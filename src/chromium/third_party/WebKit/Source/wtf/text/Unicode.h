@@ -1,35 +1,57 @@
-/*
- *  Copyright (C) 2006 George Staikos <staikos@kde.org>
- *  Copyright (C) 2006, 2008, 2009 Apple Inc. All rights reserved.
- *  Copyright (C) 2007-2009 Torch Mobile, Inc.
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Library General Public
- *  License as published by the Free Software Foundation; either
- *  version 2 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Library General Public License for more details.
- *
- *  You should have received a copy of the GNU Library General Public License
- *  along with this library; see the file COPYING.LIB.  If not, write to
- *  the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- *  Boston, MA 02110-1301, USA.
- *
- */
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Unicode.h
+// Description: Unicode Helpers
+//      Author: Ziming Li
+//     Created: 2019-02-03
+// -------------------------------------------------
+// Copyright (C) 2018 MingYang Software Technology.
+// -------------------------------------------------
 
-#ifndef WTF_Unicode_h
-#define WTF_Unicode_h
+#ifndef BLINKIT_BLINK_UNICODE_H
+#define BLINKIT_BLINK_UNICODE_H
 
-#include "wtf/Assertions.h"
+#pragma once
 
 // Define platform neutral 8 bit character type (L is for Latin-1).
 typedef unsigned char LChar;
 
-#include "wtf/text/icu/UnicodeIcu.h"
+typedef UCHAR_TYPE  UChar;
+typedef int32_t     UChar32;
+
+namespace WTF {
+namespace Unicode {
+
+enum Direction {
+    LeftToRight,
+    RightToLeft,
+    EuropeanNumber,
+    EuropeanNumberSeparator,
+    EuropeanNumberTerminator,
+    ArabicNumber,
+    CommonNumberSeparator,
+    BlockSeparator,
+    SegmentSeparator,
+    WhiteSpaceNeutral,
+    OtherNeutral,
+    LeftToRightEmbedding,
+    LeftToRightOverride,
+    RightToLeftArabic,
+    RightToLeftEmbedding,
+    RightToLeftOverride,
+    PopDirectionalFormat,
+    NonSpacingMark,
+    BoundaryNeutral
+};
+
+Direction direction(UChar32 c);
+
+int umemcasecmp(const UChar *a, const UChar *b, int len);
+
+} // namespace Unicode
+} // namespace WTF
 
 static_assert(sizeof(UChar) == 2, "UChar should be two bytes");
 
-#endif // WTF_Unicode_h
+#endif // BLINKIT_BLINK_UNICODE_H
