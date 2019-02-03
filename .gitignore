@@ -7,7 +7,6 @@ src/chromium/third_party/WebKit/Source/platform/image-decoders/testing
 src/chromium/third_party/WebKit/Source/platform/testing
 src/chromium/third_party/WebKit/Source/web/resources
 src/chromium/third_party/WebKit/Source/web/tests
-src/chromium/third_party/WebKit/Source/wtf/testing
 src/chromium/third_party/WebKit/Tools
 src/chromium/third_party/WebKit/public/default_100_percent
 src/chromium/third_party/WebKit/public/default_200_percent
