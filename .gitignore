@@ -19,4 +19,5 @@ PRESUBMIT.py
 *.gyp
 *.gypi
 *.isolate
+*.wav
 
