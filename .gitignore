@@ -14,6 +14,7 @@ PRESUBMIT.py
 
 *Test.cpp
 *Test.h
+*Test.mm
 *TestHelpers.cpp
 *TestHelpers.h
 
