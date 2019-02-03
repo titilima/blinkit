@@ -1,6 +1,7 @@
 src/chromium/third_party/WebKit/LayoutTests
 src/chromium/third_party/WebKit/ManualTests
 src/chromium/third_party/WebKit/PerformanceTests
+src/chromium/third_party/WebKit/Source/core/paint/test_data
 src/chromium/third_party/WebKit/Tools
 src/chromium/third_party/WebKit/public/default_100_percent
 src/chromium/third_party/WebKit/public/default_200_percent
@@ -10,6 +11,7 @@ DEPS
 PRESUBMIT.py
 
 *Test.cpp
+*Test.h
 
 *.gni
 *.grd
