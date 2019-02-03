@@ -9,6 +9,8 @@ BUILD.gn
 DEPS
 PRESUBMIT.py
 
+*Test.cpp
+
 *.gni
 *.grd
 *.gyp
