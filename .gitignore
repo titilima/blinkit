@@ -13,6 +13,8 @@ PRESUBMIT.py
 
 *Test.cpp
 *Test.h
+*TestHelpers.cpp
+*TestHelpers.h
 
 *.gni
 *.grd
