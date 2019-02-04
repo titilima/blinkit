@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: AnimationEffect.h
+// Description: AnimationEffect Class
+//      Author: Ziming Li
+//     Created: 2019-02-04
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,9 +42,9 @@
 #ifndef AnimationEffect_h
 #define AnimationEffect_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
 #include "core/CoreExport.h"
 #include "core/animation/Timing.h"
+#include "platform/bindings/script_wrappable.h"
 #include "platform/heap/Handle.h"
 #include "wtf/OwnPtr.h"
 #include "wtf/PassOwnPtr.h"

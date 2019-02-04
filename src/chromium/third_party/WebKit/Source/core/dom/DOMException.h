@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DOMException.h
+// Description: DOMException Class
+//      Author: Ziming Li
+//     Created: 2019-02-04
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -29,8 +40,8 @@
 #ifndef DOMException_h
 #define DOMException_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
 #include "core/CoreExport.h"
+#include "platform/bindings/script_wrappable.h"
 #include "platform/heap/Handle.h"
 #include "wtf/Forward.h"
 #include "wtf/text/WTFString.h"

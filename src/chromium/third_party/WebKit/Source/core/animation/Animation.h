@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Animation.h
+// Description: Animation Class
+//      Author: Ziming Li
+//     Created: 2019-02-04
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,8 +42,6 @@
 #ifndef Animation_h
 #define Animation_h
 
-#include "bindings/core/v8/ScriptPromise.h"
-#include "bindings/core/v8/ScriptPromiseProperty.h"
 #include "core/CSSPropertyNames.h"
 #include "core/CoreExport.h"
 #include "core/animation/AnimationEffect.h"
@@ -100,9 +109,6 @@ public:
     void play();
     void reverse();
     void finish(ExceptionState&);
-
-    ScriptPromise finished(ScriptState*);
-    ScriptPromise ready(ScriptState*);
 
     bool playing() const { return !(playStateInternal() == Idle || limited() || m_paused || m_isPausedForTesting); }
     bool limited() const { return limited(currentTimeInternal()); }
@@ -225,10 +231,6 @@ private:
     double m_endClip;
 
     unsigned m_sequenceNumber;
-
-    typedef ScriptPromiseProperty<Member<Animation>, Member<Animation>, Member<DOMException>> AnimationPromise;
-    Member<AnimationPromise> m_finishedPromise;
-    Member<AnimationPromise> m_readyPromise;
 
     Member<AnimationEffect> m_content;
     Member<AnimationTimeline> m_timeline;

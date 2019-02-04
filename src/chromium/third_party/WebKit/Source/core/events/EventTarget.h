@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: EventTarget.h
+// Description: EventTarget Class
+//      Author: Ziming Li
+//     Created: 2019-02-04
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -32,13 +43,12 @@
 #ifndef EventTarget_h
 #define EventTarget_h
 
-#include "bindings/core/v8/ScriptWrappable.h"
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/CoreExport.h"
 #include "core/EventNames.h"
 #include "core/EventTargetNames.h"
 #include "core/EventTypeNames.h"
 #include "core/events/EventListenerMap.h"
+#include "platform/bindings/script_wrappable.h"
 #include "platform/heap/Handle.h"
 #include "wtf/Allocator.h"
 #include "wtf/text/AtomicString.h"
