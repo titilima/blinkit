@@ -5,7 +5,7 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SrcRoot)blink;$(CrRoot);$(CrRoot)third_party\WebKit;$(CrRoot)third_party\WebKit\Source;$(CrRoot)third_party\WebKit\Source\gen;$(RepoRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(RepoRoot)third_party\skia\include\config;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />
