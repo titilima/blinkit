@@ -63,6 +63,7 @@
     <Import Project="..\_pch.props" />
     <Import Project="..\BlinKit.props" />
     <Import Project="..\blink.props" />
+    <Import Project="..\skia.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -70,6 +71,7 @@
     <Import Project="..\_pch.props" />
     <Import Project="..\BlinKit.props" />
     <Import Project="..\blink.props" />
+    <Import Project="..\skia.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -77,6 +79,7 @@
     <Import Project="..\_pch.props" />
     <Import Project="..\BlinKit.props" />
     <Import Project="..\blink.props" />
+    <Import Project="..\skia.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -84,6 +87,7 @@
     <Import Project="..\_pch.props" />
     <Import Project="..\BlinKit.props" />
     <Import Project="..\blink.props" />
+    <Import Project="..\skia.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -614,6 +618,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventFactory.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventListener.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventListenerMap.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventListenerOptions.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventPath.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventQueue.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventSender.h" />
