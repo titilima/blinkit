@@ -101,3 +101,8 @@ run_script('build/scripts/make_css_value_keywords.py',  \
     os.path.normpath('core/css/CSSValueKeywords.in') + ' ' + os.path.normpath('core/css/SVGCSSValueKeywords.in') + ' '  \
     '--output_dir ' + os.path.normpath('gen/core')  + GPERF \
 )
+
+run_script('build/scripts/make_names.py',  \
+    os.path.normpath('platform/network/HTTPNames.in') + ' ' \
+    '--output_dir ' + os.path.normpath('gen/platform')  \
+)

@@ -12,6 +12,9 @@
     <Filter Include="core">
       <UniqueIdentifier>{5053cb35-16b3-4226-981c-cb14c3be2703}</UniqueIdentifier>
     </Filter>
+    <Filter Include="platform">
+      <UniqueIdentifier>{de1f28bc-f3f5-4b7a-9ae4-533032566fa8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -38,6 +41,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\CSSValueKeywords.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\HTTPNames.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -63,6 +69,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\CSSValueKeywords.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\HTTPNames.h">
+      <Filter>platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

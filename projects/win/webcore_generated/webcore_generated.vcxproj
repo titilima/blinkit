@@ -170,6 +170,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTypeNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementFactory.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLNames.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\HTTPNames.cpp" />
     <ClCompile Include="..\_pch.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +182,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTypeNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementFactory.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLNames.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\HTTPNames.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\README.txt" />
