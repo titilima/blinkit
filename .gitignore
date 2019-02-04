@@ -3,6 +3,7 @@ src/chromium/third_party/WebKit/ManualTests
 src/chromium/third_party/WebKit/PerformanceTests
 src/chromium/third_party/WebKit/Source/core/paint/test_data
 src/chromium/third_party/WebKit/Source/core/testing
+src/chromium/third_party/WebKit/Source/gen
 src/chromium/third_party/WebKit/Source/platform/image-decoders/testing
 src/chromium/third_party/WebKit/Source/platform/testing
 src/chromium/third_party/WebKit/Source/web/resources
