@@ -23,6 +23,7 @@ PRESUBMIT.py
 *TestHelper.h
 *TestHelpers.cpp
 *TestHelpers.h
+*_unittest.cc
 
 *.gni
 *.grd
