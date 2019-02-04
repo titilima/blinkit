@@ -19,7 +19,7 @@
 
 #ifdef OS_WIN
 
-#   pragma warning(disable: 4244 4291)
+#   pragma warning(disable: 4244 4291 5033)
 
 #   define _CRT_NONSTDC_NO_WARNINGS
 #   define _CRT_SECURE_NO_WARNINGS
