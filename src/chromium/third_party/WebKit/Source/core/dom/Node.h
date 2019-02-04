@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Node.h
+// Description: Node Class
+//      Author: Ziming Li
+//     Created: 2018-07-10
+// -------------------------------------------------
+// Copyright (C) 2018 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,7 +36,6 @@
 #ifndef Node_h
 #define Node_h
 
-#include "bindings/core/v8/ExceptionStatePlaceholder.h"
 #include "core/CoreExport.h"
 #include "core/dom/MutationObserver.h"
 #include "core/dom/SimulatedClickOptions.h"
@@ -36,6 +46,7 @@
 #include "core/events/EventTarget.h"
 #include "core/inspector/InstanceCounters.h"
 #include "core/style/ComputedStyleConstants.h"
+#include "platform/bindings/exception_state.h"
 #include "platform/geometry/LayoutRect.h"
 #include "platform/heap/Handle.h"
 #include "platform/weborigin/KURLHash.h"
@@ -679,9 +690,6 @@ public:
 
     unsigned lengthOfContents() const;
 
-    v8::Local<v8::Object> wrap(v8::Isolate*, v8::Local<v8::Object> creationContext) override;
-    v8::Local<v8::Object> associateWithWrapper(v8::Isolate*, const WrapperTypeInfo*, v8::Local<v8::Object> wrapper) override WARN_UNUSED_RETURN;
-
 private:
     enum NodeFlags {
         HasRareDataFlag = 1,
@@ -888,13 +896,6 @@ inline bool isTreeScopeRoot(const Node* node)
 inline bool isTreeScopeRoot(const Node& node)
 {
     return node.isDocumentNode() || node.isShadowRoot();
-}
-
-// See the comment at the declaration of ScriptWrappable::fromNode in
-// bindings/core/v8/ScriptWrappable.h about why this method is defined here.
-inline ScriptWrappable* ScriptWrappable::fromNode(Node* node)
-{
-    return node;
 }
 
 // Allow equality comparisons of Nodes by reference or pointer, interchangeably.
