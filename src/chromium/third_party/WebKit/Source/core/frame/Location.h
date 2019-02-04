@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Location.h
+// Description: Location Class
+//      Author: Ziming Li
+//     Created: 2019-02-04
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2010 Apple Inc. All rights reserved.
  *
@@ -29,11 +40,10 @@
 #ifndef Location_h
 #define Location_h
 
-#include "bindings/core/v8/ScriptValue.h"
-#include "bindings/core/v8/ScriptWrappable.h"
 #include "core/CoreExport.h"
 #include "core/dom/DOMStringList.h"
 #include "core/frame/DOMWindowProperty.h"
+#include "platform/bindings/script_wrappable.h"
 #include "wtf/PassRefPtr.h"
 #include "wtf/RefCounted.h"
 #include "wtf/text/WTFString.h"
@@ -84,11 +94,6 @@ public:
     String origin() const;
 
     PassRefPtrWillBeRawPtr<DOMStringList> ancestorOrigins() const;
-
-    // Just return the |this| object the way the normal valueOf function on the Object prototype would.
-    // The valueOf function is only added to make sure that it cannot be overwritten on location
-    // objects, since that would provide a hook to change the string conversion behavior of location objects.
-    ScriptValue valueOf(const ScriptValue& thisObject) { return thisObject; }
 
     DECLARE_VIRTUAL_TRACE();
 
