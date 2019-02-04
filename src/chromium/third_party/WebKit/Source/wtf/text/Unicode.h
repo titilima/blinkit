@@ -23,6 +23,13 @@ typedef wchar_t UChar;
 
 typedef int32_t UChar32;
 
+/**
+ * Helper Macros from ICU
+ */
+#define U_IS_BMP(c)                 ((uint32_t)(c)<=0xffff)
+#define U16_LEAD(supplementary)     (UChar)(((supplementary)>>10)+0xd7c0)
+#define U16_TRAIL(supplementary)    (UChar)(((supplementary)&0x3ff)|0xdc00)
+
 namespace WTF {
 namespace Unicode {
 
