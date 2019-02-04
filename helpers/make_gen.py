@@ -14,10 +14,12 @@ def run_script(rel_path, args = ''):
     print cmd_line
     return os.system(cmd_line)
 
-# Apply path for helpers
-sys.path.append(get_full_path('helpers'))
 # Apply path for python modules
 sys.path.append(get_full_path('src/chromium/third_party'))
+
+GPERF = ''
+if 'win32' == sys.platform:
+    GPERF = ' --gperf ' + get_full_path('helpers\\gperf.exe')
 
 # Apply `WebKit/Source` as work directory
 current_dir = get_full_path('src/chromium/third_party/WebKit/Source')
@@ -92,5 +94,10 @@ run_script('build/scripts/make_element_factory.py', \
 
 run_script('build/scripts/make_css_property_names.py',  \
     os.path.normpath('core/css/CSSProperties.in') + ' ' \
-    '--output_dir ' + os.path.normpath('gen/core')  \
+    '--output_dir ' + os.path.normpath('gen/core')  + GPERF \
+)
+
+run_script('build/scripts/make_css_value_keywords.py',  \
+    os.path.normpath('core/css/CSSValueKeywords.in') + ' ' + os.path.normpath('core/css/SVGCSSValueKeywords.in') + ' '  \
+    '--output_dir ' + os.path.normpath('gen/core')  + GPERF \
 )

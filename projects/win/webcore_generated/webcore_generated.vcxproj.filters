@@ -35,6 +35,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\CSSPropertyNames.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\CSSValueKeywords.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -56,6 +59,9 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\CSSPropertyNames.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\CSSValueKeywords.h">
       <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>

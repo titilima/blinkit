@@ -164,6 +164,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\CSSPropertyNames.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\CSSValueKeywords.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTargetNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTypeNames.cpp" />
@@ -174,6 +175,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\CSSPropertyNames.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\CSSValueKeywords.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTargetNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTypeNames.h" />
