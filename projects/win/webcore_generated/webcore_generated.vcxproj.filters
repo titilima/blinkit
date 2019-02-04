@@ -20,6 +20,21 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventNames.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTargetNames.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTypeNames.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementFactory.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLNames.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\CSSPropertyNames.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -28,5 +43,23 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventNames.h">
       <Filter>core</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTargetNames.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTypeNames.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementFactory.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLNames.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\CSSPropertyNames.h">
+      <Filter>core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\README.txt" />
   </ItemGroup>
 </Project>

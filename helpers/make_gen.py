@@ -74,3 +74,23 @@ run_script('build/scripts/make_names.py',   \
     os.path.normpath('gen/EventInterfaces.in') + ' '    \
     '--output_dir ' + os.path.normpath('gen/core')  \
 )
+
+run_script('build/scripts/make_names.py',   \
+    os.path.normpath('core/events/EventTargetFactory.in') + ' ' \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)
+
+run_script('build/scripts/make_names.py',   \
+    os.path.normpath('core/events/EventTypeNames.in') + ' ' \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)
+
+run_script('build/scripts/make_element_factory.py', \
+    os.path.normpath('core/html/HTMLTagNames.in') + ' ' + os.path.normpath('core/html/HTMLAttributeNames.in') + ' ' \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)
+
+run_script('build/scripts/make_css_property_names.py',  \
+    os.path.normpath('core/css/CSSProperties.in') + ' ' \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)

@@ -163,12 +163,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\CSSPropertyNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventNames.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTargetNames.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTypeNames.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementFactory.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLNames.cpp" />
     <ClCompile Include="..\_pch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\CSSPropertyNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventNames.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTargetNames.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTypeNames.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementFactory.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLNames.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\README.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
