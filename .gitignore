@@ -1,3 +1,4 @@
+projects/win/debug
 src/chromium/third_party/WebKit/LayoutTests
 src/chromium/third_party/WebKit/ManualTests
 src/chromium/third_party/WebKit/PerformanceTests
