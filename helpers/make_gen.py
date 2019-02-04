@@ -106,3 +106,13 @@ run_script('build/scripts/make_names.py',  \
     os.path.normpath('platform/network/HTTPNames.in') + ' ' \
     '--output_dir ' + os.path.normpath('gen/platform')  \
 )
+
+run_script('build/scripts/make_media_feature_names.py', \
+    os.path.normpath('core/css/MediaFeatureNames.in') + ' ' \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)
+
+run_script('build/scripts/make_names.py',  \
+    os.path.normpath('platform/fonts/FontFamilyNames.in') + ' ' \
+    '--output_dir ' + os.path.normpath('gen/platform')  \
+)

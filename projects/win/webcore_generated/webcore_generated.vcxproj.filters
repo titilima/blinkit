@@ -44,6 +44,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\HTTPNames.cpp">
       <Filter>platform</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\MediaFeatureNames.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\FontFamilyNames.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -71,6 +77,12 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\HTTPNames.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\MediaFeatureNames.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\FontFamilyNames.h">
       <Filter>platform</Filter>
     </ClInclude>
   </ItemGroup>
