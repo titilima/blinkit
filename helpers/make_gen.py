@@ -69,3 +69,8 @@ run_script('bindings/scripts/generate_event_interfaces.py', \
     '--event-interfaces-file ' + os.path.normpath('gen/EventInterfaces.in') + ' '   \
     '--write-file-only-if-changed 0'    \
 )
+
+run_script('build/scripts/make_names.py',   \
+    os.path.normpath('gen/EventInterfaces.in') + ' '    \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)
