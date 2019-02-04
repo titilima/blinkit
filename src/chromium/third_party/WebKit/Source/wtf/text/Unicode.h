@@ -17,8 +17,11 @@
 // Define platform neutral 8 bit character type (L is for Latin-1).
 typedef unsigned char LChar;
 
-typedef UCHAR_TYPE  UChar;
-typedef int32_t     UChar32;
+#if defined(OS_WIN)
+typedef wchar_t UChar;
+#endif
+
+typedef int32_t UChar32;
 
 namespace WTF {
 namespace Unicode {
