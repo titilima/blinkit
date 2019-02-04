@@ -275,12 +275,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MainThreadTaskRunner.cpp">
       <Filter>dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MessageChannel.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MessagePort.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Microtask.cpp">
       <Filter>dom</Filter>
     </ClCompile>
@@ -983,12 +977,6 @@
       <Filter>dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MainThreadTaskRunner.h">
-      <Filter>dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MessageChannel.h">
-      <Filter>dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MessagePort.h">
       <Filter>dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Microtask.h">

@@ -268,8 +268,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\LiveNodeList.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\LiveNodeListBase.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MainThreadTaskRunner.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MessageChannel.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MessagePort.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Microtask.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MutationObserver.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MutationObserverInterestGroup.cpp" />
@@ -515,8 +513,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\LiveNodeList.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\LiveNodeListBase.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MainThreadTaskRunner.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MessageChannel.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MessagePort.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Microtask.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MutationCallback.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MutationObserver.h" />
