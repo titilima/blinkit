@@ -24,7 +24,6 @@ blockquote interfaceName=HTMLQuoteElement
 body
 br interfaceName=HTMLBRElement
 button constructorNeedsFormElement
-canvas
 caption interfaceName=HTMLTableCaptionElement
 center interfaceName=HTMLElement
 cite interfaceName=HTMLElement
@@ -44,7 +43,6 @@ div
 dl interfaceName=HTMLDListElement
 dt interfaceName=HTMLElement
 em interfaceName=HTMLElement
-embed constructorNeedsCreatedByParser
 fieldset interfaceName=HTMLFieldSetElement, constructorNeedsFormElement
 figcaption interfaceName=HTMLElement
 figure interfaceName=HTMLElement
@@ -91,14 +89,12 @@ nobr interfaceName=HTMLElement
 noembed interfaceName=HTMLNoEmbedElement, JSInterfaceName=HTMLElement
 noframes interfaceName=HTMLElement
 nolayer interfaceName=HTMLElement
-object constructorNeedsFormElement, constructorNeedsCreatedByParser
 ol interfaceName=HTMLOListElement
 optgroup interfaceName=HTMLOptGroupElement
 option
 output constructorNeedsFormElement
 shadow interfaceName=HTMLShadowElement
 p interfaceName=HTMLParagraphElement
-param
 picture interfaceName=HTMLPictureElement
 plaintext interfaceName=HTMLElement
 pre
