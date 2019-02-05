@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TextBreakIterator.h
+// Description: TextBreakIterator Helpers
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2018 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Lars Knoll <lars@trolltech.com>
  * Copyright (C) 2007, 2011, 2012 Apple Inc. All rights reserved.
@@ -26,11 +37,10 @@
 #include "wtf/text/AtomicString.h"
 #include "wtf/text/Unicode.h"
 
-#include <unicode/brkiter.h>
-
 namespace blink {
 
-typedef icu::BreakIterator TextBreakIterator;
+class TextBreakIterator {
+};
 
 // Note: The returned iterator is good only until you get another iterator, with the exception of acquireLineBreakIterator.
 
