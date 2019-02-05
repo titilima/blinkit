@@ -37,7 +37,9 @@ public:
 
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(contextMenu)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(fractionalScrollOffsets)
+    BLINK_DEFINE_EXPERIMENTAL_FEATURE(scrollTopLeftInterop)
 
+    BLINKIT_DISABLE_FEATURE(langAttributeAwareFormControlUI)
     BLINKIT_DISABLE_FEATURE(slimmingPaintOffsetCaching)
 };
 
