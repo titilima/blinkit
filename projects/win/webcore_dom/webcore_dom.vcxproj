@@ -228,7 +228,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMStringList.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMStringMap.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMTokenList.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMTypedArray.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMURL.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMURLUtils.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMURLUtilsReadOnly.cpp" />
@@ -448,7 +447,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMStringMap.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMTimeStamp.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMTokenList.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMTypedArray.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMURL.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMURLUtils.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMURLUtilsReadOnly.h" />
