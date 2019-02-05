@@ -199,6 +199,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\InputTypeNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\MathMLNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\MediaFeatureNames.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SettingsMacros.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGElementFactory.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGElementTypeHelpers.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGNames.h" />

@@ -157,3 +157,8 @@ run_script('build/scripts/make_qualified_names.py', \
     os.path.normpath('core/xml/xmlattrs.in') + ' '  \
     '--output_dir ' + os.path.normpath('gen/core')  \
 )
+
+run_script('build/scripts/make_settings.py',    \
+    os.path.normpath('core/frame/Settings.in') + ' '    \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)

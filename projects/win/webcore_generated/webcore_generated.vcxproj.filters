@@ -133,6 +133,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNames.h">
       <Filter>core</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SettingsMacros.h">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\README.txt" />
