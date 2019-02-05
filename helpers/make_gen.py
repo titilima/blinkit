@@ -116,3 +116,8 @@ run_script('build/scripts/make_names.py',  \
     os.path.normpath('platform/fonts/FontFamilyNames.in') + ' ' \
     '--output_dir ' + os.path.normpath('gen/platform')  \
 )
+
+run_script('build/scripts/make_element_type_helpers.py',    \
+    os.path.normpath('core/html/HTMLTagNames.in') + ' ' \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)

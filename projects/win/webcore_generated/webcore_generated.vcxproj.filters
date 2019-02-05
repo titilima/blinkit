@@ -85,6 +85,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\FontFamilyNames.h">
       <Filter>platform</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementTypeHelpers.h">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\README.txt" />
