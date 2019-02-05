@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Blob.h
+// Description: Blob Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -32,10 +43,7 @@
 #define Blob_h
 
 #include "bindings/core/v8/ScriptWrappable.h"
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/CoreExport.h"
-#include "core/dom/DOMArrayBuffer.h"
-#include "core/dom/DOMArrayBufferView.h"
 #include "core/html/URLRegistry.h"
 #include "core/imagebitmap/ImageBitmapSource.h"
 #include "platform/blob/BlobData.h"
@@ -57,8 +65,6 @@ public:
     {
         return new Blob(BlobDataHandle::create());
     }
-
-    static Blob* create(const HeapVector<ArrayBufferOrArrayBufferViewOrBlobOrString>&, const BlobPropertyBag&, ExceptionState&);
 
     static Blob* create(PassRefPtr<BlobDataHandle> blobDataHandle)
     {
@@ -114,13 +120,7 @@ protected:
     {
         for (size_t i = 0; i < parts.size(); ++i) {
             const ItemType& item = parts[i];
-            if (item.isArrayBuffer()) {
-                RefPtr<DOMArrayBuffer> arrayBuffer = item.getAsArrayBuffer();
-                blobData->appendBytes(arrayBuffer->data(), arrayBuffer->byteLength());
-            } else if (item.isArrayBufferView()) {
-                RefPtr<DOMArrayBufferView> arrayBufferView = item.getAsArrayBufferView();
-                blobData->appendBytes(arrayBufferView->baseAddress(), arrayBufferView->byteLength());
-            } else if (item.isBlob()) {
+            if (item.isBlob()) {
                 item.getAsBlob()->appendTo(*blobData);
             } else if (item.isString()) {
                 blobData->appendText(item.getAsString(), normalizeLineEndingsToNative);
