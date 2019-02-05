@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "core/css/CSSSelector.h"
 #include "core/page/ChromeClient.h"
 
 namespace WTF {
