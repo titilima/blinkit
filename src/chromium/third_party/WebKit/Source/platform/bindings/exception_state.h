@@ -30,6 +30,7 @@ public:
 
     virtual void throwDOMException(ExceptionCode, const String &message);
     virtual void throwTypeError(const String &message);
+    virtual void throwSecurityError(const String &sanitizedMessage, const String &unsanitizedMessage = String());
 
     bool throwIfNeeded(void)
     {
@@ -39,6 +40,8 @@ public:
         return true;
     }
 protected:
+    ExceptionState(void) = default;
+
     ExceptionCode m_exceptionCode = 0;
 private:
     virtual void throwException(void);
@@ -63,6 +66,12 @@ public:
     ExceptionState& ReturnThis(void) { return *this; }
 };
 
+class TrackExceptionState final : public ExceptionState
+{
+public:
+    TrackExceptionState(void) = default;
+};
+
 } // namespace blink
 
 #ifdef _DEBUG
@@ -71,6 +80,7 @@ public:
 #   define ASSERT_NO_EXCEPTION  (::blink::DummyExceptionStateForTesting().ReturnThis())
 #endif
 
+#define IGNORE_EXCEPTION                (::blink::DummyExceptionStateForTesting().ReturnThis())
 #define IGNORE_EXCEPTION_FOR_TESTING    (::blink::DummyExceptionStateForTesting().ReturnThis())
 
 #endif // BLINKIT_BLINK_EXCEPTION_STATE_H
