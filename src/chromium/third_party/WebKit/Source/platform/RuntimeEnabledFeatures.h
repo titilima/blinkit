@@ -31,6 +31,8 @@
 class RuntimeEnabledFeatures final {
     STATIC_ONLY(RuntimeEnabledFeatures);
 public:
+    BLINK_DEFINE_STABLE_FEATURE(smil)
+
     BLINKIT_DISABLE_FEATURE(media)
 
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(contextMenu)

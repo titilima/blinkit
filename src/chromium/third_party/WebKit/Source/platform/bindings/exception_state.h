@@ -26,7 +26,22 @@ class ExceptionState
     STACK_ALLOCATED();
     WTF_MAKE_NONCOPYABLE(ExceptionState);
 public:
+    bool hadException(void) const { return 0 != m_exceptionCode; }
+
     virtual void throwDOMException(ExceptionCode, const String &message);
+    virtual void throwTypeError(const String &message);
+
+    bool throwIfNeeded(void)
+    {
+        if (!hadException())
+            return false;
+        throwException();
+        return true;
+    }
+protected:
+    ExceptionCode m_exceptionCode = 0;
+private:
+    virtual void throwException(void);
 };
 
 class NonThrowableExceptionState final : public ExceptionState
