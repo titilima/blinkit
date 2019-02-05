@@ -6,7 +6,7 @@
 //      Author: Ziming Li
 //     Created: 2019-02-05
 // -------------------------------------------------
-// Copyright (C) 2018 MingYang Software Technology.
+// Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
 #ifndef BLINKIT_STUB_UCHAR_H
