@@ -180,8 +180,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ClientRect.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ClientRectList.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Comment.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\CompositorProxiedPropertySet.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\CompositorProxy.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContainerNode.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContextFeatures.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContextLifecycleNotifier.cpp" />
@@ -396,8 +394,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ClientRect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ClientRectList.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Comment.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\CompositorProxiedPropertySet.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\CompositorProxy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContainerNode.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContextFeatures.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContextLifecycleNotifier.h" />
