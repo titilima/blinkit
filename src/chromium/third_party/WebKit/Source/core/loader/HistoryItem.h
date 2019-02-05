@@ -14,7 +14,16 @@
 
 namespace blink {
 
-class HistoryItem;
+class HistoryItem
+{
+public:
+    void ref(void) {
+        assert(false); // Not reached!
+    }
+    void deref(void) {
+        assert(false); // Not reached!
+    }
+};
 
 } // namespace blink
 
