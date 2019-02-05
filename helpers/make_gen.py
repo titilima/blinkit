@@ -121,3 +121,29 @@ run_script('build/scripts/make_element_type_helpers.py',    \
     os.path.normpath('core/html/HTMLTagNames.in') + ' ' \
     '--output_dir ' + os.path.normpath('gen/core')  \
 )
+
+run_script('build/scripts/make_qualified_names.py', \
+    os.path.normpath('core/html/parser/MathMLTagNames.in') + ' ' +  \
+    os.path.normpath('core/html/parser/MathMLAttributeNames.in') + ' '  \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)
+
+run_script('build/scripts/make_names.py',  \
+    os.path.normpath('core/html/forms/InputTypeNames.in') + ' ' \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)
+
+run_script('build/scripts/make_element_factory.py', \
+    os.path.normpath('core/svg/SVGTagNames.in') + ' ' + os.path.normpath('core/svg/SVGAttributeNames.in') + ' ' \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)
+
+run_script('build/scripts/make_qualified_names.py', \
+    os.path.normpath('core/svg/xlinkattrs.in') + ' '    \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)
+
+run_script('build/scripts/make_element_type_helpers.py',    \
+    os.path.normpath('core/svg/SVGTagNames.in') + ' '   \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)
