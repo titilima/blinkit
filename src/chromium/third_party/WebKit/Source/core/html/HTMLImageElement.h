@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLImageElement.h
+// Description: HTMLImageElement Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -28,7 +39,6 @@
 #include "core/fetch/FetchRequest.h"
 #include "core/html/HTMLElement.h"
 #include "core/html/HTMLImageLoader.h"
-#include "core/html/canvas/CanvasImageSource.h"
 #include "core/imagebitmap/ImageBitmapSource.h"
 #include "platform/graphics/GraphicsTypes.h"
 #include "platform/network/ResourceResponse.h"
@@ -40,7 +50,7 @@ class HTMLFormElement;
 class ImageCandidate;
 class ShadowRoot;
 
-class CORE_EXPORT HTMLImageElement final : public HTMLElement, public CanvasImageSource, public ImageBitmapSource {
+class CORE_EXPORT HTMLImageElement final : public HTMLElement, public ImageBitmapSource {
     DEFINE_WRAPPERTYPEINFO();
 public:
     class ViewportChangeListener;
@@ -97,15 +107,6 @@ public:
     virtual void ensureFallbackForGeneratedContent();
     virtual void ensurePrimaryContent();
 
-    // CanvasImageSource implementation
-    PassRefPtr<Image> getSourceImageForCanvas(SourceImageStatus*, AccelerationHint) const override;
-    bool isSVGSource() const override;
-    bool wouldTaintOrigin(SecurityOrigin*) const override;
-    FloatSize elementSize() const override;
-    FloatSize defaultDestinationSize() const override;
-    const KURL& sourceURL() const override;
-    bool isOpaque() const override;
-
     // public so that HTMLPictureElement can call this as well.
     void selectSourceURL(ImageLoader::UpdateFromElementBehavior);
     void reattachFallbackContent();
@@ -119,7 +120,6 @@ public:
 
     // ImageBitmapSource implementation
     IntSize bitmapSourceSize() const override;
-    ScriptPromise createImageBitmap(ScriptState*, EventTarget&, int sx, int sy, int sw, int sh, ExceptionState&) override;
 
 protected:
     explicit HTMLImageElement(Document&, HTMLFormElement* = 0, bool createdByParser = false);
