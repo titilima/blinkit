@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DOMImplementation.cpp
+// Description: DOMImplementation Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -44,17 +55,11 @@
 #include "core/html/HTMLHeadElement.h"
 #include "core/html/HTMLMediaElement.h"
 #include "core/html/HTMLTitleElement.h"
-#include "core/html/HTMLViewSourceDocument.h"
-#include "core/html/ImageDocument.h"
-#include "core/html/MediaDocument.h"
-#include "core/html/PluginDocument.h"
-#include "core/html/TextDocument.h"
 #include "core/loader/FrameLoader.h"
 #include "core/page/Page.h"
 #include "platform/ContentType.h"
 #include "platform/MIMETypeRegistry.h"
 #include "platform/graphics/Image.h"
-#include "platform/plugins/PluginData.h"
 #include "platform/weborigin/SecurityOrigin.h"
 #include "wtf/StdLibExtras.h"
 
@@ -217,42 +222,11 @@ PassRefPtrWillBeRawPtr<HTMLDocument> DOMImplementation::createHTMLDocument(const
 
 PassRefPtrWillBeRawPtr<Document> DOMImplementation::createDocument(const String& type, const DocumentInit& init, bool inViewSourceMode)
 {
-    if (inViewSourceMode)
-        return HTMLViewSourceDocument::create(init, type);
-
-    // Plugins cannot take HTML and XHTML from us, and we don't even need to initialize the plugin database for those.
+    ASSERT(!inViewSourceMode);
     if (type == "text/html")
         return HTMLDocument::create(init);
     if (type == "application/xhtml+xml")
         return XMLDocument::createXHTML(init);
-
-    PluginData* pluginData = 0;
-    if (init.frame() && init.frame()->page() && init.frame()->loader().allowPlugins(NotAboutToInstantiatePlugin))
-        pluginData = init.frame()->page()->pluginData();
-
-    // PDF is one image type for which a plugin can override built-in support.
-    // We do not want QuickTime to take over all image types, obviously.
-    if ((type == "application/pdf" || type == "text/pdf") && pluginData && pluginData->supportsMimeType(type))
-        return PluginDocument::create(init);
-    if (Image::supportsType(type))
-        return ImageDocument::create(init);
-
-    // Check to see if the type can be played by our media player, if so create a MediaDocument
-    if (HTMLMediaElement::supportsType(ContentType(type)))
-        return MediaDocument::create(init);
-
-    // Everything else except text/plain can be overridden by plugins. In particular, Adobe SVG Viewer should be used for SVG, if installed.
-    // Disallowing plugins to use text/plain prevents plugins from hijacking a fundamental type that the browser is expected to handle,
-    // and also serves as an optimization to prevent loading the plugin database in the common case.
-    if (type != "text/plain" && pluginData && pluginData->supportsMimeType(type))
-        return PluginDocument::create(init);
-    if (isTextMIMEType(type))
-        return TextDocument::create(init);
-    if (type == "image/svg+xml")
-        return XMLDocument::createSVG(init);
-    if (isXMLMIMEType(type))
-        return XMLDocument::create(init);
-
     return HTMLDocument::create(init);
 }
 
