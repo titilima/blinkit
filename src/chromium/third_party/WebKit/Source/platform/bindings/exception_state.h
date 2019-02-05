@@ -17,6 +17,7 @@
 #include "core/dom/ExceptionCode.h"
 #include "wtf/Allocator.h"
 #include "wtf/Noncopyable.h"
+#include "wtf/text/WTFString.h"
 
 namespace blink {
 
