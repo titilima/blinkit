@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Document.cpp
+// Description: Document Class
+//      Author: Ziming Li
+//     Created: 2018-07-22
+// -------------------------------------------------
+// Copyright (C) 2018 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -27,16 +38,10 @@
 
 #include "core/dom/Document.h"
 
-#include "bindings/core/v8/CustomElementConstructorBuilder.h"
-#include "bindings/core/v8/DOMDataStore.h"
 #include "bindings/core/v8/ExceptionMessages.h"
 #include "bindings/core/v8/ExceptionState.h"
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
 #include "bindings/core/v8/ScriptController.h"
-#include "bindings/core/v8/UnionTypesCore.h"
-#include "bindings/core/v8/V8DOMWrapper.h"
-#include "bindings/core/v8/V8PerIsolateData.h"
-#include "bindings/core/v8/WindowProxy.h"
 #include "core/HTMLElementFactory.h"
 #include "core/HTMLNames.h"
 #include "core/SVGElementFactory.h"
@@ -68,6 +73,7 @@
 #include "core/dom/DocumentFragment.h"
 #include "core/dom/DocumentLifecycleObserver.h"
 #include "core/dom/DocumentType.h"
+#include "core/dom/DocumentVisibilityObserver.h"
 #include "core/dom/Element.h"
 #include "core/dom/ElementDataCache.h"
 #include "core/dom/ElementRegistrationOptions.h"
@@ -78,7 +84,6 @@
 #include "core/dom/IntersectionObserverController.h"
 #include "core/dom/LayoutTreeBuilderTraversal.h"
 #include "core/dom/MainThreadTaskRunner.h"
-#include "core/dom/Microtask.h"
 #include "core/dom/MutationObserver.h"
 #include "core/dom/NodeChildRemovalTracker.h"
 #include "core/dom/NodeComputedStyle.h"
@@ -121,12 +126,10 @@
 #include "core/events/PageTransitionEvent.h"
 #include "core/events/ScopedEventQueue.h"
 #include "core/fetch/ResourceFetcher.h"
-#include "core/frame/DOMTimer.h"
 #include "core/frame/EventHandlerRegistry.h"
 #include "core/frame/FrameConsole.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
-#include "core/frame/History.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/OriginsUsingFeatures.h"
@@ -137,7 +140,6 @@
 #include "core/html/HTMLAnchorElement.h"
 #include "core/html/HTMLBaseElement.h"
 #include "core/html/HTMLBodyElement.h"
-#include "core/html/HTMLCanvasElement.h"
 #include "core/html/HTMLCollection.h"
 #include "core/html/HTMLDialogElement.h"
 #include "core/html/HTMLDocument.h"
@@ -152,11 +154,7 @@
 #include "core/html/HTMLStyleElement.h"
 #include "core/html/HTMLTemplateElement.h"
 #include "core/html/HTMLTitleElement.h"
-#include "core/html/PluginDocument.h"
 #include "core/html/WindowNameCollection.h"
-#include "core/html/canvas/CanvasContextCreationAttributes.h"
-#include "core/html/canvas/CanvasFontCache.h"
-#include "core/html/canvas/CanvasRenderingContext.h"
 #include "core/html/forms/FormController.h"
 #include "core/html/imports/HTMLImportLoader.h"
 #include "core/html/imports/HTMLImportsController.h"
@@ -169,7 +167,6 @@
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/inspector/InspectorTraceEvents.h"
 #include "core/inspector/InstanceCounters.h"
-#include "core/inspector/ScriptCallStack.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutPart.h"
 #include "core/layout/LayoutView.h"
@@ -450,7 +447,6 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_timeline(AnimationTimeline::create(this))
     , m_templateDocumentHost(nullptr)
     , m_didAssociateFormControlsTimer(this, &Document::didAssociateFormControlsTimerFired)
-    , m_timers(timerTaskRunner()->adoptClone())
     , m_hasViewportUnits(false)
     , m_styleRecalcElementCounter(0)
     , m_parserSyncPolicy(AllowAsynchronousParsing)
@@ -615,8 +611,6 @@ void Document::dispose()
 
     m_lifecycle.advanceTo(DocumentLifecycle::Disposed);
     DocumentLifecycleNotifier::notifyDocumentWasDisposed();
-
-    m_canvasFontCache.clear();
 }
 #endif
 
@@ -776,20 +770,6 @@ PassRefPtrWillBeRawPtr<Element> Document::createElementNS(const AtomicString& na
         CustomElementRegistrationContext::setIsAttributeAndTypeExtension(element.get(), typeExtension);
 
     return element.release();
-}
-
-ScriptValue Document::registerElement(ScriptState* scriptState, const AtomicString& name, const ElementRegistrationOptions& options, ExceptionState& exceptionState, CustomElement::NameSet validNames)
-{
-    OriginsUsingFeatures::countMainWorldOnly(scriptState, *this, OriginsUsingFeatures::Feature::DocumentRegisterElement);
-
-    if (!registrationContext()) {
-        exceptionState.throwDOMException(NotSupportedError, "No element registration context is available.");
-        return ScriptValue();
-    }
-
-    CustomElementConstructorBuilder constructorBuilder(scriptState, options);
-    registrationContext()->registerElement(this, &constructorBuilder, name, validNames, exceptionState);
-    return constructorBuilder.bindingsReturnValue();
 }
 
 CustomElementMicrotaskRunQueue* Document::customElementMicrotaskRunQueue()
@@ -1392,9 +1372,6 @@ void Document::didChangeVisibilityState()
 
     if (state == PageVisibilityStateVisible)
         timeline().setAllCompositorPending();
-
-    if (hidden() && m_canvasFontCache)
-        m_canvasFontCache->pruneAll();
 }
 
 void Document::registerVisibilityObserver(DocumentVisibilityObserver* observer)
@@ -1423,8 +1400,6 @@ FormController& Document::formController()
 {
     if (!m_formController) {
         m_formController = FormController::create();
-        if (m_frame && m_frame->loader().currentItem() && m_frame->loader().currentItem()->isCurrentDocument(this))
-            m_frame->loader().currentItem()->setDocumentState(m_formController->formElementsState());
     }
     return *m_formController;
 }
@@ -2285,9 +2260,6 @@ void Document::detach(const AttachContext& context)
     if (m_importsController)
         HTMLImportsController::removeFrom(*this);
 
-    m_timers.setTimerTaskRunner(
-        Platform::current()->currentThread()->scheduler()->timerTaskRunner()->adoptClone());
-
     // This is required, as our LocalFrame might delete itself as soon as it detaches
     // us. However, this violates Node::detach() semantics, as it's never
     // possible to re-attach. Eventually Document::detach() should be renamed,
@@ -2388,14 +2360,6 @@ AXObjectCache* Document::axObjectCache() const
     if (!cacheOwner.m_axObjectCache)
         cacheOwner.m_axObjectCache = AXObjectCache::create(cacheOwner);
     return cacheOwner.m_axObjectCache.get();
-}
-
-CanvasFontCache* Document::canvasFontCache()
-{
-    if (!m_canvasFontCache)
-        m_canvasFontCache = CanvasFontCache::create(*this);
-
-    return m_canvasFontCache.get();
 }
 
 PassRefPtrWillBeRawPtr<DocumentParser> Document::createParser()
@@ -2922,22 +2886,9 @@ KURL Document::virtualCompleteURL(const String& url) const
     return completeURL(url);
 }
 
-DOMTimerCoordinator* Document::timers()
-{
-    return &m_timers;
-}
-
 EventTarget* Document::errorEventTarget()
 {
     return domWindow();
-}
-
-void Document::logExceptionToConsole(const String& errorMessage, int scriptId, const String& sourceURL, int lineNumber, int columnNumber, PassRefPtrWillBeRawPtr<ScriptCallStack> callStack)
-{
-    RefPtrWillBeRawPtr<ConsoleMessage> consoleMessage = ConsoleMessage::create(JSMessageSource, ErrorMessageLevel, errorMessage, sourceURL, lineNumber, columnNumber);
-    consoleMessage->setScriptId(scriptId);
-    consoleMessage->setCallStack(callStack);
-    addConsoleMessage(consoleMessage.release());
 }
 
 void Document::setURL(const KURL& url)
@@ -4725,11 +4676,6 @@ void Document::finishedParsing()
     // Keep it alive until we are done.
     RefPtrWillBeRawPtr<Document> protect(this);
 
-    // Ensure Custom Element callbacks are drained before DOMContentLoaded.
-    // FIXME: Remove this ad-hoc checkpoint when DOMContentLoaded is dispatched in a
-    // queued task, which will do a checkpoint anyway. https://crbug.com/425790
-    Microtask::performCheckpoint(V8PerIsolateData::mainThreadIsolate());
-
     if (RefPtrWillBeRawPtr<LocalFrame> frame = this->frame()) {
         // Don't update the layout tree if we haven't requested the main resource yet to avoid
         // adding extra latency. Note that the first layout tree update can be expensive since it
@@ -5121,7 +5067,7 @@ void Document::addConsoleMessage(PassRefPtrWillBeRawPtr<ConsoleMessage> consoleM
     if (!m_frame)
         return;
 
-    if (!consoleMessage->scriptState() && consoleMessage->url().isNull() && !consoleMessage->lineNumber()) {
+    if (consoleMessage->url().isNull() && !consoleMessage->lineNumber()) {
         consoleMessage->setURL(url().string());
         if (!isInDocumentWrite() && scriptableDocumentParser()) {
             ScriptableDocumentParser* parser = scriptableDocumentParser();
@@ -5401,10 +5347,6 @@ Node* eventTargetNodeForDocument(Document* doc)
     if (!doc)
         return 0;
     Node* node = doc->focusedElement();
-    if (!node && doc->isPluginDocument()) {
-        PluginDocument* pluginDocument = toPluginDocument(doc);
-        node = pluginDocument->pluginNode();
-    }
     if (!node && doc->isHTMLDocument())
         node = doc->body();
     if (!node)
@@ -5778,41 +5720,6 @@ void Document::platformColorsChanged()
         return;
 
     styleEngine().platformColorsChanged();
-}
-
-v8::Local<v8::Object> Document::wrap(v8::Isolate* isolate, v8::Local<v8::Object> creationContext)
-{
-    // It's possible that no one except for the new wrapper owns this object at
-    // this moment, so we have to prevent GC to collect this object until the
-    // object gets associated with the wrapper.
-    RefPtrWillBeRawPtr<Document> protect(this);
-
-    ASSERT(!DOMDataStore::containsWrapper(this, isolate));
-
-    const WrapperTypeInfo* wrapperType = wrapperTypeInfo();
-
-    if (frame() && frame()->script().initializeMainWorld()) {
-        // initializeMainWorld may have created a wrapper for the object, retry from the start.
-        v8::Local<v8::Object> wrapper = DOMDataStore::getWrapper(this, isolate);
-        if (!wrapper.IsEmpty())
-            return wrapper;
-    }
-
-    v8::Local<v8::Object> wrapper = V8DOMWrapper::createWrapper(isolate, creationContext, wrapperType, this);
-    if (UNLIKELY(wrapper.IsEmpty()))
-        return wrapper;
-
-    wrapperType->installConditionallyEnabledProperties(wrapper, isolate);
-    return associateWithWrapper(isolate, wrapperType, wrapper);
-}
-
-v8::Local<v8::Object> Document::associateWithWrapper(v8::Isolate* isolate, const WrapperTypeInfo* wrapperType, v8::Local<v8::Object> wrapper)
-{
-    wrapper = V8DOMWrapper::associateObjectWithWrapper(isolate, this, wrapperType, wrapper);
-    DOMWrapperWorld& world = DOMWrapperWorld::current(isolate);
-    if (world.isMainWorld() && frame())
-        frame()->script().windowProxy(world)->updateDocumentWrapper(wrapper);
-    return wrapper;
 }
 
 bool Document::isSecureContext(String& errorMessage, const SecureContextCheck privilegeContextCheck) const

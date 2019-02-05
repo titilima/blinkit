@@ -57,7 +57,6 @@
 #include "core/dom/ViewportDescription.h"
 #include "core/dom/custom/CustomElement.h"
 #include "core/fetch/ClientHintsPreferences.h"
-#include "core/frame/DOMTimerCoordinator.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/OriginsUsingFeatures.h"
 #include "core/html/CollectionType.h"
@@ -85,9 +84,6 @@ class CDATASection;
 class CSSStyleDeclaration;
 class CSSStyleSheet;
 class CancellableTaskFactory;
-class CanvasFontCache;
-class CanvasRenderingContext2D;
-class CanvasRenderingContext2DOrWebGLRenderingContext;
 class ChromeClient;
 class Comment;
 class ConsoleMessage;
@@ -122,7 +118,6 @@ class FrameRequestCallback;
 class FrameView;
 class HTMLAllCollection;
 class HTMLBodyElement;
-class HTMLCanvasElement;
 class HTMLCollection;
 class HTMLDialogElement;
 class HTMLElement;
@@ -944,7 +939,6 @@ public:
     void cancelIdleCallback(int id);
 
     EventTarget* errorEventTarget() final;
-    void logExceptionToConsole(const String& errorMessage, int scriptId, const String& sourceURL, int lineNumber, int columnNumber, PassRefPtrWillBeRawPtr<ScriptCallStack>) final;
 
     void initDNSPrefetch();
 
@@ -1044,8 +1038,6 @@ public:
 
     void platformColorsChanged();
 
-    DOMTimerCoordinator* timers() final;
-
     OriginsUsingFeatures::Value& originsUsingFeaturesValue() { return m_originsUsingFeaturesValue; }
 
     NthIndexCache* nthIndexCache() const { return m_nthIndexCache; }
@@ -1054,8 +1046,6 @@ public:
     bool isSecureContext(const SecureContextCheck = StandardSecureContextCheck) const override;
 
     ClientHintsPreferences& clientHintsPreferences() { return m_clientHintsPreferences; }
-
-    CanvasFontCache* canvasFontCache();
 
     // Used by unit tests so that all parsing will be main thread for
     // controlling parsing and chunking precisely.
@@ -1399,8 +1389,6 @@ private:
     WillBeHeapHashSet<RawPtrWillBeMember<SVGUseElement>> m_useElementsNeedingUpdate;
     WillBeHeapHashSet<RawPtrWillBeMember<Element>> m_layerUpdateSVGFilterElements;
 
-    DOMTimerCoordinator m_timers;
-
     bool m_hasViewportUnits;
 
     using DocumentVisibilityObserverSet = WillBeHeapHashSet<RawPtrWillBeWeakMember<DocumentVisibilityObserver>>;
@@ -1413,8 +1401,6 @@ private:
     OriginsUsingFeatures::Value m_originsUsingFeaturesValue;
 
     ClientHintsPreferences m_clientHintsPreferences;
-
-    PersistentWillBeMember<CanvasFontCache> m_canvasFontCache;
 
     PersistentWillBeMember<IntersectionObserverController> m_intersectionObserverController;
     PersistentWillBeMember<NodeIntersectionObserverData> m_intersectionObserverData;
