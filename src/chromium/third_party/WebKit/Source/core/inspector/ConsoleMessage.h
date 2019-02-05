@@ -27,11 +27,6 @@
 
 namespace blink {
 
-class ScriptArguments;
-class ScriptCallStack;
-class ScriptState;
-class WorkerGlobalScopeProxy;
-
 class CORE_EXPORT ConsoleMessage final: public RefCountedWillBeGarbageCollectedFinalized<ConsoleMessage> {
 public:
     static PassRefPtrWillBeRawPtr<ConsoleMessage> create(MessageSource source, MessageLevel level, const String& message, const String& url = String(), unsigned lineNumber = 0, unsigned columnNumber = 0)
@@ -48,18 +43,10 @@ public:
     void setURL(const String&);
     unsigned lineNumber() const;
     void setLineNumber(unsigned);
-    PassRefPtrWillBeRawPtr<ScriptCallStack> callStack() const;
-    void setCallStack(PassRefPtrWillBeRawPtr<ScriptCallStack>);
-    ScriptState* scriptState() const;
-    void setScriptState(ScriptState*);
-    PassRefPtrWillBeRawPtr<ScriptArguments> scriptArguments() const;
-    void setScriptArguments(PassRefPtrWillBeRawPtr<ScriptArguments>);
     unsigned long requestIdentifier() const;
     void setRequestIdentifier(unsigned long);
     double timestamp() const;
     void setTimestamp(double);
-    WorkerGlobalScopeProxy* workerGlobalScopeProxy() { return m_workerProxy; }
-    void setWorkerGlobalScopeProxy(WorkerGlobalScopeProxy* proxy) { m_workerProxy = proxy; }
     unsigned assignMessageId();
     unsigned messageId() const { return m_messageId; }
     unsigned relatedMessageId() const { return m_relatedMessageId; }
@@ -88,11 +75,8 @@ private:
     String m_url;
     unsigned m_lineNumber;
     unsigned m_columnNumber;
-    RefPtrWillBeMember<ScriptCallStack> m_callStack;
-    RefPtrWillBeMember<ScriptArguments> m_scriptArguments;
     unsigned long m_requestIdentifier;
     double m_timestamp;
-    WorkerGlobalScopeProxy* m_workerProxy;
     unsigned m_messageId;
     unsigned m_relatedMessageId;
 };

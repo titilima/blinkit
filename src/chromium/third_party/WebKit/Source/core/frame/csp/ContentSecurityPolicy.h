@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ContentSecurityPolicy.h
+// Description: ContentSecurityPolicy Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google, Inc. All rights reserved.
  *
@@ -26,7 +37,6 @@
 #ifndef ContentSecurityPolicy_h
 #define ContentSecurityPolicy_h
 
-#include "bindings/core/v8/ScriptState.h"
 #include "core/CoreExport.h"
 #include "core/dom/ExecutionContext.h"
 #include "core/dom/SecurityContext.h"

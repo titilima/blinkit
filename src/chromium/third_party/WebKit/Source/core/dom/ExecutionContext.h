@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ExecutionContext.h
+// Description: ExecutionContext Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2012 Google Inc. All Rights Reserved.
@@ -47,7 +58,6 @@ namespace blink {
 
 class ActiveDOMObject;
 class ConsoleMessage;
-class DOMTimerCoordinator;
 class ErrorEvent;
 class EventQueue;
 class EventTarget;
@@ -91,12 +101,6 @@ public:
     virtual String userAgent() const = 0;
     virtual void postTask(const WebTraceLocation&, PassOwnPtr<ExecutionContextTask>) = 0; // Executes the task on context's thread asynchronously.
 
-    // Gets the DOMTimerCoordinator which maintains the "active timer
-    // list" of tasks created by setTimeout and setInterval. The
-    // DOMTimerCoordinator is owned by the ExecutionContext and should
-    // not be used after the ExecutionContext is destroyed.
-    virtual DOMTimerCoordinator* timers() = 0;
-
     virtual void reportBlockedScriptExecutionToInspector(const String& directiveText) = 0;
 
     virtual SecurityContext& securityContext() = 0;
@@ -104,10 +108,8 @@ public:
     KURL contextCompleteURL(const String& url) const { return virtualCompleteURL(url); }
 
     bool shouldSanitizeScriptError(const String& sourceURL, AccessControlStatus);
-    void reportException(PassRefPtrWillBeRawPtr<ErrorEvent>, int scriptId, PassRefPtrWillBeRawPtr<ScriptCallStack>, AccessControlStatus);
 
     virtual void addConsoleMessage(PassRefPtrWillBeRawPtr<ConsoleMessage>) = 0;
-    virtual void logExceptionToConsole(const String& errorMessage, int scriptId, const String& sourceURL, int lineNumber, int columnNumber, PassRefPtrWillBeRawPtr<ScriptCallStack>) = 0;
 
     PublicURLManager& publicURLManager();
 

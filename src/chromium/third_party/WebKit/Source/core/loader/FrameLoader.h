@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FrameLoader.h
+// Description: FrameLoader Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2008, 2009 Torch Mobile Inc. All rights reserved. (http://www.torchmobile.com/)
@@ -179,7 +190,6 @@ public:
 
     void updateForSameDocumentNavigation(const KURL&, SameDocumentNavigationSource, PassRefPtr<SerializedScriptValue>, HistoryScrollRestorationType, FrameLoadType);
 
-    HistoryItem* currentItem() const { return m_currentItem.get(); }
     void saveScrollState();
 
     void restoreScrollPositionAndViewState();
@@ -234,9 +244,6 @@ private:
     // be consulted in particular as it makes sense to imply certain settings on the new loader.
     RefPtrWillBeMember<DocumentLoader> m_documentLoader;
     RefPtrWillBeMember<DocumentLoader> m_provisionalDocumentLoader;
-
-    RefPtrWillBeMember<HistoryItem> m_currentItem;
-    RefPtrWillBeMember<HistoryItem> m_provisionalItem;
 
     class DeferredHistoryLoad : public NoBaseWillBeGarbageCollectedFinalized<DeferredHistoryLoad> {
         WTF_MAKE_NONCOPYABLE(DeferredHistoryLoad);

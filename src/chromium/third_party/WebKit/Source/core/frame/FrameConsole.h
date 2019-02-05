@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FrameConsole.h
+// Description: FrameConsole Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Apple Inc. All rights reserved.
  *
@@ -29,7 +40,6 @@
 #ifndef FrameConsole_h
 #define FrameConsole_h
 
-#include "bindings/core/v8/ScriptState.h"
 #include "core/CoreExport.h"
 #include "core/frame/ConsoleTypes.h"
 #include "platform/heap/Handle.h"
