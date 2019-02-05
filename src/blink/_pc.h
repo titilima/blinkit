@@ -14,10 +14,9 @@
 
 #pragma once
 
-#include <cassert>
 #include "build/build_config.h"
 
-#ifdef OS_WIN
+#if OS_WIN
 
 #   pragma warning(disable: 4244 4291 4305 5033)
 
@@ -26,6 +25,8 @@
 #   define NOMINMAX
 
 #endif
+
+#include <cassert>
 
 #define INSIDE_BLINK    1
 
