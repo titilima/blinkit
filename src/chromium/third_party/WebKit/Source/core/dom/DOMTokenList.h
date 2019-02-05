@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DOMTokenList.h
+// Description: DOMTokenList Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -25,7 +36,6 @@
 #ifndef DOMTokenList_h
 #define DOMTokenList_h
 
-#include "bindings/core/v8/Iterable.h"
 #include "bindings/core/v8/ScriptWrappable.h"
 #include "platform/heap/Handle.h"
 #include "wtf/Vector.h"
@@ -36,7 +46,7 @@ namespace blink {
 class Element;
 class ExceptionState;
 
-class CORE_EXPORT DOMTokenList : public NoBaseWillBeGarbageCollectedFinalized<DOMTokenList>, public ScriptWrappable, public ValueIterable<String> {
+class CORE_EXPORT DOMTokenList : public NoBaseWillBeGarbageCollectedFinalized<DOMTokenList>, public ScriptWrappable {
     DEFINE_WRAPPERTYPEINFO();
     USING_FAST_MALLOC_WILL_BE_REMOVED(DOMTokenList);
     WTF_MAKE_NONCOPYABLE(DOMTokenList);
@@ -83,9 +93,6 @@ protected:
     static AtomicString addTokens(const AtomicString&, const Vector<String>&);
     static AtomicString removeToken(const AtomicString&, const AtomicString&);
     static AtomicString removeTokens(const AtomicString&, const Vector<String>&);
-
-private:
-    IterationSource* startIteration(ScriptState*, ExceptionState&) override;
 };
 
 } // namespace blink

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: NodeList.h
+// Description: NodeList Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -24,7 +35,6 @@
 #ifndef NodeList_h
 #define NodeList_h
 
-#include "bindings/core/v8/Iterable.h"
 #include "bindings/core/v8/ScriptWrappable.h"
 #include "core/CoreExport.h"
 #include "wtf/RefCounted.h"
@@ -33,7 +43,7 @@ namespace blink {
 
 class Node;
 
-class CORE_EXPORT NodeList : public RefCountedWillBeGarbageCollectedFinalized<NodeList>, public ScriptWrappable, public ValueIterable<Node *> {
+class CORE_EXPORT NodeList : public RefCountedWillBeGarbageCollectedFinalized<NodeList>, public ScriptWrappable {
     DEFINE_WRAPPERTYPEINFO();
 public:
     virtual ~NodeList() { }
@@ -53,8 +63,6 @@ public:
 protected:
     NodeList() { }
 
-private:
-    IterationSource* startIteration(ScriptState*, ExceptionState&) override;
 };
 
 } // namespace blink

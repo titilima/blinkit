@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DOMStringMap.h
+// Description: DOMStringMap Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Apple Inc. All rights reserved.
  *
@@ -28,7 +39,6 @@
 
 #include "bindings/core/v8/ExceptionState.h"
 #include "bindings/core/v8/ScriptWrappable.h"
-#include "bindings/core/v8/V8Binding.h"
 #include "platform/heap/Handle.h"
 #include "wtf/Noncopyable.h"
 #include "wtf/Vector.h"
@@ -37,6 +47,12 @@
 namespace blink {
 
 class Element;
+
+enum DeleteResult {
+    DeleteSuccess,
+    DeleteReject,
+    DeleteUnknownProperty
+};
 
 class DOMStringMap : public NoBaseWillBeGarbageCollected<DOMStringMap>, public ScriptWrappable {
     DECLARE_EMPTY_VIRTUAL_DESTRUCTOR_WILL_BE_REMOVED(DOMStringMap);

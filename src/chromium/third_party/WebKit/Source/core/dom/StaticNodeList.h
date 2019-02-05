@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StaticNodeList.h
+// Description: StaticNodeList Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -33,7 +44,6 @@
 #include "wtf/PassRefPtr.h"
 #include "wtf/RefPtr.h"
 #include "wtf/Vector.h"
-#include <v8.h>
 
 namespace blink {
 
@@ -74,14 +84,12 @@ PassRefPtrWillBeRawPtr<StaticNodeTypeList<NodeType>> StaticNodeTypeList<NodeType
 {
     RefPtrWillBeRawPtr<StaticNodeTypeList<NodeType>> nodeList = adoptRefWillBeNoop(new StaticNodeTypeList<NodeType>);
     nodeList->m_nodes.swap(nodes);
-    v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(nodeList->AllocationSize());
     return nodeList.release();
 }
 
 template <typename NodeType>
 StaticNodeTypeList<NodeType>::~StaticNodeTypeList()
 {
-    v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(-AllocationSize());
 }
 
 template <typename NodeType>
