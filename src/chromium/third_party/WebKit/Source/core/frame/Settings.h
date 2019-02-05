@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Settings.h
+// Description: Settings Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2006, 2007, 2008, 2009, 2011, 2012 Apple Inc. All rights reserved.
  *           (C) 2006 Graham Dennis (graham.dennis@gmail.com)
@@ -27,7 +38,6 @@
 #ifndef Settings_h
 #define Settings_h
 
-#include "bindings/core/v8/V8CacheOptions.h"
 #include "core/CoreExport.h"
 #include "core/SettingsMacros.h"
 #include "core/editing/EditingBehaviorTypes.h"
