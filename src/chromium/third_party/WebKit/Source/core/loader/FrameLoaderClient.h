@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FrameLoaderClient.h
+// Description: FrameLoaderClient Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple Inc. All rights reserved.
  * Copyright (C) 2012 Google Inc. All rights reserved.
@@ -42,7 +53,6 @@
 #include "platform/weborigin/Referrer.h"
 #include "wtf/Forward.h"
 #include "wtf/Vector.h"
-#include <v8.h>
 
 namespace blink {
 
@@ -170,10 +180,6 @@ public:
     virtual void dispatchDidClearWindowObjectInMainWorld() = 0;
     virtual void documentElementAvailable() = 0;
 
-    virtual v8::Local<v8::Value> createTestInterface(const AtomicString& name) = 0;
-
-    virtual void didCreateScriptContext(v8::Local<v8::Context>, int extensionGroup, int worldId) = 0;
-    virtual void willReleaseScriptContext(v8::Local<v8::Context>, int worldId) = 0;
     virtual bool allowScriptExtension(const String& extensionName, int extensionGroup, int worldId) = 0;
 
     virtual void didChangeScrollOffset() { }

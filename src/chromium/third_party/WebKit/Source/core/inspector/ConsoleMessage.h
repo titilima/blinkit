@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ConsoleMessage.h
+// Description: ConsoleMessage Class
+//      Author: Ziming Li
+//     Created: 2018-08-31
+// -------------------------------------------------
+// Copyright (C) 2018 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,11 +16,9 @@
 #ifndef ConsoleMessage_h
 #define ConsoleMessage_h
 
-#include "bindings/core/v8/ScriptState.h"
 #include "core/CoreExport.h"
 #include "core/frame/ConsoleTypes.h"
 #include "core/inspector/ConsoleAPITypes.h"
-#include "core/inspector/ScriptCallStack.h"
 #include "platform/heap/Handle.h"
 #include "wtf/Forward.h"
 #include "wtf/PassRefPtr.h"
@@ -80,7 +89,6 @@ private:
     unsigned m_lineNumber;
     unsigned m_columnNumber;
     RefPtrWillBeMember<ScriptCallStack> m_callStack;
-    OwnPtr<ScriptStateProtectingContext> m_scriptState;
     RefPtrWillBeMember<ScriptArguments> m_scriptArguments;
     unsigned long m_requestIdentifier;
     double m_timestamp;
