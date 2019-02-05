@@ -251,9 +251,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MainThreadTaskRunner.cpp">
       <Filter>dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Microtask.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MutationObserver.cpp">
       <Filter>dom</Filter>
     </ClCompile>
@@ -925,9 +922,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MainThreadTaskRunner.h">
       <Filter>dom</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Microtask.h">
-      <Filter>dom</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MutationCallback.h">
       <Filter>dom</Filter>
     </ClInclude>
@@ -1448,6 +1442,12 @@
       <Filter>events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\WheelEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\HashChangeEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\PageTransitionEventInit.h">
       <Filter>events</Filter>
     </ClInclude>
   </ItemGroup>
