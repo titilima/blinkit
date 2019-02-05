@@ -14,8 +14,7 @@
 
 namespace blink {
 
-class HistoryItem
-{
+class HistoryItem {
 public:
     void ref(void) {
         assert(false); // Not reached!
