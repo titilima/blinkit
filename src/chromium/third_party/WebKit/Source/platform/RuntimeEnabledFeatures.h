@@ -31,7 +31,12 @@
 class RuntimeEnabledFeatures final {
     STATIC_ONLY(RuntimeEnabledFeatures);
 public:
+    BLINKIT_DISABLE_FEATURE(media)
+
+    BLINK_DEFINE_EXPERIMENTAL_FEATURE(contextMenu)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(fractionalScrollOffsets)
+
+    BLINKIT_DISABLE_FEATURE(slimmingPaintOffsetCaching)
 };
 
 #endif // BLINKIT_BLINK_RUNTIME_ENABLED_FEATURES_H
