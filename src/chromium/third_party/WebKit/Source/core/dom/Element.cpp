@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Element.cpp
+// Description: Element Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,13 +36,8 @@
 
 #include "core/dom/Element.h"
 
-#include "bindings/core/v8/DOMDataStore.h"
-#include "bindings/core/v8/Dictionary.h"
 #include "bindings/core/v8/ExceptionMessages.h"
 #include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/V8DOMActivityLogger.h"
-#include "bindings/core/v8/V8DOMWrapper.h"
-#include "bindings/core/v8/V8PerContextData.h"
 #include "core/CSSValueKeywords.h"
 #include "core/SVGNames.h"
 #include "core/XLinkNames.h"
@@ -93,7 +99,6 @@
 #include "core/frame/UseCounter.h"
 #include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/html/ClassList.h"
-#include "core/html/HTMLCanvasElement.h"
 #include "core/html/HTMLCollection.h"
 #include "core/html/HTMLDocument.h"
 #include "core/html/HTMLElement.h"
@@ -101,7 +106,6 @@
 #include "core/html/HTMLFrameElementBase.h"
 #include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/HTMLOptionsCollection.h"
-#include "core/html/HTMLPlugInElement.h"
 #include "core/html/HTMLTableRowsCollection.h"
 #include "core/html/HTMLTemplateElement.h"
 #include "core/html/parser/HTMLParserIdioms.h"
@@ -248,13 +252,7 @@ short Element::tabIndex() const
 
 bool Element::layoutObjectIsFocusable() const
 {
-    // Elements in canvas fallback content are not rendered, but they are allowed to be
-    // focusable as long as their canvas is displayed and visible.
-    if (isInCanvasSubtree()) {
-        const HTMLCanvasElement* canvas = Traversal<HTMLCanvasElement>::firstAncestorOrSelf(*this);
-        ASSERT(canvas);
-        return canvas->layoutObject() && canvas->layoutObject()->style()->visibility() == VISIBLE;
-    }
+    ASSERT(!isInCanvasSubtree()); // Canvas is disabled in BlinKit.
 
     // FIXME: These asserts should be in Node::isFocusable, but there are some
     // callsites like Document::setFocusedElement that would currently fail on
@@ -970,36 +968,6 @@ void Element::scrollFrameTo(const ScrollToOptions& scrollToOptions)
     if (scrollToOptions.hasTop())
         scaledTop = ScrollableArea::normalizeNonFiniteScroll(scrollToOptions.top()) * frame->pageZoomFactor();
     viewport->setScrollPosition(DoublePoint(scaledLeft, scaledTop), ProgrammaticScroll, scrollBehavior);
-}
-
-bool Element::hasCompositorProxy() const
-{
-    return hasRareData() && elementRareData()->proxiedPropertyCounts();
-}
-
-void Element::incrementCompositorProxiedProperties(uint32_t mutableProperties)
-{
-    ElementRareData& rareData = ensureElementRareData();
-    if (!rareData.proxiedPropertyCounts())
-        setNeedsStyleRecalc(LocalStyleChange, StyleChangeReasonForTracing::create(StyleChangeReason::CompositorProxy));
-    rareData.incrementCompositorProxiedProperties(mutableProperties);
-}
-
-void Element::decrementCompositorProxiedProperties(uint32_t mutableProperties)
-{
-    ElementRareData& rareData = *elementRareData();
-    rareData.decrementCompositorProxiedProperties(mutableProperties);
-    if (!rareData.proxiedPropertyCounts())
-        setNeedsStyleRecalc(LocalStyleChange, StyleChangeReasonForTracing::create(StyleChangeReason::CompositorProxy));
-}
-
-uint32_t Element::compositorMutableProperties() const
-{
-    if (!hasRareData())
-        return WebCompositorMutablePropertyNone;
-    if (CompositorProxiedPropertySet* set = elementRareData()->proxiedPropertyCounts())
-        return set->proxiedProperties();
-    return WebCompositorMutablePropertyNone;
 }
 
 bool Element::hasNonEmptyLayoutSize() const
@@ -3323,7 +3291,6 @@ void Element::didRecalcStyle(StyleRecalcChange)
     ASSERT(hasCustomStyleCallbacks());
 }
 
-
 PassRefPtr<ComputedStyle> Element::customStyleForLayoutObject()
 {
     ASSERT(hasCustomStyleCallbacks());
@@ -3590,59 +3557,22 @@ bool Element::supportsStyleSharing() const
 
 void Element::logAddElementIfIsolatedWorldAndInDocument(const char element[], const QualifiedName& attr1)
 {
-    if (!inDocument())
-        return;
-    V8DOMActivityLogger* activityLogger = V8DOMActivityLogger::currentActivityLoggerIfIsolatedWorld();
-    if (!activityLogger)
-        return;
-    Vector<String, 2> argv;
-    argv.append(element);
-    argv.append(fastGetAttribute(attr1));
-    activityLogger->logEvent("blinkAddElement", argv.size(), argv.data());
+    // Nothing to do.
 }
 
 void Element::logAddElementIfIsolatedWorldAndInDocument(const char element[], const QualifiedName& attr1, const QualifiedName& attr2)
 {
-    if (!inDocument())
-        return;
-    V8DOMActivityLogger* activityLogger = V8DOMActivityLogger::currentActivityLoggerIfIsolatedWorld();
-    if (!activityLogger)
-        return;
-    Vector<String, 3> argv;
-    argv.append(element);
-    argv.append(fastGetAttribute(attr1));
-    argv.append(fastGetAttribute(attr2));
-    activityLogger->logEvent("blinkAddElement", argv.size(), argv.data());
+    // Nothing to do.
 }
 
 void Element::logAddElementIfIsolatedWorldAndInDocument(const char element[], const QualifiedName& attr1, const QualifiedName& attr2, const QualifiedName& attr3)
 {
-    if (!inDocument())
-        return;
-    V8DOMActivityLogger* activityLogger = V8DOMActivityLogger::currentActivityLoggerIfIsolatedWorld();
-    if (!activityLogger)
-        return;
-    Vector<String, 4> argv;
-    argv.append(element);
-    argv.append(fastGetAttribute(attr1));
-    argv.append(fastGetAttribute(attr2));
-    argv.append(fastGetAttribute(attr3));
-    activityLogger->logEvent("blinkAddElement", argv.size(), argv.data());
+    // Nothing to do.
 }
 
 void Element::logUpdateAttributeIfIsolatedWorldAndInDocument(const char element[], const QualifiedName& attributeName, const AtomicString& oldValue, const AtomicString& newValue)
 {
-    if (!inDocument())
-        return;
-    V8DOMActivityLogger* activityLogger = V8DOMActivityLogger::currentActivityLoggerIfIsolatedWorld();
-    if (!activityLogger)
-        return;
-    Vector<String, 4> argv;
-    argv.append(element);
-    argv.append(attributeName.toString());
-    argv.append(oldValue);
-    argv.append(newValue);
-    activityLogger->logEvent("blinkSetAttribute", argv.size(), argv.data());
+    // Nothing to do.
 }
 
 DEFINE_TRACE(Element)
