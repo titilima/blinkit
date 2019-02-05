@@ -46,6 +46,8 @@ enum Direction {
 
 Direction direction(UChar32 c);
 
+UChar32 foldCase(UChar32 c);
+
 int umemcasecmp(const UChar *a, const UChar *b, int len);
 
 } // namespace Unicode
