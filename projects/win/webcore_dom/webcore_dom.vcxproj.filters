@@ -1420,5 +1420,11 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\PageTransitionEventInit.h">
       <Filter>events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\shadow\ShadowRootInit.h">
+      <Filter>dom\shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\FocusEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

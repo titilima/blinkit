@@ -535,6 +535,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\shadow\InsertionPoint.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\shadow\SelectRuleFeatureSet.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\shadow\ShadowRoot.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\shadow\ShadowRootInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\shadow\ShadowRootRareData.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\shadow\SlotAssignment.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\SimulatedClickOptions.h" />
@@ -593,6 +594,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventSender.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventTarget.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\FocusEvent.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\FocusEventInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\GenericEventQueue.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\GestureEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\HashChangeEvent.h" />
