@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ElementRareData.h
+// Description: ElementRareData Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2009, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2008 David Smith <catfish.man@gmail.com>
@@ -24,7 +35,6 @@
 
 #include "core/animation/ElementAnimations.h"
 #include "core/dom/Attr.h"
-#include "core/dom/CompositorProxiedPropertySet.h"
 #include "core/dom/DatasetDOMStringMap.h"
 #include "core/dom/NamedNodeMap.h"
 #include "core/dom/NodeIntersectionObserverData.h"
@@ -116,7 +126,6 @@ public:
 
     void incrementCompositorProxiedProperties(uint32_t properties);
     void decrementCompositorProxiedProperties(uint32_t properties);
-    CompositorProxiedPropertySet* proxiedPropertyCounts() const { return m_proxiedProperties.get(); }
 
     void setCustomElementDefinition(PassRefPtrWillBeRawPtr<CustomElementDefinition> definition) { m_customElementDefinition = definition; }
     CustomElementDefinition* customElementDefinition() const { return m_customElementDefinition.get(); }
@@ -136,9 +145,6 @@ public:
     DECLARE_TRACE_AFTER_DISPATCH();
 
 private:
-    CompositorProxiedPropertySet& ensureCompositorProxiedPropertySet();
-    void clearCompositorProxiedPropertySet() { m_proxiedProperties = nullptr; }
-
     short m_tabindex;
 
     LayoutSize m_minimumSizeForResizing;
@@ -150,7 +156,6 @@ private:
     OwnPtrWillBeMember<NamedNodeMap> m_attributeMap;
     OwnPtrWillBeMember<AttrNodeList> m_attrNodeList;
     OwnPtrWillBeMember<InlineCSSStyleDeclaration> m_cssomWrapper;
-    OwnPtr<CompositorProxiedPropertySet> m_proxiedProperties;
 
     PersistentWillBeMember<ElementAnimations> m_elementAnimations;
     PersistentWillBeMember<NodeIntersectionObserverData> m_intersectionObserverData;
@@ -253,21 +258,12 @@ inline PseudoElement* ElementRareData::pseudoElement(PseudoId pseudoId) const
 
 inline void ElementRareData::incrementCompositorProxiedProperties(uint32_t properties)
 {
-    ensureCompositorProxiedPropertySet().increment(properties);
+    assert(false); // Not reached!
 }
 
 inline void ElementRareData::decrementCompositorProxiedProperties(uint32_t properties)
 {
-    m_proxiedProperties->decrement(properties);
-    if (m_proxiedProperties->isEmpty())
-        clearCompositorProxiedPropertySet();
-}
-
-inline CompositorProxiedPropertySet& ElementRareData::ensureCompositorProxiedPropertySet()
-{
-    if (!m_proxiedProperties)
-        m_proxiedProperties = CompositorProxiedPropertySet::create();
-    return *m_proxiedProperties;
+    assert(false); // Not reached!
 }
 
 } // namespace

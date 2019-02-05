@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ElementRareData.cpp
+// Description: ElementRareData Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -29,7 +40,6 @@
  */
 
 #include "core/dom/ElementRareData.h"
-#include "core/dom/CompositorProxiedPropertySet.h"
 #include "core/style/ComputedStyle.h"
 
 namespace blink {
@@ -38,7 +48,7 @@ struct SameSizeAsElementRareData : NodeRareData {
     short indices[1];
     LayoutSize sizeForResizing;
     IntSize scrollOffset;
-    void* pointers[13];
+    void* pointers[12];
     PersistentWillBeMember<void*> persistentMember[2];
 };
 
