@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "core/dom/ExceptionCode.h"
 #include "wtf/Allocator.h"
 #include "wtf/Noncopyable.h"
 
@@ -23,6 +24,8 @@ class ExceptionState
 {
     STACK_ALLOCATED();
     WTF_MAKE_NONCOPYABLE(ExceptionState);
+public:
+    virtual void throwDOMException(ExceptionCode, const String &message);
 };
 
 class NonThrowableExceptionState final : public ExceptionState
