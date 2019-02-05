@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Event.h
+// Description: Event Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -124,12 +135,6 @@ public:
     bool bubbles() const { return m_canBubble; }
     bool cancelable() const { return m_cancelable; }
 
-    // Event creation timestamp in milliseconds. If |HiResEventTimeStamp|
-    // runtime feature is enabled it returns a DOMHighResTimeStamp using the
-    // platform timestamp (see |m_platformTimeStamp|) otherwise it returns a
-    // DOMTimeStamp that represents the current object's construction time (see
-    // |m_createTime|). For more info see http://crbug.com/160524
-    double timeStamp(ScriptState*) const;
     double platformTimeStamp() const { return m_platformTimeStamp; }
     DOMTimeStamp createTime() const { return m_createTime; }
 
@@ -183,8 +188,6 @@ public:
 
     EventPath& eventPath() { ASSERT(m_eventPath); return *m_eventPath; }
     void initEventPath(Node&);
-
-    WillBeHeapVector<RefPtrWillBeMember<EventTarget>> path(ScriptState*) const;
 
     bool isBeingDispatched() const { return eventPhase(); }
 

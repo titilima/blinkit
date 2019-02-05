@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Event.cpp
+// Description: Event Class
+//      Author: Ziming Li
+//     Created: 2019-02-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -225,41 +236,6 @@ void Event::initEventPath(Node& node)
     }
 }
 
-WillBeHeapVector<RefPtrWillBeMember<EventTarget>> Event::path(ScriptState* scriptState) const
-{
-    if (m_target)
-        OriginsUsingFeatures::countOriginOrIsolatedWorldHumanReadableName(scriptState, *m_target, OriginsUsingFeatures::Feature::EventPath);
-
-    if (!m_currentTarget) {
-        ASSERT(m_eventPhase == Event::NONE);
-        if (!m_eventPath) {
-            // Before dispatching the event
-            return WillBeHeapVector<RefPtrWillBeMember<EventTarget>>();
-        }
-        ASSERT(!m_eventPath->isEmpty());
-        // After dispatching the event
-        return m_eventPath->last().treeScopeEventContext().ensureEventPath(*m_eventPath);
-    }
-
-    if (Node* node = m_currentTarget->toNode()) {
-        ASSERT(m_eventPath);
-        size_t eventPathSize = m_eventPath->size();
-        for (size_t i = 0; i < eventPathSize; ++i) {
-            if (node == (*m_eventPath)[i].node()) {
-                return (*m_eventPath)[i].treeScopeEventContext().ensureEventPath(*m_eventPath);
-            }
-        }
-        ASSERT_NOT_REACHED();
-    }
-
-    // Returns [window] for events that are directly dispatched to the window object;
-    // e.g., window.load, pageshow, etc.
-    if (LocalDOMWindow* window = m_currentTarget->toDOMWindow())
-        return WillBeHeapVector<RefPtrWillBeMember<EventTarget>>(1, window);
-
-    return WillBeHeapVector<RefPtrWillBeMember<EventTarget>>();
-}
-
 PassRefPtrWillBeRawPtr<EventDispatchMediator> Event::createMediator()
 {
     return EventDispatchMediator::create(this);
@@ -275,24 +251,6 @@ EventTarget* Event::currentTarget() const
             return svgElement;
     }
     return m_currentTarget.get();
-}
-
-double Event::timeStamp(ScriptState* scriptState) const
-{
-    double timeStamp = 0;
-    // TODO(majidvp): Get rid of m_createTime once the flag is enabled by default;
-    if (UNLIKELY(RuntimeEnabledFeatures::hiResEventTimeStampEnabled())) {
-        // Only expose monotonic time after changing its origin to its target
-        // document's time origin.
-        if (scriptState && scriptState->domWindow()) {
-            Performance* performance = DOMWindowPerformance::performance(*scriptState->domWindow());
-            timeStamp = performance->monotonicTimeToDOMHighResTimeStamp(m_platformTimeStamp);
-        }
-    } else {
-        timeStamp = m_createTime;
-    }
-
-    return timeStamp;
 }
 
 DEFINE_TRACE(Event)
