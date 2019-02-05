@@ -2,7 +2,9 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup>
+    <IncludePath>$(SrcRoot)stub;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>$(SrcRoot)blink;$(CrRoot);$(CrRoot)third_party\WebKit;$(CrRoot)third_party\WebKit\Source;$(CrRoot)third_party\WebKit\Source\gen;$(RepoRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
