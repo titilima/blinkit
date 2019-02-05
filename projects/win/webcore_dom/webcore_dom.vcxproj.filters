@@ -143,12 +143,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMNodeIds.cpp">
       <Filter>dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMPoint.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMPointReadOnly.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMRect.cpp">
       <Filter>dom</Filter>
     </ClCompile>
@@ -779,12 +773,6 @@
       <Filter>dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMNodeIds.h">
-      <Filter>dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMPoint.h">
-      <Filter>dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMPointReadOnly.h">
       <Filter>dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMRect.h">

@@ -224,8 +224,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMException.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMImplementation.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMNodeIds.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMPoint.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMPointReadOnly.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMRect.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMRectReadOnly.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMSettableTokenList.cpp" />
@@ -447,8 +445,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMHighResTimeStamp.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMImplementation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMNodeIds.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMPoint.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMPointReadOnly.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMRect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMRectReadOnly.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMSettableTokenList.h" />
