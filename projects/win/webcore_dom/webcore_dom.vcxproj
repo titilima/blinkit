@@ -582,6 +582,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Text.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TextLinkColors.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Touch.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TouchInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TouchList.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TransformSource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TreeScope.h" />
@@ -612,9 +613,11 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventDispatcher.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventDispatchMediator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventFactory.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventListener.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventListenerMap.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventListenerOptions.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventModifierInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventPath.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventQueue.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventSender.h" />
@@ -624,8 +627,10 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\GestureEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\HashChangeEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\KeyboardEvent.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\KeyboardEventInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\MessageEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\MouseEvent.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\MouseEventInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\MouseRelatedEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\MutationEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\NavigatorEvents.h" />
@@ -633,6 +638,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\PageTransitionEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\PointerEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\PointerEventFactory.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\PointerEventInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\PopStateEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\ProgressEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\PromiseRejectionEvent.h" />
@@ -645,14 +651,18 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\TextEventInputType.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\TouchEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\TouchEventContext.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\TouchEventInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\TransitionEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\TreeScopeEventContext.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\UIEvent.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\UIEventInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\UIEventWithKeyState.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\WheelEvent.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\WheelEventInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\WindowEventContext.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\input\EventHandler.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\input\InputDeviceCapabilities.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\input\InputDeviceCapabilitiesInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\input\TouchActionUtil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

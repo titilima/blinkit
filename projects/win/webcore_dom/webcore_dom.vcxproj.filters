@@ -1474,5 +1474,35 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventListenerOptions.h">
       <Filter>events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\MouseEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventModifierInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\UIEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\input\InputDeviceCapabilitiesInit.h">
+      <Filter>input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\KeyboardEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\PointerEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TouchInit.h">
+      <Filter>dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\TouchEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\WheelEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
