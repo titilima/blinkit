@@ -180,6 +180,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGElementFactory.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XLinkNames.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNames.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNSNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\FontFamilyNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\HTTPNames.cpp" />
     <ClCompile Include="..\_pch.cpp" />
@@ -201,6 +203,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGElementTypeHelpers.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XLinkNames.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNames.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNSNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\FontFamilyNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\HTTPNames.h" />
   </ItemGroup>

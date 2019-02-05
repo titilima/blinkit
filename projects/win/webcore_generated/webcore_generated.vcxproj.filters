@@ -65,6 +65,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XLinkNames.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNSNames.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNames.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -119,6 +125,12 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XLinkNames.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNSNames.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNames.h">
       <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>

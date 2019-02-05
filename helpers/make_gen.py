@@ -147,3 +147,13 @@ run_script('build/scripts/make_element_type_helpers.py',    \
     os.path.normpath('core/svg/SVGTagNames.in') + ' '   \
     '--output_dir ' + os.path.normpath('gen/core')  \
 )
+
+run_script('build/scripts/make_qualified_names.py', \
+    os.path.normpath('core/xml/xmlnsattrs.in') + ' '    \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)
+
+run_script('build/scripts/make_qualified_names.py', \
+    os.path.normpath('core/xml/xmlattrs.in') + ' '  \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)
