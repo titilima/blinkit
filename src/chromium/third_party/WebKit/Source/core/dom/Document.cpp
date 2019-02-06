@@ -84,6 +84,7 @@
 #include "core/dom/IntersectionObserverController.h"
 #include "core/dom/LayoutTreeBuilderTraversal.h"
 #include "core/dom/MainThreadTaskRunner.h"
+#include "core/dom/Microtask.h"
 #include "core/dom/MutationObserver.h"
 #include "core/dom/NodeChildRemovalTracker.h"
 #include "core/dom/NodeComputedStyle.h"
@@ -4675,6 +4676,11 @@ void Document::finishedParsing()
     // be dereferenced (when this document is in an iframe and the onload causes the iframe's src to change).
     // Keep it alive until we are done.
     RefPtrWillBeRawPtr<Document> protect(this);
+
+    // Ensure Custom Element callbacks are drained before DOMContentLoaded.
+    // FIXME: Remove this ad-hoc checkpoint when DOMContentLoaded is dispatched in a
+    // queued task, which will do a checkpoint anyway. https://crbug.com/425790
+    // BKTODO: Microtask::performCheckpoint(V8PerIsolateData::mainThreadIsolate());
 
     if (RefPtrWillBeRawPtr<LocalFrame> frame = this->frame()) {
         // Don't update the layout tree if we haven't requested the main resource yet to avoid
