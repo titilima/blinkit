@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CustomElementRegistry.cpp
+// Description: CustomElementRegistry Class
+//      Author: Ziming Li
+//     Created: 2019-02-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -30,7 +41,6 @@
 
 #include "core/dom/custom/CustomElementRegistry.h"
 
-#include "bindings/core/v8/CustomElementConstructorBuilder.h"
 #include "core/HTMLNames.h"
 #include "core/SVGNames.h"
 #include "core/dom/DocumentLifecycleObserver.h"
@@ -41,6 +51,9 @@ namespace blink {
 
 CustomElementDefinition* CustomElementRegistry::registerElement(Document* document, CustomElementConstructorBuilder* constructorBuilder, const AtomicString& userSuppliedName, CustomElement::NameSet validNames, ExceptionState& exceptionState)
 {
+    assert(false); // BKTODO:
+    return nullptr;
+#if 0
     AtomicString type = userSuppliedName.lower();
 
     if (!constructorBuilder->isFeatureAllowed()) {
@@ -90,6 +103,7 @@ CustomElementDefinition* CustomElementRegistry::registerElement(Document* docume
     }
 
     return definition.get();
+#endif
 }
 
 CustomElementDefinition* CustomElementRegistry::find(const CustomElementDescriptor& descriptor) const

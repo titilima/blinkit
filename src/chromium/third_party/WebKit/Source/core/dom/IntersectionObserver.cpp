@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: IntersectionObserver.cpp
+// Description: IntersectionObserver Class
+//      Author: Ziming Li
+//     Created: 2019-02-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -60,6 +71,7 @@ static void parseRootMargin(String rootMarginParameter, Vector<Length>& rootMarg
     }
 }
 
+#if 0
 static void parseThresholds(const DoubleOrDoubleArray& thresholdParameter, Vector<float>& thresholds, ExceptionState& exceptionState)
 {
     if (thresholdParameter.isDouble()) {
@@ -78,9 +90,13 @@ static void parseThresholds(const DoubleOrDoubleArray& thresholdParameter, Vecto
 
     std::sort(thresholds.begin(), thresholds.end());
 }
+#endif
 
 IntersectionObserver* IntersectionObserver::create(const IntersectionObserverInit& observerInit, IntersectionObserverCallback& callback, ExceptionState& exceptionState)
 {
+    assert(false); // BKTODO:
+    return nullptr;
+#if 0
     RefPtrWillBeRawPtr<Node> root = observerInit.root();
     if (!root) {
         // TODO(szager): Use Document instead of document element for implicit root. (crbug.com/570538)
@@ -110,6 +126,7 @@ IntersectionObserver* IntersectionObserver::create(const IntersectionObserverIni
         return nullptr;
 
     return new IntersectionObserver(callback, *root, rootMargin, thresholds);
+#endif
 }
 
 IntersectionObserver::IntersectionObserver(IntersectionObserverCallback& callback, Node& root, const Vector<Length>& rootMargin, const Vector<float>& thresholds)

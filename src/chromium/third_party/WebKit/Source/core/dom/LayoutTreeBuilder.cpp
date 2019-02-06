@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutTreeBuilder.cpp
+// Description: LayoutTreeBuilder Class
+//      Author: Ziming Li
+//     Created: 2019-02-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -29,7 +40,6 @@
 #include "core/SVGNames.h"
 #include "core/css/resolver/StyleResolver.h"
 #include "core/dom/FirstLetterPseudoElement.h"
-#include "core/dom/Fullscreen.h"
 #include "core/dom/Node.h"
 #include "core/dom/PseudoElement.h"
 #include "core/dom/Text.h"
@@ -134,12 +144,6 @@ void LayoutTreeBuilderForElement::createLayoutObject()
     LayoutObject* nextLayoutObject = this->nextLayoutObject();
     m_node->setLayoutObject(newLayoutObject);
     newLayoutObject->setStyle(&style); // setStyle() can depend on layoutObject() already being set.
-
-    if (Fullscreen::isActiveFullScreenElement(*m_node)) {
-        newLayoutObject = LayoutFullScreen::wrapLayoutObject(newLayoutObject, parentLayoutObject, &m_node->document());
-        if (!newLayoutObject)
-            return;
-    }
 
     // Note: Adding newLayoutObject instead of layoutObject(). layoutObject() may be a child of newLayoutObject.
     parentLayoutObject->addChild(newLayoutObject, nextLayoutObject);
