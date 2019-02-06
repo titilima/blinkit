@@ -162,3 +162,8 @@ run_script('build/scripts/make_settings.py',    \
     os.path.normpath('core/frame/Settings.in') + ' '    \
     '--output_dir ' + os.path.normpath('gen/core')  \
 )
+
+run_script('build/scripts/make_names.py',  \
+    os.path.normpath('core/fetch/FetchInitiatorTypeNames.in') + ' ' \
+    '--output_dir ' + os.path.normpath('gen/core/fetch')    \
+)

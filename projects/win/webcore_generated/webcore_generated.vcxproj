@@ -172,6 +172,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTargetNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTypeNames.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\fetch\FetchInitiatorTypeNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementFactory.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\InputTypeNames.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTargetNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTypeNames.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\fetch\FetchInitiatorTypeNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementFactory.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementTypeHelpers.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLNames.h" />

@@ -15,6 +15,9 @@
     <Filter Include="platform">
       <UniqueIdentifier>{de1f28bc-f3f5-4b7a-9ae4-533032566fa8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="core\fetch">
+      <UniqueIdentifier>{9102eb08-2a73-48e1-8dc2-ce437615f8bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -70,6 +73,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNames.cpp">
       <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\fetch\FetchInitiatorTypeNames.cpp">
+      <Filter>core\fetch</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +141,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SettingsMacros.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\fetch\FetchInitiatorTypeNames.h">
+      <Filter>core\fetch</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
