@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ExecutionContext.cpp
+// Description: ExecutionContext Class
+//      Author: Ziming Li
+//     Created: 2019-02-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2012 Google Inc. All Rights Reserved.
@@ -34,37 +45,12 @@
 #include "core/frame/UseCounter.h"
 #include "core/html/PublicURLManager.h"
 #include "core/inspector/InspectorInstrumentation.h"
-#include "core/inspector/ScriptCallStack.h"
 #include "core/workers/WorkerGlobalScope.h"
 #include "core/workers/WorkerThread.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "wtf/MainThread.h"
 
 namespace blink {
-
-class ExecutionContext::PendingException : public NoBaseWillBeGarbageCollectedFinalized<ExecutionContext::PendingException> {
-    WTF_MAKE_NONCOPYABLE(PendingException);
-public:
-    PendingException(const String& errorMessage, int lineNumber, int columnNumber, int scriptId, const String& sourceURL, PassRefPtrWillBeRawPtr<ScriptCallStack> callStack)
-        : m_errorMessage(errorMessage)
-        , m_lineNumber(lineNumber)
-        , m_columnNumber(columnNumber)
-        , m_scriptId(scriptId)
-        , m_sourceURL(sourceURL)
-        , m_callStack(callStack)
-    {
-    }
-    DEFINE_INLINE_TRACE()
-    {
-        visitor->trace(m_callStack);
-    }
-    String m_errorMessage;
-    int m_lineNumber;
-    int m_columnNumber;
-    int m_scriptId;
-    String m_sourceURL;
-    RefPtrWillBeMember<ScriptCallStack> m_callStack;
-};
 
 ExecutionContext::ExecutionContext()
     : m_circularSequentialID(0)
@@ -149,30 +135,6 @@ bool ExecutionContext::shouldSanitizeScriptError(const String& sourceURL, Access
     return !(securityOrigin()->canRequestNoSuborigin(completeURL(sourceURL)) || corsStatus == SharableCrossOrigin);
 }
 
-void ExecutionContext::reportException(PassRefPtrWillBeRawPtr<ErrorEvent> event, int scriptId, PassRefPtrWillBeRawPtr<ScriptCallStack> callStack, AccessControlStatus corsStatus)
-{
-    RefPtrWillBeRawPtr<ErrorEvent> errorEvent = event;
-    if (m_inDispatchErrorEvent) {
-        if (!m_pendingExceptions)
-            m_pendingExceptions = adoptPtrWillBeNoop(new WillBeHeapVector<OwnPtrWillBeMember<PendingException>>());
-        m_pendingExceptions->append(adoptPtrWillBeNoop(new PendingException(errorEvent->messageForConsole(), errorEvent->lineno(), errorEvent->colno(), scriptId, errorEvent->filename(), callStack)));
-        return;
-    }
-
-    // First report the original exception and only then all the nested ones.
-    if (!dispatchErrorEvent(errorEvent, corsStatus))
-        logExceptionToConsole(errorEvent->messageForConsole(), scriptId, errorEvent->filename(), errorEvent->lineno(), errorEvent->colno(), callStack);
-
-    if (!m_pendingExceptions)
-        return;
-
-    for (size_t i = 0; i < m_pendingExceptions->size(); i++) {
-        PendingException* e = m_pendingExceptions->at(i).get();
-        logExceptionToConsole(e->m_errorMessage, e->m_scriptId, e->m_sourceURL, e->m_lineNumber, e->m_columnNumber, e->m_callStack);
-    }
-    m_pendingExceptions.clear();
-}
-
 bool ExecutionContext::dispatchErrorEvent(PassRefPtrWillBeRawPtr<ErrorEvent> event, AccessControlStatus corsStatus)
 {
     EventTarget* target = errorEventTarget();
@@ -181,7 +143,7 @@ bool ExecutionContext::dispatchErrorEvent(PassRefPtrWillBeRawPtr<ErrorEvent> eve
 
     RefPtrWillBeRawPtr<ErrorEvent> errorEvent = event;
     if (shouldSanitizeScriptError(errorEvent->filename(), corsStatus))
-        errorEvent = ErrorEvent::createSanitizedError(errorEvent->world());
+        errorEvent = ErrorEvent::createSanitizedError();
 
     ASSERT(!m_inDispatchErrorEvent);
     m_inDispatchErrorEvent = true;
@@ -300,7 +262,6 @@ void ExecutionContext::enforceSuborigin(const String& name)
 DEFINE_TRACE(ExecutionContext)
 {
 #if ENABLE(OILPAN)
-    visitor->trace(m_pendingExceptions);
     visitor->trace(m_publicURLManager);
     HeapSupplementable<ExecutionContext>::trace(visitor);
 #endif

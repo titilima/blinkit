@@ -68,7 +68,7 @@ ErrorEvent::ErrorEvent(const AtomicString& type, const ErrorEventInit& initializ
         m_columnNumber = initializer.colno();
 }
 
-ErrorEvent::ErrorEvent(const String& message, const String& fileName, unsigned lineNumber, unsigned columnNumber, DOMWrapperWorld* world)
+ErrorEvent::ErrorEvent(const String& message, const String& fileName, unsigned lineNumber, unsigned columnNumber)
     : Event(EventTypeNames::error, false, true)
     , m_sanitizedMessage(message)
     , m_fileName(fileName)

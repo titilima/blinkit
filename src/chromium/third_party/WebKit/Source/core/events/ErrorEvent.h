@@ -56,17 +56,17 @@ public:
     {
         return adoptRefWillBeNoop(new ErrorEvent);
     }
-    static PassRefPtrWillBeRawPtr<ErrorEvent> create(const String& message, const String& fileName, unsigned lineNumber, unsigned columnNumber, DOMWrapperWorld* world)
+    static PassRefPtrWillBeRawPtr<ErrorEvent> create(const String& message, const String& fileName, unsigned lineNumber, unsigned columnNumber)
     {
-        return adoptRefWillBeNoop(new ErrorEvent(message, fileName, lineNumber, columnNumber, world));
+        return adoptRefWillBeNoop(new ErrorEvent(message, fileName, lineNumber, columnNumber));
     }
     static PassRefPtrWillBeRawPtr<ErrorEvent> create(const AtomicString& type, const ErrorEventInit& initializer)
     {
         return adoptRefWillBeNoop(new ErrorEvent(type, initializer));
     }
-    static PassRefPtrWillBeRawPtr<ErrorEvent> createSanitizedError(DOMWrapperWorld* world)
+    static PassRefPtrWillBeRawPtr<ErrorEvent> createSanitizedError(void)
     {
-        return adoptRefWillBeNoop(new ErrorEvent("Script error.", String(), 0, 0, world));
+        return adoptRefWillBeNoop(new ErrorEvent("Script error.", String(), 0, 0));
     }
     ~ErrorEvent() override;
 
@@ -87,7 +87,7 @@ public:
 
 private:
     ErrorEvent();
-    ErrorEvent(const String& message, const String& fileName, unsigned lineNumber, unsigned columnNumber, DOMWrapperWorld*);
+    ErrorEvent(const String& message, const String& fileName, unsigned lineNumber, unsigned columnNumber);
     ErrorEvent(const AtomicString&, const ErrorEventInit&);
 
     String m_unsanitizedMessage;
