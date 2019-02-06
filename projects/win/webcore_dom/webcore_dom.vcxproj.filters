@@ -1423,5 +1423,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\FocusEventInit.h">
       <Filter>events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\ErrorEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
