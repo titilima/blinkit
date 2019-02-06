@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: SecurityContext.h
+// Description: SecurityContext Class
+//      Author: Ziming Li
+//     Created: 2019-02-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All Rights Reserved.
  *
@@ -28,7 +39,6 @@
 #define SecurityContext_h
 
 #include "core/CoreExport.h"
-#include "core/dom/SandboxFlags.h"
 #include "platform/heap/Handle.h"
 #include "wtf/HashSet.h"
 #include "wtf/Noncopyable.h"
@@ -67,10 +77,6 @@ public:
     void setSecurityOrigin(PassRefPtr<SecurityOrigin>);
     virtual void didUpdateSecurityOrigin() = 0;
 
-    SandboxFlags sandboxFlags() const { return m_sandboxFlags; }
-    bool isSandboxed(SandboxFlags mask) const { return m_sandboxFlags & mask; }
-    void enforceSandboxFlags(SandboxFlags mask);
-
     void setHostedInReservedIPRange() { m_hostedInReservedIPRange = true; }
     bool isHostedInReservedIPRange() const { return m_hostedInReservedIPRange; }
 
@@ -96,8 +102,6 @@ private:
     bool m_haveInitializedSecurityOrigin;
     RefPtr<SecurityOrigin> m_securityOrigin;
     RefPtrWillBeMember<ContentSecurityPolicy> m_contentSecurityPolicy;
-
-    SandboxFlags m_sandboxFlags;
 
     bool m_hostedInReservedIPRange;
     InsecureRequestsPolicy m_insecureRequestsPolicy;

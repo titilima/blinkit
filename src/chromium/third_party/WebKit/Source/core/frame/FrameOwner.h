@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FrameOwner.h
+// Description: FrameOwner Class
+//      Author: Ziming Li
+//     Created: 2019-02-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,6 @@
 #define FrameOwner_h
 
 #include "core/CoreExport.h"
-#include "core/dom/SandboxFlags.h"
 #include "platform/heap/Handle.h"
 #include "platform/scroll/ScrollTypes.h"
 
@@ -22,7 +32,6 @@ public:
 
     virtual bool isLocal() const = 0;
 
-    virtual SandboxFlags sandboxFlags() const = 0;
     virtual void dispatchLoad() = 0;
 
     // On load failure, a frame can ask its owner to render fallback content

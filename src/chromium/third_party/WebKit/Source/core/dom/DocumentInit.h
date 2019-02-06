@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DocumentInit.h
+// Description: DocumentInit Class
+//      Author: Ziming Li
+//     Created: 2019-02-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -29,7 +40,6 @@
 #define DocumentInit_h
 
 #include "core/CoreExport.h"
-#include "core/dom/SandboxFlags.h"
 #include "core/dom/SecurityContext.h"
 #include "core/dom/custom/CustomElementRegistrationContext.h"
 #include "platform/heap/Handle.h"
@@ -61,7 +71,6 @@ public:
     bool shouldSetURL() const;
     bool isSeamlessAllowedFor(Document* child) const;
     bool shouldReuseDefaultView() const { return m_shouldReuseDefaultView; }
-    SandboxFlags sandboxFlags() const;
     bool shouldEnforceStrictMixedContentChecking() const;
     bool isHostedInReservedIPRange() const;
     SecurityContext::InsecureRequestsPolicy insecureRequestsPolicy() const;

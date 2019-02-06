@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLFrameOwnerElement.h
+// Description: HTMLFrameOwnerElement Class
+//      Author: Ziming Li
+//     Created: 2019-02-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2009 Apple Inc. All rights reserved.
  *
@@ -79,7 +90,6 @@ public:
     // FrameOwner overrides:
     bool isLocal() const override { return true; }
     void dispatchLoad() override;
-    SandboxFlags sandboxFlags() const override { return m_sandboxFlags; }
     void renderFallbackContent() override { }
     ScrollbarMode scrollingMode() const override { return ScrollbarAuto; }
     int marginWidth() const override { return -1; }
@@ -89,7 +99,6 @@ public:
 
 protected:
     HTMLFrameOwnerElement(const QualifiedName& tagName, Document&);
-    void setSandboxFlags(SandboxFlags);
 
     bool loadOrRedirectSubframe(const KURL&, const AtomicString& frameName, bool replaceCurrentItem);
 
@@ -101,7 +110,6 @@ private:
 
     RawPtrWillBeMember<Frame> m_contentFrame;
     RefPtrWillBeMember<Widget> m_widget;
-    SandboxFlags m_sandboxFlags;
 };
 
 DEFINE_ELEMENT_TYPE_CASTS(HTMLFrameOwnerElement, isFrameOwnerElement());

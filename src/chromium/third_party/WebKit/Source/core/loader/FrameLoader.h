@@ -45,7 +45,6 @@
 
 #include "core/CoreExport.h"
 #include "core/dom/IconURL.h"
-#include "core/dom/SandboxFlags.h"
 #include "core/dom/SecurityContext.h"
 #include "core/fetch/ResourceLoaderOptions.h"
 #include "core/frame/FrameTypes.h"
@@ -147,11 +146,6 @@ public:
     void dispatchDidClearWindowObjectInMainWorld();
     void dispatchDidClearDocumentOfWindowObject();
     void dispatchDocumentElementAvailable();
-
-    // The following sandbox flags will be forced, regardless of changes to
-    // the sandbox attribute of any parent frames.
-    void forceSandboxFlags(SandboxFlags flags) { m_forcedSandboxFlags |= flags; }
-    SandboxFlags effectiveSandboxFlags() const;
 
     bool shouldEnforceStrictMixedContentChecking() const;
 
@@ -281,8 +275,6 @@ private:
 
     bool m_didAccessInitialDocument;
     Timer<FrameLoader> m_didAccessInitialDocumentTimer;
-
-    SandboxFlags m_forcedSandboxFlags;
 
     bool m_dispatchingDidClearWindowObjectInMainWorld;
 };

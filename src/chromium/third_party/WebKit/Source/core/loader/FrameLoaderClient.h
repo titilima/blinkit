@@ -212,8 +212,6 @@ public:
 
     virtual void didEnforceStrictMixedContentChecking() {}
 
-    virtual void didChangeSandboxFlags(Frame* childFrame, SandboxFlags) { }
-
     virtual void didChangeFrameOwnerProperties(HTMLFrameElementBase*) { }
 
     virtual void dispatchWillOpenWebSocket(WebSocketHandle*) { }
