@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ErrorEvent.h
+// Description: ErrorEvent Class
+//      Author: Ziming Li
+//     Created: 2019-02-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -31,7 +42,6 @@
 #ifndef ErrorEvent_h
 #define ErrorEvent_h
 
-#include "bindings/core/v8/DOMWrapperWorld.h"
 #include "core/events/ErrorEventInit.h"
 #include "core/events/Event.h"
 #include "wtf/RefPtr.h"
@@ -65,14 +75,11 @@ public:
     const String& filename() const { return m_fileName; }
     unsigned lineno() const { return m_lineNumber; }
     unsigned colno() const { return m_columnNumber; }
-    ScriptValue error(ScriptState*) const;
 
     // 'messageForConsole' is not exposed to JavaScript, and prefers 'm_unsanitizedMessage'.
     const String& messageForConsole() const { return !m_unsanitizedMessage.isEmpty() ? m_unsanitizedMessage : m_sanitizedMessage; }
 
     const AtomicString& interfaceName() const override;
-
-    DOMWrapperWorld* world() const { return m_world.get(); }
 
     void setUnsanitizedMessage(const String&);
 
@@ -88,9 +95,6 @@ private:
     String m_fileName;
     unsigned m_lineNumber;
     unsigned m_columnNumber;
-    ScriptValue m_error;
-
-    RefPtr<DOMWrapperWorld> m_world;
 };
 
 } // namespace blink

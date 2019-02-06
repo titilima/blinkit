@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ErrorEvent.cpp
+// Description: ErrorEvent Class
+//      Author: Ziming Li
+//     Created: 2019-02-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -30,9 +41,6 @@
 
 #include "core/events/ErrorEvent.h"
 
-#include "bindings/core/v8/V8Binding.h"
-#include <v8.h>
-
 namespace blink {
 
 ErrorEvent::ErrorEvent()
@@ -40,7 +48,6 @@ ErrorEvent::ErrorEvent()
     , m_fileName()
     , m_lineNumber(0)
     , m_columnNumber(0)
-    , m_world(DOMWrapperWorld::current(v8::Isolate::GetCurrent()))
 {
 }
 
@@ -50,7 +57,6 @@ ErrorEvent::ErrorEvent(const AtomicString& type, const ErrorEventInit& initializ
     , m_fileName()
     , m_lineNumber(0)
     , m_columnNumber(0)
-    , m_world(DOMWrapperWorld::current(v8::Isolate::GetCurrent()))
 {
     if (initializer.hasMessage())
         m_sanitizedMessage = initializer.message();
@@ -60,8 +66,6 @@ ErrorEvent::ErrorEvent(const AtomicString& type, const ErrorEventInit& initializ
         m_lineNumber = initializer.lineno();
     if (initializer.hasColno())
         m_columnNumber = initializer.colno();
-    if (initializer.hasError())
-        m_error = initializer.error();
 }
 
 ErrorEvent::ErrorEvent(const String& message, const String& fileName, unsigned lineNumber, unsigned columnNumber, DOMWrapperWorld* world)
@@ -70,7 +74,6 @@ ErrorEvent::ErrorEvent(const String& message, const String& fileName, unsigned l
     , m_fileName(fileName)
     , m_lineNumber(lineNumber)
     , m_columnNumber(columnNumber)
-    , m_world(world)
 {
 }
 
@@ -87,19 +90,6 @@ ErrorEvent::~ErrorEvent()
 const AtomicString& ErrorEvent::interfaceName() const
 {
     return EventNames::ErrorEvent;
-}
-
-ScriptValue ErrorEvent::error(ScriptState* scriptState) const
-{
-    // Don't return |m_error| when we are in the different worlds to avoid
-    // leaking a V8 value.
-    // We do not clone Error objects (exceptions), for 2 reasons:
-    // 1) Errors carry a reference to the isolated world's global object, and
-    //    thus passing it around would cause leakage.
-    // 2) Errors cannot be cloned (or serialized):
-    if (world() != &scriptState->world())
-        return ScriptValue();
-    return m_error;
 }
 
 DEFINE_TRACE(ErrorEvent)
