@@ -64,7 +64,6 @@
 #include "core/dom/ElementTraversal.h"
 #include "core/dom/ExceptionCode.h"
 #include "core/dom/FirstLetterPseudoElement.h"
-#include "core/dom/Fullscreen.h"
 #include "core/dom/LayoutTreeBuilder.h"
 #include "core/dom/MutationObserverInterestGroup.h"
 #include "core/dom/MutationRecord.h"
@@ -1461,17 +1460,6 @@ void Element::removedFrom(ContainerNode* insertionPoint)
     bool wasInDocument = insertionPoint->inDocument();
 
     ASSERT(!hasRareData() || !elementRareData()->hasPseudoElements());
-
-    if (Fullscreen::isActiveFullScreenElement(*this)) {
-        setContainsFullScreenElementOnAncestorsCrossingFrameBoundaries(false);
-        if (insertionPoint->isElementNode()) {
-            toElement(insertionPoint)->setContainsFullScreenElement(false);
-            toElement(insertionPoint)->setContainsFullScreenElementOnAncestorsCrossingFrameBoundaries(false);
-        }
-    }
-
-    if (Fullscreen* fullscreen = Fullscreen::fromIfExists(document()))
-        fullscreen->elementRemoved(*this);
 
     if (document().page())
         document().page()->pointerLockController().elementRemoved(this);
@@ -3549,8 +3537,6 @@ bool Element::supportsStyleSharing() const
     if (isHTMLElement() && toHTMLElement(this)->hasDirectionAuto())
         return false;
     if (hasAnimations())
-        return false;
-    if (Fullscreen::isActiveFullScreenElement(*this))
         return false;
     return true;
 }
