@@ -32,6 +32,8 @@ public:
     virtual void throwTypeError(const String &message);
     virtual void throwSecurityError(const String &sanitizedMessage, const String &unsanitizedMessage = String());
 
+    void clearException(void);
+
     bool throwIfNeeded(void)
     {
         if (!hadException())

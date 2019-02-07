@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "core/fetch/AccessControlStatus.h"
 #include "platform/heap/Handle.h"
 
 namespace BlinKit {
@@ -23,6 +24,7 @@ class DukContext;
 namespace blink {
 
 class LocalFrame;
+class ScriptSourceCode;
 class SecurityOrigin;
 
 enum ReasonForCallingCanExecuteScripts {
@@ -34,6 +36,10 @@ class ScriptController final {
     WTF_MAKE_NONCOPYABLE(ScriptController);
 public:
     ~ScriptController(void);
+
+    void executeScriptInMainWorld(const ScriptSourceCode &, AccessControlStatus = NotSharableCrossOrigin, double *compilationFinishTime = nullptr);
+
+    bool shouldBypassMainWorldCSP(void) { return true; }
 
     void enableEval(void);
     void disableEval(const String &errorMessage);
