@@ -37,6 +37,7 @@ class GraphicsLayer;
 class LayoutObject;
 class LayoutRect;
 class LocalFrame;
+class MutationObserver;
 class Node;
 class PseudoElement;
 class ResourceLoader;
@@ -60,14 +61,18 @@ inline void continueAfterXFrameOptionsDenied(LocalFrame *, DocumentLoader *, uns
 inline void continueWithPolicyIgnore(LocalFrame *, DocumentLoader *, unsigned long, const ResourceResponse &) {}
 inline void didBlockRequest(LocalFrame *, const ResourceRequest &, DocumentLoader *, const FetchInitiatorInfo &, ResourceRequestBlockedReason) {}
 inline void didCancelAnimationFrame(ExecutionContext *, int) {}
+inline void didClearAllMutationRecords(ExecutionContext *, MutationObserver *) {}
 inline void didClearDocumentOfWindowObject(LocalFrame *) {}
 inline void didCommitLoad(LocalFrame *, DocumentLoader *) {}
 inline void didCreateAnimation(Document *, unsigned) {}
+inline void didDeliverMutationRecords(ExecutionContext *) {}
 inline void didEnqueueEvent(EventTarget *, Event *) {}
+inline void didEnqueueMutationRecord(ExecutionContext *, MutationObserver *) {}
 inline void didFailLoading(LocalFrame *frame, unsigned long, const ResourceError &) {}
 inline void didFinishEventSourceRequest(ExecutionContext *, ThreadableLoaderClient *) {}
 inline void didFinishLoading(LocalFrame *, unsigned long, double, int64_t) {}
 inline void didFireAnimationFrame(InspectorInstrumentationCookie) {}
+inline void didHandleEvent(InspectorInstrumentationCookie) {}
 inline void didInsertDOMNode(Node *) {}
 inline void didInvalidateStyleAttr(Node *) {}
 inline void didModifyDOMAttr(Element *, const QualifiedName &, const AtomicString &) {}
@@ -109,9 +114,11 @@ inline void pseudoElementDestroyed(PseudoElement *) {}
 inline void scriptExecutionBlockedByCSP(ExecutionContext *, const String &) {}
 inline bool shouldForceCORSPreflight(Document *) { return false; }
 inline void updateApplicationCacheStatus(LocalFrame *) {}
+inline void willDeliverMutationRecords(ExecutionContext *, MutationObserver *) {}
 inline void willDestroyResource(Resource *) {}
 inline void willDispachEventSourceEvent(ExecutionContext *, ThreadableLoaderClient *, const AtomicString &, const AtomicString &, const Vector<UChar> &) {}
 inline InspectorInstrumentationCookie willFireAnimationFrame(ExecutionContext *, int) { return 0; }
+inline InspectorInstrumentationCookie willHandleEvent(EventTarget *, Event *, EventListener *, bool) { return 0; }
 inline void willInsertDOMNode(Node *) {}
 inline void willModifyDOMAttr(Element *, const AtomicString &, const AtomicString &) {}
 inline void willPerformExecutionContextTask(ExecutionContext *, ExecutionContextTask *) {}
