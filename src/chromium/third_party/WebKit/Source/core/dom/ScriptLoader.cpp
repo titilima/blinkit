@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ScriptLoader.cpp
+// Description: ScriptLoader Class
+//      Author: Ziming Li
+//     Created: 2019-02-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -258,9 +269,12 @@ bool ScriptLoader::prepareScript(const TextPosition& scriptStartPosition, Legacy
         m_pendingScript = PendingScript(m_element, m_resource.get());
         LocalFrame* frame = m_element->document().frame();
         if (frame) {
+            assert(false); // BKTODO: Load script asynchronously.
+#if 0
             ScriptState* scriptState = ScriptState::forMainWorld(frame);
             if (scriptState)
                 ScriptStreamer::startStreaming(m_pendingScript, PendingScript::Async, frame->settings(), scriptState, frame->frameScheduler()->loadingTaskRunner());
+#endif
         }
         contextDocument->scriptRunner()->queueScriptForExecution(this, ScriptRunner::ASYNC_EXECUTION);
         // Note that watchForLoad can immediately call notifyFinished.

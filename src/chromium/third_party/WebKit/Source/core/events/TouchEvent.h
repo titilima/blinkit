@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TouchEvent.h
+// Description: TouchEvent Class
+//      Author: Ziming Li
+//     Created: 2019-02-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright 2008, The Android Open Source Project
  * Copyright (C) 2012 Research In Motion Limited. All rights reserved.
@@ -60,7 +71,7 @@ public:
         return adoptRefWillBeNoop(new TouchEvent(type, initializer));
     }
 
-    void initTouchEvent(ScriptState*, TouchList* touches, TouchList* targetTouches,
+    void initTouchEvent(TouchList* touches, TouchList* targetTouches,
         TouchList* changedTouches, const AtomicString& type,
         PassRefPtrWillBeRawPtr<AbstractView>,
         int, int, int, int, // unused useless members of web exposed API

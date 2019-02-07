@@ -92,9 +92,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentFragment.cpp">
       <Filter>dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentFullscreen.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentInit.cpp">
       <Filter>dom</Filter>
     </ClCompile>
@@ -173,9 +170,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ElementDataCache.cpp">
       <Filter>dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ElementFullscreen.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ElementRareData.cpp">
       <Filter>dom</Filter>
     </ClCompile>
@@ -189,9 +183,6 @@
       <Filter>dom</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\FrameRequestCallbackCollection.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Fullscreen.cpp">
       <Filter>dom</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IconURL.cpp">
@@ -305,9 +296,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\RemoteSecurityContext.cpp">
       <Filter>dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\SandboxFlags.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptableDocumentParser.cpp">
       <Filter>dom</Filter>
     </ClCompile>
@@ -381,9 +369,6 @@
       <Filter>dom</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TreeWalker.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\URLSearchParams.cpp">
       <Filter>dom</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\UserActionElementSet.cpp">
@@ -536,9 +521,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\KeyboardEvent.cpp">
       <Filter>events</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\MessageEvent.cpp">
-      <Filter>events</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\MouseEvent.cpp">
       <Filter>events</Filter>
     </ClCompile>
@@ -567,9 +549,6 @@
       <Filter>events</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\ProgressEvent.cpp">
-      <Filter>events</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\PromiseRejectionEvent.cpp">
       <Filter>events</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\RelatedEvent.cpp">
@@ -619,6 +598,9 @@
     </ClCompile>
     <ClCompile Include="..\_pch.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Microtask.cpp">
+      <Filter>dom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -701,9 +683,6 @@
       <Filter>dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentFragment.h">
-      <Filter>dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentFullscreen.h">
       <Filter>dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentInit.h">
@@ -796,9 +775,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ElementDataCache.h">
       <Filter>dom</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ElementFullscreen.h">
-      <Filter>dom</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ElementRareData.h">
       <Filter>dom</Filter>
     </ClInclude>
@@ -827,9 +803,6 @@
       <Filter>dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\FrameRequestCallbackCollection.h">
-      <Filter>dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Fullscreen.h">
       <Filter>dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\GlobalEventHandlers.h">
@@ -991,9 +964,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\RemoteSecurityContext.h">
       <Filter>dom</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\SandboxFlags.h">
-      <Filter>dom</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScopedWindowFocusAllowedIndicator.h">
       <Filter>dom</Filter>
     </ClInclude>
@@ -1091,9 +1061,6 @@
       <Filter>dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TypedFlexibleArrayBufferView.h">
-      <Filter>dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\URLSearchParams.h">
       <Filter>dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\UserActionElementSet.h">
@@ -1285,9 +1252,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\KeyboardEvent.h">
       <Filter>events</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\MessageEvent.h">
-      <Filter>events</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\MouseEvent.h">
       <Filter>events</Filter>
     </ClInclude>
@@ -1316,9 +1280,6 @@
       <Filter>events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\ProgressEvent.h">
-      <Filter>events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\PromiseRejectionEvent.h">
       <Filter>events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\RegisteredEventListener.h">
@@ -1424,6 +1385,45 @@
       <Filter>events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\ErrorEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Microtask.h">
+      <Filter>dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IntersectionObserverInit.h">
+      <Filter>dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MutationObserverInit.h">
+      <Filter>dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\AnimationEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\AnimationPlayerEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\ApplicationCacheErrorEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\CompositionEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\CustomEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\PopStateEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\ProgressEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\RelatedEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\TransitionEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\DragEventInit.h">
       <Filter>events</Filter>
     </ClInclude>
   </ItemGroup>

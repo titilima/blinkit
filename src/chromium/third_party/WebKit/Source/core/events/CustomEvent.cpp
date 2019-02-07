@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CustomEvent.cpp
+// Description: CustomEvent Class
+//      Author: Ziming Li
+//     Created: 2019-02-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies)
  *
@@ -25,9 +36,6 @@
 
 #include "core/events/CustomEvent.h"
 
-#include "bindings/core/v8/SerializedScriptValue.h"
-#include "bindings/core/v8/SerializedScriptValueFactory.h"
-
 namespace blink {
 
 CustomEvent::CustomEvent()
@@ -43,19 +51,9 @@ CustomEvent::~CustomEvent()
 {
 }
 
-void CustomEvent::initCustomEvent(const AtomicString& type, bool canBubble, bool cancelable, const ScriptValue&)
+void CustomEvent::initCustomEvent(const AtomicString& type, bool canBubble, bool cancelable)
 {
     initEvent(type, canBubble, cancelable);
-}
-
-void CustomEvent::initCustomEvent(const AtomicString& type, bool canBubble, bool cancelable, PassRefPtr<SerializedScriptValue> serializedDetail)
-{
-    if (dispatched())
-        return;
-
-    initEvent(type, canBubble, cancelable);
-
-    m_serializedDetail = serializedDetail;
 }
 
 const AtomicString& CustomEvent::interfaceName() const

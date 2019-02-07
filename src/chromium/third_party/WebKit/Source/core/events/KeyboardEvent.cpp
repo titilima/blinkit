@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: KeyboardEvent.cpp
+// Description: KeyboardEvent Class
+//      Author: Ziming Li
+//     Created: 2019-02-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -22,8 +33,6 @@
 
 #include "core/events/KeyboardEvent.h"
 
-#include "bindings/core/v8/DOMWrapperWorld.h"
-#include "bindings/core/v8/ScriptState.h"
 #include "platform/PlatformKeyboardEvent.h"
 #include "platform/WindowsKeyboardCodes.h"
 
@@ -57,13 +66,6 @@ static inline KeyboardEvent::KeyLocationCode keyLocationCode(const PlatformKeybo
     if (key.modifiers() & PlatformEvent::IsRight)
         return KeyboardEvent::DOM_KEY_LOCATION_RIGHT;
     return KeyboardEvent::DOM_KEY_LOCATION_STANDARD;
-}
-
-PassRefPtrWillBeRawPtr<KeyboardEvent> KeyboardEvent::create(ScriptState* scriptState, const AtomicString& type, const KeyboardEventInit& initializer)
-{
-    if (scriptState->world().isIsolatedWorld())
-        UIEventWithKeyState::didCreateEventInIsolatedWorld(initializer.ctrlKey(), initializer.altKey(), initializer.shiftKey(), initializer.metaKey());
-    return adoptRefWillBeNoop(new KeyboardEvent(type, initializer));
 }
 
 KeyboardEvent::KeyboardEvent()
@@ -110,14 +112,11 @@ KeyboardEvent::~KeyboardEvent()
 {
 }
 
-void KeyboardEvent::initKeyboardEvent(ScriptState* scriptState, const AtomicString& type, bool canBubble, bool cancelable, AbstractView* view,
+void KeyboardEvent::initKeyboardEvent(const AtomicString& type, bool canBubble, bool cancelable, AbstractView* view,
     const String& keyIdentifier, unsigned location, bool ctrlKey, bool altKey, bool shiftKey, bool metaKey)
 {
     if (dispatched())
         return;
-
-    if (scriptState->world().isIsolatedWorld())
-        UIEventWithKeyState::didCreateEventInIsolatedWorld(ctrlKey, altKey, shiftKey, metaKey);
 
     initUIEvent(type, canBubble, cancelable, view, 0);
 

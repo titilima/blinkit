@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PopStateEvent.cpp
+// Description: PopStateEvent Class
+//      Author: Ziming Li
+//     Created: 2019-02-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All Rights Reserved.
  *
@@ -26,30 +37,15 @@
 
 #include "core/events/PopStateEvent.h"
 
-#include "bindings/core/v8/SerializedScriptValue.h"
-#include "core/frame/History.h"
-
 namespace blink {
 
 PopStateEvent::PopStateEvent()
     : Event(EventTypeNames::popstate, false, true)
-    , m_serializedState(nullptr)
-    , m_history(nullptr)
 {
 }
 
 PopStateEvent::PopStateEvent(const AtomicString& type, const PopStateEventInit& initializer)
     : Event(type, initializer)
-    , m_history(nullptr)
-{
-    if (initializer.hasState())
-        m_state = initializer.state();
-}
-
-PopStateEvent::PopStateEvent(PassRefPtr<SerializedScriptValue> serializedState, History* history)
-    : Event(EventTypeNames::popstate, false, true)
-    , m_serializedState(serializedState)
-    , m_history(history)
 {
 }
 
@@ -60,11 +56,6 @@ PopStateEvent::~PopStateEvent()
 PassRefPtrWillBeRawPtr<PopStateEvent> PopStateEvent::create()
 {
     return adoptRefWillBeNoop(new PopStateEvent);
-}
-
-PassRefPtrWillBeRawPtr<PopStateEvent> PopStateEvent::create(PassRefPtr<SerializedScriptValue> serializedState, History* history)
-{
-    return adoptRefWillBeNoop(new PopStateEvent(serializedState, history));
 }
 
 PassRefPtrWillBeRawPtr<PopStateEvent> PopStateEvent::create(const AtomicString& type, const PopStateEventInit& initializer)
@@ -79,7 +70,6 @@ const AtomicString& PopStateEvent::interfaceName() const
 
 DEFINE_TRACE(PopStateEvent)
 {
-    visitor->trace(m_history);
     Event::trace(visitor);
 }
 

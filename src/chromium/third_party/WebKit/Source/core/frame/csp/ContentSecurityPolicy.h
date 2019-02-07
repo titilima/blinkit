@@ -68,6 +68,7 @@ class CSPDirectiveList;
 class CSPSource;
 class Document;
 class KURL;
+class LocalFrame;
 class ResourceRequest;
 class SecurityOrigin;
 
@@ -168,7 +169,7 @@ public:
     // exception in the event of a violation. When the caller will throw
     // an exception, ContentSecurityPolicy does not log a violation
     // message to the console because it would be redundant.
-    bool allowEval(ScriptState* = nullptr, ReportingStatus = SendReport, ExceptionStatus = WillNotThrowException) const;
+    bool allowEval(ReportingStatus = SendReport, ExceptionStatus = WillNotThrowException) const;
     bool allowPluginType(const String& type, const String& typeAttribute, const KURL&, ReportingStatus = SendReport) const;
     // Checks whether the plugin type should be allowed in the given
     // document; enforces the CSP rule that PluginDocuments inherit

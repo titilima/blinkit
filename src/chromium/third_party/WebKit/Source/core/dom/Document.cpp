@@ -3058,10 +3058,8 @@ void Document::maybeHandleHttpRefresh(const String& content, HttpRefreshType htt
         return;
     }
 
-    if (httpRefreshType == HttpRefreshFromMetaTag && isSandboxed(SandboxAutomaticFeatures)) {
-        String message = "Refused to execute the redirect specified via '<meta http-equiv='refresh' content='...'>'. The document is sandboxed, and the 'allow-scripts' keyword is not set.";
-        addConsoleMessage(ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, message));
-        return;
+    if (httpRefreshType == HttpRefreshFromMetaTag) {
+        // BKTODO: Ask client whether to refresh.
     }
     m_frame->navigationScheduler().scheduleRedirect(delay, refreshURL);
 }
@@ -3306,61 +3304,18 @@ void Document::cloneDataFromDocument(const Document& other)
 
 bool Document::isSecureContextImpl(String* errorMessage, const SecureContextCheck privilegeContextCheck) const
 {
-    // There may be exceptions for the secure context check defined for certain
-    // schemes. The exceptions are applied only to the special scheme and to
-    // sandboxed URLs from those origins, but *not* to any children.
-    //
-    // For example:
-    //   <iframe src="http://host">
-    //     <iframe src="scheme-has-exception://host"></iframe>
-    //     <iframe sandbox src="scheme-has-exception://host"></iframe>
-    //   </iframe>
-    // both inner iframes pass this check, assuming that the scheme
-    // "scheme-has-exception:" is granted an exception.
-    //
-    // However,
-    //   <iframe src="http://host">
-    //     <iframe sandbox src="http://host"></iframe>
-    //   </iframe>
-    // would fail the check (that is, sandbox does not grant an exception itself).
-    //
-    // Additionally, with
-    //   <iframe src="scheme-has-exception://host">
-    //     <iframe src="http://host"></iframe>
-    //     <iframe sandbox src="http://host"></iframe>
-    //   </iframe>
-    // both inner iframes would fail the check, even though the outermost iframe
-    // passes.
-    //
-    // In all cases, a frame must be potentially trustworthy in addition to
-    // having an exception listed in order for the exception to be granted.
-    if (SecurityContext::isSandboxed(SandboxOrigin)) {
-        RefPtr<SecurityOrigin> origin = SecurityOrigin::create(url());
-        if (!isOriginPotentiallyTrustworthy(origin.get(), errorMessage))
-            return false;
-        if (SchemeRegistry::schemeShouldBypassSecureContextCheck(origin->protocol()))
-            return true;
-    } else {
-        if (!isOriginPotentiallyTrustworthy(securityOrigin(), errorMessage))
-            return false;
-        if (SchemeRegistry::schemeShouldBypassSecureContextCheck(securityOrigin()->protocol()))
-            return true;
-    }
+    if (!isOriginPotentiallyTrustworthy(securityOrigin(), errorMessage))
+        return false;
+    if (SchemeRegistry::schemeShouldBypassSecureContextCheck(securityOrigin()->protocol()))
+        return true;
 
     if (privilegeContextCheck == StandardSecureContextCheck) {
         Document* context = parentDocument();
         while (context) {
             // Skip to the next ancestor if it's a srcdoc.
             if (!context->isSrcdocDocument()) {
-                if (context->securityContext().isSandboxed(SandboxOrigin)) {
-                    // For a sandboxed origin, use the document's URL.
-                    RefPtr<SecurityOrigin> origin = SecurityOrigin::create(context->url());
-                    if (!isOriginPotentiallyTrustworthy(origin.get(), errorMessage))
-                        return false;
-                } else {
-                    if (!isOriginPotentiallyTrustworthy(context->securityOrigin(), errorMessage))
-                        return false;
-                }
+                if (!isOriginPotentiallyTrustworthy(context->securityOrigin(), errorMessage))
+                    return false;
             }
             context = context->parentDocument();
         }
@@ -3995,9 +3950,7 @@ String Document::cookie(ExceptionState& exceptionState) const
     // browsing context.
 
     if (!securityOrigin()->canAccessCookies()) {
-        if (isSandboxed(SandboxOrigin))
-            exceptionState.throwSecurityError("The document is sandboxed and lacks the 'allow-same-origin' flag.");
-        else if (url().protocolIs("data"))
+        if (url().protocolIs("data"))
             exceptionState.throwSecurityError("Cookies are disabled inside 'data:' URLs.");
         else
             exceptionState.throwSecurityError("Access is denied for this document.");
@@ -4021,9 +3974,7 @@ void Document::setCookie(const String& value, ExceptionState& exceptionState)
     // browsing context.
 
     if (!securityOrigin()->canAccessCookies()) {
-        if (isSandboxed(SandboxOrigin))
-            exceptionState.throwSecurityError("The document is sandboxed and lacks the 'allow-same-origin' flag.");
-        else if (url().protocolIs("data"))
+        if (url().protocolIs("data"))
             exceptionState.throwSecurityError("Cookies are disabled inside 'data:' URLs.");
         else
             exceptionState.throwSecurityError("Access is denied for this document.");
@@ -4052,11 +4003,6 @@ String Document::domain() const
 void Document::setDomain(const String& newDomain, ExceptionState& exceptionState)
 {
     UseCounter::count(*this, UseCounter::DocumentSetDomain);
-
-    if (isSandboxed(SandboxDocumentDomain)) {
-        exceptionState.throwSecurityError("Assignment is forbidden for sandboxed iframes.");
-        return;
-    }
 
     if (SchemeRegistry::isDomainRelaxationForbiddenForURLScheme(securityOrigin()->protocol())) {
         exceptionState.throwSecurityError("Assignment is forbidden for the '" + securityOrigin()->protocol() + "' scheme.");
@@ -4833,7 +4779,6 @@ void Document::initSecurityContext(const DocumentInit& initializer)
     // In the common case, create the security context from the currently
     // loading URL with a fresh content security policy.
     m_cookieURL = m_url;
-    enforceSandboxFlags(initializer.sandboxFlags());
     if (initializer.shouldEnforceStrictMixedContentChecking())
         enforceStrictMixedContentChecking();
     setInsecureRequestsPolicy(initializer.insecureRequestsPolicy());
@@ -4841,7 +4786,7 @@ void Document::initSecurityContext(const DocumentInit& initializer)
         for (auto toUpgrade : *initializer.insecureNavigationsToUpgrade())
             addInsecureNavigationUpgrade(toUpgrade);
     }
-    setSecurityOrigin(isSandboxed(SandboxOrigin) ? SecurityOrigin::createUnique() : SecurityOrigin::create(m_url));
+    setSecurityOrigin(SecurityOrigin::create(m_url));
 
     if (importsController()) {
         // If this document is an HTML import, grab a reference to it's master document's Content
@@ -4882,16 +4827,6 @@ void Document::initSecurityContext(const DocumentInit& initializer)
 
     if (!initializer.owner()) {
         didFailToInitializeSecurityOrigin();
-        return;
-    }
-
-    if (isSandboxed(SandboxOrigin)) {
-        // If we're supposed to inherit our security origin from our owner,
-        // but we're also sandboxed, the only thing we inherit is the ability
-        // to load local resources. This lets about:blank iframes in file://
-        // URL documents load images and other resources from the file system.
-        if (initializer.owner()->securityOrigin()->canLoadLocalResources())
-            securityOrigin()->grantLoadLocalResources();
         return;
     }
 

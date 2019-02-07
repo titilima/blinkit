@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: KeyboardEvent.h
+// Description: KeyboardEvent Class
+//      Author: Ziming Li
+//     Created: 2019-02-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -54,8 +65,6 @@ public:
         return adoptRefWillBeNoop(new KeyboardEvent(platformEvent, view));
     }
 
-    static PassRefPtrWillBeRawPtr<KeyboardEvent> create(ScriptState*, const AtomicString& type, const KeyboardEventInit&);
-
     static PassRefPtrWillBeRawPtr<KeyboardEvent> create(const AtomicString& type, bool canBubble, bool cancelable, AbstractView* view,
         const String& keyIdentifier, const String& code, const String& key, unsigned location,
         PlatformEvent::Modifiers modifiers, double platformTimeStamp)
@@ -66,7 +75,7 @@ public:
 
     ~KeyboardEvent() override;
 
-    void initKeyboardEvent(ScriptState*, const AtomicString& type, bool canBubble, bool cancelable, AbstractView*,
+    void initKeyboardEvent(const AtomicString& type, bool canBubble, bool cancelable, AbstractView*,
         const String& keyIdentifier, unsigned location,
         bool ctrlKey, bool altKey, bool shiftKey, bool metaKey);
 

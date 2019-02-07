@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ProcessingInstruction.cpp
+// Description: ProcessingInstruction Class
+//      Author: Ziming Li
+//     Created: 2019-02-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Peter Kelly (pmk@post.com)
  * Copyright (C) 2006, 2008, 2009 Apple Inc. All rights reserved.
@@ -32,7 +43,6 @@
 #include "core/fetch/ResourceFetcher.h"
 #include "core/fetch/XSLStyleSheetResource.h"
 #include "core/xml/DocumentXSLT.h"
-#include "core/xml/XSLStyleSheet.h"
 #include "core/xml/parser/XMLDocumentParser.h" // for parseAttributes()
 
 namespace blink {
@@ -154,8 +164,11 @@ void ProcessingInstruction::process(const String& href, const String& charset)
         // It needs to be able to kick off import/include loads that
         // can hang off some parent sheet.
         if (m_isXSL && RuntimeEnabledFeatures::xsltEnabled()) {
+            assert(false); // Not reached!
+#if 0
             KURL finalURL(ParsedURLString, m_localHref);
             m_sheet = XSLStyleSheet::createEmbedded(this, finalURL);
+#endif
             m_loading = false;
         }
         return;
@@ -234,27 +247,35 @@ void ProcessingInstruction::setXSLStyleSheet(const String& href, const KURL& bas
         return;
     }
 
+    assert(false); // Not reached!
+#if 0
     ASSERT(m_isXSL);
     m_sheet = XSLStyleSheet::create(this, href, baseURL);
     RefPtrWillBeRawPtr<Document> protect(&document());
     OwnPtr<IncrementLoadEventDelayCount> delay = IncrementLoadEventDelayCount::create(document());
     parseStyleSheet(sheet);
+#endif
 }
 
 void ProcessingInstruction::parseStyleSheet(const String& sheet)
 {
+    assert(!m_isXSL);
     if (m_isCSS)
         toCSSStyleSheet(m_sheet.get())->contents()->parseString(sheet);
+#if 0
     else if (m_isXSL)
         toXSLStyleSheet(m_sheet.get())->parseString(sheet);
+#endif
 
     clearResource();
     m_loading = false;
 
     if (m_isCSS)
         toCSSStyleSheet(m_sheet.get())->contents()->checkLoaded();
+#if 0
     else if (m_isXSL)
         toXSLStyleSheet(m_sheet.get())->checkLoaded();
+#endif
 }
 
 Node::InsertionNotificationRequest ProcessingInstruction::insertedInto(ContainerNode* insertionPoint)

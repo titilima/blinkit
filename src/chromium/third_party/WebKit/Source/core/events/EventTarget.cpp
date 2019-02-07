@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: EventTarget.cpp
+// Description: EventTarget Class
+//      Author: Ziming Li
+//     Created: 2019-02-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -32,7 +43,6 @@
 #include "core/events/EventTarget.h"
 
 #include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/V8DOMActivityLogger.h"
 #include "core/dom/ExceptionCode.h"
 #include "core/editing/Editor.h"
 #include "core/events/Event.h"
@@ -127,6 +137,9 @@ bool EventTarget::addEventListener(const AtomicString& eventType, PassRefPtrWill
 
 bool EventTarget::addEventListener(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener> listener, const EventListenerOptionsOrBoolean& optionsUnion)
 {
+    assert(false); // BKTODO:
+    return false;
+#if 0
     if (optionsUnion.isBoolean())
         return addEventListener(eventType, listener, optionsUnion.getAsBoolean());
     if (optionsUnion.isEventListenerOptions()) {
@@ -134,6 +147,7 @@ bool EventTarget::addEventListener(const AtomicString& eventType, PassRefPtrWill
         return addEventListener(eventType, listener, options);
     }
     return addEventListener(eventType, listener);
+#endif
 }
 
 bool EventTarget::addEventListener(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener> listener, EventListenerOptions& options)
@@ -147,14 +161,6 @@ bool EventTarget::addEventListenerInternal(const AtomicString& eventType, PassRe
     if (!listener)
         return false;
 
-    V8DOMActivityLogger* activityLogger = V8DOMActivityLogger::currentActivityLoggerIfIsolatedWorld();
-    if (activityLogger) {
-        Vector<String> argv;
-        argv.append(toNode() ? toNode()->nodeName() : interfaceName());
-        argv.append(eventType);
-        activityLogger->logEvent("blinkAddEventListener", argv.size(), argv.data());
-    }
-
     return ensureEventTargetData().eventListenerMap.add(eventType, listener, options);
 }
 
@@ -167,6 +173,9 @@ bool EventTarget::removeEventListener(const AtomicString& eventType, PassRefPtrW
 
 bool EventTarget::removeEventListener(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener> listener, const EventListenerOptionsOrBoolean& optionsUnion)
 {
+    assert(false); // BKTODO:
+    return false;
+#if 0
     if (optionsUnion.isBoolean())
         return removeEventListener(eventType, listener, optionsUnion.getAsBoolean());
     if (optionsUnion.isEventListenerOptions()) {
@@ -174,6 +183,7 @@ bool EventTarget::removeEventListener(const AtomicString& eventType, PassRefPtrW
         return removeEventListener(eventType, listener, options);
     }
     return removeEventListener(eventType, listener);
+#endif
 }
 
 bool EventTarget::removeEventListener(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener> listener, EventListenerOptions& options)

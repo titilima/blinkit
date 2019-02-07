@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TouchEvent.cpp
+// Description: TouchEvent Class
+//      Author: Ziming Li
+//     Created: 2019-02-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright 2008, The Android Open Source Project
  * Copyright (C) 2012 Research In Motion Limited. All rights reserved.
@@ -26,8 +37,6 @@
 
 #include "core/events/TouchEvent.h"
 
-#include "bindings/core/v8/DOMWrapperWorld.h"
-#include "bindings/core/v8/ScriptState.h"
 #include "core/events/EventDispatcher.h"
 #include "core/frame/FrameConsole.h"
 #include "core/frame/LocalDOMWindow.h"
@@ -62,7 +71,7 @@ TouchEvent::~TouchEvent()
 {
 }
 
-void TouchEvent::initTouchEvent(ScriptState* scriptState, TouchList* touches, TouchList* targetTouches,
+void TouchEvent::initTouchEvent(TouchList* touches, TouchList* targetTouches,
     TouchList* changedTouches, const AtomicString& type,
     PassRefPtrWillBeRawPtr<AbstractView> view,
     int, int, int, int,
@@ -70,9 +79,6 @@ void TouchEvent::initTouchEvent(ScriptState* scriptState, TouchList* touches, To
 {
     if (dispatched())
         return;
-
-    if (scriptState->world().isIsolatedWorld())
-        UIEventWithKeyState::didCreateEventInIsolatedWorld(ctrlKey, altKey, shiftKey, metaKey);
 
     bool cancelable = true;
     if (type == EventTypeNames::touchcancel)

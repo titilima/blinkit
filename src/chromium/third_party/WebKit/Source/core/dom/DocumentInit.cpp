@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DocumentInit.cpp
+// Description: DocumentInit Class
+//      Author: Ziming Li
+//     Created: 2019-02-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -99,12 +110,6 @@ LocalFrame* DocumentInit::frameForSecurityContext() const
     if (m_importsController)
         return m_importsController->master()->frame();
     return 0;
-}
-
-SandboxFlags DocumentInit::sandboxFlags() const
-{
-    ASSERT(frameForSecurityContext());
-    return frameForSecurityContext()->loader().effectiveSandboxFlags();
 }
 
 bool DocumentInit::shouldEnforceStrictMixedContentChecking() const

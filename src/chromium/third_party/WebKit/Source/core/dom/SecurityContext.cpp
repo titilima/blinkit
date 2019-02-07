@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: SecurityContext.cpp
+// Description: SecurityContext Class
+//      Author: Ziming Li
+//     Created: 2019-02-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All Rights Reserved.
  *
@@ -33,7 +44,6 @@ namespace blink {
 
 SecurityContext::SecurityContext()
     : m_haveInitializedSecurityOrigin(false)
-    , m_sandboxFlags(SandboxNone)
     , m_hostedInReservedIPRange(false)
     , m_insecureRequestsPolicy(InsecureRequestsDoNotUpgrade)
     , m_enforceStrictMixedContentChecking(false)
@@ -70,16 +80,6 @@ bool SecurityContext::isSecureTransitionTo(const KURL& url) const
 
     RefPtr<SecurityOrigin> other = SecurityOrigin::create(url);
     return securityOrigin()->canAccess(other.get());
-}
-
-void SecurityContext::enforceSandboxFlags(SandboxFlags mask)
-{
-    m_sandboxFlags |= mask;
-
-    if (isSandboxed(SandboxOrigin) && securityOrigin() && !securityOrigin()->isUnique()) {
-        setSecurityOrigin(SecurityOrigin::createUnique());
-        didUpdateSecurityOrigin();
-    }
 }
 
 }

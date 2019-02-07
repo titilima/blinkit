@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WorkerThread.h
+// Description: WorkerThread Class
+//      Author: Ziming Li
+//     Created: 2019-02-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  *
@@ -38,7 +49,6 @@
 #include "wtf/OwnPtr.h"
 #include "wtf/PassRefPtr.h"
 #include "wtf/RefCounted.h"
-#include <v8.h>
 
 namespace blink {
 

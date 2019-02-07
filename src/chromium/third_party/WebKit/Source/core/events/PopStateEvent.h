@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PopStateEvent.h
+// Description: PopStateEvent Class
+//      Author: Ziming Li
+//     Created: 2019-02-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All Rights Reserved.
  *
@@ -34,24 +45,15 @@
 namespace blink {
 
 class History;
-class SerializedScriptValue;
 
 class PopStateEvent final : public Event {
     DEFINE_WRAPPERTYPEINFO();
 public:
     ~PopStateEvent() override;
     static PassRefPtrWillBeRawPtr<PopStateEvent> create();
-    static PassRefPtrWillBeRawPtr<PopStateEvent> create(PassRefPtr<SerializedScriptValue>, History*);
     static PassRefPtrWillBeRawPtr<PopStateEvent> create(const AtomicString&, const PopStateEventInit&);
 
-    ScriptValue state() const { return m_state; }
-    SerializedScriptValue* serializedState() const { return m_serializedState.get(); }
-    void setSerializedState(PassRefPtr<SerializedScriptValue> state)
-    {
-        ASSERT(!m_serializedState);
-        m_serializedState = state;
-    }
-    History* history() const { return m_history.get(); }
+    History* history() const { return nullptr; }
 
     const AtomicString& interfaceName() const override;
 
@@ -60,11 +62,6 @@ public:
 private:
     PopStateEvent();
     PopStateEvent(const AtomicString&, const PopStateEventInit&);
-    PopStateEvent(PassRefPtr<SerializedScriptValue>, History*);
-
-    RefPtr<SerializedScriptValue> m_serializedState;
-    ScriptValue m_state;
-    PersistentWillBeMember<History> m_history;
 };
 
 } // namespace blink

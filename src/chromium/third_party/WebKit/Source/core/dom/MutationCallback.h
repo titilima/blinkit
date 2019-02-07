@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: MutationCallback.h
+// Description: MutationCallback Class
+//      Author: Ziming Li
+//     Created: 2019-02-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -37,6 +48,7 @@
 
 namespace blink {
 
+class ExecutionContext;
 class MutationRecord;
 class MutationObserver;
 

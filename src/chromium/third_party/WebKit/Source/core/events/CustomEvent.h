@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CustomEvent.h
+// Description: CustomEvent Class
+//      Author: Ziming Li
+//     Created: 2019-02-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies)
  *
@@ -32,8 +43,6 @@
 
 namespace blink {
 
-class SerializedScriptValue;
-
 class CORE_EXPORT CustomEvent final : public Event {
     DEFINE_WRAPPERTYPEINFO();
 public:
@@ -49,21 +58,15 @@ public:
         return adoptRefWillBeNoop(new CustomEvent(type, initializer));
     }
 
-    void initCustomEvent(const AtomicString& type, bool canBubble, bool cancelable, const ScriptValue& detail);
-    void initCustomEvent(const AtomicString& type, bool canBubble, bool cancelable, PassRefPtr<SerializedScriptValue>);
+    void initCustomEvent(const AtomicString& type, bool canBubble, bool cancelable);
 
     const AtomicString& interfaceName() const override;
-
-    SerializedScriptValue* serializedDetail() { return m_serializedDetail.get(); }
-    void setSerializedDetail(PassRefPtr<SerializedScriptValue> serializedDetail) { m_serializedDetail = serializedDetail; }
 
     DECLARE_VIRTUAL_TRACE();
 
 private:
     CustomEvent();
     CustomEvent(const AtomicString& type, const CustomEventInit& initializer);
-
-    RefPtr<SerializedScriptValue> m_serializedDetail;
 };
 
 } // namespace blink

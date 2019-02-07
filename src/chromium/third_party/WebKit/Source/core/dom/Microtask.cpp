@@ -55,6 +55,7 @@ void Microtask::performCheckpoint(void)
 bool Microtask::performingCheckpoint(void)
 {
     // BKTODO:
+    return false;
 }
 
 static void microtaskFunctionCallback(void* data)

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WorkerGlobalScope.h
+// Description: WorkerGlobalScope Class
+//      Author: Ziming Li
+//     Created: 2019-02-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2009 Apple Inc. All rights reserved.
  *
@@ -27,14 +38,11 @@
 #ifndef WorkerGlobalScope_h
 #define WorkerGlobalScope_h
 
-#include "bindings/core/v8/V8CacheOptions.h"
-#include "bindings/core/v8/WorkerOrWorkletScriptController.h"
 #include "core/CoreExport.h"
 #include "core/dom/ExecutionContext.h"
 #include "core/events/EventListener.h"
 #include "core/events/EventTarget.h"
 #include "core/fetch/CachedMetadataHandler.h"
-#include "core/frame/DOMTimerCoordinator.h"
 #include "core/frame/DOMWindowBase64.h"
 #include "core/frame/UseCounter.h"
 #include "core/frame/csp/ContentSecurityPolicy.h"
@@ -114,18 +122,12 @@ public:
 
     WorkerNavigator* navigator() const;
 
-    // ScriptWrappable
-    v8::Local<v8::Object> wrap(v8::Isolate*, v8::Local<v8::Object> creationContext) final;
-    v8::Local<v8::Object> associateWithWrapper(v8::Isolate*, const WrapperTypeInfo*, v8::Local<v8::Object> wrapper) final;
-
     // ExecutionContext
     WorkerEventQueue* eventQueue() const final;
     SecurityContext& securityContext() final { return *this; }
 
     bool isContextThread() const final;
     bool isJSExecutionForbidden() const final;
-
-    DOMTimerCoordinator* timers() final;
 
     WorkerInspectorController* workerInspectorController() { return m_workerInspectorController.get(); }
 
@@ -156,9 +158,7 @@ protected:
     WorkerGlobalScope(const KURL&, const String& userAgent, WorkerThread*, double timeOrigin, PassOwnPtr<SecurityOrigin::PrivilegeData>, PassOwnPtrWillBeRawPtr<WorkerClients>);
     void applyContentSecurityPolicyFromVector(const Vector<CSPHeaderAndType>& headers);
 
-    void logExceptionToConsole(const String& errorMessage, int scriptId, const String& sourceURL, int lineNumber, int columnNumber, PassRefPtrWillBeRawPtr<ScriptCallStack>) override;
     void addMessageToWorkerConsole(PassRefPtrWillBeRawPtr<ConsoleMessage>);
-    void setV8CacheOptions(V8CacheOptions v8CacheOptions) { m_v8CacheOptions = v8CacheOptions; }
 
     void removeURLFromMemoryCache(const KURL&) override;
 
@@ -183,7 +183,6 @@ private:
 
     KURL m_url;
     String m_userAgent;
-    V8CacheOptions m_v8CacheOptions;
 
     mutable PersistentWillBeMember<WorkerConsole> m_console;
     mutable PersistentWillBeMember<WorkerLocation> m_location;
@@ -200,8 +199,6 @@ private:
     OwnPtrWillBeMember<WorkerEventQueue> m_eventQueue;
 
     OwnPtrWillBeMember<WorkerClients> m_workerClients;
-
-    DOMTimerCoordinator m_timers;
 
     double m_timeOrigin;
 

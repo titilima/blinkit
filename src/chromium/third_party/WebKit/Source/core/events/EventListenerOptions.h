@@ -14,18 +14,28 @@
 
 #pragma once
 
+#include <optional>
+
 namespace blink {
 
 class EventListenerOptions
 {
 public:
-    bool capture(void) const { return m_capture; }
+    bool hasCapture(void) const { return m_capture.has_value(); }
+    bool capture(void) const {
+        assert(m_capture.has_value());
+        return m_capture.value();
+    }
     void setCapture(bool capture) { m_capture = capture; }
 
-    bool passive(void) const { return m_passive; }
+    bool hasPassive(void) const { return m_passive.has_value(); }
+    bool passive(void) const {
+        assert(m_passive.has_value());
+        return m_passive.value();
+    }
     void setPassive(bool passive) { m_passive = passive; }
 private:
-    bool m_capture = false, m_passive = false;
+    std::optional<bool> m_capture, m_passive;
 };
 
 class EventListenerOptionsOrBoolean
