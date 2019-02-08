@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLFormControlElement.cpp
+// Description: HTMLFormControlElement Class
+//      Author: Ziming Li
+//     Created: 2019-02-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -233,15 +244,7 @@ void HTMLFormControlElement::setAutofilled(bool autofilled)
 
 static bool shouldAutofocusOnAttach(const HTMLFormControlElement* element)
 {
-    if (!element->isAutofocusable())
-        return false;
-    if (element->document().isSandboxed(SandboxAutomaticFeatures)) {
-        // FIXME: This message should be moved off the console once a solution to https://bugs.webkit.org/show_bug.cgi?id=103274 exists.
-        element->document().addConsoleMessage(ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, "Blocked autofocusing on a form control because the form's frame is sandboxed and the 'allow-scripts' permission is not set."));
-        return false;
-    }
-
-    return true;
+    return element->isAutofocusable();
 }
 
 void HTMLFormControlElement::attach(const AttachContext& context)

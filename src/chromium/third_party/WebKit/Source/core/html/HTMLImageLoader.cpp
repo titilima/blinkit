@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLImageLoader.cpp
+// Description: HTMLImageLoader Class
+//      Author: Ziming Li
+//     Created: 2019-02-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -27,7 +38,6 @@
 #include "core/fetch/ImageResource.h"
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLInputElement.h"
-#include "core/html/HTMLObjectElement.h"
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "platform/Logging.h"
 
@@ -53,8 +63,6 @@ void HTMLImageLoader::dispatchLoadEvent()
         return;
 
     bool errorOccurred = image()->errorOccurred();
-    if (isHTMLObjectElement(*element()) && !errorOccurred)
-        errorOccurred = (image()->response().httpStatusCode() >= 400); // An <object> considers a 404 to be an error and should fire onerror.
     element()->dispatchEvent(Event::create(errorOccurred ? EventTypeNames::error : EventTypeNames::load));
 }
 
@@ -93,9 +101,6 @@ void HTMLImageLoader::notifyFinished(Resource*)
         else
             toHTMLInputElement(element)->ensurePrimaryContent();
     }
-
-    if ((loadError || cachedImage->response().httpStatusCode() >= 400) && isHTMLObjectElement(*element))
-        toHTMLObjectElement(element)->renderFallbackContent();
 }
 
 void HTMLImageLoader::ensureFallbackContent()
