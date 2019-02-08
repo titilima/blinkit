@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: EmailInputType.cpp
+// Description: EmailInputType Class
+//      Author: Ziming Li
+//     Created: 2019-02-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * This file is part of the WebKit project.
  *
@@ -23,7 +34,7 @@
 
 #include "core/html/forms/EmailInputType.h"
 
-#include "bindings/core/v8/ScriptRegexp.h"
+#include <regex>
 #include "core/InputTypeNames.h"
 #include "core/html/HTMLInputElement.h"
 #include "core/html/parser/HTMLParserIdioms.h"
@@ -35,8 +46,6 @@
 #include "wtf/LeakAnnotations.h"
 #include "wtf/PassOwnPtr.h"
 #include "wtf/text/StringBuilder.h"
-#include <unicode/idna.h>
-#include <unicode/unistr.h>
 
 namespace blink {
 
@@ -52,8 +61,6 @@ static const char emailPattern[] =
 
 // RFC5321 says the maximum total length of a domain name is 255 octets.
 static const int32_t maximumDomainNameLength = 255;
-// Use the same option as in url/url_canon_icu.cc
-static const int32_t idnaConversionOption = UIDNA_CHECK_BIDI;
 
 String EmailInputType::convertEmailAddressToASCII(const String& address)
 {
@@ -63,6 +70,9 @@ String EmailInputType::convertEmailAddressToASCII(const String& address)
     size_t atPosition = address.find('@');
     if (atPosition == kNotFound)
         return address;
+    return address;
+    assert(false); // BKTODO:
+#if 0
     String host = address.substring(atPosition + 1);
 
     // UnicodeString ctor for copy-on-write does not work reliably (in debug
@@ -85,6 +95,7 @@ String EmailInputType::convertEmailAddressToASCII(const String& address)
     builder.append(domainName.getBuffer(), domainName.length());
     String asciiEmail = builder.toString();
     return isValidEmailAddress(asciiEmail) ? asciiEmail : address;
+#endif
 }
 
 String EmailInputType::convertEmailAddressToUnicode(const String& address) const
@@ -140,13 +151,8 @@ bool EmailInputType::isValidEmailAddress(const String& address)
     if (!addressLength)
         return false;
 
-    LEAK_SANITIZER_DISABLED_SCOPE;
-    DEFINE_STATIC_LOCAL(const ScriptRegexp, regExp, (emailPattern, TextCaseInsensitive));
-
-    int matchLength;
-    int matchOffset = regExp.match(address, 0, &matchLength);
-
-    return !matchOffset && matchLength == addressLength;
+    static const std::regex re(emailPattern);
+    return std::regex_match(address.to_string(), re);
 }
 
 PassRefPtrWillBeRawPtr<InputType> EmailInputType::create(HTMLInputElement& element)
@@ -223,13 +229,19 @@ String EmailInputType::typeMismatchText() const
         return locale().queryString(WebLocalizedString::ValidationTypeMismatchForEmailEmptyDomain, atSign, unicodeAddress);
     size_t invalidCharIndex = localPart.find(isInvalidLocalPartCharacter);
     if (invalidCharIndex != kNotFound) {
+        assert(false); // BKTODO:
+#if 0
         unsigned charLength = U_IS_LEAD(localPart[invalidCharIndex]) ? 2 : 1;
         return locale().queryString(WebLocalizedString::ValidationTypeMismatchForEmailInvalidLocal, atSign, localPart.substring(invalidCharIndex, charLength));
+#endif
     }
     invalidCharIndex = domain.find(isInvalidDomainCharacter);
     if (invalidCharIndex != kNotFound) {
+        assert(false); // BKTODO:
+#if 0
         unsigned charLength = U_IS_LEAD(domain[invalidCharIndex]) ? 2 : 1;
         return locale().queryString(WebLocalizedString::ValidationTypeMismatchForEmailInvalidDomain, atSign, domain.substring(invalidCharIndex, charLength));
+#endif
     }
     if (!checkValidDotUsage(domain)) {
         size_t atIndexInUnicode = unicodeAddress.find('@');

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: BaseTextInputType.cpp
+// Description: BaseTextInputType Class
+//      Author: Ziming Li
+//     Created: 2019-02-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * This file is part of the WebKit project.
  *
@@ -23,7 +34,7 @@
 
 #include "core/html/forms/BaseTextInputType.h"
 
-#include "bindings/core/v8/ScriptRegexp.h"
+#include <regex>
 #include "core/HTMLNames.h"
 #include "core/html/HTMLInputElement.h"
 
@@ -75,13 +86,23 @@ bool BaseTextInputType::patternMismatch(const String& value) const
 {
     const AtomicString& rawPattern = element().fastGetAttribute(patternAttr);
     // Empty values can't be mismatched
-    if (rawPattern.isNull() || value.isEmpty() || !ScriptRegexp(rawPattern, TextCaseSensitive).isValid())
+    if (rawPattern.isNull() || value.isEmpty())
         return false;
-    String pattern = "^(?:" + rawPattern + ")$";
-    int matchLength = 0;
-    int valueLength = value.length();
-    int matchOffset = ScriptRegexp(pattern, TextCaseSensitive).match(value, 0, &matchLength);
-    return matchOffset || matchLength != valueLength;
+
+    std::string pattern = rawPattern.to_string();
+    try {
+        std::regex re(pattern);
+    }
+    catch (...)
+    {
+        return false;
+    }
+
+    pattern.insert(0, "^(?:");
+    pattern.append(")$");
+
+    std::regex re(pattern);
+    return !std::regex_match(value.to_string(), re);
 }
 
 bool BaseTextInputType::supportsPlaceholder() const
