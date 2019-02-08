@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLFieldSetElement.cpp
+// Description: HTMLFieldSetElement Class
+//      Author: Ziming Li
+//     Created: 2019-02-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -30,7 +41,6 @@
 #include "core/html/HTMLCollection.h"
 #include "core/html/HTMLFormControlsCollection.h"
 #include "core/html/HTMLLegendElement.h"
-#include "core/html/HTMLObjectElement.h"
 #include "core/layout/LayoutFieldset.h"
 #include "wtf/StdLibExtras.h"
 
@@ -137,11 +147,6 @@ void HTMLFieldSetElement::refreshElementsIfNeeded() const
     m_associatedElements.clear();
 
     for (HTMLElement& element : Traversal<HTMLElement>::descendantsOf(*this)) {
-        if (isHTMLObjectElement(element)) {
-            m_associatedElements.append(toHTMLObjectElement(&element));
-            continue;
-        }
-
         if (!element.isFormControlElement())
             continue;
 

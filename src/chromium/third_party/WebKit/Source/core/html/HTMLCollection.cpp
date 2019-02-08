@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLCollection.cpp
+// Description: HTMLCollection Class
+//      Author: Ziming Li
+//     Created: 2019-02-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -30,7 +41,6 @@
 #include "core/html/DocumentNameCollection.h"
 #include "core/html/HTMLDataListOptionsCollection.h"
 #include "core/html/HTMLElement.h"
-#include "core/html/HTMLObjectElement.h"
 #include "core/html/HTMLOptionElement.h"
 #include "core/html/HTMLOptionsCollection.h"
 #include "core/html/HTMLTagCollection.h"
@@ -227,9 +237,9 @@ static inline bool isMatchingHTMLElement(const HTMLCollection& htmlCollection, c
     case MapAreas:
         return element.hasTagName(areaTag);
     case DocApplets:
-        return isHTMLObjectElement(element) && toHTMLObjectElement(element).containsJavaApplet();
     case DocEmbeds:
-        return element.hasTagName(embedTag);
+        assert(false); // Not reached!
+        return false;
     case DocLinks:
         return (element.hasTagName(aTag) || element.hasTagName(areaTag)) && element.fastHasAttribute(hrefAttr);
     case DocAnchors:
@@ -311,14 +321,12 @@ static inline bool nameShouldBeVisibleInDocumentAll(const HTMLElement& element)
     // although it returns any type of element by id.
     return element.hasTagName(aTag)
         || element.hasTagName(areaTag)
-        || element.hasTagName(embedTag)
         || element.hasTagName(formTag)
         || element.hasTagName(frameTag)
         || element.hasTagName(framesetTag)
         || element.hasTagName(iframeTag)
         || element.hasTagName(imgTag)
         || element.hasTagName(inputTag)
-        || element.hasTagName(objectTag)
         || element.hasTagName(selectTag);
 }
 
