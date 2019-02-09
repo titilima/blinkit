@@ -80,6 +80,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementLookupTrie.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLTokenizerNames.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -149,6 +152,9 @@
       <Filter>core\fetch</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementLookupTrie.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLTokenizerNames.h">
       <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>

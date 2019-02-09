@@ -170,3 +170,8 @@ run_script('build/scripts/make_element_lookup_trie.py', \
     os.path.normpath('core/html/HTMLTagNames.in') + ' ' \
     '--output_dir ' + os.path.normpath('gen/core')  \
 )
+
+run_script('build/scripts/make_names.py',  \
+    os.path.normpath('core/html/parser/HTMLTokenizerNames.in') + ' '    \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)
