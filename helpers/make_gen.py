@@ -42,14 +42,12 @@ core_event_idl_files = (
     'events/FocusEvent.idl',
     'events/HashChangeEvent.idl',
     'events/KeyboardEvent.idl',
-    'events/MessageEvent.idl',
     'events/MouseEvent.idl',
     'events/MutationEvent.idl',
     'events/PageTransitionEvent.idl',
     'events/PointerEvent.idl',
     'events/PopStateEvent.idl',
     'events/ProgressEvent.idl',
-    'events/PromiseRejectionEvent.idl',
     'events/RelatedEvent.idl',
     'events/ResourceProgressEvent.idl',
     'events/SecurityPolicyViolationEvent.idl',
@@ -166,4 +164,9 @@ run_script('build/scripts/make_settings.py',    \
 run_script('build/scripts/make_names.py',  \
     os.path.normpath('core/fetch/FetchInitiatorTypeNames.in') + ' ' \
     '--output_dir ' + os.path.normpath('gen/core/fetch')    \
+)
+
+run_script('build/scripts/make_element_lookup_trie.py', \
+    os.path.normpath('core/html/HTMLTagNames.in') + ' ' \
+    '--output_dir ' + os.path.normpath('gen/core')  \
 )

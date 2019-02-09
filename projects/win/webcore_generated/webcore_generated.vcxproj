@@ -174,6 +174,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTypeNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\fetch\FetchInitiatorTypeNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementFactory.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementLookupTrie.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\InputTypeNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\MathMLNames.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTypeNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\fetch\FetchInitiatorTypeNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementFactory.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementLookupTrie.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementTypeHelpers.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\InputTypeNames.h" />
