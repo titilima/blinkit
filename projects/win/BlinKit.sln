@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "webcore_generated", "webcor
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "webcore_html", "webcore_html\webcore_html.vcxproj", "{1E0C301E-4C6F-468E-A91E-2E55730A296F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "webcore_svg", "webcore_svg\webcore_svg.vcxproj", "{01B811B6-336E-49AD-B836-7C25DBCD7CE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -43,6 +45,14 @@ Global
 		{1E0C301E-4C6F-468E-A91E-2E55730A296F}.Release|x64.Build.0 = Release|x64
 		{1E0C301E-4C6F-468E-A91E-2E55730A296F}.Release|x86.ActiveCfg = Release|Win32
 		{1E0C301E-4C6F-468E-A91E-2E55730A296F}.Release|x86.Build.0 = Release|Win32
+		{01B811B6-336E-49AD-B836-7C25DBCD7CE6}.Debug|x64.ActiveCfg = Debug|x64
+		{01B811B6-336E-49AD-B836-7C25DBCD7CE6}.Debug|x64.Build.0 = Debug|x64
+		{01B811B6-336E-49AD-B836-7C25DBCD7CE6}.Debug|x86.ActiveCfg = Debug|Win32
+		{01B811B6-336E-49AD-B836-7C25DBCD7CE6}.Debug|x86.Build.0 = Debug|Win32
+		{01B811B6-336E-49AD-B836-7C25DBCD7CE6}.Release|x64.ActiveCfg = Release|x64
+		{01B811B6-336E-49AD-B836-7C25DBCD7CE6}.Release|x64.Build.0 = Release|x64
+		{01B811B6-336E-49AD-B836-7C25DBCD7CE6}.Release|x86.ActiveCfg = Release|Win32
+		{01B811B6-336E-49AD-B836-7C25DBCD7CE6}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,6 +61,7 @@ Global
 		{E4E9F91C-E1DD-49EA-9773-373ABE3FBAC4} = {91A28989-465E-4DCE-8769-180486DD9C19}
 		{B47CE86F-DDFE-43AF-BC11-8991F741F3A4} = {91A28989-465E-4DCE-8769-180486DD9C19}
 		{1E0C301E-4C6F-468E-A91E-2E55730A296F} = {91A28989-465E-4DCE-8769-180486DD9C19}
+		{01B811B6-336E-49AD-B836-7C25DBCD7CE6} = {91A28989-465E-4DCE-8769-180486DD9C19}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {203D556F-DFBA-4942-8EDE-A717D34DBEEB}
