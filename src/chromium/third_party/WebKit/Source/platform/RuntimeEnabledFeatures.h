@@ -33,6 +33,7 @@ class RuntimeEnabledFeatures final {
 public:
     BLINK_DEFINE_STABLE_FEATURE(eventListenerOptions)
     BLINK_DEFINE_STABLE_FEATURE(linkPreconnect)
+    BLINK_DEFINE_STABLE_FEATURE(pathOpsSVGClipping)
     BLINK_DEFINE_STABLE_FEATURE(smil)
 
     BLINKIT_DISABLE_FEATURE(media)
@@ -45,6 +46,7 @@ public:
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(scrollTopLeftInterop)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(shadowDOMV1)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(suborigins)
+    BLINK_DEFINE_EXPERIMENTAL_FEATURE(webAnimationsSVG)
 
     BLINKIT_DISABLE_FEATURE(authorShadowDOMForAnyElement)
     BLINKIT_DISABLE_FEATURE(langAttributeAwareFormControlUI)

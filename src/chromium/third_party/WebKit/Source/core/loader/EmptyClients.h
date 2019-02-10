@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: EmptyChromeClient.h
+// Description: EmptyChromeClient Class
+//      Author: Ziming Li
+//     Created: 2019-02-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Eric Seidel (eric@webkit.org)
  * Copyright (C) 2008, 2009, 2010, 2011, 2012 Apple Inc. All rights reserved.
@@ -48,7 +59,6 @@
 #include "public/platform/WebFrameScheduler.h"
 #include "public/platform/WebScreenInfo.h"
 #include "wtf/Forward.h"
-#include <v8.h>
 
 /*
  This file holds empty Client stubs for use by WebCore.
@@ -249,11 +259,7 @@ public:
     void dispatchDidClearWindowObjectInMainWorld() override {}
     void documentElementAvailable() override {}
 
-    void didCreateScriptContext(v8::Local<v8::Context>, int extensionGroup, int worldId) override {}
-    void willReleaseScriptContext(v8::Local<v8::Context>, int worldId) override {}
     bool allowScriptExtension(const String& extensionName, int extensionGroup, int worldId) override { return false; }
-
-    v8::Local<v8::Value> createTestInterface(const AtomicString& name) override;
 
     WebCookieJar* cookieJar() const override { return 0; }
 
