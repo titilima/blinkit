@@ -56,7 +56,6 @@ core_event_idl_files = (
     'events/TransitionEvent.idl',
     'events/UIEvent.idl',
     'events/WheelEvent.idl',
-    'html/MediaKeyEvent.idl',
     'html/track/TrackEvent.idl',
     'svg/SVGZoomEvent.idl',
     'xmlhttprequest/XMLHttpRequestProgressEvent.idl'
@@ -173,5 +172,10 @@ run_script('build/scripts/make_element_lookup_trie.py', \
 
 run_script('build/scripts/make_names.py',  \
     os.path.normpath('core/html/parser/HTMLTokenizerNames.in') + ' '    \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)
+
+run_script('build/scripts/make_names.py',  \
+    os.path.normpath('core/css/MediaTypeNames.in') + ' '    \
     '--output_dir ' + os.path.normpath('gen/core')  \
 )
