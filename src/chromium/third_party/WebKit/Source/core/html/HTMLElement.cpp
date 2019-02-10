@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLElement.cpp
+// Description: HTMLElement Class
+//      Author: Ziming Li
+//     Created: 2019-02-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -111,7 +122,6 @@ bool HTMLElement::ieForbidsInsertHTML() const
         || hasTagName(basefontTag)
         || hasTagName(brTag)
         || hasTagName(colTag)
-        || hasTagName(embedTag)
         || hasTagName(frameTag)
         || hasTagName(hrTag)
         || hasTagName(imageTag)
@@ -120,7 +130,6 @@ bool HTMLElement::ieForbidsInsertHTML() const
         || hasTagName(linkTag)
         || (RuntimeEnabledFeatures::contextMenuEnabled() && hasTagName(menuitemTag))
         || hasTagName(metaTag)
-        || hasTagName(paramTag)
         || hasTagName(sourceTag)
         || hasTagName(wbrTag))
         return true;

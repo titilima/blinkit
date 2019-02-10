@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FormData.h
+// Description: FormData Class
+//      Author: Ziming Li
+//     Created: 2019-02-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -31,10 +42,8 @@
 #ifndef FormData_h
 #define FormData_h
 
-#include "bindings/core/v8/Iterable.h"
-#include "bindings/core/v8/ScriptState.h"
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/CoreExport.h"
+#include "platform/bindings/script_wrappable.h"
 #include "platform/heap/Handle.h"
 #include "platform/network/EncodedFormData.h"
 #include "wtf/Forward.h"
@@ -43,12 +52,11 @@
 namespace blink {
 
 class Blob;
+class ExecutionContext;
+class File;
 class HTMLFormElement;
 
-// Typedef from FormData.idl:
-typedef FileOrUSVString FormDataEntryValue;
-
-class CORE_EXPORT FormData final : public GarbageCollected<FormData>, public ScriptWrappable, public PairIterable<String, FormDataEntryValue> {
+class CORE_EXPORT FormData final : public GarbageCollected<FormData>, public ScriptWrappable {
     DEFINE_WRAPPERTYPEINFO();
 
 public:
@@ -67,8 +75,6 @@ public:
     void append(const String& name, const String& value);
     void append(ExecutionContext*, const String& name, Blob*, const String& filename = String());
     void deleteEntry(const String& name);
-    void get(const String& name, FormDataEntryValue& result);
-    HeapVector<FormDataEntryValue> getAll(const String& name);
     bool has(const String& name);
     void set(const String& name, const String& value);
     void set(const String& name, Blob*, const String& filename = String());
@@ -91,7 +97,6 @@ private:
     explicit FormData(HTMLFormElement*);
     void setEntry(const Entry*);
     CString encodeAndNormalize(const String& key) const;
-    IterationSource* startIteration(ScriptState*, ExceptionState&) override;
 
     WTF::TextEncoding m_encoding;
     // Entry pointers in m_entries never be nullptr.

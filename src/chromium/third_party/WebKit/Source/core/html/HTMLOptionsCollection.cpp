@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLOptionsCollection.cpp
+// Description: HTMLOptionsCollection Class
+//      Author: Ziming Li
+//     Created: 2019-02-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2011, 2012 Apple Computer, Inc.
  * Copyright (C) 2014 Samsung Electronics. All rights reserved.
@@ -23,7 +34,6 @@
 
 #include "bindings/core/v8/ExceptionMessages.h"
 #include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/dom/ExceptionCode.h"
 #include "core/dom/StaticNodeList.h"
 #include "core/html/HTMLOptionElement.h"
@@ -95,19 +105,7 @@ void HTMLOptionsCollection::setLength(unsigned length, ExceptionState& exception
 
 void HTMLOptionsCollection::namedGetter(const AtomicString& name, NodeListOrElement& returnValue)
 {
-    WillBeHeapVector<RefPtrWillBeMember<Element>> namedItems;
-    this->namedItems(name, namedItems);
-
-    if (!namedItems.size())
-        return;
-
-    if (namedItems.size() == 1) {
-        returnValue.setElement(namedItems.at(0));
-        return;
-    }
-
-    // FIXME: The spec and Firefox do not return a NodeList. They always return the first matching Element.
-    returnValue.setNodeList(StaticElementList::adopt(namedItems));
+    assert(false); // Not reached!
 }
 
 bool HTMLOptionsCollection::anonymousIndexedSetter(unsigned index, PassRefPtrWillBeRawPtr<HTMLOptionElement> value, ExceptionState& exceptionState)

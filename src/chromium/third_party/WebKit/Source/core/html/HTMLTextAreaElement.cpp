@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLTextAreaElement.cpp
+// Description: HTMLTextAreaElement Class
+//      Author: Ziming Li
+//     Created: 2019-02-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -47,6 +58,7 @@
 #include "core/html/shadow/TextControlInnerElements.h"
 #include "core/layout/LayoutTextControlMultiLine.h"
 #include "core/page/ChromeClient.h"
+#include "platform/bindings/exception_messages.h"
 #include "platform/text/PlatformLocale.h"
 #include "wtf/StdLibExtras.h"
 #include "wtf/text/StringBuilder.h"

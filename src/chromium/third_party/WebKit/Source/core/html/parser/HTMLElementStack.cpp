@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLElementStack.cpp
+// Description: HTMLElementStack Class
+//      Author: Ziming Li
+//     Created: 2019-02-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -50,7 +61,6 @@ inline bool isScopeMarker(HTMLStackItem* item)
     return item->hasTagName(appletTag)
         || item->hasTagName(captionTag)
         || item->hasTagName(marqueeTag)
-        || item->hasTagName(objectTag)
         || item->hasTagName(tableTag)
         || item->hasTagName(tdTag)
         || item->hasTagName(thTag)

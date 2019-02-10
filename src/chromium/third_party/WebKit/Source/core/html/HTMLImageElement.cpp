@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLImageElement.cpp
+// Description: HTMLImageElement Class
+//      Author: Ziming Li
+//     Created: 2019-02-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,7 +36,6 @@
 #include "bindings/core/v8/ScriptEventListener.h"
 #include "core/CSSPropertyNames.h"
 #include "core/HTMLNames.h"
-#include "core/MediaTypeNames.h"
 #include "core/css/MediaQueryMatcher.h"
 #include "core/css/MediaValuesDynamic.h"
 #include "core/css/parser/SizesAttributeParser.h"
@@ -36,7 +46,6 @@
 #include "core/frame/ImageBitmap.h"
 #include "core/frame/UseCounter.h"
 #include "core/html/HTMLAnchorElement.h"
-#include "core/html/HTMLCanvasElement.h"
 #include "core/html/HTMLFormElement.h"
 #include "core/html/HTMLImageFallbackHelper.h"
 #include "core/html/HTMLSourceElement.h"
@@ -592,64 +601,6 @@ bool HTMLImageElement::isInteractiveContent() const
     return fastHasAttribute(usemapAttr);
 }
 
-PassRefPtr<Image> HTMLImageElement::getSourceImageForCanvas(SourceImageStatus* status, AccelerationHint) const
-{
-    if (!complete() || !cachedImage()) {
-        *status = IncompleteSourceImageStatus;
-        return nullptr;
-    }
-
-    if (cachedImage()->errorOccurred()) {
-        *status = UndecodableSourceImageStatus;
-        return nullptr;
-    }
-
-    RefPtr<Image> sourceImage;
-    if (cachedImage()->image()->isSVGImage()) {
-        sourceImage = SVGImageForContainer::create(toSVGImage(cachedImage()->image()),
-            cachedImage()->image()->size(), 1, document().completeURL(imageSourceURL()));
-    } else {
-        sourceImage = cachedImage()->image();
-    }
-
-    *status = NormalSourceImageStatus;
-    return sourceImage->imageForDefaultFrame();
-}
-
-bool HTMLImageElement::isSVGSource() const
-{
-    return cachedImage() && cachedImage()->image()->isSVGImage();
-}
-
-bool HTMLImageElement::wouldTaintOrigin(SecurityOrigin* destinationSecurityOrigin) const
-{
-    ImageResource* image = cachedImage();
-    if (!image)
-        return false;
-    return !image->isAccessAllowed(destinationSecurityOrigin);
-}
-
-FloatSize HTMLImageElement::elementSize() const
-{
-    ImageResource* image = cachedImage();
-    if (!image)
-        return FloatSize();
-
-    return FloatSize(image->imageSize(LayoutObject::shouldRespectImageOrientation(layoutObject()), 1.0f));
-}
-
-FloatSize HTMLImageElement::defaultDestinationSize() const
-{
-    ImageResource* image = cachedImage();
-    if (!image)
-        return FloatSize();
-    LayoutSize size;
-    size = image->imageSize(LayoutObject::shouldRespectImageOrientation(layoutObject()), 1.0f);
-    if (layoutObject() && layoutObject()->isLayoutImage() && image->image() && !image->image()->hasRelativeWidth())
-        size.scale(toLayoutImage(layoutObject())->imageDevicePixelRatio());
-    return FloatSize(size);
-}
-
 static bool sourceSizeValue(Element& element, Document& currentDocument, float& sourceSize)
 {
     String sizes = element.fastGetAttribute(sizesAttr);
@@ -684,24 +635,6 @@ void HTMLImageElement::forceReload() const
     imageLoader().updateFromElement(ImageLoader::UpdateForcedReload, m_referrerPolicy);
 }
 
-ScriptPromise HTMLImageElement::createImageBitmap(ScriptState* scriptState, EventTarget& eventTarget, int sx, int sy, int sw, int sh, ExceptionState& exceptionState)
-{
-    ASSERT(eventTarget.toDOMWindow());
-    if (!cachedImage()) {
-        exceptionState.throwDOMException(InvalidStateError, "No image can be retrieved from the provided element.");
-        return ScriptPromise();
-    }
-    if (cachedImage()->image()->isSVGImage()) {
-        exceptionState.throwDOMException(InvalidStateError, "The image element contains an SVG image, which is unsupported.");
-        return ScriptPromise();
-    }
-    if (!sw || !sh) {
-        exceptionState.throwDOMException(IndexSizeError, String::format("The source %s provided is 0.", sw ? "height" : "width"));
-        return ScriptPromise();
-    }
-    return ImageBitmapSource::fulfillImageBitmap(scriptState, ImageBitmap::create(this, IntRect(sx, sy, sw, sh), eventTarget.toDOMWindow()->document()));
-}
-
 void HTMLImageElement::selectSourceURL(ImageLoader::UpdateFromElementBehavior behavior)
 {
     if (!document().isActive())
@@ -731,11 +664,6 @@ void HTMLImageElement::selectSourceURL(ImageLoader::UpdateFromElementBehavior be
         ensurePrimaryContent();
     else
         ensureFallbackContent();
-}
-
-const KURL& HTMLImageElement::sourceURL() const
-{
-    return cachedImage()->response().url();
 }
 
 void HTMLImageElement::didAddUserAgentShadowRoot(ShadowRoot&)
@@ -793,12 +721,6 @@ void HTMLImageElement::setUseFallbackContent()
         return;
     EventDispatchForbiddenScope::AllowUserAgentEvents allowEvents;
     ensureUserAgentShadowRoot();
-}
-
-bool HTMLImageElement::isOpaque() const
-{
-    Image* image = const_cast<HTMLImageElement*>(this)->imageContents();
-    return image && image->currentFrameKnownToBeOpaque();
 }
 
 IntSize HTMLImageElement::bitmapSourceSize() const

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLFormElement.cpp
+// Description: HTMLFormElement Class
+//      Author: Ziming Li
+//     Created: 2019-02-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -26,7 +37,6 @@
 
 #include "bindings/core/v8/ScriptController.h"
 #include "bindings/core/v8/ScriptEventListener.h"
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/HTMLNames.h"
 #include "core/dom/Attribute.h"
 #include "core/dom/Document.h"
@@ -46,7 +56,6 @@
 #include "core/html/HTMLFormControlsCollection.h"
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLInputElement.h"
-#include "core/html/HTMLObjectElement.h"
 #include "core/html/RadioNodeList.h"
 #include "core/html/forms/FormController.h"
 #include "core/inspector/ConsoleMessage.h"
@@ -406,11 +415,6 @@ void HTMLFormElement::scheduleFormSubmission(PassRefPtrWillBeRawPtr<FormSubmissi
     ASSERT(submission->form());
     if (submission->action().isEmpty())
         return;
-    if (document().isSandboxed(SandboxForms)) {
-        // FIXME: This message should be moved off the console once a solution to https://bugs.webkit.org/show_bug.cgi?id=103274 exists.
-        document().addConsoleMessage(ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, "Blocked form submission to '" + submission->action().elidedString() + "' because the form's frame is sandboxed and the 'allow-forms' permission is not set."));
-        return;
-    }
 
     if (protocolIsJavaScript(submission->action())) {
         if (!document().contentSecurityPolicy()->allowFormAction(submission->action()))
@@ -588,8 +592,6 @@ void HTMLFormElement::collectAssociatedElements(Node& root, FormAssociatedElemen
         FormAssociatedElement* associatedElement = 0;
         if (element.isFormControlElement())
             associatedElement = toHTMLFormControlElement(&element);
-        else if (isHTMLObjectElement(element))
-            associatedElement = toHTMLObjectElement(&element);
         else
             continue;
         if (associatedElement->form()== this)
@@ -730,8 +732,6 @@ Element* HTMLFormElement::elementFromPastNamesMap(const AtomicString& pastName)
     ASSERT_WITH_SECURITY_IMPLICATION(toHTMLElement(element)->formOwner() == this);
     if (isHTMLImageElement(*element)) {
         ASSERT_WITH_SECURITY_IMPLICATION(imageElements().find(element) != kNotFound);
-    } else if (isHTMLObjectElement(*element)) {
-        ASSERT_WITH_SECURITY_IMPLICATION(associatedElements().find(toHTMLObjectElement(element)) != kNotFound);
     } else {
         ASSERT_WITH_SECURITY_IMPLICATION(associatedElements().find(toHTMLFormControlElement(element)) != kNotFound);
     }
@@ -794,6 +794,8 @@ void HTMLFormElement::copyNonAttributePropertiesFromElement(const Element& sourc
 
 void HTMLFormElement::anonymousNamedGetter(const AtomicString& name, RadioNodeListOrElement& returnValue)
 {
+    assert(false); // BKTODO:
+#if 0
     // Call getNamedElements twice, first time check if it has a value
     // and let HTMLFormElement update its cache.
     // See issue: 867404
@@ -828,6 +830,7 @@ void HTMLFormElement::anonymousNamedGetter(const AtomicString& name, RadioNodeLi
     }
 
     returnValue.setRadioNodeList(radioNodeList(name, onlyMatchImg));
+#endif
 }
 
 void HTMLFormElement::setDemoted(bool demoted)

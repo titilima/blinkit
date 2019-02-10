@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: NumberInputType.cpp
+// Description: NumberInputType Class
+//      Author: Ziming Li
+//     Created: 2019-02-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -42,6 +53,7 @@
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/inspector/ConsoleMessage.h"
 #include "core/layout/LayoutTextControl.h"
+#include "platform/JSONValues.h"
 #include "platform/text/PlatformLocale.h"
 #include "wtf/MathExtras.h"
 #include "wtf/PassOwnPtr.h"

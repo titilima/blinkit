@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FormData.cpp
+// Description: FormData Class
+//      Author: Ziming Li
+//     Created: 2019-02-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -39,41 +50,6 @@
 #include "wtf/text/WTFString.h"
 
 namespace blink {
-
-namespace {
-
-class FormDataIterationSource final : public PairIterable<String, FormDataEntryValue>::IterationSource {
-public:
-    FormDataIterationSource(FormData* formData) : m_formData(formData), m_current(0) { }
-
-    bool next(ScriptState* scriptState, String& name, FormDataEntryValue& value, ExceptionState& exceptionState) override
-    {
-        if (m_current >= m_formData->size())
-            return false;
-
-        const FormData::Entry& entry = *m_formData->entries()[m_current++];
-        name = m_formData->decode(entry.name());
-        if (entry.isString()) {
-            value.setUSVString(m_formData->decode(entry.value()));
-        } else {
-            ASSERT(entry.isFile());
-            value.setFile(entry.file());
-        }
-        return true;
-    }
-
-    DEFINE_INLINE_VIRTUAL_TRACE()
-    {
-        visitor->trace(m_formData);
-        PairIterable<String, FormDataEntryValue>::IterationSource::trace(visitor);
-    }
-
-private:
-    const Member<FormData> m_formData;
-    size_t m_current;
-};
-
-} // namespace
 
 FormData::FormData(const WTF::TextEncoding& encoding)
     : m_encoding(encoding)
@@ -134,42 +110,6 @@ void FormData::deleteEntry(const String& name)
             ++i;
         }
     }
-}
-
-void FormData::get(const String& name, FormDataEntryValue& result)
-{
-    const CString encodedName = encodeAndNormalize(name);
-    for (const auto& entry : entries()) {
-        if (entry->name() == encodedName) {
-            if (entry->isString()) {
-                result.setUSVString(decode(entry->value()));
-            } else {
-                ASSERT(entry->isFile());
-                result.setFile(entry->file());
-            }
-            return;
-        }
-    }
-}
-
-HeapVector<FormDataEntryValue> FormData::getAll(const String& name)
-{
-    HeapVector<FormDataEntryValue> results;
-
-    const CString encodedName = encodeAndNormalize(name);
-    for (const auto& entry : entries()) {
-        if (entry->name() != encodedName)
-            continue;
-        FormDataEntryValue value;
-        if (entry->isString()) {
-            value.setUSVString(decode(entry->value()));
-        } else {
-            ASSERT(entry->isFile());
-            value.setFile(entry->file());
-        }
-        results.append(value);
-    }
-    return results;
 }
 
 bool FormData::has(const String& name)
@@ -313,11 +253,6 @@ PassRefPtr<EncodedFormData> FormData::encodeMultiPartFormData()
     FormDataEncoder::addBoundaryToMultiPartHeader(encodedData, formData->boundary().data(), true);
     formData->appendData(encodedData.data(), encodedData.size());
     return formData.release();
-}
-
-PairIterable<String, FormDataEntryValue>::IterationSource* FormData::startIteration(ScriptState*, ExceptionState&)
-{
-    return new FormDataIterationSource(this);
 }
 
 // ----------------------------------------------------------------

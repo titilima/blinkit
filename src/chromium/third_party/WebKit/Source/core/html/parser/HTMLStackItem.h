@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLStackItem.h
+// Description: HTMLStackItem Class
+//      Author: Ziming Li
+//     Created: 2019-02-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Company 100, Inc. All rights reserved.
  *
@@ -156,7 +167,6 @@ public:
             || tagName == HTMLNames::divTag
             || tagName == HTMLNames::dlTag
             || tagName == HTMLNames::dtTag
-            || tagName == HTMLNames::embedTag
             || tagName == HTMLNames::fieldsetTag
             || tagName == HTMLNames::figcaptionTag
             || tagName == HTMLNames::figureTag
@@ -185,10 +195,8 @@ public:
             || tagName == HTMLNames::noembedTag
             || tagName == HTMLNames::noframesTag
             || tagName == HTMLNames::noscriptTag
-            || tagName == HTMLNames::objectTag
             || tagName == HTMLNames::olTag
             || tagName == HTMLNames::pTag
-            || tagName == HTMLNames::paramTag
             || tagName == HTMLNames::plaintextTag
             || tagName == HTMLNames::preTag
             || tagName == HTMLNames::scriptTag

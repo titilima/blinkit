@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLScriptRunner.cpp
+// Description: HTMLScriptRunner Class
+//      Author: Ziming Li
+//     Created: 2019-02-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -26,7 +37,6 @@
 #include "core/html/parser/HTMLScriptRunner.h"
 
 #include "bindings/core/v8/ScriptSourceCode.h"
-#include "bindings/core/v8/V8PerIsolateData.h"
 #include "core/dom/Element.h"
 #include "core/events/Event.h"
 #include "core/dom/IgnoreDestructiveWriteCountIncrementer.h"
@@ -134,6 +144,8 @@ void HTMLScriptRunner::executePendingScriptAndDispatchEvent(PendingScript& pendi
     pendingScript.stopWatchingForLoad(this);
 
     if (!isExecutingScript()) {
+        assert(false); // BKTODO:
+#if 0
         Microtask::performCheckpoint(V8PerIsolateData::mainThreadIsolate());
         if (pendingScriptType == PendingScript::ParsingBlocking) {
             m_hasScriptsWaitingForResources = !m_document->isScriptExecutionReady();
@@ -141,6 +153,7 @@ void HTMLScriptRunner::executePendingScriptAndDispatchEvent(PendingScript& pendi
             if (m_hasScriptsWaitingForResources)
                 return;
         }
+#endif
     }
 
     // Clear the pending script before possible rentrancy from executeScript()
@@ -285,9 +298,12 @@ void HTMLScriptRunner::requestParsingBlockingScript(Element* element)
     // if possible before returning control to the parser.
     if (!m_parserBlockingScript.isReady()) {
         if (m_document->frame()) {
+            assert(false); // BKTODO:
+#if 0
             ScriptState* scriptState = ScriptState::forMainWorld(m_document->frame());
             if (scriptState)
                 ScriptStreamer::startStreaming(m_parserBlockingScript, PendingScript::ParsingBlocking, m_document->frame()->settings(), scriptState, m_document->loadingTaskRunner());
+#endif
         }
 
         m_parserBlockingScript.watchForLoad(this);
@@ -301,9 +317,12 @@ void HTMLScriptRunner::requestDeferredScript(Element* element)
         return;
 
     if (m_document->frame() && !pendingScript.isReady()) {
+        assert(false); // BKTODO:
+#if 0
         ScriptState* scriptState = ScriptState::forMainWorld(m_document->frame());
         if (scriptState)
             ScriptStreamer::startStreaming(pendingScript, PendingScript::Deferred, m_document->frame()->settings(), scriptState, m_document->loadingTaskRunner());
+#endif
     }
 
     ASSERT(pendingScript.resource());
@@ -343,8 +362,11 @@ void HTMLScriptRunner::runScript(Element* script, const TextPosition& scriptStar
 
         ASSERT(scriptLoader->isParserInserted());
 
+        assert(false); // BKTODO:
+#if 0
         if (!isExecutingScript())
             Microtask::performCheckpoint(V8PerIsolateData::mainThreadIsolate());
+#endif
 
         InsertionPointRecord insertionPointRecord(m_host->inputStream());
         NestingLevelIncrementer nestingLevelIncrementer(m_scriptNestingLevel);

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: RadioNodeList.cpp
+// Description: RadioNodeList Class
+//      Author: Ziming Li
+//     Created: 2019-02-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2012 Motorola Mobility, Inc. All rights reserved.
  *
@@ -32,7 +43,6 @@
 #include "core/html/HTMLFormElement.h"
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLInputElement.h"
-#include "core/html/HTMLObjectElement.h"
 
 namespace blink {
 
@@ -97,7 +107,7 @@ bool RadioNodeList::matchesByIdOrName(const Element& testElement) const
 bool RadioNodeList::checkElementMatchesRadioNodeListFilter(const Element& testElement) const
 {
     ASSERT(!shouldOnlyMatchImgElements());
-    ASSERT(isHTMLObjectElement(testElement) || testElement.isFormControlElement());
+    ASSERT(testElement.isFormControlElement());
     if (isHTMLFormElement(ownerNode())) {
         HTMLFormElement* formElement = toHTMLElement(testElement).formOwner();
         if (!formElement || formElement != ownerNode())
@@ -119,7 +129,7 @@ bool RadioNodeList::elementMatches(const Element& element) const
         return matchesByIdOrName(element);
     }
 
-    if (!isHTMLObjectElement(element) && !element.isFormControlElement())
+    if (!element.isFormControlElement())
         return false;
 
     if (isHTMLInputElement(element) && toHTMLInputElement(element).type() == InputTypeNames::image)

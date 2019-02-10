@@ -167,7 +167,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\AutoplayExperimentHelper.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\ClassList.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\CrossOriginAttribute.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\DocumentNameCollection.cpp" />
@@ -217,7 +216,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLAllCollection.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLAnchorElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLAreaElement.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLAudioElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLBaseElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLBodyElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLBRElement.cpp" />
@@ -233,7 +231,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLDListElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLDocument.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLElement.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLEmbedElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFieldSetElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFontElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFormControlElement.cpp" />
@@ -249,7 +246,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLHRElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLHtmlElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLIFrameElement.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLIFrameElementSandbox.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageFallbackHelper.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageLoader.cpp" />
@@ -261,26 +257,21 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLLinkElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMapElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMarqueeElement.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMediaElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMediaSource.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMenuElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMenuItemElement.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMetaElement-in.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMeterElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLModElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLNameCollection.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLNoEmbedElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLNoScriptElement.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLObjectElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOListElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOptGroupElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOptionElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOptionsCollection.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOutputElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLParagraphElement.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLParamElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLPictureElement.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLPlugInElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLPreElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLProgressElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLQuoteElement.cpp" />
@@ -307,12 +298,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTextAreaElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTextFormControlElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTitleElement.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTrackElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLUListElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLUnknownElement.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLVideoElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLWBRElement.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\ImageData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImport.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportChild.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportLoader.cpp" />
@@ -326,7 +314,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\LinkRelAttribute.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\LinkResource.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\MediaFragmentURIParser.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\MediaKeyEvent.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\AtomicHTMLToken.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\BackgroundHTMLInputStream.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\BackgroundHTMLParser.cpp" />
@@ -351,7 +338,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLTokenizer.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLTreeBuilder.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLTreeBuilderSimulator.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLViewSourceParser.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\ParsedChunkQueue.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\PreloadRequest.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\ResourcePreloader.cpp" />
@@ -369,9 +355,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\DateTimeNumericFieldElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\DateTimeSymbolicFieldElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\DetailsMarkerControl.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\MediaControlElements.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\MediaControlElementTypes.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\MediaControls.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\MeterShadowElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\PickerIndicatorElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\ProgressShadowElement.cpp" />
@@ -386,7 +369,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\AutoplayExperimentHelper.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\ClassList.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\CollectionIndexCache.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\CollectionItemsCache.h" />
@@ -439,7 +421,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLAllCollection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLAnchorElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLAreaElement.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLAudioElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLBaseElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLBDIElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLBodyElement.h" />
@@ -457,7 +438,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLDListElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLDocument.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLElement.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLEmbedElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFieldSetElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFontElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFormControlElement.h" />
@@ -473,7 +453,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLHRElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLHtmlElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLIFrameElement.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLIFrameElementSandbox.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageFallbackHelper.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageLoader.h" />
@@ -485,7 +464,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLLinkElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMapElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMarqueeElement.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMediaElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMediaSource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMenuElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMenuItemElement.h" />
@@ -495,16 +473,13 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLNameCollection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLNoEmbedElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLNoScriptElement.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLObjectElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOListElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOptGroupElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOptionElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOptionsCollection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOutputElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLParagraphElement.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLParamElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLPictureElement.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLPlugInElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLPreElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLProgressElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLQuoteElement.h" />
@@ -531,12 +506,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTextAreaElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTextFormControlElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTitleElement.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTrackElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLUListElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLUnknownElement.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLVideoElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLWBRElement.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\ImageData.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImport.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportChild.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportChildClient.h" />
@@ -554,7 +526,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\MediaError.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\MediaFragmentURIParser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\MediaKeyError.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\MediaKeyEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\AtomicHTMLToken.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\BackgroundHTMLInputStream.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\BackgroundHTMLParser.h" />
@@ -584,7 +555,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLTokenizer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLTreeBuilder.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLTreeBuilderSimulator.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLViewSourceParser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\InputStreamPreprocessor.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\NestingLevelIncrementer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\ParsedChunkQueue.h" />
@@ -605,9 +575,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\DateTimeNumericFieldElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\DateTimeSymbolicFieldElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\DetailsMarkerControl.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\MediaControlElements.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\MediaControlElementTypes.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\MediaControls.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\MeterShadowElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\PickerIndicatorElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\ProgressShadowElement.h" />

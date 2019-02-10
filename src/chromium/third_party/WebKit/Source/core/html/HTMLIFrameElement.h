@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLIFrameElement.h
+// Description: HTMLIFrameElement Class
+//      Author: Ziming Li
+//     Created: 2019-02-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,18 +36,16 @@
 #define HTMLIFrameElement_h
 
 #include "core/html/HTMLFrameElementBase.h"
-#include "core/html/HTMLIFrameElementSandbox.h"
 
 namespace blink {
 
-class HTMLIFrameElement final : public HTMLFrameElementBase, public DOMSettableTokenListObserver {
+class HTMLIFrameElement final : public HTMLFrameElementBase {
     DEFINE_WRAPPERTYPEINFO();
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(HTMLIFrameElement);
 public:
     DECLARE_NODE_FACTORY(HTMLIFrameElement);
     DECLARE_VIRTUAL_TRACE();
     ~HTMLIFrameElement() override;
-    DOMSettableTokenList* sandbox() const;
 
 private:
     explicit HTMLIFrameElement(Document&);
@@ -55,13 +64,10 @@ private:
     void didLoadNonEmptyDocument() override { m_didLoadNonEmptyDocument = true; }
     bool isInteractiveContent() const override;
 
-    void valueWasSet() override;
-
     ReferrerPolicy referrerPolicyAttribute() override;
 
     AtomicString m_name;
     bool m_didLoadNonEmptyDocument;
-    RefPtrWillBeMember<HTMLIFrameElementSandbox> m_sandbox;
 
     ReferrerPolicy m_referrerPolicy;
 };

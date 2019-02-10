@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLSelectElement.cpp
+// Description: HTMLSelectElement Class
+//      Author: Ziming Li
+//     Created: 2019-02-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
@@ -30,7 +41,6 @@
 #include "bindings/core/v8/ExceptionMessages.h"
 #include "bindings/core/v8/ExceptionState.h"
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/HTMLNames.h"
 #include "core/dom/AXObjectCache.h"
 #include "core/dom/Attribute.h"
@@ -230,6 +240,8 @@ int HTMLSelectElement::activeSelectionEndListIndex() const
 
 void HTMLSelectElement::add(const HTMLOptionElementOrHTMLOptGroupElement& element, const HTMLElementOrLong& before, ExceptionState& exceptionState)
 {
+    assert(false); // BKTODO:
+#if 0
     RefPtrWillBeRawPtr<HTMLElement> elementToInsert;
     ASSERT(!element.isNull());
     if (element.isHTMLOptionElement())
@@ -247,6 +259,7 @@ void HTMLSelectElement::add(const HTMLOptionElementOrHTMLOptGroupElement& elemen
 
     insertBefore(elementToInsert, beforeElement.get(), exceptionState);
     setNeedsValidityCheck();
+#endif
 }
 
 void HTMLSelectElement::remove(int optionIndex)
@@ -481,6 +494,8 @@ void HTMLSelectElement::setOption(unsigned index, HTMLOptionElement* option, Exc
             String::format("Blocked to expand the option list and set an option at index=%u.  The maximum list length is %u.", index, maxListItems)));
         return;
     }
+    assert(false); // BKTODO:
+#if 0
     HTMLOptionElementOrHTMLOptGroupElement element;
     element.setHTMLOptionElement(option);
     HTMLElementOrLong before;
@@ -498,6 +513,7 @@ void HTMLSelectElement::setOption(unsigned index, HTMLOptionElement* option, Exc
         if (diff >= 0 && option->selected())
             optionSelectionStateChanged(option, true);
     }
+#endif
 }
 
 void HTMLSelectElement::setLength(unsigned newLen, ExceptionState& exceptionState)

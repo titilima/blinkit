@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLIFrameElement.cpp
+// Description: HTMLIFrameElement Class
+//      Author: Ziming Li
+//     Created: 2019-02-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -38,7 +49,6 @@ using namespace HTMLNames;
 inline HTMLIFrameElement::HTMLIFrameElement(Document& document)
     : HTMLFrameElementBase(iframeTag, document)
     , m_didLoadNonEmptyDocument(false)
-    , m_sandbox(HTMLIFrameElementSandbox::create(this))
     , m_referrerPolicy(ReferrerPolicyDefault)
 {
 }
@@ -47,21 +57,11 @@ DEFINE_NODE_FACTORY(HTMLIFrameElement)
 
 DEFINE_TRACE(HTMLIFrameElement)
 {
-    visitor->trace(m_sandbox);
     HTMLFrameElementBase::trace(visitor);
-    DOMSettableTokenListObserver::trace(visitor);
 }
 
 HTMLIFrameElement::~HTMLIFrameElement()
 {
-#if !ENABLE(OILPAN)
-    m_sandbox->setObserver(nullptr);
-#endif
-}
-
-DOMSettableTokenList* HTMLIFrameElement::sandbox() const
-{
-    return m_sandbox.get();
 }
 
 bool HTMLIFrameElement::isPresentationAttribute(const QualifiedName& name) const
@@ -100,9 +100,6 @@ void HTMLIFrameElement::parseAttribute(const QualifiedName& name, const AtomicSt
             document.addExtraNamedItem(value);
         }
         m_name = value;
-    } else if (name == sandboxAttr) {
-        m_sandbox->setValue(value);
-        UseCounter::count(document(), UseCounter::SandboxViaIFrame);
     } else if (RuntimeEnabledFeatures::referrerPolicyAttributeEnabled() && name == referrerpolicyAttr) {
         m_referrerPolicy = ReferrerPolicyDefault;
         if (!value.isNull())
@@ -143,15 +140,6 @@ void HTMLIFrameElement::removedFrom(ContainerNode* insertionPoint)
 bool HTMLIFrameElement::isInteractiveContent() const
 {
     return true;
-}
-
-void HTMLIFrameElement::valueWasSet()
-{
-    String invalidTokens;
-    setSandboxFlags(m_sandbox->value().isNull() ? SandboxNone : parseSandboxPolicy(m_sandbox->tokens(), invalidTokens));
-    if (!invalidTokens.isNull())
-        document().addConsoleMessage(ConsoleMessage::create(OtherMessageSource, ErrorMessageLevel, "Error while parsing the 'sandbox' attribute: " + invalidTokens));
-    setSynchronizedLazyAttribute(sandboxAttr, m_sandbox->value());
 }
 
 ReferrerPolicy HTMLIFrameElement::referrerPolicyAttribute()

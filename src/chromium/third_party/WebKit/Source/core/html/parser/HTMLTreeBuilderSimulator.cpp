@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLTreeBuilderSimulator.cpp
+// Description: HTMLTreeBuilderSimulator Class
+//      Author: Ziming Li
+//     Created: 2019-02-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google, Inc. All Rights Reserved.
  *
@@ -52,7 +63,6 @@ static bool tokenExitsForeignContent(const CompactHTMLToken& token)
         || threadSafeMatch(tagName, dlTag)
         || threadSafeMatch(tagName, dtTag)
         || threadSafeMatch(tagName, emTag)
-        || threadSafeMatch(tagName, embedTag)
         || threadSafeMatch(tagName, h1Tag)
         || threadSafeMatch(tagName, h2Tag)
         || threadSafeMatch(tagName, h3Tag)

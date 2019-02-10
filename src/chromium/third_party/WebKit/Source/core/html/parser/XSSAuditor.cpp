@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: XSSAuditor.cpp
+// Description: XSSAuditor Class
+//      Author: Ziming Li
+//     Created: 2019-02-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Adam Barth. All Rights Reserved.
  * Copyright (C) 2011 Daniel Bates (dbates@intudata.com).
@@ -33,7 +44,6 @@
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
 #include "core/frame/csp/ContentSecurityPolicy.h"
-#include "core/html/HTMLParamElement.h"
 #include "core/html/LinkRelAttribute.h"
 #include "core/html/parser/HTMLDocumentParser.h"
 #include "core/html/parser/HTMLParserIdioms.h"
@@ -426,13 +436,7 @@ bool XSSAuditor::filterStartToken(const FilterTokenRequest& request)
         didBlockScript |= filterScriptToken(request);
         ASSERT(request.shouldAllowCDATA || !m_scriptTagNestingLevel);
         m_scriptTagNestingLevel++;
-    } else if (hasName(request.token, objectTag))
-        didBlockScript |= filterObjectToken(request);
-    else if (hasName(request.token, paramTag))
-        didBlockScript |= filterParamToken(request);
-    else if (hasName(request.token, embedTag))
-        didBlockScript |= filterEmbedToken(request);
-    else if (hasName(request.token, iframeTag) || hasName(request.token, frameTag))
+    } else if (hasName(request.token, iframeTag) || hasName(request.token, frameTag))
         didBlockScript |= filterFrameToken(request);
     else if (hasName(request.token, metaTag))
         didBlockScript |= filterMetaToken(request);
@@ -498,46 +502,20 @@ bool XSSAuditor::filterScriptToken(const FilterTokenRequest& request)
 
 bool XSSAuditor::filterObjectToken(const FilterTokenRequest& request)
 {
-    ASSERT(request.token.type() == HTMLToken::StartTag);
-    ASSERT(hasName(request.token, objectTag));
-
-    bool didBlockScript = false;
-    if (isContainedInRequest(canonicalizedSnippetForTagName(request))) {
-        didBlockScript |= eraseAttributeIfInjected(request, dataAttr, blankURL().string(), SrcLikeAttributeTruncation);
-        didBlockScript |= eraseAttributeIfInjected(request, typeAttr);
-        didBlockScript |= eraseAttributeIfInjected(request, classidAttr);
-    }
-    return didBlockScript;
+    assert(false); // Not reached!
+    return false;
 }
 
 bool XSSAuditor::filterParamToken(const FilterTokenRequest& request)
 {
-    ASSERT(request.token.type() == HTMLToken::StartTag);
-    ASSERT(hasName(request.token, paramTag));
-
-    size_t indexOfNameAttribute;
-    if (!findAttributeWithName(request.token, nameAttr, indexOfNameAttribute))
-        return false;
-
-    const HTMLToken::Attribute& nameAttribute = request.token.attributes().at(indexOfNameAttribute);
-    if (!HTMLParamElement::isURLParameter(String(nameAttribute.value)))
-        return false;
-
-    return eraseAttributeIfInjected(request, valueAttr, blankURL().string(), SrcLikeAttributeTruncation);
+    assert(false); // Not reached!
+    return false;
 }
 
 bool XSSAuditor::filterEmbedToken(const FilterTokenRequest& request)
 {
-    ASSERT(request.token.type() == HTMLToken::StartTag);
-    ASSERT(hasName(request.token, embedTag));
-
-    bool didBlockScript = false;
-    if (isContainedInRequest(canonicalizedSnippetForTagName(request))) {
-        didBlockScript |= eraseAttributeIfInjected(request, codeAttr, String(), SrcLikeAttributeTruncation);
-        didBlockScript |= eraseAttributeIfInjected(request, srcAttr, blankURL().string(), SrcLikeAttributeTruncation);
-        didBlockScript |= eraseAttributeIfInjected(request, typeAttr);
-    }
-    return didBlockScript;
+    assert(false); // Not reached!
+    return false;
 }
 
 bool XSSAuditor::filterFrameToken(const FilterTokenRequest& request)

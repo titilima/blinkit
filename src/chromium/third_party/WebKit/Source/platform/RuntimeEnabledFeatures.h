@@ -32,6 +32,7 @@ class RuntimeEnabledFeatures final {
     STATIC_ONLY(RuntimeEnabledFeatures);
 public:
     BLINK_DEFINE_STABLE_FEATURE(eventListenerOptions)
+    BLINK_DEFINE_STABLE_FEATURE(linkPreconnect)
     BLINK_DEFINE_STABLE_FEATURE(smil)
 
     BLINKIT_DISABLE_FEATURE(media)
@@ -39,16 +40,21 @@ public:
 
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(contextMenu)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(fractionalScrollOffsets)
+    BLINK_DEFINE_EXPERIMENTAL_FEATURE(linkPreload)
+    BLINK_DEFINE_EXPERIMENTAL_FEATURE(referrerPolicyAttribute)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(scrollTopLeftInterop)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(shadowDOMV1)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(suborigins)
 
     BLINKIT_DISABLE_FEATURE(authorShadowDOMForAnyElement)
     BLINKIT_DISABLE_FEATURE(langAttributeAwareFormControlUI)
+    BLINKIT_DISABLE_FEATURE(mediaCapture)
+    BLINKIT_DISABLE_FEATURE(orientationEvent)
     BLINKIT_DISABLE_FEATURE(pointerEvent)
     BLINKIT_DISABLE_FEATURE(scrollCustomization)
     BLINKIT_DISABLE_FEATURE(slimmingPaintOffsetCaching)
     BLINKIT_DISABLE_FEATURE(slimmingPaintV2)
+    BLINKIT_DISABLE_FEATURE(threadedParserDataReceiver)
     BLINKIT_DISABLE_FEATURE(trustedEventsDefaultAction)
 };
 

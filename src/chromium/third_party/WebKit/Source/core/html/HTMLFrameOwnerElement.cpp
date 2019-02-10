@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLFrameOwnerElement.cpp
+// Description: HTMLFrameOwnerElement Class
+//      Author: Ziming Li
+//     Created: 2019-02-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2009 Apple Inc. All rights reserved.
  *
@@ -32,7 +43,6 @@
 #include "core/loader/FrameLoadRequest.h"
 #include "core/loader/FrameLoader.h"
 #include "core/loader/FrameLoaderClient.h"
-#include "core/plugins/PluginView.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/weborigin/SecurityOrigin.h"
 
@@ -135,7 +145,6 @@ HTMLFrameOwnerElement::HTMLFrameOwnerElement(const QualifiedName& tagName, Docum
     : HTMLElement(tagName, document)
     , m_contentFrame(nullptr)
     , m_widget(nullptr)
-    , m_sandboxFlags(SandboxNone)
 {
 }
 
@@ -197,15 +206,6 @@ Document* HTMLFrameOwnerElement::contentDocument() const
 DOMWindow* HTMLFrameOwnerElement::contentWindow() const
 {
     return m_contentFrame ? m_contentFrame->domWindow() : 0;
-}
-
-void HTMLFrameOwnerElement::setSandboxFlags(SandboxFlags flags)
-{
-    m_sandboxFlags = flags;
-    // Don't notify about updates if contentFrame() is null, for example when
-    // the subframe hasn't been created yet.
-    if (contentFrame())
-        document().frame()->loader().client()->didChangeSandboxFlags(contentFrame(), flags);
 }
 
 bool HTMLFrameOwnerElement::isKeyboardFocusable() const

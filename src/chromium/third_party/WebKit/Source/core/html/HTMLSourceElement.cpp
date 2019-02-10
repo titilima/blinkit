@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLSourceElement.cpp
+// Description: HTMLSourceElement Class
+//      Author: Ziming Li
+//     Created: 2019-02-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2010 Apple Inc. All rights reserved.
  *
@@ -32,7 +43,6 @@
 #include "core/dom/Document.h"
 #include "core/events/Event.h"
 #include "core/events/EventSender.h"
-#include "core/html/HTMLMediaElement.h"
 #include "core/html/HTMLPictureElement.h"
 #include "platform/Logging.h"
 
@@ -104,8 +114,6 @@ Node::InsertionNotificationRequest HTMLSourceElement::insertedInto(ContainerNode
 {
     HTMLElement::insertedInto(insertionPoint);
     Element* parent = parentElement();
-    if (isHTMLMediaElement(parent))
-        toHTMLMediaElement(parent)->sourceWasAdded(this);
     if (isHTMLPictureElement(parent))
         toHTMLPictureElement(parent)->sourceOrMediaChanged();
     return InsertionDone;
@@ -116,8 +124,6 @@ void HTMLSourceElement::removedFrom(ContainerNode* removalRoot)
     Element* parent = parentElement();
     if (!parent && removalRoot->isElementNode())
         parent = toElement(removalRoot);
-    if (isHTMLMediaElement(parent))
-        toHTMLMediaElement(parent)->sourceWasRemoved(this);
     if (isHTMLPictureElement(parent))
         toHTMLPictureElement(parent)->sourceOrMediaChanged();
     HTMLElement::removedFrom(removalRoot);

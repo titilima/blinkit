@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLTreeBuilder.cpp
+// Description: HTMLTreeBuilder Class
+//      Author: Ziming Li
+//     Created: 2019-02-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  * Copyright (C) 2011, 2014 Apple Inc. All rights reserved.
@@ -753,14 +764,7 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
         return;
     }
     if (token->name() == appletTag
-        || token->name() == embedTag
-        || token->name() == objectTag) {
-        if (!pluginContentIsAllowed(m_tree.parserContentPolicy()))
-            return;
-    }
-    if (token->name() == appletTag
-        || token->name() == marqueeTag
-        || token->name() == objectTag) {
+        || token->name() == marqueeTag) {
         m_tree.reconstructTheActiveFormattingElements();
         m_tree.insertHTMLElement(token);
         m_tree.activeFormattingElements()->appendMarker();
@@ -783,7 +787,6 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
     }
     if (token->name() == areaTag
         || token->name() == brTag
-        || token->name() == embedTag
         || token->name() == imgTag
         || token->name() == keygenTag
         || token->name() == wbrTag) {
@@ -807,7 +810,6 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
         return;
     }
     if ((RuntimeEnabledFeatures::contextMenuEnabled() && token->name() == menuitemTag)
-        || token->name() == paramTag
         || token->name() == sourceTag
         || token->name() == trackTag) {
         m_tree.insertSelfClosingHTMLElementDestroyingToken(token);
@@ -1869,8 +1871,7 @@ void HTMLTreeBuilder::processEndTagForInBody(AtomicHTMLToken* token)
         return;
     }
     if (token->name() == appletTag
-        || token->name() == marqueeTag
-        || token->name() == objectTag) {
+        || token->name() == marqueeTag) {
         if (!m_tree.openElements()->inScope(token->name())) {
             parseError(token);
             return;
@@ -2719,7 +2720,6 @@ void HTMLTreeBuilder::processTokenInForeignContent(AtomicHTMLToken* token)
             || token->name() == dlTag
             || token->name() == dtTag
             || token->name() == emTag
-            || token->name() == embedTag
             || isNumberedHeaderTag(token->name())
             || token->name() == headTag
             || token->name() == hrTag

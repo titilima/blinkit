@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: RangeInputType.cpp
+// Description: RangeInputType Class
+//      Author: Ziming Li
+//     Created: 2019-02-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -54,6 +65,7 @@
 #include "core/html/shadow/SliderThumbElement.h"
 #include "core/inspector/ConsoleMessage.h"
 #include "core/layout/LayoutSlider.h"
+#include "platform/JSONValues.h"
 #include "platform/PlatformMouseEvent.h"
 #include "wtf/MathExtras.h"
 #include "wtf/NonCopyingSort.h"

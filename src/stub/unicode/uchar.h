@@ -22,6 +22,8 @@ typedef wchar_t UChar;
 
 typedef int32_t UChar32;
 
+#define UCHAR_MAX_VALUE 0x10ffff
+
 #define U_IS_BMP(c) ((uint32_t)(c)<=0xffff)
 #define U_MASK(x)   ((uint32_t)1<<(x))
 

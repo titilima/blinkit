@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLMarqueeElement.cpp
+// Description: HTMLMarqueeElement Class
+//      Author: Ziming Li
+//     Created: 2019-02-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -22,8 +33,6 @@
 
 #include "core/html/HTMLMarqueeElement.h"
 
-#include "bindings/core/v8/PrivateScriptRunner.h"
-#include "bindings/core/v8/V8HTMLMarqueeElement.h"
 #include "core/HTMLNames.h"
 #include "core/dom/Document.h"
 #include "core/frame/UseCounter.h"
@@ -34,8 +43,11 @@ inline HTMLMarqueeElement::HTMLMarqueeElement(Document& document)
     : HTMLElement(HTMLNames::marqueeTag, document)
 {
     if (document.contextDocument()) {
+        assert(false); // BKTODO:
+#if 0
         v8::Local<v8::Value> classObject = PrivateScriptRunner::installClassIfNeeded(&document, "HTMLMarqueeElement");
         RELEASE_ASSERT(!classObject.IsEmpty());
+#endif
     }
     UseCounter::count(document, UseCounter::HTMLMarqueeElement);
 }
@@ -43,21 +55,30 @@ inline HTMLMarqueeElement::HTMLMarqueeElement(Document& document)
 PassRefPtrWillBeRawPtr<HTMLMarqueeElement> HTMLMarqueeElement::create(Document& document)
 {
     RefPtrWillBeRawPtr<HTMLMarqueeElement> marqueeElement(adoptRefWillBeNoop(new HTMLMarqueeElement(document)));
+    assert(false); // BKTODO:
+#if 0
     V8HTMLMarqueeElement::PrivateScript::createdCallbackMethod(document.frame(), marqueeElement.get());
+#endif
     return marqueeElement.release();
 }
 
 void HTMLMarqueeElement::attributeChanged(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& newValue, AttributeModificationReason reason)
 {
     HTMLElement::attributeChanged(name, oldValue, newValue, reason);
+    assert(false); // BKTODO:
+#if 0
     V8HTMLMarqueeElement::PrivateScript::attributeChangedCallbackMethod(document().frame(), this, name.toString(), oldValue, newValue);
+#endif
 }
 
 Node::InsertionNotificationRequest HTMLMarqueeElement::insertedInto(ContainerNode* insertionPoint)
 {
     HTMLElement::insertedInto(insertionPoint);
     if (inDocument()) {
+        assert(false); // BKTODO:
+#if 0
         V8HTMLMarqueeElement::PrivateScript::attachedCallbackMethod(document().frame(), this);
+#endif
     }
     return InsertionDone;
 }
@@ -66,7 +87,10 @@ void HTMLMarqueeElement::removedFrom(ContainerNode* insertionPoint)
 {
     HTMLElement::removedFrom(insertionPoint);
     if (insertionPoint->inDocument()) {
+        assert(false); // BKTODO:
+#if 0
         V8HTMLMarqueeElement::PrivateScript::detachedCallbackMethod(insertionPoint->document().frame(), this);
+#endif
     }
 }
 

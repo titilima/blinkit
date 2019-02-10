@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: AtomicString.h
+// Description: AtomicString Class
+//      Author: Ziming Li
+//     Created: 2019-02-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -21,6 +32,7 @@
 #ifndef AtomicString_h
 #define AtomicString_h
 
+#include <string>
 #include "wtf/Allocator.h"
 #include "wtf/HashTableDeletedValueType.h"
 #include "wtf/WTFExport.h"
@@ -154,6 +166,8 @@ public:
     CString ascii() const { return m_string.ascii(); }
     CString latin1() const { return m_string.latin1(); }
     CString utf8(UTF8ConversionMode mode = LenientUTF8Conversion) const { return m_string.utf8(mode); }
+
+    std::string to_string(void) const;
 
 #ifndef NDEBUG
     void show() const;

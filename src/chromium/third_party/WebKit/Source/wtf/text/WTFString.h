@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: String.h
+// Description: String Class
+//      Author: Ziming Li
+//     Created: 2019-02-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012, 2013 Apple Inc. All rights reserved.
@@ -25,6 +36,7 @@
 // This file would be called String.h, but that conflicts with <string.h>
 // on systems without case-sensitive file systems.
 
+#include <string>
 #include "wtf/Allocator.h"
 #include "wtf/HashTableDeletedValueType.h"
 #include "wtf/WTFExport.h"
@@ -185,6 +197,8 @@ public:
     CString ascii() const;
     CString latin1() const;
     CString utf8(UTF8ConversionMode = LenientUTF8Conversion) const;
+
+    std::string to_string(void) const;
 
     UChar operator[](unsigned index) const
     {

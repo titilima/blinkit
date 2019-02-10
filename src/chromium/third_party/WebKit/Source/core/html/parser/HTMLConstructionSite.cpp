@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLConstructionSite.cpp
+// Description: HTMLConstructionSite Class
+//      Author: Ziming Li
+//     Created: 2019-02-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -38,7 +49,6 @@
 #include "core/frame/LocalFrame.h"
 #include "core/html/HTMLFormElement.h"
 #include "core/html/HTMLHtmlElement.h"
-#include "core/html/HTMLPlugInElement.h"
 #include "core/html/HTMLScriptElement.h"
 #include "core/html/HTMLTemplateElement.h"
 #include "core/html/parser/AtomicHTMLToken.h"
@@ -275,7 +285,6 @@ void HTMLConstructionSite::queueTask(const HTMLConstructionSiteTask& task)
 void HTMLConstructionSite::attachLater(ContainerNode* parent, PassRefPtrWillBeRawPtr<Node> prpChild, bool selfClosing)
 {
     ASSERT(scriptingContentIsAllowed(m_parserContentPolicy) || !prpChild.get()->isElementNode() || !toScriptLoaderIfPossible(toElement(prpChild.get())));
-    ASSERT(pluginContentIsAllowed(m_parserContentPolicy) || !isHTMLPlugInElement(prpChild));
 
     HTMLConstructionSiteTask task(HTMLConstructionSiteTask::Insert);
     task.parent = parent;

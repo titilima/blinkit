@@ -566,6 +566,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\ApplicationCacheErrorEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\ApplicationCacheErrorEventInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\AutocompleteErrorEvent.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\AutocompleteErrorEventInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\BeforeTextInsertedEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\BeforeUnloadEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\ClipboardEvent.h" />

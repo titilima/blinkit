@@ -29,9 +29,6 @@
     <ClCompile Include="..\_pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\AutoplayExperimentHelper.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\ClassList.cpp">
       <Filter>html</Filter>
     </ClCompile>
@@ -54,9 +51,6 @@
       <Filter>html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLAreaElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLAudioElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLBaseElement.cpp">
@@ -104,9 +98,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLEmbedElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFieldSetElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
@@ -152,9 +143,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLIFrameElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLIFrameElementSandbox.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
@@ -188,9 +176,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMarqueeElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMediaElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMediaSource.cpp">
       <Filter>html</Filter>
     </ClCompile>
@@ -198,9 +183,6 @@
       <Filter>html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMenuItemElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMetaElement-in.cpp">
       <Filter>html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMeterElement.cpp">
@@ -216,9 +198,6 @@
       <Filter>html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLNoScriptElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLObjectElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOListElement.cpp">
@@ -239,13 +218,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLParagraphElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLParamElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLPictureElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLPlugInElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLPreElement.cpp">
@@ -326,22 +299,13 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTitleElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTrackElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLUListElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLUnknownElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLVideoElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLWBRElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\ImageData.cpp">
       <Filter>html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\LabelableElement.cpp">
@@ -360,9 +324,6 @@
       <Filter>html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\MediaFragmentURIParser.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\MediaKeyEvent.cpp">
       <Filter>html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\PublicURLManager.cpp">
@@ -599,9 +560,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLTreeBuilderSimulator.cpp">
       <Filter>html\parser</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLViewSourceParser.cpp">
-      <Filter>html\parser</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\ParsedChunkQueue.cpp">
       <Filter>html\parser</Filter>
     </ClCompile>
@@ -644,15 +602,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\DetailsMarkerControl.cpp">
       <Filter>html\shadow</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\MediaControlElements.cpp">
-      <Filter>html\shadow</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\MediaControlElementTypes.cpp">
-      <Filter>html\shadow</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\MediaControls.cpp">
-      <Filter>html\shadow</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\MeterShadowElement.cpp">
       <Filter>html\shadow</Filter>
     </ClCompile>
@@ -678,9 +627,6 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\AutoplayExperimentHelper.h">
-      <Filter>html</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\ClassList.h">
       <Filter>html</Filter>
@@ -713,9 +659,6 @@
       <Filter>html</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLAreaElement.h">
-      <Filter>html</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLAudioElement.h">
       <Filter>html</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLBaseElement.h">
@@ -769,9 +712,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLElement.h">
       <Filter>html</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLEmbedElement.h">
-      <Filter>html</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFieldSetElement.h">
       <Filter>html</Filter>
     </ClInclude>
@@ -817,9 +757,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLIFrameElement.h">
       <Filter>html</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLIFrameElementSandbox.h">
-      <Filter>html</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageElement.h">
       <Filter>html</Filter>
     </ClInclude>
@@ -853,9 +790,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMarqueeElement.h">
       <Filter>html</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMediaElement.h">
-      <Filter>html</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMediaSource.h">
       <Filter>html</Filter>
     </ClInclude>
@@ -883,9 +817,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLNoScriptElement.h">
       <Filter>html</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLObjectElement.h">
-      <Filter>html</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOListElement.h">
       <Filter>html</Filter>
     </ClInclude>
@@ -904,13 +835,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLParagraphElement.h">
       <Filter>html</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLParamElement.h">
-      <Filter>html</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLPictureElement.h">
-      <Filter>html</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLPlugInElement.h">
       <Filter>html</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLPreElement.h">
@@ -991,22 +916,13 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTitleElement.h">
       <Filter>html</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTrackElement.h">
-      <Filter>html</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLUListElement.h">
       <Filter>html</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLUnknownElement.h">
       <Filter>html</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLVideoElement.h">
-      <Filter>html</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLWBRElement.h">
-      <Filter>html</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\ImageData.h">
       <Filter>html</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\LabelableElement.h">
@@ -1031,9 +947,6 @@
       <Filter>html</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\MediaKeyError.h">
-      <Filter>html</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\MediaKeyEvent.h">
       <Filter>html</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\PublicURLManager.h">
@@ -1300,9 +1213,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLTreeBuilderSimulator.h">
       <Filter>html\parser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLViewSourceParser.h">
-      <Filter>html\parser</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\InputStreamPreprocessor.h">
       <Filter>html\parser</Filter>
     </ClInclude>
@@ -1352,15 +1262,6 @@
       <Filter>html\shadow</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\DetailsMarkerControl.h">
-      <Filter>html\shadow</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\MediaControlElements.h">
-      <Filter>html\shadow</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\MediaControlElementTypes.h">
-      <Filter>html\shadow</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\MediaControls.h">
       <Filter>html\shadow</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\MeterShadowElement.h">

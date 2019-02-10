@@ -23,6 +23,8 @@ class DukContext;
 
 namespace blink {
 
+class HTMLDocument;
+class KURL;
 class LocalFrame;
 class ScriptSourceCode;
 class SecurityOrigin;
@@ -39,12 +41,19 @@ public:
 
     void executeScriptInMainWorld(const ScriptSourceCode &, AccessControlStatus = NotSharableCrossOrigin, double *compilationFinishTime = nullptr);
 
+    bool executeScriptIfJavaScriptURL(const KURL &);
+
     bool shouldBypassMainWorldCSP(void) { return true; }
 
     void enableEval(void);
     void disableEval(const String &errorMessage);
 
+    static bool canAccessFromCurrentOrigin(LocalFrame *frame) { return nullptr != false; }
+
     bool canExecuteScripts(ReasonForCallingCanExecuteScripts);
+
+    void namedItemAdded(HTMLDocument *, const AtomicString &);
+    void namedItemRemoved(HTMLDocument *, const AtomicString &);
 
     void updateSecurityOrigin(SecurityOrigin *);
 private:
