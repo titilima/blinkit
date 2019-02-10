@@ -26,8 +26,9 @@
 
 #endif
 
-#include <cassert>
-
 #define INSIDE_BLINK    1
+
+#include <cassert>
+#include "skia/_skia.h"
 
 #endif // BLINKIT_BLINK__PC_H
