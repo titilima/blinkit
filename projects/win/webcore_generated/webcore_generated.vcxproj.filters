@@ -89,6 +89,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\StylePropertyShorthand.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\StyleBuilder.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\StyleBuilderFunctions.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -167,6 +173,9 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\StylePropertyShorthand.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\StyleBuilderFunctions.h">
       <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
