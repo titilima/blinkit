@@ -179,3 +179,8 @@ run_script('build/scripts/make_names.py',  \
     os.path.normpath('core/css/MediaTypeNames.in') + ' '    \
     '--output_dir ' + os.path.normpath('gen/core')  \
 )
+
+run_script('build/scripts/make_style_shorthands.py',    \
+    os.path.normpath('core/css/CSSProperties.in') + ' ' \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)
