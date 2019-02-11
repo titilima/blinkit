@@ -969,6 +969,12 @@ void Element::scrollFrameTo(const ScrollToOptions& scrollToOptions)
     viewport->setScrollPosition(DoublePoint(scaledLeft, scaledTop), ProgrammaticScroll, scrollBehavior);
 }
 
+uint32_t Element::compositorMutableProperties() const
+{
+    assert(false); // BKTODO: Is it not reached!
+    return 0;
+}
+
 bool Element::hasNonEmptyLayoutSize() const
 {
     document().updateLayoutIgnorePendingStylesheets();

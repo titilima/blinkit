@@ -118,6 +118,8 @@ bool hasLineBreakingPropertyComplexContext(UChar32 c);
 
 bool isPrintableChar(UChar32 c);
 
+UChar32 toTitleCase(UChar32 c);
+
 int umemcasecmp(const UChar *a, const UChar *b, int len);
 
 } // namespace Unicode

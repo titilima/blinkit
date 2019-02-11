@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutRubyRun.cpp
+// Description: LayoutRubyRun Class
+//      Author: Ziming Li
+//     Created: 2019-02-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -313,6 +324,8 @@ bool LayoutRubyRun::canBreakBefore(const LazyLineBreakIterator& iterator) const
 
     if (!iterator.priorContextLength())
         return true;
+    assert(false); // BKTODO:
+#if 0
     UChar ch = iterator.lastCharacter();
     ULineBreak lineBreak = static_cast<ULineBreak>(u_getIntPropertyValue(ch, UCHAR_LINE_BREAK));
     // UNICODE LINE BREAKING ALGORITHM
@@ -327,6 +340,7 @@ bool LayoutRubyRun::canBreakBefore(const LazyLineBreakIterator& iterator) const
     default:
         break;
     }
+#endif
     return true;
 }
 

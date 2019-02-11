@@ -544,6 +544,8 @@ public:
     void setTabIndex(int);
     short tabIndex() const override;
 
+    uint32_t compositorMutableProperties() const;
+
     // Helpers for V8DOMActivityLogger::logEvent.  They call logEvent only if
     // the element is inDocument() and the context is an isolated world.
     void logAddElementIfIsolatedWorldAndInDocument(const char element[], const QualifiedName& attr1);

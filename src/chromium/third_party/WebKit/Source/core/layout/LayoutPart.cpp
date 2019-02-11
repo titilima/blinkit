@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutPart.cpp
+// Description: LayoutPart Class
+//      Author: Ziming Li
+//     Created: 2019-02-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Simon Hausmann <hausmann@kde.org>
@@ -35,7 +46,6 @@
 #include "core/paint/BoxPainter.h"
 #include "core/paint/PaintLayer.h"
 #include "core/paint/PartPainter.h"
-#include "core/plugins/PluginView.h"
 
 namespace blink {
 
@@ -114,13 +124,6 @@ PaintLayerType LayoutPart::layerTypeRequired() const
 
 bool LayoutPart::requiresAcceleratedCompositing() const
 {
-    // There are two general cases in which we can return true. First, if this is a plugin
-    // LayoutObject and the plugin has a layer, then we need a layer. Second, if this is
-    // a LayoutObject with a contentDocument and that document needs a layer, then we need
-    // a layer.
-    if (widget() && widget()->isPluginView() && toPluginView(widget())->platformLayer())
-        return true;
-
     if (!node() || !node()->isFrameOwnerElement())
         return false;
 

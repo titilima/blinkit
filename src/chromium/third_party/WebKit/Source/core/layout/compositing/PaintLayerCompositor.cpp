@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PaintLayerCompositor.cpp
+// Description: PaintLayerCompositor Class
+//      Author: Ziming Li
+//     Created: 2019-02-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -28,17 +39,14 @@
 #include "core/animation/AnimationTimeline.h"
 #include "core/animation/DocumentAnimations.h"
 #include "core/dom/DOMNodeIds.h"
-#include "core/dom/Fullscreen.h"
 #include "core/editing/FrameSelection.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
 #include "core/html/HTMLIFrameElement.h"
-#include "core/html/HTMLVideoElement.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/layout/LayoutPart.h"
-#include "core/layout/LayoutVideo.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/compositing/CompositedLayerMapping.h"
 #include "core/layout/compositing/CompositingInputsUpdater.h"
@@ -155,27 +163,6 @@ bool PaintLayerCompositor::preferCompositingToLCDTextEnabled() const
     return m_compositingReasonFinder.hasOverflowScrollTrigger();
 }
 
-static LayoutVideo* findFullscreenVideoLayoutObject(Document& document)
-{
-    // Recursively find the document that is in fullscreen.
-    Element* fullscreenElement = Fullscreen::fullscreenElementFrom(document);
-    Document* contentDocument = &document;
-    while (fullscreenElement && fullscreenElement->isFrameOwnerElement()) {
-        contentDocument = toHTMLFrameOwnerElement(fullscreenElement)->contentDocument();
-        if (!contentDocument)
-            return nullptr;
-        fullscreenElement = Fullscreen::fullscreenElementFrom(*contentDocument);
-    }
-    // Get the current fullscreen element from the document.
-    fullscreenElement = Fullscreen::currentFullScreenElementFrom(*contentDocument);
-    if (!isHTMLVideoElement(fullscreenElement))
-        return nullptr;
-    LayoutObject* layoutObject = fullscreenElement->layoutObject();
-    if (!layoutObject)
-        return nullptr;
-    return toLayoutVideo(layoutObject);
-}
-
 // The descendant-dependent flags system is badly broken because we clean dirty
 // bits in upward tree walks, which means we need to call updateDescendantDependentFlags
 // at every node in the tree to fully clean all the dirty bits. While we'll in
@@ -290,31 +277,11 @@ void PaintLayerCompositor::applyOverlayFullscreenVideoAdjustmentIfNeeded()
         return;
 
     bool isLocalRoot = m_layoutView.frame()->isLocalRoot();
-    LayoutVideo* video = findFullscreenVideoLayoutObject(m_layoutView.document());
-    if (!video || !video->layer()->hasCompositedLayerMapping() || !video->videoElement()->usesOverlayFullscreenVideo()) {
-        if (isLocalRoot) {
-            GraphicsLayer* backgroundLayer = fixedRootBackgroundLayer();
-            if (backgroundLayer && !backgroundLayer->parent())
-                rootFixedBackgroundsChanged();
-        }
-        return;
+    if (isLocalRoot) {
+        GraphicsLayer* backgroundLayer = fixedRootBackgroundLayer();
+        if (backgroundLayer && !backgroundLayer->parent())
+            rootFixedBackgroundsChanged();
     }
-
-    GraphicsLayer* videoLayer = video->layer()->compositedLayerMapping()->mainGraphicsLayer();
-
-    // The fullscreen video has layer position equal to its enclosing frame's scroll position because fullscreen container is fixed-positioned.
-    // We should reset layer position here since we are going to reattach the layer at the very top level.
-    videoLayer->setPosition(IntPoint());
-
-    // Only steal fullscreen video layer and clear all other layers if we are the main frame.
-    if (!isLocalRoot)
-        return;
-
-    m_rootContentLayer->removeAllChildren();
-    m_overflowControlsHostLayer->addChild(videoLayer);
-    if (GraphicsLayer* backgroundLayer = fixedRootBackgroundLayer())
-        backgroundLayer->removeFromParent();
-    m_inOverlayFullscreenVideo = true;
 }
 
 void PaintLayerCompositor::updateWithoutAcceleratedCompositing(CompositingUpdateType updateType)
@@ -397,10 +364,6 @@ void PaintLayerCompositor::updateIfNeeded()
             if (Element* scrollingElement = m_layoutView.document().scrollingElement()) {
                 uint64_t elementId = 0;
                 uint32_t mutableProperties = WebCompositorMutablePropertyNone;
-                if (scrollingElement->hasCompositorProxy()) {
-                    elementId = DOMNodeIds::idForNode(scrollingElement);
-                    mutableProperties = (WebCompositorMutablePropertyScrollLeft | WebCompositorMutablePropertyScrollTop) & scrollingElement->compositorMutableProperties();
-                }
                 m_scrollLayer->setElementId(elementId);
                 m_scrollLayer->setCompositorMutableProperties(mutableProperties);
             }

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CompositedLayerMapping.cpp
+// Description: CompositedLayerMapping Class
+//      Author: Ziming Li
+//     Created: 2019-02-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2010, 2011 Apple Inc. All rights reserved.
  *
@@ -32,17 +43,10 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/RemoteFrame.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLCanvasElement.h"
 #include "core/html/HTMLIFrameElement.h"
-#include "core/html/HTMLMediaElement.h"
-#include "core/html/HTMLVideoElement.h"
-#include "core/html/canvas/CanvasRenderingContext.h"
 #include "core/inspector/InspectorInstrumentation.h"
-#include "core/layout/LayoutEmbeddedObject.h"
-#include "core/layout/LayoutHTMLCanvas.h"
 #include "core/layout/LayoutImage.h"
 #include "core/layout/LayoutPart.h"
-#include "core/layout/LayoutVideo.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/compositing/PaintLayerCompositor.h"
 #include "core/page/ChromeClient.h"
@@ -54,7 +58,6 @@
 #include "core/paint/PaintTiming.h"
 #include "core/paint/ScrollableAreaPainter.h"
 #include "core/paint/TransformRecorder.h"
-#include "core/plugins/PluginView.h"
 #include "platform/LengthFunctions.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/fonts/FontCache.h"
@@ -79,10 +82,6 @@ static IntRect contentsRect(const LayoutObject* layoutObject)
 {
     if (!layoutObject->isBox())
         return IntRect();
-    if (layoutObject->isCanvas())
-        return pixelSnappedIntRect(toLayoutHTMLCanvas(layoutObject)->replacedContentRect());
-    if (layoutObject->isVideo())
-        return toLayoutVideo(layoutObject)->videoBox();
 
     return pixelSnappedIntRect(toLayoutBox(layoutObject)->contentBoxRect());
 }
@@ -114,11 +113,6 @@ static IntRect backgroundRect(const LayoutObject* layoutObject)
 
 static inline bool isAcceleratedCanvas(const LayoutObject* layoutObject)
 {
-    if (layoutObject->isCanvas()) {
-        HTMLCanvasElement* canvas = toHTMLCanvasElement(layoutObject->node());
-        if (CanvasRenderingContext* context = canvas->renderingContext())
-            return context->isAccelerated();
-    }
     return false;
 }
 
@@ -144,20 +138,12 @@ static bool contentLayerSupportsDirectBackgroundComposition(const LayoutObject* 
 
 static WebLayer* platformLayerForPlugin(LayoutObject* layoutObject)
 {
-    if (!layoutObject->isEmbeddedObject())
-        return nullptr;
-    Widget* widget = toLayoutEmbeddedObject(layoutObject)->widget();
-    if (!widget || !widget->isPluginView())
-        return nullptr;
-    return toPluginView(widget)->platformLayer();
-
+    return nullptr;
 }
 
 static inline bool isAcceleratedContents(LayoutObject* layoutObject)
 {
-    return isAcceleratedCanvas(layoutObject)
-        || (layoutObject->isEmbeddedObject() && toLayoutEmbeddedObject(layoutObject)->requiresAcceleratedCompositing())
-        || layoutObject->isVideo();
+    return false;
 }
 
 // Get the scrolling coordinator in a way that works inside CompositedLayerMapping's destructor.
@@ -304,16 +290,7 @@ void CompositedLayerMapping::updateIsRootForIsolatedGroup()
 void CompositedLayerMapping::updateContentsOpaque()
 {
     ASSERT(m_isMainFrameLayoutViewLayer || !m_backgroundLayer);
-    if (isAcceleratedCanvas(layoutObject())) {
-        // Determine whether the rendering context's external texture layer is opaque.
-        CanvasRenderingContext* context = toHTMLCanvasElement(layoutObject()->node())->renderingContext();
-        if (!context->hasAlpha())
-            m_graphicsLayer->setContentsOpaque(true);
-        else if (WebLayer* layer = context->platformLayer())
-            m_graphicsLayer->setContentsOpaque(!Color(layer->backgroundColor()).hasAlpha());
-        else
-            m_graphicsLayer->setContentsOpaque(false);
-    } else if (m_backgroundLayer) {
+    if (m_backgroundLayer) {
         m_graphicsLayer->setContentsOpaque(false);
         m_backgroundLayer->setContentsOpaque(m_owningLayer.backgroundIsKnownToBeOpaqueInRect(compositedBounds()));
     } else {
@@ -539,14 +516,6 @@ bool CompositedLayerMapping::updateGraphicsLayerConfiguration()
             WebLayer* layer = toRemoteFrame(frame)->remotePlatformLayer();
             m_graphicsLayer->setContentsToPlatformLayer(layer);
         }
-    } else if (layoutObject->isVideo()) {
-        HTMLMediaElement* mediaElement = toHTMLMediaElement(layoutObject->node());
-        m_graphicsLayer->setContentsToPlatformLayer(mediaElement->platformLayer());
-    } else if (isAcceleratedCanvas(layoutObject)) {
-        HTMLCanvasElement* canvas = toHTMLCanvasElement(layoutObject->node());
-        if (CanvasRenderingContext* context = canvas->renderingContext())
-            m_graphicsLayer->setContentsToPlatformLayer(context->platformLayer());
-        layerConfigChanged = true;
     }
     if (layoutObject->isLayoutPart()) {
         if (PaintLayerCompositor::attachFrameContentLayersToIframeLayer(toLayoutPart(layoutObject)))
@@ -773,11 +742,6 @@ void CompositedLayerMapping::updateMainGraphicsLayerGeometry(const IntRect& rela
     // descendants. So, the visibility flag for m_graphicsLayer should be true if there are any
     // non-compositing visible layers.
     bool contentsVisible = m_owningLayer.hasVisibleContent() || hasVisibleNonCompositingDescendant(&m_owningLayer);
-    if (layoutObject()->isVideo()) {
-        HTMLVideoElement* videoElement = toHTMLVideoElement(layoutObject()->node());
-        if (videoElement->isFullscreen() && videoElement->usesOverlayFullscreenVideo())
-            contentsVisible = false;
-    }
     m_graphicsLayer->setContentsVisible(contentsVisible);
 
     m_graphicsLayer->setBackfaceVisibility(layoutObject()->style()->backfaceVisibility() == BackfaceVisibilityVisible);
@@ -1238,19 +1202,6 @@ void CompositedLayerMapping::updateDrawsContent()
         m_scrollingContentsAreEmpty = !m_owningLayer.hasVisibleContent() || !(layoutObject()->hasBackground() || paintsChildren());
         m_scrollingContentsLayer->setDrawsContent(!m_scrollingContentsAreEmpty);
         updateScrollingBlockSelection();
-    }
-
-    if (hasPaintedContent && isAcceleratedCanvas(layoutObject())) {
-        CanvasRenderingContext* context = toHTMLCanvasElement(layoutObject()->node())->renderingContext();
-        // Content layer may be null if context is lost.
-        if (WebLayer* contentLayer = context->platformLayer()) {
-            Color bgColor(Color::transparent);
-            if (contentLayerSupportsDirectBackgroundComposition(layoutObject())) {
-                bgColor = layoutObjectBackgroundColor();
-                hasPaintedContent = false;
-            }
-            contentLayer->setBackgroundColor(bgColor.rgb());
-        }
     }
 
     // FIXME: we could refine this to only allocate backings for one of these layers if possible.
@@ -1829,7 +1780,7 @@ bool CompositedLayerMapping::paintsChildren() const
 
 static bool isCompositedPlugin(LayoutObject* layoutObject)
 {
-    return layoutObject->isEmbeddedObject() && toLayoutEmbeddedObject(layoutObject)->requiresAcceleratedCompositing();
+    return false;
 }
 
 bool CompositedLayerMapping::hasVisibleNonCompositingDescendant(PaintLayer* parent)
@@ -1865,10 +1816,6 @@ bool CompositedLayerMapping::containsPaintedContent() const
         return false;
 
     LayoutObject* layoutObject = this->layoutObject();
-    // FIXME: we could optimize cases where the image, video or canvas is known to fill the border box entirely,
-    // and set background color on the layer in that case, instead of allocating backing store and painting.
-    if (layoutObject->isVideo() && toLayoutVideo(layoutObject)->shouldDisplayVideo())
-        return m_owningLayer.hasBoxDecorationsOrBackground();
 
     if (m_owningLayer.hasVisibleBoxDecorations())
         return true;

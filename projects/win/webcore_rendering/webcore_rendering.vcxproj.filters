@@ -101,9 +101,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutDetailsMarker.cpp">
       <Filter>layout</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutEmbeddedObject.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFieldset.cpp">
       <Filter>layout</Filter>
     </ClCompile>
@@ -122,16 +119,10 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFrameSet.cpp">
       <Filter>layout</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFullScreen.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutGeometryMap.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutGrid.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutHTMLCanvas.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutIFrame.cpp">
@@ -156,9 +147,6 @@
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutListMarker.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutMedia.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutMenuList.cpp">
@@ -254,9 +242,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTableSection.cpp">
       <Filter>layout</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTestHelper.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutText.cpp">
       <Filter>layout</Filter>
     </ClCompile>
@@ -275,13 +260,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTextFragment.cpp">
       <Filter>layout</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTextTrackContainer.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTheme.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutThemeAndroid.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutThemeDefault.cpp">
@@ -290,13 +269,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutThemeFontProvider.cpp">
       <Filter>layout</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutThemeFontProviderLinux.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutThemeFontProviderWin.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutThemeLinux.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutThemeWin.cpp">
@@ -305,13 +278,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTreeAsText.cpp">
       <Filter>layout</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutVideo.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutView.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutVTTCue.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutWordBreak.cpp">
@@ -670,9 +637,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutDetailsMarker.h">
       <Filter>layout</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutEmbeddedObject.h">
-      <Filter>layout</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFieldset.h">
       <Filter>layout</Filter>
     </ClInclude>
@@ -691,9 +655,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFrameSet.h">
       <Filter>layout</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFullScreen.h">
-      <Filter>layout</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutGeometryMap.h">
       <Filter>layout</Filter>
     </ClInclude>
@@ -701,9 +662,6 @@
       <Filter>layout</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutGrid.h">
-      <Filter>layout</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutHTMLCanvas.h">
       <Filter>layout</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutIFrame.h">
@@ -728,9 +686,6 @@
       <Filter>layout</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutListMarker.h">
-      <Filter>layout</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutMedia.h">
       <Filter>layout</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutMenuList.h">
@@ -829,9 +784,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTableSection.h">
       <Filter>layout</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTestHelper.h">
-      <Filter>layout</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutText.h">
       <Filter>layout</Filter>
     </ClInclude>
@@ -850,13 +802,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTextFragment.h">
       <Filter>layout</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTextTrackContainer.h">
-      <Filter>layout</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTheme.h">
-      <Filter>layout</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutThemeAndroid.h">
       <Filter>layout</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutThemeDefault.h">
@@ -877,13 +823,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTreeAsText.h">
       <Filter>layout</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutVideo.h">
-      <Filter>layout</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutView.h">
-      <Filter>layout</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutVTTCue.h">
       <Filter>layout</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutWordBreak.h">

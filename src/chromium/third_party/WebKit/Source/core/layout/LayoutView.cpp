@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutView.cpp
+// Description: LayoutView Class
+//      Author: Ziming Li
+//     Created: 2019-02-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
@@ -28,12 +39,10 @@
 #include "core/frame/Settings.h"
 #include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/HTMLIFrameElement.h"
-#include "core/html/HTMLVideoElement.h"
 #include "core/inspector/InspectorTraceEvents.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutFlowThread.h"
 #include "core/layout/LayoutGeometryMap.h"
-#include "core/layout/LayoutMedia.h"
 #include "core/layout/LayoutPart.h"
 #include "core/layout/LayoutQuote.h"
 #include "core/layout/LayoutScrollbarPart.h"
@@ -982,26 +991,6 @@ void LayoutView::willBeDestroyed()
         layer->setNeedsRepaint();
     LayoutBlockFlow::willBeDestroyed();
     m_compositor.clear();
-}
-
-void LayoutView::registerMediaForPositionChangeNotification(LayoutMedia& media)
-{
-    if (!m_mediaForPositionNotification.contains(&media))
-        m_mediaForPositionNotification.append(&media);
-}
-
-void LayoutView::unregisterMediaForPositionChangeNotification(LayoutMedia& media)
-{
-    size_t at = m_mediaForPositionNotification.find(&media);
-    if (at != kNotFound)
-        m_mediaForPositionNotification.remove(at);
-}
-
-void LayoutView::sendMediaPositionChangeNotifications(const IntRect& visibleRect)
-{
-    for (auto& media : m_mediaForPositionNotification) {
-        media->notifyPositionMayHaveChanged(visibleRect);
-    }
 }
 
 } // namespace blink

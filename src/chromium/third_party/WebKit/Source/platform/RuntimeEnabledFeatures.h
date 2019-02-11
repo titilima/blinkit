@@ -31,14 +31,19 @@
 class RuntimeEnabledFeatures final {
     STATIC_ONLY(RuntimeEnabledFeatures);
 public:
+    BLINK_DEFINE_STABLE_FEATURE(cssCompositing)
+    BLINK_DEFINE_STABLE_FEATURE(cssVariables)
     BLINK_DEFINE_STABLE_FEATURE(eventListenerOptions)
     BLINK_DEFINE_STABLE_FEATURE(linkPreconnect)
     BLINK_DEFINE_STABLE_FEATURE(pathOpsSVGClipping)
+    BLINK_DEFINE_STABLE_FEATURE(selectionPaintingWithoutSelectionGaps)
     BLINK_DEFINE_STABLE_FEATURE(smil)
 
     BLINKIT_DISABLE_FEATURE(media)
     BLINKIT_DISABLE_FEATURE(xslt)
 
+    BLINK_DEFINE_EXPERIMENTAL_FEATURE(columnFill)
+    BLINK_DEFINE_EXPERIMENTAL_FEATURE(compositorWorker)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(contextMenu)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(fractionalScrollOffsets)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(linkPreload)
@@ -49,8 +54,10 @@ public:
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(webAnimationsSVG)
 
     BLINKIT_DISABLE_FEATURE(authorShadowDOMForAnyElement)
+    BLINKIT_DISABLE_FEATURE(fastMobileScrolling)
     BLINKIT_DISABLE_FEATURE(langAttributeAwareFormControlUI)
     BLINKIT_DISABLE_FEATURE(mediaCapture)
+    BLINKIT_DISABLE_FEATURE(newMediaPlaybackUi)
     BLINKIT_DISABLE_FEATURE(orientationEvent)
     BLINKIT_DISABLE_FEATURE(pointerEvent)
     BLINKIT_DISABLE_FEATURE(scrollCustomization)

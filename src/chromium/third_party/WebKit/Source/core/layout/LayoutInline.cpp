@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutInline.cpp
+// Description: LayoutInline Class
+//      Author: Ziming Li
+//     Created: 2019-02-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -22,12 +33,10 @@
 
 #include "core/layout/LayoutInline.h"
 
-#include "core/dom/Fullscreen.h"
 #include "core/dom/StyleEngine.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutBlock.h"
 #include "core/layout/LayoutFlowThread.h"
-#include "core/layout/LayoutFullScreen.h"
 #include "core/layout/LayoutGeometryMap.h"
 #include "core/layout/LayoutTheme.h"
 #include "core/layout/LayoutView.h"
@@ -354,17 +363,6 @@ void LayoutInline::splitInlines(LayoutBlock* fromBlock, LayoutBlock* toBlock,
     LayoutBlock* middleBlock, LayoutObject* beforeChild, LayoutBoxModelObject* oldCont)
 {
     ASSERT(isDescendantOf(fromBlock));
-
-    // If we're splitting the inline containing the fullscreened element,
-    // |beforeChild| may be the layoutObject for the fullscreened element. However,
-    // that layoutObject is wrapped in a LayoutFullScreen, so |this| is not its
-    // parent. Since the splitting logic expects |this| to be the parent, set
-    // |beforeChild| to be the LayoutFullScreen.
-    if (Fullscreen* fullscreen = Fullscreen::fromIfExists(document())) {
-        const Element* fullScreenElement = fullscreen->webkitCurrentFullScreenElement();
-        if (fullScreenElement && beforeChild && beforeChild->node() == fullScreenElement)
-            beforeChild = fullscreen->fullScreenLayoutObject();
-    }
 
     // FIXME: Because splitting is O(n^2) as tags nest pathologically, we cap the depth at which we're willing to clone.
     // There will eventually be a better approach to this problem that will let us nest to a much

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HitTestResult.cpp
+// Description: HitTestResult Class
+//      Author: Ziming Li
+//     Created: 2019-02-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2008, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies)
@@ -35,7 +46,6 @@
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLInputElement.h"
 #include "core/html/HTMLMapElement.h"
-#include "core/html/HTMLMediaElement.h"
 #include "core/html/HTMLTextAreaElement.h"
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/layout/LayoutImage.h"
@@ -343,9 +353,7 @@ KURL HitTestResult::absoluteImageURL() const
         || (isHTMLInputElement(*innerNodeOrImageMapImage) && toHTMLInputElement(innerNodeOrImageMapImage)->isImage()))
         urlString = toElement(*innerNodeOrImageMapImage).imageSourceURL();
     else if ((innerNodeOrImageMapImage->layoutObject() && innerNodeOrImageMapImage->layoutObject()->isImage())
-        && (isHTMLEmbedElement(*innerNodeOrImageMapImage)
-        || isHTMLObjectElement(*innerNodeOrImageMapImage)
-        || isSVGImageElement(*innerNodeOrImageMapImage)))
+        && isSVGImageElement(*innerNodeOrImageMapImage))
         urlString = toElement(*innerNodeOrImageMapImage).imageSourceURL();
     if (urlString.isEmpty())
         return KURL();
@@ -355,8 +363,6 @@ KURL HitTestResult::absoluteImageURL() const
 
 KURL HitTestResult::absoluteMediaURL() const
 {
-    if (HTMLMediaElement* mediaElt = mediaElement())
-        return mediaElt->currentSrc();
     return KURL();
 }
 
@@ -368,8 +374,6 @@ HTMLMediaElement* HitTestResult::mediaElement() const
     if (!(m_innerNode->layoutObject() && m_innerNode->layoutObject()->isMedia()))
         return nullptr;
 
-    if (isHTMLMediaElement(*m_innerNode))
-        return toHTMLMediaElement(m_innerNode);
     return nullptr;
 }
 
