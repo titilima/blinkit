@@ -969,6 +969,11 @@ void Element::scrollFrameTo(const ScrollToOptions& scrollToOptions)
     viewport->setScrollPosition(DoublePoint(scaledLeft, scaledTop), ProgrammaticScroll, scrollBehavior);
 }
 
+bool Element::hasCompositorProxy() const
+{
+    return hasRareData() && elementRareData()->proxiedPropertyCounts();
+}
+
 uint32_t Element::compositorMutableProperties() const
 {
     assert(false); // BKTODO: Is it not reached!

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Editor.cpp
+// Description: Editor Class
+//      Author: Ziming Li
+//     Created: 2019-02-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2008 Nokia Corporation and/or its subsidiary(-ies)
@@ -68,7 +79,6 @@
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
 #include "core/frame/UseCounter.h"
-#include "core/html/HTMLCanvasElement.h"
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLInputElement.h"
 #include "core/html/HTMLTextAreaElement.h"
@@ -423,9 +433,6 @@ static PassRefPtr<Image> imageFromNode(const Node& node)
     if (!layoutObject)
         return nullptr;
 
-    if (layoutObject->isCanvas())
-        return toHTMLCanvasElement(node).copiedImage(FrontBuffer, PreferNoAcceleration);
-
     if (layoutObject->isImage()) {
         LayoutImage* layoutImage = toLayoutImage(layoutObject);
         if (!layoutImage)
@@ -455,8 +462,6 @@ static void writeImageNodeToPasteboard(Pasteboard* pasteboard, Node* node, const
         urlString = toHTMLElement(node)->getAttribute(srcAttr);
     else if (isSVGImageElement(*node))
         urlString = toSVGElement(node)->getAttribute(XLinkNames::hrefAttr);
-    else if (isHTMLEmbedElement(*node) || isHTMLObjectElement(*node) || isHTMLCanvasElement(*node))
-        urlString = toHTMLElement(node)->imageSourceURL();
     KURL url = urlString.isEmpty() ? KURL() : node->document().completeURL(stripLeadingAndTrailingHTMLSpaces(urlString));
 
     pasteboard->writeImage(image.get(), url, title);

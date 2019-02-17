@@ -1429,5 +1429,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\AutocompleteErrorEventInit.h">
       <Filter>events</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\SecurityPolicyViolationEventInit.h">
+      <Filter>events</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

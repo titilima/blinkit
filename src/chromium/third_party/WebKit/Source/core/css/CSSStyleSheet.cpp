@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CSSStyleSheet.cpp
+// Description: CSSStyleSheet Class
+//      Author: Ziming Li
+//     Created: 2019-02-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2007, 2012 Apple Inc. All rights reserved.
@@ -21,8 +32,6 @@
 #include "core/css/CSSStyleSheet.h"
 
 #include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/V8Binding.h"
-#include "bindings/core/v8/V8PerIsolateData.h"
 #include "core/HTMLNames.h"
 #include "core/SVGNames.h"
 #include "core/css/CSSImportRule.h"
@@ -313,7 +322,6 @@ unsigned CSSStyleSheet::insertRule(const String& ruleString, unsigned index, Exc
 
 unsigned CSSStyleSheet::insertRule(const String& rule, ExceptionState& exceptionState)
 {
-    UseCounter::countDeprecation(currentExecutionContext(V8PerIsolateData::mainThreadIsolate()), UseCounter::CSSStyleSheetInsertRuleOptionalArg);
     return insertRule(rule, 0, exceptionState);
 }
 

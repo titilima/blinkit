@@ -544,6 +544,12 @@ public:
     void setTabIndex(int);
     short tabIndex() const override;
 
+    // A compositor proxy is a very limited wrapper around an element. It
+    // exposes only those properties that are requested at the time the proxy is
+    // created. In order to know which properties are actually proxied, we
+    // maintain a count of the number of compositor proxies associated with each
+    // property.
+    bool hasCompositorProxy() const;
     uint32_t compositorMutableProperties() const;
 
     // Helpers for V8DOMActivityLogger::logEvent.  They call logEvent only if

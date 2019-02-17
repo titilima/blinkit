@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FontFace.h
+// Description: FontFace Class
+//      Author: Ziming Li
+//     Created: 2019-02-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,8 +42,6 @@
 #ifndef FontFace_h
 #define FontFace_h
 
-#include "bindings/core/v8/ScriptPromise.h"
-#include "bindings/core/v8/ScriptPromiseProperty.h"
 #include "bindings/core/v8/ScriptWrappable.h"
 #include "core/CSSPropertyNames.h"
 #include "core/css/CSSValue.h"
@@ -85,9 +94,6 @@ public:
     void setFeatureSettings(ExecutionContext*, const String&, ExceptionState&);
 
     String status() const;
-    ScriptPromise loaded(ScriptState* scriptState) { return fontStatusPromise(scriptState); }
-
-    ScriptPromise load(ScriptState*);
 
     LoadStatus loadStatus() const { return m_status; }
     void setLoadStatus(LoadStatus);
@@ -113,8 +119,6 @@ public:
     bool hasPendingActivity() const override;
 
 private:
-    static PassRefPtrWillBeRawPtr<FontFace> create(ExecutionContext*, const AtomicString& family, PassRefPtr<DOMArrayBuffer> source, const FontFaceDescriptors&);
-    static PassRefPtrWillBeRawPtr<FontFace> create(ExecutionContext*, const AtomicString& family, PassRefPtr<DOMArrayBufferView>, const FontFaceDescriptors&);
     static PassRefPtrWillBeRawPtr<FontFace> create(ExecutionContext*, const AtomicString& family, const String& source, const FontFaceDescriptors&);
 
     explicit FontFace(ExecutionContext*);
@@ -127,9 +131,6 @@ private:
     bool setPropertyValue(PassRefPtrWillBeRawPtr<CSSValue>, CSSPropertyID);
     bool setFamilyValue(const CSSValue&);
     void loadInternal(ExecutionContext*);
-    ScriptPromise fontStatusPromise(ScriptState*);
-
-    using LoadedProperty = ScriptPromiseProperty<RawPtrWillBeMember<FontFace>, RawPtrWillBeMember<FontFace>, Member<DOMException>>;
 
     AtomicString m_family;
     String m_otsParseMessage;
@@ -143,7 +144,6 @@ private:
     LoadStatus m_status;
     PersistentWillBeMember<DOMException> m_error;
 
-    PersistentWillBeMember<LoadedProperty> m_loadedProperty;
     OwnPtrWillBeMember<CSSFontFace> m_cssFontFace;
     WillBeHeapVector<RefPtrWillBeMember<LoadFontCallback>> m_callbacks;
 };

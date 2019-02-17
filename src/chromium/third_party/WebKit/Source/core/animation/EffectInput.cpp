@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: EffectInput.cpp
+// Description: EffectInput Class
+//      Author: Ziming Li
+//     Created: 2019-02-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -30,8 +41,6 @@
 
 #include "core/animation/EffectInput.h"
 
-#include "bindings/core/v8/Dictionary.h"
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/animation/AnimationInputHelpers.h"
 #include "core/animation/KeyframeEffectModel.h"
 #include "core/animation/StringKeyframe.h"

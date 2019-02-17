@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: File.cpp
+// Description: File Class
+//      Author: Ziming Li
+//     Created: 2019-02-15
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  *
@@ -27,7 +38,6 @@
 
 #include "bindings/core/v8/ExceptionState.h"
 #include "core/dom/ExceptionCode.h"
-#include "core/fileapi/FilePropertyBag.h"
 #include "platform/FileMetadata.h"
 #include "platform/MIMETypeRegistry.h"
 #include "platform/blob/BlobData.h"
@@ -85,31 +95,6 @@ static PassOwnPtr<BlobData> createBlobDataForFileSystemURL(const KURL& fileSyste
     blobData->setContentType(getContentTypeFromFileName(fileSystemURL.path(), File::WellKnownContentTypes));
     blobData->appendFileSystemURL(fileSystemURL, 0, metadata.length, metadata.modificationTime / msPerSecond);
     return blobData.release();
-}
-
-// static
-File* File::create(const HeapVector<BlobOrStringOrArrayBufferViewOrArrayBuffer>& fileBits, const String& fileName, const FilePropertyBag& options, ExceptionState& exceptionState)
-{
-    ASSERT(options.hasType());
-    if (!options.type().containsOnlyASCII()) {
-        exceptionState.throwDOMException(SyntaxError, "The 'type' property must consist of ASCII characters.");
-        return nullptr;
-    }
-
-    double lastModified;
-    if (options.hasLastModified())
-        lastModified = static_cast<double>(options.lastModified());
-    else
-        lastModified = currentTimeMS();
-    ASSERT(options.hasEndings());
-    bool normalizeLineEndingsToNative = options.endings() == "native";
-
-    OwnPtr<BlobData> blobData = BlobData::create();
-    blobData->setContentType(options.type().lower());
-    populateBlobData(blobData.get(), fileBits, normalizeLineEndingsToNative);
-
-    long long fileSize = blobData->length();
-    return File::create(fileName, lastModified, BlobDataHandle::create(blobData.release(), fileSize));
 }
 
 File* File::create(const unsigned char* data, size_t bytes, const String& mimeType)

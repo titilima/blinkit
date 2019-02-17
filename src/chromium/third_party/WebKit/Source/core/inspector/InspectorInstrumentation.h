@@ -113,6 +113,10 @@ inline void pseudoElementCreated(PseudoElement *) {}
 inline void pseudoElementDestroyed(PseudoElement *) {}
 inline void scriptExecutionBlockedByCSP(ExecutionContext *, const String &) {}
 inline bool shouldForceCORSPreflight(Document *) { return false; }
+inline void traceAsyncCallbackCompleted(int) {}
+inline InspectorInstrumentationCookie traceAsyncCallbackStarting(ExecutionContext *, int) { return 0; }
+inline int traceAsyncOperationStarting(ExecutionContext *, const char *) { return 0; }
+inline void traceAsyncOperationCompleted(ExecutionContext *, int) {}
 inline void updateApplicationCacheStatus(LocalFrame *) {}
 inline void willDeliverMutationRecords(ExecutionContext *, MutationObserver *) {}
 inline void willDestroyResource(Resource *) {}

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ImageBitmapFactories.h
+// Description: ImageBitmapFactories Class
+//      Author: Ziming Li
+//     Created: 2019-02-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2013, Google Inc. All rights reserved.
  *
@@ -31,10 +42,6 @@
 #ifndef ImageBitmapFactories_h
 #define ImageBitmapFactories_h
 
-#include "bindings/core/v8/ScriptPromise.h"
-#include "bindings/core/v8/ScriptPromiseResolver.h"
-#include "bindings/core/v8/ScriptState.h"
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/fileapi/FileReaderLoader.h"
 #include "core/fileapi/FileReaderLoaderClient.h"
 #include "platform/Supplementable.h"
@@ -47,18 +54,13 @@ class Blob;
 class EventTarget;
 class ExceptionState;
 class ExecutionContext;
-
-typedef HTMLImageElementOrHTMLVideoElementOrHTMLCanvasElementOrBlobOrImageDataOrImageBitmap ImageBitmapSourceUnion;
+class LocalDOMWindow;
 
 class ImageBitmapFactories final : public NoBaseWillBeGarbageCollectedFinalized<ImageBitmapFactories>, public WillBeHeapSupplement<LocalDOMWindow>, public WillBeHeapSupplement<WorkerGlobalScope> {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(ImageBitmapFactories);
     USING_FAST_MALLOC_WILL_BE_REMOVED(ImageBitmapFactories);
 
 public:
-    static ScriptPromise createImageBitmap(ScriptState*, EventTarget&, const ImageBitmapSourceUnion&, ExceptionState&);
-    static ScriptPromise createImageBitmap(ScriptState*, EventTarget&, const ImageBitmapSourceUnion&, int sx, int sy, int sw, int sh, ExceptionState&);
-    static ScriptPromise createImageBitmap(ScriptState*, EventTarget&, ImageBitmapSource*, int sx, int sy, int sw, int sh, ExceptionState&);
-
     virtual ~ImageBitmapFactories() { }
 
     DECLARE_TRACE();
@@ -75,7 +77,6 @@ private:
         }
 
         void loadBlobAsync(ExecutionContext*, Blob*);
-        ScriptPromise promise() { return m_resolver->promise(); }
 
         DECLARE_TRACE();
 
@@ -94,7 +95,6 @@ private:
 
         FileReaderLoader m_loader;
         RawPtrWillBeMember<ImageBitmapFactories> m_factory;
-        Member<ScriptPromiseResolver> m_resolver;
         IntRect m_cropRect;
     };
 

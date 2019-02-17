@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FileReaderLoader.h
+// Description: FileReaderLoader Class
+//      Author: Ziming Li
+//     Created: 2019-02-15
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc.  All rights reserved.
  *
@@ -44,7 +55,6 @@
 namespace blink {
 
 class BlobDataHandle;
-class DOMArrayBuffer;
 class ExecutionContext;
 class FileReaderLoaderClient;
 class Stream;
@@ -82,7 +92,6 @@ public:
     void didFail(const ResourceError&) override;
 
     String stringResult();
-    PassRefPtr<DOMArrayBuffer> arrayBufferResult() const;
 
     // Returns the total bytes received. Bytes ignored by m_rawData won't be
     // counted.

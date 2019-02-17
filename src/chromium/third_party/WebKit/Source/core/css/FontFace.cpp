@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FontFace.cpp
+// Description: FontFace Class
+//      Author: Ziming Li
+//     Created: 2019-02-12
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,8 +42,6 @@
 #include "core/css/FontFace.h"
 
 #include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/ScriptState.h"
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/CSSValueKeywords.h"
 #include "core/css/BinaryDataFontFaceSource.h"
 #include "core/css/CSSCustomIdentValue.h"
@@ -48,8 +57,6 @@
 #include "core/css/StylePropertySet.h"
 #include "core/css/StyleRule.h"
 #include "core/css/parser/CSSParser.h"
-#include "core/dom/DOMArrayBuffer.h"
-#include "core/dom/DOMArrayBufferView.h"
 #include "core/dom/DOMException.h"
 #include "core/dom/Document.h"
 #include "core/dom/ExceptionCode.h"
@@ -70,12 +77,6 @@ static PassRefPtrWillBeRawPtr<CSSValue> parseCSSValue(const Document* document, 
 
 PassRefPtrWillBeRawPtr<FontFace> FontFace::create(ExecutionContext* context, const AtomicString& family, StringOrArrayBufferOrArrayBufferView& source, const FontFaceDescriptors& descriptors)
 {
-    if (source.isString())
-        return create(context, family, source.getAsString(), descriptors);
-    if (source.isArrayBuffer())
-        return create(context, family, source.getAsArrayBuffer(), descriptors);
-    if (source.isArrayBufferView())
-        return create(context, family, source.getAsArrayBufferView(), descriptors);
     ASSERT_NOT_REACHED();
     return nullptr;
 }
@@ -89,20 +90,6 @@ PassRefPtrWillBeRawPtr<FontFace> FontFace::create(ExecutionContext* context, con
         fontFace->setError(DOMException::create(SyntaxError, "The source provided ('" + source + "') could not be parsed as a value list."));
 
     fontFace->initCSSFontFace(toDocument(context), src);
-    return fontFace.release();
-}
-
-PassRefPtrWillBeRawPtr<FontFace> FontFace::create(ExecutionContext* context, const AtomicString& family, PassRefPtr<DOMArrayBuffer> source, const FontFaceDescriptors& descriptors)
-{
-    RefPtrWillBeRawPtr<FontFace> fontFace = adoptRefWillBeNoop(new FontFace(context, family, descriptors));
-    fontFace->initCSSFontFace(static_cast<const unsigned char*>(source->data()), source->byteLength());
-    return fontFace.release();
-}
-
-PassRefPtrWillBeRawPtr<FontFace> FontFace::create(ExecutionContext* context, const AtomicString& family, PassRefPtr<DOMArrayBufferView> source, const FontFaceDescriptors& descriptors)
-{
-    RefPtrWillBeRawPtr<FontFace> fontFace = adoptRefWillBeNoop(new FontFace(context, family, descriptors));
-    fontFace->initCSSFontFace(static_cast<const unsigned char*>(source->baseAddress()), source->byteLength());
     return fontFace.release();
 }
 
@@ -332,12 +319,15 @@ void FontFace::setLoadStatus(LoadStatus status)
     ASSERT(m_status != Error || m_error);
 
     if (m_status == Loaded || m_status == Error) {
+        assert(false); // BKTODO:
+#if 0
         if (m_loadedProperty) {
             if (m_status == Loaded)
                 m_loadedProperty->resolve(this);
             else
                 m_loadedProperty->reject(m_error.get());
         }
+#endif
 
         WillBeHeapVector<RefPtrWillBeMember<LoadFontCallback>> callbacks;
         m_callbacks.swap(callbacks);
@@ -355,24 +345,6 @@ void FontFace::setError(DOMException* error)
     if (!m_error)
         m_error = error ? error : DOMException::create(NetworkError);
     setLoadStatus(Error);
-}
-
-ScriptPromise FontFace::fontStatusPromise(ScriptState* scriptState)
-{
-    if (!m_loadedProperty) {
-        m_loadedProperty = new LoadedProperty(scriptState->executionContext(), this, LoadedProperty::Loaded);
-        if (m_status == Loaded)
-            m_loadedProperty->resolve(this);
-        else if (m_status == Error)
-            m_loadedProperty->reject(m_error.get());
-    }
-    return m_loadedProperty->promise(scriptState->world());
-}
-
-ScriptPromise FontFace::load(ScriptState* scriptState)
-{
-    loadInternal(scriptState->executionContext());
-    return fontStatusPromise(scriptState);
 }
 
 void FontFace::loadWithCallback(PassRefPtrWillBeRawPtr<LoadFontCallback> callback, ExecutionContext* context)
@@ -627,7 +599,6 @@ DEFINE_TRACE(FontFace)
     visitor->trace(m_featureSettings);
     visitor->trace(m_display);
     visitor->trace(m_error);
-    visitor->trace(m_loadedProperty);
     visitor->trace(m_cssFontFace);
     visitor->trace(m_callbacks);
     ActiveDOMObject::trace(visitor);

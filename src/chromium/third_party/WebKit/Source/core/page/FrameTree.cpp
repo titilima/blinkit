@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FrameTree.cpp
+// Description: FrameTree Class
+//      Author: Ziming Li
+//     Created: 2019-02-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) Research In Motion Limited 2010. All rights reserved.
  * Copyright (C) 2006 Apple Computer, Inc.
@@ -24,8 +35,6 @@
 #include "core/frame/FrameClient.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
-#include "core/frame/RemoteFrame.h"
-#include "core/frame/RemoteFrameView.h"
 #include "core/page/Page.h"
 #include "wtf/Vector.h"
 #include "wtf/text/CString.h"

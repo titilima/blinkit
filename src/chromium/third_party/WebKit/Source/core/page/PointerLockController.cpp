@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PointerLockController.cpp
+// Description: PointerLockController Class
+//      Author: Ziming Li
+//     Created: 2019-02-12
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -53,13 +64,6 @@ void PointerLockController::requestPointerLock(Element* target)
     }
 
     UseCounter::countCrossOriginIframe(target->document(), UseCounter::ElementRequestPointerLockIframe);
-
-    if (target->document().isSandboxed(SandboxPointerLock)) {
-        // FIXME: This message should be moved off the console once a solution to https://bugs.webkit.org/show_bug.cgi?id=103274 exists.
-        target->document().addConsoleMessage(ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, "Blocked pointer lock on an element because the element's frame is sandboxed and the 'allow-pointer-lock' permission is not set."));
-        enqueueEvent(EventTypeNames::pointerlockerror, target);
-        return;
-    }
 
     if (m_element) {
         if (m_element->document() != target->document()) {

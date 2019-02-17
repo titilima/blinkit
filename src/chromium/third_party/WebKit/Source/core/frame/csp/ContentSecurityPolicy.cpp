@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ContentSecurityPolicy.cpp
+// Description: ContentSecurityPolicy Class
+//      Author: Ziming Li
+//     Created: 2019-02-15
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google, Inc. All rights reserved.
  *
@@ -25,11 +36,9 @@
 
 #include "core/frame/csp/ContentSecurityPolicy.h"
 
-#include "bindings/core/v8/ScriptCallStackFactory.h"
 #include "bindings/core/v8/ScriptController.h"
 #include "core/dom/DOMStringList.h"
 #include "core/dom/Document.h"
-#include "core/dom/SandboxFlags.h"
 #include "core/events/SecurityPolicyViolationEvent.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/LocalFrame.h"
@@ -41,7 +50,6 @@
 #include "core/frame/csp/SourceListDirective.h"
 #include "core/inspector/ConsoleMessage.h"
 #include "core/inspector/InspectorInstrumentation.h"
-#include "core/inspector/ScriptCallStack.h"
 #include "core/loader/DocumentLoader.h"
 #include "core/loader/PingLoader.h"
 #include "platform/JSONValues.h"
@@ -144,7 +152,6 @@ ContentSecurityPolicy::ContentSecurityPolicy()
     , m_overrideInlineStyleAllowed(false)
     , m_scriptHashAlgorithmsUsed(ContentSecurityPolicyHashAlgorithmNone)
     , m_styleHashAlgorithmsUsed(ContentSecurityPolicyHashAlgorithmNone)
-    , m_sandboxMask(0)
     , m_suboriginName(String())
     , m_enforceStrictMixedContentChecking(false)
     , m_referrerPolicy(ReferrerPolicyDefault)
@@ -172,10 +179,6 @@ void ContentSecurityPolicy::applyPolicySideEffectsToExecutionContext()
     // If we're in a Document, set mixed content checking and sandbox
     // flags, then dump all the parsing error messages, then poke at histograms.
     if (Document* document = this->document()) {
-        if (m_sandboxMask != SandboxNone) {
-            UseCounter::count(document, UseCounter::SandboxViaCSP);
-            document->enforceSandboxFlags(m_sandboxMask);
-        }
         if (m_enforceStrictMixedContentChecking)
             document->enforceStrictMixedContentChecking();
         if (RuntimeEnabledFeatures::suboriginsEnabled()) {
@@ -458,11 +461,6 @@ bool ContentSecurityPolicy::allowInlineStyle(const String& contextURL, const WTF
     return isAllowedByAllWithContextAndContent<&CSPDirectiveList::allowInlineStyle>(m_policies, contextURL, contextLine, reportingStatus, styleContent);
 }
 
-bool ContentSecurityPolicy::allowEval(ScriptState* scriptState, ContentSecurityPolicy::ReportingStatus reportingStatus, ContentSecurityPolicy::ExceptionStatus exceptionStatus) const
-{
-    return isAllowedByAllWithStateAndExceptionStatus<&CSPDirectiveList::allowEval>(m_policies, scriptState, reportingStatus, exceptionStatus);
-}
-
 String ContentSecurityPolicy::evalDisabledErrorMessage() const
 {
     for (const auto& policy : m_policies) {
@@ -655,11 +653,6 @@ KURL ContentSecurityPolicy::completeURL(const String& url) const
     return m_executionContext->contextCompleteURL(url);
 }
 
-void ContentSecurityPolicy::enforceSandboxFlags(SandboxFlags mask)
-{
-    m_sandboxMask |= mask;
-}
-
 void ContentSecurityPolicy::enforceStrictMixedContentChecking()
 {
     m_enforceStrictMixedContentChecking = true;
@@ -708,19 +701,6 @@ static void gatherSecurityPolicyViolationEventData(SecurityPolicyViolationEventI
 
     if (!SecurityOrigin::isSecure(document->url()) && document->loader())
         init.setStatusCode(document->loader()->response().httpStatusCode());
-
-    RefPtrWillBeRawPtr<ScriptCallStack> stack = currentScriptCallStack(1);
-    if (!stack || !stack->size())
-        return;
-
-    const ScriptCallFrame& callFrame = stack->at(0);
-
-    if (callFrame.lineNumber()) {
-        KURL source = KURL(ParsedURLString, callFrame.sourceURL());
-        init.setSourceFile(stripURLForUseInReport(document, source));
-        init.setLineNumber(callFrame.lineNumber());
-        init.setColumnNumber(callFrame.columnNumber());
-    }
 }
 
 void ContentSecurityPolicy::reportViolation(const String& directiveText, const String& effectiveDirective, const String& consoleMessage, const KURL& blockedURL, const Vector<String>& reportEndpoints, const String& header, ViolationType violationType, LocalFrame* contextFrame)

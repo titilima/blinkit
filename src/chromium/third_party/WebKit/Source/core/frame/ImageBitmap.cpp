@@ -1,11 +1,20 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ImageBitmap.cpp
+// Description: ImageBitmap Class
+//      Author: Ziming Li
+//     Created: 2019-02-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2013 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "core/frame/ImageBitmap.h"
 
-#include "core/html/HTMLCanvasElement.h"
-#include "core/html/HTMLVideoElement.h"
 #include "core/html/ImageData.h"
 #include "third_party/skia/include/core/SkSurface.h"
 #include "wtf/RefPtr.h"

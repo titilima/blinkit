@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FontFaceSet.h
+// Description: FontFaceSet Class
+//      Author: Ziming Li
+//     Created: 2019-02-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -26,8 +37,6 @@
 #ifndef FontFaceSet_h
 #define FontFaceSet_h
 
-#include "bindings/core/v8/Iterable.h"
-#include "bindings/core/v8/ScriptPromise.h"
 #include "core/css/FontFace.h"
 #include "core/dom/ActiveDOMObject.h"
 #include "core/events/EventListener.h"
@@ -57,14 +66,12 @@ class FontFaceCache;
 class FontResource;
 class ExecutionContext;
 
-using FontFaceSetIterable = PairIterable<RefPtrWillBeMember<FontFace>, RefPtrWillBeMember<FontFace>>;
-
 #if ENABLE(OILPAN)
-class FontFaceSet final : public EventTargetWithInlineData, public HeapSupplement<Document>, public ActiveDOMObject, public FontFaceSetIterable {
+class FontFaceSet final : public EventTargetWithInlineData, public HeapSupplement<Document>, public ActiveDOMObject {
     USING_GARBAGE_COLLECTED_MIXIN(FontFaceSet);
     using SupplementType = HeapSupplement<Document>;
 #else
-class FontFaceSet final : public EventTargetWithInlineData, public RefCountedSupplement<Document, FontFaceSet>, public ActiveDOMObject, public FontFaceSetIterable {
+class FontFaceSet final : public EventTargetWithInlineData, public RefCountedSupplement<Document, FontFaceSet>, public ActiveDOMObject {
     REFCOUNTED_EVENT_TARGET(FontFaceSet);
     using SupplementType = RefCountedSupplement<Document, FontFaceSet>;
 #endif
@@ -77,13 +84,6 @@ public:
     DEFINE_ATTRIBUTE_EVENT_LISTENER(loadingerror);
 
     bool check(const String& font, const String& text, ExceptionState&);
-    ScriptPromise load(ScriptState*, const String& font, const String& text);
-    ScriptPromise ready(ScriptState*);
-
-    PassRefPtrWillBeRawPtr<FontFaceSet> addForBinding(ScriptState*, FontFace*, ExceptionState&);
-    void clearForBinding(ScriptState*, ExceptionState&);
-    bool deleteForBinding(ScriptState*, FontFace*, ExceptionState&);
-    bool hasForBinding(ScriptState*, FontFace*, ExceptionState&) const;
 
     size_t size() const;
     AtomicString status() const;
@@ -116,26 +116,6 @@ private:
         return adoptRefWillBeNoop(new FontFaceSet(document));
     }
 
-    FontFaceSetIterable::IterationSource* startIteration(ScriptState*, ExceptionState&) override;
-
-    class IterationSource final : public FontFaceSetIterable::IterationSource {
-    public:
-        explicit IterationSource(const WillBeHeapVector<RefPtrWillBeMember<FontFace>>& fontFaces)
-            : m_index(0)
-            , m_fontFaces(fontFaces) { }
-        bool next(ScriptState*, RefPtrWillBeMember<FontFace>&, RefPtrWillBeMember<FontFace>&, ExceptionState&) override;
-
-        DEFINE_INLINE_VIRTUAL_TRACE()
-        {
-            visitor->trace(m_fontFaces);
-            FontFaceSetIterable::IterationSource::trace(visitor);
-        }
-
-    private:
-        size_t m_index;
-        WillBeHeapVector<RefPtrWillBeMember<FontFace>> m_fontFaces;
-    };
-
     class FontLoadHistogram {
         DISALLOW_NEW();
     public:
@@ -165,12 +145,9 @@ private:
     bool isCSSConnectedFontFace(FontFace*) const;
     bool shouldSignalReady() const;
 
-    using ReadyProperty = ScriptPromiseProperty<RawPtrWillBeMember<FontFaceSet>, RawPtrWillBeMember<FontFaceSet>, Member<DOMException>>;
-
     WillBeHeapHashSet<RefPtrWillBeMember<FontFace>> m_loadingFonts;
     bool m_shouldFireLoadingEvent;
     bool m_isLoading;
-    PersistentWillBeMember<ReadyProperty> m_ready;
     FontFaceArray m_loadedFonts;
     FontFaceArray m_failedFonts;
     WillBeHeapListHashSet<RefPtrWillBeMember<FontFace>> m_nonCSSConnectedFaces;

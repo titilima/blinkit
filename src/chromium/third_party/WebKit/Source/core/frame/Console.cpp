@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Console.cpp
+// Description: Console Class
+//      Author: Ziming Li
+//     Created: 2019-02-15
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007 Apple Inc. All rights reserved.
  *
@@ -28,7 +39,6 @@
 
 #include "core/frame/Console.h"
 
-#include "bindings/core/v8/ScriptCallStackFactory.h"
 #include "core/dom/Document.h"
 #include "core/frame/ConsoleTypes.h"
 #include "core/frame/FrameConsole.h"
@@ -36,8 +46,6 @@
 #include "core/frame/LocalFrame.h"
 #include "core/inspector/ConsoleAPITypes.h"
 #include "core/inspector/ConsoleMessage.h"
-#include "core/inspector/ScriptArguments.h"
-#include "core/inspector/ScriptCallStack.h"
 #include "platform/TraceEvent.h"
 #include "wtf/text/CString.h"
 #include "wtf/text/WTFString.h"

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FrameView.cpp
+// Description: FrameView Class
+//      Author: Ziming Li
+//     Created: 2019-02-13
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1998, 1999 Torben Weis <weis@kde.org>
  *                     1999 Lars Knoll <knoll@kde.org>
@@ -31,7 +42,6 @@
 #include "core/css/FontFaceSet.h"
 #include "core/css/resolver/StyleResolver.h"
 #include "core/dom/AXObjectCache.h"
-#include "core/dom/Fullscreen.h"
 #include "core/dom/IntersectionObserverController.h"
 #include "core/editing/EditingUtilities.h"
 #include "core/editing/FrameSelection.h"
@@ -42,7 +52,6 @@
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
 #include "core/html/HTMLFrameElement.h"
-#include "core/html/HTMLPlugInElement.h"
 #include "core/html/HTMLTextFormControlElement.h"
 #include "core/html/parser/TextResourceDecoder.h"
 #include "core/input/EventHandler.h"
@@ -50,7 +59,6 @@
 #include "core/inspector/InspectorTraceEvents.h"
 #include "core/layout/LayoutAnalyzer.h"
 #include "core/layout/LayoutCounter.h"
-#include "core/layout/LayoutEmbeddedObject.h"
 #include "core/layout/LayoutInline.h"
 #include "core/layout/LayoutListBox.h"
 #include "core/layout/LayoutPart.h"
@@ -77,7 +85,6 @@
 #include "core/paint/FramePainter.h"
 #include "core/paint/PaintLayer.h"
 #include "core/paint/PaintPropertyTreeBuilder.h"
-#include "core/plugins/PluginView.h"
 #include "core/style/ComputedStyle.h"
 #include "core/svg/SVGDocumentExtensions.h"
 #include "core/svg/SVGSVGElement.h"
@@ -1098,12 +1105,6 @@ void FrameView::invalidateTreeIfNeeded(PaintInvalidationState& paintInvalidation
 
     m_doFullPaintInvalidation = false;
     lifecycle().advanceTo(DocumentLifecycle::PaintInvalidationClean);
-
-    // Temporary callback for crbug.com/487345,402044
-    // TODO(ojan): Make this more general to be used by PositionObserver
-    // and rAF throttling.
-    IntRect visibleRect = rootFrameToContents(computeVisibleArea());
-    rootForPaintInvalidation.sendMediaPositionChangeNotifications(visibleRect);
 }
 
 IntRect FrameView::computeVisibleArea()
@@ -1167,14 +1168,7 @@ void FrameView::updateWidgetGeometries()
 
 void FrameView::addPartToUpdate(LayoutEmbeddedObject& object)
 {
-    ASSERT(isInPerformLayout());
-    // Tell the DOM element that it needs a widget update.
-    Node* node = object.node();
-    ASSERT(node);
-    if (isHTMLObjectElement(*node) || isHTMLEmbedElement(*node))
-        toHTMLPlugInElement(node)->setNeedsWidgetUpdate(true);
-
-    m_partUpdateSet.add(&object);
+    assert(false); // Not reached!
 }
 
 void FrameView::setDisplayMode(WebDisplayMode mode)
@@ -1890,40 +1884,7 @@ void FrameView::scrollToAnchor()
 
 bool FrameView::updateWidgets()
 {
-    // This is always called from updateWidgetsTimerFired.
-    // m_updateWidgetsTimer should only be scheduled if we have widgets to update.
-    // Thus I believe we can stop checking isEmpty here, and just ASSERT isEmpty:
-    // FIXME: This assert has been temporarily removed due to https://crbug.com/430344
-    if (m_nestedLayoutCount > 1 || m_partUpdateSet.isEmpty())
-        return true;
-
-    // Need to swap because script will run inside the below loop and invalidate the iterator.
-    EmbeddedObjectSet objects;
-    objects.swap(m_partUpdateSet);
-
-    for (const auto& embeddedObject : objects) {
-        LayoutEmbeddedObject& object = *embeddedObject;
-        HTMLPlugInElement* element = toHTMLPlugInElement(object.node());
-
-        // The object may have already been destroyed (thus node cleared),
-        // but FrameView holds a manual ref, so it won't have been deleted.
-        if (!element)
-            continue;
-
-        // No need to update if it's already crashed or known to be missing.
-        if (object.showsUnavailablePluginIndicator())
-            continue;
-
-        if (element->needsWidgetUpdate())
-            element->updateWidget();
-        object.updateWidgetGeometry();
-
-        // Prevent plugins from causing infinite updates of themselves.
-        // FIXME: Do we really need to prevent this?
-        m_partUpdateSet.remove(&object);
-    }
-
-    return m_partUpdateSet.isEmpty();
+    return true;
 }
 
 void FrameView::updateWidgetsTimerFired(Timer<FrameView>*)
@@ -1949,9 +1910,6 @@ void FrameView::flushAnyPendingPostLayoutTasks()
 void FrameView::scheduleUpdateWidgetsIfNecessary()
 {
     ASSERT(!isInPerformLayout());
-    if (m_updateWidgetsTimer.isActive() || m_partUpdateSet.isEmpty())
-        return;
-    m_updateWidgetsTimer.startOneShot(0, BLINK_FROM_HERE);
 }
 
 void FrameView::performPostLayoutTasks()
@@ -2555,17 +2513,6 @@ void FrameView::updateStyleAndLayoutIfNeededRecursive()
 
     if (needsLayout())
         layout();
-
-    // WebView plugins need to update regardless of whether the LayoutEmbeddedObject
-    // that owns them needed layout.
-    // TODO(leviw): This currently runs the entire lifecycle on plugin WebViews. We
-    // should have a way to only run these other Documents to the same lifecycle stage
-    // as this frame.
-    const ChildrenWidgetSet* viewChildren = children();
-    for (const RefPtrWillBeMember<Widget>& child : *viewChildren) {
-        if ((*child).isPluginContainer())
-            toPluginView(child.get())->updateAllLifecyclePhases();
-    }
 
     // FIXME: Calling layout() shouldn't trigger script execution or have any
     // observable effects on the frame tree but we're not quite there yet.
@@ -3649,11 +3596,6 @@ void FrameView::positionScrollbarLayers()
 
 bool FrameView::userInputScrollable(ScrollbarOrientation orientation) const
 {
-    Document* document = frame().document();
-    Element* fullscreenElement = Fullscreen::fullscreenElementFrom(*document);
-    if (fullscreenElement && fullscreenElement != document->documentElement())
-        return false;
-
     if (frame().settings() && frame().settings()->rootLayerScrolls())
         return false;
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DragController.cpp
+// Description: DragController Class
+//      Author: Ziming Li
+//     Created: 2019-02-12
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2009, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2008 Google Inc.
@@ -54,7 +65,6 @@
 #include "core/html/HTMLAnchorElement.h"
 #include "core/html/HTMLFormElement.h"
 #include "core/html/HTMLInputElement.h"
-#include "core/html/HTMLPlugInElement.h"
 #include "core/input/EventHandler.h"
 #include "core/layout/LayoutTheme.h"
 #include "core/layout/LayoutView.h"
@@ -553,11 +563,7 @@ bool DragController::canProcessDrag(DragData* dragData)
     if (dragData->containsFiles() && asFileInput(result.innerNode()))
         return true;
 
-    if (isHTMLPlugInElement(*result.innerNode())) {
-        HTMLPlugInElement* plugin = toHTMLPlugInElement(result.innerNode());
-        if (!plugin->canProcessDrag() && !result.innerNode()->hasEditableStyle())
-            return false;
-    } else if (!result.innerNode()->hasEditableStyle()) {
+    if (!result.innerNode()->hasEditableStyle()) {
         return false;
     }
 

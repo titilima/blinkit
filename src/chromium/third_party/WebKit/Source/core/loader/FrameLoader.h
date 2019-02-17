@@ -60,9 +60,11 @@
 
 namespace blink {
 
+class Document;
 class DocumentLoader;
 class Frame;
 class FrameLoaderClient;
+class LocalFrame;
 class ProgressTracker;
 class ResourceError;
 class SerializedScriptValue;

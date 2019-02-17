@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: EventSource.cpp
+// Description: EventSource Class
+//      Author: Ziming Li
+//     Created: 2019-02-13
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2012 Ericsson AB. All rights reserved.
  * Copyright (C) 2010 Apple Inc. All rights reserved.
@@ -34,13 +45,10 @@
 
 #include "bindings/core/v8/ExceptionState.h"
 #include "bindings/core/v8/ScriptController.h"
-#include "bindings/core/v8/SerializedScriptValue.h"
-#include "bindings/core/v8/SerializedScriptValueFactory.h"
 #include "core/dom/Document.h"
 #include "core/dom/ExceptionCode.h"
 #include "core/dom/ExecutionContext.h"
 #include "core/events/Event.h"
-#include "core/events/MessageEvent.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/csp/ContentSecurityPolicy.h"

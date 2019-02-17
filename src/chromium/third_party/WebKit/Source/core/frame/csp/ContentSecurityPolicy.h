@@ -72,7 +72,6 @@ class LocalFrame;
 class ResourceRequest;
 class SecurityOrigin;
 
-typedef int SandboxFlags;
 typedef Vector<OwnPtr<CSPDirectiveList>> CSPDirectiveListVector;
 typedef WillBeHeapVector<RefPtrWillBeMember<ConsoleMessage>> ConsoleMessageVector;
 typedef std::pair<String, ContentSecurityPolicyHeaderType> CSPHeaderAndType;
@@ -252,7 +251,6 @@ public:
     void reportBlockedScriptExecutionToInspector(const String& directiveText) const;
 
     const KURL url() const;
-    void enforceSandboxFlags(SandboxFlags);
     void enforceSuborigin(const String&);
     void enforceStrictMixedContentChecking();
     String evalDisabledErrorMessage() const;
@@ -310,8 +308,6 @@ private:
     uint8_t m_scriptHashAlgorithmsUsed;
     uint8_t m_styleHashAlgorithmsUsed;
 
-    // State flags used to configure the environment after parsing a policy.
-    SandboxFlags m_sandboxMask;
     String m_suboriginName;
     bool m_enforceStrictMixedContentChecking;
     ReferrerPolicy m_referrerPolicy;

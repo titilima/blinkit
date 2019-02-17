@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CSSDefaultStyleSheets.cpp
+// Description: CSSDefaultStyleSheets Class
+//      Author: Ziming Li
+//     Created: 2019-02-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -32,7 +43,6 @@
 #include "core/css/MediaQueryEvaluator.h"
 #include "core/css/RuleSet.h"
 #include "core/css/StyleSheetContents.h"
-#include "core/dom/Fullscreen.h"
 #include "core/html/HTMLAnchorElement.h"
 #include "core/html/HTMLHtmlElement.h"
 #include "core/layout/LayoutTheme.h"
@@ -84,7 +94,6 @@ CSSDefaultStyleSheets::CSSDefaultStyleSheets()
     , m_svgStyleSheet(nullptr)
     , m_mathmlStyleSheet(nullptr)
     , m_mediaControlsStyleSheet(nullptr)
-    , m_fullscreenStyleSheet(nullptr)
 {
     m_defaultStyle = RuleSet::create();
     m_defaultPrintStyle = RuleSet::create();
@@ -165,16 +174,6 @@ void CSSDefaultStyleSheets::ensureDefaultStyleSheetsForElement(const Element& el
         changedDefaultStyle = true;
     }
 
-    // FIXME: This only works because we Force recalc the entire document so the new sheet
-    // is loaded for <html> and the correct styles apply to everyone.
-    if (!m_fullscreenStyleSheet && Fullscreen::isFullScreen(element.document())) {
-        String fullscreenRules = loadResourceAsASCIIString("fullscreen.css") + LayoutTheme::theme().extraFullScreenStyleSheet();
-        m_fullscreenStyleSheet = parseUASheet(fullscreenRules);
-        m_defaultStyle->addRulesFromSheet(fullscreenStyleSheet(), screenEval());
-        m_defaultQuirksStyle->addRulesFromSheet(fullscreenStyleSheet(), screenEval());
-        changedDefaultStyle = true;
-    }
-
     ASSERT(!m_defaultStyle->features().hasIdsInSelectors());
     ASSERT(m_defaultStyle->features().siblingRules.isEmpty());
 }
@@ -193,7 +192,6 @@ DEFINE_TRACE(CSSDefaultStyleSheets)
     visitor->trace(m_svgStyleSheet);
     visitor->trace(m_mathmlStyleSheet);
     visitor->trace(m_mediaControlsStyleSheet);
-    visitor->trace(m_fullscreenStyleSheet);
 }
 
 } // namespace blink

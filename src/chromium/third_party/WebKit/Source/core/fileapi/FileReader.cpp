@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FileReader.cpp
+// Description: FileReader Class
+//      Author: Ziming Li
+//     Created: 2019-02-15
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc.  All rights reserved.
  *
@@ -31,9 +42,7 @@
 #include "core/fileapi/FileReader.h"
 
 #include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/UnionTypesCore.h"
 #include "core/dom/CrossThreadTask.h"
-#include "core/dom/DOMArrayBuffer.h"
 #include "core/dom/Document.h"
 #include "core/dom/ExceptionCode.h"
 #include "core/dom/ExecutionContext.h"
@@ -369,10 +378,7 @@ void FileReader::result(StringOrArrayBuffer& resultAttribute) const
     if (!m_loader || m_error)
         return;
 
-    if (m_readType == FileReaderLoader::ReadAsArrayBuffer)
-        resultAttribute.setArrayBuffer(m_loader->arrayBufferResult());
-    else
-        resultAttribute.setString(m_loader->stringResult());
+    assert(false); // Not reached!
 }
 
 void FileReader::terminate()

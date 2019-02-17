@@ -137,9 +137,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationStack.cpp">
       <Filter>animation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationTestHelper.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationTimeline.cpp">
       <Filter>animation</Filter>
     </ClCompile>
@@ -201,9 +198,6 @@
       <Filter>animation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\DoubleStyleInterpolation.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\EffectInput.cpp">
       <Filter>animation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\ElementAnimations.cpp">
@@ -599,9 +593,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSSVGDocumentValue.cpp">
       <Filter>css</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSTestHelper.cpp">
-      <Filter>css</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSTimingFunctionValue.cpp">
       <Filter>css</Filter>
     </ClCompile>
@@ -935,9 +926,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingStyle.cpp">
       <Filter>editing</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingTestBase.cpp">
-      <Filter>editing</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingUtilities.cpp">
       <Filter>editing</Filter>
     </ClCompile>
@@ -1079,12 +1067,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\SimplifyMarkupCommand.cpp">
       <Filter>editing\commands</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\SmartReplaceCF.cpp">
-      <Filter>editing\commands</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\SmartReplaceICU.cpp">
-      <Filter>editing\commands</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\SplitElementCommand.cpp">
       <Filter>editing\commands</Filter>
     </ClCompile>
@@ -1209,9 +1191,6 @@
       <Filter>fetch</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\MemoryCache.cpp">
-      <Filter>fetch</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\MockImageResourceClient.cpp">
       <Filter>fetch</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\RawResource.cpp">
@@ -1359,15 +1338,6 @@
       <Filter>frame</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PlatformEventDispatcher.cpp">
-      <Filter>frame</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RemoteDOMWindow.cpp">
-      <Filter>frame</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RemoteFrame.cpp">
-      <Filter>frame</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RemoteFrameView.cpp">
       <Filter>frame</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RootFrameViewport.cpp">
@@ -1646,9 +1616,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\EllipsisBoxPainter.cpp">
       <Filter>paint</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\EmbeddedObjectPainter.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FieldsetPainter.cpp">
       <Filter>paint</Filter>
     </ClCompile>
@@ -1671,9 +1638,6 @@
       <Filter>paint</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\GridPainter.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\HTMLCanvasPainter.cpp">
       <Filter>paint</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ImagePainter.cpp">
@@ -1701,9 +1665,6 @@
       <Filter>paint</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ListMarkerPainter.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\MediaControlsPainter.cpp">
       <Filter>paint</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\MultiColumnSetPainter.cpp">
@@ -1856,9 +1817,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TransformRecorder.cpp">
       <Filter>paint</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\VideoPainter.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ViewPainter.cpp">
       <Filter>paint</Filter>
     </ClCompile>
@@ -1988,76 +1946,10 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerThreadStartupData.cpp">
       <Filter>workers</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\DocumentXPathEvaluator.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\DocumentXSLT.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\DOMParser.cpp">
       <Filter>xml</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\NativeXPathNSResolver.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XMLSerializer.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathEvaluator.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathExpression.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathExpressionNode.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathFunctions.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathNodeSet.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathParser.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathPath.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathPredicate.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathResult.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathStep.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathUtil.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathValue.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathVariableReference.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLImportRule.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLStyleSheetLibxslt.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLTExtensions.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLTProcessor.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLTProcessorLibxslt.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLTUnicodeSort.cpp">
       <Filter>xml</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\SharedBufferReader.cpp">
@@ -2110,9 +2002,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationStack.h">
       <Filter>animation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationTestHelper.h">
-      <Filter>animation</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationTimeline.h">
       <Filter>animation</Filter>
     </ClInclude>
@@ -2126,9 +2015,6 @@
       <Filter>animation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\CompositorAnimationsImpl.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\CompositorAnimationsTestHelper.h">
       <Filter>animation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\CompositorPendingAnimations.h">
@@ -2686,9 +2572,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSSVGDocumentValue.h">
       <Filter>css</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSTestHelper.h">
-      <Filter>css</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSTimingFunctionValue.h">
       <Filter>css</Filter>
     </ClInclude>
@@ -3070,9 +2953,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingStyle.h">
       <Filter>editing</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingTestBase.h">
-      <Filter>editing</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingUtilities.h">
       <Filter>editing</Filter>
     </ClInclude>
@@ -3388,9 +3268,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\MemoryCache.h">
       <Filter>fetch</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\MockImageResourceClient.h">
-      <Filter>fetch</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\RawResource.h">
       <Filter>fetch</Filter>
     </ClInclude>
@@ -3587,18 +3464,6 @@
       <Filter>frame</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PlatformEventDispatcher.h">
-      <Filter>frame</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RemoteDOMWindow.h">
-      <Filter>frame</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RemoteFrame.h">
-      <Filter>frame</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RemoteFrameClient.h">
-      <Filter>frame</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RemoteFrameView.h">
       <Filter>frame</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RootFrameViewport.h">
@@ -3958,9 +3823,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\EllipsisBoxPainter.h">
       <Filter>paint</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\EmbeddedObjectPainter.h">
-      <Filter>paint</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FieldsetPainter.h">
       <Filter>paint</Filter>
     </ClInclude>
@@ -3983,9 +3845,6 @@
       <Filter>paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\GridPainter.h">
-      <Filter>paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\HTMLCanvasPainter.h">
       <Filter>paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ImagePainter.h">
@@ -4019,9 +3878,6 @@
       <Filter>paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ListMarkerPainter.h">
-      <Filter>paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\MediaControlsPainter.h">
       <Filter>paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\MultiColumnSetPainter.h">
@@ -4174,16 +4030,10 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ThemePainterDefault.h">
       <Filter>paint</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ThemePainterMac.h">
-      <Filter>paint</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\Transform3DRecorder.h">
       <Filter>paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TransformRecorder.h">
-      <Filter>paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\VideoPainter.h">
       <Filter>paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ViewPainter.h">
@@ -4351,76 +4201,10 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerThreadStartupData.h">
       <Filter>workers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\DocumentXPathEvaluator.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\DocumentXSLT.h">
-      <Filter>xml</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\DOMParser.h">
       <Filter>xml</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\NativeXPathNSResolver.h">
-      <Filter>xml</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XMLSerializer.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathEvaluator.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathExpression.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathExpressionNode.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathFunctions.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathNodeSet.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathNSResolver.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathParser.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathPath.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathPredicate.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathResult.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathStep.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathUtil.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathValue.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathVariableReference.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLImportRule.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLStyleSheet.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLTExtensions.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLTProcessor.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLTUnicodeSort.h">
       <Filter>xml</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\MarkupTokenizerInlines.h">
@@ -4456,13 +4240,23 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xmlhttprequest\XMLHttpRequestUpload.h">
       <Filter>xmlhttprequest</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\FetchInitiatorTypeNames.in">
-      <Filter>fetch</Filter>
-    </None>
-    <None Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\OWNERS">
-      <Filter>fetch</Filter>
-    </None>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontFaceDescriptors.h">
+      <Filter>css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontFaceSetLoadEventInit.h">
+      <Filter>css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\MediaQueryListEventInit.h">
+      <Filter>css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\KeyframeEffectOptions.h">
+      <Filter>animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\ComputedTimingProperties.h">
+      <Filter>animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\EventSourceInit.h">
+      <Filter>page</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -126,6 +126,7 @@ public:
 
     void incrementCompositorProxiedProperties(uint32_t properties);
     void decrementCompositorProxiedProperties(uint32_t properties);
+    CompositorProxiedPropertySet* proxiedPropertyCounts(void) const { return nullptr; }
 
     void setCustomElementDefinition(PassRefPtrWillBeRawPtr<CustomElementDefinition> definition) { m_customElementDefinition = definition; }
     CustomElementDefinition* customElementDefinition() const { return m_customElementDefinition.get(); }

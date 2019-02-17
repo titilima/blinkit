@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Location.cpp
+// Description: Location Class
+//      Author: Ziming Li
+//     Created: 2019-02-13
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2010 Apple Inc. All rights reserved.
  *
@@ -29,7 +40,6 @@
 #include "core/frame/Location.h"
 
 #include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/V8DOMActivityLogger.h"
 #include "core/dom/DOMURLUtilsReadOnly.h"
 #include "core/dom/Document.h"
 #include "core/dom/ExceptionCode.h"
@@ -260,15 +270,6 @@ void Location::setLocation(const String& url, LocalDOMWindow* callingWindow, Loc
     if (m_frame->domWindow()->isInsecureScriptAccess(*callingWindow, completedURL))
         return;
 
-    V8DOMActivityLogger* activityLogger = V8DOMActivityLogger::currentActivityLoggerIfIsolatedWorld();
-    if (activityLogger) {
-        Vector<String> argv;
-        argv.append("LocalDOMWindow");
-        argv.append("url");
-        argv.append(enteredDocument->url());
-        argv.append(completedURL);
-        activityLogger->logEvent("blinkSetAttribute", argv.size(), argv.data());
-    }
     m_frame->navigate(*callingWindow->document(), completedURL, locationPolicy == SetLocation::ReplaceThisFrame, UserGestureStatus::None);
 }
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ScrollingCoordinator.cpp
+// Description: ScrollingCoordinator Class
+//      Author: Ziming Li
+//     Created: 2019-02-12
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -26,7 +37,6 @@
 #include "core/page/scrolling/ScrollingCoordinator.h"
 
 #include "core/dom/Document.h"
-#include "core/dom/Fullscreen.h"
 #include "core/dom/Node.h"
 #include "core/frame/EventHandlerRegistry.h"
 #include "core/frame/FrameView.h"
@@ -40,7 +50,6 @@
 #include "core/layout/compositing/PaintLayerCompositor.h"
 #include "core/page/ChromeClient.h"
 #include "core/page/Page.h"
-#include "core/plugins/PluginView.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/TraceEvent.h"
 #include "platform/exported/WebScrollbarImpl.h"
@@ -193,15 +202,10 @@ void ScrollingCoordinator::updateAfterCompositingChangeIfNeeded()
         // If there is a non-root fullscreen element, prevent the viewport from
         // scrolling.
         Document* mainFrameDocument = m_page->deprecatedLocalMainFrame()->document();
-        Element* fullscreenElement = Fullscreen::fullscreenElementFrom(*mainFrameDocument);
         WebLayer* visualViewportScrollLayer = toWebLayer(m_page->frameHost().visualViewport().scrollLayer());
 
-        if (visualViewportScrollLayer) {
-            if (fullscreenElement && fullscreenElement != mainFrameDocument->documentElement())
-                visualViewportScrollLayer->setUserScrollable(false, false);
-            else
-                visualViewportScrollLayer->setUserScrollable(true, true);
-        }
+        if (visualViewportScrollLayer)
+            visualViewportScrollLayer->setUserScrollable(true, true);
 
         layoutViewportScrollLayer->setUserScrollable(frameView->userInputScrollable(HorizontalScrollbar), frameView->userInputScrollable(VerticalScrollbar));
     }
@@ -796,20 +800,6 @@ Region ScrollingCoordinator::computeShouldHandleScrollGestureOnMainThreadRegion(
             IntRect corner = box->layer()->scrollableArea()->touchResizerCornerRect(bounds);
             corner.moveBy(offset);
             shouldHandleScrollGestureOnMainThreadRegion.unite(corner);
-        }
-    }
-
-    if (const FrameView::ChildrenWidgetSet* children = frameView->children()) {
-        for (const RefPtrWillBeMember<Widget>& child : *children) {
-            if (!(*child).isPluginView())
-                continue;
-
-            PluginView* pluginView = toPluginView(child.get());
-            if (pluginView->wantsWheelEvents()) {
-                IntRect box = pluginView->frameRect();
-                box.moveBy(offset);
-                shouldHandleScrollGestureOnMainThreadRegion.unite(box);
-            }
         }
     }
 

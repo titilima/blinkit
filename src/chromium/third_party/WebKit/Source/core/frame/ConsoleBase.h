@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ConsoleBase.h
+// Description: ConsoleBase Class
+//      Author: Ziming Li
+//     Created: 2019-02-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -30,58 +41,30 @@
 #ifndef ConsoleBase_h
 #define ConsoleBase_h
 
-#include "bindings/core/v8/ScriptState.h"
 #include "bindings/core/v8/ScriptWrappable.h"
-#include "core/inspector/ConsoleAPITypes.h"
-#include "core/inspector/ScriptCallStack.h"
 #include "core/frame/ConsoleTypes.h"
 #include "core/frame/DOMWindowProperty.h"
 #include "platform/heap/Handle.h"
 #include "wtf/Forward.h"
+#include "wtf/text/WTFString.h"
 
 namespace blink {
 
 class ConsoleMessage;
-class ScriptArguments;
+class ExecutionContext;
 
 class ConsoleBase : public GarbageCollectedFinalized<ConsoleBase>, public ScriptWrappable {
     DEFINE_WRAPPERTYPEINFO();
 public:
-    void debug(ScriptState*, PassRefPtrWillBeRawPtr<ScriptArguments>);
-    void error(ScriptState*, PassRefPtrWillBeRawPtr<ScriptArguments>);
-    void info(ScriptState*, PassRefPtrWillBeRawPtr<ScriptArguments>);
-    void log(ScriptState*, PassRefPtrWillBeRawPtr<ScriptArguments>);
-    void clear(ScriptState*, PassRefPtrWillBeRawPtr<ScriptArguments>);
-    void warn(ScriptState*, PassRefPtrWillBeRawPtr<ScriptArguments>);
-    void dir(ScriptState*, PassRefPtrWillBeRawPtr<ScriptArguments>);
-    void dirxml(ScriptState*, PassRefPtrWillBeRawPtr<ScriptArguments>);
-    void table(ScriptState*, PassRefPtrWillBeRawPtr<ScriptArguments>);
-    void trace(ScriptState*, PassRefPtrWillBeRawPtr<ScriptArguments>);
-    void assertCondition(ScriptState*, PassRefPtrWillBeRawPtr<ScriptArguments>, bool condition);
-    void count(ScriptState*, PassRefPtrWillBeRawPtr<ScriptArguments>);
-    void markTimeline(const String&);
-    void profile(const String&);
-    void profileEnd(const String&);
-    void time(const String&);
-    void timeEnd(ScriptState*, const String&);
-    void timeStamp(const String&);
-    void timeline(ScriptState*, const String&);
-    void timelineEnd(ScriptState*, const String&);
-    void group(ScriptState*, PassRefPtrWillBeRawPtr<ScriptArguments>);
-    void groupCollapsed(ScriptState*, PassRefPtrWillBeRawPtr<ScriptArguments>);
-    void groupEnd();
+    virtual ~ConsoleBase();
 
     DEFINE_INLINE_VIRTUAL_TRACE() { }
-
-    virtual ~ConsoleBase();
 
 protected:
     virtual ExecutionContext* context() = 0;
     virtual void reportMessageToConsole(PassRefPtrWillBeRawPtr<ConsoleMessage>) = 0;
 
 private:
-    void internalAddMessage(MessageType, MessageLevel, ScriptState*, PassRefPtrWillBeRawPtr<ScriptArguments>, bool acceptNoArguments = false);
-
     HashCountedSet<String> m_counts;
     HashMap<String, double> m_times;
 };

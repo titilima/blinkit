@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ImageLoader.cpp
+// Description: ImageLoader Class
+//      Author: Ziming Li
+//     Created: 2019-02-12
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -22,9 +33,6 @@
 #include "core/loader/ImageLoader.h"
 
 #include "bindings/core/v8/ScriptController.h"
-#include "bindings/core/v8/ScriptState.h"
-#include "bindings/core/v8/V8Binding.h"
-#include "bindings/core/v8/V8PerIsolateData.h"
 #include "core/dom/Document.h"
 #include "core/dom/Element.h"
 #include "core/dom/IncrementLoadEventDelayCount.h"
@@ -41,7 +49,6 @@
 #include "core/html/HTMLImageElement.h"
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/layout/LayoutImage.h"
-#include "core/layout/LayoutVideo.h"
 #include "core/layout/svg/LayoutSVGImage.h"
 #include "core/svg/graphics/SVGImage.h"
 #include "platform/Logging.h"
@@ -92,6 +99,8 @@ public:
         , m_weakFactory(this)
         , m_referrerPolicy(referrerPolicy)
     {
+        assert(false); // BKTODO:
+#if 0
         v8::Isolate* isolate = V8PerIsolateData::mainThreadIsolate();
         v8::HandleScope scope(isolate);
         // If we're invoked from C++ without a V8 context on the stack, we should
@@ -102,6 +111,7 @@ public:
             m_scriptState = ScriptState::forMainWorld(loader->element()->document().frame());
             ASSERT(m_scriptState);
         }
+#endif
     }
 
     ~Task() override
@@ -112,18 +122,24 @@ public:
     {
         if (!m_loader)
             return;
+        assert(false); // BKTODO:
+#if 0
         if (m_scriptState->contextIsValid()) {
             ScriptState::Scope scope(m_scriptState.get());
             m_loader->doUpdateFromElement(m_shouldBypassMainWorldCSP, m_updateBehavior, m_referrerPolicy);
         } else {
             m_loader->doUpdateFromElement(m_shouldBypassMainWorldCSP, m_updateBehavior, m_referrerPolicy);
         }
+#endif
     }
 
     void clearLoader()
     {
         m_loader = nullptr;
+        assert(false); // BKTODO:
+#if 0
         m_scriptState.clear();
+#endif
     }
 
     WeakPtr<Task> createWeakPtr()
@@ -135,7 +151,6 @@ private:
     RawPtrWillBeWeakPersistent<ImageLoader> m_loader;
     BypassMainWorldBehavior m_shouldBypassMainWorldCSP;
     UpdateFromElementBehavior m_updateBehavior;
-    RefPtr<ScriptState> m_scriptState;
     WeakPtrFactory<Task> m_weakFactory;
     ReferrerPolicy m_referrerPolicy;
 };
@@ -471,7 +486,7 @@ bool ImageLoader::shouldLoadImmediately(const KURL& url) const
         if (resource && !resource->errorOccurred())
             return true;
     }
-    return (m_loadingImageDocument || isHTMLObjectElement(m_element) || isHTMLEmbedElement(m_element) || url.protocolIsData());
+    return (m_loadingImageDocument || url.protocolIsData());
 }
 
 void ImageLoader::notifyFinished(Resource* resource)
@@ -537,9 +552,6 @@ LayoutImageResource* ImageLoader::layoutImageResource()
 
     if (layoutObject->isSVGImage())
         return toLayoutSVGImage(layoutObject)->imageResource();
-
-    if (layoutObject->isVideo())
-        return toLayoutVideo(layoutObject)->imageResource();
 
     return 0;
 }

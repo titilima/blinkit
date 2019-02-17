@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CreateWindow.cpp
+// Description: Window Creators
+//      Author: Ziming Li
+//     Created: 2019-02-12
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies)
@@ -68,13 +79,6 @@ static Frame* createWindow(LocalFrame& openerFrame, LocalFrame& lookupFrame, con
         }
     }
 
-    // Sandboxed frames cannot open new auxiliary browsing contexts.
-    if (openerFrame.document()->isSandboxed(SandboxPopups)) {
-        // FIXME: This message should be moved off the console once a solution to https://bugs.webkit.org/show_bug.cgi?id=103274 exists.
-        openerFrame.document()->addConsoleMessage(ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, "Blocked opening '" + request.resourceRequest().url().elidedString() + "' in a new window because the request was made in a sandboxed frame whose 'allow-popups' permission is not set."));
-        return nullptr;
-    }
-
     if (openerFrame.settings() && !openerFrame.settings()->supportsMultipleWindows())
         return openerFrame.tree().top();
 
@@ -113,11 +117,6 @@ static Frame* createWindow(LocalFrame& openerFrame, LocalFrame& lookupFrame, con
 
     host->chromeClient().setWindowRectWithAdjustment(windowRect);
     host->chromeClient().show(policy);
-
-    // TODO(japhet): There's currently no way to set sandbox flags on a RemoteFrame and have it propagate
-    // to the real frame in a different process. See crbug.com/483584.
-    if (frame.isLocalFrame() && openerFrame.document()->isSandboxed(SandboxPropagatesToAuxiliaryBrowsingContexts))
-        toLocalFrame(&frame)->loader().forceSandboxFlags(openerFrame.document()->sandboxFlags());
 
     created = true;
     return &frame;
@@ -174,9 +173,6 @@ void createWindowForRequest(const FrameLoadRequest& request, LocalFrame& openerF
     ASSERT(request.resourceRequest().requestorOrigin() || (openerFrame.document() && openerFrame.document()->url().isEmpty()));
 
     if (openerFrame.document()->pageDismissalEventBeingDispatched() != Document::NoDismissal)
-        return;
-
-    if (openerFrame.document() && openerFrame.document()->isSandboxed(SandboxPopups))
         return;
 
     if (!LocalDOMWindow::allowPopUp(openerFrame))

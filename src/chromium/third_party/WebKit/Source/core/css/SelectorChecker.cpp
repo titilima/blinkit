@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StyleAdjuster.cpp
+// Description: StyleAdjuster Class
+//      Author: Ziming Li
+//     Created: 2019-02-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -32,7 +43,6 @@
 #include "core/dom/Document.h"
 #include "core/dom/Element.h"
 #include "core/dom/ElementTraversal.h"
-#include "core/dom/Fullscreen.h"
 #include "core/dom/NodeComputedStyle.h"
 #include "core/dom/NthIndexCache.h"
 #include "core/dom/StyleEngine.h"
@@ -953,7 +963,7 @@ bool SelectorChecker::checkPseudoClass(const SelectorCheckingContext& context, M
         // context's Document is in the fullscreen state has the 'full-screen' pseudoclass applied.
         if (isHTMLFrameElementBase(element) && element.containsFullScreenElement())
             return true;
-        return Fullscreen::isActiveFullScreenElement(element);
+        return false;
     case CSSSelector::PseudoFullScreenAncestor:
         return element.containsFullScreenElement();
     case CSSSelector::PseudoInRange:

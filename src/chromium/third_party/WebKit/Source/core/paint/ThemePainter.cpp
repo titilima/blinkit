@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ThemePainter.cpp
+// Description: ThemePainter Class
+//      Author: Ziming Li
+//     Created: 2019-02-12
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * This file is part of the theme implementation for form controls in WebCore.
  *
@@ -32,7 +43,6 @@
 #include "core/layout/LayoutMeter.h"
 #include "core/layout/LayoutTheme.h"
 #include "core/layout/LayoutView.h"
-#include "core/paint/MediaControlsPainter.h"
 #include "core/paint/PaintInfo.h"
 #include "core/style/ComputedStyle.h"
 #include "platform/graphics/GraphicsContextStateSaver.h"
@@ -112,36 +122,6 @@ bool ThemePainter::paint(const LayoutObject& o, const PaintInfo& paintInfo, cons
     case SliderThumbHorizontalPart:
     case SliderThumbVerticalPart:
         return paintSliderThumb(o, paintInfo, r);
-    case MediaEnterFullscreenButtonPart:
-    case MediaExitFullscreenButtonPart:
-        return MediaControlsPainter::paintMediaFullscreenButton(o, paintInfo, r);
-    case MediaPlayButtonPart:
-        return MediaControlsPainter::paintMediaPlayButton(o, paintInfo, r);
-    case MediaOverlayPlayButtonPart:
-        return MediaControlsPainter::paintMediaOverlayPlayButton(o, paintInfo, r);
-    case MediaMuteButtonPart:
-        return MediaControlsPainter::paintMediaMuteButton(o, paintInfo, r);
-    case MediaToggleClosedCaptionsButtonPart:
-        return MediaControlsPainter::paintMediaToggleClosedCaptionsButton(o, paintInfo, r);
-    case MediaSliderPart:
-        return MediaControlsPainter::paintMediaSlider(o, paintInfo, r);
-    case MediaSliderThumbPart:
-        return MediaControlsPainter::paintMediaSliderThumb(o, paintInfo, r);
-    case MediaVolumeSliderContainerPart:
-        return true;
-    case MediaVolumeSliderPart:
-        return MediaControlsPainter::paintMediaVolumeSlider(o, paintInfo, r);
-    case MediaVolumeSliderThumbPart:
-        return MediaControlsPainter::paintMediaVolumeSliderThumb(o, paintInfo, r);
-    case MediaFullScreenVolumeSliderPart:
-    case MediaFullScreenVolumeSliderThumbPart:
-    case MediaTimeRemainingPart:
-    case MediaCurrentTimePart:
-    case MediaControlsBackgroundPart:
-        return true;
-    case MediaCastOffButtonPart:
-    case MediaOverlayCastOffButtonPart:
-        return MediaControlsPainter::paintMediaCastButton(o, paintInfo, r);
     case MenulistButtonPart:
     case TextFieldPart:
     case TextAreaPart:

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: AnimationEffect.cpp
+// Description: AnimationEffect Class
+//      Author: Ziming Li
+//     Created: 2019-02-12
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -96,6 +107,8 @@ void AnimationEffect::updateSpecifiedTiming(const Timing& timing)
 
 void AnimationEffect::computedTiming(ComputedTimingProperties& computedTiming)
 {
+    assert(false); // BKTODO:
+#if 0
     // ComputedTimingProperties members.
     computedTiming.setStartTime(0);
     computedTiming.setEndTime(endTimeInternal() * 1000);
@@ -123,6 +136,7 @@ void AnimationEffect::computedTiming(ComputedTimingProperties& computedTiming)
     computedTiming.setPlaybackRate(specifiedTiming().playbackRate);
     computedTiming.setDirection(Timing::playbackDirectionString(specifiedTiming().direction));
     computedTiming.setEasing(specifiedTiming().timingFunction->toString());
+#endif
 }
 
 ComputedTimingProperties AnimationEffect::computedTiming()

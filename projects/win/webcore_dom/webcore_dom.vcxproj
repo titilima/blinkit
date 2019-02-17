@@ -617,6 +617,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\ResourceProgressEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\ScopedEventQueue.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\SecurityPolicyViolationEvent.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\SecurityPolicyViolationEventInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\TextEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\TextEventInputType.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\TouchEvent.h" />

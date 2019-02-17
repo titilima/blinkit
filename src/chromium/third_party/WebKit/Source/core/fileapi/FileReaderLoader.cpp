@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FileReaderLoader.cpp
+// Description: FileReaderLoader Class
+//      Author: Ziming Li
+//     Created: 2019-02-15
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc.  All rights reserved.
  *
@@ -30,7 +41,6 @@
 
 #include "core/fileapi/FileReaderLoader.h"
 
-#include "core/dom/DOMArrayBuffer.h"
 #include "core/dom/ExecutionContext.h"
 #include "core/fetch/FetchInitiatorTypeNames.h"
 #include "core/fileapi/Blob.h"
@@ -303,17 +313,6 @@ FileError::ErrorCode FileReaderLoader::httpStatusCodeToErrorCode(int httpStatusC
     default:
         return FileError::NOT_READABLE_ERR;
     }
-}
-
-PassRefPtr<DOMArrayBuffer> FileReaderLoader::arrayBufferResult() const
-{
-    ASSERT(m_readType == ReadAsArrayBuffer);
-
-    // If the loading is not started or an error occurs, return an empty result.
-    if (!m_rawData || m_errorCode)
-        return nullptr;
-
-    return DOMArrayBuffer::create(m_rawData->toArrayBuffer());
 }
 
 String FileReaderLoader::stringResult()

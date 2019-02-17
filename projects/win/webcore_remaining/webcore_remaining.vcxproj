@@ -191,7 +191,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationEffectTiming.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationInputHelpers.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationStack.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationTestHelper.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationTimeline.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationTranslationUtil.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\ColorPropertyFunctions.cpp" />
@@ -219,7 +218,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\DeferredLegacyStyleInterpolation.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\DocumentAnimations.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\DoubleStyleInterpolation.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\EffectInput.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\ElementAnimations.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\FilterStyleInterpolation.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\ImageSliceStyleInterpolation.cpp" />
@@ -330,7 +328,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSStyleSheet.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSSupportsRule.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSSVGDocumentValue.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSTestHelper.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSTimingFunctionValue.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSToLengthConversionData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSUnicodeRangeValue.cpp" />
@@ -458,8 +455,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\ReplaceSelectionCommand.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\SetNodeAttributeCommand.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\SimplifyMarkupCommand.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\SmartReplaceCF.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\SmartReplaceICU.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\SplitElementCommand.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\SplitTextNodeCommand.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\SplitTextNodeContainingElementCommand.cpp" />
@@ -473,7 +468,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingBehavior.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingStrategy.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingStyle.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingTestBase.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingUtilities.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\Editor.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditorKeyBindings.cpp" />
@@ -527,7 +521,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\IntegrityMetadata.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\LinkFetchResource.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\MemoryCache.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\MockImageResourceClient.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\RawResource.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\Resource.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\ResourceFetcher.cpp" />
@@ -583,9 +576,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PageScaleConstraintsSet.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PlatformEventController.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PlatformEventDispatcher.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RemoteDOMWindow.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RemoteFrame.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RemoteFrameView.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RootFrameViewport.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\Screen.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\Settings.cpp" />
@@ -673,7 +663,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ClipScope.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\DetailsMarkerPainter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\EllipsisBoxPainter.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\EmbeddedObjectPainter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FieldsetPainter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FileUploadControlPainter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FilterEffectBuilder.cpp" />
@@ -682,7 +671,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FramePainter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FrameSetPainter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\GridPainter.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\HTMLCanvasPainter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ImagePainter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\InlineFlowBoxPainter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\InlinePainter.cpp" />
@@ -692,7 +680,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\LineBoxListPainter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ListItemPainter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ListMarkerPainter.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\MediaControlsPainter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\MultiColumnSetPainter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\NinePieceImageGrid.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\NinePieceImagePainter.cpp" />
@@ -743,7 +730,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ThemePainterDefault.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\Transform3DRecorder.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TransformRecorder.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\VideoPainter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ViewPainter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\streams\ReadableByteStream.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\streams\ReadableStream.cpp" />
@@ -790,34 +776,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xmlhttprequest\XMLHttpRequest.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xmlhttprequest\XMLHttpRequestProgressEventThrottle.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xmlhttprequest\XMLHttpRequestUpload.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\DocumentXPathEvaluator.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\DocumentXSLT.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\DOMParser.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\NativeXPathNSResolver.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\SharedBufferReader.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\XMLDocumentParser.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\XMLDocumentParserScope.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\XMLErrors.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XMLSerializer.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathEvaluator.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathExpression.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathExpressionNode.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathFunctions.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathNodeSet.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathParser.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathPath.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathPredicate.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathResult.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathStep.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathUtil.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathValue.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathVariableReference.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLImportRule.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLStyleSheetLibxslt.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLTExtensions.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLTProcessor.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLTProcessorLibxslt.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLTUnicodeSort.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -855,14 +819,13 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationEffectTiming.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationInputHelpers.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationStack.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationTestHelper.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationTimeline.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationTranslationUtil.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\ColorPropertyFunctions.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\CompositorAnimations.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\CompositorAnimationsImpl.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\CompositorAnimationsTestHelper.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\CompositorPendingAnimations.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\ComputedTimingProperties.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\ConstantStyleInterpolation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\CSSColorInterpolationType.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\CSSFontWeightInterpolationType.h" />
@@ -909,6 +872,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\Keyframe.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\KeyframeEffect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\KeyframeEffectModel.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\KeyframeEffectOptions.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\LegacyStyleInterpolation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\LengthBoxStyleInterpolation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\LengthListPropertyFunctions.h" />
@@ -1033,7 +997,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSStyleSheet.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSSupportsRule.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSSVGDocumentValue.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSTestHelper.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSTimingFunctionValue.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSToLengthConversionData.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSUnicodeRangeValue.h" />
@@ -1052,8 +1015,10 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\ElementRuleCollector.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontFace.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontFaceCache.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontFaceDescriptors.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontFaceSet.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontFaceSetLoadEvent.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontFaceSetLoadEventInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontLoader.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontSize.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontStyleMatcher.h" />
@@ -1071,6 +1036,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\MediaQueryExp.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\MediaQueryList.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\MediaQueryListEvent.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\MediaQueryListEventInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\MediaQueryListListener.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\MediaQueryMatcher.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\MediaValues.h" />
@@ -1190,7 +1156,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingBoundary.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingStrategy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingStyle.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingTestBase.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingUtilities.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\Editor.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EphemeralRange.h" />
@@ -1258,7 +1223,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\IntegrityMetadata.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\LinkFetchResource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\MemoryCache.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\MockImageResourceClient.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\RawResource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\Resource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\ResourceClient.h" />
@@ -1332,10 +1296,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PageScaleConstraintsSet.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PlatformEventController.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PlatformEventDispatcher.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RemoteDOMWindow.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RemoteFrame.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RemoteFrameClient.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RemoteFrameView.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\RootFrameViewport.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\Screen.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\ScrollOptions.h" />
@@ -1412,6 +1372,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\DragState.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\EditorClient.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\EventSource.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\EventSourceInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\EventWithHitTestResults.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\FocusController.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\FrameTree.h" />
@@ -1449,7 +1410,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ClipScope.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\DetailsMarkerPainter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\EllipsisBoxPainter.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\EmbeddedObjectPainter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FieldsetPainter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FileUploadControlPainter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FilterEffectBuilder.h" />
@@ -1458,7 +1418,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FramePainter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FrameSetPainter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\GridPainter.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\HTMLCanvasPainter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ImagePainter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\InlineFlowBoxPainter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\InlinePainter.h" />
@@ -1470,7 +1429,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\LineLayoutPaintShim.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ListItemPainter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ListMarkerPainter.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\MediaControlsPainter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\MultiColumnSetPainter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\NinePieceImageGrid.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\NinePieceImagePainter.h" />
@@ -1521,10 +1479,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TextPainter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ThemePainter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ThemePainterDefault.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ThemePainterMac.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\Transform3DRecorder.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TransformRecorder.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\VideoPainter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ViewPainter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\streams\ReadableByteStream.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\streams\ReadableByteStreamReader.h" />
@@ -1585,10 +1541,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xmlhttprequest\XMLHttpRequestProgressEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xmlhttprequest\XMLHttpRequestProgressEventThrottle.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xmlhttprequest\XMLHttpRequestUpload.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\DocumentXPathEvaluator.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\DocumentXSLT.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\DOMParser.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\NativeXPathNSResolver.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\MarkupTokenizerInlines.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\SharedBufferReader.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\XMLDocumentParser.h" />
@@ -1596,29 +1549,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\XMLErrors.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\XMLParserInput.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XMLSerializer.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathEvaluator.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathExpression.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathExpressionNode.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathFunctions.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathNodeSet.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathNSResolver.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathParser.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathPath.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathPredicate.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathResult.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathStep.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathUtil.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathValue.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XPathVariableReference.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLImportRule.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLStyleSheet.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLTExtensions.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLTProcessor.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XSLTUnicodeSort.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\FetchInitiatorTypeNames.in" />
-    <None Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\OWNERS" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

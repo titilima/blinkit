@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CompositeEditCommand.cpp
+// Description: CompositeEditCommand Class
+//      Author: Ziming Li
+//     Created: 2019-02-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -365,8 +376,7 @@ void CompositeEditCommand::appendNode(PassRefPtrWillBeRawPtr<Node> node, PassRef
     // of an OBJECT element, the ASSERT below may fire since the return
     // value of canHaveChildrenForEditing is not reliable until the layout
     // object of the OBJECT is created. Hence we ignore this check for OBJECTs.
-    ASSERT(canHaveChildrenForEditing(parent.get())
-        || (parent->isElementNode() && toElement(parent.get())->tagQName() == objectTag));
+    ASSERT(canHaveChildrenForEditing(parent.get()));
     applyCommandToComposite(AppendNodeCommand::create(parent, node));
 }
 

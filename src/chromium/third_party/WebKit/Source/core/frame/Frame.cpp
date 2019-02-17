@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Frame.cpp
+// Description: Frame Class
+//      Author: Ziming Li
+//     Created: 2019-02-12
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1998, 1999 Torben Weis <weis@kde.org>
  *                     1999 Lars Knoll <knoll@kde.org>
@@ -200,26 +211,8 @@ static bool canAccessAncestor(const SecurityOrigin& activeSecurityOrigin, const 
 bool Frame::canNavigate(const Frame& targetFrame)
 {
     // Frame-busting is generally allowed, but blocked for sandboxed frames lacking the 'allow-top-navigation' flag.
-    if (!securityContext()->isSandboxed(SandboxTopNavigation) && targetFrame == tree().top())
+    if (targetFrame == tree().top())
         return true;
-
-    if (securityContext()->isSandboxed(SandboxNavigation)) {
-        // Sandboxed frames can navigate their own children.
-        if (targetFrame.tree().isDescendantOf(this))
-            return true;
-
-        // They can also navigate popups, if the 'allow-sandbox-escape-via-popup' flag is specified.
-        if (targetFrame == targetFrame.tree().top() && targetFrame.tree().top() != tree().top() && !securityContext()->isSandboxed(SandboxPropagatesToAuxiliaryBrowsingContexts))
-            return true;
-
-        // Otherwise, block the navigation.
-        const char* reason = "The frame attempting navigation is sandboxed, and is therefore disallowed from navigating its ancestors.";
-        if (securityContext()->isSandboxed(SandboxTopNavigation) && targetFrame == tree().top())
-            reason = "The frame attempting navigation of the top-level window is sandboxed, but the 'allow-top-navigation' flag is not set.";
-
-        printNavigationErrorMessage(targetFrame, reason);
-        return false;
-    }
 
     ASSERT(securityContext()->securityOrigin());
     SecurityOrigin& origin = *securityContext()->securityOrigin();

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ThemePainterDefault.cpp
+// Description: ThemePainterDefault Class
+//      Author: Ziming Li
+//     Created: 2019-02-12
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007 Apple Inc.
  * Copyright (C) 2007 Alp Toker <alp@atoker.com>
@@ -27,7 +38,6 @@
 #include "core/layout/LayoutObject.h"
 #include "core/layout/LayoutProgress.h"
 #include "core/layout/LayoutTheme.h"
-#include "core/paint/MediaControlsPainter.h"
 #include "core/paint/PaintInfo.h"
 #include "platform/LayoutTestSupport.h"
 #include "platform/graphics/Color.h"

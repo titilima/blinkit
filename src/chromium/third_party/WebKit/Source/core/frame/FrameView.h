@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FrameView.h
+// Description: FrameView Class
+//      Author: Ziming Li
+//     Created: 2019-02-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
    Copyright (C) 1997 Martin Jones (mjones@kde.org)
              (C) 1998 Waldo Bastian (bastian@kde.org)
@@ -757,9 +768,6 @@ private:
     LayoutScrollbarPart* resizer() const override { return nullptr; }
 
     LayoutSize m_size;
-
-    typedef HashSet<RefPtr<LayoutEmbeddedObject>> EmbeddedObjectSet;
-    EmbeddedObjectSet m_partUpdateSet;
 
     // FIXME: These are just "children" of the FrameView and should be RefPtrWillBeMember<Widget> instead.
     HashSet<RefPtr<LayoutPart>> m_parts;

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FileReaderSync.h
+// Description: FileReaderSync Class
+//      Author: Ziming Li
+//     Created: 2019-02-15
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc.  All rights reserved.
  *
@@ -39,7 +50,6 @@
 namespace blink {
 
 class Blob;
-class DOMArrayBuffer;
 class ExceptionState;
 class ExecutionContext;
 class FileReaderLoader;
@@ -52,7 +62,6 @@ public:
         return new FileReaderSync();
     }
 
-    PassRefPtr<DOMArrayBuffer> readAsArrayBuffer(ExecutionContext*, Blob*, ExceptionState&);
     String readAsBinaryString(ExecutionContext*, Blob*, ExceptionState&);
     String readAsText(ExecutionContext* executionContext, Blob* blob, ExceptionState& ec)
     {

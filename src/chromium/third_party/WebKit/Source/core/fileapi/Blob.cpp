@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Blob.cpp
+// Description: Blob Class
+//      Author: Ziming Li
+//     Created: 2019-02-15
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -34,7 +45,6 @@
 #include "core/dom/DOMURL.h"
 #include "core/dom/ExceptionCode.h"
 #include "core/dom/ExecutionContext.h"
-#include "core/fileapi/BlobPropertyBag.h"
 #include "platform/blob/BlobRegistry.h"
 #include "platform/blob/BlobURL.h"
 
@@ -82,27 +92,6 @@ Blob::Blob(PassRefPtr<BlobDataHandle> dataHandle)
 
 Blob::~Blob()
 {
-}
-
-// static
-Blob* Blob::create(const HeapVector<ArrayBufferOrArrayBufferViewOrBlobOrString>& blobParts, const BlobPropertyBag& options, ExceptionState& exceptionState)
-{
-    ASSERT(options.hasType());
-    if (!options.type().containsOnlyASCII()) {
-        exceptionState.throwDOMException(SyntaxError, "The 'type' property must consist of ASCII characters.");
-        return nullptr;
-    }
-
-    ASSERT(options.hasEndings());
-    bool normalizeLineEndingsToNative = options.endings() == "native";
-
-    OwnPtr<BlobData> blobData = BlobData::create();
-    blobData->setContentType(options.type().lower());
-
-    populateBlobData(blobData.get(), blobParts, normalizeLineEndingsToNative);
-
-    long long blobSize = blobData->length();
-    return new Blob(BlobDataHandle::create(blobData.release(), blobSize));
 }
 
 void Blob::clampSliceOffsets(long long size, long long& start, long long& end)

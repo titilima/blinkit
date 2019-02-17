@@ -23,25 +23,25 @@ namespace WTF {
 namespace Unicode {
 
 enum Direction {
-    LeftToRight,
-    RightToLeft,
-    EuropeanNumber,
-    EuropeanNumberSeparator,
-    EuropeanNumberTerminator,
-    ArabicNumber,
-    CommonNumberSeparator,
-    BlockSeparator,
-    SegmentSeparator,
-    WhiteSpaceNeutral,
-    OtherNeutral,
-    LeftToRightEmbedding,
-    LeftToRightOverride,
-    RightToLeftArabic,
-    RightToLeftEmbedding,
-    RightToLeftOverride,
-    PopDirectionalFormat,
-    NonSpacingMark,
-    BoundaryNeutral
+    LeftToRight = U_LEFT_TO_RIGHT,
+    RightToLeft = U_RIGHT_TO_LEFT,
+    EuropeanNumber = U_EUROPEAN_NUMBER,
+    EuropeanNumberSeparator = U_EUROPEAN_NUMBER_SEPARATOR,
+    EuropeanNumberTerminator = U_EUROPEAN_NUMBER_TERMINATOR,
+    ArabicNumber = U_ARABIC_NUMBER,
+    CommonNumberSeparator = U_COMMON_NUMBER_SEPARATOR,
+    BlockSeparator = U_BLOCK_SEPARATOR,
+    SegmentSeparator = U_SEGMENT_SEPARATOR,
+    WhiteSpaceNeutral = U_WHITE_SPACE_NEUTRAL,
+    OtherNeutral = U_OTHER_NEUTRAL,
+    LeftToRightEmbedding = U_LEFT_TO_RIGHT_EMBEDDING,
+    LeftToRightOverride = U_LEFT_TO_RIGHT_OVERRIDE,
+    RightToLeftArabic = U_RIGHT_TO_LEFT_ARABIC,
+    RightToLeftEmbedding = U_RIGHT_TO_LEFT_EMBEDDING,
+    RightToLeftOverride = U_RIGHT_TO_LEFT_OVERRIDE,
+    PopDirectionalFormat = U_POP_DIRECTIONAL_FORMAT,
+    NonSpacingMark = U_DIR_NON_SPACING_MARK,
+    BoundaryNeutral = U_BOUNDARY_NEUTRAL
 };
 
 enum DecompositionType {

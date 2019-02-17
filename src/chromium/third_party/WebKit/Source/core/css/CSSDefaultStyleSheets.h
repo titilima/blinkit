@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CSSDefaultStyleSheets.h
+// Description: CSSDefaultStyleSheets Class
+//      Author: Ziming Li
+//     Created: 2019-02-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -54,7 +65,6 @@ public:
     StyleSheetContents* svgStyleSheet() { return m_svgStyleSheet.get(); }
     StyleSheetContents* mathmlStyleSheet() { return m_mathmlStyleSheet.get(); }
     StyleSheetContents* mediaControlsStyleSheet() { return m_mediaControlsStyleSheet.get(); }
-    StyleSheetContents* fullscreenStyleSheet() { return m_fullscreenStyleSheet.get(); }
 
     DECLARE_TRACE();
 
@@ -74,7 +84,6 @@ private:
     RefPtrWillBeMember<StyleSheetContents> m_svgStyleSheet;
     RefPtrWillBeMember<StyleSheetContents> m_mathmlStyleSheet;
     RefPtrWillBeMember<StyleSheetContents> m_mediaControlsStyleSheet;
-    RefPtrWillBeMember<StyleSheetContents> m_fullscreenStyleSheet;
 };
 
 } // namespace blink

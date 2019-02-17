@@ -51,6 +51,7 @@ namespace blink {
 class ConsoleMessage;
 class ConsoleMessageStorage;
 class DocumentLoader;
+class LocalFrame;
 class ResourceError;
 class ResourceResponse;
 class ScriptCallStack;

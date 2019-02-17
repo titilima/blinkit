@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: SearchBuffer.cpp
+// Description: SearchBuffer Class
+//      Author: Ziming Li
+//     Created: 2019-02-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All rights reserved.
  * Copyright (C) 2005 Alexey Proskuryakov.
@@ -46,6 +57,9 @@ static bool searcherInUse;
 
 static UStringSearch* createSearcher()
 {
+    assert(false); // BKTODO:
+    return nullptr;
+#if 0
     // Provide a non-empty pattern and non-empty text so usearch_open will not fail,
     // but it doesn't matter exactly what it is, since we don't perform any searches
     // without setting both the pattern and the text.
@@ -54,6 +68,7 @@ static UStringSearch* createSearcher()
     UStringSearch* searcher = usearch_open(&newlineCharacter, 1, &newlineCharacter, 1, searchCollatorName.utf8().data(), 0, &status);
     ASSERT(status == U_ZERO_ERROR || status == U_USING_FALLBACK_WARNING || status == U_USING_DEFAULT_WARNING);
     return searcher;
+#endif
 }
 
 static UStringSearch* searcher()
@@ -114,6 +129,8 @@ inline SearchBuffer::SearchBuffer(const String& target, FindOptions options)
     // to move to multiple searchers.
     lockSearcher();
 
+    assert(false); // BKTODO:
+#if 0
     UStringSearch* searcher = blink::searcher();
     UCollator* collator = usearch_getCollator(searcher);
 
@@ -126,6 +143,7 @@ inline SearchBuffer::SearchBuffer(const String& target, FindOptions options)
     UErrorCode status = U_ZERO_ERROR;
     usearch_setPattern(searcher, m_target.data(), targetLength, &status);
     ASSERT(status == U_ZERO_ERROR);
+#endif
 
     // The kana workaround requires a normalized copy of the target string.
     if (m_targetRequiresKanaWorkaround)
@@ -134,6 +152,8 @@ inline SearchBuffer::SearchBuffer(const String& target, FindOptions options)
 
 inline SearchBuffer::~SearchBuffer()
 {
+    assert(false); // BKTODO:
+#if 0
     // Leave the static object pointing to valid strings (pattern=targer,
     // text=buffer). Otheriwse, usearch_reset() will results in 'use-after-free'
     // error.
@@ -141,6 +161,7 @@ inline SearchBuffer::~SearchBuffer()
     usearch_setPattern(blink::searcher(), &newlineCharacter, 1, &status);
     usearch_setText(blink::searcher(), &newlineCharacter, 1, &status);
     ASSERT(status == U_ZERO_ERROR);
+#endif
 
     unlockSearcher();
 }
@@ -293,6 +314,9 @@ inline size_t SearchBuffer::search(size_t& start)
             return 0;
     }
 
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     UStringSearch* searcher = blink::searcher();
 
     UErrorCode status = U_ZERO_ERROR;
@@ -347,6 +371,7 @@ nextMatch:
 
     start = size - matchStart;
     return matchedLength;
+#endif
 }
 
 // Check if there's any unpaird surrogate code point.

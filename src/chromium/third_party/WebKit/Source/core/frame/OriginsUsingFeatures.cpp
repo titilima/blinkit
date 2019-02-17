@@ -1,10 +1,20 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: OriginsUsingFeatures.cpp
+// Description: OriginsUsingFeatures Class
+//      Author: Ziming Li
+//     Created: 2019-02-13
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "core/frame/OriginsUsingFeatures.h"
 
-#include "bindings/core/v8/ScriptState.h"
 #include "core/dom/Document.h"
 #include "core/page/Page.h"
 #include "public/platform/Platform.h"
@@ -28,9 +38,7 @@ void OriginsUsingFeatures::countAnyWorld(Document& document, Feature feature)
 
 void OriginsUsingFeatures::countMainWorldOnly(const ScriptState* scriptState, Document& document, Feature feature)
 {
-    if (!scriptState || !scriptState->world().isMainWorld())
-        return;
-    countAnyWorld(document, feature);
+    assert(false); // Not reached!
 }
 
 static Document* documentFromEventTarget(EventTarget& target)
@@ -47,17 +55,7 @@ static Document* documentFromEventTarget(EventTarget& target)
 
 void OriginsUsingFeatures::countOriginOrIsolatedWorldHumanReadableName(const ScriptState* scriptState, EventTarget& target, Feature feature)
 {
-    if (!scriptState)
-        return;
-    Document* document = documentFromEventTarget(target);
-    if (!document)
-        return;
-    if (scriptState->world().isMainWorld()) {
-        document->originsUsingFeaturesValue().count(feature);
-        return;
-    }
-    if (Page* page = document->page())
-        page->originsUsingFeatures().countName(feature, scriptState->world().isolatedWorldHumanReadableName());
+    assert(false); // Not reached!
 }
 
 void OriginsUsingFeatures::Value::count(Feature feature)

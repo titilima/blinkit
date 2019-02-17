@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StyleAdjuster.cpp
+// Description: StyleAdjuster Class
+//      Author: Ziming Li
+//     Created: 2019-02-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -38,7 +49,6 @@
 #include "core/frame/UseCounter.h"
 #include "core/html/HTMLIFrameElement.h"
 #include "core/html/HTMLInputElement.h"
-#include "core/html/HTMLPlugInElement.h"
 #include "core/html/HTMLTableCellElement.h"
 #include "core/html/HTMLTextAreaElement.h"
 #include "core/layout/LayoutReplaced.h"
@@ -399,11 +409,6 @@ void StyleAdjuster::adjustStyleForHTMLElement(ComputedStyle& style, const Comput
         // Textarea considers overflow visible as auto.
         style.setOverflowX(style.overflowX() == OVISIBLE ? OAUTO : style.overflowX());
         style.setOverflowY(style.overflowY() == OVISIBLE ? OAUTO : style.overflowY());
-        return;
-    }
-
-    if (isHTMLPlugInElement(element)) {
-        style.setRequiresAcceleratedCompositingForExternalReasons(toHTMLPlugInElement(element).shouldAccelerate());
         return;
     }
 }

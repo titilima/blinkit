@@ -22,6 +22,7 @@
 #ifndef CSSStyleRule_h
 #define CSSStyleRule_h
 
+#include "core/CoreExport.h"
 #include "core/css/CSSRule.h"
 #include "platform/heap/Handle.h"
 

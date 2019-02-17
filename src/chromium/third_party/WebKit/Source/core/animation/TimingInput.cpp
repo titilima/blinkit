@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TimingInput.cpp
+// Description: TimingInput Class
+//      Author: Ziming Li
+//     Created: 2019-02-13
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -102,10 +113,13 @@ Timing TimingInput::convert(const KeyframeEffectOptions& timingInput)
     setFillMode(result, timingInput.fill());
     setIterationStart(result, timingInput.iterationStart());
     setIterationCount(result, timingInput.iterations());
+    assert(false); // BKTODO:
+#if 0
     if (timingInput.duration().isUnrestrictedDouble())
         setIterationDuration(result, timingInput.duration().getAsUnrestrictedDouble());
     else
         setIterationDuration(result, -1);
+#endif
     setPlaybackRate(result, timingInput.playbackRate());
     setPlaybackDirection(result, timingInput.direction());
     setTimingFunction(result, timingInput.easing());

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FocusController.cpp
+// Description: FocusController Class
+//      Author: Ziming Li
+//     Created: 2019-02-12
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Apple Inc. All rights reserved.
  * Copyright (C) 2008 Nuanti Ltd.
@@ -43,11 +54,10 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/LocalFrame.h"
-#include "core/frame/RemoteFrame.h"
 #include "core/frame/Settings.h"
 #include "core/html/HTMLAreaElement.h"
+#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/HTMLImageElement.h"
-#include "core/html/HTMLPlugInElement.h"
 #include "core/html/HTMLShadowElement.h"
 #include "core/html/HTMLTextFormControlElement.h"
 #include "core/input/EventHandler.h"
@@ -172,9 +182,6 @@ inline void dispatchEventsOnWindowAndFocusedElement(Document* document, bool foc
     // If we have a focused element we should dispatch blur on it before we blur the window.
     // If we have a focused element we should dispatch focus on it after we focus the window.
     // https://bugs.webkit.org/show_bug.cgi?id=27105
-
-    if (document->focusedElement() && isHTMLPlugInElement(document->focusedElement()))
-        toHTMLPlugInElement(document->focusedElement())->setPluginFocus(focused);
 
     // Do not fire events while modal dialogs are up.  See https://bugs.webkit.org/show_bug.cgi?id=33962
     if (Page* page = document->page()) {
@@ -715,17 +722,8 @@ bool FocusController::advanceFocus(WebFocusType type, bool initialFocus, InputDe
 
 bool FocusController::advanceFocusAcrossFrames(WebFocusType type, RemoteFrame* from, LocalFrame* to, InputDeviceCapabilities* sourceCapabilities)
 {
-    // If we are shifting focus from a child frame to its parent, the
-    // child frame has no more focusable elements, and we should continue
-    // looking for focusable elements in the parent, starting from the <iframe>
-    // element of the child frame.
-    Node* startingNode = nullptr;
-    if (from->tree().parent() == to) {
-        ASSERT(from->owner()->isLocal());
-        startingNode = toHTMLFrameOwnerElement(from->owner());
-    }
-
-    return advanceFocusInDocumentOrder(to, startingNode, type, false, sourceCapabilities);
+    assert(false); // Not reached!
+    return false;
 }
 
 bool FocusController::advanceFocusInDocumentOrder(LocalFrame* frame, Node* startingNode, WebFocusType type, bool initialFocus, InputDeviceCapabilities* sourceCapabilities)
@@ -751,9 +749,8 @@ bool FocusController::advanceFocusInDocumentOrder(LocalFrame* frame, Node* start
         // If there's a RemoteFrame on the ancestor chain, we need to continue
         // searching for focusable elements there.
         if (frame->localFrameRoot() != frame->tree().top()) {
-            document->clearFocusedElement();
-            toRemoteFrame(frame->localFrameRoot()->tree().parent())->advanceFocus(type, frame->localFrameRoot());
-            return true;
+            assert(false); // Not reached!
+            return false;
         }
 
         // We didn't find an element to focus, so we should try to pass focus to Chrome.
@@ -779,7 +776,7 @@ bool FocusController::advanceFocusInDocumentOrder(LocalFrame* frame, Node* start
         return true;
     }
 
-    if (element->isFrameOwnerElement() && (!isHTMLPlugInElement(*element) || !element->isKeyboardFocusable())) {
+    if (element->isFrameOwnerElement() && !element->isKeyboardFocusable()) {
         // We focus frames rather than frame owners.
         // FIXME: We should not focus frames that have no scrollbars, as focusing them isn't useful to the user.
         HTMLFrameOwnerElement* owner = toHTMLFrameOwnerElement(element);
@@ -788,13 +785,6 @@ bool FocusController::advanceFocusInDocumentOrder(LocalFrame* frame, Node* start
 
         document->clearFocusedElement();
         setFocusedFrame(owner->contentFrame());
-
-        // If contentFrame is remote, continue the search for focusable
-        // elements in that frame's process.
-        // clearFocusedElement() fires events that might detach the
-        // contentFrame, hence the need to null-check it again.
-        if (owner->contentFrame() && owner->contentFrame()->isRemoteFrame())
-            toRemoteFrame(owner->contentFrame())->advanceFocus(type, frame);
 
         return true;
     }

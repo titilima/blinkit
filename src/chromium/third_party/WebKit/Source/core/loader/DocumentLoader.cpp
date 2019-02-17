@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DocumentLoader.cpp
+// Description: DocumentLoader Class
+//      Author: Ziming Li
+//     Created: 2019-02-12
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008 Apple Inc. All rights reserved.
  * Copyright (C) 2011 Google Inc. All rights reserved.
@@ -421,7 +432,6 @@ void DocumentLoader::cancelLoadAfterXFrameOptionsOrCSPDenied(const ResourceRespo
 {
     InspectorInstrumentation::continueAfterXFrameOptionsDenied(m_frame, this, mainResourceIdentifier(), response);
 
-    frame()->document()->enforceSandboxFlags(SandboxOrigin);
     if (FrameOwner* owner = frame()->owner())
         owner->dispatchLoad();
 
@@ -671,7 +681,6 @@ bool DocumentLoader::maybeCreateArchive()
     ensureWriter(mainResource->mimeType(), m_archive->mainResource()->url());
 
     // The Document has now been created.
-    document()->enforceSandboxFlags(SandboxAll);
 
     commitData(mainResource->data()->data(), mainResource->data()->size());
     return true;

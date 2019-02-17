@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Animation.cpp
+// Description: Animation Class
+//      Author: Ziming Li
+//     Created: 2019-02-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -597,26 +608,6 @@ void Animation::finish(ExceptionState& exceptionState)
     ASSERT(limited());
 }
 
-ScriptPromise Animation::finished(ScriptState* scriptState)
-{
-    if (!m_finishedPromise) {
-        m_finishedPromise = new AnimationPromise(scriptState->executionContext(), this, AnimationPromise::Finished);
-        if (playStateInternal() == Finished)
-            m_finishedPromise->resolve(this);
-    }
-    return m_finishedPromise->promise(scriptState->world());
-}
-
-ScriptPromise Animation::ready(ScriptState* scriptState)
-{
-    if (!m_readyPromise) {
-        m_readyPromise = new AnimationPromise(scriptState->executionContext(), this, AnimationPromise::Ready);
-        if (playStateInternal() != Pending)
-            m_readyPromise->resolve(this);
-    }
-    return m_readyPromise->promise(scriptState->world());
-}
-
 const AtomicString& Animation::interfaceName() const
 {
     return EventTargetNames::AnimationPlayer;
@@ -1009,6 +1000,8 @@ Animation::PlayStateUpdateScope::~PlayStateUpdateScope()
             TRACE_EVENT_NESTABLE_ASYNC_INSTANT1("blink.animations,devtools.timeline,benchmark", "Animation", m_animation, "data", InspectorAnimationStateEvent::data(*m_animation));
     }
 
+    assert(false); // BKTODO:
+#if 0
     // Ordering is important, the ready promise should resolve/reject before
     // the finished promise.
     if (m_animation->m_readyPromise && newPlayState != oldPlayState) {
@@ -1038,6 +1031,7 @@ Animation::PlayStateUpdateScope::~PlayStateUpdateScope()
             m_animation->m_finishedPromise->reset();
         }
     }
+#endif
 
     if (oldPlayState != newPlayState && (oldPlayState == Idle || newPlayState == Idle)) {
         m_animation->setOutdated();
@@ -1095,8 +1089,6 @@ DEFINE_TRACE(Animation)
     visitor->trace(m_content);
     visitor->trace(m_timeline);
     visitor->trace(m_pendingFinishedEvent);
-    visitor->trace(m_finishedPromise);
-    visitor->trace(m_readyPromise);
     RefCountedGarbageCollectedEventTargetWithInlineData<Animation>::trace(visitor);
     ActiveDOMObject::trace(visitor);
 }

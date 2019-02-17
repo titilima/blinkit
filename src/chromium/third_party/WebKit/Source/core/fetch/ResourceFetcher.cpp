@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ResourceFetcher.cpp
+// Description: ResourceFetcher Class
+//      Author: Ziming Li
+//     Created: 2019-02-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller (mueller@kde.org)
@@ -26,7 +37,6 @@
 
 #include "core/fetch/ResourceFetcher.h"
 
-#include "bindings/core/v8/V8DOMActivityLogger.h"
 #include "core/fetch/CrossOriginAccessControl.h"
 #include "core/fetch/FetchContext.h"
 #include "core/fetch/FetchInitiatorTypeNames.h"
@@ -359,21 +369,6 @@ ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, co
 
     if (!context().canRequest(factory.type(), request.resourceRequest(), url, request.options(), request.forPreload(), request.originRestriction()))
         return nullptr;
-
-    if (!request.forPreload()) {
-        V8DOMActivityLogger* activityLogger = nullptr;
-        if (request.options().initiatorInfo.name == FetchInitiatorTypeNames::xmlhttprequest)
-            activityLogger = V8DOMActivityLogger::currentActivityLogger();
-        else
-            activityLogger = V8DOMActivityLogger::currentActivityLoggerIfIsolatedWorld();
-
-        if (activityLogger) {
-            Vector<String> argv;
-            argv.append(Resource::resourceTypeToString(factory.type(), request.options().initiatorInfo));
-            argv.append(url);
-            activityLogger->logEvent("blinkRequestResource", argv.size(), argv.data());
-        }
-    }
 
     bool isStaticData = request.resourceRequest().url().protocolIsData() || substituteData.isValid();
     ResourcePtr<Resource> resource;

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Page.cpp
+// Description: Page Class
+//      Author: Ziming Li
+//     Created: 2019-02-12
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013 Apple Inc. All Rights Reserved.
  * Copyright (C) 2008 Torch Mobile Inc. All rights reserved. (http://www.torchmobile.com/)
@@ -28,14 +39,10 @@
 #include "core/events/Event.h"
 #include "core/fetch/MemoryCache.h"
 #include "core/fetch/ResourceFetcher.h"
-#include "core/frame/DOMTimer.h"
 #include "core/frame/FrameConsole.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
-#include "core/frame/RemoteFrame.h"
-#include "core/frame/RemoteFrameView.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLMediaElement.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/TextAutosizer.h"
@@ -338,7 +345,7 @@ void Page::setDeviceColorProfile(const Vector<char>& profile)
 
 void Page::resetDeviceColorProfileForTesting()
 {
-    RuntimeEnabledFeatures::setImageColorProfilesEnabled(false);
+    assert(false); // Not reached!
 }
 
 void Page::allVisitedStateChanged(bool invalidateVisitedLinkHashes)
@@ -461,15 +468,6 @@ void Page::settingsChanged(SettingsDelegate::ChangeType changeType)
             if (!doc || !doc->styleResolver())
                 break;
             doc->styleResolver()->viewportStyleResolver()->collectViewportRules();
-        }
-        break;
-    case SettingsDelegate::TextTrackKindUserPreferenceChange:
-        for (Frame* frame = mainFrame(); frame; frame = frame->tree().traverseNext()) {
-            if (frame->isLocalFrame()) {
-                Document* doc = toLocalFrame(frame)->document();
-                if (doc)
-                    HTMLMediaElement::setTextTrackKindUserPreferenceForAllMediaElements(doc);
-            }
         }
         break;
     }

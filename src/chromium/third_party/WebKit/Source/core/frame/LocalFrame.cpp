@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LocalFrame.cpp
+// Description: LocalFrame Class
+//      Author: Ziming Li
+//     Created: 2019-02-12
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1998, 1999 Torben Weis <weis@kde.org>
  *                     1999 Lars Knoll <knoll@kde.org>
@@ -46,7 +57,6 @@
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/Settings.h"
 #include "core/html/HTMLFrameElementBase.h"
-#include "core/html/HTMLPlugInElement.h"
 #include "core/input/EventHandler.h"
 #include "core/inspector/ConsoleMessageStorage.h"
 #include "core/inspector/InspectorInstrumentation.h"
