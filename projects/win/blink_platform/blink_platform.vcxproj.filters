@@ -9,15 +9,2628 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="platform">
+      <UniqueIdentifier>{c9f76f79-3a1f-4bb8-be0f-9d7a2571ecc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\animation">
+      <UniqueIdentifier>{22a923ee-50f7-4651-9777-904f1f176310}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\blob">
+      <UniqueIdentifier>{8846e9ef-d50e-44d7-8119-59ba08290bfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\bindings">
+      <UniqueIdentifier>{78c3d22a-b0fc-43b3-a2d2-2f0c112ffe73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\clipboard">
+      <UniqueIdentifier>{5e6b8aa9-46a7-437d-955a-69e48152e1b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\exported">
+      <UniqueIdentifier>{7576aac1-9a09-4285-80c7-c0462e4d6521}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\fonts">
+      <UniqueIdentifier>{aa0286e6-cbdd-42e9-b624-163b7f9e55b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\fonts\opentype">
+      <UniqueIdentifier>{5e822ecf-a4ad-4156-8614-e756252cb18e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\fonts\shaping">
+      <UniqueIdentifier>{7b55fc70-3e42-4d78-a588-e8509abeb66a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\fonts\skia">
+      <UniqueIdentifier>{c779eb6b-e4ad-4b46-8b24-727151a7fff2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\fonts\win">
+      <UniqueIdentifier>{d23b1df5-560d-4698-a39b-1d90170ddbaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\geometry">
+      <UniqueIdentifier>{3d5d9c2e-4838-4747-826e-9346dcd292bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\graphics">
+      <UniqueIdentifier>{90b5a4b7-d9ac-45fc-96d0-3b13bea00bd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\graphics\filters">
+      <UniqueIdentifier>{cd2cf9b2-5337-44b1-b642-cbfb3f8f3b39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\graphics\paint">
+      <UniqueIdentifier>{36fb3074-9d3e-44a9-b3e3-74d5bcd1b719}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\graphics\skia">
+      <UniqueIdentifier>{29eb5196-7446-43f5-8af8-9b2040ee803b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\heap">
+      <UniqueIdentifier>{505ba979-2e17-4cfa-89c0-81f67c2c5792}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\image-decoders">
+      <UniqueIdentifier>{5c6e5588-ab65-47cf-89d7-c1933c153c1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\image-decoders\gif">
+      <UniqueIdentifier>{85c166c1-044e-4b58-91df-93ed6046d5e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\image-decoders\png">
+      <UniqueIdentifier>{877fc485-c6a8-44fa-97ce-546dd1a52223}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\network">
+      <UniqueIdentifier>{2f5c34ab-33e1-4686-8a92-598cce0b0f4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\scheduler">
+      <UniqueIdentifier>{94742a67-8b10-4187-bfcb-d52672c1fa28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\scroll">
+      <UniqueIdentifier>{07e990b5-cde2-44de-97ce-040d76aa2895}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\text">
+      <UniqueIdentifier>{0c601d0d-e9ee-4211-a7da-024d2d8404cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\transforms">
+      <UniqueIdentifier>{dd361723-80f0-4a7c-b1f7-48e4a2cbe046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\weborigin">
+      <UniqueIdentifier>{b0e44305-6bc0-40af-ba9b-acc804c15334}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\win">
+      <UniqueIdentifier>{18b6fd98-742c-4127-97c1-8891cd918e93}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Clock.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\ContentSettingCallbacks.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\ContentType.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\ContextMenu.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\ContextMenuItem.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\CrossThreadCopier.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Crypto.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Cursor.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\DateComponents.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Decimal.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\DragImage.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\EventDispatchForbiddenScope.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\EventTracer.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\FileChooser.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\FileMetadata.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\JSONValues.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\KillRingNone.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Language.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\LayoutTestSupport.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Length.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\LengthBox.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\LengthFunctions.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\LinkHash.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Logging.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MemoryPurgeController.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MIMETypeFromURL.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MIMETypeRegistry.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\NotImplemented.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PartitionAllocMemoryDumpProvider.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PlatformInstrumentation.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PlatformKeyboardEvent.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PlatformResourceLoader.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PluginScriptForbiddenScope.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Prerender.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PurgeableVector.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\ScriptForbiddenScope.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\SecureTextInput.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\SharedBuffer.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\SharedBufferChunkReader.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Supplementable.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\TaskSynchronizer.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Theme.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Timer.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\TracedValue.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\UserGestureIndicator.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\UUID.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\WebScheduler.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\WebTaskRunner.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\WebThread.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\WebThreadSupportingGC.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Widget.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\animation\CubicBezierControlPoints.cpp">
+      <Filter>platform\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\animation\TimingFunction.cpp">
+      <Filter>platform\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\blob\BlobData.cpp">
+      <Filter>platform\blob</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\blob\BlobRegistry.cpp">
+      <Filter>platform\blob</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\blob\BlobURL.cpp">
+      <Filter>platform\blob</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\clipboard\ClipboardMimeTypes.cpp">
+      <Filter>platform\clipboard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\clipboard\ClipboardUtilities.cpp">
+      <Filter>platform\clipboard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\clipboard\ClipboardUtilitiesWin.cpp">
+      <Filter>platform\clipboard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\Platform.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebActiveGestureAnimation.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebAudioBus.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebAudioDevice.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebBlobData.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCanvasCaptureHandler.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCommon.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCompositorAnimationPlayerClient.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebContentDecryptionModule.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebContentDecryptionModuleAccess.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebContentDecryptionModuleResult.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebContentDecryptionModuleSession.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebContentSettingCallbacks.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebConvertableToTraceFormat.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCredential.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCryptoAlgorithm.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCryptoKey.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCryptoKeyAlgorithm.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCryptoResult.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCryptoUtil.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCString.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCursorInfo.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebData.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebDataConsumerHandle.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebDeviceMotionData.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebDeviceOrientationData.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebDragData.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebEncryptedMediaClient.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebEncryptedMediaKeyInformation.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebEncryptedMediaRequest.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebFederatedCredential.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebFileSystemCallbacks.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebFilterKeyframe.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebHTTPBody.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebHTTPLoadInfo.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebImage.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebImageGenerator.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaConstraints.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaDeviceInfo.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaPlayerClient.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaPlayerEncryptedMediaClient.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaRecorderHandler.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaStream.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaStreamSource.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaStreamTrack.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaStreamTrackSourcesRequest.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMemoryAllocatorDump.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMemoryDumpProvider.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMessagePortChannelClient.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebPasswordCredential.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebPrerender.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebPrerenderingSupport.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebPresentationAvailabilityObserver.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebPresentationController.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebProcessMemoryDump.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebRTCConfiguration.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebRTCICECandidate.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebRTCOfferOptions.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebRTCSessionDescription.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebRTCSessionDescriptionRequest.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebRTCStatsRequest.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebRTCStatsResponse.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebRTCVoidRequest.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebScrollbarImpl.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebScrollbarThemeClientImpl.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebScrollbarThemeGeometryNative.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebScrollbarThemePainter.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSecurityOrigin.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebServicePortProviderClient.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebServiceWorkerProviderClient.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebServiceWorkerProxy.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebServiceWorkerRequest.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebServiceWorkerResponse.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSocketHandshakeRequestInfo.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSocketHandshakeResponseInfo.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSourceInfo.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSpeechSynthesisUtterance.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSpeechSynthesisVoice.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSpeechSynthesizerClientImpl.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebStorageQuotaCallbacks.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebString.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebThreadedDataReceiver.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebThreadSafeData.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebTraceLocation.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebTransformKeyframe.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebURL.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebURLError.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebURLLoaderClient.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebURLLoaderTestDelegate.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebURLLoadTiming.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebURLRequest.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebURLResponse.cpp">
+      <Filter>platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\Character.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\Font.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontCache.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontCacheMemoryDumpProvider.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontCustomPlatformData.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontData.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontDataCache.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontDescription.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontFallbackIterator.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontFallbackList.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontFamily.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontFeatureSettings.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontPlatformData.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\GenericFontFamilySettings.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\GlyphPageTreeNode.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\OrientationIterator.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\ScriptRunIterator.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\SegmentedFontData.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\SimpleFontData.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\SmallCapsIterator.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\UTF16TextIterator.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\VDMXParser.cpp">
+      <Filter>platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\opentype\OpenTypeSanitizer.cpp">
+      <Filter>platform\fonts\opentype</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\opentype\OpenTypeVerticalData.cpp">
+      <Filter>platform\fonts\opentype</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\CachingWordShaper.cpp">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\HarfBuzzFace.cpp">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\HarfBuzzShaper.cpp">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\RunSegmenter.cpp">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\Shaper.cpp">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\ShapeResult.cpp">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\ShapeResultBuffer.cpp">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\SimpleShaper.cpp">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\skia\FontCacheSkia.cpp">
+      <Filter>platform\fonts\skia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\win\FontCacheSkiaWin.cpp">
+      <Filter>platform\fonts\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\win\FontFallbackWin.cpp">
+      <Filter>platform\fonts\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\win\FontPlatformDataWin.cpp">
+      <Filter>platform\fonts\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\DoublePoint.cpp">
+      <Filter>platform\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\DoubleRect.cpp">
+      <Filter>platform\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\DoubleSize.cpp">
+      <Filter>platform\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\FloatPoint.cpp">
+      <Filter>platform\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\FloatPoint3D.cpp">
+      <Filter>platform\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\FloatPolygon.cpp">
+      <Filter>platform\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\FloatQuad.cpp">
+      <Filter>platform\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\FloatRect.cpp">
+      <Filter>platform\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\FloatRoundedRect.cpp">
+      <Filter>platform\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\FloatSize.cpp">
+      <Filter>platform\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\IntRect.cpp">
+      <Filter>platform\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\LayoutRect.cpp">
+      <Filter>platform\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\LayoutRectOutsets.cpp">
+      <Filter>platform\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\Region.cpp">
+      <Filter>platform\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\TransformState.cpp">
+      <Filter>platform\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\BitmapImage.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\BitmapImageMetrics.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\Canvas2DLayerBridge.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\CanvasMetrics.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\Color.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ColorSpace.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\CompositingReasons.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ContentLayerDelegate.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ContiguousContainer.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\CrossfadeGeneratedImage.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\DecodingImageGenerator.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\DeferredImageDecoder.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\DrawLooperBuilder.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\FirstPaintInvalidationTracking.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\FrameData.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GeneratedImage.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\Gradient.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GradientGeneratedImage.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsContext.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsContextState.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsLayer.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsLayerDebugInfo.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsTypes.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\Image.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImageBuffer.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImageBufferSurface.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImageDecodingStore.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImageFrameGenerator.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImageObserver.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImageOrientation.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImagePattern.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImageSource.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\InterceptingCanvas.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\LoggingCanvas.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\PaintInvalidationReason.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\Path.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\PathTraversalState.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\Pattern.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\PicturePattern.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\PictureSnapshot.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ProfilingCanvas.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\RecordingImageBufferSurface.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ReplayingCanvas.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\StaticBitmapImage.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\StrokeData.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ThreadSafeDataTransport.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\UnacceleratedImageBufferSurface.cpp">
+      <Filter>platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\DistantLightSource.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEBlend.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEColorMatrix.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEComponentTransfer.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEComposite.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEConvolveMatrix.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEDiffuseLighting.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEDisplacementMap.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEDropShadow.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEFlood.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEGaussianBlur.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FELighting.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEMerge.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEMorphology.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEOffset.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FESpecularLighting.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FETile.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FETurbulence.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\Filter.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FilterEffect.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FilterOperation.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FilterOperations.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\LightSource.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\PaintFilterEffect.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\PointLightSource.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\SkiaImageFilterBuilder.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\SourceAlpha.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\SourceGraphic.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\SpotLightSource.cpp">
+      <Filter>platform\graphics\filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\ClipDisplayItem.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\ClipPathDisplayItem.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\ClipPathRecorder.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\ClipRecorder.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\CompositingDisplayItem.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\CompositingRecorder.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\CullRect.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\DisplayItem.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\DisplayItemClient.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\DrawingDisplayItem.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\DrawingRecorder.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\FilterDisplayItem.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\FixedPositionContainerDisplayItem.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\FixedPositionDisplayItem.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\FloatClipDisplayItem.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\PaintArtifact.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\PaintArtifactToSkCanvas.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\PaintChunker.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\PaintController.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\ScrollDisplayItem.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\SubsequenceRecorder.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\Transform3DDisplayItem.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\TransformDisplayItem.cpp">
+      <Filter>platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\skia\ImagePixelLocker.cpp">
+      <Filter>platform\graphics\skia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\skia\SkiaUtils.cpp">
+      <Filter>platform\graphics\skia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\BlinkGCInterruptor.cpp">
+      <Filter>platform\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\BlinkGCMemoryDumpProvider.cpp">
+      <Filter>platform\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\CallbackStack.cpp">
+      <Filter>platform\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\GCInfo.cpp">
+      <Filter>platform\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\Heap.cpp">
+      <Filter>platform\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\HeapAllocator.cpp">
+      <Filter>platform\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\HeapPage.cpp">
+      <Filter>platform\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\PageMemory.cpp">
+      <Filter>platform\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\PagePool.cpp">
+      <Filter>platform\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\PersistentNode.cpp">
+      <Filter>platform\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\RunAllTests.cpp">
+      <Filter>platform\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\SafePoint.cpp">
+      <Filter>platform\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\StackFrameDepth.cpp">
+      <Filter>platform\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\ThreadState.cpp">
+      <Filter>platform\heap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\image-decoders\FastSharedBufferReader.cpp">
+      <Filter>platform\image-decoders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\image-decoders\ImageDecoder.cpp">
+      <Filter>platform\image-decoders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\image-decoders\ImageFrame.cpp">
+      <Filter>platform\image-decoders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\image-decoders\gif\GIFImageDecoder.cpp">
+      <Filter>platform\image-decoders\gif</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\image-decoders\gif\GIFImageReader.cpp">
+      <Filter>platform\image-decoders\gif</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\image-decoders\png\PNGImageDecoder.cpp">
+      <Filter>platform\image-decoders\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyParsers.cpp">
+      <Filter>platform\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyResponseHeaders.cpp">
+      <Filter>platform\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\EncodedFormData.cpp">
+      <Filter>platform\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\FormDataEncoder.cpp">
+      <Filter>platform\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\HTTPHeaderMap.cpp">
+      <Filter>platform\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\HTTPParsers.cpp">
+      <Filter>platform\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\NetworkHints.cpp">
+      <Filter>platform\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ParsedContentType.cpp">
+      <Filter>platform\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceError.cpp">
+      <Filter>platform\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceLoadTiming.cpp">
+      <Filter>platform\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceRequest.cpp">
+      <Filter>platform\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceResponse.cpp">
+      <Filter>platform\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceTimingInfo.cpp">
+      <Filter>platform\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\WebSocketHandshakeRequest.cpp">
+      <Filter>platform\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\WebSocketHandshakeResponse.cpp">
+      <Filter>platform\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scheduler\CancellableTaskFactory.cpp">
+      <Filter>platform\scheduler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ProgrammaticScrollAnimator.cpp">
+      <Filter>platform\scroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollableArea.cpp">
+      <Filter>platform\scroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollAnimator.cpp">
+      <Filter>platform\scroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollAnimatorBase.cpp">
+      <Filter>platform\scroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollAnimatorCompositorCoordinator.cpp">
+      <Filter>platform\scroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\Scrollbar.cpp">
+      <Filter>platform\scroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarTheme.cpp">
+      <Filter>platform\scroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeAndroid.cpp">
+      <Filter>platform\scroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeAura.cpp">
+      <Filter>platform\scroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMock.cpp">
+      <Filter>platform\scroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeNonMacCommon.cpp">
+      <Filter>platform\scroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeOverlay.cpp">
+      <Filter>platform\scroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\BidiCharacterRun.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\BidiContext.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\BidiTextRun.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\DateTimeFormat.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LineEnding.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LocaleICU.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LocaleToScriptMapping.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LocaleWin.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\PlatformLocale.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\QuotedPrintable.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\SegmentedString.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\StringTruncator.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextBoundaries.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextBreakIterator.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextBreakIteratorICU.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextBreakIteratorInternalICU.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextCheckerClient.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextEncodingDetector.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextRun.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextStream.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\UnicodeRange.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\UnicodeUtilities.cpp">
+      <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\AffineTransform.cpp">
+      <Filter>platform\transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\InterpolatedTransformOperation.cpp">
+      <Filter>platform\transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\Matrix3DTransformOperation.cpp">
+      <Filter>platform\transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\MatrixTransformOperation.cpp">
+      <Filter>platform\transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\PerspectiveTransformOperation.cpp">
+      <Filter>platform\transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\RotateTransformOperation.cpp">
+      <Filter>platform\transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\ScaleTransformOperation.cpp">
+      <Filter>platform\transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\SkewTransformOperation.cpp">
+      <Filter>platform\transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\TransformationMatrix.cpp">
+      <Filter>platform\transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\TransformOperations.cpp">
+      <Filter>platform\transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\TranslateTransformOperation.cpp">
+      <Filter>platform\transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\DatabaseIdentifier.cpp">
+      <Filter>platform\weborigin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\KnownPorts.cpp">
+      <Filter>platform\weborigin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\KURL.cpp">
+      <Filter>platform\weborigin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\OriginAccessEntry.cpp">
+      <Filter>platform\weborigin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\SchemeRegistry.cpp">
+      <Filter>platform\weborigin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\SecurityOrigin.cpp">
+      <Filter>platform\weborigin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\SecurityPolicy.cpp">
+      <Filter>platform\weborigin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\win\SystemInfo.cpp">
+      <Filter>platform\win</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\AsyncFileSystemCallbacks.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\AsyncMethodRunner.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\CalculationValue.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\CheckedInt.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Clock.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\ColorSuggestion.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\ContentDecryptionModuleResult.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\ContentSettingCallbacks.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\ContentType.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\ContextMenu.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\ContextMenuItem.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\CrossOriginAttributeValue.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\CrossThreadCopier.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Crypto.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\CryptoResult.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Cursor.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\DateComponents.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Decimal.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\DragImage.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\EncryptedMediaRequest.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\EventDispatchForbiddenScope.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\EventTracer.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\FileChooser.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\FileMetadata.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\FileSystemType.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\FloatConversion.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\HostWindow.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\JSONValues.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\KeyboardCodes.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\KillRing.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Language.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\LayoutTestSupport.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\LayoutUnit.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Length.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\LengthBox.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\LengthFunctions.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\LengthPoint.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\LengthSize.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\LifecycleNotifier.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\LifecycleObserver.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\LinkHash.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Logging.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MemoryPurgeController.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MIMETypeFromURL.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MIMETypeRegistry.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\NotImplemented.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\ParsingUtilities.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PartitionAllocMemoryDumpProvider.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PasteMode.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PlatformEvent.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PlatformExport.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PlatformGestureEvent.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PlatformInstrumentation.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PlatformKeyboardEvent.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PlatformMouseEvent.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PlatformResourceLoader.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PlatformTouchEvent.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PlatformTouchPoint.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PlatformWheelEvent.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PluginScriptForbiddenScope.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PODArena.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PODFreeListArena.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PODInterval.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PODIntervalTree.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PODRedBlackTree.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PopupMenu.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Prerender.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PrerenderClient.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PurgeableVector.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\RefCountedSupplement.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\RuntimeEnabledFeatures.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\ScriptForbiddenScope.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\SecureTextInput.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\SerializedResource.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\SharedBuffer.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\SharedBufferChunkReader.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\StorageQuotaCallbacks.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Supplementable.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Task.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\TaskSynchronizer.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Theme.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\ThemeTypes.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\ThreadedDataReceiver.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\ThreadSafeFunctional.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Timer.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\TracedValue.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\TraceEvent.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\TraceEventCommon.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\UserGestureIndicator.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\UUID.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\WebThreadSupportingGC.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Widget.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\WindowsKeyboardCodes.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\animation\AnimationUtilities.h">
+      <Filter>platform\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\animation\CubicBezierControlPoints.h">
+      <Filter>platform\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\animation\TimingFunction.h">
+      <Filter>platform\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\animation\UnitBezier.h">
+      <Filter>platform\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\bindings\exception_messages.h">
+      <Filter>platform\bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\bindings\exception_state.h">
+      <Filter>platform\bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\bindings\script_wrappable.h">
+      <Filter>platform\bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\blob\BlobData.h">
+      <Filter>platform\blob</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\blob\BlobRegistry.h">
+      <Filter>platform\blob</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\blob\BlobURL.h">
+      <Filter>platform\blob</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\clipboard\ClipboardMimeTypes.h">
+      <Filter>platform\clipboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\clipboard\ClipboardUtilities.h">
+      <Filter>platform\clipboard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebActiveGestureAnimation.h">
+      <Filter>platform\exported</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebScrollbarImpl.h">
+      <Filter>platform\exported</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebScrollbarThemeClientImpl.h">
+      <Filter>platform\exported</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebScrollbarThemeGeometryNative.h">
+      <Filter>platform\exported</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSpeechSynthesizerClientImpl.h">
+      <Filter>platform\exported</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebURLRequestPrivate.h">
+      <Filter>platform\exported</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebURLResponsePrivate.h">
+      <Filter>platform\exported</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WrappedResourceRequest.h">
+      <Filter>platform\exported</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WrappedResourceResponse.h">
+      <Filter>platform\exported</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\AlternateFontFamily.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\Character.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\CustomFontData.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FallbackListCompositeKey.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\Font.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontBaseline.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontCache.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontCacheClient.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontCacheKey.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontCacheMemoryDumpProvider.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontCustomPlatformData.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontData.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontDataCache.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontDataRange.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontDescription.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontFaceCreationParams.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontFallbackIterator.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontFallbackList.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontFamily.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontFeatureSettings.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontMetrics.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontOrientation.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontPlatformData.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontRenderStyle.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontSelector.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontSmoothingMode.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontTraits.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\FontWidthVariant.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\GenericFontFamilySettings.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\Glyph.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\GlyphBuffer.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\GlyphMetricsMap.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\GlyphPage.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\GlyphPageTreeNode.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\Latin1TextIterator.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\OrientationIterator.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\ScriptRunIterator.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\SegmentedFontData.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\SimpleFontData.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\SmallCapsIterator.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\TestFontSelector.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\TextBlob.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\TextRenderingMode.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\TypesettingFeatures.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\UTF16TextIterator.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\VDMXParser.h">
+      <Filter>platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\opentype\OpenTypeSanitizer.h">
+      <Filter>platform\fonts\opentype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\opentype\OpenTypeTypes.h">
+      <Filter>platform\fonts\opentype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\opentype\OpenTypeVerticalData.h">
+      <Filter>platform\fonts\opentype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\CachingWordShapeIterator.h">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\CachingWordShaper.h">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\HarfBuzzFace.h">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\HarfBuzzShaper.h">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\RunSegmenter.h">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\ShapeCache.h">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\Shaper.h">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\ShapeResult.h">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\ShapeResultBuffer.h">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\ShapeResultInlineHeaders.h">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\SimpleShaper.h">
+      <Filter>platform\fonts\shaping</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\win\FontFallbackWin.h">
+      <Filter>platform\fonts\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\DoublePoint.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\DoubleRect.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\DoubleSize.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\FloatBox.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\FloatPoint.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\FloatPoint3D.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\FloatPolygon.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\FloatQuad.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\FloatRect.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\FloatRectOutsets.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\FloatRoundedRect.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\FloatSize.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\IntPoint.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\IntRect.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\IntRectOutsets.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\IntSize.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\IntSizeHash.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\LayoutPoint.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\LayoutRect.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\LayoutRectOutsets.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\LayoutSize.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\Region.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\geometry\TransformState.h">
+      <Filter>platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\BitmapImage.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\BitmapImageMetrics.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\Canvas2DImageBufferSurface.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\Canvas2DLayerBridge.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\CanvasMetrics.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\Color.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ColorSpace.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\CompositingReasons.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ContentLayerDelegate.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ContiguousContainer.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\CrossfadeGeneratedImage.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\DashArray.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\DecodingImageGenerator.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\DeferredImageDecoder.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\DrawLooperBuilder.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ExpensiveCanvasHeuristicParameters.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\FirstPaintInvalidationTracking.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\FrameData.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GeneratedImage.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\Gradient.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GradientGeneratedImage.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsContext.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsContextState.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsContextStateSaver.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsLayer.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsLayerClient.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsLayerDebugInfo.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsLayerFactory.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsTypes.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsTypes3D.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\Image.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImageAnimationPolicy.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImageBuffer.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImageBufferClient.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImageBufferSurface.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImageDecodingStore.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImageFrameGenerator.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImageObserver.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImageOrientation.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImagePattern.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImageSource.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\InterceptingCanvas.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\LinkHighlight.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\LoggingCanvas.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\PaintInvalidationReason.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\Path.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\PathTraversalState.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\Pattern.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\PicturePattern.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\PictureSnapshot.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ProfilingCanvas.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\RecordingImageBufferSurface.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ReplayingCanvas.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\StaticBitmapImage.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\StrokeData.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ThreadSafeDataTransport.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\UnacceleratedImageBufferSurface.h">
+      <Filter>platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\DistantLightSource.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEBlend.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEColorMatrix.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEComponentTransfer.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEComposite.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEConvolveMatrix.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEDiffuseLighting.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEDisplacementMap.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEDropShadow.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEFlood.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEGaussianBlur.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FELighting.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEMerge.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEMorphology.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FEOffset.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FESpecularLighting.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FETile.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FETurbulence.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\Filter.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FilterEffect.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FilterOperation.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\FilterOperations.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\LightSource.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\PaintFilterEffect.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\PointLightSource.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\SkiaImageFilterBuilder.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\SourceAlpha.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\SourceGraphic.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\filters\SpotLightSource.h">
+      <Filter>platform\graphics\filters</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\CachedDisplayItem.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\ClipDisplayItem.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\ClipPaintPropertyNode.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\ClipPathDisplayItem.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\ClipPathRecorder.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\ClipRecorder.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\CompositingDisplayItem.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\CompositingRecorder.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\CullRect.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\DisplayItem.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\DisplayItemCacheSkipper.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\DisplayItemClient.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\DisplayItemList.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\DrawingDisplayItem.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\DrawingRecorder.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\EffectPaintPropertyNode.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\FilterDisplayItem.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\FixedPositionContainerDisplayItem.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\FixedPositionDisplayItem.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\FloatClipDisplayItem.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\PaintArtifact.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\PaintArtifactToSkCanvas.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\PaintChunk.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\PaintChunker.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\PaintChunkProperties.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\PaintController.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\ScopedPaintChunkProperties.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\ScrollDisplayItem.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\SkPictureBuilder.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\SubsequenceDisplayItem.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\SubsequenceRecorder.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\Transform3DDisplayItem.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\TransformDisplayItem.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\paint\TransformPaintPropertyNode.h">
+      <Filter>platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\skia\ImagePixelLocker.h">
+      <Filter>platform\graphics\skia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\skia\SkiaUtils.h">
+      <Filter>platform\graphics\skia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\skia\SkSizeHash.h">
+      <Filter>platform\graphics\skia</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\BlinkGC.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\BlinkGCInterruptor.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\BlinkGCMemoryDumpProvider.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\CallbackStack.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\GarbageCollected.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\GCInfo.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\GCTaskRunner.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\Handle.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\Heap.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\HeapAllocator.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\HeapLinkedStack.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\HeapPage.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\HeapTerminatedArray.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\HeapTerminatedArrayBuilder.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\InlinedGlobalMarkingVisitor.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\MarkingVisitor.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\MarkingVisitorImpl.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\PageMemory.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\PagePool.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\PersistentNode.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\SafePoint.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\StackFrameDepth.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\ThreadingTraits.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\ThreadState.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\TraceTraits.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\Visitor.h">
+      <Filter>platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\image-decoders\FastSharedBufferReader.h">
+      <Filter>platform\image-decoders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\image-decoders\ImageAnimation.h">
+      <Filter>platform\image-decoders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\image-decoders\ImageDecoder.h">
+      <Filter>platform\image-decoders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\image-decoders\ImageFrame.h">
+      <Filter>platform\image-decoders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\image-decoders\gif\GIFImageDecoder.h">
+      <Filter>platform\image-decoders\gif</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\image-decoders\gif\GIFImageReader.h">
+      <Filter>platform\image-decoders\gif</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\image-decoders\png\PNGImageDecoder.h">
+      <Filter>platform\image-decoders\png</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyParsers.h">
+      <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyResponseHeaders.h">
+      <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\EncodedFormData.h">
+      <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\FormDataEncoder.h">
+      <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\HTTPHeaderMap.h">
+      <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\HTTPParsers.h">
+      <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\NetworkHints.h">
+      <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ParsedContentType.h">
+      <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceError.h">
+      <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceLoadInfo.h">
+      <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceLoadPriority.h">
+      <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceLoadTiming.h">
+      <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceRequest.h">
+      <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceResponse.h">
+      <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceTimingInfo.h">
+      <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\WebSocketHandshakeRequest.h">
+      <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\WebSocketHandshakeResponse.h">
+      <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scheduler\CancellableTaskFactory.h">
+      <Filter>platform\scheduler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ProgrammaticScrollAnimator.h">
+      <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollableArea.h">
+      <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollAnimator.h">
+      <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollAnimatorBase.h">
+      <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollAnimatorCompositorCoordinator.h">
+      <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\Scrollbar.h">
+      <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarTheme.h">
+      <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeAura.h">
+      <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeClient.h">
+      <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMacCommon.h">
+      <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMacNonOverlayAPI.h">
+      <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMacOverlayAPI.h">
+      <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMock.h">
+      <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeNonMacCommon.h">
+      <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeOverlay.h">
+      <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeOverlayMock.h">
+      <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollTypes.h">
+      <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\BidiCharacterRun.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\BidiContext.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\BidiResolver.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\BidiRunList.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\BidiTestHarness.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\BidiTextRun.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\DateTimeFormat.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\DecodeEscapeSequences.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LineEnding.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LocaleICU.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LocaleMac.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LocaleToScriptMapping.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LocaleWin.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\ParserUtilities.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\PlatformLocale.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\QuotedPrintable.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\SegmentedString.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\StringTruncator.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\SuffixTree.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TabSize.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextBoundaries.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextBreakIterator.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextBreakIteratorInternalICU.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextCheckerClient.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextChecking.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextDecoration.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextDirection.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextEncodingDetector.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextPath.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextRun.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextRunIterator.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextStream.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\UnicodeBidi.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\UnicodeRange.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\UnicodeUtilities.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\WritingMode.h">
+      <Filter>platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\AffineTransform.h">
+      <Filter>platform\transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\IdentityTransformOperation.h">
+      <Filter>platform\transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\InterpolatedTransformOperation.h">
+      <Filter>platform\transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\Matrix3DTransformOperation.h">
+      <Filter>platform\transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\MatrixTransformOperation.h">
+      <Filter>platform\transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\PerspectiveTransformOperation.h">
+      <Filter>platform\transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\RotateTransformOperation.h">
+      <Filter>platform\transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\ScaleTransformOperation.h">
+      <Filter>platform\transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\SkewTransformOperation.h">
+      <Filter>platform\transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\TransformationMatrix.h">
+      <Filter>platform\transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\TransformOperation.h">
+      <Filter>platform\transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\TransformOperations.h">
+      <Filter>platform\transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\transforms\TranslateTransformOperation.h">
+      <Filter>platform\transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\DatabaseIdentifier.h">
+      <Filter>platform\weborigin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\KnownPorts.h">
+      <Filter>platform\weborigin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\KURL.h">
+      <Filter>platform\weborigin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\KURLHash.h">
+      <Filter>platform\weborigin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\OriginAccessEntry.h">
+      <Filter>platform\weborigin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\Referrer.h">
+      <Filter>platform\weborigin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\ReferrerPolicy.h">
+      <Filter>platform\weborigin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\SchemeRegistry.h">
+      <Filter>platform\weborigin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\SecurityOrigin.h">
+      <Filter>platform\weborigin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\SecurityOriginCache.h">
+      <Filter>platform\weborigin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\SecurityOriginHash.h">
+      <Filter>platform\weborigin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\weborigin\SecurityPolicy.h">
+      <Filter>platform\weborigin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\win\HWndDC.h">
+      <Filter>platform\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\win\SystemInfo.h">
+      <Filter>platform\win</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
