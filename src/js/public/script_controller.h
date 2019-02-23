@@ -37,6 +37,10 @@ enum ReasonForCallingCanExecuteScripts {
 class ScriptController final {
     WTF_MAKE_NONCOPYABLE(ScriptController);
 public:
+    static PassOwnPtrWillBeRawPtr<ScriptController> create(LocalFrame *frame)
+    {
+        return adoptPtrWillBeNoop(new ScriptController(frame));
+    }
     ~ScriptController(void);
 
     void executeScriptInMainWorld(const ScriptSourceCode &, AccessControlStatus = NotSharableCrossOrigin, double *compilationFinishTime = nullptr);
@@ -48,14 +52,20 @@ public:
     void enableEval(void);
     void disableEval(const String &errorMessage);
 
-    static bool canAccessFromCurrentOrigin(LocalFrame *frame) { return nullptr != false; }
+    static bool canAccessFromCurrentOrigin(LocalFrame *frame) { return nullptr != frame; }
 
     bool canExecuteScripts(ReasonForCallingCanExecuteScripts);
+
+    void clearWindowProxy(void);
+    void updateDocument(void);
 
     void namedItemAdded(HTMLDocument *, const AtomicString &);
     void namedItemRemoved(HTMLDocument *, const AtomicString &);
 
     void updateSecurityOrigin(SecurityOrigin *);
+    void clearScriptObjects(void);
+
+    void clearForClose(void);
 private:
     explicit ScriptController(LocalFrame *);
 

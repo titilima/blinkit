@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: BeaconLoader.h
+// Description: BeaconLoader Class
+//      Author: Ziming Li
+//     Created: 2019-02-22
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -15,7 +26,6 @@
 namespace blink {
 
 class Blob;
-class DOMArrayBufferView;
 class FormData;
 class KURL;
 class LocalFrame;
@@ -30,7 +40,6 @@ public:
     ~BeaconLoader() override { }
 
     static bool sendBeacon(LocalFrame*, int, const KURL&, const String&, int&);
-    static bool sendBeacon(LocalFrame*, int, const KURL&, PassRefPtr<DOMArrayBufferView>, int&);
     static bool sendBeacon(LocalFrame*, int, const KURL&, Blob*, int&);
     static bool sendBeacon(LocalFrame*, int, const KURL&, FormData*, int&);
 

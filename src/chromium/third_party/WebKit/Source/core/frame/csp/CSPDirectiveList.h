@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CSPDirectiveList.h
+// Description: CSPDirectiveList Class
+//      Author: Ziming Li
+//     Created: 2019-02-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -38,7 +49,7 @@ public:
     bool allowInlineEventHandlers(const String& contextURL, const WTF::OrdinalNumber& contextLine, ContentSecurityPolicy::ReportingStatus) const;
     bool allowInlineScript(const String& contextURL, const WTF::OrdinalNumber& contextLine, ContentSecurityPolicy::ReportingStatus, const String& scriptContent) const;
     bool allowInlineStyle(const String& contextURL, const WTF::OrdinalNumber& contextLine, ContentSecurityPolicy::ReportingStatus, const String& styleContent) const;
-    bool allowEval(ScriptState*, ContentSecurityPolicy::ReportingStatus, ContentSecurityPolicy::ExceptionStatus = ContentSecurityPolicy::WillNotThrowException) const;
+    bool allowEval(ContentSecurityPolicy::ReportingStatus, ContentSecurityPolicy::ExceptionStatus = ContentSecurityPolicy::WillNotThrowException) const;
     bool allowPluginType(const String& type, const String& typeAttribute, const KURL&, ContentSecurityPolicy::ReportingStatus) const;
 
     bool allowScriptFromSource(const KURL&, ContentSecurityPolicy::RedirectStatus, ContentSecurityPolicy::ReportingStatus) const;
@@ -103,7 +114,6 @@ private:
     void reportViolation(const String& directiveText, const String& effectiveDirective, const String& consoleMessage, const KURL& blockedURL) const;
     void reportViolationWithFrame(const String& directiveText, const String& effectiveDirective, const String& consoleMessage, const KURL& blockedURL, LocalFrame*) const;
     void reportViolationWithLocation(const String& directiveText, const String& effectiveDirective, const String& consoleMessage, const KURL& blockedURL, const String& contextURL, const WTF::OrdinalNumber& contextLine) const;
-    void reportViolationWithState(const String& directiveText, const String& effectiveDirective, const String& message, const KURL& blockedURL, ScriptState*, const ContentSecurityPolicy::ExceptionStatus) const;
 
     bool checkEval(SourceListDirective*) const;
     bool checkInline(SourceListDirective*) const;
@@ -115,7 +125,6 @@ private:
 
     void setEvalDisabledErrorMessage(const String& errorMessage) { m_evalDisabledErrorMessage = errorMessage; }
 
-    bool checkEvalAndReportViolation(SourceListDirective*, const String& consoleMessage, ScriptState*, ContentSecurityPolicy::ExceptionStatus = ContentSecurityPolicy::WillNotThrowException) const;
     bool checkInlineAndReportViolation(SourceListDirective*, const String& consoleMessage, const String& contextURL, const WTF::OrdinalNumber& contextLine, bool isScript, const String& hashValue) const;
 
     bool checkSourceAndReportViolation(SourceListDirective*, const KURL&, const String& effectiveDirective, ContentSecurityPolicy::RedirectStatus) const;

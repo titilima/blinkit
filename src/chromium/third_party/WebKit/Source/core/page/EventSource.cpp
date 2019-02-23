@@ -389,7 +389,10 @@ void EventSource::parseEventStreamLine(unsigned bufPos, int fieldLength, int lin
                 m_currentlyParsedEventId = nullAtom;
             }
             InspectorInstrumentation::willDispachEventSourceEvent(executionContext(), this, m_eventName.isEmpty() ? EventTypeNames::message : m_eventName, m_lastEventId, m_data);
+            assert(false); // BKTODO:
+#if 0
             dispatchEvent(createMessageEvent());
+#endif
         }
         if (!m_eventName.isEmpty())
             m_eventName = emptyAtom;
@@ -444,14 +447,6 @@ void EventSource::stop()
 bool EventSource::hasPendingActivity() const
 {
     return m_state != CLOSED;
-}
-
-PassRefPtrWillBeRawPtr<MessageEvent> EventSource::createMessageEvent()
-{
-    RefPtrWillBeRawPtr<MessageEvent> event = MessageEvent::create();
-    event->initMessageEvent(m_eventName.isEmpty() ? EventTypeNames::message : m_eventName, false, false, SerializedScriptValueFactory::instance().create(String(m_data)), m_eventStreamOrigin, m_lastEventId, 0, nullptr);
-    m_data.clear();
-    return event.release();
 }
 
 DEFINE_TRACE(EventSource)

@@ -1,10 +1,20 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: BeaconLoader.cpp
+// Description: BeaconLoader Class
+//      Author: Ziming Li
+//     Created: 2019-02-22
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "core/loader/BeaconLoader.h"
 
-#include "core/dom/DOMArrayBufferView.h"
 #include "core/dom/Document.h"
 #include "core/fetch/CrossOriginAccessControl.h"
 #include "core/fetch/FetchContext.h"
@@ -35,12 +45,10 @@ public:
 protected:
     static unsigned long long beaconSize(const String&);
     static unsigned long long beaconSize(Blob*);
-    static unsigned long long beaconSize(PassRefPtr<DOMArrayBufferView>);
     static unsigned long long beaconSize(FormData*);
 
     static bool serialize(const String&, ResourceRequest&, int, int&);
     static bool serialize(Blob*, ResourceRequest&, int, int&);
-    static bool serialize(PassRefPtr<DOMArrayBufferView>, ResourceRequest&, int, int&);
     static bool serialize(FormData*, ResourceRequest&, int, int&);
 };
 
@@ -105,12 +113,6 @@ public:
 };
 
 bool BeaconLoader::sendBeacon(LocalFrame* frame, int allowance, const KURL& beaconURL, const String& data, int& payloadLength)
-{
-    BeaconData<decltype(data)> beacon(data);
-    return Sender::send(frame, allowance, beaconURL, beacon, payloadLength);
-}
-
-bool BeaconLoader::sendBeacon(LocalFrame* frame, int allowance, const KURL& beaconURL, PassRefPtr<DOMArrayBufferView> data, int& payloadLength)
 {
     BeaconData<decltype(data)> beacon(data);
     return Sender::send(frame, allowance, beaconURL, beacon, payloadLength);
@@ -193,24 +195,6 @@ bool Beacon::serialize(Blob* data, ResourceRequest& request, int, int&)
     const String& blobType = data->type();
     if (!blobType.isEmpty() && isValidContentType(blobType))
         request.setHTTPContentType(AtomicString(blobType));
-
-    return true;
-}
-
-unsigned long long Beacon::beaconSize(PassRefPtr<DOMArrayBufferView> data)
-{
-    return data->byteLength();
-}
-
-bool Beacon::serialize(PassRefPtr<DOMArrayBufferView> data, ResourceRequest& request, int, int&)
-{
-    ASSERT(data);
-    RefPtr<EncodedFormData> entityBody = EncodedFormData::create(data->baseAddress(), data->byteLength());
-    request.setHTTPBody(entityBody.release());
-
-    // FIXME: a reasonable choice, but not in the spec; should it give a default?
-    AtomicString contentType = AtomicString("application/octet-stream");
-    request.setHTTPContentType(contentType);
 
     return true;
 }

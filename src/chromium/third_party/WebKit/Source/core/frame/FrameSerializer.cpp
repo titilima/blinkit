@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FrameSerializer.cpp
+// Description: FrameSerializer Class
+//      Author: Ziming Li
+//     Created: 2019-02-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -56,7 +67,6 @@
 #include "core/html/HTMLLinkElement.h"
 #include "core/html/HTMLMetaElement.h"
 #include "core/html/HTMLStyleElement.h"
-#include "core/html/ImageDocument.h"
 #include "core/style/StyleFetchedImage.h"
 #include "core/style/StyleImage.h"
 #include "platform/SerializedResource.h"
@@ -252,13 +262,6 @@ void FrameSerializer::serializeFrame(const LocalFrame& frame)
     ASSERT(frame.document());
     Document& document = *frame.document();
     KURL url = document.url();
-
-    // If frame is an image document, add the image and don't continue
-    if (document.isImageDocument()) {
-        ImageDocument& imageDocument = toImageDocument(document);
-        addImageToResources(imageDocument.cachedImage(), url);
-        return;
-    }
 
     WillBeHeapVector<RawPtrWillBeMember<Node>> serializedNodes;
     SerializerMarkupAccumulator accumulator(m_delegate, document, serializedNodes);

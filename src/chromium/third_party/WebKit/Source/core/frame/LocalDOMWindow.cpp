@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LocalDOMWindow.cpp
+// Description: LocalDOMWindow Class
+//      Author: Ziming Li
+//     Created: 2019-02-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies)
@@ -36,11 +47,9 @@
 #include "core/css/resolver/StyleResolver.h"
 #include "core/dom/DOMImplementation.h"
 #include "core/dom/FrameRequestCallback.h"
-#include "core/dom/SandboxFlags.h"
 #include "core/editing/Editor.h"
 #include "core/events/DOMWindowEventQueue.h"
 #include "core/events/HashChangeEvent.h"
-#include "core/events/MessageEvent.h"
 #include "core/events/PageTransitionEvent.h"
 #include "core/events/PopStateEvent.h"
 #include "core/frame/BarProp.h"
@@ -48,7 +57,6 @@
 #include "core/frame/EventHandlerRegistry.h"
 #include "core/frame/FrameConsole.h"
 #include "core/frame/FrameView.h"
-#include "core/frame/History.h"
 #include "core/frame/Navigator.h"
 #include "core/frame/Screen.h"
 #include "core/frame/ScrollToOptions.h"
@@ -68,6 +76,7 @@
 #include "core/page/WindowFeatures.h"
 #include "core/page/scrolling/ScrollingCoordinator.h"
 #include "platform/EventDispatchForbiddenScope.h"
+#include "platform/bindings/exception_messages.h"
 #include "public/platform/Platform.h"
 #include "public/platform/WebFrameScheduler.h"
 #include "public/platform/WebScreenInfo.h"
@@ -107,70 +116,6 @@ void LocalDOMWindow::WindowFrameObserver::contextDestroyed()
     m_window->frameDestroyed();
     LocalFrameLifecycleObserver::contextDestroyed();
 }
-
-class PostMessageTimer final : public NoBaseWillBeGarbageCollectedFinalized<PostMessageTimer>, public SuspendableTimer {
-    WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(PostMessageTimer);
-public:
-    PostMessageTimer(LocalDOMWindow& window, PassRefPtrWillBeRawPtr<MessageEvent> event, PassRefPtrWillBeRawPtr<LocalDOMWindow> source, SecurityOrigin* targetOrigin, PassRefPtrWillBeRawPtr<ScriptCallStack> stackTrace, UserGestureToken* userGestureToken)
-        : SuspendableTimer(window.document())
-        , m_event(event)
-        , m_window(&window)
-        , m_targetOrigin(targetOrigin)
-        , m_stackTrace(stackTrace)
-        , m_userGestureToken(userGestureToken)
-        , m_preventDestruction(false)
-    {
-        m_asyncOperationId = InspectorInstrumentation::traceAsyncOperationStarting(executionContext(), "postMessage");
-    }
-
-    PassRefPtrWillBeRawPtr<MessageEvent> event() const { return m_event.get(); }
-    SecurityOrigin* targetOrigin() const { return m_targetOrigin.get(); }
-    ScriptCallStack* stackTrace() const { return m_stackTrace.get(); }
-    UserGestureToken* userGestureToken() const { return m_userGestureToken.get(); }
-    void stop() override
-    {
-        SuspendableTimer::stop();
-
-        if (!m_preventDestruction) {
-            // Will destroy this object
-            m_window->removePostMessageTimer(this);
-        }
-    }
-
-    // Eager finalization is needed to promptly stop this timer object.
-    // (see DOMTimer comment for more.)
-    EAGERLY_FINALIZE();
-    DEFINE_INLINE_VIRTUAL_TRACE()
-    {
-        visitor->trace(m_event);
-        visitor->trace(m_window);
-        visitor->trace(m_stackTrace);
-        SuspendableTimer::trace(visitor);
-    }
-
-    // TODO(alexclarke): Override timerTaskRunner() to pass in a document specific default task runner.
-
-private:
-    void fired() override
-    {
-        InspectorInstrumentationCookie cookie = InspectorInstrumentation::traceAsyncOperationCompletedCallbackStarting(executionContext(), m_asyncOperationId);
-        // Prevent calls to stop triggered from the event handler to
-        // kill this object.
-        m_preventDestruction = true;
-        m_window->postMessageTimerFired(this);
-        // Will destroy this object
-        m_window->removePostMessageTimer(this);
-        InspectorInstrumentation::traceAsyncCallbackCompleted(cookie);
-    }
-
-    RefPtrWillBeMember<MessageEvent> m_event;
-    RawPtrWillBeMember<LocalDOMWindow> m_window;
-    RefPtr<SecurityOrigin> m_targetOrigin;
-    RefPtrWillBeMember<ScriptCallStack> m_stackTrace;
-    RefPtr<UserGestureToken> m_userGestureToken;
-    int m_asyncOperationId;
-    bool m_preventDestruction;
-};
 
 static void updateSuddenTerminationStatus(LocalDOMWindow* domWindow, bool addedListener, FrameLoaderClient::SuddenTerminationDisablerType disablerType)
 {
@@ -333,8 +278,6 @@ PassRefPtrWillBeRawPtr<Document> LocalDOMWindow::createDocument(const String& mi
         document = Document::create(init);
     } else {
         document = DOMImplementation::createDocument(mimeType, init, init.frame() ? init.frame()->inViewSourceMode() : false);
-        if (document->isPluginDocument() && document->isSandboxed(SandboxPlugins))
-            document = SinkDocument::create(init);
     }
 
     return document.release();
@@ -399,8 +342,6 @@ void LocalDOMWindow::documentWasClosed()
 {
     dispatchWindowLoadEvent();
     enqueuePageshowEvent(PageshowEventNotPersisted);
-    if (m_pendingStateObject)
-        enqueuePopstateEvent(m_pendingStateObject.release());
 }
 
 void LocalDOMWindow::enqueuePageshowEvent(PageshowEventPersistence persisted)
@@ -414,25 +355,6 @@ void LocalDOMWindow::enqueuePageshowEvent(PageshowEventPersistence persisted)
 void LocalDOMWindow::enqueueHashchangeEvent(const String& oldURL, const String& newURL)
 {
     enqueueWindowEvent(HashChangeEvent::create(oldURL, newURL));
-}
-
-void LocalDOMWindow::enqueuePopstateEvent(PassRefPtr<SerializedScriptValue> stateObject)
-{
-    // FIXME: https://bugs.webkit.org/show_bug.cgi?id=36202 Popstate event needs to fire asynchronously
-    dispatchEvent(PopStateEvent::create(stateObject, history()));
-}
-
-void LocalDOMWindow::statePopped(PassRefPtr<SerializedScriptValue> stateObject)
-{
-    if (!frame())
-        return;
-
-    // Per step 11 of section 6.5.9 (history traversal) of the HTML5 spec, we
-    // defer firing of popstate until we're in the complete state.
-    if (document()->isLoadCompleted())
-        enqueuePopstateEvent(stateObject);
-    else
-        m_pendingStateObject = stateObject;
 }
 
 LocalDOMWindow::~LocalDOMWindow()
@@ -527,7 +449,6 @@ void LocalDOMWindow::reset()
     m_frameObserver->contextDestroyed();
 
     m_screen = nullptr;
-    m_history = nullptr;
     m_locationbar = nullptr;
     m_menubar = nullptr;
     m_personalbar = nullptr;
@@ -589,9 +510,7 @@ Screen* LocalDOMWindow::screen() const
 
 History* LocalDOMWindow::history() const
 {
-    if (!m_history)
-        m_history = History::create(frame());
-    return m_history.get();
+    return nullptr;
 }
 
 BarProp* LocalDOMWindow::locationbar() const
@@ -666,42 +585,13 @@ Navigator* LocalDOMWindow::navigator() const
     return m_navigator.get();
 }
 
-void LocalDOMWindow::schedulePostMessage(PassRefPtrWillBeRawPtr<MessageEvent> event, LocalDOMWindow* source, SecurityOrigin* target, PassRefPtrWillBeRawPtr<ScriptCallStack> stackTrace)
-{
-    // Schedule the message.
-    OwnPtrWillBeRawPtr<PostMessageTimer> timer = adoptPtrWillBeNoop(new PostMessageTimer(*this, event, source, target, stackTrace, UserGestureIndicator::currentToken()));
-    timer->startOneShot(0, BLINK_FROM_HERE);
-    timer->suspendIfNeeded();
-    m_postMessageTimers.add(timer.release());
-}
-
-void LocalDOMWindow::postMessageTimerFired(PostMessageTimer* timer)
-{
-    if (!isCurrentlyDisplayedInFrame()) {
-        return;
-    }
-
-    RefPtrWillBeRawPtr<MessageEvent> event = timer->event();
-
-    UserGestureIndicator gestureIndicator(timer->userGestureToken());
-
-    event->entangleMessagePorts(document());
-    dispatchMessageEventWithOriginCheck(timer->targetOrigin(), event, timer->stackTrace());
-}
-
-void LocalDOMWindow::removePostMessageTimer(PostMessageTimer* timer)
-{
-    m_postMessageTimers.remove(timer);
-}
-
-void LocalDOMWindow::dispatchMessageEventWithOriginCheck(SecurityOrigin* intendedTargetOrigin, PassRefPtrWillBeRawPtr<Event> event, PassRefPtrWillBeRawPtr<ScriptCallStack> stackTrace)
+void LocalDOMWindow::dispatchMessageEventWithOriginCheck(SecurityOrigin* intendedTargetOrigin, PassRefPtrWillBeRawPtr<Event> event)
 {
     if (intendedTargetOrigin) {
         // Check target origin now since the target document may have changed since the timer was scheduled.
         if (!intendedTargetOrigin->isSameSchemeHostPortAndSuborigin(document()->securityOrigin())) {
             String message = ExceptionMessages::failedToExecute("postMessage", "DOMWindow", "The target origin provided ('" + intendedTargetOrigin->toString() + "') does not match the recipient window's origin ('" + document()->securityOrigin()->toString() + "').");
             RefPtrWillBeRawPtr<ConsoleMessage> consoleMessage = ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, message);
-            consoleMessage->setCallStack(stackTrace);
             frameConsole()->addMessage(consoleMessage.release());
             return;
         }
@@ -732,27 +622,7 @@ void LocalDOMWindow::blur()
 
 void LocalDOMWindow::print()
 {
-    if (!frame())
-        return;
-
-    FrameHost* host = frame()->host();
-    if (!host)
-        return;
-
-    if (frame()->document()->isSandboxed(SandboxModals)) {
-        UseCounter::count(frame()->document(), UseCounter::DialogInSandboxedContext);
-        if (RuntimeEnabledFeatures::sandboxBlocksModalsEnabled()) {
-            frameConsole()->addMessage(ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, "Ignored call to 'print()'. The document is sandboxed, and the 'allow-modals' keyword is not set."));
-            return;
-        }
-    }
-
-    if (frame()->isLoading()) {
-        m_shouldPrintWhenFinishedLoading = true;
-        return;
-    }
-    m_shouldPrintWhenFinishedLoading = false;
-    host->chromeClient().print(frame());
+    assert(false); // Not reached!
 }
 
 void LocalDOMWindow::stop()
@@ -766,14 +636,6 @@ void LocalDOMWindow::alert(const String& message)
 {
     if (!frame())
         return;
-
-    if (frame()->document()->isSandboxed(SandboxModals)) {
-        UseCounter::count(frame()->document(), UseCounter::DialogInSandboxedContext);
-        if (RuntimeEnabledFeatures::sandboxBlocksModalsEnabled()) {
-            frameConsole()->addMessage(ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, "Ignored call to 'alert()'. The document is sandboxed, and the 'allow-modals' keyword is not set."));
-            return;
-        }
-    }
 
     frame()->document()->updateLayoutTreeIfNeeded();
 
@@ -789,14 +651,6 @@ bool LocalDOMWindow::confirm(const String& message)
     if (!frame())
         return false;
 
-    if (frame()->document()->isSandboxed(SandboxModals)) {
-        UseCounter::count(frame()->document(), UseCounter::DialogInSandboxedContext);
-        if (RuntimeEnabledFeatures::sandboxBlocksModalsEnabled()) {
-            frameConsole()->addMessage(ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, "Ignored call to 'confirm()'. The document is sandboxed, and the 'allow-modals' keyword is not set."));
-            return false;
-        }
-    }
-
     frame()->document()->updateLayoutTreeIfNeeded();
 
     FrameHost* host = frame()->host();
@@ -810,14 +664,6 @@ String LocalDOMWindow::prompt(const String& message, const String& defaultValue)
 {
     if (!frame())
         return String();
-
-    if (frame()->document()->isSandboxed(SandboxModals)) {
-        UseCounter::count(frame()->document(), UseCounter::DialogInSandboxedContext);
-        if (RuntimeEnabledFeatures::sandboxBlocksModalsEnabled()) {
-            frameConsole()->addMessage(ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, "Ignored call to 'prompt()'. The document is sandboxed, and the 'allow-modals' keyword is not set."));
-            return String();
-        }
-    }
 
     frame()->document()->updateLayoutTreeIfNeeded();
 

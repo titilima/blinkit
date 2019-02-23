@@ -61,9 +61,7 @@ class EventQueue;
 class ExceptionState;
 class FrameConsole;
 class IntRect;
-class MessageEvent;
 class Page;
-class PostMessageTimer;
 class ScriptCallStack;
 class SecurityOrigin;
 
@@ -156,7 +154,6 @@ public:
     void cancelAnimationFrame(int id) override;
     int requestIdleCallback(IdleRequestCallback*, const IdleRequestOptions&) override;
     void cancelIdleCallback(int id) override;
-    void schedulePostMessage(PassRefPtrWillBeRawPtr<MessageEvent>, LocalDOMWindow* source, SecurityOrigin* target, PassRefPtrWillBeRawPtr<ScriptCallStack> stackTrace);
 
     void registerProperty(DOMWindowProperty*);
     void unregisterProperty(DOMWindowProperty*);
@@ -177,9 +174,7 @@ public:
 
     void printErrorMessage(const String&) const;
 
-    void postMessageTimerFired(PostMessageTimer*);
-    void removePostMessageTimer(PostMessageTimer*);
-    void dispatchMessageEventWithOriginCheck(SecurityOrigin* intendedTargetOrigin, PassRefPtrWillBeRawPtr<Event>, PassRefPtrWillBeRawPtr<ScriptCallStack>);
+    void dispatchMessageEventWithOriginCheck(SecurityOrigin* intendedTargetOrigin, PassRefPtrWillBeRawPtr<Event>);
 
     // Events
     // EventTarget API
@@ -203,10 +198,8 @@ public:
     void enqueueDocumentEvent(PassRefPtrWillBeRawPtr<Event>);
     void enqueuePageshowEvent(PageshowEventPersistence);
     void enqueueHashchangeEvent(const String& oldURL, const String& newURL);
-    void enqueuePopstateEvent(PassRefPtr<SerializedScriptValue>);
     void dispatchWindowLoadEvent();
     void documentWasClosed();
-    void statePopped(PassRefPtr<SerializedScriptValue>);
 
     // FIXME: This shouldn't be public once LocalDOMWindow becomes ExecutionContext.
     void clearEventQueue();
@@ -265,7 +258,6 @@ private:
     WillBeHeapHashSet<RawPtrWillBeWeakMember<DOMWindowProperty>> m_properties;
 
     mutable PersistentWillBeMember<Screen> m_screen;
-    mutable PersistentWillBeMember<History> m_history;
     mutable RefPtrWillBeMember<BarProp> m_locationbar;
     mutable RefPtrWillBeMember<BarProp> m_menubar;
     mutable RefPtrWillBeMember<BarProp> m_personalbar;
@@ -282,9 +274,6 @@ private:
     mutable PersistentWillBeMember<ApplicationCache> m_applicationCache;
 
     RefPtrWillBeMember<DOMWindowEventQueue> m_eventQueue;
-    RefPtr<SerializedScriptValue> m_pendingStateObject;
-
-    WillBeHeapHashSet<OwnPtrWillBeMember<PostMessageTimer>> m_postMessageTimers;
 };
 
 DEFINE_TYPE_CASTS(LocalDOMWindow, DOMWindow, x, x->isLocalDOMWindow(), x.isLocalDOMWindow());

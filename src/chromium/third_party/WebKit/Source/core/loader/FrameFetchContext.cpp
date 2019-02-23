@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FrameFetchContext.cpp
+// Description: FrameFetchContext Class
+//      Author: Ziming Li
+//     Created: 2019-02-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -44,9 +55,7 @@
 #include "core/html/imports/HTMLImportsController.h"
 #include "core/inspector/ConsoleMessage.h"
 #include "core/inspector/InspectorInstrumentation.h"
-#include "core/inspector/InspectorResourceAgent.h"
 #include "core/inspector/InspectorTraceEvents.h"
-#include "core/inspector/InstrumentingAgents.h"
 #include "core/loader/DocumentLoader.h"
 #include "core/loader/FrameLoader.h"
 #include "core/loader/FrameLoaderClient.h"
@@ -400,12 +409,6 @@ bool FrameFetchContext::allowResponse(Resource::Type type, const ResourceRequest
 
 ResourceRequestBlockedReason FrameFetchContext::canRequestInternal(Resource::Type type, const ResourceRequest& resourceRequest, const KURL& url, const ResourceLoaderOptions& options, bool forPreload, FetchRequest::OriginRestriction originRestriction, ContentSecurityPolicy::RedirectStatus redirectStatus) const
 {
-    InstrumentingAgents* agents = InspectorInstrumentation::instrumentingAgentsFor(frame());
-    if (agents && agents->inspectorResourceAgent()) {
-        if (agents->inspectorResourceAgent()->shouldBlockRequest(resourceRequest))
-            return ResourceRequestBlockedReasonInspector;
-    }
-
     SecurityOrigin* securityOrigin = options.securityOrigin.get();
     if (!securityOrigin && m_document)
         securityOrigin = m_document->securityOrigin();

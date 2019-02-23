@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Init.cpp
+// Description: CoreInitializer Class
+//      Author: Ziming Li
+//     Created: 2019-02-17
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -30,7 +41,6 @@
 
 #include "Init.h"
 
-#include "bindings/core/v8/ScriptStreamerThread.h"
 #include "core/EventNames.h"
 #include "core/EventTargetNames.h"
 #include "core/EventTypeNames.h"
@@ -49,7 +59,6 @@
 #include "core/dom/StyleChangeReason.h"
 #include "core/events/EventFactory.h"
 #include "core/fetch/FetchInitiatorTypeNames.h"
-#include "core/html/canvas/CanvasRenderingContextFactory.h"
 #include "core/html/parser/HTMLParserThread.h"
 #include "core/workers/WorkerThread.h"
 #include "platform/EventTracer.h"
@@ -138,7 +147,6 @@ void CoreInitializer::init()
     // Creates HTMLParserThread::shared and ScriptStreamerThread::shared, but
     // does not start the threads.
     HTMLParserThread::init();
-    ScriptStreamerThread::init();
 }
 
 void CoreInitializer::shutdown()

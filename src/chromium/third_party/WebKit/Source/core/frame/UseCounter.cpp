@@ -681,27 +681,6 @@ void UseCounter::count(const ExecutionContext* context, Feature feature)
         toWorkerGlobalScope(context)->countFeature(feature);
 }
 
-void UseCounter::countIfNotPrivateScript(v8::Isolate* isolate, const Frame* frame, Feature feature)
-{
-    if (DOMWrapperWorld::current(isolate).isPrivateScriptIsolatedWorld())
-        return;
-    UseCounter::count(frame, feature);
-}
-
-void UseCounter::countIfNotPrivateScript(v8::Isolate* isolate, const Document& document, Feature feature)
-{
-    if (DOMWrapperWorld::current(isolate).isPrivateScriptIsolatedWorld())
-        return;
-    UseCounter::count(document, feature);
-}
-
-void UseCounter::countIfNotPrivateScript(v8::Isolate* isolate, const ExecutionContext* context, Feature feature)
-{
-    if (DOMWrapperWorld::current(isolate).isPrivateScriptIsolatedWorld())
-        return;
-    UseCounter::count(context, feature);
-}
-
 void UseCounter::countDeprecation(const LocalFrame* frame, Feature feature)
 {
     if (!frame)
@@ -732,13 +711,6 @@ void UseCounter::countDeprecation(ExecutionContext* context, Feature feature)
 void UseCounter::countDeprecation(const Document& document, Feature feature)
 {
     UseCounter::countDeprecation(document.frame(), feature);
-}
-
-void UseCounter::countDeprecationIfNotPrivateScript(v8::Isolate* isolate, ExecutionContext* context, Feature feature)
-{
-    if (DOMWrapperWorld::current(isolate).isPrivateScriptIsolatedWorld())
-        return;
-    UseCounter::countDeprecation(context, feature);
 }
 
 void UseCounter::countCrossOriginIframe(const Document& document, Feature feature)

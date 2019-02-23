@@ -60,7 +60,6 @@
 #include "core/input/EventHandler.h"
 #include "core/inspector/ConsoleMessageStorage.h"
 #include "core/inspector/InspectorInstrumentation.h"
-#include "core/inspector/InstrumentingAgents.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/compositing/PaintLayerCompositor.h"
@@ -215,7 +214,6 @@ LocalFrame::~LocalFrame()
 
 DEFINE_TRACE(LocalFrame)
 {
-    visitor->trace(m_instrumentingAgents);
 #if ENABLE(OILPAN)
     visitor->trace(m_loader);
     visitor->trace(m_navigationScheduler);
@@ -242,7 +240,8 @@ DOMWindow* LocalFrame::domWindow() const
 
 WindowProxy* LocalFrame::windowProxy(DOMWrapperWorld& world)
 {
-    return m_script->windowProxy(world);
+    assert(false); // Not reached!
+    return nullptr;
 }
 
 void LocalFrame::navigate(Document& originDocument, const KURL& url, bool replaceCurrentItem, UserGestureStatus userGestureStatus)
@@ -275,12 +274,15 @@ void LocalFrame::reload(FrameLoadType loadType, ClientRedirectPolicy clientRedir
     ASSERT(loadType == FrameLoadTypeReload || loadType == FrameLoadTypeReloadFromOrigin);
     ASSERT(clientRedirectPolicy == NotClientRedirect || loadType == FrameLoadTypeReload);
     if (clientRedirectPolicy == NotClientRedirect) {
+        assert(false); // BKTODO:
+#if 0
         if (!m_loader.currentItem())
             return;
         FrameLoadRequest request = FrameLoadRequest(
             nullptr, m_loader.resourceRequestForReload(loadType, KURL(), clientRedirectPolicy));
         request.setClientRedirect(clientRedirectPolicy);
         m_loader.load(request, loadType);
+#endif
     } else {
         m_navigationScheduler->scheduleReload();
     }
@@ -375,7 +377,8 @@ void LocalFrame::printNavigationErrorMessage(const Frame& targetFrame, const cha
 
 WindowProxyManager* LocalFrame::windowProxyManager() const
 {
-    return m_script->windowProxyManager();
+    assert(false); // Not reached!
+    return nullptr;
 }
 
 void LocalFrame::disconnectOwnerElement()
@@ -865,12 +868,7 @@ inline LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host, FrameO
     , m_navigationDisableCount(0)
     , m_pageZoomFactor(parentPageZoomFactor(this))
     , m_textZoomFactor(parentTextZoomFactor(this))
-    , m_inViewSourceMode(false)
 {
-    if (isLocalRoot())
-        m_instrumentingAgents = InstrumentingAgents::create();
-    else
-        m_instrumentingAgents = localFrameRoot()->m_instrumentingAgents;
 }
 
 WebFrameScheduler* LocalFrame::frameScheduler()

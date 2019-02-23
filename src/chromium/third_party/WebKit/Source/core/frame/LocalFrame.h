@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LocalFrame.h
+// Description: LocalFrame Class
+//      Author: Ziming Li
+//     Created: 2019-02-22
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1998, 1999 Torben Weis <weis@kde.org>
  *                     1999-2001 Lars Knoll <knoll@kde.org>
@@ -61,7 +72,6 @@ class HTMLPlugInElement;
 class InputMethodController;
 class IntPoint;
 class IntSize;
-class InstrumentingAgents;
 class LocalDOMWindow;
 class NavigationScheduler;
 class Node;
@@ -131,8 +141,6 @@ public:
     // FIXME: This is a temporary hack to support RemoteFrames, and callers
     // should be updated to avoid storing things on the main frame.
     LocalFrame* localFrameRoot();
-
-    InstrumentingAgents* instrumentingAgents() const { return m_instrumentingAgents.get(); }
 
     // ======== All public functions below this point are candidates to move out of LocalFrame into another class. ========
 
@@ -230,10 +238,6 @@ private:
     float m_pageZoomFactor;
     float m_textZoomFactor;
 
-    bool m_inViewSourceMode;
-
-    RefPtrWillBeMember<InstrumentingAgents> m_instrumentingAgents;
-
     // TODO(dcheng): Temporary to try to debug https://crbug.com/531291
     enum class SupplementStatus { Uncleared, Clearing, Cleared };
     SupplementStatus m_supplementStatus = SupplementStatus::Uncleared;
@@ -297,12 +301,12 @@ inline InputMethodController& LocalFrame::inputMethodController() const
 
 inline bool LocalFrame::inViewSourceMode() const
 {
-    return m_inViewSourceMode;
+    return false;
 }
 
 inline void LocalFrame::setInViewSourceMode(bool mode)
 {
-    m_inViewSourceMode = mode;
+    assert(false); // Not reached!
 }
 
 inline EventHandler& LocalFrame::eventHandler() const

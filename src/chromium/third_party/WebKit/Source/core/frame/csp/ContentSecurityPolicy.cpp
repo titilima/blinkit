@@ -285,7 +285,7 @@ void ContentSecurityPolicy::addPolicyFromHeaderValue(const String& header, Conte
         if (type != ContentSecurityPolicyHeaderTypeReport && policy->didSetReferrerPolicy())
             m_referrerPolicy = policy->referrerPolicy();
 
-        if (!policy->allowEval(0, SuppressReport) && m_disableEvalErrorMessage.isNull())
+        if (!policy->allowEval(SuppressReport) && m_disableEvalErrorMessage.isNull())
             m_disableEvalErrorMessage = policy->evalDisabledErrorMessage();
 
         m_policies.append(policy.release());
@@ -464,7 +464,7 @@ bool ContentSecurityPolicy::allowInlineStyle(const String& contextURL, const WTF
 String ContentSecurityPolicy::evalDisabledErrorMessage() const
 {
     for (const auto& policy : m_policies) {
-        if (!policy->allowEval(0, SuppressReport))
+        if (!policy->allowEval(SuppressReport))
             return policy->evalDisabledErrorMessage();
     }
     return String();

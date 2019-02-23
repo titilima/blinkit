@@ -106,6 +106,7 @@ inline void frameStoppedLoading(LocalFrame *) {}
 inline bool hasFrontends(void) { return false; }
 inline bool isDebuggerPaused(LocalFrame *) { return false; }
 inline void layerTreeDidChange(LocalFrame *) {}
+inline void loadEventFired(LocalFrame *) {}
 inline void markResourceAsCached(LocalFrame *, unsigned long) {}
 inline void mediaQueryResultChanged(Document *) {}
 inline void networkStateChanged(LocalFrame *, bool) {}
@@ -115,9 +116,11 @@ inline void scriptExecutionBlockedByCSP(ExecutionContext *, const String &) {}
 inline bool shouldForceCORSPreflight(Document *) { return false; }
 inline void traceAsyncCallbackCompleted(int) {}
 inline InspectorInstrumentationCookie traceAsyncCallbackStarting(ExecutionContext *, int) { return 0; }
-inline int traceAsyncOperationStarting(ExecutionContext *, const char *) { return 0; }
 inline void traceAsyncOperationCompleted(ExecutionContext *, int) {}
+inline InspectorInstrumentationCookie traceAsyncOperationCompletedCallbackStarting(ExecutionContext *, int) { return 0; }
+inline int traceAsyncOperationStarting(ExecutionContext *, const char *) { return 0; }
 inline void updateApplicationCacheStatus(LocalFrame *) {}
+inline void willCloseWindow(ExecutionContext *) {}
 inline void willDeliverMutationRecords(ExecutionContext *, MutationObserver *) {}
 inline void willDestroyResource(Resource *) {}
 inline void willDispachEventSourceEvent(ExecutionContext *, ThreadableLoaderClient *, const AtomicString &, const AtomicString &, const Vector<UChar> &) {}

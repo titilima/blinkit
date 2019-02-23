@@ -1,13 +1,20 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ConsoleMessage.cpp
+// Description: ConsoleMessage Class
+//      Author: Ziming Li
+//     Created: 2019-02-22
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "core/inspector/ConsoleMessage.h"
 
-#include "bindings/core/v8/ScriptCallStackFactory.h"
-#include "bindings/core/v8/ScriptValue.h"
-#include "core/inspector/ScriptArguments.h"
-#include "core/inspector/ScriptAsyncCallStack.h"
 #include "wtf/CurrentTime.h"
 #include "wtf/PassOwnPtr.h"
 
@@ -40,7 +47,6 @@ ConsoleMessage::ConsoleMessage(MessageSource source,
     , m_columnNumber(columnNumber)
     , m_requestIdentifier(0)
     , m_timestamp(WTF::currentTime())
-    , m_workerProxy(nullptr)
     , m_messageId(0)
     , m_relatedMessageId(0)
 {
@@ -88,50 +94,6 @@ unsigned ConsoleMessage::lineNumber() const
 void ConsoleMessage::setLineNumber(unsigned lineNumber)
 {
     m_lineNumber = lineNumber;
-}
-
-PassRefPtrWillBeRawPtr<ScriptCallStack> ConsoleMessage::callStack() const
-{
-    return m_callStack;
-}
-
-void ConsoleMessage::setCallStack(PassRefPtrWillBeRawPtr<ScriptCallStack> callStack)
-{
-    m_callStack = callStack;
-    if (m_callStack && m_callStack->size() && !m_scriptId) {
-        const ScriptCallFrame& frame = m_callStack->at(0);
-        m_url = frame.sourceURL();
-        m_lineNumber = frame.lineNumber();
-        m_columnNumber = frame.columnNumber();
-    }
-}
-
-ScriptState* ConsoleMessage::scriptState() const
-{
-    if (m_scriptState)
-        return m_scriptState->get();
-    return nullptr;
-}
-
-void ConsoleMessage::setScriptState(ScriptState* scriptState)
-{
-    if (m_scriptState)
-        m_scriptState->clear();
-
-    if (scriptState)
-        m_scriptState = adoptPtr(new ScriptStateProtectingContext(scriptState));
-    else
-        m_scriptState.clear();
-}
-
-PassRefPtrWillBeRawPtr<ScriptArguments> ConsoleMessage::scriptArguments() const
-{
-    return m_scriptArguments;
-}
-
-void ConsoleMessage::setScriptArguments(PassRefPtrWillBeRawPtr<ScriptArguments> scriptArguments)
-{
-    m_scriptArguments = scriptArguments;
 }
 
 unsigned long ConsoleMessage::requestIdentifier() const
@@ -183,22 +145,12 @@ unsigned ConsoleMessage::columnNumber() const
 
 void ConsoleMessage::frameWindowDiscarded(LocalDOMWindow* window)
 {
-    if (scriptState() && scriptState()->domWindow() == window)
-        setScriptState(nullptr);
-
-    if (!m_scriptArguments)
-        return;
-    if (m_scriptArguments->scriptState()->domWindow() != window)
-        return;
-    if (!m_message)
-        m_message = "<message collected>";
-    m_scriptArguments.clear();
+    assert(false); // Not reached!
 }
 
 unsigned ConsoleMessage::argumentCount()
 {
-    if (m_scriptArguments)
-        return m_scriptArguments->argumentCount();
+    assert(false); // Not reached!
     return 0;
 }
 
@@ -207,14 +159,11 @@ void ConsoleMessage::collectCallStack()
     if (m_type == EndGroupMessageType)
         return;
 
-    if (!m_callStack)
-        setCallStack(currentScriptCallStackForConsole(ScriptCallStack::maxCallStackSizeToCapture));
+    assert(false); // Not reached!
 }
 
 DEFINE_TRACE(ConsoleMessage)
 {
-    visitor->trace(m_callStack);
-    visitor->trace(m_scriptArguments);
 }
 
 } // namespace blink

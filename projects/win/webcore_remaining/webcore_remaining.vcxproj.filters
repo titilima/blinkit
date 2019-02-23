@@ -96,9 +96,6 @@
     <Filter Include="streams">
       <UniqueIdentifier>{8a575df3-754d-4d99-ae71-8895292992b2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="timing">
-      <UniqueIdentifier>{1540bf81-766e-4ce0-9d6e-49fb21e281f6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="workers">
       <UniqueIdentifier>{77f225c5-b1b8-4919-aad8-6778bc2b1c76}</UniqueIdentifier>
     </Filter>
@@ -107,9 +104,6 @@
     </Filter>
     <Filter Include="xml\parser">
       <UniqueIdentifier>{154500f5-5bb3-4a9f-a526-6c0904471a08}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="xmlhttprequest">
-      <UniqueIdentifier>{8586f4dc-413a-4e44-95b4-45cc01c1c75b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1388,12 +1382,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\SourceListDirective.cpp">
       <Filter>frame\csp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\imagebitmap\ImageBitmapFactories.cpp">
-      <Filter>imagebitmap</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\imagebitmap\ImageBitmapSource.cpp">
-      <Filter>imagebitmap</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\inspector\ConsoleMessage.cpp">
       <Filter>inspector</Filter>
     </ClCompile>
@@ -1820,132 +1808,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ViewPainter.cpp">
       <Filter>paint</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\streams\ReadableByteStream.cpp">
-      <Filter>streams</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\streams\ReadableStream.cpp">
-      <Filter>streams</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\streams\ReadableStreamReader.cpp">
-      <Filter>streams</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\streams\Stream.cpp">
-      <Filter>streams</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\ConsoleMemory.cpp">
-      <Filter>timing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\DOMWindowPerformance.cpp">
-      <Filter>timing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\MemoryInfo.cpp">
-      <Filter>timing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\Performance.cpp">
-      <Filter>timing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceBase.cpp">
-      <Filter>timing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceCompositeTiming.cpp">
-      <Filter>timing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceEntry.cpp">
-      <Filter>timing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceNavigation.cpp">
-      <Filter>timing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceObserver.cpp">
-      <Filter>timing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceObserverEntryList.cpp">
-      <Filter>timing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceRenderTiming.cpp">
-      <Filter>timing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceResourceTiming.cpp">
-      <Filter>timing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceTiming.cpp">
-      <Filter>timing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceUserTiming.cpp">
-      <Filter>timing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\SharedWorkerPerformance.cpp">
-      <Filter>timing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\WorkerGlobalScopePerformance.cpp">
-      <Filter>timing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\WorkerPerformance.cpp">
-      <Filter>timing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\AbstractWorker.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\DedicatedWorkerGlobalScope.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\DedicatedWorkerMessagingProxy.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\DedicatedWorkerThread.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\InProcessWorkerBase.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\SharedWorker.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\SharedWorkerGlobalScope.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\SharedWorkerThread.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\Worker.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerConsole.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerEventQueue.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerGlobalScope.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerGlobalScopeProxyProvider.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerInspectorProxy.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerLoaderProxy.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerMessagingProxy.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerNavigator.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerObjectProxy.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerScriptLoader.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerThread.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerThreadStartupData.cpp">
-      <Filter>workers</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\DOMParser.cpp">
       <Filter>xml</Filter>
     </ClCompile>
@@ -1963,15 +1825,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\XMLErrors.cpp">
       <Filter>xml\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xmlhttprequest\XMLHttpRequest.cpp">
-      <Filter>xmlhttprequest</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xmlhttprequest\XMLHttpRequestProgressEventThrottle.cpp">
-      <Filter>xmlhttprequest</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xmlhttprequest\XMLHttpRequestUpload.cpp">
-      <Filter>xmlhttprequest</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3523,9 +3376,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\SourceListDirective.h">
       <Filter>frame\csp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\imagebitmap\ImageBitmapFactories.h">
-      <Filter>imagebitmap</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\imagebitmap\ImageBitmapSource.h">
       <Filter>imagebitmap</Filter>
     </ClInclude>
@@ -4060,145 +3910,13 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\streams\UnderlyingSource.h">
       <Filter>streams</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\ConsoleMemory.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\DOMWindowPerformance.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\MemoryInfo.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\Performance.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceBase.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceCompositeTiming.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceEntry.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceMark.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceMeasure.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceNavigation.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceObserver.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceObserverCallback.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceObserverEntryList.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceRenderTiming.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceResourceTiming.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceTiming.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\PerformanceUserTiming.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\SharedWorkerPerformance.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\WorkerGlobalScopePerformance.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\timing\WorkerPerformance.h">
-      <Filter>timing</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\AbstractWorker.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\DedicatedWorkerGlobalScope.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\DedicatedWorkerMessagingProxy.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\DedicatedWorkerThread.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\InProcessWorkerBase.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\SharedWorker.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\SharedWorkerGlobalScope.h">
-      <Filter>workers</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\SharedWorkerRepositoryClient.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\SharedWorkerThread.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\Worker.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerClients.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerConsole.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerEventQueue.h">
       <Filter>workers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerGlobalScope.h">
       <Filter>workers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerGlobalScopeProxy.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerGlobalScopeProxyProvider.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerInspectorProxy.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerLoaderProxy.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerLocation.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerMessagingProxy.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerNavigator.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerObjectProxy.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerOrWorkletGlobalScope.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerReportingProxy.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerScriptLoader.h">
-      <Filter>workers</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerThread.h">
-      <Filter>workers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerThreadStartupData.h">
       <Filter>workers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\DOMParser.h">
@@ -4224,21 +3942,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\XMLParserInput.h">
       <Filter>xml\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xmlhttprequest\XMLHttpRequest.h">
-      <Filter>xmlhttprequest</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xmlhttprequest\XMLHttpRequestEventTarget.h">
-      <Filter>xmlhttprequest</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xmlhttprequest\XMLHttpRequestProgressEvent.h">
-      <Filter>xmlhttprequest</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xmlhttprequest\XMLHttpRequestProgressEventThrottle.h">
-      <Filter>xmlhttprequest</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xmlhttprequest\XMLHttpRequestUpload.h">
-      <Filter>xmlhttprequest</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontFaceDescriptors.h">
       <Filter>css</Filter>

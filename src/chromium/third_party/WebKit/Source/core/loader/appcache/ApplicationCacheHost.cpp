@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ApplicationCacheHost.cpp
+// Description: ApplicationCacheHost Class
+//      Author: Ziming Li
+//     Created: 2019-02-22
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -35,7 +46,6 @@
 #include "core/events/ProgressEvent.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
-#include "core/inspector/InspectorApplicationCacheAgent.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/loader/DocumentLoader.h"
 #include "core/loader/FrameLoader.h"

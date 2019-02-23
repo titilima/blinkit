@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CSPDirectiveList.cpp
+// Description: CSPDirectiveList Class
+//      Author: Ziming Li
+//     Created: 2019-02-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -89,21 +100,6 @@ void CSPDirectiveList::reportViolationWithLocation(const String& directiveText, 
     m_policy->reportViolation(directiveText, effectiveDirective, message, blockedURL, m_reportEndpoints, m_header, ContentSecurityPolicy::InlineViolation);
 }
 
-void CSPDirectiveList::reportViolationWithState(const String& directiveText, const String& effectiveDirective, const String& message, const KURL& blockedURL, ScriptState* scriptState, const ContentSecurityPolicy::ExceptionStatus exceptionStatus) const
-{
-    String reportMessage = m_reportOnly ? "[Report Only] " + message : message;
-    // Print a console message if it won't be redundant with a
-    // JavaScript exception that the caller will throw. (Exceptions will
-    // never get thrown in report-only mode because the caller won't see
-    // a violation.)
-    if (m_reportOnly || exceptionStatus == ContentSecurityPolicy::WillNotThrowException) {
-        RefPtrWillBeRawPtr<ConsoleMessage> consoleMessage = ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel, reportMessage);
-        consoleMessage->setScriptState(scriptState);
-        m_policy->logToConsole(consoleMessage.release());
-    }
-    m_policy->reportViolation(directiveText, effectiveDirective, message, blockedURL, m_reportEndpoints, m_header, ContentSecurityPolicy::EvalViolation);
-}
-
 bool CSPDirectiveList::checkEval(SourceListDirective* directive) const
 {
     return !directive || directive->allowEval();
@@ -159,23 +155,6 @@ SourceListDirective* CSPDirectiveList::operativeDirective(SourceListDirective* d
 SourceListDirective* CSPDirectiveList::operativeDirective(SourceListDirective* directive, SourceListDirective* override) const
 {
     return directive ? directive : override;
-}
-
-bool CSPDirectiveList::checkEvalAndReportViolation(SourceListDirective* directive, const String& consoleMessage, ScriptState* scriptState, ContentSecurityPolicy::ExceptionStatus exceptionStatus) const
-{
-    if (checkEval(directive))
-        return true;
-
-    String suffix = String();
-    if (directive == m_defaultSrc)
-        suffix = " Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback.";
-
-    reportViolationWithState(directive->text(), ContentSecurityPolicy::ScriptSrc, consoleMessage + "\"" + directive->text() + "\"." + suffix + "\n", KURL(), scriptState, exceptionStatus);
-    if (!m_reportOnly) {
-        m_policy->reportBlockedScriptExecutionToInspector(directive->text());
-        return false;
-    }
-    return true;
 }
 
 bool CSPDirectiveList::checkMediaTypeAndReportViolation(MediaListDirective* directive, const String& type, const String& typeAttribute, const String& consoleMessage) const
@@ -296,11 +275,9 @@ bool CSPDirectiveList::allowInlineStyle(const String& contextURL, const WTF::Ord
     return checkInline(operativeDirective(m_styleSrc.get()));
 }
 
-bool CSPDirectiveList::allowEval(ScriptState* scriptState, ContentSecurityPolicy::ReportingStatus reportingStatus, ContentSecurityPolicy::ExceptionStatus exceptionStatus) const
+bool CSPDirectiveList::allowEval(ContentSecurityPolicy::ReportingStatus reportingStatus, ContentSecurityPolicy::ExceptionStatus exceptionStatus) const
 {
-    if (reportingStatus == ContentSecurityPolicy::SendReport) {
-        return checkEvalAndReportViolation(operativeDirective(m_scriptSrc.get()), "Refused to evaluate a string as JavaScript because 'unsafe-eval' is not an allowed source of script in the following Content Security Policy directive: ", scriptState, exceptionStatus);
-    }
+    assert(ContentSecurityPolicy::SendReport != reportingStatus);
     return checkEval(operativeDirective(m_scriptSrc.get()));
 }
 
@@ -541,20 +518,7 @@ void CSPDirectiveList::setCSPDirective(const String& name, const String& value, 
 
 void CSPDirectiveList::applySandboxPolicy(const String& name, const String& sandboxPolicy)
 {
-    if (m_reportOnly) {
-        m_policy->reportInvalidInReportOnly(name);
-        return;
-    }
-    if (m_hasSandboxPolicy) {
-        m_policy->reportDuplicateDirective(name);
-        return;
-    }
-    m_hasSandboxPolicy = true;
-    String invalidTokens;
-    SpaceSplitString policyTokens(AtomicString(sandboxPolicy), SpaceSplitString::ShouldNotFoldCase);
-    m_policy->enforceSandboxFlags(parseSandboxPolicy(policyTokens, invalidTokens));
-    if (!invalidTokens.isNull())
-        m_policy->reportInvalidSandboxFlags(invalidTokens);
+    assert(false); // Not reached!
 }
 
 void CSPDirectiveList::enforceStrictMixedContentChecking(const String& name, const String& value)

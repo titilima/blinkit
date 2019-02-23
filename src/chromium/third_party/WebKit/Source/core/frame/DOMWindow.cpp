@@ -1,27 +1,34 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DOMWindow.cpp
+// Description: DOMWindow Class
+//      Author: Ziming Li
+//     Created: 2019-02-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "core/frame/DOMWindow.h"
 
-#include "bindings/core/v8/ScriptCallStackFactory.h"
 #include "core/dom/Document.h"
 #include "core/dom/ExceptionCode.h"
 #include "core/dom/ExecutionContext.h"
 #include "core/dom/SecurityContext.h"
-#include "core/events/MessageEvent.h"
 #include "core/frame/Frame.h"
 #include "core/frame/FrameClient.h"
 #include "core/frame/FrameConsole.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/Location.h"
-#include "core/frame/RemoteFrame.h"
 #include "core/frame/Settings.h"
 #include "core/frame/UseCounter.h"
 #include "core/input/EventHandler.h"
 #include "core/inspector/ConsoleMessageStorage.h"
 #include "core/inspector/InspectorInstrumentation.h"
-#include "core/inspector/ScriptCallStack.h"
 #include "core/loader/FrameLoaderClient.h"
 #include "core/loader/MixedContentChecker.h"
 #include "core/page/ChromeClient.h"
@@ -39,20 +46,6 @@ DOMWindow::DOMWindow()
 
 DOMWindow::~DOMWindow()
 {
-}
-
-v8::Local<v8::Object> DOMWindow::wrap(v8::Isolate*, v8::Local<v8::Object> creationContext)
-{
-    // DOMWindow must never be wrapped with wrap method.  The wrappers must be
-    // created at WindowProxy::installDOMWindow().
-    RELEASE_ASSERT_NOT_REACHED();
-    return v8::Local<v8::Object>();
-}
-
-v8::Local<v8::Object> DOMWindow::associateWithWrapper(v8::Isolate*, const WrapperTypeInfo*, v8::Local<v8::Object> wrapper)
-{
-    RELEASE_ASSERT_NOT_REACHED(); // same as wrap method
-    return v8::Local<v8::Object>();
 }
 
 const AtomicString& DOMWindow::interfaceName() const
@@ -168,64 +161,6 @@ bool DOMWindow::isSecureContext() const
     return document()->isSecureContext(ExecutionContext::StandardSecureContextCheck);
 }
 
-void DOMWindow::postMessage(PassRefPtr<SerializedScriptValue> message, const MessagePortArray* ports, const String& targetOrigin, LocalDOMWindow* source, ExceptionState& exceptionState)
-{
-    if (!isCurrentlyDisplayedInFrame())
-        return;
-
-    Document* sourceDocument = source->document();
-
-    // Compute the target origin.  We need to do this synchronously in order
-    // to generate the SyntaxError exception correctly.
-    RefPtr<SecurityOrigin> target;
-    if (targetOrigin == "/") {
-        if (!sourceDocument)
-            return;
-        target = sourceDocument->securityOrigin();
-    } else if (targetOrigin != "*") {
-        target = SecurityOrigin::createFromString(targetOrigin);
-        // It doesn't make sense target a postMessage at a unique origin
-        // because there's no way to represent a unique origin in a string.
-        if (target->isUnique()) {
-            exceptionState.throwDOMException(SyntaxError, "Invalid target origin '" + targetOrigin + "' in a call to 'postMessage'.");
-            return;
-        }
-    }
-
-    OwnPtr<MessagePortChannelArray> channels = MessagePort::disentanglePorts(executionContext(), ports, exceptionState);
-    if (exceptionState.hadException())
-        return;
-
-    // Capture the source of the message.  We need to do this synchronously
-    // in order to capture the source of the message correctly.
-    if (!sourceDocument)
-        return;
-    String sourceOrigin = sourceDocument->securityOrigin()->toString();
-    String sourceSuborigin = sourceDocument->securityOrigin()->suboriginName();
-
-    // FIXME: MixedContentChecker needs to be refactored for OOPIF.  For now,
-    // create the url using replicated origins for remote frames.
-    KURL targetUrl = isLocalDOMWindow() ? document()->url() : KURL(KURL(), frame()->securityContext()->securityOrigin()->toString());
-    if (MixedContentChecker::isMixedContent(sourceDocument->securityOrigin(), targetUrl))
-        UseCounter::count(frame(), UseCounter::PostMessageFromSecureToInsecure);
-    else if (MixedContentChecker::isMixedContent(frame()->securityContext()->securityOrigin(), sourceDocument->url()))
-        UseCounter::count(frame(), UseCounter::PostMessageFromInsecureToSecure);
-
-    // Give the embedder a chance to intercept this postMessage.  If the
-    // target is a remote frame, the message will be forwarded through the
-    // browser process.
-    RefPtrWillBeRawPtr<MessageEvent> event = MessageEvent::create(channels.release(), message, sourceOrigin, String(), source, sourceSuborigin);
-    bool didHandleMessageEvent = frame()->client()->willCheckAndDispatchMessageEvent(target.get(), event.get(), source->document()->frame());
-    if (!didHandleMessageEvent) {
-        // Capture stack trace only when inspector front-end is loaded as it may be time consuming.
-        RefPtrWillBeRawPtr<ScriptCallStack> stackTrace = nullptr;
-        if (InspectorInstrumentation::consoleAgentEnabled(sourceDocument))
-            stackTrace = currentScriptCallStack(ScriptCallStack::maxCallStackSizeToCapture);
-
-        toLocalDOMWindow(this)->schedulePostMessage(event, source, target.get(), stackTrace.release());
-    }
-}
-
 // FIXME: Once we're throwing exceptions for cross-origin access violations, we will always sanitize the target
 // frame details, so we can safely combine 'crossDomainAccessErrorMessage' with this method after considering
 // exactly which details may be exposed to JavaScript.
@@ -273,14 +208,6 @@ String DOMWindow::crossDomainAccessErrorMessage(const LocalDOMWindow* callingWin
     // origin for RemoteFrames. If the target frame is remote and sandboxed,
     // there isn't anything else to show other than "null" for its origin.
     KURL targetURL = isLocalDOMWindow() ? document()->url() : KURL(KURL(), targetOrigin->toString());
-    if (frame()->securityContext()->isSandboxed(SandboxOrigin) || callingWindow->document()->isSandboxed(SandboxOrigin)) {
-        message = "Blocked a frame at \"" + SecurityOrigin::create(activeURL)->toString() + "\" from accessing a frame at \"" + SecurityOrigin::create(targetURL)->toString() + "\". ";
-        if (frame()->securityContext()->isSandboxed(SandboxOrigin) && callingWindow->document()->isSandboxed(SandboxOrigin))
-            return "Sandbox access violation: " + message + " Both frames are sandboxed and lack the \"allow-same-origin\" flag.";
-        if (frame()->securityContext()->isSandboxed(SandboxOrigin))
-            return "Sandbox access violation: " + message + " The frame being accessed is sandboxed and lacks the \"allow-same-origin\" flag.";
-        return "Sandbox access violation: " + message + " The frame requesting access is sandboxed and lacks the \"allow-same-origin\" flag.";
-    }
 
     // Protocol errors: Use the URL's protocol rather than the origin's protocol so that we get a useful message for non-heirarchal URLs like 'data:'.
     if (targetOrigin->protocol() != activeOrigin->protocol())

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: EventSource.h
+// Description: EventSource Class
+//      Author: Ziming Li
+//     Created: 2019-02-22
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2012 Ericsson AB. All rights reserved.
  * Copyright (C) 2010 Apple Inc. All rights reserved.
@@ -45,7 +56,6 @@ namespace blink {
 
 class EventSourceInit;
 class ExceptionState;
-class MessageEvent;
 class ResourceResponse;
 class TextResourceDecoder;
 class ThreadableLoader;
@@ -109,7 +119,6 @@ private:
     void abortConnectionAttempt();
     void parseEventStream();
     void parseEventStreamLine(unsigned pos, int fieldLength, int lineLength);
-    PassRefPtrWillBeRawPtr<MessageEvent> createMessageEvent();
 
     KURL m_url;
     bool m_withCredentials;

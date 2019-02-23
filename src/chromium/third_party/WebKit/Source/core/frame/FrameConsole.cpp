@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FrameConsole.cpp
+// Description: FrameConsole Class
+//      Author: Ziming Li
+//     Created: 2019-02-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Apple Inc. All rights reserved.
  *
@@ -28,16 +39,12 @@
 
 #include "core/frame/FrameConsole.h"
 
-#include "bindings/core/v8/ScriptCallStackFactory.h"
 #include "core/frame/FrameHost.h"
 #include "core/inspector/ConsoleAPITypes.h"
 #include "core/inspector/ConsoleMessage.h"
 #include "core/inspector/ConsoleMessageStorage.h"
-#include "core/inspector/InspectorConsoleInstrumentation.h"
-#include "core/inspector/ScriptCallStack.h"
 #include "core/page/ChromeClient.h"
 #include "core/page/Page.h"
-#include "core/workers/WorkerGlobalScopeProxy.h"
 #include "platform/network/ResourceError.h"
 #include "platform/network/ResourceResponse.h"
 #include "wtf/text/StringBuilder.h"
@@ -86,40 +93,10 @@ void FrameConsole::addMessage(PassRefPtrWillBeRawPtr<ConsoleMessage> prpConsoleM
     if (!messageStorage())
         return;
 
-    String messageURL;
-    unsigned lineNumber = 0;
-    if (consoleMessage->callStack() && consoleMessage->callStack()->size()) {
-        lineNumber = consoleMessage->callStack()->at(0).lineNumber();
-        messageURL = consoleMessage->callStack()->at(0).sourceURL();
-    } else {
-        lineNumber = consoleMessage->lineNumber();
-        messageURL = consoleMessage->url();
-    }
+    String messageURL = consoleMessage->url();
+    unsigned lineNumber = consoleMessage->lineNumber();
 
     messageStorage()->reportMessage(m_frame->document(), consoleMessage);
-
-    if (consoleMessage->source() == NetworkMessageSource)
-        return;
-
-    RefPtrWillBeRawPtr<ScriptCallStack> reportedCallStack = nullptr;
-    if (consoleMessage->source() != ConsoleAPIMessageSource) {
-        if (consoleMessage->callStack() && frame().chromeClient().shouldReportDetailedMessageForSource(frame(), messageURL))
-            reportedCallStack = consoleMessage->callStack();
-    } else {
-        if (!frame().host() || (consoleMessage->scriptArguments() && !consoleMessage->scriptArguments()->argumentCount()))
-            return;
-
-        if (!allClientReportingMessageTypes().contains(consoleMessage->type()))
-            return;
-
-        if (frame().chromeClient().shouldReportDetailedMessageForSource(frame(), messageURL))
-            reportedCallStack = currentScriptCallStack(ScriptCallStack::maxCallStackSizeToCapture);
-    }
-
-    String stackTrace;
-    if (reportedCallStack)
-        stackTrace = FrameConsole::formatStackTraceString(consoleMessage->message(), reportedCallStack);
-    frame().chromeClient().addMessageToConsole(m_frame, consoleMessage->source(), consoleMessage->level(), consoleMessage->message(), lineNumber, messageURL, stackTrace);
 }
 
 void FrameConsole::reportResourceResponseReceived(DocumentLoader* loader, unsigned long requestIdentifier, const ResourceResponse& response)
@@ -134,24 +111,6 @@ void FrameConsole::reportResourceResponseReceived(DocumentLoader* loader, unsign
     RefPtrWillBeRawPtr<ConsoleMessage> consoleMessage = ConsoleMessage::create(NetworkMessageSource, ErrorMessageLevel, message, response.url().string());
     consoleMessage->setRequestIdentifier(requestIdentifier);
     addMessage(consoleMessage.release());
-}
-
-String FrameConsole::formatStackTraceString(const String& originalMessage, PassRefPtrWillBeRawPtr<ScriptCallStack> callStack)
-{
-    StringBuilder stackTrace;
-    for (size_t i = 0; i < callStack->size(); ++i) {
-        const ScriptCallFrame& frame = callStack->at(i);
-        stackTrace.append("\n    at " + (frame.functionName().length() ? frame.functionName() : "(anonymous function)"));
-        stackTrace.appendLiteral(" (");
-        stackTrace.append(frame.sourceURL());
-        stackTrace.append(':');
-        stackTrace.appendNumber(frame.lineNumber());
-        stackTrace.append(':');
-        stackTrace.appendNumber(frame.columnNumber());
-        stackTrace.append(')');
-    }
-
-    return stackTrace.toString();
 }
 
 void FrameConsole::mute()
@@ -181,9 +140,7 @@ void FrameConsole::clearMessages()
 
 void FrameConsole::adoptWorkerMessagesAfterTermination(WorkerGlobalScopeProxy* proxy)
 {
-    ConsoleMessageStorage* storage = messageStorage();
-    if (storage)
-        storage->adoptWorkerMessagesAfterTermination(proxy);
+    assert(false); // Not reached!
 }
 
 void FrameConsole::didFailLoading(unsigned long requestIdentifier, const ResourceError& error)

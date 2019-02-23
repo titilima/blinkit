@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: EmptyClients.cpp
+// Description: EmptyClients Class
+//      Author: Ziming Li
+//     Created: 2019-02-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Eric Seidel <eric@webkit.org>
  * Copyright (C) 2008, 2009, 2012 Apple Inc. All rights reserved.
@@ -39,7 +50,6 @@
 #include "public/platform/WebMediaPlayer.h"
 #include "public/platform/modules/mediasession/WebMediaSession.h"
 #include "public/platform/modules/serviceworker/WebServiceWorkerProvider.h"
-#include "public/platform/modules/serviceworker/WebServiceWorkerProviderClient.h"
 
 namespace blink {
 
@@ -169,11 +179,6 @@ void EmptyTextCheckerClient::requestCheckingOfString(PassRefPtrWillBeRawPtr<Text
 
 void EmptyFrameLoaderClient::didRequestAutocomplete(HTMLFormElement*)
 {
-}
-
-v8::Local<v8::Value> EmptyFrameLoaderClient::createTestInterface(const AtomicString& name)
-{
-    return v8::Local<v8::Value>();
 }
 
 PassOwnPtr<WebServiceWorkerProvider> EmptyFrameLoaderClient::createServiceWorkerProvider()

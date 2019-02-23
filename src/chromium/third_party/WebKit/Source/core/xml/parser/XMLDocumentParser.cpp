@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: XMLDocumentParser.cpp
+// Description: XMLDocumentParser Class
+//      Author: Ziming Li
+//     Created: 2019-02-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Peter Kelly (pmk@post.com)
  * Copyright (C) 2005, 2006, 2008, 2014 Apple Inc. All rights reserved.
@@ -29,7 +40,6 @@
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
 #include "bindings/core/v8/ScriptController.h"
 #include "bindings/core/v8/ScriptSourceCode.h"
-#include "bindings/core/v8/V8Document.h"
 #include "core/HTMLNames.h"
 #include "core/XMLNSNames.h"
 #include "core/dom/CDATASection.h"
@@ -74,7 +84,6 @@
 #include <libxml/catalog.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
-#include <libxslt/xslt.h>
 
 namespace blink {
 
@@ -1533,23 +1542,9 @@ void XMLDocumentParser::doEnd()
 
     bool xmlViewerMode = !m_sawError && !m_sawCSS && !m_sawXSLTransform && hasNoStyleInformation(document());
     if (xmlViewerMode) {
-        const char noStyleMessage[] = "This XML file does not appear to have any style information associated with it. The document tree is shown below.";
-        document()->setIsViewSource(true);
-        V8Document::PrivateScript::transformDocumentToTreeViewMethod(document()->frame(), document(), noStyleMessage);
+        assert(false); // Not reached!
     } else if (m_sawXSLTransform) {
-        xmlDocPtr doc = xmlDocPtrForString(document(), m_originalSourceForTransform.toString(), document()->url().string());
-        document()->setTransformSource(adoptPtr(new TransformSource(doc)));
-        // Make the document think it's done, so it will apply XSL stylesheets.
-        document()->setParsingState(Document::FinishedParsing);
-        document()->styleResolverChanged();
-
-        // styleResolverChanged() call can detach the parser and null out its
-        // document. In that case, we just bail out.
-        if (isDetached())
-            return;
-
-        document()->setParsingState(Document::Parsing);
-        DocumentParser::stopParsing();
+        assert(false); // Not reached!
     }
 }
 
@@ -1557,12 +1552,16 @@ xmlDocPtr xmlDocPtrForString(Document* document, const String& source, const Str
 {
     if (source.isEmpty())
         return 0;
+    assert(false); // BKTODO:
+    return nullptr;
+#if 0
     // Parse in a single chunk into an xmlDocPtr
     // FIXME: Hook up error handlers so that a failure to parse the main
     // document results in good error messages.
     XMLDocumentParserScope scope(document, errorFunc, 0);
     XMLParserInput input(source);
     return xmlReadMemory(input.data(), input.size(), url.latin1().data(), input.encoding(), XSLT_PARSE_OPTIONS);
+#endif
 }
 
 OrdinalNumber XMLDocumentParser::lineNumber() const
