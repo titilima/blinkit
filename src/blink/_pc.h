@@ -23,10 +23,12 @@
 #   define _CRT_NONSTDC_NO_WARNINGS
 #   define _CRT_SECURE_NO_WARNINGS
 #   define NOMINMAX
+#   define WIN32_LEAN_AND_MEAN
 
 #endif
 
-#define INSIDE_BLINK    1
+#define BLINK_IMPLEMENTATION    1
+#define INSIDE_BLINK            1
 
 #include <cassert>
 #include "skia/_skia.h"

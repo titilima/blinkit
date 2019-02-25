@@ -104,12 +104,11 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(RepoRoot)third_party\harfbuzz\src;$(RepoRoot)third_party\libpng;$(RepoRoot)third_party\ots\include;$(SrcRoot)harfbuzz;$(SrcRoot)libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -132,14 +131,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(RepoRoot)third_party\harfbuzz\src;$(RepoRoot)third_party\libpng;$(RepoRoot)third_party\ots\include;$(SrcRoot)harfbuzz;$(SrcRoot)libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -236,7 +234,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaStreamTrackSourcesRequest.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMemoryAllocatorDump.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMemoryDumpProvider.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMessagePortChannelClient.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebPasswordCredential.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebPrerender.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebPrerenderingSupport.cpp" />
@@ -256,8 +253,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebScrollbarThemeGeometryNative.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebScrollbarThemePainter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSecurityOrigin.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebServicePortProviderClient.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebServiceWorkerProviderClient.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebServiceWorkerProxy.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebServiceWorkerRequest.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebServiceWorkerResponse.cpp" />
@@ -383,7 +378,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsContext.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsContextState.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsLayer.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsLayerDebugInfo.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\GraphicsTypes.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\Image.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\ImageBuffer.cpp" />
@@ -444,7 +438,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\PageMemory.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\PagePool.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\PersistentNode.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\RunAllTests.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\SafePoint.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\StackFrameDepth.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\ThreadState.cpp" />
@@ -559,10 +552,252 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\WebThreadSupportingGC.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Widget.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\win\SystemInfo.cpp" />
-    <ClCompile Include="..\_pch.cpp" />
+    <ClCompile Include="..\_pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\Platform.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\PointerProperties.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebApplicationCacheHost.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebApplicationCacheHostClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebAudioBus.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebAudioDestinationConsumer.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebAudioDevice.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebAudioSourceProvider.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebAudioSourceProviderClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebBatteryStatus.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebBatteryStatusListener.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebBlendMode.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebBlobData.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebBlobInfo.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebBlobRegistry.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCallbacks.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCanvas.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCanvasCaptureHandler.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCircularGeofencingRegion.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebClipboard.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebColor.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCommon.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCompositeAndReadbackAsyncCallback.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCompositorAnimation.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCompositorAnimationCurve.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCompositorAnimationDelegate.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCompositorAnimationPlayer.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCompositorAnimationPlayerClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCompositorAnimationTimeline.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCompositorMutableProperties.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCompositorMutableState.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCompositorMutableStateProvider.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCompositorSupport.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebConnectionType.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebContentDecryptionModule.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebContentDecryptionModuleAccess.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebContentDecryptionModuleException.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebContentDecryptionModuleResult.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebContentDecryptionModuleSession.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebContentLayer.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebContentLayerClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebContentSettingCallbacks.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebConvertableToTraceFormat.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCookieJar.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCredential.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCredentialManagerClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCredentialManagerError.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCrossOriginServiceWorkerClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCrypto.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCryptoAlgorithm.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCryptoAlgorithmParams.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCryptoKey.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCryptoKeyAlgorithm.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCryptoKeyAlgorithmParams.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCryptoUtil.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCString.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCursorInfo.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebData.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebDatabaseObserver.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebDataConsumerHandle.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebDeviceLightListener.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebDiscardableMemory.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebDisplayItemList.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebDisplayMode.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebDistillability.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebDoublePoint.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebDragData.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebEncryptedMediaClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebEncryptedMediaKeyInformation.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebEncryptedMediaRequest.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebEncryptedMediaTypes.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebExternalBitmap.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebExternalTextureLayer.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebExternalTextureLayerClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebExternalTextureMailbox.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFallbackThemeEngine.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFederatedCredential.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFileError.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFileInfo.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFileSystem.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFileSystemCallbacks.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFileSystemEntry.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFileSystemType.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFileUtilities.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFileWriter.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFileWriterClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFilterAnimationCurve.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFilterKeyframe.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFilterOperations.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFlingAnimator.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFloatAnimationCurve.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFloatKeyframe.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFloatPoint.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFloatPoint3D.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFloatRect.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFloatSize.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFocusType.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFrameScheduler.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebFrameTimingEvent.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebGamepad.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebGamepadListener.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebGamepads.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebGeofencingError.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebGeofencingEventType.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebGeofencingProvider.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebGeofencingRegistration.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebGestureCurve.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebGestureCurveTarget.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebGestureDevice.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebGraphicsContext3D.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebGraphicsContext3DProvider.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebHistoryScrollRestorationType.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebHTTPBody.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebHTTPHeaderVisitor.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebHTTPLoadInfo.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebImage.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebImageGenerator.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebImageLayer.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebInbandTextTrack.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebInbandTextTrackClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebInputEventResult.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebLayer.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebLayerPositionConstraint.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebLayerScrollClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebLayerTreeView.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebLayoutAndPaintAsyncCallback.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebLocalizedString.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMediaConstraints.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMediaDeviceInfo.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMediaKeySystemConfiguration.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMediaKeySystemMediaCapability.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMediaPlayer.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMediaPlayerClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMediaPlayerEncryptedMediaClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMediaRecorderHandler.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMediaRecorderHandlerClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMediaSource.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMediaStream.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMediaStreamCenter.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMediaStreamCenterClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMediaStreamSource.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMediaStreamTrack.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMediaStreamTrackSourcesRequest.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMemoryAllocatorDump.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMemoryDumpProvider.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMemoryPressureLevel.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMIDIAccessor.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMIDIAccessorClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebMimeRegistry.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebNativeScrollBehavior.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebNonCopyable.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebPageVisibilityState.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebPassOwnPtr.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebPasswordCredential.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebPlatformEventListener.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebPlatformEventType.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebPluginListBuilder.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebPoint.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebPointerProperties.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebPrerender.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebPrerenderingSupport.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebPrescientNetworking.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebPrivateOwnPtr.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebPrivatePtr.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebProcessMemoryDump.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebPublicSuffixList.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRect.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebReferrerPolicy.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRenderingStats.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCCertificate.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCCertificateGenerator.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCConfiguration.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCDataChannelHandler.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCDataChannelHandlerClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCDataChannelInit.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCDTMFSenderHandler.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCDTMFSenderHandlerClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCICECandidate.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCKeyParams.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCOfferOptions.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCPeerConnectionHandler.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCPeerConnectionHandlerClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCSessionDescription.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCSessionDescriptionRequest.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCStatsRequest.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCStatsResponse.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebRTCVoidRequest.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebScheduler.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebScreenInfo.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebScrollbar.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebScrollbarBehavior.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebScrollbarButtonsPlacement.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebScrollbarLayer.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebScrollbarThemeGeometry.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebScrollbarThemePainter.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebScrollBlocksOn.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebScrollOffsetAnimationCurve.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebScrollStateData.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebSecurityOrigin.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebSelectionBound.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebSetSinkIdCallbacks.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebSize.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebSourceBuffer.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebSourceBufferClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebSourceInfo.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebSpeechSynthesisUtterance.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebSpeechSynthesisVoice.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebSpeechSynthesizer.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebSpeechSynthesizerClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebStorageArea.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebStorageNamespace.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebStorageQuotaCallbacks.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebStorageQuotaError.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebStorageQuotaType.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebString.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebSuspendableTask.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebTaskRunner.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebThemeEngine.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebThread.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebThreadedDataReceiver.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebThreadSafeData.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebTimeRange.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebTopControlsState.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebTraceLocation.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebTransformAnimationCurve.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebTransformKeyframe.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebTransformOperations.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebUnitTestSupport.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebURL.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebURLError.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebURLLoader.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebURLLoaderClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebURLLoaderTestDelegate.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebURLLoadTiming.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebURLRequest.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebURLResponse.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebVector.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebViewScheduler.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebWaitableEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\animation\AnimationUtilities.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\animation\CubicBezierControlPoints.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\animation\TimingFunction.h" />
