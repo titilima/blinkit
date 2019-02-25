@@ -14,10 +14,37 @@
 
 #pragma once
 
+#include <cassert>
+
+namespace BlinKit {
+
+class Asserter {
+public:
+    Asserter(bool condition) { assert(condition); }
+};
+
+} // namespace BlinKit
+
+template <typename T> inline BlinKit::Asserter& operator<<(const BlinKit::Asserter &, const T &) {}
+
 #ifdef _DEBUG
 #   define DCHECK_IS_ON()   1
 #else
 #   define DCHECK_IS_ON()   0
 #endif
+
+#define BKASSERT(condition) ::BlinKit::Asserter(!!(condition))
+
+#define CHECK       BKASSERT
+#define DCHECK      BKASSERT
+
+#define DCHECK_EQ(v1, v2)   BKASSERT((v1) == (v2))
+#define DCHECK_GE(v1, v2)   BKASSERT((v1) >= (v2))
+#define DCHECK_GT(v1, v2)   BKASSERT((v1) > (v2))
+#define DCHECK_LE(v1, v2)   BKASSERT((v1) <= (v2))
+#define DCHECK_LT(v1, v2)   BKASSERT((v1) < (v2))
+#define DCHECK_NE(v1, v2)   BKASSERT((v1) != (v2))
+
+#define NOTREACHED()    BKASSERT(false)
 
 #endif // BLINKIT_BASE_LOGGING_H
