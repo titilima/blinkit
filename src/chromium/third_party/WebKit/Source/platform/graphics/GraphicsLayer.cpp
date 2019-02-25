@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: GraphicsLayer.cpp
+// Description: GraphicsLayer Class
+//      Author: Ziming Li
+//     Created: 2019-02-25
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All rights reserved.
  *
@@ -1232,9 +1243,8 @@ void GraphicsLayer::didScroll()
 
 scoped_refptr<base::trace_event::ConvertableToTraceFormat> GraphicsLayer::TakeDebugInfo(cc::Layer* layer)
 {
-    scoped_refptr<base::trace_event::TracedValue> tracedValue = m_debugInfo.asTracedValue();
-    tracedValue->SetString("layer_name", WTF::StringUTF8Adaptor(debugName(layer)).asStringPiece());
-    return tracedValue;
+    assert(false); // Not reached!
+    return nullptr;
 }
 
 PaintController& GraphicsLayer::paintController()

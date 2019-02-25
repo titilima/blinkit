@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - base Library
+// -------------------------------------------------
+//   File Name: weak_ptr.h
+// Description: WeakPtr Class
+//      Author: Ziming Li
+//     Created: 2019-02-25
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (c) 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -74,7 +85,6 @@
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/memory/ref_counted.h"
-#include "base/sequence_checker.h"
 #include "base/template_util.h"
 
 namespace base {
@@ -102,7 +112,6 @@ class BASE_EXPORT WeakReference {
 
     ~Flag();
 
-    SequenceChecker sequence_checker_;
     bool is_valid_;
   };
 

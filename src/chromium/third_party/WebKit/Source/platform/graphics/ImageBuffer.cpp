@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ImageBuffer.cpp
+// Description: ImageBuffer Class
+//      Author: Ziming Li
+//     Created: 2019-02-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2008, Google Inc. All rights reserved.
  * Copyright (C) 2009 Dirk Schulze <krit@webkit.org>
@@ -32,7 +43,6 @@
 
 #include "platform/graphics/ImageBuffer.h"
 
-#include "GrContext.h"
 #include "platform/MIMETypeRegistry.h"
 #include "platform/geometry/IntRect.h"
 #include "platform/graphics/GraphicsContext.h"
@@ -177,65 +187,8 @@ WebLayer* ImageBuffer::platformLayer() const
 
 bool ImageBuffer::copyToPlatformTexture(WebGraphicsContext3D* context, Platform3DObject texture, GLenum internalFormat, GLenum destType, GLint level, bool premultiplyAlpha, bool flipY)
 {
-    if (!Extensions3DUtil::canUseCopyTextureCHROMIUM(GL_TEXTURE_2D, internalFormat, destType, level))
-        return false;
-
-    if (!isSurfaceValid())
-        return false;
-
-    RefPtr<const SkImage> textureImage = m_surface->newImageSnapshot(PreferAcceleration);
-    if (!textureImage)
-        return false;
-
-    if (!m_surface->isAccelerated())
-        return false;
-
-
-    ASSERT(textureImage->isTextureBacked()); // isAccelerated() check above should guarantee this
-    // Get the texture ID, flushing pending operations if needed.
-    Platform3DObject textureId = textureImage->getTextureHandle(true);
-    if (!textureId)
-        return false;
-
-    OwnPtr<WebGraphicsContext3DProvider> provider = adoptPtr(Platform::current()->createSharedOffscreenGraphicsContext3DProvider());
-    if (!provider)
-        return false;
-    WebGraphicsContext3D* sharedContext = provider->context3d();
-    if (!sharedContext)
-        return false;
-
-    OwnPtr<WebExternalTextureMailbox> mailbox = adoptPtr(new WebExternalTextureMailbox);
-
-    // Contexts may be in a different share group. We must transfer the texture through a mailbox first
-    sharedContext->genMailboxCHROMIUM(mailbox->name);
-    sharedContext->produceTextureDirectCHROMIUM(textureId, GL_TEXTURE_2D, mailbox->name);
-    const WGC3Duint64 sharedFenceSync = sharedContext->insertFenceSyncCHROMIUM();
-    sharedContext->flush();
-
-    mailbox->validSyncToken = sharedContext->genSyncTokenCHROMIUM(sharedFenceSync, mailbox->syncToken);
-    if (mailbox->validSyncToken)
-        context->waitSyncTokenCHROMIUM(mailbox->syncToken);
-
-    Platform3DObject sourceTexture = context->createAndConsumeTextureCHROMIUM(GL_TEXTURE_2D, mailbox->name);
-
-    // The canvas is stored in a premultiplied format, so unpremultiply if necessary.
-    // The canvas is stored in an inverted position, so the flip semantics are reversed.
-    context->copyTextureCHROMIUM(sourceTexture, texture, internalFormat, destType, flipY ? GL_FALSE : GL_TRUE, GL_FALSE, premultiplyAlpha ? GL_FALSE : GL_TRUE);
-
-    context->deleteTexture(sourceTexture);
-
-    const WGC3Duint64 contextFenceSync = context->insertFenceSyncCHROMIUM();
-
-    context->flush();
-
-    WGC3Dbyte syncToken[24];
-    if (context->genSyncTokenCHROMIUM(contextFenceSync, syncToken))
-        sharedContext->waitSyncTokenCHROMIUM(syncToken);
-
-    // Undo grContext texture binding changes introduced in this function
-    provider->grContext()->resetContext(kTextureBinding_GrGLBackendState);
-
-    return true;
+    assert(false); // Not reached!
+    return false;
 }
 
 bool ImageBuffer::copyRenderingResultsFromDrawingBuffer(DrawingBuffer* drawingBuffer, SourceDrawingBuffer sourceBuffer)
