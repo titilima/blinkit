@@ -31,6 +31,7 @@
 class RuntimeEnabledFeatures final {
     STATIC_ONLY(RuntimeEnabledFeatures);
 public:
+    BLINK_DEFINE_STABLE_FEATURE(alwaysUseComplexText)
     BLINK_DEFINE_STABLE_FEATURE(clientHints)
     BLINK_DEFINE_STABLE_FEATURE(cssCompositing)
     BLINK_DEFINE_STABLE_FEATURE(cssVariables)
@@ -61,6 +62,7 @@ public:
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(css3Text)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(css3TextDecorations)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(cssGridLayout)
+    BLINK_DEFINE_EXPERIMENTAL_FEATURE(decodeToYUV)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(experimentalContentSecurityPolicyFeatures)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(fractionalScrollOffsets)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(frameTimingSupport)
@@ -83,6 +85,7 @@ public:
     BLINKIT_DISABLE_FEATURE(cssStickyPosition)
     BLINKIT_DISABLE_FEATURE(experimentalFramework)
     BLINKIT_DISABLE_FEATURE(fastMobileScrolling)
+    BLINKIT_DISABLE_FEATURE(forceDisable2dCanvasCopyOnWrite)
     BLINKIT_DISABLE_FEATURE(imageOrientation)
     BLINKIT_DISABLE_FEATURE(langAttributeAwareFormControlUI)
     BLINKIT_DISABLE_FEATURE(mediaCapture)
@@ -90,9 +93,12 @@ public:
     BLINKIT_DISABLE_FEATURE(orientationEvent)
     BLINKIT_DISABLE_FEATURE(overlayScrollbars)
     BLINKIT_DISABLE_FEATURE(pointerEvent)
+    BLINKIT_DISABLE_FEATURE(reducedReferrerGranularity)
     BLINKIT_DISABLE_FEATURE(scrollCustomization)
     BLINKIT_DISABLE_FEATURE(setImageColorProfiles)
     BLINKIT_DISABLE_FEATURE(slimmingPaintOffsetCaching)
+    BLINKIT_DISABLE_FEATURE(slimmingPaintStrictCullRectClipping)
+    BLINKIT_DISABLE_FEATURE(slimmingPaintUnderInvalidationChecking)
     BLINKIT_DISABLE_FEATURE(slimmingPaintV2)
     BLINKIT_DISABLE_FEATURE(threadedParserDataReceiver)
     BLINKIT_DISABLE_FEATURE(trustedEventsDefaultAction)
