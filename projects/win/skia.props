@@ -5,7 +5,7 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(RepoRoot)third_party\skia\include\config;$(RepoRoot)third_party\skia\include\core;$(RepoRoot)third_party\skia\include\ports;$(RepoRoot)third_party\skia\include\utils;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(RepoRoot)third_party\skia\include\config;$(RepoRoot)third_party\skia\include\core;$(RepoRoot)third_party\skia\include\effects;$(RepoRoot)third_party\skia\include\ports;$(RepoRoot)third_party\skia\include\utils;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />
