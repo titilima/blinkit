@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TracedValue.cpp
+// Description: TracedValue Class
+//      Author: Ziming Li
+//     Created: 2019-02-26
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -15,7 +26,6 @@ PassRefPtr<TracedValue> TracedValue::create()
 }
 
 TracedValue::TracedValue()
-    : m_tracedValue(new base::trace_event::TracedValue)
 {
 }
 
@@ -25,81 +35,78 @@ TracedValue::~TracedValue()
 
 void TracedValue::setInteger(const char* name, int value)
 {
-    m_tracedValue->SetIntegerWithCopiedName(name, value);
+    assert(false); // Not reached!
 }
 
 void TracedValue::setDouble(const char* name, double value)
 {
-    m_tracedValue->SetDoubleWithCopiedName(name, value);
+    assert(false); // Not reached!
 }
 
 void TracedValue::setBoolean(const char* name, bool value)
 {
-    m_tracedValue->SetBooleanWithCopiedName(name, value);
+    assert(false); // Not reached!
 }
 
 void TracedValue::setString(const char* name, const String& value)
 {
-    StringUTF8Adaptor adaptor(value);
-    m_tracedValue->SetStringWithCopiedName(name, adaptor.asStringPiece());
+    assert(false); // Not reached!
 }
 
 void TracedValue::beginDictionary(const char* name)
 {
-    m_tracedValue->BeginDictionaryWithCopiedName(name);
+    assert(false); // Not reached!
 }
 
 void TracedValue::beginArray(const char* name)
 {
-    m_tracedValue->BeginArrayWithCopiedName(name);
+    assert(false); // Not reached!
 }
 
 void TracedValue::endDictionary()
 {
-    m_tracedValue->EndDictionary();
+    assert(false); // Not reached!
 }
 
 void TracedValue::pushInteger(int value)
 {
-    m_tracedValue->AppendInteger(value);
+    assert(false); // Not reached!
 }
 
 void TracedValue::pushDouble(double value)
 {
-    m_tracedValue->AppendDouble(value);
+    assert(false); // Not reached!
 }
 
 void TracedValue::pushBoolean(bool value)
 {
-    m_tracedValue->AppendBoolean(value);
+    assert(false); // Not reached!
 }
 
 void TracedValue::pushString(const String& value)
 {
-    StringUTF8Adaptor adaptor(value);
-    m_tracedValue->AppendString(adaptor.asStringPiece());
+    assert(false); // Not reached!
 }
 
 void TracedValue::beginArray()
 {
-    m_tracedValue->BeginArray();
+    assert(false); // Not reached!
 }
 
 void TracedValue::beginDictionary()
 {
-    m_tracedValue->BeginDictionary();
+    assert(false); // Not reached!
 }
 
 void TracedValue::endArray()
 {
-    m_tracedValue->EndArray();
+    assert(false); // Not reached!
 }
 
 String TracedValue::asTraceFormat() const
 {
-    std::string out;
-    m_tracedValue->AppendAsTraceFormat(&out);
-    return String::fromUTF8(out.c_str());
+    assert(false); // Not reached!
+    return String();
 }
 
 }

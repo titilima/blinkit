@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TracedValue.h
+// Description: TracedValue Class
+//      Author: Ziming Li
+//     Created: 2019-02-26
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,16 +16,9 @@
 #ifndef TracedValue_h
 #define TracedValue_h
 
-#include "base/memory/ref_counted.h"
 #include "platform/EventTracer.h"
 #include "wtf/PassRefPtr.h"
 #include "wtf/text/WTFString.h"
-
-namespace base {
-namespace trace_event {
-class TracedValue;
-}
-}
 
 namespace blink {
 
@@ -46,8 +50,6 @@ public:
 private:
     TracedValue();
     ~TracedValue() override;
-
-    scoped_refptr<base::trace_event::TracedValue> m_tracedValue;
 };
 
 } // namespace blink
