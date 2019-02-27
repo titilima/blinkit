@@ -116,7 +116,11 @@ UChar32 foldCase(UChar32 c);
 
 bool hasLineBreakingPropertyComplexContext(UChar32 c);
 
+bool isAlphanumeric(UChar32 c);
+
 bool isPrintableChar(UChar32 c);
+
+UChar32 mirroredChar(UChar32 c);
 
 UChar32 toTitleCase(UChar32 c);
 
