@@ -20,7 +20,7 @@ namespace BlinKit {
 
 class Asserter {
 public:
-    Asserter(bool condition) { assert(condition); }
+    explicit Asserter(bool condition) { assert(condition); }
 };
 
 } // namespace BlinKit
