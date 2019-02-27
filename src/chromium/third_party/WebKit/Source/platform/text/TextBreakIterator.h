@@ -42,11 +42,13 @@ namespace blink {
 class TextBreakIterator {
 public:
     virtual int32_t first(void) = 0;
-    virtual bool isBoundary(int32_t offset) = 0;
+    virtual int32_t last(void) = 0;
+    virtual int32_t previous(void) = 0;
     virtual int32_t next(void) = 0;
     virtual int32_t current(void) const = 0;
     virtual int32_t following(int32_t offset) = 0;
     virtual int32_t preceding(int32_t offset) = 0;
+    virtual bool isBoundary(int32_t offset) = 0;
 };
 
 // Note: The returned iterator is good only until you get another iterator, with the exception of acquireLineBreakIterator.
