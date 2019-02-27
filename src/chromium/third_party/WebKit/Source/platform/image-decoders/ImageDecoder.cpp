@@ -1,3 +1,30 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ImageDecoder.cpp
+// Description: ImageDecoder Class
+//      Author: Ziming Li
+//     Created: 2019-02-27
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
+#ifndef BLINKIT_ENABLE_BITMAP
+#define BLINKIT_ENABLE_BITMAP   0
+#endif
+
+#ifndef BLINKIT_ENABLE_ICON
+#define BLINKIT_ENABLE_ICON 0
+#endif
+
+#ifndef BLINKIT_ENABLE_JPEG
+#define BLINKIT_ENABLE_JPEG 0
+#endif
+
+#ifndef BLINKIT_ENABLE_WEBP
+#define BLINKIT_ENABLE_WEBP 0
+#endif
+
 /*
  * Copyright (C) Research In Motion Limited 2009-2010. All rights reserved.
  *
@@ -27,7 +54,9 @@
 #include "platform/image-decoders/ico/ICOImageDecoder.h"
 #include "platform/image-decoders/jpeg/JPEGImageDecoder.h"
 #include "platform/image-decoders/png/PNGImageDecoder.h"
+#if BLINKIT_ENABLE_WEBP
 #include "platform/image-decoders/webp/WEBPImageDecoder.h"
+#endif
 #include "wtf/PassOwnPtr.h"
 
 namespace blink {
@@ -47,10 +76,12 @@ static size_t copyFromSharedBuffer(char* buffer, size_t bufferLength, const Shar
     return bytesExtracted;
 }
 
+#if BLINKIT_ENABLE_JPEG
 inline bool matchesJPEGSignature(char* contents)
 {
     return !memcmp(contents, "\xFF\xD8\xFF", 3);
 }
+#endif
 
 inline bool matchesPNGSignature(char* contents)
 {
@@ -62,11 +93,14 @@ inline bool matchesGIFSignature(char* contents)
     return !memcmp(contents, "GIF87a", 6) || !memcmp(contents, "GIF89a", 6);
 }
 
+#if BLINKIT_ENABLE_WEBP
 inline bool matchesWebPSignature(char* contents)
 {
     return !memcmp(contents, "RIFF", 4) && !memcmp(contents + 8, "WEBPVP", 6);
 }
+#endif
 
+#if BLINKIT_ENABLE_ICON
 inline bool matchesICOSignature(char* contents)
 {
     return !memcmp(contents, "\x00\x00\x01\x00", 4);
@@ -76,11 +110,14 @@ inline bool matchesCURSignature(char* contents)
 {
     return !memcmp(contents, "\x00\x00\x02\x00", 4);
 }
+#endif
 
+#if BLINKIT_ENABLE_BITMAP
 inline bool matchesBMPSignature(char* contents)
 {
     return !memcmp(contents, "BM", 2);
 }
+#endif
 
 PassOwnPtr<ImageDecoder> ImageDecoder::create(const SharedBuffer& data, AlphaOption alphaOption, GammaAndColorProfileOption colorOptions)
 {
@@ -93,8 +130,10 @@ PassOwnPtr<ImageDecoder> ImageDecoder::create(const SharedBuffer& data, AlphaOpt
     if (copyFromSharedBuffer(contents, longestSignatureLength, data, 0) < longestSignatureLength)
         return nullptr;
 
+#if BLINKIT_ENABLE_JPEG
     if (matchesJPEGSignature(contents))
         return adoptPtr(new JPEGImageDecoder(alphaOption, colorOptions, maxDecodedBytes));
+#endif
 
     if (matchesPNGSignature(contents))
         return adoptPtr(new PNGImageDecoder(alphaOption, colorOptions, maxDecodedBytes));
@@ -102,14 +141,20 @@ PassOwnPtr<ImageDecoder> ImageDecoder::create(const SharedBuffer& data, AlphaOpt
     if (matchesGIFSignature(contents))
         return adoptPtr(new GIFImageDecoder(alphaOption, colorOptions, maxDecodedBytes));
 
+#if BLINKIT_ENABLE_WEBP
     if (matchesWebPSignature(contents))
         return adoptPtr(new WEBPImageDecoder(alphaOption, colorOptions, maxDecodedBytes));
+#endif
 
+#if BLINKIT_ENABLE_ICON
     if (matchesICOSignature(contents) || matchesCURSignature(contents))
         return adoptPtr(new ICOImageDecoder(alphaOption, colorOptions, maxDecodedBytes));
+#endif
 
+#if BLINKIT_ENABLE_BITMAP
     if (matchesBMPSignature(contents))
         return adoptPtr(new BMPImageDecoder(alphaOption, colorOptions, maxDecodedBytes));
+#endif
 
     return nullptr;
 }
