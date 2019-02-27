@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - base Library
+// -------------------------------------------------
+//   File Name: callback_internal.h
+// Description: Implementations for Callback
+//      Author: Ziming Li
+//     Created: 2019-02-25
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (c) 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,11 +19,11 @@
 #ifndef BASE_CALLBACK_INTERNAL_H_
 #define BASE_CALLBACK_INTERNAL_H_
 
+#include <atomic>
 #include <stddef.h>
 #include <memory>
 #include <type_traits>
 
-#include "base/atomic_ref_count.h"
 #include "base/base_export.h"
 #include "base/macros.h"
 #include "base/memory/ref_counted.h"
@@ -47,7 +58,7 @@ class BindStateBase {
   void AddRef();
   void Release();
 
-  AtomicRefCount ref_count_;
+  std::atomic<unsigned> ref_count_;
 
   // Pointer to a function that will properly destroy |this|.
   void (*destructor_)(BindStateBase*);
