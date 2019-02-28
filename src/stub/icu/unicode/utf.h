@@ -18,8 +18,11 @@
 
 #define U_IS_BMP(c) ((uint32_t)(c)<=0xffff)
 
+#define U_IS_SUPPLEMENTARY(c) ((uint32_t)((c)-0x10000)<=0xfffff)
+
 #define U_IS_SURROGATE(c) (((c)&0xfffff800)==0xd800)
 
+#include "utf8.h"
 #include "utf16.h"
 
 #endif // BLINKIT_STUB_ICU_UTF_H
