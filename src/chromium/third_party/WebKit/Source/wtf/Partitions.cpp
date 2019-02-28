@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Partitions.cpp
+// Description: Partitions Class
+//      Author: Ziming Li
+//     Created: 2019-02-28
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -30,7 +41,6 @@
 
 #include "wtf/Partitions.h"
 
-#include "base/debug/alias.h"
 #include "wtf/MainThread.h"
 #include "wtf/PartitionAllocator.h"
 
@@ -126,65 +136,47 @@ void Partitions::dumpMemoryStats(bool isLightDump, PartitionStatsDumper* partiti
 
 static NEVER_INLINE void partitionsOutOfMemoryUsing2G()
 {
-    size_t signature = 2UL * 1024 * 1024 * 1024;
-    base::debug::Alias(&signature);
-    IMMEDIATE_CRASH();
+    assert(false); // Not reached!
 }
 
 static NEVER_INLINE void partitionsOutOfMemoryUsing1G()
 {
-    size_t signature = 1UL * 1024 * 1024 * 1024;
-    base::debug::Alias(&signature);
-    IMMEDIATE_CRASH();
+    assert(false); // Not reached!
 }
 
 static NEVER_INLINE void partitionsOutOfMemoryUsing512M()
 {
-    size_t signature = 512 * 1024 * 1024;
-    base::debug::Alias(&signature);
-    IMMEDIATE_CRASH();
+    assert(false); // Not reached!
 }
 
 static NEVER_INLINE void partitionsOutOfMemoryUsing256M()
 {
-    size_t signature = 256 * 1024 * 1024;
-    base::debug::Alias(&signature);
-    IMMEDIATE_CRASH();
+    assert(false); // Not reached!
 }
 
 static NEVER_INLINE void partitionsOutOfMemoryUsing128M()
 {
-    size_t signature = 128 * 1024 * 1024;
-    base::debug::Alias(&signature);
-    IMMEDIATE_CRASH();
+    assert(false); // Not reached!
 }
 
 static NEVER_INLINE void partitionsOutOfMemoryUsing64M()
 {
-    size_t signature = 64 * 1024 * 1024;
-    base::debug::Alias(&signature);
-    IMMEDIATE_CRASH();
+    assert(false); // Not reached!
 }
 
 static NEVER_INLINE void partitionsOutOfMemoryUsing32M()
 {
-    size_t signature = 32 * 1024 * 1024;
-    base::debug::Alias(&signature);
-    IMMEDIATE_CRASH();
+    assert(false); // Not reached!
 }
 
 static NEVER_INLINE void partitionsOutOfMemoryUsing16M()
 {
-    size_t signature = 16 * 1024 * 1024;
-    base::debug::Alias(&signature);
-    IMMEDIATE_CRASH();
+    assert(false); // Not reached!
 }
 
 static NEVER_INLINE void partitionsOutOfMemoryUsingLessThan16M()
 {
-    size_t signature = 16 * 1024 * 1024 - 1;
-    base::debug::Alias(&signature);
-    IMMEDIATE_CRASH();
+    assert(false); // Not reached!
 }
 
 void Partitions::handleOutOfMemory()
