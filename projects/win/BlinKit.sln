@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "webcore_remaining", "webcor
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "blink_platform", "blink_platform\blink_platform.vcxproj", "{4D41689B-1DF6-473C-8372-C186431B93A4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wtf", "wtf\wtf.vcxproj", "{F2BD6227-B9BF-4658-A72F-3A8CA514A847}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -83,6 +85,14 @@ Global
 		{4D41689B-1DF6-473C-8372-C186431B93A4}.Release|x64.Build.0 = Release|x64
 		{4D41689B-1DF6-473C-8372-C186431B93A4}.Release|x86.ActiveCfg = Release|Win32
 		{4D41689B-1DF6-473C-8372-C186431B93A4}.Release|x86.Build.0 = Release|Win32
+		{F2BD6227-B9BF-4658-A72F-3A8CA514A847}.Debug|x64.ActiveCfg = Debug|x64
+		{F2BD6227-B9BF-4658-A72F-3A8CA514A847}.Debug|x64.Build.0 = Debug|x64
+		{F2BD6227-B9BF-4658-A72F-3A8CA514A847}.Debug|x86.ActiveCfg = Debug|Win32
+		{F2BD6227-B9BF-4658-A72F-3A8CA514A847}.Debug|x86.Build.0 = Debug|Win32
+		{F2BD6227-B9BF-4658-A72F-3A8CA514A847}.Release|x64.ActiveCfg = Release|x64
+		{F2BD6227-B9BF-4658-A72F-3A8CA514A847}.Release|x64.Build.0 = Release|x64
+		{F2BD6227-B9BF-4658-A72F-3A8CA514A847}.Release|x86.ActiveCfg = Release|Win32
+		{F2BD6227-B9BF-4658-A72F-3A8CA514A847}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +105,7 @@ Global
 		{9CA55C16-3C88-4D99-93A6-5A866778E717} = {91A28989-465E-4DCE-8769-180486DD9C19}
 		{A8709B4B-640F-4593-A431-DB453F4076E5} = {91A28989-465E-4DCE-8769-180486DD9C19}
 		{4D41689B-1DF6-473C-8372-C186431B93A4} = {91A28989-465E-4DCE-8769-180486DD9C19}
+		{F2BD6227-B9BF-4658-A72F-3A8CA514A847} = {91A28989-465E-4DCE-8769-180486DD9C19}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {203D556F-DFBA-4942-8EDE-A717D34DBEEB}
