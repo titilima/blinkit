@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "blink_platform", "blink_pla
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wtf", "wtf\wtf.vcxproj", "{F2BD6227-B9BF-4658-A72F-3A8CA514A847}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "stub", "stub\stub.vcxproj", "{5C7FCBE4-3630-4DEF-AC58-916EAFBE1E97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -93,6 +95,14 @@ Global
 		{F2BD6227-B9BF-4658-A72F-3A8CA514A847}.Release|x64.Build.0 = Release|x64
 		{F2BD6227-B9BF-4658-A72F-3A8CA514A847}.Release|x86.ActiveCfg = Release|Win32
 		{F2BD6227-B9BF-4658-A72F-3A8CA514A847}.Release|x86.Build.0 = Release|Win32
+		{5C7FCBE4-3630-4DEF-AC58-916EAFBE1E97}.Debug|x64.ActiveCfg = Debug|x64
+		{5C7FCBE4-3630-4DEF-AC58-916EAFBE1E97}.Debug|x64.Build.0 = Debug|x64
+		{5C7FCBE4-3630-4DEF-AC58-916EAFBE1E97}.Debug|x86.ActiveCfg = Debug|Win32
+		{5C7FCBE4-3630-4DEF-AC58-916EAFBE1E97}.Debug|x86.Build.0 = Debug|Win32
+		{5C7FCBE4-3630-4DEF-AC58-916EAFBE1E97}.Release|x64.ActiveCfg = Release|x64
+		{5C7FCBE4-3630-4DEF-AC58-916EAFBE1E97}.Release|x64.Build.0 = Release|x64
+		{5C7FCBE4-3630-4DEF-AC58-916EAFBE1E97}.Release|x86.ActiveCfg = Release|Win32
+		{5C7FCBE4-3630-4DEF-AC58-916EAFBE1E97}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
