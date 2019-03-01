@@ -17,6 +17,15 @@
 #include <cstddef>
 #include <cstdint>
 
+typedef int8_t UBool;
+
+#ifndef TRUE
+#   define TRUE  1
+#endif
+#ifndef FALSE
+#   define FALSE 0
+#endif
+
 #if OS_WIN
 typedef wchar_t UChar;
 #endif
