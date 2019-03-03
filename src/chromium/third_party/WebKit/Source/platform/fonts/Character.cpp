@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Partitions.cpp
+// Description: Partitions Class
+//      Author: Ziming Li
+//     Created: 2019-02-28
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All rights reserved.
  *
@@ -525,9 +536,13 @@ String Character::normalizeSpaces(const UChar* characters, unsigned length)
 
 bool Character::isCommonOrInheritedScript(UChar32 character)
 {
+    assert(false); // BKTODO:
+    return false;
+#if 0
     UErrorCode status = U_ZERO_ERROR;
     UScriptCode script = uscript_getScript(character, &status);
     return U_SUCCESS(status) && (script == USCRIPT_COMMON || script == USCRIPT_INHERITED);
+#endif
 }
 
 } // namespace blink

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: UTF16TextIterator.cpp
+// Description: UTF16TextIterator Class
+//      Author: Ziming Li
+//     Created: 2019-03-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2006, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2008 Holger Hans Peter Freyther
@@ -21,8 +32,6 @@
  */
 
 #include "platform/fonts/UTF16TextIterator.h"
-
-#include <unicode/unorm.h>
 
 using namespace WTF;
 using namespace Unicode;

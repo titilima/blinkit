@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FontFallbackWin.h
+// Description: Font Fallback Utilities
+//      Author: Ziming Li
+//     Created: 2019-03-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2006, 2007, 2008, Google Inc. All rights reserved.
  *
@@ -33,7 +44,6 @@
 
 #include "platform/PlatformExport.h"
 #include "platform/fonts/FontDescription.h"
-#include <unicode/locid.h>
 #include <unicode/uscript.h>
 #include <usp10.h>
 #include <wchar.h>
@@ -51,7 +61,6 @@ PLATFORM_EXPORT const UChar* getFallbackFamily(UChar32 character,
     FontDescription::GenericFamilyType,
     UScriptCode* scriptChecked,
     SkFontMgr* fontManager);
-PLATFORM_EXPORT UScriptCode scriptCodeForUnifiedHanFromLocale(const icu::Locale&);
 
 } // namespace blink
 

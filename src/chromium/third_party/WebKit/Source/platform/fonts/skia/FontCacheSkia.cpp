@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FontCacheSkia.cpp
+// Description: FontCache Class
+//      Author: Ziming Li
+//     Created: 2019-03-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2006, 2007, 2008, 2009 Google Inc. All rights reserved.
  *
@@ -41,7 +52,6 @@
 #include "wtf/Assertions.h"
 #include "wtf/text/AtomicString.h"
 #include "wtf/text/CString.h"
-#include <unicode/locid.h>
 
 #if !OS(WIN) && !OS(ANDROID)
 #include "SkFontConfigInterface.h"

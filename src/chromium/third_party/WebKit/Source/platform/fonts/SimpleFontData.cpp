@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: SimpleFontData.cpp
+// Description: SimpleFontData Class
+//      Author: Ziming Li
+//     Created: 2019-03-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2008, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2006 Alexey Proskuryakov
@@ -42,7 +53,6 @@
 #include "wtf/Partitions.h"
 #include "wtf/text/CharacterNames.h"
 #include "wtf/text/Unicode.h"
-#include <unicode/normlzr.h>
 
 namespace blink {
 

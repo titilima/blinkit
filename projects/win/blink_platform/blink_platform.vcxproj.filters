@@ -437,30 +437,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebProcessMemoryDump.cpp">
       <Filter>platform\exported</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebRTCConfiguration.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebRTCICECandidate.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebRTCOfferOptions.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebRTCSessionDescription.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebRTCSessionDescriptionRequest.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebRTCStatsRequest.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebRTCStatsResponse.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebRTCVoidRequest.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebScrollbarImpl.cpp">
       <Filter>platform\exported</Filter>
     </ClCompile>
@@ -590,16 +566,10 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\OrientationIterator.cpp">
       <Filter>platform\fonts</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\ScriptRunIterator.cpp">
-      <Filter>platform\fonts</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\SegmentedFontData.cpp">
       <Filter>platform\fonts</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\SimpleFontData.cpp">
-      <Filter>platform\fonts</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\SmallCapsIterator.cpp">
       <Filter>platform\fonts</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\UTF16TextIterator.cpp">
@@ -618,9 +588,6 @@
       <Filter>platform\fonts\shaping</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\HarfBuzzFace.cpp">
-      <Filter>platform\fonts\shaping</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\HarfBuzzShaper.cpp">
       <Filter>platform\fonts\shaping</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\RunSegmenter.cpp">
@@ -1149,9 +1116,6 @@
       <Filter>platform\text</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LineEnding.cpp">
-      <Filter>platform\text</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LocaleICU.cpp">
       <Filter>platform\text</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LocaleToScriptMapping.cpp">
@@ -1714,16 +1678,10 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\OrientationIterator.h">
       <Filter>platform\fonts</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\ScriptRunIterator.h">
-      <Filter>platform\fonts</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\SegmentedFontData.h">
       <Filter>platform\fonts</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\SimpleFontData.h">
-      <Filter>platform\fonts</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\SmallCapsIterator.h">
       <Filter>platform\fonts</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\TestFontSelector.h">
@@ -1760,9 +1718,6 @@
       <Filter>platform\fonts\shaping</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\HarfBuzzFace.h">
-      <Filter>platform\fonts\shaping</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\HarfBuzzShaper.h">
       <Filter>platform\fonts\shaping</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\RunSegmenter.h">
@@ -2456,12 +2411,6 @@
       <Filter>platform\text</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LineEnding.h">
-      <Filter>platform\text</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LocaleICU.h">
-      <Filter>platform\text</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LocaleMac.h">
       <Filter>platform\text</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LocaleToScriptMapping.h">
