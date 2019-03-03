@@ -112,6 +112,7 @@ DecompositionType decompositionType(UChar32 c);
 
 Direction direction(UChar32 c);
 
+int foldCase(UChar *result, int resultLength, const UChar *src, int srcLength, bool *error);
 UChar32 foldCase(UChar32 c);
 
 bool hasLineBreakingPropertyComplexContext(UChar32 c);
@@ -122,7 +123,13 @@ bool isPrintableChar(UChar32 c);
 
 UChar32 mirroredChar(UChar32 c);
 
+int toLower(UChar *result, int resultLength, const UChar *src, int srcLength, bool *error);
+UChar32 toLower(UChar32 c);
+
 UChar32 toTitleCase(UChar32 c);
+
+int toUpper(UChar *result, int resultLength, const UChar *src, int srcLength, bool *error);
+UChar32 toUpper(UChar32 c);
 
 int umemcasecmp(const UChar *a, const UChar *b, int len);
 

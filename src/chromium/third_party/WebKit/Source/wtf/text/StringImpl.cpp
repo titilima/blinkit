@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StringImpl.cpp
+// Description: StringImpl Class
+//      Author: Ziming Li
+//     Created: 2019-03-03
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -37,8 +48,6 @@
 #include "wtf/text/StringBuffer.h"
 #include "wtf/text/StringHash.h"
 #include <algorithm>
-#include <unicode/translit.h>
-#include <unicode/unistr.h>
 
 #ifdef STRING_STATS
 #include "wtf/DataLog.h"
@@ -758,15 +767,22 @@ PassRefPtr<StringImpl> StringImpl::lower(const AtomicString& localeIdentifier)
 
     if (m_length > static_cast<unsigned>(numeric_limits<int32_t>::max()))
         CRASH();
+    assert(false); // BKTODO:
+    return nullptr;
+#if 0
     int length = m_length;
 
     RefPtr<StringImpl> upconverted = upconvertedString();
     const UChar* source16 = upconverted->characters16();
     return caseConvert(source16, length, u_strToLower, localeForConversion, this);
+#endif
 }
 
 PassRefPtr<StringImpl> StringImpl::upper(const AtomicString& localeIdentifier)
 {
+    assert(false); // BKTODO:
+    return upper();
+#if 0
     // Use the more-optimized code path most of the time.
     // Only Turkic (tr and az) languages and Greek require locale-specific
     // lowercasing rules.
@@ -803,6 +819,7 @@ PassRefPtr<StringImpl> StringImpl::upper(const AtomicString& localeIdentifier)
     translit->transliterate(target);
 
     return create(target.getBuffer(), target.length());
+#endif
 }
 
 PassRefPtr<StringImpl> StringImpl::fill(UChar character)
