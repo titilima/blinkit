@@ -16,6 +16,8 @@
 
 #include "umachine.h"
 
+#define U16_IS_SINGLE(c) !U_IS_SURROGATE(c)
+
 #define U16_IS_LEAD(c) (((c)&0xfffffc00)==0xd800)
 
 #define U16_IS_TRAIL(c) (((c)&0xfffffc00)==0xdc00)

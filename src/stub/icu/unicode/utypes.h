@@ -17,7 +17,12 @@
 #include "utf.h"
 
 typedef enum UErrorCode {
-    U_ZERO_ERROR              =  0,
+    U_ZERO_ERROR = 0,
+    U_BUFFER_OVERFLOW_ERROR = 15,
 } UErrorCode;
+
+inline UBool U_SUCCESS(UErrorCode code) {
+    return (UBool)(code <= U_ZERO_ERROR);
+}
 
 #endif // BLINKIT_STUB_ICU_UTYPES_H
