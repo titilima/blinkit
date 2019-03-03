@@ -55,5 +55,8 @@
     <ClCompile Include="..\..\..\src\stub\icu\uchar.cpp">
       <Filter>icu</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\stub\icu\uprops.cpp">
+      <Filter>icu</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

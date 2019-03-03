@@ -18,8 +18,18 @@
 
 #define U_MASK(x) ((uint32_t)1<<(x))
 
-typedef enum UCharCategory
-{
+typedef enum UProperty {
+    UCHAR_ALPHABETIC = 0,
+    UCHAR_BINARY_START = UCHAR_ALPHABETIC,
+    UCHAR_BINARY_LIMIT = 57,
+    UCHAR_BIDI_CLASS = 0x1000,
+    UCHAR_INT_START = UCHAR_BIDI_CLASS,
+    UCHAR_LINE_BREAK = 0x1008,
+    UCHAR_INT_LIMIT = 0x1016,
+    UCHAR_GENERAL_CATEGORY_MASK = 0x2000,
+} UProperty;
+
+typedef enum UCharCategory {
     U_UNASSIGNED = 0,
     U_GENERAL_OTHER_TYPES = 0,
     U_UPPERCASE_LETTER = 1,
@@ -163,6 +173,14 @@ typedef enum UDecompositionType {
     U_DT_WIDE,
     U_DT_COUNT
 } UDecompositionType;
+
+typedef enum ULineBreak {
+    U_LB_ALPHABETIC = 2,
+    U_LB_COMBINING_MARK = 9,
+    U_LB_COUNT = 40
+} ULineBreak;
+
+int32_t u_getIntPropertyValue(UChar32 c, UProperty which);
 
 int8_t u_charType(UChar32 c);
 
