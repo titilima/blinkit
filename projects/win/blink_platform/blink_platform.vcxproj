@@ -228,10 +228,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaPlayerClient.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaPlayerEncryptedMediaClient.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaRecorderHandler.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaStream.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaStreamSource.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaStreamTrack.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaStreamTrackSourcesRequest.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMemoryAllocatorDump.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMemoryDumpProvider.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebPasswordCredential.cpp" />
@@ -480,9 +476,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollAnimatorCompositorCoordinator.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\Scrollbar.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarTheme.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeAndroid.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeAura.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMock.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeNonMacCommon.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeOverlay.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\SecureTextInput.cpp" />
@@ -1143,13 +1137,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarTheme.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeAura.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeClient.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMacCommon.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMacNonOverlayAPI.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMacOverlayAPI.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMock.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeNonMacCommon.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeOverlay.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeOverlayMock.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollTypes.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\SecureTextInput.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\SerializedResource.h" />

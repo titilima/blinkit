@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TextBreakIteratorICU.cpp
+// Description: TextBreakIterator Helpers
+//      Author: Ziming Li
+//     Created: 2019-03-04
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Lars Knoll <lars@trolltech.com>
  * Copyright (C) 2007, 2011, 2012 Apple Inc. All rights reserved.
@@ -30,8 +41,6 @@
 #include "wtf/text/AtomicString.h"
 #include "wtf/text/CString.h"
 #include "wtf/text/WTFString.h"
-#include <unicode/rbbi.h>
-#include <unicode/ubrk.h>
 
 using namespace WTF;
 
@@ -52,6 +61,8 @@ public:
     icu::BreakIterator* take(const AtomicString& locale)
     {
         icu::BreakIterator* iterator = 0;
+        assert(false); // BKTODO:
+#if 0
         for (size_t i = 0; i < m_pool.size(); ++i) {
             if (m_pool[i].first == locale) {
                 iterator = m_pool[i].second;
@@ -79,6 +90,7 @@ public:
 
         ASSERT(!m_vendedIterators.contains(iterator));
         m_vendedIterators.set(iterator, locale);
+#endif
         return iterator;
     }
 
@@ -110,6 +122,8 @@ private:
 enum TextContext { NoContext, PriorContext, PrimaryContext };
 
 const int textBufferCapacity = 16;
+
+#if 0 // BKTODO:
 
 typedef struct {
     DISALLOW_NEW();
@@ -527,14 +541,19 @@ TextBreakIterator* wordBreakIterator(const UChar* string, int length)
     setText16(breakIter, string, length);
     return breakIter;
 }
+#endif
 
 TextBreakIterator* wordBreakIterator(const String& string, int start, int length)
 {
     if (string.isEmpty())
         return 0;
+    assert(false); // BKTODO:
+    return nullptr;
+#if 0
     if (string.is8Bit())
         return wordBreakIterator(string.characters8() + start, length);
     return wordBreakIterator(string.characters16() + start, length);
+#endif
 }
 
 TextBreakIterator* acquireLineBreakIterator(const LChar* string, int length, const AtomicString& locale, const UChar* priorContext, unsigned priorContextLength)
@@ -543,6 +562,8 @@ TextBreakIterator* acquireLineBreakIterator(const LChar* string, int length, con
     if (!iterator)
         return 0;
 
+    assert(false); // BKTODO:
+#if 0
     UTextWithBuffer textLocal;
     textLocal.text = emptyText;
     textLocal.text.extraSize = sizeof(textLocal.buffer);
@@ -563,6 +584,7 @@ TextBreakIterator* acquireLineBreakIterator(const LChar* string, int length, con
     }
 
     utext_close(text);
+#endif
 
     return iterator;
 }
@@ -573,6 +595,8 @@ TextBreakIterator* acquireLineBreakIterator(const UChar* string, int length, con
     if (!iterator)
         return 0;
 
+    assert(false); // BKTODO:
+#if 0
     UText textLocal = UTEXT_INITIALIZER;
 
     UErrorCode openStatus = U_ZERO_ERROR;
@@ -590,6 +614,7 @@ TextBreakIterator* acquireLineBreakIterator(const UChar* string, int length, con
     }
 
     utext_close(text);
+#endif
 
     return iterator;
 }
@@ -648,6 +673,8 @@ NonSharedCharacterBreakIterator::NonSharedCharacterBreakIterator(const UChar* bu
 void NonSharedCharacterBreakIterator::createIteratorForBuffer(const UChar* buffer, unsigned length)
 {
     m_iterator = nonSharedCharacterBreakIterator;
+    assert(false); // BKTODO:
+#if 0
     bool createdIterator = m_iterator && compareAndSwapNonSharedCharacterBreakIterator(m_iterator, 0);
     if (!createdIterator) {
         UErrorCode errorCode = U_ZERO_ERROR;
@@ -656,6 +683,7 @@ void NonSharedCharacterBreakIterator::createIteratorForBuffer(const UChar* buffe
     }
 
     setText16(m_iterator, buffer, length);
+#endif
 }
 
 NonSharedCharacterBreakIterator::~NonSharedCharacterBreakIterator()
@@ -716,6 +744,8 @@ TextBreakIterator* sentenceBreakIterator(const UChar* string, int length)
 {
     UErrorCode openStatus = U_ZERO_ERROR;
     static TextBreakIterator* iterator = 0;
+    assert(false); // BKTODO:
+#if 0
     if (!iterator) {
         iterator =  icu::BreakIterator::createSentenceInstance(icu::Locale(currentTextBreakLocaleID()), openStatus);
         ASSERT_WITH_MESSAGE(U_SUCCESS(openStatus), "ICU could not open a break iterator: %s (%d)", u_errorName(openStatus), openStatus);
@@ -724,14 +754,19 @@ TextBreakIterator* sentenceBreakIterator(const UChar* string, int length)
     }
 
     setText16(iterator, string, length);
+#endif
     return iterator;
 }
 
 bool isWordTextBreak(TextBreakIterator* iterator)
 {
+    assert(false); // BKTODO:
+    return false;
+#if 0
     icu::RuleBasedBreakIterator* ruleBasedBreakIterator = static_cast<icu::RuleBasedBreakIterator*>(iterator);
     int ruleStatus = ruleBasedBreakIterator->getRuleStatus();
     return ruleStatus != UBRK_WORD_NONE;
+#endif
 }
 
 static TextBreakIterator* setUpIteratorWithRules(const char* breakRules, const UChar* string, int length)
@@ -740,6 +775,8 @@ static TextBreakIterator* setUpIteratorWithRules(const char* breakRules, const U
         return 0;
 
     static TextBreakIterator* iterator = 0;
+    assert(false); // BKTODO:
+#if 0
     if (!iterator) {
         UParseError parseStatus;
         UErrorCode openStatus = U_ZERO_ERROR;
@@ -753,6 +790,7 @@ static TextBreakIterator* setUpIteratorWithRules(const char* breakRules, const U
     }
 
     setText16(iterator, string, length);
+#endif
     return iterator;
 }
 

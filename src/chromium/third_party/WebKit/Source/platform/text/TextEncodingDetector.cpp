@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TextEncodingDetector.cpp
+// Description: Text Encoding Detect Helper
+//      Author: Ziming Li
+//     Created: 2019-03-04
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2009 Google Inc. All rights reserved.
  *
@@ -31,8 +42,6 @@
 #include "platform/text/TextEncodingDetector.h"
 
 #include "wtf/text/TextEncoding.h"
-#include <unicode/ucnv.h>
-#include <unicode/ucsdet.h>
 
 namespace blink {
 
@@ -40,6 +49,8 @@ bool detectTextEncoding(const char* data, size_t length,
     const char* hintEncodingName, WTF::TextEncoding* detectedEncoding)
 {
     *detectedEncoding = WTF::TextEncoding();
+    assert(false); // BKTODO:
+#if 0
     int matchesCount = 0;
     UErrorCode status = U_ZERO_ERROR;
     UCharsetDetector* detector = ucsdet_open(&status);
@@ -109,6 +120,7 @@ bool detectTextEncoding(const char* data, size_t length,
         return true;
     }
     ucsdet_close(detector);
+#endif
     return false;
 }
 

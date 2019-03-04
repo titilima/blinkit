@@ -401,18 +401,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaRecorderHandler.cpp">
       <Filter>platform\exported</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaStream.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaStreamSource.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaStreamTrack.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMediaStreamTrackSourcesRequest.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebMemoryAllocatorDump.cpp">
       <Filter>platform\exported</Filter>
     </ClCompile>
@@ -1088,13 +1076,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarTheme.cpp">
       <Filter>platform\scroll</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeAndroid.cpp">
-      <Filter>platform\scroll</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeAura.cpp">
-      <Filter>platform\scroll</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMock.cpp">
       <Filter>platform\scroll</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeNonMacCommon.cpp">
@@ -2362,25 +2344,10 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeClient.h">
       <Filter>platform\scroll</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMacCommon.h">
-      <Filter>platform\scroll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMacNonOverlayAPI.h">
-      <Filter>platform\scroll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMacOverlayAPI.h">
-      <Filter>platform\scroll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMock.h">
-      <Filter>platform\scroll</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeNonMacCommon.h">
       <Filter>platform\scroll</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeOverlay.h">
-      <Filter>platform\scroll</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeOverlayMock.h">
       <Filter>platform\scroll</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollTypes.h">
