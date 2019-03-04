@@ -50,6 +50,9 @@
     <ClInclude Include="..\..\..\src\stub\icu\utrie2.h">
       <Filter>icu</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\stub\icu\unicode\brkiter.h">
+      <Filter>icu\unicode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\stub\icu\uchar.cpp">
