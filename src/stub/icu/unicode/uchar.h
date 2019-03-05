@@ -16,6 +16,8 @@
 
 #include "utypes.h"
 
+#define UCHAR_MAX_VALUE 0x10ffff
+
 #define U_MASK(x) ((uint32_t)1<<(x))
 
 typedef enum UProperty {
