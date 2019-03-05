@@ -123,14 +123,10 @@ public:
     void attachCompositorAnimationTimeline(WebCompositorAnimationTimeline*, LocalFrame* localRoot) override;
     void detachCompositorAnimationTimeline(WebCompositorAnimationTimeline*, LocalFrame* localRoot) override;
 
-    void enterFullScreenForElement(Element*) override;
-    void exitFullScreenForElement(Element*) override;
-
     void clearCompositedSelection() override;
     void updateCompositedSelection(const CompositedSelection&) override;
 
     // ChromeClient methods:
-    void postAccessibilityNotification(AXObject*, AXObjectCache::AXNotification) override;
     String acceptLanguages() override;
 
     // ChromeClientImpl:
@@ -142,7 +138,6 @@ public:
     PassRefPtrWillBeRawPtr<PopupMenu> openPopupMenu(LocalFrame&, HTMLSelectElement&) override;
     PagePopup* openPagePopup(PagePopupClient*);
     void closePagePopup(PagePopup*);
-    DOMWindow* pagePopupWindowForTesting() const override;
 
     bool shouldOpenModalDialogDuringPageDismissal(const DialogType&, const String& dialogMessage, Document::PageDismissalType) const override;
 

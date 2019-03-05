@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebFrame.h
+// Description: WebFrame Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -37,7 +48,6 @@
 #include "WebNode.h"
 #include "WebURLLoaderOptions.h"
 #include "public/platform/WebCanvas.h"
-#include "public/platform/WebMessagePortChannel.h"
 #include "public/platform/WebPrivateOwnPtr.h"
 #include "public/platform/WebReferrerPolicy.h"
 #include "public/platform/WebURL.h"
@@ -125,10 +135,6 @@ public:
 
     virtual bool isWebLocalFrame() const = 0;
     virtual WebLocalFrame* toWebLocalFrame() = 0;
-    virtual bool isWebRemoteFrame() const = 0;
-    virtual WebRemoteFrame* toWebRemoteFrame() = 0;
-
-    BLINK_EXPORT bool swap(WebFrame*);
 
     // This method closes and deletes the WebFrame. This is typically called by
     // the embedder in response to a frame detached callback to the WebFrame
@@ -165,15 +171,6 @@ public:
 
     // Initializes the various client interfaces.
     virtual void setSharedWorkerRepositoryClient(WebSharedWorkerRepositoryClient*) = 0;
-
-    // The security origin of this frame.
-    BLINK_EXPORT WebSecurityOrigin securityOrigin() const;
-
-    // Updates the sandbox flags in the frame's FrameOwner.  This is used when
-    // this frame's parent is in another process and it dynamically updates
-    // this frame's sandbox flags.  The flags won't take effect until the next
-    // navigation.
-    BLINK_EXPORT void setFrameOwnerSandboxFlags(WebSandboxFlags);
 
     // Returns true if the frame is enforcing strict mixed content checking.
     BLINK_EXPORT bool shouldEnforceStrictMixedContentChecking() const;
@@ -269,14 +266,6 @@ public:
 
     // Scripting ----------------------------------------------------------
 
-    // Returns a NPObject corresponding to this frame's DOMWindow.
-    virtual NPObject* windowObject() const = 0;
-
-    // Binds a NPObject as a property of this frame's DOMWindow.
-    virtual void bindToWindowObject(const WebString& name, NPObject*) = 0;
-    virtual void bindToWindowObject(
-        const WebString& name, NPObject*, void*) = 0;
-
     // Executes script in the context of the current page.
     virtual void executeScript(const WebScriptSource&) = 0;
 
@@ -319,35 +308,6 @@ public:
     // Check if the scripting URL represents a mixed content condition relative
     // to this frame.
     virtual bool checkIfRunInsecureContent(const WebURL&) const = 0;
-
-    // Executes script in the context of the current page and returns the value
-    // that the script evaluated to.
-    // DEPRECATED: Use WebLocalFrame::requestExecuteScriptAndReturnValue.
-    virtual v8::Local<v8::Value> executeScriptAndReturnValue(
-        const WebScriptSource&) = 0;
-
-    // worldID must be > 0 (as 0 represents the main world).
-    // worldID must be < EmbedderWorldIdLimit, high number used internally.
-    // DEPRECATED: Use WebLocalFrame::requestExecuteScriptInIsolatedWorld.
-    virtual void executeScriptInIsolatedWorld(
-        int worldID, const WebScriptSource* sourcesIn, unsigned numSources,
-        int extensionGroup, WebVector<v8::Local<v8::Value> >* results) = 0;
-
-    // Call the function with the given receiver and arguments, bypassing
-    // canExecute().
-    virtual v8::Local<v8::Value> callFunctionEvenIfScriptDisabled(
-        v8::Local<v8::Function>,
-        v8::Local<v8::Value>,
-        int argc,
-        v8::Local<v8::Value> argv[]) = 0;
-
-    // Returns the V8 context for associated with the main world and this
-    // frame. There can be many V8 contexts associated with this frame, one for
-    // each isolated world and one for the main world. If you don't know what
-    // the "main world" or an "isolated world" is, then you probably shouldn't
-    // be calling this API.
-    virtual v8::Local<v8::Context> mainWorldScriptContext() const = 0;
-
 
     // Returns true if the WebFrame currently executing JavaScript has access
     // to the given WebFrame, or false otherwise.
@@ -497,34 +457,6 @@ public:
 
     virtual void setCaretVisible(bool) = 0;
 
-    // Printing ------------------------------------------------------------
-
-    // Reformats the WebFrame for printing. WebPrintParams specifies the printable
-    // content size, paper size, printable area size, printer DPI and print
-    // scaling option. If constrainToNode node is specified, then only the given node
-    // is printed (for now only plugins are supported), instead of the entire frame.
-    // Returns the number of pages that can be printed at the given
-    // page size.
-    virtual int printBegin(const WebPrintParams&, const WebNode& constrainToNode = WebNode()) = 0;
-
-    // Returns the page shrinking factor calculated by webkit (usually
-    // between 1/1.25 and 1/2). Returns 0 if the page number is invalid or
-    // not in printing mode.
-    virtual float getPrintPageShrink(int page) = 0;
-
-    // Prints one page, and returns the calculated page shrinking factor
-    // (usually between 1/1.25 and 1/2).  Returns 0 if the page number is
-    // invalid or not in printing mode.
-    virtual float printPage(int pageToPrint, WebCanvas*) = 0;
-
-    // Reformats the WebFrame for screen display.
-    virtual void printEnd() = 0;
-
-    // If the frame contains a full-frame plugin or the given node refers to a
-    // plugin whose content indicates that printed output should not be scaled,
-    // return true, otherwise return false.
-    virtual bool isPrintScalingDisabledForPlugin(const WebNode& = WebNode()) = 0;
-
     // CSS3 Paged Media ----------------------------------------------------
 
     // Returns true if page box (margin boxes and page borders) is visible.
@@ -664,10 +596,6 @@ public:
 
     // Calls markerTextForListItem() defined in core/layout/LayoutTreeAsText.h.
     virtual WebString markerTextForListItem(const WebElement&) const = 0;
-
-    // Prints all of the pages into the canvas, with page boundaries drawn as
-    // one pixel wide blue lines. This method exists to support layout tests.
-    virtual void printPagesWithBoundaries(WebCanvas*, const WebSize&) = 0;
 
     // Returns the bounds rect for current selection. If selection is performed
     // on transformed text, the rect will still bound the selection but will

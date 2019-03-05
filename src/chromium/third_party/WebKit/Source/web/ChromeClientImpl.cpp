@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ChromeClientImpl.cpp
+// Description: ChromeClientImpl Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
@@ -33,9 +44,7 @@
 
 #include "bindings/core/v8/ScriptController.h"
 #include "core/HTMLNames.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/Document.h"
-#include "core/dom/Fullscreen.h"
 #include "core/dom/Node.h"
 #include "core/events/UIEventWithKeyState.h"
 #include "core/frame/Console.h"
@@ -53,7 +62,6 @@
 #include "core/loader/FrameLoadRequest.h"
 #include "core/page/Page.h"
 #include "core/page/PopupOpeningObserver.h"
-#include "modules/accessibility/AXObject.h"
 #include "platform/Cursor.h"
 #include "platform/FileChooser.h"
 #include "platform/KeyboardCodes.h"
@@ -68,7 +76,6 @@
 #include "public/platform/WebRect.h"
 #include "public/platform/WebURLRequest.h"
 #include "public/platform/WebViewScheduler.h"
-#include "public/web/WebAXObject.h"
 #include "public/web/WebAutofillClient.h"
 #include "public/web/WebColorChooser.h"
 #include "public/web/WebColorSuggestion.h"
@@ -79,7 +86,6 @@
 #include "public/web/WebKit.h"
 #include "public/web/WebNode.h"
 #include "public/web/WebPageImportanceSignals.h"
-#include "public/web/WebPlugin.h"
 #include "public/web/WebPopupMenuInfo.h"
 #include "public/web/WebSelection.h"
 #include "public/web/WebSettings.h"
@@ -99,7 +105,6 @@
 #include "web/WebFrameWidgetImpl.h"
 #include "web/WebInputEventConversion.h"
 #include "web/WebLocalFrameImpl.h"
-#include "web/WebPluginContainerImpl.h"
 #include "web/WebSettingsImpl.h"
 #include "web/WebViewImpl.h"
 #include "wtf/text/CString.h"
@@ -110,13 +115,6 @@
 namespace blink {
 
 class WebCompositorAnimationTimeline;
-
-// Converts a AXObjectCache::AXNotification to a WebAXEvent
-static WebAXEvent toWebAXEvent(AXObjectCache::AXNotification notification)
-{
-    // These enums have the same values; enforced in AssertMatchingEnums.cpp.
-    return static_cast<WebAXEvent>(notification);
-}
 
 ChromeClientImpl::ChromeClientImpl(WebViewImpl* webView)
     : m_webView(webView)
@@ -305,7 +303,6 @@ Page* ChromeClientImpl::createWindow(LocalFrame* frame, const FrameLoadRequest& 
 
     WebNavigationPolicy policy = effectiveNavigationPolicy(navigationPolicy, features);
     ASSERT(frame->document());
-    Fullscreen::fullyExitFullscreen(*frame->document());
 
     WebViewImpl* newView = toWebViewImpl(
         m_webView->client()->createView(WebLocalFrameImpl::fromFrame(frame), WrappedResourceRequest(r.resourceRequest()), features, r.frameName(), policy, shouldSetOpener == NeverSetOpener));
@@ -554,20 +551,8 @@ void ChromeClientImpl::showMouseOverURL(const HitTestResult& result)
 
     WebURL url;
     // Find out if the mouse is over a link, and if so, let our UI know...
-    if (result.isLiveLink() && !result.absoluteLinkURL().string().isEmpty()) {
+    if (result.isLiveLink() && !result.absoluteLinkURL().string().isEmpty())
         url = result.absoluteLinkURL();
-    } else if (result.innerNode()
-        && (isHTMLObjectElement(*result.innerNode())
-            || isHTMLEmbedElement(*result.innerNode()))) {
-        LayoutObject* object = result.innerNode()->layoutObject();
-        if (object && object->isLayoutPart()) {
-            Widget* widget = toLayoutPart(object)->widget();
-            if (widget && widget->isPluginContainer()) {
-                WebPluginContainerImpl* plugin = toWebPluginContainerImpl(widget);
-                url = plugin->plugin()->linkAtPosition(result.roundedPointInInnerNodeFrame());
-            }
-        }
-    }
 
     m_webView->client()->setMouseOverURL(url);
 }
@@ -709,17 +694,6 @@ void ChromeClientImpl::setCursorOverridden(bool overridden)
     m_cursorOverridden = overridden;
 }
 
-void ChromeClientImpl::postAccessibilityNotification(AXObject* obj, AXObjectCache::AXNotification notification)
-{
-    // Alert assistive technology about the accessibility object notification.
-    if (!obj || !obj->document())
-        return;
-
-    WebLocalFrameImpl* webframe = WebLocalFrameImpl::fromFrame(obj->document()->axObjectCacheOwner().frame());
-    if (webframe && webframe->client())
-        webframe->client()->postAccessibilityEvent(WebAXObject(obj), toWebAXEvent(notification));
-}
-
 String ChromeClientImpl::acceptLanguages()
 {
     return m_webView->client()->acceptLanguages();
@@ -752,9 +726,7 @@ void ChromeClientImpl::attachRootGraphicsLayer(GraphicsLayer* rootLayer, LocalFr
 
 void ChromeClientImpl::didPaint(const PaintArtifact& paintArtifact)
 {
-    // TODO(jbroman): This doesn't handle OOPIF correctly. We probably need a
-    // branch for WebFrameWidget, like attachRootGraphicsLayer.
-    m_webView->paintArtifactCompositor().update(paintArtifact);
+    assert(false); // Not reached!
 }
 
 void ChromeClientImpl::attachCompositorAnimationTimeline(WebCompositorAnimationTimeline* compositorTimeline, LocalFrame* localRoot)
@@ -797,16 +769,6 @@ void ChromeClientImpl::detachCompositorAnimationTimeline(WebCompositorAnimationT
     }
 }
 
-void ChromeClientImpl::enterFullScreenForElement(Element* element)
-{
-    m_webView->enterFullScreenForElement(element);
-}
-
-void ChromeClientImpl::exitFullScreenForElement(Element* element)
-{
-    m_webView->exitFullScreenForElement(element);
-}
-
 void ChromeClientImpl::clearCompositedSelection()
 {
     m_webView->clearCompositedSelection();
@@ -840,11 +802,6 @@ PagePopup* ChromeClientImpl::openPagePopup(PagePopupClient* client)
 void ChromeClientImpl::closePagePopup(PagePopup* popup)
 {
     m_webView->closePagePopup(popup);
-}
-
-DOMWindow* ChromeClientImpl::pagePopupWindowForTesting() const
-{
-    return m_webView->pagePopupWindow();
 }
 
 bool ChromeClientImpl::shouldOpenModalDialogDuringPageDismissal(const DialogType& dialogType, const String& dialogMessage, Document::PageDismissalType dismissalType) const

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: SpellCheckerClientImpl.h
+// Description: SpellCheckerClientImpl Class
+//      Author: Ziming Li
+//     Created: 2018-08-29
+// -------------------------------------------------
+// Copyright (C) 2018 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -44,6 +55,9 @@ public:
     explicit SpellCheckerClientImpl(WebViewImpl*);
 
     ~SpellCheckerClientImpl() override;
+
+    void EnableContinuousSpellChecking(void) { m_spellCheckThisFieldStatus = SpellCheckForcedOn; }
+    void DisableContinuousSpellChecking(void) { m_spellCheckThisFieldStatus = SpellCheckForcedOff; }
 
     bool isContinuousSpellCheckingEnabled() override;
     void toggleContinuousSpellChecking() override;

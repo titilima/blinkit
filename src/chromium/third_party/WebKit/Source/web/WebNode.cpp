@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebNode.cpp
+// Description: WebNode Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -43,21 +54,16 @@
 #include "core/html/HTMLElement.h"
 #include "core/layout/LayoutObject.h"
 #include "core/layout/LayoutPart.h"
-#include "modules/accessibility/AXObject.h"
-#include "modules/accessibility/AXObjectCacheImpl.h"
 #include "platform/Task.h"
 #include "platform/Widget.h"
 #include "public/platform/WebString.h"
 #include "public/platform/WebSuspendableTask.h"
-#include "public/web/WebAXObject.h"
 #include "public/web/WebDOMEvent.h"
 #include "public/web/WebDocument.h"
 #include "public/web/WebElement.h"
 #include "public/web/WebElementCollection.h"
-#include "public/web/WebPluginContainer.h"
 #include "web/FrameLoaderClientImpl.h"
 #include "web/WebLocalFrameImpl.h"
-#include "web/WebPluginContainerImpl.h"
 
 namespace blink {
 
@@ -197,11 +203,6 @@ bool WebNode::isContentEditable() const
     return m_private->isContentEditable();
 }
 
-bool WebNode::isInsideFocusableElementOrARIAWidget() const
-{
-    return AXObject::isInsideFocusableElementOrARIAWidget(*this->constUnwrap<Node>());
-}
-
 bool WebNode::isElementNode() const
 {
     return m_private->isElementNode();
@@ -279,31 +280,6 @@ void WebNode::querySelectorAll(const WebString& selector, WebVector<WebElement>&
 bool WebNode::focused() const
 {
     return m_private->focused();
-}
-
-WebPluginContainer* WebNode::pluginContainer() const
-{
-    if (isNull())
-        return 0;
-    const Node& coreNode = *constUnwrap<Node>();
-    if (isHTMLObjectElement(coreNode) || isHTMLEmbedElement(coreNode)) {
-        LayoutObject* object = coreNode.layoutObject();
-        if (object && object->isLayoutPart()) {
-            Widget* widget = toLayoutPart(object)->widget();
-            if (widget && widget->isPluginContainer())
-                return toWebPluginContainerImpl(widget);
-        }
-    }
-    return 0;
-}
-
-WebAXObject WebNode::accessibilityObject()
-{
-    WebDocument webDocument = document();
-    const Document* doc = document().constUnwrap<Document>();
-    AXObjectCacheImpl* cache = toAXObjectCacheImpl(doc->existingAXObjectCache());
-    Node* node = unwrap<Node>();
-    return cache ? WebAXObject(cache->get(node)) : WebAXObject();
 }
 
 WebNode::WebNode(const PassRefPtrWillBeRawPtr<Node>& node)

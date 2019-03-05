@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebKit.cpp
+// Description: WebKit Initializers & Finalizers
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -30,18 +41,12 @@
 
 #include "public/web/WebKit.h"
 
-#include "bindings/core/v8/ScriptStreamerThread.h"
-#include "bindings/core/v8/V8Binding.h"
-#include "bindings/core/v8/V8GCController.h"
-#include "bindings/core/v8/V8Initializer.h"
 #include "core/Init.h"
 #include "core/animation/AnimationClock.h"
 #include "core/dom/Microtask.h"
 #include "core/fetch/WebCacheMemoryDumpProvider.h"
 #include "core/frame/Settings.h"
 #include "core/page/Page.h"
-#include "core/workers/WorkerGlobalScopeProxy.h"
-#include "gin/public/v8_platform.h"
 #include "modules/InitModules.h"
 #include "platform/LayoutTestSupport.h"
 #include "platform/Logging.h"
@@ -53,7 +58,6 @@
 #include "public/platform/Platform.h"
 #include "public/platform/WebPrerenderingSupport.h"
 #include "public/platform/WebThread.h"
-#include "web/IndexedDBClientImpl.h"
 #include "wtf/Assertions.h"
 #include "wtf/CryptographicallyRandomNumber.h"
 #include "wtf/MainThread.h"
@@ -61,25 +65,10 @@
 #include "wtf/WTF.h"
 #include "wtf/text/AtomicString.h"
 #include "wtf/text/TextEncoding.h"
-#include <v8.h>
 
 namespace blink {
 
 namespace {
-
-class EndOfTaskRunner : public WebThread::TaskObserver {
-public:
-    void willProcessTask() override
-    {
-        AnimationClock::notifyTaskStart();
-    }
-    void didProcessTask() override
-    {
-        Microtask::performCheckpoint(mainThreadIsolate());
-        V8GCController::reportDOMMemoryUsageToV8(mainThreadIsolate());
-        V8Initializer::reportRejectedPromisesOnMainThread();
-    }
-};
 
 class MainThreadTaskRunner: public WebTaskRunner::Task {
     WTF_MAKE_NONCOPYABLE(MainThreadTaskRunner);
@@ -110,27 +99,14 @@ void initialize(Platform* platform)
 {
     initializeWithoutV8(platform);
 
-    V8Initializer::initializeMainThreadIfNeeded();
-
-    OwnPtr<V8IsolateInterruptor> interruptor = adoptPtr(new V8IsolateInterruptor(V8PerIsolateData::mainThreadIsolate()));
-    ThreadState::current()->addInterruptor(interruptor.release());
-    ThreadState::current()->registerTraceDOMWrappers(V8PerIsolateData::mainThreadIsolate(), V8GCController::traceDOMWrappers);
-
     // currentThread is null if we are running on a thread without a message loop.
     if (WebThread* currentThread = platform->currentThread()) {
         ASSERT(!s_endOfTaskRunner);
-        s_endOfTaskRunner = new EndOfTaskRunner;
-        currentThread->addTaskObserver(s_endOfTaskRunner);
 
         // Register web cache dump provider for tracing.
         platform->registerMemoryDumpProvider(WebCacheMemoryDumpProvider::instance(), "MemoryCache");
         platform->registerMemoryDumpProvider(FontCacheMemoryDumpProvider::instance(), "FontCaches");
     }
-}
-
-v8::Isolate* mainThreadIsolate()
-{
-    return V8PerIsolateData::mainThreadIsolate();
 }
 
 static double currentTimeFunction()
@@ -155,7 +131,7 @@ static void callOnMainThreadFunction(WTF::MainThreadFunction function, void* con
 
 static void adjustAmountOfExternalAllocatedMemory(int size)
 {
-    v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(size);
+    assert(false); // Not reached!
 }
 
 void initializeWithoutV8(Platform* platform)
@@ -179,8 +155,6 @@ void initializeWithoutV8(Platform* platform)
 
     DEFINE_STATIC_LOCAL(ModulesInitializer, initializer, ());
     initializer.init();
-
-    setIndexedDBClientCreateFunction(IndexedDBClientImpl::create);
 }
 
 void shutdown()
@@ -216,25 +190,11 @@ void shutdown()
         s_gcTaskRunner = nullptr;
     }
 
-    // Shutdown V8-related background threads before V8 is ramped down. Note
-    // that this will wait the thread to stop its operations.
-    ScriptStreamerThread::shutdown();
-
-    v8::Isolate* isolate = V8PerIsolateData::mainThreadIsolate();
-    V8PerIsolateData::willBeDestroyed(isolate);
-
-    // Make sure we stop WorkerThreads before the main thread's ThreadState
-    // and later shutdown steps starts freeing up resources needed during
-    // worker termination.
-    WorkerThread::terminateAndWaitForAllWorkers();
-
     ModulesInitializer::terminateThreads();
 
     // Detach the main thread before starting the shutdown sequence
     // so that the main thread won't get involved in a GC during the shutdown.
     ThreadState::detachMainThread();
-
-    V8PerIsolateData::destroy(isolate);
 
     shutdownWithoutV8();
 }

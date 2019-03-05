@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebSettings.h
+// Description: WebSettings Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -58,13 +69,6 @@ public:
         EditingBehaviorAndroid
     };
 
-    enum V8CacheOptions {
-        V8CacheOptionsDefault,
-        V8CacheOptionsNone,
-        V8CacheOptionsParse,
-        V8CacheOptionsCode,
-    };
-
     // Selection strategy defines how the selection granularity changes when the
     // selection extent is moved.
     enum class SelectionStrategyType {
@@ -98,7 +102,6 @@ public:
     virtual void setAccelerated2dCanvasEnabled(bool) = 0;
     virtual void setAccelerated2dCanvasMSAASampleCount(int) = 0;
     virtual void setAcceleratedCompositingEnabled(bool) = 0;
-    virtual void setPreferCompositingToLCDTextEnabled(bool) = 0;
     // Not implemented yet, see http://crbug.com/178119
     virtual void setAcceleratedCompositingForTransitionEnabled(bool) { }
     // If set to true, allows frames with an https origin to display passive
@@ -134,11 +137,9 @@ public:
     virtual void setDefaultTextEncodingName(const WebString&) = 0;
     virtual void setDefaultVideoPosterURL(const WebString&) = 0;
     void setDeferred2dCanvasEnabled(bool) { } // temporary stub
-    virtual void setDeviceScaleAdjustment(float) = 0;
     virtual void setDeviceSupportsMouse(bool) = 0;
     virtual void setDeviceSupportsTouch(bool) = 0;
     virtual void setDisableReadingFromCanvas(bool) = 0;
-    virtual void setDoubleTapToZoomEnabled(bool) = 0;
     virtual void setDownloadableBinaryFontsEnabled(bool) = 0;
     virtual void setEditingBehavior(EditingBehavior) = 0;
     virtual void setEnableScrollAnimator(bool) = 0;
@@ -159,7 +160,6 @@ public:
     virtual void setInertVisualViewport(bool) = 0;
     virtual void setJavaScriptCanAccessClipboard(bool) = 0;
     virtual void setJavaScriptCanOpenWindowsAutomatically(bool) = 0;
-    virtual void setJavaScriptEnabled(bool) = 0;
     void setLayerSquashingEnabled(bool) { }
     virtual void setLoadsImagesAutomatically(bool) = 0;
     virtual void setLoadWithOverviewMode(bool) = 0;
@@ -180,11 +180,6 @@ public:
     virtual void setPerTilePaintingEnabled(bool) = 0;
     virtual void setPictographFontFamily(const WebString&, UScriptCode = USCRIPT_COMMON) = 0;
     virtual void setPinchOverlayScrollbarThickness(int) = 0;
-    virtual void setPluginsEnabled(bool) = 0;
-    virtual void setAvailablePointerTypes(int) = 0;
-    virtual void setPrimaryPointerType(PointerType) = 0;
-    virtual void setAvailableHoverTypes(int) = 0;
-    virtual void setPrimaryHoverType(HoverType) = 0;
     virtual void setPreferHiddenVolumeControls(bool) = 0;
     virtual void setRenderVSyncNotificationEnabled(bool) = 0;
     virtual void setReportScreenSizeInPhysicalPixelsQuirk(bool) = 0;
@@ -220,7 +215,6 @@ public:
     virtual void setSupportsMultipleWindows(bool) = 0;
     virtual void setSyncXHRInDocumentsEnabled(bool) = 0;
     virtual void setTextAreasAreResizable(bool) = 0;
-    virtual void setTextAutosizingEnabled(bool) = 0;
     virtual void setAccessibilityFontScaleFactor(float) = 0;
     virtual void setTextTrackKindUserPreference(TextTrackKindUserPreference) = 0;
     virtual void setTextTrackBackgroundColor(const WebString&) = 0;
@@ -235,11 +229,9 @@ public:
     virtual void setUnifiedTextCheckerEnabled(bool) = 0;
     virtual void setUnsafePluginPastingEnabled(bool) = 0;
     virtual void setUseLegacyBackgroundSizeShorthandBehavior(bool) = 0;
-    virtual void setUseMobileViewportStyle(bool) = 0;
     virtual void setUseSolidColorScrollbars(bool) = 0;
     virtual void setUseWideViewport(bool) = 0;
     virtual void setUsesEncodingDetector(bool) = 0;
-    virtual void setV8CacheOptions(V8CacheOptions) = 0;
     virtual void setValidationMessageTimerMagnification(int) = 0;
     virtual void setViewportEnabled(bool) = 0;
     virtual void setViewportMetaEnabled(bool) = 0;

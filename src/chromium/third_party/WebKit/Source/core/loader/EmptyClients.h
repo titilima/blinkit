@@ -129,7 +129,6 @@ public:
 
     bool hasOpenedPopup() const override { return false; }
     PassRefPtrWillBeRawPtr<PopupMenu> openPopupMenu(LocalFrame&, HTMLSelectElement&) override;
-    DOMWindow* pagePopupWindowForTesting() const override { return nullptr; }
 
     void setStatusbarText(const String&) override {}
 
@@ -248,10 +247,7 @@ public:
     void didRunContentWithCertificateErrors(const KURL&, const CString&, const WebURL& mainResourceUrl, const CString& mainResourceSecurityInfo) override {}
     void selectorMatchChanged(const Vector<String>&, const Vector<String>&) override {}
     PassRefPtrWillBeRawPtr<LocalFrame> createFrame(const FrameLoadRequest&, const AtomicString&, HTMLFrameOwnerElement*) override;
-    PassRefPtrWillBeRawPtr<Widget> createPlugin(HTMLPlugInElement*, const KURL&, const Vector<String>&, const Vector<String>&, const String&, bool, DetachedPluginPolicy) override;
     bool canCreatePluginWithoutRenderer(const String& mimeType) const override { return false; }
-    PassOwnPtr<WebMediaPlayer> createWebMediaPlayer(HTMLMediaElement&, const WebURL&, WebMediaPlayerClient*) override;
-    PassOwnPtr<WebMediaSession> createWebMediaSession() override;
 
     ObjectContentType objectContentType(const KURL&, const String&, bool) override { return ObjectContentType(); }
 
@@ -265,7 +261,6 @@ public:
 
     void didRequestAutocomplete(HTMLFormElement*) override;
 
-    PassOwnPtr<WebServiceWorkerProvider> createServiceWorkerProvider() override;
     bool isControlledByServiceWorker(DocumentLoader&) override { return false; }
     int64_t serviceWorkerID(DocumentLoader&) override { return -1; }
     PassOwnPtr<WebApplicationCacheHost> createApplicationCacheHost(WebApplicationCacheHostClient*) override;

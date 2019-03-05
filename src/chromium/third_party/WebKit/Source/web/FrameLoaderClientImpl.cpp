@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FrameLoaderClientImpl.cpp
+// Description: FrameLoaderClientImpl Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2012 Google Inc. All rights reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -34,15 +45,11 @@
 #include "bindings/core/v8/ScriptController.h"
 #include "core/HTMLNames.h"
 #include "core/dom/Document.h"
-#include "core/dom/Fullscreen.h"
-#include "core/events/MessageEvent.h"
 #include "core/events/MouseEvent.h"
 #include "core/events/UIEventWithKeyState.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/Settings.h"
 #include "core/html/HTMLFrameElementBase.h"
-#include "core/html/HTMLMediaElement.h"
-#include "core/html/HTMLPlugInElement.h"
 #include "core/input/EventHandler.h"
 #include "core/layout/HitTestResult.h"
 #include "core/loader/DocumentLoader.h"
@@ -51,17 +58,6 @@
 #include "core/loader/HistoryItem.h"
 #include "core/page/Page.h"
 #include "core/page/WindowFeatures.h"
-#include "modules/audio_output_devices/HTMLMediaElementAudioOutputDevice.h"
-#include "modules/device_light/DeviceLightController.h"
-#include "modules/device_orientation/DeviceMotionController.h"
-#include "modules/device_orientation/DeviceOrientationAbsoluteController.h"
-#include "modules/device_orientation/DeviceOrientationController.h"
-#include "modules/encryptedmedia/HTMLMediaElementEncryptedMedia.h"
-#include "modules/gamepad/NavigatorGamepad.h"
-#include "modules/mediasession/MediaSession.h"
-#include "modules/serviceworkers/NavigatorServiceWorker.h"
-#include "modules/storage/DOMWindowStorageController.h"
-#include "modules/vr/NavigatorVRDevice.h"
 #include "platform/MIMETypeRegistry.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/UserGestureIndicator.h"
@@ -73,14 +69,10 @@
 #include "public/platform/Platform.h"
 #include "public/platform/WebApplicationCacheHost.h"
 #include "public/platform/WebMimeRegistry.h"
-#include "public/platform/WebRTCPeerConnectionHandler.h"
 #include "public/platform/WebSecurityOrigin.h"
 #include "public/platform/WebURL.h"
 #include "public/platform/WebURLError.h"
 #include "public/platform/WebVector.h"
-#include "public/platform/modules/mediasession/WebMediaSession.h"
-#include "public/platform/modules/serviceworker/WebServiceWorkerProvider.h"
-#include "public/platform/modules/serviceworker/WebServiceWorkerProviderClient.h"
 #include "public/web/WebAutofillClient.h"
 #include "public/web/WebContentSettingsClient.h"
 #include "public/web/WebDOMEvent.h"
@@ -88,21 +80,14 @@
 #include "public/web/WebFormElement.h"
 #include "public/web/WebFrameClient.h"
 #include "public/web/WebNode.h"
-#include "public/web/WebPlugin.h"
-#include "public/web/WebPluginParams.h"
 #include "public/web/WebViewClient.h"
-#include "web/DevToolsEmulator.h"
 #include "web/SharedWorkerRepositoryClientImpl.h"
 #include "web/WebDataSourceImpl.h"
-#include "web/WebDevToolsAgentImpl.h"
-#include "web/WebDevToolsFrontendImpl.h"
 #include "web/WebLocalFrameImpl.h"
-#include "web/WebPluginContainerImpl.h"
 #include "web/WebViewImpl.h"
 #include "wtf/StringExtras.h"
 #include "wtf/text/CString.h"
 #include "wtf/text/WTFString.h"
-#include <v8.h>
 
 namespace blink {
 
@@ -151,25 +136,7 @@ void FrameLoaderClientImpl::dispatchDidClearWindowObjectInMainWorld()
 {
     if (m_webFrame->client()) {
         m_webFrame->client()->didClearWindowObject(m_webFrame);
-        Document* document = m_webFrame->frame()->document();
-        if (document) {
-            DeviceMotionController::from(*document);
-            DeviceOrientationController::from(*document);
-            if (RuntimeEnabledFeatures::deviceOrientationAbsoluteEnabled())
-                DeviceOrientationAbsoluteController::from(*document);
-            if (RuntimeEnabledFeatures::deviceLightEnabled())
-                DeviceLightController::from(*document);
-            NavigatorGamepad::from(*document);
-            NavigatorServiceWorker::from(*document);
-            DOMWindowStorageController::from(*document);
-            if (RuntimeEnabledFeatures::webVREnabled())
-                NavigatorVRDevice::from(*document);
-        }
     }
-    // FIXME: when extensions go out of process, this whole concept stops working.
-    WebDevToolsFrontendImpl* devToolsFrontend = m_webFrame->top()->isWebLocalFrame() ? toWebLocalFrameImpl(m_webFrame->top())->devToolsFrontend() : nullptr;
-    if (devToolsFrontend)
-        devToolsFrontend->didClearWindowObject(m_webFrame);
 }
 
 void FrameLoaderClientImpl::documentElementAvailable()
@@ -179,18 +146,6 @@ void FrameLoaderClientImpl::documentElementAvailable()
 
     if (m_webFrame->viewImpl())
         m_webFrame->viewImpl()->documentElementAvailable(m_webFrame);
-}
-
-void FrameLoaderClientImpl::didCreateScriptContext(v8::Local<v8::Context> context, int extensionGroup, int worldId)
-{
-    if (m_webFrame->client())
-        m_webFrame->client()->didCreateScriptContext(m_webFrame, context, extensionGroup, worldId);
-}
-
-void FrameLoaderClientImpl::willReleaseScriptContext(v8::Local<v8::Context> context, int worldId)
-{
-    if (m_webFrame->client())
-        m_webFrame->client()->willReleaseScriptContext(m_webFrame, context, worldId);
 }
 
 bool FrameLoaderClientImpl::allowScriptExtension(const String& extensionName,
@@ -207,8 +162,6 @@ void FrameLoaderClientImpl::didChangeScrollOffset()
 {
     if (m_webFrame->client())
         m_webFrame->client()->didChangeScrollOffset(m_webFrame);
-    if (WebViewImpl* webview = m_webFrame->viewImpl())
-        webview->devToolsEmulator()->viewportChanged();
 }
 
 void FrameLoaderClientImpl::didUpdateCurrentHistoryItem()
@@ -490,9 +443,6 @@ void FrameLoaderClientImpl::dispatchDidCommitLoad(HistoryItem* item, HistoryComm
 
     if (m_webFrame->client())
         m_webFrame->client()->didCommitProvisionalLoad(m_webFrame, WebHistoryItem(item), static_cast<WebHistoryCommitType>(commitType));
-    WebDevToolsAgentImpl* devToolsAgent = WebLocalFrameImpl::fromFrame(m_webFrame->frame()->localFrameRoot())->devToolsAgentImpl();
-    if (devToolsAgent)
-        devToolsAgent->didCommitLoadForLocalFrame(m_webFrame->frame());
 }
 
 void FrameLoaderClientImpl::dispatchDidFailProvisionalLoad(
@@ -632,7 +582,6 @@ void FrameLoaderClientImpl::loadURLExternally(const ResourceRequest& request, Na
     if (!m_webFrame->client())
         return;
     ASSERT(m_webFrame->frame()->document());
-    Fullscreen::fullyExitFullscreen(*m_webFrame->frame()->document());
     m_webFrame->client()->loadURLExternally(
         WrappedResourceRequest(request), static_cast<WebNavigationPolicy>(policy), suggestedName, shouldReplaceCurrentEntry);
 }
@@ -754,68 +703,6 @@ bool FrameLoaderClientImpl::canCreatePluginWithoutRenderer(const String& mimeTyp
     return m_webFrame->client()->canCreatePluginWithoutRenderer(mimeType);
 }
 
-PassRefPtrWillBeRawPtr<Widget> FrameLoaderClientImpl::createPlugin(
-    HTMLPlugInElement* element,
-    const KURL& url,
-    const Vector<String>& paramNames,
-    const Vector<String>& paramValues,
-    const String& mimeType,
-    bool loadManually,
-    DetachedPluginPolicy policy)
-{
-    if (!m_webFrame->client())
-        return nullptr;
-
-    WebPluginParams params;
-    params.url = url;
-    params.mimeType = mimeType;
-    params.attributeNames = paramNames;
-    params.attributeValues = paramValues;
-    params.loadManually = loadManually;
-
-    WebPlugin* webPlugin = m_webFrame->client()->createPlugin(m_webFrame, params);
-    if (!webPlugin)
-        return nullptr;
-
-    // The container takes ownership of the WebPlugin.
-    RefPtrWillBeRawPtr<WebPluginContainerImpl> container =
-        WebPluginContainerImpl::create(element, webPlugin);
-
-    if (!webPlugin->initialize(container.get()))
-        return nullptr;
-
-    if (policy != AllowDetachedPlugin && !element->layoutObject())
-        return nullptr;
-
-    return container;
-}
-
-PassOwnPtr<WebMediaPlayer> FrameLoaderClientImpl::createWebMediaPlayer(
-    HTMLMediaElement& htmlMediaElement,
-    const WebURL& url,
-    WebMediaPlayerClient* client)
-{
-    WebLocalFrameImpl* webFrame = WebLocalFrameImpl::fromFrame(
-        htmlMediaElement.document().frame());
-
-    if (!webFrame || !webFrame->client())
-        return nullptr;
-
-    HTMLMediaElementEncryptedMedia& encryptedMedia = HTMLMediaElementEncryptedMedia::from(htmlMediaElement);
-    WebString sinkId(HTMLMediaElementAudioOutputDevice::sinkId(htmlMediaElement));
-    return adoptPtr(webFrame->client()->createMediaPlayer(webFrame, url,
-        client, &encryptedMedia,
-        encryptedMedia.contentDecryptionModule(), sinkId));
-}
-
-PassOwnPtr<WebMediaSession> FrameLoaderClientImpl::createWebMediaSession()
-{
-    if (!m_webFrame->client())
-        return nullptr;
-
-    return adoptPtr(m_webFrame->client()->createMediaSession());
-}
-
 ObjectContentType FrameLoaderClientImpl::objectContentType(
     const KURL& url,
     const String& explicitMimeType,
@@ -866,15 +753,6 @@ WebCookieJar* FrameLoaderClientImpl::cookieJar() const
     return m_webFrame->client()->cookieJar(m_webFrame);
 }
 
-bool FrameLoaderClientImpl::willCheckAndDispatchMessageEvent(
-    SecurityOrigin* target, MessageEvent* event, LocalFrame* sourceFrame) const
-{
-    if (!m_webFrame->client())
-        return false;
-    return m_webFrame->client()->willCheckAndDispatchMessageEvent(
-        WebLocalFrameImpl::fromFrame(sourceFrame), m_webFrame, WebSecurityOrigin(target), WebDOMMessageEvent(event));
-}
-
 void FrameLoaderClientImpl::frameFocused() const
 {
     if (m_webFrame->client())
@@ -893,13 +771,6 @@ void FrameLoaderClientImpl::didEnforceStrictMixedContentChecking()
     if (!m_webFrame->client())
         return;
     m_webFrame->client()->didEnforceStrictMixedContentChecking();
-}
-
-void FrameLoaderClientImpl::didChangeSandboxFlags(Frame* childFrame, SandboxFlags flags)
-{
-    if (!m_webFrame->client())
-        return;
-    m_webFrame->client()->didChangeSandboxFlags(WebFrame::fromFrame(childFrame), static_cast<WebSandboxFlags>(flags));
 }
 
 void FrameLoaderClientImpl::didChangeFrameOwnerProperties(HTMLFrameElementBase* frameElement)
@@ -949,18 +820,6 @@ void FrameLoaderClientImpl::dispatchWillInsertBody()
         m_webFrame->viewImpl()->willInsertBody(m_webFrame);
 }
 
-v8::Local<v8::Value> FrameLoaderClientImpl::createTestInterface(const AtomicString& name)
-{
-    return m_webFrame->createTestInterface(name);
-}
-
-PassOwnPtr<WebServiceWorkerProvider> FrameLoaderClientImpl::createServiceWorkerProvider()
-{
-    if (!m_webFrame->client())
-        return nullptr;
-    return adoptPtr(m_webFrame->client()->createServiceWorkerProvider(m_webFrame));
-}
-
 bool FrameLoaderClientImpl::isControlledByServiceWorker(DocumentLoader& loader)
 {
     return m_webFrame->client() && m_webFrame->client()->isControlledByServiceWorker(*WebDataSourceImpl::fromDocumentLoader(&loader));
@@ -975,7 +834,7 @@ int64_t FrameLoaderClientImpl::serviceWorkerID(DocumentLoader& loader)
 
 SharedWorkerRepositoryClient* FrameLoaderClientImpl::sharedWorkerRepositoryClient()
 {
-    return m_webFrame->sharedWorkerRepositoryClient();
+    return nullptr;
 }
 
 PassOwnPtr<WebApplicationCacheHost> FrameLoaderClientImpl::createApplicationCacheHost(WebApplicationCacheHostClient* client)

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebViewImpl.h
+// Description: WebViewImpl Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -36,7 +47,6 @@
 #include "platform/geometry/IntPoint.h"
 #include "platform/geometry/IntRect.h"
 #include "platform/graphics/GraphicsLayer.h"
-#include "platform/graphics/compositing/PaintArtifactCompositor.h"
 #include "platform/heap/Handle.h"
 #include "public/platform/WebCompositorAnimationTimeline.h"
 #include "public/platform/WebDisplayMode.h"
@@ -57,10 +67,8 @@
 #include "web/ContextMenuClientImpl.h"
 #include "web/DragClientImpl.h"
 #include "web/EditorClientImpl.h"
-#include "web/MediaKeysClientImpl.h"
 #include "web/PageWidgetDelegate.h"
 #include "web/SpellCheckerClientImpl.h"
-#include "web/StorageClientImpl.h"
 #include "wtf/HashSet.h"
 #include "wtf/OwnPtr.h"
 #include "wtf/RefCounted.h"
@@ -69,9 +77,7 @@
 namespace blink {
 
 class DataObject;
-class DevToolsEmulator;
 class Frame;
-class FullscreenController;
 class InspectorOverlay;
 class LinkHighlightImpl;
 class PageOverlay;
@@ -80,7 +86,6 @@ class PaintLayerCompositor;
 class TopControls;
 class UserGestureToken;
 class WebActiveGestureAnimation;
-class WebDevToolsAgentImpl;
 class WebElement;
 class WebLayerTreeView;
 class WebLocalFrame;
@@ -108,8 +113,6 @@ public:
     void resize(const WebSize&) override;
     void resizeVisualViewport(const WebSize&) override;
     void willEndLiveResize() override;
-    void didEnterFullScreen() override;
-    void didExitFullScreen() override;
 
     void beginFrame(double lastFrameTimeMonotonic) override;
 
@@ -256,9 +259,6 @@ public:
     void spellingMarkers(WebVector<uint32_t>* markers) override;
     void removeSpellingMarkersUnderWords(const WebVector<WebString>& words) override;
     unsigned long createUniqueIdentifierForRequest() override;
-    void enableDeviceEmulation(const WebDeviceEmulationParams&) override;
-    void disableDeviceEmulation() override;
-    WebAXObject accessibilityObject() override;
     void setSelectionColors(unsigned activeBackgroundColor,
                                     unsigned activeForegroundColor,
                                     unsigned inactiveBackgroundColor,
@@ -330,13 +330,6 @@ public:
     Page* page() const
     {
         return m_page.get();
-    }
-
-    WebDevToolsAgentImpl* mainFrameDevToolsAgentImpl();
-
-    DevToolsEmulator* devToolsEmulator() const
-    {
-        return m_devToolsEmulator.get();
     }
 
     // Returns the main frame associated with this view. This may be null when
@@ -475,9 +468,6 @@ public:
     float fakePageScaleAnimationPageScaleForTesting() const { return m_fakePageScaleAnimationPageScaleFactor; }
     bool fakePageScaleAnimationUseAnchorForTesting() const { return m_fakePageScaleAnimationUseAnchor; }
 
-    void enterFullScreenForElement(Element*);
-    void exitFullScreenForElement(Element*);
-
     void clearCompositedSelection();
     void updateCompositedSelection(const WebSelection&);
 
@@ -514,9 +504,6 @@ public:
     // Called anytime top controls layout height or content offset have changed.
     void didUpdateTopControls();
 
-    void forceNextWebGLContextCreationToFail() override;
-    void forceNextDrawingBufferCreationToFail() override;
-
     IntSize mainFrameSize();
     WebDisplayMode displayMode() const { return m_displayMode; }
 
@@ -533,9 +520,6 @@ public:
     // Detaches the PaintArtifactCompositor and clears the layer tree view's
     // root layer.
     void detachPaintArtifactCompositor();
-
-    // Use in Slimming Paint v2 to update the layer tree for the content.
-    PaintArtifactCompositor& paintArtifactCompositor() { return m_paintArtifactCompositor; }
 
 private:
     InspectorOverlay* inspectorOverlay();
@@ -637,7 +621,6 @@ private:
     DragClientImpl m_dragClientImpl;
     EditorClientImpl m_editorClientImpl;
     SpellCheckerClientImpl m_spellCheckerClientImpl;
-    StorageClientImpl m_storageClientImpl;
 
     WebSize m_size;
     // If true, automatically resize the layout view around its content.
@@ -720,7 +703,6 @@ private:
     // The popup associated with an input/select element.
     RefPtr<WebPagePopupImpl> m_pagePopup;
 
-    OwnPtrWillBePersistent<DevToolsEmulator> m_devToolsEmulator;
     OwnPtr<PageOverlay> m_pageColorOverlay;
 
     // Whether the webview is rendering transparently.
@@ -742,7 +724,6 @@ private:
     bool m_matchesHeuristicsForGpuRasterization;
     static const WebInputEvent* m_currentInputEvent;
 
-    MediaKeysClientImpl m_mediaKeysClientImpl;
     OwnPtr<WebActiveGestureAnimation> m_gestureAnimation;
     WebPoint m_positionOnFlingStart;
     WebPoint m_globalPositionOnFlingStart;
@@ -750,7 +731,6 @@ private:
     WebGestureDevice m_flingSourceDevice;
     Vector<OwnPtr<LinkHighlightImpl>> m_linkHighlights;
     OwnPtr<WebCompositorAnimationTimeline> m_linkHighlightsTimeline;
-    OwnPtrWillBePersistent<FullscreenController> m_fullscreenController;
 
     bool m_showFPSCounter;
     WebColor m_baseBackgroundColor;
@@ -770,9 +750,6 @@ private:
     WebPageImportanceSignals m_pageImportanceSignals;
 
     const OwnPtr<WebViewScheduler> m_scheduler;
-
-    // Manages the layer tree created for this page in Slimming Paint v2.
-    PaintArtifactCompositor m_paintArtifactCompositor;
 };
 
 DEFINE_TYPE_CASTS(WebViewImpl, WebWidget, widget, widget->isWebView(), widget.isWebView());

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebPagePopupImpl.cpp
+// Description: WebPagePopupImpl Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -31,7 +42,6 @@
 #include "web/WebPagePopupImpl.h"
 
 #include "core/dom/ContextFeatures.h"
-#include "core/events/MessageEvent.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
@@ -45,16 +55,12 @@
 #include "core/page/FocusController.h"
 #include "core/page/Page.h"
 #include "core/page/PagePopupClient.h"
-#include "modules/accessibility/AXObject.h"
-#include "modules/accessibility/AXObjectCacheImpl.h"
 #include "platform/EventDispatchForbiddenScope.h"
-#include "platform/LayoutTestSupport.h"
 #include "platform/ScriptForbiddenScope.h"
 #include "platform/TraceEvent.h"
 #include "platform/heap/Handle.h"
 #include "public/platform/WebCompositeAndReadbackAsyncCallback.h"
 #include "public/platform/WebCursorInfo.h"
-#include "public/web/WebAXObject.h"
 #include "public/web/WebFrameClient.h"
 #include "public/web/WebViewClient.h"
 #include "public/web/WebWidgetClient.h"
@@ -118,10 +124,6 @@ private:
 
     void scheduleAnimation(Widget*) override
     {
-        // Calling scheduleAnimation on m_webView so WebTestProxy will call beginFrame.
-        if (LayoutTestSupport::isRunningLayoutTest())
-            m_popup->m_webView->scheduleAnimation();
-
         if (m_popup->isAcceleratedCompositingActive()) {
             ASSERT(m_popup->m_layerTreeView);
             m_popup->m_layerTreeView->setNeedsBeginFrame();
@@ -176,13 +178,6 @@ private:
     void attachRootGraphicsLayer(GraphicsLayer* graphicsLayer, LocalFrame* localRoot) override
     {
         m_popup->setRootGraphicsLayer(graphicsLayer);
-    }
-
-    void postAccessibilityNotification(AXObject* obj, AXObjectCache::AXNotification notification) override
-    {
-        WebLocalFrameImpl* frame = WebLocalFrameImpl::fromFrame(m_popup->m_popupClient->ownerElement().document().frame());
-        if (obj && frame && frame->client())
-            frame->client()->postAccessibilityEvent(WebAXObject(obj), static_cast<WebAXEvent>(notification));
     }
 
     void setToolTip(const String& tooltipText, TextDirection dir) override
@@ -260,27 +255,15 @@ bool WebPagePopupImpl::initializePage()
     frame->setView(FrameView::create(frame.get()));
     frame->init();
     frame->view()->setTransparent(false);
-    if (AXObjectCache* cache = m_popupClient->ownerElement().document().existingAXObjectCache())
-        cache->childrenChanged(&m_popupClient->ownerElement());
 
     ASSERT(frame->localDOMWindow());
     DOMWindowPagePopup::install(*frame->localDOMWindow(), *this, m_popupClient);
-    ASSERT(m_popupClient->ownerElement().document().existingAXObjectCache() == frame->document()->existingAXObjectCache());
 
     RefPtr<SharedBuffer> data = SharedBuffer::create();
     m_popupClient->writeDocument(data.get());
     frame->loader().load(FrameLoadRequest(0, blankURL(), SubstituteData(data, "text/html", "UTF-8", KURL(), ForceSynchronousLoad)));
     frame->setPageZoomFactor(m_popupClient->zoomFactor());
     return true;
-}
-
-void WebPagePopupImpl::postMessage(const String& message)
-{
-    if (!m_page)
-        return;
-    ScriptForbiddenScope::AllowUserAgentScript allowScript;
-    if (LocalDOMWindow* window = toLocalFrame(m_page->mainFrame())->localDOMWindow())
-        window->dispatchEvent(MessageEvent::create(message));
 }
 
 void WebPagePopupImpl::destroyPage()
@@ -290,18 +273,6 @@ void WebPagePopupImpl::destroyPage()
 
     m_page->willBeDestroyed();
     m_page.clear();
-}
-
-AXObject* WebPagePopupImpl::rootAXObject()
-{
-    if (!m_page || !m_page->mainFrame())
-        return 0;
-    Document* document = toLocalFrame(m_page->mainFrame())->document();
-    if (!document)
-        return 0;
-    AXObjectCache* cache = document->axObjectCache();
-    ASSERT(cache);
-    return toAXObjectCacheImpl(cache)->getOrCreate(document->layoutView());
 }
 
 void WebPagePopupImpl::setWindowRect(const IntRect& rectInScreen)

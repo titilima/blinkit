@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebElement.cpp
+// Description: WebElement Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -33,7 +44,6 @@
 #include "bindings/core/v8/ExceptionState.h"
 #include "core/HTMLNames.h"
 #include "core/dom/Element.h"
-#include "core/dom/Fullscreen.h"
 #include "core/dom/custom/CustomElementProcessingStack.h"
 #include "core/html/HTMLTextFormControlElement.h"
 #include "platform/graphics/Image.h"
@@ -136,8 +146,7 @@ WebString WebElement::textContent() const
 
 void WebElement::requestFullScreen()
 {
-    Element* element = unwrap<Element>();
-    Fullscreen::from(element->document()).requestFullscreen(*element, Fullscreen::PrefixedRequest);
+    assert(false); // Not reached!
 }
 
 bool WebElement::hasNonEmptyLayoutSize() const

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebSettingsImpl.cpp
+// Description: WebSettingsImpl Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -35,14 +46,11 @@
 
 #include "public/platform/WebString.h"
 #include "public/platform/WebURL.h"
-#include "web/DevToolsEmulator.h"
-#include "web/WebDevToolsAgentImpl.h"
 
 namespace blink {
 
-WebSettingsImpl::WebSettingsImpl(Settings* settings, DevToolsEmulator* devToolsEmulator)
+WebSettingsImpl::WebSettingsImpl(Settings* settings)
     : m_settings(settings)
-    , m_devToolsEmulator(devToolsEmulator)
     , m_showFPSCounter(false)
     , m_showPaintRects(false)
     , m_renderVSyncNotificationEnabled(false)
@@ -159,11 +167,6 @@ void WebSettingsImpl::setAutoZoomFocusedNodeToLegibleScale(bool autoZoomFocusedN
     m_autoZoomFocusedNodeToLegibleScale = autoZoomFocusedNodeToLegibleScale;
 }
 
-void WebSettingsImpl::setTextAutosizingEnabled(bool enabled)
-{
-    m_devToolsEmulator->setTextAutosizingEnabled(enabled);
-}
-
 void WebSettingsImpl::setAccessibilityFontScaleFactor(float fontScaleFactor)
 {
     m_settings->setAccessibilityFontScaleFactor(fontScaleFactor);
@@ -189,19 +192,9 @@ void WebSettingsImpl::setInertVisualViewport(bool enabled)
     m_settings->setInertVisualViewport(enabled);
 }
 
-void WebSettingsImpl::setDeviceScaleAdjustment(float deviceScaleAdjustment)
-{
-    m_devToolsEmulator->setDeviceScaleAdjustment(deviceScaleAdjustment);
-}
-
 void WebSettingsImpl::setDefaultTextEncodingName(const WebString& encoding)
 {
     m_settings->setDefaultTextEncodingName((String)encoding);
-}
-
-void WebSettingsImpl::setJavaScriptEnabled(bool enabled)
-{
-    m_devToolsEmulator->setScriptEnabled(enabled);
 }
 
 void WebSettingsImpl::setWebSecurityEnabled(bool enabled)
@@ -288,31 +281,6 @@ void WebSettingsImpl::setLoadWithOverviewMode(bool enabled)
     m_settings->setLoadWithOverviewMode(enabled);
 }
 
-void WebSettingsImpl::setPluginsEnabled(bool enabled)
-{
-    m_devToolsEmulator->setPluginsEnabled(enabled);
-}
-
-void WebSettingsImpl::setAvailablePointerTypes(int pointers)
-{
-    m_devToolsEmulator->setAvailablePointerTypes(pointers);
-}
-
-void WebSettingsImpl::setPrimaryPointerType(PointerType pointer)
-{
-    m_devToolsEmulator->setPrimaryPointerType(static_cast<blink::PointerType>(pointer));
-}
-
-void WebSettingsImpl::setAvailableHoverTypes(int types)
-{
-    m_devToolsEmulator->setAvailableHoverTypes(types);
-}
-
-void WebSettingsImpl::setPrimaryHoverType(HoverType type)
-{
-    m_devToolsEmulator->setPrimaryHoverType(static_cast<blink::HoverType>(type));
-}
-
 void WebSettingsImpl::setPreferHiddenVolumeControls(bool enabled)
 {
     m_settings->setPreferHiddenVolumeControls(enabled);
@@ -361,11 +329,6 @@ void WebSettingsImpl::setWideViewportQuirkEnabled(bool wideViewportQuirkEnabled)
 void WebSettingsImpl::setUseWideViewport(bool useWideViewport)
 {
     m_settings->setUseWideViewport(useWideViewport);
-}
-
-void WebSettingsImpl::setDoubleTapToZoomEnabled(bool doubleTapToZoomEnabled)
-{
-    m_devToolsEmulator->setDoubleTapToZoomEnabled(doubleTapToZoomEnabled);
 }
 
 void WebSettingsImpl::setDownloadableBinaryFontsEnabled(bool enabled)
@@ -558,11 +521,6 @@ void WebSettingsImpl::setAntialiasedClips2dCanvasEnabled(bool enabled)
     m_settings->setAntialiasedClips2dCanvasEnabled(enabled);
 }
 
-void WebSettingsImpl::setPreferCompositingToLCDTextEnabled(bool enabled)
-{
-    m_devToolsEmulator->setPreferCompositingToLCDTextEnabled(enabled);
-}
-
 void WebSettingsImpl::setMinimumAccelerated2dCanvasSize(int numPixels)
 {
     m_settings->setMinimumAccelerated2dCanvasSize(numPixels);
@@ -683,11 +641,6 @@ bool WebSettingsImpl::viewportMetaEnabled() const
     return m_settings->viewportMetaEnabled();
 }
 
-bool WebSettingsImpl::doubleTapToZoomEnabled() const
-{
-    return m_devToolsEmulator->doubleTapToZoomEnabled();
-}
-
 bool WebSettingsImpl::mockGestureTapHighlightsEnabled() const
 {
     return m_settings->mockGestureTapHighlightsEnabled();
@@ -782,16 +735,6 @@ void WebSettingsImpl::setUseSolidColorScrollbars(bool enabled)
 void WebSettingsImpl::setMainFrameResizesAreOrientationChanges(bool enabled)
 {
     m_mainFrameResizesAreOrientationChanges = enabled;
-}
-
-void WebSettingsImpl::setV8CacheOptions(V8CacheOptions options)
-{
-    m_settings->setV8CacheOptions(static_cast<blink::V8CacheOptions>(options));
-}
-
-void WebSettingsImpl::setUseMobileViewportStyle(bool enabled)
-{
-    m_devToolsEmulator->setUseMobileViewportStyle(enabled);
 }
 
 } // namespace blink

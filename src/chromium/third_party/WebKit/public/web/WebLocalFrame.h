@@ -40,16 +40,6 @@ public:
     // If the load commits, call swap() to fully attach this frame.
     BLINK_EXPORT static WebLocalFrame* createProvisional(WebFrameClient*, WebRemoteFrame*, WebSandboxFlags, const WebFrameOwnerProperties&);
 
-    // Returns the WebFrame associated with the current V8 context. This
-    // function can return 0 if the context is associated with a Document that
-    // is not currently being displayed in a Frame.
-    BLINK_EXPORT static WebLocalFrame* frameForCurrentContext();
-
-    // Returns the frame corresponding to the given context. This can return 0
-    // if the context is detached from the frame, or if the context doesn't
-    // correspond to a frame (e.g., workers).
-    BLINK_EXPORT static WebLocalFrame* frameForContext(v8::Local<v8::Context>);
-
     // Returns the frame inside a given frame or iframe element. Returns 0 if
     // the given element is not a frame, iframe or if the frame is empty.
     BLINK_EXPORT static WebLocalFrame* fromFrameOwnerElement(const WebElement&);
@@ -58,8 +48,6 @@ public:
 
     virtual void setAutofillClient(WebAutofillClient*) = 0;
     virtual WebAutofillClient* autofillClient() = 0;
-    virtual void setDevToolsAgentClient(WebDevToolsAgentClient*) = 0;
-    virtual WebDevToolsAgent* devToolsAgent() = 0;
 
     // Basic properties ---------------------------------------------------
 
@@ -123,17 +111,6 @@ public:
     // cross process.
     virtual void setCommittedFirstRealLoad() = 0;
 
-    // Orientation Changes ----------------------------------------------------
-
-    // Notify the frame that the screen orientation has changed.
-    virtual void sendOrientationChangeEvent() = 0;
-
-
-    // Printing ------------------------------------------------------------
-
-    // Returns true on success and sets the out parameter to the print preset options for the document.
-    virtual bool getPrintPresetOptionsForPlugin(const WebNode&, WebPrintPresetOptions*) = 0;
-
 
     // Scripting --------------------------------------------------------------
     // Executes script in the context of the current page and returns the value
@@ -174,13 +151,6 @@ public:
 
     virtual void setContentSettingsClient(WebContentSettingsClient*) = 0;
 
-    // App banner -------------------------------------------------------------
-
-    // Request to show an application install banner for the given |platforms|.
-    // The implementation can request the embedder to cancel the call by setting
-    // |cancel| to true.
-    virtual void willShowInstallBannerPrompt(int requestId, const WebVector<WebString>& platforms, WebAppBannerPromptReply*) = 0;
-
     // Image reload -----------------------------------------------------------
 
     // If the provided node is an image, reload the image disabling Lo-Fi.
@@ -190,16 +160,6 @@ public:
 
     virtual void didCallAddSearchProvider() = 0;
     virtual void didCallIsSearchProviderInstalled() = 0;
-
-    // Testing ----------------------------------------------------------------
-
-    // Registers a test interface factory. Takes ownership of the factory.
-    virtual void registerTestInterface(const WebString& name, WebTestInterfaceFactory*) = 0;
-
-    // Iframe sandbox ---------------------------------------------------------
-
-    // Returns the effective sandbox flags which are inherited from their parent frame.
-    virtual WebSandboxFlags effectiveSandboxFlags() const = 0;
 
 protected:
     explicit WebLocalFrame(WebTreeScopeType scope) : WebFrame(scope) { }

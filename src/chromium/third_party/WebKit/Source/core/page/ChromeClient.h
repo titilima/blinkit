@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ChromeClient.h
+// Description: ChromeClient Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple, Inc. All rights reserved.
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
@@ -24,7 +35,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "core/CoreExport.h"
-#include "core/dom/AXObjectCache.h"
+#include "core/dom/Document.h"
 #include "core/frame/ConsoleTypes.h"
 #include "core/inspector/ConsoleAPITypes.h"
 #include "core/loader/FrameLoader.h"
@@ -42,7 +53,6 @@
 
 namespace blink {
 
-class AXObject;
 class ColorChooser;
 class ColorChooserClient;
 class DateTimeChooser;
@@ -205,9 +215,7 @@ public:
     // Checks if there is an opened popup, called by LayoutMenuList::showPopup().
     virtual bool hasOpenedPopup() const = 0;
     virtual PassRefPtrWillBeRawPtr<PopupMenu> openPopupMenu(LocalFrame&, HTMLSelectElement&) = 0;
-    virtual DOMWindow* pagePopupWindowForTesting() const = 0;
 
-    virtual void postAccessibilityNotification(AXObject*, AXObjectCache::AXNotification) { }
     virtual String acceptLanguages() = 0;
 
     enum DialogType {

@@ -80,7 +80,6 @@ class WebMediaPlayer;
 class WebMediaPlayerClient;
 class WebMediaSession;
 class WebRTCPeerConnectionHandler;
-class WebServiceWorkerProvider;
 class WebSocketHandle;
 class Widget;
 
@@ -168,11 +167,6 @@ public:
         AllowDetachedPlugin,
     };
     virtual bool canCreatePluginWithoutRenderer(const String& mimeType) const = 0;
-    virtual PassRefPtrWillBeRawPtr<Widget> createPlugin(HTMLPlugInElement*, const KURL&, const Vector<String>&, const Vector<String>&, const String&, bool loadManually, DetachedPluginPolicy) = 0;
-
-    virtual PassOwnPtr<WebMediaPlayer> createWebMediaPlayer(HTMLMediaElement&, const WebURL&, WebMediaPlayerClient*) = 0;
-
-    virtual PassOwnPtr<WebMediaSession> createWebMediaSession() = 0;
 
     virtual ObjectContentType objectContentType(const KURL&, const String& mimeType, bool shouldPreferPlugInsForImages) = 0;
 
@@ -229,8 +223,6 @@ public:
     virtual void dispatchWillInsertBody() { }
 
     virtual void dispatchDidChangeResourcePriority(unsigned long identifier, ResourceLoadPriority, int intraPriorityValue) { }
-
-    virtual PassOwnPtr<WebServiceWorkerProvider> createServiceWorkerProvider() = 0;
 
     virtual bool isControlledByServiceWorker(DocumentLoader&) = 0;
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebLocalFrameImpl.h
+// Description: WebLocalFrameImpl Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -37,7 +48,6 @@
 #include "public/platform/WebFileSystemType.h"
 #include "public/web/WebLocalFrame.h"
 #include "web/FrameLoaderClientImpl.h"
-#include "web/UserMediaClientImpl.h"
 #include "web/WebFrameImplBase.h"
 #include "wtf/Compiler.h"
 #include "wtf/OwnPtr.h"
@@ -46,12 +56,9 @@
 
 namespace blink {
 
-class ChromePrintContext;
-class GeolocationClientProxy;
 class IntSize;
 class KURL;
 class Range;
-class SharedWorkerRepositoryClientImpl;
 class TextFinder;
 class WebAutofillClient;
 class WebDataSourceImpl;
@@ -61,14 +68,11 @@ class WebFrameClient;
 class WebFrameWidget;
 class WebNode;
 class WebPerformance;
-class WebPlugin;
-class WebPluginContainerImpl;
 class WebScriptExecutionCallback;
 class WebSuspendableTask;
 class WebView;
 class WebViewImpl;
 struct FrameLoadRequest;
-struct WebPrintParams;
 
 template <typename T> class WebVector;
 
@@ -78,8 +82,6 @@ public:
     // WebFrame methods:
     bool isWebLocalFrame() const override;
     WebLocalFrame* toWebLocalFrame() override;
-    bool isWebRemoteFrame() const override;
-    WebRemoteFrame* toWebRemoteFrame() override;
     void close() override;
     WebString uniqueName() const override;
     WebString assignedName() const override;
@@ -101,9 +103,6 @@ public:
     WebPerformance performance() const override;
     bool dispatchBeforeUnloadEvent() override;
     void dispatchUnloadEvent() override;
-    NPObject* windowObject() const override;
-    void bindToWindowObject(const WebString& name, NPObject*) override;
-    void bindToWindowObject(const WebString& name, NPObject*, void*) override;
     void executeScript(const WebScriptSource&) override;
     void executeScriptInIsolatedWorld(
         int worldID, const WebScriptSource* sources, unsigned numSources,
@@ -114,22 +113,11 @@ public:
     void addMessageToConsole(const WebConsoleMessage&) override;
     void collectGarbage() override;
     bool checkIfRunInsecureContent(const WebURL&) const override;
-    v8::Local<v8::Value> executeScriptAndReturnValue(
-        const WebScriptSource&) override;
     void requestExecuteScriptAndReturnValue(
         const WebScriptSource&, bool userGesture, WebScriptExecutionCallback*) override;
-    void executeScriptInIsolatedWorld(
-        int worldID, const WebScriptSource* sourcesIn, unsigned numSources,
-        int extensionGroup, WebVector<v8::Local<v8::Value>>* results) override;
     void requestExecuteScriptInIsolatedWorld(
         int worldID, const WebScriptSource* sourceIn, unsigned numSources,
         int extensionGroup, bool userGesture, WebScriptExecutionCallback*) override;
-    v8::Local<v8::Value> callFunctionEvenIfScriptDisabled(
-        v8::Local<v8::Function>,
-        v8::Local<v8::Value>,
-        int argc,
-        v8::Local<v8::Value> argv[]) override;
-    v8::Local<v8::Context> mainWorldScriptContext() const override;
     void reload(bool ignoreCache) override;
     void reloadWithOverrideURL(const WebURL& overrideUrl, bool ignoreCache) override;
     void reloadImage(const WebNode&) override;
@@ -179,12 +167,6 @@ public:
     bool setCompositionFromExistingText(int compositionStart, int compositionEnd, const WebVector<WebCompositionUnderline>& underlines) override;
     void extendSelectionAndDelete(int before, int after) override;
     void setCaretVisible(bool) override;
-    int printBegin(const WebPrintParams&, const WebNode& constrainToNode) override;
-    float printPage(int pageToPrint, WebCanvas*) override;
-    float getPrintPageShrink(int page) override;
-    void printEnd() override;
-    bool isPrintScalingDisabledForPlugin(const WebNode&) override;
-    bool getPrintPresetOptionsForPlugin(const WebNode&, WebPrintPresetOptions*) override;
     bool hasCustomPageSizeStyle(int pageIndex) override;
     bool isPageBoxVisible(int pageIndex) override;
     void pageSizeAndMarginsInPixels(
@@ -195,7 +177,6 @@ public:
         int& marginBottom,
         int& marginLeft) override;
     WebString pageProperty(const WebString& propertyName, int pageIndex) override;
-    void printPagesWithBoundaries(WebCanvas*, const WebSize&) override;
     bool find(
         int identifier, const WebString& searchText, const WebFindOptions&,
         bool wrapWithinFrame, WebRect* selectionRect) override;
@@ -226,19 +207,11 @@ public:
     bool selectionStartHasSpellingMarkerFor(int from, int length) const override;
     WebString layerTreeAsText(bool showDebugInfo = false) const override;
 
-    void registerTestInterface(const WebString& name, WebTestInterfaceFactory*) override;
-
     WebFrameImplBase* toImplBase() override { return this; }
-
-    // Creates a test interface by name if available, returns an empty handle
-    // for unknown names.
-    v8::Local<v8::Value> createTestInterface(const AtomicString& name);
 
     // WebLocalFrame methods:
     void setAutofillClient(WebAutofillClient*) override;
     WebAutofillClient* autofillClient() override;
-    void setDevToolsAgentClient(WebDevToolsAgentClient*) override;
-    WebDevToolsAgent* devToolsAgent() override;
     void setFrameOwnerProperties(const WebFrameOwnerProperties&) override;
     WebLocalFrameImpl* localRoot() override;
     void sendPings(const WebNode& contextNode, const WebURL& destinationURL) override;
@@ -251,9 +224,6 @@ public:
     bool isResourceLoadInProgress() const override;
     bool isNavigationScheduled() const override;
     void setCommittedFirstRealLoad() override;
-    void sendOrientationChangeEvent() override;
-    void willShowInstallBannerPrompt(int requestId, const WebVector<WebString>& platforms, WebAppBannerPromptReply*) override;
-    WebSandboxFlags effectiveSandboxFlags() const override;
     void requestRunTask(WebSuspendableTask*) const override;
     void didCallAddSearchProvider() override;
     void didCallIsSearchProviderInstalled() override;
@@ -280,20 +250,9 @@ public:
     static WebLocalFrameImpl* fromFrame(LocalFrame&);
     static WebLocalFrameImpl* fromFrameOwnerElement(Element*);
 
-    // If the frame hosts a PluginDocument, this method returns the WebPluginContainerImpl
-    // that hosts the plugin.
-    static WebPluginContainerImpl* pluginContainerFromFrame(LocalFrame*);
-
-    // If the frame hosts a PluginDocument, this method returns the WebPluginContainerImpl
-    // that hosts the plugin. If the provided node is a plugin, then it runs its
-    // WebPluginContainerImpl.
-    static WebPluginContainerImpl* pluginContainerFromNode(LocalFrame*, const WebNode&);
-
     WebViewImpl* viewImpl() const;
 
     FrameView* frameView() const { return frame() ? frame()->view() : 0; }
-
-    WebDevToolsAgentImpl* devToolsAgentImpl() const { return m_devToolsAgent.get(); }
 
     // Getters for the impls corresponding to Get(Provisional)DataSource. They
     // may return 0 if there is no corresponding data source.
@@ -329,7 +288,6 @@ public:
     void setClient(WebFrameClient* client) { m_client = client; }
 
     WebContentSettingsClient* contentSettingsClient() { return m_contentSettingsClient; }
-    SharedWorkerRepositoryClientImpl* sharedWorkerRepositoryClient() const { return m_sharedWorkerRepositoryClient.get(); }
 
     void setInputEventsTransformForEmulation(const IntSize&, float);
 
@@ -345,10 +303,6 @@ public:
     void setFrameWidget(WebFrameWidget*);
     WebFrameWidget* frameWidget() const;
 
-    // DevTools front-end bindings.
-    void setDevToolsFrontend(WebDevToolsFrontendImpl* frontend) { m_webDevToolsFrontend = frontend; }
-    WebDevToolsFrontendImpl* devToolsFrontend() { return m_webDevToolsFrontend; }
-
 #if ENABLE(OILPAN)
     DECLARE_TRACE();
 #endif
@@ -357,14 +311,10 @@ private:
     friend class FrameLoaderClientImpl;
 
     WebLocalFrameImpl(WebTreeScopeType, WebFrameClient*);
-    WebLocalFrameImpl(WebRemoteFrame*, WebFrameClient*);
 
     // Sets the local core frame and registers destruction observers.
     void setCoreFrame(PassRefPtrWillBeRawPtr<LocalFrame>);
 
-    void loadJavaScriptURL(const KURL&);
-
-    WebPlugin* focusedPluginIfInputMethodSupported();
     ScrollableArea* layoutViewportScrollableArea() const;
 
     OwnPtrWillBeMember<FrameLoaderClientImpl> m_frameLoaderClientImpl;
@@ -374,34 +324,19 @@ private:
     // FIXME: These will need to change to WebFrame when we introduce WebFrameProxy.
     RefPtrWillBeMember<LocalFrame> m_frame;
 
-    OwnPtrWillBeMember<WebDevToolsAgentImpl> m_devToolsAgent;
-
     // This is set if the frame is the root of a local frame tree, and requires a widget for layout.
     WebFrameWidget* m_frameWidget;
 
     WebFrameClient* m_client;
     WebAutofillClient* m_autofillClient;
     WebContentSettingsClient* m_contentSettingsClient;
-    OwnPtr<SharedWorkerRepositoryClientImpl> m_sharedWorkerRepositoryClient;
 
     // Will be initialized after first call to find() or scopeStringMatches().
     OwnPtrWillBeMember<TextFinder> m_textFinder;
 
-    // Valid between calls to BeginPrint() and EndPrint(). Containts the print
-    // information. Is used by PrintPage().
-    OwnPtrWillBeMember<ChromePrintContext> m_printContext;
-
     // Stores the additional input events offset and scale when device metrics emulation is enabled.
     IntSize m_inputEventsOffsetForEmulation;
     float m_inputEventsScaleFactorForEmulation;
-
-    UserMediaClientImpl m_userMediaClientImpl;
-
-    OwnPtrWillBeMember<GeolocationClientProxy> m_geolocationClientProxy;
-
-    WebDevToolsFrontendImpl* m_webDevToolsFrontend;
-
-    HashMap<AtomicString, OwnPtr<WebTestInterfaceFactory>> m_testInterfaces;
 
 #if ENABLE(OILPAN)
     // Oilpan: WebLocalFrameImpl must remain alive until close() is called.

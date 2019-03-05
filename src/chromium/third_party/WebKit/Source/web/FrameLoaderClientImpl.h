@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FrameLoaderClientImpl.h
+// Description: FrameLoaderClientImpl Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2012 Google Inc. All rights reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -61,9 +72,6 @@ public:
     void dispatchDidClearWindowObjectInMainWorld() override;
     void documentElementAvailable() override;
 
-    void didCreateScriptContext(v8::Local<v8::Context>, int extensionGroup, int worldId) override;
-    void willReleaseScriptContext(v8::Local<v8::Context>, int worldId) override;
-
     // Returns true if we should allow the given V8 extension to be added to
     // the script context at the currently loading page and given extension group.
     bool allowScriptExtension(const String& extensionName, int extensionGroup, int worldId) override;
@@ -123,12 +131,6 @@ public:
     void transitionToCommittedForNewPage() override;
     PassRefPtrWillBeRawPtr<LocalFrame> createFrame(const FrameLoadRequest&, const WTF::AtomicString& name, HTMLFrameOwnerElement*) override;
     virtual bool canCreatePluginWithoutRenderer(const String& mimeType) const;
-    PassRefPtrWillBeRawPtr<Widget> createPlugin(
-        HTMLPlugInElement*, const KURL&,
-        const Vector<WTF::String>&, const Vector<WTF::String>&,
-        const WTF::String&, bool loadManually, DetachedPluginPolicy) override;
-    PassOwnPtr<WebMediaPlayer> createWebMediaPlayer(HTMLMediaElement&, const WebURL&, WebMediaPlayerClient*) override;
-    PassOwnPtr<WebMediaSession> createWebMediaSession() override;
     ObjectContentType objectContentType(
         const KURL&, const WTF::String& mimeType, bool shouldPreferPlugInsForImages) override;
     void didChangeScrollOffset() override;
@@ -146,11 +148,9 @@ public:
     void didUseKeygen() override;
 
     WebCookieJar* cookieJar() const override;
-    bool willCheckAndDispatchMessageEvent(SecurityOrigin* target, MessageEvent*, LocalFrame* sourceFrame) const override;
     void frameFocused() const override;
     void didChangeName(const String&) override;
     void didEnforceStrictMixedContentChecking() override;
-    void didChangeSandboxFlags(Frame* childFrame, SandboxFlags) override;
     void didChangeFrameOwnerProperties(HTMLFrameElementBase*) override;
 
     void dispatchWillOpenWebSocket(WebSocketHandle*) override;
@@ -164,9 +164,6 @@ public:
 
     void dispatchWillInsertBody() override;
 
-    v8::Local<v8::Value> createTestInterface(const AtomicString& name) override;
-
-    PassOwnPtr<WebServiceWorkerProvider> createServiceWorkerProvider() override;
     bool isControlledByServiceWorker(DocumentLoader&) override;
     int64_t serviceWorkerID(DocumentLoader&) override;
     SharedWorkerRepositoryClient* sharedWorkerRepositoryClient() override;

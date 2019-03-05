@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebDocument.cpp
+// Description: WebDocument Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -31,16 +42,12 @@
 #include "public/web/WebDocument.h"
 
 #include "bindings/core/v8/ExceptionState.h"
-#include "bindings/core/v8/ScriptState.h"
-#include "bindings/core/v8/ScriptValue.h"
-#include "bindings/core/v8/V8ElementRegistrationOptions.h"
 #include "core/css/StyleSheetContents.h"
 #include "core/dom/CSSSelectorWatch.h"
 #include "core/dom/Document.h"
 #include "core/dom/DocumentStatisticsCollector.h"
 #include "core/dom/DocumentType.h"
 #include "core/dom/Element.h"
-#include "core/dom/Fullscreen.h"
 #include "core/dom/StyleEngine.h"
 #include "core/events/Event.h"
 #include "core/html/HTMLAllCollection.h"
@@ -53,19 +60,15 @@
 #include "core/layout/LayoutObject.h"
 #include "core/layout/LayoutView.h"
 #include "core/loader/DocumentLoader.h"
-#include "modules/accessibility/AXObject.h"
-#include "modules/accessibility/AXObjectCacheImpl.h"
 #include "platform/weborigin/SecurityOrigin.h"
 #include "public/platform/WebDistillability.h"
 #include "public/platform/WebURL.h"
-#include "public/web/WebAXObject.h"
 #include "public/web/WebDOMEvent.h"
 #include "public/web/WebElement.h"
 #include "public/web/WebElementCollection.h"
 #include "public/web/WebFormElement.h"
 #include "web/WebLocalFrameImpl.h"
 #include "wtf/PassRefPtr.h"
-#include <v8.h>
 
 namespace blink {
 
@@ -229,19 +232,6 @@ void WebDocument::watchCSSSelectors(const WebVector<WebString>& webSelectors)
     CSSSelectorWatch::from(*document).watchCSSSelectors(selectors);
 }
 
-void WebDocument::cancelFullScreen()
-{
-    Fullscreen::fullyExitFullscreen(*unwrap<Document>());
-}
-
-WebElement WebDocument::fullScreenElement() const
-{
-    Element* fullScreenElement = 0;
-    if (Fullscreen* fullscreen = Fullscreen::fromIfExists(*const_cast<WebDocument*>(this)->unwrap<Document>()))
-        fullScreenElement = fullscreen->webkitCurrentFullScreenElement();
-    return WebElement(fullScreenElement);
-}
-
 WebReferrerPolicy WebDocument::referrerPolicy() const
 {
     return static_cast<WebReferrerPolicy>(constUnwrap<Document>()->referrerPolicy());
@@ -250,20 +240,6 @@ WebReferrerPolicy WebDocument::referrerPolicy() const
 WebString WebDocument::outgoingReferrer()
 {
     return WebString(unwrap<Document>()->outgoingReferrer());
-}
-
-WebAXObject WebDocument::accessibilityObject() const
-{
-    const Document* document = constUnwrap<Document>();
-    AXObjectCacheImpl* cache = toAXObjectCacheImpl(document->axObjectCache());
-    return cache ? WebAXObject(cache->getOrCreate(document->layoutView())) : WebAXObject();
-}
-
-WebAXObject WebDocument::accessibilityObjectFromID(int axID) const
-{
-    const Document* document = constUnwrap<Document>();
-    AXObjectCacheImpl* cache = toAXObjectCacheImpl(document->axObjectCache());
-    return cache ? WebAXObject(cache->objectFromAXID(axID)) : WebAXObject();
 }
 
 WebVector<WebDraggableRegion> WebDocument::draggableRegions() const
@@ -280,22 +256,6 @@ WebVector<WebDraggableRegion> WebDocument::draggableRegions() const
         }
     }
     return draggableRegions;
-}
-
-v8::Local<v8::Value> WebDocument::registerEmbedderCustomElement(const WebString& name, v8::Local<v8::Value> options, WebExceptionCode& ec)
-{
-    v8::Isolate* isolate = v8::Isolate::GetCurrent();
-    Document* document = unwrap<Document>();
-    TrackExceptionState exceptionState;
-    ElementRegistrationOptions registrationOptions;
-    V8ElementRegistrationOptions::toImpl(isolate, options, registrationOptions, exceptionState);
-    if (exceptionState.hadException())
-        return v8::Local<v8::Value>();
-    ScriptValue constructor = document->registerElement(ScriptState::current(isolate), name, registrationOptions, exceptionState, CustomElement::EmbedderNames);
-    ec = exceptionState.code();
-    if (exceptionState.hadException())
-        return v8::Local<v8::Value>();
-    return constructor.v8Value();
 }
 
 WebURL WebDocument::manifestURL() const

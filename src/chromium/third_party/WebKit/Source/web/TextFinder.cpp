@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TextFinder.cpp
+// Description: TextFinder Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -42,8 +53,6 @@
 #include "core/layout/LayoutObject.h"
 #include "core/layout/TextAutosizer.h"
 #include "core/page/Page.h"
-#include "modules/accessibility/AXObject.h"
-#include "modules/accessibility/AXObjectCacheImpl.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/Timer.h"
 #include "public/platform/WebVector.h"
@@ -212,26 +221,6 @@ void TextFinder::stopFindingAndClearSelection()
 
     // Let the frame know that we don't want tickmarks anymore.
     ownerFrame().frameView()->invalidatePaintForTickmarks();
-}
-
-void TextFinder::reportFindInPageResultToAccessibility(int identifier)
-{
-    AXObjectCacheImpl* axObjectCache = toAXObjectCacheImpl(ownerFrame().frame()->document()->existingAXObjectCache());
-    if (!axObjectCache)
-        return;
-
-    AXObject* startObject = axObjectCache->get(m_activeMatch->startContainer());
-    AXObject* endObject = axObjectCache->get(m_activeMatch->endContainer());
-    if (!startObject || !endObject)
-        return;
-
-    WebLocalFrameImpl* mainFrameImpl = ownerFrame().viewImpl()->mainFrameImpl();
-    if (mainFrameImpl && mainFrameImpl->client()) {
-        mainFrameImpl->client()->handleAccessibilityFindInPageResult(
-            identifier, m_activeMatchIndexInCurrentFrame + 1,
-            WebAXObject(startObject), m_activeMatch->startOffset(),
-            WebAXObject(endObject), m_activeMatch->endOffset());
-    }
 }
 
 template <typename Strategy>
@@ -460,10 +449,6 @@ void TextFinder::reportFindInPageSelection(const WebRect& selectionRect, int act
     // Update the UI with the latest selection rect.
     if (ownerFrame().client())
         ownerFrame().client()->reportFindInPageSelection(identifier, ordinalOfFirstMatch() + activeMatchOrdinal, selectionRect);
-
-    // Update accessibility too, so if the user commits to this query
-    // we can move accessibility focus to this result.
-    reportFindInPageResultToAccessibility(identifier);
 }
 
 void TextFinder::resetMatchCount()

@@ -166,7 +166,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ActiveDOMObject.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\AddConsoleMessageTask.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Attr.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\AXObjectCache.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\CDATASection.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\CharacterData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ChildFrameDisconnector.cpp" />
@@ -366,7 +365,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Attr.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Attribute.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\AttributeCollection.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\AXObjectCache.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\CDATASection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\CharacterData.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ChildFrameDisconnector.h" />

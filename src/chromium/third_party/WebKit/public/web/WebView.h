@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebView.h
+// Description: WebView Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2010, 2011, 2012 Google Inc. All rights reserved.
  *
@@ -44,7 +55,6 @@
 
 namespace blink {
 
-class WebAXObject;
 class WebAutofillClient;
 class WebCompositedDisplayList;
 class WebCredentialManagerClient;
@@ -61,7 +71,6 @@ class WebSpellCheckClient;
 class WebString;
 class WebViewClient;
 struct WebActiveWheelFlingParameters;
-struct WebDeviceEmulationParams;
 struct WebFloatPoint;
 struct WebMediaPlayerAction;
 struct WebPluginAction;
@@ -373,22 +382,6 @@ public:
     // parent Page.
     virtual unsigned long createUniqueIdentifierForRequest() = 0;
 
-
-    // Developer tools -----------------------------------------------------
-
-    // Enables device emulation as specified in params.
-    virtual void enableDeviceEmulation(const WebDeviceEmulationParams&) = 0;
-
-    // Cancel emulation started via |enableDeviceEmulation| call.
-    virtual void disableDeviceEmulation() = 0;
-
-
-    // Accessibility -------------------------------------------------------
-
-    // Returns the accessibility object for this view.
-    virtual WebAXObject accessibilityObject() = 0;
-
-
     // Context menu --------------------------------------------------------
 
     virtual void performCustomContextMenuAction(unsigned action) = 0;
@@ -476,16 +469,6 @@ public:
     // If the WebView wants to get the accept languages value, it will have
     // to call the WebViewClient::acceptLanguages().
     virtual void acceptLanguagesChanged() = 0;
-
-    // Testing functionality for TestRunner ---------------------------------
-
-    // Force the webgl context to fail so that webglcontextcreationerror
-    // event gets generated/tested.
-    virtual void forceNextWebGLContextCreationToFail() = 0;
-
-    // Force the drawing buffer used by webgl contexts to fail so that the webgl
-    // context's ability to deal with that failure gracefully can be tested.
-    virtual void forceNextDrawingBufferCreationToFail() = 0;
 
 protected:
     ~WebView() {}

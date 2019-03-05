@@ -1,14 +1,23 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebFrame.cpp
+// Description: WebFrame Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "public/web/WebFrame.h"
 
-#include "bindings/core/v8/WindowProxyManager.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
-#include "core/frame/RemoteFrame.h"
 #include "core/html/HTMLFrameElementBase.h"
 #include "core/html/HTMLFrameOwnerElement.h"
 #include "core/page/Page.h"
@@ -18,117 +27,14 @@
 #include "public/web/WebFrameOwnerProperties.h"
 #include "public/web/WebSandboxFlags.h"
 #include "web/OpenedFrameTracker.h"
-#include "web/RemoteBridgeFrameOwner.h"
 #include "web/WebLocalFrameImpl.h"
-#include "web/WebRemoteFrameImpl.h"
 #include <algorithm>
 
 namespace blink {
 
-bool WebFrame::swap(WebFrame* frame)
-{
-    using std::swap;
-    RefPtrWillBeRawPtr<Frame> oldFrame = toImplBase()->frame();
-#if !ENABLE(OILPAN)
-    RefPtr<WebFrameImplBase> protectThis = toImplBase();
-#endif
-
-    // Unload the current Document in this frame: this calls unload handlers,
-    // detaches child frames, etc. Since this runs script, make sure this frame
-    // wasn't detached before continuing with the swap.
-    // FIXME: There is no unit test for this condition, so one needs to be
-    // written.
-    if (!oldFrame->prepareForCommit())
-        return false;
-
-    if (m_parent) {
-        if (m_parent->m_firstChild == this)
-            m_parent->m_firstChild = frame;
-        if (m_parent->m_lastChild == this)
-            m_parent->m_lastChild = frame;
-        // FIXME: This is due to the fact that the |frame| may be a provisional
-        // local frame, because we don't know if the navigation will result in
-        // an actual page or something else, like a download. The PlzNavigate
-        // project will remove the need for provisional local frames.
-        frame->m_parent = m_parent;
-    }
-
-    if (m_previousSibling) {
-        m_previousSibling->m_nextSibling = frame;
-        swap(m_previousSibling, frame->m_previousSibling);
-    }
-    if (m_nextSibling) {
-        m_nextSibling->m_previousSibling = frame;
-        swap(m_nextSibling, frame->m_nextSibling);
-    }
-
-    if (m_opener) {
-        frame->setOpener(m_opener);
-        setOpener(nullptr);
-    }
-    m_openedFrameTracker->transferTo(frame);
-
-    FrameHost* host = oldFrame->host();
-    AtomicString name = oldFrame->tree().name();
-    FrameOwner* owner = oldFrame->owner();
-    oldFrame->disconnectOwnerElement();
-
-    v8::HandleScope handleScope(v8::Isolate::GetCurrent());
-    HashMap<DOMWrapperWorld*, v8::Local<v8::Object>> globals;
-    oldFrame->windowProxyManager()->clearForNavigation();
-    oldFrame->windowProxyManager()->releaseGlobals(globals);
-
-    // Although the Document in this frame is now unloaded, many resources
-    // associated with the frame itself have not yet been freed yet.
-    oldFrame->detach(FrameDetachType::Swap);
-
-    // Finally, clone the state of the current Frame into one matching
-    // the type of the passed in WebFrame.
-    // FIXME: This is a bit clunky; this results in pointless decrements and
-    // increments of connected subframes.
-    if (frame->isWebLocalFrame()) {
-        LocalFrame& localFrame = *toWebLocalFrameImpl(frame)->frame();
-        ASSERT(owner == localFrame.owner());
-        if (owner) {
-            if (owner->isLocal()) {
-                HTMLFrameOwnerElement* ownerElement = toHTMLFrameOwnerElement(owner);
-                ownerElement->setContentFrame(localFrame);
-                ownerElement->setWidget(localFrame.view());
-            } else {
-                toRemoteBridgeFrameOwner(owner)->setContentFrame(toWebLocalFrameImpl(frame));
-            }
-        } else {
-            localFrame.page()->setMainFrame(&localFrame);
-        }
-    } else {
-        toWebRemoteFrameImpl(frame)->initializeCoreFrame(host, owner, name, nullAtom);
-    }
-
-    frame->toImplBase()->frame()->windowProxyManager()->setGlobals(globals);
-
-    m_parent = nullptr;
-
-    return true;
-}
-
 void WebFrame::detach()
 {
     toImplBase()->frame()->detach(FrameDetachType::Remove);
-}
-
-WebSecurityOrigin WebFrame::securityOrigin() const
-{
-    return WebSecurityOrigin(toImplBase()->frame()->securityContext()->securityOrigin());
-}
-
-
-void WebFrame::setFrameOwnerSandboxFlags(WebSandboxFlags flags)
-{
-    // At the moment, this is only used to replicate sandbox flags
-    // for frames with a remote owner.
-    FrameOwner* owner = toImplBase()->frame()->owner();
-    ASSERT(owner);
-    toRemoteBridgeFrameOwner(owner)->setSandboxFlags(static_cast<SandboxFlags>(flags));
 }
 
 bool WebFrame::shouldEnforceStrictMixedContentChecking() const
@@ -289,7 +195,8 @@ WebFrame* WebFrame::fromFrame(Frame* frame)
 
     if (frame->isLocalFrame())
         return WebLocalFrameImpl::fromFrame(toLocalFrame(*frame));
-    return WebRemoteFrameImpl::fromFrame(toRemoteFrame(*frame));
+    assert(false); // Not reached!
+    return nullptr;
 }
 
 WebFrame::WebFrame(WebTreeScopeType scope)

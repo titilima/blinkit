@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PageOverlay.cpp
+// Description: PageOverlay Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -36,7 +47,6 @@
 #include "platform/graphics/GraphicsLayerClient.h"
 #include "public/platform/WebLayer.h"
 #include "public/web/WebViewClient.h"
-#include "web/WebDevToolsAgentImpl.h"
 #include "web/WebViewImpl.h"
 
 namespace blink {
@@ -58,8 +68,6 @@ PageOverlay::~PageOverlay()
         return;
 
     m_layer->removeFromParent();
-    if (WebDevToolsAgentImpl* devTools = m_viewImpl->mainFrameDevToolsAgentImpl())
-        devTools->didRemovePageOverlay(m_layer.get());
     m_layer = nullptr;
 }
 
@@ -78,9 +86,6 @@ void PageOverlay::update()
     if (!m_layer) {
         m_layer = GraphicsLayer::create(m_viewImpl->graphicsLayerFactory(), this);
         m_layer->setDrawsContent(true);
-
-        if (WebDevToolsAgentImpl* devTools = m_viewImpl->mainFrameDevToolsAgentImpl())
-            devTools->willAddPageOverlay(m_layer.get());
 
         // This is required for contents of overlay to stay in sync with the page while scrolling.
         WebLayer* platformLayer = m_layer->platformLayer();

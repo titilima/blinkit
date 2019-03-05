@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PagePopup.h
+// Description: PagePopup Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -35,16 +46,13 @@
 
 namespace blink {
 
-class AXObject;
 class IntRect;
 
 // A PagePopup object is created by ChromeClient::openPagePopup(), and deleted
 // by ChromeClient::closePagePopup().
 class PagePopup {
 public:
-    virtual AXObject* rootAXObject() = 0;
     virtual void setWindowRect(const IntRect&) = 0;
-    virtual void postMessage(const String& message) = 0;
 
 protected:
     virtual ~PagePopup() { }

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ContextMenuClientImpl.cpp
+// Description: ContextMenuClientImpl Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2012 Google Inc. All rights reserved.
  *
@@ -47,8 +58,6 @@
 #include "core/html/HTMLFormElement.h"
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLInputElement.h"
-#include "core/html/HTMLMediaElement.h"
-#include "core/html/HTMLPlugInElement.h"
 #include "core/html/MediaError.h"
 #include "core/input/EventHandler.h"
 #include "core/layout/HitTestResult.h"
@@ -72,14 +81,12 @@
 #include "public/web/WebFormElement.h"
 #include "public/web/WebFrameClient.h"
 #include "public/web/WebMenuItemInfo.h"
-#include "public/web/WebPlugin.h"
 #include "public/web/WebSearchableFormData.h"
 #include "public/web/WebSpellCheckClient.h"
 #include "public/web/WebViewClient.h"
 #include "web/ContextMenuAllowedScope.h"
 #include "web/WebDataSourceImpl.h"
 #include "web/WebLocalFrameImpl.h"
-#include "web/WebPluginContainerImpl.h"
 #include "web/WebViewImpl.h"
 #include "wtf/text/WTFString.h"
 
@@ -181,10 +188,7 @@ void ContextMenuClientImpl::showContextMenu(const ContextMenu* defaultMenu)
         }
     }
 
-    if (isHTMLCanvasElement(r.innerNode())) {
-        data.mediaType = WebContextMenuData::MediaTypeCanvas;
-        data.hasImageContents = true;
-    } else if (!r.absoluteImageURL().isEmpty()) {
+    if (!r.absoluteImageURL().isEmpty()) {
         data.srcURL = r.absoluteImageURL();
         data.mediaType = WebContextMenuData::MediaTypeImage;
         data.mediaFlags |= WebContextMenuData::MediaCanPrint;
@@ -198,62 +202,7 @@ void ContextMenuClientImpl::showContextMenu(const ContextMenu* defaultMenu)
                 data.imageResponse = WrappedResourceResponse(imageElement->cachedImage()->response());
         }
     } else if (!r.absoluteMediaURL().isEmpty()) {
-        data.srcURL = r.absoluteMediaURL();
-
-        // We know that if absoluteMediaURL() is not empty, then this
-        // is a media element.
-        HTMLMediaElement* mediaElement = toHTMLMediaElement(r.innerNode());
-        if (isHTMLVideoElement(*mediaElement))
-            data.mediaType = WebContextMenuData::MediaTypeVideo;
-        else if (isHTMLAudioElement(*mediaElement))
-            data.mediaType = WebContextMenuData::MediaTypeAudio;
-
-        if (mediaElement->error())
-            data.mediaFlags |= WebContextMenuData::MediaInError;
-        if (mediaElement->paused())
-            data.mediaFlags |= WebContextMenuData::MediaPaused;
-        if (mediaElement->muted())
-            data.mediaFlags |= WebContextMenuData::MediaMuted;
-        if (mediaElement->loop())
-            data.mediaFlags |= WebContextMenuData::MediaLoop;
-        if (mediaElement->supportsSave())
-            data.mediaFlags |= WebContextMenuData::MediaCanSave;
-        if (mediaElement->hasAudio())
-            data.mediaFlags |= WebContextMenuData::MediaHasAudio;
-        // Media controls can be toggled only for video player. If we toggle
-        // controls for audio then the player disappears, and there is no way to
-        // return it back. Don't set this bit for fullscreen video, since
-        // toggling is ignored in that case.
-        if (mediaElement->hasVideo() && !mediaElement->isFullscreen())
-            data.mediaFlags |= WebContextMenuData::MediaCanToggleControls;
-        if (mediaElement->shouldShowControls())
-            data.mediaFlags |= WebContextMenuData::MediaControls;
-    } else if (isHTMLObjectElement(*r.innerNode()) || isHTMLEmbedElement(*r.innerNode())) {
-        LayoutObject* object = r.innerNode()->layoutObject();
-        if (object && object->isLayoutPart()) {
-            Widget* widget = toLayoutPart(object)->widget();
-            if (widget && widget->isPluginContainer()) {
-                data.mediaType = WebContextMenuData::MediaTypePlugin;
-                WebPluginContainerImpl* plugin = toWebPluginContainerImpl(widget);
-                WebString text = plugin->plugin()->selectionAsText();
-                if (!text.isEmpty()) {
-                    data.selectedText = text;
-                    data.editFlags |= WebContextMenuData::CanCopy;
-                }
-                data.editFlags &= ~WebContextMenuData::CanTranslate;
-                data.linkURL = plugin->plugin()->linkAtPosition(data.mousePosition);
-                if (plugin->plugin()->supportsPaginatedPrint())
-                    data.mediaFlags |= WebContextMenuData::MediaCanPrint;
-
-                HTMLPlugInElement* pluginElement = toHTMLPlugInElement(r.innerNode());
-                data.srcURL = pluginElement->document().completeURL(pluginElement->url());
-                data.mediaFlags |= WebContextMenuData::MediaCanSave;
-
-                // Add context menu commands that are supported by the plugin.
-                if (plugin->plugin()->canRotateView())
-                    data.mediaFlags |= WebContextMenuData::MediaCanRotate;
-            }
-        }
+        assert(false); // Not reached!
     }
 
     // If it's not a link, an image, a media element, or an image/media link,
@@ -263,23 +212,13 @@ void ContextMenuClientImpl::showContextMenu(const ContextMenu* defaultMenu)
 
     // Send the frame and page URLs in any case.
     if (!m_webView->page()->mainFrame()->isLocalFrame()) {
-        // TODO(kenrb): This works around the problem of URLs not being
-        // available for top-level frames that are in a different process.
-        // It mostly works to convert the security origin to a URL, but
-        // extensions accessing that property will not get the correct value
-        // in that case. See https://crbug.com/534561
-        WebSecurityOrigin origin = m_webView->mainFrame()->securityOrigin();
-        if (!origin.isNull())
-            data.pageURL = KURL(ParsedURLString, origin.toString());
+        assert(false); // Not reached!
     } else {
         data.pageURL = urlFromFrame(toLocalFrame(m_webView->page()->mainFrame()));
     }
 
     if (selectedFrame != m_webView->page()->mainFrame()) {
         data.frameURL = urlFromFrame(selectedFrame);
-        RefPtrWillBeRawPtr<HistoryItem> historyItem = selectedFrame->loader().currentItem();
-        if (historyItem)
-            data.frameHistoryItem = WebHistoryItem(historyItem);
     }
 
     if (r.isSelected()) {

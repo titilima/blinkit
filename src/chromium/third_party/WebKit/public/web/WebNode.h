@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebNode.h
+// Description: WebNode Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -40,12 +51,10 @@
 namespace blink {
 
 class Node;
-class WebAXObject;
 class WebDOMEvent;
 class WebDocument;
 class WebElement;
 class WebElementCollection;
-class WebPluginContainer;
 
 // Provides access to some properties of a DOM node.
 // Note that the class design requires that neither this class nor any of its subclasses have any virtual
@@ -105,11 +114,6 @@ public:
     BLINK_EXPORT void querySelectorAll(const WebString& selector, WebVector<WebElement>& results) const;
 
     BLINK_EXPORT bool focused() const;
-
-    BLINK_EXPORT WebPluginContainer* pluginContainer() const;
-
-    BLINK_EXPORT bool isInsideFocusableElementOrARIAWidget() const;
-    BLINK_EXPORT WebAXObject accessibilityObject();
 
     template<typename T> T to();
     template<typename T> const T toConst() const;

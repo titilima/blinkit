@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TextFinder.h
+// Description: TextFinder Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -116,8 +127,6 @@ private:
     // Notifies the delegate about a new selection rect.
     void reportFindInPageSelection(
         const WebRect& selectionRect, int activeMatchOrdinal, int identifier);
-
-    void reportFindInPageResultToAccessibility(int identifier);
 
     // Clear the find-in-page matches cache forcing rects to be fully
     // calculated again next time updateFindMatchRects is called.

@@ -26,6 +26,7 @@ class ExceptionState
     STACK_ALLOCATED();
     WTF_MAKE_NONCOPYABLE(ExceptionState);
 public:
+    ExceptionCode code(void) const { return m_exceptionCode; }
     bool hadException(void) const { return 0 != m_exceptionCode; }
 
     virtual void throwDOMException(ExceptionCode, const String &message);

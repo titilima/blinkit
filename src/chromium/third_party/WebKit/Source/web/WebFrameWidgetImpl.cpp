@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebFrameWidgetImpl.cpp
+// Description: WebFrameWidgetImpl Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All rights reserved.
  *
@@ -36,7 +47,6 @@
 #include "core/editing/InputMethodController.h"
 #include "core/editing/PlainTextRange.h"
 #include "core/frame/FrameView.h"
-#include "core/frame/RemoteFrame.h"
 #include "core/frame/Settings.h"
 #include "core/input/EventHandler.h"
 #include "core/layout/LayoutView.h"
@@ -48,11 +58,8 @@
 #include "platform/NotImplemented.h"
 #include "public/web/WebWidgetClient.h"
 #include "web/ContextMenuAllowedScope.h"
-#include "web/WebDevToolsAgentImpl.h"
 #include "web/WebInputEventConversion.h"
 #include "web/WebLocalFrameImpl.h"
-#include "web/WebPluginContainerImpl.h"
-#include "web/WebRemoteFrameImpl.h"
 #include "web/WebViewFrameWidget.h"
 
 namespace blink {
@@ -121,7 +128,6 @@ DEFINE_TRACE(WebFrameWidgetImpl)
 
 void WebFrameWidgetImpl::close()
 {
-    WebDevToolsAgentImpl::webFrameWidgetImplClosed(this);
     ASSERT(allInstances().contains(this));
     allInstances().remove(this);
 
@@ -758,9 +764,8 @@ WebInputEventResult WebFrameWidgetImpl::handleKeyEvent(const WebKeyboardEvent& e
 
     RefPtrWillBeRawPtr<Frame> focusedFrame = focusedCoreFrame();
     if (focusedFrame && focusedFrame->isRemoteFrame()) {
-        WebRemoteFrameImpl* webFrame = WebRemoteFrameImpl::fromFrame(*toRemoteFrame(focusedFrame.get()));
-        webFrame->client()->forwardInputEvent(&event);
-        return WebInputEventResult::HandledSystem;
+        assert(false); // Not reached!
+        return WebInputEventResult::NotHandled;
     }
 
     if (!focusedFrame || !focusedFrame->isLocalFrame())
@@ -982,9 +987,6 @@ void WebFrameWidgetImpl::initializeLayerTreeView()
         m_client->initializeLayerTreeView();
         m_layerTreeView = m_client->layerTreeView();
     }
-
-    if (WebDevToolsAgentImpl* devTools = m_localRoot->devToolsAgentImpl())
-        devTools->layerTreeViewChanged(m_layerTreeView);
 
     page()->settings().setAcceleratedCompositingEnabled(m_layerTreeView);
     if (m_layerTreeView)

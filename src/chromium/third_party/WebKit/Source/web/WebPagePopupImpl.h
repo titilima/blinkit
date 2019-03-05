@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebPagePopupImpl.h
+// Description: WebPagePopupImpl Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -68,7 +79,6 @@ public:
     void layoutAndPaintAsync(WebLayoutAndPaintAsyncCallback*) override;
     void compositeAndReadbackAsync(WebCompositeAndReadbackAsyncCallback*) override;
     WebPoint positionRelativeToOwner() override;
-    void postMessage(const String& message) override;
     void cancel();
 
 private:
@@ -94,7 +104,6 @@ private:
     bool isViewportPointInWindow(int x, int y);
 
     // PagePopup function
-    AXObject* rootAXObject() override;
     void setWindowRect(const IntRect&) override;
 
     explicit WebPagePopupImpl(WebWidgetClient*);

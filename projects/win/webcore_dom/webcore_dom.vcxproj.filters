@@ -26,9 +26,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\AXObjectCache.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ActiveDOMObject.cpp">
       <Filter>dom</Filter>
     </ClCompile>
@@ -604,9 +601,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\AXObjectCache.h">
-      <Filter>dom</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ActiveDOMObject.h">
       <Filter>dom</Filter>
     </ClInclude>

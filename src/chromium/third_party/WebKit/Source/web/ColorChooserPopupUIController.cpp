@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ColorChooserPopupUIController.cpp
+// Description: ColorChooserPopupUIController Class
+//      Author: Ziming Li
+//     Created: 2019-03-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -88,11 +99,6 @@ void ColorChooserPopupUIController::endChooser()
         m_chooser->endChooser();
 
     closePopup();
-}
-
-AXObject* ColorChooserPopupUIController::rootAXObject()
-{
-    return m_popup ? m_popup->rootAXObject() : nullptr;
 }
 
 void ColorChooserPopupUIController::writeDocument(SharedBuffer* data)

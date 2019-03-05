@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebSettingsImpl.h
+// Description: WebSettingsImpl Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -36,12 +47,11 @@
 
 namespace blink {
 
-class DevToolsEmulator;
 class Settings;
 
 class WebSettingsImpl final : public WebSettings {
 public:
-    WebSettingsImpl(Settings*, DevToolsEmulator*);
+    WebSettingsImpl(Settings*);
     virtual ~WebSettingsImpl() { }
 
     void setFromStrings(const WebString& name, const WebString& value) override;
@@ -52,7 +62,6 @@ public:
     void setAccelerated2dCanvasEnabled(bool) override;
     void setAccelerated2dCanvasMSAASampleCount(int) override;
     void setAcceleratedCompositingEnabled(bool) override;
-    void setPreferCompositingToLCDTextEnabled(bool) override;
     void setAccessibilityEnabled(bool) override;
     void setAccessibilityPasswordValuesEnabled(bool) override;
     void setAllowDisplayOfInsecureContent(bool) override;
@@ -77,14 +86,12 @@ public:
     void setDefaultFontSize(int) override;
     void setDefaultTextEncodingName(const WebString&) override;
     void setDefaultVideoPosterURL(const WebString&) override;
-    void setDeviceScaleAdjustment(float) override;
 
     // FIXME: Replace these two with pointer/hover queries? crbug.com/441813
     void setDeviceSupportsMouse(bool) override;
     void setDeviceSupportsTouch(bool) override;
 
     void setDisableReadingFromCanvas(bool) override;
-    void setDoubleTapToZoomEnabled(bool) override;
     void setDownloadableBinaryFontsEnabled(bool) override;
     void setEditingBehavior(EditingBehavior) override;
     void setEnableScrollAnimator(bool) override;
@@ -105,7 +112,6 @@ public:
     void setInertVisualViewport(bool) override;
     void setJavaScriptCanAccessClipboard(bool) override;
     void setJavaScriptCanOpenWindowsAutomatically(bool) override;
-    void setJavaScriptEnabled(bool) override;
     void setLoadsImagesAutomatically(bool) override;
     void setLoadWithOverviewMode(bool) override;
     void setLocalStorageEnabled(bool) override;
@@ -125,11 +131,6 @@ public:
     void setPerTilePaintingEnabled(bool) override;
     void setPictographFontFamily(const WebString&, UScriptCode = USCRIPT_COMMON) override;
     void setPinchOverlayScrollbarThickness(int) override;
-    void setPluginsEnabled(bool) override;
-    void setAvailablePointerTypes(int) override;
-    void setPrimaryPointerType(PointerType) override;
-    void setAvailableHoverTypes(int) override;
-    void setPrimaryHoverType(HoverType) override;
     void setPreferHiddenVolumeControls(bool) override;
     void setRenderVSyncNotificationEnabled(bool) override;
     void setReportScreenSizeInPhysicalPixelsQuirk(bool) override;
@@ -158,7 +159,6 @@ public:
     void setSupportsMultipleWindows(bool) override;
     void setSyncXHRInDocumentsEnabled(bool) override;
     void setTextAreasAreResizable(bool) override;
-    void setTextAutosizingEnabled(bool) override;
     void setAccessibilityFontScaleFactor(float) override;
     void setTextTrackKindUserPreference(TextTrackKindUserPreference) override;
     void setTextTrackBackgroundColor(const WebString&) override;
@@ -174,10 +174,8 @@ public:
     void setUnsafePluginPastingEnabled(bool) override;
     void setUsesEncodingDetector(bool) override;
     void setUseLegacyBackgroundSizeShorthandBehavior(bool) override;
-    void setUseMobileViewportStyle(bool) override;
     void setUseSolidColorScrollbars(bool) override;
     void setUseWideViewport(bool) override;
-    void setV8CacheOptions(V8CacheOptions) override;
     void setValidationMessageTimerMagnification(int) override;
     void setViewportEnabled(bool) override;
     void setViewportMetaEnabled(bool) override;
@@ -195,7 +193,6 @@ public:
     bool showPaintRects() const { return m_showPaintRects; }
     bool renderVSyncNotificationEnabled() const { return m_renderVSyncNotificationEnabled; }
     bool autoZoomFocusedNodeToLegibleScale() const { return m_autoZoomFocusedNodeToLegibleScale; }
-    bool doubleTapToZoomEnabled() const;
     bool perTilePaintingEnabled() const { return m_perTilePaintingEnabled; }
     bool supportDeprecatedTargetDensityDPI() const { return m_supportDeprecatedTargetDensityDPI; }
     bool viewportMetaEnabled() const;
@@ -208,7 +205,6 @@ public:
 
 private:
     Settings* m_settings;
-    RawPtrWillBeUntracedMember<DevToolsEmulator> m_devToolsEmulator;
     bool m_showFPSCounter;
     bool m_showPaintRects;
     bool m_renderVSyncNotificationEnabled;

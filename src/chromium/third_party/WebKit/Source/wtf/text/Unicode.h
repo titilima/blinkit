@@ -121,6 +121,8 @@ bool isAlphanumeric(UChar32 c);
 
 bool isPrintableChar(UChar32 c);
 
+bool isPunct(UChar32 c);
+
 UChar32 mirroredChar(UChar32 c);
 
 int toLower(UChar *result, int resultLength, const UChar *src, int srcLength, bool *error);

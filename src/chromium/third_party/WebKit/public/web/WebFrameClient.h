@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebFrameClient.h
+// Description: WebFrameClient Class
+//      Author: Ziming Li
+//     Created: 2019-03-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011, 2012 Google Inc. All rights reserved.
  *
@@ -33,7 +44,6 @@
 
 #include "../platform/WebColor.h"
 #include "WebAXObject.h"
-#include "WebDOMMessageEvent.h"
 #include "WebDataSource.h"
 #include "WebFrame.h"
 #include "WebFrameOwnerProperties.h"
@@ -43,7 +53,6 @@
 #include "WebNavigationPolicy.h"
 #include "WebNavigationType.h"
 #include "WebNavigatorContentUtilsClient.h"
-#include "WebSandboxFlags.h"
 #include "WebTextDirection.h"
 #include "public/platform/WebCommon.h"
 #include "public/platform/WebFileSystem.h"
@@ -54,7 +63,6 @@
 #include "public/platform/WebStorageQuotaType.h"
 #include "public/platform/WebURLError.h"
 #include "public/platform/WebURLRequest.h"
-#include <v8.h>
 
 namespace blink {
 
@@ -81,7 +89,6 @@ class WebMediaSession;
 class WebMIDIClient;
 class WebNotificationPermissionCallback;
 class WebPermissionClient;
-class WebServiceWorkerProvider;
 class WebSocketHandle;
 class WebPlugin;
 class WebPresentationClient;
@@ -122,9 +129,6 @@ public:
     virtual WebApplicationCacheHost* createApplicationCacheHost(WebLocalFrame*, WebApplicationCacheHostClient*) { return 0; }
 
     // May return null.
-    virtual WebServiceWorkerProvider* createServiceWorkerProvider(WebLocalFrame* frame) { return 0; }
-
-    // May return null.
     virtual WebWorkerContentSettingsClientProxy* createWorkerContentSettingsClientProxy(WebLocalFrame* frame) { return 0; }
 
     // Create a new WebPopupMenu. In the "createExternalPopupMenu" form, the
@@ -156,7 +160,7 @@ public:
     // until frameDetached() is called on it.
     // Note: If you override this, you should almost certainly be overriding
     // frameDetached().
-    virtual WebFrame* createChildFrame(WebLocalFrame* parent, WebTreeScopeType, const WebString& frameName, WebSandboxFlags sandboxFlags, const WebFrameOwnerProperties&) { return nullptr; }
+    virtual WebFrame* createChildFrame(WebLocalFrame* parent, WebTreeScopeType, const WebString& frameName, const WebFrameOwnerProperties&) { return nullptr; }
 
     // This frame has set its opener to another frame, or disowned the opener
     // if opener is null. See http://html.spec.whatwg.org/#dom-opener.
@@ -463,18 +467,6 @@ public:
     // A performance timing event (e.g. first paint) occurred
     virtual void didChangePerformanceTiming() { }
 
-
-    // Script notifications ------------------------------------------------
-
-    // Notifies that a new script context has been created for this frame.
-    // This is similar to didClearWindowObject but only called once per
-    // frame context.
-    virtual void didCreateScriptContext(WebLocalFrame*, v8::Local<v8::Context>, int extensionGroup, int worldId) { }
-
-    // WebKit is about to release its reference to a v8 context for a frame.
-    virtual void willReleaseScriptContext(WebLocalFrame*, v8::Local<v8::Context>, int worldId) { }
-
-
     // Geometry notifications ----------------------------------------------
 
     // The main frame scrolled.
@@ -565,15 +557,6 @@ public:
 
 
     // Messages ------------------------------------------------------
-
-    // Notifies the embedder that a postMessage was issued on this frame, and
-    // gives the embedder a chance to handle it instead of WebKit. Returns true
-    // if the embedder handled it.
-    virtual bool willCheckAndDispatchMessageEvent(
-        WebLocalFrame* sourceFrame,
-        WebFrame* targetFrame,
-        WebSecurityOrigin target,
-        WebDOMMessageEvent event) { return false; }
 
     // Asks the embedder if a specific user agent should be used. Non-empty
     // strings indicate an override should be used. Otherwise,

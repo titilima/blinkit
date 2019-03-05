@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ColorChooserPopupUIController.h
+// Description: ColorChooserPopupUIController Class
+//      Author: Ziming Li
+//     Created: 2019-03-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -52,7 +63,6 @@ public:
 
     // ColorChooser functions
     void endChooser() override;
-    AXObject* rootAXObject() override;
 
     // PagePopupClient functions:
     void writeDocument(SharedBuffer*) override;
