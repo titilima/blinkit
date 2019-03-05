@@ -93,7 +93,6 @@ CSSDefaultStyleSheets::CSSDefaultStyleSheets()
     , m_quirksStyleSheet(nullptr)
     , m_svgStyleSheet(nullptr)
     , m_mathmlStyleSheet(nullptr)
-    , m_mediaControlsStyleSheet(nullptr)
 {
     m_defaultStyle = RuleSet::create();
     m_defaultPrintStyle = RuleSet::create();
@@ -162,18 +161,6 @@ void CSSDefaultStyleSheets::ensureDefaultStyleSheetsForElement(const Element& el
         changedDefaultStyle = true;
     }
 
-    // FIXME: We should assert that this sheet only contains rules for <video> and <audio>.
-    if (!m_mediaControlsStyleSheet && (isHTMLVideoElement(element) || isHTMLAudioElement(element))) {
-        String mediaRules = loadResourceAsASCIIString(
-            RuntimeEnabledFeatures::newMediaPlaybackUiEnabled() ?
-            "mediaControlsNew.css" : "mediaControls.css") +
-            LayoutTheme::theme().extraMediaControlsStyleSheet();
-        m_mediaControlsStyleSheet = parseUASheet(mediaRules);
-        m_defaultStyle->addRulesFromSheet(mediaControlsStyleSheet(), screenEval());
-        m_defaultPrintStyle->addRulesFromSheet(mediaControlsStyleSheet(), printEval());
-        changedDefaultStyle = true;
-    }
-
     ASSERT(!m_defaultStyle->features().hasIdsInSelectors());
     ASSERT(m_defaultStyle->features().siblingRules.isEmpty());
 }
@@ -191,7 +178,6 @@ DEFINE_TRACE(CSSDefaultStyleSheets)
     visitor->trace(m_quirksStyleSheet);
     visitor->trace(m_svgStyleSheet);
     visitor->trace(m_mathmlStyleSheet);
-    visitor->trace(m_mediaControlsStyleSheet);
 }
 
 } // namespace blink

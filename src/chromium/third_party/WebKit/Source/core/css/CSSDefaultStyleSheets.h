@@ -64,7 +64,6 @@ public:
     StyleSheetContents* quirksStyleSheet() { return m_quirksStyleSheet.get(); }
     StyleSheetContents* svgStyleSheet() { return m_svgStyleSheet.get(); }
     StyleSheetContents* mathmlStyleSheet() { return m_mathmlStyleSheet.get(); }
-    StyleSheetContents* mediaControlsStyleSheet() { return m_mediaControlsStyleSheet.get(); }
 
     DECLARE_TRACE();
 
@@ -83,7 +82,6 @@ private:
     RefPtrWillBeMember<StyleSheetContents> m_quirksStyleSheet;
     RefPtrWillBeMember<StyleSheetContents> m_svgStyleSheet;
     RefPtrWillBeMember<StyleSheetContents> m_mathmlStyleSheet;
-    RefPtrWillBeMember<StyleSheetContents> m_mediaControlsStyleSheet;
 };
 
 } // namespace blink
