@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLPreloadScanner.cpp
+// Description: HTMLPreloadScanner Class
+//      Author: Ziming Li
+//     Created: 2019-03-04
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2009 Torch Mobile, Inc. http://www.torchmobile.com/
@@ -97,8 +108,6 @@ static String initiatorFor(const StringImpl* tagImpl)
         return linkTag.localName();
     if (match(tagImpl, scriptTag))
         return scriptTag.localName();
-    if (match(tagImpl, videoTag))
-        return videoTag.localName();
     ASSERT_NOT_REACHED();
     return emptyString();
 }
@@ -137,8 +146,7 @@ public:
         }
         if ( !match(m_tagImpl, inputTag)
             && !match(m_tagImpl, linkTag)
-            && !match(m_tagImpl, scriptTag)
-            && !match(m_tagImpl, videoTag))
+            && !match(m_tagImpl, scriptTag))
             m_tagImpl = 0;
     }
 
@@ -312,13 +320,6 @@ private:
     }
 
     template<typename NameType>
-    void processVideoAttribute(const NameType& attributeName, const String& attributeValue)
-    {
-        if (match(attributeName, posterAttr))
-            setUrlToLoad(attributeValue, DisallowURLReplacement);
-    }
-
-    template<typename NameType>
     void processAttribute(const NameType& attributeName, const String& attributeValue)
     {
         if (match(attributeName, charsetAttr))
@@ -334,8 +335,6 @@ private:
             processInputAttribute(attributeName, attributeValue);
         else if (match(m_tagImpl, sourceTag))
             processSourceAttribute(attributeName, attributeValue);
-        else if (match(m_tagImpl, videoTag))
-            processVideoAttribute(attributeName, attributeValue);
     }
 
     void setUrlToLoad(const String& value, URLReplacement replacement)
@@ -353,7 +352,7 @@ private:
     const String& charset() const
     {
         // FIXME: Its not clear that this if is needed, the loader probably ignores charset for image requests anyway.
-        if (match(m_tagImpl, imgTag) || match(m_tagImpl, videoTag))
+        if (match(m_tagImpl, imgTag))
             return emptyString();
         return m_charset;
     }
@@ -362,7 +361,7 @@ private:
     {
         if (match(m_tagImpl, scriptTag))
             return Resource::Script;
-        if (match(m_tagImpl, imgTag) || match(m_tagImpl, videoTag) || (match(m_tagImpl, inputTag) && m_inputIsImage))
+        if (match(m_tagImpl, imgTag) || (match(m_tagImpl, inputTag) && m_inputIsImage))
             return Resource::Image;
         if (match(m_tagImpl, linkTag) && m_linkIsStyleSheet)
             return Resource::CSSStyleSheet;

@@ -44,7 +44,6 @@
 #include "core/dom/PseudoElement.h"
 #include "core/dom/Text.h"
 #include "core/dom/shadow/InsertionPoint.h"
-#include "core/layout/LayoutFullScreen.h"
 #include "core/layout/LayoutObject.h"
 #include "core/layout/LayoutText.h"
 #include "core/layout/LayoutView.h"

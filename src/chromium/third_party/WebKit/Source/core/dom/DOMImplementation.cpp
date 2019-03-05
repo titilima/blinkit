@@ -53,7 +53,6 @@
 #include "core/frame/UseCounter.h"
 #include "core/html/HTMLDocument.h"
 #include "core/html/HTMLHeadElement.h"
-#include "core/html/HTMLMediaElement.h"
 #include "core/html/HTMLTitleElement.h"
 #include "core/loader/FrameLoader.h"
 #include "core/page/Page.h"

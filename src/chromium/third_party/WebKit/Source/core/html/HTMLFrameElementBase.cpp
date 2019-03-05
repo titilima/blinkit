@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLFrameElementBase.cpp
+// Description: HTMLFrameElementBase Class
+//      Author: Ziming Li
+//     Created: 2019-03-04
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -30,8 +41,6 @@
 #include "core/dom/Document.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
-#include "core/frame/RemoteFrame.h"
-#include "core/frame/RemoteFrameView.h"
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/layout/LayoutPart.h"
 #include "core/loader/FrameLoader.h"
@@ -180,7 +189,7 @@ void HTMLFrameElementBase::attach(const AttachContext& context)
             if (frame->isLocalFrame())
                 setWidget(toLocalFrame(frame)->view());
             else if (frame->isRemoteFrame())
-                setWidget(toRemoteFrame(frame)->view());
+                assert(false); // Not reached!
         }
     }
 }
@@ -230,7 +239,7 @@ bool HTMLFrameElementBase::isHTMLContentAttribute(const Attribute& attribute) co
 void HTMLFrameElementBase::defaultEventHandler(Event* event)
 {
     if (contentFrame() && contentFrame()->isRemoteFrame()) {
-        toRemoteFrame(contentFrame())->forwardInputEvent(event);
+        assert(false); // Not reached!
         return;
     }
     HTMLFrameOwnerElement::defaultEventHandler(event);

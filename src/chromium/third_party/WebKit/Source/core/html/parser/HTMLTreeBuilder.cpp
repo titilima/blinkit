@@ -810,8 +810,7 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
         return;
     }
     if ((RuntimeEnabledFeatures::contextMenuEnabled() && token->name() == menuitemTag)
-        || token->name() == sourceTag
-        || token->name() == trackTag) {
+        || token->name() == sourceTag) {
         m_tree.insertSelfClosingHTMLElementDestroyingToken(token);
         return;
     }

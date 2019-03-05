@@ -41,7 +41,6 @@
 #include "core/fetch/ImageResource.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
-#include "core/frame/RemoteFrame.h"
 #include "core/frame/Settings.h"
 #include "core/html/HTMLIFrameElement.h"
 #include "core/inspector/InspectorInstrumentation.h"
@@ -513,8 +512,7 @@ bool CompositedLayerMapping::updateGraphicsLayerConfiguration()
     } else if (layoutObject->node() && layoutObject->node()->isFrameOwnerElement() && toHTMLFrameOwnerElement(layoutObject->node())->contentFrame()) {
         Frame* frame = toHTMLFrameOwnerElement(layoutObject->node())->contentFrame();
         if (frame->isRemoteFrame()) {
-            WebLayer* layer = toRemoteFrame(frame)->remotePlatformLayer();
-            m_graphicsLayer->setContentsToPlatformLayer(layer);
+            assert(false); // Not reached!
         }
     }
     if (layoutObject->isLayoutPart()) {
