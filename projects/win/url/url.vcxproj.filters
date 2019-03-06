@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="url">
+      <UniqueIdentifier>{ed73b390-9290-4f0f-9e91-af7fb4973597}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="url\third_party">
+      <UniqueIdentifier>{253fd6c0-217b-4c45-9fc4-a594e43c0136}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="url\third_party\mozilla">
+      <UniqueIdentifier>{6f98ea14-fbfc-455b-a3fd-abd181da83a8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\chromium\url\gurl.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\origin.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\scheme_host_port.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\url_canon_etc.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\url_canon_filesystemurl.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\url_canon_fileurl.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\url_canon_host.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\url_canon_internal.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\url_canon_ip.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\url_canon_mailtourl.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\url_canon_path.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\url_canon_pathurl.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\url_canon_query.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\url_canon_relative.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\url_canon_stdstring.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\url_canon_stdurl.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\url_constants.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\url_parse_file.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\url_util.cc">
+      <Filter>url</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\url\third_party\mozilla\url_parse.cc">
+      <Filter>url\third_party\mozilla</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\url\url_canon.cpp">
+      <Filter>url</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\chromium\url\gurl.h">
+      <Filter>url</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\url\origin.h">
+      <Filter>url</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\url\scheme_host_port.h">
+      <Filter>url</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\url\url_canon.h">
+      <Filter>url</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\url\url_canon_internal.h">
+      <Filter>url</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\url\url_canon_internal_file.h">
+      <Filter>url</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\url\url_canon_ip.h">
+      <Filter>url</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\url\url_canon_stdstring.h">
+      <Filter>url</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\url\url_constants.h">
+      <Filter>url</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\url\url_export.h">
+      <Filter>url</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\url\url_file.h">
+      <Filter>url</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\url\url_parse_internal.h">
+      <Filter>url</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\url\url_util.h">
+      <Filter>url</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\url\url_util_internal.h">
+      <Filter>url</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\url\third_party\mozilla\url_parse.h">
+      <Filter>url\third_party\mozilla</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\url\_pc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
