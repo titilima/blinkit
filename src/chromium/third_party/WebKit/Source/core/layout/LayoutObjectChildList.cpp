@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutObjectChildList.cpp
+// Description: LayoutObjectChildList Class
+//      Author: Ziming Li
+//     Created: 2019-03-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2010 Apple Inc. All rights reserved.
  * Copyright (C) Research In Motion Limited 2010. All rights reserved.
@@ -26,7 +37,6 @@
 
 #include "core/layout/LayoutObjectChildList.h"
 
-#include "core/dom/AXObjectCache.h"
 #include "core/layout/LayoutCounter.h"
 #include "core/layout/LayoutObject.h"
 #include "core/layout/LayoutView.h"
@@ -108,9 +118,6 @@ LayoutObject* LayoutObjectChildList::removeChildNode(LayoutObject* owner, Layout
 
     oldChild->registerSubtreeChangeListenerOnDescendants(oldChild->consumesSubtreeChangeNotification());
 
-    if (AXObjectCache* cache = owner->document().existingAXObjectCache())
-        cache->childrenChanged(owner);
-
     return oldChild;
 }
 
@@ -172,9 +179,6 @@ void LayoutObjectChildList::insertChildNode(LayoutObject* owner, LayoutObject* n
 
     if (!owner->documentBeingDestroyed())
         owner->notifyOfSubtreeChange();
-
-    if (AXObjectCache* cache = owner->document().axObjectCache())
-        cache->childrenChanged(owner);
 }
 
 void LayoutObjectChildList::invalidatePaintOnRemoval(LayoutObject& oldChild)

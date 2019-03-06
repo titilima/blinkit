@@ -383,10 +383,6 @@ WindowProxyManager* LocalFrame::windowProxyManager() const
 
 void LocalFrame::disconnectOwnerElement()
 {
-    if (owner()) {
-        if (Document* document = this->document())
-            document->topDocument().clearAXObjectCache();
-    }
     Frame::disconnectOwnerElement();
 }
 

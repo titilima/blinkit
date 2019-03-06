@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: AbstractInlineTextBox.cpp
+// Description: AbstractInlineTextBox Class
+//      Author: Ziming Li
+//     Created: 2019-03-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -30,7 +41,6 @@
 
 #include "core/layout/line/AbstractInlineTextBox.h"
 
-#include "core/dom/AXObjectCache.h"
 #include "core/editing/iterators/TextIterator.h"
 #include "platform/text/TextBreakIterator.h"
 
@@ -75,11 +85,6 @@ AbstractInlineTextBox::~AbstractInlineTextBox()
 
 void AbstractInlineTextBox::detach()
 {
-    if (Node* node = m_lineLayoutItem.node()) {
-        if (AXObjectCache* cache = node->document().existingAXObjectCache())
-            cache->remove(this);
-    }
-
     m_lineLayoutItem = LineLayoutText(nullptr);
     m_inlineTextBox = nullptr;
 }

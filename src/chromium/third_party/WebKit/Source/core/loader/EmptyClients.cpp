@@ -158,32 +158,12 @@ PassRefPtrWillBeRawPtr<LocalFrame> EmptyFrameLoaderClient::createFrame(const Fra
     return nullptr;
 }
 
-PassRefPtrWillBeRawPtr<Widget> EmptyFrameLoaderClient::createPlugin(HTMLPlugInElement*, const KURL&, const Vector<String>&, const Vector<String>&, const String&, bool, DetachedPluginPolicy)
-{
-    return nullptr;
-}
-
-PassOwnPtr<WebMediaPlayer> EmptyFrameLoaderClient::createWebMediaPlayer(HTMLMediaElement&, const WebURL&, WebMediaPlayerClient*)
-{
-    return nullptr;
-}
-
-PassOwnPtr<WebMediaSession> EmptyFrameLoaderClient::createWebMediaSession()
-{
-    return nullptr;
-}
-
 void EmptyTextCheckerClient::requestCheckingOfString(PassRefPtrWillBeRawPtr<TextCheckingRequest>)
 {
 }
 
 void EmptyFrameLoaderClient::didRequestAutocomplete(HTMLFormElement*)
 {
-}
-
-PassOwnPtr<WebServiceWorkerProvider> EmptyFrameLoaderClient::createServiceWorkerProvider()
-{
-    return nullptr;
 }
 
 PassOwnPtr<WebApplicationCacheHost> EmptyFrameLoaderClient::createApplicationCacheHost(WebApplicationCacheHostClient*)

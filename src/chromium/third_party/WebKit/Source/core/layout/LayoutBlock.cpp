@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutBlock.cpp
+// Description: LayoutBlock Class
+//      Author: Ziming Li
+//     Created: 2019-03-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -24,7 +35,6 @@
 #include "core/layout/LayoutBlock.h"
 
 #include "core/HTMLNames.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/Document.h"
 #include "core/dom/Element.h"
 #include "core/dom/StyleEngine.h"

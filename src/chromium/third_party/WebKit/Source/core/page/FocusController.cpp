@@ -38,7 +38,6 @@
 #include "core/page/FocusController.h"
 
 #include "core/HTMLNames.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/Document.h"
 #include "core/dom/Element.h"
 #include "core/dom/ElementTraversal.h"
@@ -683,18 +682,7 @@ void FocusController::setFocused(bool focused)
 
 bool FocusController::setInitialFocus(WebFocusType type)
 {
-    bool didAdvanceFocus = advanceFocus(type, true);
-
-    // If focus is being set initially, accessibility needs to be informed that system focus has moved
-    // into the web area again, even if focus did not change within WebCore. PostNotification is called instead
-    // of handleFocusedUIElementChanged, because this will send the notification even if the element is the same.
-    if (focusedOrMainFrame()->isLocalFrame()) {
-        Document* document = toLocalFrame(focusedOrMainFrame())->document();
-        if (AXObjectCache* cache = document->existingAXObjectCache())
-            cache->handleInitialFocus();
-    }
-
-    return didAdvanceFocus;
+    return advanceFocus(type, true);
 }
 
 bool FocusController::advanceFocus(WebFocusType type, bool initialFocus, InputDeviceCapabilities* sourceCapabilities)

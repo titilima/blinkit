@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutObject.cpp
+// Description: LayoutObject Class
+//      Author: Ziming Li
+//     Created: 2019-03-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -28,7 +39,6 @@
 
 #include "core/HTMLNames.h"
 #include "core/css/resolver/StyleResolver.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/ElementTraversal.h"
 #include "core/dom/StyleEngine.h"
 #include "core/dom/shadow/ShadowRoot.h"
@@ -1982,11 +1992,8 @@ void LayoutObject::styleWillChange(StyleDifference diff, const ComputedStyle& ne
         bool visibilityChanged = m_style->visibility() != newStyle.visibility()
             || m_style->zIndex() != newStyle.zIndex()
             || m_style->hasAutoZIndex() != newStyle.hasAutoZIndex();
-        if (visibilityChanged) {
+        if (visibilityChanged)
             document().setAnnotatedRegionsDirty(true);
-            if (AXObjectCache* cache = document().existingAXObjectCache())
-                cache->childrenChanged(parent());
-        }
 
         // Keep layer hierarchy visibility bits up to date if visibility changes.
         if (m_style->visibility() != newStyle.visibility()) {
@@ -2527,17 +2534,7 @@ void LayoutObject::willBeDestroyed()
             frame->page()->autoscrollController().stopAutoscrollIfNeeded(this);
     }
 
-    // For accessibility management, notify the parent of the imminent change to its child set.
-    // We do it now, before remove(), while the parent pointer is still available.
-    if (AXObjectCache* cache = document().existingAXObjectCache())
-        cache->childrenChanged(this->parent());
-
     remove();
-
-    // The remove() call above may invoke axObjectCache()->childrenChanged() on the parent, which may require the AX layout
-    // object for this layoutObject. So we remove the AX layout object now, after the layoutObject is removed.
-    if (AXObjectCache* cache = document().existingAXObjectCache())
-        cache->remove(this);
 
     // If this layoutObject had a parent, remove should have destroyed any counters
     // attached to this layoutObject and marked the affected other counters for

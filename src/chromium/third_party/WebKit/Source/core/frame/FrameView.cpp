@@ -41,7 +41,6 @@
 #include "core/MediaTypeNames.h"
 #include "core/css/FontFaceSet.h"
 #include "core/css/resolver/StyleResolver.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/IntersectionObserverController.h"
 #include "core/editing/EditingUtilities.h"
 #include "core/editing/FrameSelection.h"
@@ -251,14 +250,6 @@ void FrameView::forAllNonThrottledFrameViews(Function function)
     }
 }
 
-void FrameView::removeFromAXObjectCache()
-{
-    if (AXObjectCache* cache = axObjectCache()) {
-        cache->remove(this);
-        cache->childrenChanged(m_frame->pagePopupOwner());
-    }
-}
-
 void FrameView::init()
 {
     reset();
@@ -279,10 +270,6 @@ void FrameView::dispose()
     cancelProgrammaticScrollAnimation();
 
     detachScrollbars();
-
-    // When the view is no longer associated with a frame, it needs to be removed from the ax object cache
-    // right now, otherwise it won't be able to reach the topDocument()'s axObject cache later.
-    removeFromAXObjectCache();
 
     if (ScrollingCoordinator* scrollingCoordinator = this->scrollingCoordinator())
         scrollingCoordinator->willDestroyScrollableArea(this);
@@ -1050,11 +1037,6 @@ void FrameView::layout()
 
     m_layoutCount++;
 
-    if (AXObjectCache* cache = document->axObjectCache()) {
-        const KURL& url = document->url();
-        if (url.isValid() && !url.isAboutBlankURL())
-            cache->handleLayoutComplete(document);
-    }
     updateDocumentAnnotatedRegions();
 
     scheduleOrPerformPostLayoutTasks();
@@ -1557,9 +1539,6 @@ void FrameView::scrollPositionChanged()
         m_didScrollTimer.stop();
     m_didScrollTimer.startOneShot(resourcePriorityUpdateDelayAfterScroll, BLINK_FROM_HERE);
 
-    if (AXObjectCache* cache = m_frame->document()->existingAXObjectCache())
-        cache->handleScrollPositionChanged(this);
-
     layoutView()->clearHitTestCache();
     frame().loader().saveScrollState();
 }
@@ -1871,9 +1850,6 @@ void FrameView::scrollToAnchor()
 
         if (boundaryFrame && boundaryFrame->isLocalFrame())
             toLocalFrame(boundaryFrame.get())->view()->setSafeToPropagateScrollToParent(true);
-
-        if (AXObjectCache* cache = m_frame->document()->existingAXObjectCache())
-            cache->handleScrolledToAnchor(anchorNode.get());
     }
 
     // The scroll anchor should only be maintained while the frame is still loading.
@@ -2924,13 +2900,6 @@ bool FrameView::visualViewportSuppliesScrollbars() const
     return m_frame->isMainFrame() && m_frame->settings() && m_frame->settings()->viewportMetaEnabled();
 }
 
-AXObjectCache* FrameView::axObjectCache() const
-{
-    if (frame().document())
-        return frame().document()->existingAXObjectCache();
-    return nullptr;
-}
-
 void FrameView::setCursor(const Cursor& cursor)
 {
     Page* page = frame().page();
@@ -2968,8 +2937,6 @@ void FrameView::setLayoutSizeInternal(const IntSize& size)
 void FrameView::didAddScrollbar(Scrollbar& scrollbar, ScrollbarOrientation orientation)
 {
     ScrollableArea::didAddScrollbar(scrollbar, orientation);
-    if (AXObjectCache* cache = axObjectCache())
-        cache->handleScrollbarUpdate(this);
 }
 
 void FrameView::setTopControlsViewportAdjustment(float adjustment)
@@ -3007,8 +2974,6 @@ void FrameView::setHasHorizontalScrollbar(bool hasBar)
         m_horizontalScrollbar->styleChanged();
     } else {
         willRemoveScrollbar(*m_horizontalScrollbar, HorizontalScrollbar);
-        if (AXObjectCache* cache = axObjectCache())
-            cache->remove(m_horizontalScrollbar.get());
         // If the scrollbar has been marked as overlapping the window resizer,
         // then its removal should reduce the count.
         if (m_horizontalScrollbar->overlapsResizer())
@@ -3016,8 +2981,6 @@ void FrameView::setHasHorizontalScrollbar(bool hasBar)
         removeChild(m_horizontalScrollbar.get());
         m_horizontalScrollbar->disconnectFromScrollableArea();
         m_horizontalScrollbar = nullptr;
-        if (AXObjectCache* cache = axObjectCache())
-            cache->handleScrollbarUpdate(this);
     }
 
     setScrollCornerNeedsPaintInvalidation();
@@ -3035,8 +2998,6 @@ void FrameView::setHasVerticalScrollbar(bool hasBar)
         m_verticalScrollbar->styleChanged();
     } else {
         willRemoveScrollbar(*m_verticalScrollbar, VerticalScrollbar);
-        if (AXObjectCache* cache = axObjectCache())
-            cache->remove(m_verticalScrollbar.get());
         // If the scrollbar has been marked as overlapping the window resizer,
         // then its removal should reduce the count.
         if (m_verticalScrollbar->overlapsResizer())
@@ -3044,8 +3005,6 @@ void FrameView::setHasVerticalScrollbar(bool hasBar)
         removeChild(m_verticalScrollbar.get());
         m_verticalScrollbar->disconnectFromScrollableArea();
         m_verticalScrollbar = nullptr;
-        if (AXObjectCache* cache = axObjectCache())
-            cache->handleScrollbarUpdate(this);
     }
 
     setScrollCornerNeedsPaintInvalidation();

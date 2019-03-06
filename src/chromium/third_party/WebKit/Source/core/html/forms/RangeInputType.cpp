@@ -45,7 +45,6 @@
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
 #include "core/HTMLNames.h"
 #include "core/InputTypeNames.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/NodeComputedStyle.h"
 #include "core/dom/Touch.h"
 #include "core/dom/TouchList.h"
@@ -241,9 +240,6 @@ void RangeInputType::handleKeydownEvent(KeyboardEvent* event)
         EventQueueScope scope;
         TextFieldEventBehavior eventBehavior = DispatchInputAndChangeEvent;
         setValueAsDecimal(newValue, eventBehavior, IGNORE_EXCEPTION);
-
-        if (AXObjectCache* cache = element().document().existingAXObjectCache())
-            cache->handleValueChanged(&element());
     }
 
     event->setDefaultHandled();

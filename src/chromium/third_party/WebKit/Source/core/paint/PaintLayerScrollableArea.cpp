@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PaintLayerScrollableArea.cpp
+// Description: PaintLayerScrollableArea Class
+//      Author: Ziming Li
+//     Created: 2019-03-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple Inc. All rights reserved.
  *
@@ -44,7 +55,6 @@
 #include "core/paint/PaintLayerScrollableArea.h"
 
 #include "core/css/PseudoStyleRequest.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/Node.h"
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/editing/FrameSelection.h"
@@ -398,8 +408,6 @@ void PaintLayerScrollableArea::setScrollOffset(const DoublePoint& newScrollOffse
     if (box().node())
         box().node()->document().enqueueScrollEventForNode(box().node());
 
-    if (AXObjectCache* cache = box().document().existingAXObjectCache())
-        cache->handleScrollPositionChanged(&box());
     box().view()->clearHitTestCache();
 
     // Inform the FrameLoader of the new scroll position, so it can be restored when navigating back.

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutBlockFlowLine.cpp
+// Description: LayoutBlockFlow Class
+//      Author: Ziming Li
+//     Created: 2019-03-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All right reserved.
@@ -20,7 +31,6 @@
  *
  */
 
-#include "core/dom/AXObjectCache.h"
 #include "core/layout/BidiRunForLine.h"
 #include "core/layout/LayoutCounter.h"
 #include "core/layout/LayoutFlowThread.h"
@@ -297,11 +307,6 @@ RootInlineBox* LayoutBlockFlow::constructLine(BidiRunList<BidiRun>& bidiRuns, co
         }
 
         box->setBidiLevel(r->level());
-
-        if (box->isInlineTextBox()) {
-            if (AXObjectCache* cache = document().existingAXObjectCache())
-                cache->inlineTextBoxesUpdated(r->m_object);
-        }
     }
 
     // We should have a root inline box.  It should be unconstructed and

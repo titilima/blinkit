@@ -35,7 +35,6 @@
 
 #include "core/layout/LayoutPart.h"
 
-#include "core/dom/AXObjectCache.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/html/HTMLFrameElementBase.h"
@@ -69,11 +68,6 @@ void LayoutPart::deref()
 void LayoutPart::willBeDestroyed()
 {
     frameView()->removePart(this);
-
-    if (AXObjectCache* cache = document().existingAXObjectCache()) {
-        cache->childrenChanged(this->parent());
-        cache->remove(this);
-    }
 
     Element* element = toElement(node());
     if (element && element->isFrameOwnerElement())

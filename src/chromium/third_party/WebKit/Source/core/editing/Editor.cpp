@@ -47,7 +47,6 @@
 #include "core/clipboard/Pasteboard.h"
 #include "core/css/CSSComputedStyleDeclaration.h"
 #include "core/css/StylePropertySet.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/DocumentFragment.h"
 #include "core/dom/NodeTraversal.h"
 #include "core/dom/ParserContentPolicy.h"
@@ -546,12 +545,6 @@ void Editor::notifyComponentsOnChangedSelection(const VisibleSelection& oldSelec
 
 void Editor::respondToChangedContents(const VisibleSelection& endingSelection)
 {
-    if (frame().settings() && frame().settings()->accessibilityEnabled()) {
-        Node* node = endingSelection.start().anchorNode();
-        if (AXObjectCache* cache = frame().document()->existingAXObjectCache())
-            cache->handleEditableTextContentChanged(node);
-    }
-
     spellChecker().updateMarkersForWordsAffectedByEditing(true);
     client().respondToChangedContents();
 }

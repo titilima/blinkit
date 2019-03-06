@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutMenuList.cpp
+// Description: LayoutMenuList Class
+//      Author: Ziming Li
+//     Created: 2019-03-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * This file is part of the select element layoutObject in WebCore.
  *
@@ -27,7 +38,6 @@
 #include "core/HTMLNames.h"
 #include "core/css/CSSFontSelector.h"
 #include "core/css/resolver/StyleResolver.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/NodeComputedStyle.h"
 #include "core/html/HTMLOptGroupElement.h"
 #include "core/html/HTMLOptionElement.h"
@@ -132,9 +142,6 @@ void LayoutMenuList::addChild(LayoutObject* newChild, LayoutObject* beforeChild)
 {
     m_innerBlock->addChild(newChild, beforeChild);
     ASSERT(m_innerBlock == firstChild());
-
-    if (AXObjectCache* cache = document().existingAXObjectCache())
-        cache->childrenChanged(this);
 }
 
 void LayoutMenuList::removeChild(LayoutObject* oldChild)
@@ -320,26 +327,7 @@ void LayoutMenuList::didSetSelectedIndex(int listIndex)
 
 void LayoutMenuList::didUpdateActiveOption(int optionIndex)
 {
-    if (!document().existingAXObjectCache())
-        return;
-
-    if (m_lastActiveIndex == optionIndex)
-        return;
-    m_lastActiveIndex = optionIndex;
-
-    HTMLSelectElement* select = selectElement();
-    int listIndex = select->optionToListIndex(optionIndex);
-    if (listIndex < 0 || listIndex >= static_cast<int>(select->listItems().size()))
-        return;
-
-    // We skip sending accessiblity notifications for the very first option, otherwise
-    // we get extra focus and select events that are undesired.
-    if (!m_hasUpdatedActiveOption) {
-        m_hasUpdatedActiveOption = true;
-        return;
-    }
-
-    document().existingAXObjectCache()->handleUpdateActiveMenuOption(this, optionIndex);
+    // Nothing to do.
 }
 
 LayoutUnit LayoutMenuList::clientPaddingLeft() const

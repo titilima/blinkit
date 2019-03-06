@@ -65,7 +65,6 @@
 
 namespace blink {
 
-class AXObjectCache;
 class CancellableTaskFactory;
 class ComputedStyle;
 class DocumentLifecycle;
@@ -726,9 +725,6 @@ private:
     bool shouldIgnoreOverflowHidden() const;
 
     void updateScrollCorner();
-
-    AXObjectCache* axObjectCache() const;
-    void removeFromAXObjectCache();
 
     void setLayoutSizeInternal(const IntSize&);
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FrameSelection.cpp
+// Description: FrameSelection Class
+//      Author: Ziming Li
+//     Created: 2019-03-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2008, 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -29,7 +40,6 @@
 #include "core/HTMLNames.h"
 #include "core/InputTypeNames.h"
 #include "core/css/StylePropertySet.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/CharacterData.h"
 #include "core/dom/Document.h"
 #include "core/dom/Element.h"
@@ -879,10 +889,7 @@ bool FrameSelection::isInPasswordField() const
 
 void FrameSelection::notifyAccessibilityForSelectionChange()
 {
-    if (selection().start().isNotNull() && selection().end().isNotNull()) {
-        if (AXObjectCache* cache = m_frame->document()->existingAXObjectCache())
-            cache->selectionChanged(selection().start().computeContainerNode());
-    }
+    // Nothing to do.
 }
 
 void FrameSelection::notifyCompositorForSelectionChange()
