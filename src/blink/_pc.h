@@ -29,6 +29,7 @@
 
 #define BLINK_IMPLEMENTATION    1
 #define INSIDE_BLINK            1
+#define LIBXML_STATIC
 
 #include <cassert>
 #include "skia/_skia.h"
