@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StyleInvalidator.cpp
+// Description: StyleInvalidator Class
+//      Author: Ziming Li
+//     Created: 2018-08-10
+// -------------------------------------------------
+// Copyright (C) 2018 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -23,9 +34,7 @@ namespace blink {
 // with InvalidationSet to avoid additional GOT lookup cost.
 static const unsigned char* s_tracingEnabled = nullptr;
 
-#define TRACE_STYLE_INVALIDATOR_INVALIDATION_IF_ENABLED(element, reason) \
-    if (UNLIKELY(*s_tracingEnabled)) \
-        TRACE_STYLE_INVALIDATOR_INVALIDATION(element, reason);
+#define TRACE_STYLE_INVALIDATOR_INVALIDATION_IF_ENABLED(...)
 
 void StyleInvalidator::invalidate(Document& document)
 {
@@ -104,7 +113,7 @@ PendingInvalidations& StyleInvalidator::ensurePendingInvalidations(Element& elem
 
 StyleInvalidator::StyleInvalidator()
 {
-    s_tracingEnabled = TRACE_EVENT_API_GET_CATEGORY_GROUP_ENABLED(TRACE_DISABLED_BY_DEFAULT("devtools.timeline.invalidationTracking"));
+    s_tracingEnabled = false;
     InvalidationSet::cacheTracingFlag();
 }
 

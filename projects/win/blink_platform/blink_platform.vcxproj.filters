@@ -656,9 +656,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\BitmapImageMetrics.cpp">
       <Filter>platform\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\Canvas2DLayerBridge.cpp">
-      <Filter>platform\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\CanvasMetrics.cpp">
       <Filter>platform\graphics</Filter>
     </ClCompile>
@@ -1802,9 +1799,6 @@
       <Filter>platform\graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\Canvas2DImageBufferSurface.h">
-      <Filter>platform\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\Canvas2DLayerBridge.h">
       <Filter>platform\graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\graphics\CanvasMetrics.h">

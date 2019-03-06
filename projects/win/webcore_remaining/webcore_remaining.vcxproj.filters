@@ -3961,5 +3961,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\EventSourceInit.h">
       <Filter>page</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\inspector\InspectorTraceEvents.h">
+      <Filter>inspector</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

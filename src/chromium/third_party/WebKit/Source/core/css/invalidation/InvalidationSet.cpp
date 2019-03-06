@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: InvalidationSet.cpp
+// Description: InvalidationSet Class
+//      Author: Ziming Li
+//     Created: 2018-08-10
+// -------------------------------------------------
+// Copyright (C) 2018 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All rights reserved.
  *
@@ -41,9 +52,7 @@ namespace blink {
 
 static const unsigned char* s_tracingEnabled = nullptr;
 
-#define TRACE_STYLE_INVALIDATOR_INVALIDATION_SELECTORPART_IF_ENABLED(element, reason, invalidationSet, singleSelectorPart) \
-    if (UNLIKELY(*s_tracingEnabled)) \
-        TRACE_STYLE_INVALIDATOR_INVALIDATION_SELECTORPART(element, reason, invalidationSet, singleSelectorPart);
+#define TRACE_STYLE_INVALIDATOR_INVALIDATION_SELECTORPART_IF_ENABLED(...)
 
 void InvalidationSet::cacheTracingFlag()
 {
@@ -224,48 +233,7 @@ void InvalidationSet::setWholeSubtreeInvalid()
 
 void InvalidationSet::toTracedValue(TracedValue* value) const
 {
-    value->beginDictionary();
-
-    value->setString("id", descendantInvalidationSetToIdString(*this));
-
-    if (m_allDescendantsMightBeInvalid)
-        value->setBoolean("allDescendantsMightBeInvalid", true);
-    if (m_customPseudoInvalid)
-        value->setBoolean("customPseudoInvalid", true);
-    if (m_treeBoundaryCrossing)
-        value->setBoolean("treeBoundaryCrossing", true);
-    if (m_insertionPointCrossing)
-        value->setBoolean("insertionPointCrossing", true);
-
-    if (m_ids) {
-        value->beginArray("ids");
-        for (const auto& id : *m_ids)
-            value->pushString(id);
-        value->endArray();
-    }
-
-    if (m_classes) {
-        value->beginArray("classes");
-        for (const auto& className : *m_classes)
-            value->pushString(className);
-        value->endArray();
-    }
-
-    if (m_tagNames) {
-        value->beginArray("tagNames");
-        for (const auto& tagName : *m_tagNames)
-            value->pushString(tagName);
-        value->endArray();
-    }
-
-    if (m_attributes) {
-        value->beginArray("attributes");
-        for (const auto& attribute : *m_attributes)
-            value->pushString(attribute);
-        value->endArray();
-    }
-
-    value->endDictionary();
+    assert(false); // Not reached!
 }
 
 #ifndef NDEBUG

@@ -1267,6 +1267,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\inspector\ConsoleMessage.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\inspector\ConsoleMessageStorage.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\inspector\InspectorInstrumentation.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\inspector\InspectorTraceEvents.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\appcache\ApplicationCache.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\appcache\ApplicationCacheHost.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\BeaconLoader.h" />
