@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLDialogElement.cpp
+// Description: HTMLDialogElement Class
+//      Author: Ziming Li
+//     Created: 2019-03-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -26,7 +37,6 @@
 #include "core/html/HTMLDialogElement.h"
 
 #include "bindings/core/v8/ExceptionState.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/ExceptionCode.h"
 #include "core/dom/NodeTraversal.h"
 #include "core/events/Event.h"
@@ -78,18 +88,6 @@ static void setFocusForDialog(HTMLDialogElement* dialog)
     dialog->document().clearFocusedElement();
 }
 
-static void inertSubtreesChanged(Document& document)
-{
-    // When a modal dialog opens or closes, nodes all over the accessibility
-    // tree can change inertness which means they must be added or removed from
-    // the tree. The most foolproof way is to clear the entire tree and rebuild
-    // it, though a more clever way is probably possible.
-    Document& topDocument = document.topDocument();
-    topDocument.clearAXObjectCache();
-    if (AXObjectCache* cache = topDocument.axObjectCache())
-        cache->childrenChanged(&topDocument);
-}
-
 inline HTMLDialogElement::HTMLDialogElement(Document& document)
     : HTMLElement(dialogTag, document)
     , m_centeringMode(NotCentered)
@@ -118,8 +116,6 @@ void HTMLDialogElement::closeDialog(const String& returnValue)
 
     HTMLDialogElement* activeModalDialog = document().activeModalDialog();
     document().removeFromTopLayer(this);
-    if (activeModalDialog == this)
-        inertSubtreesChanged(document());
 
     if (!returnValue.isNull())
         m_returnValue = returnValue;
@@ -162,10 +158,6 @@ void HTMLDialogElement::showModal(ExceptionState& exceptionState)
     document().addToTopLayer(this);
     setBooleanAttribute(openAttr, true);
 
-    // Throw away the AX cache first, so the subsequent steps don't have a chance of queuing up
-    // AX events on objects that would be invalidated when the cache is thrown away.
-    inertSubtreesChanged(document());
-
     forceLayoutForCentering();
     setFocusForDialog(this);
 }
@@ -174,7 +166,6 @@ void HTMLDialogElement::removedFrom(ContainerNode* insertionPoint)
 {
     HTMLElement::removedFrom(insertionPoint);
     setNotCentered();
-    // FIXME: We should call inertSubtreesChanged() here.
 }
 
 void HTMLDialogElement::setCentered(LayoutUnit centeredPosition)

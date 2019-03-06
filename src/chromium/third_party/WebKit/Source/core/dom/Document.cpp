@@ -62,7 +62,6 @@
 #include "core/css/resolver/FontBuilder.h"
 #include "core/css/resolver/StyleResolver.h"
 #include "core/css/resolver/StyleResolverStats.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/AddConsoleMessageTask.h"
 #include "core/dom/Attr.h"
 #include "core/dom/CDATASection.h"
@@ -506,7 +505,6 @@ Document::~Document()
     ASSERT(!parentTreeScope());
     // If a top document with a cache, verify that it was comprehensively
     // cleared during detach.
-    ASSERT(!m_axObjectCache);
 #if !ENABLE(OILPAN)
     ASSERT(m_ranges.isEmpty());
     ASSERT(!hasGuardRefCount());
@@ -2140,7 +2138,6 @@ StyleResolver& Document::ensureStyleResolver() const
 void Document::attach(const AttachContext& context)
 {
     ASSERT(m_lifecycle.state() == DocumentLifecycle::Inactive);
-    ASSERT(!m_axObjectCache || this != &axObjectCacheOwner());
 
     m_layoutView = new LayoutView(this);
     setLayoutObject(m_layoutView);
@@ -2224,23 +2221,8 @@ void Document::detach(const AttachContext& context)
             frameHost()->chromeClient().focusedNodeChanged(oldFocusedElement.get(), nullptr);
     }
 
-    if (this == &axObjectCacheOwner())
-        clearAXObjectCache();
-
     m_layoutView = nullptr;
     ContainerNode::detach(context);
-
-    if (this != &axObjectCacheOwner()) {
-        if (AXObjectCache* cache = existingAXObjectCache()) {
-            // Documents that are not a root document use the AXObjectCache in
-            // their root document. Node::removedFrom is called after the
-            // document has been detached so it can't find the root document.
-            // We do the removals here instead.
-            for (Node& node : NodeTraversal::descendantsOf(*this)) {
-                cache->remove(&node);
-            }
-        }
-    }
 
     styleEngine().didDetach();
 
@@ -2290,77 +2272,6 @@ void Document::removeAllEventListeners()
 
     if (LocalDOMWindow* domWindow = this->domWindow())
         domWindow->removeAllEventListeners();
-}
-
-Document& Document::axObjectCacheOwner() const
-{
-    // FIXME(dmazzoni): Currently there's one AXObjectCache per page, owned
-    // by the top document, but with --site-isolation the top document may
-    // be a remote frame. As a quick fix we're making the local root the owner
-    // of the AXObjectCache (http://crbug.com/510410), but the proper fix
-    // will be for each Document to  have its own AXObjectCache
-    // (http://crbug.com/532249).
-    Document* top = const_cast<Document*>(this);
-    LocalFrame* frame = this->frame();
-    if (!frame)
-        return *top;
-
-    // This loop is more efficient than calling localFrameRoot.
-    while (frame && frame->owner() && frame->owner()->isLocal()) {
-        HTMLFrameOwnerElement* owner = toHTMLFrameOwnerElement(frame->owner());
-        top = &owner->document();
-        frame = top->frame();
-    }
-
-    if (top->frame() && top->frame()->pagePopupOwner()) {
-        ASSERT(!top->m_axObjectCache);
-        return top->frame()->pagePopupOwner()->document().axObjectCacheOwner();
-    }
-
-    ASSERT(top);
-    return *top;
-}
-
-void Document::clearAXObjectCache()
-{
-    ASSERT(&axObjectCacheOwner() == this);
-    // Clear the cache member variable before calling delete because attempts
-    // are made to access it during destruction.
-    if (m_axObjectCache)
-        m_axObjectCache->dispose();
-    m_axObjectCache.clear();
-}
-
-AXObjectCache* Document::existingAXObjectCache() const
-{
-    // If the layoutObject is gone then we are in the process of destruction.
-    // This method will be called before m_frame = nullptr.
-    if (!axObjectCacheOwner().layoutView())
-        return 0;
-
-    return axObjectCacheOwner().m_axObjectCache.get();
-}
-
-AXObjectCache* Document::axObjectCache() const
-{
-    Settings* settings = this->settings();
-    if (!settings || !settings->accessibilityEnabled())
-        return 0;
-
-    // The only document that actually has a AXObjectCache is the top-level
-    // document.  This is because we need to be able to get from any WebCoreAXObject
-    // to any other WebCoreAXObject on the same page.  Using a single cache allows
-    // lookups across nested webareas (i.e. multiple documents).
-    Document& cacheOwner = this->axObjectCacheOwner();
-
-    // If the document has already been detached, do not make a new axObjectCache.
-    if (!cacheOwner.layoutView())
-        return 0;
-
-    ASSERT(&cacheOwner == this || !m_axObjectCache);
-    if (!cacheOwner.m_axObjectCache)
-        cacheOwner.m_axObjectCache = AXObjectCache::create(cacheOwner);
-    return cacheOwner.m_axObjectCache.get();
 }
 
 PassRefPtrWillBeRawPtr<DocumentParser> Document::createParser()
@@ -2670,15 +2581,6 @@ void Document::implicitClose()
     }
 
     m_loadEventProgress = LoadEventCompleted;
-
-    if (frame() && layoutView() && settings()->accessibilityEnabled()) {
-        if (AXObjectCache* cache = axObjectCache()) {
-            if (this == &axObjectCacheOwner())
-                cache->handleLoadComplete(this);
-            else
-                cache->handleLayoutComplete(this);
-        }
-    }
 
     if (svgExtensions())
         accessSVGExtensions().startAnimations();
@@ -3594,12 +3496,6 @@ bool Document::setFocusedElement(PassRefPtrWillBeRawPtr<Element> prpNewFocusedEl
             else
                 view()->setFocus(true, params.type);
         }
-    }
-
-    if (!focusChangeBlocked && m_focusedElement) {
-        // Create the AXObject cache in a focus change because Chromium relies on it.
-        if (AXObjectCache* cache = axObjectCache())
-            cache->handleFocusedUIElementChanged(oldFocusedElement.get(), newFocusedElement.get());
     }
 
     if (!focusChangeBlocked && frameHost())

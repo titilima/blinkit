@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLInputElement.cpp
+// Description: HTMLInputElement Class
+//      Author: Ziming Li
+//     Created: 2019-03-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -34,7 +45,6 @@
 #include "core/CSSPropertyNames.h"
 #include "core/HTMLNames.h"
 #include "core/InputTypeNames.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/Document.h"
 #include "core/dom/ExecutionContextTask.h"
 #include "core/dom/IdTargetObserver.h"
@@ -915,14 +925,6 @@ void HTMLInputElement::setChecked(bool nowChecked, TextFieldEventBehavior eventB
         LayoutTheme::theme().controlStateChanged(*layoutObject(), CheckedControlState);
 
     setNeedsValidityCheck();
-
-    // Ideally we'd do this from the layout tree (matching
-    // LayoutTextView), but it's not possible to do it at the moment
-    // because of the way the code is structured.
-    if (layoutObject()) {
-        if (AXObjectCache* cache = layoutObject()->document().existingAXObjectCache())
-            cache->checkedStateChanged(this);
-    }
 
     // Only send a change event for items in the document (avoid firing during
     // parsing) and don't send a change event for a radio button that's getting

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLOptionElement.cpp
+// Description: HTMLOptionElement Class
+//      Author: Ziming Li
+//     Created: 2019-03-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -28,7 +39,6 @@
 
 #include "bindings/core/v8/ExceptionState.h"
 #include "core/HTMLNames.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/Document.h"
 #include "core/dom/NodeComputedStyle.h"
 #include "core/dom/NodeTraversal.h"
@@ -288,19 +298,8 @@ void HTMLOptionElement::setSelectedState(bool selected)
     m_isSelected = selected;
     pseudoStateChanged(CSSSelector::PseudoChecked);
 
-    if (HTMLSelectElement* select = ownerSelectElement()) {
+    if (HTMLSelectElement* select = ownerSelectElement())
         select->invalidateSelectedItems();
-
-        if (AXObjectCache* cache = document().existingAXObjectCache()) {
-            // If there is a layoutObject (most common), fire accessibility notifications
-            // only when it's a listbox (and not a menu list). If there's no layoutObject,
-            // fire them anyway just to be safe (to make sure the AX tree is in sync).
-            if (!select->layoutObject() || select->layoutObject()->isListBox()) {
-                cache->listboxOptionStateChanged(this);
-                cache->listboxSelectedChildrenChanged(select);
-            }
-        }
-    }
 }
 
 void HTMLOptionElement::setDirty(bool value)

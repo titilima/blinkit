@@ -33,7 +33,6 @@
 
 #include "bindings/core/v8/ExceptionMessages.h"
 #include "bindings/core/v8/ExceptionState.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/ExceptionCode.h"
 #include "core/events/Event.h"
 #include "core/frame/FrameHost.h"
@@ -250,9 +249,6 @@ void HTMLFrameOwnerElement::setWidget(PassRefPtrWillBeRawPtr<Widget> widget)
         ASSERT(layoutPart->frameView());
         moveWidgetToParentSoon(m_widget.get(), layoutPart->frameView());
     }
-
-    if (AXObjectCache* cache = document().existingAXObjectCache())
-        cache->childrenChanged(layoutPart);
 }
 
 PassRefPtrWillBeRawPtr<Widget> HTMLFrameOwnerElement::releaseWidget()
@@ -261,11 +257,6 @@ PassRefPtrWillBeRawPtr<Widget> HTMLFrameOwnerElement::releaseWidget()
         return nullptr;
     if (m_widget->parent())
         temporarilyRemoveWidgetFromParentSoon(m_widget.get());
-    LayoutPart* layoutPart = toLayoutPart(layoutObject());
-    if (layoutPart) {
-        if (AXObjectCache* cache = document().existingAXObjectCache())
-            cache->childrenChanged(layoutPart);
-    }
     return m_widget.release();
 }
 

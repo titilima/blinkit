@@ -39,7 +39,6 @@
 #include "core/HTMLNames.h"
 #include "core/css/CSSSelector.h"
 #include "core/css/resolver/StyleResolver.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/Attr.h"
 #include "core/dom/Attribute.h"
 #include "core/dom/ChildListMutationScope.h"
@@ -575,10 +574,6 @@ bool Node::isEditableToAccessibility(EditableLevel editableLevel) const
     if (editableLevel == RichlyEditable)
         return false;
 
-    // FIXME(dmazzoni): support ScopedAXObjectCache (crbug/489851).
-    if (AXObjectCache* cache = document().existingAXObjectCache())
-        return cache->rootAXEditableElement(this);
-
     return false;
 }
 
@@ -904,9 +899,6 @@ void Node::attach(const AttachContext&)
     ASSERT(!layoutObject() || (layoutObject()->style() && (layoutObject()->parent() || layoutObject()->isLayoutView())));
 
     clearNeedsStyleRecalc();
-
-    if (AXObjectCache* cache = document().axObjectCache())
-        cache->updateCacheAfterNodeIsAttached(this);
 }
 
 void Node::detach(const AttachContext& context)
@@ -1071,11 +1063,6 @@ bool Node::isRootEditableElement() const
 
 Element* Node::rootEditableElement(EditableType editableType) const
 {
-    if (editableType == HasEditableAXRole) {
-        if (AXObjectCache* cache = document().existingAXObjectCache())
-            return const_cast<Element*>(cache->rootAXEditableElement(this));
-    }
-
     return rootEditableElement();
 }
 

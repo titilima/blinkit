@@ -53,7 +53,6 @@
 #include "core/css/resolver/StyleResolver.h"
 #include "core/css/resolver/StyleResolverParentScope.h"
 #include "core/css/resolver/StyleResolverStats.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/Attr.h"
 #include "core/dom/CSSSelectorWatch.h"
 #include "core/dom/ClientRect.h"
@@ -1074,15 +1073,13 @@ IntRect Element::screenRect() const
 const AtomicString& Element::computedRole()
 {
     document().updateLayoutIgnorePendingStylesheets();
-    OwnPtr<ScopedAXObjectCache> cache = ScopedAXObjectCache::create(document());
-    return cache->get()->computedRoleForNode(this);
+    return emptyAtom;
 }
 
 String Element::computedName()
 {
     document().updateLayoutIgnorePendingStylesheets();
-    OwnPtr<ScopedAXObjectCache> cache = ScopedAXObjectCache::create(document());
-    return cache->get()->computedNameForNode(this);
+    return String();
 }
 
 const AtomicString& Element::getAttribute(const AtomicString& localName) const
@@ -1204,11 +1201,6 @@ void Element::attributeChanged(const QualifiedName& name, const AtomicString& ol
     // If there is currently no StyleResolver, we can't be sure that this attribute change won't affect style.
     if (!document().styleResolver())
         setNeedsStyleRecalc(SubtreeStyleChange, StyleChangeReasonForTracing::fromAttribute(name));
-
-    if (inDocument()) {
-        if (AXObjectCache* cache = document().existingAXObjectCache())
-            cache->handleAttributeChanged(name, this);
-    }
 }
 
 bool Element::hasLegalLinkAttribute(const QualifiedName&) const

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLTextFormControlElement.cpp
+// Description: HTMLTextFormControlElement Class
+//      Author: Ziming Li
+//     Created: 2019-03-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -27,7 +38,6 @@
 #include "bindings/core/v8/ExceptionState.h"
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
 #include "core/HTMLNames.h"
-#include "core/dom/AXObjectCache.h"
 #include "core/dom/Document.h"
 #include "core/dom/ElementTraversal.h"
 #include "core/dom/NodeList.h"
@@ -639,11 +649,6 @@ void HTMLTextFormControlElement::setInnerEditorValue(const String& value)
 
     if (value.endsWith('\n') || value.endsWith('\r'))
         innerEditor->appendChild(HTMLBRElement::create(document()));
-
-    if (textIsChanged && layoutObject()) {
-        if (AXObjectCache* cache = document().existingAXObjectCache())
-            cache->handleTextFormControlChanged(this);
-    }
 }
 
 static String finishText(StringBuilder& result)
