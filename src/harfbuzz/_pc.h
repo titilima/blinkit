@@ -25,5 +25,6 @@
 #endif
 
 #define HAVE_OT
+#define HB_NO_UNICODE_FUNCS
 
 #endif // BLINKIT_HARFBUZZ__PC_H
