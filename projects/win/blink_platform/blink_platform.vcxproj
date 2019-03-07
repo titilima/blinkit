@@ -167,6 +167,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\animation\CubicBezierControlPoints.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\animation\TimingFunction.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\bindings\exception_state.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\blob\BlobData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\blob\BlobRegistry.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\blob\BlobURL.cpp" />

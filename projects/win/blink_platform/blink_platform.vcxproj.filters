@@ -1205,6 +1205,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\save_registers.cpp">
       <Filter>platform\heap</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\bindings\exception_state.cpp">
+      <Filter>platform\bindings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
