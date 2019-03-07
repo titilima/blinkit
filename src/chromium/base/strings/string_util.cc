@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - base Library
+// -------------------------------------------------
+//   File Name: string_util.cc
+// Description: String Utilities
+//      Author: Ziming Li
+//     Created: 2018-08-17
+// -------------------------------------------------
+// Copyright (C) 2018 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2013 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -22,11 +33,9 @@
 
 #include "base/logging.h"
 #include "base/macros.h"
-#include "base/memory/singleton.h"
 #include "base/strings/string_split.h"
 #include "base/strings/utf_string_conversion_utils.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/third_party/icu/icu_utf.h"
 #include "build/build_config.h"
 
 namespace base {
@@ -42,7 +51,8 @@ struct EmptyStrings {
   const string16 s16;
 
   static EmptyStrings* GetInstance() {
-    return Singleton<EmptyStrings>::get();
+    static EmptyStrings s_instance;
+    return &s_instance;
   }
 };
 
@@ -268,13 +278,13 @@ bool ReplaceChars(const std::string& input,
 bool RemoveChars(const string16& input,
                  const StringPiece16& remove_chars,
                  string16* output) {
-  return ReplaceChars(input, remove_chars.as_string(), string16(), output);
+  return ReplaceChars(input, remove_chars, string16(), output);
 }
 
 bool RemoveChars(const std::string& input,
                  const StringPiece& remove_chars,
                  std::string* output) {
-  return ReplaceChars(input, remove_chars.as_string(), std::string(), output);
+  return ReplaceChars(input, remove_chars, std::string(), output);
 }
 
 template<typename Str>
@@ -326,14 +336,24 @@ bool TrimString(const std::string& input,
 }
 
 template<typename Str>
-BasicStringPiece<Str> TrimStringPieceT(BasicStringPiece<Str> input,
-                                       BasicStringPiece<Str> trim_chars,
-                                       TrimPositions positions) {
-  size_t begin = (positions & TRIM_LEADING) ?
-      input.find_first_not_of(trim_chars) : 0;
-  size_t end = (positions & TRIM_TRAILING) ?
-      input.find_last_not_of(trim_chars) + 1 : input.size();
-  return input.substr(begin, end - begin);
+BasicStringPiece<Str> TrimStringPieceT(
+    BasicStringPiece<Str> input,
+    BasicStringPiece<Str> trim_chars, TrimPositions positions) {
+  size_t begin = 0;
+  if (positions & TRIM_LEADING) {
+    begin = input.find_first_not_of(trim_chars);
+    if (Str::npos == begin)
+      return BasicStringPiece<Str>();
+  }
+
+  size_t end = input.length();
+  if (positions & TRIM_TRAILING) {
+    end = input.find_last_not_of(trim_chars);
+    if (Str::npos == end)
+      return BasicStringPiece<Str>();
+  }
+
+  return input.substr(begin, end - begin + 1);
 }
 
 StringPiece16 TrimString(StringPiece16 input,
@@ -346,43 +366,6 @@ StringPiece TrimString(StringPiece input,
                        const StringPiece& trim_chars,
                        TrimPositions positions) {
   return TrimStringPieceT(input, trim_chars, positions);
-}
-
-void TruncateUTF8ToByteSize(const std::string& input,
-                            const size_t byte_size,
-                            std::string* output) {
-  DCHECK(output);
-  if (byte_size > input.length()) {
-    *output = input;
-    return;
-  }
-  DCHECK_LE(byte_size,
-            static_cast<uint32_t>(std::numeric_limits<int32_t>::max()));
-  // Note: This cast is necessary because CBU8_NEXT uses int32_ts.
-  int32_t truncation_length = static_cast<int32_t>(byte_size);
-  int32_t char_index = truncation_length - 1;
-  const char* data = input.data();
-
-  // Using CBU8, we will move backwards from the truncation point
-  // to the beginning of the string looking for a valid UTF8
-  // character.  Once a full UTF8 character is found, we will
-  // truncate the string to the end of that character.
-  while (char_index >= 0) {
-    int32_t prev = char_index;
-    base_icu::UChar32 code_point = 0;
-    CBU8_NEXT(data, char_index, truncation_length, code_point);
-    if (!IsValidCharacter(code_point) ||
-        !IsValidCodepoint(code_point)) {
-      char_index = prev - 1;
-    } else {
-      break;
-    }
-  }
-
-  if (char_index >= 0 )
-    *output = input.substr(0, char_index);
-  else
-    output->clear();
 }
 
 TrimPositions TrimWhitespace(const string16& input,
@@ -515,20 +498,6 @@ bool IsStringASCII(const std::wstring& str) {
   return DoIsStringASCII(str.data(), str.length());
 }
 #endif
-
-bool IsStringUTF8(const StringPiece& str) {
-  const char *src = str.data();
-  int32_t src_len = static_cast<int32_t>(str.length());
-  int32_t char_index = 0;
-
-  while (char_index < src_len) {
-    int32_t code_point;
-    CBU8_NEXT(src, char_index, src_len, code_point);
-    if (!IsValidCharacter(code_point))
-      return false;
-  }
-  return true;
-}
 
 // Implementation note: Normally this function will be called with a hardcoded
 // constant for the lowercase_ascii parameter. Constructing a StringPiece from
