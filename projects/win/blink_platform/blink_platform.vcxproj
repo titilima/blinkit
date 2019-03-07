@@ -423,6 +423,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\PagePool.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\PersistentNode.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\SafePoint.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\save_registers.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\StackFrameDepth.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\ThreadState.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\image-decoders\FastSharedBufferReader.cpp" />
