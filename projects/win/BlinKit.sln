@@ -43,6 +43,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "base", "base\base.vcxproj",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "harfbuzz", "harfbuzz\harfbuzz.vcxproj", "{B9CB47A9-980C-45B2-92D1-A67801B28CB5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "js", "js\js.vcxproj", "{96449FF1-982F-4E4B-8617-F9E6CB647304}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -195,6 +197,14 @@ Global
 		{B9CB47A9-980C-45B2-92D1-A67801B28CB5}.Release|x64.Build.0 = Release|x64
 		{B9CB47A9-980C-45B2-92D1-A67801B28CB5}.Release|x86.ActiveCfg = Release|Win32
 		{B9CB47A9-980C-45B2-92D1-A67801B28CB5}.Release|x86.Build.0 = Release|Win32
+		{96449FF1-982F-4E4B-8617-F9E6CB647304}.Debug|x64.ActiveCfg = Debug|x64
+		{96449FF1-982F-4E4B-8617-F9E6CB647304}.Debug|x64.Build.0 = Debug|x64
+		{96449FF1-982F-4E4B-8617-F9E6CB647304}.Debug|x86.ActiveCfg = Debug|Win32
+		{96449FF1-982F-4E4B-8617-F9E6CB647304}.Debug|x86.Build.0 = Debug|Win32
+		{96449FF1-982F-4E4B-8617-F9E6CB647304}.Release|x64.ActiveCfg = Release|x64
+		{96449FF1-982F-4E4B-8617-F9E6CB647304}.Release|x64.Build.0 = Release|x64
+		{96449FF1-982F-4E4B-8617-F9E6CB647304}.Release|x86.ActiveCfg = Release|Win32
+		{96449FF1-982F-4E4B-8617-F9E6CB647304}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
