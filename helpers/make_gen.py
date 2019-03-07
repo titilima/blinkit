@@ -6,13 +6,15 @@ import os, sys
 REPO_ROOT = os.path.normpath(os.path.join(os.path.abspath(os.path.dirname(__file__)), os.pardir))
 def get_full_path(repo_path):
     return os.path.normpath(os.path.join(REPO_ROOT, repo_path))
+def run(cmd_line):
+    print cmd_line
+    return os.system(cmd_line)
 def run_script(rel_path, args = ''):
     cmd_line = os.path.normpath(rel_path)
     if args:
         cmd_line += ' '
         cmd_line += args
-    print cmd_line
-    return os.system(cmd_line)
+    return run(cmd_line)
 
 # Apply path for python modules
 sys.path.append(get_full_path('src/chromium/third_party'))
@@ -197,4 +199,9 @@ run_script('build/scripts/make_css_tokenizer_codepoints.py',    \
 run_script('build/scripts/make_media_features.py',  \
     os.path.normpath('core/css/MediaFeatureNames.in') + ' ' \
     '--output_dir ' + os.path.normpath('gen/core')  \
+)
+
+run('python ' + os.path.normpath('core/html/parser/create-html-entity-table') + ' ' \
+    '-o ' + os.path.normpath('gen/core/HTMLEntityTable.cpp') + ' '  \
+    + os.path.normpath('core/html/parser/HTMLEntityNames.in')   \
 )
