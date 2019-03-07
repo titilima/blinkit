@@ -210,3 +210,8 @@ run_script('build/scripts/make_css_property_metadata.py',   \
     os.path.normpath('core/css/CSSProperties.in') + ' ' \
     '--output_dir ' + os.path.normpath('gen/core')  \
 )
+
+run_script('build/scripts/make_token_matcher.py',   \
+    os.path.normpath('core/html/HTMLMetaElement-in.cpp') + ' '  \
+    + os.path.normpath('gen/core/HTMLMetaElement.cpp')  \
+)
