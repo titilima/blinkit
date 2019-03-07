@@ -25,7 +25,10 @@ public:
 
 } // namespace BlinKit
 
-template <typename T> inline void operator<<(const BlinKit::Asserter &, const T &) {}
+template <typename T>
+inline BlinKit::Asserter& operator<<(const BlinKit::Asserter &a, const T &) {
+    return const_cast<BlinKit::Asserter &>(a);
+}
 
 #ifdef _DEBUG
 #   define DCHECK_IS_ON()   1
