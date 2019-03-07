@@ -205,3 +205,8 @@ run('python ' + os.path.normpath('core/html/parser/create-html-entity-table') + 
     '-o ' + os.path.normpath('gen/core/HTMLEntityTable.cpp') + ' '  \
     + os.path.normpath('core/html/parser/HTMLEntityNames.in')   \
 )
+
+run_script('build/scripts/make_css_property_metadata.py',   \
+    os.path.normpath('core/css/CSSProperties.in') + ' ' \
+    '--output_dir ' + os.path.normpath('gen/core')  \
+)
