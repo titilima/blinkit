@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - blink Library
 // -------------------------------------------------
-//   File Name: String.h
+//   File Name: WTFString.h
 // Description: String Class
 //      Author: Ziming Li
 //     Created: 2019-02-08

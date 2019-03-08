@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: AtomicString.cpp
+// Description: AtomicString Class
+//      Author: Ziming Li
+//     Created: 2019-03-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2013 Apple Inc. All rights reserved.
  * Copyright (C) 2010 Patrick Gansterer <paroga@paroga.com>
@@ -528,5 +539,11 @@ void AtomicString::show() const
     m_string.show();
 }
 #endif
+
+std::string AtomicString::to_string(void) const
+{
+    CString cs = utf8();
+    return std::string(cs.data(), cs.length());
+}
 
 } // namespace WTF

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WTFString.cpp
+// Description: String Class
+//      Author: Ziming Li
+//     Created: 2019-03-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2010, 2012 Apple Inc. All rights reserved.
@@ -834,6 +845,12 @@ CString String::utf8(UTF8ConversionMode mode) const
     }
 
     return CString(bufferVector.data(), buffer - bufferVector.data());
+}
+
+std::string String::to_string(void) const
+{
+    const CString cs = utf8();
+    return std::string(cs.data(), cs.length());
 }
 
 String String::make8BitFrom16BitSource(const UChar* source, size_t length)
