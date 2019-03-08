@@ -104,6 +104,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLMetaElement.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\ColorData.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">

@@ -19,9 +19,11 @@ def run_script(rel_path, args = ''):
 # Apply path for python modules
 sys.path.append(get_full_path('src/chromium/third_party'))
 
-GPERF = ''
+GPERF = 'gperf'
+GPERF_ARG = ''
 if 'win32' == sys.platform:
-    GPERF = ' --gperf ' + get_full_path('helpers\\gperf.exe')
+    GPERF = get_full_path('helpers\\gperf.exe')
+    GPERF_ARG = ' --gperf ' + GPERF
 
 # Apply `WebKit/Source` as work directory
 current_dir = get_full_path('src/chromium/third_party/WebKit/Source')
@@ -93,12 +95,12 @@ run_script('build/scripts/make_element_factory.py', \
 
 run_script('build/scripts/make_css_property_names.py',  \
     os.path.normpath('core/css/CSSProperties.in') + ' ' \
-    '--output_dir ' + os.path.normpath('gen/core')  + GPERF \
+    '--output_dir ' + os.path.normpath('gen/core')  + GPERF_ARG \
 )
 
 run_script('build/scripts/make_css_value_keywords.py',  \
     os.path.normpath('core/css/CSSValueKeywords.in') + ' ' + os.path.normpath('core/css/SVGCSSValueKeywords.in') + ' '  \
-    '--output_dir ' + os.path.normpath('gen/core')  + GPERF \
+    '--output_dir ' + os.path.normpath('gen/core')  + GPERF_ARG \
 )
 
 run_script('build/scripts/make_names.py',  \
@@ -214,4 +216,9 @@ run_script('build/scripts/make_css_property_metadata.py',   \
 run_script('build/scripts/make_token_matcher.py',   \
     os.path.normpath('core/html/HTMLMetaElement-in.cpp') + ' '  \
     + os.path.normpath('gen/core/HTMLMetaElement.cpp')  \
+)
+
+run(GPERF + ' --key-positions=* -D -s 2 '   \
+    'platform/ColorData.gperf ' \
+    '--output-file=' + os.path.normpath('gen/platform/ColorData.cpp')   \
 )

@@ -188,6 +188,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XLinkNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNSNames.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\ColorData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\FontFamilyNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\HTTPNames.cpp" />
     <ClCompile Include="..\_pch.cpp">
