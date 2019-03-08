@@ -258,8 +258,7 @@ void enableLogChannel(const char* name)
 
 void resetPluginCache(bool reloadPages)
 {
-    ASSERT(!reloadPages);
-    Page::refreshPlugins();
+    assert(false); // Not reached!
 }
 
 void decommitFreeableMemory()

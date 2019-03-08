@@ -57,7 +57,6 @@
 #include "core/paint/PaintLayer.h"
 #include "platform/UserGestureIndicator.h"
 #include "platform/graphics/GraphicsLayer.h"
-#include "platform/plugins/PluginData.h"
 #include "public/platform/Platform.h"
 
 namespace blink {
@@ -261,30 +260,6 @@ void Page::setNeedsLayoutInAllFrames()
             view->scheduleRelayout();
         }
     }
-}
-
-void Page::refreshPlugins()
-{
-    if (allPages().isEmpty())
-        return;
-
-    PluginData::refresh();
-
-    for (const Page* page : allPages()) {
-        // Clear out the page's plugin data.
-        if (page->m_pluginData)
-            page->m_pluginData = nullptr;
-    }
-}
-
-PluginData* Page::pluginData() const
-{
-    if (!mainFrame()->isLocalFrame()
-        || !deprecatedLocalMainFrame()->loader().allowPlugins(NotAboutToInstantiatePlugin))
-        return nullptr;
-    if (!m_pluginData)
-        m_pluginData = PluginData::create(this);
-    return m_pluginData.get();
 }
 
 void Page::unmarkAllTextMatches()

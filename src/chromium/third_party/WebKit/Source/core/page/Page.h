@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Page.h
+// Description: Page Class
+//      Author: Ziming Li
+//     Created: 2019-03-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2013 Apple Inc. All rights reserved.
  * Copyright (C) 2008 Torch Mobile Inc. All rights reserved. (http://www.torchmobile.com/)
@@ -57,7 +68,6 @@ class EditorClient;
 class FocusController;
 class Frame;
 class FrameHost;
-class PluginData;
 class PointerLockController;
 class ScrollingCoordinator;
 class Settings;
@@ -121,9 +131,6 @@ public:
     void updateAcceleratedCompositingSettings();
 
     ViewportDescription viewportDescription() const;
-
-    static void refreshPlugins();
-    PluginData* pluginData() const;
 
     EditorClient& editorClient() const { return *m_editorClient; }
     SpellCheckerClient& spellCheckerClient() const { return *m_spellCheckerClient; }
@@ -258,8 +265,6 @@ private:
     // breaks this cycle, so the frame is still properly destroyed once no
     // longer needed.
     RawPtrWillBeMember<Frame> m_mainFrame;
-
-    mutable RefPtr<PluginData> m_pluginData;
 
     EditorClient* const m_editorClient;
     SpellCheckerClient* const m_spellCheckerClient;
