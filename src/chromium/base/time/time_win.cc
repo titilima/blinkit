@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - base Library
+// -------------------------------------------------
+//   File Name: time_win.cc
+// Description: Date & Time Helpers
+//      Author: Ziming Li
+//     Created: 2018-08-17
+// -------------------------------------------------
+// Copyright (C) 2018 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (c) 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -37,12 +48,11 @@
 #include <windows.h>
 #include <mmsystem.h>
 #include <stdint.h>
+#include <mutex>
 
 #include "base/bit_cast.h"
 #include "base/cpu.h"
-#include "base/lazy_instance.h"
 #include "base/logging.h"
-#include "base/synchronization/lock.h"
 
 using base::ThreadTicks;
 using base::Time;
@@ -96,8 +106,7 @@ bool g_high_res_timer_enabled = false;
 // How many times the high resolution timer has been called.
 uint32_t g_high_res_timer_count = 0;
 // The lock to control access to the above two variables.
-base::LazyInstance<base::Lock>::Leaky g_high_res_lock =
-    LAZY_INSTANCE_INITIALIZER;
+std::mutex g_high_res_lock;
 
 // Returns a pointer to the QueryThreadCycleTime() function from Windows.
 // Can't statically link to it because it is not available on XP.
@@ -194,7 +203,7 @@ FILETIME Time::ToFileTime() const {
 
 // static
 void Time::EnableHighResolutionTimer(bool enable) {
-  base::AutoLock lock(g_high_res_lock.Get());
+  std::lock_guard<std::mutex> lock(g_high_res_lock);
   if (g_high_res_timer_enabled == enable)
     return;
   g_high_res_timer_enabled = enable;
@@ -221,7 +230,7 @@ bool Time::ActivateHighResolutionTimer(bool activating) {
   // called.
   const uint32_t max = std::numeric_limits<uint32_t>::max();
 
-  base::AutoLock lock(g_high_res_lock.Get());
+  std::lock_guard<std::mutex> lock(g_high_res_lock);
   UINT period = g_high_res_timer_enabled ? kMinTimerIntervalHighResMs
                                          : kMinTimerIntervalLowResMs;
   if (activating) {
@@ -240,7 +249,7 @@ bool Time::ActivateHighResolutionTimer(bool activating) {
 
 // static
 bool Time::IsHighResolutionTimerInUse() {
-  base::AutoLock lock(g_high_res_lock.Get());
+  std::lock_guard<std::mutex> lock(g_high_res_lock);
   return g_high_res_timer_enabled && g_high_res_timer_count > 0;
 }
 
@@ -343,7 +352,7 @@ DWORD g_last_seen_now = 0;
 // easy to use a Singleton without even knowing it, and that may lead to many
 // gotchas). Its impact on startup time should be negligible due to low-level
 // nature of time code.
-base::Lock g_rollover_lock;
+std::mutex g_rollover_lock;
 
 // We use timeGetTime() to implement TimeTicks::Now().  This can be problematic
 // because it returns the number of milliseconds since Windows has started,
@@ -351,7 +360,7 @@ base::Lock g_rollover_lock;
 // rollover ourselves, which works if TimeTicks::Now() is called at least every
 // 49 days.
 TimeDelta RolloverProtectedNow() {
-  base::AutoLock locked(g_rollover_lock);
+  std::lock_guard<std::mutex> locked(g_rollover_lock);
   // We should hold the lock while calling tick_function to make sure that
   // we keep last_seen_now stay correctly in sync.
   DWORD now = g_tick_function();
@@ -491,7 +500,7 @@ TimeDelta InitialNowFunction() {
 // static
 TimeTicks::TickFunctionType TimeTicks::SetMockTickFunction(
     TickFunctionType ticker) {
-  base::AutoLock locked(g_rollover_lock);
+  std::lock_guard<std::mutex> locked(g_rollover_lock);
   TickFunctionType old = g_tick_function;
   g_tick_function = ticker;
   g_rollover_ms = 0;

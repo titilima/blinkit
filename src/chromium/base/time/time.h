@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - base Library
+// -------------------------------------------------
+//   File Name: time.h
+// Description: Date & Time Helpers
+//      Author: Ziming Li
+//     Created: 2019-03-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (c) 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -261,9 +272,6 @@ template<typename T>
 inline TimeDelta operator*(T a, TimeDelta td) {
   return td * a;
 }
-
-// For logging use only.
-BASE_EXPORT std::ostream& operator<<(std::ostream& os, TimeDelta time_delta);
 
 // Do not reference the time_internal::TimeBase template class directly.  Please
 // use one of the time subclasses instead, and only reference the public
@@ -634,9 +642,6 @@ inline TimeDelta TimeDelta::FromDouble(double value) {
   return delta;
 }
 
-// For logging use only.
-BASE_EXPORT std::ostream& operator<<(std::ostream& os, Time time);
-
 // TimeTicks ------------------------------------------------------------------
 
 // Represents monotonically non-decreasing clock time.
@@ -693,9 +698,6 @@ class BASE_EXPORT TimeTicks : public time_internal::TimeBase<TimeTicks> {
   // and testing.
   explicit TimeTicks(int64_t us) : TimeBase(us) {}
 };
-
-// For logging use only.
-BASE_EXPORT std::ostream& operator<<(std::ostream& os, TimeTicks time_ticks);
 
 // ThreadTicks ----------------------------------------------------------------
 
@@ -755,9 +757,6 @@ class BASE_EXPORT ThreadTicks : public time_internal::TimeBase<ThreadTicks> {
   static void WaitUntilInitializedWin();
 #endif
 };
-
-// For logging use only.
-BASE_EXPORT std::ostream& operator<<(std::ostream& os, ThreadTicks time_ticks);
 
 }  // namespace base
 

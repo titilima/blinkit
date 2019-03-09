@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - base Library
+// -------------------------------------------------
+//   File Name: time.cc
+// Description: Date & Time Helpers
+//      Author: Ziming Li
+//     Created: 2018-08-17
+// -------------------------------------------------
+// Copyright (C) 2018 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (c) 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,10 +18,10 @@
 #include <cmath>
 #include <ios>
 #include <limits>
+#include <mutex>
 #include <ostream>
 #include <sstream>
 
-#include "base/lazy_instance.h"
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/strings/stringprintf.h"
@@ -129,10 +140,6 @@ int64_t FromCheckedNumeric(const CheckedNumeric<int64_t> value) {
 
 }  // namespace time_internal
 
-std::ostream& operator<<(std::ostream& os, TimeDelta time_delta) {
-  return os << time_delta.InSecondsF() << "s";
-}
-
 // Time -----------------------------------------------------------------------
 
 // static
@@ -157,8 +164,7 @@ time_t Time::ToTimeT() const {
     return std::numeric_limits<time_t>::max();
   }
   if (std::numeric_limits<int64_t>::max() - kTimeTToMicrosecondsOffset <= us_) {
-    DLOG(WARNING) << "Overflow when converting base::Time with internal " <<
-                     "value " << us_ << " to time_t.";
+    assert(false); // Overflow
     return std::numeric_limits<time_t>::max();
   }
   return (us_ - kTimeTToMicrosecondsOffset) / kMicrosecondsPerSecond;
@@ -263,20 +269,6 @@ bool Time::FromStringInternal(const char* time_string,
   return true;
 }
 
-std::ostream& operator<<(std::ostream& os, Time time) {
-  Time::Exploded exploded;
-  time.UTCExplode(&exploded);
-  // Use StringPrintf because iostreams formatting is painful.
-  return os << StringPrintf("%04d-%02d-%02d %02d:%02d:%02d.%03d UTC",
-                            exploded.year,
-                            exploded.month,
-                            exploded.day_of_month,
-                            exploded.hour,
-                            exploded.minute,
-                            exploded.second,
-                            exploded.millisecond);
-}
-
 // Local helper class to hold the conversion from Time to TickTime at the
 // time of the Unix epoch.
 class UnixEpochSingleton {
@@ -292,12 +284,16 @@ class UnixEpochSingleton {
   DISALLOW_COPY_AND_ASSIGN(UnixEpochSingleton);
 };
 
-static LazyInstance<UnixEpochSingleton>::Leaky
-    leaky_unix_epoch_singleton_instance = LAZY_INSTANCE_INITIALIZER;
-
 // Static
 TimeTicks TimeTicks::UnixEpoch() {
-  return leaky_unix_epoch_singleton_instance.Get().unix_epoch();
+  static UnixEpochSingleton *leaky_unix_epoch_singleton_instance = nullptr;
+
+  static std::once_flag s_flag;
+  std::call_once(s_flag, [] {
+      leaky_unix_epoch_singleton_instance = new UnixEpochSingleton;
+  });
+
+  return leaky_unix_epoch_singleton_instance->unix_epoch();
 }
 
 TimeTicks TimeTicks::SnappedToNextTick(TimeTicks tick_phase,
@@ -311,21 +307,6 @@ TimeTicks TimeTicks::SnappedToNextTick(TimeTicks tick_phase,
   if (!interval_offset.is_zero() && tick_phase < *this)
     interval_offset += tick_interval;
   return *this + interval_offset;
-}
-
-std::ostream& operator<<(std::ostream& os, TimeTicks time_ticks) {
-  // This function formats a TimeTicks object as "bogo-microseconds".
-  // The origin and granularity of the count are platform-specific, and may very
-  // from run to run. Although bogo-microseconds usually roughly correspond to
-  // real microseconds, the only real guarantee is that the number never goes
-  // down during a single run.
-  const TimeDelta as_time_delta = time_ticks - TimeTicks();
-  return os << as_time_delta.InMicroseconds() << " bogo-microseconds";
-}
-
-std::ostream& operator<<(std::ostream& os, ThreadTicks thread_ticks) {
-  const TimeDelta as_time_delta = thread_ticks - ThreadTicks();
-  return os << as_time_delta.InMicroseconds() << " bogo-thread-microseconds";
 }
 
 // Time::Exploded -------------------------------------------------------------
