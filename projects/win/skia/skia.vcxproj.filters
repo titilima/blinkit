@@ -977,6 +977,15 @@
     <ClCompile Include="..\..\..\third_party\skia\src\utils\SkMatrix44.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkBase64.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkPatchUtils.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkDashPath.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\skia\_pc.h">
@@ -1935,6 +1944,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\third_party\skia\src\sfnt\SkOTUtils.h">
       <Filter>sfnt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\third_party\skia\src\utils\SkBase64.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\third_party\skia\src\utils\SkPatchUtils.h">
+      <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

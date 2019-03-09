@@ -466,7 +466,10 @@
     <ClCompile Include="..\..\..\third_party\skia\src\ports\SkTLS_win.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\sfnt\SkOTTable_name.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\sfnt\SkOTUtils.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkBase64.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkDashPath.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\utils\SkMatrix44.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkPatchUtils.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -792,6 +795,8 @@
     <ClInclude Include="..\..\..\third_party\skia\src\pathops\SkReduceOrder.h" />
     <ClInclude Include="..\..\..\third_party\skia\src\sfnt\SkOTTable_name.h" />
     <ClInclude Include="..\..\..\third_party\skia\src\sfnt\SkOTUtils.h" />
+    <ClInclude Include="..\..\..\third_party\skia\src\utils\SkBase64.h" />
+    <ClInclude Include="..\..\..\third_party\skia\src\utils\SkPatchUtils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
