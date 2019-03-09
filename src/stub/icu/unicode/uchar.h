@@ -184,6 +184,10 @@ typedef enum ULineBreak {
 
 int32_t u_getIntPropertyValue(UChar32 c, UProperty which);
 
+UBool u_isalnum(UChar32 c);
+
+UBool u_isprint(UChar32 c);
+
 int8_t u_charType(UChar32 c);
 
 #define U_GET_GC_MASK(c) U_MASK(u_charType(c))

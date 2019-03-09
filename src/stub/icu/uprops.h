@@ -19,5 +19,6 @@ enum {
 };
 
 #define GET_CATEGORY(props) ((props)&0x1f)
+#define CAT_MASK(props) U_MASK(GET_CATEGORY(props))
 
 #endif // BLINKIT_STUB_ICU_UPROPS_H
