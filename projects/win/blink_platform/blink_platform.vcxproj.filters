@@ -1208,6 +1208,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\bindings\exception_state.cpp">
       <Filter>platform\bindings</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMock.cpp">
+      <Filter>platform\scroll</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -3252,6 +3255,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebWaitableEvent.h">
       <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMock.h">
+      <Filter>platform\scroll</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

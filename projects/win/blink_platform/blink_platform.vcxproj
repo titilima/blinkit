@@ -478,6 +478,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\Scrollbar.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarTheme.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeAura.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMock.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeNonMacCommon.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeOverlay.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\SecureTextInput.cpp" />
@@ -1137,6 +1138,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarTheme.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeAura.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeClient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMock.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeNonMacCommon.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeOverlay.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollTypes.h" />
