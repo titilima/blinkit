@@ -42,7 +42,6 @@
 #include "core/fetch/FetchRequest.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/fetch/XSLStyleSheetResource.h"
-#include "core/xml/DocumentXSLT.h"
 #include "core/xml/parser/XMLDocumentParser.h" // for parseAttributes()
 
 namespace blink {
@@ -54,7 +53,6 @@ inline ProcessingInstruction::ProcessingInstruction(Document& document, const St
     , m_alternate(false)
     , m_createdByParser(false)
     , m_isCSS(false)
-    , m_isXSL(false)
     , m_listenerForXSLT(nullptr)
 {
 }
@@ -142,8 +140,7 @@ bool ProcessingInstruction::checkStyleSheet(String& href, String& charset)
         type = i->value;
 
     m_isCSS = type.isEmpty() || type == "text/css";
-    m_isXSL = (type == "text/xml" || type == "text/xsl" || type == "application/xml" || type == "application/xhtml+xml" || type == "application/rss+xml" || type == "application/atom+xml");
-    if (!m_isCSS && !m_isXSL)
+    if (!m_isCSS)
         return false;
 
     href = attrs.get("href");
@@ -160,17 +157,6 @@ void ProcessingInstruction::process(const String& href, const String& charset)
 {
     if (href.length() > 1 && href[0] == '#') {
         m_localHref = href.substring(1);
-        // We need to make a synthetic XSLStyleSheet that is embedded.
-        // It needs to be able to kick off import/include loads that
-        // can hang off some parent sheet.
-        if (m_isXSL && RuntimeEnabledFeatures::xsltEnabled()) {
-            assert(false); // Not reached!
-#if 0
-            KURL finalURL(ParsedURLString, m_localHref);
-            m_sheet = XSLStyleSheet::createEmbedded(this, finalURL);
-#endif
-            m_loading = false;
-        }
         return;
     }
 
@@ -180,18 +166,12 @@ void ProcessingInstruction::process(const String& href, const String& charset)
 
     ResourcePtr<StyleSheetResource> resource;
     FetchRequest request(ResourceRequest(document().completeURL(href)), FetchInitiatorTypeNames::processinginstruction);
-    if (m_isXSL) {
-        if (RuntimeEnabledFeatures::xsltEnabled())
-            resource = XSLStyleSheetResource::fetch(request, document().fetcher());
-    } else {
-        request.setCharset(charset.isEmpty() ? document().characterSet() : charset);
-        resource = CSSStyleSheetResource::fetch(request, document().fetcher());
-    }
+    request.setCharset(charset.isEmpty() ? document().characterSet() : charset);
+    resource = CSSStyleSheetResource::fetch(request, document().fetcher());
 
     if (resource) {
         m_loading = true;
-        if (!m_isXSL)
-            document().styleEngine().addPendingSheet();
+        document().styleEngine().addPendingSheet();
         setResource(resource);
     }
 }
@@ -207,12 +187,7 @@ bool ProcessingInstruction::isLoading() const
 
 bool ProcessingInstruction::sheetLoaded()
 {
-    if (!isLoading()) {
-        if (!DocumentXSLT::sheetLoaded(document(), this))
-            document().styleEngine().removePendingSheet(this);
-        return true;
-    }
-    return false;
+    return !isLoading();
 }
 
 void ProcessingInstruction::setCSSStyleSheet(const String& href, const KURL& baseURL, const String& charset, const CSSStyleSheetResource* sheet)
@@ -248,34 +223,18 @@ void ProcessingInstruction::setXSLStyleSheet(const String& href, const KURL& bas
     }
 
     assert(false); // Not reached!
-#if 0
-    ASSERT(m_isXSL);
-    m_sheet = XSLStyleSheet::create(this, href, baseURL);
-    RefPtrWillBeRawPtr<Document> protect(&document());
-    OwnPtr<IncrementLoadEventDelayCount> delay = IncrementLoadEventDelayCount::create(document());
-    parseStyleSheet(sheet);
-#endif
 }
 
 void ProcessingInstruction::parseStyleSheet(const String& sheet)
 {
-    assert(!m_isXSL);
     if (m_isCSS)
         toCSSStyleSheet(m_sheet.get())->contents()->parseString(sheet);
-#if 0
-    else if (m_isXSL)
-        toXSLStyleSheet(m_sheet.get())->parseString(sheet);
-#endif
 
     clearResource();
     m_loading = false;
 
     if (m_isCSS)
         toCSSStyleSheet(m_sheet.get())->contents()->checkLoaded();
-#if 0
-    else if (m_isXSL)
-        toXSLStyleSheet(m_sheet.get())->checkLoaded();
-#endif
 }
 
 Node::InsertionNotificationRequest ProcessingInstruction::insertedInto(ContainerNode* insertionPoint)
@@ -287,8 +246,6 @@ Node::InsertionNotificationRequest ProcessingInstruction::insertedInto(Container
     String href;
     String charset;
     bool isValid = checkStyleSheet(href, charset);
-    if (!DocumentXSLT::processingInstructionInsertedIntoDocument(document(), this))
-        document().styleEngine().addStyleSheetCandidateNode(this, m_createdByParser);
     if (isValid)
         process(href, charset);
     return InsertionDone;
@@ -299,10 +256,6 @@ void ProcessingInstruction::removedFrom(ContainerNode* insertionPoint)
     CharacterData::removedFrom(insertionPoint);
     if (!insertionPoint->inDocument())
         return;
-
-    // No need to remove XSLStyleSheet from StyleEngine.
-    if (!DocumentXSLT::processingInstructionRemovedFromDocument(document(), this))
-        document().styleEngine().removeStyleSheetCandidateNode(this);
 
     RefPtrWillBeRawPtr<StyleSheet> removedSheet = m_sheet;
     if (m_sheet) {

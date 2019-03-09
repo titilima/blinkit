@@ -866,18 +866,6 @@ bool FrameLoader::prepareForCommit()
     PluginScriptForbiddenScope forbidPluginDestructorScripting;
     RefPtrWillBeRawPtr<DocumentLoader> pdl = m_provisionalDocumentLoader;
 
-    if (m_frame->document()) {
-        unsigned totalNodeCount = InstanceCounters::counterValue(InstanceCounters::NodeCounter);
-        int nodeCount = static_cast<int>(totalNodeCount);
-        for (Document* document : Document::liveDocumentSet()) {
-            if (document != m_frame->document())
-                nodeCount -= document->nodeCount();
-        }
-        ASSERT(nodeCount >= 0);
-        float ratio = static_cast<float>(nodeCount) / totalNodeCount;
-        ThreadState::current()->schedulePageNavigationGCIfNeeded(ratio);
-    }
-
     // Don't allow any new child frames to load in this frame: attaching a new
     // child frame during or after detaching children results in an attached
     // frame on a detached DOM tree, which is bad.

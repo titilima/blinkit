@@ -331,8 +331,6 @@ bool GraphicsLayer::paintWithoutCommit(const IntRect* interestRect, GraphicsCont
 
     if (!m_client)
         return false;
-    if (firstPaintInvalidationTrackingEnabled())
-        m_debugInfo.clearAnnotatedInvalidateRects();
     incrementPaintCount();
 
     IntRect newInterestRect;
@@ -516,11 +514,6 @@ void GraphicsLayer::clearContentsLayerIfUnregistered()
 
     m_contentsLayer = 0;
     m_contentsLayerId = 0;
-}
-
-GraphicsLayerDebugInfo& GraphicsLayer::debugInfo()
-{
-    return m_debugInfo;
 }
 
 WebLayer* GraphicsLayer::contentsLayerIfRegistered()
@@ -775,16 +768,6 @@ PassRefPtr<JSONObject> GraphicsLayer::layerTreeAsJSON(LayerTreeFlags flags, Rend
             json->setBoolean("hasClipParent", true);
     }
 
-    if (flags & (LayerTreeIncludesDebugInfo | LayerTreeIncludesCompositingReasons)) {
-        bool debug = flags & LayerTreeIncludesDebugInfo;
-        RefPtr<JSONArray> compositingReasonsJSON = adoptRef(new JSONArray);
-        for (size_t i = 0; i < kNumberOfCompositingReasons; ++i) {
-            if (m_debugInfo.compositingReasons() & kCompositingReasonStringMap[i].reason)
-                compositingReasonsJSON->pushString(debug ? kCompositingReasonStringMap[i].description : kCompositingReasonStringMap[i].shortName);
-        }
-        json->setArray("compositingReasons", compositingReasonsJSON);
-    }
-
     if (m_children.size()) {
         RefPtr<JSONArray> childrenJSON = adoptRef(new JSONArray);
         for (size_t i = 0; i < m_children.size(); i++)
@@ -835,12 +818,12 @@ String GraphicsLayer::debugName(cc::Layer* layer) const
 
 void GraphicsLayer::setCompositingReasons(CompositingReasons reasons)
 {
-    m_debugInfo.setCompositingReasons(reasons);
+    assert(false); // Not reached!
 }
 
 void GraphicsLayer::setOwnerNodeId(int nodeId)
 {
-    m_debugInfo.setOwnerNodeId(nodeId);
+    assert(false); // Not reached!
 }
 
 void GraphicsLayer::setPosition(const FloatPoint& point)
@@ -1062,8 +1045,6 @@ void GraphicsLayer::setNeedsDisplayInRect(const IntRect& rect, PaintInvalidation
         return;
 
     m_layer->layer()->invalidateRect(rect);
-    if (firstPaintInvalidationTrackingEnabled())
-        m_debugInfo.appendAnnotatedInvalidateRect(rect, invalidationReason);
     if (isTrackingPaintInvalidations())
         trackPaintInvalidationRect(rect);
     for (size_t i = 0; i < m_linkHighlights.size(); ++i)

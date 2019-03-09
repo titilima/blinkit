@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - js Library
+// -------------------------------------------------
+//   File Name: XMLErrors.cpp
+// Description: XMLErrors Class
+//      Author: Ziming Li
+//     Created: 2019-03-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -33,7 +44,6 @@
 #include "core/dom/Document.h"
 #include "core/dom/Element.h"
 #include "core/dom/Text.h"
-#include "core/xml/DocumentXSLT.h"
 #include "wtf/text/WTFString.h"
 
 namespace blink {
@@ -150,15 +160,6 @@ void XMLErrors::insertErrorMessageBlock()
 
     String errorMessages = m_errorMessages.toString();
     RefPtrWillBeRawPtr<Element> reportElement = createXHTMLParserErrorHeader(m_document, errorMessages);
-
-    if (DocumentXSLT::hasTransformSourceDocument(*m_document)) {
-        Vector<Attribute> attributes;
-        attributes.append(Attribute(styleAttr, "white-space: normal"));
-        RefPtrWillBeRawPtr<Element> paragraph = m_document->createElement(pTag, true);
-        paragraph->parserSetAttributes(attributes);
-        paragraph->parserAppendChild(m_document->createTextNode("This document was created as the result of an XSL transformation. The line and column numbers given are from the transformed result."));
-        reportElement->parserAppendChild(paragraph.release());
-    }
 
     Node* firstChild = documentElement->firstChild();
     if (firstChild)

@@ -48,7 +48,7 @@ public:
     StyleSheet* sheet() const { return m_sheet.get(); }
 
     bool isCSS() const { return m_isCSS; }
-    bool isXSL() const { return m_isXSL; }
+    bool isXSL() const { return false; }
 
     void didAttributeChanged();
     bool isLoading() const;
@@ -109,7 +109,6 @@ private:
     bool m_alternate;
     bool m_createdByParser;
     bool m_isCSS;
-    bool m_isXSL;
 
     RefPtrWillBeMember<DetachableEventListener> m_listenerForXSLT;
 };

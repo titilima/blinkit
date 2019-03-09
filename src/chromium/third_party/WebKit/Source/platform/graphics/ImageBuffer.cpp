@@ -327,25 +327,8 @@ void ImageBuffer::updateGPUMemoryUsage() const
 
 bool ImageDataBuffer::encodeImage(const String& mimeType, const double& quality, Vector<unsigned char>* encodedImage) const
 {
-    if (mimeType == "image/jpeg") {
-        int compressionQuality = JPEGImageEncoder::DefaultCompressionQuality;
-        if (quality >= 0.0 && quality <= 1.0)
-            compressionQuality = static_cast<int>(quality * 100 + 0.5);
-        if (!JPEGImageEncoder::encode(*this, compressionQuality, encodedImage))
-            return false;
-    } else if (mimeType == "image/webp") {
-        int compressionQuality = WEBPImageEncoder::DefaultCompressionQuality;
-        if (quality >= 0.0 && quality <= 1.0)
-            compressionQuality = static_cast<int>(quality * 100 + 0.5);
-        if (!WEBPImageEncoder::encode(*this, compressionQuality, encodedImage))
-            return false;
-    } else {
-        if (!PNGImageEncoder::encode(*this, encodedImage))
-            return false;
-        ASSERT(mimeType == "image/png");
-    }
-
-    return true;
+    assert(false); // Not reached!
+    return false;
 }
 
 String ImageDataBuffer::toDataURL(const String& mimeType, const double& quality) const

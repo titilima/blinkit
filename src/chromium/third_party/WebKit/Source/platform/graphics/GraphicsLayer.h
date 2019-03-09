@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: GraphicsLayer.h
+// Description: GraphicsLayer Class
+//      Author: Ziming Li
+//     Created: 2019-03-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Intel Corporation. All rights reserved.
@@ -83,10 +94,7 @@ public:
 
     GraphicsLayerClient* client() const { return m_client; }
 
-    GraphicsLayerDebugInfo& debugInfo();
-
     void setCompositingReasons(CompositingReasons);
-    CompositingReasons compositingReasons() const { return m_debugInfo.compositingReasons(); }
     void setOwnerNodeId(int);
 
     GraphicsLayer* parent() const { return m_parent; }
@@ -375,7 +383,6 @@ private:
     OwnPtr<ContentLayerDelegate> m_contentLayerDelegate;
 
     RawPtrWillBeWeakPersistent<ScrollableArea> m_scrollableArea;
-    GraphicsLayerDebugInfo m_debugInfo;
     int m_3dRenderingContext;
 
     OwnPtr<PaintController> m_paintController;

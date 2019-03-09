@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - js Library
+// -------------------------------------------------
+//   File Name: CachingWordShaper.cpp
+// Description: CachingWordShaper Class
+//      Author: Ziming Li
+//     Created: 2019-03-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2015 Google Inc. All rights reserved.
  *
@@ -27,7 +38,6 @@
 
 #include "platform/fonts/SimpleFontData.h"
 #include "platform/fonts/shaping/CachingWordShapeIterator.h"
-#include "platform/fonts/shaping/HarfBuzzShaper.h"
 #include "platform/fonts/shaping/ShapeCache.h"
 #include "platform/fonts/shaping/ShapeResultBuffer.h"
 #include "wtf/text/CharacterNames.h"

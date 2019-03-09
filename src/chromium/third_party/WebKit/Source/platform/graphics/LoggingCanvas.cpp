@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LoggingCanvas.cpp
+// Description: LoggingCanvas Class
+//      Author: Ziming Li
+//     Created: 2019-03-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -33,7 +44,6 @@
 #include "platform/geometry/IntSize.h"
 #include "platform/graphics/ImageBuffer.h"
 #include "platform/graphics/skia/ImagePixelLocker.h"
-#include "platform/image-encoders/skia/PNGImageEncoder.h"
 #include "third_party/skia/include/core/SkImage.h"
 #include "third_party/skia/include/core/SkImageInfo.h"
 #include "third_party/skia/include/core/SkPaint.h"
@@ -244,11 +254,7 @@ PassRefPtr<JSONObject> objectForBitmapData(const SkBitmap& bitmap)
     Vector<unsigned char> output;
 
     if (RefPtr<SkImage> image = adoptRef(SkImage::NewFromBitmap(bitmap))) {
-        ImagePixelLocker pixelLocker(image, kUnpremul_SkAlphaType);
-        ImageDataBuffer imageData(IntSize(image->width(), image->height()),
-            static_cast<const unsigned char*>(pixelLocker.pixels()));
-
-        PNGImageEncoder::encode(imageData, &output);
+        assert(false); // Not reached!
     }
 
     RefPtr<JSONObject> dataItem = JSONObject::create();
