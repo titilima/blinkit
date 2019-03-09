@@ -48,8 +48,6 @@
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/TraceEvent.h"
 #include "platform/TracedValue.h"
-#include "platform/mhtml/ArchiveResource.h"
-#include "platform/mhtml/ArchiveResourceCollection.h"
 #include "platform/network/ResourceTimingInfo.h"
 #include "platform/weborigin/KnownPorts.h"
 #include "platform/weborigin/SecurityOrigin.h"
@@ -427,8 +425,7 @@ ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, co
             return nullptr;
         }
 
-        if (!scheduleArchiveLoad(resource.get(), request.resourceRequest()))
-            resource->load(this, request.options());
+        resource->load(this, request.options());
 
         // For asynchronous loads that immediately fail, it's sufficient to return a
         // null Resource, as it indicates that something prevented the load from starting.
@@ -841,34 +838,6 @@ void ResourceFetcher::clearPreloads()
     m_preloads.clear();
 }
 
-void ResourceFetcher::addAllArchiveResources(MHTMLArchive* archive)
-{
-    ASSERT(archive);
-    if (!m_archiveResourceCollection)
-        m_archiveResourceCollection = ArchiveResourceCollection::create();
-    m_archiveResourceCollection->addAllResources(archive);
-}
-
-bool ResourceFetcher::scheduleArchiveLoad(Resource* resource, const ResourceRequest& request)
-{
-    if (!m_archiveResourceCollection)
-        return false;
-
-    ArchiveResource* archiveResource = m_archiveResourceCollection->archiveResourceForURL(request.url());
-    if (!archiveResource) {
-        resource->error(Resource::LoadError);
-        return false;
-    }
-
-    resource->setLoading(true);
-    resource->responseReceived(archiveResource->response(), nullptr);
-    SharedBuffer* data = archiveResource->data();
-    if (data)
-        resource->appendData(data->data(), data->size());
-    resource->finish();
-    return true;
-}
-
 void ResourceFetcher::didFinishLoading(Resource* resource, double finishTime, int64_t encodedDataLength)
 {
     TRACE_EVENT_ASYNC_END0("blink.net", "Resource", resource);
@@ -1148,7 +1117,6 @@ void ResourceFetcher::DeadResourceStatsRecorder::update(RevalidationPolicy polic
 DEFINE_TRACE(ResourceFetcher)
 {
     visitor->trace(m_context);
-    visitor->trace(m_archiveResourceCollection);
     visitor->trace(m_loaders);
     visitor->trace(m_nonBlockingLoaders);
 #if ENABLE(OILPAN)

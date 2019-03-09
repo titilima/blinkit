@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DocumentLoader.h
+// Description: DocumentLoader Class
+//      Author: Ziming Li
+//     Created: 2019-03-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
  * Copyright (C) 2011 Google Inc. All rights reserved.
@@ -56,7 +67,6 @@ class ResourceFetcher;
 class DocumentInit;
 class LocalFrame;
 class FrameLoader;
-class MHTMLArchive;
 class ResourceLoader;
 class ThreadedDataReceiver;
 
@@ -171,8 +181,6 @@ private:
 
     bool maybeCreateArchive();
 
-    void prepareSubframeArchiveLoadIfNeeded();
-
     void willSendRequest(ResourceRequest&, const ResourceResponse&);
     void finishedLoading(double finishTime);
     void mainReceivedError(const ResourceError&);
@@ -216,8 +224,6 @@ private:
     bool m_replacesCurrentHistoryItem;
 
     NavigationType m_navigationType;
-
-    RefPtrWillBeMember<MHTMLArchive> m_archive;
 
     DocumentLoadTiming m_documentLoadTiming;
 

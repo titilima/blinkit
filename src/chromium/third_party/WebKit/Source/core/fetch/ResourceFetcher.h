@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ResourceFetcher.h
+// Description: ResourceFetcher Class
+//      Author: Ziming Li
+//     Created: 2019-03-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller <mueller@kde.org>
@@ -45,12 +56,10 @@
 
 namespace blink {
 
-class ArchiveResourceCollection;
 class CSSStyleSheetResource;
 class DocumentResource;
 class FontResource;
 class ImageResource;
-class MHTMLArchive;
 class RawResource;
 class ScriptResource;
 class XSLStyleSheetResource;
@@ -97,9 +106,6 @@ public:
     void clearPreloads();
     void preloadStarted(Resource*);
     void printPreloadStats();
-
-    void addAllArchiveResources(MHTMLArchive*);
-    ArchiveResourceCollection* archiveResourceCollection() const { return m_archiveResourceCollection.get(); }
 
     void setDefersLoading(bool);
     void stopFetching();
@@ -160,7 +166,6 @@ private:
     void initializeRevalidation(const FetchRequest&, Resource*);
     ResourcePtr<Resource> createResourceForLoading(FetchRequest&, const String& charset, const ResourceFactory&);
     void storeResourceTimingInitiatorInformation(Resource*);
-    bool scheduleArchiveLoad(Resource*, const ResourceRequest&);
     ResourcePtr<Resource> preCacheData(const FetchRequest&, const ResourceFactory&, const SubstituteData&);
 
     enum RevalidationPolicy { Use, Revalidate, Reload, Load };
@@ -191,7 +196,6 @@ private:
     // is revalidated. What we really want to hold here is not the ResourcePtr
     // but the underlying Resource.
     OwnPtrWillBeMember<WillBeHeapListHashSet<RawPtrWillBeMember<Resource>>> m_preloads;
-    OwnPtrWillBeMember<ArchiveResourceCollection> m_archiveResourceCollection;
 
     Timer<ResourceFetcher> m_resourceTimingReportTimer;
 
