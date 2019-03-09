@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FontCache.h
+// Description: FontCache Class
+//      Author: Ziming Li
+//     Created: 2019-03-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2008 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2007-2008 Torch Mobile, Inc.
@@ -46,7 +57,6 @@
 
 #if OS(WIN)
 #include "SkFontMgr.h"
-struct IDWriteFactory;
 #endif
 
 class SkTypeface;
@@ -104,10 +114,8 @@ public:
 #if OS(WIN)
     bool useSubpixelPositioning() const { return s_useSubpixelPositioning; }
     SkFontMgr* fontManager() { return m_fontManager.get(); }
-    static bool useDirectWrite() { return s_useDirectWrite; }
+    static bool useDirectWrite() { return false; }
     static float deviceScaleFactor() { return s_deviceScaleFactor; }
-    static void setUseDirectWrite(bool useDirectWrite) { s_useDirectWrite = useDirectWrite; }
-    static void setDirectWriteFactory(IDWriteFactory* factory) { s_directWriteFactory = factory; }
     static void setDeviceScaleFactor(float deviceScaleFactor) { s_deviceScaleFactor = deviceScaleFactor; }
     static void setUseSubpixelPositioning(bool useSubpixelPositioning) { s_useSubpixelPositioning = useSubpixelPositioning; }
     static void addSideloadedFontForTesting(SkTypeface*);
@@ -177,8 +185,6 @@ private:
 
 #if OS(WIN)
     OwnPtr<SkFontMgr> m_fontManager;
-    static bool s_useDirectWrite;
-    static IDWriteFactory* s_directWriteFactory;
     static float s_deviceScaleFactor;
     static bool s_useSubpixelPositioning;
     static HashMap<String, RefPtr<SkTypeface>>* s_sideloadedFonts;

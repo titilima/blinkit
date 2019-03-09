@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FontCacheSkiaWin.cpp
+// Description: FontCache Class
+//      Author: Ziming Li
+//     Created: 2018-08-11
+// -------------------------------------------------
+// Copyright (C) 2018 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Apple Computer, Inc.
  * Copyright (c) 2006, 2007, 2008, 2009, 2012 Google Inc. All rights reserved.
@@ -97,18 +108,12 @@ void FontCache::setStatusFontMetrics(const wchar_t* familyName, int32_t fontHeig
 FontCache::FontCache()
     : m_purgePreventCount(0)
 {
-    SkFontMgr* fontManager;
-
-    if (s_useDirectWrite) {
-        fontManager = SkFontMgr_New_DirectWrite(s_directWriteFactory);
-        s_useSubpixelPositioning = true;
-    } else {
-        fontManager = SkFontMgr_New_GDI();
-        // Subpixel text positioning is not supported by the GDI backend.
-        s_useSubpixelPositioning = false;
-    }
-
+    SkFontMgr* fontManager = SkFontMgr_New_GDI();
     ASSERT(fontManager);
+
+    // Subpixel text positioning is not supported by the GDI backend.
+    s_useSubpixelPositioning = false;
+
     m_fontManager = adoptPtr(fontManager);
 }
 
