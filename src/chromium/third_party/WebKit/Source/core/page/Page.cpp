@@ -97,8 +97,7 @@ void Page::networkStateChanged(bool online)
 
 void Page::onMemoryPressure()
 {
-    for (Page* page : ordinaryPages())
-        page->memoryPurgeController().purgeMemory();
+    assert(false); // Low memory!
 }
 
 float deviceScaleFactor(LocalFrame* frame)
@@ -115,7 +114,6 @@ PassOwnPtrWillBeRawPtr<Page> Page::createOrdinary(PageClients& pageClients)
 {
     OwnPtrWillBeRawPtr<Page> page = create(pageClients);
     ordinaryPages().add(page.get());
-    page->memoryPurgeController().registerClient(page.get());
     return page.release();
 }
 
@@ -170,14 +168,6 @@ ScrollingCoordinator* Page::scrollingCoordinator()
         m_scrollingCoordinator = ScrollingCoordinator::create(this);
 
     return m_scrollingCoordinator.get();
-}
-
-MemoryPurgeController& Page::memoryPurgeController()
-{
-    if (!m_memoryPurgeController)
-        m_memoryPurgeController = MemoryPurgeController::create();
-
-    return *m_memoryPurgeController;
 }
 
 String Page::mainThreadScrollingReasonsAsText()
@@ -484,12 +474,6 @@ void Page::acceptLanguagesChanged()
         frames[i]->localDOMWindow()->acceptLanguagesChanged();
 }
 
-void Page::purgeMemory(DeviceKind deviceKind)
-{
-    if (deviceKind == DeviceKind::LowEnd)
-        memoryCache()->pruneAll();
-}
-
 DEFINE_TRACE(Page)
 {
 #if ENABLE(OILPAN)
@@ -507,11 +491,9 @@ DEFINE_TRACE(Page)
     visitor->trace(m_validationMessageClient);
     visitor->trace(m_multisamplingChangedObservers);
     visitor->trace(m_frameHost);
-    visitor->trace(m_memoryPurgeController);
     HeapSupplementable<Page>::trace(visitor);
 #endif
     PageLifecycleNotifier::trace(visitor);
-    MemoryPurgeClient::trace(visitor);
 }
 
 void Page::layerTreeViewInitialized(WebLayerTreeView& layerTreeView)
@@ -540,10 +522,6 @@ void Page::willBeDestroyed()
     ASSERT(allPages().contains(this));
     allPages().remove(this);
     ordinaryPages().remove(this);
-#if !ENABLE(OILPAN)
-    if (m_memoryPurgeController)
-        m_memoryPurgeController->unregisterClient(this);
-#endif
 
     if (m_scrollingCoordinator)
         m_scrollingCoordinator->willBeDestroyed();
