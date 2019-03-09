@@ -65,7 +65,6 @@
 #include "core/loader/FrameLoader.h"
 #include "core/loader/ImageLoader.h"
 #include "core/svg/graphics/SVGImage.h"
-#include "core/xml/DocumentXSLT.h"
 #include "core/xml/parser/SharedBufferReader.h"
 #include "core/xml/parser/XMLDocumentParserScope.h"
 #include "core/xml/parser/XMLParserInput.h"
@@ -114,7 +113,7 @@ static inline AtomicString toAtomicString(const xmlChar* string)
 
 static inline bool hasNoStyleInformation(Document* document)
 {
-    if (document->sawElementsInKnownNamespaces() || DocumentXSLT::hasTransformSourceDocument(*document))
+    if (document->sawElementsInKnownNamespaces())
         return false;
 
     if (!document->frame() || !document->frame()->page())
@@ -370,10 +369,10 @@ void XMLDocumentParser::insert(const SegmentedString&)
 void XMLDocumentParser::append(const String& inputSource)
 {
     const SegmentedString source(inputSource);
-    if (m_sawXSLTransform || !m_sawFirstElement)
+    if (!m_sawFirstElement)
         m_originalSourceForTransform.append(source);
 
-    if (isStopped() || m_sawXSLTransform)
+    if (isStopped())
         return;
 
     if (m_parserPaused) {
@@ -804,7 +803,6 @@ XMLDocumentParser::XMLDocumentParser(Document& document, FrameView* frameView)
     , m_isCurrentlyParsing8BitChunk(false)
     , m_sawError(false)
     , m_sawCSS(false)
-    , m_sawXSLTransform(false)
     , m_sawFirstElement(false)
     , m_isXHTMLDocument(false)
     , m_parserPaused(false)
@@ -828,7 +826,6 @@ XMLDocumentParser::XMLDocumentParser(DocumentFragment* fragment, Element* parent
     , m_isCurrentlyParsing8BitChunk(false)
     , m_sawError(false)
     , m_sawCSS(false)
-    , m_sawXSLTransform(false)
     , m_sawFirstElement(false)
     , m_isXHTMLDocument(false)
     , m_parserPaused(false)
@@ -1226,20 +1223,6 @@ void XMLDocumentParser::processingInstruction(const String& target, const String
 
     if (pi->isCSS())
         m_sawCSS = true;
-
-    if (!RuntimeEnabledFeatures::xsltEnabled())
-        return;
-
-    m_sawXSLTransform = !m_sawFirstElement && pi->isXSL();
-    if (m_sawXSLTransform && !DocumentXSLT::hasTransformSourceDocument(*document())) {
-        // This behavior is very tricky. We call stopParsing() here because we
-        // want to stop processing the document until we're ready to apply the
-        // transform, but we actually still want to be fed decoded string pieces
-        // to accumulate in m_originalSourceForTransform. So, we call
-        // stopParsing() here and check isStopped() in element callbacks.
-        // FIXME: This contradicts the contract of DocumentParser.
-        stopParsing();
-    }
 }
 
 void XMLDocumentParser::cdataBlock(const String& text)
@@ -1514,7 +1497,6 @@ void XMLDocumentParser::initializeParserContext(const CString& chunk)
     sax.initialized = XML_SAX2_MAGIC;
     m_sawError = false;
     m_sawCSS = false;
-    m_sawXSLTransform = false;
     m_sawFirstElement = false;
 
     XMLDocumentParserScope scope(document());
@@ -1540,10 +1522,8 @@ void XMLDocumentParser::doEnd()
         }
     }
 
-    bool xmlViewerMode = !m_sawError && !m_sawCSS && !m_sawXSLTransform && hasNoStyleInformation(document());
+    bool xmlViewerMode = !m_sawError && !m_sawCSS && hasNoStyleInformation(document());
     if (xmlViewerMode) {
-        assert(false); // Not reached!
-    } else if (m_sawXSLTransform) {
         assert(false); // Not reached!
     }
 }

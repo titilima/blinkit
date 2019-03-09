@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: XMLDocumentParser.h
+// Description: XMLDocumentParser Class
+//      Author: Ziming Li
+//     Created: 2019-03-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Peter Kelly (pmk@post.com)
  * Copyright (C) 2005, 2006, 2007 Apple Inc. All rights reserved.
@@ -176,7 +187,6 @@ private:
     bool m_isCurrentlyParsing8BitChunk;
     bool m_sawError;
     bool m_sawCSS;
-    bool m_sawXSLTransform;
     bool m_sawFirstElement;
     bool m_isXHTMLDocument;
     bool m_parserPaused;
