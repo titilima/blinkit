@@ -200,6 +200,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\WTFString.cpp">
       <Filter>wtf\text</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\unicode_win.cpp">
+      <Filter>wtf\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\unicode.cpp">
+      <Filter>wtf\text</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">

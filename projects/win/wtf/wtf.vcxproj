@@ -210,6 +210,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\TextEncoding.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\TextEncodingRegistry.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\TextPosition.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\unicode.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\unicode_win.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\UTF8.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\WTFString.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\ThreadingPthreads.cpp" />
