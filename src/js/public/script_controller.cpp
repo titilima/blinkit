@@ -47,6 +47,11 @@ void ScriptController::clearWindowProxy(void)
     m_context.reset();
 }
 
+void ScriptController::disableEval(const String &errorMessage)
+{
+    assert(false); // Not reached!
+}
+
 void ScriptController::enableEval(void)
 {
     // Nothing to do, eval is always enabled in BlinKit.
@@ -59,6 +64,21 @@ bool ScriptController::executeScriptIfJavaScriptURL(const KURL &url)
 }
 
 void ScriptController::executeScriptInMainWorld(const ScriptSourceCode &sourceCode, AccessControlStatus accessControlStatus, double *compilationFinishTime)
+{
+    assert(false); // BKTODO:
+}
+
+void ScriptController::namedItemAdded(HTMLDocument *, const AtomicString &)
+{
+    assert(false); // BKTODO:
+}
+
+void ScriptController::namedItemRemoved(HTMLDocument *, const AtomicString &)
+{
+    assert(false); // BKTODO:
+}
+
+void ScriptController::updateDocument(void)
 {
     assert(false); // BKTODO:
 }

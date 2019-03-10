@@ -29,6 +29,12 @@
     <ClCompile Include="..\..\..\src\js\public\script_source_code.cpp">
       <Filter>public</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\js\public\script_event_listener.cpp">
+      <Filter>public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\public\script_streamer.cpp">
+      <Filter>public</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\js\_pc.h">
