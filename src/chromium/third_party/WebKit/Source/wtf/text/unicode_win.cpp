@@ -44,6 +44,12 @@ bool hasLineBreakingPropertyComplexContext(UChar32 c)
     return false;
 }
 
+UChar32 mirroredChar(UChar32 c)
+{
+    assert(false); // BKTODO:
+    return false;
+}
+
 int toLower(UChar *result, int resultLength, const UChar *src, int srcLength, bool *error)
 {
     assert(false); // BKTODO:
@@ -51,6 +57,12 @@ int toLower(UChar *result, int resultLength, const UChar *src, int srcLength, bo
 }
 
 UChar32 toLower(UChar32 c)
+{
+    assert(false); // BKTODO:
+    return 0;
+}
+
+UChar32 toTitleCase(UChar32 c)
 {
     assert(false); // BKTODO:
     return 0;

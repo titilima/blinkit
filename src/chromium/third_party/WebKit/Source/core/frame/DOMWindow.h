@@ -177,10 +177,6 @@ public:
     virtual int webkitRequestAnimationFrame(FrameRequestCallback*) = 0;
     virtual void cancelAnimationFrame(int id) = 0;
 
-    // Idle callback extensions
-    virtual int requestIdleCallback(IdleRequestCallback*, const IdleRequestOptions&) = 0;
-    virtual void cancelIdleCallback(int id) = 0;
-
     void captureEvents() { }
     void releaseEvents() { }
 

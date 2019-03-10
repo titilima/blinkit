@@ -1122,19 +1122,6 @@ void LocalDOMWindow::cancelAnimationFrame(int id)
         document->cancelAnimationFrame(id);
 }
 
-int LocalDOMWindow::requestIdleCallback(IdleRequestCallback* callback, const IdleRequestOptions& options)
-{
-    if (Document* document = this->document())
-        return document->requestIdleCallback(callback, options);
-    return 0;
-}
-
-void LocalDOMWindow::cancelIdleCallback(int id)
-{
-    if (Document* document = this->document())
-        document->cancelIdleCallback(id);
-}
-
 bool LocalDOMWindow::addEventListenerInternal(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener> prpListener, const EventListenerOptions& options)
 {
     RefPtrWillBeRawPtr<EventListener> listener = prpListener;

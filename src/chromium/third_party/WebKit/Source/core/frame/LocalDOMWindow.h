@@ -152,8 +152,6 @@ public:
     int requestAnimationFrame(FrameRequestCallback*) override;
     int webkitRequestAnimationFrame(FrameRequestCallback*) override;
     void cancelAnimationFrame(int id) override;
-    int requestIdleCallback(IdleRequestCallback*, const IdleRequestOptions&) override;
-    void cancelIdleCallback(int id) override;
 
     void registerProperty(DOMWindowProperty*);
     void unregisterProperty(DOMWindowProperty*);

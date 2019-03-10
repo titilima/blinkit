@@ -156,7 +156,6 @@ class SVGUseElement;
 class ScriptRunner;
 class ScriptableDocumentParser;
 class ScriptedAnimationController;
-class ScriptedIdleTaskController;
 class SecurityOrigin;
 class SegmentedString;
 class SelectorQueryCache;
@@ -929,9 +928,6 @@ public:
     void cancelAnimationFrame(int id);
     void serviceScriptedAnimations(double monotonicAnimationStartTime);
 
-    int requestIdleCallback(IdleRequestCallback*, const IdleRequestOptions&);
-    void cancelIdleCallback(int id);
-
     EventTarget* errorEventTarget() final;
 
     void initDNSPrefetch();
@@ -1088,7 +1084,6 @@ private:
     bool isElementNode() const = delete; // This will catch anyone doing an unnecessary check.
 
     ScriptedAnimationController& ensureScriptedAnimationController();
-    ScriptedIdleTaskController& ensureScriptedIdleTaskController();
     SecurityContext& securityContext() final { return *this; }
     EventQueue* eventQueue() const final;
 
@@ -1352,7 +1347,6 @@ private:
     unsigned m_writeRecursionDepth;
 
     RefPtrWillBeMember<ScriptedAnimationController> m_scriptedAnimationController;
-    RefPtrWillBeMember<ScriptedIdleTaskController> m_scriptedIdleTaskController;
     OwnPtrWillBeMember<MainThreadTaskRunner> m_taskRunner;
     OwnPtrWillBeMember<TextAutosizer> m_textAutosizer;
 

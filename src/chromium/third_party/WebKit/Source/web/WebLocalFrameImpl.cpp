@@ -205,7 +205,6 @@
 #include "public/web/WebScriptSource.h"
 #include "public/web/WebSerializedScriptValue.h"
 #include "public/web/WebTreeScopeType.h"
-#include "skia/ext/platform_canvas.h"
 #include "web/AssociatedURLLoader.h"
 #include "web/CompositionUnderlineVectorBuilder.h"
 #include "web/FindInPageCoordinates.h"

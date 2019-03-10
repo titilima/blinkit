@@ -97,7 +97,6 @@
 #include "core/dom/ProcessingInstruction.h"
 #include "core/dom/ScriptRunner.h"
 #include "core/dom/ScriptedAnimationController.h"
-#include "core/dom/ScriptedIdleTaskController.h"
 #include "core/dom/SelectorQuery.h"
 #include "core/dom/StaticNodeList.h"
 #include "core/dom/StyleEngine.h"
@@ -599,8 +598,6 @@ void Document::dispose()
     if (m_scriptedAnimationController)
         m_scriptedAnimationController->clearDocumentPointer();
     m_scriptedAnimationController.clear();
-
-    m_scriptedIdleTaskController.clear();
 
     if (svgExtensions())
         accessSVGExtensions().pauseAnimations();
@@ -2194,8 +2191,6 @@ void Document::detach(const AttachContext& context)
     if (m_scriptedAnimationController)
         m_scriptedAnimationController->clearDocumentPointer();
     m_scriptedAnimationController.clear();
-
-    m_scriptedIdleTaskController.clear();
 
     if (svgExtensions())
         accessSVGExtensions().pauseAnimations();
@@ -4946,8 +4941,11 @@ void Document::tasksWereResumed()
         m_scriptedAnimationController->resume();
 
     MutationObserver::resumeSuspendedObservers();
+    assert(false); // BKTODO:
+#if 0
     if (m_domWindow)
         DOMWindowPerformance::performance(*m_domWindow)->resumeSuspendedObservers();
+#endif
 }
 
 // FIXME: suspendScheduledTasks(), resumeScheduledTasks(), tasksNeedSuspension()
@@ -5109,25 +5107,6 @@ void Document::serviceScriptedAnimations(double monotonicAnimationStartTime)
     if (!m_scriptedAnimationController)
         return;
     m_scriptedAnimationController->serviceScriptedAnimations(monotonicAnimationStartTime);
-}
-
-ScriptedIdleTaskController& Document::ensureScriptedIdleTaskController()
-{
-    if (!m_scriptedIdleTaskController)
-        m_scriptedIdleTaskController = ScriptedIdleTaskController::create(this);
-    return *m_scriptedIdleTaskController;
-}
-
-int Document::requestIdleCallback(IdleRequestCallback* callback, const IdleRequestOptions& options)
-{
-    return ensureScriptedIdleTaskController().registerCallback(callback, options);
-}
-
-void Document::cancelIdleCallback(int id)
-{
-    if (!m_scriptedIdleTaskController)
-        return;
-    m_scriptedIdleTaskController->cancelCallback(id);
 }
 
 PassRefPtrWillBeRawPtr<Touch> Document::createTouch(DOMWindow* window, EventTarget* target, int identifier, double pageX, double pageY, double screenX, double screenY, double radiusX, double radiusY, float rotationAngle, float force) const

@@ -193,22 +193,8 @@ bool ImageBuffer::copyToPlatformTexture(WebGraphicsContext3D* context, Platform3
 
 bool ImageBuffer::copyRenderingResultsFromDrawingBuffer(DrawingBuffer* drawingBuffer, SourceDrawingBuffer sourceBuffer)
 {
-    if (!drawingBuffer || !m_surface->isAccelerated())
-        return false;
-    OwnPtr<WebGraphicsContext3DProvider> provider = adoptPtr(Platform::current()->createSharedOffscreenGraphicsContext3DProvider());
-    if (!provider)
-        return false;
-    WebGraphicsContext3D* context3D = provider->context3d();
-    if (!context3D)
-        return false;
-    Platform3DObject textureId = m_surface->getBackingTextureHandleForOverwrite();
-    if (!textureId)
-        return false;
-
-    context3D->flush();
-
-    return drawingBuffer->copyToPlatformTexture(context3D, textureId, GL_RGBA,
-        GL_UNSIGNED_BYTE, 0, true, false, sourceBuffer);
+    assert(false); // Not reached!
+    return false;
 }
 
 void ImageBuffer::draw(GraphicsContext& context, const FloatRect& destRect, const FloatRect* srcPtr, SkXfermode::Mode op)

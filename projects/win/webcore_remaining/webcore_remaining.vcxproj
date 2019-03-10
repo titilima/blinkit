@@ -218,6 +218,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\DeferredLegacyStyleInterpolation.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\DocumentAnimations.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\DoubleStyleInterpolation.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\EffectInput.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\ElementAnimations.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\FilterStyleInterpolation.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\ImageSliceStyleInterpolation.cpp" />
@@ -455,6 +456,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\ReplaceSelectionCommand.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\SetNodeAttributeCommand.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\SimplifyMarkupCommand.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\smart_replace.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\SplitElementCommand.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\SplitTextNodeCommand.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\SplitTextNodeContainingElementCommand.cpp" />

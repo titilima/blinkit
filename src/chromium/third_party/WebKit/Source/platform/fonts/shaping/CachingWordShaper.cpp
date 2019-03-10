@@ -39,7 +39,9 @@
 #include "platform/fonts/SimpleFontData.h"
 #include "platform/fonts/shaping/CachingWordShapeIterator.h"
 #include "platform/fonts/shaping/ShapeCache.h"
+#if 0 // BKTODO:
 #include "platform/fonts/shaping/ShapeResultBuffer.h"
+#endif
 #include "wtf/text/CharacterNames.h"
 
 namespace blink {
@@ -49,6 +51,8 @@ float CachingWordShaper::width(const Font* font, const TextRun& run,
     FloatRect* glyphBounds)
 {
     float width = 0;
+    assert(false); // BKTODO:
+#if 0
     RefPtr<ShapeResult> wordResult;
     CachingWordShapeIterator iterator(m_shapeCache, run, font);
     while (iterator.next(&wordResult)) {
@@ -65,10 +69,12 @@ float CachingWordShaper::width(const Font* font, const TextRun& run,
                 wordResult->fallbackFonts(fallbackFonts);
         }
     }
+#endif
 
     return width;
 }
 
+#if 0 // BKTODO:
 static inline float shapeResultsForRun(ShapeCache* shapeCache, const Font* font,
     const TextRun& run, HashSet<const SimpleFontData*>* fallbackFonts,
     ShapeResultBuffer* resultsBuffer)
@@ -86,43 +92,60 @@ static inline float shapeResultsForRun(ShapeCache* shapeCache, const Font* font,
     }
     return totalWidth;
 }
+#endif
 
 int CachingWordShaper::offsetForPosition(const Font* font, const TextRun& run, float targetX)
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     ShapeResultBuffer buffer;
     shapeResultsForRun(m_shapeCache, font, run, nullptr, &buffer);
 
     return buffer.offsetForPosition(run, targetX);
+#endif
 }
 
 float CachingWordShaper::fillGlyphBuffer(const Font* font, const TextRun& run,
     HashSet<const SimpleFontData*>* fallbackFonts,
     GlyphBuffer* glyphBuffer, unsigned from, unsigned to)
 {
+    assert(false); // BKTODO:
+    return 0.0;
+#if 0
     ShapeResultBuffer buffer;
     shapeResultsForRun(m_shapeCache, font, run, fallbackFonts, &buffer);
 
     return buffer.fillGlyphBuffer(glyphBuffer, run, from, to);
+#endif
 }
 
 float CachingWordShaper::fillGlyphBufferForTextEmphasis(const Font* font,
     const TextRun& run, const GlyphData* emphasisData, GlyphBuffer* glyphBuffer,
     unsigned from, unsigned to)
 {
+    assert(false); // BKTODO:
+    return 0.0;
+#if 0
     ShapeResultBuffer buffer;
     shapeResultsForRun(m_shapeCache, font, run, nullptr, &buffer);
 
     return buffer.fillGlyphBufferForTextEmphasis(glyphBuffer, run, emphasisData, from, to);
+#endif
 }
 
 FloatRect CachingWordShaper::selectionRect(const Font* font, const TextRun& run,
     const FloatPoint& point, int height, unsigned from, unsigned to)
 {
+    assert(false); // BKTODO:
+    return FloatRect();
+#if 0
     ShapeResultBuffer buffer;
     float totalWidth = shapeResultsForRun(m_shapeCache, font, run, nullptr,
         &buffer);
 
     return buffer.selectionRect(run.direction(), totalWidth, point, height, from, to);
+#endif
 }
 
 }; // namespace blink

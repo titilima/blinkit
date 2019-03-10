@@ -112,7 +112,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <ModuleDefinitionFile>BlinKit.def</ModuleDefinitionFile>
-      <AdditionalDependencies>Usp10.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shlwapi.lib;Usp10.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -143,7 +143,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <ModuleDefinitionFile>BlinKit.def</ModuleDefinitionFile>
-      <AdditionalDependencies>Usp10.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shlwapi.lib;Usp10.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -186,9 +186,6 @@
     <ProjectReference Include="..\blink_web\blink_web.vcxproj">
       <Project>{f1c61470-7860-4d03-b90f-78c892ac0cf7}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\harfbuzz\harfbuzz.vcxproj">
-      <Project>{b9cb47a9-980c-45b2-92d1-a67801b28cb5}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\js\js.vcxproj">
       <Project>{96449ff1-982f-4e4b-8617-f9e6cb647304}</Project>
     </ProjectReference>
@@ -197,6 +194,12 @@
     </ProjectReference>
     <ProjectReference Include="..\libxml\libxml.vcxproj">
       <Project>{e5a2b45e-7d69-4b6d-b23f-d9127b168877}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\modules\modules.vcxproj">
+      <Project>{98a19aa9-ddd3-42b4-92c5-c0e2681a480d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ots\ots.vcxproj">
+      <Project>{35ddb613-6c23-4b17-9b1a-643c91b09a16}</Project>
     </ProjectReference>
     <ProjectReference Include="..\skia\skia.vcxproj">
       <Project>{295edf31-49b6-48e3-b7c5-377c60665a78}</Project>

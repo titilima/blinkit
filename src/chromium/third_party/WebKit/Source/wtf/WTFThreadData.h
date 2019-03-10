@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WTFThreadData.h
+// Description: WTFThreadData Class
+//      Author: Ziming Li
+//     Created: 2019-03-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  *
@@ -38,7 +49,6 @@
 namespace WTF {
 
 class AtomicStringTable;
-struct ICUConverterWrapper;
 
 typedef void (*AtomicStringTableDestructor)(AtomicStringTable*);
 
@@ -53,12 +63,9 @@ public:
         return m_atomicStringTable;
     }
 
-    ICUConverterWrapper& cachedConverterICU() { return *m_cachedConverterICU; }
-
 private:
     AtomicStringTable* m_atomicStringTable;
     AtomicStringTableDestructor m_atomicStringTableDestructor;
-    OwnPtr<ICUConverterWrapper> m_cachedConverterICU;
 
     static ThreadSpecific<WTFThreadData>* staticData;
     friend WTFThreadData& wtfThreadData();

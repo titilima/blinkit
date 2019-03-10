@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: GraphicsContext.cpp
+// Description: GraphicsContext Class
+//      Author: Ziming Li
+//     Created: 2019-03-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2004, 2005, 2006, 2009 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -35,7 +46,6 @@
 #include "platform/graphics/Path.h"
 #include "platform/graphics/paint/PaintController.h"
 #include "platform/weborigin/KURL.h"
-#include "skia/ext/platform_canvas.h"
 #include "third_party/skia/include/core/SkAnnotation.h"
 #include "third_party/skia/include/core/SkColorFilter.h"
 #include "third_party/skia/include/core/SkData.h"
@@ -300,7 +310,7 @@ void GraphicsContext::beginRecording(const FloatRect& bounds)
 
     m_canvas = m_pictureRecorder.beginRecording(bounds, 0);
     if (m_hasMetaData)
-        skia::GetMetaData(*m_canvas) = m_metaData;
+        assert(false); // BKTODO: skia::GetMetaData(*m_canvas) = m_metaData;
 }
 
 PassRefPtr<const SkPicture> GraphicsContext::endRecording()

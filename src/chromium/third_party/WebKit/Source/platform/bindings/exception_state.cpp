@@ -13,6 +13,11 @@
 
 namespace blink {
 
+void ExceptionState::clearException(void)
+{
+    assert(false); // BKTODO:
+}
+
 void ExceptionState::throwDOMException(ExceptionCode exceptionCode, const String &message)
 {
     assert(false); // BKTODO:

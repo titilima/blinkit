@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WTFThreadData.cpp
+// Description: WTFThreadData Class
+//      Author: Ziming Li
+//     Created: 2019-03-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2010 Apple Inc. All Rights Reserved.
  *
@@ -35,7 +46,6 @@ ThreadSpecific<WTFThreadData>* WTFThreadData::staticData;
 WTFThreadData::WTFThreadData()
     : m_atomicStringTable(0)
     , m_atomicStringTableDestructor(0)
-    , m_cachedConverterICU(adoptPtr(new ICUConverterWrapper))
 {
 }
 

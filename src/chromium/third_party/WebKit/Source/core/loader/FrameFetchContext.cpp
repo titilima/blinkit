@@ -67,8 +67,6 @@
 #include "core/loader/appcache/ApplicationCacheHost.h"
 #include "core/page/Page.h"
 #include "core/svg/graphics/SVGImageChromeClient.h"
-#include "core/timing/DOMWindowPerformance.h"
-#include "core/timing/Performance.h"
 #include "platform/Logging.h"
 #include "platform/network/ResourceTimingInfo.h"
 #include "platform/weborigin/SchemeRegistry.h"
@@ -355,10 +353,7 @@ void FrameFetchContext::didLoadResource(Resource* resource)
 
 void FrameFetchContext::addResourceTiming(const ResourceTimingInfo& info)
 {
-    Document* initiatorDocument = m_document && info.isMainResource() ? m_document->parentDocument() : m_document.get();
-    if (!initiatorDocument || !initiatorDocument->domWindow())
-        return;
-    DOMWindowPerformance::performance(*initiatorDocument->domWindow())->addResourceTiming(info);
+    // Nothing to do.
 }
 
 bool FrameFetchContext::allowImage(bool imagesEnabled, const KURL& url) const

@@ -157,7 +157,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\chromium\base\cpu.cc" />
+    <ClCompile Include="..\..\..\src\chromium\base\rand_util_win.cc" />
+    <ClCompile Include="..\..\..\src\chromium\base\strings\stringprintf.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\string_util.cc" />
+    <ClCompile Include="..\..\..\src\chromium\base\strings\string_util_constants.cc" />
+    <ClCompile Include="..\..\..\src\chromium\base\strings\utf_string_conversion_utils.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\base\third_party\nspr\prtime.cc" />
+    <ClCompile Include="..\..\..\src\chromium\base\time\time.cc" />
+    <ClCompile Include="..\..\..\src\chromium\base\time\time_win.cc" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -166,10 +174,12 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\src\base\_pc.h" />
     <ClInclude Include="..\..\..\src\chromium\base\base_export.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\bit_cast.h" />
     <ClInclude Include="..\..\..\src\chromium\base\callback.h" />
     <ClInclude Include="..\..\..\src\chromium\base\callback_forward.h" />
     <ClInclude Include="..\..\..\src\chromium\base\callback_internal.h" />
     <ClInclude Include="..\..\..\src\chromium\base\compiler_specific.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\cpu.h" />
     <ClInclude Include="..\..\..\src\chromium\base\gtest_prod_util.h" />
     <ClInclude Include="..\..\..\src\chromium\base\logging.h" />
     <ClInclude Include="..\..\..\src\chromium\base\macros.h" />
@@ -178,13 +188,16 @@
     <ClInclude Include="..\..\..\src\chromium\base\rand_util.h" />
     <ClInclude Include="..\..\..\src\chromium\base\stl_util.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\string16.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\strings\stringprintf.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\string_number_conversions.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\string_piece.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\string_util.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\string_util_win.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\strings\utf_string_conversions.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\utf_string_conversion_utils.h" />
-    <ClInclude Include="..\..\..\src\chromium\base\sys_info.h" />
     <ClInclude Include="..\..\..\src\chromium\base\template_util.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\third_party\nspr\prtime.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\time\time.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

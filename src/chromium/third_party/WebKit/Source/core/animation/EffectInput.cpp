@@ -68,6 +68,9 @@ EffectModel* EffectInput::convert(Element* element, const Vector<Dictionary>& ke
     StringKeyframeVector keyframes;
     double lastOffset = 0;
 
+    assert(false); // BKTODO:
+    return nullptr;
+#if 0
     for (const auto& keyframeDictionary : keyframeDictionaryVector) {
         RefPtr<StringKeyframe> keyframe = StringKeyframe::create();
 
@@ -163,10 +166,13 @@ EffectModel* EffectInput::convert(Element* element, const Vector<Dictionary>& ke
     keyframeEffectModel->forceConversionsToAnimatableValues(*element, element->computedStyle());
 
     return keyframeEffectModel;
+#endif
 }
 
 EffectModel* EffectInput::convert(Element* element, const EffectModelOrDictionarySequenceOrDictionary& effectInput, ExceptionState& exceptionState)
 {
+    assert(false); // BKTODO:
+#if 0
     if (effectInput.isEffectModel())
         return effectInput.getAsEffectModel();
     if (effectInput.isDictionarySequence())
@@ -176,6 +182,7 @@ EffectModel* EffectInput::convert(Element* element, const EffectModelOrDictionar
         keyframes.append(effectInput.getAsDictionary());
         return convert(element, keyframes, exceptionState);
     }
+#endif
     return nullptr;
 }
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: MIMETypeRegistry.cpp
+// Description: MIMETypeRegistry Class
+//      Author: Ziming Li
+//     Created: 2019-03-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2008, 2009, Google Inc. All rights reserved.
  *
@@ -30,7 +41,6 @@
 
 #include "platform/MIMETypeRegistry.h"
 
-#include "platform/plugins/PluginData.h"
 #include "public/platform/Platform.h"
 #include "public/platform/WebMimeRegistry.h"
 #include "wtf/text/CString.h"
@@ -55,11 +65,6 @@ String MIMETypeRegistry::getMIMETypeForPath(const String& path)
         return "application/octet-stream";
     String extension = path.substring(pos + 1);
     String mimeType = getMIMETypeForExtension(extension);
-    if (mimeType.isEmpty()) {
-        // If there's no mimetype registered for the extension, check to see
-        // if a plugin can handle the extension.
-        mimeType = getPluginMimeTypeFromExtension(extension);
-    }
     if (mimeType.isEmpty())
         return "application/octet-stream";
     return mimeType;

@@ -54,6 +54,9 @@
     <Filter Include="utils">
       <UniqueIdentifier>{d792099e-6f16-492b-bc4d-789b8d5fa9c0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="utils\win">
+      <UniqueIdentifier>{f2925938-5411-4062-9250-cd146c6304e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -984,6 +987,24 @@
       <Filter>utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\third_party\skia\src\utils\SkDashPath.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkEventTracer.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkMatrix22.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkBitmapSourceDeserializer.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\win\SkHRESULT.cpp">
+      <Filter>utils\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkNullCanvas.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkNWayCanvas.cpp">
       <Filter>utils</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1949,6 +1970,12 @@
       <Filter>utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\third_party\skia\src\utils\SkPatchUtils.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\third_party\skia\src\utils\SkMatrix22.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\third_party\skia\src\utils\SkBitmapSourceDeserializer.h">
       <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>

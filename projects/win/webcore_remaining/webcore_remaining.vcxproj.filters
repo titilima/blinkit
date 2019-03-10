@@ -1826,6 +1826,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\XMLErrors.cpp">
       <Filter>xml\parser</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\EffectInput.cpp">
+      <Filter>animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\commands\smart_replace.cpp">
+      <Filter>editing\commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">

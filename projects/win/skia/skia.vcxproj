@@ -467,9 +467,15 @@
     <ClCompile Include="..\..\..\third_party\skia\src\sfnt\SkOTTable_name.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\sfnt\SkOTUtils.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\utils\SkBase64.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkBitmapSourceDeserializer.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\utils\SkDashPath.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkEventTracer.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkMatrix22.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\utils\SkMatrix44.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkNullCanvas.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkNWayCanvas.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\utils\SkPatchUtils.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\win\SkHRESULT.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -796,6 +802,8 @@
     <ClInclude Include="..\..\..\third_party\skia\src\sfnt\SkOTTable_name.h" />
     <ClInclude Include="..\..\..\third_party\skia\src\sfnt\SkOTUtils.h" />
     <ClInclude Include="..\..\..\third_party\skia\src\utils\SkBase64.h" />
+    <ClInclude Include="..\..\..\third_party\skia\src\utils\SkBitmapSourceDeserializer.h" />
+    <ClInclude Include="..\..\..\third_party\skia\src\utils\SkMatrix22.h" />
     <ClInclude Include="..\..\..\third_party\skia\src\utils\SkPatchUtils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

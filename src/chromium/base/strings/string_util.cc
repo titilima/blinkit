@@ -635,37 +635,6 @@ bool IsUnicodeWhitespace(wchar_t c) {
   return false;
 }
 
-static const char* const kByteStringsUnlocalized[] = {
-  " B",
-  " kB",
-  " MB",
-  " GB",
-  " TB",
-  " PB"
-};
-
-string16 FormatBytesUnlocalized(int64_t bytes) {
-  double unit_amount = static_cast<double>(bytes);
-  size_t dimension = 0;
-  const int kKilo = 1024;
-  while (unit_amount >= kKilo &&
-         dimension < arraysize(kByteStringsUnlocalized) - 1) {
-    unit_amount /= kKilo;
-    dimension++;
-  }
-
-  char buf[64];
-  if (bytes != 0 && dimension > 0 && unit_amount < 100) {
-    base::snprintf(buf, arraysize(buf), "%.1lf%s", unit_amount,
-                   kByteStringsUnlocalized[dimension]);
-  } else {
-    base::snprintf(buf, arraysize(buf), "%.0lf%s", unit_amount,
-                   kByteStringsUnlocalized[dimension]);
-  }
-
-  return ASCIIToUTF16(buf);
-}
-
 // Runs in O(n) time in the length of |str|.
 template<class StringType>
 void DoReplaceSubstringsAfterOffset(StringType* str,

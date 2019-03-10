@@ -167,6 +167,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\animation\CubicBezierControlPoints.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\animation\TimingFunction.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\bindings\exception_messages.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\bindings\exception_state.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\blob\BlobData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\blob\BlobRegistry.cpp" />
@@ -286,7 +287,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\OrientationIterator.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\SegmentedFontData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\CachingWordShaper.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\HarfBuzzFace.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\RunSegmenter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\Shaper.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\ShapeResult.cpp" />
@@ -442,7 +442,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\LengthFunctions.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\LinkHash.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Logging.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MemoryPurgeController.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MIMETypeFromURL.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MIMETypeRegistry.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyParsers.cpp" />
@@ -499,12 +498,11 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\StringTruncator.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextBoundaries.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextBreakIterator.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextBreakIteratorICU.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextBreakIteratorInternalICU.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextCheckerClient.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextEncodingDetector.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextRun.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextStream.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\text_break_iterator_impl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\UnicodeRange.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\UnicodeUtilities.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Theme.cpp" />
@@ -871,7 +869,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\SegmentedFontData.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\CachingWordShapeIterator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\CachingWordShaper.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\HarfBuzzFace.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\RunSegmenter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\ShapeCache.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\fonts\shaping\Shaper.h" />
@@ -1081,7 +1078,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\LifecycleObserver.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\LinkHash.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Logging.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MemoryPurgeController.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MIMETypeFromURL.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MIMETypeRegistry.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyParsers.h" />
@@ -1170,7 +1166,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TabSize.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextBoundaries.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextBreakIterator.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextBreakIteratorInternalICU.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextCheckerClient.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextChecking.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\TextDecoration.h" />

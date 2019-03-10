@@ -185,9 +185,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IconURL.cpp">
       <Filter>dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IdleDeadline.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IdTargetObserver.cpp">
       <Filter>dom</Filter>
     </ClCompile>
@@ -297,9 +294,6 @@
       <Filter>dom</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptedAnimationController.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptedIdleTaskController.cpp">
       <Filter>dom</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptLoader.cpp">
@@ -599,6 +593,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Microtask.cpp">
       <Filter>dom</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\event_factory.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ActiveDOMObject.h">
@@ -805,9 +802,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IconURL.h">
       <Filter>dom</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IdleDeadline.h">
-      <Filter>dom</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IdleRequestCallback.h">
       <Filter>dom</Filter>
     </ClInclude>
@@ -965,9 +959,6 @@
       <Filter>dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptedAnimationController.h">
-      <Filter>dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptedIdleTaskController.h">
       <Filter>dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptLoader.h">

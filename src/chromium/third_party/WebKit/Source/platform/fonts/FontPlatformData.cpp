@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FontPlatformData.cpp
+// Description: FontPlatformData Class
+//      Author: Ziming Li
+//     Created: 2019-03-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Brent Fulgham
  *
@@ -21,11 +32,15 @@
 #include "platform/fonts/FontPlatformData.h"
 
 #include "SkTypeface.h"
+#if 0 // BKTODO:
 #include "hb-ot.h"
 #include "hb.h"
+#endif
 #include "platform/fonts/Character.h"
 #include "platform/fonts/FontCache.h"
+#if 0 // BKTODO:
 #include "platform/fonts/shaping/HarfBuzzFace.h"
+#endif
 #include "wtf/ByteSwap.h"
 #include "wtf/HashMap.h"
 #include "wtf/text/StringHash.h"
@@ -117,7 +132,9 @@ FontPlatformData::FontPlatformData(const FontPlatformData& source)
 #if !OS(MACOSX)
     , m_style(source.m_style)
 #endif
+#if 0 // BKTODO:
     , m_harfBuzzFace(nullptr)
+#endif
     , m_isHashTableDeletedValue(false)
 #if OS(WIN)
     , m_paintTextFlags(source.m_paintTextFlags)
@@ -140,7 +157,9 @@ FontPlatformData::FontPlatformData(const FontPlatformData& src, float textSize)
 #if !OS(MACOSX)
     , m_style(src.m_style)
 #endif
+#if 0 // BKTODO:
     , m_harfBuzzFace(nullptr)
+#endif
     , m_isHashTableDeletedValue(false)
 #if OS(WIN)
     , m_paintTextFlags(src.m_paintTextFlags)
@@ -205,7 +224,9 @@ const FontPlatformData& FontPlatformData::operator=(const FontPlatformData& othe
     m_textSize = other.m_textSize;
     m_syntheticBold = other.m_syntheticBold;
     m_syntheticItalic = other.m_syntheticItalic;
+#if 0 // BKTODO:
     m_harfBuzzFace = nullptr;
+#endif
     m_orientation = other.m_orientation;
 #if !OS(MACOSX)
     m_style = other.m_style;
@@ -264,12 +285,17 @@ SkTypeface* FontPlatformData::typeface() const
 
 HarfBuzzFace* FontPlatformData::harfBuzzFace() const
 {
+    assert(false); // BKTODO:
+    return nullptr;
+#if 0
     if (!m_harfBuzzFace)
         m_harfBuzzFace = HarfBuzzFace::create(const_cast<FontPlatformData*>(this), uniqueID());
 
     return m_harfBuzzFace.get();
+#endif
 }
 
+#if 0 // BKTODO:
 static inline bool tableHasSpace(hb_face_t* face, hb_set_t* glyphs,
     hb_tag_t tag, hb_codepoint_t space)
 {
@@ -282,10 +308,14 @@ static inline bool tableHasSpace(hb_face_t* face, hb_set_t* glyphs,
     }
     return false;
 }
+#endif
 
 bool FontPlatformData::hasSpaceInLigaturesOrKerning(
     TypesettingFeatures features) const
 {
+    assert(false); // BKTODO:
+    return false;
+#if 0
     const HarfBuzzFace* hbFace = harfBuzzFace();
     if (!hbFace)
         return false;
@@ -317,6 +347,7 @@ bool FontPlatformData::hasSpaceInLigaturesOrKerning(
     hb_set_destroy(glyphs);
 
     return foundSpaceInTable;
+#endif
 }
 
 unsigned FontPlatformData::hash() const

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TextEncodingRegistry.cpp
+// Description: TextEncodingRegistry Class
+//      Author: Ziming Li
+//     Created: 2019-03-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2007-2009 Torch Mobile, Inc.
@@ -36,7 +47,6 @@
 #include "wtf/StringExtras.h"
 #include "wtf/ThreadingPrimitives.h"
 #include "wtf/text/CString.h"
-#include "wtf/text/TextCodecICU.h"
 #include "wtf/text/TextCodecLatin1.h"
 #include "wtf/text/TextCodecReplacement.h"
 #include "wtf/text/TextCodecUTF16.h"
@@ -247,8 +257,11 @@ static void extendTextCodecMaps()
     TextCodecReplacement::registerEncodingNames(addToTextEncodingNameMap);
     TextCodecReplacement::registerCodecs(addToTextCodecMap);
 
+    assert(false); // BKTODO:
+#if 0
     TextCodecICU::registerEncodingNames(addToTextEncodingNameMap);
     TextCodecICU::registerCodecs(addToTextCodecMap);
+#endif
 
     pruneBlacklistedCodecs();
 }

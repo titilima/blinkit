@@ -15,12 +15,45 @@
     <Filter Include="base\strings">
       <UniqueIdentifier>{310712ee-cd0a-4aae-9162-f15a537d8e11}</UniqueIdentifier>
     </Filter>
+    <Filter Include="base\time">
+      <UniqueIdentifier>{1c247f8a-c98d-488b-b454-1ee1ce13fe78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="base\third_party">
+      <UniqueIdentifier>{f04fbe79-203b-4e85-a094-98887f18a9a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="base\third_party\nspr">
+      <UniqueIdentifier>{1e9367ea-655e-407e-bd86-b5b27bb3c1cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\base\strings\string_util.cc">
+      <Filter>base\strings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\base\strings\string_util_constants.cc">
+      <Filter>base\strings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\base\rand_util_win.cc">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\base\time\time.cc">
+      <Filter>base\time</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\base\time\time_win.cc">
+      <Filter>base\time</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\base\strings\stringprintf.cc">
+      <Filter>base\strings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\base\third_party\nspr\prtime.cc">
+      <Filter>base\third_party\nspr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\base\cpu.cc">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\base\strings\utf_string_conversion_utils.cpp">
       <Filter>base\strings</Filter>
     </ClCompile>
   </ItemGroup>
@@ -64,9 +97,6 @@
     <ClInclude Include="..\..\..\src\chromium\base\stl_util.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\base\sys_info.h">
-      <Filter>base</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\base\template_util.h">
       <Filter>base</Filter>
     </ClInclude>
@@ -87,6 +117,24 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\base\strings\utf_string_conversion_utils.h">
       <Filter>base\strings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\strings\utf_string_conversions.h">
+      <Filter>base\strings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\time\time.h">
+      <Filter>base\time</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\strings\stringprintf.h">
+      <Filter>base\strings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\third_party\nspr\prtime.h">
+      <Filter>base\third_party\nspr</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\bit_cast.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\cpu.h">
+      <Filter>base</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

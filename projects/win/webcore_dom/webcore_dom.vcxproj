@@ -234,7 +234,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\FirstLetterPseudoElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\FrameRequestCallbackCollection.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IconURL.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IdleDeadline.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IdTargetObserver.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IdTargetObserverRegistry.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IncrementLoadEventDelayCount.cpp" />
@@ -273,7 +272,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\RemoteSecurityContext.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptableDocumentParser.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptedAnimationController.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptedIdleTaskController.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptLoader.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptRunner.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\SecurityContext.cpp" />
@@ -324,6 +322,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventListenerMap.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventPath.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventTarget.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\event_factory.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\FocusEvent.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\GenericEventQueue.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\GestureEvent.cpp" />
@@ -451,7 +450,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\FrameRequestCallbackCollection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\GlobalEventHandlers.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IconURL.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IdleDeadline.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IdleRequestCallback.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IdTargetObserver.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IdTargetObserverRegistry.h" />
@@ -508,7 +506,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScopedWindowFocusAllowedIndicator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptableDocumentParser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptedAnimationController.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptedIdleTaskController.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptLoader.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptLoaderClient.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptRunner.h" />
