@@ -75,6 +75,22 @@ public:
     virtual int BKAPI Load(const char *URI) = 0;
 };
 
+#ifdef _ATL_VER
+
+template <class T, class Client = BkViewClient>
+class BkViewImplT : public Client
+{
+protected:
+    BkViewImplT(void) : m_view(::BkGetApp()->CreateView(*this)) {}
+
+    BkView* GetView(void) { return m_view; }
+    const BkView* GetView(void) const { return m_view; }
+private:
+    BkView *m_view;
+};
+
+#endif // _ATL_VER
+
 } // namespace BlinKit
 
 extern "C" BKEXPORT BlinKit::BkApp* BKAPI BkInitialize(BlinKit::BkAppClient *client);
