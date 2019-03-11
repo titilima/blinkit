@@ -29,5 +29,10 @@ bool isPrintableChar(UChar32 c)
     return !!u_isprint(c);
 }
 
+bool isPunct(UChar32 c)
+{
+    return !!u_ispunct(c);
+}
+
 } // namespace Unicode
 } // namespace WTF
