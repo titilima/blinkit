@@ -26,7 +26,12 @@ public:
     virtual ~AppImpl(void);
 
     void Initialize(BkAppClient *client);
+protected:
+    AppImpl(void);
 private:
+    // BkApp
+    void BKAPI Exit(void) override final;
+
     BkAppClient *m_client = nullptr;
 };
 

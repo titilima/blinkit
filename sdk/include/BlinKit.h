@@ -34,6 +34,8 @@ class BkAppClient {
 };
 
 class BkApp {
+public:
+    virtual void BKAPI Exit(void) = 0;
 };
 
 } // namespace BlinKit
