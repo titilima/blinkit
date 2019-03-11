@@ -159,9 +159,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="main_frame.cpp" />
     <ClCompile Include="win_main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="main_frame.h" />
     <ClInclude Include="_pc.h" />
   </ItemGroup>
   <ItemGroup>

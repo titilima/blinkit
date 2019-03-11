@@ -14,8 +14,11 @@
 
 #pragma once
 
+#include <cassert>
+
 #include <atlbase.h>
 extern CComModule _Module;
+#include <atlwin.h>
 
 #include <BlinKit.h>
 using namespace BlinKit;
