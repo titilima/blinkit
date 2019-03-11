@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - url Library
+// -------------------------------------------------
+//   File Name: origin.h
+// Description: Origin Class
+//      Author: Ziming Li
+//     Created: 2019-03-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -129,9 +140,6 @@ class URL_EXPORT Origin {
   SchemeHostPort tuple_;
   bool unique_;
 };
-
-URL_EXPORT std::ostream& operator<<(std::ostream& out,
-                                    const Origin& origin);
 
 }  // namespace url
 

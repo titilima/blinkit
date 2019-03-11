@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - url Library
+// -------------------------------------------------
+//   File Name: origin.cc
+// Description: Origin Class
+//      Author: Ziming Li
+//     Created: 2019-03-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -74,10 +85,6 @@ bool Origin::IsSameOriginWith(const Origin& other) const {
 
 bool Origin::operator<(const Origin& other) const {
   return tuple_ < other.tuple_;
-}
-
-std::ostream& operator<<(std::ostream& out, const url::Origin& origin) {
-  return out << origin.Serialize();
 }
 
 }  // namespace url
