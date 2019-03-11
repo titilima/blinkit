@@ -38,3 +38,10 @@ UBool u_isprint(UChar32 c)
     GET_PROPS(c, props);
     return (UBool)((CAT_MASK(props) & U_GC_C_MASK) == 0);
 }
+
+UBool u_ispunct(UChar32 c)
+{
+    uint32_t props;
+    GET_PROPS(c, props);
+    return (UBool)((CAT_MASK(props) & U_GC_P_MASK) != 0);
+}
