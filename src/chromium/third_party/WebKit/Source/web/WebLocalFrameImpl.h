@@ -89,7 +89,6 @@ public:
     WebVector<WebIconURL> iconURLs(int iconTypesMask) const override;
     void setRemoteWebLayer(WebLayer*) override;
     void setContentSettingsClient(WebContentSettingsClient*) override;
-    void setSharedWorkerRepositoryClient(WebSharedWorkerRepositoryClient*) override;
     WebSize scrollOffset() const override;
     void setScrollOffset(const WebSize&) override;
     WebSize contentsSize() const override;
@@ -122,7 +121,6 @@ public:
     void reloadWithOverrideURL(const WebURL& overrideUrl, bool ignoreCache) override;
     void reloadImage(const WebNode&) override;
     void loadRequest(const WebURLRequest&) override;
-    void loadHistoryItem(const WebHistoryItem&, WebHistoryLoadType, WebURLRequest::CachePolicy) override;
     void loadData(
         const WebData&, const WebString& mimeType, const WebString& textEncoding,
         const WebURL& baseURL, const WebURL& unreachableURL, bool replace) override;
@@ -215,8 +213,6 @@ public:
     void setFrameOwnerProperties(const WebFrameOwnerProperties&) override;
     WebLocalFrameImpl* localRoot() override;
     void sendPings(const WebNode& contextNode, const WebURL& destinationURL) override;
-    WebURLRequest requestFromHistoryItem(const WebHistoryItem&, WebURLRequest::CachePolicy)
-        const override;
     WebURLRequest requestForReload(WebFrameLoadType, const WebURL&) const override;
     void load(const WebURLRequest&, WebFrameLoadType, const WebHistoryItem&,
         WebHistoryLoadType) override;

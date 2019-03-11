@@ -606,15 +606,6 @@ void WebLocalFrameImpl::loadRequest(const WebURLRequest& request)
     load(request, WebFrameLoadType::Standard, WebHistoryItem(), WebHistoryDifferentDocumentLoad);
 }
 
-void WebLocalFrameImpl::loadHistoryItem(const WebHistoryItem& item, WebHistoryLoadType loadType,
-    WebURLRequest::CachePolicy cachePolicy)
-{
-    // TODO(clamy): Remove this function once RenderFrame calls load for all
-    // requests.
-    WebURLRequest request = requestFromHistoryItem(item, cachePolicy);
-    load(request, WebFrameLoadType::BackForward, item, loadType);
-}
-
 void WebLocalFrameImpl::loadData(const WebData& data, const WebString& mimeType, const WebString& textEncoding, const WebURL& baseURL, const WebURL& unreachableURL, bool replace)
 {
     ASSERT(frame());
@@ -1224,20 +1215,8 @@ PassRefPtrWillBeRawPtr<LocalFrame> WebLocalFrameImpl::createChildFrame(const Fra
     if (!webframeChild->parent())
         return nullptr;
 
-    // If we're moving in the back/forward list, we might want to replace the content
-    // of this child frame with whatever was there at that point.
-    RefPtrWillBeRawPtr<HistoryItem> childItem = nullptr;
-    if (isBackForwardLoadType(frame()->loader().loadType()) && !frame()->document()->loadEventFinished())
-        childItem = PassRefPtrWillBeRawPtr<HistoryItem>(webframeChild->client()->historyItemForNewChildFrame());
-
     FrameLoadRequest newRequest = request;
-    FrameLoadType loadType = FrameLoadTypeStandard;
-    if (childItem) {
-        newRequest = FrameLoadRequest(request.originDocument(),
-            FrameLoader::resourceRequestFromHistoryItem(childItem.get(), UseProtocolCachePolicy));
-        loadType = FrameLoadTypeInitialHistoryLoad;
-    }
-    webframeChild->frame()->loader().load(newRequest, loadType, childItem.get());
+    webframeChild->frame()->loader().load(newRequest, FrameLoadTypeStandard, nullptr);
 
     // Note a synchronous navigation (about:blank) would have already processed
     // onload, so it is possible for the child frame to have already been
@@ -1461,15 +1440,6 @@ void WebLocalFrameImpl::sendPings(const WebNode& contextNode, const WebURL& dest
     Element* anchor = contextNode.constUnwrap<Node>()->enclosingLinkEventParentOrSelf();
     if (isHTMLAnchorElement(anchor))
         toHTMLAnchorElement(anchor)->sendPings(destinationURL);
-}
-
-WebURLRequest WebLocalFrameImpl::requestFromHistoryItem(const WebHistoryItem& item,
-    WebURLRequest::CachePolicy cachePolicy) const
-{
-    RefPtrWillBeRawPtr<HistoryItem> historyItem = PassRefPtrWillBeRawPtr<HistoryItem>(item);
-    ResourceRequest request = FrameLoader::resourceRequestFromHistoryItem(
-        historyItem.get(), static_cast<ResourceRequestCachePolicy>(cachePolicy));
-    return WrappedResourceRequest(request);
 }
 
 WebURLRequest WebLocalFrameImpl::requestForReload(WebFrameLoadType loadType,

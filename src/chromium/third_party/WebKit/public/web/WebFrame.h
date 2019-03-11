@@ -169,9 +169,6 @@ public:
     // null if the content is being rendered in the current process.
     virtual void setRemoteWebLayer(WebLayer*) = 0;
 
-    // Initializes the various client interfaces.
-    virtual void setSharedWorkerRepositoryClient(WebSharedWorkerRepositoryClient*) = 0;
-
     // Returns true if the frame is enforcing strict mixed content checking.
     BLINK_EXPORT bool shouldEnforceStrictMixedContentChecking() const;
 
@@ -326,13 +323,6 @@ public:
 
     // Load the given URL.
     virtual void loadRequest(const WebURLRequest&) = 0;
-
-    // Load the given history state, corresponding to a back/forward
-    // navigation of a frame. Multiple frames may be navigated via separate calls.
-    virtual void loadHistoryItem(
-        const WebHistoryItem&,
-        WebHistoryLoadType,
-        WebURLRequest::CachePolicy = WebURLRequest::UseProtocolCachePolicy) = 0;
 
     // Loads the given data with specific mime type and optional text
     // encoding.  For HTML data, baseURL indicates the security origin of

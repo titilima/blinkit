@@ -68,10 +68,6 @@ public:
 
     // Navigation ----------------------------------------------------------
 
-    // Returns a WebURLRequest corresponding to the load of the WebHistoryItem.
-    virtual WebURLRequest requestFromHistoryItem(const WebHistoryItem&, WebURLRequest::CachePolicy)
-        const = 0;
-
     // Returns a WebURLRequest corresponding to the reload of the current
     // HistoryItem.
     virtual WebURLRequest requestForReload(WebFrameLoadType,
