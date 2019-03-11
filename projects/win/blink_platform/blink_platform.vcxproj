@@ -108,7 +108,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(RepoRoot)third_party\harfbuzz\src;$(RepoRoot)third_party\libpng;$(RepoRoot)third_party\ots\include;$(SrcRoot)harfbuzz;$(SrcRoot)libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(RepoRoot)third_party\harfbuzz\src;$(RepoRoot)third_party\libpng;$(RepoRoot)third_party\ots\include;$(SrcRoot)harfbuzz;$(SrcRoot)libpng</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -137,7 +137,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(RepoRoot)third_party\harfbuzz\src;$(RepoRoot)third_party\libpng;$(RepoRoot)third_party\ots\include;$(SrcRoot)harfbuzz;$(SrcRoot)libpng;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(RepoRoot)third_party\harfbuzz\src;$(RepoRoot)third_party\libpng;$(RepoRoot)third_party\ots\include;$(SrcRoot)harfbuzz;$(SrcRoot)libpng</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
