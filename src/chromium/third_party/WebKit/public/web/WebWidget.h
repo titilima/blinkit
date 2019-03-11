@@ -1,3 +1,13 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebWidget.h
+// Description: WebWidget Class
+//      Author: Ziming Li
+//     Created: 2019-03-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
 
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
@@ -139,14 +149,6 @@ public:
         const WebFloatSize& elasticOverscrollDelta,
         float scaleFactor,
         float topControlsShownRatioDelta) { }
-
-    // Records composite or render events for the Performance Timeline.
-    // See http://w3c.github.io/frame-timing/ for definition of terms.
-    enum FrameTimingEventType {
-        CompositeEvent,
-        RenderEvent,
-    };
-    virtual void recordFrameTimingEvent(FrameTimingEventType eventType, int64_t RectId, const WebVector<WebFrameTimingEvent>& events) { }
 
     // Called to inform the WebWidget that mouse capture was lost.
     virtual void mouseCaptureLost() { }

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebViewFrameWidget.cpp
+// Description: WebViewFrameWidget Class
+//      Author: Ziming Li
+//     Created: 2019-03-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be found
 // in the LICENSE file.
@@ -129,11 +140,6 @@ void WebViewFrameWidget::applyViewportDeltas(
     float topControlsShownRatioDelta)
 {
     return m_webView->applyViewportDeltas(visualViewportDelta, layoutViewportDelta, elasticOverscrollDelta, scaleFactor, topControlsShownRatioDelta);
-}
-
-void WebViewFrameWidget::recordFrameTimingEvent(FrameTimingEventType eventType, int64_t rectId, const WebVector<WebFrameTimingEvent>& events)
-{
-    return m_webView->recordFrameTimingEvent(eventType, rectId, events);
 }
 
 void WebViewFrameWidget::mouseCaptureLost()
