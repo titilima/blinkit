@@ -30,12 +30,49 @@
 
 namespace BlinKit {
 
+class BkCrawler;
+class BkCrawlerClient;
+class BkView;
+class BkViewClient;
+
+/**
+ * Base Definitions
+ */
+
+class BkError {
+public:
+    enum {
+        Success = 0,
+        UnknownError,
+    };
+};
+
+/**
+ * Application
+ */
+
 class BkAppClient {
 };
 
 class BkApp {
 public:
     virtual void BKAPI Exit(void) = 0;
+
+    virtual BkCrawler* BKAPI CreateCrawler(BkCrawlerClient &client) = 0;
+    virtual BkView* BKAPI CreateView(BkViewClient &client) = 0;
+};
+
+/**
+ * View
+ */
+
+class BkViewClient {
+};
+
+class BkView {
+public:
+    virtual void BKAPI Destroy(void) = 0;
+    virtual int BKAPI Load(const char *URI) = 0;
 };
 
 } // namespace BlinKit

@@ -31,6 +31,8 @@ protected:
 private:
     // BkApp
     void BKAPI Exit(void) override final;
+    BkCrawler* BKAPI CreateCrawler(BkCrawlerClient &client) override final;
+    BkView* BKAPI CreateView(BkViewClient &client) override final;
 
     BkAppClient *m_client = nullptr;
 };

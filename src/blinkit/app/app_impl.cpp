@@ -14,6 +14,8 @@
 #include "public/web/WebCache.h"
 #include "public/web/WebKit.h"
 
+#include "view/view_impl.h"
+
 namespace BlinKit {
 
 static AppImpl *theApp = nullptr;
@@ -28,6 +30,17 @@ AppImpl::~AppImpl(void)
 {
     assert(theApp == this);
     theApp = nullptr;
+}
+
+BkCrawler* BKAPI AppImpl::CreateCrawler(BkCrawlerClient &client)
+{
+    assert(false); // BKTODO:
+    return nullptr;
+}
+
+BkView* BKAPI AppImpl::CreateView(BkViewClient &client)
+{
+    return ViewImpl::CreateInstance(client);
 }
 
 void BKAPI AppImpl::Exit(void)

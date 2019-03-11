@@ -18,7 +18,7 @@
 
 #if OS_WIN
 
-#   pragma warning(disable: 4291)
+#   pragma warning(disable: 4244 4291)
 
 #   define NOMINMAX
 #   define WIN32_LEAN_AND_MEAN
