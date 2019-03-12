@@ -65,6 +65,11 @@ void BKAPI AppImpl::Exit(void)
     delete theApp;
 }
 
+AppImpl& AppImpl::Get(void)
+{
+    return *theApp;
+}
+
 void AppImpl::Initialize(BkAppClient *client)
 {
     m_client = client;

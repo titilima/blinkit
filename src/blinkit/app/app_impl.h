@@ -27,6 +27,7 @@ public:
     virtual ~AppImpl(void);
 
     void Initialize(BkAppClient *client);
+    static AppImpl& Get(void);
 
     // blink::Platform
     blink::WebThread* currentThread(void) override final;

@@ -11,6 +11,9 @@
 
 #include "scheduler_impl.h"
 
+#include "blink_impl/thread_impl.h"
+#include "blink_impl/view_scheduler_impl.h"
+
 using namespace blink;
 
 namespace BlinKit {
@@ -40,14 +43,12 @@ bool SchedulerImpl::canExceedIdleDeadlineIfRequired(void)
 
 WebPassOwnPtr<WebViewScheduler> SchedulerImpl::createWebViewScheduler(WebView *webView)
 {
-    assert(false); // BKTODO:
-    return nullptr;
+    return adoptWebPtr(ViewSchedulerImpl::CreateInstance(m_thread));
 }
 
 WebTaskRunner* SchedulerImpl::loadingTaskRunner(void)
 {
-    assert(false); // BKTODO:
-    return nullptr;
+    return m_thread.taskRunner();
 }
 
 void SchedulerImpl::onNavigationStarted(void)
@@ -89,8 +90,7 @@ void SchedulerImpl::suspendTimerQueue(void)
 
 WebTaskRunner* SchedulerImpl::timerTaskRunner(void)
 {
-    assert(false); // BKTODO:
-    return nullptr;
+    return m_thread.taskRunner();
 }
 
 } // namespace BlinKit
