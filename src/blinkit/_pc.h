@@ -29,5 +29,11 @@
 #define INSIDE_BLINK            1
 
 #include <cassert>
+#include <memory>
+#include <unordered_map>
+
+#if OS_WIN
+#   include <Windows.h>
+#endif
 
 #endif // BLINKIT_BLINKIT__PC_H
