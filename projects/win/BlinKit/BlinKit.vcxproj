@@ -169,6 +169,9 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\src\blinkit\app\app_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\app\win_app.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\scheduler_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\thread_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\browser\browser_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\view\view_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\view\win_view.cpp" />
@@ -181,6 +184,9 @@
     <ClInclude Include="..\..\..\sdk\include\BlinKit.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\win_app.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\scheduler_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\thread_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_thread.h" />
     <ClInclude Include="..\..\..\src\blinkit\browser\browser_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\view\view_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\view\win_view.h" />

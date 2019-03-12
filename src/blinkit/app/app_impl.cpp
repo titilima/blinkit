@@ -24,6 +24,10 @@ AppImpl::AppImpl(void)
 {
     assert(nullptr == theApp);
     theApp = this;
+
+    blink::PlatformThreadId currentThreadId = ThreadImpl::CurrentThreadId();
+    ThreadImpl::ApplyThreadId(currentThreadId);
+    m_threads[currentThreadId] = this;
 }
 
 AppImpl::~AppImpl(void)
@@ -41,6 +45,17 @@ BkCrawler* BKAPI AppImpl::CreateCrawler(BkCrawlerClient &client)
 BkView* BKAPI AppImpl::CreateView(BkViewClient &client)
 {
     return ViewImpl::CreateInstance(client);
+}
+
+blink::WebThread* AppImpl::currentThread(void)
+{
+    AutoLock lock(m_lock);
+    auto it = m_threads.find(ThreadImpl::CurrentThreadId());
+    if (std::end(m_threads) != it)
+        return it->second;
+
+    assert(std::end(m_threads) != it);
+    return nullptr;
 }
 
 void BKAPI AppImpl::Exit(void)
