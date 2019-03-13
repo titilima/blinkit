@@ -44,6 +44,18 @@ public:
     enum {
         Success = 0,
         UnknownError,
+        InvalidOption,
+        Forbidden,
+        NotFound,
+        NetworkError,
+        Cancelled,
+        Exception,
+        EvalError,
+        RangeError,
+        ReferenceError,
+        SyntaxError,
+        TypeError,
+        URIError
     };
 };
 
