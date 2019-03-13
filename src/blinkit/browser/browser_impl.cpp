@@ -11,6 +11,7 @@
 
 #include "browser_impl.h"
 
+#include "sdk/include/BlinKit.h"
 #include "public/web/WebCache.h" 
 #include "public/web/WebLocalFrame.h"
 
@@ -32,6 +33,14 @@ BrowserImpl::~BrowserImpl(void)
 {
     m_webView->close();
     WebCache::clear();
+}
+
+int BrowserImpl::Load(const KURL &URL)
+{
+    if (!URL.isValid())
+        return BkError::URIError;
+    m_webView->mainFrame()->loadRequest(WebURLRequest(URL));
+    return BkError::Success;
 }
 
 } // namespace BlinKit

@@ -18,6 +18,10 @@
 #include "public/web/WebView.h"
 #include "public/web/WebViewClient.h"
 
+namespace blink {
+class KURL;
+}
+
 namespace BlinKit {
 
 class BrowserImpl : public blink::WebViewClient, public blink::WebFrameClient
@@ -28,6 +32,8 @@ protected:
 
     blink::WebView* GetWebView(void) { return m_webView; }
     const blink::WebView* GetWebView(void) const { return m_webView; }
+protected:
+    int Load(const blink::KURL &URL);
 private:
     // blink::WebWidgetClient
     bool allowsBrokenNullLayerTreeView(void) const final { return true; }

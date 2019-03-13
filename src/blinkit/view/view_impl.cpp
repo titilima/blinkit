@@ -11,6 +11,10 @@
 
 #include "view_impl.h"
 
+#include "platform/weborigin/KURL.h"
+
+using namespace blink;
+
 namespace BlinKit {
 
 ViewImpl::ViewImpl(BkViewClient &client) : m_client(client)
@@ -25,8 +29,10 @@ ViewImpl::~ViewImpl(void)
 
 int BKAPI ViewImpl::Load(const char *URI)
 {
-    assert(false); // BKTODO:
-    return BkError::UnknownError;
+    KURL u(ParsedURLString, URI);
+    if (u.protocolIsInHTTPFamily())
+        return BkError::URIError;
+    return BrowserImpl::Load(u);
 }
 
 } // namespace BlinKit
