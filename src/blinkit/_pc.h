@@ -30,7 +30,9 @@
 
 #include <cassert>
 #include <memory>
+#include <string>
 #include <unordered_map>
+#include <vector>
 
 #if OS_WIN
 #   include <Windows.h>
