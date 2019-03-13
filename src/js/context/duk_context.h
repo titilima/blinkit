@@ -18,6 +18,8 @@ namespace BlinKit {
 
 class DukContext
 {
+public:
+    void Reset(void);
 };
 
 } // namespace BlinKit

@@ -80,7 +80,8 @@ void ScriptController::namedItemRemoved(HTMLDocument *, const AtomicString &)
 
 void ScriptController::updateDocument(void)
 {
-    assert(false); // BKTODO:
+    if (m_context)
+        m_context->Reset();
 }
 
 void ScriptController::updateSecurityOrigin(SecurityOrigin *)

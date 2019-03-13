@@ -13,4 +13,9 @@
 
 namespace BlinKit {
 
+void DukContext::Reset(void)
+{
+    assert(false); // BKTODO:
+}
+
 } // namespace BlinKit
