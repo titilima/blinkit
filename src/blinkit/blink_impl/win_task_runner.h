@@ -23,10 +23,8 @@ class WinTaskRunner final : public TaskRunnerImpl
 public:
     WinTaskRunner(ThreadImpl &thread);
 
-    void ProcessTaskMessage(WPARAM w, LPARAM l);
+    bool ProcessMessage(const MSG &msg);
     static LPARAM CreateTaskData(Task *task, DWORD delayMs);
-
-    static const UINT TaskMessage;
 private:
     void Run(Task *task);
     void SetTimer(UINT uElapse, Task *task);

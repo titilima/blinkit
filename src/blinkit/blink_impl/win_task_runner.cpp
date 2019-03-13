@@ -24,7 +24,7 @@ struct TaskData {
     DWORD delayMs;
 };
 
-const UINT WinTaskRunner::TaskMessage = RegisterWindowMessage(TEXT("BkTaskMessage"));
+static const UINT TaskMessage = RegisterWindowMessage(TEXT("BkTaskMessage"));
 
 WinTaskRunner::WinTaskRunner(ThreadImpl &thread) : TaskRunnerImpl(thread)
 {
@@ -65,9 +65,12 @@ void WinTaskRunner::postTask(const WebTraceLocation &location, Task *task)
     PostThreadMessage(m_thread.threadId(), TaskMessage, 0, CreateTaskData(task, 0));
 }
 
-void WinTaskRunner::ProcessTaskMessage(WPARAM w, LPARAM l)
+bool WinTaskRunner::ProcessMessage(const MSG &msg)
 {
-    TaskData *td = reinterpret_cast<TaskData *>(l);
+    if (TaskMessage != msg.message)
+        return false;
+
+    TaskData *td = reinterpret_cast<TaskData *>(msg.lParam);
     if (0 == td->delayMs)
     {
         assert(0 == td->startTick);
@@ -79,6 +82,7 @@ void WinTaskRunner::ProcessTaskMessage(WPARAM w, LPARAM l)
         SetTimer(td->delayMs - delta, td->threadTask);
     }
     delete td;
+    return true;
 }
 
 void WinTaskRunner::ProcessTimer(UINT_PTR idEvent)

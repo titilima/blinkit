@@ -20,9 +20,20 @@ namespace BlinKit {
 
 class WinThread final : public ThreadImpl
 {
-private:
-    // blink::WebThread
+public:
+    ~WinThread(void);
 
+    struct CreateData;
+    void Initialize(CreateData &cd);
+private:
+    static void ApplyName(const char *name);
+    static void EnsureMessageQueueCreated(HANDLE hEvent);
+    DWORD Run(void);
+    static DWORD WINAPI ThreadProc(PVOID param);
+
+#ifdef _DEBUG
+    std::string m_name;
+#endif
     HANDLE m_hThread = nullptr;
 };
 

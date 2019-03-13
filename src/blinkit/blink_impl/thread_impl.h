@@ -25,6 +25,8 @@ class SchedulerImpl;
 class ThreadImpl : public blink::WebThread
 {
 public:
+    static ThreadImpl* CreateInstance(const char *name);
+
     static blink::PlatformThreadId CurrentThreadId(void);
 
     void WillProcessTask(void);
@@ -32,6 +34,7 @@ public:
 
     // blink::WebThread
     blink::WebTaskRunner* taskRunner(void) override final { return m_taskRunner.get(); }
+    bool isCurrentThread(void) const override final { return CurrentThreadId() == threadId(); }
     blink::PlatformThreadId threadId(void) const override final { return m_threadId; }
 protected:
     ThreadImpl(void);
@@ -44,7 +47,6 @@ protected:
     std::recursive_mutex m_lock;
 private:
     // blink::WebThread
-    bool isCurrentThread(void) const override final { return CurrentThreadId() == threadId(); }
     void addTaskObserver(blink::WebThread::TaskObserver *observer) override final;
     void removeTaskObserver(blink::WebThread::TaskObserver *observer) override final;
     blink::WebScheduler* scheduler(void) const override final;
