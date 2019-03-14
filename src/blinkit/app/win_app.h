@@ -20,6 +20,15 @@ namespace BlinKit {
 
 class WinApp final : public AppImpl
 {
+public:
+    WinApp(void);
+    ~WinApp(void);
+
+    static WinApp& Get(void);
+private:
+    static LRESULT CALLBACK HookProc(int code, WPARAM w, LPARAM l);
+
+    HHOOK m_msgHook;
 };
 
 } // namespace BlinKit
