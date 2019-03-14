@@ -25,6 +25,9 @@
     <Filter Include="blink_impl">
       <UniqueIdentifier>{e22231d2-3a1c-4096-ab33-846a101fb4fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="loader_tasks">
+      <UniqueIdentifier>{0d4c12f0-4358-4d8b-8b69-fdecb68328a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -64,6 +67,27 @@
       <Filter>blink_impl</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_task_runner.cpp">
+      <Filter>blink_impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\app\app_constants.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\url_loader_impl.cpp">
+      <Filter>blink_impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\loader_task.cpp">
+      <Filter>loader_tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\file_loader_task.cpp">
+      <Filter>loader_tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\file_loader_task_win.cpp">
+      <Filter>loader_tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\response_task.cpp">
+      <Filter>loader_tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\mime_registry_impl.cpp">
       <Filter>blink_impl</Filter>
     </ClCompile>
   </ItemGroup>
@@ -108,6 +132,27 @@
       <Filter>blink_impl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_task_runner.h">
+      <Filter>blink_impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\app\app_constants.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\url_loader_impl.h">
+      <Filter>blink_impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\loader_task.h">
+      <Filter>loader_tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\response_data.h">
+      <Filter>loader_tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\file_loader_task.h">
+      <Filter>loader_tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\response_task.h">
+      <Filter>loader_tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\mime_registry_impl.h">
       <Filter>blink_impl</Filter>
     </ClInclude>
   </ItemGroup>

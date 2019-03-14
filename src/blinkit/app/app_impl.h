@@ -20,6 +20,8 @@
 
 namespace BlinKit {
 
+class MimeRegistryImpl;
+
 class AppImpl : public BkApp, public blink::Platform, public ThreadImpl
 {
 public:
@@ -28,6 +30,8 @@ public:
 
     void Initialize(BkAppClient *client);
     static AppImpl& Get(void);
+
+    blink::WebThread& IOThread(void);
 
     // blink::Platform
     blink::WebThread* currentThread(void) override final;
@@ -38,8 +42,18 @@ private:
     void BKAPI Exit(void) override final;
     BkCrawler* BKAPI CreateCrawler(BkCrawlerClient &client) override final;
     BkView* BKAPI CreateView(BkViewClient &client) override final;
+    // blink::Platform
+    blink::WebMimeRegistry* mimeRegistry(void) override final;
+    blink::WebURLLoader* createURLLoader(void) override final;
+    blink::WebString userAgent(void) override final;
+    blink::WebThread* createThread(const char *name) override final;
+    double currentTimeSeconds(void) override final;
+    double monotonicallyIncreasingTimeSeconds(void) override final;
 
     BkAppClient *m_client = nullptr;
+    std::unique_ptr<MimeRegistryImpl> m_mimeRegistry;
+    std::unique_ptr<blink::WebThread> m_IOThread;
+    double m_firstMonotonicallyIncreasingTime;
     std::unordered_map<blink::PlatformThreadId, blink::WebThread *> m_threads;
 };
 

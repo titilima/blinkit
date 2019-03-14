@@ -167,16 +167,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\blinkit\app\app_constants.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\app\app_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\app\win_app.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\frame_scheduler_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\mime_registry_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\scheduler_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\task_runner_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\thread_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\url_loader_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\view_scheduler_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_task_runner.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\browser\browser_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\file_loader_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\file_loader_task_win.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\loader_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\response_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\view\view_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\view\win_view.cpp" />
     <ClCompile Include="..\_pch.cpp">
@@ -186,16 +193,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\sdk\include\BlinKit.h" />
+    <ClInclude Include="..\..\..\src\blinkit\app\app_constants.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\win_app.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\frame_scheduler_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\mime_registry_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\scheduler_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\task_runner_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\thread_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\url_loader_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\view_scheduler_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_task_runner.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_thread.h" />
     <ClInclude Include="..\..\..\src\blinkit\browser\browser_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\file_loader_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\loader_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\response_data.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\response_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\view\view_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\view\win_view.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />

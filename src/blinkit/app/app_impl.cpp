@@ -11,9 +11,13 @@
 
 #include "app_impl.h"
 
+#include "base/time/time.h"
 #include "public/web/WebCache.h"
 #include "public/web/WebKit.h"
 
+#include "app/app_constants.h"
+#include "blink_impl/mime_registry_impl.h"
+#include "blink_impl/url_loader_impl.h"
 #include "view/view_impl.h"
 
 namespace BlinKit {
@@ -24,6 +28,8 @@ AppImpl::AppImpl(void)
 {
     assert(nullptr == theApp);
     theApp = this;
+
+    m_firstMonotonicallyIncreasingTime = base::Time::Now().ToDoubleT();
 
     blink::PlatformThreadId currentThreadId = ThreadImpl::CurrentThreadId();
     ThreadImpl::ApplyThreadId(currentThreadId);
@@ -42,6 +48,21 @@ BkCrawler* BKAPI AppImpl::CreateCrawler(BkCrawlerClient &client)
     return nullptr;
 }
 
+blink::WebThread* AppImpl::createThread(const char *name)
+{
+    blink::WebThread *thread = ThreadImpl::CreateInstance(name);
+
+    AutoLock lock(m_lock);
+    m_threads[thread->threadId()] = thread;
+
+    return thread;
+}
+
+blink::WebURLLoader* AppImpl::createURLLoader(void)
+{
+    return new URLLoaderImpl;
+}
+
 BkView* BKAPI AppImpl::CreateView(BkViewClient &client)
 {
     return ViewImpl::CreateInstance(client);
@@ -56,6 +77,11 @@ blink::WebThread* AppImpl::currentThread(void)
 
     assert(std::end(m_threads) != it);
     return nullptr;
+}
+
+double AppImpl::currentTimeSeconds(void)
+{
+    return base::Time::Now().ToDoubleT();
 }
 
 void BKAPI AppImpl::Exit(void)
@@ -74,6 +100,39 @@ void AppImpl::Initialize(BkAppClient *client)
 {
     m_client = client;
     blink::initialize(this);
+}
+
+blink::WebThread& AppImpl::IOThread(void)
+{
+    if (!m_IOThread)
+    {
+        AutoLock lock(m_lock);
+        if (!m_IOThread)
+            m_IOThread.reset(createThread("IO"));
+    }
+    return *m_IOThread;
+}
+
+blink::WebMimeRegistry* AppImpl::mimeRegistry(void)
+{
+    if (!m_mimeRegistry)
+    {
+        AutoLock lock(m_lock);
+        if (!m_mimeRegistry)
+            m_mimeRegistry = std::make_unique<MimeRegistryImpl>();
+    }
+    return m_mimeRegistry.get();
+}
+
+double AppImpl::monotonicallyIncreasingTimeSeconds(void)
+{
+    double t = currentTimeSeconds();
+    return t - m_firstMonotonicallyIncreasingTime;
+}
+
+blink::WebString AppImpl::userAgent(void)
+{
+    return blink::WebString::fromUTF8(AppConstants::DefaultUserAgent);
 }
 
 } // namespace BlinKit
