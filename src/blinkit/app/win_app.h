@@ -18,6 +18,8 @@
 
 namespace BlinKit {
 
+class WinThemeEngine;
+
 class WinApp final : public AppImpl
 {
 public:
@@ -28,8 +30,10 @@ public:
 private:
     static LRESULT CALLBACK HookProc(int code, WPARAM w, LPARAM l);
     // blink::Platform
+    blink::WebThemeEngine* themeEngine(void) override;
     blink::WebData loadResource(const char *name) override;
 
+    std::unique_ptr<WinThemeEngine> m_themeEngine;
     HHOOK m_msgHook;
 };
 

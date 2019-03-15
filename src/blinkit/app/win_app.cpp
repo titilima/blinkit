@@ -14,6 +14,7 @@
 #include "base/win/resource_util.h"
 
 #include "blink_impl/win_task_runner.h"
+#include "blink_impl/win_theme_engine.h"
 
 namespace BlinKit {
 
@@ -54,6 +55,17 @@ blink::WebData WinApp::loadResource(const char *name)
 
     assert(false); // Failed loading resource!
     return blink::WebData();
+}
+
+blink::WebThemeEngine* WinApp::themeEngine(void)
+{
+    if (!m_themeEngine)
+    {
+        AutoLock lock(m_lock);
+        if (!m_themeEngine)
+            m_themeEngine = std::make_unique<WinThemeEngine>();
+    }
+    return m_themeEngine.get();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

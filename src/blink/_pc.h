@@ -27,9 +27,10 @@
 
 #endif
 
-#define BLINK_IMPLEMENTATION    1
-#define INSIDE_BLINK            1
+#define BLINK_IMPLEMENTATION            1
+#define INSIDE_BLINK                    1
 #define LIBXML_STATIC
+#define WTF_USE_DEFAULT_RENDER_THEME    1
 
 #include <cassert>
 #include "skia/_skia.h"

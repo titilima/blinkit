@@ -96,6 +96,9 @@
     <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp">
       <Filter>win</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_theme_engine.cpp">
+      <Filter>blink_impl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -163,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_theme_engine.h">
+      <Filter>blink_impl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
