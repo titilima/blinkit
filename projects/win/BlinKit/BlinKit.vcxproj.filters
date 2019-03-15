@@ -28,6 +28,9 @@
     <Filter Include="loader_tasks">
       <UniqueIdentifier>{0d4c12f0-4358-4d8b-8b69-fdecb68328a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="win">
+      <UniqueIdentifier>{174bf2a8-8f1d-4f66-8190-01555f26c74c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -89,6 +92,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\mime_registry_impl.cpp">
       <Filter>blink_impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp">
+      <Filter>win</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -155,10 +161,30 @@
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\mime_registry_impl.h">
       <Filter>blink_impl</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BlinKit.def">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\html.css">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\themeWin.css">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\quirks.css">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\themeWinQuirks.css">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BlinKit.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

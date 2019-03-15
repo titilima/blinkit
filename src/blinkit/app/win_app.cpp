@@ -11,6 +11,8 @@
 
 #include "win_app.h"
 
+#include "base/win/resource_util.h"
+
 #include "blink_impl/win_task_runner.h"
 
 namespace BlinKit {
@@ -41,6 +43,17 @@ LRESULT CALLBACK WinApp::HookProc(int code, WPARAM w, LPARAM l)
         static_cast<WinTaskRunner *>(app.taskRunner())->ProcessMessage(*msg);
     } while (false);
     return CallNextHookEx(app.m_msgHook, code, w, l);
+}
+
+blink::WebData WinApp::loadResource(const char *name)
+{
+    void *data;
+    size_t dataLength;
+    if (base::GetResourceFromModule(theModule, name, "RES", &data, &dataLength))
+        return blink::WebData(reinterpret_cast<const char *>(data), dataLength);
+
+    assert(false); // Failed loading resource!
+    return blink::WebData();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

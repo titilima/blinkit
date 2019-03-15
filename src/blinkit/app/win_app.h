@@ -27,6 +27,8 @@ public:
     static WinApp& Get(void);
 private:
     static LRESULT CALLBACK HookProc(int code, WPARAM w, LPARAM l);
+    // blink::Platform
+    blink::WebData loadResource(const char *name) override;
 
     HHOOK m_msgHook;
 };

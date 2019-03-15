@@ -186,6 +186,7 @@
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\response_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\view\view_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\view\win_view.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -213,6 +214,7 @@
     <ClInclude Include="..\..\..\src\blinkit\view\view_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\view\win_view.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\base\base.vcxproj">
@@ -274,7 +276,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\html.css" />
+    <None Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\quirks.css" />
+    <None Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\themeWin.css" />
+    <None Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\themeWinQuirks.css" />
     <None Include="BlinKit.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BlinKit.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
