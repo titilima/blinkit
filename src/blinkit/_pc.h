@@ -36,6 +36,7 @@
 
 #if OS_WIN
 #   include <Windows.h>
+extern HMODULE theModule;
 #endif
 
 #endif // BLINKIT_BLINKIT__PC_H
