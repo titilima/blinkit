@@ -157,7 +157,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\base\win\resource_util.cpp" />
     <ClCompile Include="..\..\..\src\chromium\base\cpu.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\rand_util_win.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\stringprintf.cc" />
@@ -167,13 +166,13 @@
     <ClCompile Include="..\..\..\src\chromium\base\third_party\nspr\prtime.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\time\time.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\time\time_win.cc" />
+    <ClCompile Include="..\..\..\src\chromium\base\win\resource_util.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\base\win\resource_util.h" />
     <ClInclude Include="..\..\..\src\base\_pc.h" />
     <ClInclude Include="..\..\..\src\chromium\base\base_export.h" />
     <ClInclude Include="..\..\..\src\chromium\base\bit_cast.h" />
@@ -200,6 +199,7 @@
     <ClInclude Include="..\..\..\src\chromium\base\template_util.h" />
     <ClInclude Include="..\..\..\src\chromium\base\third_party\nspr\prtime.h" />
     <ClInclude Include="..\..\..\src\chromium\base\time\time.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\win\resource_util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

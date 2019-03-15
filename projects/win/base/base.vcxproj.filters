@@ -59,7 +59,7 @@
     <ClCompile Include="..\..\..\src\chromium\base\strings\utf_string_conversion_utils.cpp">
       <Filter>base\strings</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\base\win\resource_util.cpp">
+    <ClCompile Include="..\..\..\src\chromium\base\win\resource_util.cpp">
       <Filter>base\win</Filter>
     </ClCompile>
   </ItemGroup>
@@ -142,7 +142,7 @@
     <ClInclude Include="..\..\..\src\chromium\base\cpu.h">
       <Filter>base</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\base\win\resource_util.h">
+    <ClInclude Include="..\..\..\src\chromium\base\win\resource_util.h">
       <Filter>base\win</Filter>
     </ClInclude>
   </ItemGroup>
