@@ -157,6 +157,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\base\win\resource_util.cpp" />
     <ClCompile Include="..\..\..\src\chromium\base\cpu.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\rand_util_win.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\stringprintf.cc" />
@@ -172,6 +173,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\base\win\resource_util.h" />
     <ClInclude Include="..\..\..\src\base\_pc.h" />
     <ClInclude Include="..\..\..\src\chromium\base\base_export.h" />
     <ClInclude Include="..\..\..\src\chromium\base\bit_cast.h" />

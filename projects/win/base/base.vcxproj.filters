@@ -24,6 +24,9 @@
     <Filter Include="base\third_party\nspr">
       <UniqueIdentifier>{1e9367ea-655e-407e-bd86-b5b27bb3c1cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="base\win">
+      <UniqueIdentifier>{182f58a9-7de3-489e-8f96-821c053e999b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -55,6 +58,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\base\strings\utf_string_conversion_utils.cpp">
       <Filter>base\strings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\base\win\resource_util.cpp">
+      <Filter>base\win</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +141,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\base\cpu.h">
       <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\base\win\resource_util.h">
+      <Filter>base\win</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
