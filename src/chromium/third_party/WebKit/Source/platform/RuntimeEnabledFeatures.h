@@ -31,7 +31,6 @@
 class RuntimeEnabledFeatures final {
     STATIC_ONLY(RuntimeEnabledFeatures);
 public:
-    BLINK_DEFINE_STABLE_FEATURE(alwaysUseComplexText)
     BLINK_DEFINE_STABLE_FEATURE(clientHints)
     BLINK_DEFINE_STABLE_FEATURE(cssCompositing)
     BLINK_DEFINE_STABLE_FEATURE(cssVariables)
@@ -48,6 +47,7 @@ public:
     BLINK_DEFINE_STABLE_FEATURE(styleSharing)
     BLINK_DEFINE_STABLE_FEATURE(touch)
 
+    BLINKIT_DISABLE_FEATURE(alwaysUseComplexText)
     BLINKIT_DISABLE_FEATURE(media)
     BLINKIT_DISABLE_FEATURE(xslt)
 
