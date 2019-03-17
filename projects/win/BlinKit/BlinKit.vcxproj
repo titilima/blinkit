@@ -187,6 +187,7 @@
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\response_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\view\view_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\view\win_view.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\win\dib_section.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -215,6 +216,7 @@
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\response_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\view\view_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\view\win_view.h" />
+    <ClInclude Include="..\..\..\src\blinkit\win\dib_section.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
