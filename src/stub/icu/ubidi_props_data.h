@@ -11,8 +11,6 @@
 #   error This file must be #included from ubidi_props.c only.
 #endif
 
-static const UVersionInfo ubidi_props_dataVersion={7,0,0,0};
-
 static const int32_t ubidi_props_indexes[UBIDI_IX_TOP]={0x10,0x5994,0x5628,0x1a,0x620,0x8b4,0x10ac0,0x10af0,0,0,0,0,0,0,0,0x5502b6};
 
 static const uint16_t ubidi_props_trieIndex[11020]={
