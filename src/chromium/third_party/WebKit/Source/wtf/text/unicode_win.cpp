@@ -20,12 +20,6 @@ DecompositionType decompositionType(UChar32 c)
     return DecompositionNone;
 }
 
-Direction direction(UChar32 c)
-{
-    assert(false); // BKTODO:
-    return LeftToRight;
-}
-
 int foldCase(UChar *result, int resultLength, const UChar *src, int srcLength, bool *error)
 {
     assert(false); // BKTODO:

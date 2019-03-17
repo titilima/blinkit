@@ -153,13 +153,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\stub\icu\ubidi_props.cpp" />
     <ClCompile Include="..\..\..\src\stub\icu\uchar.cpp" />
     <ClCompile Include="..\..\..\src\stub\icu\uprops.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\stub\icu\ubidi_props.h" />
+    <ClInclude Include="..\..\..\src\stub\icu\ubidi_props_data.h" />
     <ClInclude Include="..\..\..\src\stub\icu\uchar_props_data.h" />
     <ClInclude Include="..\..\..\src\stub\icu\unicode\brkiter.h" />
     <ClInclude Include="..\..\..\src\stub\icu\unicode\uchar.h" />
+    <ClInclude Include="..\..\..\src\stub\icu\unicode\ucmndata.h" />
+    <ClInclude Include="..\..\..\src\stub\icu\unicode\udata.h" />
+    <ClInclude Include="..\..\..\src\stub\icu\unicode\udatamem.h" />
     <ClInclude Include="..\..\..\src\stub\icu\unicode\umachine.h" />
     <ClInclude Include="..\..\..\src\stub\icu\unicode\uscript.h" />
     <ClInclude Include="..\..\..\src\stub\icu\unicode\usearch.h" />

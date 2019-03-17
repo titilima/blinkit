@@ -190,6 +190,8 @@ UBool u_ispunct(UChar32 c);
 
 UBool u_isprint(UChar32 c);
 
+UCharDirection u_charDirection(UChar32 c);
+
 int8_t u_charType(UChar32 c);
 
 #define U_GET_GC_MASK(c) U_MASK(u_charType(c))

@@ -53,12 +53,30 @@
     <ClInclude Include="..\..\..\src\stub\icu\unicode\brkiter.h">
       <Filter>icu\unicode</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\stub\icu\ubidi_props_data.h">
+      <Filter>icu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\stub\icu\ubidi_props.h">
+      <Filter>icu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\stub\icu\unicode\udata.h">
+      <Filter>icu\unicode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\stub\icu\unicode\udatamem.h">
+      <Filter>icu\unicode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\stub\icu\unicode\ucmndata.h">
+      <Filter>icu\unicode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\stub\icu\uchar.cpp">
       <Filter>icu</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\stub\icu\uprops.cpp">
+      <Filter>icu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\stub\icu\ubidi_props.cpp">
       <Filter>icu</Filter>
     </ClCompile>
   </ItemGroup>

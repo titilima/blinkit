@@ -19,6 +19,11 @@ CharCategory category(UChar32 c)
     return static_cast<CharCategory>(U_GET_GC_MASK(c));
 }
 
+Direction direction(UChar32 c)
+{
+    return static_cast<Direction>(u_charDirection(c));
+}
+
 bool isAlphanumeric(UChar32 c)
 {
     return u_isalnum(c);
