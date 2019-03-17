@@ -104,6 +104,7 @@ void WinTaskRunner::Run(Task *task)
 {
     m_thread.WillProcessTask();
     task->run();
+    delete task;
     m_thread.DidProcessTask();
 }
 

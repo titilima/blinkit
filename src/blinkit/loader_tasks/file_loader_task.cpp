@@ -36,7 +36,6 @@ void FileLoaderTask::run(void)
         default:
             ReportErrorToLoader(r);
     }
-    delete this;
 }
 
 } // namespace BlinKit

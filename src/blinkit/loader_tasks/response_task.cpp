@@ -62,8 +62,6 @@ void ResponseTask::run(void)
     size_t bodySize = m_responseData->Body.size();
     m_client->didReceiveData(m_loader, body, bodySize, 0);
     m_client->didFinishLoading(m_loader, 0.0, bodySize);
-
-    delete this;
 }
 
 } // namespace BlinKit
