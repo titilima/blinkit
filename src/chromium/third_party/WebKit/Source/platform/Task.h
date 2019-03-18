@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Task.h
+// Description: Task Classes
+//      Author: Ziming Li
+//     Created: 2019-03-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -56,6 +67,20 @@ public:
 
 private:
     OwnPtr<Closure> m_closure;
+};
+
+class Task2 : public WebTaskRunner::Task
+{
+public:
+    explicit Task2(const std::function<void()> &closure) : m_closure(closure) {}
+
+    void run(void) override
+    {
+        m_closure();
+    }
+
+private:
+    std::function<void()> m_closure;
 };
 
 } // namespace blink
