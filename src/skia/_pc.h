@@ -21,6 +21,7 @@
 #   pragma warning(disable: 4244 4267 4291 4334 4819)
 
 #   define _CRT_SECURE_NO_WARNINGS
+#   define SK_GDI_ALWAYS_USE_TEXTMETRICS_FOR_FONT_METRICS
 
 #endif
 
