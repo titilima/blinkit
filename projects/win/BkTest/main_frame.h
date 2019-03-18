@@ -29,6 +29,7 @@ private:
     void OnFinalMessage(HWND) override { delete this; }
 public:
     BEGIN_MSG_MAP(MainFrame)
+        CHAIN_MSG_MAP(BlinKit::BkViewImplT<MainFrame>)
         MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
         MESSAGE_HANDLER(WM_CREATE, OnCreate)
     END_MSG_MAP()
