@@ -35,8 +35,8 @@ protected:
     virtual std::unique_ptr<SkCanvas> CreateMemoryCanvas(int width, int height) = 0;
     virtual void DoUpdate(void);
     virtual blink::WebMouseEvent Translate(const MouseEvent &e);
-    virtual void PreHandleInput(const blink::WebMouseEvent &we);
-    virtual void PostHandleInput(const blink::WebMouseEvent &we);
+    virtual void PreHandleInput(const blink::WebInputEvent &e);
+    virtual void PostHandleInput(const blink::WebInputEvent &e);
 
     // BkView
     void BKAPI Destroy(void) override final { delete this; }

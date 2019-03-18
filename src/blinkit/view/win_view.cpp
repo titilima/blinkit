@@ -281,29 +281,44 @@ void BKAPI WinView::Paint(NativeCanvas nativeCanvas, const BkRect *rc)
     BitBlt(nativeCanvas, x, y, w, h, m_memoryDC, x, y, SRCCOPY);
 }
 
-void WinView::PostHandleInput(const WebMouseEvent &we)
+void WinView::PostHandleInput(const WebInputEvent &e)
 {
-    ViewImpl::PostHandleInput(we);
-
-    if (WebInputEvent::MouseEnter == we.type)
+    ViewImpl::PostHandleInput(e);
+    switch (e.type)
     {
-        TRACKMOUSEEVENT tme = { 0 };
-        tme.cbSize = sizeof(tme);
-        tme.dwFlags = TME_LEAVE;
-        tme.hwndTrack = m_hWnd;
-        TrackMouseEvent(&tme);
+        case WebInputEvent::MouseEnter:
+        {
+            TRACKMOUSEEVENT tme = { 0 };
+            tme.cbSize = sizeof(tme);
+            tme.dwFlags = TME_LEAVE;
+            tme.hwndTrack = m_hWnd;
+            TrackMouseEvent(&tme);
+            break;
+        }
+        case WebInputEvent::MouseUp:
+        {
+            const WebMouseEvent &me = static_cast<const WebMouseEvent &>(e);
+            if (WebMouseEvent::ButtonLeft == me.button)
+                ReleaseCapture();
+            break;
+        }
     }
-
-    if (WebInputEvent::MouseUp == we.type && WebMouseEvent::ButtonLeft == we.button)
-        ReleaseCapture();
 }
 
-void WinView::PreHandleInput(const WebMouseEvent &we)
+void WinView::PreHandleInput(const WebInputEvent &e)
 {
-    if (WebInputEvent::MouseDown == we.type && WebMouseEvent::ButtonLeft == we.button)
-        SetCapture(m_hWnd);
+    switch (e.type)
+    {
+        case WebInputEvent::MouseDown:
+        {
+            const WebMouseEvent &me = static_cast<const WebMouseEvent &>(e);
+            if (WebMouseEvent::ButtonLeft == me.button)
+                SetCapture(m_hWnd);
+            break;
+        }
+    }
 
-    ViewImpl::PreHandleInput(we);
+    ViewImpl::PreHandleInput(e);
 }
 
 void WinView::ProcessDoubleClick(UINT message, UINT keyFlags, int x, int y)

@@ -76,26 +76,31 @@ int BKAPI ViewImpl::Load(const char *URI)
     return BrowserImpl::Load(u);
 }
 
-void ViewImpl::PostHandleInput(const WebMouseEvent &we)
+void ViewImpl::PostHandleInput(const WebInputEvent &e)
 {
-    m_lastX = we.x;
-    m_lastY = we.y;
-    switch (we.type)
+    if (!WebInputEvent::isMouseEventType(e.type))
+        return;
+
+    const WebMouseEvent &me = static_cast<const WebMouseEvent &>(e);
+
+    m_lastX = me.x;
+    m_lastY = me.y;
+    switch (e.type)
     {
-        case WebMouseEvent::MouseDown:
-            m_lastDownTime = we.timeStampSeconds;
-            m_lastDownX = we.x;
-            m_lastDownY = we.y;
+        case WebInputEvent::MouseDown:
+            m_lastDownTime = e.timeStampSeconds;
+            m_lastDownX = me.x;
+            m_lastDownY = me.y;
             break;
-        case WebMouseEvent::MouseLeave:
+        case WebInputEvent::MouseLeave:
             m_mouseEntered = false;
             break;
     }
 }
 
-void ViewImpl::PreHandleInput(const WebMouseEvent &we)
+void ViewImpl::PreHandleInput(const WebInputEvent &e)
 {
-    if (WebMouseEvent::MouseEnter == we.type)
+    if (WebInputEvent::MouseEnter == e.type)
         m_mouseEntered = true;
 }
 
@@ -105,6 +110,15 @@ void BKAPI ViewImpl::ProcessInput(const MouseEvent &e)
 
     PreHandleInput(we);
     GetWebView()->handleInputEvent(we);
+    PostHandleInput(we);
+}
+
+void BKAPI ViewImpl::ProcessInput(const KeyboardEvent &e)
+{
+    WebKeyboardEvent we = Translate(e);
+
+    PreHandleInput(we);
+    m_webView->handleInputEvent(we);
     PostHandleInput(we);
 }
 

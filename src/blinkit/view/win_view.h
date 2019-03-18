@@ -48,8 +48,8 @@ private:
     std::unique_ptr<SkCanvas> CreateMemoryCanvas(int width, int height) override;
     void DoUpdate(void) override;
     blink::WebMouseEvent Translate(const MouseEvent &e) override;
-    void PreHandleInput(const blink::WebMouseEvent &we) override;
-    void PostHandleInput(const blink::WebMouseEvent &we) override;
+    void PreHandleInput(const blink::WebInputEvent &e) override;
+    void PostHandleInput(const blink::WebInputEvent &e) override;
 
     HWND m_hWnd = nullptr;
     UINT m_dpi = 96;
