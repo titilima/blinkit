@@ -35,14 +35,17 @@ protected:
     virtual std::unique_ptr<SkCanvas> CreateMemoryCanvas(int width, int height) = 0;
     virtual void DoUpdate(void);
     virtual blink::WebMouseEvent Translate(const MouseEvent &e);
+    virtual blink::WebKeyboardEvent Translate(const KeyboardEvent &e);
     virtual void PreHandleInput(const blink::WebInputEvent &e);
     virtual void PostHandleInput(const blink::WebInputEvent &e);
 
     // BkView
     void BKAPI Destroy(void) override final { delete this; }
     void BKAPI ProcessInput(const MouseEvent &e) override final;
+    void BKAPI ProcessInput(const KeyboardEvent &e) override final;
     void BKAPI Resize(int width, int height) override final;
     void BKAPI SetFocus(bool focused) override final;
+    bool BKAPI GetCaretRect(BkRect *dst) override final;
     void BKAPI SetScaleFactor(float scaleFactor) override final;
 
     BkViewClient &m_client;
@@ -52,6 +55,7 @@ private:
     static SkColor BackgroundColor(void);
     blink::WebInputEvent::Type Translate(MouseEvent::Type t) const;
     static blink::WebMouseEvent::Button Translate(MouseEvent::Button b);
+    static blink::WebInputEvent::Type Translate(KeyboardEvent::Type t);
     bool UpdateRequired(void) const { return *m_updateRequired; }
 
     // BkView

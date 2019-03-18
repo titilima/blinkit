@@ -119,11 +119,25 @@ public:
     };
     virtual void BKAPI ProcessInput(const MouseEvent &e) = 0;
 
+    struct KeyboardEvent {
+        enum Type { KeyDown, KeyUp, Char };
+
+        Type type;
+        int code;
+        bool shiftPressed;
+        bool ctrlPressed;
+        bool altPressed;
+        bool fromKeyPad;
+
+        KeyboardEvent(void) : shiftPressed(false), ctrlPressed(false), altPressed(false), fromKeyPad(false) {}
+    };
+    virtual void BKAPI ProcessInput(const KeyboardEvent &e) = 0;
+
     virtual void BKAPI Attach(NativeView nativeView) = 0;
     virtual void BKAPI Paint(NativeCanvas nativeCanvas, const BkRect *rc = nullptr) = 0;
     virtual void BKAPI Resize(int width, int height) = 0;
     virtual void BKAPI SetFocus(bool focused) = 0;
-
+    virtual bool BKAPI GetCaretRect(BkRect *dst) = 0;
     virtual void BKAPI SetScaleFactor(float scaleFactor) = 0;
 };
 

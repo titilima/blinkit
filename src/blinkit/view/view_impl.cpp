@@ -68,6 +68,19 @@ void ViewImpl::FillCoordinates(WebMouseEvent &dst, int x, int y)
     dst.movementY = dst.y - m_lastY;
 }
 
+bool BKAPI ViewImpl::GetCaretRect(BkRect *dst)
+{
+    WebRect anchor, focus;
+    if (!GetWebView()->selectionBounds(anchor, focus))
+        return false;
+
+    dst->x = focus.x;
+    dst->y = focus.y;
+    dst->width = 1;
+    dst->height = focus.height;
+    return true;
+}
+
 int BKAPI ViewImpl::Load(const char *URI)
 {
     KURL u(ParsedURLString, URI);
@@ -118,7 +131,7 @@ void BKAPI ViewImpl::ProcessInput(const KeyboardEvent &e)
     WebKeyboardEvent we = Translate(e);
 
     PreHandleInput(we);
-    m_webView->handleInputEvent(we);
+    GetWebView()->handleInputEvent(we);
     PostHandleInput(we);
 }
 
@@ -209,6 +222,30 @@ WebMouseEvent ViewImpl::Translate(const MouseEvent &e)
     return we;
 }
 
+WebKeyboardEvent ViewImpl::Translate(const KeyboardEvent &e)
+{
+    WebKeyboardEvent we;
+
+    we.timeStampSeconds = base::Time::Now().ToDoubleT();
+    we.type = Translate(e.type);
+
+    if (e.shiftPressed)
+        we.modifiers |= WebInputEvent::ShiftKey;
+    if (e.ctrlPressed)
+        we.modifiers |= WebInputEvent::ControlKey;
+    if (e.altPressed)
+        we.modifiers |= WebInputEvent::AltKey;
+    if (e.fromKeyPad)
+        we.modifiers |= WebInputEvent::IsKeyPad;
+
+    we.windowsKeyCode = we.nativeKeyCode = e.code;
+    we.domCode = we.domKey = 0;
+
+    memset(we.text, 0, sizeof(we.text));
+    we.text[0] = e.code;
+    return we;
+}
+
 WebInputEvent::Type ViewImpl::Translate(MouseEvent::Type t) const
 {
     switch (t)
@@ -243,6 +280,22 @@ WebMouseEvent::Button ViewImpl::Translate(MouseEvent::Button b)
 
     assert(MouseEvent::NoButton == b);
     return WebMouseEvent::ButtonNone;
+}
+
+WebInputEvent::Type ViewImpl::Translate(KeyboardEvent::Type t)
+{
+    switch (t)
+    {
+        case KeyboardEvent::KeyDown:
+            return WebInputEvent::KeyDown;
+        case KeyboardEvent::KeyUp:
+            return WebInputEvent::KeyUp;
+        case KeyboardEvent::Char:
+            return WebInputEvent::Char;
+    }
+
+    assert(false); // Not reached!
+    return WebInputEvent::Undefined;
 }
 
 } // namespace BlinKit

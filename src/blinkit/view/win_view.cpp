@@ -204,12 +204,90 @@ void WinView::DoUpdate(void)
     InvalidateRect(m_hWnd, nullptr, FALSE);
 }
 
+void WinView::OnChar(HWND hwnd, TCHAR ch, int cRepeat)
+{
+    KeyboardEvent e;
+    e.type = KeyboardEvent::Char;
+    e.code = ch;
+    ProcessInput(e);
+}
+
 void WinView::OnDpiChanged(HWND hwnd, UINT dpi, const RECT &rc)
 {
     m_dpi = dpi;
     UpdateScaleFactor();
     SetWindowPos(hwnd, nullptr, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top,
         SWP_NOZORDER | SWP_NOACTIVATE);
+}
+
+void WinView::OnIMEStartComposition(HWND hwnd)
+{
+    BkRect caretRect;
+    if (GetCaretRect(&caretRect))
+    {
+        COMPOSITIONFORM cf = { 0 };
+        cf.dwStyle = CFS_POINT | CFS_FORCE_POSITION;
+        cf.ptCurrentPos.x = caretRect.x;
+        cf.ptCurrentPos.y = caretRect.y;
+
+        HIMC hIMC = ImmGetContext(hwnd);
+        ImmSetCompositionWindow(hIMC, &cf);
+        ImmReleaseContext(hwnd, hIMC);
+    }
+}
+
+void WinView::OnKey(HWND, UINT vk, BOOL fDown, int cRepeat, UINT flags)
+{
+    KeyboardEvent e;
+    e.type = fDown ? KeyboardEvent::KeyDown : KeyboardEvent::KeyUp;
+    e.code = vk;
+    if (GetKeyState(VK_SHIFT) < 0)
+        e.shiftPressed = true;
+    if (GetKeyState(VK_CONTROL) < 0)
+        e.ctrlPressed = true;
+    if (GetKeyState(VK_MENU) < 0)
+        e.altPressed = true;
+    switch (vk)
+    {
+        case VK_NUMLOCK:
+        case VK_NUMPAD0:
+        case VK_NUMPAD1:
+        case VK_NUMPAD2:
+        case VK_NUMPAD3:
+        case VK_NUMPAD4:
+        case VK_NUMPAD5:
+        case VK_NUMPAD6:
+        case VK_NUMPAD7:
+        case VK_NUMPAD8:
+        case VK_NUMPAD9:
+        case VK_MULTIPLY:
+        case VK_ADD:
+        case VK_SEPARATOR:
+        case VK_SUBTRACT:
+        case VK_DECIMAL:
+        case VK_DIVIDE:
+            e.fromKeyPad = true;
+            break;
+        case VK_RETURN:
+            if (KF_EXTENDED & flags)
+                e.fromKeyPad = true;
+            break;
+        case VK_INSERT:
+        case VK_DELETE:
+        case VK_PRIOR:
+        case VK_NEXT:
+        case VK_END:
+        case VK_HOME:
+        case VK_LEFT:
+        case VK_UP:
+        case VK_RIGHT:
+        case VK_DOWN:
+            if (0 == (KF_EXTENDED & flags))
+                e.fromKeyPad = true;
+            break;
+    }
+
+    ProcessInput(e);
 }
 
 void WinView::OnMouse(UINT message, UINT keyFlags, int x, int y)
@@ -397,6 +475,19 @@ bool BKAPI WinView::ProcessMessage(HWND h, UINT m, WPARAM w, LPARAM l, LRESULT &
             ProcessDoubleClick(m, w, GET_X_LPARAM(l), GET_Y_LPARAM(l));
             break;
 
+        case WM_KEYDOWN:
+            HANDLE_WM_KEYDOWN(h, w, l, OnKey);
+            break;
+        case WM_KEYUP:
+            HANDLE_WM_KEYUP(h, w, l, OnKey);
+            break;
+        case WM_CHAR:
+            HANDLE_WM_CHAR(h, w, l, OnChar);
+            break;
+        case WM_IME_STARTCOMPOSITION:
+            OnIMEStartComposition(h);
+            break;
+
         case WM_SETFOCUS:
             SetFocus(true);
             break;
@@ -442,6 +533,62 @@ WebMouseEvent WinView::Translate(const MouseEvent &e)
 {
     WebMouseEvent we = ViewImpl::Translate(e);
     AdjustGlobalCoordinates(we);
+    return we;
+}
+
+WebKeyboardEvent WinView::Translate(const KeyboardEvent &e)
+{
+    WebKeyboardEvent we = ViewImpl::Translate(e);
+
+    if (WebInputEvent::KeyDown == we.type)
+        we.type = WebInputEvent::RawKeyDown;
+
+    if (WebInputEvent::RawKeyDown == we.type || WebInputEvent::KeyUp == we.type)
+    {
+        switch (we.windowsKeyCode)
+        {
+            case VK_LEFT:
+                strcpy(we.keyIdentifier, "Left");
+                break;
+            case VK_UP:
+                strcpy(we.keyIdentifier, "Up");
+                break;
+            case VK_RIGHT:
+                strcpy(we.keyIdentifier, "Right");
+                break;
+            case VK_DOWN:
+                strcpy(we.keyIdentifier, "Down");
+                break;
+            case VK_NEXT:
+                strcpy(we.keyIdentifier, "PageDown");
+                break;
+            case VK_PRIOR:
+                strcpy(we.keyIdentifier, "PageUp");
+                break;
+            case VK_HOME:
+                strcpy(we.keyIdentifier, "Home");
+                break;
+            case VK_END:
+                strcpy(we.keyIdentifier, "End");
+                break;
+            case VK_TAB:
+                strcpy(we.keyIdentifier, "U+0009");
+                break;
+            case VK_BACK:
+                strcpy(we.keyIdentifier, "U+0008");
+                break;
+            case VK_ESCAPE:
+                strcpy(we.keyIdentifier, "U+001B");
+                break;
+            case VK_RETURN:
+                strcpy(we.keyIdentifier, "Enter");
+                break;
+        }
+    }
+    else
+    {
+        we.windowsKeyCode = 0;
+    }
     return we;
 }
 

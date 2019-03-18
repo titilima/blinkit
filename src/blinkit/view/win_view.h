@@ -30,7 +30,10 @@ private:
     void ProcessDoubleClick(UINT message, UINT keyFlags, int x, int y);
     void UpdateScaleFactor(void);
 
+    void OnChar(HWND hwnd, TCHAR ch, int cRepeat);
     void OnDpiChanged(HWND hwnd, UINT dpi, const RECT &rc);
+    void OnIMEStartComposition(HWND hwnd);
+    void OnKey(HWND hwnd, UINT vk, BOOL fDown, int cRepeat, UINT flags);
     void OnMouse(UINT message, UINT keyFlags, int x, int y);
     bool OnNCCreate(HWND hwnd, LPCREATESTRUCT cs);
     void OnNCDestroy(HWND hwnd);
@@ -48,6 +51,7 @@ private:
     std::unique_ptr<SkCanvas> CreateMemoryCanvas(int width, int height) override;
     void DoUpdate(void) override;
     blink::WebMouseEvent Translate(const MouseEvent &e) override;
+    blink::WebKeyboardEvent Translate(const KeyboardEvent &e) override;
     void PreHandleInput(const blink::WebInputEvent &e) override;
     void PostHandleInput(const blink::WebInputEvent &e) override;
 
