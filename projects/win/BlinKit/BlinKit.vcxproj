@@ -116,7 +116,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <ModuleDefinitionFile>BlinKit.def</ModuleDefinitionFile>
-      <AdditionalDependencies>Shlwapi.lib;Usp10.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Imm32.lib;Shlwapi.lib;Usp10.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <DelayLoadDLLs>UxTheme.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -147,7 +148,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <ModuleDefinitionFile>BlinKit.def</ModuleDefinitionFile>
-      <AdditionalDependencies>Shlwapi.lib;Usp10.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Imm32.lib;Shlwapi.lib;Usp10.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <DelayLoadDLLs>UxTheme.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
