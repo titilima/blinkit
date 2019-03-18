@@ -18,6 +18,7 @@
 
 #include <SkCanvas.h>
 #include <SkColor.h>
+#include "public/web/WebInputEvent.h"
 #include "browser/browser_impl.h"
 
 namespace BlinKit {
@@ -30,11 +31,16 @@ public:
 protected:
     ViewImpl(BkViewClient &client);
 
+    void FillCoordinates(blink::WebMouseEvent &dst, int x, int y);
     virtual std::unique_ptr<SkCanvas> CreateMemoryCanvas(int width, int height) = 0;
     virtual void DoUpdate(void);
+    virtual blink::WebMouseEvent Translate(const MouseEvent &e);
+    virtual void PreHandleInput(const blink::WebMouseEvent &we);
+    virtual void PostHandleInput(const blink::WebMouseEvent &we);
 
     // BkView
     void BKAPI Destroy(void) override final { delete this; }
+    void BKAPI ProcessInput(const MouseEvent &e) override final;
     void BKAPI Resize(int width, int height) override final;
     void BKAPI SetFocus(bool focused) override final;
     void BKAPI SetScaleFactor(float scaleFactor) override final;
@@ -44,6 +50,8 @@ protected:
     bool m_hasDoubleClickEvent = false;
 private:
     static SkColor BackgroundColor(void);
+    blink::WebInputEvent::Type Translate(MouseEvent::Type t) const;
+    static blink::WebMouseEvent::Button Translate(MouseEvent::Button b);
     bool UpdateRequired(void) const { return *m_updateRequired; }
 
     // BkView
@@ -54,6 +62,15 @@ private:
     void didFinishLoad(blink::WebLocalFrame *frame) override final;
 
     std::shared_ptr<bool> m_updateRequired;
+
+    //------------------------------------------------------------
+    // Mouse Event Session
+    static const double DoubleClickInterval;
+    bool m_mouseEntered = false;
+    int m_lastX = 0, m_lastY = 0;
+    double m_lastDownTime = 0.0;
+    int m_lastDownX = -1, m_lastDownY = -1;
+    //------------------------------------------------------------
 };
 
 } // namespace BlinKit

@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "public/platform/WebCursorInfo.h"
 #include "view_impl.h"
 
 namespace BlinKit {
@@ -24,9 +25,13 @@ public:
     WinView(BkViewClient &client);
     ~WinView(void);
 private:
+    void AdjustGlobalCoordinates(blink::WebMouseEvent &we);
+    static bool BuildMouseEvent(MouseEvent &dst, UINT message, UINT keyFlags, int x, int y);
+    void ProcessDoubleClick(UINT message, UINT keyFlags, int x, int y);
     void UpdateScaleFactor(void);
 
     void OnDpiChanged(HWND hwnd, UINT dpi, const RECT &rc);
+    void OnMouse(UINT message, UINT keyFlags, int x, int y);
     bool OnNCCreate(HWND hwnd, LPCREATESTRUCT cs);
     void OnNCDestroy(HWND hwnd);
     void OnPaint(HWND hwnd);
@@ -37,14 +42,21 @@ private:
     bool BKAPI ProcessMessage(HWND h, UINT m, WPARAM w, LPARAM l, LRESULT &r) override;
     void BKAPI Attach(NativeView nativeView) override;
     void BKAPI Paint(NativeCanvas nativeCanvas, const BkRect *rc) override;
-    // WinView
+    // blink::WebWidgetClient
+    void didChangeCursor(const blink::WebCursorInfo &cursorInfo) override;
+    // ViewImpl
     std::unique_ptr<SkCanvas> CreateMemoryCanvas(int width, int height) override;
     void DoUpdate(void) override;
+    blink::WebMouseEvent Translate(const MouseEvent &e) override;
+    void PreHandleInput(const blink::WebMouseEvent &we) override;
+    void PostHandleInput(const blink::WebMouseEvent &we) override;
 
     HWND m_hWnd = nullptr;
     UINT m_dpi = 96;
     HDC m_memoryDC = nullptr;
     HGDIOBJ m_oldBitmap = nullptr;
+    bool m_changingSizeOrPosition = false;
+    blink::WebCursorInfo m_cursorInfo;
 };
 
 } // namespace BlinKit

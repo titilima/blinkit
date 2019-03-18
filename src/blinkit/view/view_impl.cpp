@@ -11,6 +11,7 @@
 
 #include "view_impl.h"
 
+#include "base/time/time.h"
 #include "public/platform/Platform.h"
 #include "public/platform/WebTaskRunner.h"
 #include "public/platform/WebTraceLocation.h"
@@ -59,12 +60,52 @@ void ViewImpl::DoUpdate(void)
     webView->paint(m_memoryCanvas.get(), rc);
 }
 
+void ViewImpl::FillCoordinates(WebMouseEvent &dst, int x, int y)
+{
+    dst.x = dst.windowX = dst.globalX = x;
+    dst.y = dst.windowY = dst.globalY = y;
+    dst.movementX = dst.x - m_lastX;
+    dst.movementY = dst.y - m_lastY;
+}
+
 int BKAPI ViewImpl::Load(const char *URI)
 {
     KURL u(ParsedURLString, URI);
     if (u.protocolIsInHTTPFamily())
         return BkError::URIError;
     return BrowserImpl::Load(u);
+}
+
+void ViewImpl::PostHandleInput(const WebMouseEvent &we)
+{
+    m_lastX = we.x;
+    m_lastY = we.y;
+    switch (we.type)
+    {
+        case WebMouseEvent::MouseDown:
+            m_lastDownTime = we.timeStampSeconds;
+            m_lastDownX = we.x;
+            m_lastDownY = we.y;
+            break;
+        case WebMouseEvent::MouseLeave:
+            m_mouseEntered = false;
+            break;
+    }
+}
+
+void ViewImpl::PreHandleInput(const WebMouseEvent &we)
+{
+    if (WebMouseEvent::MouseEnter == we.type)
+        m_mouseEntered = true;
+}
+
+void BKAPI ViewImpl::ProcessInput(const MouseEvent &e)
+{
+    WebMouseEvent we = Translate(e);
+
+    PreHandleInput(we);
+    GetWebView()->handleInputEvent(we);
+    PostHandleInput(we);
 }
 
 void BKAPI ViewImpl::Resize(int width, int height)
@@ -112,6 +153,82 @@ void BKAPI ViewImpl::SetFocus(bool focused)
 void BKAPI ViewImpl::SetScaleFactor(float scaleFactor)
 {
     GetWebView()->setZoomFactorForDeviceScaleFactor(scaleFactor);
+}
+
+WebMouseEvent ViewImpl::Translate(const MouseEvent &e)
+{
+    WebMouseEvent we;
+    we.timeStampSeconds = base::Time::Now().ToDoubleT();
+    we.type = Translate(e.type);
+    we.button = Translate(e.button);
+    FillCoordinates(we, e.x, e.y);
+
+    if (MouseEvent::MouseDown == e.type || MouseEvent::MouseMove == e.type)
+    {
+        switch (e.button)
+        {
+            case MouseEvent::LeftButton:
+                we.modifiers |= WebMouseEvent::LeftButtonDown;
+                break;
+            case MouseEvent::RightButton:
+                we.modifiers |= WebMouseEvent::RightButtonDown;
+                break;
+            case MouseEvent::MiddleButton:
+                we.modifiers |= WebMouseEvent::MiddleButtonDown;
+                break;
+        }
+    }
+
+    if (WebMouseEvent::MouseDown == we.type)
+    {
+        we.clickCount = 1;
+        if (!m_hasDoubleClickEvent)
+        {
+            const int delta = 15;
+            if (we.timeStampSeconds - m_lastDownTime < DoubleClickInterval
+                && std::abs(we.movementX) < delta && std::abs(we.movementY) < delta)
+            {
+                we.clickCount = 2;
+            }
+        }
+    }
+    return we;
+}
+
+WebInputEvent::Type ViewImpl::Translate(MouseEvent::Type t) const
+{
+    switch (t)
+    {
+        case MouseEvent::MouseMove:
+            return m_mouseEntered ? WebInputEvent::MouseMove : WebInputEvent::MouseEnter;
+        case MouseEvent::MouseDown:
+            return WebInputEvent::MouseDown;
+        case MouseEvent::MouseUp:
+            return WebInputEvent::MouseUp;
+        case MouseEvent::MouseLeave:
+            return WebInputEvent::MouseLeave;
+        case MouseEvent::ContextMenu:
+            return WebInputEvent::ContextMenu;
+    }
+
+    assert(false); // Not reached!
+    return WebInputEvent::Undefined;
+}
+
+WebMouseEvent::Button ViewImpl::Translate(MouseEvent::Button b)
+{
+    switch (b)
+    {
+        case MouseEvent::LeftButton:
+            return WebMouseEvent::ButtonLeft;
+        case MouseEvent::RightButton:
+            return WebMouseEvent::ButtonRight;
+        case MouseEvent::MiddleButton:
+            return WebMouseEvent::ButtonMiddle;
+    }
+
+    assert(MouseEvent::NoButton == b);
+    return WebMouseEvent::ButtonNone;
 }
 
 } // namespace BlinKit

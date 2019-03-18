@@ -109,6 +109,16 @@ public:
     virtual bool BKAPI ProcessMessage(HWND h, UINT m, WPARAM w, LPARAM l, LRESULT &r) = 0;
 #endif
 
+    struct MouseEvent {
+        enum Type { MouseDown, MouseUp, MouseMove, MouseLeave, ContextMenu };
+        enum Button { NoButton, LeftButton, MiddleButton, RightButton };
+
+        Type type;
+        Button button;
+        int x, y;
+    };
+    virtual void BKAPI ProcessInput(const MouseEvent &e) = 0;
+
     virtual void BKAPI Attach(NativeView nativeView) = 0;
     virtual void BKAPI Paint(NativeCanvas nativeCanvas, const BkRect *rc = nullptr) = 0;
     virtual void BKAPI Resize(int width, int height) = 0;
