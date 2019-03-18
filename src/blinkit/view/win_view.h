@@ -22,6 +22,29 @@ class WinView final : public ViewImpl
 {
 public:
     WinView(BkViewClient &client);
+    ~WinView(void);
+private:
+    void UpdateScaleFactor(void);
+
+    void OnDpiChanged(HWND hwnd, UINT dpi, const RECT &rc);
+    bool OnNCCreate(HWND hwnd, LPCREATESTRUCT cs);
+    void OnNCDestroy(HWND hwnd);
+    void OnPaint(HWND hwnd);
+    void OnSize(HWND hwnd, UINT state, int cx, int cy);
+
+    // BkView
+    HWND BKAPI GetNativeView(void) const override { return m_hWnd; }
+    bool BKAPI ProcessMessage(HWND h, UINT m, WPARAM w, LPARAM l, LRESULT &r) override;
+    void BKAPI Attach(NativeView nativeView) override;
+    void BKAPI Paint(NativeCanvas nativeCanvas, const BkRect *rc) override;
+    // WinView
+    std::unique_ptr<SkCanvas> CreateMemoryCanvas(int width, int height) override;
+    void DoUpdate(void) override;
+
+    HWND m_hWnd = nullptr;
+    UINT m_dpi = 96;
+    HDC m_memoryDC = nullptr;
+    HGDIOBJ m_oldBitmap = nullptr;
 };
 
 } // namespace BlinKit

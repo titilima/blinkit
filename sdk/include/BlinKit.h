@@ -78,13 +78,43 @@ public:
  * View
  */
 
+struct BkSize {
+    int width, height;
+};
+
+struct BkRect {
+    int x, y, width, height;
+};
+
 class BkViewClient {
+public:
+    virtual void BKAPI DocumentReady(BkView *view) {}
 };
 
 class BkView {
 public:
+#if defined(_WIN32)
+    typedef HWND    NativeView;
+    typedef HDC     NativeCanvas;
+#else
+#endif
+
     virtual void BKAPI Destroy(void) = 0;
     virtual int BKAPI Load(const char *URI) = 0;
+    virtual NativeView BKAPI GetNativeView(void) const = 0;
+#ifdef _WIN32
+    /**
+     * If ProcessMessage returns false, it means default message handlers (e.g. DefWindowProc) needed.
+     */
+    virtual bool BKAPI ProcessMessage(HWND h, UINT m, WPARAM w, LPARAM l, LRESULT &r) = 0;
+#endif
+
+    virtual void BKAPI Attach(NativeView nativeView) = 0;
+    virtual void BKAPI Paint(NativeCanvas nativeCanvas, const BkRect *rc = nullptr) = 0;
+    virtual void BKAPI Resize(int width, int height) = 0;
+    virtual void BKAPI SetFocus(bool focused) = 0;
+
+    virtual void BKAPI SetScaleFactor(float scaleFactor) = 0;
 };
 
 #ifdef _ATL_VER
@@ -97,6 +127,12 @@ protected:
 
     BkView* GetView(void) { return m_view; }
     const BkView* GetView(void) const { return m_view; }
+
+    bool ProcessWindowMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, LRESULT &lResult)
+    {
+        return m_view->ProcessMessage(hWnd, uMsg, wParam, lParam, lResult);
+    }
+
 private:
     BkView *m_view;
 };
