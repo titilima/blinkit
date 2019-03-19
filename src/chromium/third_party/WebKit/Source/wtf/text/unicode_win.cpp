@@ -32,12 +32,6 @@ UChar32 foldCase(UChar32 c)
     return 0;
 }
 
-bool hasLineBreakingPropertyComplexContext(UChar32 c)
-{
-    assert(false); // BKTODO:
-    return false;
-}
-
 UChar32 mirroredChar(UChar32 c)
 {
     assert(false); // BKTODO:

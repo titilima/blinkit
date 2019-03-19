@@ -24,6 +24,11 @@ Direction direction(UChar32 c)
     return static_cast<Direction>(u_charDirection(c));
 }
 
+bool hasLineBreakingPropertyComplexContext(UChar32 c)
+{
+    return false; // BKTODO:
+}
+
 bool isAlphanumeric(UChar32 c)
 {
     return u_isalnum(c);

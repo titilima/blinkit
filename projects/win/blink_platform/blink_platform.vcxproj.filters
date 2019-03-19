@@ -93,6 +93,9 @@
     <Filter Include="public">
       <UniqueIdentifier>{907e3346-6219-44da-8e9d-6d71d9d32426}</UniqueIdentifier>
     </Filter>
+    <Filter Include="platform\text\break_iterators">
+      <UniqueIdentifier>{a91d0143-cabf-478b-b1ab-f979fcec7ba8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -1204,6 +1207,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\text_break_iterator_impl.cpp">
       <Filter>platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\break_iterators\word_break_iterator.cpp">
+      <Filter>platform\text\break_iterators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\break_iterators\character_break_iterator.cpp">
+      <Filter>platform\text\break_iterators</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3243,6 +3252,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollbarThemeMock.h">
       <Filter>platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\break_iterators\word_break_iterator.h">
+      <Filter>platform\text\break_iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\break_iterators\break_iterator_base.h">
+      <Filter>platform\text\break_iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\break_iterators\character_break_iterator.h">
+      <Filter>platform\text\break_iterators</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

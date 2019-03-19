@@ -11,11 +11,20 @@
 
 #include "TextBreakIterator.h"
 
+#include "platform/text/break_iterators/character_break_iterator.h"
+#include "platform/text/break_iterators/word_break_iterator.h"
 #include "wtf/ThreadingPrimitives.h"
 
 using namespace WTF;
 
 namespace blink {
+
+static TextBreakIterator* characterBreakIterator(const UChar *string, int length)
+{
+    static CharacterBreakIterator s_characterBreakIterator;
+    s_characterBreakIterator.SetText(string, length);
+    return &s_characterBreakIterator;
+}
 
 static TextBreakIterator* wordBreakIterator(const LChar *string, int length)
 {
@@ -23,16 +32,17 @@ static TextBreakIterator* wordBreakIterator(const LChar *string, int length)
     return nullptr;
 }
 
-TextBreakIterator* wordBreakIterator(const UChar* string, int length)
+TextBreakIterator* wordBreakIterator(const UChar *string, int length)
 {
-    assert(false); // BKTODO:
-    return nullptr;
+    static WordBreakIterator s_wordBreakIterator;
+    s_wordBreakIterator.SetText(string, length);
+    return &s_wordBreakIterator;
 }
 
 TextBreakIterator* wordBreakIterator(const String &string, int start, int length)
 {
     if (string.isEmpty())
-        return 0;
+        return nullptr;
     if (string.is8Bit())
         return wordBreakIterator(string.characters8() + start, length);
     return wordBreakIterator(string.characters16() + start, length);
@@ -183,8 +193,7 @@ bool isWordTextBreak(TextBreakIterator *iterator)
 
 TextBreakIterator* cursorMovementIterator(const UChar *string, int length)
 {
-    assert(false); // BKTODO:
-    return nullptr;
+    return characterBreakIterator(string, length);
 }
 
 } // namespace blink

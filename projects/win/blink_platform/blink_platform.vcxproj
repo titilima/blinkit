@@ -488,6 +488,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\BidiCharacterRun.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\BidiContext.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\BidiTextRun.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\break_iterators\character_break_iterator.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\break_iterators\word_break_iterator.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\DateTimeFormat.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LineEnding.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LocaleToScriptMapping.cpp" />
@@ -1152,6 +1154,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\BidiRunList.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\BidiTestHarness.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\BidiTextRun.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\break_iterators\break_iterator_base.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\break_iterators\character_break_iterator.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\break_iterators\word_break_iterator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\DateTimeFormat.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\DecodeEscapeSequences.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\LineEnding.h" />
