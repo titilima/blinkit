@@ -136,65 +136,68 @@ void WinView::didChangeCursor(const WebCursorInfo &cursorInfo)
         DestroyCursor(m_cursorInfo.externalHandle);
     m_cursorInfo = cursorInfo;
 
+    PCTSTR cursorName = nullptr;
     switch (m_cursorInfo.type)
     {
         case WebCursorInfo::TypePointer:
-            m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_ARROW);
+            cursorName = IDC_ARROW;
             break;
         case WebCursorInfo::TypeCross:
-            m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_CROSS);
+            cursorName = IDC_CROSS;
             break;
         case WebCursorInfo::TypeHand:
-            m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_HAND);
+            cursorName = IDC_HAND;
             break;
         case WebCursorInfo::TypeIBeam:
-            m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_IBEAM);
+            cursorName = IDC_IBEAM;
             break;
         case WebCursorInfo::TypeWait:
-            m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_WAIT);
+            cursorName = IDC_WAIT;
             break;
         case WebCursorInfo::TypeHelp:
-            m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_HELP);
+            cursorName = IDC_HELP;
             break;
         case WebCursorInfo::TypeEastResize:
         case WebCursorInfo::TypeWestResize:
         case WebCursorInfo::TypeEastWestResize:
         case WebCursorInfo::TypeColumnResize:
-            m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_SIZEWE);
+            cursorName = IDC_SIZEWE;
             break;
         case WebCursorInfo::TypeNorthResize:
         case WebCursorInfo::TypeSouthResize:
         case WebCursorInfo::TypeNorthSouthResize:
         case WebCursorInfo::TypeRowResize:
-            m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_SIZENS);
+            cursorName = IDC_SIZENS;
             break;
         case WebCursorInfo::TypeNorthEastResize:
         case WebCursorInfo::TypeSouthWestResize:
-            m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_SIZENESW);
+            cursorName = IDC_SIZENESW;
             break;
         case WebCursorInfo::TypeNorthWestResize:
         case WebCursorInfo::TypeSouthEastResize:
-            m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_SIZENWSE);
+            cursorName = IDC_SIZENWSE;
             break;
         case WebCursorInfo::TypeNorthEastSouthWestResize:
         case WebCursorInfo::TypeNorthWestSouthEastResize:
         case WebCursorInfo::TypeMove:
-            m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_SIZEALL);
+            cursorName = IDC_SIZEALL;
             break;
         case WebCursorInfo::TypeProgress:
-            m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_APPSTARTING);
+            cursorName = IDC_APPSTARTING;
             break;
         case WebCursorInfo::TypeNoDrop:
         case WebCursorInfo::TypeNotAllowed:
-            m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_NO);
+            cursorName = IDC_NO;
             break;
         case WebCursorInfo::TypeCustom:
             break;
         default:
             assert(false); // Not reached!
-            m_cursorInfo.externalHandle = LoadCursor(nullptr, IDC_ARROW);
+            cursorName = IDC_ARROW;
     }
 
+    if (nullptr != cursorName)
+        m_cursorInfo.externalHandle = LoadCursor(nullptr, cursorName);
     SetCursor(m_cursorInfo.externalHandle);
 }
 
