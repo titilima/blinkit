@@ -62,6 +62,9 @@ private:
     int BKAPI Load(const char *URI) override final;
     // blink::WebWidgetClient
     void scheduleAnimation(void) override final;
+    // blink::WebViewClient
+    void startDragging(blink::WebLocalFrame *frame, const blink::WebDragData &data, blink::WebDragOperationsMask mask,
+        const blink::WebImage &image, const blink::WebPoint& dragImageOffset) override final;
     // blink::WebFrameClient
     void didFinishLoad(blink::WebLocalFrame *frame) override final;
 

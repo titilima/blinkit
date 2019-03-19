@@ -182,6 +182,14 @@ void BKAPI ViewImpl::SetScaleFactor(float scaleFactor)
     GetWebView()->setZoomFactorForDeviceScaleFactor(scaleFactor);
 }
 
+void ViewImpl::startDragging(
+    WebLocalFrame *frame,
+    const WebDragData &data, WebDragOperationsMask mask,
+    const WebImage &image, const WebPoint &dragImageOffset)
+{
+    GetWebView()->dragSourceSystemDragEnded();
+}
+
 WebMouseEvent ViewImpl::Translate(const MouseEvent &e)
 {
     WebMouseEvent we;
