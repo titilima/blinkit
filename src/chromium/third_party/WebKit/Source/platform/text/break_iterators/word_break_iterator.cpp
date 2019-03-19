@@ -75,12 +75,9 @@ int32_t WordBreakIterator::previous(void)
 
     UChar prevChar = m_text.at(m_offset - 1);
     if (IsWordBreak(prevChar))
-    {
-        --m_offset;
-        return m_offset;
-    }
+        return --m_offset;
 
-    if (!IsWordBreak(CurrentChar()))
+    if (IsWordBreak(CurrentChar()))
         --m_offset;
 
     while (m_offset > 0)
