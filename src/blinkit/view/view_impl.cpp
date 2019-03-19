@@ -12,11 +12,13 @@
 #include "view_impl.h"
 
 #include "base/time/time.h"
+#include "platform/weborigin/KURL.h"
 #include "public/platform/Platform.h"
 #include "public/platform/WebTaskRunner.h"
 #include "public/platform/WebTraceLocation.h"
 #include "public/web/WebSettings.h"
-#include "platform/weborigin/KURL.h"
+
+#include "view/context_menu.h"
 
 using namespace blink;
 
@@ -180,6 +182,16 @@ void BKAPI ViewImpl::SetFocus(bool focused)
 void BKAPI ViewImpl::SetScaleFactor(float scaleFactor)
 {
     GetWebView()->setZoomFactorForDeviceScaleFactor(scaleFactor);
+}
+
+void ViewImpl::showContextMenu(const WebContextMenuData &data)
+{
+    if (!ContextMenu::ShouldShow(data))
+        return;
+
+    if (!m_contextMenu)
+        m_contextMenu = ContextMenu::CreateInstance(GetWebView());
+    m_contextMenu->Show(GetNativeView(), data);
 }
 
 void ViewImpl::startDragging(

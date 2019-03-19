@@ -187,6 +187,8 @@
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\file_loader_task_win.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\loader_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\response_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\view\context_menu.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\view\win_context_menu.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\view\view_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\view\win_view.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\dib_section.cpp" />
@@ -216,6 +218,8 @@
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\response_data.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\response_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\view\context_menu.h" />
+    <ClInclude Include="..\..\..\src\blinkit\view\win_context_menu.h" />
     <ClInclude Include="..\..\..\src\blinkit\view\view_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\view\win_view.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\dib_section.h" />

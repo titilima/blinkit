@@ -23,6 +23,8 @@
 
 namespace BlinKit {
 
+class ContextMenu;
+
 class ViewImpl : public BkView, public BrowserImpl
 {
 public:
@@ -67,8 +69,10 @@ private:
         const blink::WebImage &image, const blink::WebPoint& dragImageOffset) override final;
     // blink::WebFrameClient
     void didFinishLoad(blink::WebLocalFrame *frame) override final;
+    void showContextMenu(const blink::WebContextMenuData &data) override final;
 
     std::shared_ptr<bool> m_updateRequired;
+    std::unique_ptr<ContextMenu> m_contextMenu;
 
     //------------------------------------------------------------
     // Mouse Event Session
