@@ -18,7 +18,6 @@
 #include "app/app_constants.h"
 #include "blink_impl/mime_registry_impl.h"
 #include "blink_impl/url_loader_impl.h"
-#include "view/view_impl.h"
 
 namespace BlinKit {
 
@@ -61,11 +60,6 @@ blink::WebThread* AppImpl::createThread(const char *name)
 blink::WebURLLoader* AppImpl::createURLLoader(void)
 {
     return new URLLoaderImpl;
-}
-
-BkView* BKAPI AppImpl::CreateView(BkViewClient &client)
-{
-    return ViewImpl::CreateInstance(client);
 }
 
 blink::WebThread* AppImpl::currentThread(void)

@@ -622,11 +622,6 @@ void WinView::UpdateScaleFactor(void)
 
 const double ViewImpl::DoubleClickInterval = static_cast<double>(GetDoubleClickTime()) / 1000.0;
 
-ViewImpl* ViewImpl::CreateInstance(BkViewClient &client)
-{
-    return new WinView(client);
-}
-
 SkColor ViewImpl::BackgroundColor(void)
 {
     COLORREF clr = GetSysColor(COLOR_WINDOW);

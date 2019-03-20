@@ -30,6 +30,8 @@ public:
     static WinApp& Get(void);
 private:
     static LRESULT CALLBACK HookProc(int code, WPARAM w, LPARAM l);
+    // BkApp
+    BkView* BKAPI CreateView(BkViewClient &client) override;
     // blink::Platform
     blink::WebClipboard* clipboard(void) override;
     blink::WebThemeEngine* themeEngine(void) override;

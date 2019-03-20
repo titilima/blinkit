@@ -16,6 +16,7 @@
 #include "blink_impl/win_clipboard.h"
 #include "blink_impl/win_task_runner.h"
 #include "blink_impl/win_theme_engine.h"
+#include "view/win_view.h"
 
 namespace BlinKit {
 
@@ -38,6 +39,11 @@ blink::WebClipboard* WinApp::clipboard(void)
             m_clipboard = std::make_unique<WinClipboard>();
     }
     return m_clipboard.get();
+}
+
+BkView* BKAPI WinApp::CreateView(BkViewClient &client)
+{
+    return new WinView(client);
 }
 
 WinApp& WinApp::Get(void)

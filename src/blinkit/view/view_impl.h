@@ -28,7 +28,6 @@ class ContextMenu;
 class ViewImpl : public BkView, public BrowserImpl
 {
 public:
-    static ViewImpl* CreateInstance(BkViewClient &client);
     virtual ~ViewImpl(void);
 protected:
     ViewImpl(BkViewClient &client);
