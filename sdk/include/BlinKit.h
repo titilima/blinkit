@@ -75,6 +75,23 @@ public:
 };
 
 /**
+ * Crawler
+ */
+
+class BkCrawlerClient {
+public:
+    virtual void BKAPI DocumentReady(BkCrawler *crawler) {}
+};
+
+class BkCrawler {
+public:
+    virtual void BKAPI Destroy(void) = 0;
+    virtual int BKAPI Load(const char *URI) = 0;
+
+    virtual void BKAPI SetUserAgent(const char *userAgent) = 0;
+};
+
+/**
  * View
  */
 

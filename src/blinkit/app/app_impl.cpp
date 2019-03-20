@@ -18,6 +18,7 @@
 #include "app/app_constants.h"
 #include "blink_impl/mime_registry_impl.h"
 #include "blink_impl/url_loader_impl.h"
+#include "crawler/crawler_impl.h"
 
 namespace BlinKit {
 
@@ -43,8 +44,7 @@ AppImpl::~AppImpl(void)
 
 BkCrawler* BKAPI AppImpl::CreateCrawler(BkCrawlerClient &client)
 {
-    assert(false); // BKTODO:
-    return nullptr;
+    return new CrawlerImpl(client);
 }
 
 blink::WebThread* AppImpl::createThread(const char *name)
