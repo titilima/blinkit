@@ -31,7 +31,7 @@ private:
     void BKAPI SetUserAgent(const char *userAgent) override { m_userAgent = userAgent; }
     // blink::WebFrameClient
     void didFinishLoad(blink::WebLocalFrame *frame) override;
-    blink::WebString userAgentOverride(WebLocalFrame *frame) override;
+    blink::WebString userAgentOverride(blink::WebLocalFrame *frame) override;
 
     BkCrawlerClient &m_client;
     std::string m_userAgent;
