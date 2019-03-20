@@ -62,6 +62,9 @@
     <ClCompile Include="..\..\..\src\chromium\base\win\resource_util.cpp">
       <Filter>base\win</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\base\strings\sys_string_conversions_win.cc">
+      <Filter>base\strings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\base\_pc.h">
@@ -144,6 +147,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\base\win\resource_util.h">
       <Filter>base\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\strings\sys_string_conversions.h">
+      <Filter>base\strings</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -162,6 +162,7 @@
     <ClCompile Include="..\..\..\src\chromium\base\strings\stringprintf.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\string_util.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\string_util_constants.cc" />
+    <ClCompile Include="..\..\..\src\chromium\base\strings\sys_string_conversions_win.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\utf_string_conversion_utils.cpp" />
     <ClCompile Include="..\..\..\src\chromium\base\third_party\nspr\prtime.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\time\time.cc" />
@@ -194,6 +195,7 @@
     <ClInclude Include="..\..\..\src\chromium\base\strings\string_piece.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\string_util.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\string_util_win.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\strings\sys_string_conversions.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\utf_string_conversions.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\utf_string_conversion_utils.h" />
     <ClInclude Include="..\..\..\src\chromium\base\template_util.h" />
