@@ -18,6 +18,7 @@
 
 namespace BlinKit {
 
+class WinClipboard;
 class WinThemeEngine;
 
 class WinApp final : public AppImpl
@@ -30,9 +31,11 @@ public:
 private:
     static LRESULT CALLBACK HookProc(int code, WPARAM w, LPARAM l);
     // blink::Platform
+    blink::WebClipboard* clipboard(void) override;
     blink::WebThemeEngine* themeEngine(void) override;
     blink::WebData loadResource(const char *name) override;
 
+    std::unique_ptr<WinClipboard> m_clipboard;
     std::unique_ptr<WinThemeEngine> m_themeEngine;
     HHOOK m_msgHook;
 };

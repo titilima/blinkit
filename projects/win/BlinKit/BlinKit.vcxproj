@@ -172,6 +172,7 @@
     <ClCompile Include="..\..\..\src\blinkit\app\app_constants.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\app\app_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\app\win_app.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\clipboard_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\frame_scheduler_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\mime_registry_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\scheduler_impl.cpp" />
@@ -179,6 +180,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\thread_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\url_loader_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\view_scheduler_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_clipboard.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_task_runner.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_theme_engine.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_thread.cpp" />
@@ -203,6 +205,7 @@
     <ClInclude Include="..\..\..\src\blinkit\app\app_constants.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\win_app.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\clipboard_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\frame_scheduler_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\mime_registry_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\scheduler_impl.h" />
@@ -210,6 +213,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\thread_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\url_loader_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\view_scheduler_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_clipboard.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_task_runner.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_theme_engine.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_thread.h" />

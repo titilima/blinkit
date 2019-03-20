@@ -13,6 +13,7 @@
 
 #include "base/win/resource_util.h"
 
+#include "blink_impl/win_clipboard.h"
 #include "blink_impl/win_task_runner.h"
 #include "blink_impl/win_theme_engine.h"
 
@@ -26,6 +27,17 @@ WinApp::WinApp(void)
 WinApp::~WinApp(void)
 {
     UnhookWindowsHookEx(m_msgHook);
+}
+
+blink::WebClipboard* WinApp::clipboard(void)
+{
+    if (!m_clipboard)
+    {
+        AutoLock lock(m_lock);
+        if (!m_clipboard)
+            m_clipboard = std::make_unique<WinClipboard>();
+    }
+    return m_clipboard.get();
 }
 
 WinApp& WinApp::Get(void)
