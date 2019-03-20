@@ -85,6 +85,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(RepoRoot)sdk\include;$(IncludePath)</IncludePath>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -92,6 +93,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(RepoRoot)sdk\include;$(IncludePath)</IncludePath>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -164,12 +166,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main_frame.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="_pc.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BlinKit\BlinKit.vcxproj">
       <Project>{c037efd6-1c86-4fdf-96bb-e5d485513621}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BkTest.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="manifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ui.html" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
