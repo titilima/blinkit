@@ -47,6 +47,13 @@ void ViewImpl::didFinishLoad(WebLocalFrame *)
     m_client.DocumentReady(this);
 }
 
+void ViewImpl::didReceiveTitle(WebLocalFrame *, const WebString &title, WebTextDirection)
+{
+    std::string newTitle = title.utf8();
+    if (m_client.AllowTitleChange(this, newTitle.c_str()))
+        ChangeTitle(GetNativeView(), newTitle);
+}
+
 void ViewImpl::DoUpdate(void)
 {
     WebView *webView = GetWebView();

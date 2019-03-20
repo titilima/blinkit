@@ -106,6 +106,11 @@ struct BkRect {
 class BkViewClient {
 public:
     virtual void BKAPI DocumentReady(BkView *view) {}
+
+    virtual bool BKAPI AllowTitleChange(BkView *view, const char *newTitle) {
+        // Return true to allow BlinKit change the title of the native view.
+        return true;
+    }
 };
 
 class BkView {

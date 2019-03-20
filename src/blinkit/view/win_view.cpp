@@ -13,6 +13,7 @@
 
 #include <windowsx.h>
 #include "base/time/time.h"
+#include "base/strings/sys_string_conversions.h"
 #include "public/web/WebSettings.h"
 
 #include "win/dib_section.h"
@@ -626,6 +627,12 @@ SkColor ViewImpl::BackgroundColor(void)
 {
     COLORREF clr = GetSysColor(COLOR_WINDOW);
     return SkColorSetARGB(0xff, GetRValue(clr), GetGValue(clr), GetBValue(clr));
+}
+
+void ViewImpl::ChangeTitle(BkView::NativeView nativeView, const std::string &title)
+{
+    std::wstring ws = base::SysUTF8ToWide(title);
+    SetWindowTextW(nativeView, ws.c_str());
 }
 
 } // namespace BlinKit

@@ -54,6 +54,7 @@ protected:
     bool m_hasDoubleClickEvent = false;
 private:
     static SkColor BackgroundColor(void);
+    static void ChangeTitle(BkView::NativeView nativeView, const std::string &title);
     blink::WebInputEvent::Type Translate(MouseEvent::Type t) const;
     static blink::WebMouseEvent::Button Translate(MouseEvent::Button b);
     static blink::WebInputEvent::Type Translate(KeyboardEvent::Type t);
@@ -67,6 +68,7 @@ private:
     void startDragging(blink::WebLocalFrame *frame, const blink::WebDragData &data, blink::WebDragOperationsMask mask,
         const blink::WebImage &image, const blink::WebPoint& dragImageOffset) override final;
     // blink::WebFrameClient
+    void didReceiveTitle(blink::WebLocalFrame *frame, const blink::WebString &title, blink::WebTextDirection direction) override final;
     void didFinishLoad(blink::WebLocalFrame *frame) override final;
     void showContextMenu(const blink::WebContextMenuData &data) override final;
 
