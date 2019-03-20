@@ -18,11 +18,20 @@ typedef CWinTraits<WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS> Fram
 
 class MainFrame final : public CWindowImpl<MainFrame, CWindow, FrameTraits>
                       , public BlinKit::BkViewImplT<MainFrame>
+                      , public BlinKit::BkCrawlerClient
 {
 public:
     static MainFrame* CreateInstance(void);
 private:
     MainFrame(void) = default;
+    ~MainFrame(void);
+
+    // BkViewClient
+    void BKAPI DocumentReady(BkView *view);
+    // BkCrawlerClient
+    void BKAPI DocumentReady(BkCrawler *crawler);
+
+    BlinKit::BkCrawler *m_crawler = nullptr;
 
     LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled);
     LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled);

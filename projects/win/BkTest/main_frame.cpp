@@ -11,6 +11,12 @@
 
 #include "main_frame.h"
 
+MainFrame::~MainFrame(void)
+{
+    if (nullptr != m_crawler)
+        m_crawler->Destroy();
+}
+
 MainFrame* MainFrame::CreateInstance(void)
 {
     MainFrame *w = new MainFrame;
@@ -29,9 +35,20 @@ MainFrame* MainFrame::CreateInstance(void)
     return nullptr;
 }
 
+void BKAPI MainFrame::DocumentReady(BkView *view)
+{
+    m_crawler = BkGetApp()->CreateCrawler(*this);
+    m_crawler->Load("http://127.0.0.1:8000/target.html");
+}
+
+void BKAPI MainFrame::DocumentReady(BkCrawler *crawler)
+{
+    // BKTODO:
+}
+
 LRESULT MainFrame::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
 {
-    GetView()->Load("file:///D:/Products/Project1412/webui/main/index.html");
+    GetView()->Load("res:ui.html");
     return 0;
 }
 
