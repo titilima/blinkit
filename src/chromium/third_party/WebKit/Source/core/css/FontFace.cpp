@@ -319,16 +319,6 @@ void FontFace::setLoadStatus(LoadStatus status)
     ASSERT(m_status != Error || m_error);
 
     if (m_status == Loaded || m_status == Error) {
-        assert(false); // BKTODO:
-#if 0
-        if (m_loadedProperty) {
-            if (m_status == Loaded)
-                m_loadedProperty->resolve(this);
-            else
-                m_loadedProperty->reject(m_error.get());
-        }
-#endif
-
         WillBeHeapVector<RefPtrWillBeMember<LoadFontCallback>> callbacks;
         m_callbacks.swap(callbacks);
         for (size_t i = 0; i < callbacks.size(); ++i) {
