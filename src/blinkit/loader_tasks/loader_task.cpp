@@ -13,6 +13,7 @@
 
 #include "public/platform/WebTraceLocation.h"
 #include "loader_tasks/file_loader_task.h"
+#include "loader_tasks/res_loader_task.h"
 #include "loader_tasks/response_task.h"
 
 using namespace blink;
@@ -28,6 +29,8 @@ LoaderTask* LoaderTask::Create(const KURL &URI)
 {
     if (URI.isLocalFile())
         return new FileLoaderTask(URI);
+    if (URI.protocolIs("res"))
+        return new ResLoaderTask(URI);
 
     assert(false); // BKTODO:
     return nullptr;
