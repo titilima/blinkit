@@ -141,6 +141,9 @@
     <ClCompile Include="..\..\..\src\blinkit\win\inet.cpp">
       <Filter>win</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.cpp">
+      <Filter>loader_tasks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -247,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\http\request_controller_impl.h">
       <Filter>http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.h">
+      <Filter>loader_tasks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

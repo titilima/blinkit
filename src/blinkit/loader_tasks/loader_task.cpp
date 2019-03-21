@@ -12,7 +12,9 @@
 #include "loader_task.h"
 
 #include "public/platform/WebTraceLocation.h"
+#include "public/platform/WebURLLoaderClient.h"
 #include "loader_tasks/file_loader_task.h"
+#include "loader_tasks/http_loader_task.h"
 #include "loader_tasks/res_loader_task.h"
 #include "loader_tasks/response_task.h"
 
@@ -20,17 +22,29 @@ using namespace blink;
 
 namespace BlinKit {
 
-LoaderTask::LoaderTask(const KURL &URI) : m_responseData(std::make_shared<ResponseData>())
+LoaderTask::LoaderTask(const KURL &URI, WebURLLoaderClient *client)
+    : m_client(client), m_responseData(std::make_shared<ResponseData>())
 {
     m_responseData->URI = URI;
 }
 
-LoaderTask* LoaderTask::Create(const KURL &URI)
+LoaderTask* LoaderTask::Create(const KURL &URI, WebURLLoaderClient *client)
 {
+    CrawlerImpl *crawler = client->Crawler();
+    if (nullptr != crawler)
+    {
+        if (!URI.protocolIsInHTTPFamily())
+        {
+            assert(URI.protocolIsInHTTPFamily());
+            return nullptr;
+        }
+        return new HTTPLoaderTask(*crawler, URI, client);
+    }
+
     if (URI.isLocalFile())
-        return new FileLoaderTask(URI);
+        return new FileLoaderTask(URI, client);
     if (URI.protocolIs("res"))
-        return new ResLoaderTask(URI);
+        return new ResLoaderTask(URI, client);
 
     assert(false); // BKTODO:
     return nullptr;
