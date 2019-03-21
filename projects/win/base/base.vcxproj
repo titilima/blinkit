@@ -161,6 +161,7 @@
     <ClCompile Include="..\..\..\src\chromium\base\logging_win.cpp" />
     <ClCompile Include="..\..\..\src\chromium\base\rand_util_win.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\stringprintf.cc" />
+    <ClCompile Include="..\..\..\src\chromium\base\strings\string_split.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\string_util.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\string_util_constants.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\sys_string_conversions_win.cc" />
