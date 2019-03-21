@@ -59,6 +59,21 @@ public:
     };
 };
 
+class BkBuffer
+{
+public:
+    inline void Assign(const std::string &s) {
+        void *dst = Prepare(s.length());
+        memcpy(dst, s.data(), s.length());
+    }
+    inline void Assign(const void *data, size_t size) {
+        void *dst = Prepare(size);
+        memcpy(dst, data, size);
+    }
+protected:
+    virtual void* BKAPI Prepare(size_t cb) = 0;
+};
+
 /**
  * Application
  */
@@ -162,6 +177,57 @@ public:
     virtual bool BKAPI GetCaretRect(BkRect *dst) = 0;
     virtual void BKAPI SetScaleFactor(float scaleFactor) = 0;
 };
+
+/**
+ * Helpers
+ */
+
+class BkBufferImpl : public BkBuffer
+{
+public:
+    BkBuffer& Wrap(void) const {
+        BkBuffer &o = const_cast<BkBufferImpl &>(*this);
+        return o;
+    }
+protected:
+    BkBufferImpl(void) = default;
+};
+
+template <typename CharType>
+class BkStringBuffer final : public BkBufferImpl
+{
+public:
+    BkStringBuffer(std::basic_string<CharType> &s) : m_s(s) {}
+private:
+    void* BKAPI Prepare(size_t cb) override {
+        m_s.resize(cb / sizeof(CharType));
+        return const_cast<CharType *>(m_s.data());
+    }
+    std::basic_string<CharType> &m_s;
+};
+
+template <typename CharType>
+inline BkStringBuffer<CharType> BkMakeBuffer(std::basic_string<CharType> &s)
+{
+    return BkStringBuffer<CharType>(s);
+}
+
+class BkBlobBuffer final : public BkBufferImpl
+{
+public:
+    BkBlobBuffer(std::vector<unsigned char> &v) : m_v(v) {}
+private:
+    void* BKAPI Prepare(size_t cb) override {
+        m_v.resize(cb);
+        return m_v.data();
+    }
+    std::vector<unsigned char> &m_v;
+};
+
+inline BkBlobBuffer BkMakeBuffer(std::vector<unsigned char> &v)
+{
+    return BkBlobBuffer(v);
+}
 
 #ifdef _ATL_VER
 
