@@ -23,6 +23,8 @@ public:
     explicit Asserter(bool condition) { assert(condition); }
 };
 
+void BkLog(const char *format, ...);
+
 } // namespace BlinKit
 
 template <typename T>
@@ -32,8 +34,10 @@ inline BlinKit::Asserter& operator<<(const BlinKit::Asserter &a, const T &) {
 
 #ifdef _DEBUG
 #   define DCHECK_IS_ON()   1
+#   define BKLOG            BlinKit::BkLog
 #else
 #   define DCHECK_IS_ON()   0
+#   define BKLOG(...)
 #endif
 
 #define BKASSERT(condition) ::BlinKit::Asserter(!!(condition))

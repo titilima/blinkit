@@ -65,6 +65,9 @@
     <ClCompile Include="..\..\..\src\chromium\base\strings\sys_string_conversions_win.cc">
       <Filter>base\strings</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\base\logging_win.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\base\_pc.h">

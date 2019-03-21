@@ -158,6 +158,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\base\cpu.cc" />
+    <ClCompile Include="..\..\..\src\chromium\base\logging_win.cpp" />
     <ClCompile Include="..\..\..\src\chromium\base\rand_util_win.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\stringprintf.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\string_util.cc" />
