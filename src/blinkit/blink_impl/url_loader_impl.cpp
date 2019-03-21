@@ -35,10 +35,10 @@ void URLLoaderImpl::cancel(void)
 
 void URLLoaderImpl::loadAsynchronously(const WebURLRequest &request, WebURLLoaderClient *client)
 {
-    LoaderTask *task = LoaderTask::Create(request.url());
+    LoaderTask *task = LoaderTask::Create(request.url(), client);
     if (nullptr != task)
     {
-        task->Setup(this, m_taskRunner, client);
+        task->Setup(this, m_taskRunner);
         AppImpl::Get().IOThread().taskRunner()->postTask(BLINK_FROM_HERE, task);
     }
     else
