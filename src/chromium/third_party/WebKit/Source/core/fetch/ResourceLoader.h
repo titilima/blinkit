@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ResourceLoader.h
+// Description: ResourceLoader Class
+//      Author: Ziming Li
+//     Created: 2019-03-21
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2011 Apple Inc. All rights reserved.
  *
@@ -71,6 +82,7 @@ public:
     void didChangePriority(ResourceLoadPriority, int intraPriorityValue);
 
     // WebURLLoaderClient
+    BlinKit::CrawlerImpl* Crawler(void) override;
     void willFollowRedirect(WebURLLoader*, WebURLRequest&, const WebURLResponse& redirectResponse) override;
     void didSendData(WebURLLoader*, unsigned long long bytesSent, unsigned long long totalBytesToBeSent) override;
     void didReceiveResponse(WebURLLoader*, const WebURLResponse&) override;

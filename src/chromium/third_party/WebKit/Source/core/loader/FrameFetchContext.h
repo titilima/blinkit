@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FrameFetchContext.h
+// Description: FrameFetchContext Class
+//      Author: Ziming Li
+//     Created: 2019-03-21
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -111,6 +122,7 @@ public:
     void countClientHintsViewportWidth() override;
 
     WebTaskRunner* loadingTaskRunner() const override;
+    BlinKit::CrawlerImpl* FrameCrawler(void) override;
 
     DECLARE_VIRTUAL_TRACE();
 

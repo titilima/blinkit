@@ -64,6 +64,10 @@
 #include "public/platform/WebURLError.h"
 #include "public/platform/WebURLRequest.h"
 
+namespace BlinKit {
+class CrawlerImpl;
+}
+
 namespace blink {
 
 enum class WebTreeScopeType;
@@ -142,6 +146,8 @@ public:
     // A frame specific cookie jar.  May return null, in which case
     // WebKitPlatformSupport::cookieJar() will be called to access cookies.
     virtual WebCookieJar* cookieJar(WebLocalFrame*) { return 0; }
+
+    virtual BlinKit::CrawlerImpl* GetCrawler(void) { return nullptr; }
 
 
     // General notifications -----------------------------------------------

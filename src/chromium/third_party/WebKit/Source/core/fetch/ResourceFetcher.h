@@ -90,6 +90,8 @@ public:
     using DocumentResourceMap = WillBeHeapHashMap<String, WeakPtrWillBeWeakMember<Resource>>;
     const DocumentResourceMap& allResources() const { return m_documentResources; }
 
+    BlinKit::CrawlerImpl* GetCrawler(void) { return m_context->FrameCrawler(); }
+
     bool autoLoadImages() const { return m_autoLoadImages; }
     void setAutoLoadImages(bool);
 

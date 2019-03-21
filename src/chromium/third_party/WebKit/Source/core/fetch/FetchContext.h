@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FetchContext.h
+// Description: FetchContext Class
+//      Author: Ziming Li
+//     Created: 2019-03-21
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -39,6 +50,10 @@
 #include "platform/heap/Handle.h"
 #include "platform/network/ResourceLoadPriority.h"
 #include "wtf/Noncopyable.h"
+
+namespace BlinKit {
+class CrawlerImpl;
+}
 
 namespace blink {
 
@@ -109,6 +124,7 @@ public:
     virtual ResourceLoadPriority modifyPriorityForExperiments(ResourceLoadPriority priority, Resource::Type, const FetchRequest&, ResourcePriority::VisibilityStatus) { return priority; }
 
     virtual WebTaskRunner* loadingTaskRunner() const { return nullptr; }
+    virtual BlinKit::CrawlerImpl* FrameCrawler(void) { return nullptr; }
 
 protected:
     FetchContext() { }

@@ -72,6 +72,8 @@
 #include "platform/weborigin/SchemeRegistry.h"
 #include "platform/weborigin/SecurityPolicy.h"
 #include "public/platform/WebFrameScheduler.h"
+#include "public/web/WebFrameClient.h"
+#include "web/WebLocalFrameImpl.h"
 
 #include <algorithm>
 
@@ -778,6 +780,15 @@ ResourceLoadPriority FrameFetchContext::modifyPriorityForExperiments(ResourceLoa
 WebTaskRunner* FrameFetchContext::loadingTaskRunner() const
 {
     return frame()->frameScheduler()->loadingTaskRunner();
+}
+
+BlinKit::CrawlerImpl* FrameFetchContext::FrameCrawler(void)
+{
+    WebLocalFrameImpl *impl = WebLocalFrameImpl::fromFrame(frame());
+    if (nullptr == impl)
+        return nullptr;
+
+    return impl->client()->GetCrawler();
 }
 
 DEFINE_TRACE(FrameFetchContext)

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ResourceLoader.cpp
+// Description: ResourceLoader Class
+//      Author: Ziming Li
+//     Created: 2019-03-21
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2010, 2011 Apple Inc. All rights reserved.
  *           (C) 2007 Graham Dennis (graham.dennis@gmail.com)
@@ -531,6 +542,11 @@ ResourceRequest& ResourceLoader::applyOptions(ResourceRequest& request) const
 {
     request.setAllowStoredCredentials(m_options.allowCredentials == AllowStoredCredentials);
     return request;
+}
+
+BlinKit::CrawlerImpl* ResourceLoader::Crawler(void)
+{
+    return m_fetcher->GetCrawler();
 }
 
 }
