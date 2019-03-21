@@ -593,7 +593,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\inspector\ConsoleMessageStorage.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\appcache\ApplicationCache.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\appcache\ApplicationCacheHost.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\BeaconLoader.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\CookieJar.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\CrossOriginPreflightResultCache.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\DocumentLoader.cpp" />
@@ -1273,7 +1272,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\inspector\InstanceCounters.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\appcache\ApplicationCache.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\appcache\ApplicationCacheHost.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\BeaconLoader.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\CookieJar.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\CrossOriginPreflightResultCache.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\DocumentLoader.h" />

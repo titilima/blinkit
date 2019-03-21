@@ -494,9 +494,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebURLLoaderClient.cpp">
       <Filter>platform\exported</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebURLLoaderTestDelegate.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebURLLoadTiming.cpp">
       <Filter>platform\exported</Filter>
     </ClCompile>
