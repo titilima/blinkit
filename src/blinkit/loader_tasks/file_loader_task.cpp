@@ -17,7 +17,7 @@ using namespace blink;
 
 namespace BlinKit {
 
-FileLoaderTask::FileLoaderTask(const KURL &URI) : LoaderTask(URI)
+FileLoaderTask::FileLoaderTask(const KURL &URI, WebURLLoaderClient *client) : LoaderTask(URI, client)
 {
     // Nothing
 }

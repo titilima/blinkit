@@ -21,7 +21,7 @@ namespace BlinKit {
 class FileLoaderTask final : public LoaderTask
 {
 public:
-    FileLoaderTask(const blink::KURL &URI);
+    FileLoaderTask(const blink::KURL &URI, blink::WebURLLoaderClient *client);
 private:
     static int LoadFileData(const blink::KURL &URI, std::vector<unsigned char> &dst);
 

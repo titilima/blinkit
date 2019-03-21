@@ -21,7 +21,7 @@ namespace BlinKit {
 class ResLoaderTask final : public LoaderTask
 {
 public:
-    ResLoaderTask(const blink::KURL &URI);
+    ResLoaderTask(const blink::KURL &URI, blink::WebURLLoaderClient *client);
 private:
     static int LoadResData(const blink::KURL &URI, std::vector<unsigned char> &dst);
 

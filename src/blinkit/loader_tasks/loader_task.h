@@ -30,13 +30,13 @@ struct ResponseData;
 class LoaderTask : public blink::WebTaskRunner::Task
 {
 public:
-    static LoaderTask* Create(const blink::KURL &URI);
+    static LoaderTask* Create(const blink::KURL &URI, blink::WebURLLoaderClient *client);
 
-    void Setup(blink::WebURLLoader *loader, blink::WebTaskRunner *taskRunner, blink::WebURLLoaderClient *client) {
-        m_loader = loader; m_taskRunner = taskRunner; m_client = client;
+    void Setup(blink::WebURLLoader *loader, blink::WebTaskRunner *taskRunner) {
+        m_loader = loader; m_taskRunner = taskRunner;
     }
 protected:
-    LoaderTask(const blink::KURL &URI);
+    LoaderTask(const blink::KURL &URI, blink::WebURLLoaderClient *client);
     void RespondToLoader(void);
     void ReportErrorToLoader(int errorCode);
 
