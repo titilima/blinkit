@@ -52,6 +52,7 @@ inline BlinKit::Asserter& operator<<(const BlinKit::Asserter &a, const T &) {
 #define DCHECK_LT(v1, v2)   BKASSERT((v1) < (v2))
 #define DCHECK_NE(v1, v2)   BKASSERT((v1) != (v2))
 
+#define DVLOG(x)        BKASSERT(false)
 #define NOTREACHED()    BKASSERT(false)
 
 #endif // BLINKIT_BASE_LOGGING_H
