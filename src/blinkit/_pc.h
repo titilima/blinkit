@@ -40,4 +40,6 @@
 extern HMODULE theModule;
 #endif
 
+#include "base/logging.h"
+
 #endif // BLINKIT_BLINKIT__PC_H
