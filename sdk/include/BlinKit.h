@@ -13,6 +13,10 @@
 
 #pragma once
 
+#include <cassert>
+#include <string>
+#include <vector>
+
 #ifdef _WIN32
 #   define BKAPI    __stdcall
 #   ifndef BLINKIT_EXPORTS
@@ -32,6 +36,10 @@ namespace BlinKit {
 
 class BkCrawler;
 class BkCrawlerClient;
+class BkRequest;
+class BkRequestClient;
+class BkRequestController;
+class BkRetainedResponse;
 class BkView;
 class BkViewClient;
 
@@ -79,6 +87,11 @@ protected:
  */
 
 class BkAppClient {
+public:
+    virtual BkRequest* BKAPI CreateNetRequest(const char *URL, BkRequestClient &client) {
+        // Return nullptr to apply the default request creator (BkCreateRequest).
+        return nullptr;
+    }
 };
 
 class BkApp {
@@ -179,6 +192,67 @@ public:
 };
 
 /**
+ * HTTP
+ */
+
+class BkRequest {
+public:
+    // Generally, a request will be automatically destroyed after completed,
+    // and the caller SHOULD NOT do anything after `Perform` called.
+    // See also `RequireLifecycleController` for "cancelable" controllers.
+    virtual int BKAPI Perform(void) = 0;
+
+    virtual void BKAPI SetMethod(const char *method) = 0; // Default is "GET"
+    virtual void BKAPI SetHeader(const char *name, const char *value) = 0;
+
+    virtual BkRequestController* BKAPI RequireLifecycleController(void) {
+        // If this returns a valid controller, the request wll not be destroyed after completed.
+        return nullptr;
+    }
+};
+
+class BkRequestController {
+public:
+    virtual void BKAPI Cancel(void) = 0;
+    virtual void BKAPI Release(void) = 0;
+};
+
+class BkResponse {
+public:
+    virtual int BKAPI GetHTTPVersion(BkBuffer &v) const = 0;
+    virtual int BKAPI StatusCode(void) const = 0;
+    virtual int BKAPI GetReasonPhrase(BkBuffer &reasonPhrase) const = 0;
+
+    virtual int BKAPI GetHeader(const char *name, BkBuffer &value) const = 0;
+
+    virtual unsigned BKAPI CookiesCount(void) const = 0;
+    virtual int BKAPI GetCookie(unsigned i, BkBuffer &cookie) const = 0;
+
+    virtual int BKAPI GetBody(BkBuffer &body) const = 0;
+
+    virtual BkRetainedResponse* BKAPI Retain(void) const { return nullptr; }
+};
+
+class BkRetainedResponse : public BkResponse {
+public:
+    virtual void BKAPI Release(void) = 0;
+};
+
+class BkRequestClient
+{
+public:
+    virtual void BKAPI RequestComplete(const BkResponse &response) = 0;
+    virtual void BKAPI RequestFailed(int errorCode) {
+        assert(BkError::Success == errorCode);
+    }
+
+    virtual bool BKAPI UseProxy(void) { return true; }
+    virtual void BKAPI GetProxy(BkBuffer &proxy) {
+        // Empty string proxy is for system global proxy.
+    }
+};
+
+/**
  * Helpers
  */
 
@@ -255,5 +329,8 @@ private:
 
 extern "C" BKEXPORT BlinKit::BkApp* BKAPI BkInitialize(BlinKit::BkAppClient *client);
 extern "C" BKEXPORT BlinKit::BkApp* BKAPI BkGetApp(void);
+
+// Create a HTTP request. `BkInitialize` is not required.
+extern "C" BKEXPORT BlinKit::BkRequest* BKAPI BkCreateRequest(const char *URL, BlinKit::BkRequestClient &client);
 
 #endif // BLINKIT_SDK_BLINKIT_H
