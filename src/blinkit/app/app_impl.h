@@ -20,6 +20,7 @@
 
 namespace BlinKit {
 
+class CookieJarImpl;
 class MimeRegistryImpl;
 
 class AppImpl : public BkApp, public blink::Platform, public ThreadImpl
@@ -31,7 +32,10 @@ public:
     void Initialize(BkAppClient *client);
     static AppImpl& Get(void);
 
+    BkRequest* CreateRequest(const char *URL, BkRequestClient &client);
+
     blink::WebThread& IOThread(void);
+    CookieJarImpl& CookieJar(void);
 
     // blink::Platform
     blink::WebThread* currentThread(void) override final;
@@ -42,6 +46,7 @@ private:
     void BKAPI Exit(void) override final;
     BkCrawler* BKAPI CreateCrawler(BkCrawlerClient &client) override final;
     // blink::Platform
+    blink::WebCookieJar* cookieJar(void) override final;
     blink::WebMimeRegistry* mimeRegistry(void) override final;
     blink::WebURLLoader* createURLLoader(void) override final;
     blink::WebString userAgent(void) override final;
@@ -50,6 +55,7 @@ private:
     double monotonicallyIncreasingTimeSeconds(void) override final;
 
     BkAppClient *m_client = nullptr;
+    std::unique_ptr<CookieJarImpl> m_cookieJar;
     std::unique_ptr<MimeRegistryImpl> m_mimeRegistry;
     std::unique_ptr<blink::WebThread> m_IOThread;
     double m_firstMonotonicallyIncreasingTime;

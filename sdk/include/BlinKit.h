@@ -88,7 +88,7 @@ protected:
 
 class BkAppClient {
 public:
-    virtual BkRequest* BKAPI CreateNetRequest(const char *URL, BkRequestClient &client) {
+    virtual BkRequest* BKAPI CreateRequest(const char *URL, BkRequestClient &client) {
         // Return nullptr to apply the default request creator (BkCreateRequest).
         return nullptr;
     }
@@ -109,6 +109,22 @@ public:
 class BkCrawlerClient {
 public:
     virtual void BKAPI DocumentReady(BkCrawler *crawler) {}
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // Cookies
+    // BlinKit holds a cookiejar internally, and the caller could also manage cookies by GetCookie/SetCookie.
+    virtual void BKAPI GetCookie(const char *URL, BkBuffer &cookie) {
+        // GetCookie will be called before sending requests.
+        // If the client provides cookies, cookiejar will not be used.
+        // Example:
+        //     cookie.Assign("foo1=bar1; foo2=bar2; foo3=bar3");
+    }
+    virtual bool BKAPI SetCookie(const char *cookie) {
+        // SetCookie will be called after receiving responses.
+        // If returns true, the current cookie will not be saved into cookiejar.
+        return false;
+    }
+    // -----------------------------------------------------------------------------------------------------------------
 };
 
 class BkCrawler {

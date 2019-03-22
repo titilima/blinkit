@@ -16,6 +16,7 @@
 #include "public/web/WebKit.h"
 
 #include "app/app_constants.h"
+#include "blink_impl/cookie_jar_impl.h"
 #include "blink_impl/mime_registry_impl.h"
 #include "blink_impl/url_loader_impl.h"
 #include "crawler/crawler_impl.h"
@@ -42,9 +43,31 @@ AppImpl::~AppImpl(void)
     theApp = nullptr;
 }
 
+blink::WebCookieJar* AppImpl::cookieJar(void)
+{
+    if (!m_cookieJar)
+    {
+        AutoLock lock(m_lock);
+        if (!m_cookieJar)
+            m_cookieJar = std::make_unique<CookieJarImpl>();
+    }
+    return m_cookieJar.get();
+}
+
 BkCrawler* BKAPI AppImpl::CreateCrawler(BkCrawlerClient &client)
 {
     return new CrawlerImpl(client);
+}
+
+BkRequest* AppImpl::CreateRequest(const char *URL, BkRequestClient &client)
+{
+    if (nullptr != m_client)
+    {
+        BkRequest *request = m_client->CreateRequest(URL, client);
+        if (nullptr != request)
+            return request;
+    }
+    return BkCreateRequest(URL, client);
 }
 
 blink::WebThread* AppImpl::createThread(const char *name)

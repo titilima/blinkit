@@ -13,6 +13,9 @@
 
 #include "platform/weborigin/KURL.h"
 
+#include "app/app_impl.h"
+#include "blink_impl/cookie_jar_impl.h"
+
 using namespace blink;
 
 namespace BlinKit {
@@ -25,6 +28,15 @@ CrawlerImpl::CrawlerImpl(BkCrawlerClient &client) : m_client(client)
 void CrawlerImpl::didFinishLoad(WebLocalFrame *)
 {
     m_client.DocumentReady(this);
+}
+
+std::string CrawlerImpl::GetCookie(const std::string &URL) const
+{
+    std::string ret;
+    m_client.GetCookie(URL.c_str(), BkMakeBuffer(ret).Wrap());
+    if (ret.empty())
+        ret = AppImpl::Get().CookieJar().GetCookie(URL);
+    return ret;
 }
 
 int BKAPI CrawlerImpl::Load(const char *URI)

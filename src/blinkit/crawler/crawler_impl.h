@@ -24,6 +24,8 @@ class CrawlerImpl final : public BkCrawler, public BrowserImpl
 {
 public:
     CrawlerImpl(BkCrawlerClient &client);
+
+    std::string GetCookie(const std::string &URL) const;
 private:
     // BkCrawler
     void BKAPI Destroy(void) override { delete this; }
