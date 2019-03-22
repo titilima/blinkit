@@ -36,6 +36,7 @@ private:
     blink::WebClipboard* clipboard(void) override;
     blink::WebThemeEngine* themeEngine(void) override;
     blink::WebData loadResource(const char *name) override;
+    blink::WebString defaultLocale(void) override;
 
     std::unique_ptr<WinClipboard> m_clipboard;
     std::unique_ptr<WinThemeEngine> m_themeEngine;

@@ -46,6 +46,20 @@ BkView* BKAPI WinApp::CreateView(BkViewClient &client)
     return new WinView(client);
 }
 
+blink::WebString WinApp::defaultLocale(void)
+{
+    std::string localName("en-US");
+
+    int len = GetLocaleInfoA(LOCALE_USER_DEFAULT, LOCALE_SNAME, nullptr, 0);
+    if (len > 0)
+    {
+        localName.resize(len - 1);
+        GetLocaleInfoA(LOCALE_USER_DEFAULT, LOCALE_SNAME, const_cast<PSTR>(localName.c_str()), len);
+    }
+
+    return blink::WebString::fromUTF8(localName);
+}
+
 WinApp& WinApp::Get(void)
 {
     return static_cast<WinApp &>(AppImpl::Get());
