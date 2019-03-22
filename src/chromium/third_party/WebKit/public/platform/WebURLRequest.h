@@ -42,6 +42,7 @@
 #ifndef WebURLRequest_h
 #define WebURLRequest_h
 
+#include <functional>
 #include "WebCommon.h"
 #include "WebHTTPBody.h"
 #include "WebReferrerPolicy.h"
@@ -205,6 +206,7 @@ public:
     BLINK_PLATFORM_EXPORT void setCachePolicy(CachePolicy);
 
     BLINK_PLATFORM_EXPORT WebString httpMethod() const;
+    std::string GetHTTPMethod(void) const;
     BLINK_PLATFORM_EXPORT void setHTTPMethod(const WebString&);
 
     BLINK_PLATFORM_EXPORT WebString httpHeaderField(const WebString& name) const;
@@ -215,6 +217,7 @@ public:
     BLINK_PLATFORM_EXPORT void addHTTPHeaderField(const WebString& name, const WebString& value);
     BLINK_PLATFORM_EXPORT void clearHTTPHeaderField(const WebString& name);
     BLINK_PLATFORM_EXPORT void visitHTTPHeaderFields(WebHTTPHeaderVisitor*) const;
+    void VisitHTTPHeaderFields(const std::function<void(const std::string &, const std::string &)> &) const;
 
     BLINK_PLATFORM_EXPORT WebHTTPBody httpBody() const;
     BLINK_PLATFORM_EXPORT void setHTTPBody(const WebHTTPBody&);

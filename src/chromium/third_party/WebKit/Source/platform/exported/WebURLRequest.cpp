@@ -175,6 +175,11 @@ WebString WebURLRequest::httpMethod() const
     return m_private->m_resourceRequest->httpMethod();
 }
 
+std::string WebURLRequest::GetHTTPMethod(void) const
+{
+    return m_private->m_resourceRequest->httpMethod().to_string();
+}
+
 void WebURLRequest::setHTTPMethod(const WebString& httpMethod)
 {
     m_private->m_resourceRequest->setHTTPMethod(httpMethod);
@@ -187,7 +192,7 @@ WebString WebURLRequest::httpHeaderField(const WebString& name) const
 
 std::string WebURLRequest::GetHeaderField(const char *name) const
 {
-    return httpHeaderField(WebString::fromUTF8(name)).utf8();
+    return m_private->m_resourceRequest->httpHeaderField(name).to_string();
 }
 
 void WebURLRequest::setHTTPHeaderField(const WebString& name, const WebString& value)
@@ -216,6 +221,17 @@ void WebURLRequest::visitHTTPHeaderFields(WebHTTPHeaderVisitor* visitor) const
     const HTTPHeaderMap& map = m_private->m_resourceRequest->httpHeaderFields();
     for (HTTPHeaderMap::const_iterator it = map.begin(); it != map.end(); ++it)
         visitor->visitHeader(it->key, it->value);
+}
+
+void WebURLRequest::VisitHTTPHeaderFields(const std::function<void(const std::string &, const std::string &)> &visitor) const
+{
+    const HTTPHeaderMap &map = m_private->m_resourceRequest->httpHeaderFields();
+    for (HTTPHeaderMap::const_iterator it = map.begin(); it != map.end(); ++it)
+    {
+        std::string name = it->key.to_string();
+        std::string value = it->value.to_string();
+        visitor(name, value);
+    }
 }
 
 WebHTTPBody WebURLRequest::httpBody() const
