@@ -144,6 +144,12 @@
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.cpp">
       <Filter>loader_tasks</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_response_task.cpp">
+      <Filter>loader_tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\cookie_jar_impl.cpp">
+      <Filter>blink_impl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -253,6 +259,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.h">
       <Filter>loader_tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_response_task.h">
+      <Filter>loader_tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\cookie_jar_impl.h">
+      <Filter>blink_impl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

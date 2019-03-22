@@ -175,6 +175,7 @@
     <ClCompile Include="..\..\..\src\blinkit\app\app_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\app\win_app.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\clipboard_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\cookie_jar_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\frame_scheduler_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\mime_registry_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\scheduler_impl.cpp" />
@@ -194,6 +195,7 @@
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\file_loader_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\file_loader_task_win.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_response_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\loader_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\response_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\res_loader_task.cpp" />
@@ -216,6 +218,7 @@
     <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\win_app.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\clipboard_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\cookie_jar_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\frame_scheduler_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\mime_registry_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\scheduler_impl.h" />
@@ -235,6 +238,7 @@
     <ClInclude Include="..\..\..\src\blinkit\http\win_request.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\file_loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_response_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\response_data.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\response_task.h" />
