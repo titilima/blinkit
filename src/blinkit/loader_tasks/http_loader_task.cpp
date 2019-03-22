@@ -11,31 +11,72 @@
 
 #include "http_loader_task.h"
 
+#include "public/platform/WebHTTPHeaderVisitor.h"
+
+#include "app/app_impl.h"
 #include "crawler/crawler_impl.h"
+#include "loader_tasks/http_response_task.h"
 
 using namespace blink;
 
 namespace BlinKit {
 
-HTTPLoaderTask::HTTPLoaderTask(CrawlerImpl &crawler, const KURL &URI, WebURLLoaderClient *client)
-    : LoaderTask(URI, client), m_crawler(crawler)
+HTTPLoaderTask::HTTPLoaderTask(CrawlerImpl &crawler, const WebURLRequest &request, WebURLLoaderClient *client)
+    : LoaderTask(request.url(), client), m_crawler(crawler), m_method(request.GetHTTPMethod())
 {
-    assert(false); // BKTODO:
+    request.VisitHTTPHeaderFields([this](const std::string &name, const std::string &value) {
+        m_headers[name] = value;
+    });
 }
 
-void BKAPI HTTPLoaderTask::RequestComplete(const BkResponse &response)
+int HTTPLoaderTask::LoadRemoteData(void)
 {
-    assert(false); // BKTODO:
-}
+    HTTPResponseTask *responseTask = new HTTPResponseTask(m_crawler, m_loader, m_client, *m_responseData);
+    if (nullptr == responseTask)
+    {
+        assert(nullptr != responseTask);
+        return BkError::UnknownError;
+    }
 
-void BKAPI HTTPLoaderTask::RequestFailed(int errorCode)
-{
+    std::string URL = m_responseData->URI.string().to_string();
+    BkRequest *request = AppImpl::Get().CreateRequest(URL.c_str(), *responseTask);
+    if (nullptr == request)
+    {
+        assert(nullptr != request);
+        delete responseTask;
+        return BkError::UnknownError;
+    }
+
+    request->SetMethod(m_method.c_str());
+    request->SetHeader("Accept-Encoding", "gzip, deflate");
+    request->SetHeader("Connection", "Keep-Alive");
+    for (const auto &it : m_headers)
+        request->SetHeader(it.first.c_str(), it.second.c_str());
     assert(false); // BKTODO:
+#if 0
+    if (MainHTML == m_resourceType)
+        request->SetHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+#endif
+
+    std::string locale = Platform::current()->defaultLocale().utf8();
+    request->SetHeader("Accept-Language", locale.c_str());
+
+    std::string cookie = m_crawler.GetCookie(URL);
+    if (!cookie.empty())
+    {
+        BKLOG("Apply cookie: %s", cookie.c_str());
+        request->SetHeader("Cookie", cookie.c_str());
+    }
+
+    responseTask->Setup(m_taskRunner);
+    return request->Perform();
 }
 
 void HTTPLoaderTask::run(void)
 {
-    assert(false); // BKTODO:
+    int r = LoadRemoteData();
+    if (BkError::Success != r)
+        ReportErrorToLoader(r);
 }
 
 } // namespace BlinKit

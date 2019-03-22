@@ -24,18 +24,18 @@ class WebURLLoaderClient;
 
 namespace BlinKit {
 
-class ResponseTask final : public blink::WebTaskRunner::Task
+class ResponseTask : public blink::WebTaskRunner::Task
 {
 public:
     ResponseTask(blink::WebURLLoader *loader, blink::WebURLLoaderClient *client, ResponseData &responseData);
+protected:
+    std::shared_ptr<ResponseData> m_responseData;
 private:
     // blink::WebTaskRunner::Task
     void run(void) override;
 
     blink::WebURLLoader *m_loader;
     blink::WebURLLoaderClient *m_client;
-    std::shared_ptr<ResponseData> m_responseData;
-    std::string m_MIMEType;
 };
 
 } // namespace BlinKit

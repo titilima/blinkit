@@ -168,15 +168,17 @@ void ResponseImpl::ParseHeaders(const std::string &rawHeaders)
 
     for (const auto &kv : headers)
     {
-        if (base::EqualsCaseInsensitiveASCII(kv.first.c_str(), "Set-Cookie"))
+        std::string k, v;
+        base::TrimWhitespaceASCII(kv.first, base::TRIM_ALL, &k);
+        base::TrimWhitespaceASCII(kv.second, base::TRIM_ALL, &v);
+        if (base::EqualsCaseInsensitiveASCII(k.c_str(), "Set-Cookie"))
         {
-            m_cookies.push_back(kv.second);
+            m_cookies.push_back(v);
         }
         else
         {
-            std::string k(kv.first);
             CanonizeHeaderName(k);
-            m_headers[k] = kv.second;
+            m_headers[k] = v;
         }
     }
 }

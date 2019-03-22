@@ -15,25 +15,26 @@
 #pragma once
 
 #include "sdk/include/BlinKit.h"
+#include "public/platform/WebURLRequest.h"
 #include "loader_task.h"
 
 namespace BlinKit {
 
 class CrawlerImpl;
 
-class HTTPLoaderTask final : public LoaderTask, public BkRequestClient
+class HTTPLoaderTask final : public LoaderTask
 {
 public:
-    HTTPLoaderTask(CrawlerImpl &crawler, const blink::KURL &URI, blink::WebURLLoaderClient *client);
+    HTTPLoaderTask(CrawlerImpl &crawler, const blink::WebURLRequest &request, blink::WebURLLoaderClient *client);
 private:
+    int LoadRemoteData(void);
+
     // blink::WebTaskRunner::Task
     void run(void) override;
-    // BkRequestClient
-    void BKAPI RequestComplete(const BkResponse &response) override;
-    void BKAPI RequestFailed(int errorCode) override;
 
     CrawlerImpl &m_crawler;
-    BkRetainedResponse *m_response = nullptr;
+    std::string m_method;
+    std::unordered_map<std::string, std::string> m_headers;
 };
 
 } // namespace BlinKit
