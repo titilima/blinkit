@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebURLRequest.cpp
+// Description: WebURLRequest Class
+//      Author: Ziming Li
+//     Created: 2019-03-22
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -172,6 +183,11 @@ void WebURLRequest::setHTTPMethod(const WebString& httpMethod)
 WebString WebURLRequest::httpHeaderField(const WebString& name) const
 {
     return m_private->m_resourceRequest->httpHeaderField(name);
+}
+
+std::string WebURLRequest::GetHeaderField(const char *name) const
+{
+    return httpHeaderField(WebString::fromUTF8(name)).utf8();
 }
 
 void WebURLRequest::setHTTPHeaderField(const WebString& name, const WebString& value)

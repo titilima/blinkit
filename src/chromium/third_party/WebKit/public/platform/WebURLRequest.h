@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebURLRequest.h
+// Description: WebURLRequest Class
+//      Author: Ziming Li
+//     Created: 2019-03-22
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -197,6 +208,7 @@ public:
     BLINK_PLATFORM_EXPORT void setHTTPMethod(const WebString&);
 
     BLINK_PLATFORM_EXPORT WebString httpHeaderField(const WebString& name) const;
+    std::string GetHeaderField(const char *name) const;
     // It's not possible to set the referrer header using this method. Use setHTTPReferrer instead.
     BLINK_PLATFORM_EXPORT void setHTTPHeaderField(const WebString& name, const WebString& value);
     BLINK_PLATFORM_EXPORT void setHTTPReferrer(const WebString& referrer, WebReferrerPolicy);
