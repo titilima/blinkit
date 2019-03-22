@@ -43,7 +43,7 @@ AppImpl::~AppImpl(void)
     theApp = nullptr;
 }
 
-blink::WebCookieJar* AppImpl::cookieJar(void)
+CookieJarImpl& AppImpl::CookieJar(void)
 {
     if (!m_cookieJar)
     {
@@ -51,7 +51,13 @@ blink::WebCookieJar* AppImpl::cookieJar(void)
         if (!m_cookieJar)
             m_cookieJar = std::make_unique<CookieJarImpl>();
     }
-    return m_cookieJar.get();
+    return *m_cookieJar;
+}
+
+blink::WebCookieJar* AppImpl::cookieJar(void)
+{
+    CookieJarImpl &cookieJar = CookieJar();
+    return &cookieJar;
 }
 
 BkCrawler* BKAPI AppImpl::CreateCrawler(BkCrawlerClient &client)
