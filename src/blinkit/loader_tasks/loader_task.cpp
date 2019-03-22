@@ -11,6 +11,7 @@
 
 #include "loader_task.h"
 
+#include "public/platform/WebURLRequest.h"
 #include "public/platform/WebTraceLocation.h"
 #include "public/platform/WebURLLoaderClient.h"
 #include "loader_tasks/file_loader_task.h"
@@ -28,8 +29,10 @@ LoaderTask::LoaderTask(const KURL &URI, WebURLLoaderClient *client)
     m_responseData->URI = URI;
 }
 
-LoaderTask* LoaderTask::Create(const KURL &URI, WebURLLoaderClient *client)
+LoaderTask* LoaderTask::Create(const WebURLRequest &request, WebURLLoaderClient *client)
 {
+    const KURL URI = request.url();
+
     CrawlerImpl *crawler = client->Crawler();
     if (nullptr != crawler)
     {
@@ -38,7 +41,7 @@ LoaderTask* LoaderTask::Create(const KURL &URI, WebURLLoaderClient *client)
             assert(URI.protocolIsInHTTPFamily());
             return nullptr;
         }
-        return new HTTPLoaderTask(*crawler, URI, client);
+        return new HTTPLoaderTask(*crawler, request, client);
     }
 
     if (URI.isLocalFile())

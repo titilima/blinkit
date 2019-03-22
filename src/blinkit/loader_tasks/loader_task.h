@@ -21,6 +21,7 @@
 namespace blink {
 class WebURLLoader;
 class WebURLLoaderClient;
+class WebURLRequest;
 }
 
 namespace BlinKit {
@@ -30,7 +31,7 @@ struct ResponseData;
 class LoaderTask : public blink::WebTaskRunner::Task
 {
 public:
-    static LoaderTask* Create(const blink::KURL &URI, blink::WebURLLoaderClient *client);
+    static LoaderTask* Create(const blink::WebURLRequest &request, blink::WebURLLoaderClient *client);
 
     void Setup(blink::WebURLLoader *loader, blink::WebTaskRunner *taskRunner) {
         m_loader = loader; m_taskRunner = taskRunner;
@@ -41,7 +42,6 @@ protected:
     void ReportErrorToLoader(int errorCode);
 
     std::shared_ptr<ResponseData> m_responseData;
-private:
     blink::WebURLLoader *m_loader = nullptr;
     blink::WebTaskRunner *m_taskRunner = nullptr;
     blink::WebURLLoaderClient *m_client = nullptr;

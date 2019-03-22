@@ -35,7 +35,7 @@ void URLLoaderImpl::cancel(void)
 
 void URLLoaderImpl::loadAsynchronously(const WebURLRequest &request, WebURLLoaderClient *client)
 {
-    LoaderTask *task = LoaderTask::Create(request.url(), client);
+    LoaderTask *task = LoaderTask::Create(request, client);
     if (nullptr != task)
     {
         task->Setup(this, m_taskRunner);
