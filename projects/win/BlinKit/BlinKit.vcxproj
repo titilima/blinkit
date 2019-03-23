@@ -102,6 +102,7 @@
     <LinkIncremental>false</LinkIncremental>
     <GenerateManifest>false</GenerateManifest>
     <IncludePath>$(RepoRoot)third_party\zlib;$(IncludePath)</IncludePath>
+    <OutDir>$(RepoRoot)sdk\win32\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
