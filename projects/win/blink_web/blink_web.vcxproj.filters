@@ -212,9 +212,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebPagePopupImpl.cpp">
       <Filter>web</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebPerformance.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebRange.cpp">
       <Filter>web</Filter>
     </ClCompile>

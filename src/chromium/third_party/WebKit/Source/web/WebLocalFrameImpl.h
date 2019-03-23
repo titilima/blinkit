@@ -67,7 +67,6 @@ class WebDevToolsFrontendImpl;
 class WebFrameClient;
 class WebFrameWidget;
 class WebNode;
-class WebPerformance;
 class WebScriptExecutionCallback;
 class WebSuspendableTask;
 class WebView;
@@ -99,7 +98,6 @@ public:
     WebView* view() const override;
     void setOpener(WebFrame*) override;
     WebDocument document() const override;
-    WebPerformance performance() const override;
     bool dispatchBeforeUnloadEvent() override;
     void dispatchUnloadEvent() override;
     void executeScript(const WebScriptSource&) override;

@@ -76,7 +76,6 @@ class WebElement;
 class WebFrameImplBase;
 class WebLayer;
 class WebLocalFrame;
-class WebPerformance;
 class WebRange;
 class WebRemoteFrame;
 class WebSecurityOrigin;
@@ -247,8 +246,6 @@ public:
     // Content ------------------------------------------------------------
 
     virtual WebDocument document() const = 0;
-
-    virtual WebPerformance performance() const = 0;
 
 
     // Closing -------------------------------------------------------------

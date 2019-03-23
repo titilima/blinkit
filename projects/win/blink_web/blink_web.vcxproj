@@ -228,7 +228,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebOptionElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebPageImportanceSignals.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebPagePopupImpl.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebPerformance.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebRange.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebScopedUserGesture.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebScopedWindowFocusAllowedIndicator.cpp" />

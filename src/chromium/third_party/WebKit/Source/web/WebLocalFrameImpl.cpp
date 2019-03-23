@@ -198,7 +198,6 @@
 #include "public/web/WebInputElement.h"
 #include "public/web/WebKit.h"
 #include "public/web/WebNode.h"
-#include "public/web/WebPerformance.h"
 #include "public/web/WebPrintParams.h"
 #include "public/web/WebPrintPresetOptions.h"
 #include "public/web/WebRange.h"
@@ -465,11 +464,6 @@ WebDocument WebLocalFrameImpl::document() const
     if (!frame() || !frame()->document())
         return WebDocument();
     return WebDocument(frame()->document());
-}
-
-WebPerformance WebLocalFrameImpl::performance() const
-{
-    return WebPerformance();
 }
 
 bool WebLocalFrameImpl::dispatchBeforeUnloadEvent()
