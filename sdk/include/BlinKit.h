@@ -221,12 +221,17 @@ public:
     virtual void BKAPI SetMethod(const char *method) = 0; // Default is "GET"
     virtual void BKAPI SetHeader(const char *name, const char *value) = 0;
 
-    virtual void BKAPI SetTimeout(unsigned timeout) = 0; // In seconds.
-
+    // -----------------------------------------------------------------------------------------------------------------
+    // Optional Methods
+    // BlinKit internal will not call these methods, so external HTTP service providers need not to implement them.
+    virtual void BKAPI SetTimeout(unsigned timeout /* in seconds */) {
+        assert(false); // Not implemented!
+    }
     virtual BkRequestController* BKAPI RequireLifecycleController(void) {
         // If this returns a valid controller, the request wll not be destroyed after completed.
         return nullptr;
     }
+    // -----------------------------------------------------------------------------------------------------------------
 };
 
 class BkRequestController {
@@ -248,7 +253,20 @@ public:
 
     virtual int BKAPI GetBody(BkBuffer &body) const = 0;
 
+    // -----------------------------------------------------------------------------------------------------------------
+    // Optional Methods
+    // BlinKit internal will not call these methods, so external HTTP service providers need not to implement them.
     virtual BkRetainedResponse* BKAPI Retain(void) const { return nullptr; }
+    enum class Information {
+        URL,
+        OriginalURL,
+    };
+    virtual int GetInformation(Information i, BkBuffer &value) const {
+        assert(false); // Not implemented!
+        return BkError::NotFound;
+    }
+    // Optional Methods End
+    // -----------------------------------------------------------------------------------------------------------------
 };
 
 class BkRetainedResponse : public BkResponse {
