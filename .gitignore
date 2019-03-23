@@ -1,5 +1,6 @@
 projects/win/debug
 projects/win/release
+sdk/win32
 src/chromium/third_party/WebKit/LayoutTests
 src/chromium/third_party/WebKit/ManualTests
 src/chromium/third_party/WebKit/PerformanceTests
@@ -17,6 +18,7 @@ src/chromium/third_party/WebKit/public/default_200_percent
 BUILD.gn
 DEPS
 PRESUBMIT.py
+!sdk/win32/BlinKit.props
 
 *Test.cpp
 *Test.h
