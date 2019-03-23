@@ -22,8 +22,12 @@ namespace BlinKit {
 class ResponseImpl final : public BkRetainedResponse
 {
 public:
+    ResponseImpl(const std::string &URL);
+
     int ErrorCode(void) const { return m_errorCode; }
     void SetErrorCode(int errorCode) { m_errorCode = errorCode; }
+
+    void SetCurrentURL(const std::string &URL) { m_URL = URL; }
 
     void ParseHeaders(const std::string &rawHeaders);
     void PrepareBody(size_t cb) { m_body.reserve(cb); }
@@ -42,9 +46,11 @@ private:
     int BKAPI GetCookie(unsigned i, BkBuffer &cookie) const override;
     int BKAPI GetBody(BkBuffer &body) const override;
     BkRetainedResponse* BKAPI Retain(void) const override;
+    int GetInformation(Information i, BkBuffer &value) const override;
 
     std::atomic<unsigned> m_refCount{ 1 };
 
+    std::string m_originURL, m_URL;
     std::string m_version;
     int m_errorCode = BkError::Success, m_statusCode = 0;
     std::string m_reasonPhrase;

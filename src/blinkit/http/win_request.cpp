@@ -276,7 +276,7 @@ void BKAPI WinRequest::SetHeader(const char *name, const char *value)
 
 void WinRequest::StartWorkThread(void)
 {
-    m_response = new ResponseImpl;
+    m_response = new ResponseImpl(m_URL);
     m_hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
     m_hThread = CreateThread(nullptr, 0, ThreadProc, this, 0, nullptr);
 }
@@ -301,6 +301,13 @@ void WinRequest::StatusCallback(
         case INTERNET_STATUS_CONNECTING_TO_SERVER:
             BKLOG("Connecting to %s ...", reinterpret_cast<PCSTR>(lpvStatusInformation));
             break;
+        case INTERNET_STATUS_REDIRECT:
+        {
+            std::string URL(reinterpret_cast<const char *>(lpvStatusInformation), dwStatusInformationLength);
+            m_response->SetCurrentURL(URL);
+            BKLOG("Redirect to: %s.", URL.c_str());
+            break;
+        }
         case INTERNET_STATUS_REQUEST_COMPLETE:
         {
             LPINTERNET_ASYNC_RESULT r = reinterpret_cast<LPINTERNET_ASYNC_RESULT>(lpvStatusInformation);

@@ -50,6 +50,11 @@ static void CanonizeHeaderName(std::string &headerName)
     }
 }
 
+ResponseImpl::ResponseImpl(const std::string &URL) : m_originURL(URL), m_URL(URL)
+{
+    // Nothing
+}
+
 void ResponseImpl::AppendData(void *data, size_t cb)
 {
     size_t n = m_body.size();
@@ -97,6 +102,23 @@ int BKAPI ResponseImpl::GetHTTPVersion(BkBuffer &v) const
         return BkError::NotFound;
 
     v.Assign(m_version);
+    return BkError::Success;
+}
+
+int ResponseImpl::GetInformation(Information i, BkBuffer &value) const
+{
+    switch (i)
+    {
+        case BkResponse::Information::URL:
+            value.Assign(m_URL);
+            break;
+        case BkResponse::Information::OriginalURL:
+            value.Assign(m_originURL);
+            break;
+        default:
+            assert(false); // Not reached!
+            return BkError::NotFound;
+    }
     return BkError::Success;
 }
 
