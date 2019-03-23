@@ -32,12 +32,12 @@ protected:
     RequestImpl(const char *URL, BkRequestClient &client);
 
     std::string GetAllHeaders(void) const;
+    unsigned long TimeoutInMs(void) const { return m_timeoutInMs; }
 
     // BkRequest
     void BKAPI SetHeader(const char *name, const char *value) override;
     BkRequestController* BKAPI RequireLifecycleController(void) override;
 
-    static const unsigned long TimeOutInMs;
     const std::string m_URL;
     BkRequestClient &m_client;
     std::string m_method;
@@ -45,9 +45,11 @@ protected:
 private:
     // BkNetRequest
     void BKAPI SetMethod(const char *method) override final { m_method = method; }
+    void BKAPI SetTimeout(unsigned timeout) override final { m_timeoutInMs = timeout * 1000; }
 
-    std::unordered_map<std::string, std::string> m_headers;
     std::atomic<unsigned> m_refCount{ 1 };
+    unsigned long m_timeoutInMs;
+    std::unordered_map<std::string, std::string> m_headers;
 };
 
 } // namespace BlinKit

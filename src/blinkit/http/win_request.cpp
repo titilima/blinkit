@@ -139,7 +139,7 @@ bool WinRequest::OpenSession(void)
         return false;
 
     m_session.SetStatusCallback(StatusCallback);
-    m_session.SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, RequestImpl::TimeOutInMs);
+    m_session.SetOption(INTERNET_OPTION_CONNECT_TIMEOUT, TimeoutInMs());
     return true;
 }
 
@@ -170,7 +170,7 @@ int BKAPI WinRequest::Perform(void)
     buf.dwStructSize = sizeof(INTERNET_BUFFERSA);
     buf.lpcszHeader = m_allHeaders.data();
     buf.dwHeadersLength = m_allHeaders.length();
-    m_request.SetOption(INTERNET_OPTION_SEND_TIMEOUT, RequestImpl::TimeOutInMs);
+    m_request.SetOption(INTERNET_OPTION_SEND_TIMEOUT, TimeoutInMs());
     if (m_request.Send(&buf))
     {
         SetEvent(m_hEvent);
@@ -203,7 +203,7 @@ int WinRequest::QueryRequest(void)
     if (m_request.QueryInfo(HTTP_QUERY_CONTENT_LENGTH, contentLength))
         m_response->PrepareBody(contentLength);
 
-    m_request.SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, RequestImpl::TimeOutInMs);
+    m_request.SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, TimeoutInMs());
     return Continue(&WinRequest::ReceiveData);
 }
 

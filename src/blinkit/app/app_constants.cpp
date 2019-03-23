@@ -20,5 +20,7 @@ const char DefaultUserAgent[] =
 #endif
     ;
 
+const unsigned long DefaultTimeoutInMs = 30000;
+
 } // namespace AppConstants
 } // namespace BlinKit

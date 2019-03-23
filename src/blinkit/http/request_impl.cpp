@@ -11,14 +11,14 @@
 
 #include "request_impl.h"
 
+#include "app/app_constants.h"
 #include "http/request_controller_impl.h"
 #include "http/response_impl.h"
 
 namespace BlinKit {
 
-const unsigned long RequestImpl::TimeOutInMs = 30000;
-
-RequestImpl::RequestImpl(const char *URL, BkRequestClient &client) : m_URL(URL), m_client(client), m_method("GET")
+RequestImpl::RequestImpl(const char *URL, BkRequestClient &client)
+    : m_URL(URL), m_client(client), m_method("GET"), m_timeoutInMs(AppConstants::DefaultTimeoutInMs)
 {
     m_headers["Accept"] = "*/*";
 }

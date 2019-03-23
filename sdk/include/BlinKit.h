@@ -221,6 +221,8 @@ public:
     virtual void BKAPI SetMethod(const char *method) = 0; // Default is "GET"
     virtual void BKAPI SetHeader(const char *name, const char *value) = 0;
 
+    virtual void BKAPI SetTimeout(unsigned timeout) = 0; // In seconds.
+
     virtual BkRequestController* BKAPI RequireLifecycleController(void) {
         // If this returns a valid controller, the request wll not be destroyed after completed.
         return nullptr;
