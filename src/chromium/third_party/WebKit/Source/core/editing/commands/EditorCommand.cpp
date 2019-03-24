@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: EditorCommand.cpp
+// Description: Editor Class
+//      Author: Ziming Li
+//     Created: 2019-03-24
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008 Apple Inc. All rights reserved.
  * Copyright (C) 2008 Nokia Corporation and/or its subsidiary(-ies)
@@ -1013,15 +1024,6 @@ static bool executePasteAndMatchStyle(LocalFrame& frame, Event*, EditorCommandSo
     return true;
 }
 
-static bool executePrint(LocalFrame& frame, Event*, EditorCommandSource, const String&)
-{
-    FrameHost* host = frame.host();
-    if (!host)
-        return false;
-    host->chromeClient().print(&frame);
-    return true;
-}
-
 static bool executeRedo(LocalFrame& frame, Event*, EditorCommandSource, const String&)
 {
     frame.editor().redo();
@@ -1589,7 +1591,6 @@ static const CommandMap& createCommandMap()
         { "Paste", {103, executePaste, supported, enabledPaste, stateNone, valueNull, notTextInsertion, allowExecutionWhenDisabled } },
         { "PasteAndMatchStyle", {104, executePasteAndMatchStyle, supported, enabledPaste, stateNone, valueNull, notTextInsertion, allowExecutionWhenDisabled } },
         { "PasteGlobalSelection", {105, executePasteGlobalSelection, supportedFromMenuOrKeyBinding, enabledPaste, stateNone, valueNull, notTextInsertion, allowExecutionWhenDisabled } },
-        { "Print", {106, executePrint, supported, enabled, stateNone, valueNull, notTextInsertion, doNotAllowExecutionWhenDisabled } },
         { "Redo", {107, executeRedo, supported, enabledRedo, stateNone, valueNull, notTextInsertion, doNotAllowExecutionWhenDisabled } },
         { "RemoveFormat", {108, executeRemoveFormat, supported, enabledRangeInEditableText, stateNone, valueNull, notTextInsertion, doNotAllowExecutionWhenDisabled } },
         { "ScrollPageBackward", {109, executeScrollPageBackward, supportedFromMenuOrKeyBinding, enabled, stateNone, valueNull, notTextInsertion, doNotAllowExecutionWhenDisabled } },
