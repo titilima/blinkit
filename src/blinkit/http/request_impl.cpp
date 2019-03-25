@@ -54,6 +54,12 @@ BkRequestController* BKAPI RequestImpl::RequireLifecycleController(void)
     return new RequestControllerImpl(*this);
 }
 
+void BKAPI RequestImpl::SetBody(const void *data, size_t dataLength)
+{
+    m_body.resize(dataLength);
+    memcpy(m_body.data(), data, dataLength);
+}
+
 void BKAPI RequestImpl::SetHeader(const char *name, const char *value)
 {
     m_headers[name] = value;

@@ -41,11 +41,13 @@ protected:
     const std::string m_URL;
     BkRequestClient &m_client;
     std::string m_method;
+    std::vector<unsigned char> m_body;
     ResponseImpl *m_response = nullptr;
 private:
     // BkNetRequest
     void BKAPI SetMethod(const char *method) override final { m_method = method; }
     void BKAPI SetTimeout(unsigned timeout) override final { m_timeoutInMs = timeout * 1000; }
+    void BKAPI SetBody(const void *data, size_t dataLength) override final;
 
     std::atomic<unsigned> m_refCount{ 1 };
     unsigned long m_timeoutInMs;

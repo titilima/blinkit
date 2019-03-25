@@ -220,6 +220,7 @@ public:
 
     virtual void BKAPI SetMethod(const char *method) = 0; // Default is "GET"
     virtual void BKAPI SetHeader(const char *name, const char *value) = 0;
+    virtual void BKAPI SetBody(const void *data, size_t dataLength) = 0;
 
     // -----------------------------------------------------------------------------------------------------------------
     // Optional Methods
