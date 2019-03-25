@@ -165,4 +165,9 @@ bool InetRequest::Send(LPINTERNET_BUFFERSA lpBuffersIn)
     return HttpSendRequestExA(m_handle, lpBuffersIn, nullptr, HSR_ASYNC, m_context);
 }
 
+bool InetRequest::Write(LPCVOID lpBuffer, DWORD dwSizeToWrite, PDWORD pSizeWritten)
+{
+    return InternetWriteFile(m_handle, lpBuffer, dwSizeToWrite, pSizeWritten);
+}
+
 } // namespace BlinKit

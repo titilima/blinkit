@@ -74,6 +74,7 @@ public:
     bool QueryInfo(DWORD dwInfoLevel, std::string &info);
 
     bool Read(LPINTERNET_BUFFERSA lpBuffersOut);
+    bool Write(LPCVOID lpBuffer, DWORD dwSizeToWrite, PDWORD pSizeWritten);
 private:
     InetRequest(HINTERNET handle, DWORD_PTR context);
 };
