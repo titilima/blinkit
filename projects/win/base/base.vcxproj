@@ -195,6 +195,7 @@
     <ClInclude Include="..\..\..\src\chromium\base\strings\stringprintf.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\string_number_conversions.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\string_piece.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\strings\string_split.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\string_util.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\string_util_win.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\sys_string_conversions.h" />
