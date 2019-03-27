@@ -170,6 +170,7 @@ int BKAPI WinRequest::Perform(void)
     buf.dwStructSize = sizeof(INTERNET_BUFFERSA);
     buf.lpcszHeader = m_allHeaders.data();
     buf.dwHeadersLength = m_allHeaders.length();
+    buf.dwBufferTotal = m_body.size();
     m_request.SetOption(INTERNET_OPTION_SEND_TIMEOUT, TimeoutInMs());
     if (m_request.Send(&buf))
     {
@@ -186,7 +187,10 @@ int BKAPI WinRequest::Perform(void)
         }
     }
 
-    m_nextWorker = &WinRequest::EndRequest;
+    if (m_body.empty())
+        m_nextWorker = &WinRequest::EndRequest;
+    else
+        m_nextWorker = &WinRequest::SendData;
     StartWorkThread();
     return BkError::Success;
 }
@@ -262,6 +266,18 @@ BkRequestController* BKAPI WinRequest::RequireLifecycleController(void)
     m_hEventCancel = CreateEvent(nullptr, TRUE, FALSE, nullptr);
 
     return RequestImpl::RequireLifecycleController();
+}
+
+int WinRequest::SendData(void)
+{
+    assert(!m_body.empty());
+
+    DWORD dwWritten = 0;
+    if (m_request.Write(m_body.data(), m_body.size(), &dwWritten))
+        return Continue(&WinRequest::EndRequest);
+
+    assert(false);
+    return BkError::NetworkError;
 }
 
 void BKAPI WinRequest::SetHeader(const char *name, const char *value)

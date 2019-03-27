@@ -37,6 +37,7 @@ private:
     int Continue(ThreadWorker nextWorker);
     int EndRequest(void);
     int QueryRequest(void);
+    int SendData(void);
     int ReceiveData(void);
     int RequestComplete(void);
     DWORD DoThreadWork(void);

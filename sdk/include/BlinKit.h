@@ -232,6 +232,19 @@ public:
         // If this returns a valid controller, the request wll not be destroyed after completed.
         return nullptr;
     }
+    // Optional Methods End
+    // -----------------------------------------------------------------------------------------------------------------
+    // Inline Helpers
+    inline int Post(const char *charSet = "utf-8") {
+        SetMethod("POST");
+
+        std::string contentType("application/x-www-form-urlencoded;charset=");
+        contentType += charSet;
+        SetHeader("Content-Type", contentType.c_str());
+
+        return Perform();
+    }
+    // Inline Helpers End
     // -----------------------------------------------------------------------------------------------------------------
 };
 
