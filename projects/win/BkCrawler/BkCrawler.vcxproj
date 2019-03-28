@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{D2E00D97-2BEE-41DB-8608-7299E97C0F0A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>BkCrawler</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\_debug.props" />
+    <Import Project="..\_pch.props" />
+    <Import Project="..\BlinKit.props" />
+    <Import Project="..\blink.props" />
+    <Import Project="..\skia.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\_release.props" />
+    <Import Project="..\_pch.props" />
+    <Import Project="..\BlinKit.props" />
+    <Import Project="..\blink.props" />
+    <Import Project="..\skia.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\_debug.props" />
+    <Import Project="..\_pch.props" />
+    <Import Project="..\BlinKit.props" />
+    <Import Project="..\blink.props" />
+    <Import Project="..\skia.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\_release.props" />
+    <Import Project="..\_pch.props" />
+    <Import Project="..\BlinKit.props" />
+    <Import Project="..\blink.props" />
+    <Import Project="..\skia.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(RepoRoot)sdk\win32\</OutDir>
+    <IncludePath>$(RepoRoot)third_party\zlib;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(RepoRoot)third_party\zlib;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;BLINKIT_EXPORTS;BLINKIT_CRAWLER_ONLY;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <ModuleDefinitionFile>BkCrawler.def</ModuleDefinitionFile>
+      <AdditionalDependencies>Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;BLINKIT_EXPORTS;BLINKIT_CRAWLER_ONLY;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <ModuleDefinitionFile>BkCrawler.def</ModuleDefinitionFile>
+      <AdditionalDependencies>Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;BKCRAWLER_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;BKCRAWLER_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\blinkit\app\app_constants.h" />
+    <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\app\win_app.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\clipboard_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\cookie_jar_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\frame_scheduler_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\mime_registry_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\scheduler_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\task_runner_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\thread_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\url_loader_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\view_scheduler_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_clipboard.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_task_runner.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_thread.h" />
+    <ClInclude Include="..\..\..\src\blinkit\browser\browser_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\http\request_controller_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\http\request_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\http\response_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\http\win_request.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\file_loader_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_response_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\loader_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\response_data.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\response_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\res_loader_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\win\inet.h" />
+    <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\blinkit\app\app_constants.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\app\app_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\app\win_app.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\clipboard_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\cookie_jar_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\frame_scheduler_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\mime_registry_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\scheduler_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\task_runner_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\thread_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\url_loader_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\view_scheduler_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_clipboard.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_task_runner.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_thread.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\browser\browser_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\http\request_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\http\response_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\http\win_request.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\file_loader_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\file_loader_task_win.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_response_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\loader_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\response_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\res_loader_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\res_loader_task_win.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\win\inet.cpp" />
+    <ClCompile Include="..\_pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BkCrawler.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BkCrawler.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\base\base.vcxproj">
+      <Project>{f8e8dc22-c9eb-4274-bbc9-011d4106f84d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\blink_crawler\blink_crawler.vcxproj">
+      <Project>{b35de08a-79a8-41d5-b651-813900363e9d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\blink_platform\blink_platform.vcxproj">
+      <Project>{4d41689b-1df6-473c-8372-c186431b93a4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\blink_web\blink_web.vcxproj">
+      <Project>{f1c61470-7860-4d03-b90f-78c892ac0cf7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\js\js.vcxproj">
+      <Project>{96449ff1-982f-4e4b-8617-f9e6cb647304}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\modules\modules.vcxproj">
+      <Project>{98a19aa9-ddd3-42b4-92c5-c0e2681a480d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\stub\stub.vcxproj">
+      <Project>{5c7fcbe4-3630-4def-ac58-916eafbe1e97}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\url\url.vcxproj">
+      <Project>{849ce42e-6457-4c6d-8ba0-854932a2aedb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\webcore_dom\webcore_dom.vcxproj">
+      <Project>{e4e9f91c-e1dd-49ea-9773-373abe3fbac4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\webcore_generated\webcore_generated.vcxproj">
+      <Project>{b47ce86f-ddfe-43af-bc11-8991f741f3a4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\webcore_html\webcore_html.vcxproj">
+      <Project>{1e0c301e-4c6f-468e-a91e-2e55730a296f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\webcore_remaining\webcore_remaining.vcxproj">
+      <Project>{a8709b4b-640f-4593-a431-db453f4076e5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\wtf\wtf.vcxproj">
+      <Project>{f2bd6227-b9bf-4658-a72f-3a8ca514a847}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\zlib\zlib.vcxproj">
+      <Project>{1ee00a35-2f4a-45d0-8c75-80b936818a76}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
