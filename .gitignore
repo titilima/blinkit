@@ -34,5 +34,6 @@ PRESUBMIT.py
 *.gypi
 *.isolate
 *.pyc
+*.FileListAbsolute.txt
 *.wav
 
