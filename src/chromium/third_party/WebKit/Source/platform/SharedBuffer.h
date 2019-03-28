@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: SharedBuffer.h
+// Description: SharedBuffer Class
+//      Author: Ziming Li
+//     Created: 2019-03-28
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) Research In Motion Limited 2009-2010. All rights reserved.
@@ -29,7 +40,9 @@
 
 #include "platform/PlatformExport.h"
 #include "platform/PurgeableVector.h"
-#include "third_party/skia/include/core/SkData.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/skia/include/core/SkData.h"
+#endif
 #include "wtf/Forward.h"
 #include "wtf/OwnPtr.h"
 #include "wtf/RefCounted.h"
@@ -129,9 +142,11 @@ public:
         return getAsBytesInternal(dest, byteLength);
     }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // Creates an SkData and copies this SharedBuffer's contents to that
     // SkData without merging segmented buffers into a flat buffer.
     PassRefPtr<SkData> getAsSkData() const;
+#endif
 
     // See PurgeableVector::lock().
     bool lock();

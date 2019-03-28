@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: SharedBuffer.cpp
+// Description: SharedBuffer Class
+//      Author: Ziming Li
+//     Created: 2019-03-28
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2008 Apple Inc. All rights reserved.
  * Copyright (C) Research In Motion Limited 2009-2010. All rights reserved.
@@ -370,6 +381,7 @@ bool SharedBuffer::getAsBytesInternal(void* dest, size_t byteLength) const
     return true;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 PassRefPtr<SkData> SharedBuffer::getAsSkData() const
 {
     size_t bufferLength = size();
@@ -389,6 +401,7 @@ PassRefPtr<SkData> SharedBuffer::getAsSkData() const
     }
     return adoptRef(data);
 }
+#endif
 
 bool SharedBuffer::lock()
 {
