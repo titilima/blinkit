@@ -547,6 +547,8 @@ void WebViewImpl::setTabKeyCyclesThroughElements(bool value)
         m_page->setTabKeyCyclesThroughElements(value);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+
 void WebViewImpl::handleMouseLeave(LocalFrame& mainFrame, const WebMouseEvent& event)
 {
     m_client->setMouseOverURL(WebURL());
@@ -608,6 +610,8 @@ void WebViewImpl::handleMouseDown(LocalFrame& mainFrame, const WebMouseEvent& ev
     }
 }
 
+#endif // BLINKIT_CRAWLER_ONLY
+
 void WebViewImpl::setDisplayMode(WebDisplayMode mode)
 {
     m_displayMode = mode;
@@ -616,6 +620,8 @@ void WebViewImpl::setDisplayMode(WebDisplayMode mode)
 
     mainFrameImpl()->frameView()->setDisplayMode(mode);
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
 
 void WebViewImpl::mouseContextMenu(const WebMouseEvent& event)
 {
@@ -959,6 +965,8 @@ void WebViewImpl::transferActiveWheelFlingAnimation(const WebActiveWheelFlingPar
     scheduleAnimation();
 }
 
+#endif // BLINKIT_CRAWLER_ONLY
+
 bool WebViewImpl::endActiveFlingAnimation()
 {
     if (m_gestureAnimation) {
@@ -1050,6 +1058,8 @@ void WebViewImpl::acceptLanguagesChanged()
 
     page()->acceptLanguagesChanged();
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
 
 WebInputEventResult WebViewImpl::handleKeyEvent(const WebKeyboardEvent& event)
 {
@@ -1187,6 +1197,8 @@ WebInputEventResult WebViewImpl::handleCharEvent(const WebKeyboardEvent& event)
 
     return WebInputEventResult::NotHandled;
 }
+
+#endif // BLINKIT_CRAWLER_ONLY
 
 WebRect WebViewImpl::computeBlockBound(const WebPoint& pointInRootFrame, bool ignoreClipping)
 {
@@ -2051,6 +2063,8 @@ bool WebViewImpl::hasVerticalScrollbar()
     return mainFrameImpl()->frameView()->verticalScrollbar();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+
 const WebInputEvent* WebViewImpl::m_currentInputEvent = nullptr;
 
 WebInputEventResult WebViewImpl::handleInputEvent(const WebInputEvent& inputEvent)
@@ -2169,6 +2183,8 @@ WebInputEventResult WebViewImpl::handleInputEvent(const WebInputEvent& inputEven
 
     return WebInputEventResult::NotHandled;
 }
+
+#endif // BLINKIT_CRAWLER_ONLY
 
 void WebViewImpl::setCursorVisibilityState(bool isVisible)
 {
@@ -3400,6 +3416,8 @@ void WebViewImpl::performPluginAction(const WebPluginAction& action,
     assert(false); // Not reached!
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+
 WebHitTestResult WebViewImpl::hitTestResultAt(const WebPoint& point)
 {
     return coreHitTestResultAt(point);
@@ -3547,6 +3565,8 @@ void WebViewImpl::dragTargetDrop(const WebPoint& clientPoint,
     m_dragOperation = WebDragOperationNone;
     m_currentDragData = nullptr;
 }
+
+#endif // BLINKIT_CRAWLER_ONLY
 
 void WebViewImpl::spellingMarkers(WebVector<uint32_t>* markers)
 {
@@ -3960,6 +3980,8 @@ bool WebViewImpl::useExternalPopupMenus()
     return shouldUseExternalPopupMenus;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+
 void WebViewImpl::startDragging(LocalFrame* frame,
                                 const WebDragData& dragData,
                                 WebDragOperationsMask mask,
@@ -3972,6 +3994,8 @@ void WebViewImpl::startDragging(LocalFrame* frame,
     m_doingDragAndDrop = true;
     m_client->startDragging(WebLocalFrameImpl::fromFrame(frame), dragData, mask, dragImage, dragImageOffset);
 }
+
+#endif
 
 void WebViewImpl::setIgnoreInputEvents(bool newValue)
 {
@@ -4021,6 +4045,8 @@ Element* WebViewImpl::focusedElement() const
     return document->focusedElement();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+
 HitTestResult WebViewImpl::hitTestResultForViewportPos(const IntPoint& posInViewport)
 {
     IntPoint rootFramePoint(m_page->frameHost().visualViewport().viewportToRootFrame(posInViewport));
@@ -4059,6 +4085,8 @@ WebHitTestResult WebViewImpl::hitTestResultForTap(const WebPoint& tapPointWindow
     result.setToShadowHostIfInUserAgentShadowRoot();
     return result;
 }
+
+#endif // BLINKIT_CRAWLER_ONLY
 
 void WebViewImpl::setTabsToLinks(bool enable)
 {
