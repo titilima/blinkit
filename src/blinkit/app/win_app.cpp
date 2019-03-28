@@ -13,10 +13,12 @@
 
 #include "base/win/resource_util.h"
 
-#include "blink_impl/win_clipboard.h"
 #include "blink_impl/win_task_runner.h"
-#include "blink_impl/win_theme_engine.h"
-#include "view/win_view.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "blink_impl/win_clipboard.h"
+#   include "blink_impl/win_theme_engine.h"
+#   include "view/win_view.h"
+#endif
 
 namespace BlinKit {
 
@@ -28,22 +30,6 @@ WinApp::WinApp(void)
 WinApp::~WinApp(void)
 {
     UnhookWindowsHookEx(m_msgHook);
-}
-
-blink::WebClipboard* WinApp::clipboard(void)
-{
-    if (!m_clipboard)
-    {
-        AutoLock lock(m_lock);
-        if (!m_clipboard)
-            m_clipboard = std::make_unique<WinClipboard>();
-    }
-    return m_clipboard.get();
-}
-
-BkView* BKAPI WinApp::CreateView(BkViewClient &client)
-{
-    return new WinView(client);
 }
 
 blink::WebString WinApp::defaultLocale(void)
@@ -78,6 +64,24 @@ LRESULT CALLBACK WinApp::HookProc(int code, WPARAM w, LPARAM l)
     return CallNextHookEx(app.m_msgHook, code, w, l);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+
+blink::WebClipboard* WinApp::clipboard(void)
+{
+    if (!m_clipboard)
+    {
+        AutoLock lock(m_lock);
+        if (!m_clipboard)
+            m_clipboard = std::make_unique<WinClipboard>();
+    }
+    return m_clipboard.get();
+}
+
+BkView* BKAPI WinApp::CreateView(BkViewClient &client)
+{
+    return new WinView(client);
+}
+
 blink::WebData WinApp::loadResource(const char *name)
 {
     void *data;
@@ -99,6 +103,8 @@ blink::WebThemeEngine* WinApp::themeEngine(void)
     }
     return m_themeEngine.get();
 }
+
+#endif // BLINKIT_CRAWLER_ONLY
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

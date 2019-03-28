@@ -91,6 +91,12 @@ blink::WebURLLoader* AppImpl::createURLLoader(void)
     return new URLLoaderImpl;
 }
 
+BkView* BKAPI AppImpl::CreateView(BkViewClient &client)
+{
+    assert(false); // Not reached!
+    return nullptr;
+}
+
 blink::WebThread* AppImpl::currentThread(void)
 {
     AutoLock lock(m_lock);

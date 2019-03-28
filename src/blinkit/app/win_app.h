@@ -30,17 +30,22 @@ public:
     static WinApp& Get(void);
 private:
     static LRESULT CALLBACK HookProc(int code, WPARAM w, LPARAM l);
+    // blink::Platform
+    blink::WebString defaultLocale(void) override;
+
+    HHOOK m_msgHook;
+
+#ifndef BLINKIT_CRAWLER_ONLY
     // BkApp
     BkView* BKAPI CreateView(BkViewClient &client) override;
     // blink::Platform
     blink::WebClipboard* clipboard(void) override;
     blink::WebThemeEngine* themeEngine(void) override;
     blink::WebData loadResource(const char *name) override;
-    blink::WebString defaultLocale(void) override;
 
     std::unique_ptr<WinClipboard> m_clipboard;
     std::unique_ptr<WinThemeEngine> m_themeEngine;
-    HHOOK m_msgHook;
+#endif
 };
 
 } // namespace BlinKit

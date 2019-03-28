@@ -45,6 +45,7 @@ private:
     // BkApp
     void BKAPI Exit(void) override final;
     BkCrawler* BKAPI CreateCrawler(BkCrawlerClient &client) override final;
+    BkView* BKAPI CreateView(BkViewClient &client) override;
     // blink::Platform
     blink::WebCookieJar* cookieJar(void) override final;
     blink::WebMimeRegistry* mimeRegistry(void) override final;
