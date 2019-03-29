@@ -260,6 +260,9 @@
     <ProjectReference Include="..\blink_platform\blink_platform.vcxproj">
       <Project>{4d41689b-1df6-473c-8372-c186431b93a4}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\blink_remaining\blink_remaining.vcxproj">
+      <Project>{8e77aeb9-bcd7-4e66-8343-a4f2131920bb}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\blink_web\blink_web.vcxproj">
       <Project>{f1c61470-7860-4d03-b90f-78c892ac0cf7}</Project>
     </ProjectReference>

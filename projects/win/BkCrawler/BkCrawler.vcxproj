@@ -123,7 +123,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <ModuleDefinitionFile>BkCrawler.def</ModuleDefinitionFile>
-      <AdditionalDependencies>Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shlwapi.lib;Usp10.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -140,7 +140,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <ModuleDefinitionFile>BkCrawler.def</ModuleDefinitionFile>
-      <AdditionalDependencies>Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Shlwapi.lib;Usp10.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -266,8 +266,20 @@
     <ProjectReference Include="..\js\js.vcxproj">
       <Project>{96449ff1-982f-4e4b-8617-f9e6cb647304}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\libpng\libpng.vcxproj">
+      <Project>{6bf8aa31-e6e9-4dc1-b721-20727f7d96cb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libxml\libxml.vcxproj">
+      <Project>{e5a2b45e-7d69-4b6d-b23f-d9127b168877}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\modules\modules.vcxproj">
       <Project>{98a19aa9-ddd3-42b4-92c5-c0e2681a480d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ots\ots.vcxproj">
+      <Project>{35ddb613-6c23-4b17-9b1a-643c91b09a16}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\skia\skia.vcxproj">
+      <Project>{295edf31-49b6-48e3-b7c5-377c60665a78}</Project>
     </ProjectReference>
     <ProjectReference Include="..\stub\stub.vcxproj">
       <Project>{5c7fcbe4-3630-4def-ac58-916eafbe1e97}</Project>
@@ -286,6 +298,12 @@
     </ProjectReference>
     <ProjectReference Include="..\webcore_remaining\webcore_remaining.vcxproj">
       <Project>{a8709b4b-640f-4593-a431-db453f4076e5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\webcore_rendering\webcore_rendering.vcxproj">
+      <Project>{9ca55c16-3c88-4d99-93a6-5a866778e717}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\webcore_svg\webcore_svg.vcxproj">
+      <Project>{01b811b6-336e-49ad-b836-7c25dbcd7ce6}</Project>
     </ProjectReference>
     <ProjectReference Include="..\wtf\wtf.vcxproj">
       <Project>{f2bd6227-b9bf-4658-a72f-3a8ca514a847}</Project>
