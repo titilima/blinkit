@@ -199,7 +199,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementUpgradeCandidateMap.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DatasetDOMStringMap.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DecodedDataDocumentParser.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Document.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentEncodingData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentFragment.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentInit.cpp" />

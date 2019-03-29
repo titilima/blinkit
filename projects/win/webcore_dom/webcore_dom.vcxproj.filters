@@ -80,9 +80,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DecodedDataDocumentParser.cpp">
       <Filter>dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Document.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentEncodingData.cpp">
       <Filter>dom</Filter>
     </ClCompile>
