@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutTreeAsText.cpp
+// Description: LayoutTreeAsText Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2006, 2007 Apple Inc. All rights reserved.
  *
@@ -53,7 +64,6 @@
 #include "core/layout/svg/LayoutSVGRoot.h"
 #include "core/layout/svg/LayoutSVGText.h"
 #include "core/layout/svg/SVGLayoutTreeAsText.h"
-#include "core/page/PrintContext.h"
 #include "core/paint/PaintLayer.h"
 #include "platform/LayoutUnit.h"
 #include "wtf/HexNumber.h"
@@ -787,11 +797,14 @@ String externalRepresentation(LocalFrame* frame, LayoutAsTextBehavior behavior)
     if (!layoutObject || !layoutObject->isBox())
         return String();
 
+    assert(false); // BKTODO: Not reached?
+#if 0
     PrintContext printContext(frame);
     if (behavior & LayoutAsTextPrintingMode) {
         FloatSize size(toLayoutBox(layoutObject)->size());
         printContext.begin(size.width(), size.height());
     }
+#endif
 
     return externalRepresentation(toLayoutBox(layoutObject), behavior);
 }

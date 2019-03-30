@@ -150,7 +150,6 @@
 #include "core/page/FocusController.h"
 #include "core/page/FrameTree.h"
 #include "core/page/Page.h"
-#include "core/page/PrintContext.h"
 #include "core/paint/PaintLayer.h"
 #include "core/paint/ScopeRecorder.h"
 #include "core/paint/TransformRecorder.h"
@@ -1163,7 +1162,6 @@ DEFINE_TRACE(WebLocalFrameImpl)
     visitor->trace(m_frame);
     visitor->trace(m_devToolsAgent);
     visitor->trace(m_textFinder);
-    visitor->trace(m_printContext);
     visitor->trace(m_geolocationClientProxy);
     visitor->template registerWeakMembers<WebFrame, &WebFrame::clearWeakFrames>(this);
     WebFrame::traceFrames(visitor, this);
