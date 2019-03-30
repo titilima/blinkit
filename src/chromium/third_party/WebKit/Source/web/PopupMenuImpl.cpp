@@ -410,8 +410,12 @@ void PopupMenuImpl::addSeparator(ItemIterationContext& context, HTMLHRElement& e
 
 void PopupMenuImpl::selectFontsFromOwnerDocument(Document& document)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     Document& ownerDocument = ownerElement().document();
     document.styleEngine().setFontSelector(PopupMenuCSSFontSelector::create(&document, ownerDocument.styleEngine().fontSelector()));
+#endif
 }
 
 void PopupMenuImpl::setValueAndClosePopup(int numValue, const String& stringValue)

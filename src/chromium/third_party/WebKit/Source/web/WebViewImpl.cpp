@@ -3909,12 +3909,16 @@ void WebViewImpl::resumeTreeViewCommitsIfRenderingReady()
     LocalFrame* frame = mainFrameImpl()->frame();
     if (!frame->loader().stateMachine()->committedFirstRealDocumentLoad())
         return;
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Check Document::isRenderingReady logic.
+#else
     if (!frame->document()->isRenderingReady())
         return;
     if (m_layerTreeView) {
         m_layerTreeView->setDeferCommits(false);
         m_layerTreeView->setNeedsBeginFrame();
     }
+#endif
 }
 
 void WebViewImpl::postLayoutResize(WebLocalFrameImpl* webframe)

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ContainerNode.cpp
+// Description: ContainerNode Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -1313,6 +1324,9 @@ void ContainerNode::setRestyleFlag(DynamicRestyleFlags mask)
 
 void ContainerNode::recalcChildStyle(StyleRecalcChange change)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     ASSERT(document().inStyleRecalc());
     ASSERT(change >= UpdatePseudoElements || childNeedsStyleRecalc());
     ASSERT(!needsStyleRecalc());
@@ -1340,10 +1354,14 @@ void ContainerNode::recalcChildStyle(StyleRecalcChange change)
                 lastTextNode = nullptr;
         }
     }
+#endif
 }
 
 void ContainerNode::checkForChildrenAdjacentRuleChanges()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     bool hasDirectAdjacentRules = childrenAffectedByDirectAdjacentRules();
     bool hasIndirectAdjacentRules = childrenAffectedByIndirectAdjacentRules();
 
@@ -1367,6 +1385,7 @@ void ContainerNode::checkForChildrenAdjacentRuleChanges()
 
         forceCheckOfAnyElementSibling = forceCheckOfAnyElementSibling || (childRulesChanged && hasIndirectAdjacentRules);
     }
+#endif
 }
 
 void ContainerNode::checkForSiblingStyleChanges(SiblingCheckType changeType, Node* nodeBeforeChange, Node* nodeAfterChange)

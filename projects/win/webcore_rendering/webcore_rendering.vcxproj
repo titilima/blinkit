@@ -213,7 +213,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutMultiColumnFlowThread.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutMultiColumnSet.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutMultiColumnSpannerPlaceholder.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutObject.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutObjectChildList.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutPagedFlowThread.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutPart.cpp" />
@@ -289,7 +288,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\AppliedTextDecoration.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\BasicShapes.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\BorderEdge.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\ComputedStyle.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\ContentData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\CounterDirectives.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\FillLayer.cpp" />

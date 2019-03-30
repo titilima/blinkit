@@ -484,10 +484,12 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
 
     m_lifecycle.advanceTo(DocumentLifecycle::Inactive);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // Since CSSFontSelector requires Document::m_fetcher and StyleEngine owns
     // CSSFontSelector, need to initialize m_styleEngine after initializing
     // m_fetcher.
     m_styleEngine = StyleEngine::create(*this);
+#endif
 
     // The parent's parser should be suspended together with all the other objects,
     // else this new Document would have a new ExecutionContext which suspended state
@@ -534,13 +536,17 @@ Document::~Document()
     ASSERT(!m_parser || m_parser->refCount() == 1);
     detachParser();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (m_styleSheetList)
         m_styleSheetList->detachFromDocument();
+#endif
 
     m_timeline->detachFromDocument();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // We need to destroy CSSFontSelector before destroying m_fetcher.
     m_styleEngine->detachFromDocument();
+#endif
 
     if (m_elemSheet)
         m_elemSheet->clearOwnerNode();
@@ -626,10 +632,14 @@ MediaQueryMatcher& Document::mediaQueryMatcher()
 
 void Document::mediaQueryAffectingValueChanged()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     styleResolverChanged();
     m_evaluateMediaQueriesOnStyleRecalc = true;
     styleEngine().clearMediaQueryRuleSetStyleSheets();
     InspectorInstrumentation::mediaQueryResultChanged(this);
+#endif
 }
 
 void Document::setCompatibilityMode(CompatibilityMode mode)
@@ -655,8 +665,10 @@ void Document::setDoctype(PassRefPtrWillBeRawPtr<DocumentType> docType)
         if (m_docType->publicId().startsWith("-//wapforum//dtd xhtml mobile 1.", TextCaseInsensitive))
             m_isMobileDocument = true;
     }
+#ifndef BLINKIT_CRAWLER_ONLY
     // Doctype affects the interpretation of the stylesheets.
     styleEngine().clearResolver();
+#endif
 }
 
 DOMImplementation& Document::implementation()
@@ -1523,6 +1535,9 @@ bool Document::hasPendingForcedStyleRecalc() const
 
 void Document::updateStyleInvalidationIfNeeded()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     ScriptForbiddenScope forbidScript;
 
     if (!isActive())
@@ -1531,6 +1546,7 @@ void Document::updateStyleInvalidationIfNeeded()
         return;
     TRACE_EVENT0("blink", "Document::updateStyleInvalidationIfNeeded");
     styleEngine().styleInvalidator().invalidate(*this);
+#endif
 }
 
 bool Document::attemptedToDetermineEncodingFromContentSniffing() const
@@ -1545,13 +1561,20 @@ bool Document::encodingWasDetectedFromContentSniffing() const
 
 void Document::setupFontBuilder(ComputedStyle& documentStyle)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     FontBuilder fontBuilder(*this);
     RefPtrWillBeRawPtr<CSSFontSelector> selector = styleEngine().fontSelector();
     fontBuilder.createFontForDocument(selector, documentStyle);
+#endif
 }
 
 void Document::inheritHtmlAndBodyElementStyles(StyleRecalcChange change)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     ASSERT(inStyleRecalc());
     ASSERT(documentElement());
 
@@ -1672,6 +1695,7 @@ void Document::inheritHtmlAndBodyElementStyles(StyleRecalcChange change)
         if (style->direction() != rootDirection || style->writingMode() != rootWritingMode)
             documentElement()->setNeedsStyleRecalc(SubtreeStyleChange, StyleChangeReasonForTracing::create(StyleChangeReason::WritingModeChange));
     }
+#endif
 }
 
 #if ENABLE(ASSERT)
@@ -1787,6 +1811,9 @@ void Document::updateLayoutTree(StyleRecalcChange change)
 
 void Document::updateStyle(StyleRecalcChange change)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (view()->shouldThrottleRendering())
         return;
 
@@ -1855,6 +1882,7 @@ void Document::updateStyle(StyleRecalcChange change)
         TRACE_EVENT_END1("blink,blink_style", "Document::updateStyle",
             "resolverAccessCount", styleEngine().resolverAccessCount() - initialResolverAccessCount);
     }
+#endif
 }
 
 void Document::notifyLayoutTreeOfSubtreeChanges()
@@ -1921,6 +1949,9 @@ void Document::updateLayout()
 
 void Document::layoutUpdated()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     // Plugins can run script inside layout which can detach the page.
     // TODO(esprehn): Can this still happen now that all plugins are out of
     // process?
@@ -1941,6 +1972,7 @@ void Document::layoutUpdated()
         if (!m_documentTiming.firstLayout())
             m_documentTiming.markFirstLayout();
     }
+#endif
 }
 
 void Document::setNeedsFocusedElementCheck()
@@ -1971,6 +2003,9 @@ void Document::clearFocusedElementTimerFired(Timer<Document>*)
 // to instead suspend JavaScript execution.
 void Document::updateLayoutTreeIgnorePendingStylesheets()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     StyleEngine::IgnoringPendingStylesheet ignoring(styleEngine());
 
     if (styleEngine().hasPendingSheets()) {
@@ -1993,6 +2028,7 @@ void Document::updateLayoutTreeIgnorePendingStylesheets()
         }
     }
     updateLayoutTreeIfNeeded();
+#endif
 }
 
 void Document::updateLayoutIgnorePendingStylesheets(Document::RunPostLayoutTasks runPostLayoutTasks)
@@ -2008,15 +2044,25 @@ void Document::updateLayoutIgnorePendingStylesheets(Document::RunPostLayoutTasks
 
 PassRefPtr<ComputedStyle> Document::styleForElementIgnoringPendingStylesheets(Element* element)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+    return nullptr;
+#else
     ASSERT_ARG(element, element->document() == this);
     StyleEngine::IgnoringPendingStylesheet ignoring(styleEngine());
     return ensureStyleResolver().styleForElement(element, element->parentNode() ? element->parentNode()->ensureComputedStyle() : 0);
+#endif
 }
 
 PassRefPtr<ComputedStyle> Document::styleForPage(int pageIndex)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+    return nullptr;
+#else
     updateDistribution();
     return ensureStyleResolver().styleForPage(pageIndex);
+#endif
 }
 
 bool Document::isPageBoxVisible(int pageIndex)
@@ -2122,6 +2168,7 @@ void Document::updateUseShadowTreesIfNeeded()
         element->buildPendingResource();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 StyleResolver* Document::styleResolver() const
 {
     return m_styleEngine->resolver();
@@ -2131,6 +2178,7 @@ StyleResolver& Document::ensureStyleResolver() const
 {
     return m_styleEngine->ensureResolver();
 }
+#endif
 
 void Document::attach(const AttachContext& context)
 {
@@ -2140,7 +2188,9 @@ void Document::attach(const AttachContext& context)
     setLayoutObject(m_layoutView);
 
     m_layoutView->setIsInWindow(true);
+#ifndef BLINKIT_CRAWLER_ONLY
     m_layoutView->setStyle(StyleResolver::styleForDocument(*this));
+#endif
     m_layoutView->compositor()->setNeedsCompositingUpdate(CompositingUpdateAfterCompositingInputChange);
 
     ContainerNode::attach(context);
@@ -2219,7 +2269,9 @@ void Document::detach(const AttachContext& context)
     m_layoutView = nullptr;
     ContainerNode::detach(context);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     styleEngine().didDetach();
+#endif
 
     frameHost()->eventHandlerRegistry().documentDetached(*this);
 
@@ -2687,6 +2739,9 @@ void Document::setParsingState(ParsingState parsingState)
 
 bool Document::shouldScheduleLayout() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     // This function will only be called when FrameView thinks a layout is needed.
     // This enforces a couple extra rules.
     //
@@ -2700,6 +2755,7 @@ bool Document::shouldScheduleLayout() const
 
     if (documentElement() && !isHTMLHtmlElement(*documentElement()))
         return true;
+#endif
 
     return false;
 }
@@ -2890,11 +2946,15 @@ void Document::disableEval(const String& errorMessage)
 
 void Document::didLoadAllImports()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     if (!haveStylesheetsLoaded())
         return;
     if (!importLoader())
         styleResolverMayHaveChanged();
     didLoadAllScriptBlockingResources();
+#endif
 }
 
 void Document::didRemoveAllPendingStylesheet()
@@ -2922,10 +2982,14 @@ void Document::didLoadAllScriptBlockingResources()
 
 void Document::executeScriptsWaitingForResources()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     if (!isRenderingReady())
         return;
     if (ScriptableDocumentParser* parser = scriptableDocumentParser())
         parser->executeScriptsWaitingForResources();
+#endif
 }
 
 CSSStyleSheet& Document::elementSheet()
@@ -3220,6 +3284,7 @@ bool Document::isSecureContextImpl(String* errorMessage, const SecureContextChec
     return true;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 StyleSheetList* Document::styleSheets()
 {
     if (!m_styleSheetList)
@@ -3242,6 +3307,7 @@ void Document::setSelectedStylesheetSet(const String& aString)
     styleEngine().setSelectedStylesheetSetName(aString);
     styleResolverChanged();
 }
+#endif
 
 void Document::evaluateMediaQueryListIfNeeded()
 {
@@ -3259,16 +3325,23 @@ void Document::evaluateMediaQueryList()
 
 void Document::notifyResizeForViewportUnits()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     if (m_mediaQueryMatcher)
         m_mediaQueryMatcher->viewportChanged();
     if (!hasViewportUnits())
         return;
     ensureStyleResolver().notifyResizeForViewportUnits();
     setNeedsStyleRecalcForViewportUnits();
+#endif
 }
 
 void Document::styleResolverChanged(StyleResolverUpdateMode updateMode)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     styleEngine().resolverChanged(updateMode);
 
     if (didLayoutWithPendingStylesheets() && !styleEngine().hasPendingSheets()) {
@@ -3280,6 +3353,7 @@ void Document::styleResolverChanged(StyleResolverUpdateMode updateMode)
         if (layoutView())
             layoutView()->invalidatePaintForViewAndCompositedLayers();
     }
+#endif
 }
 
 void Document::styleResolverMayHaveChanged()
@@ -5340,10 +5414,12 @@ void Document::updateHoverActiveState(const HitTestRequest& request, Element* in
     }
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 bool Document::haveStylesheetsLoaded() const
 {
     return m_styleEngine->haveStylesheetsLoaded();
 }
+#endif
 
 Locale& Document::getCachedLocale(const AtomicString& locale)
 {
@@ -5421,22 +5497,30 @@ float Document::devicePixelRatio() const
 
 void Document::removedStyleSheet(StyleSheet* sheet, StyleResolverUpdateMode updateMode)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     // If we're in document teardown, then we don't need this notification of our sheet's removal.
     // styleResolverChanged() is needed even when the document is inactive so that
     // imported docuements (which is inactive) notifies the change to the master document.
     if (isActive())
         styleEngine().modifiedStyleSheet(sheet);
     styleResolverChanged(updateMode);
+#endif
 }
 
 void Document::modifiedStyleSheet(StyleSheet* sheet, StyleResolverUpdateMode updateMode)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     // If we're in document teardown, then we don't need this notification of our sheet's removal.
     // styleResolverChanged() is needed even when the document is inactive so that
     // imported docuements (which is inactive) notifies the change to the master document.
     if (isActive())
         styleEngine().modifiedStyleSheet(sheet);
     styleResolverChanged(updateMode);
+#endif
 }
 
 TextAutosizer* Document::textAutosizer()
@@ -5532,10 +5616,14 @@ void Document::invalidateNodeListCaches(const QualifiedName* attrName)
 
 void Document::platformColorsChanged()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     if (!isActive())
         return;
 
     styleEngine().platformColorsChanged();
+#endif
 }
 
 bool Document::isSecureContext(String& errorMessage, const SecureContextCheck privilegeContextCheck) const

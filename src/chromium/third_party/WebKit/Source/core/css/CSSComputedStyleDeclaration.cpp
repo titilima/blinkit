@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CSSComputedStyleDeclaration.cpp
+// Description: CSSComputedStyleDeclaration Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004 Zack Rusin <zack@kde.org>
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple Inc. All rights reserved.
@@ -547,6 +558,9 @@ const HashMap<AtomicString, RefPtr<CSSVariableData>>* CSSComputedStyleDeclaratio
 
 PassRefPtrWillBeRawPtr<CSSValue> CSSComputedStyleDeclaration::getPropertyCSSValue(CSSPropertyID propertyID) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     Node* styledNode = this->styledNode();
     if (!styledNode)
         return nullptr;
@@ -583,6 +597,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSComputedStyleDeclaration::getPropertyCSSValu
         return value;
 
     logUnimplementedPropertyID(propertyID);
+#endif
     return nullptr;
 }
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StyleResolverParentScope.h
+// Description: StyleResolverParentScope Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -38,12 +49,18 @@ inline StyleResolverParentScope::StyleResolverParentScope(Node& parent)
     : m_parent(parent)
     , m_pushed(false)
     , m_previous(s_currentScope)
+#ifndef BLINKIT_CRAWLER_ONLY
     , m_resolver(parent.document().styleResolver())
+#endif
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     ASSERT(parent.document().inStyleRecalc());
     ASSERT(parent.isElementNode() || parent.isShadowRoot());
     s_currentScope = this;
     m_resolver->increaseStyleSharingDepth();
+#endif
 }
 
 inline StyleResolverParentScope::~StyleResolverParentScope()

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ElementShadow.cpp
+// Description: ElementShadow Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -232,6 +243,10 @@ void ElementShadow::setNeedsDistributionRecalc()
 
 bool ElementShadow::hasSameStyles(const ElementShadow* other) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     ShadowRoot* root = &youngestShadowRoot();
     ShadowRoot* otherRoot = &other->youngestShadowRoot();
     while (root || otherRoot) {
@@ -253,6 +268,7 @@ bool ElementShadow::hasSameStyles(const ElementShadow* other) const
     }
 
     return true;
+#endif
 }
 
 const InsertionPoint* ElementShadow::finalDestinationInsertionPointFor(const Node* key) const

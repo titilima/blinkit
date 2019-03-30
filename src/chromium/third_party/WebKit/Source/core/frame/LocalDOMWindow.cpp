@@ -907,6 +907,10 @@ PassRefPtrWillBeRawPtr<CSSStyleDeclaration> LocalDOMWindow::getComputedStyle(Ele
 
 PassRefPtrWillBeRawPtr<CSSRuleList> LocalDOMWindow::getMatchedCSSRules(Element* element, const String& pseudoElement) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     if (!element)
         return nullptr;
 
@@ -922,6 +926,7 @@ PassRefPtrWillBeRawPtr<CSSRuleList> LocalDOMWindow::getMatchedCSSRules(Element* 
     PseudoId pseudoId = CSSSelector::pseudoId(pseudoType);
     element->document().updateLayoutTreeIfNeeded();
     return frame()->document()->ensureStyleResolver().pseudoCSSRulesForElement(element, pseudoId, rulesToInclude);
+#endif
 }
 
 double LocalDOMWindow::devicePixelRatio() const

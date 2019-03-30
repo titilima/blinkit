@@ -371,14 +371,17 @@ public:
     bool isSrcdocDocument() const { return m_isSrcdocDocument; }
     bool isMobileDocument() const { return m_isMobileDocument; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     StyleResolver* styleResolver() const;
     StyleResolver& ensureStyleResolver() const;
+#endif
 
     bool isViewSource() const { return m_isViewSource; }
     void setIsViewSource(bool);
 
     bool sawElementsInKnownNamespaces() const { return m_sawElementsInKnownNamespaces; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool isRenderingReady() const { return haveImportsLoaded() && haveStylesheetsLoaded(); }
     bool isScriptExecutionReady() const { return isRenderingReady(); }
 
@@ -386,6 +389,7 @@ public:
     StyleSheetList* styleSheets();
 
     StyleEngine& styleEngine() { ASSERT(m_styleEngine.get()); return *m_styleEngine.get(); }
+#endif
 
     bool gotoAnchorNeededAfterStylesheetsLoad() { return m_gotoAnchorNeededAfterStylesheetsLoad; }
     void setGotoAnchorNeededAfterStylesheetsLoad(bool b) { m_gotoAnchorNeededAfterStylesheetsLoad = b; }
@@ -589,6 +593,7 @@ public:
 
     MouseEventWithHitTestResults prepareMouseEvent(const HitTestRequest&, const LayoutPoint&, const PlatformMouseEvent&);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     /* Newly proposed CSS3 mechanism for selecting alternate
        stylesheets using the DOM. May be subject to change as
        spec matures. - dwh
@@ -596,6 +601,7 @@ public:
     String preferredStylesheetSet() const;
     String selectedStylesheetSet() const;
     void setSelectedStylesheetSet(const String&);
+#endif
 
     bool setFocusedElement(PassRefPtrWillBeRawPtr<Element>, const FocusParams&);
     void clearFocusedElement();
@@ -1146,7 +1152,9 @@ private:
     void clearFocusedElementSoon();
     void clearFocusedElementTimerFired(Timer<Document>*);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool haveStylesheetsLoaded() const;
+#endif
 
     void setHoverNode(PassRefPtrWillBeRawPtr<Node>);
 
@@ -1230,8 +1238,10 @@ private:
 
     MutationObserverOptions m_mutationObserverTypes;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     OwnPtrWillBeMember<StyleEngine> m_styleEngine;
     RefPtrWillBeMember<StyleSheetList> m_styleSheetList;
+#endif
 
     OwnPtrWillBeMember<FormController> m_formController;
 

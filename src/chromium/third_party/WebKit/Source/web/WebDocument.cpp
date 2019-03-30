@@ -214,11 +214,15 @@ WebElement WebDocument::focusedElement() const
 
 void WebDocument::insertStyleSheet(const WebString& sourceCode)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     RefPtrWillBeRawPtr<Document> document = unwrap<Document>();
     ASSERT(document);
     RefPtrWillBeRawPtr<StyleSheetContents> parsedSheet = StyleSheetContents::create(CSSParserContext(*document, 0));
     parsedSheet->parseString(sourceCode);
     document->styleEngine().injectAuthorSheet(parsedSheet);
+#endif
 }
 
 void WebDocument::watchCSSSelectors(const WebVector<WebString>& webSelectors)

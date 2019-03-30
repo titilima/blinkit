@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutObjectInlines.h
+// Description: LayoutObject Class
+//      Author: Ziming Li
+//     Created: 2019-03-29
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -17,7 +28,12 @@ namespace blink {
 
 inline const ComputedStyle* LayoutObject::firstLineStyle() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+    return nullptr;
+#else
     return document().styleEngine().usesFirstLineRules() ? cachedFirstLineStyle() : style();
+#endif
 }
 
 inline const ComputedStyle& LayoutObject::firstLineStyleRef() const

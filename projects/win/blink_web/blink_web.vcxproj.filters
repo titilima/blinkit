@@ -23,9 +23,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\AssociatedURLLoader.cpp">
       <Filter>web</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ChromeClientImpl.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ColorChooserPopupUIController.cpp">
       <Filter>web</Filter>
     </ClCompile>
@@ -47,22 +44,13 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\DateTimeChooserImpl.cpp">
       <Filter>web</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\DragClientImpl.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\EditorClientImpl.cpp">
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ExternalDateTimeChooser.cpp">
       <Filter>web</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ExternalPopupMenu.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\FindInPageCoordinates.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\FrameLoaderClientImpl.cpp">
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\GraphicsLayerFactoryChromium.cpp">
@@ -78,9 +66,6 @@
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\PageWidgetDelegate.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\PopupMenuImpl.cpp">
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\PrerendererClientImpl.cpp">
@@ -117,9 +102,6 @@
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDateTimeSuggestion.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDocument.cpp">
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDOMEvent.cpp">
@@ -258,12 +240,6 @@
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebUserGestureToken.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebViewFrameWidget.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebViewImpl.cpp">
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebHistoryItem.cpp">

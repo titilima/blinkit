@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ShadowRootRareData.h
+// Description: ShadowRootRareData Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -68,14 +79,18 @@ public:
     void setDescendantInsertionPoints(WillBeHeapVector<RefPtrWillBeMember<InsertionPoint>>& list) { m_descendantInsertionPoints.swap(list); }
     void clearDescendantInsertionPoints() { m_descendantInsertionPoints.clear(); }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     StyleSheetList* styleSheets() { return m_styleSheetList.get(); }
     void setStyleSheets(PassRefPtrWillBeRawPtr<StyleSheetList> styleSheetList) { m_styleSheetList = styleSheetList; }
+#endif
 
     DEFINE_INLINE_TRACE()
     {
         visitor->trace(m_shadowInsertionPointOfYoungerShadowRoot);
         visitor->trace(m_descendantInsertionPoints);
+#ifndef BLINKIT_CRAWLER_ONLY
         visitor->trace(m_styleSheetList);
+#endif
     }
 
 private:
@@ -84,7 +99,9 @@ private:
     unsigned m_descendantContentElementCount;
     unsigned m_childShadowRootCount;
     WillBeHeapVector<RefPtrWillBeMember<InsertionPoint>> m_descendantInsertionPoints;
+#ifndef BLINKIT_CRAWLER_ONLY
     RefPtrWillBeMember<StyleSheetList> m_styleSheetList;
+#endif
 };
 
 inline void ShadowRootRareData::didAddInsertionPoint(InsertionPoint* point)

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ShadowRoot.cpp
+// Description: ShadowRoot Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -71,10 +82,12 @@ ShadowRoot::~ShadowRoot()
     ASSERT(!m_prev);
     ASSERT(!m_next);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (m_shadowRootRareData && m_shadowRootRareData->styleSheets())
         m_shadowRootRareData->styleSheets()->detachFromDocument();
 
     document().styleEngine().didRemoveShadowRoot(this);
+#endif
 
     // We cannot let ContainerNode destructor call willBeDeletedFromDocument()
     // for this ShadowRoot instance because TreeScope destructor
@@ -179,7 +192,9 @@ Node::InsertionNotificationRequest ShadowRoot::insertedInto(ContainerNode* inser
 void ShadowRoot::removedFrom(ContainerNode* insertionPoint)
 {
     if (insertionPoint->inDocument()) {
+#ifndef BLINKIT_CRAWLER_ONLY
         document().styleEngine().shadowRootRemovedFromDocument(this);
+#endif
         if (m_registeredWithParentShadowRoot) {
             ShadowRoot* root = host()->containingShadowRoot();
             if (!root)
@@ -316,10 +331,15 @@ const WillBeHeapVector<RefPtrWillBeMember<InsertionPoint>>& ShadowRoot::descenda
 
 StyleSheetList* ShadowRoot::styleSheets()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     if (!ensureShadowRootRareData()->styleSheets())
         m_shadowRootRareData->setStyleSheets(StyleSheetList::create(this));
 
     return m_shadowRootRareData->styleSheets();
+#endif
 }
 
 DEFINE_TRACE(ShadowRoot)

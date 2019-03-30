@@ -165,7 +165,47 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\css\CSSAnimations.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\DeferredLegacyStyleInterpolation.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\StringKeyframe.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSComputedStyleDeclaration.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\ElementRuleCollector.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontFaceSet.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\PropertySetCSSStyleDeclaration.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\ScopedStyleResolver.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\StyleResolver.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\StyleSheetContents.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\StyleSheetList.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContainerNode.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Document.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Element.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ProcessingInstruction.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptLoader.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\shadow\ElementShadow.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\shadow\ShadowRoot.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\StyleElement.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\StyleEngine.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Text.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingStyle.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameView.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalDOMWindow.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLLinkElement.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportChild.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLDocumentParser.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLScriptRunner.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutObject.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\Page.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\ComputedStyle.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\svg\SVGElement.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\svg\SVGElementRareData.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ChromeClientImpl.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\DragClientImpl.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ExternalPopupMenu.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\FrameLoaderClientImpl.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\PopupMenuImpl.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDocument.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebViewFrameWidget.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebViewImpl.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

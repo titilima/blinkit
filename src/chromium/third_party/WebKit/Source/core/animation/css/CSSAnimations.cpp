@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CSSAnimations.cpp
+// Description: CSSAnimations Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -67,6 +78,10 @@ namespace {
 
 static StringKeyframeEffectModel* createKeyframeEffectModel(StyleResolver* resolver, const Element* animatingElement, Element& element, const ComputedStyle* style, const ComputedStyle* parentStyle, const AtomicString& name, TimingFunction* defaultTimingFunction, size_t animationIndex)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     // When the animating element is null, use its parent for scoping purposes.
     const Element* elementForScoping = animatingElement ? animatingElement : &element;
     const StyleRuleKeyframes* keyframesRule = resolver->findKeyframesRule(elementForScoping, name);
@@ -181,6 +196,7 @@ static StringKeyframeEffectModel* createKeyframeEffectModel(StyleResolver* resol
     if (animationIndex > 0 && model->hasSyntheticKeyframes())
         UseCounter::count(elementForScoping->document(), UseCounter::CSSAnimationsStackedNeutralKeyframe);
     return model;
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 } // namespace
@@ -261,6 +277,9 @@ void CSSAnimations::calculateCompositorAnimationUpdate(CSSAnimationUpdate& updat
 
 void CSSAnimations::calculateAnimationUpdate(CSSAnimationUpdate& update, const Element* animatingElement, Element& element, const ComputedStyle& style, ComputedStyle* parentStyle, StyleResolver* resolver)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     const ElementAnimations* elementAnimations = animatingElement ? animatingElement->elementAnimations() : nullptr;
 
     bool isAnimationStyleChange = elementAnimations && elementAnimations->isAnimationStyleChange();
@@ -350,6 +369,7 @@ void CSSAnimations::calculateAnimationUpdate(CSSAnimationUpdate& update, const E
             update.cancelAnimation(i, *cssAnimations->m_runningAnimations[i]->animation);
         }
     }
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 void CSSAnimations::maybeApplyPendingUpdate(Element* element)

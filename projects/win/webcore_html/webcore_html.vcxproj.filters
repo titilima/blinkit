@@ -167,9 +167,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLLIElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLLinkElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMapElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
@@ -470,9 +467,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImport.cpp">
       <Filter>html\imports</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportChild.cpp">
-      <Filter>html\imports</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportLoader.cpp">
       <Filter>html\imports</Filter>
     </ClCompile>
@@ -506,9 +500,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLConstructionSite.cpp">
       <Filter>html\parser</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLDocumentParser.cpp">
-      <Filter>html\parser</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLElementStack.cpp">
       <Filter>html\parser</Filter>
     </ClCompile>
@@ -540,9 +531,6 @@
       <Filter>html\parser</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLResourcePreloader.cpp">
-      <Filter>html\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLScriptRunner.cpp">
       <Filter>html\parser</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLSourceTracker.cpp">

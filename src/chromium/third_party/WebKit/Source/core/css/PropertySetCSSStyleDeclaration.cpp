@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PropertySetCSSStyleDeclaration.cpp
+// Description: PropertySetCSSStyleDeclaration Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All rights reserved.
@@ -279,6 +290,9 @@ String AbstractPropertySetCSSStyleDeclaration::getPropertyValueInternal(CSSPrope
 
 void AbstractPropertySetCSSStyleDeclaration::setPropertyInternal(CSSPropertyID unresolvedProperty, const String& customPropertyName, const String& value, bool important, ExceptionState&)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     StyleAttributeMutationScope mutationScope(this);
     willMutate();
 
@@ -297,6 +311,7 @@ void AbstractPropertySetCSSStyleDeclaration::setPropertyInternal(CSSPropertyID u
     if (parent)
         parent->document().styleEngine().attributeChangedForElement(HTMLNames::styleAttr, *parent);
     mutationScope.enqueueMutationRecord();
+#endif
 }
 
 StyleSheetContents* AbstractPropertySetCSSStyleDeclaration::contextStyleSheet() const

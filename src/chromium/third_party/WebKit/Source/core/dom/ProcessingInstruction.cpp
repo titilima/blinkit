@@ -68,11 +68,15 @@ ProcessingInstruction::~ProcessingInstruction()
     if (m_sheet)
         clearSheet();
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // FIXME: ProcessingInstruction should not be in document here.
     // However, if we add ASSERT(!inDocument()), fast/xsl/xslt-entity.xml
     // crashes. We need to investigate ProcessingInstruction lifetime.
     if (inDocument() && m_isCSS)
         document().styleEngine().removeStyleSheetCandidateNode(this);
+#endif
     clearEventListenerForXSLT();
 #endif
 }
@@ -171,7 +175,11 @@ void ProcessingInstruction::process(const String& href, const String& charset)
 
     if (resource) {
         m_loading = true;
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(false); // BKTODO: Not reached!
+#else
         document().styleEngine().addPendingSheet();
+#endif
         setResource(resource);
     }
 }
@@ -273,10 +281,14 @@ void ProcessingInstruction::removedFrom(ContainerNode* insertionPoint)
 
 void ProcessingInstruction::clearSheet()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     ASSERT(m_sheet);
     if (m_sheet->isLoading())
         document().styleEngine().removePendingSheet(this);
     m_sheet.release()->clearOwnerNode();
+#endif
 }
 
 DEFINE_TRACE(ProcessingInstruction)

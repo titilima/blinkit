@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DragClientImpl.cpp
+// Description: DragClientImpl Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -58,6 +69,9 @@ DragDestinationAction DragClientImpl::actionMaskForDrag(DragData*)
 
 void DragClientImpl::startDrag(DragImage* dragImage, const IntPoint& dragImageOrigin, const IntPoint& eventPos, DataTransfer* dataTransfer, LocalFrame* frame, bool isLinkDrag)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // Add a ref to the frame just in case a load occurs mid-drag.
     RefPtrWillBeRawPtr<LocalFrame> frameProtector(frame);
 
@@ -80,6 +94,7 @@ void DragClientImpl::startDrag(DragImage* dragImage, const IntPoint& dragImageOr
     }
 
     m_webView->startDragging(frame, dragData, dragOperationMask, image, offsetPoint);
+#endif
 }
 
 } // namespace blink

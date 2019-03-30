@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: EditingStyle.cpp
+// Description: EditingStyle Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2009 Apple Computer, Inc.
  * Copyright (C) 2010, 2011 Google Inc. All rights reserved.
@@ -1171,6 +1182,10 @@ void EditingStyle::mergeStyle(const StylePropertySet* style, CSSPropertyOverride
 
 static PassRefPtrWillBeRawPtr<MutableStylePropertySet> styleFromMatchedRulesForElement(Element* element, unsigned rulesToInclude)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     RefPtrWillBeRawPtr<MutableStylePropertySet> style = MutableStylePropertySet::create(HTMLQuirksMode);
     RefPtrWillBeRawPtr<StyleRuleList> matchedRules = element->document().ensureStyleResolver().styleRulesForElement(element, rulesToInclude);
     if (matchedRules) {
@@ -1178,6 +1193,7 @@ static PassRefPtrWillBeRawPtr<MutableStylePropertySet> styleFromMatchedRulesForE
             style->mergeAndOverrideOnConflict(&matchedRules->at(i)->properties());
     }
     return style.release();
+#endif
 }
 
 void EditingStyle::mergeStyleFromRules(Element* element)

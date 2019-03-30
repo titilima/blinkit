@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ElementRuleCollector.cpp
+// Description: ElementRuleCollector Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -122,6 +133,9 @@ static bool rulesApplicableInCurrentTreeScope(const Element* element, const Cont
 template<typename RuleDataListType>
 void ElementRuleCollector::collectMatchingRulesForList(const RuleDataListType* rules, CascadeOrder cascadeOrder, const MatchRequest& matchRequest)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!rules)
         return;
 
@@ -175,6 +189,7 @@ void ElementRuleCollector::collectMatchingRulesForList(const RuleDataListType* r
         INCREMENT_STYLE_STATS_COUNTER(*resolver, rulesFastRejected, fastRejected);
         INCREMENT_STYLE_STATS_COUNTER(*resolver, rulesMatched, matched);
     }
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 void ElementRuleCollector::collectMatchingRules(const MatchRequest& matchRequest, CascadeOrder cascadeOrder, bool matchingTreeBoundaryRules)

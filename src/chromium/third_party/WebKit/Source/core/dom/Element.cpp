@@ -1181,7 +1181,9 @@ void Element::attributeChanged(const QualifiedName& name, const AtomicString& ol
         AtomicString newId = makeIdForStyleResolution(newValue, document().inQuirksMode());
         if (newId != oldId) {
             elementData()->setIdForStyleResolution(newId);
+#ifndef BLINKIT_CRAWLER_ONLY
             document().styleEngine().idChangedForElement(oldId, newId, *this);
+#endif
         }
     } else if (name == classAttr) {
         classAttributeChanged(newValue);
@@ -1198,9 +1200,11 @@ void Element::attributeChanged(const QualifiedName& name, const AtomicString& ol
 
     invalidateNodeListCachesInAncestors(&name, this);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // If there is currently no StyleResolver, we can't be sure that this attribute change won't affect style.
     if (!document().styleResolver())
         setNeedsStyleRecalc(SubtreeStyleChange, StyleChangeReasonForTracing::fromAttribute(name));
+#endif
 }
 
 bool Element::hasLegalLinkAttribute(const QualifiedName&) const
@@ -1260,11 +1264,15 @@ void Element::classAttributeChanged(const AtomicString& newClassString)
     if (classStringContentType == ClassStringContent::HasClasses) {
         const SpaceSplitString oldClasses = elementData()->classNames();
         elementData()->setClass(newClassString, shouldFoldCase);
+#ifndef BLINKIT_CRAWLER_ONLY
         const SpaceSplitString& newClasses = elementData()->classNames();
         document().styleEngine().classChangedForElement(oldClasses, newClasses, *this);
+#endif
     } else {
+#ifndef BLINKIT_CRAWLER_ONLY
         const SpaceSplitString& oldClasses = elementData()->classNames();
         document().styleEngine().classChangedForElement(oldClasses, *this);
+#endif
         if (classStringContentType == ClassStringContent::WhiteSpaceOnly)
             elementData()->setClass(newClassString, shouldFoldCase);
         else
@@ -1490,8 +1498,10 @@ void Element::removedFrom(ContainerNode* insertionPoint)
         if (isUpgradedCustomElement())
             CustomElement::didDetach(this, insertionPoint->document());
 
+#ifndef BLINKIT_CRAWLER_ONLY
         if (needsStyleInvalidation())
             document().styleEngine().styleInvalidator().clearInvalidation(*this);
+#endif
     }
 
     document().removeFromTopLayer(this);
@@ -1595,7 +1605,9 @@ void Element::detach(const AttachContext& context)
         document().userActionElements().didDetach(*this);
     }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     document().styleEngine().styleInvalidator().clearInvalidation(*this);
+#endif
 
     if (svgFilterNeedsLayerUpdate())
         document().unscheduleSVGFilterLayerUpdateHack(*this);
@@ -1672,8 +1684,13 @@ PassRefPtr<ComputedStyle> Element::styleForLayoutObject()
 
 PassRefPtr<ComputedStyle> Element::originalStyleForLayoutObject()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     ASSERT(document().inStyleRecalc());
     return document().ensureStyleResolver().styleForElement(this);
+#endif
 }
 
 void Element::recalcStyle(StyleRecalcChange change, Text* nextTextSibling)
@@ -1736,6 +1753,10 @@ void Element::recalcStyle(StyleRecalcChange change, Text* nextTextSibling)
 
 StyleRecalcChange Element::recalcOwnStyle(StyleRecalcChange change)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     ASSERT(document().inStyleRecalc());
     ASSERT(!parentOrShadowHostNode()->needsStyleRecalc());
     ASSERT(change >= Inherit || needsStyleRecalc());
@@ -1796,6 +1817,7 @@ StyleRecalcChange Element::recalcOwnStyle(StyleRecalcChange change)
     }
 
     return localChange;
+#endif
 }
 
 void Element::updateCallbackSelectors(const ComputedStyle* oldStyle, const ComputedStyle* newStyle)
@@ -1831,6 +1853,7 @@ ElementShadow& Element::ensureShadow()
 
 void Element::pseudoStateChanged(CSSSelector::PseudoType pseudo)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     // We can't schedule invaliation sets from inside style recalc otherwise
     // we'd never process them.
     // TODO(esprehn): Make this an ASSERT and fix places that call into this
@@ -1838,6 +1861,7 @@ void Element::pseudoStateChanged(CSSSelector::PseudoType pseudo)
     if (document().inStyleRecalc())
         return;
     document().styleEngine().pseudoStateChangedForElement(pseudo, *this);
+#endif
 }
 
 void Element::setAnimationStyleChange(bool animationStyleChange)
@@ -2024,6 +2048,9 @@ bool Element::childTypeAllowed(NodeType type) const
 
 void Element::checkForEmptyStyleChange()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     const ComputedStyle* style = computedStyle();
 
     if (!style && !styleAffectedByEmpty())
@@ -2035,6 +2062,7 @@ void Element::checkForEmptyStyleChange()
 
     if (!style || (styleAffectedByEmpty() && (!style->emptyState() || hasChildren())))
         pseudoStateChanged(CSSSelector::PseudoEmpty);
+#endif
 }
 
 void Element::childrenChanged(const ChildrenChange& change)
@@ -2715,6 +2743,10 @@ void Element::setMinimumSizeForResizing(const LayoutSize& size)
 
 const ComputedStyle* Element::ensureComputedStyle(PseudoId pseudoElementSpecifier)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     if (PseudoElement* element = pseudoElement(pseudoElementSpecifier))
         return element->ensureComputedStyle();
 
@@ -2744,6 +2776,7 @@ const ComputedStyle* Element::ensureComputedStyle(PseudoId pseudoElementSpecifie
     RefPtr<ComputedStyle> result = document().ensureStyleResolver().pseudoStyleForElement(this, PseudoStyleRequest(pseudoElementSpecifier, PseudoStyleRequest::ForComputedStyle), elementStyle);
     ASSERT(result);
     return elementStyle->addCachedPseudoStyle(result.release());
+#endif
 }
 
 AtomicString Element::computeInheritedLanguage() const
@@ -2844,6 +2877,9 @@ void Element::createPseudoElementIfNeeded(PseudoId pseudoId)
     if (isPseudoElement())
         return;
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     // Document::ensureStyleResolver is not inlined and shows up on profiles, avoid it here.
     RefPtrWillBeRawPtr<PseudoElement> element = document().styleEngine().ensureResolver().createPseudoElementIfNeeded(*this, pseudoId);
     if (!element)
@@ -2857,6 +2893,7 @@ void Element::createPseudoElementIfNeeded(PseudoId pseudoId)
     InspectorInstrumentation::pseudoElementCreated(element.get());
 
     ensureElementRareData().setPseudoElement(pseudoId, element.release());
+#endif
 }
 
 PseudoElement* Element::pseudoElement(PseudoId pseudoId) const
@@ -3097,7 +3134,9 @@ void Element::willModifyAttribute(const QualifiedName& name, const AtomicString&
     }
 
     if (oldValue != newValue) {
+#ifndef BLINKIT_CRAWLER_ONLY
         document().styleEngine().attributeChangedForElement(name, *this);
+#endif
         if (isUpgradedCustomElement())
             CustomElement::attributeDidChange(this, name.localName(), oldValue, newValue);
     }
@@ -3518,6 +3557,10 @@ void Element::addPropertyToPresentationAttributeStyle(MutableStylePropertySet*  
 
 bool Element::supportsStyleSharing() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     if (!isStyledElement() || !parentOrShadowHostElement())
         return false;
     // If the element has inline style it is probably unique.
@@ -3542,6 +3585,7 @@ bool Element::supportsStyleSharing() const
     if (hasAnimations())
         return false;
     return true;
+#endif
 }
 
 void Element::logAddElementIfIsolatedWorldAndInDocument(const char element[], const QualifiedName& attr1)

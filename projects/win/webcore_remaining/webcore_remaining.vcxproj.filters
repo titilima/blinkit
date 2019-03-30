@@ -185,9 +185,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\DefaultSVGInterpolation.cpp">
       <Filter>animation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\DeferredLegacyStyleInterpolation.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\DocumentAnimations.cpp">
       <Filter>animation</Filter>
     </ClCompile>
@@ -255,9 +252,6 @@
       <Filter>animation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\ShadowInterpolationFunctions.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\StringKeyframe.cpp">
       <Filter>animation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGAngleInterpolationType.cpp">
@@ -386,9 +380,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\css\CSSAnimationData.cpp">
       <Filter>animation\css</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\css\CSSAnimations.cpp">
-      <Filter>animation\css</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\css\CSSPropertyEquality.cpp">
       <Filter>animation\css</Filter>
     </ClCompile>
@@ -438,9 +429,6 @@
       <Filter>css</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSCalculationValue.cpp">
-      <Filter>css</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSComputedStyleDeclaration.cpp">
       <Filter>css</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSContentDistributionValue.cpp">
@@ -629,16 +617,10 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\DOMWindowCSS.cpp">
       <Filter>css</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\ElementRuleCollector.cpp">
-      <Filter>css</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontFace.cpp">
       <Filter>css</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontFaceCache.cpp">
-      <Filter>css</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontFaceSet.cpp">
       <Filter>css</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontFaceSetLoadEvent.cpp">
@@ -692,9 +674,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\PageRuleCollector.cpp">
       <Filter>css</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\PropertySetCSSStyleDeclaration.cpp">
-      <Filter>css</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\RemoteFontFaceSource.cpp">
       <Filter>css</Filter>
     </ClCompile>
@@ -735,12 +714,6 @@
       <Filter>css</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\StyleSheet.cpp">
-      <Filter>css</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\StyleSheetContents.cpp">
-      <Filter>css</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\StyleSheetList.cpp">
       <Filter>css</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\cssom\KeywordValue.cpp">
@@ -869,9 +842,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\MatchResult.cpp">
       <Filter>css\resolver</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\ScopedStyleResolver.cpp">
-      <Filter>css\resolver</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\SharedStyleFinder.cpp">
       <Filter>css\resolver</Filter>
     </ClCompile>
@@ -882,9 +852,6 @@
       <Filter>css\resolver</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\StyleBuilderCustom.cpp">
-      <Filter>css\resolver</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\StyleResolver.cpp">
       <Filter>css\resolver</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\StyleResolverParentScope.cpp">
@@ -915,9 +882,6 @@
       <Filter>editing</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingStrategy.cpp">
-      <Filter>editing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingStyle.cpp">
       <Filter>editing</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingUtilities.cpp">
@@ -1283,9 +1247,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameSerializer.cpp">
       <Filter>frame</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameView.cpp">
-      <Filter>frame</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameViewAutoSizeInfo.cpp">
       <Filter>frame</Filter>
     </ClCompile>
@@ -1293,9 +1254,6 @@
       <Filter>frame</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LayoutSubtreeRootList.cpp">
-      <Filter>frame</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalDOMWindow.cpp">
       <Filter>frame</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalFrame.cpp">
@@ -1515,9 +1473,6 @@
       <Filter>page</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\NetworkStateNotifier.cpp">
-      <Filter>page</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\Page.cpp">
       <Filter>page</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\PageAnimator.cpp">
@@ -2749,9 +2704,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\MediaQueryResult.h">
       <Filter>css\resolver</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\ScopedStyleResolver.h">
-      <Filter>css\resolver</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\SharedStyleFinder.h">
       <Filter>css\resolver</Filter>
     </ClInclude>
@@ -3966,6 +3918,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\inspector\InstanceCounters.h">
       <Filter>inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\ScopedStyleResolver.h">
+      <Filter>css\resolver</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Text.cpp
+// Description: Text Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -377,6 +388,9 @@ void Text::reattachIfNeeded(const AttachContext& context)
 
 void Text::recalcTextStyle(StyleRecalcChange change, Text* nextTextSibling)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (LayoutText* layoutObject = this->layoutObject()) {
         if (change != NoChange || needsStyleRecalc())
             layoutObject->setStyle(document().ensureStyleResolver().styleForText(this));
@@ -388,6 +402,7 @@ void Text::recalcTextStyle(StyleRecalcChange change, Text* nextTextSibling)
         if (this->layoutObject())
             reattachWhitespaceSiblingsIfNeeded(nextTextSibling);
     }
+#endif
 }
 
 // If a whitespace node had no layoutObject and goes through a recalcStyle it may

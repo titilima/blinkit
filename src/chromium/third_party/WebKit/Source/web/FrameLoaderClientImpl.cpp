@@ -469,7 +469,10 @@ void FrameLoaderClientImpl::dispatchDidChangeThemeColor()
 
 static bool allowCreatingBackgroundTabs()
 {
-
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     const WebInputEvent* inputEvent = WebViewImpl::currentInputEvent();
     if (!inputEvent || (inputEvent->type != WebInputEvent::MouseUp && (inputEvent->type != WebInputEvent::RawKeyDown && inputEvent->type != WebInputEvent::KeyDown)
         && inputEvent->type != WebInputEvent::GestureTap))
@@ -505,6 +508,7 @@ static bool allowCreatingBackgroundTabs()
     if (!navigationPolicyFromMouseEvent(buttonNumber, ctrl, shift, alt, meta, &userPolicy))
         return false;
     return userPolicy == NavigationPolicyNewBackgroundTab;
+#endif
 }
 
 NavigationPolicy FrameLoaderClientImpl::decidePolicyForNavigation(const ResourceRequest& request, DocumentLoader* loader, NavigationType type, NavigationPolicy policy, bool replacesCurrentHistoryItem)

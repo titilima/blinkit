@@ -266,9 +266,14 @@ void FontFaceSet::removeFromLoadingFonts(PassRefPtrWillBeRawPtr<FontFace> fontFa
 
 const WillBeHeapListHashSet<RefPtrWillBeMember<FontFace>>& FontFaceSet::cssConnectedFontFaceList() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     Document* d = document();
     d->ensureStyleResolver(); // Flush pending style changes.
     return d->styleEngine().fontSelector()->fontFaceCache()->cssConnectedFontFaces();
+#endif
 }
 
 bool FontFaceSet::isCSSConnectedFontFace(FontFace* fontFace) const
@@ -315,6 +320,9 @@ void FontFaceSet::fireDoneEventIfPossible()
 
 bool FontFaceSet::check(const String& fontString, const String& text, ExceptionState& exceptionState)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!inActiveDocumentContext())
         return false;
 
@@ -342,11 +350,16 @@ bool FontFaceSet::check(const String& fontString, const String& text, ExceptionS
         if (fontSelector->isPlatformFontAvailable(font.fontDescription(), f->family()))
             return true;
     }
+#endif
     return false;
 }
 
 bool FontFaceSet::resolveFontStyle(const String& fontString, Font& font)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     if (fontString.isEmpty())
         return false;
 
@@ -379,6 +392,7 @@ bool FontFaceSet::resolveFontStyle(const String& fontString, Font& font)
     font = style->font();
     font.update(document()->styleEngine().fontSelector());
     return true;
+#endif
 }
 
 void FontFaceSet::FontLoadHistogram::updateStatus(FontFace* fontFace)

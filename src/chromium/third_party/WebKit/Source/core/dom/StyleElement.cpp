@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StyleElement.cpp
+// Description: StyleElement Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Rob Buis
  * Copyright (C) 2008 Apple, Inc. All rights reserved.
@@ -63,6 +74,10 @@ StyleElement::~StyleElement()
 
 StyleElement::ProcessingResult StyleElement::processStyleSheet(Document& document, Element* element)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     TRACE_EVENT0("blink", "StyleElement::processStyleSheet");
     ASSERT(element);
     ASSERT(element->inDocument());
@@ -73,6 +88,7 @@ StyleElement::ProcessingResult StyleElement::processStyleSheet(Document& documen
         return ProcessingSuccessful;
 
     return process(element);
+#endif
 }
 
 void StyleElement::insertedInto(Element* element, ContainerNode* insertionPoint)
@@ -95,6 +111,9 @@ void StyleElement::removedFrom(Element* element, ContainerNode* insertionPoint)
     if (shadowRoot)
         shadowRoot->unregisterScopedHTMLStyleChild();
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     Document& document = element->document();
     if (m_registeredAsCandidate) {
         document.styleEngine().removeStyleSheetCandidateNode(element, shadowRoot ? *toTreeScope(shadowRoot) : toTreeScope(document));
@@ -107,10 +126,14 @@ void StyleElement::removedFrom(Element* element, ContainerNode* insertionPoint)
         clearSheet(element);
     if (removedSheet)
         document.removedStyleSheet(removedSheet.get(), AnalyzedStyleUpdate);
+#endif
 }
 
 void StyleElement::clearDocumentData(Document& document, Element* element)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (m_sheet)
         m_sheet->clearOwnerNode();
 
@@ -119,6 +142,7 @@ void StyleElement::clearDocumentData(Document& document, Element* element)
         document.styleEngine().removeStyleSheetCandidateNode(element, element->treeScope());
         m_registeredAsCandidate = false;
     }
+#endif
 }
 
 StyleElement::ProcessingResult StyleElement::childrenChanged(Element* element)
@@ -147,12 +171,16 @@ StyleElement::ProcessingResult StyleElement::process(Element* element)
 
 void StyleElement::clearSheet(Element* ownerElement)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     ASSERT(m_sheet);
 
     if (ownerElement && m_sheet->isLoading())
         ownerElement->document().styleEngine().removePendingSheet(ownerElement);
 
     m_sheet.release()->clearOwnerNode();
+#endif
 }
 
 static bool shouldBypassMainWorldCSP(Element* element)
@@ -172,6 +200,10 @@ static bool shouldBypassMainWorldCSP(Element* element)
 
 StyleElement::ProcessingResult StyleElement::createSheet(Element* e, const String& text)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     ASSERT(e);
     ASSERT(e->inDocument());
     Document& document = e->document();
@@ -209,6 +241,7 @@ StyleElement::ProcessingResult StyleElement::createSheet(Element* e, const Strin
         m_sheet->contents()->checkLoaded();
 
     return passesContentSecurityPolicyChecks ? ProcessingSuccessful : ProcessingFatalError;
+#endif
 }
 
 bool StyleElement::isLoading() const
@@ -220,16 +253,24 @@ bool StyleElement::isLoading() const
 
 bool StyleElement::sheetLoaded(Document& document)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (isLoading())
         return false;
 
     document.styleEngine().removePendingSheet(m_sheet->ownerNode());
+#endif
     return true;
 }
 
 void StyleElement::startLoadingDynamicSheet(Document& document)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     document.styleEngine().addPendingSheet();
+#endif
 }
 
 DEFINE_TRACE(StyleElement)

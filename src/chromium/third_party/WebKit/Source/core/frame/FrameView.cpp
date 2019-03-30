@@ -335,6 +335,9 @@ void FrameView::recalculateCustomScrollbarStyle()
 
 void FrameView::invalidateAllCustomScrollbarsOnActiveChanged()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     bool usesWindowInactiveSelector = m_frame->document()->styleEngine().usesWindowInactiveSelector();
 
     const ChildrenWidgetSet* viewChildren = children();
@@ -349,6 +352,7 @@ void FrameView::invalidateAllCustomScrollbarsOnActiveChanged()
     }
     if (usesWindowInactiveSelector)
         recalculateCustomScrollbarStyle();
+#endif
 }
 
 void FrameView::recalculateScrollbarOverlayStyle()
@@ -756,6 +760,9 @@ inline void FrameView::forceLayoutParentViewIfNeeded()
 
 void FrameView::performPreLayoutTasks()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     TRACE_EVENT0("blink,benchmark", "FrameView::performPreLayoutTasks");
     lifecycle().advanceTo(DocumentLifecycle::InPreLayout);
 
@@ -790,6 +797,7 @@ void FrameView::performPreLayoutTasks()
         ASSERT(layoutViewport);
         m_viewportScrollableArea = RootFrameViewport::create(visualViewport, *layoutViewport);
     }
+#endif
 }
 
 static inline void layoutFromRootObject(LayoutObject& root)
@@ -1413,10 +1421,14 @@ bool FrameView::processUrlFragmentHelper(const String& name, UrlFragmentBehavior
 {
     ASSERT(m_frame->document());
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     if (behavior == UrlFragmentScroll && !m_frame->document()->isRenderingReady()) {
         m_frame->document()->setGotoAnchorNeededAfterStylesheetsLoad(true);
         return false;
     }
+#endif
 
     m_frame->document()->setGotoAnchorNeededAfterStylesheetsLoad(false);
 

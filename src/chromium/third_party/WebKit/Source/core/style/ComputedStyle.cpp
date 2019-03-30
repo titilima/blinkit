@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ComputedStyle.cpp
+// Description: ComputedStyle Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Antti Koivisto (koivisto@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights reserved.
@@ -320,7 +331,12 @@ bool ComputedStyle::operator==(const ComputedStyle& o) const
 
 bool ComputedStyle::isStyleAvailable() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     return this != StyleResolver::styleNotYetAvailable();
+#endif
 }
 
 bool ComputedStyle::hasUniquePseudoStyle() const

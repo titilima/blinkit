@@ -251,6 +251,9 @@ bool ScriptLoader::prepareScript(const TextPosition& scriptStartPosition, Legacy
             return false;
     }
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Check Document::isRenderingReady logic.
+#else
     if (client->hasSourceAttribute() && client->deferAttributeValue() && m_parserInserted && !client->asyncAttributeValue()) {
         m_willExecuteWhenDocumentFinishedParsing = true;
         m_willBeParserExecuted = true;
@@ -288,6 +291,7 @@ bool ScriptLoader::prepareScript(const TextPosition& scriptStartPosition, Legacy
             return false;
         }
     }
+#endif // BLINKIT_CRAWLER_ONLY
 
     return true;
 }
