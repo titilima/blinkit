@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: EventHandler.cpp
+// Description: EventHandler Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2006 Alexey Proskuryakov (ap@webkit.org)
@@ -432,6 +443,10 @@ void EventHandler::nodeWillBeRemoved(Node& nodeToBeRemoved)
 
 WebInputEventResult EventHandler::handleMousePressEvent(const MouseEventWithHitTestResults& event)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     TRACE_EVENT0("blink", "EventHandler::handleMousePressEvent");
 
     // Reset drag state.
@@ -486,6 +501,7 @@ WebInputEventResult EventHandler::handleMousePressEvent(const MouseEventWithHitT
         || (m_mousePressNode && m_mousePressNode->layoutBox() && m_mousePressNode->layoutBox()->canBeProgramaticallyScrolled());
 
     return swallowEvent ? WebInputEventResult::HandledSystem : WebInputEventResult::NotHandled;
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 WebInputEventResult EventHandler::handleMouseDraggedEvent(const MouseEventWithHitTestResults& event)
@@ -1194,8 +1210,12 @@ WebInputEventResult EventHandler::handleMouseMoveOrLeaveEvent(const PlatformMous
     cancelFakeMouseMoveEvent();
 
     if (m_svgPan) {
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(false); // BKTODO: Not reached!
+#else
         m_frame->document()->accessSVGExtensions().updatePan(m_frame->view()->rootFrameToContents(m_lastKnownMousePosition));
         return WebInputEventResult::HandledSuppressed;
+#endif
     }
 
     if (m_frameSetBeingResized)
@@ -1328,9 +1348,13 @@ WebInputEventResult EventHandler::handleMouseReleaseEvent(const PlatformMouseEve
     setLastKnownMousePosition(mouseEvent);
 
     if (m_svgPan) {
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(false); // BKTODO: Not reached!
+#else
         m_svgPan = false;
         m_frame->document()->accessSVGExtensions().updatePan(m_frame->view()->rootFrameToContents(m_lastKnownMousePosition));
         return WebInputEventResult::HandledSuppressed;
+#endif
     }
 
     if (m_frameSetBeingResized)

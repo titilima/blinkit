@@ -664,7 +664,11 @@ void Node::recalcDistribution()
 
 void Node::setIsLink(bool isLink)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    setFlag(isLink, IsLinkFlag);
+#else
     setFlag(isLink && !SVGImage::isInSVGImage(toElement(this)), IsLinkFlag);
+#endif
 }
 
 void Node::setNeedsStyleInvalidation()

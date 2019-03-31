@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CSSCursorImageValue.cpp
+// Description: CSSCursorImageValue Class
+//      Author: Ziming Li
+//     Created: 2019-03-31
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Rob Buis <buis@kde.org>
  *           (C) 2008 Nikolas Zimmermann <zimmermann@kde.org>
@@ -38,8 +49,13 @@ namespace blink {
 
 static inline SVGCursorElement* resourceReferencedByCursorElement(const String& url, TreeScope& treeScope)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     Element* element = SVGURIReference::targetElementFromIRIString(url, treeScope);
     return isSVGCursorElement(element) ? toSVGCursorElement(element) : nullptr;
+#endif
 }
 
 CSSCursorImageValue::CSSCursorImageValue(PassRefPtrWillBeRawPtr<CSSValue> imageValue, bool hotSpotSpecified, const IntPoint& hotSpot)
@@ -53,6 +69,9 @@ CSSCursorImageValue::CSSCursorImageValue(PassRefPtrWillBeRawPtr<CSSValue> imageV
 
 CSSCursorImageValue::~CSSCursorImageValue()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // The below teardown is all handled by weak pointer processing in oilpan.
 #if !ENABLE(OILPAN)
     if (!isSVGCursor())
@@ -66,6 +85,7 @@ CSSCursorImageValue::~CSSCursorImageValue()
             cursorElement->removeClient(referencedElement);
     }
 #endif
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 String CSSCursorImageValue::customCSSText() const
@@ -83,6 +103,9 @@ String CSSCursorImageValue::customCSSText() const
 
 bool CSSCursorImageValue::updateIfSVGCursorIsUsed(Element* element)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!element || !element->isSVGElement())
         return false;
 
@@ -111,6 +134,7 @@ bool CSSCursorImageValue::updateIfSVGCursorIsUsed(Element* element)
         cursorElement->addClient(svgElement);
         return true;
     }
+#endif // BLINKIT_CRAWLER_ONLY
 
     return false;
 }

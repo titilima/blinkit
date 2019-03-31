@@ -735,8 +735,12 @@ RootInlineBox* LayoutBlockFlow::createLineBoxesFromBidiRuns(unsigned bidiLevel, 
     // contains reversed text or not. If we wouldn't do that editing and thus
     // text selection in RTL boxes would not work as expected.
     if (isSVGRootInlineBox) {
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(false); // BKTODO: Not reached!
+#else
         ASSERT(isSVGText());
         toSVGRootInlineBox(lineBox)->computePerCharacterLayoutInformation();
+#endif
     }
 
     // Compute our overflow now.

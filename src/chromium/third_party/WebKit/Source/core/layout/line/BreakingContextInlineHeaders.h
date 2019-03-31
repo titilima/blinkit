@@ -793,9 +793,13 @@ inline bool BreakingContext::handleText(WordMeasurements& wordMeasurements, bool
 inline void BreakingContext::prepareForNextCharacter(const LineLayoutText& layoutText, bool& prohibitBreakInside, bool previousCharacterIsSpace)
 {
     if (layoutText.isSVGInlineText() && m_current.offset()) {
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(false); // BKTODO: Not reached!
+#else
         // Force creation of new InlineBoxes for each absolute positioned character (those that start new text chunks).
         if (LineLayoutSVGInlineText(layoutText).characterStartsNewTextChunk(m_current.offset()))
             m_lineMidpointState.ensureCharacterGetsLineBox(m_current);
+#endif
     }
     if (prohibitBreakInside) {
         m_current.setNextBreakablePosition(layoutText.textLength());

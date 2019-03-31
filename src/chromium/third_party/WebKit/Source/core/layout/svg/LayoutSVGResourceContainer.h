@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutSVGResourceContainer.h
+// Description: LayoutSVGResourceContainer Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) Research In Motion Limited 2010. All rights reserved.
  *
@@ -110,11 +121,13 @@ private:
 
 inline LayoutSVGResourceContainer* getLayoutSVGResourceContainerById(TreeScope& treeScope, const AtomicString& id)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     if (id.isEmpty())
         return nullptr;
 
     if (LayoutSVGResourceContainer* layoutResource = treeScope.document().accessSVGExtensions().resourceById(id))
         return layoutResource;
+#endif
 
     return nullptr;
 }

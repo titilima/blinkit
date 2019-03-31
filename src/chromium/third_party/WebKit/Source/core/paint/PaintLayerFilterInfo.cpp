@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PaintLayerFilterInfo.cpp
+// Description: PaintLayerFilterInfo Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Adobe Systems Incorporated. All rights reserved.
  *
@@ -104,6 +115,9 @@ void PaintLayerFilterInfo::notifyFinished(Resource*)
 
 void PaintLayerFilterInfo::updateReferenceFilterClients(const FilterOperations& operations)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     removeReferenceFilterClients();
     for (size_t i = 0; i < operations.size(); ++i) {
         RefPtrWillBeRawPtr<FilterOperation> filterOperation = operations.operations().at(i);
@@ -130,10 +144,14 @@ void PaintLayerFilterInfo::updateReferenceFilterClients(const FilterOperations& 
             m_internalSVGReferences.append(filter);
         }
     }
+#endif
 }
 
 void PaintLayerFilterInfo::removeReferenceFilterClients()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     for (size_t i = 0; i < m_externalSVGReferences.size(); ++i)
         m_externalSVGReferences.at(i)->removeClient(this);
     m_externalSVGReferences.clear();
@@ -145,6 +163,7 @@ void PaintLayerFilterInfo::removeReferenceFilterClients()
             toSVGFilterElement(filter)->removeClient(m_layer->layoutObject()->node());
     }
     m_internalSVGReferences.clear();
+#endif
 }
 
 } // namespace blink

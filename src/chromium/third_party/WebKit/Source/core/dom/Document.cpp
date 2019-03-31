@@ -605,8 +605,10 @@ void Document::dispose()
         m_scriptedAnimationController->clearDocumentPointer();
     m_scriptedAnimationController.clear();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (svgExtensions())
         accessSVGExtensions().pauseAnimations();
+#endif
 
     if (m_intersectionObserverData)
         m_intersectionObserverData->dispose();
@@ -1021,8 +1023,10 @@ PassRefPtrWillBeRawPtr<Element> Document::createElement(const QualifiedName& qNa
     // FIXME: Use registered namespaces and look up in a hash to find the right factory.
     if (qName.namespaceURI() == xhtmlNamespaceURI)
         e = HTMLElementFactory::createHTMLElement(qName.localName(), *this, 0, createdByParser);
+#ifndef BLINKIT_CRAWLER_ONLY
     else if (qName.namespaceURI() == SVGNames::svgNamespaceURI)
         e = SVGElementFactory::createSVGElement(qName.localName(), *this, createdByParser);
+#endif
 
     if (e)
         m_sawElementsInKnownNamespaces = true;
@@ -1482,8 +1486,10 @@ bool Document::needsFullLayoutTreeUpdate() const
 {
     if (!isActive() || !view())
         return false;
+#ifndef BLINKIT_CRAWLER_ONLY
     if (!m_useElementsNeedingUpdate.isEmpty())
         return true;
+#endif
     if (!m_layerUpdateSVGFilterElements.isEmpty())
         return true;
     if (needsStyleRecalc())
@@ -2144,17 +2150,28 @@ void Document::unscheduleSVGFilterLayerUpdateHack(Element& element)
 
 void Document::scheduleUseShadowTreeUpdate(SVGUseElement& element)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     m_useElementsNeedingUpdate.add(&element);
+#endif
     scheduleLayoutTreeUpdateIfNeeded();
 }
 
 void Document::unscheduleUseShadowTreeUpdate(SVGUseElement& element)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     m_useElementsNeedingUpdate.remove(&element);
+#endif
 }
 
 void Document::updateUseShadowTreesIfNeeded()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     ScriptForbiddenScope forbidScript;
 
     if (m_useElementsNeedingUpdate.isEmpty())
@@ -2166,6 +2183,7 @@ void Document::updateUseShadowTreesIfNeeded()
 
     for (SVGUseElement* element : elements)
         element->buildPendingResource();
+#endif
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -2242,8 +2260,10 @@ void Document::detach(const AttachContext& context)
         m_scriptedAnimationController->clearDocumentPointer();
     m_scriptedAnimationController.clear();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (svgExtensions())
         accessSVGExtensions().pauseAnimations();
+#endif
 
     // FIXME: This shouldn't be needed once LocalDOMWindow becomes ExecutionContext.
     if (m_domWindow)
@@ -2587,10 +2607,12 @@ void Document::implicitClose()
     // JS running below could remove the frame or destroy the LayoutView so we call
     // those two functions repeatedly and don't save them on the stack.
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // To align the HTML load event and the SVGLoad event for the outermost <svg> element, fire it from
     // here, instead of doing it from SVGElement::finishedParsingChildren.
     if (svgExtensions())
         accessSVGExtensions().dispatchSVGLoadEventToOutermostSVGElements();
+#endif
 
     if (protectedWindow)
         protectedWindow->documentWasClosed();
@@ -2629,8 +2651,10 @@ void Document::implicitClose()
 
     m_loadEventProgress = LoadEventCompleted;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (svgExtensions())
         accessSVGExtensions().startAnimations();
+#endif
 }
 
 bool Document::dispatchBeforeUnloadEvent(ChromeClient& chromeClient, bool isReload, bool& didAllowNavigation)
@@ -4495,6 +4519,7 @@ PassRefPtrWillBeRawPtr<Attr> Document::createAttributeNS(const AtomicString& nam
     return Attr::create(*this, qName, emptyAtom);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 const SVGDocumentExtensions* Document::svgExtensions()
 {
     return m_svgExtensions.get();
@@ -4511,6 +4536,7 @@ bool Document::hasSVGRootNode() const
 {
     return isSVGSVGElement(documentElement());
 }
+#endif
 
 PassRefPtrWillBeRawPtr<HTMLCollection> Document::images()
 {

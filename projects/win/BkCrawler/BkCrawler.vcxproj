@@ -302,9 +302,6 @@
     <ProjectReference Include="..\webcore_rendering\webcore_rendering.vcxproj">
       <Project>{9ca55c16-3c88-4d99-93a6-5a866778e717}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\webcore_svg\webcore_svg.vcxproj">
-      <Project>{01b811b6-336e-49ad-b836-7c25dbcd7ce6}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\wtf\wtf.vcxproj">
       <Project>{f2bd6227-b9bf-4658-a72f-3a8ca514a847}</Project>
     </ProjectReference>

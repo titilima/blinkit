@@ -191,7 +191,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementMicrotaskRunQueue.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementObserver.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementProcessingStack.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementRegistrationContext.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementRegistry.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementScheduler.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementSyncMicrotaskQueue.cpp" />
@@ -238,7 +237,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IntersectionObserver.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IntersectionObserverController.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IntersectionObserverEntry.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\LayoutTreeBuilder.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\LayoutTreeBuilderTraversal.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\LiveNodeList.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\LiveNodeListBase.cpp" />
@@ -250,21 +248,18 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\MutationRecord.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NamedNodeMap.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NameNodeList.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Node.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NodeChildRemovalTracker.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NodeFilter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NodeIntersectionObserverData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NodeIterator.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NodeIteratorBase.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NodeListsNodeData.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NodeRareData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NodeTraversal.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NthIndexCache.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\PendingScript.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\PresentationAttributeStyle.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\PseudoElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\QualifiedName.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Range.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\RemoteSecurityContext.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptableDocumentParser.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptedAnimationController.cpp" />
@@ -306,7 +301,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\DOMWindowEventQueue.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\DragEvent.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\ErrorEvent.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\Event.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventDispatcher.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventDispatchMediator.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventListenerMap.cpp" />
@@ -339,7 +333,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\UIEventWithKeyState.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\WheelEvent.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\WindowEventContext.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\input\EventHandler.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\input\InputDeviceCapabilities.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\input\TouchActionUtil.cpp" />
     <ClCompile Include="..\_pch.cpp">

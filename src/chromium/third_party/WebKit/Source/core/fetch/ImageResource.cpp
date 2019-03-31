@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ImageResource.cpp
+// Description: ImageResource Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller (mueller@kde.org)
@@ -275,6 +286,9 @@ void ImageResource::setCustomAcceptHeader()
 
 inline void ImageResource::createImage()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // Create the image if it doesn't yet exist.
     if (m_image)
         return;
@@ -284,6 +298,7 @@ inline void ImageResource::createImage()
     } else {
         m_image = BitmapImage::create(this);
     }
+#endif
 }
 
 inline void ImageResource::clearImage()

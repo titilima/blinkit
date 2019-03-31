@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: AnimationInputHelpers.cpp
+// Description: AnimationInputHelpers Class
+//      Author: Ziming Li
+//     Created: 2019-03-31
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -47,12 +58,16 @@ CSSPropertyID AnimationInputHelpers::keyframeAttributeToCSSProperty(const String
 
 CSSPropertyID AnimationInputHelpers::keyframeAttributeToPresentationAttribute(const String& property, const Element& element)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!RuntimeEnabledFeatures::webAnimationsSVGEnabled() || !element.isSVGElement() || !isSVGPrefixed(property))
         return CSSPropertyInvalid;
 
     String unprefixedProperty = removeSVGPrefix(property);
     if (SVGElement::isAnimatableCSSProperty(QualifiedName(nullAtom, AtomicString(unprefixedProperty), nullAtom)))
         return cssPropertyID(unprefixedProperty);
+#endif
 
     return CSSPropertyInvalid;
 }
@@ -181,6 +196,10 @@ QualifiedName svgAttributeName(const String& property)
 
 const QualifiedName* AnimationInputHelpers::keyframeAttributeToSVGAttribute(const String& property, Element& element)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     if (!RuntimeEnabledFeatures::webAnimationsSVGEnabled() || !element.isSVGElement() || !isSVGPrefixed(property))
         return nullptr;
 
@@ -196,6 +215,7 @@ const QualifiedName* AnimationInputHelpers::keyframeAttributeToSVGAttribute(cons
         return nullptr;
 
     return iter->value;
+#endif
 }
 
 PassRefPtr<TimingFunction> AnimationInputHelpers::parseTimingFunction(const String& string)

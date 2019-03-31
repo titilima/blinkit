@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ElementStyleResources.cpp
+// Description: ElementStyleResources Class
+//      Author: Ziming Li
+//     Created: 2019-03-31
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -109,6 +120,9 @@ void ElementStyleResources::addPendingSVGDocument(FilterOperation* filterOperati
 
 void ElementStyleResources::loadPendingSVGDocuments(ComputedStyle* computedStyle)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!computedStyle->hasFilter() || m_pendingSVGDocuments.isEmpty())
         return;
 
@@ -129,6 +143,7 @@ void ElementStyleResources::loadPendingSVGDocuments(ComputedStyle* computedStyle
             ReferenceFilterBuilder::setDocumentResourceReference(referenceFilter, adoptPtr(new DocumentResourceReference(resource)));
         }
     }
+#endif
 }
 
 PassRefPtrWillBeRawPtr<StyleImage> ElementStyleResources::loadPendingImage(StylePendingImage* pendingImage, CrossOriginAttributeValue crossOrigin)

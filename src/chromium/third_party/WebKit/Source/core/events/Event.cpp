@@ -245,11 +245,13 @@ EventTarget* Event::currentTarget() const
 {
     if (!m_currentTarget)
         return nullptr;
+#ifndef BLINKIT_CRAWLER_ONLY
     Node* node = m_currentTarget->toNode();
     if (node && node->isSVGElement()) {
         if (SVGElement* svgElement = toSVGElement(node)->correspondingElement())
             return svgElement;
     }
+#endif
     return m_currentTarget.get();
 }
 

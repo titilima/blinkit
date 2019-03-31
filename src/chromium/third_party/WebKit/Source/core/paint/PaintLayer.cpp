@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PaintLayer.cpp
+// Description: PaintLayer Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple Inc. All rights reserved.
  *
@@ -978,8 +989,10 @@ bool PaintLayer::hasNonIsolatedDescendantWithBlendMode() const
 {
     if (descendantDependentCompositingInputs().hasNonIsolatedDescendantWithBlendMode)
         return true;
+#ifndef BLINKIT_CRAWLER_ONLY
     if (layoutObject()->isSVGRoot())
         return toLayoutSVGRoot(layoutObject())->hasNonIsolatedBlendingDescendants();
+#endif
     return false;
 }
 
@@ -2001,9 +2014,13 @@ bool PaintLayer::hitTestClippedOutByClipPath(PaintLayer* rootLayer, const HitTes
         ReferenceClipPathOperation* referenceClipPathOperation = toReferenceClipPathOperation(clipPathOperation);
         Element* element = layoutObject()->document().getElementById(referenceClipPathOperation->fragment());
         if (isSVGClipPathElement(element) && element->layoutObject()) {
+#ifdef BLINKIT_CRAWLER_ONLY
+            assert(false); // BKTODO: Not reached!
+#else
             LayoutSVGResourceClipper* clipper = toLayoutSVGResourceClipper(toLayoutSVGResourceContainer(element->layoutObject()));
             if (!clipper->hitTestClipContent(FloatRect(rootRelativeBounds), FloatPoint(hitTestLocation.point())))
                 return true;
+#endif
         }
     }
 
@@ -2610,10 +2627,14 @@ FilterOperations computeFilterOperationsHandleReferenceFilters(const FilterOpera
             FilterOperation* filterOperation = filters.operations().at(i).get();
             if (filterOperation->type() != FilterOperation::REFERENCE)
                 continue;
+#ifdef BLINKIT_CRAWLER_ONLY
+            assert(false); // BKTODO: Not reached!
+#else
             ReferenceFilterOperation& referenceOperation = toReferenceFilterOperation(*filterOperation);
             // FIXME: Cache the Filter if it didn't change.
             RefPtrWillBeRawPtr<Filter> referenceFilter = ReferenceFilterBuilder::build(effectiveZoom, toElement(enclosingNode), nullptr, referenceOperation);
             referenceOperation.setFilter(referenceFilter.release());
+#endif
         }
     }
 

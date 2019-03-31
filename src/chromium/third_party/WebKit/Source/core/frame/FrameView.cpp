@@ -595,6 +595,9 @@ void FrameView::calculateScrollbarModes(ScrollbarMode& hMode, ScrollbarMode& vMo
     if (!viewport || !viewport->style())
         RETURN_SCROLLBAR_MODE(ScrollbarAuto);
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(!viewport->isSVGRoot()); // BKTODO: Check this function later!
+#else
     if (viewport->isSVGRoot()) {
         // Don't allow overflow to affect <img> and css backgrounds
         if (toLayoutSVGRoot(viewport)->isEmbeddedThroughSVGImage())
@@ -605,6 +608,7 @@ void FrameView::calculateScrollbarModes(ScrollbarMode& hMode, ScrollbarMode& vMo
         if (toLayoutSVGRoot(viewport)->isEmbeddedThroughFrameContainingSVGDocument())
             RETURN_SCROLLBAR_MODE(ScrollbarAlwaysOff);
     }
+#endif
 
     calculateScrollbarModesFromOverflowStyle(viewport->style(), hMode, vMode);
 
@@ -1437,6 +1441,9 @@ bool FrameView::processUrlFragmentHelper(const String& name, UrlFragmentBehavior
     // Setting to null will clear the current target.
     m_frame->document()->setCSSTarget(anchorNode);
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(!m_frame->document()->isSVGDocument());
+#else
     if (m_frame->document()->isSVGDocument()) {
         if (SVGSVGElement* svg = SVGDocumentExtensions::rootElement(*m_frame->document())) {
             svg->setupInitialView(name, anchorNode);
@@ -1444,6 +1451,7 @@ bool FrameView::processUrlFragmentHelper(const String& name, UrlFragmentBehavior
                 return true;
         }
     }
+#endif
 
     // Implement the rule that "" and "top" both mean top of page as in other browsers.
     if (!anchorNode && !(name.isEmpty() || equalIgnoringCase(name, "top")))

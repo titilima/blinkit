@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Range.cpp
+// Description: Range Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * (C) 2000 Gunnstein Lye (gunnstein@netcom.no)
@@ -919,11 +930,17 @@ PassRefPtrWillBeRawPtr<DocumentFragment> Range::createContextualFragment(const S
             element = document.body();
             if (!element)
                 element = HTMLBodyElement::create(document);
-        } else if (document.isSVGDocument()) {
+        }
+#ifdef BLINKIT_CRAWLER_ONLY
+        else
+            assert(!document.isSVGDocument());
+#else
+        else if (document.isSVGDocument()) {
             element = document.documentElement();
             if (!element)
                 element = SVGSVGElement::create(document);
         }
+#endif
     }
 
     if (!element || (!element->isHTMLElement() && !element->isSVGElement())) {

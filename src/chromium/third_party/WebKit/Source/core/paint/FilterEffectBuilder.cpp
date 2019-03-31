@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FilterEffectBuilder.cpp
+// Description: FilterEffectBuilder Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -140,11 +151,15 @@ bool FilterEffectBuilder::build(Element* element, const FilterOperations& operat
         FilterOperation* filterOperation = operations.operations().at(i).get();
         switch (filterOperation->type()) {
         case FilterOperation::REFERENCE: {
+#ifdef BLINKIT_CRAWLER_ONLY
+            assert(false); // BKTODO: Not reached!
+#else
             RefPtrWillBeRawPtr<Filter> referenceFilter = ReferenceFilterBuilder::build(zoom, element, previousEffect.get(), toReferenceFilterOperation(*filterOperation), fillPaint, strokePaint);
             if (referenceFilter) {
                 effect = referenceFilter->lastEffect();
                 m_referenceFilters.append(referenceFilter);
             }
+#endif
             break;
         }
         case FilterOperation::GRAYSCALE: {

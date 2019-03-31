@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CSSCrossfadeValue.cpp
+// Description: CSSCrossfadeValue Class
+//      Author: Ziming Li
+//     Created: 2019-03-31
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc.  All rights reserved.
  *
@@ -215,6 +226,10 @@ void CSSCrossfadeValue::loadSubimages(Document* document)
 
 PassRefPtr<Image> CSSCrossfadeValue::image(const LayoutObject* layoutObject, const IntSize& size)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     if (size.isEmpty())
         return nullptr;
 
@@ -236,6 +251,7 @@ PassRefPtr<Image> CSSCrossfadeValue::image(const LayoutObject* layoutObject, con
     m_generatedImage = CrossfadeGeneratedImage::create(fromImageRef, toImageRef, m_percentageValue->getFloatValue(), fixedSize(layoutObject), size);
 
     return m_generatedImage.release();
+#endif
 }
 
 void CSSCrossfadeValue::crossfadeChanged(const IntRect&)

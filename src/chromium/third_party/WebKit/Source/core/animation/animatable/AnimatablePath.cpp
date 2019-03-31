@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: AnimatablePath.cpp
+// Description: AnimatablePath Class
+//      Author: Ziming Li
+//     Created: 2019-03-31
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -12,6 +23,10 @@ namespace blink {
 
 bool AnimatablePath::usesDefaultInterpolationWith(const AnimatableValue* value) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     // Default interpolation is used if the paths have different lengths,
     // or the paths have a segment with different types (ignoring "relativeness").
 
@@ -32,10 +47,15 @@ bool AnimatablePath::usesDefaultInterpolationWith(const AnimatableValue* value) 
     }
 
     return toSource.hasMoreData();
+#endif
 }
 
 PassRefPtr<AnimatableValue> AnimatablePath::interpolateTo(const AnimatableValue* value, double fraction) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     if (usesDefaultInterpolationWith(value))
         return defaultInterpolateTo(this, value, fraction);
 
@@ -49,6 +69,7 @@ PassRefPtr<AnimatableValue> AnimatablePath::interpolateTo(const AnimatableValue*
     bool ok = blender.blendAnimatedPath(fraction);
     ASSERT_UNUSED(ok, ok);
     return AnimatablePath::create(StylePath::create(byteStream.release()));
+#endif
 }
 
 StylePath* AnimatablePath::path() const

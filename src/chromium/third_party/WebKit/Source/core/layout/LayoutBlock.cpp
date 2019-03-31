@@ -2138,6 +2138,10 @@ bool LayoutBlock::hasLineIfEmpty() const
 
 LayoutUnit LayoutBlock::lineHeight(bool firstLine, LineDirectionMode direction, LinePositionMode linePositionMode) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     // Inline blocks are replaced elements. Otherwise, just pass off to
     // the base class.  If we're being queried as though we're the root line
     // box, then the fact that we're an inline-block is irrelevant, and we behave
@@ -2147,6 +2151,7 @@ LayoutUnit LayoutBlock::lineHeight(bool firstLine, LineDirectionMode direction, 
 
     const ComputedStyle& style = styleRef(firstLine && document().styleEngine().usesFirstLineRules());
     return style.computedLineHeight();
+#endif
 }
 
 int LayoutBlock::beforeMarginInLineDirection(LineDirectionMode direction) const

@@ -122,6 +122,7 @@ PaintLayerPainter::PaintResult PaintLayerPainter::paintLayerContentsAndReflectio
     return result;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 class ClipPathHelper {
 public:
     ClipPathHelper(GraphicsContext& context, const PaintLayer& paintLayer, PaintLayerPaintingInfo& paintingInfo, LayoutRect& rootRelativeBounds, bool& rootRelativeBoundsComputed,
@@ -183,6 +184,7 @@ private:
     const PaintLayer& m_paintLayer;
     GraphicsContext& m_context;
 };
+#endif // BLINKIT_CRAWLER_ONLY
 
 static bool shouldCreateSubsequence(const PaintLayer& paintLayer, GraphicsContext& context, const PaintLayerPaintingInfo& paintingInfo, PaintLayerFlags paintFlags)
 {
@@ -250,6 +252,10 @@ static bool shouldRepaintSubsequence(PaintLayer& paintLayer, const PaintLayerPai
 
 PaintLayerPainter::PaintResult PaintLayerPainter::paintLayerContents(GraphicsContext& context, const PaintLayerPaintingInfo& paintingInfoArg, PaintLayerFlags paintFlags, FragmentPolicy fragmentPolicy)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     ASSERT(m_paintLayer.isSelfPaintingLayer() || m_paintLayer.hasSelfPaintingLayerDescendant());
     ASSERT(!(paintFlags & PaintLayerAppliedTransform));
 
@@ -415,6 +421,7 @@ PaintLayerPainter::PaintResult PaintLayerPainter::paintLayerContents(GraphicsCon
     if (subsequenceRecorder)
         m_paintLayer.setPreviousPaintResult(result);
     return result;
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 bool PaintLayerPainter::needsToClip(const PaintLayerPaintingInfo& localPaintingInfo, const ClipRect& clipRect)

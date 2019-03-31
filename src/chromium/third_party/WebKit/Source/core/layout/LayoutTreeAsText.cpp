@@ -488,6 +488,9 @@ static void writeTextRun(TextStream& ts, const LayoutText& o, const InlineTextBo
 
 void write(TextStream& ts, const LayoutObject& o, int indent, LayoutAsTextBehavior behavior)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (o.isSVGShape()) {
         write(ts, toLayoutSVGShape(o), indent);
         return;
@@ -557,6 +560,7 @@ void write(TextStream& ts, const LayoutObject& o, int indent, LayoutAsTextBehavi
             }
         }
     }
+#endif
 }
 
 enum LayerPaintPhase {

@@ -104,6 +104,9 @@ KeyframeEffect::~KeyframeEffect()
 
 void KeyframeEffect::attach(Animation* animation)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (m_target) {
         m_target->ensureElementAnimations().animations().add(animation);
         m_target->setNeedsAnimationStyleRecalc();
@@ -111,6 +114,7 @@ void KeyframeEffect::attach(Animation* animation)
             toSVGElement(m_target)->setWebAnimationsPending();
     }
     AnimationEffect::attach(animation);
+#endif
 }
 
 void KeyframeEffect::detach()
@@ -177,6 +181,9 @@ bool KeyframeEffect::hasIncompatibleStyle()
 
 void KeyframeEffect::applyEffects()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     ASSERT(isInEffect());
     ASSERT(animation());
     if (!m_target || !m_model)
@@ -209,10 +216,14 @@ void KeyframeEffect::applyEffects()
         if (RuntimeEnabledFeatures::webAnimationsSVGEnabled() && m_target->isSVGElement())
             toSVGElement(*m_target).setWebAnimationsPending();
     }
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 void KeyframeEffect::clearEffects()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     ASSERT(animation());
     ASSERT(m_sampledEffect);
 
@@ -223,6 +234,7 @@ void KeyframeEffect::clearEffects()
     if (RuntimeEnabledFeatures::webAnimationsSVGEnabled() && m_target->isSVGElement())
         toSVGElement(*m_target).clearWebAnimatedAttributes();
     invalidate();
+#endif
 }
 
 void KeyframeEffect::updateChildrenAndEffects() const

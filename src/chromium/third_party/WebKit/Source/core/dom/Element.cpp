@@ -191,7 +191,9 @@ Element::~Element()
     // resources. If the document is also dead, there is no need to remove
     // the element from the pending resources.
     if (hasPendingResources()) {
+#ifndef BLINKIT_CRAWLER_ONLY
         document().accessSVGExtensions().removeElementFromPendingResources(this);
+#endif
         ASSERT(!hasPendingResources());
     }
 #endif
@@ -400,10 +402,12 @@ void Element::synchronizeAllAttributes() const
         ASSERT(isStyledElement());
         synchronizeStyleAttributeInternal();
     }
+#ifndef BLINKIT_CRAWLER_ONLY // BKTODO: Disable m_animatedSVGAttributesAreDirty later.
     if (elementData()->m_animatedSVGAttributesAreDirty) {
         ASSERT(isSVGElement());
         toSVGElement(this)->synchronizeAnimatedSVGAttribute(anyQName());
     }
+#endif
 }
 
 inline void Element::synchronizeAttribute(const QualifiedName& name) const
@@ -415,12 +419,14 @@ inline void Element::synchronizeAttribute(const QualifiedName& name) const
         synchronizeStyleAttributeInternal();
         return;
     }
+#ifndef BLINKIT_CRAWLER_ONLY // BKTODO: Disable m_animatedSVGAttributesAreDirty later.
     if (UNLIKELY(elementData()->m_animatedSVGAttributesAreDirty)) {
         ASSERT(isSVGElement());
         // See comment in the AtomicString version of synchronizeAttribute()
         // also.
         toSVGElement(this)->synchronizeAnimatedSVGAttribute(name);
     }
+#endif
 }
 
 void Element::synchronizeAttribute(const AtomicString& localName) const
@@ -434,6 +440,7 @@ void Element::synchronizeAttribute(const AtomicString& localName) const
         synchronizeStyleAttributeInternal();
         return;
     }
+#ifndef BLINKIT_CRAWLER_ONLY // BKTODO: Disable m_animatedSVGAttributesAreDirty later.
     if (elementData()->m_animatedSVGAttributesAreDirty) {
         // We're not passing a namespace argument on purpose. SVGNames::*Attr are defined w/o namespaces as well.
 
@@ -448,6 +455,7 @@ void Element::synchronizeAttribute(const AtomicString& localName) const
         // true.
         toSVGElement(this)->synchronizeAnimatedSVGAttribute(QualifiedName(nullAtom, localName, nullAtom));
     }
+#endif
 }
 
 const AtomicString& Element::getAttribute(const QualifiedName& name) const
@@ -1492,8 +1500,12 @@ void Element::removedFrom(ContainerNode* insertionPoint)
         if (this == document().cssTarget())
             document().setCSSTarget(nullptr);
 
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(!hasPendingResources());
+#else
         if (hasPendingResources())
             document().accessSVGExtensions().removeElementFromPendingResources(this);
+#endif
 
         if (isUpgradedCustomElement())
             CustomElement::didDetach(this, insertionPoint->document());

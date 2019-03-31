@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PageAnimator.cpp
+// Description: PageAnimator Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -33,6 +44,9 @@ DEFINE_TRACE(PageAnimator)
 
 void PageAnimator::serviceScriptedAnimations(double monotonicAnimationStartTime)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     RefPtrWillBeRawPtr<PageAnimator> protector(this);
     TemporaryChange<bool> servicing(m_servicingAnimations, true);
     clock().updateTime(monotonicAnimationStartTime);
@@ -69,6 +83,7 @@ void PageAnimator::serviceScriptedAnimations(double monotonicAnimationStartTime)
     // clear a stack allocated vector.
     documents.clear();
 #endif
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 void PageAnimator::scheduleVisualUpdate(LocalFrame* frame)

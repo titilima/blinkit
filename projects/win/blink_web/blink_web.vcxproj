@@ -214,7 +214,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebInputEventConversion.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebKit.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebLabelElement.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebLocalFrameImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebMemoryPressureListener.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebMetaElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebNetworkStateNotifier.cpp" />

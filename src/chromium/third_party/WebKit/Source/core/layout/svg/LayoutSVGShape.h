@@ -74,7 +74,14 @@ public:
 
     virtual bool isShapeEmpty() const { return path().isEmpty(); }
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    bool hasNonScalingStroke(void) const {
+        assert(false); // BKTODO: Rollback this file later!
+        return false;
+    }
+#else
     bool hasNonScalingStroke() const { return style()->svgStyle().vectorEffect() == VE_NON_SCALING_STROKE; }
+#endif
     Path* nonScalingStrokePath(const Path*, const AffineTransform&) const;
     AffineTransform nonScalingStrokeTransform() const;
     AffineTransform localTransform() const final { return m_localTransform; }

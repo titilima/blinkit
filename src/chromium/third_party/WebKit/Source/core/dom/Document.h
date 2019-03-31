@@ -364,7 +364,9 @@ public:
     bool isPluginDocument() const { return m_documentClasses & PluginDocumentClass; }
     bool isMediaDocument() const { return m_documentClasses & MediaDocumentClass; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool hasSVGRootNode() const;
+#endif
 
     bool isFrameSet() const;
 
@@ -865,8 +867,10 @@ public:
 
     void removeAllEventListeners() final;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     const SVGDocumentExtensions* svgExtensions();
     SVGDocumentExtensions& accessSVGExtensions();
+#endif
 
     void initSecurityContext();
     void initSecurityContext(const DocumentInit&);
@@ -1305,7 +1309,9 @@ private:
     unsigned m_nodeListCounts[numNodeListInvalidationTypes];
 #endif
 
+#ifndef BLINKIT_CRAWLER_ONLY
     OwnPtrWillBeMember<SVGDocumentExtensions> m_svgExtensions;
+#endif
 
     Vector<AnnotatedRegionValue> m_annotatedRegions;
     bool m_hasAnnotatedRegions;
@@ -1383,7 +1389,9 @@ private:
     Timer<Document> m_didAssociateFormControlsTimer;
     WillBeHeapHashSet<RefPtrWillBeMember<Element>> m_associatedFormControls;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     WillBeHeapHashSet<RawPtrWillBeMember<SVGUseElement>> m_useElementsNeedingUpdate;
+#endif
     WillBeHeapHashSet<RawPtrWillBeMember<Element>> m_layerUpdateSVGFilterElements;
 
     bool m_hasViewportUnits;

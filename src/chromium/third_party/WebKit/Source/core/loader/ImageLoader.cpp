@@ -505,8 +505,10 @@ void ImageLoader::notifyFinished(Resource* resource)
 
     updateLayoutObject();
 
+#ifndef BLINKIT_CRAWLER_ONLY // BKTODO: Strip ImageLoader for crawler later.
     if (m_image && m_image->image() && m_image->image()->isSVGImage())
         toSVGImage(m_image->image())->updateUseCounters(element()->document());
+#endif
 
     if (!m_hasPendingLoadEvent)
         return;

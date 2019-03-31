@@ -197,9 +197,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IntersectionObserverEntry.cpp">
       <Filter>dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\LayoutTreeBuilder.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\LayoutTreeBuilderTraversal.cpp">
       <Filter>dom</Filter>
     </ClCompile>
@@ -230,9 +227,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NameNodeList.cpp">
       <Filter>dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Node.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NodeChildRemovalTracker.cpp">
       <Filter>dom</Filter>
     </ClCompile>
@@ -251,9 +245,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NodeListsNodeData.cpp">
       <Filter>dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NodeRareData.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NodeTraversal.cpp">
       <Filter>dom</Filter>
     </ClCompile>
@@ -270,9 +261,6 @@
       <Filter>dom</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\QualifiedName.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Range.cpp">
       <Filter>dom</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\RemoteSecurityContext.cpp">
@@ -389,9 +377,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementProcessingStack.cpp">
       <Filter>dom\custom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementRegistrationContext.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementRegistry.cpp">
       <Filter>dom\custom</Filter>
     </ClCompile>
@@ -450,9 +435,6 @@
       <Filter>events</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\ErrorEvent.cpp">
-      <Filter>events</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\Event.cpp">
       <Filter>events</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventDispatcher.cpp">
@@ -547,9 +529,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\WindowEventContext.cpp">
       <Filter>events</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\input\EventHandler.cpp">
-      <Filter>input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\input\InputDeviceCapabilities.cpp">
       <Filter>input</Filter>

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StyleBuilderConverter.cpp
+// Description: StyleBuilderConverter Class
+//      Author: Ziming Li
+//     Created: 2019-03-31
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -97,8 +108,12 @@ Color StyleBuilderConverter::convertColor(StyleResolverState& state, const CSSVa
 
 AtomicString StyleBuilderConverter::convertFragmentIdentifier(StyleResolverState& state, const CSSValue& value)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (value.isURIValue())
         return SVGURIReference::fragmentIdentifierFromIRIString(toCSSURIValue(value).value(), state.element()->treeScope());
+#endif
     return nullAtom;
 }
 
@@ -820,6 +835,10 @@ float StyleBuilderConverter::convertSpacing(StyleResolverState& state, const CSS
 
 PassRefPtr<SVGDashArray> StyleBuilderConverter::convertStrokeDasharray(StyleResolverState& state, const CSSValue& value)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     if (!value.isValueList())
         return SVGComputedStyle::initialStrokeDashArray();
 
@@ -832,6 +851,7 @@ PassRefPtr<SVGDashArray> StyleBuilderConverter::convertStrokeDasharray(StyleReso
     }
 
     return array.release();
+#endif
 }
 
 StyleColor StyleBuilderConverter::convertStyleColor(StyleResolverState& state, const CSSValue& value, bool forVisitedLink)

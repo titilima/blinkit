@@ -181,9 +181,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\MediaFeatureNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\MediaTypeNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\StyleBuilder.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\StyleBuilderFunctions.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\StylePropertyShorthand.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGElementFactory.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XLinkNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNames.cpp" />

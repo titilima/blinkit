@@ -170,9 +170,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebLabelElement.cpp">
       <Filter>web</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebLocalFrameImpl.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebMemoryPressureListener.cpp">
       <Filter>web</Filter>
     </ClCompile>

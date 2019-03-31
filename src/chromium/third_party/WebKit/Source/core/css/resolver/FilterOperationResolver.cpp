@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FilterOperationResolver.cpp
+// Description: FilterOperationResolver Class
+//      Author: Ziming Li
+//     Created: 2019-03-31
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -134,6 +145,9 @@ FilterOperations FilterOperationResolver::createFilterOperations(StyleResolverSt
         ASSERT(filterValue->length() <= 1);
 
         if (operationType == FilterOperation::REFERENCE) {
+#ifdef BLINKIT_CRAWLER_ONLY
+            assert(false); // BKTODO: Not reached!
+#else
             CSSSVGDocumentValue* svgDocumentValue = toCSSSVGDocumentValue(filterValue->item(0));
             KURL url = state.document().completeURL(svgDocumentValue->url());
 
@@ -145,6 +159,7 @@ FilterOperations FilterOperationResolver::createFilterOperations(StyleResolverSt
                     ReferenceFilterBuilder::setDocumentResourceReference(operation.get(), adoptPtr(new DocumentResourceReference(svgDocumentValue->cachedSVGDocument())));
             }
             operations.operations().append(operation);
+#endif
             continue;
         }
 

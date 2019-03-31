@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CustomElementRegistrationContext.cpp
+// Description: CustomElementRegistrationContext Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -75,8 +86,10 @@ PassRefPtrWillBeRawPtr<Element> CustomElementRegistrationContext::createCustomTa
 
     if (HTMLNames::xhtmlNamespaceURI == tagName.namespaceURI()) {
         element = HTMLElement::create(tagName, document);
+#ifndef BLINKIT_CRAWLER_ONLY
     } else if (SVGNames::svgNamespaceURI == tagName.namespaceURI()) {
         element = SVGUnknownElement::create(tagName, document);
+#endif
     } else {
         // XML elements are not custom elements, so return early.
         return Element::create(tagName, &document);

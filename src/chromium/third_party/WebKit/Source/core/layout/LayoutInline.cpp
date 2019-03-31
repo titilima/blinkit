@@ -207,6 +207,9 @@ void LayoutInline::styleDidChange(StyleDifference diff, const ComputedStyle* old
 
 void LayoutInline::updateAlwaysCreateLineBoxes(bool fullLayout)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // Once we have been tainted once, just assume it will happen again. This way effects like hover highlighting that change the
     // background color will only cause a layout on the first rollover.
     if (alwaysCreateLineBoxes())
@@ -236,6 +239,7 @@ void LayoutInline::updateAlwaysCreateLineBoxes(bool fullLayout)
             dirtyLineBoxes(false);
         setAlwaysCreateLineBoxes();
     }
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 LayoutRect LayoutInline::localCaretRect(InlineBox* inlineBox, int, LayoutUnit* extraWidthToEndOfLine)
@@ -1288,11 +1292,15 @@ InlineFlowBox* LayoutInline::createAndAppendInlineFlowBox()
 
 LayoutUnit LayoutInline::lineHeight(bool firstLine, LineDirectionMode /*direction*/, LinePositionMode /*linePositionMode*/) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (firstLine && document().styleEngine().usesFirstLineRules()) {
         const ComputedStyle* s = style(firstLine);
         if (s != style())
             return s->computedLineHeight();
     }
+#endif
 
     return style()->computedLineHeight();
 }

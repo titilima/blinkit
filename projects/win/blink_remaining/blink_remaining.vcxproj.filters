@@ -36,9 +36,6 @@
     <Filter Include="core\layout">
       <UniqueIdentifier>{30e6f21a-6c6f-4f7b-8f4e-4e87702bdc54}</UniqueIdentifier>
     </Filter>
-    <Filter Include="core\svg">
-      <UniqueIdentifier>{e8c72d16-ac1d-4003-82c9-6c460afd8c60}</UniqueIdentifier>
-    </Filter>
     <Filter Include="core\editing">
       <UniqueIdentifier>{f1387595-d8b5-4a98-9191-899a59690713}</UniqueIdentifier>
     </Filter>
@@ -59,6 +56,57 @@
     </Filter>
     <Filter Include="core\style">
       <UniqueIdentifier>{10e3d577-c2c0-40f1-ae8f-840622118930}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gen">
+      <UniqueIdentifier>{5093558c-0773-406f-8034-ce20ce1b217a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gen\core">
+      <UniqueIdentifier>{66b37476-f247-4cc7-bd42-afd175581c34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\paint">
+      <UniqueIdentifier>{ffd94349-82ef-4cb8-a726-66b3761d9562}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\html\shadow">
+      <UniqueIdentifier>{3ca424dc-e0a6-4f0d-bc52-4b1f72d01987}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\html\forms">
+      <UniqueIdentifier>{f122bd80-9c15-4c85-a01b-963bda19cda2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\loader">
+      <UniqueIdentifier>{759b98b4-aed6-43e3-91d0-f87c721f1602}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\xml">
+      <UniqueIdentifier>{5f1c5b50-e85b-4565-91e9-897ed047acc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\xml\parser">
+      <UniqueIdentifier>{86a19481-74e6-48f5-bed2-28e4bf0cddbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\input">
+      <UniqueIdentifier>{a8e9d757-57ca-404d-8fed-179e3bf90d5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\events">
+      <UniqueIdentifier>{bcf949f8-c482-41f5-9903-2e8c511a6409}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\dom\custom">
+      <UniqueIdentifier>{4ac63dbb-ca7e-4a9c-94ce-bbddc99616e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\fetch">
+      <UniqueIdentifier>{78a3dd7f-7056-49ff-98ab-61a347e9cbb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\css\parser">
+      <UniqueIdentifier>{6dec1368-312e-46b4-a138-6fc3cd1c4e70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\animation\animatable">
+      <UniqueIdentifier>{4cfc5738-74b0-474b-a570-b5c23be83c27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\layout\line">
+      <UniqueIdentifier>{f5b18035-f307-45f3-98c4-aa83562481a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\layout\svg">
+      <UniqueIdentifier>{7c5e8e1c-5808-433e-aa33-90e2dded3775}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\layout\svg\line">
+      <UniqueIdentifier>{601ce589-5d6a-4fa5-871e-8fe45b038762}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -109,12 +157,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutObject.cpp">
       <Filter>core\layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\svg\SVGElement.cpp">
-      <Filter>core\svg</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\svg\SVGElementRareData.cpp">
-      <Filter>core\svg</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalDOMWindow.cpp">
       <Filter>core\frame</Filter>
@@ -187,6 +229,231 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\shadow\ElementShadow.cpp">
       <Filter>core\dom\shadow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGElementFactory.cpp">
+      <Filter>gen\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\StyleBuilderFunctions.cpp">
+      <Filter>gen\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutMultiColumnSpannerPlaceholder.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutRubyRun.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutListMarker.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTableCell.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTextControlSingleLine.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutMenuList.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTextControlMultiLine.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutInline.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTable.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTableSection.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTableRow.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\TextAutosizer.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutScrollbar.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutBlock.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTextCombine.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayerScrollableArea.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayerReflectionInfo.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\AnimatedStyleBuilder.cpp">
+      <Filter>core\css\resolver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\StyleBuilderCustom.cpp">
+      <Filter>core\css\resolver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageFallbackHelper.cpp">
+      <Filter>core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\TextControlInnerElements.cpp">
+      <Filter>core\html\shadow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\ImageInputType.cpp">
+      <Filter>core\html\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\ElementAnimations.cpp">
+      <Filter>core\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOptionElement.cpp">
+      <Filter>core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOptGroupElement.cpp">
+      <Filter>core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageElement.cpp">
+      <Filter>core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\InputTypeView.cpp">
+      <Filter>core\html\forms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebLocalFrameImpl.cpp">
+      <Filter>web</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Node.cpp">
+      <Filter>core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\LayoutTreeBuilder.cpp">
+      <Filter>core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NodeRareData.cpp">
+      <Filter>core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FrameLoader.cpp">
+      <Filter>core\loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\XMLDocumentParser.cpp">
+      <Filter>core\xml\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\input\EventHandler.cpp">
+      <Filter>core\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalFrame.cpp">
+      <Filter>core\frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutView.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Range.cpp">
+      <Filter>core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\Event.cpp">
+      <Filter>core\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementRegistrationContext.cpp">
+      <Filter>core\dom\custom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\PageAnimator.cpp">
+      <Filter>core\page</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\ImageLoader.cpp">
+      <Filter>core\loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayer.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FilterEffectBuilder.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\ImageResource.cpp">
+      <Filter>core\fetch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\KeyframeEffect.cpp">
+      <Filter>core\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayerFilterInfo.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\ComputedStyleCSSValueMapping.cpp">
+      <Filter>core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGInlineTextBoxPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSPropertyParser.cpp">
+      <Filter>core\css\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSPathValue.cpp">
+      <Filter>core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSCrossfadeValue.cpp">
+      <Filter>core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutImageResource.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleFetchedImage.cpp">
+      <Filter>core\style</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleFetchedImageSet.cpp">
+      <Filter>core\style</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSCursorImageValue.cpp">
+      <Filter>core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\animatable\AnimatablePath.cpp">
+      <Filter>core\animation\animatable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\AnimationInputHelpers.cpp">
+      <Filter>core\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGClipPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGPaintContext.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\ElementStyleResources.cpp">
+      <Filter>core\css\resolver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayerPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleRareNonInheritedData.cpp">
+      <Filter>core\style</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTreeAsText.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\PaintInvalidationState.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ReplacedPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutImage.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\PathStyleMotionPath.cpp">
+      <Filter>core\style</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\line\LineBreaker.cpp">
+      <Filter>core\layout\line</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StylePath.cpp">
+      <Filter>core\style</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\svg\line\SVGRootInlineBox.cpp">
+      <Filter>core\layout\svg\line</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutBlockFlowLine.cpp">
+      <Filter>core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\StyleBuilderConverter.cpp">
+      <Filter>core\css\resolver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\FilterOperationResolver.cpp">
+      <Filter>core\css\resolver</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

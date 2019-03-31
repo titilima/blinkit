@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ComputedStyleCSSValueMapping.cpp
+// Description: Computed Style CSS Value Mapping Helpers
+//      Author: Ziming Li
+//     Created: 2019-03-31
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004 Zack Rusin <zack@kde.org>
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple Inc. All rights reserved.
@@ -1162,6 +1173,10 @@ static PassRefPtrWillBeRawPtr<CSSValue> strokeDashArrayToCSSValueList(const SVGD
 
 static PassRefPtrWillBeRawPtr<CSSValue> paintOrderToCSSValueList(const SVGComputedStyle& svgStyle)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     RefPtrWillBeRawPtr<CSSValueList> list = CSSValueList::createSpaceSeparated();
     for (int i = 0; i < 3; i++) {
         EPaintOrderType paintOrderType = svgStyle.paintOrderType(i);
@@ -1179,6 +1194,7 @@ static PassRefPtrWillBeRawPtr<CSSValue> paintOrderToCSSValueList(const SVGComput
     }
 
     return list.release();
+#endif
 }
 
 static PassRefPtrWillBeRawPtr<CSSValue> adjustSVGPaintForCurrentColor(SVGPaintType paintType, const String& url, const Color& color, const Color& currentColor)
@@ -1377,6 +1393,10 @@ const HashMap<AtomicString, RefPtr<CSSVariableData>>* ComputedStyleCSSValueMappi
 
 PassRefPtrWillBeRawPtr<CSSValue> ComputedStyleCSSValueMapping::get(CSSPropertyID propertyID, const ComputedStyle& style, const LayoutObject* layoutObject, Node* styledNode, bool allowVisitedStyle)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     const SVGComputedStyle& svgStyle = style.svgStyle();
     propertyID = CSSProperty::resolveDirectionAwareProperty(propertyID, style.direction(), style.writingMode());
     switch (propertyID) {
@@ -2743,6 +2763,7 @@ PassRefPtrWillBeRawPtr<CSSValue> ComputedStyleCSSValueMapping::get(CSSPropertyID
     }
     ASSERT_NOT_REACHED();
     return nullptr;
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 }

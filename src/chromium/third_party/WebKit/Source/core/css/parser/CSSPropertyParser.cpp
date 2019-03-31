@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CSSPropertyParser.cpp
+// Description: CSSPropertyParser Class
+//      Author: Ziming Li
+//     Created: 2019-03-31
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -1922,6 +1933,10 @@ static PassRefPtrWillBeRawPtr<CSSValue> consumeContain(CSSParserTokenRange& rang
 
 static PassRefPtrWillBeRawPtr<CSSValue> consumePath(CSSParserTokenRange& range)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     // FIXME: Add support for <url>, <basic-shape>, <geometry-box>.
     if (range.peek().functionId() != CSSValuePath)
         return nullptr;
@@ -1940,6 +1955,7 @@ static PassRefPtrWillBeRawPtr<CSSValue> consumePath(CSSParserTokenRange& range)
 
     range = functionRange;
     return CSSPathValue::create(byteStream.release());
+#endif
 }
 
 static PassRefPtrWillBeRawPtr<CSSValue> consumePathOrNone(CSSParserTokenRange& range)

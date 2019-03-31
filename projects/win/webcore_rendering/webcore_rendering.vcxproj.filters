@@ -71,13 +71,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutAnalyzer.cpp">
       <Filter>layout</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutBlock.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutBlockFlow.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutBlockFlowLine.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutBox.cpp">
@@ -128,28 +122,13 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutIFrame.cpp">
       <Filter>layout</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutImage.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutImageResource.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutImageResourceStyleImage.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutInline.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutListBox.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutListItem.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutListMarker.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutMenuList.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutMeter.cpp">
@@ -159,9 +138,6 @@
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutMultiColumnSet.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutMultiColumnSpannerPlaceholder.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutObjectChildList.cpp">
@@ -191,13 +167,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutRubyBase.cpp">
       <Filter>layout</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutRubyRun.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutRubyText.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutScrollbar.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutScrollbarPart.cpp">
@@ -221,37 +191,16 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutState.cpp">
       <Filter>layout</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTable.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTableCaption.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTableCell.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTableCol.cpp">
       <Filter>layout</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTableRow.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTableSection.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutText.cpp">
       <Filter>layout</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTextCombine.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTextControl.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTextControlMultiLine.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTextControlSingleLine.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTextFragment.cpp">
@@ -272,12 +221,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutThemeWin.cpp">
       <Filter>layout</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutTreeAsText.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutView.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutWordBreak.cpp">
       <Filter>layout</Filter>
     </ClCompile>
@@ -288,9 +231,6 @@
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\OrderIterator.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\PaintInvalidationState.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\PointerEventsHitRules.cpp">
@@ -306,9 +246,6 @@
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\TableLayoutAlgorithmFixed.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\TextAutosizer.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\TextRunConstructor.cpp">
@@ -365,9 +302,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\line\LineBoxList.cpp">
       <Filter>layout\line</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\line\LineBreaker.cpp">
-      <Filter>layout\line</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\line\LineWidth.cpp">
       <Filter>layout\line</Filter>
     </ClCompile>
@@ -419,9 +353,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\NinePieceImage.cpp">
       <Filter>style</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\PathStyleMotionPath.cpp">
-      <Filter>style</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\QuotesData.cpp">
       <Filter>style</Filter>
     </ClCompile>
@@ -438,12 +369,6 @@
       <Filter>style</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleDeprecatedFlexibleBoxData.cpp">
-      <Filter>style</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleFetchedImage.cpp">
-      <Filter>style</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleFetchedImageSet.cpp">
       <Filter>style</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleFilterData.cpp">
@@ -470,13 +395,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleMultiColData.cpp">
       <Filter>style</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StylePath.cpp">
-      <Filter>style</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleRareInheritedData.cpp">
-      <Filter>style</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleRareNonInheritedData.cpp">
       <Filter>style</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleScrollSnapData.cpp">
@@ -501,9 +420,6 @@
       <Filter>layout\svg\line</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\svg\line\SVGInlineTextBox.cpp">
-      <Filter>layout\svg\line</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\svg\line\SVGRootInlineBox.cpp">
       <Filter>layout\svg\line</Filter>
     </ClCompile>
   </ItemGroup>

@@ -143,12 +143,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLIFrameElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageFallbackHelper.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageLoader.cpp">
       <Filter>html</Filter>
     </ClCompile>
@@ -198,12 +192,6 @@
       <Filter>html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOListElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOptGroupElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOptionElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOptionsCollection.cpp">
@@ -404,13 +392,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\HiddenInputType.cpp">
       <Filter>html\forms</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\ImageInputType.cpp">
-      <Filter>html\forms</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\InputType.cpp">
-      <Filter>html\forms</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\InputTypeView.cpp">
       <Filter>html\forms</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\MonthInputType.cpp">
@@ -606,9 +588,6 @@
       <Filter>html\shadow</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\SpinButtonElement.cpp">
-      <Filter>html\shadow</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\TextControlInnerElements.cpp">
       <Filter>html\shadow</Filter>
     </ClCompile>
   </ItemGroup>

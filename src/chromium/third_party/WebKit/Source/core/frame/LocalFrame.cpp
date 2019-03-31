@@ -572,12 +572,16 @@ void LocalFrame::setPageAndTextZoomFactors(float pageZoomFactor, float textZoomF
     if (!document)
         return;
 
+#ifdef BLINKIT_CRAWLER_ONLY // BKTODO: Strip zoom factor member variables later.
+    assert(!document->isSVGDocument());
+#else
     // Respect SVGs zoomAndPan="disabled" property in standalone SVG documents.
     // FIXME: How to handle compound documents + zoomAndPan="disabled"? Needs SVG WG clarification.
     if (document->isSVGDocument()) {
         if (!document->accessSVGExtensions().zoomAndPanEnabled())
             return;
     }
+#endif
 
     if (m_pageZoomFactor != pageZoomFactor) {
         if (FrameView* view = this->view()) {

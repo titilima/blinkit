@@ -340,6 +340,10 @@ static bool isSVGText(Text* text)
 
 LayoutText* Text::createTextLayoutObject(const ComputedStyle& style)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     if (isSVGText(this))
         return new LayoutSVGInlineText(this, dataImpl());
 
@@ -347,6 +351,7 @@ LayoutText* Text::createTextLayoutObject(const ComputedStyle& style)
         return new LayoutTextCombine(this, dataImpl());
 
     return new LayoutText(this, dataImpl());
+#endif
 }
 
 void Text::attach(const AttachContext& context)

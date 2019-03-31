@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ComputedStyle.h
+// Description: ComputedStyle Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -160,7 +171,9 @@ protected:
     // list of associated pseudo styles
     OwnPtr<PseudoStyleCache> m_cachedPseudoStyles;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     DataRef<SVGComputedStyle> m_svgStyle;
+#endif
 
 // !START SYNC!: Keep this in sync with the copy constructor in ComputedStyle.cpp and implicitlyInherited() in StyleResolver.cpp
 
@@ -1479,6 +1492,7 @@ public:
     bool requiresAcceleratedCompositingForExternalReasons(bool b) { return rareNonInheritedData->m_requiresAcceleratedCompositingForExternalReasons; }
     void setRequiresAcceleratedCompositingForExternalReasons(bool b) { SET_VAR(rareNonInheritedData, m_requiresAcceleratedCompositingForExternalReasons, b); }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     const SVGComputedStyle& svgStyle() const { return *m_svgStyle.get(); }
     SVGComputedStyle& accessSVGStyle() { return *m_svgStyle.access(); }
 
@@ -1527,6 +1541,7 @@ public:
         svgStyle.setBaselineShift(BS_LENGTH);
         svgStyle.setBaselineShiftValue(value);
     }
+#endif // BLINKIT_CRAWLER_ONLY
 
     void setShapeOutside(PassRefPtrWillBeRawPtr<ShapeValue> value)
     {
@@ -1886,9 +1901,11 @@ private:
     StyleColor decorationColorIncludingFallback(bool visitedLink) const;
     Color colorIncludingFallback(int colorProperty, bool visitedLink) const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     Color stopColor() const { return svgStyle().stopColor(); }
     Color floodColor() const { return svgStyle().floodColor(); }
     Color lightingColor() const { return svgStyle().lightingColor(); }
+#endif
 
     void appendContent(PassOwnPtrWillBeRawPtr<ContentData>);
     void addAppliedTextDecoration(const AppliedTextDecoration&);

@@ -244,6 +244,9 @@ bool LayoutView::doingFullPaintInvalidation() const
 
 void LayoutView::layout()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!document().paginated())
         setPageLogicalHeight(0);
 
@@ -304,6 +307,7 @@ void LayoutView::layout()
     checkLayoutState();
 #endif
     clearNeedsLayout();
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 LayoutRect LayoutView::visualOverflowRect() const

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StyleBuilderCustom.cpp
+// Description: StyleBuilderCustom Class
+//      Author: Ziming Li
+//     Created: 2019-03-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
@@ -838,16 +849,23 @@ void StyleBuilderFunctions::applyValueCSSPropertyVariable(StyleResolverState& st
 
 void StyleBuilderFunctions::applyInheritCSSPropertyBaselineShift(StyleResolverState& state)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     const SVGComputedStyle& parentSvgStyle = state.parentStyle()->svgStyle();
     EBaselineShift baselineShift = parentSvgStyle.baselineShift();
     SVGComputedStyle& svgStyle = state.style()->accessSVGStyle();
     svgStyle.setBaselineShift(baselineShift);
     if (baselineShift == BS_LENGTH)
         svgStyle.setBaselineShiftValue(parentSvgStyle.baselineShiftValue());
+#endif
 }
 
 void StyleBuilderFunctions::applyValueCSSPropertyBaselineShift(StyleResolverState& state, CSSValue* value)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     SVGComputedStyle& svgStyle = state.style()->accessSVGStyle();
     CSSPrimitiveValue* primitiveValue = toCSSPrimitiveValue(value);
     if (!primitiveValue->isValueID()) {
@@ -869,6 +887,7 @@ void StyleBuilderFunctions::applyValueCSSPropertyBaselineShift(StyleResolverStat
     default:
         ASSERT_NOT_REACHED();
     }
+#endif
 }
 
 } // namespace blink
