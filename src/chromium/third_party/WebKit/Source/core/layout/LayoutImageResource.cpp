@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: LayoutImageResource.cpp
-// Description: LayoutImageResource Class
-//      Author: Ziming Li
-//     Created: 2019-03-31
-// -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 1999 Lars Knoll <knoll@kde.org>
  * Copyright (C) 1999 Antti Koivisto <koivisto@kde.org>
@@ -112,10 +101,6 @@ LayoutSize LayoutImageResource::imageSize(float multiplier) const
 
 PassRefPtr<Image> LayoutImageResource::image(const IntSize& containerSize, float zoom) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     if (!m_cachedImage)
         return Image::nullImage();
 
@@ -130,7 +115,6 @@ PassRefPtr<Image> LayoutImageResource::image(const IntSize& containerSize, float
         url = node->document().completeURL(urlString);
     }
     return SVGImageForContainer::create(svgImage, containerSize, zoom, url);
-#endif
 }
 
 bool LayoutImageResource::maybeAnimated() const

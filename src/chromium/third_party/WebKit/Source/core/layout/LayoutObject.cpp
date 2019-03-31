@@ -1818,10 +1818,8 @@ StyleDifference LayoutObject::adjustStyleDifference(StyleDifference diff) const
             || (isText() && !isBR() && toLayoutText(this)->hasTextBoxes())
             // Caret is painted in text color.
             || (isLayoutBlock() && toLayoutBlock(this)->hasCaret())
-#ifndef BLINKIT_CRAWLER_ONLY
             || (isSVG() && style()->svgStyle().isFillColorCurrentColor())
             || (isSVG() && style()->svgStyle().isStrokeColorCurrentColor())
-#endif
             || isListMarker())
             diff.setNeedsPaintInvalidationObject();
     }
@@ -2866,32 +2864,22 @@ static PassRefPtr<ComputedStyle> firstLineStyleForCachedUncachedType(StyleCacheS
 
 PassRefPtr<ComputedStyle> LayoutObject::uncachedFirstLineStyle(ComputedStyle* style) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     if (!document().styleEngine().usesFirstLineRules())
         return nullptr;
 
     ASSERT(!isText());
 
     return firstLineStyleForCachedUncachedType(Uncached, this, style);
-#endif
 }
 
 ComputedStyle* LayoutObject::cachedFirstLineStyle() const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     ASSERT(document().styleEngine().usesFirstLineRules());
 
     if (RefPtr<ComputedStyle> style = firstLineStyleForCachedUncachedType(Cached, isText() ? parent() : this, m_style.get()))
         return style.get();
 
     return m_style.get();
-#endif
 }
 
 ComputedStyle* LayoutObject::getCachedPseudoStyle(PseudoId pseudo, const ComputedStyle* parentStyle) const
@@ -2926,10 +2914,6 @@ PassRefPtr<ComputedStyle> LayoutObject::getUncachedPseudoStyle(const PseudoStyle
     if (!element)
         return nullptr;
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     if (pseudoStyleRequest.pseudoId == FIRST_LINE_INHERITED) {
         RefPtr<ComputedStyle> result = document().ensureStyleResolver().styleForElement(element, parentStyle, DisallowStyleSharing);
         result->setStyleType(FIRST_LINE_INHERITED);
@@ -2937,7 +2921,6 @@ PassRefPtr<ComputedStyle> LayoutObject::getUncachedPseudoStyle(const PseudoStyle
     }
 
     return document().ensureStyleResolver().pseudoStyleForElement(element, pseudoStyleRequest, parentStyle);
-#endif
 }
 
 PassRefPtr<ComputedStyle> LayoutObject::getUncachedPseudoStyleFromParentOrShadowHost() const
