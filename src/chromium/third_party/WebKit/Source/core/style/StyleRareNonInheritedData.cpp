@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: StyleRareNonInheritedData.cpp
-// Description: StyleRareNonInheritedData Class
-//      Author: Ziming Li
-//     Created: 2019-03-31
-// -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 1999 Antti Koivisto (koivisto@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008 Apple Inc. All rights reserved.
@@ -224,9 +213,6 @@ StyleRareNonInheritedData::StyleRareNonInheritedData(const StyleRareNonInherited
 
 StyleRareNonInheritedData::~StyleRareNonInheritedData()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
 #if !ENABLE(OILPAN)
     const FilterOperations& filterOperations = m_filter->m_operations;
     for (unsigned i = 0; i < filterOperations.size(); ++i)
@@ -236,7 +222,6 @@ StyleRareNonInheritedData::~StyleRareNonInheritedData()
     for (unsigned i = 0; i < backdropFilterOperations.size(); ++i)
         ReferenceFilterBuilder::clearDocumentResourceReference(backdropFilterOperations.at(i));
 #endif
-#endif // BLINKIT_CRAWLER_ONLY
 }
 
 bool StyleRareNonInheritedData::operator==(const StyleRareNonInheritedData& o) const

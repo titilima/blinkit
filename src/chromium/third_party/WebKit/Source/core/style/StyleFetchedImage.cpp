@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: StyleFetchedImage.cpp
-// Description: StyleFetchedImage Class
-//      Author: Ziming Li
-//     Created: 2019-03-31
-// -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -138,27 +127,18 @@ void StyleFetchedImage::removeClient(LayoutObject* layoutObject)
 
 void StyleFetchedImage::notifyFinished(Resource* resource)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (m_document && m_image && m_image->image() && m_image->image()->isSVGImage())
         toSVGImage(m_image->image())->updateUseCounters(*m_document);
     // Oilpan: do not prolong the Document's lifetime.
     m_document.clear();
-#endif
 }
 
 PassRefPtr<Image> StyleFetchedImage::image(const LayoutObject*, const IntSize& containerSize, float zoom) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     if (!m_image->image()->isSVGImage())
         return m_image->image();
 
     return SVGImageForContainer::create(toSVGImage(m_image->image()), containerSize, zoom, m_url);
-#endif
 }
 
 bool StyleFetchedImage::knownToBeOpaque(const LayoutObject* layoutObject) const
