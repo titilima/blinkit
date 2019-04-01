@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: HTMLLinkElement.cpp
-// Description: HTMLLinkElement Class
-//      Author: Ziming Li
-//     Created: 2019-03-30
-// -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -176,12 +165,8 @@ HTMLLinkElement::~HTMLLinkElement()
 #if !ENABLE(OILPAN)
     m_sizes->setObserver(nullptr);
     m_link.clear();
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (inDocument())
         document().styleEngine().removeStyleSheetCandidateNode(this);
-#endif
     linkLoadEventSender().cancelEvent(this);
 #endif
 }
@@ -298,11 +283,7 @@ Node::InsertionNotificationRequest HTMLLinkElement::insertedInto(ContainerNode* 
         return InsertionDone;
     }
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     document().styleEngine().addStyleSheetCandidateNode(this, m_createdByParser);
-#endif
 
     process();
 
@@ -324,11 +305,7 @@ void HTMLLinkElement::removedFrom(ContainerNode* insertionPoint)
         ASSERT(!linkStyle() || !linkStyle()->hasSheet());
         return;
     }
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     document().styleEngine().removeStyleSheetCandidateNode(this);
-#endif
 
     RefPtrWillBeRawPtr<StyleSheet> removedSheet = sheet();
 
@@ -636,18 +613,11 @@ void LinkStyle::addPendingSheet(PendingSheetType type)
 
     if (m_pendingSheetType == NonBlocking)
         return;
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     m_owner->document().styleEngine().addPendingSheet();
-#endif
 }
 
 void LinkStyle::removePendingSheet()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     PendingSheetType type = m_pendingSheetType;
     m_pendingSheetType = None;
 
@@ -664,7 +634,6 @@ void LinkStyle::removePendingSheet()
     }
 
     m_owner->document().styleEngine().removePendingSheet(m_owner);
-#endif
 }
 
 void LinkStyle::setDisabledState(bool disabled)
@@ -721,9 +690,6 @@ void LinkStyle::setCrossOriginStylesheetStatus(CSSStyleSheet* sheet)
 
 void LinkStyle::process()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     ASSERT(m_owner->shouldProcessStyle());
     String type = m_owner->typeValue().lower();
     String as = m_owner->asValue().lower();
@@ -793,7 +759,6 @@ void LinkStyle::process()
         clearSheet();
         document().removedStyleSheet(removedSheet.get());
     }
-#endif
 }
 
 void LinkStyle::setSheetTitle(const String& title)

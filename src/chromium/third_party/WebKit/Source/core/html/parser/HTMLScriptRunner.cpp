@@ -117,22 +117,14 @@ inline PassRefPtrWillBeRawPtr<Event> createScriptLoadEvent()
 
 bool HTMLScriptRunner::isPendingScriptReady(const PendingScript& script)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-    return true;
-#else
     m_hasScriptsWaitingForResources = !m_document->isScriptExecutionReady();
     if (m_hasScriptsWaitingForResources)
         return false;
     return script.isReady();
-#endif
 }
 
 void HTMLScriptRunner::executeParsingBlockingScript()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     ASSERT(m_document);
     ASSERT(!isExecutingScript());
     ASSERT(m_document->isScriptExecutionReady());
@@ -140,7 +132,6 @@ void HTMLScriptRunner::executeParsingBlockingScript()
 
     InsertionPointRecord insertionPointRecord(m_host->inputStream());
     executePendingScriptAndDispatchEvent(m_parserBlockingScript, PendingScript::ParsingBlocking);
-#endif
 }
 
 void HTMLScriptRunner::executePendingScriptAndDispatchEvent(PendingScript& pendingScript, PendingScript::Type pendingScriptType)
@@ -267,9 +258,6 @@ void HTMLScriptRunner::executeScriptsWaitingForLoad(Resource* resource)
 
 void HTMLScriptRunner::executeScriptsWaitingForResources()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     ASSERT(m_document);
     // Callers should check hasScriptsWaitingForResources() before calling
     // to prevent parser or script re-entry during </style> parsing.
@@ -277,7 +265,6 @@ void HTMLScriptRunner::executeScriptsWaitingForResources()
     ASSERT(!isExecutingScript());
     ASSERT(m_document->isScriptExecutionReady());
     executeParsingBlockingScripts();
-#endif
 }
 
 bool HTMLScriptRunner::executeScriptsWaitingForParsing()

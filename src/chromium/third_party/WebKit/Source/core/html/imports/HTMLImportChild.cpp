@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: HTMLImportChild.cpp
-// Description: HTMLImportChild Class
-//      Author: Ziming Li
-//     Created: 2019-03-30
-// -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -100,10 +89,8 @@ void HTMLImportChild::didFinish()
 void HTMLImportChild::didFinishLoading()
 {
     stateWillChange();
-#ifndef BLINKIT_CRAWLER_ONLY
     if (document() && document()->styleSheets()->length() > 0)
         UseCounter::count(root()->document(), UseCounter::HTMLImportsHasStyleSheets);
-#endif
     CustomElement::didFinishLoadingImport(*(root()->document()));
 }
 
