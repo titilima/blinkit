@@ -189,7 +189,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\FileInputType.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\FormController.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\HiddenInputType.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\ImageInputType.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\InputType.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\InputTypeView.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\MonthInputType.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\NumberInputType.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\PasswordInputType.cpp" />
@@ -240,12 +242,15 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLHRElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLHtmlElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLIFrameElement.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageElement.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageFallbackHelper.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageLoader.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLInputElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLKeygenElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLLabelElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLLegendElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLLIElement.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLLinkElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMapElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMarqueeElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLMediaSource.cpp" />
@@ -257,6 +262,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLNoEmbedElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLNoScriptElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOListElement.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOptGroupElement.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOptionElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOptionsCollection.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLOutputElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLParagraphElement.cpp" />
@@ -291,6 +298,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLUnknownElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLWBRElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImport.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportChild.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportLoader.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportsController.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportStateResolver.cpp" />
@@ -308,6 +316,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\CompactHTMLToken.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\CSSPreloadScanner.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLConstructionSite.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLDocumentParser.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLElementStack.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLEntityParser.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLEntitySearch.cpp" />
@@ -319,6 +328,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLParserThread.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLPreloadScanner.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLResourcePreloader.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLScriptRunner.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLSourceTracker.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLSrcsetParser.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLTokenizer.cpp" />
@@ -347,6 +357,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\ShadowElementNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\SliderThumbElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\SpinButtonElement.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\TextControlInnerElements.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\TimeRanges.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\ValidityState.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\WindowNameCollection.cpp" />

@@ -86,9 +86,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\StylePropertyShorthand.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\StyleBuilder.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLEntityTable.cpp">
       <Filter>core</Filter>
     </ClCompile>
