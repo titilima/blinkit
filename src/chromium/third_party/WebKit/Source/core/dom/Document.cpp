@@ -325,10 +325,15 @@ static bool shouldInheritSecurityOriginFromOwner(const KURL& url)
 
 static Widget* widgetForElement(const Element& focusedElement)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     LayoutObject* layoutObject = focusedElement.layoutObject();
     if (!layoutObject || !layoutObject->isLayoutPart())
         return 0;
     return toLayoutPart(layoutObject)->widget();
+#endif
 }
 
 static bool acceptsEditingFocus(const Element& element)
@@ -428,7 +433,9 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_sawElementsInKnownNamespaces(false)
     , m_isSrcdocDocument(false)
     , m_isMobileDocument(false)
+#ifndef BLINKIT_CRAWLER_ONLY
     , m_layoutView(0)
+#endif
 #if !ENABLE(OILPAN)
     , m_weakFactory(this)
 #endif
@@ -502,7 +509,9 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
 
 Document::~Document()
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(!layoutView());
+#endif
     ASSERT(!parentTreeScope());
     // If a top document with a cache, verify that it was comprehensively
     // cleared during detach.
@@ -1178,21 +1187,35 @@ AtomicString Document::contentType() const
 
 Element* Document::elementFromPoint(int x, int y) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // Not reached!
+    return nullptr;
+#else
     if (!layoutView())
         return 0;
 
     return TreeScope::elementFromPoint(x, y);
+#endif
 }
 
 WillBeHeapVector<RawPtrWillBeMember<Element>> Document::elementsFromPoint(int x, int y) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // Not reached!
+    return WillBeHeapVector<RawPtrWillBeMember<Element>>();
+#else
     if (!layoutView())
         return WillBeHeapVector<RawPtrWillBeMember<Element>>();
     return TreeScope::elementsFromPoint(x, y);
+#endif
 }
 
 PassRefPtrWillBeRawPtr<Range> Document::caretRangeFromPoint(int x, int y)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // Not reached!
+    return nullptr;
+#else
     if (!layoutView())
         return nullptr;
 
@@ -1203,6 +1226,7 @@ PassRefPtrWillBeRawPtr<Range> Document::caretRangeFromPoint(int x, int y)
 
     Position rangeCompliantPosition = positionWithAffinity.position().parentAnchoredEquivalent();
     return Range::createAdjustedToTreeScope(*this, rangeCompliantPosition);
+#endif
 }
 
 Element* Document::scrollingElement()
@@ -1211,8 +1235,12 @@ Element* Document::scrollingElement()
         if (inQuirksMode()) {
             updateLayoutTreeIfNeeded();
             HTMLBodyElement* body = firstBodyElement();
+#ifdef BLINKIT_CRAWLER_ONLY
+            assert(false); // BKTODO: Not reached!
+#else
             if (body && body->layoutObject() && body->layoutObject()->hasOverflowClip())
                 return nullptr;
+#endif
 
             return body;
         }
@@ -1469,6 +1497,9 @@ PassRefPtrWillBeRawPtr<TreeWalker> Document::createTreeWalker(Node* root, unsign
 
 bool Document::needsLayoutTreeUpdate() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // Not reached!
+#else
     if (!isActive() || !view())
         return false;
     if (needsFullLayoutTreeUpdate())
@@ -1479,6 +1510,7 @@ bool Document::needsLayoutTreeUpdate() const
         return true;
     if (layoutView()->wasNotifiedOfSubtreeChange())
         return true;
+#endif
     return false;
 }
 
@@ -1730,6 +1762,9 @@ static void assertLayoutTreeUpdated(Node& root)
 
 void Document::updateLayoutTree(StyleRecalcChange change)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // Not reached!
+#else
     ASSERT(isMainThread());
 
     ScriptForbiddenScope forbidScript;
@@ -1813,6 +1848,7 @@ void Document::updateLayoutTree(StyleRecalcChange change)
 #if ENABLE(ASSERT)
     assertLayoutTreeUpdated(*this);
 #endif
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 void Document::updateStyle(StyleRecalcChange change)
@@ -1893,6 +1929,9 @@ void Document::updateStyle(StyleRecalcChange change)
 
 void Document::notifyLayoutTreeOfSubtreeChanges()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!layoutView()->wasNotifiedOfSubtreeChange())
         return;
 
@@ -1902,6 +1941,7 @@ void Document::notifyLayoutTreeOfSubtreeChanges()
     ASSERT(!layoutView()->wasNotifiedOfSubtreeChange());
 
     m_lifecycle.advanceTo(DocumentLifecycle::LayoutSubtreeChangeClean);
+#endif
 }
 
 void Document::updateLayoutTreeForNodeIfNeeded(Node* node)
@@ -2202,14 +2242,14 @@ void Document::attach(const AttachContext& context)
 {
     ASSERT(m_lifecycle.state() == DocumentLifecycle::Inactive);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     m_layoutView = new LayoutView(this);
     setLayoutObject(m_layoutView);
 
     m_layoutView->setIsInWindow(true);
-#ifndef BLINKIT_CRAWLER_ONLY
     m_layoutView->setStyle(StyleResolver::styleForDocument(*this));
-#endif
     m_layoutView->compositor()->setNeedsCompositingUpdate(CompositingUpdateAfterCompositingInputChange);
+#endif
 
     ContainerNode::attach(context);
 
@@ -2269,8 +2309,10 @@ void Document::detach(const AttachContext& context)
     if (m_domWindow)
         m_domWindow->clearEventQueue();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (m_layoutView)
         m_layoutView->setIsInWindow(false);
+#endif
 
     if (registrationContext())
         registrationContext()->documentWasDetached();
@@ -2286,7 +2328,9 @@ void Document::detach(const AttachContext& context)
             frameHost()->chromeClient().focusedNodeChanged(oldFocusedElement.get(), nullptr);
     }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     m_layoutView = nullptr;
+#endif
     ContainerNode::detach(context);
 
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -2638,6 +2682,7 @@ void Document::implicitClose()
         return;
     }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // We used to force a synchronous display and flush here.  This really isn't
     // necessary and can in fact be actively harmful if pages are loading at a rate of > 60fps
     // (if your platform is syncing flushes and limiting them to 60fps).
@@ -2648,6 +2693,7 @@ void Document::implicitClose()
         if (view() && layoutView() && (!layoutView()->firstChild() || layoutView()->needsLayout()))
             view()->layout();
     }
+#endif
 
     m_loadEventProgress = LoadEventCompleted;
 
@@ -3131,6 +3177,10 @@ String Document::outgoingOrigin() const
 
 MouseEventWithHitTestResults Document::prepareMouseEvent(const HitTestRequest& request, const LayoutPoint& documentPoint, const PlatformMouseEvent& event)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     ASSERT(!layoutView() || layoutView()->isLayoutView());
 
     // LayoutView::hitTest causes a layout, and we don't want to hit that until the first
@@ -3149,6 +3199,7 @@ MouseEventWithHitTestResults Document::prepareMouseEvent(const HitTestRequest& r
         updateHoverActiveState(request, result.innerElement());
 
     return MouseEventWithHitTestResults(event, result);
+#endif
 }
 
 // DOM Section 1.1.1
@@ -3415,6 +3466,9 @@ void Document::removeFocusedElementOfSubtree(Node* node, bool amongChildrenOnly)
 
 void Document::hoveredNodeDetached(Element& element)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!m_hoverNode)
         return;
 
@@ -3434,10 +3488,14 @@ void Document::hoveredNodeDetached(Element& element)
 
     if (frame())
         frame()->eventHandler().scheduleHoverStateUpdate();
+#endif
 }
 
 void Document::activeChainNodeDetached(Element& element)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!m_activeHoverElement)
         return;
 
@@ -3449,6 +3507,7 @@ void Document::activeChainNodeDetached(Element& element)
         activeNode = ComposedTreeTraversal::parent(*activeNode);
 
     m_activeHoverElement = activeNode && activeNode->isElementNode() ? toElement(activeNode) : 0;
+#endif
 }
 
 const Vector<AnnotatedRegionValue>& Document::annotatedRegions() const
@@ -4263,6 +4322,7 @@ void Document::setEncodingData(const DocumentEncodingData& newData)
     ASSERT(newData.encoding().isValid());
     m_encodingData = newData;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // FIXME: Should be removed as part of https://code.google.com/p/chromium/issues/detail?id=319643
     bool shouldUseVisualOrdering = m_encodingData.encoding().usesVisualOrdering();
     if (shouldUseVisualOrdering != m_visuallyOrdered) {
@@ -4272,6 +4332,7 @@ void Document::setEncodingData(const DocumentEncodingData& newData)
             layoutView()->mutableStyleRef().setRTLOrdering(m_visuallyOrdered ? VisualOrder : LogicalOrder);
         setNeedsStyleRecalc(SubtreeStyleChange, StyleChangeReasonForTracing::create(StyleChangeReason::VisuallyOrdered));
     }
+#endif
 }
 
 KURL Document::completeURL(const String& url) const
@@ -5329,6 +5390,9 @@ static LayoutObject* nearestCommonHoverAncestor(LayoutObject* obj1, LayoutObject
 
 void Document::updateHoverActiveState(const HitTestRequest& request, Element* innerElement)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     ASSERT(!request.readOnly());
 
     if (request.active() && m_frame)
@@ -5438,6 +5502,7 @@ void Document::updateHoverActiveState(const HitTestRequest& request, Element* in
             nodesToAddToChain[i]->setHovered(true);
         }
     }
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY

@@ -929,6 +929,9 @@ void ContainerNode::cloneChildNodes(ContainerNode *clone)
 
 bool ContainerNode::getUpperLeftCorner(FloatPoint& point) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!layoutObject())
         return false;
 
@@ -989,6 +992,7 @@ bool ContainerNode::getUpperLeftCorner(FloatPoint& point) const
         point = FloatPoint(0, document().view()->contentsHeight());
         return true;
     }
+#endif // BLINKIT_CRAWLER_ONLY
     return false;
 }
 
@@ -1013,6 +1017,10 @@ static inline LayoutObject* endOfContinuations(LayoutObject* layoutObject)
 
 bool ContainerNode::getLowerRightCorner(FloatPoint& point) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     if (!layoutObject())
         return false;
 
@@ -1075,6 +1083,7 @@ bool ContainerNode::getLowerRightCorner(FloatPoint& point) const
         }
     }
     return true;
+#endif
 }
 
 // FIXME: This override is only needed for inline anchors without an
@@ -1103,6 +1112,9 @@ LayoutRect ContainerNode::boundingBox() const
 // independent of the focused element changing.
 void ContainerNode::focusStateChanged()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // If we're just changing the window's active state and the focused node has no
     // layoutObject we can just ignore the state change.
     if (!layoutObject())
@@ -1116,6 +1128,7 @@ void ContainerNode::focusStateChanged()
         setNeedsStyleRecalc(LocalStyleChange, StyleChangeReasonForTracing::createWithExtraData(StyleChangeReason::PseudoClass, StyleChangeExtraData::Focus));
 
     LayoutTheme::theme().controlStateChanged(*layoutObject(), FocusControlState);
+#endif
 }
 
 void ContainerNode::setFocus(bool received)
@@ -1142,6 +1155,9 @@ void ContainerNode::setFocus(bool received)
 
     focusStateChanged();
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (layoutObject() || received)
         return;
 
@@ -1150,6 +1166,7 @@ void ContainerNode::setFocus(bool received)
         toElement(this)->pseudoStateChanged(CSSSelector::PseudoFocus);
     else
         setNeedsStyleRecalc(LocalStyleChange, StyleChangeReasonForTracing::createWithExtraData(StyleChangeReason::PseudoClass, StyleChangeExtraData::Focus));
+#endif
 }
 
 void ContainerNode::setActive(bool down)
@@ -1159,6 +1176,9 @@ void ContainerNode::setActive(bool down)
 
     Node::setActive(down);
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // FIXME: Why does this not need to handle the display: none transition like :hover does?
     if (layoutObject()) {
         if (computedStyle()->affectedByActive() && computedStyle()->hasPseudoStyle(FIRST_LETTER))
@@ -1170,6 +1190,7 @@ void ContainerNode::setActive(bool down)
 
         LayoutTheme::theme().controlStateChanged(*layoutObject(), PressedControlState);
     }
+#endif
 }
 
 void ContainerNode::setHovered(bool over)
@@ -1179,6 +1200,9 @@ void ContainerNode::setHovered(bool over)
 
     Node::setHovered(over);
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // If :hover sets display: none we lose our hover but still need to recalc our style.
     if (!layoutObject()) {
         if (over)
@@ -1198,6 +1222,7 @@ void ContainerNode::setHovered(bool over)
         setNeedsStyleRecalc(LocalStyleChange, StyleChangeReasonForTracing::createWithExtraData(StyleChangeReason::PseudoClass, StyleChangeExtraData::Hover));
 
     LayoutTheme::theme().controlStateChanged(*layoutObject(), HoverControlState);
+#endif
 }
 
 PassRefPtrWillBeRawPtr<HTMLCollection> ContainerNode::children()

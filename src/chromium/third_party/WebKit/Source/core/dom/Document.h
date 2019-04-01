@@ -470,10 +470,12 @@ public:
     void attach(const AttachContext& = AttachContext()) override;
     void detach(const AttachContext& = AttachContext()) override;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // If you have a Document, use layoutView() instead which is faster.
     void layoutObject() const = delete;
 
     LayoutView* layoutView() const { return m_layoutView; }
+#endif
 
     // to get visually ordered hebrew and arabic pages right
     bool visuallyOrdered() const { return m_visuallyOrdered; }
@@ -1336,7 +1338,9 @@ private:
     bool m_isSrcdocDocument;
     bool m_isMobileDocument;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     LayoutView* m_layoutView;
+#endif
 
 #if !ENABLE(OILPAN)
     WeakPtrFactory<Document> m_weakFactory;
