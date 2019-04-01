@@ -66,7 +66,9 @@ DEFINE_TRACE(NodeRareData)
 
 void NodeRareData::finalizeGarbageCollectedObject()
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     RELEASE_ASSERT(!layoutObject());
+#endif
     if (m_isElementRareData)
         static_cast<ElementRareData*>(this)->~ElementRareData();
     else

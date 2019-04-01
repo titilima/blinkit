@@ -55,10 +55,17 @@ class CompositorProxiedPropertySet;
 
 class ElementRareData : public NodeRareData {
 public:
+#ifdef BLINKIT_CRAWLER_ONLY
+    static ElementRareData* create(void)
+    {
+        return new ElementRareData;
+    }
+#else
     static ElementRareData* create(LayoutObject* layoutObject)
     {
         return new ElementRareData(layoutObject);
     }
+#endif
 
     ~ElementRareData();
 
@@ -169,7 +176,11 @@ private:
     RefPtrWillBeMember<PseudoElement> m_generatedFirstLetter;
     RefPtrWillBeMember<PseudoElement> m_backdrop;
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    explicit ElementRareData(void);
+#else
     explicit ElementRareData(LayoutObject*);
+#endif
 };
 
 inline LayoutSize defaultMinimumSizeForResizing()
@@ -177,9 +188,14 @@ inline LayoutSize defaultMinimumSizeForResizing()
     return LayoutSize(LayoutUnit::max(), LayoutUnit::max());
 }
 
+#ifdef BLINKIT_CRAWLER_ONLY
+inline ElementRareData::ElementRareData(void)
+    : m_tabindex(0)
+#else
 inline ElementRareData::ElementRareData(LayoutObject* layoutObject)
     : NodeRareData(layoutObject)
     , m_tabindex(0)
+#endif
     , m_minimumSizeForResizing(defaultMinimumSizeForResizing())
 {
     m_isElementRareData = true;

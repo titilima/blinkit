@@ -59,10 +59,17 @@ class NodeRareData : public NoBaseWillBeGarbageCollectedFinalized<NodeRareData>,
     WTF_MAKE_NONCOPYABLE(NodeRareData);
     USING_FAST_MALLOC_WILL_BE_REMOVED(NodeRareData);
 public:
+#ifdef BLINKIT_CRAWLER_ONLY
+    static NodeRareData* create(void)
+    {
+        return new NodeRareData;
+    }
+#else
     static NodeRareData* create(LayoutObject* layoutObject)
     {
         return new NodeRareData(layoutObject);
     }
+#endif
 
     void clearNodeLists() { m_nodeLists.clear(); }
     NodeListsNodeData* nodeLists() const { return m_nodeLists.get(); }
@@ -109,9 +116,14 @@ public:
     void finalizeGarbageCollectedObject();
 
 protected:
+#ifdef BLINKIT_CRAWLER_ONLY
+    explicit NodeRareData(void)
+        : m_connectedFrameCount(0)
+#else
     explicit NodeRareData(LayoutObject* layoutObject)
         : NodeRareDataBase(layoutObject)
         , m_connectedFrameCount(0)
+#endif
         , m_elementFlags(0)
         , m_restyleFlags(0)
         , m_isElementRareData(false)

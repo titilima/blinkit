@@ -116,18 +116,26 @@ enum StyleChangeType {
 
 class NodeRareDataBase {
 public:
+#ifndef BLINKIT_CRAWLER_ONLY
     LayoutObject* layoutObject() const { return m_layoutObject; }
     void setLayoutObject(LayoutObject* layoutObject) { m_layoutObject = layoutObject; }
+#endif
 
 protected:
+#ifdef BLINKIT_CRAWLER_ONLY
+    NodeRareDataBase(void) = default;
+#else
     NodeRareDataBase(LayoutObject* layoutObject)
         : m_layoutObject(layoutObject)
     { }
+#endif
 
 protected:
+#ifndef BLINKIT_CRAWLER_ONLY
     // LayoutObjects are fully owned by their DOM node. See LayoutObject's
     // LIFETIME documentation section.
     LayoutObject* m_layoutObject;
+#endif
 };
 
 class Node;
@@ -523,6 +531,7 @@ public:
     // -----------------------------------------------------------------------------
     // Integration with layout tree
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // As layoutObject() includes a branch you should avoid calling it repeatedly in hot code paths.
     // Note that if a Node has a layoutObject, it's parentNode is guaranteed to have one as well.
     LayoutObject* layoutObject() const { return hasRareData() ? m_data.m_rareData->layoutObject() : m_data.m_layoutObject; }
@@ -537,6 +546,7 @@ public:
     // Use these two methods with caution.
     LayoutBox* layoutBox() const;
     LayoutBoxModelObject* layoutBoxModelObject() const;
+#endif
 
     struct AttachContext {
         STACK_ALLOCATED();
@@ -842,6 +852,11 @@ private:
     RawPtrWillBeMember<TreeScope> m_treeScope;
     RawPtrWillBeMember<Node> m_previous;
     RawPtrWillBeMember<Node> m_next;
+#ifdef BLINKIT_CRAWLER_ONLY
+    struct Data {
+        NodeRareDataBase *m_rareData = nullptr;
+    } m_data;
+#else
     // When a node has rare data we move the layoutObject into the rare data.
     union DataUnion {
         DataUnion() : m_layoutObject(nullptr) { }
@@ -850,6 +865,7 @@ private:
         LayoutObject* m_layoutObject;
         NodeRareDataBase* m_rareData;
     } m_data;
+#endif
 };
 
 inline void Node::setParentOrShadowHostNode(ContainerNode* parent)

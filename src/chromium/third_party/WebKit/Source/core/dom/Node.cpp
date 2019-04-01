@@ -291,7 +291,9 @@ Node::~Node()
     if (hasRareData())
         clearRareData();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     RELEASE_ASSERT(!layoutObject());
+#endif
 
     if (!isContainerNode())
         willBeDeletedFromDocument();
@@ -349,10 +351,17 @@ NodeRareData& Node::ensureRareData()
     if (hasRareData())
         return *rareData();
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    if (isElementNode())
+        m_data.m_rareData = ElementRareData::create();
+    else
+        m_data.m_rareData = NodeRareData::create();
+#else
     if (isElementNode())
         m_data.m_rareData = ElementRareData::create(m_data.m_layoutObject);
     else
         m_data.m_rareData = NodeRareData::create(m_data.m_layoutObject);
+#endif
 
     ASSERT(m_data.m_rareData);
 
@@ -366,12 +375,16 @@ void Node::clearRareData()
     ASSERT(hasRareData());
     ASSERT(!transientMutationObserverRegistry() || transientMutationObserverRegistry()->isEmpty());
 
+#ifndef BLINKIT_CRAWLER_ONLY
     LayoutObject* layoutObject = m_data.m_rareData->layoutObject();
+#endif
     if (isElementNode())
         delete static_cast<ElementRareData*>(m_data.m_rareData);
     else
         delete static_cast<NodeRareData*>(m_data.m_rareData);
+#ifndef BLINKIT_CRAWLER_ONLY
     m_data.m_layoutObject = layoutObject;
+#endif
     clearFlag(HasRareDataFlag);
 }
 #endif
@@ -536,6 +549,9 @@ bool Node::isContentRichlyEditable() const
 
 bool Node::hasEditableStyle(EditableLevel editableLevel, UserSelectAllTreatment treatment) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (isPseudoElement())
         return false;
 
@@ -561,6 +577,7 @@ bool Node::hasEditableStyle(EditableLevel editableLevel, UserSelectAllTreatment 
             return false;
         }
     }
+#endif
 
     return false;
 }
@@ -577,6 +594,7 @@ bool Node::isEditableToAccessibility(EditableLevel editableLevel) const
     return false;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 LayoutBox* Node::layoutBox() const
 {
     LayoutObject* layoutObject = this->layoutObject();
@@ -588,11 +606,16 @@ LayoutBoxModelObject* Node::layoutBoxModelObject() const
     LayoutObject* layoutObject = this->layoutObject();
     return layoutObject && layoutObject->isBoxModelObject() ? toLayoutBoxModelObject(layoutObject) : nullptr;
 }
+#endif
 
 LayoutRect Node::boundingBox() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (layoutObject())
         return LayoutRect(layoutObject()->absoluteBoundingBoxRect());
+#endif
     return LayoutRect();
 }
 
@@ -900,7 +923,9 @@ void Node::attach(const AttachContext&)
     ASSERT(document().inStyleRecalc() || isDocumentNode());
     ASSERT(!document().lifecycle().inDetach());
     ASSERT(needsAttach());
+#ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(!layoutObject() || (layoutObject()->style() && (layoutObject()->parent() || layoutObject()->isLayoutView())));
+#endif
 
     clearNeedsStyleRecalc();
 }
@@ -910,15 +935,20 @@ void Node::detach(const AttachContext& context)
     ASSERT(document().lifecycle().stateAllowsDetach());
     DocumentLifecycle::DetachScope willDetach(document().lifecycle());
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (layoutObject())
         layoutObject()->destroyAndCleanupAnonymousWrappers();
     setLayoutObject(nullptr);
+#endif
     setStyleChange(NeedsReattachStyleChange);
     clearChildNeedsStyleInvalidation();
 }
 
 void Node::reattachWhitespaceSiblingsIfNeeded(Text* start)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     ScriptForbiddenScope forbidScriptDuringRawIteration;
     for (Node* sibling = start; sibling; sibling = sibling->nextSibling()) {
         if (sibling->isTextNode() && toText(sibling)->containsOnlyWhitespace()) {
@@ -932,6 +962,7 @@ void Node::reattachWhitespaceSiblingsIfNeeded(Text* start)
             return;
         }
     }
+#endif
 }
 
 const ComputedStyle* Node::virtualEnsureComputedStyle(PseudoId pseudoElementSpecifier)
@@ -952,6 +983,9 @@ bool Node::canStartSelection() const
     if (hasEditableStyle())
         return true;
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     if (layoutObject()) {
         const ComputedStyle& style = layoutObject()->styleRef();
         // We allow selections to begin within an element that has -webkit-user-select: none set,
@@ -959,6 +993,7 @@ bool Node::canStartSelection() const
         if (style.userDrag() == DRAG_ELEMENT && style.userSelect() == SELECT_NONE)
             return false;
     }
+#endif
     ContainerNode* parent = ComposedTreeTraversal::parent(*this);
     return parent ? parent->canStartSelection() : true;
 }
@@ -2061,6 +2096,9 @@ void Node::dispatchInputEvent()
 
 void Node::defaultEventHandler(Event* event)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (event->target() != this)
         return;
     const AtomicString& eventType = event->type();
@@ -2120,6 +2158,7 @@ void Node::defaultEventHandler(Event* event)
     } else if (event->type() == EventTypeNames::webkitEditableContentChanged) {
         dispatchInputEvent();
     }
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 void Node::willCallDefaultEventHandler(const Event&)
