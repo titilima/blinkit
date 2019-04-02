@@ -126,11 +126,13 @@ public:
     IntSize savedLayerScrollOffset() const { return m_savedLayerScrollOffset; }
     void setSavedLayerScrollOffset(IntSize size) { m_savedLayerScrollOffset = size; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     ElementAnimations* elementAnimations() { return m_elementAnimations.get(); }
     void setElementAnimations(ElementAnimations* elementAnimations)
     {
         m_elementAnimations = elementAnimations;
     }
+#endif
 
     bool hasPseudoElements() const;
     void clearPseudoElements();
@@ -169,9 +171,9 @@ private:
     OwnPtrWillBeMember<AttrNodeList> m_attrNodeList;
 #ifndef BLINKIT_CRAWLER_ONLY
     OwnPtrWillBeMember<InlineCSSStyleDeclaration> m_cssomWrapper;
-#endif
 
     PersistentWillBeMember<ElementAnimations> m_elementAnimations;
+#endif
     PersistentWillBeMember<NodeIntersectionObserverData> m_intersectionObserverData;
 
 #ifndef BLINKIT_CRAWLER_ONLY
