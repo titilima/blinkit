@@ -254,6 +254,10 @@ bool Element::layoutObjectIsFocusable() const
 {
     ASSERT(!isInCanvasSubtree()); // Canvas is disabled in BlinKit.
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     // FIXME: These asserts should be in Node::isFocusable, but there are some
     // callsites like Document::setFocusedElement that would currently fail on
     // them. See crbug.com/251163
@@ -272,6 +276,7 @@ bool Element::layoutObjectIsFocusable() const
         return false;
 
     return true;
+#endif
 }
 
 PassRefPtrWillBeRawPtr<Node> Element::cloneNode(bool deep)
@@ -477,6 +482,9 @@ void Element::scrollIntoView(bool alignToTop)
 {
     document().updateLayoutIgnorePendingStylesheets();
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!layoutObject())
         return;
 
@@ -488,12 +496,16 @@ void Element::scrollIntoView(bool alignToTop)
         layoutObject()->scrollRectToVisible(bounds, ScrollAlignment::alignToEdgeIfNeeded, ScrollAlignment::alignTopAlways, ProgrammaticScroll, makeVisibleInVisualViewport);
     else
         layoutObject()->scrollRectToVisible(bounds, ScrollAlignment::alignToEdgeIfNeeded, ScrollAlignment::alignBottomAlways, ProgrammaticScroll, makeVisibleInVisualViewport);
+#endif
 }
 
 void Element::scrollIntoViewIfNeeded(bool centerIfNeeded)
 {
     document().updateLayoutIgnorePendingStylesheets();
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!layoutObject())
         return;
 
@@ -504,6 +516,7 @@ void Element::scrollIntoViewIfNeeded(bool centerIfNeeded)
         layoutObject()->scrollRectToVisible(bounds, ScrollAlignment::alignCenterIfNeeded, ScrollAlignment::alignCenterIfNeeded, ProgrammaticScroll, makeVisibleInVisualViewport);
     else
         layoutObject()->scrollRectToVisible(bounds, ScrollAlignment::alignToEdgeIfNeeded, ScrollAlignment::alignToEdgeIfNeeded, ProgrammaticScroll, makeVisibleInVisualViewport);
+#endif
 }
 
 void Element::setDistributeScroll(ScrollStateCallback* scrollStateCallback, String nativeScrollBehavior)
@@ -580,6 +593,10 @@ void Element::nativeApplyScroll(ScrollState& scrollState)
             scrollState.consumeDeltaNative(scrollState.deltaX(), scrollState.deltaY());
         }
     } else {
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(false); // BKTODO: Not reached!
+        return;
+#else
         if (!layoutObject())
             return;
         LayoutBox* curBox = layoutObject()->enclosingBox();
@@ -594,6 +611,7 @@ void Element::nativeApplyScroll(ScrollState& scrollState)
             scrollState.consumeDeltaNative(0, scrollState.deltaY());
             scrolled = true;
         }
+#endif
     }
 
     if (!scrolled)
@@ -631,6 +649,9 @@ static float localZoomForLayoutObject(LayoutObject& layoutObject)
     // other out, but the alternative is that we'd have to crawl up the whole layout tree every
     // time (or store an additional bit in the ComputedStyle to indicate that a zoom was specified).
     float zoomFactor = 1;
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (layoutObject.style()->effectiveZoom() != 1) {
         // Need to find the nearest enclosing LayoutObject that set up
         // a differing zoom, and then we divide our result by it to eliminate the zoom.
@@ -645,6 +666,7 @@ static float localZoomForLayoutObject(LayoutObject& layoutObject)
         if (prev->isLayoutView())
             zoomFactor = prev->style()->zoom();
     }
+#endif
     return zoomFactor;
 }
 
@@ -658,38 +680,58 @@ static double adjustForLocalZoom(LayoutUnit value, LayoutObject& layoutObject)
 
 int Element::offsetLeft()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     document().updateLayoutIgnorePendingStylesheets();
     if (LayoutBoxModelObject* layoutObject = layoutBoxModelObject())
         return lroundf(adjustForLocalZoom(layoutObject->offsetLeft(), *layoutObject));
+#endif
     return 0;
 }
 
 int Element::offsetTop()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     document().updateLayoutIgnorePendingStylesheets();
     if (LayoutBoxModelObject* layoutObject = layoutBoxModelObject())
         return lroundf(adjustForLocalZoom(layoutObject->pixelSnappedOffsetTop(), *layoutObject));
+#endif
     return 0;
 }
 
 int Element::offsetWidth()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     document().updateLayoutIgnorePendingStylesheets();
     if (LayoutBoxModelObject* layoutObject = layoutBoxModelObject())
         return adjustLayoutUnitForAbsoluteZoom(layoutObject->pixelSnappedOffsetWidth(), *layoutObject).round();
+#endif
     return 0;
 }
 
 int Element::offsetHeight()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     document().updateLayoutIgnorePendingStylesheets();
     if (LayoutBoxModelObject* layoutObject = layoutBoxModelObject())
         return adjustLayoutUnitForAbsoluteZoom(layoutObject->pixelSnappedOffsetHeight(), *layoutObject).round();
+#endif
     return 0;
 }
 
 Element* Element::offsetParent()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     document().updateLayoutIgnorePendingStylesheets();
 
     LayoutObject* layoutObject = this->layoutObject();
@@ -704,28 +746,40 @@ Element* Element::offsetParent()
         return nullptr;
 
     return element;
+#endif
 }
 
 int Element::clientLeft()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     document().updateLayoutIgnorePendingStylesheets();
 
     if (LayoutBox* layoutObject = layoutBox())
         return adjustLayoutUnitForAbsoluteZoom(roundToInt(layoutObject->clientLeft()), *layoutObject);
+#endif
     return 0;
 }
 
 int Element::clientTop()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     document().updateLayoutIgnorePendingStylesheets();
 
     if (LayoutBox* layoutObject = layoutBox())
         return adjustLayoutUnitForAbsoluteZoom(roundToInt(layoutObject->clientTop()), *layoutObject);
+#endif
     return 0;
 }
 
 int Element::clientWidth()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     document().updateLayoutIgnorePendingStylesheets();
 
     // When in strict mode, clientWidth for the document element should return the width of the containing frame.
@@ -742,11 +796,15 @@ int Element::clientWidth()
 
     if (LayoutBox* layoutObject = layoutBox())
         return adjustLayoutUnitForAbsoluteZoom(layoutObject->pixelSnappedClientWidth(), *layoutObject).round();
+#endif
     return 0;
 }
 
 int Element::clientHeight()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     document().updateLayoutIgnorePendingStylesheets();
 
     // When in strict mode, clientHeight for the document element should return the height of the containing frame.
@@ -764,11 +822,15 @@ int Element::clientHeight()
 
     if (LayoutBox* layoutObject = layoutBox())
         return adjustLayoutUnitForAbsoluteZoom(layoutObject->pixelSnappedClientHeight(), *layoutObject).round();
+#endif
     return 0;
 }
 
 double Element::scrollLeft()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     document().updateLayoutIgnorePendingStylesheets();
 
     if (document().scrollingElement() == this) {
@@ -779,12 +841,16 @@ double Element::scrollLeft()
 
     if (LayoutBox* box = layoutBox())
         return adjustScrollForAbsoluteZoom(box->scrollLeft(), *box);
+#endif
 
     return 0;
 }
 
 double Element::scrollTop()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     document().updateLayoutIgnorePendingStylesheets();
 
     if (document().scrollingElement() == this) {
@@ -795,6 +861,7 @@ double Element::scrollTop()
 
     if (LayoutBox* box = layoutBox())
         return adjustScrollForAbsoluteZoom(box->scrollTop(), *box);
+#endif
 
     return 0;
 }
@@ -809,9 +876,13 @@ void Element::setScrollLeft(double newLeft)
         if (LocalDOMWindow* window = document().domWindow())
             window->scrollTo(newLeft, window->scrollY());
     } else {
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(false); // BKTODO: Not reached!
+#else
         LayoutBox* box = layoutBox();
         if (box)
             box->setScrollLeft(LayoutUnit::fromFloatRound(newLeft * box->style()->effectiveZoom()));
+#endif
     }
 }
 
@@ -825,14 +896,21 @@ void Element::setScrollTop(double newTop)
         if (LocalDOMWindow* window = document().domWindow())
             window->scrollTo(window->scrollX(), newTop);
     } else {
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(false); // BKTODO: Not reached!
+#else
         LayoutBox* box = layoutBox();
         if (box)
             box->setScrollTop(LayoutUnit::fromFloatRound(newTop * box->style()->effectiveZoom()));
+#endif
     }
 }
 
 int Element::scrollWidth()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     document().updateLayoutIgnorePendingStylesheets();
 
     if (document().scrollingElement() == this) {
@@ -843,11 +921,15 @@ int Element::scrollWidth()
 
     if (LayoutBox* box = layoutBox())
         return adjustForAbsoluteZoom(box->pixelSnappedScrollWidth(), box);
+#endif
     return 0;
 }
 
 int Element::scrollHeight()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     document().updateLayoutIgnorePendingStylesheets();
 
     if (document().scrollingElement() == this) {
@@ -858,6 +940,7 @@ int Element::scrollHeight()
 
     if (LayoutBox* box = layoutBox())
         return adjustForAbsoluteZoom(box->pixelSnappedScrollHeight(), box);
+#endif
     return 0;
 }
 
@@ -905,6 +988,9 @@ void Element::scrollTo(const ScrollToOptions& scrollToOptions)
 
 void Element::scrollLayoutBoxBy(const ScrollToOptions& scrollToOptions)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     double left = scrollToOptions.hasLeft() ? ScrollableArea::normalizeNonFiniteScroll(scrollToOptions.left()) : 0.0;
     double top = scrollToOptions.hasTop() ? ScrollableArea::normalizeNonFiniteScroll(scrollToOptions.top()) : 0.0;
 
@@ -918,10 +1004,14 @@ void Element::scrollLayoutBoxBy(const ScrollToOptions& scrollToOptions)
         double newScaledTop = top * box->style()->effectiveZoom() + currentScaledTop;
         box->scrollToOffset(DoubleSize(newScaledLeft, newScaledTop), scrollBehavior);
     }
+#endif
 }
 
 void Element::scrollLayoutBoxTo(const ScrollToOptions& scrollToOptions)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     ScrollBehavior scrollBehavior = ScrollBehaviorAuto;
     ScrollableArea::scrollBehaviorFromString(scrollToOptions.behavior(), scrollBehavior);
 
@@ -935,6 +1025,7 @@ void Element::scrollLayoutBoxTo(const ScrollToOptions& scrollToOptions)
             scaledTop = ScrollableArea::normalizeNonFiniteScroll(scrollToOptions.top()) * box->style()->effectiveZoom();
         box->scrollToOffset(DoubleSize(scaledLeft, scaledTop), scrollBehavior);
     }
+#endif
 }
 
 void Element::scrollFrameBy(const ScrollToOptions& scrollToOptions)
@@ -989,15 +1080,23 @@ uint32_t Element::compositorMutableProperties() const
 
 bool Element::hasNonEmptyLayoutSize() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     document().updateLayoutIgnorePendingStylesheets();
 
     if (LayoutBoxModelObject* box = layoutBoxModelObject())
         return box->hasNonEmptyLayoutSize();
+#endif
     return false;
 }
 
 IntRect Element::boundsInViewport() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return IntRect();
+#else
     document().updateLayoutIgnorePendingStylesheets();
 
     FrameView* view = document().view();
@@ -1023,10 +1122,15 @@ IntRect Element::boundsInViewport() const
         result.unite(quads[i].enclosingBoundingBox());
 
     return view->contentsToViewport(result);
+#endif
 }
 
 ClientRectList* Element::getClientRects()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     document().updateLayoutIgnorePendingStylesheets();
 
     LayoutObject* elementLayoutObject = layoutObject();
@@ -1040,10 +1144,15 @@ ClientRectList* Element::getClientRects()
     elementLayoutObject->absoluteQuads(quads);
     document().adjustFloatQuadsForScrollAndAbsoluteZoom(quads, *elementLayoutObject);
     return ClientRectList::create(quads);
+#endif
 }
 
 ClientRect* Element::getBoundingClientRect()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     document().updateLayoutIgnorePendingStylesheets();
 
     Vector<FloatQuad> quads;
@@ -1068,14 +1177,20 @@ ClientRect* Element::getBoundingClientRect()
     ASSERT(elementLayoutObject);
     document().adjustFloatRectForScrollAndAbsoluteZoom(result, *elementLayoutObject);
     return ClientRect::create(result);
+#endif
 }
 
 IntRect Element::screenRect() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return IntRect();
+#else
     if (!layoutObject())
         return IntRect();
     // FIXME: this should probably respect transforms
     return document().view()->contentsToScreen(layoutObject()->absoluteBoundingBoxRectIgnoringTransforms());
+#endif
 }
 
 const AtomicString& Element::computedRole()
@@ -1427,10 +1542,12 @@ bool Element::layoutObjectIsNeeded(const ComputedStyle& style)
     return style.display() != NONE;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 LayoutObject* Element::createLayoutObject(const ComputedStyle& style)
 {
     return LayoutObject::createObject(this, style);
 }
+#endif
 
 Node::InsertionNotificationRequest Element::insertedInto(ContainerNode* insertionPoint)
 {
@@ -1537,24 +1654,30 @@ void Element::attach(const AttachContext& context)
 {
     ASSERT(document().inStyleRecalc());
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // We've already been through detach when doing an attach, but we might
     // need to clear any state that's been added since then.
     if (hasRareData() && styleChangeType() == NeedsReattachStyleChange) {
         ElementRareData* data = elementRareData();
         data->clearComputedStyle();
     }
+#endif
 
     if (!isSlotOrActiveInsertionPoint())
         LayoutTreeBuilderForElement(*this, context.resolvedStyle).createLayoutObjectIfNeeded();
 
     addCallbackSelectors();
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO
+#else
     if (hasRareData() && !layoutObject()) {
         if (ElementAnimations* elementAnimations = elementRareData()->elementAnimations()) {
             elementAnimations->cssAnimations().cancel();
             elementAnimations->setAnimationStyleChange(false);
         }
     }
+#endif
 
     StyleResolverParentScope parentScope(*this);
 
@@ -1584,9 +1707,11 @@ void Element::detach(const AttachContext& context)
         ElementRareData* data = elementRareData();
         data->clearPseudoElements();
 
+#ifndef BLINKIT_CRAWLER_ONLY
         // attach() will clear the computed style for us when inside recalcStyle.
         if (!document().inStyleRecalc())
             data->clearComputedStyle();
+#endif
 
         if (ElementAnimations* elementAnimations = data->elementAnimations()) {
             if (context.performingReattach) {
@@ -1629,6 +1754,9 @@ void Element::detach(const AttachContext& context)
 
 bool Element::pseudoStyleCacheIsInvalid(const ComputedStyle* currentStyle, ComputedStyle* newStyle)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     ASSERT(currentStyle == computedStyle());
     ASSERT(layoutObject());
 
@@ -1659,9 +1787,11 @@ bool Element::pseudoStyleCacheIsInvalid(const ComputedStyle* currentStyle, Compu
             return true;
         }
     }
+#endif
     return false;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 PassRefPtr<ComputedStyle> Element::styleForLayoutObject()
 {
     ASSERT(document().inStyleRecalc());
@@ -1696,14 +1826,10 @@ PassRefPtr<ComputedStyle> Element::styleForLayoutObject()
 
 PassRefPtr<ComputedStyle> Element::originalStyleForLayoutObject()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     ASSERT(document().inStyleRecalc());
     return document().ensureStyleResolver().styleForElement(this);
-#endif
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 void Element::recalcStyle(StyleRecalcChange change, Text* nextTextSibling)
 {
@@ -1718,7 +1844,9 @@ void Element::recalcStyle(StyleRecalcChange change, Text* nextTextSibling)
     if (change >= Inherit || needsStyleRecalc()) {
         if (hasRareData()) {
             ElementRareData* data = elementRareData();
+#ifndef BLINKIT_CRAWLER_ONLY
             data->clearComputedStyle();
+#endif
 
             if (change >= Inherit) {
                 if (ElementAnimations* elementAnimations = data->elementAnimations())
@@ -1907,6 +2035,9 @@ void Element::setNeedsCompositingUpdate()
 {
     if (!document().isActive())
         return;
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     LayoutBoxModelObject* layoutObject = layoutBoxModelObject();
     if (!layoutObject)
         return;
@@ -1916,6 +2047,7 @@ void Element::setNeedsCompositingUpdate()
     // Changes in the return value of requiresAcceleratedCompositing change if
     // the PaintLayer is self-painting.
     layoutObject->layer()->updateSelfPaintingLayer();
+#endif
 }
 
 void Element::setCustomElementDefinition(PassRefPtrWillBeRawPtr<CustomElementDefinition> definition)
@@ -2402,6 +2534,9 @@ void Element::updateFocusAppearance(SelectionBehaviorOnFocus selectionBehavior)
 {
     if (selectionBehavior == SelectionBehaviorOnFocus::None)
         return;
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     if (isRootEditableElement()) {
         // Taking the ownership since setSelection() may release the last reference to |frame|.
         RefPtrWillBeRawPtr<LocalFrame> frame(document().frame());
@@ -2421,6 +2556,7 @@ void Element::updateFocusAppearance(SelectionBehaviorOnFocus selectionBehavior)
     } else if (layoutObject() && !layoutObject()->isLayoutPart()) {
         layoutObject()->scrollRectToVisible(boundingBox());
     }
+#endif
 }
 
 void Element::blur()
@@ -2652,6 +2788,10 @@ void Element::insertAdjacentHTML(const String& where, const String& markup, Exce
 
 String Element::innerText()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+    return String();
+#else
     // We need to update layout, since plainText uses line boxes in the layout tree.
     document().updateLayoutIgnorePendingStylesheets();
 
@@ -2659,6 +2799,7 @@ String Element::innerText()
         return textContent(true);
 
     return plainText(EphemeralRange::rangeOfContents(*this), TextIteratorForInnerText);
+#endif
 }
 
 String Element::outerText()
@@ -2830,6 +2971,9 @@ void Element::cancelFocusAppearanceUpdate()
 
 void Element::updatePseudoElement(PseudoId pseudoId, StyleRecalcChange change)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     ASSERT(!needsStyleRecalc());
     PseudoElement* element = pseudoElement(pseudoId);
 
@@ -2862,6 +3006,7 @@ void Element::updatePseudoElement(PseudoId pseudoId, StyleRecalcChange change)
     } else if (change >= UpdatePseudoElements) {
         createPseudoElementIfNeeded(pseudoId);
     }
+#endif
 }
 
 // If we're updating first letter, and the current first letter layoutObject
@@ -2869,6 +3014,9 @@ void Element::updatePseudoElement(PseudoId pseudoId, StyleRecalcChange change)
 // the first letter layoutObject.
 bool Element::updateFirstLetter(Element* element)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     LayoutObject* remainingTextLayoutObject = FirstLetterPseudoElement::firstLetterTextLayoutObject(*element);
     if (!remainingTextLayoutObject || remainingTextLayoutObject != toFirstLetterPseudoElement(element)->remainingTextLayoutObject()) {
         // We have to clear out the old first letter here because when it is
@@ -2881,6 +3029,7 @@ bool Element::updateFirstLetter(Element* element)
             elementRareData()->setPseudoElement(FIRST_LETTER, nullptr);
         return true;
     }
+#endif
     return false;
 }
 
@@ -2915,8 +3064,12 @@ PseudoElement* Element::pseudoElement(PseudoId pseudoId) const
 
 LayoutObject* Element::pseudoElementLayoutObject(PseudoId pseudoId) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (PseudoElement* element = pseudoElement(pseudoId))
         return element->layoutObject();
+#endif
     return nullptr;
 }
 
@@ -3414,9 +3567,14 @@ void Element::synchronizeStyleAttributeInternal() const
 
 CSSStyleDeclaration* Element::style()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     if (!isStyledElement())
         return nullptr;
     return &ensureElementRareData().ensureInlineCSSStyleDeclaration(this);
+#endif
 }
 
 MutableStylePropertySet& Element::ensureMutableInlineStyle()
