@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: NodeComputedStyle.h
+// Description: Node Class
+//      Author: Ziming Li
+//     Created: 2019-04-01
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -34,6 +45,7 @@
 
 namespace blink {
 
+#ifndef BLINKIT_CRAWLER_ONLY
 inline const ComputedStyle* Node::computedStyle() const
 {
     return mutableComputedStyle();
@@ -65,6 +77,7 @@ inline const ComputedStyle& Node::computedStyleRef() const
     ASSERT(style);
     return *style;
 }
+#endif
 
 }
 #endif // NodeComputedStyle_h
