@@ -314,10 +314,463 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ElementRareData.cpp">
       <Filter>core\dom</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\BackgroundImageGeometry.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\BlockFlowPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\BlockPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\BoxBorderPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\BoxClipper.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\BoxDecorationData.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\BoxPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ClipScope.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\DetailsMarkerPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\EllipsisBoxPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FieldsetPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FileUploadControlPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FilterPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FloatClipRecorder.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FramePainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FrameSetPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\GridPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ImagePainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\InlineFlowBoxPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\InlinePainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\InlineTextBoxPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\LayerClipRecorder.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\LayerFixedPositionRecorder.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\LineBoxListPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ListItemPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ListMarkerPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\MultiColumnSetPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\NinePieceImageGrid.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\NinePieceImagePainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ObjectPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ObjectPaintProperties.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintInfo.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintInvalidationCapableScrollableArea.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayerClipper.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayerStackingNode.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayerStackingNodeIterator.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintPhase.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintPropertyTreeBuilder.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintPropertyTreePrinter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintTiming.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PartPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ReplicaPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\RootInlineBoxPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\RoundedInnerRectClipper.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ScopeRecorder.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ScrollableAreaPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ScrollbarPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ScrollRecorder.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGContainerPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGFilterPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGForeignObjectPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGImagePainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGInlineFlowBoxPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGMaskPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGRootInlineBoxPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGRootPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGShapePainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGTextPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TableCellPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TablePainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TableRowPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TableSectionPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TextPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ThemePainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ThemePainterDefault.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\Transform3DRecorder.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TransformRecorder.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ViewPainter.cpp">
+      <Filter>core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\HTMLElementFactory.cpp">
+      <Filter>gen\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\BackgroundImageGeometry.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\BlockFlowPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\BlockPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\BoxBorderPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\BoxClipper.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\BoxDecorationData.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\BoxPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ClipScope.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\DetailsMarkerPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\EllipsisBoxPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FieldsetPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FileUploadControlPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FilterEffectBuilder.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FilterPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FloatClipRecorder.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FramePainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FrameSetPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\GridPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ImagePainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\InlineFlowBoxPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\InlinePainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\InlineTextBoxPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\LayerClipRecorder.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\LayerFixedPositionRecorder.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\LayoutObjectDrawingRecorder.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\LineBoxListPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\LineLayoutPaintShim.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ListItemPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ListMarkerPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\MultiColumnSetPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\NinePieceImageGrid.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\NinePieceImagePainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ObjectPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ObjectPaintProperties.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintInfo.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintInvalidationCapableScrollableArea.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayer.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayerClipper.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayerFilterInfo.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayerFragment.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayerPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayerPaintingInfo.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayerReflectionInfo.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayerScrollableArea.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayerStackingNode.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintLayerStackingNodeIterator.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintPhase.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintPropertyTreeBuilder.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintPropertyTreePrinter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintTiming.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PartPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ReplacedPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ReplicaPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\RootInlineBoxPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\RoundedInnerRectClipper.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ScopeRecorder.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ScrollableAreaPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ScrollbarPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ScrollRecorder.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGClipPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGContainerPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGFilterPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGForeignObjectPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGImagePainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGInlineFlowBoxPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGInlineTextBoxPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGMaskPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGPaintContext.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGRootInlineBoxPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGRootPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGShapePainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGTextPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TableCellPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TablePainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TableRowPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TableSectionPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TextPainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ThemePainter.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ThemePainterDefault.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\Transform3DRecorder.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TransformRecorder.h">
+      <Filter>core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ViewPainter.h">
+      <Filter>core\paint</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
