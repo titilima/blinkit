@@ -753,6 +753,10 @@ TriState EditingStyle::triStateOfStyle(CSSStyleDeclaration* styleToCompare, Shou
 
 TriState EditingStyle::triStateOfStyle(const VisibleSelection& selection) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     if (!selection.isCaretOrRange())
         return FalseTriState;
 
@@ -780,6 +784,7 @@ TriState EditingStyle::triStateOfStyle(const VisibleSelection& selection) const
     }
 
     return state;
+#endif
 }
 
 bool EditingStyle::conflictsWithInlineStyleOfElement(HTMLElement* element, EditingStyle* extractedStyle, Vector<CSSPropertyID>* conflictingProperties) const
@@ -1287,6 +1292,9 @@ void EditingStyle::removePropertiesInElementDefaultStyle(Element* element)
 
 void EditingStyle::addAbsolutePositioningFromElement(const Element& element)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     LayoutRect rect = element.boundingBox();
     LayoutObject* layoutObject = element.layoutObject();
 
@@ -1308,6 +1316,7 @@ void EditingStyle::addAbsolutePositioningFromElement(const Element& element)
     m_mutableStyle->setProperty(CSSPropertyTop, cssValuePool().createValue(y, CSSPrimitiveValue::UnitType::Pixels));
     m_mutableStyle->setProperty(CSSPropertyWidth, cssValuePool().createValue(width, CSSPrimitiveValue::UnitType::Pixels));
     m_mutableStyle->setProperty(CSSPropertyHeight, cssValuePool().createValue(height, CSSPrimitiveValue::UnitType::Pixels));
+#endif
 }
 
 void EditingStyle::forceInline()

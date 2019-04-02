@@ -63,9 +63,11 @@ public:
 
     void setStyle(PassRefPtr<ComputedStyle> style)
     {
+#ifndef BLINKIT_CRAWLER_ONLY
         // FIXME: Improve RAII of StyleResolverState to remove this function.
         m_style = style;
         m_cssToLengthConversionData = CSSToLengthConversionData(m_style.get(), rootElementStyle(), document().layoutView(), m_style->effectiveZoom());
+#endif
     }
     const ComputedStyle* style() const { return m_style.get(); }
     ComputedStyle* style() { return m_style.get(); }

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LineLayoutItem.h
+// Description: LineLayoutItem Class
+//      Author: Ziming Li
+//     Created: 2019-04-01
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -219,10 +230,12 @@ public:
         return m_layoutObject->isInlineBlockOrInlineTable();
     }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool isInlineElementContinuation() const
     {
         return m_layoutObject->isInlineElementContinuation();
     }
+#endif
 
     bool isLayoutBlock() const
     {

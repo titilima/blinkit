@@ -86,7 +86,9 @@ public:
         clearElementFlag(TabIndexWasSetExplicitly);
     }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     CSSStyleDeclaration& ensureInlineCSSStyleDeclaration(Element* ownerElement);
+#endif
 
     void clearShadow() { m_shadow = nullptr; }
     ElementShadow* shadow() const { return m_shadow.get(); }
@@ -100,9 +102,11 @@ public:
     NamedNodeMap* attributeMap() const { return m_attributeMap.get(); }
     void setAttributeMap(PassOwnPtrWillBeRawPtr<NamedNodeMap> attributeMap) { m_attributeMap = attributeMap; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     ComputedStyle* ensureComputedStyle() const { return m_computedStyle.get(); }
     void setComputedStyle(PassRefPtr<ComputedStyle> computedStyle) { m_computedStyle = computedStyle; }
     void clearComputedStyle() { m_computedStyle = nullptr; }
+#endif
 
     ClassList* classList() const { return m_classList.get(); }
     void setClassList(PassOwnPtrWillBeRawPtr<ClassList> classList) { m_classList = classList; }
@@ -163,12 +167,16 @@ private:
     OwnPtrWillBeMember<ElementShadow> m_shadow;
     OwnPtrWillBeMember<NamedNodeMap> m_attributeMap;
     OwnPtrWillBeMember<AttrNodeList> m_attrNodeList;
+#ifndef BLINKIT_CRAWLER_ONLY
     OwnPtrWillBeMember<InlineCSSStyleDeclaration> m_cssomWrapper;
+#endif
 
     PersistentWillBeMember<ElementAnimations> m_elementAnimations;
     PersistentWillBeMember<NodeIntersectionObserverData> m_intersectionObserverData;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     RefPtr<ComputedStyle> m_computedStyle;
+#endif
     RefPtrWillBeMember<CustomElementDefinition> m_customElementDefinition;
 
     RefPtrWillBeMember<PseudoElement> m_generatedBefore;

@@ -131,12 +131,16 @@ inline DistributionPool::~DistributionPool()
 
 inline void DistributionPool::detachNonDistributedNodes()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     for (size_t i = 0; i < m_nodes.size(); ++i) {
         if (m_distributed[i])
             continue;
         if (m_nodes[i]->layoutObject())
             m_nodes[i]->lazyReattachIfAttached();
     }
+#endif
 }
 
 PassOwnPtrWillBeRawPtr<ElementShadow> ElementShadow::create()

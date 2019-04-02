@@ -629,8 +629,10 @@ public:
             && !isLayoutFullScreen()
             && !isLayoutFullScreenPlaceholder();
     }
+#ifndef BLINKIT_CRAWLER_ONLY
     bool isElementContinuation() const { return node() && node()->layoutObject() != this; }
     bool isInlineElementContinuation() const { return isElementContinuation() && isInline(); }
+#endif
     virtual LayoutBoxModelObject* virtualContinuation() const { return nullptr; }
 
     bool isFloating() const { return m_bitfields.floating(); }
@@ -719,7 +721,9 @@ public:
 
     virtual void updateDragState(bool dragOn);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     LayoutView* view() const { return document().layoutView(); }
+#endif
     FrameView* frameView() const { return document().view(); }
 
     bool isRooted() const;

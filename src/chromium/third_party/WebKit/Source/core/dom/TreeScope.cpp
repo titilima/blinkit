@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TreeScope.cpp
+// Description: TreeScope Class
+//      Author: Ziming Li
+//     Created: 2019-03-31
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All Rights Reserved.
  * Copyright (C) 2012 Apple Inc. All rights reserved.
@@ -262,6 +273,7 @@ static bool pointWithScrollAndZoomIfPossible(const Document& document, IntPoint&
     return true;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 HitTestResult hitTestInDocument(const Document* document, int x, int y, const HitTestRequest& request)
 {
     IntPoint hitPoint(x, y);
@@ -272,6 +284,7 @@ HitTestResult hitTestInDocument(const Document* document, int x, int y, const Hi
     document->layoutView()->hitTest(result);
     return result;
 }
+#endif
 
 Element* TreeScope::elementFromPoint(int x, int y) const
 {
@@ -280,6 +293,10 @@ Element* TreeScope::elementFromPoint(int x, int y) const
 
 Element* TreeScope::hitTestPoint(int x, int y, const HitTestRequest& request) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     HitTestResult result = hitTestInDocument(&rootNode().document(), x, y, request);
     Node* node = result.innerNode();
     if (!node || node->isDocumentNode())
@@ -291,10 +308,15 @@ Element* TreeScope::hitTestPoint(int x, int y, const HitTestRequest& request) co
     if (!node || !node->isElementNode())
         return 0;
     return toElement(node);
+#endif
 }
 
 WillBeHeapVector<RawPtrWillBeMember<Element>> TreeScope::elementsFromHitTestResult(HitTestResult& result) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     WillBeHeapVector<RawPtrWillBeMember<Element>> elements;
 
     Node* lastNode = nullptr;
@@ -326,10 +348,15 @@ WillBeHeapVector<RawPtrWillBeMember<Element>> TreeScope::elementsFromHitTestResu
     }
 
     return elements;
+#endif
 }
 
 WillBeHeapVector<RawPtrWillBeMember<Element>> TreeScope::elementsFromPoint(int x, int y) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     Document& document = rootNode().document();
     IntPoint hitPoint(x, y);
     if (!pointWithScrollAndZoomIfPossible(document, hitPoint))
@@ -340,6 +367,7 @@ WillBeHeapVector<RawPtrWillBeMember<Element>> TreeScope::elementsFromPoint(int x
     document.layoutView()->hitTest(result);
 
     return elementsFromHitTestResult(result);
+#endif
 }
 
 void TreeScope::addLabel(const AtomicString& forAttributeValue, HTMLLabelElement* element)

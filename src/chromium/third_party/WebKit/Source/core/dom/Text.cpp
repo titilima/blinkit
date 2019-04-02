@@ -267,6 +267,10 @@ static inline bool canHaveWhitespaceChildren(const LayoutObject& parent, Text* t
 
 bool Text::textLayoutObjectIsNeeded(const ComputedStyle& style, const LayoutObject& parent)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     if (!parent.canHaveChildren())
         return false;
 
@@ -329,6 +333,7 @@ bool Text::textLayoutObjectIsNeeded(const ComputedStyle& style, const LayoutObje
         }
     }
     return true;
+#endif
 }
 
 static bool isSVGText(Text* text)
@@ -356,17 +361,24 @@ LayoutText* Text::createTextLayoutObject(const ComputedStyle& style)
 
 void Text::attach(const AttachContext& context)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (ContainerNode* layoutParent = LayoutTreeBuilderTraversal::parent(*this)) {
         if (LayoutObject* parentLayoutObject = layoutParent->layoutObject()) {
             if (textLayoutObjectIsNeeded(*parentLayoutObject->style(), *parentLayoutObject))
                 LayoutTreeBuilderForText(*this, parentLayoutObject).createLayoutObject();
         }
     }
+#endif
     CharacterData::attach(context);
 }
 
 void Text::reattachIfNeeded(const AttachContext& context)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     bool layoutObjectIsNeeded = false;
     ContainerNode* layoutParent = LayoutTreeBuilderTraversal::parent(*this);
     if (layoutParent) {
@@ -389,6 +401,7 @@ void Text::reattachIfNeeded(const AttachContext& context)
     if (layoutObjectIsNeeded)
         LayoutTreeBuilderForText(*this, layoutParent->layoutObject()).createLayoutObject();
     CharacterData::attach(reattachContext);
+#endif
 }
 
 void Text::recalcTextStyle(StyleRecalcChange change, Text* nextTextSibling)

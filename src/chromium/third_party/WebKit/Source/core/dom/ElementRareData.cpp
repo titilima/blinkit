@@ -48,16 +48,22 @@ struct SameSizeAsElementRareData : NodeRareData {
     short indices[1];
     LayoutSize sizeForResizing;
     IntSize scrollOffset;
+#ifdef BLINKIT_CRAWLER_ONLY
+    void* pointers[10];
+#else
     void* pointers[12];
+#endif
     PersistentWillBeMember<void*> persistentMember[2];
 };
 
+#ifndef BLINKIT_CRAWLER_ONLY
 CSSStyleDeclaration& ElementRareData::ensureInlineCSSStyleDeclaration(Element* ownerElement)
 {
     if (!m_cssomWrapper)
         m_cssomWrapper = adoptPtrWillBeNoop(new InlineCSSStyleDeclaration(ownerElement));
     return *m_cssomWrapper;
 }
+#endif
 
 AttrNodeList& ElementRareData::ensureAttrNodeList()
 {
@@ -76,7 +82,9 @@ DEFINE_TRACE_AFTER_DISPATCH(ElementRareData)
     visitor->trace(m_attrNodeList);
 #endif
     visitor->trace(m_elementAnimations);
+#ifndef BLINKIT_CRAWLER_ONLY
     visitor->trace(m_cssomWrapper);
+#endif
     visitor->trace(m_customElementDefinition);
     visitor->trace(m_generatedBefore);
     visitor->trace(m_generatedAfter);

@@ -80,6 +80,10 @@ LayoutObject* LayoutTreeBuilderForElement::nextLayoutObject() const
 
 LayoutObject* LayoutTreeBuilderForElement::parentLayoutObject() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     if (m_layoutObjectParent) {
         // FIXME: Guarding this by parentLayoutObject isn't quite right as the spec for
         // top layer only talks about display: none ancestors so putting a <dialog> inside an
@@ -89,6 +93,7 @@ LayoutObject* LayoutTreeBuilderForElement::parentLayoutObject() const
     }
 
     return m_layoutObjectParent;
+#endif
 }
 
 bool LayoutTreeBuilderForElement::shouldCreateLayoutObject() const

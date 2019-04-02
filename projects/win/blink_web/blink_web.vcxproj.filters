@@ -86,9 +86,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ValidationMessageClientImpl.cpp">
       <Filter>web</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebCache.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebColorSuggestion.cpp">
       <Filter>web</Filter>
     </ClCompile>
@@ -140,13 +137,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFrameImplBase.cpp">
       <Filter>web</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFrameWidgetImpl.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebHeap.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebHitTestResult.cpp">
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebImageCache.cpp">
@@ -167,22 +158,13 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebKit.cpp">
       <Filter>web</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebLabelElement.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebMemoryPressureListener.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebMetaElement.cpp">
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebNetworkStateNotifier.cpp">
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebNode.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebOptionElement.cpp">
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebPageImportanceSignals.cpp">
@@ -204,9 +186,6 @@
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebSecurityPolicy.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebSelectElement.cpp">
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebSelection.cpp">

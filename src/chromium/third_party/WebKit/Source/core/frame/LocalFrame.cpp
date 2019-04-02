@@ -101,16 +101,24 @@ public:
         : frame(frame)
         , node(node)
     {
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(false); // BKTODO: Not reached!
+#else
         ASSERT(!node || node->layoutObject());
         if (node)
             node->layoutObject()->updateDragState(true);
+#endif
     }
 
     ~ScopedFramePaintingState()
     {
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(false); // BKTODO: Not reached!
+#else
         if (node && node->layoutObject())
             node->layoutObject()->updateDragState(false);
         frame->view()->setNodeToDraw(0);
+#endif
     }
 
     RawPtrWillBeMember<LocalFrame> frame;
@@ -446,7 +454,12 @@ void LocalFrame::setPagePopupOwner(Element& owner)
 
 LayoutView* LocalFrame::contentLayoutObject() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     return document() ? document()->layoutView() : nullptr;
+#endif
 }
 
 void LocalFrame::didChangeVisibilityState()
@@ -664,6 +677,10 @@ PassOwnPtr<DragImage> LocalFrame::paintIntoDragImage(
 
 PassOwnPtr<DragImage> LocalFrame::nodeImage(Node& node)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     if (!node.layoutObject())
         return nullptr;
 
@@ -682,6 +699,7 @@ PassOwnPtr<DragImage> LocalFrame::nodeImage(Node& node)
 
     return paintIntoDragImage(*layoutObject, LayoutObject::shouldRespectImageOrientation(layoutObject),
         GlobalPaintFlattenCompositingLayers, layoutObject->paintingRootRect(rect));
+#endif
 }
 
 PassOwnPtr<DragImage> LocalFrame::dragImageForSelection(float opacity)
@@ -709,6 +727,10 @@ String LocalFrame::selectedTextForClipboard() const
 
 PositionWithAffinity LocalFrame::positionForPoint(const IntPoint& framePoint)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return PositionWithAffinity();
+#else
     HitTestResult result = eventHandler().hitTestResultAtPoint(framePoint);
     Node* node = result.innerNodeOrImageMapImage();
     if (!node)
@@ -720,6 +742,7 @@ PositionWithAffinity LocalFrame::positionForPoint(const IntPoint& framePoint)
     if (position.isNull())
         return PositionWithAffinity(firstPositionInOrBeforeNode(node));
     return position;
+#endif
 }
 
 Document* LocalFrame::documentAtPoint(const IntPoint& pointInRootFrame)
