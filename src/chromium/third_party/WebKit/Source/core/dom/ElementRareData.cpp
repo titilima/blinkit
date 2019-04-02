@@ -50,10 +50,11 @@ struct SameSizeAsElementRareData : NodeRareData {
     IntSize scrollOffset;
 #ifdef BLINKIT_CRAWLER_ONLY
     void* pointers[10];
+    PersistentWillBeMember<void*> persistentMember[1];
 #else
     void* pointers[12];
-#endif
     PersistentWillBeMember<void*> persistentMember[2];
+#endif
 };
 
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -81,8 +82,8 @@ DEFINE_TRACE_AFTER_DISPATCH(ElementRareData)
 #if ENABLE(OILPAN)
     visitor->trace(m_attrNodeList);
 #endif
-    visitor->trace(m_elementAnimations);
 #ifndef BLINKIT_CRAWLER_ONLY
+    visitor->trace(m_elementAnimations);
     visitor->trace(m_cssomWrapper);
 #endif
     visitor->trace(m_customElementDefinition);
