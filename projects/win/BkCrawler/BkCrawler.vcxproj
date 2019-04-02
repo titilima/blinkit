@@ -293,14 +293,8 @@
     <ProjectReference Include="..\webcore_generated\webcore_generated.vcxproj">
       <Project>{b47ce86f-ddfe-43af-bc11-8991f741f3a4}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\webcore_html\webcore_html.vcxproj">
-      <Project>{1e0c301e-4c6f-468e-a91e-2e55730a296f}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\webcore_remaining\webcore_remaining.vcxproj">
       <Project>{a8709b4b-640f-4593-a431-db453f4076e5}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\webcore_rendering\webcore_rendering.vcxproj">
-      <Project>{9ca55c16-3c88-4d99-93a6-5a866778e717}</Project>
     </ProjectReference>
     <ProjectReference Include="..\wtf\wtf.vcxproj">
       <Project>{f2bd6227-b9bf-4658-a72f-3a8ca514a847}</Project>
