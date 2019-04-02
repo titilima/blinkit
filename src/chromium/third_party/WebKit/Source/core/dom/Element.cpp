@@ -3486,11 +3486,13 @@ void Element::didRecalcStyle(StyleRecalcChange)
     ASSERT(hasCustomStyleCallbacks());
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 PassRefPtr<ComputedStyle> Element::customStyleForLayoutObject()
 {
     ASSERT(hasCustomStyleCallbacks());
     return nullptr;
 }
+#endif
 
 void Element::cloneAttributesFromElement(const Element& other)
 {

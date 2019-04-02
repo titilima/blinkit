@@ -938,7 +938,12 @@ VisiblePosition WebLocalFrameImpl::visiblePositionForViewportPoint(const WebPoin
 
 bool WebLocalFrameImpl::hasCustomPageSizeStyle(int pageIndex)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     return frame()->document()->styleForPage(pageIndex)->pageSizeType() != PAGE_SIZE_AUTO;
+#endif
 }
 
 bool WebLocalFrameImpl::isPageBoxVisible(int pageIndex)

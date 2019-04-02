@@ -107,11 +107,15 @@ void HTMLTextFormControlElement::dispatchBlurEvent(Element* newFocusedElement, W
 
 void HTMLTextFormControlElement::defaultEventHandler(Event* event)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (event->type() == EventTypeNames::webkitEditableContentChanged && layoutObject() && layoutObject()->isTextControl()) {
         m_lastChangeWasUserEdit = !document().isRunningExecCommand();
         subtreeHasChanged();
         return;
     }
+#endif
 
     HTMLFormControlElementWithState::defaultEventHandler(event);
 }
@@ -516,6 +520,10 @@ static inline void setContainerAndOffsetForRange(Node* node, int offset, Node*& 
 
 PassRefPtrWillBeRawPtr<Range> HTMLTextFormControlElement::selection() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     if (!layoutObject() || !isTextFormControl())
         return nullptr;
 
@@ -553,6 +561,7 @@ PassRefPtrWillBeRawPtr<Range> HTMLTextFormControlElement::selection() const
         return nullptr;
 
     return Range::create(document(), startNode, start, endNode, end);
+#endif
 }
 
 const AtomicString& HTMLTextFormControlElement::autocapitalize() const
@@ -589,6 +598,9 @@ void HTMLTextFormControlElement::restoreCachedSelection()
 
 void HTMLTextFormControlElement::selectionChanged(bool userTriggered)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!layoutObject() || !isTextFormControl())
         return;
 
@@ -599,6 +611,7 @@ void HTMLTextFormControlElement::selectionChanged(bool userTriggered)
         if (frame->selection().isRange() && userTriggered)
             dispatchEvent(Event::createBubble(EventTypeNames::select));
     }
+#endif
 }
 
 void HTMLTextFormControlElement::scheduleSelectEvent()
@@ -702,6 +715,10 @@ String HTMLTextFormControlElement::valueWithHardLineBreaks() const
     if (!innerText || !isTextFormControl())
         return value();
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+        return value();
+#else
     LayoutBlockFlow* layoutObject = toLayoutBlockFlow(innerText->layoutObject());
     if (!layoutObject)
         return value();
@@ -736,6 +753,7 @@ String HTMLTextFormControlElement::valueWithHardLineBreaks() const
             getNextSoftBreak(line, breakNode, breakOffset);
     }
     return finishText(result);
+#endif
 }
 
 HTMLTextFormControlElement* enclosingTextFormControl(const Position& position)

@@ -128,7 +128,9 @@ protected:
     virtual bool useFallbackContent() const { return m_useFallbackContent; }
 
     void didAddUserAgentShadowRoot(ShadowRoot&) override;
+#ifndef BLINKIT_CRAWLER_ONLY
     PassRefPtr<ComputedStyle> customStyleForLayoutObject() override;
+#endif
 private:
     bool areAuthorShadowsAllowed() const override { return false; }
 

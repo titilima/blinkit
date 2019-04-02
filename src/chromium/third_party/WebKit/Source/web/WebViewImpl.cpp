@@ -1202,6 +1202,9 @@ WebInputEventResult WebViewImpl::handleCharEvent(const WebKeyboardEvent& event)
 
 WebRect WebViewImpl::computeBlockBound(const WebPoint& pointInRootFrame, bool ignoreClipping)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!mainFrameImpl())
         return WebRect();
 
@@ -1226,6 +1229,7 @@ WebRect WebViewImpl::computeBlockBound(const WebPoint& pointInRootFrame, bool ig
         LocalFrame* frame = node->document().frame();
         return frame->view()->contentsToRootFrame(pointInRootFrame);
     }
+#endif
     return WebRect();
 }
 
@@ -1334,6 +1338,10 @@ void WebViewImpl::computeScaleAndScrollForBlockRect(const WebPoint& hitPointInRo
 
 static Node* findCursorDefiningAncestor(Node* node, LocalFrame* frame)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     // Go up the tree to find the node that defines a mouse cursor style
     while (node) {
         if (node->layoutObject()) {
@@ -1345,16 +1353,22 @@ static Node* findCursorDefiningAncestor(Node* node, LocalFrame* frame)
     }
 
     return node;
+#endif
 }
 
 static bool showsHandCursor(Node* node, LocalFrame* frame)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     if (!node || !node->layoutObject())
         return false;
 
     ECursor cursor = node->layoutObject()->style()->cursor();
     return cursor == CURSOR_POINTER
         || (cursor == CURSOR_AUTO && frame->eventHandler().useHandCursor(node, node->isLink()));
+#endif
 }
 
 Node* WebViewImpl::bestTapNode(const GestureEventWithHitTestResults& targetedTapEvent)
@@ -1368,6 +1382,9 @@ Node* WebViewImpl::bestTapNode(const GestureEventWithHitTestResults& targetedTap
     if (!bestTouchNode)
         return nullptr;
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // We might hit something like an image map that has no layoutObject on it
     // Walk up the tree until we have a node with an attached layoutObject
     while (!bestTouchNode->layoutObject()) {
@@ -1375,6 +1392,7 @@ Node* WebViewImpl::bestTapNode(const GestureEventWithHitTestResults& targetedTap
         if (!bestTouchNode)
             return nullptr;
     }
+#endif
 
     // Editable nodes should not be highlighted (e.g., <input>)
     if (bestTouchNode->hasEditableStyle())
@@ -1419,6 +1437,9 @@ void WebViewImpl::enableTapHighlights(WillBeHeapVector<RawPtrWillBeMember<Node>>
     // don't get a new target to highlight.
     m_linkHighlights.clear();
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     for (size_t i = 0; i < highlightNodes.size(); ++i) {
         Node* node = highlightNodes[i];
 
@@ -1434,6 +1455,7 @@ void WebViewImpl::enableTapHighlights(WillBeHeapVector<RawPtrWillBeMember<Node>>
 
         m_linkHighlights.append(LinkHighlightImpl::create(node, this));
     }
+#endif
 
     updateAllLifecyclePhases();
 }
@@ -1864,6 +1886,9 @@ TopControls& WebViewImpl::topControls()
 
 void WebViewImpl::resizeViewWhileAnchored(FrameView* view)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     ASSERT(mainFrameImpl() && mainFrameImpl()->frame()->isLocalFrame());
 
     {
@@ -1875,6 +1900,7 @@ void WebViewImpl::resizeViewWhileAnchored(FrameView* view)
     // Update lifecyle phases immediately to recalculate the minimum scale limit for rotation anchoring,
     // and to make sure that no lifecycle states are stale if this WebView is embedded in another one.
     updateAllLifecyclePhases();
+#endif
 }
 
 void WebViewImpl::resize(const WebSize& newSize)
@@ -3227,6 +3253,9 @@ void WebViewImpl::refreshPageScaleFactorAfterLayout()
 
 void WebViewImpl::updatePageDefinedViewportConstraints(const ViewportDescription& description)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // If we're not reading the viewport meta tag, allow GPU rasterization.
     if (!settingsImpl()->viewportMetaEnabled()) {
         m_matchesHeuristicsForGpuRasterization = true;
@@ -3292,6 +3321,7 @@ void WebViewImpl::updatePageDefinedViewportConstraints(const ViewportDescription
         if (TextAutosizer* textAutosizer = frame->document()->textAutosizer())
             textAutosizer->updatePageInfoInAllFrames();
     }
+#endif
 }
 
 void WebViewImpl::updateMainFrameLayoutSize()
@@ -3322,16 +3352,25 @@ void WebViewImpl::updateMainFrameLayoutSize()
 
 IntSize WebViewImpl::contentsSize() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return IntSize();
+#else
     if (!page()->mainFrame()->isLocalFrame())
         return IntSize();
     LayoutView* root = page()->deprecatedLocalMainFrame()->contentLayoutObject();
     if (!root)
         return IntSize();
     return root->documentRect().size();
+#endif
 }
 
 WebSize WebViewImpl::contentsPreferredMinimumSize()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return WebSize();
+#else
     updateAllLifecyclePhases();
 
     Document* document = m_page->mainFrame()->isLocalFrame() ? m_page->deprecatedLocalMainFrame()->document() : nullptr;
@@ -3341,6 +3380,7 @@ WebSize WebViewImpl::contentsPreferredMinimumSize()
     int widthScaled = document->layoutView()->minPreferredLogicalWidth().round(); // Already accounts for zoom.
     int heightScaled = document->documentElement()->layoutBox()->scrollHeight().round();
     return IntSize(widthScaled, heightScaled);
+#endif
 }
 
 void WebViewImpl::enableViewport()
@@ -3811,9 +3851,13 @@ void WebViewImpl::setSelectionColors(unsigned activeBackgroundColor,
                                      unsigned activeForegroundColor,
                                      unsigned inactiveBackgroundColor,
                                      unsigned inactiveForegroundColor) {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
 #if USE(DEFAULT_RENDER_THEME)
     LayoutThemeDefault::setSelectionColors(activeBackgroundColor, activeForegroundColor, inactiveBackgroundColor, inactiveForegroundColor);
     LayoutTheme::theme().platformColorsDidChange();
+#endif
 #endif
 }
 
@@ -4155,6 +4199,10 @@ GraphicsLayerFactory* WebViewImpl::graphicsLayerFactory() const
 
 PaintLayerCompositor* WebViewImpl::compositor() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     WebLocalFrameImpl* frame = mainFrameImpl();
     if (!frame)
         return nullptr;
@@ -4164,6 +4212,7 @@ PaintLayerCompositor* WebViewImpl::compositor() const
         return nullptr;
 
     return document->layoutView()->compositor();
+#endif
 }
 
 void WebViewImpl::registerForAnimations(WebLayer* layer)
@@ -4300,6 +4349,10 @@ void WebViewImpl::updateRootLayerTransform()
 
 bool WebViewImpl::detectContentOnTouch(const GestureEventWithHitTestResults& targetedEvent)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     if (!m_page->mainFrame()->isLocalFrame())
         return false;
 
@@ -4330,6 +4383,7 @@ bool WebViewImpl::detectContentOnTouch(const GestureEventWithHitTestResults& tar
     bool isMainFrame = node ? node->document().frame()->isMainFrame() : true;
     m_client->scheduleContentIntent(content.intent(), isMainFrame);
     return true;
+#endif
 }
 
 void WebViewImpl::setVisibilityState(WebPageVisibilityState visibilityState,

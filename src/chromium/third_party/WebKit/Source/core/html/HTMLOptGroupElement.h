@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLOptGroupElement.h
+// Description: HTMLOptGroupElement Class
+//      Author: Ziming Li
+//     Created: 2019-04-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -58,12 +69,16 @@ private:
     // <optgroup> might not have a layoutObject so we manually manage a cached style.
     void updateNonComputedStyle();
     ComputedStyle* nonLayoutObjectComputedStyle() const override;
+#ifndef BLINKIT_CRAWLER_ONLY
     PassRefPtr<ComputedStyle> customStyleForLayoutObject() override;
+#endif
 
     void updateGroupLabel();
     void recalcSelectOptions();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     RefPtr<ComputedStyle> m_style;
+#endif
 };
 
 } // namespace blink

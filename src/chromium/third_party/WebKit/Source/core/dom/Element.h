@@ -521,8 +521,10 @@ public:
 
     bool isSpellCheckingEnabled() const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // FIXME: public for LayoutTreeBuilder, we shouldn't expose this though.
     PassRefPtr<ComputedStyle> styleForLayoutObject();
+#endif
 
     bool hasID() const;
     bool hasClass() const;
@@ -582,7 +584,9 @@ protected:
 
     virtual void willRecalcStyle(StyleRecalcChange);
     virtual void didRecalcStyle(StyleRecalcChange);
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual PassRefPtr<ComputedStyle> customStyleForLayoutObject();
+#endif
 
     virtual bool shouldRegisterAsNamedItem() const { return false; }
     virtual bool shouldRegisterAsExtraNamedItem() const { return false; }
@@ -605,7 +609,9 @@ protected:
 
     static bool attributeValueIsJavaScriptURL(const Attribute&);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     PassRefPtr<ComputedStyle> originalStyleForLayoutObject();
+#endif
 
     Node* insertAdjacent(const String& where, Node* newChild, ExceptionState&);
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLOptionElement.h
+// Description: HTMLOptionElement Class
+//      Author: Ziming Li
+//     Created: 2019-04-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -101,7 +112,9 @@ private:
     // <option> never has a layoutObject so we manually manage a cached style.
     void updateNonComputedStyle();
     ComputedStyle* nonLayoutObjectComputedStyle() const override;
+#ifndef BLINKIT_CRAWLER_ONLY
     PassRefPtr<ComputedStyle> customStyleForLayoutObject() override;
+#endif
     void didAddUserAgentShadowRoot(ShadowRoot&) override;
 
     String collectOptionInnerText() const;
@@ -114,7 +127,9 @@ private:
     // Represents 'dirtiness'.
     // https://html.spec.whatwg.org/multipage/forms.html#concept-option-dirtiness
     bool m_isDirty = false;
+#ifndef BLINKIT_CRAWLER_ONLY
     RefPtr<ComputedStyle> m_style;
+#endif
 };
 
 } // namespace blink

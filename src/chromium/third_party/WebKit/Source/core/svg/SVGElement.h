@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: SVGElement.h
+// Description: SVGElement Class
+//      Author: Ziming Li
+//     Created: 2019-04-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2008 Nikolas Zimmermann <zimmermann@kde.org>
  * Copyright (C) 2004, 2005, 2006 Rob Buis <buis@kde.org>
@@ -137,7 +148,9 @@ public:
 
     void synchronizeAnimatedSVGAttribute(const QualifiedName&) const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     PassRefPtr<ComputedStyle> customStyleForLayoutObject() final;
+#endif
 
 #if ENABLE(ASSERT)
     virtual bool isAnimatableAttribute(const QualifiedName&) const;

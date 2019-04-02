@@ -1322,6 +1322,9 @@ IntRect Range::boundingBox() const
 
 void Range::textRects(Vector<IntRect>& rects, bool useSelectionHeight, RangeInFixedPosition* inFixed) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     Node* startContainer = m_start.container();
     ASSERT(startContainer);
     Node* endContainer = m_end.container();
@@ -1346,10 +1349,14 @@ void Range::textRects(Vector<IntRect>& rects, bool useSelectionHeight, RangeInFi
 
     if (inFixed)
         *inFixed = allFixed ? EntirelyFixedPosition : (someFixed ? PartiallyFixedPosition : NotFixedPosition);
+#endif
 }
 
 void Range::textQuads(Vector<FloatQuad>& quads, bool useSelectionHeight, RangeInFixedPosition* inFixed) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     Node* startContainer = m_start.container();
     ASSERT(startContainer);
     Node* endContainer = m_end.container();
@@ -1374,6 +1381,7 @@ void Range::textQuads(Vector<FloatQuad>& quads, bool useSelectionHeight, RangeIn
 
     if (inFixed)
         *inFixed = allFixed ? EntirelyFixedPosition : (someFixed ? PartiallyFixedPosition : NotFixedPosition);
+#endif
 }
 
 #ifndef NDEBUG
@@ -1608,6 +1616,9 @@ ClientRect* Range::getBoundingClientRect() const
 
 void Range::getBorderAndTextQuads(Vector<FloatQuad>& quads) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     Node* startContainer = m_start.container();
     Node* endContainer = m_end.container();
     Node* stopNode = pastLastNode();
@@ -1642,6 +1653,7 @@ void Range::getBorderAndTextQuads(Vector<FloatQuad>& quads) const
             }
         }
     }
+#endif
 }
 
 FloatRect Range::boundingRect() const

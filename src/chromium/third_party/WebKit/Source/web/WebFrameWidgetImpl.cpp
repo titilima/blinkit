@@ -632,6 +632,9 @@ void WebFrameWidgetImpl::handleMouseLeave(LocalFrame& mainFrame, const WebMouseE
 
 void WebFrameWidgetImpl::handleMouseDown(LocalFrame& mainFrame, const WebMouseEvent& event)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // Take capture on a mouse down on a plugin so we can send it mouse events.
     // If the hit node is a plugin but a scrollbar is over it don't start mouse
     // capture because it will interfere with the scrollbar receiving events.
@@ -663,10 +666,14 @@ void WebFrameWidgetImpl::handleMouseDown(LocalFrame& mainFrame, const WebMouseEv
             mouseContextMenu(event);
 #endif
     }
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 void WebFrameWidgetImpl::mouseContextMenu(const WebMouseEvent& event)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     page()->contextMenuController().clearContextMenu();
 
     PlatformMouseEventBuilder pme(m_localRoot->frameView(), event);
@@ -698,6 +705,7 @@ void WebFrameWidgetImpl::mouseContextMenu(const WebMouseEvent& event)
     }
     // Actually showing the context menu is handled by the ContextMenuClient
     // implementation...
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 void WebFrameWidgetImpl::handleMouseUp(LocalFrame& mainFrame, const WebMouseEvent& event)
@@ -778,11 +786,15 @@ WebInputEventResult WebFrameWidgetImpl::handleKeyEvent(const WebKeyboardEvent& e
     WebInputEventResult result = frame->eventHandler().keyEvent(evt);
     if (result != WebInputEventResult::NotHandled) {
         if (WebInputEvent::RawKeyDown == event.type) {
+#ifdef BLINKIT_CRAWLER_ONLY
+            assert(false); // BKTODO: Not reached!
+#else
             // Suppress the next keypress event unless the focused node is a plugin node.
             // (Flash needs these keypress events to handle non-US keyboards.)
             Element* element = focusedElement();
             if (!element || !element->layoutObject() || !element->layoutObject()->isEmbeddedObject())
                 m_suppressNextKeypressEvent = true;
+#endif
         }
         return result;
     }
@@ -1029,11 +1041,16 @@ void WebFrameWidgetImpl::setIsAcceleratedCompositingActive(bool active)
 
 PaintLayerCompositor* WebFrameWidgetImpl::compositor() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     LocalFrame* frame = m_localRoot->frame();
     if (!frame || !frame->document() || !frame->document()->layoutView())
         return nullptr;
 
     return frame->document()->layoutView()->compositor();
+#endif
 }
 
 void WebFrameWidgetImpl::setRootGraphicsLayer(GraphicsLayer* layer)
@@ -1080,6 +1097,7 @@ void WebFrameWidgetImpl::setVisibilityState(WebPageVisibilityState visibilitySta
     }
 }
 
+#ifdef BLINKIT_CRAWLER_ONLY
 HitTestResult WebFrameWidgetImpl::hitTestResultForRootFramePos(const IntPoint& posInRootFrame)
 {
     IntPoint docPoint(m_localRoot->frame()->view()->rootFrameToContents(posInRootFrame));
@@ -1087,5 +1105,6 @@ HitTestResult WebFrameWidgetImpl::hitTestResultForRootFramePos(const IntPoint& p
     result.setToShadowHostIfInUserAgentShadowRoot();
     return result;
 }
+#endif
 
 } // namespace blink

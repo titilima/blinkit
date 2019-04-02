@@ -2088,36 +2088,36 @@ void Document::updateLayoutIgnorePendingStylesheets(Document::RunPostLayoutTasks
         view()->flushAnyPendingPostLayoutTasks();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 PassRefPtr<ComputedStyle> Document::styleForElementIgnoringPendingStylesheets(Element* element)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-    return nullptr;
-#else
     ASSERT_ARG(element, element->document() == this);
     StyleEngine::IgnoringPendingStylesheet ignoring(styleEngine());
     return ensureStyleResolver().styleForElement(element, element->parentNode() ? element->parentNode()->ensureComputedStyle() : 0);
-#endif
 }
 
 PassRefPtr<ComputedStyle> Document::styleForPage(int pageIndex)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-    return nullptr;
-#else
     updateDistribution();
     return ensureStyleResolver().styleForPage(pageIndex);
-#endif
 }
+#endif
 
 bool Document::isPageBoxVisible(int pageIndex)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+    exit(0);
+#else
     return styleForPage(pageIndex)->visibility() != HIDDEN; // display property doesn't apply to @page.
+#endif
 }
 
 void Document::pageSizeAndMarginsInPixels(int pageIndex, IntSize& pageSize, int& marginTop, int& marginRight, int& marginBottom, int& marginLeft)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     RefPtr<ComputedStyle> style = styleForPage(pageIndex);
 
     int width = pageSize.width();
@@ -2150,6 +2150,7 @@ void Document::pageSizeAndMarginsInPixels(int pageIndex, IntSize& pageSize, int&
     marginRight = style->marginRight().isAuto() ? marginRight : intValueForLength(style->marginRight(), width);
     marginBottom = style->marginBottom().isAuto() ? marginBottom : intValueForLength(style->marginBottom(), width);
     marginLeft = style->marginLeft().isAuto() ? marginLeft : intValueForLength(style->marginLeft(), width);
+#endif
 }
 
 void Document::setIsViewSource(bool isViewSource)

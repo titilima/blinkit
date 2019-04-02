@@ -727,8 +727,12 @@ void HTMLInputElement::parseAttribute(const QualifiedName& name, const AtomicStr
         int valueAsInteger;
         if (!value.isEmpty() && parseHTMLInteger(value, valueAsInteger) && valueAsInteger > 0)
             m_size = valueAsInteger;
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(false); // BKTODO: Not reached!
+#else
         if (m_size != oldSize && layoutObject())
             layoutObject()->setNeedsLayoutAndPrefWidthsRecalcAndFullPaintInvalidation(LayoutInvalidationReason::AttributeChanged);
+#endif
     } else if (name == altAttr) {
         m_inputTypeView->altAttributeChanged();
     } else if (name == srcAttr) {
@@ -921,8 +925,12 @@ void HTMLInputElement::setChecked(bool nowChecked, TextFieldEventBehavior eventB
 
     if (RadioButtonGroupScope* scope = radioButtonGroupScope())
         scope->updateCheckedState(this);
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (layoutObject())
         LayoutTheme::theme().controlStateChanged(*layoutObject(), CheckedControlState);
+#endif
 
     setNeedsValidityCheck();
 
@@ -949,8 +957,12 @@ void HTMLInputElement::setIndeterminate(bool newValue)
 
     pseudoStateChanged(CSSSelector::PseudoIndeterminate);
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (layoutObject())
         LayoutTheme::theme().controlStateChanged(*layoutObject(), CheckedControlState);
+#endif
 }
 
 int HTMLInputElement::size() const
@@ -1028,6 +1040,9 @@ void HTMLInputElement::setSuggestedValue(const String& value)
 
 void HTMLInputElement::setEditingValue(const String& value)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!layoutObject() || !isTextField())
         return;
     setInnerEditorValue(value);
@@ -1040,6 +1055,7 @@ void HTMLInputElement::setEditingValue(const String& value)
         cacheSelectionInResponseToSetValue(max);
 
     dispatchInputEvent();
+#endif
 }
 
 void HTMLInputElement::setInnerEditorValue(const String& value)
@@ -1438,8 +1454,12 @@ void HTMLInputElement::setCanReceiveDroppedFiles(bool canReceiveDroppedFiles)
     if (!!m_canReceiveDroppedFiles == canReceiveDroppedFiles)
         return;
     m_canReceiveDroppedFiles = canReceiveDroppedFiles;
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (layoutObject())
         layoutObject()->updateFromElement();
+#endif
 }
 
 String HTMLInputElement::sanitizeValue(const String& proposedValue) const
@@ -1895,10 +1915,12 @@ bool HTMLInputElement::supportsAutofocus() const
     return m_inputType->isInteractiveContent();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 PassRefPtr<ComputedStyle> HTMLInputElement::customStyleForLayoutObject()
 {
     return m_inputTypeView->customStyleForLayoutObject(originalStyleForLayoutObject());
 }
+#endif
 
 bool HTMLInputElement::shouldDispatchFormControlChangeEvent(String& oldValue, String& newValue)
 {

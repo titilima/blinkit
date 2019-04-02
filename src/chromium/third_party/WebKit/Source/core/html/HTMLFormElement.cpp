@@ -130,6 +130,10 @@ bool HTMLFormElement::isValidElement()
 
 bool HTMLFormElement::layoutObjectIsNeeded(const ComputedStyle& style)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+    exit(0);
+#else
     if (!m_wasDemoted)
         return HTMLElement::layoutObjectIsNeeded(style);
 
@@ -155,6 +159,7 @@ bool HTMLFormElement::layoutObjectIsNeeded(const ComputedStyle& style)
         || display == TABLE_CAPTION;
 
     return formIsTablePart;
+#endif
 }
 
 Node::InsertionNotificationRequest HTMLFormElement::insertedInto(ContainerNode* insertionPoint)

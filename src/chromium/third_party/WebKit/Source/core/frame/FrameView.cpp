@@ -2244,6 +2244,9 @@ void FrameView::updateDocumentAnnotatedRegions() const
 
 void FrameView::updateScrollCorner()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     RefPtr<ComputedStyle> cornerStyle;
     IntRect cornerRect = scrollCornerRect();
     Document* doc = m_frame->document();
@@ -2251,23 +2254,15 @@ void FrameView::updateScrollCorner()
     if (doc && !cornerRect.isEmpty()) {
         // Try the <body> element first as a scroll corner source.
         if (Element* body = doc->body()) {
-#ifdef BLINKIT_CRAWLER_ONLY
-            assert(false); // BKTODO: Not reached!
-#else
             if (LayoutObject* layoutObject = body->layoutObject())
                 cornerStyle = layoutObject->getUncachedPseudoStyle(PseudoStyleRequest(SCROLLBAR_CORNER), layoutObject->style());
-#endif
         }
 
         if (!cornerStyle) {
             // If the <body> didn't have a custom style, then the root element might.
             if (Element* docElement = doc->documentElement()) {
-#ifdef BLINKIT_CRAWLER_ONLY
-                assert(false); // BKTODO: Not reached!
-#else
                 if (LayoutObject* layoutObject = docElement->layoutObject())
                     cornerStyle = layoutObject->getUncachedPseudoStyle(PseudoStyleRequest(SCROLLBAR_CORNER), layoutObject->style());
-#endif
             }
         }
 
@@ -2287,6 +2282,7 @@ void FrameView::updateScrollCorner()
         m_scrollCorner->destroy();
         m_scrollCorner = nullptr;
     }
+#endif
 }
 
 Color FrameView::documentBackgroundColor() const
