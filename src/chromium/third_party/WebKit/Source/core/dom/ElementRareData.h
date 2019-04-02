@@ -214,8 +214,10 @@ inline ElementRareData::ElementRareData(LayoutObject* layoutObject)
 inline ElementRareData::~ElementRareData()
 {
 #if !ENABLE(OILPAN)
+#ifndef BLINKIT_CRAWLER_ONLY
     if (m_elementAnimations)
         m_elementAnimations->dispose();
+#endif
     if (m_intersectionObserverData)
         m_intersectionObserverData->dispose();
     ASSERT(!m_shadow);
