@@ -185,6 +185,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\SpellCheckerClientImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\TextFinder.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ValidationMessageClientImpl.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebCache.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebColorSuggestion.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebCSSParser.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebCustomElement.cpp" />

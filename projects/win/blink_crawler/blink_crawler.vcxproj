@@ -171,6 +171,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Node.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NodeRareData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ProcessingInstruction.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Range.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptLoader.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\shadow\ElementShadow.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\shadow\ShadowRoot.cpp" />
@@ -183,6 +184,13 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameView.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalDOMWindow.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalFrame.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLCollection.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFormControlElement.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFormControlElementWithState.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFormElement.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLInputElement.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTagCollection.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTextFormControlElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\input\EventHandler.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FrameLoader.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\Page.cpp" />
@@ -205,6 +213,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLCollection.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFormControlElement.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFormControlElementWithState.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFormElement.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLInputElement.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTagCollection.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTextFormControlElement.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

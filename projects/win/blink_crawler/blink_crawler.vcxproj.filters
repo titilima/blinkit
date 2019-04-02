@@ -51,6 +51,9 @@
     <Filter Include="core\fetch">
       <UniqueIdentifier>{afca47b0-cbf5-4fe4-8645-ab74f295cf4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="core\html">
+      <UniqueIdentifier>{6bc7ce25-462e-4651-a088-ce8bc132904a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -161,10 +164,55 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ElementRareData.cpp">
       <Filter>core\dom</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFormControlElement.cpp">
+      <Filter>core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTextFormControlElement.cpp">
+      <Filter>core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLInputElement.cpp">
+      <Filter>core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Range.cpp">
+      <Filter>core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFormControlElementWithState.cpp">
+      <Filter>core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFormElement.cpp">
+      <Filter>core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTagCollection.cpp">
+      <Filter>core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLCollection.cpp">
+      <Filter>core\html</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFormControlElement.h">
+      <Filter>core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTextFormControlElement.h">
+      <Filter>core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLInputElement.h">
+      <Filter>core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFormControlElementWithState.h">
+      <Filter>core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFormElement.h">
+      <Filter>core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTagCollection.h">
+      <Filter>core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLCollection.h">
+      <Filter>core\html</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
