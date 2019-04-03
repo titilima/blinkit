@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ChromeClient.cpp
+// Description: ChromeClient Class
+//      Author: Ziming Li
+//     Created: 2019-04-03
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2009, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2008, 2010 Nokia Corporation and/or its subsidiary(-ies)
@@ -179,16 +190,6 @@ void ChromeClient::clearToolTip()
     // Do not check m_lastToolTip* and do not update them intentionally.
     // We don't want to show tooltips with same content after clearToolTip().
     setToolTip(String(), LTR);
-}
-
-void ChromeClient::print(LocalFrame* frame)
-{
-    // Defer loads in case the client method runs a new event loop that would
-    // otherwise cause the load to continue while we're in the middle of
-    // executing JavaScript.
-    ScopedPageLoadDeferrer deferrer;
-
-    printDelegate(frame);
 }
 
 float ChromeClient::screenToViewport(float length) const

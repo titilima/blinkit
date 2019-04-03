@@ -166,8 +166,6 @@ public:
     virtual void setToolTip(const String&, TextDirection) = 0;
     void clearToolTip();
 
-    void print(LocalFrame*);
-
     virtual void annotatedRegionsChanged() = 0;
 
     virtual PassOwnPtrWillBeRawPtr<ColorChooser> openColorChooser(LocalFrame*, ColorChooserClient*, const Color&) = 0;
