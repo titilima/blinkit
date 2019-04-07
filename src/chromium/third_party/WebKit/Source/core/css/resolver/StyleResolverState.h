@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StyleResolverState.h
+// Description: StyleResolverState Class
+//      Author: Ziming Li
+//     Created: 2019-04-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -61,13 +72,12 @@ public:
 
     const ElementResolveContext& elementContext() const { return m_elementContext; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void setStyle(PassRefPtr<ComputedStyle> style)
     {
-#ifndef BLINKIT_CRAWLER_ONLY
         // FIXME: Improve RAII of StyleResolverState to remove this function.
         m_style = style;
         m_cssToLengthConversionData = CSSToLengthConversionData(m_style.get(), rootElementStyle(), document().layoutView(), m_style->effectiveZoom());
-#endif
     }
     const ComputedStyle* style() const { return m_style.get(); }
     ComputedStyle* style() { return m_style.get(); }
@@ -75,6 +85,7 @@ public:
 
     ComputedStyle& mutableStyleRef() const { return *m_style; }
     const ComputedStyle& styleRef() const { return mutableStyleRef(); }
+#endif
 
     const CSSToLengthConversionData& cssToLengthConversionData() const { return m_cssToLengthConversionData; }
 
@@ -83,9 +94,11 @@ public:
 
     CSSAnimationUpdate& animationUpdate() { return m_animationUpdate; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void setParentStyle(PassRefPtr<ComputedStyle> parentStyle) { m_parentStyle = parentStyle; }
     const ComputedStyle* parentStyle() const { return m_parentStyle.get(); }
     ComputedStyle* parentStyle() { return m_parentStyle.get(); }
+#endif
 
     // FIXME: These are effectively side-channel "out parameters" for the various
     // map functions. When we map from CSS to style objects we use this state object
@@ -99,12 +112,16 @@ public:
 
     void cacheUserAgentBorderAndBackground()
     {
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(false); // BKTODO: Not reached!
+#else
         // LayoutTheme only needs the cached style if it has an appearance,
         // and constructing it is expensive so we avoid it if possible.
         if (!style()->hasAppearance())
             return;
 
         m_cachedUAStyle = CachedUAStyle::create(style());
+#endif
     }
 
     const CachedUAStyle* cachedUAStyle() const
@@ -123,6 +140,7 @@ public:
     }
 
     FontBuilder& fontBuilder() { return m_fontBuilder; }
+#ifndef BLINKIT_CRAWLER_ONLY
     // FIXME: These exist as a primitive way to track mutations to font-related properties
     // on a ComputedStyle. As designed, these are very error-prone, as some callers
     // set these directly on the ComputedStyle w/o telling us. Presumably we'll
@@ -150,6 +168,7 @@ public:
         if (m_style->setTextOrientation(textOrientation))
             m_fontBuilder.didChangeTextOrientation();
     }
+#endif
 
     void setHasDirAutoAttribute(bool value) { m_hasDirAutoAttribute = value; }
     bool hasDirAutoAttribute() const { return m_hasDirAutoAttribute; }
@@ -158,14 +177,18 @@ private:
     ElementResolveContext m_elementContext;
     RawPtrWillBeMember<Document> m_document;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // m_style is the primary output for each element's style resolve.
     RefPtr<ComputedStyle> m_style;
+#endif
 
     CSSToLengthConversionData m_cssToLengthConversionData;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // m_parentStyle is not always just ElementResolveContext::parentStyle,
     // so we keep it separate.
     RefPtr<ComputedStyle> m_parentStyle;
+#endif
 
     CSSAnimationUpdate m_animationUpdate;
 

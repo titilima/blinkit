@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CachedMatchedProperties.h
+// Description: CachedMatchedProperties Class
+//      Author: Ziming Li
+//     Created: 2019-04-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -40,8 +51,10 @@ class CachedMatchedProperties final : public NoBaseWillBeGarbageCollectedFinaliz
     USING_FAST_MALLOC_WILL_BE_REMOVED(CachedMatchedProperties);
 public:
     WillBeHeapVector<MatchedProperties> matchedProperties;
+#ifndef BLINKIT_CRAWLER_ONLY
     RefPtr<ComputedStyle> computedStyle;
     RefPtr<ComputedStyle> parentComputedStyle;
+#endif
 
     void set(const ComputedStyle&, const ComputedStyle& parentStyle, const MatchedPropertiesVector&);
     void clear();

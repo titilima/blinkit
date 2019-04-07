@@ -77,6 +77,10 @@ const QualifiedName& pseudoElementTagName();
 
 inline bool pseudoElementLayoutObjectIsNeeded(const ComputedStyle* style)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     if (!style)
         return false;
     if (style->display() == NONE)
@@ -84,6 +88,7 @@ inline bool pseudoElementLayoutObjectIsNeeded(const ComputedStyle* style)
     if (style->styleType() == FIRST_LETTER || style->styleType() == BACKDROP)
         return true;
     return style->contentData();
+#endif
 }
 
 DEFINE_ELEMENT_TYPE_CASTS(PseudoElement, isPseudoElement());

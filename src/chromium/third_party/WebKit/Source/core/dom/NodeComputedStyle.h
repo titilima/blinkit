@@ -45,7 +45,6 @@
 
 namespace blink {
 
-#ifndef BLINKIT_CRAWLER_ONLY
 inline const ComputedStyle* Node::computedStyle() const
 {
     return mutableComputedStyle();
@@ -53,6 +52,9 @@ inline const ComputedStyle* Node::computedStyle() const
 
 inline ComputedStyle* Node::mutableComputedStyle() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (LayoutObject* layoutObject = this->layoutObject())
         return layoutObject->mutableStyle();
     // <option> and <optgroup> can be styled even if they don't get layout objects,
@@ -60,15 +62,21 @@ inline ComputedStyle* Node::mutableComputedStyle() const
     // We check here explicitly to avoid the virtual call in the common case.
     if (isHTMLOptGroupElement(*this) || isHTMLOptionElement(this))
         return nonLayoutObjectComputedStyle();
+#endif
     return 0;
 }
 
 inline const ComputedStyle* Node::parentComputedStyle() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     if (isSlotOrActiveInsertionPoint())
         return 0;
     ContainerNode* parent = LayoutTreeBuilderTraversal::parent(*this);
     return parent ? parent->computedStyle() : 0;
+#endif
 }
 
 inline const ComputedStyle& Node::computedStyleRef() const
@@ -77,7 +85,6 @@ inline const ComputedStyle& Node::computedStyleRef() const
     ASSERT(style);
     return *style;
 }
-#endif
 
 }
 #endif // NodeComputedStyle_h
