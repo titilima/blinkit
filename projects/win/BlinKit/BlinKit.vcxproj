@@ -190,6 +190,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\browser\browser_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\frame_loader_client_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\request_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\response_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\win_request.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_thread.h" />
     <ClInclude Include="..\..\..\src\blinkit\browser\browser_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\frame_loader_client_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\request_controller_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\request_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\response_impl.h" />
