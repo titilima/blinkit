@@ -101,24 +101,16 @@ public:
         : frame(frame)
         , node(node)
     {
-#ifdef BLINKIT_CRAWLER_ONLY
-        assert(false); // BKTODO: Not reached!
-#else
         ASSERT(!node || node->layoutObject());
         if (node)
             node->layoutObject()->updateDragState(true);
-#endif
     }
 
     ~ScopedFramePaintingState()
     {
-#ifdef BLINKIT_CRAWLER_ONLY
-        assert(false); // BKTODO: Not reached!
-#else
         if (node && node->layoutObject())
             node->layoutObject()->updateDragState(false);
         frame->view()->setNodeToDraw(0);
-#endif
     }
 
     RawPtrWillBeMember<LocalFrame> frame;
@@ -241,17 +233,6 @@ DEFINE_TRACE(LocalFrame)
     Frame::trace(visitor);
 }
 
-DOMWindow* LocalFrame::domWindow() const
-{
-    return m_domWindow.get();
-}
-
-WindowProxy* LocalFrame::windowProxy(DOMWrapperWorld& world)
-{
-    assert(false); // Not reached!
-    return nullptr;
-}
-
 void LocalFrame::navigate(Document& originDocument, const KURL& url, bool replaceCurrentItem, UserGestureStatus userGestureStatus)
 {
     // TODO(dcheng): Special case for window.open("about:blank") to ensure it loads synchronously into
@@ -363,16 +344,6 @@ void LocalFrame::detach(FrameDetachType type)
     WeakIdentifierMap<LocalFrame>::notifyObjectDestroyed(this);
 }
 
-bool LocalFrame::prepareForCommit()
-{
-    return loader().prepareForCommit();
-}
-
-SecurityContext* LocalFrame::securityContext() const
-{
-    return document();
-}
-
 void LocalFrame::printNavigationErrorMessage(const Frame& targetFrame, const char* reason)
 {
     // URLs aren't available for RemoteFrames, so the error message uses their
@@ -383,22 +354,9 @@ void LocalFrame::printNavigationErrorMessage(const Frame& targetFrame, const cha
     localDOMWindow()->printErrorMessage(message);
 }
 
-WindowProxyManager* LocalFrame::windowProxyManager() const
-{
-    assert(false); // Not reached!
-    return nullptr;
-}
-
 void LocalFrame::disconnectOwnerElement()
 {
     Frame::disconnectOwnerElement();
-}
-
-bool LocalFrame::shouldClose()
-{
-    // TODO(dcheng): This should be fixed to dispatch beforeunload events to
-    // both local and remote frames.
-    return m_loader.shouldClose();
 }
 
 void LocalFrame::willDetachFrameHost()
@@ -442,11 +400,6 @@ void LocalFrame::setDOMWindow(PassRefPtrWillBeRawPtr<LocalDOMWindow> domWindow)
     m_domWindow = domWindow;
 }
 
-Document* LocalFrame::document() const
-{
-    return m_domWindow ? m_domWindow->document() : nullptr;
-}
-
 void LocalFrame::setPagePopupOwner(Element& owner)
 {
     m_pagePopupOwner = &owner;
@@ -454,12 +407,7 @@ void LocalFrame::setPagePopupOwner(Element& owner)
 
 LayoutView* LocalFrame::contentLayoutObject() const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     return document() ? document()->layoutView() : nullptr;
-#endif
 }
 
 void LocalFrame::didChangeVisibilityState()
@@ -509,6 +457,8 @@ String LocalFrame::layerTreeAsText(LayerTreeFlags flags) const
 
 void LocalFrame::setPrinting(bool printing, const FloatSize& pageSize, const FloatSize& originalPageSize, float maximumShrinkRatio)
 {
+    assert(false); // BKTODO: Remove this!
+#if 0
     // In setting printing, we should not validate resources already cached for the document.
     // See https://bugs.webkit.org/show_bug.cgi?id=43704
     ResourceCacheValidationSuppressor validationSuppressor(document()->fetcher());
@@ -533,13 +483,18 @@ void LocalFrame::setPrinting(bool printing, const FloatSize& pageSize, const Flo
         if (child->isLocalFrame())
             toLocalFrame(child.get())->setPrinting(printing, FloatSize(), FloatSize(), 0);
     }
+#endif
 }
 
 bool LocalFrame::shouldUsePrintingLayout() const
 {
+    assert(false); // BKTODO: Remove this!
+    return false;
+#if 0
     // Only top frame being printed should be fit to page size.
     // Subframes should be constrained by parents only.
     return document()->printing() && (!tree().parent() || !tree().parent()->isLocalFrame() || !toLocalFrame(tree().parent())->document()->printing());
+#endif
 }
 
 FloatSize LocalFrame::resizePageRectsKeepingRatio(const FloatSize& originalSize, const FloatSize& expectedSize)
@@ -585,16 +540,12 @@ void LocalFrame::setPageAndTextZoomFactors(float pageZoomFactor, float textZoomF
     if (!document)
         return;
 
-#ifdef BLINKIT_CRAWLER_ONLY // BKTODO: Strip zoom factor member variables later.
-    assert(!document->isSVGDocument());
-#else
     // Respect SVGs zoomAndPan="disabled" property in standalone SVG documents.
     // FIXME: How to handle compound documents + zoomAndPan="disabled"? Needs SVG WG clarification.
     if (document->isSVGDocument()) {
         if (!document->accessSVGExtensions().zoomAndPanEnabled())
             return;
     }
-#endif
 
     if (m_pageZoomFactor != pageZoomFactor) {
         if (FrameView* view = this->view()) {
@@ -677,10 +628,6 @@ PassOwnPtr<DragImage> LocalFrame::paintIntoDragImage(
 
 PassOwnPtr<DragImage> LocalFrame::nodeImage(Node& node)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     if (!node.layoutObject())
         return nullptr;
 
@@ -699,7 +646,6 @@ PassOwnPtr<DragImage> LocalFrame::nodeImage(Node& node)
 
     return paintIntoDragImage(*layoutObject, LayoutObject::shouldRespectImageOrientation(layoutObject),
         GlobalPaintFlattenCompositingLayers, layoutObject->paintingRootRect(rect));
-#endif
 }
 
 PassOwnPtr<DragImage> LocalFrame::dragImageForSelection(float opacity)
@@ -727,10 +673,6 @@ String LocalFrame::selectedTextForClipboard() const
 
 PositionWithAffinity LocalFrame::positionForPoint(const IntPoint& framePoint)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return PositionWithAffinity();
-#else
     HitTestResult result = eventHandler().hitTestResultAtPoint(framePoint);
     Node* node = result.innerNodeOrImageMapImage();
     if (!node)
@@ -742,7 +684,6 @@ PositionWithAffinity LocalFrame::positionForPoint(const IntPoint& framePoint)
     if (position.isNull())
         return PositionWithAffinity(firstPositionInOrBeforeNode(node));
     return position;
-#endif
 }
 
 Document* LocalFrame::documentAtPoint(const IntPoint& pointInRootFrame)
@@ -878,17 +819,13 @@ bool LocalFrame::shouldThrottleRendering() const
 }
 
 inline LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host, FrameOwner* owner)
-    : Frame(client, host, owner)
-    , m_loader(this)
-    , m_navigationScheduler(NavigationScheduler::create(this))
-    , m_script(ScriptController::create(this))
+    : LiteLocalFrame(client, host, owner)
     , m_editor(Editor::create(*this))
     , m_spellChecker(SpellChecker::create(*this))
     , m_selection(FrameSelection::create(this))
     , m_eventHandler(adoptPtrWillBeNoop(new EventHandler(this)))
     , m_console(FrameConsole::create(*this))
     , m_inputMethodController(InputMethodController::create(*this))
-    , m_navigationDisableCount(0)
     , m_pageZoomFactor(parentPageZoomFactor(this))
     , m_textZoomFactor(parentTextZoomFactor(this))
 {
@@ -917,16 +854,5 @@ void LocalFrame::updateSecurityOrigin(SecurityOrigin* origin)
 }
 
 DEFINE_WEAK_IDENTIFIER_MAP(LocalFrame);
-
-FrameNavigationDisabler::FrameNavigationDisabler(LocalFrame& frame)
-    : m_frame(&frame)
-{
-    m_frame->disableNavigation();
-}
-
-FrameNavigationDisabler::~FrameNavigationDisabler()
-{
-    m_frame->enableNavigation();
-}
 
 } // namespace blink

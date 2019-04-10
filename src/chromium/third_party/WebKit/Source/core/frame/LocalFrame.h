@@ -41,10 +41,9 @@
 
 #include "core/CoreExport.h"
 #include "core/dom/WeakIdentifierMap.h"
-#include "core/frame/Frame.h"
+#include "core/frame/lite_local_frame.h"
 #include "core/frame/LocalFrameLifecycleNotifier.h"
 #include "core/frame/LocalFrameLifecycleObserver.h"
-#include "core/loader/FrameLoader.h"
 #include "core/page/FrameTree.h"
 #include "core/paint/PaintPhase.h"
 #include "platform/Supplementable.h"
@@ -72,26 +71,22 @@ class HTMLPlugInElement;
 class InputMethodController;
 class IntPoint;
 class IntSize;
-class LocalDOMWindow;
-class NavigationScheduler;
 class Node;
 class NodeTraversal;
 class Range;
 class LayoutView;
 class TreeScope;
-class ScriptController;
 class SpellChecker;
 class TreeScope;
 class WebFrameHostScheduler;
 class WebFrameScheduler;
 template <typename Strategy> class PositionWithAffinityTemplate;
 
-class CORE_EXPORT LocalFrame : public Frame, public LocalFrameLifecycleNotifier, public WillBeHeapSupplementable<LocalFrame>, public DisplayItemClient {
+class CORE_EXPORT LocalFrame : public LiteLocalFrame, public LocalFrameLifecycleNotifier, public WillBeHeapSupplementable<LocalFrame>, public DisplayItemClient {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(LocalFrame);
 public:
     static PassRefPtrWillBeRawPtr<LocalFrame> create(FrameLoaderClient*, FrameHost*, FrameOwner*);
 
-    void init();
     void setView(PassRefPtrWillBeRawPtr<FrameView>);
     void createView(const IntSize&, const Color&, bool,
         ScrollbarMode = ScrollbarAuto, bool horizontalLock = false,
@@ -100,25 +95,17 @@ public:
     // Frame overrides:
     ~LocalFrame() override;
     DECLARE_VIRTUAL_TRACE();
-    bool isLocalFrame() const override { return true; }
-    DOMWindow* domWindow() const override;
-    WindowProxy* windowProxy(DOMWrapperWorld&) override;
     void navigate(Document& originDocument, const KURL&, bool replaceCurrentItem, UserGestureStatus) override;
     void navigate(const FrameLoadRequest&) override;
     void reload(FrameLoadType, ClientRedirectPolicy) override;
     void detach(FrameDetachType) override;
     void disconnectOwnerElement() override;
-    bool shouldClose() override;
-    SecurityContext* securityContext() const override;
     void printNavigationErrorMessage(const Frame&, const char* reason) override;
-    bool prepareForCommit() override;
 
     void willDetachFrameHost();
 
-    LocalDOMWindow* localDOMWindow() const;
     void setDOMWindow(PassRefPtrWillBeRawPtr<LocalDOMWindow>);
     FrameView* view() const;
-    Document* document() const;
     void setPagePopupOwner(Element&);
     Element* pagePopupOwner() const { return m_pagePopupOwner.get(); }
 
@@ -126,11 +113,8 @@ public:
 
     Editor& editor() const;
     EventHandler& eventHandler() const;
-    FrameLoader& loader() const;
-    NavigationScheduler& navigationScheduler() const;
     FrameSelection& selection() const;
     InputMethodController& inputMethodController() const;
-    ScriptController& script() const;
     SpellChecker& spellChecker() const;
     FrameConsole& console() const;
 
@@ -195,15 +179,8 @@ public:
 
     void updateSecurityOrigin(SecurityOrigin*);
 
-    bool isNavigationAllowed() const { return m_navigationDisableCount == 0; }
-
 private:
-    friend class FrameNavigationDisabler;
-
     LocalFrame(FrameLoaderClient*, FrameHost*, FrameOwner*);
-
-    // Internal Frame helper overrides:
-    WindowProxyManager* windowProxyManager() const override;
 
     String localLayerTreeAsText(unsigned flags) const;
 
@@ -213,27 +190,19 @@ private:
         RespectImageOrientationEnum shouldRespectImageOrientation, const GlobalPaintFlags,
         IntRect paintingRect, float opacity = 1);
 
-    void enableNavigation() { --m_navigationDisableCount; }
-    void disableNavigation() { ++m_navigationDisableCount; }
-
-    mutable FrameLoader m_loader;
-    OwnPtrWillBeMember<NavigationScheduler> m_navigationScheduler;
+    Type GetType(void) const override { return Type::Local; }
 
     RefPtrWillBeMember<FrameView> m_view;
-    RefPtrWillBeMember<LocalDOMWindow> m_domWindow;
     // Usually 0. Non-null if this is the top frame of PagePopup.
     RefPtrWillBeMember<Element> m_pagePopupOwner;
 
-    const OwnPtrWillBeMember<ScriptController> m_script;
     const OwnPtrWillBeMember<Editor> m_editor;
-    const OwnPtrWillBeMember<SpellChecker> m_spellChecker;
+    const OwnPtrWillBeMember<SpellChecker> m_spellChecker; // BKTODO: Remove this later!
     const OwnPtrWillBeMember<FrameSelection> m_selection;
     const OwnPtrWillBeMember<EventHandler> m_eventHandler;
     const OwnPtrWillBeMember<FrameConsole> m_console;
     const OwnPtrWillBeMember<InputMethodController> m_inputMethodController;
     OwnPtr<WebFrameScheduler> m_frameScheduler;
-
-    int m_navigationDisableCount;
 
     float m_pageZoomFactor;
     float m_textZoomFactor;
@@ -243,35 +212,9 @@ private:
     SupplementStatus m_supplementStatus = SupplementStatus::Uncleared;
 };
 
-inline void LocalFrame::init()
-{
-    m_loader.init();
-}
-
-inline LocalDOMWindow* LocalFrame::localDOMWindow() const
-{
-    return m_domWindow.get();
-}
-
-inline FrameLoader& LocalFrame::loader() const
-{
-    return m_loader;
-}
-
-inline NavigationScheduler& LocalFrame::navigationScheduler() const
-{
-    ASSERT(m_navigationScheduler);
-    return *m_navigationScheduler.get();
-}
-
 inline FrameView* LocalFrame::view() const
 {
     return m_view.get();
-}
-
-inline ScriptController& LocalFrame::script() const
-{
-    return *m_script;
 }
 
 inline FrameSelection& LocalFrame::selection() const
@@ -318,17 +261,6 @@ inline EventHandler& LocalFrame::eventHandler() const
 DEFINE_TYPE_CASTS(LocalFrame, Frame, localFrame, localFrame->isLocalFrame(), localFrame.isLocalFrame());
 
 DECLARE_WEAK_IDENTIFIER_MAP(LocalFrame);
-
-class FrameNavigationDisabler {
-    WTF_MAKE_NONCOPYABLE(FrameNavigationDisabler);
-    STACK_ALLOCATED();
-public:
-    explicit FrameNavigationDisabler(LocalFrame&);
-    ~FrameNavigationDisabler();
-
-private:
-    RawPtrWillBeMember<LocalFrame> m_frame;
-};
 
 } // namespace blink
 
