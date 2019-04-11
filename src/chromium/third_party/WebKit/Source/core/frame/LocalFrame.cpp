@@ -819,7 +819,7 @@ bool LocalFrame::shouldThrottleRendering() const
 }
 
 inline LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host, FrameOwner* owner)
-    : LiteLocalFrame(client, host, owner)
+    : LocalFrameImpl(client, host, owner)
     , m_editor(Editor::create(*this))
     , m_spellChecker(SpellChecker::create(*this))
     , m_selection(FrameSelection::create(this))

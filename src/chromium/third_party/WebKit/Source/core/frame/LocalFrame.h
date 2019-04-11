@@ -41,7 +41,7 @@
 
 #include "core/CoreExport.h"
 #include "core/dom/WeakIdentifierMap.h"
-#include "core/frame/lite_local_frame.h"
+#include "core/frame/local_frame_impl.h"
 #include "core/frame/LocalFrameLifecycleNotifier.h"
 #include "core/frame/LocalFrameLifecycleObserver.h"
 #include "core/page/FrameTree.h"
@@ -82,7 +82,7 @@ class WebFrameHostScheduler;
 class WebFrameScheduler;
 template <typename Strategy> class PositionWithAffinityTemplate;
 
-class CORE_EXPORT LocalFrame : public LiteLocalFrame, public LocalFrameLifecycleNotifier, public WillBeHeapSupplementable<LocalFrame>, public DisplayItemClient {
+class CORE_EXPORT LocalFrame : public LocalFrameImpl, public LocalFrameLifecycleNotifier, public WillBeHeapSupplementable<LocalFrame>, public DisplayItemClient {
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(LocalFrame);
 public:
     static PassRefPtrWillBeRawPtr<LocalFrame> create(FrameLoaderClient*, FrameHost*, FrameOwner*);
