@@ -72,7 +72,7 @@ int muteCount = 0;
 
 }
 
-FrameConsole::FrameConsole(LocalFrame& frame)
+FrameConsole::FrameConsole(LocalFrameImpl& frame)
     : m_frame(&frame)
 {
 }
