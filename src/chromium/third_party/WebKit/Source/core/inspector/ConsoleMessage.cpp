@@ -143,11 +143,6 @@ unsigned ConsoleMessage::columnNumber() const
     return m_columnNumber;
 }
 
-void ConsoleMessage::frameWindowDiscarded(LocalDOMWindow* window)
-{
-    assert(false); // Not reached!
-}
-
 unsigned ConsoleMessage::argumentCount()
 {
     assert(false); // Not reached!

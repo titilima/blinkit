@@ -18,11 +18,6 @@ void ConsoleMessageStorage::clear(ExecutionContext *)
     // Nothing to do, just a placeholder.
 }
 
-void ConsoleMessageStorage::frameWindowDiscarded(LocalDOMWindow *)
-{
-    // Nothing to do, just a placeholder.
-}
-
 void ConsoleMessageStorage::reportMessage(ExecutionContext *, PassRefPtrWillBeRawPtr<ConsoleMessage> prpMessage)
 {
 #ifdef _DEBUG

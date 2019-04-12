@@ -59,7 +59,6 @@ public:
     const String& message() const;
     unsigned columnNumber() const;
 
-    void frameWindowDiscarded(LocalDOMWindow*);
     unsigned argumentCount();
 
     void collectCallStack();

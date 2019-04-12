@@ -31,8 +31,6 @@ public:
 
     void reportMessage(ExecutionContext*, PassRefPtrWillBeRawPtr<ConsoleMessage>);
     void clear(ExecutionContext*);
-
-    void frameWindowDiscarded(LocalDOMWindow *);
 private:
     ConsoleMessageStorage(void) = default;
 };
