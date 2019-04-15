@@ -100,11 +100,8 @@ class WebViewScheduler;
 
 class WebViewImpl final : public WebView
     , public RefCounted<WebViewImpl>
-#ifndef BLINKIT_CRAWLER_ONLY
     , public WebGestureCurveTarget
-    , public PageWidgetEventHandler
-#endif
-{
+    , public PageWidgetEventHandler {
 public:
     static WebViewImpl* create(WebViewClient*);
     static HashSet<WebViewImpl*>& allInstances();
@@ -127,9 +124,7 @@ public:
     void layoutAndPaintAsync(WebLayoutAndPaintAsyncCallback*) override;
     void compositeAndReadbackAsync(WebCompositeAndReadbackAsyncCallback*) override;
     void themeChanged() override;
-#ifndef BLINKIT_CRAWLER_ONLY
     WebInputEventResult handleInputEvent(const WebInputEvent&) override;
-#endif
     void setCursorVisibilityState(bool isVisible) override;
     bool hasTouchEventHandlersAt(const WebPoint&) override;
 
@@ -235,7 +230,6 @@ public:
     void performPluginAction(
         const WebPluginAction&,
         const WebPoint&) override;
-#ifndef BLINKIT_CRAWLER_ONLY
     WebHitTestResult hitTestResultAt(const WebPoint&) override;
     WebHitTestResult hitTestResultForTap(const WebPoint&, const WebSize&) override;
     void copyImageAt(const WebPoint&) override;
@@ -261,7 +255,6 @@ public:
         const WebPoint& clientPoint,
         const WebPoint& screenPoint,
         int modifiers) override;
-#endif
     void spellingMarkers(WebVector<uint32_t>* markers) override;
     void removeSpellingMarkersUnderWords(const WebVector<WebString>& words) override;
     unsigned long createUniqueIdentifierForRequest() override;
@@ -276,9 +269,7 @@ public:
     void hidePopups() override;
     void setPageOverlayColor(WebColor) override;
     WebPageImportanceSignals* pageImportanceSignals() override;
-#ifndef BLINKIT_CRAWLER_ONLY
     void transferActiveWheelFlingAnimation(const WebActiveWheelFlingParameters&) override;
-#endif
     bool endActiveFlingAnimation() override;
     void setShowPaintRects(bool) override;
     void setShowDebugBorders(bool);
@@ -297,9 +288,7 @@ public:
     float clampPageScaleFactorToLimits(float) const;
     void resetScrollAndScaleStateImmediately();
 
-#ifndef BLINKIT_CRAWLER_ONLY
     HitTestResult coreHitTestResultAt(const WebPoint&);
-#endif
     void invalidateRect(const IntRect&);
 
     void setIgnoreInputEvents(bool newValue);
@@ -350,21 +339,17 @@ public:
     // will be removed when there can be multiple WebWidgets for a single page.
     WebLocalFrameImpl* localFrameRootTemporary() const;
 
-#ifndef BLINKIT_CRAWLER_ONLY
     // Event related methods:
     void mouseContextMenu(const WebMouseEvent&);
     void mouseDoubleClick(const WebMouseEvent&);
-#endif
 
     bool detectContentOnTouch(const GestureEventWithHitTestResults& targetedEvent);
     bool startPageScaleAnimation(const IntPoint& targetPosition, bool useAnchor, float newScale, double durationInSeconds);
 
     void hasTouchEventHandlers(bool);
 
-#ifndef BLINKIT_CRAWLER_ONLY
     // WebGestureCurveTarget implementation for fling.
     bool scrollBy(const WebFloatSize& delta, const WebFloatSize& velocity) override;
-#endif
 
     // Handles context menu events orignated via the the keyboard. These
     // include the VK_APPS virtual key and the Shift+F10 combine. Code is
@@ -422,7 +407,6 @@ public:
     void updateMainFrameLayoutSize();
     void updatePageDefinedViewportConstraints(const ViewportDescription&);
 
-#ifndef BLINKIT_CRAWLER_ONLY
     // Start a system drag and drop operation.
     void startDragging(
         LocalFrame*,
@@ -430,21 +414,18 @@ public:
         WebDragOperationsMask mask,
         const WebImage& dragImage,
         const WebPoint& dragImageOffset);
-#endif
 
     PagePopup* openPagePopup(PagePopupClient*);
     void closePagePopup(PagePopup*);
     void cleanupPagePopup();
     LocalDOMWindow* pagePopupWindow() const;
 
-#ifndef BLINKIT_CRAWLER_ONLY
     // Returns the input event we're currently processing. This is used in some
     // cases where the WebCore DOM event doesn't have the information we need.
     static const WebInputEvent* currentInputEvent()
     {
         return m_currentInputEvent;
     }
-#endif
 
     GraphicsLayer* rootGraphicsLayer();
     void setRootGraphicsLayer(GraphicsLayer*);
@@ -565,11 +546,7 @@ private:
     };
 
     explicit WebViewImpl(WebViewClient*);
-#ifdef BLINKIT_CRAWLER_ONLY
-    ~WebViewImpl(void);
-#else
     ~WebViewImpl() override;
-#endif
 
     int textInputFlags();
 
@@ -585,10 +562,8 @@ private:
 
     void hideSelectPopup();
 
-#ifndef BLINKIT_CRAWLER_ONLY
     HitTestResult hitTestResultForRootFramePos(const IntPoint&);
     HitTestResult hitTestResultForViewportPos(const IntPoint&);
-#endif
 
     // Consolidate some common code between starting a drag over a target and
     // updating a drag over a target. If we're starting a drag, |isEntering|
@@ -616,7 +591,6 @@ private:
 
     void pointerLockMouseEvent(const WebInputEvent&);
 
-#ifndef BLINKIT_CRAWLER_ONLY
     // PageWidgetEventHandler functions
     void handleMouseLeave(LocalFrame&, const WebMouseEvent&) override;
     void handleMouseDown(LocalFrame&, const WebMouseEvent&) override;
@@ -627,7 +601,6 @@ private:
     WebInputEventResult handleCharEvent(const WebKeyboardEvent&) override;
 
     WebInputEventResult handleSyntheticWheelFromTouchpadPinchEvent(const WebGestureEvent&);
-#endif
 
     WebPlugin* focusedPluginIfInputMethodSupported(LocalFrame*);
 
@@ -748,9 +721,7 @@ private:
     GraphicsLayer* m_rootGraphicsLayer;
     OwnPtr<GraphicsLayerFactory> m_graphicsLayerFactory;
     bool m_matchesHeuristicsForGpuRasterization;
-#ifndef BLINKIT_CRAWLER_ONLY
     static const WebInputEvent* m_currentInputEvent;
-#endif
 
     OwnPtr<WebActiveGestureAnimation> m_gestureAnimation;
     WebPoint m_positionOnFlingStart;
