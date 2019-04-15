@@ -42,8 +42,8 @@
 #include "core/CoreExport.h"
 #include "core/animation/AnimationClock.h"
 #include "core/animation/CompositorPendingAnimations.h"
-#include "core/dom/ContainerNode.h"
 #include "core/dom/DocumentEncodingData.h"
+#include "core/dom/document_impl.h"
 #include "core/dom/DocumentInit.h"
 #include "core/dom/DocumentLifecycle.h"
 #include "core/dom/DocumentLifecycleNotifier.h"
@@ -60,7 +60,6 @@
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/OriginsUsingFeatures.h"
 #include "core/html/CollectionType.h"
-#include "core/html/parser/ParserSynchronizationPolicy.h"
 #include "core/page/PageVisibilityState.h"
 #include "platform/Length.h"
 #include "platform/Timer.h"
@@ -95,7 +94,6 @@ class DocumentFragment;
 class DocumentLoader;
 class DocumentMarkerController;
 class DocumentNameCollection;
-class DocumentParser;
 class DocumentState;
 class DocumentType;
 class DocumentVisibilityObserver;
@@ -103,7 +101,6 @@ class Element;
 class ElementDataCache;
 class ElementRegistrationOptions;
 class Event;
-class EventFactoryBase;
 class EventListener;
 template <typename EventType>
 class EventWithHitTestResults;
@@ -200,20 +197,7 @@ enum NodeListInvalidationType {
 };
 const int numNodeListInvalidationTypes = InvalidateOnAnyAttrChange + 1;
 
-enum DocumentClass {
-    DefaultDocumentClass = 0,
-    HTMLDocumentClass = 1,
-    XHTMLDocumentClass = 1 << 1,
-    ImageDocumentClass = 1 << 2,
-    PluginDocumentClass = 1 << 3,
-    MediaDocumentClass = 1 << 4,
-    SVGDocumentClass = 1 << 5,
-    XMLDocumentClass = 1 << 6,
-};
-
-using DocumentClassFlags = unsigned char;
-
-class CORE_EXPORT Document : public ContainerNode, public TreeScope, public SecurityContext, public ExecutionContext
+class CORE_EXPORT Document : public DocumentImpl, public TreeScope, public SecurityContext, public ExecutionContext
     , public WillBeHeapSupplementable<Document>, public DocumentLifecycleNotifier {
     DEFINE_WRAPPERTYPEINFO();
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(Document);
@@ -356,34 +340,21 @@ public:
     PassRefPtrWillBeRawPtr<HTMLCollection> windowNamedItems(const AtomicString& name);
     PassRefPtrWillBeRawPtr<DocumentNameCollection> documentNamedItems(const AtomicString& name);
 
-    bool isHTMLDocument() const { return m_documentClasses & HTMLDocumentClass; }
-    bool isXHTMLDocument() const { return m_documentClasses & XHTMLDocumentClass; }
-    bool isXMLDocument() const { return m_documentClasses & XMLDocumentClass; }
-    bool isImageDocument() const { return m_documentClasses & ImageDocumentClass; }
-    bool isSVGDocument() const { return m_documentClasses & SVGDocumentClass; }
-    bool isPluginDocument() const { return m_documentClasses & PluginDocumentClass; }
-    bool isMediaDocument() const { return m_documentClasses & MediaDocumentClass; }
-
-#ifndef BLINKIT_CRAWLER_ONLY
     bool hasSVGRootNode() const;
-#endif
 
     bool isFrameSet() const;
 
     bool isSrcdocDocument() const { return m_isSrcdocDocument; }
     bool isMobileDocument() const { return m_isMobileDocument; }
 
-#ifndef BLINKIT_CRAWLER_ONLY
     StyleResolver* styleResolver() const;
     StyleResolver& ensureStyleResolver() const;
-#endif
 
     bool isViewSource() const { return m_isViewSource; }
     void setIsViewSource(bool);
 
     bool sawElementsInKnownNamespaces() const { return m_sawElementsInKnownNamespaces; }
 
-#ifndef BLINKIT_CRAWLER_ONLY
     bool isRenderingReady() const { return haveImportsLoaded() && haveStylesheetsLoaded(); }
     bool isScriptExecutionReady() const { return isRenderingReady(); }
 
@@ -391,7 +362,6 @@ public:
     StyleSheetList* styleSheets();
 
     StyleEngine& styleEngine() { ASSERT(m_styleEngine.get()); return *m_styleEngine.get(); }
-#endif
 
     bool gotoAnchorNeededAfterStylesheetsLoad() { return m_gotoAnchorNeededAfterStylesheetsLoad; }
     void setGotoAnchorNeededAfterStylesheetsLoad(bool b) { m_gotoAnchorNeededAfterStylesheetsLoad = b; }
@@ -422,7 +392,7 @@ public:
     void setStateForNewFormElements(const Vector<String>&);
 
     FrameView* view() const; // can be null
-    LocalFrame* frame() const { return m_frame; } // can be null
+    LocalFrame* frame() const; // can be null
     FrameHost* frameHost() const; // can be null
     Page* page() const; // can be null
     Settings* settings() const; // can be null
@@ -453,10 +423,8 @@ public:
         RunPostLayoutTasksSynchronously,
     };
     void updateLayoutIgnorePendingStylesheets(RunPostLayoutTasks = RunPostLayoutTasksAsyhnchronously);
-#ifndef BLINKIT_CRAWLER_ONLY
     PassRefPtr<ComputedStyle> styleForElementIgnoringPendingStylesheets(Element*);
     PassRefPtr<ComputedStyle> styleForPage(int pageIndex);
-#endif
 
     // Returns true if page box (margin boxes and page borders) is visible.
     bool isPageBoxVisible(int pageIndex);
@@ -472,12 +440,10 @@ public:
     void attach(const AttachContext& = AttachContext()) override;
     void detach(const AttachContext& = AttachContext()) override;
 
-#ifndef BLINKIT_CRAWLER_ONLY
     // If you have a Document, use layoutView() instead which is faster.
     void layoutObject() const = delete;
 
     LayoutView* layoutView() const { return m_layoutView; }
-#endif
 
     // to get visually ordered hebrew and arabic pages right
     bool visuallyOrdered() const { return m_visuallyOrdered; }
@@ -488,7 +454,6 @@ public:
     void open(Document* ownerDocument, ExceptionState&);
     // This is used internally and does not handle exceptions.
     void open();
-    PassRefPtrWillBeRawPtr<DocumentParser> implicitOpen(ParserSynchronizationPolicy);
 
     // This is the DOM API document.close()
     void close(ExceptionState&);
@@ -562,16 +527,7 @@ public:
 
     bool paginated() const { return printing() || paginatedForScreen(); }
 
-    enum CompatibilityMode { QuirksMode, LimitedQuirksMode, NoQuirksMode };
-
-    void setCompatibilityMode(CompatibilityMode);
-    CompatibilityMode compatibilityMode() const { return m_compatibilityMode; }
-
     String compatMode() const;
-
-    bool inQuirksMode() const { return m_compatibilityMode == QuirksMode; }
-    bool inLimitedQuirksMode() const { return m_compatibilityMode == LimitedQuirksMode; }
-    bool inNoQuirksMode() const { return m_compatibilityMode == NoQuirksMode; }
 
     enum ReadyState {
         Loading,
@@ -581,16 +537,6 @@ public:
     void setReadyState(ReadyState);
     bool isLoadCompleted();
 
-    enum ParsingState {
-        Parsing,
-        InDOMContentLoaded,
-        FinishedParsing
-    };
-    void setParsingState(ParsingState);
-    bool parsing() const { return m_parsingState == Parsing; }
-    bool isInDOMContentLoaded() const { return m_parsingState == InDOMContentLoaded; }
-    bool hasFinishedParsing() const { return m_parsingState == FinishedParsing; }
-
     bool shouldScheduleLayout() const;
     int elapsedTime() const;
 
@@ -599,7 +545,6 @@ public:
 
     MouseEventWithHitTestResults prepareMouseEvent(const HitTestRequest&, const LayoutPoint&, const PlatformMouseEvent&);
 
-#ifndef BLINKIT_CRAWLER_ONLY
     /* Newly proposed CSS3 mechanism for selecting alternate
        stylesheets using the DOM. May be subject to change as
        spec matures. - dwh
@@ -607,7 +552,6 @@ public:
     String preferredStylesheetSet() const;
     String selectedStylesheetSet() const;
     void setSelectedStylesheetSet(const String&);
-#endif
 
     bool setFocusedElement(PassRefPtrWillBeRawPtr<Element>, const FocusParams&);
     void clearFocusedElement();
@@ -663,14 +607,12 @@ public:
     void didMergeTextNodes(Text& oldNode, unsigned offset);
     void didSplitTextNode(Text& oldNode);
 
-    void clearDOMWindow() { m_domWindow = nullptr; }
-    LocalDOMWindow* domWindow() const { return m_domWindow; }
+    LocalDOMWindow* domWindow() const;
 
     // Helper functions for forwarding LocalDOMWindow event related tasks to the LocalDOMWindow if it exists.
     void setWindowAttributeEventListener(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener>);
     EventListener* getWindowAttributeEventListener(const AtomicString& eventType);
 
-    static void registerEventFactory(PassOwnPtr<EventFactoryBase>);
     static PassRefPtrWillBeRawPtr<Event> createEvent(const String& eventType, ExceptionState&);
 
     // keep track of what types of event listeners are registered, so we don't
@@ -854,8 +796,6 @@ public:
     void resumeScheduledTasks() final;
     bool tasksNeedSuspension() final;
 
-    void finishedParsing();
-
     void setEncodingData(const DocumentEncodingData& newData);
     const WTF::TextEncoding& encoding() const { return m_encodingData.encoding(); }
 
@@ -871,10 +811,8 @@ public:
 
     void removeAllEventListeners() final;
 
-#ifndef BLINKIT_CRAWLER_ONLY
     const SVGDocumentExtensions* svgExtensions();
     SVGDocumentExtensions& accessSVGExtensions();
-#endif
 
     void initSecurityContext();
     void initSecurityContext(const DocumentInit&);
@@ -1051,11 +989,6 @@ public:
 
     ClientHintsPreferences& clientHintsPreferences() { return m_clientHintsPreferences; }
 
-    // Used by unit tests so that all parsing will be main thread for
-    // controlling parsing and chunking precisely.
-    static void setThreadedParsingEnabledForTesting(bool);
-    static bool threadedParsingEnabledForTesting();
-
     void incrementNodeCount() { m_nodeCount++; }
     void decrementNodeCount()
     {
@@ -1160,14 +1093,9 @@ private:
     void clearFocusedElementSoon();
     void clearFocusedElementTimerFired(Timer<Document>*);
 
-#ifndef BLINKIT_CRAWLER_ONLY
     bool haveStylesheetsLoaded() const;
-#endif
 
     void setHoverNode(PassRefPtrWillBeRawPtr<Node>);
-
-    using EventFactorySet = HashSet<OwnPtr<EventFactoryBase>>;
-    static EventFactorySet& eventFactories();
 
     void setNthIndexCache(NthIndexCache* nthIndexCache) { ASSERT(!m_nthIndexCache || !nthIndexCache); m_nthIndexCache = nthIndexCache; }
 
@@ -1183,8 +1111,6 @@ private:
     // do eventually load.
     PendingSheetLayout m_pendingSheetLayout;
 
-    RawPtrWillBeMember<LocalFrame> m_frame;
-    RawPtrWillBeMember<LocalDOMWindow> m_domWindow;
     // FIXME: oilpan: when we get rid of the transition types change the
     // HTMLImportsController to not be a DocumentSupplement since it is
     // redundant with oilpan.
@@ -1219,7 +1145,6 @@ private:
     bool m_wasPrinting;
     bool m_paginatedForScreen;
 
-    CompatibilityMode m_compatibilityMode;
     bool m_compatibilityModeLocked; // This is cheaper than making setCompatibilityMode virtual.
 
     OwnPtr<CancellableTaskFactory> m_executeScriptsWaitingForResourcesTask;
@@ -1246,10 +1171,8 @@ private:
 
     MutationObserverOptions m_mutationObserverTypes;
 
-#ifndef BLINKIT_CRAWLER_ONLY
     OwnPtrWillBeMember<StyleEngine> m_styleEngine;
     RefPtrWillBeMember<StyleSheetList> m_styleSheetList;
-#endif
 
     OwnPtrWillBeMember<FormController> m_formController;
 
@@ -1258,7 +1181,6 @@ private:
 
     bool m_visuallyOrdered;
     ReadyState m_readyState;
-    ParsingState m_parsingState;
 
     bool m_gotoAnchorNeededAfterStylesheetsLoad;
     bool m_isDNSPrefetchEnabled;
@@ -1313,9 +1235,7 @@ private:
     unsigned m_nodeListCounts[numNodeListInvalidationTypes];
 #endif
 
-#ifndef BLINKIT_CRAWLER_ONLY
     OwnPtrWillBeMember<SVGDocumentExtensions> m_svgExtensions;
-#endif
 
     Vector<AnnotatedRegionValue> m_annotatedRegions;
     bool m_hasAnnotatedRegions;
@@ -1333,16 +1253,12 @@ private:
 
     bool m_useSecureKeyboardEntryWhenActive;
 
-    DocumentClassFlags m_documentClasses;
-
     bool m_isViewSource;
     bool m_sawElementsInKnownNamespaces;
     bool m_isSrcdocDocument;
     bool m_isMobileDocument;
 
-#ifndef BLINKIT_CRAWLER_ONLY
     LayoutView* m_layoutView;
-#endif
 
 #if !ENABLE(OILPAN)
     WeakPtrFactory<Document> m_weakFactory;
@@ -1395,9 +1311,7 @@ private:
     Timer<Document> m_didAssociateFormControlsTimer;
     WillBeHeapHashSet<RefPtrWillBeMember<Element>> m_associatedFormControls;
 
-#ifndef BLINKIT_CRAWLER_ONLY
     WillBeHeapHashSet<RawPtrWillBeMember<SVGUseElement>> m_useElementsNeedingUpdate;
-#endif
     WillBeHeapHashSet<RawPtrWillBeMember<Element>> m_layerUpdateSVGFilterElements;
 
     bool m_hasViewportUnits;

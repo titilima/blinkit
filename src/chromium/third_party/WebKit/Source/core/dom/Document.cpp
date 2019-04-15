@@ -325,15 +325,10 @@ static bool shouldInheritSecurityOriginFromOwner(const KURL& url)
 
 static Widget* widgetForElement(const Element& focusedElement)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     LayoutObject* layoutObject = focusedElement.layoutObject();
     if (!layoutObject || !layoutObject->isLayoutPart())
         return 0;
     return toLayoutPart(layoutObject)->widget();
-#endif
 }
 
 static bool acceptsEditingFocus(const Element& element)
@@ -351,8 +346,6 @@ static bool isOriginPotentiallyTrustworthy(SecurityOrigin* origin, String* error
 }
 
 uint64_t Document::s_globalTreeVersion = 0;
-
-static bool s_threadedParsingEnabledForTesting = true;
 
 Document::WeakDocumentSet& Document::liveDocumentSet()
 {
@@ -382,13 +375,11 @@ private:
 };
 
 Document::Document(const DocumentInit& initializer, DocumentClassFlags documentClasses)
-    : ContainerNode(0, CreateDocument)
+    : DocumentImpl(initializer.frame(), documentClasses)
     , TreeScope(*this)
     , m_hasNodesWithPlaceholderStyle(false)
     , m_evaluateMediaQueriesOnStyleRecalc(false)
     , m_pendingSheetLayout(NoLayoutWithPendingSheets)
-    , m_frame(initializer.frame())
-    , m_domWindow(m_frame ? m_frame->localDOMWindow() : 0)
     , m_importsController(initializer.importsController())
     , m_activeParserCount(0)
     , m_contextFeatures(ContextFeatures::defaultSwitch())
@@ -408,7 +399,6 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_visitedLinkState(VisitedLinkState::create(*this))
     , m_visuallyOrdered(false)
     , m_readyState(Complete)
-    , m_parsingState(FinishedParsing)
     , m_gotoAnchorNeededAfterStylesheetsLoad(false)
     , m_containsValidityStyleRules(false)
     , m_containsPlugins(false)
@@ -428,14 +418,11 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_hasAnnotatedRegions(false)
     , m_annotatedRegionsDirty(false)
     , m_useSecureKeyboardEntryWhenActive(false)
-    , m_documentClasses(documentClasses)
     , m_isViewSource(false)
     , m_sawElementsInKnownNamespaces(false)
     , m_isSrcdocDocument(false)
     , m_isMobileDocument(false)
-#ifndef BLINKIT_CRAWLER_ONLY
     , m_layoutView(0)
-#endif
 #if !ENABLE(OILPAN)
     , m_weakFactory(this)
 #endif
@@ -491,12 +478,10 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
 
     m_lifecycle.advanceTo(DocumentLifecycle::Inactive);
 
-#ifndef BLINKIT_CRAWLER_ONLY
     // Since CSSFontSelector requires Document::m_fetcher and StyleEngine owns
     // CSSFontSelector, need to initialize m_styleEngine after initializing
     // m_fetcher.
     m_styleEngine = StyleEngine::create(*this);
-#endif
 
     // The parent's parser should be suspended together with all the other objects,
     // else this new Document would have a new ExecutionContext which suspended state
@@ -509,9 +494,7 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
 
 Document::~Document()
 {
-#ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(!layoutView());
-#endif
     ASSERT(!parentTreeScope());
     // If a top document with a cache, verify that it was comprehensively
     // cleared during detach.
@@ -545,17 +528,13 @@ Document::~Document()
     ASSERT(!m_parser || m_parser->refCount() == 1);
     detachParser();
 
-#ifndef BLINKIT_CRAWLER_ONLY
     if (m_styleSheetList)
         m_styleSheetList->detachFromDocument();
-#endif
 
     m_timeline->detachFromDocument();
 
-#ifndef BLINKIT_CRAWLER_ONLY
     // We need to destroy CSSFontSelector before destroying m_fetcher.
     m_styleEngine->detachFromDocument();
-#endif
 
     if (m_elemSheet)
         m_elemSheet->clearOwnerNode();
@@ -614,10 +593,8 @@ void Document::dispose()
         m_scriptedAnimationController->clearDocumentPointer();
     m_scriptedAnimationController.clear();
 
-#ifndef BLINKIT_CRAWLER_ONLY
     if (svgExtensions())
         accessSVGExtensions().pauseAnimations();
-#endif
 
     if (m_intersectionObserverData)
         m_intersectionObserverData->dispose();
@@ -643,22 +620,10 @@ MediaQueryMatcher& Document::mediaQueryMatcher()
 
 void Document::mediaQueryAffectingValueChanged()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     styleResolverChanged();
     m_evaluateMediaQueriesOnStyleRecalc = true;
     styleEngine().clearMediaQueryRuleSetStyleSheets();
     InspectorInstrumentation::mediaQueryResultChanged(this);
-#endif
-}
-
-void Document::setCompatibilityMode(CompatibilityMode mode)
-{
-    if (m_compatibilityModeLocked || mode == m_compatibilityMode)
-        return;
-    m_compatibilityMode = mode;
-    selectorQueryCache().invalidate();
 }
 
 String Document::compatMode() const
@@ -676,10 +641,8 @@ void Document::setDoctype(PassRefPtrWillBeRawPtr<DocumentType> docType)
         if (m_docType->publicId().startsWith("-//wapforum//dtd xhtml mobile 1.", TextCaseInsensitive))
             m_isMobileDocument = true;
     }
-#ifndef BLINKIT_CRAWLER_ONLY
     // Doctype affects the interpretation of the stylesheets.
     styleEngine().clearResolver();
-#endif
 }
 
 DOMImplementation& Document::implementation()
@@ -1032,10 +995,8 @@ PassRefPtrWillBeRawPtr<Element> Document::createElement(const QualifiedName& qNa
     // FIXME: Use registered namespaces and look up in a hash to find the right factory.
     if (qName.namespaceURI() == xhtmlNamespaceURI)
         e = HTMLElementFactory::createHTMLElement(qName.localName(), *this, 0, createdByParser);
-#ifndef BLINKIT_CRAWLER_ONLY
     else if (qName.namespaceURI() == SVGNames::svgNamespaceURI)
         e = SVGElementFactory::createSVGElement(qName.localName(), *this, createdByParser);
-#endif
 
     if (e)
         m_sawElementsInKnownNamespaces = true;
@@ -1187,35 +1148,21 @@ AtomicString Document::contentType() const
 
 Element* Document::elementFromPoint(int x, int y) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // Not reached!
-    return nullptr;
-#else
     if (!layoutView())
         return 0;
 
     return TreeScope::elementFromPoint(x, y);
-#endif
 }
 
 WillBeHeapVector<RawPtrWillBeMember<Element>> Document::elementsFromPoint(int x, int y) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // Not reached!
-    return WillBeHeapVector<RawPtrWillBeMember<Element>>();
-#else
     if (!layoutView())
         return WillBeHeapVector<RawPtrWillBeMember<Element>>();
     return TreeScope::elementsFromPoint(x, y);
-#endif
 }
 
 PassRefPtrWillBeRawPtr<Range> Document::caretRangeFromPoint(int x, int y)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // Not reached!
-    return nullptr;
-#else
     if (!layoutView())
         return nullptr;
 
@@ -1226,7 +1173,6 @@ PassRefPtrWillBeRawPtr<Range> Document::caretRangeFromPoint(int x, int y)
 
     Position rangeCompliantPosition = positionWithAffinity.position().parentAnchoredEquivalent();
     return Range::createAdjustedToTreeScope(*this, rangeCompliantPosition);
-#endif
 }
 
 Element* Document::scrollingElement()
@@ -1235,12 +1181,8 @@ Element* Document::scrollingElement()
         if (inQuirksMode()) {
             updateLayoutTreeIfNeeded();
             HTMLBodyElement* body = firstBodyElement();
-#ifdef BLINKIT_CRAWLER_ONLY
-            assert(false); // BKTODO: Not reached!
-#else
             if (body && body->layoutObject() && body->layoutObject()->hasOverflowClip())
                 return nullptr;
-#endif
 
             return body;
         }
@@ -1460,22 +1402,26 @@ void Document::setStateForNewFormElements(const Vector<String>& stateVector)
 
 FrameView* Document::view() const
 {
-    return m_frame ? m_frame->view() : 0;
+    LocalFrame *f = frame();
+    return nullptr != f ? f->view() : nullptr;
 }
 
 Page* Document::page() const
 {
-    return m_frame ? m_frame->page() : 0;
+    LocalFrame *f = frame();
+    return nullptr != f ? f->page() : nullptr;
 }
 
 FrameHost* Document::frameHost() const
 {
-    return m_frame ? m_frame->host() : 0;
+    LocalFrame *f = frame();
+    return nullptr != f ? f->host() : nullptr;
 }
 
 Settings* Document::settings() const
 {
-    return m_frame ? m_frame->settings() : 0;
+    LocalFrame *f = frame();
+    return nullptr != f ? f->settings() : nullptr;
 }
 
 PassRefPtrWillBeRawPtr<Range> Document::createRange()
@@ -1497,9 +1443,6 @@ PassRefPtrWillBeRawPtr<TreeWalker> Document::createTreeWalker(Node* root, unsign
 
 bool Document::needsLayoutTreeUpdate() const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // Not reached!
-#else
     if (!isActive() || !view())
         return false;
     if (needsFullLayoutTreeUpdate())
@@ -1510,7 +1453,6 @@ bool Document::needsLayoutTreeUpdate() const
         return true;
     if (layoutView()->wasNotifiedOfSubtreeChange())
         return true;
-#endif
     return false;
 }
 
@@ -1518,10 +1460,8 @@ bool Document::needsFullLayoutTreeUpdate() const
 {
     if (!isActive() || !view())
         return false;
-#ifndef BLINKIT_CRAWLER_ONLY
     if (!m_useElementsNeedingUpdate.isEmpty())
         return true;
-#endif
     if (!m_layerUpdateSVGFilterElements.isEmpty())
         return true;
     if (needsStyleRecalc())
@@ -1573,9 +1513,6 @@ bool Document::hasPendingForcedStyleRecalc() const
 
 void Document::updateStyleInvalidationIfNeeded()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     ScriptForbiddenScope forbidScript;
 
     if (!isActive())
@@ -1584,7 +1521,6 @@ void Document::updateStyleInvalidationIfNeeded()
         return;
     TRACE_EVENT0("blink", "Document::updateStyleInvalidationIfNeeded");
     styleEngine().styleInvalidator().invalidate(*this);
-#endif
 }
 
 bool Document::attemptedToDetermineEncodingFromContentSniffing() const
@@ -1599,20 +1535,13 @@ bool Document::encodingWasDetectedFromContentSniffing() const
 
 void Document::setupFontBuilder(ComputedStyle& documentStyle)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     FontBuilder fontBuilder(*this);
     RefPtrWillBeRawPtr<CSSFontSelector> selector = styleEngine().fontSelector();
     fontBuilder.createFontForDocument(selector, documentStyle);
-#endif
 }
 
 void Document::inheritHtmlAndBodyElementStyles(StyleRecalcChange change)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     ASSERT(inStyleRecalc());
     ASSERT(documentElement());
 
@@ -1733,7 +1662,6 @@ void Document::inheritHtmlAndBodyElementStyles(StyleRecalcChange change)
         if (style->direction() != rootDirection || style->writingMode() != rootWritingMode)
             documentElement()->setNeedsStyleRecalc(SubtreeStyleChange, StyleChangeReasonForTracing::create(StyleChangeReason::WritingModeChange));
     }
-#endif
 }
 
 #if ENABLE(ASSERT)
@@ -1762,9 +1690,6 @@ static void assertLayoutTreeUpdated(Node& root)
 
 void Document::updateLayoutTree(StyleRecalcChange change)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // Not reached!
-#else
     ASSERT(isMainThread());
 
     ScriptForbiddenScope forbidScript;
@@ -1848,14 +1773,10 @@ void Document::updateLayoutTree(StyleRecalcChange change)
 #if ENABLE(ASSERT)
     assertLayoutTreeUpdated(*this);
 #endif
-#endif // BLINKIT_CRAWLER_ONLY
 }
 
 void Document::updateStyle(StyleRecalcChange change)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (view()->shouldThrottleRendering())
         return;
 
@@ -1924,14 +1845,10 @@ void Document::updateStyle(StyleRecalcChange change)
         TRACE_EVENT_END1("blink,blink_style", "Document::updateStyle",
             "resolverAccessCount", styleEngine().resolverAccessCount() - initialResolverAccessCount);
     }
-#endif
 }
 
 void Document::notifyLayoutTreeOfSubtreeChanges()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (!layoutView()->wasNotifiedOfSubtreeChange())
         return;
 
@@ -1941,7 +1858,6 @@ void Document::notifyLayoutTreeOfSubtreeChanges()
     ASSERT(!layoutView()->wasNotifiedOfSubtreeChange());
 
     m_lifecycle.advanceTo(DocumentLifecycle::LayoutSubtreeChangeClean);
-#endif
 }
 
 void Document::updateLayoutTreeForNodeIfNeeded(Node* node)
@@ -1995,9 +1911,6 @@ void Document::updateLayout()
 
 void Document::layoutUpdated()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     // Plugins can run script inside layout which can detach the page.
     // TODO(esprehn): Can this still happen now that all plugins are out of
     // process?
@@ -2018,7 +1931,6 @@ void Document::layoutUpdated()
         if (!m_documentTiming.firstLayout())
             m_documentTiming.markFirstLayout();
     }
-#endif
 }
 
 void Document::setNeedsFocusedElementCheck()
@@ -2049,9 +1961,6 @@ void Document::clearFocusedElementTimerFired(Timer<Document>*)
 // to instead suspend JavaScript execution.
 void Document::updateLayoutTreeIgnorePendingStylesheets()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     StyleEngine::IgnoringPendingStylesheet ignoring(styleEngine());
 
     if (styleEngine().hasPendingSheets()) {
@@ -2074,7 +1983,6 @@ void Document::updateLayoutTreeIgnorePendingStylesheets()
         }
     }
     updateLayoutTreeIfNeeded();
-#endif
 }
 
 void Document::updateLayoutIgnorePendingStylesheets(Document::RunPostLayoutTasks runPostLayoutTasks)
@@ -2088,7 +1996,6 @@ void Document::updateLayoutIgnorePendingStylesheets(Document::RunPostLayoutTasks
         view()->flushAnyPendingPostLayoutTasks();
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 PassRefPtr<ComputedStyle> Document::styleForElementIgnoringPendingStylesheets(Element* element)
 {
     ASSERT_ARG(element, element->document() == this);
@@ -2101,23 +2008,14 @@ PassRefPtr<ComputedStyle> Document::styleForPage(int pageIndex)
     updateDistribution();
     return ensureStyleResolver().styleForPage(pageIndex);
 }
-#endif
 
 bool Document::isPageBoxVisible(int pageIndex)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-    exit(0);
-#else
     return styleForPage(pageIndex)->visibility() != HIDDEN; // display property doesn't apply to @page.
-#endif
 }
 
 void Document::pageSizeAndMarginsInPixels(int pageIndex, IntSize& pageSize, int& marginTop, int& marginRight, int& marginBottom, int& marginLeft)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     RefPtr<ComputedStyle> style = styleForPage(pageIndex);
 
     int width = pageSize.width();
@@ -2150,7 +2048,6 @@ void Document::pageSizeAndMarginsInPixels(int pageIndex, IntSize& pageSize, int&
     marginRight = style->marginRight().isAuto() ? marginRight : intValueForLength(style->marginRight(), width);
     marginBottom = style->marginBottom().isAuto() ? marginBottom : intValueForLength(style->marginBottom(), width);
     marginLeft = style->marginLeft().isAuto() ? marginLeft : intValueForLength(style->marginLeft(), width);
-#endif
 }
 
 void Document::setIsViewSource(bool isViewSource)
@@ -2191,28 +2088,17 @@ void Document::unscheduleSVGFilterLayerUpdateHack(Element& element)
 
 void Document::scheduleUseShadowTreeUpdate(SVGUseElement& element)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     m_useElementsNeedingUpdate.add(&element);
-#endif
     scheduleLayoutTreeUpdateIfNeeded();
 }
 
 void Document::unscheduleUseShadowTreeUpdate(SVGUseElement& element)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     m_useElementsNeedingUpdate.remove(&element);
-#endif
 }
 
 void Document::updateUseShadowTreesIfNeeded()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     ScriptForbiddenScope forbidScript;
 
     if (m_useElementsNeedingUpdate.isEmpty())
@@ -2224,10 +2110,8 @@ void Document::updateUseShadowTreesIfNeeded()
 
     for (SVGUseElement* element : elements)
         element->buildPendingResource();
-#endif
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 StyleResolver* Document::styleResolver() const
 {
     return m_styleEngine->resolver();
@@ -2237,20 +2121,17 @@ StyleResolver& Document::ensureStyleResolver() const
 {
     return m_styleEngine->ensureResolver();
 }
-#endif
 
 void Document::attach(const AttachContext& context)
 {
     ASSERT(m_lifecycle.state() == DocumentLifecycle::Inactive);
 
-#ifndef BLINKIT_CRAWLER_ONLY
     m_layoutView = new LayoutView(this);
     setLayoutObject(m_layoutView);
 
     m_layoutView->setIsInWindow(true);
     m_layoutView->setStyle(StyleResolver::styleForDocument(*this));
     m_layoutView->compositor()->setNeedsCompositingUpdate(CompositingUpdateAfterCompositingInputChange);
-#endif
 
     ContainerNode::attach(context);
 
@@ -2301,19 +2182,15 @@ void Document::detach(const AttachContext& context)
         m_scriptedAnimationController->clearDocumentPointer();
     m_scriptedAnimationController.clear();
 
-#ifndef BLINKIT_CRAWLER_ONLY
     if (svgExtensions())
         accessSVGExtensions().pauseAnimations();
-#endif
 
     // FIXME: This shouldn't be needed once LocalDOMWindow becomes ExecutionContext.
     if (m_domWindow)
         m_domWindow->clearEventQueue();
 
-#ifndef BLINKIT_CRAWLER_ONLY
     if (m_layoutView)
         m_layoutView->setIsInWindow(false);
-#endif
 
     if (registrationContext())
         registrationContext()->documentWasDetached();
@@ -2329,14 +2206,10 @@ void Document::detach(const AttachContext& context)
             frameHost()->chromeClient().focusedNodeChanged(oldFocusedElement.get(), nullptr);
     }
 
-#ifndef BLINKIT_CRAWLER_ONLY
     m_layoutView = nullptr;
-#endif
     ContainerNode::detach(context);
 
-#ifndef BLINKIT_CRAWLER_ONLY
     styleEngine().didDetach();
-#endif
 
     frameHost()->eventHandlerRegistry().documentDetached(*this);
 
@@ -2473,26 +2346,6 @@ void Document::cancelParsing()
     detachParser();
     setParsingState(FinishedParsing);
     setReadyState(Complete);
-}
-
-PassRefPtrWillBeRawPtr<DocumentParser> Document::implicitOpen(ParserSynchronizationPolicy parserSyncPolicy)
-{
-    detachParser();
-
-    removeChildren();
-    ASSERT(!m_focusedElement);
-
-    setCompatibilityMode(NoQuirksMode);
-
-    if (!threadedParsingEnabledForTesting())
-        parserSyncPolicy = ForceSynchronousParsing;
-
-    m_parserSyncPolicy = parserSyncPolicy;
-    m_parser = createParser();
-    setParsingState(Parsing);
-    setReadyState(Loading);
-
-    return m_parser;
 }
 
 HTMLElement* Document::body() const
@@ -2652,12 +2505,10 @@ void Document::implicitClose()
     // JS running below could remove the frame or destroy the LayoutView so we call
     // those two functions repeatedly and don't save them on the stack.
 
-#ifndef BLINKIT_CRAWLER_ONLY
     // To align the HTML load event and the SVGLoad event for the outermost <svg> element, fire it from
     // here, instead of doing it from SVGElement::finishedParsingChildren.
     if (svgExtensions())
         accessSVGExtensions().dispatchSVGLoadEventToOutermostSVGElements();
-#endif
 
     if (protectedWindow)
         protectedWindow->documentWasClosed();
@@ -2683,7 +2534,6 @@ void Document::implicitClose()
         return;
     }
 
-#ifndef BLINKIT_CRAWLER_ONLY
     // We used to force a synchronous display and flush here.  This really isn't
     // necessary and can in fact be actively harmful if pages are loading at a rate of > 60fps
     // (if your platform is syncing flushes and limiting them to 60fps).
@@ -2694,14 +2544,11 @@ void Document::implicitClose()
         if (view() && layoutView() && (!layoutView()->firstChild() || layoutView()->needsLayout()))
             view()->layout();
     }
-#endif
 
     m_loadEventProgress = LoadEventCompleted;
 
-#ifndef BLINKIT_CRAWLER_ONLY
     if (svgExtensions())
         accessSVGExtensions().startAnimations();
-#endif
 }
 
 bool Document::dispatchBeforeUnloadEvent(ChromeClient& chromeClient, bool isReload, bool& didAllowNavigation)
@@ -2800,19 +2647,8 @@ Document::PageDismissalType Document::pageDismissalEventBeingDispatched() const
     return NoDismissal;
 }
 
-void Document::setParsingState(ParsingState parsingState)
-{
-    m_parsingState = parsingState;
-
-    if (parsing() && !m_elementDataCache)
-        m_elementDataCache = ElementDataCache::create();
-}
-
 bool Document::shouldScheduleLayout() const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     // This function will only be called when FrameView thinks a layout is needed.
     // This enforces a couple extra rules.
     //
@@ -2826,7 +2662,6 @@ bool Document::shouldScheduleLayout() const
 
     if (documentElement() && !isHTMLHtmlElement(*documentElement()))
         return true;
-#endif
 
     return false;
 }
@@ -3017,15 +2852,11 @@ void Document::disableEval(const String& errorMessage)
 
 void Document::didLoadAllImports()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     if (!haveStylesheetsLoaded())
         return;
     if (!importLoader())
         styleResolverMayHaveChanged();
     didLoadAllScriptBlockingResources();
-#endif
 }
 
 void Document::didRemoveAllPendingStylesheet()
@@ -3053,14 +2884,10 @@ void Document::didLoadAllScriptBlockingResources()
 
 void Document::executeScriptsWaitingForResources()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     if (!isRenderingReady())
         return;
     if (ScriptableDocumentParser* parser = scriptableDocumentParser())
         parser->executeScriptsWaitingForResources();
-#endif
 }
 
 CSSStyleSheet& Document::elementSheet()
@@ -3158,7 +2985,7 @@ String Document::outgoingReferrer() const
     // See http://www.whatwg.org/specs/web-apps/current-work/#fetching-resources
     // for why we walk the parent chain for srcdoc documents.
     const Document* referrerDocument = this;
-    if (LocalFrame* frame = m_frame) {
+    if (LocalFrame *frame = this->frame()) {
         while (frame->document()->isSrcdocDocument()) {
             // Srcdoc documents must be local within the containing frame.
             frame = toLocalFrame(frame->tree().parent());
@@ -3178,10 +3005,6 @@ String Document::outgoingOrigin() const
 
 MouseEventWithHitTestResults Document::prepareMouseEvent(const HitTestRequest& request, const LayoutPoint& documentPoint, const PlatformMouseEvent& event)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    exit(0);
-#else
     ASSERT(!layoutView() || layoutView()->isLayoutView());
 
     // LayoutView::hitTest causes a layout, and we don't want to hit that until the first
@@ -3200,7 +3023,6 @@ MouseEventWithHitTestResults Document::prepareMouseEvent(const HitTestRequest& r
         updateHoverActiveState(request, result.innerElement());
 
     return MouseEventWithHitTestResults(event, result);
-#endif
 }
 
 // DOM Section 1.1.1
@@ -3360,7 +3182,6 @@ bool Document::isSecureContextImpl(String* errorMessage, const SecureContextChec
     return true;
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 StyleSheetList* Document::styleSheets()
 {
     if (!m_styleSheetList)
@@ -3383,7 +3204,6 @@ void Document::setSelectedStylesheetSet(const String& aString)
     styleEngine().setSelectedStylesheetSetName(aString);
     styleResolverChanged();
 }
-#endif
 
 void Document::evaluateMediaQueryListIfNeeded()
 {
@@ -3401,23 +3221,16 @@ void Document::evaluateMediaQueryList()
 
 void Document::notifyResizeForViewportUnits()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     if (m_mediaQueryMatcher)
         m_mediaQueryMatcher->viewportChanged();
     if (!hasViewportUnits())
         return;
     ensureStyleResolver().notifyResizeForViewportUnits();
     setNeedsStyleRecalcForViewportUnits();
-#endif
 }
 
 void Document::styleResolverChanged(StyleResolverUpdateMode updateMode)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     styleEngine().resolverChanged(updateMode);
 
     if (didLayoutWithPendingStylesheets() && !styleEngine().hasPendingSheets()) {
@@ -3429,7 +3242,6 @@ void Document::styleResolverChanged(StyleResolverUpdateMode updateMode)
         if (layoutView())
             layoutView()->invalidatePaintForViewAndCompositedLayers();
     }
-#endif
 }
 
 void Document::styleResolverMayHaveChanged()
@@ -3467,9 +3279,6 @@ void Document::removeFocusedElementOfSubtree(Node* node, bool amongChildrenOnly)
 
 void Document::hoveredNodeDetached(Element& element)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (!m_hoverNode)
         return;
 
@@ -3489,14 +3298,10 @@ void Document::hoveredNodeDetached(Element& element)
 
     if (frame())
         frame()->eventHandler().scheduleHoverStateUpdate();
-#endif
 }
 
 void Document::activeChainNodeDetached(Element& element)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (!m_activeHoverElement)
         return;
 
@@ -3508,7 +3313,6 @@ void Document::activeChainNodeDetached(Element& element)
         activeNode = ComposedTreeTraversal::parent(*activeNode);
 
     m_activeHoverElement = activeNode && activeNode->isElementNode() ? toElement(activeNode) : 0;
-#endif
 }
 
 const Vector<AnnotatedRegionValue>& Document::annotatedRegions() const
@@ -3897,12 +3701,6 @@ void Document::dispatchEventsForPrinting()
     m_scriptedAnimationController->dispatchEventsAndCallbacksForPrinting();
 }
 
-Document::EventFactorySet& Document::eventFactories()
-{
-    DEFINE_STATIC_LOCAL(EventFactorySet, s_eventFactory, ());
-    return s_eventFactory;
-}
-
 const OriginAccessEntry& Document::accessEntryFromURL()
 {
     if (!m_accessEntryFromURL) {
@@ -3911,16 +3709,10 @@ const OriginAccessEntry& Document::accessEntryFromURL()
     return *m_accessEntryFromURL;
 }
 
-void Document::registerEventFactory(PassOwnPtr<EventFactoryBase> eventFactory)
-{
-    ASSERT(!eventFactories().contains(eventFactory.get()));
-    eventFactories().add(eventFactory);
-}
-
 PassRefPtrWillBeRawPtr<Event> Document::createEvent(const String& eventType, ExceptionState& exceptionState)
 {
     RefPtrWillBeRawPtr<Event> event = nullptr;
-    for (const auto& factory : eventFactories()) {
+    for (const auto& factory : EventFactories()) {
         event = factory->create(eventType);
         if (event)
             return event.release();
@@ -4323,7 +4115,6 @@ void Document::setEncodingData(const DocumentEncodingData& newData)
     ASSERT(newData.encoding().isValid());
     m_encodingData = newData;
 
-#ifndef BLINKIT_CRAWLER_ONLY
     // FIXME: Should be removed as part of https://code.google.com/p/chromium/issues/detail?id=319643
     bool shouldUseVisualOrdering = m_encodingData.encoding().usesVisualOrdering();
     if (shouldUseVisualOrdering != m_visuallyOrdered) {
@@ -4333,7 +4124,6 @@ void Document::setEncodingData(const DocumentEncodingData& newData)
             layoutView()->mutableStyleRef().setRTLOrdering(m_visuallyOrdered ? VisualOrder : LogicalOrder);
         setNeedsStyleRecalc(SubtreeStyleChange, StyleChangeReasonForTracing::create(StyleChangeReason::VisuallyOrdered));
     }
-#endif
 }
 
 KURL Document::completeURL(const String& url) const
@@ -4581,7 +4371,6 @@ PassRefPtrWillBeRawPtr<Attr> Document::createAttributeNS(const AtomicString& nam
     return Attr::create(*this, qName, emptyAtom);
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 const SVGDocumentExtensions* Document::svgExtensions()
 {
     return m_svgExtensions.get();
@@ -4598,7 +4387,6 @@ bool Document::hasSVGRootNode() const
 {
     return isSVGSVGElement(documentElement());
 }
-#endif
 
 PassRefPtrWillBeRawPtr<HTMLCollection> Document::images()
 {
@@ -4654,63 +4442,6 @@ PassRefPtrWillBeRawPtr<HTMLCollection> Document::windowNamedItems(const AtomicSt
 PassRefPtrWillBeRawPtr<DocumentNameCollection> Document::documentNamedItems(const AtomicString& name)
 {
     return ensureCachedCollection<DocumentNameCollection>(DocumentNamedItems, name);
-}
-
-void Document::finishedParsing()
-{
-    ASSERT(!scriptableDocumentParser() || !m_parser->isParsing());
-    ASSERT(!scriptableDocumentParser() || m_readyState != Loading);
-    setParsingState(InDOMContentLoaded);
-
-    // FIXME: DOMContentLoaded is dispatched synchronously, but this should be dispatched in a queued task,
-    // See https://crbug.com/425790
-    if (!m_documentTiming.domContentLoadedEventStart())
-        m_documentTiming.markDomContentLoadedEventStart();
-    dispatchEvent(Event::createBubble(EventTypeNames::DOMContentLoaded));
-    if (!m_documentTiming.domContentLoadedEventEnd())
-        m_documentTiming.markDomContentLoadedEventEnd();
-    setParsingState(FinishedParsing);
-
-    // The microtask checkpoint or the loader's finishedParsing() method may invoke script that causes this object to
-    // be dereferenced (when this document is in an iframe and the onload causes the iframe's src to change).
-    // Keep it alive until we are done.
-    RefPtrWillBeRawPtr<Document> protect(this);
-
-    // Ensure Custom Element callbacks are drained before DOMContentLoaded.
-    // FIXME: Remove this ad-hoc checkpoint when DOMContentLoaded is dispatched in a
-    // queued task, which will do a checkpoint anyway. https://crbug.com/425790
-    // BKTODO: Microtask::performCheckpoint(V8PerIsolateData::mainThreadIsolate());
-
-    if (RefPtrWillBeRawPtr<LocalFrame> frame = this->frame()) {
-        // Don't update the layout tree if we haven't requested the main resource yet to avoid
-        // adding extra latency. Note that the first layout tree update can be expensive since it
-        // triggers the parsing of the default stylesheets which are compiled-in.
-        const bool mainResourceWasAlreadyRequested = frame->loader().stateMachine()->committedFirstRealDocumentLoad();
-
-        // FrameLoader::finishedParsing() might end up calling Document::implicitClose() if all
-        // resource loads are complete. HTMLObjectElements can start loading their resources from
-        // post attach callbacks triggered by recalcStyle().  This means if we parse out an <object>
-        // tag and then reach the end of the document without updating styles, we might not have yet
-        // started the resource load and might fire the window load event too early.  To avoid this
-        // we force the styles to be up to date before calling FrameLoader::finishedParsing().
-        // See https://bugs.webkit.org/show_bug.cgi?id=36864 starting around comment 35.
-        if (mainResourceWasAlreadyRequested)
-            updateLayoutTreeIfNeeded();
-
-        frame->loader().finishedParsing();
-
-        TRACE_EVENT_INSTANT1("devtools.timeline", "MarkDOMContent", TRACE_EVENT_SCOPE_THREAD, "data", InspectorMarkLoadEvent::data(frame.get()));
-        InspectorInstrumentation::domContentLoadedEventFired(frame.get());
-    }
-
-    // Schedule dropping of the ElementDataCache. We keep it alive for a while after parsing finishes
-    // so that dynamically inserted content can also benefit from sharing optimizations.
-    // Note that we don't refresh the timer on cache access since that could lead to huge caches being kept
-    // alive indefinitely by something innocuous like JS setting .innerHTML repeatedly on a timer.
-    m_elementDataCacheClearTimer.startOneShot(10, BLINK_FROM_HERE);
-
-    // Parser should have picked up all preloads by now
-    m_fetcher->clearPreloads();
 }
 
 void Document::elementDataCacheClearTimerFired(Timer<Document>*)
@@ -5103,11 +4834,8 @@ void Document::tasksWereResumed()
         m_scriptedAnimationController->resume();
 
     MutationObserver::resumeSuspendedObservers();
-    assert(false); // BKTODO:
-#if 0
     if (m_domWindow)
         DOMWindowPerformance::performance(*m_domWindow)->resumeSuspendedObservers();
-#endif
 }
 
 // FIXME: suspendScheduledTasks(), resumeScheduledTasks(), tasksNeedSuspension()
@@ -5354,16 +5082,6 @@ void Document::adjustFloatRectForScrollAndAbsoluteZoom(FloatRect& rect, LayoutOb
     adjustFloatRectForAbsoluteZoom(rect, layoutObject);
 }
 
-void Document::setThreadedParsingEnabledForTesting(bool enabled)
-{
-    s_threadedParsingEnabledForTesting = enabled;
-}
-
-bool Document::threadedParsingEnabledForTesting()
-{
-    return s_threadedParsingEnabledForTesting;
-}
-
 bool Document::hasActiveParser()
 {
     return m_activeParserCount || (m_parser && m_parser->processingData());
@@ -5391,9 +5109,6 @@ static LayoutObject* nearestCommonHoverAncestor(LayoutObject* obj1, LayoutObject
 
 void Document::updateHoverActiveState(const HitTestRequest& request, Element* innerElement)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     ASSERT(!request.readOnly());
 
     if (request.active() && m_frame)
@@ -5503,15 +5218,12 @@ void Document::updateHoverActiveState(const HitTestRequest& request, Element* in
             nodesToAddToChain[i]->setHovered(true);
         }
     }
-#endif // BLINKIT_CRAWLER_ONLY
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 bool Document::haveStylesheetsLoaded() const
 {
     return m_styleEngine->haveStylesheetsLoaded();
 }
-#endif
 
 Locale& Document::getCachedLocale(const AtomicString& locale)
 {
@@ -5584,35 +5296,28 @@ void Document::didAssociateFormControlsTimerFired(Timer<Document>* timer)
 
 float Document::devicePixelRatio() const
 {
-    return m_frame ? m_frame->devicePixelRatio() : 1.0;
+    LocalFrame *f = frame();
+    return nullptr != f ? f->devicePixelRatio() : 1.0;
 }
 
 void Document::removedStyleSheet(StyleSheet* sheet, StyleResolverUpdateMode updateMode)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     // If we're in document teardown, then we don't need this notification of our sheet's removal.
     // styleResolverChanged() is needed even when the document is inactive so that
     // imported docuements (which is inactive) notifies the change to the master document.
     if (isActive())
         styleEngine().modifiedStyleSheet(sheet);
     styleResolverChanged(updateMode);
-#endif
 }
 
 void Document::modifiedStyleSheet(StyleSheet* sheet, StyleResolverUpdateMode updateMode)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     // If we're in document teardown, then we don't need this notification of our sheet's removal.
     // styleResolverChanged() is needed even when the document is inactive so that
     // imported docuements (which is inactive) notifies the change to the master document.
     if (isActive())
         styleEngine().modifiedStyleSheet(sheet);
     styleResolverChanged(updateMode);
-#endif
 }
 
 TextAutosizer* Document::textAutosizer()
@@ -5708,14 +5413,10 @@ void Document::invalidateNodeListCaches(const QualifiedName* attrName)
 
 void Document::platformColorsChanged()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     if (!isActive())
         return;
 
     styleEngine().platformColorsChanged();
-#endif
 }
 
 bool Document::isSecureContext(String& errorMessage, const SecureContextCheck privilegeContextCheck) const
@@ -5755,6 +5456,16 @@ void Document::enforceStrictMixedContentChecking()
     securityContext().setShouldEnforceStrictMixedContentChecking(true);
     if (frame())
         frame()->loader().client()->didEnforceStrictMixedContentChecking();
+}
+
+LocalFrame* Document::frame(void) const
+{
+    return toLocalFrame(DocumentImpl::frame());
+}
+
+LocalDOMWindow* Document::domWindow(void) const
+{
+    return toLocalDOMWindow(DocumentImpl::domWindow());
 }
 
 DEFINE_TRACE(Document)
