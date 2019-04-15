@@ -335,9 +335,6 @@ void FrameView::recalculateCustomScrollbarStyle()
 
 void FrameView::invalidateAllCustomScrollbarsOnActiveChanged()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     bool usesWindowInactiveSelector = m_frame->document()->styleEngine().usesWindowInactiveSelector();
 
     const ChildrenWidgetSet* viewChildren = children();
@@ -352,7 +349,6 @@ void FrameView::invalidateAllCustomScrollbarsOnActiveChanged()
     }
     if (usesWindowInactiveSelector)
         recalculateCustomScrollbarStyle();
-#endif
 }
 
 void FrameView::recalculateScrollbarOverlayStyle()
@@ -468,9 +464,6 @@ void FrameView::setCanHaveScrollbars(bool canHaveScrollbars)
 
 bool FrameView::shouldUseCustomScrollbars(Element*& customScrollbarElement, LocalFrame*& customScrollbarFrame) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     customScrollbarElement = nullptr;
     customScrollbarFrame = nullptr;
 
@@ -502,7 +495,6 @@ bool FrameView::shouldUseCustomScrollbars(Element*& customScrollbarElement, Loca
         customScrollbarFrame = m_frame.get();
         return true;
     }
-#endif
 
     return false;
 }
@@ -574,9 +566,6 @@ void FrameView::calculateScrollbarModesFromOverflowStyle(const ComputedStyle* st
 
 void FrameView::calculateScrollbarModes(ScrollbarMode& hMode, ScrollbarMode& vMode, ScrollbarModesCalculationStrategy strategy)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
 #define RETURN_SCROLLBAR_MODE(mode) \
     { \
         hMode = vMode = mode; \
@@ -616,7 +605,6 @@ void FrameView::calculateScrollbarModes(ScrollbarMode& hMode, ScrollbarMode& vMo
     calculateScrollbarModesFromOverflowStyle(viewport->style(), hMode, vMode);
 
 #undef RETURN_SCROLLBAR_MODE
-#endif
 }
 
 void FrameView::updateAcceleratedCompositingSettings()
@@ -768,9 +756,6 @@ inline void FrameView::forceLayoutParentViewIfNeeded()
 
 void FrameView::performPreLayoutTasks()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     TRACE_EVENT0("blink,benchmark", "FrameView::performPreLayoutTasks");
     lifecycle().advanceTo(DocumentLifecycle::InPreLayout);
 
@@ -805,7 +790,6 @@ void FrameView::performPreLayoutTasks()
         ASSERT(layoutViewport);
         m_viewportScrollableArea = RootFrameViewport::create(visualViewport, *layoutViewport);
     }
-#endif
 }
 
 static inline void layoutFromRootObject(LayoutObject& root)
@@ -907,9 +891,6 @@ void FrameView::scheduleOrPerformPostLayoutTasks()
 
 void FrameView::layout()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     // We should never layout a Document which is not in a LocalFrame.
     ASSERT(m_frame);
     ASSERT(m_frame->view() == this);
@@ -1074,7 +1055,6 @@ void FrameView::layout()
 #endif
 
     frame().document()->layoutUpdated();
-#endif
 }
 
 void FrameView::invalidateTreeIfNeeded(PaintInvalidationState& paintInvalidationState)
@@ -1433,14 +1413,10 @@ bool FrameView::processUrlFragmentHelper(const String& name, UrlFragmentBehavior
 {
     ASSERT(m_frame->document());
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     if (behavior == UrlFragmentScroll && !m_frame->document()->isRenderingReady()) {
         m_frame->document()->setGotoAnchorNeededAfterStylesheetsLoad(true);
         return false;
     }
-#endif
 
     m_frame->document()->setGotoAnchorNeededAfterStylesheetsLoad(false);
 
@@ -1449,9 +1425,6 @@ bool FrameView::processUrlFragmentHelper(const String& name, UrlFragmentBehavior
     // Setting to null will clear the current target.
     m_frame->document()->setCSSTarget(anchorNode);
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(!m_frame->document()->isSVGDocument());
-#else
     if (m_frame->document()->isSVGDocument()) {
         if (SVGSVGElement* svg = SVGDocumentExtensions::rootElement(*m_frame->document())) {
             svg->setupInitialView(name, anchorNode);
@@ -1459,7 +1432,6 @@ bool FrameView::processUrlFragmentHelper(const String& name, UrlFragmentBehavior
                 return true;
         }
     }
-#endif
 
     // Implement the rule that "" and "top" both mean top of page as in other browsers.
     if (!anchorNode && !(name.isEmpty() || equalIgnoringCase(name, "top")))
@@ -1558,14 +1530,10 @@ void FrameView::scrollPositionChanged()
 
     m_frame->eventHandler().dispatchFakeMouseMoveEventSoon();
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (LayoutView* layoutView = document->layoutView()) {
         if (layoutView->usesCompositing())
             layoutView->compositor()->frameViewDidScroll();
     }
-#endif
 
     if (m_didScrollTimer.isActive())
         m_didScrollTimer.stop();
@@ -1577,12 +1545,8 @@ void FrameView::scrollPositionChanged()
 
 void FrameView::didScrollTimerFired(Timer<FrameView>*)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (m_frame->document() && m_frame->document()->layoutView())
         m_frame->document()->fetcher()->updateAllImageResourcePriorities();
-#endif
 }
 
 void FrameView::updateLayersAndCompositingAfterScrollIfNeeded()
@@ -1865,9 +1829,6 @@ void FrameView::scrollToAnchor()
     if (m_inUpdateScrollbars)
         return;
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (anchorNode->layoutObject()) {
         LayoutRect rect;
         if (anchorNode != m_frame->document()) {
@@ -1890,7 +1851,6 @@ void FrameView::scrollToAnchor()
         if (boundaryFrame && boundaryFrame->isLocalFrame())
             toLocalFrame(boundaryFrame.get())->view()->setSafeToPropagateScrollToParent(true);
     }
-#endif
 
     // The scroll anchor should only be maintained while the frame is still loading.
     // If the frame is done loading, clear the anchor now. Otherwise, restore it
@@ -2149,15 +2109,11 @@ FrameView::ScrollingReasons FrameView::scrollingReasons()
     if ((contentsSize.height() <= visibleContentSize.height() && contentsSize.width() <= visibleContentSize.width()))
         return NotScrollableNoOverflow;
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     // Covers #2.
     // FIXME: Do we need to fix this for OOPI?
     HTMLFrameOwnerElement* owner = m_frame->deprecatedLocalOwner();
     if (owner && (!owner->layoutObject() || !owner->layoutObject()->visibleToHitTesting()))
         return NotScrollableNotVisible;
-#endif
 
     // Cover #3 and #4.
     ScrollbarMode horizontalMode;
@@ -2229,9 +2185,6 @@ void FrameView::updateDocumentAnnotatedRegions() const
     Document* document = m_frame->document();
     if (!document->hasAnnotatedRegions())
         return;
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     Vector<AnnotatedRegionValue> newRegions;
     collectAnnotatedRegions(*(document->layoutBox()), newRegions);
     if (newRegions == document->annotatedRegions())
@@ -2239,14 +2192,10 @@ void FrameView::updateDocumentAnnotatedRegions() const
     document->setAnnotatedRegions(newRegions);
     if (Page* page = m_frame->page())
         page->chromeClient().annotatedRegionsChanged();
-#endif
 }
 
 void FrameView::updateScrollCorner()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     RefPtr<ComputedStyle> cornerStyle;
     IntRect cornerRect = scrollCornerRect();
     Document* doc = m_frame->document();
@@ -2282,7 +2231,6 @@ void FrameView::updateScrollCorner()
         m_scrollCorner->destroy();
         m_scrollCorner = nullptr;
     }
-#endif
 }
 
 Color FrameView::documentBackgroundColor() const
@@ -2525,9 +2473,6 @@ void FrameView::updateFrameTimingRequestsIfNeeded()
 
 void FrameView::updateStyleAndLayoutIfNeededRecursive()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (shouldThrottleRendering())
         return;
 
@@ -2585,7 +2530,6 @@ void FrameView::updateStyleAndLayoutIfNeededRecursive()
     // TODO(esprehn): This should check isRenderingReady() instead.
     if (frame().document()->hasFinishedParsing() && frame().loader().stateMachine()->committedFirstRealDocumentLoad())
         m_isVisuallyNonEmpty = true;
-#endif // BLINKIT_CRAWLER_ONLY
 }
 
 void FrameView::invalidateTreeIfNeededRecursive()
@@ -3675,14 +3619,10 @@ bool FrameView::isScrollCornerVisible() const
 
 ScrollBehavior FrameView::scrollBehaviorStyle() const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     Element* scrollElement = m_frame->document()->scrollingElement();
     LayoutObject* layoutObject = scrollElement ? scrollElement->layoutObject() : nullptr;
     if (layoutObject && layoutObject->style()->scrollBehavior() == ScrollBehaviorSmooth)
         return ScrollBehaviorSmooth;
-#endif
 
     return ScrollBehaviorInstant;
 }
@@ -3848,14 +3788,10 @@ ScrollableArea* FrameView::layoutViewportScrollableArea()
 
 LayoutObject* FrameView::viewportLayoutObject()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (Document* document = frame().document()) {
         if (Element* element = document->viewportDefiningElement())
             return element->layoutObject();
     }
-#endif
     return nullptr;
 }
 
