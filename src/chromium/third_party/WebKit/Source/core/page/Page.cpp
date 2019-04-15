@@ -406,15 +406,11 @@ void Page::settingsChanged(SettingsDelegate::ChangeType changeType)
             textAutosizer->updatePageInfoInAllFrames();
         break;
     case SettingsDelegate::FontFamilyChange:
-#ifdef BLINKIT_CRAWLER_ONLY
-        assert(false); // BKTODO: Not reached!
-#else
         for (Frame* frame = mainFrame(); frame; frame = frame->tree().traverseNext()) {
             if (frame->isLocalFrame())
                 toLocalFrame(frame)->document()->styleEngine().updateGenericFontFamilySettings();
         }
         setNeedsRecalcStyleInAllFrames();
-#endif
         break;
     case SettingsDelegate::AcceleratedCompositingChange:
         updateAcceleratedCompositingSettings();
@@ -430,16 +426,12 @@ void Page::settingsChanged(SettingsDelegate::ChangeType changeType)
         break;
     case SettingsDelegate::ViewportRuleChange:
         {
-#ifdef BLINKIT_CRAWLER_ONLY
-            assert(false); // BKTODO: Not reached!
-#else
             if (!mainFrame() || !mainFrame()->isLocalFrame())
                 break;
             Document* doc = toLocalFrame(mainFrame())->document();
             if (!doc || !doc->styleResolver())
                 break;
             doc->styleResolver()->viewportStyleResolver()->collectViewportRules();
-#endif
         }
         break;
     }
