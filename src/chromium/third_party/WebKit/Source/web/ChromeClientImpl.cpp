@@ -277,11 +277,7 @@ WebNavigationPolicy getNavigationPolicy(const WindowFeatures& features)
     NavigationPolicy policy = NavigationPolicyNewForegroundTab;
     if (asPopup)
         policy = NavigationPolicyNewPopup;
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     updatePolicyForEvent(WebViewImpl::currentInputEvent(), &policy);
-#endif
 
     return static_cast<WebNavigationPolicy>(policy);
 }
