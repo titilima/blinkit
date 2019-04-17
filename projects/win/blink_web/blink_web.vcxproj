@@ -164,6 +164,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\AssociatedURLLoader.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ChromeClientImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ColorChooserPopupUIController.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ColorChooserUIController.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\CompositionUnderlineVectorBuilder.cpp" />
@@ -171,14 +172,18 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ContextMenuAllowedScope.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ContextMenuClientImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\DateTimeChooserImpl.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\DragClientImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\EditorClientImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ExternalDateTimeChooser.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ExternalPopupMenu.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\FindInPageCoordinates.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\FrameLoaderClientImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\GraphicsLayerFactoryChromium.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\LinkHighlightImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\OpenedFrameTracker.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\PageOverlay.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\PageWidgetDelegate.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\PopupMenuImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\PrerendererClientImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ResizeViewportAnchor.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\RotationViewportAnchor.cpp" />
@@ -191,6 +196,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebCustomElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDataSourceImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDateTimeSuggestion.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDocument.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDOMEvent.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDOMProgressEvent.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebElement.cpp" />
@@ -203,6 +209,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFormElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFrame.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFrameImplBase.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFrameWidgetImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebHeap.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebHistoryItem.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebImageCache.cpp" />
@@ -211,6 +218,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebInputEvent.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebInputEventConversion.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebKit.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebLocalFrameImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebMemoryPressureListener.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebNetworkStateNotifier.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebNode.cpp" />
@@ -231,6 +239,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebTextRun.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebUserGestureIndicator.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebUserGestureToken.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebViewFrameWidget.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebViewImpl.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
