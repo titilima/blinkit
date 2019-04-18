@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Attr.cpp
+// Description: Attr Class
+//      Author: Ziming Li
+//     Created: 2019-04-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -44,7 +55,7 @@ Attr::Attr(Element& element, const QualifiedName& name)
 {
 }
 
-Attr::Attr(Document& document, const QualifiedName& name, const AtomicString& standaloneValue)
+Attr::Attr(DocumentImpl& document, const QualifiedName& name, const AtomicString& standaloneValue)
     : Node(&document, CreateOther)
     , m_element(nullptr)
     , m_name(name)
@@ -57,7 +68,7 @@ PassRefPtrWillBeRawPtr<Attr> Attr::create(Element& element, const QualifiedName&
     return adoptRefWillBeNoop(new Attr(element, name));
 }
 
-PassRefPtrWillBeRawPtr<Attr> Attr::create(Document& document, const QualifiedName& name, const AtomicString& value)
+PassRefPtrWillBeRawPtr<Attr> Attr::create(DocumentImpl& document, const QualifiedName& name, const AtomicString& value)
 {
     return adoptRefWillBeNoop(new Attr(document, name, value));
 }

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Attr.h
+// Description: Attr Class
+//      Author: Ziming Li
+//     Created: 2019-04-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -35,7 +46,7 @@ class CORE_EXPORT Attr final : public Node {
     DEFINE_WRAPPERTYPEINFO();
 public:
     static PassRefPtrWillBeRawPtr<Attr> create(Element&, const QualifiedName&);
-    static PassRefPtrWillBeRawPtr<Attr> create(Document&, const QualifiedName&, const AtomicString& value);
+    static PassRefPtrWillBeRawPtr<Attr> create(DocumentImpl&, const QualifiedName&, const AtomicString& value);
     ~Attr() override;
 
     String name() const { return m_name.toString(); }
@@ -61,7 +72,7 @@ public:
 
 private:
     Attr(Element&, const QualifiedName&);
-    Attr(Document&, const QualifiedName&, const AtomicString& value);
+    Attr(DocumentImpl&, const QualifiedName&, const AtomicString& value);
 
     bool isElementNode() const = delete; // This will catch anyone doing an unnecessary check.
 

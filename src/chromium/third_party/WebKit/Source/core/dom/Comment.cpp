@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Comment.cpp
+// Description: Comment Class
+//      Author: Ziming Li
+//     Created: 2019-04-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,12 +36,12 @@
 
 namespace blink {
 
-inline Comment::Comment(Document& document, const String& text)
+inline Comment::Comment(DocumentImpl& document, const String& text)
     : CharacterData(document, text, CreateOther)
 {
 }
 
-PassRefPtrWillBeRawPtr<Comment> Comment::create(Document& document, const String& text)
+PassRefPtrWillBeRawPtr<Comment> Comment::create(DocumentImpl& document, const String& text)
 {
     return adoptRefWillBeNoop(new Comment(document, text));
 }

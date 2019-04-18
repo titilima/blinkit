@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CDATASection.cpp
+// Description: CDATASection Class
+//      Author: Ziming Li
+//     Created: 2019-04-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,12 +36,12 @@
 
 namespace blink {
 
-inline CDATASection::CDATASection(Document& document, const String& data)
+inline CDATASection::CDATASection(DocumentImpl& document, const String& data)
     : Text(document, data, CreateText)
 {
 }
 
-PassRefPtrWillBeRawPtr<CDATASection> CDATASection::create(Document& document, const String& data)
+PassRefPtrWillBeRawPtr<CDATASection> CDATASection::create(DocumentImpl& document, const String& data)
 {
     return adoptRefWillBeNoop(new CDATASection(document, data));
 }
