@@ -34,10 +34,10 @@
 
 #include "core/dom/Attr.h"
 
-#include "bindings/core/v8/ExceptionState.h"
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/dom/Document.h"
-#include "core/dom/Element.h"
+#include "core/HTMLNames.h"
+#include "core/dom/document_impl.h"
+#include "core/dom/element_impl.h"
 #include "core/dom/Text.h"
 #include "core/events/ScopedEventQueue.h"
 #include "core/frame/UseCounter.h"
@@ -48,7 +48,7 @@ namespace blink {
 
 using namespace HTMLNames;
 
-Attr::Attr(Element& element, const QualifiedName& name)
+Attr::Attr(ElementImpl& element, const QualifiedName& name)
     : Node(&element.document(), CreateOther)
     , m_element(&element)
     , m_name(name)
@@ -63,7 +63,7 @@ Attr::Attr(DocumentImpl& document, const QualifiedName& name, const AtomicString
 {
 }
 
-PassRefPtrWillBeRawPtr<Attr> Attr::create(Element& element, const QualifiedName& name)
+PassRefPtrWillBeRawPtr<Attr> Attr::create(ElementImpl& element, const QualifiedName& name)
 {
     return adoptRefWillBeNoop(new Attr(element, name));
 }
@@ -139,7 +139,7 @@ void Attr::detachFromElementWithValue(const AtomicString& value)
     m_element = nullptr;
 }
 
-void Attr::attachToElement(Element* element, const AtomicString& attachedLocalName)
+void Attr::attachToElement(ElementImpl* element, const AtomicString& attachedLocalName)
 {
     ASSERT(!m_element);
     m_element = element;

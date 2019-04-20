@@ -45,13 +45,13 @@ namespace blink {
 class CORE_EXPORT Attr final : public Node {
     DEFINE_WRAPPERTYPEINFO();
 public:
-    static PassRefPtrWillBeRawPtr<Attr> create(Element&, const QualifiedName&);
+    static PassRefPtrWillBeRawPtr<Attr> create(ElementImpl&, const QualifiedName&);
     static PassRefPtrWillBeRawPtr<Attr> create(DocumentImpl&, const QualifiedName&, const AtomicString& value);
     ~Attr() override;
 
     String name() const { return m_name.toString(); }
     bool specified() const { return true; }
-    Element* ownerElement() const { return m_element; }
+    ElementImpl* ownerElement() const { return m_element; }
 
     const AtomicString& value() const;
     void setValue(const AtomicString&);
@@ -61,7 +61,7 @@ public:
 
     const QualifiedName qualifiedName() const;
 
-    void attachToElement(Element*, const AtomicString&);
+    void attachToElement(ElementImpl*, const AtomicString&);
     void detachFromElementWithValue(const AtomicString&);
 
     const AtomicString& localName() const { return m_name.localName(); }
@@ -71,7 +71,7 @@ public:
     DECLARE_VIRTUAL_TRACE();
 
 private:
-    Attr(Element&, const QualifiedName&);
+    Attr(ElementImpl&, const QualifiedName&);
     Attr(DocumentImpl&, const QualifiedName&, const AtomicString& value);
 
     bool isElementNode() const = delete; // This will catch anyone doing an unnecessary check.
@@ -87,7 +87,7 @@ private:
 
     // Attr wraps either an element/name, or a name/value pair (when it's a standalone Node.)
     // Note that m_name is always set, but m_element/m_standaloneValue may be null.
-    RawPtrWillBeMember<Element> m_element;
+    RawPtrWillBeMember<ElementImpl> m_element;
     QualifiedName m_name;
     // Holds the value if it is a standalone Node, or the local name of the
     // attribute it is attached to on an Element. The latter may (letter case)
