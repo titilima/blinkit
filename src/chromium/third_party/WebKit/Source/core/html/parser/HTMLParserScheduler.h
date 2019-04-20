@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLParserScheduler.h
+// Description: HTMLParserScheduler Class
+//      Author: Ziming Li
+//     Created: 2019-04-20
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -34,31 +45,31 @@
 
 namespace blink {
 
-class Document;
+class DocumentImpl;
 class HTMLDocumentParser;
 class WebTaskRunner;
 
 class ActiveParserSession : public NestingLevelIncrementer {
     STACK_ALLOCATED();
 public:
-    ActiveParserSession(unsigned& nestingLevel, Document*);
+    ActiveParserSession(unsigned& nestingLevel, DocumentImpl*);
     ~ActiveParserSession();
 
 private:
-    RefPtrWillBeMember<Document> m_document;
+    RefPtrWillBeMember<DocumentImpl> m_document;
 };
 
 class PumpSession : public ActiveParserSession {
     STACK_ALLOCATED();
 public:
-    PumpSession(unsigned& nestingLevel, Document*);
+    PumpSession(unsigned& nestingLevel, DocumentImpl*);
     ~PumpSession();
 };
 
 class SpeculationsPumpSession : public ActiveParserSession {
     STACK_ALLOCATED();
 public:
-    SpeculationsPumpSession(unsigned& nestingLevel, Document*);
+    SpeculationsPumpSession(unsigned& nestingLevel, DocumentImpl*);
     ~SpeculationsPumpSession();
 
     double elapsedTime() const;

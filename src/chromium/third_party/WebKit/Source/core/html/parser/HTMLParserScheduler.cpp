@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLParserScheduler.cpp
+// Description: HTMLParserScheduler Class
+//      Author: Ziming Li
+//     Created: 2019-04-20
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -25,7 +36,7 @@
 
 #include "core/html/parser/HTMLParserScheduler.h"
 
-#include "core/dom/Document.h"
+#include "core/dom/document_impl.h"
 #include "core/html/parser/HTMLDocumentParser.h"
 #include "core/frame/FrameView.h"
 #include "public/platform/Platform.h"
@@ -35,7 +46,7 @@
 
 namespace blink {
 
-ActiveParserSession::ActiveParserSession(unsigned& nestingLevel, Document* document)
+ActiveParserSession::ActiveParserSession(unsigned& nestingLevel, DocumentImpl* document)
     : NestingLevelIncrementer(nestingLevel)
     , m_document(document)
 {
@@ -51,7 +62,7 @@ ActiveParserSession::~ActiveParserSession()
     m_document->decrementActiveParserCount();
 }
 
-PumpSession::PumpSession(unsigned& nestingLevel, Document* document)
+PumpSession::PumpSession(unsigned& nestingLevel, DocumentImpl* document)
     : ActiveParserSession(nestingLevel, document)
 {
 }
@@ -60,7 +71,7 @@ PumpSession::~PumpSession()
 {
 }
 
-SpeculationsPumpSession::SpeculationsPumpSession(unsigned& nestingLevel, Document* document)
+SpeculationsPumpSession::SpeculationsPumpSession(unsigned& nestingLevel, DocumentImpl* document)
     : ActiveParserSession(nestingLevel, document)
     , m_startTime(currentTime())
     , m_processedElementTokens(0)
