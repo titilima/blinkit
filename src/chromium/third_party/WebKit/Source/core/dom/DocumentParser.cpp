@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DocumentParser.cpp
+// Description: DocumentParser Class
+//      Author: Ziming Li
+//     Created: 2019-04-20
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -25,14 +36,14 @@
 
 #include "core/dom/DocumentParser.h"
 
-#include "core/dom/Document.h"
+#include "core/dom/document_impl.h"
 #include "core/dom/DocumentParserClient.h"
 #include "core/html/parser/TextResourceDecoder.h"
 #include "wtf/Assertions.h"
 
 namespace blink {
 
-DocumentParser::DocumentParser(Document* document)
+DocumentParser::DocumentParser(DocumentImpl* document)
     : m_state(ParsingState)
     , m_documentWasLoadedAsPartOfNavigation(false)
     , m_document(document)
