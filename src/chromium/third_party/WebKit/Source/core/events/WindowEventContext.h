@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WindowEventContext.h
+// Description: WindowEventContext Class
+//      Author: Ziming Li
+//     Created: 2019-04-22
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All Rights Reserved.
  *
@@ -27,7 +38,6 @@
 #ifndef WindowEventContext_h
 #define WindowEventContext_h
 
-#include "core/frame/LocalDOMWindow.h"
 #include "platform/heap/Handle.h"
 #include "wtf/RefPtr.h"
 
@@ -35,6 +45,7 @@ namespace blink {
 
 class EventTarget;
 class Event;
+class LocalDOMWindowImpl;
 class Node;
 class NodeEventContext;
 
@@ -43,27 +54,18 @@ class WindowEventContext : public NoBaseWillBeGarbageCollected<WindowEventContex
     WTF_MAKE_NONCOPYABLE(WindowEventContext);
 public:
     WindowEventContext(Event&, const NodeEventContext& topNodeEventContext);
+    ~WindowEventContext(void);
 
-    LocalDOMWindow* window() const;
-    EventTarget* target() const;
+    LocalDOMWindowImpl* window() const { return m_window.get(); }
+    EventTarget* target() const { return m_target.get(); }
     bool handleLocalEvents(Event&);
 
     DECLARE_TRACE();
 
 private:
-    RefPtrWillBeMember<LocalDOMWindow> m_window;
+    RefPtrWillBeMember<LocalDOMWindowImpl> m_window;
     RefPtrWillBeMember<EventTarget> m_target;
 };
-
-inline LocalDOMWindow* WindowEventContext::window() const
-{
-    return m_window.get();
-}
-
-inline EventTarget* WindowEventContext::target() const
-{
-    return m_target.get();
-}
 
 }
 

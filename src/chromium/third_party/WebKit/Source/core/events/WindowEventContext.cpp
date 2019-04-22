@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WindowEventContext.cpp
+// Description: WindowEventContext Class
+//      Author: Ziming Li
+//     Created: 2019-04-22
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All Rights Reserved.
  *
@@ -26,11 +37,10 @@
 
 #include "core/events/WindowEventContext.h"
 
-#include "core/dom/Document.h"
-#include "core/dom/Node.h"
+#include "core/dom/document_impl.h"
 #include "core/events/Event.h"
 #include "core/events/NodeEventContext.h"
-#include "core/frame/LocalDOMWindow.h"
+#include "core/frame/local_dom_window_impl.h"
 
 namespace blink {
 
@@ -42,8 +52,13 @@ WindowEventContext::WindowEventContext(Event& event, const NodeEventContext& top
         return;
     if (!topNodeEventContext.node()->isDocumentNode())
         return;
-    m_window = toDocument(topNodeEventContext.node())->domWindow();
+    m_window = toDocumentImpl(topNodeEventContext.node())->domWindow();
     m_target = topNodeEventContext.target();
+}
+
+WindowEventContext::~WindowEventContext(void)
+{
+    // Nothing
 }
 
 bool WindowEventContext::handleLocalEvents(Event& event)
