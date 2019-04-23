@@ -268,8 +268,6 @@ pluginsEnabled initial=false
 viewportEnabled initial=false, invalidate=ViewportDescription
 viewportMetaEnabled initial=false
 
-dnsPrefetchingEnabled initial=false, invalidate=DNSPrefetching
-
 dataSaverEnabled initial=false
 
 # FIXME: This is a temporary flag and should be removed

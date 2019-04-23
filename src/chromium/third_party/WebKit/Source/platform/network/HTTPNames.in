@@ -49,7 +49,6 @@ Upgrade-Insecure-Requests
 User-Agent
 Vary
 X-Content-Type-Options
-X-DNS-Prefetch-Control
 X-Frame-Options
 X-SourceMap
 X-XSS-Protection
