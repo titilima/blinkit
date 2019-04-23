@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLDocumentParser.h
+// Description: HTMLDocumentParser Class
+//      Author: Ziming Li
+//     Created: 2019-04-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -54,11 +65,10 @@ namespace blink {
 
 class BackgroundHTMLParser;
 class CompactHTMLToken;
-class Document;
+class DocumentImpl;
 class DocumentEncodingData;
 class DocumentFragment;
 class Element;
-class HTMLDocument;
 class HTMLParserScheduler;
 class HTMLResourcePreloader;
 class HTMLScriptRunner;
@@ -70,7 +80,7 @@ class HTMLDocumentParser :  public ScriptableDocumentParser, private HTMLScriptR
     USING_FAST_MALLOC_WILL_BE_REMOVED(HTMLDocumentParser);
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(HTMLDocumentParser);
 public:
-    static PassRefPtrWillBeRawPtr<HTMLDocumentParser> create(HTMLDocument& document, bool reportErrors, ParserSynchronizationPolicy backgroundParsingPolicy)
+    static PassRefPtrWillBeRawPtr<HTMLDocumentParser> create(DocumentImpl& document, bool reportErrors, ParserSynchronizationPolicy backgroundParsingPolicy)
     {
         return adoptRefWillBeNoop(new HTMLDocumentParser(document, reportErrors, backgroundParsingPolicy));
     }
@@ -117,7 +127,7 @@ protected:
     void append(const String&) override;
     void finish() final;
 
-    HTMLDocumentParser(HTMLDocument&, bool reportErrors, ParserSynchronizationPolicy);
+    HTMLDocumentParser(DocumentImpl&, bool reportErrors, ParserSynchronizationPolicy);
     HTMLDocumentParser(DocumentFragment*, Element* contextElement, ParserContentPolicy);
 
     HTMLTreeBuilder* treeBuilder() const { return m_treeBuilder.get(); }
@@ -153,7 +163,7 @@ private:
     size_t processParsedChunkFromBackgroundParser(PassOwnPtr<ParsedChunk>);
     void pumpPendingSpeculations();
 
-    Document* contextForParsingSession();
+    DocumentImpl* contextForParsingSession();
 
     bool canTakeNextToken();
     void pumpTokenizer();

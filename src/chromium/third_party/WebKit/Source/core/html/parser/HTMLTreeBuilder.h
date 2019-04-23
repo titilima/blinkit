@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLTreeBuilder.h
+// Description: HTMLTreeBuilder Class
+//      Author: Ziming Li
+//     Created: 2019-04-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -44,13 +55,12 @@ namespace blink {
 class AtomicHTMLToken;
 class DocumentFragment;
 class Element;
-class HTMLDocument;
 class HTMLDocumentParser;
 
 class HTMLTreeBuilder final : public NoBaseWillBeGarbageCollectedFinalized<HTMLTreeBuilder> {
     WTF_MAKE_NONCOPYABLE(HTMLTreeBuilder); USING_FAST_MALLOC_WILL_BE_REMOVED(HTMLTreeBuilder);
 public:
-    static PassOwnPtrWillBeRawPtr<HTMLTreeBuilder> create(HTMLDocumentParser* parser, HTMLDocument* document, ParserContentPolicy parserContentPolicy, bool reportErrors, const HTMLParserOptions& options)
+    static PassOwnPtrWillBeRawPtr<HTMLTreeBuilder> create(HTMLDocumentParser* parser, DocumentImpl* document, ParserContentPolicy parserContentPolicy, bool reportErrors, const HTMLParserOptions& options)
     {
         return adoptPtrWillBeNoop(new HTMLTreeBuilder(parser, document, parserContentPolicy, reportErrors, options));
     }
@@ -114,7 +124,7 @@ private:
         AfterAfterFramesetMode,
     };
 
-    HTMLTreeBuilder(HTMLDocumentParser*, HTMLDocument*, ParserContentPolicy, bool reportErrors, const HTMLParserOptions&);
+    HTMLTreeBuilder(HTMLDocumentParser*, DocumentImpl*, ParserContentPolicy, bool reportErrors, const HTMLParserOptions&);
     HTMLTreeBuilder(HTMLDocumentParser*, DocumentFragment*, Element* contextElement, ParserContentPolicy, const HTMLParserOptions&);
 
     void processToken(AtomicHTMLToken*);
