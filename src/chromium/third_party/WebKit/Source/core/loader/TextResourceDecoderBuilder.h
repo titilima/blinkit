@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TextResourceDecoderBuilder.h
+// Description: TextResourceDecoderBuilder Class
+//      Author: Ziming Li
+//     Created: 2019-04-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -38,7 +49,7 @@
 
 namespace blink {
 
-class Document;
+class DocumentImpl;
 class TextResourceDecoder;
 
 class TextResourceDecoderBuilder {
@@ -47,7 +58,7 @@ public:
     TextResourceDecoderBuilder(const AtomicString& mimeType, const AtomicString& encoding);
     ~TextResourceDecoderBuilder();
 
-    PassOwnPtr<TextResourceDecoder> buildFor(Document*);
+    PassOwnPtr<TextResourceDecoder> buildFor(DocumentImpl*);
 
     const AtomicString& mimeType() const { return m_mimeType; }
     const AtomicString& encoding() const { return m_encoding; }
@@ -55,8 +66,8 @@ public:
     void clear();
 
 private:
-    PassOwnPtr<TextResourceDecoder> createDecoderInstance(Document*);
-    void setupEncoding(TextResourceDecoder*, Document*);
+    PassOwnPtr<TextResourceDecoder> createDecoderInstance(DocumentImpl*);
+    void setupEncoding(TextResourceDecoder*, DocumentImpl*);
 
     AtomicString m_mimeType;
     AtomicString m_encoding;
