@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DocumentWriter.cpp
+// Description: DocumentWriter Class
+//      Author: Ziming Li
+//     Created: 2019-04-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010. Adam Barth. All rights reserved.
  *
@@ -28,27 +39,21 @@
 
 #include "core/loader/DocumentWriter.h"
 
-#include "core/dom/Document.h"
-#include "core/dom/ScriptableDocumentParser.h"
+#include "core/dom/document_impl.h"
+#include "core/dom/DocumentParser.h"
 #include "core/frame/FrameView.h"
-#include "core/frame/LocalDOMWindow.h"
 #include "core/frame/LocalFrame.h"
-#include "core/frame/Settings.h"
 #include "core/html/parser/TextResourceDecoder.h"
-#include "core/loader/FrameLoader.h"
-#include "core/loader/FrameLoaderStateMachine.h"
-#include "platform/weborigin/KURL.h"
-#include "platform/weborigin/SecurityOrigin.h"
 #include "wtf/PassOwnPtr.h"
 
 namespace blink {
 
-PassRefPtrWillBeRawPtr<DocumentWriter> DocumentWriter::create(Document* document, ParserSynchronizationPolicy parsingPolicy, const AtomicString& mimeType, const AtomicString& encoding)
+PassRefPtrWillBeRawPtr<DocumentWriter> DocumentWriter::create(DocumentImpl* document, ParserSynchronizationPolicy parsingPolicy, const AtomicString& mimeType, const AtomicString& encoding)
 {
     return adoptRefWillBeNoop(new DocumentWriter(document, parsingPolicy, mimeType, encoding));
 }
 
-DocumentWriter::DocumentWriter(Document* document, ParserSynchronizationPolicy parserSyncPolicy, const AtomicString& mimeType, const AtomicString& encoding)
+DocumentWriter::DocumentWriter(DocumentImpl* document, ParserSynchronizationPolicy parserSyncPolicy, const AtomicString& mimeType, const AtomicString& encoding)
     : m_document(document)
     , m_decoderBuilder(mimeType, encoding)
     // We grab a reference to the parser so that we'll always send data to the
@@ -56,10 +61,14 @@ DocumentWriter::DocumentWriter(Document* document, ParserSynchronizationPolicy p
     // document.open).
     , m_parser(m_document->implicitOpen(parserSyncPolicy))
 {
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (m_document->ForCrawler())
+        return;
     if (m_document->frame()) {
-        if (FrameView* view = m_document->frame()->view())
+        if (FrameView* view = toLocalFrame(m_document->frame())->view())
             view->setContentsSize(IntSize());
     }
+#endif
 }
 
 DocumentWriter::~DocumentWriter()
@@ -74,7 +83,7 @@ DEFINE_TRACE(DocumentWriter)
 
 void DocumentWriter::appendReplacingData(const String& source)
 {
-    m_document->setCompatibilityMode(Document::NoQuirksMode);
+    m_document->setCompatibilityMode(DocumentImpl::NoQuirksMode);
 
     // FIXME: This should call DocumentParser::appendBytes instead of append
     // to support RawDataDocumentParsers.
@@ -100,7 +109,7 @@ void DocumentWriter::end()
     // http://bugs.webkit.org/show_bug.cgi?id=10854
     // The frame's last ref may be removed and it can be deleted by checkCompleted(),
     // so we'll add a protective refcount
-    RefPtrWillBeRawPtr<LocalFrame> protect(m_document->frame());
+    RefPtrWillBeRawPtr<LocalFrameImpl> protect(m_document->frame());
 
     if (!m_parser)
         return;
