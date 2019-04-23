@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLParserOptions.cpp
+// Description: HTMLParserOptions Class
+//      Author: Ziming Li
+//     Created: 2019-04-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google, Inc. All Rights Reserved.
  *
@@ -25,19 +36,11 @@
 
 #include "core/html/parser/HTMLParserOptions.h"
 
-#include "bindings/core/v8/ScriptController.h"
-#include "core/dom/Document.h"
-#include "core/frame/LocalFrame.h"
-#include "core/frame/Settings.h"
-#include "core/loader/FrameLoader.h"
-
 namespace blink {
 
-HTMLParserOptions::HTMLParserOptions(Document* document)
+HTMLParserOptions::HTMLParserOptions(DocumentImpl *)
 {
-    LocalFrame* frame = document ? document->frame() : 0;
-    scriptEnabled = frame && frame->script().canExecuteScripts(NotAboutToExecuteScript);
-    pluginsEnabled = frame && frame->loader().allowPlugins(NotAboutToInstantiatePlugin);
+    // Nothing
 }
 
 }
