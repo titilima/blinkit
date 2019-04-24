@@ -35,7 +35,6 @@
 #include "core/dom/Attr.h"
 
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/HTMLNames.h"
 #include "core/dom/document_impl.h"
 #include "core/dom/element_impl.h"
 #include "core/dom/Text.h"
