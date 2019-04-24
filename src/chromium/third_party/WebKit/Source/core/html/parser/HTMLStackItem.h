@@ -40,7 +40,7 @@
 #include "core/HTMLNames.h"
 #include "core/MathMLNames.h"
 #include "core/SVGNames.h"
-#include "core/dom/Element.h"
+#include "core/dom/element_impl.h"
 #include "core/html/parser/AtomicHTMLToken.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "wtf/RefCounted.h"
@@ -70,7 +70,7 @@ public:
         return adoptRefWillBeNoop(new HTMLStackItem(node, token, namespaceURI));
     }
 
-    Element* element() const { return toElement(m_node.get()); }
+    ElementImpl* element() const { return toElementImpl(m_node.get()); }
     ContainerNode* node() const { return m_node.get(); }
 
     bool isDocumentFragmentNode() const { return m_isDocumentFragmentNode; }

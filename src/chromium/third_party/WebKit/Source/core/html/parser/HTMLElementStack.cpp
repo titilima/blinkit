@@ -40,8 +40,7 @@
 #include "core/HTMLNames.h"
 #include "core/MathMLNames.h"
 #include "core/SVGNames.h"
-#include "core/dom/Element.h"
-#include "core/html/HTMLElement.h"
+#include "core/dom/element_impl.h"
 
 namespace blink {
 
@@ -218,7 +217,7 @@ void HTMLElementStack::popAll()
     while (m_top) {
         Node& node = *topNode();
         if (node.isElementNode())
-            toElement(node).finishParsingChildren();
+            toElementImpl(node).finishParsingChildren();
         m_top = m_top->releaseNext();
     }
 }
@@ -250,13 +249,13 @@ void HTMLElementStack::popUntilNumberedHeaderElementPopped()
     pop();
 }
 
-void HTMLElementStack::popUntil(Element* element)
+void HTMLElementStack::popUntil(ElementImpl* element)
 {
     while (top() != element)
         pop();
 }
 
-void HTMLElementStack::popUntilPopped(Element* element)
+void HTMLElementStack::popUntilPopped(ElementImpl* element)
 {
     popUntil(element);
     pop();
@@ -407,7 +406,7 @@ HTMLStackItem* HTMLElementStack::oneBelowTop() const
     return nullptr;
 }
 
-void HTMLElementStack::removeHTMLHeadElement(Element* element)
+void HTMLElementStack::removeHTMLHeadElement(ElementImpl* element)
 {
     ASSERT(m_headElement == element);
     if (m_top->element() == element) {
@@ -418,9 +417,9 @@ void HTMLElementStack::removeHTMLHeadElement(Element* element)
     removeNonTopCommon(element);
 }
 
-void HTMLElementStack::remove(Element* element)
+void HTMLElementStack::remove(ElementImpl* element)
 {
-    ASSERT(!isHTMLHeadElement(element));
+    ASSERT(!element->hasLocalName(headTag.localName()));
     if (m_top->element() == element) {
         pop();
         return;
@@ -428,7 +427,7 @@ void HTMLElementStack::remove(Element* element)
     removeNonTopCommon(element);
 }
 
-HTMLElementStack::ElementRecord* HTMLElementStack::find(Element* element) const
+HTMLElementStack::ElementRecord* HTMLElementStack::find(ElementImpl* element) const
 {
     for (ElementRecord* pos = m_top.get(); pos; pos = pos->next()) {
         if (pos->node() == element)
@@ -446,7 +445,7 @@ HTMLElementStack::ElementRecord* HTMLElementStack::topmost(const AtomicString& t
     return nullptr;
 }
 
-bool HTMLElementStack::contains(Element* element) const
+bool HTMLElementStack::contains(ElementImpl* element) const
 {
     return !!find(element);
 }
@@ -483,7 +482,7 @@ bool HTMLElementStack::hasNumberedHeaderElementInScope() const
     return false;
 }
 
-bool HTMLElementStack::inScope(Element* targetElement) const
+bool HTMLElementStack::inScope(ElementImpl* targetElement) const
 {
     for (ElementRecord* pos = m_top.get(); pos; pos = pos->next()) {
         HTMLStackItem* item = pos->stackItem().get();
@@ -551,19 +550,19 @@ bool HTMLElementStack::hasTemplateInHTMLScope() const
     return inScopeCommon<isRootNode>(m_top.get(), templateTag.localName());
 }
 
-Element* HTMLElementStack::htmlElement() const
+ElementImpl* HTMLElementStack::htmlElement() const
 {
     ASSERT(m_rootNode);
-    return toElement(m_rootNode);
+    return toElementImpl(m_rootNode);
 }
 
-Element* HTMLElementStack::headElement() const
+ElementImpl* HTMLElementStack::headElement() const
 {
     ASSERT(m_headElement);
     return m_headElement;
 }
 
-Element* HTMLElementStack::bodyElement() const
+ElementImpl* HTMLElementStack::bodyElement() const
 {
     ASSERT(m_bodyElement);
     return m_bodyElement;
@@ -594,10 +593,10 @@ void HTMLElementStack::popCommon()
     m_stackDepth--;
 }
 
-void HTMLElementStack::removeNonTopCommon(Element* element)
+void HTMLElementStack::removeNonTopCommon(ElementImpl* element)
 {
-    ASSERT(!isHTMLHtmlElement(element));
-    ASSERT(!isHTMLBodyElement(element));
+    ASSERT(!element->hasLocalName(htmlTag.localName()));
+    ASSERT(!element->hasLocalName(bodyTag.localName()));
     ASSERT(top() != element);
     for (ElementRecord* pos = m_top.get(); pos; pos = pos->next()) {
         if (pos->next()->element() == element) {
@@ -612,7 +611,7 @@ void HTMLElementStack::removeNonTopCommon(Element* element)
     ASSERT_NOT_REACHED();
 }
 
-HTMLElementStack::ElementRecord* HTMLElementStack::furthestBlockForFormattingElement(Element* formattingElement) const
+HTMLElementStack::ElementRecord* HTMLElementStack::furthestBlockForFormattingElement(ElementImpl* formattingElement) const
 {
     ElementRecord* furthestBlock = 0;
     for (ElementRecord* pos = m_top.get(); pos; pos = pos->next()) {

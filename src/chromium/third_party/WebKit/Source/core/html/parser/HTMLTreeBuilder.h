@@ -54,7 +54,7 @@ namespace blink {
 
 class AtomicHTMLToken;
 class DocumentFragment;
-class Element;
+class ElementImpl;
 class HTMLDocumentParser;
 
 class HTMLTreeBuilder final : public NoBaseWillBeGarbageCollectedFinalized<HTMLTreeBuilder> {
@@ -83,7 +83,7 @@ public:
 
     bool hasParserBlockingScript() const { return !!m_scriptToProcess; }
     // Must be called to take the parser-blocking script before calling the parser again.
-    PassRefPtrWillBeRawPtr<Element> takeScriptToProcess(TextPosition& scriptStartPosition);
+    PassRefPtrWillBeRawPtr<ElementImpl> takeScriptToProcess(TextPosition& scriptStartPosition);
 
     // Done, close any open tags, etc.
     void finished();
@@ -207,7 +207,7 @@ private:
         ~FragmentParsingContext();
 
         DocumentFragment* fragment() const { return m_fragment; }
-        Element* contextElement() const { ASSERT(m_fragment); return m_contextElementStackItem->element(); }
+        ElementImpl* contextElement() const { ASSERT(m_fragment); return m_contextElementStackItem->element(); }
         HTMLStackItem* contextElementStackItem() const { ASSERT(m_fragment); return m_contextElementStackItem.get(); }
 
         DECLARE_TRACE();
@@ -242,7 +242,7 @@ private:
     // from within parser actions. We also need it to track the current position.
     RawPtrWillBeMember<HTMLDocumentParser> m_parser;
 
-    RefPtrWillBeMember<Element> m_scriptToProcess; // <script> tag which needs processing before resuming the parser.
+    RefPtrWillBeMember<ElementImpl> m_scriptToProcess; // <script> tag which needs processing before resuming the parser.
     TextPosition m_scriptToProcessStartPosition; // Starting line number of the script tag needing processing.
 
     HTMLParserOptions m_options;
