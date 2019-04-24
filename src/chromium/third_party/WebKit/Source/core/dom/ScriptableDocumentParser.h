@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ScriptableDocumentParser.h
+// Description: ScriptableDocumentParser Class
+//      Author: Ziming Li
+//     Created: 2019-04-24
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -55,7 +66,7 @@ public:
     ParserContentPolicy parserContentPolicy() { return m_parserContentPolicy; }
 
 protected:
-    explicit ScriptableDocumentParser(Document&, ParserContentPolicy = AllowScriptingContent);
+    explicit ScriptableDocumentParser(DocumentImpl&, ParserContentPolicy = AllowScriptingContent);
 
 private:
     ScriptableDocumentParser* asScriptableDocumentParser() final { return this; }

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ScriptableDocumentParser.cpp
+// Description: ScriptableDocumentParser Class
+//      Author: Ziming Li
+//     Created: 2019-04-24
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -30,7 +41,7 @@
 
 namespace blink {
 
-ScriptableDocumentParser::ScriptableDocumentParser(Document& document, ParserContentPolicy parserContentPolicy)
+ScriptableDocumentParser::ScriptableDocumentParser(DocumentImpl& document, ParserContentPolicy parserContentPolicy)
     : DecodedDataDocumentParser(document)
     , m_wasCreatedByScript(false)
     , m_parserContentPolicy(parserContentPolicy)
