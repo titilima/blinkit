@@ -268,8 +268,6 @@ pluginsEnabled initial=false
 viewportEnabled initial=false, invalidate=ViewportDescription
 viewportMetaEnabled initial=false
 
-dataSaverEnabled initial=false
-
 # FIXME: This is a temporary flag and should be removed
 # when squashing is ready. (crbug.com/261605)
 layerSquashingEnabled initial=false

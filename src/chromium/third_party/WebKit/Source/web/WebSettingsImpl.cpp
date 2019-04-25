@@ -396,11 +396,6 @@ void WebSettingsImpl::setDNSPrefetchingEnabled(bool enabled)
     m_settings->setDNSPrefetchingEnabled(enabled);
 }
 
-void WebSettingsImpl::setDataSaverEnabled(bool enabled)
-{
-    m_settings->setDataSaverEnabled(enabled);
-}
-
 void WebSettingsImpl::setLocalStorageEnabled(bool enabled)
 {
     m_settings->setLocalStorageEnabled(enabled);
