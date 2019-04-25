@@ -46,7 +46,6 @@
 #include "platform/FileChooser.h"
 #include "platform/Widget.h"
 #include "public/platform/Platform.h"
-#include "public/platform/WebApplicationCacheHost.h"
 #include "public/platform/WebMediaPlayer.h"
 #include "public/platform/modules/mediasession/WebMediaSession.h"
 #include "public/platform/modules/serviceworker/WebServiceWorkerProvider.h"
@@ -148,7 +147,7 @@ void EmptyFrameLoaderClient::dispatchWillSubmitForm(HTMLFormElement*)
 {
 }
 
-PassRefPtrWillBeRawPtr<DocumentLoader> EmptyFrameLoaderClient::createDocumentLoader(LocalFrame* frame, const ResourceRequest& request, const SubstituteData& substituteData)
+PassRefPtrWillBeRawPtr<DocumentLoader> EmptyFrameLoaderClient::createDocumentLoader(LocalFrameImpl* frame, const ResourceRequest& request, const SubstituteData& substituteData)
 {
     return DocumentLoader::create(frame, request, substituteData);
 }
@@ -164,11 +163,6 @@ void EmptyTextCheckerClient::requestCheckingOfString(PassRefPtrWillBeRawPtr<Text
 
 void EmptyFrameLoaderClient::didRequestAutocomplete(HTMLFormElement*)
 {
-}
-
-PassOwnPtr<WebApplicationCacheHost> EmptyFrameLoaderClient::createApplicationCacheHost(WebApplicationCacheHostClient*)
-{
-    return nullptr;
 }
 
 } // namespace blink

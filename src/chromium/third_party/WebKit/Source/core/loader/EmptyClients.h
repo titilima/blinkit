@@ -230,7 +230,7 @@ public:
 
     void loadURLExternally(const ResourceRequest&, NavigationPolicy, const String&, bool) override {}
 
-    PassRefPtrWillBeRawPtr<DocumentLoader> createDocumentLoader(LocalFrame*, const ResourceRequest&, const SubstituteData&) override;
+    PassRefPtrWillBeRawPtr<DocumentLoader> createDocumentLoader(LocalFrameImpl*, const ResourceRequest&, const SubstituteData&) override;
 
     String userAgent() override { return ""; }
 
@@ -263,7 +263,6 @@ public:
 
     bool isControlledByServiceWorker(DocumentLoader&) override { return false; }
     int64_t serviceWorkerID(DocumentLoader&) override { return -1; }
-    PassOwnPtr<WebApplicationCacheHost> createApplicationCacheHost(WebApplicationCacheHostClient*) override;
 
 protected:
     EmptyFrameLoaderClient() {}
