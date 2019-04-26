@@ -55,6 +55,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BkCrawler", "BkCrawler\BkCr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "blink_crawler", "blink_crawler\blink_crawler.vcxproj", "{B35DE08A-79A8-41D5-B651-813900363E9D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "net", "net\net.vcxproj", "{103E87CB-36EB-49C3-ADFC-6C036AA14B21}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -255,6 +257,14 @@ Global
 		{B35DE08A-79A8-41D5-B651-813900363E9D}.Release|x64.Build.0 = Release|x64
 		{B35DE08A-79A8-41D5-B651-813900363E9D}.Release|x86.ActiveCfg = Release|Win32
 		{B35DE08A-79A8-41D5-B651-813900363E9D}.Release|x86.Build.0 = Release|Win32
+		{103E87CB-36EB-49C3-ADFC-6C036AA14B21}.Debug|x64.ActiveCfg = Debug|x64
+		{103E87CB-36EB-49C3-ADFC-6C036AA14B21}.Debug|x64.Build.0 = Debug|x64
+		{103E87CB-36EB-49C3-ADFC-6C036AA14B21}.Debug|x86.ActiveCfg = Debug|Win32
+		{103E87CB-36EB-49C3-ADFC-6C036AA14B21}.Debug|x86.Build.0 = Debug|Win32
+		{103E87CB-36EB-49C3-ADFC-6C036AA14B21}.Release|x64.ActiveCfg = Release|x64
+		{103E87CB-36EB-49C3-ADFC-6C036AA14B21}.Release|x64.Build.0 = Release|x64
+		{103E87CB-36EB-49C3-ADFC-6C036AA14B21}.Release|x86.ActiveCfg = Release|Win32
+		{103E87CB-36EB-49C3-ADFC-6C036AA14B21}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -279,6 +289,7 @@ Global
 		{98A19AA9-DDD3-42B4-92C5-C0E2681A480D} = {91A28989-465E-4DCE-8769-180486DD9C19}
 		{35DDB613-6C23-4B17-9B1A-643C91B09A16} = {9A0E759B-74A2-43AC-9774-2A8BA7A86197}
 		{B35DE08A-79A8-41D5-B651-813900363E9D} = {91A28989-465E-4DCE-8769-180486DD9C19}
+		{103E87CB-36EB-49C3-ADFC-6C036AA14B21} = {91A28989-465E-4DCE-8769-180486DD9C19}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {203D556F-DFBA-4942-8EDE-A717D34DBEEB}
