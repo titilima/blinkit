@@ -157,12 +157,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\chromium\net\base\net_util.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\net\base\registry_controlled_domains\registry_controlled_domain.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\net\cookies\canonical_cookie.cc" />
+    <ClCompile Include="..\..\..\src\chromium\net\cookies\cookie_constants.cc" />
+    <ClCompile Include="..\..\..\src\chromium\net\cookies\cookie_options.cc" />
+    <ClCompile Include="..\..\..\src\chromium\net\cookies\cookie_util.cc" />
+    <ClCompile Include="..\..\..\src\chromium\net\cookies\parsed_cookie.cc" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\chromium\net\base\net_export.h" />
+    <ClInclude Include="..\..\..\src\chromium\net\base\net_util.h" />
+    <ClInclude Include="..\..\..\src\chromium\net\base\registry_controlled_domains\registry_controlled_domain.h" />
+    <ClInclude Include="..\..\..\src\chromium\net\cookies\canonical_cookie.h" />
+    <ClInclude Include="..\..\..\src\chromium\net\cookies\cookie_constants.h" />
+    <ClInclude Include="..\..\..\src\chromium\net\cookies\cookie_options.h" />
+    <ClInclude Include="..\..\..\src\chromium\net\cookies\cookie_util.h" />
+    <ClInclude Include="..\..\..\src\chromium\net\cookies\parsed_cookie.h" />
     <ClInclude Include="..\..\..\src\net\_pc.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -9,19 +9,69 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="cookies">
+      <UniqueIdentifier>{cc5189d7-fccf-4e41-b626-5fc7c0f10b22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="base">
+      <UniqueIdentifier>{489069bb-50a5-439d-b5f8-212ef013ada2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="base\registry_controlled_domains">
+      <UniqueIdentifier>{bae4ada9-0cf2-49f6-a95c-058ccc6fdd0a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\net\cookies\canonical_cookie.cc">
+      <Filter>cookies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\net\cookies\cookie_constants.cc">
+      <Filter>cookies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\net\cookies\cookie_options.cc">
+      <Filter>cookies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\net\cookies\cookie_util.cc">
+      <Filter>cookies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\net\cookies\parsed_cookie.cc">
+      <Filter>cookies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\net\base\net_util.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\net\base\registry_controlled_domains\registry_controlled_domain.cpp">
+      <Filter>base\registry_controlled_domains</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\net\_pc.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\net\cookies\canonical_cookie.h">
+      <Filter>cookies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\net\base\net_export.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\net\cookies\cookie_constants.h">
+      <Filter>cookies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\net\cookies\cookie_options.h">
+      <Filter>cookies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\net\cookies\cookie_util.h">
+      <Filter>cookies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\net\cookies\parsed_cookie.h">
+      <Filter>cookies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\net\base\net_util.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\net\base\registry_controlled_domains\registry_controlled_domain.h">
+      <Filter>base\registry_controlled_domains</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
