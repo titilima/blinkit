@@ -27,6 +27,9 @@
     <Filter Include="base\win">
       <UniqueIdentifier>{182f58a9-7de3-489e-8f96-821c053e999b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="base\metrics">
+      <UniqueIdentifier>{4dd07644-0392-49a7-8e7f-d7ce62a9b408}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -158,6 +161,15 @@
       <Filter>base\strings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\base\strings\string_split.h">
+      <Filter>base\strings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\format_macros.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\metrics\histogram_macros.h">
+      <Filter>base\metrics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\strings\string_tokenizer.h">
       <Filter>base\strings</Filter>
     </ClInclude>
   </ItemGroup>
