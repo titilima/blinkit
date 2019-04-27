@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: DocumentParser.h
-// Description: DocumentParser Class
-//      Author: Ziming Li
-//     Created: 2019-04-20
-// -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2000 Peter Kelly (pmk@post.com)
  * Copyright (C) 2005, 2006 Apple Computer, Inc.
@@ -41,7 +30,7 @@
 
 namespace blink {
 
-class DocumentImpl;
+class Document;
 class DocumentParserClient;
 class SegmentedString;
 class ScriptableDocumentParser;
@@ -78,7 +67,7 @@ public:
     virtual bool processingData() const { return false; }
 
     // document() will return 0 after detach() is called.
-    DocumentImpl* document() const { ASSERT(m_document); return m_document; }
+    Document* document() const { ASSERT(m_document); return m_document; }
 
     bool isParsing() const { return m_state == ParsingState; }
     bool isStopping() const { return m_state == StoppingState; }
@@ -114,7 +103,7 @@ public:
     void removeClient(DocumentParserClient*);
 
 protected:
-    explicit DocumentParser(DocumentImpl*);
+    explicit DocumentParser(Document*);
 
     virtual void flush() = 0;
 
@@ -130,7 +119,7 @@ private:
 
     // Every DocumentParser needs a pointer back to the document.
     // m_document will be 0 after the parser is stopped.
-    RawPtrWillBeMember<DocumentImpl> m_document;
+    RawPtrWillBeMember<Document> m_document;
 
     WillBeHeapHashSet<RawPtrWillBeWeakMember<DocumentParserClient>> m_clients;
 };
