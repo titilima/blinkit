@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: CDATASection.h
-// Description: CDATASection Class
-//      Author: Ziming Li
-//     Created: 2019-04-18
-// -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -41,10 +30,10 @@ namespace blink {
 class CDATASection final : public Text {
     DEFINE_WRAPPERTYPEINFO();
 public:
-    static PassRefPtrWillBeRawPtr<CDATASection> create(DocumentImpl&, const String&);
+    static PassRefPtrWillBeRawPtr<CDATASection> create(Document&, const String&);
 
 private:
-    CDATASection(DocumentImpl&, const String&);
+    CDATASection(Document&, const String&);
 
     String nodeName() const override;
     NodeType nodeType() const override;
