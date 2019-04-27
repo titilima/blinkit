@@ -38,7 +38,7 @@
 
 namespace blink {
 
-HTMLParserOptions::HTMLParserOptions(DocumentImpl *)
+HTMLParserOptions::HTMLParserOptions(Document* document)
 {
     // Nothing
 }

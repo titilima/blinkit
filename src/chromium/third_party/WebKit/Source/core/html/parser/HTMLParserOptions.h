@@ -42,14 +42,14 @@
 
 namespace blink {
 
-class DocumentImpl;
+class Document;
 
 class CORE_EXPORT HTMLParserOptions {
     DISALLOW_NEW();
 public:
     bool scriptEnabled = true;
 
-    explicit HTMLParserOptions(DocumentImpl* = 0);
+    explicit HTMLParserOptions(Document* = 0);
 };
 
 }
