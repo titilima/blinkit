@@ -42,8 +42,8 @@
 #include "core/CoreExport.h"
 #include "core/animation/AnimationClock.h"
 #include "core/animation/CompositorPendingAnimations.h"
+#include "core/dom/ContainerNode.h"
 #include "core/dom/DocumentEncodingData.h"
-#include "core/dom/document_impl.h"
 #include "core/dom/DocumentInit.h"
 #include "core/dom/DocumentLifecycle.h"
 #include "core/dom/DocumentLifecycleNotifier.h"
@@ -56,10 +56,10 @@
 #include "core/dom/UserActionElementSet.h"
 #include "core/dom/ViewportDescription.h"
 #include "core/dom/custom/CustomElement.h"
-#include "core/fetch/ClientHintsPreferences.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/OriginsUsingFeatures.h"
 #include "core/html/CollectionType.h"
+#include "core/html/parser/ParserSynchronizationPolicy.h"
 #include "core/page/PageVisibilityState.h"
 #include "platform/Length.h"
 #include "platform/Timer.h"
@@ -94,6 +94,7 @@ class DocumentFragment;
 class DocumentLoader;
 class DocumentMarkerController;
 class DocumentNameCollection;
+class DocumentParser;
 class DocumentState;
 class DocumentType;
 class DocumentVisibilityObserver;
@@ -101,6 +102,7 @@ class Element;
 class ElementDataCache;
 class ElementRegistrationOptions;
 class Event;
+class EventFactoryBase;
 class EventListener;
 template <typename EventType>
 class EventWithHitTestResults;
@@ -131,7 +133,7 @@ class IntersectionObserverController;
 class LayoutPoint;
 class LiveNodeListBase;
 class Locale;
-class LocalFrame;
+class LocalFrameImpl;
 class Location;
 class MainThreadTaskRunner;
 class MediaQueryListListener;
@@ -197,7 +199,20 @@ enum NodeListInvalidationType {
 };
 const int numNodeListInvalidationTypes = InvalidateOnAnyAttrChange + 1;
 
-class CORE_EXPORT Document : public DocumentImpl, public TreeScope, public SecurityContext, public ExecutionContext
+enum DocumentClass {
+    DefaultDocumentClass = 0,
+    HTMLDocumentClass = 1,
+    XHTMLDocumentClass = 1 << 1,
+    ImageDocumentClass = 1 << 2,
+    PluginDocumentClass = 1 << 3,
+    MediaDocumentClass = 1 << 4,
+    SVGDocumentClass = 1 << 5,
+    XMLDocumentClass = 1 << 6,
+};
+
+using DocumentClassFlags = unsigned char;
+
+class CORE_EXPORT Document : public ContainerNode, public TreeScope, public SecurityContext, public ExecutionContext
     , public WillBeHeapSupplementable<Document>, public DocumentLifecycleNotifier {
     DEFINE_WRAPPERTYPEINFO();
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(Document);
@@ -285,7 +300,9 @@ public:
 
     Element* elementFromPoint(int x, int y) const;
     WillBeHeapVector<RawPtrWillBeMember<Element>> elementsFromPoint(int x, int y) const;
+#if 0 // BKTODO: Seems no references.
     PassRefPtrWillBeRawPtr<Range> caretRangeFromPoint(int x, int y);
+#endif
     Element* scrollingElement();
 
     String readyState() const;
@@ -340,6 +357,14 @@ public:
     PassRefPtrWillBeRawPtr<HTMLCollection> windowNamedItems(const AtomicString& name);
     PassRefPtrWillBeRawPtr<DocumentNameCollection> documentNamedItems(const AtomicString& name);
 
+    bool isHTMLDocument() const { return m_documentClasses & HTMLDocumentClass; }
+    bool isXHTMLDocument() const { return m_documentClasses & XHTMLDocumentClass; }
+    bool isXMLDocument() const { return m_documentClasses & XMLDocumentClass; }
+    bool isImageDocument() const { return m_documentClasses & ImageDocumentClass; }
+    bool isSVGDocument() const { return m_documentClasses & SVGDocumentClass; }
+    bool isPluginDocument() const { return m_documentClasses & PluginDocumentClass; }
+    bool isMediaDocument() const { return m_documentClasses & MediaDocumentClass; }
+
     bool hasSVGRootNode() const;
 
     bool isFrameSet() const;
@@ -347,8 +372,10 @@ public:
     bool isSrcdocDocument() const { return m_isSrcdocDocument; }
     bool isMobileDocument() const { return m_isMobileDocument; }
 
+#if 0 // BKTODO:
     StyleResolver* styleResolver() const;
     StyleResolver& ensureStyleResolver() const;
+#endif
 
     bool isViewSource() const { return m_isViewSource; }
     void setIsViewSource(bool);
@@ -358,10 +385,12 @@ public:
     bool isRenderingReady() const { return haveImportsLoaded() && haveStylesheetsLoaded(); }
     bool isScriptExecutionReady() const { return isRenderingReady(); }
 
+#if 0 // BKTODO:
     // This is a DOM function.
     StyleSheetList* styleSheets();
 
     StyleEngine& styleEngine() { ASSERT(m_styleEngine.get()); return *m_styleEngine.get(); }
+#endif
 
     bool gotoAnchorNeededAfterStylesheetsLoad() { return m_gotoAnchorNeededAfterStylesheetsLoad; }
     void setGotoAnchorNeededAfterStylesheetsLoad(bool b) { m_gotoAnchorNeededAfterStylesheetsLoad = b; }
@@ -391,15 +420,19 @@ public:
     DocumentState* formElementsState() const;
     void setStateForNewFormElements(const Vector<String>&);
 
+#if 0 // BKTODO:
     FrameView* view() const; // can be null
-    LocalFrame* frame() const; // can be null
+#endif
+    LocalFrameImpl* frame() const { return m_frame; } // can be null
     FrameHost* frameHost() const; // can be null
     Page* page() const; // can be null
     Settings* settings() const; // can be null
 
     float devicePixelRatio() const;
 
+#if 0 // BKTODO:
     PassRefPtrWillBeRawPtr<Range> createRange();
+#endif
 
     PassRefPtrWillBeRawPtr<NodeIterator> createNodeIterator(Node* root, unsigned whatToShow, PassRefPtrWillBeRawPtr<NodeFilter>);
     PassRefPtrWillBeRawPtr<TreeWalker> createTreeWalker(Node* root, unsigned whatToShow, PassRefPtrWillBeRawPtr<NodeFilter>);
@@ -423,8 +456,10 @@ public:
         RunPostLayoutTasksSynchronously,
     };
     void updateLayoutIgnorePendingStylesheets(RunPostLayoutTasks = RunPostLayoutTasksAsyhnchronously);
+#if 0 // BKTODO:
     PassRefPtr<ComputedStyle> styleForElementIgnoringPendingStylesheets(Element*);
     PassRefPtr<ComputedStyle> styleForPage(int pageIndex);
+#endif
 
     // Returns true if page box (margin boxes and page borders) is visible.
     bool isPageBoxVisible(int pageIndex);
@@ -443,7 +478,9 @@ public:
     // If you have a Document, use layoutView() instead which is faster.
     void layoutObject() const = delete;
 
+#if 0 // BKTODO:
     LayoutView* layoutView() const { return m_layoutView; }
+#endif
 
     // to get visually ordered hebrew and arabic pages right
     bool visuallyOrdered() const { return m_visuallyOrdered; }
@@ -454,6 +491,7 @@ public:
     void open(Document* ownerDocument, ExceptionState&);
     // This is used internally and does not handle exceptions.
     void open();
+    PassRefPtrWillBeRawPtr<DocumentParser> implicitOpen(ParserSynchronizationPolicy);
 
     // This is the DOM API document.close()
     void close(ExceptionState&);
@@ -512,7 +550,9 @@ public:
     String userAgent() const final;
     void disableEval(const String& errorMessage) final;
 
+#if 0 // BKTODO:
     CSSStyleSheet& elementSheet();
+#endif
 
     virtual PassRefPtrWillBeRawPtr<DocumentParser> createParser();
     DocumentParser* parser() const { return m_parser.get(); }
@@ -527,7 +567,16 @@ public:
 
     bool paginated() const { return printing() || paginatedForScreen(); }
 
+    enum CompatibilityMode { QuirksMode, LimitedQuirksMode, NoQuirksMode };
+
+    void setCompatibilityMode(CompatibilityMode);
+    CompatibilityMode compatibilityMode() const { return m_compatibilityMode; }
+
     String compatMode() const;
+
+    bool inQuirksMode() const { return m_compatibilityMode == QuirksMode; }
+    bool inLimitedQuirksMode() const { return m_compatibilityMode == LimitedQuirksMode; }
+    bool inNoQuirksMode() const { return m_compatibilityMode == NoQuirksMode; }
 
     enum ReadyState {
         Loading,
@@ -537,13 +586,25 @@ public:
     void setReadyState(ReadyState);
     bool isLoadCompleted();
 
+    enum ParsingState {
+        Parsing,
+        InDOMContentLoaded,
+        FinishedParsing
+    };
+    void setParsingState(ParsingState);
+    bool parsing() const { return m_parsingState == Parsing; }
+    bool isInDOMContentLoaded() const { return m_parsingState == InDOMContentLoaded; }
+    bool hasFinishedParsing() const { return m_parsingState == FinishedParsing; }
+
     bool shouldScheduleLayout() const;
     int elapsedTime() const;
 
+#if 0 // BKTODO:
     TextLinkColors& textLinkColors() { return m_textLinkColors; }
     VisitedLinkState& visitedLinkState() const { return *m_visitedLinkState; }
 
     MouseEventWithHitTestResults prepareMouseEvent(const HitTestRequest&, const LayoutPoint&, const PlatformMouseEvent&);
+#endif
 
     /* Newly proposed CSS3 mechanism for selecting alternate
        stylesheets using the DOM. May be subject to change as
@@ -607,12 +668,14 @@ public:
     void didMergeTextNodes(Text& oldNode, unsigned offset);
     void didSplitTextNode(Text& oldNode);
 
-    LocalDOMWindow* domWindow() const;
+    void clearDOMWindow() { m_domWindow = nullptr; }
+    LocalDOMWindowImpl* domWindow() const { return m_domWindow; }
 
     // Helper functions for forwarding LocalDOMWindow event related tasks to the LocalDOMWindow if it exists.
     void setWindowAttributeEventListener(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener>);
     EventListener* getWindowAttributeEventListener(const AtomicString& eventType);
 
+    static void registerEventFactory(PassOwnPtr<EventFactoryBase>);
     static PassRefPtrWillBeRawPtr<Event> createEvent(const String& eventType, ExceptionState&);
 
     // keep track of what types of event listeners are registered, so we don't
@@ -726,7 +789,9 @@ public:
     // have been calculated on the fly (without associating it with the actual element) somewhere.
     Element* viewportDefiningElement(const ComputedStyle* rootStyle = nullptr) const;
 
+#if 0 // BKTODO:
     DocumentMarkerController& markers() const { return *m_markers; }
+#endif
 
     bool execCommand(const String& command, bool showUI, const String& value, ExceptionState&);
     bool isRunningExecCommand() const { return m_isRunningExecCommand; }
@@ -753,8 +818,10 @@ public:
     void pushCurrentScript(PassRefPtrWillBeRawPtr<HTMLScriptElement>);
     void popCurrentScript();
 
+#if 0
     void setTransformSource(PassOwnPtr<TransformSource>);
     TransformSource* transformSource() const { return m_transformSource.get(); }
+#endif
 
     void incDOMTreeVersion() { ASSERT(m_lifecycle.stateAllowsTreeMutations()); m_domTreeVersion = ++s_globalTreeVersion; }
     uint64_t domTreeVersion() const { return m_domTreeVersion; }
@@ -783,9 +850,6 @@ public:
     void updateFocusAppearanceSoon(SelectionBehaviorOnFocus);
     void cancelFocusAppearanceUpdate();
 
-    bool isDNSPrefetchEnabled() const { return m_isDNSPrefetchEnabled; }
-    void parseDNSPrefetchControlHeader(const String&);
-
     // FIXME(crbug.com/305497): This should be removed once LocalDOMWindow is an ExecutionContext.
     void postTask(const WebTraceLocation&, PassOwnPtr<ExecutionContextTask>) override; // Executes the task on context's thread asynchronously.
     void postInspectorTask(const WebTraceLocation&, PassOwnPtr<ExecutionContextTask>);
@@ -795,6 +859,8 @@ public:
     void suspendScheduledTasks() final;
     void resumeScheduledTasks() final;
     bool tasksNeedSuspension() final;
+
+    void finishedParsing();
 
     void setEncodingData(const DocumentEncodingData& newData);
     const WTF::TextEncoding& encoding() const { return m_encodingData.encoding(); }
@@ -882,15 +948,15 @@ public:
 
     EventTarget* errorEventTarget() final;
 
-    void initDNSPrefetch();
-
     bool isInDocumentWrite() { return m_writeRecursionDepth > 0; }
 
     TextAutosizer* textAutosizer();
 
     PassRefPtrWillBeRawPtr<Element> createElement(const AtomicString& localName, const AtomicString& typeExtension, ExceptionState&);
     PassRefPtrWillBeRawPtr<Element> createElementNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, const AtomicString& typeExtension, ExceptionState&);
+#if 0
     CustomElementRegistrationContext* registrationContext() { return m_registrationContext.get(); }
+#endif
     CustomElementMicrotaskRunQueue* customElementMicrotaskRunQueue();
 
     void setImportsController(HTMLImportsController*);
@@ -922,8 +988,10 @@ public:
     Locale& getCachedLocale(const AtomicString& locale = nullAtom);
 
     AnimationClock& animationClock();
+#if 0 // BKTODO:
     AnimationTimeline& timeline() const { return *m_timeline; }
     CompositorPendingAnimations& compositorPendingAnimations() { return m_compositorPendingAnimations; }
+#endif
 
     void addToTopLayer(Element*, const Element* before = nullptr);
     void removeFromTopLayer(Element*);
@@ -942,8 +1010,8 @@ public:
 
     void addConsoleMessage(PassRefPtrWillBeRawPtr<ConsoleMessage>) final;
 
-    LocalDOMWindow* executingWindow() final;
-    LocalFrame* executingFrame();
+    LocalDOMWindowImpl* executingWindow() final;
+    LocalFrameImpl* executingFrame();
 
     DocumentLifecycle& lifecycle() { return m_lifecycle; }
     bool isActive() const { return m_lifecycle.isActive(); }
@@ -987,7 +1055,10 @@ public:
     bool isSecureContext(String& errorMessage, const SecureContextCheck = StandardSecureContextCheck) const override;
     bool isSecureContext(const SecureContextCheck = StandardSecureContextCheck) const override;
 
-    ClientHintsPreferences& clientHintsPreferences() { return m_clientHintsPreferences; }
+    // Used by unit tests so that all parsing will be main thread for
+    // controlling parsing and chunking precisely.
+    static void setThreadedParsingEnabledForTesting(bool);
+    static bool threadedParsingEnabledForTesting();
 
     void incrementNodeCount() { m_nodeCount++; }
     void decrementNodeCount()
@@ -1006,7 +1077,7 @@ public:
     void enforceStrictMixedContentChecking();
 
 protected:
-    Document(const DocumentInit&, DocumentClassFlags = DefaultDocumentClass);
+    Document(const DocumentInit&, DocumentClassFlags = DefaultDocumentClass, bool forCrawler = false);
 
     void didUpdateSecurityOrigin() final;
 
@@ -1030,7 +1101,9 @@ private:
     bool isDocumentNode() const = delete; // This will catch anyone doing an unnecessary check.
     bool isElementNode() const = delete; // This will catch anyone doing an unnecessary check.
 
+#if 0 // BKTODO:
     ScriptedAnimationController& ensureScriptedAnimationController();
+#endif
     SecurityContext& securityContext() final { return *this; }
     EventQueue* eventQueue() const final;
 
@@ -1097,6 +1170,9 @@ private:
 
     void setHoverNode(PassRefPtrWillBeRawPtr<Node>);
 
+    using EventFactorySet = HashSet<OwnPtr<EventFactoryBase>>;
+    static EventFactorySet& eventFactories();
+
     void setNthIndexCache(NthIndexCache* nthIndexCache) { ASSERT(!m_nthIndexCache || !nthIndexCache); m_nthIndexCache = nthIndexCache; }
 
     const OriginAccessEntry& accessEntryFromURL();
@@ -1111,6 +1187,8 @@ private:
     // do eventually load.
     PendingSheetLayout m_pendingSheetLayout;
 
+    RawPtrWillBeMember<LocalFrameImpl> m_frame;
+    RawPtrWillBeMember<LocalDOMWindowImpl> m_domWindow;
     // FIXME: oilpan: when we get rid of the transition types change the
     // HTMLImportsController to not be a DocumentSupplement since it is
     // redundant with oilpan.
@@ -1139,12 +1217,15 @@ private:
     RefPtrWillBeMember<DocumentType> m_docType;
     OwnPtrWillBeMember<DOMImplementation> m_implementation;
 
+#if 0 // BKTODO:
     RefPtrWillBeMember<CSSStyleSheet> m_elemSheet;
+#endif
 
     bool m_printing;
     bool m_wasPrinting;
     bool m_paginatedForScreen;
 
+    CompatibilityMode m_compatibilityMode;
     bool m_compatibilityModeLocked; // This is cheaper than making setCompatibilityMode virtual.
 
     OwnPtr<CancellableTaskFactory> m_executeScriptsWaitingForResourcesTask;
@@ -1164,13 +1245,16 @@ private:
     uint64_t m_styleVersion;
 
     WillBeHeapHashSet<RawPtrWillBeWeakMember<NodeIterator>> m_nodeIterators;
+#if 0 // BKTODO:
     using AttachedRangeSet = WillBeHeapHashSet<RawPtrWillBeWeakMember<Range>>;
     AttachedRangeSet m_ranges;
+#endif
 
     unsigned short m_listenerTypes;
 
     MutationObserverOptions m_mutationObserverTypes;
 
+#if 0 // BKTODO:
     OwnPtrWillBeMember<StyleEngine> m_styleEngine;
     RefPtrWillBeMember<StyleSheetList> m_styleSheetList;
 
@@ -1178,13 +1262,13 @@ private:
 
     TextLinkColors m_textLinkColors;
     const OwnPtrWillBeMember<VisitedLinkState> m_visitedLinkState;
+#endif
 
     bool m_visuallyOrdered;
     ReadyState m_readyState;
+    ParsingState m_parsingState;
 
     bool m_gotoAnchorNeededAfterStylesheetsLoad;
-    bool m_isDNSPrefetchEnabled;
-    bool m_haveExplicitlyDisabledDNSPrefetch;
     bool m_containsValidityStyleRules;
     bool m_containsPlugins;
     SelectionBehaviorOnFocus m_updateFocusAppearanceSelectionBahavior;
@@ -1196,7 +1280,9 @@ private:
     String m_rawTitle;
     RefPtrWillBeMember<Element> m_titleElement;
 
+#if 0 // BKTODO:
     OwnPtrWillBeMember<DocumentMarkerController> m_markers;
+#endif
 
     Timer<Document> m_updateFocusAppearanceTimer;
 
@@ -1210,7 +1296,9 @@ private:
 
     WillBeHeapVector<RefPtrWillBeMember<HTMLScriptElement>> m_currentScriptStack;
 
+#if 0 // BKTODO:
     OwnPtr<TransformSource> m_transformSource;
+#endif
 
     String m_xmlEncoding;
     String m_xmlVersion;
@@ -1235,7 +1323,9 @@ private:
     unsigned m_nodeListCounts[numNodeListInvalidationTypes];
 #endif
 
+#if 0 // BKTODO:
     OwnPtrWillBeMember<SVGDocumentExtensions> m_svgExtensions;
+#endif
 
     Vector<AnnotatedRegionValue> m_annotatedRegions;
     bool m_hasAnnotatedRegions;
@@ -1253,12 +1343,16 @@ private:
 
     bool m_useSecureKeyboardEntryWhenActive;
 
+    DocumentClassFlags m_documentClasses;
+
     bool m_isViewSource;
     bool m_sawElementsInKnownNamespaces;
     bool m_isSrcdocDocument;
     bool m_isMobileDocument;
 
+#if 0
     LayoutView* m_layoutView;
+#endif
 
 #if !ENABLE(OILPAN)
     WeakPtrFactory<Document> m_weakFactory;
@@ -1280,16 +1374,22 @@ private:
     ReferrerPolicy m_referrerPolicy;
 
     DocumentTiming m_documentTiming;
+#if 0 // BKTODO:
     RefPtrWillBeMember<MediaQueryMatcher> m_mediaQueryMatcher;
+#endif
     bool m_writeRecursionIsTooDeep;
     unsigned m_writeRecursionDepth;
 
+#if 0 // BKTODO:
     RefPtrWillBeMember<ScriptedAnimationController> m_scriptedAnimationController;
+#endif
     OwnPtrWillBeMember<MainThreadTaskRunner> m_taskRunner;
+#if 0 // BKTODO:
     OwnPtrWillBeMember<TextAutosizer> m_textAutosizer;
 
     RefPtrWillBeMember<CustomElementRegistrationContext> m_registrationContext;
     RefPtrWillBeMember<CustomElementMicrotaskRunQueue> m_customElementMicrotaskRunQueue;
+#endif
 
     void elementDataCacheClearTimerFired(Timer<Document>*);
     Timer<Document> m_elementDataCacheClearTimer;
@@ -1299,8 +1399,10 @@ private:
     using LocaleIdentifierToLocaleMap = HashMap<AtomicString, OwnPtr<Locale>>;
     LocaleIdentifierToLocaleMap m_localeCache;
 
+#if 0 // BKTODO:
     PersistentWillBeMember<AnimationTimeline> m_timeline;
     CompositorPendingAnimations m_compositorPendingAnimations;
+#endif
 
     RefPtrWillBeMember<Document> m_templateDocument;
     // With Oilpan the templateDocument and the templateDocumentHost
@@ -1311,7 +1413,9 @@ private:
     Timer<Document> m_didAssociateFormControlsTimer;
     WillBeHeapHashSet<RefPtrWillBeMember<Element>> m_associatedFormControls;
 
+#if 0 // BKTODO:
     WillBeHeapHashSet<RawPtrWillBeMember<SVGUseElement>> m_useElementsNeedingUpdate;
+#endif
     WillBeHeapHashSet<RawPtrWillBeMember<Element>> m_layerUpdateSVGFilterElements;
 
     bool m_hasViewportUnits;
@@ -1324,8 +1428,6 @@ private:
     ParserSynchronizationPolicy m_parserSyncPolicy;
 
     OriginsUsingFeatures::Value m_originsUsingFeaturesValue;
-
-    ClientHintsPreferences m_clientHintsPreferences;
 
     PersistentWillBeMember<IntersectionObserverController> m_intersectionObserverController;
     PersistentWillBeMember<NodeIntersectionObserverData> m_intersectionObserverData;
