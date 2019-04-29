@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLHtmlElement.cpp
+// Description: HTMLHtmlElement Class
+//      Author: Ziming Li
+//     Created: 2019-04-29
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,11 +36,6 @@
 
 #include "core/HTMLNames.h"
 #include "core/dom/Document.h"
-#include "core/dom/DocumentParser.h"
-#include "core/frame/LocalFrame.h"
-#include "core/loader/DocumentLoader.h"
-#include "core/loader/FrameLoader.h"
-#include "core/loader/appcache/ApplicationCacheHost.h"
 
 namespace blink {
 
@@ -49,22 +55,7 @@ bool HTMLHtmlElement::isURLAttribute(const Attribute& attribute) const
 
 void HTMLHtmlElement::insertedByParser()
 {
-    // When parsing a fragment, its dummy document has a null parser.
-    if (!document().parser() || !document().parser()->documentWasLoadedAsPartOfNavigation())
-        return;
-
-    if (!document().frame())
-        return;
-
-    DocumentLoader* documentLoader = document().frame()->loader().documentLoader();
-    if (!documentLoader)
-        return;
-
-    const AtomicString& manifest = fastGetAttribute(manifestAttr);
-    if (manifest.isEmpty())
-        documentLoader->applicationCacheHost()->selectCacheWithoutManifest();
-    else
-        documentLoader->applicationCacheHost()->selectCacheWithManifest(document().completeURL(manifest));
+    document().ParserInsertedHtmlElement(*this);
 }
 
 }
