@@ -65,7 +65,7 @@ namespace blink {
 
 class BackgroundHTMLParser;
 class CompactHTMLToken;
-class DocumentImpl;
+class Document;
 class DocumentEncodingData;
 class DocumentFragment;
 class Element;
@@ -80,7 +80,7 @@ class HTMLDocumentParser :  public ScriptableDocumentParser, private HTMLScriptR
     USING_FAST_MALLOC_WILL_BE_REMOVED(HTMLDocumentParser);
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(HTMLDocumentParser);
 public:
-    static PassRefPtrWillBeRawPtr<HTMLDocumentParser> create(DocumentImpl& document, bool reportErrors, ParserSynchronizationPolicy backgroundParsingPolicy)
+    static PassRefPtrWillBeRawPtr<HTMLDocumentParser> create(Document& document, bool reportErrors, ParserSynchronizationPolicy backgroundParsingPolicy)
     {
         return adoptRefWillBeNoop(new HTMLDocumentParser(document, reportErrors, backgroundParsingPolicy));
     }
@@ -127,7 +127,7 @@ protected:
     void append(const String&) override;
     void finish() final;
 
-    HTMLDocumentParser(DocumentImpl&, bool reportErrors, ParserSynchronizationPolicy);
+    HTMLDocumentParser(Document&, bool reportErrors, ParserSynchronizationPolicy);
     HTMLDocumentParser(DocumentFragment*, Element* contextElement, ParserContentPolicy);
 
     HTMLTreeBuilder* treeBuilder() const { return m_treeBuilder.get(); }
@@ -163,7 +163,7 @@ private:
     size_t processParsedChunkFromBackgroundParser(PassOwnPtr<ParsedChunk>);
     void pumpPendingSpeculations();
 
-    DocumentImpl* contextForParsingSession();
+    Document* contextForParsingSession();
 
     bool canTakeNextToken();
     void pumpTokenizer();

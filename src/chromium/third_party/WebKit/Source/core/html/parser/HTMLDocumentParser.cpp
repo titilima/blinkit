@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLDocumentParser.cpp
+// Description: HTMLDocumentParser Class
+//      Author: Ziming Li
+//     Created: 2019-04-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -74,7 +85,6 @@ static HTMLTokenizer::State tokenizerStateForContextElement(Element* contextElem
     if (contextTag.matches(styleTag)
         || contextTag.matches(xmpTag)
         || contextTag.matches(iframeTag)
-        || (contextTag.matches(noembedTag) && options.pluginsEnabled)
         || (contextTag.matches(noscriptTag) && options.scriptEnabled)
         || contextTag.matches(noframesTag))
         return reportErrors ? HTMLTokenizer::RAWTEXTState : HTMLTokenizer::PLAINTEXTState;
@@ -137,7 +147,7 @@ private:
     WeakPtr<BackgroundHTMLParser> m_backgroundParser;
 };
 
-HTMLDocumentParser::HTMLDocumentParser(HTMLDocument& document, bool reportErrors, ParserSynchronizationPolicy syncPolicy)
+HTMLDocumentParser::HTMLDocumentParser(Document& document, bool reportErrors, ParserSynchronizationPolicy syncPolicy)
     : ScriptableDocumentParser(document)
     , m_options(&document)
     , m_token(syncPolicy == ForceSynchronousParsing ? adoptPtr(new HTMLToken) : nullptr)
@@ -158,6 +168,7 @@ HTMLDocumentParser::HTMLDocumentParser(HTMLDocument& document, bool reportErrors
     , m_pumpSpeculationsSessionNestingLevel(0)
     , m_isParsingAtLineNumber(false)
 {
+    ASSERT(document.isHTMLDocument());
     ASSERT(shouldUseThreading() || (m_token && m_tokenizer));
 }
 
@@ -791,9 +802,11 @@ void HTMLDocumentParser::startBackgroundParser()
     ASSERT(document());
     m_haveBackgroundParser = true;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // Make sure that a resolver is set up, so that the correct viewport dimensions will be fed to the background parser and preload scanner.
     if (document()->loader())
         document()->ensureStyleResolver();
+#endif
 
     RefPtr<WeakReference<BackgroundHTMLParser>> reference = WeakReference<BackgroundHTMLParser>::createUnbound();
     m_backgroundParser = WeakPtr<BackgroundHTMLParser>(reference);
