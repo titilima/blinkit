@@ -15,15 +15,17 @@
 #pragma once
 
 #include "sdk/include/BlinKit.h"
-
-#include "browser/browser_impl.h"
+#include "frame_loader_client_impl.h"
 
 namespace BlinKit {
 
-class CrawlerImpl final : public BkCrawler, public BrowserImpl
+class CrawlerFrame;
+
+class CrawlerImpl final : public BkCrawler, public FrameLoaderClientImpl
 {
 public:
     CrawlerImpl(BkCrawlerClient &client);
+    ~CrawlerImpl(void);
 
     std::string GetCookie(const std::string &URL) const;
 private:
@@ -31,14 +33,17 @@ private:
     void BKAPI Destroy(void) override { delete this; }
     int BKAPI Load(const char *URI) override;
     void BKAPI SetUserAgent(const char *userAgent) override { m_userAgent = userAgent; }
-    // blink::WebFrameClient
-    BlinKit::CrawlerImpl* GetCrawler(void) { return this; }
-    void didFinishLoad(blink::WebLocalFrame *frame) override;
-    blink::WebString userAgentOverride(blink::WebLocalFrame *frame) override;
+    // blink::FrameClient
+    bool IsCrawler(void) const override { return true; }
+    // blink::FrameLoaderClient
+    String userAgent(void) override;
 
     BkCrawlerClient &m_client;
+    RefPtr<CrawlerFrame> m_frame;
     std::string m_userAgent;
 };
+
+DEFINE_TYPE_CASTS(CrawlerImpl, ::blink::FrameClient, client, client->IsCrawler(), client.IsCrawler());
 
 } // namespace BlinKit
 

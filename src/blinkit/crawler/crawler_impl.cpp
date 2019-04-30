@@ -11,23 +11,25 @@
 
 #include "crawler_impl.h"
 
-#include "platform/weborigin/KURL.h"
+#include "core/loader/FrameLoadRequest.h"
 
 #include "app/app_impl.h"
 #include "blink_impl/cookie_jar_impl.h"
+#include "crawler/crawler_frame.h"
 
 using namespace blink;
 
 namespace BlinKit {
 
-CrawlerImpl::CrawlerImpl(BkCrawlerClient &client) : m_client(client)
+CrawlerImpl::CrawlerImpl(BkCrawlerClient &client)
+    : m_client(client), m_frame(CrawlerFrame::Create(this))
 {
-    // Nothing
+    m_frame->init();
 }
 
-void CrawlerImpl::didFinishLoad(WebLocalFrame *)
+CrawlerImpl::~CrawlerImpl(void)
 {
-    m_client.DocumentReady(this);
+    // Nothing
 }
 
 std::string CrawlerImpl::GetCookie(const std::string &URL) const
@@ -44,12 +46,17 @@ int BKAPI CrawlerImpl::Load(const char *URI)
     KURL u(ParsedURLString, URI);
     if (!u.protocolIsInHTTPFamily())
         return BkError::URIError;
-    return BrowserImpl::Load(u);
+
+    FrameLoadRequest request(nullptr, ResourceRequest(u));
+    m_frame->loader().load(request);
+    return BkError::Success;
 }
 
-WebString CrawlerImpl::userAgentOverride(WebLocalFrame *)
+String CrawlerImpl::userAgent(void)
 {
-    return m_userAgent.empty() ? WebString() : WebString::fromUTF8(m_userAgent);
+    if (!m_userAgent.empty())
+        return String::fromUTF8(m_userAgent.data(), m_userAgent.length());
+    return FrameLoaderClientImpl::userAgent();
 }
 
 } // namespace BlinKit
