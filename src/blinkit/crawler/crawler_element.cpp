@@ -11,20 +11,16 @@
 
 #include "crawler_element.h"
 
+#include "core/HTMLNames.h"
+
 using namespace blink;
 
 namespace BlinKit {
 
-CrawlerElement::CrawlerElement(const QualifiedName &tagName, DocumentImpl *document)
-    : ElementImpl(tagName, document, CreateCrawlerElement)
+CrawlerElement::CrawlerElement(const AtomicString &localName, Document *document)
+    : Element(QualifiedName(nullAtom, localName, HTMLNames::xhtmlNamespaceURI), document, CreateCrawlerElement)
 {
     // Nothing
-}
-
-PassRefPtrWillBeRawPtr<Node> CrawlerElement::cloneNode(bool deep)
-{
-    assert(false); // BKTODO:
-    return nullptr;
 }
 
 } // namespace BlinKit

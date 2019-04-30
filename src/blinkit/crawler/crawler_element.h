@@ -14,19 +14,18 @@
 
 #pragma once
 
-#include "core/dom/element_impl.h"
+#include "core/dom/Element.h"
 
 namespace BlinKit {
 
-class CrawlerElement : public blink::ElementImpl
+class CrawlerElement : public blink::Element
 {
 public:
-    static PassRefPtrWillBeRawPtr<CrawlerElement> Create(const blink::QualifiedName &tagName, blink::DocumentImpl *document) {
-        return adoptRefWillBeNoop(new CrawlerElement(tagName, document));
+    static PassRefPtrWillBeRawPtr<CrawlerElement> Create(const AtomicString &localName, blink::Document *document) {
+        return adoptRefWillBeNoop(new CrawlerElement(localName, document));
     }
 protected:
-    PassRefPtrWillBeRawPtr<Node> cloneNode(bool deep) override;
-    CrawlerElement(const blink::QualifiedName &tagName, blink::DocumentImpl *document);
+    CrawlerElement(const AtomicString &localName, blink::Document *document);
 };
 
 } // namespace BlinKit
