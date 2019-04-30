@@ -12,6 +12,7 @@
 #include "app_impl.h"
 
 #include "base/time/time.h"
+#include "core/frame/Settings.h"
 #include "public/web/WebCache.h"
 #include "public/web/WebKit.h"
 
@@ -60,6 +61,21 @@ blink::WebCookieJar* AppImpl::cookieJar(void)
     return &cookieJar;
 }
 
+blink::Settings& AppImpl::CrawlerSettings(void)
+{
+    do {
+        if (m_crawlerSettings)
+            break;
+
+        AutoLock lock(m_lock);
+        if (m_crawlerSettings)
+            break;
+
+        m_crawlerSettings = blink::Settings::create();
+    } while (false);
+    return *m_crawlerSettings;
+}
+
 BkCrawler* BKAPI AppImpl::CreateCrawler(BkCrawlerClient &client)
 {
     return new CrawlerImpl(client);
@@ -78,7 +94,7 @@ BkRequest* AppImpl::CreateRequest(const char *URL, BkRequestClient &client)
 
 blink::WebThread* AppImpl::createThread(const char *name)
 {
-    blink::WebThread *thread = ThreadImpl::CreateInstance(name);
+    ThreadImpl *thread = ThreadImpl::CreateInstance(name);
 
     AutoLock lock(m_lock);
     m_threads[thread->threadId()] = thread;
@@ -98,6 +114,11 @@ BkView* BKAPI AppImpl::CreateView(BkViewClient &client)
 }
 
 blink::WebThread* AppImpl::currentThread(void)
+{
+    return CurrentThreadImpl();
+}
+
+ThreadImpl* AppImpl::CurrentThreadImpl(void)
 {
     AutoLock lock(m_lock);
     auto it = m_threads.find(ThreadImpl::CurrentThreadId());

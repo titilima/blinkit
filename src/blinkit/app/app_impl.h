@@ -18,6 +18,10 @@
 #include "public/platform/Platform.h"
 #include "blink_impl/thread_impl.h"
 
+namespace blink {
+class Settings;
+}
+
 namespace BlinKit {
 
 class CookieJarImpl;
@@ -34,10 +38,13 @@ public:
 
     BkRequest* CreateRequest(const char *URL, BkRequestClient &client);
 
+    ThreadImpl* CurrentThreadImpl(void);
     blink::WebThread& IOThread(void);
     CookieJarImpl& CookieJar(void);
+    blink::Settings& CrawlerSettings(void);
 
     // blink::Platform
+    blink::WebCookieJar* cookieJar(void) override final;
     blink::WebThread* currentThread(void) override final;
 protected:
     AppImpl(void);
@@ -47,7 +54,6 @@ private:
     BkCrawler* BKAPI CreateCrawler(BkCrawlerClient &client) override final;
     BkView* BKAPI CreateView(BkViewClient &client) override;
     // blink::Platform
-    blink::WebCookieJar* cookieJar(void) override final;
     blink::WebMimeRegistry* mimeRegistry(void) override final;
     blink::WebURLLoader* createURLLoader(void) override final;
     blink::WebString userAgent(void) override final;
@@ -59,8 +65,9 @@ private:
     std::unique_ptr<CookieJarImpl> m_cookieJar;
     std::unique_ptr<MimeRegistryImpl> m_mimeRegistry;
     std::unique_ptr<blink::WebThread> m_IOThread;
+    OwnPtr<blink::Settings> m_crawlerSettings;
     double m_firstMonotonicallyIncreasingTime;
-    std::unordered_map<blink::PlatformThreadId, blink::WebThread *> m_threads;
+    std::unordered_map<blink::PlatformThreadId, ThreadImpl *> m_threads;
 };
 
 } // namespace BlinKit
