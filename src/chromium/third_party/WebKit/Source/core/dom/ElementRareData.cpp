@@ -45,13 +45,13 @@
 namespace blink {
 
 struct SameSizeAsElementRareData : NodeRareData {
+#ifdef BLINKIT_CRAWLER_ONLY
+    void* pointers[9];
+    PersistentWillBeMember<void*> persistentMember[1];
+#else
     short indices[1];
     LayoutSize sizeForResizing;
     IntSize scrollOffset;
-#ifdef BLINKIT_CRAWLER_ONLY
-    void* pointers[10];
-    PersistentWillBeMember<void*> persistentMember[1];
-#else
     void* pointers[12];
     PersistentWillBeMember<void*> persistentMember[2];
 #endif
@@ -77,7 +77,9 @@ DEFINE_TRACE_AFTER_DISPATCH(ElementRareData)
 {
     visitor->trace(m_dataset);
     visitor->trace(m_classList);
+#ifndef BLINKIT_CRAWLER_ONLY
     visitor->trace(m_shadow);
+#endif
     visitor->trace(m_attributeMap);
 #if ENABLE(OILPAN)
     visitor->trace(m_attrNodeList);

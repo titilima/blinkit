@@ -72,6 +72,7 @@ public:
     void setPseudoElement(PseudoId, PassRefPtrWillBeRawPtr<PseudoElement>);
     PseudoElement* pseudoElement(PseudoId) const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     short tabIndex() const { return m_tabindex; }
 
     void setTabIndexExplicitly(short index)
@@ -86,9 +87,7 @@ public:
         clearElementFlag(TabIndexWasSetExplicitly);
     }
 
-#ifndef BLINKIT_CRAWLER_ONLY
     CSSStyleDeclaration& ensureInlineCSSStyleDeclaration(Element* ownerElement);
-#endif
 
     void clearShadow() { m_shadow = nullptr; }
     ElementShadow* shadow() const { return m_shadow.get(); }
@@ -98,6 +97,7 @@ public:
             m_shadow = ElementShadow::create();
         return *m_shadow;
     }
+#endif
 
     NamedNodeMap* attributeMap() const { return m_attributeMap.get(); }
     void setAttributeMap(PassOwnPtrWillBeRawPtr<NamedNodeMap> attributeMap) { m_attributeMap = attributeMap; }
@@ -120,13 +120,13 @@ public:
     DatasetDOMStringMap* dataset() const { return m_dataset.get(); }
     void setDataset(PassOwnPtrWillBeRawPtr<DatasetDOMStringMap> dataset) { m_dataset = dataset; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     LayoutSize minimumSizeForResizing() const { return m_minimumSizeForResizing; }
     void setMinimumSizeForResizing(LayoutSize size) { m_minimumSizeForResizing = size; }
 
     IntSize savedLayerScrollOffset() const { return m_savedLayerScrollOffset; }
     void setSavedLayerScrollOffset(IntSize size) { m_savedLayerScrollOffset = size; }
 
-#ifndef BLINKIT_CRAWLER_ONLY
     ElementAnimations* elementAnimations() { return m_elementAnimations.get(); }
     void setElementAnimations(ElementAnimations* elementAnimations)
     {
@@ -159,14 +159,18 @@ public:
     DECLARE_TRACE_AFTER_DISPATCH();
 
 private:
+#ifndef BLINKIT_CRAWLER_ONLY
     short m_tabindex;
 
     LayoutSize m_minimumSizeForResizing;
     IntSize m_savedLayerScrollOffset;
+#endif
 
     OwnPtrWillBeMember<DatasetDOMStringMap> m_dataset;
     OwnPtrWillBeMember<ClassList> m_classList;
+#ifndef BLINKIT_CRAWLER_ONLY
     OwnPtrWillBeMember<ElementShadow> m_shadow;
+#endif
     OwnPtrWillBeMember<NamedNodeMap> m_attributeMap;
     OwnPtrWillBeMember<AttrNodeList> m_attrNodeList;
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -200,13 +204,12 @@ inline LayoutSize defaultMinimumSizeForResizing()
 
 #ifdef BLINKIT_CRAWLER_ONLY
 inline ElementRareData::ElementRareData(void)
-    : m_tabindex(0)
 #else
 inline ElementRareData::ElementRareData(LayoutObject* layoutObject)
     : NodeRareData(layoutObject)
     , m_tabindex(0)
-#endif
     , m_minimumSizeForResizing(defaultMinimumSizeForResizing())
+#endif
 {
     m_isElementRareData = true;
 }
@@ -220,7 +223,9 @@ inline ElementRareData::~ElementRareData()
 #endif
     if (m_intersectionObserverData)
         m_intersectionObserverData->dispose();
+#ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(!m_shadow);
+#endif
 #endif
     ASSERT(!m_generatedBefore);
     ASSERT(!m_generatedAfter);
