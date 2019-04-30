@@ -25,7 +25,7 @@ namespace blink {
 
 class HTMLDocument;
 class KURL;
-class LocalFrame;
+class LocalFrameImpl;
 class ScriptSourceCode;
 class SecurityOrigin;
 
@@ -37,7 +37,7 @@ enum ReasonForCallingCanExecuteScripts {
 class ScriptController final {
     WTF_MAKE_NONCOPYABLE(ScriptController);
 public:
-    static PassOwnPtrWillBeRawPtr<ScriptController> create(LocalFrame *frame)
+    static PassOwnPtrWillBeRawPtr<ScriptController> create(LocalFrameImpl *frame)
     {
         return adoptPtrWillBeNoop(new ScriptController(frame));
     }
@@ -52,7 +52,7 @@ public:
     void enableEval(void);
     void disableEval(const String &errorMessage);
 
-    static bool canAccessFromCurrentOrigin(LocalFrame *frame) { return nullptr != frame; }
+    static bool canAccessFromCurrentOrigin(LocalFrameImpl *frame) { return nullptr != frame; }
 
     bool canExecuteScripts(ReasonForCallingCanExecuteScripts);
 
@@ -67,7 +67,7 @@ public:
 
     void clearForClose(void);
 private:
-    explicit ScriptController(LocalFrame *);
+    explicit ScriptController(LocalFrameImpl *);
 
     std::unique_ptr<BlinKit::DukContext> m_context;
 };
