@@ -39,7 +39,7 @@
 
 #include "core/loader/DocumentWriter.h"
 
-#include "core/dom/document_impl.h"
+#include "core/dom/Document.h"
 #include "core/dom/DocumentParser.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
@@ -48,12 +48,12 @@
 
 namespace blink {
 
-PassRefPtrWillBeRawPtr<DocumentWriter> DocumentWriter::create(DocumentImpl* document, ParserSynchronizationPolicy parsingPolicy, const AtomicString& mimeType, const AtomicString& encoding)
+PassRefPtrWillBeRawPtr<DocumentWriter> DocumentWriter::create(Document* document, ParserSynchronizationPolicy parsingPolicy, const AtomicString& mimeType, const AtomicString& encoding)
 {
     return adoptRefWillBeNoop(new DocumentWriter(document, parsingPolicy, mimeType, encoding));
 }
 
-DocumentWriter::DocumentWriter(DocumentImpl* document, ParserSynchronizationPolicy parserSyncPolicy, const AtomicString& mimeType, const AtomicString& encoding)
+DocumentWriter::DocumentWriter(Document* document, ParserSynchronizationPolicy parserSyncPolicy, const AtomicString& mimeType, const AtomicString& encoding)
     : m_document(document)
     , m_decoderBuilder(mimeType, encoding)
     // We grab a reference to the parser so that we'll always send data to the
@@ -83,7 +83,7 @@ DEFINE_TRACE(DocumentWriter)
 
 void DocumentWriter::appendReplacingData(const String& source)
 {
-    m_document->setCompatibilityMode(DocumentImpl::NoQuirksMode);
+    m_document->setCompatibilityMode(Document::NoQuirksMode);
 
     // FIXME: This should call DocumentParser::appendBytes instead of append
     // to support RawDataDocumentParsers.

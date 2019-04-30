@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: DocumentWriter.h
-// Description: DocumentWriter Class
-//      Author: Ziming Li
-//     Created: 2019-04-23
-// -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2010. Adam Barth. All rights reserved.
  *
@@ -48,13 +37,13 @@
 
 namespace blink {
 
-class DocumentImpl;
+class Document;
 class DocumentParser;
 
 class DocumentWriter final : public RefCountedWillBeGarbageCollectedFinalized<DocumentWriter> {
     WTF_MAKE_NONCOPYABLE(DocumentWriter);
 public:
-    static PassRefPtrWillBeRawPtr<DocumentWriter> create(DocumentImpl*, ParserSynchronizationPolicy, const AtomicString& mimeType, const AtomicString& encoding);
+    static PassRefPtrWillBeRawPtr<DocumentWriter> create(Document*, ParserSynchronizationPolicy, const AtomicString& mimeType, const AtomicString& encoding);
 
     ~DocumentWriter();
     DECLARE_TRACE();
@@ -72,9 +61,9 @@ public:
     void setDocumentWasLoadedAsPartOfNavigation();
 
 private:
-    DocumentWriter(DocumentImpl*, ParserSynchronizationPolicy, const AtomicString& mimeType, const AtomicString& encoding);
+    DocumentWriter(Document*, ParserSynchronizationPolicy, const AtomicString& mimeType, const AtomicString& encoding);
 
-    RawPtrWillBeMember<DocumentImpl> m_document;
+    RawPtrWillBeMember<Document> m_document;
     TextResourceDecoderBuilder m_decoderBuilder;
 
     RefPtrWillBeMember<DocumentParser> m_parser;
