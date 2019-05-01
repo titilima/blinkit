@@ -921,38 +921,6 @@ static void countEditingEvent(ExecutionContext* executionContext, const Event* e
     UseCounter::count(executionContext, featureOnContentEditable);
 }
 
-void Editor::countEvent(ExecutionContext* executionContext, const Event* event)
-{
-    if (!executionContext)
-        return;
-
-    if (event->type() == EventTypeNames::textInput) {
-        countEditingEvent(executionContext, event,
-            UseCounter::TextInputEventOnInput,
-            UseCounter::TextInputEventOnTextArea,
-            UseCounter::TextInputEventOnContentEditable,
-            UseCounter::TextInputEventOnNotNode);
-        return;
-    }
-
-    if (event->type() == EventTypeNames::webkitBeforeTextInserted) {
-        countEditingEvent(executionContext, event,
-            UseCounter::WebkitBeforeTextInsertedOnInput,
-            UseCounter::WebkitBeforeTextInsertedOnTextArea,
-            UseCounter::WebkitBeforeTextInsertedOnContentEditable,
-            UseCounter::WebkitBeforeTextInsertedOnNotNode);
-        return;
-    }
-
-    if (event->type() == EventTypeNames::webkitEditableContentChanged) {
-        countEditingEvent(executionContext, event,
-            UseCounter::WebkitEditableContentChangedOnInput,
-            UseCounter::WebkitEditableContentChangedOnTextArea,
-            UseCounter::WebkitEditableContentChangedOnContentEditable,
-            UseCounter::WebkitEditableContentChangedOnNotNode);
-    }
-}
-
 void Editor::copyImage(const HitTestResult& result)
 {
     writeImageNodeToPasteboard(Pasteboard::generalPasteboard(), result.innerNodeOrImageMapImage(), result.altDisplayString());

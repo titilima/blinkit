@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Editor.h
+// Description: Editor Class
+//      Author: Ziming Li
+//     Created: 2019-05-01
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -91,7 +102,6 @@ public:
     void pasteAsPlainText();
     void performDelete();
 
-    static void countEvent(ExecutionContext*, const Event*);
     void copyImage(const HitTestResult&);
 
     void transpose();
