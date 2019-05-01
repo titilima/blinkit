@@ -17,7 +17,7 @@
 
 namespace blink {
 
-ScriptController::ScriptController(LocalFrameImpl *frame)
+ScriptController::ScriptController(LocalFrame *frame)
 {
     // Nothing
 }
