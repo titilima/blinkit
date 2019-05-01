@@ -230,7 +230,7 @@ public:
 
     void loadURLExternally(const ResourceRequest&, NavigationPolicy, const String&, bool) override {}
 
-    PassRefPtrWillBeRawPtr<DocumentLoader> createDocumentLoader(LocalFrameImpl*, const ResourceRequest&, const SubstituteData&) override;
+    PassRefPtrWillBeRawPtr<DocumentLoader> createDocumentLoader(LocalFrame*, const ResourceRequest&, const SubstituteData&) override;
 
     String userAgent() override { return ""; }
 
