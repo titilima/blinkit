@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ElementData.h
+// Description: ElementData Classes
+//      Author: Ziming Li
+//     Created: 2019-05-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  * Copyright (C) 2014 Apple Inc. All rights reserved.
@@ -66,9 +77,11 @@ public:
     const AtomicString& idForStyleResolution() const { return m_idForStyleResolution; }
     void setIdForStyleResolution(const AtomicString& newId) const { m_idForStyleResolution = newId; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     const StylePropertySet* inlineStyle() const { return m_inlineStyle.get(); }
 
     const StylePropertySet* presentationAttributeStyle() const;
+#endif
 
     AttributeCollection attributes() const;
 
@@ -94,7 +107,9 @@ protected:
     mutable unsigned m_styleAttributeIsDirty : 1;
     mutable unsigned m_animatedSVGAttributesAreDirty : 1;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     mutable RefPtrWillBeMember<StylePropertySet> m_inlineStyle;
+#endif
     mutable SpaceSplitString m_classNames;
     mutable AtomicString m_idForStyleResolution;
 
@@ -175,11 +190,13 @@ public:
 
     DECLARE_TRACE_AFTER_DISPATCH();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // FIXME: We might want to support sharing element data for elements with
     // presentation attribute style. Lots of table cells likely have the same
     // attributes. Most modern pages don't use presentation attributes though
     // so this might not make sense.
     mutable RefPtrWillBeMember<StylePropertySet> m_presentationAttributeStyle;
+#endif
     AttributeVector m_attributeVector;
 };
 
@@ -194,12 +211,14 @@ inline void ElementData::deref()
 }
 #endif
 
+#ifndef BLINKIT_CRAWLER_ONLY
 inline const StylePropertySet* ElementData::presentationAttributeStyle() const
 {
     if (!m_isUnique)
         return 0;
     return toUniqueElementData(this)->m_presentationAttributeStyle.get();
 }
+#endif
 
 inline AttributeCollection ElementData::attributes() const
 {

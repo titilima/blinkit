@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ElementData.cpp
+// Description: ElementData Classes
+//      Author: Ziming Li
+//     Created: 2019-05-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -38,7 +49,9 @@ namespace blink {
 
 struct SameSizeAsElementData : public RefCountedWillBeGarbageCollectedFinalized<SameSizeAsElementData> {
     unsigned bitfield;
+#ifndef BLINKIT_CRAWLER_ONLY
     RawPtrWillBeMember<void*> willbeMember;
+#endif
     void* pointers[2];
 };
 
@@ -132,7 +145,9 @@ DEFINE_TRACE(ElementData)
 
 DEFINE_TRACE_AFTER_DISPATCH(ElementData)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     visitor->trace(m_inlineStyle);
+#endif
 }
 
 ShareableElementData::ShareableElementData(const Vector<Attribute>& attributes)
@@ -151,11 +166,13 @@ ShareableElementData::~ShareableElementData()
 ShareableElementData::ShareableElementData(const UniqueElementData& other)
     : ElementData(other, false)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(!other.m_presentationAttributeStyle);
 
     if (other.m_inlineStyle) {
         m_inlineStyle = other.m_inlineStyle->immutableCopyIfNeeded();
     }
+#endif
 
     for (unsigned i = 0; i < m_arraySize; ++i)
         new (&m_attributeArray[i]) Attribute(other.m_attributeVector.at(i));
@@ -177,18 +194,24 @@ UniqueElementData::UniqueElementData()
 
 UniqueElementData::UniqueElementData(const UniqueElementData& other)
     : ElementData(other, true)
+#ifndef BLINKIT_CRAWLER_ONLY
     , m_presentationAttributeStyle(other.m_presentationAttributeStyle)
+#endif
     , m_attributeVector(other.m_attributeVector)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     m_inlineStyle = other.m_inlineStyle ? other.m_inlineStyle->mutableCopy() : nullptr;
+#endif
 }
 
 UniqueElementData::UniqueElementData(const ShareableElementData& other)
     : ElementData(other, true)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     // An ShareableElementData should never have a mutable inline StylePropertySet attached.
     ASSERT(!other.m_inlineStyle || !other.m_inlineStyle->isMutable());
     m_inlineStyle = other.m_inlineStyle;
+#endif
 
     unsigned length = other.attributes().size();
     m_attributeVector.reserveCapacity(length);
@@ -213,7 +236,9 @@ PassRefPtrWillBeRawPtr<ShareableElementData> UniqueElementData::makeShareableCop
 
 DEFINE_TRACE_AFTER_DISPATCH(UniqueElementData)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     visitor->trace(m_presentationAttributeStyle);
+#endif
     ElementData::traceAfterDispatch(visitor);
 }
 
