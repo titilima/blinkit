@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: HTMLInputElement.h
-// Description: HTMLInputElement Class
-//      Author: Ziming Li
-//     Created: 2019-04-02
-// -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -377,9 +366,7 @@ private:
     RadioButtonGroupScope* radioButtonGroupScope() const;
     void addToRadioButtonGroup();
     void removeFromRadioButtonGroup();
-#ifndef BLINKIT_CRAWLER_ONLY
     PassRefPtr<ComputedStyle> customStyleForLayoutObject() override;
-#endif
 
     bool shouldDispatchFormControlChangeEvent(String&, String&) override;
 
