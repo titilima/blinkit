@@ -248,7 +248,9 @@ private:
     bool isStyledElement() const = delete; // This will catch anyone doing an unnecessary check.
 
     const ComputedStyle* ensureComputedStyle(PseudoId = NOPSEUDO);
+#ifndef BLINKIT_CRAWLER_ONLY
     const ComputedStyle* virtualEnsureComputedStyle(PseudoId pseudoElementSpecifier = NOPSEUDO) final { return ensureComputedStyle(pseudoElementSpecifier); }
+#endif
     void willRecalcStyle(StyleRecalcChange) override;
 
     void buildPendingResourcesIfNeeded();
