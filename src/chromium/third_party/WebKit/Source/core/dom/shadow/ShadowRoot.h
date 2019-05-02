@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ShadowRoot.h
+// Description: ShadowRoot Class
+//      Author: Ziming Li
+//     Created: 2019-05-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -169,7 +180,11 @@ private:
 
 inline Element* ShadowRoot::activeElement() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT_NOT_REACHED();
+#else
     return adjustedFocusedElement();
+#endif
 }
 
 DEFINE_NODE_TYPE_CASTS(ShadowRoot, isShadowRoot());
