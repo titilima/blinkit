@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLTokenizer.cpp
+// Description: HTMLTokenizer Class
+//      Author: Ziming Li
+//     Created: 2019-05-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2009 Torch Mobile, Inc. http://www.torchmobile.com/
@@ -1556,7 +1567,6 @@ void HTMLTokenizer::updateStateFor(const String& tagName)
     else if (threadSafeMatch(tagName, styleTag)
         || threadSafeMatch(tagName, iframeTag)
         || threadSafeMatch(tagName, xmpTag)
-        || (threadSafeMatch(tagName, noembedTag) && m_options.pluginsEnabled)
         || threadSafeMatch(tagName, noframesTag)
         || (threadSafeMatch(tagName, noscriptTag) && m_options.scriptEnabled))
         setState(HTMLTokenizer::RAWTEXTState);
