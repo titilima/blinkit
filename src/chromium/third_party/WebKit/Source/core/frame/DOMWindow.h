@@ -129,8 +129,6 @@ public:
     // WebKit extensions
     virtual double devicePixelRatio() const = 0;
 
-    virtual ApplicationCache* applicationCache() const = 0;
-
     // This is the interface orientation in degrees. Some examples are:
     //  0 is straight up; -90 is when the device is rotated 90 clockwise;
     //  90 is when rotated counter clockwise.
@@ -143,7 +141,6 @@ public:
     void focus(ExecutionContext*);
     virtual void blur() = 0;
     void close(ExecutionContext*);
-    virtual void print() = 0;
     virtual void stop() = 0;
 
     virtual void alert(const String& message = String()) = 0;
