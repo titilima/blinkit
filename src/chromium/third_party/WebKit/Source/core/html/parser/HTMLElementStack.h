@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: HTMLElementStack.h
-// Description: HTMLElementStack Class
-//      Author: Ziming Li
-//     Created: 2019-04-24
-// -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -48,7 +37,7 @@
 namespace blink {
 
 class ContainerNode;
-class ElementImpl;
+class Element;
 class QualifiedName;
 
 // NOTE: The HTML5 spec uses a backwards (grows downward) stack.  We're using
@@ -67,7 +56,7 @@ public:
         ~ElementRecord(); // Public for ~PassOwnPtr()
 #endif
 
-        ElementImpl* element() const { return m_item->element(); }
+        Element* element() const { return m_item->element(); }
         ContainerNode* node() const { return m_item->node(); }
         const AtomicString& namespaceURI() const { return m_item->namespaceURI(); }
         PassRefPtrWillBeRawPtr<HTMLStackItem> stackItem() const { return m_item; }
@@ -94,7 +83,7 @@ public:
 
     // Inlining this function is a (small) performance win on the parsing
     // benchmark.
-    ElementImpl* top() const
+    Element* top() const
     {
         ASSERT(m_top->element());
         return m_top->element();
@@ -114,8 +103,8 @@ public:
 
     HTMLStackItem* oneBelowTop() const;
     ElementRecord* topRecord() const;
-    ElementRecord* find(ElementImpl*) const;
-    ElementRecord* furthestBlockForFormattingElement(ElementImpl*) const;
+    ElementRecord* find(Element*) const;
+    ElementRecord* furthestBlockForFormattingElement(Element*) const;
     ElementRecord* topmost(const AtomicString& tagName) const;
 
     void insertAbove(PassRefPtrWillBeRawPtr<HTMLStackItem>, ElementRecord*);
@@ -128,11 +117,11 @@ public:
 
     void pop();
     void popUntil(const AtomicString& tagName);
-    void popUntil(ElementImpl*);
+    void popUntil(Element*);
     void popUntilPopped(const AtomicString& tagName);
     void popUntilPopped(const QualifiedName& tagName) { popUntilPopped(tagName.localName()); }
 
-    void popUntilPopped(ElementImpl*);
+    void popUntilPopped(Element*);
     void popUntilNumberedHeaderElementPopped();
     void popUntilTableScopeMarker(); // "clear the stack back to a table context" in the spec.
     void popUntilTableBodyScopeMarker(); // "clear the stack back to a table body context" in the spec.
@@ -145,13 +134,13 @@ public:
     static bool isMathMLTextIntegrationPoint(HTMLStackItem*);
     static bool isHTMLIntegrationPoint(HTMLStackItem*);
 
-    void remove(ElementImpl*);
-    void removeHTMLHeadElement(ElementImpl*);
+    void remove(Element*);
+    void removeHTMLHeadElement(Element*);
 
-    bool contains(ElementImpl*) const;
+    bool contains(Element*) const;
     bool contains(const AtomicString& tagName) const;
 
-    bool inScope(ElementImpl*) const;
+    bool inScope(Element*) const;
     bool inScope(const AtomicString& tagName) const;
     bool inScope(const QualifiedName&) const;
     bool inListItemScope(const AtomicString& tagName) const;
@@ -168,9 +157,9 @@ public:
     bool hasOnlyOneElement() const;
     bool secondElementIsHTMLBodyElement() const;
     bool hasTemplateInHTMLScope() const;
-    ElementImpl* htmlElement() const;
-    ElementImpl* headElement() const;
-    ElementImpl* bodyElement() const;
+    Element* htmlElement() const;
+    Element* headElement() const;
+    Element* bodyElement() const;
 
     ContainerNode* rootNode() const;
 
@@ -184,7 +173,7 @@ private:
     void pushCommon(PassRefPtrWillBeRawPtr<HTMLStackItem>);
     void pushRootNodeCommon(PassRefPtrWillBeRawPtr<HTMLStackItem>);
     void popCommon();
-    void removeNonTopCommon(ElementImpl*);
+    void removeNonTopCommon(Element*);
 
     OwnPtrWillBeMember<ElementRecord> m_top;
 
@@ -194,8 +183,8 @@ private:
     // these elements so we haven't yet bothered to plumb the types all the
     // way down through createElement, etc.
     RawPtrWillBeMember<ContainerNode> m_rootNode;
-    RawPtrWillBeMember<ElementImpl> m_headElement;
-    RawPtrWillBeMember<ElementImpl> m_bodyElement;
+    RawPtrWillBeMember<Element> m_headElement;
+    RawPtrWillBeMember<Element> m_bodyElement;
     unsigned m_stackDepth;
 };
 
