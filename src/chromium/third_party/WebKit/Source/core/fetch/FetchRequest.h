@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FetchRequest.h
+// Description: FetchRequest Class
+//      Author: Ziming Li
+//     Created: 2019-05-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google, Inc. All rights reserved.
  *
@@ -27,7 +38,6 @@
 #define FetchRequest_h
 
 #include "core/CoreExport.h"
-#include "core/fetch/ClientHintsPreferences.h"
 #include "core/fetch/FetchInitiatorInfo.h"
 #include "core/fetch/IntegrityMetadata.h"
 #include "core/fetch/ResourceLoaderOptions.h"
@@ -82,8 +92,6 @@ public:
     ResourceWidth resourceWidth() const { return m_resourceWidth; }
     void setResourceWidth(ResourceWidth);
 
-    ClientHintsPreferences& clientHintsPreferences() { return m_clientHintPreferences; }
-
     bool forPreload() const { return m_forPreload; }
     void setForPreload(bool forPreload) { m_forPreload = forPreload; }
 
@@ -107,7 +115,6 @@ private:
     DeferOption m_defer;
     OriginRestriction m_originRestriction;
     ResourceWidth m_resourceWidth;
-    ClientHintsPreferences m_clientHintPreferences;
     IntegrityMetadataSet m_integrityMetadata;
 };
 
