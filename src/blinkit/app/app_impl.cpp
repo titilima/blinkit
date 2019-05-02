@@ -136,6 +136,8 @@ double AppImpl::currentTimeSeconds(void)
 
 void BKAPI AppImpl::Exit(void)
 {
+    if (m_crawlerSettings)
+        m_crawlerSettings.clear();
     blink::WebCache::clear();
     blink::shutdown();
     delete theApp;
