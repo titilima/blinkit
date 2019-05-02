@@ -19,8 +19,6 @@
 
 namespace BlinKit {
 
-class CrawlerFrame;
-
 class CrawlerImpl final : public BkCrawler, public FrameLoaderClientImpl
 {
 public:
@@ -36,10 +34,11 @@ private:
     // blink::FrameClient
     bool IsCrawler(void) const override { return true; }
     // blink::FrameLoaderClient
+    void dispatchDidFinishLoad(void) override;
     String userAgent(void) override;
 
     BkCrawlerClient &m_client;
-    RefPtr<CrawlerFrame> m_frame;
+    RefPtr<blink::LocalFrame> m_frame;
     std::string m_userAgent;
 };
 

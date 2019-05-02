@@ -91,16 +91,9 @@ WebCookieJar* FrameLoaderClientImpl::cookieJar(void) const
     return AppImpl::Get().cookieJar();
 }
 
-PassOwnPtr<WebApplicationCacheHost> FrameLoaderClientImpl::createApplicationCacheHost(WebApplicationCacheHostClient *)
+PassRefPtrWillBeRawPtr<DocumentLoader> FrameLoaderClientImpl::createDocumentLoader(LocalFrame *frame, const ResourceRequest &request, const SubstituteData &data)
 {
-    assert(false); // BKTODO:
-    return nullptr;
-}
-
-PassRefPtrWillBeRawPtr<DocumentLoader> FrameLoaderClientImpl::createDocumentLoader(LocalFrame *, const ResourceRequest &, const SubstituteData &)
-{
-    assert(false); // BKTODO:
-    return nullptr;
+    return DocumentLoader::create(frame, request, data);
 }
 
 PassRefPtrWillBeRawPtr<LocalFrame> FrameLoaderClientImpl::createFrame(const FrameLoadRequest &, const AtomicString &name, HTMLFrameOwnerElement *)
@@ -111,13 +104,7 @@ PassRefPtrWillBeRawPtr<LocalFrame> FrameLoaderClientImpl::createFrame(const Fram
 
 NavigationPolicy FrameLoaderClientImpl::decidePolicyForNavigation(const ResourceRequest &, DocumentLoader *, NavigationType, NavigationPolicy, bool shouldReplaceCurrentEntry)
 {
-    assert(false); // BKTODO:
     return NavigationPolicyCurrentTab;
-}
-
-void FrameLoaderClientImpl::detached(FrameDetachType)
-{
-    assert(false); // BKTODO:
 }
 
 void FrameLoaderClientImpl::didAccessInitialDocument(void)
@@ -137,15 +124,10 @@ void FrameLoaderClientImpl::didChangeName(const String&)
 
 void FrameLoaderClientImpl::didChangePerformanceTiming(void)
 {
-    assert(false); // BKTODO:
+    assert(false); // BKTODO: Remove DocumentTiming.
 }
 
 void FrameLoaderClientImpl::didChangeScrollOffset(void)
-{
-    assert(false); // BKTODO:
-}
-
-void FrameLoaderClientImpl::didCreateNewDocument(void)
 {
     assert(false); // BKTODO:
 }
@@ -250,42 +232,12 @@ void FrameLoaderClientImpl::dispatchDidChangeThemeColor(void)
     assert(false); // BKTODO:
 }
 
-void FrameLoaderClientImpl::dispatchDidClearWindowObjectInMainWorld(void)
-{
-    assert(false); // BKTODO:
-}
-
-void FrameLoaderClientImpl::dispatchDidCommitLoad(HistoryItem *, HistoryCommitType)
-{
-    assert(false); // BKTODO:
-}
-
 void FrameLoaderClientImpl::dispatchDidFailLoad(const ResourceError &, HistoryCommitType)
 {
     assert(false); // BKTODO:
 }
 
 void FrameLoaderClientImpl::dispatchDidFailProvisionalLoad(const ResourceError &, HistoryCommitType)
-{
-    assert(false); // BKTODO:
-}
-
-void FrameLoaderClientImpl::dispatchDidFinishDocumentLoad(bool documentIsEmpty)
-{
-    assert(false); // BKTODO:
-}
-
-void FrameLoaderClientImpl::dispatchDidFinishLoad(void)
-{
-    assert(false); // BKTODO:
-}
-
-void FrameLoaderClientImpl::dispatchDidFinishLoading(DocumentLoader *, unsigned long identifier)
-{
-    assert(false); // BKTODO:
-}
-
-void FrameLoaderClientImpl::dispatchDidHandleOnloadEvents(void)
 {
     assert(false); // BKTODO:
 }
@@ -300,11 +252,6 @@ void FrameLoaderClientImpl::dispatchDidNavigateWithinPage(HistoryItem*, HistoryC
     assert(false); // BKTODO:
 }
 
-void FrameLoaderClientImpl::dispatchDidReceiveResponse(DocumentLoader *, unsigned long identifier, const ResourceResponse &)
-{
-    assert(false); // BKTODO:
-}
-
 void FrameLoaderClientImpl::dispatchDidReceiveServerRedirectForProvisionalLoad(void)
 {
     assert(false); // BKTODO:
@@ -315,27 +262,7 @@ void FrameLoaderClientImpl::dispatchDidReceiveTitle(const String &)
     assert(false); // BKTODO:
 }
 
-void FrameLoaderClientImpl::dispatchDidStartProvisionalLoad(double triggeringEventTime)
-{
-    assert(false); // BKTODO:
-}
-
-void FrameLoaderClientImpl::dispatchWillClose(void)
-{
-    assert(false); // BKTODO:
-}
-
-void FrameLoaderClientImpl::dispatchWillInsertBody(void)
-{
-    assert(false); // BKTODO:
-}
-
 void FrameLoaderClientImpl::dispatchWillOpenWebSocket(WebSocketHandle *)
-{
-    assert(false); // BKTODO:
-}
-
-void FrameLoaderClientImpl::dispatchWillSendRequest(DocumentLoader *, unsigned long identifier, ResourceRequest &, const ResourceResponse &redirectResponse)
 {
     assert(false); // BKTODO:
 }
@@ -351,11 +278,6 @@ void FrameLoaderClientImpl::dispatchWillStartUsingPeerConnectionHandler(WebRTCPe
 }
 
 void FrameLoaderClientImpl::dispatchWillSubmitForm(HTMLFormElement *)
-{
-    assert(false); // BKTODO:
-}
-
-void FrameLoaderClientImpl::documentElementAvailable(void)
 {
     assert(false); // BKTODO:
 }
@@ -383,19 +305,7 @@ bool FrameLoaderClientImpl::hasPendingNavigation(void)
     return false;
 }
 
-bool FrameLoaderClientImpl::hasWebView(void) const
-{
-    assert(false); // BKTODO:
-    return false;
-}
-
 bool FrameLoaderClientImpl::inShadowTree(void) const
-{
-    assert(false); // BKTODO:
-    return false;
-}
-
-bool FrameLoaderClientImpl::isControlledByServiceWorker(DocumentLoader &)
 {
     assert(false); // BKTODO:
     return false;
@@ -463,17 +373,6 @@ int64_t FrameLoaderClientImpl::serviceWorkerID(DocumentLoader&)
     return 0;
 }
 
-void FrameLoaderClientImpl::setOpener(Frame *)
-{
-    assert(false); // BKTODO:
-}
-
-SharedWorkerRepositoryClient* FrameLoaderClientImpl::sharedWorkerRepositoryClient(void)
-{
-    assert(false); // BKTODO:
-    return nullptr;
-}
-
 void FrameLoaderClientImpl::suddenTerminationDisablerChanged(bool present, SuddenTerminationDisablerType)
 {
     assert(false); // BKTODO:
@@ -487,17 +386,12 @@ Frame* FrameLoaderClientImpl::top(void) const
 
 void FrameLoaderClientImpl::transitionToCommittedForNewPage(void)
 {
-    assert(false); // BKTODO:
+    // Nothing to do for crawlers.
 }
 
 String FrameLoaderClientImpl::userAgent(void)
 {
     return String::fromUTF8(AppConstants::DefaultUserAgent);
-}
-
-void FrameLoaderClientImpl::willBeDetached(void)
-{
-    assert(false); // BKTODO:
 }
 
 } // namespace BlinKit

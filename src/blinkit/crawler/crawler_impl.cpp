@@ -11,25 +11,30 @@
 
 #include "crawler_impl.h"
 
+#include "core/frame/LocalFrame.h"
 #include "core/loader/FrameLoadRequest.h"
 
 #include "app/app_impl.h"
 #include "blink_impl/cookie_jar_impl.h"
-#include "crawler/crawler_frame.h"
 
 using namespace blink;
 
 namespace BlinKit {
 
 CrawlerImpl::CrawlerImpl(BkCrawlerClient &client)
-    : m_client(client), m_frame(CrawlerFrame::Create(this))
+    : m_client(client), m_frame(LocalFrame::create(this, nullptr, nullptr))
 {
     m_frame->init();
 }
 
 CrawlerImpl::~CrawlerImpl(void)
 {
-    // Nothing
+    m_frame->detach(FrameDetachType::Remove);
+}
+
+void CrawlerImpl::dispatchDidFinishLoad(void)
+{
+    m_client.DocumentReady(this);
 }
 
 std::string CrawlerImpl::GetCookie(const std::string &URL) const

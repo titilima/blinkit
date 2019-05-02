@@ -23,10 +23,10 @@ class FrameLoaderClientImpl : public blink::FrameLoaderClient
 protected:
     // blink::FrameClient
     bool inShadowTree(void) const override final;
-    void willBeDetached(void) override final;
-    void detached(blink::FrameDetachType) override final;
+    void willBeDetached(void) override {}
+    void detached(blink::FrameDetachType) override {}
     blink::Frame* opener(void) const override final;
-    void setOpener(blink::Frame *) override final;
+    void setOpener(blink::Frame *opener) override final { assert(nullptr == opener); }
     blink::Frame* parent(void) const override final;
     blink::Frame* top(void) const override final;
     blink::Frame* previousSibling(void) const override final;
@@ -36,23 +36,22 @@ protected:
     unsigned backForwardLength(void) override final;
     void frameFocused(void) const override final;
     // blink::FrameLoaderClient
-    bool hasWebView(void) const override final;
-    void dispatchWillSendRequest(blink::DocumentLoader *, unsigned long identifier, blink::ResourceRequest &, const blink::ResourceResponse &redirectResponse) override final;
-    void dispatchDidReceiveResponse(blink::DocumentLoader *, unsigned long identifier, const blink::ResourceResponse &) override final;
-    void dispatchDidFinishLoading(blink::DocumentLoader *, unsigned long identifier) override final;
+    bool hasWebView(void) const override final { return false; }
+    void dispatchWillSendRequest(blink::DocumentLoader *, unsigned long identifier, blink::ResourceRequest &, const blink::ResourceResponse &redirectResponse) override {}
+    void dispatchDidReceiveResponse(blink::DocumentLoader *, unsigned long identifier, const blink::ResourceResponse &) override {}
+    void dispatchDidFinishLoading(blink::DocumentLoader *, unsigned long identifier) override {}
     void dispatchDidLoadResourceFromMemoryCache(const blink::ResourceRequest &, const blink::ResourceResponse &) override final;
-    void dispatchDidHandleOnloadEvents(void) override final;
+    void dispatchDidHandleOnloadEvents(void) override {}
     void dispatchDidReceiveServerRedirectForProvisionalLoad(void) override final;
     void dispatchDidNavigateWithinPage(blink::HistoryItem *, blink::HistoryCommitType) override final;
-    void dispatchWillClose(void) override final;
-    void dispatchDidStartProvisionalLoad(double triggeringEventTime) override final;
+    void dispatchWillClose(void) override {}
+    void dispatchDidStartProvisionalLoad(double triggeringEventTime) override {}
     void dispatchDidReceiveTitle(const String&) override final;
     void dispatchDidChangeIcons(blink::IconType) override final;
-    void dispatchDidCommitLoad(blink::HistoryItem*, blink::HistoryCommitType) override final;
+    void dispatchDidCommitLoad(blink::HistoryItem*, blink::HistoryCommitType) override {}
     void dispatchDidFailProvisionalLoad(const blink::ResourceError &, blink::HistoryCommitType) override final;
     void dispatchDidFailLoad(const blink::ResourceError &, blink::HistoryCommitType) override final;
-    void dispatchDidFinishDocumentLoad(bool documentIsEmpty) override final;
-    void dispatchDidFinishLoad(void) override final;
+    void dispatchDidFinishDocumentLoad(bool documentIsEmpty) override {}
     void dispatchDidChangeThemeColor(void) override final;
     blink::NavigationPolicy decidePolicyForNavigation(const blink::ResourceRequest&, blink::DocumentLoader*, blink::NavigationType, blink::NavigationPolicy, bool shouldReplaceCurrentEntry) override final;
     bool hasPendingNavigation(void) override final;
@@ -79,9 +78,9 @@ protected:
     PassRefPtrWillBeRawPtr<blink::LocalFrame> createFrame(const blink::FrameLoadRequest&, const AtomicString& name, blink::HTMLFrameOwnerElement *) override final;
     bool canCreatePluginWithoutRenderer(const String& mimeType) const override final;
     blink::ObjectContentType objectContentType(const blink::KURL&, const String& mimeType, bool shouldPreferPlugInsForImages) override final;
-    void didCreateNewDocument(void) override final;
-    void dispatchDidClearWindowObjectInMainWorld(void) override final;
-    void documentElementAvailable(void) override final;
+    void didCreateNewDocument(void) override {}
+    void dispatchDidClearWindowObjectInMainWorld(void) override {}
+    void documentElementAvailable(void) override {}
     bool allowScriptExtension(const String& extensionName, int extensionGroup, int worldId) override final;
     void didChangeScrollOffset(void) override final;
     void didUpdateCurrentHistoryItem(void) override final;
@@ -105,12 +104,10 @@ protected:
     void didRequestAutocomplete(blink::HTMLFormElement*) override final;
     bool allowWebGL(bool enabledPerSettings) override final;
     void didLoseWebGLContext(int) override final;
-    void dispatchWillInsertBody(void) override final;
     void dispatchDidChangeResourcePriority(unsigned long identifier, blink::ResourceLoadPriority, int intraPriorityValue) override final;
-    bool isControlledByServiceWorker(blink::DocumentLoader&) override final;
+    bool isControlledByServiceWorker(blink::DocumentLoader&) override { return false; }
     int64_t serviceWorkerID(blink::DocumentLoader&) override final;
-    blink::SharedWorkerRepositoryClient* sharedWorkerRepositoryClient(void) override final;
-    PassOwnPtr<blink::WebApplicationCacheHost> createApplicationCacheHost(blink::WebApplicationCacheHostClient *) override final;
+    blink::SharedWorkerRepositoryClient* sharedWorkerRepositoryClient(void) override { return nullptr; }
     void dispatchDidChangeManifest(void) override final;
     void suddenTerminationDisablerChanged(bool present, SuddenTerminationDisablerType) override final;
 };

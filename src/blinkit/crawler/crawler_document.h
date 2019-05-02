@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "core/dom/document_impl.h"
+#include "core/dom/Document.h"
 
 namespace blink {
 class DocumentInit;
@@ -22,13 +22,12 @@ class DocumentInit;
 
 namespace BlinKit {
 
-class CrawlerDocument final : public blink::DocumentImpl
+class CrawlerDocument final : public blink::Document
 {
 public:
-    CrawlerDocument(const blink::DocumentInit &init, blink::DocumentClassFlags extendedDocumentClasses = blink::DefaultDocumentClass);
+    CrawlerDocument(const blink::DocumentInit &init);
 private:
-    PassRefPtrWillBeRawPtr<Node> cloneNode(bool deep) override;
-    PassRefPtrWillBeRawPtr<blink::ElementImpl> CreateElement(const blink::QualifiedName &tag) override;
+    PassRefPtrWillBeRawPtr<blink::Element> createElement(const AtomicString &localName, blink::ExceptionState&) override;
 };
 
 } // namespace BlinKit

@@ -19,21 +19,15 @@ using namespace blink;
 
 namespace BlinKit {
 
-CrawlerDocument::CrawlerDocument(const DocumentInit &init, DocumentClassFlags extendedDocumentClasses)
-    : DocumentImpl(init, HTMLDocumentClass | extendedDocumentClasses, CreateCrawlerDocument)
+CrawlerDocument::CrawlerDocument(const DocumentInit &init)
+    : Document(init, HTMLDocumentClass, true)
 {
     // Nothing
 }
 
-PassRefPtrWillBeRawPtr<ElementImpl> CrawlerDocument::CreateElement(const QualifiedName &tag)
+PassRefPtrWillBeRawPtr<Element> CrawlerDocument::createElement(const AtomicString &localName, ExceptionState &)
 {
-    return CrawlerElement::Create(tag, this);
-}
-
-PassRefPtrWillBeRawPtr<Node> CrawlerDocument::cloneNode(bool deep)
-{
-    assert(false); // BKTODO:
-    return nullptr;
+    return CrawlerElement::Create(localName, this);
 }
 
 } // namespace BlinKit
