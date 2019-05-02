@@ -16,7 +16,7 @@
 
 #include "sdk/include/BlinKit.h"
 #include "public/platform/Platform.h"
-#include "blink_impl/thread_impl.h"
+#include "blinkit/blink_impl/thread_impl.h"
 
 namespace blink {
 class Settings;
