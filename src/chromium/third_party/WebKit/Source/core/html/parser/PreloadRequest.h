@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PreloadRequest.h
+// Description: PreloadRequest Class
+//      Author: Ziming Li
+//     Created: 2019-05-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,6 @@
 #ifndef PreloadRequest_h
 #define PreloadRequest_h
 
-#include "core/fetch/ClientHintsPreferences.h"
 #include "core/fetch/FetchRequest.h"
 #include "core/fetch/IntegrityMetadata.h"
 #include "core/fetch/Resource.h"
@@ -23,9 +33,9 @@ class PreloadRequest {
 public:
     enum RequestType { RequestTypePreload, RequestTypePreconnect, RequestTypeLinkRelPreload };
 
-    static PassOwnPtr<PreloadRequest> create(const String& initiatorName, const TextPosition& initiatorPosition, const String& resourceURL, const KURL& baseURL, Resource::Type resourceType, const ReferrerPolicy referrerPolicy, const FetchRequest::ResourceWidth& resourceWidth = FetchRequest::ResourceWidth(), const ClientHintsPreferences& clientHintsPreferences = ClientHintsPreferences(), RequestType requestType = RequestTypePreload)
+    static PassOwnPtr<PreloadRequest> create(const String& initiatorName, const TextPosition& initiatorPosition, const String& resourceURL, const KURL& baseURL, Resource::Type resourceType, const ReferrerPolicy referrerPolicy, const FetchRequest::ResourceWidth& resourceWidth = FetchRequest::ResourceWidth(), RequestType requestType = RequestTypePreload)
     {
-        return adoptPtr(new PreloadRequest(initiatorName, initiatorPosition, resourceURL, baseURL, resourceType, resourceWidth, clientHintsPreferences, requestType, referrerPolicy));
+        return adoptPtr(new PreloadRequest(initiatorName, initiatorPosition, resourceURL, baseURL, resourceType, resourceWidth, requestType, referrerPolicy));
     }
 
     bool isSafeToSendToAnotherThread() const;
@@ -50,7 +60,6 @@ public:
     float resourceWidth() const { return m_resourceWidth.isSet ? m_resourceWidth.width : 0; }
     const KURL& baseURL() const { return m_baseURL; }
     bool isPreconnect() const { return m_requestType == RequestTypePreconnect; }
-    const ClientHintsPreferences& preferences() const { return m_clientHintsPreferences; }
     ReferrerPolicy referrerPolicy() const { return m_referrerPolicy; }
     void setIntegrityMetadata(const IntegrityMetadataSet& metadataSet)
     {
@@ -68,7 +77,6 @@ private:
         const KURL& baseURL,
         Resource::Type resourceType,
         const FetchRequest::ResourceWidth& resourceWidth,
-        const ClientHintsPreferences& clientHintsPreferences,
         RequestType requestType,
         const ReferrerPolicy referrerPolicy)
         : m_initiatorName(initiatorName)
@@ -80,7 +88,6 @@ private:
         , m_discoveryTime(monotonicallyIncreasingTime())
         , m_defer(FetchRequest::NoDefer)
         , m_resourceWidth(resourceWidth)
-        , m_clientHintsPreferences(clientHintsPreferences)
         , m_requestType(requestType)
         , m_referrerPolicy(referrerPolicy)
     {
@@ -98,7 +105,6 @@ private:
     double m_discoveryTime;
     FetchRequest::DeferOption m_defer;
     FetchRequest::ResourceWidth m_resourceWidth;
-    ClientHintsPreferences m_clientHintsPreferences;
     RequestType m_requestType;
     ReferrerPolicy m_referrerPolicy;
     IntegrityMetadataSet m_integrityMetadata;

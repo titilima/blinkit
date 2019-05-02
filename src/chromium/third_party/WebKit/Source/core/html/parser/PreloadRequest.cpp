@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PreloadRequest.cpp
+// Description: PreloadRequest Class
+//      Author: Ziming Li
+//     Created: 2019-05-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -45,7 +56,6 @@ FetchRequest PreloadRequest::resourceRequest(Document* document)
         request.setCrossOriginAccessControl(document->securityOrigin(), m_crossOrigin);
     request.setDefer(m_defer);
     request.setResourceWidth(m_resourceWidth);
-    request.clientHintsPreferences().updateFrom(m_clientHintsPreferences);
     request.setIntegrityMetadata(m_integrityMetadata);
 
     if (m_requestType == RequestTypeLinkRelPreload)
