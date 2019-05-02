@@ -51,7 +51,7 @@ namespace blink {
 class ConsoleMessage;
 class ConsoleMessageStorage;
 class DocumentLoader;
-class LocalFrameImpl;
+class LocalFrame;
 class ResourceError;
 class ResourceResponse;
 class ScriptCallStack;
@@ -63,7 +63,7 @@ class CORE_EXPORT FrameConsole final : public NoBaseWillBeGarbageCollected<Frame
     USING_FAST_MALLOC_WILL_BE_REMOVED(FrameConsole);
     DECLARE_EMPTY_DESTRUCTOR_WILL_BE_REMOVED(FrameConsole);
 public:
-    static PassOwnPtrWillBeRawPtr<FrameConsole> create(LocalFrameImpl& frame)
+    static PassOwnPtrWillBeRawPtr<FrameConsole> create(LocalFrame& frame)
     {
         return adoptPtrWillBeNoop(new FrameConsole(frame));
     }
@@ -85,9 +85,9 @@ public:
     DECLARE_TRACE();
 
 private:
-    explicit FrameConsole(LocalFrameImpl&);
+    explicit FrameConsole(LocalFrame&);
 
-    LocalFrameImpl& frame() const
+    LocalFrame& frame() const
     {
         ASSERT(m_frame);
         return *m_frame;
@@ -95,7 +95,7 @@ private:
 
     ConsoleMessageStorage* messageStorage();
 
-    RawPtrWillBeMember<LocalFrameImpl> m_frame;
+    RawPtrWillBeMember<LocalFrame> m_frame;
 };
 
 } // namespace blink
