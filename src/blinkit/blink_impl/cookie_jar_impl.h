@@ -16,6 +16,11 @@
 
 #include <mutex>
 #include "public/platform/WebCookieJar.h"
+#include "net/cookies/cookie_options.h"
+
+namespace net {
+class CanonicalCookie;
+}
 
 namespace BlinKit {
 
@@ -23,6 +28,7 @@ class CookieJarImpl final : public blink::WebCookieJar
 {
 public:
     CookieJarImpl(void);
+    ~CookieJarImpl(void);
 
     std::string GetCookie(const std::string &URL) const;
 private:
@@ -32,6 +38,8 @@ private:
     blink::WebString cookieRequestHeaderFieldValue(const blink::WebURL&, const blink::WebURL& firstPartyForCookies) override;
 
     mutable std::recursive_mutex m_lock;
+    net::CookieOptions m_options;
+    std::vector<std::unique_ptr<net::CanonicalCookie>> m_cookies;
 };
 
 } // namespace BlinKit
