@@ -351,8 +351,6 @@ ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, co
     ASSERT(request.options().synchronousPolicy == RequestAsynchronously || factory.type() == Resource::Raw || factory.type() == Resource::XSLStyleSheet);
 
     context().upgradeInsecureRequest(request);
-    context().addClientHintsIfNecessary(request);
-    context().addCSPHeaderIfNecessary(factory.type(), request);
 
     KURL url = request.resourceRequest().url();
     TRACE_EVENT1("blink", "ResourceFetcher::requestResource", "url", urlForTraceEvent(url));
