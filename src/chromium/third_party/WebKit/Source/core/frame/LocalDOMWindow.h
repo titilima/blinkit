@@ -123,12 +123,10 @@ public:
     Document* document() const override;
     StyleMedia* styleMedia() const override;
     double devicePixelRatio() const override;
-    ApplicationCache* applicationCache() const override;
     int orientation() const override;
     Console* console() const override;
     DOMSelection* getSelection() override;
     void blur() override;
-    void print() override;
     void stop() override;
     void alert(const String& message = String()) override;
     bool confirm(const String& message) override;
@@ -248,7 +246,6 @@ private:
     OwnPtrWillBeMember<WindowFrameObserver> m_frameObserver;
     RefPtrWillBeMember<Document> m_document;
 
-    bool m_shouldPrintWhenFinishedLoading;
 #if ENABLE(ASSERT)
     bool m_hasBeenReset;
 #endif
@@ -264,12 +261,12 @@ private:
     mutable RefPtrWillBeMember<BarProp> m_toolbar;
     mutable PersistentWillBeMember<Console> m_console;
     mutable PersistentWillBeMember<Navigator> m_navigator;
+#ifndef BLINKIT_CRAWLER_ONLY
     mutable RefPtrWillBeMember<StyleMedia> m_media;
+#endif
 
     String m_status;
     String m_defaultStatus;
-
-    mutable PersistentWillBeMember<ApplicationCache> m_applicationCache;
 
     RefPtrWillBeMember<DOMWindowEventQueue> m_eventQueue;
 };
