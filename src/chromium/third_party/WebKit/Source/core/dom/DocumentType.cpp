@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DocumentType.cpp
+// Description: DocumentType Class
+//      Author: Ziming Li
+//     Created: 2019-05-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -28,7 +39,7 @@
 namespace blink {
 
 DocumentType::DocumentType(Document* document, const String& name, const String& publicId, const String& systemId)
-    : Node(document, CreateOther)
+    : Node(document, document->ForCrawler() ? CreateCrawlerOther : CreateOther)
     , m_name(name)
     , m_publicId(publicId)
     , m_systemId(systemId)
