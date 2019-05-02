@@ -25,6 +25,7 @@ public:
     CrawlerImpl(BkCrawlerClient &client);
     ~CrawlerImpl(void);
 
+    BkCrawlerClient& Client(void) const { return m_client; }
     std::string GetCookie(const std::string &URL) const;
 private:
     // BkCrawler
