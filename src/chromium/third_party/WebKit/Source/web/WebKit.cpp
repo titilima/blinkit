@@ -105,7 +105,9 @@ void initialize(Platform* platform)
 
         // Register web cache dump provider for tracing.
         platform->registerMemoryDumpProvider(WebCacheMemoryDumpProvider::instance(), "MemoryCache");
+#ifndef BLINKIT_CRAWLER_ONLY
         platform->registerMemoryDumpProvider(FontCacheMemoryDumpProvider::instance(), "FontCaches");
+#endif
     }
 }
 
@@ -177,7 +179,9 @@ void shutdown()
     // currentThread() is null if we are running on a thread without a message loop.
     if (Platform::current()->currentThread()) {
         Platform::current()->unregisterMemoryDumpProvider(WebCacheMemoryDumpProvider::instance());
+#ifndef BLINKIT_CRAWLER_ONLY
         Platform::current()->unregisterMemoryDumpProvider(FontCacheMemoryDumpProvider::instance());
+#endif
 
         // We don't need to (cannot) remove s_endOfTaskRunner from the current
         // message loop, because the message loop is already destructed before
