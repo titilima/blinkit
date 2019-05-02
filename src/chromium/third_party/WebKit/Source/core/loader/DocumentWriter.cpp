@@ -109,7 +109,7 @@ void DocumentWriter::end()
     // http://bugs.webkit.org/show_bug.cgi?id=10854
     // The frame's last ref may be removed and it can be deleted by checkCompleted(),
     // so we'll add a protective refcount
-    RefPtrWillBeRawPtr<LocalFrameImpl> protect(m_document->frame());
+    RefPtrWillBeRawPtr<LocalFrame> protect(m_document->frame());
 
     if (!m_parser)
         return;
