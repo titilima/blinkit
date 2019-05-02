@@ -73,8 +73,6 @@ class ResourceResponse;
 class SecurityOrigin;
 class SharedWorkerRepositoryClient;
 class SubstituteData;
-class WebApplicationCacheHost;
-class WebApplicationCacheHostClient;
 class WebCookieJar;
 class WebMediaPlayer;
 class WebMediaPlayerClient;
@@ -229,8 +227,6 @@ public:
     virtual int64_t serviceWorkerID(DocumentLoader&) = 0;
 
     virtual SharedWorkerRepositoryClient* sharedWorkerRepositoryClient() { return 0; }
-
-    virtual PassOwnPtr<WebApplicationCacheHost> createApplicationCacheHost(WebApplicationCacheHostClient*) = 0;
 
     virtual void dispatchDidChangeManifest() { }
 
