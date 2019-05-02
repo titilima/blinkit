@@ -274,7 +274,7 @@ private:
     unsigned m_end;
 };
 
-HTMLTreeBuilder::HTMLTreeBuilder(HTMLDocumentParser* parser, DocumentImpl* document, ParserContentPolicy parserContentPolicy, bool, const HTMLParserOptions& options)
+HTMLTreeBuilder::HTMLTreeBuilder(HTMLDocumentParser* parser, Document* document, ParserContentPolicy parserContentPolicy, bool, const HTMLParserOptions& options)
     : m_framesetOk(true)
 #if ENABLE(ASSERT)
     , m_isAttached(true)
@@ -367,7 +367,7 @@ DEFINE_TRACE(HTMLTreeBuilder::FragmentParsingContext)
     visitor->trace(m_contextElementStackItem);
 }
 
-PassRefPtrWillBeRawPtr<ElementImpl> HTMLTreeBuilder::takeScriptToProcess(TextPosition& scriptStartPosition)
+PassRefPtrWillBeRawPtr<Element> HTMLTreeBuilder::takeScriptToProcess(TextPosition& scriptStartPosition)
 {
     ASSERT(m_scriptToProcess);
     ASSERT(!m_tree.hasPendingTasks());
@@ -736,7 +736,7 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
         return;
     }
     if (token->name() == aTag) {
-        ElementImpl* activeATag = m_tree.activeFormattingElements()->closestElementInScopeWithName(aTag.localName());
+        Element* activeATag = m_tree.activeFormattingElements()->closestElementInScopeWithName(aTag.localName());
         if (activeATag) {
             parseError(token);
             processFakeEndTag(aTag);
@@ -1498,7 +1498,7 @@ void HTMLTreeBuilder::callTheAdoptionAgency(AtomicHTMLToken* token)
     // 1, 2, 3 and 16 are covered by the for() loop.
     for (int i = 0; i < outerIterationLimit; ++i) {
         // 4.
-        ElementImpl* formattingElement = m_tree.activeFormattingElements()->closestElementInScopeWithName(token->name());
+        Element* formattingElement = m_tree.activeFormattingElements()->closestElementInScopeWithName(token->name());
         // 4.a
         if (!formattingElement)
             return processAnyOtherEndTagForInBody(token);

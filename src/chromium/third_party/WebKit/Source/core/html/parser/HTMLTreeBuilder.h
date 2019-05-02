@@ -54,13 +54,13 @@ namespace blink {
 
 class AtomicHTMLToken;
 class DocumentFragment;
-class ElementImpl;
+class Element;
 class HTMLDocumentParser;
 
 class HTMLTreeBuilder final : public NoBaseWillBeGarbageCollectedFinalized<HTMLTreeBuilder> {
     WTF_MAKE_NONCOPYABLE(HTMLTreeBuilder); USING_FAST_MALLOC_WILL_BE_REMOVED(HTMLTreeBuilder);
 public:
-    static PassOwnPtrWillBeRawPtr<HTMLTreeBuilder> create(HTMLDocumentParser* parser, DocumentImpl* document, ParserContentPolicy parserContentPolicy, bool reportErrors, const HTMLParserOptions& options)
+    static PassOwnPtrWillBeRawPtr<HTMLTreeBuilder> create(HTMLDocumentParser* parser, Document* document, ParserContentPolicy parserContentPolicy, bool reportErrors, const HTMLParserOptions& options)
     {
         return adoptPtrWillBeNoop(new HTMLTreeBuilder(parser, document, parserContentPolicy, reportErrors, options));
     }
@@ -83,7 +83,7 @@ public:
 
     bool hasParserBlockingScript() const { return !!m_scriptToProcess; }
     // Must be called to take the parser-blocking script before calling the parser again.
-    PassRefPtrWillBeRawPtr<ElementImpl> takeScriptToProcess(TextPosition& scriptStartPosition);
+    PassRefPtrWillBeRawPtr<Element> takeScriptToProcess(TextPosition& scriptStartPosition);
 
     // Done, close any open tags, etc.
     void finished();
@@ -124,7 +124,7 @@ private:
         AfterAfterFramesetMode,
     };
 
-    HTMLTreeBuilder(HTMLDocumentParser*, DocumentImpl*, ParserContentPolicy, bool reportErrors, const HTMLParserOptions&);
+    HTMLTreeBuilder(HTMLDocumentParser*, Document*, ParserContentPolicy, bool reportErrors, const HTMLParserOptions&);
     HTMLTreeBuilder(HTMLDocumentParser*, DocumentFragment*, Element* contextElement, ParserContentPolicy, const HTMLParserOptions&);
 
     void processToken(AtomicHTMLToken*);
@@ -207,7 +207,7 @@ private:
         ~FragmentParsingContext();
 
         DocumentFragment* fragment() const { return m_fragment; }
-        ElementImpl* contextElement() const { ASSERT(m_fragment); return m_contextElementStackItem->element(); }
+        Element* contextElement() const { ASSERT(m_fragment); return m_contextElementStackItem->element(); }
         HTMLStackItem* contextElementStackItem() const { ASSERT(m_fragment); return m_contextElementStackItem.get(); }
 
         DECLARE_TRACE();
@@ -242,7 +242,7 @@ private:
     // from within parser actions. We also need it to track the current position.
     RawPtrWillBeMember<HTMLDocumentParser> m_parser;
 
-    RefPtrWillBeMember<ElementImpl> m_scriptToProcess; // <script> tag which needs processing before resuming the parser.
+    RefPtrWillBeMember<Element> m_scriptToProcess; // <script> tag which needs processing before resuming the parser.
     TextPosition m_scriptToProcessStartPosition; // Starting line number of the script tag needing processing.
 
     HTMLParserOptions m_options;
