@@ -165,7 +165,6 @@ HTMLTreeBuilderSimulator::SimulatedToken HTMLTreeBuilderSimulator::simulate(cons
             } else if (threadSafeMatch(tagName, styleTag)
                 || threadSafeMatch(tagName, iframeTag)
                 || threadSafeMatch(tagName, xmpTag)
-                || (threadSafeMatch(tagName, noembedTag) && m_options.pluginsEnabled)
                 || threadSafeMatch(tagName, noframesTag)
                 || (threadSafeMatch(tagName, noscriptTag) && m_options.scriptEnabled)) {
                 tokenizer->setState(HTMLTokenizer::RAWTEXTState);
