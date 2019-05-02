@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ElementResolveContext.cpp
+// Description: ElementResolveContext Class
+//      Author: Ziming Li
+//     Created: 2019-05-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -53,6 +64,11 @@ ElementResolveContext::ElementResolveContext(Element& element)
     m_rootElementStyle = documentElement && element != documentElement ? documentElement->computedStyle() : documentStyle;
     if (!m_rootElementStyle)
         m_rootElementStyle = documentStyle;
+}
+
+const ComputedStyle* ElementResolveContext::parentStyle(void) const
+{
+    return parentNode() ? parentNode()->computedStyle() : nullptr;
 }
 
 } // namespace blink

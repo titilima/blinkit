@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ElementResolveContext.h
+// Description: ElementResolveContext Class
+//      Author: Ziming Li
+//     Created: 2019-05-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -43,7 +54,7 @@ public:
     Element* element() const { return m_element; }
     const ContainerNode* parentNode() const { return m_parentNode; }
     const ComputedStyle* rootElementStyle() const { return m_rootElementStyle; }
-    const ComputedStyle* parentStyle() const { return parentNode() ? parentNode()->computedStyle() : nullptr; }
+    const ComputedStyle* parentStyle(void);
     EInsideLink elementLinkState() const { return m_elementLinkState; }
     bool distributedToInsertionPoint() const { return m_distributedToInsertionPoint; }
 
