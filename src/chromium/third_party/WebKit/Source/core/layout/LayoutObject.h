@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutObject.h
+// Description: LayoutObject Class
+//      Author: Ziming Li
+//     Created: 2019-05-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -721,10 +732,8 @@ public:
 
     virtual void updateDragState(bool dragOn);
 
-#ifndef BLINKIT_CRAWLER_ONLY
-    LayoutView* view() const { return document().layoutView(); }
-#endif
-    FrameView* frameView() const { return document().view(); }
+    LayoutView* view(void) const;
+    FrameView* frameView(void) const;
 
     bool isRooted() const;
 

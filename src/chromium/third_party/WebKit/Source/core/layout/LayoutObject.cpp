@@ -3495,6 +3495,16 @@ void LayoutObject::clearObjectPaintProperties()
     objectPaintPropertiesMap().remove(this);
 }
 
+FrameView* LayoutObject::frameView(void) const
+{
+    return document().view();
+}
+
+LayoutView* LayoutObject::view(void) const
+{
+    return document().layoutView();
+}
+
 } // namespace blink
 
 #ifndef NDEBUG
