@@ -511,7 +511,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\VisibleSelection.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\VisibleUnits.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\experiments\Experiments.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\ClientHintsPreferences.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\CrossOriginAccessControl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\CSSStyleSheetResource.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\DocumentResource.cpp" />
@@ -568,8 +567,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalDOMWindow.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalFrame.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalFrameLifecycleNotifier.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\local_dom_window_impl.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\local_frame_impl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\Location.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\Navigator.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\NavigatorCPU.cpp" />
@@ -593,8 +590,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\Init.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\inspector\ConsoleMessage.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\inspector\ConsoleMessageStorage.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\appcache\ApplicationCache.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\appcache\ApplicationCacheHost.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\CookieJar.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\CrossOriginPreflightResultCache.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\DocumentLoader.cpp" />
@@ -1161,7 +1156,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\CachedMetadata.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\CachedMetadataHandler.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\CachePolicy.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\ClientHintsPreferences.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\CrossOriginAccessControl.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\CSSStyleSheetResource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\DocumentResource.h" />
@@ -1238,8 +1232,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalFrame.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalFrameLifecycleNotifier.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalFrameLifecycleObserver.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\local_dom_window_impl.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\local_frame_impl.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\Location.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\Navigator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\NavigatorCPU.h" />
@@ -1271,8 +1263,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\inspector\InspectorInstrumentation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\inspector\InspectorTraceEvents.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\inspector\InstanceCounters.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\appcache\ApplicationCache.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\appcache\ApplicationCacheHost.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\CookieJar.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\CrossOriginPreflightResultCache.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\DocumentLoader.h" />

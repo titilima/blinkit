@@ -596,9 +596,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\input\EventHandler.cpp">
       <Filter>input</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\document_impl.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ActiveDOMObject.h">
@@ -1419,9 +1416,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\SecurityPolicyViolationEventInit.h">
       <Filter>events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\document_impl.h">
-      <Filter>dom</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

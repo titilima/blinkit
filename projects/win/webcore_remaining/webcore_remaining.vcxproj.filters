@@ -81,9 +81,6 @@
     <Filter Include="loader">
       <UniqueIdentifier>{bfd0c92c-a9fc-428c-ae1c-5fafe5146cea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="loader\appcache">
-      <UniqueIdentifier>{61eb6e0b-61ad-4a0a-a0ce-f110b3f4a4b4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="page">
       <UniqueIdentifier>{e2060f3f-0912-4a9d-8353-fe510d73468c}</UniqueIdentifier>
     </Filter>
@@ -1073,9 +1070,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\experiments\Experiments.cpp">
       <Filter>experiments</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\ClientHintsPreferences.cpp">
-      <Filter>fetch</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\CrossOriginAccessControl.cpp">
       <Filter>fetch</Filter>
     </ClCompile>
@@ -1373,12 +1367,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\WorkerThreadableLoader.cpp">
       <Filter>loader</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\appcache\ApplicationCache.cpp">
-      <Filter>loader\appcache</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\appcache\ApplicationCacheHost.cpp">
-      <Filter>loader\appcache</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\AutoscrollController.cpp">
       <Filter>page</Filter>
     </ClCompile>
@@ -1482,12 +1470,6 @@
       <Filter>editing\commands</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalFrame.cpp">
-      <Filter>frame</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\local_frame_impl.cpp">
-      <Filter>frame</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\local_dom_window_impl.cpp">
       <Filter>frame</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalDOMWindow.cpp">
@@ -3073,9 +3055,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\CachePolicy.h">
       <Filter>fetch</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\ClientHintsPreferences.h">
-      <Filter>fetch</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\fetch\CrossOriginAccessControl.h">
       <Filter>fetch</Filter>
     </ClInclude>
@@ -3496,12 +3475,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\WorkerThreadableLoader.h">
       <Filter>loader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\appcache\ApplicationCache.h">
-      <Filter>loader\appcache</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\appcache\ApplicationCacheHost.h">
-      <Filter>loader\appcache</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\AutoscrollController.h">
       <Filter>page</Filter>
     </ClInclude>
@@ -3708,12 +3681,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\resolver\ScopedStyleResolver.h">
       <Filter>css\resolver</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\local_frame_impl.h">
-      <Filter>frame</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\local_dom_window_impl.h">
-      <Filter>frame</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\BackgroundImageGeometry.h">
       <Filter>paint</Filter>

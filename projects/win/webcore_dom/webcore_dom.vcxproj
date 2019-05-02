@@ -214,7 +214,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentTiming.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentType.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentVisibilityObserver.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\document_impl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMError.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMException.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMImplementation.cpp" />
@@ -423,7 +422,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentTiming.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentType.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentVisibilityObserver.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\document_impl.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMError.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMException.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMHighResTimeStamp.h" />
