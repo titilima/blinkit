@@ -40,7 +40,7 @@
 #include "core/HTMLNames.h"
 #include "core/MathMLNames.h"
 #include "core/SVGNames.h"
-#include "core/dom/element_impl.h"
+#include "core/dom/Element.h"
 
 namespace blink {
 
@@ -217,7 +217,7 @@ void HTMLElementStack::popAll()
     while (m_top) {
         Node& node = *topNode();
         if (node.isElementNode())
-            toElementImpl(node).finishParsingChildren();
+            toElement(node).finishParsingChildren();
         m_top = m_top->releaseNext();
     }
 }
@@ -249,13 +249,13 @@ void HTMLElementStack::popUntilNumberedHeaderElementPopped()
     pop();
 }
 
-void HTMLElementStack::popUntil(ElementImpl* element)
+void HTMLElementStack::popUntil(Element* element)
 {
     while (top() != element)
         pop();
 }
 
-void HTMLElementStack::popUntilPopped(ElementImpl* element)
+void HTMLElementStack::popUntilPopped(Element* element)
 {
     popUntil(element);
     pop();
@@ -406,7 +406,7 @@ HTMLStackItem* HTMLElementStack::oneBelowTop() const
     return nullptr;
 }
 
-void HTMLElementStack::removeHTMLHeadElement(ElementImpl* element)
+void HTMLElementStack::removeHTMLHeadElement(Element* element)
 {
     ASSERT(m_headElement == element);
     if (m_top->element() == element) {
@@ -417,7 +417,7 @@ void HTMLElementStack::removeHTMLHeadElement(ElementImpl* element)
     removeNonTopCommon(element);
 }
 
-void HTMLElementStack::remove(ElementImpl* element)
+void HTMLElementStack::remove(Element* element)
 {
     ASSERT(!element->hasLocalName(headTag.localName()));
     if (m_top->element() == element) {
@@ -427,7 +427,7 @@ void HTMLElementStack::remove(ElementImpl* element)
     removeNonTopCommon(element);
 }
 
-HTMLElementStack::ElementRecord* HTMLElementStack::find(ElementImpl* element) const
+HTMLElementStack::ElementRecord* HTMLElementStack::find(Element* element) const
 {
     for (ElementRecord* pos = m_top.get(); pos; pos = pos->next()) {
         if (pos->node() == element)
@@ -445,7 +445,7 @@ HTMLElementStack::ElementRecord* HTMLElementStack::topmost(const AtomicString& t
     return nullptr;
 }
 
-bool HTMLElementStack::contains(ElementImpl* element) const
+bool HTMLElementStack::contains(Element* element) const
 {
     return !!find(element);
 }
@@ -482,7 +482,7 @@ bool HTMLElementStack::hasNumberedHeaderElementInScope() const
     return false;
 }
 
-bool HTMLElementStack::inScope(ElementImpl* targetElement) const
+bool HTMLElementStack::inScope(Element* targetElement) const
 {
     for (ElementRecord* pos = m_top.get(); pos; pos = pos->next()) {
         HTMLStackItem* item = pos->stackItem().get();
@@ -550,19 +550,19 @@ bool HTMLElementStack::hasTemplateInHTMLScope() const
     return inScopeCommon<isRootNode>(m_top.get(), templateTag.localName());
 }
 
-ElementImpl* HTMLElementStack::htmlElement() const
+Element* HTMLElementStack::htmlElement() const
 {
     ASSERT(m_rootNode);
-    return toElementImpl(m_rootNode);
+    return toElement(m_rootNode);
 }
 
-ElementImpl* HTMLElementStack::headElement() const
+Element* HTMLElementStack::headElement() const
 {
     ASSERT(m_headElement);
     return m_headElement;
 }
 
-ElementImpl* HTMLElementStack::bodyElement() const
+Element* HTMLElementStack::bodyElement() const
 {
     ASSERT(m_bodyElement);
     return m_bodyElement;
@@ -593,7 +593,7 @@ void HTMLElementStack::popCommon()
     m_stackDepth--;
 }
 
-void HTMLElementStack::removeNonTopCommon(ElementImpl* element)
+void HTMLElementStack::removeNonTopCommon(Element* element)
 {
     ASSERT(!element->hasLocalName(htmlTag.localName()));
     ASSERT(!element->hasLocalName(bodyTag.localName()));
@@ -611,7 +611,7 @@ void HTMLElementStack::removeNonTopCommon(ElementImpl* element)
     ASSERT_NOT_REACHED();
 }
 
-HTMLElementStack::ElementRecord* HTMLElementStack::furthestBlockForFormattingElement(ElementImpl* formattingElement) const
+HTMLElementStack::ElementRecord* HTMLElementStack::furthestBlockForFormattingElement(Element* formattingElement) const
 {
     ElementRecord* furthestBlock = 0;
     for (ElementRecord* pos = m_top.get(); pos; pos = pos->next()) {
