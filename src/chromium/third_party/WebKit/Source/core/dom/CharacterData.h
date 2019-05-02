@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CharacterData.h
+// Description: CharacterData Class
+//      Author: Ziming Li
+//     Created: 2019-05-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -57,7 +68,7 @@ protected:
         : Node(&treeScope, type)
         , m_data(!text.isNull() ? text : emptyString())
     {
-        ASSERT(type == CreateOther || type == CreateText || type == CreateEditingText);
+        ASSERT(type == CreateOther || type == CreateText || type == CreateEditingText || ForCrawler());
     }
 
     void setDataWithoutUpdate(const String& data)

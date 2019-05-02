@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CharacterData.cpp
+// Description: CharacterData Class
+//      Author: Ziming Li
+//     Created: 2019-05-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -164,16 +175,23 @@ void CharacterData::setDataAndUpdate(const String& newData, unsigned offsetOfRep
     String oldData = m_data;
     m_data = newData;
 
-    ASSERT(!layoutObject() || isTextNode());
-    if (isTextNode())
-        toText(this)->updateTextLayoutObject(offsetOfReplacedData, oldLength, recalcStyleBehavior);
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+    {
+        ASSERT(!layoutObject() || isTextNode());
+        if (isTextNode())
+            toText(this)->updateTextLayoutObject(offsetOfReplacedData, oldLength, recalcStyleBehavior);
+    }
+#endif
 
     if (source != UpdateFromParser) {
         if (nodeType() == PROCESSING_INSTRUCTION_NODE)
             toProcessingInstruction(this)->didAttributeChanged();
 
-        if (document().frame())
+#ifndef BLINKIT_CRAWLER_ONLY
+        if (!ForCrawler() && document().frame())
             document().frame()->selection().didUpdateCharacterData(this, offsetOfReplacedData, oldLength, newLength);
+#endif
     }
 
     document().incDOMTreeVersion();
