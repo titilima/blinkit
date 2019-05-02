@@ -73,9 +73,11 @@ public:
 
     SETTINGS_GETTERS_AND_SETTERS
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // FIXME: This does not belong here.
     static void setMockScrollbarsEnabled(bool flag);
     static bool mockScrollbarsEnabled();
+#endif
 
     // FIXME: naming_utilities.py isn't smart enough to handle OpenGL yet.
     // It could handle "GL", but that seems a bit overly broad.

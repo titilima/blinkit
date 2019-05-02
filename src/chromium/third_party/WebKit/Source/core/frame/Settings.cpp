@@ -106,6 +106,7 @@ void Settings::setTextAutosizingWindowSizeOverride(const IntSize& textAutosizing
     invalidate(SettingsDelegate::TextAutosizingChange);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void Settings::setMockScrollbarsEnabled(bool flag)
 {
     ScrollbarTheme::setMockScrollbarsEnabled(flag);
@@ -115,6 +116,7 @@ bool Settings::mockScrollbarsEnabled()
 {
     return ScrollbarTheme::mockScrollbarsEnabled();
 }
+#endif
 
 void Settings::setOpenGLMultisamplingEnabled(bool flag)
 {
