@@ -59,7 +59,6 @@ namespace blink {
 class IntSize;
 class KURL;
 class Range;
-class TextFinder;
 class WebAutofillClient;
 class WebDataSourceImpl;
 class WebDevToolsAgentImpl;
@@ -128,8 +127,6 @@ public:
     void stopLoading() override;
     WebDataSource* provisionalDataSource() const override;
     WebDataSource* dataSource() const override;
-    void enableViewSourceMode(bool enable) override;
-    bool isViewSourceModeEnabled() const override;
     void setReferrerForRequest(WebURLRequest&, const WebURL& referrer) override;
     void dispatchWillSendRequest(WebURLRequest&) override;
     WebURLLoader* createAssociatedURLLoader(const WebURLLoaderOptions&) override;
@@ -173,20 +170,6 @@ public:
         int& marginBottom,
         int& marginLeft) override;
     WebString pageProperty(const WebString& propertyName, int pageIndex) override;
-    bool find(
-        int identifier, const WebString& searchText, const WebFindOptions&,
-        bool wrapWithinFrame, WebRect* selectionRect) override;
-    void stopFinding(bool clearSelection) override;
-    void scopeStringMatches(
-        int identifier, const WebString& searchText, const WebFindOptions&,
-        bool reset) override;
-    void cancelPendingScopingEffort() override;
-    void increaseMatchCount(int count, int identifier) override;
-    void resetMatchCount() override;
-    int findMatchMarkersVersion() const override;
-    WebFloatRect activeFindMatchRect() override;
-    void findMatchRects(WebVector<WebFloatRect>&) override;
-    int selectNearestFindMatch(const WebFloatPoint&, WebRect* selectionRect) override;
     void setTickmarks(const WebVector<WebRect>&) override;
 
     void dispatchMessageEventWithOriginCheck(
@@ -253,23 +236,6 @@ public:
     WebDataSourceImpl* dataSourceImpl() const;
     WebDataSourceImpl* provisionalDataSourceImpl() const;
 
-    // Returns which frame has an active match. This function should only be
-    // called on the main frame, as it is the only frame keeping track. Returned
-    // value can be 0 if no frame has an active match.
-    WebLocalFrameImpl* activeMatchFrame() const;
-
-    // Returns the active match in the current frame. Could be a null range if
-    // the local frame has no active match.
-    Range* activeMatch() const;
-
-    // When a Find operation ends, we want to set the selection to what was active
-    // and set focus to the first focusable node we find (starting with the first
-    // node in the matched range and going up the inheritance chain). If we find
-    // nothing to focus we focus the first focusable node in the range. This
-    // allows us to set focus to a link (when we find text inside a link), which
-    // allows us to navigate by pressing Enter after closing the Find box.
-    void setFindEndstateFocusAndSelection();
-
     void didFail(const ResourceError&, bool wasProvisional, HistoryCommitType);
     void didFinish();
 
@@ -286,10 +252,6 @@ public:
     void setInputEventsTransformForEmulation(const IntSize&, float);
 
     static void selectWordAroundPosition(LocalFrame*, VisiblePosition);
-
-    // Returns the text finder object if it already exists.
-    // Otherwise creates it and then returns.
-    TextFinder& ensureTextFinder();
 
     // Returns a hit-tested VisiblePosition for the given point
     VisiblePosition visiblePositionForViewportPoint(const WebPoint&);
@@ -324,9 +286,6 @@ private:
     WebFrameClient* m_client;
     WebAutofillClient* m_autofillClient;
     WebContentSettingsClient* m_contentSettingsClient;
-
-    // Will be initialized after first call to find() or scopeStringMatches().
-    OwnPtrWillBeMember<TextFinder> m_textFinder;
 
     // Stores the additional input events offset and scale when device metrics emulation is enabled.
     IntSize m_inputEventsOffsetForEmulation;

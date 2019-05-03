@@ -207,7 +207,6 @@
 #include "web/CompositionUnderlineVectorBuilder.h"
 #include "web/FindInPageCoordinates.h"
 #include "web/SharedWorkerRepositoryClientImpl.h"
-#include "web/TextFinder.h"
 #include "web/WebDataSourceImpl.h"
 #include "web/WebFrameWidgetImpl.h"
 #include "web/WebViewImpl.h"
@@ -648,19 +647,6 @@ WebDataSource* WebLocalFrameImpl::dataSource() const
     return DataSourceForDocLoader(frame()->loader().documentLoader());
 }
 
-void WebLocalFrameImpl::enableViewSourceMode(bool enable)
-{
-    if (frame())
-        frame()->setInViewSourceMode(enable);
-}
-
-bool WebLocalFrameImpl::isViewSourceModeEnabled() const
-{
-    if (!frame())
-        return false;
-    return frame()->inViewSourceMode();
-}
-
 void WebLocalFrameImpl::setReferrerForRequest(WebURLRequest& request, const WebURL& referrerURL)
 {
     String referrer = referrerURL.isEmpty() ? frame()->document()->outgoingReferrer() : String(referrerURL.string());
@@ -959,76 +945,9 @@ WebString WebLocalFrameImpl::pageProperty(const WebString& propertyName, int pag
     return WebString();
 }
 
-bool WebLocalFrameImpl::find(int identifier, const WebString& searchText, const WebFindOptions& options, bool wrapWithinFrame, WebRect* selectionRect)
-{
-    return ensureTextFinder().find(identifier, searchText, options, wrapWithinFrame, selectionRect);
-}
-
-void WebLocalFrameImpl::stopFinding(bool clearSelection)
-{
-    if (m_textFinder) {
-        if (!clearSelection)
-            setFindEndstateFocusAndSelection();
-        m_textFinder->stopFindingAndClearSelection();
-    }
-}
-
-void WebLocalFrameImpl::scopeStringMatches(int identifier, const WebString& searchText, const WebFindOptions& options, bool reset)
-{
-    ensureTextFinder().scopeStringMatches(identifier, searchText, options, reset);
-}
-
-void WebLocalFrameImpl::cancelPendingScopingEffort()
-{
-    if (m_textFinder)
-        m_textFinder->cancelPendingScopingEffort();
-}
-
-void WebLocalFrameImpl::increaseMatchCount(int count, int identifier)
-{
-    // This function should only be called on the mainframe.
-    ASSERT(!parent());
-    ensureTextFinder().increaseMatchCount(identifier, count);
-}
-
-void WebLocalFrameImpl::resetMatchCount()
-{
-    ensureTextFinder().resetMatchCount();
-}
-
 void WebLocalFrameImpl::dispatchMessageEventWithOriginCheck(const WebSecurityOrigin& intendedTargetOrigin, const WebDOMEvent& event)
 {
     assert(false); // Not reached!
-}
-
-int WebLocalFrameImpl::findMatchMarkersVersion() const
-{
-    ASSERT(!parent());
-
-    if (m_textFinder)
-        return m_textFinder->findMatchMarkersVersion();
-    return 0;
-}
-
-int WebLocalFrameImpl::selectNearestFindMatch(const WebFloatPoint& point, WebRect* selectionRect)
-{
-    ASSERT(!parent());
-    return ensureTextFinder().selectNearestFindMatch(point, selectionRect);
-}
-
-WebFloatRect WebLocalFrameImpl::activeFindMatchRect()
-{
-    ASSERT(!parent());
-
-    if (m_textFinder)
-        return m_textFinder->activeFindMatchRect();
-    return WebFloatRect();
-}
-
-void WebLocalFrameImpl::findMatchRects(WebVector<WebFloatRect>& outputRects)
-{
-    ASSERT(!parent());
-    ensureTextFinder().findMatchRects(outputRects);
 }
 
 void WebLocalFrameImpl::setTickmarks(const WebVector<WebRect>& tickmarks)
@@ -1149,10 +1068,6 @@ WebLocalFrameImpl::~WebLocalFrameImpl()
     ASSERT(!m_frameWidget);
     Platform::current()->decrementStatsCounter(webFrameActiveCount);
     frameCount--;
-
-#if !ENABLE(OILPAN)
-    cancelPendingScopingEffort();
-#endif
 }
 
 #if ENABLE(OILPAN)
@@ -1220,11 +1135,7 @@ PassRefPtrWillBeRawPtr<LocalFrame> WebLocalFrameImpl::createChildFrame(const Fra
 
 void WebLocalFrameImpl::didChangeContentsSize(const IntSize& size)
 {
-    // This is only possible on the main frame.
-    if (m_textFinder && m_textFinder->totalMatchCount() > 0) {
-        ASSERT(!parent());
-        m_textFinder->increaseMarkerVersion();
-    }
+    // Currently nothing to do.
 }
 
 void WebLocalFrameImpl::createFrameView()
@@ -1283,77 +1194,6 @@ WebDataSourceImpl* WebLocalFrameImpl::dataSourceImpl() const
 WebDataSourceImpl* WebLocalFrameImpl::provisionalDataSourceImpl() const
 {
     return static_cast<WebDataSourceImpl*>(provisionalDataSource());
-}
-
-void WebLocalFrameImpl::setFindEndstateFocusAndSelection()
-{
-    WebLocalFrameImpl* mainFrameImpl = viewImpl()->mainFrameImpl();
-
-    if (this != mainFrameImpl->activeMatchFrame())
-        return;
-
-    if (Range* activeMatch = m_textFinder->activeMatch()) {
-        // If the user has set the selection since the match was found, we
-        // don't focus anything.
-        VisibleSelection selection(frame()->selection().selection());
-        if (!selection.isNone())
-            return;
-
-        // Need to clean out style and layout state before querying Element::isFocusable().
-        frame()->document()->updateLayoutIgnorePendingStylesheets();
-
-        // Try to find the first focusable node up the chain, which will, for
-        // example, focus links if we have found text within the link.
-        Node* node = activeMatch->firstNode();
-        if (node && node->isInShadowTree()) {
-            if (Node* host = node->shadowHost()) {
-                if (isHTMLInputElement(*host) || isHTMLTextAreaElement(*host))
-                    node = host;
-            }
-        }
-        for (; node; node = node->parentNode()) {
-            if (!node->isElementNode())
-                continue;
-            Element* element = toElement(node);
-            if (element->isFocusable()) {
-                // Found a focusable parent node. Set the active match as the
-                // selection and focus to the focusable node.
-                frame()->selection().setSelection(VisibleSelection(EphemeralRange(activeMatch)));
-                frame()->document()->setFocusedElement(element, FocusParams(SelectionBehaviorOnFocus::None, WebFocusTypeNone, nullptr));
-                return;
-            }
-        }
-
-        // Iterate over all the nodes in the range until we find a focusable node.
-        // This, for example, sets focus to the first link if you search for
-        // text and text that is within one or more links.
-        node = activeMatch->firstNode();
-        for (; node && node != activeMatch->pastLastNode(); node = NodeTraversal::next(*node)) {
-            if (!node->isElementNode())
-                continue;
-            Element* element = toElement(node);
-            if (element->isFocusable()) {
-                frame()->document()->setFocusedElement(element, FocusParams(SelectionBehaviorOnFocus::None, WebFocusTypeNone, nullptr));
-                return;
-            }
-        }
-
-        // No node related to the active match was focusable, so set the
-        // active match as the selection (so that when you end the Find session,
-        // you'll have the last thing you found highlighted) and make sure that
-        // we have nothing focused (otherwise you might have text selected but
-        // a link focused, which is weird).
-        frame()->selection().setSelection(VisibleSelection(EphemeralRange(activeMatch)));
-        frame()->document()->clearFocusedElement();
-
-        // Finally clear the active match, for two reasons:
-        // We just finished the find 'session' and we don't want future (potentially
-        // unrelated) find 'sessions' operations to start at the same place.
-        // The WebLocalFrameImpl could get reused and the activeMatch could end up pointing
-        // to a document that is no longer valid. Keeping an invalid reference around
-        // is just asking for trouble.
-        m_textFinder->resetActiveMatch();
-    }
 }
 
 void WebLocalFrameImpl::didFail(const ResourceError& error, bool wasProvisional, HistoryCommitType commitType)
@@ -1512,40 +1352,7 @@ void WebLocalFrameImpl::willBeDetached()
 
 void WebLocalFrameImpl::willDetachParent()
 {
-    // Do not expect string scoping results from any frames that got detached
-    // in the middle of the operation.
-    if (m_textFinder && m_textFinder->scopingInProgress()) {
-
-        // There is a possibility that the frame being detached was the only
-        // pending one. We need to make sure final replies can be sent.
-        m_textFinder->flushCurrentScoping();
-
-        m_textFinder->cancelPendingScopingEffort();
-    }
-}
-
-WebLocalFrameImpl* WebLocalFrameImpl::activeMatchFrame() const
-{
-    ASSERT(!parent());
-
-    if (m_textFinder)
-        return m_textFinder->activeMatchFrame();
-    return 0;
-}
-
-Range* WebLocalFrameImpl::activeMatch() const
-{
-    if (m_textFinder)
-        return m_textFinder->activeMatch();
-    return 0;
-}
-
-TextFinder& WebLocalFrameImpl::ensureTextFinder()
-{
-    if (!m_textFinder)
-        m_textFinder = TextFinder::create(*this);
-
-    return *m_textFinder;
+    // Currently nothing to do.
 }
 
 void WebLocalFrameImpl::setFrameWidget(WebFrameWidget* frameWidget)
