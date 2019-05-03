@@ -168,8 +168,6 @@ public:
     int64_t serviceWorkerID(DocumentLoader&) override;
     SharedWorkerRepositoryClient* sharedWorkerRepositoryClient() override;
 
-    PassOwnPtr<WebApplicationCacheHost> createApplicationCacheHost(WebApplicationCacheHostClient*) override;
-
     void dispatchDidChangeManifest() override;
 
     unsigned backForwardLength() override;

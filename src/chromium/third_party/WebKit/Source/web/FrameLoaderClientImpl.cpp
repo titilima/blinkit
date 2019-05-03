@@ -829,13 +829,6 @@ SharedWorkerRepositoryClient* FrameLoaderClientImpl::sharedWorkerRepositoryClien
     return nullptr;
 }
 
-PassOwnPtr<WebApplicationCacheHost> FrameLoaderClientImpl::createApplicationCacheHost(WebApplicationCacheHostClient* client)
-{
-    if (!m_webFrame->client())
-        return nullptr;
-    return adoptPtr(m_webFrame->client()->createApplicationCacheHost(m_webFrame, client));
-}
-
 void FrameLoaderClientImpl::dispatchDidChangeManifest()
 {
     if (m_webFrame->client())
