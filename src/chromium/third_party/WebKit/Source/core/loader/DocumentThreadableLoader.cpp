@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DocumentThreadableLoader.cpp
+// Description: DocumentThreadableLoader Class
+//      Author: Ziming Li
+//     Created: 2019-05-03
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011, 2012 Google Inc. All rights reserved.
  * Copyright (C) 2013, Intel Corporation
@@ -432,8 +443,6 @@ void DocumentThreadableLoader::redirectReceived(Resource* resource, ResourceRequ
     } else if (m_options.crossOriginRequestPolicy == UseAccessControl) {
         --m_corsRedirectLimit;
 
-        InspectorInstrumentation::didReceiveCORSRedirectResponse(document().frame(), resource->identifier(), document().frame()->loader().documentLoader(), redirectResponse, 0);
-
         bool allowRedirect = false;
         String accessControlErrorDescription;
 
@@ -574,8 +583,6 @@ void DocumentThreadableLoader::reportResponseReceived(unsigned long identifier, 
     if (!frame)
         return;
     DocumentLoader* loader = frame->loader().documentLoader();
-    TRACE_EVENT_INSTANT1("devtools.timeline", "ResourceReceiveResponse", TRACE_EVENT_SCOPE_THREAD, "data", InspectorReceiveResponseEvent::data(identifier, frame, response));
-    InspectorInstrumentation::didReceiveResourceResponse(frame, identifier, loader, response, resource() ? resource()->loader() : 0);
     frame->console().reportResourceResponseReceived(loader, identifier, response);
 }
 
