@@ -50,7 +50,6 @@
 #include "core/fetch/ResourceFetcher.h"
 #include "core/frame/FrameConsole.h"
 #include "core/frame/LocalFrame.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/inspector/InspectorTraceEvents.h"
 #include "core/loader/CrossOriginPreflightResultCache.h"
@@ -417,7 +416,7 @@ void DocumentThreadableLoader::redirectReceived(Resource* resource, ResourceRequ
         return;
     }
 
-    if (m_redirectMode == WebURLRequest::FetchRedirectModeError || !isAllowedByContentSecurityPolicy(request.url(), ContentSecurityPolicy::DidRedirect)) {
+    if (m_redirectMode == WebURLRequest::FetchRedirectModeError) {
         ThreadableLoaderClient* client = m_client;
         clear();
         client->didFailRedirectCheck();
@@ -845,7 +844,7 @@ void DocumentThreadableLoader::loadRequest(const ResourceRequest& request, Resou
     // FIXME: A synchronous request does not tell us whether a redirect happened or not, so we guess by comparing the
     // request and response URLs. This isn't a perfect test though, since a server can serve a redirect to the same URL that was
     // requested. Also comparing the request and response URLs as strings will fail if the requestURL still has its credentials.
-    if (requestURL != response.url() && (!isAllowedByContentSecurityPolicy(response.url(), ContentSecurityPolicy::DidRedirect) || !isAllowedRedirect(response.url()))) {
+    if (requestURL != response.url() && !isAllowedRedirect(response.url())) {
         m_client->didFailRedirectCheck();
         return;
     }
@@ -878,13 +877,6 @@ bool DocumentThreadableLoader::isAllowedRedirect(const KURL& url) const
         return true;
 
     return m_sameOriginRequest && securityOrigin()->canRequest(url);
-}
-
-bool DocumentThreadableLoader::isAllowedByContentSecurityPolicy(const KURL& url, ContentSecurityPolicy::RedirectStatus redirectStatus) const
-{
-    if (m_options.contentSecurityPolicyEnforcement != EnforceConnectSrcDirective)
-        return true;
-    return document().contentSecurityPolicy()->allowConnectToSource(url, redirectStatus);
 }
 
 StoredCredentials DocumentThreadableLoader::effectiveAllowCredentials() const

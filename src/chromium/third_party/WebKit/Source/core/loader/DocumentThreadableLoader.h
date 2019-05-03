@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DocumentThreadableLoader.h
+// Description: DocumentThreadableLoader Class
+//      Author: Ziming Li
+//     Created: 2019-05-03
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2012 Google Inc. All rights reserved.
  * Copyright (C) 2013, Intel Corporation
@@ -35,7 +46,6 @@
 #include "core/CoreExport.h"
 #include "core/fetch/RawResource.h"
 #include "core/fetch/ResourceOwner.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/loader/ThreadableLoader.h"
 #include "platform/Timer.h"
 #include "platform/network/HTTPHeaderMap.h"
@@ -140,7 +150,6 @@ class CORE_EXPORT DocumentThreadableLoader final : public ThreadableLoader, priv
 
         void loadRequest(const ResourceRequest&, ResourceLoaderOptions);
         bool isAllowedRedirect(const KURL&) const;
-        bool isAllowedByContentSecurityPolicy(const KURL&, ContentSecurityPolicy::RedirectStatus) const;
         // Returns DoNotAllowStoredCredentials
         // if m_forceDoNotAllowStoredCredentials is set. Otherwise, just
         // returns allowCredentials value of m_resourceLoaderOptions.
