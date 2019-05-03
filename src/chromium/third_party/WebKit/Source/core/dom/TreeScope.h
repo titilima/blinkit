@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TreeScope.h
+// Description: TreeScope Class
+//      Author: Ziming Li
+//     Created: 2019-05-03
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All Rights Reserved.
  * Copyright (C) 2012 Apple Inc. All Rights Reserved.
@@ -56,7 +67,9 @@ public:
     TreeScope* olderShadowRootOrParentTreeScope() const;
     bool isInclusiveOlderSiblingShadowRootOrAncestorTreeScopeOf(const TreeScope&) const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     Element* adjustedFocusedElement() const;
+#endif
     Element* getElementById(const AtomicString&) const;
     const WillBeHeapVector<RawPtrWillBeMember<Element>>& getAllElementsById(const AtomicString&) const;
     bool hasElementWithId(const AtomicString& id) const;
@@ -72,6 +85,7 @@ public:
 
     Node* ancestorInThisScope(Node*) const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void addImageMap(HTMLMapElement*);
     void removeImageMap(HTMLMapElement*);
     HTMLMapElement* getImageMap(const String& url) const;
@@ -81,7 +95,6 @@ public:
     WillBeHeapVector<RawPtrWillBeMember<Element>> elementsFromPoint(int x, int y) const;
     WillBeHeapVector<RawPtrWillBeMember<Element>> elementsFromHitTestResult(HitTestResult&) const;
 
-    // For accessibility.
     bool shouldCacheLabelsByForAttribute() const { return m_labelsByForAttribute; }
     void addLabel(const AtomicString& forAttributeValue, HTMLLabelElement*);
     void removeLabel(const AtomicString& forAttributeValue, HTMLLabelElement*);
@@ -95,6 +108,7 @@ public:
     // Anchor name matching is case sensitive in strict mode and not case sensitive in
     // quirks mode for historical compatibility reasons.
     Element* findAnchor(const String& name);
+#endif
 
     // Used by the basic DOM mutation methods (e.g., appendChild()).
     void adoptIfNeeded(Node&);
@@ -135,13 +149,17 @@ public:
     const TreeScope* commonAncestorTreeScope(const TreeScope& other) const;
     TreeScope* commonAncestorTreeScope(TreeScope& other);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     Element* getElementByAccessKey(const String& key) const;
+#endif
 
     DECLARE_VIRTUAL_TRACE();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     ScopedStyleResolver* scopedStyleResolver() const { return m_scopedStyleResolver.get(); }
     ScopedStyleResolver& ensureScopedStyleResolver();
     void clearScopedStyleResolver();
+#endif
 
 protected:
     TreeScope(ContainerNode&, Document&);
@@ -159,7 +177,9 @@ protected:
     bool hasGuardRefCount() const { return m_guardRefCount; }
 #endif
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void setNeedsStyleRecalcForViewportUnits();
+#endif
 
 private:
 #if !ENABLE(OILPAN)
@@ -187,14 +207,18 @@ private:
 #endif
 
     OwnPtrWillBeMember<DocumentOrderedMap> m_elementsById;
+#ifndef BLINKIT_CRAWLER_ONLY
     OwnPtrWillBeMember<DocumentOrderedMap> m_imageMapsByName;
     OwnPtrWillBeMember<DocumentOrderedMap> m_labelsByForAttribute;
+#endif
 
     OwnPtrWillBeMember<IdTargetObserverRegistry> m_idTargetObserverRegistry;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     OwnPtrWillBeMember<ScopedStyleResolver> m_scopedStyleResolver;
 
     mutable RefPtrWillBeMember<DOMSelection> m_selection;
+#endif
 };
 
 inline bool TreeScope::hasElementWithId(const AtomicString& id) const

@@ -100,10 +100,12 @@ TreeScope::~TreeScope()
     ASSERT(!m_guardRefCount);
     m_rootNode->setTreeScope(0);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (m_selection) {
         m_selection->clearTreeScope();
         m_selection = nullptr;
     }
+#endif
 
     if (m_parentTreeScope)
         m_parentTreeScope->guardDeref();
@@ -112,10 +114,12 @@ TreeScope::~TreeScope()
 
 TreeScope* TreeScope::olderShadowRootOrParentTreeScope() const
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     if (rootNode().isShadowRoot()) {
         if (ShadowRoot* olderShadowRoot = toShadowRoot(rootNode()).olderShadowRoot())
             return olderShadowRoot;
     }
+#endif
     return parentTreeScope();
 }
 
@@ -137,8 +141,10 @@ bool TreeScope::rootNodeHasTreeSharedParent() const
 void TreeScope::destroyTreeScopeData()
 {
     m_elementsById.clear();
+#ifndef BLINKIT_CRAWLER_ONLY
     m_imageMapsByName.clear();
     m_labelsByForAttribute.clear();
+#endif
 }
 #endif
 
@@ -156,6 +162,7 @@ void TreeScope::setParentTreeScope(TreeScope& newParentScope)
     setDocument(newParentScope.document());
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 ScopedStyleResolver& TreeScope::ensureScopedStyleResolver()
 {
     RELEASE_ASSERT(this);
@@ -168,6 +175,7 @@ void TreeScope::clearScopedStyleResolver()
 {
     m_scopedStyleResolver.clear();
 }
+#endif
 
 Element* TreeScope::getElementById(const AtomicString& elementId) const
 {
@@ -219,6 +227,7 @@ Node* TreeScope::ancestorInThisScope(Node* node) const
     return 0;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void TreeScope::addImageMap(HTMLMapElement* imageMap)
 {
     const AtomicString& name = imageMap->getName();
@@ -273,7 +282,6 @@ static bool pointWithScrollAndZoomIfPossible(const Document& document, IntPoint&
     return true;
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 HitTestResult hitTestInDocument(const Document* document, int x, int y, const HitTestRequest& request)
 {
     IntPoint hitPoint(x, y);
@@ -284,7 +292,6 @@ HitTestResult hitTestInDocument(const Document* document, int x, int y, const Hi
     document->layoutView()->hitTest(result);
     return result;
 }
-#endif
 
 Element* TreeScope::elementFromPoint(int x, int y) const
 {
@@ -293,10 +300,6 @@ Element* TreeScope::elementFromPoint(int x, int y) const
 
 Element* TreeScope::hitTestPoint(int x, int y, const HitTestRequest& request) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     HitTestResult result = hitTestInDocument(&rootNode().document(), x, y, request);
     Node* node = result.innerNode();
     if (!node || node->isDocumentNode())
@@ -308,15 +311,10 @@ Element* TreeScope::hitTestPoint(int x, int y, const HitTestRequest& request) co
     if (!node || !node->isElementNode())
         return 0;
     return toElement(node);
-#endif
 }
 
 WillBeHeapVector<RawPtrWillBeMember<Element>> TreeScope::elementsFromHitTestResult(HitTestResult& result) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    exit(0);
-#else
     WillBeHeapVector<RawPtrWillBeMember<Element>> elements;
 
     Node* lastNode = nullptr;
@@ -348,15 +346,10 @@ WillBeHeapVector<RawPtrWillBeMember<Element>> TreeScope::elementsFromHitTestResu
     }
 
     return elements;
-#endif
 }
 
 WillBeHeapVector<RawPtrWillBeMember<Element>> TreeScope::elementsFromPoint(int x, int y) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    exit(0);
-#else
     Document& document = rootNode().document();
     IntPoint hitPoint(x, y);
     if (!pointWithScrollAndZoomIfPossible(document, hitPoint))
@@ -367,7 +360,6 @@ WillBeHeapVector<RawPtrWillBeMember<Element>> TreeScope::elementsFromPoint(int x
     document.layoutView()->hitTest(result);
 
     return elementsFromHitTestResult(result);
-#endif
 }
 
 void TreeScope::addLabel(const AtomicString& forAttributeValue, HTMLLabelElement* element)
@@ -434,6 +426,7 @@ Element* TreeScope::findAnchor(const String& name)
     }
     return 0;
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 void TreeScope::adoptIfNeeded(Node& node)
 {
@@ -447,6 +440,7 @@ void TreeScope::adoptIfNeeded(Node& node)
         adopter.execute();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 Element* TreeScope::adjustedFocusedElement() const
 {
     Document& document = rootNode().document();
@@ -512,6 +506,7 @@ unsigned short TreeScope::comparePosition(const TreeScope& otherScope) const
         Node::DOCUMENT_POSITION_FOLLOWING | Node::DOCUMENT_POSITION_CONTAINED_BY :
         Node::DOCUMENT_POSITION_PRECEDING | Node::DOCUMENT_POSITION_CONTAINS;
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 const TreeScope* TreeScope::commonAncestorTreeScope(const TreeScope& other) const
 {
@@ -567,6 +562,7 @@ bool TreeScope::isInclusiveAncestorOf(const TreeScope& scope) const
     return false;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 Element* TreeScope::getElementByAccessKey(const String& key) const
 {
     if (key.isEmpty())
@@ -594,6 +590,7 @@ void TreeScope::setNeedsStyleRecalcForViewportUnits()
             element->setNeedsStyleRecalc(LocalStyleChange, StyleChangeReasonForTracing::create(StyleChangeReason::ViewportUnits));
     }
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 DEFINE_TRACE(TreeScope)
 {
@@ -601,11 +598,15 @@ DEFINE_TRACE(TreeScope)
     visitor->trace(m_document);
     visitor->trace(m_parentTreeScope);
     visitor->trace(m_idTargetObserverRegistry);
+#ifndef BLINKIT_CRAWLER_ONLY
     visitor->trace(m_selection);
+#endif
     visitor->trace(m_elementsById);
+#ifndef BLINKIT_CRAWLER_ONLY
     visitor->trace(m_imageMapsByName);
     visitor->trace(m_labelsByForAttribute);
     visitor->trace(m_scopedStyleResolver);
+#endif
 }
 
 } // namespace blink
