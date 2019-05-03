@@ -45,17 +45,17 @@
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLFrameElementBase.h"
 #include "core/input/EventHandler.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/inspector/InstanceCounters.h"
-#include "core/layout/LayoutPart.h"
 #include "core/loader/EmptyClients.h"
 #include "core/loader/FrameLoaderClient.h"
-#include "core/page/FocusController.h"
+//#include "core/page/FocusController.h"
 #include "core/page/Page.h"
 #include "wtf/PassOwnPtr.h"
 #include "wtf/RefCountedLeakCounter.h"
+
+#include "blinkit/app/app_impl.h"
 
 namespace blink {
 
@@ -84,7 +84,6 @@ WTF::RefCountedLeakCounter& frameCounter()
 Frame::~Frame()
 {
     InstanceCounters::decrementCounter(InstanceCounters::FrameCounter);
-    ASSERT(!m_owner);
 #ifndef NDEBUG
     frameCounter().decrement();
 #endif
@@ -92,9 +91,9 @@ Frame::~Frame()
 
 DEFINE_TRACE(Frame)
 {
-    visitor->trace(m_treeNode);
+#ifndef BLINKIT_CRAWLER_ONLY
     visitor->trace(m_host);
-    visitor->trace(m_owner);
+#endif
     visitor->trace(m_client);
 }
 
@@ -103,67 +102,47 @@ void Frame::detach(FrameDetachType type)
     ASSERT(m_client);
     m_client->setOpener(0);
     domWindow()->resetLocation();
-    disconnectOwnerElement();
     // After this, we must no longer talk to the client since this clears
     // its owning reference back to our owning LocalFrame.
     m_client->detached(type);
     m_client = nullptr;
+#ifndef BLINKIT_CRAWLER_ONLY
     m_host = nullptr;
-}
-
-void Frame::detachChildren()
-{
-    typedef WillBeHeapVector<RefPtrWillBeMember<Frame>> FrameVector;
-    FrameVector childrenToDetach;
-    childrenToDetach.reserveCapacity(tree().childCount());
-    for (Frame* child = tree().firstChild(); child; child = child->tree().nextSibling())
-        childrenToDetach.append(child);
-    for (const auto& child : childrenToDetach)
-        child->detach(FrameDetachType::Remove);
-}
-
-void Frame::disconnectOwnerElement()
-{
-    if (m_owner) {
-        if (m_owner->isLocal())
-            toHTMLFrameOwnerElement(m_owner)->clearContentFrame();
-    }
-    m_owner = nullptr;
+#endif
 }
 
 Page* Frame::page() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT_NOT_REACHED();
+#else
     if (m_host)
         return &m_host->page();
+#endif
     return nullptr;
 }
 
 FrameHost* Frame::host() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT_NOT_REACHED();
+    return nullptr;
+#else
     return m_host;
+#endif
 }
 
 bool Frame::isMainFrame() const
 {
-    return !tree().parent();
+    return true;
 }
 
 bool Frame::isLocalRoot() const
 {
-    if (isRemoteFrame())
-        return false;
-
-    if (!tree().parent())
-        return true;
-
-    return tree().parent()->isRemoteFrame();
+    return true;
 }
 
-HTMLFrameOwnerElement* Frame::deprecatedLocalOwner() const
-{
-    return m_owner && m_owner->isLocal() ? toHTMLFrameOwnerElement(m_owner) : nullptr;
-}
-
+#ifndef BLINKIT_CRAWLER_ONLY
 static ChromeClient& emptyChromeClient()
 {
     DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<EmptyChromeClient>, client, (EmptyChromeClient::create()));
@@ -176,138 +155,52 @@ ChromeClient& Frame::chromeClient() const
         return page->chromeClient();
     return emptyChromeClient();
 }
-
-Frame* Frame::findFrameForNavigation(const AtomicString& name, Frame& activeFrame)
-{
-    Frame* frame = tree().find(name);
-    if (!frame || !activeFrame.canNavigate(*frame))
-        return nullptr;
-    return frame;
-}
-
-static bool canAccessAncestor(const SecurityOrigin& activeSecurityOrigin, const Frame* targetFrame)
-{
-    // targetFrame can be 0 when we're trying to navigate a top-level frame
-    // that has a 0 opener.
-    if (!targetFrame)
-        return false;
-
-    const bool isLocalActiveOrigin = activeSecurityOrigin.isLocal();
-    for (const Frame* ancestorFrame = targetFrame; ancestorFrame; ancestorFrame = ancestorFrame->tree().parent()) {
-        const SecurityOrigin* ancestorSecurityOrigin = ancestorFrame->securityContext()->securityOrigin();
-        if (activeSecurityOrigin.canAccess(ancestorSecurityOrigin))
-            return true;
-
-        // Allow file URL descendant navigation even when allowFileAccessFromFileURLs is false.
-        // FIXME: It's a bit strange to special-case local origins here. Should we be doing
-        // something more general instead?
-        if (isLocalActiveOrigin && ancestorSecurityOrigin->isLocal())
-            return true;
-    }
-
-    return false;
-}
+#endif
 
 bool Frame::canNavigate(const Frame& targetFrame)
 {
-    // Frame-busting is generally allowed, but blocked for sandboxed frames lacking the 'allow-top-navigation' flag.
-    if (targetFrame == tree().top())
+    if (&targetFrame == this)
         return true;
-
-    ASSERT(securityContext()->securityOrigin());
-    SecurityOrigin& origin = *securityContext()->securityOrigin();
-
-    // This is the normal case. A document can navigate its decendant frames,
-    // or, more generally, a document can navigate a frame if the document is
-    // in the same origin as any of that frame's ancestors (in the frame
-    // hierarchy).
-    //
-    // See http://www.adambarth.com/papers/2008/barth-jackson-mitchell.pdf for
-    // historical information about this security check.
-    if (canAccessAncestor(origin, &targetFrame))
-        return true;
-
-    // Top-level frames are easier to navigate than other frames because they
-    // display their URLs in the address bar (in most browsers). However, there
-    // are still some restrictions on navigation to avoid nuisance attacks.
-    // Specifically, a document can navigate a top-level frame if that frame
-    // opened the document or if the document is the same-origin with any of
-    // the top-level frame's opener's ancestors (in the frame hierarchy).
-    //
-    // In both of these cases, the document performing the navigation is in
-    // some way related to the frame being navigate (e.g., by the "opener"
-    // and/or "parent" relation). Requiring some sort of relation prevents a
-    // document from navigating arbitrary, unrelated top-level frames.
-    if (!targetFrame.tree().parent()) {
-        if (targetFrame == client()->opener())
-            return true;
-        if (canAccessAncestor(origin, targetFrame.client()->opener()))
-            return true;
-    }
 
     printNavigationErrorMessage(targetFrame, "The frame attempting navigation is neither same-origin with the target, nor is it the target's parent or opener.");
     return false;
 }
 
-Frame* Frame::findUnsafeParentScrollPropagationBoundary()
-{
-    Frame* currentFrame = this;
-    Frame* ancestorFrame = tree().parent();
-
-    while (ancestorFrame) {
-        if (!ancestorFrame->securityContext()->securityOrigin()->canAccess(securityContext()->securityOrigin()))
-            return currentFrame;
-        currentFrame = ancestorFrame;
-        ancestorFrame = ancestorFrame->tree().parent();
-    }
-    return nullptr;
-}
-
-LayoutPart* Frame::ownerLayoutObject() const
-{
-    if (!deprecatedLocalOwner())
-        return nullptr;
-    LayoutObject* object = deprecatedLocalOwner()->layoutObject();
-    if (!object)
-        return nullptr;
-    // FIXME: If <object> is ever fixed to disassociate itself from frames
-    // that it has started but canceled, then this can turn into an ASSERT
-    // since ownerElement() would be 0 when the load is canceled.
-    // https://bugs.webkit.org/show_bug.cgi?id=18585
-    if (!object->isLayoutPart())
-        return nullptr;
-    return toLayoutPart(object);
-}
-
 Settings* Frame::settings() const
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     if (m_host)
         return &m_host->settings();
-    return nullptr;
+#endif
+    assert(m_client->IsCrawler());
+    return &(BlinKit::AppImpl::Get().CrawlerSettings());
 }
 
-Frame::Frame(FrameClient* client, FrameHost* host, FrameOwner* owner)
-    : m_treeNode(this)
+Frame::Frame(FrameClient* client, FrameHost* host)
+    : m_client(client)
+#ifndef BLINKIT_CRAWLER_ONLY
     , m_host(host)
-    , m_owner(owner)
-    , m_client(client)
+#endif
     , m_frameID(generateFrameID())
     , m_isLoading(false)
 {
     InstanceCounters::incrementCounter(InstanceCounters::FrameCounter);
 
-    ASSERT(page());
+    ASSERT(client->IsCrawler() || nullptr != page());
 
 #ifndef NDEBUG
     frameCounter().increment();
 #endif
 
-    if (m_owner) {
-        if (m_owner->isLocal())
-            toHTMLFrameOwnerElement(m_owner)->setContentFrame(*this);
-    } else {
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!client->IsCrawler())
         page()->setMainFrame(this);
-    }
+#endif
+}
+
+bool Frame::IsCrawlerFrame(void) const
+{
+    return m_client->IsCrawler();
 }
 
 } // namespace blink

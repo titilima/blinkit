@@ -31,7 +31,6 @@
 #include "core/CoreExport.h"
 #include "core/frame/FrameTypes.h"
 #include "core/loader/FrameLoaderTypes.h"
-#include "core/page/FrameTree.h"
 #include "platform/heap/Handle.h"
 #include "wtf/Forward.h"
 #include "wtf/RefCounted.h"
@@ -44,7 +43,6 @@ class DOMWrapperWorld;
 class Document;
 class FrameClient;
 class FrameHost;
-class FrameOwner;
 class HTMLFrameOwnerElement;
 class LayoutPart;
 class KURL;
@@ -71,6 +69,7 @@ public:
 
     virtual bool isLocalFrame() const { return false; }
     virtual bool isRemoteFrame() const { return false; }
+    bool IsCrawlerFrame(void) const;
 
     virtual DOMWindow* domWindow() const = 0;
     virtual WindowProxy* windowProxy(DOMWrapperWorld&) = 0;
@@ -82,8 +81,6 @@ public:
     virtual void reload(FrameLoadType, ClientRedirectPolicy) = 0;
 
     virtual void detach(FrameDetachType);
-    void detachChildren();
-    virtual void disconnectOwnerElement();
     virtual bool shouldClose() = 0;
 
     FrameClient* client() const;
@@ -97,17 +94,11 @@ public:
     bool isMainFrame() const;
     bool isLocalRoot() const;
 
-    FrameOwner* owner() const;
-    void setOwner(FrameOwner* owner) { m_owner = owner; }
-    HTMLFrameOwnerElement* deprecatedLocalOwner() const;
-
-    FrameTree& tree() const;
+#ifndef BLINKIT_CRAWLER_ONLY
     ChromeClient& chromeClient() const;
+#endif
 
     virtual SecurityContext* securityContext() const = 0;
-
-    Frame* findFrameForNavigation(const AtomicString& name, Frame& activeFrame);
-    Frame* findUnsafeParentScrollPropagationBoundary();
 
     // This prepares the Frame for the next commit. It will detach children,
     // dispatch unload events, abort XHR requests and detach the document.
@@ -117,8 +108,6 @@ public:
 
     bool canNavigate(const Frame&);
     virtual void printNavigationErrorMessage(const Frame&, const char* reason) = 0;
-
-    LayoutPart* ownerLayoutObject() const; // LayoutObject for the element that contains this frame.
 
     int64_t frameID() const { return m_frameID; }
 
@@ -134,12 +123,11 @@ public:
     virtual WindowProxyManager* windowProxyManager() const = 0;
 
 protected:
-    Frame(FrameClient*, FrameHost*, FrameOwner*);
+    Frame(FrameClient*, FrameHost*);
 
-    mutable FrameTree m_treeNode;
-
+#ifndef BLINKIT_CRAWLER_ONLY
     RawPtrWillBeMember<FrameHost> m_host;
-    RawPtrWillBeMember<FrameOwner> m_owner;
+#endif
 
 private:
     RawPtrWillBeMember<FrameClient> m_client;
@@ -151,16 +139,6 @@ private:
 inline FrameClient* Frame::client() const
 {
     return m_client;
-}
-
-inline FrameOwner* Frame::owner() const
-{
-    return m_owner;
-}
-
-inline FrameTree& Frame::tree() const
-{
-    return m_treeNode;
 }
 
 // Allow equality comparisons of Frames by reference or pointer, interchangeably.
