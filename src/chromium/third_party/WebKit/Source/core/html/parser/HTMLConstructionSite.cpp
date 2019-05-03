@@ -48,7 +48,6 @@
 #include "core/dom/Text.h"
 #include "core/frame/LocalFrame.h"
 #include "core/html/HTMLFormElement.h"
-#include "core/html/HTMLHtmlElement.h"
 #include "core/html/HTMLScriptElement.h"
 #include "core/html/HTMLTemplateElement.h"
 #include "core/html/parser/AtomicHTMLToken.h"
@@ -59,7 +58,11 @@
 #include "core/loader/FrameLoaderClient.h"
 #include "core/svg/SVGScriptElement.h"
 #include "platform/NotImplemented.h"
+#include "platform/bindings/exception_state.h"
 #include "platform/text/TextBreakIterator.h"
+
+#include "blinkit/crawler/crawler_script_element.h"
+
 #include <limits>
 
 namespace blink {
@@ -108,8 +111,10 @@ static inline bool isAllWhitespace(const String& string)
 
 static inline void insert(HTMLConstructionSiteTask& task)
 {
-    if (isHTMLTemplateElement(*task.parent))
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!task.parent->ForCrawler() && isHTMLTemplateElement(*task.parent))
         task.parent = toHTMLTemplateElement(task.parent.get())->content();
+#endif
 
     if (task.nextChild)
         task.parent->parserInsertBefore(task.child.get(), *task.nextChild);
@@ -360,7 +365,9 @@ DEFINE_TRACE(HTMLConstructionSite)
     visitor->trace(m_document);
     visitor->trace(m_attachmentRoot);
     visitor->trace(m_head);
+#ifndef BLINKIT_CRAWLER_ONLY
     visitor->trace(m_form);
+#endif
     visitor->trace(m_openElements);
     visitor->trace(m_activeFormattingElements);
     visitor->trace(m_taskQueue);
@@ -377,6 +384,7 @@ void HTMLConstructionSite::detach()
     m_attachmentRoot = nullptr;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void HTMLConstructionSite::setForm(HTMLFormElement* form)
 {
     // This method should only be needed for HTMLTreeBuilder in the fragment case.
@@ -388,6 +396,7 @@ PassRefPtrWillBeRawPtr<HTMLFormElement> HTMLConstructionSite::takeForm()
 {
     return m_form.release();
 }
+#endif
 
 void HTMLConstructionSite::dispatchDocumentElementAvailableIfNeeded()
 {
@@ -399,13 +408,13 @@ void HTMLConstructionSite::dispatchDocumentElementAvailableIfNeeded()
 void HTMLConstructionSite::insertHTMLHtmlStartTagBeforeHTML(AtomicHTMLToken* token)
 {
     ASSERT(m_document);
-    RefPtrWillBeRawPtr<HTMLHtmlElement> element = HTMLHtmlElement::create(*m_document);
+    RefPtrWillBeRawPtr<Element> element = m_document->createElement(htmlTag.localName(), ASSERT_NO_EXCEPTION);
     setAttributes(element.get(), token, m_parserContentPolicy);
     attachLater(m_attachmentRoot, element);
     m_openElements.pushHTMLHtmlElement(HTMLStackItem::create(element, token));
 
     executeQueuedTasks();
-    element->insertedByParser();
+    m_document->ParserInsertedHtmlElement(*element);
     dispatchDocumentElementAvailableIfNeeded();
 }
 
@@ -608,26 +617,29 @@ void HTMLConstructionSite::insertHTMLHeadElement(AtomicHTMLToken* token)
 void HTMLConstructionSite::insertHTMLBodyElement(AtomicHTMLToken* token)
 {
     ASSERT(!shouldFosterParent());
-    RefPtrWillBeRawPtr<HTMLElement> body = createHTMLElement(token);
+    RefPtrWillBeRawPtr<Element> body = createHTMLElement(token);
     attachLater(currentNode(), body);
     m_openElements.pushHTMLBodyElement(HTMLStackItem::create(body.release(), token));
     if (m_document && m_document->frame())
         m_document->frame()->loader().client()->dispatchWillInsertBody();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void HTMLConstructionSite::insertHTMLFormElement(AtomicHTMLToken* token, bool isDemoted)
 {
-    RefPtrWillBeRawPtr<HTMLElement> element = createHTMLElement(token);
+    ASSERT(!m_document.ForCrawler());
+    RefPtrWillBeRawPtr<Element> element = createHTMLElement(token);
     ASSERT(isHTMLFormElement(element));
     m_form = static_pointer_cast<HTMLFormElement>(element.release());
     m_form->setDemoted(isDemoted);
     attachLater(currentNode(), m_form.get());
     m_openElements.push(HTMLStackItem::create(m_form.get(), token));
 }
+#endif
 
 void HTMLConstructionSite::insertHTMLElement(AtomicHTMLToken* token)
 {
-    RefPtrWillBeRawPtr<HTMLElement> element = createHTMLElement(token);
+    RefPtrWillBeRawPtr<Element> element = createHTMLElement(token);
     attachLater(currentNode(), element);
     m_openElements.push(HTMLStackItem::create(element.release(), token));
 }
@@ -654,6 +666,8 @@ void HTMLConstructionSite::insertFormattingElement(AtomicHTMLToken* token)
 
 void HTMLConstructionSite::insertScriptElement(AtomicHTMLToken* token)
 {
+    RefPtrWillBeRawPtr<Element> element;
+
     // http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#already-started
     // http://html5.org/specs/dom-parsing.html#dom-range-createcontextualfragment
     // For createContextualFragment, the specifications say to mark it parser-inserted and already-started and later unmark them.
@@ -661,7 +675,16 @@ void HTMLConstructionSite::insertScriptElement(AtomicHTMLToken* token)
     // those flags or effects thereof.
     const bool parserInserted = m_parserContentPolicy != AllowScriptingContentAndDoNotMarkAlreadyStarted;
     const bool alreadyStarted = m_isParsingFragment && parserInserted;
-    RefPtrWillBeRawPtr<HTMLScriptElement> element = HTMLScriptElement::create(ownerDocumentForCurrentNode(), parserInserted, alreadyStarted);
+
+    Document &document = ownerDocumentForCurrentNode();
+#ifdef BLINKIT_CRAWLER_ONLY
+    element = BlinKit::CrawlerScriptElement::Create(document, parserInserted, alreadyStarted);
+#else
+    if (document.ForCrawler())
+        element = BlinKit::CrawlerScriptElement::Create(document, parserInserted, alreadyStarted);
+    else
+        element = HTMLScriptElement::create(document, parserInserted, alreadyStarted);
+#endif
     setAttributes(element.get(), token, m_parserContentPolicy);
     if (scriptingContentIsAllowed(m_parserContentPolicy))
         attachLater(currentNode(), element);
@@ -688,9 +711,11 @@ void HTMLConstructionSite::insertTextNode(const String& string, WhitespaceMode w
     if (shouldFosterParent())
         findFosterSite(dummyTask);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // FIXME: This probably doesn't need to be done both here and in insert(Task).
-    if (isHTMLTemplateElement(*dummyTask.parent))
+    if (!m_document->ForCrawler() && isHTMLTemplateElement(*dummyTask.parent))
         dummyTask.parent = toHTMLTemplateElement(dummyTask.parent.get())->content();
+#endif
 
     // Unclear when parent != case occurs. Somehow we insert text into two separate nodes while processing the same Token.
     // The nextChild != dummy.nextChild case occurs whenever foster parenting happened and we hit a new text node "<table>a</table>b"
@@ -747,21 +772,37 @@ PassRefPtrWillBeRawPtr<Element> HTMLConstructionSite::createElement(AtomicHTMLTo
 
 inline Document& HTMLConstructionSite::ownerDocumentForCurrentNode()
 {
-    if (isHTMLTemplateElement(*currentNode()))
+    ContainerNode *currentNode = this->currentNode();
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!m_document->ForCrawler() && isHTMLTemplateElement(currentNode))
         return toHTMLTemplateElement(currentElement())->content()->document();
-    return currentNode()->document();
+#endif
+    return currentNode->document();
 }
 
-PassRefPtrWillBeRawPtr<HTMLElement> HTMLConstructionSite::createHTMLElement(AtomicHTMLToken* token)
+PassRefPtrWillBeRawPtr<Element> HTMLConstructionSite::createHTMLElement(AtomicHTMLToken* token)
 {
-    Document& document = ownerDocumentForCurrentNode();
-    // Only associate the element with the current form if we're creating the new element
-    // in a document with a browsing context (rather than in <template> contents).
-    HTMLFormElement* form = document.frame() ? m_form.get() : 0;
-    // FIXME: This can't use HTMLConstructionSite::createElement because we
-    // have to pass the current form element.  We should rework form association
-    // to occur after construction to allow better code sharing here.
-    RefPtrWillBeRawPtr<HTMLElement> element = HTMLElementFactory::createHTMLElement(token->name(), document, form, true);
+    RefPtrWillBeRawPtr<Element> element;
+
+    Document &document = ownerDocumentForCurrentNode();
+#ifdef BLINKIT_CRAWLER_ONLY
+    element = document.createElement(token->name(), ASSERT_NO_EXCEPTION);
+#else
+    if (document.ForCrawler())
+    {
+        element = document.createElement(token->name(), ASSERT_NO_EXCEPTION);
+    }
+    else
+    {
+        // Only associate the element with the current form if we're creating the new element
+        // in a document with a browsing context (rather than in <template> contents).
+        HTMLFormElement* form = document.frame() ? m_form.get() : 0;
+        // FIXME: This can't use HTMLConstructionSite::createElement because we
+        // have to pass the current form element.  We should rework form association
+        // to occur after construction to allow better code sharing here.
+        element = HTMLElementFactory::createHTMLElement(token->name(), document, form, true);
+    }
+#endif
     setAttributes(element.get(), token, m_parserContentPolicy);
     return element.release();
 }

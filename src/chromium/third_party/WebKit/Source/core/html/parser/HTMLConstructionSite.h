@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLConstructionSite.h
+// Description: HTMLConstructionSite Class
+//      Author: Ziming Li
+//     Created: 2019-05-03
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -101,8 +112,7 @@ enum FlushMode {
 };
 
 class AtomicHTMLToken;
-class Document;
-class Element;
+class DocumentFragment;
 class HTMLFormElement;
 
 class HTMLConstructionSite final {
@@ -115,6 +125,10 @@ public:
     DECLARE_TRACE();
 
     void detach();
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    bool ForCrawler(void) const { return m_document->ForCrawler(); }
+#endif
 
     // executeQueuedTasks empties the queue but does not flush pending text.
     // NOTE: Possible reentrancy via JavaScript execution.
@@ -151,7 +165,9 @@ public:
     void insertFormattingElement(AtomicHTMLToken*);
     void insertHTMLHeadElement(AtomicHTMLToken*);
     void insertHTMLBodyElement(AtomicHTMLToken*);
+#ifndef BLINKIT_CRAWLER_ONLY
     void insertHTMLFormElement(AtomicHTMLToken*, bool isDemoted = false);
+#endif
     void insertScriptElement(AtomicHTMLToken*);
     void insertTextNode(const String&, WhitespaceMode = WhitespaceUnknown);
     void insertForeignElement(AtomicHTMLToken*, const AtomicString& namespaceURI);
@@ -195,9 +211,11 @@ public:
     Element* head() const { return m_head->element(); }
     HTMLStackItem* headStackItem() const { return m_head.get(); }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void setForm(HTMLFormElement*);
     HTMLFormElement* form() const { return m_form.get(); }
     PassRefPtrWillBeRawPtr<HTMLFormElement> takeForm();
+#endif
 
     ParserContentPolicy parserContentPolicy() { return m_parserContentPolicy; }
 
@@ -234,7 +252,7 @@ private:
 
     void findFosterSite(HTMLConstructionSiteTask&);
 
-    PassRefPtrWillBeRawPtr<HTMLElement> createHTMLElement(AtomicHTMLToken*);
+    PassRefPtrWillBeRawPtr<Element> createHTMLElement(AtomicHTMLToken*);
     PassRefPtrWillBeRawPtr<Element> createElement(AtomicHTMLToken*, const AtomicString& namespaceURI);
 
     void mergeAttributesFromTokenIntoElement(AtomicHTMLToken*, Element*);
@@ -251,7 +269,9 @@ private:
     RawPtrWillBeMember<ContainerNode> m_attachmentRoot;
 
     RefPtrWillBeMember<HTMLStackItem> m_head;
+#ifndef BLINKIT_CRAWLER_ONLY
     RefPtrWillBeMember<HTMLFormElement> m_form;
+#endif
     mutable HTMLElementStack m_openElements;
     mutable HTMLFormattingElementList m_activeFormattingElements;
 

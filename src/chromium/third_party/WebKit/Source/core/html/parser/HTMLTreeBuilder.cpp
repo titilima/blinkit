@@ -145,11 +145,13 @@ static bool isFormattingTag(const AtomicString& tagName)
     return tagName == aTag || isNonAnchorFormattingTag(tagName);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 static HTMLFormElement* closestFormAncestor(Element& element)
 {
     ASSERT(isMainThread());
     return Traversal<HTMLFormElement>::firstAncestorOrSelf(element);
 }
+#endif
 
 class HTMLTreeBuilder::CharacterTokenBuffer {
     WTF_MAKE_NONCOPYABLE(CharacterTokenBuffer);
@@ -318,7 +320,10 @@ HTMLTreeBuilder::HTMLTreeBuilder(HTMLDocumentParser* parser, DocumentFragment* f
         m_templateInsertionModes.append(TemplateContentsMode);
 
     resetInsertionModeAppropriately();
-    m_tree.setForm(closestFormAncestor(*contextElement));
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!m_tree.ForCrawler())
+        m_tree.setForm(closestFormAncestor(*contextElement));
+#endif
 }
 
 HTMLTreeBuilder::~HTMLTreeBuilder()
@@ -699,7 +704,8 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
         m_framesetOk = false;
         return;
     }
-    if (token->name() == formTag) {
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (token->name() == formTag && !m_tree.ForCrawler()) {
         if (m_tree.form()) {
             parseError(token);
             return;
@@ -708,6 +714,7 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
         m_tree.insertHTMLFormElement(token);
         return;
     }
+#endif
     if (token->name() == liTag) {
         processCloseWhenNestedTag<isLi>(token);
         return;
@@ -1048,7 +1055,8 @@ void HTMLTreeBuilder::processStartTagForInTable(AtomicHTMLToken* token)
         }
         // Fall through to "anything else" case.
     }
-    if (token->name() == formTag) {
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (token->name() == formTag && !m_tree.ForCrawler()) {
         parseError(token);
         if (m_tree.form())
             return;
@@ -1056,6 +1064,7 @@ void HTMLTreeBuilder::processStartTagForInTable(AtomicHTMLToken* token)
         m_tree.openElements()->pop();
         return;
     }
+#endif
     if (token->name() == templateTag) {
         processTemplateStartTag(token);
         return;
@@ -1802,7 +1811,8 @@ void HTMLTreeBuilder::processEndTagForInBody(AtomicHTMLToken* token)
         m_tree.openElements()->popUntilPopped(token->name());
         return;
     }
-    if (token->name() == formTag) {
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (token->name() == formTag && !m_tree.ForCrawler()) {
         RefPtrWillBeRawPtr<Element> node = m_tree.takeForm();
         if (!node || !m_tree.openElements()->inScope(node.get())) {
             parseError(token);
@@ -1813,6 +1823,7 @@ void HTMLTreeBuilder::processEndTagForInBody(AtomicHTMLToken* token)
             parseError(token);
         m_tree.openElements()->remove(node.get());
     }
+#endif
     if (token->name() == pTag) {
         if (!m_tree.openElements()->inButtonScope(token->name())) {
             parseError(token);
