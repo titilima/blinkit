@@ -156,7 +156,6 @@ HTMLDocumentParser::HTMLDocumentParser(Document& document, bool reportErrors, Pa
     , m_treeBuilder(HTMLTreeBuilder::create(this, &document, parserContentPolicy(), reportErrors, m_options))
     , m_loadingTaskRunner(adoptPtr(document.loadingTaskRunner()->clone()))
     , m_parserScheduler(HTMLParserScheduler::create(this, m_loadingTaskRunner.get()))
-    , m_xssAuditorDelegate(&document)
     , m_weakFactory(this)
     , m_preloader(HTMLResourcePreloader::create(document))
     , m_parsedChunkQueue(ParsedChunkQueue::create())
@@ -181,7 +180,6 @@ HTMLDocumentParser::HTMLDocumentParser(DocumentFragment* fragment, Element* cont
     , m_tokenizer(HTMLTokenizer::create(m_options))
     , m_treeBuilder(HTMLTreeBuilder::create(this, fragment, contextElement, this->parserContentPolicy(), m_options))
     , m_loadingTaskRunner(adoptPtr(fragment->document().loadingTaskRunner()->clone()))
-    , m_xssAuditorDelegate(&fragment->document())
     , m_weakFactory(this)
     , m_shouldUseThreading(false)
     , m_endWasDelayed(false)
@@ -192,7 +190,6 @@ HTMLDocumentParser::HTMLDocumentParser(DocumentFragment* fragment, Element* cont
 {
     bool reportErrors = false; // For now document fragment parsing never reports errors.
     m_tokenizer->setState(tokenizerStateForContextElement(contextElement, reportErrors, m_options));
-    m_xssAuditor.initForFragment();
 }
 
 HTMLDocumentParser::~HTMLDocumentParser()
@@ -218,7 +215,6 @@ DEFINE_TRACE(HTMLDocumentParser)
 {
     visitor->trace(m_treeBuilder);
     visitor->trace(m_parserScheduler);
-    visitor->trace(m_xssAuditorDelegate);
     visitor->trace(m_scriptRunner);
     visitor->trace(m_preloader);
     ScriptableDocumentParser::trace(visitor);
@@ -494,12 +490,6 @@ size_t HTMLDocumentParser::processParsedChunkFromBackgroundParser(PassOwnPtr<Par
 
     HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::startedChunkWithCheckpoint, AllowCrossThreadAccess(m_backgroundParser), chunk->inputCheckpoint));
 
-    for (const auto& xssInfo : chunk->xssInfos) {
-        m_textPosition = xssInfo->m_textPosition;
-        m_xssAuditorDelegate.didBlockScript(*xssInfo);
-        if (isStopped())
-            break;
-    }
     // XSSAuditorDelegate can detach the parser if it decides to block the entire current document.
     if (isDetached())
         return elementTokenCount;
@@ -653,24 +643,9 @@ void HTMLDocumentParser::pumpTokenizer()
     // much we parsed as part of didWriteHTML instead of willWriteHTML.
     TRACE_EVENT_BEGIN1("devtools.timeline", "ParseHTML", "beginData", InspectorParseHtmlEvent::beginData(document(), m_input.current().currentLine().zeroBasedInt()));
 
-    if (!isParsingFragment())
-        m_xssAuditor.init(document(), &m_xssAuditorDelegate);
-
     while (canTakeNextToken()) {
-        if (m_xssAuditor.isEnabled())
-            m_sourceTracker.start(m_input.current(), m_tokenizer.get(), token());
-
         if (!m_tokenizer->nextToken(m_input.current(), token()))
             break;
-
-        if (m_xssAuditor.isEnabled()) {
-            m_sourceTracker.end(m_input.current(), m_tokenizer.get(), token());
-
-            // We do not XSS filter innerHTML, which means we (intentionally) fail
-            // http/tests/security/xssAuditor/dom-write-innerHTML.html
-            if (OwnPtr<XSSInfo> xssInfo = m_xssAuditor.filterToken(FilterTokenRequest(token(), m_sourceTracker, m_tokenizer->shouldAllowCDATA())))
-                m_xssAuditorDelegate.didBlockScript(*xssInfo);
-        }
 
         constructTreeFromHTMLToken();
         ASSERT(isStopped() || token().isUninitialized());
@@ -820,8 +795,6 @@ void HTMLDocumentParser::startBackgroundParser()
     OwnPtr<BackgroundHTMLParser::Configuration> config = adoptPtr(new BackgroundHTMLParser::Configuration);
     config->options = m_options;
     config->parser = m_weakFactory.createWeakPtr();
-    config->xssAuditor = adoptPtr(new XSSAuditor);
-    config->xssAuditor->init(document(), &m_xssAuditorDelegate);
 
     config->preloadScanner = adoptPtr(new TokenPreloadScanner(document()->url().copy(), CachedDocumentParameters::create(document())));
     config->decoder = takeDecoder();
@@ -833,7 +806,6 @@ void HTMLDocumentParser::startBackgroundParser()
             config->pendingTokenLimit = document()->settings()->backgroundHtmlParserPendingTokenLimit();
     }
 
-    ASSERT(config->xssAuditor->isSafeToSendToAnotherThread());
     ASSERT(config->preloadScanner->isSafeToSendToAnotherThread());
     HTMLParserThread::shared()->postTask(threadSafeBind(&BackgroundHTMLParser::start, reference.release(), config.release(),
         adoptPtr(m_loadingTaskRunner->clone())));

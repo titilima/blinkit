@@ -53,8 +53,6 @@
 #include "core/html/parser/HTMLTreeBuilderSimulator.h"
 #include "core/html/parser/ParserSynchronizationPolicy.h"
 #include "core/html/parser/TextResourceDecoder.h"
-#include "core/html/parser/XSSAuditor.h"
-#include "core/html/parser/XSSAuditorDelegate.h"
 #include "platform/text/SegmentedString.h"
 #include "wtf/Deque.h"
 #include "wtf/OwnPtr.h"
@@ -106,7 +104,6 @@ public:
     public:
         OwnPtr<CompactHTMLTokenStream> tokens;
         PreloadRequestStream preloads;
-        XSSInfoStream xssInfos;
         HTMLTokenizer::State tokenizerState;
         HTMLTreeBuilderSimulator::State treeBuilderState;
         HTMLInputCheckpoint inputCheckpoint;
@@ -201,8 +198,6 @@ private:
     OwnPtrWillBeMember<HTMLParserScheduler> m_parserScheduler;
     HTMLSourceTracker m_sourceTracker;
     TextPosition m_textPosition;
-    XSSAuditor m_xssAuditor;
-    XSSAuditorDelegate m_xssAuditorDelegate;
 
     // FIXME: m_lastChunkBeforeScript, m_tokenizer, m_token, and m_input should be combined into a single state object
     // so they can be set and cleared together and passed between threads together.

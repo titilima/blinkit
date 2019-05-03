@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: BackgroundHTMLParser.cpp
+// Description: BackgroundHTMLParser Class
+//      Author: Ziming Li
+//     Created: 2019-05-03
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google, Inc. All Rights Reserved.
  *
@@ -28,7 +39,6 @@
 #include "core/HTMLNames.h"
 #include "core/html/parser/HTMLDocumentParser.h"
 #include "core/html/parser/TextResourceDecoder.h"
-#include "core/html/parser/XSSAuditor.h"
 #include "platform/Task.h"
 #include "platform/ThreadSafeFunctional.h"
 #include "public/platform/Platform.h"
@@ -72,12 +82,6 @@ static void checkThatPreloadsAreSafeToSendToAnotherThread(const PreloadRequestSt
         ASSERT(preloads[i]->isSafeToSendToAnotherThread());
 }
 
-static void checkThatXSSInfosAreSafeToSendToAnotherThread(const XSSInfoStream& infos)
-{
-    for (size_t i = 0; i < infos.size(); ++i)
-        ASSERT(infos[i]->isSafeToSendToAnotherThread());
-}
-
 #endif
 
 void BackgroundHTMLParser::start(PassRefPtr<WeakReference<BackgroundHTMLParser>> reference, PassOwnPtr<Configuration> config, PassOwnPtr<WebTaskRunner> loadingTaskRunner)
@@ -102,7 +106,6 @@ BackgroundHTMLParser::BackgroundHTMLParser(PassRefPtr<WeakReference<BackgroundHT
     , m_parser(config->parser)
     , m_pendingTokens(adoptPtr(new CompactHTMLTokenStream))
     , m_pendingTokenLimit(config->pendingTokenLimit)
-    , m_xssAuditor(config->xssAuditor.release())
     , m_preloadScanner(config->preloadScanner.release())
     , m_decoder(config->decoder.release())
     , m_loadingTaskRunner(loadingTaskRunner)
@@ -156,7 +159,6 @@ void BackgroundHTMLParser::updateDocument(const String& decodedData)
     if (encodingData != m_lastSeenEncodingData) {
         m_lastSeenEncodingData = encodingData;
 
-        m_xssAuditor->setEncoding(encodingData.encoding());
         m_loadingTaskRunner->postTask(
             BLINK_FROM_HERE,
             threadSafeBind(&HTMLDocumentParser::didReceiveEncodingDataFromBackgroundParser, AllowCrossThreadAccess(m_parser), encodingData));
@@ -224,25 +226,14 @@ void BackgroundHTMLParser::pumpTokenizer()
         return;
 
     while (true) {
-        if (m_xssAuditor->isEnabled())
-            m_sourceTracker.start(m_input.current(), m_tokenizer.get(), *m_token);
-
         if (!m_tokenizer->nextToken(m_input.current(), *m_token)) {
             // We've reached the end of our current input.
             sendTokensToMainThread();
             break;
         }
 
-        if (m_xssAuditor->isEnabled())
-            m_sourceTracker.end(m_input.current(), m_tokenizer.get(), *m_token);
-
         {
             TextPosition position = TextPosition(m_input.current().currentLine(), m_input.current().currentColumn());
-
-            if (OwnPtr<XSSInfo> xssInfo = m_xssAuditor->filterToken(FilterTokenRequest(*m_token, m_sourceTracker, m_tokenizer->shouldAllowCDATA()))) {
-                xssInfo->m_textPosition = position;
-                m_pendingXSSInfos.append(xssInfo.release());
-            }
 
             CompactHTMLToken token(m_token.get(), position);
 
@@ -278,12 +269,10 @@ void BackgroundHTMLParser::sendTokensToMainThread()
 #if ENABLE(ASSERT)
     checkThatTokensAreSafeToSendToAnotherThread(m_pendingTokens.get());
     checkThatPreloadsAreSafeToSendToAnotherThread(m_pendingPreloads);
-    checkThatXSSInfosAreSafeToSendToAnotherThread(m_pendingXSSInfos);
 #endif
 
     OwnPtr<HTMLDocumentParser::ParsedChunk> chunk = adoptPtr(new HTMLDocumentParser::ParsedChunk);
     chunk->preloads.swap(m_pendingPreloads);
-    chunk->xssInfos.swap(m_pendingXSSInfos);
     chunk->tokenizerState = m_tokenizer->state();
     chunk->treeBuilderState = m_treeBuilderSimulator.state();
     chunk->inputCheckpoint = m_input.createCheckpoint(m_pendingTokens->size());
