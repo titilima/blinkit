@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ThreadableLoaderClient.h
+// Description: ThreadableLoaderClient Class
+//      Author: Ziming Li
+//     Created: 2019-05-04
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -41,7 +52,6 @@ namespace blink {
 
 class ResourceError;
 class ResourceResponse;
-class ResourceTimingInfo;
 
 class CORE_EXPORT ThreadableLoaderClient {
     WTF_MAKE_NONCOPYABLE(ThreadableLoaderClient);
@@ -55,7 +65,6 @@ public:
     virtual void didFail(const ResourceError&) { }
     virtual void didFailAccessControlCheck(const ResourceError& error) { didFail(error); }
     virtual void didFailRedirectCheck() { }
-    virtual void didReceiveResourceTiming(const ResourceTimingInfo&) { }
 
     virtual bool isDocumentThreadableLoaderClient() { return false; }
 

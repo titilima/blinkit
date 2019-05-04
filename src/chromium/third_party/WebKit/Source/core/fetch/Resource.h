@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Resource.h
+// Description: Resource Class
+//      Author: Ziming Li
+//     Created: 2019-05-04
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller <mueller@kde.org>
@@ -51,7 +62,6 @@ class FetchRequest;
 class ResourceClient;
 class ResourcePtrBase;
 class ResourceFetcher;
-class ResourceTimingInfo;
 class InspectorResource;
 class ResourceLoader;
 class SecurityOrigin;
@@ -200,8 +210,6 @@ public:
     virtual void responseReceived(const ResourceResponse&, PassOwnPtr<WebDataConsumerHandle>);
     void setResponse(const ResourceResponse& response) { m_response = response; }
     const ResourceResponse& response() const { return m_response; }
-
-    virtual void reportResourceTimingToClients(const ResourceTimingInfo&) { }
 
     // Sets the serialized metadata retrieved from the platform's cache.
     virtual void setSerializedCachedMetadata(const char*, size_t);

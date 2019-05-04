@@ -62,7 +62,6 @@ class ResourceError;
 class ResourceLoader;
 class ResourceResponse;
 class ResourceRequest;
-class ResourceTimingInfo;
 class WebTaskRunner;
 
 enum FetchResourceType {
@@ -101,7 +100,6 @@ public:
     virtual void willStartLoadingResource(ResourceRequest&);
     virtual void didLoadResource(Resource*);
 
-    virtual void addResourceTiming(const ResourceTimingInfo&);
     virtual bool allowImage(bool, const KURL&) const { return false; }
     virtual bool canRequest(Resource::Type, const ResourceRequest&, const KURL&, const ResourceLoaderOptions&, bool forPreload, FetchRequest::OriginRestriction) const { return false; }
     virtual bool allowResponse(Resource::Type, const ResourceRequest&, const KURL&, const ResourceLoaderOptions&) const { return false; }
@@ -113,7 +111,6 @@ public:
     virtual bool defersLoading() const { return false; }
     virtual bool isLoadComplete() const { return false; }
     virtual bool pageDismissalEventBeingDispatched() const { return false; }
-    virtual bool updateTimingInfoForIFrameNavigation(ResourceTimingInfo*) { return false; }
     virtual void sendImagePing(const KURL&);
     virtual void addConsoleMessage(const String&) const;
     virtual SecurityOrigin* securityOrigin() const { return nullptr; }

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FetchContext.cpp
+// Description: FetchContext Class
+//      Author: Ziming Li
+//     Created: 2019-05-04
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -94,10 +105,6 @@ void FetchContext::willStartLoadingResource(ResourceRequest&)
 }
 
 void FetchContext::didLoadResource(Resource*)
-{
-}
-
-void FetchContext::addResourceTiming(const ResourceTimingInfo&)
 {
 }
 
