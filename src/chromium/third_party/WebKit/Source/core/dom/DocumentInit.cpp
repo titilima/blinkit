@@ -41,25 +41,18 @@
 #include "core/dom/Document.h"
 #include "core/dom/custom/CustomElementRegistrationContext.h"
 #include "core/frame/LocalFrame.h"
-#include "core/html/imports/HTMLImportsController.h"
 #include "core/loader/DocumentLoader.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "public/platform/Platform.h"
 
 namespace blink {
 
-DocumentInit::DocumentInit(const KURL& url, LocalFrame* frame, WeakPtrWillBeRawPtr<Document> contextDocument, HTMLImportsController* importsController)
+DocumentInit::DocumentInit(const KURL& url, LocalFrame* frame, WeakPtrWillBeRawPtr<Document> contextDocument)
     : m_url(url)
     , m_frame(frame)
     , m_contextDocument(contextDocument)
     , m_shouldReuseDefaultView(frame && frame->shouldReuseDefaultView(url))
 {
-#ifndef BLINKIT_CRAWLER_ONLY
-    if (m_frame->IsCrawlerFrame())
-        ASSERT(nullptr == importsController);
-    else
-        m_importsController = importsController;
-#endif
 }
 
 DocumentInit::DocumentInit(const DocumentInit&) = default;
@@ -70,24 +63,12 @@ DocumentInit::~DocumentInit()
 
 bool DocumentInit::shouldSetURL() const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
     return !m_url.isEmpty();
-#else
-    // BKTODO: Disable frame owner!
-    LocalFrame* frame = frameForSecurityContext();
-    return (frame && frame->owner()) || !m_url.isEmpty();
-#endif
 }
 
 LocalFrame* DocumentInit::frameForSecurityContext() const
 {
-    if (m_frame)
-        return m_frame;
-#ifndef BLINKIT_CRAWLER_ONLY
-    if (!m_frame->IsCrawlerFrame() && m_importsController)
-        return m_importsController->master()->frame();
-#endif
-    return 0;
+    return m_frame;
 }
 
 bool DocumentInit::shouldEnforceStrictMixedContentChecking() const
@@ -159,7 +140,7 @@ WeakPtrWillBeRawPtr<Document> DocumentInit::contextDocument() const
 
 DocumentInit DocumentInit::fromContext(WeakPtrWillBeRawPtr<Document> contextDocument, const KURL& url)
 {
-    return DocumentInit(url, 0, contextDocument, 0);
+    return DocumentInit(url, 0, contextDocument);
 }
 
 } // namespace blink

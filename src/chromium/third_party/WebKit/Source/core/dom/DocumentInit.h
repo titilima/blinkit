@@ -52,21 +52,17 @@ namespace blink {
 
 class Document;
 class LocalFrame;
-class HTMLImportsController;
 class Settings;
 
 class CORE_EXPORT DocumentInit final {
     STACK_ALLOCATED();
 public:
-    explicit DocumentInit(const KURL& = KURL(), LocalFrame* = 0, WeakPtrWillBeRawPtr<Document> = nullptr, HTMLImportsController* = 0);
+    explicit DocumentInit(const KURL& = KURL(), LocalFrame* = 0, WeakPtrWillBeRawPtr<Document> = nullptr);
     DocumentInit(const DocumentInit&);
     ~DocumentInit();
 
     const KURL& url() const { return m_url; }
     LocalFrame* frame() const { return m_frame; }
-#ifndef BLINKIT_CRAWLER_ONLY
-    HTMLImportsController* importsController() const { return m_importsController; }
-#endif
 
     bool hasSecurityContext() const { return frameForSecurityContext(); }
     bool shouldSetURL() const;
@@ -94,7 +90,6 @@ private:
     RawPtrWillBeMember<LocalFrame> m_frame;
     WeakPtrWillBeMember<Document> m_contextDocument;
 #ifndef BLINKIT_CRAWLER_ONLY
-    RawPtrWillBeMember<HTMLImportsController> m_importsController;
     RefPtrWillBeMember<CustomElementRegistrationContext> m_registrationContext;
     bool m_createNewRegistrationContext = false;
 #endif
