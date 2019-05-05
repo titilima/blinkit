@@ -379,7 +379,6 @@ bool EventTarget::fireEventListeners(Event* event)
         event->setType(unprefixedTypeName);
     }
 
-    Editor::countEvent(executionContext(), event);
     countLegacyEvents(legacyTypeName, listenersVector, legacyListenersVector);
     return !event->defaultPrevented();
 }
