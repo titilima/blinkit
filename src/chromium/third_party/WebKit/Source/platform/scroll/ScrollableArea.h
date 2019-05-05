@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ScrollableArea.h
+// Description: ScrollableArea Class
+//      Author: Ziming Li
+//     Created: 2019-05-04
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2011 Apple Inc. All Rights Reserved.
  *
@@ -72,6 +83,12 @@ class PLATFORM_EXPORT ScrollableArea : public GarbageCollectedMixin {
 class PLATFORM_EXPORT ScrollableArea {
 #endif
     WTF_MAKE_NONCOPYABLE(ScrollableArea);
+#ifdef BLINKIT_CRAWLER_ONLY
+public:
+    virtual ~ScrollableArea(void) = default;
+protected:
+    ScrollableArea(void) = default;
+#else
 public:
     static int pixelsPerLineStep();
     static float minFractionToStepWhenPaging();
@@ -357,6 +374,7 @@ private:
     // vertical-rl / ltr            YES                     NO
     // vertical-rl / rtl            YES                     YES
     IntPoint m_scrollOrigin;
+#endif // BLINKIT_CRAWLER_ONLY
 };
 
 } // namespace blink
