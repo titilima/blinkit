@@ -64,27 +64,25 @@ public:
 
     const KURL& url() const { return m_url; }
     LocalFrame* frame() const { return m_frame; }
+#ifndef BLINKIT_CRAWLER_ONLY
     HTMLImportsController* importsController() const { return m_importsController; }
+#endif
 
     bool hasSecurityContext() const { return frameForSecurityContext(); }
-    bool shouldTreatURLAsSrcdocDocument() const;
     bool shouldSetURL() const;
-    bool isSeamlessAllowedFor(Document* child) const;
     bool shouldReuseDefaultView() const { return m_shouldReuseDefaultView; }
     bool shouldEnforceStrictMixedContentChecking() const;
     bool isHostedInReservedIPRange() const;
     SecurityContext::InsecureRequestsPolicy insecureRequestsPolicy() const;
     SecurityContext::InsecureNavigationsSet* insecureNavigationsToUpgrade() const;
 
-    Document* parent() const { return m_parent.get(); }
-    Document* owner() const { return m_owner.get(); }
-    KURL parentBaseURL() const;
-    LocalFrame* ownerFrame() const;
     Settings* settings() const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     DocumentInit& withRegistrationContext(CustomElementRegistrationContext*);
     DocumentInit& withNewRegistrationContext();
     PassRefPtrWillBeRawPtr<CustomElementRegistrationContext> registrationContext(Document*) const;
+#endif
     WeakPtrWillBeRawPtr<Document> contextDocument() const;
 
     static DocumentInit fromContext(WeakPtrWillBeRawPtr<Document> contextDocument, const KURL& = KURL());
@@ -94,12 +92,12 @@ private:
 
     KURL m_url;
     RawPtrWillBeMember<LocalFrame> m_frame;
-    RefPtrWillBeMember<Document> m_parent;
-    RefPtrWillBeMember<Document> m_owner;
     WeakPtrWillBeMember<Document> m_contextDocument;
+#ifndef BLINKIT_CRAWLER_ONLY
     RawPtrWillBeMember<HTMLImportsController> m_importsController;
     RefPtrWillBeMember<CustomElementRegistrationContext> m_registrationContext;
-    bool m_createNewRegistrationContext;
+    bool m_createNewRegistrationContext = false;
+#endif
 
     // In some rare cases, we'll re-use a LocalDOMWindow for a new Document. For example,
     // when a script calls window.open("..."), the browser gives JavaScript a window
