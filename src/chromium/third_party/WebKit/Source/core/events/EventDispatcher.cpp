@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: EventDispatcher.cpp
+// Description: EventDispatcher Class
+//      Author: Ziming Li
+//     Created: 2019-05-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -57,7 +68,10 @@ EventDispatcher::EventDispatcher(Node& node, PassRefPtrWillBeRawPtr<Event> event
 #endif
 {
     ASSERT(m_event.get());
-    m_view = node.document().view();
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!node.ForCrawler())
+        m_protect = node.document().view();
+#endif
     m_event->initEventPath(*m_node);
 }
 
@@ -68,6 +82,7 @@ void EventDispatcher::dispatchScopedEvent(Node& node, PassRefPtrWillBeRawPtr<Eve
     ScopedEventQueue::instance()->enqueueEventDispatchMediator(mediator);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void EventDispatcher::dispatchSimulatedClick(Node& node, Event* underlyingEvent, SimulatedClickMouseEventOptions mouseEventOptions, SimulatedClickCreationScope creationScope)
 {
     // This persistent vector doesn't cause leaks, because added Nodes are removed
@@ -100,6 +115,7 @@ void EventDispatcher::dispatchSimulatedClick(Node& node, Event* underlyingEvent,
 
     nodesDispatchingSimulatedClicks->remove(&node);
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 bool EventDispatcher::dispatch()
 {

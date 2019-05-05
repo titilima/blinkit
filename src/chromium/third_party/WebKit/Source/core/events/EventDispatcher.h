@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: EventDispatcher.h
+// Description: EventDispatcher Class
+//      Author: Ziming Li
+//     Created: 2019-05-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -51,7 +62,9 @@ public:
     static bool dispatchEvent(Node&, PassRefPtrWillBeRawPtr<EventDispatchMediator>);
     static void dispatchScopedEvent(Node&, PassRefPtrWillBeRawPtr<EventDispatchMediator>);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     static void dispatchSimulatedClick(Node&, Event* underlyingEvent, SimulatedClickMouseEventOptions, SimulatedClickCreationScope);
+#endif
 
     bool dispatch();
     Node& node() const { return *m_node; }
@@ -68,7 +81,9 @@ private:
 
     RefPtrWillBeMember<Node> m_node;
     RefPtrWillBeMember<Event> m_event;
-    RefPtrWillBeMember<FrameView> m_view;
+#ifndef BLINKIT_CRAWLER_ONLY
+    RefPtrWillBeMember<FrameView> m_protect;
+#endif
 #if ENABLE(ASSERT)
     bool m_eventDispatched;
 #endif
