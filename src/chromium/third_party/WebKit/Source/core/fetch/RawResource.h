@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: RawResource.h
+// Description: RawResource Class
+//      Author: Ziming Li
+//     Created: 2019-05-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller <mueller@kde.org>
@@ -80,7 +91,6 @@ private:
     void setSerializedCachedMetadata(const char*, size_t) override;
     void didSendData(unsigned long long bytesSent, unsigned long long totalBytesToBeSent) override;
     void didDownloadData(int) override;
-    void reportResourceTimingToClients(const ResourceTimingInfo&) override;
 };
 
 #if ENABLE(SECURITY_ASSERT)
@@ -109,7 +119,6 @@ public:
     virtual void redirectReceived(Resource*, ResourceRequest&, const ResourceResponse&) { }
     virtual void updateRequest(Resource*, const ResourceRequest&) { }
     virtual void dataDownloaded(Resource*, int) { }
-    virtual void didReceiveResourceTiming(Resource*, const ResourceTimingInfo&) { }
 };
 
 }

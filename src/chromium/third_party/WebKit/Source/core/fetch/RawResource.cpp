@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: RawResource.cpp
+// Description: RawResource Class
+//      Author: Ziming Li
+//     Created: 2019-05-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All Rights Reserved.
  *
@@ -197,13 +208,6 @@ void RawResource::didDownloadData(int dataLength)
     ResourceClientWalker<RawResourceClient> w(m_clients);
     while (RawResourceClient* c = w.next())
         c->dataDownloaded(this, dataLength);
-}
-
-void RawResource::reportResourceTimingToClients(const ResourceTimingInfo& info)
-{
-    ResourceClientWalker<RawResourceClient> w(m_clients);
-    while (RawResourceClient* c = w.next())
-        c->didReceiveResourceTiming(this, info);
 }
 
 void RawResource::setDefersLoading(bool defers)
