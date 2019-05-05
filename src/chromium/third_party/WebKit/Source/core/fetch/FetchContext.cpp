@@ -108,15 +108,13 @@ void FetchContext::didLoadResource(Resource*)
 {
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void FetchContext::sendImagePing(const KURL&)
 {
 }
+#endif
 
 void FetchContext::addConsoleMessage(const String&) const
-{
-}
-
-void FetchContext::upgradeInsecureRequest(FetchRequest&)
 {
 }
 

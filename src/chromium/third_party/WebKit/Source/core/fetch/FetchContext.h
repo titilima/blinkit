@@ -111,10 +111,11 @@ public:
     virtual bool defersLoading() const { return false; }
     virtual bool isLoadComplete() const { return false; }
     virtual bool pageDismissalEventBeingDispatched() const { return false; }
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual void sendImagePing(const KURL&);
+#endif
     virtual void addConsoleMessage(const String&) const;
     virtual SecurityOrigin* securityOrigin() const { return nullptr; }
-    virtual void upgradeInsecureRequest(FetchRequest&);
     virtual void addClientHintsIfNecessary(FetchRequest&);
     virtual void addCSPHeaderIfNecessary(Resource::Type, FetchRequest&);
 
