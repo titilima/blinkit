@@ -37,7 +37,6 @@
 
 #include "core/dom/SecurityContext.h"
 
-#include "core/frame/csp/ContentSecurityPolicy.h"
 #include "platform/weborigin/SecurityOrigin.h"
 
 namespace blink {
@@ -45,7 +44,6 @@ namespace blink {
 SecurityContext::SecurityContext()
     : m_haveInitializedSecurityOrigin(false)
     , m_hostedInReservedIPRange(false)
-    , m_insecureRequestsPolicy(InsecureRequestsDoNotUpgrade)
     , m_enforceStrictMixedContentChecking(false)
 {
 }
@@ -56,18 +54,12 @@ SecurityContext::~SecurityContext()
 
 DEFINE_TRACE(SecurityContext)
 {
-    visitor->trace(m_contentSecurityPolicy);
 }
 
 void SecurityContext::setSecurityOrigin(PassRefPtr<SecurityOrigin> securityOrigin)
 {
     m_securityOrigin = securityOrigin;
     m_haveInitializedSecurityOrigin = true;
-}
-
-void SecurityContext::setContentSecurityPolicy(PassRefPtrWillBeRawPtr<ContentSecurityPolicy> contentSecurityPolicy)
-{
-    m_contentSecurityPolicy = contentSecurityPolicy;
 }
 
 bool SecurityContext::isSecureTransitionTo(const KURL& url) const

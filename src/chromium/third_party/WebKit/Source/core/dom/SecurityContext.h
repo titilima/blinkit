@@ -50,7 +50,6 @@
 namespace blink {
 
 class SecurityOrigin;
-class ContentSecurityPolicy;
 class KURL;
 
 class CORE_EXPORT SecurityContext : public WillBeGarbageCollectedMixin {
@@ -58,16 +57,7 @@ class CORE_EXPORT SecurityContext : public WillBeGarbageCollectedMixin {
 public:
     DECLARE_VIRTUAL_TRACE();
 
-    using InsecureNavigationsSet = HashSet<unsigned, WTF::AlreadyHashed>;
-
-    // The ordering here is important: 'Upgrade' overrides 'DoNotUpgrade'.
-    enum InsecureRequestsPolicy {
-        InsecureRequestsDoNotUpgrade = 0,
-        InsecureRequestsUpgrade
-    };
-
     SecurityOrigin* securityOrigin() const { return m_securityOrigin.get(); }
-    ContentSecurityPolicy* contentSecurityPolicy() const { return m_contentSecurityPolicy.get(); }
 
     bool isSecureTransitionTo(const KURL&) const;
 
@@ -80,12 +70,6 @@ public:
     void setHostedInReservedIPRange() { m_hostedInReservedIPRange = true; }
     bool isHostedInReservedIPRange() const { return m_hostedInReservedIPRange; }
 
-    void setInsecureRequestsPolicy(InsecureRequestsPolicy policy) { m_insecureRequestsPolicy = policy; }
-    InsecureRequestsPolicy insecureRequestsPolicy() const { return m_insecureRequestsPolicy; }
-
-    void addInsecureNavigationUpgrade(unsigned hashedHost) { m_insecureNavigationsToUpgrade.add(hashedHost); }
-    InsecureNavigationsSet* insecureNavigationsToUpgrade() { return &m_insecureNavigationsToUpgrade; }
-
     void setShouldEnforceStrictMixedContentChecking(bool shouldEnforce) { m_enforceStrictMixedContentChecking = shouldEnforce; }
     bool shouldEnforceStrictMixedContentChecking() { return m_enforceStrictMixedContentChecking; }
 
@@ -93,19 +77,14 @@ protected:
     SecurityContext();
     virtual ~SecurityContext();
 
-    void setContentSecurityPolicy(PassRefPtrWillBeRawPtr<ContentSecurityPolicy>);
-
     void didFailToInitializeSecurityOrigin() { m_haveInitializedSecurityOrigin = false; }
     bool haveInitializedSecurityOrigin() const { return m_haveInitializedSecurityOrigin; }
 
 private:
     bool m_haveInitializedSecurityOrigin;
     RefPtr<SecurityOrigin> m_securityOrigin;
-    RefPtrWillBeMember<ContentSecurityPolicy> m_contentSecurityPolicy;
 
     bool m_hostedInReservedIPRange;
-    InsecureRequestsPolicy m_insecureRequestsPolicy;
-    InsecureNavigationsSet m_insecureNavigationsToUpgrade;
     bool m_enforceStrictMixedContentChecking;
 };
 
