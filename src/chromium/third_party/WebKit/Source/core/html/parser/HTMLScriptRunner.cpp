@@ -97,14 +97,8 @@ void HTMLScriptRunner::detach()
 
 static KURL documentURLForScriptExecution(Document* document)
 {
-    if (!document)
+    if (!document || !document->frame())
         return KURL();
-
-    if (!document->frame()) {
-        if (document->importsController())
-            return document->url();
-        return KURL();
-    }
 
     // Use the URL of the currently active document for this frame.
     return document->frame()->document()->url();
