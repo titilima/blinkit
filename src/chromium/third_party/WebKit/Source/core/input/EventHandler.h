@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: EventHandler.h
+// Description: EventHandler Class
+//      Author: Ziming Li
+//     Created: 2019-05-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2009, 2010, 2011 Apple Inc. All rights reserved.
  *
@@ -64,7 +75,6 @@ template <typename EventType>
 class EventWithHitTestResults;
 class FloatPoint;
 class FloatQuad;
-class HTMLFrameSetElement;
 class HitTestRequest;
 class HitTestResult;
 class KeyboardEvent;
@@ -97,6 +107,7 @@ public:
     void clear();
     void nodeWillBeRemoved(Node&);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void updateSelectionForMouseDrag();
 
 #if OS(WIN)
@@ -126,8 +137,6 @@ public:
 
     // Return whether a mouse cursor update is currently pending.  Used for testing.
     bool cursorUpdatePending();
-
-    void setResizingFrameSet(HTMLFrameSetElement*);
 
     void resizeScrollableAreaDestroyed();
 
@@ -221,8 +230,10 @@ public:
         bool knownTarget;
         bool consumed;
     };
+#endif // BLINKIT_CRAWLER_ONLY
 
 private:
+#ifndef BLINKIT_CRAWLER_ONLY
     static DragState& dragState();
 
     DataTransfer* createDraggingDataTransfer() const;
@@ -356,12 +367,14 @@ private:
     void sendPointerCancels(WillBeHeapVector<TouchInfo>&);
 
     WebInputEventResult dispatchTouchEvents(const PlatformTouchEvent&, WillBeHeapVector<TouchInfo>&, bool, bool);
+#endif // BLINKIT_CRAWLER_ONLY
 
     // NOTE: If adding a new field to this class please ensure that it is
     // cleared in |EventHandler::clear()|.
 
     const RawPtrWillBeMember<LocalFrame> m_frame;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // Current button-press state for mouse/mouse-like-stylus.
     // TODO(crbug.com/563676): Buggy for chorded buttons.
     bool m_mousePressed;
@@ -400,8 +413,6 @@ private:
 
     RefPtrWillBeMember<Node> m_dragTarget;
     bool m_shouldOnlyFireDragOverEvent;
-
-    RefPtrWillBeMember<HTMLFrameSetElement> m_frameSetBeingResized;
 
     LayoutSize m_offsetFromResizeCorner; // In the coords of m_resizeScrollableArea.
 
@@ -465,10 +476,13 @@ private:
     // scroll which shouldn't propagate can't cause any element to
     // scroll other than the |m_previousGestureScrolledNode|.
     bool m_deltaConsumedForScrollSequence;
+#endif // BLINKIT_CRAWLER_ONLY
 };
 
 } // namespace blink
 
+#ifndef BLINKIT_CRAWLER_ONLY
 WTF_ALLOW_INIT_WITH_MEM_FUNCTIONS(blink::EventHandler::TouchInfo);
+#endif
 
 #endif // EventHandler_h

@@ -68,8 +68,6 @@
 #include "core/frame/Settings.h"
 #include "core/frame/VisualViewport.h"
 #include "core/html/HTMLDialogElement.h"
-#include "core/html/HTMLFrameElementBase.h"
-#include "core/html/HTMLFrameSetElement.h"
 #include "core/html/HTMLInputElement.h"
 #include "core/input/InputDeviceCapabilities.h"
 #include "core/input/TouchActionUtil.h"
@@ -86,7 +84,6 @@
 #include "core/page/DragController.h"
 #include "core/page/DragState.h"
 #include "core/page/FocusController.h"
-#include "core/page/FrameTree.h"
 #include "core/page/Page.h"
 #include "core/page/SpatialNavigation.h"
 #include "core/page/TouchAdjustment.h"
@@ -113,6 +110,7 @@
 
 namespace blink {
 
+#ifndef BLINKIT_CRAWLER_ONLY
 namespace {
 
 WebInputEventResult mergeEventResult(WebInputEventResult responseA, WebInputEventResult responseB)
@@ -295,9 +293,6 @@ void recomputeScrollChain(const LocalFrame& frame, const Node& startNode,
 {
     scrollChain.clear();
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     ASSERT(startNode.layoutObject());
     LayoutBox* curBox = startNode.layoutObject()->enclosingBox();
 
@@ -320,11 +315,12 @@ void recomputeScrollChain(const LocalFrame& frame, const Node& startNode,
     // containingBlock, so we ensure the scrollingElement is added
     // here.
     scrollChain.push_front(DOMNodeIds::idForNode(frame.document()->scrollingElement()));
-#endif
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 EventHandler::EventHandler(LocalFrame* frame)
     : m_frame(frame)
+#ifndef BLINKIT_CRAWLER_ONLY
     , m_mousePressed(false)
     , m_capturesDragging(false)
     , m_mouseDownMayStartDrag(false)
@@ -350,18 +346,22 @@ EventHandler::EventHandler(LocalFrame* frame)
     , m_activeIntervalTimer(this, &EventHandler::activeIntervalTimerFired)
     , m_lastShowPressTimestamp(0)
     , m_deltaConsumedForScrollSequence(false)
+#endif // BLINKIT_CRAWLER_ONLY
 {
 }
 
 EventHandler::~EventHandler()
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(!m_fakeMouseMoveEventTimer.isActive());
+#endif
 }
 
 DEFINE_TRACE(EventHandler)
 {
 #if ENABLE(OILPAN)
     visitor->trace(m_frame);
+#ifndef BLINKIT_CRAWLER_ONLY
     visitor->trace(m_mousePressNode);
     visitor->trace(m_resizeScrollableArea);
     visitor->trace(m_capturingMouseEventsNode);
@@ -380,16 +380,20 @@ DEFINE_TRACE(EventHandler)
     visitor->trace(m_lastDeferredTapElement);
     visitor->trace(m_selectionController);
 #endif
+#endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 DragState& EventHandler::dragState()
 {
     DEFINE_STATIC_LOCAL(Persistent<DragState>, state, (new DragState()));
     return *state;
 }
+#endif
 
 void EventHandler::clear()
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     m_hoverTimer.stop();
     m_cursorUpdateTimer.stop();
     m_fakeMouseMoveEventTimer.stop();
@@ -400,7 +404,6 @@ void EventHandler::clear()
     m_lastScrollbarUnderMouse = nullptr;
     m_clickCount = 0;
     m_clickNode = nullptr;
-    m_frameSetBeingResized = nullptr;
     m_dragTarget = nullptr;
     m_shouldOnlyFireDragOverEvent = false;
     m_mousePositionIsUnknown = true;
@@ -434,23 +437,23 @@ void EventHandler::clear()
     m_dragStartPos = LayoutPoint();
     m_offsetFromResizeCorner = LayoutSize();
     m_mouseDown = PlatformMouseEvent();
+#endif
 }
 
 void EventHandler::nodeWillBeRemoved(Node& nodeToBeRemoved)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     if (nodeToBeRemoved.containsIncludingShadowDOM(m_clickNode.get())) {
         // We don't dispatch click events if the mousedown node is removed
         // before a mouseup event. It is compatible with IE and Firefox.
         m_clickNode = nullptr;
     }
+#endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 WebInputEventResult EventHandler::handleMousePressEvent(const MouseEventWithHitTestResults& event)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    exit(0);
-#else
     TRACE_EVENT0("blink", "EventHandler::handleMousePressEvent");
 
     // Reset drag state.
@@ -505,15 +508,10 @@ WebInputEventResult EventHandler::handleMousePressEvent(const MouseEventWithHitT
         || (m_mousePressNode && m_mousePressNode->layoutBox() && m_mousePressNode->layoutBox()->canBeProgramaticallyScrolled());
 
     return swallowEvent ? WebInputEventResult::HandledSystem : WebInputEventResult::NotHandled;
-#endif // BLINKIT_CRAWLER_ONLY
 }
 
 WebInputEventResult EventHandler::handleMouseDraggedEvent(const MouseEventWithHitTestResults& event)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    exit(0);
-#else
     TRACE_EVENT0("blink", "EventHandler::handleMouseDraggedEvent");
 
     // While resetting m_mousePressed here may seem out of place, it turns out
@@ -565,7 +563,6 @@ WebInputEventResult EventHandler::handleMouseDraggedEvent(const MouseEventWithHi
 
     selectionController().handleMouseDraggedEvent(event, m_mouseDownPos, m_dragStartPos, m_mousePressNode.get(), m_lastKnownMousePosition);
     return WebInputEventResult::HandledSystem;
-#endif
 }
 
 void EventHandler::updateSelectionForMouseDrag()
@@ -675,10 +672,6 @@ ScrollResultOneDimensional EventHandler::scroll(ScrollDirection direction, Scrol
     if (!node)
         node = m_mousePressNode.get();
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return ScrollResultOneDimensional(false, delta);
-#else
     if (!node || !node->layoutObject())
         return ScrollResultOneDimensional(false, delta);
 
@@ -706,7 +699,6 @@ ScrollResultOneDimensional EventHandler::scroll(ScrollDirection direction, Scrol
     }
 
     return ScrollResultOneDimensional(false, delta);
-#endif
 }
 
 void EventHandler::customizedScroll(const Node& startNode, ScrollState& scrollState)
@@ -760,10 +752,6 @@ static LocalFrame* subframeForTargetNode(Node* node)
     if (!node)
         return nullptr;
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     LayoutObject* layoutObject = node->layoutObject();
     if (!layoutObject || !layoutObject->isLayoutPart())
         return nullptr;
@@ -773,7 +761,6 @@ static LocalFrame* subframeForTargetNode(Node* node)
         return nullptr;
 
     return &toFrameView(widget)->frame();
-#endif
 }
 
 static LocalFrame* subframeForHitTestResult(const MouseEventWithHitTestResults& hitTestResult)
@@ -852,10 +839,6 @@ OptionalCursor EventHandler::selectCursor(const HitTestResult& result)
     if (!node)
         return selectAutoCursor(result, node, iBeamCursor());
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    exit(0);
-#else
     LayoutObject* layoutObject = node->layoutObject();
     const ComputedStyle* style = layoutObject ? layoutObject->style() : nullptr;
 
@@ -980,7 +963,6 @@ OptionalCursor EventHandler::selectCursor(const HitTestResult& result)
         return grabbingCursor();
     }
     return pointerCursor();
-#endif
 }
 
 OptionalCursor EventHandler::selectAutoCursor(const HitTestResult& result, Node* node, const Cursor& iBeam)
@@ -990,10 +972,6 @@ OptionalCursor EventHandler::selectAutoCursor(const HitTestResult& result, Node*
     if (useHandCursor(node, result.isOverLink()))
         return handCursor();
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    exit(0);
-#else
     bool inResizer = false;
     LayoutObject* layoutObject = node ? node->layoutObject() : nullptr;
     if (layoutObject && m_frame->view()) {
@@ -1013,7 +991,6 @@ OptionalCursor EventHandler::selectAutoCursor(const HitTestResult& result, Node*
     if ((editable || (layoutObject && layoutObject->isText() && node->canStartSelection())) && !inResizer && !result.scrollbar())
         return iBeam;
     return pointerCursor();
-#endif
 }
 
 static LayoutPoint contentPointFromRootFrame(LocalFrame* frame, const IntPoint& pointInRootFrame)
@@ -1026,10 +1003,6 @@ static LayoutPoint contentPointFromRootFrame(LocalFrame* frame, const IntPoint& 
 
 WebInputEventResult EventHandler::handleMousePressEvent(const PlatformMouseEvent& mouseEvent)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    exit(0);
-#else
     TRACE_EVENT0("blink", "EventHandler::handleMousePressEvent");
 
     RefPtrWillBeRawPtr<FrameView> protector(m_frame->view());
@@ -1161,7 +1134,6 @@ WebInputEventResult EventHandler::handleMousePressEvent(const PlatformMouseEvent
     }
 
     return eventResult;
-#endif
 }
 
 static PaintLayer* layerForNode(Node* node)
@@ -1169,10 +1141,6 @@ static PaintLayer* layerForNode(Node* node)
     if (!node)
         return nullptr;
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     LayoutObject* layoutObject = node->layoutObject();
     if (!layoutObject)
         return nullptr;
@@ -1182,7 +1150,6 @@ static PaintLayer* layerForNode(Node* node)
         return nullptr;
 
     return layer;
-#endif
 }
 
 ScrollableArea* EventHandler::associatedScrollableArea(const PaintLayer* layer) const
@@ -1249,12 +1216,8 @@ WebInputEventResult EventHandler::handleMouseMoveOrLeaveEvent(const PlatformMous
     cancelFakeMouseMoveEvent();
 
     if (m_svgPan) {
-#ifdef BLINKIT_CRAWLER_ONLY
-        assert(false); // BKTODO: Not reached!
-#else
         m_frame->document()->accessSVGExtensions().updatePan(m_frame->view()->rootFrameToContents(m_lastKnownMousePosition));
         return WebInputEventResult::HandledSuppressed;
-#endif
     }
 
     if (m_frameSetBeingResized)
@@ -1387,13 +1350,9 @@ WebInputEventResult EventHandler::handleMouseReleaseEvent(const PlatformMouseEve
     setLastKnownMousePosition(mouseEvent);
 
     if (m_svgPan) {
-#ifdef BLINKIT_CRAWLER_ONLY
-        assert(false); // BKTODO: Not reached!
-#else
         m_svgPan = false;
         m_frame->document()->accessSVGExtensions().updatePan(m_frame->view()->rootFrameToContents(m_lastKnownMousePosition));
         return WebInputEventResult::HandledSuppressed;
-#endif
     }
 
     if (m_frameSetBeingResized)
@@ -1994,9 +1953,6 @@ ScrollResult scrollAreaWithWheelEvent(const PlatformWheelEvent& event, Scrollabl
 
 WebInputEventResult EventHandler::handleWheelEvent(const PlatformWheelEvent& event)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     Document* doc = m_frame->document();
 
     if (!doc->layoutView())
@@ -2062,7 +2018,6 @@ WebInputEventResult EventHandler::handleWheelEvent(const PlatformWheelEvent& eve
         setFrameWasScrolledByUser();
         return WebInputEventResult::HandledSystem;
     }
-#endif // BLINKIT_CRAWLER_ONLY
 
     return WebInputEventResult::NotHandled;
 }
@@ -2216,9 +2171,6 @@ WebInputEventResult EventHandler::handleGestureScrollEvent(const PlatformGesture
     }
 
     if (!eventTarget) {
-#ifdef BLINKIT_CRAWLER_ONLY
-        assert(false); // BKTODO: Not reached!
-#else
         Document* document = m_frame->document();
         if (!document->layoutView())
             return WebInputEventResult::NotHandled;
@@ -2237,7 +2189,6 @@ WebInputEventResult EventHandler::handleGestureScrollEvent(const PlatformGesture
 
         if (!scrollbar)
             scrollbar = result.scrollbar();
-#endif
     }
 
     if (scrollbar) {
@@ -2444,9 +2395,6 @@ WebInputEventResult EventHandler::handleGestureLongTap(const GestureEventWithHit
 
 bool EventHandler::handleScrollGestureOnResizer(Node* eventTarget, const PlatformGestureEvent& gestureEvent)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (gestureEvent.type() == PlatformEvent::GestureScrollBegin) {
         PaintLayer* layer = eventTarget->layoutObject() ? eventTarget->layoutObject()->enclosingLayer() : nullptr;
         IntPoint p = m_frame->view()->rootFrameToContents(gestureEvent.position());
@@ -2468,7 +2416,6 @@ bool EventHandler::handleScrollGestureOnResizer(Node* eventTarget, const Platfor
             return false;
         }
     }
-#endif
 
     return false;
 }
@@ -2493,9 +2440,6 @@ WebInputEventResult EventHandler::handleGestureScrollEnd(const PlatformGestureEv
     RefPtrWillBeRawPtr<Node> node = m_scrollGestureHandlingNode;
 
     if (node) {
-#ifdef BLINKIT_CRAWLER_ONLY
-        assert(false); // BKTODO: Not reached!
-#else
         passScrollGestureEventToWidget(gestureEvent, node->layoutObject());
         if (RuntimeEnabledFeatures::scrollCustomizationEnabled()) {
             RefPtrWillBeRawPtr<ScrollState> scrollState = ScrollState::create(
@@ -2503,7 +2447,6 @@ WebInputEventResult EventHandler::handleGestureScrollEnd(const PlatformGestureEv
                 false, /* isEnding */ true, /* fromUserInput */ true);
             customizedScroll(*node.get(), *scrollState);
         }
-#endif
     }
 
     clearGestureScrollState();
@@ -2512,10 +2455,6 @@ WebInputEventResult EventHandler::handleGestureScrollEnd(const PlatformGestureEv
 
 WebInputEventResult EventHandler::handleGestureScrollBegin(const PlatformGestureEvent& gestureEvent)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return WebInputEventResult::NotHandled;
-#else
     Document* document = m_frame->document();
     if (!document->layoutView())
         return WebInputEventResult::NotHandled;
@@ -2549,7 +2488,6 @@ WebInputEventResult EventHandler::handleGestureScrollBegin(const PlatformGesture
             m_frame->host()->topControls().scrollBegin();
     }
     return WebInputEventResult::HandledSystem;
-#endif
 }
 
 void EventHandler::resetOverscroll(bool didScrollX, bool didScrollY)
@@ -2591,10 +2529,6 @@ WebInputEventResult EventHandler::handleGestureScrollUpdate(const PlatformGestur
 
     Node* node = m_scrollGestureHandlingNode.get();
     if (node) {
-#ifdef BLINKIT_CRAWLER_ONLY
-        assert(false); // BKTODO: Not reached!
-        return WebInputEventResult::NotHandled;
-#else
         LayoutObject* layoutObject = node->layoutObject();
         if (!layoutObject)
             return WebInputEventResult::NotHandled;
@@ -2662,7 +2596,6 @@ WebInputEventResult EventHandler::handleGestureScrollUpdate(const PlatformGestur
             setFrameWasScrolledByUser();
             return WebInputEventResult::HandledSystem;
         }
-#endif // BLINKIT_CRAWLER_ONLY
     }
 
     if (RuntimeEnabledFeatures::scrollCustomizationEnabled())
@@ -3222,11 +3155,6 @@ bool EventHandler::isCursorVisible() const
     return m_frame->page()->isCursorVisible();
 }
 
-void EventHandler::setResizingFrameSet(HTMLFrameSetElement* frameSet)
-{
-    m_frameSetBeingResized = frameSet;
-}
-
 void EventHandler::resizeScrollableAreaDestroyed()
 {
     ASSERT(m_resizeScrollableArea);
@@ -3560,10 +3488,6 @@ bool EventHandler::tryStartDrag(const MouseEventWithHitTestResults& event)
     // Check to see if this a DOM based drag, if it is get the DOM specified drag
     // image and offset
     if (dragState().m_dragType == DragSourceActionDHTML) {
-#ifdef BLINKIT_CRAWLER_ONLY
-        assert(false); // BKTODO: Not reached!
-        return false;
-#else
         if (LayoutObject* layoutObject = dragState().m_dragSrc->layoutObject()) {
             FloatPoint absPos = layoutObject->localToAbsolute(FloatPoint(), UseTransforms);
             IntSize delta = m_mouseDownPos - roundedIntPoint(absPos);
@@ -3573,7 +3497,6 @@ bool EventHandler::tryStartDrag(const MouseEventWithHitTestResults& event)
             // the element in some way. In this case we just kill the drag.
             return false;
         }
-#endif
     }
 
     DragController& dragController = m_frame->page()->dragController();
@@ -3740,14 +3663,10 @@ void EventHandler::defaultEscapeEventHandler(KeyboardEvent* event)
 void EventHandler::capsLockStateMayHaveChanged()
 {
     if (Element* element = m_frame->document()->focusedElement()) {
-#ifdef BLINKIT_CRAWLER_ONLY
-        assert(false); // BKTODO: Not reached!
-#else
         if (LayoutObject* r = element->layoutObject()) {
             if (r->isTextField())
                 toLayoutTextControlSingleLine(r)->capsLockStateMayHaveChanged();
         }
-#endif
     }
 }
 
@@ -4244,5 +4163,6 @@ PlatformEvent::Modifiers EventHandler::accessKeyModifiers()
     return PlatformEvent::AltKey;
 #endif
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 } // namespace blink
