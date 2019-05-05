@@ -65,7 +65,6 @@ class DocumentLoader;
 class Frame;
 class FrameLoaderClient;
 class LocalFrame;
-class ProgressTracker;
 class ResourceError;
 class SerializedScriptValue;
 class SubstituteData;
@@ -88,8 +87,6 @@ public:
     ResourceRequest resourceRequestForReload(FrameLoadType, const KURL& overrideURL = KURL(),
         ClientRedirectPolicy = NotClientRedirect);
 
-    ProgressTracker& progress() const { return *m_progressTracker; }
-
     // Starts a load. It will eventually call startLoad() or
     // loadInSameDocument(). For history navigations or reloads, an appropriate
     // FrameLoadType should be given. Otherwise, FrameLoadTypeStandard should be
@@ -106,8 +103,6 @@ public:
 
     // FIXME: clear() is trying to do too many things. We should break it down into smaller functions.
     void clear();
-
-    void replaceDocumentWhileExecutingJavaScriptURL(const String& source, Document* ownerDocument);
 
     // Sets a timer to notify the client that the initial empty document has
     // been accessed, and thus it is no longer safe to show a provisional URL
@@ -175,8 +170,6 @@ public:
 
     void applyUserAgent(ResourceRequest&);
 
-    bool shouldInterruptLoadForXFrameOptions(const String&, const KURL&, unsigned long requestIdentifier);
-
     bool allAncestorsAreComplete() const; // including this
 
     bool shouldClose(bool isReload = false);
@@ -201,11 +194,9 @@ private:
 
     bool prepareRequestForThisFrame(FrameLoadRequest&);
     static void setReferrerForFrameRequest(ResourceRequest&, ShouldSendReferrer, Document*);
-    FrameLoadType determineFrameLoadType(const FrameLoadRequest&);
 
     SubstituteData defaultSubstituteDataForURL(const KURL&);
 
-    bool shouldPerformFragmentNavigation(bool isFormSubmission, const String& httpMethod, FrameLoadType, const KURL&);
     void processFragment(const KURL&, LoadStartType);
 
     void startLoad(FrameLoadRequest&, FrameLoadType, NavigationPolicy);
@@ -229,8 +220,6 @@ private:
     // header dependencies unless performance testing proves otherwise.
     // Some of these could be lazily created for memory savings on devices.
     mutable FrameLoaderStateMachine m_stateMachine;
-
-    OwnPtrWillBeMember<ProgressTracker> m_progressTracker;
 
     FrameLoadType m_loadType;
 
