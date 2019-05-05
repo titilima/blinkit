@@ -954,14 +954,4 @@ bool FrameLoader::shouldEnforceStrictMixedContentChecking() const
     return false;
 }
 
-SecurityContext::InsecureRequestsPolicy FrameLoader::insecureRequestsPolicy() const
-{
-    return SecurityContext::InsecureRequestsDoNotUpgrade;
-}
-
-SecurityContext::InsecureNavigationsSet* FrameLoader::insecureNavigationsToUpgrade() const
-{
-    return nullptr;
-}
-
 } // namespace blink
