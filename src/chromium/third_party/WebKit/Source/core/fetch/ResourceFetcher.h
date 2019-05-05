@@ -64,7 +64,6 @@ class RawResource;
 class ScriptResource;
 class XSLStyleSheetResource;
 class KURL;
-class ResourceTimingInfo;
 class ResourceLoaderSet;
 
 // The ResourceFetcher provides a per-context interface to the MemoryCache
@@ -167,7 +166,6 @@ private:
 
     void initializeRevalidation(const FetchRequest&, Resource*);
     ResourcePtr<Resource> createResourceForLoading(FetchRequest&, const String& charset, const ResourceFactory&);
-    void storeResourceTimingInitiatorInformation(Resource*);
     ResourcePtr<Resource> preCacheData(const FetchRequest&, const ResourceFactory&, const SubstituteData&);
 
     enum RevalidationPolicy { Use, Revalidate, Reload, Load };
@@ -178,8 +176,6 @@ private:
     void initializeResourceRequest(ResourceRequest&, Resource::Type);
 
     static bool resourceNeedsLoad(Resource*, const FetchRequest&, RevalidationPolicy);
-
-    void resourceTimingReportTimerFired(Timer<ResourceFetcher>*);
 
     void reloadImagesIfNotDeferred();
 
@@ -198,15 +194,6 @@ private:
     // is revalidated. What we really want to hold here is not the ResourcePtr
     // but the underlying Resource.
     OwnPtrWillBeMember<WillBeHeapListHashSet<RawPtrWillBeMember<Resource>>> m_preloads;
-
-    Timer<ResourceFetcher> m_resourceTimingReportTimer;
-
-    // We intentionally use a Member instead of a ResourcePtr.
-    // See the comment on m_preloads.
-    using ResourceTimingInfoMap = WillBeHeapHashMap<RawPtrWillBeMember<Resource>, OwnPtr<ResourceTimingInfo>>;
-    ResourceTimingInfoMap m_resourceTimingInfoMap;
-
-    Vector<OwnPtr<ResourceTimingInfo>> m_scheduledResourceTimingReports;
 
     Member<ResourceLoaderSet> m_loaders;
     Member<ResourceLoaderSet> m_nonBlockingLoaders;

@@ -48,7 +48,6 @@
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/TraceEvent.h"
 #include "platform/TracedValue.h"
-#include "platform/network/ResourceTimingInfo.h"
 #include "platform/weborigin/KnownPorts.h"
 #include "platform/weborigin/SecurityOrigin.h"
 #include "platform/weborigin/SecurityPolicy.h"
@@ -123,18 +122,6 @@ ResourceLoadPriority ResourceFetcher::loadPriority(Resource::Type type, const Fe
     return context().modifyPriorityForExperiments(typeToPriority(type), type, request, visibility);
 }
 
-static void populateResourceTiming(ResourceTimingInfo* info, Resource* resource, bool clearLoadTimings)
-{
-    info->setInitialRequest(resource->resourceRequest());
-    info->setFinalResponse(resource->response());
-    if (clearLoadTimings) {
-        info->clearLoadTimings();
-        info->setLoadFinishTime(info->initialTime());
-    } else {
-        info->setLoadFinishTime(resource->loadFinishTime());
-    }
-}
-
 static WebURLRequest::RequestContext requestContextFromType(bool isMainFrame, Resource::Type type)
 {
     switch (type) {
@@ -176,7 +163,6 @@ static WebURLRequest::RequestContext requestContextFromType(bool isMainFrame, Re
 
 ResourceFetcher::ResourceFetcher(FetchContext* context)
     : m_context(context)
-    , m_resourceTimingReportTimer(this, &ResourceFetcher::resourceTimingReportTimerFired)
     , m_autoLoadImages(true)
     , m_imagesEnabled(true)
     , m_allowStaleResources(false)
@@ -261,15 +247,6 @@ void ResourceFetcher::requestLoadStarted(Resource* resource, const FetchRequest&
     if (isStaticData)
         return;
 
-    if (type == ResourceLoadingFromCache && !resource->stillNeedsLoad() && !m_validatedURLs.contains(request.resourceRequest().url())) {
-        // Resources loaded from memory cache should be reported the first time they're used.
-        OwnPtr<ResourceTimingInfo> info = ResourceTimingInfo::create(request.options().initiatorInfo.name, monotonicallyIncreasingTime(), resource->type() == Resource::MainResource);
-        populateResourceTiming(info.get(), resource, true);
-        m_scheduledResourceTimingReports.append(info.release());
-        if (!m_resourceTimingReportTimer.isActive())
-            m_resourceTimingReportTimer.startOneShot(0, BLINK_FROM_HERE);
-    }
-
     if (m_validatedURLs.size() >= kMaxValidatedURLsSize) {
         m_validatedURLs.clear();
     }
@@ -349,8 +326,6 @@ void ResourceFetcher::moveCachedNonBlockingResourceToBlocking(Resource* resource
 ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, const ResourceFactory& factory, const SubstituteData& substituteData)
 {
     ASSERT(request.options().synchronousPolicy == RequestAsynchronously || factory.type() == Resource::Raw || factory.type() == Resource::XSLStyleSheet);
-
-    context().upgradeInsecureRequest(request);
 
     KURL url = request.resourceRequest().url();
     TRACE_EVENT1("blink", "ResourceFetcher::requestResource", "url", urlForTraceEvent(url));
@@ -456,15 +431,6 @@ ResourcePtr<Resource> ResourceFetcher::requestResource(FetchRequest& request, co
     return resource;
 }
 
-void ResourceFetcher::resourceTimingReportTimerFired(Timer<ResourceFetcher>* timer)
-{
-    ASSERT_UNUSED(timer, timer == &m_resourceTimingReportTimer);
-    Vector<OwnPtr<ResourceTimingInfo>> timingReports;
-    timingReports.swap(m_scheduledResourceTimingReports);
-    for (const auto& timingInfo : timingReports)
-        context().addResourceTiming(*timingInfo);
-}
-
 void ResourceFetcher::determineRequestContext(ResourceRequest& request, Resource::Type type, bool isMainFrame)
 {
     WebURLRequest::RequestContext requestContext = requestContextFromType(isMainFrame, type);
@@ -535,23 +501,6 @@ ResourcePtr<Resource> ResourceFetcher::createResourceForLoading(FetchRequest& re
 
     memoryCache()->add(resource.get());
     return resource;
-}
-
-void ResourceFetcher::storeResourceTimingInitiatorInformation(Resource* resource)
-{
-    if (resource->options().initiatorInfo.name == FetchInitiatorTypeNames::internal)
-        return;
-
-    OwnPtr<ResourceTimingInfo> info = ResourceTimingInfo::create(resource->options().initiatorInfo.name, monotonicallyIncreasingTime(), resource->type() == Resource::MainResource);
-
-    if (resource->isCacheValidator()) {
-        const AtomicString& timingAllowOrigin = resource->response().httpHeaderField(HTTPNames::Timing_Allow_Origin);
-        if (!timingAllowOrigin.isEmpty())
-            info->setOriginalTimingAllowOrigin(timingAllowOrigin);
-    }
-
-    if (resource->type() != Resource::MainResource || context().updateTimingInfoForIFrameNavigation(info.get()))
-        m_resourceTimingInfoMap.add(resource, info.release());
 }
 
 ResourceFetcher::RevalidationPolicy ResourceFetcher::determineRevalidationPolicy(Resource::Type type, const FetchRequest& fetchRequest, Resource* existingResource, bool isStaticData) const
@@ -776,9 +725,7 @@ void ResourceFetcher::reloadImagesIfNotDeferred()
 
 void ResourceFetcher::redirectReceived(Resource* resource, const ResourceResponse& redirectResponse)
 {
-    ResourceTimingInfoMap::iterator it = m_resourceTimingInfoMap.find(resource);
-    if (it != m_resourceTimingInfoMap.end())
-        it->value->addRedirect(redirectResponse);
+    // Nothing to do.
 }
 
 void ResourceFetcher::didLoadResource(Resource* resource)
@@ -841,17 +788,6 @@ void ResourceFetcher::didFinishLoading(Resource* resource, double finishTime, in
     TRACE_EVENT_ASYNC_END0("blink.net", "Resource", resource);
     willTerminateResourceLoader(resource->loader());
 
-    if (resource && resource->response().isHTTP() && resource->response().httpStatusCode() < 400) {
-        ResourceTimingInfoMap::iterator it = m_resourceTimingInfoMap.find(resource);
-        if (it != m_resourceTimingInfoMap.end()) {
-            OwnPtr<ResourceTimingInfo> info = it->value.release();
-            m_resourceTimingInfoMap.remove(it);
-            populateResourceTiming(info.get(), resource, false);
-            if (resource->options().requestInitiatorContext == DocumentContext)
-                context().addResourceTiming(*info);
-            resource->reportResourceTimingToClients(*info);
-        }
-    }
     context().dispatchDidFinishLoading(resource->identifier(), finishTime, encodedDataLength);
 }
 
@@ -935,7 +871,6 @@ void ResourceFetcher::willTerminateResourceLoader(ResourceLoader* loader)
 void ResourceFetcher::willStartLoadingResource(Resource* resource, ResourceRequest& request)
 {
     context().willStartLoadingResource(request);
-    storeResourceTimingInitiatorInformation(resource);
     TRACE_EVENT_ASYNC_BEGIN2("blink.net", "Resource", resource, "url", resource->url().string().ascii(), "priority", resource->resourceRequest().priority());
 }
 
@@ -1120,7 +1055,6 @@ DEFINE_TRACE(ResourceFetcher)
 #if ENABLE(OILPAN)
     visitor->trace(m_documentResources);
     visitor->trace(m_preloads);
-    visitor->trace(m_resourceTimingInfoMap);
 #endif
 }
 
