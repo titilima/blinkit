@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: NodeRareData.h
+// Description: NodeRareData Class
+//      Author: Ziming Li
+//     Created: 2019-05-06
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2008 David Smith <catfish.man@gmail.com>
@@ -88,15 +99,6 @@ public:
         return *m_mutationObserverData;
     }
 
-    unsigned connectedSubframeCount() const { return m_connectedFrameCount; }
-    void incrementConnectedSubframeCount(unsigned amount);
-    void decrementConnectedSubframeCount(unsigned amount)
-    {
-        ASSERT(m_connectedFrameCount);
-        ASSERT(amount <= m_connectedFrameCount);
-        m_connectedFrameCount -= amount;
-    }
-
     bool hasElementFlag(ElementFlags mask) const { return m_elementFlags & mask; }
     void setElementFlag(ElementFlags mask, bool value) { m_elementFlags = (m_elementFlags & ~mask) | (-(int32_t)value & mask); }
     void clearElementFlag(ElementFlags mask) { m_elementFlags &= ~mask; }
@@ -133,7 +135,7 @@ private:
     OwnPtrWillBeMember<NodeListsNodeData> m_nodeLists;
     OwnPtrWillBeMember<NodeMutationObserverData> m_mutationObserverData;
 
-    unsigned m_connectedFrameCount : ConnectedFrameCountBits;
+    unsigned m_connectedFrameCount : ConnectedFrameCountBits; // Unused
     unsigned m_elementFlags : NumberOfElementFlags;
     unsigned m_restyleFlags : NumberOfDynamicRestyleFlags;
 protected:

@@ -2047,34 +2047,6 @@ void Node::removedLastRef()
 }
 #endif
 
-unsigned Node::connectedSubframeCount() const
-{
-    return hasRareData() ? rareData()->connectedSubframeCount() : 0;
-}
-
-void Node::incrementConnectedSubframeCount(unsigned amount)
-{
-    ASSERT(isContainerNode());
-    ensureRareData().incrementConnectedSubframeCount(amount);
-}
-
-void Node::decrementConnectedSubframeCount(unsigned amount)
-{
-    rareData()->decrementConnectedSubframeCount(amount);
-}
-
-void Node::updateAncestorConnectedSubframeCountForInsertion() const
-{
-    unsigned count = connectedSubframeCount();
-
-    if (!count)
-        return;
-
-    ScriptForbiddenScope forbidScriptDuringRawIteration;
-    for (Node* node = parentOrShadowHostNode(); node; node = node->parentOrShadowHostNode())
-        node->incrementConnectedSubframeCount(count);
-}
-
 #ifndef BLINKIT_CRAWLER_ONLY
 PassRefPtrWillBeRawPtr<StaticNodeList> Node::getDestinationInsertionPoints()
 {

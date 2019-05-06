@@ -696,11 +696,6 @@ public:
     void unregisterTransientMutationObserver(MutationObserverRegistration*);
     void notifyMutationObserversNodeWillDetach();
 
-    unsigned connectedSubframeCount() const;
-    void incrementConnectedSubframeCount(unsigned amount = 1);
-    void decrementConnectedSubframeCount(unsigned amount = 1);
-    void updateAncestorConnectedSubframeCountForInsertion() const;
-
 #ifndef BLINKIT_CRAWLER_ONLY
     PassRefPtrWillBeRawPtr<StaticNodeList> getDestinationInsertionPoints();
     HTMLSlotElement* assignedSlot() const;
