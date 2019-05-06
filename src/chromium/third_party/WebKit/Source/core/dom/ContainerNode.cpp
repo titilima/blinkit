@@ -34,7 +34,6 @@
 #include "core/dom/ContainerNode.h"
 
 #include "bindings/core/v8/ExceptionState.h"
-#include "core/dom/ChildFrameDisconnector.h"
 #include "core/dom/ChildListMutationScope.h"
 #include "core/dom/ClassCollection.h"
 #include "core/dom/ElementTraversal.h"
@@ -53,7 +52,6 @@
 #include "core/events/MutationEvent.h"
 #include "core/frame/FrameView.h"
 #include "core/html/HTMLCollection.h"
-#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/HTMLTagCollection.h"
 #include "core/html/RadioNodeList.h"
 #include "core/inspector/InspectorInstrumentation.h"
@@ -88,7 +86,6 @@ static void collectChildrenAndRemoveFromOldParent(Node& node, NodeVector& nodes,
 #if !ENABLE(OILPAN)
 void ContainerNode::removeDetachedChildren()
 {
-    ASSERT(!connectedSubframeCount());
     ASSERT(needsAttach());
     removeDetachedChildrenInContainer(*this);
 }
@@ -126,8 +123,13 @@ bool ContainerNode::isChildTypeAllowed(const Node& child) const
 
 bool ContainerNode::containsConsideringHostElements(const Node& newChild) const
 {
-    if (isInShadowTree() || document().isTemplateDocument())
-        return newChild.containsIncludingHostElements(*this);
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+    {
+        if (isInShadowTree() || document().isTemplateDocument())
+            return newChild.containsIncludingHostElements(*this);
+    }
+#endif
     return newChild.contains(this);
 }
 
@@ -337,7 +339,6 @@ void ContainerNode::parserInsertBefore(PassRefPtrWillBeRawPtr<Node> newChild, No
 
         treeScope().adoptIfNeeded(*newChild);
         insertBeforeCommon(nextChild, *newChild);
-        newChild->updateAncestorConnectedSubframeCountForInsertion();
         ChildListMutationScope(*this).childAdded(*newChild);
     }
 
@@ -448,7 +449,6 @@ void ContainerNode::willRemoveChild(Node& child)
     ChildListMutationScope(*this).willRemoveChild(child);
     child.notifyMutationObserversNodeWillDetach();
     dispatchChildRemovalEvents(child);
-    ChildFrameDisconnector(child).disconnect();
     if (document() != child.document()) {
         // |child| was moved another document by DOM mutation event handler.
         return;
@@ -476,8 +476,6 @@ void ContainerNode::willRemoveChildren()
         child.notifyMutationObserversNodeWillDetach();
         dispatchChildRemovalEvents(child);
     }
-
-    ChildFrameDisconnector(*this).disconnect(ChildFrameDisconnector::DescendantsOnly);
 }
 
 #if !ENABLE(OILPAN)
@@ -596,7 +594,6 @@ PassRefPtrWillBeRawPtr<Node> ContainerNode::removeChild(PassRefPtrWillBeRawPtr<N
     }
 
     {
-        HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
         DocumentOrderedMap::RemoveScope treeRemoveScope;
 
         Node* prev = child->previousSibling();
@@ -641,17 +638,12 @@ void ContainerNode::parserRemoveChild(Node& oldChild)
     ASSERT(oldChild.parentNode() == this);
     ASSERT(!oldChild.isDocumentFragment());
 
-    // This may cause arbitrary Javascript execution via onunload handlers.
-    if (oldChild.connectedSubframeCount())
-        ChildFrameDisconnector(oldChild).disconnect();
-
     if (oldChild.parentNode() != this)
         return;
 
     ChildListMutationScope(*this).willRemoveChild(oldChild);
     oldChild.notifyMutationObserversNodeWillDetach();
 
-    HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
     DocumentOrderedMap::RemoveScope treeRemoveScope;
 
     Node* prev = oldChild.previousSibling();
@@ -676,20 +668,14 @@ void ContainerNode::removeChildren(SubtreeModificationAction action)
     // and remove... e.g. stop loading frames, fire unload events.
     willRemoveChildren();
 
-    {
-        // Removing focus can cause frames to load, either via events (focusout, blur)
-        // or widget updates (e.g., for <embed>).
-        SubframeLoadingDisabler disabler(*this);
+    // Exclude this node when looking for removed focusedElement since only
+    // children will be removed.
+    // This must be later than willRemoveChildren, which might change focus
+    // state of a child.
+    document().removeFocusedElementOfSubtree(this, true);
 
-        // Exclude this node when looking for removed focusedElement since only
-        // children will be removed.
-        // This must be later than willRemoveChildren, which might change focus
-        // state of a child.
-        document().removeFocusedElementOfSubtree(this, true);
-
-        // Removing a node from a selection can cause widget updates.
-        document().nodeChildrenWillBeRemoved(*this);
-    }
+    // Removing a node from a selection can cause widget updates.
+    document().nodeChildrenWillBeRemoved(*this);
 
 #if !ENABLE(OILPAN)
     // FIXME: Remove this NodeVector. Right now WebPluginContainerImpl::m_element is a
@@ -700,7 +686,9 @@ void ContainerNode::removeChildren(SubtreeModificationAction action)
     NodeVector removedChildren;
 #endif
     {
+#ifndef BLINKIT_CRAWLER_ONLY
         HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
+#endif
         DocumentOrderedMap::RemoveScope treeRemoveScope;
         {
             EventDispatchForbiddenScope assertNoEventDispatch;
@@ -795,7 +783,7 @@ void ContainerNode::parserAppendChild(PassRefPtrWillBeRawPtr<Node> newChild)
 {
     ASSERT(newChild);
     ASSERT(!newChild->isDocumentFragment());
-    ASSERT(!isHTMLTemplateElement(this));
+    ASSERT(!isHTMLTemplateElement(this) || ForCrawler());
 
     if (!checkParserAcceptChild(*newChild))
         return;
@@ -817,7 +805,6 @@ void ContainerNode::parserAppendChild(PassRefPtrWillBeRawPtr<Node> newChild)
 
         treeScope().adoptIfNeeded(*newChild);
         appendChildCommon(*newChild);
-        newChild->updateAncestorConnectedSubframeCountForInsertion();
         ChildListMutationScope(*this).childAdded(*newChild);
     }
 
@@ -857,8 +844,10 @@ void ContainerNode::notifyNodeInsertedInternal(Node& root, NodeVector& postInser
             continue;
         if (Node::InsertionShouldCallDidNotifySubtreeInsertions == node.insertedInto(this))
             postInsertionNotificationTargets.append(&node);
+#ifndef BLINKIT_CRAWLER_ONLY
         for (ShadowRoot* shadowRoot = node.youngestShadowRoot(); shadowRoot; shadowRoot = shadowRoot->olderShadowRoot())
             notifyNodeInsertedInternal(*shadowRoot, postInsertionNotificationTargets);
+#endif
     }
 }
 
@@ -874,8 +863,10 @@ void ContainerNode::notifyNodeRemoved(Node& root)
         if (!node.isContainerNode() && !node.isInTreeScope())
             continue;
         node.removedFrom(this);
+#ifndef BLINKIT_CRAWLER_ONLY
         for (ShadowRoot* shadowRoot = node.youngestShadowRoot(); shadowRoot; shadowRoot = shadowRoot->olderShadowRoot())
             notifyNodeRemoved(*shadowRoot);
+#endif
     }
 }
 
@@ -926,12 +917,9 @@ void ContainerNode::cloneChildNodes(ContainerNode *clone)
         clone->appendChild(n->cloneNode(true), exceptionState);
 }
 
-
+#ifndef BLINKIT_CRAWLER_ONLY
 bool ContainerNode::getUpperLeftCorner(FloatPoint& point) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (!layoutObject())
         return false;
 
@@ -992,7 +980,6 @@ bool ContainerNode::getUpperLeftCorner(FloatPoint& point) const
         point = FloatPoint(0, document().view()->contentsHeight());
         return true;
     }
-#endif // BLINKIT_CRAWLER_ONLY
     return false;
 }
 
@@ -1017,10 +1004,6 @@ static inline LayoutObject* endOfContinuations(LayoutObject* layoutObject)
 
 bool ContainerNode::getLowerRightCorner(FloatPoint& point) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return false;
-#else
     if (!layoutObject())
         return false;
 
@@ -1083,7 +1066,6 @@ bool ContainerNode::getLowerRightCorner(FloatPoint& point) const
         }
     }
     return true;
-#endif
 }
 
 // FIXME: This override is only needed for inline anchors without an
@@ -1112,9 +1094,6 @@ LayoutRect ContainerNode::boundingBox() const
 // independent of the focused element changing.
 void ContainerNode::focusStateChanged()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     // If we're just changing the window's active state and the focused node has no
     // layoutObject we can just ignore the state change.
     if (!layoutObject())
@@ -1128,7 +1107,6 @@ void ContainerNode::focusStateChanged()
         setNeedsStyleRecalc(LocalStyleChange, StyleChangeReasonForTracing::createWithExtraData(StyleChangeReason::PseudoClass, StyleChangeExtraData::Focus));
 
     LayoutTheme::theme().controlStateChanged(*layoutObject(), FocusControlState);
-#endif
 }
 
 void ContainerNode::setFocus(bool received)
@@ -1155,9 +1133,6 @@ void ContainerNode::setFocus(bool received)
 
     focusStateChanged();
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (layoutObject() || received)
         return;
 
@@ -1166,7 +1141,6 @@ void ContainerNode::setFocus(bool received)
         toElement(this)->pseudoStateChanged(CSSSelector::PseudoFocus);
     else
         setNeedsStyleRecalc(LocalStyleChange, StyleChangeReasonForTracing::createWithExtraData(StyleChangeReason::PseudoClass, StyleChangeExtraData::Focus));
-#endif
 }
 
 void ContainerNode::setActive(bool down)
@@ -1176,9 +1150,6 @@ void ContainerNode::setActive(bool down)
 
     Node::setActive(down);
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     // FIXME: Why does this not need to handle the display: none transition like :hover does?
     if (layoutObject()) {
         if (computedStyle()->affectedByActive() && computedStyle()->hasPseudoStyle(FIRST_LETTER))
@@ -1190,7 +1161,6 @@ void ContainerNode::setActive(bool down)
 
         LayoutTheme::theme().controlStateChanged(*layoutObject(), PressedControlState);
     }
-#endif
 }
 
 void ContainerNode::setHovered(bool over)
@@ -1200,9 +1170,6 @@ void ContainerNode::setHovered(bool over)
 
     Node::setHovered(over);
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     // If :hover sets display: none we lose our hover but still need to recalc our style.
     if (!layoutObject()) {
         if (over)
@@ -1222,8 +1189,8 @@ void ContainerNode::setHovered(bool over)
         setNeedsStyleRecalc(LocalStyleChange, StyleChangeReasonForTracing::createWithExtraData(StyleChangeReason::PseudoClass, StyleChangeExtraData::Hover));
 
     LayoutTheme::theme().controlStateChanged(*layoutObject(), HoverControlState);
-#endif
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 PassRefPtrWillBeRawPtr<HTMLCollection> ContainerNode::children()
 {
@@ -1347,11 +1314,9 @@ void ContainerNode::setRestyleFlag(DynamicRestyleFlags mask)
     ensureRareData().setRestyleFlag(mask);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void ContainerNode::recalcChildStyle(StyleRecalcChange change)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     ASSERT(document().inStyleRecalc());
     ASSERT(change >= UpdatePseudoElements || childNeedsStyleRecalc());
     ASSERT(!needsStyleRecalc());
@@ -1379,14 +1344,13 @@ void ContainerNode::recalcChildStyle(StyleRecalcChange change)
                 lastTextNode = nullptr;
         }
     }
-#endif
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 void ContainerNode::checkForChildrenAdjacentRuleChanges()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
+    ASSERT(false); // BKTODO:
+#if 0
     bool hasDirectAdjacentRules = childrenAffectedByDirectAdjacentRules();
     bool hasIndirectAdjacentRules = childrenAffectedByIndirectAdjacentRules();
 
@@ -1413,6 +1377,7 @@ void ContainerNode::checkForChildrenAdjacentRuleChanges()
 #endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void ContainerNode::checkForSiblingStyleChanges(SiblingCheckType changeType, Node* nodeBeforeChange, Node* nodeAfterChange)
 {
     if (!inActiveDocument() || document().hasPendingForcedStyleRecalc() || styleChangeType() >= SubtreeStyleChange)
@@ -1482,6 +1447,7 @@ void ContainerNode::checkForSiblingStyleChanges(SiblingCheckType changeType, Nod
             elementAfterChange->setNeedsStyleRecalc(SubtreeStyleChange, StyleChangeReasonForTracing::create(StyleChangeReason::SiblingSelector));
     }
 }
+#endif
 
 void ContainerNode::invalidateNodeListCachesInAncestors(const QualifiedName* attrName, Element* attributeOwnerElement)
 {
@@ -1542,12 +1508,14 @@ PassRefPtrWillBeRawPtr<ClassCollection> ContainerNode::getElementsByClassName(co
     return ensureCachedCollection<ClassCollection>(ClassCollectionType, classNames);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 PassRefPtrWillBeRawPtr<RadioNodeList> ContainerNode::radioNodeList(const AtomicString& name, bool onlyMatchImgElements)
 {
     ASSERT(isHTMLFormElement(this) || isHTMLFieldSetElement(this));
     CollectionType type = onlyMatchImgElements ? RadioImgNodeListType : RadioNodeListType;
     return ensureCachedCollection<RadioNodeList>(type, name);
 }
+#endif
 
 Element* ContainerNode::getElementById(const AtomicString& id) const
 {

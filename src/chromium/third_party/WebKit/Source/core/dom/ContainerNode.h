@@ -108,7 +108,9 @@ public:
     PassRefPtrWillBeRawPtr<TagCollection> getElementsByTagNameNS(const AtomicString& namespaceURI, const AtomicString& localName);
     PassRefPtrWillBeRawPtr<NameNodeList> getElementsByName(const AtomicString& elementName);
     PassRefPtrWillBeRawPtr<ClassCollection> getElementsByClassName(const AtomicString& classNames);
+#ifndef BLINKIT_CRAWLER_ONLY
     PassRefPtrWillBeRawPtr<RadioNodeList> radioNodeList(const AtomicString&, bool onlyMatchImgElements = false);
+#endif
 
     // These methods are only used during parsing.
     // They don't send DOM mutation events or accept DocumentFragments.
@@ -123,11 +125,13 @@ public:
 
     void attach(const AttachContext& = AttachContext()) override;
     void detach(const AttachContext& = AttachContext()) override;
+#ifndef BLINKIT_CRAWLER_ONLY
     LayoutRect boundingBox() const final;
     void setFocus(bool) override;
     void focusStateChanged();
     void setActive(bool = true) override;
     void setHovered(bool = true) override;
+#endif
 
     bool childrenOrSiblingsAffectedByFocus() const { return hasRestyleFlag(ChildrenOrSiblingsAffectedByFocus); }
     void setChildrenOrSiblingsAffectedByFocus() { setRestyleFlag(ChildrenOrSiblingsAffectedByFocus); }
@@ -172,9 +176,11 @@ public:
     // FIXME: These methods should all be renamed to something better than "check",
     // since it's not clear that they alter the style bits of siblings and children.
     void checkForChildrenAdjacentRuleChanges();
+#ifndef BLINKIT_CRAWLER_ONLY
     enum SiblingCheckType { FinishedParsingChildren, SiblingElementInserted, SiblingElementRemoved };
     void checkForSiblingStyleChanges(SiblingCheckType, Node* nodeBeforeChange, Node* nodeAfterChange);
     void recalcChildStyle(StyleRecalcChange);
+#endif
 
     bool childrenSupportStyleSharing() const { return !hasRestyleFlags(); }
 
@@ -275,8 +281,10 @@ private:
     void attachChildren(const AttachContext& = AttachContext());
     void detachChildren(const AttachContext& = AttachContext());
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool getUpperLeftCorner(FloatPoint&) const;
     bool getLowerRightCorner(FloatPoint&) const;
+#endif
 
     RawPtrWillBeMember<Node> m_firstChild;
     RawPtrWillBeMember<Node> m_lastChild;
