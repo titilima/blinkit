@@ -85,7 +85,6 @@
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/LocalFrame.h"
 #include "core/html/HTMLDialogElement.h"
-#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/HTMLSlotElement.h"
 #include "core/input/EventHandler.h"
 #include "core/layout/LayoutBox.h"
@@ -269,7 +268,10 @@ Node::Node(TreeScope* treeScope, ConstructionType type)
     , m_previous(nullptr)
     , m_next(nullptr)
 {
-    ASSERT(m_treeScope || type == CreateDocument || type == CreateShadowRoot);
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(ForCrawler());
+#endif
+    ASSERT(m_treeScope || CreateDocument == (type & CreateDocument) || type == CreateShadowRoot);
 #if !ENABLE(OILPAN)
     if (m_treeScope)
         m_treeScope->guardRef();
@@ -330,6 +332,11 @@ void Node::willBeDeletedFromDocument()
 
     if (!isTreeScopeInitialized())
         return;
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(ForCrawler());
+#else
+    if (ForCrawler())
+        return;
 
     Document& document = this->document();
 
@@ -337,6 +344,7 @@ void Node::willBeDeletedFromDocument()
         document.frameHost()->eventHandlerRegistry().didRemoveAllEventHandlers(*this);
 
     document.markers().removeMarkers(this);
+#endif
 }
 #endif
 
@@ -416,6 +424,7 @@ PassRefPtrWillBeRawPtr<NodeList> Node::childNodes()
     return ensureRareData().ensureNodeLists().ensureEmptyChildNodeList(*this);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 Node* Node::pseudoAwarePreviousSibling() const
 {
     if (parentElement() && !previousSibling()) {
@@ -471,6 +480,7 @@ Node* Node::pseudoAwareLastChild() const
 
     return lastChild();
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 PassRefPtrWillBeRawPtr<Node> Node::insertBefore(PassRefPtrWillBeRawPtr<Node> newChild, Node* refChild, ExceptionState& exceptionState)
 {
@@ -535,6 +545,7 @@ void Node::normalize()
     }
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 bool Node::isContentEditable(UserSelectAllTreatment treatment) const
 {
     document().updateLayoutTreeIfNeeded();
@@ -549,9 +560,6 @@ bool Node::isContentRichlyEditable() const
 
 bool Node::hasEditableStyle(EditableLevel editableLevel, UserSelectAllTreatment treatment) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (isPseudoElement())
         return false;
 
@@ -577,7 +585,6 @@ bool Node::hasEditableStyle(EditableLevel editableLevel, UserSelectAllTreatment 
             return false;
         }
     }
-#endif
 
     return false;
 }
@@ -594,7 +601,6 @@ bool Node::isEditableToAccessibility(EditableLevel editableLevel) const
     return false;
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 LayoutBox* Node::layoutBox() const
 {
     LayoutObject* layoutObject = this->layoutObject();
@@ -606,16 +612,11 @@ LayoutBoxModelObject* Node::layoutBoxModelObject() const
     LayoutObject* layoutObject = this->layoutObject();
     return layoutObject && layoutObject->isBoxModelObject() ? toLayoutBoxModelObject(layoutObject) : nullptr;
 }
-#endif
 
 LayoutRect Node::boundingBox() const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (layoutObject())
         return LayoutRect(layoutObject()->absoluteBoundingBoxRect());
-#endif
     return LayoutRect();
 }
 
@@ -629,6 +630,7 @@ inline static ShadowRoot* oldestShadowRootFor(const Node* node)
     return nullptr;
 }
 #endif
+#endif // BLINKIT_CRAWLER_ONLY
 
 inline static Node& rootInTreeOfTrees(const Node& node)
 {
@@ -666,10 +668,12 @@ void Node::recalcDistribution()
 {
     ASSERT(childNeedsDistributionRecalc());
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (isElementNode()) {
         if (ElementShadow* shadow = toElement(this)->shadow())
             shadow->distributeIfNeeded();
     }
+#endif
 
     ASSERT(ScriptForbiddenScope::isScriptForbidden());
     for (Node* child = firstChild(); child; child = child->nextSibling()) {
@@ -677,10 +681,12 @@ void Node::recalcDistribution()
             child->recalcDistribution();
     }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     for (ShadowRoot* root = youngestShadowRoot(); root; root = root->olderShadowRoot()) {
         if (root->childNeedsDistributionRecalc())
             root->recalcDistribution();
     }
+#endif
 
     clearChildNeedsDistributionRecalc();
 }
@@ -726,9 +732,13 @@ void Node::markAncestorsWithChildNeedsStyleRecalc()
 {
     for (ContainerNode* p = parentOrShadowHostNode(); p && !p->childNeedsStyleRecalc(); p = p->parentOrShadowHostNode())
         p->setChildNeedsStyleRecalc();
-    document().scheduleLayoutTreeUpdateIfNeeded();
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+        document().scheduleLayoutTreeUpdateIfNeeded();
+#endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void Node::setNeedsStyleRecalc(StyleChangeType changeType, const StyleChangeReasonForTracing& reason)
 {
     ASSERT(changeType != NoStyleChange);
@@ -752,6 +762,7 @@ void Node::setNeedsStyleRecalc(StyleChangeType changeType, const StyleChangeReas
     if (isElementNode() && hasRareData())
         toElement(*this).setAnimationStyleChange(false);
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 void Node::clearNeedsStyleRecalc()
 {
@@ -759,8 +770,10 @@ void Node::clearNeedsStyleRecalc()
 
     clearSVGFilterNeedsLayerUpdate();
 
-    if (isElementNode() && hasRareData())
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler() && isElementNode() && hasRareData())
         toElement(*this).setAnimationStyleChange(false);
+#endif
 }
 
 bool Node::inActiveDocument() const
@@ -768,6 +781,7 @@ bool Node::inActiveDocument() const
     return inDocument() && document().isActive();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 Node* Node::focusDelegate()
 {
     return this;
@@ -786,6 +800,7 @@ bool Node::isInert() const
         return true;
     return document().ownerElement() && document().ownerElement()->isInert();
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 unsigned Node::nodeIndex() const
 {
@@ -829,6 +844,7 @@ bool Node::contains(const Node* node) const
     return this == node || node->isDescendantOf(this);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 bool Node::containsIncludingShadowDOM(const Node* node) const
 {
     if (!node)
@@ -855,6 +871,7 @@ bool Node::containsIncludingShadowDOM(const Node* node) const
 
     return false;
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 bool Node::containsIncludingHostElements(const Node& node) const
 {
@@ -944,11 +961,9 @@ void Node::detach(const AttachContext& context)
     clearChildNeedsStyleInvalidation();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void Node::reattachWhitespaceSiblingsIfNeeded(Text* start)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     ScriptForbiddenScope forbidScriptDuringRawIteration;
     for (Node* sibling = start; sibling; sibling = sibling->nextSibling()) {
         if (sibling->isTextNode() && toText(sibling)->containsOnlyWhitespace()) {
@@ -962,13 +977,13 @@ void Node::reattachWhitespaceSiblingsIfNeeded(Text* start)
             return;
         }
     }
-#endif
 }
 
 const ComputedStyle* Node::virtualEnsureComputedStyle(PseudoId pseudoElementSpecifier)
 {
     return parentOrShadowHostNode() ? parentOrShadowHostNode()->ensureComputedStyle(pseudoElementSpecifier) : nullptr;
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 int Node::maxCharacterOffset() const
 {
@@ -976,6 +991,7 @@ int Node::maxCharacterOffset() const
     return 0;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 // FIXME: Shouldn't these functions be in the editing code?  Code that asks questions about HTML in the core DOM class
 // is obviously misplaced.
 bool Node::canStartSelection() const
@@ -983,9 +999,6 @@ bool Node::canStartSelection() const
     if (hasEditableStyle())
         return true;
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     if (layoutObject()) {
         const ComputedStyle& style = layoutObject()->styleRef();
         // We allow selections to begin within an element that has -webkit-user-select: none set,
@@ -993,16 +1006,21 @@ bool Node::canStartSelection() const
         if (style.userDrag() == DRAG_ELEMENT && style.userSelect() == SELECT_NONE)
             return false;
     }
-#endif
     ContainerNode* parent = ComposedTreeTraversal::parent(*this);
     return parent ? parent->canStartSelection() : true;
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 bool Node::canParticipateInComposedTree() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    return true;
+#else
     return !isShadowRoot() && !isSlotOrActiveInsertionPoint();
+#endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 bool Node::isSlotOrActiveInsertionPoint() const
 {
     return isHTMLSlotElement(*this) || isActiveInsertionPoint(*this);
@@ -1037,14 +1055,18 @@ bool Node::isChildOfV0ShadowHost() const
     ElementShadow* parentShadow = parentElementShadow();
     return parentShadow && !parentShadow->isV1();
 }
+#endif
 
 Element* Node::shadowHost() const
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     if (ShadowRoot* root = containingShadowRoot())
         return root->host();
+#endif
     return nullptr;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 ShadowRoot* Node::containingShadowRoot() const
 {
     Node& root = treeScope().rootNode();
@@ -1116,6 +1138,7 @@ Element* Node::rootEditableElement() const
     }
     return toElement(const_cast<Node*>(result));
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 // FIXME: End of obviously misplaced HTML editing functions.  Try to move these out of Node.
 
@@ -1479,11 +1502,13 @@ unsigned short Node::compareDocumentPosition(const Node* otherNode, ShadowTreesT
                 if (!child1->isShadowRoot())
                     return Node::DOCUMENT_POSITION_PRECEDING | connection;
 
+#ifndef BLINKIT_CRAWLER_ONLY
                 for (const ShadowRoot* child = toShadowRoot(child2)->olderShadowRoot(); child; child = child->olderShadowRoot()) {
                     if (child == child1) {
                         return Node::DOCUMENT_POSITION_FOLLOWING | connection;
                     }
                 }
+#endif
 
                 return Node::DOCUMENT_POSITION_PRECEDING | connection;
             }
@@ -1539,235 +1564,7 @@ String Node::debugNodeName() const
     return nodeName();
 }
 
-#ifndef NDEBUG
-
-static void appendAttributeDesc(const Node* node, StringBuilder& stringBuilder, const QualifiedName& name, const char* attrDesc)
-{
-    if (!node->isElementNode())
-        return;
-
-    String attr = toElement(node)->getAttribute(name);
-    if (attr.isEmpty())
-        return;
-
-    stringBuilder.append(attrDesc);
-    stringBuilder.appendLiteral("=\"");
-    stringBuilder.append(attr);
-    stringBuilder.appendLiteral("\"");
-}
-
-void Node::showNode(const char* prefix) const
-{
-    if (!prefix)
-        prefix = "";
-    if (isTextNode()) {
-        String value = nodeValue();
-        value.replaceWithLiteral('\\', "\\\\");
-        value.replaceWithLiteral('\n', "\\n");
-        WTFLogAlways("%s%s\t%p \"%s\"\n", prefix, nodeName().utf8().data(), this, value.utf8().data());
-    } else {
-        StringBuilder attrs;
-        appendAttributeDesc(this, attrs, idAttr, " ID");
-        appendAttributeDesc(this, attrs, classAttr, " CLASS");
-        appendAttributeDesc(this, attrs, styleAttr, " STYLE");
-        WTFLogAlways("%s%s\t%p%s\n", prefix, nodeName().utf8().data(), this, attrs.toString().utf8().data());
-    }
-}
-
-void Node::showTreeForThis() const
-{
-    showTreeAndMark(this, "*");
-}
-
-void Node::showTreeForThisInComposedTree() const
-{
-    showTreeAndMarkInComposedTree(this, "*");
-}
-
-void Node::showNodePathForThis() const
-{
-    WillBeHeapVector<RawPtrWillBeMember<const Node>, 16> chain;
-    const Node* node = this;
-    while (node->parentOrShadowHostNode()) {
-        chain.append(node);
-        node = node->parentOrShadowHostNode();
-    }
-    for (unsigned index = chain.size(); index > 0; --index) {
-        const Node* node = chain[index - 1];
-        if (node->isShadowRoot()) {
-            int count = 0;
-            for (const ShadowRoot* shadowRoot = toShadowRoot(node)->olderShadowRoot(); shadowRoot; shadowRoot = shadowRoot->olderShadowRoot())
-                ++count;
-            WTFLogAlways("/#shadow-root[%d]", count);
-            continue;
-        }
-
-        switch (node->nodeType()) {
-        case ELEMENT_NODE: {
-            WTFLogAlways("/%s", node->nodeName().utf8().data());
-
-            const Element* element = toElement(node);
-            const AtomicString& idattr = element->getIdAttribute();
-            bool hasIdAttr = !idattr.isNull() && !idattr.isEmpty();
-            if (node->previousSibling() || node->nextSibling()) {
-                int count = 0;
-                for (const Node* previous = node->previousSibling(); previous; previous = previous->previousSibling()) {
-                    if (previous->nodeName() == node->nodeName()) {
-                        ++count;
-                    }
-                }
-                if (hasIdAttr)
-                    WTFLogAlways("[@id=\"%s\" and position()=%d]", idattr.utf8().data(), count);
-                else
-                    WTFLogAlways("[%d]", count);
-            } else if (hasIdAttr) {
-                WTFLogAlways("[@id=\"%s\"]", idattr.utf8().data());
-            }
-            break;
-        }
-        case TEXT_NODE:
-            WTFLogAlways("/text()");
-            break;
-        case ATTRIBUTE_NODE:
-            WTFLogAlways("/@%s", node->nodeName().utf8().data());
-            break;
-        default:
-            break;
-        }
-    }
-    WTFLogAlways("\n");
-}
-
-static void traverseTreeAndMark(const String& baseIndent, const Node* rootNode, const Node* markedNode1, const char* markedLabel1, const Node* markedNode2, const char* markedLabel2)
-{
-    for (const Node& node : NodeTraversal::inclusiveDescendantsOf(*rootNode)) {
-        StringBuilder indent;
-        if (node == markedNode1)
-            indent.append(markedLabel1);
-        if (node == markedNode2)
-            indent.append(markedLabel2);
-        indent.append(baseIndent);
-        for (const Node* tmpNode = &node; tmpNode && tmpNode != rootNode; tmpNode = tmpNode->parentOrShadowHostNode())
-            indent.append('\t');
-        node.showNode(indent.toString().utf8().data());
-        indent.append('\t');
-
-        if (node.isElementNode()) {
-            const Element& element = toElement(node);
-            if (Element* pseudo = element.pseudoElement(BEFORE))
-                traverseTreeAndMark(indent.toString(), pseudo, markedNode1, markedLabel1, markedNode2, markedLabel2);
-            if (Element* pseudo = element.pseudoElement(AFTER))
-                traverseTreeAndMark(indent.toString(), pseudo, markedNode1, markedLabel1, markedNode2, markedLabel2);
-            if (Element* pseudo = element.pseudoElement(FIRST_LETTER))
-                traverseTreeAndMark(indent.toString(), pseudo, markedNode1, markedLabel1, markedNode2, markedLabel2);
-            if (Element* pseudo = element.pseudoElement(BACKDROP))
-                traverseTreeAndMark(indent.toString(), pseudo, markedNode1, markedLabel1, markedNode2, markedLabel2);
-        }
-
-        if (node.isShadowRoot()) {
-            if (ShadowRoot* youngerShadowRoot = toShadowRoot(node).youngerShadowRoot())
-                traverseTreeAndMark(indent.toString(), youngerShadowRoot, markedNode1, markedLabel1, markedNode2, markedLabel2);
-        } else if (ShadowRoot* oldestShadowRoot = oldestShadowRootFor(&node)) {
-            traverseTreeAndMark(indent.toString(), oldestShadowRoot, markedNode1, markedLabel1, markedNode2, markedLabel2);
-        }
-    }
-}
-
-static void traverseTreeAndMarkInComposedTree(const String& baseIndent, const Node* rootNode, const Node* markedNode1, const char* markedLabel1, const Node* markedNode2, const char* markedLabel2)
-{
-    for (const Node* node = rootNode; node; node = ComposedTreeTraversal::nextSibling(*node)) {
-        StringBuilder indent;
-        if (node == markedNode1)
-            indent.append(markedLabel1);
-        if (node == markedNode2)
-            indent.append(markedLabel2);
-        indent.append(baseIndent);
-        node->showNode(indent.toString().utf8().data());
-        indent.append('\t');
-
-        Node* child = ComposedTreeTraversal::firstChild(*node);
-        if (child)
-            traverseTreeAndMarkInComposedTree(indent.toString(), child, markedNode1, markedLabel1, markedNode2, markedLabel2);
-    }
-}
-
-void Node::showTreeAndMark(const Node* markedNode1, const char* markedLabel1, const Node* markedNode2, const char* markedLabel2) const
-{
-    const Node* rootNode;
-    const Node* node = this;
-    while (node->parentOrShadowHostNode() && !isHTMLBodyElement(*node))
-        node = node->parentOrShadowHostNode();
-    rootNode = node;
-
-    String startingIndent;
-    traverseTreeAndMark(startingIndent, rootNode, markedNode1, markedLabel1, markedNode2, markedLabel2);
-}
-
-void Node::showTreeAndMarkInComposedTree(const Node* markedNode1, const char* markedLabel1, const Node* markedNode2, const char* markedLabel2) const
-{
-    const Node* rootNode;
-    const Node* node = this;
-    while (node->parentOrShadowHostNode() && !isHTMLBodyElement(*node))
-        node = node->parentOrShadowHostNode();
-    rootNode = node;
-
-    String startingIndent;
-    traverseTreeAndMarkInComposedTree(startingIndent, rootNode, markedNode1, markedLabel1, markedNode2, markedLabel2);
-}
-
-void Node::formatForDebugger(char* buffer, unsigned length) const
-{
-    String result;
-    String s;
-
-    s = nodeName();
-    if (s.isEmpty())
-        result = "<none>";
-    else
-        result = s;
-
-    strncpy(buffer, result.utf8().data(), length - 1);
-}
-
-static ContainerNode* parentOrShadowHostOrFrameOwner(const Node* node)
-{
-    ContainerNode* parent = node->parentOrShadowHostNode();
-    if (!parent && node->document().frame())
-        parent = node->document().frame()->deprecatedLocalOwner();
-    return parent;
-}
-
-static void showSubTreeAcrossFrame(const Node* node, const Node* markedNode, const String& indent)
-{
-    if (node == markedNode)
-        fputs("*", stderr);
-    fputs(indent.utf8().data(), stderr);
-    node->showNode();
-    if (node->isShadowRoot()) {
-        if (ShadowRoot* youngerShadowRoot = toShadowRoot(node)->youngerShadowRoot())
-            showSubTreeAcrossFrame(youngerShadowRoot, markedNode, indent + "\t");
-    } else {
-        if (node->isFrameOwnerElement())
-            showSubTreeAcrossFrame(toHTMLFrameOwnerElement(node)->contentDocument(), markedNode, indent + "\t");
-        if (ShadowRoot* oldestShadowRoot = oldestShadowRootFor(node))
-            showSubTreeAcrossFrame(oldestShadowRoot, markedNode, indent + "\t");
-    }
-    for (const Node* child = node->firstChild(); child; child = child->nextSibling())
-        showSubTreeAcrossFrame(child, markedNode, indent + "\t");
-}
-
-void Node::showTreeForThisAcrossFrame() const
-{
-    const Node* rootNode = this;
-    while (parentOrShadowHostOrFrameOwner(rootNode))
-        rootNode = parentOrShadowHostOrFrameOwner(rootNode);
-    showSubTreeAcrossFrame(rootNode, this, "");
-}
-
-#endif
-
-// --------
-
+#ifndef BLINKIT_CRAWLER_ONLY
 Element* Node::enclosingLinkEventParentOrSelf() const
 {
     const Node* result = nullptr;
@@ -1785,6 +1582,7 @@ Element* Node::enclosingLinkEventParentOrSelf() const
 
     return toElement(const_cast<Node*>(result));
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 const AtomicString& Node::interfaceName() const
 {
@@ -1798,6 +1596,8 @@ ExecutionContext* Node::executionContext() const
 
 void Node::didMoveToNewDocument(Document& oldDocument)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     TreeScopeAdopter::ensureDidMoveToNewDocumentWasCalled(oldDocument);
 
     if (const EventTargetData* eventTargetData = this->eventTargetData()) {
@@ -1828,6 +1628,7 @@ void Node::didMoveToNewDocument(Document& oldDocument)
         for (MutationObserverRegistration* registration : *transientMutationObserverRegistry())
             document().addMutationObserverTypes(registration->mutationTypes());
     }
+#endif
 }
 
 bool Node::addEventListenerInternal(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener> listener, const EventListenerOptions& options)
@@ -1836,8 +1637,10 @@ bool Node::addEventListenerInternal(const AtomicString& eventType, PassRefPtrWil
         return false;
 
     document().addListenerTypeIfNeeded(eventType);
+#ifndef BLINKIT_CRAWLER_ONLY
     if (FrameHost* frameHost = document().frameHost())
         frameHost->eventHandlerRegistry().didAddEventHandler(*this, eventType);
+#endif
 
     return true;
 }
@@ -1847,18 +1650,22 @@ bool Node::removeEventListenerInternal(const AtomicString& eventType, PassRefPtr
     if (!EventTarget::removeEventListenerInternal(eventType, listener, options))
         return false;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // FIXME: Notify Document that the listener has vanished. We need to keep track of a number of
     // listeners for each type, not just a bool - see https://bugs.webkit.org/show_bug.cgi?id=33861
     if (FrameHost* frameHost = document().frameHost())
         frameHost->eventHandlerRegistry().didRemoveEventHandler(*this, eventType);
+#endif
 
     return true;
 }
 
 void Node::removeAllEventListeners()
 {
-    if (hasEventListeners() && document().frameHost())
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (hasEventListeners() && !ForCrawler() && document().frameHost())
         document().frameHost()->eventHandlerRegistry().didRemoveAllEventHandlers(*this);
+#endif
     EventTarget::removeAllEventListeners();
 }
 
@@ -1867,8 +1674,13 @@ void Node::removeAllEventListenersRecursively()
     ScriptForbiddenScope forbidScriptDuringRawIteration;
     for (Node& node : NodeTraversal::startsAt(this)) {
         node.removeAllEventListeners();
-        for (ShadowRoot* root = node.youngestShadowRoot(); root; root = root->olderShadowRoot())
-            root->removeAllEventListenersRecursively();
+#ifndef BLINKIT_CRAWLER_ONLY
+        if (!ForCrawler())
+        {
+            for (ShadowRoot* root = node.youngestShadowRoot(); root; root = root->olderShadowRoot())
+                root->removeAllEventListenersRecursively();
+        }
+#endif
     }
 }
 
@@ -2077,6 +1889,7 @@ bool Node::dispatchDOMActivateEvent(int detail, PassRefPtrWillBeRawPtr<Event> un
     return event->defaultHandled();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 bool Node::dispatchMouseEvent(const PlatformMouseEvent& nativeEvent, const AtomicString& eventType,
     int detail, Node* relatedTarget)
 {
@@ -2088,6 +1901,7 @@ void Node::dispatchSimulatedClick(Event* underlyingEvent, SimulatedClickMouseEve
 {
     EventDispatcher::dispatchSimulatedClick(*this, underlyingEvent, eventOptions, scope);
 }
+#endif
 
 void Node::dispatchInputEvent()
 {
@@ -2096,11 +1910,9 @@ void Node::dispatchInputEvent()
 
 void Node::defaultEventHandler(Event* event)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (event->target() != this)
         return;
+#ifndef BLINKIT_CRAWLER_ONLY
     const AtomicString& eventType = event->type();
     if (eventType == EventTypeNames::keydown || eventType == EventTypeNames::keypress) {
         if (event->isKeyboardEvent()) {
@@ -2165,6 +1977,7 @@ void Node::willCallDefaultEventHandler(const Event&)
 {
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 bool Node::willRespondToMouseMoveEvents()
 {
     if (isDisabledFormControl(this))
@@ -2185,6 +1998,7 @@ bool Node::willRespondToTouchEvents()
         return false;
     return hasEventListeners(EventTypeNames::touchstart) || hasEventListeners(EventTypeNames::touchmove) || hasEventListeners(EventTypeNames::touchcancel) || hasEventListeners(EventTypeNames::touchend);
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 #if !ENABLE(OILPAN)
 // This is here for inlining
@@ -2261,6 +2075,7 @@ void Node::updateAncestorConnectedSubframeCountForInsertion() const
         node->incrementConnectedSubframeCount(count);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 PassRefPtrWillBeRawPtr<StaticNodeList> Node::getDestinationInsertionPoints()
 {
     updateDistribution();
@@ -2359,6 +2174,7 @@ void Node::setCustomElementState(CustomElementState newState)
     if (oldState == NotCustomElement || newState == Upgraded)
         toElement(this)->pseudoStateChanged(CSSSelector::PseudoUnresolved);
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 DEFINE_TRACE(Node)
 {
@@ -2398,31 +2214,3 @@ unsigned Node::lengthOfContents() const
 }
 
 } // namespace blink
-
-#ifndef NDEBUG
-
-void showNode(const blink::Node* node)
-{
-    if (node)
-        node->showNode("");
-    else
-        fprintf(stderr, "Cannot showNode for (nil)\n");
-}
-
-void showTree(const blink::Node* node)
-{
-    if (node)
-        node->showTreeForThis();
-    else
-        fprintf(stderr, "Cannot showTree for (nil)\n");
-}
-
-void showNodePath(const blink::Node* node)
-{
-    if (node)
-        node->showNodePathForThis();
-    else
-        fprintf(stderr, "Cannot showNodePath for (nil)\n");
-}
-
-#endif

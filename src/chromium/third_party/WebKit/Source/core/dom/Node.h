@@ -115,23 +115,20 @@ enum StyleChangeType {
 };
 
 class NodeRareDataBase {
-public:
-#ifndef BLINKIT_CRAWLER_ONLY
-    LayoutObject* layoutObject() const { return m_layoutObject; }
-    void setLayoutObject(LayoutObject* layoutObject) { m_layoutObject = layoutObject; }
-#endif
-
-protected:
 #ifdef BLINKIT_CRAWLER_ONLY
+protected:
     NodeRareDataBase(void) = default;
 #else
+public:
+    LayoutObject* layoutObject() const { return m_layoutObject; }
+    void setLayoutObject(LayoutObject* layoutObject) { m_layoutObject = layoutObject; }
+
+protected:
     NodeRareDataBase(LayoutObject* layoutObject)
         : m_layoutObject(layoutObject)
     { }
-#endif
 
 protected:
-#ifndef BLINKIT_CRAWLER_ONLY
     // LayoutObjects are fully owned by their DOM node. See LayoutObject's
     // LIFETIME documentation section.
     LayoutObject* m_layoutObject;
@@ -236,10 +233,12 @@ public:
 
     void remove(ExceptionState& = ASSERT_NO_EXCEPTION);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     Node* pseudoAwareNextSibling() const;
     Node* pseudoAwarePreviousSibling() const;
     Node* pseudoAwareFirstChild() const;
     Node* pseudoAwareLastChild() const;
+#endif
 
     const KURL& baseURI() const;
 
@@ -270,6 +269,7 @@ public:
     bool isTextNode() const { return getFlag(IsTextFlag); }
     bool isHTMLElement() const { return getFlag(IsHTMLFlag); }
     bool isSVGElement() const { return getFlag(IsSVGFlag); }
+    bool ForCrawler(void) const { return getFlag(ForCrawlerFlag); }
 
     bool isPseudoElement() const { return pseudoId() != NOPSEUDO; }
     bool isBeforePseudoElement() const { return pseudoId() == BEFORE; }
@@ -289,7 +289,9 @@ public:
             ? (getFlag(CustomElementUpgradedFlag) ? Upgraded : WaitingForUpgrade)
             : NotCustomElement;
     }
+#ifndef BLINKIT_CRAWLER_ONLY
     void setCustomElementState(CustomElementState newState);
+#endif // BLINKIT_CRAWLER_ONLY
 
     virtual bool isMediaControlElement() const { return false; }
     virtual bool isMediaControls() const { return false; }
@@ -316,7 +318,9 @@ public:
     bool isInsertionPoint() const { return getFlag(IsInsertionPointFlag); }
 
     bool canParticipateInComposedTree() const;
+#ifndef BLINKIT_CRAWLER_ONLY
     bool isSlotOrActiveInsertionPoint() const;
+#endif
 
     bool hasCustomStyleCallbacks() const { return getFlag(HasCustomStyleCallbacksFlag); }
 
@@ -325,6 +329,7 @@ public:
     // shadow tree but its root is detached from its host. This can happen when handling
     // queued events (e.g. during execCommand()).
     Element* shadowHost() const;
+#ifndef BLINKIT_CRAWLER_ONLY
     // crbug.com/569532: containingShadowRoot() can return nullptr even if isInShadowTree() returns true.
     // This can happen when handling queued events (e.g. during execCommand())
     ShadowRoot* containingShadowRoot() const;
@@ -332,6 +337,7 @@ public:
 
     // Returns nullptr, a child of ShadowRoot, or a legacy shadow root.
     Node* nonBoundaryShadowTreeRootNode();
+#endif // BLINKIT_CRAWLER_ONLY
 
     // Node's parent, shadow tree host.
     ContainerNode* parentOrShadowHostNode() const;
@@ -353,9 +359,11 @@ public:
 
     virtual bool canContainRangeEndPoint() const { return false; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool isRootEditableElement() const;
     Element* rootEditableElement() const;
     Element* rootEditableElement(EditableType) const;
+#endif
 
     // For <link> and <style> elements.
     virtual bool sheetLoaded() { return true; }
@@ -371,6 +379,7 @@ public:
     bool isUserActionElement() const { return getFlag(IsUserActionElementFlag); }
     void setUserActionElement(bool flag) { setFlag(flag, IsUserActionElementFlag); }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool active() const { return isUserActionElement() && isUserActionElementActive(); }
     bool inActiveChain() const { return isUserActionElement() && isUserActionElementInActiveChain(); }
     bool hovered() const { return isUserActionElement() && isUserActionElementHovered(); }
@@ -379,6 +388,7 @@ public:
     // true for |focused()|.  Use Element::isFocusedElementInDocument() or Document::focusedElement()
     // to check which element is exactly focused.
     bool focused() const { return isUserActionElement() && isUserActionElementFocused(); }
+#endif
 
     bool needsAttach() const { return styleChangeType() == NeedsReattachStyleChange; }
     bool needsStyleRecalc() const { return styleChangeType() != NoStyleChange; }
@@ -391,7 +401,9 @@ public:
     void setChildNeedsStyleRecalc() { setFlag(ChildNeedsStyleRecalcFlag); }
     void clearChildNeedsStyleRecalc() { clearFlag(ChildNeedsStyleRecalcFlag); }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void setNeedsStyleRecalc(StyleChangeType, const StyleChangeReasonForTracing&);
+#endif
     void clearNeedsStyleRecalc();
 
 #if ENABLE(ASSERT)
@@ -426,12 +438,15 @@ public:
     void markV8CollectableDuringMinorGC() { setFlag(true, V8CollectableDuringMinorGCFlag); }
     void clearV8CollectableDuringMinorGC() { setFlag(false, V8CollectableDuringMinorGCFlag); }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual void setFocus(bool flag);
     virtual void setActive(bool flag = true);
     virtual void setHovered(bool flag = true);
+#endif
 
     virtual short tabIndex() const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual Node* focusDelegate();
     // This is called only when the node is focused.
     virtual bool shouldHaveFocusAppearance() const;
@@ -473,6 +488,7 @@ public:
 
     virtual LayoutRect boundingBox() const;
     IntRect pixelSnappedBoundingBox() const { return pixelSnappedIntRect(boundingBox()); }
+#endif // BLINKIT_CRAWLER_ONLY
 
     unsigned nodeIndex() const;
 
@@ -503,11 +519,13 @@ public:
     bool isInShadowTree() const { return getFlag(IsInShadowTreeFlag); }
     bool isInTreeScope() const { return getFlag(static_cast<NodeFlags>(InDocumentFlag | IsInShadowTreeFlag)); }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     ElementShadow* parentElementShadow() const;
     bool isInV1ShadowTree() const;
     bool isInV0ShadowTree() const;
     bool isChildOfV1ShadowHost() const;
     bool isChildOfV0ShadowHost() const;
+#endif
 
     bool isDocumentTypeNode() const { return nodeType() == DOCUMENT_TYPE_NODE; }
     virtual bool childTypeAllowed(NodeType) const { return false; }
@@ -515,7 +533,9 @@ public:
 
     bool isDescendantOf(const Node*) const;
     bool contains(const Node*) const;
+#ifndef BLINKIT_CRAWLER_ONLY
     bool containsIncludingShadowDOM(const Node*) const;
+#endif
     bool containsIncludingHostElements(const Node&) const;
     Node* commonAncestor(const Node&, ContainerNode* (*parent)(const Node&)) const;
 
@@ -525,13 +545,13 @@ public:
     // css-transform:capitalize breaking up precomposed characters and ligatures.
     virtual int maxCharacterOffset() const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // Whether or not a selection can be started in this object
     virtual bool canStartSelection() const;
 
     // -----------------------------------------------------------------------------
     // Integration with layout tree
 
-#ifndef BLINKIT_CRAWLER_ONLY
     // As layoutObject() includes a branch you should avoid calling it repeatedly in hot code paths.
     // Note that if a Node has a layoutObject, it's parentNode is guaranteed to have one as well.
     LayoutObject* layoutObject() const { return hasRareData() ? m_data.m_rareData->layoutObject() : m_data.m_layoutObject; }
@@ -572,6 +592,7 @@ public:
     // Returns true if recalcStyle should be called on the object, if there is such a method (on Document and Element).
     bool shouldCallRecalcStyle(StyleRecalcChange);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // Wrapper for nodes that don't have a layoutObject, but still cache the style (like HTMLOptionElement).
     ComputedStyle* mutableComputedStyle() const;
     const ComputedStyle* computedStyle() const;
@@ -580,6 +601,7 @@ public:
     const ComputedStyle& computedStyleRef() const;
 
     const ComputedStyle* ensureComputedStyle(PseudoId pseudoElementSpecifier = NOPSEUDO) { return virtualEnsureComputedStyle(pseudoElementSpecifier); }
+#endif
 
     // -----------------------------------------------------------------------------
     // Notification of document structure changes (see ContainerNode.h for more notification methods)
@@ -616,24 +638,14 @@ public:
     // Tracing--rename it to something indicative.
     String debugName() const;
 
-#ifndef NDEBUG
-    virtual void formatForDebugger(char* buffer, unsigned length) const;
-
-    void showNode(const char* prefix = "") const;
-    void showTreeForThis() const;
-    void showTreeForThisInComposedTree() const;
-    void showNodePathForThis() const;
-    void showTreeAndMark(const Node* markedNode1, const char* markedLabel1, const Node* markedNode2 = nullptr, const char* markedLabel2 = nullptr) const;
-    void showTreeAndMarkInComposedTree(const Node* markedNode1, const char* markedLabel1, const Node* markedNode2 = nullptr, const char* markedLabel2 = nullptr) const;
-    void showTreeForThisAcrossFrame() const;
-#endif
-
     NodeListsNodeData* nodeLists();
     void clearNodeLists();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual bool willRespondToMouseMoveEvents();
     virtual bool willRespondToMouseClickEvents();
     virtual bool willRespondToTouchEvents();
+#endif
 
     enum ShadowTreesTreatment {
         TreatShadowTreesAsDisconnected,
@@ -662,9 +674,11 @@ public:
     void dispatchSubtreeModifiedEvent();
     bool dispatchDOMActivateEvent(int detail, PassRefPtrWillBeRawPtr<Event> underlyingEvent);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool dispatchMouseEvent(const PlatformMouseEvent&, const AtomicString& eventType, int clickCount = 0, Node* relatedTarget = nullptr);
 
     void dispatchSimulatedClick(Event* underlyingEvent, SimulatedClickMouseEventOptions = SendNoEvents, SimulatedClickCreationScope = SimulatedClickCreationScope::FromUserAgent);
+#endif
 
     void dispatchInputEvent();
 
@@ -687,9 +701,11 @@ public:
     void decrementConnectedSubframeCount(unsigned amount = 1);
     void updateAncestorConnectedSubframeCountForInsertion() const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     PassRefPtrWillBeRawPtr<StaticNodeList> getDestinationInsertionPoints();
     HTMLSlotElement* assignedSlot() const;
     HTMLSlotElement* assignedSlotForBinding();
+#endif
 
     void setAlreadySpellChecked(bool flag) { setFlag(flag, AlreadySpellCheckedFlag); }
     bool isAlreadySpellChecked() { return getFlag(AlreadySpellCheckedFlag); }
@@ -746,6 +762,8 @@ private:
         HasEventTargetDataFlag = 1 << 26,
         AlreadySpellCheckedFlag = 1 << 27,
 
+        ForCrawlerFlag = 1 << 28,
+
         DefaultNodeFlags = IsFinishedParsingChildrenFlag | NeedsReattachStyleChange
     };
 
@@ -769,6 +787,10 @@ protected:
         CreateDocument = CreateContainer | InDocumentFlag,
         CreateInsertionPoint = CreateHTMLElement | IsInsertionPointFlag,
         CreateEditingText = CreateText | HasNameOrIsEditingTextFlag,
+        CreateCrawlerDocument = CreateDocument | ForCrawlerFlag,
+        CreateCrawlerElement = CreateHTMLElement | ForCrawlerFlag,
+        CreateCrawlerText = CreateText | ForCrawlerFlag,
+        CreateCrawlerOther = CreateOther | ForCrawlerFlag,
     };
 
     Node(TreeScope*, ConstructionType);
@@ -779,7 +801,9 @@ protected:
     bool removeEventListenerInternal(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener>, const EventListenerOptions&) override;
     bool dispatchEventInternal(PassRefPtrWillBeRawPtr<Event>) override;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     static void reattachWhitespaceSiblingsIfNeeded(Text* start);
+#endif
 
 #if !ENABLE(OILPAN)
     void willBeDeletedFromDocument();
@@ -825,6 +849,7 @@ private:
     // per-thread.
     virtual String debugNodeName() const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     enum EditableLevel { Editable, RichlyEditable };
     bool hasEditableStyle(EditableLevel, UserSelectAllTreatment = UserSelectAllIsAlwaysNonEditable) const;
     bool isEditableToAccessibility(EditableLevel) const;
@@ -833,14 +858,17 @@ private:
     bool isUserActionElementInActiveChain() const;
     bool isUserActionElementHovered() const;
     bool isUserActionElementFocused() const;
+#endif
 
     void recalcDistribution();
 
     void setStyleChange(StyleChangeType);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual ComputedStyle* nonLayoutObjectComputedStyle() const { return nullptr; }
 
     virtual const ComputedStyle* virtualEnsureComputedStyle(PseudoId = NOPSEUDO);
+#endif
 
     void trackForDebugging();
 
@@ -935,18 +963,6 @@ PassRefPtrWillBeRawPtr<T> T::create(Document& document) \
     return adoptRefWillBeNoop(new T(document)); \
 }
 
-// These printers are available only for testing in "webkit_unit_tests", and
-// implemented in "core/testing/CoreTestPrinters.cpp".
-std::ostream& operator<<(std::ostream&, const Node&);
-std::ostream& operator<<(std::ostream&, const Node*);
-
 } // namespace blink
-
-#ifndef NDEBUG
-// Outside the WebCore namespace for ease of invocation from gdb.
-void showNode(const blink::Node*);
-void showTree(const blink::Node*);
-void showNodePath(const blink::Node*);
-#endif
 
 #endif // Node_h
