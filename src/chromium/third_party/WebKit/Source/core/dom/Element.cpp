@@ -95,14 +95,11 @@
 #include "core/frame/ScrollToOptions.h"
 #include "core/frame/Settings.h"
 #include "core/frame/UseCounter.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/html/ClassList.h"
 #include "core/html/HTMLCollection.h"
 #include "core/html/HTMLDocument.h"
 #include "core/html/HTMLElement.h"
 #include "core/html/HTMLFormControlsCollection.h"
-#include "core/html/HTMLFrameElementBase.h"
-#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/HTMLOptionsCollection.h"
 #include "core/html/HTMLTableRowsCollection.h"
 #include "core/html/HTMLTemplateElement.h"
@@ -175,27 +172,33 @@ Element::~Element()
 
 #if !ENABLE(OILPAN)
     if (hasRareData()) {
+#ifndef BLINKIT_CRAWLER_ONLY
         elementRareData()->clearShadow();
+#endif
         detachAllAttrNodesFromElement();
     }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (isCustomElement())
         CustomElement::wasDestroyed(this);
 
     if (RuntimeEnabledFeatures::scrollCustomizationEnabled())
         scrollCustomizationCallbacks().removeCallbacksForElement(this);
+#endif
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(!hasPendingResources());
+#else
     // With Oilpan, either the Element has been removed from the Document
     // or the Document is dead as well. If the Element has been removed from
     // the Document the element has already been removed from the pending
     // resources. If the document is also dead, there is no need to remove
     // the element from the pending resources.
     if (hasPendingResources()) {
-#ifndef BLINKIT_CRAWLER_ONLY
         document().accessSVGExtensions().removeElementFromPendingResources(this);
-#endif
         ASSERT(!hasPendingResources());
     }
+#endif
 #endif
 }
 
@@ -229,24 +232,29 @@ void Element::clearElementFlag(ElementFlags mask)
     elementRareData()->clearElementFlag(mask);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void Element::clearTabIndexExplicitlyIfNeeded()
 {
+    ASSERT(!ForCrawler());
     if (hasRareData())
         elementRareData()->clearTabIndexExplicitly();
 }
 
 void Element::setTabIndexExplicitly(short tabIndex)
 {
+    ASSERT(!ForCrawler());
     ensureElementRareData().setTabIndexExplicitly(tabIndex);
 }
 
 void Element::setTabIndex(int value)
 {
+    ASSERT(!ForCrawler());
     setIntegralAttribute(tabindexAttr, value);
 }
 
 short Element::tabIndex() const
 {
+    ASSERT(!ForCrawler());
     return hasRareData() ? elementRareData()->tabIndex() : 0;
 }
 
@@ -254,10 +262,6 @@ bool Element::layoutObjectIsFocusable() const
 {
     ASSERT(!isInCanvasSubtree()); // Canvas is disabled in BlinKit.
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return false;
-#else
     // FIXME: These asserts should be in Node::isFocusable, but there are some
     // callsites like Document::setFocusedElement that would currently fail on
     // them. See crbug.com/251163
@@ -276,8 +280,8 @@ bool Element::layoutObjectIsFocusable() const
         return false;
 
     return true;
-#endif
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 PassRefPtrWillBeRawPtr<Node> Element::cloneNode(bool deep)
 {
@@ -362,6 +366,7 @@ NamedNodeMap* Element::attributesForBindings() const
     return rareData.attributeMap();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 ElementAnimations* Element::elementAnimations() const
 {
     if (hasRareData())
@@ -376,14 +381,19 @@ ElementAnimations& Element::ensureElementAnimations()
         rareData.setElementAnimations(new ElementAnimations());
     return *rareData.elementAnimations();
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 bool Element::hasAnimations() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    return false;
+#else
     if (!hasRareData())
         return false;
 
     ElementAnimations* elementAnimations = elementRareData()->elementAnimations();
     return elementAnimations && !elementAnimations->isEmpty();
+#endif
 }
 
 Node::NodeType Element::nodeType() const
@@ -398,6 +408,7 @@ bool Element::hasAttribute(const QualifiedName& name) const
 
 void Element::synchronizeAllAttributes() const
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     if (!elementData())
         return;
     // NOTE: anyAttributeMatches in SelectorChecker.cpp
@@ -407,16 +418,16 @@ void Element::synchronizeAllAttributes() const
         ASSERT(isStyledElement());
         synchronizeStyleAttributeInternal();
     }
-#ifndef BLINKIT_CRAWLER_ONLY // BKTODO: Disable m_animatedSVGAttributesAreDirty later.
     if (elementData()->m_animatedSVGAttributesAreDirty) {
         ASSERT(isSVGElement());
         toSVGElement(this)->synchronizeAnimatedSVGAttribute(anyQName());
     }
-#endif
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 inline void Element::synchronizeAttribute(const QualifiedName& name) const
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     if (!elementData())
         return;
     if (UNLIKELY(name == styleAttr && elementData()->m_styleAttributeIsDirty)) {
@@ -424,18 +435,18 @@ inline void Element::synchronizeAttribute(const QualifiedName& name) const
         synchronizeStyleAttributeInternal();
         return;
     }
-#ifndef BLINKIT_CRAWLER_ONLY // BKTODO: Disable m_animatedSVGAttributesAreDirty later.
     if (UNLIKELY(elementData()->m_animatedSVGAttributesAreDirty)) {
         ASSERT(isSVGElement());
         // See comment in the AtomicString version of synchronizeAttribute()
         // also.
         toSVGElement(this)->synchronizeAnimatedSVGAttribute(name);
     }
-#endif
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 void Element::synchronizeAttribute(const AtomicString& localName) const
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     // This version of synchronizeAttribute() is streamlined for the case where you don't have a full QualifiedName,
     // e.g when called from DOM API.
     if (!elementData())
@@ -445,7 +456,6 @@ void Element::synchronizeAttribute(const AtomicString& localName) const
         synchronizeStyleAttributeInternal();
         return;
     }
-#ifndef BLINKIT_CRAWLER_ONLY // BKTODO: Disable m_animatedSVGAttributesAreDirty later.
     if (elementData()->m_animatedSVGAttributesAreDirty) {
         // We're not passing a namespace argument on purpose. SVGNames::*Attr are defined w/o namespaces as well.
 
@@ -460,7 +470,7 @@ void Element::synchronizeAttribute(const AtomicString& localName) const
         // true.
         toSVGElement(this)->synchronizeAnimatedSVGAttribute(QualifiedName(nullAtom, localName, nullAtom));
     }
-#endif
+#endif // BLINKIT_CRAWLER_ONLY
 }
 
 const AtomicString& Element::getAttribute(const QualifiedName& name) const
@@ -478,13 +488,11 @@ bool Element::shouldIgnoreAttributeCase() const
     return isHTMLElement() && document().isHTMLDocument();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void Element::scrollIntoView(bool alignToTop)
 {
     document().updateLayoutIgnorePendingStylesheets();
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (!layoutObject())
         return;
 
@@ -496,16 +504,12 @@ void Element::scrollIntoView(bool alignToTop)
         layoutObject()->scrollRectToVisible(bounds, ScrollAlignment::alignToEdgeIfNeeded, ScrollAlignment::alignTopAlways, ProgrammaticScroll, makeVisibleInVisualViewport);
     else
         layoutObject()->scrollRectToVisible(bounds, ScrollAlignment::alignToEdgeIfNeeded, ScrollAlignment::alignBottomAlways, ProgrammaticScroll, makeVisibleInVisualViewport);
-#endif
 }
 
 void Element::scrollIntoViewIfNeeded(bool centerIfNeeded)
 {
     document().updateLayoutIgnorePendingStylesheets();
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (!layoutObject())
         return;
 
@@ -516,7 +520,6 @@ void Element::scrollIntoViewIfNeeded(bool centerIfNeeded)
         layoutObject()->scrollRectToVisible(bounds, ScrollAlignment::alignCenterIfNeeded, ScrollAlignment::alignCenterIfNeeded, ProgrammaticScroll, makeVisibleInVisualViewport);
     else
         layoutObject()->scrollRectToVisible(bounds, ScrollAlignment::alignToEdgeIfNeeded, ScrollAlignment::alignToEdgeIfNeeded, ProgrammaticScroll, makeVisibleInVisualViewport);
-#endif
 }
 
 void Element::setDistributeScroll(ScrollStateCallback* scrollStateCallback, String nativeScrollBehavior)
@@ -593,10 +596,6 @@ void Element::nativeApplyScroll(ScrollState& scrollState)
             scrollState.consumeDeltaNative(scrollState.deltaX(), scrollState.deltaY());
         }
     } else {
-#ifdef BLINKIT_CRAWLER_ONLY
-        assert(false); // BKTODO: Not reached!
-        return;
-#else
         if (!layoutObject())
             return;
         LayoutBox* curBox = layoutObject()->enclosingBox();
@@ -611,7 +610,6 @@ void Element::nativeApplyScroll(ScrollState& scrollState)
             scrollState.consumeDeltaNative(0, scrollState.deltaY());
             scrolled = true;
         }
-#endif
     }
 
     if (!scrolled)
@@ -642,6 +640,7 @@ void Element::callApplyScroll(ScrollState& scrollState)
     if (callback->nativeScrollBehavior() == WebNativeScrollBehavior::PerformAfterNativeScroll)
         callback->handleEvent(&scrollState);
 };
+#endif // BLINKIT_CRAWLER_ONLY
 
 static float localZoomForLayoutObject(LayoutObject& layoutObject)
 {
@@ -649,9 +648,6 @@ static float localZoomForLayoutObject(LayoutObject& layoutObject)
     // other out, but the alternative is that we'd have to crawl up the whole layout tree every
     // time (or store an additional bit in the ComputedStyle to indicate that a zoom was specified).
     float zoomFactor = 1;
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (layoutObject.style()->effectiveZoom() != 1) {
         // Need to find the nearest enclosing LayoutObject that set up
         // a differing zoom, and then we divide our result by it to eliminate the zoom.
@@ -666,7 +662,6 @@ static float localZoomForLayoutObject(LayoutObject& layoutObject)
         if (prev->isLayoutView())
             zoomFactor = prev->style()->zoom();
     }
-#endif
     return zoomFactor;
 }
 
@@ -678,60 +673,41 @@ static double adjustForLocalZoom(LayoutUnit value, LayoutObject& layoutObject)
     return value.toDouble() / zoomFactor;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 int Element::offsetLeft()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     document().updateLayoutIgnorePendingStylesheets();
     if (LayoutBoxModelObject* layoutObject = layoutBoxModelObject())
         return lroundf(adjustForLocalZoom(layoutObject->offsetLeft(), *layoutObject));
-#endif
     return 0;
 }
 
 int Element::offsetTop()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     document().updateLayoutIgnorePendingStylesheets();
     if (LayoutBoxModelObject* layoutObject = layoutBoxModelObject())
         return lroundf(adjustForLocalZoom(layoutObject->pixelSnappedOffsetTop(), *layoutObject));
-#endif
     return 0;
 }
 
 int Element::offsetWidth()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     document().updateLayoutIgnorePendingStylesheets();
     if (LayoutBoxModelObject* layoutObject = layoutBoxModelObject())
         return adjustLayoutUnitForAbsoluteZoom(layoutObject->pixelSnappedOffsetWidth(), *layoutObject).round();
-#endif
     return 0;
 }
 
 int Element::offsetHeight()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     document().updateLayoutIgnorePendingStylesheets();
     if (LayoutBoxModelObject* layoutObject = layoutBoxModelObject())
         return adjustLayoutUnitForAbsoluteZoom(layoutObject->pixelSnappedOffsetHeight(), *layoutObject).round();
-#endif
     return 0;
 }
 
 Element* Element::offsetParent()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     document().updateLayoutIgnorePendingStylesheets();
 
     LayoutObject* layoutObject = this->layoutObject();
@@ -746,40 +722,28 @@ Element* Element::offsetParent()
         return nullptr;
 
     return element;
-#endif
 }
 
 int Element::clientLeft()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     document().updateLayoutIgnorePendingStylesheets();
 
     if (LayoutBox* layoutObject = layoutBox())
         return adjustLayoutUnitForAbsoluteZoom(roundToInt(layoutObject->clientLeft()), *layoutObject);
-#endif
     return 0;
 }
 
 int Element::clientTop()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     document().updateLayoutIgnorePendingStylesheets();
 
     if (LayoutBox* layoutObject = layoutBox())
         return adjustLayoutUnitForAbsoluteZoom(roundToInt(layoutObject->clientTop()), *layoutObject);
-#endif
     return 0;
 }
 
 int Element::clientWidth()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     document().updateLayoutIgnorePendingStylesheets();
 
     // When in strict mode, clientWidth for the document element should return the width of the containing frame.
@@ -796,15 +760,11 @@ int Element::clientWidth()
 
     if (LayoutBox* layoutObject = layoutBox())
         return adjustLayoutUnitForAbsoluteZoom(layoutObject->pixelSnappedClientWidth(), *layoutObject).round();
-#endif
     return 0;
 }
 
 int Element::clientHeight()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     document().updateLayoutIgnorePendingStylesheets();
 
     // When in strict mode, clientHeight for the document element should return the height of the containing frame.
@@ -822,15 +782,11 @@ int Element::clientHeight()
 
     if (LayoutBox* layoutObject = layoutBox())
         return adjustLayoutUnitForAbsoluteZoom(layoutObject->pixelSnappedClientHeight(), *layoutObject).round();
-#endif
     return 0;
 }
 
 double Element::scrollLeft()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     document().updateLayoutIgnorePendingStylesheets();
 
     if (document().scrollingElement() == this) {
@@ -841,16 +797,12 @@ double Element::scrollLeft()
 
     if (LayoutBox* box = layoutBox())
         return adjustScrollForAbsoluteZoom(box->scrollLeft(), *box);
-#endif
 
     return 0;
 }
 
 double Element::scrollTop()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     document().updateLayoutIgnorePendingStylesheets();
 
     if (document().scrollingElement() == this) {
@@ -861,7 +813,6 @@ double Element::scrollTop()
 
     if (LayoutBox* box = layoutBox())
         return adjustScrollForAbsoluteZoom(box->scrollTop(), *box);
-#endif
 
     return 0;
 }
@@ -876,13 +827,9 @@ void Element::setScrollLeft(double newLeft)
         if (LocalDOMWindow* window = document().domWindow())
             window->scrollTo(newLeft, window->scrollY());
     } else {
-#ifdef BLINKIT_CRAWLER_ONLY
-        assert(false); // BKTODO: Not reached!
-#else
         LayoutBox* box = layoutBox();
         if (box)
             box->setScrollLeft(LayoutUnit::fromFloatRound(newLeft * box->style()->effectiveZoom()));
-#endif
     }
 }
 
@@ -896,21 +843,14 @@ void Element::setScrollTop(double newTop)
         if (LocalDOMWindow* window = document().domWindow())
             window->scrollTo(window->scrollX(), newTop);
     } else {
-#ifdef BLINKIT_CRAWLER_ONLY
-        assert(false); // BKTODO: Not reached!
-#else
         LayoutBox* box = layoutBox();
         if (box)
             box->setScrollTop(LayoutUnit::fromFloatRound(newTop * box->style()->effectiveZoom()));
-#endif
     }
 }
 
 int Element::scrollWidth()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     document().updateLayoutIgnorePendingStylesheets();
 
     if (document().scrollingElement() == this) {
@@ -921,15 +861,11 @@ int Element::scrollWidth()
 
     if (LayoutBox* box = layoutBox())
         return adjustForAbsoluteZoom(box->pixelSnappedScrollWidth(), box);
-#endif
     return 0;
 }
 
 int Element::scrollHeight()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     document().updateLayoutIgnorePendingStylesheets();
 
     if (document().scrollingElement() == this) {
@@ -940,7 +876,6 @@ int Element::scrollHeight()
 
     if (LayoutBox* box = layoutBox())
         return adjustForAbsoluteZoom(box->pixelSnappedScrollHeight(), box);
-#endif
     return 0;
 }
 
@@ -988,9 +923,6 @@ void Element::scrollTo(const ScrollToOptions& scrollToOptions)
 
 void Element::scrollLayoutBoxBy(const ScrollToOptions& scrollToOptions)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     double left = scrollToOptions.hasLeft() ? ScrollableArea::normalizeNonFiniteScroll(scrollToOptions.left()) : 0.0;
     double top = scrollToOptions.hasTop() ? ScrollableArea::normalizeNonFiniteScroll(scrollToOptions.top()) : 0.0;
 
@@ -1004,14 +936,10 @@ void Element::scrollLayoutBoxBy(const ScrollToOptions& scrollToOptions)
         double newScaledTop = top * box->style()->effectiveZoom() + currentScaledTop;
         box->scrollToOffset(DoubleSize(newScaledLeft, newScaledTop), scrollBehavior);
     }
-#endif
 }
 
 void Element::scrollLayoutBoxTo(const ScrollToOptions& scrollToOptions)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     ScrollBehavior scrollBehavior = ScrollBehaviorAuto;
     ScrollableArea::scrollBehaviorFromString(scrollToOptions.behavior(), scrollBehavior);
 
@@ -1025,7 +953,6 @@ void Element::scrollLayoutBoxTo(const ScrollToOptions& scrollToOptions)
             scaledTop = ScrollableArea::normalizeNonFiniteScroll(scrollToOptions.top()) * box->style()->effectiveZoom();
         box->scrollToOffset(DoubleSize(scaledLeft, scaledTop), scrollBehavior);
     }
-#endif
 }
 
 void Element::scrollFrameBy(const ScrollToOptions& scrollToOptions)
@@ -1066,6 +993,7 @@ void Element::scrollFrameTo(const ScrollToOptions& scrollToOptions)
         scaledTop = ScrollableArea::normalizeNonFiniteScroll(scrollToOptions.top()) * frame->pageZoomFactor();
     viewport->setScrollPosition(DoublePoint(scaledLeft, scaledTop), ProgrammaticScroll, scrollBehavior);
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 bool Element::hasCompositorProxy() const
 {
@@ -1078,25 +1006,18 @@ uint32_t Element::compositorMutableProperties() const
     return 0;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 bool Element::hasNonEmptyLayoutSize() const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     document().updateLayoutIgnorePendingStylesheets();
 
     if (LayoutBoxModelObject* box = layoutBoxModelObject())
         return box->hasNonEmptyLayoutSize();
-#endif
     return false;
 }
 
 IntRect Element::boundsInViewport() const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return IntRect();
-#else
     document().updateLayoutIgnorePendingStylesheets();
 
     FrameView* view = document().view();
@@ -1122,15 +1043,10 @@ IntRect Element::boundsInViewport() const
         result.unite(quads[i].enclosingBoundingBox());
 
     return view->contentsToViewport(result);
-#endif
 }
 
 ClientRectList* Element::getClientRects()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     document().updateLayoutIgnorePendingStylesheets();
 
     LayoutObject* elementLayoutObject = layoutObject();
@@ -1144,15 +1060,10 @@ ClientRectList* Element::getClientRects()
     elementLayoutObject->absoluteQuads(quads);
     document().adjustFloatQuadsForScrollAndAbsoluteZoom(quads, *elementLayoutObject);
     return ClientRectList::create(quads);
-#endif
 }
 
 ClientRect* Element::getBoundingClientRect()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     document().updateLayoutIgnorePendingStylesheets();
 
     Vector<FloatQuad> quads;
@@ -1177,21 +1088,16 @@ ClientRect* Element::getBoundingClientRect()
     ASSERT(elementLayoutObject);
     document().adjustFloatRectForScrollAndAbsoluteZoom(result, *elementLayoutObject);
     return ClientRect::create(result);
-#endif
 }
 
 IntRect Element::screenRect() const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return IntRect();
-#else
     if (!layoutObject())
         return IntRect();
     // FIXME: this should probably respect transforms
     return document().view()->contentsToScreen(layoutObject()->absoluteBoundingBoxRectIgnoringTransforms());
-#endif
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 const AtomicString& Element::computedRole()
 {
@@ -1288,12 +1194,17 @@ static inline AtomicString makeIdForStyleResolution(const AtomicString& value, b
 
 void Element::attributeChanged(const QualifiedName& name, const AtomicString& oldValue, const AtomicString& newValue, AttributeModificationReason reason)
 {
-    if (ElementShadow* parentElementShadow = shadowWhereNodeCanBeDistributed(*this)) {
-        if (shouldInvalidateDistributionWhenAttributeChanged(parentElementShadow, name, newValue))
-            parentElementShadow->setNeedsDistributionRecalc();
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+    {
+        if (ElementShadow * parentElementShadow = shadowWhereNodeCanBeDistributed(*this)) {
+            if (shouldInvalidateDistributionWhenAttributeChanged(parentElementShadow, name, newValue))
+                parentElementShadow->setNeedsDistributionRecalc();
+        }
+        if (name == HTMLNames::slotAttr && isChildOfV1ShadowHost())
+            parentElementShadow()->setNeedsDistributionRecalc();
     }
-    if (name == HTMLNames::slotAttr && isChildOfV1ShadowHost())
-        parentElementShadow()->setNeedsDistributionRecalc();
+#endif
 
     parseAttribute(name, oldValue, newValue);
 
@@ -1305,13 +1216,15 @@ void Element::attributeChanged(const QualifiedName& name, const AtomicString& ol
         if (newId != oldId) {
             elementData()->setIdForStyleResolution(newId);
 #ifndef BLINKIT_CRAWLER_ONLY
-            document().styleEngine().idChangedForElement(oldId, newId, *this);
+            if (!ForCrawler())
+                document().styleEngine().idChangedForElement(oldId, newId, *this);
 #endif
         }
     } else if (name == classAttr) {
         classAttributeChanged(newValue);
     } else if (name == HTMLNames::nameAttr) {
         setHasName(!newValue.isNull());
+#ifndef BLINKIT_CRAWLER_ONLY
     } else if (isStyledElement()) {
         if (name == styleAttr) {
             styleAttributeChanged(newValue, reason);
@@ -1319,13 +1232,14 @@ void Element::attributeChanged(const QualifiedName& name, const AtomicString& ol
             elementData()->m_presentationAttributeStyleIsDirty = true;
             setNeedsStyleRecalc(LocalStyleChange, StyleChangeReasonForTracing::fromAttribute(name));
         }
+#endif
     }
 
     invalidateNodeListCachesInAncestors(&name, this);
 
 #ifndef BLINKIT_CRAWLER_ONLY
     // If there is currently no StyleResolver, we can't be sure that this attribute change won't affect style.
-    if (!document().styleResolver())
+    if (!ForCrawler() && !document().styleResolver())
         setNeedsStyleRecalc(SubtreeStyleChange, StyleChangeReasonForTracing::fromAttribute(name));
 #endif
 }
@@ -1342,8 +1256,10 @@ const QualifiedName& Element::subResourceAttributeName() const
 
 inline void Element::attributeChangedFromParserOrByCloning(const QualifiedName& name, const AtomicString& newValue, AttributeModificationReason reason)
 {
-    if (name == isAttr)
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (name == isAttr && !ForCrawler())
         CustomElementRegistrationContext::setTypeExtension(this, newValue);
+#endif
     attributeChanged(name, nullAtom, newValue, reason);
 }
 
@@ -1388,13 +1304,19 @@ void Element::classAttributeChanged(const AtomicString& newClassString)
         const SpaceSplitString oldClasses = elementData()->classNames();
         elementData()->setClass(newClassString, shouldFoldCase);
 #ifndef BLINKIT_CRAWLER_ONLY
-        const SpaceSplitString& newClasses = elementData()->classNames();
-        document().styleEngine().classChangedForElement(oldClasses, newClasses, *this);
+        if (!ForCrawler())
+        {
+            const SpaceSplitString& newClasses = elementData()->classNames();
+            document().styleEngine().classChangedForElement(oldClasses, newClasses, *this);
+        }
 #endif
     } else {
 #ifndef BLINKIT_CRAWLER_ONLY
-        const SpaceSplitString& oldClasses = elementData()->classNames();
-        document().styleEngine().classChangedForElement(oldClasses, *this);
+        if (!ForCrawler())
+        {
+            const SpaceSplitString& oldClasses = elementData()->classNames();
+            document().styleEngine().classChangedForElement(oldClasses, *this);
+        }
 #endif
         if (classStringContentType == ClassStringContent::WhiteSpaceOnly)
             elementData()->setClass(newClassString, shouldFoldCase);
@@ -1408,6 +1330,9 @@ void Element::classAttributeChanged(const AtomicString& newClassString)
 
 bool Element::shouldInvalidateDistributionWhenAttributeChanged(ElementShadow* elementShadow, const QualifiedName& name, const AtomicString& newValue)
 {
+    assert(false); // BKTODO:
+    return false;
+#if 0
     ASSERT(elementShadow);
     const SelectRuleFeatureSet& featureSet = elementShadow->ensureSelectFeatureSet();
 
@@ -1437,6 +1362,7 @@ bool Element::shouldInvalidateDistributionWhenAttributeChanged(ElementShadow* el
     }
 
     return featureSet.hasSelectorForAttribute(name.localName());
+#endif
 }
 
 // Returns true is the given attribute is an event handler.
@@ -1532,6 +1458,7 @@ const AtomicString& Element::locateNamespacePrefix(const AtomicString& namespace
     return nullAtom;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 const AtomicString Element::imageSourceURL() const
 {
     return getAttribute(srcAttr);
@@ -1542,21 +1469,17 @@ bool Element::layoutObjectIsNeeded(const ComputedStyle& style)
     return style.display() != NONE;
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 LayoutObject* Element::createLayoutObject(const ComputedStyle& style)
 {
     return LayoutObject::createObject(this, style);
 }
-#endif
+#endif // BLINKIT_CRAWLER_ONLY
 
 Node::InsertionNotificationRequest Element::insertedInto(ContainerNode* insertionPoint)
 {
     // need to do superclass processing first so inDocument() is true
     // by the time we reach updateId
     ContainerNode::insertedInto(insertionPoint);
-
-    if (containsFullScreenElement() && parentElement() && !parentElement()->containsFullScreenElement())
-        setContainsFullScreenElementOnAncestorsCrossingFrameBoundaries(true);
 
     ASSERT(!hasRareData() || !elementRareData()->hasPseudoElements());
 
@@ -1570,8 +1493,10 @@ Node::InsertionNotificationRequest Element::insertedInto(ContainerNode* insertio
             rareData->intersectionObserverData()->activateValidIntersectionObservers(*this);
     }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (isUpgradedCustomElement() && inDocument())
         CustomElement::didAttach(this, document());
+#endif
 
     TreeScope& scope = insertionPoint->treeScope();
     if (scope != treeScope())
@@ -1597,10 +1522,15 @@ void Element::removedFrom(ContainerNode* insertionPoint)
 
     ASSERT(!hasRareData() || !elementRareData()->hasPseudoElements());
 
-    if (document().page())
-        document().page()->pointerLockController().elementRemoved(this);
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+    {
+        if (document().page())
+            document().page()->pointerLockController().elementRemoved(this);
 
-    setSavedLayerScrollOffset(IntSize());
+        setSavedLayerScrollOffset(IntSize());
+    }
+#endif
 
     if (insertionPoint->isInTreeScope() && treeScope() == document()) {
         const AtomicString& idValue = getIdAttribute();
@@ -1613,25 +1543,21 @@ void Element::removedFrom(ContainerNode* insertionPoint)
     }
 
     ContainerNode::removedFrom(insertionPoint);
-    if (wasInDocument) {
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (wasInDocument && !ForCrawler()) {
         if (this == document().cssTarget())
             document().setCSSTarget(nullptr);
 
-#ifdef BLINKIT_CRAWLER_ONLY
-        assert(!hasPendingResources());
-#else
         if (hasPendingResources())
             document().accessSVGExtensions().removeElementFromPendingResources(this);
-#endif
 
         if (isUpgradedCustomElement())
             CustomElement::didDetach(this, insertionPoint->document());
 
-#ifndef BLINKIT_CRAWLER_ONLY
         if (needsStyleInvalidation())
             document().styleEngine().styleInvalidator().clearInvalidation(*this);
-#endif
     }
+#endif
 
     document().removeFromTopLayer(this);
 
@@ -1642,8 +1568,13 @@ void Element::removedFrom(ContainerNode* insertionPoint)
 
         data->clearRestyleFlags();
 
-        if (ElementAnimations* elementAnimations = data->elementAnimations())
-            elementAnimations->cssAnimations().cancel();
+#ifndef BLINKIT_CRAWLER_ONLY
+        if (!ForCrawler())
+        {
+            if (ElementAnimations * elementAnimations = data->elementAnimations())
+                elementAnimations->cssAnimations().cancel();
+        }
+#endif
 
         if (data->intersectionObserverData())
             data->intersectionObserverData()->deactivateAllIntersectionObservers(*this);
@@ -1653,31 +1584,27 @@ void Element::removedFrom(ContainerNode* insertionPoint)
 void Element::attach(const AttachContext& context)
 {
     ASSERT(document().inStyleRecalc());
+    ASSERT(false); // BKTODO:
+#if 0
 
-#ifndef BLINKIT_CRAWLER_ONLY
     // We've already been through detach when doing an attach, but we might
     // need to clear any state that's been added since then.
     if (hasRareData() && styleChangeType() == NeedsReattachStyleChange) {
         ElementRareData* data = elementRareData();
         data->clearComputedStyle();
     }
-#endif
 
     if (!isSlotOrActiveInsertionPoint())
         LayoutTreeBuilderForElement(*this, context.resolvedStyle).createLayoutObjectIfNeeded();
 
     addCallbackSelectors();
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO
-#else
     if (hasRareData() && !layoutObject()) {
         if (ElementAnimations* elementAnimations = elementRareData()->elementAnimations()) {
             elementAnimations->cssAnimations().cancel();
             elementAnimations->setAnimationStyleChange(false);
         }
     }
-#endif
 
     StyleResolverParentScope parentScope(*this);
 
@@ -1696,67 +1623,77 @@ void Element::attach(const AttachContext& context)
     // children are attached because the first letter text could come
     // from any of them.
     createPseudoElementIfNeeded(FIRST_LETTER);
+#endif
 }
 
 void Element::detach(const AttachContext& context)
 {
-    HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
-    cancelFocusAppearanceUpdate();
-    removeCallbackSelectors();
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+    {
+        cancelFocusAppearanceUpdate();
+        removeCallbackSelectors();
+    }
+#endif
     if (hasRareData()) {
         ElementRareData* data = elementRareData();
         data->clearPseudoElements();
 
 #ifndef BLINKIT_CRAWLER_ONLY
-        // attach() will clear the computed style for us when inside recalcStyle.
-        if (!document().inStyleRecalc())
-            data->clearComputedStyle();
-#endif
+        if (!ForCrawler())
+        {
+            // attach() will clear the computed style for us when inside recalcStyle.
+            if (!document().inStyleRecalc())
+                data->clearComputedStyle();
 
-        if (ElementAnimations* elementAnimations = data->elementAnimations()) {
-            if (context.performingReattach) {
-                // FIXME: We call detach from within style recalc, so compositingState is not up to date.
-                // https://code.google.com/p/chromium/issues/detail?id=339847
-                DisableCompositingQueryAsserts disabler;
+            if (ElementAnimations * elementAnimations = data->elementAnimations()) {
+                if (context.performingReattach) {
+                    // FIXME: We call detach from within style recalc, so compositingState is not up to date.
+                    // https://code.google.com/p/chromium/issues/detail?id=339847
+                    DisableCompositingQueryAsserts disabler;
 
-                // FIXME: restart compositor animations rather than pull back to the main thread
-                elementAnimations->restartAnimationOnCompositor();
-            } else {
-                elementAnimations->cssAnimations().cancel();
-                elementAnimations->setAnimationStyleChange(false);
+                    // FIXME: restart compositor animations rather than pull back to the main thread
+                    elementAnimations->restartAnimationOnCompositor();
+                }
+                else {
+                    elementAnimations->cssAnimations().cancel();
+                    elementAnimations->setAnimationStyleChange(false);
+                }
+                elementAnimations->clearBaseComputedStyle();
             }
-            elementAnimations->clearBaseComputedStyle();
-        }
 
-        if (ElementShadow* shadow = data->shadow())
-            shadow->detach(context);
+            if (ElementShadow * shadow = data->shadow())
+                shadow->detach(context);
+        }
+#endif
     }
 
     ContainerNode::detach(context);
 
-    if (!context.performingReattach && isUserActionElement()) {
-        if (hovered())
-            document().hoveredNodeDetached(*this);
-        if (inActiveChain())
-            document().activeChainNodeDetached(*this);
-        document().userActionElements().didDetach(*this);
-    }
-
 #ifndef BLINKIT_CRAWLER_ONLY
-    document().styleEngine().styleInvalidator().clearInvalidation(*this);
-#endif
+    if (!ForCrawler())
+    {
+        if (!context.performingReattach && isUserActionElement()) {
+            if (hovered())
+                document().hoveredNodeDetached(*this);
+            if (inActiveChain())
+                document().activeChainNodeDetached(*this);
+            document().userActionElements().didDetach(*this);
+        }
 
-    if (svgFilterNeedsLayerUpdate())
-        document().unscheduleSVGFilterLayerUpdateHack(*this);
+        document().styleEngine().styleInvalidator().clearInvalidation(*this);
+
+        if (svgFilterNeedsLayerUpdate())
+            document().unscheduleSVGFilterLayerUpdateHack(*this);
+    }
+#endif
 
     ASSERT(needsAttach());
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 bool Element::pseudoStyleCacheIsInvalid(const ComputedStyle* currentStyle, ComputedStyle* newStyle)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     ASSERT(currentStyle == computedStyle());
     ASSERT(layoutObject());
 
@@ -1787,11 +1724,9 @@ bool Element::pseudoStyleCacheIsInvalid(const ComputedStyle* currentStyle, Compu
             return true;
         }
     }
-#endif
     return false;
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 PassRefPtr<ComputedStyle> Element::styleForLayoutObject()
 {
     ASSERT(document().inStyleRecalc());
@@ -1829,7 +1764,6 @@ PassRefPtr<ComputedStyle> Element::originalStyleForLayoutObject()
     ASSERT(document().inStyleRecalc());
     return document().ensureStyleResolver().styleForElement(this);
 }
-#endif // BLINKIT_CRAWLER_ONLY
 
 void Element::recalcStyle(StyleRecalcChange change, Text* nextTextSibling)
 {
@@ -1844,9 +1778,7 @@ void Element::recalcStyle(StyleRecalcChange change, Text* nextTextSibling)
     if (change >= Inherit || needsStyleRecalc()) {
         if (hasRareData()) {
             ElementRareData* data = elementRareData();
-#ifndef BLINKIT_CRAWLER_ONLY
             data->clearComputedStyle();
-#endif
 
             if (change >= Inherit) {
                 if (ElementAnimations* elementAnimations = data->elementAnimations())
@@ -1893,10 +1825,6 @@ void Element::recalcStyle(StyleRecalcChange change, Text* nextTextSibling)
 
 StyleRecalcChange Element::recalcOwnStyle(StyleRecalcChange change)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    exit(0);
-#else
     ASSERT(document().inStyleRecalc());
     ASSERT(!parentOrShadowHostNode()->needsStyleRecalc());
     ASSERT(change >= Inherit || needsStyleRecalc());
@@ -1957,7 +1885,6 @@ StyleRecalcChange Element::recalcOwnStyle(StyleRecalcChange change)
     }
 
     return localChange;
-#endif
 }
 
 void Element::updateCallbackSelectors(const ComputedStyle* oldStyle, const ComputedStyle* newStyle)
@@ -1980,12 +1907,18 @@ void Element::removeCallbackSelectors()
 {
     updateCallbackSelectors(computedStyle(), 0);
 }
+#endif
 
 ElementShadow* Element::shadow() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    return nullptr;
+#else
     return hasRareData() ? elementRareData()->shadow() : nullptr;
+#endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 ElementShadow& Element::ensureShadow()
 {
     return ensureElementRareData().ensureShadow();
@@ -1993,7 +1926,6 @@ ElementShadow& Element::ensureShadow()
 
 void Element::pseudoStateChanged(CSSSelector::PseudoType pseudo)
 {
-#ifndef BLINKIT_CRAWLER_ONLY
     // We can't schedule invaliation sets from inside style recalc otherwise
     // we'd never process them.
     // TODO(esprehn): Make this an ASSERT and fix places that call into this
@@ -2001,7 +1933,6 @@ void Element::pseudoStateChanged(CSSSelector::PseudoType pseudo)
     if (document().inStyleRecalc())
         return;
     document().styleEngine().pseudoStateChangedForElement(pseudo, *this);
-#endif
 }
 
 void Element::setAnimationStyleChange(bool animationStyleChange)
@@ -2035,9 +1966,6 @@ void Element::setNeedsCompositingUpdate()
 {
     if (!document().isActive())
         return;
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     LayoutBoxModelObject* layoutObject = layoutBoxModelObject();
     if (!layoutObject)
         return;
@@ -2047,8 +1975,8 @@ void Element::setNeedsCompositingUpdate()
     // Changes in the return value of requiresAcceleratedCompositing change if
     // the PaintLayer is self-painting.
     layoutObject->layer()->updateSelfPaintingLayer();
-#endif
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 void Element::setCustomElementDefinition(PassRefPtrWillBeRawPtr<CustomElementDefinition> definition)
 {
@@ -2065,6 +1993,7 @@ CustomElementDefinition* Element::customElementDefinition() const
     return nullptr;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 PassRefPtrWillBeRawPtr<ShadowRoot> Element::createShadowRoot(const ScriptState* scriptState, ExceptionState& exceptionState)
 {
     OriginsUsingFeatures::countMainWorldOnly(scriptState, document(), OriginsUsingFeatures::Feature::ElementCreateShadowRoot);
@@ -2121,15 +2050,21 @@ PassRefPtrWillBeRawPtr<ShadowRoot> Element::createShadowRootInternal(ShadowRootT
 
     return PassRefPtrWillBeRawPtr<ShadowRoot>(ensureShadow().addShadowRoot(*this, type));
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 ShadowRoot* Element::shadowRoot() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    return nullptr;
+#else
     ElementShadow* elementShadow = shadow();
     if (!elementShadow)
         return nullptr;
     return &elementShadow->youngestShadowRoot();
+#endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 ShadowRoot* Element::openShadowRoot() const
 {
     ShadowRoot* root = shadowRoot();
@@ -2174,6 +2109,7 @@ ShadowRoot& Element::ensureUserAgentShadowRoot()
     didAddUserAgentShadowRoot(shadowRoot);
     return shadowRoot;
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 bool Element::childTypeAllowed(NodeType type) const
 {
@@ -2190,11 +2126,9 @@ bool Element::childTypeAllowed(NodeType type) const
     return false;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void Element::checkForEmptyStyleChange()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     const ComputedStyle* style = computedStyle();
 
     if (!style && !styleAffectedByEmpty())
@@ -2206,12 +2140,15 @@ void Element::checkForEmptyStyleChange()
 
     if (!style || (styleAffectedByEmpty() && (!style->emptyState() || hasChildren())))
         pseudoStateChanged(CSSSelector::PseudoEmpty);
-#endif
 }
+#endif
 
 void Element::childrenChanged(const ChildrenChange& change)
 {
     ContainerNode::childrenChanged(change);
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (ForCrawler())
+        return;
 
     checkForEmptyStyleChange();
     if (!change.byParser && change.isChildElementChange())
@@ -2219,42 +2156,20 @@ void Element::childrenChanged(const ChildrenChange& change)
 
     if (ElementShadow* shadow = this->shadow())
         shadow->setNeedsDistributionRecalc();
+#endif
 }
 
 void Element::finishParsingChildren()
 {
     setIsFinishedParsingChildren(true);
-    checkForEmptyStyleChange();
-    checkForSiblingStyleChanges(FinishedParsingChildren, lastChild(), nullptr);
-}
-
-#ifndef NDEBUG
-void Element::formatForDebugger(char* buffer, unsigned length) const
-{
-    StringBuilder result;
-    String s;
-
-    result.append(nodeName());
-
-    s = getIdAttribute();
-    if (s.length() > 0) {
-        if (result.length() > 0)
-            result.appendLiteral("; ");
-        result.appendLiteral("id=");
-        result.append(s);
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+    {
+        checkForEmptyStyleChange();
+        checkForSiblingStyleChanges(FinishedParsingChildren, lastChild(), nullptr);
     }
-
-    s = getAttribute(classAttr);
-    if (s.length() > 0) {
-        if (result.length() > 0)
-            result.appendLiteral("; ");
-        result.appendLiteral("class=");
-        result.append(s);
-    }
-
-    strncpy(buffer, result.toString().utf8().data(), length - 1);
-}
 #endif
+}
 
 AttrNodeList* Element::attrNodeList()
 {
@@ -2354,7 +2269,10 @@ PassRefPtrWillBeRawPtr<Attr> Element::removeAttributeNode(Attr* attr, ExceptionS
 
 void Element::parseAttribute(const QualifiedName& name, const AtomicString&, const AtomicString& value)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     if (name == tabindexAttr) {
+        if (ForCrawler())
+            return;
         int tabindex = 0;
         if (value.isEmpty()) {
             clearTabIndexExplicitlyIfNeeded();
@@ -2370,6 +2288,7 @@ void Element::parseAttribute(const QualifiedName& name, const AtomicString&, con
     } else if (name == XMLNames::langAttr) {
         pseudoStateChanged(CSSSelector::PseudoLang);
     }
+#endif
 }
 
 bool Element::parseAttributeName(QualifiedName& out, const AtomicString& namespaceURI, const AtomicString& qualifiedName, ExceptionState& exceptionState)
@@ -2437,8 +2356,10 @@ void Element::removeAttribute(const AtomicString& name)
     AtomicString localName = shouldIgnoreAttributeCase() ? name.lower() : name;
     size_t index = elementData()->attributes().findIndex(localName, false);
     if (index == kNotFound) {
+#ifndef BLINKIT_CRAWLER_ONLY
         if (UNLIKELY(localName == styleAttr) && elementData()->m_styleAttributeIsDirty && isStyledElement())
             removeAllInlineStyleProperties();
+#endif
         return;
     }
 
@@ -2490,6 +2411,7 @@ bool Element::hasAttributeNS(const AtomicString& namespaceURI, const AtomicStrin
     return elementData()->attributes().find(qName);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void Element::focus(const FocusParams& params)
 {
     if (!inDocument())
@@ -2534,12 +2456,9 @@ void Element::updateFocusAppearance(SelectionBehaviorOnFocus selectionBehavior)
 {
     if (selectionBehavior == SelectionBehaviorOnFocus::None)
         return;
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     if (isRootEditableElement()) {
         // Taking the ownership since setSelection() may release the last reference to |frame|.
-        RefPtrWillBeRawPtr<LocalFrame> frame(document().frame());
+        RefPtrWillBeRawPtr<LocalFrameImpl> frame(document().frame());
         if (!frame)
             return;
 
@@ -2556,7 +2475,6 @@ void Element::updateFocusAppearance(SelectionBehaviorOnFocus selectionBehavior)
     } else if (layoutObject() && !layoutObject()->isLayoutPart()) {
         layoutObject()->scrollRectToVisible(boundingBox());
     }
-#endif
 }
 
 void Element::blur()
@@ -2648,6 +2566,7 @@ void Element::dispatchFocusOutEvent(const AtomicString& eventType, Element* newF
     ASSERT(eventType == EventTypeNames::focusout || eventType == EventTypeNames::DOMFocusOut);
     dispatchScopedEvent(FocusEvent::create(eventType, true, false, document().domWindow(), 0, newFocusedElement, sourceCapabilities));
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 String Element::innerHTML() const
 {
@@ -2789,8 +2708,7 @@ void Element::insertAdjacentHTML(const String& where, const String& markup, Exce
 String Element::innerText()
 {
 #ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-    return String();
+    return textContent(true);
 #else
     // We need to update layout, since plainText uses line boxes in the layout tree.
     document().updateLayoutIgnorePendingStylesheets();
@@ -2852,6 +2770,7 @@ String Element::textFromChildren()
     return content.toString();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 const AtomicString& Element::shadowPseudoId() const
 {
     if (ShadowRoot* root = containingShadowRoot()) {
@@ -2884,11 +2803,13 @@ bool Element::isInDescendantTreeOf(const Element* shadowHost) const
 
 LayoutSize Element::minimumSizeForResizing() const
 {
+    ASSERT(!ForCrawler());
     return hasRareData() ? elementRareData()->minimumSizeForResizing() : defaultMinimumSizeForResizing();
 }
 
 void Element::setMinimumSizeForResizing(const LayoutSize& size)
 {
+    ASSERT(!ForCrawler());
     if (!hasRareData() && size == defaultMinimumSizeForResizing())
         return;
     ensureElementRareData().setMinimumSizeForResizing(size);
@@ -2896,10 +2817,6 @@ void Element::setMinimumSizeForResizing(const LayoutSize& size)
 
 const ComputedStyle* Element::ensureComputedStyle(PseudoId pseudoElementSpecifier)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     if (PseudoElement* element = pseudoElement(pseudoElementSpecifier))
         return element->ensureComputedStyle();
 
@@ -2929,8 +2846,8 @@ const ComputedStyle* Element::ensureComputedStyle(PseudoId pseudoElementSpecifie
     RefPtr<ComputedStyle> result = document().ensureStyleResolver().pseudoStyleForElement(this, PseudoStyleRequest(pseudoElementSpecifier, PseudoStyleRequest::ForComputedStyle), elementStyle);
     ASSERT(result);
     return elementStyle->addCachedPseudoStyle(result.release());
-#endif
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 AtomicString Element::computeInheritedLanguage() const
 {
@@ -2963,17 +2880,18 @@ Locale& Element::locale() const
     return document().getCachedLocale(computeInheritedLanguage());
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void Element::cancelFocusAppearanceUpdate()
 {
     if (document().focusedElement() == this)
         document().cancelFocusAppearanceUpdate();
 }
+#endif
 
 void Element::updatePseudoElement(PseudoId pseudoId, StyleRecalcChange change)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
     assert(false); // BKTODO:
-#else
+#if 0
     ASSERT(!needsStyleRecalc());
     PseudoElement* element = pseudoElement(pseudoId);
 
@@ -3009,14 +2927,12 @@ void Element::updatePseudoElement(PseudoId pseudoId, StyleRecalcChange change)
 #endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 // If we're updating first letter, and the current first letter layoutObject
 // is not the same as the one we're currently using we need to re-create
 // the first letter layoutObject.
 bool Element::updateFirstLetter(Element* element)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     LayoutObject* remainingTextLayoutObject = FirstLetterPseudoElement::firstLetterTextLayoutObject(*element);
     if (!remainingTextLayoutObject || remainingTextLayoutObject != toFirstLetterPseudoElement(element)->remainingTextLayoutObject()) {
         // We have to clear out the old first letter here because when it is
@@ -3029,18 +2945,17 @@ bool Element::updateFirstLetter(Element* element)
             elementRareData()->setPseudoElement(FIRST_LETTER, nullptr);
         return true;
     }
-#endif
     return false;
 }
+#endif
 
 void Element::createPseudoElementIfNeeded(PseudoId pseudoId)
 {
+    assert(false); // BKTODO:
+#if 0
     if (isPseudoElement())
         return;
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     // Document::ensureStyleResolver is not inlined and shows up on profiles, avoid it here.
     RefPtrWillBeRawPtr<PseudoElement> element = document().styleEngine().ensureResolver().createPseudoElementIfNeeded(*this, pseudoId);
     if (!element)
@@ -3062,16 +2977,14 @@ PseudoElement* Element::pseudoElement(PseudoId pseudoId) const
     return hasRareData() ? elementRareData()->pseudoElement(pseudoId) : nullptr;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 LayoutObject* Element::pseudoElementLayoutObject(PseudoId pseudoId) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (PseudoElement* element = pseudoElement(pseudoId))
         return element->layoutObject();
-#endif
     return nullptr;
 }
+#endif
 
 bool Element::matches(const String& selectors, ExceptionState& exceptionState)
 {
@@ -3171,24 +3084,6 @@ void Element::setFloatingPointAttribute(const QualifiedName& attributeName, doub
     setAttribute(attributeName, AtomicString::number(value));
 }
 
-void Element::setContainsFullScreenElement(bool flag)
-{
-    setElementFlag(ContainsFullScreenElement, flag);
-    setNeedsStyleRecalc(SubtreeStyleChange, StyleChangeReasonForTracing::create(StyleChangeReason::FullScreen));
-}
-
-static Element* parentCrossingFrameBoundaries(Element* element)
-{
-    ASSERT(element);
-    return element->parentElement() ? element->parentElement() : element->document().ownerElement();
-}
-
-void Element::setContainsFullScreenElementOnAncestorsCrossingFrameBoundaries(bool flag)
-{
-    for (Element* element = parentCrossingFrameBoundaries(this); element; element = parentCrossingFrameBoundaries(element))
-        element->setContainsFullScreenElement(flag);
-}
-
 void Element::setIsInTopLayer(bool inTopLayer)
 {
     if (isInTopLayer() == inTopLayer)
@@ -3200,40 +3095,13 @@ void Element::setIsInTopLayer(bool inTopLayer)
     lazyReattachIfAttached();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void Element::requestPointerLock()
 {
     if (document().page())
         document().page()->pointerLockController().requestPointerLock(this);
 }
-
-SpellcheckAttributeState Element::spellcheckAttributeState() const
-{
-    const AtomicString& value = fastGetAttribute(spellcheckAttr);
-    if (value == nullAtom)
-        return SpellcheckAttributeDefault;
-    if (equalIgnoringCase(value, "true") || equalIgnoringCase(value, ""))
-        return SpellcheckAttributeTrue;
-    if (equalIgnoringCase(value, "false"))
-        return SpellcheckAttributeFalse;
-
-    return SpellcheckAttributeDefault;
-}
-
-bool Element::isSpellCheckingEnabled() const
-{
-    for (const Element* element = this; element; element = element->parentOrShadowHostElement()) {
-        switch (element->spellcheckAttributeState()) {
-        case SpellcheckAttributeTrue:
-            return true;
-        case SpellcheckAttributeFalse:
-            return false;
-        case SpellcheckAttributeDefault:
-            break;
-        }
-    }
-
-    return true;
-}
+#endif
 
 #if ENABLE(ASSERT)
 bool Element::fastAttributeLookupAllowed(const QualifiedName& name) const
@@ -3298,13 +3166,13 @@ void Element::willModifyAttribute(const QualifiedName& name, const AtomicString&
         updateName(oldValue, newValue);
     }
 
-    if (oldValue != newValue) {
 #ifndef BLINKIT_CRAWLER_ONLY
+    if (oldValue != newValue) {
         document().styleEngine().attributeChangedForElement(name, *this);
-#endif
         if (isUpgradedCustomElement())
             CustomElement::attributeDidChange(this, name.localName(), oldValue, newValue);
     }
+#endif
 
     if (OwnPtrWillBeRawPtr<MutationObserverInterestGroup> recipients = MutationObserverInterestGroup::createForAttributesMutation(*this, name))
         recipients->enqueueMutationRecord(MutationRecord::createAttributes(this, name, oldValue));
@@ -3345,6 +3213,7 @@ static bool needsURLResolutionForInlineStyle(const Element& element, const Docum
         return false;
     if (oldDocument.baseURL() == newDocument.baseURL())
         return false;
+#ifndef BLINKIT_CRAWLER_ONLY
     const StylePropertySet* style = element.inlineStyle();
     if (!style)
         return false;
@@ -3353,9 +3222,11 @@ static bool needsURLResolutionForInlineStyle(const Element& element, const Docum
         if (style->propertyAt(i).value()->isImageValue())
             return true;
     }
+#endif
     return false;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 static void reResolveURLsInInlineStyle(const Document& document, MutableStylePropertySet& style)
 {
     for (unsigned i = 0; i < style.propertyCount(); ++i) {
@@ -3365,6 +3236,7 @@ static void reResolveURLsInInlineStyle(const Document& document, MutableStylePro
             toCSSImageValue(property.value())->reResolveURL(document);
     }
 }
+#endif
 
 void Element::didMoveToNewDocument(Document& oldDocument)
 {
@@ -3380,12 +3252,16 @@ void Element::didMoveToNewDocument(Document& oldDocument)
             setAttribute(HTMLNames::classAttr, getClassAttribute());
     }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (needsURLResolutionForInlineStyle(*this, oldDocument, document()))
         reResolveURLsInInlineStyle(document(), ensureMutableInlineStyle());
+#endif
 }
 
 void Element::updateNamedItemRegistration(const AtomicString& oldName, const AtomicString& newName)
 {
+    assert(false); // BKTODO:
+#if 0
     if (!document().isHTMLDocument())
         return;
 
@@ -3394,10 +3270,13 @@ void Element::updateNamedItemRegistration(const AtomicString& oldName, const Ato
 
     if (!newName.isEmpty())
         toHTMLDocument(document()).addNamedItem(newName);
+#endif
 }
 
 void Element::updateExtraNamedItemRegistration(const AtomicString& oldId, const AtomicString& newId)
 {
+    assert(false); // BKTODO:
+#if 0
     if (!document().isHTMLDocument())
         return;
 
@@ -3406,8 +3285,10 @@ void Element::updateExtraNamedItemRegistration(const AtomicString& oldId, const 
 
     if (!newId.isEmpty())
         toHTMLDocument(document()).addExtraNamedItem(newId);
+#endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void Element::scheduleSVGFilterLayerUpdateHack()
 {
     document().scheduleSVGFilterLayerUpdateHack(*this);
@@ -3415,15 +3296,18 @@ void Element::scheduleSVGFilterLayerUpdateHack()
 
 IntSize Element::savedLayerScrollOffset() const
 {
+    ASSERT(!ForCrawler());
     return hasRareData() ? elementRareData()->savedLayerScrollOffset() : IntSize();
 }
 
 void Element::setSavedLayerScrollOffset(const IntSize& size)
 {
+    ASSERT(!ForCrawler());
     if (size.isZero() && !hasRareData())
         return;
     ensureElementRareData().setSavedLayerScrollOffset(size);
 }
+#endif
 
 PassRefPtrWillBeRawPtr<Attr> Element::attrIfExists(const QualifiedName& name)
 {
@@ -3527,7 +3411,11 @@ void Element::cloneAttributesFromElement(const Element& other)
     // We can only do this if there are no presentation attributes and sharing the data won't result in different case sensitivity of class or id.
     if (other.m_elementData->isUnique()
         && !ownerDocumentsHaveDifferentCaseSensitivity
+#ifdef BLINKIT_CRAWLER_ONLY
+        )
+#else
         && !other.m_elementData->presentationAttributeStyle())
+#endif
         const_cast<Element&>(other).m_elementData = toUniqueElementData(other.m_elementData)->makeShareableCopy();
 
     if (!other.m_elementData->isUnique() && !ownerDocumentsHaveDifferentCaseSensitivity && !needsURLResolutionForInlineStyle(other, other.document(), document()))
@@ -3556,6 +3444,7 @@ void Element::createUniqueElementData()
     }
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void Element::synchronizeStyleAttributeInternal() const
 {
     ASSERT(isStyledElement());
@@ -3569,14 +3458,9 @@ void Element::synchronizeStyleAttributeInternal() const
 
 CSSStyleDeclaration* Element::style()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     if (!isStyledElement())
         return nullptr;
     return &ensureElementRareData().ensureInlineCSSStyleDeclaration(this);
-#endif
 }
 
 MutableStylePropertySet& Element::ensureMutableInlineStyle()
@@ -3729,10 +3613,6 @@ void Element::addPropertyToPresentationAttributeStyle(MutableStylePropertySet*  
 
 bool Element::supportsStyleSharing() const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return false;
-#else
     if (!isStyledElement() || !parentOrShadowHostElement())
         return false;
     // If the element has inline style it is probably unique.
@@ -3757,8 +3637,8 @@ bool Element::supportsStyleSharing() const
     if (hasAnimations())
         return false;
     return true;
-#endif
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 void Element::logAddElementIfIsolatedWorldAndInDocument(const char element[], const QualifiedName& attr1)
 {

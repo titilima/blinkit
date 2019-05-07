@@ -79,12 +79,6 @@ class ShadowRoot;
 class ShadowRootInit;
 class StylePropertySet;
 
-enum SpellcheckAttributeState {
-    SpellcheckAttributeTrue,
-    SpellcheckAttributeFalse,
-    SpellcheckAttributeDefault
-};
-
 enum ElementFlags {
     TabIndexWasSetExplicitly = 1 << 0,
     StyleAffectedByEmpty = 1 << 1,
@@ -197,6 +191,7 @@ public:
     // in style attribute or one of the SVG animation attributes.
     AttributeCollection attributesWithoutUpdate() const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void scrollIntoView(bool alignToTop = true);
     void scrollIntoViewIfNeeded(bool centerIfNeeded = true);
 
@@ -228,12 +223,15 @@ public:
     ClientRect* getBoundingClientRect();
 
     bool hasNonEmptyLayoutSize() const;
+#endif
 
     const AtomicString& computedRole();
     String computedName();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // Returns the absolute bounding box translated into screen coordinates:
     IntRect screenRect() const;
+#endif
 
     void didMoveToNewDocument(Document&) override;
 
@@ -253,7 +251,9 @@ public:
 
     AttrNodeList* attrNodeList();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     CSSStyleDeclaration* style();
+#endif
 
     const QualifiedName& tagQName() const { return m_tagName; }
     String tagName() const { return nodeName(); }
@@ -280,10 +280,13 @@ public:
     PassRefPtrWillBeRawPtr<Element> cloneElementWithChildren();
     PassRefPtrWillBeRawPtr<Element> cloneElementWithoutChildren();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void scheduleSVGFilterLayerUpdateHack();
+#endif
 
     void setBooleanAttribute(const QualifiedName&, bool);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual const StylePropertySet* additionalPresentationAttributeStyle() { return nullptr; }
     void invalidateStyleAttribute();
 
@@ -298,8 +301,11 @@ public:
     void synchronizeStyleAttributeInternal() const;
 
     const StylePropertySet* presentationAttributeStyle();
+#endif
     virtual bool isPresentationAttribute(const QualifiedName&) const { return false; }
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual void collectStyleForPresentationAttribute(const QualifiedName&, const AtomicString&, MutableStylePropertySet*) { }
+#endif
 
     // For exposing to DOM only.
     NamedNodeMap* attributesForBindings() const;
@@ -337,6 +343,7 @@ public:
     void attach(const AttachContext& = AttachContext()) override;
     void detach(const AttachContext& = AttachContext()) override;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual LayoutObject* createLayoutObject(const ComputedStyle&);
     virtual bool layoutObjectIsNeeded(const ComputedStyle&);
     void recalcStyle(StyleRecalcChange, Text* nextTextSibling = nullptr);
@@ -344,12 +351,14 @@ public:
     void setAnimationStyleChange(bool);
     void clearAnimationStyleChange();
     void setNeedsAnimationStyleRecalc();
+#endif
 
     void setNeedsCompositingUpdate();
 
     bool supportsStyleSharing() const;
 
     ElementShadow* shadow() const;
+#ifndef BLINKIT_CRAWLER_ONLY
     ElementShadow& ensureShadow();
     // If type of ShadowRoot (either closed or open) is explicitly specified, creation of multiple
     // shadow roots is prohibited in any combination and throws an exception. Multiple shadow roots
@@ -373,6 +382,7 @@ public:
     bool isInDescendantTreeOf(const Element* shadowHost) const;
 
     const ComputedStyle* ensureComputedStyle(PseudoId = NOPSEUDO);
+#endif
 
     // Methods for indicating the style is affected by dynamic updates (e.g., children changing, our position changing in our sibling list, etc.)
     bool styleAffectedByEmpty() const { return hasElementFlag(StyleAffectedByEmpty); }
@@ -400,6 +410,7 @@ public:
     KURL getURLAttribute(const QualifiedName&) const;
     KURL getNonEmptyURLAttribute(const QualifiedName&) const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual const AtomicString imageSourceURL() const;
     virtual Image* imageContents() { return nullptr; }
 
@@ -429,6 +440,7 @@ public:
     virtual void dispatchBlurEvent(Element* newFocusedElement, WebFocusType, InputDeviceCapabilities* sourceCapabilities = nullptr);
     virtual void dispatchFocusInEvent(const AtomicString& eventType, Element* oldFocusedElement, WebFocusType, InputDeviceCapabilities* sourceCapabilities = nullptr);
     void dispatchFocusOutEvent(const AtomicString& eventType, Element* newFocusedElement, InputDeviceCapabilities* sourceCapabilities = nullptr);
+#endif
 
     String innerText();
     String outerText();
@@ -445,14 +457,13 @@ public:
 
     virtual String title() const { return String(); }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual const AtomicString& shadowPseudoId() const;
     void setShadowPseudoId(const AtomicString&);
 
     LayoutSize minimumSizeForResizing() const;
     void setMinimumSizeForResizing(const LayoutSize&);
-
-    virtual void didBecomeFullscreenElement() { }
-    virtual void willStopBeingFullscreenElement() { }
+#endif
 
     // Called by the parser when this element's close tag is reached,
     // signaling that all child tags have been parsed and added.
@@ -465,7 +476,9 @@ public:
     void beginParsingChildren() { setIsFinishedParsingChildren(false); }
 
     PseudoElement* pseudoElement(PseudoId) const;
+#ifndef BLINKIT_CRAWLER_ONLY
     LayoutObject* pseudoElementLayoutObject(PseudoId) const;
+#endif
 
     virtual bool matchesReadOnlyPseudoClass() const { return false; }
     virtual bool matchesReadWritePseudoClass() const { return false; }
@@ -510,18 +523,12 @@ public:
     void setCustomElementDefinition(PassRefPtrWillBeRawPtr<CustomElementDefinition>);
     CustomElementDefinition* customElementDefinition() const;
 
-    bool containsFullScreenElement() const { return hasElementFlag(ContainsFullScreenElement); }
-    void setContainsFullScreenElement(bool);
-    void setContainsFullScreenElementOnAncestorsCrossingFrameBoundaries(bool);
-
     bool isInTopLayer() const { return hasElementFlag(IsInTopLayer); }
     void setIsInTopLayer(bool);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void requestPointerLock();
 
-    bool isSpellCheckingEnabled() const;
-
-#ifndef BLINKIT_CRAWLER_ONLY
     // FIXME: public for LayoutTreeBuilder, we shouldn't expose this though.
     PassRefPtr<ComputedStyle> styleForLayoutObject();
 #endif
@@ -530,20 +537,24 @@ public:
     bool hasClass() const;
     const SpaceSplitString& classNames() const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     IntSize savedLayerScrollOffset() const;
     void setSavedLayerScrollOffset(const IntSize&);
 
     ElementAnimations* elementAnimations() const;
     ElementAnimations& ensureElementAnimations();
+#endif
     bool hasAnimations() const;
 
     void synchronizeAttribute(const AtomicString& localName) const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     MutableStylePropertySet& ensureMutableInlineStyle();
     void clearMutableInlineStyleIfEmpty();
 
     void setTabIndex(int);
     short tabIndex() const override;
+#endif
 
     // A compositor proxy is a very limited wrapper around an element. It
     // exposes only those properties that are requested at the time the proxy is
@@ -562,8 +573,6 @@ public:
 
     DECLARE_VIRTUAL_TRACE();
 
-    SpellcheckAttributeState spellcheckAttributeState() const;
-
     NodeIntersectionObserverData* intersectionObserverData() const;
     NodeIntersectionObserverData& ensureIntersectionObserverData();
 
@@ -573,10 +582,12 @@ protected:
     const ElementData* elementData() const { return m_elementData.get(); }
     UniqueElementData& ensureUniqueElementData();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void addPropertyToPresentationAttributeStyle(MutableStylePropertySet*, CSSPropertyID, CSSValueID identifier);
     void addPropertyToPresentationAttributeStyle(MutableStylePropertySet*, CSSPropertyID, double value, CSSPrimitiveValue::UnitType);
     void addPropertyToPresentationAttributeStyle(MutableStylePropertySet*, CSSPropertyID, const String& value);
     void addPropertyToPresentationAttributeStyle(MutableStylePropertySet*, CSSPropertyID, PassRefPtrWillBeRawPtr<CSSValue>);
+#endif
 
     InsertionNotificationRequest insertedInto(ContainerNode*) override;
     void removedFrom(ContainerNode*) override;
@@ -591,6 +602,7 @@ protected:
     virtual bool shouldRegisterAsNamedItem() const { return false; }
     virtual bool shouldRegisterAsExtraNamedItem() const { return false; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool supportsSpatialNavigationFocus() const;
 
     void clearTabIndexExplicitlyIfNeeded();
@@ -601,6 +613,7 @@ protected:
     // moved to LayoutObject because some focusable nodes don't have layoutObjects,
     // e.g., HTMLOptionElement.
     virtual bool layoutObjectIsFocusable() const;
+#endif
 
     // classAttributeChanged() exists to share code between
     // parseAttribute (called via setAttribute()) and
@@ -618,10 +631,12 @@ protected:
     virtual void parserDidSetAttributes() { }
 
 private:
+#ifndef BLINKIT_CRAWLER_ONLY
     void scrollLayoutBoxBy(const ScrollToOptions&);
     void scrollLayoutBoxTo(const ScrollToOptions&);
     void scrollFrameBy(const ScrollToOptions&);
     void scrollFrameTo(const ScrollToOptions&);
+#endif
 
     bool hasElementFlag(ElementFlags mask) const { return hasRareData() && hasElementFlagInternal(mask); }
     void setElementFlag(ElementFlags, bool value = true);
@@ -632,6 +647,7 @@ private:
     bool isDocumentFragment() const = delete; // This will catch anyone doing an unnecessary check.
     bool isDocumentNode() const = delete; // This will catch anyone doing an unnecessary check.
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void styleAttributeChanged(const AtomicString& newStyleString, AttributeModificationReason);
 
     void updatePresentationAttributeStyle();
@@ -643,9 +659,12 @@ private:
     StyleRecalcChange recalcOwnStyle(StyleRecalcChange);
 
     inline void checkForEmptyStyleChange();
+#endif
 
     void updatePseudoElement(PseudoId, StyleRecalcChange);
+#ifndef BLINKIT_CRAWLER_ONLY
     bool updateFirstLetter(Element*);
+#endif
 
     inline void createPseudoElementIfNeeded(PseudoId);
 
@@ -678,10 +697,7 @@ private:
     void removeAttributeInternal(size_t index, SynchronizationOfLazyAttribute);
     void attributeChangedFromParserOrByCloning(const QualifiedName&, const AtomicString&, AttributeModificationReason);
 
-#ifndef NDEBUG
-    void formatForDebugger(char* buffer, unsigned length) const override;
-#endif
-
+#ifndef BLINKIT_CRAWLER_ONLY
     bool pseudoStyleCacheIsInvalid(const ComputedStyle* currentStyle, ComputedStyle* newStyle);
 
     void cancelFocusAppearanceUpdate();
@@ -691,6 +707,7 @@ private:
     inline void updateCallbackSelectors(const ComputedStyle* oldStyle, const ComputedStyle* newStyle);
     inline void removeCallbackSelectors();
     inline void addCallbackSelectors();
+#endif
 
     // cloneNode is private so that non-virtual cloneElementWithChildren and cloneElementWithoutChildren
     // are used instead.
@@ -875,6 +892,7 @@ inline void Node::removedFrom(ContainerNode* insertionPoint)
         clearFlag(IsInShadowTreeFlag);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 inline void Element::invalidateStyleAttribute()
 {
     ASSERT(elementData());
@@ -891,6 +909,7 @@ inline const StylePropertySet* Element::presentationAttributeStyle()
     // might swap it with a UniqueElementData.
     return elementData()->presentationAttributeStyle();
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 inline void Element::setTagNameForCreateElementNS(const QualifiedName& tagName)
 {
