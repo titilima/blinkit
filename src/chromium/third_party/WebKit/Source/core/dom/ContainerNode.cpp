@@ -576,7 +576,10 @@ PassRefPtrWillBeRawPtr<Node> ContainerNode::removeChild(PassRefPtrWillBeRawPtr<N
 
     RefPtrWillBeRawPtr<Node> child = oldChild;
 
-    document().removeFocusedElementOfSubtree(child.get());
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+        document().removeFocusedElementOfSubtree(child.get());
+#endif
 
     // Events fired when blurring currently focused node might have moved this
     // child into a different parent.
@@ -668,11 +671,16 @@ void ContainerNode::removeChildren(SubtreeModificationAction action)
     // and remove... e.g. stop loading frames, fire unload events.
     willRemoveChildren();
 
-    // Exclude this node when looking for removed focusedElement since only
-    // children will be removed.
-    // This must be later than willRemoveChildren, which might change focus
-    // state of a child.
-    document().removeFocusedElementOfSubtree(this, true);
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+    {
+        // Exclude this node when looking for removed focusedElement since only
+        // children will be removed.
+        // This must be later than willRemoveChildren, which might change focus
+        // state of a child.
+        document().removeFocusedElementOfSubtree(this, true);
+    }
+#endif
 
     // Removing a node from a selection can cause widget updates.
     document().nodeChildrenWillBeRemoved(*this);
@@ -686,9 +694,6 @@ void ContainerNode::removeChildren(SubtreeModificationAction action)
     NodeVector removedChildren;
 #endif
     {
-#ifndef BLINKIT_CRAWLER_ONLY
-        HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
-#endif
         DocumentOrderedMap::RemoveScope treeRemoveScope;
         {
             EventDispatchForbiddenScope assertNoEventDispatch;
