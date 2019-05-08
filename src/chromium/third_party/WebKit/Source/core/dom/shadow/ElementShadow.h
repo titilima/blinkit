@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ElementShadow.h
+// Description: ElementShadow Class
+//      Author: Ziming Li
+//     Created: 2019-05-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -132,6 +143,7 @@ inline Element* ElementShadow::host() const
     return youngestShadowRoot().host();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 inline ShadowRoot* Node::youngestShadowRoot() const
 {
     if (!isElementNode())
@@ -159,6 +171,7 @@ inline ElementShadow* ElementShadow::containingShadow() const
         return parentRoot->owner();
     return 0;
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 inline void ElementShadow::distributeIfNeeded()
 {
