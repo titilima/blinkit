@@ -41,10 +41,10 @@
 
 #include "core/CoreExport.h"
 #include "core/dom/WeakIdentifierMap.h"
-#include "core/frame/local_frame_impl.h"
+#include "core/frame/Frame.h"
 #include "core/frame/LocalFrameLifecycleNotifier.h"
 #include "core/frame/LocalFrameLifecycleObserver.h"
-#include "core/page/FrameTree.h"
+#include "core/loader/FrameLoader.h"
 #include "core/paint/PaintPhase.h"
 #include "platform/Supplementable.h"
 #include "platform/graphics/ImageOrientation.h"
@@ -71,51 +71,81 @@ class HTMLPlugInElement;
 class InputMethodController;
 class IntPoint;
 class IntSize;
+class LocalDOMWindow;
+class NavigationScheduler;
 class Node;
 class NodeTraversal;
 class Range;
 class LayoutView;
 class TreeScope;
+class ScriptController;
 class SpellChecker;
 class TreeScope;
 class WebFrameHostScheduler;
 class WebFrameScheduler;
 template <typename Strategy> class PositionWithAffinityTemplate;
 
-class CORE_EXPORT LocalFrame : public LocalFrameImpl, public LocalFrameLifecycleNotifier, public WillBeHeapSupplementable<LocalFrame>, public DisplayItemClient {
+class CORE_EXPORT LocalFrame : public Frame
+                             , public LocalFrameLifecycleNotifier
+                             , public WillBeHeapSupplementable<LocalFrame>
+#ifndef BLINKIT_CRAWLER_ONLY
+                             , public DisplayItemClient
+#endif
+{
     WILL_BE_USING_GARBAGE_COLLECTED_MIXIN(LocalFrame);
 public:
-    static PassRefPtrWillBeRawPtr<LocalFrame> create(FrameLoaderClient*, FrameHost*, FrameOwner*);
+    static PassRefPtrWillBeRawPtr<LocalFrame> create(FrameLoaderClient*, FrameHost*);
 
+    void init();
+#ifndef BLINKIT_CRAWLER_ONLY
     void setView(PassRefPtrWillBeRawPtr<FrameView>);
     void createView(const IntSize&, const Color&, bool,
         ScrollbarMode = ScrollbarAuto, bool horizontalLock = false,
         ScrollbarMode = ScrollbarAuto, bool verticalLock = false);
+#endif
 
     // Frame overrides:
     ~LocalFrame() override;
     DECLARE_VIRTUAL_TRACE();
+    bool isLocalFrame() const override { return true; }
+    DOMWindow* domWindow() const override;
+    WindowProxy* windowProxy(DOMWrapperWorld&) override;
     void navigate(Document& originDocument, const KURL&, bool replaceCurrentItem, UserGestureStatus) override;
     void navigate(const FrameLoadRequest&) override;
     void reload(FrameLoadType, ClientRedirectPolicy) override;
     void detach(FrameDetachType) override;
-    void disconnectOwnerElement() override;
+    bool shouldClose() override;
+    SecurityContext* securityContext() const override;
     void printNavigationErrorMessage(const Frame&, const char* reason) override;
+    bool prepareForCommit() override;
 
     void willDetachFrameHost();
 
+    LocalDOMWindow* localDOMWindow() const;
     void setDOMWindow(PassRefPtrWillBeRawPtr<LocalDOMWindow>);
+#ifndef BLINKIT_CRAWLER_ONLY
     FrameView* view() const;
+#endif
+    Document* document() const;
     void setPagePopupOwner(Element&);
     Element* pagePopupOwner() const { return m_pagePopupOwner.get(); }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     LayoutView* contentLayoutObject() const; // Root of the layout tree for the document contained in this frame.
 
     Editor& editor() const;
+#endif
     EventHandler& eventHandler() const;
+    FrameLoader& loader() const;
+    NavigationScheduler& navigationScheduler() const;
+#ifndef BLINKIT_CRAWLER_ONLY
     FrameSelection& selection() const;
     InputMethodController& inputMethodController() const;
+#endif
+    ScriptController& script() const;
+#ifndef BLINKIT_CRAWLER_ONLY
     SpellChecker& spellChecker() const;
+#endif
     FrameConsole& console() const;
 
     void didChangeVisibilityState();
@@ -128,15 +158,11 @@ public:
 
     // ======== All public functions below this point are candidates to move out of LocalFrame into another class. ========
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // See GraphicsLayerClient.h for accepted flags.
     String layerTreeAsText(unsigned flags = 0) const;
 
-    void setPrinting(bool printing, const FloatSize& pageSize, const FloatSize& originalPageSize, float maximumShrinkRatio);
-    bool shouldUsePrintingLayout() const;
     FloatSize resizePageRectsKeepingRatio(const FloatSize& originalSize, const FloatSize& expectedSize);
-
-    bool inViewSourceMode() const;
-    void setInViewSourceMode(bool = true);
 
     void setPageZoomFactor(float);
     float pageZoomFactor() const { return m_pageZoomFactor; }
@@ -156,9 +182,11 @@ public:
     PositionWithAffinityTemplate<EditingAlgorithm<NodeTraversal>> positionForPoint(const IntPoint& framePoint);
     Document* documentAtPoint(const IntPoint&);
     EphemeralRangeTemplate<EditingAlgorithm<NodeTraversal>> rangeForPoint(const IntPoint& framePoint);
+#endif
 
     bool isURLAllowed(const KURL&) const;
     bool shouldReuseDefaultView(const KURL&) const;
+#ifndef BLINKIT_CRAWLER_ONLY
     void removeSpellingMarkersUnderWords(const Vector<String>& words);
 
     // FIXME: once scroll customization is enabled everywhere
@@ -172,6 +200,7 @@ public:
     IntRect visualRect() const override { return IntRect(); }
 
     bool shouldThrottleRendering() const;
+#endif // BLINKIT_CRAWLER_ONLY
 
     // Returns the frame scheduler, creating one if needed.
     WebFrameScheduler* frameScheduler();
@@ -179,9 +208,17 @@ public:
 
     void updateSecurityOrigin(SecurityOrigin*);
 
-private:
-    LocalFrame(FrameLoaderClient*, FrameHost*, FrameOwner*);
+    bool isNavigationAllowed() const { return m_navigationDisableCount == 0; }
 
+private:
+    friend class FrameNavigationDisabler;
+
+    LocalFrame(FrameLoaderClient*, FrameHost*);
+
+    // Internal Frame helper overrides:
+    WindowProxyManager* windowProxyManager() const override;
+
+#ifndef BLINKIT_CRAWLER_ONLY
     String localLayerTreeAsText(unsigned flags) const;
 
     // Paints the area for the given rect into a DragImage, with the given displayItemClient id attached.
@@ -189,20 +226,35 @@ private:
     PassOwnPtr<DragImage> paintIntoDragImage(const DisplayItemClient&,
         RespectImageOrientationEnum shouldRespectImageOrientation, const GlobalPaintFlags,
         IntRect paintingRect, float opacity = 1);
+#endif
 
-    Type GetType(void) const override { return Type::Local; }
+    void enableNavigation() { --m_navigationDisableCount; }
+    void disableNavigation() { ++m_navigationDisableCount; }
 
+    mutable FrameLoader m_loader;
+    OwnPtrWillBeMember<NavigationScheduler> m_navigationScheduler;
+
+#ifndef BLINKIT_CRAWLER_ONLY
     RefPtrWillBeMember<FrameView> m_view;
+#endif
+    RefPtrWillBeMember<LocalDOMWindow> m_domWindow;
     // Usually 0. Non-null if this is the top frame of PagePopup.
     RefPtrWillBeMember<Element> m_pagePopupOwner;
 
+    const OwnPtrWillBeMember<ScriptController> m_script;
+#ifndef BLINKIT_CRAWLER_ONLY
     const OwnPtrWillBeMember<Editor> m_editor;
-    const OwnPtrWillBeMember<SpellChecker> m_spellChecker; // BKTODO: Remove this later!
+    const OwnPtrWillBeMember<SpellChecker> m_spellChecker;
     const OwnPtrWillBeMember<FrameSelection> m_selection;
+#endif
     const OwnPtrWillBeMember<EventHandler> m_eventHandler;
     const OwnPtrWillBeMember<FrameConsole> m_console;
+#ifndef BLINKIT_CRAWLER_ONLY
     const OwnPtrWillBeMember<InputMethodController> m_inputMethodController;
+#endif
     OwnPtr<WebFrameScheduler> m_frameScheduler;
+
+    int m_navigationDisableCount;
 
     float m_pageZoomFactor;
     float m_textZoomFactor;
@@ -212,11 +264,40 @@ private:
     SupplementStatus m_supplementStatus = SupplementStatus::Uncleared;
 };
 
+inline void LocalFrame::init()
+{
+    m_loader.init();
+}
+
+inline LocalDOMWindow* LocalFrame::localDOMWindow() const
+{
+    return m_domWindow.get();
+}
+
+inline FrameLoader& LocalFrame::loader() const
+{
+    return m_loader;
+}
+
+inline NavigationScheduler& LocalFrame::navigationScheduler() const
+{
+    ASSERT(m_navigationScheduler);
+    return *m_navigationScheduler.get();
+}
+
+#ifndef BLINKIT_CRAWLER_ONLY
 inline FrameView* LocalFrame::view() const
 {
     return m_view.get();
 }
+#endif
 
+inline ScriptController& LocalFrame::script() const
+{
+    return *m_script;
+}
+
+#ifndef BLINKIT_CRAWLER_ONLY
 inline FrameSelection& LocalFrame::selection() const
 {
     return *m_selection;
@@ -231,26 +312,19 @@ inline SpellChecker& LocalFrame::spellChecker() const
 {
     return *m_spellChecker;
 }
+#endif
 
 inline FrameConsole& LocalFrame::console() const
 {
     return *m_console;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 inline InputMethodController& LocalFrame::inputMethodController() const
 {
     return *m_inputMethodController;
 }
-
-inline bool LocalFrame::inViewSourceMode() const
-{
-    return false;
-}
-
-inline void LocalFrame::setInViewSourceMode(bool mode)
-{
-    assert(false); // Not reached!
-}
+#endif
 
 inline EventHandler& LocalFrame::eventHandler() const
 {
@@ -261,6 +335,17 @@ inline EventHandler& LocalFrame::eventHandler() const
 DEFINE_TYPE_CASTS(LocalFrame, Frame, localFrame, localFrame->isLocalFrame(), localFrame.isLocalFrame());
 
 DECLARE_WEAK_IDENTIFIER_MAP(LocalFrame);
+
+class FrameNavigationDisabler {
+    WTF_MAKE_NONCOPYABLE(FrameNavigationDisabler);
+    STACK_ALLOCATED();
+public:
+    explicit FrameNavigationDisabler(LocalFrame&);
+    ~FrameNavigationDisabler();
+
+private:
+    RawPtrWillBeMember<LocalFrame> m_frame;
+};
 
 } // namespace blink
 

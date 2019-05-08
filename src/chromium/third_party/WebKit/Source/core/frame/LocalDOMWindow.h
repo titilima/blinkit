@@ -125,7 +125,9 @@ public:
     double devicePixelRatio() const override;
     int orientation() const override;
     Console* console() const override;
+#ifndef BLINKIT_CRAWLER_ONLY
     DOMSelection* getSelection() override;
+#endif
     void blur() override;
     void stop() override;
     void alert(const String& message = String()) override;
@@ -133,6 +135,7 @@ public:
     String prompt(const String& message, const String& defaultValue) override;
     bool find(const String&, bool caseSensitive, bool backwards, bool wrap, bool wholeWord, bool searchInFrames, bool showDialog) const override;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // FIXME: ScrollBehaviorSmooth is currently unsupported in VisualViewport.
     // crbug.com/434497
     void scrollBy(double x, double y, ScrollBehavior = ScrollBehaviorAuto) const override;
@@ -150,6 +153,7 @@ public:
     int requestAnimationFrame(FrameRequestCallback*) override;
     int webkitRequestAnimationFrame(FrameRequestCallback*) override;
     void cancelAnimationFrame(int id) override;
+#endif
 
     void registerProperty(DOMWindowProperty*);
     void unregisterProperty(DOMWindowProperty*);

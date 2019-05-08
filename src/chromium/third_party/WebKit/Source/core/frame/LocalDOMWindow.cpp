@@ -62,14 +62,12 @@
 #include "core/frame/ScrollToOptions.h"
 #include "core/frame/Settings.h"
 #include "core/frame/SuspendableTimer.h"
-#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/input/EventHandler.h"
 #include "core/inspector/ConsoleMessageStorage.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/loader/DocumentLoader.h"
 #include "core/loader/FrameLoaderClient.h"
 #include "core/loader/SinkDocument.h"
-#include "core/loader/appcache/ApplicationCache.h"
 #include "core/page/ChromeClient.h"
 #include "core/page/CreateWindow.h"
 #include "core/page/Page.h"
@@ -230,7 +228,6 @@ bool LocalDOMWindow::allowPopUp()
 
 LocalDOMWindow::LocalDOMWindow(LocalFrame& frame)
     : m_frameObserver(WindowFrameObserver::create(this, frame))
-    , m_shouldPrintWhenFinishedLoading(false)
 #if ENABLE(ASSERT)
     , m_hasBeenReset(false)
 #endif
@@ -277,7 +274,7 @@ PassRefPtrWillBeRawPtr<Document> LocalDOMWindow::createDocument(const String& mi
         // This is a hack for XSLTProcessor. See XSLTProcessor::createDocumentFromSource().
         document = Document::create(init);
     } else {
-        document = DOMImplementation::createDocument(mimeType, init, init.frame() ? init.frame()->inViewSourceMode() : false);
+        document = DOMImplementation::createDocument(mimeType, init);
     }
 
     return document.release();
@@ -297,17 +294,22 @@ PassRefPtrWillBeRawPtr<Document> LocalDOMWindow::installNewDocument(const String
         return m_document;
 
     frame()->script().updateDocument();
-    m_document->updateViewportDescription();
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!frame()->IsCrawlerFrame())
+    {
+        m_document->updateViewportDescription();
 
-    if (frame()->page() && frame()->view()) {
-        if (ScrollingCoordinator* scrollingCoordinator = frame()->page()->scrollingCoordinator()) {
-            scrollingCoordinator->scrollableAreaScrollbarLayerDidChange(frame()->view(), HorizontalScrollbar);
-            scrollingCoordinator->scrollableAreaScrollbarLayerDidChange(frame()->view(), VerticalScrollbar);
-            scrollingCoordinator->scrollableAreaScrollLayerDidChange(frame()->view());
+        if (frame()->page() && frame()->view()) {
+            if (ScrollingCoordinator * scrollingCoordinator = frame()->page()->scrollingCoordinator()) {
+                scrollingCoordinator->scrollableAreaScrollbarLayerDidChange(frame()->view(), HorizontalScrollbar);
+                scrollingCoordinator->scrollableAreaScrollbarLayerDidChange(frame()->view(), VerticalScrollbar);
+                scrollingCoordinator->scrollableAreaScrollLayerDidChange(frame()->view());
+            }
         }
-    }
 
-    frame()->selection().updateSecureKeyboardEntryIfActive();
+        frame()->selection().updateSecureKeyboardEntryIfActive();
+    }
+#endif
     return m_document;
 }
 
@@ -402,15 +404,19 @@ LocalDOMWindow* LocalDOMWindow::toDOMWindow()
     return this;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 PassRefPtrWillBeRawPtr<MediaQueryList> LocalDOMWindow::matchMedia(const String& media)
 {
     return document() ? document()->mediaQueryMatcher().matchMedia(media) : nullptr;
 }
+#endif
 
 void LocalDOMWindow::willDetachFrameHost()
 {
-    frame()->host()->eventHandlerRegistry().didRemoveAllEventHandlers(*this);
-    frame()->host()->consoleMessageStorage().frameWindowDiscarded(this);
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!frame()->IsCrawlerFrame())
+        frame()->host()->eventHandlerRegistry().didRemoveAllEventHandlers(*this);
+#endif
     LocalDOMWindow::notifyContextDestroyed();
 }
 
@@ -457,8 +463,9 @@ void LocalDOMWindow::reset()
     m_toolbar = nullptr;
     m_console = nullptr;
     m_navigator = nullptr;
+#ifndef BLINKIT_CRAWLER_ONLY
     m_media = nullptr;
-    m_applicationCache = nullptr;
+#endif
 #if ENABLE(ASSERT)
     m_hasBeenReset = true;
 #endif
@@ -468,6 +475,8 @@ void LocalDOMWindow::reset()
 
 void LocalDOMWindow::sendOrientationChangeEvent()
 {
+    assert(false); // BKTODO:
+#if 0
     ASSERT(RuntimeEnabledFeatures::orientationEventEnabled());
     ASSERT(frame()->isMainFrame());
 
@@ -483,10 +492,14 @@ void LocalDOMWindow::sendOrientationChangeEvent()
             continue;
         toLocalFrame(frames[i].get())->localDOMWindow()->dispatchEvent(Event::create(EventTypeNames::orientationchange));
     }
+#endif
 }
 
 int LocalDOMWindow::orientation() const
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     ASSERT(RuntimeEnabledFeatures::orientationEventEnabled());
 
     if (!frame() || !frame()->host())
@@ -499,6 +512,7 @@ int LocalDOMWindow::orientation() const
     if (orientation == 270)
         return -90;
     return orientation;
+#endif
 }
 
 Screen* LocalDOMWindow::screen() const
@@ -569,15 +583,6 @@ FrameConsole* LocalDOMWindow::frameConsole() const
     return &frame()->console();
 }
 
-ApplicationCache* LocalDOMWindow::applicationCache() const
-{
-    if (!isCurrentlyDisplayedInFrame())
-        return nullptr;
-    if (!m_applicationCache)
-        m_applicationCache = ApplicationCache::create(frame());
-    return m_applicationCache.get();
-}
-
 Navigator* LocalDOMWindow::navigator() const
 {
     if (!m_navigator)
@@ -600,6 +605,7 @@ void LocalDOMWindow::dispatchMessageEventWithOriginCheck(SecurityOrigin* intende
     dispatchEvent(event);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 DOMSelection* LocalDOMWindow::getSelection()
 {
     if (!isCurrentlyDisplayedInFrame())
@@ -607,22 +613,22 @@ DOMSelection* LocalDOMWindow::getSelection()
 
     return frame()->document()->getSelection();
 }
+#endif
 
 Element* LocalDOMWindow::frameElement() const
 {
+    assert(false); // BKTODO:
+    return nullptr;
+#if 0
     if (!(frame() && frame()->owner() && frame()->owner()->isLocal()))
         return nullptr;
 
     return toHTMLFrameOwnerElement(frame()->owner());
+#endif
 }
 
 void LocalDOMWindow::blur()
 {
-}
-
-void LocalDOMWindow::print()
-{
-    assert(false); // Not reached!
 }
 
 void LocalDOMWindow::stop()
@@ -634,6 +640,8 @@ void LocalDOMWindow::stop()
 
 void LocalDOMWindow::alert(const String& message)
 {
+    assert(false); // BKTODO:
+#if 0
     if (!frame())
         return;
 
@@ -644,10 +652,14 @@ void LocalDOMWindow::alert(const String& message)
         return;
 
     host->chromeClient().openJavaScriptAlert(frame(), message);
+#endif
 }
 
 bool LocalDOMWindow::confirm(const String& message)
 {
+    assert(false); // BKTODO:
+    return false;
+#if 0
     if (!frame())
         return false;
 
@@ -658,10 +670,13 @@ bool LocalDOMWindow::confirm(const String& message)
         return false;
 
     return host->chromeClient().openJavaScriptConfirm(frame(), message);
+#endif
 }
 
 String LocalDOMWindow::prompt(const String& message, const String& defaultValue)
 {
+    assert(false); // BKTODO:
+#if 0
     if (!frame())
         return String();
 
@@ -674,12 +689,16 @@ String LocalDOMWindow::prompt(const String& message, const String& defaultValue)
     String returnValue;
     if (host->chromeClient().openJavaScriptPrompt(frame(), message, defaultValue, returnValue))
         return returnValue;
+#endif
 
     return String();
 }
 
 bool LocalDOMWindow::find(const String& string, bool caseSensitive, bool backwards, bool wrap, bool wholeWord, bool /*searchInFrames*/, bool /*showDialog*/) const
 {
+    assert(false); // BKTODO:
+    return false;
+#if 0
     if (!isCurrentlyDisplayedInFrame())
         return false;
 
@@ -690,6 +709,7 @@ bool LocalDOMWindow::find(const String& string, bool caseSensitive, bool backwar
     // FIXME (13016): Support searchInFrames and showDialog
     FindOptions options = (backwards ? Backwards : 0) | (caseSensitive ? 0 : CaseInsensitive) | (wrap ? WrapAround : 0) | (wholeWord ? WholeWord | AtWordStarts : 0);
     return frame()->editor().findString(string, options);
+#endif
 }
 
 bool LocalDOMWindow::offscreenBuffering() const
@@ -699,6 +719,9 @@ bool LocalDOMWindow::offscreenBuffering() const
 
 int LocalDOMWindow::outerHeight() const
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     if (!frame())
         return 0;
 
@@ -709,10 +732,14 @@ int LocalDOMWindow::outerHeight() const
     if (host->settings().reportScreenSizeInPhysicalPixelsQuirk())
         return lroundf(host->chromeClient().windowRect().height() * host->deviceScaleFactor());
     return host->chromeClient().windowRect().height();
+#endif
 }
 
 int LocalDOMWindow::outerWidth() const
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     if (!frame())
         return 0;
 
@@ -723,10 +750,14 @@ int LocalDOMWindow::outerWidth() const
     if (host->settings().reportScreenSizeInPhysicalPixelsQuirk())
         return lroundf(host->chromeClient().windowRect().width() * host->deviceScaleFactor());
     return host->chromeClient().windowRect().width();
+#endif
 }
 
 static FloatSize getViewportSize(LocalFrame* frame)
 {
+    assert(false); // BKTODO:
+    return FloatSize();
+#if 0
     FrameView* view = frame->view();
     if (!view)
         return FloatSize();
@@ -751,28 +782,40 @@ static FloatSize getViewportSize(LocalFrame* frame)
     return frame->isMainFrame() && !host->settings().inertVisualViewport()
         ? FloatSize(host->visualViewport().visibleRect().size())
         : FloatSize(view->visibleContentRect(IncludeScrollbars).size());
+#endif
 }
 
 int LocalDOMWindow::innerHeight() const
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     if (!frame())
         return 0;
 
     FloatSize viewportSize = getViewportSize(frame());
     return adjustForAbsoluteZoom(expandedIntSize(viewportSize).height(), frame()->pageZoomFactor());
+#endif
 }
 
 int LocalDOMWindow::innerWidth() const
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     if (!frame())
         return 0;
 
     FloatSize viewportSize = getViewportSize(frame());
     return adjustForAbsoluteZoom(expandedIntSize(viewportSize).width(), frame()->pageZoomFactor());
+#endif
 }
 
 int LocalDOMWindow::screenX() const
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     if (!frame())
         return 0;
 
@@ -783,10 +826,14 @@ int LocalDOMWindow::screenX() const
     if (host->settings().reportScreenSizeInPhysicalPixelsQuirk())
         return lroundf(host->chromeClient().windowRect().x() * host->deviceScaleFactor());
     return host->chromeClient().windowRect().x();
+#endif
 }
 
 int LocalDOMWindow::screenY() const
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     if (!frame())
         return 0;
 
@@ -797,10 +844,14 @@ int LocalDOMWindow::screenY() const
     if (host->settings().reportScreenSizeInPhysicalPixelsQuirk())
         return lroundf(host->chromeClient().windowRect().y() * host->deviceScaleFactor());
     return host->chromeClient().windowRect().y();
+#endif
 }
 
 double LocalDOMWindow::scrollX() const
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     if (!frame())
         return 0;
 
@@ -817,10 +868,14 @@ double LocalDOMWindow::scrollX() const
     ScrollableArea* viewport = host->settings().inertVisualViewport() ? view->layoutViewportScrollableArea() : view->scrollableArea();
     double viewportX = viewport->scrollPositionDouble().x();
     return adjustScrollForAbsoluteZoom(viewportX, frame()->pageZoomFactor());
+#endif
 }
 
 double LocalDOMWindow::scrollY() const
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     if (!frame())
         return 0;
 
@@ -837,31 +892,39 @@ double LocalDOMWindow::scrollY() const
     ScrollableArea* viewport = host->settings().inertVisualViewport() ? view->layoutViewportScrollableArea() : view->scrollableArea();
     double viewportY = viewport->scrollPositionDouble().y();
     return adjustScrollForAbsoluteZoom(viewportY, frame()->pageZoomFactor());
+#endif
 }
 
 const AtomicString& LocalDOMWindow::name() const
 {
+    assert(false); // BKTODO:
+    return nullAtom;
+#if 0
     if (!isCurrentlyDisplayedInFrame())
         return nullAtom;
 
     return frame()->tree().name();
+#endif
 }
 
 void LocalDOMWindow::setName(const AtomicString& name)
 {
+    assert(false); // BKTODO:
+#if 0
     if (!isCurrentlyDisplayedInFrame())
         return;
 
     frame()->tree().setName(name);
     ASSERT(frame()->loader().client());
     frame()->loader().client()->didChangeName(name);
+#endif
 }
 
 void LocalDOMWindow::setStatus(const String& string)
 {
     m_status = string;
-
-    if (!frame())
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!frame() || frame()->IsCrawlerFrame())
         return;
 
     FrameHost* host = frame()->host();
@@ -870,13 +933,14 @@ void LocalDOMWindow::setStatus(const String& string)
 
     ASSERT(frame()->document()); // Client calls shouldn't be made when the frame is in inconsistent state.
     host->chromeClient().setStatusbarText(m_status);
+#endif
 }
 
 void LocalDOMWindow::setDefaultStatus(const String& string)
 {
     m_defaultStatus = string;
-
-    if (!frame())
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!frame() || frame()->IsCrawlerFrame())
         return;
 
     FrameHost* host = frame()->host();
@@ -885,6 +949,7 @@ void LocalDOMWindow::setDefaultStatus(const String& string)
 
     ASSERT(frame()->document()); // Client calls shouldn't be made when the frame is in inconsistent state.
     host->chromeClient().setStatusbarText(m_defaultStatus);
+#endif
 }
 
 Document* LocalDOMWindow::document() const
@@ -894,11 +959,16 @@ Document* LocalDOMWindow::document() const
 
 StyleMedia* LocalDOMWindow::styleMedia() const
 {
+    assert(false); // BKTODO:
+    return nullptr;
+#if 0
     if (!m_media)
         m_media = StyleMedia::create(frame());
     return m_media.get();
+#endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 PassRefPtrWillBeRawPtr<CSSStyleDeclaration> LocalDOMWindow::getComputedStyle(Element* elt, const String& pseudoElt) const
 {
     ASSERT(elt);
@@ -907,10 +977,6 @@ PassRefPtrWillBeRawPtr<CSSStyleDeclaration> LocalDOMWindow::getComputedStyle(Ele
 
 PassRefPtrWillBeRawPtr<CSSRuleList> LocalDOMWindow::getMatchedCSSRules(Element* element, const String& pseudoElement) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     if (!element)
         return nullptr;
 
@@ -926,17 +992,22 @@ PassRefPtrWillBeRawPtr<CSSRuleList> LocalDOMWindow::getMatchedCSSRules(Element* 
     PseudoId pseudoId = CSSSelector::pseudoId(pseudoType);
     element->document().updateLayoutTreeIfNeeded();
     return frame()->document()->ensureStyleResolver().pseudoCSSRulesForElement(element, pseudoId, rulesToInclude);
-#endif
 }
+#endif
 
 double LocalDOMWindow::devicePixelRatio() const
 {
+    assert(false); // BKTODO:
+    return 0.0;
+#if 0
     if (!frame())
         return 0.0;
 
     return frame()->devicePixelRatio();
+#endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void LocalDOMWindow::scrollBy(double x, double y, ScrollBehavior scrollBehavior) const
 {
     if (!isCurrentlyDisplayedInFrame())
@@ -1126,9 +1197,13 @@ void LocalDOMWindow::cancelAnimationFrame(int id)
     if (Document* document = this->document())
         document->cancelAnimationFrame(id);
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 bool LocalDOMWindow::addEventListenerInternal(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener> prpListener, const EventListenerOptions& options)
 {
+    assert(false); // BKTODO:
+    return false;
+#if 0
     RefPtrWillBeRawPtr<EventListener> listener = prpListener;
     if (!EventTarget::addEventListenerInternal(eventType, listener, options))
         return false;
@@ -1159,10 +1234,14 @@ bool LocalDOMWindow::addEventListenerInternal(const AtomicString& eventType, Pas
     }
 
     return true;
+#endif
 }
 
 bool LocalDOMWindow::removeEventListenerInternal(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener> listener, const EventListenerOptions& options)
 {
+    assert(false); // BKTODO:
+    return false;
+#if 0
     if (!EventTarget::removeEventListenerInternal(eventType, listener, options))
         return false;
 
@@ -1178,32 +1257,13 @@ bool LocalDOMWindow::removeEventListenerInternal(const AtomicString& eventType, 
     }
 
     return true;
+#endif
 }
 
 void LocalDOMWindow::dispatchLoadEvent()
 {
     RefPtrWillBeRawPtr<Event> loadEvent(Event::create(EventTypeNames::load));
-    if (frame() && frame()->loader().documentLoader() && !frame()->loader().documentLoader()->timing().loadEventStart()) {
-        // The DocumentLoader (and thus its DocumentLoadTiming) might get destroyed while dispatching
-        // the event, so protect it to prevent writing the end time into freed memory.
-        RefPtrWillBeRawPtr<DocumentLoader> documentLoader = frame()->loader().documentLoader();
-        DocumentLoadTiming& timing = documentLoader->timing();
-        timing.markLoadEventStart();
-        dispatchEvent(loadEvent, document());
-        timing.markLoadEventEnd();
-    } else {
-        dispatchEvent(loadEvent, document());
-    }
-
-    // For load events, send a separate load event to the enclosing frame only.
-    // This is a DOM extension and is independent of bubbling/capturing rules of
-    // the DOM.
-    FrameOwner* owner = frame() ? frame()->owner() : nullptr;
-    if (owner)
-        owner->dispatchLoad();
-
-    TRACE_EVENT_INSTANT1("devtools.timeline", "MarkLoad", TRACE_EVENT_SCOPE_THREAD, "data", InspectorMarkLoadEvent::data(frame()));
-    InspectorInstrumentation::loadEventFired(frame());
+    dispatchEvent(loadEvent, document());
 }
 
 bool LocalDOMWindow::dispatchEvent(PassRefPtrWillBeRawPtr<Event> prpEvent, PassRefPtrWillBeRawPtr<EventTarget> prpTarget)
@@ -1227,8 +1287,10 @@ void LocalDOMWindow::removeAllEventListeners()
     EventTarget::removeAllEventListeners();
 
     notifyRemoveAllEventListeners(this);
-    if (frame() && frame()->host())
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (frame() && !frame()->IsCrawlerFrame() && frame()->host())
         frame()->host()->eventHandlerRegistry().didRemoveAllEventHandlers(*this);
+#endif
 
     removeAllUnloadEventListeners(this);
     removeAllBeforeUnloadEventListeners(this);
@@ -1236,10 +1298,7 @@ void LocalDOMWindow::removeAllEventListeners()
 
 void LocalDOMWindow::finishedLoading()
 {
-    if (m_shouldPrintWhenFinishedLoading) {
-        m_shouldPrintWhenFinishedLoading = false;
-        print();
-    }
+    // Currently nothing to do.
 }
 
 void LocalDOMWindow::printErrorMessage(const String& message) const
@@ -1256,6 +1315,9 @@ void LocalDOMWindow::printErrorMessage(const String& message) const
 PassRefPtrWillBeRawPtr<DOMWindow> LocalDOMWindow::open(const String& urlString, const AtomicString& frameName, const String& windowFeaturesString,
     LocalDOMWindow* callingWindow, LocalDOMWindow* enteredWindow)
 {
+    assert(false); // BKTODO:
+    return nullptr;
+#if 0
     if (!isCurrentlyDisplayedInFrame())
         return nullptr;
     Document* activeDocument = callingWindow->document();
@@ -1307,6 +1369,7 @@ PassRefPtrWillBeRawPtr<DOMWindow> LocalDOMWindow::open(const String& urlString, 
     WindowFeatures features(windowFeaturesString);
     RefPtrWillBeRawPtr<DOMWindow> newWindow = createWindow(urlString, frameName, features, *callingWindow, *firstFrame, *frame());
     return features.noopener ? nullptr : newWindow;
+#endif
 }
 
 DEFINE_TRACE(LocalDOMWindow)

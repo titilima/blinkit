@@ -56,7 +56,6 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLFrameElementBase.h"
 #include "core/input/EventHandler.h"
 #include "core/inspector/ConsoleMessageStorage.h"
 #include "core/inspector/InspectorInstrumentation.h"
@@ -88,10 +87,14 @@
 #include "wtf/PassOwnPtr.h"
 #include "wtf/StdLibExtras.h"
 
+#include "blinkit/app/app_impl.h"
+#include "blinkit/blink_impl/frame_scheduler_impl.h"
+
 namespace blink {
 
 using namespace HTMLNames;
 
+#ifndef BLINKIT_CRAWLER_ONLY
 namespace {
 
 struct ScopedFramePaintingState {
@@ -134,14 +137,16 @@ inline float parentTextZoomFactor(LocalFrame* frame)
 }
 
 } // namespace
+#endif
 
-PassRefPtrWillBeRawPtr<LocalFrame> LocalFrame::create(FrameLoaderClient* client, FrameHost* host, FrameOwner* owner)
+PassRefPtrWillBeRawPtr<LocalFrame> LocalFrame::create(FrameLoaderClient* client, FrameHost* host)
 {
-    RefPtrWillBeRawPtr<LocalFrame> frame = adoptRefWillBeNoop(new LocalFrame(client, host, owner));
+    RefPtrWillBeRawPtr<LocalFrame> frame = adoptRefWillBeNoop(new LocalFrame(client, host));
     InspectorInstrumentation::frameAttachedToParent(frame.get());
     return frame.release();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void LocalFrame::setView(PassRefPtrWillBeRawPtr<FrameView> view)
 {
     ASSERT(!m_view || m_view != view);
@@ -199,12 +204,15 @@ void LocalFrame::createView(const IntSize& viewportSize, const Color& background
     if (owner())
         view()->setCanHaveScrollbars(owner()->scrollingMode() != ScrollbarAlwaysOff);
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 LocalFrame::~LocalFrame()
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     // Verify that the FrameView has been cleared as part of detaching
     // the frame owner.
     ASSERT(!m_view);
+#endif
 #if !ENABLE(OILPAN)
     // Oilpan: see setDOMWindow() comment why it is acceptable not to
     // explicitly call setDOMWindow() here.
@@ -231,6 +239,17 @@ DEFINE_TRACE(LocalFrame)
 #endif
     LocalFrameLifecycleNotifier::trace(visitor);
     Frame::trace(visitor);
+}
+
+DOMWindow* LocalFrame::domWindow() const
+{
+    return m_domWindow.get();
+}
+
+WindowProxy* LocalFrame::windowProxy(DOMWrapperWorld& world)
+{
+    assert(false); // Not reached!
+    return nullptr;
 }
 
 void LocalFrame::navigate(Document& originDocument, const KURL& url, bool replaceCurrentItem, UserGestureStatus userGestureStatus)
@@ -284,12 +303,7 @@ void LocalFrame::detach(FrameDetachType type)
     // detached, so protect a reference to it.
     RefPtrWillBeRawPtr<LocalFrame> protect(this);
     m_loader.stopAllLoaders();
-    // Don't allow any new child frames to load in this frame: attaching a new
-    // child frame during or after detaching children results in an attached
-    // frame on a detached DOM tree, which is bad.
-    SubframeLoadingDisabler disabler(*document());
     m_loader.dispatchUnloadEvent();
-    detachChildren();
     m_frameScheduler.clear();
 
     // All done if detaching the subframes brought about a detach of this frame also.
@@ -311,7 +325,10 @@ void LocalFrame::detach(FrameDetachType type)
     // back to FrameLoaderClient via WindowProxy.
     script().clearForClose();
     ScriptForbiddenScope forbidScript;
-    setView(nullptr);
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!IsCrawlerFrame())
+        setView(nullptr);
+#endif
     willDetachFrameHost();
     InspectorInstrumentation::frameDetachedFromParent(this);
     Frame::detach(type);
@@ -344,6 +361,16 @@ void LocalFrame::detach(FrameDetachType type)
     WeakIdentifierMap<LocalFrame>::notifyObjectDestroyed(this);
 }
 
+bool LocalFrame::prepareForCommit()
+{
+    return loader().prepareForCommit();
+}
+
+SecurityContext* LocalFrame::securityContext() const
+{
+    return document();
+}
+
 void LocalFrame::printNavigationErrorMessage(const Frame& targetFrame, const char* reason)
 {
     // URLs aren't available for RemoteFrames, so the error message uses their
@@ -354,24 +381,42 @@ void LocalFrame::printNavigationErrorMessage(const Frame& targetFrame, const cha
     localDOMWindow()->printErrorMessage(message);
 }
 
-void LocalFrame::disconnectOwnerElement()
+WindowProxyManager* LocalFrame::windowProxyManager() const
 {
-    Frame::disconnectOwnerElement();
+    assert(false); // Not reached!
+    return nullptr;
+}
+
+bool LocalFrame::shouldClose()
+{
+    // TODO(dcheng): This should be fixed to dispatch beforeunload events to
+    // both local and remote frames.
+    return m_loader.shouldClose();
 }
 
 void LocalFrame::willDetachFrameHost()
 {
     LocalFrameLifecycleNotifier::notifyWillDetachFrameHost();
 
-    // FIXME: Page should take care of updating focus/scrolling instead of Frame.
-    // FIXME: It's unclear as to why this is called more than once, but it is,
-    // so page() could be null.
-    if (page() && page()->focusController().focusedFrame() == this)
-        page()->focusController().setFocusedFrame(nullptr);
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!IsCrawlerFrame())
+    {
+        // FIXME: Page should take care of updating focus/scrolling instead of Frame.
+        // FIXME: It's unclear as to why this is called more than once, but it is,
+        // so page() could be null.
+        if (page() && page()->focusController().focusedFrame() == this)
+            page()->focusController().setFocusedFrame(nullptr);
+    }
+#endif
     script().clearScriptObjects();
 
-    if (page() && page()->scrollingCoordinator() && m_view)
-        page()->scrollingCoordinator()->willDestroyScrollableArea(m_view.get());
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!IsCrawlerFrame())
+    {
+        if (page() && page()->scrollingCoordinator() && m_view)
+            page()->scrollingCoordinator()->willDestroyScrollableArea(m_view.get());
+    }
+#endif
 }
 
 void LocalFrame::setDOMWindow(PassRefPtrWillBeRawPtr<LocalDOMWindow> domWindow)
@@ -390,8 +435,6 @@ void LocalFrame::setDOMWindow(PassRefPtrWillBeRawPtr<LocalDOMWindow> domWindow)
     //    die with the window. And the registered DOMWindowProperty instances that don't,
     //    only keep a weak reference to this frame, so there's no need to be
     //    explicitly notified that this frame is going away.
-    if (m_domWindow && host())
-        host()->consoleMessageStorage().frameWindowDiscarded(m_domWindow.get());
     if (domWindow)
         script().clearWindowProxy();
 
@@ -400,18 +443,27 @@ void LocalFrame::setDOMWindow(PassRefPtrWillBeRawPtr<LocalDOMWindow> domWindow)
     m_domWindow = domWindow;
 }
 
+Document* LocalFrame::document() const
+{
+    return m_domWindow ? m_domWindow->document() : nullptr;
+}
+
 void LocalFrame::setPagePopupOwner(Element& owner)
 {
     m_pagePopupOwner = &owner;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 LayoutView* LocalFrame::contentLayoutObject() const
 {
     return document() ? document()->layoutView() : nullptr;
 }
+#endif
 
 void LocalFrame::didChangeVisibilityState()
 {
+    assert(false); // BKTODO:
+#if 0
     if (document())
         document()->didChangeVisibilityState();
 
@@ -423,17 +475,22 @@ void LocalFrame::didChangeVisibilityState()
 
     for (size_t i = 0; i < childFrames.size(); ++i)
         childFrames[i]->didChangeVisibilityState();
+#endif
 }
 
 LocalFrame* LocalFrame::localFrameRoot()
 {
     LocalFrame* curFrame = this;
+    assert(false); // BKTODO:
+#if 0
     while (curFrame && curFrame->tree().parent() && curFrame->tree().parent()->isLocalFrame())
         curFrame = toLocalFrame(curFrame->tree().parent());
+#endif
 
     return curFrame;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 String LocalFrame::layerTreeAsText(LayerTreeFlags flags) const
 {
     TextStream textStream;
@@ -453,48 +510,6 @@ String LocalFrame::layerTreeAsText(LayerTreeFlags flags) const
     }
 
     return textStream.release();
-}
-
-void LocalFrame::setPrinting(bool printing, const FloatSize& pageSize, const FloatSize& originalPageSize, float maximumShrinkRatio)
-{
-    assert(false); // BKTODO: Remove this!
-#if 0
-    // In setting printing, we should not validate resources already cached for the document.
-    // See https://bugs.webkit.org/show_bug.cgi?id=43704
-    ResourceCacheValidationSuppressor validationSuppressor(document()->fetcher());
-
-    document()->setPrinting(printing);
-    view()->adjustMediaTypeForPrinting(printing);
-
-    if (shouldUsePrintingLayout()) {
-        view()->forceLayoutForPagination(pageSize, originalPageSize, maximumShrinkRatio);
-    } else {
-        if (LayoutView* layoutView = view()->layoutView()) {
-            layoutView->setPreferredLogicalWidthsDirty();
-            layoutView->setNeedsLayout(LayoutInvalidationReason::PrintingChanged);
-            layoutView->setShouldDoFullPaintInvalidationForViewAndAllDescendants();
-        }
-        view()->layout();
-        view()->adjustViewSize();
-    }
-
-    // Subframes of the one we're printing don't lay out to the page size.
-    for (RefPtrWillBeRawPtr<Frame> child = tree().firstChild(); child; child = child->tree().nextSibling()) {
-        if (child->isLocalFrame())
-            toLocalFrame(child.get())->setPrinting(printing, FloatSize(), FloatSize(), 0);
-    }
-#endif
-}
-
-bool LocalFrame::shouldUsePrintingLayout() const
-{
-    assert(false); // BKTODO: Remove this!
-    return false;
-#if 0
-    // Only top frame being printed should be fit to page size.
-    // Subframes should be constrained by parents only.
-    return document()->printing() && (!tree().parent() || !tree().parent()->isLocalFrame() || !toLocalFrame(tree().parent())->document()->printing());
-#endif
 }
 
 FloatSize LocalFrame::resizePageRectsKeepingRatio(const FloatSize& originalSize, const FloatSize& expectedSize)
@@ -724,9 +739,13 @@ EphemeralRange LocalFrame::rangeForPoint(const IntPoint& framePoint)
 
     return EphemeralRange();
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 bool LocalFrame::isURLAllowed(const KURL& url) const
 {
+    assert(false); // BKTODO:
+    return false;
+#if 0
     // Exempt about: URLs from self-reference check.
     if (url.protocolIsAbout())
         return true;
@@ -744,6 +763,7 @@ bool LocalFrame::isURLAllowed(const KURL& url) const
         }
     }
     return true;
+#endif
 }
 
 bool LocalFrame::shouldReuseDefaultView(const KURL& url) const
@@ -751,6 +771,7 @@ bool LocalFrame::shouldReuseDefaultView(const KURL& url) const
     return loader().stateMachine()->isDisplayingInitialEmptyDocument() && document()->isSecureTransitionTo(url);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void LocalFrame::removeSpellingMarkersUnderWords(const Vector<String>& words)
 {
     spellChecker().removeSpellingMarkersUnderWords(words);
@@ -817,24 +838,51 @@ bool LocalFrame::shouldThrottleRendering() const
 {
     return view() && view()->shouldThrottleRendering();
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
-inline LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host, FrameOwner* owner)
-    : LocalFrameImpl(client, host, owner)
-    , m_editor(Editor::create(*this))
-    , m_spellChecker(SpellChecker::create(*this))
-    , m_selection(FrameSelection::create(this))
+inline LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host)
+    : Frame(client, host)
+    , m_loader(this)
+    , m_navigationScheduler(NavigationScheduler::create(this))
+    , m_script(ScriptController::create(this))
+#ifndef BLINKIT_CRAWLER_ONLY
+    , m_editor(client->IsCrawler() ? nullptr : Editor::create(*this))
+    , m_spellChecker(client->IsCrawler() ? nullptr : SpellChecker::create(*this))
+    , m_selection(client->IsCrawler() ? nullptr : FrameSelection::create(this))
+#endif
     , m_eventHandler(adoptPtrWillBeNoop(new EventHandler(this)))
     , m_console(FrameConsole::create(*this))
-    , m_inputMethodController(InputMethodController::create(*this))
+#ifndef BLINKIT_CRAWLER_ONLY
+    , m_inputMethodController(client->IsCrawler() ? nullptr : InputMethodController::create(*this))
+#endif
+    , m_navigationDisableCount(0)
+#ifndef BLINKIT_CRAWLER_ONLY
     , m_pageZoomFactor(parentPageZoomFactor(this))
     , m_textZoomFactor(parentTextZoomFactor(this))
+#endif
 {
 }
 
 WebFrameScheduler* LocalFrame::frameScheduler()
 {
     if (!m_frameScheduler.get())
-        m_frameScheduler = page()->chromeClient().createFrameScheduler();
+    {
+        using namespace BlinKit;
+#ifdef BLINKIT_CRAWLER_ONLY
+        ThreadImpl *currentThread = AppImpl::Get().CurrentThreadImpl();
+        m_frameScheduler = adoptPtr(FrameSchedulerImpl::CreateInstance(*currentThread));
+#else
+        if (IsCrawlerFrame())
+        {
+            ThreadImpl *currentThread = AppImpl::Get().CurrentThreadImpl();
+            m_frameScheduler = adoptPtr(FrameSchedulerImpl::CreateInstance(*currentThread));
+        }
+        else
+        {
+            m_frameScheduler = page()->chromeClient().createFrameScheduler();
+        }
+#endif
+    }
 
     ASSERT(m_frameScheduler.get());
     return m_frameScheduler.get();
@@ -842,9 +890,12 @@ WebFrameScheduler* LocalFrame::frameScheduler()
 
 void LocalFrame::scheduleVisualUpdateUnlessThrottled()
 {
+    assert(false); // BKTODO:
+#if 0
     if (shouldThrottleRendering())
         return;
     page()->animator().scheduleVisualUpdate(this);
+#endif
 }
 
 void LocalFrame::updateSecurityOrigin(SecurityOrigin* origin)
@@ -854,5 +905,16 @@ void LocalFrame::updateSecurityOrigin(SecurityOrigin* origin)
 }
 
 DEFINE_WEAK_IDENTIFIER_MAP(LocalFrame);
+
+FrameNavigationDisabler::FrameNavigationDisabler(LocalFrame& frame)
+    : m_frame(&frame)
+{
+    m_frame->disableNavigation();
+}
+
+FrameNavigationDisabler::~FrameNavigationDisabler()
+{
+    m_frame->enableNavigation();
+}
 
 } // namespace blink
