@@ -30,6 +30,8 @@ public:
         m_taskRunner = taskRunner;
     }
 private:
+    // blink::WebTaskRunner::Task
+    void run(void) override;
     // BkRequestClient
     void BKAPI RequestComplete(const BkResponse &response) override;
     void BKAPI RequestFailed(int errorCode) override;

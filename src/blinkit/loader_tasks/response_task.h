@@ -29,11 +29,11 @@ class ResponseTask : public blink::WebTaskRunner::Task
 public:
     ResponseTask(blink::WebURLLoader *loader, blink::WebURLLoaderClient *client, ResponseData &responseData);
 protected:
-    std::shared_ptr<ResponseData> m_responseData;
-private:
     // blink::WebTaskRunner::Task
     void run(void) override;
 
+    std::shared_ptr<ResponseData> m_responseData;
+private:
     blink::WebURLLoader *m_loader;
     blink::WebURLLoaderClient *m_client;
 };

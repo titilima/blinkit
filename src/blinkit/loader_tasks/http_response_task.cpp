@@ -11,6 +11,8 @@
 
 #include "http_response_task.h"
 
+#include "crawler/crawler_impl.h"
+
 #include "public/platform/WebTraceLocation.h"
 
 using namespace blink;
@@ -34,7 +36,22 @@ void BKAPI HTTPResponseTask::RequestComplete(const BkResponse &response)
 
 void BKAPI HTTPResponseTask::RequestFailed(int errorCode)
 {
-    assert(false); // BKTODO:
+    BkCrawlerClient *client = &(m_crawler.Client());
+    m_taskRunner->postTask(BLINK_FROM_HERE, [client, errorCode] {
+        client->RequestFailed(errorCode);
+    });
+    delete this;
+}
+
+void HTTPResponseTask::run(void)
+{
+    int statusCode = m_responseData->StatusCode;
+    const char *body = reinterpret_cast<const char *>(m_responseData->Body.data());
+    size_t length = m_responseData->Body.size();
+    if (!m_crawler.Client().RequestComplete(&m_crawler, statusCode, body, length))
+        return;
+
+    ResponseTask::run();
 }
 
 } // namespace BlinKit
