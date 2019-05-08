@@ -2567,17 +2567,22 @@ bool Element::isKeyboardFocusable() const
 #endif
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 bool Element::isMouseFocusable() const
 {
+    ASSERT(!ForCrawler());
+#ifdef BLINKIT_CRAWLER_ONLY
+    return false;
+#else
     return isFocusable();
+#endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 bool Element::isFocusedElementInDocument() const
 {
     return this == document().focusedElement();
 }
-#endif // BLINKIT_CRAWLER_ONLY
+#endif
 
 void Element::dispatchFocusEvent(Element* oldFocusedElement, WebFocusType type, InputDeviceCapabilities* sourceCapabilities)
 {
@@ -2602,7 +2607,7 @@ void Element::dispatchFocusInEvent(const AtomicString& eventType, Element* oldFo
     ASSERT(!EventDispatchForbiddenScope::isEventDispatchForbidden());
     ASSERT(eventType == EventTypeNames::focusin || eventType == EventTypeNames::DOMFocusIn);
     dispatchScopedEvent(FocusEvent::create(eventType, true, false, document().domWindow(), 0, oldFocusedElement, sourceCapabilities));
-#
+#endif
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY

@@ -444,9 +444,7 @@ public:
     bool isFocusedElementInDocument() const;
 #endif
     virtual bool isKeyboardFocusable() const;
-#ifndef BLINKIT_CRAWLER_ONLY
     virtual bool isMouseFocusable() const;
-#endif
     virtual void dispatchFocusEvent(Element* oldFocusedElement, WebFocusType, InputDeviceCapabilities* sourceCapabilities = nullptr);
     virtual void dispatchBlurEvent(Element* newFocusedElement, WebFocusType, InputDeviceCapabilities* sourceCapabilities = nullptr);
     virtual void dispatchFocusInEvent(const AtomicString& eventType, Element* oldFocusedElement, WebFocusType, InputDeviceCapabilities* sourceCapabilities = nullptr);
