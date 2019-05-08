@@ -442,11 +442,9 @@ public:
     virtual void setFocus(bool flag);
     virtual void setActive(bool flag = true);
     virtual void setHovered(bool flag = true);
-#endif
 
     virtual short tabIndex() const;
 
-#ifndef BLINKIT_CRAWLER_ONLY
     virtual Node* focusDelegate();
     // This is called only when the node is focused.
     virtual bool shouldHaveFocusAppearance() const;
@@ -454,6 +452,7 @@ public:
     // Whether the node is inert. This can't be in Element because text nodes
     // must be recognized as inert to prevent text selection.
     bool isInert() const;
+#endif
 
     enum UserSelectAllTreatment {
         UserSelectAllDoesNotAffectEditability,
@@ -486,6 +485,7 @@ public:
         return false;
     }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual LayoutRect boundingBox() const;
     IntRect pixelSnappedBoundingBox() const { return pixelSnappedIntRect(boundingBox()); }
 #endif // BLINKIT_CRAWLER_ONLY
@@ -844,11 +844,11 @@ private:
     // per-thread.
     virtual String debugNodeName() const;
 
-#ifndef BLINKIT_CRAWLER_ONLY
     enum EditableLevel { Editable, RichlyEditable };
     bool hasEditableStyle(EditableLevel, UserSelectAllTreatment = UserSelectAllIsAlwaysNonEditable) const;
     bool isEditableToAccessibility(EditableLevel) const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool isUserActionElementActive() const;
     bool isUserActionElementInActiveChain() const;
     bool isUserActionElementHovered() const;

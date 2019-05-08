@@ -1101,13 +1101,19 @@ IntRect Element::screenRect() const
 
 const AtomicString& Element::computedRole()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     document().updateLayoutIgnorePendingStylesheets();
+#endif
     return emptyAtom;
 }
 
 String Element::computedName()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     document().updateLayoutIgnorePendingStylesheets();
+#endif
     return String();
 }
 
@@ -2584,8 +2590,10 @@ void Element::setInnerHTML(const String& html, ExceptionState& exceptionState)
 
     if (RefPtrWillBeRawPtr<DocumentFragment> fragment = createFragmentForInnerOuterHTML(html, this, AllowScriptingContent, "innerHTML", exceptionState)) {
         ContainerNode* container = this;
-        if (isHTMLTemplateElement(*this))
+#ifndef BLINKIT_CRAWLER_ONLY
+        if (!ForCrawler() && isHTMLTemplateElement(*this))
             container = toHTMLTemplateElement(this)->content();
+#endif
         replaceChildrenWithFragment(container, fragment.release(), exceptionState);
     }
 }

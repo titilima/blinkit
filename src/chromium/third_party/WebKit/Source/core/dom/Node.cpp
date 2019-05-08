@@ -402,10 +402,12 @@ Node* Node::toNode()
     return this;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 short Node::tabIndex() const
 {
     return 0;
 }
+#endif
 
 String Node::nodeValue() const
 {
@@ -545,21 +547,29 @@ void Node::normalize()
     }
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 bool Node::isContentEditable(UserSelectAllTreatment treatment) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    return false;
+#else
     document().updateLayoutTreeIfNeeded();
     return hasEditableStyle(Editable, treatment);
+#endif
 }
 
 bool Node::isContentRichlyEditable() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    return false;
+#else
     document().updateLayoutTreeIfNeeded();
     return hasEditableStyle(RichlyEditable, UserSelectAllIsAlwaysNonEditable);
+#endif
 }
 
 bool Node::hasEditableStyle(EditableLevel editableLevel, UserSelectAllTreatment treatment) const
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     if (isPseudoElement())
         return false;
 
@@ -585,22 +595,26 @@ bool Node::hasEditableStyle(EditableLevel editableLevel, UserSelectAllTreatment 
             return false;
         }
     }
+#endif
 
     return false;
 }
 
 bool Node::isEditableToAccessibility(EditableLevel editableLevel) const
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     if (hasEditableStyle(editableLevel))
         return true;
 
     // FIXME: Respect editableLevel for ARIA editable elements.
     if (editableLevel == RichlyEditable)
         return false;
+#endif
 
     return false;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 LayoutBox* Node::layoutBox() const
 {
     LayoutObject* layoutObject = this->layoutObject();
@@ -709,18 +723,24 @@ void Node::setNeedsStyleInvalidation()
 
 void Node::markAncestorsWithChildNeedsStyleInvalidation()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ScriptForbiddenScope forbidScriptDuringRawIteration;
     for (Node* node = parentOrShadowHostNode(); node && !node->childNeedsStyleInvalidation(); node = node->parentOrShadowHostNode())
         node->setChildNeedsStyleInvalidation();
     document().scheduleLayoutTreeUpdateIfNeeded();
+#endif
 }
 
 void Node::markAncestorsWithChildNeedsDistributionRecalc()
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ScriptForbiddenScope forbidScriptDuringRawIteration;
     for (Node* node = this; node && !node->childNeedsDistributionRecalc(); node = node->parentOrShadowHostNode())
         node->setChildNeedsDistributionRecalc();
     document().scheduleLayoutTreeUpdateIfNeeded();
+#endif
 }
 
 inline void Node::setStyleChange(StyleChangeType changeType)
