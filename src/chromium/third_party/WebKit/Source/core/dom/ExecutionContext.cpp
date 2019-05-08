@@ -182,11 +182,6 @@ SecurityOrigin* ExecutionContext::securityOrigin()
     return securityContext().securityOrigin();
 }
 
-ContentSecurityPolicy* ExecutionContext::contentSecurityPolicy()
-{
-    return securityContext().contentSecurityPolicy();
-}
-
 const KURL& ExecutionContext::url() const
 {
     return virtualURL();

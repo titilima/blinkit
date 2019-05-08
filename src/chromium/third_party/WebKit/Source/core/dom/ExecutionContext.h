@@ -93,7 +93,6 @@ public:
     virtual bool isContextThread() const { return true; }
 
     SecurityOrigin* securityOrigin();
-    ContentSecurityPolicy* contentSecurityPolicy();
     const KURL& url() const;
     KURL completeURL(const String& url) const;
     virtual void disableEval(const String& errorMessage) = 0;
