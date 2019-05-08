@@ -81,16 +81,6 @@ DEFINE_TRACE(DocumentWriter)
     visitor->trace(m_parser);
 }
 
-void DocumentWriter::appendReplacingData(const String& source)
-{
-    m_document->setCompatibilityMode(Document::NoQuirksMode);
-
-    // FIXME: This should call DocumentParser::appendBytes instead of append
-    // to support RawDataDocumentParsers.
-    if (DocumentParser* parser = m_document->parser())
-        parser->append(source);
-}
-
 void DocumentWriter::addData(const char* bytes, size_t length)
 {
     ASSERT(m_parser);

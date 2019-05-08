@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DocumentWriter.h
+// Description: DocumentWriter Class
+//      Author: Ziming Li
+//     Created: 2019-05-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010. Adam Barth. All rights reserved.
  *
@@ -54,9 +65,6 @@ public:
 
     const AtomicString& mimeType() const { return m_decoderBuilder.mimeType(); }
     const AtomicString& encoding() const { return m_decoderBuilder.encoding(); }
-
-    // Exposed for DocumentLoader::replaceDocumentWhileExecutingJavaScriptURL.
-    void appendReplacingData(const String&);
 
     void setDocumentWasLoadedAsPartOfNavigation();
 
