@@ -130,9 +130,6 @@ public:
     virtual WebMediaSession* createMediaSession() { return 0; }
 
     // May return null.
-    virtual WebApplicationCacheHost* createApplicationCacheHost(WebLocalFrame*, WebApplicationCacheHostClient*) { return 0; }
-
-    // May return null.
     virtual WebWorkerContentSettingsClientProxy* createWorkerContentSettingsClientProxy(WebLocalFrame* frame) { return 0; }
 
     // Create a new WebPopupMenu. In the "createExternalPopupMenu" form, the
