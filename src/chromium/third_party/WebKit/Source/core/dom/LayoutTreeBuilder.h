@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutTreeBuilder.h
+// Description: LayoutTreeBuilder Classes
+//      Author: Ziming Li
+//     Created: 2019-05-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -45,7 +56,9 @@ protected:
         : m_node(node)
         , m_layoutObjectParent(layoutObjectParent)
     {
+#ifndef BLINKIT_CRAWLER_ONLY
         ASSERT(!node.layoutObject());
+#endif
         ASSERT(node.needsAttach());
         ASSERT(node.document().inStyleRecalc());
         ASSERT(node.inActiveDocument());
