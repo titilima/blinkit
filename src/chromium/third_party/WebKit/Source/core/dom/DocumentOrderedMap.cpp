@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DocumentOrderedMap.cpp
+// Description: DocumentOrderedMap Class
+//      Author: Ziming Li
+//     Created: 2019-04-20
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
  *
@@ -72,6 +83,7 @@ inline bool keyMatchesId(const AtomicString& key, const Element& element)
     return element.getIdAttribute() == key;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 inline bool keyMatchesMapName(const AtomicString& key, const Element& element)
 {
     return isHTMLMapElement(element) && toHTMLMapElement(element).getName() == key;
@@ -86,6 +98,7 @@ inline bool keyMatchesLabelForAttribute(const AtomicString& key, const Element& 
 {
     return isHTMLLabelElement(element) && element.getAttribute(forAttr) == key;
 }
+#endif
 
 void DocumentOrderedMap::add(const AtomicString& key, Element* element)
 {
@@ -190,6 +203,7 @@ const WillBeHeapVector<RawPtrWillBeMember<Element>>& DocumentOrderedMap::getAllE
     return entry->orderedList;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 Element* DocumentOrderedMap::getElementByMapName(const AtomicString& key, const TreeScope* scope) const
 {
     return get<keyMatchesMapName>(key, scope);
@@ -204,6 +218,7 @@ Element* DocumentOrderedMap::getElementByLabelForAttribute(const AtomicString& k
 {
     return get<keyMatchesLabelForAttribute>(key, scope);
 }
+#endif
 
 DEFINE_TRACE(DocumentOrderedMap)
 {

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DocumentOrderedMap.h
+// Description: DocumentOrderedMap Class
+//      Author: Ziming Li
+//     Created: 2019-04-20
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -58,9 +69,11 @@ public:
     // concrete instantiations of the get<>() method template
     Element* getElementById(const AtomicString&, const TreeScope*) const;
     const WillBeHeapVector<RawPtrWillBeMember<Element>>& getAllElementsById(const AtomicString&, const TreeScope*) const;
+#ifndef BLINKIT_CRAWLER_ONLY
     Element* getElementByMapName(const AtomicString&, const TreeScope*) const;
     Element* getElementByLowercasedMapName(const AtomicString&, const TreeScope*) const;
     Element* getElementByLabelForAttribute(const AtomicString&, const TreeScope*) const;
+#endif
 
     DECLARE_TRACE();
 
