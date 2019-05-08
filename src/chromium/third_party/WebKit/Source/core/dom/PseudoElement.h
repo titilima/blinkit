@@ -52,9 +52,11 @@ public:
     PassRefPtr<ComputedStyle> customStyleForLayoutObject() override;
 #endif
     void attach(const AttachContext& = AttachContext()) override;
+#ifndef BLINKIT_CRAWLER_ONLY
     bool layoutObjectIsNeeded(const ComputedStyle&) override;
 
     bool canStartSelection() const override { return false; }
+#endif
     bool canContainRangeEndPoint() const override { return false; }
     PseudoId pseudoId() const override { return m_pseudoId; }
 
