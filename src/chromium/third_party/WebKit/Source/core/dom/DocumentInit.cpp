@@ -77,18 +77,6 @@ bool DocumentInit::shouldEnforceStrictMixedContentChecking() const
     return frameForSecurityContext()->loader().shouldEnforceStrictMixedContentChecking();
 }
 
-SecurityContext::InsecureRequestsPolicy DocumentInit::insecureRequestsPolicy() const
-{
-    ASSERT(frameForSecurityContext());
-    return frameForSecurityContext()->loader().insecureRequestsPolicy();
-}
-
-SecurityContext::InsecureNavigationsSet* DocumentInit::insecureNavigationsToUpgrade() const
-{
-    ASSERT(frameForSecurityContext());
-    return frameForSecurityContext()->loader().insecureNavigationsToUpgrade();
-}
-
 bool DocumentInit::isHostedInReservedIPRange() const
 {
     if (LocalFrame* frame = frameForSecurityContext()) {

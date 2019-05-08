@@ -69,8 +69,6 @@ public:
     bool shouldReuseDefaultView() const { return m_shouldReuseDefaultView; }
     bool shouldEnforceStrictMixedContentChecking() const;
     bool isHostedInReservedIPRange() const;
-    SecurityContext::InsecureRequestsPolicy insecureRequestsPolicy() const;
-    SecurityContext::InsecureNavigationsSet* insecureNavigationsToUpgrade() const;
 
     Settings* settings() const;
 
