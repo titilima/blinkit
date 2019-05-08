@@ -104,10 +104,10 @@ protected:
     unsigned m_isUnique : 1;
     unsigned m_arraySize : 28;
     mutable unsigned m_presentationAttributeStyleIsDirty : 1;
-#ifndef BLINKIT_CRAWLER_ONLY
     mutable unsigned m_styleAttributeIsDirty : 1;
     mutable unsigned m_animatedSVGAttributesAreDirty : 1;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     mutable RefPtrWillBeMember<StylePropertySet> m_inlineStyle;
 #endif
     mutable SpaceSplitString m_classNames;
