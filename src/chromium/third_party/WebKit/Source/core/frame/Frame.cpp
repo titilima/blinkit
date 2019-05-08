@@ -113,9 +113,8 @@ void Frame::detach(FrameDetachType type)
 
 Page* Frame::page() const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    ASSERT_NOT_REACHED();
-#else
+    ASSERT(!m_client->IsCrawler());
+#ifndef BLINKIT_CRAWLER_ONLY
     if (m_host)
         return &m_host->page();
 #endif
@@ -124,8 +123,8 @@ Page* Frame::page() const
 
 FrameHost* Frame::host() const
 {
+    ASSERT(!m_client->IsCrawler());
 #ifdef BLINKIT_CRAWLER_ONLY
-    ASSERT_NOT_REACHED();
     return nullptr;
 #else
     return m_host;
