@@ -108,8 +108,16 @@ public:
 
 class BkCrawlerClient {
 public:
+    virtual bool BKAPI RequestComplete(BkCrawler *crawler, int statusCode, const char *body, size_t length) {
+        return 200 == statusCode;
+    }
     virtual void BKAPI DocumentReady(BkCrawler *crawler) {}
 
+    // -----------------------------------------------------------------------------------------------------------------
+    // Optional Callbacks
+    virtual void BKAPI RequestFailed(int errorCode) {
+        assert(BkError::Success == errorCode);
+    }
     // -----------------------------------------------------------------------------------------------------------------
     // Cookies
     // BlinKit holds a cookiejar internally, and the caller could also manage cookies by GetCookie/SetCookie.
