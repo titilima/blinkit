@@ -48,8 +48,6 @@ figure interfaceName=HTMLElement
 font
 footer interfaceName=HTMLElement
 form
-frame
-frameset interfaceName=HTMLFrameSetElement
 h1 interfaceName=HTMLHeadingElement
 h2 interfaceName=HTMLHeadingElement
 h3 interfaceName=HTMLHeadingElement
@@ -62,7 +60,6 @@ hgroup interfaceName=HTMLElement
 hr interfaceName=HTMLHRElement
 html
 i interfaceName=HTMLElement
-iframe interfaceName=HTMLIFrameElement
 image interfaceName=HTMLUnknownElement
 img interfaceName=HTMLImageElement, constructorNeedsFormElement, constructorNeedsCreatedByParser
 input constructorNeedsFormElement, constructorNeedsCreatedByParser
