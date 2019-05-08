@@ -66,8 +66,10 @@ ElementData::ElementData()
     : m_isUnique(true)
     , m_arraySize(0)
     , m_presentationAttributeStyleIsDirty(false)
+#ifndef BLINKIT_CRAWLER_ONLY
     , m_styleAttributeIsDirty(false)
     , m_animatedSVGAttributesAreDirty(false)
+#endif
 {
 }
 
@@ -75,8 +77,10 @@ ElementData::ElementData(unsigned arraySize)
     : m_isUnique(false)
     , m_arraySize(arraySize)
     , m_presentationAttributeStyleIsDirty(false)
+#ifndef BLINKIT_CRAWLER_ONLY
     , m_styleAttributeIsDirty(false)
     , m_animatedSVGAttributesAreDirty(false)
+#endif
 {
 }
 
@@ -84,8 +88,10 @@ ElementData::ElementData(const ElementData& other, bool isUnique)
     : m_isUnique(isUnique)
     , m_arraySize(isUnique ? 0 : other.attributes().size())
     , m_presentationAttributeStyleIsDirty(other.m_presentationAttributeStyleIsDirty)
+#ifndef BLINKIT_CRAWLER_ONLY
     , m_styleAttributeIsDirty(other.m_styleAttributeIsDirty)
     , m_animatedSVGAttributesAreDirty(other.m_animatedSVGAttributesAreDirty)
+#endif
     , m_classNames(other.m_classNames)
     , m_idForStyleResolution(other.m_idForStyleResolution)
 {
