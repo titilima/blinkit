@@ -57,8 +57,6 @@
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
-#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/parser/HTMLDocumentParser.h"
 #include "core/html/parser/TextResourceDecoder.h"
 #include "core/inspector/ConsoleMessage.h"
@@ -67,15 +65,11 @@
 #include "core/loader/FrameLoader.h"
 #include "core/loader/FrameLoaderClient.h"
 #include "core/loader/LinkLoader.h"
-#include "core/loader/ProgressTracker.h"
-#include "core/loader/appcache/ApplicationCacheHost.h"
-#include "core/page/FrameTree.h"
 #include "core/page/Page.h"
 #include "platform/HTTPNames.h"
 #include "platform/Logging.h"
 #include "platform/ThreadedDataReceiver.h"
 #include "platform/UserGestureIndicator.h"
-#include "platform/network/ContentSecurityPolicyResponseHeaders.h"
 #include "platform/weborigin/SchemeRegistry.h"
 #include "platform/weborigin/SecurityPolicy.h"
 #include "public/platform/Platform.h"
@@ -100,9 +94,7 @@ DocumentLoader::DocumentLoader(LocalFrame* frame, const ResourceRequest& req, co
     , m_isClientRedirect(false)
     , m_replacesCurrentHistoryItem(false)
     , m_navigationType(NavigationTypeOther)
-    , m_documentLoadTiming(*this)
     , m_timeOfLastDataReceived(0.0)
-    , m_applicationCacheHost(ApplicationCacheHost::create(this))
     , m_state(NotStarted)
     , m_inDataReceived(false)
     , m_dataBuffer(SharedBuffer::create())
@@ -125,7 +117,6 @@ DocumentLoader::~DocumentLoader()
 {
     ASSERT(!m_frame || !isLoading());
     ASSERT(!m_mainResource);
-    ASSERT(!m_applicationCacheHost);
 }
 
 DEFINE_TRACE(DocumentLoader)
@@ -134,9 +125,6 @@ DEFINE_TRACE(DocumentLoader)
     visitor->trace(m_fetcher);
     // TODO(sof): start tracing ResourcePtr<>s (and m_mainResource.)
     visitor->trace(m_writer);
-    visitor->trace(m_documentLoadTiming);
-    visitor->trace(m_applicationCacheHost);
-    visitor->trace(m_contentSecurityPolicy);
 }
 
 unsigned long DocumentLoader::mainResourceIdentifier() const
@@ -171,16 +159,28 @@ void DocumentLoader::startPreload(Resource::Type type, FetchRequest& request)
     ResourcePtr<Resource> resource;
     switch (type) {
     case Resource::Image:
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(false); // BKTODO: Not reached!
+#else
         resource = ImageResource::fetch(request, fetcher());
+#endif
         break;
     case Resource::Script:
         resource = ScriptResource::fetch(request, fetcher());
         break;
     case Resource::CSSStyleSheet:
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(false); // BKTODO: Not reached!
+#else
         resource = CSSStyleSheetResource::fetch(request, fetcher());
+#endif
         break;
     case Resource::Font:
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(false); // BKTODO: Not reached!
+#else
         resource = FontResource::fetch(request, fetcher());
+#endif
         break;
     case Resource::Media:
         resource = RawResource::fetchMedia(request, fetcher());
@@ -232,9 +232,7 @@ const KURL& DocumentLoader::urlForHistory() const
 void DocumentLoader::mainReceivedError(const ResourceError& error)
 {
     ASSERT(!error.isNull());
-    ASSERT(!mainResourceLoader() || !mainResourceLoader()->defersLoading() || InspectorInstrumentation::isDebuggerPaused(m_frame));
-    if (m_applicationCacheHost)
-        m_applicationCacheHost->failedLoadingMainResource();
+    ASSERT(!mainResourceLoader() || !mainResourceLoader()->defersLoading());
     if (!frameLoader())
         return;
     m_state = MainResourceDone;
@@ -289,7 +287,7 @@ void DocumentLoader::notifyFinished(Resource* resource)
 
 void DocumentLoader::finishedLoading(double finishTime)
 {
-    ASSERT(!mainResourceLoader() || !mainResourceLoader()->defersLoading() || InspectorInstrumentation::isDebuggerPaused(m_frame));
+    ASSERT(!mainResourceLoader() || !mainResourceLoader()->defersLoading());
 
     RefPtrWillBeRawPtr<DocumentLoader> protect(this);
 
@@ -298,7 +296,6 @@ void DocumentLoader::finishedLoading(double finishTime)
         responseEndTime = m_timeOfLastDataReceived;
     if (!responseEndTime)
         responseEndTime = monotonicallyIncreasingTime();
-    timing().setResponseEnd(responseEndTime);
 
     commitIfReady();
     if (!frameLoader())
@@ -311,7 +308,6 @@ void DocumentLoader::finishedLoading(double finishTime)
             commitData(0, 0);
     }
 
-    m_applicationCacheHost->finishedLoadingMainResource();
     endWriting(m_writer.get());
     if (m_state < MainResourceDone)
         m_state = MainResourceDone;
@@ -352,12 +348,7 @@ void DocumentLoader::willSendRequest(ResourceRequest& newRequest, const Resource
     // deferrals plays less of a part in this function in preventing the bad behavior deferring
     // callbacks is meant to prevent.
     ASSERT(!newRequest.isNull());
-    if (isFormSubmission(m_navigationType) && !m_frame->document()->contentSecurityPolicy()->allowFormAction(newRequest.url())) {
-        cancelMainResourceLoad(ResourceError::cancelledError(newRequest.url()));
-        return;
-    }
 
-    ASSERT(timing().fetchStart());
     if (!redirectResponse.isNull()) {
         // If the redirecting url is not allowed to display content from the target origin,
         // then block the redirect.
@@ -367,7 +358,6 @@ void DocumentLoader::willSendRequest(ResourceRequest& newRequest, const Resource
             cancelMainResourceLoad(ResourceError::cancelledError(newRequest.url()));
             return;
         }
-        timing().addRedirect(redirectResponse.url(), newRequest.url());
     }
 
     // If we're fielding a redirect in response to a POST, force a load from origin, since
@@ -387,7 +377,7 @@ void DocumentLoader::willSendRequest(ResourceRequest& newRequest, const Resource
         cancelMainResourceLoad(ResourceError::cancelledError(m_request.url()));
 }
 
-static bool canShowMIMEType(const String& mimeType, Page* page)
+static bool canShowMIMEType(const String& mimeType)
 {
     return Platform::current()->mimeRegistry()->supportsMIMEType(mimeType) == WebMimeRegistry::IsSupported;
 }
@@ -410,7 +400,7 @@ bool DocumentLoader::shouldContinueForResponse() const
         return false;
     }
 
-    if (!canShowMIMEType(m_response.mimeType(), m_frame->page()))
+    if (!canShowMIMEType(m_response.mimeType()))
         return false;
 
     // Prevent remote web archives from loading because they can claim to be from any domain and thus avoid cross-domain security checks.
@@ -422,11 +412,6 @@ bool DocumentLoader::shouldContinueForResponse() const
 
 void DocumentLoader::cancelLoadAfterXFrameOptionsOrCSPDenied(const ResourceResponse& response)
 {
-    InspectorInstrumentation::continueAfterXFrameOptionsDenied(m_frame, this, mainResourceIdentifier(), response);
-
-    if (FrameOwner* owner = frame()->owner())
-        owner->dispatchLoad();
-
     // The load event might have detached this frame. In that case, the load will already have been cancelled during detach.
     if (frameLoader())
         cancelMainResourceLoad(ResourceError::cancelledError(m_request.url()));
@@ -440,14 +425,13 @@ void DocumentLoader::responseReceived(Resource* resource, const ResourceResponse
     RefPtrWillBeRawPtr<DocumentLoader> protect(this);
     ASSERT(frame());
 
-    m_applicationCacheHost->didReceiveResponseForMainResource(response);
-
     // The memory cache doesn't understand the application cache or its caching rules. So if a main resource is served
     // from the application cache, ensure we don't save the result for future use. All responses loaded
     // from appcache will have a non-zero appCacheID().
     if (response.appCacheID())
         memoryCache()->remove(m_mainResource.get());
 
+#if 0 // BKTODO: Remove CSP.
     m_contentSecurityPolicy = ContentSecurityPolicy::create();
     m_contentSecurityPolicy->setOverrideURLForSelf(response.url());
     m_contentSecurityPolicy->didReceiveHeaders(ContentSecurityPolicyResponseHeaders(response));
@@ -472,6 +456,7 @@ void DocumentLoader::responseReceived(Resource* resource, const ResourceResponse
             }
         }
     }
+#endif
 
     ASSERT(!mainResourceLoader() || !mainResourceLoader()->defersLoading());
 
@@ -480,17 +465,21 @@ void DocumentLoader::responseReceived(Resource* resource, const ResourceResponse
     if (isArchiveMIMEType(m_response.mimeType()) && m_mainResource->dataBufferingPolicy() != BufferData)
         m_mainResource->setDataBufferingPolicy(BufferData);
 
-    if (!shouldContinueForResponse()) {
-        InspectorInstrumentation::continueWithPolicyIgnore(m_frame, this, m_mainResource->identifier(), m_response);
+    if (!shouldContinueForResponse())
         cancelMainResourceLoad(ResourceError::cancelledError(m_request.url()));
-        return;
-    }
+}
 
-    if (m_response.isHTTP()) {
-        int status = m_response.httpStatusCode();
-        if ((status < 200 || status >= 300) && m_frame->owner())
-            m_frame->owner()->renderFallbackContent();
+const AtomicString& DocumentLoader::Encoding(void)
+{
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (m_frame->isLocalFrame())
+    {
+        const AtomicString &overrideEncoding = m_frame->host()->overrideEncoding();
+        if (!overrideEncoding.isNull())
+            return overrideEncoding;
     }
+#endif
+    return response().textEncodingName();
 }
 
 void DocumentLoader::ensureWriter(const AtomicString& mimeType, const KURL& overridingURL)
@@ -498,17 +487,19 @@ void DocumentLoader::ensureWriter(const AtomicString& mimeType, const KURL& over
     if (m_writer)
         return;
 
-    const AtomicString& encoding = m_frame->host()->overrideEncoding().isNull() ? response().textEncodingName() : m_frame->host()->overrideEncoding();
+    const AtomicString& encoding = Encoding();
 
     // Prepare a DocumentInit before clearing the frame, because it may need to
     // inherit an aliased security context.
     DocumentInit init(url(), m_frame);
+#ifndef BLINKIT_CRAWLER_ONLY
     init.withNewRegistrationContext();
+#endif
     m_frame->loader().clear();
-    ASSERT(m_frame->page());
+    ASSERT(m_frame->IsCrawlerFrame() || nullptr != m_frame->page());
 
     ParserSynchronizationPolicy parsingPolicy = AllowAsynchronousParsing;
-    if ((m_substituteData.isValid() && m_substituteData.forceSynchronousLoad()) || !Document::threadedParsingEnabledForTesting())
+    if ((m_substituteData.isValid() && m_substituteData.forceSynchronousLoad()))
         parsingPolicy = ForceSynchronousParsing;
 
     m_writer = createWriterFor(0, init, mimeType, encoding, false, parsingPolicy);
@@ -584,7 +575,6 @@ void DocumentLoader::dataReceived(Resource* resource, const char* data, size_t l
 
 void DocumentLoader::processData(const char* data, size_t length)
 {
-    m_applicationCacheHost->mainResourceDataReceived(data, length);
     m_timeOfLastDataReceived = monotonicallyIncreasingTime();
 
     if (isArchiveMIMEType(response().mimeType()))
@@ -632,8 +622,6 @@ void DocumentLoader::detachFromFrame()
 
     m_fetcher->clearContext();
 
-    m_applicationCacheHost->detachFromDocumentLoader();
-    m_applicationCacheHost.clear();
     WeakIdentifierMap<DocumentLoader>::notifyObjectDestroyed(this);
     clearMainResourceHandle();
     m_frame = nullptr;
@@ -689,7 +677,6 @@ bool DocumentLoader::maybeLoadEmpty()
 void DocumentLoader::startLoadingMainResource()
 {
     RefPtrWillBeRawPtr<DocumentLoader> protect(this);
-    timing().markNavigationStart();
     ASSERT(!m_mainResource);
     ASSERT(m_state == NotStarted);
     m_state = Provisional;
@@ -697,16 +684,11 @@ void DocumentLoader::startLoadingMainResource()
     if (maybeLoadEmpty())
         return;
 
-    ASSERT(timing().navigationStart());
-    ASSERT(!timing().fetchStart());
-    timing().markFetchStart();
     willSendRequest(m_request, ResourceResponse());
 
     // willSendRequest() may lead to our LocalFrame being detached or cancelling the load via nulling the ResourceRequest.
     if (!m_frame || m_request.isNull())
         return;
-
-    m_applicationCacheHost->willStartLoadingMainResource(m_request);
 
     ResourceRequest request(m_request);
     DEFINE_STATIC_LOCAL(ResourceLoaderOptions, mainResourceLoadOptions,
@@ -715,12 +697,6 @@ void DocumentLoader::startLoadingMainResource()
     m_mainResource = RawResource::fetchMainResource(cachedResourceRequest, fetcher(), m_substituteData);
     if (!m_mainResource) {
         m_request = ResourceRequest();
-        // If the load was aborted by clearing m_request, it's possible the ApplicationCacheHost
-        // is now in a state where starting an empty load will be inconsistent. Replace it with
-        // a new ApplicationCacheHost.
-        if (m_applicationCacheHost)
-            m_applicationCacheHost->detachFromDocumentLoader();
-        m_applicationCacheHost = ApplicationCacheHost::create(this);
         maybeLoadEmpty();
         return;
     }
@@ -770,15 +746,20 @@ PassRefPtrWillBeRawPtr<DocumentWriter> DocumentLoader::createWriterFor(const Doc
     LocalFrame* frame = init.frame();
 
     ASSERT(!frame->document() || !frame->document()->isActive());
+#ifndef BLINKIT_CRAWLER_ONLY // BKTODO: Remove FrameTree!
     ASSERT(frame->tree().childCount() == 0);
+#endif
 
     if (!init.shouldReuseDefaultView())
         frame->setDOMWindow(LocalDOMWindow::create(*frame));
 
     RefPtrWillBeRawPtr<Document> document = frame->localDOMWindow()->installNewDocument(mimeType, init);
     if (ownerDocument) {
+        assert(false); // BKTODO: Remove ownerDocument!
+#if 0
         document->setCookieURL(ownerDocument->cookieURL());
         document->updateSecurityOrigin(ownerDocument->securityOrigin());
+#endif
     }
 
     frame->loader().didBeginDocument(dispatch);
@@ -791,15 +772,6 @@ const AtomicString& DocumentLoader::mimeType() const
     if (m_writer)
         return m_writer->mimeType();
     return m_response.mimeType();
-}
-
-// This is only called by FrameLoader::replaceDocumentWhileExecutingJavaScriptURL()
-void DocumentLoader::replaceDocumentWhileExecutingJavaScriptURL(const DocumentInit& init, const String& source, Document* ownerDocument)
-{
-    m_writer = createWriterFor(ownerDocument, init, mimeType(), m_writer ? m_writer->encoding() : emptyAtom, true, ForceSynchronousParsing);
-    if (!source.isNull())
-        m_writer->appendReplacingData(source);
-    endWriting(m_writer.get());
 }
 
 DEFINE_WEAK_IDENTIFIER_MAP(DocumentLoader);

@@ -43,13 +43,10 @@
 
 #include "core/CoreExport.h"
 #include "core/dom/WeakIdentifierMap.h"
-#include "core/fetch/ClientHintsPreferences.h"
 #include "core/fetch/RawResource.h"
 #include "core/fetch/ResourceLoaderOptions.h"
 #include "core/fetch/ResourcePtr.h"
 #include "core/fetch/SubstituteData.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
-#include "core/loader/DocumentLoadTiming.h"
 #include "core/loader/DocumentWriter.h"
 #include "core/loader/FrameLoaderTypes.h"
 #include "core/loader/NavigationPolicy.h"
@@ -62,7 +59,6 @@
 
 namespace blink {
 
-class ApplicationCacheHost;
 class ResourceFetcher;
 class DocumentInit;
 class LocalFrame;
@@ -84,8 +80,6 @@ public:
     virtual void detachFromFrame();
 
     unsigned long mainResourceIdentifier() const;
-
-    void replaceDocumentWhileExecutingJavaScriptURL(const DocumentInit&, const String& source, Document*);
 
     const AtomicString& mimeType() const;
 
@@ -128,18 +122,10 @@ public:
 
     void attachThreadedDataReceiver(PassRefPtrWillBeRawPtr<ThreadedDataReceiver>);
     void acceptDataFromThreadedReceiver(const char* data, int dataLength, int encodedDataLength);
-    DocumentLoadTiming& timing() { return m_documentLoadTiming; }
-    const DocumentLoadTiming& timing() const { return m_documentLoadTiming; }
-
-    ApplicationCacheHost* applicationCacheHost() const { return m_applicationCacheHost.get(); }
 
     bool isRedirect() const { return m_redirectChain.size() > 1; }
     void clearRedirectChain();
     void appendRedirect(const KURL&);
-
-    PassRefPtrWillBeRawPtr<ContentSecurityPolicy> releaseContentSecurityPolicy() { return m_contentSecurityPolicy.release(); }
-
-    ClientHintsPreferences& clientHintsPreferences() { return m_clientHintsPreferences; }
 
     struct InitialScrollState {
         DISALLOW_NEW();
@@ -174,6 +160,7 @@ private:
     Document* document() const;
     FrameLoader* frameLoader() const;
 
+    const AtomicString& Encoding(void);
     void commitIfReady();
     void commitData(const char* bytes, size_t length);
     ResourceLoader* mainResourceLoader() const;
@@ -225,14 +212,8 @@ private:
 
     NavigationType m_navigationType;
 
-    DocumentLoadTiming m_documentLoadTiming;
-
     double m_timeOfLastDataReceived;
 
-    PersistentWillBeMember<ApplicationCacheHost> m_applicationCacheHost;
-
-    RefPtrWillBeMember<ContentSecurityPolicy> m_contentSecurityPolicy;
-    ClientHintsPreferences m_clientHintsPreferences;
     InitialScrollState m_initialScrollState;
 
     enum State {
