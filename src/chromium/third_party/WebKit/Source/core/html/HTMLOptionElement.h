@@ -127,9 +127,7 @@ private:
     // Represents 'dirtiness'.
     // https://html.spec.whatwg.org/multipage/forms.html#concept-option-dirtiness
     bool m_isDirty = false;
-#ifndef BLINKIT_CRAWLER_ONLY
     RefPtr<ComputedStyle> m_style;
-#endif
 };
 
 } // namespace blink
