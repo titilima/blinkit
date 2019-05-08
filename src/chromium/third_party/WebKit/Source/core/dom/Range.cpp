@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: Range.cpp
-// Description: Range Class
-//      Author: Ziming Li
-//     Created: 2019-03-30
-// -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * (C) 2000 Gunnstein Lye (gunnstein@netcom.no)
@@ -930,17 +919,11 @@ PassRefPtrWillBeRawPtr<DocumentFragment> Range::createContextualFragment(const S
             element = document.body();
             if (!element)
                 element = HTMLBodyElement::create(document);
-        }
-#ifdef BLINKIT_CRAWLER_ONLY
-        else
-            assert(!document.isSVGDocument());
-#else
-        else if (document.isSVGDocument()) {
+        } else if (document.isSVGDocument()) {
             element = document.documentElement();
             if (!element)
                 element = SVGSVGElement::create(document);
         }
-#endif
     }
 
     if (!element || (!element->isHTMLElement() && !element->isSVGElement())) {
@@ -1322,9 +1305,6 @@ IntRect Range::boundingBox() const
 
 void Range::textRects(Vector<IntRect>& rects, bool useSelectionHeight, RangeInFixedPosition* inFixed) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     Node* startContainer = m_start.container();
     ASSERT(startContainer);
     Node* endContainer = m_end.container();
@@ -1349,14 +1329,10 @@ void Range::textRects(Vector<IntRect>& rects, bool useSelectionHeight, RangeInFi
 
     if (inFixed)
         *inFixed = allFixed ? EntirelyFixedPosition : (someFixed ? PartiallyFixedPosition : NotFixedPosition);
-#endif
 }
 
 void Range::textQuads(Vector<FloatQuad>& quads, bool useSelectionHeight, RangeInFixedPosition* inFixed) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     Node* startContainer = m_start.container();
     ASSERT(startContainer);
     Node* endContainer = m_end.container();
@@ -1381,7 +1357,6 @@ void Range::textQuads(Vector<FloatQuad>& quads, bool useSelectionHeight, RangeIn
 
     if (inFixed)
         *inFixed = allFixed ? EntirelyFixedPosition : (someFixed ? PartiallyFixedPosition : NotFixedPosition);
-#endif
 }
 
 #ifndef NDEBUG
@@ -1616,9 +1591,6 @@ ClientRect* Range::getBoundingClientRect() const
 
 void Range::getBorderAndTextQuads(Vector<FloatQuad>& quads) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     Node* startContainer = m_start.container();
     Node* endContainer = m_end.container();
     Node* stopNode = pastLastNode();
@@ -1653,7 +1625,6 @@ void Range::getBorderAndTextQuads(Vector<FloatQuad>& quads) const
             }
         }
     }
-#endif
 }
 
 FloatRect Range::boundingRect() const
