@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: NavigationScheduler.cpp
+// Description: NavigationScheduler Class
+//      Author: Ziming Li
+//     Created: 2019-05-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2008 Nokia Corporation and/or its subsidiary(-ies)
@@ -35,7 +46,6 @@
 #include "core/events/Event.h"
 #include "core/fetch/ResourceLoaderOptions.h"
 #include "core/frame/LocalFrame.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/html/HTMLFormElement.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/loader/DocumentLoader.h"
@@ -107,16 +117,13 @@ protected:
     ScheduledURLNavigation(double delay, Document* originDocument, const String& url, bool replacesCurrentItem, bool isLocationChange)
         : ScheduledNavigation(delay, originDocument, replacesCurrentItem, isLocationChange)
         , m_url(url)
-        , m_shouldCheckMainWorldContentSecurityPolicy(CheckContentSecurityPolicy)
     {
-        if (ContentSecurityPolicy::shouldBypassMainWorld(originDocument))
-            m_shouldCheckMainWorldContentSecurityPolicy = DoNotCheckContentSecurityPolicy;
     }
 
     void fire(LocalFrame* frame) override
     {
         OwnPtr<UserGestureIndicator> gestureIndicator = createUserGestureIndicator();
-        FrameLoadRequest request(originDocument(), m_url, "_self", m_shouldCheckMainWorldContentSecurityPolicy);
+        FrameLoadRequest request(originDocument(), m_url, "_self", DoNotCheckContentSecurityPolicy);
         request.setReplacesCurrentItem(replacesCurrentItem());
         request.setClientRedirect(ClientRedirect);
         frame->loader().load(request);
@@ -126,7 +133,6 @@ protected:
 
 private:
     String m_url;
-    ContentSecurityPolicyDisposition m_shouldCheckMainWorldContentSecurityPolicy;
 };
 
 class ScheduledRedirect final : public ScheduledURLNavigation {
@@ -219,6 +225,7 @@ private:
 
 };
 
+#ifndef BLINKIT_CRAWLER_ONLY
 class ScheduledFormSubmission final : public ScheduledNavigation {
 public:
     static PassOwnPtrWillBeRawPtr<ScheduledFormSubmission> create(Document* document, PassRefPtrWillBeRawPtr<FormSubmission> submission, bool replacesCurrentItem)
@@ -253,6 +260,7 @@ private:
 
     RefPtrWillBeMember<FormSubmission> m_submission;
 };
+#endif
 
 NavigationScheduler::NavigationScheduler(LocalFrame* frame)
     : m_frame(frame)
@@ -306,14 +314,7 @@ bool NavigationScheduler::mustReplaceCurrentItem(LocalFrame* targetFrame)
 {
     // Non-user navigation before the page has finished firing onload should not create a new back/forward item.
     // See https://webkit.org/b/42861 for the original motivation for this.
-    if (!UserGestureIndicator::processingUserGesture() && !targetFrame->document()->loadEventFinished())
-        return true;
-
-    // Navigation of a subframe during loading of an ancestor frame does not create a new back/forward item.
-    // The definition of "during load" is any time before all handlers for the load event have been run.
-    // See https://bugs.webkit.org/show_bug.cgi?id=14957 for the original motivation for this.
-    Frame* parentFrame = targetFrame->tree().parent();
-    return parentFrame && parentFrame->isLocalFrame() && !toLocalFrame(parentFrame)->loader().allAncestorsAreComplete();
+    return !UserGestureIndicator::processingUserGesture() && !targetFrame->document()->loadEventFinished();
 }
 
 void NavigationScheduler::scheduleLocationChange(Document* originDocument, const String& url, bool replacesCurrentItem)
@@ -351,8 +352,11 @@ void NavigationScheduler::schedulePageBlock(Document* originDocument)
 
 void NavigationScheduler::scheduleFormSubmission(Document* document, PassRefPtrWillBeRawPtr<FormSubmission> submission)
 {
+    ASSERT(!document->ForCrawler());
+#ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(m_frame->page());
     schedule(ScheduledFormSubmission::create(document, submission, mustReplaceCurrentItem(m_frame)));
+#endif
 }
 
 void NavigationScheduler::scheduleReload()
@@ -370,16 +374,13 @@ void NavigationScheduler::navigateTask()
 
     if (!m_frame->page())
         return;
-    if (m_frame->page()->defersLoading()) {
-        InspectorInstrumentation::frameClearedScheduledNavigation(m_frame);
+    if (m_frame->page()->defersLoading())
         return;
-    }
 
     RefPtrWillBeRawPtr<LocalFrame> protect(m_frame.get());
 
     OwnPtrWillBeRawPtr<ScheduledNavigation> redirect(m_redirect.release());
     redirect->fire(m_frame);
-    InspectorInstrumentation::frameClearedScheduledNavigation(m_frame);
 }
 
 void NavigationScheduler::schedule(PassOwnPtrWillBeRawPtr<ScheduledNavigation> redirect)
@@ -407,7 +408,7 @@ void NavigationScheduler::startTimer()
     if (!m_redirect)
         return;
 
-    ASSERT(m_frame->page());
+    ASSERT(m_frame->IsCrawlerFrame() || m_frame->page());
     if (m_navigateTaskFactory->isPending())
         return;
     if (!m_redirect->shouldStartTimer(m_frame))
@@ -417,16 +418,12 @@ void NavigationScheduler::startTimer()
     scheduler->addPendingNavigation();
     scheduler->loadingTaskRunner()->postDelayedTask(
         BLINK_FROM_HERE, m_navigateTaskFactory->cancelAndCreate(), m_redirect->delay() * 1000.0);
-
-    InspectorInstrumentation::frameScheduledNavigation(m_frame, m_redirect->delay());
 }
 
 void NavigationScheduler::cancel()
 {
-    if (m_navigateTaskFactory->isPending()) {
+    if (m_navigateTaskFactory->isPending())
         Platform::current()->currentThread()->scheduler()->removePendingNavigation();
-        InspectorInstrumentation::frameClearedScheduledNavigation(m_frame);
-    }
     m_navigateTaskFactory->cancel();
     m_redirect.clear();
 }
