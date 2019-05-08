@@ -121,8 +121,6 @@ class HTMLDialogElement;
 class HTMLElement;
 class HTMLFrameOwnerElement;
 class HTMLHeadElement;
-class HTMLImportLoader;
-class HTMLImportsController;
 class HTMLLinkElement;
 class HTMLScriptElement;
 class HitTestRequest;
@@ -133,7 +131,7 @@ class IntersectionObserverController;
 class LayoutPoint;
 class LiveNodeListBase;
 class Locale;
-class LocalFrameImpl;
+class LocalFrame;
 class Location;
 class MainThreadTaskRunner;
 class MediaQueryListListener;
@@ -223,25 +221,28 @@ public:
     }
     ~Document() override;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     MediaQueryMatcher& mediaQueryMatcher();
 
     void mediaQueryAffectingValueChanged();
+#endif
 
 #if !ENABLE(OILPAN)
     using ContainerNode::ref;
     using ContainerNode::deref;
 #endif
     using SecurityContext::securityOrigin;
-    using SecurityContext::contentSecurityPolicy;
     using TreeScope::getElementById;
 
     bool canContainRangeEndPoint() const override { return true; }
 
     SelectorQueryCache& selectorQueryCache();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // Focus Management.
     Element* activeElement() const;
     bool hasFocus() const;
+#endif
 
     // DOM methods & attributes for Document
 
@@ -286,7 +287,7 @@ public:
 
     Location* location() const;
 
-    PassRefPtrWillBeRawPtr<Element> createElement(const AtomicString& name, ExceptionState&);
+    virtual PassRefPtrWillBeRawPtr<Element> createElement(const AtomicString& name, ExceptionState&);
     PassRefPtrWillBeRawPtr<DocumentFragment> createDocumentFragment();
     PassRefPtrWillBeRawPtr<Text> createTextNode(const String& data);
     PassRefPtrWillBeRawPtr<Comment> createComment(const String& data);
@@ -298,8 +299,10 @@ public:
     PassRefPtrWillBeRawPtr<Element> createElementNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, ExceptionState&);
     PassRefPtrWillBeRawPtr<Element> createElement(const QualifiedName&, bool createdByParser);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     Element* elementFromPoint(int x, int y) const;
     WillBeHeapVector<RawPtrWillBeMember<Element>> elementsFromPoint(int x, int y) const;
+#endif
 #if 0 // BKTODO: Seems no references.
     PassRefPtrWillBeRawPtr<Range> caretRangeFromPoint(int x, int y);
 #endif
@@ -337,10 +340,12 @@ public:
     String origin() const { return securityOrigin()->toString(); }
     String suborigin() const { return securityOrigin()->suboriginName(); }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     String visibilityState() const;
     PageVisibilityState pageVisibilityState() const;
     bool hidden() const;
     void didChangeVisibilityState();
+#endif
 
     PassRefPtrWillBeRawPtr<Node> adoptNode(PassRefPtrWillBeRawPtr<Node> source, ExceptionState&);
 
@@ -372,25 +377,21 @@ public:
     bool isSrcdocDocument() const { return m_isSrcdocDocument; }
     bool isMobileDocument() const { return m_isMobileDocument; }
 
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     StyleResolver* styleResolver() const;
     StyleResolver& ensureStyleResolver() const;
 #endif
-
-    bool isViewSource() const { return m_isViewSource; }
-    void setIsViewSource(bool);
 
     bool sawElementsInKnownNamespaces() const { return m_sawElementsInKnownNamespaces; }
 
     bool isRenderingReady() const { return haveImportsLoaded() && haveStylesheetsLoaded(); }
     bool isScriptExecutionReady() const { return isRenderingReady(); }
 
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     // This is a DOM function.
     StyleSheetList* styleSheets();
 
     StyleEngine& styleEngine() { ASSERT(m_styleEngine.get()); return *m_styleEngine.get(); }
-#endif
 
     bool gotoAnchorNeededAfterStylesheetsLoad() { return m_gotoAnchorNeededAfterStylesheetsLoad; }
     void setGotoAnchorNeededAfterStylesheetsLoad(bool b) { m_gotoAnchorNeededAfterStylesheetsLoad = b; }
@@ -420,10 +421,9 @@ public:
     DocumentState* formElementsState() const;
     void setStateForNewFormElements(const Vector<String>&);
 
-#if 0 // BKTODO:
     FrameView* view() const; // can be null
 #endif
-    LocalFrameImpl* frame() const { return m_frame; } // can be null
+    LocalFrame* frame() const { return m_frame; } // can be null
     FrameHost* frameHost() const; // can be null
     Page* page() const; // can be null
     Settings* settings() const; // can be null
@@ -440,6 +440,7 @@ public:
     // Special support for editing
     PassRefPtrWillBeRawPtr<Text> createEditingTextNode(const String&);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void setupFontBuilder(ComputedStyle& documentStyle);
 
     bool needsLayoutTreeUpdate() const;
@@ -455,11 +456,8 @@ public:
         RunPostLayoutTasksAsyhnchronously,
         RunPostLayoutTasksSynchronously,
     };
-    void updateLayoutIgnorePendingStylesheets(RunPostLayoutTasks = RunPostLayoutTasksAsyhnchronously);
-#if 0 // BKTODO:
     PassRefPtr<ComputedStyle> styleForElementIgnoringPendingStylesheets(Element*);
     PassRefPtr<ComputedStyle> styleForPage(int pageIndex);
-#endif
 
     // Returns true if page box (margin boxes and page borders) is visible.
     bool isPageBoxVisible(int pageIndex);
@@ -469,6 +467,7 @@ public:
     // marginLeft must be initialized to the default values that are used if
     // auto is specified.
     void pageSizeAndMarginsInPixels(int pageIndex, IntSize& pageSize, int& marginTop, int& marginRight, int& marginBottom, int& marginLeft);
+#endif
 
     ResourceFetcher* fetcher() { return m_fetcher.get(); }
 
@@ -478,12 +477,12 @@ public:
     // If you have a Document, use layoutView() instead which is faster.
     void layoutObject() const = delete;
 
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     LayoutView* layoutView() const { return m_layoutView; }
-#endif
 
     // to get visually ordered hebrew and arabic pages right
     bool visuallyOrdered() const { return m_visuallyOrdered; }
+#endif
 
     DocumentLoader* loader() const;
 
@@ -550,7 +549,7 @@ public:
     String userAgent() const final;
     void disableEval(const String& errorMessage) final;
 
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     CSSStyleSheet& elementSheet();
 #endif
 
@@ -558,14 +557,10 @@ public:
     DocumentParser* parser() const { return m_parser.get(); }
     ScriptableDocumentParser* scriptableDocumentParser() const;
 
-    bool printing() const { return m_printing; }
-    void setPrinting(bool isPrinting) { m_printing = isPrinting; }
-    bool wasPrinting() const { return m_wasPrinting; }
-
     bool paginatedForScreen() const { return m_paginatedForScreen; }
     void setPaginatedForScreen(bool p) { m_paginatedForScreen = p; }
 
-    bool paginated() const { return printing() || paginatedForScreen(); }
+    bool paginated() const { return paginatedForScreen(); }
 
     enum CompatibilityMode { QuirksMode, LimitedQuirksMode, NoQuirksMode };
 
@@ -599,12 +594,11 @@ public:
     bool shouldScheduleLayout() const;
     int elapsedTime() const;
 
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     TextLinkColors& textLinkColors() { return m_textLinkColors; }
     VisitedLinkState& visitedLinkState() const { return *m_visitedLinkState; }
 
     MouseEventWithHitTestResults prepareMouseEvent(const HitTestRequest&, const LayoutPoint&, const PlatformMouseEvent&);
-#endif
 
     /* Newly proposed CSS3 mechanism for selecting alternate
        stylesheets using the DOM. May be subject to change as
@@ -640,6 +634,7 @@ public:
 
     void scheduleLayoutTreeUpdateIfNeeded();
     bool hasPendingForcedStyleRecalc() const;
+#endif // BLINKIT_CRAWLER_ONLY
 
     void registerNodeList(const LiveNodeListBase*);
     void unregisterNodeList(const LiveNodeListBase*);
@@ -669,7 +664,7 @@ public:
     void didSplitTextNode(Text& oldNode);
 
     void clearDOMWindow() { m_domWindow = nullptr; }
-    LocalDOMWindowImpl* domWindow() const { return m_domWindow; }
+    LocalDOMWindow* domWindow() const { return m_domWindow; }
 
     // Helper functions for forwarding LocalDOMWindow event related tasks to the LocalDOMWindow if it exists.
     void setWindowAttributeEventListener(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener>);
@@ -711,7 +706,9 @@ public:
     IntersectionObserverController& ensureIntersectionObserverController();
     NodeIntersectionObserverData& ensureIntersectionObserverData();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void updateViewportDescription();
+#endif
     void processReferrerPolicy(const String& policy);
 
     // Returns the owning element in the parent document.
@@ -803,11 +800,6 @@ public:
 
     KURL openSearchDescriptionURL();
 
-    // designMode support
-    bool inDesignMode() const { return m_designMode; }
-    String designMode() const;
-    void setDesignMode(const String&);
-
     Document* parentDocument() const;
     Document& topDocument() const;
     WeakPtrWillBeRawPtr<Document> contextDocument();
@@ -847,8 +839,10 @@ public:
     void setUseSecureKeyboardEntryWhenActive(bool);
     bool useSecureKeyboardEntryWhenActive() const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void updateFocusAppearanceSoon(SelectionBehaviorOnFocus);
     void cancelFocusAppearanceUpdate();
+#endif
 
     // FIXME(crbug.com/305497): This should be removed once LocalDOMWindow is an ExecutionContext.
     void postTask(const WebTraceLocation&, PassOwnPtr<ExecutionContextTask>) override; // Executes the task on context's thread asynchronously.
@@ -877,17 +871,16 @@ public:
 
     void removeAllEventListeners() final;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     const SVGDocumentExtensions* svgExtensions();
     SVGDocumentExtensions& accessSVGExtensions();
+#endif
 
     void initSecurityContext();
     void initSecurityContext(const DocumentInit&);
-    void initContentSecurityPolicy(PassRefPtrWillBeRawPtr<ContentSecurityPolicy> = nullptr);
 
     bool allowInlineEventHandlers(Node*, EventListener*, const String& contextURL, const WTF::OrdinalNumber& contextLine);
     bool allowExecutingScripts(Node*);
-
-    void statePopped(PassRefPtr<SerializedScriptValue>);
 
     enum LoadEventProgress {
         LoadEventNotRun,
@@ -905,9 +898,6 @@ public:
     bool unloadStarted() const { return m_loadEventProgress >= PageHideInProgress; }
     bool processingBeforeUnload() const { return m_loadEventProgress == BeforeUnloadEventInProgress; }
     void suppressLoadEvent();
-
-    void setContainsPlugins() { m_containsPlugins = true; }
-    bool containsPlugins() const { return m_containsPlugins; }
 
     bool isContextThread() const final;
     bool isJSExecutionForbidden() const final { return false; }
@@ -935,39 +925,37 @@ public:
     void decrementLoadEventDelayCount();
     void checkLoadEventSoon();
     bool isDelayingLoadEvent();
-    void loadPluginsSoon();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     PassRefPtrWillBeRawPtr<Touch> createTouch(DOMWindow*, EventTarget*, int identifier, double pageX, double pageY, double screenX, double screenY, double radiusX, double radiusY, float rotationAngle, float force) const;
     PassRefPtrWillBeRawPtr<TouchList> createTouchList(WillBeHeapVector<RefPtrWillBeMember<Touch>>&) const;
-
-    const DocumentTiming& timing() const { return m_documentTiming; }
 
     int requestAnimationFrame(FrameRequestCallback*);
     void cancelAnimationFrame(int id);
     void serviceScriptedAnimations(double monotonicAnimationStartTime);
+#endif
 
     EventTarget* errorEventTarget() final;
 
     bool isInDocumentWrite() { return m_writeRecursionDepth > 0; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     TextAutosizer* textAutosizer();
+#endif
 
     PassRefPtrWillBeRawPtr<Element> createElement(const AtomicString& localName, const AtomicString& typeExtension, ExceptionState&);
     PassRefPtrWillBeRawPtr<Element> createElementNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, const AtomicString& typeExtension, ExceptionState&);
-#if 0
+#ifndef BLINKIT_CRAWLER_ONLY
     CustomElementRegistrationContext* registrationContext() { return m_registrationContext.get(); }
-#endif
     CustomElementMicrotaskRunQueue* customElementMicrotaskRunQueue();
-
-    void setImportsController(HTMLImportsController*);
-    HTMLImportsController* importsController() const { return m_importsController; }
-    HTMLImportLoader* importLoader() const;
+#endif
 
     bool haveImportsLoaded() const;
-    void didLoadAllImports();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void adjustFloatQuadsForScrollAndAbsoluteZoom(Vector<FloatQuad>&, LayoutObject&);
     void adjustFloatRectForScrollAndAbsoluteZoom(FloatRect&, LayoutObject&);
+#endif
 
     bool hasActiveParser();
     unsigned activeParserCount() { return m_activeParserCount; }
@@ -980,7 +968,9 @@ public:
     ElementDataCache* elementDataCache() { return m_elementDataCache.get(); }
 
     void didLoadAllScriptBlockingResources();
+#ifndef BLINKIT_CRAWLER_ONLY
     void didRemoveAllPendingStylesheet();
+#endif
 
     bool inStyleRecalc() const { return m_lifecycle.state() == DocumentLifecycle::InStyleRecalc; }
 
@@ -1010,8 +1000,8 @@ public:
 
     void addConsoleMessage(PassRefPtrWillBeRawPtr<ConsoleMessage>) final;
 
-    LocalDOMWindowImpl* executingWindow() final;
-    LocalFrameImpl* executingFrame();
+    LocalDOMWindow* executingWindow() final;
+    LocalFrame* executingFrame();
 
     DocumentLifecycle& lifecycle() { return m_lifecycle; }
     bool isActive() const { return m_lifecycle.isActive(); }
@@ -1029,24 +1019,32 @@ public:
 
     void setHasViewportUnits() { m_hasViewportUnits = true; }
     bool hasViewportUnits() const { return m_hasViewportUnits; }
+#ifndef BLINKIT_CRAWLER_ONLY
     void notifyResizeForViewportUnits();
+#endif
 
     void registerVisibilityObserver(DocumentVisibilityObserver*);
     void unregisterVisibilityObserver(DocumentVisibilityObserver*);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void updateStyleInvalidationIfNeeded();
+#endif
 
     bool attemptedToDetermineEncodingFromContentSniffing() const;
     bool encodingWasDetectedFromContentSniffing() const;
 
     DECLARE_VIRTUAL_TRACE();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool hasSVGFilterElementsRequiringLayerUpdate() const { return m_layerUpdateSVGFilterElements.size(); }
+#endif
     void didRecalculateStyleForElement() { ++m_styleRecalcElementCounter; }
 
     AtomicString convertLocalName(const AtomicString&);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void platformColorsChanged();
+#endif
 
     OriginsUsingFeatures::Value& originsUsingFeaturesValue() { return m_originsUsingFeaturesValue; }
 
@@ -1076,6 +1074,7 @@ public:
 
     void enforceStrictMixedContentChecking();
 
+    void ParserInsertedHtmlElement(Element &element);
 protected:
     Document(const DocumentInit&, DocumentClassFlags = DefaultDocumentClass, bool forCrawler = false);
 
@@ -1101,7 +1100,7 @@ private:
     bool isDocumentNode() const = delete; // This will catch anyone doing an unnecessary check.
     bool isElementNode() const = delete; // This will catch anyone doing an unnecessary check.
 
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     ScriptedAnimationController& ensureScriptedAnimationController();
 #endif
     SecurityContext& securityContext() final { return *this; }
@@ -1110,6 +1109,7 @@ private:
     // FIXME: Rename the StyleRecalc state to LayoutTreeUpdate.
     bool hasPendingStyleRecalc() const { return m_lifecycle.state() == DocumentLifecycle::VisualUpdatePending; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool shouldScheduleLayoutTreeUpdate() const;
     void scheduleLayoutTreeUpdate();
 
@@ -1125,6 +1125,7 @@ private:
     void updateLayoutTree(StyleRecalcChange);
     void updateStyle(StyleRecalcChange);
     void notifyLayoutTreeOfSubtreeChanges();
+#endif
 
     void detachParser();
 
@@ -1150,25 +1151,30 @@ private:
     void reportBlockedScriptExecutionToInspector(const String& directiveText) final;
 
     void updateTitle(const String&);
+#ifndef BLINKIT_CRAWLER_ONLY
     void updateFocusAppearanceTimerFired(Timer<Document>*);
+#endif
     void updateBaseURL();
 
     void executeScriptsWaitingForResources();
 
     void loadEventDelayTimerFired(Timer<Document>*);
-    void pluginLoadingTimerFired(Timer<Document>*);
 
     void addListenerType(ListenerType listenerType) { m_listenerTypes |= listenerType; }
     void addMutationEventListenerTypeIfEnabled(ListenerType);
 
     void didAssociateFormControlsTimerFired(Timer<Document>*);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void clearFocusedElementSoon();
     void clearFocusedElementTimerFired(Timer<Document>*);
+#endif
 
     bool haveStylesheetsLoaded() const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void setHoverNode(PassRefPtrWillBeRawPtr<Node>);
+#endif
 
     using EventFactorySet = HashSet<OwnPtr<EventFactoryBase>>;
     static EventFactorySet& eventFactories();
@@ -1180,19 +1186,17 @@ private:
     DocumentLifecycle m_lifecycle;
 
     bool m_hasNodesWithPlaceholderStyle;
+#ifndef BLINKIT_CRAWLER_ONLY
     bool m_evaluateMediaQueriesOnStyleRecalc;
+#endif
 
     // If we do ignore the pending stylesheet count, then we need to add a boolean
     // to track that this happened so that we can do a full repaint when the stylesheets
     // do eventually load.
     PendingSheetLayout m_pendingSheetLayout;
 
-    RawPtrWillBeMember<LocalFrameImpl> m_frame;
-    RawPtrWillBeMember<LocalDOMWindowImpl> m_domWindow;
-    // FIXME: oilpan: when we get rid of the transition types change the
-    // HTMLImportsController to not be a DocumentSupplement since it is
-    // redundant with oilpan.
-    RawPtrWillBeMember<HTMLImportsController> m_importsController;
+    RawPtrWillBeMember<LocalFrame> m_frame;
+    RawPtrWillBeMember<LocalDOMWindow> m_domWindow;
 
     PersistentWillBeMember<ResourceFetcher> m_fetcher;
     RefPtrWillBeMember<DocumentParser> m_parser;
@@ -1217,27 +1221,29 @@ private:
     RefPtrWillBeMember<DocumentType> m_docType;
     OwnPtrWillBeMember<DOMImplementation> m_implementation;
 
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     RefPtrWillBeMember<CSSStyleSheet> m_elemSheet;
 #endif
 
-    bool m_printing;
-    bool m_wasPrinting;
-    bool m_paginatedForScreen;
+    bool m_paginatedForScreen; // BKTODO: Check this usage.
 
     CompatibilityMode m_compatibilityMode;
     bool m_compatibilityModeLocked; // This is cheaper than making setCompatibilityMode virtual.
 
     OwnPtr<CancellableTaskFactory> m_executeScriptsWaitingForResourcesTask;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool m_hasAutofocused;
     Timer<Document> m_clearFocusedElementTimer;
     RefPtrWillBeMember<Element> m_autofocusElement;
     RefPtrWillBeMember<Element> m_focusedElement;
     RefPtrWillBeMember<Node> m_hoverNode;
     RefPtrWillBeMember<Element> m_activeHoverElement;
+#endif
     RefPtrWillBeMember<Element> m_documentElement;
+#ifndef BLINKIT_CRAWLER_ONLY
     UserActionElementSet m_userActionElements;
+#endif
 
     uint64_t m_domTreeVersion;
     static uint64_t s_globalTreeVersion;
@@ -1254,7 +1260,7 @@ private:
 
     MutationObserverOptions m_mutationObserverTypes;
 
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     OwnPtrWillBeMember<StyleEngine> m_styleEngine;
     RefPtrWillBeMember<StyleSheetList> m_styleSheetList;
 
@@ -1262,15 +1268,16 @@ private:
 
     TextLinkColors m_textLinkColors;
     const OwnPtrWillBeMember<VisitedLinkState> m_visitedLinkState;
-#endif
 
     bool m_visuallyOrdered;
+#endif
     ReadyState m_readyState;
     ParsingState m_parsingState;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool m_gotoAnchorNeededAfterStylesheetsLoad;
+#endif
     bool m_containsValidityStyleRules;
-    bool m_containsPlugins;
     SelectionBehaviorOnFocus m_updateFocusAppearanceSelectionBahavior;
 
     // http://www.whatwg.org/specs/web-apps/current-work/#ignore-destructive-writes-counter
@@ -1284,9 +1291,11 @@ private:
     OwnPtrWillBeMember<DocumentMarkerController> m_markers;
 #endif
 
+#ifndef BLINKIT_CRAWLER_ONLY
     Timer<Document> m_updateFocusAppearanceTimer;
 
     RawPtrWillBeMember<Element> m_cssTarget;
+#endif
 
     LoadEventProgress m_loadEventProgress;
 
@@ -1309,7 +1318,6 @@ private:
 
     DocumentEncodingData m_encodingData;
 
-    bool m_designMode;
     bool m_isRunningExecCommand;
 
     WillBeHeapHashSet<RawPtrWillBeWeakMember<const LiveNodeListBase>> m_listsInvalidatedAtDocument;
@@ -1323,7 +1331,7 @@ private:
     unsigned m_nodeListCounts[numNodeListInvalidationTypes];
 #endif
 
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     OwnPtrWillBeMember<SVGDocumentExtensions> m_svgExtensions;
 #endif
 
@@ -1345,12 +1353,11 @@ private:
 
     DocumentClassFlags m_documentClasses;
 
-    bool m_isViewSource;
     bool m_sawElementsInKnownNamespaces;
     bool m_isSrcdocDocument;
     bool m_isMobileDocument;
 
-#if 0
+#ifndef BLINKIT_CRAWLER_ONLY
     LayoutView* m_layoutView;
 #endif
 
@@ -1365,7 +1372,6 @@ private:
 
     int m_loadEventDelayCount;
     Timer<Document> m_loadEventDelayTimer;
-    Timer<Document> m_pluginLoadingTimer;
 
     ViewportDescription m_viewportDescription;
     ViewportDescription m_legacyViewportDescription;
@@ -1373,18 +1379,17 @@ private:
 
     ReferrerPolicy m_referrerPolicy;
 
-    DocumentTiming m_documentTiming;
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     RefPtrWillBeMember<MediaQueryMatcher> m_mediaQueryMatcher;
 #endif
     bool m_writeRecursionIsTooDeep;
     unsigned m_writeRecursionDepth;
 
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     RefPtrWillBeMember<ScriptedAnimationController> m_scriptedAnimationController;
 #endif
     OwnPtrWillBeMember<MainThreadTaskRunner> m_taskRunner;
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     OwnPtrWillBeMember<TextAutosizer> m_textAutosizer;
 
     RefPtrWillBeMember<CustomElementRegistrationContext> m_registrationContext;
@@ -1399,7 +1404,7 @@ private:
     using LocaleIdentifierToLocaleMap = HashMap<AtomicString, OwnPtr<Locale>>;
     LocaleIdentifierToLocaleMap m_localeCache;
 
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     PersistentWillBeMember<AnimationTimeline> m_timeline;
     CompositorPendingAnimations m_compositorPendingAnimations;
 #endif
@@ -1413,10 +1418,10 @@ private:
     Timer<Document> m_didAssociateFormControlsTimer;
     WillBeHeapHashSet<RefPtrWillBeMember<Element>> m_associatedFormControls;
 
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     WillBeHeapHashSet<RawPtrWillBeMember<SVGUseElement>> m_useElementsNeedingUpdate;
-#endif
     WillBeHeapHashSet<RawPtrWillBeMember<Element>> m_layerUpdateSVGFilterElements;
+#endif
 
     bool m_hasViewportUnits;
 
@@ -1445,6 +1450,7 @@ inline bool Document::shouldOverrideLegacyDescription(ViewportDescription::Type 
     return origin >= m_legacyViewportDescription.type;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 inline void Document::scheduleLayoutTreeUpdateIfNeeded()
 {
     // Inline early out to avoid the function calls below.
@@ -1453,6 +1459,7 @@ inline void Document::scheduleLayoutTreeUpdateIfNeeded()
     if (shouldScheduleLayoutTreeUpdate() && needsLayoutTreeUpdate())
         scheduleLayoutTreeUpdate();
 }
+#endif
 
 DEFINE_TYPE_CASTS(Document, ExecutionContext, context, context->isDocument(), context.isDocument());
 DEFINE_NODE_TYPE_CASTS(Document, isDocumentNode());
