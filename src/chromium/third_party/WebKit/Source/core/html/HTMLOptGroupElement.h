@@ -76,9 +76,7 @@ private:
     void updateGroupLabel();
     void recalcSelectOptions();
 
-#ifndef BLINKIT_CRAWLER_ONLY
     RefPtr<ComputedStyle> m_style;
-#endif
 };
 
 } // namespace blink
