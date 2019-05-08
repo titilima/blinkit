@@ -185,7 +185,9 @@ public:
     IntSize inputEventsOffsetForEmulation() const;
     void setInputEventsTransformForEmulation(const IntSize&, float);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void setScrollPosition(const DoublePoint&, ScrollType, ScrollBehavior = ScrollBehaviorInstant) override;
+#endif
 
     void didUpdateElasticOverscroll();
 
@@ -286,25 +288,33 @@ public:
     };
 
     ScrollingReasons scrollingReasons();
+#ifndef BLINKIT_CRAWLER_ONLY
     bool isScrollable() override;
     bool isProgrammaticallyScrollable() override;
+#endif
 
     enum ScrollbarModesCalculationStrategy { RulesFromWebContentOnly, AnyRule };
     void calculateScrollbarModes(ScrollbarMode& hMode, ScrollbarMode& vMode, ScrollbarModesCalculationStrategy = AnyRule);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     IntPoint lastKnownMousePosition() const override;
+#endif
     bool shouldSetCursor() const;
 
     void setCursor(const Cursor&);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool scrollbarsCanBeActive() const override;
     void scrollbarVisibilityChanged() override;
+#endif
 
     // FIXME: Remove this method once plugin loading is decoupled from layout.
     void flushAnyPendingPostLayoutTasks();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool shouldSuspendScrollAnimations() const override;
     void scrollbarStyleChanged() override;
+#endif
 
     LayoutBox* embeddedContentBox() const;
 
@@ -331,12 +341,14 @@ public:
     void removeResizerArea(LayoutBox&);
     const ResizerAreaSet* resizerAreas() const { return m_resizerAreas.get(); }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool shouldUseIntegerScrollOffset() const override;
 
     bool isActive() const override;
 
     // Override scrollbar notifications to update the AXObject cache.
     void didAddScrollbar(Scrollbar&, ScrollbarOrientation) override;
+#endif
 
     // FIXME: This should probably be renamed as the 'inSubtreeLayout' parameter
     // passed around the FrameView layout methods can be true while this returns
@@ -360,6 +372,7 @@ public:
     void setTopControlsViewportAdjustment(float);
     IntSize topControlsSize() const { return IntSize(0, roundf(m_topControlsViewportAdjustment)); }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     IntPoint maximumScrollPosition() const override;
 
     // ScrollableArea interface
@@ -389,6 +402,7 @@ public:
     // The window that hosts the FrameView. The FrameView will communicate scrolls and repaints to the
     // host window in the window's coordinate space.
     HostWindow* hostWindow() const;
+#endif
 
     // Returns a clip rect in host window coordinates. Used to clip the blit on a scroll.
     IntRect windowClipRect(IncludeScrollbarsInRect = ExcludeScrollbars) const;
@@ -401,10 +415,12 @@ public:
     void addChild(PassRefPtrWillBeRawPtr<Widget>);
     const ChildrenWidgetSet* children() const { return &m_children; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // If the scroll view does not use a native widget, then it will have cross-platform Scrollbars. These functions
     // can be used to obtain those scrollbars.
     Scrollbar* horizontalScrollbar() const override { return m_horizontalScrollbar.get(); }
     Scrollbar* verticalScrollbar() const override { return m_verticalScrollbar.get(); }
+#endif
     LayoutScrollbarPart* scrollCorner() const override { return m_scrollCorner; }
 
     void positionScrollbarLayers();
@@ -429,31 +445,39 @@ public:
 
     bool canHaveScrollbars() const { return horizontalScrollbarMode() != ScrollbarAlwaysOff || verticalScrollbarMode() != ScrollbarAlwaysOff; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // The visible content rect has a location that is the scrolled offset of
     // the document. The width and height are the layout viewport width and
     // height. By default the scrollbars themselves are excluded from this
     // rectangle, but an optional boolean argument allows them to be included.
     IntRect visibleContentRect(IncludeScrollbarsInRect = ExcludeScrollbars) const override;
+#endif
     IntSize visibleContentSize(IncludeScrollbarsInRect = ExcludeScrollbars) const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // Functions for getting/setting the size of the document contained inside the FrameView (as an IntSize or as individual width and height
     // values).
     IntSize contentsSize() const override; // Always at least as big as the visibleWidth()/visibleHeight().
     int contentsWidth() const { return contentsSize().width(); }
     int contentsHeight() const { return contentsSize().height(); }
+#endif
 
     // Functions for querying the current scrolled position (both as a point, a size, or as individual X and Y values).
     // Be careful in using the Double version scrollPositionDouble() and scrollOffsetDouble(). They are meant to be
     // used to communicate the fractional scroll position/offset with chromium compositor which can do sub-pixel positioning.
     // Do not call these if the scroll position/offset is used in Blink for positioning. Use the Int version instead.
+#ifndef BLINKIT_CRAWLER_ONLY
     IntPoint scrollPosition() const override { return visibleContentRect().location(); }
     DoublePoint scrollPositionDouble() const override { return m_scrollPosition; }
     IntSize scrollOffset() const { return toIntSize(visibleContentRect().location()); } // Gets the scrolled position as an IntSize. Convenient for adding to other sizes.
+#endif
     DoubleSize scrollOffsetDouble() const { return DoubleSize(m_scrollPosition.x(), m_scrollPosition.y()); }
     DoubleSize pendingScrollDelta() const { return m_pendingScrollDelta; }
+#ifndef BLINKIT_CRAWLER_ONLY
     IntPoint minimumScrollPosition() const override; // The minimum position we can be scrolled to.
     int scrollX() const { return scrollPosition().x(); }
     int scrollY() const { return scrollPosition().y(); }
+#endif
 
     // Scroll the actual contents of the view (either blitting or invalidating as needed).
     void scrollContents(const IntSize& scrollDelta);
@@ -506,6 +530,7 @@ public:
     // For platforms that need to hit test scrollbars from within the engine's event handlers (like Win32).
     Scrollbar* scrollbarAtFramePoint(const IntPoint&);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     IntPoint convertChildToSelf(const Widget* child, const IntPoint& point) const override
     {
         IntPoint newPoint = point;
@@ -523,6 +548,7 @@ public:
         newPoint.moveBy(-child->location());
         return newPoint;
     }
+#endif
 
     // Widget override. Handles painting of the contents of the view as well as the scrollbars.
     void paint(GraphicsContext&, const CullRect&) const override;
@@ -536,12 +562,14 @@ public:
 
     bool isPointInScrollbarCorner(const IntPoint&);
     bool scrollbarCornerPresent() const;
+#ifndef BLINKIT_CRAWLER_ONLY
     IntRect scrollCornerRect() const override;
 
     IntRect convertFromScrollbarToContainingWidget(const Scrollbar&, const IntRect&) const override;
     IntRect convertFromContainingWidgetToScrollbar(const Scrollbar&, const IntRect&) const override;
     IntPoint convertFromScrollbarToContainingWidget(const Scrollbar&, const IntPoint&) const override;
     IntPoint convertFromContainingWidgetToScrollbar(const Scrollbar&, const IntPoint&) const override;
+#endif
 
     bool isFrameView() const override { return true; }
 
@@ -606,7 +634,9 @@ protected:
     void setHasHorizontalScrollbar(bool);
     void setHasVerticalScrollbar(bool);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     ScrollBehavior scrollBehaviorStyle() const override;
+#endif
 
     void scrollContentsIfNeeded();
 
@@ -639,8 +669,10 @@ protected:
 private:
     explicit FrameView(LocalFrame*);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void setScrollOffset(const IntPoint&, ScrollType) override;
     void setScrollOffset(const DoublePoint&, ScrollType) override;
+#endif
 
     enum LifeCycleUpdateOption {
         OnlyUpToLayoutClean,
@@ -679,7 +711,9 @@ private:
 
     DocumentLifecycle& lifecycle() const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void contentsResized() override;
+#endif
     void scrollbarExistenceDidChange();
 
     // Override Widget methods to do point conversion via layoutObjects, in order to
@@ -735,7 +769,9 @@ private:
 
     IntRect rectToCopyOnScroll() const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool isFrameViewScrollbar(const Widget* child) const { return horizontalScrollbar() == child || verticalScrollbar() == child; }
+#endif
 
     ScrollingCoordinator* scrollingCoordinator() const;
 
