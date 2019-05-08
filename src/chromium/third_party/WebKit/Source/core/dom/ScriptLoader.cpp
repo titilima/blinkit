@@ -52,10 +52,8 @@
 #include "core/frame/LocalFrame.h"
 #include "core/frame/SubresourceIntegrity.h"
 #include "core/frame/UseCounter.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/html/CrossOriginAttribute.h"
 #include "core/html/HTMLScriptElement.h"
-#include "core/html/imports/HTMLImport.h"
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/inspector/ConsoleMessage.h"
 #include "core/svg/SVGScriptElement.h"
@@ -251,9 +249,6 @@ bool ScriptLoader::prepareScript(const TextPosition& scriptStartPosition, Legacy
             return false;
     }
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Check Document::isRenderingReady logic.
-#else
     if (client->hasSourceAttribute() && client->deferAttributeValue() && m_parserInserted && !client->asyncAttributeValue()) {
         m_willExecuteWhenDocumentFinishedParsing = true;
         m_willBeParserExecuted = true;
@@ -291,7 +286,6 @@ bool ScriptLoader::prepareScript(const TextPosition& scriptStartPosition, Legacy
             return false;
         }
     }
-#endif // BLINKIT_CRAWLER_ONLY
 
     return true;
 }
@@ -313,9 +307,7 @@ bool ScriptLoader::fetchScript(const String& sourceUrl, FetchRequest::DeferOptio
             request.setCrossOriginAccessControl(elementDocument->securityOrigin(), crossOrigin);
         request.setCharset(scriptCharset());
 
-        bool scriptPassesCSP = elementDocument->contentSecurityPolicy()->allowScriptWithNonce(m_element->fastGetAttribute(HTMLNames::nonceAttr));
-        if (scriptPassesCSP)
-            request.setContentSecurityCheck(DoNotCheckContentSecurityPolicy);
+        request.setContentSecurityCheck(DoNotCheckContentSecurityPolicy);
         request.setDefer(defer);
 
         String integrityAttr = m_element->fastGetAttribute(HTMLNames::integrityAttr);
@@ -375,15 +367,6 @@ bool ScriptLoader::executeScript(const ScriptSourceCode& sourceCode, double* com
         return true;
 
     LocalFrame* frame = contextDocument->frame();
-
-    const ContentSecurityPolicy* csp = elementDocument->contentSecurityPolicy();
-    bool shouldBypassMainWorldCSP = (frame && frame->script().shouldBypassMainWorldCSP())
-        || csp->allowScriptWithNonce(m_element->fastGetAttribute(HTMLNames::nonceAttr))
-        || csp->allowScriptWithHash(sourceCode.source());
-
-    if (!m_isExternalScript && (!shouldBypassMainWorldCSP && !csp->allowInlineScript(elementDocument->url(), m_startLineNumber, sourceCode.source()))) {
-        return false;
-    }
 
     if (m_isExternalScript) {
         ScriptResource* resource = m_resource ? m_resource.get() : sourceCode.resource();
