@@ -302,9 +302,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\TopControls.cpp">
       <Filter>core\frame</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\CreateWindow.cpp">
-      <Filter>core\page</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\CustomContextMenuProvider.cpp">
       <Filter>core\page</Filter>
     </ClCompile>
@@ -349,9 +346,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\markers\DocumentMarker.cpp">
       <Filter>core\editing\markers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\serializers\HTMLInterchange.cpp">
-      <Filter>core\editing\serializers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\serializers\MarkupAccumulator.cpp">
       <Filter>core\editing\serializers</Filter>
@@ -678,9 +672,6 @@
       <Filter>core\dom</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\DocumentWriter.cpp">
-      <Filter>core\loader</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FormSubmission.cpp">
       <Filter>core\loader</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\DocumentThreadableLoader.cpp">
@@ -1550,6 +1541,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\win\SystemInfo.cpp">
       <Filter>platform\win</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSMarkup.cpp">
+      <Filter>core\css</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -1783,9 +1777,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\TopControls.h">
       <Filter>core\frame</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\CreateWindow.h">
-      <Filter>core\page</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\CustomContextMenuProvider.h">
       <Filter>core\page</Filter>
     </ClInclude>
@@ -1848,9 +1839,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\markers\RenderedDocumentMarker.h">
       <Filter>core\editing\markers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\serializers\HTMLInterchange.h">
-      <Filter>core\editing\serializers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\serializers\MarkupAccumulator.h">
       <Filter>core\editing\serializers</Filter>
@@ -2231,9 +2219,6 @@
       <Filter>core\dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\DocumentWriter.h">
-      <Filter>core\loader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FormSubmission.h">
       <Filter>core\loader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\DocumentThreadableLoader.h">
@@ -3162,6 +3147,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\input\EventHandler.h">
       <Filter>core\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSMarkup.h">
+      <Filter>core\css</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

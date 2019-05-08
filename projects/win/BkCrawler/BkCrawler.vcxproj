@@ -189,7 +189,10 @@
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\view_scheduler_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_task_runner.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_thread.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_document.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_script_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\frame_loader_client_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\request_controller_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\request_impl.h" />
@@ -220,7 +223,10 @@
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\view_scheduler_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_task_runner.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_thread.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_document.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_script_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\frame_loader_client_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\request_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\response_impl.cpp" />
@@ -253,26 +259,14 @@
     <ProjectReference Include="..\blink_crawler\blink_crawler.vcxproj">
       <Project>{b35de08a-79a8-41d5-b651-813900363e9d}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\blink_platform\blink_platform.vcxproj">
-      <Project>{4d41689b-1df6-473c-8372-c186431b93a4}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\js\js.vcxproj">
       <Project>{96449ff1-982f-4e4b-8617-f9e6cb647304}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\libpng\libpng.vcxproj">
-      <Project>{6bf8aa31-e6e9-4dc1-b721-20727f7d96cb}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\libxml\libxml.vcxproj">
-      <Project>{e5a2b45e-7d69-4b6d-b23f-d9127b168877}</Project>
     </ProjectReference>
     <ProjectReference Include="..\modules\modules.vcxproj">
       <Project>{98a19aa9-ddd3-42b4-92c5-c0e2681a480d}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\ots\ots.vcxproj">
-      <Project>{35ddb613-6c23-4b17-9b1a-643c91b09a16}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\skia\skia.vcxproj">
-      <Project>{295edf31-49b6-48e3-b7c5-377c60665a78}</Project>
+    <ProjectReference Include="..\net\net.vcxproj">
+      <Project>{103e87cb-36eb-49c3-adfc-6c036aa14b21}</Project>
     </ProjectReference>
     <ProjectReference Include="..\stub\stub.vcxproj">
       <Project>{5c7fcbe4-3630-4def-ac58-916eafbe1e97}</Project>

@@ -163,6 +163,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSMarkup.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSSelector.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSSelectorList.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSParserSelector.cpp" />
@@ -258,7 +259,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\iterators\WordAwareIterator.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\markers\DocumentMarker.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\PositionWithAffinity.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\serializers\HTMLInterchange.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\serializers\MarkupAccumulator.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\serializers\MarkupFormatter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\serializers\Serialization.cpp" />
@@ -384,7 +384,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\DocumentThreadableLoader.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\DocumentWriter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\EmptyClients.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FormSubmission.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FrameFetchContext.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FrameLoader.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FrameLoaderStateMachine.cpp" />
@@ -392,7 +391,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\NavigationPolicy.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\NavigationScheduler.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\TextResourceDecoderBuilder.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\CreateWindow.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\CustomContextMenuProvider.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\DOMWindowPagePopup.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\EventSource.cpp" />
@@ -645,6 +643,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\CoreExport.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSMarkup.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSSelector.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSSelectorList.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSParserSelector.h" />
@@ -752,7 +751,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\PositionWithAffinity.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\SelectionStrategy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\SelectionType.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\serializers\HTMLInterchange.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\serializers\MarkupAccumulator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\serializers\MarkupFormatter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\serializers\Serialization.h" />
@@ -907,7 +905,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\DocumentThreadableLoader.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\DocumentWriter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\EmptyClients.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FormSubmission.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FrameFetchContext.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FrameLoader.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FrameLoaderStateMachine.h" />
@@ -915,7 +912,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\NavigationPolicy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\NavigationScheduler.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\TextResourceDecoderBuilder.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\CreateWindow.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\CustomContextMenuProvider.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\DOMWindowPagePopup.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\EventSource.h" />

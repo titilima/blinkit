@@ -15,9 +15,6 @@
     <Filter Include="html\forms">
       <UniqueIdentifier>{5ec7e3ce-2bd9-4953-9c38-9955644d7c5e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="html\imports">
-      <UniqueIdentifier>{3549135e-e6f9-4460-b019-c8cf95d67128}</UniqueIdentifier>
-    </Filter>
     <Filter Include="html\parser">
       <UniqueIdentifier>{22550146-8dac-4b39-84ac-937c2677dd47}</UniqueIdentifier>
     </Filter>
@@ -446,24 +443,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\WeekInputType.cpp">
       <Filter>html\forms</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImport.cpp">
-      <Filter>html\imports</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportLoader.cpp">
-      <Filter>html\imports</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportsController.cpp">
-      <Filter>html\imports</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportStateResolver.cpp">
-      <Filter>html\imports</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportTreeRoot.cpp">
-      <Filter>html\imports</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\LinkImport.cpp">
-      <Filter>html\imports</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\AtomicHTMLToken.cpp">
       <Filter>html\parser</Filter>
     </ClCompile>
@@ -595,9 +574,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\InputTypeView.cpp">
       <Filter>html\forms</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportChild.cpp">
-      <Filter>html\imports</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLDocumentParser.cpp">
       <Filter>html\parser</Filter>
@@ -1098,33 +1074,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\forms\WeekInputType.h">
       <Filter>html\forms</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImport.h">
-      <Filter>html\imports</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportChild.h">
-      <Filter>html\imports</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportChildClient.h">
-      <Filter>html\imports</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportLoader.h">
-      <Filter>html\imports</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportsController.h">
-      <Filter>html\imports</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportState.h">
-      <Filter>html\imports</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportStateResolver.h">
-      <Filter>html\imports</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportTreeRoot.h">
-      <Filter>html\imports</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\LinkImport.h">
-      <Filter>html\imports</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\AtomicHTMLToken.h">
       <Filter>html\parser</Filter>

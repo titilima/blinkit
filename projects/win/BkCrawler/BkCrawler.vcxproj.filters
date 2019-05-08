@@ -120,6 +120,15 @@
     <ClInclude Include="..\..\..\src\blinkit\crawler\frame_loader_client_impl.h">
       <Filter>crawler</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_document.h">
+      <Filter>crawler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_element.h">
+      <Filter>crawler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_script_element.h">
+      <Filter>crawler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -207,6 +216,15 @@
       <Filter>loader_tasks</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\crawler\frame_loader_client_impl.cpp">
+      <Filter>crawler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_document.cpp">
+      <Filter>crawler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_element.cpp">
+      <Filter>crawler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_script_element.cpp">
       <Filter>crawler</Filter>
     </ClCompile>
   </ItemGroup>
