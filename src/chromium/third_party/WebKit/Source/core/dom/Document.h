@@ -914,9 +914,6 @@ public:
 
     void dispatchEventsForPrinting();
 
-    bool hasFullscreenSupplement() const { return m_hasFullscreenSupplement; }
-    void setHasFullscreenSupplement() { m_hasFullscreenSupplement = true; }
-
     void exitPointerLock();
     Element* pointerLockElement() const;
 
@@ -1365,8 +1362,6 @@ private:
     WeakPtrFactory<Document> m_weakFactory;
 #endif
     WeakPtrWillBeWeakMember<Document> m_contextDocument;
-
-    bool m_hasFullscreenSupplement; // For early return in Fullscreen::fromIfExists()
 
     WillBeHeapVector<RefPtrWillBeMember<Element>> m_topLayerElements;
 

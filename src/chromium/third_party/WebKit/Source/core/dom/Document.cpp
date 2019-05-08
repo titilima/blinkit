@@ -438,7 +438,6 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_weakFactory(this)
 #endif
     , m_contextDocument(initializer.contextDocument())
-    , m_hasFullscreenSupplement(false)
     , m_loadEventDelayCount(0)
     , m_loadEventDelayTimer(this, &Document::loadEventDelayTimerFired)
     , m_writeRecursionIsTooDeep(false)
@@ -2218,10 +2217,6 @@ void Document::attach(const AttachContext& context)
 void Document::detach(const AttachContext& context)
 {
     TRACE_EVENT0("blink", "Document::detach");
-    ASSERT(false); // BKTODO: Check the assertion.
-#if 0
-    ASSERT(!m_frame || m_frame->tree().childCount() == 0);
-#endif
     if (!isActive())
         return;
 
@@ -2235,8 +2230,11 @@ void Document::detach(const AttachContext& context)
     // consistent state.
     ScriptForbiddenScope forbidScript;
 #ifndef BLINKIT_CRAWLER_ONLY
-    view()->dispose();
-    m_markers->prepareForDestruction();
+    if (!ForCrawler())
+    {
+        view()->dispose();
+        m_markers->prepareForDestruction();
+    }
 #endif
     if (LocalDOMWindow* window = this->domWindow())
         window->willDetachDocumentFromFrame();
@@ -2695,11 +2693,16 @@ bool Document::dispatchBeforeUnloadEvent(ChromeClient& chromeClient, bool isRelo
         return true;
     }
 
-    String text = beforeUnloadEvent->returnValue();
-    if (chromeClient.openBeforeUnloadConfirmPanel(text, m_frame, isReload)) {
-        didAllowNavigation = true;
-        return true;
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+    {
+        String text = beforeUnloadEvent->returnValue();
+        if (chromeClient.openBeforeUnloadConfirmPanel(text, m_frame, isReload)) {
+            didAllowNavigation = true;
+            return true;
+        }
     }
+#endif
     return false;
 }
 
