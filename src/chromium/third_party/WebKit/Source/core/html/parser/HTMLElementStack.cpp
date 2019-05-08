@@ -632,14 +632,4 @@ DEFINE_TRACE(HTMLElementStack)
     visitor->trace(m_bodyElement);
 }
 
-#ifndef NDEBUG
-
-void HTMLElementStack::show()
-{
-    for (ElementRecord* record = m_top.get(); record; record = record->next())
-        record->element()->showNode();
-}
-
-#endif
-
 }

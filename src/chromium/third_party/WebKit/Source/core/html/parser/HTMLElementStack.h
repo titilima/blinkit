@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLElementStack.h
+// Description: HTMLElementStack Class
+//      Author: Ziming Li
+//     Created: 2019-05-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -164,10 +175,6 @@ public:
     ContainerNode* rootNode() const;
 
     DECLARE_TRACE();
-
-#ifndef NDEBUG
-    void show();
-#endif
 
 private:
     void pushCommon(PassRefPtrWillBeRawPtr<HTMLStackItem>);
