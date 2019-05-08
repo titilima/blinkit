@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ViewportDescription.cpp
+// Description: ViewportDescription Class
+//      Author: Ziming Li
+//     Created: 2019-05-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -197,63 +208,6 @@ PageScaleConstraints ViewportDescription::resolve(const FloatSize& initialViewpo
     result.layoutSize.setWidth(resultWidth);
     result.layoutSize.setHeight(resultHeight);
     return result;
-}
-
-void ViewportDescription::reportMobilePageStats(const LocalFrame* mainFrame) const
-{
-#if OS(ANDROID)
-    enum ViewportUMAType {
-        NoViewportTag,
-        DeviceWidth,
-        ConstantWidth,
-        MetaWidthOther,
-        MetaHandheldFriendly,
-        MetaMobileOptimized,
-        XhtmlMobileProfile,
-        TypeCount
-    };
-
-    if (!mainFrame || !mainFrame->host() || !mainFrame->view() || !mainFrame->document())
-        return;
-
-    // Avoid chrome:// pages like the new-tab page (on Android new tab is non-http).
-    if (!mainFrame->document()->url().protocolIsInHTTPFamily())
-        return;
-
-    if (!isSpecifiedByAuthor()) {
-        if (mainFrame->document()->isMobileDocument())
-            Platform::current()->histogramEnumeration("Viewport.MetaTagType", XhtmlMobileProfile, TypeCount);
-        else
-            Platform::current()->histogramEnumeration("Viewport.MetaTagType", NoViewportTag, TypeCount);
-
-        return;
-    }
-
-    if (isMetaViewportType()) {
-        if (maxWidth.type() == blink::Fixed) {
-            Platform::current()->histogramEnumeration("Viewport.MetaTagType", ConstantWidth, TypeCount);
-
-            if (mainFrame->view()) {
-                // To get an idea of how "far" the viewport is from the device's ideal width, we
-                // report the zoom level that we'd need to be at for the entire page to be visible.
-                int viewportWidth = maxWidth.intValue();
-                int windowWidth = mainFrame->host()->visualViewport().size().width();
-                int overviewZoomPercent = 100 * windowWidth / static_cast<float>(viewportWidth);
-                Platform::current()->histogramSparse("Viewport.OverviewZoom", overviewZoomPercent);
-            }
-
-        } else if (maxWidth.type() == blink::DeviceWidth || maxWidth.type() == blink::ExtendToZoom) {
-            Platform::current()->histogramEnumeration("Viewport.MetaTagType", DeviceWidth, TypeCount);
-        } else {
-            // Overflow bucket for cases we may be unaware of.
-            Platform::current()->histogramEnumeration("Viewport.MetaTagType", MetaWidthOther, TypeCount);
-        }
-    } else if (type == ViewportDescription::HandheldFriendlyMeta) {
-        Platform::current()->histogramEnumeration("Viewport.MetaTagType", MetaHandheldFriendly, TypeCount);
-    } else if (type == ViewportDescription::MobileOptimizedMeta) {
-        Platform::current()->histogramEnumeration("Viewport.MetaTagType", MobileOptimizedMeta, TypeCount);
-    }
-#endif
 }
 
 bool ViewportDescription::matchesHeuristicsForGpuRasterization() const

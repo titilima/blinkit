@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ViewportDescription.h
+// Description: ViewportDescription Class
+//      Author: Ziming Li
+//     Created: 2019-05-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -128,10 +139,6 @@ struct CORE_EXPORT ViewportDescription {
     bool isMetaViewportType() const { return type == ViewportMeta; }
     bool isSpecifiedByAuthor() const { return type != UserAgentStyleSheet; }
     bool matchesHeuristicsForGpuRasterization() const;
-
-    // Reports UMA stat on whether the page is considered mobile or desktop and what kind of
-    // mobile it is. Applies only to Android, must only be called once per page load.
-    void reportMobilePageStats(const LocalFrame*) const;
 
 private:
     enum Direction { Horizontal, Vertical };
