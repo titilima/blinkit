@@ -131,8 +131,10 @@ void CoreInitializer::init()
     MediaFeatureNames::init();
     MediaTypeNames::init();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     CSSPrimitiveValue::initUnitTable();
     CSSParserTokenRange::initStaticEOFToken();
+#endif
 
     StyleChangeExtraData::init();
 
