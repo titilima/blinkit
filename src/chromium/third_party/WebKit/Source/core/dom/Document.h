@@ -302,9 +302,7 @@ public:
 #ifndef BLINKIT_CRAWLER_ONLY
     Element* elementFromPoint(int x, int y) const;
     WillBeHeapVector<RawPtrWillBeMember<Element>> elementsFromPoint(int x, int y) const;
-#endif
-#if 0 // BKTODO: Seems no references.
-    PassRefPtrWillBeRawPtr<Range> caretRangeFromPoint(int x, int y);
+    PassRefPtrWillBeRawPtr<Range> caretRangeFromPoint(int x, int y); // BKTODO: Seems no references.
 #endif
     Element* scrollingElement();
 
@@ -430,7 +428,7 @@ public:
 
     float devicePixelRatio() const;
 
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     PassRefPtrWillBeRawPtr<Range> createRange();
 #endif
 
@@ -557,6 +555,8 @@ public:
     virtual PassRefPtrWillBeRawPtr<DocumentParser> createParser();
     DocumentParser* parser() const { return m_parser.get(); }
     ScriptableDocumentParser* scriptableDocumentParser() const;
+
+    bool printing(void) const { return false; }
 
     bool paginatedForScreen() const { return m_paginatedForScreen; }
     void setPaginatedForScreen(bool p) { m_paginatedForScreen = p; }
@@ -787,7 +787,7 @@ public:
     // have been calculated on the fly (without associating it with the actual element) somewhere.
     Element* viewportDefiningElement(const ComputedStyle* rootStyle = nullptr) const;
 
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     DocumentMarkerController& markers() const { return *m_markers; }
 #endif
 
@@ -976,7 +976,7 @@ public:
     Locale& getCachedLocale(const AtomicString& locale = nullAtom);
 
     AnimationClock& animationClock();
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     AnimationTimeline& timeline() const { return *m_timeline; }
     CompositorPendingAnimations& compositorPendingAnimations() { return m_compositorPendingAnimations; }
 #endif
@@ -1249,7 +1249,7 @@ private:
     uint64_t m_styleVersion;
 
     WillBeHeapHashSet<RawPtrWillBeWeakMember<NodeIterator>> m_nodeIterators;
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     using AttachedRangeSet = WillBeHeapHashSet<RawPtrWillBeWeakMember<Range>>;
     AttachedRangeSet m_ranges;
 #endif
@@ -1285,7 +1285,7 @@ private:
     String m_rawTitle;
     RefPtrWillBeMember<Element> m_titleElement;
 
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     OwnPtrWillBeMember<DocumentMarkerController> m_markers;
 #endif
 
@@ -1303,7 +1303,7 @@ private:
 
     WillBeHeapVector<RefPtrWillBeMember<HTMLScriptElement>> m_currentScriptStack;
 
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
     OwnPtr<TransformSource> m_transformSource;
 #endif
 
