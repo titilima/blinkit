@@ -22,7 +22,7 @@ using namespace blink;
 namespace BlinKit {
 
 CrawlerImpl::CrawlerImpl(BkCrawlerClient &client)
-    : m_client(client), m_frame(LocalFrame::create(this, nullptr, nullptr))
+    : m_client(client), m_frame(LocalFrame::create(this, nullptr))
 {
     m_frame->init();
 }
