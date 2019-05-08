@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLFormattingElementList.cpp
+// Description: HTMLFormattingElementList Class
+//      Author: Ziming Li
+//     Created: 2019-05-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -24,10 +35,6 @@
  */
 
 #include "core/html/parser/HTMLFormattingElementList.h"
-
-#ifndef NDEBUG
-#include <stdio.h>
-#endif
 
 namespace blink {
 
@@ -198,20 +205,5 @@ void HTMLFormattingElementList::ensureNoahsArkCondition(HTMLStackItem* newItem)
     for (size_t i = kNoahsArkCapacity - 1; i < candidates.size(); ++i)
         remove(candidates[i]->element());
 }
-
-#ifndef NDEBUG
-
-void HTMLFormattingElementList::show()
-{
-    for (unsigned i = 1; i <= m_entries.size(); ++i) {
-        const Entry& entry = m_entries[m_entries.size() - i];
-        if (entry.isMarker())
-            fprintf(stderr, "marker\n");
-        else
-            entry.element()->showNode();
-    }
-}
-
-#endif
 
 }

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLFormattingElementList.h
+// Description: HTMLFormattingElementList Class
+//      Author: Ziming Li
+//     Created: 2019-05-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -132,10 +143,6 @@ public:
         visitor->trace(m_entries);
 #endif
     }
-
-#ifndef NDEBUG
-    void show();
-#endif
 
 private:
     Entry* first() { return &at(0); }
