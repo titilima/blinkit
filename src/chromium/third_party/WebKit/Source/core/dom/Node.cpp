@@ -402,12 +402,11 @@ Node* Node::toNode()
     return this;
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 short Node::tabIndex() const
 {
+    ASSERT(!ForCrawler());
     return 0;
 }
-#endif
 
 String Node::nodeValue() const
 {
@@ -806,13 +805,20 @@ Node* Node::focusDelegate()
 {
     return this;
 }
+#endif
 
 bool Node::shouldHaveFocusAppearance() const
 {
+    ASSERT(!ForCrawler());
+#ifdef BLINKIT_CRAWLER_ONLY
+    return false;
+#else
     ASSERT(focused());
     return true;
+#endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 bool Node::isInert() const
 {
     const HTMLDialogElement* dialog = document().activeModalDialog();
@@ -820,7 +826,7 @@ bool Node::isInert() const
         return true;
     return document().ownerElement() && document().ownerElement()->isInert();
 }
-#endif // BLINKIT_CRAWLER_ONLY
+#endif
 
 unsigned Node::nodeIndex() const
 {
@@ -1011,11 +1017,14 @@ int Node::maxCharacterOffset() const
     return 0;
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 // FIXME: Shouldn't these functions be in the editing code?  Code that asks questions about HTML in the core DOM class
 // is obviously misplaced.
 bool Node::canStartSelection() const
 {
+    ASSERT(!ForCrawler());
+#ifdef BLINKIT_CRAWLER_ONLY
+    return false;
+#else
     if (hasEditableStyle())
         return true;
 
@@ -1028,8 +1037,8 @@ bool Node::canStartSelection() const
     }
     ContainerNode* parent = ComposedTreeTraversal::parent(*this);
     return parent ? parent->canStartSelection() : true;
+#endif
 }
-#endif // BLINKIT_CRAWLER_ONLY
 
 bool Node::canParticipateInComposedTree() const
 {
@@ -2004,14 +2013,21 @@ bool Node::willRespondToMouseMoveEvents()
         return false;
     return hasEventListeners(EventTypeNames::mousemove) || hasEventListeners(EventTypeNames::mouseover) || hasEventListeners(EventTypeNames::mouseout);
 }
+#endif
 
 bool Node::willRespondToMouseClickEvents()
 {
+    ASSERT(!ForCrawler());
+#ifdef BLINKIT_CRAWLER_ONLY
+    return false;
+#else
     if (isDisabledFormControl(this))
         return false;
     return isContentEditable(UserSelectAllIsAlwaysNonEditable) || hasEventListeners(EventTypeNames::mouseup) || hasEventListeners(EventTypeNames::mousedown) || hasEventListeners(EventTypeNames::click) || hasEventListeners(EventTypeNames::DOMActivate);
+#endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 bool Node::willRespondToTouchEvents()
 {
     if (isDisabledFormControl(this))
@@ -2101,22 +2117,33 @@ HTMLSlotElement* Node::assignedSlotForBinding()
     }
     return nullptr;
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 void Node::setFocus(bool flag)
 {
+    ASSERT(!ForCrawler());
+#ifndef BLINKIT_CRAWLER_ONLY
     document().userActionElements().setFocused(this, flag);
+#endif
 }
 
 void Node::setActive(bool flag)
 {
+    ASSERT(!ForCrawler());
+#ifndef BLINKIT_CRAWLER_ONLY
     document().userActionElements().setActive(this, flag);
+#endif
 }
 
 void Node::setHovered(bool flag)
 {
+    ASSERT(!ForCrawler());
+#ifndef BLINKIT_CRAWLER_ONLY
     document().userActionElements().setHovered(this, flag);
+#endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 bool Node::isUserActionElementActive() const
 {
     ASSERT(isUserActionElement());

@@ -1464,7 +1464,6 @@ const AtomicString& Element::locateNamespacePrefix(const AtomicString& namespace
     return nullAtom;
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 const AtomicString Element::imageSourceURL() const
 {
     return getAttribute(srcAttr);
@@ -1472,14 +1471,23 @@ const AtomicString Element::imageSourceURL() const
 
 bool Element::layoutObjectIsNeeded(const ComputedStyle& style)
 {
+    ASSERT(!ForCrawler());
+#ifdef BLINKIT_CRAWLER_ONLY
+    return false;
+#else
     return style.display() != NONE;
+#endif
 }
 
 LayoutObject* Element::createLayoutObject(const ComputedStyle& style)
 {
+    ASSERT(!ForCrawler());
+#ifdef BLINKIT_CRAWLER_ONLY
+    return nullptr;
+#else
     return LayoutObject::createObject(this, style);
+#endif
 }
-#endif // BLINKIT_CRAWLER_ONLY
 
 Node::InsertionNotificationRequest Element::insertedInto(ContainerNode* insertionPoint)
 {
@@ -2417,9 +2425,10 @@ bool Element::hasAttributeNS(const AtomicString& namespaceURI, const AtomicStrin
     return elementData()->attributes().find(qName);
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 void Element::focus(const FocusParams& params)
 {
+    ASSERT(!ForCrawler());
+#ifndef BLINKIT_CRAWLER_ONLY
     if (!inDocument())
         return;
 
@@ -2456,10 +2465,13 @@ void Element::focus(const FocusParams& params)
         // up the keyboard if there's been any gesture since load.
         document().page()->chromeClient().showImeIfNeeded();
     }
+#endif
 }
 
 void Element::updateFocusAppearance(SelectionBehaviorOnFocus selectionBehavior)
 {
+    ASSERT(!ForCrawler());
+#ifndef BLINKIT_CRAWLER_ONLY
     if (selectionBehavior == SelectionBehaviorOnFocus::None)
         return;
     if (isRootEditableElement()) {
@@ -2481,10 +2493,13 @@ void Element::updateFocusAppearance(SelectionBehaviorOnFocus selectionBehavior)
     } else if (layoutObject() && !layoutObject()->isLayoutPart()) {
         layoutObject()->scrollRectToVisible(boundingBox());
     }
+#endif
 }
 
 void Element::blur()
 {
+    ASSERT(!ForCrawler());
+#ifndef BLINKIT_CRAWLER_ONLY
     cancelFocusAppearanceUpdate();
     if (treeScope().adjustedFocusedElement() == this) {
         Document& doc = document();
@@ -2493,10 +2508,15 @@ void Element::blur()
         else
             doc.clearFocusedElement();
     }
+#endif
 }
 
 bool Element::supportsFocus() const
 {
+    ASSERT(!ForCrawler());
+#ifdef BLINKIT_CRAWLER_ONLY
+    return false;
+#else
     // FIXME: supportsFocus() can be called when layout is not up to date.
     // Logic that deals with the layoutObject should be moved to layoutObjectIsFocusable().
     // But supportsFocus must return true when the element is editable, or else
@@ -2505,8 +2525,10 @@ bool Element::supportsFocus() const
     return hasElementFlag(TabIndexWasSetExplicitly) || (hasEditableStyle() && parentNode() && !parentNode()->hasEditableStyle())
         || (isShadowHost(this) && authorShadowRoot() && authorShadowRoot()->delegatesFocus())
         || supportsSpatialNavigationFocus();
+#endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 bool Element::supportsSpatialNavigationFocus() const
 {
     // This function checks whether the element satisfies the extended criteria
@@ -2533,12 +2555,19 @@ bool Element::isFocusable() const
 {
     return inDocument() && supportsFocus() && !isInert() && layoutObjectIsFocusable();
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 bool Element::isKeyboardFocusable() const
 {
+    ASSERT(!ForCrawler());
+#ifdef BLINKIT_CRAWLER_ONLY
+    return false;
+#else
     return isFocusable() && tabIndex() >= 0;
+#endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 bool Element::isMouseFocusable() const
 {
     return isFocusable();
@@ -2548,31 +2577,42 @@ bool Element::isFocusedElementInDocument() const
 {
     return this == document().focusedElement();
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 void Element::dispatchFocusEvent(Element* oldFocusedElement, WebFocusType type, InputDeviceCapabilities* sourceCapabilities)
 {
+    ASSERT(!ForCrawler());
+#ifndef BLINKIT_CRAWLER_ONLY
     dispatchEvent(FocusEvent::create(EventTypeNames::focus, false, false, document().domWindow(), 0, oldFocusedElement, sourceCapabilities));
+#endif
 }
 
 void Element::dispatchBlurEvent(Element* newFocusedElement, WebFocusType type, InputDeviceCapabilities* sourceCapabilities)
 {
+    ASSERT(!ForCrawler());
+#ifndef BLINKIT_CRAWLER_ONLY
     dispatchEvent(FocusEvent::create(EventTypeNames::blur, false, false, document().domWindow(), 0, newFocusedElement, sourceCapabilities));
+#endif
 }
 
 void Element::dispatchFocusInEvent(const AtomicString& eventType, Element* oldFocusedElement, WebFocusType, InputDeviceCapabilities* sourceCapabilities)
 {
+    ASSERT(!ForCrawler());
+#ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(!EventDispatchForbiddenScope::isEventDispatchForbidden());
     ASSERT(eventType == EventTypeNames::focusin || eventType == EventTypeNames::DOMFocusIn);
     dispatchScopedEvent(FocusEvent::create(eventType, true, false, document().domWindow(), 0, oldFocusedElement, sourceCapabilities));
+#
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void Element::dispatchFocusOutEvent(const AtomicString& eventType, Element* newFocusedElement, InputDeviceCapabilities* sourceCapabilities)
 {
     ASSERT(!EventDispatchForbiddenScope::isEventDispatchForbidden());
     ASSERT(eventType == EventTypeNames::focusout || eventType == EventTypeNames::DOMFocusOut);
     dispatchScopedEvent(FocusEvent::create(eventType, true, false, document().domWindow(), 0, newFocusedElement, sourceCapabilities));
 }
-#endif // BLINKIT_CRAWLER_ONLY
+#endif
 
 String Element::innerHTML() const
 {

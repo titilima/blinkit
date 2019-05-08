@@ -286,8 +286,11 @@ public:
 
     void setBooleanAttribute(const QualifiedName&, bool);
 
+    virtual const StylePropertySet* additionalPresentationAttributeStyle() {
+        ASSERT(!ForCrawler());
+        return nullptr;
+    }
 #ifndef BLINKIT_CRAWLER_ONLY
-    virtual const StylePropertySet* additionalPresentationAttributeStyle() { return nullptr; }
     void invalidateStyleAttribute();
 
     const StylePropertySet* inlineStyle() const { return elementData() ? elementData()->m_inlineStyle.get() : nullptr; }
@@ -303,9 +306,7 @@ public:
     const StylePropertySet* presentationAttributeStyle();
 #endif
     virtual bool isPresentationAttribute(const QualifiedName&) const { return false; }
-#ifndef BLINKIT_CRAWLER_ONLY
-    virtual void collectStyleForPresentationAttribute(const QualifiedName&, const AtomicString&, MutableStylePropertySet*) { }
-#endif
+    virtual void collectStyleForPresentationAttribute(const QualifiedName&, const AtomicString&, MutableStylePropertySet*) { ASSERT(!ForCrawler()); }
 
     // For exposing to DOM only.
     NamedNodeMap* attributesForBindings() const;
@@ -343,9 +344,9 @@ public:
     void attach(const AttachContext& = AttachContext()) override;
     void detach(const AttachContext& = AttachContext()) override;
 
-#ifndef BLINKIT_CRAWLER_ONLY
     virtual LayoutObject* createLayoutObject(const ComputedStyle&);
     virtual bool layoutObjectIsNeeded(const ComputedStyle&);
+#ifndef BLINKIT_CRAWLER_ONLY
     void recalcStyle(StyleRecalcChange, Text* nextTextSibling = nullptr);
     void pseudoStateChanged(CSSSelector::PseudoType);
     void setAnimationStyleChange(bool);
@@ -377,8 +378,10 @@ public:
     ShadowRoot* shadowRootIfV1() const;
 
     ShadowRoot& ensureUserAgentShadowRoot();
-    virtual void willAddFirstAuthorShadowRoot() { }
+#endif
+    virtual void willAddFirstAuthorShadowRoot() { ASSERT(!ForCrawler()); }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool isInDescendantTreeOf(const Element* shadowHost) const;
 
     const ComputedStyle* ensureComputedStyle(PseudoId = NOPSEUDO);
@@ -410,14 +413,17 @@ public:
     KURL getURLAttribute(const QualifiedName&) const;
     KURL getNonEmptyURLAttribute(const QualifiedName&) const;
 
-#ifndef BLINKIT_CRAWLER_ONLY
     virtual const AtomicString imageSourceURL() const;
-    virtual Image* imageContents() { return nullptr; }
+    virtual Image* imageContents() {
+        ASSERT(!ForCrawler());
+        return nullptr;
+    }
 
     virtual void focus(const FocusParams& = FocusParams());
     virtual void updateFocusAppearance(SelectionBehaviorOnFocus);
     virtual void blur();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void setDistributeScroll(ScrollStateCallback*, String nativeScrollBehavior);
     void nativeDistributeScroll(ScrollState&);
     void setApplyScroll(ScrollStateCallback*, String nativeScrollBehavior);
@@ -425,20 +431,26 @@ public:
 
     void callDistributeScroll(ScrollState&);
     void callApplyScroll(ScrollState&);
+#endif
 
     // Whether this element can receive focus at all. Most elements are not
     // focusable but some elements, such as form controls and links, are. Unlike
     // layoutObjectIsFocusable(), this method may be called when layout is not up to
     // date, so it must not use the layoutObject to determine focusability.
     virtual bool supportsFocus() const;
+#ifndef BLINKIT_CRAWLER_ONLY
     // Whether the node can actually be focused.
     bool isFocusable() const;
     bool isFocusedElementInDocument() const;
+#endif
     virtual bool isKeyboardFocusable() const;
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual bool isMouseFocusable() const;
+#endif
     virtual void dispatchFocusEvent(Element* oldFocusedElement, WebFocusType, InputDeviceCapabilities* sourceCapabilities = nullptr);
     virtual void dispatchBlurEvent(Element* newFocusedElement, WebFocusType, InputDeviceCapabilities* sourceCapabilities = nullptr);
     virtual void dispatchFocusInEvent(const AtomicString& eventType, Element* oldFocusedElement, WebFocusType, InputDeviceCapabilities* sourceCapabilities = nullptr);
+#ifndef BLINKIT_CRAWLER_ONLY
     void dispatchFocusOutEvent(const AtomicString& eventType, Element* newFocusedElement, InputDeviceCapabilities* sourceCapabilities = nullptr);
 #endif
 

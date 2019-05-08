@@ -438,17 +438,19 @@ public:
     void markV8CollectableDuringMinorGC() { setFlag(true, V8CollectableDuringMinorGCFlag); }
     void clearV8CollectableDuringMinorGC() { setFlag(false, V8CollectableDuringMinorGCFlag); }
 
-#ifndef BLINKIT_CRAWLER_ONLY
     virtual void setFocus(bool flag);
     virtual void setActive(bool flag = true);
     virtual void setHovered(bool flag = true);
 
     virtual short tabIndex() const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual Node* focusDelegate();
+#endif
     // This is called only when the node is focused.
     virtual bool shouldHaveFocusAppearance() const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // Whether the node is inert. This can't be in Element because text nodes
     // must be recognized as inert to prevent text selection.
     bool isInert() const;
@@ -545,10 +547,10 @@ public:
     // css-transform:capitalize breaking up precomposed characters and ligatures.
     virtual int maxCharacterOffset() const;
 
-#ifndef BLINKIT_CRAWLER_ONLY
     // Whether or not a selection can be started in this object
     virtual bool canStartSelection() const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // -----------------------------------------------------------------------------
     // Integration with layout tree
 
@@ -643,7 +645,9 @@ public:
 
 #ifndef BLINKIT_CRAWLER_ONLY
     virtual bool willRespondToMouseMoveEvents();
+#endif
     virtual bool willRespondToMouseClickEvents();
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual bool willRespondToTouchEvents();
 #endif
 
@@ -859,9 +863,12 @@ private:
 
     void setStyleChange(StyleChangeType);
 
-#ifndef BLINKIT_CRAWLER_ONLY
-    virtual ComputedStyle* nonLayoutObjectComputedStyle() const { return nullptr; }
+    virtual ComputedStyle* nonLayoutObjectComputedStyle() const {
+        ASSERT(!ForCrawler());
+        return nullptr;
+    }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual const ComputedStyle* virtualEnsureComputedStyle(PseudoId = NOPSEUDO);
 #endif
 
