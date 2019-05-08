@@ -60,23 +60,14 @@
     <Filter Include="core\html\parser">
       <UniqueIdentifier>{d27a171a-d409-45f9-8743-24066241d199}</UniqueIdentifier>
     </Filter>
-    <Filter Include="core\frame\csp">
-      <UniqueIdentifier>{fab85110-fb1f-4d4b-b5c9-fb745f03c8c8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="core\inspector">
       <UniqueIdentifier>{5c99098c-315b-47fd-a3f5-102cd31f0dcb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="core\html\imports">
-      <UniqueIdentifier>{7cb868bd-a0d0-477b-a74b-bf96e283b001}</UniqueIdentifier>
     </Filter>
     <Filter Include="gen\core\fetch">
       <UniqueIdentifier>{2e2c3f11-a9c4-4149-8251-a33be710b9e3}</UniqueIdentifier>
     </Filter>
     <Filter Include="core\css">
       <UniqueIdentifier>{7f143bd4-c2e1-41f9-8576-fd0ca3b38d1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="core\paint">
-      <UniqueIdentifier>{f51d13ec-90b9-406e-9a79-78d88088e233}</UniqueIdentifier>
     </Filter>
     <Filter Include="core\css\parser">
       <UniqueIdentifier>{b694ae58-3990-4741-bd98-8bfda0786336}</UniqueIdentifier>
@@ -221,12 +212,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\UseCounter.cpp">
       <Filter>core\frame</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PageScaleConstraints.cpp">
-      <Filter>core\frame</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PageScaleConstraintsSet.cpp">
-      <Filter>core\frame</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\PositionWithAffinity.cpp">
       <Filter>core\editing</Filter>
     </ClCompile>
@@ -315,9 +300,6 @@
       <Filter>core\frame</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\TopControls.cpp">
-      <Filter>core\frame</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\VisualViewport.cpp">
       <Filter>core\frame</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\CreateWindow.cpp">
@@ -494,9 +476,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IntersectionObservation.cpp">
       <Filter>core\dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ChildFrameDisconnector.cpp">
-      <Filter>core\dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ChildListMutationScope.cpp">
       <Filter>core\dom</Filter>
     </ClCompile>
@@ -505,24 +484,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\CharacterData.cpp">
       <Filter>core\dom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\ContentSecurityPolicy.cpp">
-      <Filter>core\frame\csp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPDirectiveList.cpp">
-      <Filter>core\frame\csp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPSource.cpp">
-      <Filter>core\frame\csp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPSourceList.cpp">
-      <Filter>core\frame\csp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\MediaListDirective.cpp">
-      <Filter>core\frame\csp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\SourceListDirective.cpp">
-      <Filter>core\frame\csp</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMImplementation.cpp">
       <Filter>core\dom</Filter>
@@ -580,27 +541,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLScriptRunner.cpp">
       <Filter>core\html\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImport.cpp">
-      <Filter>core\html\imports</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportChild.cpp">
-      <Filter>core\html\imports</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportLoader.cpp">
-      <Filter>core\html\imports</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportsController.cpp">
-      <Filter>core\html\imports</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportStateResolver.cpp">
-      <Filter>core\html\imports</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportTreeRoot.cpp">
-      <Filter>core\html\imports</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\LinkImport.cpp">
-      <Filter>core\html\imports</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\MixedContentChecker.cpp">
       <Filter>core\loader</Filter>
@@ -800,12 +740,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\ResourcePreloader.cpp">
       <Filter>core\html\parser</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\XSSAuditor.cpp">
-      <Filter>core\html\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\XSSAuditorDelegate.cpp">
-      <Filter>core\html\parser</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\LiveNodeListBase.cpp">
       <Filter>core\dom</Filter>
     </ClCompile>
@@ -871,9 +805,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\UIEventWithKeyState.cpp">
       <Filter>core\events</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintInvalidationCapableScrollableArea.cpp">
-      <Filter>core\paint</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContextLifecycleNotifier.cpp">
       <Filter>core\dom</Filter>
@@ -1457,12 +1388,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\ThreadState.cpp">
       <Filter>platform\heap</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyParsers.cpp">
-      <Filter>platform\network</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyResponseHeaders.cpp">
-      <Filter>platform\network</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\EncodedFormData.cpp">
       <Filter>platform\network</Filter>
     </ClCompile>
@@ -1491,9 +1416,6 @@
       <Filter>platform\network</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceResponse.cpp">
-      <Filter>platform\network</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceTimingInfo.cpp">
       <Filter>platform\network</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\WebSocketHandshakeRequest.cpp">
@@ -1628,9 +1550,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\win\SystemInfo.cpp">
       <Filter>platform\win</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollableArea.cpp">
-      <Filter>platform\scroll</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -1721,12 +1640,6 @@
       <Filter>core\loader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\UseCounter.h">
-      <Filter>core\frame</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PageScaleConstraints.h">
-      <Filter>core\frame</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PageScaleConstraintsSet.h">
       <Filter>core\frame</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\PositionWithAffinity.h">
@@ -1868,9 +1781,6 @@
       <Filter>core\frame</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\TopControls.h">
-      <Filter>core\frame</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\VisualViewport.h">
       <Filter>core\frame</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\CreateWindow.h">
@@ -2104,9 +2014,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\IntersectionObservation.h">
       <Filter>core\dom</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ChildFrameDisconnector.h">
-      <Filter>core\dom</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ChildListMutationScope.h">
       <Filter>core\dom</Filter>
     </ClInclude>
@@ -2115,27 +2022,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\CharacterData.h">
       <Filter>core\dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\ContentSecurityPolicy.h">
-      <Filter>core\frame\csp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPDirective.h">
-      <Filter>core\frame\csp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPDirectiveList.h">
-      <Filter>core\frame\csp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPSource.h">
-      <Filter>core\frame\csp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPSourceList.h">
-      <Filter>core\frame\csp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\MediaListDirective.h">
-      <Filter>core\frame\csp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\SourceListDirective.h">
-      <Filter>core\frame\csp</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DOMImplementation.h">
       <Filter>core\dom</Filter>
@@ -2202,33 +2088,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\HTMLScriptRunnerHost.h">
       <Filter>core\html\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImport.h">
-      <Filter>core\html\imports</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportChild.h">
-      <Filter>core\html\imports</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportChildClient.h">
-      <Filter>core\html\imports</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportLoader.h">
-      <Filter>core\html\imports</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportsController.h">
-      <Filter>core\html\imports</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportState.h">
-      <Filter>core\html\imports</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportStateResolver.h">
-      <Filter>core\html\imports</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportTreeRoot.h">
-      <Filter>core\html\imports</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\LinkImport.h">
-      <Filter>core\html\imports</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\MixedContentChecker.h">
       <Filter>core\loader</Filter>
@@ -2434,12 +2293,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\ResourcePreloader.h">
       <Filter>core\html\parser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\XSSAuditor.h">
-      <Filter>core\html\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\XSSAuditorDelegate.h">
-      <Filter>core\html\parser</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\LiveNodeListBase.h">
       <Filter>core\dom</Filter>
     </ClInclude>
@@ -2505,9 +2358,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\UIEventWithKeyState.h">
       <Filter>core\events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintInvalidationCapableScrollableArea.h">
-      <Filter>core\paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContextLifecycleNotifier.h">
       <Filter>core\dom</Filter>
@@ -3073,12 +2923,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\heap\Visitor.h">
       <Filter>platform\heap</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyParsers.h">
-      <Filter>platform\network</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyResponseHeaders.h">
-      <Filter>platform\network</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\EncodedFormData.h">
       <Filter>platform\network</Filter>
     </ClInclude>
@@ -3113,9 +2957,6 @@
       <Filter>platform\network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceResponse.h">
-      <Filter>platform\network</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceTimingInfo.h">
       <Filter>platform\network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\WebSocketHandshakeRequest.h">

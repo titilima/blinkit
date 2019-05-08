@@ -171,7 +171,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Attr.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\CDATASection.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\CharacterData.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ChildFrameDisconnector.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ChildListMutationScope.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ChildNodeList.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ClassCollection.cpp" />
@@ -307,12 +306,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\BarProp.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\Console.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\ConsoleBase.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\ContentSecurityPolicy.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPDirectiveList.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPSource.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPSourceList.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\MediaListDirective.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\SourceListDirective.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\DeprecatedScheduleStyleRecalcDuringLayout.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\DeviceSingleWindowEventController.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\DOMWindow.cpp" />
@@ -333,8 +326,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\NavigatorID.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\NavigatorLanguage.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\OriginsUsingFeatures.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PageScaleConstraints.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PageScaleConstraintsSet.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PlatformEventController.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PlatformEventDispatcher.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\Screen.cpp" />
@@ -344,7 +335,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\SuspendableTimer.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\TopControls.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\UseCounter.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\VisualViewport.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\ClassList.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\CrossOriginAttribute.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\DocumentNameCollection.cpp" />
@@ -353,13 +343,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLCollection.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLNameCollection.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTagCollection.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImport.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportChild.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportLoader.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportsController.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportStateResolver.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportTreeRoot.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\LinkImport.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\LabelsNodeList.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\LinkRelAttribute.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\AtomicHTMLToken.cpp" />
@@ -388,8 +371,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\PreloadRequest.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\ResourcePreloader.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\TextResourceDecoder.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\XSSAuditor.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\XSSAuditorDelegate.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\PublicURLManager.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\WindowNameCollection.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\Init.cpp" />
@@ -418,7 +399,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\NetworkStateNotifier.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\PageVisibilityState.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\WindowFeatures.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintInvalidationCapableScrollableArea.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTargetNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTypeNames.cpp" />
@@ -577,8 +557,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Logging.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MIMETypeFromURL.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MIMETypeRegistry.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyParsers.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyResponseHeaders.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\EncodedFormData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\FormDataEncoder.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\HTTPHeaderMap.cpp" />
@@ -589,7 +567,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceLoadTiming.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceRequest.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceResponse.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceTimingInfo.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\WebSocketHandshakeRequest.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\WebSocketHandshakeResponse.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\NotImplemented.cpp" />
@@ -602,7 +579,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\PurgeableVector.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scheduler\CancellableTaskFactory.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\ScriptForbiddenScope.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\scroll\ScrollableArea.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\SecureTextInput.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\SharedBuffer.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\SharedBufferChunkReader.cpp" />
@@ -677,7 +653,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Attr.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\CDATASection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\CharacterData.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ChildFrameDisconnector.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ChildListMutationScope.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ChildNodeList.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ClassCollection.h" />
@@ -841,13 +816,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\Console.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\ConsoleBase.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\ConsoleTypes.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\ContentSecurityPolicy.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPDirective.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPDirectiveList.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPSource.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPSourceList.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\MediaListDirective.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\SourceListDirective.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\DeprecatedScheduleStyleRecalcDuringLayout.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\DeviceSingleWindowEventController.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\DOMWindow.h" />
@@ -875,8 +843,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\NavigatorLanguage.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\NavigatorOnLine.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\OriginsUsingFeatures.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PageScaleConstraints.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PageScaleConstraintsSet.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PlatformEventController.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\PlatformEventDispatcher.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\Screen.h" />
@@ -888,7 +854,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\SuspendableTimer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\TopControls.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\UseCounter.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\VisualViewport.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\ClassList.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\CrossOriginAttribute.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\DocumentNameCollection.h" />
@@ -897,15 +862,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLCollection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLNameCollection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTagCollection.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImport.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportChild.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportChildClient.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportLoader.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportsController.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportState.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportStateResolver.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\HTMLImportTreeRoot.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\imports\LinkImport.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\LabelsNodeList.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\LinkRelAttribute.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\AtomicHTMLToken.h" />
@@ -938,8 +894,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\PreloadRequest.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\ResourcePreloader.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\TextResourceDecoder.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\XSSAuditor.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\XSSAuditorDelegate.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\PublicURLManager.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\WindowNameCollection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\Init.h" />
@@ -972,7 +926,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\PopupOpeningObserver.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\ValidationMessageClient.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\WindowFeatures.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\PaintInvalidationCapableScrollableArea.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTargetNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\EventTypeNames.h" />
@@ -1100,8 +1053,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Logging.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MIMETypeFromURL.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MIMETypeRegistry.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyParsers.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyResponseHeaders.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\EncodedFormData.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\FormDataEncoder.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\HTTPHeaderMap.h" />
@@ -1114,7 +1065,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceLoadTiming.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceRequest.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceResponse.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceTimingInfo.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\WebSocketHandshakeRequest.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\WebSocketHandshakeResponse.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\NotImplemented.h" />
