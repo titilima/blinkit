@@ -64,10 +64,6 @@ public:
     // is owned by the object implementing WebSharedWorkerClient.
     virtual WebNotificationPresenter* notificationPresenter() = 0;
 
-    // Called on the main webkit thread in the worker process during
-    // initialization.
-    virtual WebApplicationCacheHost* createApplicationCacheHost(WebApplicationCacheHostClient*) = 0;
-
     // Called on the main thread during initialization.
     // WebWorkerContentSettingsClientProxy should not retain the given
     // WebSecurityOrigin, as the proxy instance is passed to worker thread
