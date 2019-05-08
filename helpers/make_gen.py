@@ -34,7 +34,6 @@ core_event_idl_files = (
     'css/MediaQueryListEvent.idl',
     'events/AnimationEvent.idl',
     'events/AnimationPlayerEvent.idl',
-    'events/ApplicationCacheErrorEvent.idl',
     'events/AutocompleteErrorEvent.idl',
     'events/BeforeUnloadEvent.idl',
     'events/ClipboardEvent.idl',
