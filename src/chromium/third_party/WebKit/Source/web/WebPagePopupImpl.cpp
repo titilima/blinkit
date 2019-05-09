@@ -250,7 +250,7 @@ bool WebPagePopupImpl::initializePage()
 
     provideContextFeaturesTo(*m_page, adoptPtr(new PagePopupFeaturesClient()));
     DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<FrameLoaderClient>, emptyFrameLoaderClient, (EmptyFrameLoaderClient::create()));
-    RefPtrWillBeRawPtr<LocalFrame> frame = LocalFrame::create(emptyFrameLoaderClient.get(), &m_page->frameHost(), 0);
+    RefPtrWillBeRawPtr<LocalFrame> frame = LocalFrame::create(emptyFrameLoaderClient.get(), &m_page->frameHost());
     frame->setPagePopupOwner(m_popupClient->ownerElement());
     frame->setView(FrameView::create(frame.get()));
     frame->init();

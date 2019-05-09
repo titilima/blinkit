@@ -649,14 +649,6 @@ void FrameLoaderClientImpl::transitionToCommittedForNewPage()
     m_webFrame->createFrameView();
 }
 
-PassRefPtrWillBeRawPtr<LocalFrame> FrameLoaderClientImpl::createFrame(
-    const FrameLoadRequest& request,
-    const AtomicString& name,
-    HTMLFrameOwnerElement* ownerElement)
-{
-    return m_webFrame->createChildFrame(request, name, ownerElement);
-}
-
 bool FrameLoaderClientImpl::canCreatePluginWithoutRenderer(const String& mimeType) const
 {
     if (!m_webFrame->client())

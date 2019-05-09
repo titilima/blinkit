@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebFrameImplBase.h
+// Description: WebFrameImplBase Class
+//      Author: Ziming Li
+//     Created: 2019-05-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -31,7 +42,7 @@ class WebFrameImplBase : public RefCountedWillBeGarbageCollectedFinalized<WebFra
 public:
     virtual ~WebFrameImplBase();
 
-    virtual void initializeCoreFrame(FrameHost*, FrameOwner*, const AtomicString& name, const AtomicString& fallbackName) = 0;
+    virtual void initializeCoreFrame(FrameHost*) = 0;
     // TODO(dcheng): Rename this to coreFrame()? This probably also shouldn't be const...
     virtual Frame* frame() const = 0;
 

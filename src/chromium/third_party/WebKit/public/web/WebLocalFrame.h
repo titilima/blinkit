@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebLocalFrame.h
+// Description: WebLocalFrame Class
+//      Author: Ziming Li
+//     Created: 2019-05-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -39,10 +50,6 @@ public:
     // replacee but is invisible to the rest of the frames in the frame tree.
     // If the load commits, call swap() to fully attach this frame.
     BLINK_EXPORT static WebLocalFrame* createProvisional(WebFrameClient*, WebRemoteFrame*, WebSandboxFlags, const WebFrameOwnerProperties&);
-
-    // Returns the frame inside a given frame or iframe element. Returns 0 if
-    // the given element is not a frame, iframe or if the frame is empty.
-    BLINK_EXPORT static WebLocalFrame* fromFrameOwnerElement(const WebElement&);
 
     // Initialization ---------------------------------------------------------
 

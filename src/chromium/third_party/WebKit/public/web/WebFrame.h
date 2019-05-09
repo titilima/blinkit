@@ -146,17 +146,6 @@ public:
 
     // Basic properties ---------------------------------------------------
 
-    // The unique name of this frame.
-    virtual WebString uniqueName() const = 0;
-
-    // The name of this frame. If no name is given, empty string is returned.
-    virtual WebString assignedName() const = 0;
-
-    // Sets the name of this frame. For child frames (frames that are not a
-    // top-most frame) the actual name may have a suffix appended to make the
-    // frame name unique within the hierarchy.
-    virtual void setName(const WebString&) = 0;
-
     // The urls of the given combination types of favicon (if any) specified by
     // the document loaded in this frame. The iconTypesMask is a bit-mask of
     // WebIconURL::Type values, used to select from the available set of icon

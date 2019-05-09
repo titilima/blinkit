@@ -126,8 +126,6 @@
 #include "core/html/HTMLAnchorElement.h"
 #include "core/html/HTMLCollection.h"
 #include "core/html/HTMLFormElement.h"
-#include "core/html/HTMLFrameElementBase.h"
-#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/HTMLHeadElement.h"
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLInputElement.h"
@@ -148,7 +146,6 @@
 #include "core/loader/MixedContentChecker.h"
 #include "core/loader/NavigationScheduler.h"
 #include "core/page/FocusController.h"
-#include "core/page/FrameTree.h"
 #include "core/page/Page.h"
 #include "core/paint/PaintLayer.h"
 #include "core/paint/ScopeRecorder.h"
@@ -244,39 +241,6 @@ static void frameContentAsPlainText(size_t maxChars, LocalFrame* frame, StringBu
                 return; // Filled up the buffer.
         }
     }
-
-    // The separator between frames when the frames are converted to plain text.
-    const LChar frameSeparator[] = { '\n', '\n' };
-    const size_t frameSeparatorLength = WTF_ARRAY_LENGTH(frameSeparator);
-
-    // Recursively walk the children.
-    const FrameTree& frameTree = frame->tree();
-    for (Frame* curChild = frameTree.firstChild(); curChild; curChild = curChild->tree().nextSibling()) {
-        if (!curChild->isLocalFrame())
-            continue;
-        LocalFrame* curLocalChild = toLocalFrame(curChild);
-        // Ignore the text of non-visible frames.
-        LayoutView* contentLayoutObject = curLocalChild->contentLayoutObject();
-        LayoutPart* ownerLayoutObject = curLocalChild->ownerLayoutObject();
-        if (!contentLayoutObject || !contentLayoutObject->size().width() || !contentLayoutObject->size().height()
-            || (contentLayoutObject->location().x() + contentLayoutObject->size().width() <= 0) || (contentLayoutObject->location().y() + contentLayoutObject->size().height() <= 0)
-            || (ownerLayoutObject && ownerLayoutObject->style() && ownerLayoutObject->style()->visibility() != VISIBLE)) {
-            continue;
-        }
-
-        // Make sure the frame separator won't fill up the buffer, and give up if
-        // it will. The danger is if the separator will make the buffer longer than
-        // maxChars. This will cause the computation above:
-        //   maxChars - output->size()
-        // to be a negative number which will crash when the subframe is added.
-        if (output.length() >= maxChars - frameSeparatorLength)
-            return;
-
-        output.append(frameSeparator, frameSeparatorLength);
-        frameContentAsPlainText(maxChars, curLocalChild, output);
-        if (output.length() >= maxChars)
-            return; // Filled up the buffer.
-    }
 }
 
 static WillBeHeapVector<ScriptSourceCode> createSourcesVector(const WebScriptSource* sourcesIn, unsigned numSources)
@@ -326,11 +290,6 @@ int WebFrame::instanceCount()
     return frameCount;
 }
 
-WebLocalFrame* WebLocalFrame::fromFrameOwnerElement(const WebElement& element)
-{
-    return WebLocalFrameImpl::fromFrameOwnerElement(PassRefPtrWillBeRawPtr<Element>(element).get());
-}
-
 bool WebLocalFrameImpl::isWebLocalFrame() const
 {
     return true;
@@ -350,21 +309,6 @@ void WebLocalFrameImpl::close()
 #else
     deref(); // Balances ref() acquired in WebFrame::create
 #endif
-}
-
-WebString WebLocalFrameImpl::uniqueName() const
-{
-    return frame()->tree().uniqueName();
-}
-
-WebString WebLocalFrameImpl::assignedName() const
-{
-    return frame()->tree().name();
-}
-
-void WebLocalFrameImpl::setName(const WebString& name)
-{
-    frame()->tree().setName(name);
 }
 
 WebVector<WebIconURL> WebLocalFrameImpl::iconURLs(int iconTypesMask) const
@@ -415,11 +359,6 @@ WebSize WebLocalFrameImpl::contentsSize() const
 
 bool WebLocalFrameImpl::hasVisibleContent() const
 {
-    if (LayoutPart* layoutObject = frame()->ownerLayoutObject()) {
-        if (layoutObject->style()->visibility() != VISIBLE)
-            return false;
-    }
-
     if (FrameView* view = frameView())
         return view->visibleWidth() > 0 && view->visibleHeight() > 0;
     return false;
@@ -475,7 +414,6 @@ void WebLocalFrameImpl::dispatchUnloadEvent()
 {
     if (!frame())
         return;
-    SubframeLoadingDisabler disabler(frame()->document());
     frame()->loader().dispatchUnloadEvent();
 }
 
@@ -1089,48 +1027,13 @@ void WebLocalFrameImpl::setCoreFrame(PassRefPtrWillBeRawPtr<LocalFrame> frame)
     m_frame = frame;
 }
 
-void WebLocalFrameImpl::initializeCoreFrame(FrameHost* host, FrameOwner* owner, const AtomicString& name, const AtomicString& fallbackName)
+void WebLocalFrameImpl::initializeCoreFrame(FrameHost* host)
 {
-    setCoreFrame(LocalFrame::create(m_frameLoaderClientImpl.get(), host, owner));
-    frame()->tree().setName(name, fallbackName);
+    setCoreFrame(LocalFrame::create(m_frameLoaderClientImpl.get(), host));
     // We must call init() after m_frame is assigned because it is referenced
     // during init(). Note that this may dispatch JS events; the frame may be
     // detached after init() returns.
     frame()->init();
-}
-
-PassRefPtrWillBeRawPtr<LocalFrame> WebLocalFrameImpl::createChildFrame(const FrameLoadRequest& request,
-    const AtomicString& name, HTMLFrameOwnerElement* ownerElement)
-{
-    ASSERT(m_client);
-    TRACE_EVENT0("blink", "WebLocalFrameImpl::createChildframe");
-    WebTreeScopeType scope = frame()->document() == ownerElement->treeScope()
-        ? WebTreeScopeType::Document
-        : WebTreeScopeType::Shadow;
-    WebFrameOwnerProperties ownerProperties(ownerElement->scrollingMode(), ownerElement->marginWidth(), ownerElement->marginHeight());
-    RefPtrWillBeRawPtr<WebLocalFrameImpl> webframeChild = toWebLocalFrameImpl(m_client->createChildFrame(this, scope, name, ownerProperties));
-    if (!webframeChild)
-        return nullptr;
-
-    // FIXME: Using subResourceAttributeName as fallback is not a perfect
-    // solution. subResourceAttributeName returns just one attribute name. The
-    // element might not have the attribute, and there might be other attributes
-    // which can identify the element.
-    webframeChild->initializeCoreFrame(frame()->host(), ownerElement, name, ownerElement->getAttribute(ownerElement->subResourceAttributeName()));
-    // Initializing the core frame may cause the new child to be detached, since
-    // it may dispatch a load event in the parent.
-    if (!webframeChild->parent())
-        return nullptr;
-
-    FrameLoadRequest newRequest = request;
-    webframeChild->frame()->loader().load(newRequest, FrameLoadTypeStandard, nullptr);
-
-    // Note a synchronous navigation (about:blank) would have already processed
-    // onload, so it is possible for the child frame to have already been
-    // detached by script in the page.
-    if (!webframeChild->parent())
-        return nullptr;
-    return webframeChild->frame();
 }
 
 void WebLocalFrameImpl::didChangeContentsSize(const IntSize& size)
@@ -1146,10 +1049,7 @@ void WebLocalFrameImpl::createFrameView()
 
     WebViewImpl* webView = viewImpl();
 
-    bool isMainFrame = !parent();
-    IntSize initialSize = (isMainFrame || !frameWidget()) ? webView->mainFrameSize() : (IntSize)frameWidget()->size();
-
-    frame()->createView(initialSize, webView->baseBackgroundColor(), webView->isTransparent());
+    frame()->createView(webView->mainFrameSize(), webView->baseBackgroundColor(), webView->isTransparent());
     if (webView->shouldAutoResize() && frame()->isLocalRoot())
         frame()->view()->enableAutoSizeMode(webView->minAutoSize(), webView->maxAutoSize());
 
@@ -1170,13 +1070,6 @@ WebLocalFrameImpl* WebLocalFrameImpl::fromFrame(LocalFrame& frame)
     if (!client || !client->isFrameLoaderClientImpl())
         return nullptr;
     return toFrameLoaderClientImpl(client)->webFrame();
-}
-
-WebLocalFrameImpl* WebLocalFrameImpl::fromFrameOwnerElement(Element* element)
-{
-    if (!element->isFrameOwnerElement())
-        return nullptr;
-    return fromFrame(toLocalFrame(toHTMLFrameOwnerElement(element)->contentFrame()));
 }
 
 WebViewImpl* WebLocalFrameImpl::viewImpl() const
@@ -1260,10 +1153,7 @@ WebLocalFrameImpl* WebLocalFrameImpl::localRoot()
     // This can't use the LocalFrame::localFrameRoot, since it may be called
     // when the WebLocalFrame exists but the core LocalFrame does not.
     // TODO(alexmos, dcheng): Clean this up to only calculate this in one place.
-    WebLocalFrameImpl* localRoot = this;
-    while (!localRoot->frameWidget())
-        localRoot = toWebLocalFrameImpl(localRoot->parent());
-    return localRoot;
+    return this;
 }
 
 void WebLocalFrameImpl::sendPings(const WebNode& contextNode, const WebURL& destinationURL)

@@ -123,7 +123,6 @@ public:
     WTF::String userAgent() override;
     WTF::String doNotTrackValue() override;
     void transitionToCommittedForNewPage() override;
-    PassRefPtrWillBeRawPtr<LocalFrame> createFrame(const FrameLoadRequest&, const WTF::AtomicString& name, HTMLFrameOwnerElement*) override;
     virtual bool canCreatePluginWithoutRenderer(const String& mimeType) const;
     ObjectContentType objectContentType(
         const KURL&, const WTF::String& mimeType, bool shouldPreferPlugInsForImages) override;

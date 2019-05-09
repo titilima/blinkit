@@ -81,9 +81,6 @@ public:
     bool isWebLocalFrame() const override;
     WebLocalFrame* toWebLocalFrame() override;
     void close() override;
-    WebString uniqueName() const override;
-    WebString assignedName() const override;
-    void setName(const WebString&) override;
     WebVector<WebIconURL> iconURLs(int iconTypesMask) const override;
     void setRemoteWebLayer(WebLayer*) override;
     void setContentSettingsClient(WebContentSettingsClient*) override;
@@ -207,7 +204,7 @@ public:
     void replaceSelection(const WebString&) override;
 
     // WebFrameImplBase methods:
-    void initializeCoreFrame(FrameHost*, FrameOwner*, const AtomicString& name, const AtomicString& fallbackName) override;
+    void initializeCoreFrame(FrameHost*) override;
     LocalFrame* frame() const override { return m_frame.get(); }
 
     void willBeDetached();
@@ -217,15 +214,12 @@ public:
     static WebLocalFrameImpl* createProvisional(WebFrameClient*, WebRemoteFrame*, WebSandboxFlags, const WebFrameOwnerProperties&);
     ~WebLocalFrameImpl() override;
 
-    PassRefPtrWillBeRawPtr<LocalFrame> createChildFrame(const FrameLoadRequest&, const AtomicString& name, HTMLFrameOwnerElement*);
-
     void didChangeContentsSize(const IntSize&);
 
     void createFrameView();
 
     static WebLocalFrameImpl* fromFrame(LocalFrame*);
     static WebLocalFrameImpl* fromFrame(LocalFrame&);
-    static WebLocalFrameImpl* fromFrameOwnerElement(Element*);
 
     WebViewImpl* viewImpl() const;
 

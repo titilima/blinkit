@@ -190,12 +190,6 @@ public:
     Frame* opener() const override { return 0; }
     void setOpener(Frame*) override {}
 
-    Frame* parent() const override { return 0; }
-    Frame* top() const override { return 0; }
-    Frame* previousSibling() const override { return 0; }
-    Frame* nextSibling() const override { return 0; }
-    Frame* firstChild() const override { return 0; }
-    Frame* lastChild() const override { return 0; }
     void willBeDetached() override {}
     void detached(FrameDetachType) override {}
     void frameFocused() const override {}
@@ -246,7 +240,6 @@ public:
     void didDisplayContentWithCertificateErrors(const KURL&, const CString&, const WebURL& mainResourceUrl, const CString& mainResourceSecurityInfo) override {}
     void didRunContentWithCertificateErrors(const KURL&, const CString&, const WebURL& mainResourceUrl, const CString& mainResourceSecurityInfo) override {}
     void selectorMatchChanged(const Vector<String>&, const Vector<String>&) override {}
-    PassRefPtrWillBeRawPtr<LocalFrame> createFrame(const FrameLoadRequest&, const AtomicString&, HTMLFrameOwnerElement*) override;
     bool canCreatePluginWithoutRenderer(const String& mimeType) const override { return false; }
 
     ObjectContentType objectContentType(const KURL&, const String&, bool) override { return ObjectContentType(); }
