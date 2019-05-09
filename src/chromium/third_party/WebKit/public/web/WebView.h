@@ -163,15 +163,6 @@ public:
 
     virtual WebFrame* mainFrame() = 0;
 
-    // Returns the frame identified by the given name.  This method
-    // supports pseudo-names like _self, _top, and _blank.  It traverses
-    // the entire frame tree containing this tree looking for a frame that
-    // matches the given name.  If the optional relativeToFrame parameter
-    // is specified, then the search begins with the given frame and its
-    // children.
-    virtual WebFrame* findFrameByName(
-        const WebString& name, WebFrame* relativeToFrame = 0) = 0;
-
 
     // Focus ---------------------------------------------------------------
 
