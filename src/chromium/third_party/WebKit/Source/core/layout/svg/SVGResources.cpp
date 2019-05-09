@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: SVGResources.cpp
+// Description: SVGResources Class
+//      Author: Ziming Li
+//     Created: 2019-05-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) Research In Motion Limited 2010. All rights reserved.
  *
@@ -630,46 +641,5 @@ void SVGResources::resetLinkedResource()
     ASSERT(m_linkedResource);
     m_linkedResource = nullptr;
 }
-
-#ifndef NDEBUG
-void SVGResources::dump(const LayoutObject* object)
-{
-    ASSERT(object);
-    ASSERT(object->node());
-
-    fprintf(stderr, "-> this=%p, SVGResources(layoutObject=%p, node=%p)\n", this, object, object->node());
-    fprintf(stderr, " | DOM Tree:\n");
-    object->node()->showTreeForThis();
-
-    fprintf(stderr, "\n | List of resources:\n");
-    if (m_clipperFilterMaskerData) {
-        if (LayoutSVGResourceClipper* clipper = m_clipperFilterMaskerData->clipper)
-            fprintf(stderr, " |-> Clipper    : %p (node=%p)\n", clipper, clipper->element());
-        if (LayoutSVGResourceFilter* filter = m_clipperFilterMaskerData->filter)
-            fprintf(stderr, " |-> Filter     : %p (node=%p)\n", filter, filter->element());
-        if (LayoutSVGResourceMasker* masker = m_clipperFilterMaskerData->masker)
-            fprintf(stderr, " |-> Masker     : %p (node=%p)\n", masker, masker->element());
-    }
-
-    if (m_markerData) {
-        if (LayoutSVGResourceMarker* markerStart = m_markerData->markerStart)
-            fprintf(stderr, " |-> MarkerStart: %p (node=%p)\n", markerStart, markerStart->element());
-        if (LayoutSVGResourceMarker* markerMid = m_markerData->markerMid)
-            fprintf(stderr, " |-> MarkerMid  : %p (node=%p)\n", markerMid, markerMid->element());
-        if (LayoutSVGResourceMarker* markerEnd = m_markerData->markerEnd)
-            fprintf(stderr, " |-> MarkerEnd  : %p (node=%p)\n", markerEnd, markerEnd->element());
-    }
-
-    if (m_fillStrokeData) {
-        if (LayoutSVGResourcePaintServer* fill = m_fillStrokeData->fill)
-            fprintf(stderr, " |-> Fill       : %p (node=%p)\n", fill, fill->element());
-        if (LayoutSVGResourcePaintServer* stroke = m_fillStrokeData->stroke)
-            fprintf(stderr, " |-> Stroke     : %p (node=%p)\n", stroke, stroke->element());
-    }
-
-    if (m_linkedResource)
-        fprintf(stderr, " |-> xlink:href : %p (node=%p)\n", m_linkedResource, m_linkedResource->element());
-}
-#endif
 
 }

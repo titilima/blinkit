@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: SVGResources.h
+// Description: SVGResources Class
+//      Author: Ziming Li
+//     Created: 2019-05-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) Research In Motion Limited 2010. All rights reserved.
  *
@@ -75,10 +86,6 @@ public:
     // Methods operating on all cached resources
     void removeClientFromCache(LayoutObject*, bool markForInvalidation = true) const;
     void resourceDestroyed(LayoutSVGResourceContainer*);
-
-#ifndef NDEBUG
-    void dump(const LayoutObject*);
-#endif
 
 private:
     friend class SVGResourcesCycleSolver;
