@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StyleEngine.cpp
+// Description: StyleEngine Class
+//      Author: Ziming Li
+//     Created: 2019-05-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -40,9 +51,7 @@
 #include "core/dom/ShadowTreeStyleSheetCollection.h"
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLIFrameElement.h"
 #include "core/html/HTMLLinkElement.h"
-#include "core/html/imports/HTMLImportsController.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/page/Page.h"
 #include "core/svg/SVGStyleElement.h"
@@ -55,7 +64,6 @@ using namespace HTMLNames;
 
 StyleEngine::StyleEngine(Document& document)
     : m_document(&document)
-    , m_isMaster(!document.importsController() || document.importsController()->master() == &document)
     , m_pendingStylesheets(0)
     , m_documentStyleSheetCollection(DocumentStyleSheetCollection::create(document))
     , m_documentScopeDirty(true)
@@ -107,12 +115,7 @@ void StyleEngine::detachFromDocument()
 
 inline Document* StyleEngine::master()
 {
-    if (isMaster())
-        return m_document;
-    HTMLImportsController* import = document().importsController();
-    if (!import) // Document::import() can return null while executing its destructor.
-        return 0;
-    return import->master();
+    return m_document;
 }
 
 TreeScopeStyleSheetCollection* StyleEngine::ensureStyleSheetCollectionFor(TreeScope& treeScope)
@@ -517,8 +520,6 @@ void StyleEngine::markTreeScopeDirty(TreeScope& scope)
 void StyleEngine::markDocumentDirty()
 {
     m_documentScopeDirty = true;
-    if (document().importLoader())
-        document().importsController()->master()->styleEngine().markDocumentDirty();
 }
 
 static bool isCacheableForStyleElement(const StyleSheetContents& contents)

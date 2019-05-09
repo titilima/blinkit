@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StyleEngine.h
+// Description: StyleEngine Class
+//      Author: Ziming Li
+//     Created: 2019-05-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -194,7 +205,7 @@ private:
 
     void markTreeScopeDirty(TreeScope&);
 
-    bool isMaster() const { return m_isMaster; }
+    bool isMaster() const { return true; }
     Document* master();
     Document& document() const { return *m_document; }
 
@@ -221,7 +232,6 @@ private:
     bool shouldSkipInvalidationFor(const Element&) const;
 
     RawPtrWillBeMember<Document> m_document;
-    bool m_isMaster;
 
     // Track the number of currently loading top-level stylesheets needed for layout.
     // Sheets loaded using the @import directive are not included in this count.
