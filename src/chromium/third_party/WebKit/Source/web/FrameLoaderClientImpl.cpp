@@ -49,7 +49,6 @@
 #include "core/events/UIEventWithKeyState.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLFrameElementBase.h"
 #include "core/input/EventHandler.h"
 #include "core/layout/HitTestResult.h"
 #include "core/loader/DocumentLoader.h"
@@ -275,36 +274,6 @@ void FrameLoaderClientImpl::setOpener(Frame* opener)
     m_webFrame->setOpener(openerFrame);
 }
 
-Frame* FrameLoaderClientImpl::parent() const
-{
-    return toCoreFrame(m_webFrame->parent());
-}
-
-Frame* FrameLoaderClientImpl::top() const
-{
-    return toCoreFrame(m_webFrame->top());
-}
-
-Frame* FrameLoaderClientImpl::previousSibling() const
-{
-    return toCoreFrame(m_webFrame->previousSibling());
-}
-
-Frame* FrameLoaderClientImpl::nextSibling() const
-{
-    return toCoreFrame(m_webFrame->nextSibling());
-}
-
-Frame* FrameLoaderClientImpl::firstChild() const
-{
-    return toCoreFrame(m_webFrame->firstChild());
-}
-
-Frame* FrameLoaderClientImpl::lastChild() const
-{
-    return toCoreFrame(m_webFrame->lastChild());
-}
-
 void FrameLoaderClientImpl::willBeDetached()
 {
     m_webFrame->willBeDetached();
@@ -521,23 +490,12 @@ NavigationPolicy FrameLoaderClientImpl::decidePolicyForNavigation(const Resource
 
     WebDataSourceImpl* ds = WebDataSourceImpl::fromDocumentLoader(loader);
 
-    // Newly created child frames may need to be navigated to a history item
-    // during a back/forward navigation. This will only happen when the parent
-    // is a LocalFrame doing a back/forward navigation that has not completed.
-    // (If the load has completed and the parent later adds a frame with script,
-    // we do not want to use a history item for it.)
-    bool isHistoryNavigationInNewChildFrame = m_webFrame->parent()
-        && m_webFrame->parent()->isWebLocalFrame()
-        && isBackForwardLoadType(toWebLocalFrameImpl(m_webFrame->parent())->frame()->loader().loadType())
-        && !toWebLocalFrameImpl(m_webFrame->parent())->frame()->document()->loadEventFinished();
-
     WrappedResourceRequest wrappedResourceRequest(request);
     WebFrameClient::NavigationPolicyInfo navigationInfo(wrappedResourceRequest);
     navigationInfo.navigationType = static_cast<WebNavigationType>(type);
     navigationInfo.defaultPolicy = static_cast<WebNavigationPolicy>(policy);
     navigationInfo.extraData = ds ? ds->extraData() : nullptr;
     navigationInfo.replacesCurrentHistoryItem = replacesCurrentHistoryItem;
-    navigationInfo.isHistoryNavigationInNewChildFrame = isHistoryNavigationInNewChildFrame;
 
     WebNavigationPolicy webPolicy = m_webFrame->client()->decidePolicyForNavigation(navigationInfo);
     return static_cast<NavigationPolicy>(webPolicy);
@@ -763,14 +721,6 @@ void FrameLoaderClientImpl::didEnforceStrictMixedContentChecking()
     if (!m_webFrame->client())
         return;
     m_webFrame->client()->didEnforceStrictMixedContentChecking();
-}
-
-void FrameLoaderClientImpl::didChangeFrameOwnerProperties(HTMLFrameElementBase* frameElement)
-{
-    if (!m_webFrame->client())
-        return;
-
-    m_webFrame->client()->didChangeFrameOwnerProperties(WebFrame::fromFrame(frameElement->contentFrame()), WebFrameOwnerProperties(frameElement->scrollingMode(), frameElement->marginWidth(), frameElement->marginHeight()));
 }
 
 void FrameLoaderClientImpl::dispatchWillOpenWebSocket(WebSocketHandle* handle)

@@ -80,12 +80,6 @@ public:
     bool inShadowTree() const override;
     Frame* opener() const override;
     void setOpener(Frame*) override;
-    Frame* parent() const override;
-    Frame* top() const override;
-    Frame* previousSibling() const override;
-    Frame* nextSibling() const override;
-    Frame* firstChild() const override;
-    Frame* lastChild() const override;
     void willBeDetached() override;
     void detached(FrameDetachType) override;
     void dispatchWillSendRequest(DocumentLoader*, unsigned long identifier, ResourceRequest&, const ResourceResponse& redirectResponse) override;
@@ -151,7 +145,6 @@ public:
     void frameFocused() const override;
     void didChangeName(const String&) override;
     void didEnforceStrictMixedContentChecking() override;
-    void didChangeFrameOwnerProperties(HTMLFrameElementBase*) override;
 
     void dispatchWillOpenWebSocket(WebSocketHandle*) override;
 
