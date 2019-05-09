@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: SVGSVGElement.cpp
+// Description: SVGSVGElement Class
+//      Author: Ziming Li
+//     Created: 2019-05-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006 Nikolas Zimmermann <zimmermann@kde.org>
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2010 Rob Buis <buis@kde.org>
@@ -32,7 +43,6 @@
 #include "core/editing/FrameSelection.h"
 #include "core/events/EventListener.h"
 #include "core/frame/LocalFrame.h"
-#include "core/page/FrameTree.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/UseCounter.h"
 #include "core/layout/LayoutObject.h"
@@ -118,15 +128,7 @@ float SVGSVGElement::currentScale() const
         return 1;
 
     LocalFrame* frame = document().frame();
-    if (!frame)
-        return 1;
-
-    const FrameTree& frameTree = frame->tree();
-
-    // The behaviour of currentScale() is undefined, when we're dealing with non-standalone SVG documents.
-    // If the svg is embedded, the scaling is handled by the host layoutObject, so when asking from inside
-    // the SVG document, a scale value of 1 seems reasonable, as it doesn't know anything about the parent scale.
-    return frameTree.parent() ? 1 : frame->pageZoomFactor();
+    return frame ? frame->pageZoomFactor() : 1;
 }
 
 void SVGSVGElement::setCurrentScale(float scale)
@@ -137,14 +139,6 @@ void SVGSVGElement::setCurrentScale(float scale)
 
     LocalFrame* frame = document().frame();
     if (!frame)
-        return;
-
-    const FrameTree& frameTree = frame->tree();
-
-    // The behaviour of setCurrentScale() is undefined, when we're dealing with non-standalone SVG documents.
-    // We choose the ignore this call, it's pretty useless to support calling setCurrentScale() from within
-    // an embedded SVG document, for the same reasons as in currentScale() - needs resolution by SVG WG.
-    if (frameTree.parent())
         return;
 
     frame->setPageZoomFactor(scale);
