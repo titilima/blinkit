@@ -88,7 +88,6 @@
 #include "core/page/DragData.h"
 #include "core/page/DragSession.h"
 #include "core/page/FocusController.h"
-#include "core/page/FrameTree.h"
 #include "core/page/Page.h"
 #include "core/page/PagePopupClient.h"
 #include "core/page/PointerLockController.h"
@@ -2474,7 +2473,7 @@ int WebViewImpl::textInputFlags()
 
     DEFINE_STATIC_LOCAL(AtomicString, autocompleteString, ("autocomplete", AtomicString::ConstructFromLiteral));
     DEFINE_STATIC_LOCAL(AtomicString, autocorrectString, ("autocorrect", AtomicString::ConstructFromLiteral));
-    int flags = 0;
+    int flags = WebTextInputFlagSpellcheckOff;
 
     const AtomicString& autocomplete = element->getAttribute(autocompleteString);
     if (autocomplete == "on")
@@ -2487,12 +2486,6 @@ int WebViewImpl::textInputFlags()
         flags |= WebTextInputFlagAutocorrectOn;
     else if (autocorrect == "off")
         flags |= WebTextInputFlagAutocorrectOff;
-
-    SpellcheckAttributeState spellcheck = element->spellcheckAttributeState();
-    if (spellcheck == SpellcheckAttributeTrue)
-        flags |= WebTextInputFlagSpellcheckOn;
-    else if (spellcheck == SpellcheckAttributeFalse)
-        flags |= WebTextInputFlagSpellcheckOff;
 
     if (isHTMLTextFormControlElement(element)) {
         HTMLTextFormControlElement* formElement = static_cast<HTMLTextFormControlElement*>(element);
@@ -2759,19 +2752,6 @@ void WebViewImpl::setPageEncoding(const WebString& encodingName)
 WebFrame* WebViewImpl::mainFrame()
 {
     return WebFrame::fromFrame(m_page ? m_page->mainFrame() : nullptr);
-}
-
-WebFrame* WebViewImpl::findFrameByName(
-    const WebString& name, WebFrame* relativeToFrame)
-{
-    // FIXME: Either this should only deal with WebLocalFrames or it should move to WebFrame.
-    if (!relativeToFrame)
-        relativeToFrame = mainFrame();
-    Frame* frame = toWebLocalFrameImpl(relativeToFrame)->frame();
-    frame = frame->tree().find(name);
-    if (!frame || !frame->isLocalFrame())
-        return nullptr;
-    return WebLocalFrameImpl::fromFrame(toLocalFrame(frame));
 }
 
 WebFrame* WebViewImpl::focusedFrame()
@@ -3551,13 +3531,11 @@ void WebViewImpl::dragTargetDrop(const WebPoint& clientPoint,
 void WebViewImpl::spellingMarkers(WebVector<uint32_t>* markers)
 {
     Vector<uint32_t> result;
-    for (Frame* frame = m_page->mainFrame(); frame; frame = frame->tree().traverseNext()) {
-        if (!frame->isLocalFrame())
-            continue;
-        const DocumentMarkerVector& documentMarkers = toLocalFrame(frame)->document()->markers().markers();
-        for (size_t i = 0; i < documentMarkers.size(); ++i)
-            result.append(documentMarkers[i]->hash());
-    }
+
+    const DocumentMarkerVector& documentMarkers = toLocalFrame(m_page->mainFrame())->document()->markers().markers();
+    for (size_t i = 0; i < documentMarkers.size(); ++i)
+        result.append(documentMarkers[i]->hash());
+
     markers->assign(result);
 }
 
@@ -3565,11 +3543,7 @@ void WebViewImpl::removeSpellingMarkersUnderWords(const WebVector<WebString>& wo
 {
     Vector<String> convertedWords;
     convertedWords.append(words.data(), words.size());
-
-    for (Frame* frame = m_page->mainFrame(); frame; frame = frame->tree().traverseNext()) {
-        if (frame->isLocalFrame())
-            toLocalFrame(frame)->removeSpellingMarkersUnderWords(convertedWords);
-    }
+    toLocalFrame(m_page->mainFrame())->removeSpellingMarkersUnderWords(convertedWords);
 }
 
 WebDragOperation WebViewImpl::dragTargetDragEnterOrOver(const WebPoint& clientPoint, const WebPoint& screenPoint, DragAction dragAction, int modifiers)
@@ -3729,12 +3703,7 @@ void WebViewImpl::hidePopups()
 void WebViewImpl::setIsTransparent(bool isTransparent)
 {
     // Set any existing frames to be transparent.
-    Frame* frame = m_page->mainFrame();
-    while (frame) {
-        if (frame->isLocalFrame())
-            toLocalFrame(frame)->view()->setTransparent(isTransparent);
-        frame = frame->tree().traverseNext();
-    }
+    toLocalFrame(m_page->mainFrame())->view()->setTransparent(isTransparent);
 
     // Future frames check this to know whether to be transparent.
     m_isTransparent = isTransparent;

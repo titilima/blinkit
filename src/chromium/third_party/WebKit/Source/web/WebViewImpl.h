@@ -183,8 +183,6 @@ public:
     void setWindowFeatures(const WebWindowFeatures&) override;
     void setOpenedByDOM() override;
     WebFrame* mainFrame() override;
-    WebFrame* findFrameByName(
-        const WebString& name, WebFrame* relativeToFrame) override;
     WebFrame* focusedFrame() override;
     void setFocusedFrame(WebFrame*) override;
     void focusDocumentView(WebFrame*) override;
