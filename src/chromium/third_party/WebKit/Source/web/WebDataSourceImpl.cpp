@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebDataSourceImpl.cpp
+// Description: WebDataSourceImpl Class
+//      Author: Ziming Li
+//     Created: 2019-05-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -104,11 +115,6 @@ void WebDataSourceImpl::setExtraData(ExtraData* extraData)
 {
     // extraData can't be a PassOwnPtr because setExtraData is a WebKit API function.
     m_extraData = adoptPtr(extraData);
-}
-
-void WebDataSourceImpl::setNavigationStartTime(double navigationStart)
-{
-    timing().setNavigationStart(navigationStart);
 }
 
 WebNavigationType WebDataSourceImpl::toWebNavigationType(NavigationType type)

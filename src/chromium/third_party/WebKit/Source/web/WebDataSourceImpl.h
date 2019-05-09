@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WebDataSourceImpl.h
+// Description: WebDataSourceImpl Class
+//      Author: Ziming Li
+//     Created: 2019-05-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -65,7 +76,6 @@ public:
     WebNavigationType navigationType() const override;
     ExtraData* extraData() const override;
     void setExtraData(ExtraData*) override;
-    void setNavigationStartTime(double) override;
 
     static WebNavigationType toWebNavigationType(NavigationType);
 
