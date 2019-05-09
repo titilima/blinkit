@@ -50,9 +50,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ExternalDateTimeChooser.cpp">
       <Filter>web</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\FindInPageCoordinates.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\GraphicsLayerFactoryChromium.cpp">
       <Filter>web</Filter>
     </ClCompile>
@@ -75,12 +72,6 @@
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\RotationViewportAnchor.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\SpellCheckerClientImpl.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\TextFinder.cpp">
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ValidationMessageClientImpl.cpp">
@@ -811,9 +802,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ExternalPopupMenu.h">
       <Filter>web</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\FindInPageCoordinates.h">
-      <Filter>web</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\FrameLoaderClientImpl.h">
       <Filter>web</Filter>
     </ClInclude>
@@ -842,12 +830,6 @@
       <Filter>web</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\RotationViewportAnchor.h">
-      <Filter>web</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\SpellCheckerClientImpl.h">
-      <Filter>web</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\TextFinder.h">
       <Filter>web</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ValidationMessageClientImpl.h">
