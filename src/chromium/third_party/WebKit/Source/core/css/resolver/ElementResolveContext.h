@@ -54,7 +54,7 @@ public:
     Element* element() const { return m_element; }
     const ContainerNode* parentNode() const { return m_parentNode; }
     const ComputedStyle* rootElementStyle() const { return m_rootElementStyle; }
-    const ComputedStyle* parentStyle(void);
+    const ComputedStyle* parentStyle(void) const;
     EInsideLink elementLinkState() const { return m_elementLinkState; }
     bool distributedToInsertionPoint() const { return m_distributedToInsertionPoint; }
 
