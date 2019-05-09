@@ -499,7 +499,7 @@ bool SVGImage::dataChanged(bool allDataReceived)
         RefPtrWillBeRawPtr<LocalFrame> frame = nullptr;
         {
             TRACE_EVENT0("blink", "SVGImage::dataChanged::createFrame");
-            frame = LocalFrame::create(dummyFrameLoaderClient.get(), &page->frameHost(), 0);
+            frame = LocalFrame::create(dummyFrameLoaderClient.get(), &page->frameHost());
             frame->setView(FrameView::create(frame.get()));
             frame->init();
         }
