@@ -210,39 +210,6 @@ public:
     // This is executed between layout tests runs
     void clearOpener() { setOpener(0); }
 
-    // Inserts the given frame as a child of this frame, so that it is the next
-    // child after |previousSibling|, or first child if |previousSibling| is null.
-    BLINK_EXPORT void insertAfter(WebFrame* child, WebFrame* previousSibling);
-
-    // Adds the given frame as a child of this frame.
-    BLINK_EXPORT void appendChild(WebFrame*);
-
-    // Removes the given child from this frame.
-    virtual void removeChild(WebFrame*);
-
-    // Returns the parent frame or 0 if this is a top-most frame.
-    BLINK_EXPORT WebFrame* parent() const;
-
-    // Returns the top-most frame in the hierarchy containing this frame.
-    BLINK_EXPORT WebFrame* top() const;
-
-    // Returns the first/last child frame.
-    BLINK_EXPORT WebFrame* firstChild() const;
-    BLINK_EXPORT WebFrame* lastChild() const;
-
-    // Returns the previous/next sibling frame.
-    BLINK_EXPORT WebFrame* previousSibling() const;
-    BLINK_EXPORT WebFrame* nextSibling() const;
-
-    // Returns the previous/next frame in "frame traversal order",
-    // optionally wrapping around.
-    BLINK_EXPORT WebFrame* traversePrevious(bool wrap) const;
-    BLINK_EXPORT WebFrame* traverseNext(bool wrap) const;
-
-    // Returns the child frame identified by the given name.
-    BLINK_EXPORT WebFrame* findChildByName(const WebString& name) const;
-
-
     // Content ------------------------------------------------------------
 
     virtual WebDocument document() const = 0;
@@ -521,10 +488,6 @@ public:
         return const_cast<WebFrame*>(this)->toImplBase();
     }
 
-    // Returns the frame inside a given frame or iframe element. Returns 0 if
-    // the given element is not a frame, iframe or if the frame is empty.
-    BLINK_EXPORT static WebFrame* fromFrameOwnerElement(const WebElement&);
-
 #if BLINK_IMPLEMENTATION
     static WebFrame* fromFrame(Frame*);
 
@@ -541,12 +504,6 @@ public:
 protected:
     explicit WebFrame(WebTreeScopeType);
     virtual ~WebFrame();
-
-    // Sets the parent WITHOUT fulling adding it to the frame tree.
-    // Used to lie to a local frame that is replacing a remote frame,
-    // so it can properly start a navigation but wait to swap until
-    // commit-time.
-    void setParent(WebFrame*);
 
 private:
 #if BLINK_IMPLEMENTATION
@@ -567,12 +524,6 @@ private:
 #endif
 
     const WebTreeScopeType m_scope;
-
-    WebFrame* m_parent;
-    WebFrame* m_previousSibling;
-    WebFrame* m_nextSibling;
-    WebFrame* m_firstChild;
-    WebFrame* m_lastChild;
 
     WebFrame* m_opener;
     WebPrivateOwnPtr<OpenedFrameTracker> m_openedFrameTracker;

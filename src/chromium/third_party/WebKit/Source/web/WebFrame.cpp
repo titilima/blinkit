@@ -18,8 +18,6 @@
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
-#include "core/html/HTMLFrameElementBase.h"
-#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/page/Page.h"
 #include "platform/UserGestureIndicator.h"
 #include "platform/heap/Handle.h"
@@ -56,131 +54,6 @@ void WebFrame::setOpener(WebFrame* opener)
     m_opener = opener;
 }
 
-void WebFrame::insertAfter(WebFrame* newChild, WebFrame* previousSibling)
-{
-    newChild->m_parent = this;
-
-    WebFrame* next;
-    if (!previousSibling) {
-        // Insert at the beginning if no previous sibling is specified.
-        next = m_firstChild;
-        m_firstChild = newChild;
-    } else {
-        ASSERT(previousSibling->m_parent == this);
-        next = previousSibling->m_nextSibling;
-        previousSibling->m_nextSibling = newChild;
-        newChild->m_previousSibling = previousSibling;
-    }
-
-    if (next) {
-        newChild->m_nextSibling = next;
-        next->m_previousSibling = newChild;
-    } else {
-        m_lastChild = newChild;
-    }
-
-    toImplBase()->frame()->tree().invalidateScopedChildCount();
-    toImplBase()->frame()->host()->incrementSubframeCount();
-}
-
-void WebFrame::appendChild(WebFrame* child)
-{
-    // TODO(dcheng): Original code asserts that the frames have the same Page.
-    // We should add an equivalent check... figure out what.
-    insertAfter(child, m_lastChild);
-}
-
-void WebFrame::removeChild(WebFrame* child)
-{
-    child->m_parent = 0;
-
-    if (m_firstChild == child)
-        m_firstChild = child->m_nextSibling;
-    else
-        child->m_previousSibling->m_nextSibling = child->m_nextSibling;
-
-    if (m_lastChild == child)
-        m_lastChild = child->m_previousSibling;
-    else
-        child->m_nextSibling->m_previousSibling = child->m_previousSibling;
-
-    child->m_previousSibling = child->m_nextSibling = 0;
-
-    toImplBase()->frame()->tree().invalidateScopedChildCount();
-    toImplBase()->frame()->host()->decrementSubframeCount();
-}
-
-void WebFrame::setParent(WebFrame* parent)
-{
-    m_parent = parent;
-}
-
-WebFrame* WebFrame::parent() const
-{
-    return m_parent;
-}
-
-WebFrame* WebFrame::top() const
-{
-    WebFrame* frame = const_cast<WebFrame*>(this);
-    for (WebFrame* parent = frame; parent; parent = parent->m_parent)
-        frame = parent;
-    return frame;
-}
-
-WebFrame* WebFrame::firstChild() const
-{
-    return m_firstChild;
-}
-
-WebFrame* WebFrame::lastChild() const
-{
-    return m_lastChild;
-}
-
-WebFrame* WebFrame::previousSibling() const
-{
-    return m_previousSibling;
-}
-
-WebFrame* WebFrame::nextSibling() const
-{
-    return m_nextSibling;
-}
-
-WebFrame* WebFrame::traversePrevious(bool wrap) const
-{
-    if (Frame* frame = toImplBase()->frame())
-        return fromFrame(frame->tree().traversePreviousWithWrap(wrap));
-    return 0;
-}
-
-WebFrame* WebFrame::traverseNext(bool wrap) const
-{
-    if (Frame* frame = toImplBase()->frame())
-        return fromFrame(frame->tree().traverseNextWithWrap(wrap));
-    return 0;
-}
-
-WebFrame* WebFrame::findChildByName(const WebString& name) const
-{
-    Frame* frame = toImplBase()->frame();
-    if (!frame)
-        return 0;
-    // FIXME: It's not clear this should ever be called to find a remote frame.
-    // Perhaps just disallow that completely?
-    return fromFrame(frame->tree().child(name));
-}
-
-WebFrame* WebFrame::fromFrameOwnerElement(const WebElement& webElement)
-{
-    Element* element = PassRefPtrWillBeRawPtr<Element>(webElement).get();
-
-    if (!element->isFrameOwnerElement())
-        return nullptr;
-    return fromFrame(toHTMLFrameOwnerElement(element)->contentFrame());
-}
-
 bool WebFrame::isLoading() const
 {
     if (Frame* frame = toImplBase()->frame())
@@ -201,11 +74,6 @@ WebFrame* WebFrame::fromFrame(Frame* frame)
 
 WebFrame::WebFrame(WebTreeScopeType scope)
     : m_scope(scope)
-    , m_parent(0)
-    , m_previousSibling(0)
-    , m_nextSibling(0)
-    , m_firstChild(0)
-    , m_lastChild(0)
     , m_opener(0)
     , m_openedFrameTracker(new OpenedFrameTracker)
 {
