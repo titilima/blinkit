@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutSVGRoot.cpp
+// Description: LayoutSVGRoot Class
+//      Author: Ziming Li
+//     Created: 2019-05-09
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2007 Nikolas Zimmermann <zimmermann@kde.org>
  * Copyright (C) 2004, 2005, 2007, 2008, 2009 Rob Buis <buis@kde.org>
@@ -99,18 +110,7 @@ bool LayoutSVGRoot::isEmbeddedThroughSVGImage() const
 
 bool LayoutSVGRoot::isEmbeddedThroughFrameContainingSVGDocument() const
 {
-    if (!node())
-        return false;
-
-    LocalFrame* frame = node()->document().frame();
-    if (!frame)
-        return false;
-
-    // If our frame has an owner layoutObject, we're embedded through eg. object/embed/iframe,
-    // but we only negotiate if we're in an SVG document inside a embedded object (object/embed).
-    if (!frame->ownerLayoutObject() || !frame->ownerLayoutObject()->isEmbeddedObject())
-        return false;
-    return frame->document()->isSVGDocument();
+    return false;
 }
 
 LayoutUnit LayoutSVGRoot::computeReplacedLogicalWidth(ShouldComputePreferred shouldComputePreferred) const
