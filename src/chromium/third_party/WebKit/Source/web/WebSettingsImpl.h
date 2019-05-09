@@ -79,7 +79,6 @@ public:
     void setCookieEnabled(bool) override;
     void setNavigateOnDragDrop(bool) override;
     void setCursiveFontFamily(const WebString&, UScriptCode = USCRIPT_COMMON) override;
-    void setDNSPrefetchingEnabled(bool) override;
     void setDOMPasteAllowed(bool) override;
     void setDefaultFixedFontSize(int) override;
     void setDefaultFontSize(int) override;
@@ -186,7 +185,6 @@ public:
     void setWebGLErrorsToConsoleEnabled(bool) override;
     void setWebSecurityEnabled(bool) override;
     void setWideViewportQuirkEnabled(bool) override;
-    void setXSSAuditorEnabled(bool) override;
 
     bool showFPSCounter() const { return m_showFPSCounter; }
     bool showPaintRects() const { return m_showPaintRects; }

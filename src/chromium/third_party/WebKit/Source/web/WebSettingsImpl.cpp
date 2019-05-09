@@ -341,11 +341,6 @@ void WebSettingsImpl::setJavaScriptCanAccessClipboard(bool enabled)
     m_settings->setJavaScriptCanAccessClipboard(enabled);
 }
 
-void WebSettingsImpl::setXSSAuditorEnabled(bool enabled)
-{
-    m_settings->setXSSAuditorEnabled(enabled);
-}
-
 void WebSettingsImpl::setTextTrackKindUserPreference(TextTrackKindUserPreference preference)
 {
     m_settings->setTextTrackKindUserPreference(static_cast<blink::TextTrackKindUserPreference>(preference));
@@ -389,11 +384,6 @@ void WebSettingsImpl::setTextTrackTextSize(const WebString& size)
 void WebSettingsImpl::setUnsafePluginPastingEnabled(bool enabled)
 {
     m_settings->setUnsafePluginPastingEnabled(enabled);
-}
-
-void WebSettingsImpl::setDNSPrefetchingEnabled(bool enabled)
-{
-    m_settings->setDNSPrefetchingEnabled(enabled);
 }
 
 void WebSettingsImpl::setLocalStorageEnabled(bool enabled)
