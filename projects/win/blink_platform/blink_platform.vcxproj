@@ -443,8 +443,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Logging.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MIMETypeFromURL.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MIMETypeRegistry.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyParsers.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyResponseHeaders.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\EncodedFormData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\FormDataEncoder.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\HTTPHeaderMap.cpp" />
@@ -455,7 +453,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceLoadTiming.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceRequest.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceResponse.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceTimingInfo.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\WebSocketHandshakeRequest.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\WebSocketHandshakeResponse.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\NotImplemented.cpp" />
@@ -1081,8 +1078,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\Logging.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MIMETypeFromURL.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\MIMETypeRegistry.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyParsers.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyResponseHeaders.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\EncodedFormData.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\FormDataEncoder.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\HTTPHeaderMap.h" />
@@ -1095,7 +1090,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceLoadTiming.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceRequest.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceResponse.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceTimingInfo.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\WebSocketHandshakeRequest.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\WebSocketHandshakeResponse.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\NotImplemented.h" />

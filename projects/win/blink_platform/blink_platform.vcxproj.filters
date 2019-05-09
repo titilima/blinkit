@@ -998,12 +998,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\image-decoders\png\PNGImageDecoder.cpp">
       <Filter>platform\image-decoders\png</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyParsers.cpp">
-      <Filter>platform\network</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyResponseHeaders.cpp">
-      <Filter>platform\network</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\EncodedFormData.cpp">
       <Filter>platform\network</Filter>
     </ClCompile>
@@ -1032,9 +1026,6 @@
       <Filter>platform\network</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceResponse.cpp">
-      <Filter>platform\network</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceTimingInfo.cpp">
       <Filter>platform\network</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\WebSocketHandshakeRequest.cpp">
@@ -2260,12 +2251,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\image-decoders\png\PNGImageDecoder.h">
       <Filter>platform\image-decoders\png</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyParsers.h">
-      <Filter>platform\network</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ContentSecurityPolicyResponseHeaders.h">
-      <Filter>platform\network</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\EncodedFormData.h">
       <Filter>platform\network</Filter>
     </ClInclude>
@@ -2300,9 +2285,6 @@
       <Filter>platform\network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceResponse.h">
-      <Filter>platform\network</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ResourceTimingInfo.h">
       <Filter>platform\network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\WebSocketHandshakeRequest.h">
