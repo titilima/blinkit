@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PaintLayerScrollableArea.h
+// Description: PaintLayerScrollableArea Class
+//      Author: Ziming Li
+//     Created: 2019-05-05
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2009, 2012 Apple Inc. All rights reserved.
  *
@@ -165,6 +176,7 @@ public:
     ~PaintLayerScrollableArea() override;
     void dispose();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool hasHorizontalScrollbar() const { return horizontalScrollbar(); }
     bool hasVerticalScrollbar() const { return verticalScrollbar(); }
 
@@ -222,6 +234,7 @@ public:
 
     double scrollXOffset() const { return m_scrollOffset.width() + scrollOrigin().x(); }
     double scrollYOffset() const { return m_scrollOffset.height() + scrollOrigin().y(); }
+#endif
 
     DoubleSize scrollOffset() const { return m_scrollOffset; }
 
@@ -230,6 +243,7 @@ public:
 
     void scrollToPosition(const DoublePoint& scrollPosition, ScrollOffsetClamping = ScrollOffsetUnclamped, ScrollBehavior = ScrollBehaviorInstant, ScrollType = ProgrammaticScroll);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void scrollToOffset(const DoubleSize& scrollOffset, ScrollOffsetClamping clamp = ScrollOffsetUnclamped, ScrollBehavior scrollBehavior = ScrollBehaviorInstant)
     {
         scrollToPosition(-scrollOrigin() + scrollOffset, clamp, scrollBehavior);
@@ -249,14 +263,17 @@ public:
     {
         scrollToOffset(toDoubleSize(position), ScrollOffsetClamped, scrollBehavior);
     }
+#endif
 
     void updateAfterLayout();
     void updateAfterStyleChange(const ComputedStyle*);
     void updateAfterOverflowRecalc();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool updateAfterCompositingChange() override;
 
     bool hasScrollbar() const { return hasHorizontalScrollbar() || hasVerticalScrollbar(); }
+#endif
 
     LayoutScrollbarPart* scrollCorner() const override { return m_scrollCorner; }
 
@@ -279,7 +296,9 @@ public:
     int verticalScrollbarWidth(OverlayScrollbarSizeRelevancy = IgnoreOverlayScrollbarSize) const;
     int horizontalScrollbarHeight(OverlayScrollbarSizeRelevancy = IgnoreOverlayScrollbarSize) const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     DoubleSize adjustedScrollOffset() const { return DoubleSize(scrollXOffset(), scrollYOffset()); }
+#endif
 
     void positionOverflowControls();
 
@@ -290,7 +309,9 @@ public:
 
     bool hitTestResizerInFragments(const PaintLayerFragments&, const HitTestLocation&) const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     LayoutRect scrollIntoView(const LayoutRect&, const ScrollAlignment& alignX, const ScrollAlignment& alignY, ScrollType = ProgrammaticScroll) override;
+#endif
 
     // Returns true if scrollable area is in the FrameView's collection of scrollable areas. This can
     // only happen if we're scrollable, visible to hit test, and do in fact overflow. This means that
@@ -326,7 +347,9 @@ public:
     IntRect rectForHorizontalScrollbar(const IntRect& borderBoxRect) const;
     IntRect rectForVerticalScrollbar(const IntRect& borderBoxRect) const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     Widget* widget() override;
+#endif
 
     DECLARE_VIRTUAL_TRACE();
 
@@ -343,8 +366,10 @@ private:
 
     void computeScrollDimensions();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void setScrollOffset(const IntPoint&, ScrollType) override;
     void setScrollOffset(const DoublePoint&, ScrollType) override;
+#endif
 
     LayoutUnit verticalScrollbarStart(int minX, int maxX) const;
     LayoutUnit horizontalScrollbarStart(int minX) const;
