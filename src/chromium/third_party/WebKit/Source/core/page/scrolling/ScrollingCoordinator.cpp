@@ -209,14 +209,6 @@ void ScrollingCoordinator::updateAfterCompositingChangeIfNeeded()
 
         layoutViewportScrollLayer->setUserScrollable(frameView->userInputScrollable(HorizontalScrollbar), frameView->userInputScrollable(VerticalScrollbar));
     }
-
-    const FrameTree& tree = m_page->mainFrame()->tree();
-    for (const Frame* child = tree.firstChild(); child; child = child->tree().nextSibling()) {
-        if (!child->isLocalFrame())
-            continue;
-        if (WebLayer* scrollLayer = toWebLayer(toLocalFrame(child)->view()->layerForScrolling()))
-            scrollLayer->setBounds(toLocalFrame(child)->view()->contentsSize());
-    }
 }
 
 void ScrollingCoordinator::setLayerIsContainerForFixedPositionLayers(GraphicsLayer* layer, bool enable)
@@ -452,20 +444,6 @@ using LayerFrameMap = WillBeHeapHashMap<const PaintLayer*, WillBeHeapVector<RawP
 static void makeLayerChildFrameMap(const LocalFrame* currentFrame, LayerFrameMap* map)
 {
     map->clear();
-    const FrameTree& tree = currentFrame->tree();
-    for (const Frame* child = tree.firstChild(); child; child = child->tree().nextSibling()) {
-        if (!child->isLocalFrame())
-            continue;
-        const LayoutObject* ownerLayoutObject = toLocalFrame(child)->ownerLayoutObject();
-        if (!ownerLayoutObject)
-            continue;
-        const PaintLayer* containingLayer = ownerLayoutObject->enclosingLayer();
-        LayerFrameMap::iterator iter = map->find(containingLayer);
-        if (iter == map->end())
-            map->add(containingLayer, WillBeHeapVector<RawPtrWillBeMember<const LocalFrame>>()).storedValue->value.append(toLocalFrame(child));
-        else
-            iter->value.append(toLocalFrame(child));
-    }
 }
 
 static void projectRectsToGraphicsLayerSpaceRecursive(
@@ -554,9 +532,6 @@ static void projectRectsToGraphicsLayerSpace(LocalFrame* mainFrame, const LayerH
 
             if (layer->parent()) {
                 layer = layer->parent();
-            } else if (LayoutObject* parentDocLayoutObject = layer->layoutObject()->frame()->ownerLayoutObject()) {
-                layer = parentDocLayoutObject->enclosingLayer();
-                touchHandlerInChildFrame = true;
             }
         } while (layer);
     }
@@ -801,12 +776,6 @@ Region ScrollingCoordinator::computeShouldHandleScrollGestureOnMainThreadRegion(
             corner.moveBy(offset);
             shouldHandleScrollGestureOnMainThreadRegion.unite(corner);
         }
-    }
-
-    const FrameTree& tree = frame->tree();
-    for (Frame* subFrame = tree.firstChild(); subFrame; subFrame = subFrame->tree().nextSibling()) {
-        if (subFrame->isLocalFrame())
-            shouldHandleScrollGestureOnMainThreadRegion.unite(computeShouldHandleScrollGestureOnMainThreadRegion(toLocalFrame(subFrame), offset));
     }
 
     return shouldHandleScrollGestureOnMainThreadRegion;
