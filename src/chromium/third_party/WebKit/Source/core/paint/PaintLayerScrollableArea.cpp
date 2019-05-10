@@ -62,7 +62,6 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/input/EventHandler.h"
 #include "core/layout/LayoutFlexibleBox.h"
 #include "core/layout/LayoutGeometryMap.h"
@@ -938,11 +937,6 @@ static inline const LayoutObject& layoutObjectForScrollbar(const LayoutObject& l
             Element* docElement = doc.documentElement();
             if (docElement && docElement->layoutObject() && docElement->layoutObject()->style()->hasPseudoStyle(SCROLLBAR))
                 return *docElement->layoutObject();
-
-            // If we have an owning ipage/LocalFrame element, then it can set the custom scrollbar also.
-            LayoutPart* frameLayoutObject = node->document().frame()->ownerLayoutObject();
-            if (frameLayoutObject && frameLayoutObject->style()->hasPseudoStyle(SCROLLBAR))
-                return *frameLayoutObject;
         }
 
         if (layoutObject.styleRef().hasPseudoStyle(SCROLLBAR))
@@ -1332,9 +1326,6 @@ void PaintLayerScrollableArea::updateScrollableAreaSet(bool hasOverflow)
 
     // FIXME: Does this need to be fixed later for OOPI?
     bool isVisibleToHitTest = box().visibleToHitTesting();
-    if (HTMLFrameOwnerElement* owner = frame->deprecatedLocalOwner())
-        isVisibleToHitTest &= owner->layoutObject() && owner->layoutObject()->visibleToHitTesting();
-
     bool didScrollOverflow = m_scrollsOverflow;
 
     m_scrollsOverflow = hasOverflow && isVisibleToHitTest;
