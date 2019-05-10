@@ -114,7 +114,6 @@
 #include "core/editing/TextAffinity.h"
 #include "core/editing/iterators/TextIterator.h"
 #include "core/editing/serializers/Serialization.h"
-#include "core/editing/spellcheck/SpellChecker.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/fetch/SubstituteData.h"
 #include "core/frame/Console.h"
@@ -709,36 +708,6 @@ bool WebLocalFrameImpl::isCommandEnabled(const WebString& name) const
     return frame()->editor().command(name).isEnabled();
 }
 
-void WebLocalFrameImpl::enableContinuousSpellChecking(bool enable)
-{
-    if (enable == isContinuousSpellCheckingEnabled())
-        return;
-    frame()->spellChecker().toggleContinuousSpellChecking();
-}
-
-bool WebLocalFrameImpl::isContinuousSpellCheckingEnabled() const
-{
-    return frame()->spellChecker().isContinuousSpellCheckingEnabled();
-}
-
-void WebLocalFrameImpl::requestTextChecking(const WebElement& webElement)
-{
-    if (webElement.isNull())
-        return;
-    frame()->spellChecker().requestTextChecking(*webElement.constUnwrap<Element>());
-}
-
-void WebLocalFrameImpl::replaceMisspelledRange(const WebString& text)
-{
-    // If this caret selection has two or more markers, this function replace the range covered by the first marker with the specified word as Microsoft Word does.
-    frame()->spellChecker().replaceMisspelledRange(text);
-}
-
-void WebLocalFrameImpl::removeSpellingMarkers()
-{
-    frame()->spellChecker().removeSpellingMarkers();
-}
-
 bool WebLocalFrameImpl::hasSelection() const
 {
     // frame()->selection()->isNone() never returns true.
@@ -938,13 +907,6 @@ WebString WebLocalFrameImpl::markerTextForListItem(const WebElement& webElement)
 WebRect WebLocalFrameImpl::selectionBoundsRect() const
 {
     return hasSelection() ? WebRect(IntRect(frame()->selection().bounds())) : WebRect();
-}
-
-bool WebLocalFrameImpl::selectionStartHasSpellingMarkerFor(int from, int length) const
-{
-    if (!frame())
-        return false;
-    return frame()->spellChecker().selectionStartHasSpellingMarkerFor(from, length);
 }
 
 WebString WebLocalFrameImpl::layerTreeAsText(bool showDebugInfo) const

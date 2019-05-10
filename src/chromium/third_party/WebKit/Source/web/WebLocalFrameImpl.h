@@ -138,11 +138,6 @@ public:
     bool executeCommand(const WebString&, const WebNode& = WebNode()) override;
     bool executeCommand(const WebString&, const WebString& value, const WebNode& = WebNode()) override;
     bool isCommandEnabled(const WebString&) const override;
-    void enableContinuousSpellChecking(bool) override;
-    bool isContinuousSpellCheckingEnabled() const override;
-    void requestTextChecking(const WebElement&) override;
-    void replaceMisspelledRange(const WebString&) override;
-    void removeSpellingMarkers() override;
     bool hasSelection() const override;
     WebRange selectionRange() const override;
     WebString selectionAsText() const override;
@@ -180,7 +175,6 @@ public:
     WebString markerTextForListItem(const WebElement&) const override;
     WebRect selectionBoundsRect() const override;
 
-    bool selectionStartHasSpellingMarkerFor(int from, int length) const override;
     WebString layerTreeAsText(bool showDebugInfo = false) const override;
 
     WebFrameImplBase* toImplBase() override { return this; }

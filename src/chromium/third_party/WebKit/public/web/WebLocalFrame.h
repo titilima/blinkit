@@ -147,9 +147,6 @@ public:
     // Replaces the selection with the input string.
     virtual void replaceSelection(const WebString&) = 0;
 
-    // Spell-checking support -------------------------------------------------
-    virtual void replaceMisspelledRange(const WebString&) = 0;
-
     // Content Settings -------------------------------------------------------
 
     virtual void setContentSettingsClient(WebContentSettingsClient*) = 0;

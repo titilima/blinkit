@@ -356,12 +356,6 @@ public:
     virtual bool executeCommand(const WebString&, const WebString& value, const WebNode& = WebNode()) = 0;
     virtual bool isCommandEnabled(const WebString&) const = 0;
 
-    // Spell-checking support.
-    virtual void enableContinuousSpellChecking(bool) = 0;
-    virtual bool isContinuousSpellCheckingEnabled() const = 0;
-    virtual void requestTextChecking(const WebElement&) = 0;
-    virtual void removeSpellingMarkers() = 0;
-
     // Selection -----------------------------------------------------------
 
     virtual bool hasSelection() const = 0;
@@ -461,10 +455,6 @@ public:
     // not be transformed itself. If no selection is present, the rect will be
     // empty ((0,0), (0,0)).
     virtual WebRect selectionBoundsRect() const = 0;
-
-    // Only for testing purpose:
-    // Returns true if selection.anchorNode has a marker on range from |from| with |length|.
-    virtual bool selectionStartHasSpellingMarkerFor(int from, int length) const = 0;
 
     // Dumps the layer tree, used by the accelerated compositor, in
     // text form. This is used only by layout tests.
