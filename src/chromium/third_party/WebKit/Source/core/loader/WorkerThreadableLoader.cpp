@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WorkerThreadableLoader.cpp
+// Description: WorkerThreadableLoader Class
+//      Author: Ziming Li
+//     Created: 2019-05-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2010 Google Inc. All rights reserved.
  *
@@ -56,12 +67,10 @@ WorkerThreadableLoader::WorkerThreadableLoader(WorkerGlobalScope& workerGlobalSc
     , m_workerClientWrapper(clientWrapper)
     , m_bridge(*(new MainThreadBridge(m_workerClientWrapper, clientBridge, workerGlobalScope.thread()->workerLoaderProxy(), request, options, resourceLoaderOptions, workerGlobalScope.referrerPolicy(), workerGlobalScope.url().strippedForUseAsReferrer())))
 {
-    m_workerClientWrapper->setResourceTimingClient(this);
 }
 
 WorkerThreadableLoader::~WorkerThreadableLoader()
 {
-    m_workerClientWrapper->clearResourceTimingClient();
     m_bridge.destroy();
 }
 
@@ -105,11 +114,6 @@ void WorkerThreadableLoader::overrideTimeout(unsigned long timeoutMilliseconds)
 void WorkerThreadableLoader::cancel()
 {
     m_bridge.cancel();
-}
-
-void WorkerThreadableLoader::didReceiveResourceTiming(const ResourceTimingInfo& info)
-{
-    WorkerGlobalScopePerformance::performance(*m_workerGlobalScope)->addResourceTiming(info);
 }
 
 WorkerThreadableLoader::MainThreadBridge::MainThreadBridge(
@@ -264,11 +268,6 @@ void WorkerThreadableLoader::MainThreadBridge::didFailAccessControlCheck(const R
 void WorkerThreadableLoader::MainThreadBridge::didFailRedirectCheck()
 {
     m_clientBridge->didFailRedirectCheck();
-}
-
-void WorkerThreadableLoader::MainThreadBridge::didReceiveResourceTiming(const ResourceTimingInfo& info)
-{
-    m_clientBridge->didReceiveResourceTiming(info);
 }
 
 } // namespace blink

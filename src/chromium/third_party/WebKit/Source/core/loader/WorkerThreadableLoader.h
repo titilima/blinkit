@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WorkerThreadableLoader.h
+// Description: WorkerThreadableLoader Class
+//      Author: Ziming Li
+//     Created: 2019-05-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -50,7 +61,7 @@ class WorkerGlobalScope;
 class WorkerLoaderProxy;
 struct CrossThreadResourceRequestData;
 
-class WorkerThreadableLoader final : public ThreadableLoader, private ThreadableLoaderClientWrapper::ResourceTimingClient {
+class WorkerThreadableLoader final : public ThreadableLoader {
     USING_FAST_MALLOC(WorkerThreadableLoader);
 public:
     static void loadResourceSynchronously(WorkerGlobalScope&, const ResourceRequest&, ThreadableLoaderClient&, const ThreadableLoaderOptions&, const ResourceLoaderOptions&);
@@ -113,7 +124,6 @@ private:
         void didFail(const ResourceError&) override;
         void didFailAccessControlCheck(const ResourceError&) override;
         void didFailRedirectCheck() override;
-        void didReceiveResourceTiming(const ResourceTimingInfo&) override;
 
         // Only to be used on the main thread.
         RefPtr<ThreadableLoader> m_mainThreadLoader;
@@ -128,8 +138,6 @@ private:
     };
 
     WorkerThreadableLoader(WorkerGlobalScope&, PassRefPtr<ThreadableLoaderClientWrapper>, PassOwnPtr<ThreadableLoaderClient>, const ResourceRequest&, const ThreadableLoaderOptions&, const ResourceLoaderOptions&);
-
-    void didReceiveResourceTiming(const ResourceTimingInfo&) override;
 
     RefPtrWillBePersistent<WorkerGlobalScope> m_workerGlobalScope;
     RefPtr<ThreadableLoaderClientWrapper> m_workerClientWrapper;
