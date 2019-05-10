@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FrameSelection.h
+// Description: FrameSelection Class
+//      Author: Ziming Li
+//     Created: 2019-05-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -210,11 +221,6 @@ public:
     // Returns true if a word is selected.
     bool selectWordAroundPosition(const VisiblePosition&);
 
-#ifndef NDEBUG
-    void formatForDebugger(char* buffer, unsigned length) const;
-    void showTreeForThis() const;
-#endif
-
     enum EndPointsAdjustmentMode { AdjustEndpointsAtBidiBoundary, DoNotAdjsutEndpoints };
     void setNonDirectionalSelectionIfNeeded(const VisibleSelection&, TextGranularity, EndPointsAdjustmentMode = DoNotAdjsutEndpoints);
     void setNonDirectionalSelectionIfNeeded(const VisibleSelectionInComposedTree&, TextGranularity, EndPointsAdjustmentMode = DoNotAdjsutEndpoints);
@@ -330,11 +336,5 @@ inline void FrameSelection::setTypingStyle(PassRefPtrWillBeRawPtr<EditingStyle> 
     m_typingStyle = style;
 }
 } // namespace blink
-
-#ifndef NDEBUG
-// Outside the WebCore namespace for ease of invocation from gdb.
-void showTree(const blink::FrameSelection&);
-void showTree(const blink::FrameSelection*);
-#endif
 
 #endif // FrameSelection_h
