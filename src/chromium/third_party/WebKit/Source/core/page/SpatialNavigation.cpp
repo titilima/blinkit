@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: SpatialNavigation.cpp
+// Description: Spatial Navigation Helpers
+//      Author: Ziming Li
+//     Created: 2019-05-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies)
  * Copyright (C) 2009 Antonio Gomes <tonikitoo@webkit.org>
@@ -33,10 +44,8 @@
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
 #include "core/html/HTMLAreaElement.h"
-#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/HTMLImageElement.h"
 #include "core/layout/LayoutBox.h"
-#include "core/page/FrameTree.h"
 #include "core/page/Page.h"
 #include "platform/geometry/IntRect.h"
 
@@ -294,7 +303,7 @@ Node* scrollableEnclosingBoxOrParentFrameForNodeInDirection(WebFocusType type, N
     do {
         // FIXME: Spatial navigation is broken for OOPI.
         if (parent->isDocumentNode())
-            parent = toDocument(parent)->frame()->deprecatedLocalOwner();
+            parent = nullptr;
         else
             parent = parent->parentOrShadowHostNode();
     } while (parent && !canScrollInDirection(parent, type) && !parent->isDocumentNode());
@@ -358,22 +367,7 @@ bool canScrollInDirection(const LocalFrame* frame, WebFocusType type)
 
 static LayoutRect rectToAbsoluteCoordinates(LocalFrame* initialFrame, const LayoutRect& initialRect)
 {
-    LayoutRect rect = initialRect;
-    for (Frame* frame = initialFrame; frame; frame = frame->tree().parent()) {
-        if (!frame->isLocalFrame())
-            continue;
-        // FIXME: Spatial navigation is broken for OOPI.
-        Element* element = frame->deprecatedLocalOwner();
-        if (element) {
-            do {
-                rect.move(element->offsetLeft(), element->offsetTop());
-                LayoutObject* layoutObject = element->layoutObject();
-                element = layoutObject ? layoutObject->offsetParent() : nullptr;
-            } while (element);
-            rect.move((-toLocalFrame(frame)->view()->scrollOffset()));
-        }
-    }
-    return rect;
+    return initialRect;
 }
 
 LayoutRect nodeRectInAbsoluteCoordinates(Node* node, bool ignoreBorder)
@@ -624,10 +618,5 @@ LayoutRect virtualRectForAreaElementAndDirection(HTMLAreaElement& area, WebFocus
     LayoutRect rect = virtualRectForDirection(type, rectToAbsoluteCoordinates(area.document().frame(), area.computeRect(area.imageElement()->layoutObject())), 1);
     return rect;
 }
-
-HTMLFrameOwnerElement* frameOwnerElement(FocusCandidate& candidate)
-{
-    return candidate.isFrameOwnerElement() ? toHTMLFrameOwnerElement(candidate.visibleNode) : nullptr;
-};
 
 } // namespace blink

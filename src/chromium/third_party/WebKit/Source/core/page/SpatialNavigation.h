@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: SpatialNavigation.h
+// Description: Spatial Navigation Helpers
+//      Author: Ziming Li
+//     Created: 2019-05-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Nokia Corporation and/or its subsidiary(-ies)
  * Copyright (C) 2009 Antonio Gomes <tonikitoo@webkit.org>
@@ -31,7 +42,6 @@ namespace blink {
 
 class LocalFrame;
 class HTMLAreaElement;
-class HTMLFrameOwnerElement;
 
 inline double maxDistance()
 {
@@ -140,7 +150,6 @@ LayoutRect nodeRectInAbsoluteCoordinates(Node*, bool ignoreBorder = false);
 LayoutRect frameRectInAbsoluteCoordinates(LocalFrame*);
 LayoutRect virtualRectForDirection(WebFocusType, const LayoutRect& startingRect, LayoutUnit width = 0);
 LayoutRect virtualRectForAreaElementAndDirection(HTMLAreaElement&, WebFocusType);
-HTMLFrameOwnerElement* frameOwnerElement(FocusCandidate&);
 
 } // namespace blink
 
