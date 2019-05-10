@@ -35,7 +35,6 @@
 #include "platform/ThreadSafeFunctional.h"
 #include "platform/network/ResourceError.h"
 #include "platform/network/ResourceResponse.h"
-#include "platform/network/ResourceTimingInfo.h"
 #include "public/platform/WebWaitableEvent.h"
 #include "wtf/MainThread.h"
 #include "wtf/OwnPtr.h"
@@ -154,20 +153,6 @@ void WorkerLoaderClientBridgeSyncHelper::didFailRedirectCheck()
     m_clientTasks.append(threadSafeBind(&ThreadableLoaderClientWrapper::didFailRedirectCheck, AllowCrossThreadAccess(m_client.get())));
     m_done = true;
     m_event->signal();
-}
-
-static void didReceiveResourceTimingAdapter(ThreadableLoaderClientWrapper* client, PassOwnPtr<CrossThreadResourceTimingInfoData> timingData)
-{
-    OwnPtr<ResourceTimingInfo> info(ResourceTimingInfo::adopt(timingData));
-    client->didReceiveResourceTiming(*info);
-}
-
-void WorkerLoaderClientBridgeSyncHelper::didReceiveResourceTiming(const ResourceTimingInfo& info)
-{
-    MutexLocker lock(m_lock);
-    ASSERT(isMainThread());
-    RELEASE_ASSERT(!m_done);
-    m_clientTasks.append(threadSafeBind(&didReceiveResourceTimingAdapter, AllowCrossThreadAccess(m_client.get()), info));
 }
 
 WorkerLoaderClientBridgeSyncHelper::WorkerLoaderClientBridgeSyncHelper(ThreadableLoaderClientWrapper* client, PassOwnPtr<WebWaitableEvent> event)

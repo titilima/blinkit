@@ -65,7 +65,6 @@ public:
     void didFail(const ResourceError&) override;
     void didFailAccessControlCheck(const ResourceError&) override;
     void didFailRedirectCheck() override;
-    void didReceiveResourceTiming(const ResourceTimingInfo&) override;
 
 private:
     WorkerLoaderClientBridgeSyncHelper(ThreadableLoaderClientWrapper*, PassOwnPtr<WebWaitableEvent>);
