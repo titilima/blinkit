@@ -70,7 +70,6 @@
 #include "core/editing/iterators/TextIterator.h"
 #include "core/editing/markers/DocumentMarkerController.h"
 #include "core/editing/serializers/Serialization.h"
-#include "core/editing/spellcheck/SpellChecker.h"
 #include "core/events/ScopedEventQueue.h"
 #include "core/frame/LocalFrame.h"
 #include "core/html/HTMLBRElement.h"
@@ -1242,7 +1241,6 @@ void CompositeEditCommand::moveParagraphs(const VisiblePosition& startOfParagrap
     // FIXME (5098931): We should add a new insert action "WebViewInsertActionMoved" and call shouldInsertFragment here.
 
     setEndingSelection(VisibleSelection(start, end));
-    document().frame()->spellChecker().clearMisspellingsAndBadGrammar(endingSelection());
     deleteSelection(false, false, false);
 
     ASSERT(destination.deepEquivalent().inDocument());
@@ -1273,8 +1271,6 @@ void CompositeEditCommand::moveParagraphs(const VisiblePosition& startOfParagrap
     if (!preserveStyle)
         options |= ReplaceSelectionCommand::MatchStyle;
     applyCommandToComposite(ReplaceSelectionCommand::create(document(), fragment, options));
-
-    document().frame()->spellChecker().markMisspellingsAndBadGrammar(endingSelection());
 
     // If the selection is in an empty paragraph, restore styles from the old empty paragraph to the new empty paragraph.
     bool selectionIsEmptyParagraph = endingSelection().isCaret() && isStartOfParagraph(endingSelection().visibleStart()) && isEndOfParagraph(endingSelection().visibleStart());
