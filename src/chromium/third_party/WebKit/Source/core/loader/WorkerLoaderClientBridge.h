@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: WorkerLoaderClientBridge.h
+// Description: WorkerLoaderClientBridge Class
+//      Author: Ziming Li
+//     Created: 2019-05-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All rights reserved.
  *
@@ -58,7 +69,6 @@ public:
     void didFail(const ResourceError&) override;
     void didFailAccessControlCheck(const ResourceError&) override;
     void didFailRedirectCheck() override;
-    void didReceiveResourceTiming(const ResourceTimingInfo&) override;
 
 private:
     WorkerLoaderClientBridge(PassRefPtr<ThreadableLoaderClientWrapper>, PassRefPtr<WorkerLoaderProxy>);
