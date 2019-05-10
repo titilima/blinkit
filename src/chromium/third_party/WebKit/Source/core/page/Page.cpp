@@ -126,7 +126,6 @@ Page::Page(PageClients& pageClients)
     , m_undoStack(UndoStack::create())
     , m_mainFrame(nullptr)
     , m_editorClient(pageClients.editorClient)
-    , m_spellCheckerClient(pageClients.spellCheckerClient)
     , m_openedByDOM(false)
     , m_tabKeyCyclesThroughElements(true)
     , m_defersLoading(false)
@@ -482,7 +481,6 @@ Page::PageClients::PageClients()
     , contextMenuClient(nullptr)
     , editorClient(nullptr)
     , dragClient(nullptr)
-    , spellCheckerClient(nullptr)
 {
 }
 

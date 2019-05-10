@@ -97,7 +97,6 @@ public:
         ContextMenuClient* contextMenuClient;
         EditorClient* editorClient;
         DragClient* dragClient;
-        SpellCheckerClient* spellCheckerClient;
     };
 
     static PassOwnPtrWillBeRawPtr<Page> create(PageClients& pageClients)
@@ -132,7 +131,6 @@ public:
     ViewportDescription viewportDescription() const;
 
     EditorClient& editorClient() const { return *m_editorClient; }
-    SpellCheckerClient& spellCheckerClient() const { return *m_spellCheckerClient; }
     UndoStack& undoStack() const { return *m_undoStack; }
 
     void setMainFrame(Frame*);
@@ -262,7 +260,6 @@ private:
     RawPtrWillBeMember<Frame> m_mainFrame;
 
     EditorClient* const m_editorClient;
-    SpellCheckerClient* const m_spellCheckerClient;
     OwnPtrWillBeMember<ValidationMessageClient> m_validationMessageClient;
 
     UseCounter m_useCounter;
