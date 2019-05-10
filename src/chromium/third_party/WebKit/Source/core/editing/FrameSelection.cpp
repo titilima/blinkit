@@ -59,7 +59,6 @@
 #include "core/editing/commands/TypingCommand.h"
 #include "core/editing/iterators/TextIterator.h"
 #include "core/editing/serializers/Serialization.h"
-#include "core/editing/spellcheck/SpellChecker.h"
 #include "core/events/Event.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalDOMWindow.h"
@@ -67,7 +66,6 @@
 #include "core/frame/Settings.h"
 #include "core/html/HTMLBodyElement.h"
 #include "core/html/HTMLFormElement.h"
-#include "core/html/HTMLFrameElementBase.h"
 #include "core/html/HTMLInputElement.h"
 #include "core/html/HTMLSelectElement.h"
 #include "core/input/EventHandler.h"
@@ -79,7 +77,6 @@
 #include "core/loader/DocumentLoader.h"
 #include "core/page/EditorClient.h"
 #include "core/page/FocusController.h"
-#include "core/page/FrameTree.h"
 #include "core/page/Page.h"
 #include "core/paint/PaintLayer.h"
 #include "platform/SecureTextInput.h"
@@ -775,51 +772,7 @@ bool FrameSelection::contains(const LayoutPoint& point)
 // mouse or the keyboard after setting the selection.
 void FrameSelection::selectFrameElementInParentIfFullySelected()
 {
-    // Find the parent frame; if there is none, then we have nothing to do.
-    Frame* parent = m_frame->tree().parent();
-    if (!parent)
-        return;
-    Page* page = m_frame->page();
-    if (!page)
-        return;
-
-    // Check if the selection contains the entire frame contents; if not, then there is nothing to do.
-    if (!isRange())
-        return;
-    if (!isStartOfDocument(selection().visibleStart()))
-        return;
-    if (!isEndOfDocument(selection().visibleEnd()))
-        return;
-
-    // FIXME: This is not yet implemented for cross-process frame relationships.
-    if (!parent->isLocalFrame())
-        return;
-
-    // Get to the <iframe> or <frame> (or even <object>) element in the parent frame.
-    // FIXME: Doesn't work for OOPI.
-    HTMLFrameOwnerElement* ownerElement = m_frame->deprecatedLocalOwner();
-    if (!ownerElement)
-        return;
-    ContainerNode* ownerElementParent = ownerElement->parentNode();
-    if (!ownerElementParent)
-        return;
-
-    // This method's purpose is it to make it easier to select iframes (in order to delete them).  Don't do anything if the iframe isn't deletable.
-    if (!ownerElementParent->hasEditableStyle())
-        return;
-
-    // Create compute positions before and after the element.
-    unsigned ownerElementNodeIndex = ownerElement->nodeIndex();
-    VisiblePosition beforeOwnerElement = createVisiblePosition(Position(ownerElementParent, ownerElementNodeIndex));
-    VisiblePosition afterOwnerElement = createVisiblePosition(Position(ownerElementParent, ownerElementNodeIndex + 1), VP_UPSTREAM_IF_POSSIBLE);
-
-    // Focus on the parent frame, and then select from before this element to after.
-    VisibleSelection newSelection(beforeOwnerElement, afterOwnerElement);
-    page->focusController().setFocusedFrame(parent);
-    // setFocusedFrame can dispatch synchronous focus/blur events.  The document
-    // tree might be modified.
-    if (newSelection.isNonOrphanedCaretOrRange())
-        toLocalFrame(parent)->selection().setSelection(newSelection);
+    // Nothing to do.
 }
 
 void FrameSelection::selectAll()
@@ -927,8 +880,6 @@ void FrameSelection::focusedOrActiveStateChanged()
     // Caret appears in the active frame.
     if (activeAndFocused)
         setSelectionFromNone();
-    else
-        m_frame->spellChecker().spellCheckAfterBlur();
     setCaretVisibility(activeAndFocused ? Visible : Hidden);
 
     // Update for caps lock state
@@ -1195,12 +1146,6 @@ static HTMLFormElement* scanForForm(Node* start)
     for (HTMLElement& element : Traversal<HTMLElement>::startsAt(start->isHTMLElement() ? toHTMLElement(start) : Traversal<HTMLElement>::next(*start))) {
         if (HTMLFormElement* form = associatedFormElement(element))
             return form;
-
-        if (isHTMLFrameElementBase(element)) {
-            Node* childDocument = toHTMLFrameElementBase(element).contentDocument();
-            if (HTMLFormElement* frameResult = scanForForm(childDocument))
-                return frameResult;
-        }
     }
     return 0;
 }
@@ -1301,20 +1246,6 @@ VisibleSelectionTemplate<Strategy> FrameSelection::validateSelection(const Visib
     return newSelection;
 }
 
-#ifndef NDEBUG
-
-void FrameSelection::formatForDebugger(char* buffer, unsigned length) const
-{
-    selection().formatForDebugger(buffer, length);
-}
-
-void FrameSelection::showTreeForThis() const
-{
-    selection().showTreeForThis();
-}
-
-#endif
-
 DEFINE_TRACE(FrameSelection)
 {
     visitor->trace(m_frame);
@@ -1402,20 +1333,3 @@ void FrameSelection::moveRangeSelection(const VisiblePosition& basePosition, con
 }
 
 } // namespace blink
-
-#ifndef NDEBUG
-
-void showTree(const blink::FrameSelection& sel)
-{
-    sel.showTreeForThis();
-}
-
-void showTree(const blink::FrameSelection* sel)
-{
-    if (sel)
-        sel->showTreeForThis();
-    else
-        fprintf(stderr, "Cannot showTree for (nil) FrameSelection.\n");
-}
-
-#endif
