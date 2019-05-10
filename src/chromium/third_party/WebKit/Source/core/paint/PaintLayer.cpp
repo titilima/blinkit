@@ -63,7 +63,6 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLFrameElement.h"
 #include "core/layout/HitTestRequest.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/HitTestingTransformState.h"
@@ -924,19 +923,7 @@ PaintLayer* PaintLayer::enclosingLayerWithCompositedLayerMapping(IncludeSelfOrNo
 // including crossing frame boundaries.
 PaintLayer* PaintLayer::enclosingLayerForPaintInvalidationCrossingFrameBoundaries() const
 {
-    const PaintLayer* layer = this;
-    PaintLayer* compositedLayer = 0;
-    while (!compositedLayer) {
-        compositedLayer = layer->enclosingLayerForPaintInvalidation();
-        if (!compositedLayer) {
-            RELEASE_ASSERT(layer->layoutObject()->frame());
-            LayoutObject* owner = layer->layoutObject()->frame()->ownerLayoutObject();
-            if (!owner)
-                break;
-            layer = owner->enclosingLayer();
-        }
-    }
-    return compositedLayer;
+    return enclosingLayerForPaintInvalidation();
 }
 
 PaintLayer* PaintLayer::enclosingLayerForPaintInvalidation() const
@@ -2800,12 +2787,6 @@ void PaintLayer::markCompositingContainerChainForNeedsRepaint()
         }
 
         PaintLayer* container = layer->compositingContainer();
-        if (!container) {
-            LayoutObject* owner = layer->layoutObject()->frame()->ownerLayoutObject();
-            if (!owner)
-                break;
-            container = owner->enclosingLayer();
-        }
         if (container->m_needsRepaint)
             break;
         container->m_needsRepaint = true;
