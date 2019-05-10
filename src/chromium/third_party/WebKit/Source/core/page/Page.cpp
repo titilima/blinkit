@@ -81,11 +81,7 @@ void Page::networkStateChanged(bool online)
 
     // Get all the frames of all the pages in all the page groups
     for (Page* page : allPages()) {
-        for (Frame* frame = page->mainFrame(); frame; frame = frame->tree().traverseNext()) {
-            // FIXME: There is currently no way to dispatch events to out-of-process frames.
-            if (frame->isLocalFrame())
-                frames.append(toLocalFrame(frame));
-        }
+        frames.append(toLocalFrame(page->mainFrame()));
     }
 
     AtomicString eventName = online ? EventTypeNames::online : EventTypeNames::offline;
@@ -226,43 +222,26 @@ void Page::setOpenedByDOM()
 void Page::platformColorsChanged()
 {
     for (const Page* page : allPages())
-        for (Frame* frame = page->mainFrame(); frame; frame = frame->tree().traverseNext()) {
-            if (frame->isLocalFrame())
-                toLocalFrame(frame)->document()->platformColorsChanged();
-        }
+        toLocalFrame(page->mainFrame())->document()->platformColorsChanged();
 }
 
 void Page::setNeedsRecalcStyleInAllFrames()
 {
-    for (Frame* frame = mainFrame(); frame; frame = frame->tree().traverseNext()) {
-        if (frame->isLocalFrame())
-            toLocalFrame(frame)->document()->styleResolverChanged();
-    }
+    toLocalFrame(mainFrame())->document()->styleResolverChanged();
 }
 
 void Page::setNeedsLayoutInAllFrames()
 {
-    for (Frame* frame = mainFrame(); frame; frame = frame->tree().traverseNext()) {
-        if (!frame->isLocalFrame())
-            continue;
-        if (FrameView* view = toLocalFrame(frame)->view()) {
-            view->setNeedsLayout();
-            view->scheduleRelayout();
-        }
+    if (FrameView *view = toLocalFrame(mainFrame())->view())
+    {
+        view->setNeedsLayout();
+        view->scheduleRelayout();
     }
 }
 
 void Page::unmarkAllTextMatches()
 {
-    if (!mainFrame())
-        return;
-
-    Frame* frame = mainFrame();
-    do {
-        if (frame->isLocalFrame())
-            toLocalFrame(frame)->document()->markers().removeMarkers(DocumentMarker::TextMatch);
-        frame = frame->tree().traverseNextWithWrap(false);
-    } while (frame);
+    toLocalFrame(mainFrame())->document()->markers().removeMarkers(DocumentMarker::TextMatch);
 }
 
 void Page::setValidationMessageClient(PassOwnPtrWillBeRawPtr<ValidationMessageClient> client)
@@ -276,10 +255,7 @@ void Page::setDefersLoading(bool defers)
         return;
 
     m_defersLoading = defers;
-    for (Frame* frame = mainFrame(); frame; frame = frame->tree().traverseNext()) {
-        if (frame->isLocalFrame())
-            toLocalFrame(frame)->loader().setDefersLoading(defers);
-    }
+    toLocalFrame(mainFrame())->loader().setDefersLoading(defers);
 }
 
 void Page::setPageScaleFactor(float scale)
@@ -316,22 +292,14 @@ void Page::resetDeviceColorProfileForTesting()
 
 void Page::allVisitedStateChanged(bool invalidateVisitedLinkHashes)
 {
-    for (const Page* page : ordinaryPages()) {
-        for (Frame* frame = page->m_mainFrame; frame; frame = frame->tree().traverseNext()) {
-            if (frame->isLocalFrame())
-                toLocalFrame(frame)->document()->visitedLinkState().invalidateStyleForAllLinks(invalidateVisitedLinkHashes);
-        }
-    }
+    for (const Page* page : ordinaryPages())
+        toLocalFrame(page->m_mainFrame)->document()->visitedLinkState().invalidateStyleForAllLinks(invalidateVisitedLinkHashes);
 }
 
 void Page::visitedStateChanged(LinkHash linkHash)
 {
-    for (const Page* page : ordinaryPages()) {
-        for (Frame* frame = page->m_mainFrame; frame; frame = frame->tree().traverseNext()) {
-            if (frame->isLocalFrame())
-                toLocalFrame(frame)->document()->visitedLinkState().invalidateStyleForLink(linkHash);
-        }
-    }
+    for (const Page* page : ordinaryPages())
+        toLocalFrame(page->m_mainFrame)->document()->visitedLinkState().invalidateStyleForLink(linkHash);
 }
 
 void Page::setVisibilityState(PageVisibilityState visibilityState, bool isInitialState)
@@ -381,24 +349,19 @@ void Page::settingsChanged(SettingsDelegate::ChangeType changeType)
             deprecatedLocalMainFrame()->document()->updateViewportDescription();
         break;
     case SettingsDelegate::DNSPrefetchingChange:
-        for (Frame* frame = mainFrame(); frame; frame = frame->tree().traverseNext()) {
-            if (frame->isLocalFrame())
-                toLocalFrame(frame)->document()->initDNSPrefetch();
-        }
+        ASSERT_NOT_REACHED();
         break;
     case SettingsDelegate::MultisamplingChange: {
         for (MultisamplingChangedObserver* observer : m_multisamplingChangedObservers)
             observer->multisamplingChanged(m_settings->openGLMultisamplingEnabled());
         break;
     }
-    case SettingsDelegate::ImageLoadingChange:
-        for (Frame* frame = mainFrame(); frame; frame = frame->tree().traverseNext()) {
-            if (frame->isLocalFrame()) {
-                toLocalFrame(frame)->document()->fetcher()->setImagesEnabled(settings().imagesEnabled());
-                toLocalFrame(frame)->document()->fetcher()->setAutoLoadImages(settings().loadsImagesAutomatically());
-            }
-        }
+    case SettingsDelegate::ImageLoadingChange: {
+        ResourceFetcher *fetcher = toLocalFrame(mainFrame())->document()->fetcher();
+        fetcher->setImagesEnabled(settings().imagesEnabled());
+        fetcher->setAutoLoadImages(settings().loadsImagesAutomatically());
         break;
+    }
     case SettingsDelegate::TextAutosizingChange:
         if (!mainFrame() || !mainFrame()->isLocalFrame())
             break;
@@ -406,20 +369,14 @@ void Page::settingsChanged(SettingsDelegate::ChangeType changeType)
             textAutosizer->updatePageInfoInAllFrames();
         break;
     case SettingsDelegate::FontFamilyChange:
-        for (Frame* frame = mainFrame(); frame; frame = frame->tree().traverseNext()) {
-            if (frame->isLocalFrame())
-                toLocalFrame(frame)->document()->styleEngine().updateGenericFontFamilySettings();
-        }
+        toLocalFrame(mainFrame())->document()->styleEngine().updateGenericFontFamilySettings();
         setNeedsRecalcStyleInAllFrames();
         break;
     case SettingsDelegate::AcceleratedCompositingChange:
         updateAcceleratedCompositingSettings();
         break;
     case SettingsDelegate::MediaQueryChange:
-        for (Frame* frame = mainFrame(); frame; frame = frame->tree().traverseNext()) {
-            if (frame->isLocalFrame())
-                toLocalFrame(frame)->document()->mediaQueryAffectingValueChanged();
-        }
+        toLocalFrame(mainFrame())->document()->mediaQueryAffectingValueChanged();
         break;
     case SettingsDelegate::AccessibilityStateChange:
         // Nothing to do.
@@ -439,12 +396,8 @@ void Page::settingsChanged(SettingsDelegate::ChangeType changeType)
 
 void Page::updateAcceleratedCompositingSettings()
 {
-    for (Frame* frame = mainFrame(); frame; frame = frame->tree().traverseNext()) {
-        if (!frame->isLocalFrame())
-            continue;
-        if (FrameView* view = toLocalFrame(frame)->view())
-            view->updateAcceleratedCompositingSettings();
-    }
+    if (FrameView *view = toLocalFrame(mainFrame())->view())
+        view->updateAcceleratedCompositingSettings();
 }
 
 void Page::didCommitLoad(LocalFrame* frame)
@@ -461,17 +414,7 @@ void Page::didCommitLoad(LocalFrame* frame)
 
 void Page::acceptLanguagesChanged()
 {
-    WillBeHeapVector<RefPtrWillBeMember<LocalFrame>> frames;
-
-    // Even though we don't fire an event from here, the LocalDOMWindow's will fire
-    // an event so we keep the frames alive until we are done.
-    for (Frame* frame = mainFrame(); frame; frame = frame->tree().traverseNext()) {
-        if (frame->isLocalFrame())
-            frames.append(toLocalFrame(frame));
-    }
-
-    for (unsigned i = 0; i < frames.size(); ++i)
-        frames[i]->localDOMWindow()->acceptLanguagesChanged();
+    toLocalFrame(mainFrame())->localDOMWindow()->acceptLanguagesChanged();
 }
 
 DEFINE_TRACE(Page)
