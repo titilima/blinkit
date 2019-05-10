@@ -96,23 +96,12 @@ PassRefPtrWillBeRawPtr<DocumentLoader> FrameLoaderClientImpl::createDocumentLoad
     return DocumentLoader::create(frame, request, data);
 }
 
-PassRefPtrWillBeRawPtr<LocalFrame> FrameLoaderClientImpl::createFrame(const FrameLoadRequest &, const AtomicString &name, HTMLFrameOwnerElement *)
-{
-    assert(false); // BKTODO:
-    return nullptr;
-}
-
 NavigationPolicy FrameLoaderClientImpl::decidePolicyForNavigation(const ResourceRequest &, DocumentLoader *, NavigationType, NavigationPolicy, bool shouldReplaceCurrentEntry)
 {
     return NavigationPolicyCurrentTab;
 }
 
 void FrameLoaderClientImpl::didAccessInitialDocument(void)
-{
-    assert(false); // BKTODO:
-}
-
-void FrameLoaderClientImpl::didChangeFrameOwnerProperties(HTMLFrameElementBase *)
 {
     assert(false); // BKTODO:
 }
@@ -288,12 +277,6 @@ String FrameLoaderClientImpl::doNotTrackValue(void)
     return emptyString();
 }
 
-Frame* FrameLoaderClientImpl::firstChild(void) const
-{
-    assert(false); // BKTODO:
-    return nullptr;
-}
-
 void FrameLoaderClientImpl::frameFocused(void) const
 {
     assert(false); // BKTODO:
@@ -311,12 +294,6 @@ bool FrameLoaderClientImpl::inShadowTree(void) const
     return false;
 }
 
-Frame* FrameLoaderClientImpl::lastChild(void) const
-{
-    assert(false); // BKTODO:
-    return nullptr;
-}
-
 void FrameLoaderClientImpl::loadURLExternally(const ResourceRequest &, NavigationPolicy, const String &suggestedName, bool replacesCurrentHistoryItem)
 {
     assert(false); // BKTODO:
@@ -328,12 +305,6 @@ bool FrameLoaderClientImpl::navigateBackForward(int offset) const
     return false;
 }
 
-Frame* FrameLoaderClientImpl::nextSibling(void) const
-{
-    assert(false); // BKTODO:
-    return nullptr;
-}
-
 ObjectContentType FrameLoaderClientImpl::objectContentType(const KURL &, const String & mimeType, bool shouldPreferPlugInsForImages)
 {
     assert(false); // BKTODO:
@@ -341,18 +312,6 @@ ObjectContentType FrameLoaderClientImpl::objectContentType(const KURL &, const S
 }
 
 Frame* FrameLoaderClientImpl::opener(void) const
-{
-    assert(false); // BKTODO:
-    return nullptr;
-}
-
-Frame* FrameLoaderClientImpl::parent(void) const
-{
-    assert(false); // BKTODO:
-    return nullptr;
-}
-
-Frame* FrameLoaderClientImpl::previousSibling(void) const
 {
     assert(false); // BKTODO:
     return nullptr;
@@ -376,12 +335,6 @@ int64_t FrameLoaderClientImpl::serviceWorkerID(DocumentLoader&)
 void FrameLoaderClientImpl::suddenTerminationDisablerChanged(bool present, SuddenTerminationDisablerType)
 {
     assert(false); // BKTODO:
-}
-
-Frame* FrameLoaderClientImpl::top(void) const
-{
-    assert(false); // BKTODO:
-    return nullptr;
 }
 
 void FrameLoaderClientImpl::transitionToCommittedForNewPage(void)

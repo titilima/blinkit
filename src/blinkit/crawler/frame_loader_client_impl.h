@@ -27,12 +27,6 @@ protected:
     void detached(blink::FrameDetachType) override {}
     blink::Frame* opener(void) const override final;
     void setOpener(blink::Frame *opener) override final { assert(nullptr == opener); }
-    blink::Frame* parent(void) const override final;
-    blink::Frame* top(void) const override final;
-    blink::Frame* previousSibling(void) const override final;
-    blink::Frame* nextSibling(void) const override final;
-    blink::Frame* firstChild(void) const override final;
-    blink::Frame* lastChild(void) const override final;
     unsigned backForwardLength(void) override final;
     void frameFocused(void) const override final;
     // blink::FrameLoaderClient
@@ -75,7 +69,6 @@ protected:
     String doNotTrackValue(void) override final;
     String userAgent(void) override;
     void transitionToCommittedForNewPage(void) override final;
-    PassRefPtrWillBeRawPtr<blink::LocalFrame> createFrame(const blink::FrameLoadRequest&, const AtomicString& name, blink::HTMLFrameOwnerElement *) override final;
     bool canCreatePluginWithoutRenderer(const String& mimeType) const override final;
     blink::ObjectContentType objectContentType(const blink::KURL&, const String& mimeType, bool shouldPreferPlugInsForImages) override final;
     void didCreateNewDocument(void) override {}
@@ -98,7 +91,6 @@ protected:
     blink::WebCookieJar* cookieJar(void) const override final;
     void didChangeName(const String&) override final;
     void didEnforceStrictMixedContentChecking(void) override final;
-    void didChangeFrameOwnerProperties(blink::HTMLFrameElementBase *) override final;
     void dispatchWillOpenWebSocket(blink::WebSocketHandle *) override final;
     void dispatchWillStartUsingPeerConnectionHandler(blink::WebRTCPeerConnectionHandler *) override final;
     void didRequestAutocomplete(blink::HTMLFormElement*) override final;
