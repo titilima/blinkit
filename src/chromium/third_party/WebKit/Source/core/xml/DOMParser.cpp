@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: DOMParser.cpp
+// Description: DOMParser Class
+//      Author: Ziming Li
+//     Created: 2019-05-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  *  Copyright (C) 2003, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -26,7 +37,7 @@ namespace blink {
 
 PassRefPtrWillBeRawPtr<Document> DOMParser::parseFromString(const String& str, const String& type)
 {
-    RefPtrWillBeRawPtr<Document> doc = DOMImplementation::createDocument(type, DocumentInit(KURL(), nullptr, m_contextDocument), false);
+    RefPtrWillBeRawPtr<Document> doc = DOMImplementation::createDocument(type, DocumentInit(KURL(), nullptr, m_contextDocument));
     doc->setContent(str);
     return doc.release();
 }
