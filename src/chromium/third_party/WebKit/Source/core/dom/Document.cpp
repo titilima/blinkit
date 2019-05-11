@@ -105,7 +105,6 @@
 #include "core/dom/TreeWalker.h"
 #include "core/dom/VisitedLinkState.h"
 #include "core/dom/XMLDocument.h"
-#include "core/dom/custom/CustomElementMicrotaskRunQueue.h"
 #include "core/dom/shadow/ComposedTreeTraversal.h"
 #include "core/dom/shadow/ElementShadow.h"
 #include "core/dom/shadow/ShadowRoot.h"
@@ -115,7 +114,6 @@
 #include "core/editing/InputMethodController.h"
 #include "core/editing/markers/DocumentMarkerController.h"
 #include "core/editing/serializers/Serialization.h"
-#include "core/editing/spellcheck/SpellChecker.h"
 #include "core/events/BeforeUnloadEvent.h"
 #include "core/events/Event.h"
 #include "core/events/EventFactory.h"
@@ -443,9 +441,6 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_writeRecursionIsTooDeep(false)
     , m_writeRecursionDepth(0)
     , m_taskRunner(MainThreadTaskRunner::create(this))
-#ifndef BLINKIT_CRAWLER_ONLY
-    , m_registrationContext(initializer.registrationContext(this))
-#endif
     , m_elementDataCacheClearTimer(this, &Document::elementDataCacheClearTimerFired)
 #ifndef BLINKIT_CRAWLER_ONLY
     , m_timeline(AnimationTimeline::create(this))
@@ -604,10 +599,6 @@ void Document::dispose()
 
     m_scriptRunner->dispose();
     detachParser();
-
-#ifndef BLINKIT_CRAWLER_ONLY
-    m_registrationContext.clear();
-#endif
 
     // removeDetachedChildren() doesn't always unregister IDs,
     // so tear down scope information upfront to avoid having stale references in the map.
@@ -810,15 +801,6 @@ PassRefPtrWillBeRawPtr<Element> Document::createElementNS(const AtomicString& na
 
     return element.release();
 }
-
-#ifndef BLINKIT_CRAWLER_ONLY
-CustomElementMicrotaskRunQueue* Document::customElementMicrotaskRunQueue()
-{
-    if (!m_customElementMicrotaskRunQueue)
-        m_customElementMicrotaskRunQueue = CustomElementMicrotaskRunQueue::create();
-    return m_customElementMicrotaskRunQueue.get();
-}
-#endif
 
 bool Document::haveImportsLoaded() const
 {
@@ -1485,7 +1467,7 @@ Settings* Document::settings() const
     return m_frame ? m_frame->settings() : 0;
 }
 
-#if 0 // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
 PassRefPtrWillBeRawPtr<Range> Document::createRange()
 {
     return Range::create(*this);
@@ -1854,7 +1836,6 @@ void Document::updateStyle(StyleRecalcChange change)
     TRACE_EVENT_BEGIN0("blink,blink_style", "Document::updateStyle");
     unsigned initialResolverAccessCount = styleEngine().resolverAccessCount();
 
-    HTMLFrameOwnerElement::UpdateSuspendScope suspendWidgetHierarchyUpdates;
     m_lifecycle.advanceTo(DocumentLifecycle::InStyleRecalc);
 
     NthIndexCache nthIndexCache(*this);
@@ -1900,8 +1881,6 @@ void Document::updateStyle(StyleRecalcChange change)
     // Pseudo element removal and similar may only work with these flags still set. Reset them after the style recalc.
     styleEngine().resetCSSFeatureFlags(resolver.ensureUpdatedRuleFeatureSet());
     resolver.clearStyleSharingList();
-
-    m_wasPrinting = m_printing;
 
     ASSERT(!needsStyleRecalc());
     ASSERT(!childNeedsStyleRecalc());
@@ -1965,9 +1944,6 @@ void Document::updateLayout()
         return;
     }
 
-    if (HTMLFrameOwnerElement* owner = ownerElement())
-        owner->document().updateLayout();
-
     updateLayoutTreeIfNeeded();
 
     if (!isActive())
@@ -1989,19 +1965,6 @@ void Document::layoutUpdated()
         frame()->page()->chromeClient().layoutUpdated(frame());
 
     markers().updateRenderedRectsForMarkers();
-
-    // The layout system may perform layouts with pending stylesheets. When
-    // recording first layout time, we ignore these layouts, since painting is
-    // suppressed for them. We're interested in tracking the time of the
-    // first real or 'paintable' layout.
-    // TODO(esprehn): This doesn't really make sense, why not track the first
-    // beginFrame? This will catch the first layout in a page that does lots
-    // of layout thrashing even though that layout might not be followed by
-    // a paint for many seconds.
-    if (isRenderingReady() && body() && !styleEngine().hasPendingSheets()) {
-        if (!m_documentTiming.firstLayout())
-            m_documentTiming.markFirstLayout();
-    }
 }
 
 void Document::setNeedsFocusedElementCheck()
@@ -2275,9 +2238,6 @@ void Document::detach(const AttachContext& context)
         if (m_layoutView)
             m_layoutView->setIsInWindow(false);
 
-        if (registrationContext())
-            registrationContext()->documentWasDetached();
-
         m_hoverNode = nullptr;
         m_activeHoverElement = nullptr;
         m_autofocusElement = nullptr;
@@ -2356,13 +2316,6 @@ PassRefPtrWillBeRawPtr<DocumentParser> Document::createParser()
     // FIXME: this should probably pass the frame instead
     return XMLDocumentParser::create(*this, view());
 #endif
-}
-
-bool Document::isFrameSet() const
-{
-    if (!isHTMLDocument())
-        return false;
-    return isHTMLFrameSetElement(body());
 }
 
 ScriptableDocumentParser* Document::scriptableDocumentParser() const
@@ -2458,7 +2411,7 @@ HTMLElement* Document::body() const
         return 0;
 
     for (HTMLElement* child = Traversal<HTMLElement>::firstChild(*documentElement()); child; child = Traversal<HTMLElement>::nextSibling(*child)) {
-        if (isHTMLFrameSetElement(*child) || isHTMLBodyElement(*child))
+        if (isHTMLBodyElement(*child))
             return child;
     }
 
@@ -2491,7 +2444,7 @@ void Document::setBody(PassRefPtrWillBeRawPtr<HTMLElement> prpNewBody, Exception
         return;
     }
 
-    if (!isHTMLBodyElement(*newBody) && !isHTMLFrameSetElement(*newBody)) {
+    if (!isHTMLBodyElement(*newBody)) {
         exceptionState.throwDOMException(HierarchyRequestError, "The new body element is of type '" + newBody->tagName() + "'. It must be either a 'BODY' or 'FRAMESET' element.");
         return;
     }
@@ -2645,13 +2598,11 @@ void Document::implicitClose()
         // We used to force a synchronous display and flush here.  This really isn't
         // necessary and can in fact be actively harmful if pages are loading at a rate of > 60fps
         // (if your platform is syncing flushes and limiting them to 60fps).
-        if (!ownerElement() || (ownerElement()->layoutObject() && !ownerElement()->layoutObject()->needsLayout())) {
-            updateLayoutTreeIfNeeded();
+        updateLayoutTreeIfNeeded();
 
-            // Always do a layout after loading if needed.
-            if (view() && layoutView() && (!layoutView()->firstChild() || layoutView()->needsLayout()))
-                view()->layout();
-        }
+        // Always do a layout after loading if needed.
+        if (view() && layoutView() && (!layoutView()->firstChild() || layoutView()->needsLayout()))
+            view()->layout();
     }
 #endif
 
@@ -3370,7 +3321,7 @@ void Document::styleResolverChanged(StyleResolverUpdateMode updateMode)
         // recalc while sheets are still loading to avoid FOUC.
         m_pendingSheetLayout = IgnoreLayoutWithPendingSheets;
 
-        ASSERT(layoutView() || importsController());
+        ASSERT(layoutView());
         if (layoutView())
             layoutView()->invalidatePaintForViewAndCompositedLayers();
     }
@@ -3566,9 +3517,6 @@ bool Document::setFocusedElement(PassRefPtrWillBeRawPtr<Element> prpNewFocusedEl
                 goto SetFocusedElementDone;
             }
         }
-
-        if (m_focusedElement->isRootEditableElement())
-            frame()->spellChecker().didBeginEditing(m_focusedElement.get());
 
         // eww, I suck. set the qt focus correctly
         // ### find a better place in the code for this
@@ -4535,17 +4483,7 @@ void Document::setTransformSource(PassOwnPtr<TransformSource> source)
 
 Document* Document::parentDocument() const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
     return nullptr;
-#else
-    // BKTODO: Remove frame trees.
-    if (!m_frame)
-        return 0;
-    Frame* parent = m_frame->tree().parent();
-    if (!parent || !parent->isLocalFrame())
-        return 0;
-    return toLocalFrame(parent)->document();
-#endif
 }
 
 Document& Document::topDocument() const
@@ -5388,6 +5326,8 @@ static LayoutObject* nearestCommonHoverAncestor(LayoutObject* obj1, LayoutObject
 #ifndef BLINKIT_CRAWLER_ONLY
 void Document::updateHoverActiveState(const HitTestRequest& request, Element* innerElement)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(!request.readOnly());
 
     if (request.active() && m_frame)
@@ -5497,6 +5437,7 @@ void Document::updateHoverActiveState(const HitTestRequest& request, Element* in
             nodesToAddToChain[i]->setHovered(true);
         }
     }
+#endif
 }
 #endif // BLINKIT_CRAWLER_ONLY
 

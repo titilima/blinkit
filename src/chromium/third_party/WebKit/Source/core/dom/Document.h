@@ -55,7 +55,6 @@
 #include "core/dom/TreeScope.h"
 #include "core/dom/UserActionElementSet.h"
 #include "core/dom/ViewportDescription.h"
-#include "core/dom/custom/CustomElement.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/OriginsUsingFeatures.h"
 #include "core/html/CollectionType.h"
@@ -557,6 +556,7 @@ public:
     ScriptableDocumentParser* scriptableDocumentParser() const;
 
     bool printing(void) const { return false; }
+    bool wasPrinting(void) const { return false; }
 
     bool paginatedForScreen() const { return m_paginatedForScreen; }
     void setPaginatedForScreen(bool p) { m_paginatedForScreen = p; }
@@ -943,10 +943,6 @@ public:
 
     PassRefPtrWillBeRawPtr<Element> createElement(const AtomicString& localName, const AtomicString& typeExtension, ExceptionState&);
     PassRefPtrWillBeRawPtr<Element> createElementNS(const AtomicString& namespaceURI, const AtomicString& qualifiedName, const AtomicString& typeExtension, ExceptionState&);
-#ifndef BLINKIT_CRAWLER_ONLY
-    CustomElementRegistrationContext* registrationContext() { return m_registrationContext.get(); }
-    CustomElementMicrotaskRunQueue* customElementMicrotaskRunQueue();
-#endif
 
     bool haveImportsLoaded() const;
 
@@ -1387,9 +1383,6 @@ private:
     OwnPtrWillBeMember<MainThreadTaskRunner> m_taskRunner;
 #ifndef BLINKIT_CRAWLER_ONLY
     OwnPtrWillBeMember<TextAutosizer> m_textAutosizer;
-
-    RefPtrWillBeMember<CustomElementRegistrationContext> m_registrationContext;
-    RefPtrWillBeMember<CustomElementMicrotaskRunQueue> m_customElementMicrotaskRunQueue;
 #endif
 
     void elementDataCacheClearTimerFired(Timer<Document>*);
