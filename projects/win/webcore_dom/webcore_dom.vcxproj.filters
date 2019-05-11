@@ -12,9 +12,6 @@
     <Filter Include="dom">
       <UniqueIdentifier>{b025f48e-7868-4a17-9444-7ebafdb7d9b3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dom\custom">
-      <UniqueIdentifier>{ec532df1-08a9-4892-b016-06273db8990c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="dom\shadow">
       <UniqueIdentifier>{2909376b-b8f4-4b2f-9e9f-fccdac8a7e36}</UniqueIdentifier>
     </Filter>
@@ -39,9 +36,6 @@
       <Filter>dom</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\CharacterData.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ChildFrameDisconnector.cpp">
       <Filter>dom</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ChildListMutationScope.cpp">
@@ -260,9 +254,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\QualifiedName.cpp">
       <Filter>dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\RemoteSecurityContext.cpp">
-      <Filter>dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScriptableDocumentParser.cpp">
       <Filter>dom</Filter>
     </ClCompile>
@@ -332,57 +323,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\XMLDocument.cpp">
       <Filter>dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElement.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementAsyncImportMicrotaskQueue.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementCallbackInvocation.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementCallbackQueue.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementDefinition.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementException.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementMicrotaskDispatcher.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementMicrotaskImportStep.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementMicrotaskQueueBase.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementMicrotaskResolutionStep.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementMicrotaskRunQueue.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementObserver.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementProcessingStack.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementRegistry.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementScheduler.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementSyncMicrotaskQueue.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementUpgradeCandidateMap.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\shadow\ComposedTreeTraversal.cpp">
       <Filter>dom\shadow</Filter>
     </ClCompile>
@@ -402,9 +342,6 @@
       <Filter>events</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\AnimationPlayerEvent.cpp">
-      <Filter>events</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\ApplicationCacheErrorEvent.cpp">
       <Filter>events</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\BeforeTextInsertedEvent.cpp">
@@ -587,9 +524,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\shadow\ShadowRoot.cpp">
       <Filter>dom\shadow</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementRegistrationContext.cpp">
-      <Filter>dom\custom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\Event.cpp">
       <Filter>events</Filter>
     </ClCompile>
@@ -617,9 +551,6 @@
       <Filter>dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\CharacterData.h">
-      <Filter>dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ChildFrameDisconnector.h">
       <Filter>dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ChildListMutationScope.h">
@@ -949,9 +880,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\RawDataDocumentParser.h">
       <Filter>dom</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\RemoteSecurityContext.h">
-      <Filter>dom</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ScopedWindowFocusAllowedIndicator.h">
       <Filter>dom</Filter>
     </ClInclude>
@@ -1063,75 +991,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\XMLDocument.h">
       <Filter>dom</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElement.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementAsyncImportMicrotaskQueue.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementCallbackInvocation.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementCallbackQueue.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementDefinition.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementDescriptor.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementDescriptorHash.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementException.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementLifecycleCallbacks.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementMicrotaskDispatcher.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementMicrotaskImportStep.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementMicrotaskQueueBase.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementMicrotaskResolutionStep.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementMicrotaskRunQueue.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementMicrotaskStep.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementObserver.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementProcessingStack.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementProcessingStep.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementRegistrationContext.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementRegistry.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementScheduler.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementSyncMicrotaskQueue.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\custom\CustomElementUpgradeCandidateMap.h">
-      <Filter>dom\custom</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\shadow\ComposedTreeTraversal.h">
       <Filter>dom\shadow</Filter>
     </ClInclude>
@@ -1160,9 +1019,6 @@
       <Filter>events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\AnimationPlayerEvent.h">
-      <Filter>events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\ApplicationCacheErrorEvent.h">
       <Filter>events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\AutocompleteErrorEvent.h">
@@ -1385,9 +1241,6 @@
       <Filter>events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\AnimationPlayerEventInit.h">
-      <Filter>events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\ApplicationCacheErrorEventInit.h">
       <Filter>events</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\CompositionEventInit.h">

@@ -196,11 +196,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFileUploadControl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFlexibleBox.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFlowThread.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFrame.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFrameSet.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutGeometryMap.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutGrid.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutIFrame.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutImage.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutImageResource.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutImageResourceStyleImage.cpp" />
@@ -384,12 +381,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFileUploadControl.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFlexibleBox.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFlowThread.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFrame.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFrameSet.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutGeometryMap.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutGeometryMapStep.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutGrid.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutIFrame.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutImage.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutImageResource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutImageResourceStyleImage.h" />

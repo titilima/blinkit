@@ -107,19 +107,10 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFlowThread.cpp">
       <Filter>layout</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFrame.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFrameSet.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutGeometryMap.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutGrid.cpp">
-      <Filter>layout</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutIFrame.cpp">
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutImageResourceStyleImage.cpp">
@@ -649,12 +640,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFlowThread.h">
       <Filter>layout</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFrame.h">
-      <Filter>layout</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutFrameSet.h">
-      <Filter>layout</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutGeometryMap.h">
       <Filter>layout</Filter>
     </ClInclude>
@@ -662,9 +647,6 @@
       <Filter>layout</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutGrid.h">
-      <Filter>layout</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutIFrame.h">
       <Filter>layout</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutImage.h">

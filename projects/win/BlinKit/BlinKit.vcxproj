@@ -189,7 +189,10 @@
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_theme_engine.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\browser\browser_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_document.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_script_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\frame_loader_client_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\request_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\response_impl.cpp" />
@@ -233,7 +236,10 @@
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_theme_engine.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_thread.h" />
     <ClInclude Include="..\..\..\src\blinkit\browser\browser_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_document.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_script_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\frame_loader_client_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\request_controller_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\request_impl.h" />
@@ -262,9 +268,6 @@
     <ProjectReference Include="..\blink_platform\blink_platform.vcxproj">
       <Project>{4d41689b-1df6-473c-8372-c186431b93a4}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\blink_remaining\blink_remaining.vcxproj">
-      <Project>{8e77aeb9-bcd7-4e66-8343-a4f2131920bb}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\blink_web\blink_web.vcxproj">
       <Project>{f1c61470-7860-4d03-b90f-78c892ac0cf7}</Project>
     </ProjectReference>
@@ -279,6 +282,9 @@
     </ProjectReference>
     <ProjectReference Include="..\modules\modules.vcxproj">
       <Project>{98a19aa9-ddd3-42b4-92c5-c0e2681a480d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\net\net.vcxproj">
+      <Project>{103e87cb-36eb-49c3-adfc-6c036aa14b21}</Project>
     </ProjectReference>
     <ProjectReference Include="..\ots\ots.vcxproj">
       <Project>{35ddb613-6c23-4b17-9b1a-643c91b09a16}</Project>

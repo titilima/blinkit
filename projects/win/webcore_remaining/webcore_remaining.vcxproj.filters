@@ -54,9 +54,6 @@
     <Filter Include="editing\serializers">
       <UniqueIdentifier>{b1a7c876-7ba4-4f07-92a5-7fcf6c8739de}</UniqueIdentifier>
     </Filter>
-    <Filter Include="editing\spellcheck">
-      <UniqueIdentifier>{584cc394-6e46-47be-94de-0d6f5b6d77c4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="experiments">
       <UniqueIdentifier>{b4301281-f593-4408-b163-21329a6d51c2}</UniqueIdentifier>
     </Filter>
@@ -68,9 +65,6 @@
     </Filter>
     <Filter Include="frame">
       <UniqueIdentifier>{dada587e-b108-4229-9851-21b8e4ba613b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="frame\csp">
-      <UniqueIdentifier>{ed9be2fb-b15f-4c68-a9ff-80e5b04f46d9}</UniqueIdentifier>
     </Filter>
     <Filter Include="imagebitmap">
       <UniqueIdentifier>{6c149f80-adf9-42de-bd52-599dd5e38d56}</UniqueIdentifier>
@@ -1058,15 +1052,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\serializers\TextOffset.cpp">
       <Filter>editing\serializers</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\spellcheck\SpellChecker.cpp">
-      <Filter>editing\spellcheck</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\spellcheck\SpellCheckRequester.cpp">
-      <Filter>editing\spellcheck</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\spellcheck\TextCheckingHelper.cpp">
-      <Filter>editing\spellcheck</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\experiments\Experiments.cpp">
       <Filter>experiments</Filter>
     </ClCompile>
@@ -1268,24 +1253,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\VisualViewport.cpp">
       <Filter>frame</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\ContentSecurityPolicy.cpp">
-      <Filter>frame\csp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPDirectiveList.cpp">
-      <Filter>frame\csp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPSource.cpp">
-      <Filter>frame\csp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPSourceList.cpp">
-      <Filter>frame\csp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\MediaListDirective.cpp">
-      <Filter>frame\csp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\SourceListDirective.cpp">
-      <Filter>frame\csp</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\inspector\ConsoleMessage.cpp">
       <Filter>inspector</Filter>
     </ClCompile>
@@ -1395,9 +1362,6 @@
       <Filter>page</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\FocusController.cpp">
-      <Filter>page</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\FrameTree.cpp">
       <Filter>page</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\NetworkStateNotifier.cpp">
@@ -1617,9 +1581,6 @@
       <Filter>paint</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FramePainter.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FrameSetPainter.cpp">
       <Filter>paint</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\GridPainter.cpp">
@@ -3031,15 +2992,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\serializers\TextOffset.h">
       <Filter>editing\serializers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\spellcheck\SpellChecker.h">
-      <Filter>editing\spellcheck</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\spellcheck\SpellCheckRequester.h">
-      <Filter>editing\spellcheck</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\spellcheck\TextCheckingHelper.h">
-      <Filter>editing\spellcheck</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\experiments\Experiments.h">
       <Filter>experiments</Filter>
     </ClInclude>
@@ -3331,27 +3283,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\VisualViewport.h">
       <Filter>frame</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\ContentSecurityPolicy.h">
-      <Filter>frame\csp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPDirective.h">
-      <Filter>frame\csp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPDirectiveList.h">
-      <Filter>frame\csp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPSource.h">
-      <Filter>frame\csp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\CSPSourceList.h">
-      <Filter>frame\csp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\MediaListDirective.h">
-      <Filter>frame\csp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\csp\SourceListDirective.h">
-      <Filter>frame\csp</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\imagebitmap\ImageBitmapSource.h">
       <Filter>imagebitmap</Filter>
     </ClInclude>
@@ -3527,9 +3458,6 @@
       <Filter>page</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\FocusController.h">
-      <Filter>page</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\FrameTree.h">
       <Filter>page</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\NetworkStateNotifier.h">
@@ -3728,9 +3656,6 @@
       <Filter>paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FramePainter.h">
-      <Filter>paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\FrameSetPainter.h">
       <Filter>paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\GridPainter.h">

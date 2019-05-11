@@ -113,18 +113,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFormElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFrameElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFrameElementBase.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFrameOwnerElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFrameSetElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLHeadElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
@@ -135,9 +123,6 @@
       <Filter>html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLHtmlElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLIFrameElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageLoader.cpp">
@@ -294,9 +279,6 @@
       <Filter>html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\LabelsNodeList.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\LinkManifest.cpp">
       <Filter>html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\LinkRelAttribute.cpp">
@@ -518,16 +500,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\ResourcePreloader.cpp">
       <Filter>html\parser</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\TextDocumentParser.cpp">
-      <Filter>html\parser</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\TextResourceDecoder.cpp">
-      <Filter>html\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\XSSAuditor.cpp">
-      <Filter>html\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\XSSAuditorDelegate.cpp">
       <Filter>html\parser</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\ClearButtonElement.cpp">
@@ -706,18 +679,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFormElement.h">
       <Filter>html</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFrameElement.h">
-      <Filter>html</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFrameElementBase.h">
-      <Filter>html</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFrameOwnerElement.h">
-      <Filter>html</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLFrameSetElement.h">
-      <Filter>html</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLHeadElement.h">
       <Filter>html</Filter>
     </ClInclude>
@@ -728,9 +689,6 @@
       <Filter>html</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLHtmlElement.h">
-      <Filter>html</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLIFrameElement.h">
       <Filter>html</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageElement.h">
@@ -905,9 +863,6 @@
       <Filter>html</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\LabelsNodeList.h">
-      <Filter>html</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\LinkManifest.h">
       <Filter>html</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\LinkRelAttribute.h">
@@ -1180,16 +1135,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\ResourcePreloader.h">
       <Filter>html\parser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\TextDocumentParser.h">
-      <Filter>html\parser</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\TextResourceDecoder.h">
-      <Filter>html\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\XSSAuditor.h">
-      <Filter>html\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\parser\XSSAuditorDelegate.h">
       <Filter>html\parser</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\shadow\ClearButtonElement.h">
