@@ -245,6 +245,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebViewImpl.cpp">
       <Filter>web</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebHitTestResult.cpp">
+      <Filter>web</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">

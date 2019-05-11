@@ -209,6 +209,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFrameWidgetImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebHeap.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebHistoryItem.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebHitTestResult.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebImageCache.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebImageDecoder.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebInputElement.cpp" />
