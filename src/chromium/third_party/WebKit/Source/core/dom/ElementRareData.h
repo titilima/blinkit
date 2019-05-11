@@ -40,7 +40,6 @@
 #include "core/dom/NodeIntersectionObserverData.h"
 #include "core/dom/NodeRareData.h"
 #include "core/dom/PseudoElement.h"
-#include "core/dom/custom/CustomElementDefinition.h"
 #include "core/dom/shadow/ElementShadow.h"
 #include "core/html/ClassList.h"
 #include "core/style/StyleInheritedData.h"
@@ -141,9 +140,6 @@ public:
     void decrementCompositorProxiedProperties(uint32_t properties);
     CompositorProxiedPropertySet* proxiedPropertyCounts(void) const { return nullptr; }
 
-    void setCustomElementDefinition(PassRefPtrWillBeRawPtr<CustomElementDefinition> definition) { m_customElementDefinition = definition; }
-    CustomElementDefinition* customElementDefinition() const { return m_customElementDefinition.get(); }
-
     AttrNodeList& ensureAttrNodeList();
     AttrNodeList* attrNodeList() { return m_attrNodeList.get(); }
     void removeAttrNodeList() { m_attrNodeList.clear(); }
@@ -183,7 +179,6 @@ private:
 #ifndef BLINKIT_CRAWLER_ONLY
     RefPtr<ComputedStyle> m_computedStyle;
 #endif
-    RefPtrWillBeMember<CustomElementDefinition> m_customElementDefinition;
 
     RefPtrWillBeMember<PseudoElement> m_generatedBefore;
     RefPtrWillBeMember<PseudoElement> m_generatedAfter;
