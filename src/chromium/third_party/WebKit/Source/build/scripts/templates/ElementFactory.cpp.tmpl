@@ -10,8 +10,6 @@
 {% if fallback_interface %}
 #include "core/{{namespace|lower}}/{{fallback_interface}}.h"
 {% endif %}
-#include "core/dom/custom/CustomElement.h"
-#include "core/dom/custom/CustomElementRegistrationContext.h"
 #include "core/dom/Document.h"
 #include "core/frame/Settings.h"
 #include "platform/RuntimeEnabledFeatures.h"
@@ -85,12 +83,6 @@ PassRefPtrWillBeRawPtr<{{namespace}}Element> {{namespace}}ElementFactory::create
         create{{namespace}}FunctionMap();
     if (ConstructorFunction function = g_constructors->get(localName))
         return function(document, {% if namespace == 'HTML' %}formElement, {% endif %}createdByParser);
-
-    if (document.registrationContext() && CustomElement::isValidName(localName)) {
-        RefPtrWillBeRawPtr<Element> element = document.registrationContext()->createCustomTagElement(document, QualifiedName(nullAtom, localName, {{namespace_prefix}}NamespaceURI));
-        ASSERT_WITH_SECURITY_IMPLICATION(element->is{{namespace}}Element());
-        return static_pointer_cast<{{namespace}}Element>(element.release());
-    }
 
     return {{fallback_interface}}::create(QualifiedName(nullAtom, localName, {{namespace_prefix}}NamespaceURI), document);
 }
