@@ -41,7 +41,6 @@
 
 #include "core/CoreExport.h"
 #include "core/dom/SecurityContext.h"
-#include "core/dom/custom/CustomElementRegistrationContext.h"
 #include "platform/heap/Handle.h"
 #include "platform/weborigin/KURL.h"
 #include "wtf/PassRefPtr.h"
@@ -72,11 +71,6 @@ public:
 
     Settings* settings() const;
 
-#ifndef BLINKIT_CRAWLER_ONLY
-    DocumentInit& withRegistrationContext(CustomElementRegistrationContext*);
-    DocumentInit& withNewRegistrationContext();
-    PassRefPtrWillBeRawPtr<CustomElementRegistrationContext> registrationContext(Document*) const;
-#endif
     WeakPtrWillBeRawPtr<Document> contextDocument() const;
 
     static DocumentInit fromContext(WeakPtrWillBeRawPtr<Document> contextDocument, const KURL& = KURL());
@@ -87,10 +81,6 @@ private:
     KURL m_url;
     RawPtrWillBeMember<LocalFrame> m_frame;
     WeakPtrWillBeMember<Document> m_contextDocument;
-#ifndef BLINKIT_CRAWLER_ONLY
-    RefPtrWillBeMember<CustomElementRegistrationContext> m_registrationContext;
-    bool m_createNewRegistrationContext = false;
-#endif
 
     // In some rare cases, we'll re-use a LocalDOMWindow for a new Document. For example,
     // when a script calls window.open("..."), the browser gives JavaScript a window

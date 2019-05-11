@@ -39,7 +39,6 @@
 #include "core/dom/DocumentInit.h"
 
 #include "core/dom/Document.h"
-#include "core/dom/custom/CustomElementRegistrationContext.h"
 #include "core/frame/LocalFrame.h"
 #include "core/loader/DocumentLoader.h"
 #include "platform/RuntimeEnabledFeatures.h"
@@ -93,33 +92,6 @@ Settings* DocumentInit::settings() const
     ASSERT(frameForSecurityContext());
     return frameForSecurityContext()->settings();
 }
-
-#ifndef BLINKIT_CRAWLER_ONLY
-DocumentInit& DocumentInit::withRegistrationContext(CustomElementRegistrationContext* registrationContext)
-{
-    ASSERT(!m_createNewRegistrationContext && !m_registrationContext);
-    m_registrationContext = registrationContext;
-    return *this;
-}
-
-DocumentInit& DocumentInit::withNewRegistrationContext()
-{
-    ASSERT(!m_createNewRegistrationContext && !m_registrationContext);
-    m_createNewRegistrationContext = true;
-    return *this;
-}
-
-PassRefPtrWillBeRawPtr<CustomElementRegistrationContext> DocumentInit::registrationContext(Document* document) const
-{
-    if (!document->isHTMLDocument() && !document->isXHTMLDocument())
-        return nullptr;
-
-    if (m_createNewRegistrationContext)
-        return CustomElementRegistrationContext::create();
-
-    return m_registrationContext.get();
-}
-#endif // BLINKIT_CRAWLER_ONLY
 
 WeakPtrWillBeRawPtr<Document> DocumentInit::contextDocument() const
 {
