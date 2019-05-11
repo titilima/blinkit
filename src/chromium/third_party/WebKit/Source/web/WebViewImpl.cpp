@@ -449,7 +449,6 @@ WebViewImpl::WebViewImpl(WebViewClient* client)
     , m_contextMenuClientImpl(this)
     , m_dragClientImpl(this)
     , m_editorClientImpl(this)
-    , m_spellCheckerClientImpl(this)
     , m_shouldAutoResize(false)
     , m_zoomLevel(0)
     , m_minimumZoomLevel(zoomFactorToZoomLevel(minTextSizeMultiplier))
@@ -490,14 +489,11 @@ WebViewImpl::WebViewImpl(WebViewClient* client)
     , m_elasticOverscroll(FloatSize())
     , m_scheduler(Platform::current()->currentThread()->scheduler()->createWebViewScheduler(this).release())
 {
-    m_spellCheckerClientImpl.DisableContinuousSpellChecking();
-
     Page::PageClients pageClients;
     pageClients.chromeClient = m_chromeClientImpl.get();
     pageClients.contextMenuClient = &m_contextMenuClientImpl;
     pageClients.editorClient = &m_editorClientImpl;
     pageClients.dragClient = &m_dragClientImpl;
-    pageClients.spellCheckerClient = &m_spellCheckerClientImpl;
 
     m_page = Page::createOrdinary(pageClients);
     provideContextFeaturesTo(*m_page, ContextFeaturesClientImpl::create());

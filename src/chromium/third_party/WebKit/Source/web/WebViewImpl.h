@@ -68,7 +68,6 @@
 #include "web/DragClientImpl.h"
 #include "web/EditorClientImpl.h"
 #include "web/PageWidgetDelegate.h"
-#include "web/SpellCheckerClientImpl.h"
 #include "wtf/HashSet.h"
 #include "wtf/OwnPtr.h"
 #include "wtf/RefCounted.h"
@@ -617,7 +616,6 @@ private:
     ContextMenuClientImpl m_contextMenuClientImpl;
     DragClientImpl m_dragClientImpl;
     EditorClientImpl m_editorClientImpl;
-    SpellCheckerClientImpl m_spellCheckerClientImpl;
 
     WebSize m_size;
     // If true, automatically resize the layout view around its content.
