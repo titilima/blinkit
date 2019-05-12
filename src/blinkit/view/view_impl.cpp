@@ -16,6 +16,8 @@
 #include "public/platform/Platform.h"
 #include "public/platform/WebTaskRunner.h"
 #include "public/platform/WebTraceLocation.h"
+#include "public/web/WebCache.h"
+#include "public/web/WebLocalFrame.h"
 #include "public/web/WebSettings.h"
 
 #include "view/context_menu.h"
@@ -26,6 +28,13 @@ namespace BlinKit {
 
 ViewImpl::ViewImpl(BkViewClient &client) : m_client(client), m_updateRequired(std::make_shared<bool>(false))
 {
+    // WebView::create SHOULD BE put here, but not into the initialize list.
+    // Because the vtable need to be fully constructed.
+    m_webView = WebView::create(this);
+
+    WebLocalFrame *mainFrame = WebLocalFrame::create(WebTreeScopeType::Document, this);
+    m_webView->setMainFrame(mainFrame);
+
     WebSettings *settings = GetWebView()->settings();
     settings->setAcceleratedCompositingEnabled(false);
     settings->setCookieEnabled(false);
@@ -40,6 +49,9 @@ ViewImpl::ViewImpl(BkViewClient &client) : m_client(client), m_updateRequired(st
 ViewImpl::~ViewImpl(void)
 {
     *m_updateRequired = false; // Ignore pending update requests.
+
+    m_webView->close();
+    WebCache::clear();
 }
 
 void ViewImpl::didFinishLoad(WebLocalFrame *)
@@ -93,9 +105,11 @@ bool BKAPI ViewImpl::GetCaretRect(BkRect *dst)
 int BKAPI ViewImpl::Load(const char *URI)
 {
     KURL u(ParsedURLString, URI);
-    if (u.protocolIsInHTTPFamily())
+    if (!u.isValid() || u.protocolIsInHTTPFamily())
         return BkError::URIError;
-    return BrowserImpl::Load(u);
+
+    m_webView->mainFrame()->loadRequest(WebURLRequest(u));
+    return BkError::Success;
 }
 
 void ViewImpl::PostHandleInput(const WebInputEvent &e)

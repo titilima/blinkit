@@ -18,19 +18,24 @@
 
 #include <SkCanvas.h>
 #include <SkColor.h>
+#include "public/web/WebFrameClient.h"
 #include "public/web/WebInputEvent.h"
-#include "browser/browser_impl.h"
+#include "public/web/WebView.h"
+#include "public/web/WebViewClient.h"
 
 namespace BlinKit {
 
 class ContextMenu;
 
-class ViewImpl : public BkView, public BrowserImpl
+class ViewImpl : public BkView, public blink::WebViewClient, public blink::WebFrameClient
 {
 public:
     virtual ~ViewImpl(void);
 protected:
     ViewImpl(BkViewClient &client);
+
+    blink::WebView* GetWebView(void) { return m_webView; }
+    const blink::WebView* GetWebView(void) const { return m_webView; }
 
     void FillCoordinates(blink::WebMouseEvent &dst, int x, int y);
     virtual std::unique_ptr<SkCanvas> CreateMemoryCanvas(int width, int height) = 0;
@@ -63,6 +68,7 @@ private:
     // BkView
     int BKAPI Load(const char *URI) override final;
     // blink::WebWidgetClient
+    bool allowsBrokenNullLayerTreeView(void) const final { return true; }
     void scheduleAnimation(void) override final;
     // blink::WebViewClient
     void startDragging(blink::WebLocalFrame *frame, const blink::WebDragData &data, blink::WebDragOperationsMask mask,
@@ -72,6 +78,7 @@ private:
     void didFinishLoad(blink::WebLocalFrame *frame) override final;
     void showContextMenu(const blink::WebContextMenuData &data) override final;
 
+    blink::WebView *m_webView;
     std::shared_ptr<bool> m_updateRequired;
     std::unique_ptr<ContextMenu> m_contextMenu;
 

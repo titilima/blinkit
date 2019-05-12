@@ -16,9 +16,6 @@
     <Filter Include="app">
       <UniqueIdentifier>{bfaec5ff-c72a-4bdb-be6c-c14e57254823}</UniqueIdentifier>
     </Filter>
-    <Filter Include="browser">
-      <UniqueIdentifier>{7c2eb3ef-15fe-4ef2-b069-e4b30930f975}</UniqueIdentifier>
-    </Filter>
     <Filter Include="view">
       <UniqueIdentifier>{d6a1998a-d18b-486d-832a-b2925487b5f9}</UniqueIdentifier>
     </Filter>
@@ -47,9 +44,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\app\win_app.cpp">
       <Filter>app</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\browser\browser_impl.cpp">
-      <Filter>browser</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\view\view_impl.cpp">
       <Filter>view</Filter>
@@ -175,9 +169,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\app\win_app.h">
       <Filter>app</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\browser\browser_impl.h">
-      <Filter>browser</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\view\view_impl.h">
       <Filter>view</Filter>
