@@ -323,7 +323,6 @@ public:
 
     // Data exchange -------------------------------------------------------
 
-#ifndef BLINKIT_CRAWLER_ONLY
     // Do a hit test at given point and return the HitTestResult.
     virtual WebHitTestResult hitTestResultAt(const WebPoint&) = 0;
 
@@ -363,7 +362,6 @@ public:
     virtual void dragTargetDrop(
         const WebPoint& clientPoint, const WebPoint& screenPoint,
         int modifiers) = 0;
-#endif // BLINKIT_CRAWLER_ONLY
 
     // Retrieves a list of spelling markers.
     virtual void spellingMarkers(WebVector<uint32_t>* markers) = 0;
@@ -426,11 +424,9 @@ public:
     BLINK_EXPORT static void willEnterModalLoop();
     BLINK_EXPORT static void didExitModalLoop();
 
-#ifndef BLINKIT_CRAWLER_ONLY
     // Called to inform the WebView that a wheel fling animation was started externally (for instance
     // by the compositor) but must be completed by the WebView.
     virtual void transferActiveWheelFlingAnimation(const WebActiveWheelFlingParameters&) = 0;
-#endif
 
     // Cancels an active fling, returning true if a fling was active.
     virtual bool endActiveFlingAnimation() = 0;
