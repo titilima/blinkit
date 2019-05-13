@@ -48,10 +48,10 @@ ViewImpl::ViewImpl(BkViewClient &client) : m_client(client), m_updateRequired(st
 
 ViewImpl::~ViewImpl(void)
 {
-    *m_updateRequired = false; // Ignore pending update requests.
-
     m_webView->close();
     WebCache::clear();
+
+    *m_updateRequired = false; // Ignore pending update requests.
 }
 
 void ViewImpl::didFinishLoad(WebLocalFrame *)
