@@ -74,9 +74,6 @@ void ScopedStyleResolver::addKeyframeRules(const RuleSet& ruleSet)
 
 void ScopedStyleResolver::addFontFaceRules(const RuleSet& ruleSet)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     // FIXME(BUG 72461): We don't add @font-face rules of scoped style sheets for the moment.
     if (!treeScope().rootNode().isDocumentNode())
         return;
@@ -90,18 +87,14 @@ void ScopedStyleResolver::addFontFaceRules(const RuleSet& ruleSet)
     }
     if (fontFaceRules.size())
         document.styleResolver()->invalidateMatchedPropertiesCache();
-#endif
 }
 
 void ScopedStyleResolver::appendCSSStyleSheet(CSSStyleSheet& cssSheet, const MediaQueryEvaluator& medium)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     unsigned index = m_authorStyleSheets.size();
     m_authorStyleSheets.append(&cssSheet);
     StyleSheetContents* sheet = cssSheet.contents();
-    AddRuleFlags addRuleFlags = treeScope().document().securityOrigin()->canRequest(sheet->baseURL()) ? RuleHasDocumentSecurityOrigin : RuleHasNoSpecialState;
+    AddRuleFlags addRuleFlags = RuleHasDocumentSecurityOrigin;
     const RuleSet& ruleSet = sheet->ensureRuleSet(medium, addRuleFlags);
 
     addKeyframeRules(ruleSet);
@@ -109,7 +102,6 @@ void ScopedStyleResolver::appendCSSStyleSheet(CSSStyleSheet& cssSheet, const Med
     addTreeBoundaryCrossingRules(ruleSet, &cssSheet, index);
     treeScope().document().styleResolver()->addViewportDependentMediaQueries(ruleSet.viewportDependentMediaQueryResults());
     treeScope().document().styleResolver()->addDeviceDependentMediaQueries(ruleSet.deviceDependentMediaQueryResults());
-#endif
 }
 
 void ScopedStyleResolver::collectFeaturesTo(RuleFeatureSet& features, WillBeHeapHashSet<RawPtrWillBeMember<const StyleSheetContents>>& visitedSharedStyleSheetContents) const
@@ -225,9 +217,6 @@ static void addRules(RuleSet* ruleSet, const WillBeHeapVector<MinimalRuleData>& 
 
 void ScopedStyleResolver::addTreeBoundaryCrossingRules(const RuleSet& authorRules, CSSStyleSheet* parentStyleSheet, unsigned sheetIndex)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     bool isDocumentScope = treeScope().rootNode().isDocumentNode();
     if (authorRules.deepCombinatorOrShadowPseudoRules().isEmpty() && (isDocumentScope || authorRules.shadowDistributedRules().isEmpty()))
         return;
@@ -247,7 +236,6 @@ void ScopedStyleResolver::addTreeBoundaryCrossingRules(const RuleSet& authorRule
     }
 
     m_treeBoundaryCrossingRuleSet->append(RuleSubSet::create(parentStyleSheet, sheetIndex, ruleSetForScope.release()));
-#endif
 }
 
 DEFINE_TRACE(ScopedStyleResolver::RuleSubSet)
