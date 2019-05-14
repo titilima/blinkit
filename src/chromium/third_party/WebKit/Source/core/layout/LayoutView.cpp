@@ -37,8 +37,6 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLFrameOwnerElement.h"
-#include "core/html/HTMLIFrameElement.h"
 #include "core/inspector/InspectorTraceEvents.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutFlowThread.h"
@@ -165,8 +163,6 @@ bool LayoutView::hitTestNoLifecycleUpdate(HitTestResult& result)
 void LayoutView::clearHitTestCache()
 {
     m_hitTestCache->clear();
-    if (LayoutPart* frameLayoutObject = frame()->ownerLayoutObject())
-        frameLayoutObject->view()->clearHitTestCache();
 }
 
 void LayoutView::computeLogicalHeight(LayoutUnit logicalHeight, LayoutUnit, LogicalExtentComputedValues& computedValues) const
@@ -340,18 +336,6 @@ void LayoutView::mapLocalToAncestor(const LayoutBoxModelObject* ancestor, Transf
         // IsFixed flag is only applicable within this LayoutView.
         mode &= ~IsFixed;
     }
-
-    if (ancestor == this)
-        return;
-
-    if (mode & TraverseDocumentBoundaries) {
-        if (LayoutPart* parentDocLayoutObject = frame()->ownerLayoutObject()) {
-            transformState.move(-frame()->view()->scrollOffset());
-            transformState.move(parentDocLayoutObject->contentBoxOffset());
-
-            parentDocLayoutObject->mapLocalToAncestor(ancestor, transformState, mode, wasFixed, paintInvalidationState);
-        }
-    }
 }
 
 const LayoutObject* LayoutView::pushMappingToContainer(const LayoutBoxModelObject* ancestorToStopAt, LayoutGeometryMap& geometryMap) const
@@ -364,14 +348,6 @@ const LayoutObject* LayoutView::pushMappingToContainer(const LayoutBoxModelObjec
         offsetForFixedPosition = LayoutSize(toIntSize(m_frameView->scrollPosition()));
         if (hasOverflowClip())
             offsetForFixedPosition = LayoutSize(scrolledContentOffset());
-    }
-
-    if (geometryMap.mapCoordinatesFlags() & TraverseDocumentBoundaries) {
-        if (LayoutPart* parentDocLayoutObject = frame()->ownerLayoutObject()) {
-            offset = -LayoutSize(m_frameView->scrollOffset());
-            offset += parentDocLayoutObject->contentBoxOffset();
-            container = parentDocLayoutObject;
-        }
     }
 
     // If a container was specified, and was not 0 or the LayoutView, then we
@@ -398,14 +374,6 @@ void LayoutView::mapAbsoluteToLocalPoint(MapCoordinatesFlags mode, TransformStat
         TransformationMatrix t;
         getTransformFromContainer(0, LayoutSize(), t);
         transformState.applyTransform(t);
-    }
-
-    if (mode & TraverseDocumentBoundaries) {
-        if (LayoutPart* parentDocLayoutObject = frame()->ownerLayoutObject()) {
-            parentDocLayoutObject->mapAbsoluteToLocalPoint(mode, transformState);
-            transformState.move(parentDocLayoutObject->contentBoxOffset());
-            transformState.move(-frame()->view()->scrollOffset());
-        }
     }
 }
 
@@ -491,29 +459,6 @@ void LayoutView::mapToVisibleRectInAncestorSpace(const LayoutBoxModelObject* anc
     // Apply our transform if we have one (because of full page zooming).
     if (!ancestor && layer() && layer()->transform())
         rect = layer()->transform()->mapRect(rect);
-
-    ASSERT(ancestor);
-    if (ancestor == this)
-        return;
-
-    Element* owner = document().ownerElement();
-    if (!owner)
-        return;
-
-    if (LayoutBox* obj = owner->layoutBox()) {
-        if (!state || !state->viewClippingAndScrollOffsetDisabled()) {
-            // Intersect the viewport with the paint invalidation rect.
-            LayoutRect viewRectangle = viewRect();
-            rect.intersect(viewRectangle);
-
-            // Adjust for scroll offset of the view.
-            rect.moveBy(-viewRectangle.location());
-        }
-
-        // Adjust for frame border.
-        rect.move(obj->contentBoxOffset());
-        obj->mapToVisibleRectInAncestorSpace(ancestor, rect, 0);
-    }
 }
 
 void LayoutView::adjustViewportConstrainedOffset(LayoutRect& rect, ViewportConstrainedPosition viewportConstraint) const
@@ -833,9 +778,7 @@ void LayoutView::selectionStartEnd(int& startPos, int& endPos)
 
 bool LayoutView::shouldUsePrintingLayout() const
 {
-    if (!document().printing() || !m_frameView)
-        return false;
-    return m_frameView->frame().shouldUsePrintingLayout();
+    return false;
 }
 
 LayoutRect LayoutView::viewRect() const
