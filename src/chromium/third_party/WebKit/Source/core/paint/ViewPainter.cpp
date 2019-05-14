@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ViewPainter.cpp
+// Description: ViewPainter Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -59,7 +70,7 @@ void ViewPainter::paintBoxDecorationBackground(const PaintInfo& paintInfo)
     IntRect backgroundRect = pixelSnappedIntRect(m_layoutView.layer()->boundingBoxForCompositing());
     const Document& document = m_layoutView.document();
     const FrameView& frameView = *m_layoutView.frameView();
-    bool isMainFrame = !document.ownerElement();
+    bool isMainFrame = true;
     bool paintsBaseBackground = isMainFrame && !frameView.isTransparent();
     bool shouldClearCanvas = paintsBaseBackground && (document.settings() && document.settings()->shouldClearDocumentBackground());
     Color baseBackgroundColor = paintsBaseBackground ? frameView.baseBackgroundColor() : Color();
