@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HttpEquiv.cpp
+// Description: HttpEquiv Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,9 +17,7 @@
 
 #include "core/dom/Document.h"
 #include "core/dom/StyleEngine.h"
-#include "core/fetch/ClientHintsPreferences.h"
 #include "core/frame/UseCounter.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/html/HTMLDocument.h"
 #include "core/inspector/ConsoleMessage.h"
 #include "core/loader/DocumentLoader.h"
@@ -29,8 +38,6 @@ void HttpEquiv::process(Document& document, const AtomicString& equiv, const Ato
         processHttpEquivSetCookie(document, content);
     } else if (equalIgnoringCase(equiv, "content-language")) {
         document.setContentLanguage(content);
-    } else if (equalIgnoringCase(equiv, "x-dns-prefetch-control")) {
-        document.parseDNSPrefetchControlHeader(content);
     } else if (equalIgnoringCase(equiv, "x-frame-options")) {
         processHttpEquivXFrameOptions(document, content);
     } else if (equalIgnoringCase(equiv, "accept-ch")) {
@@ -38,21 +45,12 @@ void HttpEquiv::process(Document& document, const AtomicString& equiv, const Ato
     } else if (equalIgnoringCase(equiv, "content-security-policy") || equalIgnoringCase(equiv, "content-security-policy-report-only")) {
         if (inDocumentHeadElement)
             processHttpEquivContentSecurityPolicy(document, equiv, content);
-        else
-            document.contentSecurityPolicy()->reportMetaOutsideHead(content);
     }
 }
 
 void HttpEquiv::processHttpEquivContentSecurityPolicy(Document& document, const AtomicString& equiv, const AtomicString& content)
 {
-    if (document.importLoader())
-        return;
-    if (equalIgnoringCase(equiv, "content-security-policy"))
-        document.contentSecurityPolicy()->didReceiveHeader(content, ContentSecurityPolicyHeaderTypeEnforce, ContentSecurityPolicyHeaderSourceMeta);
-    else if (equalIgnoringCase(equiv, "content-security-policy-report-only"))
-        document.contentSecurityPolicy()->didReceiveHeader(content, ContentSecurityPolicyHeaderTypeReport, ContentSecurityPolicyHeaderSourceMeta);
-    else
-        ASSERT_NOT_REACHED();
+    // Nothing to do.
 }
 
 void HttpEquiv::processHttpEquivAcceptCH(Document& document, const AtomicString& content)
@@ -61,7 +59,6 @@ void HttpEquiv::processHttpEquivAcceptCH(Document& document, const AtomicString&
         return;
 
     UseCounter::count(document, UseCounter::ClientHintsMetaAcceptCH);
-    document.clientHintsPreferences().updateFromAcceptClientHintsHeader(content, document.fetcher());
 }
 
 void HttpEquiv::processHttpEquivDefaultStyle(Document& document, const AtomicString& content)
@@ -94,26 +91,7 @@ void HttpEquiv::processHttpEquivSetCookie(Document& document, const AtomicString
 
 void HttpEquiv::processHttpEquivXFrameOptions(Document& document, const AtomicString& content)
 {
-    LocalFrame* frame = document.frame();
-    if (!frame)
-        return;
-
-    unsigned long requestIdentifier = document.loader()->mainResourceIdentifier();
-    if (!frame->loader().shouldInterruptLoadForXFrameOptions(content, document.url(), requestIdentifier))
-        return;
-
-    RefPtrWillBeRawPtr<ConsoleMessage> consoleMessage = ConsoleMessage::create(SecurityMessageSource, ErrorMessageLevel,
-        "Refused to display '" + document.url().elidedString() + "' in a frame because it set 'X-Frame-Options' to '" + content + "'.");
-    consoleMessage->setRequestIdentifier(requestIdentifier);
-    document.addConsoleMessage(consoleMessage.release());
-
-    frame->loader().stopAllLoaders();
-    // Stopping the loader isn't enough, as we're already parsing the document; to honor the header's
-    // intent, we must navigate away from the possibly partially-rendered document to a location that
-    // doesn't inherit the parent's SecurityOrigin.
-    // TODO(dglazkov): This should probably check document lifecycle instead.
-    if (document.frame())
-        frame->navigate(document, SecurityOrigin::urlWithUniqueSecurityOrigin(), true, UserGestureStatus::None);
+    // Nothing to do.
 }
 
 }
