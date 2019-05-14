@@ -1122,10 +1122,7 @@ const LayoutBoxModelObject* LayoutObject::adjustCompositedContainerForSpecialAnc
     if (paintInvalidationContainer)
         return paintInvalidationContainer;
 
-    LayoutView* layoutView = view();
-    while (layoutView->frame()->ownerLayoutObject())
-        layoutView = layoutView->frame()->ownerLayoutObject()->view();
-    return layoutView;
+    return view();
 }
 
 String LayoutObject::decoratedName() const
@@ -1212,8 +1209,6 @@ static void invalidatePaintRectangleOnWindow(const LayoutBoxModelObject& paintIn
     ASSERT(paintInvalidationContainer.isLayoutView() && paintInvalidationContainer.layer()->compositingState() == NotComposited);
     if (!frameView || paintInvalidationContainer.document().printing())
         return;
-
-    ASSERT(!frameView->frame().ownerLayoutObject());
 
     IntRect paintRect = dirtyRect;
     paintRect.intersect(frameView->visibleContentRect());
@@ -1638,69 +1633,6 @@ void LayoutObject::mapToVisibleRectInAncestorSpace(const LayoutBoxModelObject* a
 void LayoutObject::dirtyLinesFromChangedChild(LayoutObject*)
 {
 }
-
-#ifndef NDEBUG
-
-void LayoutObject::showTreeForThis() const
-{
-    if (node())
-        node()->showTreeForThis();
-}
-
-void LayoutObject::showLayoutTreeForThis() const
-{
-    showLayoutTree(this, 0);
-}
-
-void LayoutObject::showLineTreeForThis() const
-{
-    if (containingBlock())
-        containingBlock()->showLineTreeAndMark(0, 0, 0, 0, this);
-}
-
-void LayoutObject::showLayoutObject() const
-{
-    showLayoutObject(0);
-}
-
-void LayoutObject::showLayoutObject(int printedCharacters) const
-{
-    printedCharacters += fprintf(stderr, "%s %p", decoratedName().ascii().data(), this);
-
-    if (isText() && toLayoutText(this)->isTextFragment())
-        printedCharacters += fprintf(stderr, " \"%s\" ", toLayoutText(this)->text().ascii().data());
-
-    if (virtualContinuation())
-        printedCharacters += fprintf(stderr, " continuation=%p", virtualContinuation());
-
-    if (node()) {
-        if (printedCharacters)
-            for (; printedCharacters < showTreeCharacterOffset; printedCharacters++)
-                fputc(' ', stderr);
-        fputc('\t', stderr);
-        node()->showNode();
-    } else {
-        fputc('\n', stderr);
-    }
-}
-
-void LayoutObject::showLayoutTreeAndMark(const LayoutObject* markedObject1, const char* markedLabel1, const LayoutObject* markedObject2, const char* markedLabel2, int depth) const
-{
-    int printedCharacters = 0;
-    if (markedObject1 == this && markedLabel1)
-        printedCharacters += fprintf(stderr, "%s", markedLabel1);
-    if (markedObject2 == this && markedLabel2)
-        printedCharacters += fprintf(stderr, "%s", markedLabel2);
-    for (; printedCharacters < depth * 2; printedCharacters++)
-        fputc(' ', stderr);
-
-    showLayoutObject(printedCharacters);
-
-    for (const LayoutObject* child = slowFirstChild(); child; child = child->nextSibling())
-        child->showLayoutTreeAndMark(markedObject1, markedLabel1, markedObject2, markedLabel2, depth + 1);
-}
-
-#endif // NDEBUG
 
 bool LayoutObject::isSelectable() const
 {
@@ -2504,7 +2436,7 @@ LayoutObject* LayoutObject::container(const LayoutBoxModelObject* paintInvalidat
 
 LayoutObject* LayoutObject::containerCrossingFrameBoundaries() const
 {
-    return isLayoutView() ? frame()->ownerLayoutObject() : container();
+    return isLayoutView() ? nullptr : container();
 }
 
 bool LayoutObject::isSelectionBorder() const
@@ -3506,40 +3438,3 @@ LayoutView* LayoutObject::view(void) const
 }
 
 } // namespace blink
-
-#ifndef NDEBUG
-
-void showTree(const blink::LayoutObject* object)
-{
-    if (object)
-        object->showTreeForThis();
-    else
-        fprintf(stderr, "Cannot showTree. Root is (nil)\n");
-}
-
-void showLineTree(const blink::LayoutObject* object)
-{
-    if (object)
-        object->showLineTreeForThis();
-    else
-        fprintf(stderr, "Cannot showLineTree. Root is (nil)\n");
-}
-
-void showLayoutTree(const blink::LayoutObject* object1)
-{
-    showLayoutTree(object1, 0);
-}
-
-void showLayoutTree(const blink::LayoutObject* object1, const blink::LayoutObject* object2)
-{
-    if (object1) {
-        const blink::LayoutObject* root = object1;
-        while (root->parent())
-            root = root->parent();
-        root->showLayoutTreeAndMark(object1, "*", object2, "-", 0);
-    } else {
-        fprintf(stderr, "Cannot showLayoutTree. Root is (nil)\n");
-    }
-}
-
-#endif
