@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CompositingReasonFinder.cpp
+// Description: CompositingReasonFinder Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -41,7 +52,7 @@ bool CompositingReasonFinder::hasOverflowScrollTrigger() const
 bool CompositingReasonFinder::isMainFrame() const
 {
     // FIXME: LocalFrame::isMainFrame() is probably better.
-    return !m_layoutView.document().ownerElement();
+    return true;
 }
 
 CompositingReasons CompositingReasonFinder::directReasons(const PaintLayer* layer) const
