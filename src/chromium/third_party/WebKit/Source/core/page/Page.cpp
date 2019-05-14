@@ -395,8 +395,11 @@ void Page::settingsChanged(SettingsDelegate::ChangeType changeType)
 
 void Page::updateAcceleratedCompositingSettings()
 {
-    if (FrameView *view = toLocalFrame(mainFrame())->view())
-        view->updateAcceleratedCompositingSettings();
+    if (Frame *frame = mainFrame())
+    {
+        if (FrameView *view = toLocalFrame(frame)->view())
+            view->updateAcceleratedCompositingSettings();
+    }
 }
 
 void Page::didCommitLoad(LocalFrame* frame)
