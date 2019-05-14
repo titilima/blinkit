@@ -46,7 +46,6 @@
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/editing/FrameSelection.h"
 #include "core/editing/iterators/TextIterator.h"
-#include "core/editing/spellcheck/SpellChecker.h"
 #include "core/events/BeforeTextInsertedEvent.h"
 #include "core/events/Event.h"
 #include "core/frame/FrameHost.h"
@@ -280,8 +279,7 @@ void HTMLTextAreaElement::defaultEventHandler(Event* event)
 
 void HTMLTextAreaElement::handleFocusEvent(Element*, WebFocusType)
 {
-    if (LocalFrame* frame = document().frame())
-        frame->spellChecker().didBeginEditing(this);
+    // Nothing to do.
 }
 
 void HTMLTextAreaElement::subtreeHasChanged()
