@@ -84,7 +84,6 @@ static HTMLTokenizer::State tokenizerStateForContextElement(Element* contextElem
         return HTMLTokenizer::RCDATAState;
     if (contextTag.matches(styleTag)
         || contextTag.matches(xmpTag)
-        || contextTag.matches(iframeTag)
         || (contextTag.matches(noscriptTag) && options.scriptEnabled)
         || contextTag.matches(noframesTag))
         return reportErrors ? HTMLTokenizer::RAWTEXTState : HTMLTokenizer::PLAINTEXTState;
