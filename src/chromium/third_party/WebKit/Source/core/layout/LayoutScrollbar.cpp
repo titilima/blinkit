@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutScrollbar.cpp
+// Description: LayoutScrollbar Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2009 Apple Inc. All Rights Reserved.
  *
@@ -91,8 +102,6 @@ DEFINE_TRACE(LayoutScrollbar)
 
 LayoutBox* LayoutScrollbar::owningLayoutObject() const
 {
-    if (m_owningFrame)
-        return m_owningFrame->ownerLayoutObject();
     return m_owner && m_owner->layoutObject() ? m_owner->layoutObject()->enclosingBox() : 0;
 }
 
