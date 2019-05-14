@@ -45,11 +45,9 @@
 #include "core/fetch/CachedMetadataHandler.h"
 #include "core/frame/DOMWindowBase64.h"
 #include "core/frame/UseCounter.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/workers/WorkerEventQueue.h"
 #include "core/workers/WorkerOrWorkletGlobalScope.h"
 #include "platform/heap/Handle.h"
-#include "platform/network/ContentSecurityPolicyParsers.h"
 #include "wtf/Assertions.h"
 #include "wtf/HashMap.h"
 #include "wtf/ListHashSet.h"
@@ -138,7 +136,6 @@ public:
     WorkerClients* clients() { return m_workerClients.get(); }
 
     using SecurityContext::securityOrigin;
-    using SecurityContext::contentSecurityPolicy;
 
     void addConsoleMessage(PassRefPtrWillBeRawPtr<ConsoleMessage>) final;
     ConsoleMessageStorage* messageStorage();
@@ -156,7 +153,6 @@ public:
 
 protected:
     WorkerGlobalScope(const KURL&, const String& userAgent, WorkerThread*, double timeOrigin, PassOwnPtr<SecurityOrigin::PrivilegeData>, PassOwnPtrWillBeRawPtr<WorkerClients>);
-    void applyContentSecurityPolicyFromVector(const Vector<CSPHeaderAndType>& headers);
 
     void addMessageToWorkerConsole(PassRefPtrWillBeRawPtr<ConsoleMessage>);
 
