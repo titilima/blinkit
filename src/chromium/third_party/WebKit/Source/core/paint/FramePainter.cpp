@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FramePainter.cpp
+// Description: FramePainter Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -68,8 +79,6 @@ void FramePainter::paintContents(GraphicsContext& context, const GlobalPaintFlag
     bool fillWithRed;
     if (document->printing())
         fillWithRed = false; // Printing, don't fill with red (can't remember why).
-    else if (frameView().frame().owner())
-        fillWithRed = false; // Subframe, don't fill with red.
     else if (frameView().isTransparent())
         fillWithRed = false; // Transparent, don't fill with red.
     else if (globalPaintFlags & GlobalPaintSelectionOnly)
