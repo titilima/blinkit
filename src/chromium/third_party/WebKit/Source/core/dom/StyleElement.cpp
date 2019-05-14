@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StyleElement.cpp
+// Description: StyleElement Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Rob Buis
  * Copyright (C) 2008 Apple, Inc. All rights reserved.
@@ -30,7 +41,6 @@
 #include "core/dom/StyleEngine.h"
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/frame/LocalFrame.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/html/HTMLStyleElement.h"
 #include "core/svg/SVGStyleElement.h"
 #include "platform/TraceEvent.h"
@@ -176,18 +186,12 @@ StyleElement::ProcessingResult StyleElement::createSheet(Element* e, const Strin
     ASSERT(e->inDocument());
     Document& document = e->document();
 
-    const ContentSecurityPolicy* csp = document.contentSecurityPolicy();
-    bool passesContentSecurityPolicyChecks = shouldBypassMainWorldCSP(e)
-        || csp->allowStyleWithHash(text)
-        || csp->allowStyleWithNonce(e->fastGetAttribute(HTMLNames::nonceAttr))
-        || csp->allowInlineStyle(e->document().url(), m_startPosition.m_line, text);
-
     // Clearing the current sheet may remove the cache entry so create the new sheet first
     RefPtrWillBeRawPtr<CSSStyleSheet> newSheet = nullptr;
 
     // If type is empty or CSS, this is a CSS style sheet.
     const AtomicString& type = this->type();
-    if (isCSS(e, type) && passesContentSecurityPolicyChecks) {
+    if (isCSS(e, type)) {
         RefPtrWillBeRawPtr<MediaQuerySet> mediaQueries = MediaQuerySet::create(media());
 
         MediaQueryEvaluator screenEval("screen", true);
@@ -208,7 +212,7 @@ StyleElement::ProcessingResult StyleElement::createSheet(Element* e, const Strin
     if (m_sheet)
         m_sheet->contents()->checkLoaded();
 
-    return passesContentSecurityPolicyChecks ? ProcessingSuccessful : ProcessingFatalError;
+    return ProcessingSuccessful;
 }
 
 bool StyleElement::isLoading() const
