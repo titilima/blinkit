@@ -50,7 +50,6 @@
 #include "core/frame/FrameHost.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLFrameElement.h"
 #include "core/html/HTMLTextFormControlElement.h"
 #include "core/html/parser/TextResourceDecoder.h"
 #include "core/input/EventHandler.h"
@@ -78,7 +77,6 @@
 #include "core/page/AutoscrollController.h"
 #include "core/page/ChromeClient.h"
 #include "core/page/FocusController.h"
-#include "core/page/FrameTree.h"
 #include "core/page/Page.h"
 #include "core/page/scrolling/ScrollingCoordinator.h"
 #include "core/paint/FramePainter.h"
@@ -241,13 +239,6 @@ void FrameView::forAllNonThrottledFrameViews(Function function)
         return;
 
     function(*this);
-
-    for (Frame* child = m_frame->tree().firstChild(); child; child = child->tree().nextSibling()) {
-        if (!child->isLocalFrame())
-            continue;
-        if (FrameView* childView = toLocalFrame(child)->view())
-            childView->forAllNonThrottledFrameViews(function);
-    }
 }
 
 void FrameView::init()
@@ -255,10 +246,6 @@ void FrameView::init()
     reset();
 
     m_size = LayoutSize();
-
-    // Propagate the marginwidth/height and scrolling modes to the view.
-    if (m_frame->owner() && m_frame->owner()->scrollingMode() == ScrollbarAlwaysOff)
-        setCanHaveScrollbars(false);
 }
 
 void FrameView::dispose()
@@ -284,13 +271,6 @@ void FrameView::dispose()
     if (m_didScrollTimer.isActive())
         m_didScrollTimer.stop();
     m_renderThrottlingObserverNotificationFactory->cancel();
-
-    // FIXME: Do we need to do something here for OOPI?
-    HTMLFrameOwnerElement* ownerElement = m_frame->deprecatedLocalOwner();
-    // TODO(dcheng): It seems buggy that we can have an owner element that
-    // points to another Widget.
-    if (ownerElement && ownerElement->ownedWidget() == this)
-        ownerElement->setWidget(nullptr);
 
 #if ENABLE(ASSERT)
     m_hasBeenDisposed = true;
@@ -385,19 +365,7 @@ void FrameView::invalidateRect(const IntRect& rect)
     if (!parent()) {
         if (HostWindow* window = hostWindow())
             window->invalidateRect(rect);
-        return;
     }
-
-    LayoutPart* layoutObject = m_frame->ownerLayoutObject();
-    if (!layoutObject)
-        return;
-
-    IntRect paintInvalidationRect = rect;
-    paintInvalidationRect.move(layoutObject->borderLeft() + layoutObject->paddingLeft(),
-        layoutObject->borderTop() + layoutObject->paddingTop());
-    // FIXME: We should not allow paint invalidation out of paint invalidation state. crbug.com/457415
-    DisablePaintInvalidationStateAsserts paintInvalidationAssertDisabler;
-    layoutObject->invalidatePaintRectangleNotInvalidatingDisplayItemClients(LayoutRect(paintInvalidationRect));
 }
 
 void FrameView::setFrameRect(const IntRect& newRect)
@@ -489,13 +457,6 @@ bool FrameView::shouldUseCustomScrollbars(Element*& customScrollbarElement, Loca
         return true;
     }
 
-    // If we have an owning ipage/LocalFrame element, then it can set the custom scrollbar also.
-    LayoutPart* frameLayoutObject = m_frame->ownerLayoutObject();
-    if (frameLayoutObject && frameLayoutObject->style()->hasPseudoStyle(SCROLLBAR)) {
-        customScrollbarFrame = m_frame.get();
-        return true;
-    }
-
     return false;
 }
 
@@ -571,15 +532,6 @@ void FrameView::calculateScrollbarModes(ScrollbarMode& hMode, ScrollbarMode& vMo
         hMode = vMode = mode; \
         return; \
     }
-
-    // Setting scrolling="no" on an iframe element disables scrolling.
-    if (m_frame->owner() && m_frame->owner()->scrollingMode() == ScrollbarAlwaysOff)
-        RETURN_SCROLLBAR_MODE(ScrollbarAlwaysOff);
-
-    // Framesets can't scroll.
-    Node* body = m_frame->document()->body();
-    if (isHTMLFrameSetElement(body) && body->layoutObject())
-        RETURN_SCROLLBAR_MODE(ScrollbarAlwaysOff);
 
     // Scrollbars can be disabled by FrameView::setCanHaveScrollbars.
     if (!m_canHaveScrollbars && strategy != RulesFromWebContentOnly)
@@ -705,11 +657,7 @@ GraphicsLayer* FrameView::layerForScrollCorner() const
 
 bool FrameView::isEnclosedInCompositingLayer() const
 {
-    // FIXME: It's a bug that compositing state isn't always up to date when this is called. crbug.com/366314
-    DisableCompositingQueryAsserts disabler;
-
-    LayoutObject* frameOwnerLayoutObject = m_frame->ownerLayoutObject();
-    return frameOwnerLayoutObject && frameOwnerLayoutObject->enclosingLayer()->enclosingLayerForPaintInvalidationCrossingFrameBoundaries();
+    return false;
 }
 
 void FrameView::countObjectsNeedingLayout(unsigned& needsLayoutObjects, unsigned& totalObjects, bool& isSubtree)
@@ -725,33 +673,7 @@ void FrameView::countObjectsNeedingLayout(unsigned& needsLayoutObjects, unsigned
 
 inline void FrameView::forceLayoutParentViewIfNeeded()
 {
-    LayoutPart* ownerLayoutObject = m_frame->ownerLayoutObject();
-    if (!ownerLayoutObject || !ownerLayoutObject->frame())
-        return;
-
-    LayoutBox* contentBox = embeddedContentBox();
-    if (!contentBox)
-        return;
-
-    LayoutSVGRoot* svgRoot = toLayoutSVGRoot(contentBox);
-    if (svgRoot->everHadLayout() && !svgRoot->needsLayout())
-        return;
-
-    // If the embedded SVG document appears the first time, the ownerLayoutObject has already finished
-    // layout without knowing about the existence of the embedded SVG document, because LayoutReplaced
-    // embeddedContentBox() returns 0, as long as the embedded document isn't loaded yet. Before
-    // bothering to lay out the SVG document, mark the ownerLayoutObject needing layout and ask its
-    // FrameView for a layout. After that the LayoutEmbeddedObject (ownerLayoutObject) carries the
-    // correct size, which LayoutSVGRoot::computeReplacedLogicalWidth/Height rely on, when laying
-    // out for the first time, or when the LayoutSVGRoot size has changed dynamically (eg. via <script>).
-    RefPtrWillBeRawPtr<FrameView> frameView = ownerLayoutObject->frame()->view();
-
-    // Mark the owner layoutObject as needing layout.
-    ownerLayoutObject->setNeedsLayoutAndPrefWidthsRecalcAndFullPaintInvalidation(LayoutInvalidationReason::Unknown);
-
-    // Synchronously enter layout, to layout the view containing the host object/embed/iframe.
-    ASSERT(frameView);
-    frameView->layout();
+    // Nothing to do.
 }
 
 void FrameView::performPreLayoutTasks()
@@ -953,9 +875,7 @@ void FrameView::layout()
             clearLayoutSubtreeRootsAndMarkContainingBlocks();
             Node* body = document->body();
             if (body && body->layoutObject()) {
-                if (isHTMLFrameSetElement(*body)) {
-                    body->layoutObject()->setChildNeedsLayout();
-                } else if (isHTMLBodyElement(*body)) {
+                if (isHTMLBodyElement(*body)) {
                     if (!m_firstLayout && m_size.height() != layoutSize().height() && body->layoutObject()->enclosingBox()->stretchesToViewport())
                         body->layoutObject()->setChildNeedsLayout();
                 }
@@ -1366,17 +1286,6 @@ void FrameView::scrollContentsSlowPath(const IntRect& updateRect)
         // FIXME: We should not allow paint invalidation out of paint invalidation state. crbug.com/457415
         DisablePaintInvalidationStateAsserts disabler;
         layoutView()->invalidatePaintRectangle(LayoutRect(updateRect));
-    }
-    if (LayoutPart* frameLayoutObject = m_frame->ownerLayoutObject()) {
-        if (isEnclosedInCompositingLayer()) {
-            LayoutRect rect(frameLayoutObject->borderLeft() + frameLayoutObject->paddingLeft(),
-                frameLayoutObject->borderTop() + frameLayoutObject->paddingTop(),
-                visibleWidth(), visibleHeight());
-            // FIXME: We should not allow paint invalidation out of paint invalidation state. crbug.com/457415
-            DisablePaintInvalidationStateAsserts disabler;
-            frameLayoutObject->invalidatePaintRectangle(rect);
-            return;
-        }
     }
 
     hostWindow()->invalidateRect(updateRect);
@@ -1838,18 +1747,9 @@ void FrameView::scrollToAnchor()
                 rect = documentElement->boundingBox();
         }
 
-        RefPtrWillBeRawPtr<Frame> boundaryFrame = m_frame->findUnsafeParentScrollPropagationBoundary();
-
-        // FIXME: Handle RemoteFrames
-        if (boundaryFrame && boundaryFrame->isLocalFrame())
-            toLocalFrame(boundaryFrame.get())->view()->setSafeToPropagateScrollToParent(false);
-
         // Scroll nested layers and frames to reveal the anchor.
         // Align to the top and to the closest side (this matches other browsers).
         anchorNode->layoutObject()->scrollRectToVisible(rect, ScrollAlignment::alignToEdgeIfNeeded, ScrollAlignment::alignTopAlways);
-
-        if (boundaryFrame && boundaryFrame->isLocalFrame())
-            toLocalFrame(boundaryFrame.get())->view()->setSafeToPropagateScrollToParent(true);
     }
 
     // The scroll anchor should only be maintained while the frame is still loading.
@@ -2077,11 +1977,7 @@ void FrameView::scrollbarVisibilityChanged()
 
 IntRect FrameView::scrollableAreaBoundingBox() const
 {
-    LayoutPart* ownerLayoutObject = frame().ownerLayoutObject();
-    if (!ownerLayoutObject)
-        return frameRect();
-
-    return ownerLayoutObject->absoluteContentQuad().enclosingBoundingBox();
+    return frameRect();
 }
 
 
@@ -2108,12 +2004,6 @@ FrameView::ScrollingReasons FrameView::scrollingReasons()
     IntSize visibleContentSize = visibleContentRect().size();
     if ((contentsSize.height() <= visibleContentSize.height() && contentsSize.width() <= visibleContentSize.width()))
         return NotScrollableNoOverflow;
-
-    // Covers #2.
-    // FIXME: Do we need to fix this for OOPI?
-    HTMLFrameOwnerElement* owner = m_frame->deprecatedLocalOwner();
-    if (owner && (!owner->layoutObject() || !owner->layoutObject()->visibleToHitTesting()))
-        return NotScrollableNotVisible;
 
     // Cover #3 and #4.
     ScrollbarMode horizontalMode;
@@ -2214,12 +2104,6 @@ void FrameView::updateScrollCorner()
                     cornerStyle = layoutObject->getUncachedPseudoStyle(PseudoStyleRequest(SCROLLBAR_CORNER), layoutObject->style());
             }
         }
-
-        if (!cornerStyle) {
-            // If we have an owning ipage/LocalFrame element, then it can set the custom scrollbar also.
-            if (LayoutPart* layoutObject = m_frame->ownerLayoutObject())
-                cornerStyle = layoutObject->getUncachedPseudoStyle(PseudoStyleRequest(SCROLLBAR_CORNER), layoutObject->style());
-        }
     }
 
     if (cornerStyle) {
@@ -2246,13 +2130,6 @@ Color FrameView::documentBackgroundColor() const
 
 FrameView* FrameView::parentFrameView() const
 {
-    if (!parent())
-        return nullptr;
-
-    Frame* parentFrame = m_frame->tree().parent();
-    if (parentFrame && parentFrame->isLocalFrame())
-        return toLocalFrame(parentFrame)->view();
-
     return nullptr;
 }
 
@@ -2387,7 +2264,7 @@ void FrameView::synchronizedPaint()
 {
     TRACE_EVENT0("blink", "FrameView::synchronizedPaint");
 
-    ASSERT(frame() == page()->mainFrame() || (!frame().tree().parent()->isLocalFrame()));
+    ASSERT(frame() == page()->mainFrame());
 
     LayoutView* view = layoutView();
     ASSERT(view);
@@ -2490,19 +2367,6 @@ void FrameView::updateStyleAndLayoutIfNeededRecursive()
     if (needsLayout())
         layout();
 
-    // FIXME: Calling layout() shouldn't trigger script execution or have any
-    // observable effects on the frame tree but we're not quite there yet.
-    WillBeHeapVector<RefPtrWillBeMember<FrameView>> frameViews;
-    for (Frame* child = m_frame->tree().firstChild(); child; child = child->tree().nextSibling()) {
-        if (!child->isLocalFrame())
-            continue;
-        if (FrameView* view = toLocalFrame(child)->view())
-            frameViews.append(view);
-    }
-
-    for (const auto& frameView : frameViews)
-        frameView->updateStyleAndLayoutIfNeededRecursive();
-
     // When an <iframe> gets composited, it triggers an extra style recalc in its containing FrameView.
     // To avoid pushing an invalid tree for display, we have to check for this case and do another
     // style recalc. The extra style recalc needs to happen after our child <iframes> were updated.
@@ -2547,23 +2411,6 @@ void FrameView::invalidateTreeIfNeededRecursive()
 
     if (lifecycle().state() < DocumentLifecycle::PaintInvalidationClean)
         invalidateTreeIfNeeded(rootPaintInvalidationState);
-
-    // Some frames may be not reached during the above invalidateTreeIfNeeded because
-    // - the frame is a detached frame; or
-    // - it didn't need paint invalidation.
-    // We need to call invalidateTreeIfNeededRecursive() for such frames to finish required
-    // paint invalidation and advance their life cycle state.
-    for (Frame* child = m_frame->tree().firstChild(); child; child = child->tree().nextSibling()) {
-        if (child->isLocalFrame()) {
-            FrameView& childFrameView = *toLocalFrame(child)->view();
-            // The children frames can be in any state, including stopping.
-            // Thus we have to check that it makes sense to do paint
-            // invalidation onto them here.
-            if (!childFrameView.layoutView())
-                continue;
-            childFrameView.invalidateTreeIfNeededRecursive();
-        }
-    }
 
     // Process objects needing paint invalidation on the next frame. See the definition of PaintInvalidationDelayedFull for more details.
     for (auto& target : pendingDelayedPaintInvalidations)
@@ -2695,74 +2542,21 @@ IntPoint FrameView::convertToLayoutObject(const LayoutObject& layoutObject, cons
 
 IntRect FrameView::convertToContainingWidget(const IntRect& localRect) const
 {
-    if (const FrameView* parentView = toFrameView(parent())) {
-        // Get our layoutObject in the parent view
-        LayoutPart* layoutObject = m_frame->ownerLayoutObject();
-        if (!layoutObject)
-            return localRect;
-
-        IntRect rect(localRect);
-        // Add borders and padding??
-        rect.move(layoutObject->borderLeft() + layoutObject->paddingLeft(),
-            layoutObject->borderTop() + layoutObject->paddingTop());
-        return parentView->convertFromLayoutObject(*layoutObject, rect);
-    }
-
     return localRect;
 }
 
 IntRect FrameView::convertFromContainingWidget(const IntRect& parentRect) const
 {
-    if (const FrameView* parentView = toFrameView(parent())) {
-        // Get our layoutObject in the parent view
-        LayoutPart* layoutObject = m_frame->ownerLayoutObject();
-        if (!layoutObject)
-            return parentRect;
-
-        IntRect rect = parentView->convertToLayoutObject(*layoutObject, parentRect);
-        // Subtract borders and padding
-        rect.move(-layoutObject->borderLeft() - layoutObject->paddingLeft(),
-            -layoutObject->borderTop() - layoutObject->paddingTop());
-        return rect;
-    }
-
     return parentRect;
 }
 
 IntPoint FrameView::convertToContainingWidget(const IntPoint& localPoint) const
 {
-    if (const FrameView* parentView = toFrameView(parent())) {
-        // Get our layoutObject in the parent view
-        LayoutPart* layoutObject = m_frame->ownerLayoutObject();
-        if (!layoutObject)
-            return localPoint;
-
-        IntPoint point(localPoint);
-
-        // Add borders and padding
-        point.move(layoutObject->borderLeft() + layoutObject->paddingLeft(),
-            layoutObject->borderTop() + layoutObject->paddingTop());
-        return parentView->convertFromLayoutObject(*layoutObject, point);
-    }
-
     return localPoint;
 }
 
 IntPoint FrameView::convertFromContainingWidget(const IntPoint& parentPoint) const
 {
-    if (const FrameView* parentView = toFrameView(parent())) {
-        // Get our layoutObject in the parent view
-        LayoutPart* layoutObject = m_frame->ownerLayoutObject();
-        if (!layoutObject)
-            return parentPoint;
-
-        IntPoint point = parentView->convertToLayoutObject(*layoutObject, parentPoint);
-        // Subtract borders and padding
-        point.move(-layoutObject->borderLeft() - layoutObject->paddingLeft(),
-            -layoutObject->borderTop() - layoutObject->paddingTop());
-        return point;
-    }
-
     return parentPoint;
 }
 
@@ -2776,12 +2570,8 @@ void FrameView::setTracksPaintInvalidations(bool trackPaintInvalidations)
     if (trackPaintInvalidations == m_isTrackingPaintInvalidations)
         return;
 
-    for (Frame* frame = m_frame->tree().top(); frame; frame = frame->tree().traverseNext()) {
-        if (!frame->isLocalFrame())
-            continue;
-        if (LayoutView* layoutView = toLocalFrame(frame)->contentLayoutObject())
-            layoutView->compositor()->setTracksPaintInvalidations(trackPaintInvalidations);
-    }
+    if (LayoutView *layoutView = m_frame->contentLayoutObject())
+        layoutView->compositor()->setTracksPaintInvalidations(trackPaintInvalidations);
 
     TRACE_EVENT_INSTANT1(TRACE_DISABLED_BY_DEFAULT("blink.invalidation"),
         "FrameView::setTracksPaintInvalidations", TRACE_EVENT_SCOPE_GLOBAL, "enabled", trackPaintInvalidations);
@@ -3814,12 +3604,6 @@ void FrameView::collectFrameTimingRequestsRecursive(GraphicsLayerFrameTimingRequ
 
     collectFrameTimingRequests(graphicsLayerTimingRequests);
 
-    for (Frame* child = m_frame->tree().firstChild(); child; child = child->tree().nextSibling()) {
-        if (!child->isLocalFrame())
-            continue;
-
-        toLocalFrame(child)->view()->collectFrameTimingRequestsRecursive(graphicsLayerTimingRequests);
-    }
     m_frameTimingRequestsDirty = false;
 }
 
@@ -3901,13 +3685,6 @@ void FrameView::updateViewportIntersectionsForSubtree(LifeCycleUpdateOption phas
     if (!m_needsUpdateViewportIntersectionInSubtree)
         return;
     m_needsUpdateViewportIntersectionInSubtree = false;
-
-    for (Frame* child = m_frame->tree().firstChild(); child; child = child->tree().nextSibling()) {
-        if (!child->isLocalFrame())
-            continue;
-        if (FrameView* view = toLocalFrame(child)->view())
-            view->updateViewportIntersectionsForSubtree(phases);
-    }
 }
 
 void FrameView::notifyRenderThrottlingObservers()
@@ -3929,14 +3706,6 @@ void FrameView::notifyRenderThrottlingObservers()
     //
     // Check if we can access our parent's security origin.
     m_crossOriginForThrottling = false;
-    const SecurityOrigin* origin = frame().securityContext()->securityOrigin();
-    for (Frame* parentFrame = m_frame->tree().parent(); parentFrame; parentFrame = parentFrame->tree().parent()) {
-        const SecurityOrigin* parentOrigin = parentFrame->securityContext()->securityOrigin();
-        if (!origin->canAccess(parentOrigin)) {
-            m_crossOriginForThrottling = true;
-            break;
-        }
-    }
 
     bool becameUnthrottled = wasThrottled && !canThrottleRendering();
     if (becameUnthrottled)
