@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: BoxPainter.cpp
+// Description: BoxPainter Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,6 @@
 
 #include "core/HTMLNames.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/layout/ImageQualityController.h"
 #include "core/layout/LayoutBox.h"
 #include "core/layout/LayoutBoxModelObject.h"
