@@ -122,7 +122,6 @@ bool HTMLElement::ieForbidsInsertHTML() const
         || hasTagName(basefontTag)
         || hasTagName(brTag)
         || hasTagName(colTag)
-        || hasTagName(frameTag)
         || hasTagName(hrTag)
         || hasTagName(imageTag)
         || hasTagName(imgTag)
@@ -418,7 +417,6 @@ static inline bool shouldProhibitSetInnerOuterText(const HTMLElement& element)
 {
     return element.hasTagName(colTag)
         || element.hasTagName(colgroupTag)
-        || element.hasTagName(framesetTag)
         || element.hasTagName(headTag)
         || element.hasTagName(htmlTag)
         || element.hasTagName(tableTag)
@@ -595,16 +593,6 @@ bool HTMLElement::draggable() const
 void HTMLElement::setDraggable(bool value)
 {
     setAttribute(draggableAttr, value ? "true" : "false");
-}
-
-bool HTMLElement::spellcheck() const
-{
-    return isSpellCheckingEnabled();
-}
-
-void HTMLElement::setSpellcheck(bool enable)
-{
-    setAttribute(spellcheckAttr, enable ? "true" : "false");
 }
 
 void HTMLElement::clickForBindings()
