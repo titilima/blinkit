@@ -787,13 +787,6 @@ void FrameLoader::processFragment(const KURL& url, LoadStartType loadStartType)
     if (!view)
         return;
 
-    // Leaking scroll position to a cross-origin ancestor would permit the so-called "framesniffing" attack.
-    RefPtrWillBeRawPtr<Frame> boundaryFrame = url.hasFragmentIdentifier() ? m_frame->findUnsafeParentScrollPropagationBoundary() : 0;
-
-    // FIXME: Handle RemoteFrames
-    if (boundaryFrame && boundaryFrame->isLocalFrame())
-        toLocalFrame(boundaryFrame.get())->view()->setSafeToPropagateScrollToParent(false);
-
     // If scroll position is restored from history fragment then we should not override it unless
     // this is a same document reload.
     bool shouldScrollToFragment = (loadStartType == NavigationWithinSameDocument && !isBackForwardLoadType(m_loadType))
@@ -801,9 +794,6 @@ void FrameLoader::processFragment(const KURL& url, LoadStartType loadStartType)
 
     view->processUrlFragment(url, shouldScrollToFragment ?
         FrameView::UrlFragmentScroll : FrameView::UrlFragmentDontScroll);
-
-    if (boundaryFrame && boundaryFrame->isLocalFrame())
-        toLocalFrame(boundaryFrame.get())->view()->setSafeToPropagateScrollToParent(true);
 #endif
 }
 
