@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLAnchorElement.cpp
+// Description: HTMLAnchorElement Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -189,13 +200,6 @@ void HTMLAnchorElement::parseAttribute(const QualifiedName& name, const AtomicSt
             // We might want to call blur(), but it's dangerous to dispatch
             // events here.
             document().setNeedsFocusedElementCheck();
-        }
-        if (isLink()) {
-            String parsedURL = stripLeadingAndTrailingHTMLSpaces(value);
-            if (document().isDNSPrefetchEnabled()) {
-                if (protocolIs(parsedURL, "http") || protocolIs(parsedURL, "https") || parsedURL.startsWith("//"))
-                    prefetchDNS(document().completeURL(parsedURL).host());
-            }
         }
         invalidateCachedVisitedLinkHash();
         logUpdateAttributeIfIsolatedWorldAndInDocument("a", hrefAttr, oldValue, value);
