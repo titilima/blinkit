@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TypingCommand.cpp
+// Description: TypingCommand Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2007, 2008 Apple Inc.  All rights reserved.
  *
@@ -38,7 +49,6 @@
 #include "core/editing/commands/InsertLineBreakCommand.h"
 #include "core/editing/commands/InsertParagraphSeparatorCommand.h"
 #include "core/editing/commands/InsertTextCommand.h"
-#include "core/editing/spellcheck/SpellChecker.h"
 #include "core/frame/LocalFrame.h"
 #include "core/html/HTMLBRElement.h"
 #include "core/layout/LayoutObject.h"
@@ -160,9 +170,6 @@ void TypingCommand::insertText(Document& document, const String& text, Options o
 {
     LocalFrame* frame = document.frame();
     ASSERT(frame);
-
-    if (!text.isEmpty())
-        document.frame()->spellChecker().updateMarkersForWordsAffectedByEditing(isSpaceOrNewline(text[0]));
 
     insertText(document, text, frame->selection().selection(), options, composition);
 }
@@ -290,33 +297,7 @@ EditAction TypingCommand::editingAction() const
 
 void TypingCommand::markMisspellingsAfterTyping(ETypingCommand commandType)
 {
-    LocalFrame* frame = document().frame();
-    if (!frame)
-        return;
-
-    if (!frame->spellChecker().isContinuousSpellCheckingEnabled())
-        return;
-
-    frame->spellChecker().cancelCheck();
-
-    // Take a look at the selection that results after typing and determine whether we need to spellcheck.
-    // Since the word containing the current selection is never marked, this does a check to
-    // see if typing made a new word that is not in the current selection. Basically, you
-    // get this by being at the end of a word and typing a space.
-    VisiblePosition start = createVisiblePosition(endingSelection().start(), endingSelection().affinity());
-    VisiblePosition previous = previousPositionOf(start);
-
-    VisiblePosition p1 = startOfWord(previous, LeftWordIfOnBoundary);
-
-    if (commandType == InsertParagraphSeparator) {
-        VisiblePosition p2 = nextWordPosition(start);
-        VisibleSelection words(p1, endOfWord(p2));
-        frame->spellChecker().markMisspellingsAfterLineBreak(words);
-    } else if (previous.isNotNull()) {
-        VisiblePosition p2 = startOfWord(start, LeftWordIfOnBoundary);
-        if (p1.deepEquivalent() != p2.deepEquivalent())
-            frame->spellChecker().markMisspellingsAfterTypingToWord(p1, endingSelection());
-    }
+    // Nothing to do.
 }
 
 void TypingCommand::typingAddedToOpenCommand(ETypingCommand commandTypeForAddedTyping)
@@ -413,8 +394,6 @@ void TypingCommand::deleteKeyPressed(TextGranularity granularity, bool killRing)
     LocalFrame* frame = document().frame();
     if (!frame)
         return;
-
-    frame->spellChecker().updateMarkersForWordsAffectedByEditing(false);
 
     VisibleSelection selectionToDelete;
     VisibleSelection selectionAfterUndo;
@@ -518,8 +497,6 @@ void TypingCommand::forwardDeleteKeyPressed(TextGranularity granularity, bool ki
     LocalFrame* frame = document().frame();
     if (!frame)
         return;
-
-    frame->spellChecker().updateMarkersForWordsAffectedByEditing(false);
 
     VisibleSelection selectionToDelete;
     VisibleSelection selectionAfterUndo;
