@@ -163,7 +163,6 @@ HTMLTreeBuilderSimulator::SimulatedToken HTMLTreeBuilderSimulator::simulate(cons
                 tokenizer->setState(HTMLTokenizer::ScriptDataState);
                 simulatedToken = ScriptStart;
             } else if (threadSafeMatch(tagName, styleTag)
-                || threadSafeMatch(tagName, iframeTag)
                 || threadSafeMatch(tagName, xmpTag)
                 || threadSafeMatch(tagName, noframesTag)
                 || (threadSafeMatch(tagName, noscriptTag) && m_options.scriptEnabled)) {
