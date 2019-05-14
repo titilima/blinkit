@@ -1288,7 +1288,7 @@ void LocalDOMWindow::removeAllEventListeners()
 
     notifyRemoveAllEventListeners(this);
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (frame() && !frame()->IsCrawlerFrame() && frame()->host())
+    if (frame() && frame()->host())
         frame()->host()->eventHandlerRegistry().didRemoveAllEventHandlers(*this);
 #endif
 
