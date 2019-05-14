@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Navigator.cpp
+// Description: Navigator Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  *  Copyright (C) 2000 Harri Porten (porten@kde.org)
  *  Copyright (c) 2000 Daniel Molkentin (molkentin@kde.org)
@@ -88,6 +99,9 @@ Vector<String> Navigator::languages()
 {
     Vector<String> languages;
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    languages.append(defaultLanguage());
+#else
     if (!m_frame || !m_frame->host()) {
         languages.append(defaultLanguage());
         return languages;
@@ -105,6 +119,7 @@ Vector<String> Navigator::languages()
         if (token.length() >= 3 && token[2] == '_')
             token.replace(2, 1, "-");
     }
+#endif
 
     return languages;
 }
