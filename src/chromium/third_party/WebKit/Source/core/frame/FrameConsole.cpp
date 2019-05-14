@@ -72,7 +72,7 @@ int muteCount = 0;
 
 }
 
-FrameConsole::FrameConsole(LocalFrameImpl& frame)
+FrameConsole::FrameConsole(LocalFrame& frame)
     : m_frame(&frame)
 {
 }
@@ -126,9 +126,13 @@ void FrameConsole::unmute()
 
 ConsoleMessageStorage* FrameConsole::messageStorage()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    return nullptr;
+#else
     if (!m_frame->host())
         return nullptr;
     return &m_frame->host()->consoleMessageStorage();
+#endif
 }
 
 void FrameConsole::clearMessages()
