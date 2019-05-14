@@ -50,7 +50,6 @@
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/layout/LayoutImage.h"
 #include "core/layout/LayoutTextFragment.h"
-#include "core/page/FrameTree.h"
 #include "core/svg/SVGElement.h"
 #include "platform/scroll/Scrollbar.h"
 
