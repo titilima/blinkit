@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ApplyStyleCommand.cpp
+// Description: ApplyStyleCommand Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2008, 2009 Apple Inc. All rights reserved.
  *
@@ -1022,7 +1033,7 @@ void ApplyStyleCommand::applyInlineStyleToPushDown(Node* node, EditingStyle* sty
 
     node->document().updateLayoutTreeIfNeeded();
 
-    if (!style || style->isEmpty() || !node->layoutObject() || isHTMLIFrameElement(*node))
+    if (!style || style->isEmpty() || !node->layoutObject())
         return;
 
     RefPtrWillBeRawPtr<EditingStyle> newInlineStyle = style;
