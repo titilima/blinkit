@@ -47,7 +47,6 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/Settings.h"
 #include "core/frame/UseCounter.h"
-#include "core/html/HTMLIFrameElement.h"
 #include "core/html/HTMLInputElement.h"
 #include "core/html/HTMLTableCellElement.h"
 #include "core/html/HTMLTextAreaElement.h"
@@ -375,14 +374,6 @@ void StyleAdjuster::adjustStyleForHTMLElement(ComputedStyle& style, const Comput
         // Tables never support the -webkit-* values for text-align and will reset back to the default.
         if (style.textAlign() == WEBKIT_LEFT || style.textAlign() == WEBKIT_CENTER || style.textAlign() == WEBKIT_RIGHT)
             style.setTextAlign(TASTART);
-        return;
-    }
-
-    if (isHTMLFrameElement(element) || isHTMLFrameSetElement(element)) {
-        // Frames and framesets never honor position:relative or position:absolute. This is necessary to
-        // fix a crash where a site tries to position these objects. They also never honor display.
-        style.setPosition(StaticPosition);
-        style.setDisplay(BLOCK);
         return;
     }
 
