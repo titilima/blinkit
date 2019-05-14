@@ -472,7 +472,7 @@ void DocumentLoader::responseReceived(Resource* resource, const ResourceResponse
 const AtomicString& DocumentLoader::Encoding(void)
 {
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (m_frame->isLocalFrame())
+    if (!m_frame->IsCrawlerFrame())
     {
         const AtomicString &overrideEncoding = m_frame->host()->overrideEncoding();
         if (!overrideEncoding.isNull())
@@ -492,9 +492,6 @@ void DocumentLoader::ensureWriter(const AtomicString& mimeType, const KURL& over
     // Prepare a DocumentInit before clearing the frame, because it may need to
     // inherit an aliased security context.
     DocumentInit init(url(), m_frame);
-#ifndef BLINKIT_CRAWLER_ONLY
-    init.withNewRegistrationContext();
-#endif
     m_frame->loader().clear();
     ASSERT(m_frame->IsCrawlerFrame() || nullptr != m_frame->page());
 
@@ -677,6 +674,8 @@ bool DocumentLoader::maybeLoadEmpty()
 void DocumentLoader::startLoadingMainResource()
 {
     RefPtrWillBeRawPtr<DocumentLoader> protect(this);
+    if (!m_referenceMonotonicTime)
+        m_referenceMonotonicTime = monotonicallyIncreasingTime();
     ASSERT(!m_mainResource);
     ASSERT(m_state == NotStarted);
     m_state = Provisional;
@@ -746,9 +745,6 @@ PassRefPtrWillBeRawPtr<DocumentWriter> DocumentLoader::createWriterFor(const Doc
     LocalFrame* frame = init.frame();
 
     ASSERT(!frame->document() || !frame->document()->isActive());
-#ifndef BLINKIT_CRAWLER_ONLY // BKTODO: Remove FrameTree!
-    ASSERT(frame->tree().childCount() == 0);
-#endif
 
     if (!init.shouldReuseDefaultView())
         frame->setDOMWindow(LocalDOMWindow::create(*frame));

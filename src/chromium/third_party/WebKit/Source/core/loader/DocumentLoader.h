@@ -123,6 +123,8 @@ public:
     void attachThreadedDataReceiver(PassRefPtrWillBeRawPtr<ThreadedDataReceiver>);
     void acceptDataFromThreadedReceiver(const char* data, int dataLength, int encodedDataLength);
 
+    double referenceMonotonicTime(void) const { return m_referenceMonotonicTime; }
+
     bool isRedirect() const { return m_redirectChain.size() > 1; }
     void clearRedirectChain();
     void appendRedirect(const KURL&);
@@ -229,6 +231,8 @@ private:
     // Used to protect against reentrancy into dataReceived().
     bool m_inDataReceived;
     RefPtr<SharedBuffer> m_dataBuffer;
+
+    double m_referenceMonotonicTime = 0.0;
 };
 
 DECLARE_WEAK_IDENTIFIER_MAP(DocumentLoader);
