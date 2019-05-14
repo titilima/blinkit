@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLBodyElement.h
+// Description: HTMLBodyElement Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -54,7 +65,6 @@ private:
     void collectStyleForPresentationAttribute(const QualifiedName&, const AtomicString&, MutableStylePropertySet*) override;
 
     InsertionNotificationRequest insertedInto(ContainerNode*) override;
-    void didNotifySubtreeInsertionsToDocument() override;
 
     bool isURLAttribute(const Attribute&) const override;
     bool hasLegalLinkAttribute(const QualifiedName&) const override;

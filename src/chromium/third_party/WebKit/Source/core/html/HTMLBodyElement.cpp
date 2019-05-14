@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLBodyElement.cpp
+// Description: HTMLBodyElement Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -31,7 +42,6 @@
 #include "core/css/parser/CSSParser.h"
 #include "core/dom/Attribute.h"
 #include "core/frame/UseCounter.h"
-#include "core/html/HTMLFrameElementBase.h"
 #include "core/html/parser/HTMLParserIdioms.h"
 
 namespace blink {
@@ -151,21 +161,6 @@ Node::InsertionNotificationRequest HTMLBodyElement::insertedInto(ContainerNode* 
 {
     HTMLElement::insertedInto(insertionPoint);
     return InsertionShouldCallDidNotifySubtreeInsertions;
-}
-
-void HTMLBodyElement::didNotifySubtreeInsertionsToDocument()
-{
-    // FIXME: It's surprising this is web compatible since it means a
-    // marginwidth and marginheight attribute can magically appear on the <body>
-    // of all documents embedded through <iframe> or <frame>.
-    if (document().frame() && document().frame()->owner()) {
-        int marginWidth = document().frame()->owner()->marginWidth();
-        int marginHeight = document().frame()->owner()->marginHeight();
-        if (marginWidth != -1)
-            setIntegralAttribute(marginwidthAttr, marginWidth);
-        if (marginHeight != -1)
-            setIntegralAttribute(marginheightAttr, marginHeight);
-    }
 }
 
 bool HTMLBodyElement::isURLAttribute(const Attribute& attribute) const
