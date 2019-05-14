@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LinkLoader.cpp
+// Description: LinkLoader Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -130,19 +141,7 @@ enum LinkCaller {
 
 static void dnsPrefetchIfNeeded(const LinkRelAttribute& relAttribute, const KURL& href, Document& document, const NetworkHintsInterface& networkHintsInterface, LinkCaller caller)
 {
-    if (relAttribute.isDNSPrefetch()) {
-        UseCounter::count(document, UseCounter::LinkRelDnsPrefetch);
-        if (caller == LinkCalledFromHeader)
-            UseCounter::count(document, UseCounter::LinkHeaderDnsPrefetch);
-        Settings* settings = document.settings();
-        // FIXME: The href attribute of the link element can be in "//hostname" form, and we shouldn't attempt
-        // to complete that as URL <https://bugs.webkit.org/show_bug.cgi?id=48857>.
-        if (settings && settings->dnsPrefetchingEnabled() && href.isValid() && !href.isEmpty()) {
-            if (settings->logDnsPrefetchAndPreconnect())
-                document.addConsoleMessage(ConsoleMessage::create(OtherMessageSource, DebugMessageLevel, String("DNS prefetch triggered for " + href.host())));
-            networkHintsInterface.dnsPrefetchHost(href.host());
-        }
-    }
+    // Nothing to do.
 }
 
 static void preconnectIfNeeded(const LinkRelAttribute& relAttribute, const KURL& href, Document& document, const CrossOriginAttributeValue crossOrigin, const NetworkHintsInterface& networkHintsInterface, LinkCaller caller)
