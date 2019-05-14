@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TextResourceDecoderBuilder.cpp
+// Description: TextResourceDecoderBuilder Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -39,7 +50,7 @@ namespace blink {
 
 static inline bool canReferToParentFrameEncoding(const LocalFrame* frame, const LocalFrame* parentFrame)
 {
-    return parentFrame && parentFrame->document()->securityOrigin()->canAccess(frame->document()->securityOrigin());
+    return false;
 }
 
 
@@ -68,8 +79,6 @@ inline void TextResourceDecoderBuilder::setupEncoding(TextResourceDecoder* decod
 {
     LocalFrame* frame = document->frame();
     LocalFrame* parentFrame = 0;
-    if (frame && frame->tree().parent() && frame->tree().parent()->isLocalFrame())
-        parentFrame = toLocalFrame(frame->tree().parent());
 
     if (!m_encoding.isEmpty())
         decoder->setEncoding(m_encoding.string(), TextResourceDecoder::EncodingFromHTTPHeader);
