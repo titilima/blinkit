@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ThreadableLoaderClientWrapper.h
+// Description: ThreadableLoaderClientWrapper Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  *
@@ -41,11 +52,6 @@ namespace blink {
 
 class ThreadableLoaderClientWrapper : public ThreadSafeRefCounted<ThreadableLoaderClientWrapper> {
 public:
-    class ResourceTimingClient {
-    public:
-        virtual void didReceiveResourceTiming(const ResourceTimingInfo&) = 0;
-    };
-
     static PassRefPtr<ThreadableLoaderClientWrapper> create(ThreadableLoaderClient* client)
     {
         return adoptRef(new ThreadableLoaderClientWrapper(client));
@@ -55,22 +61,11 @@ public:
     {
         m_done = true;
         m_client = 0;
-        clearResourceTimingClient();
     }
 
     bool done() const
     {
         return m_done;
-    }
-
-    void setResourceTimingClient(ResourceTimingClient* client)
-    {
-        m_resourceTimingClient = client;
-    }
-
-    void clearResourceTimingClient()
-    {
-        m_resourceTimingClient = nullptr;
     }
 
     void didSendData(unsigned long long bytesSent, unsigned long long totalBytesToBeSent)
@@ -137,22 +132,14 @@ public:
             m_client->didDownloadData(dataLength);
     }
 
-    void didReceiveResourceTiming(const ResourceTimingInfo& info)
-    {
-        if (m_resourceTimingClient)
-            m_resourceTimingClient->didReceiveResourceTiming(info);
-    }
-
 protected:
     explicit ThreadableLoaderClientWrapper(ThreadableLoaderClient* client)
         : m_client(client)
-        , m_resourceTimingClient(nullptr)
         , m_done(false)
     {
     }
 
     ThreadableLoaderClient* m_client;
-    ResourceTimingClient* m_resourceTimingClient;
     bool m_done;
 };
 
