@@ -645,22 +645,6 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
         m_tree.insertHTMLBodyStartTagInBody(token);
         return;
     }
-    if (token->name() == framesetTag) {
-        parseError(token);
-        if (!m_tree.openElements()->secondElementIsHTMLBodyElement() || m_tree.openElements()->hasOnlyOneElement()) {
-            ASSERT(isParsingFragmentOrTemplateContents());
-            return;
-        }
-        if (!m_framesetOk)
-            return;
-        m_tree.openElements()->bodyElement()->remove(ASSERT_NO_EXCEPTION);
-        m_tree.openElements()->popUntil(m_tree.openElements()->bodyElement());
-        m_tree.openElements()->popHTMLBodyElement();
-        ASSERT(m_tree.openElements()->top() == m_tree.openElements()->htmlElement());
-        m_tree.insertHTMLElement(token);
-        setInsertionMode(InFramesetMode);
-        return;
-    }
     if (token->name() == addressTag
         || token->name() == articleTag
         || token->name() == asideTag
@@ -844,11 +828,6 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
         processGenericRawTextStartTag(token);
         return;
     }
-    if (token->name() == iframeTag) {
-        m_framesetOk = false;
-        processGenericRawTextStartTag(token);
-        return;
-    }
     if (token->name() == noscriptTag && m_options.scriptEnabled) {
         processGenericRawTextStartTag(token);
         return;
@@ -910,7 +889,6 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
         return;
     }
     if (isCaptionColOrColgroupTag(token->name())
-        || token->name() == frameTag
         || token->name() == headTag
         || isTableBodyContextTag(token->name())
         || isTableCellContextTag(token->name())
@@ -1122,11 +1100,6 @@ void HTMLTreeBuilder::processStartTag(AtomicHTMLToken* token)
             setInsertionMode(InBodyMode);
             return;
         }
-        if (token->name() == framesetTag) {
-            m_tree.insertHTMLElement(token);
-            setInsertionMode(InFramesetMode);
-            return;
-        }
         if (token->name() == baseTag
             || token->name() == basefontTag
             || token->name() == bgsoundTag
@@ -1303,14 +1276,6 @@ void HTMLTreeBuilder::processStartTag(AtomicHTMLToken* token)
             processHtmlStartTagForInBody(token);
             return;
         }
-        if (token->name() == framesetTag) {
-            m_tree.insertHTMLElement(token);
-            return;
-        }
-        if (token->name() == frameTag) {
-            m_tree.insertSelfClosingHTMLElementDestroyingToken(token);
-            return;
-        }
         if (token->name() == noframesTag) {
             processStartTagForInHead(token);
             return;
@@ -1425,9 +1390,7 @@ void HTMLTreeBuilder::processStartTag(AtomicHTMLToken* token)
         }
 
         InsertionMode insertionMode = TemplateContentsMode;
-        if (token->name() == frameTag)
-            insertionMode = InFramesetMode;
-        else if (token->name() == colTag)
+        if (token->name() == colTag)
             insertionMode = InColumnGroupMode;
         else if (isCaptionColOrColgroupTag(token->name()) || isTableBodyContextTag(token->name()))
             insertionMode = InTableMode;
@@ -1635,9 +1598,6 @@ void HTMLTreeBuilder::resetInsertionModeAppropriately()
         }
         if (item->hasTagName(bodyTag))
             return setInsertionMode(InBodyMode);
-        if (item->hasTagName(framesetTag)) {
-            return setInsertionMode(InFramesetMode);
-        }
         if (item->hasTagName(htmlTag)) {
             if (m_tree.headStackItem())
                 return setInsertionMode(AfterHeadMode);
@@ -2137,19 +2097,6 @@ void HTMLTreeBuilder::processEndTag(AtomicHTMLToken* token)
         break;
     case InFramesetMode:
         ASSERT(insertionMode() == InFramesetMode);
-        if (token->name() == framesetTag) {
-            bool ignoreFramesetForFragmentParsing  = m_tree.currentIsRootNode();
-            ignoreFramesetForFragmentParsing = ignoreFramesetForFragmentParsing || m_tree.openElements()->hasTemplateInHTMLScope();
-            if (ignoreFramesetForFragmentParsing) {
-                ASSERT(isParsingFragmentOrTemplateContents());
-                parseError(token);
-                return;
-            }
-            m_tree.openElements()->pop();
-            if (!isParsingFragment() && !m_tree.currentStackItem()->hasTagName(framesetTag))
-                setInsertionMode(AfterFramesetMode);
-            return;
-        }
         if (token->name() == templateTag) {
             processTemplateEndTag(token);
             return;
