@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FocusController.h
+// Description: FocusController Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Apple Inc. All rights reserved.
  *
@@ -57,11 +68,6 @@ public:
     void focusDocumentView(PassRefPtrWillBeRawPtr<Frame>, bool notifyEmbedder = true);
     LocalFrame* focusedFrame() const;
     Frame* focusedOrMainFrame() const;
-
-    // Finds the focused HTMLFrameOwnerElement, if any, in the provided frame.
-    // An HTMLFrameOwnerElement is considered focused if the frame it owns, or
-    // one of its descendant frames, is currently focused.
-    HTMLFrameOwnerElement* focusedFrameOwnerElement(LocalFrame& currentFrame) const;
 
     // Determines whether the provided Document has focus according to
     // http://www.w3.org/TR/html5/editing.html#dom-document-hasfocus

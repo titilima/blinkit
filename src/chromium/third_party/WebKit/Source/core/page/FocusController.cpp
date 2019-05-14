@@ -55,13 +55,11 @@
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
 #include "core/html/HTMLAreaElement.h"
-#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/html/HTMLImageElement.h"
 #include "core/html/HTMLShadowElement.h"
 #include "core/html/HTMLTextFormControlElement.h"
 #include "core/input/EventHandler.h"
 #include "core/page/ChromeClient.h"
-#include "core/page/FrameTree.h"
 #include "core/page/Page.h"
 #include "core/layout/HitTestResult.h"
 #include "core/page/SpatialNavigation.h"
@@ -87,7 +85,6 @@ public:
     static FocusNavigationScope ownedByNonFocusableFocusScopeOwner(Element&);
     static FocusNavigationScope ownedByShadowHost(const Element&);
     static FocusNavigationScope ownedByShadowInsertionPoint(HTMLShadowElement&);
-    static FocusNavigationScope ownedByIFrame(const HTMLFrameOwnerElement&);
 
 private:
     explicit FocusNavigationScope(TreeScope*);
@@ -112,9 +109,6 @@ Element* FocusNavigationScope::owner() const
         ShadowRoot* shadowRoot = toShadowRoot(root);
         return shadowRoot->isYoungest() ? shadowRoot->host() : shadowRoot->shadowInsertionPointOfYoungerShadowRoot();
     }
-    // FIXME: Figure out the right thing for OOPI here.
-    if (Frame* frame = root->document().frame())
-        return frame->deprecatedLocalOwner();
     return nullptr;
 }
 
@@ -140,13 +134,6 @@ FocusNavigationScope FocusNavigationScope::ownedByShadowHost(const Element& elem
 {
     ASSERT(isShadowHost(element));
     return FocusNavigationScope(&element.shadow()->youngestShadowRoot());
-}
-
-FocusNavigationScope FocusNavigationScope::ownedByIFrame(const HTMLFrameOwnerElement& frame)
-{
-    ASSERT(frame.contentFrame());
-    ASSERT(frame.contentFrame()->isLocalFrame());
-    return FocusNavigationScope(toLocalFrame(frame.contentFrame())->document());
 }
 
 FocusNavigationScope FocusNavigationScope::ownedByShadowInsertionPoint(HTMLShadowElement& shadowInsertionPoint)
@@ -471,20 +458,6 @@ Element* findFocusableElementRecursively(WebFocusType type, const FocusNavigatio
 
 Element* findFocusableElementDescendingDownIntoFrameDocument(WebFocusType type, Element* element)
 {
-    // The element we found might be a HTMLFrameOwnerElement, so descend down the tree until we find either:
-    // 1) a focusable element, or
-    // 2) the deepest-nested HTMLFrameOwnerElement.
-    while (element && element->isFrameOwnerElement()) {
-        HTMLFrameOwnerElement& owner = toHTMLFrameOwnerElement(*element);
-        if (!owner.contentFrame() || !owner.contentFrame()->isLocalFrame())
-            break;
-        toLocalFrame(owner.contentFrame())->document()->updateLayoutIgnorePendingStylesheets();
-        Element* foundElement = findFocusableElementRecursively(type, FocusNavigationScope::ownedByIFrame(owner), nullptr);
-        if (!foundElement)
-            break;
-        ASSERT(element != foundElement);
-        element = foundElement;
-    }
     return element;
 }
 
@@ -629,26 +602,7 @@ Frame* FocusController::focusedOrMainFrame() const
     if (LocalFrame* frame = focusedFrame())
         return frame;
 
-    // FIXME: This is a temporary hack to ensure that we return a LocalFrame, even when the mainFrame is remote.
-    // FocusController needs to be refactored to deal with RemoteFrames cross-process focus transfers.
-    for (Frame* frame = m_page->mainFrame()->tree().top(); frame; frame = frame->tree().traverseNext()) {
-        if (frame->isLocalRoot())
-            return frame;
-    }
-
     return m_page->mainFrame();
-}
-
-HTMLFrameOwnerElement* FocusController::focusedFrameOwnerElement(LocalFrame& currentFrame) const
-{
-    Frame* focusedFrame = m_focusedFrame.get();
-    for (; focusedFrame; focusedFrame = focusedFrame->tree().parent()) {
-        if (focusedFrame->tree().parent() == &currentFrame) {
-            ASSERT(focusedFrame->owner()->isLocal());
-            return focusedFrame->deprecatedLocalOwner();
-        }
-    }
-    return nullptr;
 }
 
 bool FocusController::isDocumentFocused(const Document& document) const
@@ -656,7 +610,7 @@ bool FocusController::isDocumentFocused(const Document& document) const
     if (!isActive() || !isFocused())
         return false;
 
-    return m_focusedFrame && m_focusedFrame->tree().isDescendantOf(document.frame());
+    return m_focusedFrame && m_focusedFrame == document.frame();
 }
 
 void FocusController::setFocused(bool focused)
@@ -734,13 +688,6 @@ bool FocusController::advanceFocusInDocumentOrder(LocalFrame* frame, Node* start
     RefPtrWillBeRawPtr<Element> element = findFocusableElementAcrossFocusScopes(type, FocusNavigationScope::focusNavigationScopeOf(currentNode ? *currentNode : *document), currentNode);
 
     if (!element) {
-        // If there's a RemoteFrame on the ancestor chain, we need to continue
-        // searching for focusable elements there.
-        if (frame->localFrameRoot() != frame->tree().top()) {
-            assert(false); // Not reached!
-            return false;
-        }
-
         // We didn't find an element to focus, so we should try to pass focus to Chrome.
         if (!initialFocus && m_page->chromeClient().canTakeFocus(type)) {
             document->clearFocusedElement();
@@ -761,19 +708,6 @@ bool FocusController::advanceFocusInDocumentOrder(LocalFrame* frame, Node* start
 
     if (element == document->focusedElement()) {
         // Focus wrapped around to the same node.
-        return true;
-    }
-
-    if (element->isFrameOwnerElement() && !element->isKeyboardFocusable()) {
-        // We focus frames rather than frame owners.
-        // FIXME: We should not focus frames that have no scrollbars, as focusing them isn't useful to the user.
-        HTMLFrameOwnerElement* owner = toHTMLFrameOwnerElement(element);
-        if (!owner->contentFrame())
-            return false;
-
-        document->clearFocusedElement();
-        setFocusedFrame(owner->contentFrame());
-
         return true;
     }
 
@@ -918,10 +852,6 @@ static void updateFocusCandidateIfNeeded(WebFocusType type, const FocusCandidate
     ASSERT(candidate.visibleNode->isElementNode());
     ASSERT(candidate.visibleNode->layoutObject());
 
-    // Ignore iframes that don't have a src attribute
-    if (frameOwnerElement(candidate) && (!frameOwnerElement(candidate)->contentFrame() || candidate.rect.isEmpty()))
-        return;
-
     // Ignore off screen child nodes of containers that do not scroll (overflow:hidden)
     if (candidate.isOffscreen && !canBeScrolledIntoView(type, candidate))
         return;
@@ -1006,29 +936,6 @@ bool FocusController::advanceFocusDirectionallyInContainer(Node* container, cons
         // NOTE: If no scrolling is performed (i.e. scrollInDirection returns false), the
         // spatial navigation algorithm will skip this container.
         return scrollInDirection(container, type);
-    }
-
-    HTMLFrameOwnerElement* frameElement = frameOwnerElement(focusCandidate);
-    // If we have an iframe without the src attribute, it will not have a contentFrame().
-    // We ASSERT here to make sure that
-    // updateFocusCandidateIfNeeded() will never consider such an iframe as a candidate.
-    ASSERT(!frameElement || frameElement->contentFrame());
-    if (frameElement && frameElement->contentFrame()->isLocalFrame()) {
-        if (focusCandidate.isOffscreenAfterScrolling) {
-            scrollInDirection(&focusCandidate.visibleNode->document(), type);
-            return true;
-        }
-        // Navigate into a new frame.
-        LayoutRect rect;
-        Element* focusedElement = toLocalFrame(focusedOrMainFrame())->document()->focusedElement();
-        if (focusedElement && !hasOffscreenRect(focusedElement))
-            rect = nodeRectInAbsoluteCoordinates(focusedElement, true /* ignore border */);
-        toLocalFrame(frameElement->contentFrame())->document()->updateLayoutIgnorePendingStylesheets();
-        if (!advanceFocusDirectionallyInContainer(toLocalFrame(frameElement->contentFrame())->document(), rect, type)) {
-            // The new frame had nothing interesting, need to find another candidate.
-            return advanceFocusDirectionallyInContainer(container, nodeRectInAbsoluteCoordinates(focusCandidate.visibleNode, true), type);
-        }
-        return true;
     }
 
     if (canScrollInDirection(focusCandidate.visibleNode, type)) {
