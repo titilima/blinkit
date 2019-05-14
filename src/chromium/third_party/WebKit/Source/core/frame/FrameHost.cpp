@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FrameHost.cpp
+// Description: FrameHost Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -118,13 +129,7 @@ DEFINE_TRACE(FrameHost)
 #if ENABLE(ASSERT)
 void checkFrameCountConsistency(int expectedFrameCount, Frame* frame)
 {
-    ASSERT(expectedFrameCount >= 0);
-
-    int actualFrameCount = 0;
-    for (; frame; frame = frame->tree().traverseNext())
-        ++actualFrameCount;
-
-    ASSERT(expectedFrameCount == actualFrameCount);
+    ASSERT(expectedFrameCount == 1);
 }
 #endif
 
