@@ -316,10 +316,6 @@ public:
 
     void assertLaidOut() const
     {
-#ifndef NDEBUG
-        if (needsLayout())
-            showLayoutTreeForThis();
-#endif
         ASSERT_WITH_SECURITY_IMPLICATION(!needsLayout());
     }
 
@@ -333,7 +329,6 @@ public:
     {
 #ifndef NDEBUG
         if (paintInvalidationStateIsDirty()) {
-            showLayoutTreeForThis();
             ASSERT_NOT_REACHED();
         }
 #endif
@@ -433,18 +428,6 @@ private:
     bool skipInvalidationWhenLaidOutChildren() const;
 
 public:
-#ifndef NDEBUG
-    void showTreeForThis() const;
-    void showLayoutTreeForThis() const;
-    void showLineTreeForThis() const;
-
-    void showLayoutObject() const;
-    // We don't make printedCharacters an optional parameter so that
-    // showLayoutObject can be called from gdb easily.
-    void showLayoutObject(int printedCharacters) const;
-    void showLayoutTreeAndMark(const LayoutObject* markedObject1 = nullptr, const char* markedLabel1 = nullptr, const LayoutObject* markedObject2 = nullptr, const char* markedLabel2 = nullptr, int depth = 0) const;
-#endif
-
     // This function is used to create the appropriate LayoutObject based
     // on the style, in particular 'display' and 'content'.
     // "display: none" is the only time this function will return nullptr.
@@ -2102,16 +2085,5 @@ inline double adjustScrollForAbsoluteZoom(double value, LayoutObject& layoutObje
     DEFINE_TYPE_CASTS(thisType, LayoutObject, object, object->predicate, object.predicate)
 
 } // namespace blink
-
-#ifndef NDEBUG
-// Outside the WebCore namespace for ease of invocation from gdb.
-void showTree(const blink::LayoutObject*);
-void showLineTree(const blink::LayoutObject*);
-void showLayoutTree(const blink::LayoutObject* object1);
-// We don't make object2 an optional parameter so that showLayoutTree
-// can be called from gdb easily.
-void showLayoutTree(const blink::LayoutObject* object1, const blink::LayoutObject* object2);
-
-#endif
 
 #endif // LayoutObject_h
