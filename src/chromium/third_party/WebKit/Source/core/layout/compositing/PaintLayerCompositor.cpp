@@ -44,7 +44,6 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLIFrameElement.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/layout/LayoutPart.h"
 #include "core/layout/LayoutView.h"
@@ -118,11 +117,6 @@ void PaintLayerCompositor::setCompositingModeEnabled(bool enable)
         ensureRootLayer();
     else
         destroyRootLayer();
-
-    // Schedule an update in the parent frame so the <iframe>'s layer in the owner
-    // document matches the compositing state here.
-    if (HTMLFrameOwnerElement* ownerElement = m_layoutView.document().ownerElement())
-        ownerElement->setNeedsCompositingUpdate();
 }
 
 void PaintLayerCompositor::enableCompositingModeIfNeeded()
@@ -185,17 +179,6 @@ void PaintLayerCompositor::updateIfNeededRecursive()
     if (view->shouldThrottleRendering())
         return;
 
-    for (Frame* child = m_layoutView.frameView()->frame().tree().firstChild(); child; child = child->tree().nextSibling()) {
-        if (!child->isLocalFrame())
-            continue;
-        LocalFrame* localFrame = toLocalFrame(child);
-        // It's possible for trusted Pepper plugins to force hit testing in situations where
-        // the frame tree is in an inconsistent state, such as in the middle of frame detach.
-        // TODO(bbudge) Remove this check when trusted Pepper plugins are gone.
-        if (localFrame->document()->isActive())
-            localFrame->contentLayoutObject()->compositor()->updateIfNeededRecursive();
-    }
-
     TRACE_EVENT0("blink", "PaintLayerCompositor::updateIfNeededRecursive");
 
     ASSERT(!m_layoutView.needsLayout());
@@ -228,14 +211,6 @@ void PaintLayerCompositor::updateIfNeededRecursive()
 #if ENABLE(ASSERT)
     ASSERT(lifecycle().state() == DocumentLifecycle::CompositingClean);
     assertNoUnresolvedDirtyBits();
-    for (Frame* child = m_layoutView.frameView()->frame().tree().firstChild(); child; child = child->tree().nextSibling()) {
-        if (!child->isLocalFrame())
-            continue;
-        LocalFrame* localFrame = toLocalFrame(child);
-        if (localFrame->shouldThrottleRendering())
-            continue;
-        localFrame->contentLayoutObject()->compositor()->assertNoUnresolvedDirtyBits();
-    }
 #endif
 }
 
@@ -612,14 +587,6 @@ String PaintLayerCompositor::layerTreeAsText(LayerTreeFlags flags)
 
 PaintLayerCompositor* PaintLayerCompositor::frameContentsCompositor(LayoutPart* layoutObject)
 {
-    if (!layoutObject->node()->isFrameOwnerElement())
-        return nullptr;
-
-    HTMLFrameOwnerElement* element = toHTMLFrameOwnerElement(layoutObject->node());
-    if (Document* contentDocument = element->contentDocument()) {
-        if (LayoutView* view = contentDocument->layoutView())
-            return view->compositor();
-    }
     return nullptr;
 }
 
@@ -1048,14 +1015,6 @@ void PaintLayerCompositor::attachRootLayer(RootLayerAttachment attachment)
         page->chromeClient().attachRootGraphicsLayer(rootGraphicsLayer(), &frame);
         break;
     }
-    case RootLayerAttachedViaEnclosingFrame: {
-        HTMLFrameOwnerElement* ownerElement = m_layoutView.document().ownerElement();
-        ASSERT(ownerElement);
-        // The layer will get hooked up via CompositedLayerMapping::updateGraphicsLayerConfiguration()
-        // for the frame's layoutObject in the parent document.
-        ownerElement->setNeedsCompositingUpdate();
-        break;
-    }
     }
 
     m_rootLayerAttachment = attachment;
@@ -1074,9 +1033,6 @@ void PaintLayerCompositor::detachRootLayer()
             m_overflowControlsHostLayer->removeFromParent();
         else
             m_rootContentLayer->removeFromParent();
-
-        if (HTMLFrameOwnerElement* ownerElement = m_layoutView.document().ownerElement())
-            ownerElement->setNeedsCompositingUpdate();
         break;
     }
     case RootLayerAttachedViaChromeClient: {
