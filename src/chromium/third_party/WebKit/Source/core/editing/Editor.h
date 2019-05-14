@@ -62,7 +62,6 @@ class LocalFrame;
 class HitTestResult;
 class KillRing;
 class Pasteboard;
-class SpellChecker;
 class StylePropertySet;
 class TextEvent;
 class UndoStack;
@@ -288,8 +287,6 @@ private:
     void notifyComponentsOnChangedSelection(const VisibleSelection& oldSelection, FrameSelection::SetSelectionOptions);
 
     Element* findEventTargetFromSelection() const;
-
-    SpellChecker& spellChecker() const;
 
     bool handleEditingKeyboardEvent(KeyboardEvent*);
 };
