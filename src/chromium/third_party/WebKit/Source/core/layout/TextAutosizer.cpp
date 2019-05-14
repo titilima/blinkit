@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TextAutosizer.cpp
+// Description: TextAutosizer Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -496,18 +507,7 @@ bool TextAutosizer::pageNeedsAutosizing() const
 void TextAutosizer::updatePageInfoInAllFrames()
 {
     ASSERT(!m_document->frame() || m_document->frame()->isMainFrame());
-
-    for (Frame* frame = m_document->frame(); frame; frame = frame->tree().traverseNext()) {
-        if (!frame->isLocalFrame())
-            continue;
-
-        Document* document = toLocalFrame(frame)->document();
-        // If document is being detached, skip updatePageInfo.
-        if (!document || !document->isActive())
-            continue;
-        if (TextAutosizer* textAutosizer = document->textAutosizer())
-            textAutosizer->updatePageInfo();
-    }
+    updatePageInfo();
 }
 
 void TextAutosizer::updatePageInfo()
@@ -524,13 +524,7 @@ void TextAutosizer::updatePageInfo()
         LayoutView* layoutView = m_document->layoutView();
         bool horizontalWritingMode = isHorizontalWritingMode(layoutView->style()->writingMode());
 
-        // FIXME: With out-of-process iframes, the top frame can be remote and
-        // doesn't have sizing information. Just return if this is the case.
-        Frame* frame = m_document->frame()->tree().top();
-        if (frame->isRemoteFrame())
-            return;
-
-        LocalFrame* mainFrame = toLocalFrame(frame);
+        LocalFrame* mainFrame = m_document->frame();
         IntSize frameSize = m_document->settings()->textAutosizingWindowSizeOverride();
         if (frameSize.isEmpty())
             frameSize = windowSize();
