@@ -42,7 +42,6 @@
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLIFrameElement.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/layout/LayoutImage.h"
 #include "core/layout/LayoutPart.h"
@@ -509,11 +508,6 @@ bool CompositedLayerMapping::updateGraphicsLayerConfiguration()
 
     if (WebLayer* layer = platformLayerForPlugin(layoutObject)) {
         m_graphicsLayer->setContentsToPlatformLayer(layer);
-    } else if (layoutObject->node() && layoutObject->node()->isFrameOwnerElement() && toHTMLFrameOwnerElement(layoutObject->node())->contentFrame()) {
-        Frame* frame = toHTMLFrameOwnerElement(layoutObject->node())->contentFrame();
-        if (frame->isRemoteFrame()) {
-            assert(false); // Not reached!
-        }
     }
     if (layoutObject->isLayoutPart()) {
         if (PaintLayerCompositor::attachFrameContentLayersToIframeLayer(toLayoutPart(layoutObject)))
@@ -2208,8 +2202,6 @@ IntRect CompositedLayerMapping::recomputeInterestRect(const GraphicsLayer* graph
     // Now map the bounds to its visible content rect in screen space, including applying clips along the way.
     LayoutRect visibleContentRect(graphicsLayerBoundsInObjectSpace);
     LayoutView* rootView = anchorLayoutObject->view();
-    while (rootView->frame()->ownerLayoutObject())
-        rootView = rootView->frame()->ownerLayoutObject()->view();
     anchorLayoutObject->mapToVisibleRectInAncestorSpace(rootView, visibleContentRect, 0);
     visibleContentRect.intersect(LayoutRect(rootView->frameView()->visibleContentRect()));
 
