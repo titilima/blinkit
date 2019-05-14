@@ -65,12 +65,6 @@ static const MediaQueryEvaluator& screenEval()
     return *staticScreenEval;
 }
 
-static const MediaQueryEvaluator& printEval()
-{
-    DEFINE_STATIC_LOCAL(OwnPtrWillBePersistent<MediaQueryEvaluator>, staticPrintEval, (adoptPtrWillBeNoop (new MediaQueryEvaluator("print"))));
-    return *staticPrintEval;
-}
-
 static PassRefPtrWillBeRawPtr<StyleSheetContents> parseUASheet(const String& str)
 {
     RefPtrWillBeRawPtr<StyleSheetContents> sheet = StyleSheetContents::create(CSSParserContext(UASheetMode, 0));
@@ -85,8 +79,6 @@ CSSDefaultStyleSheets::CSSDefaultStyleSheets()
     : m_defaultStyle(nullptr)
     , m_defaultMobileViewportStyle(nullptr)
     , m_defaultQuirksStyle(nullptr)
-    , m_defaultPrintStyle(nullptr)
-    , m_defaultViewSourceStyle(nullptr)
     , m_defaultXHTMLMobileProfileStyle(nullptr)
     , m_defaultStyleSheet(nullptr)
     , m_mobileViewportStyleSheet(nullptr)
@@ -95,30 +87,17 @@ CSSDefaultStyleSheets::CSSDefaultStyleSheets()
     , m_mathmlStyleSheet(nullptr)
 {
     m_defaultStyle = RuleSet::create();
-    m_defaultPrintStyle = RuleSet::create();
     m_defaultQuirksStyle = RuleSet::create();
 
     // Strict-mode rules.
     String defaultRules = loadResourceAsASCIIString("html.css") + LayoutTheme::theme().extraDefaultStyleSheet();
     m_defaultStyleSheet = parseUASheet(defaultRules);
     m_defaultStyle->addRulesFromSheet(defaultStyleSheet(), screenEval());
-    m_defaultPrintStyle->addRulesFromSheet(defaultStyleSheet(), printEval());
 
     // Quirks-mode rules.
     String quirksRules = loadResourceAsASCIIString("quirks.css") + LayoutTheme::theme().extraQuirksStyleSheet();
     m_quirksStyleSheet = parseUASheet(quirksRules);
     m_defaultQuirksStyle->addRulesFromSheet(quirksStyleSheet(), screenEval());
-}
-
-RuleSet* CSSDefaultStyleSheets::defaultViewSourceStyle()
-{
-    if (!m_defaultViewSourceStyle) {
-        m_defaultViewSourceStyle = RuleSet::create();
-        // Loaded stylesheet is leaked on purpose.
-        RefPtrWillBeRawPtr<StyleSheetContents> stylesheet = parseUASheet(loadResourceAsASCIIString("view-source.css"));
-        m_defaultViewSourceStyle->addRulesFromSheet(stylesheet.release().leakRef(), screenEval());
-    }
-    return m_defaultViewSourceStyle.get();
 }
 
 RuleSet* CSSDefaultStyleSheets::defaultXHTMLMobileProfileStyle()
@@ -148,7 +127,6 @@ void CSSDefaultStyleSheets::ensureDefaultStyleSheetsForElement(const Element& el
     if (element.isSVGElement() && !m_svgStyleSheet) {
         m_svgStyleSheet = parseUASheet(loadResourceAsASCIIString("svg.css"));
         m_defaultStyle->addRulesFromSheet(svgStyleSheet(), screenEval());
-        m_defaultPrintStyle->addRulesFromSheet(svgStyleSheet(), printEval());
         changedDefaultStyle = true;
     }
 
@@ -157,7 +135,6 @@ void CSSDefaultStyleSheets::ensureDefaultStyleSheetsForElement(const Element& el
         && !m_mathmlStyleSheet) {
         m_mathmlStyleSheet = parseUASheet(loadResourceAsASCIIString("mathml.css"));
         m_defaultStyle->addRulesFromSheet(mathmlStyleSheet(), screenEval());
-        m_defaultPrintStyle->addRulesFromSheet(mathmlStyleSheet(), printEval());
         changedDefaultStyle = true;
     }
 
@@ -170,8 +147,6 @@ DEFINE_TRACE(CSSDefaultStyleSheets)
     visitor->trace(m_defaultStyle);
     visitor->trace(m_defaultMobileViewportStyle);
     visitor->trace(m_defaultQuirksStyle);
-    visitor->trace(m_defaultPrintStyle);
-    visitor->trace(m_defaultViewSourceStyle);
     visitor->trace(m_defaultXHTMLMobileProfileStyle);
     visitor->trace(m_defaultStyleSheet);
     visitor->trace(m_mobileViewportStyleSheet);
