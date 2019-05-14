@@ -41,13 +41,6 @@ public:
     virtual Frame* opener() const = 0;
     virtual void setOpener(Frame*) = 0;
 
-    virtual Frame* parent() const = 0;
-    virtual Frame* top() const = 0;
-    virtual Frame* previousSibling() const = 0;
-    virtual Frame* nextSibling() const = 0;
-    virtual Frame* firstChild() const = 0;
-    virtual Frame* lastChild() const = 0;
-
     virtual unsigned backForwardLength() = 0;
 
     // Returns true if the embedder intercepted the postMessage call
