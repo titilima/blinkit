@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: VisibleSelection.h
+// Description: VisibleSelection Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004 Apple Computer, Inc.  All rights reserved.
  *
@@ -154,12 +165,6 @@ public:
 
     void validatePositionsIfNeeded();
 
-#ifndef NDEBUG
-    void debugPosition(const char* message) const;
-    void formatForDebugger(char* buffer, unsigned length) const;
-    void showTreeForThis() const;
-#endif
-
     void setStartRespectingGranularity(TextGranularity, EWordSide = RightWordIfOnBoundary);
     void setEndRespectingGranularity(TextGranularity, EWordSide = RightWordIfOnBoundary);
 
@@ -218,13 +223,5 @@ CORE_EXPORT EphemeralRange firstEphemeralRangeOf(const VisibleSelection&);
 CORE_EXPORT PassRefPtrWillBeRawPtr<Range> firstRangeOf(const VisibleSelection&);
 
 } // namespace blink
-
-#ifndef NDEBUG
-// Outside the WebCore namespace for ease of invocation from gdb.
-void showTree(const blink::VisibleSelection&);
-void showTree(const blink::VisibleSelection*);
-void showTree(const blink::VisibleSelectionInComposedTree&);
-void showTree(const blink::VisibleSelectionInComposedTree*);
-#endif
 
 #endif // VisibleSelection_h

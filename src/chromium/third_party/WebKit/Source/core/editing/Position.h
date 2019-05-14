@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Position.h
+// Description: Position Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -167,13 +178,6 @@ public:
     static PositionTemplate<Strategy> lastPositionInOrAfterNode(Node* anchorNode);
 
     void debugPosition(const char* msg = "") const;
-
-#ifndef NDEBUG
-    void formatForDebugger(char* buffer, unsigned length) const;
-    void showAnchorTypeAndOffset() const;
-    void showTreeForThis() const;
-    void showTreeForThisInComposedTree() const;
-#endif
 
     DEFINE_INLINE_TRACE()
     {
@@ -400,11 +404,5 @@ std::ostream& operator<<(std::ostream&, const Position&);
 std::ostream& operator<<(std::ostream&, const PositionInComposedTree&);
 
 } // namespace blink
-
-#ifndef NDEBUG
-// Outside the WebCore namespace for ease of invocation from gdb.
-void showTree(const blink::Position&);
-void showTree(const blink::Position*);
-#endif
 
 #endif // Position_h

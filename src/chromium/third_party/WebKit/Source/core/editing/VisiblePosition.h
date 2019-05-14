@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: VisiblePosition.h
+// Description: VisiblePosition Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2008 Apple Inc. All rights reserved.
  *
@@ -98,12 +109,6 @@ public:
         visitor->trace(m_positionWithAffinity);
     }
 
-#ifndef NDEBUG
-    void debugPosition(const char* msg = "") const;
-    void formatForDebugger(char* buffer, unsigned length) const;
-    void showTreeForThis() const;
-#endif
-
 private:
     explicit VisiblePositionTemplate(const PositionWithAffinityTemplate<Strategy>&);
 
@@ -127,11 +132,5 @@ VisiblePosition createVisiblePositionInDOMTree(const Position&, TextAffinity = V
 VisiblePosition createVisiblePositionInDOMTree(const PositionInComposedTree&, TextAffinity = VP_DEFAULT_AFFINITY);
 
 } // namespace blink
-
-#ifndef NDEBUG
-// Outside the WebCore namespace for ease of invocation from gdb.
-void showTree(const blink::VisiblePosition*);
-void showTree(const blink::VisiblePosition&);
-#endif
 
 #endif // VisiblePosition_h

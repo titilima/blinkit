@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: VisibleSelection.cpp
+// Description: VisibleSelection Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006 Apple Computer, Inc.  All rights reserved.
  *
@@ -1055,92 +1066,7 @@ bool VisibleSelectionTemplate<Strategy>::operator==(const VisibleSelectionTempla
     return equalSelectionsAlgorithm<Strategy>(*this, other);
 }
 
-#ifndef NDEBUG
-
-template <typename Strategy>
-void VisibleSelectionTemplate<Strategy>::debugPosition(const char* message) const
-{
-    fprintf(stderr, "VisibleSelection (%s) ===============\n", message);
-
-    if (m_baseIsFirst) {
-        m_start.debugPosition("start: ");
-        m_base.debugPosition("base: ");
-        m_end.debugPosition("end: ");
-        m_extent.debugPosition("extent: ");
-    } else {
-        m_start.debugPosition("start: ");
-        m_extent.debugPosition("extent: ");
-        m_end.debugPosition("end: ");
-        m_base.debugPosition("base: ");
-    }
-
-    fprintf(stderr, "isDirectional=%s\n", isDirectional() ? "true" : "false");
-    fprintf(stderr, "affinity=%s\n", affinity() == TextAffinity::Downstream ? "DOWNSTREaM" : affinity() == TextAffinity::Upstream ? "UPSTREAM" : "UNKNOWN");
-    fprintf(stderr, "================================\n");
-}
-
-template <typename Strategy>
-void VisibleSelectionTemplate<Strategy>::formatForDebugger(char* buffer, unsigned length) const
-{
-    StringBuilder result;
-    String s;
-
-    if (isNone()) {
-        result.appendLiteral("<none>");
-    } else {
-        const int FormatBufferSize = 1024;
-        char s[FormatBufferSize];
-        result.appendLiteral("from ");
-        start().formatForDebugger(s, FormatBufferSize);
-        result.append(s);
-        result.appendLiteral(" to ");
-        end().formatForDebugger(s, FormatBufferSize);
-        result.append(s);
-    }
-
-    strncpy(buffer, result.toString().utf8().data(), length - 1);
-}
-
-template <typename Strategy>
-void VisibleSelectionTemplate<Strategy>::showTreeForThis() const
-{
-    if (start().anchorNode()) {
-        start().anchorNode()->showTreeAndMark(start().anchorNode(), "S", end().anchorNode(), "E");
-        fputs("start: ", stderr);
-        start().showAnchorTypeAndOffset();
-        fputs("end: ", stderr);
-        end().showAnchorTypeAndOffset();
-    }
-}
-
-#endif
-
 template class CORE_TEMPLATE_EXPORT VisibleSelectionTemplate<EditingStrategy>;
 template class CORE_TEMPLATE_EXPORT VisibleSelectionTemplate<EditingInComposedTreeStrategy>;
 
 } // namespace blink
-
-#ifndef NDEBUG
-
-void showTree(const blink::VisibleSelection& sel)
-{
-    sel.showTreeForThis();
-}
-
-void showTree(const blink::VisibleSelection* sel)
-{
-    if (sel)
-        sel->showTreeForThis();
-}
-
-void showTree(const blink::VisibleSelectionInComposedTree& sel)
-{
-    sel.showTreeForThis();
-}
-
-void showTree(const blink::VisibleSelectionInComposedTree* sel)
-{
-    if (sel)
-        sel->showTreeForThis();
-}
-#endif

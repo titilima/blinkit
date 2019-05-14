@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: VisiblePosition.cpp
+// Description: VisiblePosition Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
  * Portions Copyright (c) 2011 Motorola Mobility, Inc.  All rights reserved.
@@ -108,50 +119,7 @@ VisiblePosition createVisiblePositionInDOMTree(const PositionInComposedTree& pos
     return createVisiblePosition(toPositionInDOMTree(visiblePosition.deepEquivalent()), affinity);
 }
 
-#ifndef NDEBUG
-
-template<typename Strategy>
-void VisiblePositionTemplate<Strategy>::debugPosition(const char* msg) const
-{
-    if (isNull()) {
-        fprintf(stderr, "Position [%s]: null\n", msg);
-        return;
-    }
-    deepEquivalent().debugPosition(msg);
-}
-
-template<typename Strategy>
-void VisiblePositionTemplate<Strategy>::formatForDebugger(char* buffer, unsigned length) const
-{
-    deepEquivalent().formatForDebugger(buffer, length);
-}
-
-template<typename Strategy>
-void VisiblePositionTemplate<Strategy>::showTreeForThis() const
-{
-    deepEquivalent().showTreeForThis();
-}
-
-#endif
-
 template class CORE_TEMPLATE_EXPORT VisiblePositionTemplate<EditingStrategy>;
 template class CORE_TEMPLATE_EXPORT VisiblePositionTemplate<EditingInComposedTreeStrategy>;
 
 } // namespace blink
-
-#ifndef NDEBUG
-
-void showTree(const blink::VisiblePosition* vpos)
-{
-    if (vpos)
-        vpos->showTreeForThis();
-    else
-        fprintf(stderr, "Cannot showTree for (nil) VisiblePosition.\n");
-}
-
-void showTree(const blink::VisiblePosition& vpos)
-{
-    vpos.showTreeForThis();
-}
-
-#endif

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Position.cpp
+// Description: Position Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2009 Apple Inc. All rights reserved.
  *
@@ -461,88 +472,7 @@ Position toPositionInDOMTree(const PositionInComposedTree& position)
     }
 }
 
-#ifndef NDEBUG
-
-template <typename Strategy>
-void PositionTemplate<Strategy>::formatForDebugger(char* buffer, unsigned length) const
-{
-    StringBuilder result;
-
-    if (isNull()) {
-        result.appendLiteral("<null>");
-    } else {
-        char s[1024];
-        result.appendLiteral("offset ");
-        result.appendNumber(m_offset);
-        result.appendLiteral(" of ");
-        anchorNode()->formatForDebugger(s, sizeof(s));
-        result.append(s);
-    }
-
-    strncpy(buffer, result.toString().utf8().data(), length - 1);
-}
-
-template <typename Strategy>
-void PositionTemplate<Strategy>::showAnchorTypeAndOffset() const
-{
-    switch (anchorType()) {
-    case PositionAnchorType::OffsetInAnchor:
-        fputs("offset", stderr);
-        break;
-    case PositionAnchorType::BeforeChildren:
-        fputs("beforeChildren", stderr);
-        break;
-    case PositionAnchorType::AfterChildren:
-        fputs("afterChildren", stderr);
-        break;
-    case PositionAnchorType::BeforeAnchor:
-        fputs("before", stderr);
-        break;
-    case PositionAnchorType::AfterAnchor:
-        fputs("after", stderr);
-        break;
-    }
-    fprintf(stderr, ", offset:%d\n", m_offset);
-}
-
-template <typename Strategy>
-void PositionTemplate<Strategy>::showTreeForThis() const
-{
-    if (!anchorNode())
-        return;
-    anchorNode()->showTreeForThis();
-    showAnchorTypeAndOffset();
-}
-
-template <typename Strategy>
-void PositionTemplate<Strategy>::showTreeForThisInComposedTree() const
-{
-    if (!anchorNode())
-        return;
-    anchorNode()->showTreeForThisInComposedTree();
-    showAnchorTypeAndOffset();
-}
-
-#endif
-
 template class CORE_TEMPLATE_EXPORT PositionTemplate<EditingStrategy>;
 template class CORE_TEMPLATE_EXPORT PositionTemplate<EditingInComposedTreeStrategy>;
 
 } // namespace blink
-
-#ifndef NDEBUG
-
-void showTree(const blink::Position& pos)
-{
-    pos.showTreeForThis();
-}
-
-void showTree(const blink::Position* pos)
-{
-    if (pos)
-        pos->showTreeForThis();
-    else
-        fprintf(stderr, "Cannot showTree for (nil)\n");
-}
-
-#endif
