@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLPreloadScanner.h
+// Description: HTMLPreloadScanner Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2010 Google Inc. All Rights Reserved.
@@ -54,8 +65,11 @@ public:
     }
 
     bool doHtmlPreloadScanning;
+#ifndef BLINKIT_CRAWLER_ONLY
+    bool forCrawler;
     RefPtrWillBeCrossThreadPersistent<MediaValues> mediaValues;
     Length defaultViewportMinWidth;
+#endif
     bool viewportMetaZeroValuesQuirk;
     bool viewportMetaEnabled;
     ReferrerPolicy referrerPolicy;
@@ -96,20 +110,24 @@ private:
     void updatePredictedBaseURL(const Token&);
 
     struct Checkpoint {
-        Checkpoint(const KURL& predictedBaseElementURL, bool inStyle, bool isAppCacheEnabled, bool isCSPEnabled, size_t templateCount)
+#ifdef BLINKIT_CRAWLER_ONLY
+        Checkpoint(const KURL& predictedBaseElementURL)
+#else
+        Checkpoint(const KURL& predictedBaseElementURL, bool inStyle, size_t templateCount)
+#endif
             : predictedBaseElementURL(predictedBaseElementURL)
+#ifndef BLINKIT_CRAWLER_ONLY
             , inStyle(inStyle)
-            , isAppCacheEnabled(isAppCacheEnabled)
-            , isCSPEnabled(isCSPEnabled)
             , templateCount(templateCount)
+#endif
         {
         }
 
         KURL predictedBaseElementURL;
+#ifndef BLINKIT_CRAWLER_ONLY
         bool inStyle;
-        bool isAppCacheEnabled;
-        bool isCSPEnabled;
         size_t templateCount;
+#endif
     };
 
     struct PictureData {
@@ -125,17 +143,18 @@ private:
         bool picked;
     };
 
+#ifndef BLINKIT_CRAWLER_ONLY
     CSSPreloadScanner m_cssScanner;
+#endif
     const KURL m_documentURL;
     KURL m_predictedBaseElementURL;
-    bool m_inStyle;
-    bool m_inPicture;
-    bool m_isAppCacheEnabled;
-    bool m_isCSPEnabled;
+#ifndef BLINKIT_CRAWLER_ONLY
+    bool m_inStyle = false;
+    bool m_inPicture = false;
     PictureData m_pictureData;
-    size_t m_templateCount;
+    size_t m_templateCount = 0;
+#endif
     OwnPtr<CachedDocumentParameters> m_documentParameters;
-    ClientHintsPreferences m_clientHintsPreferences;
 
     Vector<Checkpoint> m_checkpoints;
 };

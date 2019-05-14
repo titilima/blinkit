@@ -187,7 +187,7 @@ public:
         }
     }
 
-    PassOwnPtr<PreloadRequest> createPreloadRequest(const KURL& predictedBaseURL, const SegmentedString& source, const ClientHintsPreferences& clientHintsPreferences, const PictureData& pictureData, const ReferrerPolicy documentReferrerPolicy)
+    PassOwnPtr<PreloadRequest> createPreloadRequest(const KURL& predictedBaseURL, const SegmentedString& source, const PictureData& pictureData, const ReferrerPolicy documentReferrerPolicy)
     {
         PreloadRequest::RequestType requestType = PreloadRequest::RequestTypePreload;
         if (shouldPreconnect())
@@ -212,7 +212,7 @@ public:
 
         // The element's 'referrerpolicy' attribute (if present) takes precedence over the document's referrer policy.
         ReferrerPolicy referrerPolicy = (m_referrerPolicy != ReferrerPolicyDefault && RuntimeEnabledFeatures::referrerPolicyAttributeEnabled()) ? m_referrerPolicy : documentReferrerPolicy;
-        OwnPtr<PreloadRequest> request = PreloadRequest::create(initiatorFor(m_tagImpl), position, m_urlToLoad, predictedBaseURL, resourceType(), referrerPolicy, resourceWidth, clientHintsPreferences, requestType);
+        OwnPtr<PreloadRequest> request = PreloadRequest::create(initiatorFor(m_tagImpl), position, m_urlToLoad, predictedBaseURL, resourceType(), referrerPolicy, resourceWidth, requestType);
         request->setCrossOrigin(m_crossOrigin);
         request->setCharset(charset());
         request->setDefer(m_defer);
@@ -435,16 +435,13 @@ private:
 
 TokenPreloadScanner::TokenPreloadScanner(const KURL& documentURL, PassOwnPtr<CachedDocumentParameters> documentParameters)
     : m_documentURL(documentURL)
-    , m_inStyle(false)
-    , m_inPicture(false)
-    , m_isAppCacheEnabled(false)
-    , m_isCSPEnabled(false)
-    , m_templateCount(0)
     , m_documentParameters(documentParameters)
 {
     ASSERT(m_documentParameters.get());
+#ifndef BLINKIT_CRAWLER_ONLY // TODO: Check the logic below
     ASSERT(m_documentParameters->mediaValues.get());
     ASSERT(m_documentParameters->mediaValues->isCached());
+#endif
 }
 
 TokenPreloadScanner::~TokenPreloadScanner()
@@ -454,7 +451,11 @@ TokenPreloadScanner::~TokenPreloadScanner()
 TokenPreloadScannerCheckpoint TokenPreloadScanner::createCheckpoint()
 {
     TokenPreloadScannerCheckpoint checkpoint = m_checkpoints.size();
-    m_checkpoints.append(Checkpoint(m_predictedBaseElementURL, m_inStyle, m_isAppCacheEnabled, m_isCSPEnabled, m_templateCount));
+#ifdef BLINKIT_CRAWLER_ONLY
+    m_checkpoints.append(Checkpoint(m_predictedBaseElementURL));
+#else
+    m_checkpoints.append(Checkpoint(m_predictedBaseElementURL, m_inStyle, m_templateCount));
+#endif
     return checkpoint;
 }
 
@@ -463,11 +464,11 @@ void TokenPreloadScanner::rewindTo(TokenPreloadScannerCheckpoint checkpointIndex
     ASSERT(checkpointIndex < m_checkpoints.size()); // If this ASSERT fires, checkpointIndex is invalid.
     const Checkpoint& checkpoint = m_checkpoints[checkpointIndex];
     m_predictedBaseElementURL = checkpoint.predictedBaseElementURL;
+#ifndef BLINKIT_CRAWLER_ONLY
     m_inStyle = checkpoint.inStyle;
-    m_isAppCacheEnabled = checkpoint.isAppCacheEnabled;
-    m_isCSPEnabled = checkpoint.isCSPEnabled;
     m_templateCount = checkpoint.templateCount;
     m_cssScanner.reset();
+#endif
     m_checkpoints.clear();
 }
 
@@ -483,6 +484,9 @@ void TokenPreloadScanner::scan(const CompactHTMLToken& token, const SegmentedStr
 
 static void handleMetaViewport(const String& attributeValue, CachedDocumentParameters* documentParameters)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!documentParameters->viewportMetaEnabled)
         return;
     ViewportDescription description(ViewportDescription::ViewportMeta);
@@ -492,19 +496,27 @@ static void handleMetaViewport(const String& attributeValue, CachedDocumentParam
     MediaValuesCached* cachedMediaValues = static_cast<MediaValuesCached*>(documentParameters->mediaValues.get());
     cachedMediaValues->setViewportHeight(constraints.layoutSize.height());
     cachedMediaValues->setViewportWidth(constraints.layoutSize.width());
+#endif
 }
 
 static void handleMetaReferrer(const String& attributeValue, CachedDocumentParameters* documentParameters, CSSPreloadScanner* cssScanner)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (attributeValue.isEmpty() || attributeValue.isNull() || !SecurityPolicy::referrerPolicyFromString(attributeValue, &documentParameters->referrerPolicy)) {
         documentParameters->referrerPolicy = ReferrerPolicyDefault;
     }
     cssScanner->setReferrerPolicy(documentParameters->referrerPolicy);
+#endif
 }
 
 template <typename Token>
 static void handleMetaNameAttribute(const Token& token, CachedDocumentParameters* documentParameters, CSSPreloadScanner* cssScanner)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     const typename Token::Attribute* nameAttribute = token.getAttributeItem(nameAttr);
     if (!nameAttribute)
         return;
@@ -523,6 +535,7 @@ static void handleMetaNameAttribute(const Token& token, CachedDocumentParameters
     if (equalIgnoringCase(nameAttributeValue, "referrer")) {
         handleMetaReferrer(contentAttributeValue, documentParameters, cssScanner);
     }
+#endif
 }
 
 template <typename Token>
@@ -531,12 +544,8 @@ void TokenPreloadScanner::scanCommon(const Token& token, const SegmentedString& 
     if (!m_documentParameters->doHtmlPreloadScanning)
         return;
 
-    // Disable preload for documents with AppCache.
-    if (m_isAppCacheEnabled)
-        return;
-
-    // http://crbug.com/434230 Disable preload for documents with CSP <meta> tags
-    if (m_isCSPEnabled)
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (m_documentParameters->forCrawler)
         return;
 
     switch (token.type()) {
@@ -582,24 +591,7 @@ void TokenPreloadScanner::scanCommon(const Token& token, const SegmentedString& 
             updatePredictedBaseURL(token);
             return;
         }
-        if (match(tagImpl, htmlTag) && token.getAttributeItem(manifestAttr)) {
-            m_isAppCacheEnabled = true;
-            return;
-        }
         if (match(tagImpl, metaTag)) {
-            const typename Token::Attribute* equivAttribute = token.getAttributeItem(http_equivAttr);
-            if (equivAttribute) {
-                String equivAttributeValue(equivAttribute->value);
-                if (equalIgnoringCase(equivAttributeValue, "content-security-policy")) {
-                    m_isCSPEnabled = true;
-                } else if (equalIgnoringCase(equivAttributeValue, "accept-ch")) {
-                    const typename Token::Attribute* contentAttribute = token.getAttributeItem(contentAttr);
-                    if (contentAttribute)
-                        m_clientHintsPreferences.updateFromAcceptClientHintsHeader(String(contentAttribute->value), nullptr);
-                }
-                return;
-            }
-
             handleMetaNameAttribute(token, m_documentParameters.get(), &m_cssScanner);
         }
 
@@ -613,7 +605,7 @@ void TokenPreloadScanner::scanCommon(const Token& token, const SegmentedString& 
         scanner.processAttributes(token.attributes());
         if (m_inPicture)
             scanner.handlePictureSourceURL(m_pictureData);
-        OwnPtr<PreloadRequest> request = scanner.createPreloadRequest(m_predictedBaseElementURL, source, m_clientHintsPreferences, m_pictureData, m_documentParameters->referrerPolicy);
+        OwnPtr<PreloadRequest> request = scanner.createPreloadRequest(m_predictedBaseElementURL, source, m_pictureData, m_documentParameters->referrerPolicy);
         if (request)
             requests.append(request.release());
         return;
@@ -622,6 +614,7 @@ void TokenPreloadScanner::scanCommon(const Token& token, const SegmentedString& 
         return;
     }
     }
+#endif
 }
 
 template<typename Token>
@@ -676,12 +669,15 @@ CachedDocumentParameters::CachedDocumentParameters(Document* document, PassRefPt
     ASSERT(isMainThread());
     ASSERT(document);
     doHtmlPreloadScanning = !document->settings() || document->settings()->doHtmlPreloadScanning();
+#ifndef BLINKIT_CRAWLER_ONLY
+    forCrawler = document->ForCrawler();
     if (givenMediaValues)
         mediaValues = givenMediaValues;
     else
         mediaValues = MediaValuesCached::create(*document);
     ASSERT(mediaValues->isSafeToSendToAnotherThread());
     defaultViewportMinWidth = document->viewportDefaultMinWidth();
+#endif
     viewportMetaZeroValuesQuirk = document->settings() && document->settings()->viewportMetaZeroValuesQuirk();
     viewportMetaEnabled = document->settings() && document->settings()->viewportMetaEnabled();
     referrerPolicy = ReferrerPolicyDefault;
