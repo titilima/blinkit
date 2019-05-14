@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TouchAdjustment.cpp
+// Description: Touch Adjustment Helpers
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies)
  *
@@ -26,7 +37,6 @@
 #include "core/editing/Editor.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
-#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/layout/LayoutBox.h"
 #include "core/layout/LayoutObject.h"
 #include "core/layout/LayoutText.h"
@@ -87,7 +97,7 @@ bool nodeRespondsToTapGesture(Node* node)
         // Tapping on a text field or other focusable item should trigger adjustment, except
         // that iframe elements are hard-coded to support focus but the effect is often invisible
         // so they should be excluded.
-        if (element->isMouseFocusable() && !isHTMLIFrameElement(element))
+        if (element->isMouseFocusable())
             return true;
         // Accept nodes that has a CSS effect when touched.
         if (element->childrenOrSiblingsAffectedByActive() || element->childrenOrSiblingsAffectedByHover())
@@ -237,8 +247,6 @@ static inline Node* parentShadowHostOrOwner(const Node* node)
 {
     if (Node* ancestor = node->parentOrShadowHostNode())
         return ancestor;
-    if (node->isDocumentNode())
-        return toDocument(node)->ownerElement();
     return nullptr;
 }
 
