@@ -37,7 +37,6 @@
 
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
-#include "core/html/HTMLFrameElementBase.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutAnalyzer.h"
 #include "core/layout/LayoutView.h"
@@ -69,10 +68,6 @@ void LayoutPart::willBeDestroyed()
 {
     frameView()->removePart(this);
 
-    Element* element = toElement(node());
-    if (element && element->isFrameOwnerElement())
-        toHTMLFrameOwnerElement(element)->setWidget(nullptr);
-
     LayoutReplaced::willBeDestroyed();
 }
 
@@ -99,12 +94,6 @@ LayoutPart::~LayoutPart()
 
 Widget* LayoutPart::widget() const
 {
-    // Plugin widgets are stored in their DOM node.
-    Element* element = toElement(node());
-
-    if (element && element->isFrameOwnerElement())
-        return toHTMLFrameOwnerElement(element)->ownedWidget();
-
     return nullptr;
 }
 
@@ -118,18 +107,6 @@ PaintLayerType LayoutPart::layerTypeRequired() const
 
 bool LayoutPart::requiresAcceleratedCompositing() const
 {
-    if (!node() || !node()->isFrameOwnerElement())
-        return false;
-
-    HTMLFrameOwnerElement* element = toHTMLFrameOwnerElement(node());
-    if (element->contentFrame() && element->contentFrame()->isRemoteFrame())
-        return true;
-
-    if (Document* contentDocument = element->contentDocument()) {
-        if (LayoutView* view = contentDocument->layoutView())
-            return view->usesCompositing();
-    }
-
     return false;
 }
 
