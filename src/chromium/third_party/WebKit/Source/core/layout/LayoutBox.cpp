@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutBox.cpp
+// Description: LayoutBox Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -33,8 +44,6 @@
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
 #include "core/html/HTMLElement.h"
-#include "core/html/HTMLFrameElementBase.h"
-#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/input/EventHandler.h"
 #include "core/layout/HitTestResult.h"
 #include "core/layout/LayoutAnalyzer.h"
@@ -350,7 +359,7 @@ void LayoutBox::updateFromStyle()
     bool rootLayerScrolls = document().settings() && document().settings()->rootLayerScrolls();
 
     // LayoutView of the main frame is resposible from painting base background.
-    if (isViewObject && !document().ownerElement())
+    if (isViewObject)
         setHasBoxDecorationBackground(true);
 
     setFloating(!isOutOfFlowPositioned() && styleToUse.isFloating());
@@ -501,19 +510,6 @@ void LayoutBox::scrollToOffset(const DoubleSize& offset, ScrollBehavior scrollBe
         layer()->scrollableArea()->scrollToOffset(offset, ScrollOffsetClamped, scrollBehavior);
 }
 
-// Returns true iff we are attempting an autoscroll inside an iframe with scrolling="no".
-static bool isDisallowedAutoscroll(HTMLFrameOwnerElement* ownerElement, FrameView* frameView)
-{
-    if (ownerElement && isHTMLFrameElementBase(*ownerElement)) {
-        HTMLFrameElementBase* frameElementBase = toHTMLFrameElementBase(ownerElement);
-        if (Page* page = frameView->frame().page()) {
-            return page->autoscrollController().autoscrollInProgress()
-                && frameElementBase->scrollingMode() == ScrollbarAlwaysOff;
-        }
-    }
-    return false;
-}
-
 void LayoutBox::scrollRectToVisible(const LayoutRect& rect, const ScrollAlignment& alignX, const ScrollAlignment& alignY, ScrollType scrollType, bool makeVisibleInVisualViewport)
 {
     ASSERT(scrollType == ProgrammaticScroll || scrollType == UserScroll);
@@ -535,25 +531,10 @@ void LayoutBox::scrollRectToVisible(const LayoutRect& rect, const ScrollAlignmen
         newRect = layer()->scrollableArea()->scrollIntoView(rect, alignX, alignY, scrollType);
     } else if (!parentBox && canBeProgramaticallyScrolled()) {
         if (FrameView* frameView = this->frameView()) {
-            HTMLFrameOwnerElement* ownerElement = document().ownerElement();
-            if (!isDisallowedAutoscroll(ownerElement, frameView)) {
-                if (makeVisibleInVisualViewport) {
-                    frameView->scrollableArea()->scrollIntoView(rect, alignX, alignY, scrollType);
-                } else {
-                    frameView->layoutViewportScrollableArea()->scrollIntoView(rect, alignX, alignY, scrollType);
-                }
-                if (ownerElement && ownerElement->layoutObject()) {
-                    if (frameView->safeToPropagateScrollToParent()) {
-                        parentBox = ownerElement->layoutObject()->enclosingBox();
-                        // FIXME: This doesn't correctly convert the rect to
-                        // absolute coordinates in the parent.
-                        newRect.setX(rect.x() - frameView->scrollX() + frameView->x());
-                        newRect.setY(rect.y() - frameView->scrollY() + frameView->y());
-                    } else {
-                        parentBox = nullptr;
-                    }
-                }
-            }
+            if (makeVisibleInVisualViewport)
+                frameView->scrollableArea()->scrollIntoView(rect, alignX, alignY, scrollType);
+            else
+                frameView->layoutViewportScrollableArea()->scrollIntoView(rect, alignX, alignY, scrollType);
         }
     }
 
@@ -848,12 +829,8 @@ IntSize LayoutBox::calculateAutoscrollDirection(const IntPoint& pointInRootFrame
 
 LayoutBox* LayoutBox::findAutoscrollable(LayoutObject* layoutObject)
 {
-    while (layoutObject && !(layoutObject->isBox() && toLayoutBox(layoutObject)->canAutoscroll())) {
-        if (!layoutObject->parent() && layoutObject->node() == layoutObject->document() && layoutObject->document().ownerElement())
-            layoutObject = layoutObject->document().ownerElement()->layoutObject();
-        else
-            layoutObject = layoutObject->parent();
-    }
+    while (layoutObject && !(layoutObject->isBox() && toLayoutBox(layoutObject)->canAutoscroll()))
+        layoutObject = layoutObject->parent();
 
     return layoutObject && layoutObject->isBox() ? toLayoutBox(layoutObject) : 0;
 }
@@ -1459,8 +1436,6 @@ bool LayoutBox::intersectsVisibleViewport()
 {
     LayoutRect rect = visualOverflowRect();
     LayoutView* layoutView = view();
-    while (layoutView->frame()->ownerLayoutObject())
-        layoutView = layoutView->frame()->ownerLayoutObject()->view();
     mapToVisibleRectInAncestorSpace(layoutView, rect, nullptr);
     return rect.intersects(LayoutRect(layoutView->frameView()->scrollableArea()->visibleContentRectDouble()));
 }
