@@ -2787,8 +2787,9 @@ void PaintLayer::markCompositingContainerChainForNeedsRepaint()
         }
 
         PaintLayer* container = layer->compositingContainer();
-        if (container->m_needsRepaint)
+        if (nullptr == container || container->m_needsRepaint)
             break;
+
         container->m_needsRepaint = true;
         layer = container;
     }
