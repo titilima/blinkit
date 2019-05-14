@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PageAnimator.cpp
+// Description: PageAnimator Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -38,10 +49,7 @@ void PageAnimator::serviceScriptedAnimations(double monotonicAnimationStartTime)
     clock().updateTime(monotonicAnimationStartTime);
 
     WillBeHeapVector<RefPtrWillBeMember<Document>> documents;
-    for (Frame* frame = m_page->mainFrame(); frame; frame = frame->tree().traverseNext()) {
-        if (frame->isLocalFrame())
-            documents.append(toLocalFrame(frame)->document());
-    }
+    documents.append(toLocalFrame(m_page->mainFrame())->document());
 
     for (auto& document : documents) {
         DocumentAnimations::updateAnimationTimingForAnimationFrame(*document);
