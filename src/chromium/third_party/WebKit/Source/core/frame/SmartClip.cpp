@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: SmartClip.cpp
+// Description: SmartClip Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -35,7 +46,6 @@
 #include "core/dom/NodeTraversal.h"
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/FrameView.h"
-#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/layout/LayoutObject.h"
 #include "core/page/Page.h"
 #include "wtf/text/StringBuilder.h"
@@ -54,8 +64,6 @@ static IntRect convertToContentCoordinatesWithoutCollapsingToZero(const IntRect&
 
 static Node* nodeInsideFrame(Node* node)
 {
-    if (node->isFrameOwnerElement())
-        return toHTMLFrameOwnerElement(node)->contentDocument();
     return nullptr;
 }
 
