@@ -51,7 +51,6 @@
 #include "core/dom/shadow/InsertionPoint.h"
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/editing/FrameSelection.h"
-#include "core/editing/spellcheck/SpellChecker.h"
 #include "core/events/BeforeTextInsertedEvent.h"
 #include "core/events/KeyboardEvent.h"
 #include "core/events/MouseEvent.h"
@@ -372,13 +371,6 @@ void HTMLInputElement::updateFocusAppearance(SelectionBehaviorOnFocus selectionB
 void HTMLInputElement::beginEditing()
 {
     ASSERT(document().isActive());
-    if (!document().isActive())
-        return;
-
-    if (!isTextField())
-        return;
-
-    document().frame()->spellChecker().didBeginEditing(this);
 }
 
 void HTMLInputElement::endEditing()
@@ -391,7 +383,6 @@ void HTMLInputElement::endEditing()
         return;
 
     LocalFrame* frame = document().frame();
-    frame->spellChecker().didEndEditingOnTextField(this);
     frame->host()->chromeClient().didEndEditingOnTextField(*this);
 }
 
