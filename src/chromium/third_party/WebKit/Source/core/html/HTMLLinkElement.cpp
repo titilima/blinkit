@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLLinkElement.cpp
+// Description: HTMLLinkElement Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -42,10 +53,7 @@
 #include "core/frame/LocalFrame.h"
 #include "core/frame/SubresourceIntegrity.h"
 #include "core/frame/UseCounter.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/html/CrossOriginAttribute.h"
-#include "core/html/LinkManifest.h"
-#include "core/html/imports/LinkImport.h"
 #include "core/inspector/ConsoleMessage.h"
 #include "core/loader/FrameLoader.h"
 #include "core/loader/FrameLoaderClient.h"
@@ -226,9 +234,9 @@ LinkResource* HTMLLinkElement::linkResourceToProcess()
 
     if (!m_link) {
         if (m_relAttribute.isImport()) {
-            m_link = LinkImport::create(this);
+            ASSERT(!m_relAttribute.isImport()); // Not supported in BlinKit!
         } else if (m_relAttribute.isManifest()) {
-            m_link = LinkManifest::create(this);
+            ASSERT(!m_relAttribute.isManifest()); // Not supported in BlinKit!
         } else {
             OwnPtrWillBeRawPtr<LinkStyle> link = LinkStyle::create(this);
             if (fastHasAttribute(disabledAttr)) {
@@ -251,15 +259,13 @@ LinkStyle* HTMLLinkElement::linkStyle() const
 
 LinkImport* HTMLLinkElement::linkImport() const
 {
-    if (!m_link || m_link->type() != LinkResource::Import)
-        return nullptr;
-    return static_cast<LinkImport*>(m_link.get());
+    ASSERT_NOT_REACHED();
+    return nullptr;
 }
 
 Document* HTMLLinkElement::import() const
 {
-    if (LinkImport* link = linkImport())
-        return link->importedDocument();
+    ASSERT_NOT_REACHED();
     return nullptr;
 }
 
@@ -699,8 +705,6 @@ void LinkStyle::process()
         if (!m_owner->shouldLoadLink())
             return;
         if (!document().securityOrigin()->canDisplay(builder.url()))
-            return;
-        if (!document().contentSecurityPolicy()->allowImageFromSource(builder.url()))
             return;
         if (document().frame() && document().frame()->loader().client())
             document().frame()->loader().client()->dispatchDidChangeIcons(m_owner->relAttribute().iconType());

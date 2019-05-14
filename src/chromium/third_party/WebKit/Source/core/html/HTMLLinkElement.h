@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLLinkElement.h
+// Description: HTMLLinkElement Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -157,7 +168,7 @@ public:
 
     bool styleSheetIsLoading() const;
 
-    bool isImport() const { return linkImport(); }
+    bool isImport() const { return false; }
     bool isDisabled() const { return linkStyle() && linkStyle()->isDisabled(); }
     bool isEnabledViaScript() const { return linkStyle() && linkStyle()->isEnabledViaScript(); }
 
