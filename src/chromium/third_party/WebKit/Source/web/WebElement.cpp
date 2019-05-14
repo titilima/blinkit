@@ -44,7 +44,6 @@
 #include "bindings/core/v8/ExceptionState.h"
 #include "core/HTMLNames.h"
 #include "core/dom/Element.h"
-#include "core/dom/custom/CustomElementProcessingStack.h"
 #include "core/html/HTMLTextFormControlElement.h"
 #include "platform/graphics/Image.h"
 #include "public/platform/WebRect.h"
@@ -110,9 +109,6 @@ WebString WebElement::getAttribute(const WebString& attrName) const
 
 bool WebElement::setAttribute(const WebString& attrName, const WebString& attrValue)
 {
-    // TODO: Custom element callbacks need to be called on WebKit API methods that
-    // mutate the DOM in any way.
-    CustomElementProcessingStack::CallbackDeliveryScope deliverCustomElementCallbacks;
     TrackExceptionState exceptionState;
     unwrap<Element>()->setAttribute(attrName, attrValue, exceptionState);
     return !exceptionState.hadException();
