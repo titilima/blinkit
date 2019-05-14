@@ -23,6 +23,7 @@ class String;
 
 namespace blink {
 
+class Animation;
 struct FetchInitiatorInfo;
 class CharacterData;
 class Document;
@@ -53,24 +54,16 @@ typedef int InspectorInstrumentationCookie;
 namespace InspectorInstrumentation {
 
 inline void activeStyleSheetsUpdated(Document *) {}
-inline void animationPlayStateChanged(Document *, Animation *, Animation::AnimationPlayState, Animation::AnimationPlayState) {}
-inline void applyUserAgentOverride(LocalFrame *, String *) {}
+inline void animationPlayStateChanged(Document *, Animation *, int, int) {}
 inline void characterDataModified(CharacterData *) {}
-inline bool collectingHTMLParseErrors(Document *) { return false; }
-inline void continueAfterXFrameOptionsDenied(LocalFrame *, DocumentLoader *, unsigned long, const ResourceResponse &) {}
-inline void continueWithPolicyIgnore(LocalFrame *, DocumentLoader *, unsigned long, const ResourceResponse &) {}
-inline void didBlockRequest(LocalFrame *, const ResourceRequest &, DocumentLoader *, const FetchInitiatorInfo &, ResourceRequestBlockedReason) {}
 inline void didCancelAnimationFrame(ExecutionContext *, int) {}
 inline void didClearAllMutationRecords(ExecutionContext *, MutationObserver *) {}
-inline void didClearDocumentOfWindowObject(LocalFrame *) {}
-inline void didCommitLoad(LocalFrame *, DocumentLoader *) {}
 inline void didCreateAnimation(Document *, unsigned) {}
 inline void didDeliverMutationRecords(ExecutionContext *) {}
 inline void didEnqueueEvent(EventTarget *, Event *) {}
 inline void didEnqueueMutationRecord(ExecutionContext *, MutationObserver *) {}
 inline void didFailLoading(LocalFrame *frame, unsigned long, const ResourceError &) {}
 inline void didFinishEventSourceRequest(ExecutionContext *, ThreadableLoaderClient *) {}
-inline void didFinishLoading(LocalFrame *, unsigned long, double, int64_t) {}
 inline void didFireAnimationFrame(InspectorInstrumentationCookie) {}
 inline void didHandleEvent(InspectorInstrumentationCookie) {}
 inline void didInsertDOMNode(Node *) {}
@@ -83,7 +76,6 @@ inline void didPostExecutionContextTask(ExecutionContext *, ExecutionContextTask
 inline void didPushShadowRoot(Element *, ShadowRoot *) {}
 inline void didRecalculateStyle(InspectorInstrumentationCookie, int) {}
 inline void didReceiveCORSRedirectResponse(LocalFrame *, unsigned long, DocumentLoader *, const ResourceResponse &, ResourceLoader *) {}
-inline void didReceiveData(LocalFrame *, unsigned long, const char *, int, int) {}
 inline void didReceiveResourceResponse(LocalFrame *, unsigned long, DocumentLoader *, const ResourceResponse &, ResourceLoader *) {}
 inline void didRemoveDOMAttr(Element *, const QualifiedName &) {}
 inline void didRemoveEvent(EventTarget *, Event *) {}
@@ -91,23 +83,16 @@ inline void didRequestAnimationFrame(ExecutionContext *, int) {}
 inline void didResizeMainFrame(LocalFrame *) {}
 inline void didRunJavaScriptDialog(InspectorInstrumentationCookie, bool) {}
 inline void didScheduleStyleRecalculation(Document *) {}
-inline void didStartProvisionalLoad(LocalFrame *) {}
 inline void didUpdateLayout(LocalFrame *) {}
 inline void documentDetached(Document *) {}
 inline void documentThreadableLoaderStartedLoadingForClient(ExecutionContext *, unsigned long, ThreadableLoaderClient *) {}
-inline void domContentLoadedEventFired(LocalFrame *) {}
 inline bool forcePseudoState(Element *, CSSSelector::PseudoType) { return false; }
 inline void frameAttachedToParent(LocalFrame *) {}
-inline void frameClearedScheduledNavigation(LocalFrame *) {}
 inline void frameDetachedFromParent(LocalFrame *) {}
-inline void frameScheduledNavigation(LocalFrame *, double) {}
 inline void frameStartedLoading(LocalFrame *) {}
 inline void frameStoppedLoading(LocalFrame *) {}
 inline bool hasFrontends(void) { return false; }
-inline bool isDebuggerPaused(LocalFrame *) { return false; }
 inline void layerTreeDidChange(LocalFrame *) {}
-inline void loadEventFired(LocalFrame *) {}
-inline void markResourceAsCached(LocalFrame *, unsigned long) {}
 inline void mediaQueryResultChanged(Document *) {}
 inline void networkStateChanged(LocalFrame *, bool) {}
 inline void pseudoElementCreated(PseudoElement *) {}
