@@ -123,7 +123,6 @@ Page* Frame::page() const
 
 FrameHost* Frame::host() const
 {
-    ASSERT(!m_client->IsCrawler());
 #ifdef BLINKIT_CRAWLER_ONLY
     return nullptr;
 #else
