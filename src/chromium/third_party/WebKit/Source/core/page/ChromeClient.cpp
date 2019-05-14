@@ -37,7 +37,6 @@
 #include "core/html/HTMLInputElement.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/layout/HitTestResult.h"
-#include "core/page/FrameTree.h"
 #include "core/page/ScopedPageLoadDeferrer.h"
 #include "core/page/WindowFeatures.h"
 #include "platform/geometry/IntRect.h"
@@ -68,13 +67,9 @@ void ChromeClient::setWindowRectWithAdjustment(const IntRect& pendingRect)
 
 bool ChromeClient::canOpenModalIfDuringPageDismissal(Frame* mainFrame, ChromeClient::DialogType dialog, const String& message)
 {
-    for (Frame* frame = mainFrame; frame; frame = frame->tree().traverseNext()) {
-        if (!frame->isLocalFrame())
-            continue;
-        Document::PageDismissalType dismissal = toLocalFrame(frame)->document()->pageDismissalEventBeingDispatched();
-        if (dismissal != Document::NoDismissal)
-            return shouldOpenModalDialogDuringPageDismissal(dialog, message, dismissal);
-    }
+    Document::PageDismissalType dismissal = toLocalFrame(mainFrame)->document()->pageDismissalEventBeingDispatched();
+    if (dismissal != Document::NoDismissal)
+        return shouldOpenModalDialogDuringPageDismissal(dialog, message, dismissal);
     return true;
 }
 
@@ -112,7 +107,7 @@ bool ChromeClient::openBeforeUnloadConfirmPanel(const String& message, LocalFram
 bool ChromeClient::openJavaScriptAlert(LocalFrame* frame, const String& message)
 {
     ASSERT(frame);
-    if (!canOpenModalIfDuringPageDismissal(frame->tree().top(), ChromeClient::AlertDialog, message))
+    if (!canOpenModalIfDuringPageDismissal(frame, ChromeClient::AlertDialog, message))
         return false;
     return openJavaScriptDialog(frame, message, ChromeClient::AlertDialog, [this, frame, &message]() {
         return openJavaScriptAlertDelegate(frame, message);
@@ -122,7 +117,7 @@ bool ChromeClient::openJavaScriptAlert(LocalFrame* frame, const String& message)
 bool ChromeClient::openJavaScriptConfirm(LocalFrame* frame, const String& message)
 {
     ASSERT(frame);
-    if (!canOpenModalIfDuringPageDismissal(frame->tree().top(), ChromeClient::ConfirmDialog, message))
+    if (!canOpenModalIfDuringPageDismissal(frame, ChromeClient::ConfirmDialog, message))
         return false;
     return openJavaScriptDialog(frame, message, ChromeClient::ConfirmDialog, [this, frame, &message]() {
         return openJavaScriptConfirmDelegate(frame, message);
@@ -132,7 +127,7 @@ bool ChromeClient::openJavaScriptConfirm(LocalFrame* frame, const String& messag
 bool ChromeClient::openJavaScriptPrompt(LocalFrame* frame, const String& prompt, const String& defaultValue, String& result)
 {
     ASSERT(frame);
-    if (!canOpenModalIfDuringPageDismissal(frame->tree().top(), ChromeClient::PromptDialog, prompt))
+    if (!canOpenModalIfDuringPageDismissal(frame, ChromeClient::PromptDialog, prompt))
         return false;
     return openJavaScriptDialog(frame, prompt, ChromeClient::PromptDialog, [this, frame, &prompt, &defaultValue, &result]() {
         return openJavaScriptPromptDelegate(frame, prompt, defaultValue, result);
@@ -141,9 +136,6 @@ bool ChromeClient::openJavaScriptPrompt(LocalFrame* frame, const String& prompt,
 
 void ChromeClient::mouseDidMoveOverElement(const HitTestResult& result)
 {
-    if (result.innerNode() && result.innerNode()->document().isDNSPrefetchEnabled())
-        prefetchDNS(result.absoluteLinkURL().host());
-
     showMouseOverURL(result);
 
     setToolTip(result);
