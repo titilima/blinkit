@@ -57,7 +57,6 @@
 #include "core/editing/commands/TypingCommand.h"
 #include "core/editing/commands/UnlinkCommand.h"
 #include "core/editing/serializers/Serialization.h"
-#include "core/editing/spellcheck/SpellChecker.h"
 #include "core/events/Event.h"
 #include "core/frame/FrameHost.h"
 #include "core/frame/FrameView.h"
@@ -518,7 +517,6 @@ static bool executeForwardDelete(LocalFrame& frame, Event*, EditorCommandSource 
 
 static bool executeIgnoreSpelling(LocalFrame& frame, Event*, EditorCommandSource, const String&)
 {
-    frame.spellChecker().ignoreSpelling();
     return true;
 }
 
@@ -1719,11 +1717,9 @@ bool Editor::executeCommand(const String& commandName)
         return command(AtomicString("ForwardDelete")).execute();
     if (commandName == "AdvanceToNextMisspelling") {
         // Wee need to pass false here or else the currently selected word will never be skipped.
-        spellChecker().advanceToNextMisspelling(false);
         return true;
     }
     if (commandName == "ToggleSpellPanel") {
-        spellChecker().showSpellingGuessPanel();
         return true;
     }
     return command(commandName).execute();
@@ -1739,7 +1735,6 @@ bool Editor::executeCommand(const String& commandName, const String& value)
         return frame().eventHandler().bubblingScroll(ScrollDownIgnoringWritingMode, ScrollByDocument);
 
     if (commandName == "showGuessPanel") {
-        spellChecker().showSpellingGuessPanel();
         return true;
     }
 
