@@ -65,7 +65,7 @@ DocumentWriter::DocumentWriter(Document* document, ParserSynchronizationPolicy p
     if (m_document->ForCrawler())
         return;
     if (m_document->frame()) {
-        if (FrameView* view = toLocalFrame(m_document->frame())->view())
+        if (FrameView* view = m_document->frame()->view())
             view->setContentsSize(IntSize());
     }
 #endif
