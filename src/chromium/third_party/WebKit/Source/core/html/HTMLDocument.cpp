@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HTMLDocument.cpp
+// Description: HTMLDocument Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -59,7 +70,6 @@
 #include "core/frame/LocalFrame.h"
 #include "core/html/HTMLBodyElement.h"
 #include "core/page/FocusController.h"
-#include "core/page/FrameTree.h"
 #include "core/page/Page.h"
 #include "wtf/text/StringBuilder.h"
 
@@ -71,7 +81,7 @@ HTMLDocument::HTMLDocument(const DocumentInit& initializer, DocumentClassFlags e
     : Document(initializer, HTMLDocumentClass | extendedDocumentClasses)
 {
     clearXMLVersion();
-    if (isSrcdocDocument() || initializer.importsController()) {
+    if (isSrcdocDocument()) {
         ASSERT(inNoQuirksMode());
         lockCompatibilityMode();
     }
@@ -158,7 +168,7 @@ void HTMLDocument::setVlinkColor(const AtomicString& value)
 
 PassRefPtrWillBeRawPtr<Document> HTMLDocument::cloneDocumentWithoutChildren()
 {
-    return create(DocumentInit(url()).withRegistrationContext(registrationContext()));
+    return create(DocumentInit(url()));
 }
 
 // --------------------------------------------------------------------------
