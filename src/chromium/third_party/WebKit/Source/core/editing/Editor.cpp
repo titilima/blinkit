@@ -67,7 +67,6 @@
 #include "core/editing/iterators/SearchBuffer.h"
 #include "core/editing/markers/DocumentMarkerController.h"
 #include "core/editing/serializers/Serialization.h"
-#include "core/editing/spellcheck/SpellChecker.h"
 #include "core/events/ClipboardEvent.h"
 #include "core/events/KeyboardEvent.h"
 #include "core/events/ScopedEventQueue.h"
@@ -513,10 +512,6 @@ void Editor::replaceSelectionWithFragment(PassRefPtrWillBeRawPtr<DocumentFragmen
     ASSERT(frame().document());
     ReplaceSelectionCommand::create(*frame().document(), fragment, options, EditActionPaste)->apply();
     revealSelectionAfterEditingOperation();
-
-    if (frame().selection().isInPasswordField() || !spellChecker().isContinuousSpellCheckingEnabled())
-        return;
-    spellChecker().chunkAndMarkAllMisspellingsAndBadGrammar(frame().selection().rootEditableElement());
 }
 
 void Editor::replaceSelectionWithText(const String& text, bool selectReplacement, bool smartReplace)
@@ -545,7 +540,6 @@ void Editor::notifyComponentsOnChangedSelection(const VisibleSelection& oldSelec
 
 void Editor::respondToChangedContents(const VisibleSelection& endingSelection)
 {
-    spellChecker().updateMarkersForWordsAffectedByEditing(true);
     client().respondToChangedContents();
 }
 
@@ -754,8 +748,6 @@ bool Editor::insertTextWithoutSendingTextEvent(const String& text, bool selectIn
     if (!selection.isContentEditable())
         return false;
 
-    spellChecker().updateMarkersForWordsAffectedByEditing(isSpaceOrNewline(text[0]));
-
     // Get the selection to use for the event that triggered this insertText.
     // If the event handler changed the selection, we may want to use a different selection
     // that is contained in the event target.
@@ -820,7 +812,6 @@ void Editor::cut()
         return;
     // TODO(yosin) We should use early return style here.
     if (shouldDeleteRange(selectedRange())) {
-        spellChecker().updateMarkersForWordsAffectedByEditing(true);
         if (enclosingTextFormControl(frame().selection().start())) {
             String plainText = frame().selectedTextForClipboard();
             Pasteboard::generalPasteboard()->writePlainText(plainText,
@@ -857,7 +848,6 @@ void Editor::paste()
         return; // DHTML did the whole operation
     if (!canPaste())
         return;
-    spellChecker().updateMarkersForWordsAffectedByEditing(false);
     ResourceFetcher* loader = frame().document()->fetcher();
     ResourceCacheValidationSuppressor validationSuppressor(loader);
     if (frame().selection().isContentRichlyEditable())
@@ -872,7 +862,6 @@ void Editor::pasteAsPlainText()
         return;
     if (!canPaste())
         return;
-    spellChecker().updateMarkersForWordsAffectedByEditing(false);
     pasteAsPlainTextWithPasteboard(Pasteboard::generalPasteboard());
 }
 
@@ -1249,14 +1238,8 @@ void Editor::setMarkedTextMatchesAreHighlighted(bool flag)
 
 void Editor::respondToChangedSelection(const VisibleSelection& oldSelection, FrameSelection::SetSelectionOptions options)
 {
-    spellChecker().respondToChangedSelection(oldSelection, options);
     frame().inputMethodController().cancelCompositionIfSelectionIsInvalid();
     notifyComponentsOnChangedSelection(oldSelection, options);
-}
-
-SpellChecker& Editor::spellChecker() const
-{
-    return frame().spellChecker();
 }
 
 void Editor::toggleOverwriteModeEnabled()
