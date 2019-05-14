@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CSSParserMode.cpp
+// Description: CSS Parser Helpers
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -28,7 +39,6 @@
 
 #include "core/dom/Document.h"
 #include "core/frame/Settings.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
 
 namespace blink {
 
@@ -51,10 +61,6 @@ CSSParserContext::CSSParserContext(const Document& document, UseCounter* useCoun
     , m_shouldCheckContentSecurityPolicy(DoNotCheckContentSecurityPolicy)
     , m_useCounter(useCounter)
 {
-    if (ContentSecurityPolicy::shouldBypassMainWorld(&document))
-        m_shouldCheckContentSecurityPolicy = DoNotCheckContentSecurityPolicy;
-    else
-        m_shouldCheckContentSecurityPolicy = CheckContentSecurityPolicy;
 }
 
 CSSParserContext::CSSParserContext(const CSSParserContext& other, UseCounter* useCounter)
