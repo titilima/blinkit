@@ -40,7 +40,6 @@
 
 #include "core/CoreExport.h"
 #include "core/dom/ExecutionContextTask.h"
-#include "core/frame/csp/ContentSecurityPolicy.h"
 #include "core/workers/WorkerGlobalScope.h"
 #include "core/workers/WorkerLoaderProxy.h"
 #include "platform/WebThreadSupportingGC.h"
