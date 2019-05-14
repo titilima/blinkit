@@ -172,15 +172,12 @@ public:
             || tagName == HTMLNames::figureTag
             || tagName == HTMLNames::footerTag
             || tagName == HTMLNames::formTag
-            || tagName == HTMLNames::frameTag
-            || tagName == HTMLNames::framesetTag
             || isNumberedHeaderElement()
             || tagName == HTMLNames::headTag
             || tagName == HTMLNames::headerTag
             || tagName == HTMLNames::hgroupTag
             || tagName == HTMLNames::hrTag
             || tagName == HTMLNames::htmlTag
-            || tagName == HTMLNames::iframeTag
             || tagName == HTMLNames::imgTag
             || tagName == HTMLNames::inputTag
             || tagName == HTMLNames::liTag
