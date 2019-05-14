@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: InlineBox.cpp
+// Description: InlineBox Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2004, 2005, 2006, 2007 Apple Inc. All rights reserved.
  *
@@ -98,44 +109,6 @@ IntRect InlineBox::visualRect() const
     // TODO(chrishtr): tighten these bounds.
     return layoutObject().visualRect();
 }
-
-#ifndef NDEBUG
-void InlineBox::showTreeForThis() const
-{
-    layoutObject().showTreeForThis();
-}
-
-void InlineBox::showLineTreeForThis() const
-{
-    layoutObject().containingBlock()->showLineTreeAndMark(this, "*");
-}
-
-void InlineBox::showLineTreeAndMark(const InlineBox* markedBox1, const char* markedLabel1, const InlineBox* markedBox2, const char* markedLabel2, const LayoutObject* obj, int depth) const
-{
-    int printedCharacters = 0;
-    if (this == markedBox1)
-        printedCharacters += fprintf(stderr, "%s", markedLabel1);
-    if (this == markedBox2)
-        printedCharacters += fprintf(stderr, "%s", markedLabel2);
-    if (&layoutObject() == obj)
-        printedCharacters += fprintf(stderr, "*");
-    for (; printedCharacters < depth * 2; printedCharacters++)
-        fputc(' ', stderr);
-
-    showBox(printedCharacters);
-}
-
-void InlineBox::showBox(int printedCharacters) const
-{
-    printedCharacters += fprintf(stderr, "%s %p", boxName(), this);
-    for (; printedCharacters < showTreeCharacterOffset; printedCharacters++)
-        fputc(' ', stderr);
-    fprintf(stderr, "\t%s %p {pos=%g,%g size=%g,%g} baseline=%i/%i\n",
-        layoutObject().decoratedName().ascii().data(), &layoutObject(),
-        x().toFloat(), y().toFloat(), width().toFloat(), height().toFloat(),
-        baselinePosition(AlphabeticBaseline), baselinePosition(IdeographicBaseline));
-}
-#endif
 
 LayoutUnit InlineBox::logicalHeight() const
 {
@@ -399,23 +372,3 @@ void InlineBox::invalidateDisplayItemClientsRecursively()
 }
 
 } // namespace blink
-
-#ifndef NDEBUG
-
-void showTree(const blink::InlineBox* b)
-{
-    if (b)
-        b->showTreeForThis();
-    else
-        fprintf(stderr, "Cannot showTree for (nil) InlineBox.\n");
-}
-
-void showLineTree(const blink::InlineBox* b)
-{
-    if (b)
-        b->showLineTreeForThis();
-    else
-        fprintf(stderr, "Cannot showLineTree for (nil) InlineBox.\n");
-}
-
-#endif

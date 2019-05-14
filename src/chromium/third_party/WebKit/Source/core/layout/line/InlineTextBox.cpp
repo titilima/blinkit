@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: InlineTextBox.cpp
+// Description: InlineTextBox Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * (C) 2000 Dirk Mueller (mueller@kde.org)
@@ -614,25 +625,5 @@ String InlineTextBox::text() const
 {
     return lineLayoutItem().text().substring(start(), len());
 }
-
-#ifndef NDEBUG
-
-void InlineTextBox::showBox(int printedCharacters) const
-{
-    String value = text();
-    value.replaceWithLiteral('\\', "\\\\");
-    value.replaceWithLiteral('\n', "\\n");
-    printedCharacters += fprintf(stderr, "%s %p", boxName(), this);
-    for (; printedCharacters < showTreeCharacterOffset; printedCharacters++)
-        fputc(' ', stderr);
-    const LineLayoutText obj = lineLayoutItem();
-    printedCharacters = fprintf(stderr, "\t%s %p", obj.name(), obj.debugPointer());
-    const int layoutObjectCharacterOffset = 75;
-    for (; printedCharacters < layoutObjectCharacterOffset; printedCharacters++)
-        fputc(' ', stderr);
-    fprintf(stderr, "(%d,%d) \"%s\"\n", start(), start() + len(), value.utf8().data());
-}
-
-#endif
 
 } // namespace blink

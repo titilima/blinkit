@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: InlineFlowBox.cpp
+// Description: InlineFlowBox Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
  *
@@ -1291,17 +1302,6 @@ const char* InlineFlowBox::boxName() const
 {
     return "InlineFlowBox";
 }
-
-#ifndef NDEBUG
-
-void InlineFlowBox::showLineTreeAndMark(const InlineBox* markedBox1, const char* markedLabel1, const InlineBox* markedBox2, const char* markedLabel2, const LayoutObject* obj, int depth) const
-{
-    InlineBox::showLineTreeAndMark(markedBox1, markedLabel1, markedBox2, markedLabel2, obj, depth);
-    for (const InlineBox* box = firstChild(); box; box = box->nextOnLine())
-        box->showLineTreeAndMark(markedBox1, markedLabel1, markedBox2, markedLabel2, obj, depth + 1);
-}
-
-#endif
 
 #if ENABLE(ASSERT)
 void InlineFlowBox::checkConsistency() const

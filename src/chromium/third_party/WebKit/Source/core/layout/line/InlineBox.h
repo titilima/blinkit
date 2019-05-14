@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: InlineBox.h
+// Description: InlineBox Class
+//      Author: Ziming Li
+//     Created: 2019-05-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2009, 2010, 2011 Apple Inc. All rights reserved.
  *
@@ -93,14 +104,6 @@ public:
     // InlineBoxes are allocated out of the rendering partition.
     void* operator new(size_t);
     void operator delete(void*);
-
-#ifndef NDEBUG
-    void showTreeForThis() const;
-    void showLineTreeForThis() const;
-
-    virtual void showBox(int = 0) const;
-    virtual void showLineTreeAndMark(const InlineBox* = nullptr, const char* = nullptr, const InlineBox* = nullptr, const char* = nullptr, const LayoutObject* = nullptr, int = 0) const;
-#endif
 
     virtual const char* boxName() const;
 
@@ -453,11 +456,5 @@ inline void InlineBox::setHasBadParent()
 DEFINE_COMPARISON_OPERATORS_WITH_REFERENCES(InlineBox)
 
 } // namespace blink
-
-#ifndef NDEBUG
-// Outside the WebCore namespace for ease of invocation from gdb.
-void showTree(const blink::InlineBox*);
-void showLineTree(const blink::InlineBox*);
-#endif
 
 #endif // InlineBox_h
