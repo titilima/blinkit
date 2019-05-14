@@ -267,7 +267,7 @@ void ImageLoader::setImageWithoutConsideringPendingLoadEvent(ImageResource* newI
         imageResource->resetAnimation();
 }
 
-static void configureRequest(FetchRequest& request, ImageLoader::BypassMainWorldBehavior bypassBehavior, Element& element, const ClientHintsPreferences& clientHintsPreferences)
+static void configureRequest(FetchRequest& request, ImageLoader::BypassMainWorldBehavior bypassBehavior, Element& element)
 {
     if (bypassBehavior == ImageLoader::BypassMainWorldCSP)
         request.setContentSecurityCheck(DoNotCheckContentSecurityPolicy);
@@ -275,9 +275,6 @@ static void configureRequest(FetchRequest& request, ImageLoader::BypassMainWorld
     CrossOriginAttributeValue crossOrigin = crossOriginAttributeValue(element.fastGetAttribute(HTMLNames::crossoriginAttr));
     if (crossOrigin != CrossOriginAttributeNotSet)
         request.setCrossOriginAccessControl(element.document().securityOrigin(), crossOrigin);
-
-    if (clientHintsPreferences.shouldSendResourceWidth() && isHTMLImageElement(element))
-        request.setResourceWidth(toHTMLImageElement(element).resourceWidth());
 }
 
 inline void ImageLoader::dispatchErrorEvent()
@@ -346,7 +343,7 @@ void ImageLoader::doUpdateFromElement(BypassMainWorldBehavior bypassBehavior, Up
         if (isHTMLPictureElement(element()->parentNode()) || !element()->fastGetAttribute(HTMLNames::srcsetAttr).isNull())
             resourceRequest.setRequestContext(WebURLRequest::RequestContextImageSet);
         FetchRequest request(resourceRequest, element()->localName(), resourceLoaderOptions);
-        configureRequest(request, bypassBehavior, *m_element, document.clientHintsPreferences());
+        configureRequest(request, bypassBehavior, *m_element);
 
         // Prevent the immediate creation of a ResourceLoader (and therefore a network
         // request) for ImageDocument loads. In this case, the image contents have already
