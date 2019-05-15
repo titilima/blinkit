@@ -138,16 +138,12 @@ void HTMLScriptRunner::executePendingScriptAndDispatchEvent(PendingScript& pendi
     pendingScript.stopWatchingForLoad(this);
 
     if (!isExecutingScript()) {
-        assert(false); // BKTODO:
-#if 0
-        Microtask::performCheckpoint(V8PerIsolateData::mainThreadIsolate());
         if (pendingScriptType == PendingScript::ParsingBlocking) {
             m_hasScriptsWaitingForResources = !m_document->isScriptExecutionReady();
             // The parser cannot be unblocked as a microtask requested another resource
             if (m_hasScriptsWaitingForResources)
                 return;
         }
-#endif
     }
 
     // Clear the pending script before possible rentrancy from executeScript()
@@ -355,12 +351,6 @@ void HTMLScriptRunner::runScript(Element* script, const TextPosition& scriptStar
             return;
 
         ASSERT(scriptLoader->isParserInserted());
-
-        assert(false); // BKTODO:
-#if 0
-        if (!isExecutingScript())
-            Microtask::performCheckpoint(V8PerIsolateData::mainThreadIsolate());
-#endif
 
         InsertionPointRecord insertionPointRecord(m_host->inputStream());
         NestingLevelIncrementer nestingLevelIncrementer(m_scriptNestingLevel);
