@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LinkResource.cpp
+// Description: LinkResource Class
+//      Author: Ziming Li
+//     Created: 2019-05-16
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -33,7 +44,6 @@
 #include "core/HTMLNames.h"
 #include "core/dom/Document.h"
 #include "core/html/HTMLLinkElement.h"
-#include "core/html/imports/HTMLImportsController.h"
 
 namespace blink {
 
@@ -50,15 +60,12 @@ LinkResource::~LinkResource()
 
 bool LinkResource::shouldLoadResource() const
 {
-    return m_owner->document().frame() || m_owner->document().importsController();
+    return m_owner->document().frame();
 }
 
 LocalFrame* LinkResource::loadingFrame() const
 {
-    HTMLImportsController* importsController = m_owner->document().importsController();
-    if (!importsController)
-        return m_owner->document().frame();
-    return importsController->master()->frame();
+    return m_owner->document().frame();
 }
 
 DEFINE_TRACE(LinkResource)
