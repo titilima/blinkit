@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TreeScopeEventContext.cpp
+// Description: TreeScopeEventContext Class
+//      Author: Ziming Li
+//     Created: 2019-05-16
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All Rights Reserved.
  *
@@ -74,12 +85,14 @@ WillBeHeapVector<RefPtrWillBeMember<EventTarget>>& TreeScopeEventContext::ensure
     return *m_eventPath;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 TouchEventContext* TreeScopeEventContext::ensureTouchEventContext()
 {
     if (!m_touchEventContext)
         m_touchEventContext = TouchEventContext::create();
     return m_touchEventContext.get();
 }
+#endif
 
 PassRefPtrWillBeRawPtr<TreeScopeEventContext> TreeScopeEventContext::create(TreeScope& treeScope)
 {
@@ -104,7 +117,9 @@ DEFINE_TRACE(TreeScopeEventContext)
     visitor->trace(m_target);
     visitor->trace(m_relatedTarget);
     visitor->trace(m_eventPath);
+#ifndef BLINKIT_CRAWLER_ONLY
     visitor->trace(m_touchEventContext);
+#endif
     visitor->trace(m_containingClosedShadowTree);
 #if ENABLE(OILPAN)
     visitor->trace(m_children);
@@ -114,7 +129,11 @@ DEFINE_TRACE(TreeScopeEventContext)
 int TreeScopeEventContext::calculateTreeOrderAndSetNearestAncestorClosedTree(int orderNumber, TreeScopeEventContext* nearestAncestorClosedTreeScopeEventContext)
 {
     m_preOrder = orderNumber;
+#ifdef BLINKIT_CRAWLER_ONLY
+    m_containingClosedShadowTree = nearestAncestorClosedTreeScopeEventContext;
+#else
     m_containingClosedShadowTree = (rootNode().isShadowRoot() && !toShadowRoot(rootNode()).isOpenOrV0()) ? this : nearestAncestorClosedTreeScopeEventContext;
+#endif
     for (size_t i = 0; i < m_children.size(); ++i)
         orderNumber = m_children[i]->calculateTreeOrderAndSetNearestAncestorClosedTree(orderNumber + 1, containingClosedShadowTree());
     m_postOrder = orderNumber + 1;

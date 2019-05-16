@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TreeScopeEventContext.h
+// Description: TreeScopeEventContext Class
+//      Author: Ziming Li
+//     Created: 2019-05-16
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All Rights Reserved.
  *
@@ -60,8 +71,10 @@ public:
     EventTarget* relatedTarget() const { return m_relatedTarget.get(); }
     void setRelatedTarget(PassRefPtrWillBeRawPtr<EventTarget>);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     TouchEventContext* touchEventContext() const { return m_touchEventContext.get(); }
     TouchEventContext* ensureTouchEventContext();
+#endif
 
     WillBeHeapVector<RefPtrWillBeMember<EventTarget>>& ensureEventPath(EventPath&);
 
@@ -92,7 +105,9 @@ private:
     RefPtrWillBeMember<EventTarget> m_target;
     RefPtrWillBeMember<EventTarget> m_relatedTarget;
     OwnPtrWillBeMember<WillBeHeapVector<RefPtrWillBeMember<EventTarget>>> m_eventPath;
+#ifndef BLINKIT_CRAWLER_ONLY
     RefPtrWillBeMember<TouchEventContext> m_touchEventContext;
+#endif
     RawPtrWillBeMember<TreeScopeEventContext> m_containingClosedShadowTree;
 
     WillBeHeapVector<RawPtrWillBeMember<TreeScopeEventContext>> m_children;
