@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: RootFrameViewport.h
+// Description: RootFrameViewport Class
+//      Author: Ziming Li
+//     Created: 2019-05-16
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -32,6 +43,7 @@ public:
 
     DECLARE_VIRTUAL_TRACE();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // ScrollableArea Implementation
     void setScrollPosition(const DoublePoint&, ScrollType, ScrollBehavior = ScrollBehaviorInstant) override;
     LayoutRect scrollIntoView(
@@ -71,6 +83,7 @@ public:
     void cancelProgrammaticScrollAnimation() override;
     ScrollBehavior scrollBehaviorStyle() const override;
     Widget* widget() override;
+#endif // BLINKIT_CRAWLER_ONLY
 
 private:
     RootFrameViewport(ScrollableArea& visualViewport, ScrollableArea& layoutViewport);

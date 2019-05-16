@@ -207,7 +207,7 @@ public:
     GraphicsLayer* layerForHorizontalScrollbar() const override;
     GraphicsLayer* layerForVerticalScrollbar() const override;
     Widget* widget() override;
-#endif
+#endif // BLINKIT_CRAWLER_ONLY
 
     // Used for gathering data on user pinch-zoom statistics.
     void userDidChangeScale();
