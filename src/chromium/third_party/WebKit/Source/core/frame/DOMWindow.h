@@ -136,7 +136,9 @@ public:
 
     virtual Console* console() const  = 0;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual DOMSelection* getSelection() = 0;
+#endif
 
     void focus(ExecutionContext*);
     virtual void blur() = 0;
@@ -149,6 +151,7 @@ public:
 
     virtual bool find(const String&, bool caseSensitive, bool backwards, bool wrap, bool wholeWord, bool searchInFrames, bool showDialog) const = 0;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual void scrollBy(double x, double y, ScrollBehavior = ScrollBehaviorAuto) const = 0;
     virtual void scrollBy(const ScrollToOptions&) const = 0;
     virtual void scrollTo(double x, double y) const = 0;
@@ -173,6 +176,7 @@ public:
     virtual int requestAnimationFrame(FrameRequestCallback*) = 0;
     virtual int webkitRequestAnimationFrame(FrameRequestCallback*) = 0;
     virtual void cancelAnimationFrame(int id) = 0;
+#endif // BLINKIT_CRAWLER_ONLY
 
     void captureEvents() { }
     void releaseEvents() { }
