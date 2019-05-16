@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: VisualViewport.h
+// Description: VisualViewport Class
+//      Author: Ziming Li
+//     Created: 2019-05-16
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -165,6 +176,7 @@ public:
     IntPoint viewportToRootFrame(const IntPoint&) const;
     IntPoint rootFrameToViewport(const IntPoint&) const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // ScrollableArea implementation
     HostWindow* hostWindow() const override;
     DoubleRect visibleContentRectDouble(IncludeScrollbarsInRect = ExcludeScrollbars) const override;
@@ -195,6 +207,7 @@ public:
     GraphicsLayer* layerForHorizontalScrollbar() const override;
     GraphicsLayer* layerForVerticalScrollbar() const override;
     Widget* widget() override;
+#endif
 
     // Used for gathering data on user pinch-zoom statistics.
     void userDidChangeScale();
