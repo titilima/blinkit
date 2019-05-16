@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: MediaValues.cpp
+// Description: MediaValues Class
+//      Author: Ziming Li
+//     Created: 2019-05-16
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -13,7 +24,6 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
-#include "core/html/imports/HTMLImportsController.h"
 #include "core/layout/LayoutObject.h"
 #include "core/layout/LayoutView.h"
 #include "core/layout/compositing/PaintLayerCompositor.h"
@@ -218,7 +228,7 @@ bool MediaValues::computeLengthImpl(double value, CSSPrimitiveValue::UnitType ty
 
 LocalFrame* MediaValues::frameFrom(Document& document)
 {
-    Document* executingDocument = document.importsController() ? document.importsController()->master() : &document;
+    Document* executingDocument = &document;
     ASSERT(executingDocument);
     return executingDocument->frame();
 }
