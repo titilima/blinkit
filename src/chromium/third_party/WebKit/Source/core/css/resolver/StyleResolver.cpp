@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StyleResolver.cpp
+// Description: StyleResolver Class
+//      Author: Ziming Li
+//     Created: 2019-05-16
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -80,7 +91,6 @@
 #include "core/frame/FrameView.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/Settings.h"
-#include "core/html/HTMLIFrameElement.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/layout/GeneratedChildren.h"
 #include "core/layout/LayoutView.h"
@@ -144,17 +154,14 @@ StyleResolver::StyleResolver(Document& document)
     : m_document(document)
     , m_viewportStyleResolver(ViewportStyleResolver::create(&document))
     , m_needCollectFeatures(false)
-    , m_printMediaType(false)
     , m_styleSharingDepth(0)
     , m_accessCount(0)
 {
     FrameView* view = document.view();
-    if (view) {
+    if (view)
         m_medium = adoptPtrWillBeNoop(new MediaQueryEvaluator(&view->frame()));
-        m_printMediaType = equalIgnoringCase(view->mediaType(), MediaTypeNames::print);
-    } else {
+    else
         m_medium = adoptPtrWillBeNoop(new MediaQueryEvaluator("all"));
-    }
 
     initWatchedSelectorRules();
 }
@@ -304,9 +311,6 @@ void StyleResolver::collectFeatures()
     if (defaultStyleSheets.defaultStyle())
         m_features.add(defaultStyleSheets.defaultStyle()->features());
 
-    if (document().isViewSource())
-        m_features.add(defaultStyleSheets.defaultViewSourceStyle()->features());
-
     if (m_watchedSelectorsRules)
         m_features.add(m_watchedSelectorsRules->features());
 
@@ -408,16 +412,12 @@ void StyleResolver::matchUARules(ElementRuleCollector& collector)
     collector.setMatchingUARules(true);
 
     CSSDefaultStyleSheets& defaultStyleSheets = CSSDefaultStyleSheets::instance();
-    RuleSet* userAgentStyleSheet = m_printMediaType ? defaultStyleSheets.defaultPrintStyle() : defaultStyleSheets.defaultStyle();
+    RuleSet* userAgentStyleSheet = defaultStyleSheets.defaultStyle();
     matchRuleSet(collector, userAgentStyleSheet);
 
     // In quirks mode, we match rules from the quirks user agent sheet.
     if (document().inQuirksMode())
         matchRuleSet(collector, defaultStyleSheets.defaultQuirksStyle());
-
-    // If document uses view source styles (in view source mode or in xml viewer mode), then we match rules from the view source style sheet.
-    if (document().isViewSource())
-        matchRuleSet(collector, defaultStyleSheets.defaultViewSourceStyle());
 
     collector.finishAddingUARules();
     collector.setMatchingUARules(false);
@@ -530,7 +530,7 @@ PassRefPtr<ComputedStyle> StyleResolver::styleForDocument(Document& document)
     documentFontDescription.setLocale(document.contentLanguage());
     documentStyle->setFontDescription(documentFontDescription);
     documentStyle->setZIndex(0);
-    documentStyle->setUserModify(document.inDesignMode() ? READ_WRITE : READ_ONLY);
+    documentStyle->setUserModify(READ_ONLY);
     // These are designed to match the user-agent stylesheet values for the document element
     // so that the common case doesn't need to create a new ComputedStyle in
     // Document::inheritHtmlAndBodyElementStyles.
@@ -860,8 +860,6 @@ PassRefPtr<ComputedStyle> StyleResolver::styleForPage(int pageIndex)
     state.setStyle(style.release());
 
     PageRuleCollector collector(rootElementStyle, pageIndex);
-
-    collector.matchPageRules(CSSDefaultStyleSheets::instance().defaultPrintStyle());
 
     if (ScopedStyleResolver* scopedResolver = document().scopedStyleResolver())
         scopedResolver->matchPageRules(collector);
