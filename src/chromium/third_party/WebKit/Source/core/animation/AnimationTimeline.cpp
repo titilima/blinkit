@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: AnimationTimeline.cpp
+// Description: AnimationTimeline Class
+//      Author: Ziming Li
+//     Created: 2019-05-16
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -208,7 +219,7 @@ DEFINE_TRACE(AnimationTimeline::AnimationTimelineTiming)
 double AnimationTimeline::zeroTime()
 {
     if (!m_zeroTimeInitialized && m_document && m_document->loader()) {
-        m_zeroTime = m_document->loader()->timing().referenceMonotonicTime();
+        m_zeroTime = m_document->loader()->referenceMonotonicTime();
         m_zeroTimeInitialized = true;
     }
     return m_zeroTime;
