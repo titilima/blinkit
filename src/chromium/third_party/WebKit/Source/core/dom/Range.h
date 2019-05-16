@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Range.h
+// Description: Range Class
+//      Author: Ziming Li
+//     Created: 2019-05-16
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * (C) 2000 Gunnstein Lye (gunnstein@netcom.no)
@@ -156,10 +167,6 @@ public:
     ClientRectList* getClientRects() const;
     ClientRect* getBoundingClientRect() const;
 
-#ifndef NDEBUG
-    void formatForDebugger(char* buffer, unsigned length) const;
-#endif
-
     DECLARE_TRACE();
 
 private:
@@ -187,10 +194,5 @@ private:
 CORE_EXPORT bool areRangesEqual(const Range*, const Range*);
 
 } // namespace blink
-
-#ifndef NDEBUG
-// Outside the WebCore namespace for ease of invocation from gdb.
-void showTree(const blink::Range*);
-#endif
 
 #endif // Range_h

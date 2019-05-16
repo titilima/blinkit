@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Range.cpp
+// Description: Range Class
+//      Author: Ziming Li
+//     Created: 2019-05-16
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * (C) 2000 Gunnstein Lye (gunnstein@netcom.no)
@@ -1359,28 +1370,6 @@ void Range::textQuads(Vector<FloatQuad>& quads, bool useSelectionHeight, RangeIn
         *inFixed = allFixed ? EntirelyFixedPosition : (someFixed ? PartiallyFixedPosition : NotFixedPosition);
 }
 
-#ifndef NDEBUG
-void Range::formatForDebugger(char* buffer, unsigned length) const
-{
-    StringBuilder result;
-
-    const int FormatBufferSize = 1024;
-    char s[FormatBufferSize];
-    result.appendLiteral("from offset ");
-    result.appendNumber(m_start.offset());
-    result.appendLiteral(" of ");
-    m_start.container()->formatForDebugger(s, FormatBufferSize);
-    result.append(s);
-    result.appendLiteral(" to offset ");
-    result.appendNumber(m_end.offset());
-    result.appendLiteral(" of ");
-    m_end.container()->formatForDebugger(s, FormatBufferSize);
-    result.append(s);
-
-    strncpy(buffer, result.toString().utf8().data(), length - 1);
-}
-#endif
-
 bool areRangesEqual(const Range* a, const Range* b)
 {
     if (a == b)
@@ -1649,17 +1638,3 @@ DEFINE_TRACE(Range)
 }
 
 } // namespace blink
-
-#ifndef NDEBUG
-
-void showTree(const blink::Range* range)
-{
-    if (range && range->boundaryPointsValid()) {
-        range->startContainer()->showTreeAndMark(range->startContainer(), "S", range->endContainer(), "E");
-        fprintf(stderr, "start offset: %d, end offset: %d\n", range->startOffset(), range->endOffset());
-    } else {
-        fprintf(stderr, "Cannot show tree if range is null, or if boundary points are invalid.\n");
-    }
-}
-
-#endif
