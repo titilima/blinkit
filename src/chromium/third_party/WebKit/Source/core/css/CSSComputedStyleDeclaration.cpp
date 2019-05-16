@@ -579,8 +579,7 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSComputedStyleDeclaration::getPropertyCSSValu
     style = computeComputedStyle();
 
     bool forceFullLayout = isLayoutDependent(propertyID, style, layoutObject)
-        || styledNode->isInShadowTree()
-        || (document.ownerElement() && document.ensureStyleResolver().hasViewportDependentMediaQueries());
+        || styledNode->isInShadowTree();
 
     if (forceFullLayout) {
         document.updateLayoutIgnorePendingStylesheets();
