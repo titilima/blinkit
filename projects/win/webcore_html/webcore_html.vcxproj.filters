@@ -131,9 +131,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLInputElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLKeygenElement.cpp">
-      <Filter>html</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLLabelElement.cpp">
       <Filter>html</Filter>
     </ClCompile>
@@ -701,9 +698,6 @@
       <Filter>html</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLInputElement.h">
-      <Filter>html</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLKeygenElement.h">
       <Filter>html</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLLabelElement.h">

@@ -241,7 +241,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageFallbackHelper.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageLoader.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLInputElement.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLKeygenElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLLabelElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLLegendElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLLIElement.cpp" />
@@ -435,7 +434,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageFallbackHelper.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLImageLoader.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLInputElement.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLKeygenElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLLabelElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLLegendElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLLIElement.h" />

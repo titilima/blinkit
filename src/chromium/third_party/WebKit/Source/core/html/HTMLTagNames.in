@@ -65,7 +65,6 @@ img interfaceName=HTMLImageElement, constructorNeedsFormElement, constructorNeed
 input constructorNeedsFormElement, constructorNeedsCreatedByParser
 ins interfaceName=HTMLModElement
 kbd interfaceName=HTMLElement
-keygen constructorNeedsFormElement
 label constructorNeedsFormElement
 layer interfaceName=HTMLElement
 legend

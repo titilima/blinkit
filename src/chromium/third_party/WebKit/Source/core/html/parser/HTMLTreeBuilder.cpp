@@ -779,7 +779,6 @@ void HTMLTreeBuilder::processStartTagForInBody(AtomicHTMLToken* token)
     if (token->name() == areaTag
         || token->name() == brTag
         || token->name() == imgTag
-        || token->name() == keygenTag
         || token->name() == wbrTag) {
         m_tree.reconstructTheActiveFormattingElements();
         m_tree.insertSelfClosingHTMLElementDestroyingToken(token);
@@ -1346,7 +1345,6 @@ void HTMLTreeBuilder::processStartTag(AtomicHTMLToken* token)
             return;
         }
         if (token->name() == inputTag
-            || token->name() == keygenTag
             || token->name() == textareaTag) {
             parseError(token);
             if (!m_tree.openElements()->inSelectScope(selectTag)) {
