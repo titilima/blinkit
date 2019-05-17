@@ -218,9 +218,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingBehavior.cpp">
       <Filter>core\editing</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingStrategy.cpp">
-      <Filter>core\editing</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditorKeyBindings.cpp">
       <Filter>core\editing</Filter>
     </ClCompile>
@@ -248,13 +245,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\DOMWindowProperty.cpp">
       <Filter>core\frame</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\EventHandlerRegistry.cpp">
-      <Filter>core\frame</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameConsole.cpp">
-      <Filter>core\frame</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameSerializer.cpp">
       <Filter>core\frame</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\ImageBitmap.cpp">
@@ -1391,9 +1382,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\HTTPParsers.cpp">
       <Filter>platform\network</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\NetworkHints.cpp">
-      <Filter>platform\network</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ParsedContentType.cpp">
       <Filter>platform\network</Filter>
     </ClCompile>
@@ -1544,6 +1532,18 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSMarkup.cpp">
       <Filter>core\css</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSParserMode.cpp">
+      <Filter>core\css\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\SelectorChecker.cpp">
+      <Filter>core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLDocument.cpp">
+      <Filter>core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\NetworkHints.cpp">
+      <Filter>platform\network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -1651,9 +1651,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingBoundary.h">
       <Filter>core\editing</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingStrategy.h">
-      <Filter>core\editing</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\FindOptions.h">
       <Filter>core\editing</Filter>
     </ClInclude>
@@ -1705,16 +1702,10 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\DOMWindowProperty.h">
       <Filter>core\frame</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\EventHandlerRegistry.h">
-      <Filter>core\frame</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameConsole.h">
       <Filter>core\frame</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameOwner.h">
-      <Filter>core\frame</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameSerializer.h">
       <Filter>core\frame</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameTypes.h">
@@ -2920,9 +2911,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\HTTPParsers.h">
       <Filter>platform\network</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\NetworkHints.h">
-      <Filter>platform\network</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ParsedContentType.h">
       <Filter>platform\network</Filter>
     </ClInclude>
@@ -3150,6 +3138,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSMarkup.h">
       <Filter>core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSParserMode.h">
+      <Filter>core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\SelectorChecker.h">
+      <Filter>core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLDocument.h">
+      <Filter>core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\NetworkHints.h">
+      <Filter>platform\network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

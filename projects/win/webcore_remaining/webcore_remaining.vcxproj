@@ -550,7 +550,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\Frame.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameConsole.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameHost.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameSerializer.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameView.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameViewAutoSizeInfo.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\ImageBitmap.cpp" />
@@ -1201,7 +1200,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameConsole.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameHost.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameOwner.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameSerializer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameTypes.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameView.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameViewAutoSizeInfo.h" />

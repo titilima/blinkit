@@ -166,7 +166,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSMarkup.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSSelector.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSSelectorList.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSParserMode.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSParserSelector.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\SelectorChecker.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ActiveDOMObject.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\AddConsoleMessageTask.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Attr.cpp" />
@@ -248,7 +250,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TreeWalker.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\UserActionElementSet.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingBehavior.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingStrategy.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditorKeyBindings.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\iterators\BackwardsCharacterIterator.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\iterators\BitStack.cpp" />
@@ -312,10 +313,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\DOMWindowBase64.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\DOMWindowLifecycleNotifier.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\DOMWindowProperty.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\EventHandlerRegistry.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\Frame.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameConsole.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameSerializer.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\ImageBitmap.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalDOMWindow.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalFrame.cpp" />
@@ -341,6 +340,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\FormData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLAllCollection.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLCollection.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLDocument.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLNameCollection.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTagCollection.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\LabelsNodeList.cpp" />
@@ -646,7 +646,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSMarkup.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSSelector.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSSelectorList.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSParserMode.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSParserSelector.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\SelectorChecker.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ActiveDOMObject.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\AddConsoleMessageTask.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Attr.h" />
@@ -736,7 +738,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingBehavior.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingBehaviorTypes.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingBoundary.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\EditingStrategy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\FindOptions.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\iterators\BackwardsCharacterIterator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\editing\iterators\BitStack.h" />
@@ -822,12 +823,10 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\DOMWindowLifecycleNotifier.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\DOMWindowLifecycleObserver.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\DOMWindowProperty.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\EventHandlerRegistry.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\Frame.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameClient.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameConsole.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameOwner.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameSerializer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameTypes.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\ImageBitmap.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\LocalDOMWindow.h" />
@@ -858,6 +857,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\FormData.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLAllCollection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLCollection.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLDocument.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLNameCollection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\HTMLTagCollection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\html\LabelsNodeList.h" />

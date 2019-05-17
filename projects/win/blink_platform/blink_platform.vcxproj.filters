@@ -1010,9 +1010,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\HTTPParsers.cpp">
       <Filter>platform\network</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\NetworkHints.cpp">
-      <Filter>platform\network</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ParsedContentType.cpp">
       <Filter>platform\network</Filter>
     </ClCompile>
@@ -1201,6 +1198,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\break_iterators\character_break_iterator.cpp">
       <Filter>platform\text\break_iterators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\NetworkHints.cpp">
+      <Filter>platform\network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2263,9 +2263,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\HTTPParsers.h">
       <Filter>platform\network</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\NetworkHints.h">
-      <Filter>platform\network</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\ParsedContentType.h">
       <Filter>platform\network</Filter>
     </ClInclude>
@@ -3240,6 +3237,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\text\break_iterators\character_break_iterator.h">
       <Filter>platform\text\break_iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\NetworkHints.h">
+      <Filter>platform\network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -433,12 +433,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFrameOwnerProperties.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFrameSerializer.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFrameSerializerClient.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFrameWidget.h">
       <Filter>public</Filter>
     </ClInclude>

@@ -1178,9 +1178,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameHost.cpp">
       <Filter>frame</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameSerializer.cpp">
-      <Filter>frame</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameViewAutoSizeInfo.cpp">
       <Filter>frame</Filter>
     </ClCompile>
@@ -3182,9 +3179,6 @@
       <Filter>frame</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameOwner.h">
-      <Filter>frame</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameSerializer.h">
       <Filter>frame</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameTypes.h">

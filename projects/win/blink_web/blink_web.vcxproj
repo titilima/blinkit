@@ -306,8 +306,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFrameClient.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFrameLoadType.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFrameOwnerProperties.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFrameSerializer.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFrameSerializerClient.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFrameWidget.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebGeolocationClient.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebGeolocationController.h" />
