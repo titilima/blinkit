@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="context">
+      <UniqueIdentifier>{28a25552-3bf9-4f9c-a436-9fd66df324c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="duktape">
+      <UniqueIdentifier>{f4e90667-3981-4cd0-90e8-b3b208f166b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="public">
+      <UniqueIdentifier>{a8fad8d4-dca6-4041-96ca-100599a0730a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wrappers">
+      <UniqueIdentifier>{94d8c365-9d69-4909-854a-539a89e0ff61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bindings">
+      <UniqueIdentifier>{70f5ebb5-10b2-411f-94a2-42aabd3945fc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\js\_pc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\context\caller_context_impl.h">
+      <Filter>context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\context\duk_context.h">
+      <Filter>context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\context\value_impl.h">
+      <Filter>context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\duktape\duktape.h">
+      <Filter>duktape</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\duktape\duk_config.h">
+      <Filter>duktape</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\public\script_controller.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\public\script_event_listener.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\public\script_source_code.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\public\script_streamer.h">
+      <Filter>public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\wrappers\duk.h">
+      <Filter>wrappers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\_pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\context\caller_context_impl.cpp">
+      <Filter>context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\context\duk_context.cpp">
+      <Filter>context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\context\value_impl.cpp">
+      <Filter>context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\duktape\duktape.c">
+      <Filter>duktape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\public\script_controller.cpp">
+      <Filter>public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\public\script_event_listener.cpp">
+      <Filter>public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\public\script_source_code.cpp">
+      <Filter>public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\public\script_streamer.cpp">
+      <Filter>public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\wrappers\duk.cpp">
+      <Filter>wrappers</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\src\js\duktape\duk_source_meta.json">
+      <Filter>duktape</Filter>
+    </None>
+  </ItemGroup>
+</Project>

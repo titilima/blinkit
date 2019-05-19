@@ -259,8 +259,8 @@
     <ProjectReference Include="..\blink_crawler\blink_crawler.vcxproj">
       <Project>{b35de08a-79a8-41d5-b651-813900363e9d}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\js\js.vcxproj">
-      <Project>{96449ff1-982f-4e4b-8617-f9e6cb647304}</Project>
+    <ProjectReference Include="..\js_crawler\js_crawler.vcxproj">
+      <Project>{27cb8ef8-f977-4466-991e-81eede3bbfbb}</Project>
     </ProjectReference>
     <ProjectReference Include="..\modules\modules.vcxproj">
       <Project>{98a19aa9-ddd3-42b4-92c5-c0e2681a480d}</Project>
