@@ -28,6 +28,13 @@
 #define BLINK_IMPLEMENTATION    1
 #define INSIDE_BLINK            1
 
+#define _BK_VERBOSE_LOG     0
+
 #include <cassert>
+#include <memory>
+#include <string>
+#include "sdk/include/BlinKit.h"
+#include "base/logging.h"
+#include "duktape/duktape.h"
 
 #endif // BLINKIT_JS__PC_H
