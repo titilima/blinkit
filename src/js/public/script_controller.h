@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "sdk/include/BlinKit.h"
 #include "core/fetch/AccessControlStatus.h"
 #include "platform/heap/Handle.h"
 
@@ -43,6 +44,10 @@ public:
     }
     ~ScriptController(void);
 
+    int CreateCrawlerObject(const char *script, size_t length);
+    int CallFunction(const char *name, BlinKit::BkCallerContext::Callback callback, void *userData);
+    int CallCrawler(const char *method, BlinKit::BkCallerContext::Callback callback, void *userData);
+
     void executeScriptInMainWorld(const ScriptSourceCode &, AccessControlStatus = NotSharableCrossOrigin, double *compilationFinishTime = nullptr);
 
     bool executeScriptIfJavaScriptURL(const KURL &);
@@ -69,6 +74,9 @@ public:
 private:
     explicit ScriptController(LocalFrame *);
 
+    BlinKit::DukContext& EnsureContext(void);
+
+    LocalFrame &m_frame;
     std::unique_ptr<BlinKit::DukContext> m_context;
 };
 

@@ -11,13 +11,16 @@
 
 #include "public/script_controller.h"
 
+#include "core/frame/LocalFrame.h"
 #include "platform/weborigin/KURL.h"
 
 #include "context/duk_context.h"
 
+using namespace BlinKit;
+
 namespace blink {
 
-ScriptController::ScriptController(LocalFrame *frame)
+ScriptController::ScriptController(LocalFrame *frame) : m_frame(*frame)
 {
     // Nothing
 }
@@ -25,6 +28,21 @@ ScriptController::ScriptController(LocalFrame *frame)
 ScriptController::~ScriptController(void)
 {
     // Nothing, just for std::unique_ptr
+}
+
+int ScriptController::CallCrawler(const char *method, BkCallerContext::Callback callback, void *userData)
+{
+    assert(m_frame.IsCrawlerFrame());
+    if (!m_context)
+        return BkError::NotFound;
+    return m_context->CallCrawler(method, callback, userData);
+}
+
+int ScriptController::CallFunction(const char *name, BkCallerContext::Callback callback, void *userData)
+{
+    if (!m_context)
+        return BkError::NotFound;
+    return m_context->CallFunction(name, callback, userData);
 }
 
 bool ScriptController::canExecuteScripts(ReasonForCallingCanExecuteScripts)
@@ -47,6 +65,12 @@ void ScriptController::clearWindowProxy(void)
     m_context.reset();
 }
 
+int ScriptController::CreateCrawlerObject(const char *script, size_t length)
+{
+    assert(m_frame.IsCrawlerFrame());
+    return EnsureContext().CreateCrawlerObject(script, length);
+}
+
 void ScriptController::disableEval(const String &errorMessage)
 {
     assert(false); // Not reached!
@@ -55,6 +79,13 @@ void ScriptController::disableEval(const String &errorMessage)
 void ScriptController::enableEval(void)
 {
     // Nothing to do, eval is always enabled in BlinKit.
+}
+
+DukContext& ScriptController::EnsureContext(void)
+{
+    if (!m_context)
+        m_context = std::make_unique<DukContext>(m_frame);
+    return *m_context;
 }
 
 bool ScriptController::executeScriptIfJavaScriptURL(const KURL &url)
