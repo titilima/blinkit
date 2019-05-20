@@ -52,11 +52,6 @@ int HTTPLoaderTask::LoadRemoteData(void)
     request->SetHeader("Connection", "Keep-Alive");
     for (const auto &it : m_headers)
         request->SetHeader(it.first.c_str(), it.second.c_str());
-    assert(false); // BKTODO:
-#if 0
-    if (MainHTML == m_resourceType)
-        request->SetHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-#endif
 
     std::string locale = Platform::current()->defaultLocale().utf8();
     request->SetHeader("Accept-Language", locale.c_str());

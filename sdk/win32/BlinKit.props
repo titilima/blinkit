@@ -7,11 +7,6 @@
   <PropertyGroup>
     <IncludePath>$(BkSDK)include;$(IncludePath)</IncludePath>
   </PropertyGroup>
-  <ItemDefinitionGroup>
-    <Link>
-      <AdditionalDependencies>BlinKit.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemGroup>
     <BuildMacro Include="BkSDK">
       <Value>$(BkSDK)</Value>
