@@ -32,5 +32,12 @@ int ToErrorCode(duk_context *ctx, duk_idx_t idx)
     return BkError::UnknownError;
 }
 
+std::string ToString(duk_context *ctx, duk_idx_t idx)
+{
+    size_t l = 0;
+    const char *s = duk_to_lstring(ctx, idx, &l);
+    return std::string(s, l);
+}
+
 } // namespace Duk
 } // namespace BlinKit

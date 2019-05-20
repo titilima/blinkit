@@ -28,6 +28,7 @@ private:
 };
 
 int ToErrorCode(duk_context *ctx, duk_idx_t idx = -1);
+std::string ToString(duk_context *ctx, duk_idx_t idx = -1);
 
 } // namespace Duk
 } // namespace BlinKit
