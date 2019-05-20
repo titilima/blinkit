@@ -14,12 +14,43 @@
 
 #pragma once
 
+namespace blink {
+class LocalFrame;
+}
+
 namespace BlinKit {
+
+class PrototypeManager;
 
 class DukContext
 {
 public:
+    DukContext(blink::LocalFrame &frame);
+    ~DukContext(void);
+
+    static DukContext* From(duk_context *ctx);
+
+    int CreateCrawlerObject(const char *script, size_t length);
+    int CallFunction(const char *name, BkCallerContext::Callback callback, void *userData);
+    int CallCrawler(const char *method, BkCallerContext::Callback callback, void *userData);
+
+    void CreateObject(const char *protoName);
+
     void Reset(void);
+private:
+    void Attach(blink::LocalFrame &frame);
+    void Initialize(void);
+    static void AdjustGlobalsForCrawler(duk_context *ctx);
+    void PrepareGlobalsToTop(void);
+#ifndef BLINKIT_CRAWLER_ONLY
+    void RegisterPrototypes(void);
+#endif
+    void RegisterPrototypesForCrawler(void);
+
+    duk_context *m_context;
+    std::unique_ptr<PrototypeManager> m_prototypeManager;
+    void *m_crawlerObjectPtr = nullptr;
+    void *m_globalsPtr = nullptr;
 };
 
 } // namespace BlinKit
