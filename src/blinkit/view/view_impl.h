@@ -47,6 +47,8 @@ protected:
 
     // BkView
     void BKAPI Destroy(void) override final { delete this; }
+    int BKAPI CallFunction(const char *name, BkCallerContext::Callback callback, void *userData) override final;
+    int BKAPI RegisterExternalFunction(const char *name, BkFunction *functionImpl) override final;
     void BKAPI ProcessInput(const MouseEvent &e) override final;
     void BKAPI ProcessInput(const KeyboardEvent &e) override final;
     void BKAPI Resize(int width, int height) override final;

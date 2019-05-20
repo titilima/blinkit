@@ -14,10 +14,14 @@
 #pragma once
 
 #include <cassert>
+#ifndef BLINKIT_DISABLE_FUNCTIONAL
+#   include <functional>
+#endif
 #include <string>
 #include <vector>
 
 #ifdef _WIN32
+#   include <Windows.h>
 #   define BKAPI    __stdcall
 #   ifndef BLINKIT_EXPORTS
 #       define BKEXPORT __declspec(dllimport)
@@ -67,8 +71,7 @@ public:
     };
 };
 
-class BkBuffer
-{
+class BkBuffer {
 public:
     inline void Assign(const std::string &s) {
         void *dst = Prepare(s.length());
@@ -80,6 +83,49 @@ public:
     }
 protected:
     virtual void* BKAPI Prepare(size_t cb) = 0;
+};
+
+class BkValue {
+public:
+    enum Type {
+        UnknownType,
+        ErrorType,
+        UndefinedType,
+        NullType,
+        BooleanType,
+        NumberType,
+        StringType,
+        ObjectType,
+        ArrayType
+    };
+    virtual Type BKAPI GetType(void) const = 0;
+};
+
+class BkCallerContext {
+public:
+    typedef void (BKAPI * Callback)(BkCallerContext &ctx, void *userData);
+
+    // All push methods return argument count after pushing.
+    virtual int BKAPI PushInt(int arg) = 0;
+    virtual int BKAPI PushString(const char *arg, size_t length = 0) = 0;
+
+    virtual const BkValue* BKAPI Call(void) = 0;
+
+#ifndef BLINKIT_DISABLE_FUNCTIONAL
+    typedef std::function<void(BkCallerContext &)> Function;
+    static void BKAPI FunctionWrapper(BkCallerContext &ctx, void *userData) {
+        Function *f = reinterpret_cast<Function *>(userData);
+        (*f)(ctx);
+    }
+#endif
+};
+
+class BkFunction {
+public:
+    class Context {
+    public:
+    };
+    virtual void BKAPI OnCall(Context &ctx) = 0;
 };
 
 /**
@@ -138,9 +184,26 @@ public:
 class BkCrawler {
 public:
     virtual void BKAPI Destroy(void) = 0;
-    virtual int BKAPI Load(const char *URI) = 0;
+
+    virtual int BKAPI CreateCrawlerObject(const char *script, size_t length = 0) = 0;
+    virtual int BKAPI Load(const char *URL) = 0;
+
+    virtual int BKAPI CallFunction(const char *name, BkCallerContext::Callback callback, void *userData = nullptr) = 0;
+    virtual int BKAPI CallCrawler(const char *method, BkCallerContext::Callback callback, void *userData = nullptr) = 0;
+    virtual int BKAPI RegisterCrawlerFunction(const char *name, BkFunction *functionImpl) = 0;
 
     virtual void BKAPI SetUserAgent(const char *userAgent) = 0;
+
+#ifndef BLINKIT_DISABLE_FUNCTIONAL
+    inline int CallFunction(const char *name, const BkCallerContext::Function &callback) {
+        void *p = const_cast<BkCallerContext::Function *>(&callback);
+        return CallFunction(name, BkCallerContext::FunctionWrapper, p);
+    }
+    inline int CallCrawler(const char *method, const BkCallerContext::Function &callback) {
+        void *p = const_cast<BkCallerContext::Function *>(&callback);
+        return CallCrawler(method, BkCallerContext::FunctionWrapper, p);
+    }
+#endif
 };
 
 /**
@@ -176,6 +239,10 @@ public:
     virtual void BKAPI Destroy(void) = 0;
     virtual int BKAPI Load(const char *URI) = 0;
     virtual NativeView BKAPI GetNativeView(void) const = 0;
+
+    virtual int BKAPI CallFunction(const char *name, BkCallerContext::Callback callback, void *userData = nullptr) = 0;
+    virtual int BKAPI RegisterExternalFunction(const char *name, BkFunction *functionImpl) = 0;
+
 #ifdef _WIN32
     /**
      * If ProcessMessage returns false, it means default message handlers (e.g. DefWindowProc) needed.
@@ -213,6 +280,13 @@ public:
     virtual void BKAPI SetFocus(bool focused) = 0;
     virtual bool BKAPI GetCaretRect(BkRect *dst) = 0;
     virtual void BKAPI SetScaleFactor(float scaleFactor) = 0;
+
+#ifndef BLINKIT_DISABLE_FUNCTIONAL
+    inline int CallFunction(const char *name, const BkCallerContext::Function &callback) {
+        void *p = const_cast<BkCallerContext::Function *>(&callback);
+        return CallFunction(name, BkCallerContext::FunctionWrapper, p);
+    }
+#endif
 };
 
 /**

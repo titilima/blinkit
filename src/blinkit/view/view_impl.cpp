@@ -54,6 +54,12 @@ ViewImpl::~ViewImpl(void)
     *m_updateRequired = false; // Ignore pending update requests.
 }
 
+int BKAPI ViewImpl::CallFunction(const char *name, BkCallerContext::Callback callback, void *userData)
+{
+    assert(false); // BKTODO:
+    return BkError::UnknownError;
+}
+
 void ViewImpl::didFinishLoad(WebLocalFrame *)
 {
     m_client.DocumentReady(this);
@@ -156,6 +162,12 @@ void BKAPI ViewImpl::ProcessInput(const KeyboardEvent &e)
     PreHandleInput(we);
     GetWebView()->handleInputEvent(we);
     PostHandleInput(we);
+}
+
+int BKAPI ViewImpl::RegisterExternalFunction(const char *name, BkFunction *functionImpl)
+{
+    assert(false); // BKTODO:
+    return BkError::UnknownError;
 }
 
 void BKAPI ViewImpl::Resize(int width, int height)

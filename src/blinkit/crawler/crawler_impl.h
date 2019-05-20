@@ -30,7 +30,11 @@ public:
 private:
     // BkCrawler
     void BKAPI Destroy(void) override { delete this; }
-    int BKAPI Load(const char *URI) override;
+    int BKAPI CreateCrawlerObject(const char *script, size_t length) override;
+    int BKAPI Load(const char *URL) override;
+    int BKAPI CallFunction(const char *name, BkCallerContext::Callback callback, void *userData) override;
+    int BKAPI CallCrawler(const char *method, BkCallerContext::Callback callback, void *userData) override;
+    int BKAPI RegisterCrawlerFunction(const char *name, BkFunction *functionImpl) override;
     void BKAPI SetUserAgent(const char *userAgent) override { m_userAgent = userAgent; }
     // blink::FrameClient
     bool IsCrawler(void) const override { return true; }
