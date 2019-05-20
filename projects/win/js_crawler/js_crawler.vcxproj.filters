@@ -59,6 +59,18 @@
     <ClInclude Include="..\..\..\src\js\wrappers\duk.h">
       <Filter>wrappers</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_window.h">
+      <Filter>bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\context\prototype_manager.h">
+      <Filter>context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\bindings\meta_data.h">
+      <Filter>bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_console.h">
+      <Filter>bindings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -90,6 +102,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\js\wrappers\duk.cpp">
       <Filter>wrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\bindings\duk_window.cpp">
+      <Filter>bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\context\prototype_manager.cpp">
+      <Filter>context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\bindings\duk_console.cpp">
+      <Filter>bindings</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

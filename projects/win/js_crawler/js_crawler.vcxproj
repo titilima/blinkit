@@ -165,8 +165,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_console.h" />
+    <ClInclude Include="..\..\..\src\js\bindings\duk_window.h" />
+    <ClInclude Include="..\..\..\src\js\bindings\meta_data.h" />
     <ClInclude Include="..\..\..\src\js\context\caller_context_impl.h" />
     <ClInclude Include="..\..\..\src\js\context\duk_context.h" />
+    <ClInclude Include="..\..\..\src\js\context\prototype_manager.h" />
     <ClInclude Include="..\..\..\src\js\context\value_impl.h" />
     <ClInclude Include="..\..\..\src\js\duktape\duktape.h" />
     <ClInclude Include="..\..\..\src\js\duktape\duk_config.h" />
@@ -178,8 +182,11 @@
     <ClInclude Include="..\..\..\src\js\_pc.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\js\bindings\duk_console.cpp" />
+    <ClCompile Include="..\..\..\src\js\bindings\duk_window.cpp" />
     <ClCompile Include="..\..\..\src\js\context\caller_context_impl.cpp" />
     <ClCompile Include="..\..\..\src\js\context\duk_context.cpp" />
+    <ClCompile Include="..\..\..\src\js\context\prototype_manager.cpp" />
     <ClCompile Include="..\..\..\src\js\context\value_impl.cpp" />
     <ClCompile Include="..\..\..\src\js\duktape\duktape.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
