@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <string_view>
 #include "sdk/include/BlinKit.h"
 #include "frame_loader_client_impl.h"
 
@@ -22,7 +23,7 @@ namespace BlinKit {
 class CrawlerImpl final : public BkCrawler, public FrameLoaderClientImpl
 {
 public:
-    CrawlerImpl(BkCrawlerClient &client);
+    CrawlerImpl(BkCrawlerClient &client, const std::string_view &script);
     ~CrawlerImpl(void);
 
     BkCrawlerClient& Client(void) const { return m_client; }
@@ -30,12 +31,11 @@ public:
 private:
     // BkCrawler
     void BKAPI Destroy(void) override { delete this; }
-    int BKAPI CreateCrawlerObject(const char *script, size_t length) override;
     int BKAPI Load(const char *URL) override;
     int BKAPI CallFunction(const char *name, BkCallerContext::Callback callback, void *userData) override;
     int BKAPI CallCrawler(const char *method, BkCallerContext::Callback callback, void *userData) override;
     int BKAPI RegisterCrawlerFunction(const char *name, BkFunction *functionImpl) override;
-    void BKAPI SetUserAgent(const char *userAgent) override { m_userAgent = userAgent; }
+    int BKAPI AccessCrawlerMember(const char *name, Accessor accessor, void *userData) override;
     // blink::FrameClient
     bool IsCrawler(void) const override { return true; }
     // blink::FrameLoaderClient
@@ -44,7 +44,6 @@ private:
 
     BkCrawlerClient &m_client;
     RefPtr<blink::LocalFrame> m_frame;
-    std::string m_userAgent;
 };
 
 DEFINE_TYPE_CASTS(CrawlerImpl, ::blink::FrameClient, client, client->IsCrawler(), client.IsCrawler());

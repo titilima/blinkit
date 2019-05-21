@@ -19,6 +19,7 @@
 #include "context/caller_context_impl.h"
 #include "context/function_manager.h"
 #include "context/prototype_manager.h"
+#include "context/value_impl.h"
 #include "wrappers/duk.h"
 
 using namespace blink;
@@ -37,7 +38,18 @@ static const char Globals[] = "globals";
 namespace Crawler {
 static duk_ret_t Eval(duk_context *ctx)
 {
-    assert(false); // BKTODO: Check incantation.
+    int top = duk_get_top(ctx);
+
+    // Check incantation first.
+    duk_push_heap_stash(ctx);
+    duk_get_prop_string(ctx, -1, StashFields::CrawlerObject);
+    if (duk_get_prop_string(ctx, -1, "incantation") && duk_equals(ctx, 0, -1))
+    {
+        duk_pop(ctx);
+        return 1;
+    }
+
+    duk_set_top(ctx, top);
     duk_peval(ctx);
     return 1;
 }
@@ -53,6 +65,18 @@ DukContext::DukContext(LocalFrame &frame)
 DukContext::~DukContext(void)
 {
     duk_destroy_heap(m_context);
+}
+
+int DukContext::AccessCrawlerMember(const char *name, BkCrawler::Accessor accessor, void *userData)
+{
+    Duk::StackKeeper sk(m_context);
+    duk_push_heapptr(m_context, m_crawlerObjectPtr);
+    if (!duk_get_prop_string(m_context, -1, name))
+        return BkError::NotFound;
+
+    ValueImpl member(m_context);
+    accessor(&member, userData);
+    return BkError::Success;
 }
 
 void DukContext::AdjustGlobalsForCrawler(duk_context *ctx)
@@ -162,6 +186,20 @@ DukContext* DukContext::From(duk_context *ctx)
     if (!duk_get_prop_string(ctx, -1, StashFields::Context))
         return nullptr;
     return reinterpret_cast<DukContext *>(duk_get_pointer(ctx, -1));
+}
+
+std::string DukContext::GetCrawlerProperty(const char *name)
+{
+    std::string ret;
+    Duk::StackKeeper sk(m_context);
+    duk_push_heapptr(m_context, m_crawlerObjectPtr);
+    if (duk_get_prop_string(m_context, -1, name))
+    {
+        if (!duk_is_string(m_context, -1))
+            duk_dup(m_context, -1);
+        ret = Duk::ToString(m_context);
+    }
+    return ret;
 }
 
 void DukContext::Initialize(void)

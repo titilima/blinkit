@@ -23,15 +23,21 @@ using namespace blink;
 
 namespace BlinKit {
 
-CrawlerImpl::CrawlerImpl(BkCrawlerClient &client)
+CrawlerImpl::CrawlerImpl(BkCrawlerClient &client, const std::string_view &script)
     : m_client(client), m_frame(LocalFrame::create(this, nullptr))
 {
     m_frame->init();
+    m_frame->script().CreateCrawlerObject(script.data(), script.length());
 }
 
 CrawlerImpl::~CrawlerImpl(void)
 {
     m_frame->detach(FrameDetachType::Remove);
+}
+
+int BKAPI CrawlerImpl::AccessCrawlerMember(const char *name, Accessor accessor, void *userData)
+{
+    return m_frame->script().AccessCrawlerMember(name, accessor, userData);
 }
 
 int BKAPI CrawlerImpl::CallCrawler(const char *method, BkCallerContext::Callback callback, void *userData)
@@ -42,13 +48,6 @@ int BKAPI CrawlerImpl::CallCrawler(const char *method, BkCallerContext::Callback
 int BKAPI CrawlerImpl::CallFunction(const char *name, BkCallerContext::Callback callback, void *userData)
 {
     return m_frame->script().CallFunction(name, callback, userData);
-}
-
-int BKAPI CrawlerImpl::CreateCrawlerObject(const char *script, size_t length)
-{
-    if (0 == length)
-        length = strlen(script);
-    return m_frame->script().CreateCrawlerObject(script, length);
 }
 
 void CrawlerImpl::dispatchDidFinishLoad(void)
@@ -83,8 +82,9 @@ int BKAPI CrawlerImpl::RegisterCrawlerFunction(const char *name, BkFunction *fun
 
 String CrawlerImpl::userAgent(void)
 {
-    if (!m_userAgent.empty())
-        return String::fromUTF8(m_userAgent.data(), m_userAgent.length());
+    std::string userAgent = m_frame->script().GetCrawlerProperty("userAgent");
+    if (!userAgent.empty())
+        return String::fromUTF8(userAgent.data(), userAgent.length());
     return FrameLoaderClientImpl::userAgent();
 }
 

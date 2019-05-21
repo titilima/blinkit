@@ -30,11 +30,15 @@ ScriptController::~ScriptController(void)
     // Nothing, just for std::unique_ptr
 }
 
+int ScriptController::AccessCrawlerMember(const char *name, BkCrawler::Accessor accessor, void *userData)
+{
+    assert(m_frame.IsCrawlerFrame());
+    return m_context->AccessCrawlerMember(name, accessor, userData);
+}
+
 int ScriptController::CallCrawler(const char *method, BkCallerContext::Callback callback, void *userData)
 {
     assert(m_frame.IsCrawlerFrame());
-    if (!m_context)
-        return BkError::NotFound;
     return m_context->CallCrawler(method, callback, userData);
 }
 
@@ -97,6 +101,11 @@ bool ScriptController::executeScriptIfJavaScriptURL(const KURL &url)
 void ScriptController::executeScriptInMainWorld(const ScriptSourceCode &sourceCode, AccessControlStatus accessControlStatus, double *compilationFinishTime)
 {
     assert(false); // BKTODO:
+}
+
+std::string ScriptController::GetCrawlerProperty(const char *name)
+{
+    return m_context->GetCrawlerProperty(name);
 }
 
 void ScriptController::namedItemAdded(HTMLDocument *, const AtomicString &)

@@ -41,6 +41,15 @@ size_t BKAPI FunctionContextImpl::ArgCount(void) const
     return m_args.size();
 }
 
+int BKAPI FunctionContextImpl::ReturnAsBoolean(bool b)
+{
+    if (m_hasReturnValue)
+        return BkError::Forbidden;
+    duk_push_boolean(m_ctx, b);
+    m_hasReturnValue = true;
+    return BkError::Success;
+}
+
 int BKAPI FunctionContextImpl::ReturnAsJSON(const char *json, size_t length)
 {
     if (m_hasReturnValue)

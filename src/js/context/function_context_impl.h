@@ -31,6 +31,7 @@ private:
     const char* BKAPI Name(void) const override { return m_name.c_str(); }
     size_t BKAPI ArgCount(void) const override;
     const BkValue* BKAPI ArgAt(size_t i) const override;
+    int BKAPI ReturnAsBoolean(bool b) override;
     int BKAPI ReturnAsJSON(const char *json, size_t length) override;
 
     duk_context *m_ctx;

@@ -24,6 +24,8 @@ public:
     void SetAsErrorType(void);
 private:
     Type BKAPI GetType(void) const override;
+    int BKAPI GetAsString(BkBuffer &dst) const override;
+    int BKAPI GetAsJSON(BkBuffer &dst) const override;
 
     duk_context *m_ctx;
     duk_idx_t m_idx;

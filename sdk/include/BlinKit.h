@@ -99,6 +99,9 @@ public:
         ArrayType
     };
     virtual Type BKAPI GetType(void) const = 0;
+
+    virtual int BKAPI GetAsString(BkBuffer &dst) const = 0;
+    virtual int BKAPI GetAsJSON(BkBuffer &dst) const = 0;
 };
 
 class BkCallerContext {
@@ -129,6 +132,7 @@ public:
         virtual size_t BKAPI ArgCount(void) const = 0;
         virtual const BkValue* BKAPI ArgAt(size_t i) const = 0;
 
+        virtual int BKAPI ReturnAsBoolean(bool b) = 0;
         virtual int BKAPI ReturnAsJSON(const char *json, size_t length = 0) = 0;
     };
     virtual void BKAPI OnCall(Context &ctx) = 0;
@@ -150,7 +154,7 @@ class BkApp {
 public:
     virtual void BKAPI Exit(void) = 0;
 
-    virtual BkCrawler* BKAPI CreateCrawler(BkCrawlerClient &client) = 0;
+    virtual BkCrawler* BKAPI CreateCrawler(BkCrawlerClient &client, const char *script, size_t length = 0) = 0;
     virtual BkView* BKAPI CreateView(BkViewClient &client) = 0;
 };
 
@@ -190,15 +194,14 @@ public:
 class BkCrawler {
 public:
     virtual void BKAPI Destroy(void) = 0;
-
-    virtual int BKAPI CreateCrawlerObject(const char *script, size_t length = 0) = 0;
     virtual int BKAPI Load(const char *URL) = 0;
 
     virtual int BKAPI CallFunction(const char *name, BkCallerContext::Callback callback, void *userData = nullptr) = 0;
     virtual int BKAPI CallCrawler(const char *method, BkCallerContext::Callback callback, void *userData = nullptr) = 0;
     virtual int BKAPI RegisterCrawlerFunction(const char *name, BkFunction *functionImpl) = 0;
 
-    virtual void BKAPI SetUserAgent(const char *userAgent) = 0;
+    typedef void (BKAPI * Accessor)(const BkValue *, void *);
+    virtual int BKAPI AccessCrawlerMember(const char *name, Accessor accessor, void *userData = nullptr) = 0;
 
 #ifndef BLINKIT_DISABLE_FUNCTIONAL
     inline int CallFunction(const char *name, const BkCallerContext::Function &callback) {
@@ -208,6 +211,18 @@ public:
     inline int CallCrawler(const char *method, const BkCallerContext::Function &callback) {
         void *p = const_cast<BkCallerContext::Function *>(&callback);
         return CallCrawler(method, BkCallerContext::FunctionWrapper, p);
+    }
+
+    typedef std::function<void(const BkValue *)> AccessFunction;
+    inline int AccessCrawlerMember(const char *name, const AccessFunction &accessor) {
+        struct AccessWrapper {
+            static void BKAPI Impl(const BkValue *val, void *userData) {
+                const AccessFunction *f = reinterpret_cast<AccessFunction *>(userData);
+                (*f)(val);
+            }
+        };
+        void *p = const_cast<AccessFunction *>(&accessor);
+        return AccessCrawlerMember(name, AccessWrapper::Impl, p);
     }
 #endif
 };
