@@ -109,6 +109,11 @@ void ScriptController::namedItemRemoved(HTMLDocument *, const AtomicString &)
     assert(false); // BKTODO:
 }
 
+int ScriptController::RegisterFunction(const char *name, BkFunction *functionImpl)
+{
+    return EnsureContext().RegisterFunction(name, functionImpl);
+}
+
 void ScriptController::updateDocument(void)
 {
     if (m_context)

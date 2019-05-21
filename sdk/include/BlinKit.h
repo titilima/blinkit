@@ -124,6 +124,12 @@ class BkFunction {
 public:
     class Context {
     public:
+        virtual const char* BKAPI Name(void) const = 0;
+
+        virtual size_t BKAPI ArgCount(void) const = 0;
+        virtual const BkValue* BKAPI ArgAt(size_t i) const = 0;
+
+        virtual int BKAPI ReturnAsJSON(const char *json, size_t length = 0) = 0;
     };
     virtual void BKAPI OnCall(Context &ctx) = 0;
 };

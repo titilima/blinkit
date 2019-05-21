@@ -19,8 +19,11 @@
 #include "public/web/WebCache.h"
 #include "public/web/WebLocalFrame.h"
 #include "public/web/WebSettings.h"
+#include "web/WebLocalFrameImpl.h"
 
 #include "view/context_menu.h"
+
+#include "js/public/script_controller.h"
 
 using namespace blink;
 
@@ -166,8 +169,8 @@ void BKAPI ViewImpl::ProcessInput(const KeyboardEvent &e)
 
 int BKAPI ViewImpl::RegisterExternalFunction(const char *name, BkFunction *functionImpl)
 {
-    assert(false); // BKTODO:
-    return BkError::UnknownError;
+    WebLocalFrameImpl *f = toWebLocalFrameImpl(GetWebView()->mainFrame());
+    return f->frame()->script().RegisterFunction(name, functionImpl);
 }
 
 void BKAPI ViewImpl::Resize(int width, int height)

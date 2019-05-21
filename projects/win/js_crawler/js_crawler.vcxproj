@@ -170,6 +170,8 @@
     <ClInclude Include="..\..\..\src\js\bindings\meta_data.h" />
     <ClInclude Include="..\..\..\src\js\context\caller_context_impl.h" />
     <ClInclude Include="..\..\..\src\js\context\duk_context.h" />
+    <ClInclude Include="..\..\..\src\js\context\function_context_impl.h" />
+    <ClInclude Include="..\..\..\src\js\context\function_manager.h" />
     <ClInclude Include="..\..\..\src\js\context\prototype_manager.h" />
     <ClInclude Include="..\..\..\src\js\context\value_impl.h" />
     <ClInclude Include="..\..\..\src\js\duktape\duktape.h" />
@@ -186,6 +188,8 @@
     <ClCompile Include="..\..\..\src\js\bindings\duk_window.cpp" />
     <ClCompile Include="..\..\..\src\js\context\caller_context_impl.cpp" />
     <ClCompile Include="..\..\..\src\js\context\duk_context.cpp" />
+    <ClCompile Include="..\..\..\src\js\context\function_context_impl.cpp" />
+    <ClCompile Include="..\..\..\src\js\context\function_manager.cpp" />
     <ClCompile Include="..\..\..\src\js\context\prototype_manager.cpp" />
     <ClCompile Include="..\..\..\src\js\context\value_impl.cpp" />
     <ClCompile Include="..\..\..\src\js\duktape\duktape.c">

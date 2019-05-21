@@ -78,8 +78,7 @@ int BKAPI CrawlerImpl::Load(const char *URL)
 
 int BKAPI CrawlerImpl::RegisterCrawlerFunction(const char *name, BkFunction *functionImpl)
 {
-    assert(false); // BKTODO:
-    return BkError::UnknownError;
+    return m_frame->script().RegisterFunction(name, functionImpl);
 }
 
 String CrawlerImpl::userAgent(void)

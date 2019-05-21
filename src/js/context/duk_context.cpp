@@ -17,6 +17,7 @@
 #include "bindings/duk_console.h"
 #include "bindings/duk_window.h"
 #include "context/caller_context_impl.h"
+#include "context/function_manager.h"
 #include "context/prototype_manager.h"
 #include "wrappers/duk.h"
 
@@ -27,11 +28,14 @@ namespace BlinKit {
 namespace StashFields {
 static const char Context[] = "context";
 static const char CrawlerObject[] = "crawlerObject";
+#ifndef BLINKIT_CRAWLER_ONLY
+static const char External[] = "external";
+#endif
 static const char Globals[] = "globals";
 }
 
 namespace Crawler {
-static duk_idx_t Eval(duk_context *ctx)
+static duk_ret_t Eval(duk_context *ctx)
 {
     assert(false); // BKTODO: Check incantation.
     duk_peval(ctx);
@@ -87,6 +91,13 @@ void DukContext::Attach(LocalFrame &frame)
 #ifndef BLINKIT_CRAWLER_ONLY
     else
         RegisterPrototypes();
+
+    if (!isCrawler)
+    {
+        duk_push_object(m_context);
+        m_functionManager = std::make_unique<FunctionManager>(m_context);
+        duk_put_prop_string(m_context, -2, StashFields::External);
+    }
 #endif
 }
 
@@ -133,6 +144,7 @@ int DukContext::CreateCrawlerObject(const char *script, size_t length)
         return BkError::TypeError;
 
     m_crawlerObjectPtr = duk_get_heapptr(m_context, -1);
+    m_functionManager = std::make_unique<FunctionManager>(m_context);
     duk_put_prop_string(m_context, -2, StashFields::CrawlerObject);
     return BkError::Success;
 }
@@ -180,6 +192,13 @@ void DukContext::PrepareGlobalsToTop(void)
         duk_put_prop(m_context, idxNewGlobal);
         // ... newGlobal globals enum
     }
+}
+
+int DukContext::RegisterFunction(const char *name, BkFunction *functionImpl)
+{
+    if (!m_functionManager)
+        return BkError::Forbidden;
+    return m_functionManager->Register(m_context, name, functionImpl);
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY

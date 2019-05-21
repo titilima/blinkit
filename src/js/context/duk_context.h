@@ -20,6 +20,7 @@ class LocalFrame;
 
 namespace BlinKit {
 
+class FunctionManager;
 class PrototypeManager;
 
 class DukContext
@@ -33,6 +34,7 @@ public:
     int CreateCrawlerObject(const char *script, size_t length);
     int CallFunction(const char *name, BkCallerContext::Callback callback, void *userData);
     int CallCrawler(const char *method, BkCallerContext::Callback callback, void *userData);
+    int RegisterFunction(const char *name, BkFunction *functionImpl);
 
     void CreateObject(const char *protoName);
 
@@ -49,6 +51,7 @@ private:
 
     duk_context *m_context;
     std::unique_ptr<PrototypeManager> m_prototypeManager;
+    std::unique_ptr<FunctionManager> m_functionManager;
     void *m_crawlerObjectPtr = nullptr;
     void *m_globalsPtr = nullptr;
 };

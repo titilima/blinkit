@@ -71,6 +71,12 @@
     <ClInclude Include="..\..\..\src\js\bindings\duk_console.h">
       <Filter>bindings</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\js\context\function_manager.h">
+      <Filter>context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\context\function_context_impl.h">
+      <Filter>context</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -111,6 +117,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\js\bindings\duk_console.cpp">
       <Filter>bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\context\function_manager.cpp">
+      <Filter>context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\context\function_context_impl.cpp">
+      <Filter>context</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

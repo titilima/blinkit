@@ -47,6 +47,7 @@ public:
     int CreateCrawlerObject(const char *script, size_t length);
     int CallFunction(const char *name, BlinKit::BkCallerContext::Callback callback, void *userData);
     int CallCrawler(const char *method, BlinKit::BkCallerContext::Callback callback, void *userData);
+    int RegisterFunction(const char *name, BlinKit::BkFunction *functionImpl);
 
     void executeScriptInMainWorld(const ScriptSourceCode &, AccessControlStatus = NotSharableCrossOrigin, double *compilationFinishTime = nullptr);
 
