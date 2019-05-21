@@ -44,7 +44,7 @@ void DukWindow::RegisterPrototype(duk_context *ctx, PrototypeManager &protos)
     };
     const auto worker = [](PrototypeEntry & entry)
     {
-        entry.Register(Properties, WTF_ARRAY_LENGTH(Properties));
+        entry.Add(Properties, WTF_ARRAY_LENGTH(Properties));
     };
     protos.Register(ctx, ProtoName, worker);
 }

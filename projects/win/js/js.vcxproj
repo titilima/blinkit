@@ -106,7 +106,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SrcRoot)js;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -135,7 +135,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SrcRoot)js;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -165,23 +165,53 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\js\bindings\duk_console.cpp" />
+    <ClCompile Include="..\..\..\src\js\bindings\duk_window.cpp" />
+    <ClCompile Include="..\..\..\src\js\context\caller_context_impl.cpp" />
     <ClCompile Include="..\..\..\src\js\context\duk_context.cpp" />
+    <ClCompile Include="..\..\..\src\js\context\function_context_impl.cpp" />
+    <ClCompile Include="..\..\..\src\js\context\function_manager.cpp" />
+    <ClCompile Include="..\..\..\src\js\context\prototype_manager.cpp" />
+    <ClCompile Include="..\..\..\src\js\context\value_impl.cpp" />
+    <ClCompile Include="..\..\..\src\js\duktape\duktape.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ForcedIncludeFiles>
+    </ClCompile>
     <ClCompile Include="..\..\..\src\js\public\script_controller.cpp" />
     <ClCompile Include="..\..\..\src\js\public\script_event_listener.cpp" />
     <ClCompile Include="..\..\..\src\js\public\script_source_code.cpp" />
     <ClCompile Include="..\..\..\src\js\public\script_streamer.cpp" />
+    <ClCompile Include="..\..\..\src\js\wrappers\duk.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_console.h" />
+    <ClInclude Include="..\..\..\src\js\bindings\duk_window.h" />
+    <ClInclude Include="..\..\..\src\js\bindings\meta_data.h" />
+    <ClInclude Include="..\..\..\src\js\context\caller_context_impl.h" />
     <ClInclude Include="..\..\..\src\js\context\duk_context.h" />
+    <ClInclude Include="..\..\..\src\js\context\function_context_impl.h" />
+    <ClInclude Include="..\..\..\src\js\context\function_manager.h" />
+    <ClInclude Include="..\..\..\src\js\context\prototype_manager.h" />
+    <ClInclude Include="..\..\..\src\js\context\value_impl.h" />
+    <ClInclude Include="..\..\..\src\js\duktape\duktape.h" />
+    <ClInclude Include="..\..\..\src\js\duktape\duk_config.h" />
     <ClInclude Include="..\..\..\src\js\public\script_controller.h" />
     <ClInclude Include="..\..\..\src\js\public\script_event_listener.h" />
     <ClInclude Include="..\..\..\src\js\public\script_source_code.h" />
     <ClInclude Include="..\..\..\src\js\public\script_streamer.h" />
+    <ClInclude Include="..\..\..\src\js\wrappers\duk.h" />
     <ClInclude Include="..\..\..\src\js\_pc.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\src\js\duktape\duk_source_meta.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

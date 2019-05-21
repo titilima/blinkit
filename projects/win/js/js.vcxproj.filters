@@ -15,6 +15,15 @@
     <Filter Include="context">
       <UniqueIdentifier>{b6284a84-d615-4cc5-be47-7980a97a8753}</UniqueIdentifier>
     </Filter>
+    <Filter Include="duktape">
+      <UniqueIdentifier>{10eac837-0bc6-4e11-be87-b8612f9f4991}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wrappers">
+      <UniqueIdentifier>{533d4217-c315-407d-9d66-5c6acdd4c9d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bindings">
+      <UniqueIdentifier>{fe572dfa-190d-4be6-b1c5-3aaf56541437}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -34,6 +43,33 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\js\public\script_streamer.cpp">
       <Filter>public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\duktape\duktape.c">
+      <Filter>duktape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\wrappers\duk.cpp">
+      <Filter>wrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\context\caller_context_impl.cpp">
+      <Filter>context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\context\value_impl.cpp">
+      <Filter>context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\bindings\duk_console.cpp">
+      <Filter>bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\bindings\duk_window.cpp">
+      <Filter>bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\context\function_context_impl.cpp">
+      <Filter>context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\context\function_manager.cpp">
+      <Filter>context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\context\prototype_manager.cpp">
+      <Filter>context</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -55,5 +91,43 @@
     <ClInclude Include="..\..\..\src\js\context\duk_context.h">
       <Filter>context</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\js\duktape\duk_config.h">
+      <Filter>duktape</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\duktape\duktape.h">
+      <Filter>duktape</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\wrappers\duk.h">
+      <Filter>wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\context\caller_context_impl.h">
+      <Filter>context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\context\value_impl.h">
+      <Filter>context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_console.h">
+      <Filter>bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_window.h">
+      <Filter>bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\bindings\meta_data.h">
+      <Filter>bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\context\function_context_impl.h">
+      <Filter>context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\context\function_manager.h">
+      <Filter>context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\context\prototype_manager.h">
+      <Filter>context</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\src\js\duktape\duk_source_meta.json">
+      <Filter>duktape</Filter>
+    </None>
   </ItemGroup>
 </Project>
