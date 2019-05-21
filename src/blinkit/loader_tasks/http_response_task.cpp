@@ -13,6 +13,7 @@
 
 #include "crawler/crawler_impl.h"
 
+#include "platform/network/HTTPParsers.h"
 #include "public/platform/WebTraceLocation.h"
 
 using namespace blink;
@@ -25,10 +26,19 @@ HTTPResponseTask::HTTPResponseTask(CrawlerImpl &crawler, WebURLLoader *loader, W
     // Nothing
 }
 
+static std::string ExtractMIMEType(const BkResponse &response)
+{
+    std::string contentType;
+    response.GetHeader("Content-Type", BkMakeBuffer(contentType).Wrap());
+
+    AtomicString mediaType = AtomicString::fromUTF8(contentType.data(), contentType.length());
+    return extractMIMETypeFromMediaType(mediaType).lower().to_string();
+}
+
 void BKAPI HTTPResponseTask::RequestComplete(const BkResponse &response)
 {
     m_responseData->StatusCode = response.StatusCode();
-    response.GetHeader("Content-Type", BkMakeBuffer(m_responseData->MimeType).Wrap());
+    m_responseData->MimeType = ExtractMIMEType(response);
     response.GetBody(BkMakeBuffer(m_responseData->Body).Wrap());
 
     m_taskRunner->postTask(BLINK_FROM_HERE, this);
