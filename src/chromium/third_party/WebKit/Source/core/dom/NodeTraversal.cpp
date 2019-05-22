@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: NodeTraversal.cpp
+// Description: NodeTraversal Class
+//      Author: Ziming Li
+//     Created: 2019-05-22
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -29,6 +40,7 @@
 
 namespace blink {
 
+#ifndef BLINKIT_CRAWLER_ONLY
 Node* NodeTraversal::previousIncludingPseudo(const Node& current, const Node* stayWithin)
 {
     if (current == stayWithin)
@@ -72,6 +84,7 @@ Node* NodeTraversal::nextIncludingPseudoSkippingChildren(const Node& current, co
     }
     return 0;
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 Node* NodeTraversal::nextAncestorSibling(const Node& current)
 {
@@ -173,9 +186,11 @@ Node* NodeTraversal::previousPostOrder(const Node& current, const Node* stayWith
     return previousAncestorSiblingPostOrder(current, stayWithin);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 Node* NodeTraversal::commonAncestor(const Node& nodeA, const Node& nodeB)
 {
     return Range::commonAncestorContainer(&nodeA, &nodeB);
 }
+#endif
 
 } // namespace blink

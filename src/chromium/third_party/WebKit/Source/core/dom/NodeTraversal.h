@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: NodeTraversal.h
+// Description: NodeTraversal Class
+//      Author: Ziming Li
+//     Created: 2019-05-22
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -74,10 +85,12 @@ public:
     // Like previous, but visits parents before their children.
     static Node* previousPostOrder(const Node&, const Node* stayWithin = 0);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // Pre-order traversal including the pseudo-elements.
     static Node* previousIncludingPseudo(const Node&, const Node* stayWithin = 0);
     static Node* nextIncludingPseudo(const Node&, const Node* stayWithin = 0);
     static Node* nextIncludingPseudoSkippingChildren(const Node&, const Node* stayWithin = 0);
+#endif
 
     CORE_EXPORT static Node* nextAncestorSibling(const Node&);
     CORE_EXPORT static Node* nextAncestorSibling(const Node&, const Node* stayWithin);
@@ -95,7 +108,9 @@ public:
     static Node* nextSibling(const Node& node) { return node.nextSibling(); }
     static Node* previousSibling(const Node& node) { return node.previousSibling(); }
     static ContainerNode* parent(const Node& node) { return node.parentNode(); }
+#ifndef BLINKIT_CRAWLER_ONLY
     static Node* commonAncestor(const Node& nodeA, const Node& nodeB);
+#endif
     static unsigned index(const Node& node) { return node.nodeIndex(); }
     static unsigned countChildren(const Node& parent) { return parent.countChildren(); }
     static ContainerNode* parentOrShadowHostNode(const Node& node) { return node.parentOrShadowHostNode(); }

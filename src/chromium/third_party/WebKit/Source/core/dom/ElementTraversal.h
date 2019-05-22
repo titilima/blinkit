@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ElementTraversal.h
+// Description: Element Traversal Helpers
+//      Author: Ziming Li
+//     Created: 2019-05-22
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -419,6 +430,7 @@ inline ElementType* Traversal<ElementType>::nextIncludingPseudoSkippingChildren(
     return toElement<ElementType>(node);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 template <class ElementType>
 inline ElementType* Traversal<ElementType>::pseudoAwarePreviousSibling(const Node& current)
 {
@@ -427,6 +439,7 @@ inline ElementType* Traversal<ElementType>::pseudoAwarePreviousSibling(const Nod
         node = node->pseudoAwarePreviousSibling();
     return toElement<ElementType>(node);
 }
+#endif
 
 template <class ElementType>
 inline ElementType* Traversal<ElementType>::previousSibling(const Node& current)
