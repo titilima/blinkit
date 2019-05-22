@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ComputedStyle.h
+// Description: ComputedStyle Class
+//      Author: Ziming Li
+//     Created: 2019-05-22
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -159,8 +170,6 @@ protected:
 
     // list of associated pseudo styles
     OwnPtr<PseudoStyleCache> m_cachedPseudoStyles;
-
-    DataRef<SVGComputedStyle> m_svgStyle;
 
 // !START SYNC!: Keep this in sync with the copy constructor in ComputedStyle.cpp and implicitlyInherited() in StyleResolver.cpp
 
@@ -1479,55 +1488,6 @@ public:
     bool requiresAcceleratedCompositingForExternalReasons(bool b) { return rareNonInheritedData->m_requiresAcceleratedCompositingForExternalReasons; }
     void setRequiresAcceleratedCompositingForExternalReasons(bool b) { SET_VAR(rareNonInheritedData, m_requiresAcceleratedCompositingForExternalReasons, b); }
 
-    const SVGComputedStyle& svgStyle() const { return *m_svgStyle.get(); }
-    SVGComputedStyle& accessSVGStyle() { return *m_svgStyle.access(); }
-
-    const SVGPaintType& fillPaintType() const { return svgStyle().fillPaintType(); }
-    Color fillPaintColor() const { return svgStyle().fillPaintColor(); }
-    float fillOpacity() const { return svgStyle().fillOpacity(); }
-    void setFillOpacity(float f) { accessSVGStyle().setFillOpacity(f); }
-
-    const SVGPaintType& strokePaintType() const { return svgStyle().strokePaintType(); }
-    Color strokePaintColor() const { return svgStyle().strokePaintColor(); }
-    float strokeOpacity() const { return svgStyle().strokeOpacity(); }
-    void setStrokeOpacity(float f) { accessSVGStyle().setStrokeOpacity(f); }
-    const UnzoomedLength& strokeWidth() const { return svgStyle().strokeWidth(); }
-    void setStrokeWidth(const UnzoomedLength& w) { accessSVGStyle().setStrokeWidth(w); }
-    SVGDashArray* strokeDashArray() const { return svgStyle().strokeDashArray(); }
-    void setStrokeDashArray(PassRefPtr<SVGDashArray> array) { accessSVGStyle().setStrokeDashArray(array); }
-    const Length& strokeDashOffset() const { return svgStyle().strokeDashOffset(); }
-    void setStrokeDashOffset(const Length& d) { accessSVGStyle().setStrokeDashOffset(d); }
-    float strokeMiterLimit() const { return svgStyle().strokeMiterLimit(); }
-    void setStrokeMiterLimit(float f) { accessSVGStyle().setStrokeMiterLimit(f); }
-
-    void setD(PassRefPtr<StylePath> d) { accessSVGStyle().setD(d); }
-    void setCx(const Length& cx) { accessSVGStyle().setCx(cx); }
-    void setCy(const Length& cy) { accessSVGStyle().setCy(cy); }
-    void setX(const Length& x) { accessSVGStyle().setX(x); }
-    void setY(const Length& y) { accessSVGStyle().setY(y); }
-    void setR(const Length& r) { accessSVGStyle().setR(r); }
-    void setRx(const Length& rx) { accessSVGStyle().setRx(rx); }
-    void setRy(const Length& ry) { accessSVGStyle().setRy(ry); }
-
-    float floodOpacity() const { return svgStyle().floodOpacity(); }
-    void setFloodOpacity(float f) { accessSVGStyle().setFloodOpacity(f); }
-
-    float stopOpacity() const { return svgStyle().stopOpacity(); }
-    void setStopOpacity(float f) { accessSVGStyle().setStopOpacity(f); }
-
-    void setStopColor(const Color& c) { accessSVGStyle().setStopColor(c); }
-    void setFloodColor(const Color& c) { accessSVGStyle().setFloodColor(c); }
-    void setLightingColor(const Color& c) { accessSVGStyle().setLightingColor(c); }
-
-    EBaselineShift baselineShift() const { return svgStyle().baselineShift(); }
-    const Length& baselineShiftValue() const { return svgStyle().baselineShiftValue(); }
-    void setBaselineShiftValue(const Length& value)
-    {
-        SVGComputedStyle& svgStyle = accessSVGStyle();
-        svgStyle.setBaselineShift(BS_LENGTH);
-        svgStyle.setBaselineShiftValue(value);
-    }
-
     void setShapeOutside(PassRefPtrWillBeRawPtr<ShapeValue> value)
     {
         if (rareNonInheritedData->m_shapeOutside == value)
@@ -1885,10 +1845,6 @@ private:
 
     StyleColor decorationColorIncludingFallback(bool visitedLink) const;
     Color colorIncludingFallback(int colorProperty, bool visitedLink) const;
-
-    Color stopColor() const { return svgStyle().stopColor(); }
-    Color floodColor() const { return svgStyle().floodColor(); }
-    Color lightingColor() const { return svgStyle().lightingColor(); }
 
     void appendContent(PassOwnPtrWillBeRawPtr<ContentData>);
     void addAppliedTextDecoration(const AppliedTextDecoration&);
