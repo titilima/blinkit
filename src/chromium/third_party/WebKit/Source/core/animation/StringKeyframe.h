@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StringKeyframe.h
+// Description: StringKeyframe Class
+//      Author: Ziming Li
+//     Created: 2019-05-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -76,28 +87,6 @@ public:
         mutable RefPtr<AnimatableValue> m_animatableValueCache;
     };
 
-    class SVGPropertySpecificKeyframe : public Keyframe::PropertySpecificKeyframe {
-    public:
-        SVGPropertySpecificKeyframe(double offset, PassRefPtr<TimingFunction> easing, const String&, EffectModel::CompositeOperation);
-
-        const String& value() const { return m_value; }
-
-        PassOwnPtr<PropertySpecificKeyframe> cloneWithOffset(double offset) const final;
-
-        const PassRefPtr<AnimatableValue> getAnimatableValue() const final { return nullptr; }
-
-        bool isNeutral() const final { return m_value.isNull(); }
-        PassOwnPtr<PropertySpecificKeyframe> neutralKeyframe(double offset, PassRefPtr<TimingFunction> easing) const final;
-        PassRefPtr<Interpolation> maybeCreateInterpolation(PropertyHandle, Keyframe::PropertySpecificKeyframe& end, Element*, const ComputedStyle* baseStyle) const final;
-
-    private:
-        SVGPropertySpecificKeyframe(double offset, PassRefPtr<TimingFunction> easing, const String&);
-
-        bool isSVGPropertySpecificKeyframe() const override { return true; }
-
-        String m_value;
-    };
-
 private:
     StringKeyframe()
         : m_cssPropertyMap(MutableStylePropertySet::create(HTMLStandardMode))
@@ -117,11 +106,9 @@ private:
 };
 
 using CSSPropertySpecificKeyframe = StringKeyframe::CSSPropertySpecificKeyframe;
-using SVGPropertySpecificKeyframe = StringKeyframe::SVGPropertySpecificKeyframe;
 
 DEFINE_TYPE_CASTS(StringKeyframe, Keyframe, value, value->isStringKeyframe(), value.isStringKeyframe());
 DEFINE_TYPE_CASTS(CSSPropertySpecificKeyframe, Keyframe::PropertySpecificKeyframe, value, value->isCSSPropertySpecificKeyframe(), value.isCSSPropertySpecificKeyframe());
-DEFINE_TYPE_CASTS(SVGPropertySpecificKeyframe, Keyframe::PropertySpecificKeyframe, value, value->isSVGPropertySpecificKeyframe(), value.isSVGPropertySpecificKeyframe());
 
 }
 
