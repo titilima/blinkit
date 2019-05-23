@@ -268,7 +268,10 @@ public:
     bool isContainerNode() const { return getFlag(IsContainerFlag); }
     bool isTextNode() const { return getFlag(IsTextFlag); }
     bool isHTMLElement() const { return getFlag(IsHTMLFlag); }
-    bool isSVGElement() const { return getFlag(IsSVGFlag); }
+    bool isSVGElement() const {
+        ASSERT(!getFlag(IsSVGFlag));
+        return false;
+    }
     bool ForCrawler(void) const { return getFlag(ForCrawlerFlag); }
 
     bool isPseudoElement() const { return pseudoId() != NOPSEUDO; }

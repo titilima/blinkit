@@ -824,7 +824,7 @@ bool Node::isInert() const
     const HTMLDialogElement* dialog = document().activeModalDialog();
     if (dialog && this != document() && (!canParticipateInComposedTree() || !ComposedTreeTraversal::containsIncludingPseudoElement(*dialog, *this)))
         return true;
-    return document().ownerElement() && document().ownerElement()->isInert();
+    return false;
 }
 #endif
 
@@ -1122,6 +1122,7 @@ ContainerNode* Node::nonShadowBoundaryParentNode() const
     ContainerNode* parent = parentNode();
     return parent && !parent->isShadowRoot() ? parent : nullptr;
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 Element* Node::parentOrShadowHostElement() const
 {
@@ -1129,8 +1130,10 @@ Element* Node::parentOrShadowHostElement() const
     if (!parent)
         return nullptr;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (parent->isShadowRoot())
         return toShadowRoot(parent)->host();
+#endif
 
     if (!parent->isElementNode())
         return nullptr;
@@ -1138,6 +1141,7 @@ Element* Node::parentOrShadowHostElement() const
     return toElement(parent);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 ContainerNode* Node::parentOrShadowHostOrTemplateHostNode() const
 {
     if (isDocumentFragment() && toDocumentFragment(this)->isTemplateContent())
