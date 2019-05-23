@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutImage.cpp
+// Description: LayoutImage Class
+//      Author: Ziming Li
+//     Created: 2019-05-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -42,7 +53,6 @@
 #include "core/layout/TextRunConstructor.h"
 #include "core/page/Page.h"
 #include "core/paint/ImagePainter.h"
-#include "core/svg/graphics/SVGImage.h"
 #include "platform/fonts/Font.h"
 #include "platform/fonts/FontCache.h"
 
@@ -314,13 +324,6 @@ bool LayoutImage::needsPreferredWidthsRecalculation() const
 
 LayoutBox* LayoutImage::embeddedContentBox() const
 {
-    if (!m_imageResource)
-        return nullptr;
-
-    ImageResource* cachedImage = m_imageResource->cachedImage();
-    if (cachedImage && cachedImage->image() && cachedImage->image()->isSVGImage())
-        return toSVGImage(cachedImage->image())->embeddedContentBox();
-
     return nullptr;
 }
 
