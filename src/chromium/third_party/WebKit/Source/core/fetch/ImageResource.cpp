@@ -40,7 +40,6 @@
 #include "core/fetch/ResourceClientWalker.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/fetch/ResourceLoader.h"
-#include "core/svg/graphics/SVGImage.h"
 #include "platform/Logging.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/SharedBuffer.h"
@@ -286,19 +285,15 @@ void ImageResource::setCustomAcceptHeader()
 
 inline void ImageResource::createImage()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     // Create the image if it doesn't yet exist.
     if (m_image)
         return;
 
     if (m_response.mimeType() == "image/svg+xml") {
-        m_image = SVGImage::create(this);
+        ASSERT_NOT_REACHED();
     } else {
         m_image = BitmapImage::create(this);
     }
-#endif
 }
 
 inline void ImageResource::clearImage()

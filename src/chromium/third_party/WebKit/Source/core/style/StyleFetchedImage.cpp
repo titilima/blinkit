@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StyleFetchedImage.cpp
+// Description: StyleFetchedImage Class
+//      Author: Ziming Li
+//     Created: 2019-05-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -26,8 +37,6 @@
 #include "core/css/CSSImageValue.h"
 #include "core/fetch/ImageResource.h"
 #include "core/layout/LayoutObject.h"
-#include "core/svg/graphics/SVGImage.h"
-#include "core/svg/graphics/SVGImageForContainer.h"
 
 namespace blink {
 
@@ -127,18 +136,14 @@ void StyleFetchedImage::removeClient(LayoutObject* layoutObject)
 
 void StyleFetchedImage::notifyFinished(Resource* resource)
 {
-    if (m_document && m_image && m_image->image() && m_image->image()->isSVGImage())
-        toSVGImage(m_image->image())->updateUseCounters(*m_document);
     // Oilpan: do not prolong the Document's lifetime.
     m_document.clear();
 }
 
 PassRefPtr<Image> StyleFetchedImage::image(const LayoutObject*, const IntSize& containerSize, float zoom) const
 {
-    if (!m_image->image()->isSVGImage())
-        return m_image->image();
-
-    return SVGImageForContainer::create(toSVGImage(m_image->image()), containerSize, zoom, m_url);
+    ASSERT(!m_image->image()->isSVGImage());
+    return m_image->image();
 }
 
 bool StyleFetchedImage::knownToBeOpaque(const LayoutObject* layoutObject) const

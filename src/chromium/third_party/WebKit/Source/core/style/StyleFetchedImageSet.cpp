@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StyleFetchedImageSet.cpp
+// Description: StyleFetchedImageSet Class
+//      Author: Ziming Li
+//     Created: 2019-05-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -28,7 +39,6 @@
 #include "core/css/CSSImageSetValue.h"
 #include "core/fetch/ImageResource.h"
 #include "core/layout/LayoutObject.h"
-#include "core/svg/graphics/SVGImageForContainer.h"
 
 namespace blink {
 
@@ -131,10 +141,8 @@ void StyleFetchedImageSet::removeClient(LayoutObject* layoutObject)
 
 PassRefPtr<Image> StyleFetchedImageSet::image(const LayoutObject*, const IntSize& containerSize, float zoom) const
 {
-    if (!m_bestFitImage->image()->isSVGImage())
-        return m_bestFitImage->image();
-
-    return SVGImageForContainer::create(toSVGImage(m_bestFitImage->image()), containerSize, zoom, m_url);
+    ASSERT(!m_bestFitImage->image()->isSVGImage());
+    return m_bestFitImage->image();
 }
 
 bool StyleFetchedImageSet::knownToBeOpaque(const LayoutObject* layoutObject) const

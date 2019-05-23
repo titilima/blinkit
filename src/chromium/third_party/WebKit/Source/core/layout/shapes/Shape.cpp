@@ -47,7 +47,6 @@
 #include "core/layout/shapes/RasterShape.h"
 #include "core/layout/shapes/RectangleShape.h"
 #include "core/style/ComputedStyle.h"
-#include "core/svg/graphics/SVGImage.h"
 #include "platform/LengthFunctions.h"
 #include "platform/geometry/FloatRoundedRect.h"
 #include "platform/geometry/FloatSize.h"

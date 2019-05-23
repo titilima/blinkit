@@ -39,7 +39,6 @@
 #include "core/css/CSSImageValue.h"
 #include "core/layout/LayoutObject.h"
 #include "core/style/StyleFetchedImage.h"
-#include "core/svg/graphics/SVGImageForContainer.h"
 #include "platform/graphics/CrossfadeGeneratedImage.h"
 #include "wtf/text/StringBuilder.h"
 
@@ -226,10 +225,6 @@ void CSSCrossfadeValue::loadSubimages(Document* document)
 
 PassRefPtr<Image> CSSCrossfadeValue::image(const LayoutObject* layoutObject, const IntSize& size)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
     if (size.isEmpty())
         return nullptr;
 
@@ -242,16 +237,9 @@ PassRefPtr<Image> CSSCrossfadeValue::image(const LayoutObject* layoutObject, con
     RefPtr<Image> fromImageRef(fromImage);
     RefPtr<Image> toImageRef(toImage);
 
-    if (fromImage->isSVGImage())
-        fromImageRef = SVGImageForContainer::create(toSVGImage(fromImage), size, 1, urlForCSSValue(m_fromValue.get()));
-
-    if (toImage->isSVGImage())
-        toImageRef = SVGImageForContainer::create(toSVGImage(toImage), size, 1, urlForCSSValue(m_toValue.get()));
-
     m_generatedImage = CrossfadeGeneratedImage::create(fromImageRef, toImageRef, m_percentageValue->getFloatValue(), fixedSize(layoutObject), size);
 
     return m_generatedImage.release();
-#endif
 }
 
 void CSSCrossfadeValue::crossfadeChanged(const IntRect&)
