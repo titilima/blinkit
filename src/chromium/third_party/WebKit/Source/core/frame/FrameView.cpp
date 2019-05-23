@@ -83,8 +83,6 @@
 #include "core/paint/PaintLayer.h"
 #include "core/paint/PaintPropertyTreeBuilder.h"
 #include "core/style/ComputedStyle.h"
-#include "core/svg/SVGDocumentExtensions.h"
-#include "core/svg/SVGSVGElement.h"
 #include "platform/HostWindow.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/ScriptForbiddenScope.h"
@@ -1333,14 +1331,6 @@ bool FrameView::processUrlFragmentHelper(const String& name, UrlFragmentBehavior
 
     // Setting to null will clear the current target.
     m_frame->document()->setCSSTarget(anchorNode);
-
-    if (m_frame->document()->isSVGDocument()) {
-        if (SVGSVGElement* svg = SVGDocumentExtensions::rootElement(*m_frame->document())) {
-            svg->setupInitialView(name, anchorNode);
-            if (!anchorNode)
-                return true;
-        }
-    }
 
     // Implement the rule that "" and "top" both mean top of page as in other browsers.
     if (!anchorNode && !(name.isEmpty() || equalIgnoringCase(name, "top")))

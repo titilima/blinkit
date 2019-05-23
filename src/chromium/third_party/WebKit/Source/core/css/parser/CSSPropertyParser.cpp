@@ -170,7 +170,6 @@ bool CSSPropertyParser::isColorKeyword(CSSValueID id)
     //   '-webkit-text'
     //
     return (id >= CSSValueAqua && id <= CSSValueWebkitText)
-        || (id >= CSSValueAliceblue && id <= CSSValueYellowgreen)
         || id == CSSValueMenu;
 }
 
@@ -3096,11 +3095,6 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseSingleValue(CSSProperty
     case CSSPropertyWebkitBorderBeforeColor:
     case CSSPropertyWebkitBorderAfterColor:
     case CSSPropertyWebkitTextStrokeColor:
-    case CSSPropertyStopColor:
-    case CSSPropertyFloodColor:
-    case CSSPropertyLightingColor:
-    case CSSPropertyWebkitColumnRuleColor:
-        return consumeColor(m_range, m_context.mode());
     case CSSPropertyColor:
         return consumeColor(m_range, m_context.mode(), inQuirksMode());
     case CSSPropertyWebkitBorderStartWidth:
@@ -3119,8 +3113,6 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseSingleValue(CSSProperty
     case CSSPropertyWebkitTextDecorationsInEffect:
     case CSSPropertyTextDecorationLine:
         return consumeTextDecorationLine(m_range);
-    case CSSPropertyD:
-        return consumePath(m_range);
     case CSSPropertyMotionPath:
         return consumePathOrNone(m_range);
     case CSSPropertyMotionOffset:
@@ -3145,46 +3137,13 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSPropertyParser::parseSingleValue(CSSProperty
         return consumePositionY(m_range, m_context.mode());
     case CSSPropertyWebkitTransformOriginZ:
         return consumeLength(m_range, m_context.mode(), ValueRangeAll);
-    case CSSPropertyFill:
-    case CSSPropertyStroke:
-        return consumePaint(m_range, m_context.mode());
-    case CSSPropertyPaintOrder:
-        return consumePaintOrder(m_range);
-    case CSSPropertyMarkerStart:
-    case CSSPropertyMarkerMid:
-    case CSSPropertyMarkerEnd:
-    case CSSPropertyClipPath:
-    case CSSPropertyFilter:
-    case CSSPropertyMask:
-        return consumeNoneOrURI(m_range);
     case CSSPropertyFlexBasis:
         return consumeFlexBasis(m_range, m_context.mode());
     case CSSPropertyFlexGrow:
     case CSSPropertyFlexShrink:
         return consumeNumber(m_range, ValueRangeNonNegative);
-    case CSSPropertyStrokeDasharray:
-        return consumeStrokeDasharray(m_range);
     case CSSPropertyWebkitColumnRuleWidth:
         return consumeColumnRuleWidth(m_range, m_context.mode());
-    case CSSPropertyStrokeOpacity:
-    case CSSPropertyFillOpacity:
-    case CSSPropertyStopOpacity:
-    case CSSPropertyFloodOpacity:
-        return consumeNumber(m_range, ValueRangeAll);
-    case CSSPropertyBaselineShift:
-        return consumeBaselineShift(m_range);
-    case CSSPropertyStrokeMiterlimit:
-        return consumeNumber(m_range, ValueRangeNonNegative);
-    case CSSPropertyStrokeWidth:
-    case CSSPropertyStrokeDashoffset:
-    case CSSPropertyCx:
-    case CSSPropertyCy:
-    case CSSPropertyX:
-    case CSSPropertyY:
-    case CSSPropertyR:
-    case CSSPropertyRx:
-    case CSSPropertyRy:
-        return consumeLengthOrPercent(m_range, SVGAttributeMode, ValueRangeAll, UnitlessQuirk::Forbid);
     case CSSPropertyCursor:
         return consumeCursor(m_range, m_context, inQuirksMode());
     case CSSPropertyContain:
@@ -3827,16 +3786,6 @@ bool CSSPropertyParser::parseShorthand(CSSPropertyID unresolvedProperty, bool im
         return consumeShorthandGreedily(webkitBorderAfterShorthand(), important);
     case CSSPropertyWebkitTextStroke:
         return consumeShorthandGreedily(webkitTextStrokeShorthand(), important);
-    case CSSPropertyMarker: {
-        ImplicitScope implicitScope(this);
-        RefPtrWillBeRawPtr<CSSValue> marker = parseSingleValue(CSSPropertyMarkerStart);
-        if (!marker || !m_range.atEnd())
-            return false;
-        addProperty(CSSPropertyMarkerStart, marker, important);
-        addProperty(CSSPropertyMarkerMid, marker, important);
-        addProperty(CSSPropertyMarkerEnd, marker.release(), important);
-        return true;
-    }
     case CSSPropertyFlex:
         return consumeFlex(important);
     case CSSPropertyFlexFlow:

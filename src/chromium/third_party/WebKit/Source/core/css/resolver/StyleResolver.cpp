@@ -94,8 +94,6 @@
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/layout/GeneratedChildren.h"
 #include "core/layout/LayoutView.h"
-#include "core/svg/SVGDocumentExtensions.h"
-#include "core/svg/SVGElement.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "wtf/StdLibExtras.h"
 
@@ -206,7 +204,7 @@ void StyleResolver::appendCSSStyleSheet(CSSStyleSheet& cssSheet)
     ASSERT(!cssSheet.disabled());
     ASSERT(cssSheet.ownerDocument());
     ASSERT(cssSheet.ownerNode());
-    ASSERT(isHTMLStyleElement(cssSheet.ownerNode()) || isSVGStyleElement(cssSheet.ownerNode()) || cssSheet.ownerNode()->treeScope() == cssSheet.ownerDocument());
+    ASSERT(isHTMLStyleElement(cssSheet.ownerNode()) || cssSheet.ownerNode()->treeScope() == cssSheet.ownerDocument());
 
     if (cssSheet.mediaQueries() && !m_medium->eval(cssSheet.mediaQueries(), &m_viewportDependentMediaQueryResults, &m_deviceDependentMediaQueryResults))
         return;
@@ -461,10 +459,6 @@ void StyleResolver::matchAllRules(StyleResolverState& state, ElementRuleCollecto
             bool isInlineStyleCacheable = !state.element()->inlineStyle()->isMutable();
             collector.addElementStyleProperties(state.element()->inlineStyle(), isInlineStyleCacheable);
         }
-
-        // Now check SMIL animation override style.
-        if (includeSMILProperties && state.element()->isSVGElement())
-            collector.addElementStyleProperties(toSVGElement(state.element())->animatedSMILStyleProperties(), false /* isCacheable */);
     }
 
     collector.finishAddingAuthorRulesForTreeScope();
@@ -1393,17 +1387,6 @@ void StyleResolver::applyMatchedProperties(StyleResolverState& state, const Matc
     for (auto range : ImportantAuthorRanges(matchResult))
         applyMatchedProperties<HighPropertyPriority>(state, range, true, applyInheritedOnly);
     applyMatchedProperties<HighPropertyPriority>(state, matchResult.uaRules(), true, applyInheritedOnly);
-
-    if (UNLIKELY(isSVGForeignObjectElement(element))) {
-        // LayoutSVGRoot handles zooming for the whole SVG subtree, so foreignObject content should not be scaled again.
-        //
-        // FIXME: The following hijacks the zoom property for foreignObject so that children of foreignObject get the
-        // correct font-size in case of zooming. 'zoom' has HighPropertyPriority, along with other font-related
-        // properties used as input to the FontBuilder, so resetting it here may cause the FontBuilder to recompute the
-        // font used as inheritable font for foreignObject content. If we want to support zoom on foreignObject we'll
-        // need to find another way of handling the SVG zoom model.
-        state.setEffectiveZoom(ComputedStyle::initialZoom());
-    }
 
     if (cachedMatchedProperties && cachedMatchedProperties->computedStyle->effectiveZoom() != state.style()->effectiveZoom()) {
         state.fontBuilder().didChangeEffectiveZoom();
