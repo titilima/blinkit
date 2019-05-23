@@ -38,7 +38,6 @@
 #include "core/events/EventTarget.h"
 #include "core/frame/OriginsUsingFeatures.h"
 #include "core/frame/UseCounter.h"
-#include "core/svg/SVGElement.h"
 #include "core/timing/DOMWindowPerformance.h"
 #include "core/timing/Performance.h"
 #include "wtf/CurrentTime.h"
@@ -243,15 +242,6 @@ PassRefPtrWillBeRawPtr<EventDispatchMediator> Event::createMediator()
 
 EventTarget* Event::currentTarget() const
 {
-    if (!m_currentTarget)
-        return nullptr;
-#ifndef BLINKIT_CRAWLER_ONLY
-    Node* node = m_currentTarget->toNode();
-    if (node && node->isSVGElement()) {
-        if (SVGElement* svgElement = toSVGElement(node)->correspondingElement())
-            return svgElement;
-    }
-#endif
     return m_currentTarget.get();
 }
 
