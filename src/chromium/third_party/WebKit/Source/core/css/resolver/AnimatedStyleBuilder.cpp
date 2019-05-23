@@ -319,12 +319,6 @@ void AnimatedStyleBuilder::applyProperty(CSSPropertyID property, StyleResolverSt
     case CSSPropertyBackgroundSize:
         setOnFillLayers<CSSPropertyBackgroundSize>(style->accessBackgroundLayers(), value, state);
         return;
-#ifndef BLINKIT_CRAWLER_ONLY
-    case CSSPropertyBaselineShift:
-        style->accessSVGStyle().setBaselineShift(BS_LENGTH);
-        style->accessSVGStyle().setBaselineShiftValue(animatableValueToLength(value, state));
-        return;
-#endif
     case CSSPropertyBorderBottomColor:
         style->setBorderBottomColor(toAnimatableColor(value)->color());
         style->setVisitedLinkBorderBottomColor(toAnimatableColor(value)->visitedLinkColor());
@@ -391,18 +385,6 @@ void AnimatedStyleBuilder::applyProperty(CSSPropertyID property, StyleResolverSt
         style->setColor(toAnimatableColor(value)->color());
         style->setVisitedLinkColor(toAnimatableColor(value)->visitedLinkColor());
         return;
-#ifndef BLINKIT_CRAWLER_ONLY
-    case CSSPropertyFillOpacity:
-        style->setFillOpacity(clampTo<float>(toAnimatableDouble(value)->toDouble(), 0, 1));
-        return;
-    case CSSPropertyFill:
-        {
-            const AnimatableSVGPaint* svgPaint = toAnimatableSVGPaint(value);
-            style->accessSVGStyle().setFillPaint(svgPaint->paintType(), svgPaint->color(), svgPaint->uri(), true, false);
-            style->accessSVGStyle().setFillPaint(svgPaint->visitedLinkPaintType(), svgPaint->visitedLinkColor(), svgPaint->visitedLinkURI(), false, true);
-        }
-        return;
-#endif
     case CSSPropertyFlexGrow:
         style->setFlexGrow(clampTo<float>(toAnimatableDouble(value)->toDouble(), 0));
         return;
@@ -412,14 +394,6 @@ void AnimatedStyleBuilder::applyProperty(CSSPropertyID property, StyleResolverSt
     case CSSPropertyFlexBasis:
         style->setFlexBasis(animatableValueToLength(value, state, ValueRangeNonNegative));
         return;
-#ifndef BLINKIT_CRAWLER_ONLY
-    case CSSPropertyFloodColor:
-        style->setFloodColor(toAnimatableColor(value)->color());
-        return;
-    case CSSPropertyFloodOpacity:
-        style->setFloodOpacity(clampTo<float>(toAnimatableDouble(value)->toDouble(), 0, 1));
-        return;
-#endif
     case CSSPropertyFontSize:
         state.fontBuilder().setSize(animatableValueToFontSize(value));
         return;
@@ -438,11 +412,6 @@ void AnimatedStyleBuilder::applyProperty(CSSPropertyID property, StyleResolverSt
     case CSSPropertyLeft:
         style->setLeft(animatableValueToLength(value, state));
         return;
-#ifndef BLINKIT_CRAWLER_ONLY
-    case CSSPropertyLightingColor:
-        style->setLightingColor(toAnimatableColor(value)->color());
-        return;
-#endif
     case CSSPropertyLineHeight:
         if (value->isLength())
             style->setLineHeight(animatableValueToLength(value, state, ValueRangeNonNegative));
@@ -514,36 +483,6 @@ void AnimatedStyleBuilder::applyProperty(CSSPropertyID property, StyleResolverSt
     case CSSPropertyRight:
         style->setRight(animatableValueToLength(value, state));
         return;
-#ifndef BLINKIT_CRAWLER_ONLY
-    case CSSPropertyStrokeWidth:
-        style->setStrokeWidth(animatableValueToUnzoomedLength(value, state, ValueRangeNonNegative));
-        return;
-    case CSSPropertyStopColor:
-        style->setStopColor(toAnimatableColor(value)->color());
-        return;
-    case CSSPropertyStopOpacity:
-        style->setStopOpacity(clampTo<float>(toAnimatableDouble(value)->toDouble(), 0, 1));
-        return;
-    case CSSPropertyStrokeDasharray:
-        style->setStrokeDashArray(toAnimatableStrokeDasharrayList(value)->toSVGDashArray(style->effectiveZoom()));
-        return;
-    case CSSPropertyStrokeDashoffset:
-        style->setStrokeDashOffset(animatableValueToLength(value, state));
-        return;
-    case CSSPropertyStrokeMiterlimit:
-        style->setStrokeMiterLimit(clampTo<float>(toAnimatableDouble(value)->toDouble(), 1));
-        return;
-    case CSSPropertyStrokeOpacity:
-        style->setStrokeOpacity(clampTo<float>(toAnimatableDouble(value)->toDouble(), 0, 1));
-        return;
-    case CSSPropertyStroke:
-        {
-            const AnimatableSVGPaint* svgPaint = toAnimatableSVGPaint(value);
-            style->accessSVGStyle().setStrokePaint(svgPaint->paintType(), svgPaint->color(), svgPaint->uri(), true, false);
-            style->accessSVGStyle().setStrokePaint(svgPaint->visitedLinkPaintType(), svgPaint->visitedLinkColor(), svgPaint->visitedLinkURI(), false, true);
-        }
-        return;
-#endif // BLINKIT_CRAWLER_ONLY
     case CSSPropertyTextDecorationColor:
         style->setTextDecorationColor(toAnimatableColor(value)->color());
         style->setVisitedLinkTextDecorationColor(toAnimatableColor(value)->visitedLinkColor());
@@ -702,32 +641,6 @@ void AnimatedStyleBuilder::applyProperty(CSSPropertyID property, StyleResolverSt
     case CSSPropertyZIndex:
         style->setZIndex(clampTo<int>(round(toAnimatableDouble(value)->toDouble())));
         return;
-#ifndef BLINKIT_CRAWLER_ONLY
-    case CSSPropertyD:
-        style->setD(toAnimatablePath(value)->path());
-        return;
-    case CSSPropertyCx:
-        style->setCx(animatableValueToLength(value, state));
-        return;
-    case CSSPropertyCy:
-        style->setCy(animatableValueToLength(value, state));
-        return;
-    case CSSPropertyX:
-        style->setX(animatableValueToLength(value, state));
-        return;
-    case CSSPropertyY:
-        style->setY(animatableValueToLength(value, state));
-        return;
-    case CSSPropertyR:
-        style->setR(animatableValueToLength(value, state, ValueRangeNonNegative));
-        return;
-    case CSSPropertyRx:
-        style->setRx(animatableValueToLength(value, state, ValueRangeNonNegative));
-        return;
-    case CSSPropertyRy:
-        style->setRy(animatableValueToLength(value, state, ValueRangeNonNegative));
-        return;
-#endif // BLINKIT_CRAWLER_ONLY
 
     default:
         ASSERT_NOT_REACHED();

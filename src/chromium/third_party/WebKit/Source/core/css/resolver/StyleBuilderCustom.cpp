@@ -2,7 +2,7 @@
 // BlinKit - blink Library
 // -------------------------------------------------
 //   File Name: StyleBuilderCustom.cpp
-// Description: StyleBuilderCustom Class
+// Description: StyleBuilder Class
 //      Author: Ziming Li
 //     Created: 2019-03-30
 // -------------------------------------------------
@@ -102,9 +102,7 @@ static inline bool isValidVisitedLinkProperty(CSSPropertyID id)
     case CSSPropertyBorderTopColor:
     case CSSPropertyBorderBottomColor:
     case CSSPropertyColor:
-    case CSSPropertyFill:
     case CSSPropertyOutlineColor:
-    case CSSPropertyStroke:
     case CSSPropertyTextDecorationColor:
     case CSSPropertyWebkitColumnRuleColor:
     case CSSPropertyWebkitTextEmphasisColor:
@@ -845,49 +843,6 @@ void StyleBuilderFunctions::applyValueCSSPropertyVariable(StyleResolverState& st
     default:
         ASSERT_NOT_REACHED();
     }
-}
-
-void StyleBuilderFunctions::applyInheritCSSPropertyBaselineShift(StyleResolverState& state)
-{
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
-    const SVGComputedStyle& parentSvgStyle = state.parentStyle()->svgStyle();
-    EBaselineShift baselineShift = parentSvgStyle.baselineShift();
-    SVGComputedStyle& svgStyle = state.style()->accessSVGStyle();
-    svgStyle.setBaselineShift(baselineShift);
-    if (baselineShift == BS_LENGTH)
-        svgStyle.setBaselineShiftValue(parentSvgStyle.baselineShiftValue());
-#endif
-}
-
-void StyleBuilderFunctions::applyValueCSSPropertyBaselineShift(StyleResolverState& state, CSSValue* value)
-{
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
-    SVGComputedStyle& svgStyle = state.style()->accessSVGStyle();
-    CSSPrimitiveValue* primitiveValue = toCSSPrimitiveValue(value);
-    if (!primitiveValue->isValueID()) {
-        svgStyle.setBaselineShift(BS_LENGTH);
-        svgStyle.setBaselineShiftValue(StyleBuilderConverter::convertLength(state, *primitiveValue));
-        return;
-    }
-    switch (primitiveValue->getValueID()) {
-    case CSSValueBaseline:
-        svgStyle.setBaselineShift(BS_LENGTH);
-        svgStyle.setBaselineShiftValue(Length(Fixed));
-        return;
-    case CSSValueSub:
-        svgStyle.setBaselineShift(BS_SUB);
-        return;
-    case CSSValueSuper:
-        svgStyle.setBaselineShift(BS_SUPER);
-        return;
-    default:
-        ASSERT_NOT_REACHED();
-    }
-#endif
 }
 
 } // namespace blink

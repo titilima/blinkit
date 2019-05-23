@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: SharedStyleFinder.cpp
+// Description: SharedStyleFinder Class
+//      Author: Ziming Li
+//     Created: 2019-05-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -46,7 +57,6 @@
 #include "core/html/HTMLOptGroupElement.h"
 #include "core/html/HTMLOptionElement.h"
 #include "core/style/ComputedStyle.h"
-#include "core/svg/SVGElement.h"
 #include "platform/TraceEvent.h"
 #include "wtf/HashSet.h"
 #include "wtf/text/AtomicString.h"
@@ -216,8 +226,6 @@ bool SharedStyleFinder::canShareStyleWithElement(Element& candidate) const
         return false;
     if (candidate.needsStyleRecalc())
         return false;
-    if (candidate.isSVGElement() && toSVGElement(candidate).animatedSMILStyleProperties())
-        return false;
     if (candidate.isLink() != element().isLink())
         return false;
     if (candidate.shadowPseudoId() != element().shadowPseudoId())
@@ -259,8 +267,6 @@ bool SharedStyleFinder::canShareStyleWithElement(Element& candidate) const
         if (!parent->isStyledElement())
             return false;
         if (parent->inlineStyle())
-            return false;
-        if (parent->isSVGElement() && toSVGElement(parent)->animatedSMILStyleProperties())
             return false;
         if (parent->hasID() && m_features.hasSelectorForId(parent->idForStyleResolution()))
             return false;

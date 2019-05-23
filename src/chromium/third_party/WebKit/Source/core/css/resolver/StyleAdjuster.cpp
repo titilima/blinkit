@@ -40,7 +40,6 @@
 #include "core/css/resolver/StyleAdjuster.h"
 
 #include "core/HTMLNames.h"
-#include "core/SVGNames.h"
 #include "core/dom/ContainerNode.h"
 #include "core/dom/Document.h"
 #include "core/dom/Element.h"
@@ -54,7 +53,6 @@
 #include "core/layout/LayoutTheme.h"
 #include "core/style/ComputedStyle.h"
 #include "core/style/ComputedStyleConstants.h"
-#include "core/svg/SVGSVGElement.h"
 #include "platform/Length.h"
 #include "platform/transforms/TransformOperations.h"
 #include "public/platform/WebCompositorMutableProperties.h"
@@ -109,7 +107,7 @@ static EDisplay equivalentBlockDisplay(EDisplay display, bool isFloating, bool s
 
 static bool isOutermostSVGElement(const Element* element)
 {
-    return element && element->isSVGElement() && toSVGElement(*element).isOutermostSVGSVGElement();
+    return false;
 }
 
 // CSS requires text-decoration to be reset at each DOM element for
@@ -246,20 +244,6 @@ void StyleAdjuster::adjustComputedStyle(ComputedStyle& style, const ComputedStyl
         || style.hasFilter()))
         style.setTransformStyle3D(TransformStyle3DFlat);
 
-    bool isSVGElement = element && element->isSVGElement();
-    if (isSVGElement) {
-        // Only the root <svg> element in an SVG document fragment tree honors css position
-        if (!(isSVGSVGElement(*element) && element->parentNode() && !element->parentNode()->isSVGElement()))
-            style.setPosition(ComputedStyle::initialPosition());
-
-        // SVG text layout code expects us to be a block-level style element.
-        if ((isSVGForeignObjectElement(*element) || isSVGTextElement(*element)) && style.isDisplayInlineType())
-            style.setDisplay(BLOCK);
-
-        // Columns don't apply to svg text elements.
-        if (isSVGTextElement(*element))
-            style.clearMultiCol();
-    }
     adjustStyleForAlignment(style, parentStyle);
 }
 

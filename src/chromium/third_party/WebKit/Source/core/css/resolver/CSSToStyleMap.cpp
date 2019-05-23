@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CSSToStyleMap.cpp
+// Description: CSSToStyleMap Class
+//      Author: Ziming Li
+//     Created: 2019-05-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -262,12 +273,6 @@ void CSSToStyleMap::mapFillMaskSourceType(StyleResolverState&, FillLayer* layer,
         return;
 
     switch (toCSSPrimitiveValue(value).getValueID()) {
-    case CSSValueAlpha:
-        type = MaskAlpha;
-        break;
-    case CSSValueLuminance:
-        type = MaskLuminance;
-        break;
     case CSSValueAuto:
         break;
     default:

@@ -160,15 +160,7 @@ static PassRefPtrWillBeRawPtr<CSSValue> valueForFillRepeat(EFillRepeat xRepeat, 
 
 static PassRefPtrWillBeRawPtr<CSSValue> valueForFillSourceType(EMaskSourceType type)
 {
-    switch (type) {
-    case MaskAlpha:
-        return cssValuePool().createIdentifierValue(CSSValueAlpha);
-    case MaskLuminance:
-        return cssValuePool().createIdentifierValue(CSSValueLuminance);
-    }
-
     ASSERT_NOT_REACHED();
-
     return nullptr;
 }
 
@@ -1393,11 +1385,6 @@ const HashMap<AtomicString, RefPtr<CSSVariableData>>* ComputedStyleCSSValueMappi
 
 PassRefPtrWillBeRawPtr<CSSValue> ComputedStyleCSSValueMapping::get(CSSPropertyID propertyID, const ComputedStyle& style, const LayoutObject* layoutObject, Node* styledNode, bool allowVisitedStyle)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
-    const SVGComputedStyle& svgStyle = style.svgStyle();
     propertyID = CSSProperty::resolveDirectionAwareProperty(propertyID, style.direction(), style.writingMode());
     switch (propertyID) {
     case CSSPropertyInvalid:
@@ -2564,118 +2551,6 @@ PassRefPtrWillBeRawPtr<CSSValue> ComputedStyleCSSValueMapping::get(CSSPropertyID
     case CSSPropertyUserZoom:
         return nullptr;
 
-    // SVG properties.
-    case CSSPropertyClipRule:
-        return CSSPrimitiveValue::create(svgStyle.clipRule());
-    case CSSPropertyFloodOpacity:
-        return CSSPrimitiveValue::create(svgStyle.floodOpacity(), CSSPrimitiveValue::UnitType::Number);
-    case CSSPropertyStopOpacity:
-        return CSSPrimitiveValue::create(svgStyle.stopOpacity(), CSSPrimitiveValue::UnitType::Number);
-    case CSSPropertyColorInterpolation:
-        return CSSPrimitiveValue::create(svgStyle.colorInterpolation());
-    case CSSPropertyColorInterpolationFilters:
-        return CSSPrimitiveValue::create(svgStyle.colorInterpolationFilters());
-    case CSSPropertyFillOpacity:
-        return CSSPrimitiveValue::create(svgStyle.fillOpacity(), CSSPrimitiveValue::UnitType::Number);
-    case CSSPropertyFillRule:
-        return CSSPrimitiveValue::create(svgStyle.fillRule());
-    case CSSPropertyColorRendering:
-        return CSSPrimitiveValue::create(svgStyle.colorRendering());
-    case CSSPropertyShapeRendering:
-        return CSSPrimitiveValue::create(svgStyle.shapeRendering());
-    case CSSPropertyStrokeLinecap:
-        return CSSPrimitiveValue::create(svgStyle.capStyle());
-    case CSSPropertyStrokeLinejoin:
-        return CSSPrimitiveValue::create(svgStyle.joinStyle());
-    case CSSPropertyStrokeMiterlimit:
-        return CSSPrimitiveValue::create(svgStyle.strokeMiterLimit(), CSSPrimitiveValue::UnitType::Number);
-    case CSSPropertyStrokeOpacity:
-        return CSSPrimitiveValue::create(svgStyle.strokeOpacity(), CSSPrimitiveValue::UnitType::Number);
-    case CSSPropertyAlignmentBaseline:
-        return CSSPrimitiveValue::create(svgStyle.alignmentBaseline());
-    case CSSPropertyDominantBaseline:
-        return CSSPrimitiveValue::create(svgStyle.dominantBaseline());
-    case CSSPropertyTextAnchor:
-        return CSSPrimitiveValue::create(svgStyle.textAnchor());
-    case CSSPropertyClipPath:
-        if (!svgStyle.clipperResource().isEmpty())
-            return CSSURIValue::create(serializeAsFragmentIdentifier(svgStyle.clipperResource()));
-        return CSSPrimitiveValue::createIdentifier(CSSValueNone);
-    case CSSPropertyMask:
-        if (!svgStyle.maskerResource().isEmpty())
-            return CSSURIValue::create(serializeAsFragmentIdentifier(svgStyle.maskerResource()));
-        return CSSPrimitiveValue::createIdentifier(CSSValueNone);
-    case CSSPropertyFilter:
-        if (!svgStyle.filterResource().isEmpty())
-            return CSSURIValue::create(serializeAsFragmentIdentifier(svgStyle.filterResource()));
-        return CSSPrimitiveValue::createIdentifier(CSSValueNone);
-    case CSSPropertyFloodColor:
-        return currentColorOrValidColor(style, svgStyle.floodColor());
-    case CSSPropertyLightingColor:
-        return currentColorOrValidColor(style, svgStyle.lightingColor());
-    case CSSPropertyStopColor:
-        return currentColorOrValidColor(style, svgStyle.stopColor());
-    case CSSPropertyFill:
-        return adjustSVGPaintForCurrentColor(svgStyle.fillPaintType(), svgStyle.fillPaintUri(), svgStyle.fillPaintColor(), style.color());
-    case CSSPropertyMarkerEnd:
-        if (!svgStyle.markerEndResource().isEmpty())
-            return CSSURIValue::create(serializeAsFragmentIdentifier(svgStyle.markerEndResource()));
-        return CSSPrimitiveValue::createIdentifier(CSSValueNone);
-    case CSSPropertyMarkerMid:
-        if (!svgStyle.markerMidResource().isEmpty())
-            return CSSURIValue::create(serializeAsFragmentIdentifier(svgStyle.markerMidResource()));
-        return CSSPrimitiveValue::createIdentifier(CSSValueNone);
-    case CSSPropertyMarkerStart:
-        if (!svgStyle.markerStartResource().isEmpty())
-            return CSSURIValue::create(serializeAsFragmentIdentifier(svgStyle.markerStartResource()));
-        return CSSPrimitiveValue::createIdentifier(CSSValueNone);
-    case CSSPropertyStroke:
-        return adjustSVGPaintForCurrentColor(svgStyle.strokePaintType(), svgStyle.strokePaintUri(), svgStyle.strokePaintColor(), style.color());
-    case CSSPropertyStrokeDasharray:
-        return strokeDashArrayToCSSValueList(*svgStyle.strokeDashArray(), style);
-    case CSSPropertyStrokeDashoffset:
-        return zoomAdjustedPixelValueForLength(svgStyle.strokeDashOffset(), style);
-    case CSSPropertyStrokeWidth:
-        return pixelValueForUnzoomedLength(svgStyle.strokeWidth(), style);
-    case CSSPropertyBaselineShift: {
-        switch (svgStyle.baselineShift()) {
-        case BS_SUPER:
-            return CSSPrimitiveValue::createIdentifier(CSSValueSuper);
-        case BS_SUB:
-            return CSSPrimitiveValue::createIdentifier(CSSValueSub);
-        case BS_LENGTH:
-            return zoomAdjustedPixelValueForLength(svgStyle.baselineShiftValue(), style);
-        }
-        ASSERT_NOT_REACHED();
-        return nullptr;
-    }
-    case CSSPropertyBufferedRendering:
-        return CSSPrimitiveValue::create(svgStyle.bufferedRendering());
-    case CSSPropertyPaintOrder:
-        return paintOrderToCSSValueList(svgStyle);
-    case CSSPropertyVectorEffect:
-        return CSSPrimitiveValue::create(svgStyle.vectorEffect());
-    case CSSPropertyMaskType:
-        return CSSPrimitiveValue::create(svgStyle.maskType());
-    case CSSPropertyMarker:
-        // the above properties are not yet implemented in the engine
-        return nullptr;
-    case CSSPropertyD:
-        return svgStyle.d()->computedCSSValue();
-    case CSSPropertyCx:
-        return zoomAdjustedPixelValueForLength(svgStyle.cx(), style);
-    case CSSPropertyCy:
-        return zoomAdjustedPixelValueForLength(svgStyle.cy(), style);
-    case CSSPropertyX:
-        return zoomAdjustedPixelValueForLength(svgStyle.x(), style);
-    case CSSPropertyY:
-        return zoomAdjustedPixelValueForLength(svgStyle.y(), style);
-    case CSSPropertyR:
-        return zoomAdjustedPixelValueForLength(svgStyle.r(), style);
-    case CSSPropertyRx:
-        return zoomAdjustedPixelValueForLength(svgStyle.rx(), style);
-    case CSSPropertyRy:
-        return zoomAdjustedPixelValueForLength(svgStyle.ry(), style);
     case CSSPropertyScrollSnapType:
         return cssValuePool().createValue(style.scrollSnapType());
     case CSSPropertyScrollSnapPointsX:
@@ -2763,7 +2638,6 @@ PassRefPtrWillBeRawPtr<CSSValue> ComputedStyleCSSValueMapping::get(CSSPropertyID
     }
     ASSERT_NOT_REACHED();
     return nullptr;
-#endif // BLINKIT_CRAWLER_ONLY
 }
 
 }
