@@ -32,31 +32,17 @@
 
 #include "core/css/CSSCursorImageValue.h"
 
-#include "core/SVGNames.h"
 #include "core/css/CSSImageSetValue.h"
+#include "core/dom/Element.h"
 #include "core/fetch/ImageResource.h"
 #include "core/style/StyleFetchedImage.h"
 #include "core/style/StyleFetchedImageSet.h"
 #include "core/style/StyleImage.h"
-#include "core/svg/SVGCursorElement.h"
-#include "core/svg/SVGLengthContext.h"
-#include "core/svg/SVGURIReference.h"
 #include "wtf/MathExtras.h"
 #include "wtf/text/StringBuilder.h"
 #include "wtf/text/WTFString.h"
 
 namespace blink {
-
-static inline SVGCursorElement* resourceReferencedByCursorElement(const String& url, TreeScope& treeScope)
-{
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
-    Element* element = SVGURIReference::targetElementFromIRIString(url, treeScope);
-    return isSVGCursorElement(element) ? toSVGCursorElement(element) : nullptr;
-#endif
-}
 
 CSSCursorImageValue::CSSCursorImageValue(PassRefPtrWillBeRawPtr<CSSValue> imageValue, bool hotSpotSpecified, const IntPoint& hotSpot)
     : CSSValue(CursorImageClass)
@@ -69,23 +55,10 @@ CSSCursorImageValue::CSSCursorImageValue(PassRefPtrWillBeRawPtr<CSSValue> imageV
 
 CSSCursorImageValue::~CSSCursorImageValue()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     // The below teardown is all handled by weak pointer processing in oilpan.
 #if !ENABLE(OILPAN)
-    if (!isSVGCursor())
-        return;
-
-    String url = toCSSImageValue(m_imageValue.get())->url();
-
-    for (SVGElement* referencedElement : m_referencedElements) {
-        referencedElement->cursorImageValueRemoved();
-        if (SVGCursorElement* cursorElement = resourceReferencedByCursorElement(url, referencedElement->treeScope()))
-            cursorElement->removeClient(referencedElement);
-    }
+    ASSERT(!isSVGCursor());
 #endif
-#endif // BLINKIT_CRAWLER_ONLY
 }
 
 String CSSCursorImageValue::customCSSText() const
@@ -103,39 +76,7 @@ String CSSCursorImageValue::customCSSText() const
 
 bool CSSCursorImageValue::updateIfSVGCursorIsUsed(Element* element)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
-    if (!element || !element->isSVGElement())
-        return false;
-
-    if (!isSVGCursor())
-        return false;
-
-    String url = toCSSImageValue(m_imageValue.get())->url();
-    if (SVGCursorElement* cursorElement = resourceReferencedByCursorElement(url, element->treeScope())) {
-        // FIXME: This will override hot spot specified in CSS, which is probably incorrect.
-        SVGLengthContext lengthContext(0);
-        m_hotSpotSpecified = true;
-        float x = roundf(cursorElement->x()->currentValue()->value(lengthContext));
-        m_hotSpot.setX(static_cast<int>(x));
-
-        float y = roundf(cursorElement->y()->currentValue()->value(lengthContext));
-        m_hotSpot.setY(static_cast<int>(y));
-
-        if (cachedImageURL() != element->document().completeURL(cursorElement->href()->currentValue()->value()))
-            clearImageResource();
-
-        SVGElement* svgElement = toSVGElement(element);
-#if !ENABLE(OILPAN)
-        m_referencedElements.add(svgElement);
-#endif
-        svgElement->setCursorImageValue(this);
-        cursorElement->addClient(svgElement);
-        return true;
-    }
-#endif // BLINKIT_CRAWLER_ONLY
-
+    ASSERT(!element || !element->isSVGElement());
     return false;
 }
 
@@ -163,20 +104,6 @@ StyleImage* CSSCursorImageValue::cacheImage(Document* document, float deviceScal
 
     if (m_isCachePending) {
         m_isCachePending = false;
-
-        // For SVG images we need to lazily substitute in the correct URL. Rather than attempt
-        // to change the URL of the CSSImageValue (which would then change behavior like cssText),
-        // we create an alternate CSSImageValue to use.
-        if (isSVGCursor() && document) {
-            RefPtrWillBeRawPtr<CSSImageValue> imageValue = toCSSImageValue(m_imageValue.get());
-            // FIXME: This will fail if the <cursor> element is in a shadow DOM (bug 59827)
-            if (SVGCursorElement* cursorElement = resourceReferencedByCursorElement(imageValue->url(), *document)) {
-                RefPtrWillBeRawPtr<CSSImageValue> svgImageValue = CSSImageValue::create(document->completeURL(cursorElement->href()->currentValue()->value()));
-                svgImageValue->setReferrer(imageValue->referrer());
-                m_cachedImage = svgImageValue->cacheImage(document);
-                return m_cachedImage.get();
-            }
-        }
 
         if (m_imageValue->isImageValue())
             m_cachedImage = toCSSImageValue(*m_imageValue).cacheImage(document);
