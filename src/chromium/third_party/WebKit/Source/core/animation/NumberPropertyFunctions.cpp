@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: NumberPropertyFunctions.cpp
+// Description: NumberPropertyFunctions Class
+//      Author: Ziming Li
+//     Created: 2019-05-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -16,17 +27,11 @@ bool NumberPropertyFunctions::getInitialNumber(CSSPropertyID property, double& r
 bool NumberPropertyFunctions::getNumber(CSSPropertyID property, const ComputedStyle& style, double& result)
 {
     switch (property) {
-    case CSSPropertyFillOpacity:
-        result = style.fillOpacity();
-        return true;
     case CSSPropertyFlexGrow:
         result = style.flexGrow();
         return true;
     case CSSPropertyFlexShrink:
         result = style.flexShrink();
-        return true;
-    case CSSPropertyFloodOpacity:
-        result = style.floodOpacity();
         return true;
     case CSSPropertyOpacity:
         result = style.opacity();
@@ -36,15 +41,6 @@ bool NumberPropertyFunctions::getNumber(CSSPropertyID property, const ComputedSt
         return true;
     case CSSPropertyShapeImageThreshold:
         result = style.shapeImageThreshold();
-        return true;
-    case CSSPropertyStopOpacity:
-        result = style.stopOpacity();
-        return true;
-    case CSSPropertyStrokeMiterlimit:
-        result = style.strokeMiterLimit();
-        return true;
-    case CSSPropertyStrokeOpacity:
-        result = style.strokeOpacity();
         return true;
     case CSSPropertyWidows:
         result = style.widows();
@@ -87,16 +83,9 @@ bool NumberPropertyFunctions::getNumber(CSSPropertyID property, const ComputedSt
 double NumberPropertyFunctions::clampNumber(CSSPropertyID property, double value)
 {
     switch (property) {
-    case CSSPropertyStrokeMiterlimit:
-        return clampTo<float>(value, 1);
-
-    case CSSPropertyFloodOpacity:
-    case CSSPropertyStopOpacity:
-    case CSSPropertyStrokeOpacity:
     case CSSPropertyShapeImageThreshold:
         return clampTo<float>(value, 0, 1);
 
-    case CSSPropertyFillOpacity:
     case CSSPropertyOpacity:
         return clampTo<float>(value, 0, nextafterf(1, 0));
 
@@ -129,17 +118,11 @@ bool NumberPropertyFunctions::setNumber(CSSPropertyID property, ComputedStyle& s
 {
     ASSERT(value == clampNumber(property, value));
     switch (property) {
-    case CSSPropertyFillOpacity:
-        style.setFillOpacity(value);
-        return true;
     case CSSPropertyFlexGrow:
         style.setFlexGrow(value);
         return true;
     case CSSPropertyFlexShrink:
         style.setFlexShrink(value);
-        return true;
-    case CSSPropertyFloodOpacity:
-        style.setFloodOpacity(value);
         return true;
     case CSSPropertyLineHeight:
         style.setLineHeight(Length(value * 100, Percent));
@@ -152,15 +135,6 @@ bool NumberPropertyFunctions::setNumber(CSSPropertyID property, ComputedStyle& s
         return true;
     case CSSPropertyShapeImageThreshold:
         style.setShapeImageThreshold(value);
-        return true;
-    case CSSPropertyStopOpacity:
-        style.setStopOpacity(value);
-        return true;
-    case CSSPropertyStrokeMiterlimit:
-        style.setStrokeMiterLimit(value);
-        return true;
-    case CSSPropertyStrokeOpacity:
-        style.setStrokeOpacity(value);
         return true;
     case CSSPropertyWebkitColumnCount:
         style.setColumnCount(value);

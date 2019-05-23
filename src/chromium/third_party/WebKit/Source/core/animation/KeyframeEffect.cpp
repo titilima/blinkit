@@ -54,7 +54,6 @@
 #include "core/dom/NodeComputedStyle.h"
 #include "core/frame/UseCounter.h"
 #include "core/paint/PaintLayer.h"
-#include "core/svg/SVGElement.h"
 
 namespace blink {
 
@@ -104,17 +103,11 @@ KeyframeEffect::~KeyframeEffect()
 
 void KeyframeEffect::attach(Animation* animation)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (m_target) {
         m_target->ensureElementAnimations().animations().add(animation);
         m_target->setNeedsAnimationStyleRecalc();
-        if (RuntimeEnabledFeatures::webAnimationsSVGEnabled() && m_target->isSVGElement())
-            toSVGElement(m_target)->setWebAnimationsPending();
     }
     AnimationEffect::attach(animation);
-#endif
 }
 
 void KeyframeEffect::detach()
@@ -181,9 +174,6 @@ bool KeyframeEffect::hasIncompatibleStyle()
 
 void KeyframeEffect::applyEffects()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     ASSERT(isInEffect());
     ASSERT(animation());
     if (!m_target || !m_model)
@@ -211,19 +201,12 @@ void KeyframeEffect::applyEffects()
         }
     }
 
-    if (changed) {
+    if (changed)
         m_target->setNeedsAnimationStyleRecalc();
-        if (RuntimeEnabledFeatures::webAnimationsSVGEnabled() && m_target->isSVGElement())
-            toSVGElement(*m_target).setWebAnimationsPending();
-    }
-#endif // BLINKIT_CRAWLER_ONLY
 }
 
 void KeyframeEffect::clearEffects()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     ASSERT(animation());
     ASSERT(m_sampledEffect);
 
@@ -231,10 +214,7 @@ void KeyframeEffect::clearEffects()
     m_sampledEffect = nullptr;
     restartAnimationOnCompositor();
     m_target->setNeedsAnimationStyleRecalc();
-    if (RuntimeEnabledFeatures::webAnimationsSVGEnabled() && m_target->isSVGElement())
-        toSVGElement(*m_target).clearWebAnimatedAttributes();
     invalidate();
-#endif
 }
 
 void KeyframeEffect::updateChildrenAndEffects() const
