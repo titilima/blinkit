@@ -77,9 +77,6 @@
 #include "core/layout/LayoutView.h"
 #include "core/layout/compositing/CompositedLayerMapping.h"
 #include "core/layout/compositing/PaintLayerCompositor.h"
-#include "core/layout/svg/LayoutSVGResourceClipper.h"
-#include "core/layout/svg/LayoutSVGRoot.h"
-#include "core/layout/svg/ReferenceFilterBuilder.h"
 #include "core/page/Page.h"
 #include "core/page/scrolling/ScrollingCoordinator.h"
 #include "core/paint/FilterEffectBuilder.h"
@@ -976,10 +973,6 @@ bool PaintLayer::hasNonIsolatedDescendantWithBlendMode() const
 {
     if (descendantDependentCompositingInputs().hasNonIsolatedDescendantWithBlendMode)
         return true;
-#ifndef BLINKIT_CRAWLER_ONLY
-    if (layoutObject()->isSVGRoot())
-        return toLayoutSVGRoot(layoutObject())->hasNonIsolatedBlendingDescendants();
-#endif
     return false;
 }
 
@@ -1998,17 +1991,7 @@ bool PaintLayer::hitTestClippedOutByClipPath(PaintLayer* rootLayer, const HitTes
             return true;
     } else {
         ASSERT(clipPathOperation->type() == ClipPathOperation::REFERENCE);
-        ReferenceClipPathOperation* referenceClipPathOperation = toReferenceClipPathOperation(clipPathOperation);
-        Element* element = layoutObject()->document().getElementById(referenceClipPathOperation->fragment());
-        if (isSVGClipPathElement(element) && element->layoutObject()) {
-#ifdef BLINKIT_CRAWLER_ONLY
-            assert(false); // BKTODO: Not reached!
-#else
-            LayoutSVGResourceClipper* clipper = toLayoutSVGResourceClipper(toLayoutSVGResourceContainer(element->layoutObject()));
-            if (!clipper->hitTestClipContent(FloatRect(rootRelativeBounds), FloatPoint(hitTestLocation.point())))
-                return true;
-#endif
-        }
+        ASSERT_NOT_REACHED();
     }
 
     return false;
@@ -2614,14 +2597,7 @@ FilterOperations computeFilterOperationsHandleReferenceFilters(const FilterOpera
             FilterOperation* filterOperation = filters.operations().at(i).get();
             if (filterOperation->type() != FilterOperation::REFERENCE)
                 continue;
-#ifdef BLINKIT_CRAWLER_ONLY
-            assert(false); // BKTODO: Not reached!
-#else
-            ReferenceFilterOperation& referenceOperation = toReferenceFilterOperation(*filterOperation);
-            // FIXME: Cache the Filter if it didn't change.
-            RefPtrWillBeRawPtr<Filter> referenceFilter = ReferenceFilterBuilder::build(effectiveZoom, toElement(enclosingNode), nullptr, referenceOperation);
-            referenceOperation.setFilter(referenceFilter.release());
-#endif
+            ASSERT_NOT_REACHED();
         }
     }
 
@@ -2714,15 +2690,6 @@ void PaintLayer::updateOrRemoveFilterEffectBuilder()
 
 void PaintLayer::filterNeedsPaintInvalidation()
 {
-    {
-        DeprecatedScheduleStyleRecalcDuringLayout marker(layoutObject()->document().lifecycle());
-        // It's possible for scheduleSVGFilterLayerUpdateHack to schedule a style recalc, which
-        // is a problem because this function can be called while performing layout.
-        // Presumably this represents an illegal data flow of layout or compositing
-        // information into the style system.
-        toElement(layoutObject()->node())->scheduleSVGFilterLayerUpdateHack();
-    }
-
     layoutObject()->setShouldDoFullPaintInvalidation();
 }
 

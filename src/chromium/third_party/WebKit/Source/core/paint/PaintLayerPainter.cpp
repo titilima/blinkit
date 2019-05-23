@@ -20,7 +20,6 @@
 #include "core/layout/LayoutBlock.h"
 #include "core/layout/LayoutPart.h"
 #include "core/layout/LayoutView.h"
-#include "core/layout/svg/LayoutSVGResourceClipper.h"
 #include "core/page/Page.h"
 #include "core/paint/FilterPainter.h"
 #include "core/paint/LayerClipRecorder.h"
@@ -28,7 +27,6 @@
 #include "core/paint/ObjectPaintProperties.h"
 #include "core/paint/PaintInfo.h"
 #include "core/paint/PaintLayer.h"
-#include "core/paint/SVGClipPainter.h"
 #include "core/paint/ScopeRecorder.h"
 #include "core/paint/ScrollRecorder.h"
 #include "core/paint/ScrollableAreaPainter.h"
@@ -133,12 +131,11 @@ PaintLayerPainter::PaintResult PaintLayerPainter::paintLayerContentsAndReflectio
     return result;
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 class ClipPathHelper {
 public:
     ClipPathHelper(GraphicsContext& context, const PaintLayer& paintLayer, PaintLayerPaintingInfo& paintingInfo, LayoutRect& rootRelativeBounds, bool& rootRelativeBoundsComputed,
         const LayoutPoint& offsetFromRoot, PaintLayerFlags paintFlags)
-        : m_resourceClipper(0), m_paintLayer(paintLayer), m_context(context)
+        : m_paintLayer(paintLayer), m_context(context)
     {
         const ComputedStyle& style = paintLayer.layoutObject()->styleRef();
 
@@ -148,54 +145,13 @@ public:
         if (!paintLayer.layoutObject()->hasClipPath() || (paintLayer.needsCompositedScrolling() && !(paintFlags & PaintLayerPaintingChildClippingMaskPhase)))
             return;
 
-        m_clipperState = SVGClipPainter::ClipperNotApplied;
-
-        paintingInfo.ancestorHasClipPathClipping = true;
-
-        ASSERT(style.clipPath());
-        if (style.clipPath()->type() == ClipPathOperation::SHAPE) {
-            ShapeClipPathOperation* clipPath = toShapeClipPathOperation(style.clipPath());
-            if (clipPath->isValid()) {
-                if (!rootRelativeBoundsComputed) {
-                    rootRelativeBounds = paintLayer.physicalBoundingBoxIncludingReflectionAndStackingChildren(offsetFromRoot);
-                    rootRelativeBoundsComputed = true;
-                }
-                m_clipPathRecorder.emplace(context, *paintLayer.layoutObject(), clipPath->path(FloatRect(rootRelativeBounds)));
-            }
-        } else if (style.clipPath()->type() == ClipPathOperation::REFERENCE) {
-            ReferenceClipPathOperation* referenceClipPathOperation = toReferenceClipPathOperation(style.clipPath());
-            Document& document = paintLayer.layoutObject()->document();
-            // FIXME: It doesn't work with forward or external SVG references (https://bugs.webkit.org/show_bug.cgi?id=90405)
-            Element* element = document.getElementById(referenceClipPathOperation->fragment());
-            if (isSVGClipPathElement(element) && element->layoutObject()) {
-                if (!rootRelativeBoundsComputed) {
-                    rootRelativeBounds = paintLayer.physicalBoundingBoxIncludingReflectionAndStackingChildren(offsetFromRoot);
-                    rootRelativeBoundsComputed = true;
-                }
-
-                m_resourceClipper = toLayoutSVGResourceClipper(toLayoutSVGResourceContainer(element->layoutObject()));
-                if (!SVGClipPainter(*m_resourceClipper).prepareEffect(*paintLayer.layoutObject(), FloatRect(rootRelativeBounds),
-                    FloatRect(rootRelativeBounds), context, m_clipperState)) {
-                    // No need to post-apply the clipper if this failed.
-                    m_resourceClipper = 0;
-                }
-            }
-        }
-    }
-
-    ~ClipPathHelper()
-    {
-        if (m_resourceClipper)
-            SVGClipPainter(*m_resourceClipper).finishEffect(*m_paintLayer.layoutObject(), m_context, m_clipperState);
+        ASSERT_NOT_REACHED();
     }
 private:
-    LayoutSVGResourceClipper* m_resourceClipper;
     Optional<ClipPathRecorder> m_clipPathRecorder;
-    SVGClipPainter::ClipperState m_clipperState;
     const PaintLayer& m_paintLayer;
     GraphicsContext& m_context;
 };
-#endif // BLINKIT_CRAWLER_ONLY
 
 static bool shouldCreateSubsequence(const PaintLayer& paintLayer, GraphicsContext& context, const PaintLayerPaintingInfo& paintingInfo, PaintLayerFlags paintFlags)
 {

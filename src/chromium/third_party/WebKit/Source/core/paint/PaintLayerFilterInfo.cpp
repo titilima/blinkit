@@ -41,11 +41,8 @@
 #include "core/paint/PaintLayerFilterInfo.h"
 
 #include "core/fetch/DocumentResourceReference.h"
-#include "core/layout/svg/LayoutSVGResourceContainer.h"
-#include "core/layout/svg/ReferenceFilterBuilder.h"
 #include "core/paint/FilterEffectBuilder.h"
 #include "core/paint/PaintLayer.h"
-#include "core/svg/SVGFilterElement.h"
 
 namespace blink {
 
@@ -115,55 +112,18 @@ void PaintLayerFilterInfo::notifyFinished(Resource*)
 
 void PaintLayerFilterInfo::updateReferenceFilterClients(const FilterOperations& operations)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     removeReferenceFilterClients();
     for (size_t i = 0; i < operations.size(); ++i) {
         RefPtrWillBeRawPtr<FilterOperation> filterOperation = operations.operations().at(i);
         if (filterOperation->type() != FilterOperation::REFERENCE)
             continue;
-        ReferenceFilterOperation* referenceFilterOperation = toReferenceFilterOperation(filterOperation.get());
-        DocumentResourceReference* documentReference = ReferenceFilterBuilder::documentResourceReference(referenceFilterOperation);
-        DocumentResource* cachedSVGDocument = documentReference ? documentReference->document() : 0;
-
-        if (cachedSVGDocument) {
-            // Reference is external; wait for notifyFinished().
-            cachedSVGDocument->addClient(this);
-            m_externalSVGReferences.append(cachedSVGDocument);
-        } else {
-            // Reference is internal; add layer as a client so we can trigger
-            // filter paint invalidation on SVG attribute change.
-            Element* filter = m_layer->layoutObject()->node()->document().getElementById(referenceFilterOperation->fragment());
-            if (!isSVGFilterElement(filter))
-                continue;
-            if (filter->layoutObject())
-                toLayoutSVGResourceContainer(filter->layoutObject())->addClientLayer(m_layer);
-            else
-                toSVGFilterElement(filter)->addClient(m_layer->layoutObject()->node());
-            m_internalSVGReferences.append(filter);
-        }
+        ASSERT_NOT_REACHED();
     }
-#endif
 }
 
 void PaintLayerFilterInfo::removeReferenceFilterClients()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
-    for (size_t i = 0; i < m_externalSVGReferences.size(); ++i)
-        m_externalSVGReferences.at(i)->removeClient(this);
-    m_externalSVGReferences.clear();
-    for (size_t i = 0; i < m_internalSVGReferences.size(); ++i) {
-        Element* filter = m_internalSVGReferences.at(i).get();
-        if (filter->layoutObject())
-            toLayoutSVGResourceContainer(filter->layoutObject())->removeClientLayer(m_layer);
-        else
-            toSVGFilterElement(filter)->removeClient(m_layer->layoutObject()->node());
-    }
-    m_internalSVGReferences.clear();
-#endif
+    ASSERT_NOT_REACHED();
 }
 
 } // namespace blink

@@ -49,8 +49,6 @@
 #include "core/html/HTMLImageElement.h"
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/layout/LayoutImage.h"
-#include "core/layout/svg/LayoutSVGImage.h"
-#include "core/svg/graphics/SVGImage.h"
 #include "platform/Logging.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/weborigin/SecurityOrigin.h"
@@ -502,9 +500,6 @@ void ImageLoader::notifyFinished(Resource* resource)
 
     updateLayoutObject();
 
-    if (m_image && m_image->image() && m_image->image()->isSVGImage())
-        toSVGImage(m_image->image())->updateUseCounters(element()->document());
-
     if (!m_hasPendingLoadEvent)
         return;
 
@@ -546,9 +541,6 @@ LayoutImageResource* ImageLoader::layoutImageResource()
     // See <https://bugs.webkit.org/show_bug.cgi?id=42840>
     if (layoutObject->isImage() && !static_cast<LayoutImage*>(layoutObject)->isGeneratedContent())
         return toLayoutImage(layoutObject)->imageResource();
-
-    if (layoutObject->isSVGImage())
-        return toLayoutSVGImage(layoutObject)->imageResource();
 
     return 0;
 }
