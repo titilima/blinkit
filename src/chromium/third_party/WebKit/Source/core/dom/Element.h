@@ -280,10 +280,6 @@ public:
     PassRefPtrWillBeRawPtr<Element> cloneElementWithChildren();
     PassRefPtrWillBeRawPtr<Element> cloneElementWithoutChildren();
 
-#ifndef BLINKIT_CRAWLER_ONLY
-    void scheduleSVGFilterLayerUpdateHack();
-#endif
-
     void setBooleanAttribute(const QualifiedName&, bool);
 
     virtual const StylePropertySet* additionalPresentationAttributeStyle() {
@@ -341,7 +337,9 @@ public:
 
     virtual void copyNonAttributePropertiesFromElement(const Element&) { }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void attach(const AttachContext& = AttachContext()) override;
+#endif
     void detach(const AttachContext& = AttachContext()) override;
 
     virtual LayoutObject* createLayoutObject(const ComputedStyle&);
@@ -530,9 +528,6 @@ public:
     void clearHasPendingResources() { clearElementFlag(HasPendingResources); }
     virtual void buildPendingResource() { }
 
-    void setCustomElementDefinition(PassRefPtrWillBeRawPtr<CustomElementDefinition>);
-    CustomElementDefinition* customElementDefinition() const;
-
     bool isInTopLayer() const { return hasElementFlag(IsInTopLayer); }
     void setIsInTopLayer(bool);
 
@@ -669,14 +664,12 @@ private:
     StyleRecalcChange recalcOwnStyle(StyleRecalcChange);
 
     inline void checkForEmptyStyleChange();
-#endif
 
     void updatePseudoElement(PseudoId, StyleRecalcChange);
-#ifndef BLINKIT_CRAWLER_ONLY
     bool updateFirstLetter(Element*);
-#endif
 
     inline void createPseudoElementIfNeeded(PseudoId);
+#endif
 
     ShadowRoot* shadowRoot() const;
 

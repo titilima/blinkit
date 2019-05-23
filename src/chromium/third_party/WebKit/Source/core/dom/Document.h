@@ -118,7 +118,6 @@ class HTMLBodyElement;
 class HTMLCollection;
 class HTMLDialogElement;
 class HTMLElement;
-class HTMLFrameOwnerElement;
 class HTMLHeadElement;
 class HTMLLinkElement;
 class HTMLScriptElement;
@@ -260,6 +259,7 @@ public:
     DEFINE_ATTRIBUTE_EVENT_LISTENER(selectstart);
     DEFINE_ATTRIBUTE_EVENT_LISTENER(wheel);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     bool shouldMergeWithLegacyDescription(ViewportDescription::Type);
     bool shouldOverrideLegacyDescription(ViewportDescription::Type);
     void setViewportDescription(const ViewportDescription&);
@@ -267,6 +267,7 @@ public:
     Length viewportDefaultMinWidth() const { return m_viewportDefaultMinWidth; }
 
     bool hasLegacyViewportTag() const { return m_legacyViewportDescription.isLegacyViewportType(); }
+#endif
 
     String outgoingReferrer() const;
     String outgoingOrigin() const;
@@ -363,11 +364,14 @@ public:
     bool isXHTMLDocument() const { return m_documentClasses & XHTMLDocumentClass; }
     bool isXMLDocument() const { return m_documentClasses & XMLDocumentClass; }
     bool isImageDocument() const { return m_documentClasses & ImageDocumentClass; }
-    bool isSVGDocument() const { return m_documentClasses & SVGDocumentClass; }
+    bool isSVGDocument() const {
+        ASSERT(0 == (m_documentClasses & SVGDocumentClass));
+        return false;
+    }
     bool isPluginDocument() const { return m_documentClasses & PluginDocumentClass; }
     bool isMediaDocument() const { return m_documentClasses & MediaDocumentClass; }
 
-    bool hasSVGRootNode() const;
+    bool hasSVGRootNode() const { return false; }
 
     bool isFrameSet() const;
 
@@ -403,14 +407,6 @@ public:
     void addedStyleSheet(StyleSheet*) { styleResolverChanged(); }
     void modifiedStyleSheet(StyleSheet*, StyleResolverUpdateMode = FullStyleUpdate);
     void changedSelectorWatch() { styleResolverChanged(); }
-
-    void scheduleUseShadowTreeUpdate(SVGUseElement&);
-    void unscheduleUseShadowTreeUpdate(SVGUseElement&);
-
-    // FIXME: SVG filters should change to store the filter on the ComputedStyle
-    // instead of the LayoutObject so we can get rid of this hack.
-    void scheduleSVGFilterLayerUpdateHack(Element&);
-    void unscheduleSVGFilterLayerUpdateHack(Element&);
 
     void evaluateMediaQueryList();
 
@@ -712,10 +708,6 @@ public:
 #endif
     void processReferrerPolicy(const String& policy);
 
-    // Returns the owning element in the parent document.
-    // Returns nullptr if this is the top level document.
-    HTMLFrameOwnerElement* ownerElement() const;
-
     // Returns true if this document belongs to a frame that the parent document
     // made invisible (for instance by setting as style display:none).
     bool isInInvisibleSubframe() const;
@@ -781,13 +773,13 @@ public:
 
     HTMLHeadElement* head() const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // Decide which element is to define the viewport's overflow policy. If |rootStyle| is set, use
     // that as the style for the root element, rather than obtaining it on our own. The reason for
     // this is that style may not have been associated with the elements yet - in which case it may
     // have been calculated on the fly (without associating it with the actual element) somewhere.
     Element* viewportDefiningElement(const ComputedStyle* rootStyle = nullptr) const;
 
-#ifndef BLINKIT_CRAWLER_ONLY
     DocumentMarkerController& markers() const { return *m_markers; }
 #endif
 
@@ -872,11 +864,6 @@ public:
 
     void removeAllEventListeners() final;
 
-#ifndef BLINKIT_CRAWLER_ONLY
-    const SVGDocumentExtensions* svgExtensions();
-    SVGDocumentExtensions& accessSVGExtensions();
-#endif
-
     void initSecurityContext();
     void initSecurityContext(const DocumentInit&);
 
@@ -906,7 +893,9 @@ public:
     bool containsValidityStyleRules() const { return m_containsValidityStyleRules; }
     void setContainsValidityStyleRules() { m_containsValidityStyleRules = true; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void enqueueResizeEvent();
+#endif
     void enqueueScrollEventForNode(Node*);
     void enqueueAnimationFrameEvent(PassRefPtrWillBeRawPtr<Event>);
     // Only one event for a target/event type combination will be dispatched per frame.
@@ -987,10 +976,12 @@ public:
     Document& ensureTemplateDocument();
     Document* templateDocumentHost() { return m_templateDocumentHost; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // TODO(thestig): Rename these and related functions, since we can call them
     // for labels and input fields outside of forms as well.
     void didAssociateFormControl(Element*);
     void removeFormAssociation(Element*);
+#endif
 
     void addConsoleMessage(PassRefPtrWillBeRawPtr<ConsoleMessage>) final;
 
@@ -1030,7 +1021,7 @@ public:
     DECLARE_VIRTUAL_TRACE();
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    bool hasSVGFilterElementsRequiringLayerUpdate() const { return m_layerUpdateSVGFilterElements.size(); }
+    bool hasSVGFilterElementsRequiringLayerUpdate() const { return false; }
 #endif
     void didRecalculateStyleForElement() { ++m_styleRecalcElementCounter; }
 
@@ -1157,9 +1148,9 @@ private:
     void addListenerType(ListenerType listenerType) { m_listenerTypes |= listenerType; }
     void addMutationEventListenerTypeIfEnabled(ListenerType);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void didAssociateFormControlsTimerFired(Timer<Document>*);
 
-#ifndef BLINKIT_CRAWLER_ONLY
     void clearFocusedElementSoon();
     void clearFocusedElementTimerFired(Timer<Document>*);
 #endif
@@ -1325,10 +1316,6 @@ private:
     unsigned m_nodeListCounts[numNodeListInvalidationTypes];
 #endif
 
-#ifndef BLINKIT_CRAWLER_ONLY
-    OwnPtrWillBeMember<SVGDocumentExtensions> m_svgExtensions;
-#endif
-
     Vector<AnnotatedRegionValue> m_annotatedRegions;
     bool m_hasAnnotatedRegions;
     bool m_annotatedRegionsDirty;
@@ -1365,9 +1352,11 @@ private:
     int m_loadEventDelayCount;
     Timer<Document> m_loadEventDelayTimer;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     ViewportDescription m_viewportDescription;
     ViewportDescription m_legacyViewportDescription;
     Length m_viewportDefaultMinWidth;
+#endif
 
     ReferrerPolicy m_referrerPolicy;
 
@@ -1404,12 +1393,9 @@ private:
     // is a manually managed backpointer from m_templateDocument.
     RawPtrWillBeMember<Document> m_templateDocumentHost;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     Timer<Document> m_didAssociateFormControlsTimer;
     WillBeHeapHashSet<RefPtrWillBeMember<Element>> m_associatedFormControls;
-
-#ifndef BLINKIT_CRAWLER_ONLY
-    WillBeHeapHashSet<RawPtrWillBeMember<SVGUseElement>> m_useElementsNeedingUpdate;
-    WillBeHeapHashSet<RawPtrWillBeMember<Element>> m_layerUpdateSVGFilterElements;
 #endif
 
     bool m_hasViewportUnits;
@@ -1431,6 +1417,7 @@ private:
 
 extern template class CORE_EXTERN_TEMPLATE_EXPORT WillBeHeapSupplement<Document>;
 
+#ifndef BLINKIT_CRAWLER_ONLY
 inline bool Document::shouldOverrideLegacyDescription(ViewportDescription::Type origin)
 {
     // The different (legacy) meta tags have different priorities based on the type
@@ -1439,7 +1426,6 @@ inline bool Document::shouldOverrideLegacyDescription(ViewportDescription::Type 
     return origin >= m_legacyViewportDescription.type;
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 inline void Document::scheduleLayoutTreeUpdateIfNeeded()
 {
     // Inline early out to avoid the function calls below.

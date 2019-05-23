@@ -39,8 +39,6 @@
 #include "bindings/core/v8/ExceptionMessages.h"
 #include "bindings/core/v8/ExceptionState.h"
 #include "core/CSSValueKeywords.h"
-#include "core/SVGNames.h"
-#include "core/XLinkNames.h"
 #include "core/XMLNames.h"
 #include "core/animation/AnimationTimeline.h"
 #include "core/animation/css/CSSAnimations.h"
@@ -76,8 +74,6 @@
 #include "core/dom/StyleChangeReason.h"
 #include "core/dom/StyleEngine.h"
 #include "core/dom/Text.h"
-#include "core/dom/custom/CustomElement.h"
-#include "core/dom/custom/CustomElementRegistrationContext.h"
 #include "core/dom/shadow/InsertionPoint.h"
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/dom/shadow/ShadowRootInit.h"
@@ -117,8 +113,6 @@
 #include "core/page/scrolling/ScrollState.h"
 #include "core/page/scrolling/ScrollStateCallback.h"
 #include "core/paint/PaintLayer.h"
-#include "core/svg/SVGDocumentExtensions.h"
-#include "core/svg/SVGElement.h"
 #include "platform/EventDispatchForbiddenScope.h"
 #include "platform/RuntimeEnabledFeatures.h"
 #include "platform/UserGestureIndicator.h"
@@ -179,26 +173,11 @@ Element::~Element()
     }
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (isCustomElement())
-        CustomElement::wasDestroyed(this);
-
     if (RuntimeEnabledFeatures::scrollCustomizationEnabled())
         scrollCustomizationCallbacks().removeCallbacksForElement(this);
 #endif
 
-#ifdef BLINKIT_CRAWLER_ONLY
     ASSERT(!hasPendingResources());
-#else
-    // With Oilpan, either the Element has been removed from the Document
-    // or the Document is dead as well. If the Element has been removed from
-    // the Document the element has already been removed from the pending
-    // resources. If the document is also dead, there is no need to remove
-    // the element from the pending resources.
-    if (hasPendingResources()) {
-        document().accessSVGExtensions().removeElementFromPendingResources(this);
-        ASSERT(!hasPendingResources());
-    }
-#endif
 #endif
 }
 
@@ -418,10 +397,6 @@ void Element::synchronizeAllAttributes() const
         ASSERT(isStyledElement());
         synchronizeStyleAttributeInternal();
     }
-    if (elementData()->m_animatedSVGAttributesAreDirty) {
-        ASSERT(isSVGElement());
-        toSVGElement(this)->synchronizeAnimatedSVGAttribute(anyQName());
-    }
 #endif // BLINKIT_CRAWLER_ONLY
 }
 
@@ -434,12 +409,6 @@ inline void Element::synchronizeAttribute(const QualifiedName& name) const
         ASSERT(isStyledElement());
         synchronizeStyleAttributeInternal();
         return;
-    }
-    if (UNLIKELY(elementData()->m_animatedSVGAttributesAreDirty)) {
-        ASSERT(isSVGElement());
-        // See comment in the AtomicString version of synchronizeAttribute()
-        // also.
-        toSVGElement(this)->synchronizeAnimatedSVGAttribute(name);
     }
 #endif // BLINKIT_CRAWLER_ONLY
 }
@@ -455,20 +424,6 @@ void Element::synchronizeAttribute(const AtomicString& localName) const
         ASSERT(isStyledElement());
         synchronizeStyleAttributeInternal();
         return;
-    }
-    if (elementData()->m_animatedSVGAttributesAreDirty) {
-        // We're not passing a namespace argument on purpose. SVGNames::*Attr are defined w/o namespaces as well.
-
-        // FIXME: this code is called regardless of whether name is an
-        // animated SVG Attribute. It would seem we should only call this method
-        // if SVGElement::isAnimatableAttribute is true, but the list of
-        // animatable attributes in isAnimatableAttribute does not suffice to
-        // pass all layout tests. Also, m_animatedSVGAttributesAreDirty stays
-        // dirty unless synchronizeAnimatedSVGAttribute is called with
-        // anyQName(). This means that even if Element::synchronizeAttribute()
-        // is called on all attributes, m_animatedSVGAttributesAreDirty remains
-        // true.
-        toSVGElement(this)->synchronizeAnimatedSVGAttribute(QualifiedName(nullAtom, localName, nullAtom));
     }
 #endif // BLINKIT_CRAWLER_ONLY
 }
@@ -1025,15 +980,9 @@ IntRect Element::boundsInViewport() const
         return IntRect();
 
     Vector<FloatQuad> quads;
-    if (isSVGElement() && layoutObject()) {
-        // Get the bounding rectangle from the SVG model.
-        if (toSVGElement(this)->isSVGGraphicsElement())
-            quads.append(layoutObject()->localToAbsoluteQuad(layoutObject()->objectBoundingBox()));
-    } else {
-        // Get the bounding rectangle from the box model.
-        if (layoutBoxModelObject())
-            layoutBoxModelObject()->absoluteQuads(quads);
-    }
+    // Get the bounding rectangle from the box model.
+    if (layoutBoxModelObject())
+        layoutBoxModelObject()->absoluteQuads(quads);
 
     if (quads.isEmpty())
         return IntRect();
@@ -1069,11 +1018,7 @@ ClientRect* Element::getBoundingClientRect()
     Vector<FloatQuad> quads;
     LayoutObject* elementLayoutObject = layoutObject();
     if (elementLayoutObject) {
-        if (isSVGElement() && !elementLayoutObject->isSVGRoot()) {
-            // Get the bounding rectangle from the SVG model.
-            if (toSVGElement(this)->isSVGGraphicsElement())
-                quads.append(elementLayoutObject->localToAbsoluteQuad(elementLayoutObject->objectBoundingBox()));
-        } else if (elementLayoutObject->isBoxModelObject() || elementLayoutObject->isBR()) {
+        if (elementLayoutObject->isBoxModelObject() || elementLayoutObject->isBR()) {
             elementLayoutObject->absoluteQuads(quads);
         }
     }
@@ -1262,10 +1207,6 @@ const QualifiedName& Element::subResourceAttributeName() const
 
 inline void Element::attributeChangedFromParserOrByCloning(const QualifiedName& name, const AtomicString& newValue, AttributeModificationReason reason)
 {
-#ifndef BLINKIT_CRAWLER_ONLY
-    if (name == isAttr && !ForCrawler())
-        CustomElementRegistrationContext::setTypeExtension(this, newValue);
-#endif
     attributeChanged(name, nullAtom, newValue, reason);
 }
 
@@ -1507,11 +1448,6 @@ Node::InsertionNotificationRequest Element::insertedInto(ContainerNode* insertio
             rareData->intersectionObserverData()->activateValidIntersectionObservers(*this);
     }
 
-#ifndef BLINKIT_CRAWLER_ONLY
-    if (isUpgradedCustomElement() && inDocument())
-        CustomElement::didAttach(this, document());
-#endif
-
     TreeScope& scope = insertionPoint->treeScope();
     if (scope != treeScope())
         return InsertionDone;
@@ -1562,12 +1498,6 @@ void Element::removedFrom(ContainerNode* insertionPoint)
         if (this == document().cssTarget())
             document().setCSSTarget(nullptr);
 
-        if (hasPendingResources())
-            document().accessSVGExtensions().removeElementFromPendingResources(this);
-
-        if (isUpgradedCustomElement())
-            CustomElement::didDetach(this, insertionPoint->document());
-
         if (needsStyleInvalidation())
             document().styleEngine().styleInvalidator().clearInvalidation(*this);
     }
@@ -1595,11 +1525,15 @@ void Element::removedFrom(ContainerNode* insertionPoint)
     }
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void Element::attach(const AttachContext& context)
 {
     ASSERT(document().inStyleRecalc());
-    ASSERT(false); // BKTODO:
-#if 0
+    if (ForCrawler())
+    {
+        ContainerNode::attach(context);
+        return;
+    }
 
     // We've already been through detach when doing an attach, but we might
     // need to clear any state that's been added since then.
@@ -1637,8 +1571,8 @@ void Element::attach(const AttachContext& context)
     // children are attached because the first letter text could come
     // from any of them.
     createPseudoElementIfNeeded(FIRST_LETTER);
-#endif
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 void Element::detach(const AttachContext& context)
 {
@@ -1696,9 +1630,6 @@ void Element::detach(const AttachContext& context)
         }
 
         document().styleEngine().styleInvalidator().clearInvalidation(*this);
-
-        if (svgFilterNeedsLayerUpdate())
-            document().unscheduleSVGFilterLayerUpdateHack(*this);
     }
 #endif
 
@@ -1990,24 +1921,7 @@ void Element::setNeedsCompositingUpdate()
     // the PaintLayer is self-painting.
     layoutObject->layer()->updateSelfPaintingLayer();
 }
-#endif // BLINKIT_CRAWLER_ONLY
 
-void Element::setCustomElementDefinition(PassRefPtrWillBeRawPtr<CustomElementDefinition> definition)
-{
-    if (!hasRareData() && !definition)
-        return;
-    ASSERT(!customElementDefinition());
-    ensureElementRareData().setCustomElementDefinition(definition);
-}
-
-CustomElementDefinition* Element::customElementDefinition() const
-{
-    if (hasRareData())
-        return elementRareData()->customElementDefinition();
-    return nullptr;
-}
-
-#ifndef BLINKIT_CRAWLER_ONLY
 PassRefPtrWillBeRawPtr<ShadowRoot> Element::createShadowRoot(const ScriptState* scriptState, ExceptionState& exceptionState)
 {
     OriginsUsingFeatures::countMainWorldOnly(scriptState, document(), OriginsUsingFeatures::Feature::ElementCreateShadowRoot);
@@ -2476,7 +2390,7 @@ void Element::updateFocusAppearance(SelectionBehaviorOnFocus selectionBehavior)
         return;
     if (isRootEditableElement()) {
         // Taking the ownership since setSelection() may release the last reference to |frame|.
-        RefPtrWillBeRawPtr<LocalFrameImpl> frame(document().frame());
+        RefPtrWillBeRawPtr<LocalFrame> frame(document().frame());
         if (!frame)
             return;
 
@@ -2939,12 +2853,9 @@ void Element::cancelFocusAppearanceUpdate()
     if (document().focusedElement() == this)
         document().cancelFocusAppearanceUpdate();
 }
-#endif
 
 void Element::updatePseudoElement(PseudoId pseudoId, StyleRecalcChange change)
 {
-    assert(false); // BKTODO:
-#if 0
     ASSERT(!needsStyleRecalc());
     PseudoElement* element = pseudoElement(pseudoId);
 
@@ -2977,10 +2888,8 @@ void Element::updatePseudoElement(PseudoId pseudoId, StyleRecalcChange change)
     } else if (change >= UpdatePseudoElements) {
         createPseudoElementIfNeeded(pseudoId);
     }
-#endif
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 // If we're updating first letter, and the current first letter layoutObject
 // is not the same as the one we're currently using we need to re-create
 // the first letter layoutObject.
@@ -3000,12 +2909,9 @@ bool Element::updateFirstLetter(Element* element)
     }
     return false;
 }
-#endif
 
 void Element::createPseudoElementIfNeeded(PseudoId pseudoId)
 {
-    assert(false); // BKTODO:
-#if 0
     if (isPseudoElement())
         return;
 
@@ -3022,8 +2928,8 @@ void Element::createPseudoElementIfNeeded(PseudoId pseudoId)
     InspectorInstrumentation::pseudoElementCreated(element.get());
 
     ensureElementRareData().setPseudoElement(pseudoId, element.release());
-#endif
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 PseudoElement* Element::pseudoElement(PseudoId pseudoId) const
 {
@@ -3077,8 +2983,6 @@ KURL Element::hrefURL() const
     // <link> implement URLUtils?
     if (isHTMLAnchorElement(*this) || isHTMLAreaElement(*this) || isHTMLLinkElement(*this))
         return getURLAttribute(hrefAttr);
-    if (isSVGAElement(*this))
-        return getURLAttribute(XLinkNames::hrefAttr);
     return KURL();
 }
 
@@ -3162,9 +3066,6 @@ bool Element::fastAttributeLookupAllowed(const QualifiedName& name) const
     if (name == HTMLNames::styleAttr)
         return false;
 
-    if (isSVGElement())
-        return !toSVGElement(this)->isAnimatableAttribute(name);
-
     return true;
 }
 #endif
@@ -3220,11 +3121,8 @@ void Element::willModifyAttribute(const QualifiedName& name, const AtomicString&
     }
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (oldValue != newValue) {
+    if (oldValue != newValue)
         document().styleEngine().attributeChangedForElement(name, *this);
-        if (isUpgradedCustomElement())
-            CustomElement::attributeDidChange(this, name.localName(), oldValue, newValue);
-    }
 #endif
 
     if (OwnPtrWillBeRawPtr<MutationObserverInterestGroup> recipients = MutationObserverInterestGroup::createForAttributesMutation(*this, name))
@@ -3313,7 +3211,7 @@ void Element::didMoveToNewDocument(Document& oldDocument)
 
 void Element::updateNamedItemRegistration(const AtomicString& oldName, const AtomicString& newName)
 {
-    assert(false); // BKTODO:
+    ASSERT(false); // BKTODO:
 #if 0
     if (!document().isHTMLDocument())
         return;
@@ -3328,7 +3226,7 @@ void Element::updateNamedItemRegistration(const AtomicString& oldName, const Ato
 
 void Element::updateExtraNamedItemRegistration(const AtomicString& oldId, const AtomicString& newId)
 {
-    assert(false); // BKTODO:
+    ASSERT(false); // BKTODO:
 #if 0
     if (!document().isHTMLDocument())
         return;
@@ -3342,11 +3240,6 @@ void Element::updateExtraNamedItemRegistration(const AtomicString& oldId, const 
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
-void Element::scheduleSVGFilterLayerUpdateHack()
-{
-    document().scheduleSVGFilterLayerUpdateHack(*this);
-}
-
 IntSize Element::savedLayerScrollOffset() const
 {
     ASSERT(!ForCrawler());
@@ -3567,7 +3460,7 @@ void Element::styleAttributeChanged(const AtomicString& newStyleString, Attribut
 
     if (newStyleString.isNull()) {
         ensureUniqueElementData().m_inlineStyle.clear();
-    } else if (modificationReason == ModifiedByCloning || ContentSecurityPolicy::shouldBypassMainWorld(&document()) || document().contentSecurityPolicy()->allowInlineStyle(document().url(), startLineNumber, newStyleString)) {
+    } else {
         setInlineStyleFromString(newStyleString);
     }
 
@@ -3670,8 +3563,6 @@ bool Element::supportsStyleSharing() const
         return false;
     // If the element has inline style it is probably unique.
     if (inlineStyle())
-        return false;
-    if (isSVGElement() && toSVGElement(this)->animatedSMILStyleProperties())
         return false;
     // Ids stop style sharing if they show up in the stylesheets.
     if (hasID() && document().ensureStyleResolver().hasRulesForId(idForStyleResolution()))
