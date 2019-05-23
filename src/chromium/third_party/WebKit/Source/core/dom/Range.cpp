@@ -55,7 +55,6 @@
 #include "core/html/HTMLElement.h"
 #include "core/layout/LayoutBoxModelObject.h"
 #include "core/layout/LayoutText.h"
-#include "core/svg/SVGSVGElement.h"
 #include "platform/geometry/FloatQuad.h"
 #include "wtf/RefCountedLeakCounter.h"
 #include "wtf/text/CString.h"
@@ -930,10 +929,6 @@ PassRefPtrWillBeRawPtr<DocumentFragment> Range::createContextualFragment(const S
             element = document.body();
             if (!element)
                 element = HTMLBodyElement::create(document);
-        } else if (document.isSVGDocument()) {
-            element = document.documentElement();
-            if (!element)
-                element = SVGSVGElement::create(document);
         }
     }
 
