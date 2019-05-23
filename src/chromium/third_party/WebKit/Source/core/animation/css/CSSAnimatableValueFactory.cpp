@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CSSAnimatableValueFactory.cpp
+// Description: CSSAnimatableValueFactory Class
+//      Author: Ziming Li
+//     Created: 2019-05-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -323,15 +334,6 @@ PassRefPtr<AnimatableValue> CSSAnimatableValueFactory::create(CSSPropertyID prop
         return createFromFillLayers<CSSPropertyBackgroundPositionY>(style.backgroundLayers(), style);
     case CSSPropertyBackgroundSize:
         return createFromFillLayers<CSSPropertyBackgroundSize>(style.backgroundLayers(), style);
-    case CSSPropertyBaselineShift:
-        switch (style.svgStyle().baselineShift()) {
-        case BS_SUPER:
-            return AnimatableUnknown::create(CSSPrimitiveValue::createIdentifier(CSSValueSuper));
-        case BS_SUB:
-            return AnimatableUnknown::create(CSSPrimitiveValue::createIdentifier(CSSValueSub));
-        default:
-            return createFromLength(style.baselineShiftValue(), style);
-        }
     case CSSPropertyBorderBottomColor:
         return createFromColor(property, style);
     case CSSPropertyBorderBottomLeftRadius:
@@ -374,23 +376,12 @@ PassRefPtr<AnimatableValue> CSSAnimatableValueFactory::create(CSSPropertyID prop
         return createFromLengthBox(style.clip(), style);
     case CSSPropertyColor:
         return createFromColor(property, style);
-    case CSSPropertyFillOpacity:
-        return createFromDouble(style.fillOpacity());
-    case CSSPropertyFill:
-        return AnimatableSVGPaint::create(
-            normalizeSVGPaintType(style.svgStyle().fillPaintType()), normalizeSVGPaintType(style.svgStyle().visitedLinkFillPaintType()),
-            style.svgStyle().fillPaintColor(), style.svgStyle().visitedLinkFillPaintColor(),
-            style.svgStyle().fillPaintUri(), style.svgStyle().visitedLinkFillPaintUri());
     case CSSPropertyFlexGrow:
         return createFromDouble(style.flexGrow());
     case CSSPropertyFlexShrink:
         return createFromDouble(style.flexShrink());
     case CSSPropertyFlexBasis:
         return createFromLength(style.flexBasis(), style);
-    case CSSPropertyFloodColor:
-        return createFromColor(property, style);
-    case CSSPropertyFloodOpacity:
-        return createFromDouble(style.floodOpacity());
     case CSSPropertyFontSize:
         // Must pass a specified size to setFontSize if Text Autosizing is enabled, but a computed size
         // if text zoom is enabled (if neither is enabled it's irrelevant as they're probably the same).
@@ -405,8 +396,6 @@ PassRefPtr<AnimatableValue> CSSAnimatableValueFactory::create(CSSPropertyID prop
         return createFromFontWeight(style.fontWeight());
     case CSSPropertyHeight:
         return createFromLength(style.height(), style);
-    case CSSPropertyLightingColor:
-        return createFromColor(property, style);
     case CSSPropertyListStyleImage:
         return createFromStyleImage(style.listStyleImage());
     case CSSPropertyLeft:
@@ -453,25 +442,6 @@ PassRefPtr<AnimatableValue> CSSAnimatableValueFactory::create(CSSPropertyID prop
         return createFromLength(style.paddingTop(), style);
     case CSSPropertyRight:
         return createFromLength(style.right(), style);
-    case CSSPropertyStrokeWidth:
-        return createFromUnzoomedLength(style.strokeWidth());
-    case CSSPropertyStopColor:
-        return createFromColor(property, style);
-    case CSSPropertyStopOpacity:
-        return createFromDouble(style.stopOpacity());
-    case CSSPropertyStrokeDasharray:
-        return AnimatableStrokeDasharrayList::create(style.strokeDashArray(), style.effectiveZoom());
-    case CSSPropertyStrokeDashoffset:
-        return createFromLength(style.strokeDashOffset(), style);
-    case CSSPropertyStrokeMiterlimit:
-        return createFromDouble(style.strokeMiterLimit());
-    case CSSPropertyStrokeOpacity:
-        return createFromDouble(style.strokeOpacity());
-    case CSSPropertyStroke:
-        return AnimatableSVGPaint::create(
-            normalizeSVGPaintType(style.svgStyle().strokePaintType()), normalizeSVGPaintType(style.svgStyle().visitedLinkStrokePaintType()),
-            style.svgStyle().strokePaintColor(), style.svgStyle().visitedLinkStrokePaintColor(),
-            style.svgStyle().strokePaintUri(), style.svgStyle().visitedLinkStrokePaintUri());
     case CSSPropertyTextDecorationColor:
         return createFromColor(property, style);
     case CSSPropertyTextIndent:
@@ -578,22 +548,6 @@ PassRefPtr<AnimatableValue> CSSAnimatableValueFactory::create(CSSPropertyID prop
         return AnimatableUnknown::create(CSSPrimitiveValue::create(style.verticalAlign()));
     case CSSPropertyVisibility:
         return AnimatableVisibility::create(style.visibility());
-    case CSSPropertyD:
-        return createFromPath(style.svgStyle().d());
-    case CSSPropertyCx:
-        return createFromLength(style.svgStyle().cx(), style);
-    case CSSPropertyCy:
-        return createFromLength(style.svgStyle().cy(), style);
-    case CSSPropertyX:
-        return createFromLength(style.svgStyle().x(), style);
-    case CSSPropertyY:
-        return createFromLength(style.svgStyle().y(), style);
-    case CSSPropertyR:
-        return createFromLength(style.svgStyle().r(), style);
-    case CSSPropertyRx:
-        return createFromLength(style.svgStyle().rx(), style);
-    case CSSPropertyRy:
-        return createFromLength(style.svgStyle().ry(), style);
     case CSSPropertyZIndex:
         if (style.hasAutoZIndex())
             return AnimatableUnknown::create(CSSValueAuto);
