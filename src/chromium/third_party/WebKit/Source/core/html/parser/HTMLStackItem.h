@@ -39,7 +39,6 @@
 
 #include "core/HTMLNames.h"
 #include "core/MathMLNames.h"
-#include "core/SVGNames.h"
 #include "core/dom/Element.h"
 #include "core/html/parser/AtomicHTMLToken.h"
 #include "platform/RuntimeEnabledFeatures.h"
@@ -134,10 +133,7 @@ public:
             || hasTagName(MathMLNames::mnTag)
             || hasTagName(MathMLNames::msTag)
             || hasTagName(MathMLNames::mtextTag)
-            || hasTagName(MathMLNames::annotation_xmlTag)
-            || hasTagName(SVGNames::foreignObjectTag)
-            || hasTagName(SVGNames::descTag)
-            || hasTagName(SVGNames::titleTag))
+            || hasTagName(MathMLNames::annotation_xmlTag))
             return true;
         if (isDocumentFragmentNode())
             return true;

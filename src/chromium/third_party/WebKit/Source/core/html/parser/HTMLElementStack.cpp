@@ -39,7 +39,6 @@
 
 #include "core/HTMLNames.h"
 #include "core/MathMLNames.h"
-#include "core/SVGNames.h"
 #include "core/dom/Element.h"
 
 namespace blink {
@@ -69,9 +68,6 @@ inline bool isScopeMarker(HTMLStackItem* item)
         || item->hasTagName(MathMLNames::msTag)
         || item->hasTagName(MathMLNames::mtextTag)
         || item->hasTagName(MathMLNames::annotation_xmlTag)
-        || item->hasTagName(SVGNames::foreignObjectTag)
-        || item->hasTagName(SVGNames::descTag)
-        || item->hasTagName(SVGNames::titleTag)
         || item->hasTagName(templateTag)
         || isRootNode(item);
 }
@@ -308,9 +304,7 @@ bool HTMLElementStack::isHTMLIntegrationPoint(HTMLStackItem* item)
         }
         return false;
     }
-    return item->hasTagName(SVGNames::foreignObjectTag)
-        || item->hasTagName(SVGNames::descTag)
-        || item->hasTagName(SVGNames::titleTag);
+    return false;
 }
 
 void HTMLElementStack::popUntilForeignContentScopeMarker()

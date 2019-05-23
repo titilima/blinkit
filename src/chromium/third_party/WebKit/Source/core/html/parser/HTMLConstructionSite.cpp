@@ -56,7 +56,6 @@
 #include "core/html/parser/HTMLToken.h"
 #include "core/loader/FrameLoader.h"
 #include "core/loader/FrameLoaderClient.h"
-#include "core/svg/SVGScriptElement.h"
 #include "platform/NotImplemented.h"
 #include "platform/bindings/exception_state.h"
 #include "platform/text/TextBreakIterator.h"
@@ -95,8 +94,7 @@ static bool hasImpliedEndTag(const HTMLStackItem* item)
 static bool shouldUseLengthLimit(const ContainerNode& node)
 {
     return !isHTMLScriptElement(node)
-        && !isHTMLStyleElement(node)
-        && !isSVGScriptElement(node);
+        && !isHTMLStyleElement(node);
 }
 
 static unsigned textLengthLimitForContainer(const ContainerNode& node)
@@ -627,7 +625,7 @@ void HTMLConstructionSite::insertHTMLBodyElement(AtomicHTMLToken* token)
 #ifndef BLINKIT_CRAWLER_ONLY
 void HTMLConstructionSite::insertHTMLFormElement(AtomicHTMLToken* token, bool isDemoted)
 {
-    ASSERT(!m_document.ForCrawler());
+    ASSERT(!m_document->ForCrawler());
     RefPtrWillBeRawPtr<Element> element = createHTMLElement(token);
     ASSERT(isHTMLFormElement(element));
     m_form = static_pointer_cast<HTMLFormElement>(element.release());
