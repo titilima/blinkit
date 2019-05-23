@@ -27,12 +27,6 @@
     <Filter Include="style">
       <UniqueIdentifier>{afac6f27-63c9-42bf-8c82-8372f1b76605}</UniqueIdentifier>
     </Filter>
-    <Filter Include="layout\svg">
-      <UniqueIdentifier>{0ea40441-a9de-4916-a30d-64e7fcda4baf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="layout\svg\line">
-      <UniqueIdentifier>{1f076df9-83c6-4aab-98f0-04537da9a393}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -407,17 +401,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleWillChangeData.cpp">
       <Filter>style</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\svg\line\SVGInlineFlowBox.cpp">
-      <Filter>layout\svg\line</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\svg\line\SVGInlineTextBox.cpp">
-      <Filter>layout\svg\line</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\line\LineBreaker.cpp">
       <Filter>layout\line</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\svg\line\SVGRootInlineBox.cpp">
-      <Filter>layout\svg\line</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\LayoutBlock.cpp">
       <Filter>layout</Filter>
@@ -1149,15 +1134,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\TransformOrigin.h">
       <Filter>style</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\svg\line\SVGInlineFlowBox.h">
-      <Filter>layout\svg\line</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\svg\line\SVGInlineTextBox.h">
-      <Filter>layout\svg\line</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\svg\line\SVGRootInlineBox.h">
-      <Filter>layout\svg\line</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

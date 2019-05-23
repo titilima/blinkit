@@ -271,9 +271,6 @@ void LayoutView::layout()
                 || child->style()->logicalMaxHeight().hasPercent())
                 layoutScope.setChildNeedsLayout(child);
         }
-
-        if (document().svgExtensions())
-            document().accessSVGExtensions().invalidateSVGRootsWithRelativeLengthDescendents(&layoutScope);
     }
 
     ASSERT(!m_layoutState);

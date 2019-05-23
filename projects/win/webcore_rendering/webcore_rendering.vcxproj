@@ -274,9 +274,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\shapes\Shape.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\shapes\ShapeOutsideInfo.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\SubtreeLayoutScope.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\svg\line\SVGInlineFlowBox.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\svg\line\SVGInlineTextBox.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\svg\line\SVGRootInlineBox.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\TableLayoutAlgorithmAuto.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\TableLayoutAlgorithmFixed.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\TextAutosizer.cpp" />
@@ -470,9 +467,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\shapes\ShapeInterval.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\shapes\ShapeOutsideInfo.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\SubtreeLayoutScope.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\svg\line\SVGInlineFlowBox.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\svg\line\SVGInlineTextBox.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\svg\line\SVGRootInlineBox.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\TableLayoutAlgorithm.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\TableLayoutAlgorithmAuto.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\layout\TableLayoutAlgorithmFixed.h" />

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PaintInvalidationState.cpp
+// Description: PaintInvalidationState Class
+//      Author: Ziming Li
+//     Created: 2019-05-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,8 +17,6 @@
 
 #include "core/layout/LayoutInline.h"
 #include "core/layout/LayoutView.h"
-#include "core/layout/svg/LayoutSVGModelObject.h"
-#include "core/layout/svg/LayoutSVGRoot.h"
 #include "core/paint/PaintLayer.h"
 
 namespace blink {
@@ -85,33 +94,9 @@ PaintInvalidationState::PaintInvalidationState(PaintInvalidationState& next, Lay
             m_clipRect = next.m_clipRect;
     }
 
-    if (m_cachedOffsetsEnabled && layoutObject.isSVGRoot()) {
-        const LayoutSVGRoot& svgRoot = toLayoutSVGRoot(layoutObject);
-        m_svgTransform = AffineTransform(svgRoot.localToBorderBoxTransform());
-        if (svgRoot.shouldApplyViewportClip())
-            addClipRectRelativeToPaintOffset(LayoutSize(svgRoot.pixelSnappedSize()));
-    }
-
     applyClipIfNeeded(layoutObject);
 
     // FIXME: <http://bugs.webkit.org/show_bug.cgi?id=13443> Apply control clip if present.
-}
-
-PaintInvalidationState::PaintInvalidationState(PaintInvalidationState& next, const LayoutSVGModelObject& layoutObject)
-    : m_clipped(next.m_clipped)
-    , m_cachedOffsetsEnabled(next.m_cachedOffsetsEnabled)
-    , m_forcedSubtreeInvalidationWithinContainer(next.m_forcedSubtreeInvalidationWithinContainer)
-    , m_forcedSubtreeInvalidationRectUpdateWithinContainer(next.m_forcedSubtreeInvalidationRectUpdateWithinContainer)
-    , m_viewClippingAndScrollOffsetDisabled(false)
-    , m_clipRect(next.m_clipRect)
-    , m_paintOffset(next.m_paintOffset)
-    , m_paintInvalidationContainer(next.m_paintInvalidationContainer)
-    , m_pendingDelayedPaintInvalidations(next.pendingDelayedPaintInvalidationTargets())
-{
-    ASSERT(layoutObject != m_paintInvalidationContainer);
-
-    if (m_cachedOffsetsEnabled)
-        m_svgTransform = AffineTransform(next.svgTransform() * layoutObject.localToParentTransform());
 }
 
 void PaintInvalidationState::addClipRectRelativeToPaintOffset(const LayoutSize& clipSize)

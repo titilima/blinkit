@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PaintInvalidationState.h
+// Description: PaintInvalidationState Class
+//      Author: Ziming Li
+//     Created: 2019-05-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -22,7 +33,6 @@ class PaintInvalidationState {
     WTF_MAKE_NONCOPYABLE(PaintInvalidationState);
 public:
     PaintInvalidationState(PaintInvalidationState& next, LayoutBoxModelObject& layoutObject, const LayoutBoxModelObject& paintInvalidationContainer);
-    PaintInvalidationState(PaintInvalidationState& next, const LayoutSVGModelObject& layoutObject);
 
     PaintInvalidationState(const LayoutView& layoutView, Vector<LayoutObject*>& pendingDelayedPaintInvalidations)
         : PaintInvalidationState(layoutView, pendingDelayedPaintInvalidations, nullptr) { }
@@ -31,7 +41,6 @@ public:
 
     const LayoutRect& clipRect() const { return m_clipRect; }
     const LayoutSize& paintOffset() const { return m_paintOffset; }
-    const AffineTransform& svgTransform() const { return m_svgTransform; }
 
     bool cachedOffsetsEnabled() const { return m_cachedOffsetsEnabled; }
     bool isClipped() const { return m_clipped; }
@@ -78,11 +87,6 @@ private:
     LayoutSize m_paintOffset;
 
     const LayoutBoxModelObject& m_paintInvalidationContainer;
-
-    // Transform from the initial viewport coordinate system of an outermost
-    // SVG root to the userspace _before_ the relevant element. Combining this
-    // with |m_paintOffset| yields the "final" offset.
-    AffineTransform m_svgTransform;
 
     Vector<LayoutObject*>& m_pendingDelayedPaintInvalidations;
 };

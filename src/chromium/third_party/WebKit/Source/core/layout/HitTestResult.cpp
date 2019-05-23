@@ -50,7 +50,6 @@
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/layout/LayoutImage.h"
 #include "core/layout/LayoutTextFragment.h"
-#include "core/svg/SVGElement.h"
 #include "platform/scroll/Scrollbar.h"
 
 namespace blink {
@@ -350,9 +349,6 @@ KURL HitTestResult::absoluteImageURL() const
     // For other elements we don't create alt containers so ensure they contain a loaded image.
     if (isHTMLImageElement(*innerNodeOrImageMapImage)
         || (isHTMLInputElement(*innerNodeOrImageMapImage) && toHTMLInputElement(innerNodeOrImageMapImage)->isImage()))
-        urlString = toElement(*innerNodeOrImageMapImage).imageSourceURL();
-    else if ((innerNodeOrImageMapImage->layoutObject() && innerNodeOrImageMapImage->layoutObject()->isImage())
-        && isSVGImageElement(*innerNodeOrImageMapImage))
         urlString = toElement(*innerNodeOrImageMapImage).imageSourceURL();
     if (urlString.isEmpty())
         return KURL();
