@@ -41,7 +41,6 @@
 #include "core/CSSPropertyNames.h"
 #include "core/EventNames.h"
 #include "core/HTMLNames.h"
-#include "core/XLinkNames.h"
 #include "core/clipboard/DataObject.h"
 #include "core/clipboard/DataTransfer.h"
 #include "core/clipboard/Pasteboard.h"
@@ -88,7 +87,6 @@
 #include "core/page/EditorClient.h"
 #include "core/page/FocusController.h"
 #include "core/page/Page.h"
-#include "core/svg/SVGImageElement.h"
 #include "platform/KillRing.h"
 #include "platform/weborigin/KURL.h"
 #include "wtf/text/CharacterNames.h"
@@ -458,8 +456,6 @@ static void writeImageNodeToPasteboard(Pasteboard* pasteboard, Node* node, const
     AtomicString urlString;
     if (isHTMLImageElement(*node) || isHTMLInputElement(*node))
         urlString = toHTMLElement(node)->getAttribute(srcAttr);
-    else if (isSVGImageElement(*node))
-        urlString = toSVGElement(node)->getAttribute(XLinkNames::hrefAttr);
     KURL url = urlString.isEmpty() ? KURL() : node->document().completeURL(stripLeadingAndTrailingHTMLSpaces(urlString));
 
     pasteboard->writeImage(image.get(), url, title);
