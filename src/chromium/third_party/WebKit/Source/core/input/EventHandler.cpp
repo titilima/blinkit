@@ -329,7 +329,6 @@ EventHandler::EventHandler(LocalFrame* frame)
     , m_cursorUpdateTimer(this, &EventHandler::cursorUpdateTimerFired)
     , m_mouseDownMayStartAutoscroll(false)
     , m_fakeMouseMoveEventTimer(this, &EventHandler::fakeMouseMoveEventTimerFired)
-    , m_svgPan(false)
     , m_resizeScrollableArea(nullptr)
     , m_eventHandlerWillResetCapturingMouseEventsNode(0)
     , m_clickCount(0)
@@ -400,7 +399,6 @@ void EventHandler::clear()
     m_activeIntervalTimer.stop();
     m_resizeScrollableArea = nullptr;
     m_nodeUnderMouse = nullptr;
-    m_lastMouseMoveEventSubframe = nullptr;
     m_lastScrollbarUnderMouse = nullptr;
     m_clickCount = 0;
     m_clickNode = nullptr;
@@ -430,7 +428,6 @@ void EventHandler::clear()
     m_lastDeferredTapElement = nullptr;
     m_eventHandlerWillResetCapturingMouseEventsNode = false;
     m_mouseDownMayStartAutoscroll = false;
-    m_svgPan = false;
     m_mouseDownPos = IntPoint();
     m_mouseDownTimestamp = 0;
     m_longTapShouldInvokeContextMenu = false;
@@ -475,14 +472,6 @@ WebInputEventResult EventHandler::handleMousePressEvent(const MouseEventWithHitT
     selectionController().handleMousePressEvent(event);
 
     m_mouseDown = event.event();
-
-    if (m_frame->document()->isSVGDocument() && m_frame->document()->accessSVGExtensions().zoomAndPanEnabled()) {
-        if (event.event().shiftKey() && singleClick) {
-            m_svgPan = true;
-            m_frame->document()->accessSVGExtensions().startPan(m_frame->view()->rootFrameToContents(event.event().position()));
-            return WebInputEventResult::HandledSystem;
-        }
-    }
 
     // We don't do this at the start of mouse down handling,
     // because we don't want to do it until we know we didn't hit a widget.
@@ -735,11 +724,7 @@ bool EventHandler::bubblingScroll(ScrollDirection direction, ScrollGranularity g
         }
     }
 
-    Frame* parentFrame = frame->tree().parent();
-    if (!parentFrame || !parentFrame->isLocalFrame())
-        return false;
-    // FIXME: Broken for OOPI.
-    return toLocalFrame(parentFrame)->eventHandler().bubblingScroll(direction, granularity, m_frame->deprecatedLocalOwner());
+    return false;
 }
 
 IntPoint EventHandler::lastKnownMousePosition() const
@@ -749,25 +734,12 @@ IntPoint EventHandler::lastKnownMousePosition() const
 
 static LocalFrame* subframeForTargetNode(Node* node)
 {
-    if (!node)
-        return nullptr;
-
-    LayoutObject* layoutObject = node->layoutObject();
-    if (!layoutObject || !layoutObject->isLayoutPart())
-        return nullptr;
-
-    Widget* widget = toLayoutPart(layoutObject)->widget();
-    if (!widget || !widget->isFrameView())
-        return nullptr;
-
-    return &toFrameView(widget)->frame();
+    return nullptr;
 }
 
 static LocalFrame* subframeForHitTestResult(const MouseEventWithHitTestResults& hitTestResult)
 {
-    if (!hitTestResult.isOverWidget())
-        return nullptr;
-    return subframeForTargetNode(hitTestResult.innerNode());
+    return nullptr;
 }
 
 static bool isSubmitImage(Node* node)
@@ -1215,14 +1187,6 @@ WebInputEventResult EventHandler::handleMouseMoveOrLeaveEvent(const PlatformMous
 
     cancelFakeMouseMoveEvent();
 
-    if (m_svgPan) {
-        m_frame->document()->accessSVGExtensions().updatePan(m_frame->view()->rootFrameToContents(m_lastKnownMousePosition));
-        return WebInputEventResult::HandledSuppressed;
-    }
-
-    if (m_frameSetBeingResized)
-        return updatePointerTargetAndDispatchEvents(EventTypeNames::mousemove, m_frameSetBeingResized.get(), 0, mouseEvent);
-
     // Send events right to a scrollbar if the mouse is pressed.
     if (m_lastScrollbarUnderMouse && m_mousePressed) {
         m_lastScrollbarUnderMouse->mouseMoved(mouseEvent);
@@ -1275,10 +1239,6 @@ WebInputEventResult EventHandler::handleMouseMoveOrLeaveEvent(const PlatformMous
     WebInputEventResult eventResult = WebInputEventResult::NotHandled;
     RefPtrWillBeRawPtr<LocalFrame> newSubframe = m_capturingMouseEventsNode.get() ? subframeForTargetNode(m_capturingMouseEventsNode.get()) : subframeForHitTestResult(mev);
 
-    // We want mouseouts to happen first, from the inside out.  First send a move event to the last subframe so that it will fire mouseouts.
-    if (m_lastMouseMoveEventSubframe && m_lastMouseMoveEventSubframe->tree().isDescendantOf(m_frame) && m_lastMouseMoveEventSubframe != newSubframe)
-        m_lastMouseMoveEventSubframe->eventHandler().handleMouseLeaveEvent(mouseEvent);
-
     if (newSubframe) {
         // Update over/out state before passing the event to the subframe.
         updateMouseEventTargetNode(mev.innerNode(), mouseEvent);
@@ -1297,8 +1257,6 @@ WebInputEventResult EventHandler::handleMouseMoveOrLeaveEvent(const PlatformMous
             }
         }
     }
-
-    m_lastMouseMoveEventSubframe = newSubframe;
 
     if (eventResult != WebInputEventResult::NotHandled)
         return eventResult;
@@ -1348,15 +1306,6 @@ WebInputEventResult EventHandler::handleMouseReleaseEvent(const PlatformMouseEve
 
     m_mousePressed = false;
     setLastKnownMousePosition(mouseEvent);
-
-    if (m_svgPan) {
-        m_svgPan = false;
-        m_frame->document()->accessSVGExtensions().updatePan(m_frame->view()->rootFrameToContents(m_lastKnownMousePosition));
-        return WebInputEventResult::HandledSuppressed;
-    }
-
-    if (m_frameSetBeingResized)
-        return dispatchMouseEvent(EventTypeNames::mouseup, m_frameSetBeingResized.get(), m_clickCount, mouseEvent);
 
     if (m_lastScrollbarUnderMouse) {
         invalidateClick();
@@ -1444,15 +1393,7 @@ WebInputEventResult EventHandler::dispatchDragEvent(const AtomicString& eventTyp
 
 static bool targetIsFrame(Node* target, LocalFrame*& frame)
 {
-    if (!isHTMLFrameElementBase(target))
-        return false;
-
-    // Cross-process drag and drop is not yet supported.
-    if (toHTMLFrameElementBase(target)->contentFrame() && !toHTMLFrameElementBase(target)->contentFrame()->isLocalFrame())
-        return false;
-
-    frame = toLocalFrame(toHTMLFrameElementBase(target)->contentFrame());
-    return true;
+    return false;
 }
 
 static bool findDropZone(Node* target, DataTransfer* dataTransfer)
@@ -2695,6 +2636,8 @@ bool EventHandler::bestZoomableAreaForTouchPoint(const IntPoint& touchCenter, co
 // With gestures, a single event conceptually both 'leaves' whatever frame currently had hover and enters a new frame
 void EventHandler::updateGestureHoverActiveState(const HitTestRequest& request, Element* innerElement)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(m_frame == m_frame->localFrameRoot());
 
     WillBeHeapVector<RawPtrWillBeMember<LocalFrame>> newHoverFrameChain;
@@ -2741,12 +2684,15 @@ void EventHandler::updateGestureHoverActiveState(const HitTestRequest& request, 
 
     // Recursively set the new active/hover states on every frame in the chain of innerElement.
     m_frame->document()->updateHoverActiveState(request, innerElement);
+#endif
 }
 
 // Update the mouseover/mouseenter/mouseout/mouseleave events across all frames for this gesture,
 // before passing the targeted gesture event directly to a hit frame.
 void EventHandler::updateGestureTargetNodeForMouseEvent(const GestureEventWithHitTestResults& targetedEvent)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(m_frame == m_frame->localFrameRoot());
 
     // Behaviour of this function is as follows:
@@ -2813,6 +2759,7 @@ void EventHandler::updateGestureTargetNodeForMouseEvent(const GestureEventWithHi
         if (parentFrame && parentFrame->isLocalFrame())
             toLocalFrame(parentFrame)->eventHandler().updateMouseEventTargetNode(toHTMLFrameOwnerElement(enteredFrameChain[indexEnteredFrameChain]->owner()), fakeMouseMove);
     }
+#endif
 }
 
 GestureEventWithHitTestResults EventHandler::targetGestureEvent(const PlatformGestureEvent& gestureEvent, bool readOnly)
@@ -3614,11 +3561,6 @@ void EventHandler::defaultArrowEventHandler(WebFocusType focusType, KeyboardEven
     if (!isSpatialNavigationEnabled(m_frame))
         return;
 
-    // Arrows and other possible directional navigation keys can be used in design
-    // mode editing.
-    if (m_frame->document()->inDesignMode())
-        return;
-
     if (page->focusController().advanceFocus(focusType))
         event->setDefaultHandled();
 }
@@ -3645,10 +3587,6 @@ void EventHandler::defaultTabEventHandler(KeyboardEvent* event)
         return;
 
     WebFocusType focusType = event->shiftKey() ? WebFocusTypeBackward : WebFocusTypeForward;
-
-    // Tabs can be used in design mode editing.
-    if (m_frame->document()->inDesignMode())
-        return;
 
     if (page->focusController().advanceFocus(focusType, InputDeviceCapabilities::doesntFireTouchEventsSourceCapabilities()))
         event->setDefaultHandled();

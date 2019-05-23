@@ -397,15 +397,12 @@ private:
 
     Timer<EventHandler> m_fakeMouseMoveEventTimer;
 
-    bool m_svgPan;
-
     RawPtrWillBeMember<PaintLayerScrollableArea> m_resizeScrollableArea;
 
     RefPtrWillBeMember<Node> m_capturingMouseEventsNode;
     bool m_eventHandlerWillResetCapturingMouseEventsNode;
 
     RefPtrWillBeMember<Node> m_nodeUnderMouse;
-    RefPtrWillBeMember<LocalFrame> m_lastMouseMoveEventSubframe;
     RefPtrWillBeMember<Scrollbar> m_lastScrollbarUnderMouse;
 
     int m_clickCount;
