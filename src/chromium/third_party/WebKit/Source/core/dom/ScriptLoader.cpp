@@ -37,7 +37,6 @@
 #include "bindings/core/v8/ScriptController.h"
 #include "bindings/core/v8/ScriptSourceCode.h"
 #include "core/HTMLNames.h"
-#include "core/SVGNames.h"
 #include "core/dom/Document.h"
 #include "core/dom/IgnoreDestructiveWriteCountIncrementer.h"
 #include "core/dom/ScriptLoaderClient.h"
@@ -56,7 +55,6 @@
 #include "core/html/HTMLScriptElement.h"
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/inspector/ConsoleMessage.h"
-#include "core/svg/SVGScriptElement.h"
 #include "platform/MIMETypeRegistry.h"
 #include "platform/weborigin/SecurityOrigin.h"
 #include "public/platform/WebFrameScheduler.h"
@@ -335,12 +333,6 @@ bool isHTMLScriptLoader(Element* element)
     return isHTMLScriptElement(*element);
 }
 
-bool isSVGScriptLoader(Element* element)
-{
-    ASSERT(element);
-    return isSVGScriptElement(*element);
-}
-
 void ScriptLoader::logScriptMimetype(ScriptResource* resource, LocalFrame* frame, String mimetype)
 {
     bool text = mimetype.lower().startsWith("text/");
@@ -497,9 +489,6 @@ ScriptLoaderClient* ScriptLoader::client() const
     if (isHTMLScriptLoader(m_element))
         return toHTMLScriptElement(m_element);
 
-    if (isSVGScriptLoader(m_element))
-        return toSVGScriptElement(m_element);
-
     ASSERT_NOT_REACHED();
     return 0;
 }
@@ -508,9 +497,6 @@ ScriptLoader* toScriptLoaderIfPossible(Element* element)
 {
     if (isHTMLScriptLoader(element))
         return toHTMLScriptElement(element)->loader();
-
-    if (isSVGScriptLoader(element))
-        return toSVGScriptElement(element)->loader();
 
     return 0;
 }

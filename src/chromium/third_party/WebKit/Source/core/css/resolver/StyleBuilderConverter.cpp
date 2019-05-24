@@ -43,7 +43,6 @@
 #include "core/css/CSSFontFeatureValue.h"
 #include "core/css/CSSFunctionValue.h"
 #include "core/css/CSSGridLineNamesValue.h"
-#include "core/css/CSSPathValue.h"
 #include "core/css/CSSPrimitiveValueMappings.h"
 #include "core/css/CSSQuadValue.h"
 #include "core/css/CSSReflectValue.h"
@@ -826,27 +825,6 @@ float StyleBuilderConverter::convertSpacing(StyleResolverState& state, const CSS
     return primitiveValue.computeLength<float>(state.cssToLengthConversionData());
 }
 
-PassRefPtr<SVGDashArray> StyleBuilderConverter::convertStrokeDasharray(StyleResolverState& state, const CSSValue& value)
-{
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
-    if (!value.isValueList())
-        return SVGComputedStyle::initialStrokeDashArray();
-
-    const CSSValueList& dashes = toCSSValueList(value);
-
-    RefPtr<SVGDashArray> array = SVGDashArray::create();
-    size_t length = dashes.length();
-    for (size_t i = 0; i < length; ++i) {
-        array->append(convertLength(state, *toCSSPrimitiveValue(dashes.item(i))));
-    }
-
-    return array.release();
-#endif
-}
-
 StyleColor StyleBuilderConverter::convertStyleColor(StyleResolverState& state, const CSSValue& value, bool forVisitedLink)
 {
     if (value.isPrimitiveValue() && toCSSPrimitiveValue(value).getValueID() == CSSValueCurrentcolor)
@@ -965,11 +943,6 @@ RespectImageOrientationEnum StyleBuilderConverter::convertImageOrientation(Style
 {
     const CSSPrimitiveValue& primitiveValue = toCSSPrimitiveValue(value);
     return primitiveValue.getValueID() == CSSValueFromImage ? RespectImageOrientation : DoNotRespectImageOrientation;
-}
-
-PassRefPtr<StylePath> StyleBuilderConverter::convertPath(StyleResolverState&, CSSValue& value)
-{
-    return toCSSPathValue(value).cachedPath();
 }
 
 } // namespace blink

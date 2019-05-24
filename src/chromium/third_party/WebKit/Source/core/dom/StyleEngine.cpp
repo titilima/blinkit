@@ -54,7 +54,6 @@
 #include "core/html/HTMLLinkElement.h"
 #include "core/inspector/InspectorInstrumentation.h"
 #include "core/page/Page.h"
-#include "core/svg/SVGStyleElement.h"
 #include "platform/TraceEvent.h"
 #include "platform/fonts/FontCache.h"
 
@@ -88,7 +87,7 @@ StyleEngine::~StyleEngine()
 
 static bool isStyleElement(Node& node)
 {
-    return isHTMLStyleElement(node) || isSVGStyleElement(node);
+    return isHTMLStyleElement(node);
 }
 
 #if !ENABLE(OILPAN)
