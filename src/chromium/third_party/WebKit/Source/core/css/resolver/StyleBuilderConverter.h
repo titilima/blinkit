@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StyleBuilderConverter.h
+// Description: StyleBuilderConverter Class
+//      Author: Ziming Li
+//     Created: 2019-05-24
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -89,7 +100,6 @@ public:
     static PassRefPtrWillBeRawPtr<ShapeValue> convertShapeValue(StyleResolverState&, const CSSValue&);
     static float convertSpacing(StyleResolverState&, const CSSValue&);
     template <CSSValueID IdForNone> static AtomicString convertString(StyleResolverState&, const CSSValue&);
-    static PassRefPtr<SVGDashArray> convertStrokeDasharray(StyleResolverState&, const CSSValue&);
     static StyleColor convertStyleColor(StyleResolverState&, const CSSValue&, bool forVisitedLink = false);
     static float convertTextStrokeWidth(StyleResolverState&, const CSSValue&);
     static TransformOrigin convertTransformOrigin(StyleResolverState&, const CSSValue&);
@@ -105,7 +115,6 @@ public:
     static PassRefPtr<RotateTransformOperation> convertRotate(StyleResolverState&, const CSSValue&);
     static PassRefPtr<ScaleTransformOperation> convertScale(StyleResolverState&, const CSSValue&);
     static RespectImageOrientationEnum convertImageOrientation(StyleResolverState&, const CSSValue&);
-    static PassRefPtr<StylePath> convertPath(StyleResolverState&, CSSValue&);
 };
 
 template <typename T>

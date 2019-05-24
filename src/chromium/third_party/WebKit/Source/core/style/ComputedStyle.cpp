@@ -998,6 +998,8 @@ void ComputedStyle::applyTransform(TransformationMatrix& result, const FloatRect
 
 void ComputedStyle::applyMotionPathTransform(float originX, float originY, TransformationMatrix& transform) const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     const StyleMotionData& motionData = rareNonInheritedData->m_transform->m_motion;
     ASSERT(motionData.m_path && motionData.m_path->isPathStyleMotionPath());
     const PathStyleMotionPath& motionPath = toPathStyleMotionPath(*motionData.m_path);
@@ -1021,6 +1023,7 @@ void ComputedStyle::applyMotionPathTransform(float originX, float originY, Trans
 
     transform.translate(point.x() - originX, point.y() - originY);
     transform.rotate(angle + motionData.m_rotation);
+#endif
 }
 
 void ComputedStyle::setTextShadow(PassRefPtr<ShadowList> s)

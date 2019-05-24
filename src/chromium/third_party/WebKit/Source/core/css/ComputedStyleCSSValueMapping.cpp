@@ -67,7 +67,6 @@
 #include "core/style/PathStyleMotionPath.h"
 #include "core/style/QuotesData.h"
 #include "core/style/ShadowList.h"
-#include "core/svg/SVGPathUtilities.h"
 #include "platform/LengthFunctions.h"
 
 namespace blink {
@@ -2464,12 +2463,16 @@ PassRefPtrWillBeRawPtr<CSSValue> ComputedStyleCSSValueMapping::get(CSSPropertyID
         return valuesForShorthandProperty(motionShorthand(), style, layoutObject, styledNode, allowVisitedStyle);
 
     case CSSPropertyMotionPath: {
+        ASSERT(false); // BKTODO:
+        return nullptr;
+#if 0
         const StyleMotionPath* styleMotionPath = style.motionPath();
         if (!styleMotionPath)
             return cssValuePool().createIdentifierValue(CSSValueNone);
 
         ASSERT(styleMotionPath->isPathStyleMotionPath());
         return CSSPathValue::create(toPathStyleMotionPath(styleMotionPath)->pathString());
+#endif
     }
 
     case CSSPropertyMotionOffset:

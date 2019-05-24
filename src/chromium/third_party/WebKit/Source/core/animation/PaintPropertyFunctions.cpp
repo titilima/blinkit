@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: PaintPropertyFunctions.cpp
+// Description: PaintPropertyFunctions Class
+//      Author: Ziming Li
+//     Created: 2019-05-24
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -30,29 +41,13 @@ static bool getColorFromPaint(const SVGPaintType type, const Color color, StyleC
 
 bool PaintPropertyFunctions::getColor(CSSPropertyID property, const ComputedStyle& style, StyleColor& result)
 {
-    switch (property) {
-    case CSSPropertyFill:
-        return getColorFromPaint(style.svgStyle().fillPaintType(), style.svgStyle().fillPaintColor(), result);
-    case CSSPropertyStroke:
-        return getColorFromPaint(style.svgStyle().strokePaintType(), style.svgStyle().strokePaintColor(), result);
-    default:
-        ASSERT_NOT_REACHED();
-        return false;
-    }
+    ASSERT_NOT_REACHED();
+    return false;
 }
 
 void PaintPropertyFunctions::setColor(CSSPropertyID property, ComputedStyle& style, const Color& color)
 {
-    switch (property) {
-    case CSSPropertyFill:
-        style.accessSVGStyle().setFillPaint(SVG_PAINTTYPE_RGBCOLOR, color, String(), true, true);
-        break;
-    case CSSPropertyStroke:
-        style.accessSVGStyle().setStrokePaint(SVG_PAINTTYPE_RGBCOLOR, color, String(), true, true);
-        break;
-    default:
-        ASSERT_NOT_REACHED();
-    }
+    ASSERT_NOT_REACHED();
 }
 
 

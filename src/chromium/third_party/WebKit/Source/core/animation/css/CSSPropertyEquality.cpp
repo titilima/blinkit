@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CSSPropertyEquality.cpp
+// Description: CSSPropertyEquality Class
+//      Author: Ziming Li
+//     Created: 2019-05-24
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -68,8 +79,6 @@ bool CSSPropertyEquality::propertiesEqual(CSSPropertyID prop, const ComputedStyl
         return fillLayersEqual<CSSPropertyBackgroundPositionY>(a.backgroundLayers(), b.backgroundLayers());
     case CSSPropertyBackgroundSize:
         return fillLayersEqual<CSSPropertyBackgroundSize>(a.backgroundLayers(), b.backgroundLayers());
-    case CSSPropertyBaselineShift:
-        return a.baselineShiftValue() == b.baselineShiftValue();
     case CSSPropertyBorderBottomColor:
         return a.borderBottomColor() == b.borderBottomColor()
             && a.visitedLinkBorderBottomColor() == b.visitedLinkBorderBottomColor();
@@ -114,26 +123,12 @@ bool CSSPropertyEquality::propertiesEqual(CSSPropertyID prop, const ComputedStyl
         return a.clip() == b.clip();
     case CSSPropertyColor:
         return a.color() == b.color() && a.visitedLinkColor() == b.visitedLinkColor();
-    case CSSPropertyFill: {
-        const SVGComputedStyle& aSVG = a.svgStyle();
-        const SVGComputedStyle& bSVG = b.svgStyle();
-        return aSVG.fillPaintType() == bSVG.fillPaintType()
-            && (aSVG.fillPaintType() != SVG_PAINTTYPE_RGBCOLOR || aSVG.fillPaintColor() == bSVG.fillPaintColor())
-            && aSVG.visitedLinkFillPaintType() == bSVG.visitedLinkFillPaintType()
-            && (aSVG.visitedLinkFillPaintType() != SVG_PAINTTYPE_RGBCOLOR || aSVG.visitedLinkFillPaintColor() == bSVG.visitedLinkFillPaintColor());
-    }
-    case CSSPropertyFillOpacity:
-        return a.fillOpacity() == b.fillOpacity();
     case CSSPropertyFlexBasis:
         return a.flexBasis() == b.flexBasis();
     case CSSPropertyFlexGrow:
         return a.flexGrow() == b.flexGrow();
     case CSSPropertyFlexShrink:
         return a.flexShrink() == b.flexShrink();
-    case CSSPropertyFloodColor:
-        return a.floodColor() == b.floodColor();
-    case CSSPropertyFloodOpacity:
-        return a.floodOpacity() == b.floodOpacity();
     case CSSPropertyFontSize:
         // CSSPropertyFontSize: Must pass a specified size to setFontSize if Text Autosizing is enabled, but a computed size
         // if text zoom is enabled (if neither is enabled it's irrelevant as they're probably the same).
@@ -152,8 +147,6 @@ bool CSSPropertyEquality::propertiesEqual(CSSPropertyID prop, const ComputedStyl
         return a.left() == b.left();
     case CSSPropertyLetterSpacing:
         return a.letterSpacing() == b.letterSpacing();
-    case CSSPropertyLightingColor:
-        return a.lightingColor() == b.lightingColor();
     case CSSPropertyLineHeight:
         return a.specifiedLineHeight() == b.specifiedLineHeight();
     case CSSPropertyListStyleImage:
@@ -208,28 +201,6 @@ bool CSSPropertyEquality::propertiesEqual(CSSPropertyID prop, const ComputedStyl
         return a.shapeMargin() == b.shapeMargin();
     case CSSPropertyShapeOutside:
         return dataEquivalent(a.shapeOutside(), b.shapeOutside());
-    case CSSPropertyStopColor:
-        return a.stopColor() == b.stopColor();
-    case CSSPropertyStopOpacity:
-        return a.stopOpacity() == b.stopOpacity();
-    case CSSPropertyStroke: {
-        const SVGComputedStyle& aSVG = a.svgStyle();
-        const SVGComputedStyle& bSVG = b.svgStyle();
-        return aSVG.strokePaintType() == bSVG.strokePaintType()
-            && (aSVG.strokePaintType() != SVG_PAINTTYPE_RGBCOLOR || aSVG.strokePaintColor() == bSVG.strokePaintColor())
-            && aSVG.visitedLinkStrokePaintType() == bSVG.visitedLinkStrokePaintType()
-            && (aSVG.visitedLinkStrokePaintType() != SVG_PAINTTYPE_RGBCOLOR || aSVG.visitedLinkStrokePaintColor() == bSVG.visitedLinkStrokePaintColor());
-    }
-    case CSSPropertyStrokeDasharray:
-        return a.strokeDashArray() == b.strokeDashArray();
-    case CSSPropertyStrokeDashoffset:
-        return a.strokeDashOffset() == b.strokeDashOffset();
-    case CSSPropertyStrokeMiterlimit:
-        return a.strokeMiterLimit() == b.strokeMiterLimit();
-    case CSSPropertyStrokeOpacity:
-        return a.strokeOpacity() == b.strokeOpacity();
-    case CSSPropertyStrokeWidth:
-        return a.strokeWidth() == b.strokeWidth();
     case CSSPropertyTextDecorationColor:
         return a.textDecorationColor() == b.textDecorationColor()
             && a.visitedLinkTextDecorationColor() == b.visitedLinkTextDecorationColor();
@@ -314,22 +285,6 @@ bool CSSPropertyEquality::propertiesEqual(CSSPropertyID prop, const ComputedStyl
         return a.width() == b.width();
     case CSSPropertyWordSpacing:
         return a.wordSpacing() == b.wordSpacing();
-    case CSSPropertyD:
-        return a.svgStyle().d()->equals(*b.svgStyle().d());
-    case CSSPropertyCx:
-        return a.svgStyle().cx() == b.svgStyle().cx();
-    case CSSPropertyCy:
-        return a.svgStyle().cy() == b.svgStyle().cy();
-    case CSSPropertyX:
-        return a.svgStyle().x() == b.svgStyle().x();
-    case CSSPropertyY:
-        return a.svgStyle().y() == b.svgStyle().y();
-    case CSSPropertyR:
-        return a.svgStyle().r() == b.svgStyle().r();
-    case CSSPropertyRx:
-        return a.svgStyle().rx() == b.svgStyle().rx();
-    case CSSPropertyRy:
-        return a.svgStyle().ry() == b.svgStyle().ry();
     case CSSPropertyZIndex:
         return a.hasAutoZIndex() == b.hasAutoZIndex() && (a.hasAutoZIndex() || a.zIndex() == b.zIndex());
     default:

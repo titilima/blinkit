@@ -451,6 +451,8 @@ void StyleBuilderFunctions::applyInheritCSSPropertyMotionPath(StyleResolverState
 
 void StyleBuilderFunctions::applyValueCSSPropertyMotionPath(StyleResolverState& state, CSSValue* value)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (value->isPathValue()) {
         const String& pathString = toCSSPathValue(value)->pathString();
         state.style()->setMotionPath(PathStyleMotionPath::create(pathString));
@@ -459,6 +461,7 @@ void StyleBuilderFunctions::applyValueCSSPropertyMotionPath(StyleResolverState& 
 
     ASSERT(value->isPrimitiveValue() && toCSSPrimitiveValue(value)->getValueID() == CSSValueNone);
     state.style()->resetMotionPath();
+#endif
 }
 
 void StyleBuilderFunctions::applyInitialCSSPropertyMotionPath(StyleResolverState& state)

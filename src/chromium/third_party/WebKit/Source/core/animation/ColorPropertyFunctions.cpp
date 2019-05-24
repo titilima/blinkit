@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ColorPropertyFunctions.cpp
+// Description: ColorPropertyFunctions Class
+//      Author: Ziming Li
+//     Created: 2019-05-24
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -38,12 +49,6 @@ StyleColor ColorPropertyFunctions::getUnvisitedColor(CSSPropertyID property, con
         return style.textFillColor();
     case CSSPropertyWebkitTextStrokeColor:
         return style.textStrokeColor();
-    case CSSPropertyFloodColor:
-        return style.floodColor();
-    case CSSPropertyLightingColor:
-        return style.lightingColor();
-    case CSSPropertyStopColor:
-        return style.stopColor();
     case CSSPropertyWebkitTapHighlightColor:
         return style.tapHighlightColor();
     case CSSPropertyTextDecorationColor:
@@ -79,12 +84,6 @@ StyleColor ColorPropertyFunctions::getVisitedColor(CSSPropertyID property, const
         return style.visitedLinkTextFillColor();
     case CSSPropertyWebkitTextStrokeColor:
         return style.visitedLinkTextStrokeColor();
-    case CSSPropertyFloodColor:
-        return style.floodColor();
-    case CSSPropertyLightingColor:
-        return style.lightingColor();
-    case CSSPropertyStopColor:
-        return style.stopColor();
     case CSSPropertyWebkitTapHighlightColor:
         return style.tapHighlightColor();
     case CSSPropertyTextDecorationColor:
@@ -116,17 +115,8 @@ void ColorPropertyFunctions::setUnvisitedColor(CSSPropertyID property, ComputedS
     case CSSPropertyColor:
         style.setColor(color);
         return;
-    case CSSPropertyFloodColor:
-        style.setFloodColor(color);
-        return;
-    case CSSPropertyLightingColor:
-        style.setLightingColor(color);
-        return;
     case CSSPropertyOutlineColor:
         style.setOutlineColor(color);
-        return;
-    case CSSPropertyStopColor:
-        style.setStopColor(color);
         return;
     case CSSPropertyTextDecorationColor:
         style.setTextDecorationColor(color);
@@ -164,17 +154,8 @@ void ColorPropertyFunctions::setVisitedColor(CSSPropertyID property, ComputedSty
     case CSSPropertyColor:
         style.setVisitedLinkColor(color);
         return;
-    case CSSPropertyFloodColor:
-        style.setFloodColor(color);
-        return;
-    case CSSPropertyLightingColor:
-        style.setLightingColor(color);
-        return;
     case CSSPropertyOutlineColor:
         style.setVisitedLinkOutlineColor(color);
-        return;
-    case CSSPropertyStopColor:
-        style.setStopColor(color);
         return;
     case CSSPropertyTextDecorationColor:
         style.setVisitedLinkTextDecorationColor(color);

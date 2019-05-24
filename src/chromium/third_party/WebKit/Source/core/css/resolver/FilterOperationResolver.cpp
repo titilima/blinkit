@@ -44,9 +44,6 @@
 #include "core/css/CSSShadowValue.h"
 #include "core/css/resolver/StyleResolverState.h"
 #include "core/frame/UseCounter.h"
-#include "core/layout/svg/ReferenceFilterBuilder.h"
-#include "core/svg/SVGElement.h"
-#include "core/svg/SVGURIReference.h"
 
 namespace blink {
 
@@ -145,21 +142,7 @@ FilterOperations FilterOperationResolver::createFilterOperations(StyleResolverSt
         ASSERT(filterValue->length() <= 1);
 
         if (operationType == FilterOperation::REFERENCE) {
-#ifdef BLINKIT_CRAWLER_ONLY
-            assert(false); // BKTODO: Not reached!
-#else
-            CSSSVGDocumentValue* svgDocumentValue = toCSSSVGDocumentValue(filterValue->item(0));
-            KURL url = state.document().completeURL(svgDocumentValue->url());
-
-            RefPtrWillBeRawPtr<ReferenceFilterOperation> operation = ReferenceFilterOperation::create(svgDocumentValue->url(), AtomicString(url.fragmentIdentifier()));
-            if (SVGURIReference::isExternalURIReference(svgDocumentValue->url(), state.document())) {
-                if (!svgDocumentValue->loadRequested())
-                    state.elementStyleResources().addPendingSVGDocument(operation.get(), svgDocumentValue);
-                else if (svgDocumentValue->cachedSVGDocument())
-                    ReferenceFilterBuilder::setDocumentResourceReference(operation.get(), adoptPtr(new DocumentResourceReference(svgDocumentValue->cachedSVGDocument())));
-            }
-            operations.operations().append(operation);
-#endif
+            ASSERT_NOT_REACHED();
             continue;
         }
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: VisitedLinkState.cpp
+// Description: VisitedLinkState Class
+//      Author: Ziming Li
+//     Created: 2019-05-24
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -29,7 +40,6 @@
 #include "core/dom/VisitedLinkState.h"
 
 #include "core/HTMLNames.h"
-#include "core/XLinkNames.h"
 #include "core/dom/ElementTraversal.h"
 #include "core/html/HTMLAnchorElement.h"
 #include "public/platform/Platform.h"
@@ -41,8 +51,7 @@ static inline const AtomicString& linkAttribute(const Element& element)
     ASSERT(element.isLink());
     if (element.isHTMLElement())
         return element.fastGetAttribute(HTMLNames::hrefAttr);
-    ASSERT(element.isSVGElement());
-    return element.getAttribute(XLinkNames::hrefAttr);
+    return nullAtom;
 }
 
 static inline LinkHash linkHashForElement(const Element& element, const AtomicString& attribute = AtomicString())

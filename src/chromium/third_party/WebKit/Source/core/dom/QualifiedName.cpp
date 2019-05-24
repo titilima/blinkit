@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: QualifiedName.cpp
+// Description: QualifiedName Class
+//      Author: Ziming Li
+//     Created: 2019-05-24
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2009 Apple Inc. All rights reserved.
  *
@@ -21,8 +32,6 @@
 
 #include "core/HTMLNames.h"
 #include "core/MathMLNames.h"
-#include "core/SVGNames.h"
-#include "core/XLinkNames.h"
 #include "core/XMLNSNames.h"
 #include "core/XMLNames.h"
 #include "wtf/Assertions.h"

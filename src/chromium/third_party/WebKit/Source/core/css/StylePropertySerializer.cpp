@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StylePropertySerializer.cpp
+// Description: StylePropertySerializer Class
+//      Author: Ziming Li
+//     Created: 2019-05-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All rights reserved.
@@ -477,11 +488,6 @@ String StylePropertySerializer::getPropertyValue(CSSPropertyID propertyID) const
         return getShorthandValue(webkitTextEmphasisShorthand());
     case CSSPropertyWebkitTextStroke:
         return getShorthandValue(webkitTextStrokeShorthand());
-    case CSSPropertyMarker: {
-        if (const CSSValue* value = m_propertySet.getPropertyCSSValue(CSSPropertyMarkerStart))
-            return value->cssText();
-        return String();
-    }
     case CSSPropertyBorderRadius:
         return get4Values(borderRadiusShorthand());
     default:

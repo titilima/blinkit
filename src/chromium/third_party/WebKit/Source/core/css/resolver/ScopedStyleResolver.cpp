@@ -52,7 +52,6 @@
 #include "core/dom/shadow/ElementShadow.h"
 #include "core/dom/shadow/ShadowRoot.h"
 #include "core/html/HTMLStyleElement.h"
-#include "core/svg/SVGStyleElement.h"
 
 namespace blink {
 

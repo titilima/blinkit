@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: StyleSheetCandidate.cpp
+// Description: StyleSheetCandidate Class
+//      Author: Ziming Li
+//     Created: 2019-05-24
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -32,8 +43,6 @@
 #include "core/dom/StyleEngine.h"
 #include "core/html/HTMLLinkElement.h"
 #include "core/html/HTMLStyleElement.h"
-#include "core/html/imports/HTMLImport.h"
-#include "core/svg/SVGStyleElement.h"
 
 namespace blink {
 
@@ -117,9 +126,6 @@ StyleSheetCandidate::Type StyleSheetCandidate::typeOf(Node& node)
         return HTMLStyle;
     }
 
-    if (isSVGStyleElement(node))
-        return SVGStyle;
-
     ASSERT_NOT_REACHED();
     return HTMLStyle;
 }
@@ -131,8 +137,6 @@ StyleSheet* StyleSheetCandidate::sheet() const
         return toHTMLLinkElement(node()).sheet();
     case HTMLStyle:
         return toHTMLStyleElement(node()).sheet();
-    case SVGStyle:
-        return toSVGStyleElement(node()).sheet();
     case Pi:
         return toProcessingInstruction(node()).sheet();
     }
