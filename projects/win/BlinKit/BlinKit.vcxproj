@@ -275,9 +275,6 @@
     <ProjectReference Include="..\libpng\libpng.vcxproj">
       <Project>{6bf8aa31-e6e9-4dc1-b721-20727f7d96cb}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\libxml\libxml.vcxproj">
-      <Project>{e5a2b45e-7d69-4b6d-b23f-d9127b168877}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\modules\modules.vcxproj">
       <Project>{98a19aa9-ddd3-42b4-92c5-c0e2681a480d}</Project>
     </ProjectReference>
@@ -310,9 +307,6 @@
     </ProjectReference>
     <ProjectReference Include="..\webcore_rendering\webcore_rendering.vcxproj">
       <Project>{9ca55c16-3c88-4d99-93a6-5a866778e717}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\webcore_svg\webcore_svg.vcxproj">
-      <Project>{01b811b6-336e-49ad-b836-7c25dbcd7ce6}</Project>
     </ProjectReference>
     <ProjectReference Include="..\wtf\wtf.vcxproj">
       <Project>{f2bd6227-b9bf-4658-a72f-3a8ca514a847}</Project>
