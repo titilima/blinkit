@@ -129,6 +129,9 @@
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_script_element.h">
       <Filter>crawler</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\sdk\include\BlinKit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">

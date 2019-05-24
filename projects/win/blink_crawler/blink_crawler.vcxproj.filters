@@ -503,9 +503,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\GenericEventQueue.cpp">
       <Filter>core\events</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGNames.cpp">
-      <Filter>gen\core</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\MathMLNames.cpp">
       <Filter>gen\core</Filter>
     </ClCompile>
@@ -553,9 +550,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\event_factory.cpp">
       <Filter>core\events</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XLinkNames.cpp">
-      <Filter>gen\core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\fetch\FetchInitiatorTypeNames.cpp">
       <Filter>gen\core\fetch</Filter>
@@ -2038,9 +2032,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\GenericEventQueue.h">
       <Filter>core\events</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGNames.h">
-      <Filter>gen\core</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\MathMLNames.h">
       <Filter>gen\core</Filter>
     </ClInclude>
@@ -2094,9 +2085,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\events\EventFactory.h">
       <Filter>core\events</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XLinkNames.h">
-      <Filter>gen\core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\fetch\FetchInitiatorTypeNames.h">
       <Filter>gen\core\fetch</Filter>
