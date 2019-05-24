@@ -83,9 +83,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebCSSParser.cpp">
       <Filter>web</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebCustomElement.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDataSourceImpl.cpp">
       <Filter>web</Filter>
     </ClCompile>
@@ -314,9 +311,6 @@
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebCSSParser.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebCustomElement.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDatabase.h">

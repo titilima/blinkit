@@ -190,7 +190,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebCache.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebColorSuggestion.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebCSSParser.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebCustomElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDataSourceImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDateTimeSuggestion.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDocument.cpp" />
@@ -267,7 +266,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebContextMenuData.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebCryptoNormalize.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebCSSParser.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebCustomElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDatabase.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDataSource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDateTimeChooserCompletion.h" />
