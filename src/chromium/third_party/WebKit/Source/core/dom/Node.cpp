@@ -90,7 +90,6 @@
 #include "core/layout/LayoutBox.h"
 #include "core/page/ContextMenuController.h"
 #include "core/page/Page.h"
-#include "core/svg/graphics/SVGImage.h"
 #include "platform/EventDispatchForbiddenScope.h"
 #include "platform/ScriptForbiddenScope.h"
 #include "platform/TraceEvent.h"
@@ -706,11 +705,7 @@ void Node::recalcDistribution()
 
 void Node::setIsLink(bool isLink)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
     setFlag(isLink, IsLinkFlag);
-#else
-    setFlag(isLink && !SVGImage::isInSVGImage(toElement(this)), IsLinkFlag);
-#endif
 }
 
 void Node::setNeedsStyleInvalidation()
