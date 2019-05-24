@@ -444,8 +444,6 @@ Element* TreeScope::adjustedFocusedElement() const
 {
     Document& document = rootNode().document();
     Element* element = document.focusedElement();
-    if (!element && document.page())
-        element = document.page()->focusController().focusedFrameOwnerElement(*document.frame());
     if (!element)
         return 0;
 
