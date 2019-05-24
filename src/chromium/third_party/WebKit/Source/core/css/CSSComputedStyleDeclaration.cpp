@@ -140,7 +140,6 @@ static const CSSPropertyID staticComputableProperties[] = {
     CSSPropertyMinWidth,
     CSSPropertyMixBlendMode,
     CSSPropertyMotionOffset,
-    CSSPropertyMotionPath,
     CSSPropertyMotionRotation,
     CSSPropertyObjectFit,
     CSSPropertyObjectPosition,
