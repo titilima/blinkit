@@ -906,7 +906,7 @@ minmax
 
 // text-indent
 each-line
-//hanging   // hanging exists in SVGCSSValueKeywords.in
+hanging
 
 // (scan:) media feature
 progressive

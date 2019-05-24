@@ -98,7 +98,7 @@ run_script('build/scripts/make_css_property_names.py',  \
 )
 
 run_script('build/scripts/make_css_value_keywords.py',  \
-    os.path.normpath('core/css/CSSValueKeywords.in') + ' ' + os.path.normpath('core/css/SVGCSSValueKeywords.in') + ' '  \
+    os.path.normpath('core/css/CSSValueKeywords.in') + ' ' \
     '--output_dir ' + os.path.normpath('gen/core')  + GPERF_ARG \
 )
 
@@ -130,21 +130,6 @@ run_script('build/scripts/make_qualified_names.py', \
 
 run_script('build/scripts/make_names.py',  \
     os.path.normpath('core/html/forms/InputTypeNames.in') + ' ' \
-    '--output_dir ' + os.path.normpath('gen/core')  \
-)
-
-run_script('build/scripts/make_element_factory.py', \
-    os.path.normpath('core/svg/SVGTagNames.in') + ' ' + os.path.normpath('core/svg/SVGAttributeNames.in') + ' ' \
-    '--output_dir ' + os.path.normpath('gen/core')  \
-)
-
-run_script('build/scripts/make_qualified_names.py', \
-    os.path.normpath('core/svg/xlinkattrs.in') + ' '    \
-    '--output_dir ' + os.path.normpath('gen/core')  \
-)
-
-run_script('build/scripts/make_element_type_helpers.py',    \
-    os.path.normpath('core/svg/SVGTagNames.in') + ' '   \
     '--output_dir ' + os.path.normpath('gen/core')  \
 )
 
