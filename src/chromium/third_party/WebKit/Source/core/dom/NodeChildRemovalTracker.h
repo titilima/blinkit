@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: NodeChildRemovalTracker.h
+// Description: NodeChildRemovalTracker Class
+//      Author: Ziming Li
+//     Created: 2019-05-24
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -65,10 +76,12 @@ inline NodeChildRemovalTracker::~NodeChildRemovalTracker()
 
 inline bool NodeChildRemovalTracker::isBeingRemoved(Node* node)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     for (NodeChildRemovalTracker* removal = s_last; removal; removal = removal->previous()) {
         if (removal->node().containsIncludingShadowDOM(node))
             return true;
     }
+#endif
 
     return false;
 }
