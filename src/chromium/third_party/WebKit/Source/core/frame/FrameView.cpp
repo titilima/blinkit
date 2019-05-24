@@ -71,7 +71,6 @@
 #include "core/layout/compositing/CompositedLayerMapping.h"
 #include "core/layout/compositing/CompositedSelection.h"
 #include "core/layout/compositing/PaintLayerCompositor.h"
-#include "core/layout/svg/LayoutSVGRoot.h"
 #include "core/loader/FrameLoader.h"
 #include "core/loader/FrameLoaderClient.h"
 #include "core/page/AutoscrollController.h"
@@ -540,17 +539,6 @@ void FrameView::calculateScrollbarModes(ScrollbarMode& hMode, ScrollbarMode& vMo
     LayoutObject* viewport = viewportLayoutObject();
     if (!viewport || !viewport->style())
         RETURN_SCROLLBAR_MODE(ScrollbarAuto);
-
-    if (viewport->isSVGRoot()) {
-        // Don't allow overflow to affect <img> and css backgrounds
-        if (toLayoutSVGRoot(viewport)->isEmbeddedThroughSVGImage())
-            RETURN_SCROLLBAR_MODE(ScrollbarAuto);
-
-        // FIXME: evaluate if we can allow overflow for these cases too.
-        // Overflow is always hidden when stand-alone SVG documents are embedded.
-        if (toLayoutSVGRoot(viewport)->isEmbeddedThroughFrameContainingSVGDocument())
-            RETURN_SCROLLBAR_MODE(ScrollbarAlwaysOff);
-    }
 
     calculateScrollbarModesFromOverflowStyle(viewport->style(), hMode, vMode);
 

@@ -48,7 +48,6 @@
 #include "core/layout/line/LineLayoutState.h"
 #include "core/layout/line/LineWidth.h"
 #include "core/layout/line/WordMeasurement.h"
-#include "core/layout/svg/line/SVGRootInlineBox.h"
 #include "platform/fonts/Character.h"
 #include "platform/text/BidiResolver.h"
 #include "wtf/RefCountedLeakCounter.h"
@@ -718,7 +717,7 @@ RootInlineBox* LayoutBlockFlow::createLineBoxesFromBidiRuns(unsigned bidiLevel, 
     lineBox->setBidiLevel(bidiLevel);
     lineBox->setEndsWithBreak(lineInfo.previousLineBrokeCleanly());
 
-    bool isSVGRootInlineBox = lineBox->isSVGRootInlineBox();
+    bool isSVGRootInlineBox = false;
 
     GlyphOverflowAndFallbackFontsMap textBoxDataMap;
 
@@ -728,16 +727,6 @@ RootInlineBox* LayoutBlockFlow::createLineBoxesFromBidiRuns(unsigned bidiLevel, 
 
     // Now position our text runs vertically.
     computeBlockDirectionPositionsForLine(lineBox, bidiRuns.firstRun(), textBoxDataMap, verticalPositionCache);
-
-    // SVG text layout code computes vertical & horizontal positions on its own.
-    // Note that we still need to execute computeVerticalPositionsForLine() as
-    // it calls InlineTextBox::positionLineBox(), which tracks whether the box
-    // contains reversed text or not. If we wouldn't do that editing and thus
-    // text selection in RTL boxes would not work as expected.
-    if (isSVGRootInlineBox) {
-        ASSERT(isSVGText());
-        toSVGRootInlineBox(lineBox)->computePerCharacterLayoutInformation();
-    }
 
     // Compute our overflow now.
     lineBox->computeOverflow(lineBox->lineTop(), lineBox->lineBottom(), textBoxDataMap);

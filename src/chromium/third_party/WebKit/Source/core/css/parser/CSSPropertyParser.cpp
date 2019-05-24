@@ -44,7 +44,6 @@
 #include "core/css/parser/CSSVariableParser.h"
 #include "core/frame/UseCounter.h"
 #include "core/layout/LayoutTheme.h"
-#include "core/svg/SVGPathUtilities.h"
 #include "wtf/text/StringBuilder.h"
 
 namespace blink {
@@ -1932,29 +1931,8 @@ static PassRefPtrWillBeRawPtr<CSSValue> consumeContain(CSSParserTokenRange& rang
 
 static PassRefPtrWillBeRawPtr<CSSValue> consumePath(CSSParserTokenRange& range)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
+    ASSERT_NOT_REACHED();
     return nullptr;
-#else
-    // FIXME: Add support for <url>, <basic-shape>, <geometry-box>.
-    if (range.peek().functionId() != CSSValuePath)
-        return nullptr;
-
-    // FIXME: Add support for <fill-rule>.
-    CSSParserTokenRange functionRange = range;
-    CSSParserTokenRange functionArgs = consumeFunction(functionRange);
-
-    if (functionArgs.peek().type() != StringToken)
-        return nullptr;
-    String pathString = functionArgs.consumeIncludingWhitespace().value();
-
-    RefPtr<SVGPathByteStream> byteStream = SVGPathByteStream::create();
-    if (!buildByteStreamFromString(pathString, *byteStream) || !functionArgs.atEnd())
-        return nullptr;
-
-    range = functionRange;
-    return CSSPathValue::create(byteStream.release());
-#endif
 }
 
 static PassRefPtrWillBeRawPtr<CSSValue> consumePathOrNone(CSSParserTokenRange& range)

@@ -40,7 +40,6 @@
 #include "core/css/CSSSVGDocumentValue.h"
 #include "core/dom/Document.h"
 #include "core/fetch/ResourceFetcher.h"
-#include "core/layout/svg/ReferenceFilterBuilder.h"
 #include "core/style/ComputedStyle.h"
 #include "core/style/ContentData.h"
 #include "core/style/FillLayer.h"
@@ -111,39 +110,6 @@ PassRefPtrWillBeRawPtr<StyleImage> ElementStyleResources::cursorOrPendingFromVal
         return StylePendingImage::create(value);
     }
     return value.cachedImage(m_deviceScaleFactor);
-}
-
-void ElementStyleResources::addPendingSVGDocument(FilterOperation* filterOperation, CSSSVGDocumentValue* cssSVGDocumentValue)
-{
-    m_pendingSVGDocuments.set(filterOperation, cssSVGDocumentValue);
-}
-
-void ElementStyleResources::loadPendingSVGDocuments(ComputedStyle* computedStyle)
-{
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
-    if (!computedStyle->hasFilter() || m_pendingSVGDocuments.isEmpty())
-        return;
-
-    FilterOperations::FilterOperationVector& filterOperations = computedStyle->mutableFilter().operations();
-    for (unsigned i = 0; i < filterOperations.size(); ++i) {
-        RefPtrWillBeRawPtr<FilterOperation> filterOperation = filterOperations.at(i);
-        if (filterOperation->type() == FilterOperation::REFERENCE) {
-            ReferenceFilterOperation* referenceFilter = toReferenceFilterOperation(filterOperation.get());
-
-            CSSSVGDocumentValue* value = m_pendingSVGDocuments.get(referenceFilter);
-            if (!value)
-                continue;
-            DocumentResource* resource = value->load(m_document);
-            if (!resource)
-                continue;
-
-            // Stash the DocumentResource on the reference filter.
-            ReferenceFilterBuilder::setDocumentResourceReference(referenceFilter, adoptPtr(new DocumentResourceReference(resource)));
-        }
-    }
-#endif
 }
 
 PassRefPtrWillBeRawPtr<StyleImage> ElementStyleResources::loadPendingImage(StylePendingImage* pendingImage, CrossOriginAttributeValue crossOrigin)
@@ -264,7 +230,6 @@ void ElementStyleResources::loadPendingImages(ComputedStyle* style)
 void ElementStyleResources::loadPendingResources(ComputedStyle* computedStyle)
 {
     loadPendingImages(computedStyle);
-    loadPendingSVGDocuments(computedStyle);
 }
 
 }

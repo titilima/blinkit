@@ -1260,7 +1260,7 @@ private:
     ParsingState m_parsingState;
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    bool m_gotoAnchorNeededAfterStylesheetsLoad;
+    bool m_gotoAnchorNeededAfterStylesheetsLoad = false;
 #endif
     bool m_containsValidityStyleRules;
     SelectionBehaviorOnFocus m_updateFocusAppearanceSelectionBahavior;
@@ -1339,7 +1339,7 @@ private:
     bool m_isMobileDocument;
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    LayoutView* m_layoutView;
+    LayoutView* m_layoutView = nullptr;
 #endif
 
 #if !ENABLE(OILPAN)

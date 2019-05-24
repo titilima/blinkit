@@ -143,9 +143,6 @@ public:
     InputMethodController& inputMethodController() const;
 #endif
     ScriptController& script() const;
-#ifndef BLINKIT_CRAWLER_ONLY
-    SpellChecker& spellChecker() const;
-#endif
     FrameConsole& console() const;
 
     void didChangeVisibilityState();
@@ -204,7 +201,9 @@ public:
 
     // Returns the frame scheduler, creating one if needed.
     WebFrameScheduler* frameScheduler();
+#ifndef BLINKIT_CRAWLER_ONLY
     void scheduleVisualUpdateUnlessThrottled();
+#endif
 
     void updateSecurityOrigin(SecurityOrigin*);
 
@@ -244,7 +243,6 @@ private:
     const OwnPtrWillBeMember<ScriptController> m_script;
 #ifndef BLINKIT_CRAWLER_ONLY
     const OwnPtrWillBeMember<Editor> m_editor;
-    const OwnPtrWillBeMember<SpellChecker> m_spellChecker;
     const OwnPtrWillBeMember<FrameSelection> m_selection;
 #endif
     const OwnPtrWillBeMember<EventHandler> m_eventHandler;
@@ -306,11 +304,6 @@ inline FrameSelection& LocalFrame::selection() const
 inline Editor& LocalFrame::editor() const
 {
     return *m_editor;
-}
-
-inline SpellChecker& LocalFrame::spellChecker() const
-{
-    return *m_spellChecker;
 }
 #endif
 

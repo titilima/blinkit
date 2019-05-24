@@ -20,7 +20,6 @@
 #include "core/frame/LocalFrame.h"
 #include "core/page/ChromeClient.h"
 #include "core/page/Page.h"
-#include "core/svg/SVGDocumentExtensions.h"
 #include "platform/Logging.h"
 
 namespace blink {
@@ -67,8 +66,6 @@ void PageAnimator::serviceScriptedAnimations(double monotonicAnimationStartTime)
                     scrollableArea->serviceScrollAnimations(monotonicAnimationStartTime);
             }
         }
-        // TODO(skyostil): These functions should not run for documents without views.
-        SVGDocumentExtensions::serviceOnAnimationFrame(*document, monotonicAnimationStartTime);
         document->serviceScriptedAnimations(monotonicAnimationStartTime);
     }
 

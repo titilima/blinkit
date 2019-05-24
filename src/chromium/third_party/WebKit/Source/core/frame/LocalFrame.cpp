@@ -47,7 +47,6 @@
 #include "core/editing/FrameSelection.h"
 #include "core/editing/InputMethodController.h"
 #include "core/editing/serializers/Serialization.h"
-#include "core/editing/spellcheck/SpellChecker.h"
 #include "core/events/Event.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/frame/EventHandlerRegistry.h"
@@ -70,7 +69,6 @@
 #include "core/page/scrolling/ScrollingCoordinator.h"
 #include "core/paint/PaintLayer.h"
 #include "core/paint/TransformRecorder.h"
-#include "core/svg/SVGDocumentExtensions.h"
 #include "platform/DragImage.h"
 #include "platform/PluginScriptForbiddenScope.h"
 #include "platform/RuntimeEnabledFeatures.h"
@@ -122,18 +120,12 @@ public:
 
 inline float parentPageZoomFactor(LocalFrame* frame)
 {
-    Frame* parent = frame->tree().parent();
-    if (!parent || !parent->isLocalFrame())
-        return 1;
-    return toLocalFrame(parent)->pageZoomFactor();
+    return 1;
 }
 
 inline float parentTextZoomFactor(LocalFrame* frame)
 {
-    Frame* parent = frame->tree().parent();
-    if (!parent || !parent->isLocalFrame())
-        return 1;
-    return toLocalFrame(parent)->textZoomFactor();
+    return 1;
 }
 
 } // namespace
@@ -189,20 +181,6 @@ void LocalFrame::createView(const IntSize& viewportSize, const Color& background
 
     if (isLocalRoot)
         frameView->setParentVisible(true);
-
-    // FIXME: Not clear what the right thing for OOPI is here.
-    if (ownerLayoutObject()) {
-        HTMLFrameOwnerElement* owner = deprecatedLocalOwner();
-        ASSERT(owner);
-        // FIXME: OOPI might lead to us temporarily lying to a frame and telling it
-        // that it's owned by a FrameOwner that knows nothing about it. If we're
-        // lying to this frame, don't let it clobber the existing widget.
-        if (owner->contentFrame() == this)
-            owner->setWidget(frameView);
-    }
-
-    if (owner())
-        view()->setCanHaveScrollbars(owner()->scrollingMode() != ScrollbarAlwaysOff);
 }
 #endif // BLINKIT_CRAWLER_ONLY
 
@@ -480,14 +458,7 @@ void LocalFrame::didChangeVisibilityState()
 
 LocalFrame* LocalFrame::localFrameRoot()
 {
-    LocalFrame* curFrame = this;
-    assert(false); // BKTODO:
-#if 0
-    while (curFrame && curFrame->tree().parent() && curFrame->tree().parent()->isLocalFrame())
-        curFrame = toLocalFrame(curFrame->tree().parent());
-#endif
-
-    return curFrame;
+    return this;
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -495,19 +466,6 @@ String LocalFrame::layerTreeAsText(LayerTreeFlags flags) const
 {
     TextStream textStream;
     textStream << localLayerTreeAsText(flags);
-
-    for (Frame* child = tree().firstChild(); child; child = child->tree().traverseNext(this)) {
-        if (!child->isLocalFrame())
-            continue;
-        String childLayerTree = toLocalFrame(child)->localLayerTreeAsText(flags);
-        if (!childLayerTree.length())
-            continue;
-
-        textStream << "\n\n--------\nFrame: '";
-        textStream << child->tree().uniqueName();
-        textStream << "'\n--------\n";
-        textStream << childLayerTree;
-    }
 
     return textStream.release();
 }
@@ -555,13 +513,6 @@ void LocalFrame::setPageAndTextZoomFactors(float pageZoomFactor, float textZoomF
     if (!document)
         return;
 
-    // Respect SVGs zoomAndPan="disabled" property in standalone SVG documents.
-    // FIXME: How to handle compound documents + zoomAndPan="disabled"? Needs SVG WG clarification.
-    if (document->isSVGDocument()) {
-        if (!document->accessSVGExtensions().zoomAndPanEnabled())
-            return;
-    }
-
     if (m_pageZoomFactor != pageZoomFactor) {
         if (FrameView* view = this->view()) {
             // Update the scroll position when doing a full page zoom, so the content stays in relatively the same position.
@@ -576,11 +527,6 @@ void LocalFrame::setPageAndTextZoomFactors(float pageZoomFactor, float textZoomF
     m_pageZoomFactor = pageZoomFactor;
     m_textZoomFactor = textZoomFactor;
 
-    for (RefPtrWillBeRawPtr<Frame> child = tree().firstChild(); child; child = child->tree().nextSibling()) {
-        if (child->isLocalFrame())
-            toLocalFrame(child.get())->setPageAndTextZoomFactors(m_pageZoomFactor, m_textZoomFactor);
-    }
-
     document->setNeedsStyleRecalc(SubtreeStyleChange, StyleChangeReasonForTracing::create(StyleChangeReason::Zoom));
     document->updateLayoutIgnorePendingStylesheets();
 }
@@ -588,10 +534,6 @@ void LocalFrame::setPageAndTextZoomFactors(float pageZoomFactor, float textZoomF
 void LocalFrame::deviceScaleFactorChanged()
 {
     document()->mediaQueryAffectingValueChanged();
-    for (RefPtrWillBeRawPtr<Frame> child = tree().firstChild(); child; child = child->tree().nextSibling()) {
-        if (child->isLocalFrame())
-            toLocalFrame(child.get())->deviceScaleFactorChanged();
-    }
 }
 
 double LocalFrame::devicePixelRatio() const
@@ -774,7 +716,7 @@ bool LocalFrame::shouldReuseDefaultView(const KURL& url) const
 #ifndef BLINKIT_CRAWLER_ONLY
 void LocalFrame::removeSpellingMarkersUnderWords(const Vector<String>& words)
 {
-    spellChecker().removeSpellingMarkersUnderWords(words);
+    // Nothing to do.
 }
 
 static ScrollResult scrollAreaOnBothAxes(const FloatSize& delta, ScrollableArea& view)
@@ -847,7 +789,6 @@ inline LocalFrame::LocalFrame(FrameLoaderClient* client, FrameHost* host)
     , m_script(ScriptController::create(this))
 #ifndef BLINKIT_CRAWLER_ONLY
     , m_editor(client->IsCrawler() ? nullptr : Editor::create(*this))
-    , m_spellChecker(client->IsCrawler() ? nullptr : SpellChecker::create(*this))
     , m_selection(client->IsCrawler() ? nullptr : FrameSelection::create(this))
 #endif
     , m_eventHandler(adoptPtrWillBeNoop(new EventHandler(this)))
@@ -888,15 +829,14 @@ WebFrameScheduler* LocalFrame::frameScheduler()
     return m_frameScheduler.get();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void LocalFrame::scheduleVisualUpdateUnlessThrottled()
 {
-    assert(false); // BKTODO:
-#if 0
     if (shouldThrottleRendering())
         return;
     page()->animator().scheduleVisualUpdate(this);
-#endif
 }
+#endif
 
 void LocalFrame::updateSecurityOrigin(SecurityOrigin* origin)
 {

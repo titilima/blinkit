@@ -17,7 +17,6 @@
 
 #include "core/layout/LayoutReplaced.h"
 #include "core/layout/api/SelectionState.h"
-#include "core/layout/svg/LayoutSVGRoot.h"
 #include "core/paint/BoxPainter.h"
 #include "core/paint/LayoutObjectDrawingRecorder.h"
 #include "core/paint/ObjectPainter.h"
@@ -30,12 +29,7 @@ namespace blink {
 
 static bool shouldApplyViewportClip(const LayoutReplaced& layoutReplaced)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
     return true;
-#else
-    return !layoutReplaced.isSVGRoot() || toLayoutSVGRoot(&layoutReplaced)->shouldApplyViewportClip();
-#endif
 }
 
 void ReplacedPainter::paint(const PaintInfo& paintInfo, const LayoutPoint& paintOffset)

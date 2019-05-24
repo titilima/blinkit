@@ -38,7 +38,6 @@
 #include "core/paint/FilterEffectBuilder.h"
 
 #include "core/layout/LayoutObject.h"
-#include "core/layout/svg/ReferenceFilterBuilder.h"
 #include "platform/FloatConversion.h"
 #include "platform/LengthFunctions.h"
 #include "platform/graphics/ColorSpace.h"
@@ -151,15 +150,7 @@ bool FilterEffectBuilder::build(Element* element, const FilterOperations& operat
         FilterOperation* filterOperation = operations.operations().at(i).get();
         switch (filterOperation->type()) {
         case FilterOperation::REFERENCE: {
-#ifdef BLINKIT_CRAWLER_ONLY
-            assert(false); // BKTODO: Not reached!
-#else
-            RefPtrWillBeRawPtr<Filter> referenceFilter = ReferenceFilterBuilder::build(zoom, element, previousEffect.get(), toReferenceFilterOperation(*filterOperation), fillPaint, strokePaint);
-            if (referenceFilter) {
-                effect = referenceFilter->lastEffect();
-                m_referenceFilters.append(referenceFilter);
-            }
-#endif
+            ASSERT_NOT_REACHED();
             break;
         }
         case FilterOperation::GRAYSCALE: {

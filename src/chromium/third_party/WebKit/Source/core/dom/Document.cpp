@@ -102,7 +102,6 @@
 #include "core/dom/TransformSource.h"
 #include "core/dom/TreeWalker.h"
 #include "core/dom/VisitedLinkState.h"
-#include "core/dom/XMLDocument.h"
 #include "core/dom/shadow/ComposedTreeTraversal.h"
 #include "core/dom/shadow/ElementShadow.h"
 #include "core/dom/shadow/ShadowRoot.h"
@@ -174,11 +173,9 @@
 #include "core/page/Page.h"
 #include "core/page/PointerLockController.h"
 #include "core/page/scrolling/ScrollingCoordinator.h"
-#include "core/svg/SVGDocumentExtensions.h"
 #include "core/timing/DOMWindowPerformance.h"
 #include "core/timing/Performance.h"
 #include "core/workers/SharedWorkerRepositoryClient.h"
-#include "core/xml/parser/XMLDocumentParser.h"
 #include "platform/DateComponents.h"
 #include "platform/EventDispatchForbiddenScope.h"
 #include "platform/Language.h"
@@ -393,9 +390,6 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
 #endif
     , m_readyState(Complete)
     , m_parsingState(FinishedParsing)
-#ifndef BLINKIT_CRAWLER_ONLY
-    , m_gotoAnchorNeededAfterStylesheetsLoad(false)
-#endif
     , m_containsValidityStyleRules(false)
     , m_updateFocusAppearanceSelectionBahavior(SelectionBehaviorOnFocus::Reset)
     , m_ignoreDestructiveWriteCount(0)
@@ -418,9 +412,6 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_sawElementsInKnownNamespaces(false)
     , m_isSrcdocDocument(false)
     , m_isMobileDocument(false)
-#ifndef BLINKIT_CRAWLER_ONLY
-    , m_layoutView(0)
-#endif
 #if !ENABLE(OILPAN)
     , m_weakFactory(this)
 #endif
@@ -1093,15 +1084,7 @@ void Document::setContentLanguage(const AtomicString& language)
 
 void Document::setXMLVersion(const String& version, ExceptionState& exceptionState)
 {
-    assert(false); // BKTODO:
-#if 0
-    if (!XMLDocumentParser::supportsXMLVersion(version)) {
-        exceptionState.throwDOMException(NotSupportedError, "This document does not support the XML version '" + version + "'.");
-        return;
-    }
-
     m_xmlVersion = version;
-#endif
 }
 
 void Document::setXMLStandalone(bool standalone, ExceptionState& exceptionState)
@@ -2246,12 +2229,8 @@ PassRefPtrWillBeRawPtr<DocumentParser> Document::createParser()
 {
     if (isHTMLDocument())
         return HTMLDocumentParser::create(*this, false, m_parserSyncPolicy);
-    assert(false); // BKTODO:
+    ASSERT_NOT_REACHED();
     return nullptr;
-#if 0
-    // FIXME: this should probably pass the frame instead
-    return XMLDocumentParser::create(*this, view());
-#endif
 }
 
 ScriptableDocumentParser* Document::scriptableDocumentParser() const
@@ -5606,7 +5585,6 @@ DEFINE_TRACE(Document)
     visitor->trace(m_templateDocumentHost);
     visitor->trace(m_visibilityObservers);
     visitor->trace(m_userActionElements);
-    visitor->trace(m_svgExtensions);
     visitor->trace(m_timeline);
     visitor->trace(m_compositorPendingAnimations);
     visitor->trace(m_contextDocument);
