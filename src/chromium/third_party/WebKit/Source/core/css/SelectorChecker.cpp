@@ -1,8 +1,8 @@
 // -------------------------------------------------
 // BlinKit - blink Library
 // -------------------------------------------------
-//   File Name: StyleAdjuster.cpp
-// Description: StyleAdjuster Class
+//   File Name: SelectorChecker.cpp
+// Description: SelectorChecker Class
 //      Author: Ziming Li
 //     Created: 2019-02-11
 // -------------------------------------------------
@@ -53,7 +53,6 @@
 #include "core/editing/FrameSelection.h"
 #include "core/frame/LocalFrame.h"
 #include "core/html/HTMLDocument.h"
-#include "core/html/HTMLFrameElementBase.h"
 #include "core/html/HTMLInputElement.h"
 #include "core/html/HTMLOptionElement.h"
 #include "core/html/HTMLSelectElement.h"
@@ -79,17 +78,29 @@ SelectorChecker::SelectorChecker(Mode mode)
 
 static bool isFrameFocused(const Element& element)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    return false;
+#else
     return element.document().frame() && element.document().frame()->selection().isFocusedAndActive();
+#endif
 }
 
 static bool matchesSpatialNavigationFocusPseudoClass(const Element& element)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    return false;
+#else
     return isHTMLOptionElement(element) && toHTMLOptionElement(element).spatialNavigationFocused() && isFrameFocused(element);
+#endif
 }
 
 static bool matchesListBoxPseudoClass(const Element& element)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    return false;
+#else
     return isHTMLSelectElement(element) && !toHTMLSelectElement(element).usesMenuList();
+#endif
 }
 
 static bool matchesTagName(const Element& element, const QualifiedName& tagQName)
@@ -113,6 +124,7 @@ static bool matchesTagName(const Element& element, const QualifiedName& tagQName
 
 static Element* parentElement(const SelectorChecker::SelectorCheckingContext& context)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     // - If context.scope is a shadow root, we should walk up to its shadow host.
     // - If context.scope is some element in some shadow tree and querySelector initialized the context,
     //   e.g. shadowRoot.querySelector(':host *'),
@@ -120,6 +132,7 @@ static Element* parentElement(const SelectorChecker::SelectorCheckingContext& co
     //   (b) Otherwise, should not walk up from a shadow root to a shadow host.
     if (context.scope && (context.scope == context.element->containingShadowRoot() || context.scope->treeScope() == context.element->treeScope()))
         return context.element->parentOrShadowHostElement();
+#endif
     return context.element->parentElement();
 }
 
@@ -132,10 +145,14 @@ static bool scopeContainsLastMatchedElement(const SelectorChecker::SelectorCheck
     if (context.scope->treeScope() == context.element->treeScope())
         return true;
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    return false;
+#else
     // Because Blink treats a shadow host's TreeScope as a separate one from its descendent shadow roots,
     // if the last matched element is a shadow host, the condition above isn't met, even though it
     // should be.
     return context.element == context.scope->shadowHost() && (!context.previousElement || context.previousElement->isInDescendantTreeOf(context.element));
+#endif
 }
 
 static inline bool nextSelectorExceedsScope(const SelectorChecker::SelectorCheckingContext& context)
@@ -352,8 +369,10 @@ SelectorChecker::Match SelectorChecker::matchForRelation(const SelectorCheckingC
         nextContext.isSubSelector = false;
         nextContext.inRightmostCompound = false;
 
+#ifndef BLINKIT_CRAWLER_ONLY
         if (nextContext.selector->pseudoType() == CSSSelector::PseudoShadow)
             return matchForPseudoShadow(nextContext, context.element->containingShadowRoot(), result);
+#endif
 
         for (nextContext.element = parentElement(context); nextContext.element; nextContext.element = parentElement(nextContext)) {
             Match match = matchSelector(nextContext, result);
@@ -435,10 +454,12 @@ SelectorChecker::Match SelectorChecker::matchForRelation(const SelectorCheckingC
         {
             if (!context.isUARule)
                 UseCounter::countDeprecation(context.element->document(), UseCounter::CSSDeepCombinator);
+#ifndef BLINKIT_CRAWLER_ONLY
             if (ShadowRoot* root = context.element->containingShadowRoot()) {
                 if (root->type() == ShadowRootType::UserAgent)
                     return SelectorFailsCompletely;
             }
+#endif
 
             if (context.selector->relationIsAffectedByPseudoContent()) {
                 // TODO(kochi): closed mode tree should be handled as well for ::content.
@@ -472,6 +493,8 @@ SelectorChecker::Match SelectorChecker::matchForRelation(const SelectorCheckingC
 
 SelectorChecker::Match SelectorChecker::matchForShadowDistributed(const SelectorCheckingContext& context, const Element& element, MatchResult& result) const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     WillBeHeapVector<RawPtrWillBeMember<InsertionPoint>, 8> insertionPoints;
     collectDestinationInsertionPoints(element, insertionPoints);
     SelectorCheckingContext nextContext(context);
@@ -485,6 +508,7 @@ SelectorChecker::Match SelectorChecker::matchForShadowDistributed(const Selector
         if (match(nextContext, result))
             return SelectorMatches;
     }
+#endif
     return SelectorFailsLocally;
 }
 
@@ -720,8 +744,10 @@ bool SelectorChecker::checkPseudoClass(const SelectorCheckingContext& context, M
                 element.setStyleAffectedByEmpty();
                 if (context.inRightmostCompound)
                     context.elementStyle->setEmptyState(result);
+#ifndef BLINKIT_CRAWLER_ONLY
                 else if (element.computedStyle() && (element.document().styleEngine().usesSiblingRules() || element.computedStyle()->unique()))
                     element.mutableComputedStyle()->setEmptyState(result);
+#endif
             }
             return result;
         }
@@ -823,7 +849,12 @@ bool SelectorChecker::checkPseudoClass(const SelectorCheckingContext& context, M
         }
         break;
     case CSSSelector::PseudoTarget:
+#ifdef BLINKIT_CRAWLER_ONLY
+        ASSERT(false); // BKTODO:
+        return false;
+#else
         return element == element.document().cssTarget();
+#endif
     case CSSSelector::PseudoAny:
         {
             SelectorCheckingContext subContext(context);
@@ -843,6 +874,9 @@ bool SelectorChecker::checkPseudoClass(const SelectorCheckingContext& context, M
     case CSSSelector::PseudoVisited:
         return element.isLink() && context.visitedMatchType == VisitedMatchEnabled;
     case CSSSelector::PseudoDrag:
+#ifdef BLINKIT_CRAWLER_ONLY
+        return false;
+#else
         if (m_mode == ResolvingStyle) {
             if (context.inRightmostCompound) {
                 context.elementStyle->setAffectedByDrag();
@@ -852,6 +886,7 @@ bool SelectorChecker::checkPseudoClass(const SelectorCheckingContext& context, M
             }
         }
         return element.layoutObject() && element.layoutObject()->isDragging();
+#endif
     case CSSSelector::PseudoFocus:
         if (m_mode == ResolvingStyle) {
             if (context.inRightmostCompound) {
@@ -863,6 +898,9 @@ bool SelectorChecker::checkPseudoClass(const SelectorCheckingContext& context, M
         }
         return matchesFocusPseudoClass(element);
     case CSSSelector::PseudoHover:
+#ifdef BLINKIT_CRAWLER_ONLY
+        return false;
+#else
         if (m_mode == ResolvingStyle) {
             if (context.inRightmostCompound) {
                 context.elementStyle->setAffectedByHover();
@@ -876,7 +914,11 @@ bool SelectorChecker::checkPseudoClass(const SelectorCheckingContext& context, M
         if (InspectorInstrumentation::forcePseudoState(&element, CSSSelector::PseudoHover))
             return true;
         return element.hovered();
+#endif
     case CSSSelector::PseudoActive:
+#ifdef BLINKIT_CRAWLER_ONLY
+        return false;
+#else
         if (m_mode == ResolvingStyle) {
             if (context.inRightmostCompound) {
                 context.elementStyle->setAffectedByActive();
@@ -890,6 +932,7 @@ bool SelectorChecker::checkPseudoClass(const SelectorCheckingContext& context, M
         if (InspectorInstrumentation::forcePseudoState(&element, CSSSelector::PseudoActive))
             return true;
         return element.active();
+#endif
     case CSSSelector::PseudoEnabled:
         if (element.isFormControlElement() || isHTMLOptionElement(element) || isHTMLOptGroupElement(element))
             return !element.isDisabledFormControl();
@@ -924,6 +967,7 @@ bool SelectorChecker::checkPseudoClass(const SelectorCheckingContext& context, M
         return element.matchesValidityPseudoClasses() && !element.isValidElement();
     case CSSSelector::PseudoChecked:
         {
+#ifndef BLINKIT_CRAWLER_ONLY
             if (isHTMLInputElement(element)) {
                 HTMLInputElement& inputElement = toHTMLInputElement(element);
                 // Even though WinIE allows checked and indeterminate to
@@ -936,6 +980,7 @@ bool SelectorChecker::checkPseudoClass(const SelectorCheckingContext& context, M
             } else if (isHTMLOptionElement(element) && toHTMLOptionElement(element).selected()) {
                 return true;
             }
+#endif
             break;
         }
     case CSSSelector::PseudoIndeterminate:
@@ -957,15 +1002,8 @@ bool SelectorChecker::checkPseudoClass(const SelectorCheckingContext& context, M
             return true;
         }
     case CSSSelector::PseudoFullScreen:
-        // While a Document is in the fullscreen state, and the document's current fullscreen
-        // element is an element in the document, the 'full-screen' pseudoclass applies to
-        // that element. Also, an <iframe>, <object> or <embed> element whose child browsing
-        // context's Document is in the fullscreen state has the 'full-screen' pseudoclass applied.
-        if (isHTMLFrameElementBase(element) && element.containsFullScreenElement())
-            return true;
-        return false;
     case CSSSelector::PseudoFullScreenAncestor:
-        return element.containsFullScreenElement();
+        return false;
     case CSSSelector::PseudoInRange:
         if (m_mode == ResolvingStyle)
             element.document().setContainsValidityStyleRules();
@@ -1037,8 +1075,10 @@ bool SelectorChecker::checkPseudoElement(const SelectorCheckingContext& context,
         }
     case CSSSelector::PseudoWebKitCustomElement:
         {
+#ifndef BLINKIT_CRAWLER_ONLY
             if (ShadowRoot* root = element.containingShadowRoot())
                 return root->type() == ShadowRootType::UserAgent && element.shadowPseudoId() == selector.value();
+#endif
             return false;
         }
     case CSSSelector::PseudoContent:
@@ -1065,6 +1105,8 @@ bool SelectorChecker::checkPseudoElement(const SelectorCheckingContext& context,
 
 bool SelectorChecker::checkPseudoHost(const SelectorCheckingContext& context, MatchResult& result) const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     const CSSSelector& selector = *context.selector;
     Element& element = *context.element;
 
@@ -1118,6 +1160,7 @@ bool SelectorChecker::checkPseudoHost(const SelectorCheckingContext& context, Ma
         result.specificity += maxSpecificity;
         return true;
     }
+#endif
 
     // FIXME: this was a fallthrough condition.
     return false;
@@ -1201,7 +1244,11 @@ bool SelectorChecker::checkScrollbarPseudoClass(const SelectorCheckingContext& c
             return false;
         }
     case CSSSelector::PseudoCornerPresent:
+#ifdef BLINKIT_CRAWLER_ONLY
+        return false;
+#else
         return scrollbar->scrollableArea() && scrollbar->scrollableArea()->isScrollCornerVisible();
+#endif
     default:
         return false;
     }
@@ -1211,7 +1258,11 @@ bool SelectorChecker::matchesFocusPseudoClass(const Element& element)
 {
     if (InspectorInstrumentation::forcePseudoState(const_cast<Element*>(&element), CSSSelector::PseudoFocus))
         return true;
+#ifdef BLINKIT_CRAWLER_ONLY
+    return false;
+#else
     return element.focused() && isFrameFocused(element);
+#endif
 }
 
 }
