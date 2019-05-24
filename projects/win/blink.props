@@ -3,7 +3,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>$(RepoRoot)third_party\libxml2\include;$(SrcRoot)libxml\win\include;$(CrRoot)third_party\khronos;$(CrRoot)gpu;$(SrcRoot)stub\icu;$(IncludePath)</IncludePath>
+    <IncludePath>$(CrRoot)third_party\khronos;$(CrRoot)gpu;$(SrcRoot)stub\icu;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
