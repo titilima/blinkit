@@ -803,11 +803,6 @@ public:
     void pushCurrentScript(PassRefPtrWillBeRawPtr<HTMLScriptElement>);
     void popCurrentScript();
 
-#if 0
-    void setTransformSource(PassOwnPtr<TransformSource>);
-    TransformSource* transformSource() const { return m_transformSource.get(); }
-#endif
-
     void incDOMTreeVersion() { ASSERT(m_lifecycle.stateAllowsTreeMutations()); m_domTreeVersion = ++s_globalTreeVersion; }
     uint64_t domTreeVersion() const { return m_domTreeVersion; }
 
@@ -1289,10 +1284,6 @@ private:
     OwnPtrWillBeMember<ScriptRunner> m_scriptRunner;
 
     WillBeHeapVector<RefPtrWillBeMember<HTMLScriptElement>> m_currentScriptStack;
-
-#ifndef BLINKIT_CRAWLER_ONLY
-    OwnPtr<TransformSource> m_transformSource;
-#endif
 
     String m_xmlEncoding;
     String m_xmlVersion;

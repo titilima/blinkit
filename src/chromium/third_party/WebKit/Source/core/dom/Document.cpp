@@ -99,7 +99,6 @@
 #include "core/dom/StaticNodeList.h"
 #include "core/dom/StyleEngine.h"
 #include "core/dom/TouchList.h"
-#include "core/dom/TransformSource.h"
 #include "core/dom/TreeWalker.h"
 #include "core/dom/VisitedLinkState.h"
 #include "core/dom/shadow/ComposedTreeTraversal.h"
