@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: BreakingContextInlineHeaders.h
+// Description: BreakingContext Class
+//      Author: Ziming Li
+//     Created: 2019-05-24
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All right reserved.
@@ -28,7 +39,6 @@
 #include "core/layout/api/LineLayoutBox.h"
 #include "core/layout/api/LineLayoutListMarker.h"
 #include "core/layout/api/LineLayoutRubyRun.h"
-#include "core/layout/api/LineLayoutSVGInlineText.h"
 #include "core/layout/api/LineLayoutText.h"
 #include "core/layout/api/LineLayoutTextCombine.h"
 #include "core/layout/line/InlineIterator.h"
@@ -39,7 +49,6 @@
 #include "core/layout/line/LineWidth.h"
 #include "core/layout/line/TrailingObjects.h"
 #include "core/layout/line/WordMeasurement.h"
-#include "core/layout/svg/LayoutSVGInlineText.h"
 #include "core/paint/PaintLayer.h"
 #include "platform/text/TextBreakIterator.h"
 #include "wtf/Allocator.h"
@@ -792,15 +801,7 @@ inline bool BreakingContext::handleText(WordMeasurements& wordMeasurements, bool
 
 inline void BreakingContext::prepareForNextCharacter(const LineLayoutText& layoutText, bool& prohibitBreakInside, bool previousCharacterIsSpace)
 {
-    if (layoutText.isSVGInlineText() && m_current.offset()) {
-#ifdef BLINKIT_CRAWLER_ONLY
-        assert(false); // BKTODO: Not reached!
-#else
-        // Force creation of new InlineBoxes for each absolute positioned character (those that start new text chunks).
-        if (LineLayoutSVGInlineText(layoutText).characterStartsNewTextChunk(m_current.offset()))
-            m_lineMidpointState.ensureCharacterGetsLineBox(m_current);
-#endif
-    }
+    ASSERT(!layoutText.isSVGInlineText());
     if (prohibitBreakInside) {
         m_current.setNextBreakablePosition(layoutText.textLength());
         prohibitBreakInside = false;
