@@ -473,16 +473,10 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\ComputedStyle.cpp">
       <Filter>style</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\PathStyleMotionPath.cpp">
-      <Filter>style</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleFetchedImage.cpp">
       <Filter>style</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleFetchedImageSet.cpp">
-      <Filter>style</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StylePath.cpp">
       <Filter>style</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleRareNonInheritedData.cpp">
@@ -1030,9 +1024,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\OutlineValue.h">
       <Filter>style</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\PathStyleMotionPath.h">
-      <Filter>style</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\QuotesData.h">
       <Filter>style</Filter>
     </ClInclude>
@@ -1094,9 +1085,6 @@
       <Filter>style</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleMultiColData.h">
-      <Filter>style</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StylePath.h">
       <Filter>style</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StylePendingImage.h">

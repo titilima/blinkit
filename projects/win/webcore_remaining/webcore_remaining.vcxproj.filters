@@ -87,12 +87,6 @@
     <Filter Include="workers">
       <UniqueIdentifier>{77f225c5-b1b8-4919-aad8-6778bc2b1c76}</UniqueIdentifier>
     </Filter>
-    <Filter Include="xml">
-      <UniqueIdentifier>{14cb641d-b89e-4390-852a-b44213d7fbaf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="xml\parser">
-      <UniqueIdentifier>{154500f5-5bb3-4a9f-a526-6c0904471a08}</UniqueIdentifier>
-    </Filter>
     <Filter Include="paint">
       <UniqueIdentifier>{d74b4dc1-f630-4d09-af87-211b137c5186}</UniqueIdentifier>
     </Filter>
@@ -152,9 +146,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\CSSLengthInterpolationType.cpp">
       <Filter>animation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\CSSLengthListInterpolationType.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\CSSNumberInterpolationType.cpp">
       <Filter>animation</Filter>
     </ClCompile>
@@ -168,9 +159,6 @@
       <Filter>animation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\CSSVisibilityInterpolationType.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\DefaultSVGInterpolation.cpp">
       <Filter>animation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\DocumentAnimations.cpp">
@@ -221,9 +209,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\NumberPropertyFunctions.cpp">
       <Filter>animation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\NumberSVGInterpolation.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\PaintPropertyFunctions.cpp">
       <Filter>animation</Filter>
     </ClCompile>
@@ -234,51 +219,6 @@
       <Filter>animation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\ShadowInterpolationFunctions.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGAngleInterpolationType.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGIntegerInterpolationType.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGIntegerOptionalIntegerInterpolationType.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGInterpolationType.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGLengthInterpolationType.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGLengthListInterpolationType.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGNumberInterpolationType.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGNumberListInterpolationType.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGNumberOptionalNumberInterpolationType.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGPathInterpolationType.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGPathSegInterpolationFunctions.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGPointListInterpolationType.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGRectInterpolationType.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGTransformListInterpolationType.cpp">
-      <Filter>animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGValueInterpolationType.cpp">
       <Filter>animation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\Timing.cpp">
@@ -1244,9 +1184,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\TopControls.cpp">
       <Filter>frame</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\UseCounter.cpp">
-      <Filter>frame</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\VisualViewport.cpp">
       <Filter>frame</Filter>
     </ClCompile>
@@ -1409,21 +1346,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\page\scrolling\ScrollStateCallback.cpp">
       <Filter>page\scrolling</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\DOMParser.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XMLSerializer.cpp">
-      <Filter>xml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\SharedBufferReader.cpp">
-      <Filter>xml\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\XMLDocumentParserScope.cpp">
-      <Filter>xml\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\XMLErrors.cpp">
-      <Filter>xml\parser</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\EffectInput.cpp">
       <Filter>animation</Filter>
     </ClCompile>
@@ -1476,9 +1398,6 @@
       <Filter>css</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSCursorImageValue.cpp">
-      <Filter>css</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSPathValue.cpp">
       <Filter>css</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\ElementRuleCollector.cpp">
@@ -1694,45 +1613,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ScrollRecorder.cpp">
       <Filter>paint</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGClipPainter.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGContainerPainter.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGFilterPainter.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGForeignObjectPainter.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGImagePainter.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGInlineFlowBoxPainter.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGInlineTextBoxPainter.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGMaskPainter.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGPaintContext.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGRootInlineBoxPainter.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGRootPainter.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGShapePainter.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGTextPainter.cpp">
-      <Filter>paint</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TableCellPainter.cpp">
       <Filter>paint</Filter>
     </ClCompile>
@@ -1763,8 +1643,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ViewPainter.cpp">
       <Filter>paint</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\XMLDocumentParser.cpp">
-      <Filter>xml\parser</Filter>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\UseCounter.cpp">
+      <Filter>frame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1834,9 +1714,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\CSSLengthInterpolationType.h">
       <Filter>animation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\CSSLengthListInterpolationType.h">
-      <Filter>animation</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\CSSNumberInterpolationType.h">
       <Filter>animation</Filter>
     </ClInclude>
@@ -1850,9 +1727,6 @@
       <Filter>animation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\CSSVisibilityInterpolationType.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\DefaultSVGInterpolation.h">
       <Filter>animation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\DeferredLegacyStyleInterpolation.h">
@@ -1936,9 +1810,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\LengthBoxStyleInterpolation.h">
       <Filter>animation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\LengthListPropertyFunctions.h">
-      <Filter>animation</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\LengthPairStyleInterpolation.h">
       <Filter>animation</Filter>
     </ClInclude>
@@ -1957,13 +1828,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\NonInterpolableValue.h">
       <Filter>animation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\NumberAttributeFunctions.h">
-      <Filter>animation</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\NumberPropertyFunctions.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\NumberSVGInterpolation.h">
       <Filter>animation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\PaintPropertyFunctions.h">
@@ -1988,54 +1853,6 @@
       <Filter>animation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\StyleInterpolation.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGAngleInterpolationType.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGIntegerInterpolationType.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGIntegerOptionalIntegerInterpolationType.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGInterpolation.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGInterpolationType.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGLengthInterpolationType.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGLengthListInterpolationType.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGNumberInterpolationType.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGNumberListInterpolationType.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGNumberOptionalNumberInterpolationType.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGPathInterpolationType.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGPathSegInterpolationFunctions.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGPointListInterpolationType.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGRectInterpolationType.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGTransformListInterpolationType.h">
-      <Filter>animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\SVGValueInterpolationType.h">
       <Filter>animation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\animation\Timing.h">
@@ -2300,9 +2117,6 @@
       <Filter>css</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSPageRule.h">
-      <Filter>css</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSPathValue.h">
       <Filter>css</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\CSSPrimitiveValue.h">
@@ -3553,30 +3367,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\workers\WorkerThread.h">
       <Filter>workers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\DOMParser.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\XMLSerializer.h">
-      <Filter>xml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\MarkupTokenizerInlines.h">
-      <Filter>xml\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\SharedBufferReader.h">
-      <Filter>xml\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\XMLDocumentParser.h">
-      <Filter>xml\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\XMLDocumentParserScope.h">
-      <Filter>xml\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\XMLErrors.h">
-      <Filter>xml\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\xml\parser\XMLParserInput.h">
-      <Filter>xml\parser</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\FontFaceDescriptors.h">
       <Filter>css</Filter>
     </ClInclude>
@@ -3776,45 +3566,6 @@
       <Filter>paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\ScrollRecorder.h">
-      <Filter>paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGClipPainter.h">
-      <Filter>paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGContainerPainter.h">
-      <Filter>paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGFilterPainter.h">
-      <Filter>paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGForeignObjectPainter.h">
-      <Filter>paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGImagePainter.h">
-      <Filter>paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGInlineFlowBoxPainter.h">
-      <Filter>paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGInlineTextBoxPainter.h">
-      <Filter>paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGMaskPainter.h">
-      <Filter>paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGPaintContext.h">
-      <Filter>paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGRootInlineBoxPainter.h">
-      <Filter>paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGRootPainter.h">
-      <Filter>paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGShapePainter.h">
-      <Filter>paint</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\SVGTextPainter.h">
       <Filter>paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\paint\TableCellPainter.h">

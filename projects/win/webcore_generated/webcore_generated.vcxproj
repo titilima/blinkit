@@ -183,9 +183,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\StyleBuilder.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\StyleBuilderFunctions.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\StylePropertyShorthand.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGElementFactory.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGNames.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XLinkNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNSNames.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\ColorData.cpp" />
@@ -217,10 +214,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SettingsMacros.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\StyleBuilderFunctions.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\StylePropertyShorthand.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGElementFactory.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGElementTypeHelpers.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGNames.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XLinkNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNSNames.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\platform\FontFamilyNames.h" />

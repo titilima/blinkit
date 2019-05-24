@@ -56,12 +56,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\InputTypeNames.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGNames.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XLinkNames.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNSNames.cpp">
       <Filter>core</Filter>
     </ClCompile>
@@ -102,9 +96,6 @@
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\StyleBuilderFunctions.cpp">
-      <Filter>core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGElementFactory.cpp">
       <Filter>core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -149,18 +140,6 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\InputTypeNames.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGElementFactory.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGNames.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\SVGElementTypeHelpers.h">
-      <Filter>core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XLinkNames.h">
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\gen\core\XMLNSNames.h">

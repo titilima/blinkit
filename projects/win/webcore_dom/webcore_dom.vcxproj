@@ -276,7 +276,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TextLinkColors.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Touch.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TouchList.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TransformSourceLibxslt.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TreeScope.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TreeScopeAdopter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TreeScopeStyleSheetCollection.cpp" />
@@ -492,7 +491,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Touch.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TouchInit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TouchList.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TransformSource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TreeScope.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TreeScopeAdopter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\TreeScopeStyleSheetCollection.h" />

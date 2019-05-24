@@ -289,7 +289,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\FillLayer.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\GridResolvedPosition.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\NinePieceImage.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\PathStyleMotionPath.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\QuotesData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\ShadowData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\ShadowList.cpp" />
@@ -306,7 +305,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleInheritedData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleMotionData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleMultiColData.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StylePath.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleRareInheritedData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleRareNonInheritedData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleScrollSnapData.cpp" />
@@ -501,7 +499,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\LineClampValue.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\NinePieceImage.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\OutlineValue.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\PathStyleMotionPath.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\QuotesData.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\ShadowData.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\ShadowList.h" />
@@ -523,7 +520,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleMotionData.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleMotionPath.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleMultiColData.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StylePath.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StylePendingImage.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleRareInheritedData.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\style\StyleRareNonInheritedData.h" />
