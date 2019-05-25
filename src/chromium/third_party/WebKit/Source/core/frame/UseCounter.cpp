@@ -390,51 +390,6 @@ int UseCounter::mapCSSPropertyIdToCSSSampleIdForHistogram(int id)
     // case CSSPropertyShapeInside: return 346;
     case CSSPropertyShapeOutside: return 347;
     case CSSPropertyShapeMargin: return 348;
-    // case CSSPropertyShapePadding: return 349;
-    // case CSSPropertyWebkitWrapFlow: return 350;
-    // case CSSPropertyWebkitWrapThrough: return 351;
-    // CSSPropertyWebkitWrap was 352.
-    // 353 was CSSPropertyWebkitTapHighlightColor (duplicated due to #ifdef).
-    // 354 was CSSPropertyWebkitAppRegion (duplicated due to #ifdef).
-    case CSSPropertyClipPath: return 355;
-    case CSSPropertyClipRule: return 356;
-    case CSSPropertyMask: return 357;
-    // CSSPropertyEnableBackground has been removed, was return 358;
-    case CSSPropertyFilter: return 359;
-    case CSSPropertyFloodColor: return 360;
-    case CSSPropertyFloodOpacity: return 361;
-    case CSSPropertyLightingColor: return 362;
-    case CSSPropertyStopColor: return 363;
-    case CSSPropertyStopOpacity: return 364;
-    case CSSPropertyColorInterpolation: return 365;
-    case CSSPropertyColorInterpolationFilters: return 366;
-    // case CSSPropertyColorProfile: return 367;
-    case CSSPropertyColorRendering: return 368;
-    case CSSPropertyFill: return 369;
-    case CSSPropertyFillOpacity: return 370;
-    case CSSPropertyFillRule: return 371;
-    case CSSPropertyMarker: return 372;
-    case CSSPropertyMarkerEnd: return 373;
-    case CSSPropertyMarkerMid: return 374;
-    case CSSPropertyMarkerStart: return 375;
-    case CSSPropertyMaskType: return 376;
-    case CSSPropertyShapeRendering: return 377;
-    case CSSPropertyStroke: return 378;
-    case CSSPropertyStrokeDasharray: return 379;
-    case CSSPropertyStrokeDashoffset: return 380;
-    case CSSPropertyStrokeLinecap: return 381;
-    case CSSPropertyStrokeLinejoin: return 382;
-    case CSSPropertyStrokeMiterlimit: return 383;
-    case CSSPropertyStrokeOpacity: return 384;
-    case CSSPropertyStrokeWidth: return 385;
-    case CSSPropertyAlignmentBaseline: return 386;
-    case CSSPropertyBaselineShift: return 387;
-    case CSSPropertyDominantBaseline: return 388;
-    // CSSPropertyGlyphOrientationHorizontal has been removed, was return 389;
-    // CSSPropertyGlyphOrientationVertical has been removed, was return 390;
-    // CSSPropertyKerning has been removed, was return 391;
-    case CSSPropertyTextAnchor: return 392;
-    case CSSPropertyVectorEffect: return 393;
     case CSSPropertyWritingMode: return 394;
     // CSSPropertyWebkitSvgShadow has been removed, was return 395;
     // CSSPropertyWebkitCursorVisibility has been removed, was return 396;
@@ -459,7 +414,6 @@ int UseCounter::mapCSSPropertyIdToCSSSampleIdForHistogram(int id)
     case CSSPropertyWebkitFilter: return 413;
     case CSSPropertyWebkitBoxDecorationBreak: return 414;
     case CSSPropertyWebkitTapHighlightColor: return 415;
-    case CSSPropertyBufferedRendering: return 416;
     case CSSPropertyGridAutoRows: return 417;
     case CSSPropertyGridAutoColumns: return 418;
     case CSSPropertyBackgroundBlendMode: return 419;
@@ -477,7 +431,6 @@ int UseCounter::mapCSSPropertyIdToCSSSampleIdForHistogram(int id)
     case CSSPropertyAnimationPlayState: return 431;
     case CSSPropertyAnimationTimingFunction: return 432;
     case CSSPropertyObjectFit: return 433;
-    case CSSPropertyPaintOrder: return 434;
     case CSSPropertyMaskSourceType: return 435;
     case CSSPropertyIsolation: return 436;
     case CSSPropertyObjectPosition: return 437;
@@ -503,14 +456,7 @@ int UseCounter::mapCSSPropertyIdToCSSSampleIdForHistogram(int id)
     case CSSPropertyMotionOffset: return 458;
     case CSSPropertyMotionRotation: return 459;
     case CSSPropertyMotion: return 460;
-    case CSSPropertyX: return 461;
-    case CSSPropertyY: return 462;
-    case CSSPropertyRx: return 463;
-    case CSSPropertyRy: return 464;
     case CSSPropertyFontSizeAdjust: return 465;
-    case CSSPropertyCx: return 466;
-    case CSSPropertyCy: return 467;
-    case CSSPropertyR: return 468;
     case CSSPropertyAliasEpubCaptionSide: return 469;
     case CSSPropertyAliasEpubTextCombine: return 470;
     case CSSPropertyAliasEpubTextEmphasis: return 471;
@@ -560,7 +506,6 @@ int UseCounter::mapCSSPropertyIdToCSSSampleIdForHistogram(int id)
     case CSSPropertyVariable: return 515;
     case CSSPropertyFontDisplay: return 516;
     case CSSPropertyContain: return 517;
-    case CSSPropertyD: return 518;
 
     // 1. Add new features above this line (don't change the assigned numbers of the existing
     // items).
@@ -589,20 +534,6 @@ void UseCounter::unmuteForInspector()
     UseCounter::m_muteCount--;
 }
 
-UseCounter::UseCounter()
-{
-    m_CSSFeatureBits.ensureSize(lastUnresolvedCSSProperty + 1);
-    m_CSSFeatureBits.clearAll();
-}
-
-UseCounter::~UseCounter()
-{
-    // We always log PageDestruction so that we have a scale for the rest of the features.
-    Platform::current()->histogramEnumeration("WebCore.FeatureObserver", PageDestruction, NumberOfFeatures);
-
-    updateMeasurements();
-}
-
 void UseCounter::CountBits::updateMeasurements()
 {
     for (unsigned i = 0; i < NumberOfFeatures; ++i) {
@@ -611,118 +542,6 @@ void UseCounter::CountBits::updateMeasurements()
     }
     // Clearing count bits is timing sensitive.
     m_bits.clearAll();
-}
-
-void UseCounter::updateMeasurements()
-{
-    Platform::current()->histogramEnumeration("WebCore.FeatureObserver", PageVisits, NumberOfFeatures);
-    m_countBits.updateMeasurements();
-
-    // FIXME: Sometimes this function is called more than once per page. The following
-    //        bool guards against incrementing the page count when there are no CSS
-    //        bits set. https://crbug.com/236262.
-    bool needsPagesMeasuredUpdate = false;
-    for (int i = firstCSSProperty; i <= lastUnresolvedCSSProperty; ++i) {
-        if (m_CSSFeatureBits.quickGet(i)) {
-            int cssSampleId = mapCSSPropertyIdToCSSSampleIdForHistogram(i);
-            Platform::current()->histogramEnumeration("WebCore.FeatureObserver.CSSProperties", cssSampleId, maximumCSSSampleId());
-            needsPagesMeasuredUpdate = true;
-        }
-    }
-
-    if (needsPagesMeasuredUpdate)
-        Platform::current()->histogramEnumeration("WebCore.FeatureObserver.CSSProperties", totalPagesMeasuredCSSSampleId(), maximumCSSSampleId());
-
-    m_CSSFeatureBits.clearAll();
-}
-
-void UseCounter::didCommitLoad()
-{
-    updateMeasurements();
-}
-
-void UseCounter::count(const Frame* frame, Feature feature)
-{
-    if (!frame)
-        return;
-    FrameHost* host = frame->host();
-    if (!host)
-        return;
-
-    ASSERT(deprecationMessage(feature).isEmpty());
-    host->useCounter().recordMeasurement(feature);
-}
-
-void UseCounter::count(const Document& document, Feature feature)
-{
-    count(document.frame(), feature);
-}
-
-bool UseCounter::isCounted(Document& document, Feature feature)
-{
-    Frame* frame = document.frame();
-    if (!frame)
-        return false;
-    FrameHost* host = frame->host();
-    if (!host)
-        return false;
-    return host->useCounter().hasRecordedMeasurement(feature);
-}
-
-void UseCounter::count(const ExecutionContext* context, Feature feature)
-{
-    if (!context)
-        return;
-    if (context->isDocument()) {
-        count(*toDocument(context), feature);
-        return;
-    }
-    if (context->isWorkerGlobalScope())
-        toWorkerGlobalScope(context)->countFeature(feature);
-}
-
-void UseCounter::countDeprecation(const LocalFrame* frame, Feature feature)
-{
-    if (!frame)
-        return;
-    FrameHost* host = frame->host();
-    if (!host)
-        return;
-
-    if (!host->useCounter().hasRecordedMeasurement(feature)) {
-        host->useCounter().recordMeasurement(feature);
-        ASSERT(!deprecationMessage(feature).isEmpty());
-        frame->console().addMessage(ConsoleMessage::create(DeprecationMessageSource, WarningMessageLevel, deprecationMessage(feature)));
-    }
-}
-
-void UseCounter::countDeprecation(ExecutionContext* context, Feature feature)
-{
-    if (!context)
-        return;
-    if (context->isDocument()) {
-        UseCounter::countDeprecation(*toDocument(context), feature);
-        return;
-    }
-    if (context->isWorkerGlobalScope())
-        toWorkerGlobalScope(context)->countDeprecation(feature);
-}
-
-void UseCounter::countDeprecation(const Document& document, Feature feature)
-{
-    UseCounter::countDeprecation(document.frame(), feature);
-}
-
-void UseCounter::countCrossOriginIframe(const Document& document, Feature feature)
-{
-    Frame* frame = document.frame();
-    if (!frame)
-        return;
-    // Check to see if the frame can script into the top level document.
-    SecurityOrigin* securityOrigin = frame->securityContext()->securityOrigin();
-    Frame* top = frame->tree().top();
-    if (top && !securityOrigin->canAccess(top->securityContext()->securityOrigin()))
-        count(frame, feature);
 }
 
 static const char* milestoneString(int milestone)
@@ -978,23 +797,6 @@ String UseCounter::deprecationMessage(Feature feature)
     default:
         return String();
     }
-}
-
-void UseCounter::count(CSSParserMode cssParserMode, CSSPropertyID feature)
-{
-    ASSERT(feature >= firstCSSProperty);
-    ASSERT(feature <= lastUnresolvedCSSProperty);
-
-    if (!isUseCounterEnabledForMode(cssParserMode))
-        return;
-
-    m_CSSFeatureBits.quickSet(feature);
-}
-
-void UseCounter::count(Feature feature)
-{
-    ASSERT(deprecationMessage(feature).isEmpty());
-    recordMeasurement(feature);
 }
 
 UseCounter* UseCounter::getFrom(const Document* document)
