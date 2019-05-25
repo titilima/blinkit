@@ -126,7 +126,9 @@ public:
     virtual void BKAPI OnFunctionCall(BkFunctionContext &context) {
         assert(false); // Not implemented!
     }
-    virtual void BKAPI OnPushArgs(BkArgList &argList) {}
+    virtual void BKAPI OnPushArgs(BkArgList &argList) {
+        // Optional. Leave it emtpy if no args to pass.
+    }
     virtual void BKAPI OnReturn(const BkValue &retVal) {
         assert(false); // Not implemented!
     }
@@ -206,13 +208,22 @@ public:
     virtual void BKAPI Destroy(void) = 0;
     virtual int BKAPI Load(const char *URL) = 0;
 
+    virtual int BKAPI Eval(const char *code, size_t length, BkCallback *callback) = 0;
+
     virtual int BKAPI CallFunction(const char *name, BkCallback *callback = nullptr) = 0;
     virtual int BKAPI CallCrawler(const char *method, BkCallback *callback = nullptr) = 0;
     virtual int BKAPI RegisterCrawlerFunction(const char *name, BkCallback &functionImpl) = 0;
 
     virtual int BKAPI AccessCrawlerMember(const char *name, BkCallback &callback) = 0;
 
+    inline int AddCode(const char *code, size_t length = 0) {
+        return Eval(code, length, nullptr);
+    }
 #ifndef BLINKIT_DISABLE_FUNCTIONAL
+    inline int Eval(const char *expr, const BkLambda &callback) {
+        BkLambdaCallback cb(callback);
+        return Eval(expr, 0, &cb);
+    }
     inline int CallFunction(const char *name, const BkLambda &callback) {
         BkLambdaCallback cb(callback);
         return CallFunction(name, &cb);
@@ -262,6 +273,7 @@ public:
     virtual int BKAPI Load(const char *URI) = 0;
     virtual NativeView BKAPI GetNativeView(void) const = 0;
 
+    virtual int BKAPI Eval(const char *code, size_t length, BkCallback *callback) = 0;
     virtual int BKAPI CallFunction(const char *name, BkCallback *callback = nullptr) = 0;
     virtual int BKAPI RegisterExternalFunction(const char *name, BkCallback &functionImpl) = 0;
 
@@ -303,7 +315,14 @@ public:
     virtual bool BKAPI GetCaretRect(BkRect *dst) = 0;
     virtual void BKAPI SetScaleFactor(float scaleFactor) = 0;
 
+    inline int AddCode(const char *code, size_t length = 0) {
+        return Eval(code, length, nullptr);
+    }
 #ifndef BLINKIT_DISABLE_FUNCTIONAL
+    inline int Eval(const char *expr, const BkLambda &callback) {
+        BkLambdaCallback cb(callback);
+        return Eval(expr, 0, &cb);
+    }
     inline int CallFunction(const char *name, const BkLambda &callback) {
         BkLambdaCallback cb(callback);
         return CallFunction(name, &cb);

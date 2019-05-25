@@ -55,6 +55,11 @@ void CrawlerImpl::dispatchDidFinishLoad(void)
     m_client.DocumentReady(this);
 }
 
+int BKAPI CrawlerImpl::Eval(const char *code, size_t length, BkCallback *callback)
+{
+    return m_frame->script().Eval(code, length, callback);
+}
+
 std::string CrawlerImpl::GetCookie(const std::string &URL) const
 {
     std::string ret;

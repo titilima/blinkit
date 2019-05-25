@@ -45,6 +45,7 @@ public:
     ~ScriptController(void);
 
     int CreateCrawlerObject(const char *script, size_t length);
+    int Eval(const char *code, size_t length, BlinKit::BkCallback *callback);
     int CallFunction(const char *name, BlinKit::BkCallback *callback);
     int CallCrawler(const char *method, BlinKit::BkCallback *callback);
     int RegisterFunction(const char *name, BlinKit::BkCallback &functionImpl);

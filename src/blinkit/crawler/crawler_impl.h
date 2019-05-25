@@ -32,6 +32,7 @@ private:
     // BkCrawler
     void BKAPI Destroy(void) override { delete this; }
     int BKAPI Load(const char *URL) override;
+    int BKAPI Eval(const char *code, size_t length, BkCallback *callback) override;
     int BKAPI CallFunction(const char *name, BkCallback *callback) override;
     int BKAPI CallCrawler(const char *method, BkCallback *callback) override;
     int BKAPI RegisterCrawlerFunction(const char *name, BkCallback &functionImpl) override;

@@ -15,6 +15,7 @@
 #include "platform/weborigin/KURL.h"
 
 #include "context/duk_context.h"
+#include "public/script_source_code.h"
 
 using namespace BlinKit;
 
@@ -85,6 +86,14 @@ void ScriptController::enableEval(void)
     // Nothing to do, eval is always enabled in BlinKit.
 }
 
+int ScriptController::Eval(const char *code, size_t length, BkCallback *callback)
+{
+    RefPtrWillBeRawPtr<LocalFrame> protect(&m_frame);
+    if (m_frame.loader().stateMachine()->isDisplayingInitialEmptyDocument())
+        m_frame.loader().didAccessInitialDocument();
+    return EnsureContext().Eval(code, length, callback);
+}
+
 DukContext& ScriptController::EnsureContext(void)
 {
     if (!m_context)
@@ -100,7 +109,16 @@ bool ScriptController::executeScriptIfJavaScriptURL(const KURL &url)
 
 void ScriptController::executeScriptInMainWorld(const ScriptSourceCode &sourceCode, AccessControlStatus accessControlStatus, double *compilationFinishTime)
 {
-    assert(false); // BKTODO:
+    RefPtrWillBeRawPtr<LocalFrame> protect(&m_frame);
+    if (m_frame.loader().stateMachine()->isDisplayingInitialEmptyDocument())
+        m_frame.loader().didAccessInitialDocument();
+
+    CString code = sourceCode.source().utf8();
+    std::string fileName = sourceCode.FileName();
+    EnsureContext().Eval(code.data(), code.length(), nullptr, fileName.c_str());
+
+    if (nullptr != compilationFinishTime)
+        *compilationFinishTime = WTF::monotonicallyIncreasingTime();
 }
 
 std::string ScriptController::GetCrawlerProperty(const char *name)

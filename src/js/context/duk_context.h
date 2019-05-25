@@ -32,6 +32,7 @@ public:
     static DukContext* From(duk_context *ctx);
 
     int CreateCrawlerObject(const char *script, size_t length);
+    int Eval(const char *code, size_t length, BkCallback *callback, const char *fileName = nullptr);
     int CallFunction(const char *name, BkCallback *callback);
     int CallCrawler(const char *method, BkCallback *callback);
     int RegisterFunction(const char *name, BkCallback &functionImpl);

@@ -89,6 +89,11 @@ void ViewImpl::DoUpdate(void)
     webView->paint(m_memoryCanvas.get(), rc);
 }
 
+int BKAPI ViewImpl::Eval(const char *code, size_t length, BkCallback *callback)
+{
+    return GetFrame()->script().Eval(code, length, callback);
+}
+
 void ViewImpl::FillCoordinates(WebMouseEvent &dst, int x, int y)
 {
     dst.x = dst.windowX = dst.globalX = x;

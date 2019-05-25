@@ -178,6 +178,30 @@ void DukContext::CreateObject(const char *protoName)
         duk_push_undefined(m_context);
 }
 
+int DukContext::Eval(const char *code, size_t length, BkCallback *callback, const char *fileName)
+{
+    if (0 == length)
+        length = strlen(code);
+
+    Duk::StackKeeper sk(m_context);
+
+    if (nullptr == fileName)
+        fileName = "eval";
+    duk_push_string(m_context, fileName);
+
+    int r = duk_pcompile_lstring_filename(m_context, 0, code, length);
+    if (DUK_EXEC_SUCCESS == r)
+        r = duk_pcall(m_context, 0);
+
+    ValueImpl retVal(m_context);
+    if (DUK_EXEC_SUCCESS != r)
+        retVal.SetAsErrorType();
+    if (nullptr != callback)
+        callback->OnReturn(retVal);
+
+    return retVal.ErrorCode();
+}
+
 DukContext* DukContext::From(duk_context *ctx)
 {
     Duk::StackKeeper sk(ctx);
