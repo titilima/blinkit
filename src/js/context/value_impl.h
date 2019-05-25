@@ -25,6 +25,7 @@ public:
     int ErrorCode(void) const { return m_errorCode; }
 private:
     Type BKAPI GetType(void) const override;
+    bool BKAPI GetAsBoolean(void) const override;
     int BKAPI GetAsString(BkBuffer &dst) const override;
     int BKAPI GetAsJSON(BkBuffer &dst) const override;
 

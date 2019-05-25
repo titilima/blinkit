@@ -87,9 +87,16 @@ int BKAPI CrawlerImpl::RegisterCrawlerFunction(const char *name, BkCallback &fun
 
 String CrawlerImpl::userAgent(void)
 {
-    std::string userAgent = m_frame->script().GetCrawlerProperty("userAgent");
+    std::string userAgent;
+    const auto callback = [&userAgent](const BkValue &prop)
+    {
+        prop.GetAsString(BkMakeBuffer(userAgent).Wrap());
+    };
+    m_frame->script().GetCrawlerProperty("userAgent", callback);
+
     if (!userAgent.empty())
         return String::fromUTF8(userAgent.data(), userAgent.length());
+
     return FrameLoaderClientImpl::userAgent();
 }
 

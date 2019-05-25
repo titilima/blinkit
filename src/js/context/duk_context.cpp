@@ -211,18 +211,18 @@ DukContext* DukContext::From(duk_context *ctx)
     return reinterpret_cast<DukContext *>(duk_get_pointer(ctx, -1));
 }
 
-std::string DukContext::GetCrawlerProperty(const char *name)
+void DukContext::GetCrawlerProperty(const char *name, const std::function<void(const BkValue &)> &callback)
 {
-    std::string ret;
+    if (nullptr == m_crawlerObjectPtr)
+        return;
+
     Duk::StackKeeper sk(m_context);
     duk_push_heapptr(m_context, m_crawlerObjectPtr);
     if (duk_get_prop_string(m_context, -1, name))
     {
-        if (!duk_is_string(m_context, -1))
-            duk_dup(m_context, -1);
-        ret = Duk::ToString(m_context);
+        ValueImpl prop(m_context);
+        callback(prop);
     }
-    return ret;
 }
 
 void DukContext::Initialize(void)

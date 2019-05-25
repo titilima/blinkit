@@ -100,6 +100,7 @@ public:
     };
     virtual Type BKAPI GetType(void) const = 0;
 
+    virtual bool BKAPI GetAsBoolean(void) const = 0;
     virtual int BKAPI GetAsString(BkBuffer &dst) const = 0;
     virtual int BKAPI GetAsJSON(BkBuffer &dst) const = 0;
 };
@@ -166,7 +167,12 @@ class BkApp {
 public:
     virtual void BKAPI Exit(void) = 0;
 
+    // Crawler Configurations
+    // - userAgent: String
+    // - incantation: String
+    // - scriptEnabled: Boolean
     virtual BkCrawler* BKAPI CreateCrawler(BkCrawlerClient &client, const char *script, size_t length = 0) = 0;
+
     virtual BkView* BKAPI CreateView(BkViewClient &client) = 0;
 };
 

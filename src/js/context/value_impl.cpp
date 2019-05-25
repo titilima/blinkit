@@ -20,6 +20,20 @@ ValueImpl::ValueImpl(duk_context *ctx, duk_idx_t idx) : m_ctx(ctx), m_idx(duk_no
     // Nothing
 }
 
+bool BKAPI ValueImpl::GetAsBoolean(void) const
+{
+    Duk::StackKeeper sk(m_ctx);
+
+    duk_idx_t idx = m_idx;
+    if (!duk_is_boolean(m_ctx, m_idx))
+    {
+        duk_dup(m_ctx, m_idx);
+        idx = -1;
+    }
+
+    return duk_to_boolean(m_ctx, idx);
+}
+
 int BKAPI ValueImpl::GetAsJSON(BkBuffer &dst) const
 {
     Duk::StackKeeper sk(m_ctx);
@@ -39,7 +53,10 @@ int BKAPI ValueImpl::GetAsString(BkBuffer &dst) const
 
     duk_idx_t idx = m_idx;
     if (!duk_is_string(m_ctx, m_idx))
+    {
         duk_dup(m_ctx, m_idx);
+        idx = -1;
+    }
 
     size_t l = 0;
     const char *s = duk_get_lstring(m_ctx, idx, &l);

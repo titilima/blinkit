@@ -52,7 +52,16 @@ int ScriptController::CallFunction(const char *name, BkCallback *callback)
 
 bool ScriptController::canExecuteScripts(ReasonForCallingCanExecuteScripts)
 {
-    return true; // Scripts are always allowed in BlinKit.
+    bool scriptEnabled = true;
+    if (m_context)
+    {
+        const auto callback = [&scriptEnabled](const BkValue &prop)
+        {
+            scriptEnabled = prop.GetAsBoolean();
+        };
+        m_context->GetCrawlerProperty("scriptEnabled", callback);
+    }
+    return scriptEnabled;
 }
 
 void ScriptController::clearForClose(void)
@@ -121,9 +130,10 @@ void ScriptController::executeScriptInMainWorld(const ScriptSourceCode &sourceCo
         *compilationFinishTime = WTF::monotonicallyIncreasingTime();
 }
 
-std::string ScriptController::GetCrawlerProperty(const char *name)
+void ScriptController::GetCrawlerProperty(const char *name, const std::function<void(const BkValue &)> &callback)
 {
-    return m_context->GetCrawlerProperty(name);
+    if (m_context)
+        m_context->GetCrawlerProperty(name, callback);
 }
 
 void ScriptController::namedItemAdded(HTMLDocument *, const AtomicString &)

@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <functional>
+
 namespace blink {
 class LocalFrame;
 }
@@ -37,7 +39,7 @@ public:
     int CallCrawler(const char *method, BkCallback *callback);
     int RegisterFunction(const char *name, BkCallback &functionImpl);
     int AccessCrawlerMember(const char *name, BkCallback &callback);
-    std::string GetCrawlerProperty(const char *name);
+    void GetCrawlerProperty(const char *name, const std::function<void(const BkValue &)> &callback);
 
     void CreateObject(const char *protoName);
 

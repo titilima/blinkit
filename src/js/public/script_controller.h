@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <functional>
 #include "sdk/include/BlinKit.h"
 #include "core/fetch/AccessControlStatus.h"
 #include "platform/heap/Handle.h"
@@ -50,7 +51,7 @@ public:
     int CallCrawler(const char *method, BlinKit::BkCallback *callback);
     int RegisterFunction(const char *name, BlinKit::BkCallback &functionImpl);
     int AccessCrawlerMember(const char *name, BlinKit::BkCallback &callback);
-    std::string GetCrawlerProperty(const char *name);
+    void GetCrawlerProperty(const char *name, const std::function<void(const BlinKit::BkValue &)> &callback);
 
     void executeScriptInMainWorld(const ScriptSourceCode &, AccessControlStatus = NotSharableCrossOrigin, double *compilationFinishTime = nullptr);
 
