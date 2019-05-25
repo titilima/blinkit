@@ -127,13 +127,21 @@ static void completeURLs(DocumentFragment& fragment, const String& baseURL)
 
 static bool isHTMLBlockElement(const Node* node)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+    return false;
+#else
     ASSERT(node);
     return isHTMLTableCellElement(*node)
         || isNonTableCellHTMLBlockElement(node);
+#endif
 }
 
 static HTMLElement* ancestorToRetainStructureAndAppearanceForBlock(Element* commonAncestorBlock)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     if (!commonAncestorBlock)
         return 0;
 
@@ -142,23 +150,38 @@ static HTMLElement* ancestorToRetainStructureAndAppearanceForBlock(Element* comm
 
     if (isNonTableCellHTMLBlockElement(commonAncestorBlock))
         return toHTMLElement(commonAncestorBlock);
+#endif
 
     return 0;
 }
 
 static inline HTMLElement* ancestorToRetainStructureAndAppearance(Node* commonAncestor)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+    return nullptr;
+#else
     return ancestorToRetainStructureAndAppearanceForBlock(enclosingBlock(commonAncestor));
+#endif
 }
 
 static inline HTMLElement* ancestorToRetainStructureAndAppearanceWithNoLayoutObject(Node* commonAncestor)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+    return nullptr;
+#else
     HTMLElement* commonAncestorBlock = toHTMLElement(enclosingNodeOfType(firstPositionInOrBeforeNode(commonAncestor), isHTMLBlockElement));
     return ancestorToRetainStructureAndAppearanceForBlock(commonAncestorBlock);
+#endif
 }
 
 bool propertyMissingOrEqualToNone(StylePropertySet* style, CSSPropertyID propertyID)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     if (!style)
         return false;
     RefPtrWillBeRawPtr<CSSValue> value = style->getPropertyCSSValue(propertyID);
@@ -167,6 +190,7 @@ bool propertyMissingOrEqualToNone(StylePropertySet* style, CSSPropertyID propert
     if (!value->isPrimitiveValue())
         return false;
     return toCSSPrimitiveValue(value.get())->getValueID() == CSSValueNone;
+#endif
 }
 
 static bool isPresentationalHTMLElement(const Node* node)
@@ -182,6 +206,10 @@ static bool isPresentationalHTMLElement(const Node* node)
 template<typename Strategy>
 static HTMLElement* highestAncestorToWrapMarkup(const PositionTemplate<Strategy>& startPosition, const PositionTemplate<Strategy>& endPosition, EAnnotateForInterchange shouldAnnotate, Node* constrainingAncestor)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     Node* firstNode = startPosition.nodeAsRangeFirstNode();
     // For compatibility reason, we use container node of start and end
     // positions rather than first node and last node in selection.
@@ -228,6 +256,7 @@ static HTMLElement* highestAncestorToWrapMarkup(const PositionTemplate<Strategy>
         specialCommonAncestor = enclosingAnchor;
 
     return specialCommonAncestor;
+#endif
 }
 
 template <typename Strategy>
@@ -242,6 +271,10 @@ template <typename Strategy>
 String CreateMarkupAlgorithm<Strategy>::createMarkup(const PositionTemplate<Strategy>& startPosition, const PositionTemplate<Strategy>& endPosition,
     EAnnotateForInterchange shouldAnnotate, ConvertBlocksToInlines convertBlocksToInlines, EAbsoluteURLs shouldResolveURLs, Node* constrainingAncestor)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return String();
+#else
     if (startPosition.isNull() || endPosition.isNull())
         return emptyString();
 
@@ -260,6 +293,7 @@ String CreateMarkupAlgorithm<Strategy>::createMarkup(const PositionTemplate<Stra
     HTMLElement* specialCommonAncestor = highestAncestorToWrapMarkup<Strategy>(startPosition, endPosition, shouldAnnotate, constrainingAncestor);
     StyledMarkupSerializer<Strategy> serializer(shouldResolveURLs, shouldAnnotate, startPosition, endPosition, specialCommonAncestor, convertBlocksToInlines);
     return serializer.createMarkup();
+#endif
 }
 
 String createMarkup(const Position& startPosition, const Position& endPosition, EAnnotateForInterchange shouldAnnotate, ConvertBlocksToInlines convertBlocksToInlines, EAbsoluteURLs shouldResolveURLs, Node* constrainingAncestor)
@@ -274,6 +308,10 @@ String createMarkup(const PositionInComposedTree& startPosition, const PositionI
 
 PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromMarkup(Document& document, const String& markup, const String& baseURL, ParserContentPolicy parserContentPolicy)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+    return nullptr;
+#else
     // We use a fake body element here to trick the HTML parser to using the InBody insertion mode.
     RefPtrWillBeRawPtr<HTMLBodyElement> fakeBody = HTMLBodyElement::create(document);
     RefPtrWillBeRawPtr<DocumentFragment> fragment = DocumentFragment::create(document);
@@ -284,6 +322,7 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromMarkup(Document& docu
         completeURLs(*fragment, baseURL);
 
     return fragment.release();
+#endif
 }
 
 static const char fragmentMarkerTag[] = "webkit-fragment-marker";
@@ -328,6 +367,10 @@ static void trimFragment(DocumentFragment* fragment, Comment* nodeBeforeContext,
 PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromMarkupWithContext(Document& document, const String& markup, unsigned fragmentStart, unsigned fragmentEnd,
     const String& baseURL, ParserContentPolicy parserContentPolicy)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+    return nullptr;
+#else
     // FIXME: Need to handle the case where the markup already contains these markers.
 
     StringBuilder taggedMarkup;
@@ -370,6 +413,7 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromMarkupWithContext(Doc
     trimFragment(fragment.get(), nodeBeforeContext.get(), nodeAfterContext.get());
 
     return fragment;
+#endif
 }
 
 String createMarkup(const Node* node, EChildrenOnly childrenOnly, EAbsoluteURLs shouldResolveURLs)
@@ -383,6 +427,9 @@ String createMarkup(const Node* node, EChildrenOnly childrenOnly, EAbsoluteURLs 
 
 static void fillContainerFromString(ContainerNode* paragraph, const String& string)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     Document& document = paragraph->document();
 
     if (string.isEmpty()) {
@@ -419,10 +466,15 @@ static void fillContainerFromString(ContainerNode* paragraph, const String& stri
 
         first = false;
     }
+#endif
 }
 
 bool isPlainTextMarkup(Node* node)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+    return false;
+#else
     ASSERT(node);
     if (!isHTMLDivElement(*node))
         return false;
@@ -435,10 +487,14 @@ bool isPlainTextMarkup(Node* node)
         return element.firstChild()->isTextNode() || element.firstChild()->hasChildren();
 
     return element.hasChildCount(2) && isTabHTMLSpanElementTextNode(element.firstChild()->firstChild()) && element.lastChild()->isTextNode();
+#endif
 }
 
 static bool shouldPreserveNewline(const EphemeralRange& range)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (Node* node = range.startPosition().nodeAsRangeFirstNode()) {
         if (LayoutObject* layoutObject = node->layoutObject())
             return layoutObject->style()->preserveNewline();
@@ -448,12 +504,17 @@ static bool shouldPreserveNewline(const EphemeralRange& range)
         if (LayoutObject* layoutObject = node->layoutObject())
             return layoutObject->style()->preserveNewline();
     }
+#endif
 
     return false;
 }
 
 PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromText(const EphemeralRange& context, const String& text)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+    return nullptr;
+#else
     if (context.isNull())
         return nullptr;
 
@@ -515,6 +576,7 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentFromText(const EphemeralR
         fragment->appendChild(element.release());
     }
     return fragment.release();
+#endif
 }
 
 String urlToMarkup(const KURL& url, const String& title)
@@ -530,6 +592,10 @@ String urlToMarkup(const KURL& url, const String& title)
 
 PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentForInnerOuterHTML(const String& markup, Element* contextElement, ParserContentPolicy parserContentPolicy, const char* method, ExceptionState& exceptionState)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+    return nullptr;
+#else
     ASSERT(contextElement);
     Document& document = isHTMLTemplateElement(*contextElement) ? contextElement->document().ensureTemplateDocument() : contextElement->document();
     RefPtrWillBeRawPtr<DocumentFragment> fragment = DocumentFragment::create(document);
@@ -545,10 +611,15 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentForInnerOuterHTML(const S
         return nullptr;
     }
     return fragment.release();
+#endif
 }
 
 PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentForTransformToFragment(const String& sourceString, const String& sourceMIMEType, Document& outputDoc)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+    return nullptr;
+#else
     RefPtrWillBeRawPtr<DocumentFragment> fragment = outputDoc.createDocumentFragment();
 
     if (sourceMIMEType == "text/html") {
@@ -569,6 +640,7 @@ PassRefPtrWillBeRawPtr<DocumentFragment> createFragmentForTransformToFragment(co
     // FIXME: Do we need to mess with URLs here?
 
     return fragment.release();
+#endif
 }
 
 static inline void removeElementPreservingChildren(PassRefPtrWillBeRawPtr<DocumentFragment> fragment, HTMLElement* element)
@@ -584,6 +656,9 @@ static inline void removeElementPreservingChildren(PassRefPtrWillBeRawPtr<Docume
 
 static inline bool isSupportedContainer(Element* element)
 {
+    assert(false); // BKTODO:
+    return false;
+#if 0
     ASSERT(element);
     if (!element->isHTMLElement())
         return true;
@@ -594,6 +669,7 @@ static inline bool isSupportedContainer(Element* element)
         return false;
     }
     return !htmlElement.ieForbidsInsertHTML();
+#endif
 }
 
 PassRefPtrWillBeRawPtr<DocumentFragment> createContextualFragment(const String& markup, Element* element, ParserContentPolicy parserContentPolicy, ExceptionState& exceptionState)

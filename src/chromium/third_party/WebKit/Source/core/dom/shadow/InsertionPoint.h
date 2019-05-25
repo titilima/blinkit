@@ -72,7 +72,9 @@ public:
 
 protected:
     InsertionPoint(const QualifiedName&, Document&);
+#ifndef BLINKIT_CRAWLER_ONLY
     bool layoutObjectIsNeeded(const ComputedStyle&) override;
+#endif
     void childrenChanged(const ChildrenChange&) override;
     InsertionNotificationRequest insertedInto(ContainerNode*) override;
     void removedFrom(ContainerNode*) override;
@@ -102,6 +104,7 @@ inline bool isActiveShadowInsertionPoint(const Node& node)
 // TODO(hayato): The function name is confusing. This neither resolve a reprojection nor support v1 shadow trees.
 inline ElementShadow* shadowWhereNodeCanBeDistributed(const Node& node)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     Node* parent = node.parentNode();
     if (!parent)
         return 0;
@@ -111,6 +114,7 @@ inline ElementShadow* shadowWhereNodeCanBeDistributed(const Node& node)
         return node.shadowHost()->shadow();
     if (parent->isElementNode())
         return toElement(parent)->shadow();
+#endif
     return 0;
 }
 

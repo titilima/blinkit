@@ -26,6 +26,10 @@ WindowNameCollection::WindowNameCollection(ContainerNode& document, const Atomic
 
 bool WindowNameCollection::elementMatches(const Element& element) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     // Match only images, forms, embeds and objects by name,
     // but anything by id
     if (isHTMLImageElement(element)
@@ -34,6 +38,7 @@ bool WindowNameCollection::elementMatches(const Element& element) const
             return true;
     }
     return element.getIdAttribute() == m_name;
+#endif
 }
 
 } // namespace blink

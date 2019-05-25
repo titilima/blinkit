@@ -67,7 +67,7 @@ bool DOMWindow::closed() const
 
 unsigned DOMWindow::length() const
 {
-    return frame() ? frame()->tree().scopedChildCount() : 0;
+    return frame() ? 1 : 0;
 }
 
 DOMWindow* DOMWindow::self() const
@@ -90,28 +90,25 @@ DOMWindow* DOMWindow::opener() const
 
 DOMWindow* DOMWindow::parent() const
 {
-    if (!frame())
-        return nullptr;
-
-    Frame* parent = frame()->tree().parent();
-    return parent ? parent->domWindow() : frame()->domWindow();
+    return frame() ? frame()->domWindow() : nullptr;
 }
 
 DOMWindow* DOMWindow::top() const
 {
-    if (!frame())
-        return nullptr;
-
-    return frame()->tree().top()->domWindow();
+    return frame() ? frame()->domWindow() : nullptr;
 }
 
 DOMWindow* DOMWindow::anonymousIndexedGetter(uint32_t index) const
 {
+    assert(false); // BKTODO:
+    return nullptr;
+#if 0
     if (!frame())
         return nullptr;
 
     Frame* child = frame()->tree().scopedChild(index);
     return child ? child->domWindow() : nullptr;
+#endif
 }
 
 bool DOMWindow::isCurrentlyDisplayedInFrame() const
@@ -123,6 +120,9 @@ bool DOMWindow::isCurrentlyDisplayedInFrame() const
 
 bool DOMWindow::isInsecureScriptAccess(LocalDOMWindow& callingWindow, const String& urlString)
 {
+    assert(false); // BKTODO:
+    return false;
+#if 0
     if (!protocolIsJavaScript(urlString))
         return false;
 
@@ -141,6 +141,7 @@ bool DOMWindow::isInsecureScriptAccess(LocalDOMWindow& callingWindow, const Stri
 
     callingWindow.printErrorMessage(crossDomainAccessErrorMessage(&callingWindow));
     return true;
+#endif
 }
 
 void DOMWindow::resetLocation()
@@ -155,10 +156,14 @@ void DOMWindow::resetLocation()
 
 bool DOMWindow::isSecureContext() const
 {
+    assert(false); // BKTODO:
+    return false;
+#if 0
     if (!frame())
         return false;
 
     return document()->isSecureContext(ExecutionContext::StandardSecureContextCheck);
+#endif
 }
 
 // FIXME: Once we're throwing exceptions for cross-origin access violations, we will always sanitize the target
@@ -168,6 +173,9 @@ bool DOMWindow::isSecureContext() const
 // http://crbug.com/17325
 String DOMWindow::sanitizedCrossDomainAccessErrorMessage(const LocalDOMWindow* callingWindow) const
 {
+    assert(false); // BKTODO:
+    return String();
+#if 0
     if (!callingWindow || !callingWindow->document() || !frame())
         return String();
 
@@ -183,10 +191,14 @@ String DOMWindow::sanitizedCrossDomainAccessErrorMessage(const LocalDOMWindow* c
     // FIXME: Evaluate which details from 'crossDomainAccessErrorMessage' may safely be reported to JavaScript.
 
     return message;
+#endif
 }
 
 String DOMWindow::crossDomainAccessErrorMessage(const LocalDOMWindow* callingWindow) const
 {
+    assert(false); // BKTODO:
+    return String();
+#if 0
     if (!callingWindow || !callingWindow->document() || !frame())
         return String();
 
@@ -223,10 +235,14 @@ String DOMWindow::crossDomainAccessErrorMessage(const LocalDOMWindow* callingWin
 
     // Default.
     return message + "Protocols, domains, and ports must match.";
+#endif
 }
 
 void DOMWindow::close(ExecutionContext* context)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     if (!frame() || !frame()->isMainFrame())
         return;
 
@@ -267,10 +283,14 @@ void DOMWindow::close(ExecutionContext* context)
     // state of this window. Scripts may access window.closed
     // before the deferred close operation has gone ahead.
     m_windowIsClosing = true;
+#endif
 }
 
 void DOMWindow::focus(ExecutionContext* context)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     if (!frame())
         return;
 
@@ -293,6 +313,7 @@ void DOMWindow::focus(ExecutionContext* context)
         page->chromeClient().focus();
 
     page->focusController().focusDocumentView(frame(), true /* notifyEmbedder */);
+#endif
 }
 
 DEFINE_TRACE(DOMWindow)

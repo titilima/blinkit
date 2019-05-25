@@ -27,7 +27,6 @@
 #include "core/editing/serializers/MarkupAccumulator.h"
 
 #include "core/HTMLNames.h"
-#include "core/XLinkNames.h"
 #include "core/XMLNSNames.h"
 #include "core/XMLNames.h"
 #include "core/dom/Attr.h"
@@ -166,6 +165,9 @@ bool MarkupAccumulator::serializeAsHTMLDocument(const Node& node) const
 template<typename Strategy>
 static void serializeNodesWithNamespaces(MarkupAccumulator& accumulator, Node& targetNode, EChildrenOnly childrenOnly, const Namespaces* namespaces)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     Namespaces namespaceHash;
     if (namespaces)
         namespaceHash = *namespaces;
@@ -181,6 +183,7 @@ static void serializeNodesWithNamespaces(MarkupAccumulator& accumulator, Node& t
 
     if (!childrenOnly && targetNode.isElementNode())
         accumulator.appendEndTag(toElement(targetNode));
+#endif
 }
 
 template<typename Strategy>

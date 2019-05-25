@@ -10,9 +10,11 @@ namespace blink {
 
 IntersectionObserverEntry::IntersectionObserverEntry(double time, const IntRect& boundingClientRect, const IntRect& rootBounds, const IntRect& intersectionRect, Element* target)
     : m_time(time)
+#ifndef BLINKIT_CRAWLER_ONLY
     , m_boundingClientRect(ClientRect::create(boundingClientRect))
     , m_rootBounds(ClientRect::create(rootBounds))
     , m_intersectionRect(ClientRect::create(intersectionRect))
+#endif
     , m_target(target)
 
 {
@@ -24,9 +26,11 @@ IntersectionObserverEntry::~IntersectionObserverEntry()
 
 DEFINE_TRACE(IntersectionObserverEntry)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     visitor->trace(m_boundingClientRect);
     visitor->trace(m_rootBounds);
     visitor->trace(m_intersectionRect);
+#endif
     visitor->trace(m_target);
 }
 

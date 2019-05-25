@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: SelectorQuery.cpp
+// Description: SelectorQuery Class
+//      Author: Ziming Li
+//     Created: 2019-05-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011, 2013 Apple Inc. All rights reserved.
  * Copyright (C) 2014 Samsung Electronics. All rights reserved.
@@ -400,6 +411,8 @@ static ContainerNode* firstWithinTraversingShadowTree(const ContainerNode& rootN
 
 static ContainerNode* nextTraversingShadowTree(const ContainerNode& node, const ContainerNode* rootNode)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (ShadowRoot* shadowRoot = authorShadowRootOf(node))
         return shadowRoot;
 
@@ -422,6 +435,7 @@ static ContainerNode* nextTraversingShadowTree(const ContainerNode& node, const 
 
         current = shadowRoot->host();
     }
+#endif
     return nullptr;
 }
 
@@ -543,6 +557,9 @@ PassRefPtrWillBeRawPtr<Element> SelectorQuery::queryFirst(ContainerNode& rootNod
 
 SelectorQuery* SelectorQueryCache::add(const AtomicString& selectors, const Document& document, ExceptionState& exceptionState)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     HashMap<AtomicString, OwnPtr<SelectorQuery>>::iterator it = m_entries.find(selectors);
     if (it != m_entries.end())
         return it->value.get();
@@ -565,6 +582,7 @@ SelectorQuery* SelectorQueryCache::add(const AtomicString& selectors, const Docu
         m_entries.remove(m_entries.begin());
 
     return m_entries.add(selectors, SelectorQuery::adopt(std::move(selectorList))).storedValue->value.get();
+#endif
 }
 
 void SelectorQueryCache::invalidate()

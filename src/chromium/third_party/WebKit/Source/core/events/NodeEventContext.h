@@ -53,7 +53,9 @@ public:
 
     EventTarget* target() const { return m_treeScopeEventContext->target(); }
     EventTarget* relatedTarget() const { return m_treeScopeEventContext->relatedTarget(); }
+#ifndef BLINKIT_CRAWLER_ONLY
     TouchEventContext* touchEventContext() const { return m_treeScopeEventContext->touchEventContext(); }
+#endif
 
     bool currentTargetSameAsTarget() const { return m_currentTarget.get() == target(); }
     void handleLocalEvents(Event&) const;

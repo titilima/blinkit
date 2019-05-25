@@ -51,8 +51,12 @@ static int maxOffsetIncludingCollapsedSpaces(Node* node)
 {
     int offset = caretMaxOffset(node);
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (node->layoutObject() && node->layoutObject()->isText())
         offset += collapsedSpaceLength(toLayoutText(node->layoutObject()), offset);
+#endif
 
     return offset;
 }
@@ -137,6 +141,9 @@ void SimplifiedBackwardsTextIteratorAlgorithm<Strategy>::init(Node* startNode, N
 template <typename Strategy>
 void SimplifiedBackwardsTextIteratorAlgorithm<Strategy>::advance()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     ASSERT(m_positionNode);
 
     if (m_shouldStop)
@@ -215,6 +222,7 @@ void SimplifiedBackwardsTextIteratorAlgorithm<Strategy>::advance()
         if (m_positionNode)
             return;
     }
+#endif
 }
 
 template <typename Strategy>
@@ -251,6 +259,10 @@ bool SimplifiedBackwardsTextIteratorAlgorithm<Strategy>::handleTextNode()
 template <typename Strategy>
 LayoutText* SimplifiedBackwardsTextIteratorAlgorithm<Strategy>::handleFirstLetter(int& startOffset, int& offsetInNode)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     LayoutText* layoutObject = toLayoutText(m_node->layoutObject());
     startOffset = (m_node == m_startNode) ? m_startOffset : 0;
 
@@ -288,6 +300,7 @@ LayoutText* SimplifiedBackwardsTextIteratorAlgorithm<Strategy>::handleFirstLette
     m_offset += collapsedSpaceLength(firstLetterLayoutObject, m_offset);
 
     return firstLetterLayoutObject;
+#endif
 }
 
 template <typename Strategy>
@@ -384,7 +397,12 @@ PositionTemplate<Strategy>SimplifiedBackwardsTextIteratorAlgorithm<Strategy>::en
 template <typename Strategy>
 bool SimplifiedBackwardsTextIteratorAlgorithm<Strategy>::isInTextSecurityMode() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+    return false;
+#else
     return isTextSecurityNode(node());
+#endif
 }
 
 template <typename Strategy>

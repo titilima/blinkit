@@ -52,6 +52,7 @@ DEFINE_TRACE(NodeEventContext)
 
 void NodeEventContext::handleLocalEvents(Event& event) const
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     if (touchEventContext()) {
         touchEventContext()->handleLocalEvents(event);
     } else if (relatedTarget()) {
@@ -61,6 +62,7 @@ void NodeEventContext::handleLocalEvents(Event& event) const
             toFocusEvent(event).setRelatedTarget(relatedTarget());
         }
     }
+#endif
     event.setTarget(target());
     event.setCurrentTarget(m_currentTarget.get());
     m_node->handleLocalEvents(event);

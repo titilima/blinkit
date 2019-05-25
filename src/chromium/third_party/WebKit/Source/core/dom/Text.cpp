@@ -34,7 +34,6 @@
 
 #include "bindings/core/v8/ExceptionState.h"
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
-#include "core/SVGNames.h"
 #include "core/css/resolver/StyleResolver.h"
 #include "core/dom/ExceptionCode.h"
 #include "core/dom/LayoutTreeBuilder.h"
@@ -45,8 +44,6 @@
 #include "core/events/ScopedEventQueue.h"
 #include "core/layout/LayoutText.h"
 #include "core/layout/LayoutTextCombine.h"
-#include "core/layout/svg/LayoutSVGInlineText.h"
-#include "core/svg/SVGForeignObjectElement.h"
 #include "wtf/text/CString.h"
 #include "wtf/text/StringBuilder.h"
 
@@ -54,11 +51,15 @@ namespace blink {
 
 PassRefPtrWillBeRawPtr<Text> Text::create(Document& document, const String& data)
 {
-    return adoptRefWillBeNoop(new Text(document, data, CreateText));
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(document.ForCrawler());
+#endif
+    return adoptRefWillBeNoop(new Text(document, data, document.ForCrawler() ? CreateCrawlerText : CreateText));
 }
 
 PassRefPtrWillBeRawPtr<Text> Text::createEditingText(Document& document, const String& data)
 {
+    ASSERT(!document.ForCrawler());
     return adoptRefWillBeNoop(new Text(document, data, CreateEditingText));
 }
 
@@ -66,6 +67,8 @@ PassRefPtrWillBeRawPtr<Node> Text::mergeNextSiblingNodesIfPossible()
 {
     RefPtrWillBeRawPtr<Node> protect(this);
 
+    assert(false); // BKTODO:
+#if 0
     // Remove empty text nodes.
     if (!length()) {
         // Care must be taken to get the next node before removing the current node.
@@ -108,12 +111,16 @@ PassRefPtrWillBeRawPtr<Node> Text::mergeNextSiblingNodesIfPossible()
         didModifyData(oldTextData, CharacterData::UpdateFromNonParser);
         nextText->remove(IGNORE_EXCEPTION);
     }
+#endif
 
     return NodeTraversal::nextPostOrder(*this);
 }
 
 PassRefPtrWillBeRawPtr<Text> Text::splitText(unsigned offset, ExceptionState& exceptionState)
 {
+    assert(false); // BKTODO:
+    return nullptr;
+#if 0
     // IndexSizeError: Raised if the specified offset is negative or greater than
     // the number of 16-bit units in data.
     if (offset > length()) {
@@ -140,6 +147,7 @@ PassRefPtrWillBeRawPtr<Text> Text::splitText(unsigned offset, ExceptionState& ex
         document().didSplitTextNode(*this);
 
     return newText.release();
+#endif
 }
 
 static const Text* earliestLogicallyAdjacentTextNode(const Text* t)
@@ -247,6 +255,7 @@ PassRefPtrWillBeRawPtr<Node> Text::cloneNode(bool /*deep*/)
     return cloneWithData(data());
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 static inline bool canHaveWhitespaceChildren(const LayoutObject& parent, Text* text)
 {
     // <button> should allow whitespace even though LayoutFlexibleBox doesn't.
@@ -267,10 +276,6 @@ static inline bool canHaveWhitespaceChildren(const LayoutObject& parent, Text* t
 
 bool Text::textLayoutObjectIsNeeded(const ComputedStyle& style, const LayoutObject& parent)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return false;
-#else
     if (!parent.canHaveChildren())
         return false;
 
@@ -333,46 +338,32 @@ bool Text::textLayoutObjectIsNeeded(const ComputedStyle& style, const LayoutObje
         }
     }
     return true;
-#endif
-}
-
-static bool isSVGText(Text* text)
-{
-    Node* parentOrShadowHostNode = text->parentOrShadowHostNode();
-    ASSERT(parentOrShadowHostNode);
-    return parentOrShadowHostNode->isSVGElement() && !isSVGForeignObjectElement(*parentOrShadowHostNode);
 }
 
 LayoutText* Text::createTextLayoutObject(const ComputedStyle& style)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return nullptr;
-#else
-    if (isSVGText(this))
-        return new LayoutSVGInlineText(this, dataImpl());
-
     if (style.hasTextCombine())
         return new LayoutTextCombine(this, dataImpl());
 
     return new LayoutText(this, dataImpl());
-#endif
 }
 
 void Text::attach(const AttachContext& context)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
-    if (ContainerNode* layoutParent = LayoutTreeBuilderTraversal::parent(*this)) {
-        if (LayoutObject* parentLayoutObject = layoutParent->layoutObject()) {
-            if (textLayoutObjectIsNeeded(*parentLayoutObject->style(), *parentLayoutObject))
-                LayoutTreeBuilderForText(*this, parentLayoutObject).createLayoutObject();
+    if (!ForCrawler())
+    {
+        if (ContainerNode * layoutParent = LayoutTreeBuilderTraversal::parent(*this))
+        {
+            if (LayoutObject * parentLayoutObject = layoutParent->layoutObject())
+            {
+                if (textLayoutObjectIsNeeded(*parentLayoutObject->style(), *parentLayoutObject))
+                    LayoutTreeBuilderForText(*this, parentLayoutObject).createLayoutObject();
+            }
         }
     }
-#endif
     CharacterData::attach(context);
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 void Text::reattachIfNeeded(const AttachContext& context)
 {
@@ -427,12 +418,18 @@ void Text::recalcTextStyle(StyleRecalcChange change, Text* nextTextSibling)
 // need to create one if the parent style now has white-space: pre.
 bool Text::needsWhitespaceLayoutObject()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     ASSERT(!layoutObject());
     if (const ComputedStyle* style = parentComputedStyle())
         return style->preserveNewline();
     return false;
+#endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void Text::updateTextLayoutObject(unsigned offsetOfReplacedData, unsigned lengthOfReplacedData, RecalcStyleBehavior recalcStyleBehavior)
 {
     if (!inActiveDocument())
@@ -447,6 +444,7 @@ void Text::updateTextLayoutObject(unsigned offsetOfReplacedData, unsigned length
     }
     textLayoutObject->setTextWithOffset(dataImpl(), offsetOfReplacedData, lengthOfReplacedData);
 }
+#endif
 
 PassRefPtrWillBeRawPtr<Text> Text::cloneWithData(const String& data)
 {
@@ -457,25 +455,5 @@ DEFINE_TRACE(Text)
 {
     CharacterData::trace(visitor);
 }
-
-#ifndef NDEBUG
-void Text::formatForDebugger(char *buffer, unsigned length) const
-{
-    StringBuilder result;
-    String s;
-
-    result.append(nodeName());
-
-    s = data();
-    if (s.length() > 0) {
-        if (result.length())
-            result.appendLiteral("; ");
-        result.appendLiteral("value=");
-        result.append(s);
-    }
-
-    strncpy(buffer, result.toString().utf8().data(), length - 1);
-}
-#endif
 
 } // namespace blink

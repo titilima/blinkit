@@ -42,7 +42,6 @@
 #include "core/fetch/FetchRequest.h"
 #include "core/fetch/ResourceFetcher.h"
 #include "core/fetch/XSLStyleSheetResource.h"
-#include "core/xml/parser/XMLDocumentParser.h" // for parseAttributes()
 
 namespace blink {
 
@@ -128,6 +127,9 @@ void ProcessingInstruction::didAttributeChanged()
 
 bool ProcessingInstruction::checkStyleSheet(String& href, String& charset)
 {
+    ASSERT(false); // BKTODO: Not reached!
+    return false;
+#if 0
     if (m_target != "xml-stylesheet" || !document().frame() || parentNode() != document())
         return false;
 
@@ -155,10 +157,14 @@ bool ProcessingInstruction::checkStyleSheet(String& href, String& charset)
     m_media = attrs.get("media");
 
     return !m_alternate || !m_title.isEmpty();
+#endif
 }
 
 void ProcessingInstruction::process(const String& href, const String& charset)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (href.length() > 1 && href[0] == '#') {
         m_localHref = href.substring(1);
         return;
@@ -175,13 +181,10 @@ void ProcessingInstruction::process(const String& href, const String& charset)
 
     if (resource) {
         m_loading = true;
-#ifdef BLINKIT_CRAWLER_ONLY
-        assert(false); // BKTODO: Not reached!
-#else
         document().styleEngine().addPendingSheet();
-#endif
         setResource(resource);
     }
+#endif
 }
 
 bool ProcessingInstruction::isLoading() const
@@ -200,6 +203,9 @@ bool ProcessingInstruction::sheetLoaded()
 
 void ProcessingInstruction::setCSSStyleSheet(const String& href, const KURL& baseURL, const String& charset, const CSSStyleSheetResource* sheet)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!inDocument()) {
         ASSERT(!m_sheet);
         return;
@@ -221,6 +227,7 @@ void ProcessingInstruction::setCSSStyleSheet(const String& href, const KURL& bas
     // getting the sheet text in "strict" mode. This enforces a valid CSS MIME
     // type.
     parseStyleSheet(sheet->sheetText());
+#endif
 }
 
 void ProcessingInstruction::setXSLStyleSheet(const String& href, const KURL& baseURL, const String& sheet)
@@ -235,6 +242,9 @@ void ProcessingInstruction::setXSLStyleSheet(const String& href, const KURL& bas
 
 void ProcessingInstruction::parseStyleSheet(const String& sheet)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (m_isCSS)
         toCSSStyleSheet(m_sheet.get())->contents()->parseString(sheet);
 
@@ -243,6 +253,7 @@ void ProcessingInstruction::parseStyleSheet(const String& sheet)
 
     if (m_isCSS)
         toCSSStyleSheet(m_sheet.get())->contents()->checkLoaded();
+#endif
 }
 
 Node::InsertionNotificationRequest ProcessingInstruction::insertedInto(ContainerNode* insertionPoint)
@@ -261,6 +272,9 @@ Node::InsertionNotificationRequest ProcessingInstruction::insertedInto(Container
 
 void ProcessingInstruction::removedFrom(ContainerNode* insertionPoint)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     CharacterData::removedFrom(insertionPoint);
     if (!insertionPoint->inDocument())
         return;
@@ -277,6 +291,7 @@ void ProcessingInstruction::removedFrom(ContainerNode* insertionPoint)
     // If we're in document teardown, then we don't need to do any notification of our sheet's removal.
     if (document().isActive())
         document().removedStyleSheet(removedSheet.get());
+#endif
 }
 
 void ProcessingInstruction::clearSheet()

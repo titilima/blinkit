@@ -16,11 +16,14 @@ namespace blink {
 
 IntersectionObservation::IntersectionObservation(IntersectionObserver& observer, Element& target, bool shouldReportRootBounds)
     : m_observer(observer)
+#ifndef BLINKIT_CRAWLER_ONLY
     , m_target(target.ensureIntersectionObserverData().createWeakPtr(&target))
+#endif
     , m_active(true)
     , m_shouldReportRootBounds(shouldReportRootBounds)
     , m_lastThresholdIndex(0)
 {
+    assert(false); // BKTODO: Not reached!
 }
 
 Element* IntersectionObservation::target() const
@@ -30,6 +33,9 @@ Element* IntersectionObservation::target() const
 
 void IntersectionObservation::initializeGeometry(IntersectionGeometry& geometry)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     ASSERT(m_target);
     LayoutObject* targetLayoutObject = target()->layoutObject();
     if (targetLayoutObject->isBoxModelObject())
@@ -37,10 +43,14 @@ void IntersectionObservation::initializeGeometry(IntersectionGeometry& geometry)
     else
         geometry.targetRect = toLayoutText(targetLayoutObject)->visualOverflowRect();
     geometry.intersectionRect = geometry.targetRect;
+#endif
 }
 
 void IntersectionObservation::clipToRoot(LayoutRect& rect)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // Map and clip rect into root element coordinates.
     // TODO(szager): the writing mode flipping needs a test.
     ASSERT(m_target);
@@ -55,10 +65,14 @@ void IntersectionObservation::clipToRoot(LayoutRect& rect)
         rect.intersect(clipRect);
         rootLayoutBox->flipForWritingMode(rect);
     }
+#endif
 }
 
 void IntersectionObservation::clipToFrameView(IntersectionGeometry& geometry)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     Node* rootNode = m_observer->root();
     LayoutObject* rootLayoutObject = m_observer->rootLayoutObject();
     if (rootLayoutObject->isLayoutView()) {
@@ -77,15 +91,24 @@ void IntersectionObservation::clipToFrameView(IntersectionGeometry& geometry)
     geometry.targetRect.moveBy(-scrollPosition);
     geometry.intersectionRect.moveBy(-scrollPosition);
     geometry.rootRect.moveBy(-scrollPosition);
+#endif
 }
 
 static void mapRectToDocumentCoordinates(LayoutObject& layoutObject, LayoutRect& rect)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     rect = LayoutRect(layoutObject.localToAbsoluteQuad(FloatQuad(FloatRect(rect)), UseTransforms | ApplyContainerFlip | TraverseDocumentBoundaries).boundingBox());
+#endif
 }
 
 bool IntersectionObservation::computeGeometry(IntersectionGeometry& geometry)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     ASSERT(m_target);
     LayoutObject* rootLayoutObject = m_observer->rootLayoutObject();
     LayoutObject* targetLayoutObject = target()->layoutObject();
@@ -120,10 +143,14 @@ bool IntersectionObservation::computeGeometry(IntersectionGeometry& geometry)
         geometry.rootRect = LayoutRect();
 
     return true;
+#endif
 }
 
 void IntersectionObservation::computeIntersectionObservations(double timestamp)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // Pre-oilpan, there will be a delay between the time when the target Element gets deleted
     // (because its ref count dropped to zero) and when this IntersectionObservation gets
     // deleted (during the next gc run, because the target Element is the only thing keeping
@@ -157,14 +184,19 @@ void IntersectionObservation::computeIntersectionObservations(double timestamp)
         observer().enqueueIntersectionObserverEntry(*newEntry);
     }
     setLastThresholdIndex(newThresholdIndex);
+#endif
 }
 
 void IntersectionObservation::disconnect()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (m_target)
         target()->ensureIntersectionObserverData().removeObservation(this->observer());
     m_observer->removeObservation(*this);
     m_observer.clear();
+#endif
 }
 
 DEFINE_TRACE(IntersectionObservation)

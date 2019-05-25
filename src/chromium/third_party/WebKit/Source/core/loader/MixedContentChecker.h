@@ -69,15 +69,11 @@ public:
     static bool isMixedContent(SecurityOrigin*, const KURL&);
     static bool isMixedFormAction(LocalFrame*, const KURL&, ReportingStatus = SendReport);
 
-    static void checkMixedPrivatePublic(LocalFrame*, const AtomicString& resourceIPAddress);
-
     static ContextType contextTypeForInspector(LocalFrame*, const ResourceRequest&);
 
     // Returns the frame that should be considered the effective frame
     // for a mixed content check for the given frame type.
     static LocalFrame* effectiveFrameForFrameType(LocalFrame*, WebURLRequest::FrameType);
-
-    static void handleCertificateError(LocalFrame*, const ResourceRequest&, const ResourceResponse&);
 
 private:
     FRIEND_TEST_ALL_PREFIXES(MixedContentCheckerTest, HandleCertificateError);

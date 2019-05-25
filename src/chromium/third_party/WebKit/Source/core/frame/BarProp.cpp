@@ -47,6 +47,8 @@ DEFINE_TRACE(BarProp)
 
 bool BarProp::visible() const
 {
+    assert(false); // BKTODO:
+#if 0
     if (!m_frame)
         return false;
     FrameHost* host = m_frame->host();
@@ -65,6 +67,7 @@ bool BarProp::visible() const
     case Statusbar:
         return host->chromeClient().statusbarVisible();
     }
+#endif
 
     ASSERT_NOT_REACHED();
     return false;

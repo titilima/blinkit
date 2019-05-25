@@ -5,7 +5,6 @@
 #include "core/input/TouchActionUtil.h"
 
 #include "core/dom/Node.h"
-#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/layout/LayoutBox.h"
 #include "core/layout/LayoutObject.h"
 
@@ -30,6 +29,8 @@ bool supportsTouchAction(const LayoutObject& object)
 
 const Node* parentNodeAcrossFrames(const Node* curNode)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     Node* parentNode = ComposedTreeTraversal::parent(*curNode);
     if (parentNode)
         return parentNode;
@@ -38,6 +39,7 @@ const Node* parentNodeAcrossFrames(const Node* curNode)
         const Document* doc = toDocument(curNode);
         return doc->ownerElement();
     }
+#endif
 
     return nullptr;
 }

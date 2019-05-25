@@ -46,7 +46,12 @@ LabelsNodeList::~LabelsNodeList()
 
 bool LabelsNodeList::elementMatches(const Element& element) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     return isHTMLLabelElement(element) && toHTMLLabelElement(element).control() == ownerNode();
+#endif
 }
 
 } // namespace blink

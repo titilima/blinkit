@@ -59,6 +59,9 @@ namespace blink {
 
 static Frame* createWindow(LocalFrame& openerFrame, LocalFrame& lookupFrame, const FrameLoadRequest& request, const WindowFeatures& features, NavigationPolicy policy, ShouldSetOpener shouldSetOpener, bool& created)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     created = false;
 
     ASSERT(!features.dialog || request.frameName().isEmpty());
@@ -120,6 +123,7 @@ static Frame* createWindow(LocalFrame& openerFrame, LocalFrame& lookupFrame, con
 
     created = true;
     return &frame;
+#endif
 }
 
 DOMWindow* createWindow(const String& urlString, const AtomicString& frameName, const WindowFeatures& windowFeatures,

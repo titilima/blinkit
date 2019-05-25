@@ -37,7 +37,6 @@
 
 #include "bindings/core/v8/ExceptionState.h"
 #include "core/HTMLNames.h"
-#include "core/SVGNames.h"
 #include "core/css/CSSStyleSheet.h"
 #include "core/css/MediaList.h"
 #include "core/css/StyleSheetContents.h"
@@ -48,7 +47,6 @@
 #include "core/dom/ExceptionCode.h"
 #include "core/dom/Text.h"
 #include "core/dom/XMLDocument.h"
-#include "core/dom/custom/CustomElementRegistrationContext.h"
 #include "core/frame/LocalFrame.h"
 #include "core/frame/UseCounter.h"
 #include "core/html/HTMLDocument.h"
@@ -62,6 +60,8 @@
 #include "platform/weborigin/SecurityOrigin.h"
 #include "wtf/StdLibExtras.h"
 
+#include "blinkit/crawler/crawler_document.h"
+
 namespace blink {
 
 DOMImplementation::DOMImplementation(Document& document)
@@ -72,16 +72,24 @@ DOMImplementation::DOMImplementation(Document& document)
 PassRefPtrWillBeRawPtr<DocumentType> DOMImplementation::createDocumentType(const AtomicString& qualifiedName,
     const String& publicId, const String& systemId, ExceptionState& exceptionState)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     AtomicString prefix, localName;
     if (!Document::parseQualifiedName(qualifiedName, prefix, localName, exceptionState))
         return nullptr;
 
     return DocumentType::create(m_document, qualifiedName, publicId, systemId);
+#endif
 }
 
 PassRefPtrWillBeRawPtr<XMLDocument> DOMImplementation::createDocument(const AtomicString& namespaceURI,
     const AtomicString& qualifiedName, DocumentType* doctype, ExceptionState& exceptionState)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     RefPtrWillBeRawPtr<XMLDocument> doc = nullptr;
     DocumentInit init = DocumentInit::fromContext(document().contextDocument());
     if (namespaceURI == SVGNames::svgNamespaceURI) {
@@ -108,6 +116,7 @@ PassRefPtrWillBeRawPtr<XMLDocument> DOMImplementation::createDocument(const Atom
         doc->appendChild(documentElement.release());
 
     return doc.release();
+#endif
 }
 
 bool DOMImplementation::isXMLMIMEType(const String& mimeType)
@@ -202,8 +211,11 @@ bool DOMImplementation::isTextMIMEType(const String& mimeType)
 
 PassRefPtrWillBeRawPtr<HTMLDocument> DOMImplementation::createHTMLDocument(const String& title)
 {
-    DocumentInit init = DocumentInit::fromContext(document().contextDocument())
-        .withRegistrationContext(document().registrationContext());
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
+    DocumentInit init = DocumentInit::fromContext(document().contextDocument());
     RefPtrWillBeRawPtr<HTMLDocument> d = HTMLDocument::create(init);
     d->open();
     d->write("<!doctype html><html><head></head><body></body></html>");
@@ -217,16 +229,23 @@ PassRefPtrWillBeRawPtr<HTMLDocument> DOMImplementation::createHTMLDocument(const
     d->setSecurityOrigin(document().securityOrigin()->isolatedCopy());
     d->setContextFeatures(document().contextFeatures());
     return d.release();
+#endif
 }
 
-PassRefPtrWillBeRawPtr<Document> DOMImplementation::createDocument(const String& type, const DocumentInit& init, bool inViewSourceMode)
+PassRefPtrWillBeRawPtr<Document> DOMImplementation::createDocument(const String& type, const DocumentInit& init)
 {
-    ASSERT(!inViewSourceMode);
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(init.frame()->IsCrawlerFrame());
+    return adoptRefWillBeNoop(new BlinKit::CrawlerDocument(init));
+#else
+    if (init.frame()->IsCrawlerFrame())
+        return adoptRefWillBeNoop(new BlinKit::CrawlerDocument(init));
     if (type == "text/html")
         return HTMLDocument::create(init);
     if (type == "application/xhtml+xml")
         return XMLDocument::createXHTML(init);
     return HTMLDocument::create(init);
+#endif
 }
 
 DEFINE_TRACE(DOMImplementation)

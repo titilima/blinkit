@@ -39,7 +39,9 @@ public:
     static PassRefPtrWillBeRawPtr<Text> create(Document&, const String&);
     static PassRefPtrWillBeRawPtr<Text> createEditingText(Document&, const String&);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     LayoutText* layoutObject() const;
+#endif
 
     // mergeNextSiblingNodesIfPossible() merges next sibling nodes if possible
     // then returns a node not merged.
@@ -52,11 +54,13 @@ public:
     PassRefPtrWillBeRawPtr<Text> replaceWholeText(const String&);
 
     void recalcTextStyle(StyleRecalcChange, Text* nextTextSibling);
+#ifndef BLINKIT_CRAWLER_ONLY
     bool textLayoutObjectIsNeeded(const ComputedStyle&, const LayoutObject& parent);
     LayoutText* createTextLayoutObject(const ComputedStyle&);
     void updateTextLayoutObject(unsigned offsetOfReplacedData, unsigned lengthOfReplacedData, RecalcStyleBehavior = DoNotRecalcStyle);
 
     void attach(const AttachContext& = AttachContext()) final;
+#endif
     void reattachIfNeeded(const AttachContext& = AttachContext());
 
     bool canContainRangeEndPoint() const final { return true; }
@@ -78,9 +82,6 @@ private:
 
     virtual PassRefPtrWillBeRawPtr<Text> cloneWithData(const String&);
 
-#ifndef NDEBUG
-    void formatForDebugger(char* buffer, unsigned length) const override;
-#endif
 };
 
 DEFINE_NODE_TYPE_CASTS(Text, isTextNode());

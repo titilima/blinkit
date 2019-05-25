@@ -46,6 +46,9 @@ Screen::Screen(LocalFrame* frame)
 
 int Screen::height() const
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     if (!m_frame)
         return 0;
     FrameHost* host = m_frame->host();
@@ -54,10 +57,14 @@ int Screen::height() const
     if (host->settings().reportScreenSizeInPhysicalPixelsQuirk())
         return lroundf(host->chromeClient().screenInfo().rect.height * host->deviceScaleFactor());
     return host->chromeClient().screenInfo().rect.height;
+#endif
 }
 
 int Screen::width() const
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     if (!m_frame)
         return 0;
     FrameHost* host = m_frame->host();
@@ -66,24 +73,36 @@ int Screen::width() const
     if (host->settings().reportScreenSizeInPhysicalPixelsQuirk())
         return lroundf(host->chromeClient().screenInfo().rect.width * host->deviceScaleFactor());
     return host->chromeClient().screenInfo().rect.width;
+#endif
 }
 
 unsigned Screen::colorDepth() const
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     if (!m_frame || !m_frame->host())
         return 0;
     return static_cast<unsigned>(m_frame->host()->chromeClient().screenInfo().depth);
+#endif
 }
 
 unsigned Screen::pixelDepth() const
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     if (!m_frame)
         return 0;
     return static_cast<unsigned>(m_frame->host()->chromeClient().screenInfo().depth);
+#endif
 }
 
 int Screen::availLeft() const
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     if (!m_frame)
         return 0;
     FrameHost* host = m_frame->host();
@@ -92,10 +111,14 @@ int Screen::availLeft() const
     if (host->settings().reportScreenSizeInPhysicalPixelsQuirk())
         return lroundf(host->chromeClient().screenInfo().availableRect.x * host->deviceScaleFactor());
     return static_cast<int>(host->chromeClient().screenInfo().availableRect.x);
+#endif
 }
 
 int Screen::availTop() const
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     if (!m_frame)
         return 0;
     FrameHost* host = m_frame->host();
@@ -104,10 +127,14 @@ int Screen::availTop() const
     if (host->settings().reportScreenSizeInPhysicalPixelsQuirk())
         return lroundf(host->chromeClient().screenInfo().availableRect.y * host->deviceScaleFactor());
     return static_cast<int>(host->chromeClient().screenInfo().availableRect.y);
+#endif
 }
 
 int Screen::availHeight() const
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     if (!m_frame)
         return 0;
     FrameHost* host = m_frame->host();
@@ -116,10 +143,14 @@ int Screen::availHeight() const
     if (host->settings().reportScreenSizeInPhysicalPixelsQuirk())
         return lroundf(host->chromeClient().screenInfo().availableRect.height * host->deviceScaleFactor());
     return host->chromeClient().screenInfo().availableRect.height;
+#endif
 }
 
 int Screen::availWidth() const
 {
+    assert(false); // BKTODO:
+    return 0;
+#if 0
     if (!m_frame)
         return 0;
     FrameHost* host = m_frame->host();
@@ -128,6 +159,7 @@ int Screen::availWidth() const
     if (host->settings().reportScreenSizeInPhysicalPixelsQuirk())
         return lroundf(host->chromeClient().screenInfo().availableRect.width * host->deviceScaleFactor());
     return host->chromeClient().screenInfo().availableRect.width;
+#endif
 }
 
 DEFINE_TRACE(Screen)

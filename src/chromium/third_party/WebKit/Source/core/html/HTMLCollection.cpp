@@ -231,9 +231,19 @@ static inline bool isMatchingHTMLElement(const HTMLCollection& htmlCollection, c
     case SelectOptions:
         return toHTMLOptionsCollection(htmlCollection).elementMatches(element);
     case SelectedOptions:
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(false); // Not reached!
+        return false;
+#else
         return isHTMLOptionElement(element) && toHTMLOptionElement(element).selected();
+#endif
     case DataListOptions:
+#ifdef BLINKIT_CRAWLER_ONLY
+        assert(false); // Not reached!
+        return false;
+#else
         return toHTMLDataListOptionsCollection(htmlCollection).elementMatches(element);
+#endif
     case MapAreas:
         return element.hasTagName(areaTag);
     case DocApplets:
@@ -322,9 +332,6 @@ static inline bool nameShouldBeVisibleInDocumentAll(const HTMLElement& element)
     return element.hasTagName(aTag)
         || element.hasTagName(areaTag)
         || element.hasTagName(formTag)
-        || element.hasTagName(frameTag)
-        || element.hasTagName(framesetTag)
-        || element.hasTagName(iframeTag)
         || element.hasTagName(imgTag)
         || element.hasTagName(inputTag)
         || element.hasTagName(selectTag);

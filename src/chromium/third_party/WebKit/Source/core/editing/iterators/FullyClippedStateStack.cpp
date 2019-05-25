@@ -16,18 +16,28 @@ namespace {
 
 inline bool fullyClipsContents(Node* node)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     LayoutObject* layoutObject = node->layoutObject();
     if (!layoutObject || !layoutObject->isBox() || !layoutObject->hasOverflowClip() || layoutObject->isLayoutView())
         return false;
     return toLayoutBox(layoutObject)->size().isEmpty();
+#endif
 }
 
 inline bool ignoresContainerClip(Node* node)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     LayoutObject* layoutObject = node->layoutObject();
     if (!layoutObject || layoutObject->isText())
         return false;
     return layoutObject->style()->hasOutOfFlowPosition();
+#endif
 }
 
 template <typename Strategy>

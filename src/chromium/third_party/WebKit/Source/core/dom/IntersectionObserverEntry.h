@@ -21,18 +21,22 @@ public:
     ~IntersectionObserverEntry();
 
     double time() const { return m_time; }
+#ifndef BLINKIT_CRAWLER_ONLY
     ClientRect* boundingClientRect() const { return m_boundingClientRect; }
     ClientRect* rootBounds() const { return m_rootBounds; }
     ClientRect* intersectionRect() const { return m_intersectionRect; }
+#endif
     Element* target() const { return m_target.get(); }
 
     DECLARE_VIRTUAL_TRACE();
 
 private:
     double m_time;
+#ifndef BLINKIT_CRAWLER_ONLY
     Member<ClientRect> m_boundingClientRect;
     Member<ClientRect> m_rootBounds;
     Member<ClientRect> m_intersectionRect;
+#endif
     RefPtrWillBeMember<Element> m_target;
 };
 

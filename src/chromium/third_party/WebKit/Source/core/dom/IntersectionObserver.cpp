@@ -25,7 +25,6 @@
 #include "core/dom/IntersectionObserverEntry.h"
 #include "core/dom/IntersectionObserverInit.h"
 #include "core/dom/NodeIntersectionObserverData.h"
-#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/layout/LayoutView.h"
 #include "platform/Timer.h"
 #include "wtf/MainThread.h"
@@ -137,6 +136,9 @@ IntersectionObserver::IntersectionObserver(IntersectionObserverCallback& callbac
     , m_bottomMargin(Fixed)
     , m_leftMargin(Fixed)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     if (root.isDocumentNode())
         m_root = toDocument(root).ensureIntersectionObserverData().createWeakPtr(&root);
     else
@@ -167,18 +169,27 @@ IntersectionObserver::IntersectionObserver(IntersectionObserverCallback& callbac
         break;
     }
     root.document().ensureIntersectionObserverController().addTrackedObserver(*this);
+#endif
 }
 
 LayoutObject* IntersectionObserver::rootLayoutObject() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return nullptr;
+#else
     Node* rootNode = root();
     if (rootNode->isDocumentNode())
         return toDocument(rootNode)->layoutView();
     return toElement(rootNode)->layoutObject();
+#endif
 }
 
 bool IntersectionObserver::isDescendantOfRoot(const Element* target) const
 {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     // Is m_root an ancestor, through the DOM and frame trees, of target?
     Node* rootNode = root();
     if (!rootNode || !target || target == rootNode)
@@ -199,10 +210,13 @@ bool IntersectionObserver::isDescendantOfRoot(const Element* target) const
         return true;
     }
     return target->isDescendantOf(rootNode);
+#endif
 }
 
 void IntersectionObserver::observe(Element* target, ExceptionState& exceptionState)
 {
+    assert(false); // BKTODO:
+#if 0
     checkRootAndDetachIfNeeded();
     if (!m_root) {
         exceptionState.throwDOMException(HierarchyRequestError, "Invalid observer: root element or containing document has been deleted.");
@@ -234,16 +248,21 @@ void IntersectionObserver::observe(Element* target, ExceptionState& exceptionSta
     IntersectionObservation* observation = new IntersectionObservation(*this, *target, shouldReportRootBounds);
     target->ensureIntersectionObserverData().addObservation(*observation);
     m_observations.add(observation);
+#endif
 }
 
 void IntersectionObserver::unobserve(Element* target, ExceptionState&)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     checkRootAndDetachIfNeeded();
     if (!target || !target->intersectionObserverData())
         return;
     // TODO(szager): unobserve callback
     if (IntersectionObservation* observation = target->intersectionObserverData()->getObservationFor(*this))
         observation->disconnect();
+#endif
 }
 
 void IntersectionObserver::computeIntersectionObservations(double timestamp)
@@ -279,8 +298,12 @@ HeapVector<Member<IntersectionObserverEntry>> IntersectionObserver::takeRecords(
 
 void IntersectionObserver::enqueueIntersectionObserverEntry(IntersectionObserverEntry& entry)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     m_entries.append(&entry);
     toDocument(m_callback->executionContext())->ensureIntersectionObserverController().scheduleIntersectionObserverForDelivery(*this);
+#endif
 }
 
 static LayoutUnit computeMargin(const Length& length, LayoutUnit referenceLength)

@@ -34,6 +34,9 @@ namespace blink {
 
 void TreeScopeAdopter::moveTreeToNewScope(Node& root) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     ASSERT(needsScopeChange());
 
 #if !ENABLE(OILPAN)
@@ -80,10 +83,14 @@ void TreeScopeAdopter::moveTreeToNewScope(Node& root) const
 #if !ENABLE(OILPAN)
     oldScope().guardDeref();
 #endif
+#endif
 }
 
 void TreeScopeAdopter::moveTreeToNewDocument(Node& root, Document& oldDocument, Document& newDocument) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     ASSERT(oldDocument != newDocument);
     for (Node& node : NodeTraversal::inclusiveDescendantsOf(root)) {
         moveNodeToNewDocument(node, oldDocument, newDocument);
@@ -97,9 +104,12 @@ void TreeScopeAdopter::moveTreeToNewDocument(Node& root, Document& oldDocument, 
                 moveTreeToNewDocument(*attr, oldDocument, newDocument);
         }
 
+#ifndef BLINKIT_CRAWLER_ONLY
         for (ShadowRoot* shadow = element.youngestShadowRoot(); shadow; shadow = shadow->olderShadowRoot())
             moveTreeToNewDocument(*shadow, oldDocument, newDocument);
+#endif
     }
+#endif
 }
 
 #if ENABLE(ASSERT)
@@ -127,6 +137,9 @@ inline void TreeScopeAdopter::updateTreeScope(Node& node) const
 
 inline void TreeScopeAdopter::moveNodeToNewDocument(Node& node, Document& oldDocument, Document& newDocument) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     ASSERT(oldDocument != newDocument);
 
     if (node.hasRareData()) {
@@ -147,6 +160,7 @@ inline void TreeScopeAdopter::moveNodeToNewDocument(Node& node, Document& oldDoc
 
     node.didMoveToNewDocument(oldDocument);
     ASSERT(didMoveToNewDocumentWasCalled);
+#endif
 }
 
 }

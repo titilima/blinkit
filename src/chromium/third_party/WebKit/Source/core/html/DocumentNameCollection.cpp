@@ -24,13 +24,17 @@ DocumentNameCollection::DocumentNameCollection(ContainerNode& document, const At
 
 bool DocumentNameCollection::elementMatches(const HTMLElement& element) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // Match images, forms, embeds, objects and iframes by name,
     // object by id, and images by id but only if they have
     // a name attribute (this very strange rule matches IE)
-    if (isHTMLFormElement(element) || isHTMLIFrameElement(element))
+    if (isHTMLFormElement(element))
         return element.getNameAttribute() == m_name;
     if (isHTMLImageElement(element))
         return element.getNameAttribute() == m_name || (element.getIdAttribute() == m_name && element.hasName());
+#endif
     return false;
 }
 

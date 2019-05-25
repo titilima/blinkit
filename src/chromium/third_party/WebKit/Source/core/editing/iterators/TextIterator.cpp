@@ -143,6 +143,9 @@ TextIteratorAlgorithm<Strategy>::TextIteratorAlgorithm(const PositionTemplate<St
     // The call to emitsOriginalText() must occur after m_behavior is initialized.
     , m_textState(emitsOriginalText())
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     ASSERT(start.isNotNull());
     ASSERT(end.isNotNull());
     // Updates layout here since, |Position.compareTo()| and |initialize()|
@@ -153,6 +156,7 @@ TextIteratorAlgorithm<Strategy>::TextIteratorAlgorithm(const PositionTemplate<St
         return;
     }
     initialize(start.computeContainerNode(), start.computeOffsetInContainerNode(), end.computeContainerNode(), end.computeOffsetInContainerNode());
+#endif
 }
 
 template<typename Strategy>
@@ -212,16 +216,24 @@ TextIteratorAlgorithm<Strategy>::~TextIteratorAlgorithm()
 template<typename Strategy>
 bool TextIteratorAlgorithm<Strategy>::isInsideAtomicInlineElement() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     if (atEnd() || length() != 1 || !m_node)
         return false;
 
     LayoutObject* layoutObject = m_node->layoutObject();
     return layoutObject && layoutObject->isAtomicInlineLevel();
+#endif
 }
 
 template<typename Strategy>
 void TextIteratorAlgorithm<Strategy>::advance()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (m_shouldStop)
         return;
 
@@ -418,10 +430,15 @@ void TextIteratorAlgorithm<Strategy>::advance()
         if (m_textState.positionNode())
             return;
     }
+#endif
 }
 
 static bool hasVisibleTextNode(LayoutText* layoutObject)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     if (layoutObject->style()->visibility() == VISIBLE)
         return true;
 
@@ -435,11 +452,16 @@ static bool hasVisibleTextNode(LayoutText* layoutObject)
     ASSERT(fragment->firstLetterPseudoElement());
     LayoutObject* pseudoElementLayoutObject = fragment->firstLetterPseudoElement()->layoutObject();
     return pseudoElementLayoutObject && pseudoElementLayoutObject->style()->visibility() == VISIBLE;
+#endif
 }
 
 template<typename Strategy>
 bool TextIteratorAlgorithm<Strategy>::handleTextNode()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     if (excludesAutofilledValue()) {
         HTMLTextFormControlElement* control = enclosingTextFormControl(m_node);
         // For security reason, we don't expose suggested value if it is
@@ -514,11 +536,15 @@ bool TextIteratorAlgorithm<Strategy>::handleTextNode()
 
     handleTextBox();
     return true;
+#endif
 }
 
 template<typename Strategy>
 void TextIteratorAlgorithm<Strategy>::handleTextBox()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     LayoutText* layoutObject = m_firstLetterText ? m_firstLetterText : toLayoutText(m_node->layoutObject());
 
     if (layoutObject->style()->visibility() != VISIBLE && !ignoresStyleVisibility()) {
@@ -614,11 +640,15 @@ void TextIteratorAlgorithm<Strategy>::handleTextBox()
         m_offset = 0;
         handleTextBox();
     }
+#endif
 }
 
 template<typename Strategy>
 void TextIteratorAlgorithm<Strategy>::handleTextNodeFirstLetter(LayoutTextFragment* layoutObject)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     m_handledFirstLetter = true;
 
     if (!layoutObject->isRemainingTextLayoutObject())
@@ -639,11 +669,15 @@ void TextIteratorAlgorithm<Strategy>::handleTextNodeFirstLetter(LayoutTextFragme
     m_textBox = toLayoutText(firstLetter)->firstTextBox();
     m_sortedTextBoxes.clear();
     m_firstLetterText = toLayoutText(firstLetter);
+#endif
 }
 
 template<typename Strategy>
 bool TextIteratorAlgorithm<Strategy>::supportsAltText(Node* node)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     if (!node->isHTMLElement())
         return false;
     HTMLElement& element = toHTMLElement(*node);
@@ -653,12 +687,17 @@ bool TextIteratorAlgorithm<Strategy>::supportsAltText(Node* node)
         return true;
     if (isHTMLInputElement(toHTMLElement(*node)) && toHTMLInputElement(*node).isImage())
         return true;
+#endif
     return false;
 }
 
 template<typename Strategy>
 bool TextIteratorAlgorithm<Strategy>::handleReplacedElement()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     if (m_fullyClippedStack.top())
         return false;
 
@@ -698,11 +737,16 @@ bool TextIteratorAlgorithm<Strategy>::handleReplacedElement()
     }
 
     return true;
+#endif
 }
 
 template<typename Strategy>
 bool TextIteratorAlgorithm<Strategy>::shouldEmitTabBeforeNode(Node* node)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     LayoutObject* r = node->layoutObject();
 
     // Table cells are delimited by tabs.
@@ -713,20 +757,30 @@ bool TextIteratorAlgorithm<Strategy>::shouldEmitTabBeforeNode(Node* node)
     LayoutTableCell* rc = toLayoutTableCell(r);
     LayoutTable* t = rc->table();
     return t && (t->cellBefore(rc) || t->cellAbove(rc));
+#endif
 }
 
 template<typename Strategy>
 bool TextIteratorAlgorithm<Strategy>::shouldEmitNewlineForNode(Node* node, bool emitsOriginalText)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     LayoutObject* layoutObject = node->layoutObject();
 
     if (layoutObject ? !layoutObject->isBR() : !isHTMLBRElement(node))
         return false;
     return emitsOriginalText || !(node->isInShadowTree() && isHTMLInputElement(*node->shadowHost()));
+#endif
 }
 
 static bool shouldEmitNewlinesBeforeAndAfterNode(Node& node)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     // Block flow (versus inline flow) is represented by having
     // a newline both before and after the element.
     LayoutObject* r = node.layoutObject();
@@ -772,11 +826,15 @@ static bool shouldEmitNewlinesBeforeAndAfterNode(Node& node)
 
     return !r->isInline() && r->isLayoutBlock()
         && !r->isFloatingOrOutOfFlowPositioned() && !r->isBody() && !r->isRubyText();
+#endif
 }
 
 template<typename Strategy>
 bool TextIteratorAlgorithm<Strategy>::shouldEmitNewlineAfterNode(Node& node)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // FIXME: It should be better but slower to create a VisiblePosition here.
     if (!shouldEmitNewlinesBeforeAndAfterNode(node))
         return false;
@@ -788,6 +846,7 @@ bool TextIteratorAlgorithm<Strategy>::shouldEmitNewlineAfterNode(Node& node)
         if (next && next->layoutObject())
             return true;
     } while (next);
+#endif
     return false;
 }
 
@@ -799,6 +858,9 @@ bool TextIteratorAlgorithm<Strategy>::shouldEmitNewlineBeforeNode(Node& node)
 
 static bool shouldEmitExtraNewlineForNode(Node* node)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // When there is a significant collapsed bottom margin, emit an extra
     // newline for a more realistic result. We end up getting the right
     // result even without margin collapsing. For example: <div><p>text</p></div>
@@ -824,6 +886,7 @@ static bool shouldEmitExtraNewlineForNode(Node* node)
                 return true;
         }
     }
+#endif
 
     return false;
 }
@@ -832,6 +895,10 @@ static bool shouldEmitExtraNewlineForNode(Node* node)
 template<typename Strategy>
 bool TextIteratorAlgorithm<Strategy>::shouldRepresentNodeOffsetZero()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     if (emitsCharactersBetweenAllVisiblePositions() && isRenderedTableElement(m_node))
         return true;
 
@@ -884,12 +951,18 @@ bool TextIteratorAlgorithm<Strategy>::shouldRepresentNodeOffsetZero()
     VisiblePosition startPos = createVisiblePosition(Position(m_startContainer, m_startOffset));
     VisiblePosition currPos = createVisiblePosition(positionBeforeNode(m_node));
     return startPos.isNotNull() && currPos.isNotNull() && !inSameLine(startPos, currPos);
+#endif
 }
 
 template<typename Strategy>
 bool TextIteratorAlgorithm<Strategy>::shouldEmitSpaceBeforeAndAfterNode(Node* node)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     return isRenderedTableElement(node) && (node->layoutObject()->isInline() || emitsCharactersBetweenAllVisiblePositions());
+#endif
 }
 
 template<typename Strategy>
@@ -917,6 +990,10 @@ void TextIteratorAlgorithm<Strategy>::representNodeOffsetZero()
 template<typename Strategy>
 bool TextIteratorAlgorithm<Strategy>::handleNonTextNode()
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     if (shouldEmitNewlineForNode(m_node, emitsOriginalText()))
         emitCharacter('\n', Strategy::parent(*m_node), m_node, 0, 1);
     else if (emitsCharactersBetweenAllVisiblePositions() && m_node->layoutObject() && m_node->layoutObject()->isHR())
@@ -925,6 +1002,7 @@ bool TextIteratorAlgorithm<Strategy>::handleNonTextNode()
         representNodeOffsetZero();
 
     return true;
+#endif
 }
 
 template<typename Strategy>
@@ -1087,7 +1165,12 @@ int TextIteratorAlgorithm<Strategy>::rangeLength(const PositionTemplate<Strategy
 template <typename Strategy>
 bool TextIteratorAlgorithm<Strategy>::isInTextSecurityMode() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     return isTextSecurityNode(node());
+#endif
 }
 
 // --------

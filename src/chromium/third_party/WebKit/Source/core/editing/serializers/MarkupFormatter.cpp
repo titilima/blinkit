@@ -27,7 +27,6 @@
 #include "core/editing/serializers/MarkupFormatter.h"
 
 #include "core/HTMLNames.h"
-#include "core/XLinkNames.h"
 #include "core/XMLNSNames.h"
 #include "core/XMLNames.h"
 #include "core/dom/CDATASection.h"
@@ -114,6 +113,9 @@ MarkupFormatter::~MarkupFormatter()
 
 String MarkupFormatter::resolveURLIfNeeded(const Element& element, const String& urlString) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO:
+#else
     switch (m_resolveURLsMethod) {
     case ResolveAllURLs:
         return element.document().completeURL(urlString).string();
@@ -126,6 +128,7 @@ String MarkupFormatter::resolveURLIfNeeded(const Element& element, const String&
     case DoNotResolveURLs:
         break;
     }
+#endif
     return urlString;
 }
 
@@ -163,6 +166,9 @@ void MarkupFormatter::appendStartMarkup(StringBuilder& result, const Node& node,
 
 static bool elementCannotHaveEndTag(const Node& node)
 {
+    assert(false); // BKTODO:
+    return false;
+#if 0
     if (!node.isHTMLElement())
         return false;
 
@@ -171,6 +177,7 @@ static bool elementCannotHaveEndTag(const Node& node)
     // or createContextualFragment.  It does not necessarily align with
     // which elements should be serialized w/o end tags.
     return toHTMLElement(node).ieForbidsInsertHTML();
+#endif
 }
 
 void MarkupFormatter::appendEndMarkup(StringBuilder& result, const Element& element)
@@ -332,7 +339,6 @@ void MarkupFormatter::appendCloseTag(StringBuilder& result, const Element& eleme
 static inline bool attributeIsInSerializedNamespace(const Attribute& attribute)
 {
     return attribute.namespaceURI() == XMLNames::xmlNamespaceURI
-        || attribute.namespaceURI() == XLinkNames::xlinkNamespaceURI
         || attribute.namespaceURI() == XMLNSNames::xmlnsNamespaceURI;
 }
 
@@ -356,11 +362,6 @@ void MarkupFormatter::appendAttribute(StringBuilder& result, const Element& elem
             if (!attribute.prefix())
                 prefixedName.setPrefix(xmlAtom);
         } else {
-            if (attribute.namespaceURI() == XLinkNames::xlinkNamespaceURI) {
-                if (!attribute.prefix())
-                    prefixedName.setPrefix(xlinkAtom);
-            }
-
             if (namespaces && shouldAddNamespaceAttribute(attribute, element)) {
                 if (!prefixedName.prefix()) {
                     // This behavior is in process of being standardized. See crbug.com/248044 and https://www.w3.org/Bugs/Public/show_bug.cgi?id=24208
@@ -435,6 +436,10 @@ bool MarkupFormatter::shouldAddNamespaceAttribute(const Attribute& attribute, co
 
 EntityMask MarkupFormatter::entityMaskForText(const Text& text) const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    exit(0);
+#else
     if (!serializeAsHTMLDocument(text))
         return EntityMaskInPCDATA;
 
@@ -446,6 +451,7 @@ EntityMask MarkupFormatter::entityMaskForText(const Text& text) const
     if (parentName && (*parentName == scriptTag || *parentName == styleTag || *parentName == xmpTag))
         return EntityMaskInCDATA;
     return EntityMaskInHTMLPCDATA;
+#endif
 }
 
 // Rules of self-closure

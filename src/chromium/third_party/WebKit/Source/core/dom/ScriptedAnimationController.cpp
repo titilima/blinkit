@@ -131,6 +131,8 @@ void ScriptedAnimationController::dispatchEvents(const AtomicString& eventInterf
 
 void ScriptedAnimationController::executeCallbacks(double monotonicTimeNow)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     // dispatchEvents() runs script which can cause the document to be destroyed.
     if (!m_document)
         return;
@@ -138,6 +140,7 @@ void ScriptedAnimationController::executeCallbacks(double monotonicTimeNow)
     double highResNowMs = 1000.0 * m_document->loader()->timing().monotonicTimeToZeroBasedDocumentTime(monotonicTimeNow);
     double legacyHighResNowMs = 1000.0 * m_document->loader()->timing().monotonicTimeToPseudoWallTime(monotonicTimeNow);
     m_callbackCollection.executeCallbacks(highResNowMs, legacyHighResNowMs);
+#endif
 }
 
 void ScriptedAnimationController::callMediaQueryListListeners()

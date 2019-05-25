@@ -46,6 +46,9 @@ namespace blink {
 
 static void measureStricterVersionOfIsMixedContent(LocalFrame* frame, const KURL& url)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // We're currently only checking for mixed content in `https://*` contexts.
     // What about other "secure" contexts the SchemeRegistry knows about? We'll
     // use this method to measure the occurance of non-webby mixed content to
@@ -57,11 +60,16 @@ static void measureStricterVersionOfIsMixedContent(LocalFrame* frame, const KURL
     } else if (!SecurityOrigin::isSecure(url) && SchemeRegistry::shouldTreatURLSchemeAsSecure(origin->protocol())) {
         UseCounter::count(frame, UseCounter::MixedContentInSecureFrameThatDoesNotRestrictMixedContent);
     }
+#endif
 }
 
 bool requestIsSubframeSubresource(LocalFrame* frame, WebURLRequest::FrameType frameType)
 {
+    assert(false); // BKTODO:
+    return false;
+#if 0
     return (frame && frame != frame->tree().top() && frameType != WebURLRequest::FrameTypeNested);
+#endif
 }
 
 // static
@@ -77,6 +85,8 @@ bool MixedContentChecker::isMixedContent(SecurityOrigin* securityOrigin, const K
 // static
 LocalFrame* MixedContentChecker::inWhichFrameIsContentMixed(LocalFrame* frame, WebURLRequest::FrameType frameType, const KURL& url)
 {
+    assert(false); // BKTODO:
+#if 0
     // We only care about subresource loads; top-level navigations cannot be mixed content. Neither can frameless requests.
     if (frameType == WebURLRequest::FrameTypeTopLevel || !frame)
         return nullptr;
@@ -97,6 +107,7 @@ LocalFrame* MixedContentChecker::inWhichFrameIsContentMixed(LocalFrame* frame, W
     measureStricterVersionOfIsMixedContent(frame, url);
     if (isMixedContent(frame->document()->securityOrigin(), url))
         return frame;
+#endif
 
     // No mixed content, no problem.
     return nullptr;
@@ -240,12 +251,15 @@ const char* MixedContentChecker::typeNameFromContext(WebURLRequest::RequestConte
 // static
 void MixedContentChecker::logToConsoleAboutFetch(LocalFrame* frame, const KURL& url, WebURLRequest::RequestContext requestContext, bool allowed)
 {
+    assert(false); // BKTODO:
+#if 0
     String message = String::format(
         "Mixed Content: The page at '%s' was loaded over HTTPS, but requested an insecure %s '%s'. %s",
         frame->document()->url().elidedString().utf8().data(), typeNameFromContext(requestContext), url.elidedString().utf8().data(),
         allowed ? "This content should also be served over HTTPS." : "This request has been blocked; the content must be served over HTTPS.");
     MessageLevel messageLevel = allowed ? WarningMessageLevel : ErrorMessageLevel;
     frame->document()->addConsoleMessage(ConsoleMessage::create(SecurityMessageSource, messageLevel, message));
+#endif
 }
 
 // static
@@ -298,6 +312,10 @@ void MixedContentChecker::count(LocalFrame* frame, WebURLRequest::RequestContext
 // static
 bool MixedContentChecker::shouldBlockFetch(LocalFrame* frame, WebURLRequest::RequestContext requestContext, WebURLRequest::FrameType frameType, const KURL& url, MixedContentChecker::ReportingStatus reportingStatus)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return false;
+#else
     LocalFrame* mixedFrame = inWhichFrameIsContentMixed(frame, frameType, url);
     if (!mixedFrame)
         return false;
@@ -362,22 +380,31 @@ bool MixedContentChecker::shouldBlockFetch(LocalFrame* frame, WebURLRequest::Req
     if (reportingStatus == SendReport)
         logToConsoleAboutFetch(frame, url, requestContext, allowed);
     return !allowed;
+#endif
 }
 
 // static
 void MixedContentChecker::logToConsoleAboutWebSocket(LocalFrame* frame, const KURL& url, bool allowed)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     String message = String::format(
         "Mixed Content: The page at '%s' was loaded over HTTPS, but attempted to connect to the insecure WebSocket endpoint '%s'. %s",
         frame->document()->url().elidedString().utf8().data(), url.elidedString().utf8().data(),
         allowed ? "This endpoint should be available via WSS. Insecure access is deprecated." : "This request has been blocked; this endpoint must be available over WSS.");
     MessageLevel messageLevel = allowed ? WarningMessageLevel : ErrorMessageLevel;
     frame->document()->addConsoleMessage(ConsoleMessage::create(SecurityMessageSource, messageLevel, message));
+#endif
 }
 
 // static
 bool MixedContentChecker::shouldBlockWebSocket(LocalFrame* frame, const KURL& url, MixedContentChecker::ReportingStatus reportingStatus)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+    return true;
+#else
     LocalFrame* mixedFrame = inWhichFrameIsContentMixed(frame, WebURLRequest::FrameTypeNone, url);
     if (!mixedFrame)
         return false;
@@ -404,10 +431,14 @@ bool MixedContentChecker::shouldBlockWebSocket(LocalFrame* frame, const KURL& ur
     if (reportingStatus == SendReport)
         logToConsoleAboutWebSocket(frame, url, allowed);
     return !allowed;
+#endif
 }
 
 bool MixedContentChecker::isMixedFormAction(LocalFrame* frame, const KURL& url, ReportingStatus reportingStatus)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(false); // BKTODO: Not reached!
+#else
     // For whatever reason, some folks handle forms via JavaScript, and submit to `javascript:void(0)`
     // rather than calling `preventDefault()`. We special-case `javascript:` URLs here, as they don't
     // introduce MixedContent for form submissions.
@@ -428,22 +459,16 @@ bool MixedContentChecker::isMixedFormAction(LocalFrame* frame, const KURL& url, 
             frame->document()->url().elidedString().utf8().data(), url.elidedString().utf8().data());
         mixedFrame->document()->addConsoleMessage(ConsoleMessage::create(SecurityMessageSource, WarningMessageLevel, message));
     }
+#endif
 
     return true;
 }
 
-void MixedContentChecker::checkMixedPrivatePublic(LocalFrame* frame, const AtomicString& resourceIPAddress)
-{
-    if (!frame || !frame->document() || !frame->document()->loader())
-        return;
-
-    // Just count these for the moment, don't block them.
-    if (Platform::current()->isReservedIPAddress(resourceIPAddress) && !frame->document()->isHostedInReservedIPRange())
-        UseCounter::count(frame->document(), UseCounter::MixedContentPrivateHostnameInPublicHostname);
-}
-
 LocalFrame* MixedContentChecker::effectiveFrameForFrameType(LocalFrame* frame, WebURLRequest::FrameType frameType)
 {
+    assert(false); // BKTODO:
+    return nullptr;
+#if 0
     // If we're loading the main resource of a subframe, ensure that we check
     // against the parent of the active frame, rather than the frame itself.
     LocalFrame* effectiveFrame = frame;
@@ -455,27 +480,7 @@ LocalFrame* MixedContentChecker::effectiveFrameForFrameType(LocalFrame* frame, W
             effectiveFrame = toLocalFrame(parentFrame);
     }
     return effectiveFrame;
-}
-
-void MixedContentChecker::handleCertificateError(LocalFrame* frame, const ResourceRequest& request, const ResourceResponse& response)
-{
-    WebURLRequest::FrameType frameType = request.frameType();
-    LocalFrame* effectiveFrame = effectiveFrameForFrameType(frame, frameType);
-    if (frameType == WebURLRequest::FrameTypeTopLevel || !effectiveFrame)
-        return;
-
-    FrameLoaderClient* client = effectiveFrame->loader().client();
-    WebURLRequest::RequestContext requestContext = request.requestContext();
-    ContextType contextType = MixedContentChecker::contextTypeFromContext(requestContext, frame);
-    if (contextType == ContextTypeBlockable) {
-        client->didRunContentWithCertificateErrors(response.url(), response.getSecurityInfo(), effectiveFrame->document()->url(), effectiveFrame->loader().documentLoader()->response().getSecurityInfo());
-    } else {
-        // contextTypeFromContext() never returns NotMixedContent (it
-        // computes the type of mixed content, given that the content is
-        // mixed).
-        ASSERT(contextType != ContextTypeNotMixedContent);
-        client->didDisplayContentWithCertificateErrors(response.url(), response.getSecurityInfo(), effectiveFrame->document()->url(), effectiveFrame->loader().documentLoader()->response().getSecurityInfo());
-    }
+#endif
 }
 
 MixedContentChecker::ContextType MixedContentChecker::contextTypeForInspector(LocalFrame* frame, const ResourceRequest& request)
