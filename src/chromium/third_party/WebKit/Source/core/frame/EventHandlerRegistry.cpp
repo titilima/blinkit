@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: EventHandlerRegistry.cpp
+// Description: EventHandlerRegistry Class
+//      Author: Ziming Li
+//     Created: 2019-05-25
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,6 @@
 
 #include "core/frame/LocalDOMWindow.h"
 #include "core/frame/LocalFrame.h"
-#include "core/html/HTMLFrameOwnerElement.h"
 #include "core/page/ChromeClient.h"
 #include "core/page/Page.h"
 #include "core/page/scrolling/ScrollingCoordinator.h"
@@ -261,11 +271,10 @@ void EventHandlerRegistry::documentDetached(Document& document)
         const EventTargetSet* targets = &m_targets[handlerClass];
         for (const auto& eventTarget : *targets) {
             if (Node* node = eventTarget.key->toNode()) {
-                for (Document* doc = &node->document(); doc; doc = doc->ownerElement() ? &doc->ownerElement()->document() : 0) {
-                    if (doc == &document) {
-                        targetsToRemove.append(eventTarget.key);
-                        break;
-                    }
+                Document* doc = &node->document();
+                if (doc == &document) {
+                    targetsToRemove.append(eventTarget.key);
+                    break;
                 }
             } else if (eventTarget.key->toDOMWindow()) {
                 // DOMWindows may outlive their documents, so we shouldn't remove their handlers
