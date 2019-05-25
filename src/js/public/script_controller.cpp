@@ -30,23 +30,23 @@ ScriptController::~ScriptController(void)
     // Nothing, just for std::unique_ptr
 }
 
-int ScriptController::AccessCrawlerMember(const char *name, BkCrawler::Accessor accessor, void *userData)
+int ScriptController::AccessCrawlerMember(const char *name, BkCallback &callback)
 {
     assert(m_frame.IsCrawlerFrame());
-    return m_context->AccessCrawlerMember(name, accessor, userData);
+    return m_context->AccessCrawlerMember(name, callback);
 }
 
-int ScriptController::CallCrawler(const char *method, BkCallerContext::Callback callback, void *userData)
+int ScriptController::CallCrawler(const char *method, BkCallback *callback)
 {
     assert(m_frame.IsCrawlerFrame());
-    return m_context->CallCrawler(method, callback, userData);
+    return m_context->CallCrawler(method, callback);
 }
 
-int ScriptController::CallFunction(const char *name, BkCallerContext::Callback callback, void *userData)
+int ScriptController::CallFunction(const char *name, BkCallback *callback)
 {
     if (!m_context)
         return BkError::NotFound;
-    return m_context->CallFunction(name, callback, userData);
+    return m_context->CallFunction(name, callback);
 }
 
 bool ScriptController::canExecuteScripts(ReasonForCallingCanExecuteScripts)
@@ -118,7 +118,7 @@ void ScriptController::namedItemRemoved(HTMLDocument *, const AtomicString &)
     assert(false); // BKTODO:
 }
 
-int ScriptController::RegisterFunction(const char *name, BkFunction *functionImpl)
+int ScriptController::RegisterFunction(const char *name, BkCallback &functionImpl)
 {
     return EnsureContext().RegisterFunction(name, functionImpl);
 }

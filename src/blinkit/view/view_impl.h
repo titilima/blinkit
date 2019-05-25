@@ -23,6 +23,10 @@
 #include "public/web/WebView.h"
 #include "public/web/WebViewClient.h"
 
+namespace blink {
+class LocalFrame;
+}
+
 namespace BlinKit {
 
 class ContextMenu;
@@ -36,6 +40,7 @@ protected:
 
     blink::WebView* GetWebView(void) { return m_webView; }
     const blink::WebView* GetWebView(void) const { return m_webView; }
+    blink::LocalFrame* GetFrame(void);
 
     void FillCoordinates(blink::WebMouseEvent &dst, int x, int y);
     virtual std::unique_ptr<SkCanvas> CreateMemoryCanvas(int width, int height) = 0;
@@ -47,8 +52,8 @@ protected:
 
     // BkView
     void BKAPI Destroy(void) override final { delete this; }
-    int BKAPI CallFunction(const char *name, BkCallerContext::Callback callback, void *userData) override final;
-    int BKAPI RegisterExternalFunction(const char *name, BkFunction *functionImpl) override final;
+    int BKAPI CallFunction(const char *name, BkCallback *callback) override final;
+    int BKAPI RegisterExternalFunction(const char *name, BkCallback &functionImpl) override final;
     void BKAPI ProcessInput(const MouseEvent &e) override final;
     void BKAPI ProcessInput(const KeyboardEvent &e) override final;
     void BKAPI Resize(int width, int height) override final;

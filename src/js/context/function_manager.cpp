@@ -49,11 +49,11 @@ duk_ret_t FunctionManager::ProcessCall(duk_context *ctx)
     auto it = m_functions.find(CurrentFunction(ctx));
 
     FunctionContextImpl context(ctx, it->second.name);
-    it->second.impl->OnCall(context);
+    it->second.impl->OnFunctionCall(context);
     return context.HasReturnValue() ? 1 : 0;
 }
 
-int FunctionManager::Register(duk_context *ctx, const char *name, BkFunction *impl)
+int FunctionManager::Register(duk_context *ctx, const char *name, BkCallback &impl)
 {
     Duk::StackKeeper sk(ctx);
 
@@ -66,7 +66,7 @@ int FunctionManager::Register(duk_context *ctx, const char *name, BkFunction *im
 
     FunctionEntry entry;
     entry.name = name;
-    entry.impl = impl;
+    entry.impl = &impl;
     m_functions[heapPtr] = entry;
     return BkError::Success;
 }

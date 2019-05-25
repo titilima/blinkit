@@ -32,10 +32,10 @@ public:
     static DukContext* From(duk_context *ctx);
 
     int CreateCrawlerObject(const char *script, size_t length);
-    int CallFunction(const char *name, BkCallerContext::Callback callback, void *userData);
-    int CallCrawler(const char *method, BkCallerContext::Callback callback, void *userData);
-    int RegisterFunction(const char *name, BkFunction *functionImpl);
-    int AccessCrawlerMember(const char *name, BkCrawler::Accessor accessor, void *userData);
+    int CallFunction(const char *name, BkCallback *callback);
+    int CallCrawler(const char *method, BkCallback *callback);
+    int RegisterFunction(const char *name, BkCallback &functionImpl);
+    int AccessCrawlerMember(const char *name, BkCallback &callback);
     std::string GetCrawlerProperty(const char *name);
 
     void CreateObject(const char *protoName);

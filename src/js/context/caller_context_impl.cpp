@@ -22,26 +22,7 @@ CallerContextImpl::CallerContextImpl(duk_context *ctx) : StackKeeper(ctx, 1)
     // Nothing
 }
 
-CallerContextImpl::~CallerContextImpl(void)
-{
-    // Nothing, just for std::unique_ptr.
-}
-
-const BkValue* BKAPI CallerContextImpl::Call(void)
-{
-    int r;
-    if (m_thisCall)
-        r = duk_pcall_method(m_ctx, m_argc);
-    else
-        r = duk_pcall(m_ctx, m_argc);
-
-    m_retVal = std::make_unique<ValueImpl>(m_ctx);
-    if (DUK_EXEC_SUCCESS != r)
-        m_retVal->SetAsErrorType();
-    return m_retVal.get();
-}
-
-int CallerContextImpl::Call(const char *name, BkCallerContext::Callback callback, void *userData)
+int CallerContextImpl::Call(const char *name, BkCallback *callback)
 {
     assert(DUK_TYPE_OBJECT == duk_get_type(m_ctx, -1));
 
@@ -56,8 +37,22 @@ int CallerContextImpl::Call(const char *name, BkCallerContext::Callback callback
         duk_push_heapptr(m_ctx, heapPtr);
     }
 
-    callback(*this, userData);
-    return BkError::Success;
+    if (nullptr != callback)
+        callback->OnPushArgs(*this);
+
+    int r;
+    if (m_thisCall)
+        r = duk_pcall_method(m_ctx, m_argc);
+    else
+        r = duk_pcall(m_ctx, m_argc);
+
+    ValueImpl retVal(m_ctx);
+    if (DUK_EXEC_SUCCESS != r)
+        retVal.SetAsErrorType();
+    if (nullptr != callback)
+        callback->OnReturn(retVal);
+
+    return retVal.ErrorCode();
 }
 
 int BKAPI CallerContextImpl::PushInt(int arg)

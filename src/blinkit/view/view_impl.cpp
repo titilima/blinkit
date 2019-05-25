@@ -57,10 +57,9 @@ ViewImpl::~ViewImpl(void)
     *m_updateRequired = false; // Ignore pending update requests.
 }
 
-int BKAPI ViewImpl::CallFunction(const char *name, BkCallerContext::Callback callback, void *userData)
+int BKAPI ViewImpl::CallFunction(const char *name, BkCallback *callback)
 {
-    assert(false); // BKTODO:
-    return BkError::UnknownError;
+    return GetFrame()->script().CallFunction(name, callback);
 }
 
 void ViewImpl::didFinishLoad(WebLocalFrame *)
@@ -109,6 +108,12 @@ bool BKAPI ViewImpl::GetCaretRect(BkRect *dst)
     dst->width = 1;
     dst->height = focus.height;
     return true;
+}
+
+LocalFrame* ViewImpl::GetFrame(void)
+{
+    WebLocalFrameImpl *f = toWebLocalFrameImpl(GetWebView()->mainFrame());
+    return f->frame();
 }
 
 int BKAPI ViewImpl::Load(const char *URI)
@@ -167,10 +172,9 @@ void BKAPI ViewImpl::ProcessInput(const KeyboardEvent &e)
     PostHandleInput(we);
 }
 
-int BKAPI ViewImpl::RegisterExternalFunction(const char *name, BkFunction *functionImpl)
+int BKAPI ViewImpl::RegisterExternalFunction(const char *name, BkCallback &functionImpl)
 {
-    WebLocalFrameImpl *f = toWebLocalFrameImpl(GetWebView()->mainFrame());
-    return f->frame()->script().RegisterFunction(name, functionImpl);
+    return GetFrame()->script().RegisterFunction(name, functionImpl);
 }
 
 void BKAPI ViewImpl::Resize(int width, int height)

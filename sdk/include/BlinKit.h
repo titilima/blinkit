@@ -104,39 +104,49 @@ public:
     virtual int BKAPI GetAsJSON(BkBuffer &dst) const = 0;
 };
 
-class BkCallerContext {
+class BkArgList {
 public:
-    typedef void (BKAPI * Callback)(BkCallerContext &ctx, void *userData);
-
-    // All push methods return argument count after pushing.
     virtual int BKAPI PushInt(int arg) = 0;
     virtual int BKAPI PushString(const char *arg, size_t length = 0) = 0;
+};
 
-    virtual const BkValue* BKAPI Call(void) = 0;
+class BkFunctionContext {
+public:
+    virtual const char* BKAPI Name(void) const = 0;
+
+    virtual size_t BKAPI ArgCount(void) const = 0;
+    virtual const BkValue* BKAPI ArgAt(size_t i) const = 0;
+
+    virtual int BKAPI ReturnAsBoolean(bool b) = 0;
+    virtual int BKAPI ReturnAsJSON(const char *json, size_t length = 0) = 0;
+};
+
+class BkCallback {
+public:
+    virtual void BKAPI OnFunctionCall(BkFunctionContext &context) {
+        assert(false); // Not implemented!
+    }
+    virtual void BKAPI OnPushArgs(BkArgList &argList) {}
+    virtual void BKAPI OnReturn(const BkValue &retVal) {
+        assert(false); // Not implemented!
+    }
+};
 
 #ifndef BLINKIT_DISABLE_FUNCTIONAL
-    typedef std::function<void(BkCallerContext &)> Function;
-    static void BKAPI FunctionWrapper(BkCallerContext &ctx, void *userData) {
-        Function *f = reinterpret_cast<Function *>(userData);
-        (*f)(ctx);
-    }
-#endif
-};
 
-class BkFunction {
+typedef std::function<void(const BkValue &)> BkLambda;
+
+class BkLambdaCallback final : public BkCallback {
 public:
-    class Context {
-    public:
-        virtual const char* BKAPI Name(void) const = 0;
-
-        virtual size_t BKAPI ArgCount(void) const = 0;
-        virtual const BkValue* BKAPI ArgAt(size_t i) const = 0;
-
-        virtual int BKAPI ReturnAsBoolean(bool b) = 0;
-        virtual int BKAPI ReturnAsJSON(const char *json, size_t length = 0) = 0;
-    };
-    virtual void BKAPI OnCall(Context &ctx) = 0;
+    BkLambdaCallback(const BkLambda &callback) : m_callback(callback) {}
+private:
+    void BKAPI OnReturn(const BkValue &retVal) override {
+        m_callback(retVal);
+    }
+    const BkLambda &m_callback;
 };
+
+#endif // BLINKIT_DISABLE_FUNCTIONAL
 
 /**
  * Application
@@ -196,33 +206,24 @@ public:
     virtual void BKAPI Destroy(void) = 0;
     virtual int BKAPI Load(const char *URL) = 0;
 
-    virtual int BKAPI CallFunction(const char *name, BkCallerContext::Callback callback, void *userData = nullptr) = 0;
-    virtual int BKAPI CallCrawler(const char *method, BkCallerContext::Callback callback, void *userData = nullptr) = 0;
-    virtual int BKAPI RegisterCrawlerFunction(const char *name, BkFunction *functionImpl) = 0;
+    virtual int BKAPI CallFunction(const char *name, BkCallback *callback = nullptr) = 0;
+    virtual int BKAPI CallCrawler(const char *method, BkCallback *callback = nullptr) = 0;
+    virtual int BKAPI RegisterCrawlerFunction(const char *name, BkCallback &functionImpl) = 0;
 
-    typedef void (BKAPI * Accessor)(const BkValue *, void *);
-    virtual int BKAPI AccessCrawlerMember(const char *name, Accessor accessor, void *userData = nullptr) = 0;
+    virtual int BKAPI AccessCrawlerMember(const char *name, BkCallback &callback) = 0;
 
 #ifndef BLINKIT_DISABLE_FUNCTIONAL
-    inline int CallFunction(const char *name, const BkCallerContext::Function &callback) {
-        void *p = const_cast<BkCallerContext::Function *>(&callback);
-        return CallFunction(name, BkCallerContext::FunctionWrapper, p);
+    inline int CallFunction(const char *name, const BkLambda &callback) {
+        BkLambdaCallback cb(callback);
+        return CallFunction(name, &cb);
     }
-    inline int CallCrawler(const char *method, const BkCallerContext::Function &callback) {
-        void *p = const_cast<BkCallerContext::Function *>(&callback);
-        return CallCrawler(method, BkCallerContext::FunctionWrapper, p);
+    inline int CallCrawler(const char *method, const BkLambda &callback) {
+        BkLambdaCallback cb(callback);
+        return CallCrawler(method, &cb);
     }
-
-    typedef std::function<void(const BkValue *)> AccessFunction;
-    inline int AccessCrawlerMember(const char *name, const AccessFunction &accessor) {
-        struct AccessWrapper {
-            static void BKAPI Impl(const BkValue *val, void *userData) {
-                const AccessFunction *f = reinterpret_cast<AccessFunction *>(userData);
-                (*f)(val);
-            }
-        };
-        void *p = const_cast<AccessFunction *>(&accessor);
-        return AccessCrawlerMember(name, AccessWrapper::Impl, p);
+    inline int AccessCrawlerMember(const char *name, const BkLambda &callback) {
+        BkLambdaCallback cb(callback);
+        return AccessCrawlerMember(name, cb);
     }
 #endif
 };
@@ -261,8 +262,8 @@ public:
     virtual int BKAPI Load(const char *URI) = 0;
     virtual NativeView BKAPI GetNativeView(void) const = 0;
 
-    virtual int BKAPI CallFunction(const char *name, BkCallerContext::Callback callback, void *userData = nullptr) = 0;
-    virtual int BKAPI RegisterExternalFunction(const char *name, BkFunction *functionImpl) = 0;
+    virtual int BKAPI CallFunction(const char *name, BkCallback *callback = nullptr) = 0;
+    virtual int BKAPI RegisterExternalFunction(const char *name, BkCallback &functionImpl) = 0;
 
 #ifdef _WIN32
     /**
@@ -303,9 +304,9 @@ public:
     virtual void BKAPI SetScaleFactor(float scaleFactor) = 0;
 
 #ifndef BLINKIT_DISABLE_FUNCTIONAL
-    inline int CallFunction(const char *name, const BkCallerContext::Function &callback) {
-        void *p = const_cast<BkCallerContext::Function *>(&callback);
-        return CallFunction(name, BkCallerContext::FunctionWrapper, p);
+    inline int CallFunction(const char *name, const BkLambda &callback) {
+        BkLambdaCallback cb(callback);
+        return CallFunction(name, &cb);
     }
 #endif
 };

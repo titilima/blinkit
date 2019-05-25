@@ -22,6 +22,7 @@ public:
     ValueImpl(duk_context *ctx, duk_idx_t idx = -1);
 
     void SetAsErrorType(void);
+    int ErrorCode(void) const { return m_errorCode; }
 private:
     Type BKAPI GetType(void) const override;
     int BKAPI GetAsString(BkBuffer &dst) const override;

@@ -18,25 +18,20 @@
 
 namespace BlinKit {
 
-class ValueImpl;
-
-class CallerContextImpl final : public BkCallerContext, private Duk::StackKeeper
+class CallerContextImpl final : public BkArgList, private Duk::StackKeeper
 {
 public:
     CallerContextImpl(duk_context *ctx);
-    ~CallerContextImpl(void);
 
     void SetAsThisCall(void) { m_thisCall = true; }
 
-    int Call(const char *name, BkCallerContext::Callback callback, void *userData);
+    int Call(const char *name, BkCallback *callback);
 private:
     int BKAPI PushInt(int arg) override;
     int BKAPI PushString(const char *arg, size_t length) override;
-    const BkValue* BKAPI Call(void) override;
 
     bool m_thisCall = false;
     int m_argc = 0;
-    std::unique_ptr<ValueImpl> m_retVal;
 };
 
 } // namespace BlinKit

@@ -23,7 +23,7 @@ class FunctionManager final
 public:
     FunctionManager(duk_context *ctx);
 
-    int Register(duk_context *ctx, const char *name, BkFunction *impl);
+    int Register(duk_context *ctx, const char *name, BkCallback &impl);
 private:
     static FunctionManager* From(duk_context *ctx);
     static void* CurrentFunction(duk_context *ctx);
@@ -33,7 +33,7 @@ private:
     void *m_containerPtr;
     struct FunctionEntry {
         std::string name;
-        BkFunction *impl;
+        BkCallback *impl;
     };
     std::unordered_map<void *, FunctionEntry> m_functions;
 };

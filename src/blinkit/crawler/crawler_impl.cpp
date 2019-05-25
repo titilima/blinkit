@@ -35,19 +35,19 @@ CrawlerImpl::~CrawlerImpl(void)
     m_frame->detach(FrameDetachType::Remove);
 }
 
-int BKAPI CrawlerImpl::AccessCrawlerMember(const char *name, Accessor accessor, void *userData)
+int BKAPI CrawlerImpl::AccessCrawlerMember(const char *name, BkCallback &callback)
 {
-    return m_frame->script().AccessCrawlerMember(name, accessor, userData);
+    return m_frame->script().AccessCrawlerMember(name, callback);
 }
 
-int BKAPI CrawlerImpl::CallCrawler(const char *method, BkCallerContext::Callback callback, void *userData)
+int BKAPI CrawlerImpl::CallCrawler(const char *method, BkCallback *callback)
 {
-    return m_frame->script().CallCrawler(method, callback, userData);
+    return m_frame->script().CallCrawler(method, callback);
 }
 
-int BKAPI CrawlerImpl::CallFunction(const char *name, BkCallerContext::Callback callback, void *userData)
+int BKAPI CrawlerImpl::CallFunction(const char *name, BkCallback *callback)
 {
-    return m_frame->script().CallFunction(name, callback, userData);
+    return m_frame->script().CallFunction(name, callback);
 }
 
 void CrawlerImpl::dispatchDidFinishLoad(void)
@@ -75,7 +75,7 @@ int BKAPI CrawlerImpl::Load(const char *URL)
     return BkError::Success;
 }
 
-int BKAPI CrawlerImpl::RegisterCrawlerFunction(const char *name, BkFunction *functionImpl)
+int BKAPI CrawlerImpl::RegisterCrawlerFunction(const char *name, BkCallback &functionImpl)
 {
     return m_frame->script().RegisterFunction(name, functionImpl);
 }

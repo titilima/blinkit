@@ -32,10 +32,10 @@ private:
     // BkCrawler
     void BKAPI Destroy(void) override { delete this; }
     int BKAPI Load(const char *URL) override;
-    int BKAPI CallFunction(const char *name, BkCallerContext::Callback callback, void *userData) override;
-    int BKAPI CallCrawler(const char *method, BkCallerContext::Callback callback, void *userData) override;
-    int BKAPI RegisterCrawlerFunction(const char *name, BkFunction *functionImpl) override;
-    int BKAPI AccessCrawlerMember(const char *name, Accessor accessor, void *userData) override;
+    int BKAPI CallFunction(const char *name, BkCallback *callback) override;
+    int BKAPI CallCrawler(const char *method, BkCallback *callback) override;
+    int BKAPI RegisterCrawlerFunction(const char *name, BkCallback &functionImpl) override;
+    int BKAPI AccessCrawlerMember(const char *name, BkCallback &callback) override;
     // blink::FrameClient
     bool IsCrawler(void) const override { return true; }
     // blink::FrameLoaderClient

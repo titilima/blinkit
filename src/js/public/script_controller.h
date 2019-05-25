@@ -45,10 +45,10 @@ public:
     ~ScriptController(void);
 
     int CreateCrawlerObject(const char *script, size_t length);
-    int CallFunction(const char *name, BlinKit::BkCallerContext::Callback callback, void *userData);
-    int CallCrawler(const char *method, BlinKit::BkCallerContext::Callback callback, void *userData);
-    int RegisterFunction(const char *name, BlinKit::BkFunction *functionImpl);
-    int AccessCrawlerMember(const char *name, BlinKit::BkCrawler::Accessor accessor, void *userData);
+    int CallFunction(const char *name, BlinKit::BkCallback *callback);
+    int CallCrawler(const char *method, BlinKit::BkCallback *callback);
+    int RegisterFunction(const char *name, BlinKit::BkCallback &functionImpl);
+    int AccessCrawlerMember(const char *name, BlinKit::BkCallback &callback);
     std::string GetCrawlerProperty(const char *name);
 
     void executeScriptInMainWorld(const ScriptSourceCode &, AccessControlStatus = NotSharableCrossOrigin, double *compilationFinishTime = nullptr);

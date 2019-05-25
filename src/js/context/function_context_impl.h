@@ -20,7 +20,7 @@ namespace BlinKit {
 
 class ValueImpl;
 
-class FunctionContextImpl final : public BkFunction::Context
+class FunctionContextImpl final : public BkFunctionContext
 {
 public:
     FunctionContextImpl(duk_context *ctx, const std::string &name);

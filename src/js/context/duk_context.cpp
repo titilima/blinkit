@@ -67,15 +67,14 @@ DukContext::~DukContext(void)
     duk_destroy_heap(m_context);
 }
 
-int DukContext::AccessCrawlerMember(const char *name, BkCrawler::Accessor accessor, void *userData)
+int DukContext::AccessCrawlerMember(const char *name, BkCallback &callback)
 {
     Duk::StackKeeper sk(m_context);
     duk_push_heapptr(m_context, m_crawlerObjectPtr);
     if (!duk_get_prop_string(m_context, -1, name))
         return BkError::NotFound;
 
-    ValueImpl member(m_context);
-    accessor(&member, userData);
+    callback.OnReturn(ValueImpl(m_context));
     return BkError::Success;
 }
 
@@ -125,7 +124,7 @@ void DukContext::Attach(LocalFrame &frame)
 #endif
 }
 
-int DukContext::CallCrawler(const char *method, BkCallerContext::Callback callback, void *userData)
+int DukContext::CallCrawler(const char *method, BkCallback *callback)
 {
     if (nullptr == m_crawlerObjectPtr)
         return BkError::NotFound;
@@ -134,15 +133,15 @@ int DukContext::CallCrawler(const char *method, BkCallerContext::Callback callba
 
     CallerContextImpl context(m_context);
     context.SetAsThisCall();
-    return context.Call(method, callback, userData);
+    return context.Call(method, callback);
 }
 
-int DukContext::CallFunction(const char *name, BkCallerContext::Callback callback, void *userData)
+int DukContext::CallFunction(const char *name, BkCallback *callback)
 {
     duk_push_global_object(m_context);
 
     CallerContextImpl context(m_context);
-    return context.Call(name, callback, userData);
+    return context.Call(name, callback);
 }
 
 int DukContext::CreateCrawlerObject(const char *script, size_t length)
@@ -232,7 +231,7 @@ void DukContext::PrepareGlobalsToTop(void)
     }
 }
 
-int DukContext::RegisterFunction(const char *name, BkFunction *functionImpl)
+int DukContext::RegisterFunction(const char *name, BkCallback &functionImpl)
 {
     if (!m_functionManager)
         return BkError::Forbidden;
@@ -259,7 +258,7 @@ void DukContext::RegisterPrototypesForCrawler(void)
 
 void DukContext::Reset(void)
 {
-    assert(false); // BKTODO:
+    Initialize();
 }
 
 } // namespace BlinKit
