@@ -27,4 +27,6 @@
 
 #include "_skia.h"
 
+#define SK_CPU_SSE_LEVEL    SK_CPU_SSE_LEVEL_SSE41
+
 #endif // BLINKIT_SKIA__PC_H
