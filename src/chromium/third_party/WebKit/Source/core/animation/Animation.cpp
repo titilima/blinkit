@@ -1000,39 +1000,6 @@ Animation::PlayStateUpdateScope::~PlayStateUpdateScope()
             TRACE_EVENT_NESTABLE_ASYNC_INSTANT1("blink.animations,devtools.timeline,benchmark", "Animation", m_animation, "data", InspectorAnimationStateEvent::data(*m_animation));
     }
 
-    assert(false); // BKTODO:
-#if 0
-    // Ordering is important, the ready promise should resolve/reject before
-    // the finished promise.
-    if (m_animation->m_readyPromise && newPlayState != oldPlayState) {
-        if (newPlayState == Idle) {
-            if (m_animation->m_readyPromise->state() == AnimationPromise::Pending) {
-                m_animation->m_readyPromise->reject(DOMException::create(AbortError));
-            }
-            m_animation->m_readyPromise->reset();
-            m_animation->m_readyPromise->resolve(m_animation);
-        } else if (oldPlayState == Pending) {
-            m_animation->m_readyPromise->resolve(m_animation);
-        } else if (newPlayState == Pending) {
-            ASSERT(m_animation->m_readyPromise->state() != AnimationPromise::Pending);
-            m_animation->m_readyPromise->reset();
-        }
-    }
-
-    if (m_animation->m_finishedPromise && newPlayState != oldPlayState) {
-        if (newPlayState == Idle) {
-            if (m_animation->m_finishedPromise->state() == AnimationPromise::Pending) {
-                m_animation->m_finishedPromise->reject(DOMException::create(AbortError));
-            }
-            m_animation->m_finishedPromise->reset();
-        } else if (newPlayState == Finished) {
-            m_animation->m_finishedPromise->resolve(m_animation);
-        } else if (oldPlayState == Finished) {
-            m_animation->m_finishedPromise->reset();
-        }
-    }
-#endif
-
     if (oldPlayState != newPlayState && (oldPlayState == Idle || newPlayState == Idle)) {
         m_animation->setOutdated();
     }
