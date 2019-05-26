@@ -421,9 +421,9 @@ public:
     Page* page() const; // can be null
     Settings* settings() const; // can be null
 
+#ifndef BLINKIT_CRAWLER_ONLY
     float devicePixelRatio() const;
 
-#ifndef BLINKIT_CRAWLER_ONLY
     PassRefPtrWillBeRawPtr<Range> createRange();
 #endif
 

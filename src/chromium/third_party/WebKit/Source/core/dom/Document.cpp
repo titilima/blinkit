@@ -5359,18 +5359,12 @@ void Document::didAssociateFormControlsTimerFired(Timer<Document>* timer)
     frame()->page()->chromeClient().didAssociateFormControls(associatedFormControls, frame());
     m_associatedFormControls.clear();
 }
-#endif
 
 float Document::devicePixelRatio() const
 {
-    assert(false); // BKTODO:
-    return 1.0;
-#if 0
     return m_frame ? m_frame->devicePixelRatio() : 1.0;
-#endif
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 void Document::removedStyleSheet(StyleSheet* sheet, StyleResolverUpdateMode updateMode)
 {
     // If we're in document teardown, then we don't need this notification of our sheet's removal.
