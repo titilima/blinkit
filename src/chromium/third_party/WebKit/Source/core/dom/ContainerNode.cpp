@@ -1350,12 +1350,9 @@ void ContainerNode::recalcChildStyle(StyleRecalcChange change)
         }
     }
 }
-#endif // BLINKIT_CRAWLER_ONLY
 
 void ContainerNode::checkForChildrenAdjacentRuleChanges()
 {
-    ASSERT(false); // BKTODO:
-#if 0
     bool hasDirectAdjacentRules = childrenAffectedByDirectAdjacentRules();
     bool hasIndirectAdjacentRules = childrenAffectedByIndirectAdjacentRules();
 
@@ -1379,10 +1376,8 @@ void ContainerNode::checkForChildrenAdjacentRuleChanges()
 
         forceCheckOfAnyElementSibling = forceCheckOfAnyElementSibling || (childRulesChanged && hasIndirectAdjacentRules);
     }
-#endif
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 void ContainerNode::checkForSiblingStyleChanges(SiblingCheckType changeType, Node* nodeBeforeChange, Node* nodeAfterChange)
 {
     if (!inActiveDocument() || document().hasPendingForcedStyleRecalc() || styleChangeType() >= SubtreeStyleChange)
