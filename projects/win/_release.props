@@ -3,7 +3,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <OutDir>$(SolutionDir)release\</OutDir>
+    <OutDir>$(ProjectDir)..\release\</OutDir>
     <IntDir>release\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
