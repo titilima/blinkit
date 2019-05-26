@@ -1,3 +1,4 @@
+@REM This file SHOULD BE executed in x64 mode!
 msbuild BlinKit.sln /t:Clean /p:Configuration=Release;Platform=x86
 msbuild BkRequest\BkRequest.vcxproj /t:Clean /p:Configuration=Release;Platform=x86
 msbuild blink_crawler\blink_crawler.vcxproj /t:Clean /p:Configuration=Release;Platform=x86
