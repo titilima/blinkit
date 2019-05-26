@@ -37,8 +37,8 @@ MainFrame* MainFrame::CreateInstance(void)
 
 void BKAPI MainFrame::DocumentReady(BkView *view)
 {
-    m_crawler = BkGetApp()->CreateCrawler(*this);
-    m_crawler->Load("http://127.0.0.1:8000/target.html");
+    //m_crawler = BkGetApp()->CreateCrawler(*this);
+    //m_crawler->Load("http://127.0.0.1:8000/target.html");
 }
 
 void BKAPI MainFrame::DocumentReady(BkCrawler *crawler)
@@ -48,7 +48,7 @@ void BKAPI MainFrame::DocumentReady(BkCrawler *crawler)
 
 LRESULT MainFrame::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
 {
-    GetView()->Load("res:ui.html");
+    GetView()->Load("file:///S:/temp/test.html");
     return 0;
 }
 
