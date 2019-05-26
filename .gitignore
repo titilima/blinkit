@@ -1,6 +1,5 @@
 projects/win/debug
 projects/win/release
-projects/win/*/release
 sdk/win32
 src/chromium/third_party/WebKit/LayoutTests
 src/chromium/third_party/WebKit/ManualTests
