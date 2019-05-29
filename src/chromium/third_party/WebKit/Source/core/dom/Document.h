@@ -302,7 +302,6 @@ public:
 #ifndef BLINKIT_CRAWLER_ONLY
     Element* elementFromPoint(int x, int y) const;
     WillBeHeapVector<RawPtrWillBeMember<Element>> elementsFromPoint(int x, int y) const;
-    PassRefPtrWillBeRawPtr<Range> caretRangeFromPoint(int x, int y); // BKTODO: Seems no references.
 #endif
     Element* scrollingElement();
 

@@ -946,16 +946,7 @@ PassRefPtrWillBeRawPtr<Node> Document::adoptNode(PassRefPtrWillBeRawPtr<Node> so
             return nullptr;
         }
 
-        if (source->isFrameOwnerElement()) {
-            assert(false); // BKTODO: Remove frame!
-#if 0
-            HTMLFrameOwnerElement* frameOwnerElement = toHTMLFrameOwnerElement(source.get());
-            if (frame() && frame()->tree().isDescendantOf(frameOwnerElement->contentFrame())) {
-                exceptionState.throwDOMException(HierarchyRequestError, "The node provided is a frame which contains this document.");
-                return nullptr;
-            }
-#endif
-        }
+        ASSERT(!source->isFrameOwnerElement());
         if (source->parentNode()) {
             source->parentNode()->removeChild(source.get(), exceptionState);
             if (exceptionState.hadException())
@@ -996,13 +987,9 @@ PassRefPtrWillBeRawPtr<Element> Document::createElement(const QualifiedName& qNa
 {
     RefPtrWillBeRawPtr<Element> e = nullptr;
 
-    assert(false); // BKTODO:
-#if 0
     // FIXME: Use registered namespaces and look up in a hash to find the right factory.
     if (qName.namespaceURI() == xhtmlNamespaceURI)
         e = HTMLElementFactory::createHTMLElement(qName.localName(), *this, 0, createdByParser);
-    else if (qName.namespaceURI() == SVGNames::svgNamespaceURI)
-        e = SVGElementFactory::createSVGElement(qName.localName(), *this, createdByParser);
 
     if (e)
         m_sawElementsInKnownNamespaces = true;
@@ -1013,7 +1000,6 @@ PassRefPtrWillBeRawPtr<Element> Document::createElement(const QualifiedName& qNa
         e->setTagNameForCreateElementNS(qName);
 
     ASSERT(qName == e->tagQName());
-#endif
 
     return e.release();
 }
@@ -1153,22 +1139,6 @@ WillBeHeapVector<RawPtrWillBeMember<Element>> Document::elementsFromPoint(int x,
     return TreeScope::elementsFromPoint(x, y);
 }
 #endif // BLINKIT_CRAWLER_ONLY
-
-#if 0 // BKTODO: Seems no references.
-PassRefPtrWillBeRawPtr<Range> Document::caretRangeFromPoint(int x, int y)
-{
-    if (!layoutView())
-        return nullptr;
-
-    HitTestResult result = hitTestInDocument(this, x, y);
-    PositionWithAffinity positionWithAffinity = result.position();
-    if (positionWithAffinity.position().isNull())
-        return nullptr;
-
-    Position rangeCompliantPosition = positionWithAffinity.position().parentAnchoredEquivalent();
-    return Range::createAdjustedToTreeScope(*this, rangeCompliantPosition);
-}
-#endif
 
 Element* Document::scrollingElement()
 {
