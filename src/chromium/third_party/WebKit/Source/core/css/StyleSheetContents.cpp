@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: StyleSheetContents.cpp
-// Description: StyleSheetContents Class
-//      Author: Ziming Li
-//     Created: 2019-03-30
-// -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2007, 2012 Apple Inc. All rights reserved.
@@ -584,12 +573,8 @@ void StyleSheetContents::clientLoadStarted(CSSStyleSheet* sheet)
 
 void StyleSheetContents::removeSheetFromCache(Document* document)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     ASSERT(document);
     document->styleEngine().removeSheet(this);
-#endif
 }
 
 void StyleSheetContents::addedToMemoryCache()
@@ -617,14 +602,10 @@ RuleSet& StyleSheetContents::ensureRuleSet(const MediaQueryEvaluator& medium, Ad
 
 static void clearResolvers(WillBeHeapHashSet<RawPtrWillBeWeakMember<CSSStyleSheet>>& clients)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     for (const auto& sheet : clients) {
         if (Document* document = sheet->ownerDocument())
             document->styleEngine().clearResolver();
     }
-#endif
 }
 
 void StyleSheetContents::clearRuleSet()
@@ -647,14 +628,10 @@ void StyleSheetContents::clearRuleSet()
 
 static void removeFontFaceRules(WillBeHeapHashSet<RawPtrWillBeWeakMember<CSSStyleSheet>>& clients, const StyleRuleFontFace* fontFaceRule)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     for (const auto& sheet : clients) {
         if (Node* ownerNode = sheet->ownerNode())
             ownerNode->document().styleEngine().removeFontFaceRules(WillBeHeapVector<RawPtrWillBeMember<const StyleRuleFontFace>>(1, fontFaceRule));
     }
-#endif
 }
 
 void StyleSheetContents::notifyRemoveFontFaceRule(const StyleRuleFontFace* fontFaceRule)

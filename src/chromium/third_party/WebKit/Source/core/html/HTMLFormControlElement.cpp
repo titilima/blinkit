@@ -177,12 +177,8 @@ void HTMLFormControlElement::parseAttribute(const QualifiedName& name, const Ato
             setNeedsWillValidateCheck();
             pseudoStateChanged(CSSSelector::PseudoReadOnly);
             pseudoStateChanged(CSSSelector::PseudoReadWrite);
-#ifdef BLINKIT_CRAWLER_ONLY
-            assert(false); // BKTODO: Not reached!
-#else
             if (layoutObject())
                 LayoutTheme::theme().controlStateChanged(*layoutObject(), ReadOnlyControlState);
-#endif
         }
     } else if (name == requiredAttr) {
         if (oldValue.isNull() != value.isNull())
@@ -201,12 +197,8 @@ void HTMLFormControlElement::disabledAttributeChanged()
     setNeedsWillValidateCheck();
     pseudoStateChanged(CSSSelector::PseudoDisabled);
     pseudoStateChanged(CSSSelector::PseudoEnabled);
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (layoutObject())
         LayoutTheme::theme().controlStateChanged(*layoutObject(), EnabledControlState);
-#endif
     if (isDisabledFormControl() && treeScope().adjustedFocusedElement() == this) {
         // We might want to call blur(), but it's dangerous to dispatch events
         // here.
@@ -259,9 +251,6 @@ void HTMLFormControlElement::attach(const AttachContext& context)
 {
     HTMLElement::attach(context);
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (!layoutObject())
         return;
 
@@ -269,7 +258,6 @@ void HTMLFormControlElement::attach(const AttachContext& context)
     // to the base class's attach() because that can sometimes do a close
     // on the layoutObject.
     layoutObject()->updateFromElement();
-#endif
 
     // FIXME: Autofocus handling should be moved to insertedInto according to
     // the standard.
@@ -391,12 +379,8 @@ String HTMLFormControlElement::resultForDialogSubmit()
 
 void HTMLFormControlElement::didRecalcStyle(StyleRecalcChange)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (LayoutObject* layoutObject = this->layoutObject())
         layoutObject->updateFromElement();
-#endif
 }
 
 bool HTMLFormControlElement::supportsFocus() const
@@ -438,14 +422,10 @@ void HTMLFormControlElement::willCallDefaultEventHandler(const Event& event)
     bool oldShouldHaveFocusAppearance = shouldHaveFocusAppearance();
     m_wasFocusedByMouse = false;
 
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     // Change of m_wasFocusByMouse may affect shouldHaveFocusAppearance() and LayoutTheme::isFocused().
     // Inform LayoutTheme if shouldHaveFocusAppearance() changes.
     if (oldShouldHaveFocusAppearance != shouldHaveFocusAppearance() && layoutObject())
         LayoutTheme::theme().controlStateChanged(*layoutObject(), FocusControlState);
-#endif
 }
 
 short HTMLFormControlElement::tabIndex() const
@@ -499,12 +479,8 @@ void HTMLFormControlElement::findCustomValidationMessageTextDirection(const Stri
 {
     subMessage = fastGetAttribute(titleAttr);
     messageDir = determineDirectionality(message);
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (!subMessage.isEmpty())
         subMessageDir = layoutObject()->style()->direction();
-#endif
 }
 
 void HTMLFormControlElement::updateVisibleValidationMessage()
@@ -513,12 +489,8 @@ void HTMLFormControlElement::updateVisibleValidationMessage()
     if (!page)
         return;
     String message;
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (layoutObject() && willValidate())
         message = validationMessage().stripWhiteSpace();
-#endif
 
     m_hasValidationMessage = true;
     ValidationMessageClient* client = &page->validationMessageClient();
