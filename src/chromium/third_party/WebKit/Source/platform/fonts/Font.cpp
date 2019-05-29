@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Font.cpp
+// Description: Font Class
+//      Author: Ziming Li
+//     Created: 2019-05-29
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -420,6 +431,7 @@ CodePath Font::codePath(const TextRunPaintInfo& runInfo) const
 
     const TextRun& run = runInfo.run;
 
+#if 0 // BKTODO:
     if (fontDescription().typesettingFeatures() && (runInfo.from || runInfo.to != run.length()))
         return ComplexPath;
 
@@ -440,6 +452,7 @@ CodePath Font::codePath(const TextRunPaintInfo& runInfo) const
     // for the prefs width calculation.
     if (fontDescription().textRendering() == OptimizeLegibility || fontDescription().textRendering() == GeometricPrecision)
         return ComplexPath;
+#endif
 
     if (run.is8Bit())
         return SimplePath;

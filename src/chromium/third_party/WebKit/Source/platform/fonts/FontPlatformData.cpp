@@ -313,9 +313,8 @@ static inline bool tableHasSpace(hb_face_t* face, hb_set_t* glyphs,
 bool FontPlatformData::hasSpaceInLigaturesOrKerning(
     TypesettingFeatures features) const
 {
-    assert(false); // BKTODO:
     return false;
-#if 0
+#if 0 // BKTODO:
     const HarfBuzzFace* hbFace = harfBuzzFace();
     if (!hbFace)
         return false;
