@@ -897,8 +897,6 @@ public:
     void enqueueUniqueAnimationFrameEvent(PassRefPtrWillBeRawPtr<Event>);
     void enqueueMediaQueryChangeListeners(WillBeHeapVector<RefPtrWillBeMember<MediaQueryListListener>>&);
 
-    void dispatchEventsForPrinting();
-
     void exitPointerLock();
     Element* pointerLockElement() const;
 

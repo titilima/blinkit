@@ -3693,16 +3693,6 @@ void Document::enqueueMediaQueryChangeListeners(WillBeHeapVector<RefPtrWillBeMem
 #endif
 }
 
-void Document::dispatchEventsForPrinting()
-{
-    assert(false); // BKTODO:
-#if 0
-    if (!m_scriptedAnimationController)
-        return;
-    m_scriptedAnimationController->dispatchEventsAndCallbacksForPrinting();
-#endif
-}
-
 Document::EventFactorySet& Document::eventFactories()
 {
     DEFINE_STATIC_LOCAL(EventFactorySet, s_eventFactory, ());
