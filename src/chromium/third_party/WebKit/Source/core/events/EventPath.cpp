@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: EventPath.cpp
+// Description: EventPath Class
+//      Author: Ziming Li
+//     Created: 2019-05-29
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -47,12 +58,9 @@ EventTarget* EventPath::eventTargetRespectingTargetRules(Node& referenceNode)
     return &referenceNode;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 static inline bool shouldStopAtShadowRoot(Event& event, ShadowRoot& shadowRoot, EventTarget& target)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return false;
-#else
     // WebKit never allowed selectstart event to cross the the shadow DOM boundary.
     // Changing this breaks existing sites.
     // See https://bugs.webkit.org/show_bug.cgi?id=52195 for details.
@@ -67,8 +75,8 @@ static inline bool shouldStopAtShadowRoot(Event& event, ShadowRoot& shadowRoot, 
             || eventType == EventTypeNames::scroll
             || eventType == EventTypeNames::select
             || eventType == EventTypeNames::selectstart);
-#endif
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 EventPath::EventPath(Node& node, Event* event)
     : m_node(node)
@@ -313,11 +321,9 @@ void EventPath::shrinkIfNeeded(const Node& target, const EventTarget& relatedTar
     }
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void EventPath::adjustForTouchEvent(TouchEvent& touchEvent)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     WillBeHeapVector<RawPtrWillBeMember<TouchList>> adjustedTouches;
     WillBeHeapVector<RawPtrWillBeMember<TouchList>> adjustedTargetTouches;
     WillBeHeapVector<RawPtrWillBeMember<TouchList>> adjustedChangedTouches;
@@ -344,14 +350,10 @@ void EventPath::adjustForTouchEvent(TouchEvent& touchEvent)
         checkReachability(treeScope, touchEventContext->changedTouches());
     }
 #endif
-#endif
 }
 
 void EventPath::adjustTouchList(const TouchList* touchList, WillBeHeapVector<RawPtrWillBeMember<TouchList>> adjustedTouchList, const WillBeHeapVector<RawPtrWillBeMember<TreeScope>>& treeScopes)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     if (!touchList)
         return;
     for (size_t i = 0; i < touchList->length(); ++i) {
@@ -369,8 +371,8 @@ void EventPath::adjustTouchList(const TouchList* touchList, WillBeHeapVector<Raw
             adjustedTouchList[j]->append(touch.cloneWithNewTarget(findRelatedNode(*treeScopes[j], relatedNodeMap)));
         }
     }
-#endif
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 const NodeEventContext& EventPath::topNodeEventContext()
 {
@@ -385,15 +387,11 @@ void EventPath::ensureWindowEventContext()
         m_windowEventContext = adoptPtrWillBeNoop(new WindowEventContext(*m_event, topNodeEventContext()));
 }
 
-#if ENABLE(ASSERT)
+#if !defined(BLINKIT_CRAWLER_ONLY) && ENABLE(ASSERT)
 void EventPath::checkReachability(TreeScope& treeScope, TouchList& touchList)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     for (size_t i = 0; i < touchList.length(); ++i)
         ASSERT(touchList.item(i)->target()->toNode()->treeScope().isInclusiveOlderSiblingShadowRootOrAncestorTreeScopeOf(treeScope));
-#endif
 }
 #endif
 

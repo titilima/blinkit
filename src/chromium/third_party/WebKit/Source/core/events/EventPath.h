@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: EventPath.h
+// Description: EventPath Class
+//      Author: Ziming Li
+//     Created: 2019-05-29
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -64,7 +75,9 @@ public:
     size_t size() const { return m_nodeEventContexts.size(); }
 
     void adjustForRelatedTarget(Node&, EventTarget* relatedTarget);
+#ifndef BLINKIT_CRAWLER_ONLY
     void adjustForTouchEvent(TouchEvent&);
+#endif
 
     static EventTarget* eventTargetRespectingTargetRules(Node&);
 
@@ -86,7 +99,9 @@ private:
     void shrink(size_t newSize) { ASSERT(!m_windowEventContext); m_nodeEventContexts.shrink(newSize); }
     void shrinkIfNeeded(const Node& target, const EventTarget& relatedTarget);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void adjustTouchList(const TouchList*, WillBeHeapVector<RawPtrWillBeMember<TouchList>> adjustedTouchList, const WillBeHeapVector<RawPtrWillBeMember<TreeScope>>& treeScopes);
+#endif
 
     using TreeScopeEventContextMap = WillBeHeapHashMap<RawPtrWillBeMember<TreeScope>, RefPtrWillBeMember<TreeScopeEventContext>>;
     TreeScopeEventContext* ensureTreeScopeEventContext(Node* currentTarget, TreeScope*, TreeScopeEventContextMap&);
@@ -96,7 +111,7 @@ private:
     static void buildRelatedNodeMap(const Node&, RelatedTargetMap&);
     static EventTarget* findRelatedNode(TreeScope&, RelatedTargetMap&);
 
-#if ENABLE(ASSERT)
+#if !defined(BLINKIT_CRAWLER_ONLY) && ENABLE(ASSERT)
     static void checkReachability(TreeScope&, TouchList&);
 #endif
 
