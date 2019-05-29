@@ -61,6 +61,8 @@ protected:
     void BKAPI SetFocus(bool focused) override final;
     bool BKAPI GetCaretRect(BkRect *dst) override final;
     void BKAPI SetScaleFactor(float scaleFactor) override final;
+    // blink::WebWidgetClient
+    void scheduleAnimation(void) override;
 
     BkViewClient &m_client;
     std::unique_ptr<SkCanvas> m_memoryCanvas;
@@ -77,7 +79,6 @@ private:
     int BKAPI Load(const char *URI) override final;
     // blink::WebWidgetClient
     bool allowsBrokenNullLayerTreeView(void) const final { return true; }
-    void scheduleAnimation(void) override final;
     // blink::WebViewClient
     void startDragging(blink::WebLocalFrame *frame, const blink::WebDragData &data, blink::WebDragOperationsMask mask,
         const blink::WebImage &image, const blink::WebPoint& dragImageOffset) override final;

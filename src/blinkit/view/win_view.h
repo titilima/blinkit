@@ -46,6 +46,7 @@ private:
     void BKAPI Attach(NativeView nativeView) override;
     void BKAPI Paint(NativeCanvas nativeCanvas, const BkRect *rc) override;
     // blink::WebWidgetClient
+    void scheduleAnimation(void) override;
     void didChangeCursor(const blink::WebCursorInfo &cursorInfo) override;
     // ViewImpl
     std::unique_ptr<SkCanvas> CreateMemoryCanvas(int width, int height) override;
@@ -59,7 +60,8 @@ private:
     UINT m_dpi = 96;
     HDC m_memoryDC = nullptr;
     HGDIOBJ m_oldBitmap = nullptr;
-    bool m_changingSizeOrPosition = false;
+    const UINT_PTR m_animatorTimerId;
+    bool m_changingSizeOrPosition = false, m_animationScheduled = false;
     blink::WebCursorInfo m_cursorInfo;
 };
 

@@ -22,7 +22,9 @@ using namespace blink;
 
 namespace BlinKit {
 
-WinView::WinView(BkViewClient &client) : ViewImpl(client)
+static const UINT AnimatorElapse = 1000 / 24;
+
+WinView::WinView(BkViewClient &client) : ViewImpl(client), m_animatorTimerId(client.AnimatorTimerId())
 {
     WebSettings *settings = GetWebView()->settings();
     settings->setStandardFontFamily("Segoe UI");
@@ -63,6 +65,8 @@ void BKAPI WinView::Attach(NativeView nativeView)
     LONG style = GetClassLong(m_hWnd, GCL_STYLE);
     if (CS_DBLCLKS & style)
         m_hasDoubleClickEvent = true;
+
+    SetTimer(m_hWnd, m_animatorTimerId, AnimatorElapse, nullptr);
 }
 
 bool WinView::BuildMouseEvent(MouseEvent &dst, UINT message, UINT keyFlags, int x, int y)
@@ -205,6 +209,7 @@ void WinView::didChangeCursor(const WebCursorInfo &cursorInfo)
 void WinView::DoUpdate(void)
 {
     ViewImpl::DoUpdate();
+    m_animationScheduled = false;
     InvalidateRect(m_hWnd, nullptr, FALSE);
 }
 
@@ -301,6 +306,9 @@ void WinView::OnMouse(UINT message, UINT keyFlags, int x, int y)
         MouseEvent e;
         if (BuildMouseEvent(e, message, keyFlags, x, y))
             ProcessInput(e);
+
+        if (m_animationScheduled && WM_MOUSEMOVE == message)
+            UpdateWindow(m_hWnd);
     }
 }
 
@@ -436,9 +444,17 @@ void WinView::ProcessDoubleClick(UINT message, UINT keyFlags, int x, int y)
 
 bool BKAPI WinView::ProcessMessage(HWND h, UINT m, WPARAM w, LPARAM l, LRESULT &r)
 {
+    WebView *v = GetWebView();
+    v->beginFrame(monotonicallyIncreasingTime());
+
     r = 0;
     switch (m)
     {
+        case WM_TIMER:
+            if (w != m_animatorTimerId)
+                return false;
+            v->updateAllLifecyclePhases();
+            break;
         case WM_ERASEBKGND:
             r = TRUE;
             break;
@@ -524,6 +540,9 @@ bool BKAPI WinView::ProcessMessage(HWND h, UINT m, WPARAM w, LPARAM l, LRESULT &
             if (r)
                 return false; // Let it go on.
             break;
+        case WM_DESTROY:
+            KillTimer(h, m_animatorTimerId);
+            return false; // Let clients to do further things.
         case WM_NCDESTROY:
             HANDLE_WM_NCDESTROY(h, w, l, OnNCDestroy);
             [[fallthrough]];
@@ -531,6 +550,12 @@ bool BKAPI WinView::ProcessMessage(HWND h, UINT m, WPARAM w, LPARAM l, LRESULT &
             return false;
     }
     return true;
+}
+
+void WinView::scheduleAnimation(void)
+{
+    m_animationScheduled = true;
+    ViewImpl::scheduleAnimation();
 }
 
 WebMouseEvent WinView::Translate(const MouseEvent &e)

@@ -265,6 +265,13 @@ public:
         // Return true to allow BlinKit change the title of the native view.
         return true;
     }
+
+#ifdef _WIN32
+    virtual UINT_PTR AnimatorTimerId(void) const {
+        // Override this method if you uses 1000 for your own timer.
+        return 1000;
+    }
+#endif
 };
 
 class BkView {
