@@ -477,7 +477,6 @@ WebViewImpl::WebViewImpl(WebViewClient* client)
     , m_matchesHeuristicsForGpuRasterization(false)
     , m_flingModifier(0)
     , m_flingSourceDevice(WebGestureDeviceUninitialized)
-    , m_showFPSCounter(false)
     , m_baseBackgroundColor(Color::white)
     , m_backgroundColorOverride(Color::transparent)
     , m_zoomFactorOverride(0)
@@ -1002,15 +1001,6 @@ void WebViewImpl::enableFakePageScaleAnimationForTesting(bool enable)
     m_enableFakePageScaleAnimationForTesting = enable;
 }
 
-void WebViewImpl::setShowFPSCounter(bool show)
-{
-    if (m_layerTreeView) {
-        TRACE_EVENT0("blink", "WebViewImpl::setShowFPSCounter");
-        m_layerTreeView->setShowFPSCounter(show);
-    }
-    m_showFPSCounter = show;
-}
-
 void WebViewImpl::setShowPaintRects(bool show)
 {
     if (m_layerTreeView) {
@@ -1024,12 +1014,6 @@ void WebViewImpl::setShowDebugBorders(bool show)
 {
     if (m_layerTreeView)
         m_layerTreeView->setShowDebugBorders(show);
-}
-
-void WebViewImpl::updateShowFPSCounter()
-{
-    if (m_layerTreeView)
-        m_layerTreeView->setShowFPSCounter(m_showFPSCounter);
 }
 
 void WebViewImpl::setShowScrollBottleneckRects(bool show)

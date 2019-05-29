@@ -270,7 +270,6 @@ public:
     bool endActiveFlingAnimation() override;
     void setShowPaintRects(bool) override;
     void setShowDebugBorders(bool);
-    void setShowFPSCounter(bool) override;
     void setShowScrollBottleneckRects(bool) override;
     void acceptLanguagesChanged() override;
 
@@ -291,7 +290,6 @@ public:
     void setIgnoreInputEvents(bool newValue);
     void setBackgroundColorOverride(WebColor);
     void setZoomFactorOverride(float);
-    void updateShowFPSCounter();
     void setCompositorDeviceScaleFactorOverride(float);
     void setRootLayerTransform(const WebSize& offset, float scale);
 
@@ -727,7 +725,6 @@ private:
     Vector<OwnPtr<LinkHighlightImpl>> m_linkHighlights;
     OwnPtr<WebCompositorAnimationTimeline> m_linkHighlightsTimeline;
 
-    bool m_showFPSCounter;
     WebColor m_baseBackgroundColor;
     WebColor m_backgroundColorOverride;
     float m_zoomFactorOverride;
