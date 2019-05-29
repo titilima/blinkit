@@ -129,10 +129,6 @@ bool HTMLFormElement::isValidElement()
 
 bool HTMLFormElement::layoutObjectIsNeeded(const ComputedStyle& style)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-    exit(0);
-#else
     if (!m_wasDemoted)
         return HTMLElement::layoutObjectIsNeeded(style);
 
@@ -158,7 +154,6 @@ bool HTMLFormElement::layoutObjectIsNeeded(const ComputedStyle& style)
         || display == TABLE_CAPTION;
 
     return formIsTablePart;
-#endif
 }
 
 Node::InsertionNotificationRequest HTMLFormElement::insertedInto(ContainerNode* insertionPoint)
@@ -414,8 +409,6 @@ void HTMLFormElement::submit(Event* event, bool activateSubmitButton, bool proce
 
 void HTMLFormElement::scheduleFormSubmission(PassRefPtrWillBeRawPtr<FormSubmission> submission)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     ASSERT(submission->method() == FormSubmission::PostMethod || submission->method() == FormSubmission::GetMethod);
     ASSERT(submission->data());
     ASSERT(submission->form());
@@ -445,7 +438,6 @@ void HTMLFormElement::scheduleFormSubmission(PassRefPtrWillBeRawPtr<FormSubmissi
     // FIXME: Plumb form submission for remote frames.
     if (targetFrame->isLocalFrame())
         toLocalFrame(targetFrame)->navigationScheduler().scheduleFormSubmission(&document(), submission);
-#endif
 }
 
 void HTMLFormElement::reset()
@@ -799,7 +791,7 @@ void HTMLFormElement::copyNonAttributePropertiesFromElement(const Element& sourc
 
 void HTMLFormElement::anonymousNamedGetter(const AtomicString& name, RadioNodeListOrElement& returnValue)
 {
-    assert(false); // BKTODO:
+    ASSERT(false); // BKTODO:
 #if 0
     // Call getNamedElements twice, first time check if it has a value
     // and let HTMLFormElement update its cache.
