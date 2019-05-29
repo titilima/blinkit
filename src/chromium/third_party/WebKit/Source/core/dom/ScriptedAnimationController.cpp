@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ScriptedAnimationController.cpp
+// Description: ScriptedAnimationController Class
+//      Author: Ziming Li
+//     Created: 2019-05-29
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All Rights Reserved.
  *
@@ -131,16 +142,13 @@ void ScriptedAnimationController::dispatchEvents(const AtomicString& eventInterf
 
 void ScriptedAnimationController::executeCallbacks(double monotonicTimeNow)
 {
-    ASSERT(false); // BKTODO:
-#if 0
     // dispatchEvents() runs script which can cause the document to be destroyed.
     if (!m_document)
         return;
 
-    double highResNowMs = 1000.0 * m_document->loader()->timing().monotonicTimeToZeroBasedDocumentTime(monotonicTimeNow);
-    double legacyHighResNowMs = 1000.0 * m_document->loader()->timing().monotonicTimeToPseudoWallTime(monotonicTimeNow);
+    double highResNowMs = 1000.0 * m_document->loader()->monotonicTimeToZeroBasedDocumentTime(monotonicTimeNow);
+    double legacyHighResNowMs = 1000.0 * m_document->loader()->monotonicTimeToPseudoWallTime(monotonicTimeNow);
     m_callbackCollection.executeCallbacks(highResNowMs, legacyHighResNowMs);
-#endif
 }
 
 void ScriptedAnimationController::callMediaQueryListListeners()

@@ -676,6 +676,8 @@ void DocumentLoader::startLoadingMainResource()
     RefPtrWillBeRawPtr<DocumentLoader> protect(this);
     if (!m_referenceMonotonicTime)
         m_referenceMonotonicTime = monotonicallyIncreasingTime();
+    if (!m_referenceWallTime)
+        m_referenceWallTime = currentTime();
     ASSERT(!m_mainResource);
     ASSERT(m_state == NotStarted);
     m_state = Provisional;
@@ -768,6 +770,20 @@ const AtomicString& DocumentLoader::mimeType() const
     if (m_writer)
         return m_writer->mimeType();
     return m_response.mimeType();
+}
+
+double DocumentLoader::monotonicTimeToZeroBasedDocumentTime(double monotonicTime) const
+{
+    if (!monotonicTime || !m_referenceMonotonicTime)
+        return 0.0;
+    return monotonicTime - m_referenceMonotonicTime;
+}
+
+double DocumentLoader::monotonicTimeToPseudoWallTime(double monotonicTime) const
+{
+    if (!monotonicTime || !m_referenceMonotonicTime)
+        return 0.0;
+    return m_referenceWallTime + monotonicTime - m_referenceMonotonicTime;
 }
 
 DEFINE_WEAK_IDENTIFIER_MAP(DocumentLoader);

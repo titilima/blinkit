@@ -124,6 +124,8 @@ public:
     void acceptDataFromThreadedReceiver(const char* data, int dataLength, int encodedDataLength);
 
     double referenceMonotonicTime(void) const { return m_referenceMonotonicTime; }
+    double monotonicTimeToZeroBasedDocumentTime(double) const;
+    double monotonicTimeToPseudoWallTime(double) const;
 
     bool isRedirect() const { return m_redirectChain.size() > 1; }
     void clearRedirectChain();
@@ -232,7 +234,7 @@ private:
     bool m_inDataReceived;
     RefPtr<SharedBuffer> m_dataBuffer;
 
-    double m_referenceMonotonicTime = 0.0;
+    double m_referenceMonotonicTime = 0.0, m_referenceWallTime = 0.0;
 };
 
 DECLARE_WEAK_IDENTIFIER_MAP(DocumentLoader);
