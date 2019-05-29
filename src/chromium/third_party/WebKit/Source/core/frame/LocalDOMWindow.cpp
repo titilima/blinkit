@@ -959,9 +959,10 @@ Document* LocalDOMWindow::document() const
 
 StyleMedia* LocalDOMWindow::styleMedia() const
 {
-    assert(false); // BKTODO:
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
     return nullptr;
-#if 0
+#else
     if (!m_media)
         m_media = StyleMedia::create(frame());
     return m_media.get();
@@ -997,12 +998,12 @@ PassRefPtrWillBeRawPtr<CSSRuleList> LocalDOMWindow::getMatchedCSSRules(Element* 
 
 double LocalDOMWindow::devicePixelRatio() const
 {
-    assert(false); // BKTODO:
-    return 0.0;
-#if 0
     if (!frame())
         return 0.0;
 
+#ifdef BLINKIT_CRAWLER_ONLY
+    return 1.0;
+#else
     return frame()->devicePixelRatio();
 #endif
 }
