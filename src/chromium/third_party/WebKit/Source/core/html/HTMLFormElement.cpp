@@ -409,6 +409,8 @@ void HTMLFormElement::submit(Event* event, bool activateSubmitButton, bool proce
 
 void HTMLFormElement::scheduleFormSubmission(PassRefPtrWillBeRawPtr<FormSubmission> submission)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     ASSERT(submission->method() == FormSubmission::PostMethod || submission->method() == FormSubmission::GetMethod);
     ASSERT(submission->data());
     ASSERT(submission->form());
@@ -438,6 +440,7 @@ void HTMLFormElement::scheduleFormSubmission(PassRefPtrWillBeRawPtr<FormSubmissi
     // FIXME: Plumb form submission for remote frames.
     if (targetFrame->isLocalFrame())
         toLocalFrame(targetFrame)->navigationScheduler().scheduleFormSubmission(&document(), submission);
+#endif
 }
 
 void HTMLFormElement::reset()
