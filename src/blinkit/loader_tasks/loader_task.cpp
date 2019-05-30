@@ -44,10 +44,12 @@ LoaderTask* LoaderTask::Create(const WebURLRequest &request, WebURLLoaderClient 
         return new HTTPLoaderTask(*crawler, request, client);
     }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (URI.isLocalFile())
         return new FileLoaderTask(URI, client);
     if (URI.protocolIs("res"))
         return new ResLoaderTask(URI, client);
+#endif
 
     assert(false); // BKTODO:
     return nullptr;
