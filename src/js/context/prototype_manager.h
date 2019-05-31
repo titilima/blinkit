@@ -24,6 +24,9 @@ class PrototypeEntry final
 {
     friend class PrototypeManager;
 public:
+    void Add(const char *name, int value);
+    void AddObject(const char *name);
+
     struct Property {
         const char *name;
         duk_c_function getter;

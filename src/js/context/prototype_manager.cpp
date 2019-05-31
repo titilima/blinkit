@@ -20,6 +20,13 @@ PrototypeEntry::PrototypeEntry(duk_context *ctx, duk_idx_t idx) : m_ctx(ctx), m_
     // Nothing
 }
 
+void PrototypeEntry::Add(const char *name, int value)
+{
+    duk_push_string(m_ctx, name);
+    duk_push_int(m_ctx, value);
+    duk_def_prop(m_ctx, m_idx, CommonFlags | DUK_DEFPROP_HAVE_VALUE);
+}
+
 void PrototypeEntry::Add(const Property *properties, size_t count, duk_uint_t extraFlags)
 {
     const duk_uint_t baseFlags = DUK_DEFPROP_HAVE_GETTER | CommonFlags | extraFlags;
@@ -51,6 +58,13 @@ void PrototypeEntry::Add(const Method *methods, size_t count, duk_uint_t extraFl
         duk_push_c_function(m_ctx, entry.impl, entry.argc);
         duk_def_prop(m_ctx, m_idx, flags);
     }
+}
+
+void PrototypeEntry::AddObject(const char *name)
+{
+    duk_push_string(m_ctx, name);
+    duk_push_object(m_ctx);
+    duk_def_prop(m_ctx, m_idx, CommonFlags | DUK_DEFPROP_HAVE_VALUE);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
