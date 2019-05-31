@@ -14,6 +14,13 @@
 namespace BlinKit {
 namespace Duk {
 
+int DefaultSetter(duk_context *ctx, const char *prop)
+{
+    duk_push_this(ctx);
+    duk_put_prop_string(ctx, -1, prop);
+    return 0;
+}
+
 int ToErrorCode(duk_context *ctx, duk_idx_t idx)
 {
     int code = duk_get_error_code(ctx, idx);

@@ -27,6 +27,8 @@ private:
     const int m_top, m_delta;
 };
 
+int DefaultSetter(duk_context *ctx, const char *prop);
+
 int ToErrorCode(duk_context *ctx, duk_idx_t idx = -1);
 std::string ToString(duk_context *ctx, duk_idx_t idx = -1);
 
