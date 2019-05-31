@@ -11,6 +11,7 @@
 
 #include "duk_window.h"
 
+#include "bindings/duk_binding_impl.h"
 #include "bindings/duk_console.h"
 #include "context/duk_context.h"
 #include "context/prototype_manager.h"
@@ -23,9 +24,65 @@ MetaData DukWindow::ClassMetaData = { MetaData::Window, nullptr };
 
 namespace Crawler {
 
+static duk_ret_t Confirm(duk_context *ctx)
+{
+    assert(false); // BKTODO:
+    return 1;
+}
+
+static duk_ret_t GetComputedStyle(duk_context *ctx)
+{
+    assert(false); // BKTODO:
+    return 1;
+}
+
+static duk_ret_t GetSelection(duk_context *ctx)
+{
+    assert(false); // BKTODO:
+    return 1;
+}
+
+static duk_ret_t MatchMedia(duk_context *ctx)
+{
+    assert(false); // BKTODO:
+    return 1;
+}
+
+static duk_ret_t Prompt(duk_context *ctx)
+{
+    assert(false); // BKTODO:
+    return 1;
+}
+
 } // namespace Crawler
 
 namespace Impl {
+
+static duk_ret_t AToB(duk_context *ctx)
+{
+    duk_dup(ctx, 0);
+    duk_base64_decode(ctx, -1);
+    return 1;
+}
+
+static duk_ret_t BToA(duk_context *ctx)
+{
+    duk_dup(ctx, 0);
+    duk_base64_encode(ctx, -1);
+    return 1;
+}
+
+static duk_ret_t ClearInterval(duk_context *ctx)
+{
+    assert(false); // BKTODO:
+    return 0;
+}
+
+static duk_ret_t ClearTimeout(duk_context *ctx)
+{
+    assert(false); // BKTODO:
+    return 0;
+}
 
 static duk_ret_t ClosedGetter(duk_context *ctx)
 {
@@ -84,6 +141,18 @@ static duk_ret_t ParentSetter(duk_context *ctx)
     return Duk::DefaultSetter(ctx, "parent");
 }
 
+static duk_ret_t SetInterval(duk_context *ctx)
+{
+    assert(false); // BKTODO:
+    return 1;
+}
+
+static duk_ret_t SetTimeout(duk_context *ctx)
+{
+    assert(false); // BKTODO:
+    return 1;
+}
+
 static duk_ret_t WindowGetter(duk_context *ctx)
 {
     duk_push_global_object(ctx);
@@ -120,10 +189,33 @@ void DukWindow::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &
         { "top",       Impl::WindowGetter,      nullptr                 },
         { "window",    Impl::WindowGetter,      nullptr                 },
     };
+    static const PrototypeEntry::Method Methods[] = {
+        { "alert",            Crawler::NothingToDo,      1           },
+        { "atob",             Impl::AToB,                1           },
+        { "btoa",             Impl::BToA,                1           },
+        { "clearInterval",    Impl::ClearInterval,       1           },
+        { "clearTimeout",     Impl::ClearTimeout,        1           },
+        { "confirm",          Crawler::Confirm,          1           },
+        { "getComputedStyle", Crawler::GetComputedStyle, 2           },
+        { "getSelection",     Crawler::GetSelection,     0           },
+        { "matchMedia",       Crawler::MatchMedia,       1           },
+        { "moveBy",           Crawler::NothingToDo,      2           },
+        { "moveTo",           Crawler::NothingToDo,      2           },
+        { "print",            Crawler::NothingToDo,      0           },
+        { "prompt",           Crawler::Prompt,           2           },
+        { "resizeBy",         Crawler::NothingToDo,      2           },
+        { "resizeTo",         Crawler::NothingToDo,      2           },
+        { "setInterval",      Impl::SetInterval,         DUK_VARARGS },
+        { "setTimeout",       Impl::SetTimeout,          DUK_VARARGS },
+        { "stop",             Crawler::NothingToDo,      DUK_VARARGS },
+    };
+
     const auto worker = [](PrototypeEntry &entry)
     {
         entry.Add(Properties, WTF_ARRAY_LENGTH(Properties));
         entry.AddObject("external");
+
+        entry.Add(Methods, WTF_ARRAY_LENGTH(Methods));
     };
     protos.Register(ctx, ProtoName, worker);
 }
