@@ -32,6 +32,7 @@ private:
     size_t BKAPI ArgCount(void) const override;
     const BkValue* BKAPI ArgAt(size_t i) const override;
     int BKAPI ReturnAsBoolean(bool b) override;
+    int BKAPI ReturnAsString(const char *s, size_t length) override;
     int BKAPI ReturnAsJSON(const char *json, size_t length) override;
 
     duk_context *m_ctx;

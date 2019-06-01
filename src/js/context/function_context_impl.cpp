@@ -64,4 +64,17 @@ int BKAPI FunctionContextImpl::ReturnAsJSON(const char *json, size_t length)
     return BkError::Success;
 }
 
+int BKAPI FunctionContextImpl::ReturnAsString(const char *s, size_t length)
+{
+    if (m_hasReturnValue)
+        return BkError::Forbidden;
+
+    if (0 == length)
+        duk_push_string(m_ctx, s);
+    else
+        duk_push_lstring(m_ctx, s, length);
+    m_hasReturnValue = true;
+    return BkError::Success;
+}
+
 } // namespace BlinKit
