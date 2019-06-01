@@ -83,6 +83,12 @@ int BKAPI ResponseImpl::GetCookie(unsigned i, BkBuffer &cookie) const
     return BkError::Success;
 }
 
+int BKAPI ResponseImpl::GetCurrentURL(BkBuffer &URL) const
+{
+    URL.Assign(m_URL);
+    return BkError::Success;
+}
+
 int BKAPI ResponseImpl::GetHeader(const char *name, BkBuffer &value) const
 {
     std::string s(name);
@@ -119,6 +125,12 @@ int ResponseImpl::GetInformation(Information i, BkBuffer &value) const
             assert(false); // Not reached!
             return BkError::NotFound;
     }
+    return BkError::Success;
+}
+
+int BKAPI ResponseImpl::GetOriginURL(BkBuffer &URL) const
+{
+    URL.Assign(m_originURL);
     return BkError::Success;
 }
 
