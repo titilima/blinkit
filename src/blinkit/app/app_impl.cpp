@@ -76,11 +76,9 @@ blink::Settings& AppImpl::CrawlerSettings(void)
     return *m_crawlerSettings;
 }
 
-BkCrawler* BKAPI AppImpl::CreateCrawler(BkCrawlerClient &client, const char *script, size_t length)
+BkCrawler* BKAPI AppImpl::CreateCrawler(BkCrawlerClient &client)
 {
-    if (0 == length)
-        length = strlen(script);
-    return new CrawlerImpl(client, std::string_view(script, length));
+    return new CrawlerImpl(client);
 }
 
 BkRequest* AppImpl::CreateRequest(const char *URL, BkRequestClient &client)
