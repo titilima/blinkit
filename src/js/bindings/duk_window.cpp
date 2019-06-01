@@ -13,9 +13,12 @@
 
 #include "bindings/duk_binding_impl.h"
 #include "bindings/duk_console.h"
+#include "bindings/duk_document.h"
 #include "context/duk_context.h"
 #include "context/prototype_manager.h"
 #include "wrappers/duk.h"
+
+using namespace blink;
 
 namespace BlinKit {
 
@@ -92,7 +95,7 @@ static duk_ret_t ClosedGetter(duk_context *ctx)
 
 static duk_ret_t ConsoleGetter(duk_context *ctx)
 {
-    DukContext::From(ctx)->CreateObject(DukConsole::ProtoName);
+    DukContext::From(ctx)->CreateObject<DukConsole>();
     return 1;
 }
 
@@ -103,7 +106,9 @@ static duk_ret_t ConsoleSetter(duk_context *ctx)
 
 static duk_ret_t DocumentGetter(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    duk_push_this(ctx);
+    DOMWindow *window = DukEventTarget::GetNativeThis<DOMWindow>(ctx);
+    DukContext::From(ctx)->PushObject<DukDocument>(window->document());
     return 1;
 }
 
@@ -212,6 +217,8 @@ void DukWindow::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &
 
     const auto worker = [](PrototypeEntry &entry)
     {
+        DukEventTarget::RegisterToPrototypeEntry(entry);
+
         entry.Add(Properties, WTF_ARRAY_LENGTH(Properties));
         entry.AddObject("external");
 
