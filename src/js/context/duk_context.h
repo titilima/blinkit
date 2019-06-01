@@ -18,6 +18,7 @@
 
 namespace blink {
 class LocalFrame;
+class ScriptWrappable;
 }
 
 namespace BlinKit {
@@ -36,16 +37,32 @@ public:
     int CreateCrawlerObject(const char *script, size_t length);
     int Eval(const char *code, size_t length, BkCallback *callback, const char *fileName = nullptr);
     int CallFunction(const char *name, BkCallback *callback);
-    int CallCrawler(const char *method, BkCallback *callback);
+    int CallCrawler(const char *method, BkCallback *callback = nullptr);
     int RegisterFunction(const char *name, BkCallback &functionImpl);
     int AccessCrawlerMember(const char *name, BkCallback &callback);
     void GetCrawlerProperty(const char *name, const std::function<void(const BkValue &)> &callback);
 
-    void CreateObject(const char *protoName);
+    template <class T>
+    void CreateObject(void) {
+        CreateObject(T::ProtoName, nullptr, nullptr);
+    }
+    template <class T>
+    void CreateObject(blink::ScriptWrappable *nativeThis) {
+        CreateObject(T::ProtoName, nativeThis, T::OnCreate);
+    }
+    template <class T>
+    void PushObject(blink::ScriptWrappable *nativeThis) {
+        auto it = m_objectPool.find(nativeThis);
+        if (std::end(m_objectPool) != it)
+            duk_push_heapptr(m_context, it->second);
+        else
+            CreateObject(T::ProtoName, nativeThis, T::OnCreate);
+    }
 
     void Reset(void);
 private:
-    void Attach(blink::LocalFrame &frame);
+    void Attach(void);
+    void CreateObject(const char *protoName, blink::ScriptWrappable *nativeThis, void(*createCallback)(blink::ScriptWrappable *));
     void Initialize(void);
     static void AdjustGlobalsForCrawler(duk_context *ctx);
     void PrepareGlobalsToTop(void);
@@ -54,11 +71,14 @@ private:
 #endif
     void RegisterPrototypesForCrawler(void);
 
+    blink::LocalFrame &m_frame;
     duk_context *m_context;
     std::unique_ptr<PrototypeManager> m_prototypeManager;
     std::unique_ptr<FunctionManager> m_functionManager;
     void *m_crawlerObjectPtr = nullptr;
     void *m_globalsPtr = nullptr;
+
+    std::unordered_map<blink::ScriptWrappable *, void *> m_objectPool;
 };
 
 } // namespace BlinKit

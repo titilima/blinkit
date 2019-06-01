@@ -14,7 +14,10 @@
 #include "core/frame/FrameClient.h"
 #include "core/frame/LocalFrame.h"
 
+#include "blinkit/crawler/crawler_impl.h"
+
 #include "bindings/duk_console.h"
+#include "bindings/duk_document.h"
 #include "bindings/duk_window.h"
 #include "context/caller_context_impl.h"
 #include "context/function_manager.h"
@@ -33,9 +36,11 @@ static const char CrawlerObject[] = "crawlerObject";
 static const char External[] = "external";
 #endif
 static const char Globals[] = "globals";
+static const char NativeCrawler[] = "nativeCrawler";
 }
 
 namespace Crawler {
+
 static duk_ret_t Eval(duk_context *ctx)
 {
     int top = duk_get_top(ctx);
@@ -53,12 +58,24 @@ static duk_ret_t Eval(duk_context *ctx)
     duk_peval(ctx);
     return 1;
 }
+
+static duk_ret_t Gather(duk_context *ctx)
+{
+    duk_push_heap_stash(ctx);
+    duk_get_prop_string(ctx, -1, StashFields::NativeCrawler);
+
+    CrawlerImpl *crawler = reinterpret_cast<CrawlerImpl *>(duk_to_pointer(ctx, -1));
+    crawler->Client().DataGathered(crawler, ValueImpl(ctx, 0));
+
+    return 0;
 }
 
+} // namespace Crawler
+
 DukContext::DukContext(LocalFrame &frame)
-    : m_context(duk_create_heap_default())
+    : m_frame(frame), m_context(duk_create_heap_default())
 {
-    Attach(frame);
+    Attach();
     Initialize();
 }
 
@@ -87,13 +104,13 @@ void DukContext::AdjustGlobalsForCrawler(duk_context *ctx)
     duk_put_prop_string(ctx, -2, eval);
 }
 
-void DukContext::Attach(LocalFrame &frame)
+void DukContext::Attach(void)
 {
 #ifdef BLINKIT_CRAWLER_ONLY
-    assert(frame.client()->IsCrawler());
+    assert(m_frame.client()->IsCrawler());
     bool isCrawler = true;
 #else
-    bool isCrawler = frame.client()->IsCrawler();
+    bool isCrawler = m_frame.client()->IsCrawler();
 #endif
 
     Duk::StackKeeper sk(m_context);
@@ -101,6 +118,13 @@ void DukContext::Attach(LocalFrame &frame)
 
     duk_push_pointer(m_context, this);
     duk_put_prop_string(m_context, -2, StashFields::Context);
+
+    if (isCrawler)
+    {
+        CrawlerImpl *nativeCrawler = toCrawlerImpl(m_frame.client());
+        duk_push_pointer(m_context, nativeCrawler);
+        duk_put_prop_string(m_context, -2, StashFields::NativeCrawler);
+    }
 
     duk_push_global_object(m_context);
     if (isCrawler)
@@ -167,15 +191,30 @@ int DukContext::CreateCrawlerObject(const char *script, size_t length)
         return BkError::TypeError;
 
     m_crawlerObjectPtr = duk_get_heapptr(m_context, -1);
+
+    duk_push_c_function(m_context, Crawler::Gather, 1);
+    duk_put_prop_string(m_context, -2, "gather");
+
     m_functionManager = std::make_unique<FunctionManager>(m_context);
     duk_put_prop_string(m_context, -2, StashFields::CrawlerObject);
     return BkError::Success;
 }
 
-void DukContext::CreateObject(const char *protoName)
+void DukContext::CreateObject(const char *protoName, ScriptWrappable *nativeThis, void(*createCallback)(ScriptWrappable *))
 {
-    if (!m_prototypeManager->CreateObject(m_context, protoName))
+    if (m_prototypeManager->CreateObject(m_context, protoName))
+    {
+        if (nullptr != nativeThis)
+        {
+            m_objectPool[nativeThis] = duk_get_heapptr(m_context, -1);
+            Duk::BindNativeThis(m_context, nativeThis);
+            createCallback(nativeThis);
+        }
+    }
+    else
+    {
         duk_push_undefined(m_context);
+    }
 }
 
 int DukContext::Eval(const char *code, size_t length, BkCallback *callback, const char *fileName)
@@ -227,7 +266,7 @@ void DukContext::GetCrawlerProperty(const char *name, const std::function<void(c
 
 void DukContext::Initialize(void)
 {
-    CreateObject(DukWindow::ProtoName);
+    CreateObject<DukWindow>(m_frame.domWindow());
     BKLOG("Window object created: %x", duk_get_heapptr(m_context, -1));
     PrepareGlobalsToTop();
     duk_set_global_object(m_context);
@@ -276,13 +315,17 @@ void DukContext::RegisterPrototypesForCrawler(void)
 {
     m_prototypeManager->BeginRegisterTransaction(m_context);
     DukConsole::RegisterPrototype(m_context, *m_prototypeManager);
+    DukDocument::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
     DukWindow::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
     m_prototypeManager->EndRegisterTransaction(m_context);
 }
 
 void DukContext::Reset(void)
 {
+    m_objectPool.clear();
     Initialize();
+    if (nullptr != m_crawlerObjectPtr)
+        CallCrawler("contextReady");
 }
 
 } // namespace BlinKit
