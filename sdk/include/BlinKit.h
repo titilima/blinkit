@@ -100,6 +100,7 @@ public:
     };
     virtual Type BKAPI GetType(void) const = 0;
 
+    virtual int BKAPI GetAsErrorCode(void) const = 0;
     virtual bool BKAPI GetAsBoolean(void) const = 0;
     virtual int BKAPI GetAsString(BkBuffer &dst) const = 0;
     virtual int BKAPI GetAsJSON(BkBuffer &dst) const = 0;
@@ -119,6 +120,7 @@ public:
     virtual const BkValue* BKAPI ArgAt(size_t i) const = 0;
 
     virtual int BKAPI ReturnAsBoolean(bool b) = 0;
+    virtual int BKAPI ReturnAsString(const char *s, size_t length = 0) = 0;
     virtual int BKAPI ReturnAsJSON(const char *json, size_t length = 0) = 0;
 };
 
@@ -168,10 +170,10 @@ public:
     virtual void BKAPI Exit(void) = 0;
 
     // Crawler Configurations
-    // - userAgent: String
-    // - incantation: String
-    // - scriptEnabled: Boolean
-    virtual BkCrawler* BKAPI CreateCrawler(BkCrawlerClient &client, const char *script, size_t length = 0) = 0;
+    // - `userAgent`: String
+    // - `incantation`: String
+    // - `scriptEnabled`: Boolean
+    virtual BkCrawler* BKAPI CreateCrawler(BkCrawlerClient &client) = 0;
 
     virtual BkView* BKAPI CreateView(BkViewClient &client) = 0;
 };
@@ -182,7 +184,24 @@ public:
 
 class BkCrawlerClient {
 public:
-    virtual bool BKAPI RequestComplete(BkCrawler *crawler, int statusCode, const char *body, size_t length) {
+    // Example Script:
+    // {
+    //     userAgent: <User agent for crawler, optional>,
+    //     incantation: <Eval incantation for access the crawler object, optional>,
+    //     scriptEnabled: <Script enabled, optional>,
+    //     requestComplete: function(body, url, statusCode) {
+    //         <Callback for request complete, optional>
+    //     },
+    //     documentReady: function() {
+    //         <Callback for document ready, optional>
+    //     }
+    // }
+    virtual void BKAPI GetUserScript(BkBuffer &userScript) = 0;
+
+    // In JS, call `crawler.gather(someData)` to pass data to BkCrawlerClient.
+    virtual void BKAPI DataGathered(BkCrawler *crawler, const BkValue &data) = 0;
+
+    virtual bool BKAPI RequestComplete(BkCrawler *crawler, const char *URL, int statusCode, const char *body, size_t length) {
         return 200 == statusCode;
     }
     virtual void BKAPI DocumentReady(BkCrawler *crawler) {}
@@ -392,6 +411,9 @@ public:
 
 class BkResponse {
 public:
+    virtual int BKAPI GetOriginURL(BkBuffer &URL) const = 0;
+    virtual int BKAPI GetCurrentURL(BkBuffer &URL) const = 0;
+
     virtual int BKAPI GetHTTPVersion(BkBuffer &v) const = 0;
     virtual int BKAPI StatusCode(void) const = 0;
     virtual int BKAPI GetReasonPhrase(BkBuffer &reasonPhrase) const = 0;
