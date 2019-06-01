@@ -77,6 +77,18 @@
     <ClInclude Include="..\..\..\src\js\context\function_context_impl.h">
       <Filter>context</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_binding_impl.h">
+      <Filter>bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_event_target.h">
+      <Filter>bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_document.h">
+      <Filter>bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_node.h">
+      <Filter>bindings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -123,6 +135,18 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\js\context\function_context_impl.cpp">
       <Filter>context</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\bindings\duk_binding_impl.cpp">
+      <Filter>bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\bindings\duk_event_target.cpp">
+      <Filter>bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\bindings\duk_document.cpp">
+      <Filter>bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\bindings\duk_node.cpp">
+      <Filter>bindings</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
