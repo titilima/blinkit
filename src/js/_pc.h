@@ -33,6 +33,7 @@
 #include <cassert>
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include "sdk/include/BlinKit.h"
 #include "base/logging.h"
 #include "duktape/duktape.h"
