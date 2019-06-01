@@ -37,6 +37,7 @@ private:
     void BKAPI RequestFailed(int errorCode) override;
 
     CrawlerImpl &m_crawler;
+    std::string m_currentURL;
     blink::WebTaskRunner *m_taskRunner = nullptr;
 };
 

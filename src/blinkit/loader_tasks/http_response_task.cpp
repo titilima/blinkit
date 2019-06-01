@@ -37,6 +37,7 @@ static std::string ExtractMIMEType(const BkResponse &response)
 
 void BKAPI HTTPResponseTask::RequestComplete(const BkResponse &response)
 {
+    response.GetCurrentURL(BkMakeBuffer(m_currentURL).Wrap());
     m_responseData->StatusCode = response.StatusCode();
     m_responseData->MimeType = ExtractMIMEType(response);
     response.GetBody(BkMakeBuffer(m_responseData->Body).Wrap());
@@ -58,7 +59,7 @@ void HTTPResponseTask::run(void)
     int statusCode = m_responseData->StatusCode;
     const char *body = reinterpret_cast<const char *>(m_responseData->Body.data());
     size_t length = m_responseData->Body.size();
-    if (!m_crawler.Client().RequestComplete(&m_crawler, statusCode, body, length))
+    if (!m_crawler.Client().RequestComplete(&m_crawler, m_currentURL.c_str(), statusCode, body, length))
         return;
 
     ResponseTask::run();
