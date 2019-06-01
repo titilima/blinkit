@@ -23,10 +23,12 @@ using namespace blink;
 
 namespace BlinKit {
 
-CrawlerImpl::CrawlerImpl(BkCrawlerClient &client, const std::string_view &script)
-    : m_client(client), m_frame(LocalFrame::create(this, nullptr))
+CrawlerImpl::CrawlerImpl(BkCrawlerClient &client) : m_client(client), m_frame(LocalFrame::create(this, nullptr))
 {
     m_frame->init();
+
+    std::string script;
+    client.GetUserScript(BkMakeBuffer(script).Wrap());
     m_frame->script().CreateCrawlerObject(script.data(), script.length());
 }
 

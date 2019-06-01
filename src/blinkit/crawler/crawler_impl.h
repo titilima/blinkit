@@ -23,7 +23,7 @@ namespace BlinKit {
 class CrawlerImpl final : public BkCrawler, public FrameLoaderClientImpl
 {
 public:
-    CrawlerImpl(BkCrawlerClient &client, const std::string_view &script);
+    CrawlerImpl(BkCrawlerClient &client);
     ~CrawlerImpl(void);
 
     BkCrawlerClient& Client(void) const { return m_client; }
