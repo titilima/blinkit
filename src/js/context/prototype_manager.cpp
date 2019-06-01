@@ -67,6 +67,12 @@ void PrototypeEntry::AddObject(const char *name)
     duk_def_prop(m_ctx, m_idx, CommonFlags | DUK_DEFPROP_HAVE_VALUE);
 }
 
+void PrototypeEntry::SetFinalizer(duk_c_function finalizer)
+{
+    duk_push_c_function(m_ctx, finalizer, 1);
+    duk_set_finalizer(m_ctx, m_idx);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 PrototypeManager::PrototypeManager(duk_context *ctx)

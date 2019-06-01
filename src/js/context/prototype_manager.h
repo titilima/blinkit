@@ -26,6 +26,7 @@ class PrototypeEntry final
 public:
     void Add(const char *name, int value);
     void AddObject(const char *name);
+    void SetFinalizer(duk_c_function finalizer);
 
     struct Property {
         const char *name;
