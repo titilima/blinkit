@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CSSParser.cpp
+// Description: CSSParser Class
+//      Author: Ziming Li
+//     Created: 2019-06-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -21,6 +32,7 @@
 
 namespace blink {
 
+#ifndef BLINKIT_CRAWLER_ONLY
 bool CSSParser::parseDeclarationList(const CSSParserContext& context, MutableStylePropertySet* propertySet, const String& declaration)
 {
     return CSSParserImpl::parseDeclarationList(propertySet, declaration, context);
@@ -30,6 +42,7 @@ void CSSParser::parseDeclarationListForInspector(const CSSParserContext& context
 {
     CSSParserImpl::parseDeclarationListForInspector(declaration, context, observer);
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 CSSSelectorList CSSParser::parseSelector(const CSSParserContext& context, const String& selector)
 {
@@ -37,6 +50,7 @@ CSSSelectorList CSSParser::parseSelector(const CSSParserContext& context, const 
     return CSSSelectorParser::parseSelector(scope.tokenRange(), context, nullptr);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 PassRefPtrWillBeRawPtr<StyleRuleBase> CSSParser::parseRule(const CSSParserContext& context, StyleSheetContents* styleSheet, const String& rule)
 {
     return CSSParserImpl::parseRule(rule, context, styleSheet, CSSParserImpl::AllowImportRules);
@@ -172,5 +186,6 @@ PassRefPtrWillBeRawPtr<CSSValue> CSSParser::parseFontFaceDescriptor(CSSPropertyI
         return nullptr;
     return toStyleRuleFontFace(rule.get())->properties().getPropertyCSSValue(propertyID);
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 } // namespace blink

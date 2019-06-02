@@ -557,9 +557,6 @@ PassRefPtrWillBeRawPtr<Element> SelectorQuery::queryFirst(ContainerNode& rootNod
 
 SelectorQuery* SelectorQueryCache::add(const AtomicString& selectors, const Document& document, ExceptionState& exceptionState)
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
     HashMap<AtomicString, OwnPtr<SelectorQuery>>::iterator it = m_entries.find(selectors);
     if (it != m_entries.end())
         return it->value.get();
@@ -582,7 +579,6 @@ SelectorQuery* SelectorQueryCache::add(const AtomicString& selectors, const Docu
         m_entries.remove(m_entries.begin());
 
     return m_entries.add(selectors, SelectorQuery::adopt(std::move(selectorList))).storedValue->value.get();
-#endif
 }
 
 void SelectorQueryCache::invalidate()

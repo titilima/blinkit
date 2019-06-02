@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CSSParserToken.cpp
+// Description: CSSParserToken Class
+//      Author: Ziming Li
+//     Created: 2019-06-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -65,10 +76,14 @@ CSSParserToken::CSSParserToken(HashTokenType type, CSSParserString value)
 
 void CSSParserToken::convertToDimensionWithUnit(CSSParserString unit)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#else
     ASSERT(m_type == NumberToken);
     m_type = DimensionToken;
     initValueFromCSSParserString(unit);
     m_unit = static_cast<unsigned>(CSSPrimitiveValue::fromName(unit));
+#endif
 }
 
 void CSSParserToken::convertToPercentage()
@@ -106,26 +121,41 @@ double CSSParserToken::numericValue() const
 
 CSSPropertyID CSSParserToken::parseAsUnresolvedCSSPropertyID() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+    return CSSPropertyInvalid;
+#else
     ASSERT(m_type == IdentToken);
     return unresolvedCSSPropertyID(value());
+#endif
 }
 
 CSSValueID CSSParserToken::id() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+    return CSSValueInvalid;
+#else
     if (m_type != IdentToken)
         return CSSValueInvalid;
     if (m_id < 0)
         m_id = cssValueKeywordID(value());
     return static_cast<CSSValueID>(m_id);
+#endif
 }
 
 CSSValueID CSSParserToken::functionId() const
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+    return CSSValueInvalid;
+#else
     if (m_type != FunctionToken)
         return CSSValueInvalid;
     if (m_id < 0)
         m_id = cssValueKeywordID(value());
     return static_cast<CSSValueID>(m_id);
+#endif
 }
 
 bool CSSParserToken::hasStringBacking() const

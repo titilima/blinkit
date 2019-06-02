@@ -1538,6 +1538,24 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\NetworkHints.cpp">
       <Filter>platform\network</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSParser.cpp">
+      <Filter>core\css\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSSelectorParser.cpp">
+      <Filter>core\css\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSTokenizer.cpp">
+      <Filter>core\css\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSParserToken.cpp">
+      <Filter>core\css\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSParserTokenRange.cpp">
+      <Filter>core\css\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSTokenizerInputStream.cpp">
+      <Filter>core\css\parser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -3138,6 +3156,24 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\network\NetworkHints.h">
       <Filter>platform\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSParser.h">
+      <Filter>core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSSelectorParser.h">
+      <Filter>core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSTokenizer.h">
+      <Filter>core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSParserToken.h">
+      <Filter>core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSParserTokenRange.h">
+      <Filter>core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSTokenizerInputStream.h">
+      <Filter>core\css\parser</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

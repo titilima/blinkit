@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: CSSSelectorParser.cpp
+// Description: CSSSelectorParser Class
+//      Author: Ziming Li
+//     Created: 2019-06-02
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -661,9 +672,13 @@ const AtomicString& CSSSelectorParser::defaultNamespace() const
 
 const AtomicString& CSSSelectorParser::determineNamespace(const AtomicString& prefix)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    return defaultNamespace();
+#else
     if (!m_styleSheet)
         return defaultNamespace();
     return m_styleSheet->determineNamespace(prefix);
+#endif
 }
 
 void CSSSelectorParser::prependTypeSelectorIfNeeded(const AtomicString& namespacePrefix, const AtomicString& elementName, CSSParserSelector* compoundSelector)
