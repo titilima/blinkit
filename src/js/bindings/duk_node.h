@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "core/dom/Node.h"
+
 #include "duk_event_target.h"
 
 namespace BlinKit {
@@ -22,6 +24,9 @@ class DukNode : public DukEventTarget
 {
 protected:
     static void RegisterToPrototypeEntry(PrototypeEntry &entry);
+
+    static duk_ret_t TextContentGetter(duk_context *ctx);
+    static duk_ret_t TextContentSetter(duk_context *ctx);
 };
 
 } // namespace BlinKit

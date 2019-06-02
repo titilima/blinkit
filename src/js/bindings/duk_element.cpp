@@ -248,17 +248,18 @@ static duk_ret_t TagNameGetter(duk_context *ctx)
 void DukElement::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &protos)
 {
     static const PrototypeEntry::Property Properties[] = {
-        { "attributes",             Impl::AttributesGetter,             nullptr               },
-        { "children",               Impl::ChildrenGetter,               nullptr               },
-        { "classList",              Impl::ClassListGetter,              nullptr               },
-        { "className",              Impl::ClassNameGetter,              Impl::ClassNameSetter },
-        { "id",                     Impl::IdGetter,                     Impl::IdSetter        },
-        { "innerHTML",              Impl::InnerHTMLGetter,              Impl::InnerHTMLSetter },
-        { "namespaceURI",           Impl::NamespaceURIGetter,           nullptr               },
-        { "nextElementSibling",     Impl::NextElementSiblingGetter,     nullptr               },
-        { "outerHTML",              Impl::OuterHTMLGetter,              Impl::OuterHTMLSetter },
-        { "previousElementSibling", Impl::PreviousElementSiblingGetter, nullptr               },
-        { "tagName",                Impl::TagNameGetter,                nullptr               },
+        { "attributes",             Impl::AttributesGetter,             nullptr                    },
+        { "children",               Impl::ChildrenGetter,               nullptr                    },
+        { "classList",              Impl::ClassListGetter,              nullptr                    },
+        { "className",              Impl::ClassNameGetter,              Impl::ClassNameSetter      },
+        { "id",                     Impl::IdGetter,                     Impl::IdSetter             },
+        { "innerHTML",              Impl::InnerHTMLGetter,              Impl::InnerHTMLSetter      },
+        { "innerText",              DukNode::TextContentGetter,         DukNode::TextContentSetter },
+        { "namespaceURI",           Impl::NamespaceURIGetter,           nullptr                    },
+        { "nextElementSibling",     Impl::NextElementSiblingGetter,     nullptr                    },
+        { "outerHTML",              Impl::OuterHTMLGetter,              Impl::OuterHTMLSetter      },
+        { "previousElementSibling", Impl::PreviousElementSiblingGetter, nullptr                    },
+        { "tagName",                Impl::TagNameGetter,                nullptr                    },
     };
     static const PrototypeEntry::Method Methods[] = {
         { "getAttribute",           Impl::GetAttribute,           1 },
