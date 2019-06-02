@@ -172,6 +172,7 @@ int BKAPI WinRequest::Perform(void)
     buf.dwHeadersLength = m_allHeaders.length();
     buf.dwBufferTotal = m_body.size();
     m_request.SetOption(INTERNET_OPTION_SEND_TIMEOUT, TimeoutInMs());
+    m_request.SetOption(INTERNET_OPTION_SECURITY_FLAGS, SECURITY_FLAG_IGNORE_REVOCATION);
     if (m_request.Send(&buf))
     {
         SetEvent(m_hEvent);
