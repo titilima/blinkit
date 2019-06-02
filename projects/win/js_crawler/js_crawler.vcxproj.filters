@@ -92,6 +92,9 @@
     <ClInclude Include="..\..\..\src\js\bindings\duk_exception_state.h">
       <Filter>bindings</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_element.h">
+      <Filter>bindings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -152,6 +155,9 @@
       <Filter>bindings</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\js\bindings\duk_exception_state.cpp">
+      <Filter>bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\bindings\duk_element.cpp">
       <Filter>bindings</Filter>
     </ClCompile>
   </ItemGroup>
