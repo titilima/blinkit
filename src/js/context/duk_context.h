@@ -50,15 +50,26 @@ public:
     }
     template <class T>
     void CreateObject(blink::ScriptWrappable *nativeThis) {
+        assert(nullptr != nativeThis);
         CreateObject(T::ProtoName, nativeThis, T::OnCreate);
     }
     template <class T>
     void PushObject(blink::ScriptWrappable *nativeThis) {
+        if (nullptr == nativeThis)
+        {
+            duk_push_undefined(m_context);
+            return;
+        }
+
         auto it = m_objectPool.find(nativeThis);
         if (std::end(m_objectPool) != it)
             duk_push_heapptr(m_context, it->second);
         else
             CreateObject(T::ProtoName, nativeThis, T::OnCreate);
+    }
+    void RemoveObjectFromPool(blink::ScriptWrappable *nativeThis) {
+        assert(std::end(m_objectPool) != m_objectPool.find(nativeThis));
+        m_objectPool.erase(nativeThis);
     }
 
     void Reset(void);

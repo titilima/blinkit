@@ -13,6 +13,7 @@
 
 #include "core/events/EventTarget.h"
 
+#include "context/duk_context.h"
 #include "context/prototype_manager.h"
 #include "wrappers/duk.h"
 
@@ -23,6 +24,7 @@ namespace BlinKit {
 duk_ret_t DukEventTarget::Finalizer(duk_context *ctx)
 {
     EventTarget *nativeThis = Get(ctx, 0);
+    DukContext::From(ctx)->RemoveObjectFromPool(nativeThis);
     nativeThis->deref();
     return 0;
 }
