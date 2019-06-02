@@ -189,12 +189,6 @@ public:
     //     userAgent: <User agent for crawler, optional>,
     //     incantation: <Eval incantation for access the crawler object, optional>,
     //     scriptEnabled: <Script enabled, optional>,
-    //     requestComplete: function(body, url, statusCode) {
-    //         <Callback for request complete, optional>
-    //     },
-    //     documentReady: function() {
-    //         <Callback for document ready, optional>
-    //     }
     // }
     virtual void BKAPI GetUserScript(BkBuffer &userScript) = 0;
 
