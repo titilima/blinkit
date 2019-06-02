@@ -201,6 +201,7 @@ public:
     // In JS, call `crawler.gather(someData)` to pass data to BkCrawlerClient.
     virtual void BKAPI DataGathered(BkCrawler *crawler, const BkValue &data) = 0;
 
+    virtual void BKAPI ContextReady(BkCrawler *crawler) {}
     virtual bool BKAPI RequestComplete(BkCrawler *crawler, const char *URL, int statusCode, const char *body, size_t length) {
         return 200 == statusCode;
     }
