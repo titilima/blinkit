@@ -62,6 +62,13 @@ int PushString(duk_context *ctx, const AtomicString &s)
     return 1;
 }
 
+AtomicString ToAtomicString(duk_context *ctx, duk_idx_t idx)
+{
+    size_t l = 0;
+    const char *s = duk_to_lstring(ctx, idx, &l);
+    return AtomicString::fromUTF8(s, l);
+}
+
 int ToErrorCode(duk_context *ctx, duk_idx_t idx)
 {
     int code = duk_get_error_code(ctx, idx);

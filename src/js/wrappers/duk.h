@@ -46,6 +46,7 @@ int PushString(duk_context *ctx, const WTF::AtomicString &s);
 
 int ToErrorCode(duk_context *ctx, duk_idx_t idx = -1);
 std::string ToString(duk_context *ctx, duk_idx_t idx = -1);
+WTF::AtomicString ToAtomicString(duk_context *ctx, duk_idx_t idx = -1);
 WTF::String ToWTFString(duk_context *ctx, duk_idx_t idx = -1);
 
 } // namespace Duk
