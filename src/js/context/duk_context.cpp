@@ -18,6 +18,7 @@
 
 #include "bindings/duk_console.h"
 #include "bindings/duk_document.h"
+#include "bindings/duk_element.h"
 #include "bindings/duk_window.h"
 #include "context/caller_context_impl.h"
 #include "context/function_manager.h"
@@ -321,6 +322,7 @@ void DukContext::RegisterPrototypesForCrawler(void)
     m_prototypeManager->BeginRegisterTransaction(m_context);
     DukConsole::RegisterPrototype(m_context, *m_prototypeManager);
     DukDocument::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
+    DukElement::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
     DukWindow::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
     m_prototypeManager->EndRegisterTransaction(m_context);
 }
