@@ -136,7 +136,11 @@ static duk_ret_t DocumentElementGetter(duk_context *ctx)
 
 static duk_ret_t GetElementById(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    duk_push_this(ctx);
+    Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
+
+    Element *ret = document->getElementById(Duk::ToAtomicString(ctx, 0));
+    DukContext::From(ctx)->PushObject<DukElement>(ret);
     return 1;
 }
 
