@@ -23,6 +23,7 @@ class ScriptWrappable;
 
 namespace BlinKit {
 
+class CrawlerImpl;
 class FunctionManager;
 class PrototypeManager;
 
@@ -33,6 +34,7 @@ public:
     ~DukContext(void);
 
     static DukContext* From(duk_context *ctx);
+    CrawlerImpl* GetCrawler(void);
 
     int CreateCrawlerObject(const char *script, size_t length);
     int Eval(const char *code, size_t length, BkCallback *callback, const char *fileName = nullptr);

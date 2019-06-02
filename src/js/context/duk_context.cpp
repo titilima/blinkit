@@ -61,12 +61,8 @@ static duk_ret_t Eval(duk_context *ctx)
 
 static duk_ret_t Gather(duk_context *ctx)
 {
-    duk_push_heap_stash(ctx);
-    duk_get_prop_string(ctx, -1, StashFields::NativeCrawler);
-
-    CrawlerImpl *crawler = reinterpret_cast<CrawlerImpl *>(duk_to_pointer(ctx, -1));
+    CrawlerImpl *crawler = DukContext::From(ctx)->GetCrawler();
     crawler->Client().DataGathered(crawler, ValueImpl(ctx, 0));
-
     return 0;
 }
 
@@ -250,6 +246,15 @@ DukContext* DukContext::From(duk_context *ctx)
     return reinterpret_cast<DukContext *>(duk_get_pointer(ctx, -1));
 }
 
+CrawlerImpl* DukContext::GetCrawler(void)
+{
+    assert(m_frame.client()->IsCrawler());
+    Duk::StackKeeper sk(m_context);
+    duk_push_heap_stash(m_context);
+    duk_get_prop_string(m_context, -1, StashFields::NativeCrawler);
+    return reinterpret_cast<CrawlerImpl *>(duk_to_pointer(m_context, -1));
+}
+
 void DukContext::GetCrawlerProperty(const char *name, const std::function<void(const BkValue &)> &callback)
 {
     if (nullptr == m_crawlerObjectPtr)
@@ -324,8 +329,14 @@ void DukContext::Reset(void)
 {
     m_objectPool.clear();
     Initialize();
-    if (nullptr != m_crawlerObjectPtr)
-        CallCrawler("contextReady");
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!m_frame.client()->IsCrawler())
+        return;
+#endif
+
+    CrawlerImpl *crawler = GetCrawler();
+    crawler->Client().ContextReady(crawler);
 }
 
 } // namespace BlinKit
