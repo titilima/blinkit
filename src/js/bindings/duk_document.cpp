@@ -11,6 +11,9 @@
 
 #include "duk_document.h"
 
+#include "bindings/duk_element.h"
+#include "bindings/duk_exception_state.h"
+#include "context/duk_context.h"
 #include "context/prototype_manager.h"
 #include "wrappers/duk.h"
 
@@ -170,7 +173,18 @@ static duk_ret_t InputEncodingGetter(duk_context *ctx)
 
 static duk_ret_t QuerySelector(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    duk_push_this(ctx);
+    Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
+
+    DukExceptionState es(ctx, "querySelector", "Document");
+    PassRefPtr<Element> ret = document->querySelector(Duk::ToAtomicString(ctx, 0), es);
+    if (es.hadException())
+    {
+        es.throwIfNeeded();
+        return 0;
+    }
+
+    DukContext::From(ctx)->PushObject<DukElement>(ret.get());
     return 1;
 }
 
