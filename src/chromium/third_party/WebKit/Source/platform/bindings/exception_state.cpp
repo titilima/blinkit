@@ -11,6 +11,8 @@
 
 #include "exception_state.h"
 
+#include "base/logging.h"
+
 namespace blink {
 
 void ExceptionState::clearException(void)
@@ -20,12 +22,14 @@ void ExceptionState::clearException(void)
 
 void ExceptionState::throwDOMException(ExceptionCode exceptionCode, const String &message)
 {
-    assert(false); // BKTODO:
+    m_exceptionCode = exceptionCode;
+    m_message = message;
+    BKLOG("DOM Exception (%d): %s", m_exceptionCode, m_message.to_string().c_str());
 }
 
 void ExceptionState::throwException(void)
 {
-    assert(false); // BKTODO:
+    assert(false); // Not reached!
 }
 
 void ExceptionState::throwSecurityError(const String &sanitizedMessage, const String &unsanitizedMessage)

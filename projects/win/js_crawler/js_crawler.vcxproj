@@ -250,6 +250,7 @@
     <ClInclude Include="..\..\..\src\js\bindings\duk_console.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_document.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_event_target.h" />
+    <ClInclude Include="..\..\..\src\js\bindings\duk_exception_state.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_node.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_window.h" />
     <ClInclude Include="..\..\..\src\js\bindings\meta_data.h" />
@@ -273,6 +274,7 @@
     <ClCompile Include="..\..\..\src\js\bindings\duk_console.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_document.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_event_target.cpp" />
+    <ClCompile Include="..\..\..\src\js\bindings\duk_exception_state.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_node.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_window.cpp" />
     <ClCompile Include="..\..\..\src\js\context\caller_context_impl.cpp" />

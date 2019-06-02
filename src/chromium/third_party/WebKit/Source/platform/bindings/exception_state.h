@@ -46,6 +46,7 @@ protected:
     ExceptionState(void) = default;
 
     ExceptionCode m_exceptionCode = 0;
+    String m_message;
 private:
     virtual void throwException(void);
 };
