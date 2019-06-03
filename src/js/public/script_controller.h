@@ -15,6 +15,7 @@
 #pragma once
 
 #include <functional>
+#include <tuple>
 #include "sdk/include/BlinKit.h"
 #include "core/fetch/AccessControlStatus.h"
 #include "platform/heap/Handle.h"
@@ -45,7 +46,7 @@ public:
     }
     ~ScriptController(void);
 
-    int CreateCrawlerObject(const char *script, size_t length);
+    std::tuple<int, std::string> CreateCrawlerObject(const char *script, size_t length);
     int Eval(const char *code, size_t length, BlinKit::BkCallback *callback);
     int CallFunction(const char *name, BlinKit::BkCallback *callback);
     int CallCrawler(const char *method, BlinKit::BkCallback *callback);

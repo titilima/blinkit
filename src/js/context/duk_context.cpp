@@ -187,7 +187,7 @@ int DukContext::CallFunction(const char *name, BkCallback *callback)
     return context.Call(name, callback);
 }
 
-int DukContext::CreateCrawlerObject(const char *script, size_t length)
+std::tuple<int, std::string> DukContext::CreateCrawlerObject(const char *script, size_t length)
 {
     std::string code(1, '(');
     code.append(script, length);
@@ -199,15 +199,19 @@ int DukContext::CreateCrawlerObject(const char *script, size_t length)
     int r = duk_peval_lstring(m_context, code.data(), code.length());
     if (DUK_EXEC_SUCCESS != r)
     {
-#ifdef _DEBUG
+        int errorCode = Duk::ToErrorCode(m_context);
+
         duk_get_prop_string(m_context, -1, "message");
-        BKLOG("ERROR: %s", duk_to_string(m_context, -1));
-#endif
-        return Duk::ToErrorCode(m_context);
+        std::string message = Duk::ToString(m_context);
+
+        return std::make_tuple(errorCode, message);
     }
 
     if (DUK_TYPE_OBJECT != duk_get_type(m_context, -1))
-        return BkError::TypeError;
+    {
+        std::string message("Crawler MUST BE the type of Object!");
+        return std::make_tuple(BkError::TypeError, message);
+    }
 
     m_crawlerObjectPtr = duk_get_heapptr(m_context, -1);
 
@@ -218,7 +222,7 @@ int DukContext::CreateCrawlerObject(const char *script, size_t length)
 
     m_functionManager = std::make_unique<FunctionManager>(m_context);
     duk_put_prop_string(m_context, -2, StashFields::CrawlerObject);
-    return BkError::Success;
+    return std::make_tuple(BkError::Success, std::string());
 }
 
 void DukContext::CreateObject(const char *protoName, ScriptWrappable *nativeThis, void(*createCallback)(ScriptWrappable *))
@@ -282,9 +286,7 @@ CrawlerImpl* DukContext::GetCrawler(void)
 
 void DukContext::GetCrawlerProperty(const char *name, const std::function<void(const BkValue &)> &callback)
 {
-    if (nullptr == m_crawlerObjectPtr)
-        return;
-
+    assert(m_frame.client()->IsCrawler());
     Duk::StackKeeper sk(m_context);
     duk_push_heapptr(m_context, m_crawlerObjectPtr);
     if (duk_get_prop_string(m_context, -1, name))

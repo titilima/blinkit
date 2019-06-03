@@ -15,6 +15,7 @@
 #pragma once
 
 #include <string_view>
+#include <tuple>
 #include "sdk/include/BlinKit.h"
 #include "frame_loader_client_impl.h"
 
@@ -25,6 +26,8 @@ class CrawlerImpl final : public BkCrawler, public FrameLoaderClientImpl
 public:
     CrawlerImpl(BkCrawlerClient &client);
     ~CrawlerImpl(void);
+
+    std::tuple<int, std::string> Initialize(void);
 
     BkCrawlerClient& Client(void) const { return m_client; }
     std::string GetCookie(const std::string &URL) const;

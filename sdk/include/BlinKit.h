@@ -173,7 +173,7 @@ public:
     // - `userAgent`: String
     // - `incantation`: String
     // - `scriptEnabled`: Boolean
-    virtual BkCrawler* BKAPI CreateCrawler(BkCrawlerClient &client) = 0;
+    virtual BkCrawler* BKAPI CreateCrawler(BkCrawlerClient &client, BkBuffer *errorMessage = nullptr) = 0;
 
     virtual BkView* BKAPI CreateView(BkViewClient &client) = 0;
 };

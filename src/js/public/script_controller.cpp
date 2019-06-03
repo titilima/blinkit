@@ -79,7 +79,7 @@ void ScriptController::clearWindowProxy(void)
     m_context.reset();
 }
 
-int ScriptController::CreateCrawlerObject(const char *script, size_t length)
+std::tuple<int, std::string> ScriptController::CreateCrawlerObject(const char *script, size_t length)
 {
     assert(m_frame.IsCrawlerFrame());
     return EnsureContext().CreateCrawlerObject(script, length);

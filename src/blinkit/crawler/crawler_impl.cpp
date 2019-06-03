@@ -26,10 +26,6 @@ namespace BlinKit {
 CrawlerImpl::CrawlerImpl(BkCrawlerClient &client) : m_client(client), m_frame(LocalFrame::create(this, nullptr))
 {
     m_frame->init();
-
-    std::string script;
-    client.GetUserScript(BkMakeBuffer(script).Wrap());
-    m_frame->script().CreateCrawlerObject(script.data(), script.length());
 }
 
 CrawlerImpl::~CrawlerImpl(void)
@@ -69,6 +65,13 @@ std::string CrawlerImpl::GetCookie(const std::string &URL) const
     if (ret.empty())
         ret = AppImpl::Get().CookieJar().GetCookie(URL);
     return ret;
+}
+
+std::tuple<int, std::string> CrawlerImpl::Initialize(void)
+{
+    std::string script;
+    m_client.GetUserScript(BkMakeBuffer(script).Wrap());
+    return m_frame->script().CreateCrawlerObject(script.data(), script.length());
 }
 
 int BKAPI CrawlerImpl::Load(const char *URL)

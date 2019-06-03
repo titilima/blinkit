@@ -51,7 +51,7 @@ protected:
 private:
     // BkApp
     void BKAPI Exit(void) override final;
-    BkCrawler* BKAPI CreateCrawler(BkCrawlerClient &client) override final;
+    BkCrawler* BKAPI CreateCrawler(BkCrawlerClient &client, BkBuffer *errorMessage) override final;
     BkView* BKAPI CreateView(BkViewClient &client) override;
     // blink::Platform
     blink::WebMimeRegistry* mimeRegistry(void) override final;

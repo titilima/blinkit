@@ -15,6 +15,7 @@
 #pragma once
 
 #include <functional>
+#include <tuple>
 
 namespace blink {
 class LocalFrame;
@@ -36,7 +37,7 @@ public:
     static DukContext* From(duk_context *ctx);
     CrawlerImpl* GetCrawler(void);
 
-    int CreateCrawlerObject(const char *script, size_t length);
+    std::tuple<int, std::string> CreateCrawlerObject(const char *script, size_t length);
     int Eval(const char *code, size_t length, BkCallback *callback, const char *fileName = nullptr);
     int CallFunction(const char *name, BkCallback *callback);
     int CallCrawler(const char *method, BkCallback *callback = nullptr);

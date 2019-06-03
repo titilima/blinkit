@@ -76,9 +76,24 @@ blink::Settings& AppImpl::CrawlerSettings(void)
     return *m_crawlerSettings;
 }
 
-BkCrawler* BKAPI AppImpl::CreateCrawler(BkCrawlerClient &client)
+BkCrawler* BKAPI AppImpl::CreateCrawler(BkCrawlerClient &client, BkBuffer *errorMessage)
 {
-    return new CrawlerImpl(client);
+    int errorCode;
+    std::string message;
+
+    CrawlerImpl *crawler = new CrawlerImpl(client);
+    std::tie(errorCode, message) = crawler->Initialize();
+    if (BkError::Success != errorCode)
+    {
+        if (nullptr != errorMessage)
+            errorMessage->Assign(message);
+        else
+            assert(false);
+
+        delete crawler;
+        crawler = nullptr;
+    }
+    return crawler;
 }
 
 BkRequest* AppImpl::CreateRequest(const char *URL, BkRequestClient &client)
