@@ -74,7 +74,7 @@ static duk_ret_t TextContentBySelector(duk_context *ctx)
     DOMWindow *window = DukEventTarget::GetNativeThis<DOMWindow>(ctx);
 
     DukExceptionState es(ctx, "querySelector", "Document");
-    PassRefPtr<Element> e = window->document->querySelector(Duk::ToAtomicString(ctx, 0), es);
+    PassRefPtr<Element> e = window->document()->querySelector(Duk::ToAtomicString(ctx, 0), es);
     if (es.hadException())
     {
         es.throwIfNeeded();
