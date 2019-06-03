@@ -19,6 +19,7 @@
 #include "bindings/duk_console.h"
 #include "bindings/duk_document.h"
 #include "bindings/duk_element.h"
+#include "bindings/duk_exception_state.h"
 #include "bindings/duk_window.h"
 #include "context/caller_context_impl.h"
 #include "context/function_manager.h"
@@ -65,6 +66,27 @@ static duk_ret_t Gather(duk_context *ctx)
     CrawlerImpl *crawler = DukContext::From(ctx)->GetCrawler();
     crawler->Client().DataGathered(crawler, ValueImpl(ctx, 0));
     return 0;
+}
+
+static duk_ret_t TextContentBySelector(duk_context *ctx)
+{
+    duk_push_global_object(ctx);
+    DOMWindow *window = DukEventTarget::GetNativeThis<DOMWindow>(ctx);
+
+    DukExceptionState es(ctx, "querySelector", "Document");
+    PassRefPtr<Element> e = window->document->querySelector(Duk::ToAtomicString(ctx, 0), es);
+    if (es.hadException())
+    {
+        es.throwIfNeeded();
+        return 0;
+    }
+
+    String ret;
+    if (e)
+        ret = e->textContent();
+    Duk::PushString(ctx, ret);
+    duk_trim(ctx, -1);
+    return 1;
 }
 
 } // namespace Crawler
@@ -191,6 +213,8 @@ int DukContext::CreateCrawlerObject(const char *script, size_t length)
 
     duk_push_c_function(m_context, Crawler::Gather, 1);
     duk_put_prop_string(m_context, -2, "gather");
+    duk_push_c_function(m_context, Crawler::TextContentBySelector, 1);
+    duk_put_prop_string(m_context, -2, "textContentBySelector");
 
     m_functionManager = std::make_unique<FunctionManager>(m_context);
     duk_put_prop_string(m_context, -2, StashFields::CrawlerObject);
