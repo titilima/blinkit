@@ -582,9 +582,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSocketHandshakeRequestInfo.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSocketHandshakeResponseInfo.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSourceInfo.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSpeechSynthesisUtterance.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSpeechSynthesisVoice.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSpeechSynthesizerClientImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebStorageQuotaCallbacks.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebString.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebThreadedDataReceiver.cpp" />
@@ -1062,7 +1059,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebScrollbarImpl.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebScrollbarThemeClientImpl.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebScrollbarThemeGeometryNative.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSpeechSynthesizerClientImpl.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebURLRequestPrivate.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebURLResponsePrivate.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WrappedResourceRequest.h" />

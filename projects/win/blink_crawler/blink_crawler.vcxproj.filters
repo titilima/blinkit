@@ -1232,15 +1232,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSourceInfo.cpp">
       <Filter>platform\exported</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSpeechSynthesisUtterance.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSpeechSynthesisVoice.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSpeechSynthesizerClientImpl.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebStorageQuotaCallbacks.cpp">
       <Filter>platform\exported</Filter>
     </ClCompile>
@@ -2741,9 +2732,6 @@
       <Filter>platform\exported</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebScrollbarThemeGeometryNative.h">
-      <Filter>platform\exported</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebSpeechSynthesizerClientImpl.h">
       <Filter>platform\exported</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebURLRequestPrivate.h">
