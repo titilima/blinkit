@@ -34,7 +34,7 @@ EventTarget* DukEventTarget::Get(duk_context *ctx, duk_idx_t idx)
     return reinterpret_cast<EventTarget *>(Duk::GetNativeThis(ctx, idx));
 }
 
-void DukEventTarget::OnCreate(ScriptWrappable *nativeThis)
+void DukEventTarget::OnCreate(duk_context *, ScriptWrappable *nativeThis)
 {
     reinterpret_cast<EventTarget *>(nativeThis)->ref();
 }

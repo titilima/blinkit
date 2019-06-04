@@ -39,7 +39,7 @@ protected:
 private:
     static blink::EventTarget* Get(duk_context *ctx, duk_idx_t idx = -1);
     static duk_ret_t Finalizer(duk_context *ctx);
-    static void OnCreate(blink::ScriptWrappable *nativeThis);
+    static void OnCreate(duk_context *ctx, blink::ScriptWrappable *nativeThis);
 };
 
 } // namespace BlinKit

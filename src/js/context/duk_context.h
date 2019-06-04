@@ -76,7 +76,7 @@ public:
     void Reset(void);
 private:
     void Attach(void);
-    void CreateObject(const char *protoName, blink::ScriptWrappable *nativeThis, void(*createCallback)(blink::ScriptWrappable *));
+    void CreateObject(const char *protoName, blink::ScriptWrappable *nativeThis, void(*createCallback)(duk_context *, blink::ScriptWrappable *));
     void Initialize(void);
     static void AdjustGlobalsForCrawler(duk_context *ctx);
     void PrepareGlobalsToTop(void);
