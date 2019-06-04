@@ -13,6 +13,7 @@
 
 #include "bindings/duk_element.h"
 #include "bindings/duk_exception_state.h"
+#include "bindings/duk_node_list.h"
 #include "context/duk_context.h"
 #include "context/prototype_manager.h"
 #include "wrappers/duk.h"
@@ -194,7 +195,18 @@ static duk_ret_t QuerySelector(duk_context *ctx)
 
 static duk_ret_t QuerySelectorAll(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    duk_push_this(ctx);
+    Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
+
+    DukExceptionState es(ctx, "querySelectorAll", "Document");
+    PassRefPtr<StaticElementList> ret = document->querySelectorAll(Duk::ToAtomicString(ctx, 0), es);
+    if (es.hadException())
+    {
+        es.throwIfNeeded();
+        return 0;
+    }
+
+    DukContext::From(ctx)->PushObject<DukNodeList>(ret.get());
     return 1;
 }
 

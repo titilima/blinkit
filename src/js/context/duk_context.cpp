@@ -20,6 +20,7 @@
 #include "bindings/duk_document.h"
 #include "bindings/duk_element.h"
 #include "bindings/duk_exception_state.h"
+#include "bindings/duk_node_list.h"
 #include "bindings/duk_window.h"
 #include "context/caller_context_impl.h"
 #include "context/function_manager.h"
@@ -225,7 +226,7 @@ std::tuple<int, std::string> DukContext::CreateCrawlerObject(const char *script,
     return std::make_tuple(BkError::Success, std::string());
 }
 
-void DukContext::CreateObject(const char *protoName, ScriptWrappable *nativeThis, void(*createCallback)(ScriptWrappable *))
+void DukContext::CreateObject(const char *protoName, ScriptWrappable *nativeThis, void(*createCallback)(duk_context *, ScriptWrappable *))
 {
     if (m_prototypeManager->CreateObject(m_context, protoName))
     {
@@ -233,7 +234,7 @@ void DukContext::CreateObject(const char *protoName, ScriptWrappable *nativeThis
         {
             m_objectPool[nativeThis] = duk_get_heapptr(m_context, -1);
             Duk::BindNativeThis(m_context, nativeThis);
-            createCallback(nativeThis);
+            createCallback(m_context, nativeThis);
         }
     }
     else
@@ -349,6 +350,7 @@ void DukContext::RegisterPrototypesForCrawler(void)
     DukConsole::RegisterPrototype(m_context, *m_prototypeManager);
     DukDocument::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
     DukElement::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
+    DukNodeList::RegisterPrototype(m_context, *m_prototypeManager);
     DukWindow::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
     m_prototypeManager->EndRegisterTransaction(m_context);
 }
