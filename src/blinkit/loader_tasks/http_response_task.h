@@ -21,7 +21,7 @@ namespace BlinKit {
 
 class CrawlerImpl;
 
-class HTTPResponseTask final : public ResponseTask, public BkRequestClient
+class HTTPResponseTask final : public ResponseTask, public BkRequestClient, public BkCrawlerResponse
 {
 public:
     HTTPResponseTask(CrawlerImpl &crawler, blink::WebURLLoader *loader, blink::WebURLLoaderClient *client, ResponseData &responseData);
@@ -30,11 +30,19 @@ public:
         m_taskRunner = taskRunner;
     }
 private:
-    // blink::WebTaskRunner::Task
-    void run(void) override;
     // BkRequestClient
     void BKAPI RequestComplete(const BkResponse &response) override;
     void BKAPI RequestFailed(int errorCode) override;
+    // BkResponse
+    int BKAPI GetCurrentURL(BkBuffer &URL) const override;
+    int BKAPI StatusCode(void) const override;
+    int BKAPI GetHeader(const char *name, BkBuffer &value) const override;
+    unsigned BKAPI CookiesCount(void) const override;
+    int BKAPI GetCookie(unsigned i, BkBuffer &cookie) const override;
+    int BKAPI GetBody(BkBuffer &body) const override;
+    // BkCrawlerResponse
+    void BKAPI SetBody(const char *body, size_t length) override;
+    void BKAPI Continue(void) override;
 
     CrawlerImpl &m_crawler;
     std::string m_currentURL;

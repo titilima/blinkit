@@ -26,6 +26,17 @@ HTTPResponseTask::HTTPResponseTask(CrawlerImpl &crawler, WebURLLoader *loader, W
     // Nothing
 }
 
+void BKAPI HTTPResponseTask::Continue(void)
+{
+    m_taskRunner->postTask(BLINK_FROM_HERE, this);
+}
+
+unsigned BKAPI HTTPResponseTask::CookiesCount(void) const
+{
+    assert(false); // BKTODO:
+    return 0;
+}
+
 static std::string ExtractMIMEType(const BkResponse &response)
 {
     std::string contentType;
@@ -35,6 +46,31 @@ static std::string ExtractMIMEType(const BkResponse &response)
     return extractMIMETypeFromMediaType(mediaType).lower().to_string();
 }
 
+int BKAPI HTTPResponseTask::GetBody(BkBuffer &body) const
+{
+    const auto &src = m_responseData->Body;
+    body.Assign(src.data(), src.size());
+    return BkError::Success;
+}
+
+int BKAPI HTTPResponseTask::GetCookie(unsigned i, BkBuffer &cookie) const
+{
+    assert(false); // BKTODO:
+    return BkError::Forbidden;
+}
+
+int BKAPI HTTPResponseTask::GetCurrentURL(BkBuffer &URL) const
+{
+    URL.Assign(m_currentURL);
+    return BkError::Success;
+}
+
+int BKAPI HTTPResponseTask::GetHeader(const char *name, BkBuffer &value) const
+{
+    assert(false); // BKTODO:
+    return BkError::Forbidden;
+}
+
 void BKAPI HTTPResponseTask::RequestComplete(const BkResponse &response)
 {
     response.GetCurrentURL(BkMakeBuffer(m_currentURL).Wrap());
@@ -42,7 +78,11 @@ void BKAPI HTTPResponseTask::RequestComplete(const BkResponse &response)
     m_responseData->MimeType = ExtractMIMEType(response);
     response.GetBody(BkMakeBuffer(m_responseData->Body).Wrap());
 
-    m_taskRunner->postTask(BLINK_FROM_HERE, this);
+    const auto callback = [this]()
+    {
+        m_crawler.Client().RequestComplete(&m_crawler, this);
+    };
+    m_taskRunner->postTask(BLINK_FROM_HERE, callback);
 }
 
 void BKAPI HTTPResponseTask::RequestFailed(int errorCode)
@@ -54,15 +94,17 @@ void BKAPI HTTPResponseTask::RequestFailed(int errorCode)
     delete this;
 }
 
-void HTTPResponseTask::run(void)
+void BKAPI HTTPResponseTask::SetBody(const char *body, size_t length)
 {
-    int statusCode = m_responseData->StatusCode;
-    const char *body = reinterpret_cast<const char *>(m_responseData->Body.data());
-    size_t length = m_responseData->Body.size();
-    if (!m_crawler.Client().RequestComplete(&m_crawler, m_currentURL.c_str(), statusCode, body, length))
-        return;
+    auto &dst = m_responseData->Body;
+    dst.resize(length);
+    if (length > 0)
+        memcpy(dst.data(), body, length);
+}
 
-    ResponseTask::run();
+int BKAPI HTTPResponseTask::StatusCode(void) const
+{
+    return m_responseData->StatusCode;
 }
 
 } // namespace BlinKit

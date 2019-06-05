@@ -153,6 +153,51 @@ private:
 
 #endif // BLINKIT_DISABLE_FUNCTIONAL
 
+class BkResponse {
+public:
+    virtual int BKAPI GetCurrentURL(BkBuffer &URL) const = 0;
+    virtual int BKAPI StatusCode(void) const = 0;
+
+    virtual int BKAPI GetHeader(const char *name, BkBuffer &value) const = 0;
+
+    virtual unsigned BKAPI CookiesCount(void) const = 0;
+    virtual int BKAPI GetCookie(unsigned i, BkBuffer &cookie) const = 0;
+
+    virtual int BKAPI GetBody(BkBuffer &body) const = 0;
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // Optional Methods
+    // BlinKit internal will not call these methods, so external HTTP service providers need not to implement them.
+    virtual BkRetainedResponse* BKAPI Retain(void) const { return nullptr; }
+    enum class Information {
+        OriginalURL,
+        HTTPVersion,
+        ReasonPhrase,
+    };
+    virtual int GetInformation(Information i, BkBuffer &value) const {
+        assert(false); // Not implemented!
+        return BkError::NotFound;
+    }
+    // Optional Methods End
+    // -----------------------------------------------------------------------------------------------------------------
+};
+
+class BkCrawlerResponse : public BkResponse {
+public:
+    virtual void BKAPI SetBody(const char *body, size_t length) = 0;
+
+    virtual void BKAPI Continue(void) = 0;
+    inline void Cancel(void) {
+        SetBody("", 0);
+        Continue();
+    }
+private:
+    BkRetainedResponse* BKAPI Retain(void) const override final {
+        assert(false); // Not reached!
+        return nullptr;
+    }
+};
+
 /**
  * Application
  */
@@ -195,17 +240,16 @@ public:
     // In JS, call `crawler.gather(someData)` to pass data to BkCrawlerClient.
     virtual void BKAPI DataGathered(BkCrawler *crawler, const BkValue &data) = 0;
 
-    virtual void BKAPI ContextReady(BkCrawler *crawler) {}
-    virtual bool BKAPI RequestComplete(BkCrawler *crawler, const char *URL, int statusCode, const char *body, size_t length) {
-        return 200 == statusCode;
-    }
-    virtual void BKAPI DocumentReady(BkCrawler *crawler) {}
-
     // -----------------------------------------------------------------------------------------------------------------
-    // Optional Callbacks
+    // Callbacks
+    virtual void BKAPI ContextReady(BkCrawler *crawler) {}
+    virtual void BKAPI RequestComplete(BkCrawler *crawler, BkCrawlerResponse *response) {
+        response->Continue();
+    }
     virtual void BKAPI RequestFailed(int errorCode) {
         assert(BkError::Success == errorCode);
     }
+    virtual void BKAPI DocumentReady(BkCrawler *crawler) {}
     // -----------------------------------------------------------------------------------------------------------------
     // Cookies
     // BlinKit holds a cookiejar internally, and the caller could also manage cookies by GetCookie/SetCookie.
@@ -402,35 +446,6 @@ class BkRequestController {
 public:
     virtual void BKAPI Cancel(void) = 0;
     virtual void BKAPI Release(void) = 0;
-};
-
-class BkResponse {
-public:
-    virtual int BKAPI GetCurrentURL(BkBuffer &URL) const = 0;
-    virtual int BKAPI StatusCode(void) const = 0;
-
-    virtual int BKAPI GetHeader(const char *name, BkBuffer &value) const = 0;
-
-    virtual unsigned BKAPI CookiesCount(void) const = 0;
-    virtual int BKAPI GetCookie(unsigned i, BkBuffer &cookie) const = 0;
-
-    virtual int BKAPI GetBody(BkBuffer &body) const = 0;
-
-    // -----------------------------------------------------------------------------------------------------------------
-    // Optional Methods
-    // BlinKit internal will not call these methods, so external HTTP service providers need not to implement them.
-    virtual BkRetainedResponse* BKAPI Retain(void) const { return nullptr; }
-    enum class Information {
-        OriginalURL,
-        HTTPVersion,
-        ReasonPhrase,
-    };
-    virtual int GetInformation(Information i, BkBuffer &value) const {
-        assert(false); // Not implemented!
-        return BkError::NotFound;
-    }
-    // Optional Methods End
-    // -----------------------------------------------------------------------------------------------------------------
 };
 
 class BkRetainedResponse : public BkResponse {
