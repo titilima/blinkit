@@ -102,44 +102,23 @@ int BKAPI ResponseImpl::GetHeader(const char *name, BkBuffer &value) const
     return BkError::Success;
 }
 
-int BKAPI ResponseImpl::GetHTTPVersion(BkBuffer &v) const
-{
-    if (m_version.empty())
-        return BkError::NotFound;
-
-    v.Assign(m_version);
-    return BkError::Success;
-}
-
 int ResponseImpl::GetInformation(Information i, BkBuffer &value) const
 {
     switch (i)
     {
-        case BkResponse::Information::URL:
-            value.Assign(m_URL);
-            break;
         case BkResponse::Information::OriginalURL:
             value.Assign(m_originURL);
+            break;
+        case BkResponse::Information::HTTPVersion:
+            value.Assign(m_version);
+            break;
+        case BkResponse::Information::ReasonPhrase:
+            value.Assign(m_reasonPhrase);
             break;
         default:
             assert(false); // Not reached!
             return BkError::NotFound;
     }
-    return BkError::Success;
-}
-
-int BKAPI ResponseImpl::GetOriginURL(BkBuffer &URL) const
-{
-    URL.Assign(m_originURL);
-    return BkError::Success;
-}
-
-int BKAPI ResponseImpl::GetReasonPhrase(BkBuffer &reasonPhrase) const
-{
-    if (m_reasonPhrase.empty())
-        return BkError::NotFound;
-
-    reasonPhrase.Assign(m_reasonPhrase);
     return BkError::Success;
 }
 

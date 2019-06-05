@@ -406,12 +406,8 @@ public:
 
 class BkResponse {
 public:
-    virtual int BKAPI GetOriginURL(BkBuffer &URL) const = 0;
     virtual int BKAPI GetCurrentURL(BkBuffer &URL) const = 0;
-
-    virtual int BKAPI GetHTTPVersion(BkBuffer &v) const = 0;
     virtual int BKAPI StatusCode(void) const = 0;
-    virtual int BKAPI GetReasonPhrase(BkBuffer &reasonPhrase) const = 0;
 
     virtual int BKAPI GetHeader(const char *name, BkBuffer &value) const = 0;
 
@@ -425,8 +421,9 @@ public:
     // BlinKit internal will not call these methods, so external HTTP service providers need not to implement them.
     virtual BkRetainedResponse* BKAPI Retain(void) const { return nullptr; }
     enum class Information {
-        URL,
         OriginalURL,
+        HTTPVersion,
+        ReasonPhrase,
     };
     virtual int GetInformation(Information i, BkBuffer &value) const {
         assert(false); // Not implemented!

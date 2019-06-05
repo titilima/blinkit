@@ -39,11 +39,8 @@ public:
     int BKAPI GetHeader(const char *name, BkBuffer &value) const override;
 private:
     // BkResponse
-    int BKAPI GetOriginURL(BkBuffer &URL) const override;
     int BKAPI GetCurrentURL(BkBuffer &URL) const override;
-    int BKAPI GetHTTPVersion(BkBuffer &v) const override;
     int BKAPI StatusCode(void) const override { return m_statusCode; }
-    int BKAPI GetReasonPhrase(BkBuffer &reasonPhrase) const override;
     unsigned BKAPI CookiesCount(void) const override { return m_cookies.size(); }
     int BKAPI GetCookie(unsigned i, BkBuffer &cookie) const override;
     int BKAPI GetBody(BkBuffer &body) const override;
