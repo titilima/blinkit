@@ -14,6 +14,7 @@
 #include "bindings/duk_binding_impl.h"
 #include "bindings/duk_console.h"
 #include "bindings/duk_document.h"
+#include "bindings/duk_location.h"
 #include "context/duk_context.h"
 #include "context/prototype_manager.h"
 #include "wrappers/duk.h"
@@ -125,7 +126,9 @@ static duk_ret_t FramesSetter(duk_context *ctx)
 
 static duk_ret_t LocationGetter(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    duk_push_this(ctx);
+    DOMWindow *window = DukEventTarget::GetNativeThis<DOMWindow>(ctx);
+    DukContext::From(ctx)->CreateObject<DukLocation>(window->location());
     return 1;
 }
 
