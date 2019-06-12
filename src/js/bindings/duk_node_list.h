@@ -15,13 +15,14 @@
 #pragma once
 
 #include "core/dom/StaticNodeList.h"
+#include "duk_object_impl.hpp"
 
 namespace BlinKit {
 
 class PrototypeEntry;
 class PrototypeManager;
 
-class DukNodeList
+class DukNodeList final : public DukObjectImpl<blink::NodeList>
 {
     friend class DukContext;
 public:

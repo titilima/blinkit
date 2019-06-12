@@ -14,19 +14,15 @@
 
 #pragma once
 
-#include "meta_data.h"
-
-namespace blink {
-class EventTarget;
-class ScriptWrappable;
-}
+#include "core/events/EventTarget.h"
+#include "duk_object_impl.hpp"
 
 namespace BlinKit {
 
 class PrototypeEntry;
 class PrototypeManager;
 
-class DukEventTarget
+class DukEventTarget : public DukObjectImpl<blink::EventTarget>
 {
     friend class DukContext;
 public:
@@ -39,7 +35,6 @@ protected:
 private:
     static blink::EventTarget* Get(duk_context *ctx, duk_idx_t idx = -1);
     static duk_ret_t Finalizer(duk_context *ctx);
-    static void OnCreate(duk_context *ctx, blink::ScriptWrappable *nativeThis);
 };
 
 } // namespace BlinKit

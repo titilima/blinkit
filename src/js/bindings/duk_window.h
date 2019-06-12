@@ -29,8 +29,6 @@ public:
     static void RegisterPrototype(duk_context *ctx, PrototypeManager &protos);
 #endif
     static void RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &protos);
-private:
-    static MetaData ClassMetaData;
 };
 
 } // namespace BlinKit

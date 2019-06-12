@@ -31,14 +31,14 @@ duk_ret_t DukNodeList::Finalizer(duk_context *ctx)
 {
     NodeList *nativeThis = Get(ctx, 0);
     DukContext::From(ctx)->RemoveObjectFromPool(nativeThis);
-    nativeThis->deref();
     return 0;
 }
 
 void DukNodeList::OnCreate(duk_context *ctx, ScriptWrappable *nativeThis)
 {
+    DukObjectImpl::OnCreate(ctx, nativeThis);
+
     NodeList *nodeList = reinterpret_cast<NodeList *>(nativeThis);
-    nodeList->ref();
 
     DukContext *context = DukContext::From(ctx);
 

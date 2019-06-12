@@ -101,6 +101,9 @@
     <ClInclude Include="..\..\..\src\js\bindings\duk_location.h">
       <Filter>bindings</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_object_impl.hpp">
+      <Filter>bindings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">

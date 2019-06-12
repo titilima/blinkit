@@ -16,6 +16,9 @@
 
 #include <functional>
 #include <tuple>
+#ifdef _DEBUG
+#include <unordered_set>
+#endif
 
 namespace blink {
 class LocalFrame;
@@ -47,12 +50,12 @@ public:
 
     template <class T>
     void CreateObject(void) {
-        CreateObject(T::ProtoName, nullptr, nullptr);
+        CreateObject(T::ProtoName, nullptr, nullptr, nullptr);
     }
     template <class T>
     void CreateObject(blink::ScriptWrappable *nativeThis) {
         assert(nullptr != nativeThis);
-        CreateObject(T::ProtoName, nativeThis, T::OnCreate);
+        CreateObject(T::ProtoName, nativeThis, T::OnCreate, T::OnGC);
     }
     template <class T>
     void PushObject(blink::ScriptWrappable *nativeThis) {
@@ -64,20 +67,20 @@ public:
 
         auto it = m_objectPool.find(nativeThis);
         if (std::end(m_objectPool) != it)
-            duk_push_heapptr(m_context, it->second);
+            duk_push_heapptr(m_context, it->second.HeapPtr);
         else
-            CreateObject(T::ProtoName, nativeThis, T::OnCreate);
+            CreateObject(T::ProtoName, nativeThis, T::OnCreate, T::OnGC);
     }
-    void RemoveObjectFromPool(blink::ScriptWrappable *nativeThis) {
-        assert(std::end(m_objectPool) != m_objectPool.find(nativeThis));
-        m_objectPool.erase(nativeThis);
-    }
+    void RemoveObjectFromPool(blink::ScriptWrappable *nativeThis);
 
     void Reset(void);
 private:
     void Attach(void);
-    void CreateObject(const char *protoName, blink::ScriptWrappable *nativeThis, void(*createCallback)(duk_context *, blink::ScriptWrappable *));
+    void CreateObject(const char *protoName, blink::ScriptWrappable *nativeThis,
+        void(*createCallback)(duk_context *, blink::ScriptWrappable *),
+        void(*gcCallback)(blink::ScriptWrappable *));
     void Initialize(void);
+    void GC(void);
     static void AdjustGlobalsForCrawler(duk_context *ctx);
     void PrepareGlobalsToTop(void);
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -92,7 +95,11 @@ private:
     void *m_crawlerObjectPtr = nullptr;
     void *m_globalsPtr = nullptr;
 
-    std::unordered_map<blink::ScriptWrappable *, void *> m_objectPool;
+    struct ObjectEntry {
+        void *HeapPtr;
+        void (*GC)(blink::ScriptWrappable *);
+    };
+    std::unordered_map<blink::ScriptWrappable *, ObjectEntry> m_objectPool;
 };
 
 } // namespace BlinKit

@@ -30,13 +30,7 @@ duk_ret_t DukLocation::Finalizer(duk_context *ctx)
 {
     Location *nativeThis = Get(ctx, 0);
     DukContext::From(ctx)->RemoveObjectFromPool(nativeThis);
-    nativeThis->deref();
     return 0;
-}
-
-void DukLocation::OnCreate(duk_context *, ScriptWrappable *nativeThis)
-{
-    reinterpret_cast<Location *>(nativeThis)->ref();
 }
 
 namespace Crawler {

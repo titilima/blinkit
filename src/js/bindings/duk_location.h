@@ -15,12 +15,13 @@
 #pragma once
 
 #include "core/frame/Location.h"
+#include "duk_object_impl.hpp"
 
 namespace BlinKit {
 
 class PrototypeManager;
 
-class DukLocation final
+class DukLocation final : public DukObjectImpl<blink::Location>
 {
     friend class DukContext;
 public:
@@ -29,7 +30,6 @@ public:
     static void RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &protos);
 private:
     static duk_ret_t Finalizer(duk_context *ctx);
-    static void OnCreate(duk_context *ctx, blink::ScriptWrappable *nativeThis);
 };
 
 } // namespace BlinKit

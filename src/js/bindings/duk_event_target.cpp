@@ -11,8 +11,6 @@
 
 #include "duk_event_target.h"
 
-#include "core/events/EventTarget.h"
-
 #include "context/duk_context.h"
 #include "context/prototype_manager.h"
 #include "wrappers/duk.h"
@@ -25,18 +23,12 @@ duk_ret_t DukEventTarget::Finalizer(duk_context *ctx)
 {
     EventTarget *nativeThis = Get(ctx, 0);
     DukContext::From(ctx)->RemoveObjectFromPool(nativeThis);
-    nativeThis->deref();
     return 0;
 }
 
 EventTarget* DukEventTarget::Get(duk_context *ctx, duk_idx_t idx)
 {
     return reinterpret_cast<EventTarget *>(Duk::GetNativeThis(ctx, idx));
-}
-
-void DukEventTarget::OnCreate(duk_context *, ScriptWrappable *nativeThis)
-{
-    reinterpret_cast<EventTarget *>(nativeThis)->ref();
 }
 
 void DukEventTarget::RegisterToPrototypeEntry(PrototypeEntry &entry)

@@ -81,6 +81,7 @@ DukContext::DukContext(LocalFrame &frame)
 
 DukContext::~DukContext(void)
 {
+    GC();
     duk_destroy_heap(m_context);
 }
 
@@ -204,14 +205,22 @@ std::tuple<int, std::string> DukContext::CreateCrawlerObject(const char *script,
     return std::make_tuple(BkError::Success, std::string());
 }
 
-void DukContext::CreateObject(const char *protoName, ScriptWrappable *nativeThis, void(*createCallback)(duk_context *, ScriptWrappable *))
+void DukContext::CreateObject(
+    const char *protoName, ScriptWrappable *nativeThis,
+    void(*createCallback)(duk_context *, ScriptWrappable *),
+    void(*gcCallback)(ScriptWrappable *))
 {
     if (m_prototypeManager->CreateObject(m_context, protoName))
     {
         if (nullptr != nativeThis)
         {
-            m_objectPool[nativeThis] = duk_get_heapptr(m_context, -1);
+            ObjectEntry entry;
+            entry.HeapPtr = duk_get_heapptr(m_context, -1);
+            entry.GC = gcCallback;
+            m_objectPool[nativeThis] = entry;
+
             Duk::BindNativeThis(m_context, nativeThis);
+
             createCallback(m_context, nativeThis);
         }
     }
@@ -252,6 +261,13 @@ DukContext* DukContext::From(duk_context *ctx)
     if (!duk_get_prop_string(ctx, -1, StashFields::Context))
         return nullptr;
     return reinterpret_cast<DukContext *>(duk_get_pointer(ctx, -1));
+}
+
+void DukContext::GC(void)
+{
+    for (const auto &it : m_objectPool)
+        it.second.GC(it.first);
+    m_objectPool.clear();
 }
 
 CrawlerImpl* DukContext::GetCrawler(void)
@@ -334,9 +350,19 @@ void DukContext::RegisterPrototypesForCrawler(void)
     m_prototypeManager->EndRegisterTransaction(m_context);
 }
 
+void DukContext::RemoveObjectFromPool(ScriptWrappable *nativeThis)
+{
+    auto it = m_objectPool.find(nativeThis);
+    if (std::end(m_objectPool) != it)
+    {
+        it->second.GC(nativeThis);
+        m_objectPool.erase(it);
+    }
+}
+
 void DukContext::Reset(void)
 {
-    m_objectPool.clear();
+    GC();
     Initialize();
 
 #ifndef BLINKIT_CRAWLER_ONLY

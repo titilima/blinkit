@@ -66,7 +66,8 @@ bool ScriptController::canExecuteScripts(ReasonForCallingCanExecuteScripts)
 
 void ScriptController::clearForClose(void)
 {
-    m_context.reset();
+    if (m_context)
+        m_context->Reset();
 }
 
 void ScriptController::clearScriptObjects(void)
@@ -76,7 +77,8 @@ void ScriptController::clearScriptObjects(void)
 
 void ScriptController::clearWindowProxy(void)
 {
-    m_context.reset();
+    if (m_context)
+        m_context->Reset();
 }
 
 std::tuple<int, std::string> ScriptController::CreateCrawlerObject(const char *script, size_t length)

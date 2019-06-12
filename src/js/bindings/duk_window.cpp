@@ -24,7 +24,6 @@ using namespace blink;
 namespace BlinKit {
 
 const char DukWindow::ProtoName[] = "Window";
-MetaData DukWindow::ClassMetaData = { MetaData::Window, nullptr };
 
 namespace Crawler {
 
