@@ -171,14 +171,10 @@ int DukContext::CallFunction(const char *name, BkCallback *callback)
 
 std::tuple<int, std::string> DukContext::CreateCrawlerObject(const char *script, size_t length)
 {
-    std::string code(1, '(');
-    code.append(script, length);
-    code.push_back(')');
-
     Duk::StackKeeper sk(m_context);
     duk_push_heap_stash(m_context);
 
-    int r = duk_peval_lstring(m_context, code.data(), code.length());
+    int r = duk_peval_lstring(m_context, script, length);
     if (DUK_EXEC_SUCCESS != r)
     {
         int errorCode = Duk::ToErrorCode(m_context);
@@ -353,6 +349,7 @@ void DukContext::RegisterPrototypesForCrawler(void)
 void DukContext::RemoveObjectFromPool(ScriptWrappable *nativeThis)
 {
     auto it = m_objectPool.find(nativeThis);
+    assert(std::end(m_objectPool) != it);
     if (std::end(m_objectPool) != it)
     {
         it->second.GC(nativeThis);
