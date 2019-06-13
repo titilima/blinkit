@@ -24,7 +24,7 @@ namespace BlinKit {
 ResponseTask::ResponseTask(WebURLLoader *loader, WebURLLoaderClient *client, ResponseData &responseData)
     : m_loader(loader), m_client(client), m_responseData(responseData.shared_from_this())
 {
-    if (!m_responseData->MimeType.empty())
+    if (!m_responseData->MIMEType.isEmpty())
         return;
 
     do {
@@ -37,12 +37,11 @@ ResponseTask::ResponseTask(WebURLLoader *loader, WebURLLoaderClient *client, Res
             break;
 
         WebString ext = fileName.substring(p + 1);
-        WebString mimeType = Platform::current()->mimeRegistry()->mimeTypeForExtension(ext);
-        m_responseData->MimeType = mimeType.utf8();
+        m_responseData->MIMEType = Platform::current()->mimeRegistry()->mimeTypeForExtension(ext);
         return;
     } while (false);
 
-    m_responseData->MimeType = "application/octet-stream";
+    m_responseData->MIMEType = "application/octet-stream";
 }
 
 void ResponseTask::run(void)
@@ -52,14 +51,28 @@ void ResponseTask::run(void)
     response.setURL(m_responseData->URI);
     response.setHTTPStatusCode(m_responseData->StatusCode);
 
-    WebString mimeType = WebString::fromUTF8(m_responseData->MimeType);
-    response.setMIMEType(mimeType);
-    response.setHTTPHeaderField("Content-Type", mimeType);
+    if (!m_responseData->ContentType.empty())
+    {
+        WebString contentType = WebString::fromUTF8(m_responseData->ContentType);
+        response.setHTTPHeaderField("Content-Type", contentType);
+    }
+
+    assert(!m_responseData->MIMEType.isEmpty());
+    response.setMIMEType(m_responseData->MIMEType);
+
+    if (!m_responseData->TextEncoding.isEmpty())
+        response.setTextEncodingName(m_responseData->TextEncoding);
 
     m_client->didReceiveResponse(m_loader, response);
 
-    const char *body = reinterpret_cast<const char *>(m_responseData->Body.data());
     size_t bodySize = m_responseData->Body.size();
+    if (0 == bodySize)
+    {
+        // Use a white space to avoid assertions.
+        m_responseData->Body.push_back(' ');
+        bodySize = 1;
+    }
+    const char *body = reinterpret_cast<const char *>(m_responseData->Body.data());
     m_client->didReceiveData(m_loader, body, bodySize, 0);
     m_client->didFinishLoading(m_loader, 0.0, bodySize);
 }

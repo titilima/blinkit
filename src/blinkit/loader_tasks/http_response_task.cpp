@@ -75,7 +75,16 @@ void BKAPI HTTPResponseTask::RequestComplete(const BkResponse &response)
 {
     response.GetCurrentURL(BkMakeBuffer(m_currentURL).Wrap());
     m_responseData->StatusCode = response.StatusCode();
-    m_responseData->MimeType = ExtractMIMEType(response);
+
+    response.GetHeader("Content-Type", BkMakeBuffer(m_responseData->ContentType).Wrap());
+    if (!m_responseData->ContentType.empty())
+    {
+        AtomicString contentType = AtomicString::fromUTF8(m_responseData->ContentType.data(),
+            m_responseData->ContentType.length()).lower();
+        m_responseData->MIMEType = extractMIMETypeFromMediaType(contentType);
+        m_responseData->TextEncoding = extractCharsetFromMediaType(contentType);
+    }
+
     response.GetBody(BkMakeBuffer(m_responseData->Body).Wrap());
 
     const auto callback = [this]()

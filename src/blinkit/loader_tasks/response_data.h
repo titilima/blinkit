@@ -22,7 +22,9 @@ struct ResponseData final : public std::enable_shared_from_this<ResponseData>
 {
     blink::KURL URI;
     int StatusCode = 200;
-    std::string MimeType;
+    std::string ContentType;
+    WTF::AtomicString MIMEType;
+    WTF::String TextEncoding;
     std::vector<unsigned char> Body;
 };
 
