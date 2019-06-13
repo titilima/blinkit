@@ -11,10 +11,9 @@
 
 #include "http_response_task.h"
 
-#include "crawler/crawler_impl.h"
-
-#include "platform/network/HTTPParsers.h"
 #include "public/platform/WebTraceLocation.h"
+
+#include "crawler/crawler_impl.h"
 
 using namespace blink;
 
@@ -35,15 +34,6 @@ unsigned BKAPI HTTPResponseTask::CookiesCount(void) const
 {
     assert(false); // BKTODO:
     return 0;
-}
-
-static std::string ExtractMIMEType(const BkResponse &response)
-{
-    std::string contentType;
-    response.GetHeader("Content-Type", BkMakeBuffer(contentType).Wrap());
-
-    AtomicString mediaType = AtomicString::fromUTF8(contentType.data(), contentType.length());
-    return extractMIMETypeFromMediaType(mediaType).lower().to_string();
 }
 
 int BKAPI HTTPResponseTask::GetBody(BkBuffer &body) const
@@ -75,16 +65,7 @@ void BKAPI HTTPResponseTask::RequestComplete(const BkResponse &response)
 {
     response.GetCurrentURL(BkMakeBuffer(m_currentURL).Wrap());
     m_responseData->StatusCode = response.StatusCode();
-
     response.GetHeader("Content-Type", BkMakeBuffer(m_responseData->ContentType).Wrap());
-    if (!m_responseData->ContentType.empty())
-    {
-        AtomicString contentType = AtomicString::fromUTF8(m_responseData->ContentType.data(),
-            m_responseData->ContentType.length()).lower();
-        m_responseData->MIMEType = extractMIMETypeFromMediaType(contentType);
-        m_responseData->TextEncoding = extractCharsetFromMediaType(contentType);
-    }
-
     response.GetBody(BkMakeBuffer(m_responseData->Body).Wrap());
 
     const auto callback = [this]()

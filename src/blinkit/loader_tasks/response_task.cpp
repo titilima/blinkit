@@ -11,6 +11,7 @@
 
 #include "response_task.h"
 
+#include "platform/network/HTTPParsers.h"
 #include "public/platform/Platform.h"
 #include "public/platform/WebMimeRegistry.h"
 #include "public/platform/WebString.h"
@@ -24,11 +25,13 @@ namespace BlinKit {
 ResponseTask::ResponseTask(WebURLLoader *loader, WebURLLoaderClient *client, ResponseData &responseData)
     : m_loader(loader), m_client(client), m_responseData(responseData.shared_from_this())
 {
-    if (!m_responseData->MIMEType.isEmpty())
-        return;
+    // Nothing
+}
 
+static AtomicString AdjustMIMEType(const KURL &URI)
+{
     do {
-        String fileName = m_responseData->URI.lastPathComponent();
+        String fileName = URI.lastPathComponent();
         if (fileName.isEmpty())
             break;
 
@@ -37,11 +40,9 @@ ResponseTask::ResponseTask(WebURLLoader *loader, WebURLLoaderClient *client, Res
             break;
 
         WebString ext = fileName.substring(p + 1);
-        m_responseData->MIMEType = Platform::current()->mimeRegistry()->mimeTypeForExtension(ext);
-        return;
+        return Platform::current()->mimeRegistry()->mimeTypeForExtension(ext);
     } while (false);
-
-    m_responseData->MIMEType = "application/octet-stream";
+    return "application/octet-stream";
 }
 
 void ResponseTask::run(void)
@@ -50,19 +51,23 @@ void ResponseTask::run(void)
     response.initialize();
     response.setURL(m_responseData->URI);
     response.setHTTPStatusCode(m_responseData->StatusCode);
-
     if (!m_responseData->ContentType.empty())
     {
-        WebString contentType = WebString::fromUTF8(m_responseData->ContentType);
+        AtomicString contentType = AtomicString::fromUTF8(m_responseData->ContentType.data(),
+            m_responseData->ContentType.length()).lower();
         response.setHTTPHeaderField("Content-Type", contentType);
+
+        AtomicString MIMEType = extractMIMETypeFromMediaType(contentType);
+        response.setMIMEType(MIMEType);
+
+        String textEncoding = extractCharsetFromMediaType(contentType);
+        if (!textEncoding.isEmpty())
+            response.setTextEncodingName(textEncoding);
     }
-
-    assert(!m_responseData->MIMEType.isEmpty());
-    response.setMIMEType(m_responseData->MIMEType);
-
-    if (!m_responseData->TextEncoding.isEmpty())
-        response.setTextEncodingName(m_responseData->TextEncoding);
-
+    else
+    {
+        response.setMIMEType(AdjustMIMEType(m_responseData->URI));
+    }
     m_client->didReceiveResponse(m_loader, response);
 
     size_t bodySize = m_responseData->Body.size();
