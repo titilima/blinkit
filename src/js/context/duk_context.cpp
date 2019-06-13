@@ -326,10 +326,14 @@ void DukContext::PushNode(Node *node)
         duk_push_undefined(m_context);
         return;
     }
-
     if (node->isDocumentNode())
     {
         PushObject<DukDocument>(node);
+        return;
+    }
+    if (node->isTextNode())
+    {
+        PushObject<DukText>(node);
         return;
     }
 
