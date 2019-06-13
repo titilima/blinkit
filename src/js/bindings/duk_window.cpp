@@ -108,7 +108,7 @@ static duk_ret_t DocumentGetter(duk_context *ctx)
 {
     duk_push_global_object(ctx);
     DOMWindow *window = DukEventTarget::GetNativeThis<DOMWindow>(ctx);
-    DukContext::From(ctx)->PushObject<DukDocument>(window->document());
+    DukContext::From(ctx)->PushNode(window->document());
     return 1;
 }
 
@@ -127,7 +127,7 @@ static duk_ret_t LocationGetter(duk_context *ctx)
 {
     duk_push_global_object(ctx);
     DOMWindow *window = DukEventTarget::GetNativeThis<DOMWindow>(ctx);
-    DukContext::From(ctx)->CreateObject<DukLocation>(window->location());
+    DukContext::From(ctx)->PushObject<DukLocation>(window->location());
     return 1;
 }
 

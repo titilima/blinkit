@@ -22,6 +22,7 @@
 
 namespace blink {
 class LocalFrame;
+class Node;
 class ScriptWrappable;
 }
 
@@ -71,6 +72,7 @@ public:
         else
             CreateObject(T::ProtoName, nativeThis, T::OnCreate, T::OnGC);
     }
+    void PushNode(blink::Node *node);
     void RemoveObjectFromPool(blink::ScriptWrappable *nativeThis);
 
     void Reset(void);

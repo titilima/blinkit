@@ -318,6 +318,24 @@ void DukContext::PrepareGlobalsToTop(void)
     }
 }
 
+void DukContext::PushNode(Node *node)
+{
+    if (nullptr == node)
+    {
+        duk_push_undefined(m_context);
+        return;
+    }
+
+    if (node->isDocumentNode())
+    {
+        PushObject<DukDocument>(node);
+        return;
+    }
+
+    assert(node->isElementNode());
+    PushObject<DukElement>(node);
+}
+
 int DukContext::RegisterFunction(const char *name, BkCallback &functionImpl)
 {
     if (!m_functionManager)

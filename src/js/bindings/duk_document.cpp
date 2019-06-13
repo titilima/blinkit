@@ -141,7 +141,7 @@ static duk_ret_t GetElementById(duk_context *ctx)
     Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
 
     Element *ret = document->getElementById(Duk::ToAtomicString(ctx, 0));
-    DukContext::From(ctx)->PushObject<DukElement>(ret);
+    DukContext::From(ctx)->PushNode(ret);
     return 1;
 }
 
@@ -189,7 +189,7 @@ static duk_ret_t QuerySelector(duk_context *ctx)
         return 0;
     }
 
-    DukContext::From(ctx)->PushObject<DukElement>(ret.get());
+    DukContext::From(ctx)->PushNode(ret.get());
     return 1;
 }
 
