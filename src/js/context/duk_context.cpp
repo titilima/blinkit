@@ -22,6 +22,7 @@
 #include "bindings/duk_exception_state.h"
 #include "bindings/duk_location.h"
 #include "bindings/duk_node_list.h"
+#include "bindings/duk_text.h"
 #include "bindings/duk_window.h"
 #include "context/caller_context_impl.h"
 #include "context/function_manager.h"
@@ -348,6 +349,7 @@ void DukContext::RegisterPrototypes(void)
 {
     m_prototypeManager->BeginRegisterTransaction(m_context);
     DukConsole::RegisterPrototype(m_context, *m_prototypeManager);
+    DukText::RegisterPrototype(m_context, *m_prototypeManager);
     DukWindow::RegisterPrototype(m_context, *m_prototypeManager);
     m_prototypeManager->EndRegisterTransaction(m_context);
 }
@@ -361,6 +363,7 @@ void DukContext::RegisterPrototypesForCrawler(void)
     DukElement::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
     DukLocation::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
     DukNodeList::RegisterPrototype(m_context, *m_prototypeManager);
+    DukText::RegisterPrototype(m_context, *m_prototypeManager);
     DukWindow::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
     m_prototypeManager->EndRegisterTransaction(m_context);
 }
