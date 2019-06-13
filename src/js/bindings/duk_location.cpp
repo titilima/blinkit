@@ -43,8 +43,9 @@ static duk_ret_t Assign(duk_context *ctx)
 
 static duk_ret_t HashGetter(duk_context *ctx)
 {
-    assert(false); // BKTODO:
-    return 1;
+    duk_push_this(ctx);
+    Location *location = Get(ctx);
+    return Duk::PushString(ctx, location->hash());
 }
 
 static duk_ret_t HashSetter(duk_context *ctx)
@@ -55,8 +56,9 @@ static duk_ret_t HashSetter(duk_context *ctx)
 
 static duk_ret_t HostGetter(duk_context *ctx)
 {
-    assert(false); // BKTODO:
-    return 1;
+    duk_push_this(ctx);
+    Location *location = Get(ctx);
+    return Duk::PushString(ctx, location->host());
 }
 
 static duk_ret_t HostSetter(duk_context *ctx)
@@ -67,8 +69,9 @@ static duk_ret_t HostSetter(duk_context *ctx)
 
 static duk_ret_t HostnameGetter(duk_context *ctx)
 {
-    assert(false); // BKTODO:
-    return 1;
+    duk_push_this(ctx);
+    Location *location = Get(ctx);
+    return Duk::PushString(ctx, location->hostname());
 }
 
 static duk_ret_t HostnameSetter(duk_context *ctx)
@@ -79,8 +82,9 @@ static duk_ret_t HostnameSetter(duk_context *ctx)
 
 static duk_ret_t HrefGetter(duk_context *ctx)
 {
-    assert(false); // BKTODO:
-    return 1;
+    duk_push_this(ctx);
+    Location *location = Get(ctx);
+    return Duk::PushString(ctx, location->href());
 }
 
 static duk_ret_t HrefSetter(duk_context *ctx)
@@ -104,8 +108,9 @@ static duk_ret_t PathnameSetter(duk_context *ctx)
 
 static duk_ret_t PortGetter(duk_context *ctx)
 {
-    assert(false); // BKTODO:
-    return 1;
+    duk_push_this(ctx);
+    Location *location = Get(ctx);
+    return Duk::PushString(ctx, location->port());
 }
 
 static duk_ret_t PortSetter(duk_context *ctx)
@@ -116,8 +121,9 @@ static duk_ret_t PortSetter(duk_context *ctx)
 
 static duk_ret_t ProtocolGetter(duk_context *ctx)
 {
-    assert(false); // BKTODO:
-    return 1;
+    duk_push_this(ctx);
+    Location *location = Get(ctx);
+    return Duk::PushString(ctx, location->protocol());
 }
 
 static duk_ret_t ProtocolSetter(duk_context *ctx)
