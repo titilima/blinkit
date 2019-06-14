@@ -177,6 +177,7 @@ void DukLocation::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager
     };
     const auto worker = [](PrototypeEntry &entry)
     {
+        entry.SetFinalizer(Finalizer);
         entry.Add(Properties, WTF_ARRAY_LENGTH(Properties));
         entry.Add(Methods, WTF_ARRAY_LENGTH(Methods));
     };
