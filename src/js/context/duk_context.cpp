@@ -44,6 +44,23 @@ static const char Globals[] = "globals";
 static const char NativeCrawler[] = "nativeCrawler";
 }
 
+
+#ifdef _DEBUG
+namespace Impl {
+static duk_ret_t DebugBreak(duk_context *ctx)
+{
+    if (duk_get_top(ctx) > 0)
+        BKLOG("DEBUG BREAK: %s", duk_to_string(ctx, 0));
+#   ifdef _WIN32
+    ::DebugBreak();
+#   else
+#       error OS not supported!
+#   endif
+    return 0;
+}
+} // namespace Impl
+#endif // _DEBUG
+
 namespace Crawler {
 
 static duk_ret_t Eval(duk_context *ctx)
@@ -144,6 +161,10 @@ void DukContext::Attach(void)
     if (!isCrawler)
     {
         duk_push_object(m_context);
+#   ifdef _DEBUG
+        duk_push_c_function(m_context, Impl::DebugBreak, 1);
+        duk_put_prop_string(m_context, -2, "debugBreak");
+#   endif
         m_functionManager = std::make_unique<FunctionManager>(m_context);
         duk_put_prop_string(m_context, -2, StashFields::External);
     }
@@ -196,6 +217,10 @@ std::tuple<int, std::string> DukContext::CreateCrawlerObject(const char *script,
 
     duk_push_c_function(m_context, Crawler::Gather, 1);
     duk_put_prop_string(m_context, -2, "gather");
+#ifdef _DEBUG
+    duk_push_c_function(m_context, Impl::DebugBreak, 1);
+    duk_put_prop_string(m_context, -2, "debugBreak");
+#endif
 
     m_functionManager = std::make_unique<FunctionManager>(m_context);
     duk_put_prop_string(m_context, -2, StashFields::CrawlerObject);
