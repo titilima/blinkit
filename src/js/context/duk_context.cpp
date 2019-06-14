@@ -32,6 +32,12 @@
 
 using namespace blink;
 
+#if defined(_WIN32)
+#   define DebugBreakImpl() ::DebugBreak()
+#else
+#   error OS not supported!
+#endif
+
 namespace BlinKit {
 
 namespace StashFields {
@@ -45,21 +51,19 @@ static const char NativeCrawler[] = "nativeCrawler";
 }
 
 
-#ifdef _DEBUG
 namespace Impl {
+
+#ifdef _DEBUG
 static duk_ret_t DebugBreak(duk_context *ctx)
 {
-    if (duk_get_top(ctx) > 0)
+    if (duk_get_top(ctx) > 0 && !duk_is_undefined(ctx, 0))
         BKLOG("DEBUG BREAK: %s", duk_to_string(ctx, 0));
-#   ifdef _WIN32
-    ::DebugBreak();
-#   else
-#       error OS not supported!
-#   endif
+    DebugBreakImpl();
     return 0;
 }
-} // namespace Impl
 #endif // _DEBUG
+
+} // namespace Impl
 
 namespace Crawler {
 
