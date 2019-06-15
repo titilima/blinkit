@@ -50,35 +50,35 @@ public:
     void GetCrawlerProperty(const char *name, const std::function<void(const BkValue &)> &callback);
 
     template <class T>
-    void CreateObject(void) {
-        CreateObject(T::ProtoName, nullptr, nullptr, nullptr);
+    void CreateObject(duk_context *ctx) {
+        CreateObject(ctx, T::ProtoName, nullptr, nullptr, nullptr);
     }
     template <class T>
-    void CreateObject(blink::ScriptWrappable *nativeThis) {
+    void CreateObject(duk_context *ctx, blink::ScriptWrappable *nativeThis) {
         assert(nullptr != nativeThis);
-        CreateObject(T::ProtoName, nativeThis, T::OnCreate, T::OnGC);
+        CreateObject(ctx, T::ProtoName, nativeThis, T::OnCreate, T::OnGC);
     }
     template <class T>
-    void PushObject(blink::ScriptWrappable *nativeThis) {
+    void PushObject(duk_context *ctx, blink::ScriptWrappable *nativeThis) {
         if (nullptr == nativeThis)
         {
-            duk_push_undefined(m_context);
+            duk_push_undefined(ctx);
             return;
         }
 
         auto it = m_objectPool.find(nativeThis);
         if (std::end(m_objectPool) != it)
-            duk_push_heapptr(m_context, it->second.HeapPtr);
+            duk_push_heapptr(ctx, it->second.HeapPtr);
         else
-            CreateObject(T::ProtoName, nativeThis, T::OnCreate, T::OnGC);
+            CreateObject(ctx, T::ProtoName, nativeThis, T::OnCreate, T::OnGC);
     }
-    void PushNode(blink::Node *node);
+    void PushNode(duk_context *ctx, blink::Node *node);
     void RemoveObjectFromPool(blink::ScriptWrappable *nativeThis);
 
     void Reset(void);
 private:
     void Attach(void);
-    void CreateObject(const char *protoName, blink::ScriptWrappable *nativeThis,
+    void CreateObject(duk_context *ctx, const char *protoName, blink::ScriptWrappable *nativeThis,
         void(*createCallback)(duk_context *, blink::ScriptWrappable *),
         void(*gcCallback)(blink::ScriptWrappable *));
     void Initialize(void);

@@ -232,27 +232,27 @@ std::tuple<int, std::string> DukContext::CreateCrawlerObject(const char *script,
 }
 
 void DukContext::CreateObject(
-    const char *protoName, ScriptWrappable *nativeThis,
+    duk_context *ctx, const char *protoName, ScriptWrappable *nativeThis,
     void(*createCallback)(duk_context *, ScriptWrappable *),
     void(*gcCallback)(ScriptWrappable *))
 {
-    if (m_prototypeManager->CreateObject(m_context, protoName))
+    if (m_prototypeManager->CreateObject(ctx, protoName))
     {
         if (nullptr != nativeThis)
         {
             ObjectEntry entry;
-            entry.HeapPtr = duk_get_heapptr(m_context, -1);
+            entry.HeapPtr = duk_get_heapptr(ctx, -1);
             entry.GC = gcCallback;
             m_objectPool[nativeThis] = entry;
 
-            Duk::BindNativeThis(m_context, nativeThis);
+            Duk::BindNativeThis(ctx, nativeThis);
 
-            createCallback(m_context, nativeThis);
+            createCallback(ctx, nativeThis);
         }
     }
     else
     {
-        duk_push_undefined(m_context);
+        duk_push_undefined(ctx);
     }
 }
 
@@ -320,7 +320,7 @@ void DukContext::GetCrawlerProperty(const char *name, const std::function<void(c
 void DukContext::Initialize(void)
 {
     DOMWindow *window = m_frame.domWindow();
-    CreateObject<DukWindow>(window);
+    CreateObject<DukWindow>(m_context, window);
     BKLOG("Window object created: %x (%x)", duk_get_heapptr(m_context, -1), window);
     PrepareGlobalsToTop();
     duk_set_global_object(m_context);
@@ -348,26 +348,26 @@ void DukContext::PrepareGlobalsToTop(void)
     }
 }
 
-void DukContext::PushNode(Node *node)
+void DukContext::PushNode(duk_context *ctx, Node *node)
 {
     if (nullptr == node)
     {
-        duk_push_undefined(m_context);
+        duk_push_undefined(ctx);
         return;
     }
     if (node->isDocumentNode())
     {
-        PushObject<DukDocument>(node);
+        PushObject<DukDocument>(ctx, node);
         return;
     }
     if (node->isTextNode())
     {
-        PushObject<DukText>(node);
+        PushObject<DukText>(ctx, node);
         return;
     }
 
     assert(node->isElementNode());
-    PushObject<DukElement>(node);
+    PushObject<DukElement>(ctx, node);
 }
 
 int DukContext::RegisterFunction(const char *name, BkCallback &functionImpl)

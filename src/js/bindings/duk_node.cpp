@@ -39,7 +39,7 @@ static duk_ret_t AppendChild(duk_context *ctx)
         return 0;
     }
 
-    DukContext::From(ctx)->PushNode(ret.get());
+    DukContext::From(ctx)->PushNode(ctx, ret.get());
     return 1;
 }
 
@@ -54,7 +54,7 @@ static duk_ret_t CloneNode(duk_context *ctx)
     duk_push_this(ctx);
     Node *node = DukEventTarget::GetNativeThis<Node>(ctx);
     PassRefPtr<Node> ret = node->cloneNode(duk_to_boolean(ctx, 0));
-    DukContext::From(ctx)->PushNode(ret.get());
+    DukContext::From(ctx)->PushNode(ctx, ret.get());
     return 1;
 }
 
@@ -80,7 +80,7 @@ static duk_ret_t FirstChildGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
     Node *node = DukEventTarget::GetNativeThis<Node>(ctx);
-    DukContext::From(ctx)->PushNode(node->firstChild());
+    DukContext::From(ctx)->PushNode(ctx, node->firstChild());
     return 1;
 }
 
@@ -108,7 +108,7 @@ static duk_ret_t InsertBefore(duk_context *ctx)
         return 0;
     }
 
-    DukContext::From(ctx)->PushNode(ret.get());
+    DukContext::From(ctx)->PushNode(ctx, ret.get());
     return 1;
 }
 
@@ -142,7 +142,7 @@ static duk_ret_t LastChildGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
     Node *node = DukEventTarget::GetNativeThis<Node>(ctx);
-    DukContext::From(ctx)->PushNode(node->lastChild());
+    DukContext::From(ctx)->PushNode(ctx, node->lastChild());
     return 1;
 }
 
@@ -150,7 +150,7 @@ static duk_ret_t NextSiblingGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
     Node *node = DukEventTarget::GetNativeThis<Node>(ctx);
-    DukContext::From(ctx)->PushNode(node->nextSibling());
+    DukContext::From(ctx)->PushNode(ctx, node->nextSibling());
     return 1;
 }
 
@@ -196,7 +196,7 @@ static duk_ret_t OwnerDocumentGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
     Node *node = DukEventTarget::GetNativeThis<Node>(ctx);
-    DukContext::From(ctx)->PushNode(node->ownerDocument());
+    DukContext::From(ctx)->PushNode(ctx, node->ownerDocument());
     return 1;
 }
 
@@ -204,7 +204,7 @@ static duk_ret_t ParentNodeGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
     Node *node = DukEventTarget::GetNativeThis<Node>(ctx);
-    DukContext::From(ctx)->PushNode(node->parentNode());
+    DukContext::From(ctx)->PushNode(ctx, node->parentNode());
     return 1;
 }
 
@@ -212,7 +212,7 @@ static duk_ret_t PreviousSiblingGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
     Node *node = DukEventTarget::GetNativeThis<Node>(ctx);
-    DukContext::From(ctx)->PushNode(node->previousSibling());
+    DukContext::From(ctx)->PushNode(ctx, node->previousSibling());
     return 1;
 }
 
@@ -231,7 +231,7 @@ static duk_ret_t RemoveChild(duk_context *ctx)
         return 0;
     }
 
-    DukContext::From(ctx)->PushNode(ret.get());
+    DukContext::From(ctx)->PushNode(ctx, ret.get());
     return 1;
 }
 
@@ -251,7 +251,7 @@ static duk_ret_t ReplaceChild(duk_context *ctx)
         return 0;
     }
 
-    DukContext::From(ctx)->PushNode(ret.get());
+    DukContext::From(ctx)->PushNode(ctx, ret.get());
     return 1;
 }
 

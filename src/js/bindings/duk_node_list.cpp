@@ -45,7 +45,7 @@ void DukNodeList::OnCreate(duk_context *ctx, ScriptWrappable *nativeThis)
     unsigned length = nodeList->length();
     for (unsigned i = 0; i < length; ++i)
     {
-        context->PushNode(nodeList->item(i));
+        context->PushNode(ctx, nodeList->item(i));
         duk_put_prop_index(ctx, -2, i);
     }
 }
@@ -58,7 +58,7 @@ duk_ret_t Item(duk_context *ctx)
     NodeList *nodeList = Get(ctx);
 
     Node *node = nodeList->item(duk_to_uint(ctx, 0));
-    DukContext::From(ctx)->PushNode(node);
+    DukContext::From(ctx)->PushNode(ctx, node);
     return 1;
 }
 

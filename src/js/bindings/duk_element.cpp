@@ -141,7 +141,7 @@ static duk_ret_t NextElementSiblingGetter(duk_context *ctx)
     Element *element = DukEventTarget::GetNativeThis<Element>(ctx);
 
     Element *ret = NonDocumentTypeChildNode::nextElementSibling(*element);
-    DukContext::From(ctx)->PushNode(ret);
+    DukContext::From(ctx)->PushNode(ctx, ret);
     return 1;
 }
 
@@ -177,7 +177,7 @@ static duk_ret_t PreviousElementSiblingGetter(duk_context *ctx)
     Element *element = DukEventTarget::GetNativeThis<Element>(ctx);
 
     Element *ret = NonDocumentTypeChildNode::previousElementSibling(*element);
-    DukContext::From(ctx)->PushNode(ret);
+    DukContext::From(ctx)->PushNode(ctx, ret);
     return 1;
 }
 
@@ -194,7 +194,7 @@ static duk_ret_t QuerySelector(duk_context *ctx)
         return 0;
     }
 
-    DukContext::From(ctx)->PushNode(ret.get());
+    DukContext::From(ctx)->PushNode(ctx, ret.get());
     return 1;
 }
 

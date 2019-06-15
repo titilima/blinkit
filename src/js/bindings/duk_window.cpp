@@ -95,7 +95,7 @@ static duk_ret_t ClosedGetter(duk_context *ctx)
 
 static duk_ret_t ConsoleGetter(duk_context *ctx)
 {
-    DukContext::From(ctx)->CreateObject<DukConsole>();
+    DukContext::From(ctx)->CreateObject<DukConsole>(ctx);
     return 1;
 }
 
@@ -108,7 +108,7 @@ static duk_ret_t DocumentGetter(duk_context *ctx)
 {
     duk_push_global_object(ctx);
     DOMWindow *window = DukEventTarget::GetNativeThis<DOMWindow>(ctx);
-    DukContext::From(ctx)->PushNode(window->document());
+    DukContext::From(ctx)->PushNode(ctx, window->document());
     return 1;
 }
 
@@ -127,7 +127,7 @@ static duk_ret_t LocationGetter(duk_context *ctx)
 {
     duk_push_global_object(ctx);
     DOMWindow *window = DukEventTarget::GetNativeThis<DOMWindow>(ctx);
-    DukContext::From(ctx)->PushObject<DukLocation>(window->location());
+    DukContext::From(ctx)->PushObject<DukLocation>(ctx, window->location());
     return 1;
 }
 
