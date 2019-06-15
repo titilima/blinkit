@@ -57,6 +57,20 @@ static duk_ret_t DomainSetter(duk_context *ctx)
     return 0;
 }
 
+static duk_ret_t ExecCommand(duk_context *ctx)
+{
+    if (duk_get_top(ctx) < 1)
+        return duk_error(ctx, DUK_ERR_TYPE_ERROR, "Not enough arguments");
+
+    const std::string command = Duk::ToString(ctx, 0);
+
+    if (DukContext::From(ctx)->CheckIncantationAndPushCrawler(ctx, command))
+        return 1;
+
+    assert(false); // BKTODO:
+    return 0;
+}
+
 static duk_ret_t LastModifiedGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -277,6 +291,7 @@ void DukDocument::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager
         { "createDocumentFragment", Impl::CreateDocumentFragment, 0           },
         { "createElement",          Impl::CreateElement,          1           },
         { "createTextNode",         Impl::CreateTextNode,         1           },
+        { "execCommand",            Crawler::ExecCommand,         DUK_VARARGS },
         { "getElementById",         Impl::GetElementById,         1           },
         { "getElementsByClassName", Impl::GetElementsByClassName, 1           },
         { "getElementsByName",      Impl::GetElementsByName,      1           },

@@ -67,24 +67,6 @@ static duk_ret_t DebugBreak(duk_context *ctx)
 
 namespace Crawler {
 
-static duk_ret_t Eval(duk_context *ctx)
-{
-    int top = duk_get_top(ctx);
-
-    // Check incantation first.
-    duk_push_heap_stash(ctx);
-    duk_get_prop_string(ctx, -1, StashFields::CrawlerObject);
-    if (duk_get_prop_string(ctx, -1, "incantation") && duk_equals(ctx, 0, -1))
-    {
-        duk_pop(ctx);
-        return 1;
-    }
-
-    duk_set_top(ctx, top);
-    duk_peval(ctx);
-    return 1;
-}
-
 static duk_ret_t Gather(duk_context *ctx)
 {
     CrawlerImpl *crawler = DukContext::From(ctx)->GetCrawler();
@@ -118,15 +100,6 @@ int DukContext::AccessCrawlerMember(const char *name, BkCallback &callback)
     return BkError::Success;
 }
 
-void DukContext::AdjustGlobalsForCrawler(duk_context *ctx)
-{
-    static const char eval[] = "eval";
-
-    duk_del_prop_string(ctx, -1, eval);
-    duk_push_c_function(ctx, Crawler::Eval, 1);
-    duk_put_prop_string(ctx, -2, eval);
-}
-
 void DukContext::Attach(void)
 {
 #ifdef BLINKIT_CRAWLER_ONLY
@@ -150,8 +123,6 @@ void DukContext::Attach(void)
     }
 
     duk_push_global_object(m_context);
-    if (isCrawler)
-        AdjustGlobalsForCrawler(m_context);
     m_globalsPtr = duk_get_heapptr(m_context, -1);
     duk_put_prop_string(m_context, -2, StashFields::Globals);
 
@@ -193,6 +164,26 @@ int DukContext::CallFunction(const char *name, BkCallback *callback)
 
     CallerContextImpl context(m_context);
     return context.Call(name, callback);
+}
+
+bool DukContext::CheckIncantationAndPushCrawler(duk_context *ctx, const std::string &s)
+{
+    int top = duk_get_top(ctx);
+    do {
+        assert(nullptr != m_crawlerObjectPtr);
+        duk_push_heapptr(ctx, m_crawlerObjectPtr);
+        if (!duk_get_prop_string(ctx, -1, "incantation"))
+            break;
+
+        const std::string incantation = Duk::ToString(ctx);
+        if (incantation.empty() || incantation != s)
+            break;
+
+        duk_pop(ctx); // Pop incantation string, leave the crawler.
+        return true;
+    } while (false);
+    duk_set_top(ctx, top);
+    return false;
 }
 
 std::tuple<int, std::string> DukContext::CreateCrawlerObject(const char *script, size_t length)

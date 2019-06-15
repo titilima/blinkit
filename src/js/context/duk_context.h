@@ -48,6 +48,7 @@ public:
     int RegisterFunction(const char *name, BkCallback &functionImpl);
     int AccessCrawlerMember(const char *name, BkCallback &callback);
     void GetCrawlerProperty(const char *name, const std::function<void(const BkValue &)> &callback);
+    bool CheckIncantationAndPushCrawler(duk_context *ctx, const std::string &s);
 
     template <class T>
     void CreateObject(duk_context *ctx) {
@@ -83,7 +84,6 @@ private:
         void(*gcCallback)(blink::ScriptWrappable *));
     void Initialize(void);
     void GC(void);
-    static void AdjustGlobalsForCrawler(duk_context *ctx);
     void PrepareGlobalsToTop(void);
 #ifndef BLINKIT_CRAWLER_ONLY
     void RegisterPrototypes(void);
