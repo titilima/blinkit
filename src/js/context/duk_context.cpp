@@ -311,8 +311,15 @@ void DukContext::GetCrawlerProperty(const char *name, const std::function<void(c
 void DukContext::Initialize(void)
 {
     DOMWindow *window = m_frame.domWindow();
+
+    duk_push_global_object(m_context);
+    DOMWindow *previousWindow = DukEventTarget::GetNativeThis<DOMWindow>(m_context);
+    duk_pop(m_context);
+    if (window == previousWindow)
+        return; // Window didn't changed, so nothing to do.
+
     CreateObject<DukWindow>(m_context, window);
-    BKLOG("Window object created: %x (%x)", duk_get_heapptr(m_context, -1), window);
+    BKLOG("Window object (re-)created: %x (%x)", duk_get_heapptr(m_context, -1), window);
     PrepareGlobalsToTop();
     duk_set_global_object(m_context);
 }
