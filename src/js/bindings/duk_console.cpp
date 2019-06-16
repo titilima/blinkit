@@ -23,7 +23,14 @@ namespace Impl {
 
 static duk_ret_t Log(duk_context *ctx)
 {
-    const std::string log = Duk::ToString(ctx, 0);
+    int idx = 0;
+    if (!duk_is_string(ctx, 0))
+    {
+        duk_dup(ctx, 0);
+        idx = -1;
+    }
+
+    const std::string log = Duk::ToString(ctx, idx);
     BKLOG("[LOG] %s", log.c_str());
     return 0;
 }
