@@ -13,7 +13,6 @@
 
 #include "bindings/duk_element.h"
 #include "bindings/duk_exception_state.h"
-#include "bindings/duk_node_list.h"
 #include "context/duk_context.h"
 #include "context/prototype_manager.h"
 #include "wrappers/duk.h"
@@ -190,40 +189,6 @@ static duk_ret_t InputEncodingGetter(duk_context *ctx)
     return Duk::PushString(ctx, document->characterSet());
 }
 
-static duk_ret_t QuerySelector(duk_context *ctx)
-{
-    duk_push_this(ctx);
-    Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
-
-    DukExceptionState es(ctx, "querySelector", "Document");
-    PassRefPtr<Element> ret = document->querySelector(Duk::ToAtomicString(ctx, 0), es);
-    if (es.hadException())
-    {
-        es.throwIfNeeded();
-        return 0;
-    }
-
-    DukContext::From(ctx)->PushNode(ctx, ret.get());
-    return 1;
-}
-
-static duk_ret_t QuerySelectorAll(duk_context *ctx)
-{
-    duk_push_this(ctx);
-    Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
-
-    DukExceptionState es(ctx, "querySelectorAll", "Document");
-    PassRefPtr<StaticElementList> ret = document->querySelectorAll(Duk::ToAtomicString(ctx, 0), es);
-    if (es.hadException())
-    {
-        es.throwIfNeeded();
-        return 0;
-    }
-
-    DukContext::From(ctx)->PushObject<DukNodeList>(ctx, ret.get());
-    return 1;
-}
-
 static duk_ret_t ReadyStateGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -297,15 +262,13 @@ void DukDocument::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager
         { "getElementsByName",      Impl::GetElementsByName,      1           },
         { "getElementsByTagName",   Impl::GetElementsByTagName,   1           },
         { "open",                   Crawler::Open,                2           },
-        { "querySelector",          Impl::QuerySelector,          1           },
-        { "querySelectorAll",       Impl::QuerySelectorAll,       1           },
         { "write",                  Impl::Write,                  DUK_VARARGS },
         { "writeln",                Impl::Writeln,                DUK_VARARGS },
     };
 
     const auto worker = [](PrototypeEntry &entry)
     {
-        DukNode::RegisterToPrototypeEntry(entry);
+        DukContainerNode::RegisterToPrototypeEntry(entry);
 
         entry.Add(Properties, WTF_ARRAY_LENGTH(Properties));
         entry.Add(Methods, WTF_ARRAY_LENGTH(Methods));

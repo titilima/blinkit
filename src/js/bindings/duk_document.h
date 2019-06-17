@@ -16,11 +16,11 @@
 
 #include "core/dom/Document.h"
 
-#include "duk_node.h"
+#include "duk_container_node.h"
 
 namespace BlinKit {
 
-class DukDocument final : public DukNode
+class DukDocument final : public DukContainerNode
 {
 public:
     static const char ProtoName[];

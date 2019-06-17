@@ -181,29 +181,6 @@ static duk_ret_t PreviousElementSiblingGetter(duk_context *ctx)
     return 1;
 }
 
-static duk_ret_t QuerySelector(duk_context *ctx)
-{
-    duk_push_this(ctx);
-    Element *element = DukEventTarget::GetNativeThis<Element>(ctx);
-
-    DukExceptionState es(ctx, "querySelector", "Element");
-    PassRefPtr<Element> ret = element->querySelector(Duk::ToAtomicString(ctx, 0), es);
-    if (es.hadException())
-    {
-        es.throwIfNeeded();
-        return 0;
-    }
-
-    DukContext::From(ctx)->PushNode(ctx, ret.get());
-    return 1;
-}
-
-static duk_ret_t QuerySelectorAll(duk_context *ctx)
-{
-    assert(false); // BKTODO:
-    return 1;
-}
-
 static duk_ret_t RemoveAttribute(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -268,8 +245,6 @@ void DukElement::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager 
         { "getElementsByTagName",   Impl::GetElementsByTagName,   1 },
         { "hasAttribute",           Impl::HasAttribute,           1 },
         { "hasAttributes",          Impl::HasAttributes,          0 },
-        { "querySelector",          Impl::QuerySelector,          1 },
-        { "querySelectorAll",       Impl::QuerySelectorAll,       1 },
         { "removeAttribute",        Impl::RemoveAttribute,        1 },
         { "removeAttributeNode",    Impl::RemoveAttributeNode,    1 },
         { "setAttribute",           Impl::SetAttribute,           2 },
@@ -278,7 +253,7 @@ void DukElement::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager 
 
     const auto worker = [](PrototypeEntry &entry)
     {
-        DukNode::RegisterToPrototypeEntry(entry);
+        DukContainerNode::RegisterToPrototypeEntry(entry);
 
         entry.Add(Properties, WTF_ARRAY_LENGTH(Properties));
         entry.Add(Methods, WTF_ARRAY_LENGTH(Methods));
