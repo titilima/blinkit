@@ -3484,10 +3484,12 @@ void Document::moveNodeIteratorsToNewDocument(Node& node, Document& newDocument)
 
 void Document::updateRangesAfterChildrenChanged(ContainerNode* container)
 {
-    assert(false); // BKTODO:
-#if 0
-    for (Range* range : m_ranges)
-        range->nodeChildrenChanged(container);
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+    {
+        for (Range* range : m_ranges)
+            range->nodeChildrenChanged(container);
+    }
 #endif
 }
 
@@ -3530,20 +3532,28 @@ void Document::nodeChildrenWillBeRemoved(ContainerNode& container)
 
 void Document::nodeWillBeRemoved(Node& n)
 {
-    assert(false); // BKTODO:
-#if 0
     for (NodeIterator* ni : m_nodeIterators)
         ni->nodeWillBeRemoved(n);
 
-    for (Range* range : m_ranges)
-        range->nodeWillBeRemoved(n);
-
-    if (LocalFrameImpl* frame = this->frame()) {
-        frame->eventHandler().nodeWillBeRemoved(n);
-        frame->selection().nodeWillBeRemoved(n);
-        frame->page()->dragCaretController().nodeWillBeRemoved(n);
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+    {
+        for (Range* range : m_ranges)
+            range->nodeWillBeRemoved(n);
     }
 #endif
+
+    if (LocalFrame *frame = this->frame())
+    {
+        frame->eventHandler().nodeWillBeRemoved(n);
+#ifndef BLINKIT_CRAWLER_ONLY
+        if (!ForCrawler())
+        {
+            frame->selection().nodeWillBeRemoved(n);
+            frame->page()->dragCaretController().nodeWillBeRemoved(n);
+        }
+#endif
+    }
 }
 
 void Document::didInsertText(Node* text, unsigned offset, unsigned length)
