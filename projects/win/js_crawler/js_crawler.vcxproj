@@ -259,7 +259,6 @@
     <ClInclude Include="..\..\..\src\js\bindings\duk_object_impl.hpp" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_text.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_window.h" />
-    <ClInclude Include="..\..\..\src\js\bindings\meta_data.h" />
     <ClInclude Include="..\..\..\src\js\context\caller_context_impl.h" />
     <ClInclude Include="..\..\..\src\js\context\duk_context.h" />
     <ClInclude Include="..\..\..\src\js\context\function_context_impl.h" />

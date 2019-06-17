@@ -14,8 +14,6 @@
 
 #pragma once
 
-#include "meta_data.h"
-
 namespace BlinKit {
 
 class PrototypeManager;
@@ -26,8 +24,6 @@ public:
     static const char ProtoName[];
 
     static void RegisterPrototype(duk_context *ctx, PrototypeManager &protos);
-private:
-    static MetaData ClassMetaData;
 };
 
 } // namespace BlinKit

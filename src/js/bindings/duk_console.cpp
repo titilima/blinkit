@@ -17,7 +17,6 @@
 namespace BlinKit {
 
 const char DukConsole::ProtoName[] = "Console";
-MetaData DukConsole::ClassMetaData = { MetaData::Console, nullptr };
 
 namespace Impl {
 
