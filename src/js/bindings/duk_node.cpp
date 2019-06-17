@@ -216,6 +216,18 @@ static duk_ret_t PreviousSiblingGetter(duk_context *ctx)
     return 1;
 }
 
+static duk_ret_t Remove(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Node *node = DukEventTarget::GetNativeThis<Node>(ctx);
+
+    DukExceptionState es(ctx, "remove", "Node");
+    node->remove(es);
+    if (es.hadException())
+        es.throwIfNeeded();
+    return 0;
+}
+
 static duk_ret_t RemoveChild(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -273,18 +285,19 @@ void DukNode::RegisterToPrototypeEntry(PrototypeEntry &entry)
         { "textContent",     TextContentGetter,           TextContentSetter     },
     };
     static const PrototypeEntry::Method Methods[] = {
-        { "appendChild", Impl::AppendChild, 1 },
-        { "cloneNode", Impl::CloneNode, 1 },
+        { "appendChild",             Impl::AppendChild,             1 },
+        { "cloneNode",               Impl::CloneNode,               1 },
         { "compareDocumentPosition", Impl::CompareDocumentPosition, 1 },
-        { "contains", Impl::Contains, 1 },
-        { "hasChildNodes", Impl::HasChildNodes, 0 },
-        { "insertBefore", Impl::InsertBefore, 2 },
-        { "isDefaultNamespace", Impl::IsDefaultNamespace, 1 },
-        { "isEqualNode", Impl::IsEqualNode, 1 },
-        { "isSameNode", Impl::IsSameNode, 1 },
-        { "normalize", Impl::Normalize, 0 },
-        { "removeChild", Impl::RemoveChild, 1 },
-        { "replaceChild", Impl::ReplaceChild, 2 },
+        { "contains",                Impl::Contains,                1 },
+        { "hasChildNodes",           Impl::HasChildNodes,           0 },
+        { "insertBefore",            Impl::InsertBefore,            2 },
+        { "isDefaultNamespace",      Impl::IsDefaultNamespace,      1 },
+        { "isEqualNode",             Impl::IsEqualNode,             1 },
+        { "isSameNode",              Impl::IsSameNode,              1 },
+        { "normalize",               Impl::Normalize,               0 },
+        { "remove",                  Impl::Remove,                  0 },
+        { "removeChild",             Impl::RemoveChild,             1 },
+        { "replaceChild",            Impl::ReplaceChild,            2 },
     };
 
     DukEventTarget::RegisterToPrototypeEntry(entry);
