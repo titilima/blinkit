@@ -54,6 +54,7 @@ public:
     PrototypeManager(duk_context *ctx);
 
     bool CreateObject(duk_context *ctx, const char *protoName);
+    bool Bind(duk_context *ctx, const char *protoName, duk_idx_t idx = -1);
 
     void BeginRegisterTransaction(duk_context *ctx);
     bool Register(duk_context *ctx, const char *protoName, const std::function<void(PrototypeEntry &)> &worker);

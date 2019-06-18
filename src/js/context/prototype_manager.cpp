@@ -87,6 +87,23 @@ void PrototypeManager::BeginRegisterTransaction(duk_context *ctx)
     duk_push_heapptr(ctx, m_protosPtr);
 }
 
+bool PrototypeManager::Bind(duk_context *ctx, const char *protoName, duk_idx_t idx)
+{
+    assert(duk_is_object(ctx, idx));
+    idx = duk_normalize_index(ctx, idx);
+
+    auto it = m_protos.find(protoName);
+    if (std::end(m_protos) == it)
+    {
+        assert(std::end(m_protos) != it);
+        return false;
+    }
+
+    duk_push_heapptr(ctx, it->second);
+    duk_set_prototype(ctx, idx);
+    return true;
+}
+
 bool PrototypeManager::CreateObject(duk_context *ctx, const char *protoName)
 {
     auto it = m_protos.find(protoName);
