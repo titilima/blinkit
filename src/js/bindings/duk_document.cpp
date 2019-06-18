@@ -11,6 +11,9 @@
 
 #include "duk_document.h"
 
+#include "core/HTMLNames.h"
+#include "core/dom/ElementTraversal.h"
+
 #include "bindings/duk_element.h"
 #include "bindings/duk_exception_state.h"
 #include "context/duk_context.h"
@@ -24,6 +27,27 @@ namespace BlinKit {
 const char DukDocument::ProtoName[] = "HTMLDocument";
 
 namespace Crawler {
+
+static duk_ret_t BodyGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
+
+    Element *ret = nullptr;
+
+    Element *de = document->documentElement();
+    if (nullptr != de)
+        ret = Traversal<Element>::firstChild(*de, HasTagName(HTMLNames::bodyTag));
+
+    DukContext::From(ctx)->PushNode(ctx, ret);
+    return 1;
+}
+
+static duk_ret_t BodySetter(duk_context *ctx)
+{
+    assert(false); // BKTODO:
+    return 0;
+}
 
 static duk_ret_t Close(duk_context *ctx)
 {
@@ -70,6 +94,21 @@ static duk_ret_t ExecCommand(duk_context *ctx)
     return 0;
 }
 
+static duk_ret_t HeadGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
+
+    Element *ret = nullptr;
+
+    Element *de = document->documentElement();
+    if (nullptr != de)
+        ret = Traversal<Element>::firstChild(*de, HasTagName(HTMLNames::headTag));
+
+    DukContext::From(ctx)->PushNode(ctx, ret);
+    return 1;
+}
+
 static duk_ret_t LastModifiedGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -93,18 +132,6 @@ static duk_ret_t ReferrerGetter(duk_context *ctx)
 } // namespace Crawler
 
 namespace Impl {
-
-static duk_ret_t BodyGetter(duk_context *ctx)
-{
-    assert(false); // BKTODO:
-    return 1;
-}
-
-static duk_ret_t BodySetter(duk_context *ctx)
-{
-    assert(false); // BKTODO:
-    return 0;
-}
 
 static duk_ret_t CreateAttribute(duk_context *ctx)
 {
@@ -235,19 +262,20 @@ static duk_ret_t Writeln(duk_context *ctx)
 void DukDocument::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &protos)
 {
     static const PrototypeEntry::Property Properties[] = {
-        { "body",            Impl::BodyGetter,            Impl::BodySetter },
+        { "body",            Crawler::BodyGetter,         Crawler::BodySetter   },
         { "cookie",          Crawler::CookieGetter,       Crawler::CookieSetter },
-        { "doctype",         Impl::DoctypeGetter,         nullptr },
-        { "documentElement", Impl::DocumentElementGetter, nullptr },
-        { "documentURI",     Impl::URLGetter,             nullptr },
+        { "doctype",         Impl::DoctypeGetter,         nullptr               },
+        { "documentElement", Impl::DocumentElementGetter, nullptr               },
+        { "documentURI",     Impl::URLGetter,             nullptr               },
         { "domain",          Crawler::DomainGetter,       Crawler::DomainSetter },
-        { "implementation",  Impl::ImplementationGetter,  nullptr                 },
-        { "inputEncoding",   Impl::InputEncodingGetter,   nullptr },
-        { "lastModified",    Crawler::LastModifiedGetter, nullptr },
-        { "readyState",      Impl::ReadyStateGetter,      nullptr },
-        { "referrer",        Crawler::ReferrerGetter,     nullptr },
-        { "title",           Impl::TitleGetter,           Impl::TitleSetter },
-        { "URL",             Impl::URLGetter,             nullptr },
+        { "head",            Crawler::HeadGetter,         nullptr               },
+        { "implementation",  Impl::ImplementationGetter,  nullptr               },
+        { "inputEncoding",   Impl::InputEncodingGetter,   nullptr               },
+        { "lastModified",    Crawler::LastModifiedGetter, nullptr               },
+        { "readyState",      Impl::ReadyStateGetter,      nullptr               },
+        { "referrer",        Crawler::ReferrerGetter,     nullptr               },
+        { "title",           Impl::TitleGetter,           Impl::TitleSetter     },
+        { "URL",             Impl::URLGetter,             nullptr               },
     };
     static const PrototypeEntry::Method Methods[] = {
         { "close",                  Crawler::Close,               0           },
