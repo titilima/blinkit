@@ -259,6 +259,7 @@
     <ClInclude Include="..\..\..\src\js\bindings\duk_object_impl.hpp" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_text.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_window.h" />
+    <ClInclude Include="..\..\..\src\js\bindings\duk_xhr.h" />
     <ClInclude Include="..\..\..\src\js\context\caller_context_impl.h" />
     <ClInclude Include="..\..\..\src\js\context\duk_context.h" />
     <ClInclude Include="..\..\..\src\js\context\function_context_impl.h" />
@@ -287,6 +288,7 @@
     <ClCompile Include="..\..\..\src\js\bindings\duk_node_list.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_text.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_window.cpp" />
+    <ClCompile Include="..\..\..\src\js\bindings\duk_xhr.cpp" />
     <ClCompile Include="..\..\..\src\js\context\caller_context_impl.cpp" />
     <ClCompile Include="..\..\..\src\js\context\duk_context.cpp" />
     <ClCompile Include="..\..\..\src\js\context\function_context_impl.cpp" />

@@ -24,6 +24,7 @@
 #include "bindings/duk_node_list.h"
 #include "bindings/duk_text.h"
 #include "bindings/duk_window.h"
+#include "bindings/duk_xhr.h"
 #include "context/caller_context_impl.h"
 #include "context/function_manager.h"
 #include "context/prototype_manager.h"
@@ -402,6 +403,7 @@ void DukContext::RegisterPrototypesForCrawler(void)
     DukNodeList::RegisterPrototype(m_context, *m_prototypeManager);
     DukText::RegisterPrototype(m_context, *m_prototypeManager);
     DukWindow::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
+    DukXHR::RegisterPrototype(m_context, *m_prototypeManager);
     m_prototypeManager->EndRegisterTransaction(m_context);
 }
 

@@ -15,6 +15,7 @@
 #include "bindings/duk_console.h"
 #include "bindings/duk_document.h"
 #include "bindings/duk_location.h"
+#include "bindings/duk_xhr.h"
 #include "context/duk_context.h"
 #include "context/prototype_manager.h"
 #include "wrappers/duk.h"
@@ -215,6 +216,7 @@ void DukWindow::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &
         { "setInterval",      Impl::SetInterval,         DUK_VARARGS },
         { "setTimeout",       Impl::SetTimeout,          DUK_VARARGS },
         { "stop",             Crawler::NothingToDo,      DUK_VARARGS },
+        { DukXHR::ProtoName,  DukXHR::Constructor,       0           },
     };
 
     const auto worker = [](PrototypeEntry &entry)
