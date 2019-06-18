@@ -39,6 +39,7 @@ public:
     ~DukContext(void);
 
     static DukContext* From(duk_context *ctx);
+    static PrototypeManager* PrototypeManagerFrom(duk_context *ctx);
     CrawlerImpl* GetCrawler(void);
 
     std::tuple<int, std::string> CreateCrawlerObject(const char *script, size_t length);

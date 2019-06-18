@@ -346,6 +346,12 @@ void DukContext::PrepareGlobalsToTop(void)
     }
 }
 
+PrototypeManager* DukContext::PrototypeManagerFrom(duk_context *ctx)
+{
+    DukContext *context = From(ctx);
+    return nullptr != context ? context->m_prototypeManager.get() : nullptr;
+}
+
 void DukContext::PushNode(duk_context *ctx, Node *node)
 {
     if (nullptr == node)
