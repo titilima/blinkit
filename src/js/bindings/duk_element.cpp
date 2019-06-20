@@ -13,6 +13,8 @@
 
 #include "core/HTMLNames.h"
 #include "core/dom/NonDocumentTypeChildNode.h"
+#include "core/dom/ParentNode.h"
+#include "core/dom/StaticNodeList.h"
 
 #include "bindings/duk_exception_state.h"
 #include "context/duk_context.h"
@@ -58,6 +60,16 @@ static duk_ret_t ClassNameSetter(duk_context *ctx)
     Element *element = DukEventTarget::GetNativeThis<Element>(ctx);
     element->setAttribute(HTMLNames::classAttr, Duk::ToAtomicString(ctx, 0));
     return 0;
+}
+
+static duk_ret_t FirstElementChildGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Element *element = DukEventTarget::GetNativeThis<Element>(ctx);
+
+    Element *ret = ParentNode::firstElementChild(*element);
+    DukContext::From(ctx)->PushNode(ctx, ret);
+    return 1;
 }
 
 static duk_ret_t GetAttribute(duk_context *ctx)
@@ -133,6 +145,16 @@ static duk_ret_t InnerHTMLSetter(duk_context *ctx)
     if (es.hadException())
         es.throwIfNeeded();
     return 0;
+}
+
+static duk_ret_t LastElementChildGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Element *element = DukEventTarget::GetNativeThis<Element>(ctx);
+
+    Element *ret = ParentNode::lastElementChild(*element);
+    DukContext::From(ctx)->PushNode(ctx, ret);
+    return 1;
 }
 
 static duk_ret_t NextElementSiblingGetter(duk_context *ctx)
@@ -229,9 +251,11 @@ void DukElement::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager 
         { "children",               Impl::ChildrenGetter,               nullptr                    },
         { "classList",              Impl::ClassListGetter,              nullptr                    },
         { "className",              Impl::ClassNameGetter,              Impl::ClassNameSetter      },
+        { "firstElementChild",      Impl::FirstElementChildGetter,      nullptr                    },
         { "id",                     Impl::IdGetter,                     Impl::IdSetter             },
         { "innerHTML",              Impl::InnerHTMLGetter,              Impl::InnerHTMLSetter      },
         { "innerText",              DukNode::TextContentGetter,         DukNode::TextContentSetter },
+        { "lastElementChild",       Impl::LastElementChildGetter,       nullptr                    },
         { "namespaceURI",           Impl::NamespaceURIGetter,           nullptr                    },
         { "nextElementSibling",     Impl::NextElementSiblingGetter,     nullptr                    },
         { "outerHTML",              Impl::OuterHTMLGetter,              Impl::OuterHTMLSetter      },
