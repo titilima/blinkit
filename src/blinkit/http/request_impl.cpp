@@ -66,3 +66,12 @@ void BKAPI RequestImpl::SetHeader(const char *name, const char *value)
 }
 
 } // namespace BlinKit
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+using namespace BlinKit;
+
+extern "C" BkRequest* BKAPI BkCreateRequest(const char *URL, BkRequestClient &client)
+{
+    return RequestImpl::CreateInstance(URL, client);
+}

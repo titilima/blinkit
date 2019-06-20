@@ -24,6 +24,7 @@ class ResponseImpl;
 class RequestImpl : public BkRequest
 {
 public:
+    static BkRequest* CreateInstance(const char *URL, BkRequestClient &client);
     virtual ~RequestImpl(void);
 
     void Release(void);

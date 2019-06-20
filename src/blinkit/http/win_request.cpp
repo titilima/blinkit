@@ -348,11 +348,11 @@ DWORD WINAPI WinRequest::ThreadProc(PVOID param)
     return reinterpret_cast<WinRequest *>(param)->DoThreadWork();
 }
 
-} // namespace BlinKit
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-extern "C" BlinKit::BkRequest* BKAPI BkCreateRequest(const char *URL, BlinKit::BkRequestClient &client)
+BkRequest* RequestImpl::CreateInstance(const char *URL, BkRequestClient &client)
 {
-    return new BlinKit::WinRequest(URL, client);
+    return new WinRequest(URL, client);
 }
+
+} // namespace BlinKit
