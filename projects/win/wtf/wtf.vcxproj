@@ -288,6 +288,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\TextEncoding.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\TextEncodingRegistry.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\TextPosition.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\text_codec_win.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\unicode.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\unicode_win.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\UTF8.cpp" />
@@ -430,6 +431,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\TextEncoding.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\TextEncodingRegistry.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\TextPosition.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\text_codec_win.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\Unicode.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\UTF8.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\wtf\text\WTFString.h" />

@@ -52,6 +52,9 @@
 #include "wtf/text/TextCodecUTF16.h"
 #include "wtf/text/TextCodecUTF8.h"
 #include "wtf/text/TextCodecUserDefined.h"
+#ifdef OS_WIN
+#   include "wtf/text/text_codec_win.h"
+#endif
 #include "wtf/text/TextEncoding.h"
 
 namespace WTF {
@@ -257,10 +260,9 @@ static void extendTextCodecMaps()
     TextCodecReplacement::registerEncodingNames(addToTextEncodingNameMap);
     TextCodecReplacement::registerCodecs(addToTextCodecMap);
 
-    assert(false); // BKTODO:
-#if 0
-    TextCodecICU::registerEncodingNames(addToTextEncodingNameMap);
-    TextCodecICU::registerCodecs(addToTextCodecMap);
+#ifdef OS_WIN
+    TextCodecWin::RegisterEncodingNames(addToTextEncodingNameMap);
+    TextCodecWin::RegisterCodecs(addToTextCodecMap);
 #endif
 
     pruneBlacklistedCodecs();
