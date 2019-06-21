@@ -84,13 +84,39 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#ifdef _DEBUG
+
+#include <unordered_set>
+
+class XHRPool {
+public:
+    ~XHRPool(void) { assert(m_pool.empty()); }
+
+    void Add(DukXHR *xhr) { m_pool.insert(xhr); }
+    void Remove(DukXHR *xhr) { m_pool.erase(xhr); }
+private:
+    std::unordered_set<DukXHR *> m_pool;
+};
+
+static XHRPool g_xhrPool;
+
+#endif
+
 const char DukXHR::ProtoName[] = "XMLHttpRequest";
 
 DukXHR::DukXHR(duk_context *ctx) : m_heapPtr(duk_get_heapptr(ctx, -1))
 {
+#ifdef _DEBUG
+    g_xhrPool.Add(this);
+#endif
 }
 
-DukXHR::~DukXHR(void) {}
+DukXHR::~DukXHR(void)
+{
+#ifdef _DEBUG
+    g_xhrPool.Remove(this);
+#endif
+}
 
 duk_ret_t DukXHR::Constructor(duk_context *ctx)
 {
@@ -110,7 +136,9 @@ duk_ret_t DukXHR::Constructor(duk_context *ctx)
 
 duk_ret_t DukXHR::Finalizer(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    DukXHR *xhr = Get(ctx, 0);
+    if (nullptr != xhr)
+        delete xhr;
     return 0;
 }
 
