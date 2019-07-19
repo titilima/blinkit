@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: ElementShadow.cpp
-// Description: ElementShadow Class
-//      Author: Ziming Li
-//     Created: 2019-03-30
-// -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -131,16 +120,12 @@ inline DistributionPool::~DistributionPool()
 
 inline void DistributionPool::detachNonDistributedNodes()
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     for (size_t i = 0; i < m_nodes.size(); ++i) {
         if (m_distributed[i])
             continue;
         if (m_nodes[i]->layoutObject())
             m_nodes[i]->lazyReattachIfAttached();
     }
-#endif
 }
 
 PassOwnPtrWillBeRawPtr<ElementShadow> ElementShadow::create()
@@ -247,10 +232,6 @@ void ElementShadow::setNeedsDistributionRecalc()
 
 bool ElementShadow::hasSameStyles(const ElementShadow* other) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    return false;
-#else
     ShadowRoot* root = &youngestShadowRoot();
     ShadowRoot* otherRoot = &other->youngestShadowRoot();
     while (root || otherRoot) {
@@ -272,7 +253,6 @@ bool ElementShadow::hasSameStyles(const ElementShadow* other) const
     }
 
     return true;
-#endif
 }
 
 const InsertionPoint* ElementShadow::finalDestinationInsertionPointFor(const Node* key) const
