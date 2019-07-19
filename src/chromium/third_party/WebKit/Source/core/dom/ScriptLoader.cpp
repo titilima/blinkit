@@ -335,15 +335,7 @@ bool isHTMLScriptLoader(Element* element)
 
 void ScriptLoader::logScriptMimetype(ScriptResource* resource, LocalFrame* frame, String mimetype)
 {
-    bool text = mimetype.lower().startsWith("text/");
-    bool application = mimetype.lower().startsWith("application/");
-    bool expectedJs = MIMETypeRegistry::isSupportedJavaScriptMIMEType(mimetype) || (text && isLegacySupportedJavaScriptLanguage(mimetype.substring(5)));
-    bool sameOrigin = m_element->document().securityOrigin()->canRequest(m_resource->url());
-    if (expectedJs) {
-        return;
-    }
-    UseCounter::Feature feature = sameOrigin ? (text ? UseCounter::SameOriginTextScript : application ? UseCounter::SameOriginApplicationScript : UseCounter::SameOriginOtherScript) : (text ? UseCounter::CrossOriginTextScript : application ? UseCounter::CrossOriginApplicationScript : UseCounter::CrossOriginOtherScript);
-    UseCounter::count(frame, feature);
+    // Nothing to do in BlinKit.
 }
 
 bool ScriptLoader::executeScript(const ScriptSourceCode& sourceCode, double* compilationFinishTime)
@@ -393,7 +385,7 @@ bool ScriptLoader::executeScript(const ScriptSourceCode& sourceCode, double* com
                 accessControlStatus = OpaqueResource;
             else
                 accessControlStatus = SharableCrossOrigin;
-        } else if (sourceCode.resource()->passesAccessControlCheck(m_element->document().securityOrigin())) {
+        } else {
             accessControlStatus = SharableCrossOrigin;
         }
     }

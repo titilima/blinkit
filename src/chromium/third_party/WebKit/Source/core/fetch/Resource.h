@@ -193,10 +193,6 @@ public:
     void setLoadFinishTime(double finishTime) { m_loadFinishTime = finishTime; }
     void finish();
 
-    // FIXME: Remove the stringless variant once all the callsites' error messages are updated.
-    bool passesAccessControlCheck(SecurityOrigin*) const;
-    bool passesAccessControlCheck(SecurityOrigin*, String& errorDescription) const;
-
     bool isEligibleForIntegrityCheck(SecurityOrigin*) const;
 
     void clearLoader();

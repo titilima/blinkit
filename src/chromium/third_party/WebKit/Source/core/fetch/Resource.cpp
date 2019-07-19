@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Resource.cpp
+// Description: Resource Class
+//      Author: Ziming Li
+//     Created: 2019-07-19
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller (mueller@kde.org)
@@ -326,21 +337,10 @@ void Resource::finish()
         m_status = Cached;
 }
 
-bool Resource::passesAccessControlCheck(SecurityOrigin* securityOrigin) const
-{
-    String ignoredErrorDescription;
-    return passesAccessControlCheck(securityOrigin, ignoredErrorDescription);
-}
-
-bool Resource::passesAccessControlCheck(SecurityOrigin* securityOrigin, String& errorDescription) const
-{
-    return blink::passesAccessControlCheck(m_response, lastResourceRequest().allowStoredCredentials() ? AllowStoredCredentials : DoNotAllowStoredCredentials, securityOrigin, errorDescription, lastResourceRequest().requestContext());
-}
-
 bool Resource::isEligibleForIntegrityCheck(SecurityOrigin* securityOrigin) const
 {
-    String ignoredErrorDescription;
-    return securityOrigin->canRequest(resourceRequest().url()) || passesAccessControlCheck(securityOrigin, ignoredErrorDescription);
+    ASSERT(nullptr == securityOrigin);
+    return true;
 }
 
 static double currentAge(const ResourceResponse& response, double responseTimestamp)

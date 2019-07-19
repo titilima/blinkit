@@ -207,15 +207,6 @@ bool ResourceFetcher::canAccessResource(Resource* resource, SecurityOrigin* sour
     if (sourceOrigin->canRequestNoSuborigin(url))
         return true;
 
-    String errorDescription;
-    if (!resource->passesAccessControlCheck(sourceOrigin, errorDescription)) {
-        resource->setCORSFailed();
-        if (!forPreload && (logErrorsDecision == ShouldLogAccessControlErrors)) {
-            String resourceType = Resource::resourceTypeToString(resource->type(), resource->options().initiatorInfo);
-            context().addConsoleMessage(resourceType + " from origin '" + SecurityOrigin::create(url)->toString() + "' has been blocked from loading by Cross-Origin Resource Sharing policy: " + errorDescription);
-        }
-        return false;
-    }
     return true;
 }
 

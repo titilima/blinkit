@@ -456,13 +456,12 @@ void ImageResource::changedInRect(const blink::Image* image, const IntRect& rect
 
 bool ImageResource::isAccessAllowed(SecurityOrigin* securityOrigin)
 {
+    ASSERT(nullptr == securityOrigin);
     if (response().wasFetchedViaServiceWorker())
         return response().serviceWorkerResponseType() != WebServiceWorkerResponseTypeOpaque;
     if (!image()->currentFrameHasSingleSecurityOrigin())
         return false;
-    if (passesAccessControlCheck(securityOrigin))
-        return true;
-    return !securityOrigin->taintsCanvas(response().url());
+    return true;
 }
 
 bool ImageResource::loadingMultipartContent() const
