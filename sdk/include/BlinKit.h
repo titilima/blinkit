@@ -237,8 +237,10 @@ public:
     // }
     virtual void BKAPI GetUserScript(BkBuffer &userScript) = 0;
 
-    // In JS, call `crawler.gather(someData)` to pass data to BkCrawlerClient.
-    virtual void BKAPI DataGathered(BkCrawler *crawler, const BkValue &data) = 0;
+    // In JS, call `crawler.notify(someData)` to pass data to BkCrawlerClient.
+    virtual void BKAPI DataNotify(BkCrawler *crawler, const BkValue &data) {
+        assert(false); // Not implemented!
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
     // Callbacks

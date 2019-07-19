@@ -68,10 +68,10 @@ static duk_ret_t DebugBreak(duk_context *ctx)
 
 namespace Crawler {
 
-static duk_ret_t Gather(duk_context *ctx)
+static duk_ret_t Notify(duk_context *ctx)
 {
     CrawlerImpl *crawler = DukContext::From(ctx)->GetCrawler();
-    crawler->Client().DataGathered(crawler, ValueImpl(ctx, 0));
+    crawler->Client().DataNotify(crawler, ValueImpl(ctx, 0));
     return 0;
 }
 
@@ -211,8 +211,8 @@ std::tuple<int, std::string> DukContext::CreateCrawlerObject(const char *script,
 
     m_crawlerObjectPtr = duk_get_heapptr(m_context, -1);
 
-    duk_push_c_function(m_context, Crawler::Gather, 1);
-    duk_put_prop_string(m_context, -2, "gather");
+    duk_push_c_function(m_context, Crawler::Notify, 1);
+    duk_put_prop_string(m_context, -2, "notify");
 #ifdef _DEBUG
     duk_push_c_function(m_context, Impl::DebugBreak, 1);
     duk_put_prop_string(m_context, -2, "debugBreak");
