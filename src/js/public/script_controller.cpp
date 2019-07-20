@@ -53,7 +53,7 @@ int ScriptController::CallFunction(const char *name, BkCallback *callback)
 bool ScriptController::canExecuteScripts(ReasonForCallingCanExecuteScripts)
 {
     bool scriptEnabled = true;
-    if (m_context)
+    if (m_frame.IsCrawlerFrame())
     {
         const auto callback = [&scriptEnabled](const BkValue &prop)
         {

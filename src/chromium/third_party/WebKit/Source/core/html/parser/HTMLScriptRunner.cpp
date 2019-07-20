@@ -288,12 +288,8 @@ void HTMLScriptRunner::requestParsingBlockingScript(Element* element)
     // if possible before returning control to the parser.
     if (!m_parserBlockingScript.isReady()) {
         if (m_document->frame()) {
-            assert(false); // BKTODO:
-#if 0
-            ScriptState* scriptState = ScriptState::forMainWorld(m_document->frame());
-            if (scriptState)
-                ScriptStreamer::startStreaming(m_parserBlockingScript, PendingScript::ParsingBlocking, m_document->frame()->settings(), scriptState, m_document->loadingTaskRunner());
-#endif
+            ScriptStreamer::startStreaming(m_parserBlockingScript, PendingScript::ParsingBlocking,
+                m_document->frame()->settings(), m_document->loadingTaskRunner());
         }
 
         m_parserBlockingScript.watchForLoad(this);
