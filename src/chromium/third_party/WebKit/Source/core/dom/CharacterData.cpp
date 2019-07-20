@@ -62,7 +62,10 @@ void CharacterData::setData(const String& data)
     unsigned oldLength = length();
 
     setDataAndUpdate(nonNullData, 0, oldLength, nonNullData.length(), UpdateFromNonParser);
-    document().didRemoveText(this, 0, oldLength);
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+        document().didRemoveText(this, 0, oldLength);
+#endif
 }
 
 String CharacterData::substringData(unsigned offset, unsigned count, ExceptionState& exceptionState)
@@ -103,7 +106,10 @@ void CharacterData::insertData(unsigned offset, const String& data, ExceptionSta
 
     setDataAndUpdate(newStr, offset, 0, data.length(), UpdateFromNonParser, recalcStyleBehavior);
 
-    document().didInsertText(this, offset, data.length());
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+        document().didInsertText(this, offset, data.length());
+#endif
 }
 
 static bool validateOffsetCount(unsigned offset, unsigned count, unsigned length, unsigned& realCount, ExceptionState& exceptionState)
@@ -135,7 +141,10 @@ void CharacterData::deleteData(unsigned offset, unsigned count, ExceptionState& 
 
     setDataAndUpdate(newStr, offset, realCount, 0, UpdateFromNonParser, recalcStyleBehavior);
 
-    document().didRemoveText(this, offset, realCount);
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+        document().didRemoveText(this, offset, realCount);
+#endif
 }
 
 void CharacterData::replaceData(unsigned offset, unsigned count, const String& data, ExceptionState& exceptionState)
@@ -150,9 +159,14 @@ void CharacterData::replaceData(unsigned offset, unsigned count, const String& d
 
     setDataAndUpdate(newStr, offset, realCount, data.length(), UpdateFromNonParser);
 
-    // update the markers for spell checking and grammar checking
-    document().didRemoveText(this, offset, realCount);
-    document().didInsertText(this, offset, data.length());
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+    {
+        // update the markers for spell checking and grammar checking
+        document().didRemoveText(this, offset, realCount);
+        document().didInsertText(this, offset, data.length());
+    }
+#endif
 }
 
 String CharacterData::nodeValue() const

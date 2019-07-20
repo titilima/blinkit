@@ -728,8 +728,8 @@ void Node::markAncestorsWithChildNeedsStyleInvalidation()
 
 void Node::markAncestorsWithChildNeedsDistributionRecalc()
 {
-    ASSERT(false); // BKTODO:
-#if 0
+    ASSERT(!ForCrawler());
+#ifndef BLINKIT_CRAWLER_ONLY
     ScriptForbiddenScope forbidScriptDuringRawIteration;
     for (Node* node = this; node && !node->childNeedsDistributionRecalc(); node = node->parentOrShadowHostNode())
         node->setChildNeedsDistributionRecalc();

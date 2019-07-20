@@ -3556,28 +3556,24 @@ void Document::nodeWillBeRemoved(Node& n)
     }
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void Document::didInsertText(Node* text, unsigned offset, unsigned length)
 {
-    assert(false); // BKTODO:
-#if 0
     for (Range* range : m_ranges)
         range->didInsertText(text, offset, length);
 
     m_markers->shiftMarkers(text, offset, length);
-#endif
 }
 
 void Document::didRemoveText(Node* text, unsigned offset, unsigned length)
 {
-    assert(false); // BKTODO:
-#if 0
     for (Range* range : m_ranges)
         range->didRemoveText(text, offset, length);
 
     m_markers->removeMarkers(text, offset, length);
     m_markers->shiftMarkers(text, offset + length, 0 - length);
-#endif
 }
+#endif
 
 void Document::didMergeTextNodes(Text& oldNode, unsigned offset)
 {

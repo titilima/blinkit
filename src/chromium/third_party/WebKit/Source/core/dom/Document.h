@@ -654,8 +654,10 @@ public:
     void nodeWillBeRemoved(Node&);
     bool canAcceptChild(const Node& newChild, const Node* oldChild, ExceptionState&) const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void didInsertText(Node*, unsigned offset, unsigned length);
     void didRemoveText(Node*, unsigned offset, unsigned length);
+#endif
     void didMergeTextNodes(Text& oldNode, unsigned offset);
     void didSplitTextNode(Text& oldNode);
 
@@ -1266,9 +1268,7 @@ private:
 
 #ifndef BLINKIT_CRAWLER_ONLY
     OwnPtrWillBeMember<DocumentMarkerController> m_markers;
-#endif
 
-#ifndef BLINKIT_CRAWLER_ONLY
     Timer<Document> m_updateFocusAppearanceTimer;
 
     RawPtrWillBeMember<Element> m_cssTarget;
