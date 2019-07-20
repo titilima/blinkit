@@ -66,7 +66,9 @@ void ResponseTask::run(void)
     }
     else
     {
-        response.setMIMEType(AdjustMIMEType(m_responseData->URI));
+        AtomicString mimeType = AdjustMIMEType(m_responseData->URI);
+        response.setMIMEType(mimeType);
+        response.setHTTPHeaderField("Content-Type", mimeType);
     }
     m_client->didReceiveResponse(m_loader, response);
 
