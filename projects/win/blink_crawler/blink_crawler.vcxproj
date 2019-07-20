@@ -540,7 +540,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCryptoKey.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCryptoKeyAlgorithm.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCryptoResult.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCryptoUtil.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCString.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCursorInfo.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebData.cpp" />

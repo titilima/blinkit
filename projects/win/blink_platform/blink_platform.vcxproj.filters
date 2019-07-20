@@ -332,9 +332,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCryptoResult.cpp">
       <Filter>platform\exported</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCryptoUtil.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCString.cpp">
       <Filter>platform\exported</Filter>
     </ClCompile>
@@ -2669,9 +2666,6 @@
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCryptoKeyAlgorithmParams.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCryptoUtil.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCString.h">

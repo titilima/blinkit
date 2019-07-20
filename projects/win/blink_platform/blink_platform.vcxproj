@@ -288,7 +288,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCryptoKey.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCryptoKeyAlgorithm.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCryptoResult.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCryptoUtil.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCString.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCursorInfo.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebData.cpp" />
@@ -675,7 +674,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCryptoKey.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCryptoKeyAlgorithm.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCryptoKeyAlgorithmParams.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCryptoUtil.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCString.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebCursorInfo.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebData.h" />
