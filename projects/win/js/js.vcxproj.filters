@@ -110,6 +110,9 @@
     <ClCompile Include="..\..\..\src\js\bindings\duk_css_style_declaration.cpp">
       <Filter>bindings</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\js\bindings\duk_document_fragment.cpp">
+      <Filter>bindings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\js\_pc.h">
@@ -200,6 +203,9 @@
       <Filter>bindings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\js\bindings\duk_css_style_declaration.h">
+      <Filter>bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_document_fragment.h">
       <Filter>bindings</Filter>
     </ClInclude>
   </ItemGroup>

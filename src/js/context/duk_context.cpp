@@ -21,6 +21,7 @@
 #   include "bindings/duk_css_style_declaration.h"
 #endif
 #include "bindings/duk_document.h"
+#include "bindings/duk_document_fragment.h"
 #include "bindings/duk_element.h"
 #include "bindings/duk_exception_state.h"
 #include "bindings/duk_html_collection.h"
@@ -372,6 +373,11 @@ void DukContext::PushNode(duk_context *ctx, Node *node)
         PushObject<DukDocument>(ctx, node);
         return;
     }
+    if (node->isDocumentFragment())
+    {
+        PushObject<DukDocumentFragment>(ctx, node);
+        return;
+    }
     if (node->isTextNode())
     {
         PushObject<DukText>(ctx, node);
@@ -396,6 +402,7 @@ void DukContext::RegisterPrototypesForUI(void)
     DukConsole::RegisterPrototype(m_context, *m_prototypeManager);
     DukCSSStyleDeclaration::RegisterPrototype(m_context, *m_prototypeManager);
     DukDocument::RegisterPrototypeForUI(m_context, *m_prototypeManager);
+    DukDocumentFragment::RegisterPrototype(m_context, *m_prototypeManager);
     DukElement::RegisterPrototypeForUI(m_context, *m_prototypeManager);
     DukHTMLCollection::RegisterPrototype(m_context, *m_prototypeManager);
     DukLocation::RegisterPrototypeForUI(m_context, *m_prototypeManager);
@@ -410,6 +417,7 @@ void DukContext::RegisterPrototypesForCrawler(void)
     m_prototypeManager->BeginRegisterTransaction(m_context);
     DukConsole::RegisterPrototype(m_context, *m_prototypeManager);
     DukDocument::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
+    DukDocumentFragment::RegisterPrototype(m_context, *m_prototypeManager);
     DukElement::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
     DukHTMLCollection::RegisterPrototype(m_context, *m_prototypeManager);
     DukLocation::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);

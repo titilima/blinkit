@@ -14,6 +14,7 @@
 #include "core/HTMLNames.h"
 #include "core/dom/Attr.h"
 #include "core/dom/Comment.h"
+#include "core/dom/DocumentFragment.h"
 #include "core/dom/ElementTraversal.h"
 #include "core/dom/Text.h"
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -169,7 +170,11 @@ static duk_ret_t CreateComment(duk_context *ctx)
 
 static duk_ret_t CreateDocumentFragment(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    duk_push_this(ctx);
+    Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
+
+    PassRefPtr<DocumentFragment> ret = document->createDocumentFragment();
+    DukContext::From(ctx)->PushNode(ctx, ret.get());
     return 1;
 }
 
