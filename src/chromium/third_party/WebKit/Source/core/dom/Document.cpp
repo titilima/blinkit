@@ -3509,25 +3509,43 @@ void Document::updateRangesAfterNodeMovedToAnotherDocument(const Node& node)
 
 void Document::nodeChildrenWillBeRemoved(ContainerNode& container)
 {
-    assert(false); // BKTODO:
-#if 0
     EventDispatchForbiddenScope assertNoEventDispatch;
-    for (Range* range : m_ranges)
-        range->nodeChildrenWillBeRemoved(container);
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+    {
+        for (Range *range : m_ranges)
+            range->nodeChildrenWillBeRemoved(container);
+    }
+#endif
 
-    for (NodeIterator* ni : m_nodeIterators) {
-        for (Node& n : NodeTraversal::childrenOf(container))
+    for (NodeIterator *ni : m_nodeIterators)
+    {
+        for (Node &n : NodeTraversal::childrenOf(container))
             ni->nodeWillBeRemoved(n);
     }
 
-    if (LocalFrameImpl* frame = this->frame()) {
-        for (Node& n : NodeTraversal::childrenOf(container)) {
+    if (LocalFrame *frame = this->frame())
+    {
+#ifdef BLINKIT_CRAWLER_ONLY
+        for (Node& n : NodeTraversal::childrenOf(container))
             frame->eventHandler().nodeWillBeRemoved(n);
-            frame->selection().nodeWillBeRemoved(n);
-            frame->page()->dragCaretController().nodeWillBeRemoved(n);
+#else
+        if (ForCrawler())
+        {
+            for (Node &n : NodeTraversal::childrenOf(container))
+                frame->eventHandler().nodeWillBeRemoved(n);
         }
-    }
+        else
+        {
+            for (Node &n : NodeTraversal::childrenOf(container))
+            {
+                frame->eventHandler().nodeWillBeRemoved(n);
+                frame->selection().nodeWillBeRemoved(n);
+                frame->page()->dragCaretController().nodeWillBeRemoved(n);
+            }
+        }
 #endif
+    }
 }
 
 void Document::nodeWillBeRemoved(Node& n)

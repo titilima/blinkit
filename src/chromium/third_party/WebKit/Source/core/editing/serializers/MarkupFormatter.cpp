@@ -166,10 +166,10 @@ void MarkupFormatter::appendStartMarkup(StringBuilder& result, const Node& node,
 
 static bool elementCannotHaveEndTag(const Node& node)
 {
-    assert(false); // BKTODO:
+#ifdef BLINKIT_CRAWLER_ONLY
     return false;
-#if 0
-    if (!node.isHTMLElement())
+#else
+    if (!node.isHTMLElement() || node.ForCrawler())
         return false;
 
     // FIXME: ieForbidsInsertHTML may not be the right function to call here
