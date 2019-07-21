@@ -26,6 +26,9 @@ public:
     static const char ProtoName[];
 
     static void RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &protos);
+#ifndef BLINKIT_CRAWLER_ONLY
+    static void RegisterPrototypeForUI(duk_context *ctx, PrototypeManager &protos);
+#endif
 };
 
 } // namespace BlinKit

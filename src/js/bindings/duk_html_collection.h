@@ -1,40 +1,38 @@
 // -------------------------------------------------
 // BlinKit - js Library
 // -------------------------------------------------
-//   File Name: duk_location.h
-// Description: Bindings for Location
+//   File Name: duk_html_collection.h
+// Description: Bindings for HTMLCollection
 //      Author: Ziming Li
-//     Created: 2019-06-11
+//     Created: 2019-07-20
 // -------------------------------------------------
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_JS_DUK_LOCATION_H
-#define BLINKIT_JS_DUK_LOCATION_H
+#ifndef BLINKIT_JS_DUK_HTML_COLLECTION_H
+#define BLINKIT_JS_DUK_HTML_COLLECTION_H
 
 #pragma once
 
-#include "core/frame/Location.h"
+#include "core/dom/TagCollection.h"
 #include "duk_object_impl.hpp"
 
 namespace BlinKit {
 
 class PrototypeManager;
 
-class DukLocation final : public DukObjectImpl<blink::Location>
+class DukHTMLCollection final : public DukObjectImpl<blink::HTMLCollection>
 {
     friend class DukContext;
 public:
     static const char ProtoName[];
 
-    static void RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &protos);
-#ifndef BLINKIT_CRAWLER_ONLY
-    static void RegisterPrototypeForUI(duk_context *ctx, PrototypeManager &protos);
-#endif
+    static void RegisterPrototype(duk_context *ctx, PrototypeManager &protos);
 private:
     static duk_ret_t Finalizer(duk_context *ctx);
+    static void OnCreate(duk_context *ctx, blink::ScriptWrappable *nativeThis);
 };
 
 } // namespace BlinKit
 
-#endif // BLINKIT_JS_DUK_LOCATION_H
+#endif // BLINKIT_JS_DUK_HTML_COLLECTION_H

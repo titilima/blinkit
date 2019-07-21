@@ -14,7 +14,11 @@
 
 #pragma once
 
-#include "core/dom/Document.h"
+#ifdef BLINKIT_CRAWLER_ONLY
+#   include "core/dom/Document.h"
+#else
+#   include "core/html/HTMLDocument.h"
+#endif
 
 #include "duk_container_node.h"
 
@@ -26,6 +30,9 @@ public:
     static const char ProtoName[];
 
     static void RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &protos);
+#ifndef BLINKIT_CRAWLER_ONLY
+    static void RegisterPrototypeForUI(duk_context *ctx, PrototypeManager &protos);
+#endif
 };
 
 } // namespace BlinKit

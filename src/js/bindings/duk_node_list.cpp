@@ -24,7 +24,7 @@ const char DukNodeList::ProtoName[] = "NodeList";
 
 static NodeList* Get(duk_context *ctx, duk_idx_t idx = -1)
 {
-    return reinterpret_cast<NodeList *>(Duk::GetNativeThis(ctx, idx));
+    return static_cast<NodeList *>(Duk::GetNativeThis(ctx, idx));
 }
 
 duk_ret_t DukNodeList::Finalizer(duk_context *ctx)
@@ -38,7 +38,7 @@ void DukNodeList::OnCreate(duk_context *ctx, ScriptWrappable *nativeThis)
 {
     DukObjectImpl::OnCreate(ctx, nativeThis);
 
-    NodeList *nodeList = reinterpret_cast<NodeList *>(nativeThis);
+    NodeList *nodeList = static_cast<NodeList *>(nativeThis);
 
     DukContext *context = DukContext::From(ctx);
 
@@ -52,7 +52,7 @@ void DukNodeList::OnCreate(duk_context *ctx, ScriptWrappable *nativeThis)
 
 namespace Impl {
 
-duk_ret_t Item(duk_context *ctx)
+static duk_ret_t Item(duk_context *ctx)
 {
     duk_push_this(ctx);
     NodeList *nodeList = Get(ctx);
@@ -62,7 +62,7 @@ duk_ret_t Item(duk_context *ctx)
     return 1;
 }
 
-duk_ret_t LengthGetter(duk_context *ctx)
+static duk_ret_t LengthGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
     NodeList *nodeList = Get(ctx);

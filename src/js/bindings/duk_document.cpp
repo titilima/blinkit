@@ -12,10 +12,17 @@
 #include "duk_document.h"
 
 #include "core/HTMLNames.h"
+#include "core/dom/Attr.h"
+#include "core/dom/Comment.h"
 #include "core/dom/ElementTraversal.h"
+#include "core/dom/Text.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "core/html/HTMLHeadElement.h"
+#endif
 
 #include "bindings/duk_element.h"
 #include "bindings/duk_exception_state.h"
+#include "bindings/duk_node_list.h"
 #include "context/duk_context.h"
 #include "context/prototype_manager.h"
 #include "wrappers/duk.h"
@@ -135,13 +142,28 @@ namespace Impl {
 
 static duk_ret_t CreateAttribute(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    duk_push_this(ctx);
+    Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
+
+    DukExceptionState es(ctx, "createAttribute", "Document");
+    PassRefPtr<Attr> ret = document->createAttribute(Duk::ToAtomicString(ctx, 0), es);
+    if (es.hadException())
+    {
+        es.throwIfNeeded();
+        return 0;
+    }
+
+    DukContext::From(ctx)->PushNode(ctx, ret.get());
     return 1;
 }
 
 static duk_ret_t CreateComment(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    duk_push_this(ctx);
+    Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
+
+    PassRefPtr<Comment> ret = document->createComment(Duk::ToWTFString(ctx, 0));
+    DukContext::From(ctx)->PushNode(ctx, ret.get());
     return 1;
 }
 
@@ -153,13 +175,28 @@ static duk_ret_t CreateDocumentFragment(duk_context *ctx)
 
 static duk_ret_t CreateElement(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    duk_push_this(ctx);
+    Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
+
+    DukExceptionState es(ctx, "createElement", "Document");
+    PassRefPtr<Element> ret = document->createElement(Duk::ToAtomicString(ctx, 0), es);
+    if (es.hadException())
+    {
+        es.throwIfNeeded();
+        return 0;
+    }
+
+    DukContext::From(ctx)->PushNode(ctx, ret.get());
     return 1;
 }
 
 static duk_ret_t CreateTextNode(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    duk_push_this(ctx);
+    Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
+
+    PassRefPtr<Text> ret = document->createTextNode(Duk::ToWTFString(ctx, 0));
+    DukContext::From(ctx)->PushNode(ctx, ret.get());
     return 1;
 }
 
@@ -185,19 +222,7 @@ static duk_ret_t GetElementById(duk_context *ctx)
     return 1;
 }
 
-static duk_ret_t GetElementsByClassName(duk_context *ctx)
-{
-    assert(false); // BKTODO:
-    return 1;
-}
-
 static duk_ret_t GetElementsByName(duk_context *ctx)
-{
-    assert(false); // BKTODO:
-    return 1;
-}
-
-static duk_ret_t GetElementsByTagName(duk_context *ctx)
 {
     assert(false); // BKTODO:
     return 1;
@@ -259,6 +284,36 @@ static duk_ret_t Writeln(duk_context *ctx)
 
 } // namespace Impl
 
+#ifndef BLINKIT_CRAWLER_ONLY
+namespace UI {
+
+static duk_ret_t BodyGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    HTMLDocument *document = DukEventTarget::GetNativeThis<HTMLDocument>(ctx);
+
+    DukContext::From(ctx)->PushNode(ctx, document->body());
+    return 1;
+}
+
+static duk_ret_t Close(duk_context *ctx)
+{
+    assert(false); // BKTODO:
+    return 0;
+}
+
+static duk_ret_t HeadGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    HTMLDocument *document = DukEventTarget::GetNativeThis<HTMLDocument>(ctx);
+
+    DukContext::From(ctx)->PushNode(ctx, document->head());
+    return 1;
+}
+
+} // namespace UI
+#endif // BLINKIT_CRAWLER_ONLY
+
 void DukDocument::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &protos)
 {
     static const PrototypeEntry::Property Properties[] = {
@@ -286,9 +341,7 @@ void DukDocument::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager
         { "createTextNode",         Impl::CreateTextNode,         1           },
         { "execCommand",            Crawler::ExecCommand,         DUK_VARARGS },
         { "getElementById",         Impl::GetElementById,         1           },
-        { "getElementsByClassName", Impl::GetElementsByClassName, 1           },
         { "getElementsByName",      Impl::GetElementsByName,      1           },
-        { "getElementsByTagName",   Impl::GetElementsByTagName,   1           },
         { "open",                   Crawler::Open,                2           },
         { "write",                  Impl::Write,                  DUK_VARARGS },
         { "writeln",                Impl::Writeln,                DUK_VARARGS },
@@ -303,5 +356,44 @@ void DukDocument::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager
     };
     protos.Register(ctx, ProtoName, worker);
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void DukDocument::RegisterPrototypeForUI(duk_context *ctx, PrototypeManager &protos)
+{
+    static const PrototypeEntry::Property Properties[] = {
+        { "body",            UI::BodyGetter,              nullptr },
+        { "doctype",         Impl::DoctypeGetter,         nullptr },
+        { "documentElement", Impl::DocumentElementGetter, nullptr },
+        { "documentURI",     Impl::URLGetter,             nullptr },
+        { "head",            UI::HeadGetter,              nullptr },
+        { "implementation",  Impl::ImplementationGetter,  nullptr },
+        { "inputEncoding",   Impl::InputEncodingGetter,   nullptr },
+        { "readyState",      Impl::ReadyStateGetter,      nullptr },
+        { "title",           Impl::TitleGetter,           nullptr },
+        { "URL",             Impl::URLGetter,             nullptr },
+    };
+    static const PrototypeEntry::Method Methods[] = {
+        { "close",                  UI::Close,                    0           },
+        { "createAttribute",        Impl::CreateAttribute,        1           },
+        { "createComment",          Impl::CreateComment,          1           },
+        { "createDocumentFragment", Impl::CreateDocumentFragment, 0           },
+        { "createElement",          Impl::CreateElement,          1           },
+        { "createTextNode",         Impl::CreateTextNode,         1           },
+        { "getElementById",         Impl::GetElementById,         1           },
+        { "getElementsByName",      Impl::GetElementsByName,      1           },
+        { "write",                  Impl::Write,                  DUK_VARARGS },
+        { "writeln",                Impl::Writeln,                DUK_VARARGS },
+    };
+
+    const auto worker = [](PrototypeEntry &entry)
+    {
+        DukContainerNode::RegisterToPrototypeEntry(entry);
+
+        entry.Add(Properties, WTF_ARRAY_LENGTH(Properties));
+        entry.Add(Methods, WTF_ARRAY_LENGTH(Methods));
+    };
+    protos.Register(ctx, ProtoName, worker);
+}
+#endif // BLINKIT_CRAWLER_ONLY
 
 } // namespace BlinKit

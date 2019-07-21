@@ -27,6 +27,10 @@ protected:
     static void OnCreate(duk_context *, blink::ScriptWrappable *nativeThis) {
         static_cast<NativeType *>(nativeThis)->ref();
     }
+    static void OnPush(duk_context *, blink::ScriptWrappable *) {
+        // Nothing to do by default.
+        // Create proxies here if needed.
+    }
     static void OnGC(blink::ScriptWrappable *nativeThis) {
         static_cast<NativeType *>(nativeThis)->deref();
     }

@@ -110,6 +110,9 @@
     <ClInclude Include="..\..\..\src\js\bindings\duk_xhr.h">
       <Filter>bindings</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_html_collection.h">
+      <Filter>bindings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -188,6 +191,9 @@
       <Filter>bindings</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\js\bindings\duk_xhr.cpp">
+      <Filter>bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\bindings\duk_html_collection.cpp">
       <Filter>bindings</Filter>
     </ClCompile>
   </ItemGroup>

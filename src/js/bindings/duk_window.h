@@ -25,10 +25,10 @@ class DukWindow final : public DukEventTarget
 public:
     static const char ProtoName[];
 
-#ifndef BLINKIT_CRAWLER_ONLY
-    static void RegisterPrototype(duk_context *ctx, PrototypeManager &protos);
-#endif
     static void RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &protos);
+#ifndef BLINKIT_CRAWLER_ONLY
+    static void RegisterPrototypeForUI(duk_context *ctx, PrototypeManager &protos);
+#endif
 };
 
 } // namespace BlinKit

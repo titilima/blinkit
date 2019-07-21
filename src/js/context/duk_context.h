@@ -73,6 +73,8 @@ public:
             duk_push_heapptr(ctx, it->second.HeapPtr);
         else
             CreateObject(ctx, T::ProtoName, nativeThis, T::OnCreate, T::OnGC);
+
+        T::OnPush(ctx, nativeThis);
     }
     void PushNode(duk_context *ctx, blink::Node *node);
     void RemoveObjectFromPool(blink::ScriptWrappable *nativeThis);
@@ -87,7 +89,7 @@ private:
     void GC(void);
     void PrepareGlobalsToTop(void);
 #ifndef BLINKIT_CRAWLER_ONLY
-    void RegisterPrototypes(void);
+    void RegisterPrototypesForUI(void);
 #endif
     void RegisterPrototypesForCrawler(void);
 

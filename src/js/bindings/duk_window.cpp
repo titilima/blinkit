@@ -26,6 +26,10 @@ namespace BlinKit {
 
 const char DukWindow::ProtoName[] = "Window";
 
+namespace Strings {
+static const char External[] = "external";
+}
+
 namespace Crawler {
 
 static duk_ret_t Confirm(duk_context *ctx)
@@ -170,32 +174,54 @@ static duk_ret_t WindowGetter(duk_context *ctx)
 } // namespace Impl
 
 #ifndef BLINKIT_CRAWLER_ONLY
-void DukWindow::RegisterPrototype(duk_context *ctx, PrototypeManager &protos)
+namespace UI {
+
+static duk_ret_t Alert(duk_context *ctx)
 {
-    static const PrototypeEntry::Property Properties[] = {
-        { "console", Impl::ConsoleGetter, Impl::ConsoleSetter }
-    };
-    const auto worker = [](PrototypeEntry & entry)
-    {
-        entry.Add(Properties, WTF_ARRAY_LENGTH(Properties));
-    };
-    protos.Register(ctx, ProtoName, worker);
+    assert(false); // BKTODO:
+    return 0;
 }
+
+static duk_ret_t Confirm(duk_context *ctx)
+{
+    assert(false); // BKTODO:
+    return 1;
+}
+
+static duk_ret_t GetComputedStyle(duk_context *ctx)
+{
+    assert(false); // BKTODO:
+    return 1;
+}
+
+static duk_ret_t GetSelection(duk_context *ctx)
+{
+    assert(false); // BKTODO:
+    return 1;
+}
+
+static duk_ret_t Prompt(duk_context *ctx)
+{
+    assert(false); // BKTODO:
+    return 1;
+}
+
+} // namespace UI
 #endif // BLINKIT_CRAWLER_ONLY
 
 void DukWindow::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &protos)
 {
     static const PrototypeEntry::Property Properties[] = {
-        { "closed",    Impl::ClosedGetter,      nullptr                 },
-        { "console",   Impl::ConsoleGetter,     Impl::ConsoleSetter     },
-        { "document",  Impl::DocumentGetter,    nullptr                 },
-        { "frames",    Impl::FramesGetter,      Impl::FramesSetter      },
-        { "location",  Impl::LocationGetter,    Impl::LocationSetter    },
-        { "navigator", Impl::NavigatorGetter,   nullptr                 },
-        { "parent",    Impl::WindowGetter,      Impl::ParentSetter      },
-        { "self",      Impl::WindowGetter,      nullptr                 },
-        { "top",       Impl::WindowGetter,      nullptr                 },
-        { "window",    Impl::WindowGetter,      nullptr                 },
+        { "closed",    Impl::ClosedGetter,    nullptr              },
+        { "console",   Impl::ConsoleGetter,   Impl::ConsoleSetter  },
+        { "document",  Impl::DocumentGetter,  nullptr              },
+        { "frames",    Impl::FramesGetter,    Impl::FramesSetter   },
+        { "location",  Impl::LocationGetter,  Impl::LocationSetter },
+        { "navigator", Impl::NavigatorGetter, nullptr              },
+        { "parent",    Impl::WindowGetter,    Impl::ParentSetter   },
+        { "self",      Impl::WindowGetter,    nullptr              },
+        { "top",       Impl::WindowGetter,    nullptr              },
+        { "window",    Impl::WindowGetter,    nullptr              },
     };
     static const PrototypeEntry::Method Methods[] = {
         { "alert",            Crawler::NothingToDo,      1           },
@@ -224,11 +250,48 @@ void DukWindow::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &
         DukEventTarget::RegisterToPrototypeEntry(entry);
 
         entry.Add(Properties, WTF_ARRAY_LENGTH(Properties));
-        entry.AddObject("external");
+        entry.AddObject(Strings::External);
 
         entry.Add(Methods, WTF_ARRAY_LENGTH(Methods));
     };
     protos.Register(ctx, ProtoName, worker);
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void DukWindow::RegisterPrototypeForUI(duk_context *ctx, PrototypeManager &protos)
+{
+    static const PrototypeEntry::Property Properties[] = {
+        { "console",   Impl::ConsoleGetter,   nullptr },
+        { "document",  Impl::DocumentGetter,  nullptr },
+        { "location",  Impl::LocationGetter,  nullptr },
+        { "window",    Impl::WindowGetter,    nullptr },
+    };
+    static const PrototypeEntry::Method Methods[] = {
+        { "alert",            UI::Alert,            1           },
+        { "atob",             Impl::AToB,           1           },
+        { "btoa",             Impl::BToA,           1           },
+        { "clearInterval",    Impl::ClearInterval,  1           },
+        { "clearTimeout",     Impl::ClearTimeout,   1           },
+        { "confirm",          UI::Confirm,          1           },
+        { "getComputedStyle", UI::GetComputedStyle, 2           },
+        { "getSelection",     UI::GetSelection,     0           },
+        { "prompt",           UI::Prompt,           2           },
+        { "setInterval",      Impl::SetInterval,    DUK_VARARGS },
+        { "setTimeout",       Impl::SetTimeout,     DUK_VARARGS },
+        { DukXHR::ProtoName,  DukXHR::Constructor,  0           },
+    };
+
+    const auto worker = [](PrototypeEntry &entry)
+    {
+        DukEventTarget::RegisterToPrototypeEntry(entry);
+
+        entry.Add(Properties, WTF_ARRAY_LENGTH(Properties));
+        entry.AddObject(Strings::External);
+
+        entry.Add(Methods, WTF_ARRAY_LENGTH(Methods));
+    };
+    protos.Register(ctx, ProtoName, worker);
+}
+#endif // BLINKIT_CRAWLER_ONLY
 
 } // namespace BlinKit

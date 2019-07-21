@@ -14,6 +14,7 @@
 #include "core/dom/Element.h"
 
 #include "bindings/duk_exception_state.h"
+#include "bindings/duk_html_collection.h"
 #include "bindings/duk_node_list.h"
 #include "context/duk_context.h"
 #include "context/prototype_manager.h"
@@ -24,6 +25,22 @@ using namespace blink;
 namespace BlinKit {
 
 namespace Impl {
+
+static duk_ret_t GetElementsByClassName(duk_context *ctx)
+{
+    ASSERT(false); // BKTODO:
+    return 1;
+}
+
+static duk_ret_t GetElementsByTagName(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    ContainerNode *node = DukEventTarget::GetNativeThis<ContainerNode>(ctx);
+
+    PassRefPtr<TagCollection> ret = node->getElementsByTagName(Duk::ToAtomicString(ctx, 0));
+    DukContext::From(ctx)->PushObject<DukHTMLCollection>(ctx, ret.get());
+    return 1;
+}
 
 static duk_ret_t QuerySelector(duk_context *ctx)
 {
@@ -64,8 +81,10 @@ static duk_ret_t QuerySelectorAll(duk_context *ctx)
 void DukContainerNode::RegisterToPrototypeEntry(PrototypeEntry &entry)
 {
     static const PrototypeEntry::Method Methods[] = {
-        { "querySelector",    Impl::QuerySelector,    1 },
-        { "querySelectorAll", Impl::QuerySelectorAll, 1 },
+        { "getElementsByClassName", Impl::GetElementsByClassName, 1 },
+        { "getElementsByTagName",   Impl::GetElementsByTagName,   1 },
+        { "querySelector",          Impl::QuerySelector,          1 },
+        { "querySelectorAll",       Impl::QuerySelectorAll,       1 },
     };
 
     DukNode::RegisterToPrototypeEntry(entry);

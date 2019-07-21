@@ -17,9 +17,13 @@
 #include "blinkit/crawler/crawler_impl.h"
 
 #include "bindings/duk_console.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "bindings/duk_css_style_declaration.h"
+#endif
 #include "bindings/duk_document.h"
 #include "bindings/duk_element.h"
 #include "bindings/duk_exception_state.h"
+#include "bindings/duk_html_collection.h"
 #include "bindings/duk_location.h"
 #include "bindings/duk_node_list.h"
 #include "bindings/duk_text.h"
@@ -128,14 +132,17 @@ void DukContext::Attach(void)
     duk_put_prop_string(m_context, -2, StashFields::Globals);
 
     m_prototypeManager = std::make_unique<PrototypeManager>(m_context);
+#ifdef BLINKIT_CRAWLER_ONLY
+    RegisterPrototypesForCrawler();
+#else
     if (isCrawler)
-        RegisterPrototypesForCrawler();
-#ifndef BLINKIT_CRAWLER_ONLY
-    else
-        RegisterPrototypes();
-
-    if (!isCrawler)
     {
+        RegisterPrototypesForCrawler();
+    }
+    else
+    {
+        RegisterPrototypesForUI();
+
         duk_push_object(m_context);
 #   ifdef _DEBUG
         duk_push_c_function(m_context, Impl::DebugBreak, 1);
@@ -383,12 +390,17 @@ int DukContext::RegisterFunction(const char *name, BkCallback &functionImpl)
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
-void DukContext::RegisterPrototypes(void)
+void DukContext::RegisterPrototypesForUI(void)
 {
     m_prototypeManager->BeginRegisterTransaction(m_context);
     DukConsole::RegisterPrototype(m_context, *m_prototypeManager);
+    DukCSSStyleDeclaration::RegisterPrototype(m_context, *m_prototypeManager);
+    DukDocument::RegisterPrototypeForUI(m_context, *m_prototypeManager);
+    DukElement::RegisterPrototypeForUI(m_context, *m_prototypeManager);
+    DukHTMLCollection::RegisterPrototype(m_context, *m_prototypeManager);
+    DukLocation::RegisterPrototypeForUI(m_context, *m_prototypeManager);
     DukText::RegisterPrototype(m_context, *m_prototypeManager);
-    DukWindow::RegisterPrototype(m_context, *m_prototypeManager);
+    DukWindow::RegisterPrototypeForUI(m_context, *m_prototypeManager);
     m_prototypeManager->EndRegisterTransaction(m_context);
 }
 #endif // BLINKIT_CRAWLER_ONLY
@@ -399,6 +411,7 @@ void DukContext::RegisterPrototypesForCrawler(void)
     DukConsole::RegisterPrototype(m_context, *m_prototypeManager);
     DukDocument::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
     DukElement::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
+    DukHTMLCollection::RegisterPrototype(m_context, *m_prototypeManager);
     DukLocation::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
     DukNodeList::RegisterPrototype(m_context, *m_prototypeManager);
     DukText::RegisterPrototype(m_context, *m_prototypeManager);

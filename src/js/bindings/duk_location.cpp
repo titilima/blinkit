@@ -41,13 +41,6 @@ static duk_ret_t Assign(duk_context *ctx)
     return 0;
 }
 
-static duk_ret_t HashGetter(duk_context *ctx)
-{
-    duk_push_this(ctx);
-    Location *location = Get(ctx);
-    return Duk::PushString(ctx, location->hash());
-}
-
 static duk_ret_t HashSetter(duk_context *ctx)
 {
     assert(false); // BKTODO:
@@ -78,13 +71,6 @@ static duk_ret_t HostnameSetter(duk_context *ctx)
 {
     assert(false); // BKTODO:
     return 0;
-}
-
-static duk_ret_t HrefGetter(duk_context *ctx)
-{
-    duk_push_this(ctx);
-    Location *location = Get(ctx);
-    return Duk::PushString(ctx, location->href());
 }
 
 static duk_ret_t HrefSetter(duk_context *ctx)
@@ -158,13 +144,31 @@ static duk_ret_t SearchSetter(duk_context *ctx)
 
 } // namespace Crawler
 
+namespace Impl {
+
+static duk_ret_t HashGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Location *location = Get(ctx);
+    return Duk::PushString(ctx, location->hash());
+}
+
+static duk_ret_t HrefGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Location *location = Get(ctx);
+    return Duk::PushString(ctx, location->href());
+}
+
+} // namespace Impl
+
 void DukLocation::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &protos)
 {
     static const PrototypeEntry::Property Properties[] = {
-        { "hash",     Crawler::HashGetter,     Crawler::HashSetter     },
+        { "hash",     Impl::HashGetter,        Crawler::HashSetter     },
         { "host",     Crawler::HostGetter,     Crawler::HostSetter     },
         { "hostname", Crawler::HostnameGetter, Crawler::HostnameSetter },
-        { "href",     Crawler::HrefGetter,     Crawler::HrefSetter     },
+        { "href",     Impl::HrefGetter,        Crawler::HrefSetter     },
         { "pathname", Crawler::PathnameGetter, Crawler::PathnameSetter },
         { "port",     Crawler::PortGetter,     Crawler::PortSetter     },
         { "protocol", Crawler::ProtocolGetter, Crawler::ProtocolSetter },
@@ -183,5 +187,21 @@ void DukLocation::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager
     };
     protos.Register(ctx, ProtoName, worker);
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void DukLocation::RegisterPrototypeForUI(duk_context *ctx, PrototypeManager &protos)
+{
+    static const PrototypeEntry::Property Properties[] = {
+        { "hash", Impl::HashGetter, nullptr },
+        { "href", Impl::HrefGetter, nullptr },
+    };
+    const auto worker = [](PrototypeEntry &entry)
+    {
+        entry.SetFinalizer(Finalizer);
+        entry.Add(Properties, WTF_ARRAY_LENGTH(Properties));
+    };
+    protos.Register(ctx, ProtoName, worker);
+}
+#endif
 
 } // namespace BlinKit
