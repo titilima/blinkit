@@ -412,7 +412,7 @@ int Font::offsetForPosition(const TextRun& run, float x, bool includePartialGlyp
 {
     FontCachePurgePreventer purgePreventer;
 
-    if (codePath(TextRunPaintInfo(run)) != ComplexPath && !fontDescription().typesettingFeatures())
+    if (codePath(TextRunPaintInfo(run)) != ComplexPath) // BKTODO: && !fontDescription().typesettingFeatures())
         return offsetForPositionForSimpleText(run, x, includePartialGlyphs);
 
     return offsetForPositionForComplexText(run, x, includePartialGlyphs);
