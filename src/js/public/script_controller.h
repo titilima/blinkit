@@ -46,6 +46,8 @@ public:
     }
     ~ScriptController(void);
 
+    BlinKit::DukContext* Context(void) { return m_context.get(); }
+
     std::tuple<int, std::string> CreateCrawlerObject(const char *script, size_t length);
     int Eval(const char *code, size_t length, BlinKit::BkCallback *callback);
     int CallFunction(const char *name, BlinKit::BkCallback *callback);
