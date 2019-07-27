@@ -11,11 +11,14 @@
 
 #include "duk_context.h"
 
+#include "core/HTMLNames.h"
 #include "core/frame/FrameClient.h"
 #include "core/frame/LocalFrame.h"
 
 #include "blinkit/crawler/crawler_impl.h"
 
+#include "bindings/duk_attr.h"
+#include "bindings/duk_comment.h"
 #include "bindings/duk_console.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "bindings/duk_css_style_declaration.h"
@@ -23,9 +26,16 @@
 #include "bindings/duk_document.h"
 #include "bindings/duk_document_fragment.h"
 #include "bindings/duk_element.h"
+#include "bindings/duk_event.h"
+#include "bindings/duk_event_listener.h"
 #include "bindings/duk_exception_state.h"
 #include "bindings/duk_html_collection.h"
+#include "bindings/duk_input_element.h"
 #include "bindings/duk_location.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "bindings/duk_mouse_event.h"
+#endif
+#include "bindings/duk_named_node_map.h"
 #include "bindings/duk_node_list.h"
 #include "bindings/duk_text.h"
 #include "bindings/duk_window.h"
@@ -329,7 +339,10 @@ void DukContext::Initialize(void)
 
     CreateObject<DukWindow>(m_context, window);
     BKLOG("Window object (re-)created: %x (%x)", duk_get_heapptr(m_context, -1), window);
+
     PrepareGlobalsToTop();
+    DukEventListener::InitializeListenerPool(m_context);
+
     duk_set_global_object(m_context);
 }
 
@@ -361,11 +374,86 @@ PrototypeManager* DukContext::PrototypeManagerFrom(duk_context *ctx)
     return nullptr != context ? context->m_prototypeManager.get() : nullptr;
 }
 
+void DukContext::PushEvent(duk_context *ctx, Event *event)
+{
+    if (nullptr == event)
+    {
+        duk_push_undefined(ctx);
+        return;
+    }
+    if (event->isKeyboardEvent())
+    {
+        assert(false); // BKTODO:
+        return;
+    }
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (event->isMouseEvent())
+    {
+        PushObject<DukMouseEvent>(ctx, event);
+        return;
+    }
+#endif
+    if (event->isFocusEvent())
+    {
+        assert(false); // BKTODO:
+        return;
+    }
+    if (event->isUIEvent())
+    {
+        assert(false); // BKTODO:
+        return;
+    }
+    if (event->isTouchEvent())
+    {
+        assert(false); // BKTODO:
+        return;
+    }
+    if (event->isRelatedEvent())
+    {
+        assert(false); // BKTODO:
+        return;
+    }
+
+    PushObject<DukEvent>(ctx, event);
+}
+
+duk_ret_t DukContext::PushEventTarget(duk_context *ctx, EventTarget *eventTarget)
+{
+    if (nullptr == eventTarget)
+    {
+        duk_push_undefined(ctx);
+    }
+    else if (Node *node = eventTarget->toNode())
+    {
+        PushNode(ctx, node);
+    }
+    else if (LocalDOMWindow *window = eventTarget->toDOMWindow())
+    {
+        duk_push_global_object(ctx);
+    }
+    else
+    {
+        assert(false); // Not reached!
+        return 0;
+    }
+    return 1;
+}
+
 void DukContext::PushNode(duk_context *ctx, Node *node)
 {
     if (nullptr == node)
     {
         duk_push_undefined(ctx);
+        return;
+    }
+    if (node->isAttributeNode())
+    {
+        PushObject<DukAttr>(ctx, node);
+        return;
+    }
+    if (Node::COMMENT_NODE == node->nodeType())
+    {
+        PushObject<DukComment>(ctx, node);
         return;
     }
     if (node->isDocumentNode())
@@ -385,7 +473,15 @@ void DukContext::PushNode(duk_context *ctx, Node *node)
     }
 
     assert(node->isElementNode());
-    PushObject<DukElement>(ctx, node);
+    Element *element = toElement(node);
+
+    if (element->hasTagName(HTMLNames::inputTag))
+    {
+        PushObject<DukInputElement>(ctx, element);
+        return;
+    }
+
+    PushObject<DukElement>(ctx, element);
 }
 
 int DukContext::RegisterFunction(const char *name, BkCallback &functionImpl)
@@ -399,15 +495,23 @@ int DukContext::RegisterFunction(const char *name, BkCallback &functionImpl)
 void DukContext::RegisterPrototypesForUI(void)
 {
     m_prototypeManager->BeginRegisterTransaction(m_context);
+    DukAttr::RegisterPrototype(m_context, *m_prototypeManager);
+    DukComment::RegisterPrototype(m_context, *m_prototypeManager);
     DukConsole::RegisterPrototype(m_context, *m_prototypeManager);
     DukCSSStyleDeclaration::RegisterPrototype(m_context, *m_prototypeManager);
     DukDocument::RegisterPrototypeForUI(m_context, *m_prototypeManager);
     DukDocumentFragment::RegisterPrototype(m_context, *m_prototypeManager);
     DukElement::RegisterPrototypeForUI(m_context, *m_prototypeManager);
+    DukEvent::RegisterPrototype(m_context, *m_prototypeManager);
     DukHTMLCollection::RegisterPrototype(m_context, *m_prototypeManager);
+    DukInputElement::RegisterPrototypeForUI(m_context, *m_prototypeManager);
     DukLocation::RegisterPrototypeForUI(m_context, *m_prototypeManager);
+    DukMouseEvent::RegisterPrototype(m_context, *m_prototypeManager);
+    DukNamedNodeMap::RegisterPrototype(m_context, *m_prototypeManager);
+    DukNodeList::RegisterPrototype(m_context, *m_prototypeManager);
     DukText::RegisterPrototype(m_context, *m_prototypeManager);
     DukWindow::RegisterPrototypeForUI(m_context, *m_prototypeManager);
+    DukXHR::RegisterPrototype(m_context, *m_prototypeManager);
     m_prototypeManager->EndRegisterTransaction(m_context);
 }
 #endif // BLINKIT_CRAWLER_ONLY
@@ -415,12 +519,17 @@ void DukContext::RegisterPrototypesForUI(void)
 void DukContext::RegisterPrototypesForCrawler(void)
 {
     m_prototypeManager->BeginRegisterTransaction(m_context);
+    DukAttr::RegisterPrototype(m_context, *m_prototypeManager);
+    DukComment::RegisterPrototype(m_context, *m_prototypeManager);
     DukConsole::RegisterPrototype(m_context, *m_prototypeManager);
     DukDocument::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
     DukDocumentFragment::RegisterPrototype(m_context, *m_prototypeManager);
     DukElement::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
+    DukInputElement::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
+    DukEvent::RegisterPrototype(m_context, *m_prototypeManager);
     DukHTMLCollection::RegisterPrototype(m_context, *m_prototypeManager);
     DukLocation::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
+    DukNamedNodeMap::RegisterPrototype(m_context, *m_prototypeManager);
     DukNodeList::RegisterPrototype(m_context, *m_prototypeManager);
     DukText::RegisterPrototype(m_context, *m_prototypeManager);
     DukWindow::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);

@@ -16,6 +16,7 @@
 #include "core/dom/Comment.h"
 #include "core/dom/DocumentFragment.h"
 #include "core/dom/ElementTraversal.h"
+#include "core/dom/NameNodeList.h"
 #include "core/dom/Text.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "core/html/HTMLHeadElement.h"
@@ -213,7 +214,10 @@ static duk_ret_t DoctypeGetter(duk_context *ctx)
 
 static duk_ret_t DocumentElementGetter(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    duk_push_this(ctx);
+    Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
+
+    DukContext::From(ctx)->PushNode(ctx, document->documentElement());
     return 1;
 }
 
@@ -229,7 +233,11 @@ static duk_ret_t GetElementById(duk_context *ctx)
 
 static duk_ret_t GetElementsByName(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    duk_push_this(ctx);
+    Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
+
+    PassRefPtr<NameNodeList> ret = document->getElementsByName(Duk::ToAtomicString(ctx, 0));
+    DukContext::From(ctx)->PushObject<DukNodeList>(ctx, ret.get());
     return 1;
 }
 

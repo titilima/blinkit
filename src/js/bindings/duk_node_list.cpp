@@ -34,57 +34,48 @@ duk_ret_t DukNodeList::Finalizer(duk_context *ctx)
     return 0;
 }
 
-void DukNodeList::OnCreate(duk_context *ctx, ScriptWrappable *nativeThis)
+void DukNodeList::OnPush(duk_context *ctx, ScriptWrappable *)
 {
-    DukObjectImpl::OnCreate(ctx, nativeThis);
-
-    NodeList *nodeList = static_cast<NodeList *>(nativeThis);
-
-    DukContext *context = DukContext::From(ctx);
-
-    unsigned length = nodeList->length();
-    for (unsigned i = 0; i < length; ++i)
-    {
-        context->PushNode(ctx, nodeList->item(i));
-        duk_put_prop_index(ctx, -2, i);
-    }
+    duk_push_object(ctx);
+    duk_push_c_function(ctx, ProxyGet, 3);
+    duk_put_prop_string(ctx, -2, "get");
+    duk_push_proxy(ctx, 0);
 }
 
 namespace Impl {
 
-static duk_ret_t Item(duk_context *ctx)
-{
-    duk_push_this(ctx);
-    NodeList *nodeList = Get(ctx);
-
-    Node *node = nodeList->item(duk_to_uint(ctx, 0));
-    DukContext::From(ctx)->PushNode(ctx, node);
-    return 1;
-}
-
-static duk_ret_t LengthGetter(duk_context *ctx)
-{
-    duk_push_this(ctx);
-    NodeList *nodeList = Get(ctx);
-    duk_push_uint(ctx, nodeList->length());
-    return 1;
-}
-
 } // namespace Impl
+
+duk_ret_t DukNodeList::ProxyGet(duk_context *ctx)
+{
+    NodeList *nativeThis = Get(ctx, 0);
+
+    if (duk_is_number(ctx, 1))
+    {
+        duk_uint_t index = duk_to_uint(ctx, 1);
+        DukContext::From(ctx)->PushNode(ctx, nativeThis->item(index));
+        return 1;
+    }
+
+    assert(duk_is_string(ctx, 1));
+    const std::string key = Duk::ToString(ctx, 1);
+    if (key == "length")
+    {
+        duk_push_uint(ctx, nativeThis->length());
+    }
+    else
+    {
+        assert(false); // BKTODO:
+    }
+
+    return 1;
+}
 
 void DukNodeList::RegisterPrototype(duk_context *ctx, PrototypeManager &protos)
 {
-    static const PrototypeEntry::Property Properties[] = {
-        { "length", Impl::LengthGetter, nullptr }
-    };
-    static const PrototypeEntry::Method Methods[] = {
-        { "item", Impl::Item, 1 }
-    };
-
     const auto worker = [](PrototypeEntry &entry)
     {
-        entry.Add(Properties, WTF_ARRAY_LENGTH(Properties));
-        entry.Add(Methods, WTF_ARRAY_LENGTH(Methods));
+        entry.SetFinalizer(Finalizer);
     };
     protos.Register(ctx, ProtoName, worker);
 }

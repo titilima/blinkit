@@ -11,7 +11,9 @@
 
 #include "duk_container_node.h"
 
+#include "core/dom/ClassCollection.h"
 #include "core/dom/Element.h"
+#include "core/dom/TagCollection.h"
 
 #include "bindings/duk_exception_state.h"
 #include "bindings/duk_html_collection.h"
@@ -28,7 +30,11 @@ namespace Impl {
 
 static duk_ret_t GetElementsByClassName(duk_context *ctx)
 {
-    ASSERT(false); // BKTODO:
+    duk_push_this(ctx);
+    ContainerNode *node = DukEventTarget::GetNativeThis<ContainerNode>(ctx);
+
+    PassRefPtr<ClassCollection> ret = node->getElementsByClassName(Duk::ToAtomicString(ctx, 0));
+    DukContext::From(ctx)->PushObject<DukHTMLCollection>(ctx, ret.get());
     return 1;
 }
 

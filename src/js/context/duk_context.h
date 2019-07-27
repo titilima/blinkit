@@ -21,6 +21,8 @@
 #endif
 
 namespace blink {
+class Event;
+class EventTarget;
 class LocalFrame;
 class Node;
 class ScriptWrappable;
@@ -41,6 +43,8 @@ public:
     static DukContext* From(duk_context *ctx);
     static PrototypeManager* PrototypeManagerFrom(duk_context *ctx);
     CrawlerImpl* GetCrawler(void);
+
+    duk_context* RawContext(void) { return m_context; }
 
     std::tuple<int, std::string> CreateCrawlerObject(const char *script, size_t length);
     int Eval(const char *code, size_t length, BkCallback *callback, const char *fileName = nullptr);
@@ -77,6 +81,8 @@ public:
         T::OnPush(ctx, nativeThis);
     }
     void PushNode(duk_context *ctx, blink::Node *node);
+    void PushEvent(duk_context *ctx, blink::Event *event);
+    duk_ret_t PushEventTarget(duk_context *ctx, blink::EventTarget *eventTarget);
     void RemoveObjectFromPool(blink::ScriptWrappable *nativeThis);
 
     void Reset(void);

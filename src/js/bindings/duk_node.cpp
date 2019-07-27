@@ -14,6 +14,7 @@
 #include "core/dom/Document.h"
 
 #include "bindings/duk_exception_state.h"
+#include "bindings/duk_node_list.h"
 #include "context/duk_context.h"
 #include "context/prototype_manager.h"
 #include "wrappers/duk.h"
@@ -45,7 +46,11 @@ static duk_ret_t AppendChild(duk_context *ctx)
 
 static duk_ret_t ChildNodesGetter(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    duk_push_this(ctx);
+    Node *node = DukEventTarget::GetNativeThis<Node>(ctx);
+
+    PassRefPtr<NodeList> ret = node->childNodes();
+    DukContext::From(ctx)->PushObject<DukNodeList>(ctx, ret.get());
     return 1;
 }
 

@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "core/dom/TagCollection.h"
+#include "core/html/HTMLCollection.h"
 #include "duk_object_impl.hpp"
 
 namespace BlinKit {
@@ -30,7 +30,8 @@ public:
     static void RegisterPrototype(duk_context *ctx, PrototypeManager &protos);
 private:
     static duk_ret_t Finalizer(duk_context *ctx);
-    static void OnCreate(duk_context *ctx, blink::ScriptWrappable *nativeThis);
+    static duk_ret_t ProxyGet(duk_context *ctx);
+    static void OnPush(duk_context *ctx, blink::ScriptWrappable *nativeThis);
 };
 
 } // namespace BlinKit

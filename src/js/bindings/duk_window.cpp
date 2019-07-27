@@ -11,8 +11,13 @@
 
 #include "duk_window.h"
 
+#include "core/dom/Element.h"
+
 #include "bindings/duk_binding_impl.h"
 #include "bindings/duk_console.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "bindings/duk_css_style_declaration.h"
+#endif
 #include "bindings/duk_document.h"
 #include "bindings/duk_location.h"
 #include "bindings/duk_xhr.h"
@@ -190,7 +195,14 @@ static duk_ret_t Confirm(duk_context *ctx)
 
 static duk_ret_t GetComputedStyle(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    duk_push_this(ctx);
+    DOMWindow *window = DukEventTarget::GetNativeThis<DOMWindow>(ctx);
+
+    Element *e = DukEventTarget::GetNativeThis<Element>(ctx, 0);
+    const String pseudo = Duk::ToWTFString(ctx, 1);
+
+    PassRefPtr<CSSStyleDeclaration> ret = window->getComputedStyle(e, pseudo);
+    DukContext::From(ctx)->PushObject<DukCSSStyleDeclaration>(ctx, ret.get());
     return 1;
 }
 

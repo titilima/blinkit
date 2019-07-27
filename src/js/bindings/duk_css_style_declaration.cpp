@@ -139,7 +139,12 @@ duk_ret_t DukCSSStyleDeclaration::ProxySet(duk_context *ctx)
         return Impl::CSSTextSetter(ctx, style, Duk::ToWTFString(ctx, 2));
 
     CSSPropertyID propId = ParseCSSPropertyID(key.c_str());
-    assert(false); // BKTODO:
+    if (CSSPropertyInvalid == propId)
+        return 0;
+
+    DukExceptionState exceptionState(ctx, key.c_str(), ProtoName);
+    style->setPropertyInternal(propId, String(), Duk::ToWTFString(ctx, 2), false, exceptionState);
+    exceptionState.throwIfNeeded();
     return 0;
 }
 

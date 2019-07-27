@@ -16,10 +16,12 @@
 #include "core/dom/ParentNode.h"
 #include "core/dom/StaticNodeList.h"
 
+#include "bindings/duk_binding_impl.h"
 #include "bindings/duk_exception_state.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "bindings/duk_css_style_declaration.h"
 #endif
+#include "bindings/duk_named_node_map.h"
 #include "context/duk_context.h"
 #include "context/prototype_manager.h"
 #include "wrappers/duk.h"
@@ -34,7 +36,10 @@ namespace Impl {
 
 static duk_ret_t AttributesGetter(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    duk_push_this(ctx);
+    Element *element = DukEventTarget::GetNativeThis<Element>(ctx);
+
+    DukContext::From(ctx)->PushObject<DukNamedNodeMap>(ctx, element->attributesForBindings());
     return 1;
 }
 
@@ -238,6 +243,15 @@ static duk_ret_t TagNameGetter(duk_context *ctx)
 #ifndef BLINKIT_CRAWLER_ONLY
 namespace UI {
 
+static duk_ret_t Focus(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    HTMLElement *element = DukEventTarget::GetNativeThis<HTMLElement>(ctx);
+
+    element->focus();
+    return 0;
+}
+
 static duk_ret_t StyleGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -250,7 +264,7 @@ static duk_ret_t StyleGetter(duk_context *ctx)
 } // namespace UI
 #endif // BLINKIT_CRAWLER_ONLY
 
-void DukElement::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &protos)
+void DukElement::RegisterToPrototypeEntryForCrawler(PrototypeEntry &entry)
 {
     static const PrototypeEntry::Property Properties[] = {
         { "attributes",             Impl::AttributesGetter,             nullptr                    },
@@ -269,6 +283,7 @@ void DukElement::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager 
         { "tagName",                Impl::TagNameGetter,                nullptr                    },
     };
     static const PrototypeEntry::Method Methods[] = {
+        { "focus",                  Crawler::NothingToDo,      0 },
         { "getAttribute",           Impl::GetAttribute,        1 },
         { "getAttributeNode",       Impl::GetAttributeNode,    1 },
         { "hasAttribute",           Impl::HasAttribute,        1 },
@@ -279,19 +294,24 @@ void DukElement::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager 
         { "setAttributeNode",       Impl::SetAttributeNode,    1 },
     };
 
+    DukContainerNode::RegisterToPrototypeEntry(entry);
+    entry.Add(Properties, WTF_ARRAY_LENGTH(Properties));
+    entry.AddObject("style");
+    entry.Add(Methods, WTF_ARRAY_LENGTH(Methods));
+}
+
+void DukElement::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &protos)
+{
     const auto worker = [](PrototypeEntry &entry)
     {
-        DukContainerNode::RegisterToPrototypeEntry(entry);
-
-        entry.Add(Properties, WTF_ARRAY_LENGTH(Properties));
-        entry.AddObject("style");
-        entry.Add(Methods, WTF_ARRAY_LENGTH(Methods));
+        RegisterToPrototypeEntryForCrawler(entry);
     };
     protos.Register(ctx, ProtoName, worker);
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
-void DukElement::RegisterPrototypeForUI(duk_context *ctx, PrototypeManager &protos)
+
+void DukElement::RegisterToPrototypeEntryForUI(PrototypeEntry &entry)
 {
     static const PrototypeEntry::Property Properties[] = {
         { "attributes",             Impl::AttributesGetter,             nullptr                    },
@@ -310,6 +330,7 @@ void DukElement::RegisterPrototypeForUI(duk_context *ctx, PrototypeManager &prot
         { "tagName",                Impl::TagNameGetter,                nullptr                    },
     };
     static const PrototypeEntry::Method Methods[] = {
+        { "focus",                  UI::Focus,                 0 },
         { "getAttribute",           Impl::GetAttribute,        1 },
         { "getAttributeNode",       Impl::GetAttributeNode,    1 },
         { "hasAttribute",           Impl::HasAttribute,        1 },
@@ -320,15 +341,20 @@ void DukElement::RegisterPrototypeForUI(duk_context *ctx, PrototypeManager &prot
         { "setAttributeNode",       Impl::SetAttributeNode,    1 },
     };
 
+    DukContainerNode::RegisterToPrototypeEntry(entry);
+    entry.Add(Properties, WTF_ARRAY_LENGTH(Properties));
+    entry.Add(Methods, WTF_ARRAY_LENGTH(Methods));
+}
+
+void DukElement::RegisterPrototypeForUI(duk_context *ctx, PrototypeManager &protos)
+{
     const auto worker = [](PrototypeEntry &entry)
     {
-        DukContainerNode::RegisterToPrototypeEntry(entry);
-
-        entry.Add(Properties, WTF_ARRAY_LENGTH(Properties));
-        entry.Add(Methods, WTF_ARRAY_LENGTH(Methods));
+        RegisterToPrototypeEntryForUI(entry);
     };
     protos.Register(ctx, ProtoName, worker);
 }
+
 #endif // BLINKIT_CRAWLER_ONLY
 
 } // namespace BlinKit

@@ -17,11 +17,13 @@
 namespace BlinKit {
 
 namespace Crawler {
-duk_ret_t NothingToDo(duk_context *ctx);
-} // namespace Crawler
 
-namespace Impl {
-} // namespace Impl
+duk_ret_t NothingToDo(duk_context *ctx);
+
+duk_ret_t ElementAttributeGetter(duk_context *ctx, const char *name);
+duk_ret_t ElementAttributeSetter(duk_context *ctx, const char *name);
+
+} // namespace Crawler
 
 } // namespace BlinKit
 
