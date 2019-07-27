@@ -1202,15 +1202,14 @@ void LocalDOMWindow::cancelAnimationFrame(int id)
 
 bool LocalDOMWindow::addEventListenerInternal(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener> prpListener, const EventListenerOptions& options)
 {
-    assert(false); // BKTODO:
-    return false;
-#if 0
     RefPtrWillBeRawPtr<EventListener> listener = prpListener;
     if (!EventTarget::addEventListenerInternal(eventType, listener, options))
         return false;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (frame() && frame()->host())
         frame()->host()->eventHandlerRegistry().didAddEventHandler(*this, eventType);
+#endif
 
     if (Document* document = this->document()) {
         document->addListenerTypeIfNeeded(eventType);
@@ -1235,19 +1234,17 @@ bool LocalDOMWindow::addEventListenerInternal(const AtomicString& eventType, Pas
     }
 
     return true;
-#endif
 }
 
 bool LocalDOMWindow::removeEventListenerInternal(const AtomicString& eventType, PassRefPtrWillBeRawPtr<EventListener> listener, const EventListenerOptions& options)
 {
-    assert(false); // BKTODO:
-    return false;
-#if 0
     if (!EventTarget::removeEventListenerInternal(eventType, listener, options))
         return false;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (frame() && frame()->host())
         frame()->host()->eventHandlerRegistry().didRemoveEventHandler(*this, eventType);
+#endif
 
     notifyRemoveEventListener(this, eventType);
 
@@ -1258,7 +1255,6 @@ bool LocalDOMWindow::removeEventListenerInternal(const AtomicString& eventType, 
     }
 
     return true;
-#endif
 }
 
 void LocalDOMWindow::dispatchLoadEvent()
