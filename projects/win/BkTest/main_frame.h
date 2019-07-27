@@ -29,6 +29,7 @@ private:
     // BkViewClient
     void BKAPI DocumentReady(BkView *view);
     // BkCrawlerClient
+    void BKAPI GetUserScript(BkBuffer &userScript);
     void BKAPI DocumentReady(BkCrawler *crawler);
 
     BlinKit::BkCrawler *m_crawler = nullptr;
