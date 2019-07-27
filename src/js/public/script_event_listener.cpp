@@ -11,12 +11,21 @@
 
 #include "script_event_listener.h"
 
+#include "core/dom/QualifiedName.h"
+
+#include "bindings/duk_lazy_event_listener.h"
+
+using namespace BlinKit;
+
 namespace blink {
 
 PassRefPtr<EventListener> createAttributeEventListener(Node *node, const QualifiedName &name, const AtomicString &value, const AtomicString &eventParameterName)
 {
-    assert(false); // BKTODO:
-    return nullptr;
+    assert(nullptr != node);
+    if (value.isNull())
+        return nullptr;
+
+    return DukLazyEventListener::Create(name.localName(), eventParameterName, value);
 }
 
 PassRefPtr<EventListener> createAttributeEventListener(LocalFrame *frame, const QualifiedName &name, const AtomicString &value, const AtomicString &eventParameterName)
