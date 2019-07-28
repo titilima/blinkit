@@ -1,6 +1,7 @@
 projects/win/debug
 projects/win/release
 sdk/win32
+sdk/*.zip
 src/chromium/third_party/WebKit/LayoutTests
 src/chromium/third_party/WebKit/ManualTests
 src/chromium/third_party/WebKit/PerformanceTests
