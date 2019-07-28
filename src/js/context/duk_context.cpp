@@ -439,6 +439,11 @@ duk_ret_t DukContext::PushEventTarget(duk_context *ctx, EventTarget *eventTarget
     return 1;
 }
 
+static bool MatchTag(Element *element, const HTMLQualifiedName &tag)
+{
+    return element->hasLocalName(tag.localName());
+}
+
 void DukContext::PushNode(duk_context *ctx, Node *node)
 {
     if (nullptr == node)
@@ -475,7 +480,7 @@ void DukContext::PushNode(duk_context *ctx, Node *node)
     assert(node->isElementNode());
     Element *element = toElement(node);
 
-    if (element->hasTagName(HTMLNames::inputTag))
+    if (MatchTag(element, HTMLNames::inputTag))
     {
         PushObject<DukInputElement>(ctx, element);
         return;
