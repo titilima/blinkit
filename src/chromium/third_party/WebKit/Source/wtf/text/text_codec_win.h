@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <Windows.h>
 #include "wtf/text/TextCodec.h"
 
 namespace WTF {
