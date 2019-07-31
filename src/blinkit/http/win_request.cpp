@@ -320,7 +320,7 @@ void WinRequest::StatusCallback(
             break;
         case INTERNET_STATUS_REDIRECT:
         {
-            std::string URL(reinterpret_cast<const char *>(lpvStatusInformation), dwStatusInformationLength);
+            std::string URL(reinterpret_cast<const char *>(lpvStatusInformation), dwStatusInformationLength - 1);
             m_response->SetCurrentURL(URL);
             BKLOG("Redirect to: %s.", URL.c_str());
             break;
