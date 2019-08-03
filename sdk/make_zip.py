@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 files = (
+    'BlinKit.Credits.html',
     'include/BlinKit.h',
     'win32/BkCrawler.dll',
     'win32/BkCrawler.lib',
