@@ -264,6 +264,8 @@ public:
         return false;
     }
     // -----------------------------------------------------------------------------------------------------------------
+    // Other Optional Callbacks
+    virtual void BKAPI GetUserAgent(BkBuffer &userAgent) {}
 };
 
 class BkCrawler {

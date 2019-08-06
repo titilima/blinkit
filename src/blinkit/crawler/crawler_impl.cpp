@@ -104,6 +104,8 @@ String CrawlerImpl::userAgent(void)
     };
     m_frame->script().GetCrawlerProperty("userAgent", callback);
 
+    if (userAgent.empty())
+        m_client.GetUserAgent(BkMakeBuffer(userAgent).Wrap());
     if (!userAgent.empty())
         return String::fromUTF8(userAgent.data(), userAgent.length());
 
