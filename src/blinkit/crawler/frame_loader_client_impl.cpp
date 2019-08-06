@@ -221,16 +221,6 @@ void FrameLoaderClientImpl::dispatchDidChangeThemeColor(void)
     assert(false); // BKTODO:
 }
 
-void FrameLoaderClientImpl::dispatchDidFailLoad(const ResourceError &, HistoryCommitType)
-{
-    assert(false); // BKTODO:
-}
-
-void FrameLoaderClientImpl::dispatchDidFailProvisionalLoad(const ResourceError &, HistoryCommitType)
-{
-    assert(false); // BKTODO:
-}
-
 void FrameLoaderClientImpl::dispatchDidLoadResourceFromMemoryCache(const ResourceRequest &, const ResourceResponse &)
 {
     assert(false); // BKTODO:

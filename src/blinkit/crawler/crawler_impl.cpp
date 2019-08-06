@@ -48,6 +48,11 @@ int BKAPI CrawlerImpl::CallFunction(const char *name, BkCallback *callback)
     return m_frame->script().CallFunction(name, callback);
 }
 
+void CrawlerImpl::CancelLoading(void)
+{
+    m_frame->loader().stopAllLoaders();
+}
+
 void CrawlerImpl::dispatchDidFinishLoad(void)
 {
     m_client.DocumentReady(this);

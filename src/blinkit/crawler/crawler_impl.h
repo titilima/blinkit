@@ -31,6 +31,8 @@ public:
 
     BkCrawlerClient& Client(void) const { return m_client; }
     std::string GetCookie(const std::string &URL) const;
+
+    void CancelLoading(void);
 private:
     // BkCrawler
     void BKAPI Destroy(void) override { delete this; }

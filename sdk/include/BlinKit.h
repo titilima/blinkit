@@ -187,10 +187,7 @@ public:
     virtual void BKAPI SetBody(const char *body, size_t length) = 0;
 
     virtual void BKAPI Continue(void) = 0;
-    inline void Cancel(void) {
-        SetBody("", 0);
-        Continue();
-    }
+    virtual void BKAPI Cancel(void) = 0;
 private:
     BkRetainedResponse* BKAPI Retain(void) const override final {
         assert(false); // Not reached!

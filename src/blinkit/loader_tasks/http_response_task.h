@@ -43,6 +43,7 @@ private:
     // BkCrawlerResponse
     void BKAPI SetBody(const char *body, size_t length) override;
     void BKAPI Continue(void) override;
+    void BKAPI Cancel(void) override;
 
     CrawlerImpl &m_crawler;
     std::string m_currentURL;

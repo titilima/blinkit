@@ -25,6 +25,11 @@ HTTPResponseTask::HTTPResponseTask(CrawlerImpl &crawler, WebURLLoader *loader, W
     // Nothing
 }
 
+void BKAPI HTTPResponseTask::Cancel(void)
+{
+    m_crawler.CancelLoading();
+}
+
 void BKAPI HTTPResponseTask::Continue(void)
 {
     m_taskRunner->postTask(BLINK_FROM_HERE, this);

@@ -57,6 +57,7 @@ private:
     blink::WebMimeRegistry* mimeRegistry(void) override final;
     blink::WebURLLoader* createURLLoader(void) override final;
     blink::WebString userAgent(void) override final;
+    blink::WebURLError cancelledError(const blink::WebURL &url) const override final;
     blink::WebThread* createThread(const char *name) override final;
     double currentTimeSeconds(void) override final;
     double monotonicallyIncreasingTimeSeconds(void) override final;

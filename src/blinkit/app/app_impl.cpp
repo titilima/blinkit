@@ -44,6 +44,14 @@ AppImpl::~AppImpl(void)
     theApp = nullptr;
 }
 
+blink::WebURLError AppImpl::cancelledError(const blink::WebURL &url) const
+{
+    blink::WebURLError ret;
+    ret.reason = BkError::Cancelled;
+    ret.isCancellation = true;
+    return ret;
+}
+
 CookieJarImpl& AppImpl::CookieJar(void)
 {
     if (!m_cookieJar)

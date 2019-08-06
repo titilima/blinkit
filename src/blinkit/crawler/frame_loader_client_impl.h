@@ -43,8 +43,8 @@ protected:
     void dispatchDidReceiveTitle(const String&) override final;
     void dispatchDidChangeIcons(blink::IconType) override final;
     void dispatchDidCommitLoad(blink::HistoryItem*, blink::HistoryCommitType) override {}
-    void dispatchDidFailProvisionalLoad(const blink::ResourceError &, blink::HistoryCommitType) override final;
-    void dispatchDidFailLoad(const blink::ResourceError &, blink::HistoryCommitType) override final;
+    void dispatchDidFailProvisionalLoad(const blink::ResourceError &, blink::HistoryCommitType) override {}
+    void dispatchDidFailLoad(const blink::ResourceError &, blink::HistoryCommitType) override {}
     void dispatchDidFinishDocumentLoad(bool documentIsEmpty) override {}
     void dispatchDidChangeThemeColor(void) override final;
     blink::NavigationPolicy decidePolicyForNavigation(const blink::ResourceRequest&, blink::DocumentLoader*, blink::NavigationType, blink::NavigationPolicy, bool shouldReplaceCurrentEntry) override final;
