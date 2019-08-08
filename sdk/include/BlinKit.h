@@ -238,7 +238,12 @@ public:
     virtual void BKAPI DataNotify(BkCrawler *crawler, const BkValue &data) {
         assert(false); // Not implemented!
     }
-
+    virtual bool BKAPI Log(const char *s) {
+        // `crawler.log(s)` Handler.
+        // If client processes the log, return true.
+        // Otherwise, BlinKit will print the log natively (OutputDebugString/NSLog/...).
+        return false;
+    }
     // -----------------------------------------------------------------------------------------------------------------
     // Callbacks
     virtual void BKAPI ContextReady(BkCrawler *crawler) {}

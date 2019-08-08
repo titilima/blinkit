@@ -11,6 +11,8 @@
 
 #include "duk_console.h"
 
+#include "blinkit/app/app_impl.h"
+
 #include "context/prototype_manager.h"
 #include "wrappers/duk.h"
 
@@ -22,22 +24,33 @@ namespace Impl {
 
 static duk_ret_t Log(duk_context *ctx)
 {
-    int idx = 0;
+    duk_idx_t idx = 0;
     if (!duk_is_string(ctx, 0))
     {
         duk_dup(ctx, 0);
         idx = -1;
     }
 
-    const std::string log = Duk::ToString(ctx, idx);
-    BKLOG("[LOG] %s", log.c_str());
+    std::string msg("[Bk.Log] ");
+    msg.append(duk_to_string(ctx, idx));
+
+    AppImpl::Get().Log(msg.c_str());
     return 0;
 }
 
 static duk_ret_t Warn(duk_context *ctx)
 {
-    const std::string msg = Duk::ToString(ctx, 0);
-    BKLOG("[WARNING] %s", msg.c_str());
+    duk_idx_t idx = 0;
+    if (!duk_is_string(ctx, 0))
+    {
+        duk_dup(ctx, 0);
+        idx = -1;
+    }
+
+    std::string msg("[Bk.Warn] ");
+    msg.append(duk_to_string(ctx, idx));
+
+    AppImpl::Get().Log(msg.c_str());
     return 0;
 }
 

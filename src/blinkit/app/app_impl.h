@@ -43,6 +43,8 @@ public:
     CookieJarImpl& CookieJar(void);
     blink::Settings& CrawlerSettings(void);
 
+    void Log(const char *s);
+
     // blink::Platform
     blink::WebCookieJar* cookieJar(void) override final;
     blink::WebThread* currentThread(void) override final;

@@ -11,6 +11,7 @@
 
 #include "win_app.h"
 
+#include "base/strings/sys_string_conversions.h"
 #include "base/win/resource_util.h"
 
 #include "blink_impl/win_task_runner.h"
@@ -111,6 +112,13 @@ blink::WebThemeEngine* WinApp::themeEngine(void)
 void AppImpl::CreateInstance(void)
 {
     new WinApp;
+}
+
+void AppImpl::Log(const char *s)
+{
+    std::wstring ws = base::SysUTF8ToWide(s);
+    ws.append(L"\r\n");
+    ::OutputDebugStringW(ws.c_str());
 }
 
 } // namespace BlinKit

@@ -15,6 +15,7 @@
 #include "core/frame/FrameClient.h"
 #include "core/frame/LocalFrame.h"
 
+#include "blinkit/app/app_impl.h"
 #include "blinkit/crawler/crawler_impl.h"
 
 #include "bindings/duk_attr.h"
@@ -82,6 +83,27 @@ static duk_ret_t DebugBreak(duk_context *ctx)
 } // namespace Impl
 
 namespace Crawler {
+
+static duk_ret_t Log(duk_context *ctx)
+{
+    CrawlerImpl *crawler = DukContext::From(ctx)->GetCrawler();
+
+    duk_idx_t idx = 0;
+    if (!duk_is_string(ctx, 0))
+    {
+        duk_dup(ctx, 0);
+        idx = -1;
+    }
+
+    const char *s = duk_to_string(ctx, idx);
+    if (!crawler->Client().Log(s))
+    {
+        std::string msg("[Bk.Crawler] ");
+        msg.append(s);
+        AppImpl::Get().Log(msg.c_str());
+    }
+    return 0;
+}
 
 static duk_ret_t Notify(duk_context *ctx)
 {
@@ -231,6 +253,8 @@ std::tuple<int, std::string> DukContext::CreateCrawlerObject(const char *script,
 
     duk_push_c_function(m_context, Crawler::Notify, 1);
     duk_put_prop_string(m_context, -2, "notify");
+    duk_push_c_function(m_context, Crawler::Log, 1);
+    duk_put_prop_string(m_context, -2, "log");
 #ifdef _DEBUG
     duk_push_c_function(m_context, Impl::DebugBreak, 1);
     duk_put_prop_string(m_context, -2, "debugBreak");
