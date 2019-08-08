@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: MarkupFormatter.cpp
+// Description: MarkupFormatter Class
+//      Author: Ziming Li
+//     Created: 2019-08-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2012 Apple Inc. All rights reserved.
  * Copyright (C) 2009, 2010 Google Inc. All rights reserved.
@@ -436,10 +447,6 @@ bool MarkupFormatter::shouldAddNamespaceAttribute(const Attribute& attribute, co
 
 EntityMask MarkupFormatter::entityMaskForText(const Text& text) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-    exit(0);
-#else
     if (!serializeAsHTMLDocument(text))
         return EntityMaskInPCDATA;
 
@@ -451,7 +458,6 @@ EntityMask MarkupFormatter::entityMaskForText(const Text& text) const
     if (parentName && (*parentName == scriptTag || *parentName == styleTag || *parentName == xmpTag))
         return EntityMaskInCDATA;
     return EntityMaskInHTMLPCDATA;
-#endif
 }
 
 // Rules of self-closure

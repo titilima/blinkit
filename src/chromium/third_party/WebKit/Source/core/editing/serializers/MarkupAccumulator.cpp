@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: MarkupAccumulator.cpp
+// Description: MarkupAccumulator Class
+//      Author: Ziming Li
+//     Created: 2019-08-08
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2012 Apple Inc. All rights reserved.
  * Copyright (C) 2009, 2010 Google Inc. All rights reserved.
@@ -165,9 +176,6 @@ bool MarkupAccumulator::serializeAsHTMLDocument(const Node& node) const
 template<typename Strategy>
 static void serializeNodesWithNamespaces(MarkupAccumulator& accumulator, Node& targetNode, EChildrenOnly childrenOnly, const Namespaces* namespaces)
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO: Not reached!
-#else
     Namespaces namespaceHash;
     if (namespaces)
         namespaceHash = *namespaces;
@@ -175,15 +183,25 @@ static void serializeNodesWithNamespaces(MarkupAccumulator& accumulator, Node& t
     if (!childrenOnly)
         accumulator.appendStartTag(targetNode, &namespaceHash);
 
-    if (!(accumulator.serializeAsHTMLDocument(targetNode) && elementCannotHaveEndTag(targetNode))) {
+#ifdef BLINKIT_CRAWLER_ONLY
+    for (Node *current = Strategy::firstChild(targetNode); nullptr != current; current = Strategy::nextSibling(*current))
+        serializeNodesWithNamespaces<Strategy>(accumulator, *current, IncludeNode, &namespaceHash);
+#else
+    if (targetNode.ForCrawler())
+    {
+        for (Node *current = Strategy::firstChild(targetNode); nullptr != current; current = Strategy::nextSibling(*current))
+            serializeNodesWithNamespaces<Strategy>(accumulator, *current, IncludeNode, &namespaceHash);
+    }
+    else if (!(accumulator.serializeAsHTMLDocument(targetNode) && elementCannotHaveEndTag(targetNode)))
+    {
         Node* current = isHTMLTemplateElement(targetNode) ? Strategy::firstChild(*toHTMLTemplateElement(targetNode).content()) : Strategy::firstChild(targetNode);
         for ( ; current; current = Strategy::nextSibling(*current))
             serializeNodesWithNamespaces<Strategy>(accumulator, *current, IncludeNode, &namespaceHash);
     }
+#endif
 
     if (!childrenOnly && targetNode.isElementNode())
         accumulator.appendEndTag(toElement(targetNode));
-#endif
 }
 
 template<typename Strategy>
