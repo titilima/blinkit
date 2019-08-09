@@ -59,7 +59,7 @@ int BKAPI ValueImpl::GetAsString(BkBuffer &dst) const
     }
 
     size_t l = 0;
-    const char *s = duk_get_lstring(m_ctx, idx, &l);
+    const char *s = duk_to_lstring(m_ctx, idx, &l);
     dst.Assign(s, l);
     return BkError::Success;
 }
