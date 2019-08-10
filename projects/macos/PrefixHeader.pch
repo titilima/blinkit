@@ -1,0 +1,17 @@
+// -------------------------------------------------
+// BlinKit
+// -------------------------------------------------
+//   File Name: PrefixHeader.pch
+// Description: Prefix Header for Xcode
+//      Author: Ziming Li
+//     Created: 2019-08-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
+#ifndef BLINKIT_PREFIXHEADER_PCH
+#define BLINKIT_PREFIXHEADER_PCH
+
+#include "_pc.h"
+
+#endif // BLINKIT_PREFIXHEADER_PCH

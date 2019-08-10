@@ -21,6 +21,7 @@ BUILD.gn
 DEPS
 PRESUBMIT.py
 !sdk/win32/BlinKit.props
+!PrefixHeader.pch
 
 *Test.cpp
 *Test.h
