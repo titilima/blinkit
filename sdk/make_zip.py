@@ -10,9 +10,9 @@ files = (
     'win32/BkRequest.dll',
     'win32/BkRequest.lib',
     'win32/BkRequest.pdb',
-    'win32/BlinKit.dll',
-    'win32/BlinKit.lib',
-    'win32/BlinKit.pdb',
+#    'win32/BlinKit.dll',
+#    'win32/BlinKit.lib',
+#    'win32/BlinKit.pdb',
     'win32/BlinKit.props'
 )
 
