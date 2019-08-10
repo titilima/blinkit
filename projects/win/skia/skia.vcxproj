@@ -43,7 +43,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -176,7 +176,6 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SrcRoot)skia;$(RepoRoot)third_party\skia\include\images;$(RepoRoot)third_party\skia\include\pathops;$(RepoRoot)third_party\skia\include\private;$(RepoRoot)third_party\skia\include\utils\win;$(RepoRoot)third_party\skia\src\core;$(RepoRoot)third_party\skia\src\image;$(RepoRoot)third_party\skia\src\lazy;$(RepoRoot)third_party\skia\src\opts;$(RepoRoot)third_party\skia\src\sfnt;$(RepoRoot)third_party\skia\src\utils;$(SrcRoot);$(CrRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
