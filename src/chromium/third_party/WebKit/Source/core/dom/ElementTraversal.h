@@ -129,6 +129,7 @@ public:
     static ElementType* nextSkippingChildren(const Node&);
     static ElementType* nextSkippingChildren(const Node&, const Node* stayWithin);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // Pre-order traversal including the pseudo-elements.
     static ElementType* previousIncludingPseudo(const Node&, const Node* stayWithin = 0);
     static ElementType* nextIncludingPseudo(const Node&, const Node* stayWithin = 0);
@@ -136,6 +137,7 @@ public:
 
     // Utility function to traverse only the element and pseudo-element siblings of a node.
     static ElementType* pseudoAwarePreviousSibling(const Node&);
+#endif
 
     // Previous / Next sibling.
     static ElementType* previousSibling(const Node&);
@@ -403,6 +405,7 @@ inline ElementType* Traversal<ElementType>::nextSkippingChildren(const Node& cur
     return toElement<ElementType>(node);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 template <class ElementType>
 inline ElementType* Traversal<ElementType>::previousIncludingPseudo(const Node& current, const Node* stayWithin)
 {
@@ -430,7 +433,6 @@ inline ElementType* Traversal<ElementType>::nextIncludingPseudoSkippingChildren(
     return toElement<ElementType>(node);
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 template <class ElementType>
 inline ElementType* Traversal<ElementType>::pseudoAwarePreviousSibling(const Node& current)
 {
@@ -439,7 +441,7 @@ inline ElementType* Traversal<ElementType>::pseudoAwarePreviousSibling(const Nod
         node = node->pseudoAwarePreviousSibling();
     return toElement<ElementType>(node);
 }
-#endif
+#endif // BLINKIT_CRAWLER_ONLY
 
 template <class ElementType>
 inline ElementType* Traversal<ElementType>::previousSibling(const Node& current)
