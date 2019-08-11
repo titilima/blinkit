@@ -54,6 +54,6 @@ inline BlinKit::Asserter& operator<<(const BlinKit::Asserter &a, const T &) {
 
 #define DVLOG(x)        BKASSERT(false)
 #define NOTREACHED()    BKASSERT(false)
-#define VLOG(x)        BKASSERT(false)
+#define VLOG(x)         BKASSERT(false)
 
 #endif // BLINKIT_BASE_LOGGING_H
