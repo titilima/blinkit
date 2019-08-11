@@ -49,8 +49,15 @@
 
 namespace blink {
 
-struct SameSizeAsNodeRareData {
+struct SameSizeAsNodeRareDataBase {
+#ifndef BLINKIT_CRAWLER_ONLY
     void* m_pointer;
+#endif
+};
+
+struct SameSizeAsNodeRareData : public NoBaseWillBeGarbageCollectedFinalized<SameSizeAsNodeRareData>
+                              , public SameSizeAsNodeRareDataBase
+{
     RawPtrWillBeMember<void*> m_willbeMember[2];
     unsigned m_bitfields;
 };
