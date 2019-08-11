@@ -17,11 +17,12 @@
 #include "build/build_config.h"
 
 #if OS_WIN
-
 #   pragma warning(disable: 4244)
-
 #   define NOMINMAX
+#endif
 
+#if (OS_MACOSX || OS_IOS)
+#   pragma clang diagnostic ignored "-Wshorten-64-to-32"
 #endif
 
 #include <cassert>
