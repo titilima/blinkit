@@ -12,7 +12,8 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-BK_SRC = $(PROJECT_DIR)/../../../src
+BK_ROOT = $(PROJECT_DIR)/../../..
+BK_SRC = $(BK_ROOT)/src
 BK_CR_SRC = $(BK_SRC)/chromium
 
 CLANG_CXX_LANGUAGE_STANDARD = c++17
