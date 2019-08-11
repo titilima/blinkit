@@ -111,8 +111,8 @@
 		F93F3AD722FEEA780059DA35 /* BlinKit.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = BlinKit.xcconfig; path = ../BlinKit.xcconfig; sourceTree = SOURCE_ROOT; };
 		F93F3ADA22FEF2880059DA35 /* string_util_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_util_posix.h; sourceTree = "<group>"; };
 		F93F3ADD22FEF3400059DA35 /* histogram_macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = histogram_macros.h; sourceTree = "<group>"; };
-		F93F3ADF22FF16030059DA35 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = ../PrefixHeader.pch; sourceTree = "<group>"; };
-		F98DA35622FFDEA100A1F2D0 /* _pc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _pc.h; path = ../../../src/base/_pc.h; sourceTree = "<group>"; };
+		F93F3ADF22FF16030059DA35 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = ../PrefixHeader.pch; sourceTree = SOURCE_ROOT; };
+		F98DA35622FFDEA100A1F2D0 /* _pc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _pc.h; path = ../../../src/base/_pc.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
