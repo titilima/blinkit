@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Color.h
+// Description: Color Class
+//      Author: Ziming Li
+//     Created: 2019-08-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2004, 2005, 2006, 2010 Apple Inc. All rights reserved.
  *
@@ -57,7 +68,7 @@ struct NamedColor {
     unsigned ARGBValue;
 };
 
-PLATFORM_EXPORT const NamedColor* findColor(register const char* str, register unsigned len);
+PLATFORM_EXPORT const NamedColor* findColor(const char* str, unsigned len);
 
 class PLATFORM_EXPORT Color {
     DISALLOW_NEW_EXCEPT_PLACEMENT_NEW();

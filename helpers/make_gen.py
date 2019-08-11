@@ -15,6 +15,13 @@ def run_script(rel_path, args = ''):
         cmd_line += ' '
         cmd_line += args
     return run(cmd_line)
+def fix_gperf_for_cxx17(file_path):
+    with open(file_path, 'r+') as f:
+        s = f.read()
+        s = s.replace('register ', '')
+        f.seek(0)
+        f.write(s)
+        f.truncate()
 
 # Apply path for python modules
 sys.path.append(get_full_path('src/chromium/third_party'))
@@ -202,7 +209,9 @@ run_script('build/scripts/make_token_matcher.py',   \
     + os.path.normpath('gen/core/HTMLMetaElement.cpp')  \
 )
 
+color_data = os.path.normpath('gen/platform/ColorData.cpp')
 run(GPERF + ' --key-positions=* -D -s 2 '   \
     'platform/ColorData.gperf ' \
-    '--output-file=' + os.path.normpath('gen/platform/ColorData.cpp')   \
+    '--output-file=' + color_data   \
 )
+fix_gperf_for_cxx17(color_data)
