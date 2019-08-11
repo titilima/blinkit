@@ -25,5 +25,7 @@
 #endif
 
 #include <cassert>
+#include <cctype>
+#include <cstring>
 
 #endif // BLINKIT_BASE__PC_H
