@@ -12,6 +12,10 @@
 #ifndef BLINKIT_PREFIXHEADER_PCH
 #define BLINKIT_PREFIXHEADER_PCH
 
+#if DEBUG
+#   define _DEBUG
+#endif
+
 #include "_pc.h"
 
 #endif // BLINKIT_PREFIXHEADER_PCH
