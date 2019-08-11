@@ -1,9 +1,21 @@
-//
-//  BlinKit.xcconfig
-//  
-//
-//  Created by Ziming Li on 2019/8/10.
-//
+// -------------------------------------------------
+// BlinKit
+// -------------------------------------------------
+//   File Name: BlinKit.xcconfig
+// Description: Common Configurations
+//      Author: Ziming Li
+//     Created: 2019-08-10
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
 
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
+
+BK_SRC = $(PROJECT_DIR)/../../../src
+BK_CR_SRC = $(BK_SRC)/chromium
+
+CLANG_CXX_LANGUAGE_STANDARD = c++17
+GCC_PREFIX_HEADER = $(PROJECT_DIR)/../PrefixHeader.pch
+USE_HEADERMAP = NO
+USER_HEADER_SEARCH_PATHS = $(BK_SRC) $(BK_CR_SRC) $(inherited)
