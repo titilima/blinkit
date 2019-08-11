@@ -28,6 +28,8 @@ typedef int8_t UBool;
 
 #if OS_WIN
 typedef wchar_t UChar;
+#elif (OS_MACOSX || OS_IOS)
+typedef char16_t UChar;
 #endif
 
 typedef int32_t UChar32;
