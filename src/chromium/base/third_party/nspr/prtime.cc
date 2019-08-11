@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - base Library
+// -------------------------------------------------
+//   File Name: prtime.cc
+// Description: NSPR date and time functions
+//      Author: Ziming Li
+//     Created: 2019-08-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /* Portions are Copyright (C) 2011 Google Inc */
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -788,7 +799,7 @@ PR_ParseTimeString(
                                           tmp_usec = tmp_usec * 10 + *end - '0';
                                         end++;
                                       }
-                                    int ndigits = end - rest;
+                                    int ndigits = static_cast<int>(end - rest);
                                     while (ndigits++ < 6)
                                       tmp_usec *= 10;
                                     rest = end;
