@@ -20,6 +20,8 @@ namespace icu {
 
 class BreakIterator {
 public:
+    virtual ~BreakIterator(void) = default;
+
     enum {
         DONE = (int32_t)-1
     };
