@@ -27,4 +27,7 @@
    <FileRef
       location = "group:js_crawler/js_crawler.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:stub/stub.xcodeproj">
+   </FileRef>
 </Workspace>
