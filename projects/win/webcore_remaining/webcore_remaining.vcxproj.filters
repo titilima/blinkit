@@ -2992,9 +2992,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameHost.h">
       <Filter>frame</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameOwner.h">
-      <Filter>frame</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\frame\FrameTypes.h">
       <Filter>frame</Filter>
     </ClInclude>
