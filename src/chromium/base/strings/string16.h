@@ -19,13 +19,20 @@
 
 #include "base/base_export.h"
 #include "build/build_config.h"
+#if (OS_MACOSX || OS_IOS)
+#   include <MacTypes.h>
+#endif
 
 namespace base {
 
 #if defined(WCHAR_T_IS_UTF16)
 typedef wchar_t char16;
 #elif defined(WCHAR_T_IS_UTF32)
+#   if (OS_MACOSX || OS_IOS)
+typedef UniChar char16;
+#   else
 typedef char16_t char16;
+#   endif
 #endif
 typedef std::basic_string<char16> string16;
 

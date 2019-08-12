@@ -16,6 +16,9 @@
 
 #include <cstddef>
 #include <cstdint>
+#if (OS_MACOSX || OS_IOS)
+#   include <MacTypes.h>
+#endif
 
 typedef int8_t UBool;
 
@@ -29,7 +32,7 @@ typedef int8_t UBool;
 #if OS_WIN
 typedef wchar_t UChar;
 #elif (OS_MACOSX || OS_IOS)
-typedef char16_t UChar;
+typedef UniChar UChar;
 #endif
 
 typedef int32_t UChar32;
