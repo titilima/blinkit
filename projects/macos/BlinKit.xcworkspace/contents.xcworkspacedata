@@ -20,6 +20,9 @@
       <FileRef
          location = "group:modules/modules.xcodeproj">
       </FileRef>
+      <FileRef
+         location = "group:net/net.xcodeproj">
+      </FileRef>
    </Group>
    <FileRef
       location = "group:js_crawler/js_crawler.xcodeproj">

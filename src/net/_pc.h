@@ -21,6 +21,12 @@
 #   define NOMINMAX
 #endif
 
+#if (OS_MACOSX || OS_IOS)
+#   pragma clang diagnostic ignored "-Wshorten-64-to-32"
+#   pragma clang diagnostic ignored "-Wunused-const-variable"
+#   pragma clang diagnostic ignored "-Wunused-variable"
+#endif
+
 #include <cassert>
 
 #endif // BLINKIT_NET__PC_H
