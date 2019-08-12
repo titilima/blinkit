@@ -354,6 +354,9 @@
     <ProjectReference Include="..\blink_web\blink_web.vcxproj">
       <Project>{f1c61470-7860-4d03-b90f-78c892ac0cf7}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\duktape\duktape.vcxproj">
+      <Project>{c8a7568b-b29b-430c-99a1-e43120933154}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\js\js.vcxproj">
       <Project>{96449ff1-982f-4e4b-8617-f9e6cb647304}</Project>
     </ProjectReference>

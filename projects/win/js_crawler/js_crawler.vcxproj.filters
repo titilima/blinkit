@@ -12,9 +12,6 @@
     <Filter Include="context">
       <UniqueIdentifier>{28a25552-3bf9-4f9c-a436-9fd66df324c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="duktape">
-      <UniqueIdentifier>{f4e90667-3981-4cd0-90e8-b3b208f166b1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="public">
       <UniqueIdentifier>{a8fad8d4-dca6-4041-96ca-100599a0730a}</UniqueIdentifier>
     </Filter>
@@ -37,12 +34,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\js\context\value_impl.h">
       <Filter>context</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\js\duktape\duktape.h">
-      <Filter>duktape</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\js\duktape\duk_config.h">
-      <Filter>duktape</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\js\public\script_controller.h">
       <Filter>public</Filter>
@@ -151,9 +142,6 @@
     <ClCompile Include="..\..\..\src\js\context\value_impl.cpp">
       <Filter>context</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\js\duktape\duktape.c">
-      <Filter>duktape</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\js\public\script_controller.cpp">
       <Filter>public</Filter>
     </ClCompile>
@@ -244,10 +232,5 @@
     <ClCompile Include="..\..\..\src\js\bindings\duk_input_element.cpp">
       <Filter>bindings</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\src\js\duktape\duk_source_meta.json">
-      <Filter>duktape</Filter>
-    </None>
   </ItemGroup>
 </Project>

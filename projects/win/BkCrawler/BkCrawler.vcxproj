@@ -341,6 +341,9 @@
     <ProjectReference Include="..\blink_crawler\blink_crawler.vcxproj">
       <Project>{b35de08a-79a8-41d5-b651-813900363e9d}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\duktape\duktape.vcxproj">
+      <Project>{c8a7568b-b29b-430c-99a1-e43120933154}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\js_crawler\js_crawler.vcxproj">
       <Project>{27cb8ef8-f977-4466-991e-81eede3bbfbb}</Project>
     </ProjectReference>

@@ -274,8 +274,6 @@
     <ClInclude Include="..\..\..\src\js\context\function_manager.h" />
     <ClInclude Include="..\..\..\src\js\context\prototype_manager.h" />
     <ClInclude Include="..\..\..\src\js\context\value_impl.h" />
-    <ClInclude Include="..\..\..\src\js\duktape\duktape.h" />
-    <ClInclude Include="..\..\..\src\js\duktape\duk_config.h" />
     <ClInclude Include="..\..\..\src\js\public\script_controller.h" />
     <ClInclude Include="..\..\..\src\js\public\script_event_listener.h" />
     <ClInclude Include="..\..\..\src\js\public\script_source_code.h" />
@@ -312,29 +310,6 @@
     <ClCompile Include="..\..\..\src\js\context\function_manager.cpp" />
     <ClCompile Include="..\..\..\src\js\context\prototype_manager.cpp" />
     <ClCompile Include="..\..\..\src\js\context\value_impl.cpp" />
-    <ClCompile Include="..\..\..\src\js\duktape\duktape.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseLTL|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseLTL|x64'">NotUsing</PrecompiledHeader>
-      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </ForcedIncludeFiles>
-      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </ForcedIncludeFiles>
-      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </ForcedIncludeFiles>
-      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='ReleaseLTL|Win32'">
-      </ForcedIncludeFiles>
-      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </ForcedIncludeFiles>
-      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='ReleaseLTL|x64'">
-      </ForcedIncludeFiles>
-      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4819;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='ReleaseLTL|Win32'">4819;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4819;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\js\public\script_controller.cpp" />
     <ClCompile Include="..\..\..\src\js\public\script_event_listener.cpp" />
     <ClCompile Include="..\..\..\src\js\public\script_source_code.cpp" />
@@ -348,9 +323,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseLTL|x64'">Create</PrecompiledHeader>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\src\js\duktape\duk_source_meta.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
