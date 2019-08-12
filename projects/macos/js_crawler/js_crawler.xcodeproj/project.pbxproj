@@ -1,0 +1,604 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F941DC13230156B900007B98 /* PrefixHeader.pch in Headers */ = {isa = PBXBuildFile; fileRef = F941DC12230156B900007B98 /* PrefixHeader.pch */; };
+		F941DCD72301577800007B98 /* duk.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DC832301577800007B98 /* duk.h */; };
+		F941DCD82301577800007B98 /* duk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DC842301577800007B98 /* duk.cpp */; };
+		F941DCD92301577800007B98 /* _pc.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DC852301577800007B98 /* _pc.h */; };
+		F941DCDA2301577800007B98 /* prototype_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DC872301577800007B98 /* prototype_manager.h */; };
+		F941DCDB2301577800007B98 /* duk_context.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DC882301577800007B98 /* duk_context.h */; };
+		F941DCDC2301577800007B98 /* function_context_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DC892301577800007B98 /* function_context_impl.h */; };
+		F941DCDD2301577800007B98 /* duk_context.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DC8A2301577800007B98 /* duk_context.cpp */; };
+		F941DCDE2301577800007B98 /* value_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DC8B2301577800007B98 /* value_impl.h */; };
+		F941DCDF2301577800007B98 /* function_context_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DC8C2301577800007B98 /* function_context_impl.cpp */; };
+		F941DCE02301577800007B98 /* prototype_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DC8D2301577800007B98 /* prototype_manager.cpp */; };
+		F941DCE12301577800007B98 /* value_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DC8E2301577800007B98 /* value_impl.cpp */; };
+		F941DCE22301577800007B98 /* function_manager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DC8F2301577800007B98 /* function_manager.cpp */; };
+		F941DCE32301577800007B98 /* caller_context_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DC902301577800007B98 /* caller_context_impl.cpp */; };
+		F941DCE42301577800007B98 /* caller_context_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DC912301577800007B98 /* caller_context_impl.h */; };
+		F941DCE52301577800007B98 /* function_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DC922301577800007B98 /* function_manager.h */; };
+		F941DCE62301577800007B98 /* script_streamer.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DC942301577800007B98 /* script_streamer.h */; };
+		F941DCE72301577800007B98 /* script_controller.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DC952301577800007B98 /* script_controller.h */; };
+		F941DCE82301577800007B98 /* script_event_listener.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DC962301577800007B98 /* script_event_listener.h */; };
+		F941DCE92301577800007B98 /* script_event_listener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DC972301577800007B98 /* script_event_listener.cpp */; };
+		F941DCEA2301577800007B98 /* script_source_code.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DC982301577800007B98 /* script_source_code.h */; };
+		F941DCEB2301577800007B98 /* script_streamer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DC992301577800007B98 /* script_streamer.cpp */; };
+		F941DCEC2301577800007B98 /* script_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DC9A2301577800007B98 /* script_controller.cpp */; };
+		F941DCED2301577800007B98 /* script_source_code.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DC9B2301577800007B98 /* script_source_code.cpp */; };
+		F941DCEE2301577800007B98 /* duk_console.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DC9D2301577800007B98 /* duk_console.h */; };
+		F941DCF02301577800007B98 /* duk_exception_state.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DC9F2301577800007B98 /* duk_exception_state.h */; };
+		F941DCF12301577800007B98 /* duk_node_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCA02301577800007B98 /* duk_node_list.cpp */; };
+		F941DCF22301577800007B98 /* duk_lazy_event_listener.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCA12301577800007B98 /* duk_lazy_event_listener.h */; };
+		F941DCF32301577800007B98 /* duk_xhr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCA22301577800007B98 /* duk_xhr.cpp */; };
+		F941DCF42301577800007B98 /* duk_location.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCA32301577800007B98 /* duk_location.cpp */; };
+		F941DCF62301577800007B98 /* duk_text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCA52301577800007B98 /* duk_text.cpp */; };
+		F941DCF72301577800007B98 /* duk_document.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCA62301577800007B98 /* duk_document.h */; };
+		F941DCF82301577800007B98 /* duk_document_fragment.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCA72301577800007B98 /* duk_document_fragment.h */; };
+		F941DCF92301577800007B98 /* duk_binding_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCA82301577800007B98 /* duk_binding_impl.cpp */; };
+		F941DCFA2301577800007B98 /* duk_event_listener.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCA92301577800007B98 /* duk_event_listener.h */; };
+		F941DCFB2301577800007B98 /* duk_attr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCAA2301577800007B98 /* duk_attr.cpp */; };
+		F941DCFC2301577800007B98 /* duk_object_impl.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F941DCAB2301577800007B98 /* duk_object_impl.hpp */; };
+		F941DCFD2301577800007B98 /* duk_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCAC2301577800007B98 /* duk_node.cpp */; };
+		F941DCFE2301577800007B98 /* duk_comment.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCAD2301577800007B98 /* duk_comment.h */; };
+		F941DCFF2301577800007B98 /* duk_location.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCAE2301577800007B98 /* duk_location.h */; };
+		F941DD002301577800007B98 /* duk_comment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCAF2301577800007B98 /* duk_comment.cpp */; };
+		F941DD012301577800007B98 /* duk_mouse_event.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCB02301577800007B98 /* duk_mouse_event.h */; };
+		F941DD022301577800007B98 /* duk_console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCB12301577800007B98 /* duk_console.cpp */; };
+		F941DD042301577800007B98 /* duk_window.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCB32301577800007B98 /* duk_window.h */; };
+		F941DD052301577800007B98 /* duk_exception_state.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCB42301577800007B98 /* duk_exception_state.cpp */; };
+		F941DD062301577800007B98 /* duk_input_element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCB52301577800007B98 /* duk_input_element.cpp */; };
+		F941DD072301577800007B98 /* duk_container_node.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCB62301577800007B98 /* duk_container_node.h */; };
+		F941DD082301577800007B98 /* duk_element.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCB72301577800007B98 /* duk_element.h */; };
+		F941DD092301577800007B98 /* duk_document.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCB82301577800007B98 /* duk_document.cpp */; };
+		F941DD0A2301577800007B98 /* duk_named_node_map.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCB92301577800007B98 /* duk_named_node_map.h */; };
+		F941DD0B2301577800007B98 /* duk_event_target.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCBA2301577800007B98 /* duk_event_target.h */; };
+		F941DD0C2301577800007B98 /* duk_named_node_map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCBB2301577800007B98 /* duk_named_node_map.cpp */; };
+		F941DD0D2301577800007B98 /* duk_input_element.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCBC2301577800007B98 /* duk_input_element.h */; };
+		F941DD0E2301577800007B98 /* duk_html_collection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCBD2301577800007B98 /* duk_html_collection.cpp */; };
+		F941DD0F2301577800007B98 /* duk_mouse_event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCBE2301577800007B98 /* duk_mouse_event.cpp */; };
+		F941DD102301577800007B98 /* duk_binding_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCBF2301577800007B98 /* duk_binding_impl.h */; };
+		F941DD122301577800007B98 /* duk_lazy_event_listener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCC12301577800007B98 /* duk_lazy_event_listener.cpp */; };
+		F941DD132301577800007B98 /* duk_node.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCC22301577800007B98 /* duk_node.h */; };
+		F941DD142301577800007B98 /* duk_event.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCC32301577800007B98 /* duk_event.h */; };
+		F941DD152301577800007B98 /* duk_attr.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCC42301577800007B98 /* duk_attr.h */; };
+		F941DD162301577800007B98 /* duk_document_fragment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCC52301577800007B98 /* duk_document_fragment.cpp */; };
+		F941DD172301577800007B98 /* duk_event_target.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCC62301577800007B98 /* duk_event_target.cpp */; };
+		F941DD182301577800007B98 /* duk_event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCC72301577800007B98 /* duk_event.cpp */; };
+		F941DD192301577800007B98 /* duk_window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCC82301577800007B98 /* duk_window.cpp */; };
+		F941DD1A2301577800007B98 /* duk_container_node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCC92301577800007B98 /* duk_container_node.cpp */; };
+		F941DD1B2301577800007B98 /* duk_xhr.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCCA2301577800007B98 /* duk_xhr.h */; };
+		F941DD1D2301577800007B98 /* duk_element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCCC2301577800007B98 /* duk_element.cpp */; };
+		F941DD1E2301577800007B98 /* duk_event_listener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DCCD2301577800007B98 /* duk_event_listener.cpp */; };
+		F941DD202301577800007B98 /* duk_html_collection.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCCF2301577800007B98 /* duk_html_collection.h */; };
+		F941DD212301577800007B98 /* duk_node_list.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCD02301577800007B98 /* duk_node_list.h */; };
+		F941DD222301577800007B98 /* duk_text.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DCD12301577800007B98 /* duk_text.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		F941DC0A2301565D00007B98 /* libjs_crawler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libjs_crawler.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F941DC11230156B900007B98 /* blink.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = blink.xcconfig; path = ../blink.xcconfig; sourceTree = SOURCE_ROOT; };
+		F941DC12230156B900007B98 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = ../PrefixHeader.pch; sourceTree = SOURCE_ROOT; };
+		F941DC832301577800007B98 /* duk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk.h; sourceTree = "<group>"; };
+		F941DC842301577800007B98 /* duk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk.cpp; sourceTree = "<group>"; };
+		F941DC852301577800007B98 /* _pc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _pc.h; sourceTree = "<group>"; };
+		F941DC872301577800007B98 /* prototype_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prototype_manager.h; sourceTree = "<group>"; };
+		F941DC882301577800007B98 /* duk_context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_context.h; sourceTree = "<group>"; };
+		F941DC892301577800007B98 /* function_context_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = function_context_impl.h; sourceTree = "<group>"; };
+		F941DC8A2301577800007B98 /* duk_context.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_context.cpp; sourceTree = "<group>"; };
+		F941DC8B2301577800007B98 /* value_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = value_impl.h; sourceTree = "<group>"; };
+		F941DC8C2301577800007B98 /* function_context_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = function_context_impl.cpp; sourceTree = "<group>"; };
+		F941DC8D2301577800007B98 /* prototype_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = prototype_manager.cpp; sourceTree = "<group>"; };
+		F941DC8E2301577800007B98 /* value_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = value_impl.cpp; sourceTree = "<group>"; };
+		F941DC8F2301577800007B98 /* function_manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = function_manager.cpp; sourceTree = "<group>"; };
+		F941DC902301577800007B98 /* caller_context_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = caller_context_impl.cpp; sourceTree = "<group>"; };
+		F941DC912301577800007B98 /* caller_context_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = caller_context_impl.h; sourceTree = "<group>"; };
+		F941DC922301577800007B98 /* function_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = function_manager.h; sourceTree = "<group>"; };
+		F941DC942301577800007B98 /* script_streamer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = script_streamer.h; sourceTree = "<group>"; };
+		F941DC952301577800007B98 /* script_controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = script_controller.h; sourceTree = "<group>"; };
+		F941DC962301577800007B98 /* script_event_listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = script_event_listener.h; sourceTree = "<group>"; };
+		F941DC972301577800007B98 /* script_event_listener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = script_event_listener.cpp; sourceTree = "<group>"; };
+		F941DC982301577800007B98 /* script_source_code.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = script_source_code.h; sourceTree = "<group>"; };
+		F941DC992301577800007B98 /* script_streamer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = script_streamer.cpp; sourceTree = "<group>"; };
+		F941DC9A2301577800007B98 /* script_controller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = script_controller.cpp; sourceTree = "<group>"; };
+		F941DC9B2301577800007B98 /* script_source_code.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = script_source_code.cpp; sourceTree = "<group>"; };
+		F941DC9D2301577800007B98 /* duk_console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_console.h; sourceTree = "<group>"; };
+		F941DC9F2301577800007B98 /* duk_exception_state.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_exception_state.h; sourceTree = "<group>"; };
+		F941DCA02301577800007B98 /* duk_node_list.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_node_list.cpp; sourceTree = "<group>"; };
+		F941DCA12301577800007B98 /* duk_lazy_event_listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_lazy_event_listener.h; sourceTree = "<group>"; };
+		F941DCA22301577800007B98 /* duk_xhr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_xhr.cpp; sourceTree = "<group>"; };
+		F941DCA32301577800007B98 /* duk_location.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_location.cpp; sourceTree = "<group>"; };
+		F941DCA52301577800007B98 /* duk_text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_text.cpp; sourceTree = "<group>"; };
+		F941DCA62301577800007B98 /* duk_document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_document.h; sourceTree = "<group>"; };
+		F941DCA72301577800007B98 /* duk_document_fragment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_document_fragment.h; sourceTree = "<group>"; };
+		F941DCA82301577800007B98 /* duk_binding_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_binding_impl.cpp; sourceTree = "<group>"; };
+		F941DCA92301577800007B98 /* duk_event_listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_event_listener.h; sourceTree = "<group>"; };
+		F941DCAA2301577800007B98 /* duk_attr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_attr.cpp; sourceTree = "<group>"; };
+		F941DCAB2301577800007B98 /* duk_object_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = duk_object_impl.hpp; sourceTree = "<group>"; };
+		F941DCAC2301577800007B98 /* duk_node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_node.cpp; sourceTree = "<group>"; };
+		F941DCAD2301577800007B98 /* duk_comment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_comment.h; sourceTree = "<group>"; };
+		F941DCAE2301577800007B98 /* duk_location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_location.h; sourceTree = "<group>"; };
+		F941DCAF2301577800007B98 /* duk_comment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_comment.cpp; sourceTree = "<group>"; };
+		F941DCB02301577800007B98 /* duk_mouse_event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_mouse_event.h; sourceTree = "<group>"; };
+		F941DCB12301577800007B98 /* duk_console.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_console.cpp; sourceTree = "<group>"; };
+		F941DCB32301577800007B98 /* duk_window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_window.h; sourceTree = "<group>"; };
+		F941DCB42301577800007B98 /* duk_exception_state.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_exception_state.cpp; sourceTree = "<group>"; };
+		F941DCB52301577800007B98 /* duk_input_element.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_input_element.cpp; sourceTree = "<group>"; };
+		F941DCB62301577800007B98 /* duk_container_node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_container_node.h; sourceTree = "<group>"; };
+		F941DCB72301577800007B98 /* duk_element.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_element.h; sourceTree = "<group>"; };
+		F941DCB82301577800007B98 /* duk_document.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_document.cpp; sourceTree = "<group>"; };
+		F941DCB92301577800007B98 /* duk_named_node_map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_named_node_map.h; sourceTree = "<group>"; };
+		F941DCBA2301577800007B98 /* duk_event_target.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_event_target.h; sourceTree = "<group>"; };
+		F941DCBB2301577800007B98 /* duk_named_node_map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_named_node_map.cpp; sourceTree = "<group>"; };
+		F941DCBC2301577800007B98 /* duk_input_element.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_input_element.h; sourceTree = "<group>"; };
+		F941DCBD2301577800007B98 /* duk_html_collection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_html_collection.cpp; sourceTree = "<group>"; };
+		F941DCBE2301577800007B98 /* duk_mouse_event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_mouse_event.cpp; sourceTree = "<group>"; };
+		F941DCBF2301577800007B98 /* duk_binding_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_binding_impl.h; sourceTree = "<group>"; };
+		F941DCC12301577800007B98 /* duk_lazy_event_listener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_lazy_event_listener.cpp; sourceTree = "<group>"; };
+		F941DCC22301577800007B98 /* duk_node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_node.h; sourceTree = "<group>"; };
+		F941DCC32301577800007B98 /* duk_event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_event.h; sourceTree = "<group>"; };
+		F941DCC42301577800007B98 /* duk_attr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_attr.h; sourceTree = "<group>"; };
+		F941DCC52301577800007B98 /* duk_document_fragment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_document_fragment.cpp; sourceTree = "<group>"; };
+		F941DCC62301577800007B98 /* duk_event_target.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_event_target.cpp; sourceTree = "<group>"; };
+		F941DCC72301577800007B98 /* duk_event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_event.cpp; sourceTree = "<group>"; };
+		F941DCC82301577800007B98 /* duk_window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_window.cpp; sourceTree = "<group>"; };
+		F941DCC92301577800007B98 /* duk_container_node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_container_node.cpp; sourceTree = "<group>"; };
+		F941DCCA2301577800007B98 /* duk_xhr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_xhr.h; sourceTree = "<group>"; };
+		F941DCCC2301577800007B98 /* duk_element.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_element.cpp; sourceTree = "<group>"; };
+		F941DCCD2301577800007B98 /* duk_event_listener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = duk_event_listener.cpp; sourceTree = "<group>"; };
+		F941DCCF2301577800007B98 /* duk_html_collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_html_collection.h; sourceTree = "<group>"; };
+		F941DCD02301577800007B98 /* duk_node_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_node_list.h; sourceTree = "<group>"; };
+		F941DCD12301577800007B98 /* duk_text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_text.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F941DC082301565D00007B98 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F941DC012301565D00007B98 = {
+			isa = PBXGroup;
+			children = (
+				F941DC812301577800007B98 /* js */,
+				F941DC11230156B900007B98 /* blink.xcconfig */,
+				F941DC12230156B900007B98 /* PrefixHeader.pch */,
+				F941DC0B2301565D00007B98 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F941DC0B2301565D00007B98 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F941DC0A2301565D00007B98 /* libjs_crawler.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F941DC812301577800007B98 /* js */ = {
+			isa = PBXGroup;
+			children = (
+				F941DC9C2301577800007B98 /* bindings */,
+				F941DC862301577800007B98 /* context */,
+				F941DC932301577800007B98 /* public */,
+				F941DC822301577800007B98 /* wrappers */,
+				F941DC852301577800007B98 /* _pc.h */,
+			);
+			name = js;
+			path = ../../../src/js;
+			sourceTree = "<group>";
+		};
+		F941DC822301577800007B98 /* wrappers */ = {
+			isa = PBXGroup;
+			children = (
+				F941DC842301577800007B98 /* duk.cpp */,
+				F941DC832301577800007B98 /* duk.h */,
+			);
+			path = wrappers;
+			sourceTree = "<group>";
+		};
+		F941DC862301577800007B98 /* context */ = {
+			isa = PBXGroup;
+			children = (
+				F941DC902301577800007B98 /* caller_context_impl.cpp */,
+				F941DC912301577800007B98 /* caller_context_impl.h */,
+				F941DC8A2301577800007B98 /* duk_context.cpp */,
+				F941DC882301577800007B98 /* duk_context.h */,
+				F941DC8C2301577800007B98 /* function_context_impl.cpp */,
+				F941DC892301577800007B98 /* function_context_impl.h */,
+				F941DC8F2301577800007B98 /* function_manager.cpp */,
+				F941DC922301577800007B98 /* function_manager.h */,
+				F941DC8D2301577800007B98 /* prototype_manager.cpp */,
+				F941DC872301577800007B98 /* prototype_manager.h */,
+				F941DC8E2301577800007B98 /* value_impl.cpp */,
+				F941DC8B2301577800007B98 /* value_impl.h */,
+			);
+			path = context;
+			sourceTree = "<group>";
+		};
+		F941DC932301577800007B98 /* public */ = {
+			isa = PBXGroup;
+			children = (
+				F941DC9A2301577800007B98 /* script_controller.cpp */,
+				F941DC952301577800007B98 /* script_controller.h */,
+				F941DC972301577800007B98 /* script_event_listener.cpp */,
+				F941DC962301577800007B98 /* script_event_listener.h */,
+				F941DC9B2301577800007B98 /* script_source_code.cpp */,
+				F941DC982301577800007B98 /* script_source_code.h */,
+				F941DC992301577800007B98 /* script_streamer.cpp */,
+				F941DC942301577800007B98 /* script_streamer.h */,
+			);
+			path = public;
+			sourceTree = "<group>";
+		};
+		F941DC9C2301577800007B98 /* bindings */ = {
+			isa = PBXGroup;
+			children = (
+				F941DCAA2301577800007B98 /* duk_attr.cpp */,
+				F941DCC42301577800007B98 /* duk_attr.h */,
+				F941DCA82301577800007B98 /* duk_binding_impl.cpp */,
+				F941DCBF2301577800007B98 /* duk_binding_impl.h */,
+				F941DCAF2301577800007B98 /* duk_comment.cpp */,
+				F941DCAD2301577800007B98 /* duk_comment.h */,
+				F941DCB12301577800007B98 /* duk_console.cpp */,
+				F941DC9D2301577800007B98 /* duk_console.h */,
+				F941DCC92301577800007B98 /* duk_container_node.cpp */,
+				F941DCB62301577800007B98 /* duk_container_node.h */,
+				F941DCC52301577800007B98 /* duk_document_fragment.cpp */,
+				F941DCA72301577800007B98 /* duk_document_fragment.h */,
+				F941DCB82301577800007B98 /* duk_document.cpp */,
+				F941DCA62301577800007B98 /* duk_document.h */,
+				F941DCCC2301577800007B98 /* duk_element.cpp */,
+				F941DCB72301577800007B98 /* duk_element.h */,
+				F941DCCD2301577800007B98 /* duk_event_listener.cpp */,
+				F941DCA92301577800007B98 /* duk_event_listener.h */,
+				F941DCC62301577800007B98 /* duk_event_target.cpp */,
+				F941DCBA2301577800007B98 /* duk_event_target.h */,
+				F941DCC72301577800007B98 /* duk_event.cpp */,
+				F941DCC32301577800007B98 /* duk_event.h */,
+				F941DCB42301577800007B98 /* duk_exception_state.cpp */,
+				F941DC9F2301577800007B98 /* duk_exception_state.h */,
+				F941DCBD2301577800007B98 /* duk_html_collection.cpp */,
+				F941DCCF2301577800007B98 /* duk_html_collection.h */,
+				F941DCB52301577800007B98 /* duk_input_element.cpp */,
+				F941DCBC2301577800007B98 /* duk_input_element.h */,
+				F941DCC12301577800007B98 /* duk_lazy_event_listener.cpp */,
+				F941DCA12301577800007B98 /* duk_lazy_event_listener.h */,
+				F941DCA32301577800007B98 /* duk_location.cpp */,
+				F941DCAE2301577800007B98 /* duk_location.h */,
+				F941DCBE2301577800007B98 /* duk_mouse_event.cpp */,
+				F941DCB02301577800007B98 /* duk_mouse_event.h */,
+				F941DCBB2301577800007B98 /* duk_named_node_map.cpp */,
+				F941DCB92301577800007B98 /* duk_named_node_map.h */,
+				F941DCA02301577800007B98 /* duk_node_list.cpp */,
+				F941DCD02301577800007B98 /* duk_node_list.h */,
+				F941DCAC2301577800007B98 /* duk_node.cpp */,
+				F941DCC22301577800007B98 /* duk_node.h */,
+				F941DCAB2301577800007B98 /* duk_object_impl.hpp */,
+				F941DCA52301577800007B98 /* duk_text.cpp */,
+				F941DCD12301577800007B98 /* duk_text.h */,
+				F941DCC82301577800007B98 /* duk_window.cpp */,
+				F941DCB32301577800007B98 /* duk_window.h */,
+				F941DCA22301577800007B98 /* duk_xhr.cpp */,
+				F941DCCA2301577800007B98 /* duk_xhr.h */,
+			);
+			path = bindings;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		F941DC062301565D00007B98 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F941DCD92301577800007B98 /* _pc.h in Headers */,
+				F941DD152301577800007B98 /* duk_attr.h in Headers */,
+				F941DD132301577800007B98 /* duk_node.h in Headers */,
+				F941DD0B2301577800007B98 /* duk_event_target.h in Headers */,
+				F941DD082301577800007B98 /* duk_element.h in Headers */,
+				F941DCDB2301577800007B98 /* duk_context.h in Headers */,
+				F941DCF72301577800007B98 /* duk_document.h in Headers */,
+				F941DCDC2301577800007B98 /* function_context_impl.h in Headers */,
+				F941DCE42301577800007B98 /* caller_context_impl.h in Headers */,
+				F941DCF82301577800007B98 /* duk_document_fragment.h in Headers */,
+				F941DCE82301577800007B98 /* script_event_listener.h in Headers */,
+				F941DCF02301577800007B98 /* duk_exception_state.h in Headers */,
+				F941DCDA2301577800007B98 /* prototype_manager.h in Headers */,
+				F941DCE72301577800007B98 /* script_controller.h in Headers */,
+				F941DCFF2301577800007B98 /* duk_location.h in Headers */,
+				F941DD222301577800007B98 /* duk_text.h in Headers */,
+				F941DD0A2301577800007B98 /* duk_named_node_map.h in Headers */,
+				F941DD1B2301577800007B98 /* duk_xhr.h in Headers */,
+				F941DCF22301577800007B98 /* duk_lazy_event_listener.h in Headers */,
+				F941DD142301577800007B98 /* duk_event.h in Headers */,
+				F941DD102301577800007B98 /* duk_binding_impl.h in Headers */,
+				F941DD012301577800007B98 /* duk_mouse_event.h in Headers */,
+				F941DD212301577800007B98 /* duk_node_list.h in Headers */,
+				F941DCE52301577800007B98 /* function_manager.h in Headers */,
+				F941DD042301577800007B98 /* duk_window.h in Headers */,
+				F941DC13230156B900007B98 /* PrefixHeader.pch in Headers */,
+				F941DCEE2301577800007B98 /* duk_console.h in Headers */,
+				F941DCEA2301577800007B98 /* script_source_code.h in Headers */,
+				F941DD0D2301577800007B98 /* duk_input_element.h in Headers */,
+				F941DD202301577800007B98 /* duk_html_collection.h in Headers */,
+				F941DCFA2301577800007B98 /* duk_event_listener.h in Headers */,
+				F941DCFE2301577800007B98 /* duk_comment.h in Headers */,
+				F941DCDE2301577800007B98 /* value_impl.h in Headers */,
+				F941DCE62301577800007B98 /* script_streamer.h in Headers */,
+				F941DD072301577800007B98 /* duk_container_node.h in Headers */,
+				F941DCD72301577800007B98 /* duk.h in Headers */,
+				F941DCFC2301577800007B98 /* duk_object_impl.hpp in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		F941DC092301565D00007B98 /* js_crawler */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F941DC0E2301565D00007B98 /* Build configuration list for PBXNativeTarget "js_crawler" */;
+			buildPhases = (
+				F941DC062301565D00007B98 /* Headers */,
+				F941DC072301565D00007B98 /* Sources */,
+				F941DC082301565D00007B98 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = js_crawler;
+			productName = js_crawler;
+			productReference = F941DC0A2301565D00007B98 /* libjs_crawler.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F941DC022301565D00007B98 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1030;
+				ORGANIZATIONNAME = "MingYang Software Technology";
+				TargetAttributes = {
+					F941DC092301565D00007B98 = {
+						CreatedOnToolsVersion = 10.3;
+					};
+				};
+			};
+			buildConfigurationList = F941DC052301565D00007B98 /* Build configuration list for PBXProject "js_crawler" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = F941DC012301565D00007B98;
+			productRefGroup = F941DC0B2301565D00007B98 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F941DC092301565D00007B98 /* js_crawler */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F941DC072301565D00007B98 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F941DCF42301577800007B98 /* duk_location.cpp in Sources */,
+				F941DCF12301577800007B98 /* duk_node_list.cpp in Sources */,
+				F941DCDD2301577800007B98 /* duk_context.cpp in Sources */,
+				F941DD182301577800007B98 /* duk_event.cpp in Sources */,
+				F941DD1A2301577800007B98 /* duk_container_node.cpp in Sources */,
+				F941DD192301577800007B98 /* duk_window.cpp in Sources */,
+				F941DCE22301577800007B98 /* function_manager.cpp in Sources */,
+				F941DD0F2301577800007B98 /* duk_mouse_event.cpp in Sources */,
+				F941DD1E2301577800007B98 /* duk_event_listener.cpp in Sources */,
+				F941DD0C2301577800007B98 /* duk_named_node_map.cpp in Sources */,
+				F941DD172301577800007B98 /* duk_event_target.cpp in Sources */,
+				F941DCF32301577800007B98 /* duk_xhr.cpp in Sources */,
+				F941DCF62301577800007B98 /* duk_text.cpp in Sources */,
+				F941DCEC2301577800007B98 /* script_controller.cpp in Sources */,
+				F941DD052301577800007B98 /* duk_exception_state.cpp in Sources */,
+				F941DD162301577800007B98 /* duk_document_fragment.cpp in Sources */,
+				F941DD0E2301577800007B98 /* duk_html_collection.cpp in Sources */,
+				F941DD062301577800007B98 /* duk_input_element.cpp in Sources */,
+				F941DCDF2301577800007B98 /* function_context_impl.cpp in Sources */,
+				F941DCF92301577800007B98 /* duk_binding_impl.cpp in Sources */,
+				F941DD022301577800007B98 /* duk_console.cpp in Sources */,
+				F941DD092301577800007B98 /* duk_document.cpp in Sources */,
+				F941DCE02301577800007B98 /* prototype_manager.cpp in Sources */,
+				F941DCE12301577800007B98 /* value_impl.cpp in Sources */,
+				F941DCEB2301577800007B98 /* script_streamer.cpp in Sources */,
+				F941DCE92301577800007B98 /* script_event_listener.cpp in Sources */,
+				F941DD002301577800007B98 /* duk_comment.cpp in Sources */,
+				F941DCFD2301577800007B98 /* duk_node.cpp in Sources */,
+				F941DD122301577800007B98 /* duk_lazy_event_listener.cpp in Sources */,
+				F941DCD82301577800007B98 /* duk.cpp in Sources */,
+				F941DCED2301577800007B98 /* script_source_code.cpp in Sources */,
+				F941DD1D2301577800007B98 /* duk_element.cpp in Sources */,
+				F941DCE32301577800007B98 /* caller_context_impl.cpp in Sources */,
+				F941DCFB2301577800007B98 /* duk_attr.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F941DC0C2301565D00007B98 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F941DC11230156B900007B98 /* blink.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(BK_SRC)/js",
+					"$(inherited)",
+				);
+			};
+			name = Debug;
+		};
+		F941DC0D2301565D00007B98 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F941DC11230156B900007B98 /* blink.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(BK_SRC)/js",
+					"$(inherited)",
+				);
+			};
+			name = Release;
+		};
+		F941DC0F2301565D00007B98 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		F941DC102301565D00007B98 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F941DC052301565D00007B98 /* Build configuration list for PBXProject "js_crawler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F941DC0C2301565D00007B98 /* Debug */,
+				F941DC0D2301565D00007B98 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F941DC0E2301565D00007B98 /* Build configuration list for PBXNativeTarget "js_crawler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F941DC0F2301565D00007B98 /* Debug */,
+				F941DC102301565D00007B98 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F941DC022301565D00007B98 /* Project object */;
+}

@@ -7,20 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F941DD3B2301697400007B98 /* duk_config.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DD372301697400007B98 /* duk_config.h */; };
-		F941DD3C2301697400007B98 /* duktape.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DD382301697400007B98 /* duktape.h */; };
-		F941DD3D2301697400007B98 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = F941DD3A2301697400007B98 /* duktape.c */; };
+		F941DD502301A60900007B98 /* PrefixHeader.pch in Headers */ = {isa = PBXBuildFile; fileRef = F941DD4F2301A60900007B98 /* PrefixHeader.pch */; };
+		F941DD552301A61E00007B98 /* ModulesExport.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DD522301A61E00007B98 /* ModulesExport.h */; };
+		F941DD562301A61E00007B98 /* InitModules.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DD532301A61E00007B98 /* InitModules.cpp */; };
+		F941DD572301A61E00007B98 /* InitModules.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DD542301A61E00007B98 /* InitModules.h */; };
+		F941DD592301A63900007B98 /* _pc.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DD582301A63900007B98 /* _pc.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F941DD2F2301696200007B98 /* libduktape.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libduktape.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		F941DD372301697400007B98 /* duk_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_config.h; sourceTree = "<group>"; };
-		F941DD382301697400007B98 /* duktape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duktape.h; sourceTree = "<group>"; };
-		F941DD3A2301697400007B98 /* duktape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = duktape.c; sourceTree = "<group>"; };
+		F941DD472301A5E800007B98 /* libmodules.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmodules.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F941DD4E2301A60900007B98 /* blink.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = blink.xcconfig; path = ../blink.xcconfig; sourceTree = SOURCE_ROOT; };
+		F941DD4F2301A60900007B98 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = ../PrefixHeader.pch; sourceTree = SOURCE_ROOT; };
+		F941DD522301A61E00007B98 /* ModulesExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModulesExport.h; sourceTree = "<group>"; };
+		F941DD532301A61E00007B98 /* InitModules.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InitModules.cpp; sourceTree = "<group>"; };
+		F941DD542301A61E00007B98 /* InitModules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitModules.h; sourceTree = "<group>"; };
+		F941DD582301A63900007B98 /* _pc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _pc.h; path = ../../../src/blink/_pc.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		F941DD2D2301696200007B98 /* Frameworks */ = {
+		F941DD452301A5E800007B98 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -30,110 +35,116 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F941DD262301696200007B98 = {
+		F941DD3E2301A5E800007B98 = {
 			isa = PBXGroup;
 			children = (
-				F941DD362301697400007B98 /* duktape */,
-				F941DD302301696200007B98 /* Products */,
+				F941DD512301A61E00007B98 /* modules */,
+				F941DD582301A63900007B98 /* _pc.h */,
+				F941DD4E2301A60900007B98 /* blink.xcconfig */,
+				F941DD4F2301A60900007B98 /* PrefixHeader.pch */,
+				F941DD482301A5E800007B98 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		F941DD302301696200007B98 /* Products */ = {
+		F941DD482301A5E800007B98 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F941DD2F2301696200007B98 /* libduktape.a */,
+				F941DD472301A5E800007B98 /* libmodules.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F941DD362301697400007B98 /* duktape */ = {
+		F941DD512301A61E00007B98 /* modules */ = {
 			isa = PBXGroup;
 			children = (
-				F941DD372301697400007B98 /* duk_config.h */,
-				F941DD3A2301697400007B98 /* duktape.c */,
-				F941DD382301697400007B98 /* duktape.h */,
+				F941DD532301A61E00007B98 /* InitModules.cpp */,
+				F941DD542301A61E00007B98 /* InitModules.h */,
+				F941DD522301A61E00007B98 /* ModulesExport.h */,
 			);
-			name = duktape;
-			path = ../../../src/duktape;
-			sourceTree = "<group>";
+			name = modules;
+			path = ../../../src/chromium/third_party/WebKit/Source/modules;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		F941DD2B2301696200007B98 /* Headers */ = {
+		F941DD432301A5E800007B98 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F941DD3B2301697400007B98 /* duk_config.h in Headers */,
-				F941DD3C2301697400007B98 /* duktape.h in Headers */,
+				F941DD572301A61E00007B98 /* InitModules.h in Headers */,
+				F941DD592301A63900007B98 /* _pc.h in Headers */,
+				F941DD552301A61E00007B98 /* ModulesExport.h in Headers */,
+				F941DD502301A60900007B98 /* PrefixHeader.pch in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		F941DD2E2301696200007B98 /* duktape */ = {
+		F941DD462301A5E800007B98 /* modules */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F941DD332301696200007B98 /* Build configuration list for PBXNativeTarget "duktape" */;
+			buildConfigurationList = F941DD4B2301A5E800007B98 /* Build configuration list for PBXNativeTarget "modules" */;
 			buildPhases = (
-				F941DD2B2301696200007B98 /* Headers */,
-				F941DD2C2301696200007B98 /* Sources */,
-				F941DD2D2301696200007B98 /* Frameworks */,
+				F941DD432301A5E800007B98 /* Headers */,
+				F941DD442301A5E800007B98 /* Sources */,
+				F941DD452301A5E800007B98 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = duktape;
-			productName = duktape;
-			productReference = F941DD2F2301696200007B98 /* libduktape.a */;
+			name = modules;
+			productName = modules;
+			productReference = F941DD472301A5E800007B98 /* libmodules.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		F941DD272301696200007B98 /* Project object */ = {
+		F941DD3F2301A5E800007B98 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1030;
 				ORGANIZATIONNAME = "MingYang Software Technology";
 				TargetAttributes = {
-					F941DD2E2301696200007B98 = {
+					F941DD462301A5E800007B98 = {
 						CreatedOnToolsVersion = 10.3;
 					};
 				};
 			};
-			buildConfigurationList = F941DD2A2301696200007B98 /* Build configuration list for PBXProject "duktape" */;
+			buildConfigurationList = F941DD422301A5E800007B98 /* Build configuration list for PBXProject "modules" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = F941DD262301696200007B98;
-			productRefGroup = F941DD302301696200007B98 /* Products */;
+			mainGroup = F941DD3E2301A5E800007B98;
+			productRefGroup = F941DD482301A5E800007B98 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F941DD2E2301696200007B98 /* duktape */,
+				F941DD462301A5E800007B98 /* modules */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		F941DD2C2301696200007B98 /* Sources */ = {
+		F941DD442301A5E800007B98 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F941DD3D2301697400007B98 /* duktape.c in Sources */,
+				F941DD562301A61E00007B98 /* InitModules.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		F941DD312301696200007B98 /* Debug */ = {
+		F941DD492301A5E800007B98 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F941DD4E2301A60900007B98 /* blink.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -187,12 +198,16 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
-				WARNING_CFLAGS = "-Wno-shorten-64-to-32";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(BK_SRC)/blink",
+					"$(inherited)",
+				);
 			};
 			name = Debug;
 		};
-		F941DD322301696200007B98 /* Release */ = {
+		F941DD4A2301A5E800007B98 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F941DD4E2301A60900007B98 /* blink.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -239,11 +254,14 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
-				WARNING_CFLAGS = "-Wno-shorten-64-to-32";
+				USER_HEADER_SEARCH_PATHS = (
+					"$(BK_SRC)/blink",
+					"$(inherited)",
+				);
 			};
 			name = Release;
 		};
-		F941DD342301696200007B98 /* Debug */ = {
+		F941DD4C2301A5E800007B98 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -253,7 +271,7 @@
 			};
 			name = Debug;
 		};
-		F941DD352301696200007B98 /* Release */ = {
+		F941DD4D2301A5E800007B98 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -266,25 +284,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F941DD2A2301696200007B98 /* Build configuration list for PBXProject "duktape" */ = {
+		F941DD422301A5E800007B98 /* Build configuration list for PBXProject "modules" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F941DD312301696200007B98 /* Debug */,
-				F941DD322301696200007B98 /* Release */,
+				F941DD492301A5E800007B98 /* Debug */,
+				F941DD4A2301A5E800007B98 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F941DD332301696200007B98 /* Build configuration list for PBXNativeTarget "duktape" */ = {
+		F941DD4B2301A5E800007B98 /* Build configuration list for PBXNativeTarget "modules" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F941DD342301696200007B98 /* Debug */,
-				F941DD352301696200007B98 /* Release */,
+				F941DD4C2301A5E800007B98 /* Debug */,
+				F941DD4D2301A5E800007B98 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = F941DD272301696200007B98 /* Project object */;
+	rootObject = F941DD3F2301A5E800007B98 /* Project object */;
 }

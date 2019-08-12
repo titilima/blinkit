@@ -3,6 +3,13 @@
    version = "1.0">
    <Group
       location = "container:"
+      name = "3rd">
+      <FileRef
+         location = "group:duktape/duktape.xcodeproj">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
       name = "Chromium">
       <FileRef
          location = "group:base/base.xcodeproj">
@@ -10,5 +17,11 @@
       <FileRef
          location = "group:blink_crawler/blink_crawler.xcodeproj">
       </FileRef>
+      <FileRef
+         location = "group:modules/modules.xcodeproj">
+      </FileRef>
    </Group>
+   <FileRef
+      location = "group:js_crawler/js_crawler.xcodeproj">
+   </FileRef>
 </Workspace>
