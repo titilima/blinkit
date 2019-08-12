@@ -23,6 +23,9 @@
       <FileRef
          location = "group:net/net.xcodeproj">
       </FileRef>
+      <FileRef
+         location = "group:url/url.xcodeproj">
+      </FileRef>
    </Group>
    <FileRef
       location = "group:js_crawler/js_crawler.xcodeproj">

@@ -1,0 +1,456 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F941DDE12301A9CB00007B98 /* PrefixHeader.pch in Headers */ = {isa = PBXBuildFile; fileRef = F941DDDF2301A9CB00007B98 /* PrefixHeader.pch */; };
+		F941DE1E2301A9E200007B98 /* origin.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DDE32301A9E200007B98 /* origin.cc */; };
+		F941DE1F2301A9E200007B98 /* url_canon_etc.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DDE42301A9E200007B98 /* url_canon_etc.cc */; };
+		F941DE202301A9E200007B98 /* url_canon_internal_file.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DDE52301A9E200007B98 /* url_canon_internal_file.h */; };
+		F941DE222301A9E200007B98 /* url_file.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DDE72301A9E200007B98 /* url_file.h */; };
+		F941DE232301A9E200007B98 /* url_canon_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DDE92301A9E200007B98 /* url_canon_internal.h */; };
+		F941DE242301A9E200007B98 /* gurl.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DDEA2301A9E200007B98 /* gurl.h */; };
+		F941DE252301A9E200007B98 /* scheme_host_port.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DDEB2301A9E200007B98 /* scheme_host_port.cc */; };
+		F941DE262301A9E200007B98 /* origin.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DDEC2301A9E200007B98 /* origin.h */; };
+		F941DE272301A9E200007B98 /* url_util.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DDED2301A9E200007B98 /* url_util.cc */; };
+		F941DE282301A9E200007B98 /* url_canon.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DDEE2301A9E200007B98 /* url_canon.h */; };
+		F941DE292301A9E200007B98 /* url_canon_host.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DDEF2301A9E200007B98 /* url_canon_host.cc */; };
+		F941DE2B2301A9E200007B98 /* url_constants.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DDF12301A9E200007B98 /* url_constants.h */; };
+		F941DE2D2301A9E200007B98 /* url_constants.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DDF52301A9E200007B98 /* url_constants.cc */; };
+		F941DE2E2301A9E200007B98 /* scheme_host_port.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DDF62301A9E200007B98 /* scheme_host_port.h */; };
+		F941DE2F2301A9E200007B98 /* url_canon_query.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DDF72301A9E200007B98 /* url_canon_query.cc */; };
+		F941DE302301A9E200007B98 /* url_export.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DDF82301A9E200007B98 /* url_export.h */; };
+		F941DE312301A9E200007B98 /* url_canon_relative.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DDF92301A9E200007B98 /* url_canon_relative.cc */; };
+		F941DE322301A9E200007B98 /* url_canon_filesystemurl.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DDFA2301A9E200007B98 /* url_canon_filesystemurl.cc */; };
+		F941DE332301A9E200007B98 /* url_canon_pathurl.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DDFB2301A9E200007B98 /* url_canon_pathurl.cc */; };
+		F941DE342301A9E200007B98 /* url_canon_ip.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DDFC2301A9E200007B98 /* url_canon_ip.h */; };
+		F941DE352301A9E200007B98 /* url_canon_ip.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DDFD2301A9E200007B98 /* url_canon_ip.cc */; };
+		F941DE362301A9E200007B98 /* url_parse.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DE012301A9E200007B98 /* url_parse.cc */; };
+		F941DE372301A9E200007B98 /* url_parse.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DE032301A9E200007B98 /* url_parse.h */; };
+		F941DE382301A9E200007B98 /* url_canon_stdstring.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DE042301A9E200007B98 /* url_canon_stdstring.cc */; };
+		F941DE392301A9E200007B98 /* url_canon_mailtourl.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DE052301A9E200007B98 /* url_canon_mailtourl.cc */; };
+		F941DE3A2301A9E200007B98 /* url_canon_fileurl.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DE062301A9E200007B98 /* url_canon_fileurl.cc */; };
+		F941DE3E2301A9E200007B98 /* url_canon_stdurl.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DE112301A9E200007B98 /* url_canon_stdurl.cc */; };
+		F941DE3F2301A9E200007B98 /* url_parse_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DE122301A9E200007B98 /* url_parse_internal.h */; };
+		F941DE402301A9E200007B98 /* url_util_internal.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DE152301A9E200007B98 /* url_util_internal.h */; };
+		F941DE412301A9E200007B98 /* url_util.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DE162301A9E200007B98 /* url_util.h */; };
+		F941DE422301A9E200007B98 /* gurl.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DE172301A9E200007B98 /* gurl.cc */; };
+		F941DE442301A9E200007B98 /* url_canon_path.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DE192301A9E200007B98 /* url_canon_path.cc */; };
+		F941DE452301A9E200007B98 /* url_canon_stdstring.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DE1A2301A9E200007B98 /* url_canon_stdstring.h */; };
+		F941DE462301A9E200007B98 /* url_canon_internal.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DE1B2301A9E200007B98 /* url_canon_internal.cc */; };
+		F941DE472301A9E200007B98 /* url_parse_file.cc in Sources */ = {isa = PBXBuildFile; fileRef = F941DE1C2301A9E200007B98 /* url_parse_file.cc */; };
+		F941DE4B2301A9EF00007B98 /* _pc.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DE492301A9EF00007B98 /* _pc.h */; };
+		F941DE4C2301A9EF00007B98 /* url_canon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DE4A2301A9EF00007B98 /* url_canon.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		F941DDD82301A9BC00007B98 /* liburl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liburl.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F941DDDF2301A9CB00007B98 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = ../PrefixHeader.pch; sourceTree = SOURCE_ROOT; };
+		F941DDE32301A9E200007B98 /* origin.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = origin.cc; sourceTree = "<group>"; };
+		F941DDE42301A9E200007B98 /* url_canon_etc.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_canon_etc.cc; sourceTree = "<group>"; };
+		F941DDE52301A9E200007B98 /* url_canon_internal_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_canon_internal_file.h; sourceTree = "<group>"; };
+		F941DDE72301A9E200007B98 /* url_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_file.h; sourceTree = "<group>"; };
+		F941DDE92301A9E200007B98 /* url_canon_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_canon_internal.h; sourceTree = "<group>"; };
+		F941DDEA2301A9E200007B98 /* gurl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gurl.h; sourceTree = "<group>"; };
+		F941DDEB2301A9E200007B98 /* scheme_host_port.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scheme_host_port.cc; sourceTree = "<group>"; };
+		F941DDEC2301A9E200007B98 /* origin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = origin.h; sourceTree = "<group>"; };
+		F941DDED2301A9E200007B98 /* url_util.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_util.cc; sourceTree = "<group>"; };
+		F941DDEE2301A9E200007B98 /* url_canon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_canon.h; sourceTree = "<group>"; };
+		F941DDEF2301A9E200007B98 /* url_canon_host.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_canon_host.cc; sourceTree = "<group>"; };
+		F941DDF12301A9E200007B98 /* url_constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_constants.h; sourceTree = "<group>"; };
+		F941DDF52301A9E200007B98 /* url_constants.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_constants.cc; sourceTree = "<group>"; };
+		F941DDF62301A9E200007B98 /* scheme_host_port.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scheme_host_port.h; sourceTree = "<group>"; };
+		F941DDF72301A9E200007B98 /* url_canon_query.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_canon_query.cc; sourceTree = "<group>"; };
+		F941DDF82301A9E200007B98 /* url_export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_export.h; sourceTree = "<group>"; };
+		F941DDF92301A9E200007B98 /* url_canon_relative.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_canon_relative.cc; sourceTree = "<group>"; };
+		F941DDFA2301A9E200007B98 /* url_canon_filesystemurl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_canon_filesystemurl.cc; sourceTree = "<group>"; };
+		F941DDFB2301A9E200007B98 /* url_canon_pathurl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_canon_pathurl.cc; sourceTree = "<group>"; };
+		F941DDFC2301A9E200007B98 /* url_canon_ip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_canon_ip.h; sourceTree = "<group>"; };
+		F941DDFD2301A9E200007B98 /* url_canon_ip.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_canon_ip.cc; sourceTree = "<group>"; };
+		F941DE012301A9E200007B98 /* url_parse.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_parse.cc; sourceTree = "<group>"; };
+		F941DE032301A9E200007B98 /* url_parse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_parse.h; sourceTree = "<group>"; };
+		F941DE042301A9E200007B98 /* url_canon_stdstring.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_canon_stdstring.cc; sourceTree = "<group>"; };
+		F941DE052301A9E200007B98 /* url_canon_mailtourl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_canon_mailtourl.cc; sourceTree = "<group>"; };
+		F941DE062301A9E200007B98 /* url_canon_fileurl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_canon_fileurl.cc; sourceTree = "<group>"; };
+		F941DE112301A9E200007B98 /* url_canon_stdurl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_canon_stdurl.cc; sourceTree = "<group>"; };
+		F941DE122301A9E200007B98 /* url_parse_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_parse_internal.h; sourceTree = "<group>"; };
+		F941DE152301A9E200007B98 /* url_util_internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_util_internal.h; sourceTree = "<group>"; };
+		F941DE162301A9E200007B98 /* url_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_util.h; sourceTree = "<group>"; };
+		F941DE172301A9E200007B98 /* gurl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gurl.cc; sourceTree = "<group>"; };
+		F941DE192301A9E200007B98 /* url_canon_path.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_canon_path.cc; sourceTree = "<group>"; };
+		F941DE1A2301A9E200007B98 /* url_canon_stdstring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_canon_stdstring.h; sourceTree = "<group>"; };
+		F941DE1B2301A9E200007B98 /* url_canon_internal.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_canon_internal.cc; sourceTree = "<group>"; };
+		F941DE1C2301A9E200007B98 /* url_parse_file.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_parse_file.cc; sourceTree = "<group>"; };
+		F941DE492301A9EF00007B98 /* _pc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _pc.h; path = ../../../src/url/_pc.h; sourceTree = SOURCE_ROOT; };
+		F941DE4A2301A9EF00007B98 /* url_canon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = url_canon.cpp; path = ../../../src/url/url_canon.cpp; sourceTree = SOURCE_ROOT; };
+		F941DE4D2301AACB00007B98 /* BlinKit.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = BlinKit.xcconfig; path = ../BlinKit.xcconfig; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F941DDD62301A9BC00007B98 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F941DDCF2301A9BC00007B98 = {
+			isa = PBXGroup;
+			children = (
+				F941DDD92301A9BC00007B98 /* Products */,
+				F941DDE22301A9E200007B98 /* url */,
+				F941DE492301A9EF00007B98 /* _pc.h */,
+				F941DE4D2301AACB00007B98 /* BlinKit.xcconfig */,
+				F941DDDF2301A9CB00007B98 /* PrefixHeader.pch */,
+			);
+			sourceTree = "<group>";
+		};
+		F941DDD92301A9BC00007B98 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F941DDD82301A9BC00007B98 /* liburl.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F941DDE22301A9E200007B98 /* url */ = {
+			isa = PBXGroup;
+			children = (
+				F941DDFE2301A9E200007B98 /* third_party */,
+				F941DE172301A9E200007B98 /* gurl.cc */,
+				F941DDEA2301A9E200007B98 /* gurl.h */,
+				F941DDE32301A9E200007B98 /* origin.cc */,
+				F941DDEC2301A9E200007B98 /* origin.h */,
+				F941DDEB2301A9E200007B98 /* scheme_host_port.cc */,
+				F941DDF62301A9E200007B98 /* scheme_host_port.h */,
+				F941DDE42301A9E200007B98 /* url_canon_etc.cc */,
+				F941DDFA2301A9E200007B98 /* url_canon_filesystemurl.cc */,
+				F941DE062301A9E200007B98 /* url_canon_fileurl.cc */,
+				F941DDEF2301A9E200007B98 /* url_canon_host.cc */,
+				F941DDE52301A9E200007B98 /* url_canon_internal_file.h */,
+				F941DE1B2301A9E200007B98 /* url_canon_internal.cc */,
+				F941DDE92301A9E200007B98 /* url_canon_internal.h */,
+				F941DDFD2301A9E200007B98 /* url_canon_ip.cc */,
+				F941DDFC2301A9E200007B98 /* url_canon_ip.h */,
+				F941DE052301A9E200007B98 /* url_canon_mailtourl.cc */,
+				F941DE192301A9E200007B98 /* url_canon_path.cc */,
+				F941DDFB2301A9E200007B98 /* url_canon_pathurl.cc */,
+				F941DDF72301A9E200007B98 /* url_canon_query.cc */,
+				F941DDF92301A9E200007B98 /* url_canon_relative.cc */,
+				F941DE042301A9E200007B98 /* url_canon_stdstring.cc */,
+				F941DE1A2301A9E200007B98 /* url_canon_stdstring.h */,
+				F941DE112301A9E200007B98 /* url_canon_stdurl.cc */,
+				F941DE4A2301A9EF00007B98 /* url_canon.cpp */,
+				F941DDEE2301A9E200007B98 /* url_canon.h */,
+				F941DDF52301A9E200007B98 /* url_constants.cc */,
+				F941DDF12301A9E200007B98 /* url_constants.h */,
+				F941DDF82301A9E200007B98 /* url_export.h */,
+				F941DDE72301A9E200007B98 /* url_file.h */,
+				F941DE1C2301A9E200007B98 /* url_parse_file.cc */,
+				F941DE122301A9E200007B98 /* url_parse_internal.h */,
+				F941DE152301A9E200007B98 /* url_util_internal.h */,
+				F941DDED2301A9E200007B98 /* url_util.cc */,
+				F941DE162301A9E200007B98 /* url_util.h */,
+			);
+			name = url;
+			path = ../../../src/chromium/url;
+			sourceTree = SOURCE_ROOT;
+		};
+		F941DDFE2301A9E200007B98 /* third_party */ = {
+			isa = PBXGroup;
+			children = (
+				F941DDFF2301A9E200007B98 /* mozilla */,
+			);
+			path = third_party;
+			sourceTree = "<group>";
+		};
+		F941DDFF2301A9E200007B98 /* mozilla */ = {
+			isa = PBXGroup;
+			children = (
+				F941DE012301A9E200007B98 /* url_parse.cc */,
+				F941DE032301A9E200007B98 /* url_parse.h */,
+			);
+			path = mozilla;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		F941DDD42301A9BC00007B98 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F941DE242301A9E200007B98 /* gurl.h in Headers */,
+				F941DE262301A9E200007B98 /* origin.h in Headers */,
+				F941DE4B2301A9EF00007B98 /* _pc.h in Headers */,
+				F941DE282301A9E200007B98 /* url_canon.h in Headers */,
+				F941DDE12301A9CB00007B98 /* PrefixHeader.pch in Headers */,
+				F941DE2E2301A9E200007B98 /* scheme_host_port.h in Headers */,
+				F941DE402301A9E200007B98 /* url_util_internal.h in Headers */,
+				F941DE3F2301A9E200007B98 /* url_parse_internal.h in Headers */,
+				F941DE412301A9E200007B98 /* url_util.h in Headers */,
+				F941DE372301A9E200007B98 /* url_parse.h in Headers */,
+				F941DE222301A9E200007B98 /* url_file.h in Headers */,
+				F941DE202301A9E200007B98 /* url_canon_internal_file.h in Headers */,
+				F941DE2B2301A9E200007B98 /* url_constants.h in Headers */,
+				F941DE342301A9E200007B98 /* url_canon_ip.h in Headers */,
+				F941DE232301A9E200007B98 /* url_canon_internal.h in Headers */,
+				F941DE452301A9E200007B98 /* url_canon_stdstring.h in Headers */,
+				F941DE302301A9E200007B98 /* url_export.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		F941DDD72301A9BC00007B98 /* url */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F941DDDC2301A9BC00007B98 /* Build configuration list for PBXNativeTarget "url" */;
+			buildPhases = (
+				F941DDD42301A9BC00007B98 /* Headers */,
+				F941DDD52301A9BC00007B98 /* Sources */,
+				F941DDD62301A9BC00007B98 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = url;
+			productName = url;
+			productReference = F941DDD82301A9BC00007B98 /* liburl.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F941DDD02301A9BC00007B98 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1030;
+				ORGANIZATIONNAME = "MingYang Software Technology";
+				TargetAttributes = {
+					F941DDD72301A9BC00007B98 = {
+						CreatedOnToolsVersion = 10.3;
+					};
+				};
+			};
+			buildConfigurationList = F941DDD32301A9BC00007B98 /* Build configuration list for PBXProject "url" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = F941DDCF2301A9BC00007B98;
+			productRefGroup = F941DDD92301A9BC00007B98 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F941DDD72301A9BC00007B98 /* url */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F941DDD52301A9BC00007B98 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F941DE332301A9E200007B98 /* url_canon_pathurl.cc in Sources */,
+				F941DE472301A9E200007B98 /* url_parse_file.cc in Sources */,
+				F941DE4C2301A9EF00007B98 /* url_canon.cpp in Sources */,
+				F941DE2F2301A9E200007B98 /* url_canon_query.cc in Sources */,
+				F941DE422301A9E200007B98 /* gurl.cc in Sources */,
+				F941DE392301A9E200007B98 /* url_canon_mailtourl.cc in Sources */,
+				F941DE382301A9E200007B98 /* url_canon_stdstring.cc in Sources */,
+				F941DE352301A9E200007B98 /* url_canon_ip.cc in Sources */,
+				F941DE462301A9E200007B98 /* url_canon_internal.cc in Sources */,
+				F941DE252301A9E200007B98 /* scheme_host_port.cc in Sources */,
+				F941DE2D2301A9E200007B98 /* url_constants.cc in Sources */,
+				F941DE1F2301A9E200007B98 /* url_canon_etc.cc in Sources */,
+				F941DE1E2301A9E200007B98 /* origin.cc in Sources */,
+				F941DE3A2301A9E200007B98 /* url_canon_fileurl.cc in Sources */,
+				F941DE442301A9E200007B98 /* url_canon_path.cc in Sources */,
+				F941DE292301A9E200007B98 /* url_canon_host.cc in Sources */,
+				F941DE322301A9E200007B98 /* url_canon_filesystemurl.cc in Sources */,
+				F941DE272301A9E200007B98 /* url_util.cc in Sources */,
+				F941DE3E2301A9E200007B98 /* url_canon_stdurl.cc in Sources */,
+				F941DE312301A9E200007B98 /* url_canon_relative.cc in Sources */,
+				F941DE362301A9E200007B98 /* url_parse.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F941DDDA2301A9BC00007B98 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F941DE4D2301AACB00007B98 /* BlinKit.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(BK_SRC)/url",
+					"$(inherited)",
+				);
+			};
+			name = Debug;
+		};
+		F941DDDB2301A9BC00007B98 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F941DE4D2301AACB00007B98 /* BlinKit.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(BK_SRC)/url",
+					"$(inherited)",
+				);
+			};
+			name = Release;
+		};
+		F941DDDD2301A9BC00007B98 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		F941DDDE2301A9BC00007B98 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F941DDD32301A9BC00007B98 /* Build configuration list for PBXProject "url" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F941DDDA2301A9BC00007B98 /* Debug */,
+				F941DDDB2301A9BC00007B98 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F941DDDC2301A9BC00007B98 /* Build configuration list for PBXNativeTarget "url" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F941DDDD2301A9BC00007B98 /* Debug */,
+				F941DDDE2301A9BC00007B98 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F941DDD02301A9BC00007B98 /* Project object */;
+}

@@ -20,6 +20,10 @@
 #   pragma warning(disable: 4819)
 #endif
 
+#if (OS_MACOSX || OS_IOS)
+#   pragma clang diagnostic ignored "-Wshorten-64-to-32"
+#endif
+
 #include <cassert>
 
 #endif // BLINKIT_URL__PC_H
