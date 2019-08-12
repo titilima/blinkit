@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <unordered_map>
 #include "sdk/include/BlinKit.h"
 #include "public/platform/Platform.h"
 #include "blinkit/blink_impl/thread_impl.h"
