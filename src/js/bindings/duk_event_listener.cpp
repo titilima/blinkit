@@ -30,7 +30,12 @@ static const char ListenerPoolKey[] = DUK_HIDDEN_SYMBOL("listenerPool");
 static std::string GenerateListenerKey(EventTarget *target, const AtomicString &type, void *heapPtr)
 {
     const std::string utf8 = type.to_string();
-    return base::StringPrintf("%x_%s_%x", target, utf8.c_str(), heapPtr);
+    return base::StringPrintf("%p_%s_%p", target, utf8.c_str(), heapPtr);
+}
+
+static std::string GenerateNativeListenerKey(DukEventListener *listener)
+{
+    return base::StringPrintf("listener_%p", listener);
 }
 
 static DukContext* ToDukContext(ExecutionContext *executionContext)
@@ -56,8 +61,10 @@ DukEventListener::DukEventListener(duk_context *ctx, void *heapPtr)
     Duk::StackKeeper sk(ctx);
     duk_push_global_object(ctx);
     duk_get_prop_string(ctx, -1, ListenerPoolKey);
+
+    std::string key = GenerateNativeListenerKey(this);
     duk_push_heapptr(ctx, heapPtr);
-    duk_put_prop_index(ctx, -2, reinterpret_cast<duk_uarridx_t>(this));
+    duk_put_prop_lstring(ctx, -2, key.data(), key.length());
 }
 
 DukEventListener::~DukEventListener(void)
@@ -68,7 +75,9 @@ DukEventListener::~DukEventListener(void)
     Duk::StackKeeper sk(m_ctx);
     duk_push_global_object(m_ctx);
     duk_get_prop_string(m_ctx, -1, ListenerPoolKey);
-    duk_del_prop_index(m_ctx, -2, reinterpret_cast<duk_uarridx_t>(this));
+
+    std::string key = GenerateNativeListenerKey(this);
+    duk_del_prop_lstring(m_ctx, -2, key.data(), key.length());
 }
 
 PassRefPtr<DukEventListener> DukEventListener::Create(duk_context *ctx, void *heapPtr, EventTarget *target, const AtomicString &type)
