@@ -1,0 +1,19 @@
+// -------------------------------------------------
+// BlinKit
+// -------------------------------------------------
+//   File Name: blink.xcconfig
+// Description: Common Configurations for Blink
+//      Author: Ziming Li
+//     Created: 2019-08-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include "BlinKit.xcconfig"
+#include "skia.xcconfig"
+
+HEADER_SEARCH_PATHS = $(BK_SRC)/stub/icu $(BK_CR_SRC)/gpu $(BK_CR_SRC)/third_party/khronos $(inherited)
+USER_HEADER_SEARCH_PATHS = $(inherited) $(BK_CR_SRC)/third_party/WebKit $(BK_CR_SRC)/third_party/WebKit/Source $(BK_CR_SRC)/third_party/WebKit/Source/gen $(BK_ROOT)

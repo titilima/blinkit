@@ -7,5 +7,8 @@
       <FileRef
          location = "group:base/base.xcodeproj">
       </FileRef>
+      <FileRef
+         location = "group:blink_crawler/blink_crawler.xcodeproj">
+      </FileRef>
    </Group>
 </Workspace>
