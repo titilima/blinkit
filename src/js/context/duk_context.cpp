@@ -51,6 +51,8 @@ using namespace blink;
 
 #if defined(_WIN32)
 #   define DebugBreakImpl() ::DebugBreak()
+#elif defined(__APPLE__)
+#   define DebugBreakImpl() ::__builtin_trap()
 #else
 #   error OS not supported!
 #endif
