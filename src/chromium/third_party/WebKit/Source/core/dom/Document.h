@@ -939,8 +939,10 @@ public:
     void incrementActiveParserCount() { ++m_activeParserCount; }
     void decrementActiveParserCount() { --m_activeParserCount; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void setContextFeatures(ContextFeatures&);
     ContextFeatures& contextFeatures() const { return *m_contextFeatures; }
+#endif
 
     ElementDataCache* elementDataCache() { return m_elementDataCache.get(); }
 
@@ -1180,7 +1182,9 @@ private:
     PersistentWillBeMember<ResourceFetcher> m_fetcher;
     RefPtrWillBeMember<DocumentParser> m_parser;
     unsigned m_activeParserCount;
+#ifndef BLINKIT_CRAWLER_ONLY
     RefPtrWillBeMember<ContextFeatures> m_contextFeatures;
+#endif
 
     bool m_wellFormed;
 

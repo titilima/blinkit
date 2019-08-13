@@ -369,7 +369,9 @@ Document::Document(const DocumentInit& initializer, DocumentClassFlags documentC
     , m_frame(initializer.frame())
     , m_domWindow(m_frame ? m_frame->localDOMWindow() : 0)
     , m_activeParserCount(0)
+#ifndef BLINKIT_CRAWLER_ONLY
     , m_contextFeatures(ContextFeatures::defaultSwitch())
+#endif
     , m_wellFormed(false)
     , m_paginatedForScreen(false)
     , m_compatibilityMode(NoQuirksMode)
@@ -572,8 +574,8 @@ void Document::dispose()
 #endif
     m_titleElement = nullptr;
     m_documentElement = nullptr;
-    m_contextFeatures = ContextFeatures::defaultSwitch();
 #ifndef BLINKIT_CRAWLER_ONLY
+    m_contextFeatures = ContextFeatures::defaultSwitch();
     m_userActionElements.documentDidRemoveLastRef();
     m_associatedFormControls.clear();
 #endif
@@ -2704,7 +2706,9 @@ void Document::setURL(const KURL& url)
     m_url = newURL;
     m_accessEntryFromURL = nullptr;
     updateBaseURL();
+#ifndef BLINKIT_CRAWLER_ONLY
     contextFeatures().urlDidChange(this);
+#endif
 }
 
 void Document::updateBaseURL()
@@ -3090,7 +3094,9 @@ void Document::cloneDataFromDocument(const Document& other)
 {
     setCompatibilityMode(other.compatibilityMode());
     setEncodingData(other.m_encodingData);
+#ifndef BLINKIT_CRAWLER_ONLY
     setContextFeatures(other.contextFeatures());
+#endif
     setSecurityOrigin(other.securityOrigin()->isolatedCopy());
     setMimeType(other.contentType());
 }
@@ -3725,8 +3731,12 @@ PassRefPtrWillBeRawPtr<Event> Document::createEvent(const String& eventType, Exc
 
 void Document::addMutationEventListenerTypeIfEnabled(ListenerType listenerType)
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    addListenerType(listenerType);
+#else
     if (ContextFeatures::mutationEventsEnabled(this))
         addListenerType(listenerType);
+#endif
 }
 
 void Document::addListenerTypeIfNeeded(const AtomicString& eventType)
@@ -5159,10 +5169,12 @@ bool Document::hasActiveParser()
     return m_activeParserCount || (m_parser && m_parser->processingData());
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void Document::setContextFeatures(ContextFeatures& features)
 {
     m_contextFeatures = PassRefPtrWillBeRawPtr<ContextFeatures>(features);
 }
+#endif
 
 static LayoutObject* nearestCommonHoverAncestor(LayoutObject* obj1, LayoutObject* obj2)
 {
