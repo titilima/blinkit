@@ -17,5 +17,6 @@
 #include "base/logging.h"
 
 #define MACH_DCHECK(cond, x)    BKASSERT(cond)
+#define MACH_LOG_IF(a, cond, b) BKASSERT(cond)
 
 #endif // BLINKIT_BASE_MACH_LOGGING_H
