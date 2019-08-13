@@ -22,6 +22,7 @@
 #endif
 
 #if (OS_MACOSX || OS_IOS)
+#   pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #   pragma clang diagnostic ignored "-Wshorten-64-to-32"
 #endif
 
