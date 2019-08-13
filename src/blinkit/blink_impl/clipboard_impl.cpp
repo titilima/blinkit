@@ -23,7 +23,7 @@ bool ClipboardImpl::isFormatAvailable(Format format, Buffer buffer)
 
 WebVector<WebString> ClipboardImpl::readAvailableTypes(Buffer buffer, bool *containsFilenames)
 {
-    WebVector<WebString> ret(1U);
+    WebVector<WebString> ret(1UL);
     ret[0] = WebString("text/plain"); // Currently, support only plain text.
     return ret;
 }
