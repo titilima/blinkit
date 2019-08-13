@@ -31,6 +31,9 @@
       </FileRef>
    </Group>
    <FileRef
+      location = "group:BkCrawler/BkCrawler.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:js_crawler/js_crawler.xcodeproj">
    </FileRef>
    <FileRef
