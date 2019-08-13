@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F9151F9B23026A8D00EFECD1 /* logging_apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9151F9A23026A8D00EFECD1 /* logging_apple.mm */; };
 		F93F3A9E22FEE7700059DA35 /* stl_util.h in Headers */ = {isa = PBXBuildFile; fileRef = F93F3A5922FEE7700059DA35 /* stl_util.h */; };
 		F93F3A9F22FEE7700059DA35 /* sys_string_conversions.h in Headers */ = {isa = PBXBuildFile; fileRef = F93F3A5B22FEE7700059DA35 /* sys_string_conversions.h */; };
 		F93F3AA222FEE7700059DA35 /* string_number_conversions.h in Headers */ = {isa = PBXBuildFile; fileRef = F93F3A5E22FEE7700059DA35 /* string_number_conversions.h */; };
@@ -60,6 +61,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F9151F9A23026A8D00EFECD1 /* logging_apple.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = logging_apple.mm; sourceTree = "<group>"; };
 		F93F3A4F22FEE71E0059DA35 /* libbase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libbase.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F93F3A5922FEE7700059DA35 /* stl_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stl_util.h; sourceTree = "<group>"; };
 		F93F3A5B22FEE7700059DA35 /* sys_string_conversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sys_string_conversions.h; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 				F93F3A8D22FEE7700059DA35 /* cpu.h */,
 				F93F3A7322FEE7700059DA35 /* format_macros.h */,
 				F93F3A8B22FEE7700059DA35 /* gtest_prod_util.h */,
+				F9151F9A23026A8D00EFECD1 /* logging_apple.mm */,
 				F93F3A7B22FEE7700059DA35 /* logging.h */,
 				F93F3A8A22FEE7700059DA35 /* macros.h */,
 				F93F3A9722FEE7700059DA35 /* move.h */,
@@ -392,6 +395,7 @@
 			files = (
 				F93F3AA722FEE7700059DA35 /* string_split.cc in Sources */,
 				F93F3ABF22FEE7700059DA35 /* time.cc in Sources */,
+				F9151F9B23026A8D00EFECD1 /* logging_apple.mm in Sources */,
 				F93F3AAC22FEE7700059DA35 /* stringprintf.cc in Sources */,
 				F93F3AAB22FEE7700059DA35 /* string_util.cc in Sources */,
 				F93F3AAF22FEE7700059DA35 /* utf_string_conversion_utils.cpp in Sources */,
