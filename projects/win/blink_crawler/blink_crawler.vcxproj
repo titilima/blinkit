@@ -264,7 +264,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ClassCollection.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Comment.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContainerNode.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContextFeatures.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContextLifecycleNotifier.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DatasetDOMStringMap.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DecodedDataDocumentParser.cpp" />
@@ -745,7 +744,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ClassCollection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\Comment.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContainerNode.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContextFeatures.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContextLifecycleNotifier.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContextLifecycleObserver.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DatasetDOMStringMap.h" />

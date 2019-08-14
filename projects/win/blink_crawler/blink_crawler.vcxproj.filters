@@ -422,9 +422,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentParser.cpp">
       <Filter>core\dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContextFeatures.cpp">
-      <Filter>core\dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NodeIntersectionObserverData.cpp">
       <Filter>core\dom</Filter>
     </ClCompile>
@@ -1949,9 +1946,6 @@
       <Filter>core\dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\DocumentParserClient.h">
-      <Filter>core\dom</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\ContextFeatures.h">
       <Filter>core\dom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\dom\NodeIntersectionObserverData.h">
