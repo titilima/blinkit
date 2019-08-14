@@ -23,10 +23,12 @@ SchedulerImpl::SchedulerImpl(ThreadImpl &thread) : m_thread(thread)
     // Nothing
 }
 
+#ifdef _DEBUG
 SchedulerImpl::~SchedulerImpl(void)
 {
     assert(!m_pending);
 }
+#endif
 
 void SchedulerImpl::addPendingNavigation(void)
 {

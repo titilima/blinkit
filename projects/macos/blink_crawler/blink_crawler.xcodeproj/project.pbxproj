@@ -763,7 +763,6 @@
 		F98DA94A230016B200A1F2D0 /* IntersectionObserverController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98DA806230016B000A1F2D0 /* IntersectionObserverController.cpp */; };
 		F98DA94C230016B200A1F2D0 /* CDATASection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98DA808230016B000A1F2D0 /* CDATASection.cpp */; };
 		F98DA94E230016B200A1F2D0 /* Element.h in Headers */ = {isa = PBXBuildFile; fileRef = F98DA80B230016B000A1F2D0 /* Element.h */; };
-		F98DA952230016B200A1F2D0 /* ContextFeatures.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98DA811230016B000A1F2D0 /* ContextFeatures.cpp */; };
 		F98DA953230016B200A1F2D0 /* NodeIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98DA812230016B000A1F2D0 /* NodeIterator.cpp */; };
 		F98DA954230016B200A1F2D0 /* MutationRecord.h in Headers */ = {isa = PBXBuildFile; fileRef = F98DA813230016B000A1F2D0 /* MutationRecord.h */; };
 		F98DA956230016B200A1F2D0 /* DOMURLUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98DA815230016B000A1F2D0 /* DOMURLUtils.cpp */; };
@@ -825,7 +824,6 @@
 		F98DA9BA230016B200A1F2D0 /* DocumentParser.h in Headers */ = {isa = PBXBuildFile; fileRef = F98DA88F230016B100A1F2D0 /* DocumentParser.h */; };
 		F98DA9BC230016B200A1F2D0 /* IdTargetObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = F98DA891230016B100A1F2D0 /* IdTargetObserver.h */; };
 		F98DA9BD230016B200A1F2D0 /* DOMURLUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = F98DA892230016B100A1F2D0 /* DOMURLUtils.h */; };
-		F98DA9C8230016B200A1F2D0 /* ContextFeatures.h in Headers */ = {isa = PBXBuildFile; fileRef = F98DA8A0230016B100A1F2D0 /* ContextFeatures.h */; };
 		F98DA9CB230016B200A1F2D0 /* DocumentOrderedList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98DA8A3230016B100A1F2D0 /* DocumentOrderedList.cpp */; };
 		F98DAA8323006A9D00A1F2D0 /* CompositionUnderline.h in Headers */ = {isa = PBXBuildFile; fileRef = F98DA9CE23006A9D00A1F2D0 /* CompositionUnderline.h */; };
 		F98DAA8E23006A9D00A1F2D0 /* RenderedDocumentMarker.h in Headers */ = {isa = PBXBuildFile; fileRef = F98DA9DA23006A9D00A1F2D0 /* RenderedDocumentMarker.h */; };
@@ -1791,7 +1789,6 @@
 		F98DA806230016B000A1F2D0 /* IntersectionObserverController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IntersectionObserverController.cpp; sourceTree = "<group>"; };
 		F98DA808230016B000A1F2D0 /* CDATASection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDATASection.cpp; sourceTree = "<group>"; };
 		F98DA80B230016B000A1F2D0 /* Element.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Element.h; sourceTree = "<group>"; };
-		F98DA811230016B000A1F2D0 /* ContextFeatures.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContextFeatures.cpp; sourceTree = "<group>"; };
 		F98DA812230016B000A1F2D0 /* NodeIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NodeIterator.cpp; sourceTree = "<group>"; };
 		F98DA813230016B000A1F2D0 /* MutationRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MutationRecord.h; sourceTree = "<group>"; };
 		F98DA815230016B000A1F2D0 /* DOMURLUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DOMURLUtils.cpp; sourceTree = "<group>"; };
@@ -1853,7 +1850,6 @@
 		F98DA88F230016B100A1F2D0 /* DocumentParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentParser.h; sourceTree = "<group>"; };
 		F98DA891230016B100A1F2D0 /* IdTargetObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdTargetObserver.h; sourceTree = "<group>"; };
 		F98DA892230016B100A1F2D0 /* DOMURLUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DOMURLUtils.h; sourceTree = "<group>"; };
-		F98DA8A0230016B100A1F2D0 /* ContextFeatures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextFeatures.h; sourceTree = "<group>"; };
 		F98DA8A3230016B100A1F2D0 /* DocumentOrderedList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DocumentOrderedList.cpp; sourceTree = "<group>"; };
 		F98DA9CE23006A9D00A1F2D0 /* CompositionUnderline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompositionUnderline.h; sourceTree = "<group>"; };
 		F98DA9DA23006A9D00A1F2D0 /* RenderedDocumentMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderedDocumentMarker.h; sourceTree = "<group>"; };
@@ -2998,8 +2994,6 @@
 				F98DA79E230016B000A1F2D0 /* Comment.h */,
 				F98DA852230016B100A1F2D0 /* ContainerNode.cpp */,
 				F98DA7FB230016B000A1F2D0 /* ContainerNode.h */,
-				F98DA811230016B000A1F2D0 /* ContextFeatures.cpp */,
-				F98DA8A0230016B100A1F2D0 /* ContextFeatures.h */,
 				F98DA832230016B000A1F2D0 /* ContextLifecycleNotifier.cpp */,
 				F98DA7EE230016B000A1F2D0 /* ContextLifecycleNotifier.h */,
 				F98DA7DB230016B000A1F2D0 /* ContextLifecycleObserver.h */,
@@ -3898,7 +3892,6 @@
 				F98DA6BB22FFEC4600A1F2D0 /* FetchInitiatorTypeNames.h in Headers */,
 				F98DAAA523006A9D00A1F2D0 /* MarkupFormatter.h in Headers */,
 				F941D8BF23011CA400007B98 /* AffineTransform.h in Headers */,
-				F98DA9C8230016B200A1F2D0 /* ContextFeatures.h in Headers */,
 				F98DACE823006D9700A1F2D0 /* Blob.h in Headers */,
 				F941D8EF23011CC800007B98 /* KURL.h in Headers */,
 				F98DAA9123006A9D00A1F2D0 /* DocumentMarker.h in Headers */,
@@ -4173,7 +4166,6 @@
 				F98DA985230016B200A1F2D0 /* NodeChildRemovalTracker.cpp in Sources */,
 				F98DA927230016B100A1F2D0 /* DOMStringMap.cpp in Sources */,
 				F98DA93F230016B200A1F2D0 /* MutationObserver.cpp in Sources */,
-				F98DA952230016B200A1F2D0 /* ContextFeatures.cpp in Sources */,
 				F98DADA323006E7000A1F2D0 /* LocalFrameLifecycleNotifier.cpp in Sources */,
 				F941D6EE23011B2A00007B98 /* WebPrerender.cpp in Sources */,
 				F98DA9B6230016B200A1F2D0 /* DocumentLifecycleNotifier.cpp in Sources */,

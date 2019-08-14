@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F9151FAB230295DA00EFECD1 /* unicode_apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9151FAA230295DA00EFECD1 /* unicode_apple.mm */; };
 		F941DE602301AB8900007B98 /* PrefixHeader.pch in Headers */ = {isa = PBXBuildFile; fileRef = F941DE5E2301AB8900007B98 /* PrefixHeader.pch */; };
 		F941DF462301AB9B00007B98 /* ArrayBufferBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941DE622301AB9A00007B98 /* ArrayBufferBuilder.cpp */; };
 		F941DF472301AB9B00007B98 /* ThreadRestrictionVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DE632301AB9A00007B98 /* ThreadRestrictionVerifier.h */; };
@@ -220,6 +221,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F9151FAA230295DA00EFECD1 /* unicode_apple.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = unicode_apple.mm; sourceTree = "<group>"; };
 		F941DE572301AB7000007B98 /* libwtf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libwtf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F941DE5E2301AB8900007B98 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = ../PrefixHeader.pch; sourceTree = SOURCE_ROOT; };
 		F941DE5F2301AB8900007B98 /* blink.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = blink.xcconfig; path = ../blink.xcconfig; sourceTree = SOURCE_ROOT; };
@@ -686,6 +688,7 @@
 				F941DF092301AB9B00007B98 /* TextEncodingRegistry.h */,
 				F941DF1F2301AB9B00007B98 /* TextPosition.cpp */,
 				F941DF032301AB9B00007B98 /* TextPosition.h */,
+				F9151FAA230295DA00EFECD1 /* unicode_apple.mm */,
 				F941DF252301AB9B00007B98 /* unicode.cpp */,
 				F941DF0E2301AB9B00007B98 /* Unicode.h */,
 				F941DF212301AB9B00007B98 /* UTF8.cpp */,
@@ -931,6 +934,7 @@
 				F941DFBB2301AB9B00007B98 /* HashTable.cpp in Sources */,
 				F941DF6E2301AB9B00007B98 /* dtoa.cpp in Sources */,
 				F941E0142301AB9B00007B98 /* PageAllocator.cpp in Sources */,
+				F9151FAB230295DA00EFECD1 /* unicode_apple.mm in Sources */,
 				F941DF7B2301AB9B00007B98 /* Assertions.cpp in Sources */,
 				F941DF972301AB9B00007B98 /* fast-dtoa.cc in Sources */,
 				F941DF712301AB9B00007B98 /* CryptographicallyRandomNumber.cpp in Sources */,

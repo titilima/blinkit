@@ -24,7 +24,9 @@ class SchedulerImpl final : public blink::WebScheduler
 {
 public:
     SchedulerImpl(ThreadImpl &thread);
+#ifdef _DEBUG
     ~SchedulerImpl(void);
+#endif
 private:
     // blink::WebScheduler
     void shutdown(void) override { /* Nothing to do. */ }

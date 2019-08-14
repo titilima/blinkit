@@ -29,3 +29,10 @@ extern "C" __declspec(naked) void pushAllRegisters(void *, void *, void *)
 }
 #   endif // ARCH_CPU_X86
 #endif // OS_WIN
+
+#if OS_MACOSX
+extern "C" void pushAllRegisters(void *, void *, void *)
+{
+    assert(false); // BKTODO:
+}
+#endif

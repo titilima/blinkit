@@ -15,6 +15,7 @@
 		F9151FA723026D9000EFECD1 /* scoped_policy.h in Headers */ = {isa = PBXBuildFile; fileRef = F9151FA623026D9000EFECD1 /* scoped_policy.h */; };
 		F9151FA923026DBE00EFECD1 /* scoped_generic.h in Headers */ = {isa = PBXBuildFile; fileRef = F9151FA823026DBE00EFECD1 /* scoped_generic.h */; };
 		F9151FAD230297AC00EFECD1 /* scoped_mach_port.cc in Sources */ = {isa = PBXBuildFile; fileRef = F9151FAC230297AB00EFECD1 /* scoped_mach_port.cc */; };
+		F9151FB92302CB2800EFECD1 /* rand_util_generic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9151FB82302CB2700EFECD1 /* rand_util_generic.cpp */; };
 		F93F3A9E22FEE7700059DA35 /* stl_util.h in Headers */ = {isa = PBXBuildFile; fileRef = F93F3A5922FEE7700059DA35 /* stl_util.h */; };
 		F93F3A9F22FEE7700059DA35 /* sys_string_conversions.h in Headers */ = {isa = PBXBuildFile; fileRef = F93F3A5B22FEE7700059DA35 /* sys_string_conversions.h */; };
 		F93F3AA222FEE7700059DA35 /* string_number_conversions.h in Headers */ = {isa = PBXBuildFile; fileRef = F93F3A5E22FEE7700059DA35 /* string_number_conversions.h */; };
@@ -76,6 +77,7 @@
 		F9151FA623026D9000EFECD1 /* scoped_policy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scoped_policy.h; sourceTree = "<group>"; };
 		F9151FA823026DBE00EFECD1 /* scoped_generic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scoped_generic.h; sourceTree = "<group>"; };
 		F9151FAC230297AB00EFECD1 /* scoped_mach_port.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scoped_mach_port.cc; sourceTree = "<group>"; };
+		F9151FB82302CB2700EFECD1 /* rand_util_generic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rand_util_generic.cpp; sourceTree = "<group>"; };
 		F93F3A4F22FEE71E0059DA35 /* libbase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libbase.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F93F3A5922FEE7700059DA35 /* stl_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stl_util.h; sourceTree = "<group>"; };
 		F93F3A5B22FEE7700059DA35 /* sys_string_conversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sys_string_conversions.h; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 				F93F3A8A22FEE7700059DA35 /* macros.h */,
 				F93F3A9722FEE7700059DA35 /* move.h */,
 				F93F3A8C22FEE7700059DA35 /* observer_list.h */,
+				F9151FB82302CB2700EFECD1 /* rand_util_generic.cpp */,
 				F93F3A7522FEE7700059DA35 /* rand_util.h */,
 				F93F3A7A22FEE7700059DA35 /* scoped_clear_errno.h */,
 				F9151FA823026DBE00EFECD1 /* scoped_generic.h */,
@@ -435,6 +438,7 @@
 				F93F3AAC22FEE7700059DA35 /* stringprintf.cc in Sources */,
 				F93F3AAB22FEE7700059DA35 /* string_util.cc in Sources */,
 				F93F3AAF22FEE7700059DA35 /* utf_string_conversion_utils.cpp in Sources */,
+				F9151FB92302CB2800EFECD1 /* rand_util_generic.cpp in Sources */,
 				F93F3AB022FEE7700059DA35 /* string_util_constants.cc in Sources */,
 				F93F3AC422FEE7700059DA35 /* cpu.cc in Sources */,
 				F93F3AC622FEE7700059DA35 /* prtime.cc in Sources */,

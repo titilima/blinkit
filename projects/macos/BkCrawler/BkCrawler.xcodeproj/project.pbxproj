@@ -44,15 +44,11 @@
 		F91370742302616900BA54B3 /* http_response_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F91370242302616900BA54B3 /* http_response_task.cpp */; };
 		F91370762302616900BA54B3 /* response_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F91370262302616900BA54B3 /* response_task.h */; };
 		F91370772302616900BA54B3 /* loader_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F91370272302616900BA54B3 /* loader_task.h */; };
-		F91370782302616900BA54B3 /* res_loader_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F91370282302616900BA54B3 /* res_loader_task.cpp */; };
 		F913707A2302616900BA54B3 /* loader_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F913702A2302616900BA54B3 /* loader_task.cpp */; };
 		F913707B2302616900BA54B3 /* response_data.h in Headers */ = {isa = PBXBuildFile; fileRef = F913702B2302616900BA54B3 /* response_data.h */; };
 		F913707C2302616900BA54B3 /* http_response_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F913702C2302616900BA54B3 /* http_response_task.h */; };
-		F913707D2302616900BA54B3 /* res_loader_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F913702D2302616900BA54B3 /* res_loader_task.h */; };
-		F913707E2302616900BA54B3 /* file_loader_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F913702E2302616900BA54B3 /* file_loader_task.h */; };
 		F913707F2302616900BA54B3 /* http_loader_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F913702F2302616900BA54B3 /* http_loader_task.cpp */; };
 		F91370802302616900BA54B3 /* http_loader_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F91370302302616900BA54B3 /* http_loader_task.h */; };
-		F91370812302616900BA54B3 /* file_loader_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F91370312302616900BA54B3 /* file_loader_task.cpp */; };
 		F91370822302616900BA54B3 /* response_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F91370322302616900BA54B3 /* response_task.cpp */; };
 		F91370832302616900BA54B3 /* request_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F91370342302616900BA54B3 /* request_impl.h */; };
 		F91370852302616900BA54B3 /* response_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F91370362302616900BA54B3 /* response_impl.cpp */; };
@@ -73,6 +69,12 @@
 		F91370AA2302660700BA54B3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F91370A92302660700BA54B3 /* Foundation.framework */; };
 		F91370AD2302686900BA54B3 /* apple_app.h in Headers */ = {isa = PBXBuildFile; fileRef = F91370AB2302686900BA54B3 /* apple_app.h */; };
 		F91370AE2302686900BA54B3 /* apple_app.mm in Sources */ = {isa = PBXBuildFile; fileRef = F91370AC2302686900BA54B3 /* apple_app.mm */; };
+		F9151FB02302B34F00EFECD1 /* posix_thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9151FAE2302B34F00EFECD1 /* posix_thread.cpp */; };
+		F9151FB12302B34F00EFECD1 /* posix_thread.h in Headers */ = {isa = PBXBuildFile; fileRef = F9151FAF2302B34F00EFECD1 /* posix_thread.h */; };
+		F9151FB62302B85800EFECD1 /* apple_request.h in Headers */ = {isa = PBXBuildFile; fileRef = F9151FB42302B85800EFECD1 /* apple_request.h */; };
+		F9151FB72302B85800EFECD1 /* apple_request.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9151FB52302B85800EFECD1 /* apple_request.mm */; };
+		F9151FBC2302CD3100EFECD1 /* apple_task_runner.h in Headers */ = {isa = PBXBuildFile; fileRef = F9151FBA2302CD3000EFECD1 /* apple_task_runner.h */; };
+		F9151FBD2302CD3100EFECD1 /* apple_task_runner.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9151FBB2302CD3100EFECD1 /* apple_task_runner.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -115,15 +117,11 @@
 		F91370242302616900BA54B3 /* http_response_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = http_response_task.cpp; sourceTree = "<group>"; };
 		F91370262302616900BA54B3 /* response_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = response_task.h; sourceTree = "<group>"; };
 		F91370272302616900BA54B3 /* loader_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = loader_task.h; sourceTree = "<group>"; };
-		F91370282302616900BA54B3 /* res_loader_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = res_loader_task.cpp; sourceTree = "<group>"; };
 		F913702A2302616900BA54B3 /* loader_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = loader_task.cpp; sourceTree = "<group>"; };
 		F913702B2302616900BA54B3 /* response_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = response_data.h; sourceTree = "<group>"; };
 		F913702C2302616900BA54B3 /* http_response_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http_response_task.h; sourceTree = "<group>"; };
-		F913702D2302616900BA54B3 /* res_loader_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = res_loader_task.h; sourceTree = "<group>"; };
-		F913702E2302616900BA54B3 /* file_loader_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = file_loader_task.h; sourceTree = "<group>"; };
 		F913702F2302616900BA54B3 /* http_loader_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = http_loader_task.cpp; sourceTree = "<group>"; };
 		F91370302302616900BA54B3 /* http_loader_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http_loader_task.h; sourceTree = "<group>"; };
-		F91370312302616900BA54B3 /* file_loader_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = file_loader_task.cpp; sourceTree = "<group>"; };
 		F91370322302616900BA54B3 /* response_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = response_task.cpp; sourceTree = "<group>"; };
 		F91370342302616900BA54B3 /* request_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = request_impl.h; sourceTree = "<group>"; };
 		F91370362302616900BA54B3 /* response_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = response_impl.cpp; sourceTree = "<group>"; };
@@ -144,6 +142,12 @@
 		F91370A92302660700BA54B3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F91370AB2302686900BA54B3 /* apple_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apple_app.h; sourceTree = "<group>"; };
 		F91370AC2302686900BA54B3 /* apple_app.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = apple_app.mm; sourceTree = "<group>"; };
+		F9151FAE2302B34F00EFECD1 /* posix_thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = posix_thread.cpp; sourceTree = "<group>"; };
+		F9151FAF2302B34F00EFECD1 /* posix_thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = posix_thread.h; sourceTree = "<group>"; };
+		F9151FB42302B85800EFECD1 /* apple_request.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apple_request.h; sourceTree = "<group>"; };
+		F9151FB52302B85800EFECD1 /* apple_request.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = apple_request.mm; sourceTree = "<group>"; };
+		F9151FBA2302CD3000EFECD1 /* apple_task_runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apple_task_runner.h; sourceTree = "<group>"; };
+		F9151FBB2302CD3100EFECD1 /* apple_task_runner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = apple_task_runner.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +209,8 @@
 		F9136FEF2302616900BA54B3 /* blink_impl */ = {
 			isa = PBXGroup;
 			children = (
+				F9151FBA2302CD3000EFECD1 /* apple_task_runner.h */,
+				F9151FBB2302CD3100EFECD1 /* apple_task_runner.mm */,
 				F9136FFB2302616900BA54B3 /* clipboard_impl.cpp */,
 				F9136FFF2302616900BA54B3 /* clipboard_impl.h */,
 				F9136FF22302616900BA54B3 /* cookie_jar_impl.cpp */,
@@ -213,6 +219,8 @@
 				F91370082302616900BA54B3 /* frame_scheduler_impl.h */,
 				F91370042302616900BA54B3 /* mime_registry_impl.cpp */,
 				F91370012302616900BA54B3 /* mime_registry_impl.h */,
+				F9151FAE2302B34F00EFECD1 /* posix_thread.cpp */,
+				F9151FAF2302B34F00EFECD1 /* posix_thread.h */,
 				F9136FF92302616900BA54B3 /* scheduler_impl.cpp */,
 				F9136FFE2302616900BA54B3 /* scheduler_impl.h */,
 				F91370002302616900BA54B3 /* task_runner_impl.cpp */,
@@ -260,16 +268,12 @@
 		F91370232302616900BA54B3 /* loader_tasks */ = {
 			isa = PBXGroup;
 			children = (
-				F91370312302616900BA54B3 /* file_loader_task.cpp */,
-				F913702E2302616900BA54B3 /* file_loader_task.h */,
 				F913702F2302616900BA54B3 /* http_loader_task.cpp */,
 				F91370302302616900BA54B3 /* http_loader_task.h */,
 				F91370242302616900BA54B3 /* http_response_task.cpp */,
 				F913702C2302616900BA54B3 /* http_response_task.h */,
 				F913702A2302616900BA54B3 /* loader_task.cpp */,
 				F91370272302616900BA54B3 /* loader_task.h */,
-				F91370282302616900BA54B3 /* res_loader_task.cpp */,
-				F913702D2302616900BA54B3 /* res_loader_task.h */,
 				F913702B2302616900BA54B3 /* response_data.h */,
 				F91370322302616900BA54B3 /* response_task.cpp */,
 				F91370262302616900BA54B3 /* response_task.h */,
@@ -280,6 +284,8 @@
 		F91370332302616900BA54B3 /* http */ = {
 			isa = PBXGroup;
 			children = (
+				F9151FB42302B85800EFECD1 /* apple_request.h */,
+				F9151FB52302B85800EFECD1 /* apple_request.mm */,
 				F91370382302616900BA54B3 /* request_controller_impl.h */,
 				F91370392302616900BA54B3 /* request_impl.cpp */,
 				F91370342302616900BA54B3 /* request_impl.h */,
@@ -317,13 +323,14 @@
 			files = (
 				F913704C2302616900BA54B3 /* thread_impl.h in Headers */,
 				F91370AD2302686900BA54B3 /* apple_app.h in Headers */,
+				F9151FB12302B34F00EFECD1 /* posix_thread.h in Headers */,
 				F91370532302616900BA54B3 /* clipboard_impl.h in Headers */,
 				F91370482302616900BA54B3 /* view_scheduler_impl.h in Headers */,
 				F91370872302616900BA54B3 /* request_controller_impl.h in Headers */,
 				F91370832302616900BA54B3 /* request_impl.h in Headers */,
 				F91370552302616900BA54B3 /* mime_registry_impl.h in Headers */,
+				F9151FBC2302CD3100EFECD1 /* apple_task_runner.h in Headers */,
 				F91370712302616900BA54B3 /* crawler_impl.h in Headers */,
-				F913707E2302616900BA54B3 /* file_loader_task.h in Headers */,
 				F913707C2302616900BA54B3 /* http_response_task.h in Headers */,
 				F9136FED2302615900BA54B3 /* PrefixHeader.pch in Headers */,
 				F91370602302616900BA54B3 /* app_constants.h in Headers */,
@@ -338,12 +345,12 @@
 				F913706C2302616900BA54B3 /* frame_loader_client_impl.h in Headers */,
 				F91370522302616900BA54B3 /* scheduler_impl.h in Headers */,
 				F913706A2302616900BA54B3 /* crawler_script_element.h in Headers */,
-				F913707D2302616900BA54B3 /* res_loader_task.h in Headers */,
 				F91370772302616900BA54B3 /* loader_task.h in Headers */,
 				F91370722302616900BA54B3 /* crawler_element.h in Headers */,
 				F913705C2302616900BA54B3 /* frame_scheduler_impl.h in Headers */,
 				F91370632302616900BA54B3 /* app_impl.h in Headers */,
 				F91370702302616900BA54B3 /* crawler_document.h in Headers */,
+				F9151FB62302B85800EFECD1 /* apple_request.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,12 +421,13 @@
 				F913706D2302616900BA54B3 /* crawler_script_element.cpp in Sources */,
 				F91370542302616900BA54B3 /* task_runner_impl.cpp in Sources */,
 				F913705B2302616900BA54B3 /* view_scheduler_impl.cpp in Sources */,
+				F9151FB02302B34F00EFECD1 /* posix_thread.cpp in Sources */,
 				F91370882302616900BA54B3 /* request_impl.cpp in Sources */,
 				F913705A2302616900BA54B3 /* frame_scheduler_impl.cpp in Sources */,
 				F91370462302616900BA54B3 /* cookie_jar_impl.cpp in Sources */,
-				F91370812302616900BA54B3 /* file_loader_task.cpp in Sources */,
-				F91370782302616900BA54B3 /* res_loader_task.cpp in Sources */,
+				F9151FB72302B85800EFECD1 /* apple_request.mm in Sources */,
 				F913704D2302616900BA54B3 /* scheduler_impl.cpp in Sources */,
+				F9151FBD2302CD3100EFECD1 /* apple_task_runner.mm in Sources */,
 				F91370852302616900BA54B3 /* response_impl.cpp in Sources */,
 				F91370582302616900BA54B3 /* mime_registry_impl.cpp in Sources */,
 				F91370732302616900BA54B3 /* crawler_impl.cpp in Sources */,
