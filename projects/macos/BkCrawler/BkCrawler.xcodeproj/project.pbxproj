@@ -7,309 +7,314 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F9136FED2302615900BA54B3 /* PrefixHeader.pch in Headers */ = {isa = PBXBuildFile; fileRef = F9136FEC2302615900BA54B3 /* PrefixHeader.pch */; };
-		F91370452302616900BA54B3 /* thread_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9136FF12302616900BA54B3 /* thread_impl.cpp */; };
-		F91370462302616900BA54B3 /* cookie_jar_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9136FF22302616900BA54B3 /* cookie_jar_impl.cpp */; };
-		F91370472302616900BA54B3 /* task_runner_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9136FF32302616900BA54B3 /* task_runner_impl.h */; };
-		F91370482302616900BA54B3 /* view_scheduler_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9136FF42302616900BA54B3 /* view_scheduler_impl.h */; };
-		F91370492302616900BA54B3 /* cookie_jar_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9136FF52302616900BA54B3 /* cookie_jar_impl.h */; };
-		F913704A2302616900BA54B3 /* url_loader_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9136FF62302616900BA54B3 /* url_loader_impl.h */; };
-		F913704C2302616900BA54B3 /* thread_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9136FF82302616900BA54B3 /* thread_impl.h */; };
-		F913704D2302616900BA54B3 /* scheduler_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9136FF92302616900BA54B3 /* scheduler_impl.cpp */; };
-		F913704F2302616900BA54B3 /* clipboard_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9136FFB2302616900BA54B3 /* clipboard_impl.cpp */; };
-		F91370502302616900BA54B3 /* url_loader_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9136FFC2302616900BA54B3 /* url_loader_impl.cpp */; };
-		F91370522302616900BA54B3 /* scheduler_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9136FFE2302616900BA54B3 /* scheduler_impl.h */; };
-		F91370532302616900BA54B3 /* clipboard_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9136FFF2302616900BA54B3 /* clipboard_impl.h */; };
-		F91370542302616900BA54B3 /* task_runner_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F91370002302616900BA54B3 /* task_runner_impl.cpp */; };
-		F91370552302616900BA54B3 /* mime_registry_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F91370012302616900BA54B3 /* mime_registry_impl.h */; };
-		F91370582302616900BA54B3 /* mime_registry_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F91370042302616900BA54B3 /* mime_registry_impl.cpp */; };
-		F913705A2302616900BA54B3 /* frame_scheduler_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F91370062302616900BA54B3 /* frame_scheduler_impl.cpp */; };
-		F913705B2302616900BA54B3 /* view_scheduler_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F91370072302616900BA54B3 /* view_scheduler_impl.cpp */; };
-		F913705C2302616900BA54B3 /* frame_scheduler_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F91370082302616900BA54B3 /* frame_scheduler_impl.h */; };
-		F913705E2302616900BA54B3 /* _pc.h in Headers */ = {isa = PBXBuildFile; fileRef = F913700A2302616900BA54B3 /* _pc.h */; };
-		F91370602302616900BA54B3 /* app_constants.h in Headers */ = {isa = PBXBuildFile; fileRef = F913700D2302616900BA54B3 /* app_constants.h */; };
-		F91370622302616900BA54B3 /* app_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F913700F2302616900BA54B3 /* app_impl.cpp */; };
-		F91370632302616900BA54B3 /* app_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F91370102302616900BA54B3 /* app_impl.h */; };
-		F91370642302616900BA54B3 /* app_constants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F91370112302616900BA54B3 /* app_constants.cpp */; };
-		F913706A2302616900BA54B3 /* crawler_script_element.h in Headers */ = {isa = PBXBuildFile; fileRef = F91370192302616900BA54B3 /* crawler_script_element.h */; };
-		F913706B2302616900BA54B3 /* crawler_element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F913701A2302616900BA54B3 /* crawler_element.cpp */; };
-		F913706C2302616900BA54B3 /* frame_loader_client_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F913701B2302616900BA54B3 /* frame_loader_client_impl.h */; };
-		F913706D2302616900BA54B3 /* crawler_script_element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F913701C2302616900BA54B3 /* crawler_script_element.cpp */; };
-		F913706E2302616900BA54B3 /* crawler_document.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F913701D2302616900BA54B3 /* crawler_document.cpp */; };
-		F913706F2302616900BA54B3 /* frame_loader_client_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F913701E2302616900BA54B3 /* frame_loader_client_impl.cpp */; };
-		F91370702302616900BA54B3 /* crawler_document.h in Headers */ = {isa = PBXBuildFile; fileRef = F913701F2302616900BA54B3 /* crawler_document.h */; };
-		F91370712302616900BA54B3 /* crawler_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F91370202302616900BA54B3 /* crawler_impl.h */; };
-		F91370722302616900BA54B3 /* crawler_element.h in Headers */ = {isa = PBXBuildFile; fileRef = F91370212302616900BA54B3 /* crawler_element.h */; };
-		F91370732302616900BA54B3 /* crawler_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F91370222302616900BA54B3 /* crawler_impl.cpp */; };
-		F91370742302616900BA54B3 /* http_response_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F91370242302616900BA54B3 /* http_response_task.cpp */; };
-		F91370762302616900BA54B3 /* response_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F91370262302616900BA54B3 /* response_task.h */; };
-		F91370772302616900BA54B3 /* loader_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F91370272302616900BA54B3 /* loader_task.h */; };
-		F913707A2302616900BA54B3 /* loader_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F913702A2302616900BA54B3 /* loader_task.cpp */; };
-		F913707B2302616900BA54B3 /* response_data.h in Headers */ = {isa = PBXBuildFile; fileRef = F913702B2302616900BA54B3 /* response_data.h */; };
-		F913707C2302616900BA54B3 /* http_response_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F913702C2302616900BA54B3 /* http_response_task.h */; };
-		F913707F2302616900BA54B3 /* http_loader_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F913702F2302616900BA54B3 /* http_loader_task.cpp */; };
-		F91370802302616900BA54B3 /* http_loader_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F91370302302616900BA54B3 /* http_loader_task.h */; };
-		F91370822302616900BA54B3 /* response_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F91370322302616900BA54B3 /* response_task.cpp */; };
-		F91370832302616900BA54B3 /* request_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F91370342302616900BA54B3 /* request_impl.h */; };
-		F91370852302616900BA54B3 /* response_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F91370362302616900BA54B3 /* response_impl.cpp */; };
-		F91370872302616900BA54B3 /* request_controller_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F91370382302616900BA54B3 /* request_controller_impl.h */; };
-		F91370882302616900BA54B3 /* request_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F91370392302616900BA54B3 /* request_impl.cpp */; };
-		F91370892302616900BA54B3 /* response_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F913703A2302616900BA54B3 /* response_impl.h */; };
-		F91370942302650700BA54B3 /* libbase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F91370932302650700BA54B3 /* libbase.a */; };
-		F91370962302650700BA54B3 /* libblink_crawler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F91370952302650700BA54B3 /* libblink_crawler.a */; };
-		F91370982302650700BA54B3 /* libduktape.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F91370972302650700BA54B3 /* libduktape.a */; };
-		F913709A2302650700BA54B3 /* libjs_crawler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F91370992302650700BA54B3 /* libjs_crawler.a */; };
-		F913709C2302650700BA54B3 /* libmodules.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F913709B2302650700BA54B3 /* libmodules.a */; };
-		F913709E2302650700BA54B3 /* libnet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F913709D2302650700BA54B3 /* libnet.a */; };
-		F91370A02302650700BA54B3 /* libstub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F913709F2302650700BA54B3 /* libstub.a */; };
-		F91370A22302650700BA54B3 /* liburl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F91370A12302650700BA54B3 /* liburl.a */; };
-		F91370A42302650700BA54B3 /* libwtf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F91370A32302650700BA54B3 /* libwtf.a */; };
-		F91370A62302657C00BA54B3 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F91370A52302657C00BA54B3 /* CoreFoundation.framework */; };
-		F91370A8230265C400BA54B3 /* libz.1.2.11.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F91370A7230265C400BA54B3 /* libz.1.2.11.tbd */; };
-		F91370AA2302660700BA54B3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F91370A92302660700BA54B3 /* Foundation.framework */; };
-		F91370AD2302686900BA54B3 /* apple_app.h in Headers */ = {isa = PBXBuildFile; fileRef = F91370AB2302686900BA54B3 /* apple_app.h */; };
-		F91370AE2302686900BA54B3 /* apple_app.mm in Sources */ = {isa = PBXBuildFile; fileRef = F91370AC2302686900BA54B3 /* apple_app.mm */; };
-		F9151FB02302B34F00EFECD1 /* posix_thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9151FAE2302B34F00EFECD1 /* posix_thread.cpp */; };
-		F9151FB12302B34F00EFECD1 /* posix_thread.h in Headers */ = {isa = PBXBuildFile; fileRef = F9151FAF2302B34F00EFECD1 /* posix_thread.h */; };
-		F9151FB62302B85800EFECD1 /* apple_request.h in Headers */ = {isa = PBXBuildFile; fileRef = F9151FB42302B85800EFECD1 /* apple_request.h */; };
-		F9151FB72302B85800EFECD1 /* apple_request.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9151FB52302B85800EFECD1 /* apple_request.mm */; };
-		F9151FBC2302CD3100EFECD1 /* apple_task_runner.h in Headers */ = {isa = PBXBuildFile; fileRef = F9151FBA2302CD3000EFECD1 /* apple_task_runner.h */; };
-		F9151FBD2302CD3100EFECD1 /* apple_task_runner.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9151FBB2302CD3100EFECD1 /* apple_task_runner.mm */; };
+		F92449C723040D8C009EE7CF /* PrefixHeader.pch in Headers */ = {isa = PBXBuildFile; fileRef = F92449C523040D8C009EE7CF /* PrefixHeader.pch */; };
+		F92449CA23040DB7009EE7CF /* BlinKit.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449C923040DB7009EE7CF /* BlinKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F9244A2923040DD1009EE7CF /* posix_thread.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449CD23040DD1009EE7CF /* posix_thread.h */; };
+		F9244A2B23040DD2009EE7CF /* thread_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449CF23040DD1009EE7CF /* thread_impl.cpp */; };
+		F9244A2C23040DD2009EE7CF /* cookie_jar_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449D023040DD1009EE7CF /* cookie_jar_impl.cpp */; };
+		F9244A2D23040DD2009EE7CF /* apple_task_runner.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449D123040DD1009EE7CF /* apple_task_runner.h */; };
+		F9244A2E23040DD2009EE7CF /* task_runner_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449D223040DD1009EE7CF /* task_runner_impl.h */; };
+		F9244A2F23040DD2009EE7CF /* view_scheduler_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449D323040DD1009EE7CF /* view_scheduler_impl.h */; };
+		F9244A3023040DD2009EE7CF /* cookie_jar_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449D423040DD1009EE7CF /* cookie_jar_impl.h */; };
+		F9244A3123040DD2009EE7CF /* url_loader_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449D523040DD1009EE7CF /* url_loader_impl.h */; };
+		F9244A3323040DD2009EE7CF /* thread_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449D723040DD1009EE7CF /* thread_impl.h */; };
+		F9244A3423040DD2009EE7CF /* posix_thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449D823040DD1009EE7CF /* posix_thread.cpp */; };
+		F9244A3523040DD2009EE7CF /* scheduler_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449D923040DD1009EE7CF /* scheduler_impl.cpp */; };
+		F9244A3723040DD2009EE7CF /* clipboard_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449DB23040DD1009EE7CF /* clipboard_impl.cpp */; };
+		F9244A3823040DD2009EE7CF /* url_loader_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449DC23040DD1009EE7CF /* url_loader_impl.cpp */; };
+		F9244A3A23040DD2009EE7CF /* scheduler_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449DE23040DD1009EE7CF /* scheduler_impl.h */; };
+		F9244A3B23040DD2009EE7CF /* clipboard_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449DF23040DD1009EE7CF /* clipboard_impl.h */; };
+		F9244A3C23040DD2009EE7CF /* task_runner_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449E023040DD1009EE7CF /* task_runner_impl.cpp */; };
+		F9244A3D23040DD2009EE7CF /* mime_registry_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449E123040DD1009EE7CF /* mime_registry_impl.h */; };
+		F9244A4023040DD2009EE7CF /* mime_registry_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449E423040DD1009EE7CF /* mime_registry_impl.cpp */; };
+		F9244A4223040DD2009EE7CF /* frame_scheduler_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449E623040DD1009EE7CF /* frame_scheduler_impl.cpp */; };
+		F9244A4323040DD2009EE7CF /* view_scheduler_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449E723040DD1009EE7CF /* view_scheduler_impl.cpp */; };
+		F9244A4423040DD2009EE7CF /* apple_task_runner.mm in Sources */ = {isa = PBXBuildFile; fileRef = F92449E823040DD1009EE7CF /* apple_task_runner.mm */; };
+		F9244A4523040DD2009EE7CF /* frame_scheduler_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449E923040DD1009EE7CF /* frame_scheduler_impl.h */; };
+		F9244A4723040DD2009EE7CF /* _pc.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449EB23040DD1009EE7CF /* _pc.h */; };
+		F9244A4823040DD2009EE7CF /* apple_app.mm in Sources */ = {isa = PBXBuildFile; fileRef = F92449ED23040DD1009EE7CF /* apple_app.mm */; };
+		F9244A4A23040DD2009EE7CF /* app_constants.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449EF23040DD1009EE7CF /* app_constants.h */; };
+		F9244A4C23040DD2009EE7CF /* app_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449F123040DD1009EE7CF /* app_impl.cpp */; };
+		F9244A4D23040DD2009EE7CF /* apple_app.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449F223040DD1009EE7CF /* apple_app.h */; };
+		F9244A4E23040DD2009EE7CF /* app_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449F323040DD1009EE7CF /* app_impl.h */; };
+		F9244A4F23040DD2009EE7CF /* app_constants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449F423040DD1009EE7CF /* app_constants.cpp */; };
+		F9244A5523040DD2009EE7CF /* crawler_script_element.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449FC23040DD1009EE7CF /* crawler_script_element.h */; };
+		F9244A5623040DD2009EE7CF /* crawler_element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449FD23040DD1009EE7CF /* crawler_element.cpp */; };
+		F9244A5723040DD2009EE7CF /* frame_loader_client_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449FE23040DD1009EE7CF /* frame_loader_client_impl.h */; };
+		F9244A5823040DD2009EE7CF /* crawler_script_element.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449FF23040DD1009EE7CF /* crawler_script_element.cpp */; };
+		F9244A5923040DD2009EE7CF /* crawler_document.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9244A0023040DD1009EE7CF /* crawler_document.cpp */; };
+		F9244A5A23040DD2009EE7CF /* frame_loader_client_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9244A0123040DD1009EE7CF /* frame_loader_client_impl.cpp */; };
+		F9244A5B23040DD2009EE7CF /* crawler_document.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A0223040DD1009EE7CF /* crawler_document.h */; };
+		F9244A5C23040DD2009EE7CF /* crawler_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A0323040DD1009EE7CF /* crawler_impl.h */; };
+		F9244A5D23040DD2009EE7CF /* crawler_element.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A0423040DD1009EE7CF /* crawler_element.h */; };
+		F9244A5E23040DD2009EE7CF /* crawler_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9244A0523040DD1009EE7CF /* crawler_impl.cpp */; };
+		F9244A5F23040DD2009EE7CF /* http_response_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9244A0723040DD1009EE7CF /* http_response_task.cpp */; };
+		F9244A6123040DD2009EE7CF /* response_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A0923040DD1009EE7CF /* response_task.h */; };
+		F9244A6223040DD2009EE7CF /* loader_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A0A23040DD1009EE7CF /* loader_task.h */; };
+		F9244A6523040DD2009EE7CF /* loader_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9244A0D23040DD1009EE7CF /* loader_task.cpp */; };
+		F9244A6623040DD2009EE7CF /* response_data.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A0E23040DD1009EE7CF /* response_data.h */; };
+		F9244A6723040DD2009EE7CF /* http_response_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A0F23040DD1009EE7CF /* http_response_task.h */; };
+		F9244A6A23040DD2009EE7CF /* http_loader_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9244A1223040DD1009EE7CF /* http_loader_task.cpp */; };
+		F9244A6B23040DD2009EE7CF /* http_loader_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A1323040DD1009EE7CF /* http_loader_task.h */; };
+		F9244A6D23040DD2009EE7CF /* response_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9244A1523040DD1009EE7CF /* response_task.cpp */; };
+		F9244A6E23040DD2009EE7CF /* request_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A1723040DD1009EE7CF /* request_impl.h */; };
+		F9244A7023040DD2009EE7CF /* response_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9244A1923040DD1009EE7CF /* response_impl.cpp */; };
+		F9244A7223040DD2009EE7CF /* request_controller_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A1B23040DD1009EE7CF /* request_controller_impl.h */; };
+		F9244A7323040DD2009EE7CF /* apple_request.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9244A1C23040DD1009EE7CF /* apple_request.mm */; };
+		F9244A7423040DD2009EE7CF /* request_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9244A1D23040DD1009EE7CF /* request_impl.cpp */; };
+		F9244A7523040DD2009EE7CF /* response_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A1E23040DD1009EE7CF /* response_impl.h */; };
+		F9244A7623040DD2009EE7CF /* apple_request.h in Headers */ = {isa = PBXBuildFile; fileRef = F9244A1F23040DD1009EE7CF /* apple_request.h */; };
+		F9244A8123040F09009EE7CF /* libbase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A8023040F09009EE7CF /* libbase.a */; };
+		F9244A8323040F09009EE7CF /* libblink_crawler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A8223040F09009EE7CF /* libblink_crawler.a */; };
+		F9244A8523040F09009EE7CF /* libduktape.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A8423040F09009EE7CF /* libduktape.a */; };
+		F9244A8723040F09009EE7CF /* libjs_crawler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A8623040F09009EE7CF /* libjs_crawler.a */; };
+		F9244A8923040F09009EE7CF /* libmodules.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A8823040F09009EE7CF /* libmodules.a */; };
+		F9244A8B23040F09009EE7CF /* libnet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A8A23040F09009EE7CF /* libnet.a */; };
+		F9244A8D23040F09009EE7CF /* libstub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A8C23040F09009EE7CF /* libstub.a */; };
+		F9244A8F23040F09009EE7CF /* liburl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A8E23040F09009EE7CF /* liburl.a */; };
+		F9244A9123040F09009EE7CF /* libwtf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A9023040F09009EE7CF /* libwtf.a */; };
+		F9244A9323040F80009EE7CF /* libz.1.2.11.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A9223040F80009EE7CF /* libz.1.2.11.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F9136FE42302612300BA54B3 /* libBkCrawler.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libBkCrawler.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		F9136FEB2302615900BA54B3 /* blink.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = blink.xcconfig; path = ../blink.xcconfig; sourceTree = SOURCE_ROOT; };
-		F9136FEC2302615900BA54B3 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = ../PrefixHeader.pch; sourceTree = SOURCE_ROOT; };
-		F9136FF12302616900BA54B3 /* thread_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = thread_impl.cpp; sourceTree = "<group>"; };
-		F9136FF22302616900BA54B3 /* cookie_jar_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cookie_jar_impl.cpp; sourceTree = "<group>"; };
-		F9136FF32302616900BA54B3 /* task_runner_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = task_runner_impl.h; sourceTree = "<group>"; };
-		F9136FF42302616900BA54B3 /* view_scheduler_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = view_scheduler_impl.h; sourceTree = "<group>"; };
-		F9136FF52302616900BA54B3 /* cookie_jar_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cookie_jar_impl.h; sourceTree = "<group>"; };
-		F9136FF62302616900BA54B3 /* url_loader_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_loader_impl.h; sourceTree = "<group>"; };
-		F9136FF82302616900BA54B3 /* thread_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = thread_impl.h; sourceTree = "<group>"; };
-		F9136FF92302616900BA54B3 /* scheduler_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scheduler_impl.cpp; sourceTree = "<group>"; };
-		F9136FFB2302616900BA54B3 /* clipboard_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = clipboard_impl.cpp; sourceTree = "<group>"; };
-		F9136FFC2302616900BA54B3 /* url_loader_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_loader_impl.cpp; sourceTree = "<group>"; };
-		F9136FFE2302616900BA54B3 /* scheduler_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scheduler_impl.h; sourceTree = "<group>"; };
-		F9136FFF2302616900BA54B3 /* clipboard_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = clipboard_impl.h; sourceTree = "<group>"; };
-		F91370002302616900BA54B3 /* task_runner_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = task_runner_impl.cpp; sourceTree = "<group>"; };
-		F91370012302616900BA54B3 /* mime_registry_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mime_registry_impl.h; sourceTree = "<group>"; };
-		F91370042302616900BA54B3 /* mime_registry_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mime_registry_impl.cpp; sourceTree = "<group>"; };
-		F91370062302616900BA54B3 /* frame_scheduler_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = frame_scheduler_impl.cpp; sourceTree = "<group>"; };
-		F91370072302616900BA54B3 /* view_scheduler_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = view_scheduler_impl.cpp; sourceTree = "<group>"; };
-		F91370082302616900BA54B3 /* frame_scheduler_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = frame_scheduler_impl.h; sourceTree = "<group>"; };
-		F913700A2302616900BA54B3 /* _pc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _pc.h; sourceTree = "<group>"; };
-		F913700D2302616900BA54B3 /* app_constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = app_constants.h; sourceTree = "<group>"; };
-		F913700F2302616900BA54B3 /* app_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = app_impl.cpp; sourceTree = "<group>"; };
-		F91370102302616900BA54B3 /* app_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = app_impl.h; sourceTree = "<group>"; };
-		F91370112302616900BA54B3 /* app_constants.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = app_constants.cpp; sourceTree = "<group>"; };
-		F91370192302616900BA54B3 /* crawler_script_element.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crawler_script_element.h; sourceTree = "<group>"; };
-		F913701A2302616900BA54B3 /* crawler_element.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crawler_element.cpp; sourceTree = "<group>"; };
-		F913701B2302616900BA54B3 /* frame_loader_client_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = frame_loader_client_impl.h; sourceTree = "<group>"; };
-		F913701C2302616900BA54B3 /* crawler_script_element.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crawler_script_element.cpp; sourceTree = "<group>"; };
-		F913701D2302616900BA54B3 /* crawler_document.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crawler_document.cpp; sourceTree = "<group>"; };
-		F913701E2302616900BA54B3 /* frame_loader_client_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = frame_loader_client_impl.cpp; sourceTree = "<group>"; };
-		F913701F2302616900BA54B3 /* crawler_document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crawler_document.h; sourceTree = "<group>"; };
-		F91370202302616900BA54B3 /* crawler_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crawler_impl.h; sourceTree = "<group>"; };
-		F91370212302616900BA54B3 /* crawler_element.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crawler_element.h; sourceTree = "<group>"; };
-		F91370222302616900BA54B3 /* crawler_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crawler_impl.cpp; sourceTree = "<group>"; };
-		F91370242302616900BA54B3 /* http_response_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = http_response_task.cpp; sourceTree = "<group>"; };
-		F91370262302616900BA54B3 /* response_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = response_task.h; sourceTree = "<group>"; };
-		F91370272302616900BA54B3 /* loader_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = loader_task.h; sourceTree = "<group>"; };
-		F913702A2302616900BA54B3 /* loader_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = loader_task.cpp; sourceTree = "<group>"; };
-		F913702B2302616900BA54B3 /* response_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = response_data.h; sourceTree = "<group>"; };
-		F913702C2302616900BA54B3 /* http_response_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http_response_task.h; sourceTree = "<group>"; };
-		F913702F2302616900BA54B3 /* http_loader_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = http_loader_task.cpp; sourceTree = "<group>"; };
-		F91370302302616900BA54B3 /* http_loader_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http_loader_task.h; sourceTree = "<group>"; };
-		F91370322302616900BA54B3 /* response_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = response_task.cpp; sourceTree = "<group>"; };
-		F91370342302616900BA54B3 /* request_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = request_impl.h; sourceTree = "<group>"; };
-		F91370362302616900BA54B3 /* response_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = response_impl.cpp; sourceTree = "<group>"; };
-		F91370382302616900BA54B3 /* request_controller_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = request_controller_impl.h; sourceTree = "<group>"; };
-		F91370392302616900BA54B3 /* request_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = request_impl.cpp; sourceTree = "<group>"; };
-		F913703A2302616900BA54B3 /* response_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = response_impl.h; sourceTree = "<group>"; };
-		F91370932302650700BA54B3 /* libbase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libbase.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		F91370952302650700BA54B3 /* libblink_crawler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libblink_crawler.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		F91370972302650700BA54B3 /* libduktape.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libduktape.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		F91370992302650700BA54B3 /* libjs_crawler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libjs_crawler.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		F913709B2302650700BA54B3 /* libmodules.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libmodules.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		F913709D2302650700BA54B3 /* libnet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libnet.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		F913709F2302650700BA54B3 /* libstub.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libstub.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		F91370A12302650700BA54B3 /* liburl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liburl.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		F91370A32302650700BA54B3 /* libwtf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libwtf.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		F91370A52302657C00BA54B3 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		F91370A7230265C400BA54B3 /* libz.1.2.11.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.11.tbd; path = usr/lib/libz.1.2.11.tbd; sourceTree = SDKROOT; };
-		F91370A92302660700BA54B3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		F91370AB2302686900BA54B3 /* apple_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apple_app.h; sourceTree = "<group>"; };
-		F91370AC2302686900BA54B3 /* apple_app.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = apple_app.mm; sourceTree = "<group>"; };
-		F9151FAE2302B34F00EFECD1 /* posix_thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = posix_thread.cpp; sourceTree = "<group>"; };
-		F9151FAF2302B34F00EFECD1 /* posix_thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = posix_thread.h; sourceTree = "<group>"; };
-		F9151FB42302B85800EFECD1 /* apple_request.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apple_request.h; sourceTree = "<group>"; };
-		F9151FB52302B85800EFECD1 /* apple_request.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = apple_request.mm; sourceTree = "<group>"; };
-		F9151FBA2302CD3000EFECD1 /* apple_task_runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apple_task_runner.h; sourceTree = "<group>"; };
-		F9151FBB2302CD3100EFECD1 /* apple_task_runner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = apple_task_runner.mm; sourceTree = "<group>"; };
+		F92449BA23040CF6009EE7CF /* BkCrawler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BkCrawler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F92449BE23040CF6009EE7CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F92449C523040D8C009EE7CF /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = ../PrefixHeader.pch; sourceTree = SOURCE_ROOT; };
+		F92449C623040D8C009EE7CF /* blink.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = blink.xcconfig; path = ../blink.xcconfig; sourceTree = SOURCE_ROOT; };
+		F92449C923040DB7009EE7CF /* BlinKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlinKit.h; path = ../../../../sdk/include/BlinKit.h; sourceTree = "<group>"; };
+		F92449CD23040DD1009EE7CF /* posix_thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = posix_thread.h; sourceTree = "<group>"; };
+		F92449CF23040DD1009EE7CF /* thread_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = thread_impl.cpp; sourceTree = "<group>"; };
+		F92449D023040DD1009EE7CF /* cookie_jar_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cookie_jar_impl.cpp; sourceTree = "<group>"; };
+		F92449D123040DD1009EE7CF /* apple_task_runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apple_task_runner.h; sourceTree = "<group>"; };
+		F92449D223040DD1009EE7CF /* task_runner_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = task_runner_impl.h; sourceTree = "<group>"; };
+		F92449D323040DD1009EE7CF /* view_scheduler_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = view_scheduler_impl.h; sourceTree = "<group>"; };
+		F92449D423040DD1009EE7CF /* cookie_jar_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cookie_jar_impl.h; sourceTree = "<group>"; };
+		F92449D523040DD1009EE7CF /* url_loader_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_loader_impl.h; sourceTree = "<group>"; };
+		F92449D723040DD1009EE7CF /* thread_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = thread_impl.h; sourceTree = "<group>"; };
+		F92449D823040DD1009EE7CF /* posix_thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = posix_thread.cpp; sourceTree = "<group>"; };
+		F92449D923040DD1009EE7CF /* scheduler_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scheduler_impl.cpp; sourceTree = "<group>"; };
+		F92449DB23040DD1009EE7CF /* clipboard_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = clipboard_impl.cpp; sourceTree = "<group>"; };
+		F92449DC23040DD1009EE7CF /* url_loader_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_loader_impl.cpp; sourceTree = "<group>"; };
+		F92449DE23040DD1009EE7CF /* scheduler_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scheduler_impl.h; sourceTree = "<group>"; };
+		F92449DF23040DD1009EE7CF /* clipboard_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = clipboard_impl.h; sourceTree = "<group>"; };
+		F92449E023040DD1009EE7CF /* task_runner_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = task_runner_impl.cpp; sourceTree = "<group>"; };
+		F92449E123040DD1009EE7CF /* mime_registry_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mime_registry_impl.h; sourceTree = "<group>"; };
+		F92449E423040DD1009EE7CF /* mime_registry_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mime_registry_impl.cpp; sourceTree = "<group>"; };
+		F92449E623040DD1009EE7CF /* frame_scheduler_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = frame_scheduler_impl.cpp; sourceTree = "<group>"; };
+		F92449E723040DD1009EE7CF /* view_scheduler_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = view_scheduler_impl.cpp; sourceTree = "<group>"; };
+		F92449E823040DD1009EE7CF /* apple_task_runner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = apple_task_runner.mm; sourceTree = "<group>"; };
+		F92449E923040DD1009EE7CF /* frame_scheduler_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = frame_scheduler_impl.h; sourceTree = "<group>"; };
+		F92449EB23040DD1009EE7CF /* _pc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _pc.h; sourceTree = "<group>"; };
+		F92449ED23040DD1009EE7CF /* apple_app.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = apple_app.mm; sourceTree = "<group>"; };
+		F92449EF23040DD1009EE7CF /* app_constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = app_constants.h; sourceTree = "<group>"; };
+		F92449F123040DD1009EE7CF /* app_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = app_impl.cpp; sourceTree = "<group>"; };
+		F92449F223040DD1009EE7CF /* apple_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apple_app.h; sourceTree = "<group>"; };
+		F92449F323040DD1009EE7CF /* app_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = app_impl.h; sourceTree = "<group>"; };
+		F92449F423040DD1009EE7CF /* app_constants.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = app_constants.cpp; sourceTree = "<group>"; };
+		F92449FC23040DD1009EE7CF /* crawler_script_element.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crawler_script_element.h; sourceTree = "<group>"; };
+		F92449FD23040DD1009EE7CF /* crawler_element.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crawler_element.cpp; sourceTree = "<group>"; };
+		F92449FE23040DD1009EE7CF /* frame_loader_client_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = frame_loader_client_impl.h; sourceTree = "<group>"; };
+		F92449FF23040DD1009EE7CF /* crawler_script_element.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crawler_script_element.cpp; sourceTree = "<group>"; };
+		F9244A0023040DD1009EE7CF /* crawler_document.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crawler_document.cpp; sourceTree = "<group>"; };
+		F9244A0123040DD1009EE7CF /* frame_loader_client_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = frame_loader_client_impl.cpp; sourceTree = "<group>"; };
+		F9244A0223040DD1009EE7CF /* crawler_document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crawler_document.h; sourceTree = "<group>"; };
+		F9244A0323040DD1009EE7CF /* crawler_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crawler_impl.h; sourceTree = "<group>"; };
+		F9244A0423040DD1009EE7CF /* crawler_element.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crawler_element.h; sourceTree = "<group>"; };
+		F9244A0523040DD1009EE7CF /* crawler_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crawler_impl.cpp; sourceTree = "<group>"; };
+		F9244A0723040DD1009EE7CF /* http_response_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = http_response_task.cpp; sourceTree = "<group>"; };
+		F9244A0923040DD1009EE7CF /* response_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = response_task.h; sourceTree = "<group>"; };
+		F9244A0A23040DD1009EE7CF /* loader_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = loader_task.h; sourceTree = "<group>"; };
+		F9244A0D23040DD1009EE7CF /* loader_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = loader_task.cpp; sourceTree = "<group>"; };
+		F9244A0E23040DD1009EE7CF /* response_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = response_data.h; sourceTree = "<group>"; };
+		F9244A0F23040DD1009EE7CF /* http_response_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http_response_task.h; sourceTree = "<group>"; };
+		F9244A1223040DD1009EE7CF /* http_loader_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = http_loader_task.cpp; sourceTree = "<group>"; };
+		F9244A1323040DD1009EE7CF /* http_loader_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http_loader_task.h; sourceTree = "<group>"; };
+		F9244A1523040DD1009EE7CF /* response_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = response_task.cpp; sourceTree = "<group>"; };
+		F9244A1723040DD1009EE7CF /* request_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = request_impl.h; sourceTree = "<group>"; };
+		F9244A1923040DD1009EE7CF /* response_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = response_impl.cpp; sourceTree = "<group>"; };
+		F9244A1B23040DD1009EE7CF /* request_controller_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = request_controller_impl.h; sourceTree = "<group>"; };
+		F9244A1C23040DD1009EE7CF /* apple_request.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = apple_request.mm; sourceTree = "<group>"; };
+		F9244A1D23040DD1009EE7CF /* request_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = request_impl.cpp; sourceTree = "<group>"; };
+		F9244A1E23040DD1009EE7CF /* response_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = response_impl.h; sourceTree = "<group>"; };
+		F9244A1F23040DD1009EE7CF /* apple_request.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apple_request.h; sourceTree = "<group>"; };
+		F9244A8023040F09009EE7CF /* libbase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libbase.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9244A8223040F09009EE7CF /* libblink_crawler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libblink_crawler.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9244A8423040F09009EE7CF /* libduktape.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libduktape.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9244A8623040F09009EE7CF /* libjs_crawler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libjs_crawler.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9244A8823040F09009EE7CF /* libmodules.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libmodules.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9244A8A23040F09009EE7CF /* libnet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libnet.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9244A8C23040F09009EE7CF /* libstub.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libstub.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9244A8E23040F09009EE7CF /* liburl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liburl.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9244A9023040F09009EE7CF /* libwtf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libwtf.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9244A9223040F80009EE7CF /* libz.1.2.11.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.11.tbd; path = usr/lib/libz.1.2.11.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		F9136FE22302612300BA54B3 /* Frameworks */ = {
+		F92449B723040CF6009EE7CF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F91370A62302657C00BA54B3 /* CoreFoundation.framework in Frameworks */,
-				F91370AA2302660700BA54B3 /* Foundation.framework in Frameworks */,
-				F91370A8230265C400BA54B3 /* libz.1.2.11.tbd in Frameworks */,
-				F91370942302650700BA54B3 /* libbase.a in Frameworks */,
-				F91370962302650700BA54B3 /* libblink_crawler.a in Frameworks */,
-				F91370982302650700BA54B3 /* libduktape.a in Frameworks */,
-				F913709A2302650700BA54B3 /* libjs_crawler.a in Frameworks */,
-				F913709C2302650700BA54B3 /* libmodules.a in Frameworks */,
-				F913709E2302650700BA54B3 /* libnet.a in Frameworks */,
-				F91370A02302650700BA54B3 /* libstub.a in Frameworks */,
-				F91370A22302650700BA54B3 /* liburl.a in Frameworks */,
-				F91370A42302650700BA54B3 /* libwtf.a in Frameworks */,
+				F9244A9323040F80009EE7CF /* libz.1.2.11.tbd in Frameworks */,
+				F9244A8123040F09009EE7CF /* libbase.a in Frameworks */,
+				F9244A8323040F09009EE7CF /* libblink_crawler.a in Frameworks */,
+				F9244A8523040F09009EE7CF /* libduktape.a in Frameworks */,
+				F9244A8723040F09009EE7CF /* libjs_crawler.a in Frameworks */,
+				F9244A8923040F09009EE7CF /* libmodules.a in Frameworks */,
+				F9244A8B23040F09009EE7CF /* libnet.a in Frameworks */,
+				F9244A8D23040F09009EE7CF /* libstub.a in Frameworks */,
+				F9244A8F23040F09009EE7CF /* liburl.a in Frameworks */,
+				F9244A9123040F09009EE7CF /* libwtf.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F9136FDB2302612300BA54B3 = {
+		F92449B023040CF6009EE7CF = {
 			isa = PBXGroup;
 			children = (
-				F9136FEE2302616900BA54B3 /* blinkit */,
-				F9136FEB2302615900BA54B3 /* blink.xcconfig */,
-				F9136FEC2302615900BA54B3 /* PrefixHeader.pch */,
-				F9136FE52302612300BA54B3 /* Products */,
-				F91370922302650700BA54B3 /* Frameworks */,
+				F92449BC23040CF6009EE7CF /* BkCrawler */,
+				F92449CB23040DD1009EE7CF /* blinkit */,
+				F92449C623040D8C009EE7CF /* blink.xcconfig */,
+				F92449C523040D8C009EE7CF /* PrefixHeader.pch */,
+				F92449BB23040CF6009EE7CF /* Products */,
+				F9244A7F23040F09009EE7CF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		F9136FE52302612300BA54B3 /* Products */ = {
+		F92449BB23040CF6009EE7CF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F9136FE42302612300BA54B3 /* libBkCrawler.dylib */,
+				F92449BA23040CF6009EE7CF /* BkCrawler.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F9136FEE2302616900BA54B3 /* blinkit */ = {
+		F92449BC23040CF6009EE7CF /* BkCrawler */ = {
 			isa = PBXGroup;
 			children = (
-				F913700B2302616900BA54B3 /* app */,
-				F9136FEF2302616900BA54B3 /* blink_impl */,
-				F91370182302616900BA54B3 /* crawler */,
-				F91370332302616900BA54B3 /* http */,
-				F91370232302616900BA54B3 /* loader_tasks */,
-				F913700A2302616900BA54B3 /* _pc.h */,
+				F92449C923040DB7009EE7CF /* BlinKit.h */,
+				F92449BE23040CF6009EE7CF /* Info.plist */,
+			);
+			path = BkCrawler;
+			sourceTree = SOURCE_ROOT;
+		};
+		F92449CB23040DD1009EE7CF /* blinkit */ = {
+			isa = PBXGroup;
+			children = (
+				F92449EC23040DD1009EE7CF /* app */,
+				F92449CC23040DD1009EE7CF /* blink_impl */,
+				F92449FB23040DD1009EE7CF /* crawler */,
+				F9244A1623040DD1009EE7CF /* http */,
+				F9244A0623040DD1009EE7CF /* loader_tasks */,
+				F92449EB23040DD1009EE7CF /* _pc.h */,
 			);
 			name = blinkit;
 			path = ../../../src/blinkit;
 			sourceTree = SOURCE_ROOT;
 		};
-		F9136FEF2302616900BA54B3 /* blink_impl */ = {
+		F92449CC23040DD1009EE7CF /* blink_impl */ = {
 			isa = PBXGroup;
 			children = (
-				F9151FBA2302CD3000EFECD1 /* apple_task_runner.h */,
-				F9151FBB2302CD3100EFECD1 /* apple_task_runner.mm */,
-				F9136FFB2302616900BA54B3 /* clipboard_impl.cpp */,
-				F9136FFF2302616900BA54B3 /* clipboard_impl.h */,
-				F9136FF22302616900BA54B3 /* cookie_jar_impl.cpp */,
-				F9136FF52302616900BA54B3 /* cookie_jar_impl.h */,
-				F91370062302616900BA54B3 /* frame_scheduler_impl.cpp */,
-				F91370082302616900BA54B3 /* frame_scheduler_impl.h */,
-				F91370042302616900BA54B3 /* mime_registry_impl.cpp */,
-				F91370012302616900BA54B3 /* mime_registry_impl.h */,
-				F9151FAE2302B34F00EFECD1 /* posix_thread.cpp */,
-				F9151FAF2302B34F00EFECD1 /* posix_thread.h */,
-				F9136FF92302616900BA54B3 /* scheduler_impl.cpp */,
-				F9136FFE2302616900BA54B3 /* scheduler_impl.h */,
-				F91370002302616900BA54B3 /* task_runner_impl.cpp */,
-				F9136FF32302616900BA54B3 /* task_runner_impl.h */,
-				F9136FF12302616900BA54B3 /* thread_impl.cpp */,
-				F9136FF82302616900BA54B3 /* thread_impl.h */,
-				F9136FFC2302616900BA54B3 /* url_loader_impl.cpp */,
-				F9136FF62302616900BA54B3 /* url_loader_impl.h */,
-				F91370072302616900BA54B3 /* view_scheduler_impl.cpp */,
-				F9136FF42302616900BA54B3 /* view_scheduler_impl.h */,
+				F92449D123040DD1009EE7CF /* apple_task_runner.h */,
+				F92449E823040DD1009EE7CF /* apple_task_runner.mm */,
+				F92449DB23040DD1009EE7CF /* clipboard_impl.cpp */,
+				F92449DF23040DD1009EE7CF /* clipboard_impl.h */,
+				F92449D023040DD1009EE7CF /* cookie_jar_impl.cpp */,
+				F92449D423040DD1009EE7CF /* cookie_jar_impl.h */,
+				F92449E623040DD1009EE7CF /* frame_scheduler_impl.cpp */,
+				F92449E923040DD1009EE7CF /* frame_scheduler_impl.h */,
+				F92449E423040DD1009EE7CF /* mime_registry_impl.cpp */,
+				F92449E123040DD1009EE7CF /* mime_registry_impl.h */,
+				F92449D823040DD1009EE7CF /* posix_thread.cpp */,
+				F92449CD23040DD1009EE7CF /* posix_thread.h */,
+				F92449D923040DD1009EE7CF /* scheduler_impl.cpp */,
+				F92449DE23040DD1009EE7CF /* scheduler_impl.h */,
+				F92449E023040DD1009EE7CF /* task_runner_impl.cpp */,
+				F92449D223040DD1009EE7CF /* task_runner_impl.h */,
+				F92449CF23040DD1009EE7CF /* thread_impl.cpp */,
+				F92449D723040DD1009EE7CF /* thread_impl.h */,
+				F92449DC23040DD1009EE7CF /* url_loader_impl.cpp */,
+				F92449D523040DD1009EE7CF /* url_loader_impl.h */,
+				F92449E723040DD1009EE7CF /* view_scheduler_impl.cpp */,
+				F92449D323040DD1009EE7CF /* view_scheduler_impl.h */,
 			);
 			path = blink_impl;
 			sourceTree = "<group>";
 		};
-		F913700B2302616900BA54B3 /* app */ = {
+		F92449EC23040DD1009EE7CF /* app */ = {
 			isa = PBXGroup;
 			children = (
-				F91370112302616900BA54B3 /* app_constants.cpp */,
-				F913700D2302616900BA54B3 /* app_constants.h */,
-				F913700F2302616900BA54B3 /* app_impl.cpp */,
-				F91370102302616900BA54B3 /* app_impl.h */,
-				F91370AB2302686900BA54B3 /* apple_app.h */,
-				F91370AC2302686900BA54B3 /* apple_app.mm */,
+				F92449F423040DD1009EE7CF /* app_constants.cpp */,
+				F92449EF23040DD1009EE7CF /* app_constants.h */,
+				F92449F123040DD1009EE7CF /* app_impl.cpp */,
+				F92449F323040DD1009EE7CF /* app_impl.h */,
+				F92449F223040DD1009EE7CF /* apple_app.h */,
+				F92449ED23040DD1009EE7CF /* apple_app.mm */,
 			);
 			path = app;
 			sourceTree = "<group>";
 		};
-		F91370182302616900BA54B3 /* crawler */ = {
+		F92449FB23040DD1009EE7CF /* crawler */ = {
 			isa = PBXGroup;
 			children = (
-				F913701D2302616900BA54B3 /* crawler_document.cpp */,
-				F913701F2302616900BA54B3 /* crawler_document.h */,
-				F913701A2302616900BA54B3 /* crawler_element.cpp */,
-				F91370212302616900BA54B3 /* crawler_element.h */,
-				F91370222302616900BA54B3 /* crawler_impl.cpp */,
-				F91370202302616900BA54B3 /* crawler_impl.h */,
-				F913701C2302616900BA54B3 /* crawler_script_element.cpp */,
-				F91370192302616900BA54B3 /* crawler_script_element.h */,
-				F913701E2302616900BA54B3 /* frame_loader_client_impl.cpp */,
-				F913701B2302616900BA54B3 /* frame_loader_client_impl.h */,
+				F9244A0023040DD1009EE7CF /* crawler_document.cpp */,
+				F9244A0223040DD1009EE7CF /* crawler_document.h */,
+				F92449FD23040DD1009EE7CF /* crawler_element.cpp */,
+				F9244A0423040DD1009EE7CF /* crawler_element.h */,
+				F9244A0523040DD1009EE7CF /* crawler_impl.cpp */,
+				F9244A0323040DD1009EE7CF /* crawler_impl.h */,
+				F92449FF23040DD1009EE7CF /* crawler_script_element.cpp */,
+				F92449FC23040DD1009EE7CF /* crawler_script_element.h */,
+				F9244A0123040DD1009EE7CF /* frame_loader_client_impl.cpp */,
+				F92449FE23040DD1009EE7CF /* frame_loader_client_impl.h */,
 			);
 			path = crawler;
 			sourceTree = "<group>";
 		};
-		F91370232302616900BA54B3 /* loader_tasks */ = {
+		F9244A0623040DD1009EE7CF /* loader_tasks */ = {
 			isa = PBXGroup;
 			children = (
-				F913702F2302616900BA54B3 /* http_loader_task.cpp */,
-				F91370302302616900BA54B3 /* http_loader_task.h */,
-				F91370242302616900BA54B3 /* http_response_task.cpp */,
-				F913702C2302616900BA54B3 /* http_response_task.h */,
-				F913702A2302616900BA54B3 /* loader_task.cpp */,
-				F91370272302616900BA54B3 /* loader_task.h */,
-				F913702B2302616900BA54B3 /* response_data.h */,
-				F91370322302616900BA54B3 /* response_task.cpp */,
-				F91370262302616900BA54B3 /* response_task.h */,
+				F9244A1223040DD1009EE7CF /* http_loader_task.cpp */,
+				F9244A1323040DD1009EE7CF /* http_loader_task.h */,
+				F9244A0723040DD1009EE7CF /* http_response_task.cpp */,
+				F9244A0F23040DD1009EE7CF /* http_response_task.h */,
+				F9244A0D23040DD1009EE7CF /* loader_task.cpp */,
+				F9244A0A23040DD1009EE7CF /* loader_task.h */,
+				F9244A0E23040DD1009EE7CF /* response_data.h */,
+				F9244A1523040DD1009EE7CF /* response_task.cpp */,
+				F9244A0923040DD1009EE7CF /* response_task.h */,
 			);
 			path = loader_tasks;
 			sourceTree = "<group>";
 		};
-		F91370332302616900BA54B3 /* http */ = {
+		F9244A1623040DD1009EE7CF /* http */ = {
 			isa = PBXGroup;
 			children = (
-				F9151FB42302B85800EFECD1 /* apple_request.h */,
-				F9151FB52302B85800EFECD1 /* apple_request.mm */,
-				F91370382302616900BA54B3 /* request_controller_impl.h */,
-				F91370392302616900BA54B3 /* request_impl.cpp */,
-				F91370342302616900BA54B3 /* request_impl.h */,
-				F91370362302616900BA54B3 /* response_impl.cpp */,
-				F913703A2302616900BA54B3 /* response_impl.h */,
+				F9244A1F23040DD1009EE7CF /* apple_request.h */,
+				F9244A1C23040DD1009EE7CF /* apple_request.mm */,
+				F9244A1B23040DD1009EE7CF /* request_controller_impl.h */,
+				F9244A1D23040DD1009EE7CF /* request_impl.cpp */,
+				F9244A1723040DD1009EE7CF /* request_impl.h */,
+				F9244A1923040DD1009EE7CF /* response_impl.cpp */,
+				F9244A1E23040DD1009EE7CF /* response_impl.h */,
 			);
 			path = http;
 			sourceTree = "<group>";
 		};
-		F91370922302650700BA54B3 /* Frameworks */ = {
+		F9244A7F23040F09009EE7CF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				F91370A92302660700BA54B3 /* Foundation.framework */,
-				F91370A7230265C400BA54B3 /* libz.1.2.11.tbd */,
-				F91370A52302657C00BA54B3 /* CoreFoundation.framework */,
-				F91370932302650700BA54B3 /* libbase.a */,
-				F91370952302650700BA54B3 /* libblink_crawler.a */,
-				F91370972302650700BA54B3 /* libduktape.a */,
-				F91370992302650700BA54B3 /* libjs_crawler.a */,
-				F913709B2302650700BA54B3 /* libmodules.a */,
-				F913709D2302650700BA54B3 /* libnet.a */,
-				F913709F2302650700BA54B3 /* libstub.a */,
-				F91370A12302650700BA54B3 /* liburl.a */,
-				F91370A32302650700BA54B3 /* libwtf.a */,
+				F9244A9223040F80009EE7CF /* libz.1.2.11.tbd */,
+				F9244A8023040F09009EE7CF /* libbase.a */,
+				F9244A8223040F09009EE7CF /* libblink_crawler.a */,
+				F9244A8423040F09009EE7CF /* libduktape.a */,
+				F9244A8623040F09009EE7CF /* libjs_crawler.a */,
+				F9244A8823040F09009EE7CF /* libmodules.a */,
+				F9244A8A23040F09009EE7CF /* libnet.a */,
+				F9244A8C23040F09009EE7CF /* libstub.a */,
+				F9244A8E23040F09009EE7CF /* liburl.a */,
+				F9244A9023040F09009EE7CF /* libwtf.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -317,53 +322,55 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		F9136FE02302612300BA54B3 /* Headers */ = {
+		F92449B523040CF6009EE7CF /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F913704C2302616900BA54B3 /* thread_impl.h in Headers */,
-				F91370AD2302686900BA54B3 /* apple_app.h in Headers */,
-				F9151FB12302B34F00EFECD1 /* posix_thread.h in Headers */,
-				F91370532302616900BA54B3 /* clipboard_impl.h in Headers */,
-				F91370482302616900BA54B3 /* view_scheduler_impl.h in Headers */,
-				F91370872302616900BA54B3 /* request_controller_impl.h in Headers */,
-				F91370832302616900BA54B3 /* request_impl.h in Headers */,
-				F91370552302616900BA54B3 /* mime_registry_impl.h in Headers */,
-				F9151FBC2302CD3100EFECD1 /* apple_task_runner.h in Headers */,
-				F91370712302616900BA54B3 /* crawler_impl.h in Headers */,
-				F913707C2302616900BA54B3 /* http_response_task.h in Headers */,
-				F9136FED2302615900BA54B3 /* PrefixHeader.pch in Headers */,
-				F91370602302616900BA54B3 /* app_constants.h in Headers */,
-				F913704A2302616900BA54B3 /* url_loader_impl.h in Headers */,
-				F913707B2302616900BA54B3 /* response_data.h in Headers */,
-				F91370492302616900BA54B3 /* cookie_jar_impl.h in Headers */,
-				F91370472302616900BA54B3 /* task_runner_impl.h in Headers */,
-				F91370892302616900BA54B3 /* response_impl.h in Headers */,
-				F91370762302616900BA54B3 /* response_task.h in Headers */,
-				F91370802302616900BA54B3 /* http_loader_task.h in Headers */,
-				F913705E2302616900BA54B3 /* _pc.h in Headers */,
-				F913706C2302616900BA54B3 /* frame_loader_client_impl.h in Headers */,
-				F91370522302616900BA54B3 /* scheduler_impl.h in Headers */,
-				F913706A2302616900BA54B3 /* crawler_script_element.h in Headers */,
-				F91370772302616900BA54B3 /* loader_task.h in Headers */,
-				F91370722302616900BA54B3 /* crawler_element.h in Headers */,
-				F913705C2302616900BA54B3 /* frame_scheduler_impl.h in Headers */,
-				F91370632302616900BA54B3 /* app_impl.h in Headers */,
-				F91370702302616900BA54B3 /* crawler_document.h in Headers */,
-				F9151FB62302B85800EFECD1 /* apple_request.h in Headers */,
+				F92449CA23040DB7009EE7CF /* BlinKit.h in Headers */,
+				F9244A3323040DD2009EE7CF /* thread_impl.h in Headers */,
+				F9244A2923040DD1009EE7CF /* posix_thread.h in Headers */,
+				F9244A4D23040DD2009EE7CF /* apple_app.h in Headers */,
+				F9244A7623040DD2009EE7CF /* apple_request.h in Headers */,
+				F9244A4723040DD2009EE7CF /* _pc.h in Headers */,
+				F9244A7523040DD2009EE7CF /* response_impl.h in Headers */,
+				F9244A3123040DD2009EE7CF /* url_loader_impl.h in Headers */,
+				F9244A4E23040DD2009EE7CF /* app_impl.h in Headers */,
+				F9244A3023040DD2009EE7CF /* cookie_jar_impl.h in Headers */,
+				F9244A6E23040DD2009EE7CF /* request_impl.h in Headers */,
+				F9244A5D23040DD2009EE7CF /* crawler_element.h in Headers */,
+				F9244A4523040DD2009EE7CF /* frame_scheduler_impl.h in Headers */,
+				F9244A6B23040DD2009EE7CF /* http_loader_task.h in Headers */,
+				F9244A2D23040DD2009EE7CF /* apple_task_runner.h in Headers */,
+				F9244A6623040DD2009EE7CF /* response_data.h in Headers */,
+				F9244A5B23040DD2009EE7CF /* crawler_document.h in Headers */,
+				F9244A4A23040DD2009EE7CF /* app_constants.h in Headers */,
+				F9244A3B23040DD2009EE7CF /* clipboard_impl.h in Headers */,
+				F9244A6223040DD2009EE7CF /* loader_task.h in Headers */,
+				F9244A2F23040DD2009EE7CF /* view_scheduler_impl.h in Headers */,
+				F9244A5C23040DD2009EE7CF /* crawler_impl.h in Headers */,
+				F9244A3A23040DD2009EE7CF /* scheduler_impl.h in Headers */,
+				F9244A6123040DD2009EE7CF /* response_task.h in Headers */,
+				F9244A5523040DD2009EE7CF /* crawler_script_element.h in Headers */,
+				F9244A3D23040DD2009EE7CF /* mime_registry_impl.h in Headers */,
+				F9244A5723040DD2009EE7CF /* frame_loader_client_impl.h in Headers */,
+				F92449C723040D8C009EE7CF /* PrefixHeader.pch in Headers */,
+				F9244A7223040DD2009EE7CF /* request_controller_impl.h in Headers */,
+				F9244A6723040DD2009EE7CF /* http_response_task.h in Headers */,
+				F9244A2E23040DD2009EE7CF /* task_runner_impl.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		F9136FE32302612300BA54B3 /* BkCrawler */ = {
+		F92449B923040CF6009EE7CF /* BkCrawler */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F9136FE82302612300BA54B3 /* Build configuration list for PBXNativeTarget "BkCrawler" */;
+			buildConfigurationList = F92449C223040CF6009EE7CF /* Build configuration list for PBXNativeTarget "BkCrawler" */;
 			buildPhases = (
-				F9136FE02302612300BA54B3 /* Headers */,
-				F9136FE12302612300BA54B3 /* Sources */,
-				F9136FE22302612300BA54B3 /* Frameworks */,
+				F92449B523040CF6009EE7CF /* Headers */,
+				F92449B623040CF6009EE7CF /* Sources */,
+				F92449B723040CF6009EE7CF /* Frameworks */,
+				F92449B823040CF6009EE7CF /* Resources */,
 			);
 			buildRules = (
 			);
@@ -371,80 +378,90 @@
 			);
 			name = BkCrawler;
 			productName = BkCrawler;
-			productReference = F9136FE42302612300BA54B3 /* libBkCrawler.dylib */;
-			productType = "com.apple.product-type.library.dynamic";
+			productReference = F92449BA23040CF6009EE7CF /* BkCrawler.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		F9136FDC2302612300BA54B3 /* Project object */ = {
+		F92449B123040CF6009EE7CF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1030;
 				ORGANIZATIONNAME = "MingYang Software Technology";
 				TargetAttributes = {
-					F9136FE32302612300BA54B3 = {
+					F92449B923040CF6009EE7CF = {
 						CreatedOnToolsVersion = 10.3;
 					};
 				};
 			};
-			buildConfigurationList = F9136FDF2302612300BA54B3 /* Build configuration list for PBXProject "BkCrawler" */;
+			buildConfigurationList = F92449B423040CF6009EE7CF /* Build configuration list for PBXProject "BkCrawler" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = F9136FDB2302612300BA54B3;
-			productRefGroup = F9136FE52302612300BA54B3 /* Products */;
+			mainGroup = F92449B023040CF6009EE7CF;
+			productRefGroup = F92449BB23040CF6009EE7CF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F9136FE32302612300BA54B3 /* BkCrawler */,
+				F92449B923040CF6009EE7CF /* BkCrawler */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		F92449B823040CF6009EE7CF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		F9136FE12302612300BA54B3 /* Sources */ = {
+		F92449B623040CF6009EE7CF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F913707A2302616900BA54B3 /* loader_task.cpp in Sources */,
-				F91370622302616900BA54B3 /* app_impl.cpp in Sources */,
-				F91370AE2302686900BA54B3 /* apple_app.mm in Sources */,
-				F913706E2302616900BA54B3 /* crawler_document.cpp in Sources */,
-				F91370822302616900BA54B3 /* response_task.cpp in Sources */,
-				F913706B2302616900BA54B3 /* crawler_element.cpp in Sources */,
-				F913707F2302616900BA54B3 /* http_loader_task.cpp in Sources */,
-				F913704F2302616900BA54B3 /* clipboard_impl.cpp in Sources */,
-				F913706D2302616900BA54B3 /* crawler_script_element.cpp in Sources */,
-				F91370542302616900BA54B3 /* task_runner_impl.cpp in Sources */,
-				F913705B2302616900BA54B3 /* view_scheduler_impl.cpp in Sources */,
-				F9151FB02302B34F00EFECD1 /* posix_thread.cpp in Sources */,
-				F91370882302616900BA54B3 /* request_impl.cpp in Sources */,
-				F913705A2302616900BA54B3 /* frame_scheduler_impl.cpp in Sources */,
-				F91370462302616900BA54B3 /* cookie_jar_impl.cpp in Sources */,
-				F9151FB72302B85800EFECD1 /* apple_request.mm in Sources */,
-				F913704D2302616900BA54B3 /* scheduler_impl.cpp in Sources */,
-				F9151FBD2302CD3100EFECD1 /* apple_task_runner.mm in Sources */,
-				F91370852302616900BA54B3 /* response_impl.cpp in Sources */,
-				F91370582302616900BA54B3 /* mime_registry_impl.cpp in Sources */,
-				F91370732302616900BA54B3 /* crawler_impl.cpp in Sources */,
-				F91370502302616900BA54B3 /* url_loader_impl.cpp in Sources */,
-				F91370452302616900BA54B3 /* thread_impl.cpp in Sources */,
-				F91370742302616900BA54B3 /* http_response_task.cpp in Sources */,
-				F91370642302616900BA54B3 /* app_constants.cpp in Sources */,
-				F913706F2302616900BA54B3 /* frame_loader_client_impl.cpp in Sources */,
+				F9244A6D23040DD2009EE7CF /* response_task.cpp in Sources */,
+				F9244A4023040DD2009EE7CF /* mime_registry_impl.cpp in Sources */,
+				F9244A3423040DD2009EE7CF /* posix_thread.cpp in Sources */,
+				F9244A7023040DD2009EE7CF /* response_impl.cpp in Sources */,
+				F9244A3523040DD2009EE7CF /* scheduler_impl.cpp in Sources */,
+				F9244A6A23040DD2009EE7CF /* http_loader_task.cpp in Sources */,
+				F9244A4223040DD2009EE7CF /* frame_scheduler_impl.cpp in Sources */,
+				F9244A4423040DD2009EE7CF /* apple_task_runner.mm in Sources */,
+				F9244A6523040DD2009EE7CF /* loader_task.cpp in Sources */,
+				F9244A4823040DD2009EE7CF /* apple_app.mm in Sources */,
+				F9244A5E23040DD2009EE7CF /* crawler_impl.cpp in Sources */,
+				F9244A5A23040DD2009EE7CF /* frame_loader_client_impl.cpp in Sources */,
+				F9244A5F23040DD2009EE7CF /* http_response_task.cpp in Sources */,
+				F9244A5623040DD2009EE7CF /* crawler_element.cpp in Sources */,
+				F9244A2C23040DD2009EE7CF /* cookie_jar_impl.cpp in Sources */,
+				F9244A3C23040DD2009EE7CF /* task_runner_impl.cpp in Sources */,
+				F9244A5923040DD2009EE7CF /* crawler_document.cpp in Sources */,
+				F9244A4F23040DD2009EE7CF /* app_constants.cpp in Sources */,
+				F9244A5823040DD2009EE7CF /* crawler_script_element.cpp in Sources */,
+				F9244A4323040DD2009EE7CF /* view_scheduler_impl.cpp in Sources */,
+				F9244A3723040DD2009EE7CF /* clipboard_impl.cpp in Sources */,
+				F9244A3823040DD2009EE7CF /* url_loader_impl.cpp in Sources */,
+				F9244A7323040DD2009EE7CF /* apple_request.mm in Sources */,
+				F9244A4C23040DD2009EE7CF /* app_impl.cpp in Sources */,
+				F9244A7423040DD2009EE7CF /* request_impl.cpp in Sources */,
+				F9244A2B23040DD2009EE7CF /* thread_impl.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		F9136FE62302612300BA54B3 /* Debug */ = {
+		F92449C023040CF6009EE7CF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F9136FEB2302615900BA54B3 /* blink.xcconfig */;
+			baseConfigurationReference = F92449C623040D8C009EE7CF /* blink.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -475,9 +492,13 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 16;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_COMPATIBILITY_VERSION = 16;
+				DYLIB_CURRENT_VERSION = 16;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_VERSION = 1.0.1;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -493,7 +514,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INSTALL_PATH = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -504,12 +524,14 @@
 					"$(BK_SRC)/blinkit",
 					"$(inherited)",
 				);
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
-		F9136FE72302612300BA54B3 /* Release */ = {
+		F92449C123040CF6009EE7CF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F9136FEB2302615900BA54B3 /* blink.xcconfig */;
+			baseConfigurationReference = F92449C623040D8C009EE7CF /* blink.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -541,9 +563,13 @@
 				CODE_SIGN_IDENTITY = "-";
 				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/../../../sdk/macos";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 16;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 16;
+				DYLIB_CURRENT_VERSION = 16;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_VERSION = 1.0.1;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -556,7 +582,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INSTALL_PATH = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -566,29 +591,49 @@
 					"$(BK_SRC)/blinkit",
 					"$(inherited)",
 				);
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
-		F9136FE92302612300BA54B3 /* Debug */ = {
+		F92449C323040CF6009EE7CF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				EXECUTABLE_PREFIX = lib;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = BkCrawler/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = tech.mysoft.BkCrawler;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
-		F9136FEA2302612300BA54B3 /* Release */ = {
+		F92449C423040CF6009EE7CF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				EXECUTABLE_PREFIX = lib;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = BkCrawler/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = tech.mysoft.BkCrawler;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -596,25 +641,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F9136FDF2302612300BA54B3 /* Build configuration list for PBXProject "BkCrawler" */ = {
+		F92449B423040CF6009EE7CF /* Build configuration list for PBXProject "BkCrawler" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F9136FE62302612300BA54B3 /* Debug */,
-				F9136FE72302612300BA54B3 /* Release */,
+				F92449C023040CF6009EE7CF /* Debug */,
+				F92449C123040CF6009EE7CF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F9136FE82302612300BA54B3 /* Build configuration list for PBXNativeTarget "BkCrawler" */ = {
+		F92449C223040CF6009EE7CF /* Build configuration list for PBXNativeTarget "BkCrawler" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F9136FE92302612300BA54B3 /* Debug */,
-				F9136FEA2302612300BA54B3 /* Release */,
+				F92449C323040CF6009EE7CF /* Debug */,
+				F92449C423040CF6009EE7CF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = F9136FDC2302612300BA54B3 /* Project object */;
+	rootObject = F92449B123040CF6009EE7CF /* Project object */;
 }
