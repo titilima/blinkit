@@ -101,6 +101,7 @@ public:
 
     const BasicShape* basicShape() const { return m_shape.get(); }
     bool isValid() const { return m_shape.get(); }
+#ifndef BLINKIT_CRAWLER_ONLY
     const Path& path(const FloatRect& boundingRect)
     {
         ASSERT(m_shape);
@@ -110,6 +111,7 @@ public:
         m_path->setWindRule(m_shape->windRule());
         return *m_path;
     }
+#endif
 
 private:
     bool operator==(const ClipPathOperation&) const override;
@@ -121,7 +123,9 @@ private:
     }
 
     RefPtr<BasicShape> m_shape;
+#ifndef BLINKIT_CRAWLER_ONLY
     OwnPtr<Path> m_path;
+#endif
 };
 
 DEFINE_TYPE_CASTS(ShapeClipPathOperation, ClipPathOperation, op, op->type() == ClipPathOperation::SHAPE, op.type() == ClipPathOperation::SHAPE);
