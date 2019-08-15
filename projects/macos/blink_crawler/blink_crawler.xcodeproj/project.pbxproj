@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F9244AB923044AF1009EE7CF /* save_registers_macos.s in Sources */ = {isa = PBXBuildFile; fileRef = F9244AB323044AF1009EE7CF /* save_registers_macos.s */; };
 		F941D21D23010A1F00007B98 /* HTMLTagCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = F941D00723010A1D00007B98 /* HTMLTagCollection.h */; };
 		F941D22423010A2000007B98 /* ClassList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F941D01023010A1D00007B98 /* ClassList.cpp */; };
 		F941D2BA23010A2000007B98 /* DocumentNameCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = F941D0C123010A1D00007B98 /* DocumentNameCollection.h */; };
@@ -633,7 +634,6 @@
 		F98DA71822FFF1D500A1F2D0 /* BlinkGCInterruptor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98DA6E822FFF1D500A1F2D0 /* BlinkGCInterruptor.cpp */; };
 		F98DA71922FFF1D500A1F2D0 /* MarkingVisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = F98DA6EA22FFF1D500A1F2D0 /* MarkingVisitor.h */; };
 		F98DA71A22FFF1D500A1F2D0 /* Visitor.h in Headers */ = {isa = PBXBuildFile; fileRef = F98DA6EB22FFF1D500A1F2D0 /* Visitor.h */; };
-		F98DA71B22FFF1D500A1F2D0 /* save_registers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98DA6EC22FFF1D500A1F2D0 /* save_registers.cpp */; };
 		F98DA71C22FFF1D500A1F2D0 /* HeapLinkedStack.h in Headers */ = {isa = PBXBuildFile; fileRef = F98DA6EE22FFF1D500A1F2D0 /* HeapLinkedStack.h */; };
 		F98DA71D22FFF1D500A1F2D0 /* HeapTerminatedArrayBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = F98DA6EF22FFF1D500A1F2D0 /* HeapTerminatedArrayBuilder.h */; };
 		F98DA71E22FFF1D500A1F2D0 /* TraceTraits.h in Headers */ = {isa = PBXBuildFile; fileRef = F98DA6F022FFF1D500A1F2D0 /* TraceTraits.h */; };
@@ -1031,6 +1031,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F9244AB323044AF1009EE7CF /* save_registers_macos.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = save_registers_macos.s; sourceTree = "<group>"; };
 		F941D00723010A1D00007B98 /* HTMLTagCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLTagCollection.h; sourceTree = "<group>"; };
 		F941D01023010A1D00007B98 /* ClassList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClassList.cpp; sourceTree = "<group>"; };
 		F941D0C123010A1D00007B98 /* DocumentNameCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentNameCollection.h; sourceTree = "<group>"; };
@@ -1659,7 +1660,6 @@
 		F98DA6E822FFF1D500A1F2D0 /* BlinkGCInterruptor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlinkGCInterruptor.cpp; sourceTree = "<group>"; };
 		F98DA6EA22FFF1D500A1F2D0 /* MarkingVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarkingVisitor.h; sourceTree = "<group>"; };
 		F98DA6EB22FFF1D500A1F2D0 /* Visitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Visitor.h; sourceTree = "<group>"; };
-		F98DA6EC22FFF1D500A1F2D0 /* save_registers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = save_registers.cpp; sourceTree = "<group>"; };
 		F98DA6EE22FFF1D500A1F2D0 /* HeapLinkedStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeapLinkedStack.h; sourceTree = "<group>"; };
 		F98DA6EF22FFF1D500A1F2D0 /* HeapTerminatedArrayBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeapTerminatedArrayBuilder.h; sourceTree = "<group>"; };
 		F98DA6F022FFF1D500A1F2D0 /* TraceTraits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TraceTraits.h; sourceTree = "<group>"; };
@@ -2067,6 +2067,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F9244AAD23044AF1009EE7CF /* asm */ = {
+			isa = PBXGroup;
+			children = (
+				F9244AB323044AF1009EE7CF /* save_registers_macos.s */,
+			);
+			path = asm;
+			sourceTree = "<group>";
+		};
 		F941CFEF23010A1D00007B98 /* html */ = {
 			isa = PBXGroup;
 			children = (
@@ -2927,6 +2935,7 @@
 		F98DA6D622FFF1D500A1F2D0 /* heap */ = {
 			isa = PBXGroup;
 			children = (
+				F9244AAD23044AF1009EE7CF /* asm */,
 				F98DA6F822FFF1D500A1F2D0 /* BlinkGC.h */,
 				F98DA6E822FFF1D500A1F2D0 /* BlinkGCInterruptor.cpp */,
 				F98DA70322FFF1D500A1F2D0 /* BlinkGCInterruptor.h */,
@@ -2959,7 +2968,6 @@
 				F98DA70722FFF1D500A1F2D0 /* PersistentNode.h */,
 				F98DA6FE22FFF1D500A1F2D0 /* SafePoint.cpp */,
 				F98DA70522FFF1D500A1F2D0 /* SafePoint.h */,
-				F98DA6EC22FFF1D500A1F2D0 /* save_registers.cpp */,
 				F98DA6D822FFF1D500A1F2D0 /* StackFrameDepth.cpp */,
 				F98DA70022FFF1D500A1F2D0 /* StackFrameDepth.h */,
 				F98DA70422FFF1D500A1F2D0 /* ThreadingTraits.h */,
@@ -4435,6 +4443,7 @@
 				F941D2BC23010A2000007B98 /* HTMLCollection.cpp in Sources */,
 				F941D86723011C2200007B98 /* TextStream.cpp in Sources */,
 				F98DA5A622FFE78100A1F2D0 /* CSSParserToken.cpp in Sources */,
+				F9244AB923044AF1009EE7CF /* save_registers_macos.s in Sources */,
 				F941D31F23010A2000007B98 /* HTMLElementStack.cpp in Sources */,
 				F941D9FA23011E4D00007B98 /* TaskSynchronizer.cpp in Sources */,
 				F941D96B23011D8800007B98 /* JSONValues.cpp in Sources */,
@@ -4459,7 +4468,6 @@
 				F941D78823011B7100007B98 /* FloatPoint.cpp in Sources */,
 				F941D88D23011C2200007B98 /* PlatformLocale.cpp in Sources */,
 				F941D70E23011B2A00007B98 /* WebSpeechSynthesizerClientImpl.cpp in Sources */,
-				F98DA71B22FFF1D500A1F2D0 /* save_registers.cpp in Sources */,
 				F941D66B23011AFC00007B98 /* ClipboardMimeTypes.cpp in Sources */,
 				F941D6F723011B2A00007B98 /* WebCanvasCaptureHandler.cpp in Sources */,
 				F98DACA223006CD400A1F2D0 /* RawResource.cpp in Sources */,
