@@ -30,8 +30,12 @@ public:
 
     struct CreateData;
     void Initialize(CreateData &cd);
+
+    void Run(void);
 private:
     base::scoped_nsobject<NSThread> m_nativeThread;
+    NSPort *m_portForRunloop;
+    bool m_keepRunning = true;
 };
 
 } // namespace BlinKit

@@ -11,6 +11,8 @@
 
 #include "apple_thread.h"
 
+#include "blink_impl/apple_task_runner.h"
+
 using namespace blink;
 
 namespace BlinKit {
@@ -18,43 +20,70 @@ namespace BlinKit {
 struct AppleThread::CreateData {
     AppleThread *thread;
     const char *name;
-    NSCondition *cond;
+    base::scoped_nsobject<NSCondition> cond;
 };
 
-AppleThread::AppleThread(void) {}
+AppleThread::AppleThread(void)
+    : m_nativeThread([NSThread currentThread], base::scoped_policy::RETAIN)
+    , m_portForRunloop(nil)
+{
+    // Nothing
+}
 
 AppleThread::~AppleThread(void)
 {
-    [m_nativeThread cancel];
+    m_keepRunning = false;
+
+    base::scoped_nsobject<TaskWrapper> taskWrapper = [[TaskWrapper alloc] init];
+    [taskWrapper performSelector: @selector(exitRunLoopWithPort:)
+                        onThread: m_nativeThread
+                      withObject: m_portForRunloop
+                   waitUntilDone: YES];
+
+    m_portForRunloop = nil;
 }
 
 void AppleThread::Initialize(CreateData &cd)
 {
-    id threadProc = ^ {
-        cd.thread->ApplyThreadId(ThreadImpl::CurrentThreadId());
-        [cd.cond signal];
+#ifdef _DEBUG
+    m_name = cd.name;
+#endif
+    m_portForRunloop = [NSPort port];
+    [[NSRunLoop currentRunLoop] addPort: m_portForRunloop
+                                forMode: NSDefaultRunLoopMode];
+}
 
-        [[NSRunLoop currentRunLoop] run];
-    };
-    m_nativeThread = [[NSThread alloc] initWithBlock: threadProc];
-    [m_nativeThread setName: [NSString stringWithUTF8String: cd.name]];
-    [m_nativeThread start];
+void AppleThread::Run(void)
+{
+    do {
+        [[NSRunLoop currentRunLoop] runMode: NSDefaultRunLoopMode
+                                 beforeDate: [NSDate distantFuture]];
+    } while (m_keepRunning);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ThreadImpl* ThreadImpl::CreateInstance(const char *name)
 {
-    AppleThread::CreateData cd;
-    cd.thread = new AppleThread;
+    __block AppleThread::CreateData cd;
+    cd.thread = nullptr;
     cd.name = name;
     cd.cond = [[NSCondition alloc] init];
 
-    cd.thread->Initialize(cd);
+    id threadProc = ^ {
+        cd.thread = new AppleThread; // Create instance in the new thread
+                                     // to initialize the task runner
+                                     // in the corresponding thread context.
+        cd.thread->Initialize(cd);
+        [cd.cond signal];
+        
+        cd.thread->Run();
+    };
+    base::scoped_nsobject<NSThread> nativeThread = [[NSThread alloc] initWithBlock: threadProc];
+    [nativeThread setName: [NSString stringWithUTF8String: cd.name]];
+    [nativeThread start];
 
     [cd.cond wait];
-    [cd.cond release];
-
     return cd.thread;
 }
 

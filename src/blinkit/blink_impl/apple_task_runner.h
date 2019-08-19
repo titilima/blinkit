@@ -16,7 +16,19 @@
 
 #include "task_runner_impl.h"
 
-@class NSThread;
+@interface TaskWrapper : NSObject
+{
+@private
+    BlinKit::TaskRunnerImpl *m_taskRunner;
+    blink::WebTaskRunner::Task *m_task;
+}
+
+- (id)init;
++ (id)taskWrapperWith: (BlinKit::TaskRunnerImpl *)taskRunner andTask: (blink::WebTaskRunner::Task *)task;
+- (void)fireBy: (NSDate *)date;
+- (void)exitRunLoopWithPort: (NSPort *)port;
+
+@end
 
 namespace BlinKit {
 
