@@ -16,8 +16,24 @@
 
 #include "task_runner_impl.h"
 
+@class NSThread;
+
 namespace BlinKit {
-    
+
+class AppleTaskRunner final : public TaskRunnerImpl
+{
+public:
+    AppleTaskRunner(ThreadImpl &thread);
+
+private:
+    // blink::WebTaskRunner
+    void postTask(const blink::WebTraceLocation &location, Task *task) override;
+    void postDelayedTask(const blink::WebTraceLocation &location, Task *task, double delayMs) override;
+    blink::WebTaskRunner* clone(void) override;
+
+    NSThread *m_nativeThread;
+};
+
 } // namespace BlinKit
 
 #endif
