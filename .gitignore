@@ -1,5 +1,6 @@
 projects/win/debug
 projects/win/release
+sdk/macos
 sdk/win32
 sdk/*.zip
 src/chromium/third_party/WebKit/LayoutTests
