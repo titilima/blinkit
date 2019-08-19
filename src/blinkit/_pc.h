@@ -44,6 +44,13 @@
 extern HMODULE theModule;
 #endif
 
+#ifdef __OBJC__
+#   import <Foundation/Foundation.h>
+#endif
+
 #include "base/logging.h"
+#ifdef __OBJC__
+#   include "base/mac/scoped_nsobject.h"
+#endif
 
 #endif // BLINKIT_BLINKIT__PC_H
