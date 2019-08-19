@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		F92449C723040D8C009EE7CF /* PrefixHeader.pch in Headers */ = {isa = PBXBuildFile; fileRef = F92449C523040D8C009EE7CF /* PrefixHeader.pch */; };
 		F92449CA23040DB7009EE7CF /* BlinKit.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449C923040DB7009EE7CF /* BlinKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F9244A2923040DD1009EE7CF /* posix_thread.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449CD23040DD1009EE7CF /* posix_thread.h */; };
 		F9244A2B23040DD2009EE7CF /* thread_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449CF23040DD1009EE7CF /* thread_impl.cpp */; };
 		F9244A2C23040DD2009EE7CF /* cookie_jar_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449D023040DD1009EE7CF /* cookie_jar_impl.cpp */; };
 		F9244A2D23040DD2009EE7CF /* apple_task_runner.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449D123040DD1009EE7CF /* apple_task_runner.h */; };
@@ -18,7 +17,6 @@
 		F9244A3023040DD2009EE7CF /* cookie_jar_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449D423040DD1009EE7CF /* cookie_jar_impl.h */; };
 		F9244A3123040DD2009EE7CF /* url_loader_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449D523040DD1009EE7CF /* url_loader_impl.h */; };
 		F9244A3323040DD2009EE7CF /* thread_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449D723040DD1009EE7CF /* thread_impl.h */; };
-		F9244A3423040DD2009EE7CF /* posix_thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449D823040DD1009EE7CF /* posix_thread.cpp */; };
 		F9244A3523040DD2009EE7CF /* scheduler_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449D923040DD1009EE7CF /* scheduler_impl.cpp */; };
 		F9244A3723040DD2009EE7CF /* clipboard_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449DB23040DD1009EE7CF /* clipboard_impl.cpp */; };
 		F9244A3823040DD2009EE7CF /* url_loader_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449DC23040DD1009EE7CF /* url_loader_impl.cpp */; };
@@ -74,6 +72,8 @@
 		F9244A8F23040F09009EE7CF /* liburl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A8E23040F09009EE7CF /* liburl.a */; };
 		F9244A9123040F09009EE7CF /* libwtf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A9023040F09009EE7CF /* libwtf.a */; };
 		F9244A9323040F80009EE7CF /* libz.1.2.11.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A9223040F80009EE7CF /* libz.1.2.11.tbd */; };
+		F927529A230946F900D183F2 /* apple_thread.h in Headers */ = {isa = PBXBuildFile; fileRef = F9275298230946F800D183F2 /* apple_thread.h */; };
+		F927529B230946F900D183F2 /* apple_thread.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9275299230946F900D183F2 /* apple_thread.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,7 +82,6 @@
 		F92449C523040D8C009EE7CF /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = ../PrefixHeader.pch; sourceTree = SOURCE_ROOT; };
 		F92449C623040D8C009EE7CF /* blink.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = blink.xcconfig; path = ../blink.xcconfig; sourceTree = SOURCE_ROOT; };
 		F92449C923040DB7009EE7CF /* BlinKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlinKit.h; path = ../../../../sdk/include/BlinKit.h; sourceTree = "<group>"; };
-		F92449CD23040DD1009EE7CF /* posix_thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = posix_thread.h; sourceTree = "<group>"; };
 		F92449CF23040DD1009EE7CF /* thread_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = thread_impl.cpp; sourceTree = "<group>"; };
 		F92449D023040DD1009EE7CF /* cookie_jar_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cookie_jar_impl.cpp; sourceTree = "<group>"; };
 		F92449D123040DD1009EE7CF /* apple_task_runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apple_task_runner.h; sourceTree = "<group>"; };
@@ -91,7 +90,6 @@
 		F92449D423040DD1009EE7CF /* cookie_jar_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cookie_jar_impl.h; sourceTree = "<group>"; };
 		F92449D523040DD1009EE7CF /* url_loader_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = url_loader_impl.h; sourceTree = "<group>"; };
 		F92449D723040DD1009EE7CF /* thread_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = thread_impl.h; sourceTree = "<group>"; };
-		F92449D823040DD1009EE7CF /* posix_thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = posix_thread.cpp; sourceTree = "<group>"; };
 		F92449D923040DD1009EE7CF /* scheduler_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scheduler_impl.cpp; sourceTree = "<group>"; };
 		F92449DB23040DD1009EE7CF /* clipboard_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = clipboard_impl.cpp; sourceTree = "<group>"; };
 		F92449DC23040DD1009EE7CF /* url_loader_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = url_loader_impl.cpp; sourceTree = "<group>"; };
@@ -147,6 +145,8 @@
 		F9244A8E23040F09009EE7CF /* liburl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liburl.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9244A9023040F09009EE7CF /* libwtf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libwtf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9244A9223040F80009EE7CF /* libz.1.2.11.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.11.tbd; path = usr/lib/libz.1.2.11.tbd; sourceTree = SDKROOT; };
+		F9275298230946F800D183F2 /* apple_thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apple_thread.h; sourceTree = "<group>"; };
+		F9275299230946F900D183F2 /* apple_thread.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = apple_thread.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +218,8 @@
 			children = (
 				F92449D123040DD1009EE7CF /* apple_task_runner.h */,
 				F92449E823040DD1009EE7CF /* apple_task_runner.mm */,
+				F9275298230946F800D183F2 /* apple_thread.h */,
+				F9275299230946F900D183F2 /* apple_thread.mm */,
 				F92449DB23040DD1009EE7CF /* clipboard_impl.cpp */,
 				F92449DF23040DD1009EE7CF /* clipboard_impl.h */,
 				F92449D023040DD1009EE7CF /* cookie_jar_impl.cpp */,
@@ -226,8 +228,6 @@
 				F92449E923040DD1009EE7CF /* frame_scheduler_impl.h */,
 				F92449E423040DD1009EE7CF /* mime_registry_impl.cpp */,
 				F92449E123040DD1009EE7CF /* mime_registry_impl.h */,
-				F92449D823040DD1009EE7CF /* posix_thread.cpp */,
-				F92449CD23040DD1009EE7CF /* posix_thread.h */,
 				F92449D923040DD1009EE7CF /* scheduler_impl.cpp */,
 				F92449DE23040DD1009EE7CF /* scheduler_impl.h */,
 				F92449E023040DD1009EE7CF /* task_runner_impl.cpp */,
@@ -328,7 +328,6 @@
 			files = (
 				F92449CA23040DB7009EE7CF /* BlinKit.h in Headers */,
 				F9244A3323040DD2009EE7CF /* thread_impl.h in Headers */,
-				F9244A2923040DD1009EE7CF /* posix_thread.h in Headers */,
 				F9244A4D23040DD2009EE7CF /* apple_app.h in Headers */,
 				F9244A7623040DD2009EE7CF /* apple_request.h in Headers */,
 				F9244A4723040DD2009EE7CF /* _pc.h in Headers */,
@@ -339,6 +338,7 @@
 				F9244A6E23040DD2009EE7CF /* request_impl.h in Headers */,
 				F9244A5D23040DD2009EE7CF /* crawler_element.h in Headers */,
 				F9244A4523040DD2009EE7CF /* frame_scheduler_impl.h in Headers */,
+				F927529A230946F900D183F2 /* apple_thread.h in Headers */,
 				F9244A6B23040DD2009EE7CF /* http_loader_task.h in Headers */,
 				F9244A2D23040DD2009EE7CF /* apple_task_runner.h in Headers */,
 				F9244A6623040DD2009EE7CF /* response_data.h in Headers */,
@@ -429,7 +429,6 @@
 			files = (
 				F9244A6D23040DD2009EE7CF /* response_task.cpp in Sources */,
 				F9244A4023040DD2009EE7CF /* mime_registry_impl.cpp in Sources */,
-				F9244A3423040DD2009EE7CF /* posix_thread.cpp in Sources */,
 				F9244A7023040DD2009EE7CF /* response_impl.cpp in Sources */,
 				F9244A3523040DD2009EE7CF /* scheduler_impl.cpp in Sources */,
 				F9244A6A23040DD2009EE7CF /* http_loader_task.cpp in Sources */,
@@ -437,6 +436,7 @@
 				F9244A4423040DD2009EE7CF /* apple_task_runner.mm in Sources */,
 				F9244A6523040DD2009EE7CF /* loader_task.cpp in Sources */,
 				F9244A4823040DD2009EE7CF /* apple_app.mm in Sources */,
+				F927529B230946F900D183F2 /* apple_thread.mm in Sources */,
 				F9244A5E23040DD2009EE7CF /* crawler_impl.cpp in Sources */,
 				F9244A5A23040DD2009EE7CF /* frame_loader_client_impl.cpp in Sources */,
 				F9244A5F23040DD2009EE7CF /* http_response_task.cpp in Sources */,

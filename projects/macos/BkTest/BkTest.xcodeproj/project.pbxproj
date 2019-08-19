@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F9244A95230422C3009EE7CF /* BkCrawler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A94230422C3009EE7CF /* BkCrawler.framework */; };
+		F9244A97230427ED009EE7CF /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9244A96230427ED009EE7CF /* Cocoa.framework */; };
 		F9873C822303B9D9006FC01D /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9873C812303B9D9006FC01D /* AppDelegate.mm */; };
 		F9873C852303B9D9006FC01D /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9873C842303B9D9006FC01D /* ViewController.mm */; };
 		F9873C872303B9DC006FC01D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F9873C862303B9DC006FC01D /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 
 /* Begin PBXFileReference section */
 		F9244A94230422C3009EE7CF /* BkCrawler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BkCrawler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9244A96230427ED009EE7CF /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		F9873C7D2303B9D9006FC01D /* BkTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BkTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9873C802303B9D9006FC01D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F9873C812303B9D9006FC01D /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
@@ -35,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9244A97230427ED009EE7CF /* Cocoa.framework in Frameworks */,
 				F9244A95230422C3009EE7CF /* BkCrawler.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,6 +81,7 @@
 		F9873C942303B9F4006FC01D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F9244A96230427ED009EE7CF /* Cocoa.framework */,
 				F9244A94230422C3009EE7CF /* BkCrawler.framework */,
 				F9873C952303B9F4006FC01D /* libBkCrawler.dylib */,
 			);
@@ -179,7 +183,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -238,7 +242,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;

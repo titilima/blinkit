@@ -16,6 +16,8 @@
 		F9151FA923026DBE00EFECD1 /* scoped_generic.h in Headers */ = {isa = PBXBuildFile; fileRef = F9151FA823026DBE00EFECD1 /* scoped_generic.h */; };
 		F9151FAD230297AC00EFECD1 /* scoped_mach_port.cc in Sources */ = {isa = PBXBuildFile; fileRef = F9151FAC230297AB00EFECD1 /* scoped_mach_port.cc */; };
 		F9151FB92302CB2800EFECD1 /* rand_util_generic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9151FB82302CB2700EFECD1 /* rand_util_generic.cpp */; };
+		F927529E2309961500D183F2 /* scoped_typeref.h in Headers */ = {isa = PBXBuildFile; fileRef = F927529C2309961500D183F2 /* scoped_typeref.h */; };
+		F927529F2309961500D183F2 /* scoped_nsobject.h in Headers */ = {isa = PBXBuildFile; fileRef = F927529D2309961500D183F2 /* scoped_nsobject.h */; };
 		F93F3A9E22FEE7700059DA35 /* stl_util.h in Headers */ = {isa = PBXBuildFile; fileRef = F93F3A5922FEE7700059DA35 /* stl_util.h */; };
 		F93F3A9F22FEE7700059DA35 /* sys_string_conversions.h in Headers */ = {isa = PBXBuildFile; fileRef = F93F3A5B22FEE7700059DA35 /* sys_string_conversions.h */; };
 		F93F3AA222FEE7700059DA35 /* string_number_conversions.h in Headers */ = {isa = PBXBuildFile; fileRef = F93F3A5E22FEE7700059DA35 /* string_number_conversions.h */; };
@@ -78,6 +80,8 @@
 		F9151FA823026DBE00EFECD1 /* scoped_generic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scoped_generic.h; sourceTree = "<group>"; };
 		F9151FAC230297AB00EFECD1 /* scoped_mach_port.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scoped_mach_port.cc; sourceTree = "<group>"; };
 		F9151FB82302CB2700EFECD1 /* rand_util_generic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rand_util_generic.cpp; sourceTree = "<group>"; };
+		F927529C2309961500D183F2 /* scoped_typeref.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scoped_typeref.h; sourceTree = "<group>"; };
+		F927529D2309961500D183F2 /* scoped_nsobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scoped_nsobject.h; sourceTree = "<group>"; };
 		F93F3A4F22FEE71E0059DA35 /* libbase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libbase.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F93F3A5922FEE7700059DA35 /* stl_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stl_util.h; sourceTree = "<group>"; };
 		F93F3A5B22FEE7700059DA35 /* sys_string_conversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sys_string_conversions.h; sourceTree = "<group>"; };
@@ -151,6 +155,8 @@
 				F9151FA123026CD700EFECD1 /* scoped_cftyperef.h */,
 				F9151FAC230297AB00EFECD1 /* scoped_mach_port.cc */,
 				F9151FA223026CD700EFECD1 /* scoped_mach_port.h */,
+				F927529D2309961500D183F2 /* scoped_nsobject.h */,
+				F927529C2309961500D183F2 /* scoped_typeref.h */,
 			);
 			path = mac;
 			sourceTree = "<group>";
@@ -345,6 +351,7 @@
 				F93F3AD422FEE7700059DA35 /* callback.h in Headers */,
 				F93F3AD022FEE7700059DA35 /* hash_tables.h in Headers */,
 				F93F3AC722FEE7700059DA35 /* macros.h in Headers */,
+				F927529F2309961500D183F2 /* scoped_nsobject.h in Headers */,
 				F93F3AAD22FEE7700059DA35 /* utf_string_conversions.h in Headers */,
 				F93F3ADE22FEF3400059DA35 /* histogram_macros.h in Headers */,
 				F93F3AD122FEE7700059DA35 /* compiler_specific.h in Headers */,
@@ -358,6 +365,7 @@
 				F93F3AA622FEE7700059DA35 /* stringprintf.h in Headers */,
 				F93F3AD222FEE7700059DA35 /* move.h in Headers */,
 				F9151FA723026D9000EFECD1 /* scoped_policy.h in Headers */,
+				F927529E2309961500D183F2 /* scoped_typeref.h in Headers */,
 				F9151FA523026CD800EFECD1 /* scoped_mach_port.h in Headers */,
 				F93F3AAE22FEE7700059DA35 /* string_split.h in Headers */,
 				F93F3AA822FEE7700059DA35 /* string_piece.h in Headers */,
