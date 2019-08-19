@@ -100,14 +100,6 @@ void WinTaskRunner::ProcessTimer(UINT_PTR idEvent)
     }
 }
 
-void WinTaskRunner::Run(Task *task)
-{
-    m_thread.WillProcessTask();
-    task->run();
-    delete task;
-    m_thread.DidProcessTask();
-}
-
 void WinTaskRunner::SetTimer(UINT uElapse, Task *task)
 {
     assert(GetCurrentThreadId() == m_thread.threadId());

@@ -24,6 +24,8 @@ class TaskRunnerImpl : public blink::WebTaskRunner
 {
 public:
     static std::unique_ptr<blink::WebTaskRunner> CreateInstance(ThreadImpl &thread);
+
+    void Run(Task *task);
 protected:
     TaskRunnerImpl(ThreadImpl &thread);
 

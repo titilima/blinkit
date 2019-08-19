@@ -26,7 +26,6 @@ public:
     bool ProcessMessage(const MSG &msg);
     static LPARAM CreateTaskData(Task *task, DWORD delayMs);
 private:
-    void Run(Task *task);
     void SetTimer(UINT uElapse, Task *task);
     void ProcessTimer(UINT_PTR idEvent);
     static void CALLBACK OnTimer(HWND h, UINT msg, UINT_PTR idEvent, DWORD dwTime);

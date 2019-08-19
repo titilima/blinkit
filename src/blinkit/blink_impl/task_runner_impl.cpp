@@ -11,6 +11,8 @@
 
 #include "task_runner_impl.h"
 
+#include "blink_impl/thread_impl.h"
+
 using namespace blink;
 
 namespace BlinKit {
@@ -18,6 +20,14 @@ namespace BlinKit {
 TaskRunnerImpl::TaskRunnerImpl(ThreadImpl &thread) : m_thread(thread)
 {
     // Nothing
+}
+
+void TaskRunnerImpl::Run(Task *task)
+{
+    m_thread.WillProcessTask();
+    task->run();
+    delete task;
+    m_thread.DidProcessTask();
 }
 
 } // namespace BlinKit
