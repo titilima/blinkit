@@ -14,30 +14,31 @@
 #include "blink_impl/thread_impl.h"
 
 using namespace blink;
+using namespace BlinKit;
 
 @interface NativeTaskRunner : NSObject
 {
 @private
-    BlinKit::TaskRunnerImpl *m_taskRunner;
-    blink::WebTaskRunner::Task *m_task;
+    TaskRunnerImpl *m_taskRunner;
+    WebTaskRunner::Task *m_task;
 }
 
-- (id)initWith: (BlinKit::TaskRunnerImpl *)taskRunner andTask: (WebTaskRunner::Task *)task;
-
++ (id)taskRunnerWith: (TaskRunnerImpl *)taskRunner andTask: (WebTaskRunner::Task *)task;
 - (void)fireBy: (NSDate *)date;
 
 @end
 
 @implementation NativeTaskRunner
 
-- (id)initWith: (BlinKit::TaskRunnerImpl *)taskRunner andTask: (WebTaskRunner::Task *)task
++ (id)taskRunnerWith: (TaskRunnerImpl *)taskRunner andTask: (WebTaskRunner::Task *)task
 {
-    if (self = [super init])
-    {
-        m_taskRunner = taskRunner;
-        m_task = task;
-    }
-    return self;
+    NativeTaskRunner *ret = [[NativeTaskRunner alloc] init];
+    if (nil == ret)
+        return nil;
+
+    ret->m_taskRunner = taskRunner;
+    ret->m_task = task;
+    return [ret autorelease];
 }
 
 - (void)fireBy: (NSDate *)date
@@ -49,17 +50,14 @@ using namespace blink;
     if (interval <= 0)
     {
         m_taskRunner->Run(m_task);
-    }
-    else
-    {
-        id timerProc = ^(NSTimer *) {
-            m_taskRunner->Run(m_task);
-        };
-        NSTimer *timer = [NSTimer timerWithTimeInterval: interval repeats: NO block: timerProc];
-        [[NSRunLoop currentRunLoop] addTimer: timer forMode: NSRunLoopCommonModes];
+        return;
     }
 
-    [self release];
+    id timerProc = ^(NSTimer *) {
+        m_taskRunner->Run(m_task);
+    };
+    NSTimer *timer = [NSTimer timerWithTimeInterval: interval repeats: NO block: timerProc];
+    [[NSRunLoop currentRunLoop] addTimer: timer forMode: NSRunLoopCommonModes];
 }
 
 @end
@@ -78,19 +76,16 @@ WebTaskRunner* AppleTaskRunner::clone(void)
 
 void AppleTaskRunner::postDelayedTask(const WebTraceLocation &location, Task *task, double delayMs)
 {
-    NativeTaskRunner *taskRunner = [[NativeTaskRunner alloc] initWith: this andTask: task];
-
-    NSDate *timeToFire = [[NSDate alloc] initWithTimeIntervalSinceNow: delayMs / 1000];
+    NativeTaskRunner *taskRunner = [NativeTaskRunner taskRunnerWith: this andTask: task];
     [taskRunner performSelector: @selector(fireBy:)
                        onThread: m_nativeThread
-                     withObject: timeToFire
+                     withObject: [NSDate dateWithTimeIntervalSinceNow: delayMs / 1000]
                   waitUntilDone: NO];
-    [timeToFire release];
 }
 
 void AppleTaskRunner::postTask(const WebTraceLocation &location, Task *task)
 {
-    NativeTaskRunner *taskRunner = [[NativeTaskRunner alloc] initWith: this andTask: task];
+    NativeTaskRunner *taskRunner = [NativeTaskRunner taskRunnerWith: this andTask: task];
     [taskRunner performSelector: @selector(fireBy:)
                        onThread: m_nativeThread
                      withObject: nil
