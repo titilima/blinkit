@@ -31,9 +31,6 @@ private:
     DWORD Run(void);
     static DWORD WINAPI ThreadProc(PVOID param);
 
-#ifdef _DEBUG
-    std::string m_name;
-#endif
     HANDLE m_hThread = nullptr;
 };
 

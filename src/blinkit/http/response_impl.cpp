@@ -55,16 +55,21 @@ ResponseImpl::ResponseImpl(const std::string &URL) : m_originURL(URL), m_URL(URL
     // Nothing
 }
 
-void ResponseImpl::AppendData(void *data, size_t cb)
+void ResponseImpl::AppendData(const void *data, size_t cb)
 {
     size_t n = m_body.size();
     m_body.resize(n + cb);
     memcpy(m_body.data() + n, data, cb);
 }
 
+void ResponseImpl::AppendHeader(const char *name, const char *val)
+{
+    m_headers[name] = val;
+}
+
 int BKAPI ResponseImpl::GetBody(BkBuffer &body) const
 {
-    if (m_version.empty())
+    if (m_body.empty())
         return BkError::NotFound;
 
     body.Assign(m_body.data(), m_body.size());

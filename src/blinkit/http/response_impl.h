@@ -28,10 +28,12 @@ public:
     void SetErrorCode(int errorCode) { m_errorCode = errorCode; }
 
     void SetCurrentURL(const std::string &URL) { m_URL = URL; }
+    void SetStatusCode(int statusCode) { m_statusCode = statusCode; }
+    void AppendHeader(const char *name, const char *val);
 
     void ParseHeaders(const std::string &rawHeaders);
     void PrepareBody(size_t cb) { m_body.reserve(cb); }
-    void AppendData(void *data, size_t cb);
+    void AppendData(const void *data, size_t cb);
     void GZipInflate(void);
 
     // BkResponse

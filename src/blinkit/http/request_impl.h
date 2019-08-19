@@ -32,6 +32,7 @@ public:
 protected:
     RequestImpl(const char *URL, BkRequestClient &client);
 
+    const auto& RawHeaders(void) const { return m_headers; }
     std::string GetAllHeaders(void) const;
     unsigned long TimeoutInMs(void) const { return m_timeoutInMs; }
 
