@@ -22,13 +22,16 @@ class AppleRequest final : public RequestImpl
 {
 public:
     AppleRequest(const char *URL, BkRequestClient &client);
+    ~AppleRequest(void);
 private:
+    void RequestComplete(NSData *data, NSURLResponse *response, NSError *error);
+
     // BkRequest
     int BKAPI Perform(void) override;
-    void BKAPI SetHeader(const char *name, const char *value) override;
-    BkRequestController* BKAPI RequireLifecycleController(void) override;
     // RequestImpl
     void Cancel(void) override;
+
+    NSURLSessionTask *m_sessionTask;
 };
 
 } // namespace BlinKit
