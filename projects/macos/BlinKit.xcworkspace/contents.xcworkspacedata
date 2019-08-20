@@ -8,6 +8,9 @@
          location = "group:duktape/duktape.xcodeproj">
       </FileRef>
       <FileRef
+         location = "group:ots/ots.xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:png/png.xcodeproj">
       </FileRef>
    </Group>
