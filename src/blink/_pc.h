@@ -40,6 +40,9 @@
 #define WTF_USE_DEFAULT_RENDER_THEME    1
 
 #include <cassert>
+#ifdef __OBJC__
+#   import <Cocoa/Cocoa.h>
+#endif
 #include "skia/_skia.h"
 
 #endif // BLINKIT_BLINK__PC_H
