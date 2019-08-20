@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LocalCurrentGraphicsContext.mm
+// Description: LocalCurrentGraphicsContext Class
+//      Author: Ziming Li
+//     Created: 2019-08-20
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.
  *
@@ -22,7 +33,6 @@
 #include <AppKit/NSGraphicsContext.h>
 #include "platform/graphics/GraphicsContext.h"
 #include "platform/mac/ThemeMac.h"
-#include "platform_canvas.h"
 
 namespace blink {
 
