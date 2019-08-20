@@ -12,4 +12,4 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-USER_HEADER_SEARCH_PATHS = $(inherited) $(BK_ROOT)/third_party/skia/include/config $(BK_ROOT)/third_party/skia/include/core $(BK_ROOT)/third_party/skia/include/utils
+USER_HEADER_SEARCH_PATHS = $(inherited) $(BK_ROOT)/third_party/skia/include/config $(BK_ROOT)/third_party/skia/include/core $(BK_ROOT)/third_party/skia/include/effects $(BK_ROOT)/third_party/skia/include/ports $(BK_ROOT)/third_party/skia/include/utils
