@@ -40,6 +40,9 @@
       location = "group:BkTest/BkTest.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:js/js.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:js_crawler/js_crawler.xcodeproj">
    </FileRef>
    <FileRef
