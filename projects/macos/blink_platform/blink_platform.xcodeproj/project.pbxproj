@@ -10,7 +10,6 @@
 		F9ECDCB4230BEE7D00497BDD /* PrefixHeader.pch in Headers */ = {isa = PBXBuildFile; fileRef = F9ECDCB3230BEE7D00497BDD /* PrefixHeader.pch */; };
 		F9ECE12A230BEEB900497BDD /* TracedValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDCB6230BEEB700497BDD /* TracedValue.cpp */; };
 		F9ECE12B230BEEB900497BDD /* StorageQuotaCallbacks.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECDCB7230BEEB700497BDD /* StorageQuotaCallbacks.h */; };
-		F9ECE12C230BEEB900497BDD /* MemoryPurgeController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDCB8230BEEB700497BDD /* MemoryPurgeController.cpp */; };
 		F9ECE12D230BEEB900497BDD /* Widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDCB9230BEEB700497BDD /* Widget.cpp */; };
 		F9ECE12E230BEEB900497BDD /* NotImplemented.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDCBA230BEEB700497BDD /* NotImplemented.cpp */; };
 		F9ECE130230BEEB900497BDD /* LengthFunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDCBC230BEEB700497BDD /* LengthFunctions.cpp */; };
@@ -130,7 +129,6 @@
 		F9ECE1B8230BEEB900497BDD /* WebMemoryDumpProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD4B230BEEB700497BDD /* WebMemoryDumpProvider.cpp */; };
 		F9ECE1B9230BEEB900497BDD /* WebHTTPBody.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD4C230BEEB700497BDD /* WebHTTPBody.cpp */; };
 		F9ECE1BA230BEEB900497BDD /* WebFilterKeyframe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD4D230BEEB700497BDD /* WebFilterKeyframe.cpp */; };
-		F9ECE1BB230BEEB900497BDD /* WebServicePortProviderClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD4E230BEEB700497BDD /* WebServicePortProviderClient.cpp */; };
 		F9ECE1BC230BEEB900497BDD /* WebCryptoAlgorithm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD4F230BEEB700497BDD /* WebCryptoAlgorithm.cpp */; };
 		F9ECE1BD230BEEB900497BDD /* WebServiceWorkerProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD50230BEEB700497BDD /* WebServiceWorkerProxy.cpp */; };
 		F9ECE1BE230BEEB900497BDD /* WebServiceWorkerResponse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD51230BEEB700497BDD /* WebServiceWorkerResponse.cpp */; };
@@ -151,7 +149,6 @@
 		F9ECE1CE230BEEB900497BDD /* WebScrollbarThemePainter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD61230BEEB700497BDD /* WebScrollbarThemePainter.cpp */; };
 		F9ECE1D0230BEEB900497BDD /* WebMediaStreamTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD63230BEEB700497BDD /* WebMediaStreamTrack.cpp */; };
 		F9ECE1D1230BEEB900497BDD /* WebCryptoKeyAlgorithm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD64230BEEB700497BDD /* WebCryptoKeyAlgorithm.cpp */; };
-		F9ECE1D2230BEEB900497BDD /* WebMessagePortChannelClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD65230BEEB700497BDD /* WebMessagePortChannelClient.cpp */; };
 		F9ECE1D3230BEEB900497BDD /* WebScrollbarThemeClientImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECDD66230BEEB700497BDD /* WebScrollbarThemeClientImpl.h */; };
 		F9ECE1D8230BEEB900497BDD /* WebSpeechSynthesizerClientImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECDD6C230BEEB700497BDD /* WebSpeechSynthesizerClientImpl.h */; };
 		F9ECE1D9230BEEB900497BDD /* WebDeviceOrientationData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD6D230BEEB700497BDD /* WebDeviceOrientationData.cpp */; };
@@ -162,7 +159,6 @@
 		F9ECE1DE230BEEB900497BDD /* WebData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD72230BEEB700497BDD /* WebData.cpp */; };
 		F9ECE1DF230BEEB900497BDD /* Platform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD73230BEEB700497BDD /* Platform.cpp */; };
 		F9ECE1E0230BEEB900497BDD /* WebContentDecryptionModuleSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD74230BEEB700497BDD /* WebContentDecryptionModuleSession.cpp */; };
-		F9ECE1E1230BEEB900497BDD /* WebServiceWorkerProviderClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD75230BEEB700497BDD /* WebServiceWorkerProviderClient.cpp */; };
 		F9ECE1E2230BEEB900497BDD /* WebImageGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD76230BEEB700497BDD /* WebImageGenerator.cpp */; };
 		F9ECE1E3230BEEB900497BDD /* WebFileSystemCallbacks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD77230BEEB700497BDD /* WebFileSystemCallbacks.cpp */; };
 		F9ECE1E4230BEEB900497BDD /* WebDeviceMotionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD78230BEEB700497BDD /* WebDeviceMotionData.cpp */; };
@@ -249,7 +245,6 @@
 		F9ECE239230BEEB900497BDD /* Logging.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECDDD3230BEEB700497BDD /* Logging.h */; };
 		F9ECE23A230BEEB900497BDD /* EncryptedMediaRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECDDD4230BEEB700497BDD /* EncryptedMediaRequest.h */; };
 		F9ECE23B230BEEB900497BDD /* SecureTextInput.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECDDD5230BEEB700497BDD /* SecureTextInput.h */; };
-		F9ECE23C230BEEB900497BDD /* MemoryPurgeController.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECDDD6230BEEB700497BDD /* MemoryPurgeController.h */; };
 		F9ECE23D230BEEB900497BDD /* JSONValues.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDDD7230BEEB700497BDD /* JSONValues.cpp */; };
 		F9ECE23E230BEEBA00497BDD /* Crypto.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECDDD8230BEEB700497BDD /* Crypto.h */; };
 		F9ECE23F230BEEBA00497BDD /* PlatformEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECDDD9230BEEB700497BDD /* PlatformEvent.h */; };
@@ -640,7 +635,6 @@
 		F9ECE459230BEEBB00497BDD /* PictureSnapshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE01A230BEEB800497BDD /* PictureSnapshot.cpp */; };
 		F9ECE45A230BEEBB00497BDD /* ImageFrameGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE01B230BEEB800497BDD /* ImageFrameGenerator.h */; };
 		F9ECE45B230BEEBB00497BDD /* ImageOrientation.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE01C230BEEB800497BDD /* ImageOrientation.h */; };
-		F9ECE45C230BEEBB00497BDD /* GraphicsLayerDebugInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE01D230BEEB800497BDD /* GraphicsLayerDebugInfo.h */; };
 		F9ECE45D230BEEBB00497BDD /* GraphicsLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE01E230BEEB800497BDD /* GraphicsLayer.cpp */; };
 		F9ECE45E230BEEBB00497BDD /* PicturePattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE01F230BEEB800497BDD /* PicturePattern.cpp */; };
 		F9ECE45F230BEEBB00497BDD /* FirstPaintInvalidationTracking.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE020230BEEB800497BDD /* FirstPaintInvalidationTracking.h */; };
@@ -677,7 +671,6 @@
 		F9ECE48E230BEEBB00497BDD /* BitmapImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE054230BEEB800497BDD /* BitmapImage.cpp */; };
 		F9ECE48F230BEEBB00497BDD /* ExpensiveCanvasHeuristicParameters.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE055230BEEB800497BDD /* ExpensiveCanvasHeuristicParameters.h */; };
 		F9ECE490230BEEBB00497BDD /* LinkHighlight.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE056230BEEB800497BDD /* LinkHighlight.h */; };
-		F9ECE491230BEEBB00497BDD /* Canvas2DLayerBridge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE057230BEEB800497BDD /* Canvas2DLayerBridge.cpp */; };
 		F9ECE492230BEEBB00497BDD /* Pattern.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE058230BEEB800497BDD /* Pattern.h */; };
 		F9ECE493230BEEBB00497BDD /* GraphicsContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE059230BEEB800497BDD /* GraphicsContext.cpp */; };
 		F9ECE494230BEEBB00497BDD /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE05A230BEEB800497BDD /* Color.cpp */; };
@@ -692,7 +685,6 @@
 		F9ECE49D230BEEBB00497BDD /* PictureSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE063230BEEB800497BDD /* PictureSnapshot.h */; };
 		F9ECE4A0230BEEBB00497BDD /* DrawLooperBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE067230BEEB800497BDD /* DrawLooperBuilder.h */; };
 		F9ECE4A1230BEEBB00497BDD /* UnacceleratedImageBufferSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE068230BEEB800497BDD /* UnacceleratedImageBufferSurface.h */; };
-		F9ECE4A2230BEEBB00497BDD /* GraphicsLayerDebugInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE069230BEEB800497BDD /* GraphicsLayerDebugInfo.cpp */; };
 		F9ECE4A3230BEEBB00497BDD /* FrameData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE06A230BEEB800497BDD /* FrameData.cpp */; };
 		F9ECE4A4230BEEBB00497BDD /* ImagePattern.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE06B230BEEB800497BDD /* ImagePattern.h */; };
 		F9ECE4A5230BEEBB00497BDD /* ReplayingCanvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE06C230BEEB900497BDD /* ReplayingCanvas.cpp */; };
@@ -705,7 +697,6 @@
 		F9ECE4AC230BEEBB00497BDD /* GraphicsContextState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE073230BEEB900497BDD /* GraphicsContextState.cpp */; };
 		F9ECE4AD230BEEBB00497BDD /* RecordingImageBufferSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE074230BEEB900497BDD /* RecordingImageBufferSurface.h */; };
 		F9ECE4AE230BEEBB00497BDD /* ImageFrameGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE075230BEEB900497BDD /* ImageFrameGenerator.cpp */; };
-		F9ECE4AF230BEEBB00497BDD /* Canvas2DLayerBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE076230BEEB900497BDD /* Canvas2DLayerBridge.h */; };
 		F9ECE4B0230BEEBB00497BDD /* FrameData.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE077230BEEB900497BDD /* FrameData.h */; };
 		F9ECE4B1230BEEBB00497BDD /* ProfilingCanvas.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE078230BEEB900497BDD /* ProfilingCanvas.h */; };
 		F9ECE4B2230BEEBB00497BDD /* ImageBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE07A230BEEB900497BDD /* ImageBuffer.cpp */; };
@@ -740,8 +731,6 @@
 		F9ECE4D1230BEEBB00497BDD /* OpenTypeVerticalData.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE09D230BEEB900497BDD /* OpenTypeVerticalData.h */; };
 		F9ECE4D2230BEEBB00497BDD /* OpenTypeSanitizer.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE09E230BEEB900497BDD /* OpenTypeSanitizer.h */; };
 		F9ECE4D3230BEEBB00497BDD /* FontDataRange.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE09F230BEEB900497BDD /* FontDataRange.h */; };
-		F9ECE4D4230BEEBB00497BDD /* ScriptRunIterator.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE0A0230BEEB900497BDD /* ScriptRunIterator.h */; };
-		F9ECE4D5230BEEBB00497BDD /* ScriptRunIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE0A1230BEEB900497BDD /* ScriptRunIterator.cpp */; };
 		F9ECE4D6230BEEBB00497BDD /* FontCustomPlatformData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE0A2230BEEB900497BDD /* FontCustomPlatformData.cpp */; };
 		F9ECE4D7230BEEBB00497BDD /* GlyphPage.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE0A3230BEEB900497BDD /* GlyphPage.h */; };
 		F9ECE4D8230BEEBB00497BDD /* FontFamily.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE0A4230BEEB900497BDD /* FontFamily.cpp */; };
@@ -763,7 +752,6 @@
 		F9ECE4EC230BEEBB00497BDD /* FontCacheMemoryDumpProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE0BA230BEEB900497BDD /* FontCacheMemoryDumpProvider.cpp */; };
 		F9ECE4ED230BEEBB00497BDD /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE0BB230BEEB900497BDD /* Font.cpp */; };
 		F9ECE4EE230BEEBB00497BDD /* FontFeatureSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE0BC230BEEB900497BDD /* FontFeatureSettings.h */; };
-		F9ECE4EF230BEEBB00497BDD /* SmallCapsIterator.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE0BD230BEEB900497BDD /* SmallCapsIterator.h */; };
 		F9ECE4F0230BEEBB00497BDD /* FontSmoothingMode.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE0BE230BEEB900497BDD /* FontSmoothingMode.h */; };
 		F9ECE4F1230BEEBB00497BDD /* FontCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE0BF230BEEB900497BDD /* FontCache.cpp */; };
 		F9ECE4F2230BEEBB00497BDD /* FallbackListCompositeKey.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE0C0230BEEB900497BDD /* FallbackListCompositeKey.h */; };
@@ -781,7 +769,6 @@
 		F9ECE4FF230BEEBB00497BDD /* VDMXParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE0CE230BEEB900497BDD /* VDMXParser.cpp */; };
 		F9ECE500230BEEBB00497BDD /* FontCacheClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE0CF230BEEB900497BDD /* FontCacheClient.h */; };
 		F9ECE501230BEEBB00497BDD /* FontBaseline.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE0D0230BEEB900497BDD /* FontBaseline.h */; };
-		F9ECE502230BEEBB00497BDD /* SmallCapsIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECE0D1230BEEB900497BDD /* SmallCapsIterator.cpp */; };
 		F9ECE503230BEEBB00497BDD /* GlyphBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE0D2230BEEB900497BDD /* GlyphBuffer.h */; };
 		F9ECE504230BEEBC00497BDD /* SimpleFontData.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE0D3230BEEB900497BDD /* SimpleFontData.h */; };
 		F9ECE505230BEEBC00497BDD /* FontRenderStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE0D4230BEEB900497BDD /* FontRenderStyle.h */; };
@@ -1103,7 +1090,6 @@
 		F9ECDCB3230BEE7D00497BDD /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = ../PrefixHeader.pch; sourceTree = SOURCE_ROOT; };
 		F9ECDCB6230BEEB700497BDD /* TracedValue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TracedValue.cpp; sourceTree = "<group>"; };
 		F9ECDCB7230BEEB700497BDD /* StorageQuotaCallbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageQuotaCallbacks.h; sourceTree = "<group>"; };
-		F9ECDCB8230BEEB700497BDD /* MemoryPurgeController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryPurgeController.cpp; sourceTree = "<group>"; };
 		F9ECDCB9230BEEB700497BDD /* Widget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Widget.cpp; sourceTree = "<group>"; };
 		F9ECDCBA230BEEB700497BDD /* NotImplemented.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NotImplemented.cpp; sourceTree = "<group>"; };
 		F9ECDCBC230BEEB700497BDD /* LengthFunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LengthFunctions.cpp; sourceTree = "<group>"; };
@@ -1223,7 +1209,6 @@
 		F9ECDD4B230BEEB700497BDD /* WebMemoryDumpProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebMemoryDumpProvider.cpp; sourceTree = "<group>"; };
 		F9ECDD4C230BEEB700497BDD /* WebHTTPBody.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebHTTPBody.cpp; sourceTree = "<group>"; };
 		F9ECDD4D230BEEB700497BDD /* WebFilterKeyframe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebFilterKeyframe.cpp; sourceTree = "<group>"; };
-		F9ECDD4E230BEEB700497BDD /* WebServicePortProviderClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebServicePortProviderClient.cpp; sourceTree = "<group>"; };
 		F9ECDD4F230BEEB700497BDD /* WebCryptoAlgorithm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebCryptoAlgorithm.cpp; sourceTree = "<group>"; };
 		F9ECDD50230BEEB700497BDD /* WebServiceWorkerProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebServiceWorkerProxy.cpp; sourceTree = "<group>"; };
 		F9ECDD51230BEEB700497BDD /* WebServiceWorkerResponse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebServiceWorkerResponse.cpp; sourceTree = "<group>"; };
@@ -1244,7 +1229,6 @@
 		F9ECDD61230BEEB700497BDD /* WebScrollbarThemePainter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebScrollbarThemePainter.cpp; sourceTree = "<group>"; };
 		F9ECDD63230BEEB700497BDD /* WebMediaStreamTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebMediaStreamTrack.cpp; sourceTree = "<group>"; };
 		F9ECDD64230BEEB700497BDD /* WebCryptoKeyAlgorithm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebCryptoKeyAlgorithm.cpp; sourceTree = "<group>"; };
-		F9ECDD65230BEEB700497BDD /* WebMessagePortChannelClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebMessagePortChannelClient.cpp; sourceTree = "<group>"; };
 		F9ECDD66230BEEB700497BDD /* WebScrollbarThemeClientImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebScrollbarThemeClientImpl.h; sourceTree = "<group>"; };
 		F9ECDD6C230BEEB700497BDD /* WebSpeechSynthesizerClientImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSpeechSynthesizerClientImpl.h; sourceTree = "<group>"; };
 		F9ECDD6D230BEEB700497BDD /* WebDeviceOrientationData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebDeviceOrientationData.cpp; sourceTree = "<group>"; };
@@ -1255,7 +1239,6 @@
 		F9ECDD72230BEEB700497BDD /* WebData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebData.cpp; sourceTree = "<group>"; };
 		F9ECDD73230BEEB700497BDD /* Platform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.cpp; sourceTree = "<group>"; };
 		F9ECDD74230BEEB700497BDD /* WebContentDecryptionModuleSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebContentDecryptionModuleSession.cpp; sourceTree = "<group>"; };
-		F9ECDD75230BEEB700497BDD /* WebServiceWorkerProviderClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebServiceWorkerProviderClient.cpp; sourceTree = "<group>"; };
 		F9ECDD76230BEEB700497BDD /* WebImageGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebImageGenerator.cpp; sourceTree = "<group>"; };
 		F9ECDD77230BEEB700497BDD /* WebFileSystemCallbacks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebFileSystemCallbacks.cpp; sourceTree = "<group>"; };
 		F9ECDD78230BEEB700497BDD /* WebDeviceMotionData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebDeviceMotionData.cpp; sourceTree = "<group>"; };
@@ -1342,7 +1325,6 @@
 		F9ECDDD3230BEEB700497BDD /* Logging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logging.h; sourceTree = "<group>"; };
 		F9ECDDD4230BEEB700497BDD /* EncryptedMediaRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncryptedMediaRequest.h; sourceTree = "<group>"; };
 		F9ECDDD5230BEEB700497BDD /* SecureTextInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecureTextInput.h; sourceTree = "<group>"; };
-		F9ECDDD6230BEEB700497BDD /* MemoryPurgeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoryPurgeController.h; sourceTree = "<group>"; };
 		F9ECDDD7230BEEB700497BDD /* JSONValues.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JSONValues.cpp; sourceTree = "<group>"; };
 		F9ECDDD8230BEEB700497BDD /* Crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crypto.h; sourceTree = "<group>"; };
 		F9ECDDD9230BEEB700497BDD /* PlatformEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlatformEvent.h; sourceTree = "<group>"; };
@@ -1734,7 +1716,6 @@
 		F9ECE01A230BEEB800497BDD /* PictureSnapshot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PictureSnapshot.cpp; sourceTree = "<group>"; };
 		F9ECE01B230BEEB800497BDD /* ImageFrameGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFrameGenerator.h; sourceTree = "<group>"; };
 		F9ECE01C230BEEB800497BDD /* ImageOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageOrientation.h; sourceTree = "<group>"; };
-		F9ECE01D230BEEB800497BDD /* GraphicsLayerDebugInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicsLayerDebugInfo.h; sourceTree = "<group>"; };
 		F9ECE01E230BEEB800497BDD /* GraphicsLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphicsLayer.cpp; sourceTree = "<group>"; };
 		F9ECE01F230BEEB800497BDD /* PicturePattern.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PicturePattern.cpp; sourceTree = "<group>"; };
 		F9ECE020230BEEB800497BDD /* FirstPaintInvalidationTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstPaintInvalidationTracking.h; sourceTree = "<group>"; };
@@ -1771,7 +1752,6 @@
 		F9ECE054230BEEB800497BDD /* BitmapImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BitmapImage.cpp; sourceTree = "<group>"; };
 		F9ECE055230BEEB800497BDD /* ExpensiveCanvasHeuristicParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpensiveCanvasHeuristicParameters.h; sourceTree = "<group>"; };
 		F9ECE056230BEEB800497BDD /* LinkHighlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkHighlight.h; sourceTree = "<group>"; };
-		F9ECE057230BEEB800497BDD /* Canvas2DLayerBridge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Canvas2DLayerBridge.cpp; sourceTree = "<group>"; };
 		F9ECE058230BEEB800497BDD /* Pattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pattern.h; sourceTree = "<group>"; };
 		F9ECE059230BEEB800497BDD /* GraphicsContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphicsContext.cpp; sourceTree = "<group>"; };
 		F9ECE05A230BEEB800497BDD /* Color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Color.cpp; sourceTree = "<group>"; };
@@ -1786,7 +1766,6 @@
 		F9ECE063230BEEB800497BDD /* PictureSnapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureSnapshot.h; sourceTree = "<group>"; };
 		F9ECE067230BEEB800497BDD /* DrawLooperBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawLooperBuilder.h; sourceTree = "<group>"; };
 		F9ECE068230BEEB800497BDD /* UnacceleratedImageBufferSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnacceleratedImageBufferSurface.h; sourceTree = "<group>"; };
-		F9ECE069230BEEB800497BDD /* GraphicsLayerDebugInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphicsLayerDebugInfo.cpp; sourceTree = "<group>"; };
 		F9ECE06A230BEEB800497BDD /* FrameData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrameData.cpp; sourceTree = "<group>"; };
 		F9ECE06B230BEEB800497BDD /* ImagePattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePattern.h; sourceTree = "<group>"; };
 		F9ECE06C230BEEB900497BDD /* ReplayingCanvas.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplayingCanvas.cpp; sourceTree = "<group>"; };
@@ -1799,7 +1778,6 @@
 		F9ECE073230BEEB900497BDD /* GraphicsContextState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphicsContextState.cpp; sourceTree = "<group>"; };
 		F9ECE074230BEEB900497BDD /* RecordingImageBufferSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordingImageBufferSurface.h; sourceTree = "<group>"; };
 		F9ECE075230BEEB900497BDD /* ImageFrameGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageFrameGenerator.cpp; sourceTree = "<group>"; };
-		F9ECE076230BEEB900497BDD /* Canvas2DLayerBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Canvas2DLayerBridge.h; sourceTree = "<group>"; };
 		F9ECE077230BEEB900497BDD /* FrameData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameData.h; sourceTree = "<group>"; };
 		F9ECE078230BEEB900497BDD /* ProfilingCanvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfilingCanvas.h; sourceTree = "<group>"; };
 		F9ECE07A230BEEB900497BDD /* ImageBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageBuffer.cpp; sourceTree = "<group>"; };
@@ -1834,8 +1812,6 @@
 		F9ECE09D230BEEB900497BDD /* OpenTypeVerticalData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenTypeVerticalData.h; sourceTree = "<group>"; };
 		F9ECE09E230BEEB900497BDD /* OpenTypeSanitizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenTypeSanitizer.h; sourceTree = "<group>"; };
 		F9ECE09F230BEEB900497BDD /* FontDataRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontDataRange.h; sourceTree = "<group>"; };
-		F9ECE0A0230BEEB900497BDD /* ScriptRunIterator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptRunIterator.h; sourceTree = "<group>"; };
-		F9ECE0A1230BEEB900497BDD /* ScriptRunIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScriptRunIterator.cpp; sourceTree = "<group>"; };
 		F9ECE0A2230BEEB900497BDD /* FontCustomPlatformData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FontCustomPlatformData.cpp; sourceTree = "<group>"; };
 		F9ECE0A3230BEEB900497BDD /* GlyphPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlyphPage.h; sourceTree = "<group>"; };
 		F9ECE0A4230BEEB900497BDD /* FontFamily.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FontFamily.cpp; sourceTree = "<group>"; };
@@ -1857,7 +1833,6 @@
 		F9ECE0BA230BEEB900497BDD /* FontCacheMemoryDumpProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FontCacheMemoryDumpProvider.cpp; sourceTree = "<group>"; };
 		F9ECE0BB230BEEB900497BDD /* Font.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Font.cpp; sourceTree = "<group>"; };
 		F9ECE0BC230BEEB900497BDD /* FontFeatureSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontFeatureSettings.h; sourceTree = "<group>"; };
-		F9ECE0BD230BEEB900497BDD /* SmallCapsIterator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmallCapsIterator.h; sourceTree = "<group>"; };
 		F9ECE0BE230BEEB900497BDD /* FontSmoothingMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontSmoothingMode.h; sourceTree = "<group>"; };
 		F9ECE0BF230BEEB900497BDD /* FontCache.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FontCache.cpp; sourceTree = "<group>"; };
 		F9ECE0C0230BEEB900497BDD /* FallbackListCompositeKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FallbackListCompositeKey.h; sourceTree = "<group>"; };
@@ -1875,7 +1850,6 @@
 		F9ECE0CE230BEEB900497BDD /* VDMXParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VDMXParser.cpp; sourceTree = "<group>"; };
 		F9ECE0CF230BEEB900497BDD /* FontCacheClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontCacheClient.h; sourceTree = "<group>"; };
 		F9ECE0D0230BEEB900497BDD /* FontBaseline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontBaseline.h; sourceTree = "<group>"; };
-		F9ECE0D1230BEEB900497BDD /* SmallCapsIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SmallCapsIterator.cpp; sourceTree = "<group>"; };
 		F9ECE0D2230BEEB900497BDD /* GlyphBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlyphBuffer.h; sourceTree = "<group>"; };
 		F9ECE0D3230BEEB900497BDD /* SimpleFontData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleFontData.h; sourceTree = "<group>"; };
 		F9ECE0D4230BEEB900497BDD /* FontRenderStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontRenderStyle.h; sourceTree = "<group>"; };
@@ -2306,8 +2280,6 @@
 				F9ECDF92230BEEB800497BDD /* LinkHash.h */,
 				F9ECDD13230BEEB700497BDD /* Logging.cpp */,
 				F9ECDDD3230BEEB700497BDD /* Logging.h */,
-				F9ECDCB8230BEEB700497BDD /* MemoryPurgeController.cpp */,
-				F9ECDDD6230BEEB700497BDD /* MemoryPurgeController.h */,
 				F9ECDDEF230BEEB700497BDD /* MIMETypeFromURL.cpp */,
 				F9ECE114230BEEB900497BDD /* MIMETypeFromURL.h */,
 				F9ECE121230BEEB900497BDD /* MIMETypeRegistry.cpp */,
@@ -2505,7 +2477,6 @@
 				F9ECDD44230BEEB700497BDD /* WebMediaStreamTrackSourcesRequest.cpp */,
 				F9ECDD3E230BEEB700497BDD /* WebMemoryAllocatorDump.cpp */,
 				F9ECDD4B230BEEB700497BDD /* WebMemoryDumpProvider.cpp */,
-				F9ECDD65230BEEB700497BDD /* WebMessagePortChannelClient.cpp */,
 				F9ECDD71230BEEB700497BDD /* WebPasswordCredential.cpp */,
 				F9ECDD3F230BEEB700497BDD /* WebPrerender.cpp */,
 				F9ECDD6F230BEEB700497BDD /* WebPrerenderingSupport.cpp */,
@@ -2520,8 +2491,6 @@
 				F9ECDD3D230BEEB700497BDD /* WebScrollbarThemeGeometryNative.h */,
 				F9ECDD61230BEEB700497BDD /* WebScrollbarThemePainter.cpp */,
 				F9ECDD36230BEEB700497BDD /* WebSecurityOrigin.cpp */,
-				F9ECDD4E230BEEB700497BDD /* WebServicePortProviderClient.cpp */,
-				F9ECDD75230BEEB700497BDD /* WebServiceWorkerProviderClient.cpp */,
 				F9ECDD50230BEEB700497BDD /* WebServiceWorkerProxy.cpp */,
 				F9ECDD41230BEEB700497BDD /* WebServiceWorkerRequest.cpp */,
 				F9ECDD51230BEEB700497BDD /* WebServiceWorkerResponse.cpp */,
@@ -2907,8 +2876,6 @@
 				F9ECE02D230BEEB800497BDD /* BitmapImageMetrics.cpp */,
 				F9ECDF9D230BEEB800497BDD /* BitmapImageMetrics.h */,
 				F9ECE040230BEEB800497BDD /* Canvas2DImageBufferSurface.h */,
-				F9ECE057230BEEB800497BDD /* Canvas2DLayerBridge.cpp */,
-				F9ECE076230BEEB900497BDD /* Canvas2DLayerBridge.h */,
 				F9ECE084230BEEB900497BDD /* CanvasMetrics.cpp */,
 				F9ECE042230BEEB800497BDD /* CanvasMetrics.h */,
 				F9ECE05A230BEEB800497BDD /* Color.cpp */,
@@ -2949,8 +2916,6 @@
 				F9ECE01E230BEEB800497BDD /* GraphicsLayer.cpp */,
 				F9ECE04C230BEEB800497BDD /* GraphicsLayer.h */,
 				F9ECE051230BEEB800497BDD /* GraphicsLayerClient.h */,
-				F9ECE069230BEEB800497BDD /* GraphicsLayerDebugInfo.cpp */,
-				F9ECE01D230BEEB800497BDD /* GraphicsLayerDebugInfo.h */,
 				F9ECE04E230BEEB800497BDD /* GraphicsLayerFactory.h */,
 				F9ECE047230BEEB800497BDD /* GraphicsTypes.cpp */,
 				F9ECE037230BEEB800497BDD /* GraphicsTypes.h */,
@@ -3211,14 +3176,10 @@
 				F9ECE0DD230BEEB900497BDD /* Latin1TextIterator.h */,
 				F9ECE0F0230BEEB900497BDD /* OrientationIterator.cpp */,
 				F9ECE0B9230BEEB900497BDD /* OrientationIterator.h */,
-				F9ECE0A1230BEEB900497BDD /* ScriptRunIterator.cpp */,
-				F9ECE0A0230BEEB900497BDD /* ScriptRunIterator.h */,
 				F9ECE0E9230BEEB900497BDD /* SegmentedFontData.cpp */,
 				F9ECE0E4230BEEB900497BDD /* SegmentedFontData.h */,
 				F9ECE0E6230BEEB900497BDD /* SimpleFontData.cpp */,
 				F9ECE0D3230BEEB900497BDD /* SimpleFontData.h */,
-				F9ECE0D1230BEEB900497BDD /* SmallCapsIterator.cpp */,
-				F9ECE0BD230BEEB900497BDD /* SmallCapsIterator.h */,
 				F9ECE0A8230BEEB900497BDD /* TestFontSelector.h */,
 				F9ECE0E5230BEEB900497BDD /* TextBlob.h */,
 				F9ECE0AC230BEEB900497BDD /* TextRenderingMode.h */,
@@ -3702,7 +3663,6 @@
 				F9ECE14D230BEEB900497BDD /* OriginAccessEntry.h in Headers */,
 				F9ECE37F230BEEBA00497BDD /* LayoutPoint.h in Headers */,
 				F9ECE37E230BEEBA00497BDD /* LayoutSize.h in Headers */,
-				F9ECE45C230BEEBB00497BDD /* GraphicsLayerDebugInfo.h in Headers */,
 				F9ECE44A230BEEBB00497BDD /* FEMerge.h in Headers */,
 				F9ECE6DF230BF00E00497BDD /* WebBlobData.h in Headers */,
 				F9ECE6F7230BF00E00497BDD /* WebFloatAnimationCurve.h in Headers */,
@@ -3843,7 +3803,6 @@
 				F9ECE4A0230BEEBB00497BDD /* DrawLooperBuilder.h in Headers */,
 				F9ECE736230BF00E00497BDD /* WebMediaDeviceInfo.h in Headers */,
 				F9ECE6FF230BF00E00497BDD /* WebConvertableToTraceFormat.h in Headers */,
-				F9ECE23C230BEEB900497BDD /* MemoryPurgeController.h in Headers */,
 				F9ECE2DB230BEEBA00497BDD /* ScaleTransformOperation.h in Headers */,
 				F9ECE3D9230BEEBA00497BDD /* SkiaUtils.h in Headers */,
 				F9ECE772230BF00E00497BDD /* WebPassOwnPtr.h in Headers */,
@@ -3890,7 +3849,6 @@
 				F9ECE748230BF00E00497BDD /* WebCompositorAnimationPlayerClient.h in Headers */,
 				F9ECE76A230BF00E00497BDD /* WebLayerScrollClient.h in Headers */,
 				F9ECE3E8230BEEBB00497BDD /* PaintArtifactToSkCanvas.h in Headers */,
-				F9ECE4D4230BEEBB00497BDD /* ScriptRunIterator.h in Headers */,
 				F9ECE3E3230BEEBB00497BDD /* ScopedPaintChunkProperties.h in Headers */,
 				F9ECE786230BF00E00497BDD /* WebMediaSource.h in Headers */,
 				F9ECE53B230BEEBC00497BDD /* BlobURL.h in Headers */,
@@ -4023,12 +3981,10 @@
 				F9ECE18B230BEEB900497BDD /* PopupMenu.h in Headers */,
 				F9ECE329230BEEBA00497BDD /* LifecycleObserver.h in Headers */,
 				F9ECE735230BF00E00497BDD /* WebRenderingStats.h in Headers */,
-				F9ECE4AF230BEEBB00497BDD /* Canvas2DLayerBridge.h in Headers */,
 				F9ECE4A8230BEEBB00497BDD /* ImageAnimationPolicy.h in Headers */,
 				F9ECE549230BEEBC00497BDD /* Clock.h in Headers */,
 				F9ECE349230BEEBA00497BDD /* LifecycleNotifier.h in Headers */,
 				F9ECE266230BEEBA00497BDD /* CheckedInt.h in Headers */,
-				F9ECE4EF230BEEBB00497BDD /* SmallCapsIterator.h in Headers */,
 				F9ECE380230BEEBA00497BDD /* FloatQuad.h in Headers */,
 				F9ECE47E230BEEBB00497BDD /* ImageDecodingStore.h in Headers */,
 				F9ECE3A8230BEEBA00497BDD /* UnicodeBidi.h in Headers */,
@@ -4337,7 +4293,6 @@
 				F9ECE130230BEEB900497BDD /* LengthFunctions.cpp in Sources */,
 				F9ECE554230BEEBC00497BDD /* ClipboardUtilities.cpp in Sources */,
 				F9ECE2F5230BEEBA00497BDD /* Heap.cpp in Sources */,
-				F9ECE502230BEEBB00497BDD /* SmallCapsIterator.cpp in Sources */,
 				F9ECE44E230BEEBB00497BDD /* FEColorMatrix.cpp in Sources */,
 				F9ECE3EA230BEEBB00497BDD /* DisplayItem.cpp in Sources */,
 				F9ECE38A230BEEBA00497BDD /* FloatQuad.cpp in Sources */,
@@ -4451,7 +4406,6 @@
 				F9ECE3B3230BEEBA00497BDD /* TextRun.cpp in Sources */,
 				F9ECE1B8230BEEB900497BDD /* WebMemoryDumpProvider.cpp in Sources */,
 				F9ECE3C9230BEEBA00497BDD /* QuotedPrintable.cpp in Sources */,
-				F9ECE4A2230BEEBB00497BDD /* GraphicsLayerDebugInfo.cpp in Sources */,
 				F9ECE214230BEEB900497BDD /* HTTPHeaderMap.cpp in Sources */,
 				F9ECE404230BEEBB00497BDD /* PaintChunker.cpp in Sources */,
 				F9ECE1A2230BEEB900497BDD /* WebThreadedDataReceiver.cpp in Sources */,
@@ -4497,7 +4451,6 @@
 				F9ECE42D230BEEBB00497BDD /* FELighting.cpp in Sources */,
 				F9ECE447230BEEBB00497BDD /* SourceGraphic.cpp in Sources */,
 				F9ECE398230BEEBA00497BDD /* BidiContext.cpp in Sources */,
-				F9ECE1E1230BEEB900497BDD /* WebServiceWorkerProviderClient.cpp in Sources */,
 				F9ECE54B230BEEBC00497BDD /* PluginScriptForbiddenScope.cpp in Sources */,
 				F9ECE371230BEEBA00497BDD /* FloatPoint.cpp in Sources */,
 				F9ECE151230BEEB900497BDD /* OriginAccessEntry.cpp in Sources */,
@@ -4512,7 +4465,6 @@
 				F9ECE24C230BEEBA00497BDD /* WebThread.cpp in Sources */,
 				F9ECE4C5230BEEBB00497BDD /* PathTraversalState.cpp in Sources */,
 				F9ECE46F230BEEBB00497BDD /* StrokeData.cpp in Sources */,
-				F9ECE1BB230BEEB900497BDD /* WebServicePortProviderClient.cpp in Sources */,
 				F9ECE4BC230BEEBB00497BDD /* CanvasMetrics.cpp in Sources */,
 				F9ECE1D0230BEEB900497BDD /* WebMediaStreamTrack.cpp in Sources */,
 				F9ECE301230BEEBA00497BDD /* GCInfo.cpp in Sources */,
@@ -4547,7 +4499,6 @@
 				F9ECE14E230BEEB900497BDD /* KnownPorts.cpp in Sources */,
 				F9ECE402230BEEBB00497BDD /* CompositingRecorder.cpp in Sources */,
 				F9ECE550230BEEBC00497BDD /* ClipboardUtilitiesPosix.cpp in Sources */,
-				F9ECE1D2230BEEB900497BDD /* WebMessagePortChannelClient.cpp in Sources */,
 				F9ECE1B0230BEEB900497BDD /* WebScrollbarThemeClientImpl.cpp in Sources */,
 				F9ECE1F8230BEEB900497BDD /* WebAudioBus.cpp in Sources */,
 				F9ECE305230BEEBA00497BDD /* PagePool.cpp in Sources */,
@@ -4636,7 +4587,6 @@
 				F9ECE1AE230BEEB900497BDD /* WebServiceWorkerRequest.cpp in Sources */,
 				F9ECE3E0230BEEBB00497BDD /* FilterDisplayItem.cpp in Sources */,
 				F9ECE1FD230BEEB900497BDD /* ContentType.cpp in Sources */,
-				F9ECE4D5230BEEBB00497BDD /* ScriptRunIterator.cpp in Sources */,
 				F9ECE23D230BEEB900497BDD /* JSONValues.cpp in Sources */,
 				F9ECE4FA230BEEBB00497BDD /* FontPlatformDataMac.mm in Sources */,
 				F9ECE166230BEEB900497BDD /* Scrollbar.cpp in Sources */,
@@ -4651,7 +4601,6 @@
 				F9ECE38B230BEEBA00497BDD /* TransformState.cpp in Sources */,
 				F9ECE1FA230BEEB900497BDD /* WebSpeechSynthesisUtterance.cpp in Sources */,
 				F9ECE1DC230BEEB900497BDD /* WebBlobData.cpp in Sources */,
-				F9ECE491230BEEBB00497BDD /* Canvas2DLayerBridge.cpp in Sources */,
 				F9ECE16C230BEEB900497BDD /* ScrollbarThemeMacNonOverlayAPI.mm in Sources */,
 				F9ECE2D5230BEEBA00497BDD /* PerspectiveTransformOperation.cpp in Sources */,
 				F9ECE3FF230BEEBB00497BDD /* DrawingDisplayItem.cpp in Sources */,
@@ -4678,7 +4627,6 @@
 				F9ECE3FB230BEEBB00497BDD /* ClipPathDisplayItem.cpp in Sources */,
 				F9ECE41E230BEEBB00497BDD /* FETile.cpp in Sources */,
 				F9ECE481230BEEBB00497BDD /* GraphicsTypes.cpp in Sources */,
-				F9ECE12C230BEEB900497BDD /* MemoryPurgeController.cpp in Sources */,
 				F9ECE300230BEEBA00497BDD /* BlinkGCMemoryDumpProvider.cpp in Sources */,
 				F9ECE33C230BEEBA00497BDD /* GIFImageReader.cpp in Sources */,
 				F9ECE448230BEEBB00497BDD /* DistantLightSource.cpp in Sources */,
@@ -4727,13 +4675,13 @@
 /* Begin XCBuildConfiguration section */
 		F9ECDCAD230BEE6D00497BDD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F9ECDCB2230BEE7D00497BDD /* blink.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -4775,23 +4723,35 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BK_ROOT)/third_party/harfbuzz/src",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(BK_SRC)/blink",
+					"$(inherited)",
+					"$(BK_ROOT)/third_party/libpng",
+					"$(BK_ROOT)/third_party/ots/include",
+					"$(BK_SRC)/harfbuzz",
+					"$(BK_SRC)/libpng",
+				);
 			};
 			name = Debug;
 		};
 		F9ECDCAE230BEE6D00497BDD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F9ECDCB2230BEE7D00497BDD /* blink.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -4827,10 +4787,22 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BK_ROOT)/third_party/harfbuzz/src",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(BK_SRC)/blink",
+					"$(inherited)",
+					"$(BK_ROOT)/third_party/libpng",
+					"$(BK_ROOT)/third_party/ots/include",
+					"$(BK_SRC)/harfbuzz",
+					"$(BK_SRC)/libpng",
+				);
 			};
 			name = Release;
 		};
