@@ -7,6 +7,9 @@
       <FileRef
          location = "group:duktape/duktape.xcodeproj">
       </FileRef>
+      <FileRef
+         location = "group:png/png.xcodeproj">
+      </FileRef>
    </Group>
    <Group
       location = "container:"
