@@ -28,6 +28,7 @@
 #   pragma clang diagnostic ignored "-Wdocumentation"
 #   pragma clang diagnostic ignored "-Winconsistent-missing-override"
 #   pragma clang diagnostic ignored "-Wshorten-64-to-32"
+#   pragma clang diagnostic ignored "-Wswitch"
 #endif
 
 #define BLINK_IMPLEMENTATION    1

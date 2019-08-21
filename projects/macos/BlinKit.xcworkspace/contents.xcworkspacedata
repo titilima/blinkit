@@ -64,6 +64,9 @@
       location = "group:BkTest/BkTest.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:BlinKit/BlinKit.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:js/js.xcodeproj">
    </FileRef>
    <FileRef
