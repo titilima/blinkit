@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: LayoutThemeMac.cpp
+// Description: LayoutThemeMac Class
+//      Author: Ziming Li
+//     Created: 2019-08-21
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
  * Copyright (C) 2008, 2009 Google, Inc.
@@ -27,7 +38,6 @@
 #import "core/layout/LayoutMeter.h"
 #import "core/layout/LayoutProgress.h"
 #import "core/layout/LayoutView.h"
-#import "core/paint/MediaControlsPainter.h"
 #import "core/style/ShadowList.h"
 #import "platform/LayoutTestSupport.h"
 #import "platform/PlatformResourceLoader.h"
@@ -1033,6 +1043,8 @@ NSPopUpButtonCell* LayoutThemeMac::popupButton() const
 NSSearchFieldCell* LayoutThemeMac::search() const
 {
     if (!m_search) {
+        ASSERT(false); // BKTODO:
+#if 0
         m_search.adoptNS([[NSSearchFieldCell alloc] initTextCell:@""]);
         [m_search.get() setBezelStyle:NSTextFieldRoundedBezel];
         [m_search.get() setBezeled:YES];
@@ -1048,6 +1060,7 @@ NSSearchFieldCell* LayoutThemeMac::search() const
             [invocation setArgument:&boolValue atIndex:2];
             [invocation invoke];
         }
+#endif
     }
 
     return m_search.get();
@@ -1144,7 +1157,10 @@ void LayoutThemeMac::updateActiveState(NSCell* cell, const LayoutObject& o)
 
 void LayoutThemeMac::adjustMediaSliderThumbSize(ComputedStyle& style) const
 {
+    ASSERT(false); // BKTODO:
+#if 0
     MediaControlsPainter::adjustMediaSliderThumbSize(style);
+#endif
 }
 
 String LayoutThemeMac::extraFullScreenStyleSheet()
