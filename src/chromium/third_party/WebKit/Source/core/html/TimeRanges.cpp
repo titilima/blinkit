@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: TimeRanges.cpp
+// Description: TimeRanges Class
+//      Author: Ziming Li
+//     Created: 2019-08-21
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2009, 2010 Apple Inc.  All rights reserved.
  *
@@ -29,7 +40,7 @@
 #include "bindings/core/v8/ExceptionState.h"
 #include "bindings/core/v8/ExceptionStatePlaceholder.h"
 #include "core/dom/ExceptionCode.h"
-#include <math.h>
+#include <cmath>
 
 using namespace blink;
 
