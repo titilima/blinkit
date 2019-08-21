@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: HashTools.h
+// Description: Hash Tools
+//      Author: Ziming Li
+//     Created: 2019-08-21
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Andras Becsi <abecsi@inf.u-szeged.hu>, University of Szeged
  *
@@ -36,8 +47,8 @@ struct Value {
     int id;
 };
 
-const Property* findProperty(register const char* str, register unsigned len);
-const Value* findValue(register const char* str, register unsigned len);
+const Property* findProperty(const char* str, unsigned len);
+const Value* findValue(const char* str, unsigned len);
 
 } // namespace blink
 
