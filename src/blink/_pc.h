@@ -31,6 +31,7 @@
 #   pragma clang diagnostic ignored "-Winconsistent-missing-override"
 #   pragma clang diagnostic ignored "-Wrange-loop-analysis"
 #   pragma clang diagnostic ignored "-Wshorten-64-to-32"
+#   pragma clang diagnostic ignored "-Wswitch"
 #   pragma clang diagnostic ignored "-Wunused-function"
 #   pragma clang diagnostic ignored "-Wunused-variable"
 #endif
