@@ -13,6 +13,9 @@
       <FileRef
          location = "group:png/png.xcodeproj">
       </FileRef>
+      <FileRef
+         location = "group:skia/skia.xcodeproj">
+      </FileRef>
    </Group>
    <Group
       location = "container:"

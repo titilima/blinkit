@@ -17,12 +17,17 @@
 #include "build/build_config.h"
 
 #if OS_WIN
-
 #   pragma warning(disable: 4244 4267 4291 4334 4819)
-
 #   define _CRT_SECURE_NO_WARNINGS
 #   define SK_GDI_ALWAYS_USE_TEXTMETRICS_FOR_FONT_METRICS
+#endif
 
+#if (OS_MACOSX || OS_IOS)
+#   pragma clang diagnostic ignored "-Wconditional-uninitialized"
+#   pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#   pragma clang diagnostic ignored "-Wdocumentation"
+#   pragma clang diagnostic ignored "-Wshorten-64-to-32"
+#   pragma clang diagnostic ignored "-Wunreachable-code"
 #endif
 
 #include "_skia.h"
