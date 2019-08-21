@@ -113,7 +113,7 @@ PendingInvalidations& StyleInvalidator::ensurePendingInvalidations(Element& elem
 
 StyleInvalidator::StyleInvalidator()
 {
-    s_tracingEnabled = false;
+    s_tracingEnabled = nullptr;
     InvalidationSet::cacheTracingFlag();
 }
 
