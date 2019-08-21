@@ -103,11 +103,13 @@ run_script('build/scripts/make_css_property_names.py',  \
     os.path.normpath('core/css/CSSProperties.in') + ' ' \
     '--output_dir ' + os.path.normpath('gen/core')  + GPERF_ARG \
 )
+fix_gperf_for_cxx17(os.path.normpath('gen/core/CSSPropertyNames.cpp'))
 
 run_script('build/scripts/make_css_value_keywords.py',  \
     os.path.normpath('core/css/CSSValueKeywords.in') + ' ' \
     '--output_dir ' + os.path.normpath('gen/core')  + GPERF_ARG \
 )
+fix_gperf_for_cxx17(os.path.normpath('gen/core/CSSValueKeywords.cpp'))
 
 run_script('build/scripts/make_names.py',  \
     os.path.normpath('platform/network/HTTPNames.in') + ' ' \
