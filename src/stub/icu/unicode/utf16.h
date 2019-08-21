@@ -70,6 +70,12 @@
     } \
 }
 
+#define U16_FWD_1_UNSAFE(s, i) { \
+    if(U16_IS_LEAD((s)[(i)++])) { \
+        ++(i); \
+    } \
+}
+
 #define U16_PREV(s, start, i, c) { \
     (c)=(s)[--(i)]; \
     if(U16_IS_TRAIL(c)) { \
