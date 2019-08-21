@@ -26,6 +26,7 @@
 
 #if (OS_MACOSX || OS_IOS)
 #   pragma clang diagnostic ignored "-Wcomma"
+#   pragma clang diagnostic ignored "-Wconditional-uninitialized"
 #   pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #   pragma clang diagnostic ignored "-Wdocumentation"
 #   pragma clang diagnostic ignored "-Winconsistent-missing-override"

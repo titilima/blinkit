@@ -48,6 +48,9 @@
          location = "group:webcore_html/webcore_html.xcodeproj">
       </FileRef>
       <FileRef
+         location = "group:webcore_remaining/webcore_remaining.xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:wtf/wtf.xcodeproj">
       </FileRef>
    </Group>
