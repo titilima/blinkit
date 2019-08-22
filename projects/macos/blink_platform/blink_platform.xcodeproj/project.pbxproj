@@ -115,7 +115,6 @@
 		F9ECE1A1230BEEB900497BDD /* WebMediaStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD34230BEEB700497BDD /* WebMediaStream.cpp */; };
 		F9ECE1A2230BEEB900497BDD /* WebThreadedDataReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD35230BEEB700497BDD /* WebThreadedDataReceiver.cpp */; };
 		F9ECE1A3230BEEB900497BDD /* WebSecurityOrigin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD36230BEEB700497BDD /* WebSecurityOrigin.cpp */; };
-		F9ECE1A4230BEEB900497BDD /* WebAudioDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD37230BEEB700497BDD /* WebAudioDevice.cpp */; };
 		F9ECE1A5230BEEB900497BDD /* WebTransformKeyframe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD38230BEEB700497BDD /* WebTransformKeyframe.cpp */; };
 		F9ECE1A6230BEEB900497BDD /* WebFederatedCredential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD39230BEEB700497BDD /* WebFederatedCredential.cpp */; };
 		F9ECE1A8230BEEB900497BDD /* WebCryptoKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD3B230BEEB700497BDD /* WebCryptoKey.cpp */; };
@@ -177,7 +176,6 @@
 		F9ECE1E9230BEEB900497BDD /* WebConvertableToTraceFormat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD7D230BEEB700497BDD /* WebConvertableToTraceFormat.cpp */; };
 		F9ECE1EB230BEEB900497BDD /* WebSourceInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD7F230BEEB700497BDD /* WebSourceInfo.cpp */; };
 		F9ECE1EC230BEEB900497BDD /* WebMediaRecorderHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD80230BEEB700497BDD /* WebMediaRecorderHandler.cpp */; };
-		F9ECE1ED230BEEB900497BDD /* WebEncryptedMediaClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD81230BEEB700497BDD /* WebEncryptedMediaClient.cpp */; };
 		F9ECE1EE230BEEB900497BDD /* WebScrollbarImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECDD82230BEEB700497BDD /* WebScrollbarImpl.h */; };
 		F9ECE1EF230BEEB900497BDD /* WebContentDecryptionModuleResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD83230BEEB700497BDD /* WebContentDecryptionModuleResult.cpp */; };
 		F9ECE1F0230BEEB900497BDD /* WebActiveGestureAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECDD84230BEEB700497BDD /* WebActiveGestureAnimation.h */; };
@@ -188,7 +186,6 @@
 		F9ECE1F5230BEEB900497BDD /* WebMediaStreamSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD89230BEEB700497BDD /* WebMediaStreamSource.cpp */; };
 		F9ECE1F6230BEEB900497BDD /* WebProcessMemoryDump.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD8A230BEEB700497BDD /* WebProcessMemoryDump.cpp */; };
 		F9ECE1F7230BEEB900497BDD /* WebString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD8B230BEEB700497BDD /* WebString.cpp */; };
-		F9ECE1F8230BEEB900497BDD /* WebAudioBus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD8C230BEEB700497BDD /* WebAudioBus.cpp */; };
 		F9ECE1F9230BEEB900497BDD /* WebPresentationController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD8D230BEEB700497BDD /* WebPresentationController.cpp */; };
 		F9ECE1FA230BEEB900497BDD /* WebSpeechSynthesisUtterance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD8E230BEEB700497BDD /* WebSpeechSynthesisUtterance.cpp */; };
 		F9ECE1FB230BEEB900497BDD /* WebCompositorAnimationPlayerClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDD8F230BEEB700497BDD /* WebCompositorAnimationPlayerClient.cpp */; };
@@ -918,7 +915,6 @@
 		F9ECE71E230BF00E00497BDD /* WebRTCStatsRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE599230BEFDF00497BDD /* WebRTCStatsRequest.h */; };
 		F9ECE71F230BF00E00497BDD /* WebScrollStateData.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE59A230BEFE000497BDD /* WebScrollStateData.h */; };
 		F9ECE720230BF00E00497BDD /* WebEncryptedMediaRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE59B230BEFE000497BDD /* WebEncryptedMediaRequest.h */; };
-		F9ECE721230BF00E00497BDD /* WebAudioBus.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE59C230BEFE000497BDD /* WebAudioBus.h */; };
 		F9ECE722230BF00E00497BDD /* WebScrollbar.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE59D230BEFE000497BDD /* WebScrollbar.h */; };
 		F9ECE723230BF00E00497BDD /* WebThreadedDataReceiver.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE59E230BEFE000497BDD /* WebThreadedDataReceiver.h */; };
 		F9ECE724230BF00E00497BDD /* WebRTCICECandidate.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE59F230BEFE100497BDD /* WebRTCICECandidate.h */; };
@@ -954,7 +950,6 @@
 		F9ECE742230BF00E00497BDD /* WebCryptoKey.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE5BD230BEFE700497BDD /* WebCryptoKey.h */; };
 		F9ECE743230BF00E00497BDD /* WebFileSystemType.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE5BE230BEFE800497BDD /* WebFileSystemType.h */; };
 		F9ECE744230BF00E00497BDD /* WebURLError.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE5BF230BEFE800497BDD /* WebURLError.h */; };
-		F9ECE745230BF00E00497BDD /* WebEncryptedMediaClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE5C0230BEFE800497BDD /* WebEncryptedMediaClient.h */; };
 		F9ECE746230BF00E00497BDD /* WebRTCDTMFSenderHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE5C1230BEFE800497BDD /* WebRTCDTMFSenderHandler.h */; };
 		F9ECE747230BF00E00497BDD /* WebLayerTreeView.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE5C2230BEFE900497BDD /* WebLayerTreeView.h */; };
 		F9ECE748230BF00E00497BDD /* WebCompositorAnimationPlayerClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE5C3230BEFE900497BDD /* WebCompositorAnimationPlayerClient.h */; };
@@ -1001,7 +996,6 @@
 		F9ECE775230BF00E00497BDD /* WebColor.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE5F1230BEFF000497BDD /* WebColor.h */; };
 		F9ECE776230BF00E00497BDD /* WebPrivateOwnPtr.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE5F2230BEFF100497BDD /* WebPrivateOwnPtr.h */; };
 		F9ECE777230BF00E00497BDD /* WebSelectionBound.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE5F3230BEFF100497BDD /* WebSelectionBound.h */; };
-		F9ECE778230BF00E00497BDD /* WebAudioDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE5F4230BEFF100497BDD /* WebAudioDevice.h */; };
 		F9ECE779230BF00E00497BDD /* WebFileInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE5F5230BEFF100497BDD /* WebFileInfo.h */; };
 		F9ECE77A230BF00E00497BDD /* WebPlatformEventType.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE5F6230BEFF100497BDD /* WebPlatformEventType.h */; };
 		F9ECE77B230BF00E00497BDD /* WebInbandTextTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECE5F7230BEFF200497BDD /* WebInbandTextTrack.h */; };
@@ -1203,7 +1197,6 @@
 		F9ECDD34230BEEB700497BDD /* WebMediaStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebMediaStream.cpp; sourceTree = "<group>"; };
 		F9ECDD35230BEEB700497BDD /* WebThreadedDataReceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebThreadedDataReceiver.cpp; sourceTree = "<group>"; };
 		F9ECDD36230BEEB700497BDD /* WebSecurityOrigin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebSecurityOrigin.cpp; sourceTree = "<group>"; };
-		F9ECDD37230BEEB700497BDD /* WebAudioDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebAudioDevice.cpp; sourceTree = "<group>"; };
 		F9ECDD38230BEEB700497BDD /* WebTransformKeyframe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebTransformKeyframe.cpp; sourceTree = "<group>"; };
 		F9ECDD39230BEEB700497BDD /* WebFederatedCredential.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebFederatedCredential.cpp; sourceTree = "<group>"; };
 		F9ECDD3B230BEEB700497BDD /* WebCryptoKey.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebCryptoKey.cpp; sourceTree = "<group>"; };
@@ -1265,7 +1258,6 @@
 		F9ECDD7D230BEEB700497BDD /* WebConvertableToTraceFormat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebConvertableToTraceFormat.cpp; sourceTree = "<group>"; };
 		F9ECDD7F230BEEB700497BDD /* WebSourceInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebSourceInfo.cpp; sourceTree = "<group>"; };
 		F9ECDD80230BEEB700497BDD /* WebMediaRecorderHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebMediaRecorderHandler.cpp; sourceTree = "<group>"; };
-		F9ECDD81230BEEB700497BDD /* WebEncryptedMediaClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebEncryptedMediaClient.cpp; sourceTree = "<group>"; };
 		F9ECDD82230BEEB700497BDD /* WebScrollbarImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebScrollbarImpl.h; sourceTree = "<group>"; };
 		F9ECDD83230BEEB700497BDD /* WebContentDecryptionModuleResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebContentDecryptionModuleResult.cpp; sourceTree = "<group>"; };
 		F9ECDD84230BEEB700497BDD /* WebActiveGestureAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebActiveGestureAnimation.h; sourceTree = "<group>"; };
@@ -1276,7 +1268,6 @@
 		F9ECDD89230BEEB700497BDD /* WebMediaStreamSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebMediaStreamSource.cpp; sourceTree = "<group>"; };
 		F9ECDD8A230BEEB700497BDD /* WebProcessMemoryDump.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebProcessMemoryDump.cpp; sourceTree = "<group>"; };
 		F9ECDD8B230BEEB700497BDD /* WebString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebString.cpp; sourceTree = "<group>"; };
-		F9ECDD8C230BEEB700497BDD /* WebAudioBus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebAudioBus.cpp; sourceTree = "<group>"; };
 		F9ECDD8D230BEEB700497BDD /* WebPresentationController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebPresentationController.cpp; sourceTree = "<group>"; };
 		F9ECDD8E230BEEB700497BDD /* WebSpeechSynthesisUtterance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebSpeechSynthesisUtterance.cpp; sourceTree = "<group>"; };
 		F9ECDD8F230BEEB700497BDD /* WebCompositorAnimationPlayerClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebCompositorAnimationPlayerClient.cpp; sourceTree = "<group>"; };
@@ -2007,7 +1998,6 @@
 		F9ECE599230BEFDF00497BDD /* WebRTCStatsRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebRTCStatsRequest.h; sourceTree = "<group>"; };
 		F9ECE59A230BEFE000497BDD /* WebScrollStateData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebScrollStateData.h; sourceTree = "<group>"; };
 		F9ECE59B230BEFE000497BDD /* WebEncryptedMediaRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebEncryptedMediaRequest.h; sourceTree = "<group>"; };
-		F9ECE59C230BEFE000497BDD /* WebAudioBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebAudioBus.h; sourceTree = "<group>"; };
 		F9ECE59D230BEFE000497BDD /* WebScrollbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebScrollbar.h; sourceTree = "<group>"; };
 		F9ECE59E230BEFE000497BDD /* WebThreadedDataReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebThreadedDataReceiver.h; sourceTree = "<group>"; };
 		F9ECE59F230BEFE100497BDD /* WebRTCICECandidate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebRTCICECandidate.h; sourceTree = "<group>"; };
@@ -2043,7 +2033,6 @@
 		F9ECE5BD230BEFE700497BDD /* WebCryptoKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebCryptoKey.h; sourceTree = "<group>"; };
 		F9ECE5BE230BEFE800497BDD /* WebFileSystemType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebFileSystemType.h; sourceTree = "<group>"; };
 		F9ECE5BF230BEFE800497BDD /* WebURLError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebURLError.h; sourceTree = "<group>"; };
-		F9ECE5C0230BEFE800497BDD /* WebEncryptedMediaClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebEncryptedMediaClient.h; sourceTree = "<group>"; };
 		F9ECE5C1230BEFE800497BDD /* WebRTCDTMFSenderHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebRTCDTMFSenderHandler.h; sourceTree = "<group>"; };
 		F9ECE5C2230BEFE900497BDD /* WebLayerTreeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebLayerTreeView.h; sourceTree = "<group>"; };
 		F9ECE5C3230BEFE900497BDD /* WebCompositorAnimationPlayerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebCompositorAnimationPlayerClient.h; sourceTree = "<group>"; };
@@ -2090,7 +2079,6 @@
 		F9ECE5F1230BEFF000497BDD /* WebColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebColor.h; sourceTree = "<group>"; };
 		F9ECE5F2230BEFF100497BDD /* WebPrivateOwnPtr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebPrivateOwnPtr.h; sourceTree = "<group>"; };
 		F9ECE5F3230BEFF100497BDD /* WebSelectionBound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSelectionBound.h; sourceTree = "<group>"; };
-		F9ECE5F4230BEFF100497BDD /* WebAudioDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebAudioDevice.h; sourceTree = "<group>"; };
 		F9ECE5F5230BEFF100497BDD /* WebFileInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebFileInfo.h; sourceTree = "<group>"; };
 		F9ECE5F6230BEFF100497BDD /* WebPlatformEventType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebPlatformEventType.h; sourceTree = "<group>"; };
 		F9ECE5F7230BEFF200497BDD /* WebInbandTextTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebInbandTextTrack.h; sourceTree = "<group>"; };
@@ -2462,8 +2450,6 @@
 				F9ECDD73230BEEB700497BDD /* Platform.cpp */,
 				F9ECDD5A230BEEB700497BDD /* WebActiveGestureAnimation.cpp */,
 				F9ECDD84230BEEB700497BDD /* WebActiveGestureAnimation.h */,
-				F9ECDD8C230BEEB700497BDD /* WebAudioBus.cpp */,
-				F9ECDD37230BEEB700497BDD /* WebAudioDevice.cpp */,
 				F9ECDD70230BEEB700497BDD /* WebBlobData.cpp */,
 				F9ECDD48230BEEB700497BDD /* WebCanvasCaptureHandler.cpp */,
 				F9ECDD59230BEEB700497BDD /* WebCommon.cpp */,
@@ -2487,7 +2473,6 @@
 				F9ECDD78230BEEB700497BDD /* WebDeviceMotionData.cpp */,
 				F9ECDD6D230BEEB700497BDD /* WebDeviceOrientationData.cpp */,
 				F9ECDD56230BEEB700497BDD /* WebDragData.cpp */,
-				F9ECDD81230BEEB700497BDD /* WebEncryptedMediaClient.cpp */,
 				F9ECDD33230BEEB700497BDD /* WebEncryptedMediaKeyInformation.cpp */,
 				F9ECDD79230BEEB700497BDD /* WebEncryptedMediaRequest.cpp */,
 				F9ECDD39230BEEB700497BDD /* WebFederatedCredential.cpp */,
@@ -3310,9 +3295,7 @@
 				F9ECE5E4230BEFEE00497BDD /* PointerProperties.h */,
 				F9ECE610230BEFFB00497BDD /* WebApplicationCacheHost.h */,
 				F9ECE6CC230BF00900497BDD /* WebApplicationCacheHostClient.h */,
-				F9ECE59C230BEFE000497BDD /* WebAudioBus.h */,
 				F9ECE6C0230BF00500497BDD /* WebAudioDestinationConsumer.h */,
-				F9ECE5F4230BEFF100497BDD /* WebAudioDevice.h */,
 				F9ECE5E9230BEFEF00497BDD /* WebAudioSourceProvider.h */,
 				F9ECE5AA230BEFE400497BDD /* WebAudioSourceProviderClient.h */,
 				F9ECE604230BEFF500497BDD /* WebBatteryStatus.h */,
@@ -3373,7 +3356,6 @@
 				F9ECE607230BEFF700497BDD /* WebDistillability.h */,
 				F9ECE5A5230BEFE300497BDD /* WebDoublePoint.h */,
 				F9ECE585230BEFDC00497BDD /* WebDragData.h */,
-				F9ECE5C0230BEFE800497BDD /* WebEncryptedMediaClient.h */,
 				F9ECE57B230BEFDA00497BDD /* WebEncryptedMediaKeyInformation.h */,
 				F9ECE59B230BEFE000497BDD /* WebEncryptedMediaRequest.h */,
 				F9ECE6D8230BF00C00497BDD /* WebEncryptedMediaTypes.h */,
@@ -3781,7 +3763,6 @@
 				F9ECE818230BF00F00497BDD /* WebGestureDevice.h in Headers */,
 				F9ECE78C230BF00E00497BDD /* WebLayoutAndPaintAsyncCallback.h in Headers */,
 				F9ECE734230BF00E00497BDD /* WebExternalTextureMailbox.h in Headers */,
-				F9ECE745230BF00E00497BDD /* WebEncryptedMediaClient.h in Headers */,
 				F9ECE306230BEEBA00497BDD /* PageMemory.h in Headers */,
 				F9ECE3B2230BEEBA00497BDD /* TextRunIterator.h in Headers */,
 				F9ECE41B230BEEBB00497BDD /* ImageBufferSurface.h in Headers */,
@@ -3895,7 +3876,6 @@
 				F9ECE496230BEEBB00497BDD /* CompositingReasons.h in Headers */,
 				F9ECE451230BEEBB00497BDD /* FEDiffuseLighting.h in Headers */,
 				F9ECE22D230BEEB900497BDD /* WindowsKeyboardCodes.h in Headers */,
-				F9ECE721230BF00E00497BDD /* WebAudioBus.h in Headers */,
 				F9ECE70D230BF00E00497BDD /* WebGraphicsContext3DProvider.h in Headers */,
 				F9ECE4D3230BEEBB00497BDD /* FontDataRange.h in Headers */,
 				F9ECE260230BEEBA00497BDD /* BlockExceptions.h in Headers */,
@@ -4039,7 +4019,6 @@
 				F9ECE3B5230BEEBA00497BDD /* SegmentedString.h in Headers */,
 				F9ECE396230BEEBA00497BDD /* ParserUtilities.h in Headers */,
 				F9ECE52D230BEEBC00497BDD /* CachingWordShapeIterator.h in Headers */,
-				F9ECE778230BF00E00497BDD /* WebAudioDevice.h in Headers */,
 				F9ECE33D230BEEBA00497BDD /* GIFImageReader.h in Headers */,
 				F9ECE807230BF00F00497BDD /* WebInbandTextTrackClient.h in Headers */,
 				F9ECE4B9230BEEBB00497BDD /* PathTraversalState.h in Headers */,
@@ -4536,7 +4515,6 @@
 				F9ECE402230BEEBB00497BDD /* CompositingRecorder.cpp in Sources */,
 				F9ECE550230BEEBC00497BDD /* ClipboardUtilitiesPosix.cpp in Sources */,
 				F9ECE1B0230BEEB900497BDD /* WebScrollbarThemeClientImpl.cpp in Sources */,
-				F9ECE1F8230BEEB900497BDD /* WebAudioBus.cpp in Sources */,
 				F9ECE305230BEEBA00497BDD /* PagePool.cpp in Sources */,
 				F9ECE254230BEEBA00497BDD /* UserGestureIndicator.cpp in Sources */,
 				F9ECE264230BEEBA00497BDD /* LocalCurrentGraphicsContext.mm in Sources */,
@@ -4582,7 +4560,6 @@
 				F9ECE3F2230BEEBB00497BDD /* FixedPositionContainerDisplayItem.cpp in Sources */,
 				F9ECE15D230BEEB900497BDD /* KURL.cpp in Sources */,
 				F9A4B2AC230E3A7F00EED81E /* IntSizeCG.cpp in Sources */,
-				F9ECE1A4230BEEB900497BDD /* WebAudioDevice.cpp in Sources */,
 				F9ECE2CA230BEEBA00497BDD /* TransformationMatrix.cpp in Sources */,
 				F9ECE2F7230BEEBA00497BDD /* BlinkGCInterruptor.cpp in Sources */,
 				F9ECE44B230BEEBB00497BDD /* FilterEffect.cpp in Sources */,
@@ -4631,7 +4608,6 @@
 				F9ECE166230BEEB900497BDD /* Scrollbar.cpp in Sources */,
 				F9ECE1BF230BEEB900497BDD /* WebCredential.cpp in Sources */,
 				F9ECE1F4230BEEB900497BDD /* WebURLResponse.cpp in Sources */,
-				F9ECE1ED230BEEB900497BDD /* WebEncryptedMediaClient.cpp in Sources */,
 				F9ECE181230BEEB900497BDD /* Decimal.cpp in Sources */,
 				F9ECE1E6230BEEB900497BDD /* WebScrollbarImpl.cpp in Sources */,
 				F9ECE1A3230BEEB900497BDD /* WebSecurityOrigin.cpp in Sources */,

@@ -281,12 +281,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebActiveGestureAnimation.cpp">
       <Filter>platform\exported</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebAudioBus.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebAudioDevice.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebBlobData.cpp">
       <Filter>platform\exported</Filter>
     </ClCompile>
@@ -351,9 +345,6 @@
       <Filter>platform\exported</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebDragData.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebEncryptedMediaClient.cpp">
       <Filter>platform\exported</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebEncryptedMediaKeyInformation.cpp">
@@ -2518,13 +2509,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebApplicationCacheHostClient.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebAudioBus.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebAudioDestinationConsumer.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebAudioDevice.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebAudioSourceProvider.h">
@@ -2702,9 +2687,6 @@
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebDragData.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebEncryptedMediaClient.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebEncryptedMediaKeyInformation.h">

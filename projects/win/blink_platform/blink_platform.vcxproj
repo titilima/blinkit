@@ -270,8 +270,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\EventTracer.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\Platform.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebActiveGestureAnimation.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebAudioBus.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebAudioDevice.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebBlobData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCanvasCaptureHandler.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCommon.cpp" />
@@ -294,7 +292,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebDeviceMotionData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebDeviceOrientationData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebDragData.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebEncryptedMediaClient.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebEncryptedMediaKeyInformation.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebEncryptedMediaRequest.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebFederatedCredential.cpp" />
@@ -623,9 +620,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\PointerProperties.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebApplicationCacheHost.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebApplicationCacheHostClient.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebAudioBus.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebAudioDestinationConsumer.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebAudioDevice.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebAudioSourceProvider.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebAudioSourceProviderClient.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebBatteryStatus.h" />
@@ -685,7 +680,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebDistillability.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebDoublePoint.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebDragData.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebEncryptedMediaClient.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebEncryptedMediaKeyInformation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebEncryptedMediaRequest.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\platform\WebEncryptedMediaTypes.h" />

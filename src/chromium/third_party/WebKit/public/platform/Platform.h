@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: Platform.h
+// Description: Platform Class
+//      Author: Ziming Li
+//     Created: 2019-08-22
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -35,7 +46,6 @@
 #include <windows.h>
 #endif
 
-#include "WebAudioDevice.h"
 #include "WebBatteryStatusListener.h"
 #include "WebCommon.h"
 #include "WebData.h"
@@ -161,10 +171,6 @@ public:
     virtual double audioHardwareSampleRate() { return 0; }
     virtual size_t audioHardwareBufferSize() { return 0; }
     virtual unsigned audioHardwareOutputChannels() { return 0; }
-
-    // Creates a device for audio I/O.
-    // Pass in (numberOfInputChannels > 0) if live/local audio input is desired.
-    virtual WebAudioDevice* createAudioDevice(size_t bufferSize, unsigned numberOfInputChannels, unsigned numberOfChannels, double sampleRate, WebAudioDevice::RenderCallback*, const WebString& deviceId) { return nullptr; }
 
 
     // MIDI ----------------------------------------------------------------
