@@ -32,6 +32,7 @@ PRESUBMIT.py
 *TestHelpers.h
 *_unittest.cc
 
+*.cod
 *.gni
 *.grd
 *.gyp
