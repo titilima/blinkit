@@ -1052,12 +1052,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebActiveGestureAnimation.cpp">
       <Filter>platform\exported</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebAudioBus.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebAudioDevice.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebBlobData.cpp">
       <Filter>platform\exported</Filter>
     </ClCompile>
@@ -1122,9 +1116,6 @@
       <Filter>platform\exported</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebDragData.cpp">
-      <Filter>platform\exported</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebEncryptedMediaClient.cpp">
       <Filter>platform\exported</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebEncryptedMediaKeyInformation.cpp">

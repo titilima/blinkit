@@ -521,8 +521,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\EventTracer.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\Platform.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebActiveGestureAnimation.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebAudioBus.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebAudioDevice.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebBlobData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCanvasCaptureHandler.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebCommon.cpp" />
@@ -545,7 +543,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebDeviceMotionData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebDeviceOrientationData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebDragData.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebEncryptedMediaClient.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebEncryptedMediaKeyInformation.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebEncryptedMediaRequest.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\platform\exported\WebFederatedCredential.cpp" />
