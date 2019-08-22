@@ -11,7 +11,6 @@
 		F9A4AF45230E277200EED81E /* _pc.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AF44230E277200EED81E /* _pc.h */; };
 		F9A4B000230E27CE00EED81E /* WebSpellCheckClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AF47230E27BE00EED81E /* WebSpellCheckClient.h */; };
 		F9A4B004230E27CE00EED81E /* WebLocalFrame.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AF4B230E27BE00EED81E /* WebLocalFrame.h */; };
-		F9A4B005230E27CE00EED81E /* WebNetworkStateNotifier.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AF4C230E27BE00EED81E /* WebNetworkStateNotifier.h */; };
 		F9A4B006230E27CE00EED81E /* WebNode.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AF4D230E27BE00EED81E /* WebNode.h */; };
 		F9A4B007230E27CE00EED81E /* WebView.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AF4E230E27BE00EED81E /* WebView.h */; };
 		F9A4B008230E27CE00EED81E /* WebDraggableRegion.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AF4F230E27BE00EED81E /* WebDraggableRegion.h */; };
@@ -25,7 +24,6 @@
 		F9A4B013230E27CE00EED81E /* WebInputEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AF5A230E27BF00EED81E /* WebInputEvent.h */; };
 		F9A4B015230E27CE00EED81E /* WebImageDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AF5C230E27BF00EED81E /* WebImageDecoder.h */; };
 		F9A4B016230E27CE00EED81E /* WebTextRun.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AF5D230E27BF00EED81E /* WebTextRun.h */; };
-		F9A4B017230E27CE00EED81E /* WebCSSParser.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AF5E230E27BF00EED81E /* WebCSSParser.h */; };
 		F9A4B018230E27CE00EED81E /* WebActiveWheelFlingParameters.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AF5F230E27BF00EED81E /* WebActiveWheelFlingParameters.h */; };
 		F9A4B019230E27CE00EED81E /* WebTouchAction.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AF60230E27BF00EED81E /* WebTouchAction.h */; };
 		F9A4B01A230E27CE00EED81E /* WebViewClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AF61230E27BF00EED81E /* WebViewClient.h */; };
@@ -72,11 +70,9 @@
 		F9A4B051230E27CE00EED81E /* WebSharedWorkerConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AF98230E27C400EED81E /* WebSharedWorkerConnector.h */; };
 		F9A4B052230E27CE00EED81E /* WebContentSettingsClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AF99230E27C400EED81E /* WebContentSettingsClient.h */; };
 		F9A4B059230E27CE00EED81E /* WebMemoryPressureListener.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFA5230E27C500EED81E /* WebMemoryPressureListener.h */; };
-		F9A4B05A230E27CE00EED81E /* WebFontDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFA6230E27C500EED81E /* WebFontDescription.h */; };
 		F9A4B05C230E27CE00EED81E /* WebPrerendererClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFA8230E27C500EED81E /* WebPrerendererClient.h */; };
 		F9A4B05F230E27CE00EED81E /* WebTextCheckingType.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFAB230E27C500EED81E /* WebTextCheckingType.h */; };
 		F9A4B060230E27CE00EED81E /* WebHelperPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFAC230E27C600EED81E /* WebHelperPlugin.h */; };
-		F9A4B061230E27CE00EED81E /* WebFont.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFAD230E27C600EED81E /* WebFont.h */; };
 		F9A4B062230E27CE00EED81E /* WebExternalPopupMenu.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFAE230E27C600EED81E /* WebExternalPopupMenu.h */; };
 		F9A4B063230E27CE00EED81E /* WebTextDirection.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFAF230E27C600EED81E /* WebTextDirection.h */; };
 		F9A4B064230E27CE00EED81E /* WebTextInputType.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFB0230E27C600EED81E /* WebTextInputType.h */; };
@@ -102,7 +98,6 @@
 		F9A4B07A230E27CE00EED81E /* WebSharedWorkerRepositoryClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFC6230E27C800EED81E /* WebSharedWorkerRepositoryClient.h */; };
 		F9A4B07B230E27CE00EED81E /* WebSharedWorkerClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFC7230E27C800EED81E /* WebSharedWorkerClient.h */; };
 		F9A4B07D230E27CE00EED81E /* WebSocketClient.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFC9230E27C900EED81E /* WebSocketClient.h */; };
-		F9A4B07E230E27CE00EED81E /* WebSelector.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFCA230E27C900EED81E /* WebSelector.h */; };
 		F9A4B080230E27CE00EED81E /* WebWindowFeatures.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFCC230E27C900EED81E /* WebWindowFeatures.h */; };
 		F9A4B081230E27CE00EED81E /* WebInputElement.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFCD230E27C900EED81E /* WebInputElement.h */; };
 		F9A4B082230E27CE00EED81E /* WebDateTimeInputType.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFCE230E27C900EED81E /* WebDateTimeInputType.h */; };
@@ -119,7 +114,6 @@
 		F9A4B091230E27CE00EED81E /* WebPageImportanceSignals.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFDE230E27CB00EED81E /* WebPageImportanceSignals.h */; };
 		F9A4B092230E27CE00EED81E /* WebSubstringUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFE0230E27CB00EED81E /* WebSubstringUtil.h */; };
 		F9A4B093230E27CE00EED81E /* WebScrollbarTheme.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFE1230E27CB00EED81E /* WebScrollbarTheme.h */; };
-		F9A4B094230E27CE00EED81E /* WebDOMProgressEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFE2230E27CB00EED81E /* WebDOMProgressEvent.h */; };
 		F9A4B095230E27CE00EED81E /* WebSecurityOrigin.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFE3230E27CB00EED81E /* WebSecurityOrigin.h */; };
 		F9A4B096230E27CE00EED81E /* WebSerializedScriptValueVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFE4230E27CB00EED81E /* WebSerializedScriptValueVersion.h */; };
 		F9A4B097230E27CE00EED81E /* WebHitTestResult.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4AFE5230E27CB00EED81E /* WebHitTestResult.h */; };
@@ -152,8 +146,6 @@
 		F9A4B1B5230E27FB00EED81E /* WebDataSourceImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4B0C2230E27FA00EED81E /* WebDataSourceImpl.h */; };
 		F9A4B1B6230E27FB00EED81E /* WebDateTimeSuggestion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B0C3230E27FA00EED81E /* WebDateTimeSuggestion.cpp */; };
 		F9A4B1B7230E27FB00EED81E /* WebHistoryItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B0C4230E27FA00EED81E /* WebHistoryItem.cpp */; };
-		F9A4B1B8230E27FB00EED81E /* WebNetworkStateNotifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B0C5230E27FA00EED81E /* WebNetworkStateNotifier.cpp */; };
-		F9A4B1BA230E27FB00EED81E /* WebEntities.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4B0C7230E27FA00EED81E /* WebEntities.h */; };
 		F9A4B1BD230E27FB00EED81E /* WebImageDecoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B0CA230E27FA00EED81E /* WebImageDecoder.cpp */; };
 		F9A4B1BE230E27FB00EED81E /* WebLocalFrameImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4B0CB230E27FA00EED81E /* WebLocalFrameImpl.h */; };
 		F9A4B1C1230E27FB00EED81E /* PageOverlay.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4B0CE230E27FA00EED81E /* PageOverlay.h */; };
@@ -170,7 +162,6 @@
 		F9A4B1D7230E27FB00EED81E /* ExternalPopupMenu.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4B0E4230E27FA00EED81E /* ExternalPopupMenu.h */; };
 		F9A4B1E1230E27FB00EED81E /* WebViewImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B0EE230E27FA00EED81E /* WebViewImpl.cpp */; };
 		F9A4B1E2230E27FB00EED81E /* WebFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B0EF230E27FB00EED81E /* WebFrame.cpp */; };
-		F9A4B1E5230E27FB00EED81E /* WebDOMProgressEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B0F2230E27FB00EED81E /* WebDOMProgressEvent.cpp */; };
 		F9A4B1EA230E27FB00EED81E /* WebScopedWindowFocusAllowedIndicator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B0F7230E27FB00EED81E /* WebScopedWindowFocusAllowedIndicator.cpp */; };
 		F9A4B1EB230E27FB00EED81E /* WebFrameImplBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B0F8230E27FB00EED81E /* WebFrameImplBase.cpp */; };
 		F9A4B1EC230E27FB00EED81E /* WebSelection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B0F9230E27FB00EED81E /* WebSelection.cpp */; };
@@ -203,18 +194,15 @@
 		F9A4B21C230E27FB00EED81E /* ResizeViewportAnchor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B12B230E27FB00EED81E /* ResizeViewportAnchor.cpp */; };
 		F9A4B21E230E27FB00EED81E /* WebLocalFrameImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B12D230E27FB00EED81E /* WebLocalFrameImpl.cpp */; };
 		F9A4B220230E27FB00EED81E /* WebSurroundingText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B12F230E27FB00EED81E /* WebSurroundingText.cpp */; };
-		F9A4B221230E27FB00EED81E /* WebFontDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B130230E27FB00EED81E /* WebFontDescription.cpp */; };
 		F9A4B224230E27FB00EED81E /* WebScriptSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B133230E27FB00EED81E /* WebScriptSource.cpp */; };
 		F9A4B225230E27FB00EED81E /* WebScrollbarTheme.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B135230E27FB00EED81E /* WebScrollbarTheme.mm */; };
 		F9A4B226230E27FB00EED81E /* WebSubstringUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B136230E27FB00EED81E /* WebSubstringUtil.mm */; };
 		F9A4B229230E27FB00EED81E /* DateTimeChooserImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4B139230E27FB00EED81E /* DateTimeChooserImpl.h */; };
 		F9A4B22A230E27FB00EED81E /* WebPerformance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B13A230E27FB00EED81E /* WebPerformance.cpp */; };
 		F9A4B22B230E27FB00EED81E /* WebDocument.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B13B230E27FB00EED81E /* WebDocument.cpp */; };
-		F9A4B22E230E27FB00EED81E /* WebCSSParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B13E230E27FB00EED81E /* WebCSSParser.cpp */; };
 		F9A4B22F230E27FB00EED81E /* WebScopedUserGesture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B13F230E27FB00EED81E /* WebScopedUserGesture.cpp */; };
 		F9A4B231230E27FB00EED81E /* ContextMenuAllowedScope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B141230E27FB00EED81E /* ContextMenuAllowedScope.cpp */; };
 		F9A4B234230E27FB00EED81E /* CompositionUnderlineVectorBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B144230E27FB00EED81E /* CompositionUnderlineVectorBuilder.cpp */; };
-		F9A4B235230E27FB00EED81E /* WebFontImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B145230E27FB00EED81E /* WebFontImpl.cpp */; };
 		F9A4B238230E27FB00EED81E /* PageWidgetDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B148230E27FB00EED81E /* PageWidgetDelegate.cpp */; };
 		F9A4B239230E27FB00EED81E /* WebSettingsImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B149230E27FB00EED81E /* WebSettingsImpl.cpp */; };
 		F9A4B23B230E27FB00EED81E /* RotationViewportAnchor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B14B230E27FB00EED81E /* RotationViewportAnchor.cpp */; };
@@ -222,7 +210,6 @@
 		F9A4B240230E27FB00EED81E /* ColorChooserUIController.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4B151230E27FB00EED81E /* ColorChooserUIController.h */; };
 		F9A4B241230E27FB00EED81E /* WebMemoryPressureListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B152230E27FB00EED81E /* WebMemoryPressureListener.cpp */; };
 		F9A4B242230E27FB00EED81E /* DateTimeChooserImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B153230E27FB00EED81E /* DateTimeChooserImpl.cpp */; };
-		F9A4B246230E27FB00EED81E /* WebSelector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B157230E27FB00EED81E /* WebSelector.cpp */; };
 		F9A4B247230E27FB00EED81E /* ColorChooserPopupUIController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B158230E27FB00EED81E /* ColorChooserPopupUIController.cpp */; };
 		F9A4B248230E27FB00EED81E /* PopupMenuImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4B159230E27FB00EED81E /* PopupMenuImpl.h */; };
 		F9A4B24A230E27FB00EED81E /* WebFileChooserCompletionImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4B15B230E27FB00EED81E /* WebFileChooserCompletionImpl.h */; };
@@ -236,7 +223,6 @@
 		F9A4B259230E27FB00EED81E /* WebFormControlElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B16B230E27FB00EED81E /* WebFormControlElement.cpp */; };
 		F9A4B25A230E27FB00EED81E /* WebHeap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B16C230E27FB00EED81E /* WebHeap.cpp */; };
 		F9A4B25B230E27FB00EED81E /* WebHitTestResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B16D230E27FB00EED81E /* WebHitTestResult.cpp */; };
-		F9A4B25C230E27FB00EED81E /* WebEntities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B16E230E27FB00EED81E /* WebEntities.cpp */; };
 		F9A4B260230E27FB00EED81E /* WebColorSuggestion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B172230E27FB00EED81E /* WebColorSuggestion.cpp */; };
 		F9A4B261230E27FB00EED81E /* WebPagePopupImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B173230E27FB00EED81E /* WebPagePopupImpl.cpp */; };
 		F9A4B263230E27FB00EED81E /* ChromeClientImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B175230E27FB00EED81E /* ChromeClientImpl.cpp */; };
@@ -261,7 +247,6 @@
 		F9A4B283230E27FB00EED81E /* OpenedFrameTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B195230E27FB00EED81E /* OpenedFrameTracker.cpp */; };
 		F9A4B284230E27FB00EED81E /* WebTextCheckingCompletionImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B196230E27FB00EED81E /* WebTextCheckingCompletionImpl.cpp */; };
 		F9A4B285230E27FB00EED81E /* WebFormElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B197230E27FB00EED81E /* WebFormElement.cpp */; };
-		F9A4B288230E27FB00EED81E /* WebFontImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4B19A230E27FB00EED81E /* WebFontImpl.h */; };
 		F9A4B289230E27FB00EED81E /* ContextFeaturesClientImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4B19B230E27FB00EED81E /* ContextFeaturesClientImpl.h */; };
 		F9A4B28A230E27FB00EED81E /* ContextMenuClientImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4B19C230E27FB00EED81E /* ContextMenuClientImpl.h */; };
 		F9A4B28C230E27FB00EED81E /* CompositionUnderlineBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4B19E230E27FB00EED81E /* CompositionUnderlineBuilder.h */; };
@@ -279,7 +264,6 @@
 		F9A4AF44230E277200EED81E /* _pc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _pc.h; path = ../../../src/blink/_pc.h; sourceTree = SOURCE_ROOT; };
 		F9A4AF47230E27BE00EED81E /* WebSpellCheckClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSpellCheckClient.h; sourceTree = "<group>"; };
 		F9A4AF4B230E27BE00EED81E /* WebLocalFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebLocalFrame.h; sourceTree = "<group>"; };
-		F9A4AF4C230E27BE00EED81E /* WebNetworkStateNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebNetworkStateNotifier.h; sourceTree = "<group>"; };
 		F9A4AF4D230E27BE00EED81E /* WebNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebNode.h; sourceTree = "<group>"; };
 		F9A4AF4E230E27BE00EED81E /* WebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebView.h; sourceTree = "<group>"; };
 		F9A4AF4F230E27BE00EED81E /* WebDraggableRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebDraggableRegion.h; sourceTree = "<group>"; };
@@ -293,7 +277,6 @@
 		F9A4AF5A230E27BF00EED81E /* WebInputEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebInputEvent.h; sourceTree = "<group>"; };
 		F9A4AF5C230E27BF00EED81E /* WebImageDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebImageDecoder.h; sourceTree = "<group>"; };
 		F9A4AF5D230E27BF00EED81E /* WebTextRun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebTextRun.h; sourceTree = "<group>"; };
-		F9A4AF5E230E27BF00EED81E /* WebCSSParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebCSSParser.h; sourceTree = "<group>"; };
 		F9A4AF5F230E27BF00EED81E /* WebActiveWheelFlingParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebActiveWheelFlingParameters.h; sourceTree = "<group>"; };
 		F9A4AF60230E27BF00EED81E /* WebTouchAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebTouchAction.h; sourceTree = "<group>"; };
 		F9A4AF61230E27BF00EED81E /* WebViewClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewClient.h; sourceTree = "<group>"; };
@@ -340,11 +323,9 @@
 		F9A4AF98230E27C400EED81E /* WebSharedWorkerConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSharedWorkerConnector.h; sourceTree = "<group>"; };
 		F9A4AF99230E27C400EED81E /* WebContentSettingsClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebContentSettingsClient.h; sourceTree = "<group>"; };
 		F9A4AFA5230E27C500EED81E /* WebMemoryPressureListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebMemoryPressureListener.h; sourceTree = "<group>"; };
-		F9A4AFA6230E27C500EED81E /* WebFontDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebFontDescription.h; sourceTree = "<group>"; };
 		F9A4AFA8230E27C500EED81E /* WebPrerendererClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebPrerendererClient.h; sourceTree = "<group>"; };
 		F9A4AFAB230E27C500EED81E /* WebTextCheckingType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebTextCheckingType.h; sourceTree = "<group>"; };
 		F9A4AFAC230E27C600EED81E /* WebHelperPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebHelperPlugin.h; sourceTree = "<group>"; };
-		F9A4AFAD230E27C600EED81E /* WebFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebFont.h; sourceTree = "<group>"; };
 		F9A4AFAE230E27C600EED81E /* WebExternalPopupMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebExternalPopupMenu.h; sourceTree = "<group>"; };
 		F9A4AFAF230E27C600EED81E /* WebTextDirection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebTextDirection.h; sourceTree = "<group>"; };
 		F9A4AFB0230E27C600EED81E /* WebTextInputType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebTextInputType.h; sourceTree = "<group>"; };
@@ -370,7 +351,6 @@
 		F9A4AFC6230E27C800EED81E /* WebSharedWorkerRepositoryClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSharedWorkerRepositoryClient.h; sourceTree = "<group>"; };
 		F9A4AFC7230E27C800EED81E /* WebSharedWorkerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSharedWorkerClient.h; sourceTree = "<group>"; };
 		F9A4AFC9230E27C900EED81E /* WebSocketClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocketClient.h; sourceTree = "<group>"; };
-		F9A4AFCA230E27C900EED81E /* WebSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSelector.h; sourceTree = "<group>"; };
 		F9A4AFCC230E27C900EED81E /* WebWindowFeatures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebWindowFeatures.h; sourceTree = "<group>"; };
 		F9A4AFCD230E27C900EED81E /* WebInputElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebInputElement.h; sourceTree = "<group>"; };
 		F9A4AFCE230E27C900EED81E /* WebDateTimeInputType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebDateTimeInputType.h; sourceTree = "<group>"; };
@@ -387,7 +367,6 @@
 		F9A4AFDE230E27CB00EED81E /* WebPageImportanceSignals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebPageImportanceSignals.h; sourceTree = "<group>"; };
 		F9A4AFE0230E27CB00EED81E /* WebSubstringUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSubstringUtil.h; sourceTree = "<group>"; };
 		F9A4AFE1230E27CB00EED81E /* WebScrollbarTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebScrollbarTheme.h; sourceTree = "<group>"; };
-		F9A4AFE2230E27CB00EED81E /* WebDOMProgressEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebDOMProgressEvent.h; sourceTree = "<group>"; };
 		F9A4AFE3230E27CB00EED81E /* WebSecurityOrigin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSecurityOrigin.h; sourceTree = "<group>"; };
 		F9A4AFE4230E27CB00EED81E /* WebSerializedScriptValueVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSerializedScriptValueVersion.h; sourceTree = "<group>"; };
 		F9A4AFE5230E27CB00EED81E /* WebHitTestResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebHitTestResult.h; sourceTree = "<group>"; };
@@ -420,8 +399,6 @@
 		F9A4B0C2230E27FA00EED81E /* WebDataSourceImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebDataSourceImpl.h; sourceTree = "<group>"; };
 		F9A4B0C3230E27FA00EED81E /* WebDateTimeSuggestion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebDateTimeSuggestion.cpp; sourceTree = "<group>"; };
 		F9A4B0C4230E27FA00EED81E /* WebHistoryItem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebHistoryItem.cpp; sourceTree = "<group>"; };
-		F9A4B0C5230E27FA00EED81E /* WebNetworkStateNotifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebNetworkStateNotifier.cpp; sourceTree = "<group>"; };
-		F9A4B0C7230E27FA00EED81E /* WebEntities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebEntities.h; sourceTree = "<group>"; };
 		F9A4B0CA230E27FA00EED81E /* WebImageDecoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebImageDecoder.cpp; sourceTree = "<group>"; };
 		F9A4B0CB230E27FA00EED81E /* WebLocalFrameImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebLocalFrameImpl.h; sourceTree = "<group>"; };
 		F9A4B0CE230E27FA00EED81E /* PageOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageOverlay.h; sourceTree = "<group>"; };
@@ -438,7 +415,6 @@
 		F9A4B0E4230E27FA00EED81E /* ExternalPopupMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExternalPopupMenu.h; sourceTree = "<group>"; };
 		F9A4B0EE230E27FA00EED81E /* WebViewImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebViewImpl.cpp; sourceTree = "<group>"; };
 		F9A4B0EF230E27FB00EED81E /* WebFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebFrame.cpp; sourceTree = "<group>"; };
-		F9A4B0F2230E27FB00EED81E /* WebDOMProgressEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebDOMProgressEvent.cpp; sourceTree = "<group>"; };
 		F9A4B0F7230E27FB00EED81E /* WebScopedWindowFocusAllowedIndicator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebScopedWindowFocusAllowedIndicator.cpp; sourceTree = "<group>"; };
 		F9A4B0F8230E27FB00EED81E /* WebFrameImplBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebFrameImplBase.cpp; sourceTree = "<group>"; };
 		F9A4B0F9230E27FB00EED81E /* WebSelection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebSelection.cpp; sourceTree = "<group>"; };
@@ -471,18 +447,15 @@
 		F9A4B12B230E27FB00EED81E /* ResizeViewportAnchor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResizeViewportAnchor.cpp; sourceTree = "<group>"; };
 		F9A4B12D230E27FB00EED81E /* WebLocalFrameImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebLocalFrameImpl.cpp; sourceTree = "<group>"; };
 		F9A4B12F230E27FB00EED81E /* WebSurroundingText.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebSurroundingText.cpp; sourceTree = "<group>"; };
-		F9A4B130230E27FB00EED81E /* WebFontDescription.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebFontDescription.cpp; sourceTree = "<group>"; };
 		F9A4B133230E27FB00EED81E /* WebScriptSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebScriptSource.cpp; sourceTree = "<group>"; };
 		F9A4B135230E27FB00EED81E /* WebScrollbarTheme.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WebScrollbarTheme.mm; sourceTree = "<group>"; };
 		F9A4B136230E27FB00EED81E /* WebSubstringUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WebSubstringUtil.mm; sourceTree = "<group>"; };
 		F9A4B139230E27FB00EED81E /* DateTimeChooserImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTimeChooserImpl.h; sourceTree = "<group>"; };
 		F9A4B13A230E27FB00EED81E /* WebPerformance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebPerformance.cpp; sourceTree = "<group>"; };
 		F9A4B13B230E27FB00EED81E /* WebDocument.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebDocument.cpp; sourceTree = "<group>"; };
-		F9A4B13E230E27FB00EED81E /* WebCSSParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebCSSParser.cpp; sourceTree = "<group>"; };
 		F9A4B13F230E27FB00EED81E /* WebScopedUserGesture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebScopedUserGesture.cpp; sourceTree = "<group>"; };
 		F9A4B141230E27FB00EED81E /* ContextMenuAllowedScope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContextMenuAllowedScope.cpp; sourceTree = "<group>"; };
 		F9A4B144230E27FB00EED81E /* CompositionUnderlineVectorBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CompositionUnderlineVectorBuilder.cpp; sourceTree = "<group>"; };
-		F9A4B145230E27FB00EED81E /* WebFontImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebFontImpl.cpp; sourceTree = "<group>"; };
 		F9A4B148230E27FB00EED81E /* PageWidgetDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PageWidgetDelegate.cpp; sourceTree = "<group>"; };
 		F9A4B149230E27FB00EED81E /* WebSettingsImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebSettingsImpl.cpp; sourceTree = "<group>"; };
 		F9A4B14B230E27FB00EED81E /* RotationViewportAnchor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RotationViewportAnchor.cpp; sourceTree = "<group>"; };
@@ -490,7 +463,6 @@
 		F9A4B151230E27FB00EED81E /* ColorChooserUIController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorChooserUIController.h; sourceTree = "<group>"; };
 		F9A4B152230E27FB00EED81E /* WebMemoryPressureListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebMemoryPressureListener.cpp; sourceTree = "<group>"; };
 		F9A4B153230E27FB00EED81E /* DateTimeChooserImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DateTimeChooserImpl.cpp; sourceTree = "<group>"; };
-		F9A4B157230E27FB00EED81E /* WebSelector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebSelector.cpp; sourceTree = "<group>"; };
 		F9A4B158230E27FB00EED81E /* ColorChooserPopupUIController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColorChooserPopupUIController.cpp; sourceTree = "<group>"; };
 		F9A4B159230E27FB00EED81E /* PopupMenuImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupMenuImpl.h; sourceTree = "<group>"; };
 		F9A4B15B230E27FB00EED81E /* WebFileChooserCompletionImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebFileChooserCompletionImpl.h; sourceTree = "<group>"; };
@@ -504,7 +476,6 @@
 		F9A4B16B230E27FB00EED81E /* WebFormControlElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebFormControlElement.cpp; sourceTree = "<group>"; };
 		F9A4B16C230E27FB00EED81E /* WebHeap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebHeap.cpp; sourceTree = "<group>"; };
 		F9A4B16D230E27FB00EED81E /* WebHitTestResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebHitTestResult.cpp; sourceTree = "<group>"; };
-		F9A4B16E230E27FB00EED81E /* WebEntities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebEntities.cpp; sourceTree = "<group>"; };
 		F9A4B172230E27FB00EED81E /* WebColorSuggestion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebColorSuggestion.cpp; sourceTree = "<group>"; };
 		F9A4B173230E27FB00EED81E /* WebPagePopupImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebPagePopupImpl.cpp; sourceTree = "<group>"; };
 		F9A4B175230E27FB00EED81E /* ChromeClientImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChromeClientImpl.cpp; sourceTree = "<group>"; };
@@ -529,7 +500,6 @@
 		F9A4B195230E27FB00EED81E /* OpenedFrameTracker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenedFrameTracker.cpp; sourceTree = "<group>"; };
 		F9A4B196230E27FB00EED81E /* WebTextCheckingCompletionImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebTextCheckingCompletionImpl.cpp; sourceTree = "<group>"; };
 		F9A4B197230E27FB00EED81E /* WebFormElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WebFormElement.cpp; sourceTree = "<group>"; };
-		F9A4B19A230E27FB00EED81E /* WebFontImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebFontImpl.h; sourceTree = "<group>"; };
 		F9A4B19B230E27FB00EED81E /* ContextFeaturesClientImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextFeaturesClientImpl.h; sourceTree = "<group>"; };
 		F9A4B19C230E27FB00EED81E /* ContextMenuClientImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextMenuClientImpl.h; sourceTree = "<group>"; };
 		F9A4B19E230E27FB00EED81E /* CompositionUnderlineBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompositionUnderlineBuilder.h; sourceTree = "<group>"; };
@@ -589,7 +559,6 @@
 				F9A4AF95230E27C400EED81E /* WebContentSecurityPolicy.h */,
 				F9A4AF99230E27C400EED81E /* WebContentSettingsClient.h */,
 				F9A4AF59230E27BF00EED81E /* WebContextMenuData.h */,
-				F9A4AF5E230E27BF00EED81E /* WebCSSParser.h */,
 				F9A4AFF4230E27CD00EED81E /* WebDataSource.h */,
 				F9A4AF6E230E27C100EED81E /* WebDateTimeChooserCompletion.h */,
 				F9A4AFEA230E27CC00EED81E /* WebDateTimeChooserParams.h */,
@@ -598,7 +567,6 @@
 				F9A4AF72230E27C100EED81E /* WebDeviceEmulationParams.h */,
 				F9A4AFD9230E27CA00EED81E /* WebDocument.h */,
 				F9A4AFF3230E27CD00EED81E /* WebDOMEvent.h */,
-				F9A4AFE2230E27CB00EED81E /* WebDOMProgressEvent.h */,
 				F9A4AF4F230E27BE00EED81E /* WebDraggableRegion.h */,
 				F9A4AF74230E27C100EED81E /* WebDragOperation.h */,
 				F9A4AF81230E27C200EED81E /* WebDragStatus.h */,
@@ -612,8 +580,6 @@
 				F9A4AFB6230E27C700EED81E /* WebFileChooserCompletion.h */,
 				F9A4AFFD230E27CE00EED81E /* WebFileChooserParams.h */,
 				F9A4AF79230E27C100EED81E /* WebFindOptions.h */,
-				F9A4AFAD230E27C600EED81E /* WebFont.h */,
-				F9A4AFA6230E27C500EED81E /* WebFontDescription.h */,
 				F9A4AFBF230E27C800EED81E /* WebFormControlElement.h */,
 				F9A4AFD3230E27CA00EED81E /* WebFormElement.h */,
 				F9A4AFF5230E27CD00EED81E /* WebFrame.h */,
@@ -645,7 +611,6 @@
 				F9A4AF6B230E27C000EED81E /* WebNavigationPolicy.h */,
 				F9A4AF77230E27C100EED81E /* WebNavigationType.h */,
 				F9A4AF93230E27C400EED81E /* WebNavigatorContentUtilsClient.h */,
-				F9A4AF4C230E27BE00EED81E /* WebNetworkStateNotifier.h */,
 				F9A4AF4D230E27BE00EED81E /* WebNode.h */,
 				F9A4AFED230E27CC00EED81E /* WebOptionElement.h */,
 				F9A4AFDE230E27CB00EED81E /* WebPageImportanceSignals.h */,
@@ -671,7 +636,6 @@
 				F9A4AF7C230E27C200EED81E /* WebSecurityPolicy.h */,
 				F9A4AF51230E27BE00EED81E /* WebSelectElement.h */,
 				F9A4AF50230E27BE00EED81E /* WebSelection.h */,
-				F9A4AFCA230E27C900EED81E /* WebSelector.h */,
 				F9A4B296230E307300EED81E /* WebSerializedScriptValue.h */,
 				F9A4AFE4230E27CB00EED81E /* WebSerializedScriptValueVersion.h */,
 				F9A4AFEE230E27CC00EED81E /* WebSettings.h */,
@@ -789,22 +753,15 @@
 				F9A4B10E230E27FB00EED81E /* ViewportAnchor.h */,
 				F9A4B15E230E27FB00EED81E /* WebCache.cpp */,
 				F9A4B172230E27FB00EED81E /* WebColorSuggestion.cpp */,
-				F9A4B13E230E27FB00EED81E /* WebCSSParser.cpp */,
 				F9A4B0D0230E27FA00EED81E /* WebDataSourceImpl.cpp */,
 				F9A4B0C2230E27FA00EED81E /* WebDataSourceImpl.h */,
 				F9A4B0C3230E27FA00EED81E /* WebDateTimeSuggestion.cpp */,
 				F9A4B13B230E27FB00EED81E /* WebDocument.cpp */,
 				F9A4B0C1230E27FA00EED81E /* WebDOMEvent.cpp */,
-				F9A4B0F2230E27FB00EED81E /* WebDOMProgressEvent.cpp */,
 				F9A4B184230E27FB00EED81E /* WebElement.cpp */,
 				F9A4B1A2230E27FB00EED81E /* WebElementCollection.cpp */,
-				F9A4B16E230E27FB00EED81E /* WebEntities.cpp */,
-				F9A4B0C7230E27FA00EED81E /* WebEntities.h */,
 				F9A4B114230E27FB00EED81E /* WebFileChooserCompletionImpl.cpp */,
 				F9A4B15B230E27FB00EED81E /* WebFileChooserCompletionImpl.h */,
-				F9A4B130230E27FB00EED81E /* WebFontDescription.cpp */,
-				F9A4B145230E27FB00EED81E /* WebFontImpl.cpp */,
-				F9A4B19A230E27FB00EED81E /* WebFontImpl.h */,
 				F9A4B16B230E27FB00EED81E /* WebFormControlElement.cpp */,
 				F9A4B197230E27FB00EED81E /* WebFormElement.cpp */,
 				F9A4B0EF230E27FB00EED81E /* WebFrame.cpp */,
@@ -827,7 +784,6 @@
 				F9A4B0CB230E27FA00EED81E /* WebLocalFrameImpl.h */,
 				F9A4B152230E27FB00EED81E /* WebMemoryPressureListener.cpp */,
 				F9A4B1A1230E27FB00EED81E /* WebMetaElement.cpp */,
-				F9A4B0C5230E27FA00EED81E /* WebNetworkStateNotifier.cpp */,
 				F9A4B129230E27FB00EED81E /* WebNode.cpp */,
 				F9A4B18C230E27FB00EED81E /* WebOptionElement.cpp */,
 				F9A4B1A4230E27FB00EED81E /* WebPageImportanceSignals.cpp */,
@@ -843,7 +799,6 @@
 				F9A4B118230E27FB00EED81E /* WebSecurityPolicy.cpp */,
 				F9A4B180230E27FB00EED81E /* WebSelectElement.cpp */,
 				F9A4B0F9230E27FB00EED81E /* WebSelection.cpp */,
-				F9A4B157230E27FB00EED81E /* WebSelector.cpp */,
 				F9A4B149230E27FB00EED81E /* WebSettingsImpl.cpp */,
 				F9A4B189230E27FB00EED81E /* WebSettingsImpl.h */,
 				F9A4B12F230E27FB00EED81E /* WebSurroundingText.cpp */,
@@ -935,18 +890,15 @@
 				F9A4B066230E27CE00EED81E /* WebTestInterfaceFactory.h in Headers */,
 				F9A4B04E230E27CE00EED81E /* WebContentSecurityPolicy.h in Headers */,
 				F9A4B072230E27CE00EED81E /* WebTreeScopeType.h in Headers */,
-				F9A4B1BA230E27FB00EED81E /* WebEntities.h in Headers */,
 				F9A4B076230E27CE00EED81E /* WebEmbeddedWorker.h in Headers */,
 				F9A4B091230E27CE00EED81E /* WebPageImportanceSignals.h in Headers */,
 				F9A4B04F230E27CE00EED81E /* WebElement.h in Headers */,
-				F9A4B005230E27CE00EED81E /* WebNetworkStateNotifier.h in Headers */,
 				F9A4B032230E27CE00EED81E /* WebFindOptions.h in Headers */,
 				F9A4B015230E27CE00EED81E /* WebImageDecoder.h in Headers */,
 				F9A4B0AF230E27CE00EED81E /* WebFileChooserParams.h in Headers */,
 				F9A4B20B230E27FB00EED81E /* RotationViewportAnchor.h in Headers */,
 				F9A4B281230E27FB00EED81E /* WebFrameWidgetImpl.h in Headers */,
 				F9A4B021230E27CE00EED81E /* WebScopedWindowFocusAllowedIndicator.h in Headers */,
-				F9A4B07E230E27CE00EED81E /* WebSelector.h in Headers */,
 				F9A4B1CE230E27FB00EED81E /* WebViewImpl.h in Headers */,
 				F9A4B276230E27FB00EED81E /* ColorChooserPopupUIController.h in Headers */,
 				F9A4B030230E27CE00EED81E /* WebNavigationType.h in Headers */,
@@ -970,7 +922,6 @@
 				F9A4B064230E27CE00EED81E /* WebTextInputType.h in Headers */,
 				F9A4B09D230E27CE00EED81E /* WebCompositionUnderline.h in Headers */,
 				F9A4B295230E301800EED81E /* SharedWorkerRepositoryClientImpl.h in Headers */,
-				F9A4B061230E27CE00EED81E /* WebFont.h in Headers */,
 				F9A4B03A230E27CE00EED81E /* WebDragStatus.h in Headers */,
 				F9A4B1AB230E27FB00EED81E /* AssociatedURLLoader.h in Headers */,
 				F9A4B0A7230E27CE00EED81E /* WebFrame.h in Headers */,
@@ -979,8 +930,6 @@
 				F9A4B08D230E27CE00EED81E /* WebDocument.h in Headers */,
 				F9A4B033230E27CE00EED81E /* WebColorSuggestion.h in Headers */,
 				F9A4B065230E27CE00EED81E /* WebPerformance.h in Headers */,
-				F9A4B05A230E27CE00EED81E /* WebFontDescription.h in Headers */,
-				F9A4B094230E27CE00EED81E /* WebDOMProgressEvent.h in Headers */,
 				F9A4B019230E27CE00EED81E /* WebTouchAction.h in Headers */,
 				F9A4B0A6230E27CE00EED81E /* WebDataSource.h in Headers */,
 				F9A4B067230E27CE00EED81E /* WebUserGestureToken.h in Headers */,
@@ -1022,7 +971,6 @@
 				F9A4B024230E27CE00EED81E /* WebNavigationPolicy.h in Headers */,
 				F9A4B009230E27CE00EED81E /* WebSelection.h in Headers */,
 				F9A4AF43230E276400EED81E /* PrefixHeader.pch in Headers */,
-				F9A4B288230E27FB00EED81E /* WebFontImpl.h in Headers */,
 				F9A4B06C230E27CE00EED81E /* WebIconURL.h in Headers */,
 				F9A4B012230E27CE00EED81E /* WebContextMenuData.h in Headers */,
 				F9A4B0AD230E27CE00EED81E /* WebFrameWidget.h in Headers */,
@@ -1060,7 +1008,6 @@
 				F9A4B089230E27CE00EED81E /* WebPopupMenuInfo.h in Headers */,
 				F9A4B240230E27FB00EED81E /* ColorChooserUIController.h in Headers */,
 				F9A4B042230E27CE00EED81E /* WebPluginScriptForbiddenScope.h in Headers */,
-				F9A4B017230E27CE00EED81E /* WebCSSParser.h in Headers */,
 				F9A4B034230E27CE00EED81E /* WebPluginContainer.h in Headers */,
 				F9A4B26C230E27FB00EED81E /* ValidationMessageClientImpl.h in Headers */,
 				F9A4B073230E27CE00EED81E /* WebFormControlElement.h in Headers */,
@@ -1124,7 +1071,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F9A4B1E5230E27FB00EED81E /* WebDOMProgressEvent.cpp in Sources */,
 				F9A4B1E1230E27FB00EED81E /* WebViewImpl.cpp in Sources */,
 				F9A4B26E230E27FB00EED81E /* WebSelectElement.cpp in Sources */,
 				F9A4B267230E27FB00EED81E /* PrerendererClientImpl.cpp in Sources */,
@@ -1155,7 +1101,6 @@
 				F9A4B1C3230E27FB00EED81E /* WebDataSourceImpl.cpp in Sources */,
 				F9A4B1C9230E27FB00EED81E /* WebLabelElement.cpp in Sources */,
 				F9A4B1F0230E27FB00EED81E /* WebTextInputInfo.cpp in Sources */,
-				F9A4B221230E27FB00EED81E /* WebFontDescription.cpp in Sources */,
 				F9A4B234230E27FB00EED81E /* CompositionUnderlineVectorBuilder.cpp in Sources */,
 				F9A4B241230E27FB00EED81E /* WebMemoryPressureListener.cpp in Sources */,
 				F9A4B247230E27FB00EED81E /* ColorChooserPopupUIController.cpp in Sources */,
@@ -1169,7 +1114,6 @@
 				F9A4B284230E27FB00EED81E /* WebTextCheckingCompletionImpl.cpp in Sources */,
 				F9A4B1D5230E27FB00EED81E /* WebRange.cpp in Sources */,
 				F9A4B21C230E27FB00EED81E /* ResizeViewportAnchor.cpp in Sources */,
-				F9A4B1B8230E27FB00EED81E /* WebNetworkStateNotifier.cpp in Sources */,
 				F9A4B224230E27FB00EED81E /* WebScriptSource.cpp in Sources */,
 				F9A4B260230E27FB00EED81E /* WebColorSuggestion.cpp in Sources */,
 				F9A4B201230E27FB00EED81E /* PageOverlay.cpp in Sources */,
@@ -1189,13 +1133,10 @@
 				F9A4B27F230E27FB00EED81E /* GraphicsLayerFactoryChromium.cpp in Sources */,
 				F9A4B24B230E27FB00EED81E /* WebTextRun.cpp in Sources */,
 				F9A4B1FE230E27FB00EED81E /* WebKit.cpp in Sources */,
-				F9A4B22E230E27FB00EED81E /* WebCSSParser.cpp in Sources */,
 				F9A4B238230E27FB00EED81E /* PageWidgetDelegate.cpp in Sources */,
 				F9A4B231230E27FB00EED81E /* ContextMenuAllowedScope.cpp in Sources */,
 				F9A4B1B6230E27FB00EED81E /* WebDateTimeSuggestion.cpp in Sources */,
-				F9A4B25C230E27FB00EED81E /* WebEntities.cpp in Sources */,
 				F9A4B290230E27FB00EED81E /* WebElementCollection.cpp in Sources */,
-				F9A4B235230E27FB00EED81E /* WebFontImpl.cpp in Sources */,
 				F9A4B22A230E27FB00EED81E /* WebPerformance.cpp in Sources */,
 				F9A4B214230E27FB00EED81E /* ColorChooserUIController.cpp in Sources */,
 				F9A4B1F6230E27FB00EED81E /* WebInputEvent.cpp in Sources */,
@@ -1208,7 +1149,6 @@
 				F9A4B220230E27FB00EED81E /* WebSurroundingText.cpp in Sources */,
 				F9A4B27D230E27FB00EED81E /* ContextMenuClientImpl.cpp in Sources */,
 				F9A4B266230E27FB00EED81E /* WebInputEventConversion.cpp in Sources */,
-				F9A4B246230E27FB00EED81E /* WebSelector.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

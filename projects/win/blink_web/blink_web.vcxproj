@@ -268,18 +268,13 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ValidationMessageClientImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebCache.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebColorSuggestion.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebCSSParser.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDataSourceImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDateTimeSuggestion.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDocument.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDOMEvent.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDOMProgressEvent.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebElementCollection.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebEntities.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFileChooserCompletionImpl.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFontDescription.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFontImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFormControlElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFormElement.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFrame.cpp" />
@@ -296,7 +291,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebKit.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebLocalFrameImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebMemoryPressureListener.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebNetworkStateNotifier.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebNode.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebPageImportanceSignals.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebPagePopupImpl.cpp" />
@@ -306,7 +300,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebSearchableFormData.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebSecurityPolicy.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebSelection.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebSelector.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebSettingsImpl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebSurroundingText.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebTextCheckingCompletionImpl.cpp" />
@@ -339,7 +332,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebContentSecurityPolicy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebContentSettingsClient.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebContextMenuData.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebCSSParser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDataSource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDateTimeChooserCompletion.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDateTimeChooserParams.h" />
@@ -348,7 +340,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDeviceEmulationParams.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDocument.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDOMEvent.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDOMProgressEvent.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDraggableRegion.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDragOperation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDragStatus.h" />
@@ -362,8 +353,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFileChooserCompletion.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFileChooserParams.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFindOptions.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFont.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFontDescription.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFormControlElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFormElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFrame.h" />
@@ -394,7 +383,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebNavigationPolicy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebNavigationType.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebNavigatorContentUtilsClient.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebNetworkStateNotifier.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebNode.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebOptionElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebPageImportanceSignals.h" />
@@ -420,7 +408,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSecurityPolicy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSelectElement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSelection.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSelector.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSerializedScriptValue.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSerializedScriptValueVersion.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSettings.h" />
@@ -486,9 +473,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ValidationMessageClientImpl.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\ViewportAnchor.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDataSourceImpl.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebEntities.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFileChooserCompletionImpl.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFontImpl.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFrameImplBase.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFrameWidgetImpl.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebInputEventConversion.h" />

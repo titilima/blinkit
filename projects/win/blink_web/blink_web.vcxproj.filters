@@ -80,9 +80,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebColorSuggestion.cpp">
       <Filter>web</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebCSSParser.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDataSourceImpl.cpp">
       <Filter>web</Filter>
     </ClCompile>
@@ -92,25 +89,13 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDOMEvent.cpp">
       <Filter>web</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDOMProgressEvent.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebElement.cpp">
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebElementCollection.cpp">
       <Filter>web</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebEntities.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFileChooserCompletionImpl.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFontDescription.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFontImpl.cpp">
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFormControlElement.cpp">
@@ -149,9 +134,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebMemoryPressureListener.cpp">
       <Filter>web</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebNetworkStateNotifier.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebNode.cpp">
       <Filter>web</Filter>
     </ClCompile>
@@ -177,9 +159,6 @@
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebSelection.cpp">
-      <Filter>web</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebSelector.cpp">
       <Filter>web</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebSettingsImpl.cpp">
@@ -292,9 +271,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebContextMenuData.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebCSSParser.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDataSource.h">
       <Filter>public</Filter>
     </ClInclude>
@@ -317,9 +293,6 @@
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDOMEvent.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDOMProgressEvent.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDraggableRegion.h">
@@ -359,12 +332,6 @@
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFindOptions.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFont.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFontDescription.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFormControlElement.h">
@@ -457,9 +424,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebNavigatorContentUtilsClient.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebNetworkStateNotifier.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebNode.h">
       <Filter>public</Filter>
     </ClInclude>
@@ -533,9 +497,6 @@
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSelection.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSelector.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSerializedScriptValue.h">
@@ -733,13 +694,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebDataSourceImpl.h">
       <Filter>web</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebEntities.h">
-      <Filter>web</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFileChooserCompletionImpl.h">
-      <Filter>web</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFontImpl.h">
       <Filter>web</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\web\WebFrameImplBase.h">
