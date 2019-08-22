@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F9A4B29C230E389B00EED81E /* LayoutTestSupport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B29A230E389A00EED81E /* LayoutTestSupport.cpp */; };
+		F9A4B29D230E389B00EED81E /* LayoutTestSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = F9A4B29B230E389A00EED81E /* LayoutTestSupport.h */; };
+		F9A4B2A7230E3A7F00EED81E /* FloatPointCG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B2A1230E3A7E00EED81E /* FloatPointCG.cpp */; };
+		F9A4B2A8230E3A7F00EED81E /* FloatSizeCG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B2A2230E3A7E00EED81E /* FloatSizeCG.cpp */; };
+		F9A4B2A9230E3A7F00EED81E /* IntPointCG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B2A3230E3A7E00EED81E /* IntPointCG.cpp */; };
+		F9A4B2AA230E3A7F00EED81E /* IntRectCG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B2A4230E3A7E00EED81E /* IntRectCG.cpp */; };
+		F9A4B2AB230E3A7F00EED81E /* FloatRectCG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B2A5230E3A7E00EED81E /* FloatRectCG.cpp */; };
+		F9A4B2AC230E3A7F00EED81E /* IntSizeCG.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A4B2A6230E3A7E00EED81E /* IntSizeCG.cpp */; };
 		F9ECDCB4230BEE7D00497BDD /* PrefixHeader.pch in Headers */ = {isa = PBXBuildFile; fileRef = F9ECDCB3230BEE7D00497BDD /* PrefixHeader.pch */; };
 		F9ECE12A230BEEB900497BDD /* TracedValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ECDCB6230BEEB700497BDD /* TracedValue.cpp */; };
 		F9ECE12B230BEEB900497BDD /* StorageQuotaCallbacks.h in Headers */ = {isa = PBXBuildFile; fileRef = F9ECDCB7230BEEB700497BDD /* StorageQuotaCallbacks.h */; };
@@ -1085,6 +1093,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F9A4B29A230E389A00EED81E /* LayoutTestSupport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayoutTestSupport.cpp; sourceTree = "<group>"; };
+		F9A4B29B230E389A00EED81E /* LayoutTestSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutTestSupport.h; sourceTree = "<group>"; };
+		F9A4B2A1230E3A7E00EED81E /* FloatPointCG.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FloatPointCG.cpp; sourceTree = "<group>"; };
+		F9A4B2A2230E3A7E00EED81E /* FloatSizeCG.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FloatSizeCG.cpp; sourceTree = "<group>"; };
+		F9A4B2A3230E3A7E00EED81E /* IntPointCG.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IntPointCG.cpp; sourceTree = "<group>"; };
+		F9A4B2A4230E3A7E00EED81E /* IntRectCG.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IntRectCG.cpp; sourceTree = "<group>"; };
+		F9A4B2A5230E3A7E00EED81E /* FloatRectCG.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FloatRectCG.cpp; sourceTree = "<group>"; };
+		F9A4B2A6230E3A7E00EED81E /* IntSizeCG.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IntSizeCG.cpp; sourceTree = "<group>"; };
 		F9ECDCAB230BEE6D00497BDD /* libblink_platform.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libblink_platform.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9ECDCB2230BEE7D00497BDD /* blink.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = blink.xcconfig; path = ../blink.xcconfig; sourceTree = SOURCE_ROOT; };
 		F9ECDCB3230BEE7D00497BDD /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = ../PrefixHeader.pch; sourceTree = SOURCE_ROOT; };
@@ -2176,6 +2192,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F9A4B2A0230E3A7E00EED81E /* cg */ = {
+			isa = PBXGroup;
+			children = (
+				F9A4B2A1230E3A7E00EED81E /* FloatPointCG.cpp */,
+				F9A4B2A5230E3A7E00EED81E /* FloatRectCG.cpp */,
+				F9A4B2A2230E3A7E00EED81E /* FloatSizeCG.cpp */,
+				F9A4B2A3230E3A7E00EED81E /* IntPointCG.cpp */,
+				F9A4B2A4230E3A7E00EED81E /* IntRectCG.cpp */,
+				F9A4B2A6230E3A7E00EED81E /* IntSizeCG.cpp */,
+			);
+			path = cg;
+			sourceTree = "<group>";
+		};
 		F9ECDCA2230BEE6D00497BDD = {
 			isa = PBXGroup;
 			children = (
@@ -2265,6 +2294,8 @@
 				F9ECE11B230BEEB900497BDD /* KillRingNone.cpp */,
 				F9ECDDC0230BEEB700497BDD /* Language.cpp */,
 				F9ECDD9A230BEEB700497BDD /* Language.h */,
+				F9A4B29A230E389A00EED81E /* LayoutTestSupport.cpp */,
+				F9A4B29B230E389A00EED81E /* LayoutTestSupport.h */,
 				F9ECDF11230BEEB800497BDD /* LayoutUnit.h */,
 				F9ECDCBF230BEEB700497BDD /* Length.cpp */,
 				F9ECDEFB230BEEB800497BDD /* Length.h */,
@@ -2724,6 +2755,7 @@
 		F9ECDF13230BEEB800497BDD /* geometry */ = {
 			isa = PBXGroup;
 			children = (
+				F9A4B2A0230E3A7E00EED81E /* cg */,
 				F9ECDF2F230BEEB800497BDD /* mac */,
 				F9ECDF3F230BEEB800497BDD /* DoublePoint.cpp */,
 				F9ECDF3E230BEEB800497BDD /* DoublePoint.h */,
@@ -4025,6 +4057,7 @@
 				F9ECE16B230BEEB900497BDD /* ScrollAnimator.h in Headers */,
 				F9ECE2CE230BEEBA00497BDD /* RotateTransformOperation.h in Headers */,
 				F9ECE1AF230BEEB900497BDD /* WrappedResourceRequest.h in Headers */,
+				F9A4B29D230E389B00EED81E /* LayoutTestSupport.h in Headers */,
 				F9ECE1EE230BEEB900497BDD /* WebScrollbarImpl.h in Headers */,
 				F9ECE825230BF00F00497BDD /* WebContentLayer.h in Headers */,
 				F9ECE4C3230BEEBB00497BDD /* ImageObserver.h in Headers */,
@@ -4288,6 +4321,7 @@
 				F9ECE2DF230BEEBA00497BDD /* EventDispatchForbiddenScope.cpp in Sources */,
 				F9ECE3AA230BEEBA00497BDD /* TextCheckerClient.cpp in Sources */,
 				F9ECE4A3230BEEBB00497BDD /* FrameData.cpp in Sources */,
+				F9A4B2AA230E3A7F00EED81E /* IntRectCG.cpp in Sources */,
 				F9ECE1E3230BEEB900497BDD /* WebFileSystemCallbacks.cpp in Sources */,
 				F9ECE4CE230BEEBB00497BDD /* OpenTypeSanitizer.cpp in Sources */,
 				F9ECE130230BEEB900497BDD /* LengthFunctions.cpp in Sources */,
@@ -4423,6 +4457,7 @@
 				F9ECE1BA230BEEB900497BDD /* WebFilterKeyframe.cpp in Sources */,
 				F9ECE2D3230BEEBA00497BDD /* MatrixTransformOperation.cpp in Sources */,
 				F9ECE1EF230BEEB900497BDD /* WebContentDecryptionModuleResult.cpp in Sources */,
+				F9A4B2A9230E3A7F00EED81E /* IntPointCG.cpp in Sources */,
 				F9ECE1CC230BEEB900497BDD /* WebSpeechSynthesizerClientImpl.cpp in Sources */,
 				F9ECE3DD230BEEBB00497BDD /* ImagePixelLocker.cpp in Sources */,
 				F9ECE4D6230BEEBB00497BDD /* FontCustomPlatformData.cpp in Sources */,
@@ -4464,6 +4499,7 @@
 				F9ECE1DA230BEEB900497BDD /* WebMediaDeviceInfo.cpp in Sources */,
 				F9ECE24C230BEEBA00497BDD /* WebThread.cpp in Sources */,
 				F9ECE4C5230BEEBB00497BDD /* PathTraversalState.cpp in Sources */,
+				F9A4B2A7230E3A7F00EED81E /* FloatPointCG.cpp in Sources */,
 				F9ECE46F230BEEBB00497BDD /* StrokeData.cpp in Sources */,
 				F9ECE4BC230BEEBB00497BDD /* CanvasMetrics.cpp in Sources */,
 				F9ECE1D0230BEEB900497BDD /* WebMediaStreamTrack.cpp in Sources */,
@@ -4508,6 +4544,7 @@
 				F9ECE35A230BEEBA00497BDD /* WebScheduler.cpp in Sources */,
 				F9ECE1A6230BEEB900497BDD /* WebFederatedCredential.cpp in Sources */,
 				F9ECE422230BEEBB00497BDD /* FEOffset.cpp in Sources */,
+				F9A4B2A8230E3A7F00EED81E /* FloatSizeCG.cpp in Sources */,
 				F9ECE177230BEEB900497BDD /* ScrollbarThemeMacCommon.mm in Sources */,
 				F9ECE226230BEEB900497BDD /* ContextMenu.cpp in Sources */,
 				F9ECE1B7230BEEB900497BDD /* WebURLLoadTiming.cpp in Sources */,
@@ -4544,6 +4581,7 @@
 				F9ECE39E230BEEBA00497BDD /* SegmentedString.cpp in Sources */,
 				F9ECE3F2230BEEBB00497BDD /* FixedPositionContainerDisplayItem.cpp in Sources */,
 				F9ECE15D230BEEB900497BDD /* KURL.cpp in Sources */,
+				F9A4B2AC230E3A7F00EED81E /* IntSizeCG.cpp in Sources */,
 				F9ECE1A4230BEEB900497BDD /* WebAudioDevice.cpp in Sources */,
 				F9ECE2CA230BEEBA00497BDD /* TransformationMatrix.cpp in Sources */,
 				F9ECE2F7230BEEBA00497BDD /* BlinkGCInterruptor.cpp in Sources */,
@@ -4570,6 +4608,7 @@
 				F9ECE45E230BEEBB00497BDD /* PicturePattern.cpp in Sources */,
 				F9ECE54D230BEEBC00497BDD /* ContentSettingCallbacks.cpp in Sources */,
 				F9ECE1B1230BEEB900497BDD /* WebMediaStreamTrackSourcesRequest.cpp in Sources */,
+				F9A4B29C230E389B00EED81E /* LayoutTestSupport.cpp in Sources */,
 				F9ECE3E9230BEEBB00497BDD /* CompositingDisplayItem.cpp in Sources */,
 				F9ECE263230BEEBA00497BDD /* ThemeMac.mm in Sources */,
 				F9ECE48E230BEEBB00497BDD /* BitmapImage.cpp in Sources */,
@@ -4634,6 +4673,7 @@
 				F9ECE475230BEEBB00497BDD /* ImageObserver.cpp in Sources */,
 				F9ECE376230BEEBA00497BDD /* FloatSize.cpp in Sources */,
 				F9ECE232230BEEB900497BDD /* TimingFunction.cpp in Sources */,
+				F9A4B2AB230E3A7F00EED81E /* FloatRectCG.cpp in Sources */,
 				F9ECE54F230BEEBC00497BDD /* ClipboardMimeTypes.cpp in Sources */,
 				F9ECE12A230BEEB900497BDD /* TracedValue.cpp in Sources */,
 				F9ECE1A5230BEEB900497BDD /* WebTransformKeyframe.cpp in Sources */,

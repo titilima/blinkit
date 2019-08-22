@@ -93,6 +93,8 @@
 		F9A4AF28230D7A7C00EED81E /* libwtf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A4AF27230D7A7C00EED81E /* libwtf.a */; };
 		F9A4AF2A230D7A8C00EED81E /* libz.1.2.11.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A4AF29230D7A8C00EED81E /* libz.1.2.11.tbd */; };
 		F9A4AF30230D892200EED81E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A4AF2F230D892200EED81E /* Cocoa.framework */; };
+		F9A4B299230E37BB00EED81E /* libblink_web.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A4B298230E37BB00EED81E /* libblink_web.a */; };
+		F9A4B29F230E395100EED81E /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A4B29E230E395100EED81E /* Carbon.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -186,6 +188,8 @@
 		F9A4AF2B230D88B700EED81E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F9A4AF2D230D88DD00EED81E /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		F9A4AF2F230D892200EED81E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		F9A4B298230E37BB00EED81E /* libblink_web.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libblink_web.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9A4B29E230E395100EED81E /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,9 +198,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9A4AF30230D892200EED81E /* Cocoa.framework in Frameworks */,
+				F9A4B29F230E395100EED81E /* Carbon.framework in Frameworks */,
 				F9A4AF2A230D7A8C00EED81E /* libz.1.2.11.tbd in Frameworks */,
 				F9A4AF06230D7A7C00EED81E /* libbase.a in Frameworks */,
 				F9A4AF08230D7A7C00EED81E /* libblink_platform.a in Frameworks */,
+				F9A4B299230E37BB00EED81E /* libblink_web.a in Frameworks */,
 				F9A4AF0A230D7A7C00EED81E /* libduktape.a in Frameworks */,
 				F9A4AF0C230D7A7C00EED81E /* libjs_crawler.a in Frameworks */,
 				F9A4AF0E230D7A7C00EED81E /* libjs.a in Frameworks */,
@@ -370,6 +376,8 @@
 		F9A4AF04230D7A7B00EED81E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F9A4B29E230E395100EED81E /* Carbon.framework */,
+				F9A4B298230E37BB00EED81E /* libblink_web.a */,
 				F9A4AF2F230D892200EED81E /* Cocoa.framework */,
 				F9A4AF2D230D88DD00EED81E /* CoreText.framework */,
 				F9A4AF2B230D88B700EED81E /* CoreGraphics.framework */,
