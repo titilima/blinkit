@@ -30,6 +30,9 @@
          location = "group:blink_platform/blink_platform.xcodeproj">
       </FileRef>
       <FileRef
+         location = "group:blink_web/blink_web.xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:modules/modules.xcodeproj">
       </FileRef>
       <FileRef
