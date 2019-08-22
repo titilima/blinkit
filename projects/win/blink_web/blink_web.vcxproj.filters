@@ -253,15 +253,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebActiveWheelFlingParameters.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebArrayBuffer.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebArrayBufferConverter.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebArrayBufferView.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebAutofillClient.h">
       <Filter>public</Filter>
     </ClInclude>
@@ -269,12 +260,6 @@
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebAXObject.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebBindings.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebBlob.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebCache.h">
@@ -307,13 +292,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebContextMenuData.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebCryptoNormalize.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebCSSParser.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDatabase.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDataSource.h">
@@ -334,31 +313,10 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDeviceEmulationParams.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDevToolsAgent.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDevToolsAgentClient.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDevToolsFrontend.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDevToolsFrontendClient.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDocument.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDOMActivityLogger.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDOMEvent.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDOMFileSystem.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDOMMediaStreamTrack.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebDOMProgressEvent.h">
@@ -430,24 +388,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebFrameWidget.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebGeolocationClient.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebGeolocationController.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebGeolocationError.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebGeolocationPermissionRequest.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebGeolocationPermissionRequestManager.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebGeolocationPosition.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebHeap.h">
       <Filter>public</Filter>
     </ClInclude>
@@ -484,9 +424,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebLabelElement.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebLeakDetector.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebLocalFrame.h">
       <Filter>public</Filter>
     </ClInclude>
@@ -499,9 +436,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebMediaPlayerAction.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebMediaStreamRegistry.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebMemoryPressureListener.h">
       <Filter>public</Filter>
     </ClInclude>
@@ -512,9 +446,6 @@
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebMIDIClient.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebMIDIPermissionRequest.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebNavigationPolicy.h">
@@ -550,9 +481,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebPluginContainer.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebPluginDocument.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebPluginScriptForbiddenScope.h">
       <Filter>public</Filter>
     </ClInclude>
@@ -580,19 +508,10 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSandboxFlags.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebScopedMicrotaskSuppression.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebScopedUserGesture.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebScopedWindowFocusAllowedIndicator.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebScriptBindings.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebScriptController.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebScriptExecutionCallback.h">
@@ -646,22 +565,10 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSharedWorkerRepositoryClient.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSocket.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSocketClient.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSpeechGrammar.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSpeechRecognitionHandle.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSpeechRecognitionParams.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSpeechRecognitionResult.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSpeechRecognizer.h">
@@ -673,13 +580,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSpellCheckClient.h">
       <Filter>public</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebStorageEventDispatcher.h">
-      <Filter>public</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebSurroundingText.h">
-      <Filter>public</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebTestingSupport.h">
       <Filter>public</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\public\web\WebTestInterfaceFactory.h">
