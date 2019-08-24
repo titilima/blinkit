@@ -43,7 +43,6 @@
 		F98B00A5230D5FF700523381 /* LayoutText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98BFEC6230D5FF600523381 /* LayoutText.cpp */; };
 		F98B00A6230D5FF700523381 /* LayoutSliderContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98BFEC7230D5FF600523381 /* LayoutSliderContainer.cpp */; };
 		F98B00A7230D5FF700523381 /* LayoutWordBreak.h in Headers */ = {isa = PBXBuildFile; fileRef = F98BFEC8230D5FF600523381 /* LayoutWordBreak.h */; };
-		F98B00A8230D5FF700523381 /* LayoutThemeDefault.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98BFEC9230D5FF600523381 /* LayoutThemeDefault.cpp */; };
 		F98B00AA230D5FF700523381 /* LayoutTextControlSingleLine.h in Headers */ = {isa = PBXBuildFile; fileRef = F98BFECB230D5FF600523381 /* LayoutTextControlSingleLine.h */; };
 		F98B00AB230D5FF700523381 /* ViewFragmentationContext.h in Headers */ = {isa = PBXBuildFile; fileRef = F98BFECC230D5FF600523381 /* ViewFragmentationContext.h */; };
 		F98B00AC230D5FF700523381 /* LayoutMeter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98BFECD230D5FF600523381 /* LayoutMeter.cpp */; };
@@ -97,10 +96,8 @@
 		F98B00DC230D5FF700523381 /* LayoutGeometryMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98BFEFE230D5FF600523381 /* LayoutGeometryMap.cpp */; };
 		F98B00DD230D5FF700523381 /* LayoutTableRow.h in Headers */ = {isa = PBXBuildFile; fileRef = F98BFEFF230D5FF600523381 /* LayoutTableRow.h */; };
 		F98B00DE230D5FF700523381 /* LayoutInline.h in Headers */ = {isa = PBXBuildFile; fileRef = F98BFF00230D5FF600523381 /* LayoutInline.h */; };
-		F98B00DF230D5FF700523381 /* LayoutThemeDefault.h in Headers */ = {isa = PBXBuildFile; fileRef = F98BFF01230D5FF600523381 /* LayoutThemeDefault.h */; };
 		F98B00E0230D5FF700523381 /* LayoutCounter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98BFF02230D5FF600523381 /* LayoutCounter.cpp */; };
 		F98B00E1230D5FF700523381 /* HitTestCache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98BFF03230D5FF600523381 /* HitTestCache.cpp */; };
-		F98B00E2230D5FF700523381 /* LayoutThemeAndroid.h in Headers */ = {isa = PBXBuildFile; fileRef = F98BFF04230D5FF600523381 /* LayoutThemeAndroid.h */; };
 		F98B00E3230D5FF700523381 /* LayoutRubyText.h in Headers */ = {isa = PBXBuildFile; fileRef = F98BFF05230D5FF600523381 /* LayoutRubyText.h */; };
 		F98B00E4230D5FF700523381 /* BidiRun.h in Headers */ = {isa = PBXBuildFile; fileRef = F98BFF06230D5FF600523381 /* BidiRun.h */; };
 		F98B00E5230D5FF700523381 /* LayoutRuby.h in Headers */ = {isa = PBXBuildFile; fileRef = F98BFF07230D5FF600523381 /* LayoutRuby.h */; };
@@ -221,7 +218,6 @@
 		F98B0158230D5FF800523381 /* CounterNode.h in Headers */ = {isa = PBXBuildFile; fileRef = F98BFF7D230D5FF700523381 /* CounterNode.h */; };
 		F98B0159230D5FF800523381 /* LayoutSliderThumb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98BFF7F230D5FF700523381 /* LayoutSliderThumb.cpp */; };
 		F98B015A230D5FF800523381 /* LayoutGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98BFF80230D5FF700523381 /* LayoutGrid.cpp */; };
-		F98B015B230D5FF800523381 /* LayoutThemeAndroid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F98BFF81230D5FF700523381 /* LayoutThemeAndroid.cpp */; };
 		F98B015C230D5FF800523381 /* GeneratedChildren.h in Headers */ = {isa = PBXBuildFile; fileRef = F98BFF82230D5FF700523381 /* GeneratedChildren.h */; };
 		F98B015E230D5FF800523381 /* LayoutTableSection.h in Headers */ = {isa = PBXBuildFile; fileRef = F98BFF84230D5FF700523381 /* LayoutTableSection.h */; };
 		F98B015F230D5FF800523381 /* ListMarkerText.h in Headers */ = {isa = PBXBuildFile; fileRef = F98BFF85230D5FF700523381 /* ListMarkerText.h */; };
@@ -447,7 +443,6 @@
 		F98BFEC6230D5FF600523381 /* LayoutText.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayoutText.cpp; sourceTree = "<group>"; };
 		F98BFEC7230D5FF600523381 /* LayoutSliderContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayoutSliderContainer.cpp; sourceTree = "<group>"; };
 		F98BFEC8230D5FF600523381 /* LayoutWordBreak.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutWordBreak.h; sourceTree = "<group>"; };
-		F98BFEC9230D5FF600523381 /* LayoutThemeDefault.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayoutThemeDefault.cpp; sourceTree = "<group>"; };
 		F98BFECB230D5FF600523381 /* LayoutTextControlSingleLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutTextControlSingleLine.h; sourceTree = "<group>"; };
 		F98BFECC230D5FF600523381 /* ViewFragmentationContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFragmentationContext.h; sourceTree = "<group>"; };
 		F98BFECD230D5FF600523381 /* LayoutMeter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayoutMeter.cpp; sourceTree = "<group>"; };
@@ -501,10 +496,8 @@
 		F98BFEFE230D5FF600523381 /* LayoutGeometryMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayoutGeometryMap.cpp; sourceTree = "<group>"; };
 		F98BFEFF230D5FF600523381 /* LayoutTableRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutTableRow.h; sourceTree = "<group>"; };
 		F98BFF00230D5FF600523381 /* LayoutInline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutInline.h; sourceTree = "<group>"; };
-		F98BFF01230D5FF600523381 /* LayoutThemeDefault.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutThemeDefault.h; sourceTree = "<group>"; };
 		F98BFF02230D5FF600523381 /* LayoutCounter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayoutCounter.cpp; sourceTree = "<group>"; };
 		F98BFF03230D5FF600523381 /* HitTestCache.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HitTestCache.cpp; sourceTree = "<group>"; };
-		F98BFF04230D5FF600523381 /* LayoutThemeAndroid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutThemeAndroid.h; sourceTree = "<group>"; };
 		F98BFF05230D5FF600523381 /* LayoutRubyText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutRubyText.h; sourceTree = "<group>"; };
 		F98BFF06230D5FF600523381 /* BidiRun.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BidiRun.h; sourceTree = "<group>"; };
 		F98BFF07230D5FF600523381 /* LayoutRuby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutRuby.h; sourceTree = "<group>"; };
@@ -625,7 +618,6 @@
 		F98BFF7D230D5FF700523381 /* CounterNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CounterNode.h; sourceTree = "<group>"; };
 		F98BFF7F230D5FF700523381 /* LayoutSliderThumb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayoutSliderThumb.cpp; sourceTree = "<group>"; };
 		F98BFF80230D5FF700523381 /* LayoutGrid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayoutGrid.cpp; sourceTree = "<group>"; };
-		F98BFF81230D5FF700523381 /* LayoutThemeAndroid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayoutThemeAndroid.cpp; sourceTree = "<group>"; };
 		F98BFF82230D5FF700523381 /* GeneratedChildren.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneratedChildren.h; sourceTree = "<group>"; };
 		F98BFF84230D5FF700523381 /* LayoutTableSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LayoutTableSection.h; sourceTree = "<group>"; };
 		F98BFF85230D5FF700523381 /* ListMarkerText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListMarkerText.h; sourceTree = "<group>"; };
@@ -939,10 +931,6 @@
 				F98BFEE6230D5FF600523381 /* LayoutTextFragment.h */,
 				F98BFEE3230D5FF600523381 /* LayoutTheme.cpp */,
 				F98BFF0C230D5FF600523381 /* LayoutTheme.h */,
-				F98BFF81230D5FF700523381 /* LayoutThemeAndroid.cpp */,
-				F98BFF04230D5FF600523381 /* LayoutThemeAndroid.h */,
-				F98BFEC9230D5FF600523381 /* LayoutThemeDefault.cpp */,
-				F98BFF01230D5FF600523381 /* LayoutThemeDefault.h */,
 				F98BFFAA230D5FF700523381 /* LayoutThemeFontProvider.cpp */,
 				F98BFF5F230D5FF700523381 /* LayoutThemeFontProvider.h */,
 				F98BFF90230D5FF700523381 /* LayoutThemeMac.h */,
@@ -1216,7 +1204,6 @@
 				F98B0150230D5FF800523381 /* LineLayoutInline.h in Headers */,
 				F98B01F5230D5FF800523381 /* GridTrackSize.h in Headers */,
 				F98B0169230D5FF800523381 /* TableLayoutAlgorithmFixed.h in Headers */,
-				F98B00E2230D5FF700523381 /* LayoutThemeAndroid.h in Headers */,
 				F98B01E4230D5FF800523381 /* StyleRareInheritedData.h in Headers */,
 				F98B0100230D5FF700523381 /* PaintLayerCompositor.h in Headers */,
 				F98B016A230D5FF800523381 /* LayoutThemeMac.h in Headers */,
@@ -1272,7 +1259,6 @@
 				F98B01E5230D5FF800523381 /* StyleWillChangeData.h in Headers */,
 				F98B00BE230D5FF700523381 /* LayoutDetailsMarker.h in Headers */,
 				F98B01BA230D5FF800523381 /* BorderImageLength.h in Headers */,
-				F98B00DF230D5FF700523381 /* LayoutThemeDefault.h in Headers */,
 				F98B01ED230D5FF800523381 /* StyleMultiColData.h in Headers */,
 				F98B00D0230D5FF700523381 /* ShapeOutsideInfo.h in Headers */,
 				F98B0155230D5FF800523381 /* LineLayoutRubyRun.h in Headers */,
@@ -1531,7 +1517,6 @@
 				F98B00D6230D5FF700523381 /* ShapeOutsideInfo.cpp in Sources */,
 				F98B008F230D5FF700523381 /* LayoutBoxModelObject.cpp in Sources */,
 				F98B0125230D5FF800523381 /* EllipsisBox.cpp in Sources */,
-				F98B00A8230D5FF700523381 /* LayoutThemeDefault.cpp in Sources */,
 				F98B01B5230D5FF800523381 /* CounterDirectives.cpp in Sources */,
 				F98B0171230D5FF800523381 /* LayoutFlowThread.cpp in Sources */,
 				F98B008D230D5FF700523381 /* LayoutReplaced.cpp in Sources */,
@@ -1616,7 +1601,6 @@
 				F98B014A230D5FF800523381 /* LayoutBlock.cpp in Sources */,
 				F98B00DC230D5FF700523381 /* LayoutGeometryMap.cpp in Sources */,
 				F98B009D230D5FF700523381 /* LayoutListBox.cpp in Sources */,
-				F98B015B230D5FF800523381 /* LayoutThemeAndroid.cpp in Sources */,
 				F98B0197230D5FF800523381 /* BorderEdge.cpp in Sources */,
 				F98B00C2230D5FF700523381 /* LayoutTheme.cpp in Sources */,
 				F98B00C8230D5FF700523381 /* HitTestLocation.cpp in Sources */,
