@@ -2035,11 +2035,13 @@ void Document::updateUseShadowTreesIfNeeded()
 
 StyleResolver* Document::styleResolver() const
 {
+    ASSERT(!ForCrawler());
     return m_styleEngine->resolver();
 }
 
 StyleResolver& Document::ensureStyleResolver() const
 {
+    ASSERT(!ForCrawler());
     return m_styleEngine->ensureResolver();
 }
 #endif // BLINKIT_CRAWLER_ONLY
@@ -2080,6 +2082,7 @@ void Document::detach(const AttachContext& context)
     if (!isActive())
         return;
 
+    const bool forCrawler = ForCrawler();
     // Frame navigation can cause a new Document to be attached. Don't allow that, since that will
     // cause a situation where LocalFrame still has a Document attached after this finishes!
     // Normally, it shouldn't actually be possible to trigger navigation here. However, plugins
@@ -2090,7 +2093,7 @@ void Document::detach(const AttachContext& context)
     // consistent state.
     ScriptForbiddenScope forbidScript;
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (!ForCrawler())
+    if (!forCrawler)
     {
         view()->dispose();
         m_markers->prepareForDestruction();
@@ -2102,7 +2105,7 @@ void Document::detach(const AttachContext& context)
     m_lifecycle.advanceTo(DocumentLifecycle::Stopping);
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (page())
+    if (!forCrawler && page())
         page()->documentDetached(this);
 #endif
     InspectorInstrumentation::documentDetached(this);
@@ -2113,7 +2116,7 @@ void Document::detach(const AttachContext& context)
     stopActiveDOMObjects();
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (!ForCrawler())
+    if (!forCrawler)
     {
         // FIXME: consider using ActiveDOMObject.
         if (m_scriptedAnimationController)
@@ -2127,7 +2130,7 @@ void Document::detach(const AttachContext& context)
         m_domWindow->clearEventQueue();
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (!ForCrawler())
+    if (!forCrawler)
     {
         if (m_layoutView)
             m_layoutView->setIsInWindow(false);
@@ -2149,7 +2152,7 @@ void Document::detach(const AttachContext& context)
     ContainerNode::detach(context);
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (!ForCrawler())
+    if (!forCrawler)
     {
         styleEngine().didDetach();
 
@@ -2175,7 +2178,7 @@ void Document::detach(const AttachContext& context)
     m_frame = nullptr;
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (!ForCrawler() && m_mediaQueryMatcher)
+    if (!forCrawler && m_mediaQueryMatcher)
         m_mediaQueryMatcher->documentDetached();
 #endif
 
@@ -5308,7 +5311,7 @@ bool Document::haveStylesheetsLoaded() const
 #ifdef BLINKIT_CRAWLER_ONLY
     return true;
 #else
-    return m_styleEngine->haveStylesheetsLoaded();
+    return ForCrawler() || m_styleEngine->haveStylesheetsLoaded();
 #endif
 }
 

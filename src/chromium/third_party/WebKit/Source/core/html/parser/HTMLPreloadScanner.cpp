@@ -438,9 +438,16 @@ TokenPreloadScanner::TokenPreloadScanner(const KURL& documentURL, PassOwnPtr<Cac
     , m_documentParameters(documentParameters)
 {
     ASSERT(m_documentParameters.get());
-#ifndef BLINKIT_CRAWLER_ONLY // TODO: Check the logic below
-    ASSERT(m_documentParameters->mediaValues.get());
-    ASSERT(m_documentParameters->mediaValues->isCached());
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (m_documentParameters->forCrawler)
+    {
+        ASSERT(!m_documentParameters->mediaValues);
+    }
+    else
+    {
+        ASSERT(m_documentParameters->mediaValues.get());
+        ASSERT(m_documentParameters->mediaValues->isCached());
+    }
 #endif
 }
 
@@ -671,11 +678,18 @@ CachedDocumentParameters::CachedDocumentParameters(Document* document, PassRefPt
     doHtmlPreloadScanning = !document->settings() || document->settings()->doHtmlPreloadScanning();
 #ifndef BLINKIT_CRAWLER_ONLY
     forCrawler = document->ForCrawler();
-    if (givenMediaValues)
-        mediaValues = givenMediaValues;
+    if (!forCrawler)
+    {
+        if (givenMediaValues)
+            mediaValues = givenMediaValues;
+        else
+            mediaValues = MediaValuesCached::create(*document);
+        ASSERT(mediaValues->isSafeToSendToAnotherThread());
+    }
     else
-        mediaValues = MediaValuesCached::create(*document);
-    ASSERT(mediaValues->isSafeToSendToAnotherThread());
+    {
+        ASSERT(!givenMediaValues);
+    }
     defaultViewportMinWidth = document->viewportDefaultMinWidth();
 #endif
     viewportMetaZeroValuesQuirk = document->settings() && document->settings()->viewportMetaZeroValuesQuirk();

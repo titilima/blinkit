@@ -778,7 +778,7 @@ void HTMLDocumentParser::startBackgroundParser()
 
 #ifndef BLINKIT_CRAWLER_ONLY
     // Make sure that a resolver is set up, so that the correct viewport dimensions will be fed to the background parser and preload scanner.
-    if (document()->loader())
+    if (!document()->ForCrawler() && document()->loader())
         document()->ensureStyleResolver();
 #endif
 

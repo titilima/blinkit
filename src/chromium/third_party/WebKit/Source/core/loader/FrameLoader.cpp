@@ -195,8 +195,11 @@ void FrameLoader::dispatchUnloadEvent()
         m_frame->document()->dispatchUnloadEvents();
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (Page* page = m_frame->page())
-        page->undoStack().didUnloadFrame(*m_frame);
+    if (!m_frame->IsCrawlerFrame())
+    {
+        if (Page *page = m_frame->page())
+            page->undoStack().didUnloadFrame(*m_frame);
+    }
 #endif
 }
 
