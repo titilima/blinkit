@@ -28,6 +28,10 @@
 #   endif
 #endif
 
+#ifdef __APPLE__
+#   include <TargetConditionals.h>
+#endif
+
 #ifndef BKAPI
 #   define BKAPI
 #endif
@@ -344,6 +348,7 @@ public:
     typedef HWND    NativeView;
     typedef HDC     NativeCanvas;
 #else
+    typedef void    *NativeView, *NativeCanvas;
 #endif
 
     virtual void BKAPI Destroy(void) = 0;
