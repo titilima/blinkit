@@ -26,6 +26,7 @@ public:
     ~WinRequest(void);
 private:
     bool OpenSession(void);
+    int WaitForIOPending(void);
     void StatusCallback(HINTERNET hInternet, DWORD dwInternetStatus,
         PVOID lpvStatusInformation, DWORD dwStatusInformationLength);
     static void CALLBACK StatusCallback(HINTERNET hInternet, DWORD_PTR dwContext, DWORD dwInternetStatus,
@@ -34,7 +35,9 @@ private:
     typedef int (WinRequest::*ThreadWorker)(void);
     void StartWorkThread(void);
     ThreadWorker DetachThreadWorker(void);
-    int Continue(ThreadWorker nextWorker);
+    int Continue(ThreadWorker nextWorker, bool signal);
+    int SendRequest(void);
+    int SendBody(void);
     int EndRequest(void);
     int QueryRequest(void);
     int SendData(void);
@@ -50,7 +53,7 @@ private:
     // RequestImpl
     void Cancel(void) override;
 
-    std::string m_userAgent, m_referer, m_allHeaders;
+    std::string m_userAgent, m_referer;
     InetSession m_session;
     InetConnection m_connection;
     InetRequest m_request;

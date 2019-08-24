@@ -47,10 +47,11 @@ void WinRequest::Cancel(void)
     RequestImpl::Release();
 }
 
-int WinRequest::Continue(ThreadWorker nextWorker)
+int WinRequest::Continue(ThreadWorker nextWorker, bool signal)
 {
     m_nextWorker = nextWorker;
-    SetEvent(m_hEvent);
+    if (signal)
+        SetEvent(m_hEvent);
     return BkError::Success;
 }
 
@@ -63,23 +64,20 @@ WinRequest::ThreadWorker WinRequest::DetachThreadWorker(void)
 
 DWORD WinRequest::DoThreadWork(void)
 {
-    const HANDLE events[2] = { m_hEvent, m_hEventCancel };
-    DWORD count = nullptr != m_hEventCancel ? 2 : 1;
-
     for (;;)
     {
-        DWORD dwWait = WaitForMultipleObjects(count, events, FALSE, INFINITE);
-        if (WAIT_OBJECT_0 + 1 == dwWait)
-            m_response->SetErrorCode(BkError::Cancelled);
-
-        if (BkError::Success != m_response->ErrorCode())
+        int r = WaitForIOPending();
+        if (BkError::Success != r)
+        {
+            m_response->SetErrorCode(r);
             break;
+        }
 
         ThreadWorker worker = DetachThreadWorker();
         if (nullptr == worker)
             break;
 
-        int r = (this->*worker)();
+        r = (this->*worker)();
         if (BkError::Success != r)
         {
             m_response->SetErrorCode(r);
@@ -105,12 +103,9 @@ DWORD WinRequest::DoThreadWork(void)
 
 int WinRequest::EndRequest(void)
 {
-    m_nextWorker = &WinRequest::QueryRequest;
-    if (m_request.End())
-    {
-        SetEvent(m_hEvent);
-    }
-    else
+    bool signal = true;
+
+    if (!m_request.End())
     {
         DWORD err = GetLastError();
         if (ERROR_IO_PENDING != err)
@@ -118,8 +113,10 @@ int WinRequest::EndRequest(void)
             assert(ERROR_IO_PENDING == err);
             return BkError::UnknownError;
         }
+        signal = false;
     }
-    return BkError::Success;
+
+    return Continue(&WinRequest::QueryRequest, signal);
 }
 
 bool WinRequest::OpenSession(void)
@@ -163,37 +160,8 @@ int BKAPI WinRequest::Perform(void)
     if (!m_request.IsValid())
         return BkError::NetworkError;
 
-    assert(m_allHeaders.empty());
-    m_allHeaders = GetAllHeaders();
-
-    INTERNET_BUFFERSA buf = { 0 };
-    buf.dwStructSize = sizeof(INTERNET_BUFFERSA);
-    buf.lpcszHeader = m_allHeaders.data();
-    buf.dwHeadersLength = m_allHeaders.length();
-    buf.dwBufferTotal = m_body.size();
-    m_request.SetOption(INTERNET_OPTION_SEND_TIMEOUT, TimeoutInMs());
-    m_request.SetOption(INTERNET_OPTION_SECURITY_FLAGS, SECURITY_FLAG_IGNORE_REVOCATION);
-    if (m_request.Send(&buf))
-    {
-        SetEvent(m_hEvent);
-    }
-    else
-    {
-        DWORD err = GetLastError();
-        if (ERROR_IO_PENDING != err)
-        {
-            assert(ERROR_IO_PENDING == err);
-            delete this;
-            return BkError::NetworkError;
-        }
-    }
-
-    if (m_body.empty())
-        m_nextWorker = &WinRequest::EndRequest;
-    else
-        m_nextWorker = &WinRequest::SendData;
     StartWorkThread();
-    return BkError::Success;
+    return Continue(&WinRequest::SendRequest, true);
 }
 
 int WinRequest::QueryRequest(void)
@@ -209,14 +177,11 @@ int WinRequest::QueryRequest(void)
         m_response->PrepareBody(contentLength);
 
     m_request.SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, TimeoutInMs());
-    return Continue(&WinRequest::ReceiveData);
+    return Continue(&WinRequest::ReceiveData, true);
 }
 
 int WinRequest::ReceiveData(void)
 {
-    const HANDLE events[2] = { m_hEvent, m_hEventCancel };
-    DWORD count = nullptr != m_hEventCancel ? 2 : 1;
- 
     BYTE buf[1024];
     INTERNET_BUFFERSA ib = { 0 };
     ib.dwStructSize = sizeof(ib);
@@ -235,9 +200,9 @@ int WinRequest::ReceiveData(void)
                 return BkError::NetworkError;
             }
 
-            DWORD dwWait = WaitForMultipleObjects(count, events, FALSE, INFINITE);
-            if (WAIT_OBJECT_0 + 1 == dwWait)
-                return BkError::Cancelled;
+            int r = WaitForIOPending();
+            if (BkError::Success != r)
+                return r;
         }
 
         if (ib.dwBufferLength > 0)
@@ -246,7 +211,7 @@ int WinRequest::ReceiveData(void)
             done = true;
     }
 
-    return Continue(&WinRequest::RequestComplete);
+    return Continue(&WinRequest::RequestComplete, true);
 }
 
 int WinRequest::RequestComplete(void)
@@ -258,7 +223,7 @@ int WinRequest::RequestComplete(void)
             m_response->GZipInflate();
     }
     m_client.RequestComplete(*m_response);
-    return Continue(nullptr);
+    return Continue(nullptr, true);
 }
 
 BkRequestController* BKAPI WinRequest::RequireLifecycleController(void)
@@ -269,16 +234,55 @@ BkRequestController* BKAPI WinRequest::RequireLifecycleController(void)
     return RequestImpl::RequireLifecycleController();
 }
 
-int WinRequest::SendData(void)
+int WinRequest::SendBody(void)
 {
-    assert(!m_body.empty());
+    bool signal = true;
 
     DWORD dwWritten = 0;
-    if (m_request.Write(m_body.data(), m_body.size(), &dwWritten))
-        return Continue(&WinRequest::EndRequest);
+    assert(!m_body.empty());
+    if (!m_request.Write(m_body.data(), m_body.size(), &dwWritten))
+    {
+        DWORD err = GetLastError();
+        if (ERROR_IO_PENDING != err)
+        {
+            assert(ERROR_IO_PENDING == err);
+            return BkError::NetworkError;
+        }
 
-    assert(false);
-    return BkError::NetworkError;
+        signal = false;
+    }
+
+    return Continue(&WinRequest::EndRequest, signal);
+}
+
+int WinRequest::SendRequest(void)
+{
+    std::string allHeaders = GetAllHeaders();
+
+    INTERNET_BUFFERSA buf = { 0 };
+    buf.dwStructSize = sizeof(INTERNET_BUFFERSA);
+    buf.lpcszHeader = allHeaders.data();
+    buf.dwHeadersLength = allHeaders.length();
+    buf.dwBufferTotal = m_body.size();
+    m_request.SetOption(INTERNET_OPTION_SEND_TIMEOUT, TimeoutInMs());
+    m_request.SetOption(INTERNET_OPTION_SECURITY_FLAGS, SECURITY_FLAG_IGNORE_REVOCATION);
+    if (!m_request.Send(&buf))
+    {
+        DWORD err = GetLastError();
+        if (ERROR_IO_PENDING != err)
+        {
+            assert(ERROR_IO_PENDING == err);
+            return BkError::NetworkError;
+        }
+
+        int r = WaitForIOPending();
+        if (BkError::Success != r)
+            return r;
+    }
+
+    ThreadWorker nextWorker = m_body.empty() ? &WinRequest::EndRequest : &WinRequest::SendBody;
+    return Continue(nextWorker, true);
+
 }
 
 void BKAPI WinRequest::SetHeader(const char *name, const char *value)
@@ -346,6 +350,18 @@ void WinRequest::StatusCallback(
 DWORD WINAPI WinRequest::ThreadProc(PVOID param)
 {
     return reinterpret_cast<WinRequest *>(param)->DoThreadWork();
+}
+
+int WinRequest::WaitForIOPending(void)
+{
+    const HANDLE events[2] = { m_hEvent, m_hEventCancel };
+    DWORD count = nullptr != m_hEventCancel ? 2 : 1;
+
+    DWORD dwWait = WaitForMultipleObjects(count, events, FALSE, INFINITE);
+    if (WAIT_OBJECT_0 + 1 == dwWait)
+        return BkError::Cancelled;
+
+    return BkError::Success;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
