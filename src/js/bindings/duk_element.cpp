@@ -11,7 +11,6 @@
 
 #include "duk_element.h"
 
-#include "core/HTMLNames.h"
 #include "core/dom/NonDocumentTypeChildNode.h"
 #include "core/dom/ParentNode.h"
 #include "core/dom/StaticNodeList.h"
@@ -31,6 +30,13 @@ using namespace blink;
 namespace BlinKit {
 
 const char DukElement::ProtoName[] = "HTMLElement";
+
+duk_ret_t DukElement::DefaultAttributeGetter(duk_context *ctx, const QualifiedName &name)
+{
+    duk_push_this(ctx);
+    Element *element = DukEventTarget::GetNativeThis<Element>(ctx);
+    return Duk::PushString(ctx, element->getAttribute(name.localName()));
+}
 
 namespace Impl {
 

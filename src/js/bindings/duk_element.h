@@ -32,6 +32,8 @@ public:
 #ifndef BLINKIT_CRAWLER_ONLY
     static void RegisterPrototypeForUI(duk_context *ctx, PrototypeManager &protos);
 #endif
+
+    static duk_ret_t DefaultAttributeGetter(duk_context *ctx, const blink::QualifiedName &name);
 protected:
     static void RegisterToPrototypeEntryForCrawler(PrototypeEntry &entry);
 #ifndef BLINKIT_CRAWLER_ONLY
