@@ -23,6 +23,7 @@
 #include "bindings/duk_xhr.h"
 #include "context/duk_context.h"
 #include "context/prototype_manager.h"
+#include "context/timer_manager.h"
 #include "wrappers/duk.h"
 
 using namespace blink;
@@ -160,18 +161,6 @@ static duk_ret_t ParentSetter(duk_context *ctx)
     return Duk::DefaultSetter(ctx, "parent");
 }
 
-static duk_ret_t SetInterval(duk_context *ctx)
-{
-    assert(false); // BKTODO:
-    return 1;
-}
-
-static duk_ret_t SetTimeout(duk_context *ctx)
-{
-    assert(false); // BKTODO:
-    return 1;
-}
-
 static duk_ret_t WindowGetter(duk_context *ctx)
 {
     duk_push_global_object(ctx);
@@ -253,8 +242,8 @@ void DukWindow::RegisterPrototypeForCrawler(duk_context *ctx, PrototypeManager &
         { "prompt",           Crawler::Prompt,           2           },
         { "resizeBy",         Crawler::NothingToDo,      2           },
         { "resizeTo",         Crawler::NothingToDo,      2           },
-        { "setInterval",      Impl::SetInterval,         DUK_VARARGS },
-        { "setTimeout",       Impl::SetTimeout,          DUK_VARARGS },
+        { "setInterval",      TimerManager::SetInterval, DUK_VARARGS },
+        { "setTimeout",       TimerManager::SetTimeout,  DUK_VARARGS },
         { "stop",             Crawler::NothingToDo,      DUK_VARARGS },
         { DukXHR::ProtoName,  DukXHR::Constructor,       0           },
     };
@@ -281,18 +270,18 @@ void DukWindow::RegisterPrototypeForUI(duk_context *ctx, PrototypeManager &proto
         { "window",    Impl::WindowGetter,    nullptr },
     };
     static const PrototypeEntry::Method Methods[] = {
-        { "alert",            UI::Alert,            1           },
-        { "atob",             Impl::AToB,           1           },
-        { "btoa",             Impl::BToA,           1           },
-        { "clearInterval",    Impl::ClearInterval,  1           },
-        { "clearTimeout",     Impl::ClearTimeout,   1           },
-        { "confirm",          UI::Confirm,          1           },
-        { "getComputedStyle", UI::GetComputedStyle, 2           },
-        { "getSelection",     UI::GetSelection,     0           },
-        { "prompt",           UI::Prompt,           2           },
-        { "setInterval",      Impl::SetInterval,    DUK_VARARGS },
-        { "setTimeout",       Impl::SetTimeout,     DUK_VARARGS },
-        { DukXHR::ProtoName,  DukXHR::Constructor,  0           },
+        { "alert",            UI::Alert,                 1           },
+        { "atob",             Impl::AToB,                1           },
+        { "btoa",             Impl::BToA,                1           },
+        { "clearInterval",    Impl::ClearInterval,       1           },
+        { "clearTimeout",     Impl::ClearTimeout,        1           },
+        { "confirm",          UI::Confirm,               1           },
+        { "getComputedStyle", UI::GetComputedStyle,      2           },
+        { "getSelection",     UI::GetSelection,          0           },
+        { "prompt",           UI::Prompt,                2           },
+        { "setInterval",      TimerManager::SetInterval, DUK_VARARGS },
+        { "setTimeout",       TimerManager::SetTimeout,  DUK_VARARGS },
+        { DukXHR::ProtoName,  DukXHR::Constructor,       0           },
     };
 
     const auto worker = [](PrototypeEntry &entry)

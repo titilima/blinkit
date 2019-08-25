@@ -128,6 +128,9 @@
     <ClInclude Include="..\..\..\src\js\bindings\duk_input_element.h">
       <Filter>bindings</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\js\context\timer_manager.h">
+      <Filter>context</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -231,6 +234,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\js\bindings\duk_input_element.cpp">
       <Filter>bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\context\timer_manager.cpp">
+      <Filter>context</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

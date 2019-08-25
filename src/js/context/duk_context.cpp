@@ -44,6 +44,7 @@
 #include "context/caller_context_impl.h"
 #include "context/function_manager.h"
 #include "context/prototype_manager.h"
+#include "context/timer_manager.h"
 #include "context/value_impl.h"
 #include "wrappers/duk.h"
 
@@ -368,6 +369,8 @@ void DukContext::Initialize(void)
 
     PrepareGlobalsToTop();
     DukEventListener::InitializeListenerPool(m_context);
+
+    TimerManager::Attach(m_context);
 
     duk_set_global_object(m_context);
 }

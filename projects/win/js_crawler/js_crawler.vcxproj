@@ -273,6 +273,7 @@
     <ClInclude Include="..\..\..\src\js\context\function_context_impl.h" />
     <ClInclude Include="..\..\..\src\js\context\function_manager.h" />
     <ClInclude Include="..\..\..\src\js\context\prototype_manager.h" />
+    <ClInclude Include="..\..\..\src\js\context\timer_manager.h" />
     <ClInclude Include="..\..\..\src\js\context\value_impl.h" />
     <ClInclude Include="..\..\..\src\js\public\script_controller.h" />
     <ClInclude Include="..\..\..\src\js\public\script_event_listener.h" />
@@ -309,6 +310,7 @@
     <ClCompile Include="..\..\..\src\js\context\function_context_impl.cpp" />
     <ClCompile Include="..\..\..\src\js\context\function_manager.cpp" />
     <ClCompile Include="..\..\..\src\js\context\prototype_manager.cpp" />
+    <ClCompile Include="..\..\..\src\js\context\timer_manager.cpp" />
     <ClCompile Include="..\..\..\src\js\context\value_impl.cpp" />
     <ClCompile Include="..\..\..\src\js\public\script_controller.cpp" />
     <ClCompile Include="..\..\..\src\js\public\script_event_listener.cpp" />
