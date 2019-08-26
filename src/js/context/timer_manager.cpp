@@ -15,6 +15,7 @@
 #include "public/platform/WebTaskRunner.h"
 #include "public/platform/WebTraceLocation.h"
 
+#include "context/value_impl.h"
 #include "wrappers/duk.h"
 
 using namespace blink;
@@ -72,17 +73,26 @@ void TimerTask::run(void)
     int timerIdx = duk_get_top_index(m_ctx);
 
     duk_get_prop_index(m_ctx, timerIdx, 0); // worker
+    int r = DUK_EXEC_SUCCESS;
     if (duk_is_string(m_ctx, -1))
     {
-        duk_peval_noresult(m_ctx);
+        r = duk_peval(m_ctx);
     }
     else if (duk_is_callable(m_ctx, -1))
     {
         duk_size_t n = duk_get_length(m_ctx, timerIdx);
         for (duk_size_t i = 2; i < n; ++i)
             duk_get_prop_index(m_ctx, timerIdx, i);
-        duk_pcall(m_ctx, n - 2);
+        r = duk_pcall(m_ctx, n - 2);
     }
+#ifdef _DEBUG
+    if (DUK_EXEC_SUCCESS != r)
+    {
+        ValueImpl retVal(m_ctx);
+        retVal.SetAsErrorType();
+    }
+#endif
+    assert(DUK_EXEC_SUCCESS == r);
 
     // Repeatable?
     duk_get_prop_index(m_ctx, timerIdx, 1);
