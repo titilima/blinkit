@@ -990,16 +990,23 @@ PassRefPtrWillBeRawPtr<Element> Document::createElement(const QualifiedName& qNa
     RefPtrWillBeRawPtr<Element> e = nullptr;
 
 #ifdef BLINKIT_CRAWLER_ONLY
-    e = Element::create(qName, this);
+    e = createElement(qName.localName(), ASSERT_NO_EXCEPTION);
 #else
-    // FIXME: Use registered namespaces and look up in a hash to find the right factory.
-    if (qName.namespaceURI() == xhtmlNamespaceURI)
-        e = HTMLElementFactory::createHTMLElement(qName.localName(), *this, 0, createdByParser);
-
-    if (e)
-        m_sawElementsInKnownNamespaces = true;
+    if (ForCrawler())
+    {
+        e = createElement(qName.localName(), ASSERT_NO_EXCEPTION);
+    }
     else
-        e = Element::create(qName, this);
+    {
+        // FIXME: Use registered namespaces and look up in a hash to find the right factory.
+        if (qName.namespaceURI() == xhtmlNamespaceURI)
+            e = HTMLElementFactory::createHTMLElement(qName.localName(), *this, 0, createdByParser);
+
+        if (e)
+            m_sawElementsInKnownNamespaces = true;
+        else
+            e = Element::create(qName, this);
+    }
 #endif
 
     if (e->prefix() != qName.prefix())

@@ -39,6 +39,7 @@
 #include "core/css/SelectorChecker.h"
 
 #include "core/HTMLNames.h"
+#include "core/InputTypeNames.h"
 #include "core/css/CSSSelectorList.h"
 #include "core/dom/Document.h"
 #include "core/dom/Element.h"
@@ -710,6 +711,53 @@ bool SelectorChecker::checkPseudoNot(const SelectorCheckingContext& context, Mat
     return false;
 }
 
+static bool IsPseudoClassCheckedForCrawler(const Element &element)
+{
+    ASSERT(element.ForCrawler());
+
+    using namespace HTMLNames;
+    if (element.hasTagName(inputTag))
+    {
+        if (element.hasAttribute(checkedAttr))
+        {
+            const AtomicString &type = element.getAttribute(typeAttr);
+            return (type == InputTypeNames::radio || type == InputTypeNames::checkbox);
+        }
+    }
+    if (element.hasTagName(optionTag))
+    {
+        if (element.hasAttribute(selectAttr))
+            return true;
+    }
+    return false;
+}
+
+#ifndef BLINKIT_CRAWLER_ONLY
+
+static bool IsPseudoClassCheckedForUI(const Element &element)
+{
+    ASSERT(!element.ForCrawler());
+
+    if (isHTMLInputElement(element))
+    {
+        const HTMLInputElement &inputElement = toHTMLInputElement(element);
+        // Even though WinIE allows checked and indeterminate to
+        // co-exist, the CSS selector spec says that you can't be
+        // both checked and indeterminate. We will behave like WinIE
+        // behind the scenes and just obey the CSS spec here in the
+        // test for matching the pseudo.
+        if (inputElement.shouldAppearChecked() && !inputElement.shouldAppearIndeterminate())
+            return true;
+    }
+    else if (isHTMLOptionElement(element) && toHTMLOptionElement(element).selected())
+    {
+        return true;
+    }
+    return false;
+}
+
+#endif
+
 bool SelectorChecker::checkPseudoClass(const SelectorCheckingContext& context, MatchResult& result) const
 {
     Element& element = *context.element;
@@ -967,18 +1015,19 @@ bool SelectorChecker::checkPseudoClass(const SelectorCheckingContext& context, M
         return element.matchesValidityPseudoClasses() && !element.isValidElement();
     case CSSSelector::PseudoChecked:
         {
-#ifndef BLINKIT_CRAWLER_ONLY
-            if (isHTMLInputElement(element)) {
-                HTMLInputElement& inputElement = toHTMLInputElement(element);
-                // Even though WinIE allows checked and indeterminate to
-                // co-exist, the CSS selector spec says that you can't be
-                // both checked and indeterminate. We will behave like WinIE
-                // behind the scenes and just obey the CSS spec here in the
-                // test for matching the pseudo.
-                if (inputElement.shouldAppearChecked() && !inputElement.shouldAppearIndeterminate())
-                    return true;
-            } else if (isHTMLOptionElement(element) && toHTMLOptionElement(element).selected()) {
+#ifdef BLINKIT_CRAWLER_ONLY
+            if (IsPseudoClassCheckedForCrawler(element))
                 return true;
+#else
+            if (element.ForCrawler())
+            {
+                if (IsPseudoClassCheckedForCrawler(element))
+                    return true;
+            }
+            else
+            {
+                if (IsPseudoClassCheckedForUI(element))
+                    return true;
             }
 #endif
             break;

@@ -391,7 +391,11 @@ public:
     // This is a DOM function.
     StyleSheetList* styleSheets();
 
-    StyleEngine& styleEngine() { ASSERT(m_styleEngine.get()); return *m_styleEngine.get(); }
+    StyleEngine& styleEngine() {
+        ASSERT(!ForCrawler());
+        ASSERT(m_styleEngine.get());
+        return *m_styleEngine.get();
+    }
 
     bool gotoAnchorNeededAfterStylesheetsLoad() { return m_gotoAnchorNeededAfterStylesheetsLoad; }
     void setGotoAnchorNeededAfterStylesheetsLoad(bool b) { m_gotoAnchorNeededAfterStylesheetsLoad = b; }
