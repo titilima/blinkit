@@ -868,6 +868,11 @@ inline UniqueElementData& Element::ensureUniqueElementData()
     return toUniqueElementData(*m_elementData);
 }
 
+inline bool Node::hasTagName(const HTMLQualifiedName &name) const
+{
+    return isHTMLElement() && toElement(*this).hasLocalName(name.localName());
+}
+
 inline Node::InsertionNotificationRequest Node::insertedInto(ContainerNode* insertionPoint)
 {
     ASSERT(!childNeedsStyleInvalidation());

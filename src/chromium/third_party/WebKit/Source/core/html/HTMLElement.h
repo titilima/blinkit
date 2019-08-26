@@ -161,11 +161,6 @@ inline HTMLElement::HTMLElement(const QualifiedName& tagName, Document& document
     ASSERT(!tagName.localName().isNull());
 }
 
-inline bool Node::hasTagName(const HTMLQualifiedName& name) const
-{
-    return isHTMLElement() && toHTMLElement(*this).hasTagName(name);
-}
-
 // Functor used to match HTMLElements with a specific HTML tag when using the ElementTraversal API.
 class HasHTMLTagName {
     STACK_ALLOCATED();
