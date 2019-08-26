@@ -203,6 +203,8 @@ int WinRequest::ReceiveData(void)
             int r = WaitForIOPending();
             if (BkError::Success != r)
                 return r;
+            if (BkError::Success != m_response->ErrorCode())
+                return m_response->ErrorCode();
         }
 
         if (ib.dwBufferLength > 0)
@@ -278,6 +280,8 @@ int WinRequest::SendRequest(void)
         int r = WaitForIOPending();
         if (BkError::Success != r)
             return r;
+        if (BkError::Success != m_response->ErrorCode())
+            return m_response->ErrorCode();
     }
 
     ThreadWorker nextWorker = m_body.empty() ? &WinRequest::EndRequest : &WinRequest::SendBody;
@@ -321,6 +325,9 @@ void WinRequest::StatusCallback(
     {
         case INTERNET_STATUS_CONNECTING_TO_SERVER:
             BKLOG("Connecting to %s ...", reinterpret_cast<PCSTR>(lpvStatusInformation));
+            break;
+        case INTERNET_STATUS_DETECTING_PROXY:
+            BKLOG("Detecting proxy...");
             break;
         case INTERNET_STATUS_REDIRECT:
         {
