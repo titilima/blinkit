@@ -3121,7 +3121,7 @@ void Element::willModifyAttribute(const QualifiedName& name, const AtomicString&
     }
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (oldValue != newValue)
+    if (!ForCrawler() && oldValue != newValue)
         document().styleEngine().attributeChangedForElement(name, *this);
 #endif
 
