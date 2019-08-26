@@ -35,7 +35,15 @@ duk_ret_t DukElement::DefaultAttributeGetter(duk_context *ctx, const QualifiedNa
 {
     duk_push_this(ctx);
     Element *element = DukEventTarget::GetNativeThis<Element>(ctx);
-    return Duk::PushString(ctx, element->getAttribute(name.localName()));
+    return Duk::PushString(ctx, element->getAttribute(name));
+}
+
+duk_ret_t DukElement::DefaultAttributeSetter(duk_context *ctx, const QualifiedName &name, duk_idx_t valueIdx)
+{
+    duk_push_this(ctx);
+    Element *element = DukEventTarget::GetNativeThis<Element>(ctx);
+    element->setAttribute(name, Duk::ToAtomicString(ctx, valueIdx));
+    return 0;
 }
 
 namespace Impl {
@@ -142,7 +150,7 @@ static duk_ret_t InnerHTMLSetter(duk_context *ctx)
     duk_push_this(ctx);
     Element *element = DukEventTarget::GetNativeThis<Element>(ctx);
 
-    DukExceptionState es(ctx, "innerHTML", "Element");
+    DukExceptionState es(ctx, "innerHTML", DukElement::ProtoName);
     element->setInnerHTML(Duk::ToWTFString(ctx, 0), es);
     if (es.hadException())
         es.throwIfNeeded();
@@ -181,7 +189,7 @@ static duk_ret_t OuterHTMLSetter(duk_context *ctx)
     duk_push_this(ctx);
     Element *element = DukEventTarget::GetNativeThis<Element>(ctx);
 
-    DukExceptionState es(ctx, "outerHTML", "Element");
+    DukExceptionState es(ctx, "outerHTML", DukElement::ProtoName);
     element->setOuterHTML(Duk::ToWTFString(ctx, 0), es);
     if (es.hadException())
         es.throwIfNeeded();
@@ -224,7 +232,7 @@ static duk_ret_t SetAttribute(duk_context *ctx)
     duk_push_this(ctx);
     Element *element = DukEventTarget::GetNativeThis<Element>(ctx);
 
-    DukExceptionState es(ctx, "setAttribute", "Element");
+    DukExceptionState es(ctx, "setAttribute", DukElement::ProtoName);
     element->setAttribute(Duk::ToAtomicString(ctx, 0), Duk::ToAtomicString(ctx, 1), es);
     if (es.hadException())
         es.throwIfNeeded();

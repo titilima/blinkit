@@ -34,6 +34,7 @@ public:
 #endif
 
     static duk_ret_t DefaultAttributeGetter(duk_context *ctx, const blink::QualifiedName &name);
+    static duk_ret_t DefaultAttributeSetter(duk_context *ctx, const blink::QualifiedName &name, duk_idx_t valueIdx = 0);
 protected:
     static void RegisterToPrototypeEntryForCrawler(PrototypeEntry &entry);
 #ifndef BLINKIT_CRAWLER_ONLY
