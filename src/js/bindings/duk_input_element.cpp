@@ -26,22 +26,22 @@ namespace Crawler {
 
 static duk_ret_t TypeGetter(duk_context *ctx)
 {
-    return ElementAttributeGetter(ctx, "type");
+    return DukElement::DefaultAttributeGetter(ctx, HTMLNames::typeAttr);
 }
 
 static duk_ret_t TypeSetter(duk_context *ctx)
 {
-    return ElementAttributeSetter(ctx, "type");
+    return DukElement::DefaultAttributeSetter(ctx, HTMLNames::typeAttr);
 }
 
 static duk_ret_t ValueGetter(duk_context *ctx)
 {
-    return ElementAttributeGetter(ctx, "value");
+    return DukElement::DefaultAttributeGetter(ctx, HTMLNames::valueAttr);
 }
 
 static duk_ret_t ValueSetter(duk_context *ctx)
 {
-    return ElementAttributeSetter(ctx, "value");
+    return DukElement::DefaultAttributeSetter(ctx, HTMLNames::valueAttr);
 }
 
 } // namespace Crawler
