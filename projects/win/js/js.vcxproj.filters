@@ -140,6 +140,15 @@
     <ClCompile Include="..\..\..\src\js\context\timer_manager.cpp">
       <Filter>context</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\js\bindings\duk_form_element.cpp">
+      <Filter>bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\bindings\duk_anchor_element.cpp">
+      <Filter>bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\js\bindings\duk_image_element.cpp">
+      <Filter>bindings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\js\_pc.h">
@@ -261,6 +270,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\js\context\timer_manager.h">
       <Filter>context</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_form_element.h">
+      <Filter>bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_anchor_element.h">
+      <Filter>bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_image_element.h">
+      <Filter>bindings</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

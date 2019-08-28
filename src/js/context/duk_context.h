@@ -21,6 +21,7 @@
 #endif
 
 namespace blink {
+class Element;
 class Event;
 class EventTarget;
 class LocalFrame;
@@ -98,6 +99,7 @@ private:
     void RegisterPrototypesForUI(void);
 #endif
     void RegisterPrototypesForCrawler(void);
+    bool PushElementForCrawler(duk_context *ctx, blink::Element *element);
 
     blink::LocalFrame &m_frame;
     duk_context *m_context;

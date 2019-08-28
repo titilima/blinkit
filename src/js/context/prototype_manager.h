@@ -59,6 +59,8 @@ public:
     void BeginRegisterTransaction(duk_context *ctx);
     bool Register(duk_context *ctx, const char *protoName, const std::function<void(PrototypeEntry &)> &worker);
     void EndRegisterTransaction(duk_context *ctx);
+
+    void AddElementPrototypes(duk_context *ctx);
 private:
     void *m_protosPtr;
     std::unordered_map<std::string, void *> m_protos;

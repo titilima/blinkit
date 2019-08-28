@@ -18,6 +18,7 @@
 #include "blinkit/app/app_impl.h"
 #include "blinkit/crawler/crawler_impl.h"
 
+#include "bindings/duk_anchor_element.h"
 #include "bindings/duk_attr.h"
 #include "bindings/duk_comment.h"
 #include "bindings/duk_console.h"
@@ -30,7 +31,9 @@
 #include "bindings/duk_event.h"
 #include "bindings/duk_event_listener.h"
 #include "bindings/duk_exception_state.h"
+#include "bindings/duk_form_element.h"
 #include "bindings/duk_html_collection.h"
+#include "bindings/duk_image_element.h"
 #include "bindings/duk_input_element.h"
 #include "bindings/duk_location.h"
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -86,6 +89,12 @@ static duk_ret_t DebugBreak(duk_context *ctx)
 } // namespace Impl
 
 namespace Crawler {
+
+static duk_ret_t AddElementPrototypes(duk_context *ctx)
+{
+    DukContext::PrototypeManagerFrom(ctx)->AddElementPrototypes(ctx);
+    return 0;
+}
 
 static duk_ret_t Log(duk_context *ctx)
 {
@@ -258,6 +267,8 @@ std::tuple<int, std::string> DukContext::CreateCrawlerObject(const char *script,
     duk_put_prop_string(m_context, -2, "notify");
     duk_push_c_function(m_context, Crawler::Log, 1);
     duk_put_prop_string(m_context, -2, "log");
+    duk_push_c_function(m_context, Crawler::AddElementPrototypes, 1);
+    duk_put_prop_string(m_context, -2, "addElementPrototypes");
 #ifdef _DEBUG
     duk_push_c_function(m_context, Impl::DebugBreak, 1);
     duk_put_prop_string(m_context, -2, "debugBreak");
@@ -403,6 +414,19 @@ PrototypeManager* DukContext::PrototypeManagerFrom(duk_context *ctx)
     return nullptr != context ? context->m_prototypeManager.get() : nullptr;
 }
 
+bool DukContext::PushElementForCrawler(duk_context *ctx, Element *element)
+{
+    if (element->hasTagName(HTMLNames::aTag))
+        PushObject<DukAnchorElement>(ctx, element);
+    else if (element->hasTagName(HTMLNames::formTag))
+        PushObject<DukFormElement>(ctx, element);
+    else if (element->hasTagName(HTMLNames::imgTag))
+        PushObject<DukImageElement>(ctx, element);
+    else
+        return false;
+    return true;
+}
+
 void DukContext::PushEvent(duk_context *ctx, Event *event)
 {
     if (nullptr == event)
@@ -468,11 +492,6 @@ duk_ret_t DukContext::PushEventTarget(duk_context *ctx, EventTarget *eventTarget
     return 1;
 }
 
-static bool MatchTag(Element *element, const HTMLQualifiedName &tag)
-{
-    return element->hasLocalName(tag.localName());
-}
-
 void DukContext::PushNode(duk_context *ctx, Node *node)
 {
     if (nullptr == node)
@@ -509,7 +528,15 @@ void DukContext::PushNode(duk_context *ctx, Node *node)
     assert(node->isElementNode());
     Element *element = toElement(node);
 
-    if (MatchTag(element, HTMLNames::inputTag))
+#ifdef BLINKIT_CRAWLER_ONLY
+    if (PushElementForCrawler(ctx, element))
+        return;
+#else
+    if (element->ForCrawler() && PushElementForCrawler(ctx, element))
+        return;
+#endif
+
+    if (element->hasTagName(HTMLNames::inputTag))
     {
         PushObject<DukInputElement>(ctx, element);
         return;
@@ -553,12 +580,15 @@ void DukContext::RegisterPrototypesForUI(void)
 void DukContext::RegisterPrototypesForCrawler(void)
 {
     m_prototypeManager->BeginRegisterTransaction(m_context);
+    DukAnchorElement::RegisterPrototype(m_context, *m_prototypeManager);
     DukAttr::RegisterPrototype(m_context, *m_prototypeManager);
     DukComment::RegisterPrototype(m_context, *m_prototypeManager);
     DukConsole::RegisterPrototype(m_context, *m_prototypeManager);
     DukDocument::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
     DukDocumentFragment::RegisterPrototype(m_context, *m_prototypeManager);
     DukElement::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
+    DukFormElement::RegisterPrototype(m_context, *m_prototypeManager);
+    DukImageElement::RegisterPrototype(m_context, *m_prototypeManager);
     DukInputElement::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
     DukEvent::RegisterPrototype(m_context, *m_prototypeManager);
     DukHTMLCollection::RegisterPrototype(m_context, *m_prototypeManager);

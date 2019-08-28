@@ -82,6 +82,11 @@ PrototypeManager::PrototypeManager(duk_context *ctx)
     duk_put_prop_string(ctx, -2, "prototypes");
 }
 
+void PrototypeManager::AddElementPrototypes(duk_context *ctx)
+{
+    assert(false); // BKTODO:
+}
+
 void PrototypeManager::BeginRegisterTransaction(duk_context *ctx)
 {
     duk_push_heapptr(ctx, m_protosPtr);

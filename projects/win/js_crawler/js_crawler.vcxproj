@@ -245,6 +245,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\js\bindings\duk_anchor_element.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_attr.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_binding_impl.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_comment.h" />
@@ -257,7 +258,9 @@
     <ClInclude Include="..\..\..\src\js\bindings\duk_event_listener.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_event_target.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_exception_state.h" />
+    <ClInclude Include="..\..\..\src\js\bindings\duk_form_element.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_html_collection.h" />
+    <ClInclude Include="..\..\..\src\js\bindings\duk_image_element.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_input_element.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_lazy_event_listener.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_location.h" />
@@ -283,6 +286,7 @@
     <ClInclude Include="..\..\..\src\js\_pc.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\js\bindings\duk_anchor_element.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_attr.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_binding_impl.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_comment.cpp" />
@@ -295,7 +299,9 @@
     <ClCompile Include="..\..\..\src\js\bindings\duk_event_listener.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_event_target.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_exception_state.cpp" />
+    <ClCompile Include="..\..\..\src\js\bindings\duk_form_element.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_html_collection.cpp" />
+    <ClCompile Include="..\..\..\src\js\bindings\duk_image_element.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_input_element.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_lazy_event_listener.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_location.cpp" />
