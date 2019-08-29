@@ -44,7 +44,9 @@
 #include "core/fileapi/Blob.h"
 #include "core/fileapi/File.h"
 #include "core/frame/UseCounter.h"
-#include "core/html/HTMLFormElement.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "core/html/HTMLFormElement.h"
+#endif
 #include "platform/network/FormDataEncoder.h"
 #include "platform/text/LineEnding.h"
 #include "wtf/text/WTFString.h"
@@ -56,6 +58,7 @@ FormData::FormData(const WTF::TextEncoding& encoding)
 {
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 FormData::FormData(HTMLFormElement* form)
     : m_encoding(UTF8Encoding())
 {
@@ -68,6 +71,7 @@ FormData::FormData(HTMLFormElement* form)
             element->appendToFormData(*this);
     }
 }
+#endif
 
 DEFINE_TRACE(FormData)
 {

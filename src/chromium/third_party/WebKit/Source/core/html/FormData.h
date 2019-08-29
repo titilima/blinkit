@@ -60,10 +60,12 @@ class CORE_EXPORT FormData final : public GarbageCollected<FormData>, public Scr
     DEFINE_WRAPPERTYPEINFO();
 
 public:
+#ifndef BLINKIT_CRAWLER_ONLY
     static FormData* create(HTMLFormElement* form = 0)
     {
         return new FormData(form);
     }
+#endif
 
     static FormData* create(const WTF::TextEncoding& encoding)
     {
@@ -94,7 +96,9 @@ public:
 
 private:
     explicit FormData(const WTF::TextEncoding&);
+#ifndef BLINKIT_CRAWLER_ONLY
     explicit FormData(HTMLFormElement*);
+#endif
     void setEntry(const Entry*);
     CString encodeAndNormalize(const String& key) const;
 
