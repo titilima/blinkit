@@ -246,17 +246,7 @@ void FrameLoaderClientImpl::dispatchWillOpenWebSocket(WebSocketHandle *)
     assert(false); // BKTODO:
 }
 
-void FrameLoaderClientImpl::dispatchWillSendSubmitEvent(HTMLFormElement *)
-{
-    assert(false); // BKTODO:
-}
-
 void FrameLoaderClientImpl::dispatchWillStartUsingPeerConnectionHandler(WebRTCPeerConnectionHandler *)
-{
-    assert(false); // BKTODO:
-}
-
-void FrameLoaderClientImpl::dispatchWillSubmitForm(HTMLFormElement *)
 {
     assert(false); // BKTODO:
 }

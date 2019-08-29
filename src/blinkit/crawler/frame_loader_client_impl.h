@@ -49,8 +49,8 @@ protected:
     void dispatchDidChangeThemeColor(void) override final;
     blink::NavigationPolicy decidePolicyForNavigation(const blink::ResourceRequest&, blink::DocumentLoader*, blink::NavigationType, blink::NavigationPolicy, bool shouldReplaceCurrentEntry) override final;
     bool hasPendingNavigation(void) override final;
-    void dispatchWillSendSubmitEvent(blink::HTMLFormElement *) override final;
-    void dispatchWillSubmitForm(blink::HTMLFormElement *) override final;
+    void dispatchWillSendSubmitEvent(blink::Element *) override {}
+    void dispatchWillSubmitForm(blink::Element *) override {}
     void didStartLoading(blink::LoadStartType) override final;
     void progressEstimateChanged(double progressEstimate) override final;
     void didStopLoading(void) override final;
