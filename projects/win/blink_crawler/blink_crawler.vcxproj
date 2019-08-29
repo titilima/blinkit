@@ -468,6 +468,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\DocumentThreadableLoader.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\DocumentWriter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\EmptyClients.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FormSubmission.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FrameFetchContext.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FrameLoader.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FrameLoaderStateMachine.cpp" />
@@ -985,6 +986,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\DocumentThreadableLoader.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\DocumentWriter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\EmptyClients.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FormSubmission.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FrameFetchContext.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FrameLoader.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FrameLoaderStateMachine.h" />

@@ -156,6 +156,9 @@
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_script_element.cpp">
       <Filter>crawler</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_form_element.cpp">
+      <Filter>crawler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -279,6 +282,9 @@
       <Filter>crawler</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_script_element.h">
+      <Filter>crawler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_form_element.h">
       <Filter>crawler</Filter>
     </ClInclude>
   </ItemGroup>

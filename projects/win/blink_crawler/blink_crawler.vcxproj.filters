@@ -1532,6 +1532,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSTokenizerInputStream.cpp">
       <Filter>core\css\parser</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FormSubmission.cpp">
+      <Filter>core\loader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -3141,6 +3144,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\css\parser\CSSTokenizerInputStream.h">
       <Filter>core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\WebKit\Source\core\loader\FormSubmission.h">
+      <Filter>core\loader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

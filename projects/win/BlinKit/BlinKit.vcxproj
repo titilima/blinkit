@@ -274,6 +274,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_document.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_element.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_form_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_script_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\frame_loader_client_impl.cpp" />
@@ -321,6 +322,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_thread.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_document.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_element.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_form_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_script_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\frame_loader_client_impl.h" />
