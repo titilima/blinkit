@@ -109,8 +109,8 @@ public:
     virtual NavigationPolicy decidePolicyForNavigation(const ResourceRequest&, DocumentLoader*, NavigationType, NavigationPolicy, bool shouldReplaceCurrentEntry) = 0;
     virtual bool hasPendingNavigation() = 0;
 
-    virtual void dispatchWillSendSubmitEvent(HTMLFormElement*) = 0;
-    virtual void dispatchWillSubmitForm(HTMLFormElement*) = 0;
+    virtual void dispatchWillSendSubmitEvent(Element*) = 0;
+    virtual void dispatchWillSubmitForm(Element*) = 0;
 
     virtual void didStartLoading(LoadStartType) = 0;
     virtual void progressEstimateChanged(double progressEstimate) = 0;

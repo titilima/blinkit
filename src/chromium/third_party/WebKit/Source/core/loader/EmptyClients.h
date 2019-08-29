@@ -215,8 +215,8 @@ public:
     NavigationPolicy decidePolicyForNavigation(const ResourceRequest&, DocumentLoader*, NavigationType, NavigationPolicy, bool) override;
     bool hasPendingNavigation() override;
 
-    void dispatchWillSendSubmitEvent(HTMLFormElement*) override;
-    void dispatchWillSubmitForm(HTMLFormElement*) override;
+    void dispatchWillSendSubmitEvent(Element*) override;
+    void dispatchWillSubmitForm(Element*) override;
 
     void didStartLoading(LoadStartType) override {}
     void progressEstimateChanged(double) override {}

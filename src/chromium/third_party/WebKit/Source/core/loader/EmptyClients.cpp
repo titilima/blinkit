@@ -136,11 +136,11 @@ bool EmptyFrameLoaderClient::hasPendingNavigation()
     return false;
 }
 
-void EmptyFrameLoaderClient::dispatchWillSendSubmitEvent(HTMLFormElement*)
+void EmptyFrameLoaderClient::dispatchWillSendSubmitEvent(Element*)
 {
 }
 
-void EmptyFrameLoaderClient::dispatchWillSubmitForm(HTMLFormElement*)
+void EmptyFrameLoaderClient::dispatchWillSubmitForm(Element*)
 {
 }
 

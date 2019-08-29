@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FrameLoadRequest.h
+// Description: FrameLoadRequest Struct
+//      Author: Ziming Li
+//     Created: 2019-08-29
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2006, 2010 Apple Inc. All rights reserved.
  *
@@ -27,10 +38,10 @@
 #define FrameLoadRequest_h
 
 #include "core/dom/Document.h"
+#include "core/dom/Element.h"
 #include "core/events/Event.h"
 #include "core/fetch/ResourceLoaderOptions.h"
 #include "core/fetch/SubstituteData.h"
-#include "core/html/HTMLFormElement.h"
 #include "core/loader/FrameLoaderTypes.h"
 #include "platform/network/ResourceRequest.h"
 
@@ -83,8 +94,11 @@ public:
     Event* triggeringEvent() const { return m_triggeringEvent.get(); }
     void setTriggeringEvent(PassRefPtrWillBeRawPtr<Event> triggeringEvent) { m_triggeringEvent = triggeringEvent; }
 
-    HTMLFormElement* form() const { return m_form.get(); }
-    void setForm(PassRefPtrWillBeRawPtr<HTMLFormElement> form) { m_form = form; }
+    Element* form() const { return m_form.get(); }
+    void setForm(PassRefPtrWillBeRawPtr<Element> form) {
+        ASSERT(form->hasTagName(HTMLNames::formTag));
+        m_form = form;
+    }
 
     ShouldSendReferrer shouldSendReferrer() const { return m_shouldSendReferrer; }
     void setShouldSendReferrer(ShouldSendReferrer shouldSendReferrer) { m_shouldSendReferrer = shouldSendReferrer; }
@@ -124,7 +138,7 @@ private:
     bool m_replacesCurrentItem;
     ClientRedirectPolicy m_clientRedirect;
     RefPtrWillBeMember<Event> m_triggeringEvent;
-    RefPtrWillBeMember<HTMLFormElement> m_form;
+    RefPtrWillBeMember<Element> m_form;
     ShouldSendReferrer m_shouldSendReferrer;
     ShouldSetOpener m_shouldSetOpener;
     ContentSecurityPolicyDisposition m_shouldCheckMainWorldContentSecurityPolicy;

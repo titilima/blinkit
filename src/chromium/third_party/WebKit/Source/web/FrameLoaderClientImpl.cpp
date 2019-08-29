@@ -49,6 +49,7 @@
 #include "core/events/UIEventWithKeyState.h"
 #include "core/frame/FrameView.h"
 #include "core/frame/Settings.h"
+#include "core/html/HTMLFormElement.h"
 #include "core/input/EventHandler.h"
 #include "core/layout/HitTestResult.h"
 #include "core/loader/DocumentLoader.h"
@@ -509,16 +510,22 @@ bool FrameLoaderClientImpl::hasPendingNavigation()
     return m_webFrame->client()->hasPendingNavigation(m_webFrame);
 }
 
-void FrameLoaderClientImpl::dispatchWillSendSubmitEvent(HTMLFormElement* form)
+void FrameLoaderClientImpl::dispatchWillSendSubmitEvent(Element *e)
 {
     if (m_webFrame->client())
+    {
+        HTMLFormElement *form = toHTMLFormElement(e);
         m_webFrame->client()->willSendSubmitEvent(m_webFrame, WebFormElement(form));
+    }
 }
 
-void FrameLoaderClientImpl::dispatchWillSubmitForm(HTMLFormElement* form)
+void FrameLoaderClientImpl::dispatchWillSubmitForm(Element *e)
 {
     if (m_webFrame->client())
+    {
+        HTMLFormElement *form = toHTMLFormElement(e);
         m_webFrame->client()->willSubmitForm(m_webFrame, WebFormElement(form));
+    }
 }
 
 void FrameLoaderClientImpl::didStartLoading(LoadStartType loadStartType)

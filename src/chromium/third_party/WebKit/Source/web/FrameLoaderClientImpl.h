@@ -103,8 +103,8 @@ public:
     void dispatchDidChangeThemeColor() override;
     NavigationPolicy decidePolicyForNavigation(const ResourceRequest&, DocumentLoader*, NavigationType, NavigationPolicy, bool shouldReplaceCurrentEntry) override;
     bool hasPendingNavigation() override;
-    void dispatchWillSendSubmitEvent(HTMLFormElement*) override;
-    void dispatchWillSubmitForm(HTMLFormElement*) override;
+    void dispatchWillSendSubmitEvent(Element*) override;
+    void dispatchWillSubmitForm(Element*) override;
     void didStartLoading(LoadStartType) override;
     void didStopLoading() override;
     void progressEstimateChanged(double progressEstimate) override;
