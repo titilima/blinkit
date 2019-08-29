@@ -1176,7 +1176,7 @@ void Element::attributeChanged(const QualifiedName& name, const AtomicString& ol
     } else if (name == HTMLNames::nameAttr) {
         setHasName(!newValue.isNull());
 #ifndef BLINKIT_CRAWLER_ONLY
-    } else if (isStyledElement()) {
+    } else if (isStyledElement() && !ForCrawler()) {
         if (name == styleAttr) {
             styleAttributeChanged(newValue, reason);
         } else if (isPresentationAttribute(name)) {

@@ -2848,6 +2848,7 @@ void Document::executeScriptsWaitingForResources()
 #ifndef BLINKIT_CRAWLER_ONLY
 CSSStyleSheet& Document::elementSheet()
 {
+    ASSERT(!ForCrawler());
     if (!m_elemSheet)
         m_elemSheet = CSSStyleSheet::createInline(this, m_baseURL);
     return *m_elemSheet;
