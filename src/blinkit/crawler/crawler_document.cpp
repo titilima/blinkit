@@ -13,7 +13,7 @@
 
 #include "core/dom/DocumentInit.h"
 
-#include "crawler/crawler_element.h"
+#include "crawler/crawler_form_element.h"
 
 using namespace blink;
 
@@ -27,6 +27,8 @@ CrawlerDocument::CrawlerDocument(const DocumentInit &init)
 
 PassRefPtrWillBeRawPtr<Element> CrawlerDocument::createElement(const AtomicString &localName, ExceptionState &)
 {
+    if (localName == HTMLNames::formTag)
+        return CrawlerFormElement::Create(*this);
     return CrawlerElement::Create(localName, this);
 }
 

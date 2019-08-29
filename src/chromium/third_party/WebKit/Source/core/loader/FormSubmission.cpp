@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FormSubmission.cpp
+// Description: FormSubmission Class
+//      Author: Ziming Li
+//     Created: 2019-08-27
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -33,11 +44,14 @@
 #include "core/HTMLNames.h"
 #include "core/InputTypeNames.h"
 #include "core/dom/Document.h"
+#include "core/dom/ElementTraversal.h"
 #include "core/events/Event.h"
 #include "core/html/FormData.h"
-#include "core/html/HTMLFormControlElement.h"
-#include "core/html/HTMLFormElement.h"
-#include "core/html/HTMLInputElement.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "core/html/HTMLFormControlElement.h"
+#   include "core/html/HTMLFormElement.h"
+#   include "core/html/HTMLInputElement.h"
+#endif
 #include "core/html/parser/HTMLParserIdioms.h"
 #include "core/loader/FrameLoadRequest.h"
 #include "core/loader/FrameLoader.h"
@@ -47,6 +61,8 @@
 #include "wtf/CurrentTime.h"
 #include "wtf/text/StringBuilder.h"
 #include "wtf/text/TextEncoding.h"
+
+#include "blinkit/crawler/crawler_form_element.h"
 
 namespace blink {
 
@@ -142,7 +158,7 @@ void FormSubmission::Attributes::copyFrom(const Attributes& other)
     m_acceptCharset = other.m_acceptCharset;
 }
 
-inline FormSubmission::FormSubmission(Method method, const KURL& action, const AtomicString& target, const AtomicString& contentType, HTMLFormElement* form, PassRefPtr<EncodedFormData> data, const String& boundary, PassRefPtrWillBeRawPtr<Event> event)
+inline FormSubmission::FormSubmission(Method method, const KURL& action, const AtomicString& target, const AtomicString& contentType, Element* form, PassRefPtr<EncodedFormData> data, const String& boundary, PassRefPtrWillBeRawPtr<Event> event)
     : m_method(method)
     , m_action(action)
     , m_target(target)
@@ -152,6 +168,7 @@ inline FormSubmission::FormSubmission(Method method, const KURL& action, const A
     , m_boundary(boundary)
     , m_event(event)
 {
+    ASSERT(form->isHTMLElement() && form->hasTagName(HTMLNames::formTag));
 }
 
 inline FormSubmission::FormSubmission(const String& result)
@@ -160,23 +177,31 @@ inline FormSubmission::FormSubmission(const String& result)
 {
 }
 
-PassRefPtrWillBeRawPtr<FormSubmission> FormSubmission::create(HTMLFormElement* form, const Attributes& attributes, PassRefPtrWillBeRawPtr<Event> event)
+PassRefPtrWillBeRawPtr<FormSubmission> FormSubmission::create(Element *form, const Attributes& attributes, PassRefPtrWillBeRawPtr<Event> event)
 {
     ASSERT(form);
 
-    HTMLFormControlElement* submitButton = 0;
-    if (event && event->target()) {
-        for (Node* node = event->target()->toNode(); node; node = node->parentOrShadowHostNode()) {
-            if (node->isElementNode() && toElement(node)->isFormControlElement()) {
-                submitButton = toHTMLFormControlElement(node);
-                break;
+    Element *submitButton = nullptr;
+    if (event && event->target())
+    {
+        for (Node* node = event->target()->toNode(); node; node = node->parentOrShadowHostNode())
+        {
+            if (node->isElementNode())
+            {
+                Element *e = toElement(node);
+                if (e->isFormControlElement())
+                {
+                    submitButton = e;
+                    break;
+                }
             }
         }
     }
 
     FormSubmission::Attributes copiedAttributes;
     copiedAttributes.copyFrom(attributes);
-    if (submitButton) {
+    if (submitButton)
+    {
         AtomicString attributeValue;
         if (!(attributeValue = submitButton->fastGetAttribute(formactionAttr)).isNull())
             copiedAttributes.parseAction(attributeValue);
@@ -188,10 +213,14 @@ PassRefPtrWillBeRawPtr<FormSubmission> FormSubmission::create(HTMLFormElement* f
             copiedAttributes.setTarget(attributeValue);
     }
 
-    if (copiedAttributes.method() == DialogMethod) {
+    if (copiedAttributes.method() == DialogMethod)
+    {
+        ASSERT(false); // BKTODO:
+#if 0
         if (submitButton)
             return adoptRefWillBeNoop(new FormSubmission(submitButton->resultForDialogSubmit()));
         return adoptRefWillBeNoop(new FormSubmission(""));
+#endif
     }
 
     Document& document = form->document();
@@ -200,9 +229,11 @@ PassRefPtrWillBeRawPtr<FormSubmission> FormSubmission::create(HTMLFormElement* f
     bool isMultiPartForm = false;
     AtomicString encodingType = copiedAttributes.encodingType();
 
-    if (copiedAttributes.method() == PostMethod) {
+    if (copiedAttributes.method() == PostMethod)
+    {
         isMultiPartForm = copiedAttributes.isMultiPartForm();
-        if (isMultiPartForm && isMailtoForm) {
+        if (isMultiPartForm && isMailtoForm)
+        {
             encodingType = AtomicString("application/x-www-form-urlencoded", AtomicString::ConstructFromLiteral);
             isMultiPartForm = false;
         }
@@ -211,18 +242,15 @@ PassRefPtrWillBeRawPtr<FormSubmission> FormSubmission::create(HTMLFormElement* f
     FormData* domFormData = FormData::create(dataEncoding.encodingForFormSubmission());
 
     bool containsPasswordData = false;
-    for (unsigned i = 0; i < form->associatedElements().size(); ++i) {
-        FormAssociatedElement* control = form->associatedElements()[i];
-        ASSERT(control);
-        HTMLElement& element = toHTMLElement(*control);
-        if (!element.isDisabledFormControl())
-            control->appendToFormData(*domFormData);
-        if (isHTMLInputElement(element)) {
-            HTMLInputElement& input = toHTMLInputElement(element);
-            if (input.type() == InputTypeNames::password && !input.value().isEmpty())
-                containsPasswordData = true;
-        }
-    }
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(form->ForCrawler());
+    ProcessFormDOMForCrawler(static_cast<BlinKit::CrawlerFormElement *>(form), *domFormData, containsPasswordData);
+#else
+    if (form->ForCrawler())
+        ProcessFormDOMForCrawler(static_cast<BlinKit::CrawlerFormElement *>(form), *domFormData, containsPasswordData);
+    else
+        ProcessFormDOMForUI(toHTMLFormElement(form), *domFormData, containsPasswordData);
+#endif
 
     RefPtr<EncodedFormData> formData;
     String boundary;
@@ -279,5 +307,46 @@ void FormSubmission::populateFrameLoadRequest(FrameLoadRequest& frameRequest)
 
     frameRequest.resourceRequest().setURL(requestURL());
 }
+
+void FormSubmission::ProcessFormDOMForCrawler(BlinKit::CrawlerFormElement *form, FormData &domFormData, bool &containsPasswordData)
+{
+    for (Element &element : Traversal<Element>::startsAfter(*form))
+    {
+        if (!element.isFormControlElement())
+            continue;
+        if (!element.isDisabledFormControl())
+            form->CollectFormData(domFormData, element);
+        if (element.hasTagName(HTMLNames::inputTag))
+        {
+            const AtomicString &type = element.getAttribute(HTMLNames::typeAttr);
+            if (type == InputTypeNames::password)
+            {
+                const AtomicString &value = element.getAttribute(HTMLNames::valueAttr);
+                if (!value.isEmpty())
+                    containsPasswordData = true;
+            }
+        }
+    }
+}
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void FormSubmission::ProcessFormDOMForUI(HTMLFormElement *form, FormData &domFormData, bool &containsPasswordData)
+{
+    for (unsigned i = 0; i < form->associatedElements().size(); ++i)
+    {
+        FormAssociatedElement* control = form->associatedElements()[i];
+        ASSERT(control);
+        HTMLElement& element = toHTMLElement(*control);
+        if (!element.isDisabledFormControl())
+            control->appendToFormData(domFormData);
+        if (isHTMLInputElement(element))
+        {
+            HTMLInputElement& input = toHTMLInputElement(element);
+            if (input.type() == InputTypeNames::password && !input.value().isEmpty())
+                containsPasswordData = true;
+        }
+    }
+}
+#endif
 
 }

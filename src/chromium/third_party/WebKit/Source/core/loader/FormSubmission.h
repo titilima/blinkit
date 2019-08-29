@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FormSubmission.h
+// Description: FormSubmission Class
+//      Author: Ziming Li
+//     Created: 2019-08-27
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -36,10 +47,16 @@
 #include "platform/weborigin/Referrer.h"
 #include "wtf/Allocator.h"
 
+namespace BlinKit {
+class CrawlerFormElement;
+}
+
 namespace blink {
 
+class Element;
 class EncodedFormData;
 class Event;
+class FormData;
 struct FrameLoadRequest;
 class HTMLFormElement;
 
@@ -89,7 +106,7 @@ public:
         String m_acceptCharset;
     };
 
-    static PassRefPtrWillBeRawPtr<FormSubmission> create(HTMLFormElement*, const Attributes&, PassRefPtrWillBeRawPtr<Event>);
+    static PassRefPtrWillBeRawPtr<FormSubmission> create(Element*, const Attributes&, PassRefPtrWillBeRawPtr<Event>);
     DECLARE_TRACE();
 
     void populateFrameLoadRequest(FrameLoadRequest&);
@@ -100,23 +117,28 @@ public:
     const KURL& action() const { return m_action; }
     const AtomicString& target() const { return m_target; }
     void clearTarget() { m_target = nullAtom; }
-    HTMLFormElement* form() const { return m_form.get(); }
+    Element* form() const { return m_form.get(); }
     EncodedFormData* data() const { return m_formData.get(); }
     Event* event() const { return m_event.get(); }
 
     const String& result() const { return m_result; }
 
 private:
-    FormSubmission(Method, const KURL& action, const AtomicString& target, const AtomicString& contentType, HTMLFormElement*, PassRefPtr<EncodedFormData>, const String& boundary, PassRefPtrWillBeRawPtr<Event>);
+    FormSubmission(Method, const KURL& action, const AtomicString& target, const AtomicString& contentType, Element*, PassRefPtr<EncodedFormData>, const String& boundary, PassRefPtrWillBeRawPtr<Event>);
     // FormSubmission for DialogMethod
     FormSubmission(const String& result);
+
+    static void ProcessFormDOMForCrawler(BlinKit::CrawlerFormElement *form, FormData &domFormData, bool &containsPasswordData);
+#ifndef BLINKIT_CRAWLER_ONLY
+    static void ProcessFormDOMForUI(HTMLFormElement *form, FormData &domFormData, bool &containsPasswordData);
+#endif
 
     // FIXME: Hold an instance of Attributes instead of individual members.
     Method m_method;
     KURL m_action;
     AtomicString m_target;
     AtomicString m_contentType;
-    RefPtrWillBeMember<HTMLFormElement> m_form;
+    RefPtrWillBeMember<Element> m_form;
     RefPtr<EncodedFormData> m_formData;
     String m_boundary;
     RefPtrWillBeMember<Event> m_event;

@@ -26,6 +26,11 @@ public:
     }
 protected:
     CrawlerElement(const AtomicString &localName, blink::Document *document);
+
+    bool isURLAttribute(const blink::Attribute &attribute) const;
+private:
+    bool isFormControlElement(void) const final;
+    bool isDisabledFormControl(void) const final;
 };
 
 } // namespace BlinKit
