@@ -30,6 +30,7 @@ public:
     CookieJarImpl(void);
     ~CookieJarImpl(void);
 
+    void AddCookieEntry(const std::string &URL, const std::string &cookie);
     std::string GetCookie(const std::string &URL) const;
 private:
     // blink::WebCookieJar

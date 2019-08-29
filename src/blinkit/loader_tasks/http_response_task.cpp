@@ -13,6 +13,8 @@
 
 #include "public/platform/WebTraceLocation.h"
 
+#include "app/app_impl.h"
+#include "blink_impl/cookie_jar_impl.h"
 #include "crawler/crawler_impl.h"
 
 using namespace blink;
@@ -37,8 +39,7 @@ void BKAPI HTTPResponseTask::Continue(void)
 
 unsigned BKAPI HTTPResponseTask::CookiesCount(void) const
 {
-    assert(false); // BKTODO:
-    return 0;
+    return m_cookies.size();
 }
 
 int BKAPI HTTPResponseTask::GetBody(BkBuffer &body) const
@@ -50,8 +51,14 @@ int BKAPI HTTPResponseTask::GetBody(BkBuffer &body) const
 
 int BKAPI HTTPResponseTask::GetCookie(unsigned i, BkBuffer &cookie) const
 {
-    assert(false); // BKTODO:
-    return BkError::Forbidden;
+    if (m_cookies.size() <= i)
+    {
+        assert(i < m_cookies.size());
+        return BkError::NotFound;
+    }
+
+    cookie.Assign(m_cookies.at(i));
+    return BkError::Success;
 }
 
 int BKAPI HTTPResponseTask::GetCurrentURL(BkBuffer &URL) const
@@ -73,6 +80,14 @@ void BKAPI HTTPResponseTask::RequestComplete(const BkResponse &response)
     response.GetHeader("Content-Type", BkMakeBuffer(m_responseData->ContentType).Wrap());
     response.GetBody(BkMakeBuffer(m_responseData->Body).Wrap());
 
+    const unsigned cookiesCount = response.CookiesCount();
+    for (unsigned i = 0; i < cookiesCount; ++i)
+    {
+        std::string cookie;
+        response.GetCookie(i, BkMakeBuffer(cookie).Wrap());
+        m_cookies.push_back(cookie);
+    }
+
     const auto callback = [this]()
     {
         m_crawler.Client().RequestComplete(&m_crawler, this);
@@ -87,6 +102,20 @@ void BKAPI HTTPResponseTask::RequestFailed(int errorCode)
         client->RequestFailed(errorCode);
     });
     delete this;
+}
+
+void HTTPResponseTask::run(void)
+{
+    BkCrawlerClient &client = m_crawler.Client();
+    CookieJarImpl &cookieJar = AppImpl::Get().CookieJar();
+
+    for (const std::string &cookie : m_cookies)
+    {
+        if (!client.SetCookie(cookie.c_str()))
+            cookieJar.AddCookieEntry(m_currentURL, cookie);
+    }
+
+    ResponseTask::run();
 }
 
 void BKAPI HTTPResponseTask::SetBody(const char *body, size_t length)

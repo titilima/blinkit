@@ -30,6 +30,8 @@ public:
         m_taskRunner = taskRunner;
     }
 private:
+    // blink::WebTaskRunner::Task
+    void run(void) override;
     // BkRequestClient
     void BKAPI RequestComplete(const BkResponse &response) override;
     void BKAPI RequestFailed(int errorCode) override;
@@ -47,6 +49,7 @@ private:
 
     CrawlerImpl &m_crawler;
     std::string m_currentURL;
+    std::vector<std::string> m_cookies;
     blink::WebTaskRunner *m_taskRunner = nullptr;
 };
 
