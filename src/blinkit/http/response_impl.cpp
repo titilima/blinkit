@@ -15,6 +15,7 @@
 #include <zlib.h>
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "url/gurl.h"
 
 namespace BlinKit {
 
@@ -205,6 +206,31 @@ void BKAPI ResponseImpl::Release(void)
 {
     if (0 == --m_refCount)
         delete this;
+}
+
+void ResponseImpl::ResetForRedirection(void)
+{
+    m_version.clear();
+    m_errorCode = BkError::Success;
+    m_statusCode = 0;
+    m_reasonPhrase.clear();
+    m_headers.clear();
+    m_cookies.clear();
+    m_body.clear();
+}
+
+std::string ResponseImpl::ResolveRedirection(void)
+{
+    std::string ret;
+
+    auto it = m_headers.find("Location");
+    assert(std::end(m_headers) != it);
+    if (std::end(m_headers) != it)
+    {
+        ret = m_URL;
+        m_URL = GURL(m_URL).Resolve(it->second).spec();
+    }
+    return ret;
 }
 
 BkRetainedResponse* BKAPI ResponseImpl::Retain(void) const

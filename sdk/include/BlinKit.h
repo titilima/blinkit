@@ -472,6 +472,12 @@ public:
         assert(BkError::Success == errorCode);
     }
 
+    virtual bool BKAPI RequestRedirect(const BkResponse &response) {
+        // Return false to refuse the redirection,
+        // then the request will be completed without calling `RequestComplete`.
+        return true;
+    }
+
     virtual bool BKAPI UseProxy(void) { return true; }
     virtual void BKAPI GetProxy(BkBuffer &proxy) {
         // Empty string proxy is for system global proxy.

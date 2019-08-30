@@ -119,6 +119,25 @@ int WinRequest::EndRequest(void)
     return Continue(&WinRequest::QueryRequest, signal);
 }
 
+int WinRequest::OpenRequest(const std::string &URL)
+{
+    GURL u(URL);
+    if (!u.SchemeIsHTTPOrHTTPS())
+        return BkError::URIError;
+
+    assert(!m_connection.IsValid());
+    m_connection = m_session.Connect(u.host(), u.EffectiveIntPort(), u.username(), u.password());
+    if (!m_connection.IsValid())
+        return BkError::NetworkError;
+
+    assert(!m_request.IsValid());
+    m_request = m_connection.OpenRequest(m_method, u.PathForRequest(), m_referer, u.SchemeIs("https"));
+    if (!m_request.IsValid())
+        return BkError::NetworkError;
+
+    return BkError::Success;
+}
+
 bool WinRequest::OpenSession(void)
 {
     std::string proxy;
@@ -148,17 +167,9 @@ int BKAPI WinRequest::Perform(void)
     if (!OpenSession())
         return BkError::NetworkError;
 
-    GURL URL(m_URL);
-    if (!URL.SchemeIsHTTPOrHTTPS())
-        return BkError::URIError;
-
-    m_connection = m_session.Connect(URL.host(), URL.EffectiveIntPort(), URL.username(), URL.password());
-    if (!m_connection.IsValid())
-        return BkError::NetworkError;
-
-    m_request = m_connection.OpenRequest(m_method, URL.PathForRequest(), m_referer, URL.SchemeIs("https"));
-    if (!m_request.IsValid())
-        return BkError::NetworkError;
+    int r = OpenRequest(m_URL);
+    if (BkError::Success != r)
+        return r;
 
     StartWorkThread();
     return Continue(&WinRequest::SendRequest, true);
@@ -224,8 +235,38 @@ int WinRequest::RequestComplete(void)
         if (base::EqualsCaseInsensitiveASCII(contentEncoding, "gzip"))
             m_response->GZipInflate();
     }
-    m_client.RequestComplete(*m_response);
-    return Continue(nullptr, true);
+
+    ThreadWorker nextWorker = nullptr;
+    switch (m_response->StatusCode())
+    {
+        case 301: case 302:
+        {
+            std::string previousURL = m_response->ResolveRedirection();
+            if (m_client.RequestRedirect(*m_response))
+            {
+                m_referer = previousURL;
+                nextWorker = &WinRequest::RequestRedirect;
+                break;
+            }
+        }
+        [[fallthrough]];
+        default:
+            m_client.RequestComplete(*m_response);
+    }
+    return Continue(nextWorker, true);
+}
+
+int WinRequest::RequestRedirect(void)
+{
+    m_request.Close();
+    m_connection.Close();
+    m_response->ResetForRedirection();
+
+    int r = OpenRequest(m_response->CurrentURL());
+    if (BkError::Success != r)
+        return r;
+
+    return Continue(&WinRequest::SendRequest, true);
 }
 
 BkRequestController* BKAPI WinRequest::RequireLifecycleController(void)

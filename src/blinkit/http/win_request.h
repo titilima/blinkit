@@ -26,6 +26,7 @@ public:
     ~WinRequest(void);
 private:
     bool OpenSession(void);
+    int OpenRequest(const std::string &URL);
     int WaitForIOPending(void);
     void StatusCallback(HINTERNET hInternet, DWORD dwInternetStatus,
         PVOID lpvStatusInformation, DWORD dwStatusInformationLength);
@@ -40,9 +41,9 @@ private:
     int SendBody(void);
     int EndRequest(void);
     int QueryRequest(void);
-    int SendData(void);
     int ReceiveData(void);
     int RequestComplete(void);
+    int RequestRedirect(void);
     DWORD DoThreadWork(void);
     static DWORD WINAPI ThreadProc(PVOID param);
 

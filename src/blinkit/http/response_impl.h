@@ -24,25 +24,30 @@ class ResponseImpl final : public BkRetainedResponse
 public:
     ResponseImpl(const std::string &URL);
 
+    void ResetForRedirection(void);
+
     int ErrorCode(void) const { return m_errorCode; }
     void SetErrorCode(int errorCode) { m_errorCode = errorCode; }
 
+    const std::string& CurrentURL(void) const { return m_URL; }
     void SetCurrentURL(const std::string &URL) { m_URL = URL; }
+
     void SetStatusCode(int statusCode) { m_statusCode = statusCode; }
     void AppendHeader(const char *name, const char *val);
 
     void ParseHeaders(const std::string &rawHeaders);
+    std::string ResolveRedirection(void);
     void PrepareBody(size_t cb) { m_body.reserve(cb); }
     void AppendData(const void *data, size_t cb);
     void GZipInflate(void);
 
     // BkResponse
-    void BKAPI Release(void) override;
+    int BKAPI StatusCode(void) const override { return m_statusCode; }
     int BKAPI GetHeader(const char *name, BkBuffer &value) const override;
+    void BKAPI Release(void) override;
 private:
     // BkResponse
     int BKAPI GetCurrentURL(BkBuffer &URL) const override;
-    int BKAPI StatusCode(void) const override { return m_statusCode; }
     unsigned BKAPI CookiesCount(void) const override { return m_cookies.size(); }
     int BKAPI GetCookie(unsigned i, BkBuffer &cookie) const override;
     int BKAPI GetBody(BkBuffer &body) const override;
