@@ -48,6 +48,12 @@ ScriptWrappable* GetNativeThis(duk_context *ctx, duk_idx_t idx)
     return reinterpret_cast<ScriptWrappable *>(duk_to_pointer(ctx, -1));
 }
 
+int PushString(duk_context *ctx, const std::string &s)
+{
+    duk_push_lstring(ctx, s.data(), s.length());
+    return 1;
+}
+
 int PushString(duk_context *ctx, const String &s)
 {
     const std::string utf8 = s.to_string();

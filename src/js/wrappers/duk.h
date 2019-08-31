@@ -41,6 +41,7 @@ blink::ScriptWrappable* GetNativeThis(duk_context *ctx, duk_idx_t idx = -1);
 
 int DefaultSetter(duk_context *ctx, const char *prop);
 
+int PushString(duk_context *ctx, const std::string &s);
 int PushString(duk_context *ctx, const WTF::String &s);
 int PushString(duk_context *ctx, const WTF::AtomicString &s);
 
