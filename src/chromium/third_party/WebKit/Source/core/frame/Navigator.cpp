@@ -76,11 +76,19 @@ String Navigator::vendorSub() const
 
 String Navigator::userAgent() const
 {
-    // If the frame is already detached it no longer has a meaningful useragent.
-    if (!m_frame || !m_frame->page())
-        return String();
+    if (m_frame)
+    {
+#ifdef BLINKIT_CRAWLER_ONLY
+        ASSERT(m_frame->IsCrawlerFrame());
+        return m_frame->loader().userAgent();
+#else
+        if (m_frame->IsCrawlerFrame() || nullptr != m_frame->page())
+            return m_frame->loader().userAgent();
+#endif
+    }
 
-    return m_frame->loader().userAgent();
+    // If the frame is already detached it no longer has a meaningful useragent.
+    return String();
 }
 
 bool Navigator::cookieEnabled() const
