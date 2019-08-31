@@ -23,7 +23,7 @@ const char DukLocation::ProtoName[] = "Location";
 
 static Location* Get(duk_context *ctx, duk_idx_t idx = -1)
 {
-    return reinterpret_cast<Location *>(Duk::GetNativeThis(ctx, idx));
+    return static_cast<Location *>(Duk::GetNativeThis(ctx, idx));
 }
 
 duk_ret_t DukLocation::Finalizer(duk_context *ctx)
