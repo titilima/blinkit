@@ -3833,18 +3833,6 @@ String Document::cookie(ExceptionState& exceptionState) const
     if (settings() && !settings()->cookieEnabled())
         return String();
 
-    // FIXME: The HTML5 DOM spec states that this attribute can raise an
-    // InvalidStateError exception on getting if the Document has no
-    // browsing context.
-
-    if (!securityOrigin()->canAccessCookies()) {
-        if (url().protocolIs("data"))
-            exceptionState.throwSecurityError("Cookies are disabled inside 'data:' URLs.");
-        else
-            exceptionState.throwSecurityError("Access is denied for this document.");
-        return String();
-    }
-
     KURL cookieURL = this->cookieURL();
     if (cookieURL.isEmpty())
         return String();
@@ -3856,18 +3844,6 @@ void Document::setCookie(const String& value, ExceptionState& exceptionState)
 {
     if (settings() && !settings()->cookieEnabled())
         return;
-
-    // FIXME: The HTML5 DOM spec states that this attribute can raise an
-    // InvalidStateError exception on setting if the Document has no
-    // browsing context.
-
-    if (!securityOrigin()->canAccessCookies()) {
-        if (url().protocolIs("data"))
-            exceptionState.throwSecurityError("Cookies are disabled inside 'data:' URLs.");
-        else
-            exceptionState.throwSecurityError("Access is denied for this document.");
-        return;
-    }
 
     KURL cookieURL = this->cookieURL();
     if (cookieURL.isEmpty())
@@ -3956,11 +3932,6 @@ const KURL& Document::firstPartyForCookies() const
         while (currentDocument->isSrcdocDocument())
             currentDocument = currentDocument->parentDocument();
         ASSERT(currentDocument);
-
-        // We use 'matchesDomain' here, as it turns out that some folks embed HTTPS login forms
-        // into HTTP pages; we should allow this kind of upgrade.
-        if (accessEntry.matchesDomain(*currentDocument->securityOrigin()) == OriginAccessEntry::DoesNotMatchOrigin)
-            return SecurityOrigin::urlWithUniqueSecurityOrigin();
 
         currentDocument = currentDocument->parentDocument();
     }
@@ -4643,6 +4614,7 @@ void Document::initSecurityContext()
 
 void Document::initSecurityContext(const DocumentInit& initializer)
 {
+    m_cookieURL = m_url;
 #if 0 // BKTODO: Seems useless.
     if (haveInitializedSecurityOrigin()) {
         ASSERT(securityOrigin());
