@@ -40,6 +40,7 @@
 #   include "bindings/duk_mouse_event.h"
 #endif
 #include "bindings/duk_named_node_map.h"
+#include "bindings/duk_navigator.h"
 #include "bindings/duk_node_list.h"
 #include "bindings/duk_text.h"
 #include "bindings/duk_window.h"
@@ -289,6 +290,9 @@ void DukContext::CreateObject(
         if (nullptr != nativeThis)
         {
             ObjectEntry entry;
+#ifdef _DEBUG
+            entry.ProtoName = protoName;
+#endif
             entry.HeapPtr = duk_get_heapptr(ctx, -1);
             entry.GC = gcCallback;
             m_objectPool[nativeThis] = entry;
@@ -594,6 +598,7 @@ void DukContext::RegisterPrototypesForCrawler(void)
     DukHTMLCollection::RegisterPrototype(m_context, *m_prototypeManager);
     DukLocation::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);
     DukNamedNodeMap::RegisterPrototype(m_context, *m_prototypeManager);
+    DukNavigator::RegisterPrototype(m_context, *m_prototypeManager);
     DukNodeList::RegisterPrototype(m_context, *m_prototypeManager);
     DukText::RegisterPrototype(m_context, *m_prototypeManager);
     DukWindow::RegisterPrototypeForCrawler(m_context, *m_prototypeManager);

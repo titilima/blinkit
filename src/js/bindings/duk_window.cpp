@@ -20,6 +20,7 @@
 #endif
 #include "bindings/duk_document.h"
 #include "bindings/duk_location.h"
+#include "bindings/duk_navigator.h"
 #include "bindings/duk_xhr.h"
 #include "context/duk_context.h"
 #include "context/prototype_manager.h"
@@ -152,7 +153,11 @@ static duk_ret_t LocationSetter(duk_context *ctx)
 
 static duk_ret_t NavigatorGetter(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    duk_push_this(ctx);
+    DOMWindow *window = DukEventTarget::GetNativeThis<DOMWindow>(ctx);
+
+    Navigator *ret = window->navigator();
+    DukContext::From(ctx)->PushObject<DukNavigator>(ctx, ret);
     return 1;
 }
 

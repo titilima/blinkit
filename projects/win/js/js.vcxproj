@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -267,6 +267,7 @@
     <ClCompile Include="..\..\..\src\js\bindings\duk_location.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_mouse_event.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_named_node_map.cpp" />
+    <ClCompile Include="..\..\..\src\js\bindings\duk_navigator.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_node.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_node_list.cpp" />
     <ClCompile Include="..\..\..\src\js\bindings\duk_text.cpp" />
@@ -315,6 +316,7 @@
     <ClInclude Include="..\..\..\src\js\bindings\duk_location.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_mouse_event.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_named_node_map.h" />
+    <ClInclude Include="..\..\..\src\js\bindings\duk_navigator.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_node.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_node_list.h" />
     <ClInclude Include="..\..\..\src\js\bindings\duk_object_impl.hpp" />

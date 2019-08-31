@@ -109,6 +109,9 @@ private:
     void *m_globalsPtr = nullptr;
 
     struct ObjectEntry {
+#ifdef _DEBUG
+        const char *ProtoName;
+#endif
         void *HeapPtr;
         void (*GC)(blink::ScriptWrappable *);
     };
