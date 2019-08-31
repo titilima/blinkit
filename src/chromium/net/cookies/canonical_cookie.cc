@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - base Library
+// -------------------------------------------------
+//   File Name: canonical_cookie.cc
+// Description: CanonicalCookie Class
+//      Author: Ziming Li
+//     Created: 2018-10-21
+// -------------------------------------------------
+// Copyright (C) 2018 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (c) 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -63,13 +74,13 @@ namespace {
 const int kVlogSetCookies = 7;
 
 // Determine the cookie domain to use for setting the specified cookie.
-bool GetCookieDomain(const GURL& url,
-                     const ParsedCookie& pc,
-                     std::string* result) {
-  std::string domain_string;
-  if (pc.HasDomain())
-    domain_string = pc.Domain();
-  return cookie_util::GetCookieDomainWithString(url, domain_string, result);
+bool GetCookieDomain(const GURL &url, const ParsedCookie &pc, std::string *result)
+{
+    if (pc.HasDomain())
+        *result = pc.Domain();
+    else
+        *result = url.host();
+    return true;
 }
 
 std::string CanonPathWithString(const GURL& url,

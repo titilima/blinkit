@@ -15,6 +15,7 @@
 #include "url/gurl.h"
 
 using namespace blink;
+using namespace net;
 
 typedef std::lock_guard<std::recursive_mutex> AutoLock;
 
@@ -28,6 +29,17 @@ CookieJarImpl::CookieJarImpl(void)
 CookieJarImpl::~CookieJarImpl(void)
 {
     // Nothing
+}
+
+void CookieJarImpl::AddCookieEntry(const std::string &URL, const std::string &cookie)
+{
+    AutoLock lock(m_lock);
+
+    CanonicalCookie *c = CanonicalCookie::Create(GURL(URL), cookie, base::Time::Now(), m_options);
+    if (nullptr != c)
+        m_cookies.push_back(std::unique_ptr<CanonicalCookie>(c));
+    else
+        BKLOG("Parse cookie failed! Cookie line: %s", cookie.c_str());
 }
 
 WebString CookieJarImpl::cookieRequestHeaderFieldValue(const WebURL &URL, const WebURL &firstPartyForCookies)
