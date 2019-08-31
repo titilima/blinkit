@@ -73,6 +73,9 @@ DWORD WinRequest::DoThreadWork(void)
             break;
         }
 
+        if (BkError::Success != m_response->ErrorCode())
+            break;
+
         ThreadWorker worker = DetachThreadWorker();
         if (nullptr == worker)
             break;

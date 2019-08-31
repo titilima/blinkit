@@ -45,6 +45,7 @@ private:
     // blink::FrameClient
     bool IsCrawler(void) const override { return true; }
     // blink::FrameLoaderClient
+    void dispatchDidFailProvisionalLoad(const blink::ResourceError &error, blink::HistoryCommitType) override;
     void dispatchDidFinishLoad(void) override;
     String userAgent(void) override;
 

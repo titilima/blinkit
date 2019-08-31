@@ -21,20 +21,17 @@
 namespace BlinKit {
 
 class CrawlerImpl;
+class HTTPLoader;
 
 class HTTPLoaderTask final : public LoaderTask
 {
 public:
     HTTPLoaderTask(CrawlerImpl &crawler, const blink::WebURLRequest &request, blink::WebURLLoaderClient *client);
 private:
-    int LoadRemoteData(void);
-
     // blink::WebTaskRunner::Task
     void run(void) override;
 
-    CrawlerImpl &m_crawler;
-    std::string m_method;
-    std::unordered_map<std::string, std::string> m_headers;
+    HTTPLoader *m_httpLoader;
 };
 
 } // namespace BlinKit

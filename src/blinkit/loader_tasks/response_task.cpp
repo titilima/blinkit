@@ -18,6 +18,8 @@
 #include "public/platform/WebURLLoaderClient.h"
 #include "public/platform/WebURLResponse.h"
 
+#include "loader_tasks/response_error_task.h"
+
 using namespace blink;
 
 namespace BlinKit {
@@ -43,6 +45,11 @@ static AtomicString AdjustMIMEType(const KURL &URI)
         return Platform::current()->mimeRegistry()->mimeTypeForExtension(ext);
     } while (false);
     return "application/octet-stream";
+}
+
+WebTaskRunner::Task* ResponseTask::CreateErrorTask(int errorCode)
+{
+    return new ResponseErrorTask(errorCode, m_loader, m_client);
 }
 
 void ResponseTask::run(void)

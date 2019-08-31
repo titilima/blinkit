@@ -13,6 +13,7 @@
 
 #include "core/frame/LocalFrame.h"
 #include "core/loader/FrameLoadRequest.h"
+#include "platform/network/ResourceError.h"
 
 #include "app/app_impl.h"
 #include "blink_impl/cookie_jar_impl.h"
@@ -51,6 +52,11 @@ int BKAPI CrawlerImpl::CallFunction(const char *name, BkCallback *callback)
 void CrawlerImpl::CancelLoading(void)
 {
     m_frame->loader().stopAllLoaders();
+}
+
+void CrawlerImpl::dispatchDidFailProvisionalLoad(const ResourceError &error, HistoryCommitType)
+{
+    m_client.LoadFailed(error.errorCode(), this);
 }
 
 void CrawlerImpl::dispatchDidFinishLoad(void)

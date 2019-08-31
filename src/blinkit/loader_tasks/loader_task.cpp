@@ -14,9 +14,11 @@
 #include "public/platform/WebURLRequest.h"
 #include "public/platform/WebTraceLocation.h"
 #include "public/platform/WebURLLoaderClient.h"
+
 #include "loader_tasks/file_loader_task.h"
 #include "loader_tasks/http_loader_task.h"
 #include "loader_tasks/res_loader_task.h"
+#include "loader_tasks/response_error_task.h"
 #include "loader_tasks/response_task.h"
 
 using namespace blink;
@@ -57,7 +59,7 @@ LoaderTask* LoaderTask::Create(const WebURLRequest &request, WebURLLoaderClient 
 
 void LoaderTask::ReportErrorToLoader(int errorCode)
 {
-    assert(false); // BKTODO:
+    m_taskRunner->postTask(BLINK_FROM_HERE, new ResponseErrorTask(errorCode, m_loader, m_client));
 }
 
 void LoaderTask::RespondToLoader(void)

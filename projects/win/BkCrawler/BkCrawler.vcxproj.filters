@@ -99,9 +99,6 @@
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.h">
       <Filter>loader_tasks</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_response_task.h">
-      <Filter>loader_tasks</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\loader_task.h">
       <Filter>loader_tasks</Filter>
     </ClInclude>
@@ -128,6 +125,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_form_element.h">
       <Filter>crawler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_loader.h">
+      <Filter>loader_tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\response_error_task.h">
+      <Filter>loader_tasks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -194,9 +197,6 @@
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.cpp">
       <Filter>loader_tasks</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_response_task.cpp">
-      <Filter>loader_tasks</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\loader_task.cpp">
       <Filter>loader_tasks</Filter>
     </ClCompile>
@@ -217,6 +217,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_form_element.cpp">
       <Filter>crawler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_loader.cpp">
+      <Filter>loader_tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\response_error_task.cpp">
+      <Filter>loader_tasks</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

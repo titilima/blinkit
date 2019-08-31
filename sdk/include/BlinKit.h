@@ -254,10 +254,10 @@ public:
     virtual void BKAPI RequestComplete(BkCrawler *crawler, BkCrawlerResponse *response) {
         response->Continue();
     }
-    virtual void BKAPI RequestFailed(int errorCode) {
+    virtual void BKAPI DocumentReady(BkCrawler *crawler) {}
+    virtual void BKAPI LoadFailed(int errorCode, BkCrawler *crawler) {
         assert(BkError::Success == errorCode);
     }
-    virtual void BKAPI DocumentReady(BkCrawler *crawler) {}
     // -----------------------------------------------------------------------------------------------------------------
     // Cookies
     // BlinKit holds a cookiejar internally, and the caller could also manage cookies by GetCookie/SetCookie.

@@ -1,16 +1,16 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: http_response_task.h
-// Description: HTTPResponseTask Class
+//   File Name: http_loader.h
+// Description: HTTPLoader Class
 //      Author: Ziming Li
-//     Created: 2019-03-22
+//     Created: 2019-08-30
 // -------------------------------------------------
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINKIT_HTTP_RESPONSE_TASK_H
-#define BLINKIT_BLINKIT_HTTP_RESPONSE_TASK_H
+#ifndef BLINKIT_BLINKIT_HTTP_LOADER_H
+#define BLINKIT_BLINKIT_HTTP_LOADER_H
 
 #pragma once
 
@@ -21,20 +21,24 @@ namespace BlinKit {
 
 class CrawlerImpl;
 
-class HTTPResponseTask final : public ResponseTask, public BkRequestClient, public BkCrawlerResponse
+class HTTPLoader final : public ResponseTask, public BkRequestClient, public BkCrawlerResponse
 {
 public:
-    HTTPResponseTask(CrawlerImpl &crawler, blink::WebURLLoader *loader, blink::WebURLLoaderClient *client, ResponseData &responseData);
+    HTTPLoader(CrawlerImpl &crawler, blink::WebURLLoader *loader, blink::WebURLLoaderClient *client, ResponseData &responseData);
 
-    void Setup(blink::WebTaskRunner *taskRunner) {
-        m_taskRunner = taskRunner;
-    }
+    void SetMethod(const std::string &method) { m_method = method; }
+    void SetURL(const std::string &URL) { m_currentURL = URL; }
+    void AddHeader(const std::string &name, const std::string &value) { m_headers[name] = value; }
+    void SetTaskRunner(blink::WebTaskRunner *taskRunner) { m_taskRunner = taskRunner; }
+
+    int Load(void);
 private:
-    // blink::WebTaskRunner::Task
-    void run(void) override;
+    void ApplyCookies(const BkResponse &response);
+
     // BkRequestClient
     void BKAPI RequestComplete(const BkResponse &response) override;
     void BKAPI RequestFailed(int errorCode) override;
+    bool BKAPI RequestRedirect(const BkResponse &response) override;
     // BkResponse
     int BKAPI GetCurrentURL(BkBuffer &URL) const override;
     int BKAPI StatusCode(void) const override;
@@ -48,11 +52,13 @@ private:
     void BKAPI Cancel(void) override;
 
     CrawlerImpl &m_crawler;
+    std::string m_method;
     std::string m_currentURL;
+    std::unordered_map<std::string, std::string> m_headers;
     std::vector<std::string> m_cookies;
     blink::WebTaskRunner *m_taskRunner = nullptr;
 };
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BLINKIT_HTTP_RESPONSE_TASK_H
+#endif // BLINKIT_BLINKIT_HTTP_LOADER_H

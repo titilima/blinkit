@@ -286,10 +286,11 @@
     <ClInclude Include="..\..\..\src\blinkit\http\request_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\response_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\win_request.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_loader.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.h" />
-    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_response_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\response_data.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\response_error_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\response_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\inet.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
@@ -318,9 +319,10 @@
     <ClCompile Include="..\..\..\src\blinkit\http\request_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\response_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\win_request.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_loader.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_response_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\loader_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\response_error_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\response_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\inet.cpp" />
