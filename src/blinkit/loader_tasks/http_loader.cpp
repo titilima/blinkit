@@ -39,8 +39,9 @@ void HTTPLoader::ApplyCookies(const BkResponse &response)
         response.GetCookie(i, BkMakeBuffer(cookie).Wrap());
         m_cookies.push_back(cookie);
 
-        if (!client.SetCookie(cookie.c_str()))
-            cookieJar.AddCookieEntry(m_currentURL, cookie);
+        cookieJar.AddCookieEntry(m_currentURL, cookie);
+
+        client.SetCookie(cookie.c_str());
     }
 }
 
@@ -101,7 +102,7 @@ int HTTPLoader::Load(void)
     for (const auto &it : m_headers)
         request->SetHeader(it.first.c_str(), it.second.c_str());
 
-    std::string cookie = m_crawler.GetCookie(m_currentURL);
+    std::string cookie = m_crawler.GetCookies(m_currentURL);
     if (!cookie.empty())
     {
         BKLOG("Apply cookie: %s", cookie.c_str());

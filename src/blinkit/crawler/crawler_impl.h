@@ -30,7 +30,7 @@ public:
     std::tuple<int, std::string> Initialize(void);
 
     BkCrawlerClient& Client(void) const { return m_client; }
-    std::string GetCookie(const std::string &URL) const;
+    std::string GetCookies(const std::string &URL) const;
 
     void CancelLoading(void);
 private:

@@ -66,13 +66,30 @@ static duk_ret_t Close(duk_context *ctx)
 
 static duk_ret_t CookieGetter(duk_context *ctx)
 {
-    assert(false); // BKTODO:
-    return 1;
+    duk_push_this(ctx);
+    Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
+
+    DukExceptionState es(ctx, "cookie", DukDocument::ProtoName);
+    String ret = document->cookie(es);
+    if (es.hadException())
+    {
+        es.throwIfNeeded();
+        return 0;
+    }
+
+    return Duk::PushString(ctx, ret);
 }
 
 static duk_ret_t CookieSetter(duk_context *ctx)
 {
-    assert(false); // BKTODO:
+    duk_push_this(ctx);
+    Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
+
+    DukExceptionState es(ctx, "cookie", DukDocument::ProtoName);
+    document->setCookie(Duk::ToWTFString(ctx, 0), es);
+    if (es.hadException())
+        es.throwIfNeeded();
+
     return 0;
 }
 
@@ -147,7 +164,7 @@ static duk_ret_t CreateAttribute(duk_context *ctx)
     duk_push_this(ctx);
     Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
 
-    DukExceptionState es(ctx, "createAttribute", "Document");
+    DukExceptionState es(ctx, "createAttribute", DukDocument::ProtoName);
     PassRefPtr<Attr> ret = document->createAttribute(Duk::ToAtomicString(ctx, 0), es);
     if (es.hadException())
     {
@@ -184,7 +201,7 @@ static duk_ret_t CreateElement(duk_context *ctx)
     duk_push_this(ctx);
     Document *document = DukEventTarget::GetNativeThis<Document>(ctx);
 
-    DukExceptionState es(ctx, "createElement", "Document");
+    DukExceptionState es(ctx, "createElement", DukDocument::ProtoName);
     PassRefPtr<Element> ret = document->createElement(Duk::ToAtomicString(ctx, 0), es);
     if (es.hadException())
     {

@@ -69,12 +69,12 @@ int BKAPI CrawlerImpl::Eval(const char *code, size_t length, BkCallback *callbac
     return m_frame->script().Eval(code, length, callback);
 }
 
-std::string CrawlerImpl::GetCookie(const std::string &URL) const
+std::string CrawlerImpl::GetCookies(const std::string &URL) const
 {
     std::string ret;
-    m_client.GetCookie(URL.c_str(), BkMakeBuffer(ret).Wrap());
+    m_client.GetCookies(URL.c_str(), BkMakeBuffer(ret).Wrap());
     if (ret.empty())
-        ret = AppImpl::Get().CookieJar().GetCookie(URL);
+        ret = AppImpl::Get().CookieJar().GetCookies(URL);
     return ret;
 }
 

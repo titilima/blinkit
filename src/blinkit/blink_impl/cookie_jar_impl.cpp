@@ -14,6 +14,8 @@
 #include "net/cookies/canonical_cookie.h"
 #include "url/gurl.h"
 
+#include "public/platform/WebURL.h"
+
 using namespace blink;
 using namespace net;
 
@@ -50,11 +52,11 @@ WebString CookieJarImpl::cookieRequestHeaderFieldValue(const WebURL &URL, const 
 
 WebString CookieJarImpl::cookies(const WebURL &URL, const WebURL &firstPartyForCookies)
 {
-    assert(false); // BKTODO:
-    return WebString();
+    std::string cookies = GetCookies(URL.string().utf8());
+    return WebString::fromUTF8(cookies);
 }
 
-std::string CookieJarImpl::GetCookie(const std::string &URL) const
+std::string CookieJarImpl::GetCookies(const std::string &URL) const
 {
     AutoLock l(m_lock);
 
@@ -77,7 +79,7 @@ std::string CookieJarImpl::GetCookie(const std::string &URL) const
 
 void CookieJarImpl::setCookie(const WebURL &URL, const WebURL &firstPartyForCookies, const WebString &cookie)
 {
-    assert(false); // BKTODO:
+    AddCookieEntry(URL.string().utf8(), cookie.utf8());
 }
 
 } // namespace BlinKit

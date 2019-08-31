@@ -261,16 +261,15 @@ public:
     // -----------------------------------------------------------------------------------------------------------------
     // Cookies
     // BlinKit holds a cookiejar internally, and the caller could also manage cookies by GetCookie/SetCookie.
-    virtual void BKAPI GetCookie(const char *URL, BkBuffer &cookie) {
+    virtual void BKAPI GetCookies(const char *URL, BkBuffer &cookies) {
         // GetCookie will be called before sending requests.
         // If the client provides cookies, cookiejar will not be used.
         // Example:
-        //     cookie.Assign("foo1=bar1; foo2=bar2; foo3=bar3");
+        //     cookies.Assign("foo1=bar1; foo2=bar2; foo3=bar3");
     }
-    virtual bool BKAPI SetCookie(const char *cookie) {
-        // SetCookie will be called after receiving responses.
-        // If returns true, the current cookie will not be saved into cookiejar.
-        return false;
+    virtual void BKAPI SetCookie(const char *cookie) {
+        // SetCookie will be called after `Set-Cookie` headers received.
+        // Clients could parse & save it for data persistence.
     }
     // -----------------------------------------------------------------------------------------------------------------
     // Other Optional Callbacks
