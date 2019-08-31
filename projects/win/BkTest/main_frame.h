@@ -27,10 +27,10 @@ private:
     ~MainFrame(void);
 
     // BkViewClient
-    void BKAPI DocumentReady(BkView *view);
+    void BKAPI DocumentReady(BkView *view) override;
     // BkCrawlerClient
-    void BKAPI GetUserScript(BkBuffer &userScript);
-    void BKAPI DocumentReady(BkCrawler *crawler);
+    void BKAPI GetUserScript(BkBuffer &userScript) override;
+    void BKAPI DocumentReady(BkCrawler *crawler) override;
 
     BlinKit::BkCrawler *m_crawler = nullptr;
 
