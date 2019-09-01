@@ -11,6 +11,11 @@
 
 #include "main_frame.h"
 
+static const char code[] = R"(
+({
+})
+)";
+
 MainFrame::~MainFrame(void)
 {
     if (nullptr != m_crawler)
@@ -50,7 +55,7 @@ void BKAPI MainFrame::DocumentReady(BkCrawler *crawler)
 
 void BKAPI MainFrame::GetUserScript(BkBuffer &userScript)
 {
-    assert(false); // TODO:
+    userScript.Assign(code);
 }
 
 LRESULT MainFrame::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
