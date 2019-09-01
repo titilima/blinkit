@@ -55,6 +55,7 @@ bool ScriptController::canExecuteScripts(ReasonForCallingCanExecuteScripts)
     bool scriptEnabled = true;
     if (m_frame.IsCrawlerFrame())
     {
+        scriptEnabled = false;
         const auto callback = [&scriptEnabled](const BkValue &prop)
         {
             scriptEnabled = prop.GetAsBoolean();
