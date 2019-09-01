@@ -33,12 +33,12 @@ bool CrawlerElement::isDisabledFormControl(void) const
 bool CrawlerElement::isFormControlElement(void) const
 {
     using namespace HTMLNames;
-    static const HTMLQualifiedName formTags[] = {
-        buttonTag, fieldsetTag, inputTag, outputTag, selectTag, textareaTag
+    static const HTMLQualifiedName *formTags[] = {
+        &buttonTag, &fieldsetTag, &inputTag, &outputTag, &selectTag, &textareaTag
     };
-    for (const auto &tag : formTags)
+    for (const auto *tag : formTags)
     {
-        if (hasTagName(tag))
+        if (hasTagName(*tag))
             return true;
     }
     return false;
