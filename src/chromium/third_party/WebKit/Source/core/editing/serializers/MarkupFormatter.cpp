@@ -124,9 +124,6 @@ MarkupFormatter::~MarkupFormatter()
 
 String MarkupFormatter::resolveURLIfNeeded(const Element& element, const String& urlString) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
-    assert(false); // BKTODO:
-#else
     switch (m_resolveURLsMethod) {
     case ResolveAllURLs:
         return element.document().completeURL(urlString).string();
@@ -139,7 +136,6 @@ String MarkupFormatter::resolveURLIfNeeded(const Element& element, const String&
     case DoNotResolveURLs:
         break;
     }
-#endif
     return urlString;
 }
 
