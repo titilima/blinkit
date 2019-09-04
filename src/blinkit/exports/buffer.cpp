@@ -1,12 +1,12 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: simple_buffer.cpp
-// Description: DIBSection Class
+//   File Name: buffer.cpp
+// Description: Buffer Related Implementations
 //      Author: Ziming Li
-//     Created: 2018-07-01
+//     Created: 2019-09-04
 // -------------------------------------------------
-// Copyright (C) 2018 MingYang Software Technology.
+// Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
 #include "bk_def.h"
