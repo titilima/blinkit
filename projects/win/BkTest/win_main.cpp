@@ -10,6 +10,10 @@
 // -------------------------------------------------
 
 #include <Windows.h>
+#include <tchar.h>
+#include <bk_def.h>
+
+using namespace BlinKit;
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE, PTSTR, int nShowCmd)
 {
