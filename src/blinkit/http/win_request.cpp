@@ -19,7 +19,7 @@
 
 namespace BlinKit {
 
-WinRequest::WinRequest(const char *URL, BkRequestClient &client)
+WinRequest::WinRequest(const char *URL, const BkRequestClient &client)
     : RequestImpl(URL, client)
     , m_userAgent(AppConstants::DefaultUserAgent)
     , m_session(this)
@@ -52,7 +52,7 @@ int WinRequest::Continue(ThreadWorker nextWorker, bool signal)
     m_nextWorker = nextWorker;
     if (signal)
         SetEvent(m_hEvent);
-    return BkError::Success;
+    return BK_ERR_SUCCESS;
 }
 
 WinRequest::ThreadWorker WinRequest::DetachThreadWorker(void)
@@ -67,13 +67,13 @@ DWORD WinRequest::DoThreadWork(void)
     for (;;)
     {
         int r = WaitForIOPending();
-        if (BkError::Success != r)
+        if (BK_ERR_SUCCESS != r)
         {
             m_response->SetErrorCode(r);
             break;
         }
 
-        if (BkError::Success != m_response->ErrorCode())
+        if (BK_ERR_SUCCESS != m_response->ErrorCode())
             break;
 
         ThreadWorker worker = DetachThreadWorker();
@@ -81,7 +81,7 @@ DWORD WinRequest::DoThreadWork(void)
             break;
 
         r = (this->*worker)();
-        if (BkError::Success != r)
+        if (BK_ERR_SUCCESS != r)
         {
             m_response->SetErrorCode(r);
             break;
@@ -94,8 +94,8 @@ DWORD WinRequest::DoThreadWork(void)
         m_hEventCancel = nullptr;
     }
 
-    if (BkError::Success != m_response->ErrorCode())
-        m_client.RequestFailed(m_response->ErrorCode());
+    if (BK_ERR_SUCCESS != m_response->ErrorCode())
+        m_client.RequestFailed(m_response->ErrorCode(), m_client.UserData);
 
     CloseHandle(m_hThread);
     m_hThread = nullptr;
@@ -114,7 +114,7 @@ int WinRequest::EndRequest(void)
         if (ERROR_IO_PENDING != err)
         {
             assert(ERROR_IO_PENDING == err);
-            return BkError::UnknownError;
+            return BK_ERR_UNKNOWN;
         }
         signal = false;
     }
@@ -122,34 +122,42 @@ int WinRequest::EndRequest(void)
     return Continue(&WinRequest::QueryRequest, signal);
 }
 
+ControllerImpl* WinRequest::GetController(void)
+{
+    assert(nullptr == m_hEventCancel);
+    m_hEventCancel = CreateEvent(nullptr, TRUE, FALSE, nullptr);
+
+    return RequestImpl::GetController();
+}
+
 int WinRequest::OpenRequest(const std::string &URL)
 {
     GURL u(URL);
     if (!u.SchemeIsHTTPOrHTTPS())
-        return BkError::URIError;
+        return BK_ERR_URI;
 
     assert(!m_connection.IsValid());
     m_connection = m_session.Connect(u.host(), u.EffectiveIntPort(), u.username(), u.password());
     if (!m_connection.IsValid())
-        return BkError::NetworkError;
+        return BK_ERR_NETWORK;
 
     assert(!m_request.IsValid());
     m_request = m_connection.OpenRequest(m_method, u.PathForRequest(), m_referer, u.SchemeIs("https"));
     if (!m_request.IsValid())
-        return BkError::NetworkError;
+        return BK_ERR_NETWORK;
 
-    return BkError::Success;
+    return BK_ERR_SUCCESS;
 }
 
 bool WinRequest::OpenSession(void)
 {
     std::string proxy;
-    DWORD proxyType = INTERNET_OPEN_TYPE_DIRECT;
-    if (m_client.UseProxy())
+    DWORD proxyType = INTERNET_OPEN_TYPE_PRECONFIG;
+    if (HasProxy())
     {
-        m_client.GetProxy(BkMakeBuffer(proxy).Wrap());
+        proxy = Proxy();
         if (proxy.empty())
-            proxyType = INTERNET_OPEN_TYPE_PRECONFIG;
+            proxyType = INTERNET_OPEN_TYPE_DIRECT;
         else
             proxyType = INTERNET_OPEN_TYPE_PROXY;
     }
@@ -162,16 +170,16 @@ bool WinRequest::OpenSession(void)
     return true;
 }
 
-int BKAPI WinRequest::Perform(void)
+int WinRequest::Perform(void)
 {
     if (m_session.IsValid())
-        return BkError::Forbidden;
+        return BK_ERR_FORBIDDEN;
 
     if (!OpenSession())
-        return BkError::NetworkError;
+        return BK_ERR_NETWORK;
 
     int r = OpenRequest(m_URL);
-    if (BkError::Success != r)
+    if (BK_ERR_SUCCESS != r)
         return r;
 
     StartWorkThread();
@@ -182,7 +190,7 @@ int WinRequest::QueryRequest(void)
 {
     std::string rawHeaders;
     if (!m_request.QueryInfo(HTTP_QUERY_RAW_HEADERS_CRLF, rawHeaders))
-        return BkError::UnknownError;
+        return BK_ERR_UNKNOWN;
 
     m_response->ParseHeaders(rawHeaders);
 
@@ -211,13 +219,13 @@ int WinRequest::ReceiveData(void)
             if (ERROR_IO_PENDING != err)
             {
                 assert(ERROR_IO_PENDING == err);
-                return BkError::NetworkError;
+                return BK_ERR_NETWORK;
             }
 
             int r = WaitForIOPending();
-            if (BkError::Success != r)
+            if (BK_ERR_SUCCESS != r)
                 return r;
-            if (BkError::Success != m_response->ErrorCode())
+            if (BK_ERR_SUCCESS != m_response->ErrorCode())
                 return m_response->ErrorCode();
         }
 
@@ -233,7 +241,7 @@ int WinRequest::ReceiveData(void)
 int WinRequest::RequestComplete(void)
 {
     std::string contentEncoding;
-    if (BkError::Success == m_response->GetHeader("Content-Encoding", BkMakeBuffer(contentEncoding).Wrap()))
+    if (BK_ERR_SUCCESS == m_response->GetHeader("Content-Encoding", BkMakeBuffer(contentEncoding)))
     {
         if (base::EqualsCaseInsensitiveASCII(contentEncoding, "gzip"))
             m_response->GZipInflate();
@@ -245,7 +253,7 @@ int WinRequest::RequestComplete(void)
         case 301: case 302:
         {
             std::string previousURL = m_response->ResolveRedirection();
-            if (m_client.RequestRedirect(*m_response))
+            if (nullptr == m_client.RequestRedirect || m_client.RequestRedirect(m_response.get(), m_client.UserData))
             {
                 m_referer = previousURL;
                 nextWorker = &WinRequest::RequestRedirect;
@@ -253,7 +261,7 @@ int WinRequest::RequestComplete(void)
             break;
         }
         default:
-            m_client.RequestComplete(*m_response);
+            m_client.RequestComplete(m_response.get(), m_client.UserData);
     }
     return Continue(nextWorker, true);
 }
@@ -265,18 +273,10 @@ int WinRequest::RequestRedirect(void)
     m_response->ResetForRedirection();
 
     int r = OpenRequest(m_response->CurrentURL());
-    if (BkError::Success != r)
+    if (BK_ERR_SUCCESS != r)
         return r;
 
     return Continue(&WinRequest::SendRequest, true);
-}
-
-BkRequestController* BKAPI WinRequest::RequireLifecycleController(void)
-{
-    assert(nullptr == m_hEventCancel);
-    m_hEventCancel = CreateEvent(nullptr, TRUE, FALSE, nullptr);
-
-    return RequestImpl::RequireLifecycleController();
 }
 
 int WinRequest::SendBody(void)
@@ -291,7 +291,7 @@ int WinRequest::SendBody(void)
         if (ERROR_IO_PENDING != err)
         {
             assert(ERROR_IO_PENDING == err);
-            return BkError::NetworkError;
+            return BK_ERR_NETWORK;
         }
 
         signal = false;
@@ -317,13 +317,13 @@ int WinRequest::SendRequest(void)
         if (ERROR_IO_PENDING != err)
         {
             assert(ERROR_IO_PENDING == err);
-            return BkError::NetworkError;
+            return BK_ERR_NETWORK;
         }
 
         int r = WaitForIOPending();
-        if (BkError::Success != r)
+        if (BK_ERR_SUCCESS != r)
             return r;
-        if (BkError::Success != m_response->ErrorCode())
+        if (BK_ERR_SUCCESS != m_response->ErrorCode())
             return m_response->ErrorCode();
     }
 
@@ -332,7 +332,7 @@ int WinRequest::SendRequest(void)
 
 }
 
-void BKAPI WinRequest::SetHeader(const char *name, const char *value)
+void WinRequest::SetHeader(const char *name, const char *value)
 {
     if (base::EqualsCaseInsensitiveASCII(name, "User-Agent"))
         m_userAgent = value;
@@ -344,7 +344,7 @@ void BKAPI WinRequest::SetHeader(const char *name, const char *value)
 
 void WinRequest::StartWorkThread(void)
 {
-    m_response = new ResponseImpl(m_URL);
+    m_response = std::make_unique<ResponseImpl>(m_URL);
     m_hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
     m_hThread = CreateThread(nullptr, 0, ThreadProc, this, 0, nullptr);
 }
@@ -385,7 +385,7 @@ void WinRequest::StatusCallback(
             if (ERROR_SUCCESS != r->dwError)
             {
                 BKLOG("Request complete, error = %d.", r->dwError);
-                m_response->SetErrorCode(BkError::NetworkError);
+                m_response->SetErrorCode(BK_ERR_NETWORK);
             }
             else
             {
@@ -409,16 +409,16 @@ int WinRequest::WaitForIOPending(void)
 
     DWORD dwWait = WaitForMultipleObjects(count, events, FALSE, INFINITE);
     if (WAIT_OBJECT_0 + 1 == dwWait)
-        return BkError::Cancelled;
+        return BK_ERR_CANCELLED;
 
-    return BkError::Success;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-BkRequest* RequestImpl::CreateInstance(const char *URL, BkRequestClient &client)
-{
-    return new WinRequest(URL, client);
+    return BK_ERR_SUCCESS;
 }
 
 } // namespace BlinKit
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+extern "C" BkRequest BKAPI BkCreateRequest(const char *URL, BkRequestClient *client)
+{
+    return new BlinKit::WinRequest(URL, *client);
+}

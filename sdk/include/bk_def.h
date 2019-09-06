@@ -14,6 +14,7 @@
 #pragma once
 
 #ifdef __cplusplus
+#   include <cassert>
 #   include <cstddef>
 #   include <cstring>
 #   include <string>
@@ -35,10 +36,38 @@
 #endif
 
 #ifdef __cplusplus
-#define BK_DECLARE_HANDLE(name, impl)   class impl; typedef impl *name
+#   define BK_DECLARE_HANDLE(name, impl)    class impl; typedef impl *name
 #else
-#define BK_DECLARE_HANDLE(name, impl)   struct impl; typedef struct impl *name
+#   define BK_DECLARE_HANDLE(name, impl)    struct impl; typedef struct impl *name
 #endif
+
+#ifdef __cplusplus
+typedef bool    bool_t;
+#elif !defined(BK_BOOLEAN_TYPE_DEFINED)
+typedef unsigned char   bool_t;
+enum BkBooleanValues {
+    false = 0, true = 1
+};
+#   define BK_BOOLEAN_TYPE_DEFINED
+#endif
+
+enum BkError {
+    BK_ERR_SUCCESS = 0,
+    BK_ERR_UNKNOWN,
+    BK_ERR_FORBIDDEN,
+    BK_ERR_NOT_FOUND,
+    BK_ERR_NETWORK,
+    BK_ERR_CANCELLED,
+    BK_ERR_EXCEPTION,
+    BK_ERR_EVAL,
+    BK_ERR_RANGE,
+    BK_ERR_REFERENCE,
+    BK_ERR_SYNTAX,
+    BK_ERR_TYPE,
+    BK_ERR_URI
+};
+
+BK_DECLARE_HANDLE(BkResponse, ResponseImpl);
 
 #ifdef __cplusplus
 extern "C" {
@@ -64,6 +93,12 @@ struct BkSimpleBuffer {
 
 BKEXPORT struct BkBuffer* BKAPI BkInitializeSimpleBuffer(struct BkSimpleBuffer *buffer);
 BKEXPORT void BKAPI BkFinalizeSimpleBuffer(struct BkSimpleBuffer *buffer);
+
+BK_DECLARE_HANDLE(BkWorkController, ControllerImpl);
+
+BKEXPORT int BKAPI BkControllerContinueWorking(BkWorkController controller);
+BKEXPORT int BKAPI BkControllerCancelWork(BkWorkController controller);
+BKEXPORT int BKAPI BkReleaseController(BkWorkController controller);
 
 #ifdef __cplusplus
 } // extern "C"

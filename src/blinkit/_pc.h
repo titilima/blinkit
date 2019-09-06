@@ -40,6 +40,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include "base/logging.h"
+
 #if OS_WIN
 #   include <Windows.h>
 extern HMODULE theModule;
@@ -47,10 +49,6 @@ extern HMODULE theModule;
 
 #ifdef __OBJC__
 #   import <Foundation/Foundation.h>
-#endif
-
-#include "base/logging.h"
-#ifdef __OBJC__
 #   include "base/mac/scoped_nsobject.h"
 #endif
 

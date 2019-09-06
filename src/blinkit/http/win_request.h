@@ -22,7 +22,7 @@ namespace BlinKit {
 class WinRequest final : public RequestImpl
 {
 public:
-    WinRequest(const char *URL, BkRequestClient &client);
+    WinRequest(const char *URL, const BkRequestClient &client);
     ~WinRequest(void);
 private:
     bool OpenSession(void);
@@ -47,11 +47,10 @@ private:
     DWORD DoThreadWork(void);
     static DWORD WINAPI ThreadProc(PVOID param);
 
-    // BkRequest
-    int BKAPI Perform(void) override;
-    void BKAPI SetHeader(const char *name, const char *value) override;
-    BkRequestController* BKAPI RequireLifecycleController(void) override;
     // RequestImpl
+    int Perform(void) override;
+    void SetHeader(const char *name, const char *value) override;
+    ControllerImpl* GetController(void) override;
     void Cancel(void) override;
 
     std::string m_userAgent, m_referer;

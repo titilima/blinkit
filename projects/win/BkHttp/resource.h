@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by BkRequest.rc
+// Used by BkHttp.rc
 
 // Next default values for new objects
 // 

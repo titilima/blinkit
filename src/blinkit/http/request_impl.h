@@ -15,47 +15,52 @@
 #pragma once
 
 #include <atomic>
-#include "sdk/include/BlinKit.h"
+#include <optional>
+#include "bk_http.h"
 
-namespace BlinKit {
-
+class ControllerImpl;
 class ResponseImpl;
 
-class RequestImpl : public BkRequest
+class RequestImpl
 {
 public:
-    static BkRequest* CreateInstance(const char *URL, BkRequestClient &client);
     virtual ~RequestImpl(void);
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Exports
+    virtual int Perform(void) = 0;
+    void SetMethod(const char *method) { m_method = method; }
+    virtual void SetHeader(const char *name, const char *value);
+    void SetBody(const void *data, size_t dataLength);
+    void SetTimeout(unsigned timeout) { m_timeoutInMs = timeout * 1000; }
+    void SetProxy(const char *proxy);
+    virtual ControllerImpl* GetController(void);
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     void Release(void);
     virtual void Cancel(void) = 0;
 protected:
-    RequestImpl(const char *URL, BkRequestClient &client);
+    RequestImpl(const char *URL, const BkRequestClient &client);
 
     const auto& RawHeaders(void) const { return m_headers; }
     std::string GetAllHeaders(void) const;
     unsigned long TimeoutInMs(void) const { return m_timeoutInMs; }
-
-    // BkRequest
-    void BKAPI SetHeader(const char *name, const char *value) override;
-    BkRequestController* BKAPI RequireLifecycleController(void) override;
+    bool HasProxy(void) const { return m_proxy.has_value(); }
+    const std::string& Proxy(void) const {
+        assert(m_proxy.has_value());
+        return *m_proxy;
+    }
 
     const std::string m_URL;
-    BkRequestClient &m_client;
+    BkRequestClient m_client;
     std::string m_method;
     std::vector<unsigned char> m_body;
-    ResponseImpl *m_response = nullptr;
+    std::unique_ptr<ResponseImpl> m_response;
 private:
-    // BkNetRequest
-    void BKAPI SetMethod(const char *method) override final { m_method = method; }
-    void BKAPI SetTimeout(unsigned timeout) override final { m_timeoutInMs = timeout * 1000; }
-    void BKAPI SetBody(const void *data, size_t dataLength) override final;
-
     std::atomic<unsigned> m_refCount{ 1 };
     unsigned long m_timeoutInMs;
     std::unordered_map<std::string, std::string> m_headers;
+    std::optional<std::string> m_proxy;
 };
-
-} // namespace BlinKit
 
 #endif // BLINKIT_BLINKIT_REQUEST_IMPL_H

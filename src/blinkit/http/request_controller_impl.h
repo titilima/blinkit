@@ -14,25 +14,32 @@
 
 #pragma once
 
-#include "request_impl.h"
+#include "http/request_impl.h"
+#include "misc/controller_impl.h"
 
 namespace BlinKit {
 
-class RequestControllerImpl final : public BkRequestController
+class RequestControllerImpl final : public ControllerImpl
 {
 public:
     RequestControllerImpl(RequestImpl &request) : m_request(request) {}
-    ~RequestControllerImpl(void) {
+    ~RequestControllerImpl(void)
+    {
         m_request.Release();
     }
 private:
-    // BkRequestController
-    void BKAPI Cancel(void) override {
+    // ControllerImpl
+    int Release(void) override
+    {
+        delete this;
+        return BK_ERR_SUCCESS;
+    }
+    int ContinueWorking(void) override { return BK_ERR_FORBIDDEN; }
+    int CancelWork(void) override
+    {
         m_request.Cancel();
         delete this;
-    }
-    void BKAPI Release(void) override {
-        delete this;
+        return BK_ERR_SUCCESS;
     }
 
     RequestImpl &m_request;

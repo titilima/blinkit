@@ -14,13 +14,16 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="app">
-      <UniqueIdentifier>{0e92bde2-f592-4f82-9e0e-791acdae606e}</UniqueIdentifier>
+      <UniqueIdentifier>{4c23c574-3634-40bc-aa0c-9a435479a678}</UniqueIdentifier>
     </Filter>
     <Filter Include="http">
-      <UniqueIdentifier>{65b49d7f-4850-4e6b-a6c9-976071c92937}</UniqueIdentifier>
+      <UniqueIdentifier>{eb00bc75-1b8e-4746-a37f-fc9ebfbc0357}</UniqueIdentifier>
     </Filter>
     <Filter Include="win">
-      <UniqueIdentifier>{cbaf8479-84b7-46b3-95db-1dfa7f66b09b}</UniqueIdentifier>
+      <UniqueIdentifier>{5fbca7bb-08d6-4430-a5b8-48c99fe694a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="misc">
+      <UniqueIdentifier>{a8f38960-a948-4084-9981-011289483284}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -42,14 +45,14 @@
     <ClCompile Include="..\..\..\src\blinkit\win\inet.cpp">
       <Filter>win</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\misc\buffer.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\misc\controller.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\blinkit\_pc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\app\app_constants.h">
       <Filter>app</Filter>
     </ClInclude>
@@ -68,14 +71,23 @@
     <ClInclude Include="..\..\..\src\blinkit\win\inet.h">
       <Filter>win</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\_pc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\misc\controller_impl.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BkRequest.def">
+    <None Include="BkHttp.def">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="BkRequest.rc">
+    <ResourceCompile Include="BkHttp.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

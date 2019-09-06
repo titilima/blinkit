@@ -15,14 +15,21 @@
 #pragma once
 
 #include <atomic>
-#include "sdk/include/BlinKit.h"
+#include "bk_http.h"
 
-namespace BlinKit {
-
-class ResponseImpl final : public BkRetainedResponse
+class ResponseImpl final
 {
 public:
     ResponseImpl(const std::string &URL);
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Exports
+    int StatusCode(void) const { return m_statusCode; }
+    int GetData(int data, BkBuffer *dst) const;
+    int GetHeader(const char *name, BkBuffer *dst) const;
+    size_t CookiesCount(void) const { return m_cookies.size(); }
+    int GetCookie(size_t index, BkBuffer *dst) const;
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     void ResetForRedirection(void);
 
@@ -40,31 +47,12 @@ public:
     void PrepareBody(size_t cb) { m_body.reserve(cb); }
     void AppendData(const void *data, size_t cb);
     void GZipInflate(void);
-
-    // BkResponse
-    int BKAPI StatusCode(void) const override { return m_statusCode; }
-    int BKAPI GetHeader(const char *name, BkBuffer &value) const override;
-    void BKAPI Release(void) override;
 private:
-    // BkResponse
-    int BKAPI GetCurrentURL(BkBuffer &URL) const override;
-    unsigned BKAPI CookiesCount(void) const override { return m_cookies.size(); }
-    int BKAPI GetCookie(unsigned i, BkBuffer &cookie) const override;
-    int BKAPI GetBody(BkBuffer &body) const override;
-    BkRetainedResponse* BKAPI Retain(void) const override;
-    int GetInformation(Information i, BkBuffer &value) const override;
-
-    std::atomic<unsigned> m_refCount{ 1 };
-
     std::string m_originURL, m_URL;
-    std::string m_version;
-    int m_errorCode = BkError::Success, m_statusCode = 0;
-    std::string m_reasonPhrase;
+    int m_errorCode = BK_ERR_SUCCESS, m_statusCode = 0;
     std::unordered_map<std::string, std::string> m_headers;
     std::vector<std::string> m_cookies;
     std::vector<unsigned char> m_body;
 };
-
-} // namespace BlinKit
 
 #endif // BLINKIT_BLINKIT_RESPONSE_IMPL_H

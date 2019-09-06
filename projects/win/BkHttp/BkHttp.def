@@ -1,0 +1,25 @@
+LIBRARY "BkHttp"
+
+EXPORTS
+
+BkSetBufferData
+BkInitializeSimpleBuffer
+BkFinalizeSimpleBuffer
+
+BkControllerContinueWorking
+BkControllerCancelWork
+BkReleaseController
+
+BkCreateRequest
+BkPerformRequest
+BkSetRequestMethod
+BkSetRequestHeader
+BkSetRequestBody
+BkSetRequestTimeout
+BkGetRequestController
+
+BkGetResponseStatusCode
+BkGetResponseData
+BkGetResponseHeader
+BkGetResponseCookiesCount
+BkGetResponseCookie

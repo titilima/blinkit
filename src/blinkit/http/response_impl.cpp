@@ -17,8 +17,6 @@
 #include "base/strings/string_util.h"
 #include "url/gurl.h"
 
-namespace BlinKit {
-
 static void CanonizeHeaderName(std::string &headerName)
 {
     static const char* specialNames[] = { "ETag" };
@@ -68,64 +66,50 @@ void ResponseImpl::AppendHeader(const char *name, const char *val)
     m_headers[name] = val;
 }
 
-int BKAPI ResponseImpl::GetBody(BkBuffer &body) const
+int ResponseImpl::GetCookie(size_t index, BkBuffer *dst) const
 {
-    if (m_body.empty())
-        return BkError::NotFound;
-
-    body.Assign(m_body.data(), m_body.size());
-    return BkError::Success;
-}
-
-int BKAPI ResponseImpl::GetCookie(unsigned i, BkBuffer &cookie) const
-{
-    if (m_cookies.size() <= i)
+    if (m_cookies.size() <= index)
     {
-        assert(i < m_cookies.size());
-        return BkError::NotFound;
+        assert(index < m_cookies.size());
+        return BK_ERR_NOT_FOUND;
     }
 
-    cookie.Assign(m_cookies.at(i));
-    return BkError::Success;
+    const std::string &cookie = m_cookies.at(index);
+    BkSetBufferData(dst, cookie.data(), cookie.length());
+    return BK_ERR_SUCCESS;
 }
 
-int BKAPI ResponseImpl::GetCurrentURL(BkBuffer &URL) const
+int ResponseImpl::GetData(int data, BkBuffer *dst) const
 {
-    URL.Assign(m_URL);
-    return BkError::Success;
+    switch (data)
+    {
+        case BK_RE_CURRENT_URL:
+            BkSetBufferData(dst, m_URL.data(), m_URL.length());
+            break;
+        case BK_RE_ORIGINAL_URL:
+            BkSetBufferData(dst, m_originURL.data(), m_originURL.length());
+            break;
+        case BK_RE_BODY:
+            BkSetBufferData(dst, m_body.data(), m_body.size());
+            break;
+        default:
+            assert(false); // Not reached!
+            return BK_ERR_NOT_FOUND;
+    }
+    return BK_ERR_SUCCESS;
 }
 
-int BKAPI ResponseImpl::GetHeader(const char *name, BkBuffer &value) const
+int ResponseImpl::GetHeader(const char *name, BkBuffer *dst) const
 {
     std::string s(name);
     CanonizeHeaderName(s);
 
     auto it = m_headers.find(s);
     if (std::end(m_headers) == it)
-        return BkError::NotFound;
+        return BK_ERR_NOT_FOUND;
 
-    value.Assign(it->second);
-    return BkError::Success;
-}
-
-int ResponseImpl::GetInformation(Information i, BkBuffer &value) const
-{
-    switch (i)
-    {
-        case BkResponse::Information::OriginalURL:
-            value.Assign(m_originURL);
-            break;
-        case BkResponse::Information::HTTPVersion:
-            value.Assign(m_version);
-            break;
-        case BkResponse::Information::ReasonPhrase:
-            value.Assign(m_reasonPhrase);
-            break;
-        default:
-            assert(false); // Not reached!
-            return BkError::NotFound;
-    }
-    return BkError::Success;
+    BkSetBufferData(dst, it->second.data(), it->second.length());
+    return BK_ERR_SUCCESS;
 }
 
 void ResponseImpl::GZipInflate(void)
@@ -166,7 +150,7 @@ void ResponseImpl::GZipInflate(void)
 
 void ResponseImpl::ParseHeaders(const std::string &rawHeaders)
 {
-    std::regex pattern(R"(HTTP/(\d+\.\d+)\s+(\d+)\s+(.+))");
+    std::regex pattern(R"(HTTP/\d+\.\d+\s+(\d+).+)");
     std::smatch match;
     if (!std::regex_search(rawHeaders, match, pattern))
     {
@@ -174,9 +158,7 @@ void ResponseImpl::ParseHeaders(const std::string &rawHeaders)
         return;
     }
 
-    m_version = match.str(1);
-    m_statusCode = std::stoi(match.str(2));
-    m_reasonPhrase = match.str(3);
+    m_statusCode = std::stoi(match.str(1));
 
     std::string_view input(rawHeaders);
     input = input.substr(match.length(0));
@@ -202,18 +184,10 @@ void ResponseImpl::ParseHeaders(const std::string &rawHeaders)
     }
 }
 
-void BKAPI ResponseImpl::Release(void)
-{
-    if (0 == --m_refCount)
-        delete this;
-}
-
 void ResponseImpl::ResetForRedirection(void)
 {
-    m_version.clear();
-    m_errorCode = BkError::Success;
+    m_errorCode = BK_ERR_SUCCESS;
     m_statusCode = 0;
-    m_reasonPhrase.clear();
     m_headers.clear();
     m_cookies.clear();
     m_body.clear();
@@ -233,11 +207,33 @@ std::string ResponseImpl::ResolveRedirection(void)
     return ret;
 }
 
-BkRetainedResponse* BKAPI ResponseImpl::Retain(void) const
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+extern "C" {
+
+int BKAPI BkGetResponseCookie(BkResponse response, size_t index, BkBuffer *dst)
 {
-    ResponseImpl *r = const_cast<ResponseImpl *>(this);
-    ++r->m_refCount;
-    return r;
+    return response->GetCookie(index, dst);
 }
 
-} // namespace BlinKit
+size_t BKAPI BkGetResponseCookiesCount(BkResponse response)
+{
+    return response->CookiesCount();
+}
+
+int BKAPI BkGetResponseData(BkResponse response, int data, BkBuffer *dst)
+{
+    return response->GetData(data, dst);
+}
+
+int BKAPI BkGetResponseHeader(BkResponse response, const char *name, BkBuffer *dst)
+{
+    return response->GetHeader(name, dst);
+}
+
+int BKAPI BkGetResponseStatusCode(BkResponse response)
+{
+    return response->StatusCode();
+}
+
+} // extern "C"

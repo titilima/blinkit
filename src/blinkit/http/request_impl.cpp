@@ -15,19 +15,15 @@
 #include "http/request_controller_impl.h"
 #include "http/response_impl.h"
 
-namespace BlinKit {
+using namespace BlinKit;
 
-RequestImpl::RequestImpl(const char *URL, BkRequestClient &client)
+RequestImpl::RequestImpl(const char *URL, const BkRequestClient &client)
     : m_URL(URL), m_client(client), m_method("GET"), m_timeoutInMs(AppConstants::DefaultTimeoutInMs)
 {
     m_headers["Accept"] = "*/*";
 }
 
-RequestImpl::~RequestImpl(void)
-{
-    if (nullptr != m_response)
-        m_response->Release();
-}
+RequestImpl::~RequestImpl(void) {}
 
 std::string RequestImpl::GetAllHeaders(void) const
 {
@@ -42,36 +38,74 @@ std::string RequestImpl::GetAllHeaders(void) const
     return headers;
 }
 
+ControllerImpl* RequestImpl::GetController(void)
+{
+    ++m_refCount;
+    return new RequestControllerImpl(*this);
+}
+
 void RequestImpl::Release(void)
 {
     if (0 == --m_refCount)
         delete this;
 }
 
-BkRequestController* BKAPI RequestImpl::RequireLifecycleController(void)
-{
-    ++m_refCount;
-    return new RequestControllerImpl(*this);
-}
-
-void BKAPI RequestImpl::SetBody(const void *data, size_t dataLength)
+void RequestImpl::SetBody(const void *data, size_t dataLength)
 {
     m_body.resize(dataLength);
     memcpy(m_body.data(), data, dataLength);
 }
 
-void BKAPI RequestImpl::SetHeader(const char *name, const char *value)
+void RequestImpl::SetHeader(const char *name, const char *value)
 {
     m_headers[name] = value;
 }
 
-} // namespace BlinKit
+void RequestImpl::SetProxy(const char *proxy)
+{
+    if (nullptr == proxy)
+        m_proxy->clear();
+    else
+        m_proxy->assign(proxy);
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-using namespace BlinKit;
+extern "C" {
 
-extern "C" BkRequest* BKAPI BkCreateRequest(const char *URL, BkRequestClient &client)
+BkWorkController BKAPI BkGetRequestController(BkRequest request)
 {
-    return RequestImpl::CreateInstance(URL, client);
+    return request->GetController();
 }
+
+int BKAPI BkPerformRequest(BkRequest request)
+{
+    return request->Perform();
+}
+
+void BKAPI BkSetRequestBody(BkRequest request, const void *data, size_t dataLength)
+{
+    request->SetBody(data, dataLength);
+}
+
+void BKAPI BkSetRequestHeader(BkRequest request, const char *name, const char *value)
+{
+    request->SetHeader(name, value);
+}
+
+void BKAPI BkSetRequestMethod(BkRequest request, const char *method)
+{
+    request->SetMethod(method);
+}
+
+void BKAPI BkSetRequestProxy(BkRequest request, const char *proxy)
+{
+    request->SetProxy(proxy);
+}
+
+void BKAPI BkSetRequestTimeout(BkRequest request, unsigned timeout)
+{
+    request->SetTimeout(timeout);
+}
+
+} // extern "C"
