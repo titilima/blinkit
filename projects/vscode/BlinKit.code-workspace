@@ -1,0 +1,19 @@
+{
+	"folders": [
+        {
+            "path": "../../helpers"
+        },
+        {
+            "path": "../../sdk"
+        },
+        {
+            "path": "../../src"
+        }
+    ],
+    "settings": {
+        "files.exclude": {
+            "{**/*.exe,**/*.dll,**/*.lib,**/*.exp,**/*.iobj,**/*.ipdb,**/*.pdb}": true,
+            "{**/*.framework,**/*.dSYM}": true
+        }
+    }
+}
