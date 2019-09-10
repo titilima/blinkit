@@ -73,37 +73,37 @@ void RequestImpl::SetProxy(const char *proxy)
 
 extern "C" {
 
-BkWorkController BKAPI BkGetRequestController(BkRequest request)
+BKEXPORT BkWorkController BKAPI BkGetRequestController(BkRequest request)
 {
     return request->GetController();
 }
 
-int BKAPI BkPerformRequest(BkRequest request)
+BKEXPORT int BKAPI BkPerformRequest(BkRequest request)
 {
     return request->Perform();
 }
 
-void BKAPI BkSetRequestBody(BkRequest request, const void *data, size_t dataLength)
+BKEXPORT void BKAPI BkSetRequestBody(BkRequest request, const void *data, size_t dataLength)
 {
     request->SetBody(data, dataLength);
 }
 
-void BKAPI BkSetRequestHeader(BkRequest request, const char *name, const char *value)
+BKEXPORT void BKAPI BkSetRequestHeader(BkRequest request, const char *name, const char *value)
 {
     request->SetHeader(name, value);
 }
 
-void BKAPI BkSetRequestMethod(BkRequest request, const char *method)
+BKEXPORT void BKAPI BkSetRequestMethod(BkRequest request, const char *method)
 {
     request->SetMethod(method);
 }
 
-void BKAPI BkSetRequestProxy(BkRequest request, const char *proxy)
+BKEXPORT void BKAPI BkSetRequestProxy(BkRequest request, const char *proxy)
 {
     request->SetProxy(proxy);
 }
 
-void BKAPI BkSetRequestTimeout(BkRequest request, unsigned timeout)
+BKEXPORT void BKAPI BkSetRequestTimeout(BkRequest request, unsigned timeout)
 {
     request->SetTimeout(timeout);
 }

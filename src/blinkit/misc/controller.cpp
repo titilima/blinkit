@@ -13,17 +13,17 @@
 
 extern "C" {
 
-int BKAPI BkControllerCancelWork(BkWorkController controller)
+BKEXPORT int BKAPI BkControllerCancelWork(BkWorkController controller)
 {
     return controller->CancelWork();
 }
 
-int BKAPI BkControllerContinueWorking(BkWorkController controller)
+BKEXPORT int BKAPI BkControllerContinueWorking(BkWorkController controller)
 {
     return controller->ContinueWorking();
 }
 
-int BKAPI BkReleaseController(BkWorkController controller)
+BKEXPORT int BKAPI BkReleaseController(BkWorkController controller)
 {
     return controller->Release();
 }

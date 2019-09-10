@@ -31,6 +31,15 @@
 #   endif
 #endif
 
+#ifdef __linux__
+#   ifdef BLINKIT_EXPORTS
+#       define BKEXPORT __attribute__((visibility("default")))
+#   endif
+#endif
+
+#ifndef BKAPI
+#   define BKAPI
+#endif
 #ifndef BKEXPORT
 #   define BKEXPORT
 #endif

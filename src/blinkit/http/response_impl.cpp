@@ -211,27 +211,27 @@ std::string ResponseImpl::ResolveRedirection(void)
 
 extern "C" {
 
-int BKAPI BkGetResponseCookie(BkResponse response, size_t index, BkBuffer *dst)
+BKEXPORT int BKAPI BkGetResponseCookie(BkResponse response, size_t index, BkBuffer *dst)
 {
     return response->GetCookie(index, dst);
 }
 
-size_t BKAPI BkGetResponseCookiesCount(BkResponse response)
+BKEXPORT size_t BKAPI BkGetResponseCookiesCount(BkResponse response)
 {
     return response->CookiesCount();
 }
 
-int BKAPI BkGetResponseData(BkResponse response, int data, BkBuffer *dst)
+BKEXPORT int BKAPI BkGetResponseData(BkResponse response, int data, BkBuffer *dst)
 {
     return response->GetData(data, dst);
 }
 
-int BKAPI BkGetResponseHeader(BkResponse response, const char *name, BkBuffer *dst)
+BKEXPORT int BKAPI BkGetResponseHeader(BkResponse response, const char *name, BkBuffer *dst)
 {
     return response->GetHeader(name, dst);
 }
 
-int BKAPI BkGetResponseStatusCode(BkResponse response)
+BKEXPORT int BKAPI BkGetResponseStatusCode(BkResponse response)
 {
     return response->StatusCode();
 }
