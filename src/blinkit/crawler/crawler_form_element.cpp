@@ -34,11 +34,11 @@ void CrawlerFormElement::CollectFormData(FormData &dst, const Element &src)
     if (src.hasTagName(HTMLNames::inputTag))
         return CollectInputData(dst, src, name);
 
-#ifdef _DEBUG
+#ifndef NDEBUG
     const std::string s = src.tagName().to_string();
     BKLOG("unexpected tag `%s`!", s.c_str());
-#endif
     assert(false); // BKTODO:
+#endif
 }
 
 void CrawlerFormElement::CollectInputData(FormData &dst, const Element &src, const AtomicString &name)
@@ -51,11 +51,11 @@ void CrawlerFormElement::CollectInputData(FormData &dst, const Element &src, con
     }
     else
     {
-#ifdef _DEBUG
+#ifndef NDEBUG
         const std::string s = type.to_string();
         BKLOG("unexpected type `%s`!", s.c_str());
-#endif
         assert(false); // BKTODO:
+#endif
     }
 }
 

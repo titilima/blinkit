@@ -32,12 +32,12 @@ inline BlinKit::Asserter& operator<<(const BlinKit::Asserter &a, const T &) {
     return const_cast<BlinKit::Asserter &>(a);
 }
 
-#ifdef _DEBUG
-#   define DCHECK_IS_ON()   1
-#   define BKLOG            BlinKit::BkLog
-#else
+#ifdef NDEBUG
 #   define DCHECK_IS_ON()   0
 #   define BKLOG(...)
+#else
+#   define DCHECK_IS_ON()   1
+#   define BKLOG            BlinKit::BkLog
 #endif
 
 #define BKASSERT(condition) ::BlinKit::Asserter(!!(condition))

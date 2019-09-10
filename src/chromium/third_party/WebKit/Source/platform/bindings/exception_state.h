@@ -78,10 +78,10 @@ public:
 
 } // namespace blink
 
-#ifdef _DEBUG
-#   define ASSERT_NO_EXCEPTION  (::blink::NonThrowableExceptionState(__FILE__, __LINE__).ReturnThis())
-#else
+#ifdef NDEBUG
 #   define ASSERT_NO_EXCEPTION  (::blink::DummyExceptionStateForTesting().ReturnThis())
+#else
+#   define ASSERT_NO_EXCEPTION  (::blink::NonThrowableExceptionState(__FILE__, __LINE__).ReturnThis())
 #endif
 
 #define IGNORE_EXCEPTION                (::blink::DummyExceptionStateForTesting().ReturnThis())

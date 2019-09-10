@@ -16,8 +16,8 @@
 
 #include <functional>
 #include <tuple>
-#ifdef _DEBUG
-#include <unordered_set>
+#ifndef NDEBUG
+#   include <unordered_set>
 #endif
 
 namespace blink {
@@ -109,7 +109,7 @@ private:
     void *m_globalsPtr = nullptr;
 
     struct ObjectEntry {
-#ifdef _DEBUG
+#ifndef NDEBUG
         const char *ProtoName;
 #endif
         void *HeapPtr;

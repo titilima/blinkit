@@ -89,7 +89,7 @@ BkValue::Type BKAPI ValueImpl::GetType(void) const
 void ValueImpl::SetAsErrorType(void)
 {
     m_errorCode = Duk::ToErrorCode(m_ctx, m_idx);
-#ifdef _DEBUG
+#ifndef NDEBUG
     duk_get_prop_string(m_ctx, m_idx, "message");
     BKLOG("ERROR: %s", duk_to_string(m_ctx, -1));
     duk_pop(m_ctx);

@@ -60,7 +60,7 @@ void WinThread::EnsureMessageQueueCreated(HANDLE hEvent)
 
 void WinThread::Initialize(CreateData &cd)
 {
-#ifdef _DEBUG
+#ifndef NDEBUG
     m_name = cd.name;
 #endif
     DWORD threadId;

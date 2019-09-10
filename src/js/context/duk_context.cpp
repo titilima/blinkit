@@ -77,15 +77,15 @@ static const char NativeCrawler[] = "nativeCrawler";
 
 namespace Impl {
 
-#ifdef _DEBUG
-static duk_ret_t DebugBreak(duk_context *ctx)
+#ifndef NDEBUG
+    static duk_ret_t DebugBreak(duk_context *ctx)
 {
     if (duk_get_top(ctx) > 0 && !duk_is_undefined(ctx, 0))
         BKLOG("DEBUG BREAK: %s", duk_to_string(ctx, 0));
     DebugBreakImpl();
     return 0;
 }
-#endif // _DEBUG
+#endif // NDEBUG
 
 } // namespace Impl
 
@@ -190,7 +190,7 @@ void DukContext::Attach(void)
         RegisterPrototypesForUI();
 
         duk_push_object(m_context);
-#   ifdef _DEBUG
+#   ifndef NDEBUG
         duk_push_c_function(m_context, Impl::DebugBreak, 1);
         duk_put_prop_string(m_context, -2, "debugBreak");
 #   endif
@@ -270,7 +270,7 @@ std::tuple<int, std::string> DukContext::CreateCrawlerObject(const char *script,
     duk_put_prop_string(m_context, -2, "log");
     duk_push_c_function(m_context, Crawler::AddElementPrototypes, 1);
     duk_put_prop_string(m_context, -2, "addElementPrototypes");
-#ifdef _DEBUG
+#ifndef NDEBUG
     duk_push_c_function(m_context, Impl::DebugBreak, 1);
     duk_put_prop_string(m_context, -2, "debugBreak");
 #endif
@@ -290,7 +290,7 @@ void DukContext::CreateObject(
         if (nullptr != nativeThis)
         {
             ObjectEntry entry;
-#ifdef _DEBUG
+#ifndef NDEBUG
             entry.ProtoName = protoName;
 #endif
             entry.HeapPtr = duk_get_heapptr(ctx, -1);

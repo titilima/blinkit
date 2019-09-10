@@ -85,7 +85,7 @@ void TimerTask::run(void)
             duk_get_prop_index(m_ctx, timerIdx, i);
         r = duk_pcall(m_ctx, n - 2);
     }
-#ifdef _DEBUG
+#ifndef NDEBUG
     if (DUK_EXEC_SUCCESS != r)
     {
         ValueImpl retVal(m_ctx);

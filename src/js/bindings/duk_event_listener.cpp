@@ -143,11 +143,11 @@ void DukEventListener::handleEvent(ExecutionContext *executionContext, Event *ev
     }
     else
     {
-#ifdef _DEBUG
+#ifndef NDEBUG
         ValueImpl retVal(ctx);
         retVal.SetAsErrorType();
-#endif
         assert(DUK_EXEC_SUCCESS == r);
+#endif
     }
 }
 

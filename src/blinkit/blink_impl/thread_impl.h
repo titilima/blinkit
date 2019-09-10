@@ -45,7 +45,7 @@ protected:
 
     typedef std::lock_guard<std::recursive_mutex> AutoLock;
     std::recursive_mutex m_lock;
-#ifdef _DEBUG
+#ifndef NDEBUG
     std::string m_name;
 #endif
 private:

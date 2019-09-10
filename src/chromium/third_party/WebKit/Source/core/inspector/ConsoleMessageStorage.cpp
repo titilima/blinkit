@@ -20,7 +20,7 @@ void ConsoleMessageStorage::clear(ExecutionContext *)
 
 void ConsoleMessageStorage::reportMessage(ExecutionContext *, PassRefPtrWillBeRawPtr<ConsoleMessage> prpMessage)
 {
-#ifdef _DEBUG
+#ifndef NDEBUG
     assert(false); // BKTODO: Show log for the message.
 #endif
 }

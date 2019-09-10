@@ -24,7 +24,7 @@ class SchedulerImpl final : public blink::WebScheduler
 {
 public:
     SchedulerImpl(ThreadImpl &thread);
-#ifdef _DEBUG
+#ifndef NDEBUG
     ~SchedulerImpl(void);
 #endif
 private:
@@ -45,7 +45,7 @@ private:
     void onNavigationStarted(void) override;
 
     ThreadImpl &m_thread;
-#ifdef _DEBUG
+#ifndef NDEBUG
     bool m_pending = false;
 #endif
 };

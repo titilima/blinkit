@@ -84,7 +84,7 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef _DEBUG
+#ifndef NDEBUG
 
 #include <unordered_set>
 
@@ -106,14 +106,14 @@ const char DukXHR::ProtoName[] = "XMLHttpRequest";
 
 DukXHR::DukXHR(duk_context *ctx) : m_heapPtr(duk_get_heapptr(ctx, -1))
 {
-#ifdef _DEBUG
+#ifndef NDEBUG
     g_xhrPool.Add(this);
 #endif
 }
 
 DukXHR::~DukXHR(void)
 {
-#ifdef _DEBUG
+#ifndef NDEBUG
     g_xhrPool.Remove(this);
 #endif
 }
