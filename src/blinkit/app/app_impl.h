@@ -15,47 +15,41 @@
 #pragma once
 
 #include <unordered_map>
-#include "sdk/include/BlinKit.h"
-#include "public/platform/Platform.h"
-#include "blinkit/blink_impl/thread_impl.h"
-
-namespace blink {
-class Settings;
-}
+#include "public/platform/platform.h"
 
 namespace BlinKit {
+
+class BkAppClient;
 
 class CookieJarImpl;
 class MimeRegistryImpl;
 
-class AppImpl : public BkApp, public blink::Platform, public ThreadImpl
+class AppImpl : public blink::Platform
 {
 public:
-    static void CreateInstance(void);
+    static AppImpl* CreateInstance(void);
     virtual ~AppImpl(void);
 
     void Initialize(BkAppClient *client);
     static AppImpl& Get(void);
 
-    BkRequest* CreateRequest(const char *URL, BkRequestClient &client);
-
+#if 0 // BKTODO:
     ThreadImpl* CurrentThreadImpl(void);
     blink::WebThread& IOThread(void);
     CookieJarImpl& CookieJar(void);
-    blink::Settings& CrawlerSettings(void);
+#endif
 
     void Log(const char *s);
 
+#if 0 // BKTODO:
     // blink::Platform
     blink::WebCookieJar* cookieJar(void) override final;
     blink::WebThread* currentThread(void) override final;
+#endif
 protected:
     AppImpl(void);
 private:
-    // BkApp
-    void BKAPI Exit(void) override final;
-    BkCrawler* BKAPI CreateCrawler(BkCrawlerClient &client, BkBuffer *errorMessage) override final;
-    BkView* BKAPI CreateView(BkViewClient &client) override;
+#if 0 // BKTODO:
     // blink::Platform
     blink::WebMimeRegistry* mimeRegistry(void) override final;
     blink::WebURLLoader* createURLLoader(void) override final;
@@ -65,13 +59,13 @@ private:
     double currentTimeSeconds(void) override final;
     double monotonicallyIncreasingTimeSeconds(void) override final;
 
-    BkAppClient *m_client = nullptr;
     std::unique_ptr<CookieJarImpl> m_cookieJar;
     std::unique_ptr<MimeRegistryImpl> m_mimeRegistry;
     std::unique_ptr<blink::WebThread> m_IOThread;
-    OwnPtr<blink::Settings> m_crawlerSettings;
     double m_firstMonotonicallyIncreasingTime;
     std::unordered_map<blink::PlatformThreadId, ThreadImpl *> m_threads;
+#endif
+    std::unique_ptr<blink::scheduler::WebThreadScheduler> m_mainThreadScheduler;
 };
 
 } // namespace BlinKit

@@ -25,6 +25,9 @@
     <Filter Include="win">
       <UniqueIdentifier>{1c972ffa-f5fa-46d8-9f33-8c5975aec476}</UniqueIdentifier>
     </Filter>
+    <Filter Include="app">
+      <UniqueIdentifier>{35dad8df-03c1-429e-bcd5-ab434e946865}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\sdk\include\bk_app.h">
@@ -60,6 +63,15 @@
     <ClInclude Include="..\..\..\src\blinkit\http\win_request.h">
       <Filter>http</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\app\win_app.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\app\app_constants.h">
+      <Filter>app</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BkCrawler.def">
@@ -90,6 +102,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\http\win_request.cpp">
       <Filter>http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\app\app_impl.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\app\win_app.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\app\app_constants.cpp">
+      <Filter>app</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

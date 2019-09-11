@@ -106,6 +106,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <ModuleDefinitionFile>BkCrawler.def</ModuleDefinitionFile>
+      <AdditionalDependencies>Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -141,6 +142,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <ModuleDefinitionFile>BkCrawler.def</ModuleDefinitionFile>
+      <AdditionalDependencies>Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -167,6 +169,9 @@
     <ClInclude Include="..\..\..\sdk\include\bk_crawler.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_def.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_http.h" />
+    <ClInclude Include="..\..\..\src\blinkit\app\app_constants.h" />
+    <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\app\win_app.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\request_controller_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\request_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\response_impl.h" />
@@ -183,6 +188,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\app\app_constants.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\app\app_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\app\win_app.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\request_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\response_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\win_request.cpp" />
@@ -192,6 +200,15 @@
     <ClCompile Include="..\..\..\src\blinkit\win\inet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\base\base.vcxproj">
+      <Project>{f8e8dc22-c9eb-4274-bbc9-011d4106f84d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\blink_crawler\blink_crawler.vcxproj">
+      <Project>{368255a7-294a-481f-82a8-cb130feb5096}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\url\url.vcxproj">
+      <Project>{849ce42e-6457-4c6d-8ba0-854932a2aedb}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\zlib\zlib.vcxproj">
       <Project>{1ee00a35-2f4a-45d0-8c75-80b936818a76}</Project>
     </ProjectReference>

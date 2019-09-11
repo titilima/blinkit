@@ -11,23 +11,27 @@
 
 #include "app_impl.h"
 
+#if 0 // BKTODO:
 #include "base/time/time.h"
-#include "core/frame/Settings.h"
-#include "public/web/WebCache.h"
-#include "public/web/WebKit.h"
+#endif
+#include "public/platform/web_cache.h"
+#include "public/platform/web_thread_scheduler.h"
+#include "public/web/blink.h"
 
+#include "bk_app.h"
 #include "app/app_constants.h"
+#if 0 // BKTODO:
 #include "blink_impl/cookie_jar_impl.h"
 #include "blink_impl/mime_registry_impl.h"
 #include "blink_impl/url_loader_impl.h"
 #include "crawler/crawler_impl.h"
+#endif
 
 namespace BlinKit {
 
-static AppImpl *theApp = nullptr;
-
 AppImpl::AppImpl(void)
 {
+#if 0 // BKTODO:
     assert(nullptr == theApp);
     theApp = this;
 
@@ -36,14 +40,18 @@ AppImpl::AppImpl(void)
     blink::PlatformThreadId currentThreadId = ThreadImpl::CurrentThreadId();
     ThreadImpl::ApplyThreadId(currentThreadId);
     m_threads[currentThreadId] = this;
+#endif
 }
 
 AppImpl::~AppImpl(void)
 {
+#if 0 // BKTODO:
     assert(theApp == this);
     theApp = nullptr;
+#endif
 }
 
+#if 0 // BKTODO:
 blink::WebURLError AppImpl::cancelledError(const blink::WebURL &url) const
 {
     blink::WebURLError ret;
@@ -156,27 +164,21 @@ double AppImpl::currentTimeSeconds(void)
 {
     return base::Time::Now().ToDoubleT();
 }
-
-void BKAPI AppImpl::Exit(void)
-{
-    if (m_crawlerSettings)
-        m_crawlerSettings.clear();
-    blink::WebCache::clear();
-    blink::shutdown();
-    delete theApp;
-}
+#endif // 0
 
 AppImpl& AppImpl::Get(void)
 {
-    return *theApp;
+    AppImpl *app = static_cast<AppImpl *>(Platform::Current());
+    return *app;
 }
 
 void AppImpl::Initialize(BkAppClient *client)
 {
-    m_client = client;
-    blink::initialize(this);
+    assert(nullptr == client);
+    blink::Initialize(this, m_mainThreadScheduler.get());
 }
 
+#if 0 // BKTODO:
 blink::WebThread& AppImpl::IOThread(void)
 {
     if (!m_IOThread)
@@ -209,26 +211,37 @@ blink::WebString AppImpl::userAgent(void)
 {
     return blink::WebString::fromUTF8(AppConstants::DefaultUserAgent);
 }
+#endif // 0
 
 } // namespace BlinKit
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+using namespace blink;
 using namespace BlinKit;
 
-extern "C" BkApp* BKAPI BkGetApp(void)
+extern "C" {
+
+BKEXPORT void BKAPI BkFinalize(void)
 {
-    return theApp;
+    WebCache::Clear();
+    delete Platform::Current();
 }
 
-extern "C" BkApp* BKAPI BkInitialize(BkAppClient *client)
+BKEXPORT bool_t BKAPI BkInitialize(void *reserved)
 {
-    assert(nullptr == theApp);
-    if (nullptr == theApp)
+    if (nullptr == Platform::Current())
     {
-        AppImpl::CreateInstance();
-        assert(nullptr != theApp);
-        theApp->Initialize(client);
+        AppImpl *app = AppImpl::CreateInstance();
+        if (nullptr == app)
+        {
+            assert(nullptr != app);
+            return false;
+        }
+
+        app->Initialize(nullptr);
     }
-    return theApp;
+    return true;
 }
+
+} // extern "C"

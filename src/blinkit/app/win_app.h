@@ -29,6 +29,7 @@ public:
 
     static WinApp& Get(void);
 private:
+#if 0 // BKTODO:
     static LRESULT CALLBACK HookProc(int code, WPARAM w, LPARAM l);
     // blink::Platform
     blink::WebString defaultLocale(void) override;
@@ -46,6 +47,7 @@ private:
     std::unique_ptr<WinClipboard> m_clipboard;
     std::unique_ptr<WinThemeEngine> m_themeEngine;
 #endif
+#endif // 0
 };
 
 } // namespace BlinKit

@@ -12,6 +12,7 @@
 #include "win_app.h"
 
 #include "base/strings/sys_string_conversions.h"
+#if 0 // BKTODO:
 #include "base/win/resource_util.h"
 
 #include "blink_impl/win_task_runner.h"
@@ -20,19 +21,25 @@
 #   include "blink_impl/win_theme_engine.h"
 #   include "view/win_view.h"
 #endif
+#endif // 0
 
 namespace BlinKit {
 
 WinApp::WinApp(void)
 {
+#if 0 // BKTODO:
     m_msgHook = SetWindowsHookEx(WH_GETMESSAGE, HookProc, nullptr, threadId());
+#endif
 }
 
 WinApp::~WinApp(void)
 {
+#if 0 // BKTODO:
     UnhookWindowsHookEx(m_msgHook);
+#endif
 }
 
+#if 0 // BKTODO:
 blink::WebString WinApp::defaultLocale(void)
 {
     std::string localName("en-US");
@@ -46,12 +53,14 @@ blink::WebString WinApp::defaultLocale(void)
 
     return blink::WebString::fromUTF8(localName);
 }
+#endif
 
 WinApp& WinApp::Get(void)
 {
     return static_cast<WinApp &>(AppImpl::Get());
 }
 
+#if 0 // BKTODO:
 LRESULT CALLBACK WinApp::HookProc(int code, WPARAM w, LPARAM l)
 {
     WinApp &app = Get();
@@ -106,12 +115,13 @@ blink::WebThemeEngine* WinApp::themeEngine(void)
 }
 
 #endif // BLINKIT_CRAWLER_ONLY
+#endif // 0
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void AppImpl::CreateInstance(void)
+AppImpl* AppImpl::CreateInstance(void)
 {
-    new WinApp;
+    return new WinApp;
 }
 
 void AppImpl::Log(const char *s)

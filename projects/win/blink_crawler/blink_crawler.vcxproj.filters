@@ -13,5 +13,57 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="public">
+      <UniqueIdentifier>{cece06b5-b732-4cd2-b129-d2aa3150f6dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="public\platform">
+      <UniqueIdentifier>{0f955a03-9503-412c-bb55-e691c8b52dc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="public\web">
+      <UniqueIdentifier>{5ef9cc2a-4630-4b41-ac42-695884a51d4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer">
+      <UniqueIdentifier>{6cc75533-03ea-4324-9021-04efeeafaa1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\platform">
+      <UniqueIdentifier>{7788ce90-250f-4cc5-9611-d15c6f168f34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\platform\exported">
+      <UniqueIdentifier>{40c67e72-1ba1-4c21-b24f-102402b9e158}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\controller">
+      <UniqueIdentifier>{18a8afbd-3525-40f2-b7ff-1ed40556d0b1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\platform.h">
+      <Filter>public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\web\blink.h">
+      <Filter>public\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blink\_pc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_thread_scheduler.h">
+      <Filter>public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_cache.h">
+      <Filter>public\platform</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\platform.cpp">
+      <Filter>renderer\platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\_pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\controller\blink_initializer.cpp">
+      <Filter>renderer\controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\web_cache.cpp">
+      <Filter>renderer\platform\exported</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
