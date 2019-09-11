@@ -150,7 +150,7 @@ void ResponseImpl::GZipInflate(void)
 
 void ResponseImpl::ParseHeaders(const std::string &rawHeaders)
 {
-    std::regex pattern(R"(HTTP/\d+\.\d+\s+(\d+).+)");
+    std::regex pattern(R"(HTTP\/[\d+\.]+\s+(\d+).*?)");
     std::smatch match;
     if (!std::regex_search(rawHeaders, match, pattern))
     {
