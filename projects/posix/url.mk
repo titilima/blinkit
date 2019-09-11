@@ -1,6 +1,6 @@
 URLSrc = $(BkRoot)src/chromium/url
 URLFlags = -I$(BkRoot)src/url -I$(URLSrc) $(CrFlags)
-URLObjects = gurl.o	url_canon.o url_canon_etc.o url_canon_filesystemurl.o url_canon_fileurl.o url_canon_host.o	\
+URLObjects = gurl.o url_canon.o url_canon_etc.o url_canon_filesystemurl.o url_canon_fileurl.o url_canon_host.o	\
 	url_canon_internal.o url_canon_ip.o url_canon_mailtourl.o url_canon_path.o url_canon_pathurl.o	\
 	url_canon_query.o url_canon_relative.o url_canon_stdstring.o url_canon_stdurl.o url_constants.o url_parse.o	\
 	url_parse_file.o url_util.o
