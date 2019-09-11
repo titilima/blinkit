@@ -2,6 +2,9 @@ LIBRARY "BkCrawler"
 
 EXPORTS
 
+BkInitialize
+BkFinalize
+
 BkSetBufferData
 BkInitializeSimpleBuffer
 BkFinalizeSimpleBuffer

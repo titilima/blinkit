@@ -4,6 +4,9 @@
             "path": "../../helpers"
         },
         {
+            "path": "../../projects/posix"
+        },
+        {
             "path": "../../sdk"
         },
         {
@@ -13,7 +16,9 @@
     "settings": {
         "files.exclude": {
             "{**/*.exe,**/*.dll,**/*.lib,**/*.exp,**/*.iobj,**/*.ipdb,**/*.pdb}": true,
-            "{**/*.framework,**/*.dSYM}": true
+            "{**/*.framework,**/*.dSYM}": true,
+            "{**/*.o}": true,
+            "{BkTest,libBlinKit.so}": true
         }
     }
 }
