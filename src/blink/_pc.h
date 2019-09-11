@@ -45,6 +45,8 @@
 #ifdef __OBJC__
 #   import <Cocoa/Cocoa.h>
 #endif
+
+#include "base/logging.h"
 #include "skia/_skia.h"
 
 #endif // BLINKIT_BLINK__PC_H
