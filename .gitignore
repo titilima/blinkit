@@ -1,3 +1,4 @@
+projects/posix/*.so
 projects/win/debug
 projects/win/release
 sdk/macos
@@ -21,6 +22,7 @@ src/duktape
 BUILD.gn
 DEPS
 PRESUBMIT.py
+projects/posix/BkTest
 !sdk/win32/BlinKit.props
 !PrefixHeader.pch
 
