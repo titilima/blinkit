@@ -128,7 +128,7 @@ bool InetRequest::End(void)
 bool InetRequest::QueryInfo(DWORD dwInfoLevel, DWORD &info)
 {
     DWORD l = sizeof(DWORD);
-#ifdef _DEBUG
+#ifndef NDEBUG
     HttpQueryInfoA(m_handle, dwInfoLevel | HTTP_QUERY_FLAG_NUMBER, nullptr, &l, nullptr);
     assert(sizeof(DWORD) == l || ERROR_HTTP_HEADER_NOT_FOUND == GetLastError());
 #endif
