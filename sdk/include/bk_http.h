@@ -60,38 +60,30 @@ BKEXPORT int BKAPI BkGetResponseCookie(BkResponse response, size_t index, struct
 
 namespace BlinKit {
 
-class BkRequestClientImpl
+class BkRequestClientImpl : public BkClientImpl<BkRequestClientImpl, BkRequestClient>
 {
-public:
-    operator BkRequestClient* (void) { return &m_client; }
-protected:
-    BkRequestClientImpl(void)
-    {
-        memset(&m_client, 0, sizeof(BkRequestClient));
-        m_client.UserData = this;
-        m_client.RequestComplete = RequestCompleteImpl;
-        m_client.RequestFailed = RequestFailedImpl;
-        m_client.RequestRedirect = RequestRedirectImpl;
-    }
 private:
     virtual void RequestComplete(BkResponse response) = 0;
     virtual void RequestFailed(int errorCode) { assert(BK_ERR_SUCCESS == errorCode); }
     virtual bool_t RequestRedirect(BkResponse response) { return true; }
 
+    void Setup(BkRequestClient &rawClient)
+    {
+        rawClient.RequestComplete = RequestCompleteImpl;
+        rawClient.RequestFailed = RequestFailedImpl;
+        rawClient.RequestRedirect = RequestRedirectImpl;
+    }
     static void BKAPI RequestCompleteImpl(BkResponse response, void *userData)
     {
-        BkRequestClientImpl *This = reinterpret_cast<BkRequestClientImpl *>(userData);
-        This->RequestComplete(response);
+        ToImpl(userData)->RequestComplete(response);
     }
     static void BKAPI RequestFailedImpl(int errorCode, void *userData)
     {
-        BkRequestClientImpl *This = reinterpret_cast<BkRequestClientImpl *>(userData);
-        This->RequestFailed(errorCode);
+        ToImpl(userData)->RequestFailed(errorCode);
     }
     static bool_t BKAPI RequestRedirectImpl(BkResponse response, void *userData)
     {
-        BkRequestClientImpl *This = reinterpret_cast<BkRequestClientImpl *>(userData);
-        return This->RequestRedirect(response);
+        return ToImpl(userData)->RequestRedirect(response);
     }
 
     BkRequestClient m_client;

@@ -146,6 +146,37 @@ inline BkBufferImpl<std::vector<unsigned char>> BkMakeBuffer(std::vector<unsigne
     return BkBufferImpl<std::vector<unsigned char>>(v);
 }
 
+template <class T, typename ClientType>
+class BkClientImpl
+{
+public:
+    operator ClientType* (void)
+    {
+        if (nullptr == m_client.UserData)
+        {
+            m_client.UserData = static_cast<T *>(this);
+            static_cast<T *>(this)->Setup(m_client);
+        }
+        return &m_client;
+    }
+protected:
+    BkClientImpl(void)
+    {
+        memset(&m_client, 0, sizeof(ClientType));
+    }
+    static T* ToImpl(void *userData)
+    {
+        return reinterpret_cast<T *>(userData);
+    }
+private:
+    void Setup(ClientType &rawClient)
+    {
+        assert(false); // Not reached: Setup callback handlers in client!
+    }
+
+    ClientType m_client;
+};
+
 } // namespace BlinKit
 
 #endif // __cplusplus
