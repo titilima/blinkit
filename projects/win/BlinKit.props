@@ -4,10 +4,13 @@
   <PropertyGroup Label="UserMacros">
     <RepoRoot>$(MSBuildThisFileDirectory)..\..\</RepoRoot>
     <SrcRoot>$(RepoRoot)src\</SrcRoot>
-    <CrRoot>$(SrcRoot)chromium\</CrRoot>
   </PropertyGroup>
   <PropertyGroup />
-  <ItemDefinitionGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SrcRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <BuildMacro Include="RepoRoot">
       <Value>$(RepoRoot)</Value>
@@ -15,9 +18,6 @@
     </BuildMacro>
     <BuildMacro Include="SrcRoot">
       <Value>$(SrcRoot)</Value>
-    </BuildMacro>
-    <BuildMacro Include="CrRoot">
-      <Value>$(CrRoot)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>
