@@ -30,6 +30,9 @@
     <Filter Include="base\metrics">
       <UniqueIdentifier>{4dd07644-0392-49a7-8e7f-d7ce62a9b408}</UniqueIdentifier>
     </Filter>
+    <Filter Include="base\memory">
+      <UniqueIdentifier>{d9d69703-5981-4890-96a2-bc8e4b0ab487}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -171,6 +174,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\base\strings\string_tokenizer.h">
       <Filter>base\strings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\memory\ref_counted.h">
+      <Filter>base\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\memory\scoped_policy.h">
+      <Filter>base\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\memory\weak_ptr.h">
+      <Filter>base\memory</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

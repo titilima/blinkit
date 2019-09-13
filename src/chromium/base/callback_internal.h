@@ -27,7 +27,6 @@
 #include "base/base_export.h"
 #include "base/macros.h"
 #include "base/memory/ref_counted.h"
-#include "base/memory/scoped_ptr.h"
 #include "base/template_util.h"
 
 namespace base {

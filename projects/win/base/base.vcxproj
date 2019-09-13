@@ -265,6 +265,9 @@
     <ClInclude Include="..\..\..\src\chromium\base\gtest_prod_util.h" />
     <ClInclude Include="..\..\..\src\chromium\base\logging.h" />
     <ClInclude Include="..\..\..\src\chromium\base\macros.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\memory\ref_counted.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\memory\scoped_policy.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\memory\weak_ptr.h" />
     <ClInclude Include="..\..\..\src\chromium\base\metrics\histogram_macros.h" />
     <ClInclude Include="..\..\..\src\chromium\base\move.h" />
     <ClInclude Include="..\..\..\src\chromium\base\observer_list.h" />

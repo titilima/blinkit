@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - base Library
+// -------------------------------------------------
+//   File Name: gurl.h
+// Description: GURL Class
+//      Author: Ziming Li
+//     Created: 2019-09-13
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2013 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,9 +19,9 @@
 #include <stddef.h>
 
 #include <iosfwd>
+#include <memory>
 #include <string>
 
-#include "base/memory/scoped_ptr.h"
 #include "base/strings/string16.h"
 #include "base/strings/string_piece.h"
 #include "url/third_party/mozilla/url_parse.h"
@@ -433,7 +444,7 @@ class URL_EXPORT GURL {
   url::Parsed parsed_;
 
   // Used for nested schemes [currently only filesystem:].
-  scoped_ptr<GURL> inner_url_;
+  std::unique_ptr<GURL> inner_url_;
 };
 
 // Stream operator so GURL can be used in assertion statements.
