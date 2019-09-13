@@ -62,17 +62,18 @@ namespace BlinKit {
 
 class BkRequestClientImpl : public BkClientImpl<BkRequestClientImpl, BkRequestClient>
 {
-private:
-    virtual void RequestComplete(BkResponse response) = 0;
-    virtual void RequestFailed(int errorCode) { assert(BK_ERR_SUCCESS == errorCode); }
-    virtual bool_t RequestRedirect(BkResponse response) { return true; }
-
+public:
     void Setup(BkRequestClient &rawClient)
     {
         rawClient.RequestComplete = RequestCompleteImpl;
         rawClient.RequestFailed = RequestFailedImpl;
         rawClient.RequestRedirect = RequestRedirectImpl;
     }
+private:
+    virtual void RequestComplete(BkResponse response) = 0;
+    virtual void RequestFailed(int errorCode) { assert(BK_ERR_SUCCESS == errorCode); }
+    virtual bool_t RequestRedirect(BkResponse response) { return true; }
+
     static void BKAPI RequestCompleteImpl(BkResponse response, void *userData)
     {
         ToImpl(userData)->RequestComplete(response);
@@ -85,8 +86,6 @@ private:
     {
         return ToImpl(userData)->RequestRedirect(response);
     }
-
-    BkRequestClient m_client;
 };
 
 } // namespace BlinKit
