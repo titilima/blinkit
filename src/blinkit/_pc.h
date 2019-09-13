@@ -40,8 +40,6 @@
 #include <unordered_map>
 #include <vector>
 
-#include "base/logging.h"
-
 #if OS_WIN
 #   include <Windows.h>
 extern HMODULE theModule;
@@ -49,7 +47,9 @@ extern HMODULE theModule;
 
 #ifdef __OBJC__
 #   import <Foundation/Foundation.h>
-#   include "base/mac/scoped_nsobject.h"
 #endif
+
+#include "bk_def.h"
+#include "base/logging.h"
 
 #endif // BLINKIT_BLINKIT__PC_H

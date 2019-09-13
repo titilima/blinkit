@@ -9,8 +9,6 @@
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "bk_def.h"
-
 static void* BKAPI Alloc(size_t cb, void *userData)
 {
     BkSimpleBuffer *buffer = reinterpret_cast<BkSimpleBuffer *>(userData);

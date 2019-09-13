@@ -42,6 +42,7 @@
 #define WTF_USE_DEFAULT_RENDER_THEME    1
 
 #include <cassert>
+#include <memory>
 #ifdef __OBJC__
 #   import <Cocoa/Cocoa.h>
 #endif
