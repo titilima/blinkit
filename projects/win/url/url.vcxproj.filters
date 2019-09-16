@@ -86,6 +86,9 @@
     <ClCompile Include="..\..\..\src\url\url_canon.cpp">
       <Filter>url</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\url\bk_url.cpp">
+      <Filter>url</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\chromium\url\gurl.h">
@@ -135,6 +138,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\url\_pc.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\url\bk_url.h">
+      <Filter>url</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

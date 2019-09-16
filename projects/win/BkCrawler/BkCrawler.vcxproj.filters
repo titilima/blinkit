@@ -28,6 +28,9 @@
     <Filter Include="app">
       <UniqueIdentifier>{35dad8df-03c1-429e-bcd5-ab434e946865}</UniqueIdentifier>
     </Filter>
+    <Filter Include="crawler">
+      <UniqueIdentifier>{72a3f121-30b8-468f-844f-f10e0a04706e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\sdk\include\bk_app.h">
@@ -72,6 +75,12 @@
     <ClInclude Include="..\..\..\src\blinkit\app\app_constants.h">
       <Filter>app</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_impl.h">
+      <Filter>crawler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\local_frame_client_impl.h">
+      <Filter>blink_impl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BkCrawler.def">
@@ -111,6 +120,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\app\app_constants.cpp">
       <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_impl.cpp">
+      <Filter>crawler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\local_frame_client_impl.cpp">
+      <Filter>blink_impl</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

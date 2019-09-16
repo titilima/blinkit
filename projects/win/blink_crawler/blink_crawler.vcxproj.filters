@@ -34,6 +34,30 @@
     <Filter Include="renderer\controller">
       <UniqueIdentifier>{18a8afbd-3525-40f2-b7ff-1ed40556d0b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core">
+      <UniqueIdentifier>{3a2b77d0-116f-4194-a428-b70abdcf8ea7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\frame">
+      <UniqueIdentifier>{67bb7a95-0f4f-42e1-85f3-a22748f551d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\platform\wtf">
+      <UniqueIdentifier>{01226538-4af0-4811-8ecf-8501872403fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\platform\heap">
+      <UniqueIdentifier>{33a998a5-7d81-450b-9b8d-e724ba050411}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\platform\weborigin">
+      <UniqueIdentifier>{4cf36b7c-d892-43c1-91d7-df9241d8a6ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\loader">
+      <UniqueIdentifier>{61a94011-2795-4312-8052-2e05d366c88a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\platform\loader">
+      <UniqueIdentifier>{01f9e40b-eebe-4d24-8761-9657ff40df01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\platform\loader\fetch">
+      <UniqueIdentifier>{ddf739b4-6895-4851-b40f-b4f19d057ff9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\platform.h">
@@ -51,6 +75,48 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_cache.h">
       <Filter>public\platform</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_frame.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\frame.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\platform_export.h">
+      <Filter>renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\wtf_export.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\heap\garbage_collected.h">
+      <Filter>renderer\platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\heap\heap.h">
+      <Filter>renderer\platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\frame_client.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_frame_client.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\heap\member.h">
+      <Filter>renderer\platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\heap\handle.h">
+      <Filter>renderer\platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_load_request.h">
+      <Filter>renderer\core\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource_request.h">
+      <Filter>renderer\platform\loader\fetch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_loader.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\allocator.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\platform.cpp">
@@ -64,6 +130,21 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\web_cache.cpp">
       <Filter>renderer\platform\exported</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_frame.cpp">
+      <Filter>renderer\core\frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\frame.cpp">
+      <Filter>renderer\core\frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_load_request.cpp">
+      <Filter>renderer\core\loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource_request.cpp">
+      <Filter>renderer\platform\loader\fetch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_loader.cpp">
+      <Filter>renderer\core\frame</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -99,7 +99,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;BLINKIT_EXPORTS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;$(RepoRoot)sdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;BLINKIT_EXPORTS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;$(RepoRoot)sdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -172,6 +172,8 @@
     <ClInclude Include="..\..\..\src\blinkit\app\app_constants.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\win_app.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\local_frame_client_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\request_controller_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\request_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\response_impl.h" />
@@ -191,6 +193,8 @@
     <ClCompile Include="..\..\..\src\blinkit\app\app_constants.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\app\app_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\app\win_app.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\local_frame_client_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\request_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\response_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\win_request.cpp" />
