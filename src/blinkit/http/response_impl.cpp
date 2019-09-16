@@ -15,7 +15,9 @@
 #include <zlib.h>
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "url/gurl.h"
+#include "url/bk_url.h"
+
+using namespace BlinKit;
 
 static void CanonizeHeaderName(std::string &headerName)
 {
@@ -202,7 +204,7 @@ std::string ResponseImpl::ResolveRedirection(void)
     if (std::end(m_headers) != it)
     {
         ret = m_URL;
-        m_URL = GURL(m_URL).Resolve(it->second).spec();
+        m_URL = BkURL(m_URL).Resolve(it->second).AsString();
     }
     return ret;
 }
