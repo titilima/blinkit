@@ -41,6 +41,7 @@
 
 #include "local_frame.h"
 
+#include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 
 namespace blink {
@@ -52,6 +53,18 @@ LocalFrame::LocalFrame(LocalFrameClient &client, Page *page) : Frame(client, pag
 std::unique_ptr<LocalFrame> LocalFrame::Create(LocalFrameClient &client, Page *page)
 {
     return std::unique_ptr<LocalFrame>(new LocalFrame(client, page));
+}
+
+LocalDOMWindow* LocalFrame::DomWindow(void) const
+{
+    DOMWindow *domWindow = Frame::DomWindow();
+    return ToLocalDOMWindow(domWindow);
+}
+
+Document* LocalFrame::GetDocument(void) const
+{
+    LocalDOMWindow *domWindow = DomWindow();
+    return nullptr != domWindow ? domWindow->document() : nullptr;
 }
 
 } // namespace blink

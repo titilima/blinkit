@@ -46,6 +46,7 @@
 
 namespace blink {
 
+class DOMWindow;
 class FrameClient;
 class Page;
 
@@ -53,11 +54,14 @@ class Frame : public GarbageCollectedFinalized<Frame>
 {
 public:
     virtual ~Frame(void);
+
+    DOMWindow* DomWindow(void) const { return m_domWindow; }
 protected:
     Frame(FrameClient &client, Page *page);
 
     FrameClient &m_client;
     Member<Page> m_page;
+    Member<DOMWindow> m_domWindow;
 };
 
 } // namespace blink

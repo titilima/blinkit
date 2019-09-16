@@ -47,6 +47,8 @@
 
 namespace blink {
 
+class Document;
+class LocalDOMWindow;
 class LocalFrameClient;
 
 class LocalFrame final : public Frame
@@ -55,6 +57,8 @@ public:
     static std::unique_ptr<LocalFrame> Create(LocalFrameClient &client, Page *page = nullptr);
 
     FrameLoader& Loader(void) const { return m_loader; }
+    LocalDOMWindow* DomWindow(void) const;
+    Document* GetDocument(void) const;
 private:
     LocalFrame(LocalFrameClient &client, Page *page);
 
