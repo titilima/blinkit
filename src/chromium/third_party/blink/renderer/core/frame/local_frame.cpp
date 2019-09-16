@@ -45,7 +45,7 @@
 
 namespace blink {
 
-LocalFrame::LocalFrame(LocalFrameClient &client, Page *page) : Frame(client, page)
+LocalFrame::LocalFrame(LocalFrameClient &client, Page *page) : Frame(client, page), m_loader(this)
 {
 }
 

@@ -43,6 +43,7 @@
 #pragma once
 
 #include "third_party/blink/renderer/core/frame/frame.h"
+#include "third_party/blink/renderer/core/loader/frame_loader.h"
 
 namespace blink {
 
@@ -52,8 +53,12 @@ class LocalFrame final : public Frame
 {
 public:
     static std::unique_ptr<LocalFrame> Create(LocalFrameClient &client, Page *page = nullptr);
+
+    FrameLoader& Loader(void) const { return m_loader; }
 private:
     LocalFrame(LocalFrameClient &client, Page *page);
+
+    mutable FrameLoader m_loader;
 };
 
 } // namespace blink
