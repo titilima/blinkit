@@ -12,7 +12,8 @@
 #include "win_request.h"
 
 #include "base/strings/string_util.h"
-#include "url/gurl.h"
+#include "url/bk_url.h"
+#include "url/url_constants.h"
 
 #include "app/app_constants.h"
 #include "http/response_impl.h"
@@ -132,17 +133,17 @@ ControllerImpl* WinRequest::GetController(void)
 
 int WinRequest::OpenRequest(const std::string &URL)
 {
-    GURL u(URL);
+    BkURL u(URL);
     if (!u.SchemeIsHTTPOrHTTPS())
         return BK_ERR_URI;
 
     assert(!m_connection.IsValid());
-    m_connection = m_session.Connect(u.host(), u.EffectiveIntPort(), u.username(), u.password());
+    m_connection = m_session.Connect(u.Host(), u.EffectiveIntPort(), u.Username(), u.Password());
     if (!m_connection.IsValid())
         return BK_ERR_NETWORK;
 
     assert(!m_request.IsValid());
-    m_request = m_connection.OpenRequest(m_method, u.PathForRequest(), m_referer, u.SchemeIs("https"));
+    m_request = m_connection.OpenRequest(m_method, u.PathForRequest(), m_referer, u.SchemeIs(url::kHttpsScheme));
     if (!m_request.IsValid())
         return BK_ERR_NETWORK;
 
