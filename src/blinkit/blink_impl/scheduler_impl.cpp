@@ -70,7 +70,8 @@ void SchedulerImpl::postIdleTaskAfterWakeup(const WebTraceLocation &location, We
 
 void SchedulerImpl::postNonNestableIdleTask(const WebTraceLocation &location, WebThread::IdleTask *task)
 {
-    assert(false); // BKTODO:
+    BKLOG("// TODO: SchedulerImpl::postNonNestableIdleTask");
+    delete task;
 }
 
 void SchedulerImpl::removePendingNavigation(void)
