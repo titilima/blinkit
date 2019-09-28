@@ -188,11 +188,14 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\allocator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\assertions.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\compiler.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\date_math.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\dtoa\double-conversion.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\noncopyable.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\threading.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\type_traits.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\wtf.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\wtf_export.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\wtf_thread_data.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\controller\blink_initializer.cpp" />

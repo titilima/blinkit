@@ -70,6 +70,9 @@
     <Filter Include="renderer\core\exported">
       <UniqueIdentifier>{f2d6d686-b166-4298-8eb1-b943e5ffd292}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\platform\wtf\dtoa">
+      <UniqueIdentifier>{d1249730-fbe9-471c-8418-f4bb654e147d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\platform.h">
@@ -191,6 +194,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\substitute_data.h">
       <Filter>renderer\platform\loader\fetch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\date_math.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\wtf_thread_data.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\dtoa\double-conversion.h">
+      <Filter>renderer\platform\wtf\dtoa</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
