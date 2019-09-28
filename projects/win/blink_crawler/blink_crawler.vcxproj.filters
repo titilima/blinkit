@@ -58,6 +58,18 @@
     <Filter Include="renderer\platform\loader\fetch">
       <UniqueIdentifier>{ddf739b4-6895-4851-b40f-b4f19d057ff9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\dom">
+      <UniqueIdentifier>{b07b622e-b854-4451-997b-1f155ccc8102}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\dom\events">
+      <UniqueIdentifier>{39031ed2-3f5b-4873-9162-f92c343816ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\platform\bindings">
+      <UniqueIdentifier>{07440a4e-4c93-414a-9a1d-095d1307975b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\exported">
+      <UniqueIdentifier>{f2d6d686-b166-4298-8eb1-b943e5ffd292}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\platform.h">
@@ -84,9 +96,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\platform_export.h">
       <Filter>renderer\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\wtf_export.h">
-      <Filter>renderer\platform\wtf</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\heap\garbage_collected.h">
       <Filter>renderer\platform\heap</Filter>
     </ClInclude>
@@ -111,11 +120,77 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource_request.h">
       <Filter>renderer\platform\loader\fetch</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_loader.h">
-      <Filter>renderer\core\frame</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\allocator.h">
       <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\dom_window.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_dom_window.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\events\event_target.h">
+      <Filter>renderer\core\dom\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\script_wrappable.h">
+      <Filter>renderer\platform\bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\noncopyable.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\assertions.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\container_node.h">
+      <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\document.h">
+      <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\node.h">
+      <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\compiler.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\wtf_export.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\script_forbidden_scope.h">
+      <Filter>renderer\platform\bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\wtf.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\threading.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\type_traits.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\document_loader.h">
+      <Filter>renderer\core\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_loader.h">
+      <Filter>renderer\core\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\raw_resource.h">
+      <Filter>renderer\platform\loader\fetch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource_client.h">
+      <Filter>renderer\platform\loader\fetch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\web\web_document_loader.h">
+      <Filter>public\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\web\web_frame_load_type.h">
+      <Filter>public\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\exported\web_document_loader_impl.h">
+      <Filter>renderer\core\exported</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\substitute_data.h">
+      <Filter>renderer\platform\loader\fetch</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -143,8 +218,47 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource_request.cpp">
       <Filter>renderer\platform\loader\fetch</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_loader.cpp">
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\dom_window.cpp">
       <Filter>renderer\core\frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_dom_window.cpp">
+      <Filter>renderer\core\frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\events\event_target.cpp">
+      <Filter>renderer\core\dom\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\container_node.cpp">
+      <Filter>renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\document.cpp">
+      <Filter>renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\node.cpp">
+      <Filter>renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\script_forbidden_scope.cpp">
+      <Filter>renderer\platform\bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\wtf.cpp">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\threading.cc">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\document_loader.cpp">
+      <Filter>renderer\core\loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_loader.cpp">
+      <Filter>renderer\core\loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\raw_resource.cpp">
+      <Filter>renderer\platform\loader\fetch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource_client.cpp">
+      <Filter>renderer\platform\loader\fetch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\exported\web_document_loader_impl.cpp">
+      <Filter>renderer\core\exported</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
