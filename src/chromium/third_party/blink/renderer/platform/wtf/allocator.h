@@ -14,10 +14,15 @@
 
 #pragma once
 
-#define DISALLOW_NEW()                                          \
-    private:                                                    \
-        void* operator new(size_t) = delete;                    \
-        void* operator new(size_t, void*) = delete;             \
-    public:
+#define DISALLOW_NEW()                          \
+    void* operator new(size_t) = delete;        \
+    void* operator new(size_t, void *) = delete
+
+#define STATIC_ONLY(Type)                       \
+    Type(void) = delete;                        \
+    Type(const Type &) = delete;                \
+    Type& operator=(const Type &) = delete;     \
+    void* operator new(size_t) = delete;        \
+    void* operator new(size_t, void *) = delete
 
 #endif // BLINKIT_BLINK_ALLOCATOR_H
