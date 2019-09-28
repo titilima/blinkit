@@ -18,6 +18,8 @@
 
 namespace blink {
 
+class GarbageCollectedMixin {};
+
 template <typename T>
 class GarbageCollectedFinalized : public GarbageCollected<T>
 {
