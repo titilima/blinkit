@@ -51,8 +51,10 @@
 
 namespace blink {
 
+class DocumentLoader;
 struct FrameLoadRequest;
 class LocalFrame;
+class LocalFrameClient;
 
 class FrameLoader final
 {
@@ -64,7 +66,10 @@ public:
     void Init(void);
     void StartNavigation(const FrameLoadRequest &request, WebFrameLoadType loadType = WebFrameLoadType::kStandard);
 private:
+    LocalFrameClient* Client(void) const;
+
     Member<LocalFrame> m_frame;
+    std::unique_ptr<DocumentLoader> m_provisionalDocumentLoader;
 
     DISALLOW_COPY_AND_ASSIGN(FrameLoader);
 };

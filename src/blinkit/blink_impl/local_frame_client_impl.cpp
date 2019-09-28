@@ -11,6 +11,20 @@
 
 #include "local_frame_client_impl.h"
 
+#include "third_party/blink/renderer/core/exported/web_document_loader_impl.h"
+
+using namespace blink;
+
 namespace BlinKit {
+
+std::unique_ptr<DocumentLoader> LocalFrameClientImpl::CreateDocumentLoader(
+    LocalFrame *frame,
+    const ResourceRequest &request,
+    const SubstituteData &data, std::unique_ptr<WebDocumentLoader::ExtraData> extraData)
+{
+    std::unique_ptr<WebDocumentLoaderImpl> ret = WebDocumentLoaderImpl::Create(frame, request, data);
+    ret->SetExtraData(std::move(extraData));
+    return ret;
+}
 
 } // namespace BlinKit

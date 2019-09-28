@@ -1,23 +1,16 @@
 // -------------------------------------------------
 // BlinKit - blink Library
 // -------------------------------------------------
-//   File Name: frame_loader.cpp
-// Description: FrameLoader Class
+//   File Name: document_loader.cpp
+// Description: DocumentLoader Class
 //      Author: Ziming Li
-//     Created: 2019-09-14
+//     Created: 2019-09-28
 // -------------------------------------------------
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
 /*
- * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights
- * reserved.
- * Copyright (C) 2008 Nokia Corporation and/or its subsidiary(-ies)
- * Copyright (C) 2008, 2009 Torch Mobile Inc. All rights reserved.
- * (http://www.torchmobile.com/)
- * Copyright (C) 2008 Alp Toker <alp@atoker.com>
- * Copyright (C) Research In Motion Limited 2009. All rights reserved.
- * Copyright (C) 2011 Kris Jordan <krisjordan@gmail.com>
+ * Copyright (C) 2006, 2007, 2008 Apple Inc. All rights reserved.
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,46 +38,19 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "frame_loader.h"
-
-#include "third_party/blink/renderer/core/frame/local_frame.h"
-#include "third_party/blink/renderer/core/frame/local_frame_client.h"
-#include "third_party/blink/renderer/core/loader/document_loader.h"
-#include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
-#include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
-#include "third_party/blink/renderer/platform/loader/fetch/substitute_data.h"
-
-using namespace BlinKit;
+#include "document_loader.h"
 
 namespace blink {
 
-FrameLoader::FrameLoader(LocalFrame *frame) : m_frame(frame)
+DocumentLoader::DocumentLoader(LocalFrame *frame, const ResourceRequest &request, const SubstituteData &substituteData)
+    : m_frame(frame)
+    , m_originalRequest(request)
+    , m_substituteData(substituteData)
 {
 }
 
-FrameLoader::~FrameLoader(void) = default;
-
-LocalFrameClient* FrameLoader::Client(void) const
+void DocumentLoader::StartLoading(void)
 {
-    return m_frame->Client();
-}
-
-void FrameLoader::Init(void)
-{
-    ScriptForbiddenScope forbidScripts;
-
-    BkURL emptyURL;
-    ResourceRequest initialRequest(emptyURL);
-    m_provisionalDocumentLoader = Client()->CreateDocumentLoader(m_frame, initialRequest, SubstituteData(), nullptr);
-    m_provisionalDocumentLoader->StartLoading();
-    assert(false); // BKTODO:
-}
-
-void FrameLoader::StartNavigation(const FrameLoadRequest &request, WebFrameLoadType loadType)
-{
-    assert(WebFrameLoadType::kStandard == loadType || WebFrameLoadType::kReload == loadType);
-
-    assert(nullptr != m_frame->GetDocument());
     assert(false); // BKTODO:
 }
 

@@ -21,6 +21,10 @@ namespace BlinKit {
 class LocalFrameClientImpl : public blink::LocalFrameClient
 {
 public:
+private:
+    std::unique_ptr<blink::DocumentLoader> CreateDocumentLoader(blink::LocalFrame *frame,
+        const blink::ResourceRequest &request, const blink::SubstituteData &data,
+        std::unique_ptr<blink::WebDocumentLoader::ExtraData> extraData) override;
 };
 
 } // namespace BlinKit

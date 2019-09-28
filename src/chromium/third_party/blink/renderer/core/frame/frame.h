@@ -55,6 +55,7 @@ class Frame : public GarbageCollectedFinalized<Frame>
 public:
     virtual ~Frame(void);
 
+    FrameClient* Client(void) const { return &m_client; }
     DOMWindow* DomWindow(void) const { return m_domWindow; }
 protected:
     Frame(FrameClient &client, Page *page);

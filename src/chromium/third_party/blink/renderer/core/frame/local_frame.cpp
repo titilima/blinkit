@@ -50,6 +50,11 @@ LocalFrame::LocalFrame(LocalFrameClient &client, Page *page) : Frame(client, pag
 {
 }
 
+LocalFrameClient* LocalFrame::Client(void) const
+{
+    return static_cast<LocalFrameClient *>(Frame::Client());
+}
+
 std::unique_ptr<LocalFrame> LocalFrame::Create(LocalFrameClient &client, Page *page)
 {
     return std::unique_ptr<LocalFrame>(new LocalFrame(client, page));

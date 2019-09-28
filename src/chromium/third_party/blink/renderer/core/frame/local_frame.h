@@ -56,6 +56,9 @@ class LocalFrame final : public Frame
 public:
     static std::unique_ptr<LocalFrame> Create(LocalFrameClient &client, Page *page = nullptr);
 
+    void Init(void) { m_loader.Init(); }
+
+    LocalFrameClient* Client(void) const;
     FrameLoader& Loader(void) const { return m_loader; }
     LocalDOMWindow* DomWindow(void) const;
     Document* GetDocument(void) const;

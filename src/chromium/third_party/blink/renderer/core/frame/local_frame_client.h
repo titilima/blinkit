@@ -42,15 +42,23 @@
 #ifndef BLINKIT_BLINK_LOCAL_FRAME_CLIENT_H
 #define BLINKIT_BLINK_LOCAL_FRAME_CLIENT_H
 
+#pragma once
+
+#include "third_party/blink/public/web/web_document_loader.h"
 #include "third_party/blink/renderer/core/frame/frame_client.h"
 
 namespace blink {
 
+class DocumentLoader;
 class LocalFrame;
+class ResourceRequest;
+class SubstituteData;
 
 class LocalFrameClient : public FrameClient
 {
 public:
+    virtual std::unique_ptr<DocumentLoader> CreateDocumentLoader(LocalFrame *frame, const ResourceRequest &request,
+        const SubstituteData &data, std::unique_ptr<WebDocumentLoader::ExtraData> extraData) = 0;
 };
 
 }  // namespace blink
