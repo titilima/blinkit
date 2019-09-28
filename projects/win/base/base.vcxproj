@@ -272,6 +272,15 @@
     <ClInclude Include="..\..\..\src\chromium\base\memory\weak_ptr.h" />
     <ClInclude Include="..\..\..\src\chromium\base\metrics\histogram_macros.h" />
     <ClInclude Include="..\..\..\src\chromium\base\move.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\checked_math.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\checked_math_impl.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\clamped_math.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\clamped_math_impl.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\safe_conversions.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\safe_conversions_impl.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\safe_math.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\safe_math_impl.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\safe_math_shared_impl.h" />
     <ClInclude Include="..\..\..\src\chromium\base\observer_list.h" />
     <ClInclude Include="..\..\..\src\chromium\base\rand_util.h" />
     <ClInclude Include="..\..\..\src\chromium\base\stl_util.h" />

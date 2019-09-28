@@ -33,6 +33,9 @@
     <Filter Include="base\memory">
       <UniqueIdentifier>{d9d69703-5981-4890-96a2-bc8e4b0ab487}</UniqueIdentifier>
     </Filter>
+    <Filter Include="base\numerics">
+      <UniqueIdentifier>{09d878b3-2ff7-4af0-aacb-3607475d6746}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -183,6 +186,33 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\base\memory\weak_ptr.h">
       <Filter>base\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\checked_math.h">
+      <Filter>base\numerics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\checked_math_impl.h">
+      <Filter>base\numerics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\clamped_math.h">
+      <Filter>base\numerics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\clamped_math_impl.h">
+      <Filter>base\numerics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\safe_conversions.h">
+      <Filter>base\numerics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\safe_conversions_impl.h">
+      <Filter>base\numerics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\safe_math.h">
+      <Filter>base\numerics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\safe_math_impl.h">
+      <Filter>base\numerics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\numerics\safe_math_shared_impl.h">
+      <Filter>base\numerics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
