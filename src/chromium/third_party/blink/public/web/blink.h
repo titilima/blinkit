@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "public/platform/platform.h"
+#include "third_party/blink/public/platform/platform.h"
 
 namespace blink {
 

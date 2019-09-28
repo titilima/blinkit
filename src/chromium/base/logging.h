@@ -15,6 +15,8 @@
 #pragma once
 
 #include <cassert>
+#include "base/compiler_specific.h"
+#include "base/macros.h"
 
 namespace BlinKit {
 
@@ -40,10 +42,12 @@ inline BlinKit::Asserter& operator<<(const BlinKit::Asserter &a, const T &) {
 #   define BKLOG            BlinKit::BkLog
 #endif
 
-#define BKASSERT(condition) ::BlinKit::Asserter(!!(condition))
+#define BKASSERT(condition) (::BlinKit::Asserter(!!(condition)))
 
-#define CHECK       BKASSERT
-#define DCHECK      BKASSERT
+#define CHECK    BKASSERT
+#define DCHECK   BKASSERT
+
+#define CHECK_NE(v1, v2)    BKASSERT((v1) != (v2))
 
 #define DCHECK_EQ(v1, v2)   BKASSERT((v1) == (v2))
 #define DCHECK_GE(v1, v2)   BKASSERT((v1) >= (v2))

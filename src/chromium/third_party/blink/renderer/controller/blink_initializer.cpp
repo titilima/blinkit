@@ -9,13 +9,13 @@
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "public/web/blink.h"
+#include "third_party/blink/public/web/blink.h"
 
 namespace blink {
 
 static void InitializeCommon(Platform *platform)
 {
-    assert(false); // BKTODO:
+    // BKTODO:
 }
 
 void Initialize(Platform *platform, scheduler::WebThreadScheduler* mainThreadScheduler)
