@@ -214,5 +214,8 @@
     <ClInclude Include="..\..\..\src\chromium\base\numerics\safe_math_shared_impl.h">
       <Filter>base\numerics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\memory\scoped_refptr.h">
+      <Filter>base\memory</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
