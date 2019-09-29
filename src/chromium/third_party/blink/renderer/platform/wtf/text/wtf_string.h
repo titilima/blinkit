@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: wtf_string.h
+// Description: String Class
+//      Author: Ziming Li
+//     Created: 2019-09-29
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012, 2013 Apple Inc.
@@ -157,6 +168,7 @@ class WTF_EXPORT String {
   CString Ascii() const;
   CString Latin1() const;
   CString Utf8(UTF8ConversionMode = kLenientUTF8Conversion) const;
+  std::string StdUtf8(UTF8ConversionMode = kLenientUTF8Conversion) const;
 
   UChar operator[](unsigned index) const {
     if (!impl_ || index >= impl_->length())

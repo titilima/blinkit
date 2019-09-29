@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: wtf_string.cc
+// Description: String Class
+//      Author: Ziming Li
+//     Created: 2019-09-29
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2010, 2012 Apple Inc. All rights
@@ -22,8 +33,9 @@
 
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
-#include <stdarg.h>
+#include <cstdarg>
 #include <algorithm>
+#include <sstream>
 #include "base/strings/string_util.h"
 #include "third_party/blink/renderer/platform/wtf/ascii_ctype.h"
 #include "third_party/blink/renderer/platform/wtf/dtoa.h"
@@ -726,6 +738,12 @@ CString String::Utf8(UTF8ConversionMode mode) const {
   return CString(buffer_vector.data(), buffer - buffer_vector.data());
 }
 
+std::string String::StdUtf8(UTF8ConversionMode mode) const
+{
+    CString utf8 = Utf8(mode);
+    return std::string(utf8.data(), utf8.length());
+}
+
 String String::Make8BitFrom16BitSource(const UChar* source, wtf_size_t length) {
   if (!length)
     return g_empty_string;
@@ -802,7 +820,8 @@ std::ostream& operator<<(std::ostream& out, const String& string) {
 
 #ifndef NDEBUG
 void String::Show() const {
-  DLOG(INFO) << *this;
+  std::string utf8 = StdUtf8();
+  BKLOG("%s", utf8.c_str());
 }
 #endif
 
