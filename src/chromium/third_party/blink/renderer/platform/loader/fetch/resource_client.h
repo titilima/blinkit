@@ -48,9 +48,13 @@ class Resource;
 class ResourceClient : public GarbageCollectedMixin
 {
 public:
-    virtual ~ResourceClient(void) = default;
+    virtual ~ResourceClient(void);
+
+    Resource* GetResource(void) const { return m_resource.get(); }
 protected:
     ResourceClient(void) = default;
+private:
+    std::shared_ptr<Resource> m_resource;
 };
 
 }  // namespace blink

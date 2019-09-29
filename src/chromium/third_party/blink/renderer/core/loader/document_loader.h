@@ -50,6 +50,7 @@
 
 namespace blink {
 
+class FrameLoader;
 class LocalFrame;
 
 class DocumentLoader : public GarbageCollectedFinalized<DocumentLoader>, private RawResourceClient
@@ -59,9 +60,15 @@ public:
 protected:
     DocumentLoader(LocalFrame *frame, const ResourceRequest &request, const SubstituteData &substituteData);
 private:
+    FrameLoader& GetFrameLoader(void) const;
+    bool MaybeLoadEmpty(void);
+
     Member<LocalFrame> m_frame;
-    ResourceRequest m_originalRequest;
+    ResourceRequest m_originalRequest, m_currentRequest;
     SubstituteData m_substituteData;
+
+    enum State { kNotStarted, kProvisional, kCommitted, kSentDidFinishLoad };
+    State m_state = kNotStarted;
 };
 
 }  // namespace blink

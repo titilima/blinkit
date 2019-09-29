@@ -25,6 +25,7 @@ public:
     BkURL(void) = default;
     explicit BkURL(const std::string &URLString);
 
+    bool IsEmpty(void) const { return m_string.empty(); }
     const std::string& AsString(void) const { return m_string; }
 
     bool SchemeIs(std::string_view scheme) const;

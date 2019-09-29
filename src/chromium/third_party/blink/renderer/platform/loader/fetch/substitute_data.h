@@ -39,15 +39,23 @@
 
 #pragma once
 
+#include "base/memory/scoped_refptr.h"
+#include "third_party/blink/renderer/platform/shared_buffer.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 
 namespace blink {
+
+class SharedBuffer;
 
 class SubstituteData
 {
     DISALLOW_NEW();
 public:
     SubstituteData(void) = default;
+
+    bool IsValid(void) const { return nullptr != m_content.get(); }
+private:
+    scoped_refptr<SharedBuffer> m_content;
 };
 
 }  // namespace blink

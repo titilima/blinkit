@@ -40,17 +40,50 @@
 
 #include "document_loader.h"
 
+#include "third_party/blink/renderer/core/frame/local_frame.h"
+
 namespace blink {
 
 DocumentLoader::DocumentLoader(LocalFrame *frame, const ResourceRequest &request, const SubstituteData &substituteData)
     : m_frame(frame)
-    , m_originalRequest(request)
+    , m_originalRequest(request), m_currentRequest(request)
     , m_substituteData(substituteData)
 {
 }
 
+FrameLoader& DocumentLoader::GetFrameLoader(void) const
+{
+    DCHECK(m_frame);
+    return m_frame->Loader();
+}
+
+bool DocumentLoader::MaybeLoadEmpty(void)
+{
+    bool shouldLoadEmpty = !m_substituteData.IsValid() && m_currentRequest.Url().IsEmpty();
+    if (!shouldLoadEmpty)
+        return false;
+
+    if (m_currentRequest.Url().IsEmpty() &&
+        !GetFrameLoader().StateMachine()->CreatingInitialEmptyDocument())
+    {
+        request_.SetURL(BlankURL());
+    }
+    response_ = ResourceResponse(request_.Url());
+    response_.SetMimeType("text/html");
+    response_.SetTextEncodingName("utf-8");
+    FinishedLoading(CurrentTimeTicks());
+    return true;
+}
+
 void DocumentLoader::StartLoading(void)
 {
+    DCHECK(!GetResource());
+    DCHECK_EQ(m_state, kNotStarted);
+    m_state = kProvisional;
+
+    if (MaybeLoadEmpty())
+        return;
+
     assert(false); // BKTODO:
 }
 

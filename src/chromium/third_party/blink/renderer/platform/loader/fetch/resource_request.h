@@ -47,6 +47,8 @@ class ResourceRequest final
 {
 public:
     explicit ResourceRequest(const BlinKit::BkURL &URL);
+
+    const BlinKit::BkURL& Url(void) const { return m_URL; }
 private:
     BlinKit::BkURL m_URL;
 };

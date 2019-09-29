@@ -36,6 +36,10 @@
 
 #include "resource_client.h"
 
+#include "third_party/blink/renderer/platform/loader/fetch/resource.h"
+
 namespace blink {
+
+ResourceClient::~ResourceClient(void) = default;
 
 }  //  namespace blink
