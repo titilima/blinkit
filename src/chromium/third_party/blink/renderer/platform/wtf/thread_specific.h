@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: thread_specific.h
+// Description: ThreadSpecific Class
+//      Author: Ziming Li
+//     Created: 2019-09-29
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All rights reserved.
  * Copyright (C) 2009 Jian Li <jianli@chromium.org>
@@ -37,7 +48,6 @@
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/allocator/partition_allocator.h"
 #include "third_party/blink/renderer/platform/wtf/allocator/partitions.h"
-#include "third_party/blink/renderer/platform/wtf/stack_util.h"
 #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #include "third_party/blink/renderer/platform/wtf/wtf_export.h"
@@ -115,7 +125,7 @@ inline ThreadSpecific<T>::operator T*() {
 #else
   const bool kMainThreadAlwaysChecksTLS = false;
   T** ptr = &main_thread_storage_;
-  if (UNLIKELY(MayNotBeMainThread())) {
+  if (UNLIKELY(!IsMainThread())) {
     off_thread_ptr = static_cast<T*>(Get());
     ptr = &off_thread_ptr;
   }
