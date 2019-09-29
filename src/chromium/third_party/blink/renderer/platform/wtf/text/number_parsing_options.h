@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: number_parsing_options.h
+// Description: NumberParsingOptions Class
+//      Author: Ziming Li
+//     Created: 2019-09-29
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -26,9 +37,9 @@ class NumberParsingOptions {
 
   // This constructor allows implicit conversion from unsigned.
   NumberParsingOptions(unsigned options) : options_(options) {
-    DCHECK_LT(options, 1u << 4) << "NumberParsingOptions should be built with "
-                                   "a combination of "
-                                   "NumberParsingOptions::kFoo constants.";
+    assert(options < (1u << 4)); // NumberParsingOptions should be built with
+                                 // a combination of
+                                 // NumberParsingOptions::kFoo constants.
   }
 
   bool AcceptTrailingGarbage() const {
