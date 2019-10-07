@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: string_view.cc
+// Description: StringView Class
+//      Author: Ziming Li
+//     Created: 2019-10-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -16,9 +27,8 @@ StringView::StringView(const UChar* chars)
 #if DCHECK_IS_ON()
 StringView::~StringView() {
   DCHECK(impl_);
-  DCHECK(!impl_->HasOneRef() || impl_->IsStatic())
-      << "StringView does not own the StringImpl, it "
-         "must not have the last ref.";
+  DCHECK(!impl_->HasOneRef() || impl_->IsStatic()); // StringView does not own the StringImpl,
+                                                    // it must not have the last ref.
 }
 #endif
 

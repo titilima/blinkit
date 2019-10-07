@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: string_impl.h
+// Description: StringImpl Class
+//      Author: Ziming Li
+//     Created: 2019-09-29
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010, 2013 Apple Inc. All rights
@@ -259,22 +270,25 @@ class WTF_EXPORT StringImpl {
 
   ALWAYS_INLINE bool HasOneRef() const {
 #if DCHECK_IS_ON()
-    DCHECK(IsStatic() || verifier_.IsSafeToUse()) << AsciiForDebugging();
+    std::string ascii = AsciiForDebugging();
+    DCHECK(IsStatic() || verifier_.IsSafeToUse());
 #endif
     return ref_count_ == 1;
   }
 
   ALWAYS_INLINE void AddRef() const {
 #if DCHECK_IS_ON()
-    DCHECK(IsStatic() || verifier_.OnRef(ref_count_)) << AsciiForDebugging();
+    std::string ascii = AsciiForDebugging();
+    DCHECK(IsStatic() || verifier_.OnRef(ref_count_));
 #endif
     ++ref_count_;
   }
 
   ALWAYS_INLINE void Release() const {
 #if DCHECK_IS_ON()
-    DCHECK(IsStatic() || verifier_.OnDeref(ref_count_))
-        << AsciiForDebugging() << " " << CurrentThread();
+    std::string ascii = AsciiForDebugging();
+    auto tid = CurrentThread();
+    DCHECK(IsStatic() || verifier_.OnDeref(ref_count_));
 #endif
     if (!--ref_count_)
       DestroyIfNotStatic();

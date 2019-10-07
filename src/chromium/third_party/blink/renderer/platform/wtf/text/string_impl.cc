@@ -648,6 +648,9 @@ scoped_refptr<StringImpl> StringImpl::LowerUnicode(
   else
     return LowerUnicode();
 
+  assert(false); // BKTODO:
+  return nullptr;
+#if 0
   CHECK_LE(length_, static_cast<wtf_size_t>(numeric_limits<int32_t>::max()));
   int length = length_;
 
@@ -655,6 +658,7 @@ scoped_refptr<StringImpl> StringImpl::LowerUnicode(
   const UChar* source16 = upconverted->Characters16();
   return CaseConvert(source16, length, u_strToLower, locale_for_conversion,
                      this);
+#endif
 }
 
 scoped_refptr<StringImpl> StringImpl::UpperUnicode(
@@ -673,6 +677,9 @@ scoped_refptr<StringImpl> StringImpl::UpperUnicode(
   else
     return UpperUnicode();
 
+  assert(false); // BKTODO:
+  return nullptr;
+#if 0
   CHECK_LE(length_, static_cast<wtf_size_t>(numeric_limits<int32_t>::max()));
   int length = length_;
 
@@ -681,6 +688,7 @@ scoped_refptr<StringImpl> StringImpl::UpperUnicode(
 
   return CaseConvert(source16, length, u_strToUpper, locale_for_conversion,
                      this);
+#endif
 }
 
 scoped_refptr<StringImpl> StringImpl::Fill(UChar character) {
