@@ -62,7 +62,6 @@ private:
 template <class T>
 class RefCounted : public RefCountedBase<unsigned>
 {
-    DISALLOW_COPY_AND_ASSIGN(RefCounted<T>);
 public:
     void Release(void)
     {
@@ -70,7 +69,10 @@ public:
             delete static_cast<T *>(this);
     }
 protected:
+    RefCounted(void) = default;
     ~RefCounted(void) = default;
+private:
+    DISALLOW_COPY_AND_ASSIGN(RefCounted);
 };
 
 template <class T>
@@ -88,5 +90,7 @@ protected:
 };
 
 } // namespace base
+
+#define REQUIRE_ADOPTION_FOR_REFCOUNTED_TYPE()
 
 #endif // BLINKIT_BASE_REF_COUNTED_H
