@@ -270,25 +270,34 @@ class WTF_EXPORT StringImpl {
 
   ALWAYS_INLINE bool HasOneRef() const {
 #if DCHECK_IS_ON()
-    std::string ascii = AsciiForDebugging();
-    DCHECK(IsStatic() || verifier_.IsSafeToUse());
+    if (!IsStatic() && !verifier_.IsSafeToUse())
+    {
+      std::string ascii = AsciiForDebugging();
+      DCHECK(IsStatic() || verifier_.IsSafeToUse());
+    }
 #endif
     return ref_count_ == 1;
   }
 
   ALWAYS_INLINE void AddRef() const {
 #if DCHECK_IS_ON()
-    std::string ascii = AsciiForDebugging();
-    DCHECK(IsStatic() || verifier_.OnRef(ref_count_));
+    if (!IsStatic() && !verifier_.OnRef(ref_count_))
+    {
+      std::string ascii = AsciiForDebugging();
+      DCHECK(IsStatic() || verifier_.OnRef(ref_count_));
+    }
 #endif
     ++ref_count_;
   }
 
   ALWAYS_INLINE void Release() const {
 #if DCHECK_IS_ON()
-    std::string ascii = AsciiForDebugging();
-    auto tid = CurrentThread();
-    DCHECK(IsStatic() || verifier_.OnDeref(ref_count_));
+    if (!IsStatic() && !verifier_.OnDeref(ref_count_))
+    {
+      std::string ascii = AsciiForDebugging();
+      auto tid = CurrentThread();
+      DCHECK(IsStatic() || verifier_.OnDeref(ref_count_));
+    }
 #endif
     if (!--ref_count_)
       DestroyIfNotStatic();
