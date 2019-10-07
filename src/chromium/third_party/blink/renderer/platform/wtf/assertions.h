@@ -40,6 +40,8 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/platform/wtf/wtf_export.h"
+
 #define SECURITY_DCHECK assert
 
 // DEFINE_COMPARISON_OPERATORS_WITH_REFERENCES
