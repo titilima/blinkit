@@ -47,6 +47,10 @@ inline BlinKit::Asserter& operator<<(const BlinKit::Asserter &a, const T &) {
 #define CHECK    BKASSERT
 #define DCHECK   BKASSERT
 
+#define CHECK_GE(v1, v2)    BKASSERT((v1) >= (v2))
+#define CHECK_GT(v1, v2)    BKASSERT((v1) > (v2))
+#define CHECK_LE(v1, v2)    BKASSERT((v1) <= (v2))
+#define CHECK_LT(v1, v2)    BKASSERT((v1) < (v2))
 #define CHECK_NE(v1, v2)    BKASSERT((v1) != (v2))
 
 #define DCHECK_EQ(v1, v2)   BKASSERT((v1) == (v2))
