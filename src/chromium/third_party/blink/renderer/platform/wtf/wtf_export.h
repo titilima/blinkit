@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - blink Library
 // -------------------------------------------------
-//   File Name: allocator.h
+//   File Name: wtf_export.h
 // Description: Placeholders for WTF Part
 //      Author: Ziming Li
 //     Created: 2019-09-17

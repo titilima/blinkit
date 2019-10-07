@@ -10,7 +10,7 @@
 // -------------------------------------------------
 
 #ifndef BLINKIT_BLINK_CORE_EXPORT_H
-#define BLINKIT_BLINK_WTF_EXPORT_H
+#define BLINKIT_BLINK_CORE_EXPORT_H
 
 #pragma once
 
