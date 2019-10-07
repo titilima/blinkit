@@ -4,7 +4,9 @@
   <PropertyGroup Label="UserMacros">
     <CrRoot>$(SrcRoot)chromium\</CrRoot>
   </PropertyGroup>
-  <PropertyGroup />
+  <PropertyGroup>
+    <IncludePath>$(SrcRoot)stub\icu;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>$(CrRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
