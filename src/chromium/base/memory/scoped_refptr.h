@@ -15,6 +15,20 @@
 #pragma once
 
 template <class T>
+class scoped_refptr;
+
+namespace base {
+
+namespace subtle {
+enum AdoptRefTag { kAdoptRefTag };
+}
+
+template <typename T>
+scoped_refptr<T> AdoptRef(T *obj);
+
+} // namespace base
+
+template <class T>
 class scoped_refptr
 {
 public:
@@ -125,6 +139,9 @@ protected:
     T *m_ptr;
 
 private:
+    template <typename U> friend scoped_refptr<U> base::AdoptRef(U *);
+    scoped_refptr(T *p, base::subtle::AdoptRefTag) : m_ptr(p) {}
+
     // Non-inline helpers to allow:
     //     class Opaque;
     //     extern template class scoped_refptr<Opaque>;
@@ -138,5 +155,17 @@ void scoped_refptr<T>::AddRef(T *ptr) { ptr->AddRef(); }
 
 template <typename T>
 void scoped_refptr<T>::Release(T *ptr) { ptr->Release(); }
+
+namespace base {
+
+template <typename T>
+scoped_refptr<T> AdoptRef(T *obj)
+{
+    DCHECK(obj);
+    DCHECK(obj->HasOneRef());
+    return scoped_refptr<T>(obj, subtle::kAdoptRefTag);
+}
+
+} // namespace base
 
 #endif // BLINKIT_BASE_SCOPED_REFPTR_H
