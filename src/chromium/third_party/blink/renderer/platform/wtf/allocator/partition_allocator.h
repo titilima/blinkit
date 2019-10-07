@@ -48,6 +48,18 @@ public:
     {
         return reinterpret_cast<T*>(AllocateBacking(size));
     }
+    template <typename T, typename HashTable>
+    static T* AllocateHashTableBacking(size_t size)
+    {
+        return reinterpret_cast<T *>(AllocateBacking(size));
+    }
+    template <typename T, typename HashTable>
+    static T* AllocateZeroedHashTableBacking(size_t size)
+    {
+        void* result = AllocateBacking(size);
+        memset(result, 0, size);
+        return reinterpret_cast<T *>(result);
+    }
     static inline void FreeInlineVectorBacking(void *address)
     {
         FreeVectorBacking(address);
@@ -56,7 +68,12 @@ public:
     {
         free(address);
     }
+    static void FreeHashTableBacking(void *address)
+    {
+        free(address);
+    }
 
+    static inline bool ExpandHashTableBacking(void *, size_t) { return false; }
     static bool IsAllocationAllowed(void) { return true; }
     static bool IsObjectResurrectionForbidden(void) { return false; }
     static bool IsSweepForbidden(void) { return false; }
@@ -70,6 +87,7 @@ public:
         // we can skip reallocation.
         return quantizedCurrentSize == quantizedShrunkSize;
     }
+    static void TraceMarkedBackingStore(void *) {}
 private:
     static void* AllocateBacking(size_t size)
     {
