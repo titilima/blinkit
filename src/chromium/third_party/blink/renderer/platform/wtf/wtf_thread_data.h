@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: wtf_thread_data.h
+// Description: WTFThreadData Class
+//      Author: Ziming Li
+//     Created: 2019-10-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  *
@@ -44,7 +55,7 @@ class AtomicStringTable;
 struct ICUConverterWrapper;
 
 class WTF_EXPORT WTFThreadData {
-  DISALLOW_NEW();
+  // BKTODO: DISALLOW_NEW();
 
  public:
   WTFThreadData();
@@ -52,26 +63,15 @@ class WTF_EXPORT WTFThreadData {
 
   AtomicStringTable& GetAtomicStringTable() { return *atomic_string_table_; }
 
-  ICUConverterWrapper& CachedConverterICU() { return *cached_converter_icu_; }
-
   ThreadIdentifier ThreadId() const { return thread_id_; }
 
   // Must be called on the main thread before any callers to wtfThreadData().
   static void Initialize();
 
-#if defined(OS_WIN) && defined(COMPILER_MSVC)
-  static size_t ThreadStackSize();
-#endif
-
  private:
   std::unique_ptr<AtomicStringTable> atomic_string_table_;
-  std::unique_ptr<ICUConverterWrapper> cached_converter_icu_;
 
   ThreadIdentifier thread_id_;
-
-#if defined(OS_WIN) && defined(COMPILER_MSVC)
-  size_t thread_stack_size_ = 0u;
-#endif
 
   static ThreadSpecific<WTFThreadData>* static_data_;
   friend WTFThreadData& WtfThreadData();

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: wtf_thread_data.cc
+// Description: WTFThreadData Class
+//      Author: Ziming Li
+//     Created: 2019-10-07
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2010 Apple Inc. All Rights Reserved.
  *
@@ -26,9 +37,7 @@
 
 #include "third_party/blink/renderer/platform/wtf/wtf_thread_data.h"
 
-#include "third_party/blink/renderer/platform/wtf/stack_util.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string_table.h"
-#include "third_party/blink/renderer/platform/wtf/text/text_codec_icu.h"
 
 namespace WTF {
 
@@ -36,7 +45,6 @@ ThreadSpecific<WTFThreadData>* WTFThreadData::static_data_;
 
 WTFThreadData::WTFThreadData()
     : atomic_string_table_(new AtomicStringTable),
-      cached_converter_icu_(new ICUConverterWrapper),
       thread_id_(internal::CurrentThreadSyscall()) {}
 
 WTFThreadData::~WTFThreadData() = default;
@@ -46,19 +54,5 @@ void WTFThreadData::Initialize() {
   WTFThreadData::static_data_ = new ThreadSpecific<WTFThreadData>;
   WtfThreadData();
 }
-
-#if defined(OS_WIN) && defined(COMPILER_MSVC)
-size_t WTFThreadData::ThreadStackSize() {
-  // Needed to bootstrap WTFThreadData on Windows, because this value is needed
-  // before the main thread data is fully initialized.
-  if (!WTFThreadData::static_data_->IsSet())
-    return internal::ThreadStackSize();
-
-  WTFThreadData& data = WtfThreadData();
-  if (!data.thread_stack_size_)
-    data.thread_stack_size_ = internal::ThreadStackSize();
-  return data.thread_stack_size_;
-}
-#endif
 
 }  // namespace WTF
