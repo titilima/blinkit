@@ -36,6 +36,9 @@
     <Filter Include="base\numerics">
       <UniqueIdentifier>{09d878b3-2ff7-4af0-aacb-3607475d6746}</UniqueIdentifier>
     </Filter>
+    <Filter Include="base\threading">
+      <UniqueIdentifier>{bb11ded1-fbf9-43d1-958f-f9a0eae6d2c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -79,6 +82,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\base\strings\string_split.cc">
       <Filter>base\strings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\base\threading\thread_local_storage.cpp">
+      <Filter>base\threading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -216,6 +222,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\base\memory\scoped_refptr.h">
       <Filter>base\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\threading\thread_local_storage.h">
+      <Filter>base\threading</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
