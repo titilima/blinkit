@@ -53,12 +53,6 @@
     <ClCompile Include="..\..\..\src\chromium\base\rand_util_win.cc">
       <Filter>base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\base\time\time.cc">
-      <Filter>base\time</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\base\time\time_win.cc">
-      <Filter>base\time</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\base\strings\stringprintf.cc">
       <Filter>base\strings</Filter>
     </ClCompile>
@@ -85,6 +79,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\base\threading\thread_local_storage.cpp">
       <Filter>base\threading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\base\threading\thread_local_storage_win.cpp">
+      <Filter>base\threading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\base\time\time_win.cpp">
+      <Filter>base\time</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\base\time\time.cpp">
+      <Filter>base\time</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

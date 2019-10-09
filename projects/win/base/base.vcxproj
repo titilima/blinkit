@@ -246,8 +246,9 @@
     <ClCompile Include="..\..\..\src\chromium\base\strings\utf_string_conversion_utils.cpp" />
     <ClCompile Include="..\..\..\src\chromium\base\third_party\nspr\prtime.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\threading\thread_local_storage.cpp" />
-    <ClCompile Include="..\..\..\src\chromium\base\time\time.cc" />
-    <ClCompile Include="..\..\..\src\chromium\base\time\time_win.cc" />
+    <ClCompile Include="..\..\..\src\chromium\base\threading\thread_local_storage_win.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\base\time\time.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\base\time\time_win.cpp" />
     <ClCompile Include="..\..\..\src\chromium\base\win\resource_util.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
