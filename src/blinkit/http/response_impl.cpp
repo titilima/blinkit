@@ -19,38 +19,6 @@
 
 using namespace BlinKit;
 
-static void CanonizeHeaderName(std::string &headerName)
-{
-    static const char* specialNames[] = { "ETag" };
-    for (const char *specialName : specialNames)
-    {
-        if (base::EqualsCaseInsensitiveASCII(headerName, specialName))
-        {
-            headerName = specialName;
-            return;
-        }
-    }
-
-    bool upperNext = true;
-    for (size_t i = 0; i < headerName.length(); ++i)
-    {
-        char ch = headerName.at(i);
-
-        if (upperNext)
-        {
-            headerName.at(i) = base::ToUpperASCII(ch);
-            upperNext = false;
-        }
-        else
-        {
-            headerName.at(i) = base::ToLowerASCII(ch);
-        }
-
-        if ('-' == ch)
-            upperNext = true;
-    }
-}
-
 ResponseImpl::ResponseImpl(const std::string &URL) : m_originURL(URL), m_URL(URL)
 {
     // Nothing
@@ -65,7 +33,7 @@ void ResponseImpl::AppendData(const void *data, size_t cb)
 
 void ResponseImpl::AppendHeader(const char *name, const char *val)
 {
-    m_headers[name] = val;
+    m_headers.Set(name, val);
 }
 
 int ResponseImpl::GetCookie(size_t index, BkBuffer *dst) const
@@ -103,14 +71,11 @@ int ResponseImpl::GetData(int data, BkBuffer *dst) const
 
 int ResponseImpl::GetHeader(const char *name, BkBuffer *dst) const
 {
-    std::string s(name);
-    CanonizeHeaderName(s);
-
-    auto it = m_headers.find(s);
-    if (std::end(m_headers) == it)
+    std::string ret = m_headers.Get(name);
+    if (ret.empty())
         return BK_ERR_NOT_FOUND;
 
-    BkSetBufferData(dst, it->second.data(), it->second.length());
+    BkSetBufferData(dst, ret.data(), ret.length());
     return BK_ERR_SUCCESS;
 }
 
@@ -175,14 +140,9 @@ void ResponseImpl::ParseHeaders(const std::string &rawHeaders)
         base::TrimWhitespaceASCII(kv.first, base::TRIM_ALL, &k);
         base::TrimWhitespaceASCII(kv.second, base::TRIM_ALL, &v);
         if (base::EqualsCaseInsensitiveASCII(k.c_str(), "Set-Cookie"))
-        {
             m_cookies.push_back(v);
-        }
         else
-        {
-            CanonizeHeaderName(k);
-            m_headers[k] = v;
-        }
+            m_headers.Set(k, v);
     }
 }
 
@@ -190,7 +150,7 @@ void ResponseImpl::ResetForRedirection(void)
 {
     m_errorCode = BK_ERR_SUCCESS;
     m_statusCode = 0;
-    m_headers.clear();
+    m_headers.Clear();
     m_cookies.clear();
     m_body.clear();
 }
@@ -199,12 +159,12 @@ std::string ResponseImpl::ResolveRedirection(void)
 {
     std::string ret;
 
-    auto it = m_headers.find("Location");
-    assert(std::end(m_headers) != it);
-    if (std::end(m_headers) != it)
+    std::string location = m_headers.Get("Location");
+    assert(!location.empty());
+    if (!location.empty())
     {
         ret = m_URL;
-        m_URL = BkURL(m_URL).Resolve(it->second).AsString();
+        m_URL = BkURL(m_URL).Resolve(location).AsString();
     }
     return ret;
 }

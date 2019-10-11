@@ -303,7 +303,7 @@ int WinRequest::SendBody(void)
 
 int WinRequest::SendRequest(void)
 {
-    std::string allHeaders = GetAllHeaders();
+    std::string allHeaders = m_headers.GetAllForRequest();
 
     INTERNET_BUFFERSA buf = { 0 };
     buf.dwStructSize = sizeof(INTERNET_BUFFERSA);

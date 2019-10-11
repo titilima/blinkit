@@ -17,6 +17,7 @@
 #include <atomic>
 #include <optional>
 #include "bk_http.h"
+#include "blinkit/common/bk_http_header_map.h"
 
 class ControllerImpl;
 class ResponseImpl;
@@ -42,11 +43,10 @@ public:
 protected:
     RequestImpl(const char *URL, const BkRequestClient &client);
 
-    const auto& RawHeaders(void) const { return m_headers; }
-    std::string GetAllHeaders(void) const;
     unsigned long TimeoutInMs(void) const { return m_timeoutInMs; }
     bool HasProxy(void) const { return m_proxy.has_value(); }
-    const std::string& Proxy(void) const {
+    const std::string& Proxy(void) const
+    {
         assert(m_proxy.has_value());
         return *m_proxy;
     }
@@ -54,12 +54,12 @@ protected:
     const std::string m_URL;
     BkRequestClient m_client;
     std::string m_method;
+    BlinKit::BkHTTPHeaderMap m_headers;
     std::vector<unsigned char> m_body;
     std::unique_ptr<ResponseImpl> m_response;
 private:
     std::atomic<unsigned> m_refCount{ 1 };
     unsigned long m_timeoutInMs;
-    std::unordered_map<std::string, std::string> m_headers;
     std::optional<std::string> m_proxy;
 };
 

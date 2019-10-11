@@ -20,23 +20,10 @@ using namespace BlinKit;
 RequestImpl::RequestImpl(const char *URL, const BkRequestClient &client)
     : m_URL(URL), m_client(client), m_method("GET"), m_timeoutInMs(AppConstants::DefaultTimeoutInMs)
 {
-    m_headers["Accept"] = "*/*";
+    m_headers.Set("Accept", "*/*");
 }
 
-RequestImpl::~RequestImpl(void) {}
-
-std::string RequestImpl::GetAllHeaders(void) const
-{
-    std::string headers;
-    for (const auto &it : m_headers)
-    {
-        headers.append(it.first);
-        headers.append(": ");
-        headers.append(it.second);
-        headers.append("\r\n");
-    }
-    return headers;
-}
+RequestImpl::~RequestImpl(void) = default;
 
 ControllerImpl* RequestImpl::GetController(void)
 {
@@ -58,7 +45,7 @@ void RequestImpl::SetBody(const void *data, size_t dataLength)
 
 void RequestImpl::SetHeader(const char *name, const char *value)
 {
-    m_headers[name] = value;
+    m_headers.Set(name, value);
 }
 
 void RequestImpl::SetProxy(const char *proxy)

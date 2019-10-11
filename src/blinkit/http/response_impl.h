@@ -16,6 +16,7 @@
 
 #include <atomic>
 #include "bk_http.h"
+#include "blinkit/common/bk_http_header_map.h"
 
 class ResponseImpl final
 {
@@ -50,7 +51,7 @@ public:
 private:
     std::string m_originURL, m_URL;
     int m_errorCode = BK_ERR_SUCCESS, m_statusCode = 0;
-    std::unordered_map<std::string, std::string> m_headers;
+    BlinKit::BkHTTPHeaderMap m_headers;
     std::vector<std::string> m_cookies;
     std::vector<unsigned char> m_body;
 };
