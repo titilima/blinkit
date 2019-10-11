@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: atomic_string.h
+// Description: AtomicString Class
+//      Author: Ziming Li
+//     Created: 2019-10-11
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -23,6 +34,7 @@
 
 #include <cstring>
 #include <iosfwd>
+#include <string>
 
 #include "build/build_config.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
@@ -213,11 +225,18 @@ class WTF_EXPORT AtomicString {
   // NOTE: Passing a zero size means use the whole string.
   static AtomicString FromUTF8(const char*, size_t length);
   static AtomicString FromUTF8(const char*);
+  static AtomicString FromStdUTF8(const std::string &s) {
+    return FromUTF8(s.data(), s.length());
+  }
 
   CString Ascii() const { return string_.Ascii(); }
   CString Latin1() const { return string_.Latin1(); }
   CString Utf8(UTF8ConversionMode mode = kLenientUTF8Conversion) const {
     return string_.Utf8(mode);
+  }
+  std::string StdUtf8(UTF8ConversionMode mode = kLenientUTF8Conversion) const {
+      CString cs = Utf8(mode);
+      return std::string(cs.data(), cs.length());
   }
 
   size_t CharactersSizeInBytes() const {
