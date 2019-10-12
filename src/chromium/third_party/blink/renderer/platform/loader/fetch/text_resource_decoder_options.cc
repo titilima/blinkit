@@ -1,9 +1,22 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_resource_decoder_options.cc
+// Description: TextResourceDecoderOptions Class
+//      Author: Ziming Li
+//     Created: 2019-10-12
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/platform/language.h"
 #include "third_party/blink/renderer/platform/loader/fetch/text_resource_decoder_options.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -14,19 +27,19 @@ TextResourceDecoderOptions::TextResourceDecoderOptions(
                                  content_type,
                                  default_encoding,
                                  nullptr,
-                                 KURL()) {}
+                                 BkURL()) {}
 
 TextResourceDecoderOptions
 TextResourceDecoderOptions::CreateAlwaysUseUTF8ForText() {
   return TextResourceDecoderOptions(kAlwaysUseUTF8ForText, kPlainTextContent,
-                                    UTF8Encoding(), nullptr, NullURL());
+                                    UTF8Encoding(), nullptr, BkURL());
 }
 
 TextResourceDecoderOptions TextResourceDecoderOptions::CreateWithAutoDetection(
     ContentType content_type,
     const WTF::TextEncoding& default_encoding,
     const WTF::TextEncoding& hint_encoding,
-    const KURL& hint_url) {
+    const BkURL& hint_url) {
   return TextResourceDecoderOptions(kUseAllAutoDetection, content_type,
                                     default_encoding, hint_encoding.GetName(),
                                     hint_url);
@@ -37,7 +50,7 @@ TextResourceDecoderOptions::TextResourceDecoderOptions(
     ContentType content_type,
     const WTF::TextEncoding& default_encoding,
     const char* hint_encoding,
-    const KURL& hint_url)
+    const BkURL& hint_url)
     : encoding_detection_option_(encoding_detection_option),
       content_type_(content_type),
       default_encoding_(default_encoding),

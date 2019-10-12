@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_resource_decoder_options.h
+// Description: TextResourceDecoderOptions Class
+//      Author: Ziming Li
+//     Created: 2019-10-12
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,8 +17,8 @@
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_LOADER_FETCH_TEXT_RESOURCE_DECODER_OPTIONS_H_
 
 #include "third_party/blink/renderer/platform/platform_export.h"
-#include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
+#include "url/bk_url.h"
 
 namespace blink {
 
@@ -34,7 +45,7 @@ class PLATFORM_EXPORT TextResourceDecoderOptions final {
       ContentType,
       const WTF::TextEncoding& default_encoding,
       const WTF::TextEncoding& hint_encoding,
-      const KURL& hint_url);
+      const BlinKit::BkURL& hint_url);
 
   void SetUseLenientXMLDecoding() { use_lenient_xml_decoding_ = true; }
   void OverrideContentType(ContentType content_type) {
@@ -72,7 +83,7 @@ class PLATFORM_EXPORT TextResourceDecoderOptions final {
   bool GetUseLenientXMLDecoding() const { return use_lenient_xml_decoding_; }
 
   const char* HintEncoding() const { return hint_encoding_; }
-  const KURL& HintURL() const { return hint_url_; }
+  const BlinKit::BkURL& HintURL() const { return hint_url_; }
   const char* HintLanguage() const { return hint_language_; }
 
  private:
@@ -80,7 +91,7 @@ class PLATFORM_EXPORT TextResourceDecoderOptions final {
                              ContentType,
                              const WTF::TextEncoding& default_encoding,
                              const char* hint_encoding,
-                             const KURL& hint_url);
+                             const BlinKit::BkURL& hint_url);
 
   EncodingDetectionOption encoding_detection_option_;
   ContentType content_type_;
@@ -90,7 +101,7 @@ class PLATFORM_EXPORT TextResourceDecoderOptions final {
   // Hints for DetectTextEncoding().
   // Only used when |encoding_detection_option_| == |kUseAllAutoDetection|.
   const char* hint_encoding_;
-  KURL hint_url_;
+  BlinKit::BkURL hint_url_;
   char hint_language_[3];
 };
 
