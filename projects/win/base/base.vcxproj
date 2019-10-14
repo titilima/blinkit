@@ -269,6 +269,7 @@
     <ClInclude Include="..\..\..\src\chromium\base\gtest_prod_util.h" />
     <ClInclude Include="..\..\..\src\chromium\base\logging.h" />
     <ClInclude Include="..\..\..\src\chromium\base\macros.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\memory\ptr_util.h" />
     <ClInclude Include="..\..\..\src\chromium\base\memory\ref_counted.h" />
     <ClInclude Include="..\..\..\src\chromium\base\memory\scoped_policy.h" />
     <ClInclude Include="..\..\..\src\chromium\base\memory\scoped_refptr.h" />

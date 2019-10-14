@@ -229,5 +229,8 @@
     <ClInclude Include="..\..\..\src\chromium\base\threading\thread_local_storage.h">
       <Filter>base\threading</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\memory\ptr_util.h">
+      <Filter>base\memory</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
