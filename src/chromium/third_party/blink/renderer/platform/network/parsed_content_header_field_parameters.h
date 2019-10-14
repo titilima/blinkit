@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: parsed_content_header_field_parameters.h
+// Description: ParsedContentHeaderFieldParameters Class
+//      Author: Ziming Li
+//     Created: 2019-10-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_NETWORK_PARSED_CONTENT_HEADER_FIELD_PARAMETERS_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_NETWORK_PARSED_CONTENT_HEADER_FIELD_PARAMETERS_H_
 
-#include "base/optional.h"
+#include <optional>
 #include "third_party/blink/renderer/platform/platform_export.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
@@ -44,7 +55,7 @@ class PLATFORM_EXPORT ParsedContentHeaderFieldParameters final {
   // We use base::Optional instead of WTF::Optional which requires its content
   // type to be fully defined. They are essentially same, so uses of this class
   // can (and should) use WTF::Optional to store the returned value.
-  static base::Optional<ParsedContentHeaderFieldParameters> Parse(
+  static std::optional<ParsedContentHeaderFieldParameters> Parse(
       HeaderFieldTokenizer,
       Mode);
 

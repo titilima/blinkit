@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: parsed_content_header_field_parameters.cc
+// Description: ParsedContentHeaderFieldParameters Class
+//      Author: Ziming Li
+//     Created: 2019-10-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -32,14 +43,14 @@ namespace blink {
 //               "/" / "[" / "]" / "?" / "="
 //               ; Must be in quoted-string,
 //               ; to use within parameter values
-base::Optional<ParsedContentHeaderFieldParameters>
+std::optional<ParsedContentHeaderFieldParameters>
 ParsedContentHeaderFieldParameters::Parse(HeaderFieldTokenizer tokenizer,
                                           Mode mode) {
   NameValuePairs parameters;
   while (!tokenizer.IsConsumed()) {
     if (!tokenizer.Consume(';')) {
       DVLOG(1) << "Failed to find ';'";
-      return base::nullopt;
+      return std::nullopt;
     }
 
     StringView key;
@@ -47,16 +58,16 @@ ParsedContentHeaderFieldParameters::Parse(HeaderFieldTokenizer tokenizer,
     if (!tokenizer.ConsumeToken(Mode::kNormal, key)) {
       DVLOG(1) << "Invalid content parameter name. (at " << tokenizer.Index()
                << ")";
-      return base::nullopt;
+      return std::nullopt;
     }
     if (!tokenizer.Consume('=')) {
       DVLOG(1) << "Failed to find '='";
-      return base::nullopt;
+      return std::nullopt;
     }
     if (!tokenizer.ConsumeTokenOrQuotedString(mode, value)) {
       DVLOG(1) << "Invalid content parameter value (at " << tokenizer.Index()
                << ", for '" << key.ToString() << "').";
-      return base::nullopt;
+      return std::nullopt;
     }
     parameters.emplace_back(key.ToString(), value);
   }

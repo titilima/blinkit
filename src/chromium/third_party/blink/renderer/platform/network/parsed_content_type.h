@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: parsed_content_type.h
+// Description: ParsedContentType Class
+//      Author: Ziming Li
+//     Created: 2019-10-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  * Copyright (C) 2012 Intel Corporation. All rights reserved.
@@ -32,7 +43,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_NETWORK_PARSED_CONTENT_TYPE_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_NETWORK_PARSED_CONTENT_TYPE_H_
 
-#include "base/optional.h"
+#include <optional>
 #include "third_party/blink/renderer/platform/network/parsed_content_header_field_parameters.h"
 #include "third_party/blink/renderer/platform/platform_export.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
@@ -68,7 +79,7 @@ class PLATFORM_EXPORT ParsedContentType final {
 
  private:
   String mime_type_;
-  base::Optional<ParsedContentHeaderFieldParameters> parameters_;
+  std::optional<ParsedContentHeaderFieldParameters> parameters_;
 };
 
 }  // namespace blink
