@@ -507,6 +507,9 @@ class WTF_EXPORT String {
     return FromUTF8(reinterpret_cast<const LChar*>(s));
   }
   static String FromUTF8(const CString&);
+  static String FromStdUTF8(const std::string &s) {
+    return FromUTF8(s.data(), s.length());
+  }
 
   // Tries to convert the passed in string to UTF-8, but will fall back to
   // Latin-1 if the string is not valid UTF-8.
