@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: document_parser.cc
+// Description: DocumentParser Class
+//      Author: Ziming Li
+//     Created: 2019-10-17
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -42,11 +53,6 @@ DocumentParser::DocumentParser(Document* document)
 
 DocumentParser::~DocumentParser() = default;
 
-void DocumentParser::Trace(blink::Visitor* visitor) {
-  visitor->Trace(document_);
-  visitor->Trace(clients_);
-}
-
 void DocumentParser::SetDecoder(std::unique_ptr<TextResourceDecoder>) {
   NOTREACHED();
 }
@@ -64,11 +70,9 @@ void DocumentParser::StopParsing() {
   state_ = kStoppedState;
 
   // Clients may be removed while in the loop. Make a snapshot for iteration.
-  HeapVector<Member<DocumentParserClient>> clients_snapshot;
-  CopyToVector(clients_, clients_snapshot);
-
+  std::vector<DocumentParserClient *> clients_snapshot(clients_.begin(), clients_.end());
   for (DocumentParserClient* client : clients_snapshot) {
-    if (!clients_.Contains(client))
+    if (clients_.find(client) == std::end(clients_))
       continue;
 
     client->NotifyParserStopped();

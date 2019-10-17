@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: document_parser.h
+// Description: DocumentParser Class
+//      Author: Ziming Li
+//     Created: 2019-10-17
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Peter Kelly (pmk@post.com)
  * Copyright (C) 2005, 2006 Apple Computer, Inc.
@@ -25,6 +36,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_DOM_DOCUMENT_PARSER_H_
 
 #include <memory>
+#include <unordered_set>
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/platform/bindings/name_client.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
@@ -42,7 +54,6 @@ class CORE_EXPORT DocumentParser
       public NameClient {
  public:
   virtual ~DocumentParser();
-  virtual void Trace(blink::Visitor*);
   const char* NameInHeapSnapshot() const override { return "DocumentParser"; }
 
   virtual ScriptableDocumentParser* AsScriptableDocumentParser() {
@@ -132,7 +143,7 @@ class CORE_EXPORT DocumentParser
   // document_ will be 0 after the parser is stopped.
   Member<Document> document_;
 
-  HeapHashSet<WeakMember<DocumentParserClient>> clients_;
+  std::unordered_set<DocumentParserClient *> clients_;
 };
 
 }  // namespace blink
