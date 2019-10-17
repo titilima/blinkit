@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scriptable_document_parser.cc
+// Description: ScriptableDocumentParser Class
+//      Author: Ziming Li
+//     Created: 2019-10-17
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -25,10 +36,6 @@
 
 #include "third_party/blink/renderer/core/dom/scriptable_document_parser.h"
 
-#include "third_party/blink/renderer/core/dom/document.h"
-#include "third_party/blink/renderer/core/frame/settings.h"
-#include "third_party/blink/renderer/platform/loader/fetch/source_keyed_cached_metadata_handler.h"
-
 namespace blink {
 
 ScriptableDocumentParser::ScriptableDocumentParser(
@@ -40,11 +47,6 @@ ScriptableDocumentParser::ScriptableDocumentParser(
 
 bool ScriptableDocumentParser::IsParsingAtLineNumber() const {
   return IsParsing() && !IsWaitingForScripts() && !IsExecutingScript();
-}
-
-void ScriptableDocumentParser::Trace(blink::Visitor* visitor) {
-  visitor->Trace(inline_script_cache_handler_);
-  DecodedDataDocumentParser::Trace(visitor);
 }
 
 }  // namespace blink

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scriptable_document_parser.h
+// Description: ScriptableDocumentParser Class
+//      Author: Ziming Li
+//     Created: 2019-10-17
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -37,8 +48,6 @@ class SourceKeyedCachedMetadataHandler;
 
 class CORE_EXPORT ScriptableDocumentParser : public DecodedDataDocumentParser {
  public:
-  void Trace(blink::Visitor*) override;
-
   // Only used by Document::open for deciding if its safe to act on a
   // JavaScript document.open() call right now, or it should be ignored.
   virtual bool IsExecutingScript() const { return false; }
