@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_formatting_element_list.h
+// Description: HTMLFormattingElementList Class
+//      Author: Ziming Li
+//     Created: 2019-10-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -26,6 +37,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_HTML_PARSER_HTML_FORMATTING_ELEMENT_LIST_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_HTML_PARSER_HTML_FORMATTING_ELEMENT_LIST_H_
 
+#include <vector>
 #include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
 #include "third_party/blink/renderer/core/html/parser/html_stack_item.h"
@@ -76,8 +88,6 @@ class HTMLFormattingElementList {
       return !item_ ? !!element : item_->GetElement() != element;
     }
 
-    void Trace(blink::Visitor* visitor) { visitor->Trace(item_); }
-
    private:
     Member<HTMLStackItem> item_;
   };
@@ -118,14 +128,8 @@ class HTMLFormattingElementList {
   // clearToLastMarker also clears the marker (per the HTML5 spec).
   void ClearToLastMarker();
 
-  const Entry& at(wtf_size_t i) const { return entries_[i]; }
-  Entry& at(wtf_size_t i) { return entries_[i]; }
-
-  void Trace(blink::Visitor* visitor) { visitor->Trace(entries_); }
-
-#ifndef NDEBUG
-  void Show();
-#endif
+  const Entry& at(wtf_size_t i) const { return entries_.at(i); }
+  Entry& at(wtf_size_t i) { return entries_.at(i); }
 
  private:
   Entry* First() { return &at(0); }
@@ -135,10 +139,10 @@ class HTMLFormattingElementList {
   // mis-nested elements.
   void TryToEnsureNoahsArkConditionQuickly(
       HTMLStackItem*,
-      HeapVector<Member<HTMLStackItem>>& remaining_candiates);
+      std::vector<Member<HTMLStackItem>>& remaining_candiates);
   void EnsureNoahsArkCondition(HTMLStackItem*);
 
-  HeapVector<Entry> entries_;
+  std::vector<Entry> entries_;
 
   DISALLOW_COPY_AND_ASSIGN(HTMLFormattingElementList);
 };

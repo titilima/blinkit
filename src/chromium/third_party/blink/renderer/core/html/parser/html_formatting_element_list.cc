@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_formatting_element_list.cc
+// Description: HTMLFormattingElementList Class
+//      Author: Ziming Li
+//     Created: 2019-10-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -25,9 +36,8 @@
 
 #include "third_party/blink/renderer/core/html/parser/html_formatting_element_list.h"
 
-#ifndef NDEBUG
-#include <stdio.h>
-#endif
+#include <algorithm>
+#include <iterator>
 
 namespace blink {
 
@@ -59,18 +69,19 @@ bool HTMLFormattingElementList::Contains(Element* element) {
 
 HTMLFormattingElementList::Entry* HTMLFormattingElementList::Find(
     Element* element) {
-  wtf_size_t index = entries_.ReverseFind(element);
-  if (index != kNotFound) {
-    // This is somewhat of a hack, and is why this method can't be const.
-    return &entries_[index];
+  auto it = std::find(entries_.rbegin(), entries_.rend(), element);
+  if (std::rend(entries_) != it) {
+    Entry &e = *it;
+    return &e;
   }
   return nullptr;
 }
 
 HTMLFormattingElementList::Bookmark HTMLFormattingElementList::BookmarkFor(
     Element* element) {
-  wtf_size_t index = entries_.ReverseFind(element);
-  DCHECK_NE(index, kNotFound);
+  auto it = std::find(entries_.rbegin(), entries_.rend(), element);
+  ASSERT(std::rend(entries_) != it);
+  wtf_size_t index = std::distance(entries_.begin(), it.base()) - 1;
   return Bookmark(&at(index));
 }
 
@@ -86,23 +97,22 @@ void HTMLFormattingElementList::SwapTo(Element* old_element,
   }
   size_t index = bookmark.Mark() - First();
   SECURITY_DCHECK(index < size());
-  entries_.insert(static_cast<wtf_size_t>(index + 1), new_item);
-  Remove(old_element);
+  entries_.at(index).ReplaceElement(new_item);
 }
 
 void HTMLFormattingElementList::Append(HTMLStackItem* item) {
   EnsureNoahsArkCondition(item);
-  entries_.push_back(item);
+  entries_.push_back(Entry(item));
 }
 
 void HTMLFormattingElementList::Remove(Element* element) {
-  wtf_size_t index = entries_.ReverseFind(element);
-  if (index != kNotFound)
-    entries_.EraseAt(index);
+  auto it = std::find(entries_.rbegin(), entries_.rend(), element);
+  if (std::rend(entries_) != it)
+    entries_.erase(it.base() - 1);
 }
 
 void HTMLFormattingElementList::AppendMarker() {
-  entries_.push_back(Entry::kMarkerEntry);
+  entries_.push_back(Entry(Entry::kMarkerEntry));
 }
 
 void HTMLFormattingElementList::ClearToLastMarker() {
@@ -117,15 +127,15 @@ void HTMLFormattingElementList::ClearToLastMarker() {
 
 void HTMLFormattingElementList::TryToEnsureNoahsArkConditionQuickly(
     HTMLStackItem* new_item,
-    HeapVector<Member<HTMLStackItem>>& remaining_candidates) {
-  DCHECK(remaining_candidates.IsEmpty());
+    std::vector<Member<HTMLStackItem>>& remaining_candidates) {
+  DCHECK(remaining_candidates.empty());
 
   if (entries_.size() < kNoahsArkCapacity)
     return;
 
   // Use a vector with inline capacity to avoid a malloc in the common case of a
   // quickly ensuring the condition.
-  HeapVector<Member<HTMLStackItem>, 10> candidates;
+  std::vector<Member<HTMLStackItem>> candidates;
 
   wtf_size_t new_item_attribute_count = new_item->Attributes().size();
 
@@ -151,20 +161,20 @@ void HTMLFormattingElementList::TryToEnsureNoahsArkConditionQuickly(
   if (candidates.size() < kNoahsArkCapacity)
     return;
 
-  remaining_candidates.AppendVector(candidates);
+  remaining_candidates.insert(remaining_candidates.end(), candidates.begin(), candidates.end());
 }
 
 void HTMLFormattingElementList::EnsureNoahsArkCondition(
     HTMLStackItem* new_item) {
-  HeapVector<Member<HTMLStackItem>> candidates;
+  std::vector<Member<HTMLStackItem>> candidates;
   TryToEnsureNoahsArkConditionQuickly(new_item, candidates);
-  if (candidates.IsEmpty())
+  if (candidates.empty())
     return;
 
   // We pre-allocate and re-use this second vector to save one malloc per
   // attribute that we verify.
-  HeapVector<Member<HTMLStackItem>> remaining_candidates;
-  remaining_candidates.ReserveInitialCapacity(candidates.size());
+  std::vector<Member<HTMLStackItem>> remaining_candidates;
+  remaining_candidates.reserve(candidates.size());
 
   for (const auto& attribute : new_item->Attributes()) {
     for (const auto& candidate : candidates) {
@@ -185,7 +195,7 @@ void HTMLFormattingElementList::EnsureNoahsArkCondition(
       return;
 
     candidates.swap(remaining_candidates);
-    remaining_candidates.Shrink(0);
+    remaining_candidates.shrink_to_fit();
   }
 
   // Inductively, we shouldn't spin this loop very many times. It's possible,
@@ -194,19 +204,5 @@ void HTMLFormattingElementList::EnsureNoahsArkCondition(
   for (wtf_size_t i = kNoahsArkCapacity - 1; i < candidates.size(); ++i)
     Remove(candidates[i]->GetElement());
 }
-
-#ifndef NDEBUG
-
-void HTMLFormattingElementList::Show() {
-  for (wtf_size_t i = 1; i <= entries_.size(); ++i) {
-    const Entry& entry = entries_[entries_.size() - i];
-    if (entry.IsMarker())
-      LOG(INFO) << "marker";
-    else
-      LOG(INFO) << *entry.GetElement();
-  }
-}
-
-#endif
 
 }  // namespace blink
