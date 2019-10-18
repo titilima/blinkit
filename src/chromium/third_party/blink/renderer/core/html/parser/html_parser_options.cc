@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_parser_options.cc
+// Description: HTMLParserOptions Class
+//      Author: Ziming Li
+//     Created: 2019-10-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google, Inc. All Rights Reserved.
  *
@@ -25,11 +36,7 @@
 
 #include "third_party/blink/renderer/core/html/parser/html_parser_options.h"
 
-#include "third_party/blink/renderer/bindings/core/v8/script_controller.h"
 #include "third_party/blink/renderer/core/dom/document.h"
-#include "third_party/blink/renderer/core/frame/local_frame.h"
-#include "third_party/blink/renderer/core/frame/settings.h"
-#include "third_party/blink/renderer/core/loader/frame_loader.h"
 
 namespace blink {
 
@@ -39,8 +46,6 @@ HTMLParserOptions::HTMLParserOptions(Document* document) {
 
   if (LocalFrame* frame = document->GetFrame()) {
     script_enabled = document->CanExecuteScripts(kNotAboutToExecuteScript);
-    plugins_enabled =
-        frame->Loader().AllowPlugins(kNotAboutToInstantiatePlugin);
   }
 }
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_parser_options.h
+// Description: HTMLParserOptions Class
+//      Author: Ziming Li
+//     Created: 2019-10-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google, Inc. All Rights Reserved.
  *
@@ -38,7 +49,6 @@ class CORE_EXPORT HTMLParserOptions {
 
  public:
   bool script_enabled = false;
-  bool plugins_enabled = false;
 
   explicit HTMLParserOptions(Document* = nullptr);
 };
