@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: comment.h
+// Description: Comment Class
+//      Author: Ziming Li
+//     Created: 2019-10-19
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -39,7 +50,9 @@ class CORE_EXPORT Comment final : public CharacterData {
   String nodeName() const override;
   NodeType getNodeType() const override;
   Node* Clone(Document&, CloneChildrenFlag) const override;
+#ifndef BLINKIT_CRAWLER_ONLY
   void DetachLayoutTree(const AttachContext&) final {}
+#endif
 };
 
 DEFINE_NODE_TYPE_CASTS(Comment, getNodeType() == Node::kCommentNode);
