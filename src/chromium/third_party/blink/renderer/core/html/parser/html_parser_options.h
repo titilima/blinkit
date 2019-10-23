@@ -49,6 +49,7 @@ class CORE_EXPORT HTMLParserOptions {
 
  public:
   bool script_enabled = false;
+  bool for_crawler = true;
 
   explicit HTMLParserOptions(Document* = nullptr);
 };

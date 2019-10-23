@@ -41,12 +41,14 @@
 namespace blink {
 
 HTMLParserOptions::HTMLParserOptions(Document* document) {
+  ASSERT(nullptr != document); // BKTODO: Adjust for_crawler when document is nullptr!
   if (!document)
     return;
 
   if (LocalFrame* frame = document->GetFrame()) {
     script_enabled = document->CanExecuteScripts(kNotAboutToExecuteScript);
   }
+  for_crawler = document->ForCrawler();
 }
 
 }  // namespace blink
