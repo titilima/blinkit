@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_preload_scanner.h
+// Description: HTMLPreloadScanner Class
+//      Author: Ziming Li
+//     Created: 2019-10-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2010 Google Inc. All Rights Reserved.
@@ -33,28 +44,46 @@
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/core_export.h"
-#include "third_party/blink/renderer/core/css/media_values_cached.h"
 #include "third_party/blink/renderer/core/html/parser/compact_html_token.h"
-#include "third_party/blink/renderer/core/html/parser/css_preload_scanner.h"
 #include "third_party/blink/renderer/core/html/parser/html_token.h"
 #include "third_party/blink/renderer/core/html/parser/preload_request.h"
-#include "third_party/blink/renderer/core/page/viewport_description.h"
 #include "third_party/blink/renderer/platform/text/segmented_string.h"
+#include "third_party/blink/renderer/platform/weborigin/security_policy.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
+#include "url/bk_url.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/media_values_cached.h"
+#   include "third_party/blink/renderer/core/html/parser/css_preload_scanner.h"
+#   include "third_party/blink/renderer/core/page/viewport_description.h"
+#endif
 
 namespace blink {
 
 typedef wtf_size_t TokenPreloadScannerCheckpoint;
 
+class Document;
 class HTMLParserOptions;
 class HTMLTokenizer;
 class SegmentedString;
+
+#ifdef BLINKIT_CRAWLER_ONLY
+
+class CSSPreloadScanner;
+class MediaValuesCached {
+public:
+    struct MediaValuesCachedData {};
+};
+struct ViewportDescriptionWrapper;
+
+#else
 
 struct ViewportDescriptionWrapper {
   ViewportDescription description;
   bool set;
   ViewportDescriptionWrapper() : set(false) {}
 };
+
+#endif // BLINKIT_CRAWLER_ONLY
 
 struct CORE_EXPORT CachedDocumentParameters {
   USING_FAST_MALLOC(CachedDocumentParameters);
@@ -69,11 +98,12 @@ struct CORE_EXPORT CachedDocumentParameters {
   }
 
   bool do_html_preload_scanning;
+#ifndef BLINKIT_CRAWLER_ONLY
   Length default_viewport_min_width;
   bool viewport_meta_zero_values_quirk;
   bool viewport_meta_enabled;
+#endif
   ReferrerPolicy referrer_policy;
-  SubresourceIntegrity::IntegrityFeatures integrity_features;
 
  private:
   explicit CachedDocumentParameters(Document*);
@@ -86,11 +116,13 @@ class TokenPreloadScanner {
  public:
   enum class ScannerType { kMainDocument, kInsertion };
 
-  TokenPreloadScanner(const KURL& document_url,
+  TokenPreloadScanner(const BlinKit::BkURL &document_url,
                       std::unique_ptr<CachedDocumentParameters>,
                       const MediaValuesCached::MediaValuesCachedData&,
                       const ScannerType);
   ~TokenPreloadScanner();
+
+  void SetIsForCrawler(void) { for_crawler_ = true; }
 
   void Scan(const HTMLToken&,
             const SegmentedString&,
@@ -103,7 +135,7 @@ class TokenPreloadScanner {
             ViewportDescriptionWrapper*,
             bool* is_csp_meta_tag);
 
-  void SetPredictedBaseElementURL(const KURL& url) {
+  void SetPredictedBaseElementURL(const BlinKit::BkURL& url) {
     predicted_base_element_url_ = url;
   }
 
@@ -126,7 +158,7 @@ class TokenPreloadScanner {
   void UpdatePredictedBaseURL(const Token&);
 
   struct Checkpoint {
-    Checkpoint(const KURL& predicted_base_element_url,
+    Checkpoint(const BlinKit::BkURL& predicted_base_element_url,
                bool in_style,
                bool in_script,
                size_t template_count)
@@ -135,12 +167,15 @@ class TokenPreloadScanner {
           in_script(in_script),
           template_count(template_count) {}
 
-    KURL predicted_base_element_url;
+    BlinKit::BkURL predicted_base_element_url;
     bool in_style;
     bool in_script;
     size_t template_count;
   };
 
+#ifdef BLINKIT_CRAWLER_ONLY
+  struct PictureData { /* Just a placeholder */ };
+#else
   struct PictureData {
     PictureData() : source_size(0.0), source_size_set(false), picked(false) {}
     String source_url;
@@ -150,16 +185,21 @@ class TokenPreloadScanner {
   };
 
   CSSPreloadScanner css_scanner_;
-  const KURL document_url_;
-  KURL predicted_base_element_url_;
+#endif
+  const BlinKit::BkURL document_url_;
+  BlinKit::BkURL predicted_base_element_url_;
   bool in_style_;
   bool in_picture_;
   bool in_script_;
+  bool for_crawler_ = false;
+#ifndef BLINKIT_CRAWLER_ONLY
   PictureData picture_data_;
+#endif
   size_t template_count_;
   std::unique_ptr<CachedDocumentParameters> document_parameters_;
+#ifndef BLINKIT_CRAWLER_ONLY
   Persistent<MediaValuesCached> media_values_;
-  ClientHintsPreferences client_hints_preferences_;
+#endif
   ScannerType scanner_type_;
 
   bool did_rewind_ = false;
@@ -175,7 +215,7 @@ class CORE_EXPORT HTMLPreloadScanner {
  public:
   static std::unique_ptr<HTMLPreloadScanner> Create(
       const HTMLParserOptions& options,
-      const KURL& document_url,
+      const BlinKit::BkURL& document_url,
       std::unique_ptr<CachedDocumentParameters> document_parameters,
       const MediaValuesCached::MediaValuesCachedData& media_values_cached_data,
       const TokenPreloadScanner::ScannerType scanner_type) {
@@ -187,12 +227,12 @@ class CORE_EXPORT HTMLPreloadScanner {
   ~HTMLPreloadScanner();
 
   void AppendToEnd(const SegmentedString&);
-  PreloadRequestStream Scan(const KURL& document_base_element_url,
+  PreloadRequestStream Scan(const BlinKit::BkURL& document_base_element_url,
                             ViewportDescriptionWrapper*);
 
  private:
   HTMLPreloadScanner(const HTMLParserOptions&,
-                     const KURL& document_url,
+                     const BlinKit::BkURL& document_url,
                      std::unique_ptr<CachedDocumentParameters>,
                      const MediaValuesCached::MediaValuesCachedData&,
                      const TokenPreloadScanner::ScannerType);

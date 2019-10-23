@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_preload_scanner.cc
+// Description: HTMLPreloadScanner Class
+//      Author: Ziming Li
+//     Created: 2019-10-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2009 Torch Mobile, Inc. http://www.torchmobile.com/
@@ -28,41 +39,37 @@
 #include "third_party/blink/renderer/core/html/parser/html_preload_scanner.h"
 
 #include <memory>
-#include "base/optional.h"
-#include "third_party/blink/public/platform/modules/fetch/fetch_api_request.mojom-shared.h"
-#include "third_party/blink/renderer/core/css/media_list.h"
-#include "third_party/blink/renderer/core/css/media_query_evaluator.h"
-#include "third_party/blink/renderer/core/css/media_values_cached.h"
-#include "third_party/blink/renderer/core/css/parser/sizes_attribute_parser.h"
+#include <optional>
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
-#include "third_party/blink/renderer/core/frame/settings.h"
-#include "third_party/blink/renderer/core/frame/viewport_data.h"
-#include "third_party/blink/renderer/core/html/cross_origin_attribute.h"
-#include "third_party/blink/renderer/core/html/html_dimension.h"
-#include "third_party/blink/renderer/core/html/html_image_element.h"
-#include "third_party/blink/renderer/core/html/html_meta_element.h"
-#include "third_party/blink/renderer/core/html/link_rel_attribute.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
-#include "third_party/blink/renderer/core/html/parser/html_srcset_parser.h"
 #include "third_party/blink/renderer/core/html/parser/html_tokenizer.h"
 #include "third_party/blink/renderer/core/html_names.h"
-#include "third_party/blink/renderer/core/input_type_names.h"
-#include "third_party/blink/renderer/core/loader/importance_attribute.h"
-#include "third_party/blink/renderer/core/loader/link_loader.h"
-#include "third_party/blink/renderer/core/loader/subresource_integrity_helper.h"
 #include "third_party/blink/renderer/core/script/script_loader.h"
-#include "third_party/blink/renderer/platform/histogram.h"
-#include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
-#include "third_party/blink/renderer/platform/loader/fetch/integrity_metadata.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
-#include "third_party/blink/renderer/platform/loader/subresource_integrity.h"
 #include "third_party/blink/renderer/platform/network/mime/content_type.h"
 #include "third_party/blink/renderer/platform/network/mime/mime_type_registry.h"
+#include "third_party/blink/renderer/platform/wtf/wtf.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/media_list.h"
+#   include "third_party/blink/renderer/core/css/media_query_evaluator.h"
+#   include "third_party/blink/renderer/core/css/media_values_cached.h"
+#   include "third_party/blink/renderer/core/css/parser/sizes_attribute_parser.h"
+#   include "third_party/blink/renderer/core/frame/viewport_data.h"
+#   include "third_party/blink/renderer/core/html/html_dimension.h"
+#   include "third_party/blink/renderer/core/html/html_image_element.h"
+#   include "third_party/blink/renderer/core/html/html_meta_element.h"
+#   include "third_party/blink/renderer/core/html/link_rel_attribute.h"
+#   include "third_party/blink/renderer/core/html/parser/html_srcset_parser.h"
+#   include "third_party/blink/renderer/core/input_type_names.h"
+#   include "third_party/blink/renderer/core/loader/link_loader.h"
+#endif
+
+using namespace BlinKit;
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 static bool Match(const StringImpl* impl, const QualifiedName& q_name) {
   return impl == q_name.LocalName().Impl();
@@ -94,20 +101,21 @@ static const StringImpl* TagImplFor(const String& tag_name) {
 
 static String InitiatorFor(const StringImpl* tag_impl) {
   DCHECK(tag_impl);
-  if (Match(tag_impl, imgTag))
-    return imgTag.LocalName();
-  if (Match(tag_impl, inputTag))
-    return inputTag.LocalName();
-  if (Match(tag_impl, linkTag))
-    return linkTag.LocalName();
-  if (Match(tag_impl, scriptTag))
-    return scriptTag.LocalName();
-  if (Match(tag_impl, videoTag))
-    return videoTag.LocalName();
+  if (Match(tag_impl, kImgTag))
+    return kImgTag.LocalName();
+  if (Match(tag_impl, kInputTag))
+    return kInputTag.LocalName();
+  if (Match(tag_impl, kLinkTag))
+    return kLinkTag.LocalName();
+  if (Match(tag_impl, kScriptTag))
+    return kScriptTag.LocalName();
+  if (Match(tag_impl, kVideoTag))
+    return kVideoTag.LocalName();
   NOTREACHED();
   return g_empty_string;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 static bool MediaAttributeMatches(const MediaValuesCached& media_values,
                                   const String& attribute_value) {
   scoped_refptr<MediaQuerySet> media_queries =
@@ -124,6 +132,7 @@ static bool IsDimensionSmallAndAbsoluteForLazyLoad(
   return ParseDimensionValue(attribute_value, dimension) &&
          dimension.IsAbsolute() && dimension.Value() <= kMinDimensionToLazyLoad;
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 class TokenPreloadScanner::StartTagScanner {
   STACK_ALLOCATED();
@@ -131,39 +140,45 @@ class TokenPreloadScanner::StartTagScanner {
  public:
   StartTagScanner(const StringImpl* tag_impl,
                   MediaValuesCached* media_values,
-                  SubresourceIntegrity::IntegrityFeatures features,
                   TokenPreloadScanner::ScannerType scanner_type)
       : tag_impl_(tag_impl),
+#ifndef BLINKIT_CRAWLER_ONLY
         link_is_style_sheet_(false),
         link_is_preconnect_(false),
         link_is_preload_(false),
         link_is_modulepreload_(false),
         link_is_import_(false),
+#endif
         matched_(true),
+#ifndef BLINKIT_CRAWLER_ONLY
         input_is_image_(false),
+#endif
         nomodule_attribute_value_(false),
+#ifndef BLINKIT_CRAWLER_ONLY
         source_size_(0),
         source_size_set_(false),
-        defer_(FetchParameters::kNoDefer),
-        cross_origin_(kCrossOriginAttributeNotSet),
-        importance_(mojom::FetchImportanceMode::kImportanceAuto),
-        importance_mode_set_(false),
         media_values_(media_values),
+#endif
         referrer_policy_set_(false),
         referrer_policy_(kReferrerPolicyDefault),
-        integrity_attr_set_(false),
-        integrity_features_(features),
+#ifndef BLINKIT_CRAWLER_ONLY
         lazyload_attr_set_to_off_(false),
         width_attr_small_absolute_(false),
         height_attr_small_absolute_(false),
+#endif
         scanner_type_(scanner_type) {
-    if (Match(tag_impl_, imgTag) || Match(tag_impl_, sourceTag)) {
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(nullptr == media_values);
+    if (!Match(tag_impl_, kScriptTag))
+      tag_impl_ = nullptr;
+#else
+    if (Match(tag_impl_, kImgTag) || Match(tag_impl_, kSourceTag)) {
       source_size_ = SizesAttributeParser(media_values_, String()).length();
       return;
     }
-    if (!Match(tag_impl_, inputTag) && !Match(tag_impl_, linkTag) &&
-        !Match(tag_impl_, scriptTag) && !Match(tag_impl_, videoTag))
+    if (!Match(tag_impl_, inputTag) && !Match(tag_impl_, linkTag) && !Match(tag_impl_, scriptTag))
       tag_impl_ = nullptr;
+#endif
   }
 
   enum URLReplacement { kAllowURLReplacement, kDisallowURLReplacement };
@@ -191,12 +206,15 @@ class TokenPreloadScanner::StartTagScanner {
   }
 
   void PostProcessAfterAttributes() {
+#ifndef BLINKIT_CRAWLER_ONLY
     if (Match(tag_impl_, imgTag) ||
         (link_is_preload_ && as_attribute_value_ == "image" &&
          RuntimeEnabledFeatures::PreloadImageSrcSetEnabled()))
       SetUrlFromImageAttributes();
+#endif
   }
 
+#ifndef BLINKIT_CRAWLER_ONLY
   void HandlePictureSourceURL(PictureData& picture_data) {
     if (Match(tag_impl_, sourceTag) && matched_ &&
         picture_data.source_url.IsEmpty()) {
@@ -214,16 +232,19 @@ class TokenPreloadScanner::StartTagScanner {
       SetUrlToLoad(picture_data.source_url, kAllowURLReplacement);
     }
   }
+#endif
 
   std::unique_ptr<PreloadRequest> CreatePreloadRequest(
-      const KURL& predicted_base_url,
+      const BkURL& predicted_base_url,
       const SegmentedString& source,
-      const ClientHintsPreferences& client_hints_preferences,
       const PictureData& picture_data,
       const ReferrerPolicy document_referrer_policy) {
     PreloadRequest::RequestType request_type =
         PreloadRequest::kRequestTypePreload;
-    base::Optional<ResourceType> type;
+    std::optional<ResourceType> type;
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#else
     if (ShouldPreconnect()) {
       request_type = PreloadRequest::kRequestTypePreconnect;
     } else {
@@ -240,7 +261,11 @@ class TokenPreloadScanner::StartTagScanner {
         return nullptr;
       }
     }
+#endif
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     TextPosition position =
         TextPosition(source.CurrentLine(), source.CurrentColumn());
     FetchParameters::ResourceWidth resource_width;
@@ -300,6 +325,7 @@ class TokenPreloadScanner::StartTagScanner {
       request->SetFromInsertionScanner(true);
 
     return request;
+#endif
   }
 
  private:
@@ -307,38 +333,27 @@ class TokenPreloadScanner::StartTagScanner {
   void ProcessScriptAttribute(const NameType& attribute_name,
                               const String& attribute_value) {
     // FIXME - Don't set crossorigin multiple times.
-    if (Match(attribute_name, srcAttr)) {
+    if (Match(attribute_name, kSrcAttr)) {
       SetUrlToLoad(attribute_value, kDisallowURLReplacement);
-    } else if (Match(attribute_name, crossoriginAttr)) {
-      SetCrossOrigin(attribute_value);
-    } else if (Match(attribute_name, nonceAttr)) {
-      SetNonce(attribute_value);
-    } else if (Match(attribute_name, asyncAttr)) {
-      SetDefer(FetchParameters::kLazyLoad);
-    } else if (Match(attribute_name, deferAttr)) {
-      SetDefer(FetchParameters::kLazyLoad);
-    } else if (!integrity_attr_set_ && Match(attribute_name, integrityAttr)) {
-      integrity_attr_set_ = true;
-      SubresourceIntegrity::ParseIntegrityAttribute(
-          attribute_value, integrity_features_, integrity_metadata_);
-    } else if (Match(attribute_name, typeAttr)) {
+    } else if (Match(attribute_name, kTypeAttr)) {
       type_attribute_value_ = attribute_value;
-    } else if (Match(attribute_name, languageAttr)) {
+    } else if (Match(attribute_name, kLanguageAttr)) {
       language_attribute_value_ = attribute_value;
-    } else if (Match(attribute_name, nomoduleAttr)) {
+    } else if (Match(attribute_name, kNomoduleAttr)) {
       nomodule_attribute_value_ = true;
     } else if (!referrer_policy_set_ &&
-               Match(attribute_name, referrerpolicyAttr) &&
+               Match(attribute_name, kReferrerpolicyAttr) &&
                !attribute_value.IsNull()) {
       SetReferrerPolicy(attribute_value,
                         kDoNotSupportReferrerPolicyLegacyKeywords);
     }
   }
 
+#ifndef BLINKIT_CRAWLER_ONLY
   template <typename NameType>
   void ProcessImgAttribute(const NameType& attribute_name,
                            const String& attribute_value) {
-    if (Match(attribute_name, srcAttr) && img_src_url_.IsNull()) {
+    if (Match(attribute_name, kSrcAttr) && img_src_url_.IsNull()) {
       img_src_url_ = attribute_value;
     } else if (Match(attribute_name, crossoriginAttr)) {
       SetCrossOrigin(attribute_value);
@@ -464,24 +479,17 @@ class TokenPreloadScanner::StartTagScanner {
           ContentType(attribute_value).GetType());
     }
   }
-
-  template <typename NameType>
-  void ProcessVideoAttribute(const NameType& attribute_name,
-                             const String& attribute_value) {
-    if (Match(attribute_name, posterAttr))
-      SetUrlToLoad(attribute_value, kDisallowURLReplacement);
-    else if (Match(attribute_name, crossoriginAttr))
-      SetCrossOrigin(attribute_value);
-  }
+#endif // BLINKIT_CRAWLER_ONLY
 
   template <typename NameType>
   void ProcessAttribute(const NameType& attribute_name,
                         const String& attribute_value) {
-    if (Match(attribute_name, charsetAttr))
+    if (Match(attribute_name, kCharsetAttr))
       charset_ = attribute_value;
 
-    if (Match(tag_impl_, scriptTag))
+    if (Match(tag_impl_, kScriptTag))
       ProcessScriptAttribute(attribute_name, attribute_value);
+#ifndef BLINKIT_CRAWLER_ONLY
     else if (Match(tag_impl_, imgTag))
       ProcessImgAttribute(attribute_name, attribute_value);
     else if (Match(tag_impl_, linkTag))
@@ -490,8 +498,7 @@ class TokenPreloadScanner::StartTagScanner {
       ProcessInputAttribute(attribute_name, attribute_value);
     else if (Match(tag_impl_, sourceTag))
       ProcessSourceAttribute(attribute_name, attribute_value);
-    else if (Match(tag_impl_, videoTag))
-      ProcessVideoAttribute(attribute_name, attribute_value);
+#endif
   }
 
   void SetUrlToLoad(const String& value, URLReplacement replacement) {
@@ -506,51 +513,56 @@ class TokenPreloadScanner::StartTagScanner {
   }
 
   const String& Charset() const {
+#ifndef BLINKIT_CRAWLER_ONLY
     // FIXME: Its not clear that this if is needed, the loader probably ignores
     // charset for image requests anyway.
-    if (Match(tag_impl_, imgTag) || Match(tag_impl_, videoTag))
+    if (Match(tag_impl_, kImgTag))
       return g_empty_string;
+#endif
     return charset_;
   }
 
-  base::Optional<ResourceType> ResourceTypeForLinkPreload() const {
+#ifndef BLINKIT_CRAWLER_ONLY
+  std::optional<ResourceType> ResourceTypeForLinkPreload() const {
     DCHECK(link_is_preload_);
     return LinkLoader::GetResourceTypeFromAsAttribute(as_attribute_value_);
   }
+#endif
 
   ResourceType GetResourceType() const {
-    if (Match(tag_impl_, scriptTag)) {
+    if (Match(tag_impl_, kScriptTag))
       return ResourceType::kScript;
-    } else if (Match(tag_impl_, imgTag) || Match(tag_impl_, videoTag) ||
-               (Match(tag_impl_, inputTag) && input_is_image_)) {
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (Match(tag_impl_, kImgTag) || (Match(tag_impl_, kInputTag) && input_is_image_))
       return ResourceType::kImage;
-    } else if (Match(tag_impl_, linkTag) && link_is_style_sheet_) {
+    if (Match(tag_impl_, kLinkTag) && link_is_style_sheet_)
       return ResourceType::kCSSStyleSheet;
-    } else if (link_is_preconnect_) {
+    if (link_is_preconnect_)
       return ResourceType::kRaw;
-    } else if (Match(tag_impl_, linkTag) && link_is_import_) {
+    if (Match(tag_impl_, kLinkTag) && link_is_import_)
       return ResourceType::kImportResource;
-    }
+#endif
     NOTREACHED();
     return ResourceType::kRaw;
   }
 
+#ifndef BLINKIT_CRAWLER_ONLY
   bool ShouldPreconnect() const {
-    return Match(tag_impl_, linkTag) && link_is_preconnect_ &&
+    return Match(tag_impl_, kLinkTag) && link_is_preconnect_ &&
            !url_to_load_.IsEmpty();
   }
 
   bool IsLinkRelPreload() const {
-    return Match(tag_impl_, linkTag) && link_is_preload_ &&
+    return Match(tag_impl_, kLinkTag) && link_is_preload_ &&
            !url_to_load_.IsEmpty();
   }
 
   bool IsLinkRelModulePreload() const {
-    return Match(tag_impl_, linkTag) && link_is_modulepreload_ &&
+    return Match(tag_impl_, kLinkTag) && link_is_modulepreload_ &&
            !url_to_load_.IsEmpty();
   }
 
-  bool ShouldPreloadLink(base::Optional<ResourceType>& type) const {
+  bool ShouldPreloadLink(std::optional<ResourceType>& type) const {
     if (link_is_style_sheet_) {
       return type_attribute_value_.IsEmpty() ||
              MIMETypeRegistry::IsSupportedStyleSheetMIMEType(
@@ -577,17 +589,20 @@ class TokenPreloadScanner::StartTagScanner {
 
     return true;
   }
+#endif // BLINKIT_CRAWLER_ONLY
 
-  bool ShouldPreload(base::Optional<ResourceType>& type) const {
+  bool ShouldPreload(std::optional<ResourceType>& type) const {
     if (url_to_load_.IsEmpty())
       return false;
     if (!matched_)
       return false;
-    if (Match(tag_impl_, linkTag))
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (Match(tag_impl_, kLinkTag))
       return ShouldPreloadLink(type);
-    if (Match(tag_impl_, inputTag) && !input_is_image_)
+    if (Match(tag_impl_, kInputTag) && !input_is_image_)
       return false;
-    if (Match(tag_impl_, scriptTag)) {
+#endif
+    if (Match(tag_impl_, kScriptTag)) {
       ScriptType script_type = ScriptType::kClassic;
       if (!ScriptLoader::IsValidScriptTypeAndLanguage(
               type_attribute_value_, language_attribute_value_,
@@ -602,15 +617,13 @@ class TokenPreloadScanner::StartTagScanner {
     return true;
   }
 
+#ifndef BLINKIT_CRAWLER_ONLY
   void ParseSourceSize(const String& attribute_value) {
     source_size_ =
         SizesAttributeParser(media_values_, attribute_value).length();
     source_size_set_ = true;
   }
-
-  void SetCrossOrigin(const String& cors_setting) {
-    cross_origin_ = GetCrossOriginAttributeValue(cors_setting);
-  }
+#endif
 
   void SetReferrerPolicy(
       const String& attribute_value,
@@ -620,56 +633,45 @@ class TokenPreloadScanner::StartTagScanner {
         attribute_value, legacy_keywords_support, &referrer_policy_);
   }
 
-  void SetImportance(const String& importance) {
-    DCHECK(RuntimeEnabledFeatures::PriorityHintsEnabled());
-    importance_mode_set_ = true;
-    importance_ = GetFetchImportanceAttributeValue(importance);
-  }
-
-  void SetNonce(const String& nonce) { nonce_ = nonce; }
-
-  void SetDefer(FetchParameters::DeferOption defer) { defer_ = defer; }
-
-  bool Defer() const { return defer_; }
-
   const StringImpl* tag_impl_;
   String url_to_load_;
+#ifndef BLINKIT_CRAWLER_ONLY
   ImageCandidate srcset_image_candidate_;
+#endif
   String charset_;
+#ifndef BLINKIT_CRAWLER_ONLY
   bool link_is_style_sheet_;
   bool link_is_preconnect_;
   bool link_is_preload_;
   bool link_is_modulepreload_;
   bool link_is_import_;
+#endif
   bool matched_;
+#ifndef BLINKIT_CRAWLER_ONLY
   bool input_is_image_;
+#endif
   String img_src_url_;
   String srcset_attribute_value_;
   String as_attribute_value_;
   String type_attribute_value_;
   String language_attribute_value_;
   bool nomodule_attribute_value_;
+#ifndef BLINKIT_CRAWLER_ONLY
   float source_size_;
   bool source_size_set_;
-  FetchParameters::DeferOption defer_;
-  CrossOriginAttributeValue cross_origin_;
-  mojom::FetchImportanceMode importance_;
-  bool importance_mode_set_;
-  String nonce_;
   Member<MediaValuesCached> media_values_;
+#endif
   bool referrer_policy_set_;
   ReferrerPolicy referrer_policy_;
-  bool integrity_attr_set_;
-  IntegrityMetadataSet integrity_metadata_;
-  SubresourceIntegrity::IntegrityFeatures integrity_features_;
-  bool lazyload_attr_set_to_off_;
+#ifndef BLINKIT_CRAWLER_ONLY
   bool width_attr_small_absolute_;
   bool height_attr_small_absolute_;
+#endif
   TokenPreloadScanner::ScannerType scanner_type_;
 };
 
 TokenPreloadScanner::TokenPreloadScanner(
-    const KURL& document_url,
+    const BkURL& document_url,
     std::unique_ptr<CachedDocumentParameters> document_parameters,
     const MediaValuesCached::MediaValuesCachedData& media_values_cached_data,
     const ScannerType scanner_type)
@@ -679,13 +681,19 @@ TokenPreloadScanner::TokenPreloadScanner(
       in_script_(false),
       template_count_(0),
       document_parameters_(std::move(document_parameters)),
+#ifndef BLINKIT_CRAWLER_ONLY
       media_values_(MediaValuesCached::Create(media_values_cached_data)),
+#endif
       scanner_type_(scanner_type),
       did_rewind_(false) {
   DCHECK(document_parameters_.get());
+#ifndef BLINKIT_CRAWLER_ONLY
   DCHECK(media_values_.Get());
+#endif
   DCHECK(document_url.IsValid());
+#ifndef BLINKIT_CRAWLER_ONLY
   css_scanner_.SetReferrerPolicy(document_parameters_->referrer_policy);
+#endif
 }
 
 TokenPreloadScanner::~TokenPreloadScanner() = default;
@@ -709,7 +717,9 @@ void TokenPreloadScanner::RewindTo(
   did_rewind_ = true;
   in_script_ = checkpoint.in_script;
 
+#ifndef BLINKIT_CRAWLER_ONLY
   css_scanner_.Reset();
+#endif
   checkpoints_.clear();
 }
 
@@ -729,6 +739,7 @@ void TokenPreloadScanner::Scan(const CompactHTMLToken& token,
   ScanCommon(token, source, requests, viewport, is_csp_meta_tag);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 static void HandleMetaViewport(
     const String& attribute_value,
     const CachedDocumentParameters* document_parameters,
@@ -751,6 +762,7 @@ static void HandleMetaViewport(
   media_values->OverrideViewportDimensions(constraints.layout_size.Width(),
                                            constraints.layout_size.Height());
 }
+#endif
 
 static void HandleMetaReferrer(const String& attribute_value,
                                CachedDocumentParameters* document_parameters,
@@ -762,7 +774,11 @@ static void HandleMetaReferrer(const String& attribute_value,
           &meta_referrer_policy)) {
     document_parameters->referrer_policy = meta_referrer_policy;
   }
+#ifdef BLINKIT_CRAWLER_ONLY
+  ASSERT(nullptr == css_scanner);
+#else
   css_scanner->SetReferrerPolicy(document_parameters->referrer_policy);
+#endif
 }
 
 template <typename Token>
@@ -773,22 +789,24 @@ static void HandleMetaNameAttribute(
     CSSPreloadScanner* css_scanner,
     ViewportDescriptionWrapper* viewport) {
   const typename Token::Attribute* name_attribute =
-      token.GetAttributeItem(nameAttr);
+      token.GetAttributeItem(kNameAttr);
   if (!name_attribute)
     return;
 
   String name_attribute_value(name_attribute->Value());
   const typename Token::Attribute* content_attribute =
-      token.GetAttributeItem(contentAttr);
+      token.GetAttributeItem(kContentAttr);
   if (!content_attribute)
     return;
 
   String content_attribute_value(content_attribute->Value());
+#ifndef BLINKIT_CRAWLER_ONLY
   if (DeprecatedEqualIgnoringCase(name_attribute_value, "viewport")) {
     HandleMetaViewport(content_attribute_value, document_parameters,
                        media_values, viewport);
     return;
   }
+#endif
 
   if (DeprecatedEqualIgnoringCase(name_attribute_value, "referrer")) {
     HandleMetaReferrer(content_attribute_value, document_parameters,
@@ -807,100 +825,118 @@ void TokenPreloadScanner::ScanCommon(const Token& token,
 
   switch (token.GetType()) {
     case HTMLToken::kCharacter: {
-      if (in_style_) {
+#ifdef BLINKIT_CRAWLER_ONLY
+      ASSERT(for_crawler_ && !in_style_);
+#else
+      if (for_crawler_) {
+        ASSERT(!in_style_);
+      } else if (in_style_) {
         css_scanner_.Scan(token.Data(), source, requests,
                           predicted_base_element_url_);
       }
+#endif
       return;
     }
     case HTMLToken::kEndTag: {
       const StringImpl* tag_impl = TagImplFor(token.Data());
-      if (Match(tag_impl, templateTag)) {
-        if (template_count_)
-          --template_count_;
-        return;
-      }
-      if (Match(tag_impl, styleTag)) {
-        if (in_style_)
-          css_scanner_.Reset();
-        in_style_ = false;
-        return;
-      }
-      if (Match(tag_impl, scriptTag)) {
+#ifdef BLINKIT_CRAWLER_ONLY
+      ASSERT(for_crawler_);
+      if (Match(tag_impl, kScriptTag)) {
         in_script_ = false;
         return;
       }
-      if (Match(tag_impl, pictureTag)) {
-        in_picture_ = false;
-        picture_data_.picked = false;
+#else
+      if (!for_crawler_) {
+        if (Match(tag_impl, templateTag)) {
+          if (template_count_)
+            --template_count_;
+          return;
+        }
+        if (Match(tag_impl, styleTag)) {
+          if (in_style_)
+            css_scanner_.Reset();
+          in_style_ = false;
+          return;
+        }
+        if (Match(tag_impl, pictureTag)) {
+          in_picture_ = false;
+          picture_data_.picked = false;
+        }
       }
+      if (Match(tag_impl, kScriptTag)) {
+        in_script_ = false;
+        return;
+      }
+#endif
       return;
     }
     case HTMLToken::kStartTag: {
       if (template_count_)
         return;
       const StringImpl* tag_impl = TagImplFor(token.Data());
-      if (Match(tag_impl, templateTag)) {
+      if (Match(tag_impl, kTemplateTag)) {
         ++template_count_;
         return;
       }
-      if (Match(tag_impl, styleTag)) {
-        in_style_ = true;
-        return;
+#ifndef BLINKIT_CRAWLER_ONLY
+      if (!for_crawler_) {
+        if (Match(tag_impl, styleTag)) {
+          in_style_ = true;
+          return;
+        }
+        if (Match(tag_impl, pictureTag)) {
+          in_picture_ = true;
+          picture_data_ = PictureData();
+          return;
+        }
       }
+#endif
       // Don't early return, because the StartTagScanner needs to look at these
       // too.
-      if (Match(tag_impl, scriptTag)) {
+      if (Match(tag_impl, kScriptTag)) {
         in_script_ = true;
       }
-      if (Match(tag_impl, baseTag)) {
+      if (Match(tag_impl, kBaseTag)) {
         // The first <base> element is the one that wins.
         if (!predicted_base_element_url_.IsEmpty())
           return;
         UpdatePredictedBaseURL(token);
         return;
       }
-      if (Match(tag_impl, metaTag)) {
+      if (Match(tag_impl, kMetaTag)) {
         const typename Token::Attribute* equiv_attribute =
-            token.GetAttributeItem(http_equivAttr);
+            token.GetAttributeItem(kHttpEquivAttr);
         if (equiv_attribute) {
           String equiv_attribute_value(equiv_attribute->Value());
           if (DeprecatedEqualIgnoringCase(equiv_attribute_value,
                                           "content-security-policy")) {
             *is_csp_meta_tag = true;
-          } else if (DeprecatedEqualIgnoringCase(equiv_attribute_value,
-                                                 "accept-ch")) {
-            const typename Token::Attribute* content_attribute =
-                token.GetAttributeItem(contentAttr);
-            if (content_attribute) {
-              client_hints_preferences_.UpdateFromAcceptClientHintsHeader(
-                  content_attribute->Value(), document_url_, nullptr);
-            }
           }
           return;
         }
-
+#ifdef BLINKIT_CRAWLER_ONLY
+        HandleMetaNameAttribute(token, document_parameters_.get(), nullptr, nullptr, nullptr);
+#else
         HandleMetaNameAttribute(token, document_parameters_.get(),
                                 media_values_.Get(), &css_scanner_, viewport);
+#endif
       }
 
-      if (Match(tag_impl, pictureTag)) {
-        in_picture_ = true;
-        picture_data_ = PictureData();
-        return;
-      }
-
-      StartTagScanner scanner(tag_impl, media_values_,
-                              document_parameters_->integrity_features,
-                              scanner_type_);
+#ifdef BLINKIT_CRAWLER_ONLY
+      MediaValuesCached *media_values_ = nullptr;
+#endif
+      StartTagScanner scanner(tag_impl, media_values_, scanner_type_);
       scanner.ProcessAttributes(token.Attributes());
+#ifdef BLINKIT_CRAWLER_ONLY
+      PictureData picture_data_;
+#else
       // TODO(yoav): ViewportWidth is currently racy and might be zero in some
       // cases, at least in tests. That problem will go away once
       // ParseHTMLOnMainThread lands and MediaValuesCached is eliminated.
-      if (in_picture_ && media_values_->ViewportWidth())
+      if (for_crawler_ && in_picture_ && media_values_->ViewportWidth())
         scanner.HandlePictureSourceURL(picture_data_);
-      std::unique_ptr<PreloadRequest> request = scanner.CreatePreloadRequest(
-          predicted_base_element_url_, source, client_hints_preferences_,
+#endif
+      std::unique_ptr<PreloadRequest> request = scanner.CreatePreloadRequest(predicted_base_element_url_, source,
           picture_data_, document_parameters_->referrer_policy);
       if (request)
         requests.push_back(std::move(request));
@@ -914,17 +950,20 @@ template <typename Token>
 void TokenPreloadScanner::UpdatePredictedBaseURL(const Token& token) {
   DCHECK(predicted_base_element_url_.IsEmpty());
   if (const typename Token::Attribute* href_attribute =
-          token.GetAttributeItem(hrefAttr)) {
-    KURL url(document_url_, StripLeadingAndTrailingHTMLSpaces(
+          token.GetAttributeItem(kHrefAttr)) {
+    ASSERT(false); // BKTODO:
+#if 0
+    BkURL url(document_url_, StripLeadingAndTrailingHTMLSpaces(
                                 href_attribute->Value8BitIfNecessary()));
     predicted_base_element_url_ =
-        url.IsValid() && !url.ProtocolIsData() ? url.Copy() : KURL();
+        url.IsValid() && !url.ProtocolIsData() ? url.Copy() : BkURL();
+#endif
   }
 }
 
 HTMLPreloadScanner::HTMLPreloadScanner(
     const HTMLParserOptions& options,
-    const KURL& document_url,
+    const BkURL& document_url,
     std::unique_ptr<CachedDocumentParameters> document_parameters,
     const MediaValuesCached::MediaValuesCachedData& media_values_cached_data,
     const TokenPreloadScanner::ScannerType scanner_type)
@@ -932,7 +971,10 @@ HTMLPreloadScanner::HTMLPreloadScanner(
                std::move(document_parameters),
                media_values_cached_data,
                scanner_type),
-      tokenizer_(HTMLTokenizer::Create(options)) {}
+      tokenizer_(HTMLTokenizer::Create(options)) {
+  if (options.for_crawler)
+    scanner_.SetIsForCrawler();
+}
 
 HTMLPreloadScanner::~HTMLPreloadScanner() = default;
 
@@ -941,13 +983,10 @@ void HTMLPreloadScanner::AppendToEnd(const SegmentedString& source) {
 }
 
 PreloadRequestStream HTMLPreloadScanner::Scan(
-    const KURL& starting_base_element_url,
+    const BkURL& starting_base_element_url,
     ViewportDescriptionWrapper* viewport) {
   // HTMLTokenizer::updateStateFor only works on the main thread.
   DCHECK(IsMainThread());
-
-  TRACE_EVENT1("blink", "HTMLPreloadScanner::scan", "source_length",
-               source_.length());
 
   // When we start scanning, our best prediction of the baseElementURL is the
   // real one!
@@ -976,6 +1015,8 @@ PreloadRequestStream HTMLPreloadScanner::Scan(
 CachedDocumentParameters::CachedDocumentParameters(Document* document) {
   DCHECK(IsMainThread());
   DCHECK(document);
+  ASSERT(false); // BKTODO:
+#if 0
   do_html_preload_scanning =
       !document->GetSettings() ||
       document->GetSettings()->GetDoHtmlPreloadScanning();
@@ -988,6 +1029,7 @@ CachedDocumentParameters::CachedDocumentParameters(Document* document) {
                           document->GetSettings()->GetViewportMetaEnabled();
   referrer_policy = document->GetReferrerPolicy();
   integrity_features = SubresourceIntegrityHelper::GetFeatures(document);
+#endif
 }
 
 }  // namespace blink
