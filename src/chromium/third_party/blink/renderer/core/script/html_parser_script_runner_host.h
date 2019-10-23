@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_parser_script_runner_host.h
+// Description: HTMLParserScriptRunnerHost Class
+//      Author: Ziming Li
+//     Created: 2019-10-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -37,7 +48,6 @@ class PendingScript;
 class CORE_EXPORT HTMLParserScriptRunnerHost : public GarbageCollectedMixin {
  public:
   virtual ~HTMLParserScriptRunnerHost() = default;
-  void Trace(blink::Visitor* visitor) override {}
 
   virtual void NotifyScriptLoaded(PendingScript*) = 0;
   virtual HTMLInputStream& InputStream() = 0;
