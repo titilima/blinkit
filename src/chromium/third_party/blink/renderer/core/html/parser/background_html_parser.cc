@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: background_html_parser.cc
+// Description: BackgroundHTMLParser Class
+//      Author: Ziming Li
+//     Created: 2019-10-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google, Inc. All Rights Reserved.
  *
@@ -32,15 +43,11 @@
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/renderer/core/html/parser/html_document_parser.h"
 #include "third_party/blink/renderer/core/html/parser/text_resource_decoder.h"
-#include "third_party/blink/renderer/core/html/parser/xss_auditor.h"
-#include "third_party/blink/renderer/core/html_names.h"
-#include "third_party/blink/renderer/platform/cross_thread_functional.h"
-#include "third_party/blink/renderer/platform/histogram.h"
-#include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 #include "third_party/blink/renderer/platform/web_task_runner.h"
-#include "third_party/blink/renderer/platform/wtf/functional.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
 #include "third_party/blink/renderer/platform/wtf/time.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -66,18 +73,15 @@ static const size_t kPendingTokenLimit = 1000;
 static_assert(kOutstandingTokenLimit > kPendingTokenLimit,
               "Outstanding token limit is applied after pending token limit.");
 
-using namespace HTMLNames;
-
-base::WeakPtr<BackgroundHTMLParser> BackgroundHTMLParser::Create(
+std::weak_ptr<BackgroundHTMLParser> BackgroundHTMLParser::Create(
     std::unique_ptr<Configuration> config,
-    scoped_refptr<base::SingleThreadTaskRunner> loading_task_runner) {
-  auto* background_parser = new BackgroundHTMLParser(
-      std::move(config), std::move(loading_task_runner));
-  return background_parser->weak_factory_.GetWeakPtr();
+    std::shared_ptr<base::SingleThreadTaskRunner> loading_task_runner) {
+  auto* background_parser = new BackgroundHTMLParser(std::move(config), loading_task_runner);
+  return base::WrapWeak(background_parser->weak_factory_);
 }
 
 void BackgroundHTMLParser::Init(
-    const KURL& document_url,
+    const BkURL& document_url,
     std::unique_ptr<CachedDocumentParameters> cached_document_parameters,
     const MediaValuesCached::MediaValuesCachedData& media_values_cached_data) {
   preload_scanner_.reset(new TokenPreloadScanner(
@@ -90,22 +94,21 @@ BackgroundHTMLParser::Configuration::Configuration() {}
 
 BackgroundHTMLParser::BackgroundHTMLParser(
     std::unique_ptr<Configuration> config,
-    scoped_refptr<base::SingleThreadTaskRunner> loading_task_runner)
+    std::shared_ptr<base::SingleThreadTaskRunner> loading_task_runner)
     : token_(std::make_unique<HTMLToken>()),
       tokenizer_(HTMLTokenizer::Create(config->options)),
       tree_builder_simulator_(config->options),
       options_(config->options),
       parser_(config->parser),
-      xss_auditor_(std::move(config->xss_auditor)),
       decoder_(std::move(config->decoder)),
-      loading_task_runner_(std::move(loading_task_runner)),
+      loading_task_runner_(loading_task_runner),
       pending_csp_meta_token_index_(
           HTMLDocumentParser::TokenizedChunk::kNoPendingToken),
       starting_script_(false),
       weak_factory_(this) {
 }
 
-BackgroundHTMLParser::~BackgroundHTMLParser() = default;
+BackgroundHTMLParser::~BackgroundHTMLParser(void) = default;
 
 void BackgroundHTMLParser::AppendRawBytesFromMainThread(
     std::unique_ptr<Vector<char>> buffer) {
@@ -136,9 +139,8 @@ void BackgroundHTMLParser::UpdateDocument(const String& decoded_data) {
   if (encoding_data != last_seen_encoding_data_) {
     last_seen_encoding_data_ = encoding_data;
 
-    xss_auditor_->SetEncoding(encoding_data.Encoding());
-    if (parser_)
-      parser_->DidReceiveEncodingDataFromBackgroundParser(encoding_data);
+    if (auto parser = parser_.lock())
+      parser->DidReceiveEncodingDataFromBackgroundParser(encoding_data);
   }
 
   if (decoded_data.IsEmpty())
@@ -172,7 +174,7 @@ void BackgroundHTMLParser::Finish() {
 }
 
 void BackgroundHTMLParser::Stop() {
-  delete this;
+  weak_factory_.reset();
 }
 
 void BackgroundHTMLParser::ForcePlaintextForTextDocument() {
@@ -190,7 +192,6 @@ void BackgroundHTMLParser::MarkEndOfFile() {
 }
 
 void BackgroundHTMLParser::PumpTokenizer() {
-  TRACE_EVENT0("loading", "BackgroundHTMLParser::pumpTokenizer");
   HTMLTreeBuilderSimulator::SimulatedToken simulated_token =
       HTMLTreeBuilderSimulator::kOtherToken;
 
@@ -199,33 +200,23 @@ void BackgroundHTMLParser::PumpTokenizer() {
     return;
 
   while (true) {
-    if (xss_auditor_->IsEnabled())
-      source_tracker_.Start(input_.Current(), tokenizer_.get(), *token_);
-
     if (!tokenizer_->NextToken(input_.Current(), *token_)) {
       // We've reached the end of our current input.
       break;
     }
 
-    if (xss_auditor_->IsEnabled())
-      source_tracker_.end(input_.Current(), tokenizer_.get(), *token_);
-
     {
       TextPosition position = TextPosition(input_.Current().CurrentLine(),
                                            input_.Current().CurrentColumn());
 
-      if (std::unique_ptr<XSSInfo> xss_info =
-              xss_auditor_->FilterToken(FilterTokenRequest(
-                  *token_, source_tracker_, tokenizer_->ShouldAllowCDATA()))) {
-        xss_info->text_position_ = position;
-        pending_xss_infos_.push_back(std::move(xss_info));
-      }
-
       CompactHTMLToken token(token_.get(), position);
 
       bool is_csp_meta_tag = false;
-      preload_scanner_->Scan(token, input_.Current(), pending_preloads_,
-                             &viewport_description_, &is_csp_meta_tag);
+#ifdef BLINKIT_CRAWLER_ONLY
+      preload_scanner_->Scan(token, input_.Current(), pending_preloads_, nullptr, &is_csp_meta_tag);
+#else
+      preload_scanner_->Scan(token, input_.Current(), pending_preloads_, &viewport_description_, &is_csp_meta_tag);
+#endif
 
       simulated_token =
           tree_builder_simulator_.Simulate(token, tokenizer_.get());
@@ -267,14 +258,12 @@ void BackgroundHTMLParser::EnqueueTokenizedChunk() {
     return;
 
   auto chunk = std::make_unique<HTMLDocumentParser::TokenizedChunk>();
-  TRACE_EVENT_WITH_FLOW0("blink,loading",
-                         "BackgroundHTMLParser::sendTokensToMainThread",
-                         chunk.get(), TRACE_EVENT_FLAG_FLOW_OUT);
 
   chunk->preloads.swap(pending_preloads_);
+#ifndef BLINKIT_CRAWLER_ONLY
   if (viewport_description_.set)
     chunk->viewport = viewport_description_;
-  chunk->xss_infos.swap(pending_xss_infos_);
+#endif
   chunk->tokenizer_state = tokenizer_->GetState();
   chunk->tree_builder_state = tree_builder_simulator_.GetState();
   chunk->input_checkpoint = input_.CreateCheckpoint(pending_tokens_.size());
@@ -286,8 +275,8 @@ void BackgroundHTMLParser::EnqueueTokenizedChunk() {
   pending_csp_meta_token_index_ =
       HTMLDocumentParser::TokenizedChunk::kNoPendingToken;
 
-  if (parser_)
-    parser_->EnqueueTokenizedChunk(std::move(chunk));
+  if (auto parser = parser_.lock())
+    parser->EnqueueTokenizedChunk(std::move(chunk));
 }
 
 }  // namespace blink

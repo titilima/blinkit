@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: background_html_parser.h
+// Description: BackgroundHTMLParser Class
+//      Author: Ziming Li
+//     Created: 2019-10-23
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google, Inc. All Rights Reserved.
  *
@@ -29,7 +40,6 @@
 #include <memory>
 
 #include "base/macros.h"
-#include "base/memory/weak_ptr.h"
 #include "base/single_thread_task_runner.h"
 #include "third_party/blink/renderer/core/dom/document_encoding_data.h"
 #include "third_party/blink/renderer/core/html/parser/background_html_input_stream.h"
@@ -39,12 +49,10 @@
 #include "third_party/blink/renderer/core/html/parser/html_source_tracker.h"
 #include "third_party/blink/renderer/core/html/parser/html_tree_builder_simulator.h"
 #include "third_party/blink/renderer/core/html/parser/text_resource_decoder.h"
-#include "third_party/blink/renderer/core/html/parser/xss_auditor_delegate.h"
 
 namespace blink {
 
 class HTMLDocumentParser;
-class XSSAuditor;
 
 class BackgroundHTMLParser {
   USING_FAST_MALLOC(BackgroundHTMLParser);
@@ -56,17 +64,17 @@ class BackgroundHTMLParser {
    public:
     Configuration();
     HTMLParserOptions options;
-    base::WeakPtr<HTMLDocumentParser> parser;
-    std::unique_ptr<XSSAuditor> xss_auditor;
+    std::weak_ptr<HTMLDocumentParser> parser;
     std::unique_ptr<TextResourceDecoder> decoder;
   };
 
   // The returned BackgroundHTMLParser must first be initialized by calling
   // init(), and free by calling stop().
-  static base::WeakPtr<BackgroundHTMLParser> Create(
+  static std::weak_ptr<BackgroundHTMLParser> Create(
       std::unique_ptr<Configuration>,
-      scoped_refptr<base::SingleThreadTaskRunner>);
-  void Init(const KURL& document_url,
+      std::shared_ptr<base::SingleThreadTaskRunner>);
+  ~BackgroundHTMLParser(void);
+  void Init(const BlinKit::BkURL& document_url,
             std::unique_ptr<CachedDocumentParameters>,
             const MediaValuesCached::MediaValuesCachedData&);
 
@@ -74,7 +82,7 @@ class BackgroundHTMLParser {
     USING_FAST_MALLOC(Checkpoint);
 
    public:
-    base::WeakPtr<HTMLDocumentParser> parser;
+    std::weak_ptr<HTMLDocumentParser> parser;
     std::unique_ptr<HTMLToken> token;
     std::unique_ptr<HTMLTokenizer> tokenizer;
     HTMLTreeBuilderSimulator::State tree_builder_state;
@@ -95,8 +103,7 @@ class BackgroundHTMLParser {
 
  private:
   BackgroundHTMLParser(std::unique_ptr<Configuration>,
-                       scoped_refptr<base::SingleThreadTaskRunner>);
-  ~BackgroundHTMLParser();
+                       std::shared_ptr<base::SingleThreadTaskRunner>);
 
   void AppendDecodedBytes(const String&);
   void MarkEndOfFile();
@@ -111,18 +118,18 @@ class BackgroundHTMLParser {
   std::unique_ptr<HTMLTokenizer> tokenizer_;
   HTMLTreeBuilderSimulator tree_builder_simulator_;
   HTMLParserOptions options_;
-  base::WeakPtr<HTMLDocumentParser> parser_;
+  std::weak_ptr<HTMLDocumentParser> parser_;
 
   CompactHTMLTokenStream pending_tokens_;
   PreloadRequestStream pending_preloads_;
+#ifndef BLINKIT_CRAWLER_ONLY
   ViewportDescriptionWrapper viewport_description_;
-  XSSInfoStream pending_xss_infos_;
+#endif
 
-  std::unique_ptr<XSSAuditor> xss_auditor_;
   std::unique_ptr<TokenPreloadScanner> preload_scanner_;
   std::unique_ptr<TextResourceDecoder> decoder_;
   DocumentEncodingData last_seen_encoding_data_;
-  scoped_refptr<base::SingleThreadTaskRunner> loading_task_runner_;
+  std::shared_ptr<base::SingleThreadTaskRunner> loading_task_runner_;
 
   // Index into |pending_tokens_| of the last <meta> csp token found. Will be
   // |TokenizedChunk::kNoPendingToken| if none have been found.
@@ -130,7 +137,7 @@ class BackgroundHTMLParser {
 
   bool starting_script_;
 
-  base::WeakPtrFactory<BackgroundHTMLParser> weak_factory_;
+  std::shared_ptr<BackgroundHTMLParser> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(BackgroundHTMLParser);
 };
