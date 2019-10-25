@@ -18,6 +18,16 @@ std::unique_ptr<T> WrapUnique(T* ptr) {
   return std::unique_ptr<T>(ptr);
 }
 
+template <typename T>
+std::shared_ptr<T> WrapShared(T* ptr) {
+  return std::shared_ptr<T>(ptr);
+}
+
+template <typename T>
+std::weak_ptr<T> WrapWeak(const std::shared_ptr<T> &ptr) {
+  return std::weak_ptr<T>(ptr);
+}
+
 }  // namespace base
 
 #endif  // BASE_MEMORY_PTR_UTIL_H_
