@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_resource_preloader.cc
+// Description: HTMLResourcePreloader Class
+//      Author: Ziming Li
+//     Created: 2019-10-27
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All Rights Reserved.
  *
@@ -27,8 +38,8 @@
 
 #include <memory>
 #include "third_party/blink/renderer/core/dom/document.h"
-#include "third_party/blink/renderer/core/frame/deprecation.h"
-#include "third_party/blink/renderer/core/frame/settings.h"
+//#include "third_party/blink/renderer/core/frame/deprecation.h"
+//#include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/loader/document_loader.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
@@ -42,34 +53,7 @@ HTMLResourcePreloader* HTMLResourcePreloader::Create(Document& document) {
   return new HTMLResourcePreloader(document);
 }
 
-void HTMLResourcePreloader::Trace(blink::Visitor* visitor) {
-  visitor->Trace(document_);
-}
-
-int HTMLResourcePreloader::CountPreloads() {
-  if (document_->Loader())
-    return document_->Loader()->Fetcher()->CountPreloads();
-  return 0;
-}
-
-static void PreconnectHost(
-    PreloadRequest* request,
-    const NetworkHintsInterface& network_hints_interface) {
-  DCHECK(request);
-  DCHECK(request->IsPreconnect());
-  KURL host(request->BaseURL(), request->ResourceURL());
-  if (!host.IsValid() || !host.ProtocolIsInHTTPFamily())
-    return;
-  network_hints_interface.PreconnectHost(host, request->CrossOrigin());
-}
-
-void HTMLResourcePreloader::Preload(
-    std::unique_ptr<PreloadRequest> preload,
-    const NetworkHintsInterface& network_hints_interface) {
-  if (preload->IsPreconnect()) {
-    PreconnectHost(preload.get(), network_hints_interface);
-    return;
-  }
+void HTMLResourcePreloader::Preload(std::unique_ptr<PreloadRequest> preload) {
   // TODO(yoichio): Should preload if document is imported.
   if (!document_->Loader())
     return;

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_resource_preloader.h
+// Description: HTMLResourcePreloader Class
+//      Author: Ziming Li
+//     Created: 2019-10-27
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All Rights Reserved.
  *
@@ -31,8 +42,7 @@
 #include "base/macros.h"
 #include "third_party/blink/renderer/core/html/parser/preload_request.h"
 #include "third_party/blink/renderer/core/html/parser/resource_preloader.h"
-#include "third_party/blink/renderer/core/loader/network_hints_interface.h"
-#include "third_party/blink/renderer/platform/heap/heap.h"
+#include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
 #include "third_party/blink/renderer/platform/wtf/time.h"
 
@@ -47,13 +57,10 @@ class CORE_EXPORT HTMLResourcePreloader
 
  public:
   static HTMLResourcePreloader* Create(Document&);
-  int CountPreloads();
   Document* GetDocument() { return document_.Get(); }
-  void Trace(blink::Visitor*);
 
  protected:
-  void Preload(std::unique_ptr<PreloadRequest>,
-               const NetworkHintsInterface&) override;
+  void Preload(std::unique_ptr<PreloadRequest>) override;
   explicit HTMLResourcePreloader(Document&);
 
  private:

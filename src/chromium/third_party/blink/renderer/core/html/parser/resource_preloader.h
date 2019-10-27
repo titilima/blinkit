@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: resource_preloader.h
+// Description: ResourcePreloader Class
+//      Author: Ziming Li
+//     Created: 2019-10-27
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -11,15 +22,12 @@
 
 namespace blink {
 
-class NetworkHintsInterface;
-
 class CORE_EXPORT ResourcePreloader {
  public:
   virtual void TakeAndPreload(PreloadRequestStream&);
 
  private:
-  virtual void Preload(std::unique_ptr<PreloadRequest>,
-                       const NetworkHintsInterface&) = 0;
+  virtual void Preload(std::unique_ptr<PreloadRequest>) = 0;
 };
 
 }  // namespace blink
