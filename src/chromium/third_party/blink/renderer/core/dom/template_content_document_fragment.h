@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: template_content_document_fragment.h
+// Description: TemplateContentDocumentFragment Class
+//      Author: Ziming Li
+//     Created: 2019-10-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -39,11 +50,6 @@ class TemplateContentDocumentFragment final : public DocumentFragment {
   }
 
   Element* Host() const { return host_; }
-
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(host_);
-    DocumentFragment::Trace(visitor);
-  }
 
  private:
   TemplateContentDocumentFragment(Document& document, Element* host)
