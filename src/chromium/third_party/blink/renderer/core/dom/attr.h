@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: attr.h
+// Description: Attr Class
+//      Author: Ziming Li
+//     Created: 2019-10-31
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -29,7 +40,6 @@
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/node.h"
 #include "third_party/blink/renderer/core/dom/qualified_name.h"
-#include "third_party/blink/renderer/platform/bindings/trace_wrapper_member.h"
 
 namespace blink {
 
@@ -59,8 +69,6 @@ class CORE_EXPORT Attr final : public Node {
   const AtomicString& namespaceURI() const { return name_.NamespaceURI(); }
   const AtomicString& prefix() const { return name_.Prefix(); }
 
-  void Trace(blink::Visitor*) override;
-
  private:
   Attr(Element&, const QualifiedName&);
   Attr(Document&, const QualifiedName&, const AtomicString& value);
@@ -81,7 +89,7 @@ class CORE_EXPORT Attr final : public Node {
   // standalone Node.)
   // Note that name_ is always set, but element_ /
   // standalone_value_or_attached_local_name_ may be null.
-  TraceWrapperMember<Element> element_;
+  Member<Element> element_;
   QualifiedName name_;
   // Holds the value if it is a standalone Node, or the local name of the
   // attribute it is attached to on an Element. The latter may (letter case)
