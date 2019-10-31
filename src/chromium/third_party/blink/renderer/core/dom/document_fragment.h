@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: document_fragment.h
+// Description: DocumentFragment Class
+//      Author: Ziming Li
+//     Created: 2019-10-19
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -39,11 +50,10 @@ class CORE_EXPORT DocumentFragment : public ContainerNode {
   void ParseHTML(const String&,
                  Element* context_element,
                  ParserContentPolicy = kAllowScriptingContent);
-  bool ParseXML(const String&,
-                Element* context_element,
-                ParserContentPolicy = kAllowScriptingContent);
 
+#ifndef BLINKIT_CRAWLER_ONLY
   bool CanContainRangeEndPoint() const final { return true; }
+#endif
   virtual bool IsTemplateContent() const { return false; }
 
  protected:
