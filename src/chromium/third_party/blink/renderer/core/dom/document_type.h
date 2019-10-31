@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: document_type.h
+// Description: DocumentType Class
+//      Author: Ziming Li
+//     Created: 2019-10-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -55,7 +66,9 @@ class DocumentType final : public Node {
 
   InsertionNotificationRequest InsertedInto(ContainerNode&) override;
   void RemovedFrom(ContainerNode&) override;
-  void DetachLayoutTree(const AttachContext&) final {}
+#ifndef BLINKIT_CRAWLER_ONLY
+  void DetachLayoutTree(const AttachContext&) final { ASSERT(!ForCrawler()); }
+#endif
 
   String name_;
   String public_id_;
