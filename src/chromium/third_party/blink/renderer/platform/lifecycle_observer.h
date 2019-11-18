@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: lifecycle_observer.h
+// Description: LifecycleObserver Class
+//      Author: Ziming Li
+//     Created: 2019-11-18
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  *
@@ -39,10 +50,6 @@ class LifecycleObserverBase : public GarbageCollectedMixin {};
 template <typename Context, typename Observer>
 class LifecycleObserver : public LifecycleObserverBase {
  public:
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(lifecycle_context_);
-  }
-
   Context* LifecycleContext() const { return lifecycle_context_; }
 
   void ClearContext() { SetContext(nullptr); }
@@ -55,7 +62,7 @@ class LifecycleObserver : public LifecycleObserverBase {
   void SetContext(Context*);
 
  private:
-  WeakMember<Context> lifecycle_context_;
+  Context *lifecycle_context_;
 };
 
 template <typename Context, typename Observer>
