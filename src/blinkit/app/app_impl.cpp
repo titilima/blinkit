@@ -14,12 +14,12 @@
 #if 0 // BKTODO:
 #include "base/time/time.h"
 #endif
-#include "public/platform/web_cache.h"
-#include "public/platform/web_thread_scheduler.h"
-#include "public/web/blink.h"
+#include "third_party/blink/public/platform/web_cache.h"
+#include "third_party/blink/public/platform/web_thread_scheduler.h"
+#include "third_party/blink/public/web/blink.h"
 
 #include "bk_app.h"
-#include "app/app_constants.h"
+#include "blinkit/app/app_constants.h"
 #if 0 // BKTODO:
 #include "blink_impl/cookie_jar_impl.h"
 #include "blink_impl/mime_registry_impl.h"
@@ -31,15 +31,10 @@ namespace BlinKit {
 
 AppImpl::AppImpl(void)
 {
+    m_threadId = ThreadImpl::CurrentThreadId();
+    AttachMainThread(this);
 #if 0 // BKTODO:
-    assert(nullptr == theApp);
-    theApp = this;
-
     m_firstMonotonicallyIncreasingTime = base::Time::Now().ToDoubleT();
-
-    blink::PlatformThreadId currentThreadId = ThreadImpl::CurrentThreadId();
-    ThreadImpl::ApplyThreadId(currentThreadId);
-    m_threads[currentThreadId] = this;
 #endif
 }
 

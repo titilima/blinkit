@@ -11,18 +11,19 @@
 
 #include "crawler_element.h"
 
-#include "core/HTMLNames.h"
+#include "third_party/blink/renderer/core/html_names.h"
 
 using namespace blink;
 
 namespace BlinKit {
 
 CrawlerElement::CrawlerElement(const AtomicString &localName, Document *document)
-    : Element(QualifiedName(nullAtom, localName, HTMLNames::xhtmlNamespaceURI), document, CreateCrawlerElement)
+    : Element(QualifiedName(g_null_atom, localName, html_names::xhtmlNamespaceURI), document, kCreateCrawlerElement)
 {
     // Nothing
 }
 
+#if 0 // BKTODO:
 bool CrawlerElement::isDisabledFormControl(void) const
 {
     if (fastHasAttribute(HTMLNames::disabledAttr))
@@ -53,5 +54,6 @@ bool CrawlerElement::isURLAttribute(const Attribute &attribute) const
         return name == HTMLNames::srcAttr;
     return false;
 }
+#endif // 0
 
 } // namespace BlinKit

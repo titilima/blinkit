@@ -14,50 +14,25 @@
 
 #pragma once
 
-#include <mutex>
-#include <unordered_set>
-#include "public/platform/WebThread.h"
+#include "third_party/blink/renderer/platform/scheduler/public/thread.h"
 
 namespace BlinKit {
 
 class SchedulerImpl;
 
-class ThreadImpl : public blink::WebThread
+class ThreadImpl : public blink::Thread
 {
 public:
-    static ThreadImpl* CreateInstance(const char *name);
-
     static blink::PlatformThreadId CurrentThreadId(void);
 
-    void WillProcessTask(void);
-    void DidProcessTask(void);
-
-    // blink::WebThread
-    blink::WebTaskRunner* taskRunner(void) override final { return m_taskRunner.get(); }
-    bool isCurrentThread(void) const override final { return CurrentThreadId() == threadId(); }
-    blink::PlatformThreadId threadId(void) const override final { return m_threadId; }
+    blink::PlatformThreadId ThreadId(void) const final { return m_threadId; }
 protected:
-    ThreadImpl(void);
-    ~ThreadImpl(void);
-    void ApplyThreadId(blink::PlatformThreadId threadId);
-    void addTaskObserverWithoutLock(blink::WebThread::TaskObserver *observer);
-    void removeTaskObserverWithoutLock(blink::WebThread::TaskObserver *observer);
+    ThreadImpl(void) = default;
+    ~ThreadImpl(void) override;
 
-    typedef std::lock_guard<std::recursive_mutex> AutoLock;
-    std::recursive_mutex m_lock;
-#ifdef _DEBUG
-    std::string m_name;
-#endif
-private:
-    // blink::WebThread
-    void addTaskObserver(blink::WebThread::TaskObserver *observer) override final;
-    void removeTaskObserver(blink::WebThread::TaskObserver *observer) override final;
-    blink::WebScheduler* scheduler(void) const override final;
+    bool IsCurrentThread(void) const final;
 
     blink::PlatformThreadId m_threadId = 0;
-    std::unique_ptr<SchedulerImpl> m_scheduler;
-    std::unique_ptr<blink::WebTaskRunner> m_taskRunner;
-    std::unordered_set<blink::WebThread::TaskObserver *> m_observers;
 };
 
 } // namespace BlinKit

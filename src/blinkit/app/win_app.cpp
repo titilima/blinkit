@@ -12,6 +12,7 @@
 #include "win_app.h"
 
 #include "base/strings/sys_string_conversions.h"
+#include "blinkit/blink_impl/win_single_thread_task_runner.h"
 #if 0 // BKTODO:
 #include "base/win/resource_util.h"
 
@@ -28,7 +29,7 @@ namespace BlinKit {
 WinApp::WinApp(void)
 {
 #if 0 // BKTODO:
-    m_msgHook = SetWindowsHookEx(WH_GETMESSAGE, HookProc, nullptr, threadId());
+    m_msgHook = SetWindowsHookEx(WH_GETMESSAGE, HookProc, nullptr, GetCurrentThreadId());
 #endif
 }
 
@@ -39,8 +40,7 @@ WinApp::~WinApp(void)
 #endif
 }
 
-#if 0 // BKTODO:
-blink::WebString WinApp::defaultLocale(void)
+WTF::String WinApp::DefaultLocale(void)
 {
     std::string localName("en-US");
 
@@ -51,13 +51,19 @@ blink::WebString WinApp::defaultLocale(void)
         GetLocaleInfoA(LOCALE_USER_DEFAULT, LOCALE_SNAME, const_cast<PSTR>(localName.c_str()), len);
     }
 
-    return blink::WebString::fromUTF8(localName);
+    return WTF::String::FromStdUTF8(localName);
 }
-#endif
 
 WinApp& WinApp::Get(void)
 {
     return static_cast<WinApp &>(AppImpl::Get());
+}
+
+std::shared_ptr<base::SingleThreadTaskRunner> WinApp::GetTaskRunner(void) const
+{
+    if (!m_taskRunner)
+        m_taskRunner = std::make_shared<WinSingleThreadTaskRunner>();
+    return m_taskRunner;
 }
 
 #if 0 // BKTODO:

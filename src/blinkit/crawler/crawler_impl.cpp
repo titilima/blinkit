@@ -11,29 +11,34 @@
 
 #include "crawler_impl.h"
 
-#include "core/frame/LocalFrame.h"
-#include "core/loader/FrameLoadRequest.h"
+#include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "third_party/blink/renderer/core/loader/frame_load_request.h"
+#include "url/bk_url.h"
+#if 0 // BKTODO:
 #include "platform/network/ResourceError.h"
 
 #include "app/app_impl.h"
 #include "blink_impl/cookie_jar_impl.h"
 
 #include "js/public/script_controller.h"
+#endif // 0
 
 using namespace blink;
+using namespace BlinKit;
 
-namespace BlinKit {
-
-CrawlerImpl::CrawlerImpl(BkCrawlerClient &client) : m_client(client), m_frame(LocalFrame::create(this, nullptr))
+CrawlerImpl::CrawlerImpl(const BkCrawlerClient &client) : m_client(client), m_frame(LocalFrame::Create(*this))
 {
-    m_frame->init();
+    m_frame->Init();
 }
 
 CrawlerImpl::~CrawlerImpl(void)
 {
+#if 0 // BKTODO:
     m_frame->detach(FrameDetachType::Remove);
+#endif
 }
 
+#if 0 // BKTODO:
 int BKAPI CrawlerImpl::AccessCrawlerMember(const char *name, BkCallback &callback)
 {
     return m_frame->script().AccessCrawlerMember(name, callback);
@@ -85,22 +90,32 @@ std::tuple<int, std::string> CrawlerImpl::Initialize(void)
     return m_frame->script().CreateCrawlerObject(script.data(), script.length());
 }
 
-int BKAPI CrawlerImpl::Load(const char *URL)
-{
-    KURL u(ParsedURLString, URL);
-    if (!u.protocolIsInHTTPFamily())
-        return BkError::URIError;
-
-    FrameLoadRequest request(nullptr, ResourceRequest(u));
-    m_frame->loader().load(request);
-    return BkError::Success;
-}
-
 int BKAPI CrawlerImpl::RegisterCrawlerFunction(const char *name, BkCallback &functionImpl)
 {
     return m_frame->script().RegisterFunction(name, functionImpl);
 }
+#endif // 0
 
+int CrawlerImpl::Run(const char *URL)
+{
+    BkURL u(URL);
+    if (!u.SchemeIsHTTPOrHTTPS())
+    {
+        assert(u.SchemeIsHTTPOrHTTPS());
+        return BK_ERR_URI;
+    }
+
+    FrameLoadRequest request(nullptr, ResourceRequest(u));
+    m_frame->Loader().StartNavigation(request);
+    return BK_ERR_SUCCESS;
+}
+
+void CrawlerImpl::TransitionToCommittedForNewPage(void)
+{
+    // Nothing to do for crawlers.
+}
+
+#if 0 // BKTODO:
 String CrawlerImpl::userAgent(void)
 {
     std::string userAgent;
@@ -117,5 +132,25 @@ String CrawlerImpl::userAgent(void)
 
     return FrameLoaderClientImpl::userAgent();
 }
+#endif // 0
 
-} // namespace BlinKit
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+extern "C" {
+
+BKEXPORT BkCrawler BKAPI BkCreateCrawler(BkCrawlerClient *client)
+{
+    return new CrawlerImpl(*client);
+}
+
+BKEXPORT void BKAPI BkDestroyCrawler(BkCrawler crawler)
+{
+    delete crawler;
+}
+
+BKEXPORT int BKAPI BkRunCrawler(BkCrawler crawler, const char *URL)
+{
+    return crawler->Run(URL);
+}
+
+} // extern "C"

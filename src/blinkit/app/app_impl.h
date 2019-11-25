@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include <unordered_map>
-#include "public/platform/platform.h"
+#include "third_party/blink/public/platform/platform.h"
+#include "blinkit/blink_impl/thread_impl.h"
 
 namespace BlinKit {
 
@@ -24,7 +24,7 @@ class BkAppClient;
 class CookieJarImpl;
 class MimeRegistryImpl;
 
-class AppImpl : public blink::Platform
+class AppImpl : public blink::Platform, public ThreadImpl
 {
 public:
     static AppImpl* CreateInstance(void);
@@ -43,21 +43,21 @@ public:
 
 #if 0 // BKTODO:
     // blink::Platform
-    blink::WebCookieJar* cookieJar(void) override final;
-    blink::WebThread* currentThread(void) override final;
+    blink::WebCookieJar* cookieJar(void) final;
+    blink::WebThread* currentThread(void) final;
 #endif
 protected:
     AppImpl(void);
 private:
 #if 0 // BKTODO:
     // blink::Platform
-    blink::WebMimeRegistry* mimeRegistry(void) override final;
-    blink::WebURLLoader* createURLLoader(void) override final;
-    blink::WebString userAgent(void) override final;
-    blink::WebURLError cancelledError(const blink::WebURL &url) const override final;
-    blink::WebThread* createThread(const char *name) override final;
-    double currentTimeSeconds(void) override final;
-    double monotonicallyIncreasingTimeSeconds(void) override final;
+    blink::WebMimeRegistry* mimeRegistry(void) final;
+    blink::WebURLLoader* createURLLoader(void) final;
+    blink::WebString userAgent(void) final;
+    blink::WebURLError cancelledError(const blink::WebURL &url) const final;
+    blink::WebThread* createThread(const char *name) final;
+    double currentTimeSeconds(void) final;
+    double monotonicallyIncreasingTimeSeconds(void) final;
 
     std::unique_ptr<CookieJarImpl> m_cookieJar;
     std::unique_ptr<MimeRegistryImpl> m_mimeRegistry;

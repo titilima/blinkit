@@ -14,24 +14,20 @@
 
 #pragma once
 
-#include "thread_impl.h"
+#include "blinkit/blink_impl/thread_impl.h"
 
 namespace BlinKit {
 
 class WinThread final : public ThreadImpl
 {
 public:
-    ~WinThread(void);
-
-    struct CreateData;
-    void Initialize(CreateData &cd);
+    ~WinThread(void) override;
 private:
-    static void ApplyName(const char *name);
-    static void EnsureMessageQueueCreated(HANDLE hEvent);
-    DWORD Run(void);
-    static DWORD WINAPI ThreadProc(PVOID param);
+    // Thread overrides
+    std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(void) const override;
 
     HANDLE m_hThread = nullptr;
+    mutable std::shared_ptr<base::SingleThreadTaskRunner> m_taskRunner;
 };
 
 } // namespace BlinKit

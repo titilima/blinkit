@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "app_impl.h"
+#include "blinkit/app/app_impl.h"
 
 namespace BlinKit {
 
@@ -25,17 +25,25 @@ class WinApp final : public AppImpl
 {
 public:
     WinApp(void);
-    ~WinApp(void);
+    ~WinApp(void) override;
 
     static WinApp& Get(void);
 private:
 #if 0 // BKTODO:
     static LRESULT CALLBACK HookProc(int code, WPARAM w, LPARAM l);
+#endif
+
     // blink::Platform
-    blink::WebString defaultLocale(void) override;
+    WTF::String DefaultLocale(void) override;
+    // blink::Thread
+    std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(void) const override;
 
+#if 0 // BKTODO:
     HHOOK m_msgHook;
+#endif
+    mutable std::shared_ptr<base::SingleThreadTaskRunner> m_taskRunner;
 
+#if 0 // BKTODO:
 #ifndef BLINKIT_CRAWLER_ONLY
     // BkApp
     BkView* BKAPI CreateView(BkViewClient &client) override;

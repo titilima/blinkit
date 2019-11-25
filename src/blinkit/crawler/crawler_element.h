@@ -14,23 +14,23 @@
 
 #pragma once
 
-#include "core/dom/Element.h"
+#include "third_party/blink/renderer/core/dom/element.h"
 
 namespace BlinKit {
 
 class CrawlerElement : public blink::Element
 {
 public:
-    static PassRefPtrWillBeRawPtr<CrawlerElement> Create(const AtomicString &localName, blink::Document *document) {
-        return adoptRefWillBeNoop(new CrawlerElement(localName, document));
-    }
-protected:
     CrawlerElement(const AtomicString &localName, blink::Document *document);
-
-    bool isURLAttribute(const blink::Attribute &attribute) const;
+protected:
+#if 0 // BKTODO:
+    bool IsURLAttribute(const blink::Attribute &attribute) const;
+#endif
 private:
-    bool isFormControlElement(void) const final;
-    bool isDisabledFormControl(void) const final;
+#if 0 // BKTODO:
+    bool IsFormControlElement(void) const final;
+    bool IsDisabledFormControl(void) const final;
+#endif
 };
 
 } // namespace BlinKit

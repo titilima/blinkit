@@ -11,25 +11,21 @@
 
 #include "crawler_document.h"
 
-#include "core/dom/DocumentInit.h"
-
-#include "crawler/crawler_form_element.h"
+#include "blinkit/crawler/crawler_element.h"
+#include "third_party/blink/renderer/core/dom/document_init.h"
 
 using namespace blink;
 
 namespace BlinKit {
 
-CrawlerDocument::CrawlerDocument(const DocumentInit &init)
-    : Document(init, HTMLDocumentClass, true)
+CrawlerDocument::CrawlerDocument(const DocumentInit &init) : Document(init)
 {
     // Nothing
 }
 
-PassRefPtrWillBeRawPtr<Element> CrawlerDocument::createElement(const AtomicString &localName, ExceptionState &)
+Element* CrawlerDocument::CreateElement(const AtomicString &localName, CreateElementFlags flags)
 {
-    if (localName == HTMLNames::formTag)
-        return CrawlerFormElement::Create(*this);
-    return CrawlerElement::Create(localName, this);
+    return new CrawlerElement(localName, this);
 }
 
 } // namespace BlinKit
