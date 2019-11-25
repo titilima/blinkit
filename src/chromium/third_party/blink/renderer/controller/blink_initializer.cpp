@@ -11,11 +11,30 @@
 
 #include "third_party/blink/public/web/blink.h"
 
+#include "third_party/blink/renderer/core/event_type_names.h"
+#include "third_party/blink/renderer/core/html_names.h"
+#include "third_party/blink/renderer/core/html_tokenizer_names.h"
+#include "third_party/blink/renderer/platform/wtf/text/atomic_string_table.h"
+#include "third_party/blink/renderer/platform/network/http_names.h"
+
 namespace blink {
 
 static void InitializeCommon(Platform *platform)
 {
+    const unsigned kQualifiedNamesCount = html_names::kTagsCount + html_names::kAttrsCount;
+
+    const unsigned kCoreStaticStringsCount = event_type_names::kNamesCount + html_tokenizer_names::kNamesCount + http_names::kNamesCount;
+
+    StringImpl::ReserveStaticStringsCapacityForSize(kCoreStaticStringsCount + StringImpl::AllStaticStrings().size());
+    QualifiedName::InitAndReserveCapacityForSize(kQualifiedNamesCount);
+    AtomicStringTable::Instance().ReserveCapacity(kCoreStaticStringsCount);
+
     // BKTODO:
+    html_names::Init();
+
+    event_type_names::Init();
+    html_tokenizer_names::Init();
+    http_names::Init();
 }
 
 void Initialize(Platform *platform, scheduler::WebThreadScheduler* mainThreadScheduler)

@@ -35,12 +35,18 @@
 #pragma once
 
 #include "base/memory/ref_counted.h"
+#include "third_party/blink/renderer/platform/wtf/allocator.h"
 
 namespace WTF {
 
 template <class T>
 class RefCounted : public base::RefCounted<T>
 {
+protected:
+    RefCounted(void)
+    {
+        this->AddRef(); // Adoption required
+    }
 };
 
 // Allows subclasses to use the default copy constructor.

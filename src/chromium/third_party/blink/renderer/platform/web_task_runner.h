@@ -18,6 +18,8 @@
 
 #pragma once
 
+#include "base/sequenced_task_runner.h"
+
 namespace blink {
 
 class TaskHandle

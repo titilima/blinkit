@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_construction_site.h
+// Description: HTMLConstructionSite Class
+//      Author: Ziming Li
+//     Created: 2019-10-19
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -27,6 +38,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_HTML_PARSER_HTML_CONSTRUCTION_SITE_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_HTML_PARSER_HTML_CONSTRUCTION_SITE_H_
 
+#include <vector>
 #include "base/macros.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/parser_content_policy.h"
@@ -34,7 +46,6 @@
 #include "third_party/blink/renderer/core/html/parser/html_formatting_element_list.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
-#include "third_party/blink/renderer/platform/wtf/vector.h"
 
 namespace blink {
 
@@ -52,12 +63,6 @@ struct HTMLConstructionSiteTask {
 
   explicit HTMLConstructionSiteTask(Operation op)
       : operation(op), self_closing(false) {}
-
-  void Trace(blink::Visitor* visitor) {
-    visitor->Trace(parent);
-    visitor->Trace(next_child);
-    visitor->Trace(child);
-  }
 
   ContainerNode* OldParent() {
     // It's sort of ugly, but we store the |oldParent| in the |child| field of
@@ -136,7 +141,7 @@ class HTMLConstructionSite final {
   }
 
   bool HasPendingTasks() {
-    return !pending_text_.IsEmpty() || !task_queue_.IsEmpty();
+    return !pending_text_.IsEmpty() || !task_queue_.empty();
   }
 
   void SetDefaultCompatibilityMode();
@@ -241,7 +246,7 @@ class HTMLConstructionSite final {
  private:
   // In the common case, this queue will have only one task because most tokens
   // produce only one DOM mutation.
-  typedef HeapVector<HTMLConstructionSiteTask, 1> TaskQueue;
+  typedef std::vector<HTMLConstructionSiteTask> TaskQueue;
 
   void SetCompatibilityMode(Document::CompatibilityMode);
   void SetCompatibilityModeFromDoctype(const String& name,

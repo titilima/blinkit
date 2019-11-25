@@ -41,6 +41,8 @@
 
 #include "frame.h"
 
+#include "third_party/blink/renderer/core/frame/dom_window.h"
+
 namespace blink {
 
 Frame::Frame(FrameClient &client, Page *page) : m_client(client), m_page(page)

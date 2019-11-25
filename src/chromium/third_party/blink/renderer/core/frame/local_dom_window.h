@@ -38,6 +38,7 @@
 #ifndef BLINKIT_BLINK_LOCAL_DOM_WINDOW_H
 #define BLINKIT_BLINK_LOCAL_DOM_WINDOW_H
 
+#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/frame/dom_window.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
@@ -45,12 +46,29 @@
 namespace blink {
 
 class Document;
+class DocumentInit;
+class LocalFrame;
 
 class LocalDOMWindow final : public DOMWindow
 {
 public:
+    static std::unique_ptr<LocalDOMWindow> Create(LocalFrame &frame)
+    {
+        return base::WrapUnique(new LocalDOMWindow(frame));
+    }
+    ~LocalDOMWindow(void) override;
+
+    LocalFrame* GetFrame(void) const;
     Document* document(void) const { return m_document.get(); }
+
+    void Reset(void);
+
+    Document* InstallNewDocument(const DocumentInit &init);
 private:
+    explicit LocalDOMWindow(LocalFrame &frame);
+
+    void ClearDocument(void);
+
     std::unique_ptr<Document> m_document;
 };
 

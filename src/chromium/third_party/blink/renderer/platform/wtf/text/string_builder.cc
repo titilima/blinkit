@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: string_builder.cc
+// Description: StringBuilder Class
+//      Author: Ziming Li
+//     Created: 2019-10-14
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2012 Google Inc. All rights reserved.
@@ -27,7 +38,7 @@
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
 #include <algorithm>
-#include "base/optional.h"
+#include <optional>
 #include "third_party/blink/renderer/platform/wtf/dtoa.h"
 #include "third_party/blink/renderer/platform/wtf/text/integer_to_string_conversion.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
@@ -72,8 +83,8 @@ String StringBuilder::Substring(unsigned start, unsigned length) const {
 }
 
 void StringBuilder::Swap(StringBuilder& builder) {
-  base::Optional<Buffer8> buffer8;
-  base::Optional<Buffer16> buffer16;
+  std::optional<Buffer8> buffer8;
+  std::optional<Buffer16> buffer16;
   if (has_buffer_) {
     if (is8_bit_) {
       buffer8 = std::move(buffer8_);

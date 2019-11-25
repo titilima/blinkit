@@ -39,6 +39,8 @@
 #ifndef BLINKIT_BLINK_RESOURCE_REQUEST_H
 #define BLINKIT_BLINK_RESOURCE_REQUEST_H
 
+#pragma once
+
 #include "url/bk_url.h"
 
 namespace blink {
@@ -49,8 +51,13 @@ public:
     explicit ResourceRequest(const BlinKit::BkURL &URL);
 
     const BlinKit::BkURL& Url(void) const { return m_URL; }
+    void SetURL(const BlinKit::BkURL &URL) { m_URL = URL; }
+
+    bool WasDiscarded(void) const { return m_wasDiscarded; }
+    void SetWasDiscarded(bool wasDiscarded) { m_wasDiscarded = wasDiscarded; }
 private:
     BlinKit::BkURL m_URL;
+    bool m_wasDiscarded = false;
 };
 
 }  // namespace blink

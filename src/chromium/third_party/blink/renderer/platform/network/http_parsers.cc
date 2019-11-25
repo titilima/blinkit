@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: http_parsers.cc
+// Description: HTTP Parse Helpers
+//      Author: Ziming Li
+//     Created: 2019-10-16
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Alexey Proskuryakov (ap@webkit.org)
  * Copyright (C) 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
@@ -33,10 +44,9 @@
 #include "third_party/blink/renderer/platform/network/http_parsers.h"
 
 #include <memory>
-#include "net/http/http_content_disposition.h"
-#include "net/http/http_response_headers.h"
-#include "net/http/http_util.h"
-#include "third_party/blink/public/platform/web_string.h"
+// BKTODO: #include "net/http/http_content_disposition.h"
+// BKTODO: #include "net/http/http_response_headers.h"
+// BKTODO: #include "net/http/http_util.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
 #include "third_party/blink/renderer/platform/network/header_field_tokenizer.h"
 #include "third_party/blink/renderer/platform/network/http_names.h"
@@ -132,18 +142,25 @@ bool IsValidHTTPHeaderValue(const String& name) {
 bool IsValidHTTPToken(const String& characters) {
   if (characters.IsEmpty())
     return false;
+  ASSERT(false); // BKTODO:
+#if 0
   for (unsigned i = 0; i < characters.length(); ++i) {
     UChar c = characters[i];
     if (c > 0x7F || !net::HttpUtil::IsTokenChar(c))
       return false;
   }
+#endif
   return true;
 }
 
 bool IsContentDispositionAttachment(const String& content_disposition) {
   CString cstring(content_disposition.Utf8());
   std::string string(cstring.data(), cstring.length());
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return net::HttpContentDisposition(string, std::string()).is_attachment();
+#endif
 }
 
 // https://html.spec.whatwg.org/multipage/semantics.html#attr-meta-http-equiv-refresh
@@ -214,7 +231,11 @@ bool ParseHTTPRefresh(const String& refresh,
 }
 
 double ParseDate(const String& value) {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return ParseDateFromNullTerminatedCharacters(value.Utf8().data());
+#endif
 }
 
 AtomicString ExtractMIMETypeFromMediaType(const AtomicString& media_type) {
@@ -583,6 +604,9 @@ bool ParseMultipartHeadersFromBody(const char* bytes,
                                    size_t* end) {
   DCHECK(IsMainThread());
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   int headers_end_pos =
       net::HttpUtil::LocateEndOfAdditionalHeaders(bytes, size, 0);
 
@@ -619,12 +643,16 @@ bool ParseMultipartHeadersFromBody(const char* bytes,
     }
   }
   return true;
+#endif
 }
 
 bool ParseMultipartFormHeadersFromBody(const char* bytes,
                                        size_t size,
                                        HTTPHeaderMap* header_fields,
                                        size_t* end) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   DCHECK_EQ(0u, header_fields->size());
 
   int headersEndPos =
@@ -659,15 +687,20 @@ bool ParseMultipartFormHeadersFromBody(const char* bytes,
   }
 
   return true;
+#endif
 }
 
 bool ParseContentRangeHeaderFor206(const String& content_range,
                                    int64_t* first_byte_position,
                                    int64_t* last_byte_position,
                                    int64_t* instance_length) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return net::HttpUtil::ParseContentRangeHeaderFor206(
       StringUTF8Adaptor(content_range).AsStringPiece(), first_byte_position,
       last_byte_position, instance_length);
+#endif
 }
 
 std::unique_ptr<ServerTimingHeaderVector> ParseServerTimingHeader(

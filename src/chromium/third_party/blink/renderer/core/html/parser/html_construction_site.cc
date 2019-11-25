@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_construction_site.cc
+// Description: HTMLConstructionSite Class
+//      Author: Ziming Li
+//     Created: 2019-10-19
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -40,35 +51,36 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
-#include "third_party/blink/renderer/core/html/custom/ce_reactions_scope.h"
-#include "third_party/blink/renderer/core/html/custom/custom_element.h"
-#include "third_party/blink/renderer/core/html/custom/custom_element_definition.h"
-#include "third_party/blink/renderer/core/html/custom/custom_element_descriptor.h"
-#include "third_party/blink/renderer/core/html/custom/custom_element_registry.h"
-#include "third_party/blink/renderer/core/html/forms/form_associated.h"
-#include "third_party/blink/renderer/core/html/forms/html_form_element.h"
-#include "third_party/blink/renderer/core/html/html_html_element.h"
-#include "third_party/blink/renderer/core/html/html_plugin_element.h"
-#include "third_party/blink/renderer/core/html/html_script_element.h"
-#include "third_party/blink/renderer/core/html/html_style_element.h"
-#include "third_party/blink/renderer/core/html/html_template_element.h"
+#include "third_party/blink/renderer/core/html_element_type_helpers.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/custom/ce_reactions_scope.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/custom/custom_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/custom/custom_element_definition.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/custom/custom_element_descriptor.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/custom/custom_element_registry.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/forms/form_associated.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/forms/html_form_element.h"
 #include "third_party/blink/renderer/core/html/parser/atomic_html_token.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_reentry_permit.h"
 #include "third_party/blink/renderer/core/html/parser/html_stack_item.h"
 #include "third_party/blink/renderer/core/html/parser/html_token.h"
-#include "third_party/blink/renderer/core/html_element_factory.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/loader/frame_loader.h"
 #include "third_party/blink/renderer/core/script/ignore_destructive_write_count_incrementer.h"
-#include "third_party/blink/renderer/core/svg/svg_script_element.h"
-#include "third_party/blink/renderer/platform/bindings/microtask.h"
-#include "third_party/blink/renderer/platform/bindings/v8_per_isolate_data.h"
-#include "third_party/blink/renderer/platform/text/text_break_iterator.h"
+// BKTODO: #include "third_party/blink/renderer/platform/bindings/microtask.h"
+// BKTODO: #include "third_party/blink/renderer/platform/text/text_break_iterator.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/html_element_factory.h"
+#   include "third_party/blink/renderer/core/html/html_html_element.h"
+#   include "third_party/blink/renderer/core/html/html_plugin_element.h"
+#   include "third_party/blink/renderer/core/html/html_script_element.h"
+#   include "third_party/blink/renderer/core/html/html_style_element.h"
+#   include "third_party/blink/renderer/core/html/html_template_element.h"
+#endif
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 static const unsigned kMaximumHTMLParserDOMTreeDepth = 512;
 
@@ -85,16 +97,15 @@ static inline void SetAttributes(Element* element,
 }
 
 static bool HasImpliedEndTag(const HTMLStackItem* item) {
-  return item->HasTagName(ddTag) || item->HasTagName(dtTag) ||
-         item->HasTagName(liTag) || item->HasTagName(optionTag) ||
-         item->HasTagName(optgroupTag) || item->HasTagName(pTag) ||
-         item->HasTagName(rbTag) || item->HasTagName(rpTag) ||
-         item->HasTagName(rtTag) || item->HasTagName(rtcTag);
+  return item->HasTagName(kDdTag) || item->HasTagName(kDtTag) ||
+         item->HasTagName(kLiTag) || item->HasTagName(kOptionTag) ||
+         item->HasTagName(kOptgroupTag) || item->HasTagName(kPTag) ||
+         item->HasTagName(kRbTag) || item->HasTagName(kRpTag) ||
+         item->HasTagName(kRtTag) || item->HasTagName(kRTCTag);
 }
 
 static bool ShouldUseLengthLimit(const ContainerNode& node) {
-  return !IsHTMLScriptElement(node) && !IsHTMLStyleElement(node) &&
-         !IsSVGScriptElement(node);
+  return !IsHTMLScriptElement(node) && !IsHTMLStyleElement(node);
 }
 
 static unsigned TextLengthLimitForContainer(const ContainerNode& node) {
@@ -107,12 +118,12 @@ static inline bool IsAllWhitespace(const String& string) {
 }
 
 static inline void Insert(HTMLConstructionSiteTask& task) {
+  BKLOG("// BKTODO: Process <template> tag.");
+#if 0
   if (auto* template_element = ToHTMLTemplateElementOrNull(*task.parent))
     task.parent = template_element->content();
+#endif
 
-  // https://html.spec.whatwg.org/#insert-a-foreign-element
-  // 3.1, (3) Push (pop) an element queue
-  CEReactionsScope reactions;
   if (task.next_child)
     task.parent->ParserInsertBefore(task.child.Get(), *task.next_child);
   else
@@ -174,7 +185,7 @@ static inline void ExecuteTakeAllChildrenTask(HTMLConstructionSiteTask& task) {
 }
 
 void HTMLConstructionSite::ExecuteTask(HTMLConstructionSiteTask& task) {
-  DCHECK(task_queue_.IsEmpty());
+  DCHECK(task_queue_.empty());
   if (task.operation == HTMLConstructionSiteTask::kInsert)
     return ExecuteInsertTask(task);
 
@@ -201,6 +212,8 @@ void HTMLConstructionSite::ExecuteTask(HTMLConstructionSiteTask& task) {
 static unsigned FindBreakIndexBetween(const StringBuilder& string,
                                       unsigned current_position,
                                       unsigned proposed_break_index) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK_LT(current_position, proposed_break_index);
   DCHECK_LE(proposed_break_index, string.length());
   // The end of the string is always a valid break.
@@ -230,6 +243,7 @@ static unsigned FindBreakIndexBetween(const StringBuilder& string,
   if (adjusted_break_index_in_substring > 0)
     return current_position + adjusted_break_index_in_substring;
   // We failed to find a breakable point, let the caller figure out what to do.
+#endif
   return 0;
 }
 
@@ -298,8 +312,6 @@ void HTMLConstructionSite::AttachLater(ContainerNode* parent,
                                        bool self_closing) {
   DCHECK(ScriptingContentIsAllowed(parser_content_policy_) ||
          !child->IsElementNode() || !ToElement(child)->IsScriptElement());
-  DCHECK(PluginContentIsAllowed(parser_content_policy_) ||
-         !IsHTMLPlugInElement(child));
 
   HTMLConstructionSiteTask task(HTMLConstructionSiteTask::kInsert);
   task.parent = parent;
@@ -358,7 +370,6 @@ HTMLConstructionSite::HTMLConstructionSite(
       is_parsing_fragment_(false),
       redirect_attach_to_foster_parent_(false),
       in_quirks_mode_(document.InQuirksMode()) {
-  DCHECK(document_->IsHTMLDocument() || document_->IsXHTMLDocument());
 }
 
 void HTMLConstructionSite::InitFragmentParsing(DocumentFragment* fragment,
@@ -372,28 +383,20 @@ void HTMLConstructionSite::InitFragmentParsing(DocumentFragment* fragment,
   attachment_root_ = fragment;
   is_parsing_fragment_ = true;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!context_element->GetDocument().IsTemplateDocument())
     form_ = Traversal<HTMLFormElement>::FirstAncestorOrSelf(*context_element);
+#endif
 }
 
 HTMLConstructionSite::~HTMLConstructionSite() {
   // Depending on why we're being destroyed it might be OK to forget queued
   // tasks, but currently we don't expect to.
-  DCHECK(task_queue_.IsEmpty());
+  DCHECK(task_queue_.empty());
   // Currently we assume that text will never be the last token in the document
   // and that we'll always queue some additional task to cause it to flush.
   DCHECK(pending_text_.IsEmpty());
-}
-
-void HTMLConstructionSite::Trace(blink::Visitor* visitor) {
-  visitor->Trace(document_);
-  visitor->Trace(attachment_root_);
-  visitor->Trace(head_);
-  visitor->Trace(form_);
-  visitor->Trace(open_elements_);
-  visitor->Trace(active_formatting_elements_);
-  visitor->Trace(task_queue_);
-  visitor->Trace(pending_text_);
 }
 
 void HTMLConstructionSite::Detach() {
@@ -412,19 +415,13 @@ HTMLFormElement* HTMLConstructionSite::TakeForm() {
 void HTMLConstructionSite::InsertHTMLHtmlStartTagBeforeHTML(
     AtomicHTMLToken* token) {
   DCHECK(document_);
-  HTMLHtmlElement* element;
-  if (const auto* is_attribute = token->GetAttributeItem(HTMLNames::isAttr)) {
-    element = ToHTMLHtmlElement(document_->CreateElement(
-        HTMLNames::htmlTag, GetCreateElementFlags(), is_attribute->Value()));
-  } else {
-    element = HTMLHtmlElement::Create(*document_);
-  }
+  Element *element = document_->CreateElement(html_names::kHTMLTag.LocalName(), GetCreateElementFlags());
   SetAttributes(element, token, parser_content_policy_);
   AttachLater(attachment_root_, element);
   open_elements_.PushHTMLHtmlElement(HTMLStackItem::Create(element, token));
 
   ExecuteQueuedTasks();
-  element->InsertedByParser();
+  document_->ParserInsertedHtmlElement(*element);
 }
 
 void HTMLConstructionSite::MergeAttributesFromTokenIntoElement(
@@ -616,7 +613,7 @@ void HTMLConstructionSite::ProcessEndOfFile() {
 void HTMLConstructionSite::FinishedParsing() {
   // We shouldn't have any queued tasks but we might have pending text which we
   // need to promote to tasks and execute.
-  DCHECK(task_queue_.IsEmpty());
+  DCHECK(task_queue_.empty());
   Flush(kFlushAlways);
   document_->FinishedParsing();
 }
@@ -687,6 +684,8 @@ void HTMLConstructionSite::InsertHTMLBodyElement(AtomicHTMLToken* token) {
 
 void HTMLConstructionSite::InsertHTMLFormElement(AtomicHTMLToken* token,
                                                  bool is_demoted) {
+  ASSERT(false); // BKTODO:
+#if 0
   auto* form_element =
       ToHTMLFormElement(CreateElement(token, xhtmlNamespaceURI));
   if (!OpenElements()->HasTemplateInHTMLScope())
@@ -697,6 +696,7 @@ void HTMLConstructionSite::InsertHTMLFormElement(AtomicHTMLToken* token,
   }
   AttachLater(CurrentNode(), form_element);
   open_elements_.Push(HTMLStackItem::Create(form_element, token));
+#endif
 }
 
 void HTMLConstructionSite::InsertHTMLElement(AtomicHTMLToken* token) {
@@ -736,6 +736,8 @@ void HTMLConstructionSite::InsertScriptElement(AtomicHTMLToken* token) {
       .SetCreatedByParser(parser_content_policy_ !=
                           kAllowScriptingContentAndDoNotMarkAlreadyStarted)
       .SetAlreadyStarted(is_parsing_fragment_ && flags.IsCreatedByParser());
+  ASSERT(false); // BKTODO:
+#if 0
   HTMLScriptElement* element = nullptr;
   if (const auto* is_attribute = token->GetAttributeItem(HTMLNames::isAttr)) {
     element = ToHTMLScriptElement(OwnerDocumentForCurrentNode().CreateElement(
@@ -747,6 +749,7 @@ void HTMLConstructionSite::InsertScriptElement(AtomicHTMLToken* token) {
   if (ScriptingContentIsAllowed(parser_content_policy_))
     AttachLater(CurrentNode(), element);
   open_elements_.Push(HTMLStackItem::Create(element, token));
+#endif
 }
 
 void HTMLConstructionSite::InsertForeignElement(
@@ -754,7 +757,7 @@ void HTMLConstructionSite::InsertForeignElement(
     const AtomicString& namespace_uri) {
   DCHECK_EQ(token->GetType(), HTMLToken::kStartTag);
   // parseError when xmlns or xmlns:xlink are wrong.
-  DVLOG(1) << "Not implemented.";
+  BKLOG("Not implemented.");
 
   Element* element = CreateElement(token, namespace_uri);
   if (ScriptingContentIsAllowed(parser_content_policy_) ||
@@ -773,6 +776,8 @@ void HTMLConstructionSite::InsertTextNode(const StringView& string,
   if (ShouldFosterParent())
     FindFosterSite(dummy_task);
 
+  ASSERT(false); // BKTODO:
+#if 0
   // FIXME: This probably doesn't need to be done both here and in insert(Task).
   if (auto* template_element = ToHTMLTemplateElementOrNull(*dummy_task.parent))
     dummy_task.parent = template_element->content();
@@ -788,6 +793,7 @@ void HTMLConstructionSite::InsertTextNode(const StringView& string,
     FlushPendingText(kFlushAlways);
   pending_text_.Append(dummy_task.parent, dummy_task.next_child, string,
                        whitespace_mode);
+#endif
 }
 
 void HTMLConstructionSite::Reparent(HTMLElementStack::ElementRecord* new_parent,
@@ -836,8 +842,11 @@ CreateElementFlags HTMLConstructionSite::GetCreateElementFlags() const {
 }
 
 inline Document& HTMLConstructionSite::OwnerDocumentForCurrentNode() {
+#ifndef BLINKIT_CRAWLER_ONLY
+  ASSERT(false); // BKTODO:
   if (auto* template_element = ToHTMLTemplateElementOrNull(*CurrentNode()))
     return template_element->content()->GetDocument();
+#endif
   return CurrentNode()->GetDocument();
 }
 
@@ -847,8 +856,11 @@ CustomElementDefinition* HTMLConstructionSite::LookUpCustomElementDefinition(
     Document& document,
     const QualifiedName& tag_name,
     const AtomicString& is) {
+#ifdef BLINKIT_CRAWLER_ONLY
+  return nullptr;
+#else
   // "1. If namespace is not the HTML namespace, return null."
-  if (tag_name.NamespaceURI() != HTMLNames::xhtmlNamespaceURI)
+  if (tag_name.NamespaceURI() != html_names::xhtmlNamespaceURI)
     return nullptr;
 
   // "2. If document does not have a browsing context, return null."
@@ -856,6 +868,7 @@ CustomElementDefinition* HTMLConstructionSite::LookUpCustomElementDefinition(
   if (!window)
     return nullptr;
 
+  ASSERT(false); // BKTODO:
   // "3. Let registry be document's browsing context's Window's
   // CustomElementRegistry object."
   CustomElementRegistry* registry = window->MaybeCustomElements();
@@ -868,6 +881,7 @@ CustomElementDefinition* HTMLConstructionSite::LookUpCustomElementDefinition(
 
   // 4.-6.
   return registry->DefinitionFor(descriptor);
+#endif
 }
 
 // "create an element for a token"
@@ -881,7 +895,7 @@ Element* HTMLConstructionSite::CreateElement(
   // "2. Let local name be the tag name of the token."
   QualifiedName tag_name(g_null_atom, token->GetName(), namespace_uri);
   // "3. Let is be the value of the "is" attribute in the given token ..." etc.
-  const Attribute* is_attribute = token->GetAttributeItem(HTMLNames::isAttr);
+  const Attribute* is_attribute = token->GetAttributeItem(html_names::kIsAttr);
   const AtomicString& is = is_attribute ? is_attribute->Value() : g_null_atom;
   // "4. Let definition be the result of looking up a custom element ..." etc.
   auto* definition = LookUpCustomElementDefinition(document, tag_name, is);
@@ -893,6 +907,9 @@ Element* HTMLConstructionSite::CreateElement(
   Element* element;
 
   if (will_execute_script) {
+    ASSERT(false); // BKTODO:
+    element = nullptr;
+#if 0
     // "6.1 Increment the document's throw-on-dynamic-insertion counter."
     ThrowOnDynamicMarkupInsertionCountIncrementer
         throw_on_dynamic_markup_insertions(&document);
@@ -922,7 +939,12 @@ Element* HTMLConstructionSite::CreateElement(
     // "9. If will execute script is true, then ..." etc. The CEReactionsScope
     // and ThrowOnDynamicMarkupInsertionCountIncrementer destructors implement
     // steps 9.1-3.
+#endif
   } else {
+#ifdef BLINKIT_CRAWLER_ONLY
+    element = document.CreateElement(tag_name.LocalName(), GetCreateElementFlags());
+#else
+    ASSERT(false); // BKTODO:
     if (definition) {
       DCHECK(GetCreateElementFlags().IsAsyncCustomElements());
       element = definition->CreateElement(document, tag_name,
@@ -986,6 +1008,7 @@ Element* HTMLConstructionSite::CreateElement(
       //   to reset the form association.
       form_associated_element->AssociateWith(form_.Get());
     }
+#endif
     // "8. Append each attribute in the given token to element."
     SetAttributes(element, token, parser_content_policy_);
   }
@@ -1062,11 +1085,11 @@ bool HTMLConstructionSite::InQuirksMode() {
 void HTMLConstructionSite::FindFosterSite(HTMLConstructionSiteTask& task) {
   // 2.1
   HTMLElementStack::ElementRecord* last_template =
-      open_elements_.Topmost(templateTag.LocalName());
+      open_elements_.Topmost(kTemplateTag.LocalName());
 
   // 2.2
   HTMLElementStack::ElementRecord* last_table =
-      open_elements_.Topmost(tableTag.LocalName());
+      open_elements_.Topmost(kTableTag.LocalName());
 
   // 2.3
   if (last_template && (!last_table || last_template->IsAbove(last_table))) {
@@ -1104,11 +1127,6 @@ void HTMLConstructionSite::FosterParent(Node* node) {
   task.child = node;
   DCHECK(task.parent);
   QueueTask(task);
-}
-
-void HTMLConstructionSite::PendingText::Trace(blink::Visitor* visitor) {
-  visitor->Trace(parent);
-  visitor->Trace(next_child);
 }
 
 }  // namespace blink

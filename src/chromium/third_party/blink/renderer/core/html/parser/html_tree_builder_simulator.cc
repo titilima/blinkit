@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_tree_builder_simulator.cc
+// Description: HTMLTreeBuilderSimulator Class
+//      Author: Ziming Li
+//     Created: 2019-10-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google, Inc. All Rights Reserved.
  *
@@ -32,12 +43,16 @@
 #include "third_party/blink/renderer/core/mathml_names.h"
 #include "third_party/blink/renderer/core/script/script_loader.h"
 #include "third_party/blink/renderer/core/svg_names.h"
+#include "third_party/blink/renderer/platform/wtf/wtf.h"
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 static bool TokenExitsForeignContent(const CompactHTMLToken& token) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // FIXME: This is copied from HTMLTreeBuilder::processTokenInForeignContent
   // and changed to use threadSafeHTMLNamesMatch.
   const String& tag_name = token.Data();
@@ -81,9 +96,13 @@ static bool TokenExitsForeignContent(const CompactHTMLToken& token) {
           (token.GetAttributeItem(colorAttr) ||
            token.GetAttributeItem(faceAttr) ||
            token.GetAttributeItem(sizeAttr)));
+#endif
 }
 
 static bool TokenExitsMath(const CompactHTMLToken& token) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // FIXME: This is copied from HTMLElementStack::isMathMLTextIntegrationPoint
   // and changed to use threadSafeMatch.
   const String& tag_name = token.Data();
@@ -92,14 +111,15 @@ static bool TokenExitsMath(const CompactHTMLToken& token) {
          ThreadSafeMatch(tag_name, MathMLNames::mnTag) ||
          ThreadSafeMatch(tag_name, MathMLNames::msTag) ||
          ThreadSafeMatch(tag_name, MathMLNames::mtextTag);
+#endif
 }
 
 static bool TokenExitsInSelect(const CompactHTMLToken& token) {
   // https://html.spec.whatwg.org/#parsing-main-inselect
   const String& tag_name = token.Data();
-  return ThreadSafeMatch(tag_name, inputTag) ||
-         ThreadSafeMatch(tag_name, keygenTag) ||
-         ThreadSafeMatch(tag_name, textareaTag);
+  return ThreadSafeMatch(tag_name, kInputTag) ||
+         ThreadSafeMatch(tag_name, kKeygenTag) ||
+         ThreadSafeMatch(tag_name, kTextareaTag);
 }
 
 HTMLTreeBuilderSimulator::HTMLTreeBuilderSimulator(
@@ -112,6 +132,8 @@ HTMLTreeBuilderSimulator::State HTMLTreeBuilderSimulator::StateFor(
     HTMLTreeBuilder* tree_builder) {
   DCHECK(IsMainThread());
   State namespace_stack;
+  ASSERT(false); // BKTODO:
+#if 0
   for (HTMLElementStack::ElementRecord* record =
            tree_builder->OpenElements()->TopRecord();
        record; record = record->Next()) {
@@ -126,6 +148,7 @@ HTMLTreeBuilderSimulator::State HTMLTreeBuilderSimulator::StateFor(
       namespace_stack.push_back(current_namespace);
   }
   namespace_stack.Reverse();
+#endif
   return namespace_stack;
 }
 
@@ -134,6 +157,8 @@ HTMLTreeBuilderSimulator::SimulatedToken HTMLTreeBuilderSimulator::Simulate(
     HTMLTokenizer* tokenizer) {
   SimulatedToken simulated_token = kOtherToken;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (token.GetType() == HTMLToken::kStartTag) {
     const String& tag_name = token.Data();
     if (ThreadSafeMatch(tag_name, SVGNames::svgTag))
@@ -232,12 +257,15 @@ HTMLTreeBuilderSimulator::SimulatedToken HTMLTreeBuilderSimulator::Simulate(
   // FIXME: Also setForceNullCharacterReplacement when in text mode.
   tokenizer->SetForceNullCharacterReplacement(InForeignContent());
   tokenizer->SetShouldAllowCDATA(InForeignContent());
+#endif
   return simulated_token;
 }
 
 // https://html.spec.whatwg.org/multipage/parsing.html#html-integration-point
 bool HTMLTreeBuilderSimulator::IsHTMLIntegrationPointForStartTag(
     const CompactHTMLToken& token) const {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(token.GetType() == HTMLToken::kStartTag) << token.GetType();
 
   Namespace tokens_ns = namespace_stack_.back();
@@ -258,6 +286,7 @@ bool HTMLTreeBuilderSimulator::IsHTMLIntegrationPointForStartTag(
     return ThreadSafeMatch(tag_name, SVGNames::descTag) ||
            ThreadSafeMatch(tag_name, SVGNames::titleTag);
   }
+#endif
   return false;
 }
 
@@ -267,6 +296,8 @@ bool HTMLTreeBuilderSimulator::IsHTMLIntegrationPointForEndTag(
   if (token.GetType() != HTMLToken::kEndTag)
     return false;
 
+  ASSERT(false); // BKTODO:
+#if 0
   // If it's inside an HTML integration point, the top namespace is
   // HTML, and its next namespace is not HTML.
   if (namespace_stack_.back() != HTML)
@@ -287,6 +318,7 @@ bool HTMLTreeBuilderSimulator::IsHTMLIntegrationPointForEndTag(
     return ThreadSafeMatch(tag_name, SVGNames::descTag) ||
            ThreadSafeMatch(tag_name, SVGNames::titleTag);
   }
+#endif
   return false;
 }
 

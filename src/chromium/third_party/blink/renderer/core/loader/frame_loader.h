@@ -48,6 +48,7 @@
 
 #include "third_party/blink/public/web/web_frame_load_type.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
+#include "third_party/blink/renderer/core/loader/frame_loader_state_machine.h"
 
 namespace blink {
 
@@ -64,15 +65,22 @@ public:
     explicit FrameLoader(LocalFrame *frame);
     ~FrameLoader(void);
 
-    FrameLoaderStateMachine* StateMachine(void) const { return m_stateMachine.get(); }
+    FrameLoaderStateMachine* StateMachine(void) const { return &m_stateMachine; }
+    DocumentLoader* GetDocumentLoader(void) const { return m_documentLoader.get(); }
 
     void Init(void);
     void StartNavigation(const FrameLoadRequest &request, WebFrameLoadType loadType = WebFrameLoadType::kStandard);
+    bool PrepareForCommit(void);
+    void CommitProvisionalLoad(void);
+    void FinishedParsing(void);
+
+    void DispatchDidClearDocumentOfWindowObject(void);
 private:
     LocalFrameClient* Client(void) const;
 
     Member<LocalFrame> m_frame;
-    std::unique_ptr<FrameLoaderStateMachine> m_stateMachine;
+    mutable FrameLoaderStateMachine m_stateMachine;
+    std::unique_ptr<DocumentLoader> m_documentLoader;
     std::unique_ptr<DocumentLoader> m_provisionalDocumentLoader;
 
     DISALLOW_COPY_AND_ASSIGN(FrameLoader);

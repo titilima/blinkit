@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_tree_builder.h
+// Description: HTMLTreeBuilder Class
+//      Author: Ziming Li
+//     Created: 2019-10-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  * Copyright (C) 2011 Apple Inc. All rights reserved.
@@ -68,7 +79,6 @@ class HTMLTreeBuilder final
                                parser_content_policy, options);
   }
   ~HTMLTreeBuilder();
-  void Trace(blink::Visitor*);
 
   const HTMLElementStack* OpenElements() const { return tree_.OpenElements(); }
 
@@ -232,8 +242,6 @@ class HTMLTreeBuilder final
       DCHECK(fragment_);
       return context_element_stack_item_.Get();
     }
-
-    void Trace(blink::Visitor*);
 
    private:
     Member<DocumentFragment> fragment_;

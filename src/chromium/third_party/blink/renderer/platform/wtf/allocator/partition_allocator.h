@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/platform/wtf/allocator.h"
+
 namespace WTF {
 
 class PartitionAllocator
@@ -33,6 +35,11 @@ public:
         return kGenericMaxDirectMapped / sizeof(T);
     }
 
+    template <typename Return, typename Metadata>
+    static Return Malloc(size_t size, const char* type_name)
+    {
+        return reinterpret_cast<Return>(WTF::Partitions::FastMalloc(size, type_name));
+    }
     template <typename T>
     static T* AllocateInlineVectorBacking(size_t size)
     {
@@ -72,11 +79,19 @@ public:
     {
         free(address);
     }
+    static void Free(void *address)
+    {
+        WTF::Partitions::FastFree(address);
+    }
 
+    static inline bool ExpandVectorBacking(void *, size_t) { return false; }
     static inline bool ExpandHashTableBacking(void *, size_t) { return false; }
     static bool IsAllocationAllowed(void) { return true; }
     static bool IsObjectResurrectionForbidden(void) { return false; }
     static bool IsSweepForbidden(void) { return false; }
+
+    static void EnterGCForbiddenScope(void) {}
+    static void LeaveGCForbiddenScope(void) {}
 
     static void BackingWriteBarrier(void *) {}
     template <typename T, typename Traits> static void NotifyNewObject(T *object) {}
@@ -86,6 +101,10 @@ public:
         // Optimization: if we're downsizing inside the same allocator bucket,
         // we can skip reallocation.
         return quantizedCurrentSize == quantizedShrunkSize;
+    }
+    static inline bool ShrinkInlineVectorBacking(void *address, size_t quantizedCurrentSize, size_t quantizedShrunkSize)
+    {
+        return ShrinkVectorBacking(address, quantizedCurrentSize, quantizedShrunkSize);
     }
     static void TraceMarkedBackingStore(void *) {}
 private:
@@ -99,6 +118,24 @@ private:
 
 } // namespace WTF
 
-#define USE_ALLOCATOR(ClassName, Allocator)
+#define USE_ALLOCATOR(ClassName, Allocator)                       \
+ public:                                                          \
+  void* operator new(size_t size) {                               \
+    return Allocator::template Malloc<void*, ClassName>(          \
+        size, WTF_HEAP_PROFILER_TYPE_NAME(ClassName));            \
+  }                                                               \
+  void operator delete(void* p) { Allocator::Free(p); }           \
+  void* operator new[](size_t size) {                             \
+    return Allocator::template NewArray<ClassName>(size);         \
+  }                                                               \
+  void operator delete[](void* p) { Allocator::DeleteArray(p); }  \
+  void* operator new(size_t, NotNullTag, void* location) {        \
+    DCHECK(location);                                             \
+    return location;                                              \
+  }                                                               \
+  void* operator new(size_t, void* location) { return location; } \
+                                                                  \
+ private:                                                         \
+  typedef int __thisIsHereToForceASemicolonAfterThisMacro
 
 #endif  // BLINKIT_BLINK_PARTITION_ALLOCATOR_H

@@ -41,6 +41,8 @@
 
 #include "web_document_loader_impl.h"
 
+#include "base/memory/ptr_util.h"
+
 namespace blink {
 
 WebDocumentLoaderImpl::WebDocumentLoaderImpl(LocalFrame *frame, const ResourceRequest &request, const SubstituteData &substituteData)
@@ -53,7 +55,7 @@ std::unique_ptr<WebDocumentLoaderImpl> WebDocumentLoaderImpl::Create(
     const ResourceRequest &request,
     const SubstituteData &substituteData)
 {
-    return std::unique_ptr<WebDocumentLoaderImpl>(new WebDocumentLoaderImpl(frame, request, substituteData));
+    return base::WrapUnique(new WebDocumentLoaderImpl(frame, request, substituteData));
 }
 
 }  // namespace blink

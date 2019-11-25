@@ -55,14 +55,16 @@ class Frame : public GarbageCollectedFinalized<Frame>
 public:
     virtual ~Frame(void);
 
+    virtual bool IsLocalFrame(void) const = 0;
+
     FrameClient* Client(void) const { return &m_client; }
-    DOMWindow* DomWindow(void) const { return m_domWindow; }
+    DOMWindow* DomWindow(void) const { return m_domWindow.get(); }
 protected:
     Frame(FrameClient &client, Page *page);
 
     FrameClient &m_client;
     Member<Page> m_page;
-    Member<DOMWindow> m_domWindow;
+    std::unique_ptr<DOMWindow> m_domWindow;
 };
 
 } // namespace blink

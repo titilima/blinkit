@@ -1,18 +1,29 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: mime_type_registry.cc
+// Description: MIMETypeRegistry Class
+//      Author: Ziming Li
+//     Created: 2019-10-31
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/platform/network/mime/mime_type_registry.h"
 
-#include "base/files/file_path.h"
+// BKTODO: #include "base/files/file_path.h"
 #include "base/strings/string_util.h"
-#include "media/base/mime_util.h"
-#include "media/filters/stream_parser_factory.h"
-#include "net/base/mime_util.h"
-#include "third_party/blink/public/common/mime_util/mime_util.h"
-#include "third_party/blink/public/platform/file_path_conversion.h"
-#include "third_party/blink/public/platform/interface_provider.h"
-#include "third_party/blink/public/platform/mime_registry.mojom-blink.h"
+// BKTODO: #include "media/base/mime_util.h"
+// BKTODO: #include "media/filters/stream_parser_factory.h"
+// BKTODO: #include "net/base/mime_util.h"
+// BKTODO: #include "third_party/blink/public/common/mime_util/mime_util.h"
+// BKTODO: #include "third_party/blink/public/platform/file_path_conversion.h"
+// BKTODO: #include "third_party/blink/public/platform/interface_provider.h"
+// BKTODO: #include "third_party/blink/public/platform/mime_registry.mojom-blink.h"
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
@@ -21,6 +32,7 @@ namespace blink {
 
 namespace {
 
+#if 0 // BKTODO:
 struct MimeRegistryPtrHolder {
  public:
   MimeRegistryPtrHolder() {
@@ -35,6 +47,7 @@ struct MimeRegistryPtrHolder {
 std::string ToASCIIOrEmpty(const WebString& string) {
   return string.ContainsOnlyASCII() ? string.Ascii() : std::string();
 }
+#endif
 
 template <typename CHARTYPE, typename SIZETYPE>
 std::string ToLowerASCIIInternal(CHARTYPE* str, SIZETYPE length) {
@@ -54,13 +67,16 @@ std::string ToLowerASCIIOrEmpty(const String& str) {
   return ToLowerASCIIInternal(str.Characters16(), str.length());
 }
 
-STATIC_ASSERT_ENUM(MIMETypeRegistry::kIsNotSupported, media::IsNotSupported);
-STATIC_ASSERT_ENUM(MIMETypeRegistry::kIsSupported, media::IsSupported);
-STATIC_ASSERT_ENUM(MIMETypeRegistry::kMayBeSupported, media::MayBeSupported);
+// BKTODO: STATIC_ASSERT_ENUM(MIMETypeRegistry::kIsNotSupported, media::IsNotSupported);
+// BKTODO: STATIC_ASSERT_ENUM(MIMETypeRegistry::kIsSupported, media::IsSupported);
+// BKTODO: STATIC_ASSERT_ENUM(MIMETypeRegistry::kMayBeSupported, media::MayBeSupported);
 
 }  // namespace
 
 String MIMETypeRegistry::GetMIMETypeForExtension(const String& ext) {
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   // The sandbox restricts our access to the registry, so we need to proxy
   // these calls over to the browser process.
   DEFINE_STATIC_LOCAL(MimeRegistryPtrHolder, registry_holder, ());
@@ -70,22 +86,35 @@ String MIMETypeRegistry::GetMIMETypeForExtension(const String& ext) {
     return String();
   }
   return mime_type;
+#endif
 }
 
 String MIMETypeRegistry::GetWellKnownMIMETypeForExtension(const String& ext) {
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   // This method must be thread safe and should not consult the OS/registry.
   std::string mime_type;
   net::GetWellKnownMimeTypeFromExtension(WebStringToFilePath(ext).value(),
                                          &mime_type);
   return String::FromUTF8(mime_type.data(), mime_type.length());
+#endif
 }
 
 bool MIMETypeRegistry::IsSupportedMIMEType(const String& mime_type) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return blink::IsSupportedMimeType(ToLowerASCIIOrEmpty(mime_type));
+#endif
 }
 
 bool MIMETypeRegistry::IsSupportedImageMIMEType(const String& mime_type) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return blink::IsSupportedImageMimeType(ToLowerASCIIOrEmpty(mime_type));
+#endif
 }
 
 bool MIMETypeRegistry::IsSupportedImageResourceMIMEType(
@@ -95,11 +124,15 @@ bool MIMETypeRegistry::IsSupportedImageResourceMIMEType(
 
 bool MIMETypeRegistry::IsSupportedImagePrefixedMIMEType(
     const String& mime_type) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   std::string ascii_mime_type = ToLowerASCIIOrEmpty(mime_type);
   return (blink::IsSupportedImageMimeType(ascii_mime_type) ||
           (base::StartsWith(ascii_mime_type, "image/",
                             base::CompareCase::SENSITIVE) &&
            blink::IsSupportedNonImageMimeType(ascii_mime_type)));
+#endif
 }
 
 bool MIMETypeRegistry::IsSupportedImageMIMETypeForEncoding(
@@ -118,7 +151,11 @@ bool MIMETypeRegistry::IsModernImageMIMEType(const String& mime_type) {
 }
 
 bool MIMETypeRegistry::IsSupportedJavaScriptMIMEType(const String& mime_type) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return blink::IsSupportedJavascriptMimeType(ToLowerASCIIOrEmpty(mime_type));
+#endif
 }
 
 bool MIMETypeRegistry::IsLegacySupportedJavaScriptLanguage(
@@ -148,7 +185,11 @@ bool MIMETypeRegistry::IsLegacySupportedJavaScriptLanguage(
 }
 
 bool MIMETypeRegistry::IsSupportedNonImageMIMEType(const String& mime_type) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return blink::IsSupportedNonImageMimeType(ToLowerASCIIOrEmpty(mime_type));
+#endif
 }
 
 bool MIMETypeRegistry::IsSupportedMediaMIMEType(const String& mime_type,
@@ -159,15 +200,22 @@ bool MIMETypeRegistry::IsSupportedMediaMIMEType(const String& mime_type,
 MIMETypeRegistry::SupportsType MIMETypeRegistry::SupportsMediaMIMEType(
     const String& mime_type,
     const String& codecs) {
+  ASSERT(false); // BKTODO:
+  return kIsNotSupported;
+#if 0
   const std::string ascii_mime_type = ToLowerASCIIOrEmpty(mime_type);
   std::vector<std::string> codec_vector;
   media::SplitCodecs(ToASCIIOrEmpty(codecs), &codec_vector);
   return static_cast<SupportsType>(
       media::IsSupportedMediaFormat(ascii_mime_type, codec_vector));
+#endif
 }
 
 bool MIMETypeRegistry::IsSupportedMediaSourceMIMEType(const String& mime_type,
                                                       const String& codecs) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   const std::string ascii_mime_type = ToLowerASCIIOrEmpty(mime_type);
   if (ascii_mime_type.empty())
     return false;
@@ -176,6 +224,7 @@ bool MIMETypeRegistry::IsSupportedMediaSourceMIMEType(const String& mime_type,
   return static_cast<MIMETypeRegistry::SupportsType>(
       media::StreamParserFactory::IsTypeSupported(ascii_mime_type,
                                                   parsed_codec_ids));
+#endif
 }
 
 bool MIMETypeRegistry::IsJavaAppletMIMEType(const String& mime_type) {

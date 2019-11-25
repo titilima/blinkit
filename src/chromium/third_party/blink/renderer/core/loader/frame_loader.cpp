@@ -47,9 +47,11 @@
 
 #include "frame_loader.h"
 
+#include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/loader/document_loader.h"
+#include "third_party/blink/renderer/core/loader/navigation_scheduler.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
 #include "third_party/blink/renderer/platform/loader/fetch/substitute_data.h"
@@ -69,6 +71,52 @@ LocalFrameClient* FrameLoader::Client(void) const
     return m_frame->Client();
 }
 
+void FrameLoader::CommitProvisionalLoad(void)
+{
+    if (!PrepareForCommit())
+        return;
+
+    Client()->TransitionToCommittedForNewPage();
+
+    m_frame->GetNavigationScheduler().Cancel();
+}
+
+void FrameLoader::DispatchDidClearDocumentOfWindowObject(void)
+{
+    ASSERT(nullptr != m_frame->GetDocument());
+    if (m_stateMachine.CreatingInitialEmptyDocument())
+        return;
+    ASSERT(false); // BKTODO:
+}
+
+void FrameLoader::FinishedParsing(void)
+{
+    if (m_stateMachine.CreatingInitialEmptyDocument())
+        return;
+
+    ASSERT(false); // BKTODO:
+#if 0
+    progress_tracker_->FinishedParsing();
+
+    if (Client()) {
+        ScriptForbiddenScope forbid_scripts;
+        Client()->DispatchDidFinishDocumentLoad();
+    }
+
+    if (Client()) {
+        Client()->RunScriptsAtDocumentReady(
+            document_loader_ ? document_loader_->IsCommittedButEmpty() : true);
+    }
+
+    if (frame_->View()) {
+        ProcessFragment(frame_->GetDocument()->Url(), document_loader_->LoadType(),
+            kNavigationToDifferentDocument);
+    }
+
+    frame_->GetDocument()->CheckCompleted();
+#endif
+}
+
 void FrameLoader::Init(void)
 {
     ScriptForbiddenScope forbidScripts;
@@ -77,7 +125,59 @@ void FrameLoader::Init(void)
     ResourceRequest initialRequest(emptyURL);
     m_provisionalDocumentLoader = Client()->CreateDocumentLoader(m_frame, initialRequest, SubstituteData(), nullptr);
     m_provisionalDocumentLoader->StartLoading();
-    assert(false); // BKTODO:
+
+    m_frame->GetDocument()->CancelParsing();
+
+    m_stateMachine.AdvanceTo(FrameLoaderStateMachine::kDisplayingInitialEmptyDocument);
+
+    // Suppress finish notifications for initial empty documents, since they don't
+    // generate start notifications.
+    m_documentLoader->SetSentDidFinishLoad();
+#if 0 // BKTODO: Check if necessary
+    if (frame_->GetPage()->Paused())
+        SetDefersLoading(true);
+#endif
+}
+
+bool FrameLoader::PrepareForCommit(void)
+{
+    DocumentLoader *pdl = m_provisionalDocumentLoader.get();
+
+    if (m_documentLoader)
+    {
+        ASSERT(false); // BKTODO:
+    }
+
+    // The previous calls to dispatchUnloadEvent() and detachChildren() can
+    // execute arbitrary script via things like unload events. If the executed
+    // script intiates a new load or causes the current frame to be detached, we
+    // need to abandon the current load.
+    if (pdl != m_provisionalDocumentLoader.get())
+        return false;
+
+    // detachFromFrame() will abort XHRs that haven't completed, which can trigger
+    // event listeners for 'abort'. These event listeners might call
+    // window.stop(), which will in turn detach the provisional document loader.
+    // At this point, the provisional document loader should not detach, because
+    // then the FrameLoader would not have any attached DocumentLoaders.
+    if (m_documentLoader)
+    {
+        ASSERT(false); // BKTODO:
+    }
+    // 'abort' listeners can also detach the frame.
+    if (nullptr == m_frame->Client())
+        return false;
+    assert(m_provisionalDocumentLoader.get() == pdl);
+
+    // No more events will be dispatched so detach the Document.
+    // TODO(yoav): Should we also be nullifying domWindow's document (or
+    // domWindow) since the doc is now detached?
+    if (Document *document = m_frame->GetDocument())
+        document->Shutdown();
+    m_documentLoader = std::move(m_provisionalDocumentLoader);
+    if (m_documentLoader)
+        m_documentLoader->MarkAsCommitted();
+    return true;
 }
 
 void FrameLoader::StartNavigation(const FrameLoadRequest &request, WebFrameLoadType loadType)

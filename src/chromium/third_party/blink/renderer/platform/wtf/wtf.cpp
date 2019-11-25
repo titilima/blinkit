@@ -12,6 +12,9 @@
 #include "wtf.h"
 
 #include "third_party/blink/renderer/platform/wtf/threading.h"
+#include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_statics.h"
+#include "third_party/blink/renderer/platform/wtf/wtf_thread_data.h"
 
 namespace WTF {
 
@@ -42,9 +45,9 @@ void Initialize(void (*callOnMainThreadFunction)(MainThreadFunction, void *))
     InitializeCurrentThread();
     g_mainThreadIdentifier = CurrentThread();
 
-#if 0 // BKTODO:
     WTFThreadData::Initialize();
 
+#if 0 // BKTODO:
     InitializeDates();
 
     // Force initialization of static DoubleToStringConverter converter variable
@@ -55,9 +58,9 @@ void Initialize(void (*callOnMainThreadFunction)(MainThreadFunction, void *))
     g_callOnMainThreadFunction = callOnMainThreadFunction;
 #if 0 // BKTODO:
     internal::InitializeMainThreadStackEstimate();
+#endif
     AtomicString::Init();
     StringStatics::Init();
-#endif
 }
 
 } // namespace WTF

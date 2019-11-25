@@ -41,7 +41,11 @@
 
 #include "third_party/blink/public/platform/platform.h"
 
+#include "blinkit/blink_impl/thread_impl.h"
+#include "third_party/blink/renderer/platform/language.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -50,6 +54,22 @@ static Platform *g_platform = nullptr;
 Platform* Platform::Current(void)
 {
     return g_platform;
+}
+
+void Platform::AttachMainThread(Thread *thread)
+{
+    m_threads[thread->ThreadId()] = thread;
+}
+
+Thread* Platform::CurrentThread(void)
+{
+    std::lock_guard<std::mutex> lock(m_lock);
+    auto it = m_threads.find(ThreadImpl::CurrentThreadId());
+    if (std::end(m_threads) != it)
+        return it->second;
+
+    ASSERT(std::end(m_threads) != it);
+    return nullptr;
 }
 
 void Platform::Initialize(Platform *platform, scheduler::WebThreadScheduler *mainThreadScheduler)
@@ -68,6 +88,7 @@ static void CallOnMainThreadFunction(WTF::MainThreadFunction function, void *con
 void Platform::InitializeCommon(Platform *platform)
 {
     WTF::Initialize(CallOnMainThreadFunction);
+    InitializePlatformLanguage();
     // BKTODO:
 }
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_document_parser.h
+// Description: HTMLDocumentParser Class
+//      Author: Ziming Li
+//     Created: 2019-10-17
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google, Inc. All Rights Reserved.
  *
@@ -27,12 +38,9 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_HTML_PARSER_HTML_DOCUMENT_PARSER_H_
 
 #include <memory>
-#include "base/memory/scoped_refptr.h"
-#include "base/memory/weak_ptr.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/parser_content_policy.h"
 #include "third_party/blink/renderer/core/dom/scriptable_document_parser.h"
-#include "third_party/blink/renderer/core/html/parser/background_html_input_stream.h"
 #include "third_party/blink/renderer/core/html/parser/html_input_stream.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_options.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_reentry_permit.h"
@@ -41,15 +49,16 @@
 #include "third_party/blink/renderer/core/html/parser/html_token.h"
 #include "third_party/blink/renderer/core/html/parser/html_tokenizer.h"
 #include "third_party/blink/renderer/core/html/parser/html_tree_builder_simulator.h"
-#include "third_party/blink/renderer/core/html/parser/parser_synchronization_policy.h"
 #include "third_party/blink/renderer/core/html/parser/preload_request.h"
 #include "third_party/blink/renderer/core/html/parser/text_resource_decoder.h"
-#include "third_party/blink/renderer/core/html/parser/xss_auditor.h"
-#include "third_party/blink/renderer/core/html/parser/xss_auditor_delegate.h"
 #include "third_party/blink/renderer/core/script/html_parser_script_runner_host.h"
-#include "third_party/blink/renderer/platform/bindings/trace_wrapper_member.h"
+#include "third_party/blink/renderer/platform/web_task_runner.h"
 #include "third_party/blink/renderer/platform/wtf/deque.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
+
+namespace base {
+class SingleThreadTaskRunner;
+}
 
 namespace blink {
 
@@ -60,31 +69,26 @@ class DocumentEncodingData;
 class DocumentFragment;
 class Element;
 class HTMLDocument;
-class HTMLParserScheduler;
 class HTMLParserScriptRunner;
 class HTMLPreloadScanner;
 class HTMLResourcePreloader;
 class HTMLTreeBuilder;
 
-class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser,
-                                       private HTMLParserScriptRunnerHost {
+class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser
+                                     , private HTMLParserScriptRunnerHost
+                                     , public std::enable_shared_from_this<HTMLDocumentParser>
+{
   USING_GARBAGE_COLLECTED_MIXIN(HTMLDocumentParser);
-  USING_PRE_FINALIZER(HTMLDocumentParser, Dispose);
 
  public:
-  static HTMLDocumentParser* Create(
-      HTMLDocument& document,
-      ParserSynchronizationPolicy background_parsing_policy) {
-    return new HTMLDocumentParser(document, background_parsing_policy);
+  static std::shared_ptr<HTMLDocumentParser> Create(Document& document)
+  {
+    return base::WrapShared(new HTMLDocumentParser(document));
   }
   ~HTMLDocumentParser() override;
-  void Trace(blink::Visitor*) override;
 
   // TODO(alexclarke): Remove when background parser goes away.
   void Dispose();
-
-  // Exposed for HTMLParserScheduler
-  void ResumeParsingAfterYield();
 
   static void ParseDocumentFragment(
       const String&,
@@ -114,11 +118,11 @@ class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser,
    public:
     CompactHTMLTokenStream tokens;
     PreloadRequestStream preloads;
+#ifndef BLINKIT_CRAWLER_ONLY
     ViewportDescriptionWrapper viewport;
-    XSSInfoStream xss_infos;
+#endif
     HTMLTokenizer::State tokenizer_state;
     HTMLTreeBuilderSimulator::State tree_builder_state;
-    HTMLInputCheckpoint input_checkpoint;
     TokenPreloadScannerCheckpoint preload_scanner_checkpoint;
     bool starting_script;
     // Index into |tokens| of the last <meta> csp tag in |tokens|. Preloads will
@@ -140,7 +144,7 @@ class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser,
   void Append(const String&) override;
   void Finish() final;
 
-  HTMLDocumentParser(HTMLDocument&, ParserSynchronizationPolicy);
+  HTMLDocumentParser(Document&);
   HTMLDocumentParser(DocumentFragment*,
                      Element* context_element,
                      ParserContentPolicy);
@@ -157,8 +161,7 @@ class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser,
                                   parser_content_policy);
   }
   HTMLDocumentParser(Document&,
-                     ParserContentPolicy,
-                     ParserSynchronizationPolicy);
+                     ParserContentPolicy);
 
   // DocumentParser
   void Detach() final;
@@ -179,21 +182,8 @@ class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser,
   // HTMLParserScriptRunnerHost
   void NotifyScriptLoaded(PendingScript*) final;
   HTMLInputStream& InputStream() final { return input_; }
-  bool HasPreloadScanner() const final {
-    return preload_scanner_.get() && !ShouldUseThreading();
-  }
+  bool HasPreloadScanner() const final { return preload_scanner_.get(); }
   void AppendCurrentInputStreamToPreloadScannerAndScan() final;
-
-  void StartBackgroundParser();
-  void StopBackgroundParser();
-  void ValidateSpeculations(std::unique_ptr<TokenizedChunk> last_chunk);
-  void DiscardSpeculationsAndResumeFrom(
-      std::unique_ptr<TokenizedChunk> last_chunk,
-      std::unique_ptr<HTMLToken>,
-      std::unique_ptr<HTMLTokenizer>);
-  size_t ProcessTokenizedChunkFromBackgroundParser(
-      std::unique_ptr<TokenizedChunk>);
-  void PumpPendingSpeculations();
 
   bool CanTakeNextToken();
   void PumpTokenizer();
@@ -209,14 +199,10 @@ class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser,
   void AttemptToRunDeferredScriptsAndEnd();
   void end();
 
-  bool ShouldUseThreading() const { return should_use_threading_; }
-
   bool IsParsingFragment() const;
-  bool IsScheduledForUnpause() const;
   bool InPumpSession() const { return pump_session_nesting_level_ > 0; }
   bool ShouldDelayEnd() const {
-    return InPumpSession() || IsPaused() || IsScheduledForUnpause() ||
-           IsExecutingScript();
+    return InPumpSession() || IsPaused() || IsExecutingScript();
   }
 
   std::unique_ptr<HTMLPreloadScanner> CreatePreloadScanner(
@@ -235,29 +221,22 @@ class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser,
 
   std::unique_ptr<HTMLToken> token_;
   std::unique_ptr<HTMLTokenizer> tokenizer_;
-  TraceWrapperMember<HTMLParserScriptRunner> script_runner_;
+  Member<HTMLParserScriptRunner> script_runner_;
   Member<HTMLTreeBuilder> tree_builder_;
 
   std::unique_ptr<HTMLPreloadScanner> preload_scanner_;
   // A scanner used only for input provided to the insert() method.
   std::unique_ptr<HTMLPreloadScanner> insertion_preload_scanner_;
 
-  scoped_refptr<base::SingleThreadTaskRunner> loading_task_runner_;
-  Member<HTMLParserScheduler> parser_scheduler_;
+  std::shared_ptr<base::SingleThreadTaskRunner> loading_task_runner_;
   HTMLSourceTracker source_tracker_;
   TextPosition text_position_;
-  XSSAuditor xss_auditor_;
-  XSSAuditorDelegate xss_auditor_delegate_;
 
   // FIXME: last_chunk_before_pause_, tokenizer_, token_, and input_ should be
   // combined into a single state object so they can be set and cleared together
   // and passed between threads together.
   std::unique_ptr<TokenizedChunk> last_chunk_before_pause_;
   Deque<std::unique_ptr<TokenizedChunk>> speculations_;
-  // Using WeakPtr for GarbageCollected is discouraged. But in this case this is
-  // ok because HTMLDocumentParser guarantees to revoke all WeakPtrs in the pre
-  // finalizer.
-  base::WeakPtr<BackgroundHTMLParser> background_parser_;
   Member<HTMLResourcePreloader> preloader_;
   PreloadRequestStream queued_preloads_;
 
@@ -271,9 +250,7 @@ class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser,
 
   TaskHandle resume_parsing_task_handle_;
 
-  bool should_use_threading_;
   bool end_was_delayed_;
-  bool have_background_parser_;
   bool tasks_were_paused_;
   unsigned pump_session_nesting_level_;
   unsigned pump_speculations_session_nesting_level_;
@@ -281,8 +258,6 @@ class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser,
   bool tried_loading_link_headers_;
   bool added_pending_stylesheet_in_body_;
   bool is_waiting_for_stylesheets_;
-
-  base::WeakPtrFactory<HTMLDocumentParser> weak_factory_;
 };
 
 }  // namespace blink

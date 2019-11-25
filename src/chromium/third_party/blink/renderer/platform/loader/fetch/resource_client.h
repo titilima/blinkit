@@ -41,6 +41,10 @@
 
 #include "third_party/blink/renderer/platform/heap/handle.h"
 
+namespace base {
+class SingleThreadTaskRunner;
+}
+
 namespace blink {
 
 class Resource;
@@ -53,7 +57,11 @@ public:
     Resource* GetResource(void) const { return m_resource.get(); }
 protected:
     ResourceClient(void) = default;
+
+    void ClearResource(void) { SetResource(nullptr, nullptr); }
 private:
+    void SetResource(Resource *newResource, base::SingleThreadTaskRunner *taskRunner);
+
     std::shared_ptr<Resource> m_resource;
 };
 

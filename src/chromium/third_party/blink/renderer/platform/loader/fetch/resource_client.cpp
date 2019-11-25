@@ -42,4 +42,12 @@ namespace blink {
 
 ResourceClient::~ResourceClient(void) = default;
 
+void ResourceClient::SetResource(Resource *newResource, base::SingleThreadTaskRunner *taskRunner)
+{
+    if (newResource == m_resource.get())
+        return;
+
+    ASSERT(false); // BKTODO:
+}
+
 }  //  namespace blink

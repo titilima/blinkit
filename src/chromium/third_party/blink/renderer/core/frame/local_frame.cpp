@@ -43,11 +43,18 @@
 
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
+#include "third_party/blink/renderer/core/loader/navigation_scheduler.h"
 
 namespace blink {
 
-LocalFrame::LocalFrame(LocalFrameClient &client, Page *page) : Frame(client, page), m_loader(this)
+LocalFrame::LocalFrame(LocalFrameClient &client, Page *page)
+    : Frame(client, page), m_loader(this), m_navigationScheduler(NavigationScheduler::Create(this))
 {
+}
+
+LocalFrame::~LocalFrame(void)
+{
+    // BKTODO: assert(nullptr == m_view);
 }
 
 LocalFrameClient* LocalFrame::Client(void) const
@@ -57,7 +64,25 @@ LocalFrameClient* LocalFrame::Client(void) const
 
 std::unique_ptr<LocalFrame> LocalFrame::Create(LocalFrameClient &client, Page *page)
 {
-    return std::unique_ptr<LocalFrame>(new LocalFrame(client, page));
+    return base::WrapUnique(new LocalFrame(client, page));
+}
+
+void LocalFrame::DocumentAttached(void)
+{
+    assert(nullptr != GetDocument());
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (Client()->IsCrawler())
+        return;
+
+    Document *document = GetDocument();
+    GetEditor().Clear();
+    GetEventHandler().Clear();
+    Selection().DocumentAttached(GetDocument());
+    GetInputMethodController().DocumentAttached(GetDocument());
+    GetSpellChecker().DocumentAttached(GetDocument());
+    GetTextSuggestionController().DocumentAttached(GetDocument());
+    previews_resource_loading_hints_receiver_.reset();
+#endif
 }
 
 LocalDOMWindow* LocalFrame::DomWindow(void) const
@@ -70,6 +95,21 @@ Document* LocalFrame::GetDocument(void) const
 {
     LocalDOMWindow *domWindow = DomWindow();
     return nullptr != domWindow ? domWindow->document() : nullptr;
+}
+
+void LocalFrame::SetDOMWindow(std::unique_ptr<LocalDOMWindow> domWindow)
+{
+    if (domWindow)
+        BKLOG("// BKTODO: GetScriptController().ClearWindowProxy();");
+
+    if (LocalDOMWindow *currentDomWindow = DomWindow())
+        currentDomWindow->Reset();
+    m_domWindow = std::move(domWindow);
+}
+
+bool LocalFrame::ShouldReuseDefaultView(void) const
+{
+    return m_loader.StateMachine()->IsDisplayingInitialEmptyDocument();
 }
 
 } // namespace blink

@@ -37,6 +37,67 @@
 
 #include "local_dom_window.h"
 
+#include "blinkit/crawler/crawler_document.h"
+#include "third_party/blink/renderer/core/dom/document.h"
+#include "third_party/blink/renderer/core/dom/document_init.h"
+#include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "third_party/blink/renderer/core/frame/local_frame_client.h"
+
+using namespace BlinKit;
+
 namespace blink {
+
+LocalDOMWindow::LocalDOMWindow(LocalFrame &frame) : DOMWindow(frame)
+{
+}
+
+LocalDOMWindow::~LocalDOMWindow(void) = default;
+
+void LocalDOMWindow::ClearDocument(void)
+{
+    if (!m_document)
+        return;
+
+    assert(false); // BKTODO:
+}
+
+LocalFrame* LocalDOMWindow::GetFrame(void) const
+{
+    return ToLocalFrame(DOMWindow::GetFrame());
+}
+
+Document* LocalDOMWindow::InstallNewDocument(const DocumentInit &init)
+{
+    LocalFrame *frame = GetFrame();
+    assert(init.GetFrame() == frame);
+
+    ClearDocument();
+
+#ifdef BLINKIT_CRAWLER_ONLY
+    assert(init.GetFrame()->Client()->IsCrawler());
+    m_document = std::make_unique<CrawlerDocument>(init);
+#else
+    if (init.GetFrame()->Client()->IsCrawler())
+        m_document = std::make_unique<CrawlerDocument>(init);
+    else
+        assert(false); // BKTODO:
+#endif
+    m_document->Initialize();
+
+    if (nullptr != frame)
+    {
+        BKLOG("// BKTODO: frame->GetScriptController().UpdateDocument();");
+#ifndef BLINKIT_CRAWLER_ONLY
+        m_document->GetViewportData().UpdateViewportDescription();
+#endif
+    }
+
+    return m_document.get();
+}
+
+void LocalDOMWindow::Reset(void)
+{
+    assert(false); // BKTODO:
+}
 
 }  // namespace blink

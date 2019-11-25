@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: script.h
+// Description: Script Class
+//      Author: Ziming Li
+//     Created: 2019-10-20
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -23,9 +34,7 @@ enum class ScriptType { kClassic, kModule };
 // https://html.spec.whatwg.org/multipage/webappapis.html#concept-script
 class CORE_EXPORT Script : public GarbageCollectedFinalized<Script> {
  public:
-  virtual void Trace(blink::Visitor* visitor) {}
-
-  virtual ~Script() {}
+  virtual ~Script(void) = default;
 
   virtual ScriptType GetScriptType() const = 0;
 
@@ -39,10 +48,10 @@ class CORE_EXPORT Script : public GarbageCollectedFinalized<Script> {
   virtual String InlineSourceTextForCSP() const = 0;
 
   const ScriptFetchOptions& FetchOptions() const { return fetch_options_; }
-  const KURL& BaseURL() const { return base_url_; }
+  const BlinKit::BkURL& BaseURL() const { return base_url_; }
 
  protected:
-  explicit Script(const ScriptFetchOptions& fetch_options, const KURL& base_url)
+  explicit Script(const ScriptFetchOptions& fetch_options, const BlinKit::BkURL& base_url)
       : fetch_options_(fetch_options), base_url_(base_url) {}
 
  private:
@@ -50,7 +59,7 @@ class CORE_EXPORT Script : public GarbageCollectedFinalized<Script> {
   const ScriptFetchOptions fetch_options_;
 
   // https://html.spec.whatwg.org/multipage/webappapis.html#concept-script-base-url
-  const KURL base_url_;
+  const BlinKit::BkURL base_url_;
 };
 
 }  // namespace blink

@@ -43,32 +43,67 @@
 
 #pragma once
 
+#include "third_party/blink/public/web/web_global_object_reuse_policy.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/loader/fetch/raw_resource.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
+#include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
 #include "third_party/blink/renderer/platform/loader/fetch/substitute_data.h"
+#include "third_party/blink/renderer/platform/wtf/time.h"
 
 namespace blink {
 
+class Document;
+class DocumentParser;
 class FrameLoader;
 class LocalFrame;
+class LocalFrameClient;
+class ResourceFetcher;
 
 class DocumentLoader : public GarbageCollectedFinalized<DocumentLoader>, private RawResourceClient
 {
 public:
+    ~DocumentLoader(void) override;
+
+    LocalFrame* GetFrame(void) const { return m_frame; }
+    const ResourceResponse& GetResponse(void) const { return m_response; }
+    const BlinKit::BkURL& Url(void) const { return m_currentRequest.Url(); }
+
     void StartLoading(void);
+    void MarkAsCommitted(void);
+    void SetSentDidFinishLoad(void) { m_state = kSentDidFinishLoad; }
 protected:
     DocumentLoader(LocalFrame *frame, const ResourceRequest &request, const SubstituteData &substituteData);
 private:
     FrameLoader& GetFrameLoader(void) const;
+    LocalFrameClient& GetLocalFrameClient(void) const;
+
+    // installNewDocument() does the work of creating a Document and
+    // DocumentParser, as well as creating a new LocalDOMWindow if needed. It also
+    // initalizes a bunch of state on the Document (e.g., the state based on
+    // response headers).
+    void InstallNewDocument(const BlinKit::BkURL &URL, WebGlobalObjectReusePolicy reusePolicy,
+        const AtomicString &mimeType, const AtomicString &encoding, const BlinKit::BkURL &overridingURL);
+    void DidInstallNewDocument(Document *document);
+
+    void WillCommitNavigation(void);
+    void CommitNavigation(const AtomicString &mimeType, const BlinKit::BkURL &overridingURL = BlinKit::BkURL());
+    void DidCommitNavigation(WebGlobalObjectReusePolicy);
+    void CommitData(const char *bytes, size_t length);
+    void FinishedLoading(void);
     bool MaybeLoadEmpty(void);
 
     Member<LocalFrame> m_frame;
+    std::unique_ptr<ResourceFetcher> m_fetcher;
+    std::shared_ptr<DocumentParser> m_parser;
     ResourceRequest m_originalRequest, m_currentRequest;
     SubstituteData m_substituteData;
+    ResourceResponse m_response;
 
     enum State { kNotStarted, kProvisional, kCommitted, kSentDidFinishLoad };
     State m_state = kNotStarted;
+
+    bool m_dataReceived = false;
 };
 
 }  // namespace blink

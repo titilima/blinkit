@@ -44,6 +44,11 @@
 
 #pragma once
 
+#include <mutex>
+#include <unordered_map>
+#include "third_party/blink/renderer/platform/scheduler/public/thread.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+
 namespace blink {
 
 namespace scheduler {
@@ -55,8 +60,18 @@ class Platform
 public:
     static void Initialize(Platform *platform, scheduler::WebThreadScheduler *mainThreadScheduler);
     static Platform* Current(void);
+
+    Thread* CurrentThread(void);
+
+    virtual WTF::String DefaultLocale(void) { return String("en-US"); }
+protected:
+    void AttachMainThread(Thread *thread);
+
+    std::mutex m_lock;
 private:
     static void InitializeCommon(Platform *platform);
+
+    std::unordered_map<PlatformThreadId, Thread *> m_threads;
 };
 
 } // namespace blink

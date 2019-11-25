@@ -50,23 +50,37 @@ namespace blink {
 class Document;
 class LocalDOMWindow;
 class LocalFrameClient;
+class NavigationScheduler;
 
 class LocalFrame final : public Frame
 {
 public:
     static std::unique_ptr<LocalFrame> Create(LocalFrameClient &client, Page *page = nullptr);
+    ~LocalFrame(void) override;
 
     void Init(void) { m_loader.Init(); }
 
     LocalFrameClient* Client(void) const;
     FrameLoader& Loader(void) const { return m_loader; }
+    NavigationScheduler& GetNavigationScheduler(void) const { return *m_navigationScheduler; }
     LocalDOMWindow* DomWindow(void) const;
+    void SetDOMWindow(std::unique_ptr<LocalDOMWindow> domWindow);
     Document* GetDocument(void) const;
+
+    bool ShouldReuseDefaultView(void) const;
+
+    void DocumentAttached(void);
 private:
     LocalFrame(LocalFrameClient &client, Page *page);
 
+    // Frame overrides
+    bool IsLocalFrame(void) const override { return true; }
+
     mutable FrameLoader m_loader;
+    std::unique_ptr<NavigationScheduler> m_navigationScheduler;
 };
+
+DEFINE_TYPE_CASTS(LocalFrame, Frame, x, x->IsLocalFrame(), x.IsLocalFrame());
 
 } // namespace blink
 

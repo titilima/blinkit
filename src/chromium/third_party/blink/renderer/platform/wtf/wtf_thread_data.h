@@ -55,7 +55,7 @@ class AtomicStringTable;
 struct ICUConverterWrapper;
 
 class WTF_EXPORT WTFThreadData {
-  // BKTODO: DISALLOW_NEW();
+  DISALLOW_NEW();
 
  public:
   WTFThreadData();

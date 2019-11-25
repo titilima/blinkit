@@ -41,6 +41,22 @@
 
 namespace blink {
 
+enum class ResourceType : uint8_t {
+    kMainResource,
+    kImage,
+    kCSSStyleSheet,
+    kScript,
+    kFont,
+    kRaw,
+    kXSLStyleSheet,
+    kLinkPrefetch,
+    kTextTrack,
+    kImportResource,
+    kAudio,
+    kVideo,
+    kManifest,
+};
+
 class Resource : public GarbageCollectedFinalized<Resource>, public std::enable_shared_from_this<Resource>
 {
 };
