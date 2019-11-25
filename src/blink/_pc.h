@@ -41,7 +41,6 @@
 #define INSIDE_BLINK                    1
 #define WTF_USE_DEFAULT_RENDER_THEME    1
 
-#include <cassert>
 #include <memory>
 #ifdef __OBJC__
 #   import <Cocoa/Cocoa.h>

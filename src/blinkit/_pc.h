@@ -34,7 +34,6 @@
 #define BLINK_IMPLEMENTATION    1
 #define INSIDE_BLINK            1
 
-#include <cassert>
 #include <memory>
 #include <string>
 #include <unordered_map>
