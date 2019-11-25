@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: element_data.h
+// Description: ElementData Class
+//      Author: Ziming Li
+//     Created: 2019-10-31
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  * Copyright (C) 2014 Apple Inc. All rights reserved.
@@ -38,6 +49,7 @@
 #include "third_party/blink/renderer/core/dom/space_split_string.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
+#include "third_party/blink/renderer/platform/wtf/ref_counted.h"
 
 namespace blink {
 
@@ -47,7 +59,7 @@ class UniqueElementData;
 
 // ElementData represents very common, but not necessarily unique to an element,
 // data such as attributes, inline style, and parsed class names and ids.
-class ElementData : public GarbageCollectedFinalized<ElementData> {
+class ElementData : public WTF::RefCounted<ElementData> {
  public:
   // Override GarbageCollectedFinalized's finalizeGarbageCollectedObject to
   // dispatch to the correct subclass destructor.
@@ -66,9 +78,11 @@ class ElementData : public GarbageCollectedFinalized<ElementData> {
     id_for_style_resolution_ = new_id;
   }
 
+#ifndef BLINKIT_CRAWLER_ONLY
   const CSSPropertyValueSet* InlineStyle() const { return inline_style_.Get(); }
 
   const CSSPropertyValueSet* PresentationAttributeStyle() const;
+#endif
 
   AttributeCollection Attributes() const;
 
@@ -78,9 +92,6 @@ class ElementData : public GarbageCollectedFinalized<ElementData> {
   bool IsEquivalent(const ElementData* other) const;
 
   bool IsUnique() const { return is_unique_; }
-
-  void TraceAfterDispatch(blink::Visitor*);
-  void Trace(blink::Visitor*);
 
  protected:
   ElementData();
@@ -95,7 +106,9 @@ class ElementData : public GarbageCollectedFinalized<ElementData> {
   mutable unsigned style_attribute_is_dirty_ : 1;
   mutable unsigned animated_svg_attributes_are_dirty_ : 1;
 
+#ifndef BLINKIT_CRAWLER_ONLY
   mutable Member<CSSPropertyValueSet> inline_style_;
+#endif
   mutable SpaceSplitString class_names_;
   mutable AtomicString id_for_style_resolution_;
 
@@ -130,10 +143,6 @@ class ShareableElementData final : public ElementData {
   explicit ShareableElementData(const Vector<Attribute>&);
   explicit ShareableElementData(const UniqueElementData&);
   ~ShareableElementData();
-
-  void TraceAfterDispatch(blink::Visitor* visitor) {
-    ElementData::TraceAfterDispatch(visitor);
-  }
 
   // Add support for placement new as ShareableElementData is not allocated
   // with a fixed size. Instead the allocated memory size is computed based on
@@ -187,12 +196,14 @@ DEFINE_ELEMENT_DATA_TYPE_CASTS(UniqueElementData,
                                data->IsUnique(),
                                data.IsUnique());
 
+#ifndef BLINKIT_CRAWLER_ONLY
 inline const CSSPropertyValueSet* ElementData::PresentationAttributeStyle()
     const {
   if (!is_unique_)
     return nullptr;
   return ToUniqueElementData(this)->presentation_attribute_style_.Get();
 }
+#endif
 
 inline AttributeCollection ElementData::Attributes() const {
   if (IsUnique())

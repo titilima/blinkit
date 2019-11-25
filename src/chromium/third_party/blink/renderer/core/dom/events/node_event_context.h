@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: node_event_context.h
+// Description: NodeEventContext Class
+//      Author: Ziming Li
+//     Created: 2019-11-20
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All Rights Reserved.
  *
@@ -43,12 +54,11 @@ class CORE_EXPORT NodeEventContext {
  public:
   // FIXME: Use ContainerNode instead of Node.
   NodeEventContext(Node*, EventTarget* current_target);
-  void Trace(blink::Visitor*);
 
   Node* GetNode() const { return node_.Get(); }
 
-  void SetTreeScopeEventContext(
-      TreeScopeEventContext* tree_scope_event_context) {
+  void SetTreeScopeEventContext(const std::shared_ptr<TreeScopeEventContext> &tree_scope_event_context)
+  {
     tree_scope_event_context_ = tree_scope_event_context;
   }
   TreeScopeEventContext& GetTreeScopeEventContext() {
@@ -60,6 +70,7 @@ class CORE_EXPORT NodeEventContext {
   EventTarget* RelatedTarget() const {
     return tree_scope_event_context_->RelatedTarget();
   }
+#if 0 // BKTODO:
   TouchEventContext* GetTouchEventContext() const {
     return tree_scope_event_context_->GetTouchEventContext();
   }
@@ -67,16 +78,15 @@ class CORE_EXPORT NodeEventContext {
   bool CurrentTargetSameAsTarget() const {
     return current_target_.Get() == Target();
   }
+#endif
   void HandleLocalEvents(Event&) const;
 
  private:
   Member<Node> node_;
   Member<EventTarget> current_target_;
-  Member<TreeScopeEventContext> tree_scope_event_context_;
+  std::shared_ptr<TreeScopeEventContext> tree_scope_event_context_;
 };
 
 }  // namespace blink
-
-WTF_ALLOW_MOVE_INIT_AND_COMPARE_WITH_MEM_FUNCTIONS(blink::NodeEventContext);
 
 #endif  // THIRD_PARTY_BLINK_RENDERER_CORE_DOM_EVENTS_NODE_EVENT_CONTEXT_H_

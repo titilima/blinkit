@@ -1,21 +1,16 @@
 // -------------------------------------------------
 // BlinKit - blink Library
 // -------------------------------------------------
-//   File Name: event_target.h
-// Description: EventTarget Class
+//   File Name: tree_scope_event_context.h
+// Description: TreeScopeEventContext Class
 //      Author: Ziming Li
-//     Created: 2019-09-16
+//     Created: 2019-11-20
 // -------------------------------------------------
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
 /*
- * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
- *           (C) 1999 Antti Koivisto (koivisto@kde.org)
- *           (C) 2001 Dirk Mueller (mueller@kde.org)
- * Copyright (C) 2004, 2005, 2006, 2007, 2008 Apple Inc. All rights reserved.
- * Copyright (C) 2006 Alexey Proskuryakov (ap@webkit.org)
- *           (C) 2007, 2008 Nikolas Zimmermann <zimmermann@kde.org>
+ * Copyright (C) 2014 Google Inc. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -40,40 +35,54 @@
  *
  */
 
-#ifndef BLINKIT_BLINK_EVENT_TARGET_H
-#define BLINKIT_BLINK_EVENT_TARGET_H
+#ifndef BLINKIT_BLINK_TREE_SCOPE_EVENT_CONTEXT_H
+#define BLINKIT_BLINK_TREE_SCOPE_EVENT_CONTEXT_H
 
 #pragma once
 
-#include "third_party/blink/renderer/core/dom/events/event_dispatch_result.h"
-#include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
+#include <vector>
 #include "third_party/blink/renderer/platform/heap/handle.h"
-#include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
 namespace blink {
 
 class Event;
+class EventTarget;
+class TreeScope;
 
-class EventTarget : public ScriptWrappable
+class TreeScopeEventContext final : public GarbageCollected<TreeScopeEventContext>
 {
 public:
-    virtual Node* ToNode(void) { return nullptr; }
+    static std::shared_ptr<TreeScopeEventContext> Create(TreeScope &treeScope);
 
-    DispatchEventResult DispatchEvent(Event &event);
-    DispatchEventResult FireEventListeners(Event &event);
-    static DispatchEventResult GetDispatchEventResult(const Event &event);
+    TreeScope& GetTreeScope(void) const { return *m_treeScope; }
 
-    virtual bool KeepEventInNode(const Event &event) const { return false; } // BKTODO: This method is only for media controls, so it may be useless.
-protected:
-    EventTarget(void) = default;
+    EventTarget* Target(void) const { return m_target.Get(); }
+    void SetTarget(EventTarget *target);
 
-    virtual DispatchEventResult DispatchEventInternal(Event &event);
+    EventTarget* RelatedTarget(void) const { return m_relatedTarget.Get(); }
+    void SetRelatedTarget(EventTarget *relatedTarget);
+
+    void AddChild(TreeScopeEventContext &child) { m_children.push_back(&child); }
+
+    // For ancestor-descendant relationship check in O(1).
+    // Preprocessing takes O(N).
+    int CalculateTreeOrderAndSetNearestAncestorClosedTree(int orderNumber, TreeScopeEventContext *nearestAncestorClosedTreeScopeEventContext);
+
+    TreeScopeEventContext* ContainingClosedShadowTree(void) const { return m_containingClosedShadowTree.Get(); }
+private:
+    TreeScopeEventContext(TreeScope &treeScope);
+
+    void CheckReachableNode(EventTarget &target);
+
+    Member<TreeScope> m_treeScope;
+    Member<EventTarget> m_target, m_relatedTarget;
+    Member<TreeScopeEventContext> m_containingClosedShadowTree;
+
+    std::vector<TreeScopeEventContext *> m_children;
+    int m_preOrder = -1;
+    int m_postOrder = -1;
 };
 
-class EventTargetWithInlineData : public EventTarget
-{
-};
+} // namespace blink
 
-}  // namespace blink
-
-#endif  // BLINKIT_BLINK_EVENT_TARGET_H
+#endif // BLINKIT_BLINK_TREE_SCOPE_EVENT_CONTEXT_H

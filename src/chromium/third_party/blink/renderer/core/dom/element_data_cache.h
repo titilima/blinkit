@@ -1,21 +1,16 @@
 // -------------------------------------------------
 // BlinKit - blink Library
 // -------------------------------------------------
-//   File Name: event_target.cpp
-// Description: EventTarget Class
+//   File Name: element_data_cache.h
+// Description: ElementDataCache Class
 //      Author: Ziming Li
-//     Created: 2019-09-16
+//     Created: 2019-10-12
 // -------------------------------------------------
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
 /*
- * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
- *           (C) 1999 Antti Koivisto (koivisto@kde.org)
- *           (C) 2001 Dirk Mueller (mueller@kde.org)
- * Copyright (C) 2004, 2005, 2006, 2007 Apple Inc. All rights reserved.
- * Copyright (C) 2006 Alexey Proskuryakov (ap@webkit.org)
- *           (C) 2007, 2008 Nikolas Zimmermann <zimmermann@kde.org>
+ * Copyright (C) 2012, 2013 Apple Inc. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -40,37 +35,27 @@
  *
  */
 
-#include "event_target.h"
+#ifndef BLINKIT_BLINK_ELEMENT_DATA_CACHE_H
+#define BLINKIT_BLINK_ELEMENT_DATA_CACHE_H
 
-#include "third_party/blink/renderer/core/dom/events/event.h"
+#pragma once
+
+#include "base/memory/ptr_util.h"
+#include "third_party/blink/renderer/platform/heap/handle.h"
 
 namespace blink {
 
-DispatchEventResult EventTarget::DispatchEvent(Event &event)
+class ElementDataCache final : public GarbageCollected<ElementDataCache>
 {
-    event.SetTrusted(true);
-    return DispatchEventInternal(event);
-}
-
-DispatchEventResult EventTarget::DispatchEventInternal(Event &event)
-{
-    ASSERT(false); // BKTODO:
-    return DispatchEventResult::kCanceledBeforeDispatch;
-}
-
-DispatchEventResult EventTarget::FireEventListeners(Event &event)
-{
-    ASSERT(false); // BKTODO:
-    return DispatchEventResult::kCanceledBeforeDispatch;
-}
-
-DispatchEventResult EventTarget::GetDispatchEventResult(const Event &event)
-{
-    if (event.defaultPrevented())
-        return DispatchEventResult::kCanceledByEventHandler;
-    if (event.DefaultHandled())
-        return DispatchEventResult::kCanceledByDefaultEventHandler;
-    return DispatchEventResult::kNotCanceled;
-}
+public:
+    static std::unique_ptr<ElementDataCache> Create(void)
+    {
+        return base::WrapUnique(new ElementDataCache);
+    }
+private:
+    ElementDataCache(void) = default;
+};
 
 }  // namespace blink
+
+#endif // BLINKIT_BLINK_ELEMENT_DATA_CACHE_H

@@ -100,6 +100,7 @@ public:
 
     void AdvanceTo(LifecycleState);
 
+    bool StateAllowsTreeMutations(void) const;
     bool StateTransitionDisallowed(void) const { return m_disallowTransitionCount > 0; }
 private:
 #ifndef NDEBUG

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: node_event_context.cc
+// Description: NodeEventContext Class
+//      Author: Ziming Li
+//     Created: 2019-11-20
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All Rights Reserved.
  *
@@ -27,11 +38,14 @@
 #include "third_party/blink/renderer/core/dom/events/node_event_context.h"
 
 #include "third_party/blink/renderer/core/dom/events/event.h"
-#include "third_party/blink/renderer/core/events/focus_event.h"
-#include "third_party/blink/renderer/core/events/mouse_event.h"
-#include "third_party/blink/renderer/core/events/pointer_event.h"
-#include "third_party/blink/renderer/core/events/touch_event_context.h"
-#include "third_party/blink/renderer/core/input/touch_list.h"
+#include "third_party/blink/renderer/core/dom/node.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/events/focus_event.h"
+#   include "third_party/blink/renderer/core/events/mouse_event.h"
+#   include "third_party/blink/renderer/core/events/pointer_event.h"
+#   include "third_party/blink/renderer/core/events/touch_event_context.h"
+#   include "third_party/blink/renderer/core/input/touch_list.h"
+#endif
 
 namespace blink {
 
@@ -40,18 +54,17 @@ NodeEventContext::NodeEventContext(Node* node, EventTarget* current_target)
   DCHECK(node_);
 }
 
-void NodeEventContext::Trace(blink::Visitor* visitor) {
-  visitor->Trace(node_);
-  visitor->Trace(current_target_);
-  visitor->Trace(tree_scope_event_context_);
-}
-
 void NodeEventContext::HandleLocalEvents(Event& event) const {
+#ifdef BLINKIT_CRAWLER_ONLY
+  if (EventTarget *relatedTarget = RelatedTarget())
+     event.SetRelatedTargetIfExists(relatedTarget);
+#else
   if (TouchEventContext* touch_context = GetTouchEventContext()) {
     touch_context->HandleLocalEvents(event);
   } else if (RelatedTarget()) {
     event.SetRelatedTargetIfExists(RelatedTarget());
   }
+#endif
   event.SetTarget(Target());
   event.SetCurrentTarget(current_target_.Get());
   node_->HandleLocalEvents(event);

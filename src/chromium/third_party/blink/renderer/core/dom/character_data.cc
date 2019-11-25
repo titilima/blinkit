@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: character_data.cc
+// Description: CharacterData Class
+//      Author: Ziming Li
+//     Created: 2019-10-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,14 +36,14 @@
 #include "base/numerics/checked_math.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
-#include "third_party/blink/renderer/core/dom/mutation_observer_interest_group.h"
-#include "third_party/blink/renderer/core/dom/mutation_record.h"
-#include "third_party/blink/renderer/core/dom/processing_instruction.h"
+// BKTODO: #include "third_party/blink/renderer/core/dom/mutation_observer_interest_group.h"
+// BKTODO: #include "third_party/blink/renderer/core/dom/mutation_record.h"
+// BKTODO: #include "third_party/blink/renderer/core/dom/processing_instruction.h"
 #include "third_party/blink/renderer/core/dom/text.h"
-#include "third_party/blink/renderer/core/editing/frame_selection.h"
-#include "third_party/blink/renderer/core/events/mutation_event.h"
-#include "third_party/blink/renderer/core/probe/core_probes.h"
-#include "third_party/blink/renderer/platform/bindings/exception_state.h"
+// BKTODO: #include "third_party/blink/renderer/core/editing/frame_selection.h"
+// BKTODO: #include "third_party/blink/renderer/core/events/mutation_event.h"
+// BKTODO: #include "third_party/blink/renderer/core/probe/core_probes.h"
+// BKTODO: #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 
 namespace blink {
 
@@ -44,12 +55,17 @@ void CharacterData::setData(const String& data) {
   unsigned old_length = length();
 
   SetDataAndUpdate(data, 0, old_length, data.length(), kUpdateFromNonParser);
+  ASSERT(false); // BKTODO:
+#if 0
   GetDocument().DidRemoveText(*this, 0, old_length);
+#endif
 }
 
 String CharacterData::substringData(unsigned offset,
                                     unsigned count,
                                     ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (offset > length()) {
     exception_state.ThrowDOMException(
         DOMExceptionCode::kIndexSizeError,
@@ -58,6 +74,7 @@ String CharacterData::substringData(unsigned offset,
             ").");
     return String();
   }
+#endif
 
   return data_.Substring(offset, count);
 }
@@ -81,6 +98,8 @@ void CharacterData::appendData(const String& data) {
 void CharacterData::insertData(unsigned offset,
                                const String& data,
                                ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (offset > length()) {
     exception_state.ThrowDOMException(
         DOMExceptionCode::kIndexSizeError,
@@ -96,6 +115,7 @@ void CharacterData::insertData(unsigned offset,
   SetDataAndUpdate(new_str, offset, 0, data.length(), kUpdateFromNonParser);
 
   GetDocument().DidInsertText(*this, offset, data.length());
+#endif
 }
 
 static bool ValidateOffsetCount(unsigned offset,
@@ -103,6 +123,8 @@ static bool ValidateOffsetCount(unsigned offset,
                                 unsigned length,
                                 unsigned& real_count,
                                 ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (offset > length) {
     exception_state.ThrowDOMException(
         DOMExceptionCode::kIndexSizeError,
@@ -119,6 +141,7 @@ static bool ValidateOffsetCount(unsigned offset,
     real_count = length - offset;
   else
     real_count = count;
+#endif
 
   return true;
 }
@@ -126,6 +149,8 @@ static bool ValidateOffsetCount(unsigned offset,
 void CharacterData::deleteData(unsigned offset,
                                unsigned count,
                                ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   unsigned real_count = 0;
   if (!ValidateOffsetCount(offset, count, length(), real_count,
                            exception_state))
@@ -137,12 +162,15 @@ void CharacterData::deleteData(unsigned offset,
   SetDataAndUpdate(new_str, offset, real_count, 0, kUpdateFromNonParser);
 
   GetDocument().DidRemoveText(*this, offset, real_count);
+#endif
 }
 
 void CharacterData::replaceData(unsigned offset,
                                 unsigned count,
                                 const String& data,
                                 ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   unsigned real_count = 0;
   if (!ValidateOffsetCount(offset, count, length(), real_count,
                            exception_state))
@@ -158,6 +186,7 @@ void CharacterData::replaceData(unsigned offset,
   // update DOM ranges
   GetDocument().DidRemoveText(*this, offset, real_count);
   GetDocument().DidInsertText(*this, offset, data.length());
+#endif
 }
 
 String CharacterData::nodeValue() const {
@@ -180,6 +209,8 @@ void CharacterData::SetDataAndUpdate(const String& new_data,
   String old_data = data_;
   data_ = new_data;
 
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!GetLayoutObject() || IsTextNode());
   if (IsTextNode())
     ToText(this)->UpdateTextLayoutObject(offset_of_replaced_data, old_length);
@@ -194,9 +225,12 @@ void CharacterData::SetDataAndUpdate(const String& new_data,
 
   GetDocument().IncDOMTreeVersion();
   DidModifyData(old_data, source);
+#endif
 }
 
 void CharacterData::DidModifyData(const String& old_data, UpdateSource source) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (MutationObserverInterestGroup* mutation_recipients =
           MutationObserverInterestGroup::CreateForCharacterDataMutation(*this))
     mutation_recipients->EnqueueMutationRecord(
@@ -222,6 +256,7 @@ void CharacterData::DidModifyData(const String& old_data, UpdateSource source) {
     DispatchSubtreeModifiedEvent();
   }
   probe::characterDataModified(this);
+#endif
 }
 
 }  // namespace blink

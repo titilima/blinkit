@@ -1,21 +1,17 @@
 // -------------------------------------------------
 // BlinKit - blink Library
 // -------------------------------------------------
-//   File Name: event_target.cpp
-// Description: EventTarget Class
+//   File Name: tree_scope.h
+// Description: TreeScope Class
 //      Author: Ziming Li
-//     Created: 2019-09-16
+//     Created: 2019-10-19
 // -------------------------------------------------
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
 /*
- * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
- *           (C) 1999 Antti Koivisto (koivisto@kde.org)
- *           (C) 2001 Dirk Mueller (mueller@kde.org)
- * Copyright (C) 2004, 2005, 2006, 2007 Apple Inc. All rights reserved.
- * Copyright (C) 2006 Alexey Proskuryakov (ap@webkit.org)
- *           (C) 2007, 2008 Nikolas Zimmermann <zimmermann@kde.org>
+ * Copyright (C) 2011 Google Inc. All Rights Reserved.
+ * Copyright (C) 2012 Apple Inc. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -26,10 +22,10 @@
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
  *
- * THIS SOFTWARE IS PROVIDED BY APPLE COMPUTER, INC. ``AS IS'' AND ANY
+ * THIS SOFTWARE IS PROVIDED BY APPLE INC. ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL APPLE COMPUTER, INC. OR
+ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL APPLE INC. OR
  * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
  * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
  * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
@@ -37,40 +33,49 @@
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
-#include "event_target.h"
+#ifndef BLINKIT_BLINK_TREE_SCOPE_H
+#define BLINKIT_BLINK_TREE_SCOPE_H
 
-#include "third_party/blink/renderer/core/dom/events/event.h"
+#pragma once
+
+#include "third_party/blink/renderer/platform/heap/handle.h"
 
 namespace blink {
 
-DispatchEventResult EventTarget::DispatchEvent(Event &event)
-{
-    event.SetTrusted(true);
-    return DispatchEventInternal(event);
-}
+class ContainerNode;
+class Document;
+class Node;
 
-DispatchEventResult EventTarget::DispatchEventInternal(Event &event)
+class TreeScope : public GarbageCollectedMixin
 {
-    ASSERT(false); // BKTODO:
-    return DispatchEventResult::kCanceledBeforeDispatch;
-}
+public:
+    TreeScope* ParentTreeScope(void) const { return m_parentTreeScope; }
+    
+    bool IsInclusiveOlderSiblingShadowRootOrAncestorTreeScopeOf(const TreeScope &scope) const;
 
-DispatchEventResult EventTarget::FireEventListeners(Event &event)
-{
-    ASSERT(false); // BKTODO:
-    return DispatchEventResult::kCanceledBeforeDispatch;
-}
+    Document& GetDocument(void) const
+    {
+        ASSERT(m_document);
+        return *m_document;
+    }
 
-DispatchEventResult EventTarget::GetDispatchEventResult(const Event &event)
-{
-    if (event.defaultPrevented())
-        return DispatchEventResult::kCanceledByEventHandler;
-    if (event.DefaultHandled())
-        return DispatchEventResult::kCanceledByDefaultEventHandler;
-    return DispatchEventResult::kNotCanceled;
-}
+    // Used by the basic DOM mutation methods (e.g., appendChild()).
+    void AdoptIfNeeded(Node &node);
+
+protected:
+    TreeScope(ContainerNode &rootNode, Document &document);
+    TreeScope(Document &document);
+    virtual ~TreeScope(void);
+private:
+    Member<ContainerNode> m_rootNode;
+    Member<Document> m_document;
+    Member<TreeScope> m_parentTreeScope;
+};
+
+DEFINE_COMPARISON_OPERATORS_WITH_REFERENCES(TreeScope)
 
 }  // namespace blink
+
+#endif // BLINKIT_BLINK_TREE_SCOPE_H

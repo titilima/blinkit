@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: element_data.cc
+// Description: ElementData Class
+//      Author: Ziming Li
+//     Created: 2019-10-31
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -30,16 +41,20 @@
 
 #include "third_party/blink/renderer/core/dom/element_data.h"
 
-#include "third_party/blink/renderer/core/css/css_property_value_set.h"
 #include "third_party/blink/renderer/core/dom/qualified_name.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/css_property_value_set.h"
+#endif
 
 namespace blink {
 
 struct SameSizeAsElementData
-    : public GarbageCollectedFinalized<SameSizeAsElementData> {
+    : public WTF::RefCounted<SameSizeAsElementData> {
   unsigned bitfield;
+#ifndef BLINKIT_CRAWLER_ONLY
   Member<void*> willbe_member;
+#endif
   void* pointers[2];
 };
 
@@ -108,17 +123,6 @@ bool ElementData::IsEquivalent(const ElementData* other) const {
   return true;
 }
 
-void ElementData::Trace(blink::Visitor* visitor) {
-  if (is_unique_)
-    ToUniqueElementData(this)->TraceAfterDispatch(visitor);
-  else
-    ToShareableElementData(this)->TraceAfterDispatch(visitor);
-}
-
-void ElementData::TraceAfterDispatch(blink::Visitor* visitor) {
-  visitor->Trace(inline_style_);
-}
-
 ShareableElementData::ShareableElementData(const Vector<Attribute>& attributes)
     : ElementData(attributes.size()) {
   for (unsigned i = 0; i < array_size_; ++i)
@@ -134,9 +138,11 @@ ShareableElementData::ShareableElementData(const UniqueElementData& other)
     : ElementData(other, false) {
   DCHECK(!other.presentation_attribute_style_);
 
+#ifndef BLINKIT_CRAWLER_ONLY
   if (other.inline_style_) {
     inline_style_ = other.inline_style_->ImmutableCopyIfNeeded();
   }
+#endif
 
   for (unsigned i = 0; i < array_size_; ++i)
     new (&attribute_array_[i]) Attribute(other.attribute_vector_.at(i));
@@ -144,9 +150,13 @@ ShareableElementData::ShareableElementData(const UniqueElementData& other)
 
 ShareableElementData* ShareableElementData::CreateWithAttributes(
     const Vector<Attribute>& attributes) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   void* slot = ThreadHeap::Allocate<ElementData>(
       SizeForShareableElementDataWithAttributeCount(attributes.size()));
   return new (slot) ShareableElementData(attributes);
+#endif
 }
 
 UniqueElementData::UniqueElementData() = default;
@@ -155,16 +165,20 @@ UniqueElementData::UniqueElementData(const UniqueElementData& other)
     : ElementData(other, true),
       presentation_attribute_style_(other.presentation_attribute_style_),
       attribute_vector_(other.attribute_vector_) {
+#ifndef BLINKIT_CRAWLER_ONLY
   inline_style_ =
       other.inline_style_ ? other.inline_style_->MutableCopy() : nullptr;
+#endif
 }
 
 UniqueElementData::UniqueElementData(const ShareableElementData& other)
     : ElementData(other, true) {
+#ifndef BLINKIT_CRAWLER_ONLY
   // An ShareableElementData should never have a mutable inline
   // CSSPropertyValueSet attached.
   DCHECK(!other.inline_style_ || !other.inline_style_->IsMutable());
   inline_style_ = other.inline_style_;
+#endif
 
   unsigned length = other.Attributes().size();
   attribute_vector_.ReserveCapacity(length);
@@ -177,14 +191,13 @@ UniqueElementData* UniqueElementData::Create() {
 }
 
 ShareableElementData* UniqueElementData::MakeShareableCopy() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   void* slot = ThreadHeap::Allocate<ElementData>(
       SizeForShareableElementDataWithAttributeCount(attribute_vector_.size()));
   return new (slot) ShareableElementData(*this);
-}
-
-void UniqueElementData::TraceAfterDispatch(blink::Visitor* visitor) {
-  visitor->Trace(presentation_attribute_style_);
-  ElementData::TraceAfterDispatch(visitor);
+#endif
 }
 
 }  // namespace blink

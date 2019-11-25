@@ -37,11 +37,19 @@
 #ifndef BLINKIT_BLINK_NODE_H
 #define BLINKIT_BLINK_NODE_H
 
+#pragma once
+
 #include "third_party/blink/renderer/core/dom/events/event_target.h"
+#include "third_party/blink/renderer/core/dom/tree_scope.h"
+#include "third_party/blink/renderer/core/html_names.h"
+#include "third_party/blink/renderer/core/style/computed_style_constants.h"
+#include "third_party/blink/renderer/platform/wtf/assertions.h"
+#include "third_party/blink/renderer/platform/wtf/ref_counted.h"
 
 namespace blink {
 
-class TreeScope;
+class Document;
+class Element;
 
 const int kNodeStyleChangeShift = 18;
 const int kNodeCustomElementShift = 20;
@@ -58,8 +66,11 @@ enum StyleChangeType {
     kNeedsReattachStyleChange = 3 << kNodeStyleChangeShift,
 };
 
-class Node : public EventTarget
+enum class CloneChildrenFlag { kClone, kSkip };
+
+class Node : public EventTarget, public WTF::RefCounted<Node>
 {
+    friend class TreeScope;
 public:
     enum NodeType {
         kElementNode = 1,
@@ -73,7 +84,137 @@ public:
         kDocumentFragmentNode = 11,
     };
 
-    ~Node(void);
+    ~Node(void) override;
+
+    Document& GetDocument(void) const { return GetTreeScope().GetDocument(); }
+    TreeScope& GetTreeScope(void) const
+    {
+        ASSERT(m_treeScope);
+        return *m_treeScope;
+    }
+
+    // DOM methods & attributes for Node
+    virtual String nodeName(void) const = 0;
+    bool HasTagName(const HTMLQualifiedName &name) const;
+    virtual String nodeValue(void) const;
+    virtual void setNodeValue(const String &nodeValue);
+    virtual NodeType getNodeType(void) const = 0;
+    virtual Node* Clone(Document &document, CloneChildrenFlag flag) const = 0;
+    ContainerNode* parentNode(void) const;
+    ContainerNode* ParentOrShadowHostNode(void) const;
+    Element* parentElement(void) const;
+    void SetParentOrShadowHostNode(ContainerNode *parent);
+    Node* previousSibling(void) const { return m_previous; }
+    void SetPreviousSibling(Node *previous) { m_previous = previous; }
+    Node* nextSibling(void) const { return m_next; }
+    void SetNextSibling(Node *next) { m_next = next; }
+    Node* firstChild(void) const;
+    bool hasChildren(void) const { return nullptr != firstChild(); }
+    Node* lastChild(void) const;
+    unsigned NodeIndex(void) const;
+    unsigned CountChildren(void) const;
+
+    Node* PseudoAwareNextSibling(void) const;
+    Node* PseudoAwarePreviousSibling(void) const;
+    Node* PseudoAwareFirstChild(void) const;
+    Node* PseudoAwareLastChild(void) const;
+
+    virtual void HandleLocalEvents(Event &event);
+    virtual void WillCallDefaultEventHandler(const Event &event);
+    virtual void DefaultEventHandler(Event &event);
+
+    typedef ContainerNode* (*ParentGetter)(const Node &);
+    Node* CommonAncestor(const Node &other, ParentGetter getParent) const;
+
+    bool IsDescendantOf(const Node *other) const;
+    bool IsDocumentNode(void) const;
+    bool IsDocumentTypeNode(void) const { return getNodeType() == kDocumentTypeNode; }
+    bool IsTreeScope(void) const;
+    bool HasRareData(void) const { return GetFlag(kHasRareDataFlag); }
+    bool IsTextNode(void) const { return GetFlag(kIsTextFlag); }
+    bool IsContainerNode(void) const { return GetFlag(kIsContainerFlag); }
+    bool IsElementNode(void) const { return GetFlag(kIsElementFlag); }
+    bool IsHTMLElement(void) const { return GetFlag(kIsHTMLFlag); }
+#ifdef BLINKIT_CRAWLER_ONLY
+    bool ForCrawler(void) const
+    {
+        ASSERT(GetFlag(kForCrawlerFlag));
+        return true;
+    }
+#else
+    bool ForCrawler(void) const { return GetFlag(kForCrawlerFlag); }
+#endif
+    bool IsDocumentFragment(void) const { return GetFlag(kIsDocumentFragmentFlag); }
+    bool IsUserActionElement(void) const { return GetFlag(kIsUserActionElementFlag); }
+    bool isConnected(void) const { return GetFlag(kIsConnectedFlag); }
+    bool IsInShadowTree(void) const { return GetFlag(kIsInShadowTreeFlag); }
+    bool IsInTreeScope(void) const { return GetFlag(static_cast<NodeFlags>(kIsConnectedFlag | kIsInShadowTreeFlag)); }
+    bool ChildNeedsDistributionRecalc(void) const { return GetFlag(kChildNeedsDistributionRecalcFlag); }
+    bool HasName(void) const
+    {
+        ASSERT(!IsTextNode());
+        return GetFlag(kHasNameOrIsEditingTextFlag);
+    }
+    bool HasEventTargetData(void) const { return GetFlag(kHasEventTargetDataFlag); }
+    void SetHasEventTargetData(bool flag) { SetFlag(flag, kHasEventTargetDataFlag); }
+    bool HasDuplicateAttribute(void) const { return GetFlag(kHasDuplicateAttributes); }
+    void SetHasDuplicateAttributes(void) { SetFlag(kHasDuplicateAttributes); }
+
+    bool IsActive(void) const { return IsUserActionElement() && IsUserActionElementActive(); }
+    bool IsShadowRoot(void) const { return IsDocumentFragment() && IsTreeScope(); }
+
+    virtual PseudoId GetPseudoId(void) const { return kPseudoIdNone; }
+    bool IsPseudoElement(void) const { return GetPseudoId() != kPseudoIdNone; }
+
+    virtual bool IsCharacterDataNode(void) const { return false; }
+    virtual bool IsAttributeNode(void) const { return false; }
+
+    virtual bool ChildTypeAllowed(NodeType) const {
+        ASSERT(false); // BKTODO: Check child classes!
+        return false;
+    }
+
+    enum InsertionNotificationRequest {
+        kInsertionDone,
+        kInsertionShouldCallDidNotifySubtreeInsertions
+    };
+    virtual InsertionNotificationRequest InsertedInto(ContainerNode &insertionPoint);
+    virtual void DidNotifySubtreeInsertionsToDocument(void);
+    virtual void RemovedFrom(ContainerNode &insertionPoint);
+
+    void CheckSlotChangeAfterInserted(void)
+    {
+        ASSERT(false); // BKTODO:
+    }
+
+    bool MayContainLegacyNodeTreeWhereDistributionShouldBeSupported(void) const;
+    // This is not what you might want to call in most cases.
+    // You should call UpdateDistributionForFlatTreeTraversal, instead.
+    // Only the implementation of v0 shadow trees uses this.
+    void UpdateDistributionForLegacyDistributedNodes(void)
+    {
+        // The implementation is same to UpdateDistributionForFlatTreeTraversal.
+        UpdateDistributionInternal();
+    }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    struct AttachContext {
+        STACK_ALLOCATED();
+
+    public:
+        // Keep track of previously attached in-flow box during attachment so that
+        // we don't need to backtrack past display:none/contents and out of flow
+        // objects when we need to do whitespace re-attachment.
+        LayoutObject* previous_in_flow = nullptr;
+        bool performing_reattach = false;
+        bool clear_invalidation = false;
+        // True if the previous_in_flow member is up-to-date, even if it is nullptr.
+        bool use_previous_in_flow = false;
+
+        AttachContext() {}
+    };
+    virtual void DetachLayoutTree(const AttachContext &context = AttachContext());
+#endif
 private:
     enum NodeFlags {
         kHasRareDataFlag = 1,
@@ -83,7 +224,7 @@ private:
         kIsContainerFlag = 1 << 2,
         kIsElementFlag = 1 << 3,
         kIsHTMLFlag = 1 << 4,
-        kIsSVGFlag = 1 << 5,
+        kForCrawlerFlag = 1 << 5,
         kIsDocumentFragmentFlag = 1 << 6,
         kIsV0InsertionPointFlag = 1 << 7,
 
@@ -126,8 +267,7 @@ private:
         // Temporary flag for some UseCounter items. crbug.com/859391.
         kInDOMNodeRemovedHandler = 1 << 29,
 
-        kDefaultNodeFlags =
-        kIsFinishedParsingChildrenFlag | kNeedsReattachStyleChange
+        kDefaultNodeFlags = kIsFinishedParsingChildrenFlag | kNeedsReattachStyleChange
     };
 
     // 3 bits remaining.
@@ -147,17 +287,40 @@ protected:
         kCreateShadowRoot = kCreateContainer | kIsDocumentFragmentFlag | kIsInShadowTreeFlag,
         kCreateDocumentFragment = kCreateContainer | kIsDocumentFragmentFlag,
         kCreateHTMLElement = kCreateElement | kIsHTMLFlag,
-        kCreateSVGElement = kCreateElement | kIsSVGFlag,
         kCreateDocument = kCreateContainer | kIsConnectedFlag,
         kCreateV0InsertionPoint = kCreateHTMLElement | kIsV0InsertionPointFlag,
         kCreateEditingText = kCreateText | kHasNameOrIsEditingTextFlag,
         kCreatePseudoElement = kDefaultNodeFlags | kIsContainerFlag | kIsElementFlag | kNeedsReattachLayoutTree,
+        kCreateCrawlerDocument = kCreateDocument | kForCrawlerFlag,
+        kCreateCrawlerElement = kCreateHTMLElement | kForCrawlerFlag,
     };
 
-    Node(TreeScope*, ConstructionType);
+    Node(TreeScope *treeScope, ConstructionType type);
+
+    void SetTreeScope(TreeScope *scope) { m_treeScope = scope; }
+    void SetIsFinishedParsingChildren(bool value) { SetFlag(value, kIsFinishedParsingChildrenFlag); }
+
+    // EventTarget overrides
+    DispatchEventResult DispatchEventInternal(Event &event) override;
 private:
+    bool IsUserActionElementActive(void) const;
+
+    void UpdateDistributionInternal(void);
+
+    // EventTarget overrides
+    Node* ToNode(void) final { return this; }
+
     uint32_t m_nodeFlags;
+    Member<Node> m_parentOrShadowHostNode;
+    Member<TreeScope> m_treeScope;
+    Member<Node> m_previous;
+    Member<Node> m_next;
 };
+
+DEFINE_COMPARISON_OPERATORS_WITH_REFERENCES(Node)
+
+#define DEFINE_NODE_TYPE_CASTS(thisType, predicate) \
+    DEFINE_TYPE_CASTS(thisType, Node, node, node->predicate, node.predicate)
 
 }  // namespace blink
 

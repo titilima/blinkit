@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: named_node_map.cc
+// Description: NamedNodeMap Class
+//      Author: Ziming Li
+//     Created: 2019-10-31
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -28,12 +39,12 @@
 #include "third_party/blink/renderer/core/dom/attr.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/element.h"
-#include "third_party/blink/renderer/platform/bindings/exception_state.h"
+// BKTODO: #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 Attr* NamedNodeMap::getNamedItem(const AtomicString& name) const {
   return element_->getAttributeNode(name);
@@ -46,6 +57,9 @@ Attr* NamedNodeMap::getNamedItemNS(const AtomicString& namespace_uri,
 
 Attr* NamedNodeMap::removeNamedItem(const AtomicString& name,
                                     ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   wtf_size_t index =
       element_->Attributes().FindIndex(element_->LowercaseIfNecessary(name));
   if (index == kNotFound) {
@@ -55,11 +69,15 @@ Attr* NamedNodeMap::removeNamedItem(const AtomicString& name,
     return nullptr;
   }
   return element_->DetachAttribute(index);
+#endif
 }
 
 Attr* NamedNodeMap::removeNamedItemNS(const AtomicString& namespace_uri,
                                       const AtomicString& local_name,
                                       ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   wtf_size_t index = element_->Attributes().FindIndex(
       QualifiedName(g_null_atom, local_name, namespace_uri));
   if (index == kNotFound) {
@@ -69,24 +87,37 @@ Attr* NamedNodeMap::removeNamedItemNS(const AtomicString& namespace_uri,
     return nullptr;
   }
   return element_->DetachAttribute(index);
+#endif
 }
 
 Attr* NamedNodeMap::setNamedItem(Attr* attr, ExceptionState& exception_state) {
   DCHECK(attr);
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return element_->setAttributeNode(attr, exception_state);
+#endif
 }
 
 Attr* NamedNodeMap::setNamedItemNS(Attr* attr,
                                    ExceptionState& exception_state) {
   DCHECK(attr);
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return element_->setAttributeNodeNS(attr, exception_state);
+#endif
 }
 
 Attr* NamedNodeMap::item(uint32_t index) const {
   AttributeCollection attributes = element_->Attributes();
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (index >= attributes.size())
     return nullptr;
   return element_->EnsureAttr(attributes[index].GetName());
+#endif
 }
 
 uint32_t NamedNodeMap::length() const {
@@ -107,6 +138,8 @@ void NamedNodeMap::NamedPropertyEnumerator(Vector<String>& names,
   // 3. Return names.
   const AttributeCollection attributes = element_->Attributes();
   names.ReserveInitialCapacity(attributes.size());
+  ASSERT(false); // BKTODO:
+#if 0
   if (element_->IsHTMLElement() && element_->GetDocument().IsHTMLDocument()) {
     for (const Attribute& attribute : attributes) {
       if ((attribute.Prefix() == attribute.Prefix().LowerASCII()) &&
@@ -118,7 +151,8 @@ void NamedNodeMap::NamedPropertyEnumerator(Vector<String>& names,
     for (const Attribute& attribute : attributes) {
       names.UncheckedAppend(attribute.GetName().ToString());
     }
-  }
+  
+#endif
 }
 
 bool NamedNodeMap::NamedPropertyQuery(const AtomicString& name,
@@ -126,11 +160,6 @@ bool NamedNodeMap::NamedPropertyQuery(const AtomicString& name,
   Vector<String> properties;
   NamedPropertyEnumerator(properties, exception_state);
   return properties.Contains(name);
-}
-
-void NamedNodeMap::Trace(blink::Visitor* visitor) {
-  visitor->Trace(element_);
-  ScriptWrappable::Trace(visitor);
 }
 
 }  // namespace blink

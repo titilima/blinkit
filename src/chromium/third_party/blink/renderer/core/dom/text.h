@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text.h
+// Description: Text Class
+//      Author: Ziming Li
+//     Created: 2019-10-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -54,6 +65,7 @@ class CORE_EXPORT Text : public CharacterData {
   String wholeText() const;
   Text* ReplaceWholeText(const String&);
 
+#ifndef BLINKIT_CRAWLER_ONLY
   void RecalcTextStyle(StyleRecalcChange);
   void RebuildTextLayoutTree(WhitespaceAttacher&);
   bool TextLayoutObjectIsNeeded(const AttachContext&,
@@ -67,9 +79,8 @@ class CORE_EXPORT Text : public CharacterData {
   void ReattachLayoutTreeIfNeeded(const AttachContext&);
 
   bool CanContainRangeEndPoint() const final { return true; }
+#endif
   NodeType getNodeType() const override;
-
-  void Trace(blink::Visitor*) override;
 
  protected:
   Text(TreeScope& tree_scope, const String& data, ConstructionType type)

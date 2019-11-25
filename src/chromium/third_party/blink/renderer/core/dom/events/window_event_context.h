@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: window_event_context.h
+// Description: WindowEventContext Class
+//      Author: Ziming Li
+//     Created: 2019-11-21
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All Rights Reserved.
  *
@@ -45,8 +56,6 @@ class WindowEventContext : public GarbageCollected<WindowEventContext> {
   EventTarget* Target() const;
   EventTarget* RelatedTarget() const;
   bool HandleLocalEvents(Event&);
-
-  void Trace(blink::Visitor*);
 
  private:
   Member<LocalDOMWindow> window_;

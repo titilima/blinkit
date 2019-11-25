@@ -36,14 +36,102 @@
 #ifndef BLINKIT_BLINK_CONTAINER_NODE_H
 #define BLINKIT_BLINK_CONTAINER_NODE_H
 
+#include <vector>
 #include "third_party/blink/renderer/core/dom/node.h"
 
 namespace blink {
 
+enum SubtreeModificationAction {
+    kDispatchSubtreeModifiedEvent,
+    kOmitSubtreeModifiedEvent
+};
+
+using NodeVector = std::vector<Node *>;
+
 class ContainerNode : public Node
 {
+public:
+    Node* firstChild(void) const { return m_firstChild; }
+    Node* lastChild(void) const { return m_lastChild; }
+    bool HasChildren(void) const { return !!m_firstChild; }
+    unsigned CountChildren(void) const;
+
+    Node* AppendChild(Node *newChild);
+
+    void RemoveChildren(SubtreeModificationAction action = kDispatchSubtreeModifiedEvent);
+    void CloneChildNodesFrom(const ContainerNode &node);
+
+    void ParserAppendChild(Node *newChild);
+    void ParserRemoveChild(Node &oldChild);
+    void ParserInsertBefore(Node *newChild, Node &refChild);
+    void ParserTakeAllChildrenFrom(ContainerNode &oldParent);
+
+    enum ChildrenChangeType {
+        kElementInserted,
+        kNonElementInserted,
+        kElementRemoved,
+        kNonElementRemoved,
+        kAllChildrenRemoved,
+        kTextChanged
+    };
+    enum ChildrenChangeSource {
+        kChildrenChangeSourceAPI,
+        kChildrenChangeSourceParser
+    };
+    struct ChildrenChange;
+    virtual void ChildrenChanged(const ChildrenChange &change);
 protected:
     ContainerNode(TreeScope *treeScope, ConstructionType type = kCreateContainer);
+
+    void SetFirstChild(Node *child) { m_firstChild = child; }
+    void SetLastChild(Node *child) { m_lastChild = child; }
+
+    void InvalidateNodeListCachesInAncestors(const QualifiedName *attrName, Element *attributeOwnerElement,
+        const ChildrenChange *change);
+private:
+    class AdoptAndAppendChild;
+    friend class AdoptAndAppendChild;
+
+    void AppendChildCommon(Node &child);
+    bool CheckParserAcceptChild(const Node &newChild) const;
+    void NotifyNodeInserted(Node &root, ChildrenChangeSource source = kChildrenChangeSourceAPI);
+    void NotifyNodeInsertedInternal(Node &root, NodeVector &postInsertionNotificationTargets);
+
+    Member<Node> m_firstChild;
+    Member<Node> m_lastChild;
+};
+
+DEFINE_NODE_TYPE_CASTS(ContainerNode, IsContainerNode());
+
+struct ContainerNode::ChildrenChange
+{
+    STACK_ALLOCATED();
+public:
+    static ChildrenChange ForInsertion(Node &node, Node *unchangedPrevious, Node *unchangedNext, ChildrenChangeSource byParser)
+    {
+        ChildrenChange change;
+        change.type = node.IsElementNode() ? kElementInserted : kNonElementInserted;
+        change.siblingChanged = &node;
+        change.siblingBeforeChange = unchangedPrevious;
+        change.siblingAfterChange = unchangedNext;
+        change.byParser = byParser;
+        return change;
+    }
+
+    ChildrenChangeType type;
+    Member<Node> siblingChanged;
+    // |siblingBeforeChange| is
+    //  - siblingChanged.previousSibling before node removal
+    //  - siblingChanged.previousSibling after single node insertion
+    //  - previousSibling of the first inserted node after multiple node
+    //    insertion
+    Member<Node> siblingBeforeChange;
+    // |siblingAfterChange| is
+    //  - siblingChanged.nextSibling before node removal
+    //  - siblingChanged.nextSibling after single node insertion
+    //  - nextSibling of the last inserted node after multiple node insertion.
+    Member<Node> siblingAfterChange;
+    ChildrenChangeSource byParser;
 };
 
 }  // namespace blink

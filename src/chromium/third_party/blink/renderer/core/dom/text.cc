@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text.cc
+// Description: Text Class
+//      Author: Ziming Li
+//     Created: 2019-10-30
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -22,26 +33,29 @@
 
 #include "third_party/blink/renderer/core/dom/text.h"
 
-#include "third_party/blink/renderer/core/css/resolver/style_resolver.h"
-#include "third_party/blink/renderer/core/dom/events/scoped_event_queue.h"
-#include "third_party/blink/renderer/core/dom/first_letter_pseudo_element.h"
-#include "third_party/blink/renderer/core/dom/layout_tree_builder.h"
-#include "third_party/blink/renderer/core/dom/layout_tree_builder_traversal.h"
-#include "third_party/blink/renderer/core/dom/node_computed_style.h"
+#include "third_party/blink/renderer/core/dom/document.h"
+ // BKTODO: #include "third_party/blink/renderer/core/dom/events/scoped_event_queue.h"
+// BKTODO: #include "third_party/blink/renderer/core/dom/first_letter_pseudo_element.h"
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
-#include "third_party/blink/renderer/core/dom/shadow_root.h"
-#include "third_party/blink/renderer/core/dom/whitespace_attacher.h"
-#include "third_party/blink/renderer/core/layout/layout_text.h"
-#include "third_party/blink/renderer/core/layout/layout_text_combine.h"
-#include "third_party/blink/renderer/core/layout/layout_text_fragment.h"
-#include "third_party/blink/renderer/core/layout/ng/inline/layout_ng_text.h"
-#include "third_party/blink/renderer/core/layout/svg/layout_svg_inline_text.h"
-#include "third_party/blink/renderer/core/svg/svg_foreign_object_element.h"
-#include "third_party/blink/renderer/core/svg_names.h"
-#include "third_party/blink/renderer/platform/bindings/dom_data_store.h"
-#include "third_party/blink/renderer/platform/bindings/exception_state.h"
+// BKTODO: #include "third_party/blink/renderer/platform/bindings/dom_data_store.h"
+// BKTODO: #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/wtf/text/cstring.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/resolver/style_resolver.h"
+#   include "third_party/blink/renderer/core/dom/layout_tree_builder.h"
+#   include "third_party/blink/renderer/core/dom/layout_tree_builder_traversal.h"
+#   include "third_party/blink/renderer/core/dom/node_computed_style.h"
+#   include "third_party/blink/renderer/core/dom/shadow_root.h"
+#   include "third_party/blink/renderer/core/dom/whitespace_attacher.h"
+#   include "third_party/blink/renderer/core/layout/layout_text.h"
+#   include "third_party/blink/renderer/core/layout/layout_text_combine.h"
+#   include "third_party/blink/renderer/core/layout/layout_text_fragment.h"
+#   include "third_party/blink/renderer/core/layout/ng/inline/layout_ng_text.h"
+#   include "third_party/blink/renderer/core/layout/svg/layout_svg_inline_text.h"
+#   include "third_party/blink/renderer/core/svg/svg_foreign_object_element.h"
+#   include "third_party/blink/renderer/core/svg_names.h"
+#endif
 
 namespace blink {
 
@@ -54,6 +68,9 @@ Text* Text::CreateEditingText(Document& document, const String& data) {
 }
 
 Node* Text::MergeNextSiblingNodesIfPossible() {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   // Remove empty text nodes.
   if (!length()) {
     // Care must be taken to get the next node before removing the current node.
@@ -98,9 +115,13 @@ Node* Text::MergeNextSiblingNodesIfPossible() {
   }
 
   return NodeTraversal::NextPostOrder(*this);
+#endif
 }
 
 Text* Text::splitText(unsigned offset, ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   // IndexSizeError: Raised if the specified offset is negative or greater than
   // the number of 16-bit units in data.
   if (offset > length()) {
@@ -137,6 +158,7 @@ Text* Text::splitText(unsigned offset, ExceptionState& exception_state) {
       DOMDataStore::GetWrapper(new_text, v8::Isolate::GetCurrent()).IsEmpty());
 
   return new_text;
+#endif
 }
 
 static const Text* EarliestLogicallyAdjacentTextNode(const Text* t) {
@@ -194,6 +216,9 @@ String Text::wholeText() const {
 }
 
 Text* Text::ReplaceWholeText(const String& new_text) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   // Remove all adjacent text nodes, and replace the contents of this one.
 
   // Protect startText and endText against mutation event handlers removing the
@@ -229,6 +254,7 @@ Text* Text::ReplaceWholeText(const String& new_text) {
 
   setData(new_text);
   return this;
+#endif
 }
 
 String Text::nodeName() const {
@@ -246,6 +272,8 @@ Node* Text::Clone(Document& factory, CloneChildrenFlag) const {
 static inline bool EndsWithWhitespace(const String& text) {
   return text.length() && IsASCIISpace(text[text.length() - 1]);
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
 
 static inline bool CanHaveWhitespaceChildren(
     const LayoutObject& parent,
@@ -467,12 +495,10 @@ void Text::UpdateTextLayoutObject(unsigned offset_of_replaced_data,
                                         length_of_replaced_data);
 }
 
+#endif // BLINKIT_CRAWLER_ONLY
+
 Text* Text::CloneWithData(Document& factory, const String& data) const {
   return Create(factory, data);
-}
-
-void Text::Trace(blink::Visitor* visitor) {
-  CharacterData::Trace(visitor);
 }
 
 }  // namespace blink

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: named_node_map.h
+// Description: NamedNodeMap Class
+//      Author: Ziming Li
+//     Created: 2019-10-31
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -63,8 +74,6 @@ class NamedNodeMap final : public ScriptWrappable {
 
   void NamedPropertyEnumerator(Vector<String>& names, ExceptionState&) const;
   bool NamedPropertyQuery(const AtomicString&, ExceptionState&) const;
-
-  void Trace(blink::Visitor*) override;
 
  private:
   explicit NamedNodeMap(Element* element) : element_(element) {

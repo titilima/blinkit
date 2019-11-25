@@ -249,4 +249,18 @@ void DocumentLifecycle::AdvanceTo(LifecycleState nextState)
     m_state = nextState;
 }
 
+bool DocumentLifecycle::StateAllowsTreeMutations(void) const
+{
+    switch (m_state)
+    {
+        case kInStyleRecalc:
+        case kInPerformLayout:
+        case kInCompositingUpdate:
+        case kInPrePaint:
+        case kInPaint:
+            return false;
+    }
+    return true;
+}
+
 }  // namespace blink
