@@ -25,7 +25,10 @@ public:
     BkURL(void) = default;
     explicit BkURL(const std::string &URLString);
 
+    static const BkURL& Blank(void) { return m_blank; }
+
     bool IsEmpty(void) const { return m_string.empty(); }
+    bool IsValid(void) const { return m_isValid; }
     const std::string& AsString(void) const { return m_string; }
 
     bool SchemeIs(std::string_view scheme) const;
@@ -47,8 +50,10 @@ private:
     }
 
     bool m_isValid = false;
-    const std::string m_string;
+    std::string m_string;
     url::Parsed m_parsed;
+
+    static BkURL m_blank;
 };
 
 } // namespace BlinKit

@@ -17,6 +17,8 @@ using namespace url;
 
 namespace BlinKit {
 
+BkURL BkURL::m_blank("about:blank");
+
 BkURL::BkURL(const std::string &URLString) : m_string(URLString)
 {
     ParseStandardURL(m_string.data(), m_string.length(), &m_parsed);
