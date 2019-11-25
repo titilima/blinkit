@@ -96,6 +96,9 @@
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_single_thread_task_runner.h">
       <Filter>blink_impl</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BkCrawler.def">
@@ -157,5 +160,10 @@
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_single_thread_task_runner.cpp">
       <Filter>blink_impl</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BkCrawler.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

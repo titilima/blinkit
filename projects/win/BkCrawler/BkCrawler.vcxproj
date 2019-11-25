@@ -186,6 +186,7 @@
     <ClInclude Include="..\..\..\src\blinkit\misc\controller_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\win\inet.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BkCrawler.def" />
@@ -229,6 +230,9 @@
     <ProjectReference Include="..\zlib\zlib.vcxproj">
       <Project>{1ee00a35-2f4a-45d0-8c75-80b936818a76}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BkCrawler.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
