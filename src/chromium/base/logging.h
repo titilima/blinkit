@@ -15,8 +15,18 @@
 #pragma once
 
 #include <cassert>
+#include "build/build_config.h"
 #include "base/compiler_specific.h"
 #include "base/macros.h"
+
+#ifdef OS_WIN
+#   ifdef ASSERT
+#       undef ASSERT
+#   endif
+#   define ASSERT(e)    (!(e) ? __debugbreak() : (void)0)
+#else
+#   define ASSERT   assert
+#endif
 
 namespace BlinKit {
 

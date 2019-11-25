@@ -32,6 +32,18 @@ int64_t SaturatedAdd(TimeDelta delta, int64_t value)
     return std::numeric_limits<int64_t>::max();
 }
 
+int64_t SaturatedSub(TimeDelta delta, int64_t value)
+{
+    CheckedNumeric<int64_t> rv(delta.m_delta);
+    rv -= value;
+    if (rv.IsValid())
+        return rv.ValueOrDie();
+    // Negative RHS overflows. Positive RHS underflows.
+    if (value < 0)
+        return std::numeric_limits<int64_t>::max();
+    return std::numeric_limits<int64_t>::min();
+}
+
 } // namespace time_internal
 
 Time Time::Now(void)
@@ -67,10 +79,20 @@ TimeDelta TimeDelta::FromProduct(int64_t value, int64_t positiveValue)
         : TimeDelta(value * positiveValue);
 }
 
+TimeDelta TimeDelta::FromSeconds(int64_t secs)
+{
+    return FromProduct(secs, Time::kMicrosecondsPerSecond);
+}
+
 TimeDelta TimeDelta::FromSecondsD(double secs)
 {
     assert(false); // BKTODO:
     return TimeDelta();
+}
+
+int64_t TimeDelta::InMilliseconds(void) const
+{
+    return DivideOrMax<int64_t>(Time::kMicrosecondsPerMillisecond);
 }
 
 double TimeDelta::InMillisecondsF(void) const
