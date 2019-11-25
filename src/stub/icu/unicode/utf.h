@@ -20,6 +20,10 @@
 
 #define U_IS_SUPPLEMENTARY(c) ((uint32_t)((c)-0x10000)<=0xfffff)
 
+#define U_IS_LEAD(c) (((c)&0xfffffc00)==0xd800)
+
+#define U_IS_TRAIL(c) (((c)&0xfffffc00)==0xdc00)
+
 #define U_IS_SURROGATE(c) (((c)&0xfffff800)==0xd800)
 
 #include "utf8.h"
