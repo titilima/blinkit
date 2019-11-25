@@ -198,6 +198,9 @@
     <ProjectReference Include="..\base\base.vcxproj">
       <Project>{f8e8dc22-c9eb-4274-bbc9-011d4106f84d}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\BkCommon\BkCommon.vcxproj">
+      <Project>{a0f4521b-ed40-4f21-a6df-db3c017dba1e}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\url\url.vcxproj">
       <Project>{849ce42e-6457-4c6d-8ba0-854932a2aedb}</Project>
     </ProjectReference>

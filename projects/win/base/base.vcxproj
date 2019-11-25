@@ -236,14 +236,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\base\cpu.cc" />
+    <ClCompile Include="..\..\..\src\chromium\base\hash.cc" />
+    <ClCompile Include="..\..\..\src\chromium\base\location.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\logging_win.cpp" />
     <ClCompile Include="..\..\..\src\chromium\base\rand_util_win.cc" />
+    <ClCompile Include="..\..\..\src\chromium\base\sequenced_task_runner.cpp" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\stringprintf.cc" />
+    <ClCompile Include="..\..\..\src\chromium\base\strings\string_number_conversions.cpp" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\string_split.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\string_util.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\string_util_constants.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\sys_string_conversions_win.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\strings\utf_string_conversion_utils.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\base\task_runner.cpp" />
     <ClCompile Include="..\..\..\src\chromium\base\third_party\nspr\prtime.cc" />
     <ClCompile Include="..\..\..\src\chromium\base\threading\thread_local_storage.cpp" />
     <ClCompile Include="..\..\..\src\chromium\base\threading\thread_local_storage_win.cpp" />
@@ -258,6 +263,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\base\_pc.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\auto_reset.h" />
     <ClInclude Include="..\..\..\src\chromium\base\base_export.h" />
     <ClInclude Include="..\..\..\src\chromium\base\bit_cast.h" />
     <ClInclude Include="..\..\..\src\chromium\base\callback.h" />
@@ -265,15 +271,18 @@
     <ClInclude Include="..\..\..\src\chromium\base\callback_internal.h" />
     <ClInclude Include="..\..\..\src\chromium\base\compiler_specific.h" />
     <ClInclude Include="..\..\..\src\chromium\base\cpu.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\debug\debugging_buildflags.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\debug\leak_annotations.h" />
     <ClInclude Include="..\..\..\src\chromium\base\format_macros.h" />
     <ClInclude Include="..\..\..\src\chromium\base\gtest_prod_util.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\hash.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\location.h" />
     <ClInclude Include="..\..\..\src\chromium\base\logging.h" />
     <ClInclude Include="..\..\..\src\chromium\base\macros.h" />
     <ClInclude Include="..\..\..\src\chromium\base\memory\ptr_util.h" />
     <ClInclude Include="..\..\..\src\chromium\base\memory\ref_counted.h" />
     <ClInclude Include="..\..\..\src\chromium\base\memory\scoped_policy.h" />
     <ClInclude Include="..\..\..\src\chromium\base\memory\scoped_refptr.h" />
-    <ClInclude Include="..\..\..\src\chromium\base\memory\weak_ptr.h" />
     <ClInclude Include="..\..\..\src\chromium\base\metrics\histogram_macros.h" />
     <ClInclude Include="..\..\..\src\chromium\base\move.h" />
     <ClInclude Include="..\..\..\src\chromium\base\numerics\checked_math.h" />
@@ -285,8 +294,9 @@
     <ClInclude Include="..\..\..\src\chromium\base\numerics\safe_math.h" />
     <ClInclude Include="..\..\..\src\chromium\base\numerics\safe_math_impl.h" />
     <ClInclude Include="..\..\..\src\chromium\base\numerics\safe_math_shared_impl.h" />
-    <ClInclude Include="..\..\..\src\chromium\base\observer_list.h" />
     <ClInclude Include="..\..\..\src\chromium\base\rand_util.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\sequenced_task_runner.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\single_thread_task_runner.h" />
     <ClInclude Include="..\..\..\src\chromium\base\stl_util.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\string16.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\stringprintf.h" />
@@ -299,6 +309,7 @@
     <ClInclude Include="..\..\..\src\chromium\base\strings\sys_string_conversions.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\utf_string_conversions.h" />
     <ClInclude Include="..\..\..\src\chromium\base\strings\utf_string_conversion_utils.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\task_runner.h" />
     <ClInclude Include="..\..\..\src\chromium\base\template_util.h" />
     <ClInclude Include="..\..\..\src\chromium\base\third_party\nspr\prtime.h" />
     <ClInclude Include="..\..\..\src\chromium\base\threading\thread_local_storage.h" />

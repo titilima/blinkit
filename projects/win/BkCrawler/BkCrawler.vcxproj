@@ -97,7 +97,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;BLINKIT_EXPORTS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;BLINKIT_EXPORTS;BLINKIT_CRAWLER_ONLY;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SrcRoot)blinkit;$(RepoRoot)sdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -131,7 +131,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;BLINKIT_EXPORTS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;BLINKIT_EXPORTS;BLINKIT_CRAWLER_ONLY;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SrcRoot)blinkit;$(RepoRoot)sdk\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -173,6 +173,11 @@
     <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\win_app.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\local_frame_client_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\thread_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_single_thread_task_runner.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_thread.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_document.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\request_controller_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\request_impl.h" />
@@ -194,6 +199,11 @@
     <ClCompile Include="..\..\..\src\blinkit\app\app_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\app\win_app.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\local_frame_client_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\thread_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_single_thread_task_runner.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_thread.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_document.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\request_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\response_impl.cpp" />
@@ -206,6 +216,9 @@
   <ItemGroup>
     <ProjectReference Include="..\base\base.vcxproj">
       <Project>{f8e8dc22-c9eb-4274-bbc9-011d4106f84d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\BkCommon\BkCommon.vcxproj">
+      <Project>{a0f4521b-ed40-4f21-a6df-db3c017dba1e}</Project>
     </ProjectReference>
     <ProjectReference Include="..\blink_crawler\blink_crawler.vcxproj">
       <Project>{368255a7-294a-481f-82a8-cb130feb5096}</Project>
