@@ -16,9 +16,20 @@
 
 #include "third_party/blink/renderer/platform/wtf/allocator/partitions.h"
 
-#define DISALLOW_NEW()                          \
-    void* operator new(size_t) = delete;        \
-    void* operator new(size_t, void *) = delete
+#define DISALLOW_NEW()                                      \
+public:                                                     \
+    void* operator new(size_t, NotNullTag, void *location)  \
+    {                                                       \
+        return location;                                    \
+    }                                                       \
+    void* operator new(size_t, void *location)              \
+    {                                                       \
+        return location;                                    \
+    }                                                       \
+private:                                                    \
+    void* operator new(size_t) = delete;                    \
+public:                                                     \
+    typedef int __thisIsHereToForceASemicolonAfterThisMacro
 
 #define STACK_ALLOCATED() DISALLOW_NEW()
 

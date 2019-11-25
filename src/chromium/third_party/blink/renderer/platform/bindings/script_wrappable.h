@@ -30,4 +30,8 @@ protected:
 
 }  // namespace blink
 
+#define DEFINE_WRAPPERTYPEINFO()        \
+private:                                \
+    typedef int ThisIsOnlyAPlaceholder
+
 #endif  // BLINKIT_BLINK_SCRIPT_WRAPPABLE_H

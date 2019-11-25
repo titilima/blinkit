@@ -31,4 +31,6 @@ protected:
 
 } // namespace blink
 
+#define USING_GARBAGE_COLLECTED_MIXIN(TYPE)
+
 #endif // BLINKIT_BLINK_GARBAGE_COLLECTED_H

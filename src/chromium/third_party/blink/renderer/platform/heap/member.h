@@ -22,13 +22,25 @@ class Member
 public:
     Member(T *ptr = nullptr) : m_rawPtr(ptr) {}
     Member(const Member &other) : m_rawPtr(other.Get()) {}
+    explicit Member(T &rawObj) : m_rawPtr(&rawObj) {}
 
     T* Get(void) const { return m_rawPtr; }
+    T* Release(void)
+    {
+        T* result = m_rawPtr;
+        m_rawPtr = nullptr;
+        return result;
+    }
 
     operator T*() const { return m_rawPtr; }
     T& operator*() const { return *m_rawPtr; }
     T* operator->() const { return m_rawPtr; }
     bool operator!() const { return !m_rawPtr; }
+
+    void Swap(Member<T> &other)
+    {
+        std::swap(m_rawPtr, other.m_rawPtr);
+    }
 private:
     T *m_rawPtr;
 };

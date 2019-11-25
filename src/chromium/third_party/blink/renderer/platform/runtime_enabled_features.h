@@ -33,6 +33,10 @@ class RuntimeEnabledFeatures final
 {
     STATIC_ONLY(RuntimeEnabledFeatures);
 public:
+    BLINK_DEFINE_STABLE_FEATURE(CSSInBodyDoesNotBlockPaint)
+    BLINK_DEFINE_STABLE_FEATURE(TrustedEventsDefaultAction)
+
+    BLINK_DEFINE_EXPERIMENTAL_FEATURE(InvisibleDOM)
 
     BLINKIT_DISABLE_FEATURE(SlimmingPaintV2)
 };
