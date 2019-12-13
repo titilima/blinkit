@@ -117,7 +117,7 @@ void ResponseImpl::GZipInflate(void)
 
 void ResponseImpl::ParseHeaders(const std::string &rawHeaders)
 {
-    std::regex pattern(R"(HTTP\/[\d+\.]+\s+(\d+).*?)");
+    std::regex pattern(R"(HTTP\/[\d+\.]+\s+(\d+))");
     std::smatch match;
     if (!std::regex_search(rawHeaders, match, pattern))
     {
@@ -128,7 +128,11 @@ void ResponseImpl::ParseHeaders(const std::string &rawHeaders)
     m_statusCode = std::stoi(match.str(1));
 
     std::string_view input(rawHeaders);
-    input = input.substr(match.length(0));
+    size_t p = input.find('\n', match.length(0));
+    if (std::string_view::npos == p)
+        return;
+
+    input = input.substr(p + 1);
 
     base::StringPairs headers;
     if (!base::SplitStringIntoKeyValuePairs(input, ':', '\n', &headers))
