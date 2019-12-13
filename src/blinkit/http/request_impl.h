@@ -30,8 +30,9 @@ public:
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
     virtual int Perform(void) = 0;
-    void SetMethod(const char *method) { m_method = method; }
+    void SetMethod(const std::string &method) { m_method = method; }
     virtual void SetHeader(const char *name, const char *value);
+    void SetHeaders(const BlinKit::BkHTTPHeaderMap &headers) { m_headers = headers; }
     void SetBody(const void *data, size_t dataLength);
     void SetTimeout(unsigned timeout) { m_timeoutInMs = timeout * 1000; }
     void SetProxy(const char *proxy);
