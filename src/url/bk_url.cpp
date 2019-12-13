@@ -42,6 +42,9 @@ std::string BkURL::PathForRequest(void) const
     if (m_parsed.ref.is_valid())
         return m_string.substr(m_parsed.path.begin, m_parsed.ref.begin - m_parsed.path.begin - 1);
 
+    if (!m_parsed.path.is_valid())
+        return std::string(1, '/');
+
     int pathLen = m_parsed.path.len;
     if (m_parsed.query.is_valid())
         pathLen = m_parsed.query.end() - m_parsed.path.begin;
@@ -64,9 +67,42 @@ bool BkURL::SchemeIs(std::string_view scheme) const
     return ComponentStringView(m_parsed.scheme) == scheme;
 }
 
+bool BkURL::SchemeIsData(void) const
+{
+    return SchemeIs(kDataScheme);
+}
+
 bool BkURL::SchemeIsHTTPOrHTTPS(void) const
 {
     return SchemeIs(kHttpScheme) || SchemeIs(kHttpsScheme);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool EqualIgnoringFragmentIdentifier(const BkURL &a, const BkURL &b)
+{
+    // Compute the length of each URL without its ref. Note that the reference
+    // begin (if it exists) points to the character *after* the '#', so we need
+    // to subtract one.
+    int al = a.m_string.length();
+    if (a.m_parsed.ref.len >= 0)
+        al = a.m_parsed.ref.begin - 1;
+
+    int bl = b.m_string.length();
+    if (b.m_parsed.ref.len >= 0)
+        bl = b.m_parsed.ref.begin - 1;
+
+    if (al != bl)
+        return false;
+
+    const std::string &as = a.m_string;
+    const std::string &bs = b.m_string;
+    for (int i = 0; i < al; ++i)
+    {
+        if (as.at(i) != bs.at(i))
+            return false;
+    }
+    return true;
 }
 
 } // namespace BlinKit

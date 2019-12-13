@@ -33,15 +33,19 @@ public:
 
     bool SchemeIs(std::string_view scheme) const;
     bool SchemeIsHTTPOrHTTPS(void) const;
+    bool SchemeIsData(void) const;
 
     std::string Host(void) const { return ComponentString(m_parsed.host); }
     std::string Username(void) const { return ComponentString(m_parsed.username); }
     std::string Password(void) const { return ComponentString(m_parsed.password); }
     int EffectiveIntPort(void) const;
     std::string PathForRequest(void) const;
+    bool HasRef(void) const { return m_parsed.ref.is_nonempty(); }
 
     BkURL Resolve(const std::string &relative) const;
 private:
+    friend bool EqualIgnoringFragmentIdentifier(const BkURL &a, const BkURL &b);
+
     std::string ComponentString(const url::Component &comp) const {
         return comp.is_nonempty() ? std::string(m_string.data() + comp.begin, comp.len) : std::string();
     }
@@ -55,6 +59,8 @@ private:
 
     static BkURL m_blank;
 };
+
+bool EqualIgnoringFragmentIdentifier(const BkURL &a, const BkURL &b);
 
 } // namespace BlinKit
 
