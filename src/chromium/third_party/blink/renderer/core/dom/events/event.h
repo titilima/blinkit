@@ -38,6 +38,7 @@
 
 #pragma once
 
+#include "base/memory/scoped_refptr.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_result.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
@@ -49,7 +50,7 @@ class EventDispatcher;
 class EventPath;
 class EventTarget;
 
-class Event : public ScriptWrappable
+class Event : public WTF::RefCounted<Event>, public ScriptWrappable
 {
 public:
     enum class Bubbles {
@@ -71,9 +72,13 @@ public:
         kScoped,
     };
 
-    static Event* CreateBubble(const AtomicString &type)
+    static scoped_refptr<Event> Create(const AtomicString &type)
     {
-        return new Event(type, Bubbles::kYes, Cancelable::kNo);
+        return AdoptRef(new Event(type, Bubbles::kNo, Cancelable::kNo));
+    }
+    static scoped_refptr<Event> CreateBubble(const AtomicString &type)
+    {
+        return AdoptRef(new Event(type, Bubbles::kYes, Cancelable::kNo));
     }
     ~Event(void) override;
 
@@ -97,9 +102,15 @@ public:
 
     bool DefaultHandled(void) const { return m_defaultHandled; }
 
+    bool WasInitialized(void) const { return m_wasInitialized; }
+
     bool isTrusted(void) const { return m_isTrusted; }
     void SetTrusted(bool value) { m_isTrusted = value; }
-    
+
+    bool FireOnlyCaptureListenersAtTarget(void) const { return m_fireOnlyCaptureListenersAtTarget; }
+
+    bool FireOnlyNonCaptureListenersAtTarget(void) const { return m_fireOnlyNonCaptureListenersAtTarget; }
+
     unsigned short eventPhase(void) const { return m_eventPhase; }
     void SetEventPhase(unsigned short eventPhase) { m_eventPhase = eventPhase; }
 
@@ -130,7 +141,14 @@ private:
     unsigned m_immediatePropagationStopped : 1;
     unsigned m_defaultPrevented : 1;
     unsigned m_defaultHandled : 1;
+    unsigned m_wasInitialized : 1;
     unsigned m_isTrusted : 1;
+
+    // This fields are effective only when
+    // CallCaptureListenersAtCapturePhaseAtShadowHosts runtime flag is enabled.
+    unsigned m_fireOnlyCaptureListenersAtTarget : 1;
+    unsigned m_fireOnlyNonCaptureListenersAtTarget : 1;
+
     unsigned short m_eventPhase = 0;
     Member<EventTarget> m_target, m_currentTarget;
     std::unique_ptr<EventPath> m_eventPath;

@@ -47,7 +47,10 @@ Event::Event(const AtomicString &eventType, Bubbles bubbles, Cancelable cancelab
     , m_immediatePropagationStopped(false)
     , m_defaultPrevented(false)
     , m_defaultHandled(false)
+    , m_wasInitialized(true)
     , m_isTrusted(false)
+    , m_fireOnlyCaptureListenersAtTarget(false)
+    , m_fireOnlyNonCaptureListenersAtTarget(false)
     , m_platformTimeStamp(platformTimeStamp)
 {
 }

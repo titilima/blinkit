@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: registered_event_listener.h
+// Description: RegisteredEventListener Class
+//      Author: Ziming Li
+//     Created: 2019-12-21
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -26,7 +37,6 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_DOM_EVENTS_REGISTERED_EVENT_LISTENER_H_
 
 #include "base/memory/scoped_refptr.h"
-#include "third_party/blink/renderer/platform/bindings/trace_wrapper_member.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 
 namespace blink {
@@ -47,13 +57,11 @@ class RegisteredEventListener final {
                           const AddEventListenerOptionsResolved& options);
   RegisteredEventListener& operator=(const RegisteredEventListener& that);
 
-  void Trace(Visitor* visitor);
-
   AddEventListenerOptionsResolved Options() const;
 
-  const EventListener* Callback() const { return callback_; }
+  const EventListener* Callback() const { return callback_.get(); }
 
-  EventListener* Callback() { return callback_; }
+  EventListener* Callback() { return callback_.get(); }
 
   void SetCallback(EventListener* listener);
 
@@ -85,7 +93,7 @@ class RegisteredEventListener final {
   bool operator==(const RegisteredEventListener& other) const;
 
  private:
-  TraceWrapperMember<EventListener> callback_;
+  std::shared_ptr<EventListener> callback_;
   unsigned use_capture_ : 1;
   unsigned passive_ : 1;
   unsigned once_ : 1;
@@ -95,7 +103,5 @@ class RegisteredEventListener final {
 };
 
 }  // namespace blink
-
-WTF_ALLOW_CLEAR_UNUSED_SLOTS_WITH_MEM_FUNCTIONS(blink::RegisteredEventListener);
 
 #endif  // THIRD_PARTY_BLINK_RENDERER_CORE_DOM_EVENTS_REGISTERED_EVENT_LISTENER_H_

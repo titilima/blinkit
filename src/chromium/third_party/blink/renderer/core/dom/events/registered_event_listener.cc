@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: registered_event_listener.cc
+// Description: RegisteredEventListener Class
+//      Author: Ziming Li
+//     Created: 2019-12-21
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -54,10 +65,6 @@ RegisteredEventListener::RegisteredEventListener(
 RegisteredEventListener& RegisteredEventListener::operator=(
     const RegisteredEventListener& that) = default;
 
-void RegisteredEventListener::Trace(Visitor* visitor) {
-  visitor->Trace(callback_);
-}
-
 AddEventListenerOptionsResolved RegisteredEventListener::Options() const {
   AddEventListenerOptionsResolved result;
   result.setCapture(use_capture_);
@@ -69,7 +76,7 @@ AddEventListenerOptionsResolved RegisteredEventListener::Options() const {
 }
 
 void RegisteredEventListener::SetCallback(EventListener* listener) {
-  callback_ = listener;
+  callback_ = listener->shared_from_this();
 }
 
 bool RegisteredEventListener::Matches(

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: add_event_listener_options_resolved.h
+// Description: AddEventListenerOptionsResolved Class
+//      Author: Ziming Li
+//     Created: 2019-12-21
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -33,8 +44,6 @@ class CORE_EXPORT AddEventListenerOptionsResolved
   // created by callee.
   void SetPassiveSpecified(bool specified) { passive_specified_ = specified; }
   bool PassiveSpecified() const { return passive_specified_; }
-
-  void Trace(blink::Visitor*) override;
 
  private:
   bool passive_forced_for_document_target_;
