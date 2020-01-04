@@ -18,6 +18,9 @@
     <Filter Include="base\registry_controlled_domains">
       <UniqueIdentifier>{bae4ada9-0cf2-49f6-a95c-058ccc6fdd0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="http">
+      <UniqueIdentifier>{778473fd-da06-486e-8c75-187e96a5eab5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -43,6 +46,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\net\base\registry_controlled_domains\registry_controlled_domain.cpp">
       <Filter>base\registry_controlled_domains</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\net\http\http_util.cpp">
+      <Filter>http</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +78,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\net\base\registry_controlled_domains\registry_controlled_domain.h">
       <Filter>base\registry_controlled_domains</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\net\http\http_util.h">
+      <Filter>http</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
