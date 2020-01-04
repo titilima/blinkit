@@ -4,7 +4,7 @@
 //   File Name: event_type_names.h
 // Description: Event Type Names
 //      Author: Ziming Li
-//     Created: 2019-11-21
+//     Created: 2019-12-29
 // -------------------------------------------------
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
@@ -21,8 +21,10 @@ namespace event_type_names {
 
 extern const WTF::AtomicString &kDOMContentLoaded;
 extern const WTF::AtomicString &kLoad;
+extern const WTF::AtomicString &kReadystatechange;
+extern const WTF::AtomicString &kUnload;
 
-constexpr unsigned kNamesCount = 2;
+constexpr unsigned kNamesCount = 4;
 
 void Init(void);
 

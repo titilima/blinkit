@@ -1,4 +1,6 @@
 [
     { "name": "DOMContentLoaded", "hash": 10217403 },
-    { "name": "load", "hash": 8207817 }
+    { "name": "load", "hash": 8207817 },
+    { "name": "readystatechange", "hash": 11011948 },
+    { "name": "unload", "hash": 4411490 }
 ]

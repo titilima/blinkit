@@ -4,7 +4,7 @@
 //   File Name: event_type_names.cpp
 // Description: Event Type Names
 //      Author: Ziming Li
-//     Created: 2019-11-21
+//     Created: 2019-12-29
 // -------------------------------------------------
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
@@ -20,6 +20,8 @@ static void* names_storage[kNamesCount * ((sizeof(AtomicString) + sizeof(void *)
 
 const AtomicString &kDOMContentLoaded = reinterpret_cast<AtomicString *>(&names_storage)[0];
 const AtomicString &kLoad = reinterpret_cast<AtomicString *>(&names_storage)[1];
+const AtomicString &kReadystatechange = reinterpret_cast<AtomicString *>(&names_storage)[2];
+const AtomicString &kUnload = reinterpret_cast<AtomicString *>(&names_storage)[3];
 
 void Init(void)
 {
@@ -37,6 +39,8 @@ void Init(void)
     static const NameEntry kNames[] = {
         { "DOMContentLoaded", 10217403, 16 },
         { "load", 8207817, 4 },
+        { "readystatechange", 11011948, 16 },
+        { "unload", 4411490, 6 },
     };
 
     for (size_t i = 0; i < std::size(kNames); ++i)

@@ -38,6 +38,7 @@
     { "name": "figure", "hash": 13776479, "is_tag": true },
     { "name": "font", "hash": 4588695, "is_tag": true },
     { "name": "footer", "hash": 13359933, "is_tag": true },
+    { "name": "for", "hash": 4145292, "is_attr": true },
     { "name": "form", "hash": 10060301, "is_tag": true, "is_attr": true },
     { "name": "frame", "hash": 3408403, "is_tag": true, "is_attr": true },
     { "name": "frameset", "hash": 11229107, "is_tag": true },
