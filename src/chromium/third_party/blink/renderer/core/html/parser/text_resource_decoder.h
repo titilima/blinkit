@@ -77,10 +77,15 @@ public:
 
     String Decode(const char *data, size_t length);
     String Flush(void);
+
+    wtf_size_t CheckForBOM(const char *data, wtf_size_t len);
 protected:
     TextResourceDecoder(const TextResourceDecoderOptions &options);
 private:
     void AutoDetectEncodingIfAllowed(const char *data, wtf_size_t len);
+    bool CheckForCSSCharset(const char *data, wtf_size_t len, bool &movedDataToBuffer);
+    bool CheckForXMLCharset(const char *data, wtf_size_t len, bool &movedDataToBuffer);
+    void CheckForMetaCharset(const char *data, wtf_size_t length);
 
     const TextResourceDecoderOptions m_options;
     WTF::TextEncoding m_encoding;
@@ -90,7 +95,9 @@ private:
     bool m_checkedForBom = false;
     bool m_checkedForCssCharset = false;
     bool m_checkedForXmlCharset = false;
+    bool m_checkedForMetaCharset = false;
     bool m_sawError = false;
+    bool m_detectionCompleted = false;
 
     DISALLOW_COPY_AND_ASSIGN(TextResourceDecoder);
 };

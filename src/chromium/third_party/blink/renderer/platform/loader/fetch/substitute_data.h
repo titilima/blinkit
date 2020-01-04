@@ -53,9 +53,9 @@ class SubstituteData
 public:
     SubstituteData(void) = default;
 
-    bool IsValid(void) const { return nullptr != m_content.get(); }
+    bool IsValid(void) const { return !!m_content; }
 private:
-    scoped_refptr<SharedBuffer> m_content;
+    std::shared_ptr<SharedBuffer> m_content;
 };
 
 }  // namespace blink

@@ -13,6 +13,7 @@
 
 #include "base/strings/sys_string_conversions.h"
 #include "blinkit/blink_impl/win_single_thread_task_runner.h"
+#include "third_party/blink/renderer/platform/wtf/wtf.h"
 #if 0 // BKTODO:
 #include "base/win/resource_util.h"
 
@@ -27,17 +28,14 @@
 namespace BlinKit {
 
 WinApp::WinApp(void)
+    : m_msgHook(SetWindowsHookEx(WH_GETMESSAGE, HookProc, nullptr, GetCurrentThreadId()))
+    , m_taskRunner(std::make_shared<WinSingleThreadTaskRunner>())
 {
-#if 0 // BKTODO:
-    m_msgHook = SetWindowsHookEx(WH_GETMESSAGE, HookProc, nullptr, GetCurrentThreadId());
-#endif
 }
 
 WinApp::~WinApp(void)
 {
-#if 0 // BKTODO:
     UnhookWindowsHookEx(m_msgHook);
-#endif
 }
 
 WTF::String WinApp::DefaultLocale(void)
@@ -61,12 +59,9 @@ WinApp& WinApp::Get(void)
 
 std::shared_ptr<base::SingleThreadTaskRunner> WinApp::GetTaskRunner(void) const
 {
-    if (!m_taskRunner)
-        m_taskRunner = std::make_shared<WinSingleThreadTaskRunner>();
     return m_taskRunner;
 }
 
-#if 0 // BKTODO:
 LRESULT CALLBACK WinApp::HookProc(int code, WPARAM w, LPARAM l)
 {
     WinApp &app = Get();
@@ -75,11 +70,12 @@ LRESULT CALLBACK WinApp::HookProc(int code, WPARAM w, LPARAM l)
             break;
 
         LPMSG msg = reinterpret_cast<LPMSG>(l);
-        static_cast<WinTaskRunner *>(app.taskRunner())->ProcessMessage(*msg);
+        app.m_taskRunner->ProcessMessage(*msg);
     } while (false);
     return CallNextHookEx(app.m_msgHook, code, w, l);
 }
 
+#if 0 // BKTODO:
 #ifndef BLINKIT_CRAWLER_ONLY
 
 blink::WebClipboard* WinApp::clipboard(void)

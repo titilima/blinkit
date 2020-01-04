@@ -46,6 +46,7 @@
 #pragma once
 
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_result.h"
+#include "third_party/blink/renderer/core/dom/events/event_listener_map.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
@@ -53,6 +54,17 @@
 namespace blink {
 
 class Event;
+
+class EventTargetData final : public GarbageCollectedFinalized<EventTargetData>
+{
+public:
+    EventTargetData(void) = default;
+    ~EventTargetData(void) = default;
+
+    EventListenerMap eventListenerMap;
+private:
+    DISALLOW_COPY_AND_ASSIGN(EventTargetData);
+};
 
 class EventTarget : public ScriptWrappable
 {
@@ -68,10 +80,18 @@ protected:
     EventTarget(void) = default;
 
     virtual DispatchEventResult DispatchEventInternal(Event &event);
+
+    // Subclasses should likely not override these themselves; instead, they
+    // should subclass EventTargetWithInlineData.
+    virtual EventTargetData* GetEventTargetData(void) = 0;
 };
 
 class EventTargetWithInlineData : public EventTarget
 {
+protected:
+    EventTargetData* GetEventTargetData(void) final { return &m_eventTargetData; }
+private:
+    EventTargetData m_eventTargetData;
 };
 
 }  // namespace blink

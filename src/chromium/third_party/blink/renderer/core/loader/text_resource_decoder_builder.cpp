@@ -82,7 +82,7 @@ static const WTF::TextEncoding GetEncodingFromDomain(const BkURL &url)
     if (std::string::npos != p)
     {
         std::string tld = host.substr(p + 1);
-        assert(false); // BKTODO: Test it!
+        ASSERT(false); // BKTODO: Test it!
         for (const LegacyEncoding &e : kEncodings)
         {
             if (tld == e.domain)
@@ -112,7 +112,7 @@ std::unique_ptr<TextResourceDecoder> BuildTextResourceDecoderFor(
         defaultEncoding, WTF::TextEncoding(), document->Url());
 
     std::unique_ptr<TextResourceDecoder> decoder = TextResourceDecoder::Create(options);
-    assert(decoder);
+    ASSERT(decoder);
 
     if (!encoding.IsEmpty())
         decoder->SetEncoding(WTF::TextEncoding(encoding.GetString()), TextResourceDecoder::kEncodingFromHTTPHeader);
@@ -120,4 +120,4 @@ std::unique_ptr<TextResourceDecoder> BuildTextResourceDecoderFor(
     return decoder;
 }
 
-}  // namespace blink
+} // namespace blink

@@ -40,12 +40,22 @@
 
 #pragma once
 
-#include "third_party/blink/renderer/platform/wtf/ref_counted.h"
+#include <vector>
 
 namespace blink {
 
-class SharedBuffer : public RefCounted<SharedBuffer>
+class SharedBuffer : public std::enable_shared_from_this<SharedBuffer>
 {
+public:
+    static std::shared_ptr<SharedBuffer> Create(const char *data, size_t length);
+
+    size_t size(void) const { return m_data.size(); }
+
+    void Append(const char *data, size_t length);
+private:
+    SharedBuffer(const char *data, size_t length);
+
+    std::vector<char> m_data;
 };
 
 }  // namespace blink

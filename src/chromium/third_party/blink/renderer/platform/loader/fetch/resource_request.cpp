@@ -37,12 +37,30 @@
 
 #include "resource_request.h"
 
+#include "third_party/blink/renderer/platform/network/http_names.h"
+
 using namespace BlinKit;
 
 namespace blink {
 
-ResourceRequest::ResourceRequest(const BkURL &URL) : m_URL(URL)
+ResourceRequest::ResourceRequest(const BkURL &URL)
+    : m_URL(URL)
+    , m_httpMethod(http_names::kGET)
+    , m_downloadToBlob(false)
+    , m_keepalive(false)
 {
+}
+
+EncodedFormData* ResourceRequest::HttpBody(void) const
+{
+    ASSERT(false); // BKTODO:
+    return nullptr;
+}
+
+void ResourceRequest::SetHTTPUserAgent(const String &httpUserAgent)
+{
+    std::string name = http_names::kUserAgent.StdUtf8();
+    m_headers.Set(name, httpUserAgent.StdUtf8());
 }
 
 }  // namespace blink

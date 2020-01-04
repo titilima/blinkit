@@ -34,7 +34,11 @@ private:
         delete this;
         return BK_ERR_SUCCESS;
     }
-    int ContinueWorking(void) override { return BK_ERR_FORBIDDEN; }
+    int ContinueWorking(void) override
+    {
+        assert(false); // Not reached!
+        return BK_ERR_FORBIDDEN;
+    }
     int CancelWork(void) override
     {
         m_request.Cancel();

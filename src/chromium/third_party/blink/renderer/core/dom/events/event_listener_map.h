@@ -50,6 +50,7 @@
 #include "base/macros.h"
 #include "third_party/blink/renderer/core/dom/events/registered_event_listener.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
+#include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
 namespace blink {
 
@@ -62,7 +63,11 @@ class EventListenerMap final
     DISALLOW_NEW();
 public:
     EventListenerMap(void) = default;
+
+    EventListenerVector* Find(const AtomicString &eventType);
 private:
+    std::vector<std::pair<AtomicString, std::unique_ptr<EventListenerVector>>> m_entries;
+
     DISALLOW_COPY_AND_ASSIGN(EventListenerMap);
 };
 

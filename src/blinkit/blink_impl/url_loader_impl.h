@@ -14,29 +14,24 @@
 
 #pragma once
 
-#include "public/platform/WebURLLoader.h"
+#include "third_party/blink/public/platform/web_url_loader.h"
 
-namespace blink {
-class KURL;
+namespace base {
+class SingleThreadTaskRunner;
 }
 
 namespace BlinKit {
 
-class LoaderTask;
-
 class URLLoaderImpl final : public blink::WebURLLoader
 {
 public:
-    URLLoaderImpl(void);
+    URLLoaderImpl(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner);
+    ~URLLoaderImpl(void) override;
 private:
     // blink::WebURLLoader
-    void loadSynchronously(const blink::WebURLRequest &, blink::WebURLResponse&, blink::WebURLError&, blink::WebData& data) override;
-    void loadAsynchronously(const blink::WebURLRequest &request, blink::WebURLLoaderClient *client) override;
-    void cancel(void) override;
-    void setDefersLoading(bool) override;
-    void setLoadingTaskRunner(blink::WebTaskRunner *taskRunner) override { m_taskRunner = taskRunner; }
+    void LoadAsynchronously(const blink::ResourceRequest &request, blink::WebURLLoaderClient *client) override;
 
-    blink::WebTaskRunner *m_taskRunner;
+    std::shared_ptr<base::SingleThreadTaskRunner> m_taskRunner;
 };
 
 } // namespace BlinKit

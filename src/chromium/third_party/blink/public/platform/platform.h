@@ -49,7 +49,13 @@
 #include "third_party/blink/renderer/platform/scheduler/public/thread.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
+namespace base {
+class SingleThreadTaskRunner;
+}
+
 namespace blink {
+
+class WebURLLoader;
 
 namespace scheduler {
 class WebThreadScheduler;
@@ -64,6 +70,7 @@ public:
     Thread* CurrentThread(void);
 
     virtual WTF::String DefaultLocale(void) { return String("en-US"); }
+    virtual std::unique_ptr<WebURLLoader> CreateURLLoader(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner);
 protected:
     void AttachMainThread(Thread *thread);
 

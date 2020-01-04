@@ -41,6 +41,24 @@
 
 #include "fetch_context.h"
 
+#include "base/single_thread_task_runner.h"
+
 namespace blink {
+
+FetchContext::FetchContext(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner)
+    : m_taskRunner(taskRunner)
+{
+}
+
+FetchContext::~FetchContext(void) = default;
+
+void FetchContext::DispatchWillSendRequest(
+    unsigned long identifier,
+    ResourceRequest &request,
+    const ResourceResponse &redirectResponse,
+    ResourceType resourceType,
+    const FetchInitiatorInfo &initiatorInfo)
+{
+}
 
 }  // namespace blink

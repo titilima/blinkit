@@ -11,52 +11,40 @@
 
 #include "url_loader_impl.h"
 
-#include "public/platform/Platform.h"
-#include "public/platform/WebTraceLocation.h"
-#include "public/platform/WebURL.h"
-#include "public/platform/WebURLLoaderClient.h"
-
-#include "app/app_impl.h"
-#include "loader_tasks/loader_task.h"
+#include "base/single_thread_task_runner.h"
+#include "blinkit/loader_tasks/http_loader_task.h"
+#include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
 
 using namespace blink;
 
 namespace BlinKit {
 
-URLLoaderImpl::URLLoaderImpl(void) : m_taskRunner(Platform::current()->currentThread()->taskRunner())
+URLLoaderImpl::URLLoaderImpl(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner) : m_taskRunner(taskRunner)
 {
     // Nothing
 }
 
-void URLLoaderImpl::cancel(void)
-{
-    // Currently nothing to do.
-}
+URLLoaderImpl::~URLLoaderImpl(void) = default;
 
-void URLLoaderImpl::loadAsynchronously(const WebURLRequest &request, WebURLLoaderClient *client)
+void URLLoaderImpl::LoadAsynchronously(const ResourceRequest &request, WebURLLoaderClient *client)
 {
-    LoaderTask *task = LoaderTask::Create(request, client);
+    const BkURL &url = request.Url();
+
+    LoaderTask *task = nullptr;
+    do {
+        if (url.SchemeIsHTTPOrHTTPS())
+        {
+            ASSERT(nullptr != request.Crawler());
+            task = new HTTPLoaderTask(request.Crawler(), m_taskRunner, client);
+        }
+
+    } while (false);
+
+    int error = BK_ERR_URI;
     if (nullptr != task)
-    {
-        task->Setup(this, m_taskRunner);
-        AppImpl::Get().IOThread().taskRunner()->postTask(BLINK_FROM_HERE, task);
-    }
-    else
-    {
-        WebURLError e;
-        e.reason = BkError::UnknownError;
-        client->didFail(this, e);
-    }
-}
-
-void URLLoaderImpl::loadSynchronously(const WebURLRequest &, WebURLResponse&, WebURLError&, WebData& data)
-{
-    assert(false); // Not reached!
-}
-
-void URLLoaderImpl::setDefersLoading(bool)
-{
-    assert(false); // Not reached!
+        error = task->Run(request);
+    if (BK_ERR_SUCCESS != error)
+        LoaderTask::ReportError(m_taskRunner.get(), error);
 }
 
 } // namespace BlinKit

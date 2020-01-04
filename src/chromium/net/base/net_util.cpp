@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - base Library
+// BlinKit - net Library
 // -------------------------------------------------
 //   File Name: net_util.cpp
 // Description: Net Utilities

@@ -49,7 +49,6 @@
 #include "third_party/blink/renderer/core/dom/space_split_string.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
-#include "third_party/blink/renderer/platform/wtf/ref_counted.h"
 
 namespace blink {
 
@@ -59,11 +58,9 @@ class UniqueElementData;
 
 // ElementData represents very common, but not necessarily unique to an element,
 // data such as attributes, inline style, and parsed class names and ids.
-class ElementData : public WTF::RefCounted<ElementData> {
+class ElementData : public GarbageCollectedFinalized<ElementData> {
  public:
-  // Override GarbageCollectedFinalized's finalizeGarbageCollectedObject to
-  // dispatch to the correct subclass destructor.
-  void FinalizeGarbageCollectedObject();
+  virtual ~ElementData(void) = default;
 
   void ClearClass() const { class_names_.Clear(); }
   void SetClass(const AtomicString& class_name, bool should_fold_case) const {
@@ -98,8 +95,7 @@ class ElementData : public WTF::RefCounted<ElementData> {
   explicit ElementData(unsigned array_size);
   ElementData(const ElementData&, bool is_unique);
 
-  // Keep the type in a bitfield instead of using virtual destructors to avoid
-  // adding a vtable.
+  // Keep the type in a bitfield instead of using a virtual 'IsUnique' function member.
   unsigned is_unique_ : 1;
   unsigned array_size_ : 28;
   mutable unsigned presentation_attribute_style_is_dirty_ : 1;
@@ -138,22 +134,15 @@ class ElementData : public WTF::RefCounted<ElementData> {
 // duplicate sets of attributes (ex. the same classes).
 class ShareableElementData final : public ElementData {
  public:
-  static ShareableElementData* CreateWithAttributes(const Vector<Attribute>&);
-
-  explicit ShareableElementData(const Vector<Attribute>&);
-  explicit ShareableElementData(const UniqueElementData&);
-  ~ShareableElementData();
-
-  // Add support for placement new as ShareableElementData is not allocated
-  // with a fixed size. Instead the allocated memory size is computed based on
-  // the number of attributes. This requires us to use ThreadHeap::allocate
-  // directly with the computed size and subsequently call placement new with
-  // the allocated memory address.
-  void* operator new(std::size_t, void* location) { return location; }
+  static std::shared_ptr<ShareableElementData> CreateWithAttributes(const Vector<Attribute>&);
+  ~ShareableElementData(void) override;
 
   AttributeCollection Attributes() const;
 
-  Attribute attribute_array_[0];
+  Attribute *attribute_array_;
+private:
+  explicit ShareableElementData(const Vector<Attribute>&);
+  explicit ShareableElementData(const UniqueElementData&);
 };
 
 DEFINE_ELEMENT_DATA_TYPE_CASTS(ShareableElementData,

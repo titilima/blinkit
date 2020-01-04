@@ -43,6 +43,7 @@
 
 #pragma once
 
+#include "third_party/blink/public/web/web_frame_load_type.h"
 #include "third_party/blink/public/web/web_global_object_reuse_policy.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/loader/fetch/raw_resource.h"
@@ -58,6 +59,7 @@ class DocumentParser;
 class FrameLoader;
 class LocalFrame;
 class LocalFrameClient;
+class ResourceError;
 class ResourceFetcher;
 
 class DocumentLoader : public GarbageCollectedFinalized<DocumentLoader>, private RawResourceClient
@@ -66,14 +68,31 @@ public:
     ~DocumentLoader(void) override;
 
     LocalFrame* GetFrame(void) const { return m_frame; }
+    std::shared_ptr<ResourceFetcher> Fetcher(void) const { return m_fetcher; }
     const ResourceResponse& GetResponse(void) const { return m_response; }
     const BlinKit::BkURL& Url(void) const { return m_currentRequest.Url(); }
+    WebFrameLoadType LoadType(void) const { return m_loadType; }
+    void SetLoadType(WebFrameLoadType loadType) { m_loadType = loadType; }
 
+    void AppendRedirect(const BlinKit::BkURL &url) { m_redirectChain.push_back(url); }
+
+    // Without PlzNavigate, this is only false for a narrow window during
+    // navigation start. For PlzNavigate, a navigation sent to the browser will
+    // leave a dummy DocumentLoader in the NotStarted state until the navigation
+    // is actually handled in the renderer.
+    bool DidStart(void) const { return m_state != kNotStarted; }
     void StartLoading(void);
+    void StopLoading(void);
     void MarkAsCommitted(void);
+    bool SentDidFinishLoad(void) const { return kSentDidFinishLoad == m_state; }
     void SetSentDidFinishLoad(void) { m_state = kSentDidFinishLoad; }
+    void LoadFailed(const ResourceError &error);
+
+    virtual void DetachFromFrame(bool flushMicrotaskQueue);
 protected:
     DocumentLoader(LocalFrame *frame, const ResourceRequest &request, const SubstituteData &substituteData);
+
+    std::vector<BlinKit::BkURL> m_redirectChain;
 private:
     FrameLoader& GetFrameLoader(void) const;
     LocalFrameClient& GetLocalFrameClient(void) const;
@@ -92,18 +111,34 @@ private:
     void CommitData(const char *bytes, size_t length);
     void FinishedLoading(void);
     bool MaybeLoadEmpty(void);
+    void ProcessData(const char *data, size_t length);
+    // Processes the data stored in the m_dataBuffer, used to avoid appending data
+    // to the parser in a nested message loop.
+    void ProcessDataBuffer();
+
+    bool ShouldContinueForResponse(void) const;
+
+    // ResourceClient overrides
+    void DataReceived(Resource *resource, const char *data, size_t length) final;
+    void NotifyFinished(Resource *resource) final;
+    // RawResourceClient overrides
+    void ResponseReceived(Resource *resource, const ResourceResponse &response) final;
 
     Member<LocalFrame> m_frame;
-    std::unique_ptr<ResourceFetcher> m_fetcher;
+    std::shared_ptr<ResourceFetcher> m_fetcher;
     std::shared_ptr<DocumentParser> m_parser;
     ResourceRequest m_originalRequest, m_currentRequest;
     SubstituteData m_substituteData;
     ResourceResponse m_response;
+    WebFrameLoadType m_loadType = WebFrameLoadType::kStandard;
 
     enum State { kNotStarted, kProvisional, kCommitted, kSentDidFinishLoad };
     State m_state = kNotStarted;
 
     bool m_dataReceived = false;
+    // Used to protect against reentrancy into dataReceived().
+    bool m_inDataReceived = false;
+    std::shared_ptr<SharedBuffer> m_dataBuffer;
 };
 
 }  // namespace blink

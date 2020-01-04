@@ -19,6 +19,7 @@
 namespace BlinKit {
 
 class WinClipboard;
+class WinSingleThreadTaskRunner;
 class WinThemeEngine;
 
 class WinApp final : public AppImpl
@@ -29,19 +30,15 @@ public:
 
     static WinApp& Get(void);
 private:
-#if 0 // BKTODO:
     static LRESULT CALLBACK HookProc(int code, WPARAM w, LPARAM l);
-#endif
 
     // blink::Platform
     WTF::String DefaultLocale(void) override;
     // blink::Thread
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(void) const override;
 
-#if 0 // BKTODO:
     HHOOK m_msgHook;
-#endif
-    mutable std::shared_ptr<base::SingleThreadTaskRunner> m_taskRunner;
+    std::shared_ptr<WinSingleThreadTaskRunner> m_taskRunner;
 
 #if 0 // BKTODO:
 #ifndef BLINKIT_CRAWLER_ONLY

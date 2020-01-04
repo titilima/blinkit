@@ -64,6 +64,11 @@ public:
     void Reset(void);
 
     Document* InstallNewDocument(const DocumentInit &init);
+
+    DispatchEventResult DispatchEvent(Event &event, EventTarget *target);
+
+    void DocumentWasClosed(void);
+    void FinishedLoading(void);
 private:
     explicit LocalDOMWindow(LocalFrame &frame);
 

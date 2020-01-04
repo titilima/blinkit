@@ -60,11 +60,16 @@ public:
     ResourceResponse(void) = default;
     explicit ResourceResponse(const BlinKit::BkURL &URL);
 
+    bool IsNull(void) const { return m_isNull; }
+
     const AtomicString& MimeType(void) const { return m_mimeType; }
     void SetMimeType(const AtomicString &mimeType);
 
     const AtomicString& TextEncodingName(void) const { return m_textEncodingName; }
     void SetTextEncodingName(const AtomicString &encodingName);
+
+    int HttpStatusCode(void) const { return m_httpStatusCode; }
+    void SetHTTPStatusCode(int statusCode) { m_httpStatusCode = statusCode; }
 
     AtomicString HttpHeaderField(const AtomicString &name) const;
 
@@ -74,6 +79,8 @@ private:
     bool m_isNull = true;
     BlinKit::BkURL m_URL;
     AtomicString m_mimeType, m_textEncodingName;
+
+    int m_httpStatusCode = 0;
     BlinKit::BkHTTPHeaderMap m_httpHeaderFields;
 };
 

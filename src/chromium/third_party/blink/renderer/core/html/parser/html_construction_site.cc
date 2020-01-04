@@ -212,8 +212,6 @@ void HTMLConstructionSite::ExecuteTask(HTMLConstructionSiteTask& task) {
 static unsigned FindBreakIndexBetween(const StringBuilder& string,
                                       unsigned current_position,
                                       unsigned proposed_break_index) {
-  ASSERT(false); // BKTODO:
-#if 0
   DCHECK_LT(current_position, proposed_break_index);
   DCHECK_LE(proposed_break_index, string.length());
   // The end of the string is always a valid break.
@@ -225,6 +223,8 @@ static unsigned FindBreakIndexBetween(const StringBuilder& string,
   if (string.Is8Bit())
     return proposed_break_index;
 
+  ASSERT(false); // BKTODO:
+#if 0
   const UChar* break_search_characters =
       string.Characters16() + current_position;
   // We need at least two characters look-ahead to account for UTF-16
@@ -776,11 +776,12 @@ void HTMLConstructionSite::InsertTextNode(const StringView& string,
   if (ShouldFosterParent())
     FindFosterSite(dummy_task);
 
+#ifndef BLINKIT_CRAWLER_ONLY
   ASSERT(false); // BKTODO:
-#if 0
   // FIXME: This probably doesn't need to be done both here and in insert(Task).
   if (auto* template_element = ToHTMLTemplateElementOrNull(*dummy_task.parent))
     dummy_task.parent = template_element->content();
+#endif
 
   // Unclear when parent != case occurs. Somehow we insert text into two
   // separate nodes while processing the same Token. The nextChild !=
@@ -793,7 +794,6 @@ void HTMLConstructionSite::InsertTextNode(const StringView& string,
     FlushPendingText(kFlushAlways);
   pending_text_.Append(dummy_task.parent, dummy_task.next_child, string,
                        whitespace_mode);
-#endif
 }
 
 void HTMLConstructionSite::Reparent(HTMLElementStack::ElementRecord* new_parent,

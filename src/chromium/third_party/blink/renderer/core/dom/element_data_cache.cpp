@@ -37,6 +37,48 @@
 
 #include "element_data_cache.h"
 
+#include "third_party/blink/renderer/core/dom/element_data.h"
+#include "third_party/blink/renderer/platform/wtf/string_hasher.h"
+
 namespace blink {
+
+ElementDataCache::~ElementDataCache(void) = default;
+
+inline unsigned AttributeHash(const Vector<Attribute> &attributes)
+{
+    return StringHasher::HashMemory(attributes.data(), attributes.size() * sizeof(Attribute));
+}
+
+inline bool HasSameAttributes(const Vector<Attribute> &attributes, ShareableElementData &elementData)
+{
+    if (attributes.size() != elementData.Attributes().size())
+        return false;
+    return 0 == memcmp(attributes.data(), elementData.attribute_array_, attributes.size() * sizeof(Attribute));
+}
+
+std::shared_ptr<ElementData> ElementDataCache::CachedShareableElementDataWithAttributes(const Vector<Attribute> &attributes)
+{
+    ASSERT(!attributes.IsEmpty());
+
+    std::shared_ptr<ShareableElementData> ret;
+
+    unsigned hash = AttributeHash(attributes);
+
+    auto it = m_shareableElementDataCache.find(hash);
+    if (std::end(m_shareableElementDataCache) != it)
+    {
+        if (HasSameAttributes(attributes, *it->second))
+            ret = it->second;
+        else
+            ret = ShareableElementData::CreateWithAttributes(attributes);
+    }
+    else
+    {
+        ret = ShareableElementData::CreateWithAttributes(attributes);
+        m_shareableElementDataCache[hash] = ret;
+    }
+
+    return ret;
+}
 
 }  // namespace blink

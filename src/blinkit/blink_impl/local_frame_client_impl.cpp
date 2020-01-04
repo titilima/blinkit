@@ -11,6 +11,7 @@
 
 #include "local_frame_client_impl.h"
 
+#include "blinkit/app/app_constants.h"
 #include "third_party/blink/renderer/core/exported/web_document_loader_impl.h"
 
 using namespace blink;
@@ -25,6 +26,11 @@ std::unique_ptr<DocumentLoader> LocalFrameClientImpl::CreateDocumentLoader(
     std::unique_ptr<WebDocumentLoaderImpl> ret = WebDocumentLoaderImpl::Create(frame, request, data);
     ret->SetExtraData(std::move(extraData));
     return ret;
+}
+
+String LocalFrameClientImpl::UserAgent(void)
+{
+    return String::FromUTF8(AppConstants::DefaultUserAgent);
 }
 
 } // namespace BlinKit

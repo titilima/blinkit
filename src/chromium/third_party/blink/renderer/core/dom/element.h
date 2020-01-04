@@ -50,6 +50,14 @@ class Attribute;
 class ElementData;
 class ElementRareData;
 
+// https://html.spec.whatwg.org/multipage/dom.html#dom-document-nameditem-filter
+enum class NamedItemType {
+    kNone,
+    kName,
+    kNameOrId,
+    kNameOrIdWithName,
+};
+
 class Element : public ContainerNode
 {
 public:
@@ -92,6 +100,7 @@ public:
         const AttributeModificationReason reason;
     };
     virtual void AttributeChanged(const AttributeModificationParams &params);
+    virtual void ParseAttribute(const AttributeModificationParams &params);
     void ParserSetAttributes(const Vector<Attribute> &attributeVector);
     void StripScriptingAttributes(Vector<Attribute> &attributeVector) const;
 
@@ -113,6 +122,8 @@ protected:
 
     virtual void ParserDidSetAttributes(void) {}
 
+    virtual NamedItemType GetNamedItemType(void) const { return NamedItemType::kNone; }
+
     // ContainerNode overrides
 #ifndef BLINKIT_CRAWLER_ONLY
     void ChildrenChanged(const ChildrenChange &change) override;
@@ -121,10 +132,11 @@ private:
     ElementRareData* GetElementRareData(void) const;
     void UpdateId(TreeScope &scope, const AtomicString &oldId, const AtomicString &newId);
     void UpdateName(const AtomicString &oldName, const AtomicString &newName);
+    void UpdateNamedItemRegistration(NamedItemType type, const AtomicString &oldName, const AtomicString &newName);
 
     QualifiedName m_tagName;
 
-    scoped_refptr<ElementData> m_elementData;
+    std::shared_ptr<ElementData> m_elementData;
 };
 
 DEFINE_NODE_TYPE_CASTS(Element, IsElementNode());

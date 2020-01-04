@@ -36,8 +36,8 @@
 #include "base/numerics/checked_math.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
-// BKTODO: #include "third_party/blink/renderer/core/dom/mutation_observer_interest_group.h"
-// BKTODO: #include "third_party/blink/renderer/core/dom/mutation_record.h"
+#include "third_party/blink/renderer/core/dom/mutation_observer_interest_group.h"
+#include "third_party/blink/renderer/core/dom/mutation_record.h"
 // BKTODO: #include "third_party/blink/renderer/core/dom/processing_instruction.h"
 #include "third_party/blink/renderer/core/dom/text.h"
 // BKTODO: #include "third_party/blink/renderer/core/editing/frame_selection.h"
@@ -209,28 +209,31 @@ void CharacterData::SetDataAndUpdate(const String& new_data,
   String old_data = data_;
   data_ = new_data;
 
-  ASSERT(false); // BKTODO:
-#if 0
+#ifdef BLINKIT_CRAWLER_ONLY
+  ASSERT(IsTextNode());
+#else
   DCHECK(!GetLayoutObject() || IsTextNode());
   if (IsTextNode())
     ToText(this)->UpdateTextLayoutObject(offset_of_replaced_data, old_length);
+#endif
 
-  if (source != kUpdateFromParser) {
+  if (source != kUpdateFromParser)
+  {
+    ASSERT(false); // BKTODO:
+#if 0
     if (getNodeType() == kProcessingInstructionNode)
       ToProcessingInstruction(this)->DidAttributeChanged();
 
     GetDocument().NotifyUpdateCharacterData(this, offset_of_replaced_data,
                                             old_length, new_length);
+#endif
   }
 
   GetDocument().IncDOMTreeVersion();
   DidModifyData(old_data, source);
-#endif
 }
 
 void CharacterData::DidModifyData(const String& old_data, UpdateSource source) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (MutationObserverInterestGroup* mutation_recipients =
           MutationObserverInterestGroup::CreateForCharacterDataMutation(*this))
     mutation_recipients->EnqueueMutationRecord(
@@ -247,6 +250,8 @@ void CharacterData::DidModifyData(const String& old_data, UpdateSource source) {
   // Note that mutation observer events will still fire.
   // Spec: https://html.spec.whatwg.org/multipage/syntax.html#insert-a-character
   if (source != kUpdateFromParser && !IsInShadowTree()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (GetDocument().HasListenerType(
             Document::kDOMCharacterDataModifiedListener)) {
       DispatchScopedEvent(*MutationEvent::Create(
@@ -254,9 +259,8 @@ void CharacterData::DidModifyData(const String& old_data, UpdateSource source) {
           nullptr, old_data, data_));
     }
     DispatchSubtreeModifiedEvent();
-  }
-  probe::characterDataModified(this);
 #endif
+  }
 }
 
 }  // namespace blink

@@ -101,12 +101,13 @@ String MIMETypeRegistry::GetWellKnownMIMETypeForExtension(const String& ext) {
 #endif
 }
 
-bool MIMETypeRegistry::IsSupportedMIMEType(const String& mime_type) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
-  return blink::IsSupportedMimeType(ToLowerASCIIOrEmpty(mime_type));
-#endif
+bool MIMETypeRegistry::IsSupportedMIMEType(const String &mime_type)
+{
+    const std::string s = base::ToLowerASCII(mime_type.StdUtf8());
+    if (s == "text/html")
+        return true;
+    ASSERT(false); // BKTODO:
+    return false;
 }
 
 bool MIMETypeRegistry::IsSupportedImageMIMEType(const String& mime_type) {

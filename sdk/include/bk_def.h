@@ -152,17 +152,17 @@ class BkClientImpl
 public:
     operator ClientType* (void)
     {
-        if (nullptr == m_client.UserData)
+        if (nullptr == m_rawClient.UserData)
         {
-            m_client.UserData = static_cast<T *>(this);
-            static_cast<T *>(this)->Setup(m_client);
+            m_rawClient.UserData = static_cast<T *>(this);
+            static_cast<T *>(this)->Setup(m_rawClient);
         }
-        return &m_client;
+        return &m_rawClient;
     }
 protected:
     BkClientImpl(void)
     {
-        memset(&m_client, 0, sizeof(ClientType));
+        memset(&m_rawClient, 0, sizeof(ClientType));
     }
     static T* ToImpl(void *userData)
     {
@@ -174,7 +174,7 @@ private:
         assert(false); // Not reached: Setup callback handlers in client!
     }
 
-    ClientType m_client;
+    ClientType m_rawClient;
 };
 
 } // namespace BlinKit

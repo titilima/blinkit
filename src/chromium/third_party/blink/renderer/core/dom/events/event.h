@@ -107,6 +107,9 @@ public:
     bool isTrusted(void) const { return m_isTrusted; }
     void SetTrusted(bool value) { m_isTrusted = value; }
 
+    bool executedListenerOrDefaultAction(void) const { return m_executedListenerOrDefaultAction; }
+    void SetExecutedListenerOrDefaultAction(void) { m_executedListenerOrDefaultAction = true; }
+
     bool FireOnlyCaptureListenersAtTarget(void) const { return m_fireOnlyCaptureListenersAtTarget; }
 
     bool FireOnlyNonCaptureListenersAtTarget(void) const { return m_fireOnlyNonCaptureListenersAtTarget; }
@@ -127,6 +130,12 @@ public:
     void InitEventPath(Node &node);
 
     virtual DispatchEventResult DispatchEvent(EventDispatcher &dispatcher);
+
+    // This callback is invoked when an event listener has been dispatched
+    // at the current target. It should only be used to influence UMA metrics
+    // and not change functionality since observing the presence of listeners
+    // is dangerous.
+    virtual void DoneDispatchingEventAtCurrentTarget(void);
 protected:
     Event(const AtomicString &eventType, Bubbles bubbles, Cancelable cancelable, ComposedMode composedMode, TimeTicks platformTimeStamp);
     Event(const AtomicString &eventType, Bubbles bubbles, Cancelable cancelable, ComposedMode composedMode = ComposedMode::kScoped);
@@ -143,6 +152,9 @@ private:
     unsigned m_defaultHandled : 1;
     unsigned m_wasInitialized : 1;
     unsigned m_isTrusted : 1;
+    // Only if at least one listeners or default actions are executed on an event
+    // does Event Timing report it.
+    unsigned m_executedListenerOrDefaultAction : 1;
 
     // This fields are effective only when
     // CallCaptureListenersAtCapturePhaseAtShadowHosts runtime flag is enabled.

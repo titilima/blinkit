@@ -18,7 +18,7 @@
 #include "bk_http.h"
 #include "blinkit/common/bk_http_header_map.h"
 
-class ResponseImpl final
+class ResponseImpl final : public std::enable_shared_from_this<ResponseImpl>
 {
 public:
     ResponseImpl(const std::string &URL);
@@ -36,6 +36,11 @@ public:
 
     int ErrorCode(void) const { return m_errorCode; }
     void SetErrorCode(int errorCode) { m_errorCode = errorCode; }
+
+    const BlinKit::BkHTTPHeaderMap& Headers(void) const { return m_headers; }
+
+    const char* BodyData(void) const { return m_body.empty() ? nullptr : reinterpret_cast<const char *>(m_body.data()); }
+    int BodyLength(void) const { return m_body.size(); }
 
     const std::string& CurrentURL(void) const { return m_URL; }
     void SetCurrentURL(const std::string &URL) { m_URL = URL; }

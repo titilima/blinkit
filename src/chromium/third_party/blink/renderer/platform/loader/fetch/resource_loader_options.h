@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: resource_loader_options.h
+// Description: ResourceLoaderOptions Struct
+//      Author: Ziming Li
+//     Created: 2019-11-27
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -32,9 +43,8 @@
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_LOADER_FETCH_RESOURCE_LOADER_OPTIONS_H_
 
 #include "base/memory/scoped_refptr.h"
-#include "services/network/public/mojom/url_loader_factory.mojom-blink.h"
 #include "third_party/blink/renderer/platform/loader/fetch/fetch_initiator_info.h"
-#include "third_party/blink/renderer/platform/loader/fetch/integrity_metadata.h"
+// BKTODO: #include "third_party/blink/renderer/platform/loader/fetch/integrity_metadata.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
@@ -80,41 +90,43 @@ struct ResourceLoaderOptions {
  public:
   ResourceLoaderOptions()
       : data_buffering_policy(kBufferData),
-        content_security_policy_option(kCheckContentSecurityPolicy),
-        request_initiator_context(kDocumentContext),
+      // BKTODO:  content_security_policy_option(kCheckContentSecurityPolicy),
+      // BKTODO:  request_initiator_context(kDocumentContext),
         synchronous_policy(kRequestAsynchronously),
-        cors_handling_by_resource_fetcher(kEnableCORSHandlingByResourceFetcher),
-        cors_flag(false),
-        parser_disposition(kParserInserted),
+      // BKTODO:  cors_handling_by_resource_fetcher(kEnableCORSHandlingByResourceFetcher),
+      // BKTODO:  cors_flag(false),
+      // BKTODO:  parser_disposition(kParserInserted),
         cache_aware_loading_enabled(kNotCacheAwareLoadingEnabled) {}
 
   FetchInitiatorInfo initiator_info;
 
   DataBufferingPolicy data_buffering_policy;
 
-  ContentSecurityPolicyDisposition content_security_policy_option;
-  RequestInitiatorContext request_initiator_context;
+  // BKTODO: ContentSecurityPolicyDisposition content_security_policy_option;
+  // BKTODO: RequestInitiatorContext request_initiator_context;
   SynchronousPolicy synchronous_policy;
 
   // When set to kDisableCORSHandlingByResourceFetcher, the ResourceFetcher
   // suppresses part of its CORS handling logic.
   // Used by ThreadableLoader which does CORS handling by itself.
-  CORSHandlingByResourceFetcher cors_handling_by_resource_fetcher;
+  // BKTODO: CORSHandlingByResourceFetcher cors_handling_by_resource_fetcher;
 
   // Corresponds to the CORS flag in the Fetch spec.
-  bool cors_flag;
+  // BKTODO: bool cors_flag;
 
-  String content_security_policy_nonce;
-  IntegrityMetadataSet integrity_metadata;
-  ParserDisposition parser_disposition;
+  // BKTODO: String content_security_policy_nonce;
+  // BKTODO: IntegrityMetadataSet integrity_metadata;
+  // BKTODO: ParserDisposition parser_disposition;
   CacheAwareLoadingEnabled cache_aware_loading_enabled;
 
+#if 0 // BKTODO:
   // If not null, this URLLoaderFactory should be used to load this resource
   // rather than whatever factory the system might otherwise use.
   // Used for example for loading blob: URLs and for prefetch loading.
   scoped_refptr<
       base::RefCountedData<network::mojom::blink::URLLoaderFactoryPtr>>
       url_loader_factory;
+#endif
 };
 
 }  // namespace blink

@@ -41,6 +41,9 @@
 
 #include "frame_fetch_context.h"
 
+#include "third_party/blink/renderer/core/dom/document.h"
+#include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/loader/document_loader.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 
@@ -52,35 +55,240 @@ struct FrameFetchContext::FrozenState final : GarbageCollectedFinalized<FrozenSt
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-FrameFetchContext::FrameFetchContext(DocumentLoader *loader, Document *document)
-    : m_documentLoader(loader), m_document(document)
+static std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(DocumentLoader *loader, Document *document)
 {
-    assert(nullptr != GetFrame());
+    if (nullptr != document)
+        return document->GetTaskRunner(TaskType::kNetworking);
+    return loader->GetFrame()->GetTaskRunner(TaskType::kNetworking);
+}
+
+FrameFetchContext::FrameFetchContext(DocumentLoader *loader, Document *document)
+    : BaseFetchContext(GetTaskRunner(loader, document))
+    , m_documentLoader(loader), m_document(document)
+{
+    ASSERT(nullptr != GetFrame());
 }
 
 FrameFetchContext::~FrameFetchContext(void) = default;
 
-std::unique_ptr<ResourceFetcher> FrameFetchContext::CreateFetcher(DocumentLoader *loader, Document *document)
+std::shared_ptr<ResourceFetcher> FrameFetchContext::CreateFetcher(DocumentLoader *loader, Document *document)
 {
     std::unique_ptr<FetchContext> context(new FrameFetchContext(loader, document));
     return ResourceFetcher::Create(context);
 }
 
+FetchContext* FrameFetchContext::Detach(void)
+{
+    if (IsDetached())
+        return this;
+
+    BKLOG("// BKTODO: Initialize FrozenState stuff.");
+#if 0 // BKTODO:
+    if (m_document)
+    {
+        frozen_state_ = new FrozenState(
+            Url(), GetParentSecurityOrigin(), GetAddressSpace(),
+            GetContentSecurityPolicy(), GetSiteForCookies(),
+            GetClientHintsPreferences(), GetDevicePixelRatio(), GetUserAgent(),
+            IsMainFrame(), IsSVGImageChromeClient());
+        fetch_client_settings_object_ =
+            document_->CreateFetchClientSettingsObjectSnapshot();
+    }
+    else
+    {
+        // Some getters are unavailable in this case.
+        frozen_state_ = new FrozenState(
+            NullURL(), GetParentSecurityOrigin(), GetAddressSpace(),
+            GetContentSecurityPolicy(), GetSiteForCookies(),
+            GetClientHintsPreferences(), GetDevicePixelRatio(), GetUserAgent(),
+            IsMainFrame(), IsSVGImageChromeClient());
+        fetch_client_settings_object_ = new FetchClientSettingsObjectSnapshot(
+            NullURL(), nullptr, kReferrerPolicyDefault, String());
+    }
+#endif
+
+    // This is needed to break a reference cycle in which off-heap
+    // ComputedStyle is involved. See https://crbug.com/383860 for details.
+    m_document = nullptr;
+
+    return this;
+}
+
+void FrameFetchContext::DidLoadResource(Resource *resource)
+{
+    if (!m_document)
+        return;
+
+    if (resource->IsLoadEventBlockingResourceType())
+        m_document->CheckCompleted();
+}
+
+void FrameFetchContext::DispatchDidFinishLoading(unsigned long identifier)
+{
+#if 0 // BKTODO: Check if necessary.
+    if (IsDetached())
+        return;
+
+    GetFrame()->Loader().Progress().CompleteProgress(identifier);
+    probe::didFinishLoading(GetFrame()->GetDocument(), identifier,
+        MasterDocumentLoader(), finish_time,
+        encoded_data_length, decoded_body_length,
+        should_report_corb_blocking);
+    if (document_) {
+        InteractiveDetector* interactive_detector(
+            InteractiveDetector::From(*document_));
+        if (interactive_detector) {
+            interactive_detector->OnResourceLoadEnd(finish_time);
+        }
+    }
+#endif
+}
+
+void FrameFetchContext::DispatchDidReceiveResponse(
+    unsigned long identifier,
+    const ResourceResponse &response,
+    Resource *resource)
+{
+#if 0 // BKTODO: Check if necessary.
+    if (IsDetached())
+        return;
+
+    DCHECK(resource);
+
+    MaybeRecordCTPolicyComplianceUseCounter(GetFrame(), resource->GetType(),
+        response.GetCTPolicyCompliance(),
+        MasterDocumentLoader());
+
+    MixedContentChecker::CheckMixedPrivatePublic(GetFrame(),
+        response.RemoteIPAddress());
+    LinkLoader::CanLoadResources resource_loading_policy =
+        response_type == ResourceResponseType::kFromMemoryCache
+        ? LinkLoader::kDoNotLoadResources
+        : LinkLoader::kLoadResourcesAndPreconnect;
+    if (document_loader_ &&
+        document_loader_ == document_loader_->GetFrame()
+        ->Loader()
+        .GetProvisionalDocumentLoader()) {
+        // When response is received with a provisional docloader, the resource
+        // haven't committed yet, and we cannot load resources, only preconnect.
+        resource_loading_policy = LinkLoader::kDoNotLoadResources;
+    }
+    // Client hints preferences should be persisted only from responses that were
+    // served by the same host as the host of the document-level origin.
+    KURL frame_url = Url();
+    if (frame_url == NullURL())
+        frame_url = document_loader_->Url();
+
+    LinkLoader::LoadLinksFromHeader(
+        response.HttpHeaderField(HTTPNames::Link), response.Url(), *GetFrame(),
+        document_, NetworkHintsInterfaceImpl(), resource_loading_policy,
+        LinkLoader::kLoadAll, nullptr);
+
+    GetLocalFrameClient()->DispatchDidReceiveResponse(response);
+#endif
+}
+
+void FrameFetchContext::DispatchWillSendRequest(
+    unsigned long identifier,
+    ResourceRequest &request,
+    const ResourceResponse &redirectResponse,
+    ResourceType resourceType,
+    const FetchInitiatorInfo &initiatorInfo)
+{
+#if 0 // BKTODO: Check if necessary.
+    if (IsDetached())
+        return;
+
+    if (redirectResponse.IsNull())
+    {
+        // Progress doesn't care about redirects, only notify it when an
+        // initial request is sent.
+        GetFrame()->Loader().Progress().WillStartLoading(identifier,
+            request.Priority());
+    }
+    if (IdlenessDetector* idleness_detector = GetFrame()->GetIdlenessDetector())
+        idleness_detector->OnWillSendRequest(MasterDocumentLoader()->Fetcher());
+    if (document_) {
+        InteractiveDetector* interactive_detector(
+            InteractiveDetector::From(*document_));
+        if (interactive_detector) {
+            interactive_detector->OnResourceLoadBegin(base::nullopt);
+        }
+    }
+#endif
+}
+
 LocalFrame* FrameFetchContext::GetFrame(void) const
 {
-    assert(!IsDetached());
+    ASSERT(!IsDetached());
 
     if (!m_documentLoader)
     {
-        assert(false); // BKTODO:
+        ASSERT(false); // BKTODO:
 #if 0
         return FrameOfImportsController();
 #endif
     }
 
     LocalFrame *frame = m_documentLoader->GetFrame();
-    assert(nullptr != frame);
+    ASSERT(nullptr != frame);
     return frame;
+}
+
+LocalFrameClient* FrameFetchContext::GetLocalFrameClient(void) const
+{
+    return GetFrame()->Client();;
+}
+
+String FrameFetchContext::GetUserAgent(void) const
+{
+    if (IsDetached())
+        ASSERT(false); // BKTODO: return frozen_state_->user_agent;
+    return GetFrame()->Loader().UserAgent();
+}
+
+void FrameFetchContext::PrepareRequest(ResourceRequest &request, RedirectType redirectType)
+{
+    SetFirstPartyCookie(request);
+
+    String userAgent = GetUserAgent();
+    request.SetHTTPUserAgent(AtomicString(userAgent));
+
+    if (IsDetached())
+        return;
+    GetLocalFrameClient()->DispatchWillSendRequest(request);
+}
+
+void FrameFetchContext::RecordDataUriWithOctothorpe(void)
+{
+    ASSERT(false); // BKTODO:
+}
+
+void FrameFetchContext::SetFirstPartyCookie(ResourceRequest &request)
+{
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (GetLocalFrameClient()->IsCrawler())
+        return;
+#endif
+    // Set the first party for cookies url if it has not been set yet (new
+    // requests). This value will be updated during redirects, consistent with
+    // https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site-00#section-2.1.1?
+    if (request.SiteForCookies().IsEmpty())
+        request.SetSiteForCookies(request.Url());
+}
+
+bool FrameFetchContext::ShouldLoadNewResource(ResourceType type) const
+{
+    if (!m_documentLoader)
+        return true;
+
+    if (IsDetached())
+        return false;
+
+    FrameLoader &loader = m_documentLoader->GetFrame()->Loader();
+    if (type == ResourceType::kMainResource)
+        return loader.GetProvisionalDocumentLoader() == m_documentLoader;
+    return loader.GetDocumentLoader() == m_documentLoader;
 }
 
 }  // namespace blink

@@ -24,8 +24,13 @@ class ScriptWrappable : public GarbageCollectedFinalized<ScriptWrappable>
     WTF_MAKE_NONCOPYABLE(ScriptWrappable);
 public:
     virtual ~ScriptWrappable(void) = default;
+
+    bool OwnedByContext(void) const { return m_ownedByContext; }
 protected:
     ScriptWrappable(void) = default;
+private:
+    bool m_ownedByContext = false;
+    void *m_contextObject = nullptr;
 };
 
 }  // namespace blink

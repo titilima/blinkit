@@ -33,10 +33,12 @@ class RuntimeEnabledFeatures final
 {
     STATIC_ONLY(RuntimeEnabledFeatures);
 public:
+    BLINK_DEFINE_STABLE_FEATURE(CallCaptureListenersAtCapturePhaseAtShadowHosts)
     BLINK_DEFINE_STABLE_FEATURE(CSSInBodyDoesNotBlockPaint)
     BLINK_DEFINE_STABLE_FEATURE(TrustedEventsDefaultAction)
 
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(InvisibleDOM)
+    BLINK_DEFINE_EXPERIMENTAL_FEATURE(IsolatedCodeCache)
 
     BLINKIT_DISABLE_FEATURE(SlimmingPaintV2)
 };

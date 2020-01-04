@@ -36,6 +36,84 @@
 
 #include "raw_resource.h"
 
+#include "base/memory/ptr_util.h"
+#include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
+#include "third_party/blink/renderer/platform/loader/fetch/source_keyed_cached_metadata_handler.h"
+
 namespace blink {
+
+std::shared_ptr<Resource> RawResource::RawResourceFactory::Create(const ResourceRequest &request, const ResourceLoaderOptions & options) const
+{
+    return base::WrapShared(new RawResource(request, m_type, options));
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+RawResource::RawResource(const ResourceRequest &resourceRequest, ResourceType type, const ResourceLoaderOptions &options)
+    : Resource(resourceRequest, type, options)
+{
+}
+
+void RawResource::DidAddClient(ResourceClient *c)
+{
+    // ASSERT()/RevalidationStartForbiddenScope are for
+    // https://crbug.com/640960#c24.
+    ASSERT(!IsCacheValidator());
+    if (!HasClient(c))
+        return;
+    ASSERT(c->IsRawResourceClient());
+    RevalidationStartForbiddenScope revalidationStartForbiddenScope(this);
+    RawResourceClient *client = static_cast<RawResourceClient *>(c);
+    for (const auto &redirect : RedirectChain())
+    {
+        ResourceRequest request(redirect.m_request);
+        ASSERT(false); // BKTODO:
+#if 0
+        client->RedirectReceived(this, request, redirect.redirect_response_);
+#endif
+        if (!HasClient(c))
+            return;
+    }
+
+    if (!GetResponse().IsNull())
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        client->ResponseReceived(this, GetResponse(),
+            std::move(data_consumer_handle_));
+#endif
+    }
+    if (!HasClient(c))
+        return;
+    Resource::DidAddClient(c);
+}
+
+std::shared_ptr<RawResource> RawResource::FetchMainResource(
+    FetchParameters &params,
+    ResourceFetcher *fetcher,
+    RawResourceClient *client,
+    const SubstituteData &substituteData)
+{
+    RawResourceFactory factory(ResourceType::kMainResource);
+    std::shared_ptr<Resource> resource = fetcher->RequestResource(params, factory, client, substituteData);
+    return ToRawResource(resource);
+}
+
+SourceKeyedCachedMetadataHandler* RawResource::InlineScriptCacheHandler(void)
+{
+    ASSERT(ResourceType::kMainResource == GetType());
+    return static_cast<SourceKeyedCachedMetadataHandler *>(Resource::CacheHandler());
+}
+
+void RawResource::ResponseReceived(const ResourceResponse &response)
+{
+    Resource::ResponseReceived(response);
+
+    std::vector<RawResourceClient *> clients;
+    for (ResourceClient *c : Clients())
+        clients.push_back(static_cast<RawResourceClient *>(c));
+    for (RawResourceClient *c : clients)
+        c->ResponseReceived(this, GetResponse());
+}
 
 }  // namespace blink

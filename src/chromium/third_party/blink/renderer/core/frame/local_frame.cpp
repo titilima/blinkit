@@ -44,11 +44,21 @@
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/loader/navigation_scheduler.h"
+#include "third_party/blink/renderer/platform/scheduler/main_thread/frame_scheduler_impl.h"
+#include "third_party/blink/renderer/platform/wtf/wtf.h"
 
 namespace blink {
 
+static std::unique_ptr<FrameScheduler> CreateFrameScheduler(Page *)
+{
+    return scheduler::FrameSchedulerImpl::Create();
+}
+
 LocalFrame::LocalFrame(LocalFrameClient &client, Page *page)
-    : Frame(client, page), m_loader(this), m_navigationScheduler(NavigationScheduler::Create(this))
+    : Frame(client, page)
+    , m_frameScheduler(CreateFrameScheduler(page))
+    , m_loader(this)
+    , m_navigationScheduler(NavigationScheduler::Create(this))
 {
 }
 
@@ -95,6 +105,12 @@ Document* LocalFrame::GetDocument(void) const
 {
     LocalDOMWindow *domWindow = DomWindow();
     return nullptr != domWindow ? domWindow->document() : nullptr;
+}
+
+std::shared_ptr<base::SingleThreadTaskRunner> LocalFrame::GetTaskRunner(TaskType type)
+{
+    ASSERT(IsMainThread());
+    return m_frameScheduler->GetTaskRunner(type);
 }
 
 void LocalFrame::SetDOMWindow(std::unique_ptr<LocalDOMWindow> domWindow)

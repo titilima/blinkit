@@ -40,6 +40,8 @@
 #include "blinkit/crawler/crawler_document.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/document_init.h"
+#include "third_party/blink/renderer/core/dom/events/event.h"
+#include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 
@@ -58,7 +60,34 @@ void LocalDOMWindow::ClearDocument(void)
     if (!m_document)
         return;
 
-    assert(false); // BKTODO:
+    ASSERT(!m_document->IsActive());
+
+    m_document->ClearDOMWindow();
+    m_document.reset(nullptr);
+}
+
+DispatchEventResult LocalDOMWindow::DispatchEvent(Event &event, EventTarget *target)
+{
+#if DCHECK_IS_ON()
+    ASSERT(!EventDispatchForbiddenScope::IsEventDispatchForbidden());
+#endif
+
+    event.SetTrusted(true);
+    event.SetTarget(target ? target : this);
+    event.SetCurrentTarget(this);
+    event.SetEventPhase(Event::kAtTarget);
+
+    return FireEventListeners(event);
+}
+
+void LocalDOMWindow::DocumentWasClosed(void)
+{
+    ASSERT(false); // BKTODO:
+}
+
+void LocalDOMWindow::FinishedLoading(void)
+{
+    // Currently nothing to do.
 }
 
 LocalFrame* LocalDOMWindow::GetFrame(void) const
@@ -69,18 +98,18 @@ LocalFrame* LocalDOMWindow::GetFrame(void) const
 Document* LocalDOMWindow::InstallNewDocument(const DocumentInit &init)
 {
     LocalFrame *frame = GetFrame();
-    assert(init.GetFrame() == frame);
+    ASSERT(init.GetFrame() == frame);
 
     ClearDocument();
 
 #ifdef BLINKIT_CRAWLER_ONLY
-    assert(init.GetFrame()->Client()->IsCrawler());
+    ASSERT(init.GetFrame()->Client()->IsCrawler());
     m_document = std::make_unique<CrawlerDocument>(init);
 #else
     if (init.GetFrame()->Client()->IsCrawler())
         m_document = std::make_unique<CrawlerDocument>(init);
     else
-        assert(false); // BKTODO:
+        ASSERT(false); // BKTODO:
 #endif
     m_document->Initialize();
 
@@ -97,7 +126,7 @@ Document* LocalDOMWindow::InstallNewDocument(const DocumentInit &init)
 
 void LocalDOMWindow::Reset(void)
 {
-    assert(false); // BKTODO:
+    ASSERT(false); // BKTODO:
 }
 
 }  // namespace blink

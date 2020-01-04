@@ -23,10 +23,21 @@ namespace base {
 class TaskRunner
 {
 public:
+    virtual ~TaskRunner(void) = default;
+
+    // Posts the given task to be run.  Returns true if the task may be
+    // run at some point in the future, and false if the task definitely
+    // will not be run.
+    //
+    // Equivalent to PostDelayedTask(from_here, task, 0).
+    bool PostTask(const Location &fromHere, const std::function<void()> &task);
+
     // Like PostTask, but tries to run the posted task only after |delay_ms|
     // has passed. Implementations should use a tick clock, rather than wall-
     // clock time, to implement |delay|.
     virtual bool PostDelayedTask(const Location &fromHere, const std::function<void()> &task, TimeDelta delay) = 0;
+protected:
+    TaskRunner(void) = default;
 };
 
 } // namespace base 

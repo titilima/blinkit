@@ -93,6 +93,8 @@ public:
     static constexpr int64_t kMicrosecondsPerMillisecond = 1000;
     static constexpr int64_t kMicrosecondsPerSecond = kMicrosecondsPerMillisecond * kMillisecondsPerSecond;
 
+    constexpr bool is_null(void) const { return 0 == m_us; }
+
     TimeDelta since_origin(void) const {
         return TimeDelta::FromMicroseconds(m_us);
     }
@@ -111,6 +113,18 @@ public:
     bool operator!=(const T &other) const {
         return m_us != other.m_us;
     }
+    bool operator<(const T &other) const {
+        return m_us < other.m_us;
+    }
+    bool operator<=(const T &other) const {
+        return m_us <= other.m_us;
+    }
+    bool operator>(const T &other) const {
+        return m_us > other.m_us;
+    }
+    bool operator>=(const T &other) const {
+        return m_us >= other.m_us;
+    }
 protected:
     explicit TimeBase(int64_t us) : m_us(us) {}
 private:
@@ -125,10 +139,51 @@ private:
 class Time : public time_internal::TimeBase<Time>
 {
 public:
+    // Represents an exploded time that can be formatted nicely. This is kind of
+    // like the Win32 SYSTEMTIME structure or the Unix "struct tm" with a few
+    // additions and changes to prevent errors.
+    struct Exploded {
+        int year;          // Four digit year "2007"
+        int month;         // 1-based month (values 1 = January, etc.)
+        int day_of_week;   // 0-based day of week (0 = Sunday, etc.)
+        int day_of_month;  // 1-based day of month (1-31)
+        int hour;          // Hour within the current day (0-23)
+        int minute;        // Minute within the current hour (0-59)
+        int second;        // Second within the current minute (0-59 plus leap
+                           //   seconds which may take it up to 60).
+        int millisecond;   // Milliseconds within the current second (0-999)
+
+        // A cursory test for whether the data members are within their
+        // respective ranges. A 'true' return value does not guarantee the
+        // Exploded value can be successfully converted to a Time value.
+        bool HasValidValues(void) const;
+    };
+
     Time(void) : TimeBase(0) {}
 
     static Time Now(void);
     double ToDoubleT(void) const;
+    time_t ToTimeT(void) const;
+
+    // Converts an exploded structure representing either the local time or UTC
+    // into a Time class. Returns false on a failure when, for example, a day of
+    // month is set to 31 on a 28-30 day month. Returns Time(0) on overflow.
+    static Time FromUTCExploded(const Exploded &exploded) {
+        Time t;
+        FromExploded(false, exploded, &t);
+        return t;
+    }
+
+private:
+    friend class time_internal::TimeBase<Time>;
+
+    explicit Time(int64_t us) : TimeBase(us) {}
+
+    // Unexplodes a given time assuming the source is either local time
+    // |is_local = true| or UTC |is_local = false|. Function returns false on
+    // failure and sets |time| to Time(0). Otherwise returns true and sets |time|
+    // to non-exploded time.
+    static bool FromExploded(bool isLocal, const Exploded &exploded, Time *time);
 };
 
 /**

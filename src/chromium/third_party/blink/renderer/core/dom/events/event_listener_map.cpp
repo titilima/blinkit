@@ -45,4 +45,15 @@
 
 namespace blink {
 
+EventListenerVector* EventListenerMap::Find(const AtomicString &eventType)
+{
+    for (const auto &entry : m_entries)
+    {
+        if (entry.first == eventType)
+            return entry.second.get();
+    }
+
+    return nullptr;
+}
+
 }  // namespace blink

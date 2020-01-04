@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: mutation_record.cc
+// Description: MutationRecord Classes
+//      Author: Ziming Li
+//     Created: 2019-12-31
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -31,13 +42,14 @@
 #include "third_party/blink/renderer/core/dom/mutation_record.h"
 
 #include "third_party/blink/renderer/core/dom/node.h"
-#include "third_party/blink/renderer/core/dom/node_list.h"
+// BKTODO: #include "third_party/blink/renderer/core/dom/node_list.h"
 #include "third_party/blink/renderer/core/dom/qualified_name.h"
-#include "third_party/blink/renderer/core/dom/static_node_list.h"
+// BKTODO: #include "third_party/blink/renderer/core/dom/static_node_list.h"
 #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
 
 namespace blink {
 
+#if 0 // BKTODO:
 namespace {
 
 class ChildListRecord : public MutationRecord {
@@ -185,30 +197,47 @@ const AtomicString& CharacterDataRecord::type() {
 }
 
 }  // namespace
+#endif
 
 MutationRecord* MutationRecord::CreateChildList(Node* target,
                                                 StaticNodeList* added,
                                                 StaticNodeList* removed,
                                                 Node* previous_sibling,
                                                 Node* next_sibling) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return new ChildListRecord(target, added, removed, previous_sibling,
                              next_sibling);
+#endif
 }
 
 MutationRecord* MutationRecord::CreateAttributes(
     Node* target,
     const QualifiedName& name,
     const AtomicString& old_value) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return new AttributesRecord(target, name, old_value);
+#endif
 }
 
 MutationRecord* MutationRecord::CreateCharacterData(Node* target,
                                                     const String& old_value) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return new CharacterDataRecord(target, old_value);
+#endif
 }
 
 MutationRecord* MutationRecord::CreateWithNullOldValue(MutationRecord* record) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return new MutationRecordWithNullOldValue(record);
+#endif
 }
 
 MutationRecord::~MutationRecord() = default;

@@ -46,9 +46,14 @@
 
 #pragma once
 
+#include "third_party/blink/public/web/web_document_loader.h"
 #include "third_party/blink/public/web/web_frame_load_type.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/core/loader/frame_loader_state_machine.h"
+
+namespace BlinKit {
+class BkURL;
+}
 
 namespace blink {
 
@@ -57,6 +62,8 @@ class FrameLoaderStateMachine;
 struct FrameLoadRequest;
 class LocalFrame;
 class LocalFrameClient;
+class ResourceRequest;
+class SubstituteData;
 
 class FrameLoader final
 {
@@ -67,21 +74,49 @@ public:
 
     FrameLoaderStateMachine* StateMachine(void) const { return &m_stateMachine; }
     DocumentLoader* GetDocumentLoader(void) const { return m_documentLoader.get(); }
+    DocumentLoader* GetProvisionalDocumentLoader(void) const { return m_provisionalDocumentLoader.get(); }
+    // Note: When a PlzNavigtate navigation is handled by the client, we will
+    // have created a dummy provisional DocumentLoader, so this will return true
+    // while the client handles the navigation.
+    bool HasProvisionalNavigation(void) const { return nullptr != GetProvisionalDocumentLoader(); }
+
+    String UserAgent(void) const;
 
     void Init(void);
-    void StartNavigation(const FrameLoadRequest &request, WebFrameLoadType loadType = WebFrameLoadType::kStandard);
+    void StartNavigation(const FrameLoadRequest &passedRequest, WebFrameLoadType loadType = WebFrameLoadType::kStandard);
+    void CommitNavigation(const ResourceRequest &request, const SubstituteData &substituteData,
+        WebFrameLoadType loadType = WebFrameLoadType::kStandard,
+        std::unique_ptr<WebDocumentLoader::ExtraData> extraData = nullptr);
     bool PrepareForCommit(void);
     void CommitProvisionalLoad(void);
     void FinishedParsing(void);
+    void DidFinishNavigation(void);
 
     void DispatchDidClearDocumentOfWindowObject(void);
+    void DispatchUnloadEvent(void);
+
+    static void SetReferrerForFrameRequest(FrameLoadRequest &frameRequest);
 private:
     LocalFrameClient* Client(void) const;
+
+    std::unique_ptr<DocumentLoader> CreateDocumentLoader(const ResourceRequest &request,
+        const SubstituteData &substituteData, WebFrameLoadType loadType,
+        std::unique_ptr<WebDocumentLoader::ExtraData> extraData);
+    SubstituteData DefaultSubstituteDataForURL(const BlinKit::BkURL &url);
+
+    // Returns whether we should continue with new navigation.
+    bool CancelProvisionalLoaderForNewNavigation(bool cancelScheduledNavigations);
+    bool ShouldPerformFragmentNavigation(bool isFormSubmission, const String &httpMethod, WebFrameLoadType loadType,
+        const BlinKit::BkURL &url);
+    void DetachDocumentLoader(std::unique_ptr<DocumentLoader> &loader, bool flushMicrotaskQueue = false);
 
     Member<LocalFrame> m_frame;
     mutable FrameLoaderStateMachine m_stateMachine;
     std::unique_ptr<DocumentLoader> m_documentLoader;
     std::unique_ptr<DocumentLoader> m_provisionalDocumentLoader;
+
+    bool m_inStopAllLoaders = false;
+    bool m_protectProvisionalLoader = false;
 
     DISALLOW_COPY_AND_ASSIGN(FrameLoader);
 };

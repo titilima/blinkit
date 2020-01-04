@@ -66,4 +66,11 @@ bool NavigationScheduler::LocationChangePending(void)
     return m_redirect && m_redirect->IsLocationChange();
 }
 
+void NavigationScheduler::StartTimer(void)
+{
+    if (!m_redirect)
+        return;
+    ASSERT(false); // BKTODO:
+}
+
 }  // namespace blink

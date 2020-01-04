@@ -85,6 +85,7 @@ protected:
 
     void SetFirstChild(Node *child) { m_firstChild = child; }
     void SetLastChild(Node *child) { m_lastChild = child; }
+    void FastCleanupChildren(void);
 
     void InvalidateNodeListCachesInAncestors(const QualifiedName *attrName, Element *attributeOwnerElement,
         const ChildrenChange *change);

@@ -40,27 +40,105 @@
 
 #pragma once
 
+#include <optional>
+#include <unordered_set>
 #include "base/memory/ptr_util.h"
+#include "third_party/blink/public/platform/resource_request_blocked_reason.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
+#include "third_party/blink/renderer/platform/loader/fetch/fetch_parameters.h"
+#include "third_party/blink/renderer/platform/loader/fetch/substitute_data.h"
+#include "third_party/blink/renderer/platform/loader/fetch/resource_load_priority.h"
+#include "third_party/blink/renderer/platform/loader/fetch/resource_priority.h"
 #include "third_party/blink/renderer/platform/wtf/noncopyable.h"
 
 namespace blink {
 
 class FetchContext;
+class FetchParameters;
+class Resource;
+class ResourceClient;
+class ResourceFactory;
+class ResourceLoader;
+enum class ResourceType : uint8_t;
 
 class ResourceFetcher : public GarbageCollectedFinalized<ResourceFetcher>
 {
     WTF_MAKE_NONCOPYABLE(ResourceFetcher);
 public:
-    static std::unique_ptr<ResourceFetcher> Create(std::unique_ptr<FetchContext> &context)
+    static std::shared_ptr<ResourceFetcher> Create(std::unique_ptr<FetchContext> &context)
     {
-        return base::WrapUnique(new ResourceFetcher(context));
+        return base::WrapShared(new ResourceFetcher(context));
     }
     ~ResourceFetcher(void);
+
+    FetchContext& Context(void) const;
+    void ClearContext(void);
+
+    // Triggers a fetch based on the given FetchParameters (if there isn't a
+    // suitable Resource already cached) and registers the given ResourceClient
+    // with the Resource. Guaranteed to return a non-null Resource of the subtype
+    // specified by ResourceFactory::GetType().
+    std::shared_ptr<Resource> RequestResource(FetchParameters &params, const ResourceFactory &factory,
+        ResourceClient *client, const SubstituteData &substituteData = SubstituteData());
+
+    // Binds the given Resource instance to this ResourceFetcher instance to
+    // start loading the Resource actually.
+    // Usually, RequestResource() calls this method internally, but needs to
+    // call this method explicitly on cases such as ResourceNeedsLoad() returning
+    // false.
+    bool StartLoad(Resource *resource);
+    void StopFetching(void);
+    enum LoaderFinishType { kDidFinishLoading, kDidFinishFirstPartInMultipart };
+    void HandleLoaderFinish(Resource *resource, LoaderFinishType type);
+
+    int BlockingRequestCount(void) const;
 private:
     ResourceFetcher(std::unique_ptr<FetchContext> &context);
 
+    std::shared_ptr<Resource> CreateResourceForLoading(const FetchParameters &params, const ResourceFactory &factory);
+
+    ResourceLoadPriority ComputeLoadPriority(ResourceType type, const ResourceRequest &resourceRequest,
+        ResourcePriority::VisibilityStatus visibility, FetchParameters::DeferOption deferOption = FetchParameters::kNoDefer,
+        FetchParameters::SpeculativePreloadType speculativePreloadType = FetchParameters::SpeculativePreloadType::kNotSpeculative,
+        bool isLinkPreload = false);
+
+    std::optional<ResourceRequestBlockedReason> PrepareRequest(FetchParameters &params, const ResourceFactory &factory,
+        const SubstituteData &substituteData, unsigned long identifier);
+
+    std::shared_ptr<Resource> ResourceForBlockedRequest(const FetchParameters &params, const ResourceFactory &factory,
+        ResourceRequestBlockedReason blockedReason, ResourceClient *client);
+
+    void InsertAsPreloadIfNecessary(Resource *resource, const FetchParameters &params, ResourceType type);
+
+    enum RevalidationPolicy { kUse, kRevalidate, kReload, kLoad };
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    void RequestLoadStarted(unsigned long identifier, Resource *resource, const FetchParameters &params,
+        RevalidationPolicy policy, bool isStaticData = false);
+#endif
+    bool ResourceNeedsLoad(Resource *resource, const FetchParameters &params, RevalidationPolicy policy);
+
+    void RemoveResourceLoader(ResourceLoader *loader);
+    void HandleLoadCompletion(Resource *resource);
+
+    enum class StopFetchingTarget {
+        kExcludingKeepaliveLoaders,
+        kIncludingKeepaliveLoaders,
+    };
+    void StopFetchingInternal(StopFetchingTarget target);
+
     std::unique_ptr<FetchContext> m_context;
+    std::unordered_set<ResourceLoader *> m_loaders;
+    std::unordered_set<ResourceLoader *> m_nonBlockingLoaders;
+
+    // When populated, forces Resources to remain alive across a navigation, to
+    // increase the odds the next document will be able to reuse resources from
+    // the previous page. Unpopulated unless experiment is enabled.
+    std::unordered_set<Resource *> m_resourcesFromPreviousFetcher;
+
+    bool m_imageFetched : 1;
+
+    uint32_t m_inflightKeepaliveBytes = 0;
 };
 
 }  // namespace blink

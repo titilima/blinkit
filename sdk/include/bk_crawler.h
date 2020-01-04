@@ -24,6 +24,8 @@ BK_DECLARE_HANDLE(BkCrawler, CrawlerImpl);
 struct BkCrawlerClient {
     void *UserData;
     void (BKAPI * GetUserScript)(struct BkBuffer *, void *);
+    void (BKAPI * RequestComplete)(BkResponse, BkWorkController, void *);
+    void (BKAPI * DocumentReady)(void *);
 };
 
 BKEXPORT BkCrawler BKAPI BkCreateCrawler(struct BkCrawlerClient *client);
@@ -42,14 +44,30 @@ public:
     void Setup(BkCrawlerClient &rawClient)
     {
         rawClient.GetUserScript = GetUserScriptImpl;
+        rawClient.RequestComplete = RequestCompleteImpl;
+        rawClient.DocumentReady = DocumentReadyImpl;
+    }
+protected:
+    virtual void RequestComplete(BkResponse responce, BkWorkController controller)
+    {
+        BkControllerContinueWorking(controller);
     }
 private:
     virtual std::string GetUserScript(void) = 0;
+    virtual void DocumentReady(void) = 0;
 
     static void BKAPI GetUserScriptImpl(BkBuffer *dst, void *userData)
     {
         std::string userScript = ToImpl(userData)->GetUserScript();
         BkSetBufferData(dst, userScript.data(), userScript.length());
+    }
+    static void BKAPI RequestCompleteImpl(BkResponse responce, BkWorkController controller, void *userData)
+    {
+        ToImpl(userData)->RequestComplete(responce, controller);
+    }
+    static void BKAPI DocumentReadyImpl(void *userData)
+    {
+        ToImpl(userData)->DocumentReady();
     }
 };
 

@@ -14,24 +14,47 @@
 
 #pragma once
 
-#include "sdk/include/BlinKit.h"
-#include "public/platform/WebURLRequest.h"
-#include "loader_task.h"
+#include <optional>
+#include "bk_crawler.h"
+#include "bk_http.h"
+#include "blinkit/loader_tasks/loader_task.h"
+#include "blinkit/misc/controller_impl.h"
+#include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
+
+namespace blink {
+class ResourceResponse;
+}
 
 namespace BlinKit {
 
-class CrawlerImpl;
-class HTTPLoader;
-
-class HTTPLoaderTask final : public LoaderTask
+class HTTPLoaderTask final : public LoaderTask, public BkRequestClientImpl, public ControllerImpl
 {
 public:
-    HTTPLoaderTask(CrawlerImpl &crawler, const blink::WebURLRequest &request, blink::WebURLLoaderClient *client);
+    HTTPLoaderTask(BkCrawler crawler, const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
+    ~HTTPLoaderTask(void) override;
 private:
-    // blink::WebTaskRunner::Task
-    void run(void) override;
+    AtomicString GetResponseHeader(const AtomicString &name) const;
 
-    HTTPLoader *m_httpLoader;
+    void ProcessRequestComplete(void);
+    void PopulateResourceResponse(blink::ResourceResponse &response) const;
+    void DoContinue(void);
+    void DoCancel(void);
+
+    // LoaderTask
+    int Run(const blink::ResourceRequest &request) override;
+    // BkRequestClientImpl
+    void RequestComplete(BkResponse response) override;
+    void RequestFailed(int errorCode) override;
+    // ControllerImpl
+    int Release(void) override { return CancelWork(); }
+    int ContinueWorking(void) override;
+    int CancelWork(void) override;
+
+    BkCrawler m_crawler;
+    std::shared_ptr<ResponseImpl> m_response;
+
+    bool m_callingCrawler = false;
+    std::optional<bool> m_cancel;
 };
 
 } // namespace BlinKit

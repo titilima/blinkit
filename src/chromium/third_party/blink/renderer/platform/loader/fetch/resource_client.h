@@ -54,13 +54,28 @@ class ResourceClient : public GarbageCollectedMixin
 public:
     virtual ~ResourceClient(void);
 
+    // DataReceived() is called each time a chunk of data is received.
+    // For cache hits, the data is replayed before NotifyFinished() is called.
+    // For successful revalidation responses, the data is NOT replayed, because
+    // the Resource may not be in an entirely consistent state in the middle of
+    // completing the revalidation, when DataReceived() would have to be called.
+    // Some RawResourceClients depends on receiving all bytes via DataReceived(),
+    // but RawResources forbid revalidation attempts, so they still are guaranteed
+    // to get all data via DataReceived().
+    virtual void DataReceived(Resource *resource, const char *data, size_t length) {}
+    virtual void NotifyFinished(Resource *resource) {}
+
+    virtual bool IsRawResourceClient(void) const { return false; }
+
     Resource* GetResource(void) const { return m_resource.get(); }
 protected:
     ResourceClient(void) = default;
 
     void ClearResource(void) { SetResource(nullptr, nullptr); }
 private:
-    void SetResource(Resource *newResource, base::SingleThreadTaskRunner *taskRunner);
+    friend class ResourceFetcher;
+
+    void SetResource(const std::shared_ptr<Resource> &newResource, base::SingleThreadTaskRunner *taskRunner);
 
     std::shared_ptr<Resource> m_resource;
 };

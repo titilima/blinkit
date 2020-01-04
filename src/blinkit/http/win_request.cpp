@@ -345,7 +345,7 @@ void WinRequest::SetHeader(const char *name, const char *value)
 
 void WinRequest::StartWorkThread(void)
 {
-    m_response = std::make_unique<ResponseImpl>(m_URL);
+    m_response = std::make_shared<ResponseImpl>(m_URL);
     m_hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
     m_hThread = CreateThread(nullptr, 0, ThreadProc, this, 0, nullptr);
 }

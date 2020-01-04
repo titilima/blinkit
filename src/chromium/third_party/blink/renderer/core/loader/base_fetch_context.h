@@ -26,7 +26,12 @@ namespace blink {
 class BaseFetchContext : public FetchContext
 {
 protected:
-    BaseFetchContext(void) = default;
+    explicit BaseFetchContext(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner);
+
+    // FetchContext overrides
+    void AddAdditionalRequestHeaders(ResourceRequest &request, FetchResourceType type) override;
+    std::optional<ResourceRequestBlockedReason> CanRequest(ResourceType type, const ResourceRequest &resourceRequest,
+        const BlinKit::BkURL &url, const ResourceLoaderOptions &options, ResourceRequest::RedirectStatus redirectStatus) const override;
 };
 
 }  // namespace blink

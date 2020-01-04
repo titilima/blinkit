@@ -42,6 +42,7 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/core/frame/frame_lifecycle.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 
 namespace blink {
@@ -59,12 +60,24 @@ public:
 
     FrameClient* Client(void) const { return &m_client; }
     DOMWindow* DomWindow(void) const { return m_domWindow.get(); }
+
+    bool IsAttached(void) const { return m_lifecycle.GetState() == FrameLifecycle::kAttached; }
+
+    // IsLoading() is true when the embedder should think a load is in progress.
+    // In the case of LocalFrames, it means that the frame has sent a
+    // didStartLoading() callback, but not the matching didStopLoading(). Inside
+    // blink, you probably want Document::loadEventFinished() instead.
+    bool IsLoading(void) const { return m_isLoading; }
+    void SetIsLoading(bool isLoading) { m_isLoading = isLoading; }
 protected:
     Frame(FrameClient &client, Page *page);
 
     FrameClient &m_client;
     Member<Page> m_page;
     std::unique_ptr<DOMWindow> m_domWindow;
+private:
+    FrameLifecycle m_lifecycle;
+    bool m_isLoading = false;
 };
 
 } // namespace blink

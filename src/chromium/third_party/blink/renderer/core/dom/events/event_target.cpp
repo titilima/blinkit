@@ -43,6 +43,7 @@
 #include "event_target.h"
 
 #include "third_party/blink/renderer/core/dom/events/event.h"
+#include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
 
 namespace blink {
 
@@ -60,8 +61,51 @@ DispatchEventResult EventTarget::DispatchEventInternal(Event &event)
 
 DispatchEventResult EventTarget::FireEventListeners(Event &event)
 {
-    ASSERT(false); // BKTODO:
-    return DispatchEventResult::kCanceledBeforeDispatch;
+#if DCHECK_IS_ON()
+    ASSERT(!EventDispatchForbiddenScope::IsEventDispatchForbidden());
+#endif
+    ASSERT(event.WasInitialized());
+
+    EventTargetData *d = GetEventTargetData();
+    if (nullptr == d)
+        return DispatchEventResult::kNotCanceled;
+
+    EventListenerVector *legacyListenersVector = nullptr;
+#ifndef BLINKIT_CRAWLER_ONLY
+    AtomicString legacyTypeName = LegacyType(event);
+    if (!legacy_type_name.IsEmpty())
+        legacy_listeners_vector = d->event_listener_map.Find(legacy_type_name);
+#endif
+
+    EventListenerVector *listenersVector = d->eventListenerMap.Find(event.type());
+
+    bool firedEventListeners = false;
+    if (nullptr != listenersVector)
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        firedEventListeners = FireEventListeners(event, d, *listenersVector);
+#endif
+    }
+    else if (event.isTrusted() && legacyListenersVector)
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        AtomicString unprefixed_type_name = event.type();
+        event.SetType(legacy_type_name);
+        fired_event_listeners =
+            FireEventListeners(event, d, *legacy_listeners_vector);
+        event.SetType(unprefixed_type_name);
+#endif
+    }
+
+    // Only invoke the callback if event listeners were fired for this phase.
+    if (firedEventListeners)
+    {
+        event.DoneDispatchingEventAtCurrentTarget();
+        event.SetExecutedListenerOrDefaultAction();
+    }
+    return GetDispatchEventResult(event);
 }
 
 DispatchEventResult EventTarget::GetDispatchEventResult(const Event &event)

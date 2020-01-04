@@ -49,6 +49,7 @@ Event::Event(const AtomicString &eventType, Bubbles bubbles, Cancelable cancelab
     , m_defaultHandled(false)
     , m_wasInitialized(true)
     , m_isTrusted(false)
+    , m_executedListenerOrDefaultAction(false)
     , m_fireOnlyCaptureListenersAtTarget(false)
     , m_fireOnlyNonCaptureListenersAtTarget(false)
     , m_platformTimeStamp(platformTimeStamp)
@@ -65,6 +66,11 @@ Event::~Event(void) = default;
 DispatchEventResult Event::DispatchEvent(EventDispatcher &dispatcher)
 {
     return dispatcher.Dispatch();
+}
+
+void Event::DoneDispatchingEventAtCurrentTarget(void)
+{
+    ASSERT(false); // BKTODO:
 }
 
 void Event::InitEventPath(Node &node)

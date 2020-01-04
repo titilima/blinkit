@@ -44,7 +44,6 @@
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/style/computed_style_constants.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
-#include "third_party/blink/renderer/platform/wtf/ref_counted.h"
 
 namespace blink {
 
@@ -68,7 +67,7 @@ enum StyleChangeType {
 
 enum class CloneChildrenFlag { kClone, kSkip };
 
-class Node : public EventTarget, public WTF::RefCounted<Node>
+class Node : public EventTarget
 {
     friend class TreeScope;
 public:
@@ -92,6 +91,8 @@ public:
         ASSERT(m_treeScope);
         return *m_treeScope;
     }
+
+    void RemoveAllEventListenersRecursively(void);
 
     // DOM methods & attributes for Node
     virtual String nodeName(void) const = 0;
@@ -155,12 +156,18 @@ public:
         ASSERT(!IsTextNode());
         return GetFlag(kHasNameOrIsEditingTextFlag);
     }
+    void SetHasName(bool f)
+    {
+        ASSERT(!IsTextNode());
+        SetFlag(f, kHasNameOrIsEditingTextFlag);
+    }
     bool HasEventTargetData(void) const { return GetFlag(kHasEventTargetDataFlag); }
     void SetHasEventTargetData(bool flag) { SetFlag(flag, kHasEventTargetDataFlag); }
     bool HasDuplicateAttribute(void) const { return GetFlag(kHasDuplicateAttributes); }
     void SetHasDuplicateAttributes(void) { SetFlag(kHasDuplicateAttributes); }
 
     bool IsActive(void) const { return IsUserActionElement() && IsUserActionElementActive(); }
+    bool IsInDocumentTree(void) const { return isConnected() && !IsInShadowTree(); }
     bool IsShadowRoot(void) const { return IsDocumentFragment() && IsTreeScope(); }
 
     virtual PseudoId GetPseudoId(void) const { return kPseudoIdNone; }
@@ -309,6 +316,7 @@ private:
 
     // EventTarget overrides
     Node* ToNode(void) final { return this; }
+    EventTargetData* GetEventTargetData(void) override;
 
     uint32_t m_nodeFlags;
     Member<Node> m_parentOrShadowHostNode;

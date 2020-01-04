@@ -450,8 +450,7 @@ void HTMLDocumentParser::Append(const String& input_source) {
 
   const SegmentedString source(input_source);
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary
   if (GetDocument()->IsPrefetchOnly()) {
     // Do not prefetch if there is an appcache.
     if (GetDocument()->Loader()->GetResponse().AppCacheID() != 0)

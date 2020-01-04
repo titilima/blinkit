@@ -52,6 +52,7 @@ namespace blink {
 class Document;
 class DocumentLoader;
 class LocalFrame;
+class LocalFrameClient;
 class ResourceFetcher;
 
 class FrameFetchContext final : public BaseFetchContext
@@ -59,7 +60,7 @@ class FrameFetchContext final : public BaseFetchContext
 public:
     ~FrameFetchContext(void) override;
 
-    static std::unique_ptr<ResourceFetcher> CreateFetcherFromDocumentLoader(DocumentLoader *loader)
+    static std::shared_ptr<ResourceFetcher> CreateFetcherFromDocumentLoader(DocumentLoader *loader)
     {
         return CreateFetcher(loader, nullptr);
     }
@@ -68,9 +69,25 @@ public:
 private:
     FrameFetchContext(DocumentLoader *loader, Document *document);
 
-    static std::unique_ptr<ResourceFetcher> CreateFetcher(DocumentLoader *loader, Document *document);
+    static std::shared_ptr<ResourceFetcher> CreateFetcher(DocumentLoader *loader, Document *document);
 
     LocalFrame* GetFrame(void) const;
+    LocalFrameClient* GetLocalFrameClient(void) const;
+    void SetFirstPartyCookie(ResourceRequest &request);
+    String GetUserAgent(void) const;
+
+    // FetchContext overrides
+    void RecordDataUriWithOctothorpe(void) override;
+    void PrepareRequest(ResourceRequest &request, RedirectType redirectType) override;
+    bool ShouldLoadNewResource(ResourceType type) const override;
+    void DispatchWillSendRequest(unsigned long identifier, ResourceRequest &request,
+        const ResourceResponse &redirectResponse, ResourceType resourceType,
+        const FetchInitiatorInfo &initiatorInfo) override;
+    void DispatchDidReceiveResponse(unsigned long identifier, const ResourceResponse &response,
+        Resource *resource) override;
+    void DispatchDidFinishLoading(unsigned long identifier) override;
+    void DidLoadResource(Resource *resource) override;
+    FetchContext* Detach(void) override;
 
     Member<DocumentLoader> m_documentLoader;
     Member<Document> m_document;

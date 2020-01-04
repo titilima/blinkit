@@ -46,6 +46,7 @@
 
 #include "third_party/blink/public/web/web_document_loader.h"
 #include "third_party/blink/renderer/core/frame/frame_client.h"
+#include "third_party/blink/renderer/core/loader/navigation_policy.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace blink {
@@ -63,10 +64,21 @@ public:
     virtual std::unique_ptr<DocumentLoader> CreateDocumentLoader(LocalFrame *frame, const ResourceRequest &request,
         const SubstituteData &data, std::unique_ptr<WebDocumentLoader::ExtraData> extraData) = 0;
 
+    virtual String UserAgent(void) = 0;
+
     virtual void TransitionToCommittedForNewPage(void) = 0;
+    
+    virtual void DispatchWillSendRequest(ResourceRequest &request) = 0;
 
     virtual void DidCreateNewDocument(void) = 0;
     virtual void DispatchDidReceiveTitle(const String &title) = 0;
+    virtual void RunScriptsAtDocumentIdle(void) {}
+    virtual void DispatchDidFinishDocumentLoad(void) = 0;
+    virtual void DispatchDidHandleOnloadEvents(void) = 0;
+    virtual void DispatchDidFinishLoad(void) = 0;
+
+    virtual NavigationPolicy DecidePolicyForNavigation(const ResourceRequest &request) { return kNavigationPolicyCurrentTab; }
+    virtual void DispatchDidStartProvisionalLoad(DocumentLoader *loader, ResourceRequest &request) {}
 };
 
 }  // namespace blink

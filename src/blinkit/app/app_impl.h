@@ -49,10 +49,11 @@ public:
 protected:
     AppImpl(void);
 private:
+    // blink::Platform
+    std::unique_ptr<blink::WebURLLoader> CreateURLLoader(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner) final;
 #if 0 // BKTODO:
     // blink::Platform
     blink::WebMimeRegistry* mimeRegistry(void) final;
-    blink::WebURLLoader* createURLLoader(void) final;
     blink::WebString userAgent(void) final;
     blink::WebURLError cancelledError(const blink::WebURL &url) const final;
     blink::WebThread* createThread(const char *name) final;

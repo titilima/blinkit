@@ -37,6 +37,28 @@
 
 #include "shared_buffer.h"
 
+#include "base/memory/ptr_util.h"
+
 namespace blink {
+
+SharedBuffer::SharedBuffer(const char *data, size_t length)
+{
+    if (length > 0)
+        Append(data, length);
+}
+
+void SharedBuffer::Append(const char *data, size_t length)
+{
+    ASSERT(length > 0);
+
+    size_t oldLength = m_data.size();
+    m_data.resize(oldLength + length);
+    memcpy(m_data.data() + oldLength, data, length);
+}
+
+std::shared_ptr<SharedBuffer> SharedBuffer::Create(const char *data, size_t length)
+{
+    return base::WrapShared(new SharedBuffer(data, length));
+}
 
 }  // namespace blink

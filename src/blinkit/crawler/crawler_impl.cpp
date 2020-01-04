@@ -11,6 +11,7 @@
 
 #include "crawler_impl.h"
 
+#include "blinkit/misc/controller_impl.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/loader/frame_load_request.h"
 #include "url/bk_url.h"
@@ -36,6 +37,19 @@ CrawlerImpl::~CrawlerImpl(void)
 #if 0 // BKTODO:
     m_frame->detach(FrameDetachType::Remove);
 #endif
+}
+
+void CrawlerImpl::DispatchDidFinishLoad(void)
+{
+    m_client.DocumentReady(m_client.UserData);
+}
+
+void CrawlerImpl::ProcessRequestComplete(BkResponse response, BkWorkController controller)
+{
+    if (nullptr != m_client.RequestComplete)
+        m_client.RequestComplete(response, controller, m_client.UserData);
+    else
+        controller->ContinueWorking();
 }
 
 #if 0 // BKTODO:
@@ -106,6 +120,7 @@ int CrawlerImpl::Run(const char *URL)
     }
 
     FrameLoadRequest request(nullptr, ResourceRequest(u));
+    request.GetResourceRequest().SetCrawler(this);
     m_frame->Loader().StartNavigation(request);
     return BK_ERR_SUCCESS;
 }
@@ -113,6 +128,12 @@ int CrawlerImpl::Run(const char *URL)
 void CrawlerImpl::TransitionToCommittedForNewPage(void)
 {
     // Nothing to do for crawlers.
+}
+
+String CrawlerImpl::UserAgent(void)
+{
+    BKLOG("// BKTODO: Get user agent string from crawler object.");
+    return LocalFrameClientImpl::UserAgent();
 }
 
 #if 0 // BKTODO:

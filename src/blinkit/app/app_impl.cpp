@@ -11,19 +11,19 @@
 
 #include "app_impl.h"
 
+#include "bk_app.h"
 #if 0 // BKTODO:
 #include "base/time/time.h"
 #endif
+#include "blinkit/app/app_constants.h"
+#include "blinkit/blink_impl/url_loader_impl.h"
 #include "third_party/blink/public/platform/web_cache.h"
 #include "third_party/blink/public/platform/web_thread_scheduler.h"
 #include "third_party/blink/public/web/blink.h"
 
-#include "bk_app.h"
-#include "blinkit/app/app_constants.h"
 #if 0 // BKTODO:
 #include "blink_impl/cookie_jar_impl.h"
 #include "blink_impl/mime_registry_impl.h"
-#include "blink_impl/url_loader_impl.h"
 #include "crawler/crawler_impl.h"
 #endif
 
@@ -44,6 +44,11 @@ AppImpl::~AppImpl(void)
     assert(theApp == this);
     theApp = nullptr;
 #endif
+}
+
+std::unique_ptr<blink::WebURLLoader> AppImpl::CreateURLLoader(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner)
+{
+    return std::make_unique<URLLoaderImpl>(taskRunner);
 }
 
 #if 0 // BKTODO:
@@ -126,11 +131,6 @@ blink::WebThread* AppImpl::createThread(const char *name)
     m_threads[thread->threadId()] = thread;
 
     return thread;
-}
-
-blink::WebURLLoader* AppImpl::createURLLoader(void)
-{
-    return new URLLoaderImpl;
 }
 
 BkView* BKAPI AppImpl::CreateView(BkViewClient &client)

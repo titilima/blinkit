@@ -65,6 +65,7 @@ public:
 
     bool LocationChangePending(void);
 
+    void StartTimer(void);
     void Cancel(void);
 private:
     explicit NavigationScheduler(LocalFrame *frame);

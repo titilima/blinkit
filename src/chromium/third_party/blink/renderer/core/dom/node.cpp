@@ -54,7 +54,10 @@ Node::Node(TreeScope *treeScope, ConstructionType type)
 
 Node::~Node(void)
 {
-    ASSERT(false); // BKTODO:
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!HasRareData() && !m_data.node_layout_data_->IsSharedEmptyData())
+        delete data_.node_layout_data_;
+#endif
 }
 
 Node* Node::CommonAncestor(const Node &other, ParentGetter getParent) const
@@ -240,6 +243,12 @@ void Node::HandleLocalEvents(Event &event)
 #endif
 }
 
+EventTargetData* Node::GetEventTargetData(void)
+{
+    ASSERT(false); // BKTODO:
+    return nullptr;
+}
+
 bool Node::HasTagName(const HTMLQualifiedName &name) const
 {
     ASSERT(false); // BKTODO:
@@ -372,6 +381,11 @@ Node* Node::PseudoAwareLastChild(void) const
 {
     ASSERT(false); // BKTODO:
     return nullptr;
+}
+
+void Node::RemoveAllEventListenersRecursively(void)
+{
+    ASSERT(false); // BKTODO:
 }
 
 void Node::RemovedFrom(ContainerNode &insertionPoint)

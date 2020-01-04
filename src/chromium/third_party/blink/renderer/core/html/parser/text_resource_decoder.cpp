@@ -38,6 +38,8 @@
 
 namespace blink {
 
+static const int kMinimumLengthOfXMLDeclaration = 8;
+
 TextResourceDecoder::TextResourceDecoder(const TextResourceDecoderOptions &options) : m_options(options)
 {
 #ifndef NDEBUG
@@ -54,13 +56,223 @@ TextResourceDecoder::~TextResourceDecoder(void) = default;
 
 void TextResourceDecoder::AutoDetectEncodingIfAllowed(const char *data, wtf_size_t len)
 {
+    if (m_options.GetEncodingDetectionOption() != TextResourceDecoderOptions::kUseAllAutoDetection || m_detectionCompleted)
+        return;
+
+    // Just checking hint_encoding_ suffices here because it's only set
+    // in SetHintEncoding when the source is AutoDetectedEncoding.
+    if (!(kDefaultEncoding == m_source || (kEncodingFromParentFrame == m_source && m_options.HintEncoding())))
+        return;
+
+    WTF::TextEncoding detectedEncoding;
     ASSERT(false); // BKTODO:
+#if 0
+    if (DetectTextEncoding(data, len, m_options.HintEncoding(), m_options.HintURL(), m_options.HintLanguage(), &detectedEncoding))
+        SetEncoding(detectedEncoding, kEncodingFromContentSniffing);
+#endif
+    if (detectedEncoding != WTF::UnknownEncoding())
+        m_detectionCompleted = true;
 }
 
-String TextResourceDecoder::Decode(const char *data, size_t length)
+wtf_size_t TextResourceDecoder::CheckForBOM(const char *data, wtf_size_t len)
+{
+    // Check for UTF-16 or UTF-8 BOM mark at the beginning, which is a sure
+    // sign of a Unicode encoding. We let it override even a user-chosen encoding.
+    ASSERT(!m_checkedForBom);
+
+    wtf_size_t lengthOfBom = 0;
+    const wtf_size_t maxBomLength = 3;
+
+    wtf_size_t bufferLength = m_buffer.size();
+
+    wtf_size_t buf1Len = bufferLength;
+    wtf_size_t buf2Len = len;
+    const unsigned char *buf1 = reinterpret_cast<const unsigned char *>(m_buffer.data());
+    const unsigned char *buf2 = reinterpret_cast<const unsigned char *>(data);
+    unsigned char c1 = buf1Len ? (--buf1Len, *buf1++) : buf2Len ? (--buf2Len, *buf2++) : 0;
+    unsigned char c2 = buf1Len ? (--buf1Len, *buf1++) : buf2Len ? (--buf2Len, *buf2++) : 0;
+    unsigned char c3 = buf1Len ? *buf1 : buf2Len ? *buf2 : 0;
+
+    // Check for the BOM.
+    if (c1 == 0xEF && c2 == 0xBB && c3 == 0xBF)
+    {
+        SetEncoding(UTF8Encoding(), kAutoDetectedEncoding);
+        lengthOfBom = 3;
+    }
+    else if (m_options.GetEncodingDetectionOption() != TextResourceDecoderOptions::kAlwaysUseUTF8ForText)
+    {
+        if (c1 == 0xFE && c2 == 0xFF)
+        {
+            SetEncoding(UTF16BigEndianEncoding(), kAutoDetectedEncoding);
+            lengthOfBom = 2;
+        }
+        else if (c1 == 0xFF && c2 == 0xFE)
+        {
+            SetEncoding(UTF16LittleEndianEncoding(), kAutoDetectedEncoding);
+            lengthOfBom = 2;
+        }
+    }
+
+    if (lengthOfBom || bufferLength + len >= maxBomLength)
+        m_checkedForBom = true;
+
+    return lengthOfBom;
+}
+
+bool TextResourceDecoder::CheckForCSSCharset(const char *data, wtf_size_t len, bool &movedDataToBuffer)
 {
     ASSERT(false); // BKTODO:
-    return String();
+    return false;
+}
+
+void TextResourceDecoder::CheckForMetaCharset(const char *data, wtf_size_t length)
+{
+    if (kEncodingFromHTTPHeader == m_source || kAutoDetectedEncoding == m_source)
+    {
+        m_checkedForMetaCharset = true;
+        return;
+    }
+
+    ASSERT(false); // BKTODO:
+#if 0
+    if (!charset_parser_)
+        charset_parser_ = HTMLMetaCharsetParser::Create();
+
+    if (!charset_parser_->CheckForMetaCharset(data, length))
+        return;
+
+    SetEncoding(charset_parser_->Encoding(), kEncodingFromMetaTag);
+    charset_parser_.reset();
+#endif
+    m_checkedForMetaCharset = true;
+}
+
+bool TextResourceDecoder::CheckForXMLCharset(const char *data, wtf_size_t len, bool &movedDataToBuffer)
+{
+    if (m_source != kDefaultEncoding && m_source != kEncodingFromParentFrame)
+    {
+        m_checkedForXmlCharset = true;
+        return true;
+    }
+
+    ASSERT(false); // BKTODO:
+#if 0
+    // This is not completely efficient, since the function might go
+    // through the HTML head several times.
+
+    wtf_size_t old_size = buffer_.size();
+    buffer_.Grow(old_size + len);
+    memcpy(buffer_.data() + old_size, data, len);
+
+    moved_data_to_buffer = true;
+
+    const char* ptr = buffer_.data();
+    const char* p_end = ptr + buffer_.size();
+
+    // Is there enough data available to check for XML declaration?
+    if (buffer_.size() < kMinimumLengthOfXMLDeclaration)
+        return false;
+
+    // Handle XML declaration, which can have encoding in it. This encoding is
+    // honored even for HTML documents. It is an error for an XML declaration not
+    // to be at the start of an XML document, and it is ignored in HTML documents
+    // in such case.
+    if (BytesEqual(ptr, '<', '?', 'x', 'm', 'l')) {
+        const char* xml_declaration_end = ptr;
+        while (xml_declaration_end != p_end && *xml_declaration_end != '>')
+            ++xml_declaration_end;
+        if (xml_declaration_end == p_end)
+            return false;
+        // No need for +1, because we have an extra "?" to lose at the end of XML
+        // declaration.
+        int len = 0;
+        int pos =
+            FindXMLEncoding(ptr, static_cast<int>(xml_declaration_end - ptr), len);
+        if (pos != -1)
+            SetEncoding(FindTextEncoding(ptr + pos, len), kEncodingFromXMLHeader);
+        // continue looking for a charset - it may be specified in an HTTP-Equiv
+        // meta
+    }
+    else if (BytesEqual(ptr, '<', 0, '?', 0, 'x', 0)) {
+        SetEncoding(UTF16LittleEndianEncoding(), kAutoDetectedEncoding);
+    }
+    else if (BytesEqual(ptr, 0, '<', 0, '?', 0, 'x')) {
+        SetEncoding(UTF16BigEndianEncoding(), kAutoDetectedEncoding);
+    }
+#endif
+
+    m_checkedForXmlCharset = true;
+    return true;
+}
+
+String TextResourceDecoder::Decode(const char *data, size_t dataLen)
+{
+    wtf_size_t len = SafeCast<wtf_size_t>(dataLen);
+    wtf_size_t lengthOfBom = 0;
+    if (!m_checkedForBom)
+    {
+        lengthOfBom = CheckForBOM(data, len);
+
+        // BOM check can fail when the available data is not enough.
+        if (!m_checkedForBom)
+        {
+            ASSERT(0 == lengthOfBom);
+            m_buffer.Append(data, len);
+            return g_empty_string;
+        }
+    }
+    ASSERT(lengthOfBom <= m_buffer.size() + len);
+
+    bool movedDataToBuffer = false;
+    const TextResourceDecoderOptions::ContentType contentType = m_options.GetContentType();
+
+    if (contentType == TextResourceDecoderOptions::kCSSContent && !m_checkedForCssCharset)
+    {
+        if (!CheckForCSSCharset(data, len, movedDataToBuffer))
+            return g_empty_string;
+    }
+
+    // We check XML declaration in HTML content only if there is enough data
+    // available
+    if (((contentType == TextResourceDecoderOptions::kHTMLContent && len >= kMinimumLengthOfXMLDeclaration)
+        || contentType == TextResourceDecoderOptions::kXMLContent) && !m_checkedForXmlCharset)
+    {
+        if (!CheckForXMLCharset(data, len, movedDataToBuffer))
+            return g_empty_string;
+    }
+
+    const char *dataForDecode = data + lengthOfBom;
+    wtf_size_t lengthForDecode = len - lengthOfBom;
+
+    if (!m_buffer.IsEmpty())
+    {
+        if (!movedDataToBuffer)
+        {
+            wtf_size_t oldSize = m_buffer.size();
+            m_buffer.Grow(oldSize + len);
+            memcpy(m_buffer.data() + oldSize, data, len);
+        }
+
+        dataForDecode = m_buffer.data() + lengthOfBom;
+        lengthForDecode = m_buffer.size() - lengthOfBom;
+    }
+
+    if (contentType == TextResourceDecoderOptions::kHTMLContent && !m_checkedForMetaCharset)
+        CheckForMetaCharset(dataForDecode, lengthForDecode);
+
+    AutoDetectEncodingIfAllowed(data, len);
+
+    ASSERT(m_encoding.IsValid());
+
+    if (!m_codec)
+        m_codec = NewTextCodec(m_encoding);
+
+    String result = m_codec->Decode(dataForDecode, lengthForDecode, WTF::FlushBehavior::kDoNotFlush,
+        contentType == TextResourceDecoderOptions::kXMLContent && !m_options.GetUseLenientXMLDecoding(),
+        m_sawError);
+
+    m_buffer.clear();
+    return result;
 }
 
 String TextResourceDecoder::Flush(void)

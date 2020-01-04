@@ -21,11 +21,16 @@ namespace BlinKit {
 class LocalFrameClientImpl : public blink::LocalFrameClient
 {
 public:
+protected:
+    String UserAgent(void) override;
 private:
     std::unique_ptr<blink::DocumentLoader> CreateDocumentLoader(blink::LocalFrame *frame,
         const blink::ResourceRequest &request, const blink::SubstituteData &data,
         std::unique_ptr<blink::WebDocumentLoader::ExtraData> extraData) override;
+    void DispatchWillSendRequest(blink::ResourceRequest &request) override {}
     void DidCreateNewDocument(void) override {}
+    void DispatchDidFinishDocumentLoad(void) override {}
+    void DispatchDidHandleOnloadEvents(void) override {}
 };
 
 } // namespace BlinKit

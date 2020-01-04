@@ -42,12 +42,18 @@
 
 #pragma once
 
+#include "third_party/blink/public/platform/task_type.h"
 #include "third_party/blink/renderer/core/frame/frame.h"
 #include "third_party/blink/renderer/core/loader/frame_loader.h"
+
+namespace base {
+class SingleThreadTaskRunner;
+}
 
 namespace blink {
 
 class Document;
+class FrameScheduler;
 class LocalDOMWindow;
 class LocalFrameClient;
 class NavigationScheduler;
@@ -66,21 +72,50 @@ public:
     LocalDOMWindow* DomWindow(void) const;
     void SetDOMWindow(std::unique_ptr<LocalDOMWindow> domWindow);
     Document* GetDocument(void) const;
+    std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(TaskType type);
+
+    bool IsNavigationAllowed(void) const { return 0 == m_navigationDisableCount; }
 
     bool ShouldReuseDefaultView(void) const;
 
     void DocumentAttached(void);
 private:
+    friend class FrameNavigationDisabler;
+
     LocalFrame(LocalFrameClient &client, Page *page);
+
+    void EnableNavigation(void) { --m_navigationDisableCount; }
+    void DisableNavigation(void) { ++m_navigationDisableCount; }
 
     // Frame overrides
     bool IsLocalFrame(void) const override { return true; }
 
+    std::unique_ptr<FrameScheduler> m_frameScheduler;
     mutable FrameLoader m_loader;
     std::unique_ptr<NavigationScheduler> m_navigationScheduler;
+
+    int m_navigationDisableCount = 0;
 };
 
 DEFINE_TYPE_CASTS(LocalFrame, Frame, x, x->IsLocalFrame(), x.IsLocalFrame());
+
+class FrameNavigationDisabler
+{
+    STACK_ALLOCATED();
+public:
+    explicit FrameNavigationDisabler(LocalFrame &frame) : m_frame(frame)
+    {
+        m_frame->DisableNavigation();
+    }
+    ~FrameNavigationDisabler(void)
+    {
+        m_frame->EnableNavigation();
+    }
+private:
+    Member<LocalFrame> m_frame;
+
+    DISALLOW_COPY_AND_ASSIGN(FrameNavigationDisabler);
+};
 
 } // namespace blink
 

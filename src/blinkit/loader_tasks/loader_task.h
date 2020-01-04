@@ -14,37 +14,29 @@
 
 #pragma once
 
-#include "platform/weborigin/KURL.h"
-#include "public/platform/WebTaskRunner.h"
-#include "response_data.h"
-
+namespace base {
+class SingleThreadTaskRunner;
+}
 namespace blink {
-class WebURLLoader;
+class ResourceRequest;
 class WebURLLoaderClient;
-class WebURLRequest;
 }
 
 namespace BlinKit {
 
-struct ResponseData;
-
-class LoaderTask : public blink::WebTaskRunner::Task
+class LoaderTask
 {
 public:
-    static LoaderTask* Create(const blink::WebURLRequest &request, blink::WebURLLoaderClient *client);
+    virtual ~LoaderTask(void);
 
-    void Setup(blink::WebURLLoader *loader, blink::WebTaskRunner *taskRunner) {
-        m_loader = loader; m_taskRunner = taskRunner;
-    }
+    static void ReportError(base::SingleThreadTaskRunner *taskRunner, int error);
+
+    virtual int Run(const blink::ResourceRequest &request) = 0;
 protected:
-    LoaderTask(const blink::KURL &URI, blink::WebURLLoaderClient *client);
-    void RespondToLoader(void);
-    void ReportErrorToLoader(int errorCode);
+    LoaderTask(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
 
-    std::shared_ptr<ResponseData> m_responseData;
-    blink::WebURLLoader *m_loader = nullptr;
-    blink::WebTaskRunner *m_taskRunner = nullptr;
-    blink::WebURLLoaderClient *m_client = nullptr;
+    std::shared_ptr<base::SingleThreadTaskRunner> m_taskRunner;
+    blink::WebURLLoaderClient *m_client;
 };
 
 } // namespace BlinKit

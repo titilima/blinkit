@@ -47,6 +47,8 @@
 #include "third_party/blink/renderer/core/dom/create_element_flags.h"
 #include "third_party/blink/renderer/core/dom/document_encoding_data.h"
 #include "third_party/blink/renderer/core/dom/document_lifecycle.h"
+#include "third_party/blink/renderer/core/dom/document_shutdown_notifier.h"
+#include "third_party/blink/renderer/core/dom/document_shutdown_observer.h"
 #include "third_party/blink/renderer/core/dom/live_node_list_registry.h"
 #include "third_party/blink/renderer/core/dom/mutation_observer_options.h"
 #include "third_party/blink/renderer/core/dom/synchronous_mutation_notifier.h"
@@ -70,6 +72,7 @@ class ExceptionState;
 class LayoutView;
 class LocalDOMWindow;
 class LocalFrame;
+class ResourceFetcher;
 class ScriptableDocumentParser;
 
 enum NodeListInvalidationType : int {
@@ -94,6 +97,7 @@ enum ShadowCascadeOrder {
 class Document : public ContainerNode
                , public ExecutionContext
                , public TreeScope
+               , public DocumentShutdownNotifier
                , public SynchronousMutationNotifier
 {
 public:
@@ -110,6 +114,7 @@ public:
     }
 
     LocalDOMWindow* domWindow(void) const { return m_domWindow; }
+    void ClearDOMWindow(void) { m_domWindow = nullptr; }
     LocalFrame* GetFrame(void) const { return m_frame; }  // can be null
 
     void SetDoctype(DocumentType *docType);
@@ -132,6 +137,8 @@ public:
         ASSERT(m_nodeCount > 0);
         --m_nodeCount;
     }
+
+    ElementDataCache* GetElementDataCache(void) { return m_elementDataCache.get(); }
 
     bool MayContainV0Shadow(void) const { return m_mayContainV0Shadow; }
 
@@ -157,6 +164,13 @@ public:
     void WillInsertBody(void);
     void FinishedParsing(void);
     void CancelParsing(void);
+    void Abort(void);
+    void CheckCompleted(void);
+
+    void DispatchUnloadEvents(void);
+
+    bool IsActive(void) const { return m_lifecycle.IsActive(); }
+    bool InStyleRecalc(void) const { return m_lifecycle.GetState() == DocumentLifecycle::kInStyleRecalc; }
 
     enum PageDismissalType {
         kNoDismissal,
@@ -182,7 +196,9 @@ public:
         kUnloadEventHandled
     };
     bool LoadEventFinished(void) const { return m_loadEventProgress >= kLoadEventCompleted; }
+    bool LoadEventStillNeeded(void) const { return kLoadEventNotRun == m_loadEventProgress; }
     void SuppressLoadEvent(void);
+    bool IsDelayingLoadEvent(void) { return 0 != m_loadEventDelayCount; }
 
     DocumentParser* Parser(void) const { return m_parser.get(); }
     ScriptableDocumentParser* GetScriptableDocumentParser(void) const;
@@ -215,6 +231,13 @@ private:
 
     void DispatchDidReceiveTitle(void);
 
+    // ImplicitClose() actually does the work of closing the input stream.
+    void ImplicitClose(void);
+    bool ShouldComplete(void);
+    // Returns |true| if both document and its owning frame are still attached.
+    // Any of them could be detached during the check, e.g. by calling
+    // iframe.remove() from an event handler.
+    bool CheckCompletedInternal(void);
     void DetachParser(void);
 
     // Node overrides
@@ -249,6 +272,7 @@ private:
     // Document URLs.
     BlinKit::BkURL m_URL;  // Document.URL: The URL from which this document was retrieved.
 
+    Member<DocumentType> m_docType;
     Member<Element> m_titleElement;
     Member<Element> m_documentElement;
 
@@ -258,7 +282,9 @@ private:
     bool m_wasDiscarded = false;
 
     LoadEventProgress m_loadEventProgress = kLoadEventCompleted;
+    int m_loadEventDelayCount = 0;
 
+    std::shared_ptr<ResourceFetcher> m_fetcher;
     std::shared_ptr<DocumentParser> m_parser;
 #ifndef BLINKIT_CRAWLER_ONLY
     LayoutView *m_layoutView = nullptr;

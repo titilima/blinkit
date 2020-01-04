@@ -34,6 +34,7 @@
 
 #include "container_node.h"
 
+#include <stack>
 #include "third_party/blink/renderer/core/dom/child_list_mutation_scope.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
@@ -127,6 +128,27 @@ unsigned ContainerNode::CountChildren(void) const
     for (Node *node = firstChild(); nullptr != node; node = node->nextSibling())
         ++count;
     return count;
+}
+
+void ContainerNode::FastCleanupChildren(void)
+{
+    std::stack<Node *> children;
+
+    Node *n = m_firstChild;
+    while (nullptr != n)
+    {
+        ASSERT(!n->OwnedByContext());
+        children.push(n);
+        n = NodeTraversal::Next(*n);
+    }
+
+    m_firstChild = m_lastChild = nullptr;
+
+    while (!children.empty())
+    {
+        delete children.top();
+        children.pop();
+    }
 }
 
 void ContainerNode::InvalidateNodeListCachesInAncestors(

@@ -13,4 +13,9 @@
 
 namespace base {
 
+bool TaskRunner::PostTask(const Location &fromHere, const std::function<void()> &task)
+{
+    return PostDelayedTask(fromHere, task, TimeDelta());
+}
+
 } // namespace base

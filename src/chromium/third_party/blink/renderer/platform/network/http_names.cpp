@@ -19,8 +19,12 @@ namespace http_names {
 
 void* names_storage[kNamesCount * ((sizeof(AtomicString) + sizeof(void *) - 1) / sizeof(void *))];
 
-const AtomicString &kContentLanguage = reinterpret_cast<AtomicString*>(&names_storage)[0];
-const AtomicString &kRefresh = reinterpret_cast<AtomicString*>(&names_storage)[1];
+const AtomicString &kContentDisposition = reinterpret_cast<AtomicString *>(&names_storage)[0];
+const AtomicString &kContentLanguage = reinterpret_cast<AtomicString *>(&names_storage)[1];
+const AtomicString &kContentType = reinterpret_cast<AtomicString *>(&names_storage)[2];
+const AtomicString &kGET = reinterpret_cast<AtomicString *>(&names_storage)[3];
+const AtomicString &kRefresh = reinterpret_cast<AtomicString *>(&names_storage)[4];
+const AtomicString &kUserAgent = reinterpret_cast<AtomicString *>(&names_storage)[5];
 
 void Init(void)
 {
@@ -31,8 +35,12 @@ void Init(void)
     };
 
     static const NameEntry kNames[] = {
-      { "Content-Language", 3105184, 16 },
-      { "Refresh",          7822740, 7  },
+        { "Content-Disposition",   362682,  19 },
+        { "Content-Language",     3105184,  16 },
+        { "Content-Type",         7448957,  12 },
+        { "GET",                  1490282,  3  },
+        { "Refresh",              7822740,  7  },
+        { "User-Agent",          13018365,  10 },
     };
 
     const auto worker = []

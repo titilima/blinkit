@@ -19,10 +19,14 @@
 namespace blink {
 namespace http_names {
 
+extern const WTF::AtomicString &kContentDisposition;
 extern const WTF::AtomicString &kContentLanguage;
+extern const WTF::AtomicString &kContentType;
+extern const WTF::AtomicString &kGET;
 extern const WTF::AtomicString &kRefresh;
+extern const WTF::AtomicString &kUserAgent;
 
-constexpr unsigned kNamesCount = 2;
+constexpr unsigned kNamesCount = 6;
 
 void Init(void);
 

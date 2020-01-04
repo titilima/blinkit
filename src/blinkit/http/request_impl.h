@@ -57,7 +57,7 @@ protected:
     std::string m_method;
     BlinKit::BkHTTPHeaderMap m_headers;
     std::vector<unsigned char> m_body;
-    std::unique_ptr<ResponseImpl> m_response;
+    std::shared_ptr<ResponseImpl> m_response;
 private:
     std::atomic<unsigned> m_refCount{ 1 };
     unsigned long m_timeoutInMs;

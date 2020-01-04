@@ -42,6 +42,7 @@
 #include "third_party/blink/public/platform/platform.h"
 
 #include "blinkit/blink_impl/thread_impl.h"
+#include "third_party/blink/public/platform/web_url_loader.h"
 #include "third_party/blink/renderer/platform/language.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
@@ -59,6 +60,12 @@ Platform* Platform::Current(void)
 void Platform::AttachMainThread(Thread *thread)
 {
     m_threads[thread->ThreadId()] = thread;
+}
+
+std::unique_ptr<WebURLLoader> Platform::CreateURLLoader(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner)
+{
+    NOTREACHED();
+    return nullptr;
 }
 
 Thread* Platform::CurrentThread(void)

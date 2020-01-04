@@ -42,12 +42,18 @@ namespace blink {
 
 ResourceClient::~ResourceClient(void) = default;
 
-void ResourceClient::SetResource(Resource *newResource, base::SingleThreadTaskRunner *taskRunner)
+void ResourceClient::SetResource(const std::shared_ptr<Resource> &newResource, base::SingleThreadTaskRunner *taskRunner)
 {
-    if (newResource == m_resource.get())
+    if (newResource == m_resource)
         return;
 
-    ASSERT(false); // BKTODO:
+    // Some ResourceClient implementations reenter this so we need to
+    // prevent double removal.
+    if (std::shared_ptr<Resource> oldResource = std::move(m_resource))
+        oldResource->RemoveClient(this);
+    m_resource = newResource;
+    if (m_resource)
+        m_resource->AddClient(this, taskRunner);
 }
 
 }  //  namespace blink

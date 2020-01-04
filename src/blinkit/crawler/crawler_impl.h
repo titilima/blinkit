@@ -24,6 +24,8 @@ public:
     CrawlerImpl(const BkCrawlerClient &client);
     ~CrawlerImpl(void);
 
+    void ProcessRequestComplete(BkResponse response, BkWorkController controller);
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
     int Run(const char *URL);
@@ -53,8 +55,10 @@ private:
 #endif
     // LocalFrameClient
     bool IsCrawler(void) const override { return true; }
+    String UserAgent(void) override;
     void TransitionToCommittedForNewPage(void) override;
     void DispatchDidReceiveTitle(const String &title) override {}
+    void DispatchDidFinishLoad(void) override;
 
     BkCrawlerClient m_client;
     std::unique_ptr<blink::LocalFrame> m_frame;

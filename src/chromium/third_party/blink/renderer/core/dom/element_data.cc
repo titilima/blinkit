@@ -41,6 +41,7 @@
 
 #include "third_party/blink/renderer/core/dom/element_data.h"
 
+#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/dom/qualified_name.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -48,22 +49,6 @@
 #endif
 
 namespace blink {
-
-struct SameSizeAsElementData
-    : public WTF::RefCounted<SameSizeAsElementData> {
-  unsigned bitfield;
-#ifndef BLINKIT_CRAWLER_ONLY
-  Member<void*> willbe_member;
-#endif
-  void* pointers[2];
-};
-
-static_assert(sizeof(ElementData) == sizeof(SameSizeAsElementData),
-              "ElementData should stay small");
-
-static size_t SizeForShareableElementDataWithAttributeCount(unsigned count) {
-  return sizeof(ShareableElementData) + sizeof(Attribute) * count;
-}
 
 ElementData::ElementData()
     : is_unique_(true),
@@ -93,13 +78,6 @@ ElementData::ElementData(const ElementData& other, bool is_unique)
   // don't know what to do with it here.
 }
 
-void ElementData::FinalizeGarbageCollectedObject() {
-  if (is_unique_)
-    ToUniqueElementData(this)->~UniqueElementData();
-  else
-    ToShareableElementData(this)->~ShareableElementData();
-}
-
 UniqueElementData* ElementData::MakeUniqueCopy() const {
   if (IsUnique())
     return new UniqueElementData(ToUniqueElementData(*this));
@@ -125,6 +103,7 @@ bool ElementData::IsEquivalent(const ElementData* other) const {
 
 ShareableElementData::ShareableElementData(const Vector<Attribute>& attributes)
     : ElementData(attributes.size()) {
+  attribute_array_ = reinterpret_cast<Attribute *>(malloc(sizeof(Attribute) * array_size_));
   for (unsigned i = 0; i < array_size_; ++i)
     new (&attribute_array_[i]) Attribute(attributes[i]);
 }
@@ -132,6 +111,7 @@ ShareableElementData::ShareableElementData(const Vector<Attribute>& attributes)
 ShareableElementData::~ShareableElementData() {
   for (unsigned i = 0; i < array_size_; ++i)
     attribute_array_[i].~Attribute();
+  free(attribute_array_);
 }
 
 ShareableElementData::ShareableElementData(const UniqueElementData& other)
@@ -148,15 +128,9 @@ ShareableElementData::ShareableElementData(const UniqueElementData& other)
     new (&attribute_array_[i]) Attribute(other.attribute_vector_.at(i));
 }
 
-ShareableElementData* ShareableElementData::CreateWithAttributes(
+std::shared_ptr<ShareableElementData> ShareableElementData::CreateWithAttributes(
     const Vector<Attribute>& attributes) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
-  void* slot = ThreadHeap::Allocate<ElementData>(
-      SizeForShareableElementDataWithAttributeCount(attributes.size()));
-  return new (slot) ShareableElementData(attributes);
-#endif
+  return base::WrapShared(new ShareableElementData(attributes));
 }
 
 UniqueElementData::UniqueElementData() = default;

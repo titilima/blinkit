@@ -22,13 +22,18 @@ namespace BlinKit {
 class WinSingleThreadTaskRunner final : public base::SingleThreadTaskRunner
 {
 public:
+    WinSingleThreadTaskRunner(void);
+
+    bool ProcessMessage(const MSG &msg);
 private:
     void ProcessTimer(UINT_PTR timerId);
+    bool SetTimer(const std::function<void()> &task, DWORD delayInMs);
     static void CALLBACK OnTimer(HWND h, UINT msg, UINT_PTR idEvent, DWORD dwTime);
 
     // TaskRunner overrides
     bool PostDelayedTask(const base::Location &fromHere, const std::function<void()> &task, base::TimeDelta delay) override;
 
+    const DWORD m_threadId;
     std::unordered_map<UINT_PTR, std::function<void()>> m_tasks;
 };
 

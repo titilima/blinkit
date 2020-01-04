@@ -43,14 +43,23 @@
 namespace blink {
 
 class Document;
+class Element;
 
 struct FrameLoadRequest
 {
 public:
     FrameLoadRequest(Document *originDocument, const ResourceRequest &resourceRequest);
+
+    Document* OriginDocument(void) const { return m_originDocument.Get(); }
+
+    ResourceRequest& GetResourceRequest(void) { return m_resourceRequest; }
+    const ResourceRequest& GetResourceRequest(void) const { return m_resourceRequest; }
+
+    Element* Form(void) const { return m_form.Get(); }
 private:
     Member<Document> m_originDocument;
     ResourceRequest m_resourceRequest;
+    Member<Element> m_form;
 };
 
 }  // namespace blink

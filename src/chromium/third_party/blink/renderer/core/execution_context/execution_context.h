@@ -15,6 +15,8 @@
 #pragma once
 
 #include "third_party/blink/public/platform/task_type.h"
+#include "third_party/blink/renderer/core/dom/context_lifecycle_notifier.h"
+#include "third_party/blink/renderer/core/dom/context_lifecycle_observer.h"
 
 namespace base {
 class SingleThreadTaskRunner;
@@ -27,7 +29,7 @@ enum ReasonForCallingCanExecuteScripts {
     kNotAboutToExecuteScript
 };
 
-class ExecutionContext
+class ExecutionContext : public ContextLifecycleNotifier
 {
 public:
     virtual bool IsDocument(void) const { return false; }

@@ -41,23 +41,64 @@
 
 #pragma once
 
+#include "bk_crawler.h"
+#include "blinkit/common/bk_http_header_map.h"
+#include "third_party/blink/renderer/platform/loader/fetch/resource_load_priority.h"
+#include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 #include "url/bk_url.h"
 
 namespace blink {
 
+class EncodedFormData;
+
 class ResourceRequest final
 {
 public:
+    enum class RedirectStatus : uint8_t { kFollowedRedirect, kNoRedirect };
+
     explicit ResourceRequest(const BlinKit::BkURL &URL);
+
+    BkCrawler Crawler(void) const { return m_crawler; }
+    void SetCrawler(BkCrawler crawler) { m_crawler = crawler; }
 
     const BlinKit::BkURL& Url(void) const { return m_URL; }
     void SetURL(const BlinKit::BkURL &URL) { m_URL = URL; }
 
+    const BlinKit::BkURL& SiteForCookies(void) const { return m_siteForCookies; }
+    void SetSiteForCookies(const BlinKit::BkURL &siteForCookies) { m_siteForCookies = siteForCookies; }
+
+    const AtomicString& HttpMethod(void) const { return m_httpMethod; }
+
+    const BlinKit::BkHTTPHeaderMap& AllHeaders(void) const { return m_headers; }
+    void SetHTTPUserAgent(const String &httpUserAgent);
+
+    EncodedFormData* HttpBody(void) const;
+
+    bool DownloadToBlob(void) const { return m_downloadToBlob; }
+    bool GetKeepalive(void) const { return m_keepalive; }
+
+    ResourceLoadPriority Priority(void) const { return m_priority; }
+    void SetPriority(ResourceLoadPriority priority, int intraPriorityValue = 0)
+    {
+        m_priority = priority;
+        m_intraPriorityValue = intraPriorityValue;
+    }
+
     bool WasDiscarded(void) const { return m_wasDiscarded; }
     void SetWasDiscarded(bool wasDiscarded) { m_wasDiscarded = wasDiscarded; }
+
+    RedirectStatus GetRedirectStatus(void) const { return m_redirectStatus; }
 private:
-    BlinKit::BkURL m_URL;
+    BkCrawler m_crawler = nullptr;
+    BlinKit::BkURL m_URL, m_siteForCookies;
+    AtomicString m_httpMethod;
+    BlinKit::BkHTTPHeaderMap m_headers;
+    bool m_downloadToBlob : 1;
+    bool m_keepalive : 1;
+    ResourceLoadPriority m_priority = ResourceLoadPriority::kLowest;
+    int m_intraPriorityValue = 0;
     bool m_wasDiscarded = false;
+    RedirectStatus m_redirectStatus = RedirectStatus::kNoRedirect;
 };
 
 }  // namespace blink
