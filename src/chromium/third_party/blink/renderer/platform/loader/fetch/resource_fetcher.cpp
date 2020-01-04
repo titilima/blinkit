@@ -642,7 +642,7 @@ bool ResourceFetcher::StartLoad(Resource *resource)
         if (resource->ShouldBlockLoadEvent())
             m_loaders.insert(loader);
         else
-            ASSERT(false); // BKTODO: non_blocking_loaders_.insert(loader);
+            m_nonBlockingLoaders.insert(loader);
     }
 
     loader->Start();

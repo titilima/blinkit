@@ -42,7 +42,6 @@ public:
 private:
 #if 0 // BKTODO:
     // BkCrawler
-    int BKAPI Load(const char *URL) override;
     int BKAPI Eval(const char *code, size_t length, BkCallback *callback) override;
     int BKAPI CallFunction(const char *name, BkCallback *callback) override;
     int BKAPI CallCrawler(const char *method, BkCallback *callback) override;
@@ -51,7 +50,6 @@ private:
     // blink::FrameLoaderClient
     void dispatchDidFailProvisionalLoad(const blink::ResourceError &error, blink::HistoryCommitType) override;
     void dispatchDidFinishLoad(void) override;
-    String userAgent(void) override;
 #endif
     // LocalFrameClient
     bool IsCrawler(void) const override { return true; }

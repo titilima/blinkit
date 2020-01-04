@@ -136,25 +136,6 @@ String CrawlerImpl::UserAgent(void)
     return LocalFrameClientImpl::UserAgent();
 }
 
-#if 0 // BKTODO:
-String CrawlerImpl::userAgent(void)
-{
-    std::string userAgent;
-    const auto callback = [&userAgent](const BkValue &prop)
-    {
-        prop.GetAsString(BkMakeBuffer(userAgent).Wrap());
-    };
-    m_frame->script().GetCrawlerProperty("userAgent", callback);
-
-    if (userAgent.empty())
-        m_client.GetUserAgent(BkMakeBuffer(userAgent).Wrap());
-    if (!userAgent.empty())
-        return String::fromUTF8(userAgent.data(), userAgent.length());
-
-    return FrameLoaderClientImpl::userAgent();
-}
-#endif // 0
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 extern "C" {
