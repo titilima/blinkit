@@ -63,6 +63,7 @@ public:
     void Start(void);
     void Cancel(void);
     void ScheduleCancel(void);
+    void HandleError(const ResourceError &error);
 
     void SetDefersLoading(bool defers);
 
@@ -80,6 +81,7 @@ private:
     void DidReceiveResponse(const ResourceResponse &response) override;
     void DidReceiveData(const char *data, int length) override;
     void DidFinishLoading(void) override;
+    void DidFail(const ResourceError &error) override;
 
     std::unique_ptr<WebURLLoader> m_loader;
     Member<ResourceFetcher> m_fetcher;

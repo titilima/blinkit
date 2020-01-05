@@ -14,6 +14,7 @@
 #include "blinkit/misc/controller_impl.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/loader/frame_load_request.h"
+#include "third_party/blink/renderer/platform/loader/fetch/resource_error.h"
 #include "url/bk_url.h"
 #if 0 // BKTODO:
 #include "platform/network/ResourceError.h"
@@ -37,6 +38,12 @@ CrawlerImpl::~CrawlerImpl(void)
 #if 0 // BKTODO:
     m_frame->detach(FrameDetachType::Remove);
 #endif
+}
+
+void CrawlerImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
+{
+    const std::string URL = error.FailingURL();
+    m_client.Error(error.ErrorCode(), URL.c_str(), m_client.UserData);
 }
 
 void CrawlerImpl::DispatchDidFinishLoad(void)

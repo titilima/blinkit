@@ -83,11 +83,17 @@ public:
     ~Resource(void);
 
     ResourceType GetType(void) const { return m_type; }
+    void SetStatus(ResourceStatus status) { m_status = status; }
     bool IsLoading(void) const { return ResourceStatus::kPending == m_status; }
     bool ErrorOccurred(void) const { return ResourceStatus::kLoadError == m_status || ResourceStatus::kDecodeError == m_status; }
     bool IsLoaded(void) const { return m_status > ResourceStatus::kPending; }
     bool StillNeedsLoad(void) const { return m_status < ResourceStatus::kPending; }
 
+    const ResourceError& GetResourceError(void) const
+    {
+        ASSERT(m_error);
+        return *m_error;
+    }
     bool WasCanceled(void) const { return m_error && m_error->IsCancellation(); }
 
     unsigned long Identifier(void) const { return m_identifier; }
@@ -111,6 +117,7 @@ public:
     void SetResponse(const ResourceResponse &response);
 
     virtual void AppendData(const char *data, size_t length);
+    virtual void FinishAsError(const ResourceError &error, base::SingleThreadTaskRunner *taskRunner);
 
     bool ShouldBlockLoadEvent(void) const;
     bool IsLoadEventBlockingResourceType(void) const;
@@ -154,6 +161,7 @@ protected:
 
     bool HasClient(ResourceClient *client) const;
     std::shared_ptr<SharedBuffer> Data(void) const { return m_data; }
+    void ClearData(void);
 
     struct RedirectPair
     {

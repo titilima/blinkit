@@ -46,6 +46,7 @@
 
 namespace blink {
 
+class ResourceError;
 class ResourceResponse;
 
 class WebURLLoaderClient
@@ -63,6 +64,9 @@ public:
 
     // Called when the load completes successfully.
     virtual void DidFinishLoading(void) {}
+
+    // Called when the load completes with an error.
+    virtual void DidFail(const ResourceError &error) {}
 protected:
     virtual ~WebURLLoaderClient(void) = default;
 };

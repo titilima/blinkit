@@ -302,7 +302,30 @@ void DocumentLoader::InstallNewDocument(
 
 void DocumentLoader::LoadFailed(const ResourceError &error)
 {
-    ASSERT(false); // BKTODO:
+    // BKTODO: m_fetcher->ClearResourcesFromPreviousFetcher();
+
+    switch (m_state)
+    {
+        case kNotStarted:
+            [[fallthrough]];
+        case kProvisional:
+            m_state = kSentDidFinishLoad;
+            GetLocalFrameClient().DispatchDidFailProvisionalLoad(error);
+            if (m_frame)
+                GetFrameLoader().DetachProvisionalDocumentLoader(this);
+            break;
+        case kCommitted:
+            if (DocumentParser *documentParser = m_frame->GetDocument()->Parser())
+                documentParser->StopParsing();
+            m_state = kSentDidFinishLoad;
+            GetLocalFrameClient().DispatchDidFailLoad(error);
+            GetFrameLoader().DidFinishNavigation();
+            break;
+        case kSentDidFinishLoad:
+            NOTREACHED();
+            break;
+    }
+    ASSERT(kSentDidFinishLoad == m_state);
 }
 
 void DocumentLoader::MarkAsCommitted(void)
@@ -344,7 +367,7 @@ void DocumentLoader::NotifyFinished(Resource *resource)
         return;
     }
 
-    ASSERT(false); // BKTODO: LoadFailed(resource->GetResourceError());
+    LoadFailed(resource->GetResourceError());
     ClearResource();
 }
 

@@ -227,6 +227,28 @@ void ResourceFetcher::HandleLoadCompletion(Resource *resource)
 #endif
 }
 
+void ResourceFetcher::HandleLoaderError(Resource *resource, const ResourceError &error)
+{
+    ASSERT(nullptr != resource);
+
+#if 0 // BKTODO:
+    DCHECK_LE(inflight_keepalive_bytes, inflight_keepalive_bytes_);
+    inflight_keepalive_bytes_ -= inflight_keepalive_bytes;
+#endif
+
+    RemoveResourceLoader(resource->Loader());
+
+    Context().DispatchDidFail(resource->Url(), resource->Identifier(), error);
+
+#if 0 // BKTODO:
+    if (error.IsCancellation())
+        RemovePreload(resource);
+#endif
+    resource->FinishAsError(error, Context().GetLoadingTaskRunner().get());
+
+    HandleLoadCompletion(resource);
+}
+
 void ResourceFetcher::HandleLoaderFinish(Resource *resource, LoaderFinishType type)
 {
     ASSERT(nullptr != resource);

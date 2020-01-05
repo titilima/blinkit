@@ -44,7 +44,7 @@ void URLLoaderImpl::LoadAsynchronously(const ResourceRequest &request, WebURLLoa
     if (nullptr != task)
         error = task->Run(request);
     if (BK_ERR_SUCCESS != error)
-        LoaderTask::ReportError(m_taskRunner.get(), error);
+        LoaderTask::ReportError(client, m_taskRunner.get(), error, url);
 }
 
 } // namespace BlinKit

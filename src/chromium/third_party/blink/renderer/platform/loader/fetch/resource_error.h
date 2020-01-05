@@ -41,6 +41,7 @@
 #pragma once
 
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
+#include "url/bk_url.h"
 
 namespace blink {
 
@@ -50,9 +51,17 @@ class ResourceError final
 {
     DISALLOW_NEW();
 public:
+    ResourceError(int errorCode, const BlinKit::BkURL &failingURL);
+
+    int ErrorCode(void) const { return m_errorCode; }
+    std::string FailingURL(void) const { return m_failingURL.AsString(); }
+
     bool IsCancellation(void) const;
 
     static bool Compare(const ResourceError &a, const ResourceError &b);
+private:
+    int m_errorCode;
+    BlinKit::BkURL m_failingURL;
 };
 
 inline bool operator==(const ResourceError &a, const ResourceError &b)

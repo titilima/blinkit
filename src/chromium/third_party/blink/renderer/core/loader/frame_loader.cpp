@@ -47,6 +47,7 @@
 
 #include "frame_loader.h"
 
+#include "base/single_thread_task_runner.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -185,14 +186,31 @@ SubstituteData FrameLoader::DefaultSubstituteDataForURL(const BkURL &url)
     return SubstituteData();
 }
 
-void FrameLoader::DetachDocumentLoader(std::unique_ptr<DocumentLoader> &loader, bool flushMicrotaskQueue)
+std::unique_ptr<DocumentLoader> FrameLoader::DetachDocumentLoader(std::unique_ptr<DocumentLoader> &loader, bool flushMicrotaskQueue)
 {
     if (!loader)
-        return;
+        return nullptr;
 
     FrameNavigationDisabler navigationDisabler(*m_frame);
     loader->DetachFromFrame(flushMicrotaskQueue);
-    loader = nullptr;
+    return std::move(loader);
+}
+
+static void DestroyDocumentLoaderTask(DocumentLoader *loader)
+{
+    delete loader;
+}
+
+void FrameLoader::DetachProvisionalDocumentLoader(DocumentLoader *loader)
+{
+    ASSERT(m_provisionalDocumentLoader.get() == loader);
+    std::unique_ptr<DocumentLoader> detachedLoader = DetachDocumentLoader(m_provisionalDocumentLoader);
+    DidFinishNavigation();
+    if (detachedLoader)
+    {
+        std::function<void()> task = std::bind(DestroyDocumentLoaderTask, detachedLoader.release());
+        m_frame->GetTaskRunner(TaskType::kInternalLoading)->PostTask(FROM_HERE, task);
+    }
 }
 
 void FrameLoader::DidFinishNavigation(void)

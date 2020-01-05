@@ -117,13 +117,14 @@ void HTTPLoaderTask::RequestComplete(BkResponse response)
 void HTTPLoaderTask::RequestFailed(int errorCode)
 {
     BKLOG("HTTPLoaderTask::RequestFailed: %d.", errorCode);
-    LoaderTask::ReportError(m_taskRunner.get(), errorCode);
+    LoaderTask::ReportError(m_client, m_taskRunner.get(), errorCode, m_url);
     delete this;
 }
 
 int HTTPLoaderTask::Run(const ResourceRequest &request)
 {
-    const std::string URL = request.Url().AsString();
+    m_url = request.Url();
+    const std::string URL = m_url.AsString();
 
     BkRequest req = BkCreateRequest(URL.c_str(), *this);
     if (nullptr == req)

@@ -91,6 +91,7 @@ public:
     void CommitProvisionalLoad(void);
     void FinishedParsing(void);
     void DidFinishNavigation(void);
+    void DetachProvisionalDocumentLoader(DocumentLoader *loader);
 
     void DispatchDidClearDocumentOfWindowObject(void);
     void DispatchUnloadEvent(void);
@@ -108,7 +109,7 @@ private:
     bool CancelProvisionalLoaderForNewNavigation(bool cancelScheduledNavigations);
     bool ShouldPerformFragmentNavigation(bool isFormSubmission, const String &httpMethod, WebFrameLoadType loadType,
         const BlinKit::BkURL &url);
-    void DetachDocumentLoader(std::unique_ptr<DocumentLoader> &loader, bool flushMicrotaskQueue = false);
+    std::unique_ptr<DocumentLoader> DetachDocumentLoader(std::unique_ptr<DocumentLoader> &loader, bool flushMicrotaskQueue = false);
 
     Member<LocalFrame> m_frame;
     mutable FrameLoaderStateMachine m_stateMachine;

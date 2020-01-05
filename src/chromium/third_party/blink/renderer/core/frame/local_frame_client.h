@@ -53,6 +53,7 @@ namespace blink {
 
 class DocumentLoader;
 class LocalFrame;
+class ResourceError;
 class ResourceRequest;
 class SubstituteData;
 
@@ -72,6 +73,8 @@ public:
 
     virtual void DidCreateNewDocument(void) = 0;
     virtual void DispatchDidReceiveTitle(const String &title) = 0;
+    virtual void DispatchDidFailProvisionalLoad(const ResourceError &error) = 0;
+    virtual void DispatchDidFailLoad(const ResourceError &error) = 0;
     virtual void RunScriptsAtDocumentIdle(void) {}
     virtual void DispatchDidFinishDocumentLoad(void) = 0;
     virtual void DispatchDidHandleOnloadEvents(void) = 0;

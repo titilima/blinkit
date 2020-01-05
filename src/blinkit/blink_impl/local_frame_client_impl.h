@@ -29,6 +29,8 @@ private:
         std::unique_ptr<blink::WebDocumentLoader::ExtraData> extraData) override;
     void DispatchWillSendRequest(blink::ResourceRequest &request) override {}
     void DidCreateNewDocument(void) override {}
+    void DispatchDidFailProvisionalLoad(const blink::ResourceError &error) override {}
+    void DispatchDidFailLoad(const blink::ResourceError &error) override {}
     void DispatchDidFinishDocumentLoad(void) override {}
     void DispatchDidHandleOnloadEvents(void) override {}
 };

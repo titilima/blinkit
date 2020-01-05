@@ -24,12 +24,14 @@ class WebURLLoaderClient;
 
 namespace BlinKit {
 
+class BkURL;
+
 class LoaderTask
 {
 public:
     virtual ~LoaderTask(void);
 
-    static void ReportError(base::SingleThreadTaskRunner *taskRunner, int error);
+    static void ReportError(blink::WebURLLoaderClient *client, base::SingleThreadTaskRunner *taskRunner, int errorCode, const BkURL &URL);
 
     virtual int Run(const blink::ResourceRequest &request) = 0;
 protected:

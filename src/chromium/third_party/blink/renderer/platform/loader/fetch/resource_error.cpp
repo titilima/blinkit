@@ -37,7 +37,13 @@
 
 #include "resource_error.h"
 
+using namespace BlinKit;
+
 namespace blink {
+
+ResourceError::ResourceError(int errorCode, const BkURL &failingURL) : m_errorCode(errorCode), m_failingURL(failingURL)
+{
+}
 
 bool ResourceError::Compare(const ResourceError &a, const ResourceError &b)
 {

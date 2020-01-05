@@ -123,27 +123,6 @@ void FrameFetchContext::DidLoadResource(Resource *resource)
         m_document->CheckCompleted();
 }
 
-void FrameFetchContext::DispatchDidFinishLoading(unsigned long identifier)
-{
-#if 0 // BKTODO: Check if necessary.
-    if (IsDetached())
-        return;
-
-    GetFrame()->Loader().Progress().CompleteProgress(identifier);
-    probe::didFinishLoading(GetFrame()->GetDocument(), identifier,
-        MasterDocumentLoader(), finish_time,
-        encoded_data_length, decoded_body_length,
-        should_report_corb_blocking);
-    if (document_) {
-        InteractiveDetector* interactive_detector(
-            InteractiveDetector::From(*document_));
-        if (interactive_detector) {
-            interactive_detector->OnResourceLoadEnd(finish_time);
-        }
-    }
-#endif
-}
-
 void FrameFetchContext::DispatchDidReceiveResponse(
     unsigned long identifier,
     const ResourceResponse &response,
@@ -185,36 +164,6 @@ void FrameFetchContext::DispatchDidReceiveResponse(
         LinkLoader::kLoadAll, nullptr);
 
     GetLocalFrameClient()->DispatchDidReceiveResponse(response);
-#endif
-}
-
-void FrameFetchContext::DispatchWillSendRequest(
-    unsigned long identifier,
-    ResourceRequest &request,
-    const ResourceResponse &redirectResponse,
-    ResourceType resourceType,
-    const FetchInitiatorInfo &initiatorInfo)
-{
-#if 0 // BKTODO: Check if necessary.
-    if (IsDetached())
-        return;
-
-    if (redirectResponse.IsNull())
-    {
-        // Progress doesn't care about redirects, only notify it when an
-        // initial request is sent.
-        GetFrame()->Loader().Progress().WillStartLoading(identifier,
-            request.Priority());
-    }
-    if (IdlenessDetector* idleness_detector = GetFrame()->GetIdlenessDetector())
-        idleness_detector->OnWillSendRequest(MasterDocumentLoader()->Fetcher());
-    if (document_) {
-        InteractiveDetector* interactive_detector(
-            InteractiveDetector::From(*document_));
-        if (interactive_detector) {
-            interactive_detector->OnResourceLoadBegin(base::nullopt);
-        }
-    }
 #endif
 }
 

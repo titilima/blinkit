@@ -129,6 +129,11 @@ void Resource::AppendData(const char *data, size_t length)
         c->DataReceived(this, data, length);
 }
 
+void Resource::ClearData(void)
+{
+    m_data.reset();
+}
+
 void Resource::DidAddClient(ResourceClient *c)
 {
     if (std::shared_ptr<SharedBuffer> data = Data())
@@ -198,6 +203,47 @@ void Resource::Finish(base::SingleThreadTaskRunner *taskRunner)
     // BKTODO: CheckResourceIntegrity();
     TriggerNotificationForFinishObservers(taskRunner);
     NotifyFinished();
+}
+
+void Resource::FinishAsError(const ResourceError &error, base::SingleThreadTaskRunner *taskRunner)
+{
+    m_error = error;
+    m_isRevalidating = false;
+
+#if 0
+    if (IsMainThread())
+        GetMemoryCache()->Remove(this);
+#endif
+
+    bool failedDuringStart = ResourceStatus::kNotStarted == m_status;
+    if (!ErrorOccurred())
+        SetStatus(ResourceStatus::kLoadError);
+    ASSERT(ErrorOccurred());
+    ClearData();
+    m_loader = nullptr;
+    // BKTODO: CheckResourceIntegrity();
+    TriggerNotificationForFinishObservers(taskRunner);
+
+    ASSERT(!failedDuringStart); // BKTODO:
+#if 0
+    // Most resource types don't expect to succeed or fail inside
+    // ResourceFetcher::RequestResource(). If the request does complete
+    // immediately, the convention is to notify the client asynchronously
+    // unless the type is exempted for historical reasons (mostly due to
+    // performance implications to making those notifications asynchronous).
+    // So if this is an immediate failure (i.e., before NotifyStartLoad()),
+    // post a task if the Resource::Type supports it.
+    if (failed_during_start && !NeedsSynchronousCacheHit(GetType(), options_)) {
+        task_runner->PostTask(FROM_HERE, WTF::Bind(&Resource::NotifyFinished,
+            WrapWeakPersistent(this)));
+    }
+    else {
+        NotifyFinished();
+    }
+#else
+    NotifyFinished();
+#endif
+    // BKTODO: Check image overrides
 }
 
 bool Resource::HasClient(ResourceClient * client) const

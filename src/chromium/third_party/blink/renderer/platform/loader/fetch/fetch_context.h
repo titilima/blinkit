@@ -58,6 +58,7 @@ class SingleThreadTaskRunner;
 namespace blink {
 
 class Resource;
+class ResourceError;
 struct ResourceLoaderOptions;
 class ResourceRequest;
 class ResourceResponse;
@@ -99,6 +100,7 @@ public:
     virtual void DispatchDidReceiveData(unsigned long identifier, const char *data, int dataLength) {}
     virtual void DispatchDidFinishLoading(unsigned long identifier) {}
     virtual void DidLoadResource(Resource *resource) {}
+    virtual void DispatchDidFail(const BlinKit::BkURL &url, unsigned long identifier, const ResourceError &error) {}
 
     virtual bool IsDetached(void) const { return false; }
     bool DefersLoading(void) const { return false; } // BKTODO: This always returns false, because the page cannot be paused in BlinKit.

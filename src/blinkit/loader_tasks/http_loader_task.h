@@ -20,6 +20,7 @@
 #include "blinkit/loader_tasks/loader_task.h"
 #include "blinkit/misc/controller_impl.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
+#include "url/bk_url.h"
 
 namespace blink {
 class ResourceResponse;
@@ -51,6 +52,7 @@ private:
     int CancelWork(void) override;
 
     BkCrawler m_crawler;
+    BkURL m_url;
     std::shared_ptr<ResponseImpl> m_response;
 
     bool m_callingCrawler = false;

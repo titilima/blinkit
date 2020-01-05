@@ -57,6 +57,7 @@ class FetchContext;
 class FetchParameters;
 class Resource;
 class ResourceClient;
+class ResourceError;
 class ResourceFactory;
 class ResourceLoader;
 enum class ResourceType : uint8_t;
@@ -90,6 +91,7 @@ public:
     void StopFetching(void);
     enum LoaderFinishType { kDidFinishLoading, kDidFinishFirstPartInMultipart };
     void HandleLoaderFinish(Resource *resource, LoaderFinishType type);
+    void HandleLoaderError(Resource *resource, const ResourceError &error);
 
     int BlockingRequestCount(void) const;
 private:

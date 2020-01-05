@@ -96,6 +96,11 @@ ResourceLoader* ResourceLoader::Create(ResourceFetcher *fetcher, Resource *resou
     return resource->Loader();
 }
 
+void ResourceLoader::DidFail(const ResourceError &error)
+{
+    HandleError(error);
+}
+
 void ResourceLoader::DidFinishLoading(void)
 {
 #if 0 // BKTODO:
@@ -180,6 +185,17 @@ void ResourceLoader::DidReceiveResponse(const ResourceResponse &response)
         !resource_->ShouldIgnoreHTTPStatusCodeErrors())
         HandleError(ResourceError::CancelledError(response_to_pass.Url()));
 #endif
+}
+
+void ResourceLoader::HandleError(const ResourceError &error)
+{
+    m_loader.reset();
+    ASSERT(!ShouldFetchCodeCache()); // BKTODO:
+#if 0
+    code_cache_request_.reset();
+#endif
+
+    m_fetcher->HandleLoaderError(m_resource.Get(), error);
 }
 
 void ResourceLoader::ScheduleCancel(void)

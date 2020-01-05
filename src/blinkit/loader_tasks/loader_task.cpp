@@ -12,6 +12,9 @@
 #include "loader_task.h"
 
 #include "base/single_thread_task_runner.h"
+#include "third_party/blink/public/platform/web_url_loader_client.h"
+#include "third_party/blink/renderer/platform/loader/fetch/resource_error.h"
+#include "third_party/blink/renderer/platform/wtf/wtf.h"
 
 using namespace blink;
 
@@ -24,9 +27,17 @@ LoaderTask::LoaderTask(const std::shared_ptr<base::SingleThreadTaskRunner> &task
 
 LoaderTask::~LoaderTask(void) = default;
 
-void LoaderTask::ReportError(base::SingleThreadTaskRunner *taskRunner, int error)
+static void ErrorWorker(WebURLLoaderClient *client, const ResourceError error)
 {
-    ASSERT(false); // BKTODO:
+    ASSERT(IsMainThread());
+    client->DidFail(error);
+}
+
+void LoaderTask::ReportError(WebURLLoaderClient *client, base::SingleThreadTaskRunner *taskRunner, int errorCode, const BkURL &URL)
+{
+    ResourceError error(errorCode, URL);
+    std::function<void()> callback = std::bind(&ErrorWorker, client, error);
+    taskRunner->PostTask(FROM_HERE, callback);
 }
 
 } // namespace BlinKit

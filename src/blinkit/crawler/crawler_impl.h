@@ -56,6 +56,7 @@ private:
     String UserAgent(void) override;
     void TransitionToCommittedForNewPage(void) override;
     void DispatchDidReceiveTitle(const String &title) override {}
+    void DispatchDidFailProvisionalLoad(const blink::ResourceError &error) override;
     void DispatchDidFinishLoad(void) override;
 
     BkCrawlerClient m_client;

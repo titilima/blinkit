@@ -80,12 +80,8 @@ private:
     void RecordDataUriWithOctothorpe(void) override;
     void PrepareRequest(ResourceRequest &request, RedirectType redirectType) override;
     bool ShouldLoadNewResource(ResourceType type) const override;
-    void DispatchWillSendRequest(unsigned long identifier, ResourceRequest &request,
-        const ResourceResponse &redirectResponse, ResourceType resourceType,
-        const FetchInitiatorInfo &initiatorInfo) override;
     void DispatchDidReceiveResponse(unsigned long identifier, const ResourceResponse &response,
         Resource *resource) override;
-    void DispatchDidFinishLoading(unsigned long identifier) override;
     void DidLoadResource(Resource *resource) override;
     FetchContext* Detach(void) override;
 
