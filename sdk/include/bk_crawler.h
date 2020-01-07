@@ -50,7 +50,7 @@ public:
         rawClient.Error = ErrorImpl;
     }
 protected:
-    virtual void RequestComplete(BkResponse responce, BkWorkController controller)
+    virtual void RequestComplete(BkResponse response, BkWorkController controller)
     {
         BkControllerContinueWorking(controller);
     }
@@ -67,9 +67,9 @@ private:
         std::string userScript = ToImpl(userData)->GetUserScript();
         BkSetBufferData(dst, userScript.data(), userScript.length());
     }
-    static void BKAPI RequestCompleteImpl(BkResponse responce, BkWorkController controller, void *userData)
+    static void BKAPI RequestCompleteImpl(BkResponse response, BkWorkController controller, void *userData)
     {
-        ToImpl(userData)->RequestComplete(responce, controller);
+        ToImpl(userData)->RequestComplete(response, controller);
     }
     static void BKAPI DocumentReadyImpl(void *userData)
     {
