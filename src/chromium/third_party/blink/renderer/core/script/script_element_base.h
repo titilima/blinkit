@@ -22,7 +22,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_SCRIPT_SCRIPT_ELEMENT_BASE_H_
 
 #include "third_party/blink/renderer/core/core_export.h"
-#include "third_party/blink/renderer/core/frame/csp/content_security_policy.h"
+#include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/heap/heap.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
@@ -30,8 +30,7 @@
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace blink {
-class Document;
-class Element;
+
 class HTMLScriptElementOrSVGScriptElement;
 class ScriptLoader;
 
@@ -39,42 +38,57 @@ ScriptLoader* ScriptLoaderFromElement(Element*);
 
 class CORE_EXPORT ScriptElementBase : public GarbageCollectedMixin {
  public:
-  virtual bool AsyncAttributeValue() const = 0;
-  virtual String CharsetAttributeValue() const = 0;
-  virtual String CrossOriginAttributeValue() const = 0;
-  virtual bool DeferAttributeValue() const = 0;
-  virtual String EventAttributeValue() const = 0;
+  virtual ~ScriptElementBase(void);
+
+  ScriptLoader* Loader(void) const { return m_loader.get(); }
+
+  bool AsyncAttributeValue(void) const { return false; } // Seems no need to support `async` scripts.
+  String CharsetAttributeValue(void) const;
+#if 0 // BKTODO:
+  bool DeferAttributeValue(void) const { return false; }
+  String EventAttributeValue(void) const;
   virtual String ForAttributeValue() const = 0;
   virtual String IntegrityAttributeValue() const = 0;
-  virtual String LanguageAttributeValue() const = 0;
+#endif
+  String LanguageAttributeValue(void) const;
+#if 0 // BKTODO:
   virtual bool NomoduleAttributeValue() const = 0;
   virtual String SourceAttributeValue() const = 0;
-  virtual String TypeAttributeValue() const = 0;
+#endif
+  String TypeAttributeValue(void) const;
+#if 0 // BKTODO:
   virtual String ReferrerPolicyAttributeValue() const = 0;
+#endif
 
-  virtual String TextFromChildren() = 0;
-  virtual bool HasSourceAttribute() const = 0;
-  virtual bool IsConnected() const = 0;
+  String TextFromChildren(void) const;
+  bool HasSourceAttribute(void) const;
+  bool IsConnected(void) const;
+#if 0 // BKTODO:
   virtual bool HasChildren() const = 0;
   virtual const AtomicString& GetNonceForElement() const = 0;
   virtual bool ElementHasDuplicateAttributes() const = 0;
+#endif
 
-  virtual bool AllowInlineScriptForCSP(const AtomicString& nonce,
-                                       const WTF::OrdinalNumber&,
-                                       const String& script_content,
-                                       ContentSecurityPolicy::InlineType) = 0;
-  virtual Document& GetDocument() const = 0;
+  Document& GetDocument(void) const { return GetElement().GetDocument(); }
+#if 0 // BKTODO:
   virtual void SetScriptElementForBinding(
       HTMLScriptElementOrSVGScriptElement&) = 0;
 
   virtual void DispatchLoadEvent() = 0;
   virtual void DispatchErrorEvent() = 0;
+#endif
 
  protected:
-  ScriptLoader* InitializeScriptLoader(bool parser_inserted,
-                                       bool already_started);
+  ScriptElementBase(bool parserInserted, bool alreadyStarted);
 
-  virtual ScriptLoader* Loader() const = 0;
+  Node::InsertionNotificationRequest InsertedIntoImpl(ContainerNode &insertionPoint);
+  void DidNotifySubtreeInsertionsToDocumentImpl(void);
+  void ChildrenChangedImpl(const ContainerNode::ChildrenChange &change);
+  bool ParseAttributeImpl(const Element::AttributeModificationParams &params);
+private:
+  virtual const Element& GetElement(void) const = 0;
+
+  std::unique_ptr<ScriptLoader> m_loader;
 };
 
 }  // namespace blink

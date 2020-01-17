@@ -41,8 +41,10 @@
 #include "third_party/blink/renderer/core/dom/element_data.h"
 #include "third_party/blink/renderer/core/dom/element_data_cache.h"
 #include "third_party/blink/renderer/core/dom/element_rare_data.h"
+#include "third_party/blink/renderer/core/dom/text.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
 namespace blink {
 
@@ -57,6 +59,13 @@ Element::~Element(void)
 #ifndef BLINKIT_CRAWLER_ONLY
     DCHECK(NeedsAttach());
 #endif
+}
+
+static inline AtomicString MakeIdForStyleResolution(const AtomicString &value, bool inQuirksMode)
+{
+    if (inQuirksMode)
+        return value.LowerASCII();
+    return value;
 }
 
 void Element::AttributeChanged(const AttributeModificationParams &params)
@@ -81,16 +90,15 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
 
     if (name == html_names::kIdAttr)
     {
-        ASSERT(false); // BKTODO:
-#if 0
-        AtomicString old_id = GetElementData()->IdForStyleResolution();
-        AtomicString new_id = MakeIdForStyleResolution(
-            params.new_value, GetDocument().InQuirksMode());
-        if (new_id != old_id) {
-            GetElementData()->SetIdForStyleResolution(new_id);
+        AtomicString oldId = GetElementData()->IdForStyleResolution();
+        AtomicString newId = MakeIdForStyleResolution(params.newValue, GetDocument().InQuirksMode());
+        if (newId != oldId)
+        {
+            GetElementData()->SetIdForStyleResolution(newId);
+#ifndef BLINKIT_CRAWLER_ONLY
             GetDocument().GetStyleEngine().IdChangedForElement(old_id, new_id, *this);
-        }
 #endif
+        }
     }
     else if (name == html_names::kClassAttr)
     {
@@ -219,6 +227,13 @@ const AtomicString& Element::FastGetAttribute(const QualifiedName &name) const
     return g_null_atom;
 }
 
+bool Element::FastHasAttribute(const QualifiedName &name) const
+{
+    if (const ElementData *elementData = GetElementData())
+        return elementData->Attributes().FindIndex(name) != kNotFound;
+    return false;
+}
+
 void Element::FinishParsingChildren(void)
 {
     SetIsFinishedParsingChildren(true);
@@ -232,7 +247,12 @@ void Element::FinishParsingChildren(void)
 
 const AtomicString& Element::getAttribute(const QualifiedName &name) const
 {
-    ASSERT(false); // BKTODO:
+    if (const ElementData *elementData = GetElementData())
+    {
+        SynchronizeAttribute(name);
+        if (const Attribute *attribute = elementData->Attributes().Find(name))
+            return attribute->Value();
+    }
     return g_null_atom;
 }
 
@@ -385,7 +405,79 @@ void Element::StripScriptingAttributes(Vector<Attribute> &attributeVector) const
     ASSERT(false); // BKTODO:
 }
 
+void Element::SynchronizeAttribute(const QualifiedName &name) const
+{
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!GetElementData())
+        return;
+    if (UNLIKELY(name == styleAttr &&
+        GetElementData()->style_attribute_is_dirty_)) {
+        DCHECK(IsStyledElement());
+        SynchronizeStyleAttributeInternal();
+        return;
+    }
+#endif
+}
+
+String Element::TextFromChildren(void) const
+{
+    Text *firstTextNode = nullptr;
+    bool foundMultipleTextNodes = false;
+    unsigned totalLength = 0;
+
+    for (Node *child = firstChild(); nullptr != child; child = child->nextSibling())
+    {
+        if (!child->IsTextNode())
+            continue;
+        Text *text = ToText(child);
+        if (nullptr == firstTextNode)
+            firstTextNode = text;
+        else
+            foundMultipleTextNodes = true;
+        unsigned length = text->data().length();
+        if (length > std::numeric_limits<unsigned>::max() - totalLength)
+            return g_empty_string;
+        totalLength += length;
+    }
+
+    if (nullptr == firstTextNode)
+        return g_empty_string;
+
+    if (nullptr != firstTextNode && !foundMultipleTextNodes)
+    {
+        firstTextNode->Atomize();
+        return firstTextNode->data();
+    }
+
+    StringBuilder content;
+    content.ReserveCapacity(totalLength);
+    for (Node *child = firstTextNode; nullptr != child; child = child->nextSibling())
+    {
+        if (!child->IsTextNode())
+            continue;
+        content.Append(ToText(child)->data());
+    }
+
+    ASSERT(content.length() == totalLength);
+    return content.ToString();
+}
+
 void Element::UpdateId(TreeScope &scope, const AtomicString &oldId, const AtomicString &newId)
+{
+    ASSERT(IsInTreeScope());
+    ASSERT(oldId != newId);
+
+    if (!oldId.IsEmpty())
+        scope.RemoveElementById(oldId, *this);
+    if (!newId.IsEmpty())
+        scope.AddElementById(newId, *this);
+
+    NamedItemType type = GetNamedItemType();
+    if (NamedItemType::kNameOrId == type || NamedItemType::kNameOrIdWithName == type)
+        UpdateIdNamedItemRegistration(type, oldId, newId);
+}
+
+void Element::UpdateIdNamedItemRegistration(NamedItemType type, const AtomicString &oldName, const AtomicString &newName)
 {
     ASSERT(false); // BKTODO:
 }

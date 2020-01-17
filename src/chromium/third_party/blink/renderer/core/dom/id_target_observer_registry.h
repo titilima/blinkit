@@ -1,17 +1,16 @@
 // -------------------------------------------------
 // BlinKit - blink Library
 // -------------------------------------------------
-//   File Name: tree_scope.h
-// Description: TreeScope Class
+//   File Name: id_target_observer_registry.h
+// Description: IdTargetObserverRegistry Class
 //      Author: Ziming Li
-//     Created: 2019-10-19
+//     Created: 2020-01-12
 // -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
+// Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
 /*
- * Copyright (C) 2011 Google Inc. All Rights Reserved.
- * Copyright (C) 2012 Apple Inc. All Rights Reserved.
+ * Copyright (C) 2012 Google Inc. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -35,58 +34,39 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef BLINKIT_BLINK_TREE_SCOPE_H
-#define BLINKIT_BLINK_TREE_SCOPE_H
+#ifndef BLINKIT_BLINK_ID_TARGET_OBSERVER_REGISTRY_H
+#define BLINKIT_BLINK_ID_TARGET_OBSERVER_REGISTRY_H
 
 #pragma once
 
+#include <unordered_set>
+#include <unordered_map>
+#include "base/macros.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
 namespace blink {
 
-class ContainerNode;
-class Document;
-class Element;
-class IdTargetObserverRegistry;
-class Node;
-class TreeOrderedMap;
+class IdTargetObserver;
 
-class TreeScope : public GarbageCollectedMixin
+class IdTargetObserverRegistry final : public GarbageCollected<IdTargetObserverRegistry>
 {
 public:
-    TreeScope* ParentTreeScope(void) const { return m_parentTreeScope; }
-    
-    bool IsInclusiveOlderSiblingShadowRootOrAncestorTreeScopeOf(const TreeScope &scope) const;
+    static std::unique_ptr<IdTargetObserverRegistry> Create(void);
 
-    void AddElementById(const AtomicString &elementId, Element &element);
-    void RemoveElementById(const AtomicString &elementId, Element &element);
-
-    Document& GetDocument(void) const
-    {
-        ASSERT(m_document);
-        return *m_document;
-    }
-
-    // Used by the basic DOM mutation methods (e.g., appendChild()).
-    void AdoptIfNeeded(Node &node);
-
-protected:
-    TreeScope(ContainerNode &rootNode, Document &document);
-    TreeScope(Document &document);
-    virtual ~TreeScope(void);
+    void NotifyObservers(const AtomicString &id);
 private:
-    Member<ContainerNode> m_rootNode;
-    Member<Document> m_document;
-    Member<TreeScope> m_parentTreeScope;
+    IdTargetObserverRegistry(void) = default;
 
-    std::unique_ptr<TreeOrderedMap> m_elementsById;
+    void NotifyObserversInternal(const AtomicString &id);
 
-    std::unique_ptr<IdTargetObserverRegistry> m_idTargetObserverRegistry;
+    typedef std::unordered_set<Member<IdTargetObserver>> ObserverSet;
+    typedef std::unordered_map<StringImpl *, Member<ObserverSet>> IdToObserverSetMap;
+    IdToObserverSetMap m_registry;
+    Member<ObserverSet> m_notifyingObserversInSet;
+    DISALLOW_COPY_AND_ASSIGN(IdTargetObserverRegistry);
 };
 
-DEFINE_COMPARISON_OPERATORS_WITH_REFERENCES(TreeScope)
+} // namespace blink
 
-}  // namespace blink
-
-#endif // BLINKIT_BLINK_TREE_SCOPE_H
+#endif // BLINKIT_BLINK_ID_TARGET_OBSERVER_REGISTRY_H

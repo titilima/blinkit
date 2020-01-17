@@ -14,43 +14,39 @@
 
 #pragma once
 
-#include "core/dom/ScriptLoader.h"
-#include "core/dom/ScriptLoaderClient.h"
-#include "crawler_element.h"
+#include "blinkit/crawler/crawler_element.h"
+#include "third_party/blink/renderer/core/dom/create_element_flags.h"
+#include "third_party/blink/renderer/core/script/script_element_base.h"
 
 namespace BlinKit {
 
-class CrawlerScriptElement final : public CrawlerElement, public blink::ScriptLoaderClient
+class CrawlerScriptElement final : public CrawlerElement, public blink::ScriptElementBase
 {
 public:
-    static PassRefPtrWillBeRawPtr<CrawlerScriptElement> Create(blink::Document &, bool wasInsertedByParser, bool alreadyStarted);
+    static CrawlerScriptElement* Create(blink::Document &document, const CreateElementFlags flags)
+    {
+        return new CrawlerScriptElement(document, flags);
+    }
 private:
-    CrawlerScriptElement(blink::Document &, bool wasInsertedByParser, bool alreadyStarted);
+    CrawlerScriptElement(blink::Document &document, const CreateElementFlags flags);
 
-    void parseAttribute(const blink::QualifiedName&, const AtomicString&, const AtomicString&) override;
-    void didNotifySubtreeInsertionsToDocument(void) override;
-    void childrenChanged(const ChildrenChange&) override;
-    void didMoveToNewDocument(blink::Document& oldDocument) override;
+    // Node overrides
+    InsertionNotificationRequest InsertedInto(ContainerNode &insertionPoint) override;
+    void DidNotifySubtreeInsertionsToDocument(void) override;
+    // ContainerNode overrides
+    void ChildrenChanged(const ChildrenChange &change) override;
+    // Element overrides
+    void ParseAttribute(const AttributeModificationParams &params) override;
+#if 0
+    void DidMoveToNewDocument(Document& old_document) override;
 
-    bool isURLAttribute(const blink::Attribute&) const override;
-    bool hasLegalLinkAttribute(const blink::QualifiedName&) const override;
-    const blink::QualifiedName& subResourceAttributeName(void) const override;
+    bool IsURLAttribute(const blink::Attribute&) const override;
+    bool HasLegalLinkAttribute(const blink::QualifiedName&) const override;
+    const blink::QualifiedName& SubResourceAttributeName() const override;
+#endif
 
-    String sourceAttributeValue(void) const override;
-    String charsetAttributeValue(void) const override;
-    String typeAttributeValue(void) const override;
-    String languageAttributeValue(void) const override;
-    String forAttributeValue(void) const override;
-    String eventAttributeValue(void) const override;
-    bool asyncAttributeValue(void) const override;
-    bool deferAttributeValue(void) const override;
-    bool hasSourceAttribute(void) const override;
-
-    void dispatchLoadEvent(void) override;
-
-    PassRefPtrWillBeRawPtr<blink::Element> cloneElementWithoutAttributesAndChildren(void) override;
-
-    OwnPtrWillBeMember<blink::ScriptLoader> m_loader;
+    // ScriptElementBase
+    const blink::Element& GetElement(void) const override { return *this; }
 };
 
 } // namespace BlinKit

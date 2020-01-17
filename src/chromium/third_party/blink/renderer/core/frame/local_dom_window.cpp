@@ -42,6 +42,7 @@
 #include "third_party/blink/renderer/core/dom/document_init.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
+#include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 
@@ -80,9 +81,28 @@ DispatchEventResult LocalDOMWindow::DispatchEvent(Event &event, EventTarget *tar
     return FireEventListeners(event);
 }
 
+void LocalDOMWindow::DispatchLoadEvent(void)
+{
+    scoped_refptr<Event> loadEvent = Event::Create(event_type_names::kLoad);
+    DispatchEvent(*loadEvent, document());
+}
+
+void LocalDOMWindow::DispatchWindowLoadEvent(void)
+{
+#if DCHECK_IS_ON()
+    ASSERT(!EventDispatchForbiddenScope::IsEventDispatchForbidden());
+#endif
+    DispatchLoadEvent();
+}
+
 void LocalDOMWindow::DocumentWasClosed(void)
 {
-    ASSERT(false); // BKTODO:
+    DispatchWindowLoadEvent();
+#ifndef BLINKIT_CRAWLER_ONLY
+    EnqueuePageshowEvent(kPageshowEventNotPersisted);
+    if (pending_state_object_)
+        EnqueuePopstateEvent(std::move(pending_state_object_));
+#endif
 }
 
 void LocalDOMWindow::FinishedLoading(void)

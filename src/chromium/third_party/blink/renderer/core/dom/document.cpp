@@ -328,6 +328,13 @@ Node* Document::Clone(Document &factory, CloneChildrenFlag flag) const
     return nullptr;
 }
 
+Document* Document::ContextDocument(void) const
+{
+    if (m_frame)
+        return const_cast<Document *>(this);
+    return nullptr;
+}
+
 std::shared_ptr<DocumentParser> Document::CreateParser(void)
 {
     return HTMLDocumentParser::Create(*this);
@@ -422,6 +429,24 @@ void Document::DispatchUnloadEvents(void)
 void Document::ElementDataCacheClearTimerFired(TimerBase *)
 {
     m_elementDataCache.reset();
+}
+
+LocalFrame* Document::ExecutingFrame(void)
+{
+    if (LocalDOMWindow *window = ExecutingWindow())
+        return window->GetFrame();
+    return nullptr;
+}
+
+LocalDOMWindow* Document::ExecutingWindow(void) const
+{
+    if (LocalDOMWindow *owningWindow = domWindow())
+        return owningWindow;
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (HTMLImportsController* import = ImportsController())
+        return import->Master()->domWindow();
+#endif
+    return nullptr;
 }
 
 void Document::FinishedParsing(void)

@@ -24,6 +24,8 @@ class SingleThreadTaskRunner;
 
 namespace blink {
 
+class LocalDOMWindow;
+
 enum ReasonForCallingCanExecuteScripts {
     kAboutToExecuteScript,
     kNotAboutToExecuteScript
@@ -33,6 +35,8 @@ class ExecutionContext : public ContextLifecycleNotifier
 {
 public:
     virtual bool IsDocument(void) const { return false; }
+
+    virtual LocalDOMWindow* ExecutingWindow(void) const { return nullptr; }
 
     virtual bool CanExecuteScripts(ReasonForCallingCanExecuteScripts reason) { return false; }
 

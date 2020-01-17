@@ -72,6 +72,7 @@ public:
     AttributeCollection AttributesWithoutUpdate(void) const;
     const AtomicString& getAttribute(const QualifiedName &name) const;
     const AtomicString& FastGetAttribute(const QualifiedName &name) const;
+    bool FastHasAttribute(const QualifiedName &name) const;
     void setAttribute(const QualifiedName &name, const AtomicString &value);
     Attr* getAttributeNode(const AtomicString &name);
     Attr* getAttributeNodeNS(const AtomicString &namespaceURI, const AtomicString &localName);
@@ -82,6 +83,8 @@ public:
     const AtomicString& GetNameAttribute(void) const;
 
     AtomicString LowercaseIfNecessary(const AtomicString &name) const;
+
+    String TextFromChildren(void) const;
 
     virtual bool IsScriptElement(void) const { return false; }
 
@@ -130,9 +133,11 @@ protected:
 #endif
 private:
     ElementRareData* GetElementRareData(void) const;
+    void SynchronizeAttribute(const QualifiedName &name) const;
     void UpdateId(TreeScope &scope, const AtomicString &oldId, const AtomicString &newId);
     void UpdateName(const AtomicString &oldName, const AtomicString &newName);
     void UpdateNamedItemRegistration(NamedItemType type, const AtomicString &oldName, const AtomicString &newName);
+    void UpdateIdNamedItemRegistration(NamedItemType type, const AtomicString &oldName, const AtomicString &newName);
 
     QualifiedName m_tagName;
 

@@ -92,6 +92,16 @@ public:
     void FinishedParsing(void);
     void DidFinishNavigation(void);
     void DetachProvisionalDocumentLoader(DocumentLoader *loader);
+    // This runs the "stop document loading" algorithm in HTML:
+    // https://html.spec.whatwg.org/C/browsing-the-web.html#stop-document-loading
+    // Note, this function only cancels ongoing navigation handled through
+    // FrameLoader. You might also want to call
+    // LocalFrameClient::AbortClientNavigation() if appropriate.
+    //
+    // Warning: StopAllLoaders() may detach the LocalFrame to which this
+    // FrameLoader belongs. Callers need to be careful about checking the
+    // existence of the frame after StopAllLoaders() returns.
+    void StopAllLoaders(void);
 
     void DispatchDidClearDocumentOfWindowObject(void);
     void DispatchUnloadEvent(void);

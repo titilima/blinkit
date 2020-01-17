@@ -66,12 +66,14 @@ public:
     Document* InstallNewDocument(const DocumentInit &init);
 
     DispatchEventResult DispatchEvent(Event &event, EventTarget *target);
+    void DispatchWindowLoadEvent(void);
 
     void DocumentWasClosed(void);
     void FinishedLoading(void);
 private:
     explicit LocalDOMWindow(LocalFrame &frame);
 
+    void DispatchLoadEvent(void);
     void ClearDocument(void);
 
     std::unique_ptr<Document> m_document;

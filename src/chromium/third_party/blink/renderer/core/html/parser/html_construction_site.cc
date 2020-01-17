@@ -38,6 +38,7 @@
 #include "third_party/blink/renderer/core/html/parser/html_construction_site.h"
 
 #include <limits>
+#include "blinkit/crawler/crawler_script_element.h"
 #include "third_party/blink/renderer/core/dom/comment.h"
 #include "third_party/blink/renderer/core/dom/document_fragment.h"
 #include "third_party/blink/renderer/core/dom/document_type.h"
@@ -77,6 +78,8 @@
 #   include "third_party/blink/renderer/core/html/html_style_element.h"
 #   include "third_party/blink/renderer/core/html/html_template_element.h"
 #endif
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -736,8 +739,11 @@ void HTMLConstructionSite::InsertScriptElement(AtomicHTMLToken* token) {
       .SetCreatedByParser(parser_content_policy_ !=
                           kAllowScriptingContentAndDoNotMarkAlreadyStarted)
       .SetAlreadyStarted(is_parsing_fragment_ && flags.IsCreatedByParser());
-  ASSERT(false); // BKTODO:
-#if 0
+  Document &document = OwnerDocumentForCurrentNode();
+  Element *element = nullptr;
+#ifdef BLINKIT_CRAWLER_ONLY
+  element = CrawlerScriptElement::Create(document, flags);
+#else
   HTMLScriptElement* element = nullptr;
   if (const auto* is_attribute = token->GetAttributeItem(HTMLNames::isAttr)) {
     element = ToHTMLScriptElement(OwnerDocumentForCurrentNode().CreateElement(
@@ -745,11 +751,11 @@ void HTMLConstructionSite::InsertScriptElement(AtomicHTMLToken* token) {
   } else {
     element = HTMLScriptElement::Create(OwnerDocumentForCurrentNode(), flags);
   }
+#endif
   SetAttributes(element, token, parser_content_policy_);
   if (ScriptingContentIsAllowed(parser_content_policy_))
     AttachLater(CurrentNode(), element);
   open_elements_.Push(HTMLStackItem::Create(element, token));
-#endif
 }
 
 void HTMLConstructionSite::InsertForeignElement(

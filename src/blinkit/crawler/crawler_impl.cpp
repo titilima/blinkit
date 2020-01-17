@@ -35,9 +35,7 @@ CrawlerImpl::CrawlerImpl(const BkCrawlerClient &client) : m_client(client), m_fr
 
 CrawlerImpl::~CrawlerImpl(void)
 {
-#if 0 // BKTODO:
-    m_frame->detach(FrameDetachType::Remove);
-#endif
+    m_frame->Detach(FrameDetachType::kRemove);
 }
 
 void CrawlerImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
@@ -122,7 +120,7 @@ int CrawlerImpl::Run(const char *URL)
     BkURL u(URL);
     if (!u.SchemeIsHTTPOrHTTPS())
     {
-        assert(u.SchemeIsHTTPOrHTTPS());
+        //assert(u.SchemeIsHTTPOrHTTPS());
         return BK_ERR_URI;
     }
 

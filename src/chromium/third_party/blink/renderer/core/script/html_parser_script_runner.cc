@@ -47,6 +47,7 @@
 #include "third_party/blink/renderer/core/html/parser/nesting_level_incrementer.h"
 #include "third_party/blink/renderer/core/script/html_parser_script_runner_host.h"
 #include "third_party/blink/renderer/core/script/ignore_destructive_write_count_incrementer.h"
+#include "third_party/blink/renderer/core/script/script_element_base.h"
 #include "third_party/blink/renderer/core/script/script_loader.h"
 
 using namespace BlinKit;
@@ -55,7 +56,7 @@ namespace blink {
 
 namespace {
 
-void DoExecuteScript(PendingScript* pending_script, const BkURL& document_url) {
+void DoExecuteScript(PendingScript *pending_script, const BkURL& document_url) {
   pending_script->ExecuteScriptBlock(document_url);
 }
 
@@ -441,14 +442,14 @@ void HTMLParserScriptRunner::ProcessScriptElementInternal(
   DCHECK(document_);
   DCHECK(!HasParserBlockingScript());
   {
-    ASSERT(false); // BKTODO:
-#if 0
     ScriptLoader* script_loader = ScriptLoaderFromElement(script);
 
     DCHECK(script_loader->IsParserInserted());
 
+#if 0 // BKTODO:
     if (!IsExecutingScript())
       Microtask::PerformCheckpoint(V8PerIsolateData::MainThreadIsolate());
+#endif
 
     // <spec>... Let the old insertion point have the same value as the current
     // insertion point. Let the insertion point be just before the next input
@@ -497,7 +498,7 @@ void HTMLParserScriptRunner::ProcessScriptElementInternal(
           parser_blocking_script_->Dispose();
         parser_blocking_script_ = nullptr;
         DoExecuteScript(
-            script_loader->TakePendingScript(ScriptSchedulingType::kImmediate),
+            script_loader->TakePendingScript(ScriptSchedulingType::kImmediate).get(),
             DocumentURLForScriptExecution(document_));
       }
     } else {
@@ -515,7 +516,6 @@ void HTMLParserScriptRunner::ProcessScriptElementInternal(
     // point. ...</spec>
     //
     // Implemented by ~InsertionPointRecord().
-#endif
   }
 }
 

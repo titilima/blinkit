@@ -51,6 +51,8 @@ class DOMWindow;
 class FrameClient;
 class Page;
 
+enum class FrameDetachType { kRemove, kSwap };
+
 class Frame : public GarbageCollectedFinalized<Frame>
 {
 public:
@@ -60,6 +62,8 @@ public:
 
     FrameClient* Client(void) const { return &m_client; }
     DOMWindow* DomWindow(void) const { return m_domWindow.get(); }
+
+    void Detach(FrameDetachType type);
 
     bool IsAttached(void) const { return m_lifecycle.GetState() == FrameLifecycle::kAttached; }
 
@@ -71,6 +75,14 @@ public:
     void SetIsLoading(bool isLoading) { m_isLoading = isLoading; }
 protected:
     Frame(FrameClient &client, Page *page);
+
+    // DetachImpl() may be re-entered multiple times, if a frame is detached while
+    // already being detached.
+    virtual void DetachImpl(FrameDetachType type) = 0;
+
+    // Note that IsAttached() and IsDetached() are not strict opposites: frames
+    // that are detaching are considered to be in neither state.
+    bool IsDetached(void) const { return m_lifecycle.GetState() == FrameLifecycle::kDetached; }
 
     FrameClient &m_client;
     Member<Page> m_page;

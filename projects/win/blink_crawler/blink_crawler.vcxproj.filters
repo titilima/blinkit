@@ -959,6 +959,18 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource_error.h">
       <Filter>renderer\platform\loader\fetch</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\html_meta_charset_parser.h">
+      <Filter>renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\tree_ordered_map.h">
+      <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\id_target_observer_registry.h">
+      <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\script_element_base.h">
+      <Filter>renderer\core\script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\platform.cpp">
@@ -1455,6 +1467,18 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource_error.cpp">
       <Filter>renderer\platform\loader\fetch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\html_meta_charset_parser.cc">
+      <Filter>renderer\core\html\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\tree_ordered_map.cpp">
+      <Filter>renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\id_target_observer_registry.cpp">
+      <Filter>renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\script_element_base.cpp">
+      <Filter>renderer\core\script</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

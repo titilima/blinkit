@@ -89,6 +89,7 @@ private:
 
     // Frame overrides
     bool IsLocalFrame(void) const override { return true; }
+    void DetachImpl(FrameDetachType type) override;
 
     std::unique_ptr<FrameScheduler> m_frameScheduler;
     mutable FrameLoader m_loader;

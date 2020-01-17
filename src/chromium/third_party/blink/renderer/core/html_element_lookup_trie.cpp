@@ -41,6 +41,7 @@ static const HTMLQualifiedName* LookupHTMLTag2(const UChar *data)
                 case '4': return &kH4Tag;
                 case '5': return &kH5Tag;
                 case '6': return &kH6Tag;
+                case 'r': return &kHrTag;
             }
             break;
         }
@@ -72,12 +73,24 @@ static const HTMLQualifiedName* LookupHTMLTag4(const UChar *data)
                 return &kBodyTag;
             break;
         }
+        case 'c':
+        {
+            if ('o' == data[1] && 'd' == data[2] && 'e' == data[3])
+                return &kCodeTag;
+            break;
+        }
         case 'h':
         {
             if ('e' == data[1] && 'a' == data[2] && 'd' == data[3])
                 return &kHeadTag;
             if ('t' == data[1] && 'm' == data[2] && 'l' == data[3])
                 return &kHTMLTag;
+            break;
+        }
+        case 'l':
+        {
+            if ('i' == data[1] && 'n' == data[2] && 'k' == data[3])
+                return &kLinkTag;
             break;
         }
         case 'm':
@@ -112,6 +125,22 @@ static const HTMLQualifiedName* LookupHTMLTag5(const UChar *data)
     return nullptr;
 }
 
+static const HTMLQualifiedName* LookupHTMLTag6(const UChar *data)
+{
+    switch (data[0])
+    {
+        case 's':
+        {
+            if ('c' == data[1] && 'r' == data[2] && 'i' == data[3] && 'p' == data[4] && 't' == data[5])
+                return &kScriptTag;
+            if ('t' == data[1] && 'r' == data[2] && 'o' == data[3] && 'n' == data[4] && 'g' == data[5])
+                return &kStrongTag;
+            break;
+        }
+    }
+    return nullptr;
+}
+
 const AtomicString& lookupHTMLTag(const UChar *data, unsigned length)
 {
     ASSERT(nullptr != data);
@@ -134,6 +163,9 @@ const AtomicString& lookupHTMLTag(const UChar *data, unsigned length)
             break;
         case 5:
             tag = LookupHTMLTag5(data);
+            break;
+        case 6:
+            tag = LookupHTMLTag6(data);
             break;
     }
 

@@ -33,12 +33,23 @@
 
 #include "text_resource_decoder.h"
 
+#include "third_party/blink/renderer/core/html/parser/html_meta_charset_parser.h"
 #include "third_party/blink/renderer/platform/wtf/string_extras.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_encoding_registry.h"
 
 namespace blink {
 
 static const int kMinimumLengthOfXMLDeclaration = 8;
+
+static inline bool BytesEqual(const char *p, char b0, char b1, char b2, char b3, char b4)
+{
+    return p[0] == b0 && p[1] == b1 && p[2] == b2 && p[3] == b3 && p[4] == b4;
+}
+
+static inline bool BytesEqual(const char *p, char b0, char b1, char b2, char b3, char b4, char b5)
+{
+    return p[0] == b0 && p[1] == b1 && p[2] == b2 && p[3] == b3 && p[4] == b4 && p[5] == b5;
+}
 
 TextResourceDecoder::TextResourceDecoder(const TextResourceDecoderOptions &options) : m_options(options)
 {
@@ -133,17 +144,14 @@ void TextResourceDecoder::CheckForMetaCharset(const char *data, wtf_size_t lengt
         return;
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
-    if (!charset_parser_)
-        charset_parser_ = HTMLMetaCharsetParser::Create();
+    if (!m_charsetParser)
+        m_charsetParser = HTMLMetaCharsetParser::Create();
 
-    if (!charset_parser_->CheckForMetaCharset(data, length))
+    if (!m_charsetParser->CheckForMetaCharset(data, length))
         return;
 
-    SetEncoding(charset_parser_->Encoding(), kEncodingFromMetaTag);
-    charset_parser_.reset();
-#endif
+    SetEncoding(m_charsetParser->Encoding(), kEncodingFromMetaTag);
+    m_charsetParser.reset();
     m_checkedForMetaCharset = true;
 }
 
@@ -155,29 +163,30 @@ bool TextResourceDecoder::CheckForXMLCharset(const char *data, wtf_size_t len, b
         return true;
     }
 
-    ASSERT(false); // BKTODO:
-#if 0
     // This is not completely efficient, since the function might go
     // through the HTML head several times.
 
-    wtf_size_t old_size = buffer_.size();
-    buffer_.Grow(old_size + len);
-    memcpy(buffer_.data() + old_size, data, len);
+    wtf_size_t oldSize = m_buffer.size();
+    m_buffer.Grow(oldSize + len);
+    memcpy(m_buffer.data() + oldSize, data, len);
 
-    moved_data_to_buffer = true;
+    movedDataToBuffer = true;
 
-    const char* ptr = buffer_.data();
-    const char* p_end = ptr + buffer_.size();
+    const char *ptr = m_buffer.data();
+    const char *pEnd = ptr + m_buffer.size();
 
     // Is there enough data available to check for XML declaration?
-    if (buffer_.size() < kMinimumLengthOfXMLDeclaration)
+    if (m_buffer.size() < kMinimumLengthOfXMLDeclaration)
         return false;
 
     // Handle XML declaration, which can have encoding in it. This encoding is
     // honored even for HTML documents. It is an error for an XML declaration not
     // to be at the start of an XML document, and it is ignored in HTML documents
     // in such case.
-    if (BytesEqual(ptr, '<', '?', 'x', 'm', 'l')) {
+    if (BytesEqual(ptr, '<', '?', 'x', 'm', 'l'))
+    {
+        ASSERT(false); // BKTODO:
+#if 0
         const char* xml_declaration_end = ptr;
         while (xml_declaration_end != p_end && *xml_declaration_end != '>')
             ++xml_declaration_end;
@@ -192,14 +201,16 @@ bool TextResourceDecoder::CheckForXMLCharset(const char *data, wtf_size_t len, b
             SetEncoding(FindTextEncoding(ptr + pos, len), kEncodingFromXMLHeader);
         // continue looking for a charset - it may be specified in an HTTP-Equiv
         // meta
+#endif
     }
-    else if (BytesEqual(ptr, '<', 0, '?', 0, 'x', 0)) {
+    else if (BytesEqual(ptr, '<', 0, '?', 0, 'x', 0))
+    {
         SetEncoding(UTF16LittleEndianEncoding(), kAutoDetectedEncoding);
     }
-    else if (BytesEqual(ptr, 0, '<', 0, '?', 0, 'x')) {
+    else if (BytesEqual(ptr, 0, '<', 0, '?', 0, 'x'))
+    {
         SetEncoding(UTF16BigEndianEncoding(), kAutoDetectedEncoding);
     }
-#endif
 
     m_checkedForXmlCharset = true;
     return true;

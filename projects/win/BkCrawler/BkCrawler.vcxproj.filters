@@ -111,6 +111,9 @@
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\loader_task.h">
       <Filter>loader_tasks</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_script_element.h">
+      <Filter>crawler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BkCrawler.def">
@@ -180,6 +183,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\loader_task.cpp">
       <Filter>loader_tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_script_element.cpp">
+      <Filter>crawler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -11,130 +11,39 @@
 
 #include "crawler_script_element.h"
 
-#include "core/HTMLNames.h"
-#include "core/dom/ScriptRunner.h"
-#include "core/events/Event.h"
+#include "third_party/blink/renderer/core/html_names.h"
 
 using namespace blink;
-using namespace HTMLNames;
 
 namespace BlinKit {
 
-inline CrawlerScriptElement::CrawlerScriptElement(Document &document, bool wasInsertedByParser, bool alreadyStarted)
-    : CrawlerElement(scriptTag.localName(), &document)
-    , m_loader(ScriptLoader::create(this, wasInsertedByParser, alreadyStarted))
+CrawlerScriptElement::CrawlerScriptElement(Document &document, const CreateElementFlags flags)
+    : CrawlerElement(html_names::kScriptTag.LocalName(), &document)
+    , ScriptElementBase(flags.IsCreatedByParser(), flags.WasAlreadyStarted())
 {
 }
 
-bool CrawlerScriptElement::asyncAttributeValue(void) const
+void CrawlerScriptElement::ChildrenChanged(const ChildrenChange &change)
 {
-    return fastHasAttribute(asyncAttr);
+    CrawlerElement::ChildrenChanged(change);
+    ScriptElementBase::ChildrenChangedImpl(change);
 }
 
-String CrawlerScriptElement::charsetAttributeValue(void) const
+void CrawlerScriptElement::DidNotifySubtreeInsertionsToDocument(void)
 {
-    return getAttribute(charsetAttr).string();
+    ScriptElementBase::DidNotifySubtreeInsertionsToDocumentImpl();
 }
 
-void CrawlerScriptElement::childrenChanged(const ChildrenChange& change)
+Node::InsertionNotificationRequest CrawlerScriptElement::InsertedInto(ContainerNode &insertionPoint)
 {
-    CrawlerElement::childrenChanged(change);
-    if (change.isChildInsertion())
-        m_loader->childrenChanged();
+    CrawlerElement::InsertedInto(insertionPoint);
+    return ScriptElementBase::InsertedIntoImpl(insertionPoint);
 }
 
-PassRefPtrWillBeRawPtr<Element> CrawlerScriptElement::cloneElementWithoutAttributesAndChildren(void)
+void CrawlerScriptElement::ParseAttribute(const AttributeModificationParams &params)
 {
-    return adoptRefWillBeNoop(new CrawlerScriptElement(document(), false, m_loader->alreadyStarted()));
-}
-
-PassRefPtrWillBeRawPtr<CrawlerScriptElement> CrawlerScriptElement::Create(Document& document, bool wasInsertedByParser, bool alreadyStarted)
-{
-    return adoptRefWillBeNoop(new CrawlerScriptElement(document, wasInsertedByParser, alreadyStarted));
-}
-
-bool CrawlerScriptElement::deferAttributeValue(void) const
-{
-    return fastHasAttribute(deferAttr);
-}
-
-void CrawlerScriptElement::didMoveToNewDocument(Document &oldDocument)
-{
-    ScriptRunner::movePendingScript(oldDocument, document(), m_loader.get());
-    CrawlerElement::didMoveToNewDocument(oldDocument);
-}
-
-void CrawlerScriptElement::didNotifySubtreeInsertionsToDocument(void)
-{
-    m_loader->didNotifySubtreeInsertionsToDocument();
-}
-
-void CrawlerScriptElement::dispatchLoadEvent(void)
-{
-    ASSERT(!m_loader->haveFiredLoadEvent());
-    dispatchEvent(Event::create(EventTypeNames::load));
-}
-
-String CrawlerScriptElement::eventAttributeValue(void) const
-{
-    return getAttribute(eventAttr).string();
-}
-
-String CrawlerScriptElement::forAttributeValue(void) const
-{
-    return getAttribute(forAttr).string();
-}
-
-bool CrawlerScriptElement::hasLegalLinkAttribute(const QualifiedName &name) const
-{
-    return name == srcAttr || CrawlerElement::hasLegalLinkAttribute(name);
-}
-
-bool CrawlerScriptElement::hasSourceAttribute(void) const
-{
-    return fastHasAttribute(srcAttr);
-}
-
-bool CrawlerScriptElement::isURLAttribute(const Attribute &attribute) const
-{
-    return attribute.name() == srcAttr || CrawlerElement::isURLAttribute(attribute);
-}
-
-String CrawlerScriptElement::languageAttributeValue(void) const
-{
-    return getAttribute(languageAttr).string();
-}
-
-void CrawlerScriptElement::parseAttribute(const QualifiedName &name, const AtomicString &oldValue, const AtomicString &value)
-{
-    if (name == srcAttr)
-    {
-        m_loader->handleSourceAttribute(value);
-        logUpdateAttributeIfIsolatedWorldAndInDocument("script", srcAttr, oldValue, value);
-    }
-    else if (name == asyncAttr)
-    {
-        m_loader->handleAsyncAttribute();
-    }
-    else
-    {
-        CrawlerElement::parseAttribute(name, oldValue, value);
-    }
-}
-
-String CrawlerScriptElement::sourceAttributeValue(void) const
-{
-    return getAttribute(srcAttr).string();
-}
-
-const QualifiedName& CrawlerScriptElement::subResourceAttributeName(void) const
-{
-    return srcAttr;
-}
-
-String CrawlerScriptElement::typeAttributeValue(void) const
-{
-    return getAttribute(typeAttr).string();
+    if (!ScriptElementBase::ParseAttributeImpl(params))
+        CrawlerElement::ParseAttribute(params);
 }
 
 } // namespace BlinKit

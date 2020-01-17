@@ -45,6 +45,8 @@
 
 namespace blink {
 
+class HTMLMetaCharsetParser;
+
 class TextResourceDecoder
 {
     USING_FAST_MALLOC(TextResourceDecoder);
@@ -98,6 +100,8 @@ private:
     bool m_checkedForMetaCharset = false;
     bool m_sawError = false;
     bool m_detectionCompleted = false;
+
+    std::unique_ptr<HTMLMetaCharsetParser> m_charsetParser;
 
     DISALLOW_COPY_AND_ASSIGN(TextResourceDecoder);
 };

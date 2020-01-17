@@ -38,6 +38,8 @@
 #include "tree_scope.h"
 
 #include "third_party/blink/renderer/core/dom/document.h"
+#include "third_party/blink/renderer/core/dom/id_target_observer_registry.h"
+#include "third_party/blink/renderer/core/dom/tree_ordered_map.h"
 #include "third_party/blink/renderer/core/dom/tree_scope_adopter.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 
@@ -55,11 +57,20 @@ TreeScope::TreeScope(ContainerNode &rootNode, Document &document)
 TreeScope::TreeScope(Document &document)
     : m_rootNode(&document)
     , m_document(&document)
+    , m_idTargetObserverRegistry(IdTargetObserverRegistry::Create())
 {
     m_rootNode->SetTreeScope(this);
 }
 
 TreeScope::~TreeScope(void) = default;
+
+void TreeScope::AddElementById(const AtomicString &elementId, Element &element)
+{
+    if (!m_elementsById)
+        m_elementsById = TreeOrderedMap::Create();
+    m_elementsById->Add(elementId, element);
+    m_idTargetObserverRegistry->NotifyObservers(elementId);
+}
 
 void TreeScope::AdoptIfNeeded(Node &node)
 {
@@ -82,6 +93,11 @@ bool TreeScope::IsInclusiveOlderSiblingShadowRootOrAncestorTreeScopeOf(const Tre
             return true;
     }
     return false;
+}
+
+void TreeScope::RemoveElementById(const AtomicString &elementId, Element &element)
+{
+    ASSERT(false); // BKTODO:
 }
 
 }  // namespace blink

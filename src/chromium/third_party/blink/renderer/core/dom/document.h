@@ -116,6 +116,8 @@ public:
     LocalDOMWindow* domWindow(void) const { return m_domWindow; }
     void ClearDOMWindow(void) { m_domWindow = nullptr; }
     LocalFrame* GetFrame(void) const { return m_frame; }  // can be null
+    LocalFrame* ExecutingFrame(void);
+    Document* ContextDocument(void) const;
 
     void SetDoctype(DocumentType *docType);
 
@@ -248,13 +250,14 @@ private:
     void ChildrenChanged(const ChildrenChange &change) override;
     // ExecutionContext overrides
     bool IsDocument(void) const final { return true; }
+    LocalDOMWindow* ExecutingWindow(void) const final;
 
     static uint64_t m_globalTreeVersion;
     uint64_t m_domTreeVersion;
 
     DocumentLifecycle m_lifecycle;
-    Member<LocalDOMWindow> m_domWindow;
     Member<LocalFrame> m_frame;
+    Member<LocalDOMWindow> m_domWindow;
     DocumentEncodingData m_encodingData;
     DocumentReadyState m_readyState = kComplete;
     ParsingState m_parsingState = kFinishedParsing;

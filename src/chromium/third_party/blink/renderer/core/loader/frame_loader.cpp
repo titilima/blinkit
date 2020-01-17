@@ -465,6 +465,11 @@ void FrameLoader::StartNavigation(const FrameLoadRequest &passedRequest, WebFram
     ASSERT(m_provisionalDocumentLoader);
 }
 
+void FrameLoader::StopAllLoaders(void)
+{
+    ASSERT(false); // BKTODO:
+}
+
 String FrameLoader::UserAgent(void) const
 {
     return Client()->UserAgent();

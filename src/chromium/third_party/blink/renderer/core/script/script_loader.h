@@ -39,15 +39,24 @@
 #include "third_party/blink/renderer/core/script/script_scheduling_type.h"
 #include "third_party/blink/renderer/platform/bindings/name_client.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_position.h"
 
 namespace blink {
+
+class ScriptElementBase;
 
 class ScriptLoader final : public GarbageCollectedFinalized<ScriptLoader>
                          // BKTODO:, public PendingScriptClient
                          , public NameClient
 {
 public:
+    static std::unique_ptr<ScriptLoader> Create(ScriptElementBase *element, bool createdByParser, bool isEvaluated);
     ~ScriptLoader(void); // BKTODO: override;
+
+    bool IsParserInserted(void) const { return m_parserInserted; }
+    bool ReadyToBeParserExecuted(void) const { return m_readyToBeParserExecuted; }
+    bool WillBeParserExecuted(void) const { return m_willBeParserExecuted; }
+    bool WillExecuteWhenDocumentFinishedParsing(void) const { return m_willExecuteWhenDocumentFinishedParsing; }
 
     enum LegacyTypeSupport {
         kDisallowLegacyTypeInTypeAttribute,
@@ -58,7 +67,50 @@ public:
 
     static bool BlockForNoModule(ScriptType scriptType, bool nomodule);
 
+    void HandleSourceAttribute(const String &sourceUrl);
+    void DidNotifySubtreeInsertionsToDocument(void);
+    void ChildrenChanged(void);
+
     std::shared_ptr<PendingScript> TakePendingScript(ScriptSchedulingType schedulingType);
+
+    bool PrepareScript(const TextPosition &scriptStartPosition = TextPosition::MinimumPosition(),
+        LegacyTypeSupport supportLegacyTypes = kDisallowLegacyTypeInTypeAttribute);
+private:
+    ScriptLoader(ScriptElementBase *element, bool parserInserted, bool alreadyStarted);
+
+    const char* NameInHeapSnapshot(void) const override;
+
+    Member<ScriptElementBase> m_element;
+
+    // <spec
+    // href="https://html.spec.whatwg.org/multipage/scripting.html#already-started">
+    // ... Initially, script elements must have this flag unset ...</spec>
+    bool m_alreadyStarted = false;
+
+    // <spec
+    // href="https://html.spec.whatwg.org/multipage/scripting.html#parser-inserted">
+    // ... Initially, script elements must have this flag unset. ...</spec>
+    bool m_parserInserted = false;
+
+    // <spec
+    // href="https://html.spec.whatwg.org/multipage/scripting.html#non-blocking">
+    // ... Initially, script elements must have this flag set. ...</spec>
+    bool m_nonBlocking = true;
+
+    // <spec
+    // href="https://html.spec.whatwg.org/multipage/scripting.html#ready-to-be-parser-executed">
+    // ... Initially, script elements must have this flag unset ...</spec>
+    bool m_readyToBeParserExecuted = false;
+
+    // <spec
+    // href="https://html.spec.whatwg.org/multipage/scripting.html#concept-script-type">
+    // ... It is determined when the script is prepared, ...</spec>
+    ScriptType m_scriptType = ScriptType::kClassic;
+
+    // Same as "The parser will handle executing the script."
+    bool m_willBeParserExecuted = false;
+
+    bool m_willExecuteWhenDocumentFinishedParsing = false;
 };
 
 }  // namespace blink

@@ -119,6 +119,8 @@ public:
         return change;
     }
 
+    bool IsChildInsertion(void) const { return kElementInserted == type || kNonElementInserted == type; }
+
     ChildrenChangeType type;
     Member<Node> siblingChanged;
     // |siblingBeforeChange| is

@@ -152,11 +152,35 @@ bool MIMETypeRegistry::IsModernImageMIMEType(const String& mime_type) {
 }
 
 bool MIMETypeRegistry::IsSupportedJavaScriptMIMEType(const String& mime_type) {
-  ASSERT(false); // BKTODO:
+  //  Support every script type mentioned in the spec, as it notes that "User
+  //  agents must recognize all JavaScript MIME types." See
+  //  https://html.spec.whatwg.org/#javascript-mime-type.
+  const char* const kSupportedJavascriptTypes[] = {
+    "application/ecmascript",
+    "application/javascript",
+    "application/x-ecmascript",
+    "application/x-javascript",
+    "text/ecmascript",
+    "text/javascript",
+    "text/javascript1.0",
+    "text/javascript1.1",
+    "text/javascript1.2",
+    "text/javascript1.3",
+    "text/javascript1.4",
+    "text/javascript1.5",
+    "text/jscript",
+    "text/livescript",
+    "text/x-ecmascript",
+    "text/x-javascript",
+  };
+
+  const std::string s = ToLowerASCIIOrEmpty(mime_type);
+  for (const char *ps : kSupportedJavascriptTypes)
+  {
+    if (s == ps)
+      return true;
+  }
   return false;
-#if 0
-  return blink::IsSupportedJavascriptMimeType(ToLowerASCIIOrEmpty(mime_type));
-#endif
 }
 
 bool MIMETypeRegistry::IsLegacySupportedJavaScriptLanguage(
