@@ -167,6 +167,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\web\web_global_object_reuse_policy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\computed_style_base_constants.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\core_export.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_query.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\attr.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\attribute.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\attribute_collection.h" />
@@ -443,6 +444,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\controller\blink_initializer.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_query.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\attr.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\character_data.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\child_list_mutation_scope.cpp" />

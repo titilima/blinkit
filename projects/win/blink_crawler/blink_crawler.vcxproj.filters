@@ -108,6 +108,9 @@
     <Filter Include="renderer\platform\scheduler\main_thread">
       <UniqueIdentifier>{fa27779d-f00f-4060-8917-eb0d965ffc44}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\css">
+      <UniqueIdentifier>{14ecc93e-0efc-40aa-a3fb-c9c2e3444a09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\platform.h">
@@ -971,6 +974,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\script_element_base.h">
       <Filter>renderer\core\script</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_query.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\platform.cpp">
@@ -1479,6 +1485,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\script_element_base.cpp">
       <Filter>renderer\core\script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_query.cpp">
+      <Filter>renderer\core\css</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

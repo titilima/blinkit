@@ -74,6 +74,7 @@ class LocalDOMWindow;
 class LocalFrame;
 class ResourceFetcher;
 class ScriptableDocumentParser;
+class SelectorQueryCache;
 
 enum NodeListInvalidationType : int {
     kDoNotInvalidateOnAttributeChanges = 0,
@@ -141,6 +142,7 @@ public:
     }
 
     ElementDataCache* GetElementDataCache(void) { return m_elementDataCache.get(); }
+    SelectorQueryCache& GetSelectorQueryCache(void);
 
     bool MayContainV0Shadow(void) const { return m_mayContainV0Shadow; }
 
@@ -295,6 +297,7 @@ private:
 #endif
 
     std::unique_ptr<ElementDataCache> m_elementDataCache;
+    std::unique_ptr<SelectorQueryCache> m_selectorQueryCache;
 
     int m_nodeCount = 0;
     LiveNodeListRegistry m_nodeLists;

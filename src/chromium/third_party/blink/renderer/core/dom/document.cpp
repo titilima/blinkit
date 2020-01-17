@@ -41,6 +41,7 @@
 #include "document.h"
 
 #include "third_party/blink/public/platform/platform.h"
+#include "third_party/blink/renderer/core/css/selector_query.h"
 #include "third_party/blink/renderer/core/dom/document_init.h"
 #include "third_party/blink/renderer/core/dom/document_fragment.h"
 #include "third_party/blink/renderer/core/dom/document_parser.h"
@@ -537,6 +538,13 @@ ScriptableDocumentParser* Document::GetScriptableDocumentParser(void) const
     return nullptr;
 }
 
+SelectorQueryCache& Document::GetSelectorQueryCache(void)
+{
+    if (!m_selectorQueryCache)
+        m_selectorQueryCache = std::make_unique<SelectorQueryCache>();
+    return *m_selectorQueryCache;
+}
+
 std::shared_ptr<base::SingleThreadTaskRunner> Document::GetTaskRunner(TaskType type)
 {
     ASSERT(IsMainThread());
@@ -753,7 +761,8 @@ void Document::SetCompatibilityMode(CompatibilityMode mode)
         return;
 
     m_compatibilityMode = mode;
-    BKLOG("// BKTODO: GetSelectorQueryCache().Invalidate();");
+    if (m_selectorQueryCache)
+        m_selectorQueryCache->Invalidate();
 }
 
 void Document::SetDoctype(DocumentType *docType)
