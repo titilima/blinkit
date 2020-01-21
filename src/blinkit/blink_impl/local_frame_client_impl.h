@@ -24,6 +24,7 @@ public:
 protected:
     String UserAgent(void) override;
 private:
+    void Detached(blink::FrameDetachType) override {}
     std::unique_ptr<blink::DocumentLoader> CreateDocumentLoader(blink::LocalFrame *frame,
         const blink::ResourceRequest &request, const blink::SubstituteData &data,
         std::unique_ptr<blink::WebDocumentLoader::ExtraData> extraData) override;
@@ -33,6 +34,7 @@ private:
     void DispatchDidFailLoad(const blink::ResourceError &error) override {}
     void DispatchDidFinishDocumentLoad(void) override {}
     void DispatchDidHandleOnloadEvents(void) override {}
+    void WillBeDetached(void) override {}
 };
 
 } // namespace BlinKit

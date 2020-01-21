@@ -28,7 +28,7 @@
 using namespace blink;
 using namespace BlinKit;
 
-CrawlerImpl::CrawlerImpl(const BkCrawlerClient &client) : m_client(client), m_frame(LocalFrame::Create(*this))
+CrawlerImpl::CrawlerImpl(const BkCrawlerClient &client) : m_client(client), m_frame(LocalFrame::Create(this))
 {
     m_frame->Init();
 }

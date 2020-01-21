@@ -31,9 +31,11 @@ public:
     ~DOMWindow(void) override;
 
     Frame* GetFrame(void) const {
-        assert(!m_frame || m_frame->DomWindow() == this);
+        ASSERT(!m_frame || m_frame->DomWindow() == this);
         return m_frame;
     }
+    void DisconnectFromFrame(void) { m_frame = nullptr; }
+
     bool IsLocalDOMWindow(void) const { return true; }
 protected:
     explicit DOMWindow(Frame &frame);

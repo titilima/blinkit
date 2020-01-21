@@ -76,6 +76,7 @@ public:
     static DispatchEventResult GetDispatchEventResult(const Event &event);
 
     virtual bool KeepEventInNode(const Event &event) const { return false; } // BKTODO: This method is only for media controls, so it may be useless.
+    virtual void RemoveAllEventListeners(void);
 protected:
     EventTarget(void) = default;
 
@@ -94,6 +95,6 @@ private:
     EventTargetData m_eventTargetData;
 };
 
-}  // namespace blink
+} // namespace blink
 
-#endif  // BLINKIT_BLINK_EVENT_TARGET_H
+#endif // BLINKIT_BLINK_EVENT_TARGET_H

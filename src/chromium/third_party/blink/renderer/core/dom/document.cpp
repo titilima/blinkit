@@ -755,6 +755,14 @@ void Document::ParserInsertedHtmlElement(Element &element)
     }
 }
 
+void Document::RemoveAllEventListeners(void)
+{
+    ContainerNode::RemoveAllEventListeners();
+
+    if (LocalDOMWindow *domWindow = this->domWindow())
+        domWindow->RemoveAllEventListeners();
+}
+
 void Document::SetCompatibilityMode(CompatibilityMode mode)
 {
     if (m_compatibilityModeLocked || mode == m_compatibilityMode)

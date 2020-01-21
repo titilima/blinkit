@@ -230,6 +230,7 @@ protected:
 private:
     friend class IgnoreDestructiveWriteCountIncrementer;
     friend class ThrowOnDynamicMarkupInsertionCountIncrementer;
+    friend class IgnoreOpensDuringUnloadCountIncrementer;
 
     static ConstructionType GetConstructionType(const DocumentInit &init);
 
@@ -244,6 +245,8 @@ private:
     bool CheckCompletedInternal(void);
     void DetachParser(void);
 
+    // EventTarget overrides
+    void RemoveAllEventListeners(void) final;
     // Node overrides
     String nodeName(void) const final;
     NodeType getNodeType(void) const final { return kDocumentNode; }
@@ -267,8 +270,12 @@ private:
 
     MutationObserverOptions m_mutationObserverTypes = 0;
 
+    // https://html.spec.whatwg.org/C/dynamic-markup-insertion.html#ignore-destructive-writes-counter
     unsigned ignore_destructive_write_count_ = 0;
+    // https://html.spec.whatwg.org/C/dynamic-markup-insertion.html#throw-on-dynamic-markup-insertion-counter
     unsigned throw_on_dynamic_markup_insertion_count_ = 0;
+    // https://html.spec.whatwg.org/C/dynamic-markup-insertion.html#ignore-opens-during-unload-counter
+    unsigned ignore_opens_during_unload_count_ = 0;
 
     bool m_wellFormed = false;
 

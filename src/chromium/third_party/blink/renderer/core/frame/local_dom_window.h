@@ -38,6 +38,7 @@
 #ifndef BLINKIT_BLINK_LOCAL_DOM_WINDOW_H
 #define BLINKIT_BLINK_LOCAL_DOM_WINDOW_H
 
+#include <unordered_set>
 #include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/frame/dom_window.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
@@ -70,6 +71,15 @@ public:
 
     void DocumentWasClosed(void);
     void FinishedLoading(void);
+    void FrameDestroyed(void);
+
+    class EventListenerObserver : public GarbageCollectedMixin {
+    public:
+        virtual void DidRemoveAllEventListeners(LocalDOMWindow *) = 0;
+    };
+
+    // EventTarget overrides
+    void RemoveAllEventListeners(void) final;
 private:
     explicit LocalDOMWindow(LocalFrame &frame);
 
@@ -77,6 +87,8 @@ private:
     void ClearDocument(void);
 
     std::unique_ptr<Document> m_document;
+
+    std::unordered_set<EventListenerObserver *> m_eventListenerObservers;
 };
 
 DEFINE_TYPE_CASTS(LocalDOMWindow, DOMWindow, x, x->IsLocalDOMWindow(), x.IsLocalDOMWindow());

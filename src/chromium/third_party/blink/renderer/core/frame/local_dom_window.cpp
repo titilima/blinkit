@@ -110,6 +110,12 @@ void LocalDOMWindow::FinishedLoading(void)
     // Currently nothing to do.
 }
 
+void LocalDOMWindow::FrameDestroyed(void)
+{
+    RemoveAllEventListeners();
+    DisconnectFromFrame();
+}
+
 LocalFrame* LocalDOMWindow::GetFrame(void) const
 {
     return ToLocalFrame(DOMWindow::GetFrame());
@@ -142,6 +148,22 @@ Document* LocalDOMWindow::InstallNewDocument(const DocumentInit &init)
     }
 
     return m_document.get();
+}
+
+void LocalDOMWindow::RemoveAllEventListeners(void)
+{
+    EventTarget::RemoveAllEventListeners();
+
+    for (EventListenerObserver *observer : m_eventListenerObservers)
+        observer->DidRemoveAllEventListeners(this);
+
+#if 0 // BKTODO:
+    if (LocalFrame *frame = GetFrame())
+        frame->GetEventHandlerRegistry().DidRemoveAllEventHandlers(*this);
+
+    UntrackAllUnloadEventListeners(this);
+    UntrackAllBeforeUnloadEventListeners(this);
+#endif
 }
 
 void LocalDOMWindow::Reset(void)

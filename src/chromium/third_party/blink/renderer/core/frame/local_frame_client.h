@@ -79,6 +79,7 @@ public:
     virtual void DispatchDidFinishDocumentLoad(void) = 0;
     virtual void DispatchDidHandleOnloadEvents(void) = 0;
     virtual void DispatchDidFinishLoad(void) = 0;
+    virtual void WillBeDetached(void) = 0;
 
     virtual NavigationPolicy DecidePolicyForNavigation(const ResourceRequest &request) { return kNavigationPolicyCurrentTab; }
     virtual void DispatchDidStartProvisionalLoad(DocumentLoader *loader, ResourceRequest &request) {}

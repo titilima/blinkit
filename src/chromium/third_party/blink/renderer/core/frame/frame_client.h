@@ -21,11 +21,14 @@
 namespace blink {
 
 class Frame;
+enum class FrameDetachType;
 
 class FrameClient : public GarbageCollectedFinalized<FrameClient>
 {
 public:
     virtual ~FrameClient(void) = default;
+
+    virtual void Detached(FrameDetachType) = 0;
 };
 
 }  // namespace blink

@@ -102,6 +102,7 @@ public:
     // FrameLoader belongs. Callers need to be careful about checking the
     // existence of the frame after StopAllLoaders() returns.
     void StopAllLoaders(void);
+    void Detach(void);
 
     void DispatchDidClearDocumentOfWindowObject(void);
     void DispatchUnloadEvent(void);
@@ -128,6 +129,7 @@ private:
 
     bool m_inStopAllLoaders = false;
     bool m_protectProvisionalLoader = false;
+    bool m_detached = false;
 
     DISALLOW_COPY_AND_ASSIGN(FrameLoader);
 };

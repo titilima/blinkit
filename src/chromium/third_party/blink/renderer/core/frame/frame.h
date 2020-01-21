@@ -60,7 +60,7 @@ public:
 
     virtual bool IsLocalFrame(void) const = 0;
 
-    FrameClient* Client(void) const { return &m_client; }
+    FrameClient* Client(void) const { return m_client; }
     DOMWindow* DomWindow(void) const { return m_domWindow.get(); }
 
     void Detach(FrameDetachType type);
@@ -74,7 +74,7 @@ public:
     bool IsLoading(void) const { return m_isLoading; }
     void SetIsLoading(bool isLoading) { m_isLoading = isLoading; }
 protected:
-    Frame(FrameClient &client, Page *page);
+    Frame(FrameClient *client, Page *page);
 
     // DetachImpl() may be re-entered multiple times, if a frame is detached while
     // already being detached.
@@ -84,10 +84,10 @@ protected:
     // that are detaching are considered to be in neither state.
     bool IsDetached(void) const { return m_lifecycle.GetState() == FrameLifecycle::kDetached; }
 
-    FrameClient &m_client;
     Member<Page> m_page;
     std::unique_ptr<DOMWindow> m_domWindow;
 private:
+    Member<FrameClient> m_client;
     FrameLifecycle m_lifecycle;
     bool m_isLoading = false;
 };

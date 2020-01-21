@@ -117,4 +117,23 @@ DispatchEventResult EventTarget::GetDispatchEventResult(const Event &event)
     return DispatchEventResult::kNotCanceled;
 }
 
+void EventTarget::RemoveAllEventListeners(void)
+{
+    EventTargetData *d = GetEventTargetData();
+    if (nullptr == d)
+        return;
+    d->eventListenerMap.Clear();
+
+#if 0 // BKTODO:
+    // Notify firing events planning to invoke the listener at 'index' that
+    // they have one less listener to invoke.
+    if (d->firing_event_iterators) {
+        for (const auto& iterator : *d->firing_event_iterators) {
+            iterator.iterator = 0;
+            iterator.end = 0;
+        }
+    }
+#endif
+}
+
 }  // namespace blink

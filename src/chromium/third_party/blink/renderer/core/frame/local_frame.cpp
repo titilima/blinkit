@@ -41,9 +41,12 @@
 
 #include "local_frame.h"
 
+#include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
+#include "third_party/blink/renderer/core/dom/ignore_opens_during_unload_count_incrementer.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/loader/navigation_scheduler.h"
+#include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #include "third_party/blink/renderer/platform/scheduler/main_thread/frame_scheduler_impl.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
@@ -54,11 +57,12 @@ static std::unique_ptr<FrameScheduler> CreateFrameScheduler(Page *)
     return scheduler::FrameSchedulerImpl::Create();
 }
 
-LocalFrame::LocalFrame(LocalFrameClient &client, Page *page)
+LocalFrame::LocalFrame(LocalFrameClient *client, Page *page)
     : Frame(client, page)
     , m_frameScheduler(CreateFrameScheduler(page))
     , m_loader(this)
     , m_navigationScheduler(NavigationScheduler::Create(this))
+    , m_scriptController(ScriptController::Create(*this))
 {
 }
 
@@ -72,7 +76,7 @@ LocalFrameClient* LocalFrame::Client(void) const
     return static_cast<LocalFrameClient *>(Frame::Client());
 }
 
-std::unique_ptr<LocalFrame> LocalFrame::Create(LocalFrameClient &client, Page *page)
+std::unique_ptr<LocalFrame> LocalFrame::Create(LocalFrameClient *client, Page *page)
 {
     return base::WrapUnique(new LocalFrame(client, page));
 }
@@ -85,24 +89,11 @@ void LocalFrame::DetachImpl(FrameDetachType type)
     // events, et cetera can run Javascript, which can reenter Detach().
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     m_loader.StopAllLoaders();
-    ASSERT(false); // BKTODO:
-#if 0
-    // Don't allow any new child frames to load in this frame: attaching a new
-    // child frame during or after detaching children results in an attached
-    // frame on a detached DOM tree, which is bad.
-    SubframeLoadingDisabler disabler(*GetDocument());
     // https://html.spec.whatwg.org/C/browsing-the-web.html#unload-a-document
     // The ignore-opens-during-unload counter of a Document must be incremented
     // both when unloading itself and when unloading its descendants.
-    IgnoreOpensDuringUnloadCountIncrementer ignore_opens_during_unload(
-        GetDocument());
+    IgnoreOpensDuringUnloadCountIncrementer ignoreOpensDuringUnload(GetDocument());
     m_loader.DispatchUnloadEvent();
-    DetachChildren();
-
-    // All done if detaching the subframes brought about a detach of this frame
-    // also.
-    if (!Client())
-        return;
 
     // stopAllLoaders() needs to be called after detachChildren(), because
     // detachChildren() will trigger the unload event handlers of any child
@@ -111,6 +102,7 @@ void LocalFrame::DetachImpl(FrameDetachType type)
     m_loader.StopAllLoaders();
     m_loader.Detach();
     GetDocument()->Shutdown();
+#ifndef BLINKIT_CRAWLER_ONLY
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
     // It seems to crash because Frame is detached before LocalFrameView.
     // Verify here that any LocalFrameView has been detached by now.
@@ -120,12 +112,13 @@ void LocalFrame::DetachImpl(FrameDetachType type)
         CHECK_EQ(view_, DeprecatedLocalOwner()->OwnedEmbeddedContentView());
     }
     CHECK(!view_ || !view_->IsAttached());
+#endif
 
     // This is the earliest that scripting can be disabled:
     // - FrameLoader::Detach() can fire XHR abort events
     // - Document::Shutdown() can dispose plugins which can run script.
     ScriptForbiddenScope forbidScript;
-    if (!Client())
+    if (nullptr == Client())
         return;
 
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -134,28 +127,39 @@ void LocalFrame::DetachImpl(FrameDetachType type)
     // re-entered, then check for a non-null Client() above should have already
     // returned.
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    DCHECK(!IsDetached());
+    ASSERT(!IsDetached());
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
     CHECK(!view_->IsAttached());
+#endif
     Client()->WillBeDetached();
     // Notify ScriptController that the frame is closing, since its cleanup ends
     // up calling back to LocalFrameClient via WindowProxy.
     GetScriptController().ClearForClose();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
     CHECK(!view_->IsAttached());
     SetView(nullptr);
+#endif
 
+#if 0 // BKTODO:
     GetEventHandlerRegistry().DidRemoveAllEventHandlers(*DomWindow());
+#endif
 
     DomWindow()->FrameDestroyed();
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (GetPage() && GetPage()->GetFocusController().FocusedFrame() == this)
         GetPage()->GetFocusController().SetFocusedFrame(nullptr);
+#endif
 
+#if 0 // BKTODO:
     supplements_.clear();
-    frame_scheduler_.reset();
+#endif
+    m_frameScheduler.reset();
+#if 0 // BKTODO: Check the code below.
     WeakIdentifierMap<LocalFrame>::NotifyObjectDestroyed(this);
 #endif
 }

@@ -68,7 +68,10 @@ FrameLoader::FrameLoader(LocalFrame *frame) : m_frame(frame)
 {
 }
 
-FrameLoader::~FrameLoader(void) = default;
+FrameLoader::~FrameLoader(void)
+{
+    ASSERT(m_detached);
+}
 
 bool FrameLoader::CancelProvisionalLoaderForNewNavigation(bool cancelScheduledNavigations)
 {
@@ -184,6 +187,14 @@ SubstituteData FrameLoader::DefaultSubstituteDataForURL(const BkURL &url)
 {
     ASSERT(url.AsString() != "about:src"); // BKTODO:
     return SubstituteData();
+}
+
+void FrameLoader::Detach(void)
+{
+    DetachDocumentLoader(m_documentLoader);
+    DetachDocumentLoader(m_provisionalDocumentLoader);
+
+    m_detached = true;
 }
 
 std::unique_ptr<DocumentLoader> FrameLoader::DetachDocumentLoader(std::unique_ptr<DocumentLoader> &loader, bool flushMicrotaskQueue)
@@ -467,7 +478,23 @@ void FrameLoader::StartNavigation(const FrameLoadRequest &passedRequest, WebFram
 
 void FrameLoader::StopAllLoaders(void)
 {
-    ASSERT(false); // BKTODO:
+    if (m_frame->GetDocument()->PageDismissalEventBeingDispatched() != Document::kNoDismissal)
+        return;
+
+    // If this method is called from within this method, infinite recursion can
+    // occur (3442218). Avoid this.
+    if (m_inStopAllLoaders)
+        return;
+
+    base::AutoReset<bool> inStopAllLoaders(&m_inStopAllLoaders, true);
+
+    m_frame->GetDocument()->CancelParsing();
+    if (m_documentLoader)
+        m_documentLoader->StopLoading();
+    if (!m_protectProvisionalLoader)
+        DetachDocumentLoader(m_provisionalDocumentLoader);
+    m_frame->GetNavigationScheduler().Cancel();
+    DidFinishNavigation();
 }
 
 String FrameLoader::UserAgent(void) const

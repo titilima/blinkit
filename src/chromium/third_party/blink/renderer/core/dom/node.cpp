@@ -37,13 +37,24 @@
 
 #include "node.h"
 
+#include <unordered_map>
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatcher.h"
+#include "third_party/blink/renderer/core/dom/node_traversal.h"
+#include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
 namespace blink {
+
+using EventTargetDataMap = std::unordered_map<Node *, std::unique_ptr<EventTargetData>>;
+
+static EventTargetDataMap& GetEventTargetDataMap(void)
+{
+    static EventTargetDataMap s_eventTargetDataMap;
+    return s_eventTargetDataMap;
+}
 
 Node::Node(TreeScope *treeScope, ConstructionType type)
     : m_nodeFlags(type)
@@ -54,6 +65,8 @@ Node::Node(TreeScope *treeScope, ConstructionType type)
 
 Node::~Node(void)
 {
+    if (HasEventTargetData())
+        GetEventTargetDataMap().erase(this);
 #ifndef BLINKIT_CRAWLER_ONLY
     if (!HasRareData() && !m_data.node_layout_data_->IsSharedEmptyData())
         delete data_.node_layout_data_;
@@ -245,8 +258,7 @@ void Node::HandleLocalEvents(Event &event)
 
 EventTargetData* Node::GetEventTargetData(void)
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
+    return HasEventTargetData() ? GetEventTargetDataMap()[this].get() : nullptr;
 }
 
 bool Node::HasTagName(const HTMLQualifiedName &name) const
@@ -385,7 +397,15 @@ Node* Node::PseudoAwareLastChild(void) const
 
 void Node::RemoveAllEventListenersRecursively(void)
 {
-    ASSERT(false); // BKTODO:
+    ScriptForbiddenScope forbidScriptDuringRawIteration;
+    for (Node &node : NodeTraversal::StartsAt(*this))
+    {
+        node.RemoveAllEventListeners();
+#ifndef BLINKIT_CRAWLER_ONLY
+        if (ShadowRoot* root = node.GetShadowRoot())
+            root->RemoveAllEventListenersRecursively();
+#endif
+    }
 }
 
 void Node::RemovedFrom(ContainerNode &insertionPoint)

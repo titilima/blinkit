@@ -57,11 +57,12 @@ class FrameScheduler;
 class LocalDOMWindow;
 class LocalFrameClient;
 class NavigationScheduler;
+class ScriptController;
 
 class LocalFrame final : public Frame
 {
 public:
-    static std::unique_ptr<LocalFrame> Create(LocalFrameClient &client, Page *page = nullptr);
+    static std::unique_ptr<LocalFrame> Create(LocalFrameClient *client, Page *page = nullptr);
     ~LocalFrame(void) override;
 
     void Init(void) { m_loader.Init(); }
@@ -73,6 +74,7 @@ public:
     void SetDOMWindow(std::unique_ptr<LocalDOMWindow> domWindow);
     Document* GetDocument(void) const;
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(TaskType type);
+    ScriptController& GetScriptController(void) const { return *m_scriptController; }
 
     bool IsNavigationAllowed(void) const { return 0 == m_navigationDisableCount; }
 
@@ -82,7 +84,7 @@ public:
 private:
     friend class FrameNavigationDisabler;
 
-    LocalFrame(LocalFrameClient &client, Page *page);
+    LocalFrame(LocalFrameClient *client, Page *page);
 
     void EnableNavigation(void) { --m_navigationDisableCount; }
     void DisableNavigation(void) { ++m_navigationDisableCount; }
@@ -94,6 +96,8 @@ private:
     std::unique_ptr<FrameScheduler> m_frameScheduler;
     mutable FrameLoader m_loader;
     std::unique_ptr<NavigationScheduler> m_navigationScheduler;
+
+    const std::unique_ptr<ScriptController> m_scriptController;
 
     int m_navigationDisableCount = 0;
 };

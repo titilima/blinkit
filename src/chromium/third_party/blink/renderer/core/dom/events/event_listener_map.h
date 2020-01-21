@@ -64,6 +64,7 @@ class EventListenerMap final
 public:
     EventListenerMap(void) = default;
 
+    void Clear(void) { m_entries.clear(); }
     EventListenerVector* Find(const AtomicString &eventType);
 private:
     std::vector<std::pair<AtomicString, std::unique_ptr<EventListenerVector>>> m_entries;
