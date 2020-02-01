@@ -203,7 +203,7 @@ std::shared_ptr<base::SingleThreadTaskRunner> LocalFrame::GetTaskRunner(TaskType
 void LocalFrame::SetDOMWindow(std::unique_ptr<LocalDOMWindow> domWindow)
 {
     if (domWindow)
-        BKLOG("// BKTODO: GetScriptController().ClearWindowProxy();");
+        GetScriptController().ClearWindowProxy();
 
     if (LocalDOMWindow *currentDomWindow = DomWindow())
         currentDomWindow->Reset();

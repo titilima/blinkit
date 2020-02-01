@@ -41,6 +41,7 @@
 #include "document.h"
 
 #include "third_party/blink/public/platform/platform.h"
+#include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/css/selector_query.h"
 #include "third_party/blink/renderer/core/dom/document_init.h"
 #include "third_party/blink/renderer/core/dom/document_fragment.h"
@@ -251,11 +252,14 @@ void Document::CancelParsing(void)
     SuppressLoadEvent();
 }
 
-bool Document::CanExecuteScripts(ReasonForCallingCanExecuteScripts reason)
+bool Document::CanExecuteScripts(ReasonForCallingCanExecuteScripts)
 {
     ASSERT(nullptr != GetFrame());
-    BKLOG("// BKTODO: CanExecuteScripts");
-    return false;
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!ForCrawler())
+        return true;
+#endif
+    return m_frame->GetScriptController().ScriptEnabled();
 }
 
 void Document::CheckCompleted(void)

@@ -11,7 +11,9 @@
 
 #include "crawler_impl.h"
 
+#include "blinkit/js/context_impl.h"
 #include "blinkit/misc/controller_impl.h"
+#include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/loader/frame_load_request.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_error.h"
@@ -47,6 +49,11 @@ void CrawlerImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 void CrawlerImpl::DispatchDidFinishLoad(void)
 {
     m_client.DocumentReady(m_client.UserData);
+}
+
+BkJSContext CrawlerImpl::GetScriptContext(void)
+{
+    return &(m_frame->GetScriptController().EnsureContext());
 }
 
 void CrawlerImpl::ProcessRequestComplete(BkResponse response, BkWorkController controller)
@@ -102,13 +109,6 @@ std::string CrawlerImpl::GetCookies(const std::string &URL) const
     return ret;
 }
 
-std::tuple<int, std::string> CrawlerImpl::Initialize(void)
-{
-    std::string script;
-    m_client.GetUserScript(BkMakeBuffer(script).Wrap());
-    return m_frame->script().CreateCrawlerObject(script.data(), script.length());
-}
-
 int BKAPI CrawlerImpl::RegisterCrawlerFunction(const char *name, BkCallback &functionImpl)
 {
     return m_frame->script().RegisterFunction(name, functionImpl);
@@ -120,7 +120,7 @@ int CrawlerImpl::Run(const char *URL)
     BkURL u(URL);
     if (!u.SchemeIsHTTPOrHTTPS())
     {
-        //assert(u.SchemeIsHTTPOrHTTPS());
+        BKLOG("Invalid URL: %s", URL);
         return BK_ERR_URI;
     }
 
@@ -153,6 +153,11 @@ BKEXPORT BkCrawler BKAPI BkCreateCrawler(BkCrawlerClient *client)
 BKEXPORT void BKAPI BkDestroyCrawler(BkCrawler crawler)
 {
     delete crawler;
+}
+
+BKEXPORT BkJSContext BKAPI BkGetScriptContextForCrawler(BkCrawler crawler)
+{
+    return crawler->GetScriptContext();
 }
 
 BKEXPORT int BKAPI BkRunCrawler(BkCrawler crawler, const char *URL)

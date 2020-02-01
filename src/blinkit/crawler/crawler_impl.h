@@ -14,7 +14,6 @@
 
 #pragma once
 
-// BKTODO: #include <tuple>
 #include "bk_crawler.h"
 #include "blinkit/blink_impl/local_frame_client_impl.h"
 
@@ -24,17 +23,17 @@ public:
     CrawlerImpl(const BkCrawlerClient &client);
     ~CrawlerImpl(void);
 
+    const BkCrawlerClient& Client(void) const { return m_client; }
+
     void ProcessRequestComplete(BkResponse response, BkWorkController controller);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
     int Run(const char *URL);
+    BkJSContext GetScriptContext(void);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #if 0 // BKTODO:
-    std::tuple<int, std::string> Initialize(void);
-
-    BkCrawlerClient& Client(void) const { return m_client; }
     std::string GetCookies(const std::string &URL) const;
 
     void CancelLoading(void);
@@ -63,8 +62,6 @@ private:
     std::unique_ptr<blink::LocalFrame> m_frame;
 };
 
-#if 0 // BKTODO:
-DEFINE_TYPE_CASTS(CrawlerImpl, ::blink::FrameClient, client, client->IsCrawler(), client.IsCrawler());
-#endif
+DEFINE_TYPE_CASTS(CrawlerImpl, ::blink::LocalFrameClient, client, client->IsCrawler(), client.IsCrawler());
 
 #endif // BLINKIT_BLINKIT_CRAWLER_IMPL_H

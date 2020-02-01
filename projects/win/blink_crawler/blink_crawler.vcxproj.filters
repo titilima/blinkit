@@ -111,6 +111,15 @@
     <Filter Include="renderer\core\css">
       <UniqueIdentifier>{14ecc93e-0efc-40aa-a3fb-c9c2e3444a09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\bindings">
+      <UniqueIdentifier>{c3d4cdeb-09ca-4740-ba58-bedc8dd224b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\bindings\core">
+      <UniqueIdentifier>{bf065e9a-377f-452c-82f4-c95590e44f0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\bindings\core\duk">
+      <UniqueIdentifier>{1141b8fc-a3ec-4d0a-9bfa-c220c67b7f20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\platform.h">
@@ -977,6 +986,24 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_query.h">
       <Filter>renderer\core\css</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_controller.h">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\ignore_opens_during_unload_count_incrementer.h">
+      <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\prototype_helper.h">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_window.h">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_event_target.h">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_script_object.h">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\platform.cpp">
@@ -1488,6 +1515,21 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_query.cpp">
       <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_controller.cpp">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\prototype_helper.cpp">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_window.cpp">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_event_target.cpp">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_script_object.cpp">
+      <Filter>renderer\bindings\core\duk</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

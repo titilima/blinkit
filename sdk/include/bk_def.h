@@ -76,6 +76,7 @@ enum BkError {
     BK_ERR_URI
 };
 
+BK_DECLARE_HANDLE(BkJSContext, ContextImpl);
 BK_DECLARE_HANDLE(BkResponse, ResponseImpl);
 
 #ifdef __cplusplus
@@ -155,7 +156,7 @@ public:
         if (nullptr == m_rawClient.UserData)
         {
             m_rawClient.UserData = static_cast<T *>(this);
-            static_cast<T *>(this)->Setup(m_rawClient);
+            static_cast<T *>(this)->Attach(m_rawClient);
         }
         return &m_rawClient;
     }
@@ -169,10 +170,7 @@ protected:
         return reinterpret_cast<T *>(userData);
     }
 private:
-    void Setup(ClientType &rawClient)
-    {
-        assert(false); // Not reached: Setup callback handlers in client!
-    }
+    virtual void Attach(ClientType &rawClient) = 0;
 
     ClientType m_rawClient;
 };

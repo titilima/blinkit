@@ -165,6 +165,11 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\web\web_document_loader.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\web\web_frame_load_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\web\web_global_object_reuse_policy.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_event_target.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_script_object.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_window.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\prototype_helper.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_controller.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\computed_style_base_constants.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\core_export.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_query.h" />
@@ -210,6 +215,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\events\tree_scope_event_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\events\window_event_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\id_target_observer_registry.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\ignore_opens_during_unload_count_incrementer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\live_node_list_base.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\live_node_list_registry.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\mutation_observer_interest_group.h" />
@@ -443,6 +449,11 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\wtf_thread_data.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_event_target.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_script_object.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_window.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\prototype_helper.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_controller.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\controller\blink_initializer.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_query.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\attr.cc" />

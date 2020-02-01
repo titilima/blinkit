@@ -62,8 +62,9 @@ namespace BlinKit {
 
 class BkRequestClientImpl : public BkClientImpl<BkRequestClientImpl, BkRequestClient>
 {
-public:
-    void Setup(BkRequestClient &rawClient)
+    template <class T, typename C> friend class BkClientImpl;
+protected:
+    void Attach(BkRequestClient &rawClient) override
     {
         rawClient.RequestComplete = RequestCompleteImpl;
         rawClient.RequestFailed = RequestFailedImpl;

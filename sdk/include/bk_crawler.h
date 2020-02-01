@@ -27,12 +27,15 @@ struct BkCrawlerClient {
     void (BKAPI * RequestComplete)(BkResponse, BkWorkController, void *);
     void (BKAPI * DocumentReady)(void *);
     void (BKAPI * Error)(int, const char *, void *);
+    void (BKAPI * ConsoleLog)(const char *, void *);
 };
 
 BKEXPORT BkCrawler BKAPI BkCreateCrawler(struct BkCrawlerClient *client);
 BKEXPORT void BKAPI BkDestroyCrawler(BkCrawler crawler);
 
 BKEXPORT int BKAPI BkRunCrawler(BkCrawler crawler, const char *URL);
+
+BKEXPORT BkJSContext BKAPI BkGetScriptContextForCrawler(BkCrawler crawler);
 
 #ifdef __cplusplus
 } // extern "C"
@@ -41,15 +44,15 @@ namespace BlinKit {
 
 class BkCrawlerClientImpl : public BkClientImpl<BkCrawlerClientImpl, BkCrawlerClient>
 {
-public:
-    void Setup(BkCrawlerClient &rawClient)
+    template <class T, typename C> friend class BkClientImpl;
+protected:
+    void Attach(BkCrawlerClient &rawClient) override
     {
         rawClient.GetUserScript = GetUserScriptImpl;
         rawClient.RequestComplete = RequestCompleteImpl;
         rawClient.DocumentReady = DocumentReadyImpl;
         rawClient.Error = ErrorImpl;
     }
-protected:
     virtual void RequestComplete(BkResponse response, BkWorkController controller)
     {
         BkControllerContinueWorking(controller);

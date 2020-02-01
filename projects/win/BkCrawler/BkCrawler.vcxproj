@@ -169,6 +169,7 @@
     <ClInclude Include="..\..\..\sdk\include\bk_crawler.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_def.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_http.h" />
+    <ClInclude Include="..\..\..\sdk\include\bk_js.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\app_constants.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\win_app.h" />
@@ -185,6 +186,7 @@
     <ClInclude Include="..\..\..\src\blinkit\http\request_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\response_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\win_request.h" />
+    <ClInclude Include="..\..\..\src\blinkit\js\context_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\misc\controller_impl.h" />
@@ -215,6 +217,7 @@
     <ClCompile Include="..\..\..\src\blinkit\http\request_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\response_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\win_request.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\js\context_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\loader_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\misc\buffer.cpp" />
@@ -231,6 +234,9 @@
     </ProjectReference>
     <ProjectReference Include="..\blink_crawler\blink_crawler.vcxproj">
       <Project>{368255a7-294a-481f-82a8-cb130feb5096}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\duktape\duktape.vcxproj">
+      <Project>{c8a7568b-b29b-430c-99a1-e43120933154}</Project>
     </ProjectReference>
     <ProjectReference Include="..\net\net.vcxproj">
       <Project>{103e87cb-36eb-49c3-adfc-6c036aa14b21}</Project>

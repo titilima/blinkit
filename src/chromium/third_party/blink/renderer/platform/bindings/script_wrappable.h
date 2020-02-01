@@ -17,6 +17,10 @@
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/noncopyable.h"
 
+namespace BlinKit {
+class PrototypeHelper;
+} // namespace BlinKit
+
 namespace blink {
 
 class ScriptWrappable : public GarbageCollectedFinalized<ScriptWrappable>
@@ -29,6 +33,8 @@ public:
 protected:
     ScriptWrappable(void) = default;
 private:
+    friend class BlinKit::PrototypeHelper;
+
     bool m_ownedByContext = false;
     void *m_contextObject = nullptr;
 };
