@@ -22,6 +22,10 @@ namespace base {
 class SingleThreadTaskRunner;
 }
 
+namespace BlinKit {
+class BkURL;
+}
+
 namespace blink {
 
 class LocalDOMWindow;
@@ -36,6 +40,7 @@ class ExecutionContext : public ContextLifecycleNotifier
 public:
     virtual bool IsDocument(void) const { return false; }
 
+    virtual const BlinKit::BkURL& BaseURL(void) const = 0;
     virtual LocalDOMWindow* ExecutingWindow(void) const { return nullptr; }
 
     virtual bool CanExecuteScripts(ReasonForCallingCanExecuteScripts reason) { return false; }

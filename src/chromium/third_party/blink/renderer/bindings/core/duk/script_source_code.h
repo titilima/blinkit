@@ -1,10 +1,10 @@
 // -------------------------------------------------
 // BlinKit - blink Library
 // -------------------------------------------------
-//   File Name: script_controller.h
-// Description: ScriptController Class
+//   File Name: script_source_code.h
+// Description: ScriptSourceCode Class
 //      Author: Ziming Li
-//     Created: 2020-01-17
+//     Created: 2020-02-05
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
@@ -39,51 +39,36 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef BLINKIT_BLINK_SCRIPT_CONTROLLER_H
-#define BLINKIT_BLINK_SCRIPT_CONTROLLER_H
+#ifndef BLINKIT_BLINK_SCRIPT_SOURCE_CODE_H
+#define BLINKIT_BLINK_SCRIPT_SOURCE_CODE_H
 
 #pragma once
 
-#include "third_party/blink/renderer/platform/heap/handle.h"
-#include "third_party/blink/renderer/platform/wtf/noncopyable.h"
-
-class ContextImpl;
-
-namespace BlinKit {
-class BkURL;
-}
+#include "third_party/blink/renderer/bindings/core/v8/script_source_location_type.h"
+#include "third_party/blink/renderer/platform/wtf/allocator.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_position.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+#include "url/bk_url.h"
 
 namespace blink {
 
-class LocalFrame;
-class ScriptSourceCode;
+class ScriptResource;
+class SingleCachedMetadataHandler;
 
-// This class exposes methods to run script in a frame (in the main world and
-// in isolated worlds). An instance can be obtained by using
-// LocalFrame::GetScriptController().
-class ScriptController final : public GarbageCollected<ScriptController>
+class ScriptSourceCode final
 {
-    WTF_MAKE_NONCOPYABLE(ScriptController);
+    DISALLOW_NEW();
 public:
-    static std::unique_ptr<ScriptController> Create(LocalFrame &frame);
-    ~ScriptController(void);
+    // For inline scripts.
+    ScriptSourceCode(const String &source, ScriptSourceLocationType sourceLocationType = ScriptSourceLocationType::kUnknown,
+        const BlinKit::BkURL &url = BlinKit::BkURL(), const TextPosition &startPosition = TextPosition::MinimumPosition());
+    ~ScriptSourceCode(void);
 
-    ContextImpl& EnsureContext(void);
-    bool ScriptEnabled(void);
-
-    void ExecuteScriptInMainWorld(const ScriptSourceCode &sourceSode, const BlinKit::BkURL &baseURL);
-
-    void ClearWindowProxy(void);
-    void UpdateDocument(void);
-
-    void ClearForClose(void);
+    const std::string& Source(void) const { return m_source; }
 private:
-    ScriptController(LocalFrame &frame);
-
-    const Member<LocalFrame> m_frame;
-    std::unique_ptr<ContextImpl> m_context;
+    const std::string m_source;
 };
 
 } // namespace blink
 
-#endif // BLINKIT_BLINK_SCRIPT_CONTROLLER_H
+#endif // BLINKIT_BLINK_SCRIPT_SOURCE_CODE_H

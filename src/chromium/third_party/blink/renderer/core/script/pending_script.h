@@ -41,6 +41,9 @@
 
 #include <functional>
 #include "base/macros.h"
+#include "third_party/blink/renderer/core/script/script.h"
+#include "third_party/blink/renderer/core/script/script_element_base.h"
+#include "third_party/blink/renderer/core/script/script_scheduling_type.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "url/bk_url.h"
 
@@ -61,11 +64,25 @@ class PendingScript : public GarbageCollectedFinalized<PendingScript>
 public:
     virtual ~PendingScript(void) = default;
 
+    TextPosition StartingPosition(void) const { return m_startingPosition; }
     void MarkParserBlockingLoadStartTime(void);
 
     void WatchForLoad(PendingScriptClient *client);
     void StopWatchingForLoad(void);
 
+    ScriptElementBase* GetElement(void) const;
+
+    bool IsControlledByScriptRunner(void) const;
+    void SetSchedulingType(ScriptSchedulingType schedulingType)
+    {
+        ASSERT(m_schedulingType == ScriptSchedulingType::kNotSet);
+        m_schedulingType = schedulingType;
+    }
+
+    // Returns nullptr when "script's script is null", i.e. an error occurred.
+    virtual std::unique_ptr<Script> GetSource(const BlinKit::BkURL &documentURL) const = 0;
+
+    virtual ScriptType GetScriptType(void) const = 0;
     virtual bool IsReady(void) const = 0;
     virtual bool IsExternal(void) const = 0;
     virtual bool WasCanceled(void) const = 0;
@@ -78,8 +95,33 @@ public:
     }
     void Dispose(void);
 
+    bool WasCreatedDuringDocumentWrite(void) const { return m_createdDuringDocumentWrite; }
+
     virtual void ExecuteScriptBlock(const BlinKit::BkURL &documentURL);
+protected:
+    PendingScript(ScriptElementBase *element, const TextPosition &startingPosition);
+
+    PendingScriptClient* Client(void) { return m_client; }
+    bool IsWatchingForLoad(void) const { return nullptr != m_client; }
+
+    virtual void DisposeInternal(void) = 0;
+    virtual void CheckState(void) const = 0;
 private:
+    static void ExecuteScriptBlockInternal(Script *script, ScriptElementBase *element, bool wasCanceled,
+        bool isExternal, bool createdDuringDocumentWrite, bool isControlledByScriptRunner);
+
+    // |m_element| must points to the corresponding ScriptLoader's
+    // ScriptElementBase and thus must be non-null before dispose() is called
+    // (except for unit tests).
+    Member<ScriptElementBase> m_element;
+
+    TextPosition m_startingPosition;  // Only used for inline script tags.
+
+    ScriptSchedulingType m_schedulingType = ScriptSchedulingType::kNotSet;
+
+    Member<PendingScriptClient> m_client;
+
+    const bool m_createdDuringDocumentWrite;
 
     DISALLOW_COPY_AND_ASSIGN(PendingScript);
 };

@@ -120,6 +120,12 @@
     <Filter Include="renderer\bindings\core\duk">
       <UniqueIdentifier>{1141b8fc-a3ec-4d0a-9bfa-c220c67b7f20}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\bindings\core\v8">
+      <UniqueIdentifier>{5feec3ed-a8f7-4e04-ab88-8344b3063f25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\loader\resource">
+      <UniqueIdentifier>{873072f4-f427-4ec8-87d0-b56409d049c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\platform.h">
@@ -1004,6 +1010,27 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_script_object.h">
       <Filter>renderer\bindings\core\duk</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\v8\script_source_location_type.h">
+      <Filter>renderer\bindings\core\v8</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_pending_script.h">
+      <Filter>renderer\core\script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\script_resource.h">
+      <Filter>renderer\core\loader\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\text_resource.h">
+      <Filter>renderer\core\loader\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_script.h">
+      <Filter>renderer\core\script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_source_code.h">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_streamer.h">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\platform.cpp">
@@ -1529,6 +1556,24 @@
       <Filter>renderer\bindings\core\duk</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_script_object.cpp">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_pending_script.cpp">
+      <Filter>renderer\core\script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\script_resource.cpp">
+      <Filter>renderer\core\loader\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\text_resource.cc">
+      <Filter>renderer\core\loader\resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_script.cpp">
+      <Filter>renderer\core\script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_source_code.cpp">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_streamer.cpp">
       <Filter>renderer\bindings\core\duk</Filter>
     </ClCompile>
   </ItemGroup>

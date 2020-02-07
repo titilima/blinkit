@@ -45,8 +45,24 @@
 
 #include "base/memory/ptr_util.h"
 #include "blinkit/js/context_impl.h"
+#include "third_party/blink/renderer/bindings/core/duk/script_source_code.h"
+#include "third_party/blink/renderer/core/frame/local_frame.h"
+
+using namespace BlinKit;
 
 namespace blink {
+
+static void CommonCallback(ContextImpl *ctxImpl, duk_context *ctx)
+{
+    if (!duk_is_error(ctx, -1))
+        return;
+
+    size_t l = 0;
+    const char *s = duk_safe_to_lstring(ctx, -1, &l);
+
+    std::string str(s, l);
+    ctxImpl->Log(str.c_str());
+}
 
 ScriptController::ScriptController(LocalFrame &frame) : m_frame(frame)
 {
@@ -75,6 +91,14 @@ ContextImpl& ScriptController::EnsureContext(void)
     if (!m_context)
         m_context = std::make_unique<ContextImpl>(*m_frame);
     return *m_context;
+}
+
+void ScriptController::ExecuteScriptInMainWorld(const ScriptSourceCode &sourceSode, const BkURL &baseURL)
+{
+    ContextImpl &ctx = EnsureContext();
+
+    const ContextImpl::Callback callback = std::bind(CommonCallback, &ctx, std::placeholders::_1);
+    ctx.Eval(sourceSode.Source(), callback);
 }
 
 bool ScriptController::ScriptEnabled(void)

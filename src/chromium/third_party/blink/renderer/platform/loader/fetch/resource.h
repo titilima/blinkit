@@ -80,8 +80,9 @@ enum class ResourceType : uint8_t {
 class Resource : public GarbageCollectedFinalized<Resource>
 {
 public:
-    ~Resource(void);
+    virtual ~Resource(void);
 
+    virtual WTF::TextEncoding Encoding(void) const { return WTF::TextEncoding(); }
     ResourceType GetType(void) const { return m_type; }
     void SetStatus(ResourceStatus status) { m_status = status; }
     bool IsLoading(void) const { return ResourceStatus::kPending == m_status; }

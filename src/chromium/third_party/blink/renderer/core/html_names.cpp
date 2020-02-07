@@ -4,9 +4,9 @@
 //   File Name: html_names.cpp
 // Description: HTML Names
 //      Author: Ziming Li
-//     Created: 2019-12-31
+//     Created: 2020-02-01
 // -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
+// Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
 #include "html_names.h"
@@ -140,28 +140,29 @@ const QualifiedName &kClassAttr = reinterpret_cast<QualifiedName *>(&attr_storag
 const QualifiedName &kColorAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[2];
 const QualifiedName &kContentAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[3];
 const QualifiedName &kDirAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[4];
-const QualifiedName &kFaceAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[5];
-const QualifiedName &kForAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[6];
-const QualifiedName &kFormAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[7];
-const QualifiedName &kFrameAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[8];
-const QualifiedName &kHrefAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[9];
-const QualifiedName &kHttpEquivAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[10];
-const QualifiedName &kIdAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[11];
-const QualifiedName &kIsAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[12];
-const QualifiedName &kLanguageAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[13];
-const QualifiedName &kLinkAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[14];
-const QualifiedName &kNameAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[15];
-const QualifiedName &kNomoduleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[16];
-const QualifiedName &kObjectAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[17];
-const QualifiedName &kReferrerpolicyAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[18];
-const QualifiedName &kSelectAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[19];
-const QualifiedName &kSizeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[20];
-const QualifiedName &kSpanAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[21];
-const QualifiedName &kSrcAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[22];
-const QualifiedName &kStyleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[23];
-const QualifiedName &kSummaryAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[24];
-const QualifiedName &kTitleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[25];
-const QualifiedName &kTypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[26];
+const QualifiedName &kEventAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[5];
+const QualifiedName &kFaceAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[6];
+const QualifiedName &kForAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[7];
+const QualifiedName &kFormAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[8];
+const QualifiedName &kFrameAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[9];
+const QualifiedName &kHrefAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[10];
+const QualifiedName &kHttpEquivAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[11];
+const QualifiedName &kIdAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[12];
+const QualifiedName &kIsAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[13];
+const QualifiedName &kLanguageAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[14];
+const QualifiedName &kLinkAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[15];
+const QualifiedName &kNameAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[16];
+const QualifiedName &kNomoduleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[17];
+const QualifiedName &kObjectAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[18];
+const QualifiedName &kReferrerpolicyAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[19];
+const QualifiedName &kSelectAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[20];
+const QualifiedName &kSizeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[21];
+const QualifiedName &kSpanAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[22];
+const QualifiedName &kSrcAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[23];
+const QualifiedName &kStyleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[24];
+const QualifiedName &kSummaryAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[25];
+const QualifiedName &kTitleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[26];
+const QualifiedName &kTypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[27];
 
 void Init(void)
 {
@@ -213,6 +214,7 @@ void Init(void)
         { "dt", 8177126, 2, 1, 0 },
         { "em", 2724661, 2, 1, 0 },
         { "embed", 855371, 5, 1, 0 },
+        { "event", 4205160, 5, 0, 1 },
         { "face", 12427611, 4, 0, 1 },
         { "fieldset", 37097, 8, 1, 0 },
         { "figcaption", 13388641, 10, 1, 0 },

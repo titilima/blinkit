@@ -16,7 +16,9 @@
 #include "script_element_base.h"
 
 #include "blinkit/crawler/crawler_script_element.h"
+#include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/core/html_names.h"
+#include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/script/script_loader.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/html/html_script_element.h"
@@ -57,6 +59,26 @@ void ScriptElementBase::DidNotifySubtreeInsertionsToDocumentImpl(void)
     m_loader->DidNotifySubtreeInsertionsToDocument();
 }
 
+void ScriptElementBase::DispatchErrorEvent(void)
+{
+    GetElement().DispatchEvent(*Event::Create(event_type_names::kError));
+}
+
+void ScriptElementBase::DispatchLoadEvent(void)
+{
+    GetElement().DispatchEvent(*Event::Create(event_type_names::kLoad));
+}
+
+String ScriptElementBase::EventAttributeValue(void) const
+{
+    return GetElement().getAttribute(kEventAttr).GetString();
+}
+
+String ScriptElementBase::ForAttributeValue(void) const
+{
+    return GetElement().getAttribute(kForAttr).GetString();
+}
+
 bool ScriptElementBase::HasSourceAttribute(void) const
 {
     return GetElement().FastHasAttribute(kSrcAttr);
@@ -75,6 +97,11 @@ bool ScriptElementBase::IsConnected(void) const
 String ScriptElementBase::LanguageAttributeValue(void) const
 {
     return GetElement().getAttribute(kLanguageAttr).GetString();
+}
+
+bool ScriptElementBase::NomoduleAttributeValue(void) const
+{
+    return GetElement().FastHasAttribute(kNomoduleAttr);
 }
 
 bool ScriptElementBase::ParseAttributeImpl(const Element::AttributeModificationParams &params)

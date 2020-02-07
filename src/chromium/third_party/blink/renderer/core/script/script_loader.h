@@ -57,6 +57,7 @@ public:
     bool ReadyToBeParserExecuted(void) const { return m_readyToBeParserExecuted; }
     bool WillBeParserExecuted(void) const { return m_willBeParserExecuted; }
     bool WillExecuteWhenDocumentFinishedParsing(void) const { return m_willExecuteWhenDocumentFinishedParsing; }
+    ScriptType GetScriptType(void) const { return m_scriptType; }
 
     enum LegacyTypeSupport {
         kDisallowLegacyTypeInTypeAttribute,
@@ -77,6 +78,8 @@ public:
         LegacyTypeSupport supportLegacyTypes = kDisallowLegacyTypeInTypeAttribute);
 private:
     ScriptLoader(ScriptElementBase *element, bool parserInserted, bool alreadyStarted);
+
+    bool IsScriptForEventSupported(void) const;
 
     const char* NameInHeapSnapshot(void) const override;
 
@@ -107,10 +110,17 @@ private:
     // ... It is determined when the script is prepared, ...</spec>
     ScriptType m_scriptType = ScriptType::kClassic;
 
+    // <spec
+    // href="https://html.spec.whatwg.org/multipage/scripting.html#concept-script-external">
+    // ... It is determined when the script is prepared, ...</spec>
+    bool m_isExternalScript = false;
+
     // Same as "The parser will handle executing the script."
     bool m_willBeParserExecuted = false;
 
     bool m_willExecuteWhenDocumentFinishedParsing = false;
+
+    std::unique_ptr<PendingScript> m_preparedPendingScript;
 };
 
 }  // namespace blink

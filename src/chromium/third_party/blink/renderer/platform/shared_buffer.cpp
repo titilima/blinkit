@@ -41,6 +41,13 @@
 
 namespace blink {
 
+SharedBuffer::Iterator& SharedBuffer::Iterator::operator++()
+{
+    ASSERT(nullptr != m_data);
+    m_data = nullptr;
+    return *this;
+}
+
 SharedBuffer::SharedBuffer(const char *data, size_t length)
 {
     if (length > 0)
@@ -56,9 +63,19 @@ void SharedBuffer::Append(const char *data, size_t length)
     memcpy(m_data.data() + oldLength, data, length);
 }
 
+SharedBuffer::Iterator SharedBuffer::begin(void) const
+{
+    return Iterator(&m_data);
+}
+
 std::shared_ptr<SharedBuffer> SharedBuffer::Create(const char *data, size_t length)
 {
     return base::WrapShared(new SharedBuffer(data, length));
+}
+
+SharedBuffer::Iterator SharedBuffer::end(void) const
+{
+    return Iterator(nullptr);
 }
 
 }  // namespace blink

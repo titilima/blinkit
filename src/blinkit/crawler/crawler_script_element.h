@@ -46,7 +46,7 @@ private:
 #endif
 
     // ScriptElementBase
-    const blink::Element& GetElement(void) const override { return *this; }
+    blink::Element& GetElement(void) const override { return const_cast<CrawlerScriptElement &>(*this); }
 };
 
 } // namespace BlinKit

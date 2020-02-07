@@ -4,9 +4,9 @@
 //   File Name: html_names.h
 // Description: HTML Names
 //      Author: Ziming Li
-//     Created: 2019-12-31
+//     Created: 2020-02-01
 // -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
+// Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
 #ifndef BLINKIT_BLINK_HTML_NAMES_H
@@ -145,6 +145,7 @@ extern const blink::QualifiedName &kClassAttr;
 extern const blink::QualifiedName &kColorAttr;
 extern const blink::QualifiedName &kContentAttr;
 extern const blink::QualifiedName &kDirAttr;
+extern const blink::QualifiedName &kEventAttr;
 extern const blink::QualifiedName &kFaceAttr;
 extern const blink::QualifiedName &kForAttr;
 extern const blink::QualifiedName &kFormAttr;
@@ -168,7 +169,7 @@ extern const blink::QualifiedName &kSummaryAttr;
 extern const blink::QualifiedName &kTitleAttr;
 extern const blink::QualifiedName &kTypeAttr;
 
-constexpr unsigned kAttrsCount = 27;
+constexpr unsigned kAttrsCount = 28;
 
 void Init(void);
 

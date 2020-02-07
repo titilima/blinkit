@@ -46,13 +46,15 @@ class CORE_EXPORT ScriptElementBase : public GarbageCollectedMixin {
   String CharsetAttributeValue(void) const;
 #if 0 // BKTODO:
   bool DeferAttributeValue(void) const { return false; }
+#endif
   String EventAttributeValue(void) const;
-  virtual String ForAttributeValue() const = 0;
+  String ForAttributeValue(void) const;
+#if 0 // BKTODO:
   virtual String IntegrityAttributeValue() const = 0;
 #endif
   String LanguageAttributeValue(void) const;
+  bool NomoduleAttributeValue(void) const;
 #if 0 // BKTODO:
-  virtual bool NomoduleAttributeValue() const = 0;
   virtual String SourceAttributeValue() const = 0;
 #endif
   String TypeAttributeValue(void) const;
@@ -73,10 +75,10 @@ class CORE_EXPORT ScriptElementBase : public GarbageCollectedMixin {
 #if 0 // BKTODO:
   virtual void SetScriptElementForBinding(
       HTMLScriptElementOrSVGScriptElement&) = 0;
-
-  virtual void DispatchLoadEvent() = 0;
-  virtual void DispatchErrorEvent() = 0;
 #endif
+
+  void DispatchLoadEvent(void);
+  void DispatchErrorEvent(void);
 
  protected:
   ScriptElementBase(bool parserInserted, bool alreadyStarted);
@@ -86,7 +88,7 @@ class CORE_EXPORT ScriptElementBase : public GarbageCollectedMixin {
   void ChildrenChangedImpl(const ContainerNode::ChildrenChange &change);
   bool ParseAttributeImpl(const Element::AttributeModificationParams &params);
 private:
-  virtual const Element& GetElement(void) const = 0;
+  virtual Element& GetElement(void) const = 0;
 
   std::unique_ptr<ScriptLoader> m_loader;
 };

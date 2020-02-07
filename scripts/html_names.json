@@ -32,6 +32,7 @@
     { "name": "dt", "hash": 8177126, "is_tag": true },
     { "name": "em", "hash": 2724661, "is_tag": true },
     { "name": "embed", "hash": 855371, "is_tag": true },
+    { "name": "event", "hash": 4205160, "is_attr": true },
     { "name": "face", "hash": 12427611, "is_attr": true },
     { "name": "fieldset", "hash": 37097, "is_tag": true },
     { "name": "figcaption", "hash": 13388641, "is_tag": true },

@@ -4,9 +4,9 @@
 //   File Name: event_type_names.h
 // Description: Event Type Names
 //      Author: Ziming Li
-//     Created: 2019-12-29
+//     Created: 2020-02-06
 // -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
+// Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
 #ifndef BLINKIT_BLINK_EVENT_TYPE_NAMES_H
@@ -20,11 +20,12 @@ namespace blink {
 namespace event_type_names {
 
 extern const WTF::AtomicString &kDOMContentLoaded;
+extern const WTF::AtomicString &kError;
 extern const WTF::AtomicString &kLoad;
 extern const WTF::AtomicString &kReadystatechange;
 extern const WTF::AtomicString &kUnload;
 
-constexpr unsigned kNamesCount = 4;
+constexpr unsigned kNamesCount = 5;
 
 void Init(void);
 

@@ -25,7 +25,6 @@
 namespace blink {
 
 class LocalFrame;
-class SecurityOrigin;
 
 // TODO(asamidoi, nhiroki): Remove this enum in favor of
 // blink::mojom::ScriptType.
@@ -42,22 +41,15 @@ class CORE_EXPORT Script : public GarbageCollectedFinalized<Script> {
   // or
   // https://html.spec.whatwg.org/multipage/webappapis.html#run-a-module-script,
   // depending on the script type.
-  virtual void RunScript(LocalFrame*, const SecurityOrigin*) const = 0;
+  virtual void RunScript(LocalFrame*) const = 0;
 
-  // For CSP check for inline scripts.
-  virtual String InlineSourceTextForCSP() const = 0;
-
-  const ScriptFetchOptions& FetchOptions() const { return fetch_options_; }
   const BlinKit::BkURL& BaseURL() const { return base_url_; }
 
  protected:
-  explicit Script(const ScriptFetchOptions& fetch_options, const BlinKit::BkURL& base_url)
-      : fetch_options_(fetch_options), base_url_(base_url) {}
+  explicit Script(const BlinKit::BkURL& base_url)
+      : base_url_(base_url) {}
 
  private:
-  // https://html.spec.whatwg.org/multipage/webappapis.html#concept-script-script-fetch-options
-  const ScriptFetchOptions fetch_options_;
-
   // https://html.spec.whatwg.org/multipage/webappapis.html#concept-script-base-url
   const BlinKit::BkURL base_url_;
 };

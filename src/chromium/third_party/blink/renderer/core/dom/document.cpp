@@ -124,6 +124,13 @@ void Document::Abort(void)
     CheckCompletedInternal();
 }
 
+const BkURL& Document::BaseURL(void) const
+{
+    if (!m_baseURL.IsEmpty())
+        return m_baseURL;
+    return BkURL::Blank();
+}
+
 bool Document::CanAcceptChild(const Node &newChild, const Node *next, const Node *oldChild, ExceptionState &exceptionState) const
 {
     ASSERT(!(nullptr != next && nullptr != oldChild));
@@ -555,6 +562,30 @@ std::shared_ptr<base::SingleThreadTaskRunner> Document::GetTaskRunner(TaskType t
     return Platform::Current()->CurrentThread()->GetTaskRunner();
 }
 
+bool Document::HaveImportsLoaded(void) const
+{
+#ifdef BLINKIT_CRAWLER_ONLY
+    return true;
+#else
+    if (ForCrawler())
+        return true;
+    ASSERT(false); // BKTODO:
+    return false;
+#endif
+}
+
+bool Document::HaveScriptBlockingStylesheetsLoaded(void) const
+{
+#ifdef BLINKIT_CRAWLER_ONLY
+    return true;
+#else
+    if (ForCrawler())
+        return true;
+    ASSERT(false); // BKTODO:
+    return false;
+#endif
+}
+
 void Document::ImplicitClose(void)
 {
     ASSERT(!InStyleRecalc());
@@ -757,6 +788,18 @@ void Document::ParserInsertedHtmlElement(Element &element)
         BKLOG("// BKTODO: frame->Loader().DispatchDocumentElementAvailable();");
         BKLOG("// BKTODO: frame->Loader().RunScriptsAtDocumentElementAvailable();");
     }
+}
+
+void Document::PopCurrentScript(ScriptElementBase *script)
+{
+    ASSERT(!m_currentScriptStack.empty());
+    ASSERT(m_currentScriptStack.top() == script);
+    m_currentScriptStack.pop();
+}
+
+void Document::PushCurrentScript(ScriptElementBase *newCurrentScript)
+{
+    m_currentScriptStack.push(newCurrentScript);
 }
 
 void Document::RemoveAllEventListeners(void)

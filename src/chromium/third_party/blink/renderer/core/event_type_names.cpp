@@ -4,9 +4,9 @@
 //   File Name: event_type_names.cpp
 // Description: Event Type Names
 //      Author: Ziming Li
-//     Created: 2019-12-29
+//     Created: 2020-02-06
 // -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
+// Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
 #include "event_type_names.h"
@@ -19,9 +19,10 @@ namespace event_type_names {
 static void* names_storage[kNamesCount * ((sizeof(AtomicString) + sizeof(void *) - 1) / sizeof(void *))];
 
 const AtomicString &kDOMContentLoaded = reinterpret_cast<AtomicString *>(&names_storage)[0];
-const AtomicString &kLoad = reinterpret_cast<AtomicString *>(&names_storage)[1];
-const AtomicString &kReadystatechange = reinterpret_cast<AtomicString *>(&names_storage)[2];
-const AtomicString &kUnload = reinterpret_cast<AtomicString *>(&names_storage)[3];
+const AtomicString &kError = reinterpret_cast<AtomicString *>(&names_storage)[1];
+const AtomicString &kLoad = reinterpret_cast<AtomicString *>(&names_storage)[2];
+const AtomicString &kReadystatechange = reinterpret_cast<AtomicString *>(&names_storage)[3];
+const AtomicString &kUnload = reinterpret_cast<AtomicString *>(&names_storage)[4];
 
 void Init(void)
 {
@@ -38,6 +39,7 @@ void Init(void)
 
     static const NameEntry kNames[] = {
         { "DOMContentLoaded", 10217403, 16 },
+        { "error", 6654137, 5 },
         { "load", 8207817, 4 },
         { "readystatechange", 11011948, 16 },
         { "unload", 4411490, 6 },

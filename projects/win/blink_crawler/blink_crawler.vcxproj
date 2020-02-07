@@ -170,6 +170,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_window.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\prototype_helper.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_controller.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_source_code.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_streamer.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\v8\script_source_location_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\computed_style_base_constants.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\core_export.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_query.h" />
@@ -290,9 +293,13 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_load_request.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\navigation_policy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\navigation_scheduler.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\script_resource.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\text_resource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\scheduled_navigation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\text_resource_decoder_builder.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\mathml_names.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_pending_script.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_script.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\html_parser_script_runner.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\html_parser_script_runner_host.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\ignore_destructive_write_count_incrementer.h" />
@@ -454,6 +461,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_window.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\prototype_helper.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_controller.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_source_code.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_streamer.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\controller\blink_initializer.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_query.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\attr.cc" />
@@ -545,8 +554,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_loader_state_machine.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_load_request.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\navigation_scheduler.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\script_resource.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\text_resource.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\scheduled_navigation.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\text_resource_decoder_builder.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_pending_script.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_script.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\html_parser_script_runner.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\pending_script.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\script_element_base.cpp" />

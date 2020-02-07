@@ -49,6 +49,30 @@ class SharedBuffer : public std::enable_shared_from_this<SharedBuffer>
 public:
     static std::shared_ptr<SharedBuffer> Create(const char *data, size_t length);
 
+    // Iterator for ShreadBuffer contents. An Iterator will get invalid once the
+    // associated SharedBuffer is modified (e.g., Append() is called). An Iterator
+    // doesn't retain the associated container.
+    class Iterator final
+    {
+    public:
+        ~Iterator(void) = default;
+
+        Iterator& operator++();
+        bool operator==(const Iterator &o) const { return m_data == o.m_data; }
+        bool operator!=(const Iterator &o) const { return !(*this == o); }
+        const std::vector<char>& operator*() const { return *m_data; }
+
+        const char* data(void) const { return m_data->data(); }
+        size_t size(void) const { return m_data->size(); }
+    private:
+        friend class SharedBuffer;
+        Iterator(const std::vector<char> *data) : m_data(data) {}
+
+        const std::vector<char> *m_data = nullptr;
+    };
+
+    Iterator begin(void) const;
+    Iterator end(void) const;
     size_t size(void) const { return m_data.size(); }
 
     void Append(const char *data, size_t length);

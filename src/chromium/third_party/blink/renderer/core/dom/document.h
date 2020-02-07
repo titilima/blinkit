@@ -43,6 +43,7 @@
 
 #pragma once
 
+#include <stack>
 #include "third_party/blink/renderer/core/dom/container_node.h"
 #include "third_party/blink/renderer/core/dom/create_element_flags.h"
 #include "third_party/blink/renderer/core/dom/document_encoding_data.h"
@@ -74,6 +75,7 @@ class LocalDOMWindow;
 class LocalFrame;
 class ResourceFetcher;
 class ScriptableDocumentParser;
+class ScriptElementBase;
 class SelectorQueryCache;
 
 enum NodeListInvalidationType : int {
@@ -214,15 +216,20 @@ public:
     void MaybeHandleHttpRefresh(const String &content, HttpRefreshType refreshType);
 
     bool IsScriptExecutionReady(void) const {
-        ASSERT(false); // BKTODO:
-        return false;
+        return HaveImportsLoaded() && HaveScriptBlockingStylesheetsLoaded();
     }
 
     bool CanAcceptChild(const Node &newChild, const Node *next, const Node *oldChild, ExceptionState &exceptionState) const;
 
     bool ContainsV1ShadowTree(void) const { return ShadowCascadeOrder::kShadowCascadeV1 == m_shadowCascadeOrder; }
 
+    bool IsInDocumentWrite(void) const { return m_writeRecursionDepth > 0; }
+
+    void PushCurrentScript(ScriptElementBase *newCurrentScript);
+    void PopCurrentScript(ScriptElementBase *script);
+
     // ExecutionContext overrides
+    const BlinKit::BkURL& BaseURL(void) const;
     bool CanExecuteScripts(ReasonForCallingCanExecuteScripts reason) override;
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(TaskType type) override;
 protected:
@@ -244,6 +251,9 @@ private:
     // iframe.remove() from an event handler.
     bool CheckCompletedInternal(void);
     void DetachParser(void);
+
+    bool HaveImportsLoaded(void) const;
+    bool HaveScriptBlockingStylesheetsLoaded(void) const;
 
     // EventTarget overrides
     void RemoveAllEventListeners(void) final;
@@ -283,6 +293,7 @@ private:
 
     // Document URLs.
     BlinKit::BkURL m_URL;  // Document.URL: The URL from which this document was retrieved.
+    BlinKit::BkURL m_baseURL;  // Node.baseURI: The URL to use when resolving relative URLs.
 
     Member<DocumentType> m_docType;
     Member<Element> m_titleElement;
@@ -313,6 +324,10 @@ private:
 
     TaskRunnerTimer<Document> m_elementDataCacheClearTimer;
     void ElementDataCacheClearTimerFired(TimerBase *);
+
+    unsigned m_writeRecursionDepth = 0;
+
+    std::stack<ScriptElementBase *> m_currentScriptStack;
 };
 
 DEFINE_COMPARISON_OPERATORS_WITH_REFERENCES(Document)
