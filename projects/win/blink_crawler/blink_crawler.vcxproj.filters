@@ -140,9 +140,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_thread_scheduler.h">
       <Filter>public\platform</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_cache.h">
-      <Filter>public\platform</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_frame.h">
       <Filter>renderer\core\frame</Filter>
     </ClInclude>
@@ -728,9 +725,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\script.h">
       <Filter>renderer\core\script</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\script_fetch_options.h">
-      <Filter>renderer\platform\loader\fetch</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\weborigin\referrer_policy.h">
       <Filter>renderer\platform\weborigin</Filter>
     </ClInclude>
@@ -1041,9 +1035,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\controller\blink_initializer.cpp">
       <Filter>renderer\controller</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\web_cache.cpp">
-      <Filter>renderer\platform\exported</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_frame.cpp">
       <Filter>renderer\core\frame</Filter>
@@ -1386,9 +1377,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\network\mime\mime_type_registry.cc">
       <Filter>renderer\platform\network\mime</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\script_fetch_options.cpp">
-      <Filter>renderer\platform\loader\fetch</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\weborigin\security_policy.cpp">
       <Filter>renderer\platform\weborigin</Filter>

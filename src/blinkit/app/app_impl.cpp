@@ -17,7 +17,6 @@
 #endif
 #include "blinkit/app/app_constants.h"
 #include "blinkit/blink_impl/url_loader_impl.h"
-#include "third_party/blink/public/platform/web_cache.h"
 #include "third_party/blink/public/platform/web_thread_scheduler.h"
 #include "third_party/blink/public/web/blink.h"
 
@@ -219,7 +218,6 @@ extern "C" {
 
 BKEXPORT void BKAPI BkFinalize(void)
 {
-    WebCache::Clear();
     delete Platform::Current();
 }
 
