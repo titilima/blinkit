@@ -31,7 +31,9 @@ PrototypeHelper::PrototypeHelper(duk_context *ctx)
 
 PrototypeHelper::~PrototypeHelper(void)
 {
+#ifdef _DEBUG
     ASSERT(duk_get_heapptr(m_ctx, -2) == m_heapPtr);
+#endif
     duk_put_prop_string(m_ctx, -2, Prototypes);
 }
 
@@ -90,7 +92,9 @@ PrototypeEntry::PrototypeEntry(duk_context *ctx, const char *name)
 
 PrototypeEntry::~PrototypeEntry(void)
 {
+#ifdef _DEBUG
     ASSERT(duk_get_top(m_ctx) == m_top);
+#endif
 
     duk_idx_t idx = duk_push_bare_object(m_ctx);
 
