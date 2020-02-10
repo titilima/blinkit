@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <unordered_map>
 #include <iterator> // for std::size
 #include "duktape/duktape.h"
 
@@ -29,7 +30,7 @@ class PrototypeEntry final
 public:
     ~PrototypeEntry(void);
 
-    void SetFinalizer(duk_c_function finalizer);
+    void SetFinalizer(duk_c_function finalizer) { m_finalizer = finalizer; }
 
     struct Property {
         const char *name;
@@ -44,14 +45,30 @@ public:
         duk_idx_t argc;
     };
     void Add(const Method *methods, size_t count, duk_uint_t extraFlags = 0);
+
+    static const char NameKey[];
 private:
     PrototypeEntry(duk_context *ctx, const char *name);
 
     duk_context *m_ctx;
     const char *m_name;
 #ifdef _DEBUG
-    void *m_heapPtr;
+    const int m_top;
 #endif
+
+    duk_c_function m_finalizer = nullptr;
+    struct PropertyData {
+        duk_c_function getter;
+        duk_c_function setter; // Could be nullptr
+        duk_uint_t flags;
+    };
+    std::unordered_map<std::string, PropertyData> m_properties;
+    struct MethodData {
+        duk_c_function impl;
+        duk_idx_t argc;
+        duk_uint_t flags;
+    };
+    std::unordered_map<std::string, MethodData> m_methods;
 };
 
 class PrototypeHelper final

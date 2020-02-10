@@ -35,7 +35,7 @@ BKEXPORT void BKAPI BkDestroyCrawler(BkCrawler crawler);
 
 BKEXPORT int BKAPI BkRunCrawler(BkCrawler crawler, const char *URL);
 
-BKEXPORT BkJSContext BKAPI BkGetScriptContextForCrawler(BkCrawler crawler);
+BKEXPORT BkJSContext BKAPI BkGetScriptContextFromCrawler(BkCrawler crawler);
 
 #ifdef __cplusplus
 } // extern "C"

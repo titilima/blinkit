@@ -155,7 +155,7 @@ BKEXPORT void BKAPI BkDestroyCrawler(BkCrawler crawler)
     delete crawler;
 }
 
-BKEXPORT BkJSContext BKAPI BkGetScriptContextForCrawler(BkCrawler crawler)
+BKEXPORT BkJSContext BKAPI BkGetScriptContextFromCrawler(BkCrawler crawler)
 {
     return crawler->GetScriptContext();
 }

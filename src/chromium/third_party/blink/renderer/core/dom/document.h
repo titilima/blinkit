@@ -44,6 +44,7 @@
 #pragma once
 
 #include <stack>
+#include <vector>
 #include "third_party/blink/renderer/core/dom/container_node.h"
 #include "third_party/blink/renderer/core/dom/create_element_flags.h"
 #include "third_party/blink/renderer/core/dom/document_encoding_data.h"
@@ -56,6 +57,7 @@
 #include "third_party/blink/renderer/core/dom/synchronous_mutation_observer.h"
 #include "third_party/blink/renderer/core/dom/tree_scope.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/timer.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 #include "url/bk_url.h"
@@ -121,6 +123,11 @@ public:
     LocalFrame* GetFrame(void) const { return m_frame; }  // can be null
     LocalFrame* ExecutingFrame(void);
     Document* ContextDocument(void) const;
+
+    // Exports for JS
+    void open(Document *enteredDocument, ExceptionState &exceptionState);
+    void write(const String &text, Document *enteredDocument = nullptr, ExceptionState &exceptionState = ASSERT_NO_EXCEPTION);
+    void write(LocalDOMWindow *callingWindow, const std::vector<std::string> &text, ExceptionState &exceptionState);
 
     void SetDoctype(DocumentType *docType);
 
@@ -325,6 +332,7 @@ private:
     TaskRunnerTimer<Document> m_elementDataCacheClearTimer;
     void ElementDataCacheClearTimerFired(TimerBase *);
 
+    bool m_writeRecursionIsTooDeep = false;
     unsigned m_writeRecursionDepth = 0;
 
     std::stack<ScriptElementBase *> m_currentScriptStack;

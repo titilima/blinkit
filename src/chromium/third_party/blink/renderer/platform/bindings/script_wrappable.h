@@ -18,7 +18,7 @@
 #include "third_party/blink/renderer/platform/wtf/noncopyable.h"
 
 namespace BlinKit {
-class PrototypeHelper;
+class DukScriptObject;
 } // namespace BlinKit
 
 namespace blink {
@@ -33,7 +33,7 @@ public:
 protected:
     ScriptWrappable(void) = default;
 private:
-    friend class BlinKit::PrototypeHelper;
+    friend class BlinKit::DukScriptObject;
 
     bool m_ownedByContext = false;
     void *m_contextObject = nullptr;

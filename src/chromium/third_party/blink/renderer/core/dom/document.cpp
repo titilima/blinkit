@@ -57,6 +57,7 @@
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/html/parser/html_document_parser.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
+#include "third_party/blink/renderer/core/html/parser/nesting_level_incrementer.h"
 #include "third_party/blink/renderer/core/loader/document_loader.h"
 #include "third_party/blink/renderer/core/loader/navigation_scheduler.h"
 #include "third_party/blink/renderer/core/loader/text_resource_decoder_builder.h"
@@ -744,6 +745,11 @@ String Document::nodeName(void) const
     return "#document";
 }
 
+void Document::open(Document *enteredDocument, ExceptionState &exceptionState)
+{
+    ASSERT(false); // BKTODO:
+}
+
 std::shared_ptr<DocumentParser> Document::OpenForNavigation(const AtomicString &mimeType, const AtomicString &encoding)
 {
     std::shared_ptr<DocumentParser> parser = ImplicitOpen();
@@ -1105,6 +1111,71 @@ void Document::WillInsertBody(void)
     // isVisuallyNonEmpty() ?
     BeginLifecycleUpdatesIfRenderingReady();
 #endif
+}
+
+void Document::write(const String &text, Document *enteredDocument, ExceptionState &exceptionState)
+{
+    static const unsigned kCMaxWriteRecursionDepth = 21;
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+    if (ImportLoader())
+    {
+        exception_state.ThrowDOMException(
+            DOMExceptionCode::kInvalidStateError,
+            "Imported document doesn't support write().");
+        return;
+    }
+#endif
+
+    if (throw_on_dynamic_markup_insertion_count_ > 0)
+    {
+        exceptionState.ThrowDOMException(DOMExceptionCode::kInvalidStateError,
+            "Custom Element constructor should not use write().");
+        return;
+    }
+
+    NestingLevelIncrementer nestingLevelIncrementer(m_writeRecursionDepth);
+    m_writeRecursionIsTooDeep = (m_writeRecursionDepth > 1) && m_writeRecursionIsTooDeep;
+    m_writeRecursionIsTooDeep = (m_writeRecursionDepth > kCMaxWriteRecursionDepth) || m_writeRecursionIsTooDeep;
+    if (m_writeRecursionIsTooDeep)
+        return;
+
+    bool hasInsertionPoint = m_parser && m_parser->HasInsertionPoint();
+    if (!hasInsertionPoint)
+    {
+        if (ignore_destructive_write_count_)
+        {
+            ASSERT(false); // BKTODO:
+#if 0
+            AddConsoleMessage(ConsoleMessage::Create(
+                kJSMessageSource, kWarningMessageLevel,
+                ExceptionMessages::FailedToExecute(
+                    "write", "Document",
+                    "It isn't possible to write into a document "
+                    "from an asynchronously-loaded external "
+                    "script unless it is explicitly opened.")));
+#endif
+            return;
+        }
+        if (ignore_opens_during_unload_count_)
+            return;
+
+        open(enteredDocument, ASSERT_NO_EXCEPTION);
+    }
+
+    ASSERT(m_parser);
+    m_parser->insert(text);
+}
+
+void Document::write(LocalDOMWindow *callingWindow, const std::vector<std::string> &text, ExceptionState &exceptionState)
+{
+    ASSERT(nullptr != callingWindow);
+
+    std::string builder;
+    for (const std::string &s : text)
+        builder.append(s);
+    write(String::FromStdUTF8(builder), callingWindow->document(), exceptionState);
 }
 
 }  // namespace blink

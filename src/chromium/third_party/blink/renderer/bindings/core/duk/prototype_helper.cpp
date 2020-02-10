@@ -11,6 +11,7 @@
 
 #include "prototype_helper.h"
 
+#include "third_party/blink/renderer/bindings/core/duk/duk_script_object.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 
 using namespace blink;
@@ -36,9 +37,9 @@ PrototypeHelper::~PrototypeHelper(void)
 
 duk_idx_t PrototypeHelper::CreateScriptObject(duk_context *ctx, const char *protoName, ScriptWrappable &nativeObject)
 {
-    ASSERT(nullptr == nativeObject.m_contextObject);
-
     duk_push_object(ctx);
+
+    DukScriptObject::BindScriptWrappable(ctx, -1, nativeObject);
 
     const duk_idx_t top = duk_get_top(ctx);
     // ... obj
@@ -77,66 +78,78 @@ static const duk_uint_t CommonFlags =
     | DUK_DEFPROP_ENUMERABLE
     | DUK_DEFPROP_HAVE_CONFIGURABLE;
 
+const char PrototypeEntry::NameKey[] = DUK_HIDDEN_SYMBOL("name");
+
 PrototypeEntry::PrototypeEntry(duk_context *ctx, const char *name)
     : m_ctx(ctx), m_name(name)
 #ifdef _DEBUG
-    , m_heapPtr(duk_get_heapptr(ctx, -1))
+    , m_top(duk_get_top(ctx))
 #endif
 {
-    duk_push_bare_object(m_ctx);
 }
 
 PrototypeEntry::~PrototypeEntry(void)
 {
-    ASSERT(duk_get_heapptr(m_ctx, -2) == m_heapPtr);
+    ASSERT(duk_get_top(m_ctx) == m_top);
+
+    duk_idx_t idx = duk_push_bare_object(m_ctx);
+
+    duk_push_string(m_ctx, m_name);
+    duk_put_prop_string(m_ctx, idx, NameKey);
+
+    if (nullptr != m_finalizer)
+    {
+        duk_push_c_function(m_ctx, m_finalizer, 1);
+        duk_set_finalizer(m_ctx, idx);
+    }
+
+    for (const auto &it : m_methods)
+    {
+        duk_push_lstring(m_ctx, it.first.data(), it.first.length());
+        duk_push_c_function(m_ctx, it.second.impl, it.second.argc);
+        duk_def_prop(m_ctx, idx, it.second.flags);
+    }
+
+    for (const auto &it : m_properties)
+    {
+        duk_push_lstring(m_ctx, it.first.data(), it.first.length());
+        duk_push_c_function(m_ctx, it.second.getter, 0);
+        if (nullptr != it.second.setter)
+            duk_push_c_function(m_ctx, it.second.setter, 1);
+        duk_def_prop(m_ctx, idx, it.second.flags);
+    }
+
     duk_put_prop_string(m_ctx, -2, m_name);
 }
 
 void PrototypeEntry::Add(const Property *properties, size_t count, duk_uint_t extraFlags)
 {
-    ASSERT(duk_get_heapptr(m_ctx, -2) == m_heapPtr);
-
-    const duk_idx_t idx = duk_normalize_index(m_ctx, -1);
-    const duk_uint_t baseFlags = DUK_DEFPROP_HAVE_GETTER | CommonFlags | extraFlags;
     for (size_t i = 0; i < count; ++i)
     {
         const Property &entry = properties[i];
 
-        duk_uint_t flags = baseFlags;
-
-        duk_push_string(m_ctx, entry.name);
-        duk_push_c_function(m_ctx, entry.getter, 0);
-        if (nullptr != entry.setter)
-        {
-            flags |= DUK_DEFPROP_HAVE_SETTER;
-            duk_push_c_function(m_ctx, entry.setter, 1);
-        }
-        duk_def_prop(m_ctx, idx, flags);
+        PropertyData data;
+        data.getter = entry.getter;
+        data.setter = entry.setter;
+        data.flags = DUK_DEFPROP_HAVE_GETTER | CommonFlags | extraFlags;
+        if (nullptr != data.setter)
+            data.flags |= DUK_DEFPROP_HAVE_SETTER;
+        m_properties[entry.name] = data;
     }
 }
 
 void PrototypeEntry::Add(const Method *methods, size_t count, duk_uint_t extraFlags)
 {
-    ASSERT(duk_get_heapptr(m_ctx, -2) == m_heapPtr);
-
-    const duk_idx_t idx = duk_normalize_index(m_ctx, -1);
-    const duk_uint_t flags = DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_HAVE_WRITABLE | CommonFlags | extraFlags;
     for (size_t i = 0; i < count; ++i)
     {
         const Method &entry = methods[i];
 
-        duk_push_string(m_ctx, entry.name);
-        duk_push_c_function(m_ctx, entry.impl, entry.argc);
-        duk_def_prop(m_ctx, idx, flags);
+        MethodData data;
+        data.impl = entry.impl;
+        data.argc = entry.argc;
+        data.flags = DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_HAVE_WRITABLE | CommonFlags | extraFlags;
+        m_methods[entry.name] = data;
     }
-}
-
-void PrototypeEntry::SetFinalizer(duk_c_function finalizer)
-{
-    ASSERT(duk_get_heapptr(m_ctx, -2) == m_heapPtr);
-
-    duk_push_c_function(m_ctx, finalizer, 1);
-    duk_set_finalizer(m_ctx, -2);
 }
 
 } // namespace BlinKit

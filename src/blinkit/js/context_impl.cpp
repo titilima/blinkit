@@ -13,6 +13,8 @@
 
 #include "base/strings/string_util.h"
 #include "blinkit/crawler/crawler_impl.h"
+#include "blinkit/js/js_value_impl.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_document.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 
@@ -165,12 +167,13 @@ void ContextImpl::InitializeHeapStash(void)
 void ContextImpl::RegisterPrototypesForCrawler(duk_context *ctx)
 {
     PrototypeHelper helper(ctx);
+    DukDocument::RegisterPrototypeForCrawler(helper);
     DukWindow::RegisterPrototypeForCrawler(helper);
 }
 
 void ContextImpl::Reset(void)
 {
-    const duk_idx_t idx = PrototypeHelper::CreateScriptObject(m_ctx, DukWindow::ProtoName, *(m_frame.DomWindow()));
+    const duk_idx_t idx = DukScriptObject::Create<DukWindow>(m_ctx, *(m_frame.DomWindow()));
     ExposeGlobals(m_ctx, idx);
 
     duk_set_global_object(m_ctx);
@@ -179,4 +182,19 @@ void ContextImpl::Reset(void)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 extern "C" {
+
+BKEXPORT BkJSValue BKAPI BkJSEvaluate(BkJSContext context, const char *code, unsigned flags)
+{
+    JSValueImpl *ret = nullptr;
+
+    const auto callback = [flags, &ret](duk_context *ctx)
+    {
+        if (0 == (BK_EVAL_IGNORE_RETURN_VALUE & flags))
+            ret = JSValueImpl::Create(ctx, -1);
+    };
+    context->Eval(code, callback);
+
+    return ret;
+}
+
 } // extern "C"

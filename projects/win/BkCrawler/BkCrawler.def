@@ -30,3 +30,12 @@ BkGetResponseCookie
 BkCreateCrawler
 BkDestroyCrawler
 BkRunCrawler
+BkGetScriptContextFromCrawler
+
+BkReleaseValue
+BkGetValueType
+BkGetBooleanValue
+BkGetIntegerValue
+BkGetNumberValue
+BkGetValueAsString
+BkJSEvaluate

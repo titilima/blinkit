@@ -11,6 +11,10 @@
 
 #include "duk_window.h"
 
+#include "third_party/blink/renderer/bindings/core/duk/duk_document.h"
+
+using namespace blink;
+
 namespace BlinKit {
 
 const char DukWindow::ProtoName[] = "Window";
@@ -35,6 +39,14 @@ static duk_ret_t BToA(duk_context *ctx)
     return 1;
 }
 
+static duk_ret_t DocumentGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    LocalDOMWindow *w = DukScriptObject::To<LocalDOMWindow>(ctx, -1);
+    DukScriptObject::Push<DukDocument>(ctx, w->document());
+    return 1;
+}
+
 } // namespace Impl
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,9 +57,13 @@ void DukWindow::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
         { "atob",             Impl::AToB,                1           },
         { "btoa",             Impl::BToA,                1           },
     };
+    static const PrototypeEntry::Property Properties[] = {
+        { "document",  Impl::DocumentGetter,  nullptr              },
+    };
 
     DukEventTarget::FillPrototypeEntry(entry);
     entry.Add(Methods, std::size(Methods));
+    entry.Add(Properties, std::size(Properties));
 }
 
 void DukWindow::RegisterPrototypeForCrawler(PrototypeHelper &helper)
