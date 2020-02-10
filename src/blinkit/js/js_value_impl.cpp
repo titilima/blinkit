@@ -16,10 +16,7 @@ using namespace BlinKit;
 JSValueImpl* JSValueImpl::Create(duk_context *ctx, duk_idx_t idx)
 {
     if (duk_is_error(ctx, idx))
-    {
-        ASSERT(false); // BKTODO:
-        return nullptr;
-    }
+        return new JSErrorImpl(ctx, idx);
 
     switch (duk_get_type(ctx, idx))
     {
@@ -46,15 +43,70 @@ JSValueImpl* JSValueImpl::Create(duk_context *ctx, duk_idx_t idx)
         case DUK_TYPE_OBJECT:
         {
             if (duk_is_array(ctx, idx))
-                return new JSArrayValue(ctx, idx);
+                return new JSArrayImpl(ctx, idx);
             else
-                return new JSObjectValue(ctx, idx);
+                return new JSObjectImpl(ctx, idx);
         }
     }
 
     BKLOG("Unexpected type: %d!", duk_get_type(ctx, idx));
     ASSERT(false); // Not reached!
     return nullptr;
+}
+
+JSErrorImpl::JSErrorImpl(duk_context *ctx, duk_idx_t idx)
+{
+    const duk_idx_t top = duk_get_top(ctx);
+    idx = duk_normalize_index(ctx, idx);
+
+    const duk_errcode_t code = duk_get_error_code(ctx, idx);
+    switch (code)
+    {
+        case DUK_ERR_EVAL_ERROR:      m_code = BK_ERR_EVAL;      break;
+        case DUK_ERR_RANGE_ERROR:     m_code = BK_ERR_RANGE;     break;
+        case DUK_ERR_REFERENCE_ERROR: m_code = BK_ERR_REFERENCE; break;
+        case DUK_ERR_SYNTAX_ERROR:    m_code = BK_ERR_SYNTAX;    break;
+        case DUK_ERR_TYPE_ERROR:      m_code = BK_ERR_TYPE;      break;
+        case DUK_ERR_URI_ERROR:       m_code = BK_ERR_URI;       break;
+
+        default:
+            BKLOG("Unexpected error: %d!", code);
+            m_code = BK_ERR_UNKNOWN;
+    }
+
+    m_name = Extract(ctx, idx, "name");
+    m_message = Extract(ctx, idx, "message");
+    m_fileName = Extract(ctx, idx, "fileName");
+#ifdef _DEBUG
+    m_stack = Extract(ctx, idx, "stack");
+#endif
+    if (duk_get_prop_string(ctx, idx, "lineNumber"))
+        m_lineNumber = duk_to_int(ctx, -1);
+
+    duk_set_top(ctx, top);
+}
+
+std::string JSErrorImpl::Extract(duk_context *ctx, duk_idx_t idx, const char *field)
+{
+    std::string ret;
+    if (duk_get_prop_string(ctx, idx, field))
+    {
+        ASSERT(duk_is_string(ctx, -1));
+
+        size_t l = 0;
+        const char *s = duk_get_lstring(ctx, -1, &l);
+        ret.assign(s, l);
+    }
+    return ret;
+}
+
+std::string JSErrorImpl::GetAsString(void) const
+{
+    std::string ret(m_name);
+    ret.push_back(':');
+    ret.push_back(' ');
+    ret.append(m_message);
+    return ret;
 }
 
 namespace BlinKit {
@@ -185,6 +237,11 @@ BKEXPORT int BKAPI BkGetValueType(BkJSValue val)
 BKEXPORT void BKAPI BkReleaseValue(BkJSValue val)
 {
     val->Release();
+}
+
+BKEXPORT BkJSError BKAPI BkValueToError(BkJSValue val)
+{
+    return BK_VT_ERROR == val->GetType() ? static_cast<JSErrorImpl *>(val) : nullptr;
 }
 
 } // extern "C"

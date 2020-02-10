@@ -20,6 +20,7 @@ extern "C" {
 #endif
 
 BK_DECLARE_HANDLE(BkJSValue, JSValueImpl);
+BK_DECLARE_HANDLE(BkJSError, JSErrorImpl);
 
 BKEXPORT void BKAPI BkReleaseValue(BkJSValue val);
 
@@ -40,6 +41,7 @@ BKEXPORT int BKAPI BkGetBooleanValue(BkJSValue val, bool_t *dst);
 BKEXPORT int BKAPI BkGetIntegerValue(BkJSValue val, int *dst);
 BKEXPORT int BKAPI BkGetNumberValue(BkJSValue val, double *dst);
 BKEXPORT int BKAPI BkGetValueAsString(BkJSValue val, struct BkBuffer *dst);
+BKEXPORT BkJSError BKAPI BkValueToError(BkJSValue val);
 
 enum BkEvalFlags {
     BK_EVAL_DEFAULT             =   0,

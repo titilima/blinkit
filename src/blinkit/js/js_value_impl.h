@@ -32,6 +32,24 @@ protected:
     virtual ~JSValueImpl(void) = default;
 };
 
+class JSErrorImpl final : public JSValueImpl
+{
+public:
+    JSErrorImpl(duk_context *ctx, duk_idx_t idx);
+private:
+    static std::string Extract(duk_context *ctx, duk_idx_t idx, const char *field);
+
+    int GetType(void) const override { return BK_VT_ERROR; }
+    std::string GetAsString(void) const override;
+
+    int m_code;
+    std::string m_name, m_message, m_fileName;
+#ifdef _DEBUG
+    std::string m_stack;
+#endif
+    int m_lineNumber = 0;
+};
+
 namespace BlinKit {
 
 class JSSimpleValue final : public JSValueImpl
@@ -88,22 +106,22 @@ private:
     std::string m_key;
 };
 
-class JSArrayValue : public JSHeapValue
+} // namespace BlinKit
+
+class JSArrayImpl final : public BlinKit::JSHeapValue
 {
 public:
-    JSArrayValue(duk_context *ctx, duk_idx_t idx) : JSHeapValue(ctx, idx) {}
+    JSArrayImpl(duk_context *ctx, duk_idx_t idx) : JSHeapValue(ctx, idx) {}
 private:
     int GetType(void) const override { return BK_VT_ARRAY; }
 };
 
-class JSObjectValue : public JSHeapValue
+class JSObjectImpl final : public BlinKit::JSHeapValue
 {
 public:
-    JSObjectValue(duk_context *ctx, duk_idx_t idx) : JSHeapValue(ctx, idx) {}
+    JSObjectImpl(duk_context *ctx, duk_idx_t idx) : JSHeapValue(ctx, idx) {}
 private:
     int GetType(void) const override { return BK_VT_OBJECT; }
 };
-
-} // namespace BlinKit
 
 #endif // BLINKIT_BLINKIT_JS_VALUE_IMPL_H
