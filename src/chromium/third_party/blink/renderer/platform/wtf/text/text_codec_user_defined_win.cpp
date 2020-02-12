@@ -36,12 +36,27 @@
 
 #include "text_codec_user_defined.h"
 
+#include "third_party/blink/renderer/platform/wtf/text/text_codec_win.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
+
 namespace BlinKit {
 
 std::unique_ptr<WTF::TextCodec> NewUserDefinedTextDecoder(const WTF::TextEncoding &textEncoding, const void *)
 {
-    assert(false); // BKTODO:
-    return nullptr;
+    UINT codePage;
+
+    const char *encodingName = textEncoding.GetName();
+    if (0 == strcmpi(encodingName, "GBK"))
+    {
+        codePage = 936;
+    }
+    else
+    {
+        ASSERT(false); // Not reached: any other code pages to support?
+        return nullptr;
+    }
+
+    return std::make_unique<TextCodecWin>(codePage);
 }
 
 } // namespace BlinKit
