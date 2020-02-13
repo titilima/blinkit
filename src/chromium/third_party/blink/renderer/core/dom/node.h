@@ -91,6 +91,11 @@ public:
         ASSERT(m_treeScope);
         return *m_treeScope;
     }
+    TreeScope& ContainingTreeScope(void) const
+    {
+        ASSERT(IsInTreeScope());
+        return *m_treeScope;
+    }
 
     void RemoveAllEventListenersRecursively(void);
 

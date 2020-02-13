@@ -39,7 +39,9 @@
 
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/html_names.h"
-#ifndef BLINKIT_CRAWLER_ONLY
+#ifdef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/html_element_type_helpers.h"
+#else
 #   include "third_party/blink/renderer/core/html/forms/html_form_control_element.h"
 #   include "third_party/blink/renderer/core/html/forms/html_select_element.h"
 #   include "third_party/blink/renderer/core/html/html_element.h"
@@ -359,15 +361,12 @@ void HTMLElementStack::RemoveHTMLHeadElement(Element* element) {
 }
 
 void HTMLElementStack::Remove(Element* element) {
-  ASSERT(false); // BKTODO:
-#if 0
-  DCHECK(!IsHTMLHeadElement(element));
+  DCHECK(!IsHTMLHeadElement(*element));
   if (top_->GetElement() == element) {
     Pop();
     return;
   }
   RemoveNonTopCommon(element);
-#endif
 }
 
 HTMLElementStack::ElementRecord* HTMLElementStack::Find(

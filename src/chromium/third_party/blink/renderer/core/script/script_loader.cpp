@@ -102,7 +102,15 @@ void ScriptLoader::DidNotifySubtreeInsertionsToDocument(void)
 
 void ScriptLoader::HandleSourceAttribute(const String &sourceUrl)
 {
-    ASSERT(false); // BKTODO:
+    if (IgnoresLoadRequest() || sourceUrl.IsEmpty())
+        return;
+
+    PrepareScript();  // FIXME: Provide a real starting line number here.
+}
+
+bool ScriptLoader::IgnoresLoadRequest(void) const
+{
+    return m_alreadyStarted || m_isExternalScript || m_parserInserted || !m_element->IsConnected();
 }
 
 // https://html.spec.whatwg.org/multipage/scripting.html#prepare-a-script

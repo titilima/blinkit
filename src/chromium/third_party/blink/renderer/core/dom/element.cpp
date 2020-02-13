@@ -43,10 +43,13 @@
 #include "third_party/blink/renderer/core/dom/element_rare_data.h"
 #include "third_party/blink/renderer/core/dom/text.h"
 #include "third_party/blink/renderer/core/html_names.h"
+#include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
 namespace blink {
+
+enum class ClassStringContent { kEmpty, kWhiteSpaceOnly, kHasClasses };
 
 Element::Element(const QualifiedName &tagName, Document *document, ConstructionType type)
     : ContainerNode(document, type), m_tagName(tagName)
@@ -102,14 +105,18 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
     }
     else if (name == html_names::kClassAttr)
     {
-        ASSERT(false); // BKTODO:
+        ClassAttributeChanged(params.newValue);
+        if (HasRareData())
+        {
+            ASSERT(false); // BKTODO:
 #if 0
-        ClassAttributeChanged(params.new_value);
-        if (HasRareData() && GetElementRareData()->GetClassList()) {
-            GetElementRareData()->GetClassList()->DidUpdateAttributeValue(
-                params.old_value, params.new_value);
-        }
+            if (GetElementRareData()->GetClassList())
+            {
+                GetElementRareData()->GetClassList()->DidUpdateAttributeValue(
+                    params.old_value, params.new_value);
+            }
 #endif
+        }
     }
     else if (name == html_names::kNameAttr)
     {
@@ -196,6 +203,77 @@ void Element::ChildrenChanged(const ChildrenChange &change)
 #endif
 }
 #endif
+
+template <typename CharacterType>
+static inline ClassStringContent ClassStringHasClassName(const CharacterType *characters, unsigned length)
+{
+    ASSERT(length > 0);
+
+    unsigned i = 0;
+    do {
+        if (IsNotHTMLSpace<CharacterType>(characters[i]))
+            break;
+        ++i;
+    } while (i < length);
+
+    if (i == length && length >= 1)
+        return ClassStringContent::kWhiteSpaceOnly;
+
+    return ClassStringContent::kHasClasses;
+}
+
+static inline ClassStringContent ClassStringHasClassName(const AtomicString &newClassString)
+{
+    unsigned length = newClassString.length();
+
+    if (!length)
+        return ClassStringContent::kEmpty;
+
+    if (newClassString.Is8Bit())
+        return ClassStringHasClassName(newClassString.Characters8(), length);
+    return ClassStringHasClassName(newClassString.Characters16(), length);
+}
+
+void Element::ClassAttributeChanged(const AtomicString &newClassString)
+{
+    const ElementData *elementData = GetElementData();
+    ASSERT(nullptr != elementData);
+
+    ClassStringContent classStringContentType = ClassStringHasClassName(newClassString);
+    const bool shouldFoldCase = GetDocument().InQuirksMode();
+    if (classStringContentType == ClassStringContent::kHasClasses)
+    {
+#ifdef BLINKIT_CRAWLER_ONLY
+        elementData->SetClass(newClassString, shouldFoldCase);
+#else
+        if (ForCrawler())
+        {
+            elementData->SetClass(newClassString, shouldFoldCase);
+        }
+        else
+        {
+            const SpaceSplitString oldClasses = elementData->ClassNames();
+            elementData->SetClass(newClassString, shouldFoldCase);
+            const SpaceSplitString& new_classes = elementData->ClassNames();
+            GetDocument().GetStyleEngine().ClassChangedForElement(old_classes, new_classes, *this);
+        }
+#endif
+    }
+    else
+    {
+#ifndef BLINKIT_CRAWLER_ONLY
+        if (!ForCrawler())
+        {
+            const SpaceSplitString& old_classes = elementData->ClassNames();
+            GetDocument().GetStyleEngine().ClassChangedForElement(old_classes, *this);
+        }
+#endif
+        if (classStringContentType == ClassStringContent::kWhiteSpaceOnly)
+            elementData->SetClass(newClassString, shouldFoldCase);
+        else
+            elementData->ClearClass();
+    }
+}
 
 Node* Element::Clone(Document &document, CloneChildrenFlag flag) const
 {
@@ -385,7 +463,6 @@ void Element::ParserSetAttributes(const Vector<Attribute> &attributeVector)
             ASSERT(false); // BKTODO: m_elementData = ShareableElementData::CreateWithAttributes(attributeVector);
     }
 
-    ASSERT(!HasTagName(html_names::kInputTag)); // BKTODO: ParserDidSetAttributes
     ParserDidSetAttributes();
 
     for (const auto &attribute : attributeVector)

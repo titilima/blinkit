@@ -43,6 +43,7 @@
 #include "tree_ordered_map.h"
 
 #include "base/memory/ptr_util.h"
+#include "third_party/blink/renderer/core/dom/element_traversal.h"
 
 namespace blink {
 
@@ -67,6 +68,42 @@ void TreeOrderedMap::Add(const AtomicString &key, Element &element)
 std::unique_ptr<TreeOrderedMap> TreeOrderedMap::Create(void)
 {
     return base::WrapUnique(new TreeOrderedMap);
+}
+
+Element* TreeOrderedMap::Get(const AtomicString &key, const TreeScope &scope, const Matcher &matcher) const
+{
+    ASSERT(key);
+
+    const auto it = m_map.find(key);
+    if (std::end(m_map) == it)
+        return nullptr;
+
+    MapEntry &entry = const_cast<MapEntry &>(it->second);
+    ASSERT(entry.count > 0);
+    if (nullptr != entry.element)
+        return entry.element;
+
+    // Iterate to find the node that matches. Nothing will match iff an element
+    // with children having duplicate IDs is being removed -- the tree traversal
+    // will be over an updated tree not having that subtree. In all other cases,
+    // a match is expected.
+    for (Element &element : ElementTraversal::StartsAfter(scope.RootNode()))
+    {
+        if (!matcher(key, element))
+            continue;
+        entry.element = &element;
+        return &element;
+    }
+    return nullptr;
+}
+
+Element* TreeOrderedMap::GetElementById(const AtomicString &key, const TreeScope &scope) const
+{
+    const auto matcher = [&key](const AtomicString &key, const Element &element)
+    {
+        return element.GetIdAttribute() == key;
+    };
+    return Get(key, scope, matcher);
 }
 
 } // namespace blink

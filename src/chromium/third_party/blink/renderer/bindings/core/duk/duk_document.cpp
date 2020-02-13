@@ -24,6 +24,20 @@ const char DukDocument::ProtoName[] = "HTMLDocument";
 
 namespace Impl {
 
+static duk_ret_t GetElementById(duk_context *ctx)
+{
+    size_t l = 0;
+    const char *s = duk_to_lstring(ctx, 0, &l);
+    const AtomicString id = AtomicString::FromUTF8(s, l);
+
+    duk_push_this(ctx);
+    Document *document = DukScriptObject::To<Document>(ctx, -1);
+
+    Element *ret = document->getElementById(id);
+    ASSERT(false); // BKTODO:
+    return 1;
+}
+
 static duk_ret_t Write(duk_context *ctx)
 {
     std::vector<std::string> text;
@@ -58,6 +72,7 @@ static duk_ret_t Write(duk_context *ctx)
 void DukDocument::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
 {
     static const PrototypeEntry::Method Methods[] = {
+        { "getElementById",         Impl::GetElementById,         1           },
         { "write",                  Impl::Write,                  DUK_VARARGS },
     };
 

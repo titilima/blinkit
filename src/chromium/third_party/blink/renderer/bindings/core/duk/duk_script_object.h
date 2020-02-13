@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/bindings/core/duk/duk_exception_state.h"
 #include "third_party/blink/renderer/bindings/core/duk/prototype_helper.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 

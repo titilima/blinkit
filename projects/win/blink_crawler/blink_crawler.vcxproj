@@ -166,6 +166,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\web\web_global_object_reuse_policy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_container_node.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_document.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_element.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_event_target.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_exception_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_node.h" />
@@ -439,6 +440,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_codec_user_defined.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_codec_utf16.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_codec_utf8.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_codec_win.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_encoding.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_encoding_registry.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_position.h" />
@@ -460,6 +462,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_container_node.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_document.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_element.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_event_target.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_exception_state.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_node.cpp" />
@@ -630,6 +633,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_codec_user_defined_win.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_codec_utf16.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_codec_utf8.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_codec_win.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_encoding.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_encoding_registry.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_position.cc" />

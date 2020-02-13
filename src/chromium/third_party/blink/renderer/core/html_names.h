@@ -4,7 +4,7 @@
 //   File Name: html_names.h
 // Description: HTML Names
 //      Author: Ziming Li
-//     Created: 2020-02-01
+//     Created: 2020-02-13
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
@@ -80,6 +80,7 @@ extern const blink::HTMLQualifiedName &kImageTag;
 extern const blink::HTMLQualifiedName &kImgTag;
 extern const blink::HTMLQualifiedName &kInputTag;
 extern const blink::HTMLQualifiedName &kKeygenTag;
+extern const blink::HTMLQualifiedName &kLabelTag;
 extern const blink::HTMLQualifiedName &kLiTag;
 extern const blink::HTMLQualifiedName &kLinkTag;
 extern const blink::HTMLQualifiedName &kListingTag;
@@ -137,7 +138,7 @@ extern const blink::HTMLQualifiedName &kVideoTag;
 extern const blink::HTMLQualifiedName &kWbrTag;
 extern const blink::HTMLQualifiedName &kXmpTag;
 
-constexpr unsigned kTagsCount = 111;
+constexpr unsigned kTagsCount = 112;
 
 // Attributes
 extern const blink::QualifiedName &kCharsetAttr;
@@ -154,6 +155,7 @@ extern const blink::QualifiedName &kHrefAttr;
 extern const blink::QualifiedName &kHttpEquivAttr;
 extern const blink::QualifiedName &kIdAttr;
 extern const blink::QualifiedName &kIsAttr;
+extern const blink::QualifiedName &kLabelAttr;
 extern const blink::QualifiedName &kLanguageAttr;
 extern const blink::QualifiedName &kLinkAttr;
 extern const blink::QualifiedName &kNameAttr;
@@ -169,7 +171,7 @@ extern const blink::QualifiedName &kSummaryAttr;
 extern const blink::QualifiedName &kTitleAttr;
 extern const blink::QualifiedName &kTypeAttr;
 
-constexpr unsigned kAttrsCount = 28;
+constexpr unsigned kAttrsCount = 29;
 
 void Init(void);
 

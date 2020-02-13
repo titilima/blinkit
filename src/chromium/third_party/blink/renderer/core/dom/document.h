@@ -125,6 +125,7 @@ public:
     Document* ContextDocument(void) const;
 
     // Exports for JS
+    using TreeScope::getElementById;
     void open(Document *enteredDocument, ExceptionState &exceptionState);
     void write(const String &text, Document *enteredDocument = nullptr, ExceptionState &exceptionState = ASSERT_NO_EXCEPTION);
     void write(LocalDOMWindow *callingWindow, const std::vector<std::string> &text, ExceptionState &exceptionState);

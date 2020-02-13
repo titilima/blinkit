@@ -411,7 +411,7 @@ void HTMLConstructionSite::Detach() {
   attachment_root_ = nullptr;
 }
 
-HTMLFormElement* HTMLConstructionSite::TakeForm() {
+Element* HTMLConstructionSite::TakeForm() {
   return form_.Release();
 }
 
@@ -687,19 +687,11 @@ void HTMLConstructionSite::InsertHTMLBodyElement(AtomicHTMLToken* token) {
 
 void HTMLConstructionSite::InsertHTMLFormElement(AtomicHTMLToken* token,
                                                  bool is_demoted) {
-  ASSERT(false); // BKTODO:
-#if 0
-  auto* form_element =
-      ToHTMLFormElement(CreateElement(token, xhtmlNamespaceURI));
+  auto* form_element = CreateElement(token, xhtmlNamespaceURI);
   if (!OpenElements()->HasTemplateInHTMLScope())
     form_ = form_element;
-  if (is_demoted) {
-    UseCounter::Count(OwnerDocumentForCurrentNode(),
-                      WebFeature::kDemotedFormElement);
-  }
   AttachLater(CurrentNode(), form_element);
   open_elements_.Push(HTMLStackItem::Create(form_element, token));
-#endif
 }
 
 void HTMLConstructionSite::InsertHTMLElement(AtomicHTMLToken* token) {

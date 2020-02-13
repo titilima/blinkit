@@ -45,6 +45,7 @@
 
 #pragma once
 
+#include <functional>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -62,8 +63,12 @@ public:
     static std::unique_ptr<TreeOrderedMap> Create(void);
 
     void Add(const AtomicString &key, Element &element);
+    Element* GetElementById(const AtomicString &key, const TreeScope &scope) const;
 private:
     TreeOrderedMap(void) = default;
+
+    typedef std::function<bool(const AtomicString &, const Element &)> Matcher;
+    Element* Get(const AtomicString &key, const TreeScope &scope, const Matcher &matcher) const;
 
     struct MapEntry {
         explicit MapEntry(Element &firstElement) : element(firstElement) {}

@@ -105,7 +105,6 @@ class AtomicHTMLToken;
 class CustomElementDefinition;
 class Document;
 class Element;
-class HTMLFormElement;
 class HTMLParserReentryPermit;
 
 class HTMLConstructionSite final {
@@ -217,7 +216,7 @@ class HTMLConstructionSite final {
   HTMLStackItem* HeadStackItem() const { return head_.Get(); }
 
   bool IsFormElementPointerNonNull() const { return form_; }
-  HTMLFormElement* TakeForm();
+  Element* TakeForm();
 
   ParserContentPolicy GetParserContentPolicy() {
     return parser_content_policy_;
@@ -283,7 +282,7 @@ class HTMLConstructionSite final {
   // https://html.spec.whatwg.org/multipage/syntax.html#head-element-pointer
   Member<HTMLStackItem> head_;
   // https://html.spec.whatwg.org/multipage/syntax.html#form-element-pointer
-  Member<HTMLFormElement> form_;
+  Member<Element> form_;
   mutable HTMLElementStack open_elements_;
   mutable HTMLFormattingElementList active_formatting_elements_;
 

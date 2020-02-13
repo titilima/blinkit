@@ -15,6 +15,7 @@
 #include "blinkit/crawler/crawler_impl.h"
 #include "blinkit/js/js_value_impl.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_document.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 
@@ -168,6 +169,7 @@ void ContextImpl::RegisterPrototypesForCrawler(duk_context *ctx)
 {
     PrototypeHelper helper(ctx);
     DukDocument::RegisterPrototypeForCrawler(helper);
+    DukElement::RegisterPrototypeForCrawler(helper);
     DukWindow::RegisterPrototypeForCrawler(helper);
 }
 

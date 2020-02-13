@@ -37,6 +37,7 @@
 #include <stack>
 #include "third_party/blink/renderer/core/dom/child_list_mutation_scope.h"
 #include "third_party/blink/renderer/core/dom/document.h"
+#include "third_party/blink/renderer/core/dom/element_traversal.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
 #include "third_party/blink/renderer/core/html_element_type_helpers.h"
@@ -149,6 +150,29 @@ void ContainerNode::FastCleanupChildren(void)
         delete children.top();
         children.pop();
     }
+}
+
+Element* ContainerNode::getElementById(const AtomicString &id) const
+{
+    if (IsInTreeScope())
+    {
+        // Fast path if we are in a tree scope: call getElementById() on tree scope
+        // and check if the matching element is in our subtree.
+        Element *element = ContainingTreeScope().getElementById(id);
+        if (nullptr == element)
+            return nullptr;
+        if (element->IsDescendantOf(this))
+            return element;
+    }
+
+    // Fall back to traversing our subtree. In case of duplicate ids, the first
+    // element found will be returned.
+    for (Element &element : ElementTraversal::DescendantsOf(*this))
+    {
+        if (element.GetIdAttribute() == id)
+            return &element;
+    }
+    return nullptr;
 }
 
 void ContainerNode::InvalidateNodeListCachesInAncestors(

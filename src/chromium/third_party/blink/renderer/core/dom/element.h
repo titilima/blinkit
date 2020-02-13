@@ -131,6 +131,10 @@ protected:
 #ifndef BLINKIT_CRAWLER_ONLY
     void ChildrenChanged(const ChildrenChange &change) override;
 #endif
+    // classAttributeChanged() exists to share code between
+    // parseAttribute (called via setAttribute()) and
+    // svgAttributeChanged (called when element.className.baseValue is set)
+    void ClassAttributeChanged(const AtomicString &newClassString);
 private:
     ElementRareData* GetElementRareData(void) const;
     void SynchronizeAttribute(const QualifiedName &name) const;

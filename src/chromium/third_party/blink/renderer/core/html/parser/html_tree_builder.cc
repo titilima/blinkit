@@ -646,15 +646,12 @@ void HTMLTreeBuilder::ProcessStartTagForInBody(AtomicHTMLToken* token) {
     return;
   }
   if (token->GetName() == kFormTag) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (tree_.IsFormElementPointerNonNull() && !IsParsingTemplateContents()) {
       ParseError(token);
       UseCounter::Count(tree_.CurrentNode()->GetDocument(),
                         WebFeature::kHTMLParseErrorNestedForm);
       return;
     }
-#endif
     ProcessFakePEndTagIfPInButtonScope();
     tree_.InsertHTMLFormElement(token);
     return;
@@ -812,8 +809,7 @@ void HTMLTreeBuilder::ProcessStartTagForInBody(AtomicHTMLToken* token) {
 #endif
     return;
   }
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   if (token->GetName() == kNoembedTag && options_.plugins_enabled) {
     ProcessGenericRawTextStartTag(token);
     return;
@@ -864,20 +860,12 @@ void HTMLTreeBuilder::ProcessStartTagForInBody(AtomicHTMLToken* token) {
     tree_.InsertHTMLElement(token);
     return;
   }
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   if (token->GetName() == MathMLNames::mathTag.LocalName()) {
     tree_.ReconstructTheActiveFormattingElements();
     AdjustMathMLAttributes(token);
     AdjustForeignAttributes(token);
     tree_.InsertForeignElement(token, MathMLNames::mathmlNamespaceURI);
-    return;
-  }
-  if (token->GetName() == SVGNames::svgTag.LocalName()) {
-    tree_.ReconstructTheActiveFormattingElements();
-    AdjustSVGAttributes(token);
-    AdjustForeignAttributes(token);
-    tree_.InsertForeignElement(token, SVGNames::svgNamespaceURI);
     return;
   }
 #endif
@@ -1778,8 +1766,6 @@ void HTMLTreeBuilder::ProcessEndTagForInBody(AtomicHTMLToken* token) {
     return;
   }
   if (token->GetName() == kFormTag && !IsParsingTemplateContents()) {
-    ASSERT(false); // BKTODO:
-#if 0
     Element* node = tree_.TakeForm();
     if (!node || !tree_.OpenElements()->InScope(node)) {
       ParseError(token);
@@ -1789,7 +1775,6 @@ void HTMLTreeBuilder::ProcessEndTagForInBody(AtomicHTMLToken* token) {
     if (tree_.CurrentElement() != node)
       ParseError(token);
     tree_.OpenElements()->Remove(node);
-#endif
   }
   if (token->GetName() == kPTag) {
     if (!tree_.OpenElements()->InButtonScope(token->GetName())) {

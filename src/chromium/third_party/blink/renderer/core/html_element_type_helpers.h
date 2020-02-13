@@ -19,6 +19,16 @@
 
 namespace blink {
 
+inline bool IsHTMLHeadElement(const Element &element)
+{
+    return element.HasTagName(html_names::kHeadTag);
+}
+
+inline bool IsHTMLHeadElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLHeadElement(ToElement(node));
+}
+
 inline bool IsHTMLScriptElement(const Element &element)
 {
     return element.HasTagName(html_names::kScriptTag);

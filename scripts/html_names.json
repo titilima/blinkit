@@ -64,6 +64,7 @@
     { "name": "input", "hash": 10365436, "is_tag": true },
     { "name": "is", "hash": 15617733, "is_attr": true },
     { "name": "keygen", "hash": 5603105, "is_tag": true },
+    { "name": "label", "hash": 15092473, "is_tag": true, "is_attr": true },
     { "name": "language", "hash": 4109061, "is_attr": true },
     { "name": "li", "hash": 11097939, "is_tag": true },
     { "name": "link", "hash": 7010491, "is_tag": true, "is_attr": true },

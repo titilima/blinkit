@@ -51,8 +51,11 @@ using NodeVector = std::vector<Node *>;
 class ContainerNode : public Node
 {
 public:
+    // Exports for JS
     Node* firstChild(void) const { return m_firstChild; }
+    Element* getElementById(const AtomicString &id) const;
     Node* lastChild(void) const { return m_lastChild; }
+
     bool HasChildren(void) const { return !!m_firstChild; }
     unsigned CountChildren(void) const;
 

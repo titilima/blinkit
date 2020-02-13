@@ -79,6 +79,7 @@ public:
 private:
     ScriptLoader(ScriptElementBase *element, bool parserInserted, bool alreadyStarted);
 
+    bool IgnoresLoadRequest(void) const;
     bool IsScriptForEventSupported(void) const;
 
     const char* NameInHeapSnapshot(void) const override;

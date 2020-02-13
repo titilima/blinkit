@@ -55,10 +55,12 @@ class TreeOrderedMap;
 class TreeScope : public GarbageCollectedMixin
 {
 public:
+    ContainerNode& RootNode(void) const { return *m_rootNode; }
     TreeScope* ParentTreeScope(void) const { return m_parentTreeScope; }
     
     bool IsInclusiveOlderSiblingShadowRootOrAncestorTreeScopeOf(const TreeScope &scope) const;
 
+    Element* getElementById(const AtomicString &elementId) const;
     void AddElementById(const AtomicString &elementId, Element &element);
     void RemoveElementById(const AtomicString &elementId, Element &element);
 
