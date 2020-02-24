@@ -76,6 +76,8 @@ public:
     size_t size(void) const { return m_data.size(); }
 
     void Append(const char *data, size_t length);
+
+    bool GetBytes(void *dest, size_t destSize) const;
 private:
     SharedBuffer(const char *data, size_t length);
 

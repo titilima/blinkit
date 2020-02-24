@@ -78,4 +78,14 @@ SharedBuffer::Iterator SharedBuffer::end(void) const
     return Iterator(nullptr);
 }
 
+bool SharedBuffer::GetBytes(void *dest, size_t destSize) const
+{
+    if (nullptr == dest)
+        return false;
+    if (m_data.size() < destSize)
+        return false;
+    memcpy(dest, m_data.data(), destSize);
+    return true;
+}
+
 }  // namespace blink
