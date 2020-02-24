@@ -32,7 +32,7 @@ namespace BlinKit {
 
 class Asserter {
 public:
-    explicit Asserter(bool condition) { assert(condition); }
+    explicit Asserter(bool condition) { ASSERT(condition); }
 };
 
 void BkLog(const char *format, ...);
