@@ -27,6 +27,8 @@ public:
     std::string Get(const std::string &name) const;
     void Set(const std::string &name, const std::string &val);
 
+    void Remove(const std::string &name);
+
     std::string GetAllForRequest(void) const;
 private:
     static std::string CanonizeHeaderName(const std::string &header);

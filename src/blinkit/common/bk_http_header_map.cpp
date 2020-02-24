@@ -68,6 +68,11 @@ std::string BkHTTPHeaderMap::GetAllForRequest(void) const
     return ret;
 }
 
+void BkHTTPHeaderMap::Remove(const std::string &name)
+{
+    m_headers.erase(name);
+}
+
 void BkHTTPHeaderMap::Set(const std::string &name, const std::string &val)
 {
     assert(std::string::npos == name.find_first_of(CRLF));
