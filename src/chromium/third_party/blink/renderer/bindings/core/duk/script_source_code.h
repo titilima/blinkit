@@ -44,6 +44,7 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/bindings/core/duk/script_streamer.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_source_location_type.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
@@ -62,11 +63,18 @@ public:
     // For inline scripts.
     ScriptSourceCode(const String &source, ScriptSourceLocationType sourceLocationType = ScriptSourceLocationType::kUnknown,
         const BlinKit::BkURL &url = BlinKit::BkURL(), const TextPosition &startPosition = TextPosition::MinimumPosition());
+    // For external scripts.
+    //
+    // We lose the encoding information from ScriptResource.
+    // Not sure if that matters.
+    ScriptSourceCode(ScriptStreamer *streamer, ScriptResource *resource, ScriptStreamer::NotStreamingReason reason);
     ~ScriptSourceCode(void);
 
     const std::string& Source(void) const { return m_source; }
+    const BlinKit::BkURL &Url(void) const { return m_URL; }
 private:
     const std::string m_source;
+    const BlinKit::BkURL m_URL;
 };
 
 } // namespace blink

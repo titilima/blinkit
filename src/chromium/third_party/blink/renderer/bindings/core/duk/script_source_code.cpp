@@ -28,6 +28,16 @@ ScriptSourceCode::ScriptSourceCode(
 {
 }
 
+ScriptSourceCode::ScriptSourceCode(
+    ScriptStreamer *streamer,
+    ScriptResource *resource,
+    ScriptStreamer::NotStreamingReason reason)
+    : m_source(resource->SourceText())
+    , m_URL(resource->GetResponse().Url().StripFragmentIdentifier())
+{
+    ASSERT(!streamer == (reason != ScriptStreamer::NotStreamingReason::kInvalid));
+}
+
 ScriptSourceCode::~ScriptSourceCode(void) = default;
 
 } // namespace blink
