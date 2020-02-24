@@ -23,8 +23,9 @@ const AtomicString &kContentDisposition = reinterpret_cast<AtomicString *>(&name
 const AtomicString &kContentLanguage = reinterpret_cast<AtomicString *>(&names_storage)[1];
 const AtomicString &kContentType = reinterpret_cast<AtomicString *>(&names_storage)[2];
 const AtomicString &kGET = reinterpret_cast<AtomicString *>(&names_storage)[3];
-const AtomicString &kRefresh = reinterpret_cast<AtomicString *>(&names_storage)[4];
-const AtomicString &kUserAgent = reinterpret_cast<AtomicString *>(&names_storage)[5];
+const AtomicString &kReferer = reinterpret_cast<AtomicString *>(&names_storage)[4];
+const AtomicString &kRefresh = reinterpret_cast<AtomicString *>(&names_storage)[5];
+const AtomicString &kUserAgent = reinterpret_cast<AtomicString *>(&names_storage)[6];
 
 void Init(void)
 {
@@ -39,6 +40,7 @@ void Init(void)
         { "Content-Language",     3105184,  16 },
         { "Content-Type",         7448957,  12 },
         { "GET",                  1490282,  3  },
+        { "Referer",             15797945,  7  },
         { "Refresh",              7822740,  7  },
         { "User-Agent",          13018365,  10 },
     };
