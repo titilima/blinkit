@@ -62,7 +62,7 @@ void HTTPLoaderTask::DoContinue(void)
 {
     ASSERT(IsMainThread());
 
-    ResourceResponse response;
+    ResourceResponse response(BkURL(m_response->CurrentURL()));
     PopulateResourceResponse(response);
     m_client->DidReceiveResponse(response);
     m_client->DidReceiveData(m_response->BodyData(), m_response->BodyLength());
