@@ -526,7 +526,7 @@ std::shared_ptr<Resource> ResourceFetcher::RequestResource(
     // start loading.
     if (ResourceNeedsLoad(resource.get(), params, policy))
     {
-        if (!StartLoad(resource.get()))
+        if (!StartLoad(resource))
         {
             ASSERT(false); // BKTODO:
 #if 0
@@ -548,8 +548,19 @@ std::shared_ptr<Resource> ResourceFetcher::ResourceForBlockedRequest(
     ResourceRequestBlockedReason blockedReason,
     ResourceClient  *client)
 {
+    std::shared_ptr<base::SingleThreadTaskRunner> taskRunner = Context().GetLoadingTaskRunner();
+
+    std::shared_ptr<Resource> resource = factory.Create(params.GetResourceRequest(), params.Options(),
+        params.DecoderOptions());
+    if (nullptr != client)
+        client->SetResource(resource, taskRunner.get());
     ASSERT(false); // BKTODO:
-    return nullptr;
+#if 0
+    resource->FinishAsError(ResourceError::CancelledDueToAccessCheckError(
+        params.Url(), blocked_reason),
+        Context().GetLoadingTaskRunner().get());
+#endif
+    return resource;
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -609,7 +620,7 @@ bool ResourceFetcher::ResourceNeedsLoad(Resource *resource, const FetchParameter
     return policy != kUse || resource->StillNeedsLoad();
 }
 
-bool ResourceFetcher::StartLoad(Resource *resource)
+bool ResourceFetcher::StartLoad(std::shared_ptr<Resource> &resource)
 {
     ASSERT(nullptr != resource);
     ASSERT(resource->StillNeedsLoad());
@@ -620,8 +631,8 @@ bool ResourceFetcher::StartLoad(Resource *resource)
     {
         // Forbids JavaScript/revalidation until start()
         // to prevent unintended state transitions.
-        Resource::RevalidationStartForbiddenScope revalidationStartForbiddenScope(resource);
-        ScriptForbiddenScope script_forbidden_scope;
+        Resource::RevalidationStartForbiddenScope revalidationStartForbiddenScope(resource.get());
+        ScriptForbiddenScope scriptForbiddenScope;
 
         if (!Context().ShouldLoadNewResource(resource->GetType()) && IsMainThread())
         {
@@ -670,11 +681,11 @@ bool ResourceFetcher::StartLoad(Resource *resource)
     loader->Start();
 
     {
-        Resource::RevalidationStartForbiddenScope revalidationStartForbiddenScope(resource);
+        Resource::RevalidationStartForbiddenScope revalidationStartForbiddenScope(resource.get());
         ScriptForbiddenScope scriptForbiddenScope;
 
         // NotifyStartLoad() shouldn't cause AddClient/RemoveClient().
-        Resource::ProhibitAddRemoveClientInScope prohibitAddRemoveClientInScope(resource);
+        Resource::ProhibitAddRemoveClientInScope prohibitAddRemoveClientInScope(resource.get());
         if (!resource->IsLoaded())
             resource->NotifyStartLoad();
     }

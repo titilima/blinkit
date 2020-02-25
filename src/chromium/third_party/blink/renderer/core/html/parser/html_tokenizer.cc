@@ -1504,7 +1504,7 @@ inline bool HTMLTokenizer::IsAppropriateEndTag() {
 }
 
 inline void HTMLTokenizer::ParseError() {
-  ASSERT(false); // Not implemented!
+  BKLOG("HTMLTokenizer::ParseError");
 }
 
 }  // namespace blink

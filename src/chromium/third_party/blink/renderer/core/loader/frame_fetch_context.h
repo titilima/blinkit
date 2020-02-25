@@ -64,6 +64,7 @@ public:
     {
         return CreateFetcher(loader, nullptr);
     }
+    static void ProvideDocumentToContext(FetchContext &context, Document *document);
 
     bool IsDetached(void) const override { return !!m_frozenState; }
 private:
@@ -77,6 +78,7 @@ private:
     String GetUserAgent(void) const;
 
     // FetchContext overrides
+    bool IsFrameFetchContext(void) override { return true; }
     void RecordDataUriWithOctothorpe(void) override;
     void PrepareRequest(ResourceRequest &request, RedirectType redirectType) override;
     bool ShouldLoadNewResource(ResourceType type) const override;
@@ -84,12 +86,16 @@ private:
         Resource *resource) override;
     void DidLoadResource(Resource *resource) override;
     FetchContext* Detach(void) override;
+    // BaseFetchContext overrides
+    const FetchClientSettingsObject* GetFetchClientSettingsObject(void) const override { return m_fetchClientSettingsObject.get(); }
 
     Member<DocumentLoader> m_documentLoader;
     Member<Document> m_document;
 
     struct FrozenState;
     std::unique_ptr<const FrozenState> m_frozenState; // Non-null only when detached.
+
+    std::unique_ptr<FetchClientSettingsObject> m_fetchClientSettingsObject;
 };
 
 }  // namespace blink

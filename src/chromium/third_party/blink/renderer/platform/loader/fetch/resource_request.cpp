@@ -57,6 +57,16 @@ EncodedFormData* ResourceRequest::HttpBody(void) const
     return nullptr;
 }
 
+void ResourceRequest::SetHTTPReferrer(const String &referrer)
+{
+    const std::string name = http_names::kReferer.StdUtf8();
+    if (referrer.IsEmpty())
+        m_headers.Remove(name);
+    else
+        m_headers.Set(name, referrer.StdUtf8());
+    m_didSetHttpReferrer = true;
+}
+
 void ResourceRequest::SetHTTPUserAgent(const String &httpUserAgent)
 {
     std::string name = http_names::kUserAgent.StdUtf8();

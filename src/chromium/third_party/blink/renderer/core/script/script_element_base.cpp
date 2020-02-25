@@ -113,6 +113,11 @@ bool ScriptElementBase::ParseAttributeImpl(const Element::AttributeModificationP
     return true;
 }
 
+String ScriptElementBase::SourceAttributeValue(void) const
+{
+    return GetElement().getAttribute(kSrcAttr).GetString();
+}
+
 String ScriptElementBase::TextFromChildren(void) const
 {
     return GetElement().TextFromChildren();

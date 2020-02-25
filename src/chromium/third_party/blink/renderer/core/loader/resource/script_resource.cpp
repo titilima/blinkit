@@ -37,8 +37,54 @@
 
 #include "script_resource.h"
 
+#include "base/memory/ptr_util.h"
+#include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
+
 namespace blink {
 
+ScriptResource::ScriptResourceFactory::ScriptResourceFactory(void)
+    : ResourceFactory(ResourceType::kScript, TextResourceDecoderOptions::kPlainTextContent)
+{
+}
+
+std::shared_ptr<Resource> ScriptResource::ScriptResourceFactory::Create(
+    const ResourceRequest &request,
+    const ResourceLoaderOptions &options,
+    const TextResourceDecoderOptions &decoderOptions) const
+{
+    return base::WrapShared(new ScriptResource(request, options, decoderOptions));
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ScriptResource::ScriptResource(
+    const ResourceRequest &resourceRequest,
+    const ResourceLoaderOptions &options,
+    const TextResourceDecoderOptions &decoderOptions)
+    : TextResource(resourceRequest, ResourceType::kScript, options, decoderOptions)
+{
+}
+
 ScriptResource::~ScriptResource(void) = default;
+
+std::shared_ptr<ScriptResource> ScriptResource::Fetch(FetchParameters &params, ResourceFetcher *fetcher, ResourceClient *client)
+{
+    std::shared_ptr<Resource> resource = fetcher->RequestResource(params, ScriptResourceFactory(), client);
+    return ToScriptResource(resource);
+}
+
+const std::string& ScriptResource::SourceText(void)
+{
+    ASSERT(IsLoaded());
+
+    if (m_sourceText.empty() && Data())
+    {
+        String sourceText = DecodedText();
+        ClearData();
+        m_sourceText = sourceText.StdUtf8();
+    }
+
+    return m_sourceText;
+}
 
 }  // namespace blink

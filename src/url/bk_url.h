@@ -39,10 +39,14 @@ public:
     std::string Username(void) const { return ComponentString(m_parsed.username); }
     std::string Password(void) const { return ComponentString(m_parsed.password); }
     int EffectiveIntPort(void) const;
+    std::string Path(void) const { return ComponentString(m_parsed.path); }
     std::string PathForRequest(void) const;
     bool HasRef(void) const { return m_parsed.ref.is_nonempty(); }
 
     BkURL Resolve(const std::string &relative) const;
+
+    BkURL StripFragmentIdentifier(void) const;
+    std::string StrippedForUseAsReferrer(void) const;
 private:
     friend bool EqualIgnoringFragmentIdentifier(const BkURL &a, const BkURL &b);
 
@@ -61,6 +65,8 @@ private:
 };
 
 bool EqualIgnoringFragmentIdentifier(const BkURL &a, const BkURL &b);
+
+inline bool operator==(const BkURL &a, const BkURL &b) { return a.AsString() == b.AsString(); }
 
 } // namespace BlinKit
 

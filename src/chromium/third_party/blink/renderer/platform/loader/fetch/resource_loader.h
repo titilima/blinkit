@@ -57,7 +57,7 @@ class ResourceLoader final : public GarbageCollectedFinalized<ResourceLoader>
                            , public WebURLLoaderClient
 {
 public:
-    static ResourceLoader* Create(ResourceFetcher *fetcher, Resource *resource, uint32_t inflightKeepaliveBytes = 0);
+    static ResourceLoader* Create(ResourceFetcher *fetcher, std::shared_ptr<Resource> &resource, uint32_t inflightKeepaliveBytes = 0);
     ~ResourceLoader(void) override;
 
     void Start(void);
@@ -71,7 +71,7 @@ public:
     // |m_resource->options()| and applicable.
     void ActivateCacheAwareLoadingIfNeeded(const ResourceRequest &request);
 private:
-    ResourceLoader(ResourceFetcher *fetcher, Resource *resource, uint32_t inflightKeepaliveBytes);
+    ResourceLoader(ResourceFetcher *fetcher, std::shared_ptr<Resource> &resource, uint32_t inflightKeepaliveBytes);
 
     FetchContext& Context(void) const;
     bool ShouldFetchCodeCache(void);
@@ -85,7 +85,7 @@ private:
 
     std::unique_ptr<WebURLLoader> m_loader;
     Member<ResourceFetcher> m_fetcher;
-    Member<Resource> m_resource;
+    std::shared_ptr<Resource> m_resource;
 
     bool m_isCacheAwareLoadingActivated = false;
     bool m_isDownloadingToBlob = false;

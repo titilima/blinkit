@@ -64,6 +64,9 @@ public:
     const BlinKit::BkURL& Url(void) const { return m_URL; }
     void SetURL(const BlinKit::BkURL &URL) { m_URL = URL; }
 
+    void SetHTTPReferrer(const String &referrer);
+    bool DidSetHTTPReferrer(void) const { return m_didSetHttpReferrer; }
+
     const BlinKit::BkURL& SiteForCookies(void) const { return m_siteForCookies; }
     void SetSiteForCookies(const BlinKit::BkURL &siteForCookies) { m_siteForCookies = siteForCookies; }
 
@@ -97,6 +100,7 @@ private:
     bool m_keepalive : 1;
     ResourceLoadPriority m_priority = ResourceLoadPriority::kLowest;
     int m_intraPriorityValue = 0;
+    bool m_didSetHttpReferrer = false;
     bool m_wasDiscarded = false;
     RedirectStatus m_redirectStatus = RedirectStatus::kNoRedirect;
 };

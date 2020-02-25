@@ -114,6 +114,12 @@ public:
     ResourceLoader* Loader(void) const { return m_loader.get(); }
     void SetLoader(std::unique_ptr<ResourceLoader> &loader);
 
+    virtual std::shared_ptr<const SharedBuffer> ResourceBuffer(void) const
+    {
+        ASSERT(GetType() != ResourceType::kImage); // BKTODO:
+        return m_data;
+    }
+
     const ResourceResponse& GetResponse(void) const { return m_response; }
     void SetResponse(const ResourceResponse &response);
 

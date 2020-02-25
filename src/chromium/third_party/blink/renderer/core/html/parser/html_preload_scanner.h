@@ -71,7 +71,9 @@ class SegmentedString;
 class CSSPreloadScanner;
 class MediaValuesCached {
 public:
-    struct MediaValuesCachedData {};
+    struct MediaValuesCachedData {
+        explicit MediaValuesCachedData(Document &) {}
+    };
 };
 struct ViewportDescriptionWrapper;
 

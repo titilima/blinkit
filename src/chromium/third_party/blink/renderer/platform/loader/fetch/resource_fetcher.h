@@ -87,7 +87,7 @@ public:
     // Usually, RequestResource() calls this method internally, but needs to
     // call this method explicitly on cases such as ResourceNeedsLoad() returning
     // false.
-    bool StartLoad(Resource *resource);
+    bool StartLoad(std::shared_ptr<Resource> &resource);
     void StopFetching(void);
     enum LoaderFinishType { kDidFinishLoading, kDidFinishFirstPartInMultipart };
     void HandleLoaderFinish(Resource *resource, LoaderFinishType type);

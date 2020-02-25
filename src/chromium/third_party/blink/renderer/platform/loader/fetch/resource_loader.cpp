@@ -52,7 +52,7 @@
 
 namespace blink {
 
-ResourceLoader::ResourceLoader(ResourceFetcher *fetcher, Resource *resource, uint32_t inflightKeepaliveBytes)
+ResourceLoader::ResourceLoader(ResourceFetcher *fetcher, std::shared_ptr<Resource> &resource, uint32_t inflightKeepaliveBytes)
     : m_fetcher(fetcher), m_resource(resource)
 {
     ASSERT(m_fetcher);
@@ -89,7 +89,7 @@ FetchContext& ResourceLoader::Context(void) const
     return m_fetcher->Context();
 }
 
-ResourceLoader* ResourceLoader::Create(ResourceFetcher *fetcher, Resource *resource, uint32_t inflightKeepaliveBytes)
+ResourceLoader* ResourceLoader::Create(ResourceFetcher *fetcher, std::shared_ptr<Resource> &resource, uint32_t inflightKeepaliveBytes)
 {
     std::unique_ptr<ResourceLoader> loader = base::WrapUnique(new ResourceLoader(fetcher, resource, inflightKeepaliveBytes));
     resource->SetLoader(loader);
@@ -128,7 +128,8 @@ void ResourceLoader::DidFinishLoading(void)
     code_cache_request_.reset();
 #endif
 
-    m_fetcher->HandleLoaderFinish(m_resource.Get(), ResourceFetcher::kDidFinishLoading);
+    std::shared_ptr<Resource> resource(m_resource);
+    m_fetcher->HandleLoaderFinish(resource.get(), ResourceFetcher::kDidFinishLoading);
 #if 0 // BKTODO:
     m_fetcher->HandleLoaderFinish(
         resource_.Get(), finish_time, ResourceFetcher::kDidFinishLoading,
@@ -163,7 +164,7 @@ void ResourceLoader::DidReceiveResponse(const ResourceResponse &response)
     const ResourceRequest &initialRequest = m_resource->GetResourceRequest();
     const ResourceLoaderOptions &options = m_resource->Options();
 
-    Context().DispatchDidReceiveResponse(m_resource->Identifier(), response, m_resource);
+    Context().DispatchDidReceiveResponse(m_resource->Identifier(), response, m_resource.get());
 
     m_resource->ResponseReceived(response);
 
@@ -195,7 +196,7 @@ void ResourceLoader::HandleError(const ResourceError &error)
     code_cache_request_.reset();
 #endif
 
-    m_fetcher->HandleLoaderError(m_resource.Get(), error);
+    m_fetcher->HandleLoaderError(m_resource.get(), error);
 }
 
 void ResourceLoader::ScheduleCancel(void)

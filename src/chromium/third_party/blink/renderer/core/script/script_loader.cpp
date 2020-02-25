@@ -37,6 +37,7 @@
 
 #include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/dom/document.h"
+#include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/core/script/classic_pending_script.h"
 #include "third_party/blink/renderer/core/script/script_element_base.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_loader_options.h"
@@ -98,6 +99,16 @@ void ScriptLoader::DidNotifySubtreeInsertionsToDocument(void)
 {
     if (!m_parserInserted)
         PrepareScript();  // FIXME: Provide a real starting line number here.
+}
+
+// https://html.spec.whatwg.org/multipage/webappapis.html#fetch-a-classic-script
+void ScriptLoader::FetchClassicScript(const BkURL &url, Document &elementDocument, const WTF::TextEncoding &encoding)
+{
+    std::unique_ptr<ClassicPendingScript> pendingScript = ClassicPendingScript::Fetch(url, elementDocument,
+        encoding, m_element);
+    ResourceClient *resourceClient = pendingScript.get();
+    m_preparedPendingScript = std::move(pendingScript);;
+    m_resourceKeepAlive = resourceClient->GetResource();
 }
 
 void ScriptLoader::HandleSourceAttribute(const String &sourceUrl)
@@ -345,43 +356,49 @@ bool ScriptLoader::PrepareScript(const TextPosition &scriptStartPosition, Legacy
     // <spec step="24">If the element has a src content attribute, then:</spec>
     if (m_element->HasSourceAttribute())
     {
-        ASSERT(false); // BKTODO:
-#if 0
         // <spec step="24.1">Let src be the value of the element's src
         // attribute.</spec>
-        String src =
-            StripLeadingAndTrailingHTMLSpaces(element_->SourceAttributeValue());
+        String src = StripLeadingAndTrailingHTMLSpaces(m_element->SourceAttributeValue());
 
         // <spec step="24.2">If src is the empty string, queue a task to fire an
         // event named error at the element, and return.</spec>
-        if (src.IsEmpty()) {
+        if (src.IsEmpty())
+        {
+            ASSERT(false); // BKTODO:
+#if 0
             element_document.GetTaskRunner(TaskType::kDOMManipulation)
                 ->PostTask(FROM_HERE,
                     WTF::Bind(&ScriptElementBase::DispatchErrorEvent,
                         WrapPersistent(element_.Get())));
+#endif
             return false;
         }
 
         // <spec step="24.3">Set the element's from an external file flag.</spec>
-        is_external_script_ = true;
+        m_isExternalScript = true;
 
         // <spec step="24.4">Parse src relative to the element's node
         // document.</spec>
-        KURL url = element_document.CompleteURL(src);
+        BkURL url = elementDocument.CompleteURL(src);
 
         // <spec step="24.5">If the previous step failed, queue a task to fire an
         // event named error at the element, and return. Otherwise, let url be the
         // resulting URL record.</spec>
-        if (!url.IsValid()) {
+        if (!url.IsValid())
+        {
+            ASSERT(false); // BKTODO:
+#if 0
             element_document.GetTaskRunner(TaskType::kDOMManipulation)
                 ->PostTask(FROM_HERE,
                     WTF::Bind(&ScriptElementBase::DispatchErrorEvent,
                         WrapPersistent(element_.Get())));
+#endif
             return false;
         }
 
         // <spec step="24.6">Switch on the script's type:</spec>
-        if (GetScriptType() == ScriptType::kClassic) {
+        if (GetScriptType() == ScriptType::kClassic)
+        {
             // - "classic":
 
             // <spec step="15">If the script element has a charset attribute, then let
@@ -392,19 +409,22 @@ bool ScriptLoader::PrepareScript(const TextPosition &scriptStartPosition, Legacy
             //
             // TODO(hiroshige): Should we handle failure in getting an encoding?
             WTF::TextEncoding encoding;
-            if (!element_->CharsetAttributeValue().IsEmpty())
-                encoding = WTF::TextEncoding(element_->CharsetAttributeValue());
+            String charset = m_element->CharsetAttributeValue();
+            if (!charset.IsEmpty())
+                encoding = WTF::TextEncoding(charset);
             else
-                encoding = element_document.Encoding();
+                encoding = elementDocument.Encoding();
 
             // <spec step="24.6.A">"classic"
             //
             // Fetch a classic script given url, settings object, options, classic
             // script CORS setting, and encoding.</spec>
-            FetchClassicScript(url, element_document, options, cross_origin,
-                encoding);
+            FetchClassicScript(url, elementDocument, encoding);
         }
-        else {
+        else
+        {
+            ASSERT(false); // BKTODO:
+#if 0
             // - "module":
 
             // Step 15 is skipped because they are not used in module
@@ -417,6 +437,7 @@ bool ScriptLoader::PrepareScript(const TextPosition &scriptStartPosition, Legacy
             Modulator* modulator = Modulator::From(
                 ToScriptStateForMainWorld(context_document->GetFrame()));
             FetchModuleScriptTree(url, settings_object, modulator, options);
+#endif
         }
         // <spec step="24.6">When the chosen algorithm asynchronously completes, set
         // the script's script to the result. At that time, the script is ready.
@@ -428,7 +449,6 @@ bool ScriptLoader::PrepareScript(const TextPosition &scriptStartPosition, Legacy
         // - ScriptLoader::PrepareScript(), or
         // - HTMLParserScriptRunner,
         // depending on the conditions in Step 25 of "prepare a script".
-#endif
     }
 
     // <spec step="25">If the element does not have a src content attribute, run

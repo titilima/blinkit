@@ -210,7 +210,13 @@ bool PendingScript::IsControlledByScriptRunner(void) const
 
 void PendingScript::MarkParserBlockingLoadStartTime(void)
 {
-    ASSERT(false); // BKTODO:
+    // BKTODO: Check if necessary.
+}
+
+void PendingScript::PendingScriptFinished(void)
+{
+    if (nullptr != m_client)
+        m_client->PendingScriptFinished(this);
 }
 
 void PendingScript::StopWatchingForLoad(void)
@@ -224,7 +230,18 @@ void PendingScript::StopWatchingForLoad(void)
 
 void PendingScript::WatchForLoad(PendingScriptClient *client)
 {
-    ASSERT(false); // BKTODO:
+    CheckState();
+
+    ASSERT(!IsWatchingForLoad());
+    ASSERT(nullptr != client);
+    // addClient() will call streamingFinished() if the load is complete. Callers
+    // who do not expect to be re-entered from this call should not call
+    // watchForLoad for a PendingScript which isReady. We also need to set
+    // m_watchingForLoad early, since addClient() can result in calling
+    // notifyFinished and further stopWatchingForLoad().
+    m_client = client;
+    if (IsReady())
+        PendingScriptFinished();
 }
 
 }  // namespace blink

@@ -59,6 +59,7 @@
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/core/html/parser/nesting_level_incrementer.h"
 #include "third_party/blink/renderer/core/loader/document_loader.h"
+#include "third_party/blink/renderer/core/loader/frame_fetch_context.h"
 #include "third_party/blink/renderer/core/loader/navigation_scheduler.h"
 #include "third_party/blink/renderer/core/loader/text_resource_decoder_builder.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
@@ -89,9 +90,9 @@ Document::Document(const DocumentInit &initializer)
 #endif
 
         m_fetcher = m_frame->Loader().GetDocumentLoader()->Fetcher();
-#ifndef BLINKIT_CRAWLER_ONLY
-        FrameFetchContext::ProvideDocumentToContext(fetcher_->Context(), this);
+        FrameFetchContext::ProvideDocumentToContext(m_fetcher->Context(), this);
 
+#ifndef BLINKIT_CRAWLER_ONLY
         // TODO(dcheng): Why does this need to check that DOMWindow is non-null?
         CustomElementRegistry* registry =
             frame_->DomWindow() ? frame_->DomWindow()->MaybeCustomElements()
@@ -108,6 +109,24 @@ Document::Document(const DocumentInit &initializer)
         fetcher_ = ResourceFetcher::Create(nullptr);
     }
 #endif
+    ASSERT(m_fetcher);
+
+    // We depend on the url getting immediately set in subframes, but we
+    // also depend on the url NOT getting immediately set in opened windows.
+    // See fast/dom/early-frame-url.html
+    // and fast/dom/location-new-window-no-crash.html, respectively.
+    // FIXME: Can/should we unify this behavior?
+    if (initializer.ShouldSetURL())
+    {
+        SetURL(initializer.Url());
+    }
+    else
+    {
+        // Even if this document has no URL, we need to initialize base URL with
+        // fallback base URL.
+        UpdateBaseURL();
+    }
+
     m_lifecycle.AdvanceTo(DocumentLifecycle::kInactive);
 }
 
@@ -341,6 +360,23 @@ Node* Document::Clone(Document &factory, CloneChildrenFlag flag) const
     return nullptr;
 }
 
+BkURL Document::CompleteURL(const String &url) const
+{
+    return CompleteURLWithOverride(url, m_baseURL);
+}
+
+BkURL Document::CompleteURLWithOverride(const String &url, const BkURL &baseUrlOverride) const
+{
+    ASSERT(baseUrlOverride.IsEmpty() || baseUrlOverride.IsValid());
+
+    // Always return a null URL when passed a null string.
+    // FIXME: Should we change the KURL constructor to have this behavior?
+    // See also [CSS]StyleSheet::completeURL(const String&)
+    if (url.IsNull())
+        return BkURL();
+    return baseUrlOverride.Resolve(url.StdUtf8()); // BKTODO: Resolve with encoding.
+}
+
 Document* Document::ContextDocument(void) const
 {
     if (m_frame)
@@ -460,6 +496,11 @@ LocalDOMWindow* Document::ExecutingWindow(void) const
         return import->Master()->domWindow();
 #endif
     return nullptr;
+}
+
+BkURL Document::FallbackBaseURL(void) const
+{
+    return urlForBinding();
 }
 
 void Document::FinishedParsing(void)
@@ -913,6 +954,16 @@ void Document::SetReadyState(DocumentReadyState readyState)
     }
 }
 
+void Document::SetURL(const BkURL &url)
+{
+    const BkURL &newURL = url.IsEmpty() ? BkURL::Blank() : url;
+    if (newURL == m_URL)
+        return;
+
+    m_URL = newURL;
+    UpdateBaseURL();
+}
+
 bool Document::ShouldComplete(void)
 {
     if (kFinishedParsing != m_parsingState)
@@ -1091,9 +1142,59 @@ void Document::SuppressLoadEvent(void)
         m_loadEventProgress = kLoadEventCompleted;
 }
 
+void Document::UpdateBaseURL(void)
+{
+    BkURL oldBaseURL = m_baseURL;
+    // DOM 3 Core: When the Document supports the feature "HTML" [DOM Level 2
+    // HTML], the base URI is computed using first the value of the href attribute
+    // of the HTML BASE element if any, and the value of the documentURI attribute
+    // from the Document interface otherwise (which we store, preparsed, in url_).
+    if (!m_baseElementURL.IsEmpty())
+        m_baseURL = m_baseElementURL;
+    else if (!m_baseURLOverride.IsEmpty())
+        m_baseURL = m_baseURLOverride;
+    else
+        m_baseURL = FallbackBaseURL();
+
+    if (m_selectorQueryCache)
+        m_selectorQueryCache->Invalidate();
+
+    if (!m_baseURL.IsValid())
+        m_baseURL = BkURL();
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (ForCrawler())
+        return;
+
+    if (elem_sheet_) {
+        // Element sheet is silly. It never contains anything.
+        DCHECK(!elem_sheet_->Contents()->RuleCount());
+        elem_sheet_ = CSSStyleSheet::CreateInline(*this, base_url_);
+    }
+
+    if (!EqualIgnoringFragmentIdentifier(old_base_url, base_url_)) {
+        // Base URL change changes any relative visited links.
+        // FIXME: There are other URLs in the tree that would need to be
+        // re-evaluated on dynamic base URL change. Style should be invalidated too.
+        for (HTMLAnchorElement& anchor :
+            Traversal<HTMLAnchorElement>::StartsAfter(*this))
+            anchor.InvalidateCachedVisitedLinkHash();
+    }
+#endif
+}
+
+BkURL Document::urlForBinding(void) const
+{
+    const BkURL &url = Url();
+    if (!url.IsEmpty())
+        return url;
+    return BkURL::Blank();
+}
+
 BkURL Document::ValidBaseElementURL(void) const
 {
-    ASSERT(false); // BKTODO:
+    if (m_baseElementURL.IsValid())
+        return m_baseElementURL;
     return BkURL();
 }
 

@@ -62,6 +62,9 @@ public:
 
     bool IsNull(void) const { return m_isNull; }
 
+    const BlinKit::BkURL& Url(void) const { return m_URL; }
+    void SetURL(const BlinKit::BkURL &URL);
+
     const AtomicString& MimeType(void) const { return m_mimeType; }
     void SetMimeType(const AtomicString &mimeType);
 
@@ -70,6 +73,8 @@ public:
 
     int HttpStatusCode(void) const { return m_httpStatusCode; }
     void SetHTTPStatusCode(int statusCode) { m_httpStatusCode = statusCode; }
+
+    AtomicString HttpContentType(void) const;
 
     AtomicString HttpHeaderField(const AtomicString &name) const;
 

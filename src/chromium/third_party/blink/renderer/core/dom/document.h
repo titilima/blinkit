@@ -134,8 +134,16 @@ public:
 
     // Return the document URL, or an empty URL if it's unavailable.
     // This is not an implementation of web-exposed Document.prototype.URL.
-    const BlinKit::BkURL& Url(void) const { return m_URL; }
+    const BlinKit::BkURL& Url(void) const final { return m_URL; }
+    void SetURL(const BlinKit::BkURL &url);
     BlinKit::BkURL ValidBaseElementURL(void) const;
+    // Creates URL based on passed relative url and passed base URL override.
+    BlinKit::BkURL CompleteURLWithOverride(const String &url, const BlinKit::BkURL &baseUrlOverride) const;
+    // Bind the url to document.url, if unavailable bind to about:blank.
+    BlinKit::BkURL urlForBinding(void) const;
+    // Fallback base URL.
+    // https://html.spec.whatwg.org/multipage/urls-and-fetching.html#fallback-base-url
+    BlinKit::BkURL FallbackBaseURL(void) const;
 
     Element* documentElement(void) const { return m_documentElement.Get(); }
 
@@ -165,6 +173,7 @@ public:
     bool InQuirksMode(void) const { return kQuirksMode == m_compatibilityMode; }
     void SetCompatibilityMode(CompatibilityMode mode);
 
+    const WTF::TextEncoding& Encoding(void) const { return m_encodingData.Encoding(); }
     void SetEncodingData(const DocumentEncodingData &newData);
 
     enum DocumentReadyState { kLoading, kInteractive, kComplete };
@@ -238,6 +247,11 @@ public:
 
     // ExecutionContext overrides
     const BlinKit::BkURL& BaseURL(void) const;
+    // Creates URL based on passed relative url and this documents base URL.
+    // Depending on base URL value it is possible that parent document
+    // base URL will be used instead. Uses CompleteURLWithOverride internally.
+    BlinKit::BkURL CompleteURL(const String &url) const final;
+    ResourceFetcher* Fetcher(void) const override { return m_fetcher.get(); }
     bool CanExecuteScripts(ReasonForCallingCanExecuteScripts reason) override;
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(TaskType type) override;
 protected:
@@ -250,6 +264,7 @@ private:
     static ConstructionType GetConstructionType(const DocumentInit &init);
 
     void DispatchDidReceiveTitle(void);
+    void UpdateBaseURL(void);
 
     // ImplicitClose() actually does the work of closing the input stream.
     void ImplicitClose(void);
@@ -302,6 +317,8 @@ private:
     // Document URLs.
     BlinKit::BkURL m_URL;  // Document.URL: The URL from which this document was retrieved.
     BlinKit::BkURL m_baseURL;  // Node.baseURI: The URL to use when resolving relative URLs.
+    BlinKit::BkURL m_baseURLOverride;
+    BlinKit::BkURL m_baseElementURL;  // The URL set by the <base> element.
 
     Member<DocumentType> m_docType;
     Member<Element> m_titleElement;

@@ -54,9 +54,7 @@ class CORE_EXPORT ScriptElementBase : public GarbageCollectedMixin {
 #endif
   String LanguageAttributeValue(void) const;
   bool NomoduleAttributeValue(void) const;
-#if 0 // BKTODO:
-  virtual String SourceAttributeValue() const = 0;
-#endif
+  String SourceAttributeValue(void) const;
   String TypeAttributeValue(void) const;
 #if 0 // BKTODO:
   virtual String ReferrerPolicyAttributeValue() const = 0;

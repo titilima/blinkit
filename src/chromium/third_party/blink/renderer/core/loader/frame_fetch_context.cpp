@@ -45,6 +45,7 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/loader/document_loader.h"
+#include "third_party/blink/renderer/core/script/fetch_client_settings_object_impl.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 
 namespace blink {
@@ -66,6 +67,8 @@ FrameFetchContext::FrameFetchContext(DocumentLoader *loader, Document *document)
     : BaseFetchContext(GetTaskRunner(loader, document))
     , m_documentLoader(loader), m_document(document)
 {
+    if (m_document)
+        m_fetchClientSettingsObject = std::make_unique<FetchClientSettingsObjectImpl>(*m_document);
     ASSERT(nullptr != GetFrame());
 }
 
@@ -206,6 +209,14 @@ void FrameFetchContext::PrepareRequest(ResourceRequest &request, RedirectType re
     if (IsDetached())
         return;
     GetLocalFrameClient()->DispatchWillSendRequest(request);
+}
+
+void FrameFetchContext::ProvideDocumentToContext(FetchContext &context, Document *document)
+{
+    ASSERT(document);
+    ASSERT(context.IsFrameFetchContext());
+    static_cast<FrameFetchContext &>(context).m_document = document;
+    static_cast<FrameFetchContext &>(context).m_fetchClientSettingsObject = std::make_unique<FetchClientSettingsObjectImpl>(*document);
 }
 
 void FrameFetchContext::RecordDataUriWithOctothorpe(void)

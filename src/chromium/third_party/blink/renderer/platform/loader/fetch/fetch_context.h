@@ -73,6 +73,8 @@ class FetchContext : public GarbageCollectedFinalized<FetchContext>
 public:
     virtual ~FetchContext(void);
 
+    virtual bool IsFrameFetchContext(void) { return false; }
+
     virtual void AddAdditionalRequestHeaders(ResourceRequest &request, FetchResourceType type) {}
 
     virtual void RecordDataUriWithOctothorpe(void) {}

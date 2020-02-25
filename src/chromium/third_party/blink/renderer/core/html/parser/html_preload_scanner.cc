@@ -1015,8 +1015,9 @@ PreloadRequestStream HTMLPreloadScanner::Scan(
 CachedDocumentParameters::CachedDocumentParameters(Document* document) {
   DCHECK(IsMainThread());
   DCHECK(document);
+  do_html_preload_scanning = false;
+#ifndef BLINKIT_CRAWLER_ONLY
   ASSERT(false); // BKTODO:
-#if 0
   do_html_preload_scanning =
       !document->GetSettings() ||
       document->GetSettings()->GetDoHtmlPreloadScanning();
@@ -1030,6 +1031,7 @@ CachedDocumentParameters::CachedDocumentParameters(Document* document) {
   referrer_policy = document->GetReferrerPolicy();
   integrity_features = SubresourceIntegrityHelper::GetFeatures(document);
 #endif
+  referrer_policy = kReferrerPolicyDefault;
 }
 
 }  // namespace blink

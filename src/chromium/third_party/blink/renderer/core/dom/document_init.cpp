@@ -57,16 +57,21 @@ LocalFrame* DocumentInit::GetFrame(void) const
     return m_documentLoader ? m_documentLoader->GetFrame() : nullptr;
 }
 
+bool DocumentInit::ShouldSetURL(void) const
+{
+    return !m_URL.IsEmpty();
+}
+
 DocumentInit& DocumentInit::WithDocumentLoader(DocumentLoader *loader)
 {
-    assert(!m_documentLoader);
+    ASSERT(!m_documentLoader);
     m_documentLoader = loader;
     return *this;
 }
 
 DocumentInit& DocumentInit::WithURL(const BkURL &URL)
 {
-    assert(m_URL.IsEmpty());
+    ASSERT(m_URL.IsEmpty());
     m_URL = URL;
     return *this;
 }

@@ -68,6 +68,8 @@ public:
 
     DocumentInit& WithURL(const BlinKit::BkURL &URL);
     const BlinKit::BkURL& Url(void) const { return m_URL; }
+
+    bool ShouldSetURL(void) const;
 private:
     DocumentInit(void) = default;
 

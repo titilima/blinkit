@@ -19,6 +19,7 @@
 #pragma once
 
 #include "third_party/blink/renderer/platform/heap/handle.h"
+#include "third_party/blink/renderer/platform/loader/fetch/fetch_client_settings_object.h"
 #include "third_party/blink/renderer/platform/loader/fetch/fetch_context.h"
 
 namespace blink {
@@ -27,6 +28,10 @@ class BaseFetchContext : public FetchContext
 {
 protected:
     explicit BaseFetchContext(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner);
+
+    virtual const FetchClientSettingsObject* GetFetchClientSettingsObject(void) const = 0;
+    // Used for security checks.
+    virtual bool AllowScriptFromSource(const BlinKit::BkURL &url) const { return true; }
 
     // FetchContext overrides
     void AddAdditionalRequestHeaders(ResourceRequest &request, FetchResourceType type) override;

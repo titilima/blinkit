@@ -130,11 +130,8 @@ void HTMLParserScriptRunner::
   pending_script->StopWatchingForLoad();
 
   if (!IsExecutingScript()) {
-    ASSERT(false); // BKTODO: Check this
-#if 0
     // TODO(kouhei, hiroshige): Investigate why we need checkpoint here.
-    Microtask::PerformCheckpoint(V8PerIsolateData::MainThreadIsolate());
-#endif
+    // BKTODO: Microtask::PerformCheckpoint(V8PerIsolateData::MainThreadIsolate());
     // The parser cannot be unblocked as a microtask requested another
     // resource
     if (!document_->IsScriptExecutionReady())

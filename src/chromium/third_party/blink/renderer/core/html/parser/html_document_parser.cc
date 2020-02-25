@@ -748,14 +748,10 @@ void HTMLDocumentParser::DocumentElementAvailable() {
 
 std::unique_ptr<HTMLPreloadScanner> HTMLDocumentParser::CreatePreloadScanner(
     TokenPreloadScanner::ScannerType scanner_type) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return HTMLPreloadScanner::Create(
       options_, GetDocument()->Url(),
       CachedDocumentParameters::Create(GetDocument()),
       MediaValuesCached::MediaValuesCachedData(*GetDocument()), scanner_type);
-#endif
 }
 
 void HTMLDocumentParser::ScanAndPreload(HTMLPreloadScanner* scanner) {

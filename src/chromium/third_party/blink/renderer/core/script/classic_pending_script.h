@@ -38,10 +38,20 @@ class ClassicPendingScript final : public PendingScript, public ResourceClient
 {
     USING_GARBAGE_COLLECTED_MIXIN(ClassicPendingScript);
 public:
+    // https://html.spec.whatwg.org/multipage/webappapis.html#fetch-a-classic-script
+    //
+    // For a script from an external file, calls ScriptResource::Fetch() and
+    // creates ClassicPendingScript. Returns nullptr if Fetch() returns nullptr.
+    static std::unique_ptr<ClassicPendingScript> Fetch(const BlinKit::BkURL &url, Document &elementDocument,
+        const WTF::TextEncoding &encoding, ScriptElementBase *element);
     // For an inline script.
     static std::unique_ptr<ClassicPendingScript> CreateInline(ScriptElementBase *element,
         const TextPosition &startingPosition, ScriptSourceLocationType sourceLocationType);
     ~ClassicPendingScript(void) override;
+
+    // ScriptStreamer callbacks.
+    void SetStreamer(std::unique_ptr<ScriptStreamer> &streamer);
+    void StreamingFinished(void);
 
     std::unique_ptr<Script> GetSource(const BlinKit::BkURL &documentURL) const override;
     ScriptType GetScriptType(void) const override { return ScriptType::kClassic; }
@@ -63,9 +73,17 @@ private:
     ClassicPendingScript(ScriptElementBase *element, const TextPosition &startingPosition,
         ScriptSourceLocationType sourceLocationType, bool isExternal);
 
+    // Advances the current state of the script, reporting to the client if
+    // appropriate.
+    void AdvanceReadyState(ReadyState newReadyState);
+
+    // Handle the end of streaming.
+    void FinishWaitingForStreaming(void);
+    void FinishReadyStreaming(void);
     void CancelStreaming(void);
 
     bool StartStreamingIfPossible(const std::function<void()> &done) override;
+    bool IsCurrentlyStreaming(void) const override { return m_isCurrentlyStreaming; }
     void DisposeInternal(void) override;
     void CheckState(void) const override;
     // ResourceClient
@@ -88,6 +106,21 @@ private:
     bool m_integrityFailure = false;
 
     std::unique_ptr<ScriptStreamer> m_streamer;
+    std::function<void()> m_streamerDone;
+
+    // This flag tracks whether streamer_ is currently streaming. It is used
+    // mainly to prevent re-streaming a script while it is being streamed.
+    //
+    // ReadyState unfortunately doesn't contain this information, because
+    // 1, the WaitingFor* states can occur with or without streaming, and
+    // 2, during the state transition, we need to first transition ready_state_,
+    //    then run callbacks, and only then consider the streaming done. So
+    //    during AdvanceReadyState and callback processing, the ready state
+    //    and is_currently_streaming_ are temporarily different. (They must
+    //    be consistent before and after AdvanceReadyState.)
+    //
+    // (See also: crbug.com/754360)
+    bool m_isCurrentlyStreaming = false;
 
     // Specifies the reason that script was never streamed.
     ScriptStreamer::NotStreamingReason m_notStreamedReason;

@@ -64,6 +64,16 @@ static const HTMLQualifiedName* LookupHTMLTag2(const UChar *data)
                 return &kLiTag;
             break;
         }
+        case 't':
+        {
+            switch (data[1])
+            {
+                case 'd': return &kTdTag;
+                case 'h': return &kThTag;
+                case 'r': return &kTrTag;
+            }
+            break;
+        }
         case 'u':
         {
             if ('l' == data[1])

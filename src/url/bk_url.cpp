@@ -11,7 +11,9 @@
 
 #include "bk_url.h"
 
+#include "url/url_canon_stdstring.h"
 #include "url/url_constants.h"
+#include "url/url_util.h"
 
 using namespace url;
 
@@ -58,7 +60,15 @@ BkURL BkURL::Resolve(const std::string &relative) const
         return BkURL();
 
     BkURL result;
-    assert(false); // BKTODO:
+    url::StdStringCanonOutput output(&result.m_string);
+    if (!url::ResolveRelative(m_string.data(), static_cast<int>(m_string.length()), m_parsed,
+        relative.data(), static_cast<int>(relative.length()), nullptr, &output, &result.m_parsed))
+    {
+        // Error resolving, return an empty URL.
+        return BkURL();
+    }
+    output.Complete();
+    result.m_isValid = true;
     return result;
 }
 
@@ -75,6 +85,34 @@ bool BkURL::SchemeIsData(void) const
 bool BkURL::SchemeIsHTTPOrHTTPS(void) const
 {
     return SchemeIs(kHttpScheme) || SchemeIs(kHttpsScheme);
+}
+
+std::string BkURL::StrippedForUseAsReferrer(void) const
+{
+    if (!SchemeIsHTTPOrHTTPS())
+        return std::string();
+
+    if (m_parsed.username.is_nonempty() || m_parsed.password.is_nonempty() || m_parsed.ref.is_valid())
+    {
+        assert(false); // BKTODO:
+#if 0
+        KURL referrer(*this);
+        referrer.SetUser(String());
+        referrer.SetPass(String());
+        referrer.RemoveFragmentIdentifier();
+        return referrer.GetString();
+#endif
+    }
+    return AsString();
+}
+
+BkURL BkURL::StripFragmentIdentifier(void) const
+{
+    if (m_parsed.ref.is_nonempty())
+    {
+        assert(false); // BKTODO:
+    }
+    return *this;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

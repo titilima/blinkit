@@ -1043,6 +1043,12 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_codec_win.h">
       <Filter>renderer\platform\wtf\text</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_client_settings_object.h">
+      <Filter>renderer\platform\loader\fetch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\fetch_client_settings_object_impl.h">
+      <Filter>renderer\core\script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\platform.cpp">
@@ -1599,6 +1605,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_codec_win.cpp">
       <Filter>renderer\platform\wtf\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\fetch_client_settings_object_impl.cpp">
+      <Filter>renderer\core\script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\execution_context\execution_context.cpp">
+      <Filter>renderer\core\execution_context</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

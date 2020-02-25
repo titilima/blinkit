@@ -39,10 +39,12 @@
 #include "third_party/blink/renderer/core/script/script_scheduling_type.h"
 #include "third_party/blink/renderer/platform/bindings/name_client.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
 
 namespace blink {
 
+class Resource;
 class ScriptElementBase;
 
 class ScriptLoader final : public GarbageCollectedFinalized<ScriptLoader>
@@ -78,6 +80,13 @@ public:
         LegacyTypeSupport supportLegacyTypes = kDisallowLegacyTypeInTypeAttribute);
 private:
     ScriptLoader(ScriptElementBase *element, bool parserInserted, bool alreadyStarted);
+
+    // FetchClassicScript corresponds to Step 21.6 of
+    // https://html.spec.whatwg.org/multipage/scripting.html#prepare-a-script
+    // and must NOT be called from outside of PendingScript().
+    //
+    // https://html.spec.whatwg.org/multipage/webappapis.html#fetch-a-classic-script
+    void FetchClassicScript(const BlinKit::BkURL &url, Document &elementDocument, const WTF::TextEncoding &encoding);
 
     bool IgnoresLoadRequest(void) const;
     bool IsScriptForEventSupported(void) const;
@@ -122,6 +131,11 @@ private:
     bool m_willExecuteWhenDocumentFinishedParsing = false;
 
     std::unique_ptr<PendingScript> m_preparedPendingScript;
+
+    // This is used only to keep the ScriptResource of a classic script alive
+    // and thus to keep it on MemoryCache, even after script execution, as long
+    // as ScriptLoader is alive. crbug.com/778799
+    Member<Resource> m_resourceKeepAlive;
 };
 
 }  // namespace blink

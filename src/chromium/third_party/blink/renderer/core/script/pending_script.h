@@ -69,9 +69,15 @@ public:
 
     void WatchForLoad(PendingScriptClient *client);
     void StopWatchingForLoad(void);
+    void PendingScriptFinished(void);
 
     ScriptElementBase* GetElement(void) const;
 
+    ScriptSchedulingType GetSchedulingType(void) const
+    {
+        ASSERT(ScriptSchedulingType::kNotSet != m_schedulingType);
+        return m_schedulingType;
+    }
     bool IsControlledByScriptRunner(void) const;
     void SetSchedulingType(ScriptSchedulingType schedulingType)
     {
@@ -87,12 +93,11 @@ public:
     virtual bool IsExternal(void) const = 0;
     virtual bool WasCanceled(void) const = 0;
 
+    // Support for script streaming.
     virtual bool StartStreamingIfPossible(const std::function<void()> &done) = 0;
+    virtual bool IsCurrentlyStreaming(void) const = 0;
 
-    bool IsExternalOrModule(void) const {
-        ASSERT(false); // BKTODO:
-        return false;
-    }
+    bool IsExternalOrModule(void) const { return IsExternal() || GetScriptType() == ScriptType::kModule; }
     void Dispose(void);
 
     bool WasCreatedDuringDocumentWrite(void) const { return m_createdDuringDocumentWrite; }

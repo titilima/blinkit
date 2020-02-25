@@ -37,6 +37,9 @@
 
 #include "resource_response.h"
 
+#include "third_party/blink/renderer/platform/network/http_names.h"
+#include "third_party/blink/renderer/platform/network/http_parsers.h"
+
 using namespace BlinKit;
 
 namespace blink {
@@ -47,8 +50,13 @@ ResourceResponse::ResourceResponse(const BkURL &URL) : m_isNull(false), m_URL(UR
 
 bool ResourceResponse::Compare(const ResourceResponse &a, const ResourceResponse &b)
 {
-    assert(false); // BKTODO:
+    ASSERT(false); // BKTODO:
     return false;
+}
+
+AtomicString ResourceResponse::HttpContentType(void) const
+{
+    return ExtractMIMETypeFromMediaType(HttpHeaderField(http_names::kContentType).DeprecatedLower());
 }
 
 AtomicString ResourceResponse::HttpHeaderField(const AtomicString &name) const
@@ -67,6 +75,12 @@ void ResourceResponse::SetTextEncodingName(const AtomicString &encodingName)
 {
     m_isNull = false;
     m_textEncodingName = encodingName;
+}
+
+void ResourceResponse::SetURL(const BkURL &URL)
+{
+    m_isNull = false;
+    m_URL = URL;
 }
 
 }  // namespace blink
