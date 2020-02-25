@@ -40,7 +40,7 @@ public:
 private:
     void InitializeHeapStash(void);
     static void RegisterPrototypesForCrawler(duk_context *ctx);
-    bool CreateCrawlerObject(const BkCrawlerClient &crawlerClient);
+    void CreateCrawlerObject(const BkCrawlerClient &crawlerClient);
     static void ExposeGlobals(duk_context *ctx, duk_idx_t dst);
 
     const blink::LocalFrame &m_frame;

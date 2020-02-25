@@ -58,45 +58,49 @@ bool ContextImpl::AccessCrawler(const Callback &worker)
     return ret;
 }
 
-bool ContextImpl::CreateCrawlerObject(const BkCrawlerClient &crawlerClient)
+void ContextImpl::CreateCrawlerObject(const BkCrawlerClient &crawlerClient)
 {
-    if (nullptr != crawlerClient.ConsoleLog)
-        m_logger = std::bind(crawlerClient.ConsoleLog, std::placeholders::_1, crawlerClient.UserData);
-
-    if (nullptr == crawlerClient.GetConfig)
-        return false;
-
-    std::string objectScript;
-    crawlerClient.GetConfig(BK_CFG_OBJECT_SCRIPT, BkMakeBuffer(objectScript), crawlerClient.UserData);
-    base::TrimWhitespaceASCII(objectScript, base::TRIM_ALL, &objectScript);
-    if (objectScript.empty())
-        return false;
-
-    bool ret = true;
-    std::string log;
-    const auto callback = [&crawlerClient, &ret, &log](duk_context *ctx)
-    {
-        if (!duk_is_error(ctx, -1))
+    do {
+        std::string objectScript;
+        if (nullptr != crawlerClient.GetConfig)
         {
-            if (duk_is_object(ctx, -1))
-            {
-                duk_put_prop_string(ctx, -2, CrawlerObject);
-                return;
-            }
-
-            duk_type_error(ctx, "Object type expected.");
+            crawlerClient.GetConfig(BK_CFG_OBJECT_SCRIPT, BkMakeBuffer(objectScript), crawlerClient.UserData);
+            base::TrimWhitespaceASCII(objectScript, base::TRIM_ALL, &objectScript);
+        }
+        if (objectScript.empty())
+        {
+            BKLOG("Default crawler object created.");
+            break;
         }
 
-        size_t len = 0;
-        const char *s = duk_safe_to_lstring(ctx, -1, &len);
-        log.assign(s, len);
-    };
-    Eval(objectScript, callback, nullptr);
+        std::string errorLog;
+        const auto callback = [this, &crawlerClient, &errorLog](duk_context *ctx)
+        {
+            if (!duk_is_error(ctx, -1))
+            {
+                if (duk_is_object(ctx, -1))
+                {
+                    duk_put_prop_string(ctx, -2, CrawlerObject);
+                    return;
+                }
 
-    if (!ret)
-        m_logger(log.c_str());
-    ASSERT(ret);
-    return ret;
+                duk_type_error(ctx, "Object type expected.");
+            }
+
+            size_t len = 0;
+            const char *s = duk_safe_to_lstring(ctx, -1, &len);
+            errorLog.assign(s, len);
+        };
+        Eval(objectScript, callback, nullptr);
+
+        if (errorLog.empty())
+            return;
+
+        m_logger(errorLog.c_str());
+    } while (false);
+
+    duk_push_object(m_ctx);
+    duk_put_prop_string(m_ctx, -2, CrawlerObject);
 }
 
 void ContextImpl::Eval(const std::string_view code, const Callback &callback, const char *fileName)
@@ -148,13 +152,22 @@ void ContextImpl::InitializeHeapStash(void)
 
 #ifdef BLINKIT_CRAWLER_ONLY
     ASSERT(m_frame.Client()->IsCrawler());
+
     RegisterPrototypesForCrawler(m_ctx);
-    CreateCrawlerObject(ToCrawlerImpl(m_frame.Client())->Client());
+
+    const BkCrawlerClient &crawlerClient = ToCrawlerImpl(m_frame.Client())->Client();
+    if (nullptr != crawlerClient.ConsoleLog)
+        m_logger = std::bind(crawlerClient.ConsoleLog, std::placeholders::_1, crawlerClient.UserData);
+    CreateCrawlerObject(crawlerClient);
 #else
     if (frame.Client()->IsCrawler())
     {
         RegisterPrototypesForCrawler(m_ctx);
-        CreateCrawlerObject(ToCrawlerImpl(frame.Client())->Client());
+
+        const BkCrawlerClient &crawlerClient = ToCrawlerImpl(m_frame.Client())->Client();
+        if (nullptr != crawlerClient.ConsoleLog)
+            m_logger = std::bind(crawlerClient.ConsoleLog, std::placeholders::_1, crawlerClient.UserData);
+        CreateCrawlerObject(crawlerClient);
     }
     else
     {
