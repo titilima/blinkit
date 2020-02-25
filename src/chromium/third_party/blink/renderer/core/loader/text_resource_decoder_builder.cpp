@@ -82,7 +82,6 @@ static const WTF::TextEncoding GetEncodingFromDomain(const BkURL &url)
     if (std::string::npos != p)
     {
         std::string tld = host.substr(p + 1);
-        ASSERT(false); // BKTODO: Test it!
         for (const LegacyEncoding &e : kEncodings)
         {
             if (tld == e.domain)
