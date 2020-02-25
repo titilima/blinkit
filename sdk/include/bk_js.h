@@ -15,12 +15,12 @@
 
 #include "bk_def.h"
 
+BK_DECLARE_HANDLE(BkJSValue, JSValueImpl);
+BK_DECLARE_HANDLE(BkJSError, JSErrorImpl);
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-BK_DECLARE_HANDLE(BkJSValue, JSValueImpl);
-BK_DECLARE_HANDLE(BkJSError, JSErrorImpl);
 
 BKEXPORT void BKAPI BkReleaseValue(BkJSValue val);
 
