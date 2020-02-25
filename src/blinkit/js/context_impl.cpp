@@ -63,13 +63,13 @@ bool ContextImpl::CreateCrawlerObject(const BkCrawlerClient &crawlerClient)
     if (nullptr != crawlerClient.ConsoleLog)
         m_logger = std::bind(crawlerClient.ConsoleLog, std::placeholders::_1, crawlerClient.UserData);
 
-    if (nullptr == crawlerClient.GetUserScript)
+    if (nullptr == crawlerClient.GetConfig)
         return false;
 
-    std::string userScript;
-    crawlerClient.GetUserScript(BkMakeBuffer(userScript), crawlerClient.UserData);
-    base::TrimWhitespaceASCII(userScript, base::TRIM_ALL, &userScript);
-    if (userScript.empty())
+    std::string objectScript;
+    crawlerClient.GetConfig(BK_CFG_OBJECT_SCRIPT, BkMakeBuffer(objectScript), crawlerClient.UserData);
+    base::TrimWhitespaceASCII(objectScript, base::TRIM_ALL, &objectScript);
+    if (objectScript.empty())
         return false;
 
     bool ret = true;
@@ -91,7 +91,7 @@ bool ContextImpl::CreateCrawlerObject(const BkCrawlerClient &crawlerClient)
         const char *s = duk_safe_to_lstring(ctx, -1, &len);
         log.assign(s, len);
     };
-    Eval(userScript, callback, nullptr);
+    Eval(objectScript, callback, nullptr);
 
     if (!ret)
         m_logger(log.c_str());

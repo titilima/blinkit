@@ -21,9 +21,13 @@ extern "C" {
 
 BK_DECLARE_HANDLE(BkCrawler, CrawlerImpl);
 
+enum BkCrawlerConfig {
+    BK_CFG_OBJECT_SCRIPT = 0,
+};
+
 struct BkCrawlerClient {
     void *UserData;
-    void (BKAPI * GetUserScript)(struct BkBuffer *, void *);
+    void (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
     void (BKAPI * RequestComplete)(BkResponse, BkWorkController, void *);
     void (BKAPI * DocumentReady)(void *);
     void (BKAPI * Error)(int, const char *, void *);
@@ -48,7 +52,7 @@ class BkCrawlerClientImpl : public BkClientImpl<BkCrawlerClientImpl, BkCrawlerCl
 protected:
     void Attach(BkCrawlerClient &rawClient) override
     {
-        rawClient.GetUserScript = GetUserScriptImpl;
+        rawClient.GetConfig = GetConfigImpl;
         rawClient.RequestComplete = RequestCompleteImpl;
         rawClient.DocumentReady = DocumentReadyImpl;
         rawClient.Error = ErrorImpl;
@@ -58,17 +62,22 @@ protected:
         BkControllerContinueWorking(controller);
     }
 private:
-    virtual std::string GetUserScript(void) = 0;
+    virtual void GetConfig(int cfg, std::string &dst)
+    {
+        assert(false); // Not implemented!
+    }
     virtual void DocumentReady(void) = 0;
     virtual void Error(int errorCode, const char *URL)
     {
         assert(BK_ERR_SUCCESS == errorCode);
     }
 
-    static void BKAPI GetUserScriptImpl(BkBuffer *dst, void *userData)
+    static void BKAPI GetConfigImpl(int cfg, BkBuffer *dst, void *userData)
     {
-        std::string userScript = ToImpl(userData)->GetUserScript();
-        BkSetBufferData(dst, userScript.data(), userScript.length());
+        std::string s;
+        ToImpl(userData)->GetConfig(cfg, s);
+        if (!s.empty())
+            BkSetBufferData(dst, s.data(), s.length());
     }
     static void BKAPI RequestCompleteImpl(BkResponse response, BkWorkController controller, void *userData)
     {

@@ -41,9 +41,6 @@ public:
 private:
 #if 0 // BKTODO:
     // BkCrawler
-    int BKAPI Eval(const char *code, size_t length, BkCallback *callback) override;
-    int BKAPI CallFunction(const char *name, BkCallback *callback) override;
-    int BKAPI CallCrawler(const char *method, BkCallback *callback) override;
     int BKAPI RegisterCrawlerFunction(const char *name, BkCallback &functionImpl) override;
     int BKAPI AccessCrawlerMember(const char *name, BkCallback &callback) override;
     // blink::FrameLoaderClient

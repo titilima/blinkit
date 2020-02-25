@@ -70,16 +70,6 @@ int BKAPI CrawlerImpl::AccessCrawlerMember(const char *name, BkCallback &callbac
     return m_frame->script().AccessCrawlerMember(name, callback);
 }
 
-int BKAPI CrawlerImpl::CallCrawler(const char *method, BkCallback *callback)
-{
-    return m_frame->script().CallCrawler(method, callback);
-}
-
-int BKAPI CrawlerImpl::CallFunction(const char *name, BkCallback *callback)
-{
-    return m_frame->script().CallFunction(name, callback);
-}
-
 void CrawlerImpl::CancelLoading(void)
 {
     m_frame->loader().stopAllLoaders();
@@ -93,11 +83,6 @@ void CrawlerImpl::dispatchDidFailProvisionalLoad(const ResourceError &error, His
 void CrawlerImpl::dispatchDidFinishLoad(void)
 {
     m_client.DocumentReady(this);
-}
-
-int BKAPI CrawlerImpl::Eval(const char *code, size_t length, BkCallback *callback)
-{
-    return m_frame->script().Eval(code, length, callback);
 }
 
 std::string CrawlerImpl::GetCookies(const std::string &URL) const
