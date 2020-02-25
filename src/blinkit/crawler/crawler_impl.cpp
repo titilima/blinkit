@@ -19,12 +19,8 @@
 #include "third_party/blink/renderer/platform/loader/fetch/resource_error.h"
 #include "url/bk_url.h"
 #if 0 // BKTODO:
-#include "platform/network/ResourceError.h"
-
 #include "app/app_impl.h"
 #include "blink_impl/cookie_jar_impl.h"
-
-#include "js/public/script_controller.h"
 #endif // 0
 
 using namespace blink;
@@ -122,7 +118,13 @@ void CrawlerImpl::TransitionToCommittedForNewPage(void)
 
 String CrawlerImpl::UserAgent(void)
 {
-    BKLOG("// BKTODO: Get user agent string from crawler object.");
+    if (nullptr != m_client.GetConfig)
+    {
+        std::string userAgent;
+        m_client.GetConfig(BK_CFG_USER_AGENT, BkMakeBuffer(userAgent), m_client.UserData);
+        if (!userAgent.empty())
+            return String::FromStdUTF8(userAgent);
+    }
     return LocalFrameClientImpl::UserAgent();
 }
 
