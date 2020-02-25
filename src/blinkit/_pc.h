@@ -48,7 +48,7 @@ extern HMODULE theModule;
 #   import <Foundation/Foundation.h>
 #endif
 
-#include "bk_def.h"
+#include "BlinKit.hpp"
 #include "base/logging.h"
 
 #endif // BLINKIT_BLINKIT__PC_H

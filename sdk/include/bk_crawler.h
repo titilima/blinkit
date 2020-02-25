@@ -43,57 +43,6 @@ BKEXPORT BkJSContext BKAPI BkGetScriptContextFromCrawler(BkCrawler crawler);
 
 #ifdef __cplusplus
 } // extern "C"
-
-namespace BlinKit {
-
-class BkCrawlerClientImpl : public BkClientImpl<BkCrawlerClientImpl, BkCrawlerClient>
-{
-    template <class T, typename C> friend class BkClientImpl;
-protected:
-    void Attach(BkCrawlerClient &rawClient) override
-    {
-        rawClient.GetConfig = GetConfigImpl;
-        rawClient.RequestComplete = RequestCompleteImpl;
-        rawClient.DocumentReady = DocumentReadyImpl;
-        rawClient.Error = ErrorImpl;
-    }
-    virtual void RequestComplete(BkResponse response, BkWorkController controller)
-    {
-        BkControllerContinueWorking(controller);
-    }
-private:
-    virtual void GetConfig(int cfg, std::string &dst)
-    {
-        assert(false); // Not implemented!
-    }
-    virtual void DocumentReady(void) = 0;
-    virtual void Error(int errorCode, const char *URL)
-    {
-        assert(BK_ERR_SUCCESS == errorCode);
-    }
-
-    static void BKAPI GetConfigImpl(int cfg, BkBuffer *dst, void *userData)
-    {
-        std::string s;
-        ToImpl(userData)->GetConfig(cfg, s);
-        if (!s.empty())
-            BkSetBufferData(dst, s.data(), s.length());
-    }
-    static void BKAPI RequestCompleteImpl(BkResponse response, BkWorkController controller, void *userData)
-    {
-        ToImpl(userData)->RequestComplete(response, controller);
-    }
-    static void BKAPI DocumentReadyImpl(void *userData)
-    {
-        ToImpl(userData)->DocumentReady();
-    }
-    static void BKAPI ErrorImpl(int errorCode, const char *URL, void *userData)
-    {
-        ToImpl(userData)->Error(errorCode, URL);
-    }
-};
-
-} // namespace BlinKit
 #endif // __cplusplus
 
 #endif // BLINKIT_SDK_CRAWLER_H

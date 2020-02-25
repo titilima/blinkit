@@ -13,16 +13,8 @@
 
 #pragma once
 
-#ifdef __cplusplus
-#   include <cassert>
-#   include <cstddef>
-#   include <cstring>
-#   include <string>
-#   include <vector>
-#else
-#   include <stddef.h>
-#   include <string.h>
-#endif
+#include <stddef.h>
+#include <string.h>
 
 #ifdef _WIN32
 #   define BKAPI    __stdcall
@@ -78,6 +70,7 @@ enum BkError {
 
 BK_DECLARE_HANDLE(BkJSContext, ContextImpl);
 BK_DECLARE_HANDLE(BkResponse, ResponseImpl);
+BK_DECLARE_HANDLE(BkWorkController, ControllerImpl);
 
 #ifdef __cplusplus
 extern "C" {
@@ -104,79 +97,12 @@ struct BkSimpleBuffer {
 BKEXPORT struct BkBuffer* BKAPI BkInitializeSimpleBuffer(struct BkSimpleBuffer *buffer);
 BKEXPORT void BKAPI BkFinalizeSimpleBuffer(struct BkSimpleBuffer *buffer);
 
-BK_DECLARE_HANDLE(BkWorkController, ControllerImpl);
-
 BKEXPORT int BKAPI BkControllerContinueWorking(BkWorkController controller);
 BKEXPORT int BKAPI BkControllerCancelWork(BkWorkController controller);
 BKEXPORT int BKAPI BkReleaseController(BkWorkController controller);
 
 #ifdef __cplusplus
 } // extern "C"
-
-namespace BlinKit {
-
-template <typename Container>
-class BkBufferImpl {
-public:
-    BkBufferImpl(Container &data)
-    {
-        m_buffer.Allocator = Alloc;
-        m_buffer.UserData = &data;
-    }
-    operator BkBuffer* (void) const {
-        BkBuffer *buf = const_cast<BkBuffer *>(&m_buffer);
-        return buf;
-    }
-private:
-    static void* BKAPI Alloc(size_t size, void *This) {
-        Container *c = reinterpret_cast<Container *>(This);
-        c->resize(size / sizeof(typename Container::value_type));
-        return const_cast<typename Container::value_type *>(c->data());
-    }
-    BkBuffer m_buffer;
-};
-
-template <typename CharType>
-inline BkBufferImpl<std::basic_string<CharType>> BkMakeBuffer(std::basic_string<CharType> &s)
-{
-    return BkBufferImpl<std::basic_string<CharType>>(s);
-}
-
-inline BkBufferImpl<std::vector<unsigned char>> BkMakeBuffer(std::vector<unsigned char> &v)
-{
-    return BkBufferImpl<std::vector<unsigned char>>(v);
-}
-
-template <class T, typename ClientType>
-class BkClientImpl
-{
-public:
-    operator ClientType* (void)
-    {
-        if (nullptr == m_rawClient.UserData)
-        {
-            m_rawClient.UserData = static_cast<T *>(this);
-            static_cast<T *>(this)->Attach(m_rawClient);
-        }
-        return &m_rawClient;
-    }
-protected:
-    BkClientImpl(void)
-    {
-        memset(&m_rawClient, 0, sizeof(ClientType));
-    }
-    static T* ToImpl(void *userData)
-    {
-        return reinterpret_cast<T *>(userData);
-    }
-private:
-    virtual void Attach(ClientType &rawClient) = 0;
-
-    ClientType m_rawClient;
-};
-
-} // namespace BlinKit
-
 #endif // __cplusplus
 
 #endif // BLINKIT_SDK_DEF_H

@@ -15,11 +15,11 @@
 
 #include "bk_def.h"
 
+BK_DECLARE_HANDLE(BkRequest, RequestImpl);
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-BK_DECLARE_HANDLE(BkRequest, RequestImpl);
 
 struct BkRequestClient {
     void *UserData;
@@ -57,40 +57,6 @@ BKEXPORT int BKAPI BkGetResponseCookie(BkResponse response, size_t index, struct
 
 #ifdef __cplusplus
 } // extern "C"
-
-namespace BlinKit {
-
-class BkRequestClientImpl : public BkClientImpl<BkRequestClientImpl, BkRequestClient>
-{
-    template <class T, typename C> friend class BkClientImpl;
-protected:
-    void Attach(BkRequestClient &rawClient) override
-    {
-        rawClient.RequestComplete = RequestCompleteImpl;
-        rawClient.RequestFailed = RequestFailedImpl;
-        rawClient.RequestRedirect = RequestRedirectImpl;
-    }
-private:
-    virtual void RequestComplete(BkResponse response) = 0;
-    virtual void RequestFailed(int errorCode) { assert(BK_ERR_SUCCESS == errorCode); }
-    virtual bool_t RequestRedirect(BkResponse response) { return true; }
-
-    static void BKAPI RequestCompleteImpl(BkResponse response, void *userData)
-    {
-        ToImpl(userData)->RequestComplete(response);
-    }
-    static void BKAPI RequestFailedImpl(int errorCode, void *userData)
-    {
-        ToImpl(userData)->RequestFailed(errorCode);
-    }
-    static bool_t BKAPI RequestRedirectImpl(BkResponse response, void *userData)
-    {
-        return ToImpl(userData)->RequestRedirect(response);
-    }
-};
-
-} // namespace BlinKit
-
 #endif
 
 #endif // BLINKIT_SDK_HTTP_H

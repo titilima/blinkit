@@ -126,6 +126,9 @@
     <ClInclude Include="..\..\..\src\blinkit\js\js_value_impl.h">
       <Filter>js</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\sdk\include\BlinKit.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BkCrawler.def">
