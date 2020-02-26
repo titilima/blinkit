@@ -44,6 +44,7 @@
 #include "script_controller.h"
 
 #include "base/memory/ptr_util.h"
+#include "blinkit/crawler/crawler_impl.h"
 #include "blinkit/js/context_impl.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_source_code.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -104,13 +105,11 @@ void ScriptController::ExecuteScriptInMainWorld(const ScriptSourceCode &sourceSo
 bool ScriptController::ScriptEnabled(void)
 {
     bool ret = true;
-    const auto worker = [&ret](duk_context *ctx)
+    if (CrawlerImpl *crawler = ToCrawlerImpl(m_frame->Client()))
     {
-        duk_get_prop_string(ctx, -1, "scriptEnabled");
-        if (duk_is_boolean(ctx, -1))
-            ret = duk_to_boolean(ctx, -1);
-    };
-    EnsureContext().AccessCrawler(worker);
+        std::string s = crawler->GetConfig(BK_CFG_SCRIPT_DISABLED);
+        ret = false;
+    }
     return ret;
 }
 

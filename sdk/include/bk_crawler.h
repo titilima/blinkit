@@ -23,7 +23,8 @@ BK_DECLARE_HANDLE(BkCrawler, CrawlerImpl);
 
 enum BkCrawlerConfig {
     BK_CFG_OBJECT_SCRIPT = 0,
-    BK_CFG_USER_AGENT
+    BK_CFG_USER_AGENT,
+    BK_CFG_SCRIPT_DISABLED
 };
 
 struct BkCrawlerClient {
