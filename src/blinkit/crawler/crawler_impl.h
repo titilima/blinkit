@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <functional>
 #include "bk_crawler.h"
 #include "blinkit/blink_impl/local_frame_client_impl.h"
 
@@ -23,8 +24,9 @@ public:
     CrawlerImpl(const BkCrawlerClient &client);
     ~CrawlerImpl(void);
 
-    const BkCrawlerClient& Client(void) const { return m_client; }
-
+    // BkCrawlerClient Wrappers
+    std::string GetConfig(int cfg) const;
+    bool ApplyLogger(std::function<void(const char *)> &dst) const;
     void ProcessRequestComplete(BkResponse response, BkWorkController controller);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

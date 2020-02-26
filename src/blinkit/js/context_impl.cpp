@@ -58,15 +58,11 @@ bool ContextImpl::AccessCrawler(const Callback &worker)
     return ret;
 }
 
-void ContextImpl::CreateCrawlerObject(const BkCrawlerClient &crawlerClient)
+void ContextImpl::CreateCrawlerObject(const CrawlerImpl &crawler)
 {
     do {
-        std::string objectScript;
-        if (nullptr != crawlerClient.GetConfig)
-        {
-            crawlerClient.GetConfig(BK_CFG_OBJECT_SCRIPT, BkMakeBuffer(objectScript), crawlerClient.UserData);
-            base::TrimWhitespaceASCII(objectScript, base::TRIM_ALL, &objectScript);
-        }
+        std::string objectScript = crawler.GetConfig(BK_CFG_OBJECT_SCRIPT);
+        base::TrimWhitespaceASCII(objectScript, base::TRIM_ALL, &objectScript);
         if (objectScript.empty())
         {
             BKLOG("Default crawler object created.");
@@ -74,7 +70,7 @@ void ContextImpl::CreateCrawlerObject(const BkCrawlerClient &crawlerClient)
         }
 
         std::string errorLog;
-        const auto callback = [this, &crawlerClient, &errorLog](duk_context *ctx)
+        const auto callback = [&errorLog](duk_context *ctx)
         {
             if (!duk_is_error(ctx, -1))
             {
@@ -155,19 +151,17 @@ void ContextImpl::InitializeHeapStash(void)
 
     RegisterPrototypesForCrawler(m_ctx);
 
-    const BkCrawlerClient &crawlerClient = ToCrawlerImpl(m_frame.Client())->Client();
-    if (nullptr != crawlerClient.ConsoleLog)
-        m_logger = std::bind(crawlerClient.ConsoleLog, std::placeholders::_1, crawlerClient.UserData);
-    CreateCrawlerObject(crawlerClient);
+    CrawlerImpl *crawler = ToCrawlerImpl(m_frame.Client());
+    crawler->ApplyLogger(m_logger);
+    CreateCrawlerObject(*crawler);
 #else
     if (frame.Client()->IsCrawler())
     {
         RegisterPrototypesForCrawler(m_ctx);
 
-        const BkCrawlerClient &crawlerClient = ToCrawlerImpl(m_frame.Client())->Client();
-        if (nullptr != crawlerClient.ConsoleLog)
-            m_logger = std::bind(crawlerClient.ConsoleLog, std::placeholders::_1, crawlerClient.UserData);
-        CreateCrawlerObject(crawlerClient);
+        CrawlerImpl *crawler = ToCrawlerImpl(m_frame.Client());
+        crawler->ApplyLogger(m_logger);
+        CreateCrawlerObject(*crawler);
     }
     else
     {

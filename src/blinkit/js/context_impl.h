@@ -19,11 +19,11 @@
 #include "bk_js.h"
 #include "duktape/duktape.h"
 
-struct BkCrawlerClient;
-
 namespace blink {
 class LocalFrame;
 }
+
+class CrawlerImpl;
 
 class ContextImpl final
 {
@@ -40,7 +40,7 @@ public:
 private:
     void InitializeHeapStash(void);
     static void RegisterPrototypesForCrawler(duk_context *ctx);
-    void CreateCrawlerObject(const BkCrawlerClient &crawlerClient);
+    void CreateCrawlerObject(const CrawlerImpl &crawler);
     static void ExposeGlobals(duk_context *ctx, duk_idx_t dst);
 
     const blink::LocalFrame &m_frame;

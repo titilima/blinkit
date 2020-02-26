@@ -36,6 +36,14 @@ CrawlerImpl::~CrawlerImpl(void)
     m_frame->Detach(FrameDetachType::kRemove);
 }
 
+bool CrawlerImpl::ApplyLogger(std::function<void(const char *)> &dst) const
+{
+    if (nullptr == m_client.ConsoleLog)
+        return false;
+    dst = std::bind(m_client.ConsoleLog, std::placeholders::_1, m_client.UserData);
+    return true;
+}
+
 void CrawlerImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 {
     const std::string URL = error.FailingURL();
@@ -45,6 +53,14 @@ void CrawlerImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 void CrawlerImpl::DispatchDidFinishLoad(void)
 {
     m_client.DocumentReady(m_client.UserData);
+}
+
+std::string CrawlerImpl::GetConfig(int cfg) const
+{
+    std::string ret;
+    if (nullptr != m_client.GetConfig)
+        m_client.GetConfig(cfg, BkMakeBuffer(ret), m_client.UserData);
+    return ret;
 }
 
 BkJSContext CrawlerImpl::GetScriptContext(void)
