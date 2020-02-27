@@ -108,7 +108,8 @@ bool ScriptController::ScriptEnabled(void)
     if (CrawlerImpl *crawler = ToCrawlerImpl(m_frame->Client()))
     {
         std::string s = crawler->GetConfig(BK_CFG_SCRIPT_DISABLED);
-        ret = false;
+        if (!s.empty())
+            ret = false;
     }
     return ret;
 }
