@@ -30,15 +30,13 @@ struct BkRequestClient {
 
 BKEXPORT BkRequest BKAPI BkCreateRequest(const char *URL, struct BkRequestClient *client);
 
-BKEXPORT int BKAPI BkPerformRequest(BkRequest request);
+BKEXPORT int BKAPI BkPerformRequest(BkRequest request, BkWorkController *controller);
 
 BKEXPORT void BKAPI BkSetRequestMethod(BkRequest request, const char *method);
 BKEXPORT void BKAPI BkSetRequestHeader(BkRequest request, const char *name, const char *value);
 BKEXPORT void BKAPI BkSetRequestBody(BkRequest request, const void *data, size_t dataLength);
 BKEXPORT void BKAPI BkSetRequestTimeout(BkRequest request, unsigned timeout /* in seconds */);
 BKEXPORT void BKAPI BkSetRequestProxy(BkRequest request, const char *proxy);
-
-BKEXPORT BkWorkController BKAPI BkGetRequestController(BkRequest request);
 
 BKEXPORT int BKAPI BkGetResponseStatusCode(BkResponse response);
 
