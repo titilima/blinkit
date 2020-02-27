@@ -60,11 +60,6 @@ bool InetSession::Open(const std::string &agent, DWORD dwAccessType, const std::
     return nullptr != m_handle;
 }
 
-void InetSession::SetStatusCallback(INTERNET_STATUS_CALLBACK lpfnInternetCallback)
-{
-    InternetSetStatusCallbackA(m_handle, lpfnInternetCallback);
-}
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 InetConnection::InetConnection(void) : InetObject(nullptr, 0)
