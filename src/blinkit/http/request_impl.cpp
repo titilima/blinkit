@@ -60,13 +60,10 @@ void RequestImpl::SetProxy(const char *proxy)
 
 extern "C" {
 
-BKEXPORT BkWorkController BKAPI BkGetRequestController(BkRequest request)
+BKEXPORT int BKAPI BkPerformRequest(BkRequest request, BkWorkController *controller)
 {
-    return request->GetController();
-}
-
-BKEXPORT int BKAPI BkPerformRequest(BkRequest request)
-{
+    if (nullptr != controller)
+        *controller = request->GetController();
     return request->Perform();
 }
 
