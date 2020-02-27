@@ -24,6 +24,7 @@ public:
     bool IsValid(void) const { return nullptr != m_handle; }
     void Close(void);
     bool SetOption(DWORD option, ULONG value);
+    void SetStatusCallback(INTERNET_STATUS_CALLBACK lpfnInternetCallback);
 protected:
     InetObject(HINTERNET handle, DWORD_PTR context);
 
@@ -39,8 +40,6 @@ public:
     InetSession(PVOID context);
 
     bool Open(const std::string &agent, DWORD dwAccessType, const std::string &proxy);
-    void Close(void);
-    void SetStatusCallback(INTERNET_STATUS_CALLBACK lpfnInternetCallback);
 
     InetConnection Connect(const std::string &serverName, INTERNET_PORT nServerPort,
         const std::string &userName, const std::string &password);
