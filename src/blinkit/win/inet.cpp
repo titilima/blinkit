@@ -22,6 +22,7 @@ void InetObject::Close(void)
 {
     if (nullptr != m_handle)
     {
+        SetStatusCallback(nullptr);
         InternetCloseHandle(m_handle);
         m_handle = nullptr;
     }
@@ -32,17 +33,16 @@ bool InetObject::SetOption(DWORD option, ULONG value)
     return InternetSetOptionA(m_handle, option, &value, sizeof(ULONG));
 }
 
+void InetObject::SetStatusCallback(INTERNET_STATUS_CALLBACK lpfnInternetCallback)
+{
+    InternetSetStatusCallbackA(m_handle, lpfnInternetCallback);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 InetSession::InetSession(PVOID context) : InetObject(nullptr, reinterpret_cast<DWORD_PTR>(context))
 {
     // Nothing
-}
-
-void InetSession::Close(void)
-{
-    SetStatusCallback(nullptr);
-    InetObject::Close();
 }
 
 InetConnection InetSession::Connect(

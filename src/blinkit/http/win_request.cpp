@@ -30,15 +30,16 @@ WinRequest::WinRequest(const char *URL, const BkRequestClient &client)
 
 WinRequest::~WinRequest(void)
 {
-    assert(nullptr == m_hEventCancel);
-    assert(nullptr == m_hThread);
+    if (nullptr != m_hEvent)
+        CloseHandle(m_hEvent);
+    if (nullptr != m_hEventCancel)
+        CloseHandle(m_hEventCancel);
+    if (nullptr != m_hThread)
+        CloseHandle(m_hThread);
 
     m_request.Close();
     m_connection.Close();
     m_session.Close();
-
-    if (nullptr != m_hEvent)
-        CloseHandle(m_hEvent);
 }
 
 void WinRequest::Cancel(void)
@@ -89,17 +90,8 @@ DWORD WinRequest::DoThreadWork(void)
         }
     }
 
-    if (nullptr != m_hEventCancel)
-    {
-        CloseHandle(m_hEventCancel);
-        m_hEventCancel = nullptr;
-    }
-
     if (BK_ERR_SUCCESS != m_response->ErrorCode())
         m_client.RequestFailed(m_response->ErrorCode(), m_client.UserData);
-
-    CloseHandle(m_hThread);
-    m_hThread = nullptr;
 
     RequestImpl::Release();
     return EXIT_SUCCESS;
