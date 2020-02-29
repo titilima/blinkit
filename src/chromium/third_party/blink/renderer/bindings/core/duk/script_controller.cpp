@@ -90,7 +90,10 @@ std::unique_ptr<ScriptController> ScriptController::Create(LocalFrame &frame)
 ContextImpl& ScriptController::EnsureContext(void)
 {
     if (!m_context)
+    {
         m_context = std::make_unique<ContextImpl>(*m_frame);
+        m_context->Reset();
+    }
     return *m_context;
 }
 
