@@ -81,9 +81,11 @@ void Event::InitEventPath(Node &node)
         m_eventPath->InitializeWith(node, this);
 }
 
-void Event::SetRelatedTargetIfExists(EventTarget * relatedTarget)
+void Event::SetRelatedTargetIfExists(EventTarget *relatedTarget)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(false); // BKTODO:
+#endif
 }
 
 void Event::SetTarget(EventTarget *target)
@@ -96,4 +98,4 @@ void Event::SetTarget(EventTarget *target)
         ReceivedTarget();
 }
 
-}  // namespace blink
+} // namespace blink

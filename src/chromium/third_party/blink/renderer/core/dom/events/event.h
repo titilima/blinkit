@@ -102,6 +102,8 @@ public:
 
     bool DefaultHandled(void) const { return m_defaultHandled; }
 
+    bool cancelBubble(void) const { return PropagationStopped(); }
+
     bool WasInitialized(void) const { return m_wasInitialized; }
 
     bool isTrusted(void) const { return m_isTrusted; }

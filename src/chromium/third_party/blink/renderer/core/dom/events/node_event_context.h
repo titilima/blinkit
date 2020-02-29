@@ -74,11 +74,11 @@ class CORE_EXPORT NodeEventContext {
   TouchEventContext* GetTouchEventContext() const {
     return tree_scope_event_context_->GetTouchEventContext();
   }
+#endif
 
   bool CurrentTargetSameAsTarget() const {
     return current_target_.Get() == Target();
   }
-#endif
   void HandleLocalEvents(Event&) const;
 
  private:

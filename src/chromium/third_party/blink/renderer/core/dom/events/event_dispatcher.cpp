@@ -143,11 +143,12 @@ void EventDispatcher::DispatchEventAtBubbling(void)
     for (wtf_size_t i = 1; i < size; ++i)
     {
         const NodeEventContext &eventContext = eventPath.at(i);
-        ASSERT(false); // BKTODO:
-#if 0
-        if (event_context.CurrentTargetSameAsTarget()) {
+        if (eventContext.CurrentTargetSameAsTarget())
+        {
             // TODO(hayato): Need to check cancelBubble() also here?
-            event_->SetEventPhase(Event::kAtTarget);
+            m_event->SetEventPhase(Event::kAtTarget);
+            ASSERT(false); // BKTODO:
+#if 0
             if (RuntimeEnabledFeatures::
                 CallCaptureListenersAtCapturePhaseAtShadowHostsEnabled()) {
                 event_->SetFireOnlyNonCaptureListenersAtTarget(true);
@@ -157,16 +158,17 @@ void EventDispatcher::DispatchEventAtBubbling(void)
             else {
                 event_context.HandleLocalEvents(*event_);
             }
+#endif
         }
-        else if (event_->bubbles() && !event_->cancelBubble()) {
-            event_->SetEventPhase(Event::kBubblingPhase);
-            event_context.HandleLocalEvents(*event_);
+        else if (m_event->bubbles() && !m_event->cancelBubble())
+        {
+            m_event->SetEventPhase(Event::kBubblingPhase);
+            eventContext.HandleLocalEvents(*m_event);
         }
         else
         {
             continue;
         }
-#endif
         if (m_event->PropagationStopped())
             return;
     }
@@ -190,10 +192,10 @@ EventDispatchContinuation EventDispatcher::DispatchEventAtCapturing(void)
     for (wtf_size_t i = eventPath.size() - 1; i > 0; --i)
     {
         const NodeEventContext &eventContext = eventPath.at(i);
-        ASSERT(false); // BKTODO:
-#if 0
         if (eventContext.CurrentTargetSameAsTarget())
         {
+            ASSERT(false); // BKTODO:
+#if 0
             if (!RuntimeEnabledFeatures::
                 CallCaptureListenersAtCapturePhaseAtShadowHostsEnabled())
                 continue;
@@ -201,13 +203,13 @@ EventDispatchContinuation EventDispatcher::DispatchEventAtCapturing(void)
             event_->SetFireOnlyCaptureListenersAtTarget(true);
             event_context.HandleLocalEvents(*event_);
             event_->SetFireOnlyCaptureListenersAtTarget(false);
+#endif
         }
         else
         {
-            event_->SetEventPhase(Event::kCapturingPhase);
-            event_context.HandleLocalEvents(*event_);
+            m_event->SetEventPhase(Event::kCapturingPhase);
+            eventContext.HandleLocalEvents(*m_event);
         }
-#endif
         if (m_event->PropagationStopped())
             return kDoneDispatching;
     }
