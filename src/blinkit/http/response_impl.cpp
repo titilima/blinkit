@@ -40,7 +40,7 @@ int ResponseImpl::GetCookie(size_t index, BkBuffer *dst) const
 {
     if (m_cookies.size() <= index)
     {
-        assert(index < m_cookies.size());
+        ASSERT(index < m_cookies.size());
         return BK_ERR_NOT_FOUND;
     }
 
@@ -63,7 +63,7 @@ int ResponseImpl::GetData(int data, BkBuffer *dst) const
             BkSetBufferData(dst, m_body.data(), m_body.size());
             break;
         default:
-            assert(false); // Not reached!
+            NOTREACHED();
             return BK_ERR_NOT_FOUND;
     }
     return BK_ERR_SUCCESS;
@@ -92,7 +92,7 @@ void ResponseImpl::GZipInflate(void)
     if (Z_OK != err)
     {
         BKLOG("inflateInit2 failed, code = %d", err);
-        assert(Z_OK == err);
+        ASSERT(Z_OK == err);
         return;
     }
 
@@ -104,15 +104,24 @@ void ResponseImpl::GZipInflate(void)
         if (err < 0)
         {
             BKLOG("inflate failed, code = %d", err);
-            assert(err >= 0);
+            ASSERT(err >= 0);
             return;
         }
 
         uncompressedData.append(buf, BufSize - stm.avail_out);
     } while (stm.avail_in > 0);
 
-    assert(Z_STREAM_END == err);
+    ASSERT(Z_STREAM_END == err);
     m_body.assign(uncompressedData.begin(), uncompressedData.end());
+}
+
+void ResponseImpl::Hijack(const void *newBody, size_t length)
+{
+    m_body.resize(length);
+    if (nullptr != newBody)
+        memcpy(m_body.data(), newBody, length);
+    else
+        ASSERT(0 == length);
 }
 
 void ResponseImpl::ParseHeaders(const std::string &rawHeaders)
@@ -121,7 +130,7 @@ void ResponseImpl::ParseHeaders(const std::string &rawHeaders)
     std::smatch match;
     if (!std::regex_search(rawHeaders, match, pattern))
     {
-        assert(false); // Invalid header!
+        ASSERT(false); // Invalid header!
         return;
     }
 
@@ -164,7 +173,7 @@ std::string ResponseImpl::ResolveRedirection(void)
     std::string ret;
 
     std::string location = m_headers.Get("Location");
-    assert(!location.empty());
+    ASSERT(!location.empty());
     if (!location.empty())
     {
         ret = m_URL;

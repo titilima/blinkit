@@ -11,6 +11,7 @@
 
 #include "crawler_impl.h"
 
+#include "blinkit/http/response_impl.h"
 #include "blinkit/js/context_impl.h"
 #include "blinkit/misc/controller_impl.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
@@ -36,11 +37,11 @@ CrawlerImpl::~CrawlerImpl(void)
     m_frame->Detach(FrameDetachType::kRemove);
 }
 
-bool CrawlerImpl::ApplyLogger(std::function<void(const char *)> &dst) const
+bool CrawlerImpl::ApplyConsoleMessager(std::function<void(int, const char *)> &dst) const
 {
-    if (nullptr == m_client.ConsoleLog)
+    if (nullptr == m_client.ConsoleMessage)
         return false;
-    dst = std::bind(m_client.ConsoleLog, std::placeholders::_1, m_client.UserData);
+    dst = std::bind(m_client.ConsoleMessage, std::placeholders::_1, std::placeholders::_2, m_client.UserData);
     return true;
 }
 
@@ -68,6 +69,19 @@ BkJSContext CrawlerImpl::GetScriptContext(void)
     return &(m_frame->GetScriptController().EnsureContext());
 }
 
+bool CrawlerImpl::HijackRequest(const char *URL, std::string &dst) const
+{
+    if (nullptr == m_client.HijackRequest)
+        return false;
+    return m_client.HijackRequest(URL, BkMakeBuffer(dst), m_client.UserData);
+}
+
+void CrawlerImpl::HijackResponse(BkResponse response)
+{
+    if (nullptr != m_client.HijackResponse)
+        m_client.HijackResponse(response, m_client.UserData);
+}
+
 void CrawlerImpl::ProcessRequestComplete(BkResponse response, BkWorkController controller)
 {
     if (nullptr != m_client.RequestComplete)
@@ -85,16 +99,6 @@ int BKAPI CrawlerImpl::AccessCrawlerMember(const char *name, BkCallback &callbac
 void CrawlerImpl::CancelLoading(void)
 {
     m_frame->loader().stopAllLoaders();
-}
-
-void CrawlerImpl::dispatchDidFailProvisionalLoad(const ResourceError &error, HistoryCommitType)
-{
-    m_client.LoadFailed(error.errorCode(), this);
-}
-
-void CrawlerImpl::dispatchDidFinishLoad(void)
-{
-    m_client.DocumentReady(this);
 }
 
 std::string CrawlerImpl::GetCookies(const std::string &URL) const
@@ -123,6 +127,7 @@ int CrawlerImpl::Run(const char *URL)
 
     FrameLoadRequest request(nullptr, ResourceRequest(u));
     request.GetResourceRequest().SetCrawler(this);
+    request.GetResourceRequest().SetHijackType(HijackType::kMainHTML);
     m_frame->Loader().StartNavigation(request);
     return BK_ERR_SUCCESS;
 }
@@ -161,6 +166,11 @@ BKEXPORT void BKAPI BkDestroyCrawler(BkCrawler crawler)
 BKEXPORT BkJSContext BKAPI BkGetScriptContextFromCrawler(BkCrawler crawler)
 {
     return crawler->GetScriptContext();
+}
+
+BKEXPORT void BKAPI BkHijackResponse(BkResponse response, const void *newBody, size_t length)
+{
+    response->Hijack(newBody, length);
 }
 
 BKEXPORT int BKAPI BkRunCrawler(BkCrawler crawler, const char *URL)

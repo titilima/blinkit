@@ -11,13 +11,13 @@
 
 #include "http_loader_task.h"
 
+#include "base/auto_reset.h"
 #include "base/single_thread_task_runner.h"
 #include "blinkit/crawler/crawler_impl.h"
 #include "blinkit/http/request_impl.h"
 #include "blinkit/http/response_impl.h"
 #include "net/http/http_util.h"
 #include "third_party/blink/public/platform/web_url_loader_client.h"
-#include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
 #include "third_party/blink/renderer/platform/network/http_names.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
@@ -76,6 +76,27 @@ AtomicString HTTPLoaderTask::GetResponseHeader(const AtomicString &name) const
     return ret.empty() ? g_null_atom : AtomicString::FromStdUTF8(ret);
 }
 
+void HTTPLoaderTask::PopulateHijackedResponse(const std::string &URL, const std::string &hijack)
+{
+    ASSERT(!m_response);
+    m_response = std::make_shared<ResponseImpl>(URL);
+
+    m_response->SetStatusCode(200);
+
+    switch (m_hijackType)
+    {
+        case HijackType::kScript:
+        {
+            std::string name = http_names::kContentType.StdUtf8();
+            m_response->MutableHeaders().Set(name, "application/javascript; charset=utf-8");
+            break;
+        }
+        default: NOTREACHED();
+    }
+
+    m_response->Hijack(hijack.data(), hijack.length());
+}
+
 void HTTPLoaderTask::PopulateResourceResponse(ResourceResponse &response) const
 {
     response.SetHTTPStatusCode(m_response->StatusCode());
@@ -89,21 +110,48 @@ void HTTPLoaderTask::PopulateResourceResponse(ResourceResponse &response) const
         response.SetTextEncodingName(AtomicString::FromStdUTF8(charset));
 }
 
+bool HTTPLoaderTask::ProcessHijackRequest(const std::string &URL)
+{
+    if (HijackType::kScript != m_hijackType)
+        return false;
+
+    std::string hijack;
+    if (!m_crawler->HijackRequest(URL.c_str(), hijack))
+        return false;
+
+    PopulateHijackedResponse(URL, hijack);
+    return true;
+}
+
+bool HTTPLoaderTask::ProcessHijackResponse(void)
+{
+    if (HijackType::kMainHTML == m_hijackType)
+        return false;
+    m_crawler->HijackResponse(m_response.get());
+    return true;
+}
+
 void HTTPLoaderTask::ProcessRequestComplete(void)
 {
     ASSERT(m_response);
+    do {
+        if (ProcessHijackResponse())
+            break;
 
-    m_callingCrawler = true;
-    m_crawler->ProcessRequestComplete(m_response.get(), this);
-    m_callingCrawler = false;
+        {
+            base::AutoReset callingCrawler(&m_callingCrawler, true);
+            m_crawler->ProcessRequestComplete(m_response.get(), this);
+        }
+        if (!m_cancel.has_value())
+            return;
 
-    if (!m_cancel.has_value())
-        return;
+        if (!m_cancel.value())
+            break;
 
-    if (m_cancel.value())
         DoCancel();
-    else
-        DoContinue();
+        return;
+    } while (false);
+    DoContinue();
 }
 
 void HTTPLoaderTask::RequestComplete(BkResponse response)
@@ -124,7 +172,15 @@ void HTTPLoaderTask::RequestFailed(int errorCode)
 int HTTPLoaderTask::Run(const ResourceRequest &request)
 {
     m_url = request.Url();
+    m_hijackType = request.GetHijackType();
+
     const std::string URL = m_url.AsString();
+    if (ProcessHijackRequest(URL))
+    {
+        std::function<void()> callback = std::bind(&HTTPLoaderTask::DoContinue, this);
+        m_taskRunner->PostTask(FROM_HERE, callback);
+        return BK_ERR_SUCCESS;
+    }
 
     BkRequest req = BkCreateRequest(URL.c_str(), *this);
     if (nullptr == req)

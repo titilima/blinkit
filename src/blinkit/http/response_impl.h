@@ -30,6 +30,7 @@ public:
     int GetHeader(const char *name, BkBuffer *dst) const;
     size_t CookiesCount(void) const { return m_cookies.size(); }
     int GetCookie(size_t index, BkBuffer *dst) const;
+    void Hijack(const void *newBody, size_t length);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     void ResetForRedirection(void);
@@ -37,6 +38,7 @@ public:
     int ErrorCode(void) const { return m_errorCode; }
     void SetErrorCode(int errorCode) { m_errorCode = errorCode; }
 
+    BlinKit::BkHTTPHeaderMap& MutableHeaders(void) { return m_headers; }
     const BlinKit::BkHTTPHeaderMap& Headers(void) const { return m_headers; }
 
     const char* BodyData(void) const { return m_body.empty() ? nullptr : reinterpret_cast<const char *>(m_body.data()); }

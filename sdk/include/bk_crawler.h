@@ -30,10 +30,12 @@ enum BkCrawlerConfig {
 struct BkCrawlerClient {
     void *UserData;
     void (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
+    bool_t (BKAPI * HijackRequest)(const char *, struct BkBuffer *, void *);
+    void (BKAPI * HijackResponse)(BkResponse, void *);
     void (BKAPI * RequestComplete)(BkResponse, BkWorkController, void *);
     void (BKAPI * DocumentReady)(void *);
     void (BKAPI * Error)(int, const char *, void *);
-    void (BKAPI * ConsoleLog)(const char *, void *);
+    void (BKAPI * ConsoleMessage)(int type, const char *, void *);
 };
 
 BKEXPORT BkCrawler BKAPI BkCreateCrawler(struct BkCrawlerClient *client);
@@ -42,6 +44,8 @@ BKEXPORT void BKAPI BkDestroyCrawler(BkCrawler crawler);
 BKEXPORT int BKAPI BkRunCrawler(BkCrawler crawler, const char *URL);
 
 BKEXPORT BkJSContext BKAPI BkGetScriptContextFromCrawler(BkCrawler crawler);
+
+BKEXPORT void BKAPI BkHijackResponse(BkResponse response, const void *newBody, size_t length);
 
 #ifdef __cplusplus
 } // extern "C"

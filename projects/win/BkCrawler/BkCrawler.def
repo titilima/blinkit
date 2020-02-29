@@ -25,6 +25,7 @@ BkGetResponseData
 BkGetResponseHeader
 BkGetResponseCookiesCount
 BkGetResponseCookie
+BkHijackResponse
 
 BkCreateCrawler
 BkDestroyCrawler

@@ -165,6 +165,7 @@ std::unique_ptr<ClassicPendingScript> ClassicPendingScript::Fetch(
     {
         CrawlerImpl *crawler = ToCrawlerImpl(elementDocument.GetFrame()->Client());
         request.SetCrawler(crawler);
+        request.SetHijackType(HijackType::kScript);
     }
 
     ResourceLoaderOptions resourceLoaderOptions;

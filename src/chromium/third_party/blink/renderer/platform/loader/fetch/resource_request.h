@@ -51,6 +51,13 @@ namespace blink {
 
 class EncodedFormData;
 
+enum class HijackType {
+    kNotForCrawler = 0,
+    kMainHTML,
+    kScript,
+    kOther
+};
+
 class ResourceRequest final
 {
 public:
@@ -90,6 +97,9 @@ public:
     bool WasDiscarded(void) const { return m_wasDiscarded; }
     void SetWasDiscarded(bool wasDiscarded) { m_wasDiscarded = wasDiscarded; }
 
+    HijackType GetHijackType(void) const { return m_hijackType; }
+    void SetHijackType(HijackType hijackType) { m_hijackType = hijackType; }
+
     RedirectStatus GetRedirectStatus(void) const { return m_redirectStatus; }
 private:
     BkCrawler m_crawler = nullptr;
@@ -103,6 +113,7 @@ private:
     bool m_didSetHttpReferrer = false;
     bool m_wasDiscarded = false;
     RedirectStatus m_redirectStatus = RedirectStatus::kNoRedirect;
+    HijackType m_hijackType = HijackType::kNotForCrawler;
 };
 
 }  // namespace blink

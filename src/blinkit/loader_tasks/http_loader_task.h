@@ -19,6 +19,7 @@
 #include "bk_http.h"
 #include "blinkit/loader_tasks/loader_task.h"
 #include "blinkit/misc/controller_impl.h"
+#include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 #include "url/bk_url.h"
 
@@ -36,7 +37,10 @@ public:
 private:
     AtomicString GetResponseHeader(const AtomicString &name) const;
 
+    bool ProcessHijackRequest(const std::string &URL);
+    bool ProcessHijackResponse(void);
     void ProcessRequestComplete(void);
+    void PopulateHijackedResponse(const std::string &URL, const std::string &hijack);
     void PopulateResourceResponse(blink::ResourceResponse &response) const;
     void DoContinue(void);
     void DoCancel(void);
@@ -53,6 +57,7 @@ private:
 
     BkCrawler m_crawler;
     BkURL m_url;
+    blink::HijackType m_hijackType = blink::HijackType::kOther;
     std::shared_ptr<ResponseImpl> m_response;
 
     bool m_callingCrawler = false;

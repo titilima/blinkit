@@ -26,8 +26,10 @@ public:
 
     // BkCrawlerClient Wrappers
     std::string GetConfig(int cfg) const;
-    bool ApplyLogger(std::function<void(const char *)> &dst) const;
     void ProcessRequestComplete(BkResponse response, BkWorkController controller);
+    bool HijackRequest(const char *URL, std::string &dst) const;
+    void HijackResponse(BkResponse response);
+    bool ApplyConsoleMessager(std::function<void(int, const char *)> &dst) const;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
@@ -45,9 +47,6 @@ private:
     // BkCrawler
     int BKAPI RegisterCrawlerFunction(const char *name, BkCallback &functionImpl) override;
     int BKAPI AccessCrawlerMember(const char *name, BkCallback &callback) override;
-    // blink::FrameLoaderClient
-    void dispatchDidFailProvisionalLoad(const blink::ResourceError &error, blink::HistoryCommitType) override;
-    void dispatchDidFinishLoad(void) override;
 #endif
     // LocalFrameClient
     bool IsCrawler(void) const override { return true; }
