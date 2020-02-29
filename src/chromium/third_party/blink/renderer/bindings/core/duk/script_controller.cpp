@@ -62,7 +62,7 @@ static void CommonCallback(ContextImpl *ctxImpl, duk_context *ctx)
     const char *s = duk_safe_to_lstring(ctx, -1, &l);
 
     std::string str(s, l);
-    ctxImpl->Log(str.c_str());
+    ctxImpl->ConsoleOutput(BK_CONSOLE_ERROR, str.c_str());
 }
 
 ScriptController::ScriptController(LocalFrame &frame) : m_frame(frame)

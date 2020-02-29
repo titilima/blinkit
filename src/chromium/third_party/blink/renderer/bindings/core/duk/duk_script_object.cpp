@@ -88,7 +88,7 @@ duk_idx_t DukScriptObject::PushScriptWrappable(duk_context *ctx, const char *pro
 
     if (nullptr != nativeObject->m_contextObject)
         return duk_push_heapptr(ctx, nativeObject->m_contextObject);
-    return PrototypeHelper::CreateScriptObject(ctx, protoName, *nativeObject);
+    return PrototypeHelper::CreateScriptObject(ctx, protoName, nativeObject);
 }
 
 ScriptWrappable* DukScriptObject::ToScriptWrappable(duk_context *ctx, duk_idx_t idx)

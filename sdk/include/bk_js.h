@@ -50,6 +50,11 @@ enum BkEvalFlags {
 
 BKEXPORT BkJSValue BKAPI BkJSEvaluate(BkJSContext context, const char *code, unsigned flags);
 
+enum BkConsoleMessageType {
+    BK_CONSOLE_LOG = 0,
+    BK_CONSOLE_ERROR,
+};
+
 #ifdef __cplusplus
 } // extern "C"
 #endif

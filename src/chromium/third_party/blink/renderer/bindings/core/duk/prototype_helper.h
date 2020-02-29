@@ -80,7 +80,7 @@ public:
     typedef void (*Worker)(PrototypeEntry &);
     void Register(const char *protoName, Worker worker);
 
-    static duk_idx_t CreateScriptObject(duk_context *ctx, const char *protoName, blink::ScriptWrappable &nativeObject);
+    static duk_idx_t CreateScriptObject(duk_context *ctx, const char *protoName, blink::ScriptWrappable *nativeObject);
 private:
     duk_context *m_ctx;
 #ifdef _DEBUG

@@ -11,6 +11,7 @@
 
 #include "duk_window.h"
 
+#include "third_party/blink/renderer/bindings/core/duk/duk_console.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_document.h"
 
 using namespace blink;
@@ -39,6 +40,12 @@ static duk_ret_t BToA(duk_context *ctx)
     return 1;
 }
 
+static duk_ret_t ConsoleGetter(duk_context *ctx)
+{
+    DukScriptObject::Create<DukConsole>(ctx);
+    return 1;
+}
+
 static duk_ret_t DocumentGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -58,6 +65,7 @@ void DukWindow::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
         { "btoa",             Impl::BToA,                1           },
     };
     static const PrototypeEntry::Property Properties[] = {
+        { "console",   Impl::ConsoleGetter,   nullptr              },
         { "document",  Impl::DocumentGetter,  nullptr              },
     };
 

@@ -25,9 +25,14 @@ class DukScriptObject
     STATIC_ONLY(DukScriptObject);
 public:
     template <class T>
+    static inline duk_idx_t Create(duk_context *ctx)
+    {
+        return PrototypeHelper::CreateScriptObject(ctx, T::ProtoName, nullptr);
+    }
+    template <class T>
     static inline duk_idx_t Create(duk_context *ctx, blink::ScriptWrappable &nativeObject)
     {
-        return PrototypeHelper::CreateScriptObject(ctx, T::ProtoName, nativeObject);
+        return PrototypeHelper::CreateScriptObject(ctx, T::ProtoName, &nativeObject);
     }
 
     template <class T>

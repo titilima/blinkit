@@ -31,12 +31,14 @@ public:
     ContextImpl(const blink::LocalFrame &frame);
     ~ContextImpl(void);
 
+    static ContextImpl* From(duk_context *ctx);
+
     void Reset(void);
 
     typedef std::function<void(duk_context *)> Callback;
     bool AccessCrawler(const Callback &worker);
     void Eval(const std::string_view code, const Callback &callback, const char *fileName = "eval");
-    void Log(const char *log) { m_logger(log); }
+    void ConsoleOutput(int type, const char *msg) { m_consoleMessager(type, msg); }
 private:
     void InitializeHeapStash(void);
     static void RegisterPrototypesForCrawler(duk_context *ctx);
@@ -45,7 +47,7 @@ private:
 
     const blink::LocalFrame &m_frame;
     duk_context *m_ctx;
-    std::function<void(const char *)> m_logger;
+    std::function<void(int, const char *)> m_consoleMessager;
 };
 
 #endif // BLINKIT_BLINKIT_CONTEXT_IMPL_H

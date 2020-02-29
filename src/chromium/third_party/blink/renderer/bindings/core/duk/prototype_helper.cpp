@@ -37,11 +37,12 @@ PrototypeHelper::~PrototypeHelper(void)
     duk_put_prop_string(m_ctx, -2, Prototypes);
 }
 
-duk_idx_t PrototypeHelper::CreateScriptObject(duk_context *ctx, const char *protoName, ScriptWrappable &nativeObject)
+duk_idx_t PrototypeHelper::CreateScriptObject(duk_context *ctx, const char *protoName, ScriptWrappable *nativeObject)
 {
     duk_push_object(ctx);
 
-    DukScriptObject::BindScriptWrappable(ctx, -1, nativeObject);
+    if (nullptr != nativeObject)
+        DukScriptObject::BindScriptWrappable(ctx, -1, *nativeObject);
 
     const duk_idx_t top = duk_get_top(ctx);
     // ... obj

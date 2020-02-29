@@ -14,6 +14,7 @@
 #include "base/strings/string_util.h"
 #include "blinkit/crawler/crawler_impl.h"
 #include "blinkit/js/js_value_impl.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_console.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_document.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_window.h"
@@ -24,16 +25,17 @@ using namespace BlinKit;
 
 static const char CrawlerObject[] = "crawlerObject";
 static const char Globals[] = "globals";
+static const char NativeContext[] = "nativeContext";
 
-static void DefaultLog(const char *log)
+static void DefaultConsoleOutput(int type, const char *msg)
 {
-    BkLog("%s", log);
+    BkLog("%s", msg);
 }
 
 ContextImpl::ContextImpl(const LocalFrame &frame)
     : m_frame(frame)
     , m_ctx(duk_create_heap_default())
-    , m_logger(std::bind(DefaultLog, std::placeholders::_1))
+    , m_consoleMessager(std::bind(DefaultConsoleOutput, std::placeholders::_1, std::placeholders::_2))
 {
     InitializeHeapStash();
 }
@@ -92,7 +94,7 @@ void ContextImpl::CreateCrawlerObject(const CrawlerImpl &crawler)
         if (errorLog.empty())
             return;
 
-        m_logger(errorLog.c_str());
+        m_consoleMessager(BK_CONSOLE_ERROR, errorLog.c_str());
     } while (false);
 
     duk_push_object(m_ctx);
@@ -139,9 +141,24 @@ void ContextImpl::ExposeGlobals(duk_context *ctx, duk_idx_t dst)
     duk_set_top(ctx, top);
 }
 
+ContextImpl* ContextImpl::From(duk_context *ctx)
+{
+    ContextImpl *ret = nullptr;
+
+    duk_push_heap_stash(ctx);
+    duk_get_prop_string(ctx, -1, NativeContext);
+    ret = reinterpret_cast<ContextImpl *>(duk_get_pointer(ctx, -1));
+    duk_pop_2(ctx);
+
+    return ret;
+}
+
 void ContextImpl::InitializeHeapStash(void)
 {
     duk_push_heap_stash(m_ctx);
+
+    duk_push_pointer(m_ctx, this);
+    duk_put_prop_string(m_ctx, -2, NativeContext);
 
     duk_push_global_object(m_ctx);
     duk_put_prop_string(m_ctx, -2, Globals);
@@ -152,7 +169,7 @@ void ContextImpl::InitializeHeapStash(void)
     RegisterPrototypesForCrawler(m_ctx);
 
     CrawlerImpl *crawler = ToCrawlerImpl(m_frame.Client());
-    crawler->ApplyLogger(m_logger);
+    crawler->ApplyConsoleMessager(m_consoleMessager);
     CreateCrawlerObject(*crawler);
 #else
     if (frame.Client()->IsCrawler())
@@ -175,6 +192,7 @@ void ContextImpl::InitializeHeapStash(void)
 void ContextImpl::RegisterPrototypesForCrawler(duk_context *ctx)
 {
     PrototypeHelper helper(ctx);
+    DukConsole::RegisterPrototype(helper);
     DukDocument::RegisterPrototypeForCrawler(helper);
     DukElement::RegisterPrototypeForCrawler(helper);
     DukWindow::RegisterPrototypeForCrawler(helper);
