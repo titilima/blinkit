@@ -84,6 +84,9 @@ public:
 protected:
     TextResourceDecoder(const TextResourceDecoderOptions &options);
 private:
+    static const WTF::TextEncoding& DefaultEncoding(TextResourceDecoderOptions::ContentType contentType,
+        const WTF::TextEncoding &specifiedDefaultEncoding);
+
     void AutoDetectEncodingIfAllowed(const char *data, wtf_size_t len);
     bool CheckForCSSCharset(const char *data, wtf_size_t len, bool &movedDataToBuffer);
     bool CheckForXMLCharset(const char *data, wtf_size_t len, bool &movedDataToBuffer);

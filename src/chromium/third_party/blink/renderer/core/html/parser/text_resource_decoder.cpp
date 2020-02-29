@@ -51,7 +51,9 @@ static inline bool BytesEqual(const char *p, char b0, char b1, char b2, char b3,
     return p[0] == b0 && p[1] == b1 && p[2] == b2 && p[3] == b3 && p[4] == b4 && p[5] == b5;
 }
 
-TextResourceDecoder::TextResourceDecoder(const TextResourceDecoderOptions &options) : m_options(options)
+TextResourceDecoder::TextResourceDecoder(const TextResourceDecoderOptions &options)
+    : m_options(options)
+    , m_encoding(DefaultEncoding(m_options.GetContentType(), m_options.DefaultEncoding()))
 {
 #ifndef NDEBUG
     // TODO(hiroshige): Move the invariant check to TextResourceDecoderOptions.
@@ -284,6 +286,23 @@ String TextResourceDecoder::Decode(const char *data, size_t dataLen)
 
     m_buffer.clear();
     return result;
+}
+
+const WTF::TextEncoding& TextResourceDecoder::DefaultEncoding(
+    TextResourceDecoderOptions::ContentType contentType,
+    const WTF::TextEncoding& specifiedDefaultEncoding)
+{
+    // Despite 8.5 "Text/xml with Omitted Charset" of RFC 3023, we assume UTF-8
+    // instead of US-ASCII for text/xml. This matches Firefox.
+    if (contentType == TextResourceDecoderOptions::kXMLContent
+        || contentType == TextResourceDecoderOptions::kJSONContent)
+    {
+        return UTF8Encoding();
+    }
+
+    if (!specifiedDefaultEncoding.IsValid())
+        return Latin1Encoding();
+    return specifiedDefaultEncoding;
 }
 
 String TextResourceDecoder::Flush(void)
