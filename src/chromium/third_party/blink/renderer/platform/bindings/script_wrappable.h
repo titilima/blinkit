@@ -19,6 +19,8 @@
 
 namespace BlinKit {
 class DukScriptObject;
+class GCPool;
+class PushWrapper;
 } // namespace BlinKit
 
 namespace blink {
@@ -29,20 +31,26 @@ class ScriptWrappable : public GarbageCollectedFinalized<ScriptWrappable>
 public:
     virtual ~ScriptWrappable(void) = default;
 
-    bool OwnedByContext(void) const { return m_ownedByContext; }
+    bool IsContextRetained(void) const { return m_contextRetained; }
+    bool IsInGCPool(void) const { return m_inGCPool; }
+
+    virtual void PreCollectGarbage(BlinKit::GCPool &gcPool) {}
 protected:
-    ScriptWrappable(void) = default;
+    ScriptWrappable(void) : m_contextRetained(false), m_inGCPool(false) {}
 private:
     friend class BlinKit::DukScriptObject;
+    friend class BlinKit::GCPool;
+    friend class BlinKit::PushWrapper;
 
-    bool m_ownedByContext = false;
+    bool m_contextRetained : 1;
+    bool m_inGCPool : 1;
     void *m_contextObject = nullptr;
 };
 
-}  // namespace blink
+} // namespace blink
 
 #define DEFINE_WRAPPERTYPEINFO()        \
 private:                                \
     typedef int ThisIsOnlyAPlaceholder
 
-#endif  // BLINKIT_BLINK_SCRIPT_WRAPPABLE_H
+#endif // BLINKIT_BLINK_SCRIPT_WRAPPABLE_H
