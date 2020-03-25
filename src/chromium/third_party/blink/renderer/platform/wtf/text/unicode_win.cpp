@@ -16,6 +16,12 @@
 namespace WTF {
 namespace Unicode {
 
+CharDecompositionType DecompositionType(UChar32 c)
+{
+    ASSERT(false); // BKTODO:
+    return kDecompositionNone;
+}
+
 CharDirection Direction(UChar32 c)
 {
     ASSERT(false); // BKTODO:

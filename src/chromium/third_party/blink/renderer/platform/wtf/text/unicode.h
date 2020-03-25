@@ -128,6 +128,13 @@ enum CharCategory {
     kPunctuation_FinalQuote = U_MASK(U_FINAL_PUNCTUATION)
 };
 
+inline CharCategory Category(UChar32 c)
+{
+    return static_cast<CharCategory>(U_GET_GC_MASK(c));
+}
+
+CharDecompositionType DecompositionType(UChar32 c);
+
 CharDirection Direction(UChar32 c);
 
 UChar32 FoldCase(UChar32 c);

@@ -60,6 +60,7 @@ public:                                                                 \
 #define WTF_HEAP_PROFILER_TYPE_NAME(T)  nullptr
 
 #define USING_FAST_MALLOC(type) USING_FAST_MALLOC_INTERNAL(type, WTF_HEAP_PROFILER_TYPE_NAME(type))
+#define USING_FAST_MALLOC_WITH_TYPE_NAME(type)  USING_FAST_MALLOC_INTERNAL(type, #type)
 
 enum NotNullTag { NotNull };
 inline void* operator new(size_t, NotNullTag, void *location)
