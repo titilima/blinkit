@@ -53,7 +53,7 @@ RegisteredEventListener::RegisteredEventListener()
 RegisteredEventListener::RegisteredEventListener(
     EventListener* listener,
     const AddEventListenerOptionsResolved& options)
-    : callback_(listener),
+    : callback_(listener->shared_from_this()),
       use_capture_(options.capture()),
       passive_(options.passive()),
       once_(options.once()),
