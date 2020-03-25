@@ -40,7 +40,6 @@
 
 namespace blink {
 
-class ExceptionState;
 class LayoutText;
 class WhitespaceAttacher;
 

@@ -50,6 +50,10 @@ namespace blink {
 
 class Node;
 
+class ChildListMutationAccumulator final : public GarbageCollected<ChildListMutationAccumulator>
+{
+};
+
 class ChildListMutationScope final
 {
     STACK_ALLOCATED();
@@ -60,6 +64,7 @@ public:
     void ChildAdded(Node &child);
     void WillRemoveChild(Node &child);
 private:
+    std::shared_ptr<ChildListMutationAccumulator> m_accumulator;
     DISALLOW_COPY_AND_ASSIGN(ChildListMutationScope);
 };
 

@@ -52,17 +52,17 @@ ChildListMutationScope::ChildListMutationScope(Node &target)
 
 ChildListMutationScope::~ChildListMutationScope(void)
 {
-    BKLOG("// BKTODO: ChildListMutationScope::~ChildListMutationScope");
+    ASSERT(!m_accumulator); // BKTODO:
 }
 
 void ChildListMutationScope::ChildAdded(Node &child)
 {
-    BKLOG("// BKTODO: ChildListMutationScope::ChildAdded");
+    ASSERT(!m_accumulator); // BKTODO:
 }
 
 void ChildListMutationScope::WillRemoveChild(Node &child)
 {
-    BKLOG("// BKTODO: ChildListMutationScope::WillRemoveChild");
+    ASSERT(!m_accumulator); // BKTODO:
 }
 
 }  // namespace blink

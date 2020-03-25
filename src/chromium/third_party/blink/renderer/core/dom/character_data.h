@@ -41,8 +41,6 @@
 
 namespace blink {
 
-class ExceptionState;
-
 class CORE_EXPORT CharacterData : public Node {
   DEFINE_WRAPPERTYPEINFO();
 
