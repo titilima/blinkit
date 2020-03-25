@@ -39,6 +39,7 @@
 #pragma once
 
 #include "base/memory/scoped_refptr.h"
+#include "third_party/blink/renderer/core/css/css_selector.h"
 #include "third_party/blink/renderer/core/dom/container_node.h"
 #include "third_party/blink/renderer/core/dom/element_data.h"
 #include "third_party/blink/renderer/core/dom/qualified_name.h"
@@ -49,6 +50,7 @@ class Attr;
 class Attribute;
 class ElementData;
 class ElementRareData;
+class NamedNodeMap;
 
 // https://html.spec.whatwg.org/multipage/dom.html#dom-document-nameditem-filter
 enum class NamedItemType {
@@ -58,10 +60,18 @@ enum class NamedItemType {
     kNameOrIdWithName,
 };
 
+typedef std::vector<Attr *> AttrNodeList;
+
 class Element : public ContainerNode
 {
 public:
     ~Element(void) override;
+
+    // Exports for JS
+    NamedNodeMap* attributes(void) const;
+    String innerHTML(void) const;
+    void setAttribute(const AtomicString &localName, const AtomicString &value, ExceptionState &exceptionState);
+    void setInnerHTML(const String &html, ExceptionState &exceptionState);
 
     const QualifiedName& TagQName(void) const { return m_tagName; }
     const AtomicString& localName(void) const { return m_tagName.LocalName(); }
@@ -76,8 +86,14 @@ public:
     void setAttribute(const QualifiedName &name, const AtomicString &value);
     Attr* getAttributeNode(const AtomicString &name);
     Attr* getAttributeNodeNS(const AtomicString &namespaceURI, const AtomicString &localName);
+    void SynchronizeAttribute(const AtomicString &localName) const;
+    Attr* AttrIfExists(const QualifiedName &name);
+    Attr* EnsureAttr(const QualifiedName &name);
+    AttrNodeList* GetAttrNodeList(void);
 
     bool HasID(void) const;
+    bool HasClass(void) const;
+    const SpaceSplitString& ClassNames(void) const;
     const AtomicString& GetIdAttribute(void) const;
 
     const AtomicString& GetNameAttribute(void) const;
@@ -86,7 +102,17 @@ public:
 
     String TextFromChildren(void) const;
 
+    Element* CloneWithChildren(Document *nullableFactory = nullptr) const;
+    Element* CloneWithoutChildren(Document *nullableFactory = nullptr) const;
+    void CloneAttributesFrom(const Element &other);
+    // Step 5 of https://dom.spec.whatwg.org/#concept-node-clone
+    virtual void CloneNonAttributePropertiesFrom(const Element &source, CloneChildrenFlag flag) {} // BKTODO: Check overrides for child classes
+
     virtual bool IsScriptElement(void) const { return false; }
+    // Elements that may have an insertion mode other than "in body" should
+    // override this and return true.
+    // https://html.spec.whatwg.org/multipage/parsing.html#reset-the-insertion-mode-appropriately
+    virtual bool HasNonInBodyInsertionMode(void) const { return false; } // BKTODO: Check overrides
 
     enum class AttributeModificationReason { kDirectly, kByParser, kByCloning };
     struct AttributeModificationParams {
@@ -137,11 +163,34 @@ protected:
     void ClassAttributeChanged(const AtomicString &newClassString);
 private:
     ElementRareData* GetElementRareData(void) const;
+    ElementRareData& EnsureElementRareData(void);
+    UniqueElementData& EnsureUniqueElementData(void);
+
+    virtual Element* CloneWithoutAttributesAndChildren(Document &factory) const;
+
+    void DetachAllAttrNodesFromElement(void);
+    void SynchronizeAllAttributes(void) const;
     void SynchronizeAttribute(const QualifiedName &name) const;
+    void UpdateId(const AtomicString &oldId, const AtomicString &newId);
     void UpdateId(TreeScope &scope, const AtomicString &oldId, const AtomicString &newId);
     void UpdateName(const AtomicString &oldName, const AtomicString &newName);
     void UpdateNamedItemRegistration(NamedItemType type, const AtomicString &oldName, const AtomicString &newName);
     void UpdateIdNamedItemRegistration(NamedItemType type, const AtomicString &oldName, const AtomicString &newName);
+
+    enum SynchronizationOfLazyAttribute {
+        kNotInSynchronizationOfLazyAttribute = 0,
+        kInSynchronizationOfLazyAttribute
+    };
+    void WillModifyAttribute(const QualifiedName &name, const AtomicString &oldValue, const AtomicString &newValue);
+    void AppendAttributeInternal(const QualifiedName &name, const AtomicString &value,
+        SynchronizationOfLazyAttribute inSynchronizationOfLazyAttribute);
+    void SetAttributeInternal(wtf_size_t index, const QualifiedName &name, const AtomicString &newValue,
+        SynchronizationOfLazyAttribute inSynchronizationOfLazyAttribute);
+    void DidAddAttribute(const QualifiedName &name, const AtomicString &value);
+    void DidModifyAttribute(const QualifiedName &name, const AtomicString &oldValue, const AtomicString &newValue);
+
+    // Node overrides
+    bool ChildTypeAllowed(NodeType type) const final;
 
     QualifiedName m_tagName;
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_selector.cc
+// Description: CSSSelector Class
+//      Author: Ziming Li
+//     Created: 2020-03-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999-2003 Lars Knoll (knoll@kde.org)
  *               1999 Waldo Bastian (bastian@kde.org)
@@ -28,9 +39,9 @@
 
 #include <algorithm>
 #include <memory>
-#include "third_party/blink/renderer/core/css/css_markup.h"
+// BKTODO: #include "third_party/blink/renderer/core/css/css_markup.h"
 #include "third_party/blink/renderer/core/css/css_selector_list.h"
-#include "third_party/blink/renderer/core/css/parser/css_parser_context.h"
+// BKTODO: #include "third_party/blink/renderer/core/css/parser/css_parser_context.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
@@ -44,7 +55,7 @@
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 struct SameSizeAsCSSSelector {
   unsigned bitfields;
@@ -565,8 +576,11 @@ void CSSSelector::UpdatePseudoType(const AtomicString& value,
         pseudo_type_ = kPseudoUnknown;
       break;
     case kPseudoShadow:
+      ASSERT(false); // BKTODO:
+#if 0
       if (match_ != kPseudoElement || context.IsLiveProfile())
         pseudo_type_ = kPseudoUnknown;
+#endif
       break;
     case kPseudoBlinkInternalElement:
       if (match_ != kPseudoElement || mode != kUASheetMode)
@@ -692,10 +706,13 @@ bool CSSSelector::operator==(const CSSSelector& other) const {
 static void SerializeIdentifierOrAny(const AtomicString& identifier,
                                      const AtomicString& any,
                                      StringBuilder& builder) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (identifier != any)
     SerializeIdentifier(identifier, builder);
   else
     builder.Append(g_star_atom);
+#endif
 }
 
 static void SerializeNamespacePrefixIfNeeded(const AtomicString& prefix,
@@ -717,6 +734,8 @@ const CSSSelector* CSSSelector::SerializeCompound(
                              builder);
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   for (const CSSSelector* simple_selector = this; simple_selector;
        simple_selector = simple_selector->TagHistory()) {
     if (simple_selector->match_ == kId) {
@@ -844,6 +863,7 @@ const CSSSelector* CSSSelector::SerializeCompound(
     if (simple_selector->Relation() != kSubSelector)
       return simple_selector;
   }
+#endif
   return nullptr;
 }
 
@@ -986,6 +1006,8 @@ unsigned CSSSelector::ComputeLinkMatchType(unsigned link_match_type) const {
        current = current->TagHistory()) {
     switch (current->GetPseudoType()) {
       case kPseudoNot: {
+        ASSERT(false); // BKTODO:
+#if 0
         // :not(:visited) is equivalent to :link. Parser enforces that :not
         // can't nest.
         DCHECK(current->SelectorList());
@@ -997,6 +1019,7 @@ unsigned CSSSelector::ComputeLinkMatchType(unsigned link_match_type) const {
           else if (sub_type == kPseudoLink)
             link_match_type &= ~kMatchLink;
         }
+#endif
       } break;
       case kPseudoLink:
         link_match_type &= ~kMatchVisited;
@@ -1052,6 +1075,8 @@ bool CSSSelector::MatchesPseudoElement() const {
 template <typename Functor>
 static bool ForAnyInTagHistory(const Functor& functor,
                                const CSSSelector& selector) {
+  ASSERT(false); // BKTODO:
+#if 0
   for (const CSSSelector* current = &selector; current;
        current = current->TagHistory()) {
     if (functor(*current))
@@ -1064,6 +1089,7 @@ static bool ForAnyInTagHistory(const Functor& functor,
       }
     }
   }
+#endif
 
   return false;
 }

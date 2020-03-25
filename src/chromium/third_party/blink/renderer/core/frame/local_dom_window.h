@@ -75,16 +75,23 @@ public:
 
     class EventListenerObserver : public GarbageCollectedMixin {
     public:
+        virtual void DidAddEventListener(LocalDOMWindow *, const AtomicString &) = 0;
         virtual void DidRemoveAllEventListeners(LocalDOMWindow *) = 0;
     };
 
     // EventTarget overrides
     void RemoveAllEventListeners(void) final;
+protected:
+    // EventTarget overrides
+    void AddedEventListener(const AtomicString &eventType, RegisteredEventListener &registeredListener) override;
 private:
     explicit LocalDOMWindow(LocalFrame &frame);
 
     void DispatchLoadEvent(void);
     void ClearDocument(void);
+
+    ExecutionContext* GetExecutionContext(void) const final;
+    const LocalDOMWindow* ToLocalDOMWindow(void) const final { return this; }
 
     std::unique_ptr<Document> m_document;
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: collection_items_cache.h
+// Description: CollectionItemsCache Class
+//      Author: Ziming Li
+//     Created: 2020-03-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012,2013 Google Inc. All rights reserved.
  * Copyright (C) 2014 Apple Inc. All rights reserved.
@@ -32,8 +43,8 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_HTML_COLLECTION_ITEMS_CACHE_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_HTML_COLLECTION_ITEMS_CACHE_H_
 
+#include <vector>
 #include "third_party/blink/renderer/core/dom/collection_index_cache.h"
-#include "third_party/blink/renderer/platform/wtf/vector.h"
 
 namespace blink {
 
@@ -47,18 +58,13 @@ class CollectionItemsCache : public CollectionIndexCache<Collection, NodeType> {
   CollectionItemsCache();
   ~CollectionItemsCache();
 
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(cached_list_);
-    Base::Trace(visitor);
-  }
-
   unsigned NodeCount(const Collection&);
   NodeType* NodeAt(const Collection&, unsigned index);
   void Invalidate();
 
  private:
   bool list_valid_;
-  HeapVector<Member<NodeType>> cached_list_;
+  std::vector<Member<NodeType>> cached_list_;
 };
 
 template <typename Collection, typename NodeType>
@@ -72,7 +78,7 @@ template <typename Collection, typename NodeType>
 void CollectionItemsCache<Collection, NodeType>::Invalidate() {
   Base::Invalidate();
   if (list_valid_) {
-    cached_list_.Shrink(0);
+    cached_list_.shrink_to_fit();
     list_valid_ = false;
   }
 }

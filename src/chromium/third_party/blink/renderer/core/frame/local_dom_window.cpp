@@ -57,6 +57,30 @@ LocalDOMWindow::LocalDOMWindow(LocalFrame &frame) : DOMWindow(frame)
 
 LocalDOMWindow::~LocalDOMWindow(void) = default;
 
+void LocalDOMWindow::AddedEventListener(const AtomicString &eventType, RegisteredEventListener &registeredListener)
+{
+    DOMWindow::AddedEventListener(eventType, registeredListener);
+#if 0 // BKTODO: Check if necessary.
+    if (auto* frame = GetFrame()) {
+        frame->GetEventHandlerRegistry().DidAddEventHandler(
+            *this, event_type, registered_listener.Options());
+    }
+#endif
+
+    if (Document *document = this->document())
+        document->AddListenerTypeIfNeeded(eventType, *this);
+
+    for (auto *ob : m_eventListenerObservers)
+        ob->DidAddEventListener(this, eventType);
+
+#if 0 // BKTODO: Check if necessary.
+    if (eventType == event_type_names::kUnload)
+        TrackUnloadEventListener(this);
+    else if (eventType == event_type_names::kBeforeunload)
+        TrackBeforeUnloadEventListener(this);
+#endif
+}
+
 void LocalDOMWindow::ClearDocument(void)
 {
     if (!m_document)
@@ -115,6 +139,11 @@ void LocalDOMWindow::FrameDestroyed(void)
 {
     RemoveAllEventListeners();
     DisconnectFromFrame();
+}
+
+ExecutionContext* LocalDOMWindow::GetExecutionContext(void) const
+{
+    return m_document.get();
 }
 
 LocalFrame* LocalDOMWindow::GetFrame(void) const

@@ -46,6 +46,8 @@ public:
     };
     void Add(const Method *methods, size_t count, duk_uint_t extraFlags = 0);
 
+    void Add(const char *name, duk_int_t type) { m_simpleMembers[name] = type; }
+
     static const char NameKey[];
 private:
     PrototypeEntry(duk_context *ctx, const char *name);
@@ -69,6 +71,7 @@ private:
         duk_uint_t flags;
     };
     std::unordered_map<std::string, MethodData> m_methods;
+    std::unordered_map<std::string, duk_int_t> m_simpleMembers;
 };
 
 class PrototypeHelper final

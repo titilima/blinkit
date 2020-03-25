@@ -77,9 +77,9 @@ class ElementData : public GarbageCollectedFinalized<ElementData> {
 
 #ifndef BLINKIT_CRAWLER_ONLY
   const CSSPropertyValueSet* InlineStyle() const { return inline_style_.Get(); }
+#endif
 
   const CSSPropertyValueSet* PresentationAttributeStyle() const;
-#endif
 
   AttributeCollection Attributes() const;
 
@@ -114,7 +114,7 @@ class ElementData : public GarbageCollectedFinalized<ElementData> {
   friend class UniqueElementData;
   friend class SVGElement;
 
-  UniqueElementData* MakeUniqueCopy() const;
+  std::shared_ptr<UniqueElementData> MakeUniqueCopy() const;
 };
 
 #define DEFINE_ELEMENT_DATA_TYPE_CASTS(thisType, pointerPredicate, \
@@ -141,6 +141,7 @@ class ShareableElementData final : public ElementData {
 
   Attribute *attribute_array_;
 private:
+  friend class UniqueElementData;
   explicit ShareableElementData(const Vector<Attribute>&);
   explicit ShareableElementData(const UniqueElementData&);
 };
@@ -161,8 +162,8 @@ DEFINE_ELEMENT_DATA_TYPE_CASTS(ShareableElementData,
 // attribute will have the same inline style.
 class UniqueElementData final : public ElementData {
  public:
-  static UniqueElementData* Create();
-  ShareableElementData* MakeShareableCopy() const;
+  static std::shared_ptr<UniqueElementData> Create();
+  std::shared_ptr<ShareableElementData> MakeShareableCopy() const;
 
   MutableAttributeCollection Attributes();
   AttributeCollection Attributes() const;
@@ -185,14 +186,16 @@ DEFINE_ELEMENT_DATA_TYPE_CASTS(UniqueElementData,
                                data->IsUnique(),
                                data.IsUnique());
 
-#ifndef BLINKIT_CRAWLER_ONLY
 inline const CSSPropertyValueSet* ElementData::PresentationAttributeStyle()
     const {
+#ifdef BLINKIT_CRAWLER_ONLY
+  return nullptr;
+#else
   if (!is_unique_)
     return nullptr;
   return ToUniqueElementData(this)->presentation_attribute_style_.Get();
-}
 #endif
+}
 
 inline AttributeCollection ElementData::Attributes() const {
   if (IsUnique())

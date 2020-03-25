@@ -42,7 +42,7 @@ duk_idx_t PrototypeHelper::CreateScriptObject(duk_context *ctx, const char *prot
     duk_push_object(ctx);
 
     if (nullptr != nativeObject)
-        DukScriptObject::BindScriptWrappable(ctx, -1, *nativeObject);
+        DukScriptObject::BindNative(ctx, -1, *nativeObject);
 
     const duk_idx_t top = duk_get_top(ctx);
     // ... obj
@@ -122,6 +122,22 @@ PrototypeEntry::~PrototypeEntry(void)
         if (nullptr != it.second.setter)
             duk_push_c_function(m_ctx, it.second.setter, 1);
         duk_def_prop(m_ctx, idx, it.second.flags);
+    }
+
+    for (const auto &it : m_simpleMembers)
+    {
+        duk_push_lstring(m_ctx, it.first.data(), it.first.length());
+
+        duk_uint_t extraFlags = DUK_DEFPROP_HAVE_VALUE;
+        switch (it.second)
+        {
+            case DUK_TYPE_OBJECT:
+                duk_push_object(m_ctx);
+                break;
+            default:
+                extraFlags = 0;
+        }
+        duk_def_prop(m_ctx, idx, CommonFlags | extraFlags);
     }
 
     duk_put_prop_string(m_ctx, -2, m_name);

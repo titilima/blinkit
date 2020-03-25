@@ -41,21 +41,34 @@
 
 #include "element_rare_data.h"
 
+#include "third_party/blink/renderer/core/dom/attr.h"
+
 namespace blink {
 
-struct SameSizeAsElementRareData // BKTODO: : NodeRareData
+struct SameSizeAsElementRareData : NodeRareData
 {
+    void* pointersOrStrings[4];
 };
 
 ElementRareData::~ElementRareData(void)
 {
-    ASSERT(false); // BKTODO: DCHECK(!pseudo_element_data_);
+    if (m_attrNodeList)
+    {
+        for (Attr *attr : *m_attrNodeList)
+        {
+            ASSERT(!attr->IsContextRetained());
+            delete attr;
+        }
+        m_attrNodeList->clear();
+    }
+    ASSERT(!m_pseudoElementData);
 }
 
-bool ElementRareData::HasPseudoElements(void) const
+AttrNodeList& ElementRareData::EnsureAttrNodeList(void)
 {
-    ASSERT(false); // BKTODO:
-    return false;
+    if (!m_attrNodeList)
+        m_attrNodeList = std::make_unique<AttrNodeList>();
+    return *m_attrNodeList;
 }
 
 static_assert(sizeof(ElementRareData) == sizeof(SameSizeAsElementRareData), "ElementRareData should stay small");

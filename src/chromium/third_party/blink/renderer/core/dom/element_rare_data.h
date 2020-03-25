@@ -35,14 +35,55 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/core/dom/named_node_map.h"
+#include "third_party/blink/renderer/core/dom/node_rare_data.h"
+#include "third_party/blink/renderer/core/dom/pseudo_element_data.h"
+#include "third_party/blink/renderer/core/intersection_observer/element_intersection_observer_data.h"
+
 namespace blink {
 
-class ElementRareData // BKTODO : public NodeRareData
+class ElementRareData : public NodeRareData
 {
 public:
+#ifdef BLINKIT_CRAWLER_ONLY
+    static ElementRareData* Create(void) { return new ElementRareData; }
+#else
+    static ElementRareData* Create(NodeRenderingData* node_layout_data) {
+        return new ElementRareData(node_layout_data);
+    }
+#endif
     ~ElementRareData(void);
 
-    bool HasPseudoElements(void) const;
+    bool HasPseudoElements(void) const
+    {
+        ASSERT(!m_pseudoElementData); // BKTODO:
+        return false;
+    }
+
+    NamedNodeMap* AttributeMap(void) const { return m_attributeMap.get(); }
+    void SetAttributeMap(std::unique_ptr<NamedNodeMap> &attributeMap)
+    {
+        m_attributeMap = std::move(attributeMap);
+    }
+
+    AttrNodeList& EnsureAttrNodeList(void);
+    AttrNodeList* GetAttrNodeList(void) { return m_attrNodeList.get(); }
+    void AddAttr(Attr *attr) { EnsureAttrNodeList().push_back(attr); }
+
+    ElementIntersectionObserverData* IntersectionObserverData(void) const { return m_intersectionObserverData.get(); }
+private:
+#ifdef BLINKIT_CRAWLER_ONLY
+    ElementRareData(void) = default;
+#else
+    explicit ElementRareData(NodeRenderingData*);
+#endif
+
+    std::unique_ptr<NamedNodeMap> m_attributeMap;
+    std::unique_ptr<AttrNodeList> m_attrNodeList;
+
+    std::unique_ptr<ElementIntersectionObserverData> m_intersectionObserverData;
+
+    std::unique_ptr<PseudoElementData> m_pseudoElementData;
 };
 
 } // namespace blink

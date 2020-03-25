@@ -11,7 +11,10 @@
 
 #include "duk_document.h"
 
+#include "third_party/blink/renderer/bindings/core/duk/duk.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_exception_state.h"
+#include "third_party/blink/renderer/core/dom/document_fragment.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 
 using namespace blink;
@@ -24,17 +27,61 @@ const char DukDocument::ProtoName[] = "HTMLDocument";
 
 namespace Impl {
 
+static duk_ret_t BodyGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Document *document = DukScriptObject::To<Document>(ctx, -1);
+    DukElement::Push(ctx, document->body());
+    return 1;
+}
+
+static duk_ret_t CreateDocumentFragment(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Document *document = DukScriptObject::To<Document>(ctx, -1);
+
+    DocumentFragment *ret = document->createDocumentFragment();
+    DukNode::Push(ctx, ret);
+    return 1;
+}
+
+static duk_ret_t CreateElement(duk_context *ctx)
+{
+    const AtomicString name = Duk::To<AtomicString>(ctx, 0);
+
+    duk_push_this(ctx);
+    Document *document = DukScriptObject::To<Document>(ctx, -1);
+
+    DukExceptionState exceptionState(ctx);
+    Element *ret = document->createElement(name, exceptionState);
+    if (exceptionState.HadException())
+    {
+        exceptionState.ThrowIfNeeded();
+        return 0;
+    }
+
+    DukElement::Push(ctx, ret);
+    return 1;
+}
+
+static duk_ret_t DocumentElementGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Document *document = DukScriptObject::To<Document>(ctx, -1);
+
+    DukElement::Push(ctx, document->documentElement());
+    return 1;
+}
+
 static duk_ret_t GetElementById(duk_context *ctx)
 {
-    size_t l = 0;
-    const char *s = duk_to_lstring(ctx, 0, &l);
-    const AtomicString id = AtomicString::FromUTF8(s, l);
+    const AtomicString id = Duk::To<AtomicString>(ctx, 0);
 
     duk_push_this(ctx);
     Document *document = DukScriptObject::To<Document>(ctx, -1);
 
     Element *ret = document->getElementById(id);
-    ASSERT(false); // BKTODO:
+    DukElement::Push(ctx, ret);
     return 1;
 }
 
@@ -72,12 +119,19 @@ static duk_ret_t Write(duk_context *ctx)
 void DukDocument::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
 {
     static const PrototypeEntry::Method Methods[] = {
+        { "createDocumentFragment", Impl::CreateDocumentFragment, 0           },
+        { "createElement",          Impl::CreateElement,          1           },
         { "getElementById",         Impl::GetElementById,         1           },
         { "write",                  Impl::Write,                  DUK_VARARGS },
+    };
+    static const PrototypeEntry::Property Properties[] = {
+        { "body",            Impl::BodyGetter,            nullptr               },
+        { "documentElement", Impl::DocumentElementGetter, nullptr               },
     };
 
     DukContainerNode::FillPrototypeEntry(entry);
     entry.Add(Methods, std::size(Methods));
+    entry.Add(Properties, std::size(Properties));
 }
 
 void DukDocument::RegisterPrototypeForCrawler(PrototypeHelper &helper)

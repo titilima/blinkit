@@ -37,15 +37,22 @@
 
 #include "element.h"
 
+#include "third_party/blink/renderer/core/dom/attr.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/element_data.h"
 #include "third_party/blink/renderer/core/dom/element_data_cache.h"
 #include "third_party/blink/renderer/core/dom/element_rare_data.h"
+#include "third_party/blink/renderer/core/dom/mutation_observer_interest_group.h"
 #include "third_party/blink/renderer/core/dom/text.h"
+#include "third_party/blink/renderer/core/editing/serializers/serialization.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
+#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
+#include "third_party/blink/renderer/platform/wtf/not_found.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -62,6 +69,30 @@ Element::~Element(void)
 #ifndef BLINKIT_CRAWLER_ONLY
     DCHECK(NeedsAttach());
 #endif
+}
+
+void Element::AppendAttributeInternal(
+    const QualifiedName &name, const AtomicString &value,
+    SynchronizationOfLazyAttribute inSynchronizationOfLazyAttribute)
+{
+    if (!inSynchronizationOfLazyAttribute)
+        WillModifyAttribute(name, g_null_atom, value);
+    EnsureUniqueElementData().Attributes().Append(name, value);
+    if (!inSynchronizationOfLazyAttribute)
+        DidAddAttribute(name, value);
+}
+
+Attr* Element::AttrIfExists(const QualifiedName &name)
+{
+    if (AttrNodeList *attrNodeList = GetAttrNodeList())
+    {
+        for (const auto &attr : *attrNodeList)
+        {
+            if (attr->GetQualifiedName().Matches(name))
+                return attr;
+        }
+    }
+    return nullptr;
 }
 
 static inline AtomicString MakeIdForStyleResolution(const AtomicString &value, bool inQuirksMode)
@@ -175,6 +206,17 @@ AttributeCollection Element::Attributes(void) const
     return AttributeCollection();
 }
 
+NamedNodeMap* Element::attributes(void) const
+{
+    ElementRareData &rareData = const_cast<Element *>(this)->EnsureElementRareData();
+    if (NamedNodeMap *attributeMap = rareData.AttributeMap())
+        return attributeMap;
+
+    std::unique_ptr<NamedNodeMap> attributeMap = NamedNodeMap::Create(const_cast<Element *>(this));
+    rareData.SetAttributeMap(attributeMap);
+    return rareData.AttributeMap();
+}
+
 AttributeCollection Element::AttributesWithoutUpdate(void) const
 {
     ASSERT(false); // BKTODO:
@@ -203,6 +245,22 @@ void Element::ChildrenChanged(const ChildrenChange &change)
 #endif
 }
 #endif
+
+bool Element::ChildTypeAllowed(NodeType type) const
+{
+    switch (type)
+    {
+        case kElementNode:
+        case kTextNode:
+        case kCommentNode:
+        case kProcessingInstructionNode:
+        case kCdataSectionNode:
+            return true;
+        default:
+            break;
+    }
+    return false;
+}
 
 template <typename CharacterType>
 static inline ClassStringContent ClassStringHasClassName(const CharacterType *characters, unsigned length)
@@ -275,7 +333,94 @@ void Element::ClassAttributeChanged(const AtomicString &newClassString)
     }
 }
 
+const SpaceSplitString& Element::ClassNames(void) const
+{
+    ASSERT(HasClass());
+    ASSERT(GetElementData());
+    return GetElementData()->ClassNames();
+}
+
+void Element::CloneAttributesFrom(const Element &other)
+{
+    if (HasRareData())
+        DetachAllAttrNodesFromElement();
+
+    other.SynchronizeAllAttributes();
+    if (!other.m_elementData)
+    {
+        m_elementData.reset();
+        return;
+    }
+
+    const AtomicString &oldId = GetIdAttribute();
+    const AtomicString &newId = other.GetIdAttribute();
+
+    if (!oldId.IsNull() || !newId.IsNull())
+        UpdateId(oldId, newId);
+
+    const AtomicString &oldName = GetNameAttribute();
+    const AtomicString &newName = other.GetNameAttribute();
+
+    if (!oldName.IsNull() || !newName.IsNull())
+        UpdateName(oldName, newName);
+
+    // Quirks mode makes class and id not case sensitive. We can't share the
+    // ElementData if the idForStyleResolution and the className need different
+    // casing.
+    bool ownerDocumentsHaveDifferentCaseSensitivity = false;
+    if (other.HasClass() || other.HasID())
+        ownerDocumentsHaveDifferentCaseSensitivity = other.GetDocument().InQuirksMode() != GetDocument().InQuirksMode();
+
+    // If 'other' has a mutable ElementData, convert it to an immutable one so we
+    // can share it between both elements.
+    // We can only do this if there are no presentation attributes and sharing the
+    // data won't result in different case sensitivity of class or id.
+    if (other.m_elementData->IsUnique() && !ownerDocumentsHaveDifferentCaseSensitivity
+        && nullptr == other.m_elementData->PresentationAttributeStyle())
+    {
+        const_cast<Element &>(other).m_elementData = ToUniqueElementData(other.m_elementData.get())->MakeShareableCopy();
+    }
+
+    ASSERT(GetDocument() == other.GetDocument()); // Old logic from NeedsURLResolutionForInlineStyle
+    if (!other.m_elementData->IsUnique() && !ownerDocumentsHaveDifferentCaseSensitivity)
+        m_elementData = other.m_elementData;
+    else
+        m_elementData = other.m_elementData->MakeUniqueCopy();
+
+    for (const Attribute &attr : m_elementData->Attributes())
+    {
+        AttributeModificationParams params(attr.GetName(), g_null_atom, attr.Value(), AttributeModificationReason::kByCloning);
+        AttributeChanged(params);
+    }
+}
+
 Node* Element::Clone(Document &document, CloneChildrenFlag flag) const
+{
+    return flag == CloneChildrenFlag::kClone
+        ? CloneWithChildren(&document)
+        : CloneWithoutChildren(&document);
+}
+
+Element* Element::CloneWithChildren(Document *factory) const
+{
+    if (nullptr == factory)
+        factory = &GetDocument();
+
+    Element *clone = CloneWithoutAttributesAndChildren(*factory);
+
+    clone->CloneAttributesFrom(*this);
+    clone->CloneNonAttributePropertiesFrom(*this, CloneChildrenFlag::kClone);
+    clone->CloneChildNodesFrom(*this);
+    return clone;
+}
+
+Element* Element::CloneWithoutAttributesAndChildren(Document &factory) const
+{
+    ASSERT(!IsScriptElement()); // BKTODO:
+    return factory.CreateElement(localName(), CreateElementFlags::ByCloneNode());
+}
+
+Element* Element::CloneWithoutChildren(Document *nullableFactory) const
 {
     ASSERT(false); // BKTODO:
     return nullptr;
@@ -294,6 +439,50 @@ void Element::DefaultEventHandler(Event & event)
     ContainerNode::DefaultEventHandler(event);
 }
 #endif
+
+void Element::DetachAllAttrNodesFromElement(void)
+{
+    ASSERT(false); // BKTODO:
+}
+
+void Element::DidAddAttribute(const QualifiedName &name, const AtomicString &value)
+{
+    if (name == html_names::kIdAttr)
+        UpdateId(g_null_atom, value);
+    AttributeChanged(AttributeModificationParams(name, g_null_atom, value, AttributeModificationReason::kDirectly));
+    DispatchSubtreeModifiedEvent();
+}
+
+void Element::DidModifyAttribute(const QualifiedName &name, const AtomicString &oldValue, const AtomicString &newValue)
+{
+    ASSERT(false); // BKTODO:
+}
+
+Attr* Element::EnsureAttr(const QualifiedName &name)
+{
+    Attr *attrNode = AttrIfExists(name);
+    if (nullptr == attrNode)
+    {
+        attrNode = Attr::Create(*this, name);
+        GetTreeScope().AdoptIfNeeded(*attrNode);
+        EnsureElementRareData().AddAttr(attrNode);
+    }
+    return attrNode;
+}
+
+ElementRareData& Element::EnsureElementRareData(void)
+{
+    return static_cast<ElementRareData &>(EnsureRareData());
+}
+
+UniqueElementData& Element::EnsureUniqueElementData(void)
+{
+    if (!m_elementData)
+        m_elementData = UniqueElementData::Create();
+    else if (!m_elementData->IsUnique())
+        m_elementData = ToShareableElementData(m_elementData.get())->MakeUniqueCopy();
+    return ToUniqueElementData(*m_elementData);
+}
 
 const AtomicString& Element::FastGetAttribute(const QualifiedName &name) const
 {
@@ -323,6 +512,11 @@ void Element::FinishParsingChildren(void)
     // BKTODO: Check HTML element overrides.
 }
 
+AttrNodeList* Element::GetAttrNodeList(void)
+{
+    return HasRareData() ? GetElementRareData()->GetAttrNodeList() : nullptr;
+}
+
 const AtomicString& Element::getAttribute(const QualifiedName &name) const
 {
     if (const ElementData *elementData = GetElementData())
@@ -336,8 +530,16 @@ const AtomicString& Element::getAttribute(const QualifiedName &name) const
 
 Attr* Element::getAttributeNode(const AtomicString &name)
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
+    const ElementData *elementData = GetElementData();
+    if (nullptr == elementData)
+        return nullptr;
+
+    SynchronizeAttribute(name);
+    const Attribute* attribute = elementData->Attributes().Find(LowercaseIfNecessary(name));
+    if (nullptr == attribute)
+        return nullptr;
+
+    return EnsureAttr(attribute->GetName());
 }
 
 Attr* Element::getAttributeNodeNS(const AtomicString &namespaceURI, const AtomicString &localName)
@@ -349,8 +551,7 @@ Attr* Element::getAttributeNodeNS(const AtomicString &namespaceURI, const Atomic
 ElementRareData* Element::GetElementRareData(void) const
 {
     ASSERT(HasRareData());
-    ASSERT(false); // BKTODO:
-    return nullptr;
+    return static_cast<ElementRareData *>(RareData());
 }
 
 const AtomicString& Element::GetIdAttribute(void) const
@@ -363,11 +564,24 @@ const AtomicString& Element::GetNameAttribute(void) const
     return HasName() ? FastGetAttribute(html_names::kNameAttr) : g_null_atom;
 }
 
+bool Element::HasClass(void) const
+{
+    if (const ElementData *elementData = GetElementData())
+        return elementData->HasClass();
+    return false;
+}
+
 bool Element::HasID(void) const
 {
     if (const ElementData *elementData = GetElementData())
         return elementData->HasID();
     return false;
+}
+
+String Element::innerHTML(void) const
+{
+    ASSERT(false); // BKTODO:
+    return String();
 }
 
 Node::InsertionNotificationRequest Element::InsertedInto(ContainerNode &insertionPoint)
@@ -383,17 +597,17 @@ Node::InsertionNotificationRequest Element::InsertedInto(ContainerNode &insertio
 
     if (HasRareData())
     {
-        ASSERT(false); // BKTODO:
+        ElementRareData *rareData = GetElementRareData();
+        if (rareData->IntersectionObserverData() && rareData->IntersectionObserverData()->HasObservations())
+        {
+            ASSERT(false); // BKTODO:
 #if 0
-        ElementRareData* rare_data = GetElementRareData();
-        if (rare_data->IntersectionObserverData() &&
-            rare_data->IntersectionObserverData()->HasObservations()) {
             GetDocument().EnsureIntersectionObserverController().AddTrackedTarget(
                 *this);
             if (LocalFrameView* frame_view = GetDocument().View())
                 frame_view->SetIntersectionObservationState(LocalFrameView::kRequired);
-        }
 #endif
+        }
     }
 
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -433,8 +647,7 @@ Node::InsertionNotificationRequest Element::InsertedInto(ContainerNode &insertio
 
 AtomicString Element::LowercaseIfNecessary(const AtomicString &name) const
 {
-    ASSERT(false); // BKTODO:
-    return g_null_atom;
+    return name.LowerASCII();
 }
 
 String Element::nodeName(void) const
@@ -477,9 +690,123 @@ void Element::setAttribute(const QualifiedName &name, const AtomicString &value)
     ASSERT(false); // BKTODO:
 }
 
+void Element::setAttribute(const AtomicString &localName, const AtomicString &value, ExceptionState &exceptionState)
+{
+    if (!Document::IsValidName(localName))
+    {
+        exceptionState.ThrowDOMException(DOMExceptionCode::kInvalidCharacterError,
+            "'" + localName + "' is not a valid attribute name.");
+        return;
+    }
+
+    SynchronizeAttribute(localName);
+    AtomicString caseAdjustedLocalName = LowercaseIfNecessary(localName);
+
+    if (nullptr == GetElementData())
+    {
+        QualifiedName qName(g_null_atom, caseAdjustedLocalName, g_null_atom);
+        SetAttributeInternal(kNotFound, qName, value, kNotInSynchronizationOfLazyAttribute);
+        return;
+    }
+
+    AttributeCollection attributes = GetElementData()->Attributes();
+    wtf_size_t index = attributes.FindIndex(caseAdjustedLocalName);
+    const QualifiedName qName = index != kNotFound
+        ? attributes[index].GetName()
+        : QualifiedName(g_null_atom, caseAdjustedLocalName, g_null_atom);
+    SetAttributeInternal(index, qName, value, kNotInSynchronizationOfLazyAttribute);
+}
+
+void Element::SetAttributeInternal(
+    wtf_size_t index,
+    const QualifiedName &name, const AtomicString &newValue,
+    SynchronizationOfLazyAttribute inSynchronizationOfLazyAttribute)
+{
+    if (newValue.IsNull())
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        if (index != kNotFound)
+            RemoveAttributeInternal(index, inSynchronizationOfLazyAttribute);
+#endif
+        return;
+    }
+
+    if (index == kNotFound)
+    {
+        AppendAttributeInternal(name, newValue, inSynchronizationOfLazyAttribute);
+        return;
+    }
+
+    const Attribute &existingAttribute = GetElementData()->Attributes().at(index);
+    AtomicString existingAttributeValue = existingAttribute.Value();
+    QualifiedName existingAttributeName = existingAttribute.GetName();
+
+    if (!inSynchronizationOfLazyAttribute)
+        WillModifyAttribute(existingAttributeName, existingAttributeValue, newValue);
+    if (newValue != existingAttributeValue)
+        EnsureUniqueElementData().Attributes().at(index).SetValue(newValue);
+    if (!inSynchronizationOfLazyAttribute)
+        DidModifyAttribute(existingAttributeName, existingAttributeValue, newValue);
+}
+
+void Element::setInnerHTML(const String &html, ExceptionState &exceptionState)
+{
+    if (html.IsEmpty() && !HasNonInBodyInsertionMode())
+    {
+        setTextContent(html);
+    }
+    else
+    {
+        DocumentFragment *fragment = CreateFragmentForInnerOuterHTML(html, this, kAllowScriptingContent, "innerHTML", exceptionState);
+        if (nullptr != fragment)
+        {
+            ContainerNode *container = this;
+            ASSERT(!HasTagName(html_names::kTemplateTag)); // BKTODO:
+#if 0
+            if (auto* template_element = ToHTMLTemplateElementOrNull(*this))
+                container = template_element->content();
+#endif
+            ReplaceChildrenWithFragment(container, fragment, exceptionState);
+        }
+    }
+}
+
 void Element::StripScriptingAttributes(Vector<Attribute> &attributeVector) const
 {
     ASSERT(false); // BKTODO:
+}
+
+void Element::SynchronizeAllAttributes(void) const
+{
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (!GetElementData())
+        return;
+    // NOTE: AnyAttributeMatches in selector_checker.cc currently assumes that all
+    // lazy attributes have a null namespace.  If that ever changes we'll need to
+    // fix that code.
+    if (GetElementData()->style_attribute_is_dirty_)
+    {
+        DCHECK(IsStyledElement());
+        SynchronizeStyleAttributeInternal();
+    }
+#endif
+}
+
+void Element::SynchronizeAttribute(const AtomicString &localName) const
+{
+#ifndef BLINKIT_CRAWLER_ONLY
+    // This version of synchronizeAttribute() is streamlined for the case where
+    // you don't have a full QualifiedName, e.g when called from DOM API.
+    if (!GetElementData())
+        return;
+    if (GetElementData()->style_attribute_is_dirty_ &&
+        LowercaseIfNecessary(local_name) == styleAttr.LocalName()) {
+        DCHECK(IsStyledElement());
+        SynchronizeStyleAttributeInternal();
+        return;
+    }
+#endif
 }
 
 void Element::SynchronizeAttribute(const QualifiedName &name) const
@@ -539,6 +866,17 @@ String Element::TextFromChildren(void) const
     return content.ToString();
 }
 
+void Element::UpdateId(const AtomicString &oldId, const AtomicString &newId)
+{
+    if (!IsInTreeScope())
+        return;
+
+    if (oldId == newId)
+        return;
+
+    UpdateId(ContainingTreeScope(), oldId, newId);
+}
+
 void Element::UpdateId(TreeScope &scope, const AtomicString &oldId, const AtomicString &newId)
 {
     ASSERT(IsInTreeScope());
@@ -575,6 +913,30 @@ void Element::UpdateName(const AtomicString &oldName, const AtomicString &newNam
 void Element::UpdateNamedItemRegistration(NamedItemType type, const AtomicString &oldName, const AtomicString &newName)
 {
     ASSERT(false); // BKTODO:
+}
+
+void Element::WillModifyAttribute(const QualifiedName &name, const AtomicString &oldValue, const AtomicString &newValue)
+{
+    if (name == html_names::kNameAttr)
+        UpdateName(oldValue, newValue);
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (GetCustomElementState() == CustomElementState::kCustom) {
+        CustomElement::EnqueueAttributeChangedCallback(this, name, old_value,
+            new_value);
+    }
+
+    if (old_value != new_value) {
+        GetDocument().GetStyleEngine().AttributeChangedForElement(name, *this);
+        if (IsUpgradedV0CustomElement()) {
+            V0CustomElement::AttributeDidChange(this, name.LocalName(), old_value,
+                new_value);
+        }
+    }
+#endif
+
+    if (MutationObserverInterestGroup *recipients = MutationObserverInterestGroup::CreateForAttributesMutation(*this, name))
+        ASSERT(false); // BKTODO: recipients->EnqueueMutationRecord(MutationRecord::CreateAttributes(this, name, oldValue));
 }
 
 } // namespace blink

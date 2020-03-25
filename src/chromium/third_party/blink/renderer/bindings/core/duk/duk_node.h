@@ -15,13 +15,25 @@
 #pragma once
 
 #include "third_party/blink/renderer/bindings/core/duk/duk_event_target.h"
+#include "third_party/blink/renderer/core/dom/node.h"
 
 namespace BlinKit {
 
+namespace ProtoNames {
+extern const char DocumentFragment[];
+extern const char Text[];
+}
+
 class DukNode : public DukEventTarget
 {
+public:
+    static void RegisterPrototype(PrototypeHelper &helper, const char *name);
+
+    static duk_idx_t Push(duk_context *ctx, blink::Node *node);
 protected:
     static void FillPrototypeEntry(PrototypeEntry &entry);
+    static duk_ret_t TextContentGetter(duk_context *ctx);
+    static duk_ret_t TextContentSetter(duk_context *ctx);
 };
 
 } // namespace BlinKit

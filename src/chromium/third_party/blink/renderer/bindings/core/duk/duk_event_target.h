@@ -15,6 +15,7 @@
 #pragma once
 
 #include "third_party/blink/renderer/bindings/core/duk/duk_script_object.h"
+#include "third_party/blink/renderer/core/dom/events/event_target.h"
 
 namespace BlinKit {
 

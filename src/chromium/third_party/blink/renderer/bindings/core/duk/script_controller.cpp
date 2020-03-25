@@ -46,6 +46,7 @@
 #include "base/memory/ptr_util.h"
 #include "blinkit/crawler/crawler_impl.h"
 #include "blinkit/js/context_impl.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_source_code.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 
@@ -58,10 +59,7 @@ static void CommonCallback(ContextImpl *ctxImpl, duk_context *ctx)
     if (!duk_is_error(ctx, -1))
         return;
 
-    size_t l = 0;
-    const char *s = duk_safe_to_lstring(ctx, -1, &l);
-
-    std::string str(s, l);
+    std::string str = Duk::To<std::string>(ctx, -1);
     ctxImpl->ConsoleOutput(BK_CONSOLE_ERROR, str.c_str());
 }
 

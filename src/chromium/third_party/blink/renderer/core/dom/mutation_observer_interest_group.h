@@ -62,6 +62,14 @@ public:
         ASSERT(false); // BKTODO:
         return nullptr;
     }
+    static MutationObserverInterestGroup* CreateForAttributesMutation(Node &target, const QualifiedName &attributeName)
+    {
+        if (!target.GetDocument().HasMutationObserversOfType(kMutationTypeAttributes))
+            return nullptr;
+
+        ASSERT(false); // BKTODO:
+        return nullptr;
+    }
 
     void EnqueueMutationRecord(MutationRecord *mutation);
 };

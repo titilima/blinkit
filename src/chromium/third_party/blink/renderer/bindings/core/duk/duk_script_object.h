@@ -48,13 +48,14 @@ public:
         return PushScriptWrappable(ctx, T::ProtoName, nativeObject);
     }
 protected:
+    static void BindNative(duk_context *ctx, duk_idx_t idx, blink::ScriptWrappable &nativeObject);
+    static duk_ret_t DefaultFinalizer(duk_context *ctx);
     static void FillPrototypeEntry(PrototypeEntry &entry);
+    static bool Push(duk_context *ctx, blink::ScriptWrappable *nativeObject);
 private:
     friend class PrototypeHelper;
-    static void BindScriptWrappable(duk_context *ctx, duk_idx_t idx, blink::ScriptWrappable &nativeObject);
     static blink::ScriptWrappable* ToScriptWrappable(duk_context *ctx, duk_idx_t idx);
     static duk_idx_t PushScriptWrappable(duk_context *ctx, const char *protoName, blink::ScriptWrappable *nativeObject);
-    static duk_ret_t DefaultFinalizer(duk_context *ctx);
 };
 
 } // namespace BlinKit

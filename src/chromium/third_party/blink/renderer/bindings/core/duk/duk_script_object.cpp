@@ -11,7 +11,10 @@
 
 #include "duk_script_object.h"
 
+#include "blinkit/js/context_impl.h"
+#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
+#include "third_party/blink/renderer/platform/bindings/script_wrappers.h"
 
 using namespace blink;
 
@@ -44,12 +47,9 @@ static duk_ret_t ToString(duk_context *ctx)
 
 } // namespace Impl
 
-void DukScriptObject::BindScriptWrappable(duk_context *ctx, duk_idx_t idx, blink::ScriptWrappable &nativeObject)
+void DukScriptObject::BindNative(duk_context *ctx, duk_idx_t idx, ScriptWrappable &nativeObject)
 {
     idx = duk_normalize_index(ctx, idx);
-
-    ASSERT(nullptr == nativeObject.m_contextObject);
-    nativeObject.m_contextObject = duk_get_heapptr(ctx, idx);
 
     duk_push_pointer(ctx, &nativeObject);
     duk_put_prop_string(ctx, idx, NativeThis);
@@ -60,10 +60,12 @@ duk_ret_t DukScriptObject::DefaultFinalizer(duk_context *ctx)
     ScriptWrappable *nativeThis = DukScriptObject::ToScriptWrappable(ctx, 0);
     if (nullptr != nativeThis)
     {
-        if (nativeThis->m_ownedByContext)
-            delete nativeThis;
-        else
-            nativeThis->m_contextObject = nullptr;
+        nativeThis->m_contextObject = nullptr;
+        if (nativeThis->IsContextRetained())
+        {
+            nativeThis->m_contextRetained = false;
+            ContextImpl::From(ctx)->GetGCPool().Save(*nativeThis);
+        }
     }
     return 0;
 }
@@ -78,16 +80,28 @@ void DukScriptObject::FillPrototypeEntry(PrototypeEntry &entry)
     entry.Add(Methods, std::size(Methods));
 }
 
-duk_idx_t DukScriptObject::PushScriptWrappable(duk_context *ctx, const char *protoName, ScriptWrappable *nativeObject)
+bool DukScriptObject::Push(duk_context *ctx, ScriptWrappable *nativeObject)
 {
     if (nullptr == nativeObject)
     {
         duk_push_undefined(ctx);
-        return duk_get_top_index(ctx);
+        return true;
     }
 
     if (nullptr != nativeObject->m_contextObject)
-        return duk_push_heapptr(ctx, nativeObject->m_contextObject);
+    {
+        duk_push_heapptr(ctx, nativeObject->m_contextObject);
+        return true;
+    }
+
+    return false;
+}
+
+duk_idx_t DukScriptObject::PushScriptWrappable(duk_context *ctx, const char *protoName, ScriptWrappable *nativeObject)
+{
+    PushWrapper w(ctx, nativeObject);
+    if (Push(ctx, nativeObject))
+        return duk_get_top_index(ctx);
     return PrototypeHelper::CreateScriptObject(ctx, protoName, nativeObject);
 }
 

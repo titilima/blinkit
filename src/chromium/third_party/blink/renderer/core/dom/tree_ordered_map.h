@@ -64,6 +64,34 @@ public:
 
     void Add(const AtomicString &key, Element &element);
     Element* GetElementById(const AtomicString &key, const TreeScope &scope) const;
+
+    // While removing a ContainerNode, ID lookups won't be precise should the tree
+    // have elements with duplicate IDs contained in the element being removed.
+    // Rare trees, but ID lookups may legitimately fail across such removals;
+    // this scope object informs TreeOrderedMaps about the transitory state of the
+    // underlying tree.
+    class RemoveScope
+    {
+        STACK_ALLOCATED();
+    public:
+        RemoveScope(void)
+        {
+#if DCHECK_IS_ON()
+            ++s_removeScopeLevel;
+#endif
+        }
+        ~RemoveScope(void)
+        {
+#if DCHECK_IS_ON()
+            ASSERT(s_removeScopeLevel > 0);
+            --s_removeScopeLevel;
+#endif
+        }
+    private:
+#if DCHECK_IS_ON()
+        static int s_removeScopeLevel;
+#endif
+    };
 private:
     TreeOrderedMap(void) = default;
 

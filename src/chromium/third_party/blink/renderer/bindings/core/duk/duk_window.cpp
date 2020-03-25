@@ -54,6 +54,12 @@ static duk_ret_t DocumentGetter(duk_context *ctx)
     return 1;
 }
 
+static duk_ret_t WindowGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    return 1;
+}
+
 } // namespace Impl
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,6 +73,7 @@ void DukWindow::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
     static const PrototypeEntry::Property Properties[] = {
         { "console",   Impl::ConsoleGetter,   nullptr              },
         { "document",  Impl::DocumentGetter,  nullptr              },
+        { "window",    Impl::WindowGetter,    nullptr              },
     };
 
     DukEventTarget::FillPrototypeEntry(entry);

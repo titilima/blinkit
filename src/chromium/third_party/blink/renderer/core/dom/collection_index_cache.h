@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: collection_index_cache.h
+// Description: CollectionIndexCache Class
+//      Author: Ziming Li
+//     Created: 2020-03-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Apple Inc. All rights reserved.
  * Copyright (C) 2014 Samsung Electronics. All rights reserved.
@@ -65,8 +76,6 @@ class CollectionIndexCache {
 
   void NodeInserted();
   void NodeRemoved();
-
-  virtual void Trace(blink::Visitor* visitor) { visitor->Trace(current_node_); }
 
  protected:
   ALWAYS_INLINE NodeType* CachedNode() const { return current_node_; }

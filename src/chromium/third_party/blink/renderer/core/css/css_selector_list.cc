@@ -1,3 +1,13 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_selector_list.cc
+// Description: CSSSelectorList Class
+//      Author: Ziming Li
+//     Created: 2020-03-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
 /*
  * Copyright (C) 2008, 2012 Apple Inc. All rights reserved.
  * Copyright (C) 2009 Google Inc. All rights reserved.
@@ -28,7 +38,7 @@
 
 #include <memory>
 #include <vector>
-#include "third_party/blink/renderer/core/css/parser/css_parser_selector.h"
+// BKTODO: #include "third_party/blink/renderer/core/css/parser/css_parser_selector.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/wtf/allocator/partitions.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
@@ -46,6 +56,8 @@ namespace blink {
 CSSSelectorList CSSSelectorList::Copy() const {
   CSSSelectorList list;
 
+  ASSERT(false); // BKTODO:
+#if 0
   unsigned length = this->ComputeLength();
   list.selector_array_ =
       reinterpret_cast<CSSSelector*>(WTF::Partitions::FastMalloc(
@@ -53,6 +65,7 @@ CSSSelectorList CSSSelectorList::Copy() const {
           kCSSSelectorTypeName));
   for (unsigned i = 0; i < length; ++i)
     new (&list.selector_array_[i]) CSSSelector(selector_array_[i]);
+#endif
 
   return list;
 }
@@ -65,6 +78,9 @@ CSSSelectorList CSSSelectorList::ConcatenateListExpansion(
   unsigned total_length = expanded_length + original_length;
 
   CSSSelectorList list;
+
+  ASSERT(false); // BKTODO:
+#if 0
   list.selector_array_ = reinterpret_cast<CSSSelector*>(
       WTF::Partitions::FastMalloc(WTF::Partitions::ComputeAllocationSize(
                                       total_length, sizeof(CSSSelector)),
@@ -86,6 +102,7 @@ CSSSelectorList CSSSelectorList::ConcatenateListExpansion(
   }
   DCHECK(list.selector_array_[list_index - 1].IsLastInOriginalList());
   DCHECK(list.selector_array_[list_index - 1].IsLastInSelectorList());
+#endif
   return list;
 }
 
@@ -173,6 +190,8 @@ CSSSelectorList CSSSelectorList::ExpandedFirstPseudoClass() const {
     return CSSSelectorList();
 
   CSSSelectorList list;
+  ASSERT(false); // BKTODO:
+#if 0
   list.selector_array_ =
       reinterpret_cast<CSSSelector*>(WTF::Partitions::FastMalloc(
           WTF::Partitions::ComputeAllocationSize(expanded_selector_list_length,
@@ -196,6 +215,7 @@ CSSSelectorList CSSSelectorList::ExpandedFirstPseudoClass() const {
       true);
   list.selector_array_[expanded_selector_list_length - 1].SetLastInSelectorList(
       true);
+#endif
 
   return list;
 }
@@ -245,13 +265,18 @@ CSSSelectorList CSSSelectorList::AdoptSelectorVector(
     Vector<std::unique_ptr<CSSParserSelector>>& selector_vector) {
   size_t flattened_size = 0;
   for (wtf_size_t i = 0; i < selector_vector.size(); ++i) {
+    ASSERT(false); // BKTODO:
+#if 0
     for (CSSParserSelector* selector = selector_vector[i].get(); selector;
          selector = selector->TagHistory())
       ++flattened_size;
+#endif
   }
   DCHECK(flattened_size);
 
   CSSSelectorList list;
+  ASSERT(false); // BKTODO:
+#if 0
   list.selector_array_ = reinterpret_cast<CSSSelector*>(
       WTF::Partitions::FastMalloc(WTF::Partitions::ComputeAllocationSize(
                                       flattened_size, sizeof(CSSSelector)),
@@ -279,6 +304,7 @@ CSSSelectorList CSSSelectorList::AdoptSelectorVector(
   list.selector_array_[array_index - 1].SetLastInSelectorList(true);
   list.selector_array_[array_index - 1].SetLastInOriginalList(true);
   selector_vector.clear();
+#endif
 
   return list;
 }

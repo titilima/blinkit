@@ -44,6 +44,7 @@
 #pragma once
 
 #include <stack>
+#include <unordered_set>
 #include <vector>
 #include "third_party/blink/renderer/core/dom/container_node.h"
 #include "third_party/blink/renderer/core/dom/create_element_flags.h"
@@ -69,9 +70,7 @@ class DocumentInit;
 class DocumentLoader;
 class DocumentParser;
 class DocumentType;
-class Element;
 class ElementDataCache;
-class ExceptionState;
 class LayoutView;
 class LocalDOMWindow;
 class LocalFrame;
@@ -110,6 +109,7 @@ public:
 
     void Initialize(void);
     virtual void Shutdown(void);
+    bool IsHTMLDocument(void) const { return true; } // Just a placeholder.
 
     uint64_t DomTreeVersion(void) const { return m_domTreeVersion; }
     void IncDOMTreeVersion(void)
@@ -125,6 +125,10 @@ public:
     Document* ContextDocument(void) const;
 
     // Exports for JS
+    Element* body(void) const;
+    DocumentFragment* createDocumentFragment(void);
+    Element* createElement(const AtomicString &name, ExceptionState &exceptionState);
+    Element* documentElement(void) const { return m_documentElement.Get(); }
     using TreeScope::getElementById;
     void open(Document *enteredDocument, ExceptionState &exceptionState);
     void write(const String &text, Document *enteredDocument = nullptr, ExceptionState &exceptionState = ASSERT_NO_EXCEPTION);
@@ -145,10 +149,35 @@ public:
     // https://html.spec.whatwg.org/multipage/urls-and-fetching.html#fallback-base-url
     BlinKit::BkURL FallbackBaseURL(void) const;
 
-    Element* documentElement(void) const { return m_documentElement.Get(); }
-
+    // The following implements the rule from HTML 4 for what valid names are.
+    // To get this right for all the XML cases, we probably have to improve this
+    // or move it and make it sensitive to the type of document.
+    static bool IsValidName(const String &name);
     virtual Element* CreateElement(const AtomicString &name, CreateElementFlags flags) = 0;
 
+    // keep track of what types of event listeners are registered, so we don't
+    // dispatch events unnecessarily
+    enum ListenerType {
+        kDOMSubtreeModifiedListener = 1,
+        kDOMNodeInsertedListener = 1 << 1,
+        kDOMNodeRemovedListener = 1 << 2,
+        kDOMNodeRemovedFromDocumentListener = 1 << 3,
+        kDOMNodeInsertedIntoDocumentListener = 1 << 4,
+        kDOMCharacterDataModifiedListener = 1 << 5,
+        kAnimationEndListener = 1 << 6,
+        kAnimationStartListener = 1 << 7,
+        kAnimationIterationListener = 1 << 8,
+        kTransitionEndListener = 1 << 9,
+        kScrollListener = 1 << 10,
+        kLoadListenerAtCapturePhaseOrAtStyleElement = 1 << 11
+        // 4 bits remaining
+    };
+    bool HasListenerType(ListenerType listenerType) const { return 0 != (m_listenerTypes & listenerType); }
+    void AddListenerType(ListenerType listenerType) { m_listenerTypes |= listenerType; }
+    void AddListenerTypeIfNeeded(const AtomicString &eventType, EventTarget &eventTarget);
+    void AddMutationEventListenerTypeIfEnabled(ListenerType listenerType);
+
+    bool HasMutationObservers(void) const { return 0 != m_mutationObserverTypes; }
     bool HasMutationObserversOfType(MutationType type) const { return 0 != (m_mutationObserverTypes & type); }
 
     int NodeCount(void) const { return m_nodeCount; }
@@ -162,9 +191,12 @@ public:
     ElementDataCache* GetElementDataCache(void) { return m_elementDataCache.get(); }
     SelectorQueryCache& GetSelectorQueryCache(void);
 
+    void RegisterNodeList(const LiveNodeListBase *list);
+
     bool MayContainV0Shadow(void) const { return m_mayContainV0Shadow; }
 
     bool ShouldInvalidateNodeListCaches(const QualifiedName *attrName = nullptr) const;
+    void InvalidateNodeListCaches(const QualifiedName *attrName);
 
     DocumentLoader* Loader(void) const;
 
@@ -237,6 +269,10 @@ public:
     }
 
     bool CanAcceptChild(const Node &newChild, const Node *next, const Node *oldChild, ExceptionState &exceptionState) const;
+    // nodeChildrenWillBeRemoved is used when removing all node children at once.
+    void NodeChildrenWillBeRemoved(ContainerNode &container);
+    // nodeWillBeRemoved is only safe when removing one node at a time.
+    void NodeWillBeRemoved(Node &n);
 
     bool ContainsV1ShadowTree(void) const { return ShadowCascadeOrder::kShadowCascadeV1 == m_shadowCascadeOrder; }
 
@@ -254,6 +290,16 @@ public:
     ResourceFetcher* Fetcher(void) const override { return m_fetcher.get(); }
     bool CanExecuteScripts(ReasonForCallingCanExecuteScripts reason) override;
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(TaskType type) override;
+
+    // Temporary flag for some UseCounter items. crbug.com/859391.
+    enum class InDOMNodeRemovedHandlerState {
+        kNone,
+        kDOMNodeRemoved,
+        kDOMNodeRemovedFromDocument
+    };
+    void SetInDOMNodeRemovedHandlerState(InDOMNodeRemovedHandlerState state) { m_inDomNodeRemovedHandlerState = state; }
+    InDOMNodeRemovedHandlerState GetInDOMNodeRemovedHandlerState(void) const { return m_inDomNodeRemovedHandlerState; }
+    bool InDOMNodeRemovedHandler(void) const { return m_inDomNodeRemovedHandlerState != InDOMNodeRemovedHandlerState::kNone; }
 protected:
     Document(const DocumentInit &initializer);
 private:
@@ -284,6 +330,7 @@ private:
     String nodeName(void) const final;
     NodeType getNodeType(void) const final { return kDocumentNode; }
     Node* Clone(Document &factory, CloneChildrenFlag flag) const override;
+    bool ChildTypeAllowed(NodeType type) const final;
     // ContainerNode overrides
     void ChildrenChanged(const ChildrenChange &change) override;
     // ExecutionContext overrides
@@ -301,6 +348,7 @@ private:
     ParsingState m_parsingState = kFinishedParsing;
     ShadowCascadeOrder m_shadowCascadeOrder = kShadowCascadeNone;
 
+    unsigned short m_listenerTypes = 0;
     MutationObserverOptions m_mutationObserverTypes = 0;
 
     // https://html.spec.whatwg.org/C/dynamic-markup-insertion.html#ignore-destructive-writes-counter
@@ -343,8 +391,11 @@ private:
     std::unique_ptr<SelectorQueryCache> m_selectorQueryCache;
 
     int m_nodeCount = 0;
+    std::unordered_set<const LiveNodeListBase *> m_listsInvalidatedAtDocument;
     LiveNodeListRegistry m_nodeLists;
 
+    // Temporary flag for some UseCounter items. crbug.com/859391.
+    InDOMNodeRemovedHandlerState m_inDomNodeRemovedHandlerState = InDOMNodeRemovedHandlerState::kNone;
     bool m_mayContainV0Shadow = false; // BKTODO: This may be useless for crawlers.
 
     TaskRunnerTimer<Document> m_elementDataCacheClearTimer;

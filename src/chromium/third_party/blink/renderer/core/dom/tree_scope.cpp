@@ -92,14 +92,14 @@ Element* TreeScope::getElementById(const AtomicString &elementId) const
     if (!m_elementsById)
         return nullptr;
     Element *element = m_elementsById->GetElementById(elementId, *this);
-    ASSERT(false); // BKTODO:
-#if 0
     if (nullptr != element && &RootNode() == &GetDocument() && GetDocument().InDOMNodeRemovedHandler())
     {
+        ASSERT(false); // BKTODO:
+#if 0
         if (NodeChildRemovalTracker::IsBeingRemoved(element))
             GetDocument().CountDetachingNodeAccessInDOMNodeRemovedHandler();
-    }
 #endif
+    }
     return element;
 }
 

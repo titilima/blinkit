@@ -78,10 +78,10 @@ ElementData::ElementData(const ElementData& other, bool is_unique)
   // don't know what to do with it here.
 }
 
-UniqueElementData* ElementData::MakeUniqueCopy() const {
+std::shared_ptr<UniqueElementData> ElementData::MakeUniqueCopy() const {
   if (IsUnique())
-    return new UniqueElementData(ToUniqueElementData(*this));
-  return new UniqueElementData(ToShareableElementData(*this));
+    return base::WrapShared(new UniqueElementData(ToUniqueElementData(*this)));
+  return base::WrapShared(new UniqueElementData(ToShareableElementData(*this)));
 }
 
 bool ElementData::IsEquivalent(const ElementData* other) const {
@@ -124,6 +124,7 @@ ShareableElementData::ShareableElementData(const UniqueElementData& other)
   }
 #endif
 
+  attribute_array_ = reinterpret_cast<Attribute *>(malloc(sizeof(Attribute) * array_size_));
   for (unsigned i = 0; i < array_size_; ++i)
     new (&attribute_array_[i]) Attribute(other.attribute_vector_.at(i));
 }
@@ -160,18 +161,12 @@ UniqueElementData::UniqueElementData(const ShareableElementData& other)
     attribute_vector_.UncheckedAppend(other.attribute_array_[i]);
 }
 
-UniqueElementData* UniqueElementData::Create() {
-  return new UniqueElementData;
+std::shared_ptr<UniqueElementData> UniqueElementData::Create() {
+  return base::WrapShared(new UniqueElementData);
 }
 
-ShareableElementData* UniqueElementData::MakeShareableCopy() const {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
-  void* slot = ThreadHeap::Allocate<ElementData>(
-      SizeForShareableElementDataWithAttributeCount(attribute_vector_.size()));
-  return new (slot) ShareableElementData(*this);
-#endif
+std::shared_ptr<ShareableElementData> UniqueElementData::MakeShareableCopy() const {
+  return base::WrapShared(new ShareableElementData(*this));
 }
 
 }  // namespace blink

@@ -37,6 +37,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_DOM_NAMED_NODE_MAP_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_DOM_NAMED_NODE_MAP_H_
 
+#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
@@ -44,15 +45,14 @@
 namespace blink {
 
 class Attr;
-class ExceptionState;
 
 class NamedNodeMap final : public ScriptWrappable {
   DEFINE_WRAPPERTYPEINFO();
   friend class Element;
 
  public:
-  static NamedNodeMap* Create(Element* element) {
-    return new NamedNodeMap(element);
+  static std::unique_ptr<NamedNodeMap> Create(Element* element) {
+    return base::WrapUnique(new NamedNodeMap(element));
   }
 
   // Public DOM interface.

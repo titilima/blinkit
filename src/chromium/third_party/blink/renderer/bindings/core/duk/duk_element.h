@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <unordered_map>
 #include "third_party/blink/renderer/bindings/core/duk/duk_container_node.h"
 #include "third_party/blink/renderer/core/dom/element.h"
 
@@ -24,7 +25,16 @@ class DukElement : public DukContainerNode
 public:
     static const char ProtoName[];
     static void RegisterPrototypeForCrawler(PrototypeHelper &helper);
+
+    static duk_idx_t Push(duk_context *ctx, blink::Element *element);
+
+    static const std::unordered_map<std::string, std::string>& PrototypeMapForCrawler(void);
+#ifndef BLINKIT_CRAWLER_ONLY
+    static const std::unordered_map<std::string, std::string>& PrototypeMapForUI(void);
+#endif
 private:
+    friend class DukNode;
+    static void Create(duk_context *ctx, blink::Element &element);
     static void FillPrototypeEntryForCrawler(PrototypeEntry &entry);
 };
 

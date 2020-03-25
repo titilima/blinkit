@@ -38,8 +38,12 @@
 
 #include <vector>
 #include "third_party/blink/renderer/core/dom/node.h"
+#include "third_party/blink/renderer/core/html/collection_type.h"
 
 namespace blink {
+
+class HTMLCollection;
+class NodeListsNodeData;
 
 enum SubtreeModificationAction {
     kDispatchSubtreeModifiedEvent,
@@ -52,17 +56,31 @@ class ContainerNode : public Node
 {
 public:
     // Exports for JS
-    Node* firstChild(void) const { return m_firstChild; }
-    Element* getElementById(const AtomicString &id) const;
-    Node* lastChild(void) const { return m_lastChild; }
+    HTMLCollection* getElementsByTagName(const AtomicString &qualifiedName);
 
+    Node* FirstChild(void) const { return m_firstChild; }
+    Node* LastChild(void) const { return m_lastChild; }
+    Node* RemoveChild(Node *oldChild, ExceptionState &exceptionState);
+    Node* ReplaceChild(Node *newChild, Node *oldChild, ExceptionState &exceptionState);
+
+    bool HasOneChild(void) const { return m_firstChild && nullptr == m_firstChild->nextSibling(); }
+    bool HasOneTextChild(void) const { return HasOneChild() && m_firstChild->IsTextNode(); }
     bool HasChildren(void) const { return !!m_firstChild; }
     unsigned CountChildren(void) const;
+    Element* GetElementById(const AtomicString &id) const;
 
+    Node* AppendChild(Node *newChild, ExceptionState &exceptionState);
     Node* AppendChild(Node *newChild);
+    bool EnsurePreInsertionValidity(const Node &newChild, const Node *next, const Node *oldChild, ExceptionState &exceptionState) const;
 
     void RemoveChildren(SubtreeModificationAction action = kDispatchSubtreeModifiedEvent);
     void CloneChildNodesFrom(const ContainerNode &node);
+
+    // Utility functions for NodeListsNodeData API.
+    template <typename Collection>
+    Collection* EnsureCachedCollection(CollectionType);
+    template <typename Collection>
+    Collection* EnsureCachedCollection(CollectionType, const AtomicString& name);
 
     void ParserAppendChild(Node *newChild);
     void ParserRemoveChild(Node &oldChild);
@@ -88,18 +106,35 @@ protected:
 
     void SetFirstChild(Node *child) { m_firstChild = child; }
     void SetLastChild(Node *child) { m_lastChild = child; }
-    void FastCleanupChildren(void);
 
     void InvalidateNodeListCachesInAncestors(const QualifiedName *attrName, Element *attributeOwnerElement,
         const ChildrenChange *change);
+
+    void PreCollectGarbage(BlinKit::GCPool &gcPool) override;
 private:
     class AdoptAndAppendChild;
     friend class AdoptAndAppendChild;
 
+    NodeListsNodeData& EnsureNodeLists(void);
+
     void AppendChildCommon(Node &child);
     bool CheckParserAcceptChild(const Node &newChild) const;
+    void DidInsertNodeVector(const NodeVector &targets, Node *next, const NodeVector& postInsertionNotificationTargets);
+    // Inserts the specified nodes before |next|.
+    // |next| may be nullptr.
+    // |post_insertion_notification_targets| must not be nullptr.
+    template <typename Functor>
+    void InsertNodeVector(const NodeVector &targets, Node *next, const Functor &mutator, NodeVector *postInsertionNotificationTargets);
     void NotifyNodeInserted(Node &root, ChildrenChangeSource source = kChildrenChangeSourceAPI);
     void NotifyNodeInsertedInternal(Node &root, NodeVector &postInsertionNotificationTargets);
+    void NotifyNodeRemoved(Node &root);
+    void RemoveBetween(Node *previousChild, Node* nextChild, Node &oldChild);
+    void WillRemoveChild(Node &child);
+    void WillRemoveChildren(void);
+
+    bool RecheckNodeInsertionStructuralPrereq(const NodeVector &newChildren, const Node *next, ExceptionState &exceptionState);
+    inline bool IsHostIncludingInclusiveAncestorOfThis(const Node &newChild, ExceptionState &exceptionState) const;
+    inline bool IsChildTypeAllowed(const Node &child) const;
 
     Member<Node> m_firstChild;
     Member<Node> m_lastChild;
@@ -114,11 +149,21 @@ public:
     static ChildrenChange ForInsertion(Node &node, Node *unchangedPrevious, Node *unchangedNext, ChildrenChangeSource byParser)
     {
         ChildrenChange change;
-        change.type = node.IsElementNode() ? kElementInserted : kNonElementInserted;
-        change.siblingChanged = &node;
+        change.type                = node.IsElementNode() ? kElementInserted : kNonElementInserted;
+        change.siblingChanged      = &node;
         change.siblingBeforeChange = unchangedPrevious;
-        change.siblingAfterChange = unchangedNext;
-        change.byParser = byParser;
+        change.siblingAfterChange  = unchangedNext;
+        change.byParser            = byParser;
+        return change;
+    }
+    static ChildrenChange ForRemoval(Node &node, Node *previousSibling, Node *nextSibling, ChildrenChangeSource byParser)
+    {
+        ChildrenChange change;
+        change.type                = node.IsElementNode() ? kElementRemoved : kNonElementRemoved;
+        change.siblingChanged      = &node;
+        change.siblingBeforeChange = previousSibling;
+        change.siblingAfterChange  = nextSibling;
+        change.byParser            = byParser;
         return change;
     }
 
@@ -140,6 +185,13 @@ public:
     ChildrenChangeSource byParser;
 };
 
-}  // namespace blink
+inline void GetChildNodes(ContainerNode &node, NodeVector &nodes)
+{
+    ASSERT(nodes.empty());
+    for (Node *child = node.FirstChild(); nullptr != child; child = child->nextSibling())
+        nodes.push_back(child);
+}
 
-#endif  // BLINKIT_BLINK_CONTAINER_NODE_H
+} // namespace blink
+
+#endif // BLINKIT_BLINK_CONTAINER_NODE_H

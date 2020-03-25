@@ -47,6 +47,10 @@
 
 namespace blink {
 
+#if DCHECK_IS_ON()
+int TreeOrderedMap::RemoveScope::s_removeScopeLevel = 0;
+#endif
+
 void TreeOrderedMap::Add(const AtomicString &key, Element &element)
 {
     ASSERT(key);

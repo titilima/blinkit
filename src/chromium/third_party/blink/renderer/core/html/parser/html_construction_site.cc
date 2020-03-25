@@ -121,7 +121,7 @@ static inline bool IsAllWhitespace(const String& string) {
 }
 
 static inline void Insert(HTMLConstructionSiteTask& task) {
-  BKLOG("// BKTODO: Process <template> tag.");
+  ASSERT(!task.parent->HasTagName(html_names::kTemplateTag)); // BKTODO:
 #if 0
   if (auto* template_element = ToHTMLTemplateElementOrNull(*task.parent))
     task.parent = template_element->content();
@@ -375,6 +375,14 @@ HTMLConstructionSite::HTMLConstructionSite(
       in_quirks_mode_(document.InQuirksMode()) {
 }
 
+static Element* FirstFormAncestorOrSelf(const Element &context_element) {
+  for (const Element *e = &context_element; nullptr != e; e = e->parentElement()) {
+    if (IsHTMLFormElement(*e))
+      return const_cast<Element *>(e);
+  }
+  return nullptr;
+}
+
 void HTMLConstructionSite::InitFragmentParsing(DocumentFragment* fragment,
                                                Element* context_element) {
   DCHECK(context_element);
@@ -386,8 +394,9 @@ void HTMLConstructionSite::InitFragmentParsing(DocumentFragment* fragment,
   attachment_root_ = fragment;
   is_parsing_fragment_ = true;
 
-  ASSERT(false); // BKTODO:
-#if 0
+#ifdef BLINKIT_CRAWLER_ONLY
+  form_ = FirstFormAncestorOrSelf(*context_element);
+#else
   if (!context_element->GetDocument().IsTemplateDocument())
     form_ = Traversal<HTMLFormElement>::FirstAncestorOrSelf(*context_element);
 #endif

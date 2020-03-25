@@ -18,7 +18,8 @@
 
 #pragma once
 
-#include <unordered_map>
+#include <utility>
+#include <vector>
 #include "base/macros.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 
@@ -30,8 +31,12 @@ enum NodeListInvalidationType : int;
 class LiveNodeListRegistry
 {
     DISALLOW_NEW();
+    using Entry = std::pair<const LiveNodeListBase *, unsigned>;
 public:
     LiveNodeListRegistry(void) = default;
+
+    void Add(const LiveNodeListBase *list, NodeListInvalidationType type);
+    void Remove(const LiveNodeListBase *list, NodeListInvalidationType type);
 
     bool IsEmpty(void) const { return 0 == m_mask; }
 
@@ -45,7 +50,7 @@ private:
         return 1u << type;
     }
 
-    std::unordered_map<const LiveNodeListBase *, NodeListInvalidationType> m_data;
+    std::vector<Entry> m_data;
     unsigned m_mask = 0;
 
     DISALLOW_COPY_AND_ASSIGN(LiveNodeListRegistry);

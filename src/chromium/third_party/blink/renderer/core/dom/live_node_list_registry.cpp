@@ -21,4 +21,17 @@ namespace blink {
 
 static_assert(kNumNodeListInvalidationTypes <= sizeof(unsigned) * 8, "NodeListInvalidationType must fit in LiveNodeListRegistry bits");
 
+void LiveNodeListRegistry::Add(const LiveNodeListBase *list, NodeListInvalidationType type)
+{
+    Entry entry = { list, MaskForInvalidationType(type) };
+    ASSERT(std::find(m_data.begin(), m_data.end(), entry) == m_data.end());
+    m_data.push_back(entry);
+    m_mask |= entry.second;
+}
+
+void LiveNodeListRegistry::Remove(const LiveNodeListBase *list, NodeListInvalidationType type)
+{
+    ASSERT(false); // BKTODO:
+}
+
 }  // namespace blink

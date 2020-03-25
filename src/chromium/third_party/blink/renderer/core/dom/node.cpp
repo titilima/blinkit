@@ -38,13 +38,22 @@
 #include "node.h"
 
 #include <unordered_map>
+#include "third_party/blink/renderer/core/dom/child_list_mutation_scope.h"
 #include "third_party/blink/renderer/core/dom/document.h"
+#include "third_party/blink/renderer/core/dom/document_fragment.h"
 #include "third_party/blink/renderer/core/dom/element.h"
+#include "third_party/blink/renderer/core/dom/element_rare_data.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
+#include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatcher.h"
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
+#include "third_party/blink/renderer/core/dom/text.h"
+#include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -67,10 +76,64 @@ Node::~Node(void)
 {
     if (HasEventTargetData())
         GetEventTargetDataMap().erase(this);
+
+    if (HasRareData())
+        ClearRareData();
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (!HasRareData() && !m_data.node_layout_data_->IsSharedEmptyData())
+    else if (!HasRareData() && !m_data.node_layout_data_->IsSharedEmptyData())
         delete data_.node_layout_data_;
 #endif
+}
+
+void Node::AddedEventListener(const AtomicString& eventType, RegisteredEventListener &registeredListener)
+{
+    EventTarget::AddedEventListener(eventType, registeredListener);
+    GetDocument().AddListenerTypeIfNeeded(eventType, *this);
+#if 0 // BKTODO: Check if necessary.
+    if (LocalFrame *frame = GetDocument().GetFrame())
+        frame->GetEventHandlerRegistry().DidAddEventHandler(*this, eventType, registeredListener.Options());
+#endif
+}
+
+Node* Node::appendChild(Node *newChild, ExceptionState &exceptionState)
+{
+    if (IsContainerNode())
+        return ToContainerNode(this)->AppendChild(newChild, exceptionState);
+
+    exceptionState.ThrowDOMException(DOMExceptionCode::kHierarchyRequestError,
+        "This node type does not support this method.");
+    return nullptr;
+}
+
+void Node::ClearRareData(void)
+{
+    if (IsElementNode())
+        delete static_cast<ElementRareData *>(m_data.m_rareData);
+    else
+        delete static_cast<NodeRareData *>(m_data.m_rareData);
+    m_data.m_rareData = nullptr;
+    ClearFlag(kHasRareDataFlag);
+}
+
+Node* Node::cloneNode(bool deep, ExceptionState &exceptionState) const
+{
+    // https://dom.spec.whatwg.org/#dom-node-clonenode
+
+    // 1. If context object is a shadow root, then throw a
+    // "NotSupportedError" DOMException.
+    if (IsShadowRoot())
+    {
+        exceptionState.ThrowDOMException(DOMExceptionCode::kNotSupportedError,
+            "ShadowRoot nodes are not clonable.");
+        return nullptr;
+    }
+
+    Document &document = GetDocument();
+
+    // 2. Return a clone of the context object, with the clone children
+    // flag set if deep is true.
+    Node *ret = Clone(document, deep ? CloneChildrenFlag::kClone : CloneChildrenFlag::kSkip);
+    return GCPool::From(document).Save(ret);
 }
 
 Node* Node::CommonAncestor(const Node &other, ParentGetter getParent) const
@@ -116,11 +179,51 @@ Node* Node::CommonAncestor(const Node &other, ParentGetter getParent) const
     return nullptr;
 }
 
+bool Node::contains(const Node *node) const
+{
+    if (nullptr == node)
+        return false;
+    return this == node || node->IsDescendantOf(this);
+}
+
+bool Node::ContainsIncludingHostElements(const Node &node) const
+{
+    const Node *current = &node;
+    do {
+        if (current == this)
+            return true;
+        if (current->IsDocumentFragment() && ToDocumentFragment(current)->IsTemplateContent())
+            ASSERT(false); // BKTODO: current = static_cast<const TemplateContentDocumentFragment *>(current)->Host();
+        else
+            current = current->ParentOrShadowHostNode();
+    } while (nullptr != current);
+    return false;
+}
+
 unsigned Node::CountChildren(void) const
 {
     if (!IsContainerNode())
         return 0;
     return ToContainerNode(this)->CountChildren();
+}
+
+NodeRareData& Node::CreateRareData(void)
+{
+#ifdef BLINKIT_CRAWLER_ONLY
+    if (IsElementNode())
+        m_data.m_rareData = ElementRareData::Create();
+    else
+        m_data.m_rareData = NodeRareData::Create();
+#else
+    if (IsElementNode())
+        m_data.m_rareData = ElementRareData::Create(data_.node_layout_data_);
+    else
+        data_.rare_data_ = NodeRareData::Create(data_.node_layout_data_);
+#endif
+
+    ASSERT(m_data.m_rareData);
+    SetFlag(kHasRareDataFlag);
+    return *RareData();
 }
 
 void Node::DefaultEventHandler(Event &event)
@@ -223,37 +326,41 @@ DispatchEventResult Node::DispatchEventInternal(Event &event)
     return EventDispatcher::DispatchEvent(*this, event);
 }
 
-Node* Node::firstChild(void) const
+void Node::DispatchSubtreeModifiedEvent(void)
 {
-    if (!IsContainerNode())
-        return nullptr;
-    return ToContainerNode(this)->firstChild();
-}
+    if (IsInShadowTree())
+        return;
 
-void Node::HandleLocalEvents(Event &event)
-{
-    if (!HasEventTargetData())
+#if DCHECK_IS_ON()
+    DCHECK(!EventDispatchForbiddenScope::IsEventDispatchForbidden());
+#endif
+
+    if (!GetDocument().HasListenerType(Document::kDOMSubtreeModifiedListener))
         return;
 
     ASSERT(false); // BKTODO:
 #if 0
-    if (IsDisabledFormControl(this) && event.IsMouseEvent() &&
-        !RuntimeEnabledFeatures::SendMouseEventsDisabledFormControlsEnabled()) {
-        if (HasEventListeners(event.type())) {
-            UseCounter::Count(GetDocument(),
-                WebFeature::kDispatchMouseEventOnDisabledFormControl);
-            if (event.type() == EventTypeNames::mousedown ||
-                event.type() == EventTypeNames::mouseup) {
-                UseCounter::Count(
-                    GetDocument(),
-                    WebFeature::kDispatchMouseUpDownEventOnDisabledFormControl);
-            }
-        }
-        return;
-    }
-
-    FireEventListeners(event);
+    DispatchScopedEvent(*MutationEvent::Create(EventTypeNames::DOMSubtreeModified, Event::Bubbles::kYes));
 #endif
+}
+
+EventTargetData& Node::EnsureEventTargetData(void)
+{
+    EventTargetDataMap &targetMap = GetEventTargetDataMap();
+    if (!HasEventTargetData())
+    {
+        ASSERT(std::end(targetMap) == targetMap.find(this));
+        SetHasEventTargetData(true);
+        targetMap[this] = std::make_unique<EventTargetData>();
+    }
+    return *targetMap.at(this);
+}
+
+Node* Node::firstChild(void) const
+{
+    if (!IsContainerNode())
+        return nullptr;
+    return ToContainerNode(this)->FirstChild();
 }
 
 EventTargetData* Node::GetEventTargetData(void)
@@ -261,10 +368,22 @@ EventTargetData* Node::GetEventTargetData(void)
     return HasEventTargetData() ? GetEventTargetDataMap()[this].get() : nullptr;
 }
 
+ExecutionContext* Node::GetExecutionContext(void) const
+{
+    return GetDocument().ContextDocument();
+}
+
+void Node::HandleLocalEvents(Event &event)
+{
+    if (!HasEventTargetData())
+        return;
+
+    FireEventListeners(event);
+}
+
 bool Node::HasTagName(const HTMLQualifiedName &name) const
 {
-    ASSERT(false); // BKTODO:
-    return false;
+    return IsHTMLElement() && ToElement(*this).HasTagName(name);
 }
 
 Node::InsertionNotificationRequest Node::InsertedInto(ContainerNode &insertionPoint)
@@ -292,7 +411,18 @@ Node::InsertionNotificationRequest Node::InsertedInto(ContainerNode &insertionPo
 
 bool Node::IsDescendantOf(const Node *other) const
 {
-    ASSERT(false); // BKTODO:
+    // Return true if other is an ancestor of this, otherwise false
+    if (nullptr == other || !other->hasChildren() || isConnected() != other->isConnected())
+        return false;
+    if (other->GetTreeScope() != GetTreeScope())
+        return false;
+    if (other->IsTreeScope())
+        return !IsTreeScope();
+    for (const ContainerNode *n = parentNode(); nullptr != n; n = n->parentNode())
+    {
+        if (n == other)
+            return true;
+    }
     return false;
 }
 
@@ -303,8 +433,7 @@ bool Node::IsDocumentNode(void) const
 
 bool Node::IsTreeScope(void) const
 {
-    ASSERT(false); // BKTODO:
-    return false;
+    return &GetTreeScope().RootNode() == this;
 }
 
 bool Node::IsUserActionElementActive(void) const
@@ -317,7 +446,7 @@ Node* Node::lastChild(void) const
 {
     if (!IsContainerNode())
         return nullptr;
-    return ToContainerNode(this)->lastChild();
+    return ToContainerNode(this)->LastChild();
 }
 
 bool Node::MayContainLegacyNodeTreeWhereDistributionShouldBeSupported(void) const
@@ -345,9 +474,38 @@ unsigned Node::NodeIndex(void) const
     return count;
 }
 
+NodeListsNodeData* Node::NodeLists(void)
+{
+    return HasRareData() ? RareData()->NodeLists() : nullptr;
+}
+
 String Node::nodeValue(void) const
 {
     return String();
+}
+
+void Node::NotifyMutationObserversNodeWillDetach(void)
+{
+    if (!GetDocument().HasMutationObservers())
+        return;
+
+    ASSERT(false); // BKTODO:
+#if 0
+    ScriptForbiddenScope forbid_script_during_raw_iteration;
+    for (Node* node = parentNode(); node; node = node->parentNode()) {
+        if (const HeapVector<TraceWrapperMember<MutationObserverRegistration>>*
+            registry = node->MutationObserverRegistry()) {
+            for (const auto& registration : *registry)
+                registration->ObservedSubtreeNodeWillDetach(*this);
+        }
+
+        if (const HeapHashSet<TraceWrapperMember<MutationObserverRegistration>>*
+            transient_registry = node->TransientMutationObserverRegistry()) {
+            for (auto& registration : *transient_registry)
+                registration->ObservedSubtreeNodeWillDetach(*this);
+        }
+    }
+#endif
 }
 
 Element* Node::parentElement(void) const
@@ -408,9 +566,26 @@ void Node::RemoveAllEventListenersRecursively(void)
     }
 }
 
+Node* Node::removeChild(Node *child, ExceptionState &exceptionState)
+{
+    if (IsContainerNode())
+        return ToContainerNode(this)->RemoveChild(child, exceptionState);
+
+    exceptionState.ThrowDOMException(DOMExceptionCode::kNotFoundError,
+        "This node type does not support this method.");
+    return nullptr;
+}
+
 void Node::RemovedFrom(ContainerNode &insertionPoint)
 {
-    ASSERT(false); // BKTODO:
+    ASSERT(insertionPoint.isConnected() || IsContainerNode() || IsInShadowTree());
+    if (insertionPoint.isConnected())
+    {
+        ClearFlag(kIsConnectedFlag);
+        insertionPoint.GetDocument().DecrementNodeCount();
+    }
+    if (IsInShadowTree() && !ContainingTreeScope().RootNode().IsShadowRoot())
+        ClearFlag(kIsInShadowTreeFlag);
 }
 
 void Node::setNodeValue(const String &nodeValue)
@@ -422,6 +597,73 @@ void Node::SetParentOrShadowHostNode(ContainerNode *parent)
 {
     ASSERT(IsMainThread());
     m_parentOrShadowHostNode = parent;
+}
+
+void Node::setTextContent(const String &text)
+{
+    switch (getNodeType())
+    {
+        case kAttributeNode:
+        case kTextNode:
+        case kCdataSectionNode:
+        case kCommentNode:
+        case kProcessingInstructionNode:
+            setNodeValue(text);
+            return;
+        case kElementNode:
+        case kDocumentFragmentNode:
+        {
+            // FIXME: Merge this logic into replaceChildrenWithText.
+            ContainerNode *container = ToContainerNode(this);
+
+            // Note: This is an intentional optimization.
+            // See crbug.com/352836 also.
+            // No need to do anything if the text is identical.
+            if (container->HasOneTextChild() && ToText(container->firstChild())->data() == text
+                && !text.IsEmpty())
+            {
+                return;
+            }
+
+            ChildListMutationScope mutation(*this);
+            // Note: This API will not insert empty text nodes:
+            // https://dom.spec.whatwg.org/#dom-node-textcontent
+            if (text.IsEmpty())
+            {
+                container->RemoveChildren(kDispatchSubtreeModifiedEvent);
+            }
+            else
+            {
+                ASSERT(false); // BKTODO:
+#if 0
+                container->RemoveChildren(kOmitSubtreeModifiedEvent);
+                container->AppendChild(GetDocument().createTextNode(text), ASSERT_NO_EXCEPTION);
+#endif
+        }
+            return;
+        }
+        case kDocumentNode:
+        case kDocumentTypeNode:
+            // Do nothing.
+            return;
+    }
+    NOTREACHED();
+}
+
+String Node::textContent(bool convertBrsToNewlines) const
+{
+    ASSERT(false); // BKTODO:
+    return String();
+}
+
+Node& Node::TreeRoot(void) const
+{
+    if (IsInTreeScope())
+        return ContainingTreeScope().RootNode();
+    const Node *node = this;
+    while (nullptr != node->parentNode())
+        node = node->parentNode();
+    return const_cast<Node &>(*node);
 }
 
 void Node::UpdateDistributionInternal(void)

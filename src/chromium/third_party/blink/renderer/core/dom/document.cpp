@@ -49,12 +49,14 @@
 #include "third_party/blink/renderer/core/dom/element_data_cache.h"
 #include "third_party/blink/renderer/core/dom/element_traversal.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
+#include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
 #include "third_party/blink/renderer/core/dom/live_node_list_base.h"
 #include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
+#include "third_party/blink/renderer/core/html_element_type_helpers.h"
 #include "third_party/blink/renderer/core/html/parser/html_document_parser.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/core/html/parser/nesting_level_incrementer.h"
@@ -63,6 +65,7 @@
 #include "third_party/blink/renderer/core/loader/navigation_scheduler.h"
 #include "third_party/blink/renderer/core/loader/text_resource_decoder_builder.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
+#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 #include "third_party/blink/renderer/platform/network/http_parsers.h"
@@ -73,6 +76,91 @@ using namespace BlinKit;
 namespace blink {
 
 uint64_t Document::m_globalTreeVersion = 0;
+
+// DOM Level 2 says (letters added):
+//
+// a) Name start characters must have one of the categories Ll, Lu, Lo, Lt, Nl.
+// b) Name characters other than Name-start characters must have one of the
+//    categories Mc, Me, Mn, Lm, or Nd.
+// c) Characters in the compatibility area (i.e. with character code greater
+//    than #xF900 and less than #xFFFE) are not allowed in XML names.
+// d) Characters which have a font or compatibility decomposition (i.e. those
+//    with a "compatibility formatting tag" in field 5 of the database -- marked
+//    by field 5 beginning with a "<") are not allowed.
+// e) The following characters are treated as name-start characters rather than
+//    name characters, because the property file classifies them as Alphabetic:
+//    [#x02BB-#x02C1], #x0559, #x06E5, #x06E6.
+// f) Characters #x20DD-#x20E0 are excluded (in accordance with Unicode, section
+//    5.14).
+// g) Character #x00B7 is classified as an extender, because the property list
+//    so identifies it.
+// h) Character #x0387 is added as a name character, because #x00B7 is its
+//    canonical equivalent.
+// i) Characters ':' and '_' are allowed as name-start characters.
+// j) Characters '-' and '.' are allowed as name characters.
+//
+// It also contains complete tables. If we decide it's better, we could include
+// those instead of the following code.
+
+static inline bool IsValidNameStart(UChar32 c)
+{
+    // rule (e) above
+    if ((c >= 0x02BB && c <= 0x02C1) || c == 0x559 || c == 0x6E5 || c == 0x6E6)
+        return true;
+
+    // rule (i) above
+    if (c == ':' || c == '_')
+        return true;
+
+    // rules (a) and (f) above
+    const uint32_t kNameStartMask = WTF::Unicode::kLetter_Lowercase | WTF::Unicode::kLetter_Uppercase
+        | WTF::Unicode::kLetter_Other | WTF::Unicode::kLetter_Titlecase | WTF::Unicode::kNumber_Letter;
+    if (0 == (WTF::Unicode::Category(c) & kNameStartMask))
+        return false;
+
+    // rule (c) above
+    if (c >= 0xF900 && c < 0xFFFE)
+        return false;
+
+    // rule (d) above
+    WTF::Unicode::CharDecompositionType decompType = WTF::Unicode::DecompositionType(c);
+    if (decompType == WTF::Unicode::kDecompositionFont || decompType == WTF::Unicode::kDecompositionCompat)
+        return false;
+
+    return true;
+}
+
+static inline bool IsValidNamePart(UChar32 c)
+{
+    // rules (a), (e), and (i) above
+    if (IsValidNameStart(c))
+        return true;
+
+    // rules (g) and (h) above
+    if (c == 0x00B7 || c == 0x0387)
+        return true;
+
+    // rule (j) above
+    if (c == '-' || c == '.')
+        return true;
+
+    // rules (b) and (f) above
+    const uint32_t kOtherNamePartMask = WTF::Unicode::kMark_NonSpacing | WTF::Unicode::kMark_Enclosing
+        | WTF::Unicode::kMark_SpacingCombining | WTF::Unicode::kLetter_Modifier | WTF::Unicode::kNumber_DecimalDigit;
+    if (!(WTF::Unicode::Category(c) & kOtherNamePartMask))
+        return false;
+
+    // rule (c) above
+    if (c >= 0xF900 && c < 0xFFFE)
+        return false;
+
+    // rule (d) above
+    WTF::Unicode::CharDecompositionType decompType = WTF::Unicode::DecompositionType(c);
+    if (decompType == WTF::Unicode::kDecompositionFont || decompType == WTF::Unicode::kDecompositionCompat)
+        return false;
+
+    return true;
+}
 
 Document::Document(const DocumentInit &initializer)
     : ContainerNode(nullptr, GetConstructionType(initializer))
@@ -132,7 +220,6 @@ Document::Document(const DocumentInit &initializer)
 
 Document::~Document(void)
 {
-    FastCleanupChildren();
 #ifndef BLINKIT_CRAWLER_ONLY
     DCHECK(!GetLayoutView());
 #endif
@@ -144,11 +231,99 @@ void Document::Abort(void)
     CheckCompletedInternal();
 }
 
+void Document::AddListenerTypeIfNeeded(const AtomicString &eventType, EventTarget &eventTarget)
+{
+    if (eventType == event_type_names::kDOMSubtreeModified)
+    {
+        AddMutationEventListenerTypeIfEnabled(kDOMSubtreeModifiedListener);
+    }
+    else if (eventType == event_type_names::kDOMNodeInserted)
+    {
+        AddMutationEventListenerTypeIfEnabled(kDOMNodeInsertedListener);
+    }
+    else if (eventType == event_type_names::kDOMNodeRemoved)
+    {
+        AddMutationEventListenerTypeIfEnabled(kDOMNodeRemovedListener);
+    }
+    else if (eventType == event_type_names::kDOMNodeRemovedFromDocument)
+    {
+        AddMutationEventListenerTypeIfEnabled(kDOMNodeRemovedFromDocumentListener);
+    }
+    else if (eventType == event_type_names::kDOMNodeInsertedIntoDocument)
+    {
+        AddMutationEventListenerTypeIfEnabled(kDOMNodeInsertedIntoDocumentListener);
+    }
+    else if (eventType == event_type_names::kDOMCharacterDataModified)
+    {
+        AddMutationEventListenerTypeIfEnabled(kDOMCharacterDataModifiedListener);
+    }
+#ifndef BLINKIT_CRAWLER_ONLY
+    else if (event_type == EventTypeNames::webkitAnimationStart ||
+        event_type == EventTypeNames::animationstart) {
+        AddListenerType(kAnimationStartListener);
+    }
+    else if (event_type == EventTypeNames::webkitAnimationEnd ||
+        event_type == EventTypeNames::animationend) {
+        AddListenerType(kAnimationEndListener);
+    }
+    else if (event_type == EventTypeNames::webkitAnimationIteration ||
+        event_type == EventTypeNames::animationiteration) {
+        AddListenerType(kAnimationIterationListener);
+        if (View()) {
+            // Need to re-evaluate time-to-effect-change for any running animations.
+            View()->ScheduleAnimation();
+        }
+    }
+    else if (event_type == EventTypeNames::webkitTransitionEnd ||
+        event_type == EventTypeNames::transitionend) {
+        AddListenerType(kTransitionEndListener);
+    }
+    else if (eventType == event_type_names::kScroll)
+    {
+        AddListenerType(kScrollListener);
+    }
+#endif // BLINKIT_CRAWLER_ONLY
+    else if (eventType == event_type_names::kLoad)
+    {
+#ifndef BLINKIT_CRAWLER_ONLY
+        if (Node* node = event_target.ToNode()) {
+            if (IsHTMLStyleElement(*node)) {
+                AddListenerType(kLoadListenerAtCapturePhaseOrAtStyleElement);
+                return;
+            }
+        }
+#endif
+        if (eventTarget.HasCapturingEventListeners(eventType))
+            AddListenerType(kLoadListenerAtCapturePhaseOrAtStyleElement);
+    }
+}
+
+void Document::AddMutationEventListenerTypeIfEnabled(ListenerType listenerType)
+{
+    AddListenerType(listenerType);
+}
+
 const BkURL& Document::BaseURL(void) const
 {
     if (!m_baseURL.IsEmpty())
         return m_baseURL;
     return BkURL::Blank();
+}
+
+Element* Document::body(void) const
+{
+    if (nullptr == documentElement())
+        return nullptr;
+
+    for (Element *child = Traversal<Element>::FirstChild(*documentElement());
+        nullptr != child;
+        child = Traversal<Element>::NextSibling(*child))
+    {
+        if (IsHTMLBodyElement(*child))
+            return child;
+    }
+
+    return nullptr;
 }
 
 bool Document::CanAcceptChild(const Node &newChild, const Node *next, const Node *oldChild, ExceptionState &exceptionState) const
@@ -354,6 +529,34 @@ void Document::ChildrenChanged(const ChildrenChange &change)
     m_documentElement = ElementTraversal::FirstWithin(*this);
 }
 
+// DOM Section 1.1.1
+bool Document::ChildTypeAllowed(NodeType type) const
+{
+    switch (type)
+    {
+        case kAttributeNode:
+        case kCdataSectionNode:
+        case kDocumentFragmentNode:
+        case kDocumentNode:
+        case kTextNode:
+            return false;
+        case kCommentNode:
+        case kProcessingInstructionNode:
+            return true;
+        case kDocumentTypeNode:
+        case kElementNode:
+            // Documents may contain no more than one of each of these.
+            // (One Element and one DocumentType.)
+            for (Node& c : NodeTraversal::ChildrenOf(*this))
+            {
+                if (c.getNodeType() == type)
+                    return false;
+            }
+            return true;
+    }
+    return false;
+}
+
 Node* Document::Clone(Document &factory, CloneChildrenFlag flag) const
 {
     ASSERT(false); // BKTODO:
@@ -382,6 +585,44 @@ Document* Document::ContextDocument(void) const
     if (m_frame)
         return const_cast<Document *>(this);
     return nullptr;
+}
+
+DocumentFragment* Document::createDocumentFragment(void)
+{
+    DocumentFragment *ret = DocumentFragment::Create(*this);
+    return GCPool::From(*this).Save(ret);
+}
+
+Element* Document::createElement(const AtomicString &name, ExceptionState &exceptionState)
+{
+    if (!IsValidName(name))
+    {
+        exceptionState.ThrowDOMException(DOMExceptionCode::kInvalidCharacterError,
+            "The tag name provided ('" + name + "') is not a valid name.");
+        return nullptr;
+    }
+
+#ifdef BLINKIT_CRAWLER_ONLY
+    Element *ret = CreateElement(name, CreateElementFlags::ByCreateElement());
+    return GCPool::From(*this).Save(ret);
+#else
+    // 2. If the context object is an HTML document, let localName be
+    // converted to ASCII lowercase.
+    AtomicString local_name = ConvertLocalName(name);
+    if (CustomElement::ShouldCreateCustomElement(local_name)) {
+        return CustomElement::CreateCustomElement(
+            *this,
+            QualifiedName(g_null_atom, local_name, HTMLNames::xhtmlNamespaceURI),
+            CreateElementFlags::ByCreateElement());
+    }
+    if (auto* element = HTMLElementFactory::Create(
+        local_name, *this, CreateElementFlags::ByCreateElement()))
+        return element;
+    QualifiedName q_name(g_null_atom, local_name, HTMLNames::xhtmlNamespaceURI);
+    if (RegistrationContext() && V0CustomElement::IsValidName(local_name))
+        return RegistrationContext()->CreateCustomTagElement(*this, q_name);
+    return HTMLUnknownElement::Create(q_name, *this);
+#endif
 }
 
 std::shared_ptr<DocumentParser> Document::CreateParser(void)
@@ -713,7 +954,7 @@ std::shared_ptr<DocumentParser> Document::ImplicitOpen(void)
 
 void Document::Initialize(void)
 {
-    assert(m_lifecycle.GetState() == DocumentLifecycle::kInactive);
+    ASSERT(m_lifecycle.GetState() == DocumentLifecycle::kInactive);
 
 #ifndef BLINKIT_CRAWLER_ONLY
     if (!ForCrawler())
@@ -754,6 +995,81 @@ void Document::Initialize(void)
 #endif
 }
 
+void Document::InvalidateNodeListCaches(const QualifiedName *attrName)
+{
+    for (const LiveNodeListBase *list : m_listsInvalidatedAtDocument)
+        list->InvalidateCacheForAttribute(attrName);
+}
+
+template <typename CharType>
+static inline bool IsValidNameASCII(const CharType *characters, unsigned length)
+{
+    CharType c = characters[0];
+    if (!(IsASCIIAlpha(c) || c == ':' || c == '_'))
+        return false;
+
+    for (unsigned i = 1; i < length; ++i)
+    {
+        c = characters[i];
+        if (!(IsASCIIAlphanumeric(c) || c == ':' || c == '_' || c == '-' || c == '.'))
+            return false;
+    }
+
+    return true;
+}
+
+static bool IsValidNameNonASCII(const LChar *characters, unsigned length)
+{
+    if (!IsValidNameStart(characters[0]))
+        return false;
+
+    for (unsigned i = 1; i < length; ++i)
+    {
+        if (!IsValidNamePart(characters[i]))
+            return false;
+    }
+
+    return true;
+}
+
+static bool IsValidNameNonASCII(const UChar *characters, unsigned length)
+{
+    for (unsigned i = 0; i < length;)
+    {
+        bool first = i == 0;
+        UChar32 c;
+        U16_NEXT(characters, i, length, c);  // Increments i.
+        if (first ? !IsValidNameStart(c) : !IsValidNamePart(c))
+            return false;
+    }
+
+    return true;
+}
+
+bool Document::IsValidName(const String &name)
+{
+    unsigned length = name.length();
+    if (0 == length)
+        return false;
+
+    if (name.Is8Bit())
+    {
+        const LChar *characters = name.Characters8();
+
+        if (IsValidNameASCII(characters, length))
+            return true;
+
+        return IsValidNameNonASCII(characters, length);
+    }
+
+    const UChar* characters = name.Characters16();
+
+    if (IsValidNameASCII(characters, length))
+        return true;
+
+    return IsValidNameNonASCII(characters, length);
+}
+
 DocumentLoader* Document::Loader(void) const
 {
     if (!m_frame)
@@ -769,21 +1085,64 @@ void Document::MaybeHandleHttpRefresh(const String &content, HttpRefreshType ref
         return;
 
     double delay;
-    String refresh_url_string;
-    if (!ParseHTTPRefresh(content,
-        refreshType == kHttpRefreshFromMetaTag
-        ? IsHTMLSpace<UChar>
-        : nullptr,
-        delay, refresh_url_string))
-    {
+    String refreshUrlString;
+    WTF::CharacterMatchFunctionPtr matcher = refreshType == kHttpRefreshFromMetaTag ? IsHTMLSpace<UChar> : nullptr;
+    if (!ParseHTTPRefresh(content, matcher, delay, refreshUrlString))
         return;
-    }
     ASSERT(false); // BKTODO:
+}
+
+void Document::NodeChildrenWillBeRemoved(ContainerNode &container)
+{
+    EventDispatchForbiddenScope assertNoEventDispatch;
+#ifndef BLINKIT_CRAWLER_ONLY
+    for (Range* range : ranges_)
+        range->NodeChildrenWillBeRemoved(container);
+#endif
+
+#if 0 // BKTODO: Check if necessary.
+    for (NodeIterator* ni : node_iterators_) {
+        for (Node& n : NodeTraversal::ChildrenOf(container))
+            ni->NodeWillBeRemoved(n);
+    }
+#endif
+
+    NotifyNodeChildrenWillBeRemoved(container);
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (ContainsV1ShadowTree()) {
+        for (Node& n : NodeTraversal::ChildrenOf(container))
+            n.CheckSlotChangeBeforeRemoved();
+    }
+#endif
 }
 
 String Document::nodeName(void) const
 {
     return "#document";
+}
+
+void Document::NodeWillBeRemoved(Node &n)
+{
+#if 0 // BKTODO: Check if necessary.
+    for (NodeIterator* ni : node_iterators_)
+        ni->NodeWillBeRemoved(n);
+#endif
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    for (Range* range : ranges_)
+        range->NodeWillBeRemoved(n);
+#endif
+
+    NotifyNodeWillBeRemoved(n);
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (ContainsV1ShadowTree())
+        n.CheckSlotChangeBeforeRemoved();
+
+    if (n.InActiveDocument())
+        GetStyleEngine().NodeWillBeRemoved(n);
+#endif
 }
 
 void Document::open(Document *enteredDocument, ExceptionState &exceptionState)
@@ -847,6 +1206,13 @@ void Document::PopCurrentScript(ScriptElementBase *script)
 void Document::PushCurrentScript(ScriptElementBase *newCurrentScript)
 {
     m_currentScriptStack.push(newCurrentScript);
+}
+
+void Document::RegisterNodeList(const LiveNodeListBase *list)
+{
+    m_nodeLists.Add(list, list->InvalidationType());
+    if (list->IsRootedAtTreeScope())
+        m_listsInvalidatedAtDocument.insert(list);
 }
 
 void Document::RemoveAllEventListeners(void)

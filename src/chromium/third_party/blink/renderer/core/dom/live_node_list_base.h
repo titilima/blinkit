@@ -39,14 +39,67 @@
 #pragma once
 
 #include "third_party/blink/renderer/core/dom/document.h"
+#include "third_party/blink/renderer/core/dom/element_traversal.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 
 namespace blink {
 
+enum class NodeListSearchRoot {
+    kOwnerNode,
+    kTreeScope,
+};
+
 class LiveNodeListBase : public GarbageCollectedMixin
 {
 public:
+    LiveNodeListBase(ContainerNode &ownerNode,
+        NodeListSearchRoot searchRoot,
+        NodeListInvalidationType invalidationType,
+        CollectionType collectionType)
+        : m_ownerNode(ownerNode)
+        , m_searchRoot(static_cast<unsigned>(searchRoot))
+        , m_invalidationType(invalidationType)
+        , m_collectionType(collectionType)
+    {
+        ASSERT(static_cast<unsigned>(searchRoot) == m_searchRoot);
+        ASSERT(static_cast<unsigned>(invalidationType) == m_invalidationType);
+        ASSERT(static_cast<unsigned>(collectionType) == m_collectionType);
+    }
+    virtual ~LiveNodeListBase(void) = default;
+
+    ContainerNode& RootNode(void) const;
+
+    bool IsRootedAtTreeScope(void) const { return m_searchRoot == static_cast<unsigned>(NodeListSearchRoot::kTreeScope); }
+    NodeListInvalidationType InvalidationType(void) const { return static_cast<NodeListInvalidationType>(m_invalidationType); }
+    CollectionType GetType(void) const { return static_cast<CollectionType>(m_collectionType); }
+
+    virtual void InvalidateCache(Document *oldDocument = nullptr) const = 0;
+    void InvalidateCacheForAttribute(const QualifiedName *attrName) const;
+
     static bool ShouldInvalidateTypeOnAttributeChange(NodeListInvalidationType type, const QualifiedName &attrName);
+protected:
+    Document& GetDocument(void) const { return m_ownerNode->GetDocument(); }
+
+    template <typename MatchFunc>
+    static Element* TraverseMatchingElementsForwardToOffset(
+        Element &currentElement,
+        const ContainerNode *stayWithin,
+        unsigned offset, unsigned &currentOffset,
+        MatchFunc isMatch)
+    {
+        ASSERT(currentOffset < offset);
+        for (Element *next = ElementTraversal::Next(currentElement, stayWithin, isMatch); nullptr != next; next = ElementTraversal::Next(*next, stayWithin, isMatch))
+        {
+            if (++currentOffset == offset)
+                return next;
+        }
+        return nullptr;
+    }
+private:
+    Member<ContainerNode> m_ownerNode;  // Cannot be null.
+    const unsigned m_searchRoot : 1;
+    const unsigned m_invalidationType : 4;
+    const unsigned m_collectionType : 5;
 };
 
 } // namespace blink

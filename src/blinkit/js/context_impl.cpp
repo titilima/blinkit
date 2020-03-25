@@ -14,10 +14,13 @@
 #include "base/strings/string_util.h"
 #include "blinkit/crawler/crawler_impl.h"
 #include "blinkit/js/js_value_impl.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_attr.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_console.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_document.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_element.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_event.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_window.h"
+#include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 
 using namespace blink;
@@ -36,6 +39,10 @@ ContextImpl::ContextImpl(const LocalFrame &frame)
     : m_frame(frame)
     , m_ctx(duk_create_heap_default())
     , m_consoleMessager(std::bind(DefaultConsoleOutput, std::placeholders::_1, std::placeholders::_2))
+#ifdef BLINKIT_CRAWLER_ONLY
+    , m_prototypeMap(DukElement::PrototypeMapForCrawler())
+#else
+#endif
 {
     InitializeHeapStash();
 }
@@ -153,6 +160,23 @@ ContextImpl* ContextImpl::From(duk_context *ctx)
     return ret;
 }
 
+ContextImpl* ContextImpl::From(ExecutionContext *executionContext)
+{
+    if (executionContext->IsDocument())
+    {
+        Document *document = static_cast<Document *>(executionContext);
+        return document->GetFrame()->GetScriptController().GetContext();
+    }
+
+    NOTREACHED();
+    return nullptr;
+}
+
+GCPool& ContextImpl::GetGCPool(void)
+{
+    return m_frame.GetGCPool();
+}
+
 void ContextImpl::InitializeHeapStash(void)
 {
     duk_push_heap_stash(m_ctx);
@@ -189,12 +213,24 @@ void ContextImpl::InitializeHeapStash(void)
     duk_pop(m_ctx);
 }
 
+const char* ContextImpl::LookupPrototypeName(const std::string &tagName) const
+{
+    auto it = m_prototypeMap.find(tagName);
+    if (std::end(m_prototypeMap) == it)
+        return DukElement::ProtoName;
+    return it->second.c_str();
+}
+
 void ContextImpl::RegisterPrototypesForCrawler(duk_context *ctx)
 {
     PrototypeHelper helper(ctx);
+    DukAttr::RegisterPrototype(helper);
     DukConsole::RegisterPrototype(helper);
     DukDocument::RegisterPrototypeForCrawler(helper);
     DukElement::RegisterPrototypeForCrawler(helper);
+    DukEvent::RegisterPrototype(helper);
+    DukNode::RegisterPrototype(helper, ProtoNames::DocumentFragment);
+    DukNode::RegisterPrototype(helper, ProtoNames::Text);
     DukWindow::RegisterPrototypeForCrawler(helper);
 }
 

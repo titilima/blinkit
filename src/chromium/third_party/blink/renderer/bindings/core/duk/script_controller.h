@@ -68,6 +68,7 @@ public:
     static std::unique_ptr<ScriptController> Create(LocalFrame &frame);
     ~ScriptController(void);
 
+    ContextImpl* GetContext(void) { return m_context.get(); }
     ContextImpl& EnsureContext(void);
     bool ScriptEnabled(void);
 

@@ -40,6 +40,7 @@
 #pragma once
 
 #include "third_party/blink/renderer/core/dom/events/event_target.h"
+#include "third_party/blink/renderer/core/dom/node_rare_data.h"
 #include "third_party/blink/renderer/core/dom/tree_scope.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/style/computed_style_constants.h"
@@ -49,6 +50,8 @@ namespace blink {
 
 class Document;
 class Element;
+class ExceptionState;
+class NodeRareData;
 
 const int kNodeStyleChangeShift = 18;
 const int kNodeCustomElementShift = 20;
@@ -85,6 +88,16 @@ public:
 
     ~Node(void) override;
 
+    // Exports for JS
+    Node* appendChild(Node *newChild, ExceptionState &exceptionState);
+    Node* cloneNode(bool deep, ExceptionState &exceptionState) const;
+    Node* firstChild(void) const;
+    Node* lastChild(void) const;
+    inline NodeType nodeType(void) const { return getNodeType(); }
+    Node* removeChild(Node *child, ExceptionState &exceptionState);
+    String textContent(bool convertBrsToNewlines = false) const;
+    void setTextContent(const String &text);
+
     Document& GetDocument(void) const { return GetTreeScope().GetDocument(); }
     TreeScope& GetTreeScope(void) const
     {
@@ -114,16 +127,19 @@ public:
     void SetPreviousSibling(Node *previous) { m_previous = previous; }
     Node* nextSibling(void) const { return m_next; }
     void SetNextSibling(Node *next) { m_next = next; }
-    Node* firstChild(void) const;
     bool hasChildren(void) const { return nullptr != firstChild(); }
-    Node* lastChild(void) const;
+    Node& TreeRoot(void) const;
     unsigned NodeIndex(void) const;
     unsigned CountChildren(void) const;
+    bool contains(const Node *node) const;
+    bool ContainsIncludingHostElements(const Node &node) const;
 
     Node* PseudoAwareNextSibling(void) const;
     Node* PseudoAwarePreviousSibling(void) const;
     Node* PseudoAwareFirstChild(void) const;
     Node* PseudoAwareLastChild(void) const;
+
+    NodeListsNodeData* NodeLists(void);
 
     virtual void HandleLocalEvents(Event &event);
     virtual void WillCallDefaultEventHandler(const Event &event);
@@ -181,10 +197,7 @@ public:
     virtual bool IsCharacterDataNode(void) const { return false; }
     virtual bool IsAttributeNode(void) const { return false; }
 
-    virtual bool ChildTypeAllowed(NodeType) const {
-        ASSERT(false); // BKTODO: Check child classes!
-        return false;
-    }
+    virtual bool ChildTypeAllowed(NodeType) const { return false; }
 
     enum InsertionNotificationRequest {
         kInsertionDone,
@@ -208,6 +221,10 @@ public:
         // The implementation is same to UpdateDistributionForFlatTreeTraversal.
         UpdateDistributionInternal();
     }
+
+    void DispatchSubtreeModifiedEvent(void);
+
+    void NotifyMutationObserversNodeWillDetach(void);
 
 #ifndef BLINKIT_CRAWLER_ONLY
     struct AttachContext {
@@ -312,23 +329,54 @@ protected:
     void SetTreeScope(TreeScope *scope) { m_treeScope = scope; }
     void SetIsFinishedParsingChildren(bool value) { SetFlag(value, kIsFinishedParsingChildrenFlag); }
 
+    NodeRareData* RareData(void) const
+    {
+        ASSERT(HasRareData());
+        return static_cast<NodeRareData *>(m_data.m_rareData);
+    }
+    NodeRareData& EnsureRareData(void)
+    {
+        if (HasRareData())
+            return *RareData();
+
+        return CreateRareData();
+    }
+
     // EventTarget overrides
+    void AddedEventListener(const AtomicString& eventType, RegisteredEventListener &registeredListener) override;
     DispatchEventResult DispatchEventInternal(Event &event) override;
 private:
     bool IsUserActionElementActive(void) const;
 
     void UpdateDistributionInternal(void);
 
+    NodeRareData& CreateRareData(void);
+    void ClearRareData(void);
+
     // EventTarget overrides
+    ExecutionContext* GetExecutionContext(void) const final;
     Node* ToNode(void) final { return this; }
     EventTargetData* GetEventTargetData(void) override;
+    EventTargetData& EnsureEventTargetData(void) override;
 
     uint32_t m_nodeFlags;
     Member<Node> m_parentOrShadowHostNode;
     Member<TreeScope> m_treeScope;
     Member<Node> m_previous;
     Member<Node> m_next;
-};
+    // When a node has rare data we move the layoutObject into the rare data.
+    union DataUnion {
+#ifdef BLINKIT_CRAWLER_ONLY
+        NodeRareDataBase *m_rareData = nullptr;
+#else
+        DataUnion() : node_layout_data_(&NodeRenderingData::SharedEmptyData()) {}
+        // LayoutObjects are fully owned by their DOM node. See LayoutObject's
+        // LIFETIME documentation section.
+        NodeRenderingData* node_layout_data_;
+        NodeRareDataBase* rare_data_;
+#endif
+    } m_data;
+ };
 
 DEFINE_COMPARISON_OPERATORS_WITH_REFERENCES(Node)
 

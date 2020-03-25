@@ -50,6 +50,7 @@
 #include "third_party/blink/renderer/core/html/parser/html_stack_item.h"
 #include "third_party/blink/renderer/core/html/parser/html_token.h"
 #include "third_party/blink/renderer/core/html/parser/html_tokenizer.h"
+#include "third_party/blink/renderer/core/html_element_type_helpers.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/mathml_names.h"
 #include "third_party/blink/renderer/core/svg_names.h"
@@ -266,11 +267,8 @@ HTMLTreeBuilder::HTMLTreeBuilder(HTMLDocumentParser* parser,
   tree_.OpenElements()->PushRootNode(HTMLStackItem::Create(
       fragment, HTMLStackItem::kItemForDocumentFragmentNode));
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (IsHTMLTemplateElement(*context_element))
     template_insertion_modes_.push_back(kTemplateContentsMode);
-#endif
 
   ResetInsertionModeAppropriately();
 }
@@ -891,12 +889,9 @@ void HTMLTreeBuilder::ProcessTemplateStartTag(AtomicHTMLToken* token) {
 bool HTMLTreeBuilder::ProcessTemplateEndTag(AtomicHTMLToken* token) {
   DCHECK_EQ(token->GetName(), kTemplateTag.LocalName());
   if (!tree_.OpenElements()->HasTemplateInHTMLScope()) {
-    ASSERT(false); // BKTODO:
-#if 0
     DCHECK(template_insertion_modes_.IsEmpty() ||
            (template_insertion_modes_.size() == 1 &&
             IsHTMLTemplateElement(fragment_context_.ContextElement())));
-#endif
     ParseError(token);
     return false;
   }
@@ -921,8 +916,6 @@ bool HTMLTreeBuilder::ProcessEndOfFileForInTemplateContents(
 }
 
 bool HTMLTreeBuilder::ProcessColgroupEndTagForInColumnGroup() {
-  ASSERT(false); // BKTODO:
-#if 0
   if (tree_.CurrentIsRootNode() ||
       IsHTMLTemplateElement(*tree_.CurrentNode())) {
     DCHECK(IsParsingFragmentOrTemplateContents());
@@ -931,7 +924,6 @@ bool HTMLTreeBuilder::ProcessColgroupEndTagForInColumnGroup() {
   }
   tree_.OpenElements()->Pop();
   SetInsertionMode(kInTableMode);
-#endif
   return true;
 }
 
@@ -2451,11 +2443,8 @@ void HTMLTreeBuilder::ProcessEndOfFile(AtomicHTMLToken* token) {
         DCHECK(IsParsingFragment());
         return;  // FIXME: Should we break here instead of returning?
       }
-      ASSERT(false); // BKTODO:
-#if 0
       DCHECK(tree_.CurrentNode()->HasTagName(kColgroupTag) ||
              IsHTMLTemplateElement(tree_.CurrentNode()));
-#endif
       ProcessColgroupEndTagForInColumnGroup();
       FALLTHROUGH;
     case kInFramesetMode:

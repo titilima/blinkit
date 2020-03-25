@@ -34,7 +34,24 @@
 
 #include "live_node_list_base.h"
 
+#include "third_party/blink/renderer/core/html/html_collection.h"
+
 namespace blink {
+
+void LiveNodeListBase::InvalidateCacheForAttribute(const QualifiedName *attrName) const
+{
+    if (IsLiveNodeListType(GetType()))
+        ASSERT(false); // BKTODO: ToLiveNodeList(this)->InvalidateCacheForAttribute(attrName);
+    else
+        ToHTMLCollection(this)->InvalidateCacheForAttribute(attrName);
+}
+
+ContainerNode& LiveNodeListBase::RootNode(void) const
+{
+    if (IsRootedAtTreeScope() && m_ownerNode->IsInTreeScope())
+        return m_ownerNode->ContainingTreeScope().RootNode();
+    return *m_ownerNode;
+}
 
 bool LiveNodeListBase::ShouldInvalidateTypeOnAttributeChange(NodeListInvalidationType type, const QualifiedName &attrName)
 {
