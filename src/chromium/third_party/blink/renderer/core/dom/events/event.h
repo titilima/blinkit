@@ -71,6 +71,19 @@ public:
         kComposed,
         kScoped,
     };
+    enum class PassiveMode {
+        // Not passive, default initialized.
+        kNotPassiveDefault,
+        // Not passive, explicitly specified.
+        kNotPassive,
+        // Passive, explicitly specified.
+        kPassive,
+        // Passive, not explicitly specified and forced due to document level
+        // listener.
+        kPassiveForcedDocumentLevel,
+        // Passive, default initialized.
+        kPassiveDefault,
+    };
 
     static scoped_refptr<Event> Create(const AtomicString &type)
     {
@@ -99,6 +112,7 @@ public:
     bool bubbles(void) const { return m_bubbles; }
 
     bool defaultPrevented(void) const { return m_defaultPrevented; }
+    virtual void preventDefault(void);
 
     bool DefaultHandled(void) const { return m_defaultHandled; }
 
@@ -108,6 +122,8 @@ public:
 
     bool isTrusted(void) const { return m_isTrusted; }
     void SetTrusted(bool value) { m_isTrusted = value; }
+
+    void SetHandlingPassive(PassiveMode mode);
 
     bool executedListenerOrDefaultAction(void) const { return m_executedListenerOrDefaultAction; }
     void SetExecutedListenerOrDefaultAction(void) { m_executedListenerOrDefaultAction = true; }
@@ -123,6 +139,8 @@ public:
     void SetStopPropagation(bool stopPropagation) { m_propagationStopped = stopPropagation; }
     void SetStopImmediatePropagation(bool stopImmediatePropagation) { m_immediatePropagationStopped = stopImmediatePropagation; }
 
+    bool ImmediatePropagationStopped(void) const { return m_immediatePropagationStopped; }
+
     bool HasEventPath(void) { return !!m_eventPath; }
     EventPath& GetEventPath(void)
     {
@@ -132,6 +150,8 @@ public:
     void InitEventPath(Node &node);
 
     virtual DispatchEventResult DispatchEvent(EventDispatcher &dispatcher);
+
+    virtual bool IsBeforeUnloadEvent(void) const { return false; }
 
     // This callback is invoked when an event listener has been dispatched
     // at the current target. It should only be used to influence UMA metrics
@@ -157,12 +177,17 @@ private:
     // Only if at least one listeners or default actions are executed on an event
     // does Event Timing report it.
     unsigned m_executedListenerOrDefaultAction : 1;
-
+    // Whether preventDefault was called when |handling_passive_| is
+    // true. This field is reset on each call to SetHandlingPassive.
+    unsigned m_preventDefaultCalledDuringPassive : 1;
+    // Whether preventDefault was called on uncancelable event.
+    unsigned m_preventDefaultCalledOnUncancelableEvent : 1;
     // This fields are effective only when
     // CallCaptureListenersAtCapturePhaseAtShadowHosts runtime flag is enabled.
     unsigned m_fireOnlyCaptureListenersAtTarget : 1;
     unsigned m_fireOnlyNonCaptureListenersAtTarget : 1;
 
+    PassiveMode m_handlingPassive = PassiveMode::kNotPassiveDefault;
     unsigned short m_eventPhase = 0;
     Member<EventTarget> m_target, m_currentTarget;
     std::unique_ptr<EventPath> m_eventPath;

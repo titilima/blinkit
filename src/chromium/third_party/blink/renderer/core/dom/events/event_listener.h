@@ -60,8 +60,8 @@ public:
 
     virtual ~EventListener(void) = default;
     virtual bool operator==(const EventListener &other) const = 0;
-#if 0 // BKTODO:
     virtual void handleEvent(ExecutionContext*, Event*) = 0;
+#if 0 // BKTODO:
     virtual const String& Code() const { return g_empty_string; }
     virtual bool IsEventHandlerForContentAttribute() const { return false; }
     virtual bool BelongsToTheCurrentWorld(ExecutionContext*) const {

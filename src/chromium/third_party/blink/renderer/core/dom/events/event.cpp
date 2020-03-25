@@ -35,6 +35,7 @@
 
 #include "third_party/blink/renderer/core/dom/events/event_dispatcher.h"
 #include "third_party/blink/renderer/core/dom/events/event_path.h"
+#include "third_party/blink/renderer/core/dom/events/window_event_context.h"
 
 namespace blink {
 
@@ -50,6 +51,7 @@ Event::Event(const AtomicString &eventType, Bubbles bubbles, Cancelable cancelab
     , m_wasInitialized(true)
     , m_isTrusted(false)
     , m_executedListenerOrDefaultAction(false)
+    , m_preventDefaultCalledOnUncancelableEvent(false)
     , m_fireOnlyCaptureListenersAtTarget(false)
     , m_fireOnlyNonCaptureListenersAtTarget(false)
     , m_platformTimeStamp(platformTimeStamp)
@@ -70,7 +72,7 @@ DispatchEventResult Event::DispatchEvent(EventDispatcher &dispatcher)
 
 void Event::DoneDispatchingEventAtCurrentTarget(void)
 {
-    ASSERT(false); // BKTODO:
+    SetExecutedListenerOrDefaultAction();
 }
 
 void Event::InitEventPath(Node &node)
@@ -79,6 +81,36 @@ void Event::InitEventPath(Node &node)
         m_eventPath = std::make_unique<EventPath>(node, this);
     else
         m_eventPath->InitializeWith(node, this);
+}
+
+void Event::preventDefault(void)
+{
+    if (PassiveMode::kNotPassive != m_handlingPassive && PassiveMode::kNotPassiveDefault != m_handlingPassive)
+    {
+        m_preventDefaultCalledDuringPassive = true;
+
+        const LocalDOMWindow *window = m_eventPath ? m_eventPath->GetWindowEventContext().Window() : nullptr;
+        if (nullptr != window && PassiveMode::kPassive == m_handlingPassive)
+        {
+            ASSERT(false); // BKTODO:
+#if 0
+            window->PrintErrorMessage(
+                "Unable to preventDefault inside passive event listener invocation.");
+#endif
+        }
+        return;
+    }
+
+    if (m_cancelable)
+        m_defaultPrevented = true;
+    else
+        m_preventDefaultCalledOnUncancelableEvent = true;
+}
+
+void Event::SetHandlingPassive(PassiveMode mode)
+{
+    m_handlingPassive = mode;
+    m_preventDefaultCalledDuringPassive = false;
 }
 
 void Event::SetRelatedTargetIfExists(EventTarget *relatedTarget)

@@ -64,7 +64,13 @@ class EventListenerMap final
 public:
     EventListenerMap(void) = default;
 
+    bool ContainsCapturing(const AtomicString &eventType) const;
+
     void Clear(void) { m_entries.clear(); }
+    bool Add(const AtomicString &eventType, EventListener *listener, const AddEventListenerOptionsResolved &options,
+        RegisteredEventListener* registeredListener);
+    bool Remove(const AtomicString &eventType, const EventListener *listener, const EventListenerOptions &options,
+        wtf_size_t *indexOfRemovedListener, RegisteredEventListener *registeredListener);
     EventListenerVector* Find(const AtomicString &eventType);
 private:
     std::vector<std::pair<AtomicString, std::unique_ptr<EventListenerVector>>> m_entries;

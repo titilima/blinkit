@@ -43,7 +43,59 @@
 
 #include "event_listener_map.h"
 
+#include <algorithm>
+
 namespace blink {
+
+static bool AddListenerToVector(
+    EventListenerVector *vector,
+    EventListener *listener,
+    const AddEventListenerOptionsResolved &options,
+    RegisteredEventListener *registeredListener)
+{
+    *registeredListener = RegisteredEventListener(listener, options);
+
+    if (std::find(vector->begin(), vector->end(), *registeredListener) != std::end(*vector))
+        return false;  // Duplicate listener.
+
+    vector->push_back(*registeredListener);
+    return true;
+}
+
+bool EventListenerMap::Add(
+    const AtomicString &eventType,
+    EventListener *listener,
+    const AddEventListenerOptionsResolved &options,
+    RegisteredEventListener* registeredListener)
+{
+    // BKTODO: CheckNoActiveIterators();
+
+    for (const auto &entry : m_entries)
+    {
+        if (entry.first == eventType)
+            return AddListenerToVector(entry.second.get(), listener, options, registeredListener);
+    }
+
+    m_entries.push_back(std::make_pair(eventType, std::make_unique<EventListenerVector>()));
+    return AddListenerToVector(m_entries.back().second.get(), listener, options, registeredListener);
+}
+
+bool EventListenerMap::ContainsCapturing(const AtomicString &eventType) const
+{
+    for (const auto &entry : m_entries)
+    {
+        if (entry.first == eventType)
+        {
+            for (const auto &eventListener : *entry.second)
+            {
+                if (eventListener.Capture())
+                    return true;
+            }
+            return false;
+        }
+    }
+    return false;
+}
 
 EventListenerVector* EventListenerMap::Find(const AtomicString &eventType)
 {
@@ -54,6 +106,58 @@ EventListenerVector* EventListenerMap::Find(const AtomicString &eventType)
     }
 
     return nullptr;
+}
+
+static bool RemoveListenerFromVector(
+    EventListenerVector *listenerVector,
+    const EventListener *listener,
+    const EventListenerOptions &options,
+    wtf_size_t *indexOfRemovedListener,
+    RegisteredEventListener* registeredListener)
+{
+    // Do a manual search for the matching RegisteredEventListener. It is not
+    // possible to create a RegisteredEventListener on the stack because of the
+    // const on |listener|.
+    const auto callback = [listener, &options](const RegisteredEventListener &eventListener)
+    {
+        return eventListener.Matches(listener, options);
+    };
+    const auto it = std::find_if(listenerVector->begin(), listenerVector->end(), callback);
+
+    if (std::end(*listenerVector) == it)
+    {
+        *indexOfRemovedListener = kNotFound;
+        return false;
+    }
+
+    *registeredListener = *it;
+    *indexOfRemovedListener = static_cast<wtf_size_t>(it - listenerVector->begin());
+    listenerVector->erase(it);
+    return true;
+}
+
+bool EventListenerMap::Remove(
+    const AtomicString &eventType,
+    const EventListener *listener,
+    const EventListenerOptions &options,
+    wtf_size_t *indexOfRemovedListener,
+    RegisteredEventListener *registeredListener)
+{
+    // BKTODO: CheckNoActiveIterators();
+
+    for (unsigned i = 0; i < m_entries.size(); ++i)
+    {
+        if (m_entries[i].first == eventType)
+        {
+            bool wasRemoved = RemoveListenerFromVector(m_entries[i].second.get(), listener, options,
+                indexOfRemovedListener, registeredListener);
+            if (m_entries[i].second->empty())
+                m_entries.erase(m_entries.begin() + i);
+            return wasRemoved;
+        }
+    }
+
+    return false;
 }
 
 }  // namespace blink

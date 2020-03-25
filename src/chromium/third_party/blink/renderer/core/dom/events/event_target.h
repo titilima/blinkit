@@ -45,6 +45,7 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/core/dom/events/add_event_listener_options_resolved.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_result.h"
 #include "third_party/blink/renderer/core/dom/events/event_listener_map.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
@@ -54,6 +55,21 @@
 namespace blink {
 
 class Event;
+class ExecutionContext;
+class LocalDOMWindow;
+
+struct FiringEventIterator {
+    DISALLOW_NEW();
+    FiringEventIterator(const AtomicString &eventType, wtf_size_t &iterator, wtf_size_t &end)
+        : eventType(eventType), iterator(iterator), end(end)
+    {
+    }
+
+    const AtomicString &eventType;
+    wtf_size_t &iterator;
+    wtf_size_t &end;
+};
+using FiringEventIteratorVector = std::vector<FiringEventIterator>;
 
 class EventTargetData final : public GarbageCollectedFinalized<EventTargetData>
 {
@@ -62,6 +78,7 @@ public:
     ~EventTargetData(void) = default;
 
     EventListenerMap eventListenerMap;
+    std::unique_ptr<FiringEventIteratorVector> firingEventIterators;
 private:
     DISALLOW_COPY_AND_ASSIGN(EventTargetData);
 };
@@ -69,7 +86,16 @@ private:
 class EventTarget : public ScriptWrappable
 {
 public:
+    virtual ExecutionContext* GetExecutionContext(void) const = 0;
+
+    virtual const LocalDOMWindow* ToLocalDOMWindow(void) const { return nullptr; }
     virtual Node* ToNode(void) { return nullptr; }
+
+    // Exports for JS
+    bool addEventListener(const AtomicString &eventType, EventListener *listener, bool useCapture);
+    bool removeEventListener(const AtomicString &eventType, const EventListener *listener, bool useCapture);
+
+    bool HasCapturingEventListeners(const AtomicString &eventType);
 
     DispatchEventResult DispatchEvent(Event &event);
     DispatchEventResult FireEventListeners(Event &event);
@@ -80,17 +106,36 @@ public:
 protected:
     EventTarget(void) = default;
 
+    virtual bool AddEventListenerInternal(const AtomicString &eventType, EventListener *listener,
+        const AddEventListenerOptionsResolved &options);
+    virtual bool RemoveEventListenerInternal(const AtomicString &eventType, const EventListener *listener,
+        const EventListenerOptions &options);
+
+    // Called when an event listener has been successfully added.
+    virtual void AddedEventListener(const AtomicString& eventType, RegisteredEventListener &registeredListener);
+    // Called when an event listener is removed. The original registration
+    // parameters of this event listener are available to be queried.
+    virtual void RemovedEventListener(const AtomicString &eventType, const RegisteredEventListener &registeredListener);
+
     virtual DispatchEventResult DispatchEventInternal(Event &event);
 
     // Subclasses should likely not override these themselves; instead, they
     // should subclass EventTargetWithInlineData.
     virtual EventTargetData* GetEventTargetData(void) = 0;
+    virtual EventTargetData& EnsureEventTargetData(void) = 0;
+private:
+    LocalDOMWindow* ExecutingWindow(void);
+    void SetDefaultAddEventListenerOptions(const AtomicString &eventType, EventListener *eventListener,
+        AddEventListenerOptionsResolved &options);
+
+    bool FireEventListeners(Event &event, EventTargetData *d, EventListenerVector &entry);
 };
 
 class EventTargetWithInlineData : public EventTarget
 {
 protected:
     EventTargetData* GetEventTargetData(void) final { return &m_eventTargetData; }
+    EventTargetData& EnsureEventTargetData(void) final { return m_eventTargetData; }
 private:
     EventTargetData m_eventTargetData;
 };

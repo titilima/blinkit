@@ -42,10 +42,74 @@
 
 #include "event_target.h"
 
+#include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
+#include "third_party/blink/renderer/core/dom/events/event_listener.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
 
 namespace blink {
+
+static Event::PassiveMode EventPassiveMode(const RegisteredEventListener &eventListener)
+{
+    if (!eventListener.Passive())
+    {
+        if (eventListener.PassiveSpecified())
+            return Event::PassiveMode::kNotPassive;
+        return Event::PassiveMode::kNotPassiveDefault;
+    }
+    if (eventListener.PassiveForcedForDocumentTarget())
+        return Event::PassiveMode::kPassiveForcedDocumentLevel;
+    if (eventListener.PassiveSpecified())
+        return Event::PassiveMode::kPassive;
+    return Event::PassiveMode::kPassiveDefault;
+}
+
+static bool IsTouchScrollBlockingEvent(const AtomicString &eventType)
+{
+    return false;
+#if 0 // BKTODO:
+    return eventType == EventTypeNames::touchstart || eventType == EventTypeNames::touchmove;
+#endif
+}
+
+static bool IsWheelScrollBlockingEvent(const AtomicString &eventType)
+{
+    return eventType == event_type_names::kMousewheel || eventType == event_type_names::kWheel;
+}
+
+static bool IsScrollBlockingEvent(const AtomicString &eventType)
+{
+    return IsTouchScrollBlockingEvent(eventType) || IsWheelScrollBlockingEvent(eventType);
+}
+
+bool EventTarget::AddEventListenerInternal(
+    const AtomicString &eventType,
+    EventListener *listener,
+    const AddEventListenerOptionsResolved &options)
+{
+    if (nullptr == listener)
+        return false;
+
+    RegisteredEventListener registeredListener;
+    bool added = EnsureEventTargetData().eventListenerMap.Add(eventType, listener, options, &registeredListener);
+    if (added)
+        AddedEventListener(eventType, registeredListener);
+    return added;
+}
+
+bool EventTarget::addEventListener(const AtomicString &eventType, EventListener *listener, bool useCapture)
+{
+    AddEventListenerOptionsResolved options;
+    options.setCapture(useCapture);
+    SetDefaultAddEventListenerOptions(eventType, listener, options);
+    return AddEventListenerInternal(eventType, listener, options);
+}
+
+void EventTarget::AddedEventListener(const AtomicString& eventType, RegisteredEventListener &registeredListener)
+{
+    // Currently nothing to do.
+}
 
 DispatchEventResult EventTarget::DispatchEvent(Event &event)
 {
@@ -57,6 +121,13 @@ DispatchEventResult EventTarget::DispatchEventInternal(Event &event)
 {
     ASSERT(false); // BKTODO:
     return DispatchEventResult::kCanceledBeforeDispatch;
+}
+
+inline LocalDOMWindow* EventTarget::ExecutingWindow(void)
+{
+    if (ExecutionContext *context = GetExecutionContext())
+        return context->ExecutingWindow();
+    return nullptr;
 }
 
 DispatchEventResult EventTarget::FireEventListeners(Event &event)
@@ -82,22 +153,17 @@ DispatchEventResult EventTarget::FireEventListeners(Event &event)
     bool firedEventListeners = false;
     if (nullptr != listenersVector)
     {
-        ASSERT(false); // BKTODO:
-#if 0
         firedEventListeners = FireEventListeners(event, d, *listenersVector);
-#endif
     }
+#ifndef BLINKIT_CRAWLER_ONLY
     else if (event.isTrusted() && legacyListenersVector)
     {
-        ASSERT(false); // BKTODO:
-#if 0
-        AtomicString unprefixed_type_name = event.type();
-        event.SetType(legacy_type_name);
-        fired_event_listeners =
-            FireEventListeners(event, d, *legacy_listeners_vector);
-        event.SetType(unprefixed_type_name);
-#endif
+        AtomicString unprefixedTypeName = event.type();
+        event.SetType(legacyTypeName);
+        firedEventListeners = FireEventListeners(event, d, *legacyListenersVector);
+        event.SetType(unprefixedTypeName);
     }
+#endif
 
     // Only invoke the callback if event listeners were fired for this phase.
     if (firedEventListeners)
@@ -106,6 +172,64 @@ DispatchEventResult EventTarget::FireEventListeners(Event &event)
         event.SetExecutedListenerOrDefaultAction();
     }
     return GetDispatchEventResult(event);
+}
+
+bool EventTarget::FireEventListeners(Event &event, EventTargetData *d, EventListenerVector &entry)
+{
+    // Fire all listeners registered for this event. Don't fire listeners removed
+    // during event dispatch. Also, don't fire event listeners added during event
+    // dispatch. Conveniently, all new event listeners will be added after or at
+    // index |size|, so iterating up to (but not including) |size| naturally
+    // excludes new event listeners.
+    ExecutionContext *context = GetExecutionContext();
+    if (nullptr == context)
+        return false;
+
+    wtf_size_t i = 0;
+    wtf_size_t size = entry.size();
+    if (!d->firingEventIterators)
+        d->firingEventIterators = std::make_unique<FiringEventIteratorVector>();
+    d->firingEventIterators->push_back(FiringEventIterator(event.type(), i, size));
+
+    bool firedListener = false;
+    while (i < size)
+    {
+        RegisteredEventListener registeredListener = entry[i];
+
+        // Move the iterator past this event listener. This must match
+        // the handling of the FiringEventIterator::iterator in
+        // EventTarget::removeEventListener.
+        ++i;
+
+        if (!registeredListener.ShouldFire(event))
+            continue;
+
+        EventListener *listener = registeredListener.Callback();
+        // The listener will be retained by Member<EventListener> in the
+        // registeredListener, i and size are updated with the firing event iterator
+        // in case the listener is removed from the listener vector below.
+        if (registeredListener.Once())
+            removeEventListener(event.type(), listener, registeredListener.Capture());
+
+        // If stopImmediatePropagation has been called, we just break out
+        // immediately, without handling any more events on this target.
+        if (event.ImmediatePropagationStopped())
+            break;
+
+        event.SetHandlingPassive(EventPassiveMode(registeredListener));
+        bool passiveForced = registeredListener.PassiveForcedForDocumentTarget();
+
+        // To match Mozilla, the AT_TARGET phase fires both capturing and bubbling
+        // event listeners, even though that violates some versions of the DOM spec.
+        listener->handleEvent(context, &event);
+        firedListener = true;
+
+        event.SetHandlingPassive(Event::PassiveMode::kNotPassive);
+
+        ASSERT(i <= size);
+    }
+    d->firingEventIterators->pop_back();
+    return firedListener;
 }
 
 DispatchEventResult EventTarget::GetDispatchEventResult(const Event &event)
@@ -117,6 +241,14 @@ DispatchEventResult EventTarget::GetDispatchEventResult(const Event &event)
     return DispatchEventResult::kNotCanceled;
 }
 
+bool EventTarget::HasCapturingEventListeners(const AtomicString &eventType)
+{
+    EventTargetData *d = GetEventTargetData();
+    if (nullptr == d)
+        return false;
+    return d->eventListenerMap.ContainsCapturing(eventType);
+}
+
 void EventTarget::RemoveAllEventListeners(void)
 {
     EventTargetData *d = GetEventTargetData();
@@ -124,14 +256,192 @@ void EventTarget::RemoveAllEventListeners(void)
         return;
     d->eventListenerMap.Clear();
 
-#if 0 // BKTODO:
     // Notify firing events planning to invoke the listener at 'index' that
     // they have one less listener to invoke.
-    if (d->firing_event_iterators) {
-        for (const auto& iterator : *d->firing_event_iterators) {
+    if (d->firingEventIterators)
+    {
+        for (const auto &iterator : *d->firingEventIterators)
+        {
             iterator.iterator = 0;
             iterator.end = 0;
         }
+    }
+}
+
+bool EventTarget::removeEventListener(const AtomicString &eventType, const EventListener *listener, bool useCapture)
+{
+    EventListenerOptions options;
+    options.setCapture(useCapture);
+    return RemoveEventListenerInternal(eventType, listener, options);
+}
+
+void EventTarget::RemovedEventListener(const AtomicString &eventType, const RegisteredEventListener &registeredListener)
+{
+    // Currently nothing to do.
+}
+
+bool EventTarget::RemoveEventListenerInternal(
+    const AtomicString &eventType,
+    const EventListener *listener,
+    const EventListenerOptions &options)
+{
+    if (nullptr == listener)
+        return false;
+
+    EventTargetData *d = GetEventTargetData();
+    if (nullptr == d)
+        return false;
+
+    wtf_size_t indexOfRemovedListener;
+    RegisteredEventListener registeredListener;
+
+    if (!d->eventListenerMap.Remove(eventType, listener, options, &indexOfRemovedListener, &registeredListener))
+        return false;
+
+    // Notify firing events planning to invoke the listener at 'index' that
+    // they have one less listener to invoke.
+    if (d->firingEventIterators)
+    {
+        for (const auto &firingIterator : *d->firingEventIterators)
+        {
+            if (eventType != firingIterator.eventType)
+                continue;
+
+            if (indexOfRemovedListener >= firingIterator.end)
+                continue;
+
+            --firingIterator.end;
+            // Note that when firing an event listener,
+            // firingIterator.iterator indicates the next event listener
+            // that would fire, not the currently firing event
+            // listener. See EventTarget::fireEventListeners.
+            if (indexOfRemovedListener < firingIterator.iterator)
+                --firingIterator.iterator;
+        }
+    }
+    RemovedEventListener(eventType, registeredListener);
+    return true;
+}
+
+void EventTarget::SetDefaultAddEventListenerOptions(
+    const AtomicString &eventType,
+    EventListener *eventListener,
+    AddEventListenerOptionsResolved &options)
+{
+    options.SetPassiveSpecified(options.hasPassive());
+
+    if (!IsScrollBlockingEvent(eventType))
+    {
+        if (!options.hasPassive())
+            options.setPassive(false);
+        return;
+    }
+
+#ifdef BLINKIT_CRAWLER_ONLY
+    NOTREACHED();
+#else
+    LocalDOMWindow* executing_window = ExecutingWindow();
+
+    if (RuntimeEnabledFeatures::PassiveDocumentEventListenersEnabled() &&
+        IsTouchScrollBlockingEvent(event_type)) {
+        if (!options.hasPassive() && IsTopLevelNode()) {
+            options.setPassive(true);
+            options.SetPassiveForcedForDocumentTarget(true);
+            return;
+        }
+    }
+
+    if (IsWheelScrollBlockingEvent(event_type) && IsTopLevelNode()) {
+        if (options.hasPassive()) {
+            if (executing_window) {
+                UseCounter::Count(
+                    executing_window->document(),
+                    options.passive()
+                    ? WebFeature::kAddDocumentLevelPassiveTrueWheelEventListener
+                    : WebFeature::kAddDocumentLevelPassiveFalseWheelEventListener);
+            }
+        }
+        else {  // !options.hasPassive()
+            if (executing_window) {
+                UseCounter::Count(
+                    executing_window->document(),
+                    WebFeature::kAddDocumentLevelPassiveDefaultWheelEventListener);
+            }
+            if (RuntimeEnabledFeatures::PassiveDocumentWheelEventListenersEnabled()) {
+                options.setPassive(true);
+                options.SetPassiveForcedForDocumentTarget(true);
+                return;
+            }
+        }
+    }
+
+    // For mousewheel event listeners that have the target as the window and
+    // a bound function name of "ssc_wheel" treat and no passive value default
+    // passive to true. See crbug.com/501568.
+    if (RuntimeEnabledFeatures::SmoothScrollJSInterventionEnabled() &&
+        event_type == EventTypeNames::mousewheel && ToLocalDOMWindow() &&
+        event_listener && !options.hasPassive()) {
+        JSBasedEventListener* v8_listener =
+            JSBasedEventListener::Cast(event_listener);
+        if (!v8_listener)
+            return;
+        v8::Local<v8::Value> callback_object =
+            v8_listener->GetListenerObject(*this);
+        if (!callback_object.IsEmpty() && callback_object->IsFunction() &&
+            strcmp(
+                "ssc_wheel",
+                *v8::String::Utf8Value(
+                    v8::Isolate::GetCurrent(),
+                    v8::Local<v8::Function>::Cast(callback_object)->GetName())) ==
+            0) {
+            options.setPassive(true);
+            if (executing_window) {
+                UseCounter::Count(executing_window->document(),
+                    WebFeature::kSmoothScrollJSInterventionActivated);
+
+                executing_window->GetFrame()->Console().AddMessage(
+                    ConsoleMessage::Create(
+                        kInterventionMessageSource, kWarningMessageLevel,
+                        "Registering mousewheel event as passive due to "
+                        "smoothscroll.js usage. The smoothscroll.js library is "
+                        "buggy, no longer necessary and degrades performance. See "
+                        "https://www.chromestatus.com/feature/5749447073988608"));
+            }
+            return;
+        }
+    }
+
+    if (Settings* settings = WindowSettings(ExecutingWindow())) {
+        switch (settings->GetPassiveListenerDefault()) {
+        case PassiveListenerDefault::kFalse:
+            if (!options.hasPassive())
+                options.setPassive(false);
+            break;
+        case PassiveListenerDefault::kTrue:
+            if (!options.hasPassive())
+                options.setPassive(true);
+            break;
+        case PassiveListenerDefault::kForceAllTrue:
+            options.setPassive(true);
+            break;
+        }
+    }
+    else {
+        if (!options.hasPassive())
+            options.setPassive(false);
+    }
+
+    if (!options.passive() && !options.PassiveSpecified()) {
+        String message_text = String::Format(
+            "Added non-passive event listener to a scroll-blocking '%s' event. "
+            "Consider marking event handler as 'passive' to make the page more "
+            "responsive. See "
+            "https://www.chromestatus.com/feature/5745543795965952",
+            event_type.GetString().Utf8().data());
+
+        PerformanceMonitor::ReportGenericViolation(
+            GetExecutionContext(), PerformanceMonitor::kDiscouragedAPIUse,
+            message_text, base::TimeDelta(), nullptr);
     }
 #endif
 }
