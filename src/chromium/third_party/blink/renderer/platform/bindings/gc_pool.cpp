@@ -41,9 +41,11 @@ void GCPool::Restore(ScriptWrappable &object)
 
 void GCPool::Save(ScriptWrappable &object)
 {
-    ASSERT(!object.IsContextRetained());
-    m_objects.insert(&object);
-    object.m_inGCPool = true;
+    if (!object.IsContextRetained())
+    {
+        m_objects.insert(&object);
+        object.m_inGCPool = true;
+    }
 }
 
 } // namespace BlinKit
