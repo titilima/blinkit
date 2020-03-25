@@ -49,6 +49,7 @@ namespace blink {
 class Document;
 class DocumentInit;
 class LocalFrame;
+class Navigator;
 
 class LocalDOMWindow final : public DOMWindow
 {
@@ -58,6 +59,9 @@ public:
         return base::WrapUnique(new LocalDOMWindow(frame));
     }
     ~LocalDOMWindow(void) override;
+
+    // Exports for JS
+    Navigator* navigator(void) const;
 
     LocalFrame* GetFrame(void) const;
     Document* document(void) const { return m_document.get(); }
@@ -95,6 +99,8 @@ private:
 
     std::unique_ptr<Document> m_document;
 
+    mutable std::unique_ptr<Navigator> m_navigator;
+    
     std::unordered_set<EventListenerObserver *> m_eventListenerObservers;
 };
 

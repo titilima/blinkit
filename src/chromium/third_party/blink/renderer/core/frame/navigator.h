@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: navigator.h
+// Description: Navigator Class
+//      Author: Ziming Li
+//     Created: 2020-03-25
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 2008 Nokia Corporation and/or its subsidiary(-ies)
 
@@ -20,16 +31,12 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_NAVIGATOR_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_NAVIGATOR_H_
 
+#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/core_export.h"
-#include "third_party/blink/renderer/core/dom/context_lifecycle_observer.h"
-#include "third_party/blink/renderer/core/frame/navigator_concurrent_hardware.h"
-#include "third_party/blink/renderer/core/frame/navigator_device_memory.h"
 #include "third_party/blink/renderer/core/frame/navigator_id.h"
 #include "third_party/blink/renderer/core/frame/navigator_language.h"
-#include "third_party/blink/renderer/core/frame/navigator_on_line.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
-#include "third_party/blink/renderer/platform/supplementable.h"
 #include "third_party/blink/renderer/platform/wtf/forward.h"
 
 namespace blink {
@@ -37,18 +44,13 @@ namespace blink {
 class LocalFrame;
 
 class CORE_EXPORT Navigator final : public ScriptWrappable,
-                                    public NavigatorConcurrentHardware,
-                                    public NavigatorDeviceMemory,
                                     public NavigatorID,
-                                    public NavigatorLanguage,
-                                    public NavigatorOnLine,
-                                    public DOMWindowClient,
-                                    public Supplementable<Navigator> {
+                                    public NavigatorLanguage {
   DEFINE_WRAPPERTYPEINFO();
   USING_GARBAGE_COLLECTED_MIXIN(Navigator);
 
  public:
-  static Navigator* Create(LocalFrame* frame) { return new Navigator(frame); }
+  static std::unique_ptr<Navigator> Create(LocalFrame* frame) { return base::WrapUnique(new Navigator(frame)); }
 
   // NavigatorCookies
   bool cookieEnabled() const;
@@ -59,16 +61,15 @@ class CORE_EXPORT Navigator final : public ScriptWrappable,
   String vendor() const;
   String vendorSub() const;
 
-  String platform() const override;
   String userAgent() const override;
 
   // NavigatorLanguage
   Vector<String> languages() override;
 
-  void Trace(blink::Visitor*) override;
-
  private:
   explicit Navigator(LocalFrame*);
+
+  LocalFrame *m_frame;
 };
 
 }  // namespace blink

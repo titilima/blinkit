@@ -46,6 +46,7 @@
 #include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
+#include "third_party/blink/renderer/core/frame/navigator.h"
 
 using namespace BlinKit;
 
@@ -178,6 +179,13 @@ Document* LocalDOMWindow::InstallNewDocument(const DocumentInit &init)
     }
 
     return m_document.get();
+}
+
+Navigator* LocalDOMWindow::navigator(void) const
+{
+    if (!m_navigator)
+        m_navigator = Navigator::Create(GetFrame());
+    return m_navigator.get();
 }
 
 void LocalDOMWindow::RemoveAllEventListeners(void)

@@ -1136,6 +1136,18 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\node_list.h">
       <Filter>renderer\core\dom</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\navigator.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\navigator_id.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\navigator_language.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_navigator.h">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\platform.cpp">
@@ -1751,6 +1763,18 @@
       <Filter>renderer\bindings\core\duk</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_event.cpp">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\navigator.cpp">
+      <Filter>renderer\core\frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\navigator_language.cc">
+      <Filter>renderer\core\frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\navigator_id.cc">
+      <Filter>renderer\core\frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_navigator.cpp">
       <Filter>renderer\bindings\core\duk</Filter>
     </ClCompile>
   </ItemGroup>
