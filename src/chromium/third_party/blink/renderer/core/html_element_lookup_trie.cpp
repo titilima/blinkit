@@ -204,6 +204,8 @@ static const HTMLQualifiedName* LookupHTMLTag6(const UChar *data)
         {
             if ('c' == data[1] && 'r' == data[2] && 'i' == data[3] && 'p' == data[4] && 't' == data[5])
                 return &kScriptTag;
+            if ('e' == data[1] && 'l' == data[2] && 'e' == data[3] && 'c' == data[4] && 't' == data[5])
+                return &kSelectTag;
             if ('t' == data[1] && 'r' == data[2] && 'o' == data[3] && 'n' == data[4] && 'g' == data[5])
                 return &kStrongTag;
             break;

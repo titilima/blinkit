@@ -19,6 +19,21 @@
 
 namespace blink {
 
+inline bool IsHTMLBodyElement(const Element &element)
+{
+    return element.HasTagName(html_names::kBodyTag);
+}
+
+inline bool IsHTMLFormElement(const Element &element)
+{
+    return element.HasTagName(html_names::kFormTag);
+}
+
+inline bool IsHTMLFormElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLFormElement(ToElement(node));
+}
+
 inline bool IsHTMLHeadElement(const Element &element)
 {
     return element.HasTagName(html_names::kHeadTag);
@@ -54,9 +69,19 @@ inline bool IsHTMLTemplateElement(const Element &element)
     return element.HasTagName(html_names::kTemplateTag);
 }
 
+inline bool IsHTMLTemplateElement(const Element *element)
+{
+    return nullptr != element && IsHTMLTemplateElement(*element);
+}
+
 inline bool IsHTMLTemplateElement(const Node &node)
 {
     return node.IsHTMLElement() && IsHTMLTemplateElement(ToElement(node));
+}
+
+inline bool IsHTMLTemplateElement(const Node *node)
+{
+    return nullptr != node && IsHTMLTemplateElement(*node);
 }
 
 } // namespace blink
