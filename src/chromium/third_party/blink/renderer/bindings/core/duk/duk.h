@@ -46,6 +46,7 @@ inline WTF::String To<WTF::String>(duk_context *ctx, duk_idx_t idx)
     return WTF::String::FromUTF8(s, l);
 }
 
+const char* PushString(duk_context *ctx, const std::string &s);
 const char* PushString(duk_context *ctx, const WTF::String &s);
 
 } // namespace Duk

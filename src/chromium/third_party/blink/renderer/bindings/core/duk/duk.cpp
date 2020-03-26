@@ -14,10 +14,14 @@
 namespace BlinKit {
 namespace Duk {
 
+const char* PushString(duk_context *ctx, const std::string &s)
+{
+    return duk_push_lstring(ctx, s.data(), s.length());
+}
+
 const char* PushString(duk_context *ctx, const WTF::String &s)
 {
-    const std::string s2 = s.StdUtf8();
-    return duk_push_lstring(ctx, s2.data(), s2.length());
+    return PushString(ctx, s.StdUtf8());
 }
 
 } // namespace Duk
