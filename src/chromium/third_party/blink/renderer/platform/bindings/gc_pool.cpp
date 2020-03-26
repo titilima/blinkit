@@ -41,6 +41,7 @@ void GCPool::Restore(ScriptWrappable &object)
 
 void GCPool::Save(ScriptWrappable &object)
 {
+    ASSERT(object.CanBePooled());
     if (!object.IsContextRetained())
     {
         m_objects.insert(&object);

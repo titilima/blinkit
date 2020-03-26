@@ -170,6 +170,7 @@ Document::Document(const DocumentInit &initializer)
     , m_domWindow(nullptr != m_frame ? m_frame->DomWindow() : nullptr)
     , m_elementDataCacheClearTimer(GetTaskRunner(TaskType::kInternalUserInteraction), this, &Document::ElementDataCacheClearTimerFired)
 {
+    SetCannotBePooled();
     if (m_frame)
     {
 #ifndef BLINKIT_CRAWLER_ONLY

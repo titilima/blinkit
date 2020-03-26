@@ -33,10 +33,29 @@ public:
 
     bool IsContextRetained(void) const { return m_contextRetained; }
     bool IsInGCPool(void) const { return m_inGCPool; }
+    bool CanBePooled(void) const {
+#ifdef _DEBUG
+        return m_canBePooled;
+#else
+        return true;
+#endif
+    }
 
     virtual void PreCollectGarbage(BlinKit::GCPool &gcPool) {}
 protected:
-    ScriptWrappable(void) : m_contextRetained(false), m_inGCPool(false) {}
+    ScriptWrappable(void)
+        : m_contextRetained(false), m_inGCPool(false)
+#ifdef _DEBUG
+        , m_canBePooled(true)
+#endif
+    {
+    }
+
+    void SetCannotBePooled(void) {
+#ifdef _DEBUG
+        m_canBePooled = false;
+#endif
+    }
 private:
     friend class BlinKit::DukScriptObject;
     friend class BlinKit::GCPool;
@@ -44,6 +63,9 @@ private:
 
     bool m_contextRetained : 1;
     bool m_inGCPool : 1;
+#ifdef _DEBUG
+    bool m_canBePooled : 1;
+#endif
     void *m_contextObject = nullptr;
 };
 
