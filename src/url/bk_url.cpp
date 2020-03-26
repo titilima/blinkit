@@ -87,6 +87,21 @@ bool BkURL::SchemeIsHTTPOrHTTPS(void) const
     return SchemeIs(kHttpScheme) || SchemeIs(kHttpsScheme);
 }
 
+std::string BkURL::StrippedForUseAsHref(void) const
+{
+    if (m_parsed.username.is_nonempty() || m_parsed.password.is_nonempty())
+    {
+        assert(false); // BKTODO:
+#if 0
+        KURL href(*this);
+        href.SetUser(String());
+        href.SetPass(String());
+        return href.GetString();
+#endif
+    }
+    return AsString();
+}
+
 std::string BkURL::StrippedForUseAsReferrer(void) const
 {
     if (!SchemeIsHTTPOrHTTPS())

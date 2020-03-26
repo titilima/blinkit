@@ -24,11 +24,15 @@
 namespace blink {
 
 class Frame;
+class Location;
 
 class DOMWindow : public EventTargetWithInlineData
 {
 public:
     ~DOMWindow(void) override;
+
+    // Exports for JS
+    Location* location(void) const;
 
     Frame* GetFrame(void) const {
         ASSERT(!m_frame || m_frame->DomWindow() == this);
@@ -41,6 +45,7 @@ protected:
     explicit DOMWindow(Frame &frame);
 private:
     Member<Frame> m_frame;
+    mutable std::unique_ptr<Location> m_location;
 };
 
 }  // namespace blink

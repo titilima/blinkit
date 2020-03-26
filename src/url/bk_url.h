@@ -46,6 +46,7 @@ public:
     BkURL Resolve(const std::string &relative) const;
 
     BkURL StripFragmentIdentifier(void) const;
+    std::string StrippedForUseAsHref(void) const;
     std::string StrippedForUseAsReferrer(void) const;
 private:
     friend bool EqualIgnoringFragmentIdentifier(const BkURL &a, const BkURL &b);

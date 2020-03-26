@@ -13,6 +13,7 @@
 
 #include "third_party/blink/renderer/bindings/core/duk/duk_console.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_document.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_location.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_navigator.h"
 
 using namespace blink;
@@ -55,6 +56,20 @@ static duk_ret_t DocumentGetter(duk_context *ctx)
     return 1;
 }
 
+static duk_ret_t LocationGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    LocalDOMWindow *w = DukScriptObject::To<LocalDOMWindow>(ctx, -1);
+    DukScriptObject::Push<DukLocation>(ctx, w->location());
+    return 1;
+}
+
+static duk_ret_t LocationSetter(duk_context *ctx)
+{
+    ASSERT(false); // BKTODO:
+    return 0;
+}
+
 static duk_ret_t NavigatorGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -82,6 +97,7 @@ void DukWindow::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
     static const PrototypeEntry::Property Properties[] = {
         { "console",   Impl::ConsoleGetter,   nullptr              },
         { "document",  Impl::DocumentGetter,  nullptr              },
+        { "location",  Impl::LocationGetter,  Impl::LocationSetter },
         { "navigator", Impl::NavigatorGetter, nullptr              },
         { "window",    Impl::WindowGetter,    nullptr              },
     };

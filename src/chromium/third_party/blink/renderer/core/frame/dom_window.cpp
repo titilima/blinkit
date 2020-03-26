@@ -15,6 +15,8 @@
 
 #include "dom_window.h"
 
+#include "third_party/blink/renderer/core/frame/location.h"
+
 namespace blink {
 
 DOMWindow::DOMWindow(Frame &frame) : m_frame(&frame)
@@ -24,7 +26,14 @@ DOMWindow::DOMWindow(Frame &frame) : m_frame(&frame)
 DOMWindow::~DOMWindow(void)
 {
     // The frame must be disconnected before finalization.
-    assert(!m_frame);
+    ASSERT(!m_frame);
+}
+
+Location* DOMWindow::location(void) const
+{
+    if (!m_location)
+        m_location = Location::Create(const_cast<DOMWindow *>(this));
+    return m_location.get();
 }
 
 }  // namespace blink
