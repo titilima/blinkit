@@ -104,10 +104,10 @@ void ScriptLoader::DidNotifySubtreeInsertionsToDocument(void)
 // https://html.spec.whatwg.org/multipage/webappapis.html#fetch-a-classic-script
 void ScriptLoader::FetchClassicScript(const BkURL &url, Document &elementDocument, const WTF::TextEncoding &encoding)
 {
-    std::unique_ptr<ClassicPendingScript> pendingScript = ClassicPendingScript::Fetch(url, elementDocument,
+    std::shared_ptr<ClassicPendingScript> pendingScript = ClassicPendingScript::Fetch(url, elementDocument,
         encoding, m_element);
     ResourceClient *resourceClient = pendingScript.get();
-    m_preparedPendingScript = std::move(pendingScript);;
+    m_preparedPendingScript = pendingScript;
     m_resourceKeepAlive = resourceClient->GetResource();
 }
 
@@ -705,7 +705,7 @@ std::shared_ptr<PendingScript> ScriptLoader::TakePendingScript(ScriptSchedulingT
             break;
     }
 
-    std::shared_ptr<PendingScript> pendingScript(m_preparedPendingScript.release());
+    std::shared_ptr<PendingScript> pendingScript = std::move(m_preparedPendingScript);
     pendingScript->SetSchedulingType(schedulingType);
     return pendingScript;
 }

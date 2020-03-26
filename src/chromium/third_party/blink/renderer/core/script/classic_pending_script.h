@@ -34,7 +34,9 @@ namespace blink {
 // A RefPtr alone does not prevent the underlying Resource from purging its data
 // buffer. This class holds a dummy client open for its lifetime in order to
 // guarantee that the data buffer will not be purged.
-class ClassicPendingScript final : public PendingScript, public ResourceClient
+class ClassicPendingScript final : public PendingScript
+                                 , public ResourceClient
+                                 , public std::enable_shared_from_this<ClassicPendingScript>
 {
     USING_GARBAGE_COLLECTED_MIXIN(ClassicPendingScript);
 public:
@@ -42,10 +44,10 @@ public:
     //
     // For a script from an external file, calls ScriptResource::Fetch() and
     // creates ClassicPendingScript. Returns nullptr if Fetch() returns nullptr.
-    static std::unique_ptr<ClassicPendingScript> Fetch(const BlinKit::BkURL &url, Document &elementDocument,
+    static std::shared_ptr<ClassicPendingScript> Fetch(const BlinKit::BkURL &url, Document &elementDocument,
         const WTF::TextEncoding &encoding, ScriptElementBase *element);
     // For an inline script.
-    static std::unique_ptr<ClassicPendingScript> CreateInline(ScriptElementBase *element,
+    static std::shared_ptr<ClassicPendingScript> CreateInline(ScriptElementBase *element,
         const TextPosition &startingPosition, ScriptSourceLocationType sourceLocationType);
     ~ClassicPendingScript(void) override;
 

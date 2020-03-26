@@ -130,7 +130,7 @@ private:
 
     bool m_willExecuteWhenDocumentFinishedParsing = false;
 
-    std::unique_ptr<PendingScript> m_preparedPendingScript;
+    std::shared_ptr<PendingScript> m_preparedPendingScript;
 
     // This is used only to keep the ScriptResource of a classic script alive
     // and thus to keep it on MemoryCache, even after script execution, as long

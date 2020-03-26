@@ -131,12 +131,12 @@ void ClassicPendingScript::CheckState(void) const
     ASSERT(nullptr != GetResource() || !m_streamer);
 }
 
-std::unique_ptr<ClassicPendingScript> ClassicPendingScript::CreateInline(
+std::shared_ptr<ClassicPendingScript> ClassicPendingScript::CreateInline(
     ScriptElementBase *element,
     const TextPosition &startingPosition,
     ScriptSourceLocationType sourceLocationType)
 {
-    std::unique_ptr<ClassicPendingScript> pendingScript = base::WrapUnique(new ClassicPendingScript(element, startingPosition, sourceLocationType, false));
+    std::shared_ptr<ClassicPendingScript> pendingScript = base::WrapShared(new ClassicPendingScript(element, startingPosition, sourceLocationType, false));
     pendingScript->CheckState();
     return pendingScript;
 }
@@ -154,7 +154,7 @@ void ClassicPendingScript::DisposeInternal(void)
     CancelStreaming();
 }
 
-std::unique_ptr<ClassicPendingScript> ClassicPendingScript::Fetch(
+std::shared_ptr<ClassicPendingScript> ClassicPendingScript::Fetch(
     const BkURL &url,
     Document &elementDocument,
     const WTF::TextEncoding &encoding,
@@ -173,7 +173,7 @@ std::unique_ptr<ClassicPendingScript> ClassicPendingScript::Fetch(
 
     FetchParameters params(request, resourceLoaderOptions);
 
-    std::unique_ptr<ClassicPendingScript> pendingScript = base::WrapUnique(new ClassicPendingScript(
+    std::shared_ptr<ClassicPendingScript> pendingScript = base::WrapShared(new ClassicPendingScript(
         element, TextPosition(), ScriptSourceLocationType::kExternalFile,
         true));
 
@@ -383,6 +383,8 @@ bool ClassicPendingScript::StartStreamingIfPossible(const std::function<void()> 
 
 void ClassicPendingScript::StreamingFinished(void)
 {
+    std::shared_ptr<ClassicPendingScript> guard(shared_from_this());
+
     CheckState();
     // BKTODO: DCHECK(streamer_);  // Should only be called by ScriptStreamer.
     ASSERT(IsCurrentlyStreaming());
