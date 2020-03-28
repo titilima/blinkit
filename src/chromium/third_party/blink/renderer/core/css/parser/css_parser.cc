@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_parser.cc
+// Description: CSSParser Class
+//      Author: Ziming Li
+//     Created: 2020-03-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,22 +16,27 @@
 #include "third_party/blink/renderer/core/css/parser/css_parser.h"
 
 #include <memory>
-#include "third_party/blink/renderer/core/css/css_color_value.h"
-#include "third_party/blink/renderer/core/css/css_keyframe_rule.h"
-#include "third_party/blink/renderer/core/css/parser/css_parser_fast_paths.h"
-#include "third_party/blink/renderer/core/css/parser/css_parser_impl.h"
-#include "third_party/blink/renderer/core/css/parser/css_property_parser.h"
 #include "third_party/blink/renderer/core/css/parser/css_selector_parser.h"
-#include "third_party/blink/renderer/core/css/parser/css_supports_parser.h"
 #include "third_party/blink/renderer/core/css/parser/css_tokenizer.h"
-#include "third_party/blink/renderer/core/css/parser/css_variable_parser.h"
-#include "third_party/blink/renderer/core/css/style_color.h"
-#include "third_party/blink/renderer/core/css/style_rule.h"
-#include "third_party/blink/renderer/core/css/style_sheet_contents.h"
-#include "third_party/blink/renderer/core/layout/layout_theme.h"
+#ifdef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/css_selector_list.h"
+#else
+#   include "third_party/blink/renderer/core/css/css_color_value.h"
+#   include "third_party/blink/renderer/core/css/css_keyframe_rule.h"
+#   include "third_party/blink/renderer/core/css/parser/css_parser_fast_paths.h"
+#   include "third_party/blink/renderer/core/css/parser/css_parser_impl.h"
+#   include "third_party/blink/renderer/core/css/parser/css_property_parser.h"
+#   include "third_party/blink/renderer/core/css/parser/css_supports_parser.h"
+#   include "third_party/blink/renderer/core/css/parser/css_variable_parser.h"
+#   include "third_party/blink/renderer/core/css/style_color.h"
+#   include "third_party/blink/renderer/core/css/style_rule.h"
+#   include "third_party/blink/renderer/core/css/style_sheet_contents.h"
+#   include "third_party/blink/renderer/core/layout/layout_theme.h"
+#endif
 
 namespace blink {
 
+#ifndef BLINKIT_CRAWLER_ONLY
 using namespace cssvalue;
 
 bool CSSParser::ParseDeclarationList(const CSSParserContext* context,
@@ -37,6 +53,7 @@ void CSSParser::ParseDeclarationListForInspector(
   CSSParserImpl::ParseDeclarationListForInspector(declaration, context,
                                                   observer);
 }
+#endif
 
 CSSSelectorList CSSParser::ParseSelector(
     const CSSParserContext* context,
@@ -48,6 +65,7 @@ CSSSelectorList CSSParser::ParseSelector(
                                           style_sheet_contents);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 CSSSelectorList CSSParser::ParsePageSelector(
     const CSSParserContext& context,
     StyleSheetContents* style_sheet_contents,
@@ -258,5 +276,6 @@ const CSSValue* CSSParser::ParseFontFaceDescriptor(
 
   return value;
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 }  // namespace blink

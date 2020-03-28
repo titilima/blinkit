@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_parser.h
+// Description: CSSParser Class
+//      Author: Ziming Li
+//     Created: 2020-03-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,9 +18,11 @@
 
 #include <memory>
 #include "third_party/blink/renderer/core/core_export.h"
-#include "third_party/blink/renderer/core/css/css_property_value_set.h"
 #include "third_party/blink/renderer/core/css/parser/css_parser_context.h"
-#include "third_party/blink/renderer/core/css_property_names.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/css_property_value_set.h"
+#   include "third_party/blink/renderer/core/css_property_names.h"
+#endif
 
 namespace blink {
 
@@ -30,6 +43,7 @@ class CORE_EXPORT CSSParser {
   STATIC_ONLY(CSSParser);
 
  public:
+#ifndef BLINKIT_CRAWLER_ONLY
   // As well as regular rules, allows @import and @namespace but not @charset
   static StyleRuleBase* ParseRule(const CSSParserContext*,
                                   StyleSheetContents*,
@@ -42,9 +56,11 @@ class CORE_EXPORT CSSParser {
       CSSDeferPropertyParsing defer_property_parsing =
           CSSDeferPropertyParsing::kNo,
       bool allow_import_rules = true);
+#endif
   static CSSSelectorList ParseSelector(const CSSParserContext*,
                                        StyleSheetContents*,
                                        const String&);
+#ifndef BLINKIT_CRAWLER_ONLY
   static CSSSelectorList ParsePageSelector(const CSSParserContext&,
                                            StyleSheetContents*,
                                            const String&);
@@ -115,6 +131,7 @@ class CORE_EXPORT CSSParser {
       const String&,
       bool important,
       const CSSParserContext*);
+#endif // BLINKIT_CRAWLER_ONLY
 };
 
 }  // namespace blink
