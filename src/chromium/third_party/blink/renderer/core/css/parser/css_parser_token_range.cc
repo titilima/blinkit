@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_parser_token_range.cc
+// Description: CSSParserTokenRange Class
+//      Author: Ziming Li
+//     Created: 2020-03-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -57,6 +68,7 @@ void CSSParserTokenRange::ConsumeComponentValue() {
   } while (nesting_level && first_ < last_);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 String CSSParserTokenRange::Serialize() const {
   // We're supposed to insert comments between certain pairs of token types
   // as per spec, but since this is currently only used for @supports CSSOM
@@ -66,5 +78,6 @@ String CSSParserTokenRange::Serialize() const {
     it->Serialize(builder);
   return builder.ToString();
 }
+#endif
 
 }  // namespace blink

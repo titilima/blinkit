@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_parser_token.h
+// Description: CSSParserToken Class
+//      Author: Ziming Li
+//     Created: 2020-03-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,9 +18,11 @@
 
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/css/css_primitive_value.h"
-#include "third_party/blink/renderer/core/css/parser/at_rule_descriptors.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_view.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/parser/at_rule_descriptors.h"
+#endif
 
 namespace blink {
 
@@ -140,15 +153,19 @@ class CORE_EXPORT CSSParserToken {
     DCHECK_EQ(type_, static_cast<unsigned>(kUnicodeRangeToken));
     return unicode_range_.end;
   }
+#ifndef BLINKIT_CRAWLER_ONLY
   CSSValueID Id() const;
   CSSValueID FunctionId() const;
+#endif
 
   bool HasStringBacking() const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
   CSSPropertyID ParseAsUnresolvedCSSPropertyID() const;
   AtRuleDescriptorID ParseAsAtRuleDescriptorID() const;
 
   void Serialize(StringBuilder&) const;
+#endif
 
   CSSParserToken CopyWithUpdatedString(const StringView&) const;
 

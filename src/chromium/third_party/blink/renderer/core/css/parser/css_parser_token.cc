@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_parser_token.cc
+// Description: CSSParserToken Class
+//      Author: Ziming Li
+//     Created: 2020-03-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,11 +16,13 @@
 #include "third_party/blink/renderer/core/css/parser/css_parser_token.h"
 
 #include <limits.h>
-#include "third_party/blink/renderer/core/css/css_markup.h"
 #include "third_party/blink/renderer/core/css/css_primitive_value.h"
-#include "third_party/blink/renderer/core/css/parser/css_property_parser.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/css_markup.h"
+#   include "third_party/blink/renderer/core/css/parser/css_property_parser.h"
+#endif
 
 namespace blink {
 
@@ -85,6 +98,7 @@ double CSSParserToken::NumericValue() const {
   return numeric_value_;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 CSSPropertyID CSSParserToken::ParseAsUnresolvedCSSPropertyID() const {
   DCHECK_EQ(type_, static_cast<unsigned>(kIdentToken));
   return UnresolvedCSSPropertyID(Value());
@@ -110,6 +124,7 @@ CSSValueID CSSParserToken::FunctionId() const {
     id_ = CssValueKeywordID(Value());
   return static_cast<CSSValueID>(id_);
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 bool CSSParserToken::HasStringBacking() const {
   CSSParserTokenType token_type = GetType();
@@ -185,6 +200,7 @@ bool CSSParserToken::operator==(const CSSParserToken& other) const {
   }
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void CSSParserToken::Serialize(StringBuilder& builder) const {
   // This is currently only used for @supports CSSOM. To keep our implementation
   // simple we handle some of the edge cases incorrectly (see comments below).
@@ -276,5 +292,6 @@ void CSSParserToken::Serialize(StringBuilder& builder) const {
       return;
   }
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 }  // namespace blink
