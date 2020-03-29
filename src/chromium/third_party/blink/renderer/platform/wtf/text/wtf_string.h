@@ -698,4 +698,16 @@ using WTF::Find;
 using WTF::IsSpaceOrNewline;
 
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
+
+namespace std {
+
+template<>
+struct hash<WTF::String> {
+  std::size_t operator()(const WTF::String &s) const noexcept {
+    return s.Impl()->ExistingHash();
+  }
+};
+
+}
+
 #endif  // THIRD_PARTY_BLINK_RENDERER_PLATFORM_WTF_TEXT_WTF_STRING_H_
