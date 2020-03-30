@@ -1,3 +1,13 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_selector_list.cc
+// Description: CSSSelectorList Class
+//      Author: Ziming Li
+//     Created: 2020-03-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
 /*
  * Copyright (C) 2008, 2012 Apple Inc. All rights reserved.
  * Copyright (C) 2009 Google Inc. All rights reserved.
@@ -315,6 +325,7 @@ void CSSSelectorList::DeleteSelectors() {
   WTF::Partitions::FastFree(selector_array_);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 String CSSSelectorList::SelectorsText() const {
   StringBuilder result;
 
@@ -326,5 +337,6 @@ String CSSSelectorList::SelectorsText() const {
 
   return result.ToString();
 }
+#endif
 
 }  // namespace blink

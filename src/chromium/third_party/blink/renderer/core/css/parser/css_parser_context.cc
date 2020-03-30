@@ -1,21 +1,36 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_parser_context.cc
+// Description: CSSParserContext Class
+//      Author: Ziming Li
+//     Created: 2020-03-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/core/css/parser/css_parser_context.h"
 
-#include "third_party/blink/renderer/core/css/css_style_sheet.h"
-#include "third_party/blink/renderer/core/css/style_sheet_contents.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
-#include "third_party/blink/renderer/core/frame/csp/content_security_policy.h"
-#include "third_party/blink/renderer/core/frame/deprecation.h"
-#include "third_party/blink/renderer/core/frame/settings.h"
-#include "third_party/blink/renderer/core/html/imports/html_imports_controller.h"
-#include "third_party/blink/renderer/core/loader/document_loader.h"
-#include "third_party/blink/renderer/core/page/page.h"
+#include "third_party/blink/renderer/core/dom/document.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/css_style_sheet.h"
+#   include "third_party/blink/renderer/core/css/style_sheet_contents.h"
+#   include "third_party/blink/renderer/core/frame/deprecation.h"
+#   include "third_party/blink/renderer/core/html/imports/html_imports_controller.h"
+#   include "third_party/blink/renderer/core/loader/document_loader.h"
+#   include "third_party/blink/renderer/core/page/page.h"
+#endif
+
+using namespace BlinKit;
 
 namespace blink {
 
+#ifndef BLINKIT_CRAWLER_ONLY
 // static
 CSSParserContext* CSSParserContext::Create(const ExecutionContext& context) {
   const Referrer referrer(context.Url().StrippedForUseAsReferrer(),
@@ -101,17 +116,20 @@ CSSParserContext* CSSParserContext::Create(const Document& document) {
       false /* is_opaque_response_from_service_worker */,
       document.GetReferrerPolicy(), WTF::TextEncoding(), kLiveProfile);
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 // static
 CSSParserContext* CSSParserContext::Create(
     const Document& document,
-    const KURL& base_url_override,
+    const BkURL& base_url_override,
     bool is_opaque_response_from_service_worker,
-    ReferrerPolicy referrer_policy_override,
     const WTF::TextEncoding& charset,
     SelectorProfile profile) {
   CSSParserMode mode =
       document.InQuirksMode() ? kHTMLQuirksMode : kHTMLStandardMode;
+#ifdef BLINKIT_CRAWLER_ONLY
+  CSSParserMode match_mode = mode;
+#else
   CSSParserMode match_mode;
   HTMLImportsController* imports_controller = document.ImportsController();
   if (imports_controller && profile == kLiveProfile) {
@@ -121,37 +139,37 @@ CSSParserContext* CSSParserContext::Create(
   } else {
     match_mode = mode;
   }
+#endif
 
-  const Referrer referrer(base_url_override.StrippedForUseAsReferrer(),
-                          referrer_policy_override);
+  const std::string referrer = base_url_override.StrippedForUseAsReferrer();
 
-  bool use_legacy_background_size_shorthand_behavior =
+  bool use_legacy_background_size_shorthand_behavior = false;
+#if 0 // BKTODO: Check below
       document.GetSettings()
           ? document.GetSettings()
                 ->GetUseLegacyBackgroundSizeShorthandBehavior()
           : false;
+#endif
 
-  ContentSecurityPolicyDisposition policy_disposition;
-  if (ContentSecurityPolicy::ShouldBypassMainWorld(&document))
-    policy_disposition = kDoNotCheckContentSecurityPolicy;
-  else
-    policy_disposition = kCheckContentSecurityPolicy;
+  ContentSecurityPolicyDisposition policy_disposition = kDoNotCheckContentSecurityPolicy;
 
   return new CSSParserContext(
       base_url_override, is_opaque_response_from_service_worker, charset, mode,
       match_mode, profile, referrer, document.IsHTMLDocument(),
       use_legacy_background_size_shorthand_behavior,
-      document.GetSecureContextMode(), policy_disposition, &document);
+      SecureContextMode::kSecureContext,
+      // BKTODO: document.GetSecureContextMode(),
+      policy_disposition, &document);
 }
 
 CSSParserContext::CSSParserContext(
-    const KURL& base_url,
+    const BkURL& base_url,
     bool is_opaque_response_from_service_worker,
     const WTF::TextEncoding& charset,
     CSSParserMode mode,
     CSSParserMode match_mode,
     SelectorProfile profile,
-    const Referrer& referrer,
+    const std::string& referrer,
     bool is_html_document,
     bool use_legacy_background_size_shorthand_behavior,
     SecureContextMode secure_context_mode,
@@ -172,6 +190,7 @@ CSSParserContext::CSSParserContext(
       should_check_content_security_policy_(policy_disposition),
       document_(use_counter_document) {}
 
+#ifndef BLINKIT_CRAWLER_ONLY
 bool CSSParserContext::operator==(const CSSParserContext& other) const {
   return base_url_ == other.base_url_ && charset_ == other.charset_ &&
          mode_ == other.mode_ && match_mode_ == other.match_mode_ &&
@@ -216,12 +235,13 @@ KURL CSSParserContext::CompleteURL(const String& url) const {
     return KURL(BaseURL(), url);
   return KURL(BaseURL(), url, Charset());
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
-void CSSParserContext::Count(WebFeature feature) const {
-  if (IsUseCounterRecordingEnabled())
-    UseCounter::Count(*document_, feature);
+void CSSParserContext::Count(WebFeature) const {
+  // Nothing to do, just a placeholder.
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 void CSSParserContext::CountDeprecation(WebFeature feature) const {
   if (IsUseCounterRecordingEnabled())
     Deprecation::CountDeprecation(*document_, feature);
@@ -238,9 +258,6 @@ void CSSParserContext::Count(CSSParserMode mode, CSSPropertyID property) const {
 bool CSSParserContext::IsDocumentHandleEqual(const Document* other) const {
   return document_.Get() == other;
 }
-
-void CSSParserContext::Trace(blink::Visitor* visitor) {
-  visitor->Trace(document_);
-}
+#endif // BLINKIT_CRAWLER_ONLY
 
 }  // namespace blink

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scroll_types.h
+// Description: Scroll Types
+//      Author: Ziming Li
+//     Created: 2020-03-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
  *
@@ -26,12 +37,16 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_SCROLL_SCROLL_TYPES_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_SCROLL_SCROLL_TYPES_H_
 
-#include "third_party/blink/public/platform/web_gesture_event.h"
-#include "third_party/blink/public/platform/web_scroll_types.h"
-#include "third_party/blink/renderer/platform/geometry/float_point.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/public/platform/web_gesture_event.h"
+#   include "third_party/blink/public/platform/web_scroll_types.h"
+#   include "third_party/blink/renderer/platform/geometry/float_point.h"
+#endif
 
 namespace blink {
+
+#ifndef BLINKIT_CRAWLER_ONLY
 
 // A ScrollOffset represents an offset from the scroll origin of a
 // ScrollableArea.  Note that "scroll origin" is not the same as the layout
@@ -183,6 +198,8 @@ enum ScrollbarControlStateMask {
   kPressedScrollbarState = 1 << 2
 };
 
+#endif // BLINKIT_CRAWLER_ONLY
+
 enum ScrollbarPart {
   kNoPart = 0,
   kBackButtonStartPart = 1,
@@ -196,6 +213,8 @@ enum ScrollbarPart {
   kTrackBGPart = 1 << 8,
   kAllParts = 0xffffffff
 };
+
+#ifndef BLINKIT_CRAWLER_ONLY
 
 enum ScrollbarOverlayColorTheme {
   kScrollbarOverlayColorThemeDark,
@@ -269,6 +288,8 @@ inline ScrollGranularity ToPlatformScrollGranularity(
 }
 
 typedef unsigned ScrollbarControlPartMask;
+
+#endif // BLINKIT_CRAWLER_ONLY
 
 }  // namespace blink
 

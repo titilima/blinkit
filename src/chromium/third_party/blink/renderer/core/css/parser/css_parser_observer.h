@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_parser_observer.h
+// Description: CSSParserObserver Class
+//      Author: Ziming Li
+//     Created: 2020-03-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2008, 2009, 2010 Apple Inc. All rights
@@ -25,14 +36,18 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_CSS_PARSER_CSS_PARSER_OBSERVER_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_PARSER_CSS_PARSER_OBSERVER_H_
 
-#include "third_party/blink/renderer/core/css/css_property_source_data.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/css_property_source_data.h"
+#endif
 
 namespace blink {
 
 // This is only for the inspector and shouldn't be used elsewhere.
 class CSSParserObserver {
  public:
+#ifndef BLINKIT_CRAWLER_ONLY
   virtual void StartRuleHeader(StyleRule::RuleType, unsigned offset) = 0;
+#endif
   virtual void EndRuleHeader(unsigned offset) = 0;
   virtual void ObserveSelector(unsigned start_offset, unsigned end_offset) = 0;
   virtual void StartRuleBody(unsigned offset) = 0;

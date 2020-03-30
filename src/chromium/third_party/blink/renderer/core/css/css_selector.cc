@@ -39,15 +39,17 @@
 
 #include <algorithm>
 #include <memory>
-// BKTODO: #include "third_party/blink/renderer/core/css/css_markup.h"
 #include "third_party/blink/renderer/core/css/css_selector_list.h"
-// BKTODO: #include "third_party/blink/renderer/core/css/parser/css_parser_context.h"
+#include "third_party/blink/renderer/core/css/parser/css_parser_context.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
 #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/css_markup.h"
+#endif
 
 #ifndef NDEBUG
 #include <stdio.h>
@@ -473,38 +475,6 @@ static CSSSelector::PseudoType NameToPseudoType(const AtomicString& name,
   return static_cast<CSSSelector::PseudoType>(match->type);
 }
 
-#ifndef NDEBUG
-void CSSSelector::Show(int indent) const {
-  printf("%*sSelectorText(): %s\n", indent, "", SelectorText().Ascii().data());
-  printf("%*smatch_: %d\n", indent, "", match_);
-  if (match_ != kTag)
-    printf("%*sValue(): %s\n", indent, "", Value().Ascii().data());
-  printf("%*sGetPseudoType(): %d\n", indent, "", GetPseudoType());
-  if (match_ == kTag)
-    printf("%*sTagQName().LocalName(): %s\n", indent, "",
-           TagQName().LocalName().Ascii().data());
-  printf("%*sIsAttributeSelector(): %d\n", indent, "", IsAttributeSelector());
-  if (IsAttributeSelector())
-    printf("%*sAttribute(): %s\n", indent, "",
-           Attribute().LocalName().Ascii().data());
-  printf("%*sArgument(): %s\n", indent, "", Argument().Ascii().data());
-  printf("%*sSpecificity(): %u\n", indent, "", Specificity());
-  if (TagHistory()) {
-    printf("\n%*s--> (Relation() == %d)\n", indent, "", Relation());
-    TagHistory()->Show(indent + 2);
-  } else {
-    printf("\n%*s--> (Relation() == %d)\n", indent, "", Relation());
-  }
-}
-
-void CSSSelector::Show() const {
-  printf("\n******* CSSSelector::Show(\"%s\") *******\n",
-         SelectorText().Ascii().data());
-  Show(2);
-  printf("******* end *******\n");
-}
-#endif
-
 CSSSelector::PseudoType CSSSelector::ParsePseudoType(const AtomicString& name,
                                                      bool has_arguments) {
   PseudoType pseudo_type = NameToPseudoType(name, has_arguments);
@@ -576,11 +546,8 @@ void CSSSelector::UpdatePseudoType(const AtomicString& value,
         pseudo_type_ = kPseudoUnknown;
       break;
     case kPseudoShadow:
-      ASSERT(false); // BKTODO:
-#if 0
       if (match_ != kPseudoElement || context.IsLiveProfile())
         pseudo_type_ = kPseudoUnknown;
-#endif
       break;
     case kPseudoBlinkInternalElement:
       if (match_ != kPseudoElement || mode != kUASheetMode)
@@ -703,16 +670,15 @@ bool CSSSelector::operator==(const CSSSelector& other) const {
   return true;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+
 static void SerializeIdentifierOrAny(const AtomicString& identifier,
                                      const AtomicString& any,
                                      StringBuilder& builder) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (identifier != any)
     SerializeIdentifier(identifier, builder);
   else
     builder.Append(g_star_atom);
-#endif
 }
 
 static void SerializeNamespacePrefixIfNeeded(const AtomicString& prefix,
@@ -734,8 +700,6 @@ const CSSSelector* CSSSelector::SerializeCompound(
                              builder);
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   for (const CSSSelector* simple_selector = this; simple_selector;
        simple_selector = simple_selector->TagHistory()) {
     if (simple_selector->match_ == kId) {
@@ -863,7 +827,6 @@ const CSSSelector* CSSSelector::SerializeCompound(
     if (simple_selector->Relation() != kSubSelector)
       return simple_selector;
   }
-#endif
   return nullptr;
 }
 
@@ -907,6 +870,7 @@ String CSSSelector::SelectorText() const {
   NOTREACHED();
   return String();
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 void CSSSelector::SetAttribute(const QualifiedName& value,
                                AttributeMatchType match_type) {
@@ -1006,8 +970,6 @@ unsigned CSSSelector::ComputeLinkMatchType(unsigned link_match_type) const {
        current = current->TagHistory()) {
     switch (current->GetPseudoType()) {
       case kPseudoNot: {
-        ASSERT(false); // BKTODO:
-#if 0
         // :not(:visited) is equivalent to :link. Parser enforces that :not
         // can't nest.
         DCHECK(current->SelectorList());
@@ -1019,7 +981,6 @@ unsigned CSSSelector::ComputeLinkMatchType(unsigned link_match_type) const {
           else if (sub_type == kPseudoLink)
             link_match_type &= ~kMatchLink;
         }
-#endif
       } break;
       case kPseudoLink:
         link_match_type &= ~kMatchVisited;
@@ -1075,8 +1036,6 @@ bool CSSSelector::MatchesPseudoElement() const {
 template <typename Functor>
 static bool ForAnyInTagHistory(const Functor& functor,
                                const CSSSelector& selector) {
-  ASSERT(false); // BKTODO:
-#if 0
   for (const CSSSelector* current = &selector; current;
        current = current->TagHistory()) {
     if (functor(*current))
@@ -1089,7 +1048,6 @@ static bool ForAnyInTagHistory(const Functor& functor,
       }
     }
   }
-#endif
 
   return false;
 }
