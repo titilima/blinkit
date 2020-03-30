@@ -4,7 +4,7 @@
 //   File Name: html_names.h
 // Description: HTML Names
 //      Author: Ziming Li
-//     Created: 2020-02-13
+//     Created: 2020-03-30
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
@@ -141,37 +141,74 @@ extern const blink::HTMLQualifiedName &kXmpTag;
 constexpr unsigned kTagsCount = 112;
 
 // Attributes
+extern const blink::QualifiedName &kAcceptAttr;
+extern const blink::QualifiedName &kAcceptCharsetAttr;
+extern const blink::QualifiedName &kAlignAttr;
+extern const blink::QualifiedName &kAlinkAttr;
+extern const blink::QualifiedName &kAxisAttr;
+extern const blink::QualifiedName &kBgcolorAttr;
 extern const blink::QualifiedName &kCharsetAttr;
+extern const blink::QualifiedName &kCheckedAttr;
 extern const blink::QualifiedName &kClassAttr;
+extern const blink::QualifiedName &kClearAttr;
+extern const blink::QualifiedName &kCodetypeAttr;
 extern const blink::QualifiedName &kColorAttr;
+extern const blink::QualifiedName &kCompactAttr;
 extern const blink::QualifiedName &kContentAttr;
+extern const blink::QualifiedName &kDeclareAttr;
+extern const blink::QualifiedName &kDeferAttr;
 extern const blink::QualifiedName &kDirAttr;
+extern const blink::QualifiedName &kDirectionAttr;
+extern const blink::QualifiedName &kDisabledAttr;
+extern const blink::QualifiedName &kEnctypeAttr;
 extern const blink::QualifiedName &kEventAttr;
 extern const blink::QualifiedName &kFaceAttr;
 extern const blink::QualifiedName &kForAttr;
 extern const blink::QualifiedName &kFormAttr;
 extern const blink::QualifiedName &kFrameAttr;
 extern const blink::QualifiedName &kHrefAttr;
+extern const blink::QualifiedName &kHreflangAttr;
 extern const blink::QualifiedName &kHttpEquivAttr;
 extern const blink::QualifiedName &kIdAttr;
 extern const blink::QualifiedName &kIsAttr;
 extern const blink::QualifiedName &kLabelAttr;
+extern const blink::QualifiedName &kLangAttr;
 extern const blink::QualifiedName &kLanguageAttr;
 extern const blink::QualifiedName &kLinkAttr;
+extern const blink::QualifiedName &kMediaAttr;
+extern const blink::QualifiedName &kMethodAttr;
+extern const blink::QualifiedName &kMultipleAttr;
 extern const blink::QualifiedName &kNameAttr;
+extern const blink::QualifiedName &kNohrefAttr;
 extern const blink::QualifiedName &kNomoduleAttr;
+extern const blink::QualifiedName &kNoresizeAttr;
+extern const blink::QualifiedName &kNoshadeAttr;
+extern const blink::QualifiedName &kNowrapAttr;
 extern const blink::QualifiedName &kObjectAttr;
+extern const blink::QualifiedName &kReadonlyAttr;
 extern const blink::QualifiedName &kReferrerpolicyAttr;
+extern const blink::QualifiedName &kRelAttr;
+extern const blink::QualifiedName &kRevAttr;
+extern const blink::QualifiedName &kRulesAttr;
+extern const blink::QualifiedName &kScopeAttr;
+extern const blink::QualifiedName &kScrollingAttr;
 extern const blink::QualifiedName &kSelectAttr;
+extern const blink::QualifiedName &kSelectedAttr;
+extern const blink::QualifiedName &kShapeAttr;
 extern const blink::QualifiedName &kSizeAttr;
 extern const blink::QualifiedName &kSpanAttr;
 extern const blink::QualifiedName &kSrcAttr;
 extern const blink::QualifiedName &kStyleAttr;
 extern const blink::QualifiedName &kSummaryAttr;
+extern const blink::QualifiedName &kTargetAttr;
+extern const blink::QualifiedName &kTextAttr;
 extern const blink::QualifiedName &kTitleAttr;
 extern const blink::QualifiedName &kTypeAttr;
+extern const blink::QualifiedName &kValignAttr;
+extern const blink::QualifiedName &kValuetypeAttr;
+extern const blink::QualifiedName &kVlinkAttr;
 
-constexpr unsigned kAttrsCount = 29;
+constexpr unsigned kAttrsCount = 66;
 
 void Init(void);
 

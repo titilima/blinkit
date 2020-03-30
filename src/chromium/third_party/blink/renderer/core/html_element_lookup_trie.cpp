@@ -200,6 +200,12 @@ static const HTMLQualifiedName* LookupHTMLTag6(const UChar *data)
                 return &kButtonTag;
             break;
         }
+        case 'o':
+        {
+            if ('p' == data[1] && 't' == data[2] && 'i' == data[3] && 'o' == data[4] && 'n' == data[5])
+                return &kOptionTag;
+            break;
+        }
         case 's':
         {
             if ('c' == data[1] && 'r' == data[2] && 'i' == data[3] && 'p' == data[4] && 't' == data[5])

@@ -4,7 +4,7 @@
 //   File Name: html_names.cpp
 // Description: HTML Names
 //      Author: Ziming Li
-//     Created: 2020-02-13
+//     Created: 2020-03-30
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
@@ -136,35 +136,72 @@ const HTMLQualifiedName &kXmpTag = reinterpret_cast<HTMLQualifiedName *>(&tag_st
 
 // Attributes
 static void* attr_storage[kAttrsCount * ((sizeof(QualifiedName) + sizeof(void *) - 1) / sizeof(void *))];
-const QualifiedName &kCharsetAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[0];
-const QualifiedName &kClassAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[1];
-const QualifiedName &kColorAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[2];
-const QualifiedName &kContentAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[3];
-const QualifiedName &kDirAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[4];
-const QualifiedName &kEventAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[5];
-const QualifiedName &kFaceAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[6];
-const QualifiedName &kForAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[7];
-const QualifiedName &kFormAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[8];
-const QualifiedName &kFrameAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[9];
-const QualifiedName &kHrefAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[10];
-const QualifiedName &kHttpEquivAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[11];
-const QualifiedName &kIdAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[12];
-const QualifiedName &kIsAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[13];
-const QualifiedName &kLabelAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[14];
-const QualifiedName &kLanguageAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[15];
-const QualifiedName &kLinkAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[16];
-const QualifiedName &kNameAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[17];
-const QualifiedName &kNomoduleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[18];
-const QualifiedName &kObjectAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[19];
-const QualifiedName &kReferrerpolicyAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[20];
-const QualifiedName &kSelectAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[21];
-const QualifiedName &kSizeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[22];
-const QualifiedName &kSpanAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[23];
-const QualifiedName &kSrcAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[24];
-const QualifiedName &kStyleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[25];
-const QualifiedName &kSummaryAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[26];
-const QualifiedName &kTitleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[27];
-const QualifiedName &kTypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[28];
+const QualifiedName &kAcceptAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[0];
+const QualifiedName &kAcceptCharsetAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[1];
+const QualifiedName &kAlignAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[2];
+const QualifiedName &kAlinkAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[3];
+const QualifiedName &kAxisAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[4];
+const QualifiedName &kBgcolorAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[5];
+const QualifiedName &kCharsetAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[6];
+const QualifiedName &kCheckedAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[7];
+const QualifiedName &kClassAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[8];
+const QualifiedName &kClearAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[9];
+const QualifiedName &kCodetypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[10];
+const QualifiedName &kColorAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[11];
+const QualifiedName &kCompactAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[12];
+const QualifiedName &kContentAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[13];
+const QualifiedName &kDeclareAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[14];
+const QualifiedName &kDeferAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[15];
+const QualifiedName &kDirAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[16];
+const QualifiedName &kDirectionAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[17];
+const QualifiedName &kDisabledAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[18];
+const QualifiedName &kEnctypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[19];
+const QualifiedName &kEventAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[20];
+const QualifiedName &kFaceAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[21];
+const QualifiedName &kForAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[22];
+const QualifiedName &kFormAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[23];
+const QualifiedName &kFrameAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[24];
+const QualifiedName &kHrefAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[25];
+const QualifiedName &kHreflangAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[26];
+const QualifiedName &kHttpEquivAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[27];
+const QualifiedName &kIdAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[28];
+const QualifiedName &kIsAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[29];
+const QualifiedName &kLabelAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[30];
+const QualifiedName &kLangAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[31];
+const QualifiedName &kLanguageAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[32];
+const QualifiedName &kLinkAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[33];
+const QualifiedName &kMediaAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[34];
+const QualifiedName &kMethodAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[35];
+const QualifiedName &kMultipleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[36];
+const QualifiedName &kNameAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[37];
+const QualifiedName &kNohrefAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[38];
+const QualifiedName &kNomoduleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[39];
+const QualifiedName &kNoresizeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[40];
+const QualifiedName &kNoshadeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[41];
+const QualifiedName &kNowrapAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[42];
+const QualifiedName &kObjectAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[43];
+const QualifiedName &kReadonlyAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[44];
+const QualifiedName &kReferrerpolicyAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[45];
+const QualifiedName &kRelAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[46];
+const QualifiedName &kRevAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[47];
+const QualifiedName &kRulesAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[48];
+const QualifiedName &kScopeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[49];
+const QualifiedName &kScrollingAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[50];
+const QualifiedName &kSelectAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[51];
+const QualifiedName &kSelectedAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[52];
+const QualifiedName &kShapeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[53];
+const QualifiedName &kSizeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[54];
+const QualifiedName &kSpanAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[55];
+const QualifiedName &kSrcAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[56];
+const QualifiedName &kStyleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[57];
+const QualifiedName &kSummaryAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[58];
+const QualifiedName &kTargetAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[59];
+const QualifiedName &kTextAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[60];
+const QualifiedName &kTitleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[61];
+const QualifiedName &kTypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[62];
+const QualifiedName &kValignAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[63];
+const QualifiedName &kValuetypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[64];
+const QualifiedName &kVlinkAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[65];
 
 void Init(void)
 {
@@ -184,14 +221,20 @@ void Init(void)
 
     static const NameEntry kNames[] = {
         { "a", 9778235, 1, 1, 0 },
+        { "accept", 4839857, 6, 0, 1 },
+        { "accept-charset", 5192676, 14, 0, 1 },
         { "address", 10008206, 7, 1, 0 },
+        { "align", 10094397, 5, 0, 1 },
+        { "alink", 2408650, 5, 0, 1 },
         { "applet", 7823075, 6, 1, 0 },
         { "area", 7355486, 4, 1, 0 },
         { "article", 2968800, 7, 1, 0 },
         { "aside", 10128566, 5, 1, 0 },
+        { "axis", 14347904, 4, 0, 1 },
         { "b", 7170995, 1, 1, 0 },
         { "base", 4376626, 4, 1, 0 },
         { "basefont", 5439393, 8, 1, 0 },
+        { "bgcolor", 11074228, 7, 0, 1 },
         { "bgsound", 9424179, 7, 1, 0 },
         { "big", 2330122, 3, 1, 0 },
         { "blockquote", 6047050, 10, 1, 0 },
@@ -201,21 +244,30 @@ void Init(void)
         { "caption", 2437650, 7, 1, 0 },
         { "center", 909285, 6, 1, 0 },
         { "charset", 14273970, 7, 0, 1 },
+        { "checked", 10213523, 7, 0, 1 },
         { "class", 1023741, 5, 0, 1 },
+        { "clear", 12832795, 5, 0, 1 },
         { "code", 11588001, 4, 1, 0 },
+        { "codetype", 7482920, 8, 0, 1 },
         { "col", 12850806, 3, 1, 0 },
         { "colgroup", 3733719, 8, 1, 0 },
         { "color", 2734929, 5, 0, 1 },
         { "command", 2099501, 7, 1, 0 },
+        { "compact", 369367, 7, 0, 1 },
         { "content", 6894765, 7, 1, 1 },
         { "dd", 16480447, 2, 1, 0 },
+        { "declare", 13440114, 7, 0, 1 },
+        { "defer", 13832204, 5, 0, 1 },
         { "details", 4653180, 7, 1, 0 },
         { "dir", 5122803, 3, 1, 1 },
+        { "direction", 16092904, 9, 0, 1 },
+        { "disabled", 12237545, 8, 0, 1 },
         { "div", 9762591, 3, 1, 0 },
         { "dl", 5117854, 2, 1, 0 },
         { "dt", 8177126, 2, 1, 0 },
         { "em", 2724661, 2, 1, 0 },
         { "embed", 855371, 5, 1, 0 },
+        { "enctype", 11388071, 7, 0, 1 },
         { "event", 4205160, 5, 0, 1 },
         { "face", 12427611, 4, 0, 1 },
         { "fieldset", 37097, 8, 1, 0 },
@@ -238,6 +290,7 @@ void Init(void)
         { "hgroup", 8927907, 6, 1, 0 },
         { "hr", 7182703, 2, 1, 0 },
         { "href", 5797448, 4, 0, 1 },
+        { "hreflang", 12582042, 8, 0, 1 },
         { "html", 7123128, 4, 1, 0 },
         { "http-equiv", 12415310, 10, 0, 1 },
         { "i", 16149244, 1, 1, 0 },
@@ -249,21 +302,29 @@ void Init(void)
         { "is", 15617733, 2, 0, 1 },
         { "keygen", 5603105, 6, 1, 0 },
         { "label", 15092473, 5, 1, 1 },
+        { "lang", 3702417, 4, 0, 1 },
         { "language", 4109061, 8, 0, 1 },
         { "li", 11097939, 2, 1, 0 },
         { "link", 7010491, 4, 1, 1 },
         { "listing", 15674586, 7, 1, 0 },
         { "main", 13501767, 4, 1, 0 },
         { "marquee", 1416619, 7, 1, 0 },
+        { "media", 13905581, 5, 0, 1 },
         { "menu", 13428288, 4, 1, 0 },
         { "meta", 14067019, 4, 1, 0 },
+        { "method", 14679268, 6, 0, 1 },
+        { "multiple", 6185486, 8, 0, 1 },
         { "name", 8774809, 4, 0, 1 },
         { "nav", 15269619, 3, 1, 0 },
         { "nobr", 419763, 4, 1, 0 },
         { "noembed", 11476379, 7, 1, 0 },
         { "noframes", 13751064, 8, 1, 0 },
+        { "nohref", 2672291, 6, 0, 1 },
         { "nomodule", 10903441, 8, 0, 1 },
+        { "noresize", 11098542, 8, 0, 1 },
         { "noscript", 10168152, 8, 1, 0 },
+        { "noshade", 12172860, 7, 0, 1 },
+        { "nowrap", 15804466, 6, 0, 1 },
         { "object", 6907086, 6, 1, 1 },
         { "ol", 6672076, 2, 1, 0 },
         { "optgroup", 10180907, 8, 1, 0 },
@@ -273,15 +334,23 @@ void Init(void)
         { "plaintext", 2551274, 9, 1, 0 },
         { "pre", 16061734, 3, 1, 0 },
         { "rb", 4749743, 2, 1, 0 },
+        { "readonly", 4471832, 8, 0, 1 },
         { "referrerpolicy", 13927145, 14, 0, 1 },
+        { "rel", 8963158, 3, 0, 1 },
+        { "rev", 12217053, 3, 0, 1 },
         { "rp", 4502666, 2, 1, 0 },
         { "rt", 8494892, 2, 1, 0 },
         { "rtc", 4350543, 3, 1, 0 },
         { "ruby", 12793227, 4, 1, 0 },
+        { "rules", 8604373, 5, 0, 1 },
         { "s", 11249530, 1, 1, 0 },
+        { "scope", 5624816, 5, 0, 1 },
         { "script", 7137273, 6, 1, 0 },
+        { "scrolling", 4321742, 9, 0, 1 },
         { "section", 8056235, 7, 1, 0 },
         { "select", 210571, 6, 1, 1 },
+        { "selected", 15762609, 8, 0, 1 },
+        { "shape", 15210140, 5, 0, 1 },
         { "size", 12715024, 4, 0, 1 },
         { "small", 14362904, 5, 1, 0 },
         { "source", 341674, 6, 1, 0 },
@@ -294,9 +363,11 @@ void Init(void)
         { "summary", 1148260, 7, 1, 1 },
         { "sup", 8741418, 3, 1, 0 },
         { "table", 8181317, 5, 1, 0 },
+        { "target", 1752822, 6, 0, 1 },
         { "tbody", 14028375, 5, 1, 0 },
         { "td", 10309076, 2, 1, 0 },
         { "template", 12693000, 8, 1, 0 },
+        { "text", 2784654, 4, 0, 1 },
         { "textarea", 10510497, 8, 1, 0 },
         { "tfoot", 13009441, 5, 1, 0 },
         { "th", 3915297, 2, 1, 0 },
@@ -308,8 +379,11 @@ void Init(void)
         { "type", 1916283, 4, 0, 1 },
         { "u", 13317144, 1, 1, 0 },
         { "ul", 12324505, 2, 1, 0 },
+        { "valign", 8345445, 6, 0, 1 },
+        { "valuetype", 4808367, 9, 0, 1 },
         { "var", 9573901, 3, 1, 0 },
         { "video", 16765639, 5, 1, 0 },
+        { "vlink", 12743618, 5, 0, 1 },
         { "wbr", 8290101, 3, 1, 0 },
         { "xmp", 8764488, 3, 1, 0 },
     };
