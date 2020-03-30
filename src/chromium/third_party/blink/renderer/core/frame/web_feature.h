@@ -17,8 +17,14 @@
 namespace blink {
 
 enum class WebFeature {
+    kCaseInsensitiveAttrSelectorMatch,
+    kCSSDeepCombinatorAndShadow,
+    kDeepCombinatorInStaticProfile,
     kDuplicatedAttribute,
+    kHasBeforeOrAfterPseudoElement,
+    kHasIDClassTagAttribute,
     kHTMLParseErrorNestedForm,
+    kPseudoShadowInStaticProfile,
 };
 
 } // namespace blink
