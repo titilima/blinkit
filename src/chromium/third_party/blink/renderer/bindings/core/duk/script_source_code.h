@@ -72,6 +72,7 @@ public:
 
     const std::string& Source(void) const { return m_source; }
     const BlinKit::BkURL &Url(void) const { return m_URL; }
+    std::string FileName(void) const;
 private:
     const std::string m_source;
     const BlinKit::BkURL m_URL;

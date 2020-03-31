@@ -59,6 +59,9 @@ static void CommonCallback(ContextImpl *ctxImpl, duk_context *ctx)
     if (!duk_is_error(ctx, -1))
         return;
 
+#ifdef _DEBUG
+    duk_get_prop_string(ctx, -1, "stack");
+#endif
     std::string str = Duk::To<std::string>(ctx, -1);
     ctxImpl->ConsoleOutput(BK_CONSOLE_ERROR, str.c_str());
 }
@@ -95,12 +98,11 @@ ContextImpl& ScriptController::EnsureContext(void)
     return *m_context;
 }
 
-void ScriptController::ExecuteScriptInMainWorld(const ScriptSourceCode &sourceSode, const BkURL &baseURL)
+void ScriptController::ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const BkURL &baseURL)
 {
     ContextImpl &ctx = EnsureContext();
-
     const ContextImpl::Callback callback = std::bind(CommonCallback, &ctx, std::placeholders::_1);
-    ctx.Eval(sourceSode.Source(), callback);
+    ctx.Eval(sourceCode.Source(), callback, sourceCode.FileName().c_str());
 }
 
 bool ScriptController::ScriptEnabled(void)

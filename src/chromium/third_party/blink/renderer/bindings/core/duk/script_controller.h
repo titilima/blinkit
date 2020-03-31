@@ -72,7 +72,7 @@ public:
     ContextImpl& EnsureContext(void);
     bool ScriptEnabled(void);
 
-    void ExecuteScriptInMainWorld(const ScriptSourceCode &sourceSode, const BlinKit::BkURL &baseURL);
+    void ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const BlinKit::BkURL &baseURL);
 
     void ClearWindowProxy(void);
     void UpdateDocument(void);

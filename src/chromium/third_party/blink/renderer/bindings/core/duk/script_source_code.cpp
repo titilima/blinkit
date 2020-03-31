@@ -40,4 +40,13 @@ ScriptSourceCode::ScriptSourceCode(
 
 ScriptSourceCode::~ScriptSourceCode(void) = default;
 
+std::string ScriptSourceCode::FileName(void) const
+{
+    std::string ret = m_URL.Path();
+    size_t p = ret.rfind('/');
+    if (std::string::npos != p)
+        ret = ret.substr(p + 1);
+    return ret;
+}
+
 } // namespace blink
