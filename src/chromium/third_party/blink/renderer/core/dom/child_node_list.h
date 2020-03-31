@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: child_node_list.h
+// Description: ChildNodeList Class
+//      Author: Ziming Li
+//     Created: 2020-03-31
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -62,8 +73,6 @@ class ChildNodeList final : public NodeList {
   Node* TraverseBackwardToOffset(unsigned offset,
                                  Node& current_node,
                                  unsigned& current_offset) const;
-
-  void Trace(blink::Visitor*) override;
 
  private:
   explicit ChildNodeList(ContainerNode& root_node);

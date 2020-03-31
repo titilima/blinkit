@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: empty_node_list.h
+// Description: EmptyNodeList Class
+//      Author: Ziming Li
+//     Created: 2020-03-31
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Apple Inc. All rights reserved.
  * Copyright (C) 2014 Samsung Electronics. All rights reserved.
@@ -44,8 +55,6 @@ class EmptyNodeList final : public NodeList {
   ~EmptyNodeList() override;
 
   Node& OwnerNode() const { return *owner_; }
-
-  void Trace(blink::Visitor*) override;
 
  private:
   explicit EmptyNodeList(Node& root_node) : owner_(root_node) {}
