@@ -43,6 +43,19 @@
 
 namespace blink {
 
+struct SameSizeAsQualifiedNameImpl
+    : public RefCounted<SameSizeAsQualifiedNameImpl> {
+  unsigned bitfield;
+  void* pointers[4];
+#ifndef NDEBUG
+  std::shared_ptr<std::string> views[4];
+#endif
+};
+
+static_assert(sizeof(QualifiedName::QualifiedNameImpl) ==
+                  sizeof(SameSizeAsQualifiedNameImpl),
+              "QualifiedNameImpl should stay small");
+
 using QualifiedNameCache =
     HashSet<QualifiedName::QualifiedNameImpl*, QualifiedNameHash>;
 

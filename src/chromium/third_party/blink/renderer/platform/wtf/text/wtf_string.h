@@ -572,11 +572,11 @@ class WTF_EXPORT String {
   class Debugger {
    public:
     Debugger(String &s) : s_(s) {}
-    ~Debugger() { s_.view_ = s_.StdUtf8(); }
+    ~Debugger() { s_.view_ = std::make_shared<std::string>(s_.StdUtf8()); }
    private:
     String &s_;
   };
-  std::string view_;
+  std::shared_ptr<std::string> view_;
 #endif
 };
 
