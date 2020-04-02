@@ -51,31 +51,41 @@ namespace WTF {
 
 // Construct a string with UTF-16 data.
 String::String(const UChar* characters, unsigned length)
-    : impl_(characters ? StringImpl::Create(characters, length) : nullptr) {}
+    : impl_(characters ? StringImpl::Create(characters, length) : nullptr) {
+  WTF_STRING_ATTACH_DEBUGGER(this);
+}
 
 // Construct a string with UTF-16 data, from a null-terminated source.
 String::String(const UChar* str) {
   if (!str)
     return;
+  WTF_STRING_ATTACH_DEBUGGER(this);
   impl_ = StringImpl::Create(str, LengthOfNullTerminatedString(str));
 }
 
 // Construct a string with latin1 data.
 String::String(const LChar* characters, unsigned length)
-    : impl_(characters ? StringImpl::Create(characters, length) : nullptr) {}
+    : impl_(characters ? StringImpl::Create(characters, length) : nullptr) {
+  WTF_STRING_ATTACH_DEBUGGER(this);
+}
 
 String::String(const char* characters, unsigned length)
     : impl_(characters
                 ? StringImpl::Create(reinterpret_cast<const LChar*>(characters),
                                      length)
-                : nullptr) {}
+                : nullptr) {
+  WTF_STRING_ATTACH_DEBUGGER(this);
+}
 
 #if defined(ARCH_CPU_64_BITS)
 String::String(const char* characters, size_t length)
-    : String(characters, SafeCast<unsigned>(length)) {}
+    : String(characters, SafeCast<unsigned>(length)) {
+  WTF_STRING_ATTACH_DEBUGGER(this);
+}
 #endif  // defined(ARCH_CPU_64_BITS)
 
 void String::append(const StringView& string) {
+  WTF_STRING_ATTACH_DEBUGGER(this);
   if (string.IsEmpty())
     return;
   if (!impl_) {
@@ -124,6 +134,7 @@ void String::append(const StringView& string) {
 
 template <typename CharacterType>
 inline void String::AppendInternal(CharacterType c) {
+  WTF_STRING_ATTACH_DEBUGGER(this);
   // FIXME: This is extremely inefficient. So much so that we might want to
   // take this out of String's API. We can make it better by optimizing the
   // case where exactly one String is pointing at this StringImpl, but even
@@ -199,6 +210,7 @@ scoped_refptr<StringImpl> InsertInternal(scoped_refptr<StringImpl> impl,
 }
 
 void String::insert(const StringView& string, unsigned position) {
+  WTF_STRING_ATTACH_DEBUGGER(this);
   if (string.IsEmpty()) {
     if (string.IsNull())
       return;
@@ -242,11 +254,13 @@ void String::Ensure16Bit() {
 }
 
 void String::Truncate(unsigned length) {
+  WTF_STRING_ATTACH_DEBUGGER(this);
   if (impl_)
     impl_ = impl_->Truncate(length);
 }
 
 void String::Remove(unsigned start, unsigned length_to_remove) {
+  WTF_STRING_ATTACH_DEBUGGER(this);
   if (impl_)
     impl_ = impl_->Remove(start, length_to_remove);
 }

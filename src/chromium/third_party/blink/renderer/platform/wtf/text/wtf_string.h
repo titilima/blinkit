@@ -70,6 +70,12 @@ enum UTF8ConversionMode {
              ? op##IgnoringASCIICase args               \
              : op##IgnoringCase args)
 
+#ifndef NDEBUG
+#   define  WTF_STRING_ATTACH_DEBUGGER(ps)  Debugger debugger##__LINE__(*(ps))
+#else
+#   define  WTF_STRING_ATTACH_DEBUGGER(ps)
+#endif
+
 // You can find documentation about this class in this doc:
 // https://docs.google.com/document/d/1kOCUlJdh2WJMJGDf-WoEQhmnjKLaOYRbiHz5TiGJl14/edit?usp=sharing
 class WTF_EXPORT String {
@@ -95,7 +101,9 @@ class WTF_EXPORT String {
   // Construct a string with UTF-16 data, from a null-terminated source.
   String(const UChar*);
   String(const char16_t* chars)
-      : String(reinterpret_cast<const UChar*>(chars)) {}
+      : String(reinterpret_cast<const UChar*>(chars)) {
+    WTF_STRING_ATTACH_DEBUGGER(this);
+  }
 
   // Construct a string with latin1 data.
   String(const LChar* characters, unsigned length);
@@ -109,15 +117,26 @@ class WTF_EXPORT String {
 
   // Construct a string with latin1 data, from a null-terminated source.
   String(const LChar* characters)
-      : String(reinterpret_cast<const char*>(characters)) {}
+      : String(reinterpret_cast<const char*>(characters)) {
+    WTF_STRING_ATTACH_DEBUGGER(this);
+  }
   String(const char* characters)
-      : String(characters, characters ? strlen(characters) : 0) {}
+      : String(characters, characters ? strlen(characters) : 0) {
+    WTF_STRING_ATTACH_DEBUGGER(this);
+  }
 
   // Construct a string referencing an existing StringImpl.
-  String(StringImpl* impl) : impl_(impl) {}
-  String(scoped_refptr<StringImpl> impl) : impl_(std::move(impl)) {}
+  String(StringImpl* impl) : impl_(impl) {
+    WTF_STRING_ATTACH_DEBUGGER(this);
+  }
+  String(scoped_refptr<StringImpl> impl) : impl_(std::move(impl)) {
+    WTF_STRING_ATTACH_DEBUGGER(this);
+  }
 
-  void swap(String& o) { impl_.swap(o.impl_); }
+  void swap(String& o) {
+    WTF_STRING_ATTACH_DEBUGGER(this);
+    impl_.swap(o.impl_);
+  }
 
   template <typename CharType>
   static String Adopt(StringBuffer<CharType>& buffer) {
@@ -289,16 +308,19 @@ class WTF_EXPORT String {
   // TODO(esprehn): replace strangely both modifies this String *and* return a
   // value. It should only do one of those.
   String& Replace(UChar pattern, UChar replacement) {
+    WTF_STRING_ATTACH_DEBUGGER(this);
     if (impl_)
       impl_ = impl_->Replace(pattern, replacement);
     return *this;
   }
   String& Replace(UChar pattern, const StringView& replacement) {
+    WTF_STRING_ATTACH_DEBUGGER(this);
     if (impl_)
       impl_ = impl_->Replace(pattern, replacement);
     return *this;
   }
   String& Replace(const StringView& pattern, const StringView& replacement) {
+    WTF_STRING_ATTACH_DEBUGGER(this);
     if (impl_)
       impl_ = impl_->Replace(pattern, replacement);
     return *this;
@@ -306,12 +328,14 @@ class WTF_EXPORT String {
   String& replace(unsigned index,
                   unsigned length_to_replace,
                   const StringView& replacement) {
+    WTF_STRING_ATTACH_DEBUGGER(this);
     if (impl_)
       impl_ = impl_->Replace(index, length_to_replace, replacement);
     return *this;
   }
 
   void Fill(UChar c) {
+    WTF_STRING_ATTACH_DEBUGGER(this);
     if (impl_)
       impl_ = impl_->Fill(c);
   }
@@ -543,6 +567,17 @@ class WTF_EXPORT String {
   void AppendInternal(CharacterType);
 
   scoped_refptr<StringImpl> impl_;
+
+#ifndef NDEBUG
+  class Debugger {
+   public:
+    Debugger(String &s) : s_(s) {}
+    ~Debugger() { s_.view_ = s_.StdUtf8(); }
+   private:
+    String &s_;
+  };
+  std::string view_;
+#endif
 };
 
 #undef DISPATCH_CASE_OP
@@ -588,7 +623,9 @@ inline void swap(String& a, String& b) {
 template <wtf_size_t inlineCapacity>
 String::String(const Vector<UChar, inlineCapacity>& vector)
     : impl_(vector.size() ? StringImpl::Create(vector.data(), vector.size())
-                          : StringImpl::empty_) {}
+                          : StringImpl::empty_) {
+  WTF_STRING_ATTACH_DEBUGGER(this);
+}
 
 template <>
 inline const LChar* String::GetCharacters<LChar>() const {

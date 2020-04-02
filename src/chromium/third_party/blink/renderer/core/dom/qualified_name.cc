@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: qualified_name.cc
+// Description: QualifiedName Class
+//      Author: Ziming Li
+//     Created: 2020-04-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006, 2009 Apple Inc. All rights reserved.
  *
@@ -31,16 +42,6 @@
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
 namespace blink {
-
-struct SameSizeAsQualifiedNameImpl
-    : public RefCounted<SameSizeAsQualifiedNameImpl> {
-  unsigned bitfield;
-  void* pointers[4];
-};
-
-static_assert(sizeof(QualifiedName::QualifiedNameImpl) ==
-                  sizeof(SameSizeAsQualifiedNameImpl),
-              "QualifiedNameImpl should stay small");
 
 using QualifiedNameCache =
     HashSet<QualifiedName::QualifiedNameImpl*, QualifiedNameHash>;
