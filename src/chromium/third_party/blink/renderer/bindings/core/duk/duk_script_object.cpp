@@ -63,7 +63,7 @@ duk_ret_t DukScriptObject::DefaultFinalizer(duk_context *ctx)
         nativeThis->m_contextObject = nullptr;
         if (nativeThis->IsContextRetained())
         {
-            nativeThis->m_contextRetained = false;
+            nativeThis->ReleaseFromContext();
             ContextImpl::From(ctx)->GetGCPool().Save(*nativeThis);
         }
     }
