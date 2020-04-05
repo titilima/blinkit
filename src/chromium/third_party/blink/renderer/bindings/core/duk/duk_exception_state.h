@@ -24,6 +24,9 @@ class DukExceptionState final : public blink::ExceptionState
 public:
     DukExceptionState(duk_context *ctx);
 private:
+    // ExceptionState
+    void ThrowException(void) override;
+
     duk_context *m_ctx;
 };
 
