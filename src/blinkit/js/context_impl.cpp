@@ -17,10 +17,10 @@
 #include "third_party/blink/renderer/bindings/core/duk/duk_attr.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_console.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_document.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_event.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_location.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_navigator.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_script_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_window.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -220,7 +220,7 @@ const char* ContextImpl::LookupPrototypeName(const std::string &tagName) const
     auto it = m_prototypeMap.find(tagName);
     if (std::end(m_prototypeMap) == it)
         return DukElement::ProtoName;
-    return it->second.c_str();
+    return it->second;
 }
 
 void ContextImpl::RegisterPrototypesForCrawler(duk_context *ctx)
@@ -235,6 +235,7 @@ void ContextImpl::RegisterPrototypesForCrawler(duk_context *ctx)
     DukNavigator::RegisterPrototype(helper);
     DukNode::RegisterPrototype(helper, ProtoNames::DocumentFragment);
     DukNode::RegisterPrototype(helper, ProtoNames::Text);
+    DukScriptElement::RegisterPrototypeForCrawler(helper);
     DukWindow::RegisterPrototypeForCrawler(helper);
 }
 

@@ -40,6 +40,13 @@ Node::InsertionNotificationRequest CrawlerScriptElement::InsertedInto(ContainerN
     return ScriptElementBase::InsertedIntoImpl(insertionPoint);
 }
 
+bool CrawlerScriptElement::IsURLAttribute(const Attribute &attribute) const
+{
+    if (ScriptElementBase::IsURLAttributeImpl(attribute.GetName()))
+        return true;
+    return CrawlerElement::IsURLAttribute(attribute);
+}
+
 void CrawlerScriptElement::ParseAttribute(const AttributeModificationParams &params)
 {
     if (!ScriptElementBase::ParseAttributeImpl(params))

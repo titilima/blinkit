@@ -85,6 +85,7 @@ class CORE_EXPORT ScriptElementBase : public GarbageCollectedMixin {
   void DidNotifySubtreeInsertionsToDocumentImpl(void);
   void ChildrenChangedImpl(const ContainerNode::ChildrenChange &change);
   bool ParseAttributeImpl(const Element::AttributeModificationParams &params);
+  static bool IsURLAttributeImpl(const QualifiedName &attrName);
 private:
   virtual Element& GetElement(void) const = 0;
 

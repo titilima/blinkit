@@ -94,6 +94,14 @@ bool ScriptElementBase::IsConnected(void) const
     return GetElement().isConnected();
 }
 
+bool ScriptElementBase::IsURLAttributeImpl(const QualifiedName &attrName)
+{
+    using namespace html_names;
+    if (attrName == kSrcAttr)
+        return true;
+    return false;
+}
+
 String ScriptElementBase::LanguageAttributeValue(void) const
 {
     return GetElement().getAttribute(kLanguageAttr).GetString();

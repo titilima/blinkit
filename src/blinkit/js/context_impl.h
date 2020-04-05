@@ -60,7 +60,7 @@ private:
     const blink::LocalFrame &m_frame;
     duk_context *m_ctx;
     std::function<void(int, const char *)> m_consoleMessager;
-    const std::unordered_map<std::string, std::string> &m_prototypeMap;
+    const std::unordered_map<std::string, const char *> &m_prototypeMap;
 };
 
 #endif // BLINKIT_BLINKIT_CONTEXT_IMPL_H

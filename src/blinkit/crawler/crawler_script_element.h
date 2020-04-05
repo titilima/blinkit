@@ -39,8 +39,9 @@ private:
     void ParseAttribute(const AttributeModificationParams &params) override;
 #if 0
     void DidMoveToNewDocument(Document& old_document) override;
-
-    bool IsURLAttribute(const blink::Attribute&) const override;
+#endif
+    bool IsURLAttribute(const blink::Attribute &attribute) const override;
+#if 0
     bool HasLegalLinkAttribute(const blink::QualifiedName&) const override;
     const blink::QualifiedName& SubResourceAttributeName() const override;
 #endif
