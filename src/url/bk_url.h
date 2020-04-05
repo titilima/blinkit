@@ -31,6 +31,7 @@ public:
     bool IsValid(void) const { return m_isValid; }
     const std::string& AsString(void) const { return m_string; }
 
+    std::string Scheme(void) const { return ComponentString(m_parsed.scheme); }
     bool SchemeIs(std::string_view scheme) const;
     bool SchemeIsHTTPOrHTTPS(void) const;
     bool SchemeIsData(void) const;
