@@ -47,6 +47,7 @@
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
+#include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/core/loader/frame_fetch_context.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #include "third_party/blink/renderer/platform/loader/fetch/fetch_parameters.h"
@@ -209,16 +210,12 @@ void DocumentLoader::DidInstallNewDocument(Document *document)
     String headerContentLanguage = m_response.HttpHeaderField(http_names::kContentLanguage);
     if (!headerContentLanguage.IsEmpty())
     {
-        assert(false); // BKTODO:
-#if 0
-        size_t comma_index = header_content_language.find(',');
+        size_t commaIndex = headerContentLanguage.find(',');
         // kNotFound == -1 == don't truncate
-        header_content_language.Truncate(comma_index);
-        header_content_language =
-            header_content_language.StripWhiteSpace(IsHTMLSpace<UChar>);
-        if (!header_content_language.IsEmpty())
-            document->SetContentLanguage(AtomicString(header_content_language));
-#endif
+        headerContentLanguage.Truncate(commaIndex);
+        headerContentLanguage = headerContentLanguage.StripWhiteSpace(IsHTMLSpace<UChar>);
+        if (!headerContentLanguage.IsEmpty())
+            document->SetContentLanguage(AtomicString(headerContentLanguage));
     }
 
     GetLocalFrameClient().DidCreateNewDocument();
