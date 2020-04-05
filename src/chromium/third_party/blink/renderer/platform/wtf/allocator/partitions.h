@@ -19,6 +19,10 @@ namespace WTF {
 class Partitions
 {
 public:
+    static size_t ComputeAllocationSize(size_t count, size_t size)
+    {
+        return count * size;
+    }
     static void* FastMalloc(size_t n, const char *)
     {
         return malloc(n);
