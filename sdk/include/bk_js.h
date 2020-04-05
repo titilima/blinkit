@@ -52,7 +52,8 @@ BKEXPORT BkJSValue BKAPI BkJSEvaluate(BkJSContext context, const char *code, uns
 
 enum BkConsoleMessageType {
     BK_CONSOLE_LOG = 0,
-    BK_CONSOLE_ERROR,
+    BK_CONSOLE_WARN,
+    BK_CONSOLE_ERROR
 };
 
 #ifdef __cplusplus

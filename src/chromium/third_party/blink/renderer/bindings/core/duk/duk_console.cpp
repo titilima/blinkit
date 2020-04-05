@@ -24,6 +24,12 @@ static duk_ret_t Log(duk_context *ctx)
     return 0;
 }
 
+static duk_ret_t Warn(duk_context *ctx)
+{
+    ContextImpl::From(ctx)->ConsoleOutput(BK_CONSOLE_WARN, duk_to_string(ctx, 0));
+    return 0;
+}
+
 } // namespace Impl
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -33,7 +39,8 @@ const char DukConsole::ProtoName[] = "Console";
 void DukConsole::FillPrototypeEntry(PrototypeEntry &entry)
 {
     static const PrototypeEntry::Method Methods[] = {
-        { "log", Impl::Log, 1 },
+        { "log",  Impl::Log,  1 },
+        { "warn", Impl::Warn, 1 }
     };
 
     DukScriptObject::FillPrototypeEntry(entry);
