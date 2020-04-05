@@ -32,6 +32,9 @@ public:
     virtual ~ScriptWrappable(void) = default;
 
     bool IsContextRetained(void) const { return m_contextRetained; }
+    void RetainByContext(void) { m_contextRetained = true; }
+    void ReleaseFromContext(void) { m_contextRetained = false; }
+
     bool IsInGCPool(void) const { return m_inGCPool; }
     bool CanBePooled(void) const {
 #ifdef _DEBUG

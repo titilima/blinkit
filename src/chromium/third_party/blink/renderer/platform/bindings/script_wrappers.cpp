@@ -35,7 +35,7 @@ PushWrapper::~PushWrapper(void)
 
     if (m_nativeObject->IsInGCPool())
     {
-        m_nativeObject->m_contextRetained = true;
+        m_nativeObject->RetainByContext();
         ContextImpl::From(m_ctx)->GetGCPool().Restore(*m_nativeObject);
     }
 }
