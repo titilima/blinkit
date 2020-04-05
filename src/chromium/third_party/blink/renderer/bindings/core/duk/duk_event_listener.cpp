@@ -120,6 +120,9 @@ void DukEventListener::handleEvent(ExecutionContext *executionContext, Event *ev
     }
     else
     {
+#ifdef _DEBUG
+        duk_get_prop_string(m_ctx, -1, "stack");
+#endif
         std::string str = Duk::To<std::string>(m_ctx, -1);
         ctxImpl->ConsoleOutput(BK_CONSOLE_ERROR, str.c_str());
     }
