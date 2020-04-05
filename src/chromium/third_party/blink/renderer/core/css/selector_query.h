@@ -41,22 +41,58 @@
 #pragma once
 
 #include <unordered_map>
+#include <vector>
 #include "base/macros.h"
+#include "third_party/blink/renderer/core/css/css_selector_list.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
 namespace blink {
 
+class ContainerNode;
+class Document;
+class Element;
+class ExceptionState;
+template <typename NodeType>
+class StaticNodeTypeList;
+using StaticElementList = StaticNodeTypeList<Element>;
+
 class SelectorQuery
 {
 public:
+    static std::unique_ptr<SelectorQuery> Adopt(CSSSelectorList selectorList);
+
+    // https://dom.spec.whatwg.org/#dom-parentnode-queryselectorall
+    StaticElementList* QueryAll(ContainerNode &rootNode) const;
 private:
-     DISALLOW_COPY_AND_ASSIGN(SelectorQuery);
+    explicit SelectorQuery(CSSSelectorList selectorList);
+
+    template <typename SelectorQueryTrait>
+    void Execute(ContainerNode &rootNode, typename SelectorQueryTrait::OutputType &output) const;
+    template <typename SelectorQueryTrait>
+    void ExecuteForTraverseRoot(ContainerNode &traverseRoot, ContainerNode &rootNode, typename SelectorQueryTrait::OutputType &output) const;
+    template <typename SelectorQueryTrait>
+    void FindTraverseRootsAndExecute(ContainerNode &rootNode, typename SelectorQueryTrait::OutputType &output) const;
+
+    CSSSelectorList m_selectorList;
+    // Contains the list of CSSSelector's to match, but without ones that could
+    // never match like pseudo elements, div::before. This can be empty, while
+    // m_selectorList will never be empty as SelectorQueryCache::add would have
+    // thrown an exception.
+    std::vector<const CSSSelector *> m_selectors;
+    AtomicString m_selectorId;
+    bool m_selectorIdIsRightmost : 1;
+    bool m_selectorIdAffectedBySiblingCombinator : 1;
+    bool m_usesDeepCombinatorOrShadowPseudo : 1;
+    bool m_needsUpdatedDistribution : 1;
+    bool m_useSlowScan : 1;
+    DISALLOW_COPY_AND_ASSIGN(SelectorQuery);
 };
 
 class SelectorQueryCache
 {
 public:
+    SelectorQuery* Add(const AtomicString &selectors, const Document &document, ExceptionState &exceptionState);
     void Invalidate(void);
 private:
     std::unordered_map<AtomicString, std::unique_ptr<SelectorQuery>> m_entries;
