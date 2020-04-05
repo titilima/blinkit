@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: nth_index_cache.h
+// Description: NthIndexCache Class
+//      Author: Ziming Li
+//     Created: 2020-03-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,6 +16,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_DOM_NTH_INDEX_CACHE_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_DOM_NTH_INDEX_CACHE_H_
 
+#include <unordered_map>
 #include "base/macros.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/element.h"
@@ -25,10 +37,8 @@ class CORE_EXPORT NthIndexData final : public GarbageCollected<NthIndexData> {
   unsigned NthOfTypeIndex(Element&) const;
   unsigned NthLastOfTypeIndex(Element&) const;
 
-  void Trace(blink::Visitor*);
-
  private:
-  HeapHashMap<Member<Element>, unsigned> element_index_map_;
+  std::unordered_map<Element *, unsigned> element_index_map_;
   unsigned count_ = 0;
   DISALLOW_COPY_AND_ASSIGN(NthIndexData);
 };
@@ -46,9 +56,9 @@ class CORE_EXPORT NthIndexCache final {
   static unsigned NthLastOfTypeIndex(Element&);
 
  private:
-  using IndexByType = HeapHashMap<String, Member<NthIndexData>>;
-  using ParentMap = HeapHashMap<Member<Node>, Member<NthIndexData>>;
-  using ParentMapForType = HeapHashMap<Member<Node>, Member<IndexByType>>;
+  using IndexByType = std::unordered_map<String, std::unique_ptr<NthIndexData>>;
+  using ParentMap = std::unordered_map<Node *, std::unique_ptr<NthIndexData>>;
+  using ParentMapForType = std::unordered_map<Node *, std::unique_ptr<IndexByType>>;
 
   void CacheNthIndexDataForParent(Element&);
   void CacheNthOfTypeIndexDataForParent(Element&);

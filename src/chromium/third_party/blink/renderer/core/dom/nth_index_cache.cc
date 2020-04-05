@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: nth_index_cache.cc
+// Description: NthIndexCache Class
+//      Author: Ziming Li
+//     Created: 2020-03-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -84,7 +95,7 @@ unsigned NthIndexCache::NthChildIndex(Element& element) {
   NthIndexCache* nth_index_cache = element.GetDocument().GetNthIndexCache();
   NthIndexData* nth_index_data = nullptr;
   if (nth_index_cache && nth_index_cache->parent_map_)
-    nth_index_data = nth_index_cache->parent_map_->at(element.parentNode());
+    nth_index_data = nth_index_cache->parent_map_->at(element.parentNode()).get();
   if (nth_index_data)
     return nth_index_data->NthIndex(element);
   unsigned index = UncachedNthChildIndex(element);
@@ -99,7 +110,7 @@ unsigned NthIndexCache::NthLastChildIndex(Element& element) {
   NthIndexCache* nth_index_cache = element.GetDocument().GetNthIndexCache();
   NthIndexData* nth_index_data = nullptr;
   if (nth_index_cache && nth_index_cache->parent_map_)
-    nth_index_data = nth_index_cache->parent_map_->at(element.parentNode());
+    nth_index_data = nth_index_cache->parent_map_->at(element.parentNode()).get();
   if (nth_index_data)
     return nth_index_data->NthLastIndex(element);
   unsigned index = UncachedNthLastChildIndex(element);
@@ -112,8 +123,8 @@ NthIndexData* NthIndexCache::NthTypeIndexDataForParent(Element& element) const {
   DCHECK(element.parentNode());
   if (!parent_map_for_type_)
     return nullptr;
-  if (const IndexByType* map = parent_map_for_type_->at(element.parentNode()))
-    return map->at(element.tagName());
+  if (const IndexByType* map = parent_map_for_type_->at(element.parentNode()).get())
+    return map->at(element.tagName()).get();
   return nullptr;
 }
 
@@ -154,10 +165,7 @@ void NthIndexCache::CacheNthIndexDataForParent(Element& element) {
   if (!parent_map_)
     parent_map_ = new ParentMap();
 
-  ParentMap::AddResult add_result =
-      parent_map_->insert(element.parentNode(), nullptr);
-  DCHECK(add_result.is_new_entry);
-  add_result.stored_value->value = new NthIndexData(*element.parentNode());
+  parent_map_->insert_or_assign(element.parentNode(), std::make_unique<NthIndexData>(*element.parentNode()));
 }
 
 NthIndexCache::IndexByType& NthIndexCache::EnsureTypeIndexMap(
@@ -165,22 +173,20 @@ NthIndexCache::IndexByType& NthIndexCache::EnsureTypeIndexMap(
   if (!parent_map_for_type_)
     parent_map_for_type_ = new ParentMapForType();
 
-  ParentMapForType::AddResult add_result =
-      parent_map_for_type_->insert(&parent, nullptr);
-  if (add_result.is_new_entry)
-    add_result.stored_value->value = new IndexByType();
+  auto it = parent_map_for_type_->find(&parent);
+  if (std::end(*parent_map_for_type_) != it)
+    return *(it->second);
 
-  DCHECK(add_result.stored_value->value);
-  return *add_result.stored_value->value;
+  auto add_result = parent_map_for_type_->insert({ &parent, std::make_unique<IndexByType>() });
+  DCHECK(add_result.second);
+  return *(add_result.first->second);
 }
 
 void NthIndexCache::CacheNthOfTypeIndexDataForParent(Element& element) {
   DCHECK(element.parentNode());
-  IndexByType::AddResult add_result = EnsureTypeIndexMap(*element.parentNode())
-                                          .insert(element.tagName(), nullptr);
-  DCHECK(add_result.is_new_entry);
-  add_result.stored_value->value =
-      new NthIndexData(*element.parentNode(), element.TagQName());
+  EnsureTypeIndexMap(*element.parentNode()).insert(
+    { element.tagName(), std::make_unique<NthIndexData>(*element.parentNode(), element.TagQName()) }
+  );
 }
 
 unsigned NthIndexData::NthIndex(Element& element) const {
@@ -191,7 +197,7 @@ unsigned NthIndexData::NthIndex(Element& element) const {
        sibling = ElementTraversal::PreviousSibling(*sibling), index++) {
     auto it = element_index_map_.find(sibling);
     if (it != element_index_map_.end())
-      return it->value + index;
+      return it->second + index;
   }
   return index;
 }
@@ -206,7 +212,7 @@ unsigned NthIndexData::NthOfTypeIndex(Element& element) const {
                index++) {
     auto it = element_index_map_.find(sibling);
     if (it != element_index_map_.end())
-      return it->value + index;
+      return it->second + index;
   }
   return index;
 }
@@ -230,7 +236,7 @@ NthIndexData::NthIndexData(ContainerNode& parent) {
   for (Element* sibling = ElementTraversal::FirstChild(parent); sibling;
        sibling = ElementTraversal::NextSibling(*sibling)) {
     if (!(++count % kSpread))
-      element_index_map_.insert(sibling, count);
+      element_index_map_.insert({ sibling, count });
   }
   DCHECK(count);
   count_ = count;
@@ -250,14 +256,10 @@ NthIndexData::NthIndexData(ContainerNode& parent, const QualifiedName& type) {
        sibling;
        sibling = ElementTraversal::NextSibling(*sibling, HasTagName(type))) {
     if (!(++count % kSpread))
-      element_index_map_.insert(sibling, count);
+      element_index_map_.insert({ sibling, count });
   }
   DCHECK(count);
   count_ = count;
-}
-
-void NthIndexData::Trace(blink::Visitor* visitor) {
-  visitor->Trace(element_index_map_);
 }
 
 }  // namespace blink
