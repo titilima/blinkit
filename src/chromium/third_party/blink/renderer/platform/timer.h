@@ -32,6 +32,8 @@ public:
     explicit TimerBase(const std::shared_ptr<base::SingleThreadTaskRunner> &webTaskRunner);
     virtual ~TimerBase(void);
 
+    bool IsActive(void) const { return m_isActive; }
+
     void Start(TimeDelta nextFireInterval, TimeDelta repeatInterval, const base::Location &caller);
 
     void StartOneShot(TimeDelta interval, const base::Location &caller) { Start(interval, TimeDelta(), caller); }
@@ -41,6 +43,7 @@ private:
     virtual void Fired(void) = 0;
 
     std::shared_ptr<bool> m_isAlive;
+    bool m_isActive = false;
     base::Location m_location;
     TimeTicks m_nextFireTime;   // 0 if inactive
     TimeDelta m_repeatInterval; // 0 if not repeating

@@ -32,6 +32,8 @@ TimerBase::~TimerBase(void)
 
 void TimerBase::RunInternal(void)
 {
+    m_isActive = false;
+
 #if DCHECK_IS_ON()
     ASSERT(CurrentThread() == m_thread);
 #endif
@@ -77,10 +79,12 @@ void TimerBase::SetNextFireTime(TimeTicks now, TimeDelta delay)
         m_nextFireTime = newTime;
 
         std::shared_ptr<bool> isAlive(m_isAlive);
-        const auto callback = [this, isAlive] {
+        const auto callback = [this, isAlive]
+        {
             if (*isAlive)
                 RunInternal();
         };
+        m_isActive = true;
         m_webTaskRunner->PostDelayedTask(m_location, callback, delay);
     }
 }
