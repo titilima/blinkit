@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: markup_accumulator.cc
+// Description: MarkupAccumulator Class
+//      Author: Ziming Li
+//     Created: 2020-04-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2012 Apple Inc. All rights
  * reserved.
@@ -33,16 +44,17 @@
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/document_fragment.h"
 #include "third_party/blink/renderer/core/dom/document_type.h"
+#include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/processing_instruction.h"
 #include "third_party/blink/renderer/core/editing/editing_utilities.h"
-#include "third_party/blink/renderer/core/editing/editor.h"
-#include "third_party/blink/renderer/core/html/html_element.h"
-#include "third_party/blink/renderer/core/html/html_template_element.h"
+#include "third_party/blink/renderer/core/html_element_type_helpers.h"
 #include "third_party/blink/renderer/core/xlink_names.h"
-#include "third_party/blink/renderer/core/xml_names.h"
-#include "third_party/blink/renderer/core/xmlns_names.h"
-#include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/text/character_names.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/editing/editor.h"
+#   include "third_party/blink/renderer/core/html/html_element.h"
+#   include "third_party/blink/renderer/core/html/html_template_element.h"
+#endif
 
 namespace blink {
 
@@ -119,8 +131,8 @@ void MarkupAccumulator::AppendElement(StringBuilder& result,
     // 3.2. Element: If current node's is value is not null, and the
     // element does not have an is attribute in its attribute list, ...
     const AtomicString& is_value = element.IsValue();
-    if (!is_value.IsNull() && !attributes.Find(HTMLNames::isAttr)) {
-      AppendAttribute(result, element, Attribute(HTMLNames::isAttr, is_value),
+    if (!is_value.IsNull() && !attributes.Find(html_names::kIsAttr)) {
+      AppendAttribute(result, element, Attribute(html_names::kIsAttr, is_value),
                       namespaces);
     }
   }
@@ -185,10 +197,15 @@ static void SerializeNodesWithNamespaces(MarkupAccumulator& accumulator,
 
   if (!(accumulator.SerializeAsHTMLDocument(target_node) &&
         ElementCannotHaveEndTag(target_node))) {
+#ifdef BLINKIT_CRAWLER_ONLY
+    Node* current = Strategy::FirstChild(target_node);
+    ASSERT(!IsHTMLTemplateElement(target_node)); // BKTODO:
+#else
     Node* current = IsHTMLTemplateElement(target_node)
                         ? Strategy::FirstChild(
                               *ToHTMLTemplateElement(target_node).content())
                         : Strategy::FirstChild(target_node);
+#endif
     for (; current; current = Strategy::NextSibling(*current))
       SerializeNodesWithNamespaces<Strategy>(accumulator, *current,
                                              kIncludeNode, &namespace_hash);
@@ -223,16 +240,8 @@ template <typename Strategy>
 String SerializeNodes(MarkupAccumulator& accumulator,
                       Node& target_node,
                       EChildrenOnly children_only) {
-  Namespaces* namespaces = nullptr;
-  Namespaces namespace_hash;
-  if (!accumulator.SerializeAsHTMLDocument(target_node)) {
-    // Add pre-bound namespaces for XML fragments.
-    namespace_hash.Set(g_xml_atom, XMLNames::xmlNamespaceURI);
-    namespaces = &namespace_hash;
-  }
-
-  SerializeNodesWithNamespaces<Strategy>(accumulator, target_node,
-                                         children_only, namespaces);
+  bool success = accumulator.SerializeAsHTMLDocument(target_node);
+  ASSERT(success);
   return accumulator.ToString();
 }
 
