@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: static_node_list.h
+// Description: StaticNodeTypeList Class
+//      Author: Ziming Li
+//     Created: 2020-03-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -29,11 +40,10 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_DOM_STATIC_NODE_LIST_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_DOM_STATIC_NODE_LIST_H_
 
+#include <vector>
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/node_child_removal_tracker.h"
 #include "third_party/blink/renderer/core/dom/node_list.h"
-#include "third_party/blink/renderer/platform/bindings/trace_wrapper_member.h"
-#include "third_party/blink/renderer/platform/wtf/vector.h"
 
 namespace blink {
 
@@ -42,7 +52,7 @@ class Node;
 template <typename NodeType>
 class StaticNodeTypeList final : public NodeList {
  public:
-  static StaticNodeTypeList* Adopt(HeapVector<Member<NodeType>>& nodes);
+  static StaticNodeTypeList* Adopt(std::vector<NodeType *> &nodes);
 
   static StaticNodeTypeList* CreateEmpty() { return new StaticNodeTypeList; }
 
@@ -51,17 +61,15 @@ class StaticNodeTypeList final : public NodeList {
   unsigned length() const override;
   NodeType* item(unsigned index) const override;
 
-  void Trace(blink::Visitor*) override;
-
  private:
-  HeapVector<TraceWrapperMember<NodeType>> nodes_;
+  std::vector<NodeType *> nodes_;
 };
 
 using StaticNodeList = StaticNodeTypeList<Node>;
 
 template <typename NodeType>
 StaticNodeTypeList<NodeType>* StaticNodeTypeList<NodeType>::Adopt(
-    HeapVector<Member<NodeType>>& nodes) {
+    std::vector<NodeType *>& nodes) {
   StaticNodeTypeList<NodeType>* node_list = new StaticNodeTypeList<NodeType>;
   swap(node_list->nodes_, nodes);
   return node_list;
@@ -78,19 +86,13 @@ unsigned StaticNodeTypeList<NodeType>::length() const {
 template <typename NodeType>
 NodeType* StaticNodeTypeList<NodeType>::item(unsigned index) const {
   if (index < nodes_.size()) {
-    auto* node = nodes_[index].Get();
+    auto* node = nodes_[index];
     if (node->GetDocument().InDOMNodeRemovedHandler() &&
         NodeChildRemovalTracker::IsBeingRemoved(node))
       node->GetDocument().CountDetachingNodeAccessInDOMNodeRemovedHandler();
     return node;
   }
   return nullptr;
-}
-
-template <typename NodeType>
-void StaticNodeTypeList<NodeType>::Trace(Visitor* visitor) {
-  visitor->Trace(nodes_);
-  NodeList::Trace(visitor);
 }
 
 }  // namespace blink
