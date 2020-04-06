@@ -800,11 +800,8 @@ void HTMLTreeBuilder::ProcessStartTagForInBody(AtomicHTMLToken* token) {
     return;
   }
   if (token->GetName() == kIFrameTag) {
-    ASSERT(false); // BKTODO:
-#if 0
     frameset_ok_ = false;
     ProcessGenericRawTextStartTag(token);
-#endif
     return;
   }
 #if 0 // BKTODO: Check if necessary.
@@ -1412,8 +1409,7 @@ bool HTMLTreeBuilder::ProcessBodyEndTagForInBody(AtomicHTMLToken* token) {
     ParseError(token);
     return false;
   }
-  // Emit a more specific parse error based on stack contents.
-  BKLOG("Not implmeneted: HTMLTreeBuilder::ProcessBodyEndTagForInBody.");
+  BKLOG("Not implmeneted: Emit a more specific parse error based on stack contents.");
   SetInsertionMode(kAfterBodyMode);
   return true;
 }
@@ -2417,8 +2413,7 @@ void HTMLTreeBuilder::ProcessEndOfFile(AtomicHTMLToken* token) {
              GetInsertionMode() == kInCaptionMode ||
              GetInsertionMode() == kInRowMode ||
              GetInsertionMode() == kTemplateContentsMode);
-      // Emit parse error based on what elements are still open.
-      BKLOG("Not implemented: HTMLTreeBuilder::ProcessEndOfFile.");
+      BKLOG("Not implemented: Emit parse error based on what elements are still open.");
       if (!template_insertion_modes_.IsEmpty() &&
           ProcessEndOfFileForInTemplateContents(token))
         return;
@@ -2471,12 +2466,10 @@ void HTMLTreeBuilder::ProcessEndOfFile(AtomicHTMLToken* token) {
     case kTextMode: {
       ParseError(token);
       if (tree_.CurrentStackItem()->HasTagName(kScriptTag)) {
-        // Mark the script element as "already started".
-        BKLOG("Not implemented: HTMLTreeBuilder::ProcessEndOfFile(kTextMode).");
+        BKLOG("Not implemented: Mark the script element as \"already started\".");
       }
       Element* el = tree_.OpenElements()->Top();
-      ASSERT(false); // BKTODO:
-#if 0
+#ifndef BLINKIT_CRAWLER_ONLY
       if (IsHTMLTextAreaElement(el))
         ToHTMLFormControlElement(el)->SetBlocksFormSubmission(true);
 #endif
