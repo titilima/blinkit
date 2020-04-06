@@ -11,8 +11,9 @@
 
 #include "crawler_document.h"
 
-#include "blinkit/crawler/crawler_element.h"
+#include "blinkit/crawler/crawler_script_element.h"
 #include "third_party/blink/renderer/core/dom/document_init.h"
+#include "third_party/blink/renderer/core/html_names.h"
 
 using namespace blink;
 
@@ -25,6 +26,9 @@ CrawlerDocument::CrawlerDocument(const DocumentInit &init) : Document(init)
 
 Element* CrawlerDocument::CreateElement(const AtomicString &localName, CreateElementFlags flags)
 {
+    using namespace html_names;
+    if (localName == kScriptTag.LocalName())
+        return CrawlerScriptElement::Create(*this, flags);
     return new CrawlerElement(localName, this);
 }
 
