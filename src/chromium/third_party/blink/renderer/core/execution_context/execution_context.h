@@ -37,6 +37,8 @@ enum ReasonForCallingCanExecuteScripts {
     kNotAboutToExecuteScript
 };
 
+enum class SecureContextMode { kInsecureContext, kSecureContext };
+
 class ExecutionContext : public ContextLifecycleNotifier
 {
 public:

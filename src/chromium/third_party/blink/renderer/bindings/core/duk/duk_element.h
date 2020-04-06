@@ -20,7 +20,7 @@
 
 namespace BlinKit {
 
-class DukElement : public DukContainerNode
+class DukElement : DukContainerNode
 {
 public:
     static const char ProtoName[];
@@ -28,14 +28,15 @@ public:
 
     static duk_idx_t Push(duk_context *ctx, blink::Element *element);
 
-    static const std::unordered_map<std::string, std::string>& PrototypeMapForCrawler(void);
+    static const std::unordered_map<std::string, const char *>& PrototypeMapForCrawler(void);
 #ifndef BLINKIT_CRAWLER_ONLY
-    static const std::unordered_map<std::string, std::string>& PrototypeMapForUI(void);
+    static const std::unordered_map<std::string, const char *>& PrototypeMapForUI(void);
 #endif
+protected:
+    static void FillPrototypeEntryForCrawler(PrototypeEntry &entry);
 private:
     friend class DukNode;
     static void Create(duk_context *ctx, blink::Element &element);
-    static void FillPrototypeEntryForCrawler(PrototypeEntry &entry);
 };
 
 } // namespace BlinKit

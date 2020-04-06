@@ -72,6 +72,7 @@ public:
     // Exports for JS
     std::string host(void) const;
     std::string href(void) const;
+    std::string protocol(void) const;
 private:
     explicit Location(DOMWindow *domWindow);
 

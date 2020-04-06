@@ -202,7 +202,11 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
 
 AttributeCollection Element::Attributes(void) const
 {
-    ASSERT(false); // BKTODO:
+    if (const ElementData *elementData = GetElementData())
+    {
+        SynchronizeAllAttributes();
+        return elementData->Attributes();
+    }
     return AttributeCollection();
 }
 
@@ -219,8 +223,9 @@ NamedNodeMap* Element::attributes(void) const
 
 AttributeCollection Element::AttributesWithoutUpdate(void) const
 {
-    ASSERT(false); // BKTODO:
-    return AttributeCollection();
+    if (!GetElementData())
+        return AttributeCollection();
+    return GetElementData()->Attributes();
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -426,6 +431,34 @@ Element* Element::CloneWithoutChildren(Document *nullableFactory) const
     return nullptr;
 }
 
+AtomicString Element::ComputeInheritedLanguage(void) const
+{
+    const Node *n = this;
+    AtomicString value;
+    // The language property is inherited, so we iterate over the parents to find
+    // the first language.
+    do {
+        if (n->IsElementNode())
+        {
+            if (const ElementData *elementData = ToElement(n)->GetElementData())
+            {
+                AttributeCollection attributes = elementData->Attributes();
+                if (const Attribute *attribute = attributes.Find(html_names::kLangAttr))
+                    value = attribute->Value();
+            }
+        }
+        else if (auto *document = DynamicTo<Document>(n))
+        {
+            // checking the MIME content-language
+            value = document->ContentLanguage();
+        }
+
+        n = n->ParentOrShadowHostNode();
+    } while (nullptr != n && value.IsNull());
+
+    return value;
+}
+
 #ifndef BLINKIT_CRAWLER_ONLY
 void Element::DefaultEventHandler(Event & event)
 {
@@ -564,11 +597,38 @@ const AtomicString& Element::GetNameAttribute(void) const
     return HasName() ? FastGetAttribute(html_names::kNameAttr) : g_null_atom;
 }
 
+BkURL Element::GetURLAttribute(const QualifiedName &name) const
+{
+#if DCHECK_IS_ON()
+    if (const ElementData *elementData = GetElementData())
+    {
+        if (const Attribute *attribute = elementData->Attributes().Find(name))
+            ASSERT(IsURLAttribute(*attribute));
+    }
+#endif
+    return GetDocument().CompleteURL(StripLeadingAndTrailingHTMLSpaces(getAttribute(name)));
+}
+
+bool Element::hasAttribute(const AtomicString &name) const
+{
+    if (const ElementData *elementData = GetElementData())
+    {
+        SynchronizeAttribute(name);
+        return GetElementData()->Attributes().FindIndex(LowercaseIfNecessary(name)) != kNotFound;
+    }
+    return false;
+}
+
 bool Element::HasClass(void) const
 {
     if (const ElementData *elementData = GetElementData())
         return elementData->HasClass();
     return false;
+}
+
+bool Element::HasClassName(const AtomicString &className) const
+{
+    return HasClass() && ClassNames().Contains(className);
 }
 
 bool Element::HasID(void) const
@@ -578,10 +638,15 @@ bool Element::HasID(void) const
     return false;
 }
 
+const AtomicString& Element::IdForStyleResolution(void) const
+{
+    ASSERT(HasID());
+    return GetElementData()->IdForStyleResolution();
+}
+
 String Element::innerHTML(void) const
 {
-    ASSERT(false); // BKTODO:
-    return String();
+    return CreateMarkup(this, kChildrenOnly);
 }
 
 Node::InsertionNotificationRequest Element::InsertedInto(ContainerNode &insertionPoint)
@@ -643,6 +708,31 @@ Node::InsertionNotificationRequest Element::InsertedInto(ContainerNode &insertio
         UpdateName(g_null_atom, nameValue);
 
     return kInsertionDone;
+}
+
+bool Element::IsInDescendantTreeOf(const Element *shadowHost) const
+{
+#ifdef BLINKIT_CRAWLER_ONLY
+    NOTREACHED();
+#else
+    DCHECK(shadow_host);
+    DCHECK(IsShadowHost(shadow_host));
+
+    for (const Element* ancestor_shadow_host = OwnerShadowHost();
+        ancestor_shadow_host;
+        ancestor_shadow_host = ancestor_shadow_host->OwnerShadowHost()) {
+        if (ancestor_shadow_host == shadow_host)
+            return true;
+    }
+#endif
+    return false;
+}
+
+const AtomicString& Element::IsValue(void) const
+{
+    if (HasRareData())
+        return GetElementRareData()->IsValue();
+    return g_null_atom;
 }
 
 AtomicString Element::LowercaseIfNecessary(const AtomicString &name) const
@@ -750,6 +840,13 @@ void Element::SetAttributeInternal(
         DidModifyAttribute(existingAttributeName, existingAttributeValue, newValue);
 }
 
+void Element::SetElementFlag(ElementFlags mask, bool value)
+{
+    if (!HasRareData() && !value)
+        return;
+    EnsureElementRareData().SetElementFlag(mask, value);
+}
+
 void Element::setInnerHTML(const String &html, ExceptionState &exceptionState)
 {
     if (html.IsEmpty() && !HasNonInBodyInsertionMode())
@@ -770,6 +867,27 @@ void Element::setInnerHTML(const String &html, ExceptionState &exceptionState)
             ReplaceChildrenWithFragment(container, fragment, exceptionState);
         }
     }
+}
+
+void Element::SetIsValue(const AtomicString &isValue)
+{
+    ASSERT(false); // BKTODO:
+}
+
+bool Element::ShouldSerializeEndTag(void) const
+{
+    using namespace html_names;
+    // See https://www.w3.org/TR/DOM-Parsing/
+    if (HasTagName(kAreaTag) || HasTagName(kBaseTag) || HasTagName(kBasefontTag)
+        || HasTagName(kBgsoundTag) || HasTagName(kBrTag) || HasTagName(kColTag)
+        || HasTagName(kEmbedTag) || HasTagName(kFrameTag) || HasTagName(kHrTag)
+        || HasTagName(kImgTag) || HasTagName(kInputTag) || HasTagName(kKeygenTag)
+        || HasTagName(kLinkTag) || HasTagName(kMetaTag) || HasTagName(kParamTag)
+        || HasTagName(kSourceTag) || HasTagName(kTrackTag) || HasTagName(kWbrTag))
+    {
+        return false;
+    }
+    return true;
 }
 
 void Element::StripScriptingAttributes(Vector<Attribute> &attributeVector) const

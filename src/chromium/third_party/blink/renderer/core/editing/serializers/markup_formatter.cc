@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: markup_formatter.cc
+// Description: MarkupFormatter Class
+//      Author: Ziming Li
+//     Created: 2020-04-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2012 Apple Inc. All rights
  * reserved.
@@ -32,21 +43,19 @@
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/document_fragment.h"
 #include "third_party/blink/renderer/core/dom/document_type.h"
+#include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/processing_instruction.h"
 #include "third_party/blink/renderer/core/editing/editing_utilities.h"
-#include "third_party/blink/renderer/core/editing/editor.h"
-#include "third_party/blink/renderer/core/html/html_element.h"
-#include "third_party/blink/renderer/core/html/html_template_element.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/xlink_names.h"
 #include "third_party/blink/renderer/core/xml_names.h"
 #include "third_party/blink/renderer/core/xmlns_names.h"
-#include "third_party/blink/renderer/platform/weborigin/kurl.h"
+#include "third_party/blink/renderer/platform/wtf/text/atomic_string_hash.h"
 #include "third_party/blink/renderer/platform/wtf/text/character_names.h"
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 struct EntityDescription {
   UChar entity;
@@ -133,11 +142,11 @@ String MarkupFormatter::ResolveURLIfNeeded(const Element& element,
                                            const String& url_string) const {
   switch (resolve_urls_method_) {
     case kResolveAllURLs:
-      return element.GetDocument().CompleteURL(url_string).GetString();
+      return String::FromStdUTF8(element.GetDocument().CompleteURL(url_string).AsString());
 
     case kResolveNonLocalURLs:
-      if (!element.GetDocument().Url().IsLocalFile())
-        return element.GetDocument().CompleteURL(url_string).GetString();
+      if (!element.GetDocument().Url().SchemeIsFile())
+        return String::FromStdUTF8(element.GetDocument().CompleteURL(url_string).AsString());
       break;
 
     case kDoNotResolveURLs:
@@ -205,10 +214,10 @@ void MarkupFormatter::AppendQuotedURLAttributeValue(
     StringBuilder& result,
     const Element& element,
     const Attribute& attribute) {
-  DCHECK(element.IsURLAttribute(attribute)) << element;
+  ASSERT(element.IsURLAttribute(attribute));
   String resolved_url_string = ResolveURLIfNeeded(element, attribute.Value());
   UChar quote_char = '"';
-  if (ProtocolIsJavaScript(resolved_url_string)) {
+  if (resolved_url_string.StartsWith(String("javascript:"))) {
     // minimal escaping for javascript urls
     if (resolved_url_string.Contains('&'))
       resolved_url_string.Replace('&', "&amp;");
@@ -270,25 +279,7 @@ void MarkupFormatter::AppendComment(StringBuilder& result,
 
 void MarkupFormatter::AppendXMLDeclaration(StringBuilder& result,
                                            const Document& document) {
-  if (!document.HasXMLDeclaration())
-    return;
-
-  result.Append("<?xml version=\"");
-  result.Append(document.xmlVersion());
-  const String& encoding = document.xmlEncoding();
-  if (!encoding.IsEmpty()) {
-    result.Append("\" encoding=\"");
-    result.Append(encoding);
-  }
-  if (document.XmlStandaloneStatus() != Document::kStandaloneUnspecified) {
-    result.Append("\" standalone=\"");
-    if (document.xmlStandalone())
-      result.Append("yes");
-    else
-      result.Append("no");
-  }
-
-  result.Append("\"?>");
+  // Nothing to do.
 }
 
 void MarkupFormatter::AppendDocumentType(StringBuilder& result,
@@ -356,18 +347,18 @@ void MarkupFormatter::AppendAttribute(StringBuilder& result,
 
   QualifiedName prefixed_name = attribute.GetName();
   if (document_is_html) {
-    if (attribute.NamespaceURI() == XMLNSNames::xmlnsNamespaceURI) {
+    if (attribute.NamespaceURI() == xmlns_names::kNamespaceURI) {
       if (!attribute.Prefix() && attribute.LocalName() != g_xmlns_atom)
         prefixed_name.SetPrefix(g_xmlns_atom);
-    } else if (attribute.NamespaceURI() == XMLNames::xmlNamespaceURI) {
+    } else if (attribute.NamespaceURI() == xml_names::kNamespaceURI) {
       prefixed_name.SetPrefix(g_xml_atom);
-    } else if (attribute.NamespaceURI() == XLinkNames::xlinkNamespaceURI) {
+    } else if (attribute.NamespaceURI() == xlink_names::kNamespaceURI) {
       prefixed_name.SetPrefix(g_xlink_atom);
     }
     result.Append(' ');
     result.Append(prefixed_name.ToString());
   } else {
-    if (attribute.NamespaceURI() == XMLNSNames::xmlnsNamespaceURI) {
+    if (attribute.NamespaceURI() == xmlns_names::kNamespaceURI) {
       if (!attribute.Prefix() && attribute.LocalName() != g_xmlns_atom)
         prefixed_name.SetPrefix(g_xmlns_atom);
       // Account for the namespace attribute we're about to append.
@@ -376,11 +367,11 @@ void MarkupFormatter::AppendAttribute(StringBuilder& result,
             (!attribute.Prefix()) ? g_empty_atom : attribute.LocalName();
         namespaces->Set(lookup_key, attribute.Value());
       }
-    } else if (attribute.NamespaceURI() == XMLNames::xmlNamespaceURI) {
+    } else if (attribute.NamespaceURI() == xml_names::kNamespaceURI) {
       if (!attribute.Prefix())
         prefixed_name.SetPrefix(g_xml_atom);
     } else {
-      if (attribute.NamespaceURI() == XLinkNames::xlinkNamespaceURI) {
+      if (attribute.NamespaceURI() == xlink_names::kNamespaceURI) {
         if (!attribute.Prefix())
           prefixed_name.SetPrefix(g_xlink_atom);
       }
@@ -452,7 +443,7 @@ bool MarkupFormatter::ShouldAddNamespaceAttribute(
     const Element& element) const {
   // xmlns and xmlns:prefix attributes should be handled by another branch in
   // appendAttribute.
-  DCHECK_NE(attribute.NamespaceURI(), XMLNSNames::xmlnsNamespaceURI);
+  ASSERT(attribute.NamespaceURI() != xmlns_names::kNamespaceURI);
 
   // Attributes are in the null namespace by default.
   if (!attribute.NamespaceURI())
@@ -476,11 +467,11 @@ EntityMask MarkupFormatter::EntityMaskForText(const Text& text) const {
     parent_name = &(text.parentElement())->TagQName();
 
   if (parent_name &&
-      (*parent_name == scriptTag || *parent_name == styleTag ||
-       *parent_name == xmpTag || *parent_name == iframeTag ||
-       *parent_name == plaintextTag || *parent_name == noembedTag ||
-       *parent_name == noframesTag ||
-       (*parent_name == noscriptTag && text.GetDocument().GetFrame() &&
+      (*parent_name == kScriptTag || *parent_name == kStyleTag ||
+       *parent_name == kXmpTag || *parent_name == kIFrameTag ||
+       *parent_name == kPlaintextTag || *parent_name == kNoembedTag ||
+       *parent_name == kNoframesTag ||
+       (*parent_name == kNoscriptTag && text.GetDocument().GetFrame() &&
         text.GetDocument().CanExecuteScripts(kNotAboutToExecuteScript))))
     return kEntityMaskInCDATA;
   return kEntityMaskInHTMLPCDATA;

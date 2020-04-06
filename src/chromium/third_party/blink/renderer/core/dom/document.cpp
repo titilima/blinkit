@@ -64,6 +64,7 @@
 #include "third_party/blink/renderer/core/loader/frame_fetch_context.h"
 #include "third_party/blink/renderer/core/loader/navigation_scheduler.h"
 #include "third_party/blink/renderer/core/loader/text_resource_decoder_builder.h"
+#include "third_party/blink/renderer/core/script/script_runner.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
@@ -169,6 +170,8 @@ Document::Document(const DocumentInit &initializer)
     , m_frame(initializer.GetFrame())
     , m_domWindow(nullptr != m_frame ? m_frame->DomWindow() : nullptr)
     , m_elementDataCacheClearTimer(GetTaskRunner(TaskType::kInternalUserInteraction), this, &Document::ElementDataCacheClearTimerFired)
+    , m_scriptRunner(ScriptRunner::Create(this))
+    , m_loadEventDelayTimer(GetTaskRunner(TaskType::kNetworking), this, &Document::LoadEventDelayTimerFired)
 {
     SetCannotBePooled();
     if (m_frame)
@@ -524,6 +527,12 @@ bool Document::CheckCompletedInternal(void)
     return true;
 }
 
+void Document::CheckLoadEventSoon(void)
+{
+    if (nullptr != GetFrame() && !m_loadEventDelayTimer.IsActive())
+        m_loadEventDelayTimer.StartOneShot(TimeDelta(), FROM_HERE);
+}
+
 void Document::ChildrenChanged(const ChildrenChange &change)
 {
     ContainerNode::ChildrenChanged(change);
@@ -629,6 +638,14 @@ Element* Document::createElement(const AtomicString &name, ExceptionState &excep
 std::shared_ptr<DocumentParser> Document::CreateParser(void)
 {
     return HTMLDocumentParser::Create(*this);
+}
+void Document::DecrementLoadEventDelayCount(void)
+{
+    ASSERT(m_loadEventDelayCount > 0);
+    --m_loadEventDelayCount;
+
+    if (0 == m_loadEventDelayCount)
+        CheckLoadEventSoon();
 }
 
 void Document::DetachParser(void)
@@ -1071,6 +1088,11 @@ bool Document::IsValidName(const String &name)
     return IsValidNameNonASCII(characters, length);
 }
 
+void Document::LoadEventDelayTimerFired(TimerBase *)
+{
+    CheckCompleted();
+}
+
 DocumentLoader* Document::Loader(void) const
 {
     if (!m_frame)
@@ -1078,6 +1100,14 @@ DocumentLoader* Document::Loader(void) const
 
     ASSERT(m_frame->GetDocument() == this);
     return m_frame->Loader().GetDocumentLoader();
+}
+
+Location* Document::location(void) const
+{
+    if (!GetFrame())
+        return nullptr;
+
+    return domWindow()->location();
 }
 
 void Document::MaybeHandleHttpRefresh(const String &content, HttpRefreshType refreshType)
@@ -1232,6 +1262,19 @@ void Document::SetCompatibilityMode(CompatibilityMode mode)
     m_compatibilityMode = mode;
     if (m_selectorQueryCache)
         m_selectorQueryCache->Invalidate();
+}
+
+void Document::SetContentLanguage(const AtomicString &language)
+{
+    if (m_contentLanguage == language)
+        return;
+    m_contentLanguage = language;
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    // Document's style depends on the content language.
+    SetNeedsStyleRecalc(kSubtreeStyleChange, StyleChangeReasonForTracing::Create(
+        StyleChangeReason::kLanguage));
+#endif
 }
 
 void Document::SetDoctype(DocumentType *docType)
@@ -1644,6 +1687,23 @@ void Document::write(LocalDOMWindow *callingWindow, const std::vector<std::strin
     for (const std::string &s : text)
         builder.append(s);
     write(String::FromStdUTF8(builder), callingWindow->document(), exceptionState);
+}
+
+void Document::writeln(const String &text, Document *enteredDocument, ExceptionState &exceptionState)
+{
+    write(text, enteredDocument, exceptionState);
+    if (!exceptionState.HadException())
+        write("\n", enteredDocument);
+}
+
+void Document::writeln(LocalDOMWindow *callingWindow, const std::vector<std::string> &text, ExceptionState &exceptionState)
+{
+    ASSERT(nullptr != callingWindow);
+
+    std::string builder;
+    for (const std::string &s : text)
+        builder.append(s);
+    writeln(String::FromStdUTF8(builder), callingWindow->document(), exceptionState);
 }
 
 }  // namespace blink

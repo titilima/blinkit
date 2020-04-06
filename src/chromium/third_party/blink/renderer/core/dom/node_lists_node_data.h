@@ -40,7 +40,9 @@
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/css/css_selector.h"
+#include "third_party/blink/renderer/core/dom/child_node_list.h"
 #include "third_party/blink/renderer/core/dom/container_node.h"
+#include "third_party/blink/renderer/core/dom/empty_node_list.h"
 #include "third_party/blink/renderer/core/dom/live_node_list_base.h"
 #include "third_party/blink/renderer/core/dom/node_list.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
@@ -60,8 +62,19 @@ public:
     ChildNodeList* GetChildNodeList(ContainerNode &node)
     {
         ASSERT(!m_childNodeList || node == m_childNodeList->VirtualOwnerNode());
-        ASSERT(!m_childNodeList); // BKTODO:
-        return nullptr; // BKTODO: return ToChildNodeList(m_childNodeList.get());
+        return ToChildNodeList(m_childNodeList.get());
+    }
+    ChildNodeList* EnsureChildNodeList(ContainerNode &node)
+    {
+        if (!m_childNodeList)
+            m_childNodeList.reset(ChildNodeList::Create(node));
+        return ToChildNodeList(m_childNodeList.get());
+    }
+    EmptyNodeList* EnsureEmptyChildNodeList(Node &node)
+    {
+        if (!m_childNodeList)
+            m_childNodeList.reset(EmptyNodeList::Create(node));
+        return ToEmptyNodeList(m_childNodeList.get());
     }
 
     void InvalidateCaches(const QualifiedName *attrName = nullptr);

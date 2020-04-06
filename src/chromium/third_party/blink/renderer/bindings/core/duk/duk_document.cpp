@@ -14,6 +14,7 @@
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_exception_state.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_location.h"
 #include "third_party/blink/renderer/core/dom/document_fragment.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 
@@ -24,6 +25,20 @@ namespace BlinKit {
 const char DukDocument::ProtoName[] = "HTMLDocument";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+static void CollectStringArgs(duk_context *ctx, std::vector<std::string> &dst)
+{
+    const duk_idx_t n = duk_get_top(ctx);
+    for (duk_idx_t i = 0; i < n; ++i)
+    {
+        size_t l = 0;
+        const char *s = duk_safe_to_lstring(ctx, i, &l);
+        if (nullptr == s)
+            continue;
+
+        dst.push_back(std::string(s, l));
+    }
+}
 
 namespace Impl {
 
@@ -85,19 +100,24 @@ static duk_ret_t GetElementById(duk_context *ctx)
     return 1;
 }
 
+static duk_ret_t LocationGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Document *document = DukScriptObject::To<Document>(ctx, -1);
+    DukScriptObject::Push<DukLocation>(ctx, document->location());
+    return 1;
+}
+
+static duk_ret_t LocationSetter(duk_context *ctx)
+{
+    ASSERT(false); // BKTODO:
+    return 0;
+}
+
 static duk_ret_t Write(duk_context *ctx)
 {
     std::vector<std::string> text;
-    const duk_idx_t n = duk_get_top(ctx);
-    for (duk_idx_t i = 0; i < n; ++i)
-    {
-        size_t l = 0;
-        const char *s = duk_safe_to_lstring(ctx, i, &l);
-        if (nullptr == s)
-            continue;
-
-        text.push_back(std::string(s, l));
-    }
+    CollectStringArgs(ctx, text);
 
     duk_push_this(ctx);
     Document *doc = DukScriptObject::To<Document>(ctx, -1);
@@ -107,6 +127,24 @@ static duk_ret_t Write(duk_context *ctx)
 
     DukExceptionState es(ctx);
     doc->write(callingWindow, text, es);
+    if (es.HadException())
+        es.ThrowIfNeeded();
+    return 0;
+}
+
+static duk_ret_t Writeln(duk_context *ctx)
+{
+    std::vector<std::string> text;
+    CollectStringArgs(ctx, text);
+
+    duk_push_this(ctx);
+    Document *doc = DukScriptObject::To<Document>(ctx, -1);
+
+    duk_push_global_object(ctx);
+    LocalDOMWindow *callingWindow = DukScriptObject::To<LocalDOMWindow>(ctx, -1);
+
+    DukExceptionState es(ctx);
+    doc->writeln(callingWindow, text, es);
     if (es.HadException())
         es.ThrowIfNeeded();
     return 0;
@@ -123,10 +161,12 @@ void DukDocument::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
         { "createElement",          Impl::CreateElement,          1           },
         { "getElementById",         Impl::GetElementById,         1           },
         { "write",                  Impl::Write,                  DUK_VARARGS },
+        { "writeln",                Impl::Writeln,                DUK_VARARGS },
     };
     static const PrototypeEntry::Property Properties[] = {
         { "body",            Impl::BodyGetter,            nullptr               },
         { "documentElement", Impl::DocumentElementGetter, nullptr               },
+        { "location",        Impl::LocationGetter,        Impl::LocationSetter  },
     };
 
     DukContainerNode::FillPrototypeEntry(entry);

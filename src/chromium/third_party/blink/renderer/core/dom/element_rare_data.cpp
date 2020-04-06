@@ -47,7 +47,10 @@ namespace blink {
 
 struct SameSizeAsElementRareData : NodeRareData
 {
-    void* pointersOrStrings[4];
+    void* pointersOrStrings[5];
+#ifndef NDEBUG
+    std::shared_ptr<std::string> views;
+#endif
 };
 
 ElementRareData::~ElementRareData(void)

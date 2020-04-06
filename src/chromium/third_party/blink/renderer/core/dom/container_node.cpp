@@ -35,6 +35,7 @@
 #include "container_node.h"
 
 #include <stack>
+#include "third_party/blink/renderer/core/css/selector_query.h"
 #include "third_party/blink/renderer/core/dom/child_list_mutation_scope.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/document_fragment.h"
@@ -42,6 +43,7 @@
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
 #include "third_party/blink/renderer/core/dom/node_lists_node_data.h"
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
+#include "third_party/blink/renderer/core/dom/static_node_list.h"
 #include "third_party/blink/renderer/core/dom/tree_ordered_map.h"
 #include "third_party/blink/renderer/core/html_element_type_helpers.h"
 #include "third_party/blink/renderer/core/html/html_tag_collection.h"
@@ -112,6 +114,25 @@ public:
     {
         container.GetTreeScope().AdoptIfNeeded(child);
         container.AppendChildCommon(child);
+
+        if (nullptr != m_gcPool)
+            m_gcPool->Restore(child);
+    }
+private:
+    GCPool *m_gcPool;
+};
+
+class ContainerNode::AdoptAndInsertBefore
+{
+public:
+    AdoptAndInsertBefore(GCPool *gcPool = nullptr) : m_gcPool(gcPool) {}
+
+    inline void operator()(ContainerNode &container, Node &child, Node *next) const
+    {
+        ASSERT(nullptr != next);
+        ASSERT(next->parentNode() == &container);
+        container.GetTreeScope().AdoptIfNeeded(child);
+        container.InsertBeforeCommon(*next, child);
 
         if (nullptr != m_gcPool)
             m_gcPool->Restore(child);
@@ -263,6 +284,7 @@ void ContainerNode::AppendChildCommon(Node &child)
 #endif
     ASSERT(ScriptForbiddenScope::IsScriptForbidden());
 
+    child.ReleaseFromContext();
     child.SetParentOrShadowHostNode(this);
     if (m_lastChild)
     {
@@ -478,6 +500,86 @@ HTMLCollection* ContainerNode::getElementsByTagName(const AtomicString &qualifie
     return EnsureCachedCollection<HTMLTagCollection>(kHTMLTagCollectionType, qualifiedName);
 }
 
+Node* ContainerNode::InsertBefore(Node *newChild, Node *refChild, ExceptionState &exceptionState)
+{
+    ASSERT(nullptr != newChild);
+    // https://dom.spec.whatwg.org/#concept-node-pre-insert
+
+    // insertBefore(node, null) is equivalent to appendChild(node)
+    if (nullptr == refChild)
+        return AppendChild(newChild, exceptionState);
+
+    // 1. Ensure pre-insertion validity of node into parent before child.
+    if (!EnsurePreInsertionValidity(*newChild, refChild, nullptr, exceptionState))
+        return newChild;
+
+    // 2. Let reference child be child.
+    // 3. If reference child is node, set it to node¡¯s next sibling.
+    if (refChild == newChild)
+    {
+        refChild = newChild->nextSibling();
+        if (nullptr == refChild)
+            return AppendChild(newChild, exceptionState);
+    }
+
+    // 4. Adopt node into parent¡¯s node document.
+    NodeVector targets;
+    DOMTreeMutationDetector detector(*newChild, *this);
+    if (!CollectChildrenAndRemoveFromOldParent(*newChild, targets, exceptionState))
+        return newChild;
+    if (!detector.NeedsRecheck())
+    {
+        if (!RecheckNodeInsertionStructuralPrereq(targets, refChild, exceptionState))
+            return newChild;
+    }
+
+    // 5. Insert node into parent before reference child.
+    NodeVector postInsertionNotificationTargets;
+    {
+#ifndef BLINKIT_CRAWLER_ONLY
+        SlotAssignmentRecalcForbiddenScope forbid_slot_recalc(GetDocument());
+#endif
+        ChildListMutationScope mutation(*this);
+        GCPool &gcPool = GCPool::From(GetDocument());
+        InsertNodeVector(targets, refChild, AdoptAndInsertBefore(&gcPool), &postInsertionNotificationTargets);
+    }
+    DidInsertNodeVector(targets, refChild, postInsertionNotificationTargets);
+    return newChild;
+}
+
+void ContainerNode::InsertBeforeCommon(Node &nextChild, Node &newChild)
+{
+#if DCHECK_IS_ON()
+    ASSERT(EventDispatchForbiddenScope::IsEventDispatchForbidden());
+#endif
+    ASSERT(ScriptForbiddenScope::IsScriptForbidden());
+    // Use insertBefore if you need to handle reparenting (and want DOM mutation
+    // events).
+    ASSERT(nullptr == newChild.parentNode());
+    ASSERT(nullptr == newChild.nextSibling());
+    ASSERT(nullptr == newChild.previousSibling());
+    ASSERT(!newChild.IsShadowRoot());
+
+    Node *prev = nextChild.previousSibling();
+    ASSERT(m_lastChild != prev);
+    nextChild.SetPreviousSibling(&newChild);
+    if (nullptr != prev)
+    {
+        ASSERT(firstChild() != nextChild);
+        ASSERT(prev->nextSibling() == nextChild);
+        prev->SetNextSibling(&newChild);
+    }
+    else
+    {
+        ASSERT(firstChild() == nextChild);
+        SetFirstChild(&newChild);
+    }
+    newChild.ReleaseFromContext();
+    newChild.SetParentOrShadowHostNode(this);
+    newChild.SetPreviousSibling(prev);
+    newChild.SetNextSibling(&nextChild);
+}
+
 template <typename Functor>
 void ContainerNode::InsertNodeVector(const NodeVector &targets, Node *next, const Functor &mutator, NodeVector *postInsertionNotificationTargets)
 {
@@ -514,15 +616,10 @@ void ContainerNode::InvalidateNodeListCachesInAncestors(
         {
             if (ChildNodeList *childNodeList = lists->GetChildNodeList(*this))
             {
-                ASSERT(false); // BKTODO:
-#if 0
-                if (change) {
-                    child_node_list->ChildrenChanged(*change);
-                }
-                else {
-                    child_node_list->InvalidateCache();
-                }
-#endif
+                if (change)
+                    childNodeList->ChildrenChanged(*change);
+                else
+                    childNodeList->InvalidateCache();
             }
         }
     }
@@ -710,6 +807,24 @@ void ContainerNode::PreCollectGarbage(GCPool &gcPool)
     }
 }
 
+Element* ContainerNode::querySelector(const AtomicString &selectors, ExceptionState &exceptionState)
+{
+    ASSERT(false); // BKTODO:
+    return nullptr;
+}
+
+StaticElementList* ContainerNode::querySelectorAll(const AtomicString &selectors, ExceptionState &exceptionState)
+{
+    SelectorQuery *selectorQuery = GetDocument().GetSelectorQueryCache().Add(selectors, GetDocument(), exceptionState);
+    if (nullptr == selectorQuery)
+        return nullptr;
+
+    StaticElementList *ret = selectorQuery->QueryAll(*this);
+    if (nullptr != ret)
+        GCPool::From(GetDocument()).Save(*ret);
+    return ret;
+}
+
 bool ContainerNode::RecheckNodeInsertionStructuralPrereq(const NodeVector &newChildren, const Node *next, ExceptionState &exceptionState)
 {
     ASSERT(false); // BKTODO:
@@ -858,8 +973,100 @@ void ContainerNode::RemoveChildren(SubtreeModificationAction action)
 
 Node* ContainerNode::ReplaceChild(Node *newChild, Node *oldChild, ExceptionState &exceptionState)
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
+    DCHECK(nullptr != newChild);
+    // https://dom.spec.whatwg.org/#concept-node-replace
+
+    if (nullptr == oldChild)
+    {
+        exceptionState.ThrowDOMException(DOMExceptionCode::kNotFoundError, "The node to be replaced is null.");
+        return nullptr;
+    }
+
+    // Step 2 to 6.
+    if (!EnsurePreInsertionValidity(*newChild, nullptr, oldChild, exceptionState))
+        return oldChild;
+
+    // 7. Let reference child be child¡¯s next sibling.
+    Node *next = oldChild->nextSibling();
+    // 8. If reference child is node, set it to node¡¯s next sibling.
+    if (next == newChild)
+        next = newChild->nextSibling();
+
+    bool needsRecheck = false;
+    // 10. Adopt node into parent¡¯s node document.
+    // TODO(tkent): Actually we do only RemoveChild() as a part of 'adopt'
+    // operation.
+    //
+    // Though the following CollectChildrenAndRemoveFromOldParent() also calls
+    // RemoveChild(), we'd like to call RemoveChild() here to make a separated
+    // MutationRecord.
+    if (ContainerNode *newChildParent = newChild->parentNode())
+    {
+        DOMTreeMutationDetector detector(*newChild, *this);
+        newChildParent->RemoveChild(newChild, exceptionState);
+        if (exceptionState.HadException())
+            return nullptr;
+        if (!detector.NeedsRecheck())
+            needsRecheck = true;
+    }
+
+    NodeVector targets;
+    NodeVector postInsertionNotificationTargets;
+    {
+        // 9. Let previousSibling be child¡¯s previous sibling.
+        // 11. Let removedNodes be the empty list.
+        // 15. Queue a mutation record of "childList" for target parent with
+        // addedNodes nodes, removedNodes removedNodes, nextSibling reference child,
+        // and previousSibling previousSibling.
+        ChildListMutationScope mutation(*this);
+
+        // 12. If child¡¯s parent is not null, run these substeps:
+        //    1. Set removedNodes to a list solely containing child.
+        //    2. Remove child from its parent with the suppress observers flag set.
+        if (ContainerNode *oldChildParent = oldChild->parentNode())
+        {
+            DOMTreeMutationDetector detector(*oldChild, *this);
+            oldChildParent->RemoveChild(oldChild, exceptionState);
+            if (exceptionState.HadException())
+                return nullptr;
+            if (!detector.NeedsRecheck())
+                needsRecheck = true;
+        }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+        SlotAssignmentRecalcForbiddenScope forbid_slot_recalc(GetDocument());
+#endif
+
+        // 13. Let nodes be node¡¯s children if node is a DocumentFragment node, and
+        // a list containing solely node otherwise.
+        DOMTreeMutationDetector detector(*newChild, *this);
+        if (!CollectChildrenAndRemoveFromOldParent(*newChild, targets, exceptionState))
+            return oldChild;
+        if (!detector.NeedsRecheck() || needsRecheck)
+        {
+            if (!RecheckNodeInsertionStructuralPrereq(targets, next, exceptionState))
+                return oldChild;
+        }
+
+        // 10. Adopt node into parent¡¯s node document.
+        // 14. Insert node into parent before reference child with the suppress
+        // observers flag set.
+        GCPool &gcPool = GCPool::From(GetDocument());
+        if (next)
+            InsertNodeVector(targets, next, AdoptAndInsertBefore(&gcPool), &postInsertionNotificationTargets);
+        else
+            InsertNodeVector(targets, nullptr, AdoptAndAppendChild(&gcPool), &postInsertionNotificationTargets);
+    }
+    DidInsertNodeVector(targets, next, postInsertionNotificationTargets);
+
+    // 16. Return child.
+    return oldChild;
+}
+
+void ContainerNode::SetRestyleFlag(DynamicRestyleFlags mask)
+{
+    ASSERT(IsElementNode() || IsShadowRoot());
+    EnsureRareData().SetRestyleFlag(mask);
 }
 
 void ContainerNode::WillRemoveChild(Node &child)

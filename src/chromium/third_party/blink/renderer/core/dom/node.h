@@ -51,7 +51,9 @@ namespace blink {
 class Document;
 class Element;
 class ExceptionState;
+class NodeList;
 class NodeRareData;
+class ShadowRoot;
 
 const int kNodeStyleChangeShift = 18;
 const int kNodeCustomElementShift = 20;
@@ -91,9 +93,14 @@ public:
     // Exports for JS
     Node* appendChild(Node *newChild, ExceptionState &exceptionState);
     Node* cloneNode(bool deep, ExceptionState &exceptionState) const;
+    NodeList* childNodes(void);
     Node* firstChild(void) const;
+    Node* insertBefore(Node *newChild, Node *refChild, ExceptionState &exceptionState);
     Node* lastChild(void) const;
     inline NodeType nodeType(void) const { return getNodeType(); }
+    // Returns the DOM ownerDocument attribute. This method never returns null,
+    // except in the case of a Document node.
+    Document* ownerDocument(void) const;
     Node* removeChild(Node *child, ExceptionState &exceptionState);
     String textContent(bool convertBrsToNewlines = false) const;
     void setTextContent(const String &text);
@@ -121,7 +128,10 @@ public:
     virtual Node* Clone(Document &document, CloneChildrenFlag flag) const = 0;
     ContainerNode* parentNode(void) const;
     ContainerNode* ParentOrShadowHostNode(void) const;
+    Element* ParentOrShadowHostElement(void) const;
     Element* parentElement(void) const;
+    ContainerNode* ParentElementOrShadowRoot(void) const;
+    ContainerNode* ParentElementOrDocumentFragment(void) const;
     void SetParentOrShadowHostNode(ContainerNode *parent);
     Node* previousSibling(void) const { return m_previous; }
     void SetPreviousSibling(Node *previous) { m_previous = previous; }
@@ -133,6 +143,15 @@ public:
     unsigned CountChildren(void) const;
     bool contains(const Node *node) const;
     bool ContainsIncludingHostElements(const Node &node) const;
+
+    // If this node is in a shadow tree, returns its shadow host. Otherwise,
+    // returns nullptr.
+    Element* OwnerShadowHost(void) const;
+    // crbug.com/569532: containingShadowRoot() can return nullptr even if
+    // isInShadowTree() returns true.
+    // This can happen when handling queued events (e.g. during execCommand())
+    ShadowRoot* ContainingShadowRoot(void) const;
+    ShadowRoot* GetShadowRoot(void) const;
 
     Node* PseudoAwareNextSibling(void) const;
     Node* PseudoAwarePreviousSibling(void) const;
@@ -148,6 +167,7 @@ public:
     typedef ContainerNode* (*ParentGetter)(const Node &);
     Node* CommonAncestor(const Node &other, ParentGetter getParent) const;
 
+    bool IsShadowIncludingInclusiveAncestorOf(const Node *node) const;
     bool IsDescendantOf(const Node *other) const;
     bool IsDocumentNode(void) const;
     bool IsDocumentTypeNode(void) const { return getNodeType() == kDocumentTypeNode; }
@@ -167,9 +187,11 @@ public:
     bool ForCrawler(void) const { return GetFlag(kForCrawlerFlag); }
 #endif
     bool IsDocumentFragment(void) const { return GetFlag(kIsDocumentFragmentFlag); }
+    bool IsLink(void) const { return GetFlag(kIsLinkFlag); }
     bool IsUserActionElement(void) const { return GetFlag(kIsUserActionElementFlag); }
     bool isConnected(void) const { return GetFlag(kIsConnectedFlag); }
     bool IsInShadowTree(void) const { return GetFlag(kIsInShadowTreeFlag); }
+    bool IsFinishedParsingChildren(void) const { return GetFlag(kIsFinishedParsingChildrenFlag); }
     bool IsInTreeScope(void) const { return GetFlag(static_cast<NodeFlags>(kIsConnectedFlag | kIsInShadowTreeFlag)); }
     bool ChildNeedsDistributionRecalc(void) const { return GetFlag(kChildNeedsDistributionRecalcFlag); }
     bool HasName(void) const

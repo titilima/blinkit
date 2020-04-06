@@ -15,6 +15,7 @@
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_exception_state.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_named_node_map.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_script_element.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappers.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
@@ -84,6 +85,27 @@ static duk_ret_t SetAttribute(duk_context *ctx)
     return 0;
 }
 
+static duk_ret_t TagNameGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Element *element = DukScriptObject::To<Element>(ctx, -1);
+    Duk::PushString(ctx, element->tagName());
+    return 1;
+}
+
+static duk_ret_t ToString(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Element *element = DukScriptObject::To<Element>(ctx, -1);
+
+    std::string ret("[object HTML");
+    ret += element->tagName().StdUtf8();
+    ret += "Element]";
+    ret.at(12) = toupper(ret.at(12));
+    Duk::PushString(ctx, ret);
+    return 1;
+}
+
 } // namespace Impl
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -99,10 +121,12 @@ void DukElement::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
     static const PrototypeEntry::Method Methods[] = {
         { "getAttribute",           Impl::GetAttribute,        1 },
         { "setAttribute",           Impl::SetAttribute,        2 },
+        { "toString",               Impl::ToString,            0 },
     };
     static const PrototypeEntry::Property Properties[] = {
         { "attributes",             Impl::AttributesGetter,             nullptr                    },
         { "innerHTML",              Impl::InnerHTMLGetter,              Impl::InnerHTMLSetter      },
+        { "tagName",                Impl::TagNameGetter,                nullptr                    },
     };
 
     DukContainerNode::FillPrototypeEntry(entry);
@@ -111,14 +135,16 @@ void DukElement::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
     entry.Add("style", DUK_TYPE_OBJECT);
 }
 
-const std::unordered_map<std::string, std::string>& DukElement::PrototypeMapForCrawler(void)
+const std::unordered_map<std::string, const char *>& DukElement::PrototypeMapForCrawler(void)
 {
-    static std::unordered_map<std::string, std::string> s_prototypeMapForCrawler;
+    static std::unordered_map<std::string, const char *> s_prototypeMapForCrawler;
 
     ASSERT(IsMainThread());
     if (s_prototypeMapForCrawler.empty())
     {
-        // BKTODO:
+        s_prototypeMapForCrawler.insert({
+            { "script", DukScriptElement::ProtoName }
+        });
     }
 
     return s_prototypeMapForCrawler;

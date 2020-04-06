@@ -49,6 +49,10 @@ class Document;
 class DocumentFragment;
 class Element;
 class ExceptionState;
+class Node;
+
+enum EChildrenOnly { kIncludeNode, kChildrenOnly };
+enum EAbsoluteURLs { kDoNotResolveURLs, kResolveAllURLs, kResolveNonLocalURLs };
 
 DocumentFragment* CreateFragmentForInnerOuterHTML(
     const String &markup,
@@ -61,6 +65,8 @@ DocumentFragment* CreateFragmentForInnerOuterHTML(
 // These methods are used by HTMLElement & ShadowRoot to replace the
 // children with respected fragment/text.
 void ReplaceChildrenWithFragment(ContainerNode *container, DocumentFragment *fragment, ExceptionState &exceptionState);
+
+String CreateMarkup(const Node *node, EChildrenOnly childrenOnly = kIncludeNode, EAbsoluteURLs shouldResolveUrls = kDoNotResolveURLs);
 
 } // namespace blink
 

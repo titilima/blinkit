@@ -24,6 +24,16 @@ const char DukWindow::ProtoName[] = "Window";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+namespace Crawler {
+
+static duk_ret_t GetComputedStyle(duk_context *ctx)
+{
+    duk_push_object(ctx);
+    return 1;
+}
+
+} // namespace Crawler
+
 namespace Impl {
 
 static duk_ret_t AToB(duk_context *ctx)
@@ -93,6 +103,7 @@ void DukWindow::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
     static const PrototypeEntry::Method Methods[] = {
         { "atob",             Impl::AToB,                1           },
         { "btoa",             Impl::BToA,                1           },
+        { "getComputedStyle", Crawler::GetComputedStyle, 2           },
     };
     static const PrototypeEntry::Property Properties[] = {
         { "console",   Impl::ConsoleGetter,   nullptr              },

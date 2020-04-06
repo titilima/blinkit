@@ -71,6 +71,9 @@ public:
     void AddAttr(Attr *attr) { EnsureAttrNodeList().push_back(attr); }
 
     ElementIntersectionObserverData* IntersectionObserverData(void) const { return m_intersectionObserverData.get(); }
+
+    void SetIsValue(const AtomicString &isValue) { m_isValue = isValue; }
+    const AtomicString& IsValue(void) const { return m_isValue; }
 private:
 #ifdef BLINKIT_CRAWLER_ONLY
     ElementRareData(void) = default;
@@ -82,6 +85,8 @@ private:
     std::unique_ptr<AttrNodeList> m_attrNodeList;
 
     std::unique_ptr<ElementIntersectionObserverData> m_intersectionObserverData;
+
+    AtomicString m_isValue;
 
     std::unique_ptr<PseudoElementData> m_pseudoElementData;
 };

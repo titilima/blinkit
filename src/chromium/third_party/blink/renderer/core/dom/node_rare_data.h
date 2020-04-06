@@ -38,6 +38,8 @@
 
 namespace blink {
 
+enum class DynamicRestyleFlags;
+enum class ElementFlags;
 class NodeListsNodeData;
 
 class NodeRareDataBase
@@ -67,9 +69,33 @@ public:
             CreateNodeLists();
         return *m_nodeLists;
     }
+
+    bool HasElementFlag(ElementFlags mask) const { return 0 != (m_elementFlags & static_cast<unsigned>(mask)); }
+    void SetElementFlag(ElementFlags mask, bool value)
+    {
+        m_elementFlags = (m_elementFlags & ~static_cast<unsigned>(mask)) | (-(int32_t)value & static_cast<unsigned>(mask));
+    }
+    void ClearElementFlag(ElementFlags mask)
+    {
+        m_elementFlags &= ~static_cast<unsigned>(mask);
+    }
+
+    bool HasRestyleFlag(DynamicRestyleFlags mask) const { return 0 != (m_restyleFlags & static_cast<unsigned>(mask)); }
+    void SetRestyleFlag(DynamicRestyleFlags mask)
+    {
+        m_restyleFlags |= static_cast<unsigned>(mask);
+        ASSERT(HasRestyleFlags());
+    }
+    bool HasRestyleFlags(void) const { return 0 != m_restyleFlags; }
+    void ClearRestyleFlags(void) { m_restyleFlags = 0; }
+
+    enum {
+        kNumberOfElementFlags = 6,
+        kNumberOfDynamicRestyleFlags = 14
+    };
 protected:
 #ifdef BLINKIT_CRAWLER_ONLY
-    NodeRareData(void);
+    explicit NodeRareData(void);
 #else
     explicit NodeRareData(NodeRenderingData* node_layout_data)
         : NodeRareDataBase(node_layout_data),
@@ -84,7 +110,10 @@ private:
     void CreateNodeLists(void);
 
     std::unique_ptr<NodeListsNodeData> m_nodeLists;
-protected:
+
+    unsigned m_elementFlags : kNumberOfElementFlags;
+    unsigned m_restyleFlags : kNumberOfDynamicRestyleFlags;
+
     DISALLOW_COPY_AND_ASSIGN(NodeRareData);
 };
 

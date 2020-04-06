@@ -74,10 +74,14 @@ class ElementDataCache;
 class LayoutView;
 class LocalDOMWindow;
 class LocalFrame;
+class Location;
+class NthIndexCache;
 class ResourceFetcher;
 class ScriptableDocumentParser;
 class ScriptElementBase;
+class ScriptRunner;
 class SelectorQueryCache;
+class Text;
 
 enum NodeListInvalidationType : int {
     kDoNotInvalidateOnAttributeChanges = 0,
@@ -123,6 +127,7 @@ public:
     LocalFrame* GetFrame(void) const { return m_frame; }  // can be null
     LocalFrame* ExecutingFrame(void);
     Document* ContextDocument(void) const;
+    ScriptRunner* GetScriptRunner(void) { return m_scriptRunner.get(); }
 
     // Exports for JS
     Element* body(void) const;
@@ -130,9 +135,12 @@ public:
     Element* createElement(const AtomicString &name, ExceptionState &exceptionState);
     Element* documentElement(void) const { return m_documentElement.Get(); }
     using TreeScope::getElementById;
+    Location* location(void) const;
     void open(Document *enteredDocument, ExceptionState &exceptionState);
     void write(const String &text, Document *enteredDocument = nullptr, ExceptionState &exceptionState = ASSERT_NO_EXCEPTION);
     void write(LocalDOMWindow *callingWindow, const std::vector<std::string> &text, ExceptionState &exceptionState);
+    void writeln(const String &text, Document *enteredDocument = nullptr, ExceptionState &exceptionState = ASSERT_NO_EXCEPTION);
+    void writeln(LocalDOMWindow *callingWindow, const std::vector<std::string> &text, ExceptionState &exceptionState);
 
     void SetDoctype(DocumentType *docType);
 
@@ -148,6 +156,9 @@ public:
     // Fallback base URL.
     // https://html.spec.whatwg.org/multipage/urls-and-fetching.html#fallback-base-url
     BlinKit::BkURL FallbackBaseURL(void) const;
+
+    const AtomicString& ContentLanguage(void) const { return m_contentLanguage; }
+    void SetContentLanguage(const AtomicString &language);
 
     // The following implements the rule from HTML 4 for what valid names are.
     // To get this right for all the XML cases, we probably have to improve this
@@ -190,6 +201,13 @@ public:
 
     ElementDataCache* GetElementDataCache(void) { return m_elementDataCache.get(); }
     SelectorQueryCache& GetSelectorQueryCache(void);
+
+    NthIndexCache* GetNthIndexCache(void) const { return m_nthIndexCache; }
+    void SetNthIndexCache(NthIndexCache *nthIndexCache)
+    {
+        ASSERT(nullptr == m_nthIndexCache || nullptr == nthIndexCache);
+        m_nthIndexCache = nthIndexCache;
+    }
 
     void RegisterNodeList(const LiveNodeListBase *list);
 
@@ -253,6 +271,11 @@ public:
     bool LoadEventFinished(void) const { return m_loadEventProgress >= kLoadEventCompleted; }
     bool LoadEventStillNeeded(void) const { return kLoadEventNotRun == m_loadEventProgress; }
     void SuppressLoadEvent(void);
+    // Used to allow element that loads data without going through a FrameLoader
+    // to delay the 'load' event.
+    void IncrementLoadEventDelayCount(void) { ++m_loadEventDelayCount; }
+    void DecrementLoadEventDelayCount(void);
+    void CheckLoadEventSoon(void);
     bool IsDelayingLoadEvent(void) { return 0 != m_loadEventDelayCount; }
 
     DocumentParser* Parser(void) const { return m_parser.get(); }
@@ -300,6 +323,7 @@ public:
     void SetInDOMNodeRemovedHandlerState(InDOMNodeRemovedHandlerState state) { m_inDomNodeRemovedHandlerState = state; }
     InDOMNodeRemovedHandlerState GetInDOMNodeRemovedHandlerState(void) const { return m_inDomNodeRemovedHandlerState; }
     bool InDOMNodeRemovedHandler(void) const { return m_inDomNodeRemovedHandlerState != InDOMNodeRemovedHandlerState::kNone; }
+    void CountDetachingNodeAccessInDOMNodeRemovedHandler(void) { ASSERT(GetInDOMNodeRemovedHandlerState() != InDOMNodeRemovedHandlerState::kNone); } // Just a placeholder
 protected:
     Document(const DocumentInit &initializer);
 private:
@@ -323,6 +347,8 @@ private:
 
     bool HaveImportsLoaded(void) const;
     bool HaveScriptBlockingStylesheetsLoaded(void) const;
+
+    void LoadEventDelayTimerFired(TimerBase *);
 
     // EventTarget overrides
     void RemoveAllEventListeners(void) final;
@@ -368,6 +394,8 @@ private:
     BlinKit::BkURL m_baseURLOverride;
     BlinKit::BkURL m_baseElementURL;  // The URL set by the <base> element.
 
+    AtomicString m_contentLanguage;
+
     Member<DocumentType> m_docType;
     Member<Element> m_titleElement;
     Member<Element> m_documentElement;
@@ -379,9 +407,11 @@ private:
 
     LoadEventProgress m_loadEventProgress = kLoadEventCompleted;
     int m_loadEventDelayCount = 0;
+    TaskRunnerTimer<Document> m_loadEventDelayTimer;
 
     std::shared_ptr<ResourceFetcher> m_fetcher;
     std::shared_ptr<DocumentParser> m_parser;
+    std::unique_ptr<ScriptRunner> m_scriptRunner;
 #ifndef BLINKIT_CRAWLER_ONLY
     LayoutView *m_layoutView = nullptr;
     Member<Element> m_focusedElement;
@@ -389,6 +419,13 @@ private:
 
     std::unique_ptr<ElementDataCache> m_elementDataCache;
     std::unique_ptr<SelectorQueryCache> m_selectorQueryCache;
+
+    // It is safe to keep a raw, untraced pointer to this stack-allocated
+    // cache object: it is set upon the cache object being allocated on
+    // the stack and cleared upon leaving its allocated scope. Hence it
+    // is acceptable not to trace it -- should a conservative GC occur,
+    // the cache object's references will be traced by a stack walk.
+    NthIndexCache *m_nthIndexCache = nullptr;
 
     int m_nodeCount = 0;
     std::unordered_set<const LiveNodeListBase *> m_listsInvalidatedAtDocument;

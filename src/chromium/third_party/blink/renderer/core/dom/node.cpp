@@ -38,19 +38,22 @@
 #include "node.h"
 
 #include <unordered_map>
+#include "third_party/blink/renderer/core/dom/attr.h"
 #include "third_party/blink/renderer/core/dom/child_list_mutation_scope.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/document_fragment.h"
-#include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/element_rare_data.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatcher.h"
+#include "third_party/blink/renderer/core/dom/node_lists_node_data.h"
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
 #include "third_party/blink/renderer/core/dom/text.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "third_party/blink/renderer/core/html_element_type_helpers.h"
 #include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
 using namespace BlinKit;
@@ -136,6 +139,13 @@ Node* Node::cloneNode(bool deep, ExceptionState &exceptionState) const
     return GCPool::From(document).Save(ret);
 }
 
+NodeList* Node::childNodes(void)
+{
+    if (IsContainerNode())
+        return EnsureRareData().EnsureNodeLists().EnsureChildNodeList(ToContainerNode(*this));
+    return EnsureRareData().EnsureNodeLists().EnsureEmptyChildNodeList(*this);
+}
+
 Node* Node::CommonAncestor(const Node &other, ParentGetter getParent) const
 {
     if (this == other)
@@ -177,6 +187,17 @@ Node* Node::CommonAncestor(const Node &other, ParentGetter getParent) const
     }
     ASSERT(nullptr == otherIterator);
     return nullptr;
+}
+
+ShadowRoot* Node::ContainingShadowRoot(void) const
+{
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(!GetTreeScope().RootNode().IsShadowRoot());
+    return nullptr;
+#else
+    Node& root = GetTreeScope().RootNode();
+    return root.IsShadowRoot() ? ToShadowRoot(&root) : nullptr;
+#endif
 }
 
 bool Node::contains(const Node *node) const
@@ -373,6 +394,17 @@ ExecutionContext* Node::GetExecutionContext(void) const
     return GetDocument().ContextDocument();
 }
 
+ShadowRoot* Node::GetShadowRoot(void) const
+{
+#ifdef BLINKIT_CRAWLER_ONLY
+    return nullptr;
+#else
+    if (!IsElementNode())
+        return nullptr;
+    return ToElement(this)->GetShadowRoot();
+#endif
+}
+
 void Node::HandleLocalEvents(Event &event)
 {
     if (!HasEventTargetData())
@@ -384,6 +416,16 @@ void Node::HandleLocalEvents(Event &event)
 bool Node::HasTagName(const HTMLQualifiedName &name) const
 {
     return IsHTMLElement() && ToElement(*this).HasTagName(name);
+}
+
+Node* Node::insertBefore(Node *newChild, Node *refChild, ExceptionState &exceptionState)
+{
+    if (IsContainerNode())
+        return ToContainerNode(this)->InsertBefore(newChild, refChild, exceptionState);
+
+    exceptionState.ThrowDOMException(DOMExceptionCode::kHierarchyRequestError,
+        "This node type does not support this method.");
+    return nullptr;
 }
 
 Node::InsertionNotificationRequest Node::InsertedInto(ContainerNode &insertionPoint)
@@ -429,6 +471,33 @@ bool Node::IsDescendantOf(const Node *other) const
 bool Node::IsDocumentNode(void) const
 {
     return this == GetDocument();
+}
+
+bool Node::IsShadowIncludingInclusiveAncestorOf(const Node *node) const
+{
+    if (nullptr == node)
+        return false;
+
+    if (this == node)
+        return true;
+
+    if (GetDocument() != node->GetDocument())
+        return false;
+
+    if (isConnected() != node->isConnected())
+        return false;
+
+    bool has_children = IsContainerNode() && ToContainerNode(this)->HasChildren();
+    bool has_shadow = IsShadowHost(this);
+    if (!has_children && !has_shadow)
+        return false;
+
+    for (; node; node = node->OwnerShadowHost()) {
+        if (GetTreeScope() == node->GetTreeScope())
+            return contains(node);
+    }
+
+    return false;
 }
 
 bool Node::IsTreeScope(void) const
@@ -508,6 +577,21 @@ void Node::NotifyMutationObserversNodeWillDetach(void)
 #endif
 }
 
+Document* Node::ownerDocument(void) const
+{
+    Document *doc = &GetDocument();
+    return doc == this ? nullptr : doc;
+}
+
+Element* Node::OwnerShadowHost(void) const
+{
+#ifndef BLINKIT_CRAWLER_ONLY
+    if (ShadowRoot *root = ContainingShadowRoot())
+        return &root->host();
+#endif
+    return nullptr;
+}
+
 Element* Node::parentElement(void) const
 {
     if (ContainerNode *parent = parentNode())
@@ -516,6 +600,45 @@ Element* Node::parentElement(void) const
             return ToElement(parent);
     }
     return nullptr;
+}
+
+ContainerNode* Node::ParentElementOrDocumentFragment(void) const
+{
+    if (ContainerNode *parent = parentNode())
+    {
+        if (parent->IsElementNode() || parent->IsDocumentFragment())
+            return parent;
+    }
+    return nullptr;
+}
+
+ContainerNode* Node::ParentElementOrShadowRoot(void) const
+{
+    if (ContainerNode *parent = parentNode())
+    {
+        if (parent->IsElementNode() || parent->IsShadowRoot())
+            return parent;
+    }
+    return nullptr;
+}
+
+Element* Node::ParentOrShadowHostElement(void) const
+{
+    ContainerNode *parent = ParentOrShadowHostNode();
+    if (nullptr == parent)
+        return nullptr;
+
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(!parent->IsShadowRoot());
+#else
+    if (parent->IsShadowRoot())
+        return &ToShadowRoot(parent)->host();
+#endif
+
+    if (!parent->IsElementNode())
+        return nullptr;
+
+    return ToElement(parent);
 }
 
 ContainerNode* Node::ParentOrShadowHostNode(void) const
@@ -597,6 +720,10 @@ void Node::SetParentOrShadowHostNode(ContainerNode *parent)
 {
     ASSERT(IsMainThread());
     m_parentOrShadowHostNode = parent;
+#ifdef _DEBUG
+    if (nullptr != parent && !parent->IsShadowRoot())
+        ASSERT(!IsContextRetained());
+#endif
 }
 
 void Node::setTextContent(const String &text)
@@ -652,8 +779,30 @@ void Node::setTextContent(const String &text)
 
 String Node::textContent(bool convertBrsToNewlines) const
 {
-    ASSERT(false); // BKTODO:
-    return String();
+    // This covers ProcessingInstruction and Comment that should return their
+    // value when .textContent is accessed on them, but should be ignored when
+    // iterated over as a descendant of a ContainerNode.
+    if (IsCharacterDataNode())
+        return ToCharacterData(this)->data();
+
+    // Attribute nodes have their attribute values as textContent.
+    if (IsAttributeNode())
+        return ToAttr(this)->value();
+
+    // Documents and non-container nodes (that are not CharacterData)
+    // have null textContent.
+    if (IsDocumentNode() || !IsContainerNode())
+        return String();
+
+    StringBuilder content;
+    for (const Node &node : NodeTraversal::InclusiveDescendantsOf(*this))
+    {
+        if (IsHTMLBRElement(node) && convertBrsToNewlines)
+            content.Append('\n');
+        else if (node.IsTextNode())
+            content.Append(ToText(node).data());
+    }
+    return content.ToString();
 }
 
 Node& Node::TreeRoot(void) const

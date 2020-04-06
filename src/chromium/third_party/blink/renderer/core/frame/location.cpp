@@ -65,6 +65,10 @@ std::string Location::href(void) const
 {
     return Url().StrippedForUseAsReferrer();
 }
+std::string Location::protocol(void) const
+{
+    return Url().Scheme();
+}
 
 const BkURL& Location::Url(void) const
 {

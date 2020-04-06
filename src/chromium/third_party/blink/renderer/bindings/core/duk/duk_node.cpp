@@ -13,7 +13,9 @@
 
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_attr.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_document.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_element.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_node_list.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappers.h"
 
 using namespace blink;
@@ -46,6 +48,14 @@ static duk_ret_t AppendChild(duk_context *ctx)
     return 1;
 }
 
+static duk_ret_t ChildNodesGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Node *node = DukScriptObject::To<Node>(ctx, -1);
+    DukNodeList::Push(ctx, node->childNodes());
+    return 1;
+}
+
 static duk_ret_t CloneNode(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -71,6 +81,26 @@ static duk_ret_t FirstChildGetter(duk_context *ctx)
     return 1;
 }
 
+static duk_ret_t InsertBefore(duk_context *ctx)
+{
+    Node *newChild = DukScriptObject::To<Node>(ctx, 0);
+    Node *refChild = DukScriptObject::To<Node>(ctx, 1);
+
+    duk_push_this(ctx);
+    Node *node = DukScriptObject::To<Node>(ctx, -1);
+
+    DukExceptionState exceptionState(ctx);
+    Node *ret = node->insertBefore(newChild, refChild, exceptionState);
+    if (exceptionState.HadException())
+    {
+        exceptionState.ThrowIfNeeded();
+        return 0;
+    }
+
+    DukNode::Push(ctx, ret);
+    return 1;
+}
+
 static duk_ret_t LastChildGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -79,11 +109,35 @@ static duk_ret_t LastChildGetter(duk_context *ctx)
     return 1;
 }
 
+static duk_ret_t NodeNameGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Node *node = DukScriptObject::To<Node>(ctx, -1);
+    Duk::PushString(ctx, node->nodeName());
+    return 1;
+}
+
 static duk_ret_t NodeTypeGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
     Node *node = DukScriptObject::To<Node>(ctx, -1);
     duk_push_uint(ctx, node->nodeType());
+    return 1;
+}
+
+static duk_ret_t OwnerDocumentGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Node *node = DukScriptObject::To<Node>(ctx, -1);
+    DukScriptObject::Push<DukDocument>(ctx, node->ownerDocument());
+    return 1;
+}
+
+static duk_ret_t ParentNodeGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Node *node = DukScriptObject::To<Node>(ctx, -1);
+    DukNode::Push(ctx, node->parentNode());
     return 1;
 }
 
@@ -113,12 +167,17 @@ void DukNode::FillPrototypeEntry(PrototypeEntry &entry)
     static const PrototypeEntry::Method Methods[] = {
         { "appendChild",             Impl::AppendChild,             1 },
         { "cloneNode",               Impl::CloneNode,               1 },
+        { "insertBefore",            Impl::InsertBefore,            2 },
         { "removeChild",             Impl::RemoveChild,             1 },
     };
     static const PrototypeEntry::Property Properties[] = {
+        { "childNodes",      Impl::ChildNodesGetter,      nullptr               },
         { "firstChild",      Impl::FirstChildGetter,      nullptr               },
         { "lastChild",       Impl::LastChildGetter,       nullptr               },
+        { "nodeName",        Impl::NodeNameGetter,        nullptr               },
         { "nodeType",        Impl::NodeTypeGetter,        nullptr               },
+        { "ownerDocument",   Impl::OwnerDocumentGetter,   nullptr               },
+        { "parentNode",      Impl::ParentNodeGetter,      nullptr               },
         { "textContent",     TextContentGetter,           TextContentSetter     },
     };
 

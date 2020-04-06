@@ -43,6 +43,7 @@
 #include "third_party/blink/renderer/core/dom/child_list_mutation_scope.h"
 #include "third_party/blink/renderer/core/dom/document_fragment.h"
 #include "third_party/blink/renderer/core/dom/element.h"
+#include "third_party/blink/renderer/core/editing/serializers/markup_accumulator.h"
 
 using namespace BlinKit;
 
@@ -68,6 +69,15 @@ DocumentFragment* CreateFragmentForInnerOuterHTML(
     DocumentFragment *fragment = DocumentFragment::Create(document);
     fragment->ParseHTML(markup, contextElement, parserContentPolicy);
     return fragment;
+}
+
+String CreateMarkup(const Node *node, EChildrenOnly childrenOnly, EAbsoluteURLs shouldResolveUrls)
+{
+    if (nullptr == node)
+        return "";
+
+    MarkupAccumulator accumulator(shouldResolveUrls);
+    return SerializeNodes<EditingStrategy>(accumulator, const_cast<Node &>(*node), childrenOnly);
 }
 
 void ReplaceChildrenWithFragment(ContainerNode *container, DocumentFragment *fragment, ExceptionState &exceptionState)

@@ -44,6 +44,35 @@ namespace blink {
 
 class HTMLCollection;
 class NodeListsNodeData;
+template <typename NodeType>
+class StaticNodeTypeList;
+using StaticElementList = StaticNodeTypeList<Element>;
+
+enum class DynamicRestyleFlags {
+    kChildrenOrSiblingsAffectedByFocus = 1 << 0,
+    kChildrenOrSiblingsAffectedByHover = 1 << 1,
+    kChildrenOrSiblingsAffectedByActive = 1 << 2,
+    kChildrenOrSiblingsAffectedByDrag = 1 << 3,
+    kChildrenAffectedByFirstChildRules = 1 << 4,
+    kChildrenAffectedByLastChildRules = 1 << 5,
+    kChildrenAffectedByDirectAdjacentRules = 1 << 6,
+    kChildrenAffectedByIndirectAdjacentRules = 1 << 7,
+    kChildrenAffectedByForwardPositionalRules = 1 << 8,
+    kChildrenAffectedByBackwardPositionalRules = 1 << 9,
+    kAffectedByFirstChildRules = 1 << 10,
+    kAffectedByLastChildRules = 1 << 11,
+    kChildrenOrSiblingsAffectedByFocusWithin = 1 << 12,
+    kChildrenOrSiblingsAffectedByFocusVisible = 1 << 13,
+
+    kNumberOfDynamicRestyleFlags = 14,
+
+    kChildrenAffectedByStructuralRules =
+    kChildrenAffectedByFirstChildRules | kChildrenAffectedByLastChildRules |
+    kChildrenAffectedByDirectAdjacentRules |
+    kChildrenAffectedByIndirectAdjacentRules |
+    kChildrenAffectedByForwardPositionalRules |
+    kChildrenAffectedByBackwardPositionalRules
+};
 
 enum SubtreeModificationAction {
     kDispatchSubtreeModifiedEvent,
@@ -57,6 +86,8 @@ class ContainerNode : public Node
 public:
     // Exports for JS
     HTMLCollection* getElementsByTagName(const AtomicString &qualifiedName);
+    Element* querySelector(const AtomicString &selectors, ExceptionState &exceptionState);
+    StaticElementList* querySelectorAll(const AtomicString &selectors, ExceptionState &exceptionState);
 
     Node* FirstChild(void) const { return m_firstChild; }
     Node* LastChild(void) const { return m_lastChild; }
@@ -72,6 +103,7 @@ public:
     Node* AppendChild(Node *newChild, ExceptionState &exceptionState);
     Node* AppendChild(Node *newChild);
     bool EnsurePreInsertionValidity(const Node &newChild, const Node *next, const Node *oldChild, ExceptionState &exceptionState) const;
+    Node* InsertBefore(Node *newChild, Node *refChild, ExceptionState &exceptionState);
 
     void RemoveChildren(SubtreeModificationAction action = kDispatchSubtreeModifiedEvent);
     void CloneChildNodesFrom(const ContainerNode &node);
@@ -81,6 +113,17 @@ public:
     Collection* EnsureCachedCollection(CollectionType);
     template <typename Collection>
     Collection* EnsureCachedCollection(CollectionType, const AtomicString& name);
+
+    void SetChildrenOrSiblingsAffectedByFocus(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenOrSiblingsAffectedByFocus); }
+    void SetChildrenAffectedByFirstChildRules(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByFirstChildRules); }
+    void SetChildrenAffectedByLastChildRules(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByLastChildRules); }
+    void SetChildrenAffectedByDirectAdjacentRules(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByDirectAdjacentRules); }
+    void SetChildrenAffectedByIndirectAdjacentRules(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByIndirectAdjacentRules); }
+    void SetChildrenAffectedByForwardPositionalRules(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByForwardPositionalRules); }
+    void SetChildrenAffectedByBackwardPositionalRules(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByBackwardPositionalRules); }
+    void SetAffectedByFirstChildRules(void) { SetRestyleFlag(DynamicRestyleFlags::kAffectedByFirstChildRules); }
+    void SetAffectedByLastChildRules(void) { SetRestyleFlag(DynamicRestyleFlags::kAffectedByLastChildRules); }
+    void SetChildrenOrSiblingsAffectedByFocusVisible(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenOrSiblingsAffectedByFocusVisible); }
 
     void ParserAppendChild(Node *newChild);
     void ParserRemoveChild(Node &oldChild);
@@ -113,13 +156,18 @@ protected:
     void PreCollectGarbage(BlinKit::GCPool &gcPool) override;
 private:
     class AdoptAndAppendChild;
+    class AdoptAndInsertBefore;
     friend class AdoptAndAppendChild;
+    friend class AdoptAndInsertBefore;
 
     NodeListsNodeData& EnsureNodeLists(void);
+
+    void SetRestyleFlag(DynamicRestyleFlags mask);
 
     void AppendChildCommon(Node &child);
     bool CheckParserAcceptChild(const Node &newChild) const;
     void DidInsertNodeVector(const NodeVector &targets, Node *next, const NodeVector& postInsertionNotificationTargets);
+    void InsertBeforeCommon(Node &nextChild, Node &newChild);
     // Inserts the specified nodes before |next|.
     // |next| may be nullptr.
     // |post_insertion_notification_targets| must not be nullptr.
@@ -168,6 +216,7 @@ public:
     }
 
     bool IsChildInsertion(void) const { return kElementInserted == type || kNonElementInserted == type; }
+    bool IsChildRemoval(void) const { return kElementRemoved == type || kNonElementRemoved == type; }
 
     ChildrenChangeType type;
     Member<Node> siblingChanged;

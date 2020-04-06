@@ -43,6 +43,7 @@
 #include "third_party/blink/renderer/core/dom/container_node.h"
 #include "third_party/blink/renderer/core/dom/element_data.h"
 #include "third_party/blink/renderer/core/dom/qualified_name.h"
+#include "url/bk_url.h"
 
 namespace blink {
 
@@ -51,6 +52,17 @@ class Attribute;
 class ElementData;
 class ElementRareData;
 class NamedNodeMap;
+
+enum class ElementFlags {
+    kTabIndexWasSetExplicitly = 1 << 0,
+    kStyleAffectedByEmpty = 1 << 1,
+    kIsInCanvasSubtree = 1 << 2,
+    kContainsFullScreenElement = 1 << 3,
+    kIsInTopLayer = 1 << 4,
+    kContainsPersistentVideo = 1 << 5,
+
+    kNumberOfElementFlags = 6,  // Size of bitfield used to store the flags.
+};
 
 // https://html.spec.whatwg.org/multipage/dom.html#dom-document-nameditem-filter
 enum class NamedItemType {
@@ -69,19 +81,24 @@ public:
 
     // Exports for JS
     NamedNodeMap* attributes(void) const;
+    bool hasAttribute(const AtomicString &name) const;
     String innerHTML(void) const;
-    void setAttribute(const AtomicString &localName, const AtomicString &value, ExceptionState &exceptionState);
     void setInnerHTML(const String &html, ExceptionState &exceptionState);
+    void setAttribute(const AtomicString &localName, const AtomicString &value, ExceptionState &exceptionState);
+    String tagName(void) const { return nodeName(); }
 
     const QualifiedName& TagQName(void) const { return m_tagName; }
+    const AtomicString& prefix(void) const { return m_tagName.Prefix(); }
     const AtomicString& localName(void) const { return m_tagName.LocalName(); }
     const AtomicString& namespaceURI(void) const { return m_tagName.NamespaceURI(); }
     bool HasTagName(const QualifiedName &tagName) const { return m_tagName.Matches(tagName); }
+    bool ShouldSerializeEndTag(void) const;
 
     AttributeCollection Attributes(void) const;
     AttributeCollection AttributesWithoutUpdate(void) const;
     const AtomicString& getAttribute(const QualifiedName &name) const;
     const AtomicString& FastGetAttribute(const QualifiedName &name) const;
+    BlinKit::BkURL GetURLAttribute(const QualifiedName &name) const;
     bool FastHasAttribute(const QualifiedName &name) const;
     void setAttribute(const QualifiedName &name, const AtomicString &value);
     Attr* getAttributeNode(const AtomicString &name);
@@ -94,13 +111,23 @@ public:
     bool HasID(void) const;
     bool HasClass(void) const;
     const SpaceSplitString& ClassNames(void) const;
+    bool HasClassName(const AtomicString &className) const;
     const AtomicString& GetIdAttribute(void) const;
+    // Call this to get the value of the id attribute for style resolution
+    // purposes.  The value will already be lowercased if the document is in
+    // compatibility mode, so this function is not suitable for non-style uses.
+    const AtomicString& IdForStyleResolution(void) const;
 
     const AtomicString& GetNameAttribute(void) const;
 
     AtomicString LowercaseIfNecessary(const AtomicString &name) const;
 
+    const AtomicString& IsValue(void) const;
+    void SetIsValue(const AtomicString &isValue);
+
     String TextFromChildren(void) const;
+
+    void SetStyleAffectedByEmpty(void) { SetElementFlag(ElementFlags::kStyleAffectedByEmpty); }
 
     Element* CloneWithChildren(Document *nullableFactory = nullptr) const;
     Element* CloneWithoutChildren(Document *nullableFactory = nullptr) const;
@@ -108,11 +135,31 @@ public:
     // Step 5 of https://dom.spec.whatwg.org/#concept-node-clone
     virtual void CloneNonAttributePropertiesFrom(const Element &source, CloneChildrenFlag flag) {} // BKTODO: Check overrides for child classes
 
+    bool IsInDescendantTreeOf(const Element *shadowHost) const;
+
+    AtomicString ComputeInheritedLanguage(void) const;
+
+    // Used for disabled form elements; if true, prevents mouse events from being
+    // dispatched to event listeners, and prevents DOMActivate events from being
+    // sent at all.
+    virtual bool IsDisabledFormControl(void) const { return false; }
+    virtual bool IsOptionalFormControl(void) const { return false; }
+    virtual bool IsRequiredFormControl(void) const { return false; }
     virtual bool IsScriptElement(void) const { return false; }
+    virtual bool IsValidElement(void) { return false; }
     // Elements that may have an insertion mode other than "in body" should
     // override this and return true.
     // https://html.spec.whatwg.org/multipage/parsing.html#reset-the-insertion-mode-appropriately
     virtual bool HasNonInBodyInsertionMode(void) const { return false; } // BKTODO: Check overrides
+    virtual bool ShouldAppearIndeterminate(void) const { return false; }
+
+    virtual bool MatchesDefaultPseudoClass(void) const { return false; }
+    virtual bool MatchesEnabledPseudoClass(void) const { return false; }
+    virtual bool MatchesReadOnlyPseudoClass(void) const { return false; }
+    virtual bool MatchesReadWritePseudoClass(void) const { return false; }
+    virtual bool MatchesValidityPseudoClasses(void) const { return false; }
+
+    virtual bool IsURLAttribute(const Attribute &attribute) const { return false; }
 
     enum class AttributeModificationReason { kDirectly, kByParser, kByCloning };
     struct AttributeModificationParams {
@@ -165,6 +212,8 @@ private:
     ElementRareData* GetElementRareData(void) const;
     ElementRareData& EnsureElementRareData(void);
     UniqueElementData& EnsureUniqueElementData(void);
+
+    void SetElementFlag(ElementFlags mask, bool value = true);
 
     virtual Element* CloneWithoutAttributesAndChildren(Document &factory) const;
 
@@ -242,6 +291,15 @@ inline const T* ToElement(const Node *node)
 {
     ASSERT(!node || IsElementOfType<const T>(*node));
     return static_cast<const T *>(node);
+}
+
+inline bool IsShadowHost(const Node *node)
+{
+#ifdef BLINKIT_CRAWLER_ONLY
+    return false;
+#else
+    return nullptr != node && nullptr != node->GetShadowRoot();
+#endif
 }
 
 }  // namespace blink
