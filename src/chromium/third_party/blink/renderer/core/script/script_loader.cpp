@@ -40,6 +40,7 @@
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/core/script/classic_pending_script.h"
 #include "third_party/blink/renderer/core/script/script_element_base.h"
+#include "third_party/blink/renderer/core/script/script_runner.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_loader_options.h"
 #include "third_party/blink/renderer/platform/network/mime/mime_type_registry.h"
 
@@ -93,6 +94,11 @@ void ScriptLoader::ChildrenChanged(void)
 std::unique_ptr<ScriptLoader> ScriptLoader::Create(ScriptElementBase *element, bool createdByParser, bool isEvaluated)
 {
     return base::WrapUnique(new ScriptLoader(element, createdByParser, isEvaluated));
+}
+
+void ScriptLoader::DetachPendingScript(void)
+{
+    ASSERT(false); // BKTODO:
 }
 
 void ScriptLoader::DidNotifySubtreeInsertionsToDocument(void)
@@ -215,6 +221,25 @@ const char* ScriptLoader::NameInHeapSnapshot(void) const
 {
     ASSERT(false); // BKTODO:
     return nullptr;
+}
+
+void ScriptLoader::PendingScriptFinished(PendingScript *pendingScript)
+{
+    ASSERT(!m_willBeParserExecuted);
+    ASSERT(m_pendingScript.get() == pendingScript);
+    ASSERT(m_pendingScript->GetScriptType() == GetScriptType());
+    ASSERT(pendingScript->IsControlledByScriptRunner());
+
+    Document *contextDocument = m_element->GetDocument().ContextDocument();
+    if (nullptr == contextDocument)
+    {
+        DetachPendingScript();
+        return;
+    }
+
+    contextDocument->GetScriptRunner()->NotifyScriptReady(pendingScript);
+    pendingScript->StopWatchingForLoad();
+    m_pendingScript.reset();
 }
 
 bool ScriptLoader::PrepareScript(const TextPosition &scriptStartPosition, LegacyTypeSupport supportLegacyTypes)
@@ -617,24 +642,20 @@ bool ScriptLoader::PrepareScript(const TextPosition &scriptStartPosition, Legacy
     if ((GetScriptType() == ScriptType::kClassic && m_element->HasSourceAttribute())
         || GetScriptType() == ScriptType::kModule)
     {
-        ASSERT(false); // BKTODO:
-#if 0
         // <spec step="26.D">... The element must be added to the set of scripts
         // that will execute as soon as possible of the node document of the script
         // element at the time the prepare a script algorithm started. When the
         // script is ready, execute the script block and then remove the element
         // from the set of scripts that will execute as soon as possible.</spec>
-        pending_script_ = TakePendingScript(ScriptSchedulingType::kAsync);
+        m_pendingScript = TakePendingScript(ScriptSchedulingType::kAsync);
         // TODO(hiroshige): Here |contextDocument| is used as "node document"
         // while Step 14 uses |elementDocument| as "node document". Fix this.
-        context_document->GetScriptRunner()->QueueScriptForExecution(
-            pending_script_);
+        contextDocument->GetScriptRunner()->QueueScriptForExecution(m_pendingScript);
         // Note that watchForLoad can immediately call pendingScriptFinished.
-        pending_script_->WatchForLoad(this);
+        m_pendingScript->WatchForLoad(this);
         // The part "When the script is ready..." is implemented in
         // ScriptRunner::notifyScriptReady().
         // TODO(hiroshige): Annotate it.
-#endif
 
         return true;
     }
@@ -697,7 +718,7 @@ std::shared_ptr<PendingScript> ScriptLoader::TakePendingScript(ScriptSchedulingT
             // the ScriptResource is anyway kept alive until evaluation,
             // and can be garbage-collected after that (together with
             // ClassicPendingScript).
-            ASSERT(false); // BKTODO: m_resourceKeepAlive = nullptr;
+            m_resourceKeepAlive = nullptr;
             break;
         default:
             // ScriptResource is kept alive by resource_keep_alive_

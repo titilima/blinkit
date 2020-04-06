@@ -48,7 +48,7 @@ class Resource;
 class ScriptElementBase;
 
 class ScriptLoader final : public GarbageCollectedFinalized<ScriptLoader>
-                         // BKTODO:, public PendingScriptClient
+                         , public PendingScriptClient
                          , public NameClient
 {
 public:
@@ -91,7 +91,12 @@ private:
     bool IgnoresLoadRequest(void) const;
     bool IsScriptForEventSupported(void) const;
 
+    // Clears the connection to the PendingScript.
+    void DetachPendingScript(void);
+
     const char* NameInHeapSnapshot(void) const override;
+    // PendingScriptClient
+    void PendingScriptFinished(PendingScript *pendingScript) override;
 
     Member<ScriptElementBase> m_element;
 
@@ -130,7 +135,18 @@ private:
 
     bool m_willExecuteWhenDocumentFinishedParsing = false;
 
+    // A PendingScript is first created in PrepareScript() and stored in
+    // |prepared_pending_script_|.
+    // Later, TakePendingScript() is called, and its caller holds a reference
+    // to the PendingScript instead and |prepared_pending_script_| is cleared.
     std::shared_ptr<PendingScript> m_preparedPendingScript;
+
+    // If the script is controlled by ScriptRunner, then
+    // ScriptLoader::pending_script_ holds a reference to the PendingScript and
+    // ScriptLoader is its client.
+    // Otherwise, HTMLParserScriptRunner or XMLParserScriptRunner holds the
+    // reference and |pending_script_| here is null.
+    std::shared_ptr<PendingScript> m_pendingScript;
 
     // This is used only to keep the ScriptResource of a classic script alive
     // and thus to keep it on MemoryCache, even after script execution, as long
