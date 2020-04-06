@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: editing_utilities.cc
+// Description: Editing Utilities
+//      Author: Ziming Li
+//     Created: 2020-04-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007 Apple Inc. All rights reserved.
  *
@@ -25,60 +36,66 @@
 
 #include "third_party/blink/renderer/core/editing/editing_utilities.h"
 
-#include "third_party/blink/renderer/core/clipboard/clipboard_mime_types.h"
-#include "third_party/blink/renderer/core/clipboard/data_object.h"
-#include "third_party/blink/renderer/core/clipboard/system_clipboard.h"
-#include "third_party/blink/renderer/core/dom/document.h"
-#include "third_party/blink/renderer/core/dom/element_traversal.h"
-#include "third_party/blink/renderer/core/dom/node_computed_style.h"
-#include "third_party/blink/renderer/core/dom/range.h"
-#include "third_party/blink/renderer/core/dom/shadow_root.h"
-#include "third_party/blink/renderer/core/dom/text.h"
-#include "third_party/blink/renderer/core/editing/editing_strategy.h"
-#include "third_party/blink/renderer/core/editing/editor.h"
-#include "third_party/blink/renderer/core/editing/ephemeral_range.h"
-#include "third_party/blink/renderer/core/editing/frame_selection.h"
-#include "third_party/blink/renderer/core/editing/iterators/text_iterator.h"
-#include "third_party/blink/renderer/core/editing/local_caret_rect.h"
-#include "third_party/blink/renderer/core/editing/plain_text_range.h"
-#include "third_party/blink/renderer/core/editing/position_iterator.h"
-#include "third_party/blink/renderer/core/editing/position_with_affinity.h"
-#include "third_party/blink/renderer/core/editing/selection_template.h"
-#include "third_party/blink/renderer/core/editing/serializers/html_interchange.h"
-#include "third_party/blink/renderer/core/editing/state_machines/backspace_state_machine.h"
-#include "third_party/blink/renderer/core/editing/state_machines/backward_grapheme_boundary_state_machine.h"
-#include "third_party/blink/renderer/core/editing/state_machines/forward_grapheme_boundary_state_machine.h"
-#include "third_party/blink/renderer/core/editing/visible_position.h"
-#include "third_party/blink/renderer/core/editing/visible_selection.h"
-#include "third_party/blink/renderer/core/editing/visible_units.h"
-#include "third_party/blink/renderer/core/frame/local_frame.h"
-#include "third_party/blink/renderer/core/frame/local_frame_view.h"
-#include "third_party/blink/renderer/core/frame/use_counter.h"
-#include "third_party/blink/renderer/core/html/canvas/html_canvas_element.h"
-#include "third_party/blink/renderer/core/html/forms/html_input_element.h"
-#include "third_party/blink/renderer/core/html/html_br_element.h"
-#include "third_party/blink/renderer/core/html/html_div_element.h"
-#include "third_party/blink/renderer/core/html/html_image_element.h"
-#include "third_party/blink/renderer/core/html/html_li_element.h"
-#include "third_party/blink/renderer/core/html/html_paragraph_element.h"
-#include "third_party/blink/renderer/core/html/html_span_element.h"
-#include "third_party/blink/renderer/core/html/html_table_cell_element.h"
-#include "third_party/blink/renderer/core/html/html_ulist_element.h"
-#include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
-#include "third_party/blink/renderer/core/html_element_factory.h"
-#include "third_party/blink/renderer/core/html_names.h"
-#include "third_party/blink/renderer/core/input_type_names.h"
-#include "third_party/blink/renderer/core/layout/layout_image.h"
-#include "third_party/blink/renderer/core/layout/layout_object.h"
-#include "third_party/blink/renderer/core/layout/layout_table_cell.h"
-#include "third_party/blink/renderer/core/svg/svg_image_element.h"
-#include "third_party/blink/renderer/platform/graphics/static_bitmap_image.h"
-#include "third_party/blink/renderer/platform/wtf/assertions.h"
-#include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
-#include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
-#include "third_party/blink/renderer/platform/wtf/text/unicode.h"
+#ifdef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/dom/element.h"
+#else
+#   include "third_party/blink/renderer/core/clipboard/clipboard_mime_types.h"
+#   include "third_party/blink/renderer/core/clipboard/data_object.h"
+#   include "third_party/blink/renderer/core/clipboard/system_clipboard.h"
+#   include "third_party/blink/renderer/core/dom/document.h"
+#   include "third_party/blink/renderer/core/dom/element_traversal.h"
+#   include "third_party/blink/renderer/core/dom/node_computed_style.h"
+#   include "third_party/blink/renderer/core/dom/range.h"
+#   include "third_party/blink/renderer/core/dom/shadow_root.h"
+#   include "third_party/blink/renderer/core/dom/text.h"
+#   include "third_party/blink/renderer/core/editing/editing_strategy.h"
+#   include "third_party/blink/renderer/core/editing/editor.h"
+#   include "third_party/blink/renderer/core/editing/ephemeral_range.h"
+#   include "third_party/blink/renderer/core/editing/frame_selection.h"
+#   include "third_party/blink/renderer/core/editing/iterators/text_iterator.h"
+#   include "third_party/blink/renderer/core/editing/local_caret_rect.h"
+#   include "third_party/blink/renderer/core/editing/plain_text_range.h"
+#   include "third_party/blink/renderer/core/editing/position_iterator.h"
+#   include "third_party/blink/renderer/core/editing/position_with_affinity.h"
+#   include "third_party/blink/renderer/core/editing/selection_template.h"
+#   include "third_party/blink/renderer/core/editing/serializers/html_interchange.h"
+#   include "third_party/blink/renderer/core/editing/state_machines/backspace_state_machine.h"
+#   include "third_party/blink/renderer/core/editing/state_machines/backward_grapheme_boundary_state_machine.h"
+#   include "third_party/blink/renderer/core/editing/state_machines/forward_grapheme_boundary_state_machine.h"
+#   include "third_party/blink/renderer/core/editing/visible_position.h"
+#   include "third_party/blink/renderer/core/editing/visible_selection.h"
+#   include "third_party/blink/renderer/core/editing/visible_units.h"
+#   include "third_party/blink/renderer/core/frame/local_frame.h"
+#   include "third_party/blink/renderer/core/frame/local_frame_view.h"
+#   include "third_party/blink/renderer/core/frame/use_counter.h"
+#   include "third_party/blink/renderer/core/html/canvas/html_canvas_element.h"
+#   include "third_party/blink/renderer/core/html/forms/html_input_element.h"
+#   include "third_party/blink/renderer/core/html/html_br_element.h"
+#   include "third_party/blink/renderer/core/html/html_div_element.h"
+#   include "third_party/blink/renderer/core/html/html_image_element.h"
+#   include "third_party/blink/renderer/core/html/html_li_element.h"
+#   include "third_party/blink/renderer/core/html/html_paragraph_element.h"
+#   include "third_party/blink/renderer/core/html/html_span_element.h"
+#   include "third_party/blink/renderer/core/html/html_table_cell_element.h"
+#   include "third_party/blink/renderer/core/html/html_ulist_element.h"
+#   include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
+#   include "third_party/blink/renderer/core/html_element_factory.h"
+#   include "third_party/blink/renderer/core/html_names.h"
+#   include "third_party/blink/renderer/core/input_type_names.h"
+#   include "third_party/blink/renderer/core/layout/layout_image.h"
+#   include "third_party/blink/renderer/core/layout/layout_object.h"
+#   include "third_party/blink/renderer/core/layout/layout_table_cell.h"
+#   include "third_party/blink/renderer/core/svg/svg_image_element.h"
+#   include "third_party/blink/renderer/platform/graphics/static_bitmap_image.h"
+#   include "third_party/blink/renderer/platform/wtf/assertions.h"
+#   include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
+#   include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+#   include "third_party/blink/renderer/platform/wtf/text/unicode.h"
+#endif
 
 namespace blink {
+
+#ifndef BLINKIT_CRAWLER_ONLY
 
 using namespace HTMLNames;
 
@@ -1409,12 +1426,16 @@ bool IsMailHTMLBlockquoteElement(const Node* node) {
          element.getAttribute("type") == "cite";
 }
 
+#endif // BLINKIT_CRAWLER_ONLY
+
 bool ElementCannotHaveEndTag(const Node& node) {
   if (!node.IsHTMLElement())
     return false;
 
-  return !ToHTMLElement(node).ShouldSerializeEndTag();
+  return !ToElement(node).ShouldSerializeEndTag();
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
 
 // FIXME: indexForVisiblePosition and visiblePositionForIndex use TextIterators
 // to convert between VisiblePositions and indices. But TextIterator iteration
@@ -1761,5 +1782,7 @@ HTMLImageElement* ImageElementFromImageDocument(const Document* document) {
 
   return ToHTMLImageElementOrNull(body->firstChild());
 }
+
+#endif // BLINKIT_CRAWLER_ONLY
 
 }  // namespace blink

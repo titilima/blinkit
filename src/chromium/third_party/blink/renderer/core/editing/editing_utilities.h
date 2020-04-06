@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: editing_utilities.h
+// Description: Editing Utilities
+//      Author: Ziming Li
+//     Created: 2020-04-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -27,13 +38,15 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_EDITING_EDITING_UTILITIES_H_
 
 #include "third_party/blink/renderer/core/core_export.h"
-#include "third_party/blink/renderer/core/editing/editing_boundary.h"
-#include "third_party/blink/renderer/core/editing/forward.h"
-#include "third_party/blink/renderer/core/events/input_event.h"
-#include "third_party/blink/renderer/platform/geometry/float_quad.h"
-#include "third_party/blink/renderer/platform/text/text_direction.h"
-#include "third_party/blink/renderer/platform/wtf/forward.h"
-#include "third_party/blink/renderer/platform/wtf/text/character_names.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/editing/editing_boundary.h"
+#   include "third_party/blink/renderer/core/editing/forward.h"
+#   include "third_party/blink/renderer/core/events/input_event.h"
+#   include "third_party/blink/renderer/platform/geometry/float_quad.h"
+#   include "third_party/blink/renderer/platform/text/text_direction.h"
+#   include "third_party/blink/renderer/platform/wtf/forward.h"
+#   include "third_party/blink/renderer/platform/wtf/text/character_names.h"
+#endif
 
 namespace blink {
 
@@ -56,6 +69,8 @@ class HTMLElement;
 class HTMLSpanElement;
 struct LocalCaretRect;
 class Node;
+
+#ifndef BLINKIT_CRAWLER_ONLY
 
 // This file contains a set of helper functions used by the editing commands
 
@@ -322,9 +337,13 @@ Element* FindEventTargetFrom(LocalFrame&, const VisibleSelection&);
 // Editor::CanCopy()
 HTMLImageElement* ImageElementFromImageDocument(const Document*);
 
+#endif // BLINKIT_CRAWLER_ONLY
+
 // Boolean functions on Element
 
 CORE_EXPORT bool ElementCannotHaveEndTag(const Node&);
+
+#ifndef BLINKIT_CRAWLER_ONLY
 
 // -------------------------------------------------------------------------
 // VisibleSelection
@@ -382,6 +401,9 @@ DispatchEventResult DispatchBeforeInputEditorCommand(Node*,
 DispatchEventResult DispatchBeforeInputDataTransfer(Node*,
                                                     InputEvent::InputType,
                                                     DataTransfer*);
+
+#endif // BLINKIT_CRAWLER_ONLY
+
 }  // namespace blink
 
 #endif
