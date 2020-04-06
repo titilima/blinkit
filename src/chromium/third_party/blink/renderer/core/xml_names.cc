@@ -10,9 +10,8 @@
 
 #include "third_party/blink/renderer/core/xml_names.h"
 
+#include <iterator>
 #include <memory>
-
-#include "base/stl_util.h"  // for base::size()
 #include "third_party/blink/renderer/platform/wtf/static_constructors.h"
 #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
 
@@ -56,7 +55,7 @@ void Init() {
   };
 
   size_t attr_i = 0;
-  for (size_t i = 0; i < base::size(kNames); ++i) {
+  for (size_t i = 0; i < std::size(kNames); ++i) {
     StringImpl* impl = StringImpl::CreateStatic(kNames[i].name, kNames[i].length, kNames[i].hash);
     void* address = reinterpret_cast<QualifiedName*>(&attr_storage) + attr_i;
     QualifiedName::CreateStatic(address, impl, ns_uri);
