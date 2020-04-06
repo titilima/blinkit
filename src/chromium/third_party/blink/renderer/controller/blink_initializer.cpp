@@ -14,6 +14,9 @@
 #include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/html_tokenizer_names.h"
+#include "third_party/blink/renderer/core/xlink_names.h"
+#include "third_party/blink/renderer/core/xml_names.h"
+#include "third_party/blink/renderer/core/xmlns_names.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string_table.h"
 #include "third_party/blink/renderer/platform/network/http_names.h"
 
@@ -21,7 +24,8 @@ namespace blink {
 
 static void InitializeCommon(Platform *platform)
 {
-    const unsigned kQualifiedNamesCount = html_names::kTagsCount + html_names::kAttrsCount;
+    const unsigned kQualifiedNamesCount = html_names::kTagsCount + html_names::kAttrsCount
+        + xlink_names::kAttrsCount + xml_names::kAttrsCount + xmlns_names::kAttrsCount;
 
     const unsigned kCoreStaticStringsCount = event_type_names::kNamesCount + html_tokenizer_names::kNamesCount + http_names::kNamesCount;
 
@@ -31,6 +35,9 @@ static void InitializeCommon(Platform *platform)
 
     // BKTODO:
     html_names::Init();
+    xlink_names::Init();
+    xml_names::Init();
+    xmlns_names::Init();
 
     event_type_names::Init();
     html_tokenizer_names::Init();
