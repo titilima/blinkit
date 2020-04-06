@@ -82,6 +82,11 @@ bool BkURL::SchemeIsData(void) const
     return SchemeIs(kDataScheme);
 }
 
+bool BkURL::SchemeIsFile(void) const
+{
+    return SchemeIs(kFileScheme);
+}
+
 bool BkURL::SchemeIsHTTPOrHTTPS(void) const
 {
     return SchemeIs(kHttpScheme) || SchemeIs(kHttpsScheme);

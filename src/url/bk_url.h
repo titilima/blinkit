@@ -35,6 +35,7 @@ public:
     bool SchemeIs(std::string_view scheme) const;
     bool SchemeIsHTTPOrHTTPS(void) const;
     bool SchemeIsData(void) const;
+    bool SchemeIsFile(void) const;
 
     std::string Host(void) const { return ComponentString(m_parsed.host); }
     std::string Username(void) const { return ComponentString(m_parsed.username); }
