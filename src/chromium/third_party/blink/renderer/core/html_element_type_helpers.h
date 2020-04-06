@@ -24,6 +24,16 @@ inline bool IsHTMLBodyElement(const Element &element)
     return element.HasTagName(html_names::kBodyTag);
 }
 
+inline bool IsHTMLBRElement(const Element &element)
+{
+    return element.HasTagName(html_names::kBrTag);
+}
+
+inline bool IsHTMLBRElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLBRElement(ToElement(node));
+}
+
 inline bool IsHTMLFormElement(const Element &element)
 {
     return element.HasTagName(html_names::kFormTag);

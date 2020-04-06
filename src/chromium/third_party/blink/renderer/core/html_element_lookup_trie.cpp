@@ -273,7 +273,7 @@ const AtomicString& lookupHTMLTag(const UChar *data, unsigned length)
 
     if (nullptr != tag)
         return tag->LocalName();
-    ASSERT(false); // BKTODO:
+    ASSERT(nullptr == tag); // BKTODO:
     return g_null_atom;
 }
 
