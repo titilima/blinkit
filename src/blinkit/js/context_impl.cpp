@@ -243,8 +243,16 @@ void ContextImpl::Reset(void)
 {
     const duk_idx_t idx = DukScriptObject::Create<DukWindow>(m_ctx, *(m_frame.DomWindow()));
     ExposeGlobals(m_ctx, idx);
-
     duk_set_global_object(m_ctx);
+
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(m_frame.Client()->IsCrawler());
+#else
+    if (!m_frame.Client()->IsCrawler())
+        return;
+#endif
+
+    ToCrawlerImpl(m_frame.Client())->ProcessDocumentReset();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

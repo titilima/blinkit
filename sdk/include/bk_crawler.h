@@ -33,6 +33,7 @@ struct BkCrawlerClient {
     bool_t (BKAPI * HijackRequest)(const char *, struct BkBuffer *, void *);
     void (BKAPI * HijackResponse)(BkResponse, void *);
     void (BKAPI * RequestComplete)(BkResponse, BkWorkController, void *);
+    void (BKAPI * DocumentReset)(void *);
     void (BKAPI * DocumentReady)(void *);
     void (BKAPI * Error)(int, const char *, void *);
     void (BKAPI * ConsoleMessage)(int type, const char *, void *);

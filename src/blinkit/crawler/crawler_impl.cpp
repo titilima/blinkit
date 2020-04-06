@@ -84,6 +84,12 @@ void CrawlerImpl::HijackResponse(BkResponse response)
         m_client.HijackResponse(response, m_client.UserData);
 }
 
+void CrawlerImpl::ProcessDocumentReset(void)
+{
+    if (nullptr != m_client.DocumentReset)
+        m_client.DocumentReset(m_client.UserData);
+}
+
 void CrawlerImpl::ProcessRequestComplete(BkResponse response, BkWorkController controller)
 {
     if (nullptr != m_client.RequestComplete)

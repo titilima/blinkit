@@ -30,6 +30,7 @@ public:
     bool HijackRequest(const char *URL, std::string &dst) const;
     void HijackResponse(BkResponse response);
     bool ApplyConsoleMessager(std::function<void(int, const char *)> &dst) const;
+    void ProcessDocumentReset(void);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
