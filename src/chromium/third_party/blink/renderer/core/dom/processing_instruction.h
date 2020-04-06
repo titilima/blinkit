@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: processing_instruction.h
+// Description: ProcessingInstruction Class
+//      Author: Ziming Li
+//     Created: 2020-04-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Peter Kelly (pmk@post.com)
  * Copyright (C) 2006 Apple Inc. All rights reserved.
@@ -22,10 +33,12 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_DOM_PROCESSING_INSTRUCTION_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_DOM_PROCESSING_INSTRUCTION_H_
 
-#include "third_party/blink/renderer/core/css/style_engine_context.h"
 #include "third_party/blink/renderer/core/dom/character_data.h"
 #include "third_party/blink/renderer/core/loader/resource/text_resource.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_client.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/style_engine_context.h"
+#endif
 
 namespace blink {
 
@@ -42,11 +55,12 @@ class CORE_EXPORT ProcessingInstruction final : public CharacterData,
                                        const String& target,
                                        const String& data);
   ~ProcessingInstruction() override;
-  void Trace(blink::Visitor*) override;
 
   const String& target() const { return target_; }
   const String& LocalHref() const { return local_href_; }
+#ifndef BLINKIT_CRAWLER_ONLY
   StyleSheet* sheet() const { return sheet_.Get(); }
+#endif
 
   bool IsCSS() const { return is_css_; }
   bool IsXSL() const { return is_xsl_; }
@@ -61,8 +75,6 @@ class CORE_EXPORT ProcessingInstruction final : public CharacterData,
     virtual EventListener* ToEventListener() = 0;
     // Detach event listener from its processing instruction.
     virtual void Detach() = 0;
-
-    void Trace(blink::Visitor* visitor) override {}
   };
 
   void SetEventListenerForXSLT(DetachableEventListener* listener) {
@@ -80,26 +92,34 @@ class CORE_EXPORT ProcessingInstruction final : public CharacterData,
 
   InsertionNotificationRequest InsertedInto(ContainerNode&) override;
   void RemovedFrom(ContainerNode&) override;
+#ifndef BLINKIT_CRAWLER_ONLY
   void DetachLayoutTree(const AttachContext&) final {}
+#endif
 
   bool CheckStyleSheet(String& href, String& charset);
   void Process(const String& href, const String& charset);
 
   void NotifyFinished(Resource*) override;
 
+#ifndef BLINKIT_CRAWLER_ONLY
   bool SheetLoaded() override;
+#endif
 
   void ParseStyleSheet(const String& sheet);
   void ClearSheet();
 
+#if 0 // BKTODO:
   String DebugName() const override { return "ProcessingInstruction"; }
+#endif
 
   String target_;
   String local_href_;
   String title_;
   String media_;
+#ifndef BLINKIT_CRAWLER_ONLY
   Member<StyleSheet> sheet_;
   StyleEngineContext style_engine_context_;
+#endif
   bool loading_;
   bool alternate_;
   bool is_css_;
