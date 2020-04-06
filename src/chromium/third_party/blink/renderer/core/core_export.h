@@ -15,5 +15,7 @@
 #pragma once
 
 #define CORE_EXPORT
+#define CORE_EXTERN_TEMPLATE_EXPORT
+#define CORE_TEMPLATE_EXPORT
 
 #endif  // BLINKIT_BLINK_CORE_EXPORT_H
