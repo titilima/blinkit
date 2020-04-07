@@ -56,7 +56,7 @@ public:
 
     void NotifyObservers(const AtomicString &id);
 private:
-    IdTargetObserverRegistry(void);
+    IdTargetObserverRegistry(void) = default;
 
     void NotifyObserversInternal(const AtomicString &id);
 
