@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - base Library
+// -------------------------------------------------
+//   File Name: safe_math_shared_impl.h
+// Description: Math Implementations
+//      Author: Ziming Li
+//     Created: 2020-04-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -17,17 +28,7 @@
 
 #include "base/numerics/safe_conversions.h"
 
-// Where available use builtin math overflow support on Clang and GCC.
-#if !defined(__native_client__) &&                         \
-    ((defined(__clang__) &&                                \
-      ((__clang_major__ > 3) ||                            \
-       (__clang_major__ == 3 && __clang_minor__ >= 4))) || \
-     (defined(__GNUC__) && __GNUC__ >= 5))
-#include "base/numerics/safe_math_clang_gcc_impl.h"
-#define BASE_HAS_OPTIMIZED_SAFE_MATH (1)
-#else
 #define BASE_HAS_OPTIMIZED_SAFE_MATH (0)
-#endif
 
 namespace base {
 namespace internal {

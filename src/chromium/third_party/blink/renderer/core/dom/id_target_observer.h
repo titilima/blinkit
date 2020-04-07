@@ -1,10 +1,10 @@
 // -------------------------------------------------
 // BlinKit - blink Library
 // -------------------------------------------------
-//   File Name: id_target_observer_registry.h
-// Description: IdTargetObserverRegistry Class
+//   File Name: id_target_observer.h
+// Description: IdTargetObserver Class
 //      Author: Ziming Li
-//     Created: 2020-01-12
+//     Created: 2020-04-07
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
@@ -34,39 +34,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef BLINKIT_BLINK_ID_TARGET_OBSERVER_REGISTRY_H
-#define BLINKIT_BLINK_ID_TARGET_OBSERVER_REGISTRY_H
+#ifndef BLINKIT_BLINK_ID_TARGET_OBSERVER_H
+#define BLINKIT_BLINK_ID_TARGET_OBSERVER_H
 
 #pragma once
 
-#include <unordered_set>
-#include <unordered_map>
-#include "base/macros.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
-#include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
 namespace blink {
 
-class IdTargetObserver;
-
-class IdTargetObserverRegistry final : public GarbageCollected<IdTargetObserverRegistry>
+class IdTargetObserver : public GarbageCollectedFinalized<IdTargetObserver>
 {
-public:
-    static std::unique_ptr<IdTargetObserverRegistry> Create(void);
-
-    void NotifyObservers(const AtomicString &id);
-private:
-    IdTargetObserverRegistry(void);
-
-    void NotifyObserversInternal(const AtomicString &id);
-
-    typedef std::unordered_set<IdTargetObserver *> ObserverSet;
-    typedef std::unordered_map<StringImpl *, Member<ObserverSet>> IdToObserverSetMap;
-    IdToObserverSetMap m_registry;
-    Member<ObserverSet> m_notifyingObserversInSet;
-    DISALLOW_COPY_AND_ASSIGN(IdTargetObserverRegistry);
 };
 
 } // namespace blink
 
-#endif // BLINKIT_BLINK_ID_TARGET_OBSERVER_REGISTRY_H
+#endif // BLINKIT_BLINK_ID_TARGET_OBSERVER_H

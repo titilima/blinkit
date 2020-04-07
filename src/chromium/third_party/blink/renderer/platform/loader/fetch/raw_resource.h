@@ -82,8 +82,9 @@ inline bool IsRawResource(ResourceType type)
         case ResourceType::kAudio:          case ResourceType::kVideo: case ResourceType::kManifest:
         case ResourceType::kImportResource:
             return true;
+        default:
+            return false;
     }
-    return false;
 }
 
 inline bool IsRawResource(const Resource &resource)

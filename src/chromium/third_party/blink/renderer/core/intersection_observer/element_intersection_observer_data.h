@@ -27,8 +27,7 @@ class IntersectionObservation;
 class IntersectionObserver;
 
 class ElementIntersectionObserverData
-    : public GarbageCollected<ElementIntersectionObserverData>,
-      public NameClient {
+    : public GarbageCollected<ElementIntersectionObserverData> {
  public:
   bool HasObservations(void) const
   {

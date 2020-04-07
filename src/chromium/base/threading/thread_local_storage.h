@@ -21,10 +21,12 @@
 #include "build/build_config.h"
 
 #include <cstdint>
-#ifdef OS_WIN
-#   include <Windows.h>
-#endif
 #include "base/macros.h"
+#if defined(OS_WIN)
+#   include <Windows.h>
+#elif defined(OS_POSIX)
+#   include <pthread.h>
+#endif
 
 namespace base {
 
@@ -36,6 +38,13 @@ public:
 #if defined(OS_WIN)
     typedef DWORD   TLSKey;
     enum : unsigned { TLS_KEY_OUT_OF_INDEXES = TLS_OUT_OF_INDEXES };
+#elif defined(OS_POSIX)
+    typedef pthread_key_t TLSKey;
+    // The following is a "reserved key" which is used in our generic Chromium
+    // ThreadLocalStorage implementation.  We expect that an OS will not return
+    // such a key, but if it is returned (i.e., the OS tries to allocate it) we
+    // will just request another key.
+    enum { TLS_KEY_OUT_OF_INDEXES = 0x7FFFFFFF };
 #endif
     static bool AllocTLS(TLSKey *key);
     static void* GetTLSValue(TLSKey key);

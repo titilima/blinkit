@@ -76,7 +76,7 @@ public:
     const AtomicString& IsValue(void) const { return m_isValue; }
 private:
 #ifdef BLINKIT_CRAWLER_ONLY
-    ElementRareData(void) = default;
+    ElementRareData(void);
 #else
     explicit ElementRareData(NodeRenderingData*);
 #endif

@@ -323,6 +323,8 @@ String TextResourceDecoder::Flush(void)
             case TextResourceDecoderOptions::kCSSContent:
                 if (!m_checkedForCssCharset)
                     tryAutoDetectEncoding = true;
+                [[fallthrough]];
+            default:
                 break;
         }
 

@@ -259,8 +259,9 @@ bool DocumentLifecycle::StateAllowsTreeMutations(void) const
         case kInPrePaint:
         case kInPaint:
             return false;
+        default:
+            return true;
     }
-    return true;
 }
 
 }  // namespace blink

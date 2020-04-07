@@ -346,6 +346,8 @@ Element* HTMLCollection::TraverseToFirst(void) const
             return ElementTraversal::FirstWithin(RootNode(), MakeIsMatch(ToHTMLTagCollection(*this)));
         case kClassCollectionType:
             return ElementTraversal::FirstWithin(RootNode(), MakeIsMatch(ToClassCollection(*this)));
+        default:
+            break;
     }
     if (OverridesItemAfter())
         return VirtualItemAfter(nullptr);

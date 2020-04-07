@@ -37,6 +37,7 @@
 #include "id_target_observer_registry.h"
 
 #include "base/memory/ptr_util.h"
+#include "third_party/blink/renderer/core/dom/id_target_observer.h"
 
 namespace blink {
 

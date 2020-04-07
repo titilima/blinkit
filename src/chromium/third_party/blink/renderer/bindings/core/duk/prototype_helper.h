@@ -14,8 +14,9 @@
 
 #pragma once
 
-#include <unordered_map>
 #include <iterator> // for std::size
+#include <string>
+#include <unordered_map>
 #include "duktape/duktape.h"
 
 namespace blink {

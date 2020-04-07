@@ -78,7 +78,6 @@ void TreeScope::AdoptIfNeeded(Node &node)
     // of rescoping in |didMoveToNewDocument| callbacks. See
     // https://crbug.com/605766 and https://crbug.com/606651.
     ScriptForbiddenScope forbidScript;
-    ASSERT(nullptr != this);
     ASSERT(!node.IsDocumentNode());
     TreeScopeAdopter adopter(node, *this);
     if (adopter.NeedsScopeChange())

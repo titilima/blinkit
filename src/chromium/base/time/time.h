@@ -21,6 +21,7 @@
 #include "build/build_config.h"
 
 #include <cstdint>
+#include <ctime>
 #include <limits>
 
 namespace base {

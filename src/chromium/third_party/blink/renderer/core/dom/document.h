@@ -305,7 +305,7 @@ public:
     void PopCurrentScript(ScriptElementBase *script);
 
     // ExecutionContext overrides
-    const BlinKit::BkURL& BaseURL(void) const;
+    const BlinKit::BkURL& BaseURL(void) const override;
     // Creates URL based on passed relative url and this documents base URL.
     // Depending on base URL value it is possible that parent document
     // base URL will be used instead. Uses CompleteURLWithOverride internally.

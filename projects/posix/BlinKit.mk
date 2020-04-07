@@ -1,5 +1,5 @@
 CrawlerSrc = $(BkRoot)src/blinkit
-CrawlerFlags = -I$(CrawlerSrc) -DBLINKIT_EXPORTS $(CrFlags)
+CrawlerFlags = -I$(CrawlerSrc) -DBLINKIT_EXPORTS -DBLINKIT_CRAWLER_ONLY $(CrFlags)
 CrawlerObjects = app_constants.o \
 	curl_request.o request_impl.o response_impl.o	\
 	buffer.o controller.o

@@ -53,6 +53,10 @@ struct SameSizeAsElementRareData : NodeRareData
 #endif
 };
 
+#ifdef BLINKIT_CRAWLER_ONLY
+ElementRareData::ElementRareData(void) = default;
+#endif
+
 ElementRareData::~ElementRareData(void)
 {
     if (m_attrNodeList)

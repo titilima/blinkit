@@ -29,10 +29,12 @@ typedef int8_t UBool;
 #   define FALSE 0
 #endif
 
-#if OS_WIN
+#if defined(OS_WIN)
 typedef wchar_t UChar;
-#elif (OS_MACOSX || OS_IOS)
+#elif defined(OS_MACOSX) || defined(OS_IOS)
 typedef UniChar UChar;
+#elif defined(OS_POSIX)
+typedef uint16_t UChar;
 #endif
 
 typedef int32_t UChar32;

@@ -47,6 +47,8 @@
 #endif
 
 #include "base/logging.h"
-#include "skia/_skia.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "skia/_skia.h"
+#endif
 
 #endif // BLINKIT_BLINK__PC_H

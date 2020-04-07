@@ -122,6 +122,8 @@ static ResourceLoadPriority TypeToPriority(ResourceType type)
             return ResourceLoadPriority::kLow;
         case ResourceType::kLinkPrefetch:
             return ResourceLoadPriority::kVeryLow;
+        default:
+            break;
     }
 
     NOTREACHED();

@@ -85,6 +85,7 @@ public:
     }
 
     static inline bool ExpandVectorBacking(void *, size_t) { return false; }
+    static inline bool ExpandInlineVectorBacking(void *, size_t) { return false; }
     static inline bool ExpandHashTableBacking(void *, size_t) { return false; }
     static bool IsAllocationAllowed(void) { return true; }
     static bool IsObjectResurrectionForbidden(void) { return false; }

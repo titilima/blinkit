@@ -103,7 +103,7 @@ Element* TreeOrderedMap::Get(const AtomicString &key, const TreeScope &scope, co
 
 Element* TreeOrderedMap::GetElementById(const AtomicString &key, const TreeScope &scope) const
 {
-    const auto matcher = [&key](const AtomicString &key, const Element &element)
+    const auto matcher = [](const AtomicString &key, const Element &element)
     {
         return element.GetIdAttribute() == key;
     };
