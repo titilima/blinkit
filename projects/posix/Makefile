@@ -9,7 +9,7 @@ CXXFLAGS += -g
 endif
 
 BkRoot = ../../
-CrFlags = -I$(BkRoot)src/chromium -I$(BkRoot)sdk/include
+CrFlags = -I$(BkRoot)sdk/include -I$(BkRoot)src -I$(BkRoot)src/chromium
 
 .PHONY: clean help
 
@@ -19,9 +19,9 @@ help:
 	@echo '    make all config=release # Build BlinKit for release'
 	@echo '    make clean              # Cleanup all object files'
 
-include base.mk url.mk BlinKit.mk
+include base.mk blink.mk url.mk BlinKit.mk
 
-AllObjects = $(BaseObjects) $(URLObjects) $(CrawlerObjects)
+AllObjects = $(BaseObjects) $(BlinkObjects) $(URLObjects) $(CrawlerObjects)
 
 all: $(AllObjects)
 	$(CXX) -fPIC -shared $(AllObjects) -lcurl -o libBlinKit.so
