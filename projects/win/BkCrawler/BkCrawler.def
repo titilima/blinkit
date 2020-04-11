@@ -4,6 +4,7 @@ EXPORTS
 
 BkInitialize
 BkFinalize
+BkAppExecute
 
 BkSetBufferData
 BkInitializeSimpleBuffer

@@ -25,19 +25,27 @@ class WinThemeEngine;
 class WinApp final : public AppImpl
 {
 public:
-    WinApp(void);
+    WinApp(HANDLE hBackgroundThread = nullptr);
     ~WinApp(void) override;
 
     static WinApp& Get(void);
 private:
+    friend class AppImpl;
+
     static LRESULT CALLBACK HookProc(int code, WPARAM w, LPARAM l);
+    static DWORD WINAPI BackgroundThread(PVOID param);
 
     // blink::Platform
     WTF::String DefaultLocale(void) override;
     // blink::Thread
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(void) const override;
+    // AppImpl
+    bool IsBackgroundMode(void) const override { return nullptr != m_backgroundThread; }
+    void FinalizeInBackground(void) override;
 
-    HHOOK m_msgHook;
+    const DWORD m_appThreadId;
+    HHOOK m_msgHook = nullptr;
+    HANDLE m_backgroundThread;
     std::shared_ptr<WinSingleThreadTaskRunner> m_taskRunner;
 
 #if 0 // BKTODO:

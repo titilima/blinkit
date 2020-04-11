@@ -24,14 +24,24 @@ class BkAppClient;
 class CookieJarImpl;
 class MimeRegistryImpl;
 
+struct BkInitDataV1 {
+    size_t size;
+    int mode;
+    void *reserved;
+};
+
 class AppImpl : public blink::Platform, public ThreadImpl
 {
 public:
     static AppImpl* CreateInstance(void);
     virtual ~AppImpl(void);
 
-    void Initialize(BkAppClient *client);
+    static void InitializeBackgroundInstance(void);
+    virtual bool IsBackgroundMode(void) const = 0;
+    virtual void FinalizeInBackground(void) = 0;
+
     static AppImpl& Get(void);
+    void Initialize(BkAppClient *client);
 
 #if 0 // BKTODO:
     ThreadImpl* CurrentThreadImpl(void);

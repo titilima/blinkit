@@ -19,8 +19,23 @@
 extern "C" {
 #endif
 
-BKEXPORT bool_t BKAPI BkInitialize(void *reserved);
+enum BkAppMode {
+    BK_APP_DEFAULT_MODE = 0,
+    BK_APP_BACKGROUND_MODE
+};
+
+struct BkInitData {
+    size_t size; // sizeof(BkInitData)
+    int mode;
+    void *reserved;
+};
+
+BKEXPORT bool_t BKAPI BkInitialize(struct BkInitData *initData);
+
 BKEXPORT void BKAPI BkFinalize(void);
+
+typedef void (BKAPI * BkBackgroundWorker)(void *);
+BKEXPORT bool_t BKAPI BkAppExecute(BkBackgroundWorker worker, void *userData);
 
 #ifdef __cplusplus
 } // extern "C"

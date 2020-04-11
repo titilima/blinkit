@@ -27,15 +27,61 @@
 
 namespace BlinKit {
 
-WinApp::WinApp(void)
-    : m_msgHook(SetWindowsHookEx(WH_GETMESSAGE, HookProc, nullptr, GetCurrentThreadId()))
-    , m_taskRunner(std::make_shared<WinSingleThreadTaskRunner>())
+struct BackgoundThreadData
 {
+    BackgoundThreadData(void) : hEvent(CreateEvent(nullptr, FALSE, FALSE, nullptr))
+    {
+    }
+    ~BackgoundThreadData(void)
+    {
+        CloseHandle(hEvent);
+    }
+
+    HANDLE hEvent;
+    HANDLE hThread = nullptr;
+};
+
+WinApp::WinApp(HANDLE hBackgroundThread)
+    : m_appThreadId(GetCurrentThreadId())
+    , m_taskRunner(std::make_shared<WinSingleThreadTaskRunner>())
+    , m_backgroundThread(hBackgroundThread)
+{
+    m_msgHook = SetWindowsHookEx(WH_GETMESSAGE, HookProc, nullptr, m_appThreadId);
 }
 
 WinApp::~WinApp(void)
 {
     UnhookWindowsHookEx(m_msgHook);
+    if (nullptr != m_backgroundThread)
+        CloseHandle(m_backgroundThread);
+}
+
+DWORD WINAPI WinApp::BackgroundThread(PVOID param)
+{
+    BackgoundThreadData *data = reinterpret_cast<BackgoundThreadData *>(param);
+
+    WinApp *app = new WinApp(data->hThread);
+    if (nullptr == app)
+    {
+        ASSERT(nullptr != app);
+        CloseHandle(data->hThread);
+        SetEvent(data->hEvent);
+        return EXIT_FAILURE;
+    }
+
+    app->Initialize(nullptr);
+    IsGUIThread(TRUE);
+    SetEvent(data->hEvent);
+
+    MSG msg;
+    while (GetMessage(&msg, nullptr, 0, 0))
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+
+    delete app;
+    return msg.wParam;
 }
 
 WTF::String WinApp::DefaultLocale(void)
@@ -50,6 +96,15 @@ WTF::String WinApp::DefaultLocale(void)
     }
 
     return WTF::String::FromStdUTF8(localName);
+}
+
+void WinApp::FinalizeInBackground(void)
+{
+    ASSERT(nullptr != m_backgroundThread);
+    ASSERT(GetCurrentThreadId() != m_appThreadId);
+
+    PostThreadMessage(m_appThreadId, WM_QUIT, 0, 0);
+    WaitForSingleObject(m_backgroundThread, INFINITE);
 }
 
 WinApp& WinApp::Get(void)
@@ -124,6 +179,13 @@ blink::WebThemeEngine* WinApp::themeEngine(void)
 AppImpl* AppImpl::CreateInstance(void)
 {
     return new WinApp;
+}
+
+void AppImpl::InitializeBackgroundInstance(void)
+{
+    BackgoundThreadData data;
+    data.hThread = CreateThread(nullptr, 0, WinApp::BackgroundThread, &data, 0, nullptr);
+    WaitForSingleObject(data.hEvent, INFINITE);
 }
 
 void AppImpl::Log(const char *s)

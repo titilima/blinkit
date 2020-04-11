@@ -12,6 +12,7 @@
 #include "app_impl.h"
 
 #include "bk_app.h"
+#include "base/single_thread_task_runner.h"
 #if 0 // BKTODO:
 #include "base/time/time.h"
 #endif
@@ -27,6 +28,8 @@
 #endif
 
 namespace BlinKit {
+
+static_assert(sizeof(BkInitData) == sizeof(BkInitDataV1));
 
 AppImpl::AppImpl(void)
 {
@@ -216,23 +219,69 @@ using namespace BlinKit;
 
 extern "C" {
 
-BKEXPORT void BKAPI BkFinalize(void)
+BKEXPORT bool_t BKAPI BkAppExecute(BkBackgroundWorker worker, void *userData)
 {
-    delete Platform::Current();
+    AppImpl &app = AppImpl::Get();
+    if (!app.IsBackgroundMode())
+        return false;
+
+    const auto task = [worker, userData]
+    {
+        worker(userData);
+    };
+    app.GetTaskRunner()->PostTask(FROM_HERE, task);
+    return true;
 }
 
-BKEXPORT bool_t BKAPI BkInitialize(void *reserved)
+BKEXPORT void BKAPI BkFinalize(void)
 {
-    if (nullptr == Platform::Current())
+    Platform *p = Platform::Current();
+    if (nullptr == p)
+        return;
+
+    AppImpl *app = static_cast<AppImpl *>(p);
+    if (app->IsBackgroundMode())
+        app->FinalizeInBackground();
+    else
+        delete app;
+}
+
+BKEXPORT bool_t BKAPI BkInitialize(BkInitData *initData)
+{
+    if (nullptr != Platform::Current())
+        return false;
+
+    int mode = BK_APP_DEFAULT_MODE;
+    if (nullptr != initData)
+        mode = initData->mode;
+    switch (mode)
     {
-        AppImpl *app = AppImpl::CreateInstance();
-        if (nullptr == app)
+        case BK_APP_DEFAULT_MODE:
+#ifndef OS_LINUX
         {
-            assert(nullptr != app);
-            return false;
+            AppImpl *app = AppImpl::CreateInstance();
+            if (nullptr == app)
+            {
+                ASSERT(nullptr != app);
+                return false;
+            }
+
+            app->Initialize(nullptr);
+            break;
+        }
+#else
+            [[fallthrough]];
+#endif
+        case BK_APP_BACKGROUND_MODE:
+        {
+            ASSERT(nullptr != initData);
+            AppImpl::InitializeBackgroundInstance();
+            break;
         }
 
-        app->Initialize(nullptr);
+        default:
+            NOTREACHED();
+            return false;
     }
     return true;
 }
