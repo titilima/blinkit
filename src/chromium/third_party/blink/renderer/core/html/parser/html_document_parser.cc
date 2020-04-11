@@ -43,7 +43,6 @@
 #include "base/numerics/safe_conversions.h"
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/public/platform/task_type.h"
-// BKTODO: #include "third_party/blink/public/platform/web_loading_behavior_flag.h"
 #include "third_party/blink/renderer/core/dom/document_fragment.h"
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -54,7 +53,6 @@
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/loader/document_loader.h"
 #include "third_party/blink/renderer/core/loader/navigation_scheduler.h"
-// BKTODO: #include "third_party/blink/renderer/core/probe/core_probes.h"
 #include "third_party/blink/renderer/core/script/html_parser_script_runner.h"
 // BKTODO: #include "third_party/blink/renderer/platform/cross_thread_functional.h"
 // BKTODO: #include "third_party/blink/renderer/platform/heap/handle.h"
@@ -498,6 +496,8 @@ void HTMLDocumentParser::Append(const String& input_source) {
 
 void HTMLDocumentParser::end() {
   DCHECK(!IsDetached());
+
+  std::shared_ptr<HTMLDocumentParser> protect(shared_from_this());
 
   // Informs the the rest of WebCore that parsing is really finished (and
   // deletes this).
