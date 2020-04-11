@@ -30,6 +30,7 @@ public:
     void Remove(const std::string &name);
 
     std::string GetAllForRequest(void) const;
+    const std::unordered_map<std::string, std::string>& GetRawMap(void) const { return m_headers; }
 private:
     static std::string CanonizeHeaderName(const std::string &header);
 
