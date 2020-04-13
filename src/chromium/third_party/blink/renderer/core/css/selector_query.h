@@ -64,6 +64,9 @@ public:
 
     // https://dom.spec.whatwg.org/#dom-parentnode-queryselectorall
     StaticElementList* QueryAll(ContainerNode &rootNode) const;
+
+    // https://dom.spec.whatwg.org/#dom-parentnode-queryselector
+    Element* QueryFirst(ContainerNode &rootNode) const;
 private:
     explicit SelectorQuery(CSSSelectorList selectorList);
 

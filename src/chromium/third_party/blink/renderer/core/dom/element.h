@@ -92,6 +92,8 @@ public:
     const AtomicString& localName(void) const { return m_tagName.LocalName(); }
     const AtomicString& namespaceURI(void) const { return m_tagName.NamespaceURI(); }
     bool HasTagName(const QualifiedName &tagName) const { return m_tagName.Matches(tagName); }
+    // A fast function for checking the local name against another atomic string.
+    bool HasLocalName(const AtomicString &other) const { return m_tagName.LocalName() == other; }
     bool ShouldSerializeEndTag(void) const;
 
     AttributeCollection Attributes(void) const;

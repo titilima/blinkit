@@ -809,8 +809,17 @@ void ContainerNode::PreCollectGarbage(GCPool &gcPool)
 
 Element* ContainerNode::querySelector(const AtomicString &selectors, ExceptionState &exceptionState)
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
+    SelectorQuery *selectorQuery = GetDocument().GetSelectorQueryCache().Add(selectors, GetDocument(), exceptionState);
+    if (nullptr == selectorQuery)
+        return nullptr;
+
+    Element *element = selectorQuery->QueryFirst(*this);
+    if (nullptr != element && element->GetDocument().InDOMNodeRemovedHandler())
+    {
+        if (NodeChildRemovalTracker::IsBeingRemoved(element))
+            GetDocument().CountDetachingNodeAccessInDOMNodeRemovedHandler();
+    }
+    return element;
 }
 
 StaticElementList* ContainerNode::querySelectorAll(const AtomicString &selectors, ExceptionState &exceptionState)

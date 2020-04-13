@@ -64,6 +64,50 @@ struct AllElementsSelectorQueryTrait {
     }
 };
 
+struct SingleElementSelectorQueryTrait {
+    typedef Element *OutputType;
+    static const bool kShouldOnlyMatchFirstElement = true;
+    ALWAYS_INLINE static bool IsEmpty(const OutputType &output)
+    {
+        return nullptr == output;
+    }
+    ALWAYS_INLINE static void AppendElement(OutputType &output, Element &element)
+    {
+        ASSERT(nullptr == output);
+        output = &element;
+    }
+};
+
+static inline bool MatchesTagName(const QualifiedName &tagName, const Element &element)
+{
+    if (tagName == AnyQName())
+        return true;
+    if (element.HasLocalName(tagName.LocalName()))
+        return true;
+    // Non-html elements in html documents are normalized to their camel-cased
+    // version during parsing if applicable. Yet, type selectors are lower-cased
+    // for selectors in html documents. Compare the upper case converted names
+    // instead to allow matching SVG elements like foreignObject.
+    if (!element.IsHTMLElement() && element.GetDocument().IsHTMLDocument())
+        return element.TagQName().LocalNameUpper() == tagName.LocalNameUpper();
+    return false;
+}
+
+template <typename SelectorQueryTrait>
+static void CollectElementsByTagName(ContainerNode &rootNode, const QualifiedName &tagName, typename SelectorQueryTrait::OutputType &output)
+{
+    ASSERT(tagName.NamespaceURI() == g_star_atom);
+    for (Element &element : ElementTraversal::DescendantsOf(rootNode))
+    {
+        if (MatchesTagName(tagName, element))
+        {
+            SelectorQueryTrait::AppendElement(output, element);
+            if (SelectorQueryTrait::kShouldOnlyMatchFirstElement)
+                return;
+        }
+    }
+}
+
 inline bool SelectorMatches(const CSSSelector &selector, Element &element, const ContainerNode &rootNode)
 {
     SelectorChecker::Init init;
@@ -178,10 +222,7 @@ void SelectorQuery::Execute(ContainerNode &rootNode, typename SelectorQueryTrait
         case CSSSelector::kTag:
             if (firstSelector.TagQName().NamespaceURI() == g_star_atom)
             {
-                ASSERT(false); // BKTODO:
-#if 0
                 CollectElementsByTagName<SelectorQueryTrait>(rootNode, firstSelector.TagQName(), output);
-#endif
                 return;
             }
             // querySelector*() doesn't allow namespace prefix resolution and
@@ -292,6 +333,14 @@ StaticElementList* SelectorQuery::QueryAll(ContainerNode &rootNode) const
     std::vector<Element *> result;
     Execute<AllElementsSelectorQueryTrait>(rootNode, result);
     return StaticElementList::Adopt(result);
+}
+
+Element* SelectorQuery::QueryFirst(ContainerNode &rootNode) const
+{
+    NthIndexCache nthIndexCache(rootNode.GetDocument());
+    Element *matchedElement = nullptr;
+    Execute<SingleElementSelectorQueryTrait>(rootNode, matchedElement);
+    return matchedElement;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
