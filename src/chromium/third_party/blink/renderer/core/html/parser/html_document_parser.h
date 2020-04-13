@@ -154,11 +154,11 @@ class CORE_EXPORT HTMLDocumentParser : public ScriptableDocumentParser
   void ForcePlaintextForTextDocument();
 
  private:
-  static HTMLDocumentParser* Create(DocumentFragment* fragment,
+  static std::shared_ptr<HTMLDocumentParser> Create(DocumentFragment* fragment,
                                     Element* context_element,
                                     ParserContentPolicy parser_content_policy) {
-    return new HTMLDocumentParser(fragment, context_element,
-                                  parser_content_policy);
+    return base::WrapShared(new HTMLDocumentParser(fragment, context_element,
+                                  parser_content_policy));
   }
   HTMLDocumentParser(Document&,
                      ParserContentPolicy);

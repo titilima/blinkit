@@ -702,7 +702,7 @@ void HTMLDocumentParser::ParseDocumentFragment(
     DocumentFragment* fragment,
     Element* context_element,
     ParserContentPolicy parser_content_policy) {
-  HTMLDocumentParser* parser = HTMLDocumentParser::Create(
+  std::shared_ptr<HTMLDocumentParser> parser = HTMLDocumentParser::Create(
       fragment, context_element, parser_content_policy);
   parser->Append(source);
   parser->Finish();
