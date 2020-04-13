@@ -11,6 +11,8 @@
 
 #include "js_value_impl.h"
 
+#include <cfloat>
+
 using namespace BlinKit;
 
 JSValueImpl* JSValueImpl::Create(duk_context *ctx, duk_idx_t idx)
@@ -161,16 +163,17 @@ std::string JSSimpleValue::GetAsString(void) const
                 return std::to_string(intVal);
             }
             return std::to_string(m_numberVal);
+        default:
+            NOTREACHED();
     }
 
-    ASSERT(false); // Not reached!
     return std::string();
 }
 
 JSHeapValue::JSHeapValue(duk_context *ctx, duk_idx_t idx) : m_ctx(ctx), m_heapPtr(duk_get_heapptr(ctx, idx))
 {
-    char buf[32];
-    sprintf(buf, "%x", reinterpret_cast<unsigned int>(this));
+    char buf[128];
+    sprintf(buf, "%p", this);
     m_key.assign(DUK_HIDDEN_SYMBOL("val"));
     m_key.append(buf);
 
