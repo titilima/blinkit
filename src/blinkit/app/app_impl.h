@@ -33,15 +33,16 @@ struct BkInitDataV1 {
 class AppImpl : public blink::Platform, public ThreadImpl
 {
 public:
-    static AppImpl* CreateInstance(void);
+    static AppImpl* CreateInstance(int mode);
     virtual ~AppImpl(void);
 
     static void InitializeBackgroundInstance(void);
-    virtual bool IsBackgroundMode(void) const = 0;
-    virtual void FinalizeInBackground(void) = 0;
 
     static AppImpl& Get(void);
-    void Initialize(BkAppClient *client);
+    int Mode(void) const { return m_mode; }
+    virtual void Initialize(BkAppClient *client);
+    virtual int RunAndFinalize(void) = 0;
+    virtual void Exit(int code) = 0;
 
 #if 0 // BKTODO:
     ThreadImpl* CurrentThreadImpl(void);
@@ -57,7 +58,7 @@ public:
     blink::WebThread* currentThread(void) final;
 #endif
 protected:
-    AppImpl(void);
+    AppImpl(int mode);
 private:
     // blink::Platform
     std::unique_ptr<blink::WebURLLoader> CreateURLLoader(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner) final;
@@ -76,6 +77,7 @@ private:
     double m_firstMonotonicallyIncreasingTime;
     std::unordered_map<blink::PlatformThreadId, ThreadImpl *> m_threads;
 #endif
+    const int m_mode;
     std::unique_ptr<blink::scheduler::WebThreadScheduler> m_mainThreadScheduler;
 };
 

@@ -21,6 +21,7 @@ extern "C" {
 
 enum BkAppMode {
     BK_APP_DEFAULT_MODE = 0,
+    BK_APP_FOREGROUND_MODE,
     BK_APP_BACKGROUND_MODE
 };
 
@@ -32,8 +33,24 @@ struct BkInitData {
 
 BKEXPORT bool_t BKAPI BkInitialize(struct BkInitData *initData);
 
+/**
+ * Default mode only
+ */
 BKEXPORT void BKAPI BkFinalize(void);
 
+/**
+ * Foreground mode only
+ */
+BKEXPORT int BKAPI BkRunApp(void);
+
+/**
+ * For Foreground & background mode
+ */
+BKEXPORT void BKAPI BkExitApp(int code);
+
+/**
+ * Background mode only
+ */
 typedef void (BKAPI * BkBackgroundWorker)(void *);
 BKEXPORT bool_t BKAPI BkAppExecute(BkBackgroundWorker worker, void *userData);
 

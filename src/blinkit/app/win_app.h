@@ -25,7 +25,7 @@ class WinThemeEngine;
 class WinApp final : public AppImpl
 {
 public:
-    WinApp(HANDLE hBackgroundThread = nullptr);
+    WinApp(int mode, HANDLE hBackgroundThread = nullptr);
     ~WinApp(void) override;
 
     static WinApp& Get(void);
@@ -40,10 +40,10 @@ private:
     // blink::Thread
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(void) const override;
     // AppImpl
-    bool IsBackgroundMode(void) const override { return nullptr != m_backgroundThread; }
-    void FinalizeInBackground(void) override;
+    void Initialize(BkAppClient *client) override;
+    int RunAndFinalize(void) override;
+    void Exit(int code) override;
 
-    const DWORD m_appThreadId;
     HHOOK m_msgHook = nullptr;
     HANDLE m_backgroundThread;
     std::shared_ptr<WinSingleThreadTaskRunner> m_taskRunner;

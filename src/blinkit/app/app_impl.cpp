@@ -13,9 +13,6 @@
 
 #include "bk_app.h"
 #include "base/single_thread_task_runner.h"
-#if 0 // BKTODO:
-#include "base/time/time.h"
-#endif
 #include "blinkit/app/app_constants.h"
 #include "blinkit/blink_impl/url_loader_impl.h"
 #include "third_party/blink/public/platform/web_thread_scheduler.h"
@@ -31,22 +28,13 @@ namespace BlinKit {
 
 static_assert(sizeof(BkInitData) == sizeof(BkInitDataV1));
 
-AppImpl::AppImpl(void)
+AppImpl::AppImpl(int mode) : m_mode(mode)
 {
     m_threadId = ThreadImpl::CurrentThreadId();
     AttachMainThread(this);
-#if 0 // BKTODO:
-    m_firstMonotonicallyIncreasingTime = base::Time::Now().ToDoubleT();
-#endif
 }
 
-AppImpl::~AppImpl(void)
-{
-#if 0 // BKTODO:
-    assert(theApp == this);
-    theApp = nullptr;
-#endif
-}
+AppImpl::~AppImpl(void) = default;
 
 std::unique_ptr<blink::WebURLLoader> AppImpl::CreateURLLoader(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner)
 {
@@ -171,7 +159,7 @@ AppImpl& AppImpl::Get(void)
 
 void AppImpl::Initialize(BkAppClient *client)
 {
-    assert(nullptr == client);
+    ASSERT(nullptr == client); // BKTODO:
     blink::Initialize(this, m_mainThreadScheduler.get());
 }
 
@@ -222,15 +210,39 @@ extern "C" {
 BKEXPORT bool_t BKAPI BkAppExecute(BkBackgroundWorker worker, void *userData)
 {
     AppImpl &app = AppImpl::Get();
-    if (!app.IsBackgroundMode())
-        return false;
-
-    const auto task = [worker, userData]
+    switch (app.Mode())
     {
-        worker(userData);
-    };
-    app.GetTaskRunner()->PostTask(FROM_HERE, task);
-    return true;
+        case BK_APP_BACKGROUND_MODE:
+        {
+            const auto task = [worker, userData]
+            {
+                worker(userData);
+            };
+            app.GetTaskRunner()->PostTask(FROM_HERE, task);
+            return true;
+        }
+
+        default:
+            NOTREACHED();
+    }
+    return false;
+}
+
+BKEXPORT void BKAPI BkExitApp(int code)
+{
+    AppImpl &app = AppImpl::Get();
+    switch (app.Mode())
+    {
+#ifdef OS_LINUX
+        case BK_APP_DEFAULT_MODE:
+#endif
+        case BK_APP_FOREGROUND_MODE:
+        case BK_APP_BACKGROUND_MODE:
+            app.Exit(code);
+            break;
+        default:
+            NOTREACHED();
+    }
 }
 
 BKEXPORT void BKAPI BkFinalize(void)
@@ -240,10 +252,14 @@ BKEXPORT void BKAPI BkFinalize(void)
         return;
 
     AppImpl *app = static_cast<AppImpl *>(p);
-    if (app->IsBackgroundMode())
-        app->FinalizeInBackground();
-    else
-        delete app;
+    switch (app->Mode())
+    {
+        case BK_APP_DEFAULT_MODE:
+            delete app;
+            break;
+        default:
+            NOTREACHED();
+    }
 }
 
 BKEXPORT bool_t BKAPI BkInitialize(BkInitData *initData)
@@ -257,9 +273,9 @@ BKEXPORT bool_t BKAPI BkInitialize(BkInitData *initData)
     switch (mode)
     {
         case BK_APP_DEFAULT_MODE:
-#ifndef OS_LINUX
+        case BK_APP_FOREGROUND_MODE:
         {
-            AppImpl *app = AppImpl::CreateInstance();
+            AppImpl *app = AppImpl::CreateInstance(mode);
             if (nullptr == app)
             {
                 ASSERT(nullptr != app);
@@ -269,9 +285,6 @@ BKEXPORT bool_t BKAPI BkInitialize(BkInitData *initData)
             app->Initialize(nullptr);
             break;
         }
-#else
-            [[fallthrough]];
-#endif
         case BK_APP_BACKGROUND_MODE:
         {
             ASSERT(nullptr != initData);
@@ -284,6 +297,19 @@ BKEXPORT bool_t BKAPI BkInitialize(BkInitData *initData)
             return false;
     }
     return true;
+}
+
+BKEXPORT int BKAPI BkRunApp(void)
+{
+    AppImpl &app = AppImpl::Get();
+    switch (app.Mode())
+    {
+        case BK_APP_FOREGROUND_MODE:
+            return app.RunAndFinalize();
+        default:
+            NOTREACHED();
+    }
+    return EXIT_FAILURE;
 }
 
 } // extern "C"

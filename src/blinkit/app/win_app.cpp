@@ -11,6 +11,7 @@
 
 #include "win_app.h"
 
+#include "bk_app.h"
 #include "base/strings/sys_string_conversions.h"
 #include "blinkit/blink_impl/win_single_thread_task_runner.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
@@ -41,12 +42,12 @@ struct BackgoundThreadData
     HANDLE hThread = nullptr;
 };
 
-WinApp::WinApp(HANDLE hBackgroundThread)
-    : m_appThreadId(GetCurrentThreadId())
+WinApp::WinApp(int mode, HANDLE hBackgroundThread)
+    : AppImpl(mode)
     , m_taskRunner(std::make_shared<WinSingleThreadTaskRunner>())
     , m_backgroundThread(hBackgroundThread)
 {
-    m_msgHook = SetWindowsHookEx(WH_GETMESSAGE, HookProc, nullptr, m_appThreadId);
+    m_msgHook = SetWindowsHookEx(WH_GETMESSAGE, HookProc, nullptr, GetCurrentThreadId());
 }
 
 WinApp::~WinApp(void)
@@ -60,7 +61,7 @@ DWORD WINAPI WinApp::BackgroundThread(PVOID param)
 {
     BackgoundThreadData *data = reinterpret_cast<BackgoundThreadData *>(param);
 
-    WinApp *app = new WinApp(data->hThread);
+    WinApp *app = new WinApp(BK_APP_BACKGROUND_MODE, data->hThread);
     if (nullptr == app)
     {
         ASSERT(nullptr != app);
@@ -70,18 +71,9 @@ DWORD WINAPI WinApp::BackgroundThread(PVOID param)
     }
 
     app->Initialize(nullptr);
-    IsGUIThread(TRUE);
     SetEvent(data->hEvent);
 
-    MSG msg;
-    while (GetMessage(&msg, nullptr, 0, 0))
-    {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
-
-    delete app;
-    return msg.wParam;
+    return app->RunAndFinalize();
 }
 
 WTF::String WinApp::DefaultLocale(void)
@@ -98,13 +90,17 @@ WTF::String WinApp::DefaultLocale(void)
     return WTF::String::FromStdUTF8(localName);
 }
 
-void WinApp::FinalizeInBackground(void)
+void WinApp::Exit(int code)
 {
-    ASSERT(nullptr != m_backgroundThread);
-    ASSERT(GetCurrentThreadId() != m_appThreadId);
+    ASSERT(BK_APP_FOREGROUND_MODE == Mode() || BK_APP_BACKGROUND_MODE == Mode());
 
-    PostThreadMessage(m_appThreadId, WM_QUIT, 0, 0);
-    WaitForSingleObject(m_backgroundThread, INFINITE);
+    DWORD threadId = ThreadId();
+    PostThreadMessage(threadId, WM_QUIT, code, 0);
+    if (nullptr != m_backgroundThread)
+    {
+        ASSERT(GetCurrentThreadId() != threadId);
+        WaitForSingleObject(m_backgroundThread, INFINITE);
+    }
 }
 
 WinApp& WinApp::Get(void)
@@ -128,6 +124,26 @@ LRESULT CALLBACK WinApp::HookProc(int code, WPARAM w, LPARAM l)
         app.m_taskRunner->ProcessMessage(*msg);
     } while (false);
     return CallNextHookEx(app.m_msgHook, code, w, l);
+}
+
+void WinApp::Initialize(BkAppClient *client)
+{
+    AppImpl::Initialize(client);
+    IsGUIThread(TRUE);
+}
+
+int WinApp::RunAndFinalize(void)
+{
+    ASSERT(BK_APP_BACKGROUND_MODE == Mode() || BK_APP_FOREGROUND_MODE == Mode());
+
+    MSG msg;
+    while (GetMessage(&msg, nullptr, 0, 0))
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+    delete this;
+    return msg.wParam;
 }
 
 #if 0 // BKTODO:
@@ -176,9 +192,9 @@ blink::WebThemeEngine* WinApp::themeEngine(void)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-AppImpl* AppImpl::CreateInstance(void)
+AppImpl* AppImpl::CreateInstance(int mode)
 {
-    return new WinApp;
+    return new WinApp(mode);
 }
 
 void AppImpl::InitializeBackgroundInstance(void)
