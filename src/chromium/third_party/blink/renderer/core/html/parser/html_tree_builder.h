@@ -139,7 +139,7 @@ class HTMLTreeBuilder final
     kAfterAfterBodyMode,
     kAfterAfterFramesetMode,
   };
-#ifndef DEBUG
+#ifndef NDEBUG
   static const char* ToString(InsertionMode);
 #endif
 
