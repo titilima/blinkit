@@ -41,8 +41,8 @@
 #pragma once
 
 #include "blinkit/common/bk_http_header_map.h"
+#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
-#include "url/bk_url.h"
 
 namespace blink {
 

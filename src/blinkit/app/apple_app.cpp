@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: apple_app.mm
+//   File Name: apple_app.cpp
 // Description: AppleApp Class
 //      Author: Ziming Li
 //     Created: 2019-08-13

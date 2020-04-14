@@ -17,11 +17,11 @@
 #include <optional>
 #include "bk_crawler.h"
 #include "bk_http.h"
+#include "blinkit/common/bk_url.h"
 #include "blinkit/loader_tasks/loader_task.h"
 #include "blinkit/misc/controller_impl.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
-#include "url/bk_url.h"
 
 namespace blink {
 class ResourceResponse;

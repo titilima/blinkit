@@ -41,11 +41,11 @@
 
 #include <functional>
 #include "base/macros.h"
+#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/core/script/script.h"
 #include "third_party/blink/renderer/core/script/script_element_base.h"
 #include "third_party/blink/renderer/core/script/script_scheduling_type.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
-#include "url/bk_url.h"
 
 namespace blink {
 

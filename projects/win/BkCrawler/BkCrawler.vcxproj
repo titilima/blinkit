@@ -181,6 +181,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_single_thread_task_runner.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_thread.h" />
     <ClInclude Include="..\..\..\src\blinkit\common\bk_http_header_map.h" />
+    <ClInclude Include="..\..\..\src\blinkit\common\bk_url.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_document.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_impl.h" />
@@ -215,6 +216,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_single_thread_task_runner.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\common\bk_http_header_map.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\common\bk_url.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_document.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_impl.cpp" />

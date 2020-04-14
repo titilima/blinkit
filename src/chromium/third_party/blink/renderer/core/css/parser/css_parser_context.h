@@ -16,6 +16,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_CSS_PARSER_CSS_PARSER_CONTEXT_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_PARSER_CSS_PARSER_CONTEXT_H_
 
+#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/css/parser/css_parser_mode.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
@@ -23,7 +24,6 @@
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_loader_options.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
-#include "url/bk_url.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/css_property_names.h"
 #endif

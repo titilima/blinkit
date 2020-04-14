@@ -46,6 +46,7 @@
 #include <stack>
 #include <unordered_set>
 #include <vector>
+#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/core/dom/container_node.h"
 #include "third_party/blink/renderer/core/dom/create_element_flags.h"
 #include "third_party/blink/renderer/core/dom/document_encoding_data.h"
@@ -61,7 +62,6 @@
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/timer.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
-#include "url/bk_url.h"
 
 namespace blink {
 

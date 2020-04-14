@@ -135,6 +135,9 @@
     <ClInclude Include="..\..\..\src\blinkit\common\bk_http_header_map.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\common\bk_url.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BkCrawler.def">
@@ -215,6 +218,9 @@
       <Filter>js</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\common\bk_http_header_map.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\common\bk_url.cpp">
       <Filter>common</Filter>
     </ClCompile>
   </ItemGroup>

@@ -43,8 +43,8 @@
 
 #pragma once
 
+#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
-#include "url/bk_url.h"
 
 namespace blink {
 

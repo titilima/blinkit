@@ -11,7 +11,7 @@
 
 #include "execution_context.h"
 
-#include "url/bk_url.h"
+#include "blinkit/common/bk_url.h"
 
 namespace blink {
 

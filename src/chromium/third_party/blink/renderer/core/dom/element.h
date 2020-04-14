@@ -39,11 +39,11 @@
 #pragma once
 
 #include "base/memory/scoped_refptr.h"
+#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/core/css/css_selector.h"
 #include "third_party/blink/renderer/core/dom/container_node.h"
 #include "third_party/blink/renderer/core/dom/element_data.h"
 #include "third_party/blink/renderer/core/dom/qualified_name.h"
-#include "url/bk_url.h"
 
 namespace blink {
 

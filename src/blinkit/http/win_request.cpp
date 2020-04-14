@@ -12,7 +12,7 @@
 #include "win_request.h"
 
 #include "base/strings/string_util.h"
-#include "url/bk_url.h"
+#include "blinkit/common/bk_url.h"
 #include "url/url_constants.h"
 
 #include "app/app_constants.h"

@@ -15,7 +15,7 @@
 #include <zlib.h>
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "url/bk_url.h"
+#include "blinkit/common/bk_url.h"
 
 using namespace BlinKit;
 

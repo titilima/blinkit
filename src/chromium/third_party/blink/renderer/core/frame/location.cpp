@@ -39,9 +39,9 @@
 
 #include "location.h"
 
+#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
-#include "url/bk_url.h"
 
 using namespace BlinKit;
 

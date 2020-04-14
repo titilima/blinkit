@@ -255,7 +255,6 @@
     <ClCompile Include="..\..\..\src\chromium\url\url_constants.cc" />
     <ClCompile Include="..\..\..\src\chromium\url\url_parse_file.cc" />
     <ClCompile Include="..\..\..\src\chromium\url\url_util.cc" />
-    <ClCompile Include="..\..\..\src\url\bk_url.cpp" />
     <ClCompile Include="..\..\..\src\url\url_canon.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -279,7 +278,6 @@
     <ClInclude Include="..\..\..\src\chromium\url\url_parse_internal.h" />
     <ClInclude Include="..\..\..\src\chromium\url\url_util.h" />
     <ClInclude Include="..\..\..\src\chromium\url\url_util_internal.h" />
-    <ClInclude Include="..\..\..\src\url\bk_url.h" />
     <ClInclude Include="..\..\..\src\url\_pc.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

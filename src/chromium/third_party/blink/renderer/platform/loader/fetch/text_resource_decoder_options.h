@@ -16,9 +16,9 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_LOADER_FETCH_TEXT_RESOURCE_DECODER_OPTIONS_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_LOADER_FETCH_TEXT_RESOURCE_DECODER_OPTIONS_H_
 
+#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/platform/platform_export.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
-#include "url/bk_url.h"
 
 namespace blink {
 

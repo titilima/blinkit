@@ -44,12 +44,12 @@
 
 #pragma once
 
+#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_streamer.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_source_location_type.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
-#include "url/bk_url.h"
 
 namespace blink {
 
