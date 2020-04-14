@@ -296,6 +296,7 @@ class WTF_EXPORT StringImpl {
     {
       std::string ascii = AsciiForDebugging();
       auto tid = CurrentThread();
+      (void)tid;
       DCHECK(IsStatic() || verifier_.OnDeref(ref_count_));
     }
 #endif
