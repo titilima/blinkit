@@ -21,8 +21,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "base", "base\base.vcxproj",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "url", "url\url.vcxproj", "{849CE42E-6457-4C6D-8BA0-854932A2AEDB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BkCommon", "BkCommon\BkCommon.vcxproj", "{A0F4521B-ED40-4F21-A6DF-DB3C017DBA1E}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{8D9C74CB-C873-4655-8546-911698BBC328}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\scripts\event_type_names.cpp.php = ..\..\scripts\event_type_names.cpp.php
@@ -134,18 +132,6 @@ Global
 		{849CE42E-6457-4C6D-8BA0-854932A2AEDB}.ReleaseLTL|x64.Build.0 = ReleaseLTL|x64
 		{849CE42E-6457-4C6D-8BA0-854932A2AEDB}.ReleaseLTL|x86.ActiveCfg = ReleaseLTL|Win32
 		{849CE42E-6457-4C6D-8BA0-854932A2AEDB}.ReleaseLTL|x86.Build.0 = ReleaseLTL|Win32
-		{A0F4521B-ED40-4F21-A6DF-DB3C017DBA1E}.Debug|x64.ActiveCfg = Debug|x64
-		{A0F4521B-ED40-4F21-A6DF-DB3C017DBA1E}.Debug|x64.Build.0 = Debug|x64
-		{A0F4521B-ED40-4F21-A6DF-DB3C017DBA1E}.Debug|x86.ActiveCfg = Debug|Win32
-		{A0F4521B-ED40-4F21-A6DF-DB3C017DBA1E}.Debug|x86.Build.0 = Debug|Win32
-		{A0F4521B-ED40-4F21-A6DF-DB3C017DBA1E}.Release|x64.ActiveCfg = Release|x64
-		{A0F4521B-ED40-4F21-A6DF-DB3C017DBA1E}.Release|x64.Build.0 = Release|x64
-		{A0F4521B-ED40-4F21-A6DF-DB3C017DBA1E}.Release|x86.ActiveCfg = Release|Win32
-		{A0F4521B-ED40-4F21-A6DF-DB3C017DBA1E}.Release|x86.Build.0 = Release|Win32
-		{A0F4521B-ED40-4F21-A6DF-DB3C017DBA1E}.ReleaseLTL|x64.ActiveCfg = Release|x64
-		{A0F4521B-ED40-4F21-A6DF-DB3C017DBA1E}.ReleaseLTL|x64.Build.0 = Release|x64
-		{A0F4521B-ED40-4F21-A6DF-DB3C017DBA1E}.ReleaseLTL|x86.ActiveCfg = Release|Win32
-		{A0F4521B-ED40-4F21-A6DF-DB3C017DBA1E}.ReleaseLTL|x86.Build.0 = Release|Win32
 		{103E87CB-36EB-49C3-ADFC-6C036AA14B21}.Debug|x64.ActiveCfg = Debug|x64
 		{103E87CB-36EB-49C3-ADFC-6C036AA14B21}.Debug|x64.Build.0 = Debug|x64
 		{103E87CB-36EB-49C3-ADFC-6C036AA14B21}.Debug|x86.ActiveCfg = Debug|Win32

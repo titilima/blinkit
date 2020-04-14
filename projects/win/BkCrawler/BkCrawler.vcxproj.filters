@@ -37,6 +37,9 @@
     <Filter Include="js">
       <UniqueIdentifier>{5a0810f6-9254-4504-a53f-5455dc6182dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{79349190-9b60-4652-8572-e59726b42f89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\sdk\include\bk_app.h">
@@ -129,6 +132,9 @@
     <ClInclude Include="..\..\..\sdk\include\BlinKit.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\common\bk_http_header_map.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BkCrawler.def">
@@ -207,6 +213,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\js\js_value_impl.cpp">
       <Filter>js</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\common\bk_http_header_map.cpp">
+      <Filter>common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

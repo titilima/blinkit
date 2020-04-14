@@ -180,6 +180,7 @@
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\url_loader_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_single_thread_task_runner.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_thread.h" />
+    <ClInclude Include="..\..\..\src\blinkit\common\bk_http_header_map.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_document.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_impl.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\url_loader_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_single_thread_task_runner.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_thread.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\common\bk_http_header_map.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_document.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_impl.cpp" />
@@ -232,9 +234,6 @@
   <ItemGroup>
     <ProjectReference Include="..\base\base.vcxproj">
       <Project>{f8e8dc22-c9eb-4274-bbc9-011d4106f84d}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\BkCommon\BkCommon.vcxproj">
-      <Project>{a0f4521b-ed40-4f21-a6df-db3c017dba1e}</Project>
     </ProjectReference>
     <ProjectReference Include="..\blink_crawler\blink_crawler.vcxproj">
       <Project>{368255a7-294a-481f-82a8-cb130feb5096}</Project>
