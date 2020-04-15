@@ -42,9 +42,6 @@
 #define WTF_USE_DEFAULT_RENDER_THEME    1
 
 #include <memory>
-#ifdef __OBJC__
-#   import <Cocoa/Cocoa.h>
-#endif
 
 #include "base/logging.h"
 #ifndef BLINKIT_CRAWLER_ONLY

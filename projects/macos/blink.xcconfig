@@ -16,4 +16,3 @@
 #include "skia.xcconfig"
 
 HEADER_SEARCH_PATHS = $(BK_SRC)/stub/icu $(BK_CR_SRC)/gpu $(BK_CR_SRC)/third_party/khronos $(inherited)
-USER_HEADER_SEARCH_PATHS = $(inherited) $(BK_CR_SRC)/third_party/WebKit $(BK_CR_SRC)/third_party/WebKit/Source $(BK_CR_SRC)/third_party/WebKit/Source/gen $(BK_ROOT)

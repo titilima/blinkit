@@ -39,13 +39,13 @@
 #include <unordered_map>
 #include <vector>
 
-#if OS_WIN
+#ifdef OS_WIN
 #   include <Windows.h>
 extern HMODULE theModule;
 #endif
 
-#ifdef __OBJC__
-#   import <Foundation/Foundation.h>
+#if defined(OS_MACOSX) || defined(OS_IOS)
+#   include <CoreFoundation/CoreFoundation.h>
 #endif
 
 #include "BlinKit.hpp"

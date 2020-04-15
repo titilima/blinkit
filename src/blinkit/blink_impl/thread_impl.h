@@ -25,7 +25,11 @@ class ThreadImpl : public blink::Thread
 public:
     static blink::PlatformThreadId CurrentThreadId(void);
 
-    blink::PlatformThreadId ThreadId(void) const final { return m_threadId; }
+    blink::PlatformThreadId ThreadId(void) const final
+    {
+        ASSERT(false); // BKTODO:
+        return m_threadId;
+    }
 protected:
     ThreadImpl(void) = default;
     ~ThreadImpl(void) override;

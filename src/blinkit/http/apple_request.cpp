@@ -15,8 +15,9 @@
 #include "http/response_impl.h"
 
 namespace BlinKit {
-
-AppleRequest::AppleRequest(const char *URL, BkRequestClient &client) : RequestImpl(URL, client), m_sessionTask(nil)
+#if 0
+AppleRequest::AppleRequest(const char *URL, const BkRequestClient &client)
+    : RequestImpl(URL, client), m_sessionTask(nil)
 {
     SetHeader("User-Agent", AppConstants::DefaultUserAgent);
 }
@@ -37,13 +38,13 @@ void AppleRequest::Cancel(void)
     RequestImpl::Release();
 }
 
-int BKAPI AppleRequest::Perform(void)
+int AppleRequest::Perform(void)
 {
     NSURL *u = [NSURL URLWithString: [NSString stringWithUTF8String: m_URL.c_str()]];
 
     NSString *scheme = u.scheme;
     if (![scheme isEqualToString: @"http"] && ![scheme isEqualToString: @"https"])
-        return BkError::URIError;
+        return BK_ERR_URI;
 
     NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL: u];
 
@@ -52,7 +53,7 @@ int BKAPI AppleRequest::Perform(void)
 
     req.HTTPMethod = [NSString stringWithUTF8String: m_method.c_str()];
 
-    for (const auto &it : RawHeaders())
+    for (const auto &it : m_headers.GetRawMap())
     {
         NSString *name = [NSString stringWithUTF8String: it.first.c_str()];
         NSString *val = [NSString stringWithUTF8String: it.second.c_str()];
@@ -73,20 +74,20 @@ int BKAPI AppleRequest::Perform(void)
     m_sessionTask = [session dataTaskWithRequest: req completionHandler: handler];
     [m_sessionTask retain];
     [m_sessionTask resume];
-    return BkError::Success;
+    return BK_ERR_SUCCESS;
 }
 
 void AppleRequest::RequestComplete(NSData *data, NSURLResponse *response, NSError *error)
 {
     if (nil != error)
     {
-        m_client.RequestFailed(BkError::NetworkError);
+        m_client.RequestFailed(BK_ERR_NETWORK, m_client.UserData);
         return;
     }
 
     NSHTTPURLResponse *repo = static_cast<NSHTTPURLResponse *>(response);
 
-    m_response = new ResponseImpl(m_URL);
+    m_response = std::make_shared<ResponseImpl>(m_URL);
     m_response->SetCurrentURL(repo.URL.absoluteString.UTF8String);
     m_response->SetStatusCode(repo.statusCode);
     for (NSString *key in repo.allHeaderFields)
@@ -96,14 +97,17 @@ void AppleRequest::RequestComplete(NSData *data, NSURLResponse *response, NSErro
     }
     m_response->AppendData(data.bytes, data.length);
 
-    m_client.RequestComplete(*m_response);
+    m_client.RequestComplete(m_response.get(), m_client.UserData);
 }
+#endif
+
+} // namespace BlinKit
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-BkRequest* RequestImpl::CreateInstance(const char *URL, BkRequestClient &client)
+extern "C" BkRequest BKAPI BkCreateRequest(const char *URL, BkRequestClient *client)
 {
-    return new AppleRequest(URL, client);
+    ASSERT(false); // BKTODO:
+    return nullptr;
+    // BKTODO: return new BlinKit::AppleRequest(URL, *client);
 }
-
-} // namespace BlinKit

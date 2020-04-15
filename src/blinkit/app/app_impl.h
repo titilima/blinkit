@@ -65,7 +65,6 @@ private:
 #if 0 // BKTODO:
     // blink::Platform
     blink::WebMimeRegistry* mimeRegistry(void) final;
-    blink::WebString userAgent(void) final;
     blink::WebURLError cancelledError(const blink::WebURL &url) const final;
     blink::WebThread* createThread(const char *name) final;
     double currentTimeSeconds(void) final;

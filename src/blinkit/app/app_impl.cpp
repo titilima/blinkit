@@ -67,52 +67,6 @@ blink::WebCookieJar* AppImpl::cookieJar(void)
     return &cookieJar;
 }
 
-blink::Settings& AppImpl::CrawlerSettings(void)
-{
-    do {
-        if (m_crawlerSettings)
-            break;
-
-        AutoLock lock(m_lock);
-        if (m_crawlerSettings)
-            break;
-
-        m_crawlerSettings = blink::Settings::create();
-    } while (false);
-    return *m_crawlerSettings;
-}
-
-BkCrawler* BKAPI AppImpl::CreateCrawler(BkCrawlerClient &client, BkBuffer *errorMessage)
-{
-    int errorCode;
-    std::string message;
-
-    CrawlerImpl *crawler = new CrawlerImpl(client);
-    std::tie(errorCode, message) = crawler->Initialize();
-    if (BkError::Success != errorCode)
-    {
-        if (nullptr != errorMessage)
-            errorMessage->Assign(message);
-        else
-            assert(false);
-
-        delete crawler;
-        crawler = nullptr;
-    }
-    return crawler;
-}
-
-BkRequest* AppImpl::CreateRequest(const char *URL, BkRequestClient &client)
-{
-    if (nullptr != m_client)
-    {
-        BkRequest *request = m_client->CreateRequest(URL, client);
-        if (nullptr != request)
-            return request;
-    }
-    return BkCreateRequest(URL, client);
-}
-
 blink::WebThread* AppImpl::createThread(const char *name)
 {
     ThreadImpl *thread = ThreadImpl::CreateInstance(name);

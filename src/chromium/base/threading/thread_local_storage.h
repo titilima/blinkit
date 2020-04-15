@@ -47,8 +47,18 @@ public:
     enum { TLS_KEY_OUT_OF_INDEXES = 0x7FFFFFFF };
 #endif
     static bool AllocTLS(TLSKey *key);
+    // Note: FreeTLS() doesn't have to be called, it is fine with this leak, OS
+    // might not reuse released slot, you might just reset the TLS value with
+    // SetTLSValue().
+    static void FreeTLS(TLSKey key);
     static void* GetTLSValue(TLSKey key);
     static void SetTLSValue(TLSKey key, void *value);
+#if defined(OS_POSIX)
+    // |Value| is the data stored in TLS slot, The implementation can't use
+    // GetTLSValue() to retrieve the value of slot as it has already been reset
+    // in Posix.
+    static void OnThreadExit(void *value);
+#endif
 };
 
 } // namespace internal

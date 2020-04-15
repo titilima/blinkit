@@ -14,28 +14,15 @@
 
 #pragma once
 
-#include <pthread.h>
-#include "base/mac/scoped_nsobject.h"
-#include "thread_impl.h"
-
-@class NSThread;
+#include "blinkit/blink_impl/thread_impl.h"
 
 namespace BlinKit {
     
 class AppleThread final : public ThreadImpl
 {
-public:
-    AppleThread(void);
-    ~AppleThread(void);
-
-    struct CreateData;
-    void Initialize(CreateData &cd);
-
-    void Run(void);
 private:
-    base::scoped_nsobject<NSThread> m_nativeThread;
-    NSPort *m_portForRunloop;
-    bool m_keepRunning = true;
+    // Thread overrides
+    std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(void) const override;
 };
 
 } // namespace BlinKit

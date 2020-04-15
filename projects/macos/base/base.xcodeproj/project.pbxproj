@@ -27,7 +27,7 @@
 		F90A31D8243B33CD00F268E3 /* string_split.h in Headers */ = {isa = PBXBuildFile; fileRef = F90A3174243B33CC00F268E3 /* string_split.h */; };
 		F90A31D9243B33CD00F268E3 /* utf_string_conversion_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F90A3175243B33CC00F268E3 /* utf_string_conversion_utils.cpp */; };
 		F90A31DA243B33CD00F268E3 /* string_util_constants.cc in Sources */ = {isa = PBXBuildFile; fileRef = F90A3176243B33CC00F268E3 /* string_util_constants.cc */; };
-		F90A31DB243B33CD00F268E3 /* logging_apple.mm in Sources */ = {isa = PBXBuildFile; fileRef = F90A3177243B33CC00F268E3 /* logging_apple.mm */; };
+		F90A31DB243B33CD00F268E3 /* logging_apple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F90A3177243B33CC00F268E3 /* logging_apple.cpp */; };
 		F90A31DC243B33CD00F268E3 /* scoped_refptr.h in Headers */ = {isa = PBXBuildFile; fileRef = F90A3179243B33CC00F268E3 /* scoped_refptr.h */; };
 		F90A31DD243B33CD00F268E3 /* scoped_policy.h in Headers */ = {isa = PBXBuildFile; fileRef = F90A317A243B33CC00F268E3 /* scoped_policy.h */; };
 		F90A31DE243B33CD00F268E3 /* ref_counted.h in Headers */ = {isa = PBXBuildFile; fileRef = F90A317B243B33CC00F268E3 /* ref_counted.h */; };
@@ -86,6 +86,7 @@
 		F90A321A243B33CD00F268E3 /* debugging_buildflags.h in Headers */ = {isa = PBXBuildFile; fileRef = F90A31C1243B33CD00F268E3 /* debugging_buildflags.h */; };
 		F90A321B243B33CD00F268E3 /* rand_util_generic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F90A31C2243B33CD00F268E3 /* rand_util_generic.cpp */; };
 		F90A321C243B33CD00F268E3 /* sequenced_task_runner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F90A31C3243B33CD00F268E3 /* sequenced_task_runner.cpp */; };
+		F989FA642446A9CF00D6C241 /* thread_local_storage_posix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F989FA632446A9CF00D6C241 /* thread_local_storage_posix.cpp */; };
 		F98DA35722FFDEA100A1F2D0 /* _pc.h in Headers */ = {isa = PBXBuildFile; fileRef = F98DA35622FFDEA100A1F2D0 /* _pc.h */; };
 /* End PBXBuildFile section */
 
@@ -110,7 +111,7 @@
 		F90A3174243B33CC00F268E3 /* string_split.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_split.h; sourceTree = "<group>"; };
 		F90A3175243B33CC00F268E3 /* utf_string_conversion_utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utf_string_conversion_utils.cpp; sourceTree = "<group>"; };
 		F90A3176243B33CC00F268E3 /* string_util_constants.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = string_util_constants.cc; sourceTree = "<group>"; };
-		F90A3177243B33CC00F268E3 /* logging_apple.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = logging_apple.mm; sourceTree = "<group>"; };
+		F90A3177243B33CC00F268E3 /* logging_apple.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = logging_apple.cpp; sourceTree = "<group>"; };
 		F90A3179243B33CC00F268E3 /* scoped_refptr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scoped_refptr.h; sourceTree = "<group>"; };
 		F90A317A243B33CC00F268E3 /* scoped_policy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scoped_policy.h; sourceTree = "<group>"; };
 		F90A317B243B33CC00F268E3 /* ref_counted.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ref_counted.h; sourceTree = "<group>"; };
@@ -172,6 +173,7 @@
 		F93F3A4F22FEE71E0059DA35 /* libbase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libbase.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F93F3AD722FEEA780059DA35 /* BlinKit.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = BlinKit.xcconfig; path = ../BlinKit.xcconfig; sourceTree = SOURCE_ROOT; };
 		F93F3ADF22FF16030059DA35 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = ../PrefixHeader.pch; sourceTree = SOURCE_ROOT; };
+		F989FA632446A9CF00D6C241 /* thread_local_storage_posix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = thread_local_storage_posix.cpp; sourceTree = "<group>"; };
 		F98DA35622FFDEA100A1F2D0 /* _pc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _pc.h; path = ../../../src/base/_pc.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -215,7 +217,7 @@
 				F90A31BB243B33CD00F268E3 /* hash.h */,
 				F90A3188243B33CC00F268E3 /* location.cc */,
 				F90A31AF243B33CD00F268E3 /* location.h */,
-				F90A3177243B33CC00F268E3 /* logging_apple.mm */,
+				F90A3177243B33CC00F268E3 /* logging_apple.cpp */,
 				F90A318B243B33CC00F268E3 /* logging.h */,
 				F90A31AA243B33CD00F268E3 /* macros.h */,
 				F90A31B4243B33CD00F268E3 /* move.h */,
@@ -354,6 +356,7 @@
 		F90A31B5243B33CD00F268E3 /* threading */ = {
 			isa = PBXGroup;
 			children = (
+				F989FA632446A9CF00D6C241 /* thread_local_storage_posix.cpp */,
 				F90A31B8243B33CD00F268E3 /* thread_local_storage.cpp */,
 				F90A31B7243B33CD00F268E3 /* thread_local_storage.h */,
 			);
@@ -521,11 +524,12 @@
 				F90A31F1243B33CD00F268E3 /* time.cpp in Sources */,
 				F90A31D1243B33CD00F268E3 /* string_split.cc in Sources */,
 				F90A31E8243B33CD00F268E3 /* hash.cc in Sources */,
-				F90A31DB243B33CD00F268E3 /* logging_apple.mm in Sources */,
+				F90A31DB243B33CD00F268E3 /* logging_apple.cpp in Sources */,
 				F90A3212243B33CD00F268E3 /* thread_local_storage.cpp in Sources */,
 				F90A31EA243B33CD00F268E3 /* task_runner.cpp in Sources */,
 				F90A31D5243B33CD00F268E3 /* string_util.cc in Sources */,
 				F90A31D9243B33CD00F268E3 /* utf_string_conversion_utils.cpp in Sources */,
+				F989FA642446A9CF00D6C241 /* thread_local_storage_posix.cpp in Sources */,
 				F90A3202243B33CD00F268E3 /* cpu.cc in Sources */,
 				F90A3204243B33CD00F268E3 /* prtime.cc in Sources */,
 				F90A31F0243B33CD00F268E3 /* time_apple.cpp in Sources */,
@@ -548,7 +552,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -611,7 +614,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;

@@ -24,6 +24,8 @@
 		F941DD8D2301A78000007B98 /* canonical_cookie.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DD7E2301A78000007B98 /* canonical_cookie.h */; };
 		F941DD8E2301A78000007B98 /* cookie_options.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DD7F2301A78000007B98 /* cookie_options.h */; };
 		F941DD902301A78F00007B98 /* _pc.h in Headers */ = {isa = PBXBuildFile; fileRef = F941DD8F2301A78F00007B98 /* _pc.h */; };
+		F989FA612446A18900D6C241 /* http_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F989FA5F2446A18900D6C241 /* http_util.cpp */; };
+		F989FA622446A18900D6C241 /* http_util.h in Headers */ = {isa = PBXBuildFile; fileRef = F989FA602446A18900D6C241 /* http_util.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,8 @@
 		F941DD7E2301A78000007B98 /* canonical_cookie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = canonical_cookie.h; sourceTree = "<group>"; };
 		F941DD7F2301A78000007B98 /* cookie_options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cookie_options.h; sourceTree = "<group>"; };
 		F941DD8F2301A78F00007B98 /* _pc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _pc.h; path = ../../../src/net/_pc.h; sourceTree = SOURCE_ROOT; };
+		F989FA5F2446A18900D6C241 /* http_util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = http_util.cpp; sourceTree = "<group>"; };
+		F989FA602446A18900D6C241 /* http_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = http_util.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +87,7 @@
 			children = (
 				F941DD6E2301A78000007B98 /* base */,
 				F941DD752301A78000007B98 /* cookies */,
+				F989FA5E2446A18900D6C241 /* http */,
 			);
 			name = net;
 			path = ../../../src/chromium/net;
@@ -91,10 +96,10 @@
 		F941DD6E2301A78000007B98 /* base */ = {
 			isa = PBXGroup;
 			children = (
-				F941DD6F2301A78000007B98 /* net_util.h */,
-				F941DD702301A78000007B98 /* net_export.h */,
 				F941DD712301A78000007B98 /* registry_controlled_domains */,
+				F941DD702301A78000007B98 /* net_export.h */,
 				F941DD742301A78000007B98 /* net_util.cpp */,
+				F941DD6F2301A78000007B98 /* net_util.h */,
 			);
 			path = base;
 			sourceTree = "<group>";
@@ -111,18 +116,27 @@
 		F941DD752301A78000007B98 /* cookies */ = {
 			isa = PBXGroup;
 			children = (
-				F941DD762301A78000007B98 /* cookie_constants.h */,
-				F941DD772301A78000007B98 /* parsed_cookie.h */,
-				F941DD782301A78000007B98 /* cookie_constants.cc */,
 				F941DD792301A78000007B98 /* canonical_cookie.cc */,
-				F941DD7A2301A78000007B98 /* parsed_cookie.cc */,
-				F941DD7B2301A78000007B98 /* cookie_util.h */,
-				F941DD7C2301A78000007B98 /* cookie_options.cc */,
-				F941DD7D2301A78000007B98 /* cookie_util.cc */,
 				F941DD7E2301A78000007B98 /* canonical_cookie.h */,
+				F941DD782301A78000007B98 /* cookie_constants.cc */,
+				F941DD762301A78000007B98 /* cookie_constants.h */,
+				F941DD7C2301A78000007B98 /* cookie_options.cc */,
 				F941DD7F2301A78000007B98 /* cookie_options.h */,
+				F941DD7D2301A78000007B98 /* cookie_util.cc */,
+				F941DD7B2301A78000007B98 /* cookie_util.h */,
+				F941DD7A2301A78000007B98 /* parsed_cookie.cc */,
+				F941DD772301A78000007B98 /* parsed_cookie.h */,
 			);
 			path = cookies;
+			sourceTree = "<group>";
+		};
+		F989FA5E2446A18900D6C241 /* http */ = {
+			isa = PBXGroup;
+			children = (
+				F989FA5F2446A18900D6C241 /* http_util.cpp */,
+				F989FA602446A18900D6C241 /* http_util.h */,
+			);
+			path = http;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -132,6 +146,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F989FA622446A18900D6C241 /* http_util.h in Headers */,
 				F941DD802301A78000007B98 /* net_util.h in Headers */,
 				F941DD8D2301A78000007B98 /* canonical_cookie.h in Headers */,
 				F941DD852301A78000007B98 /* cookie_constants.h in Headers */,
@@ -185,6 +200,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = F941DD5A2301A73A00007B98;
 			productRefGroup = F941DD642301A73A00007B98 /* Products */;
@@ -204,6 +220,7 @@
 				F941DD8C2301A78000007B98 /* cookie_util.cc in Sources */,
 				F941DD892301A78000007B98 /* parsed_cookie.cc in Sources */,
 				F941DD882301A78000007B98 /* canonical_cookie.cc in Sources */,
+				F989FA612446A18900D6C241 /* http_util.cpp in Sources */,
 				F941DD822301A78000007B98 /* registry_controlled_domain.cpp in Sources */,
 				F941DD842301A78000007B98 /* net_util.cpp in Sources */,
 				F941DD8B2301A78000007B98 /* cookie_options.cc in Sources */,

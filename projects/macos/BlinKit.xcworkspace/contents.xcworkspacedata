@@ -7,15 +7,6 @@
       <FileRef
          location = "group:duktape/duktape.xcodeproj">
       </FileRef>
-      <FileRef
-         location = "group:ots/ots.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:png/png.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:skia/skia.xcodeproj">
-      </FileRef>
    </Group>
    <Group
       location = "container:"
@@ -27,37 +18,10 @@
          location = "group:blink_crawler/blink_crawler.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:blink_platform/blink_platform.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:blink_web/blink_web.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:modules/modules.xcodeproj">
-      </FileRef>
-      <FileRef
          location = "group:net/net.xcodeproj">
       </FileRef>
       <FileRef
          location = "group:url/url.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:webcore_dom/webcore_dom.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:webcore_generated/webcore_generated.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:webcore_html/webcore_html.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:webcore_remaining/webcore_remaining.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:webcore_rendering/webcore_rendering.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:wtf/wtf.xcodeproj">
       </FileRef>
    </Group>
    <FileRef
@@ -68,12 +32,6 @@
    </FileRef>
    <FileRef
       location = "group:BlinKit/BlinKit.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:js/js.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:js_crawler/js_crawler.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:stub/stub.xcodeproj">

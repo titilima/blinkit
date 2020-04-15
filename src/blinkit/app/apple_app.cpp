@@ -11,16 +11,43 @@
 
 #include "apple_app.h"
 
+#include "base/mac/scoped_cftyperef.h"
+
 namespace BlinKit {
 
-void AppImpl::CreateInstance(void)
+AppleApp::AppleApp(int mode) : AppImpl(mode)
 {
-    new AppleApp;
+}
+
+AppleApp::~AppleApp(void) = default;
+
+void AppleApp::Exit(int code)
+{
+    ASSERT(false); // BKTODO:
+}
+
+int AppleApp::RunAndFinalize(void)
+{
+    ASSERT(false); // BKTODO:
+    return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+AppImpl* AppImpl::CreateInstance(int mode)
+{
+    return new AppleApp(mode);
+}
+
+void AppImpl::InitializeBackgroundInstance(void)
+{
+    ASSERT(false); // BKTODO:
 }
 
 void AppImpl::Log(const char *s)
 {
-    NSLog(@"%s", s);
+    base::ScopedCFTypeRef<CFStringRef> cf = CFStringCreateWithCStringNoCopy(nullptr, s, kCFStringEncodingUTF8, nullptr);
+    CFShowStr(cf);
 }
 
 } // namespace BlinKit

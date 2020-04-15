@@ -20,6 +20,13 @@ namespace BlinKit {
 
 class AppleApp final : public AppImpl
 {
+public:
+    AppleApp(int mode);
+    ~AppleApp(void) override;
+private:
+    // AppImpl
+    int RunAndFinalize(void) override;
+    void Exit(int code) override;
 };
 
 } // namespace BlinKit

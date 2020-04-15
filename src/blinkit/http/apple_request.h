@@ -17,23 +17,23 @@
 #include "request_impl.h"
 
 namespace BlinKit {
-
+#if 0
 class AppleRequest final : public RequestImpl
 {
 public:
-    AppleRequest(const char *URL, BkRequestClient &client);
+    AppleRequest(const char *URL, const BkRequestClient &client);
     ~AppleRequest(void);
 private:
     void RequestComplete(NSData *data, NSURLResponse *response, NSError *error);
 
     // BkRequest
-    int BKAPI Perform(void) override;
+    int Perform(void) override;
     // RequestImpl
     void Cancel(void) override;
 
     NSURLSessionTask *m_sessionTask;
 };
-
+#endif
 } // namespace BlinKit
 
 #endif // BLINKIT_BLINKIT_APPLE_REQUEST_H
