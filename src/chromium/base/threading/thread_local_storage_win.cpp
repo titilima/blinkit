@@ -1,8 +1,8 @@
 // -------------------------------------------------
 // BlinKit - base Library
 // -------------------------------------------------
-//   File Name: thread_local_storage.cpp
-// Description: thread_local_storage_win Class
+//   File Name: thread_local_storage_win.cpp
+// Description: PlatformThreadLocalStorage Class
 //      Author: Ziming Li
 //     Created: 2019-10-07
 // -------------------------------------------------
