@@ -2,7 +2,7 @@
 // BlinKit - BlinKit Library
 // -------------------------------------------------
 //   File Name: apple_task_runner.h
-// Description: AppleTaskRunner Class
+// Description: Task Runner Classes
 //      Author: Ziming Li
 //     Created: 2019-08-13
 // -------------------------------------------------
@@ -14,38 +14,21 @@
 
 #pragma once
 
-#include "task_runner_impl.h"
-
-@interface TaskWrapper : NSObject
-{
-@private
-    BlinKit::TaskRunnerImpl *m_taskRunner;
-    blink::WebTaskRunner::Task *m_task;
-}
-
-- (id)init;
-+ (id)taskWrapperWith: (BlinKit::TaskRunnerImpl *)taskRunner andTask: (blink::WebTaskRunner::Task *)task;
-- (void)fireBy: (NSDate *)date;
-- (void)exitRunLoopWithPort: (NSPort *)port;
-
-@end
+#include "base/single_thread_task_runner.h"
 
 namespace BlinKit {
 
-class AppleTaskRunner final : public TaskRunnerImpl
+class MainThreadTaskRunner final : public base::SingleThreadTaskRunner
 {
 public:
-    AppleTaskRunner(ThreadImpl &thread);
-
+    MainThreadTaskRunner(void) = default;
 private:
-    // blink::WebTaskRunner
-    void postTask(const blink::WebTraceLocation &location, Task *task) override;
-    void postDelayedTask(const blink::WebTraceLocation &location, Task *task, double delayMs) override;
-    blink::WebTaskRunner* clone(void) override;
+    static void Worker(void *data);
 
-    NSThread *m_nativeThread;
+    // TaskRunner overrides
+    bool PostDelayedTask(const base::Location &fromHere, const std::function<void()> &task, base::TimeDelta delay) override;
 };
 
 } // namespace BlinKit
 
-#endif
+#endif // BLINKIT_BLINKIT_APPLE_TASK_RUNNER_H
