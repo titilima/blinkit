@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - base Library
 // -------------------------------------------------
-//   File Name: time_apple.cpp
+//   File Name: time_posix.cpp
 // Description: Date & Time Helpers
 //      Author: Ziming Li
 //     Created: 2020-04-14
@@ -19,8 +19,11 @@ namespace base {
 
 TimeTicks TimeTicks::Now(void)
 {
-    assert(false); // BKTODO:
-    return TimeTicks();
+    timespec tp;
+    clock_gettime(CLOCK_MONOTONIC, &tp);
+    int64_t ms = tp.tv_sec * kMillisecondsPerSecond;
+    ms += tp.tv_nsec / 1000000;
+    return TimeTicks() + TimeDelta::FromMilliseconds(ms);
 }
 
 } // namespace base
