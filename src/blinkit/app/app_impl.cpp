@@ -26,8 +26,6 @@
 
 namespace BlinKit {
 
-static_assert(sizeof(BkInitData) == sizeof(BkInitDataV1));
-
 AppImpl::AppImpl(int mode) : m_mode(mode)
 {
     m_threadId = ThreadImpl::CurrentThreadId();
@@ -187,9 +185,6 @@ BKEXPORT void BKAPI BkExitApp(int code)
     AppImpl &app = AppImpl::Get();
     switch (app.Mode())
     {
-#ifdef OS_LINUX
-        case BK_APP_DEFAULT_MODE:
-#endif
         case BK_APP_FOREGROUND_MODE:
         case BK_APP_BACKGROUND_MODE:
             app.Exit(code);
@@ -208,7 +203,7 @@ BKEXPORT void BKAPI BkFinalize(void)
     AppImpl *app = static_cast<AppImpl *>(p);
     switch (app->Mode())
     {
-        case BK_APP_DEFAULT_MODE:
+        case BK_APP_FOREGROUND_MODE:
             delete app;
             break;
         default:
@@ -216,17 +211,13 @@ BKEXPORT void BKAPI BkFinalize(void)
     }
 }
 
-BKEXPORT bool_t BKAPI BkInitialize(BkInitData *initData)
+BKEXPORT bool_t BKAPI BkInitialize(int mode, void *reserved)
 {
     if (nullptr != Platform::Current())
         return false;
 
-    int mode = BK_APP_DEFAULT_MODE;
-    if (nullptr != initData)
-        mode = initData->mode;
     switch (mode)
     {
-        case BK_APP_DEFAULT_MODE:
         case BK_APP_FOREGROUND_MODE:
         {
             AppImpl *app = AppImpl::CreateInstance(mode);
@@ -241,7 +232,6 @@ BKEXPORT bool_t BKAPI BkInitialize(BkInitData *initData)
         }
         case BK_APP_BACKGROUND_MODE:
         {
-            ASSERT(nullptr != initData);
             AppImpl::InitializeBackgroundInstance();
             break;
         }

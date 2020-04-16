@@ -24,12 +24,6 @@ class BkAppClient;
 class CookieJarImpl;
 class MimeRegistryImpl;
 
-struct BkInitDataV1 {
-    size_t size;
-    int mode;
-    void *reserved;
-};
-
 class AppImpl : public blink::Platform, public ThreadImpl
 {
 public:

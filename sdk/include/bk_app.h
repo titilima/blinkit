@@ -20,36 +20,33 @@ extern "C" {
 #endif
 
 enum BkAppMode {
-    BK_APP_DEFAULT_MODE = 0,
-    BK_APP_FOREGROUND_MODE,
+    BK_APP_FOREGROUND_MODE = 0,
     BK_APP_BACKGROUND_MODE
 };
 
-struct BkInitData {
-    size_t size; // sizeof(BkInitData)
-    int mode;
-    void *reserved;
-};
-
-BKEXPORT bool_t BKAPI BkInitialize(struct BkInitData *initData);
+BKEXPORT bool_t BKAPI BkInitialize(int mode, void *reserved);
 
 /**
- * Default mode only
+ * If you have your own message loops, call BkFinalize before application exiting.
+ *   Cannot be used with BkRunApp.
+ *   Foreground mode only.
  */
 BKEXPORT void BKAPI BkFinalize(void);
 
 /**
- * Foreground mode only
+ * BkRunApp starts a message loop, and BlinKit will do the cleaning up stuff automatically.
+ *   Cannot be used with BkFinalize.
+ *   Foreground mode only.
  */
 BKEXPORT int BKAPI BkRunApp(void);
 
 /**
- * For Foreground & background mode
+ * BkExitApp exits the message loop which created by BkRunApp or in backgound mode.
  */
 BKEXPORT void BKAPI BkExitApp(int code);
 
 /**
- * Background mode only
+ * Execute code in the backgound thread.
  */
 typedef void (BKAPI * BkBackgroundWorker)(void *);
 BKEXPORT bool_t BKAPI BkAppExecute(BkBackgroundWorker worker, void *userData);
