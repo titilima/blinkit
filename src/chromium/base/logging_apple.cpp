@@ -25,8 +25,8 @@ void BkLog(const char *format, ...)
 
     base::ScopedCFTypeRef<CFStringRef> cf = CFStringCreateWithBytesNoCopy(nullptr,
         reinterpret_cast<const UInt8 *>(s.data()), s.length(),
-        kCFStringEncodingUTF8, false, nullptr);
-    CFShowStr(cf);
+        kCFStringEncodingUTF8, false, kCFAllocatorNull);
+    CFShow(cf);
 }
 
 } // namespace BlinKit

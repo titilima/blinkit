@@ -46,8 +46,9 @@ void AppImpl::InitializeBackgroundInstance(void)
 
 void AppImpl::Log(const char *s)
 {
-    base::ScopedCFTypeRef<CFStringRef> cf = CFStringCreateWithCStringNoCopy(nullptr, s, kCFStringEncodingUTF8, nullptr);
-    CFShowStr(cf);
+    base::ScopedCFTypeRef<CFStringRef> cf = CFStringCreateWithCStringNoCopy(nullptr, s, kCFStringEncodingUTF8,
+        kCFAllocatorNull);
+    CFShow(cf);
 }
 
 } // namespace BlinKit
