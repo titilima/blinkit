@@ -92,8 +92,6 @@ WTF::String WinApp::DefaultLocale(void)
 
 void WinApp::Exit(int code)
 {
-    ASSERT(BK_APP_FOREGROUND_MODE == Mode() || BK_APP_BACKGROUND_MODE == Mode());
-
     DWORD threadId = ThreadId();
     PostThreadMessage(threadId, WM_QUIT, code, 0);
     if (nullptr != m_backgroundThread)
@@ -134,8 +132,6 @@ void WinApp::Initialize(BkAppClient *client)
 
 int WinApp::RunAndFinalize(void)
 {
-    ASSERT(BK_APP_BACKGROUND_MODE == Mode() || BK_APP_FOREGROUND_MODE == Mode());
-
     MSG msg;
     while (GetMessage(&msg, nullptr, 0, 0))
     {

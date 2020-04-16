@@ -185,7 +185,7 @@ BKEXPORT void BKAPI BkExitApp(int code)
     AppImpl &app = AppImpl::Get();
     switch (app.Mode())
     {
-        case BK_APP_FOREGROUND_MODE:
+        case BK_APP_MAINTHREAD_MODE:
         case BK_APP_BACKGROUND_MODE:
             app.Exit(code);
             break;
@@ -203,7 +203,7 @@ BKEXPORT void BKAPI BkFinalize(void)
     AppImpl *app = static_cast<AppImpl *>(p);
     switch (app->Mode())
     {
-        case BK_APP_FOREGROUND_MODE:
+        case BK_APP_MAINTHREAD_MODE:
             delete app;
             break;
         default:
@@ -218,7 +218,7 @@ BKEXPORT bool_t BKAPI BkInitialize(int mode, void *reserved)
 
     switch (mode)
     {
-        case BK_APP_FOREGROUND_MODE:
+        case BK_APP_MAINTHREAD_MODE:
         {
             AppImpl *app = AppImpl::CreateInstance(mode);
             if (nullptr == app)
@@ -248,7 +248,7 @@ BKEXPORT int BKAPI BkRunApp(void)
     AppImpl &app = AppImpl::Get();
     switch (app.Mode())
     {
-        case BK_APP_FOREGROUND_MODE:
+        case BK_APP_MAINTHREAD_MODE:
             return app.RunAndFinalize();
         default:
             NOTREACHED();
