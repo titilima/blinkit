@@ -28,6 +28,7 @@ enum BkCrawlerConfig {
 };
 
 struct BkCrawlerClient {
+    size_t SizeOfStruct; // sizeof(BkCrawlerClient)
     void *UserData;
     void (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
     bool_t (BKAPI * HijackRequest)(const char *, struct BkBuffer *, void *);

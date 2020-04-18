@@ -80,6 +80,7 @@ protected:
     BkClientImpl(void)
     {
         memset(&m_rawClient, 0, sizeof(ClientType));
+        m_rawClient.SizeOfStruct = sizeof(ClientType);
     }
     static T* ToImpl(void *userData)
     {

@@ -22,6 +22,7 @@ extern "C" {
 #endif
 
 struct BkRequestClient {
+    size_t SizeOfStruct; // sizeof(BkRequestClient)
     void *UserData;
     void (BKAPI * RequestComplete)(BkResponse, void *);
     void (BKAPI * RequestFailed)(int errorCode, void *);
