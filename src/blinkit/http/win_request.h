@@ -23,7 +23,7 @@ class WinRequest final : public RequestImpl
 {
 public:
     WinRequest(const char *URL, const BkRequestClient &client);
-    ~WinRequest(void);
+    ~WinRequest(void) override;
 private:
     bool OpenSession(void);
     int OpenRequest(const std::string &URL);

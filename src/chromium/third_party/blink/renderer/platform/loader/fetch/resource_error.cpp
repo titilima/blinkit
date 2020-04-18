@@ -37,6 +37,8 @@
 
 #include "resource_error.h"
 
+#include "bk_def.h"
+
 using namespace BlinKit;
 
 namespace blink {
@@ -53,8 +55,7 @@ bool ResourceError::Compare(const ResourceError &a, const ResourceError &b)
 
 bool ResourceError::IsCancellation(void) const
 {
-    ASSERT(false); // BKTODO:
-    return false;
+    return BK_ERR_CANCELLED == m_errorCode;
 }
 
 } // namespace blink

@@ -27,7 +27,7 @@ public:
 
     blink::PlatformThreadId ThreadId(void) const final
     {
-        ASSERT(false); // BKTODO:
+        ASSERT(0 != m_threadId); // BKTODO: Initialize id in other threads.
         return m_threadId;
     }
 protected:

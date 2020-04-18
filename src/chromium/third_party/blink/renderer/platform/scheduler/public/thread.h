@@ -65,7 +65,11 @@ public:
         virtual void DidProcessTask(void) = 0;
     };
 
-    virtual std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(void) const { return nullptr; }
+    virtual std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(void) const
+    {
+        NOTREACHED();
+        return nullptr;
+    }
 
     virtual bool IsCurrentThread(void) const = 0;
     virtual PlatformThreadId ThreadId(void) const { return 0; }

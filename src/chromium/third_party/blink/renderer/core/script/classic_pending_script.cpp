@@ -83,7 +83,8 @@ void ClassicPendingScript::AdvanceReadyState(ReadyState newReadyState)
             // Call the streamer_done_ callback. Ensure that is_currently_streaming_
             // is reset only after the callback returns, to prevent accidentally
             // start streaming by work done within the callback. (crbug.com/754360)
-            std::function<void()> done = std::move(m_streamerDone);
+            std::function<void()> done;
+            done.swap(m_streamerDone);
             if (done)
                 done();
             m_isCurrentlyStreaming = false;
