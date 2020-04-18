@@ -43,7 +43,7 @@
 		F90A31EC243B33CD00F268E3 /* logging.h in Headers */ = {isa = PBXBuildFile; fileRef = F90A318B243B33CC00F268E3 /* logging.h */; };
 		F90A31ED243B33CD00F268E3 /* sequenced_task_runner.h in Headers */ = {isa = PBXBuildFile; fileRef = F90A318C243B33CC00F268E3 /* sequenced_task_runner.h */; };
 		F90A31EE243B33CD00F268E3 /* time.h in Headers */ = {isa = PBXBuildFile; fileRef = F90A318E243B33CC00F268E3 /* time.h */; };
-		F90A31F0243B33CD00F268E3 /* time_apple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F90A3190243B33CC00F268E3 /* time_apple.cpp */; };
+		F90A31F0243B33CD00F268E3 /* time_posix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F90A3190243B33CC00F268E3 /* time_posix.cpp */; };
 		F90A31F1243B33CD00F268E3 /* time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F90A3191243B33CC00F268E3 /* time.cpp */; };
 		F90A31F2243B33CD00F268E3 /* clamped_math.h in Headers */ = {isa = PBXBuildFile; fileRef = F90A3193243B33CC00F268E3 /* clamped_math.h */; };
 		F90A31F3243B33CD00F268E3 /* safe_math_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F90A3194243B33CC00F268E3 /* safe_math_impl.h */; };
@@ -127,7 +127,7 @@
 		F90A318B243B33CC00F268E3 /* logging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logging.h; sourceTree = "<group>"; };
 		F90A318C243B33CC00F268E3 /* sequenced_task_runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sequenced_task_runner.h; sourceTree = "<group>"; };
 		F90A318E243B33CC00F268E3 /* time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = time.h; sourceTree = "<group>"; };
-		F90A3190243B33CC00F268E3 /* time_apple.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = time_apple.cpp; sourceTree = "<group>"; };
+		F90A3190243B33CC00F268E3 /* time_posix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = time_posix.cpp; sourceTree = "<group>"; };
 		F90A3191243B33CC00F268E3 /* time.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = time.cpp; sourceTree = "<group>"; };
 		F90A3193243B33CC00F268E3 /* clamped_math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = clamped_math.h; sourceTree = "<group>"; };
 		F90A3194243B33CC00F268E3 /* safe_math_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = safe_math_impl.h; sourceTree = "<group>"; };
@@ -292,7 +292,7 @@
 		F90A318D243B33CC00F268E3 /* time */ = {
 			isa = PBXGroup;
 			children = (
-				F90A3190243B33CC00F268E3 /* time_apple.cpp */,
+				F90A3190243B33CC00F268E3 /* time_posix.cpp */,
 				F90A3191243B33CC00F268E3 /* time.cpp */,
 				F90A318E243B33CC00F268E3 /* time.h */,
 			);
@@ -532,7 +532,7 @@
 				F989FA642446A9CF00D6C241 /* thread_local_storage_posix.cpp in Sources */,
 				F90A3202243B33CD00F268E3 /* cpu.cc in Sources */,
 				F90A3204243B33CD00F268E3 /* prtime.cc in Sources */,
-				F90A31F0243B33CD00F268E3 /* time_apple.cpp in Sources */,
+				F90A31F0243B33CD00F268E3 /* time_posix.cpp in Sources */,
 				F90A321C243B33CD00F268E3 /* sequenced_task_runner.cpp in Sources */,
 				F90A31E9243B33CD00F268E3 /* location.cc in Sources */,
 				F90A31DA243B33CD00F268E3 /* string_util_constants.cc in Sources */,

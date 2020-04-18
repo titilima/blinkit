@@ -24,9 +24,14 @@ public:
     AppleApp(int mode);
     ~AppleApp(void) override;
 private:
+    // Thread
+    std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(void) const override;
     // AppImpl
     int RunAndFinalize(void) override;
     void Exit(int code) override;
+
+    int m_exitCode = EXIT_SUCCESS;
+    std::shared_ptr<base::SingleThreadTaskRunner> m_taskRunner;
 };
 
 } // namespace BlinKit

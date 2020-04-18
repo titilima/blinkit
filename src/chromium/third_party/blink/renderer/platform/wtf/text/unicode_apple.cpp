@@ -11,6 +11,8 @@
 
 #include "unicode.h"
 
+#include "base/mac/scoped_cftyperef.h"
+
 namespace WTF {
 namespace Unicode {
 
@@ -28,9 +30,11 @@ CharDirection Direction(UChar32 c)
 
 UChar32 FoldCase(UChar32 c)
 {
-    wchar_t wch = static_cast<wchar_t>(c);
-    ASSERT(false); // BKTODO:
-    return wch;
+    UniChar uch = c;
+    base::ScopedCFTypeRef<CFMutableStringRef> s = CFStringCreateMutableWithExternalCharactersNoCopy(nullptr,
+        &uch, 1, 1, kCFAllocatorNull);
+    CFStringLowercase(s, nullptr);
+    return uch;
 }
 
 int FoldCase(UChar *result, int resultLength, const UChar *src, int srcLength, bool *error)

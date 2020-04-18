@@ -14,26 +14,25 @@
 
 #pragma once
 
-#include "request_impl.h"
+#include <Foundation/Foundation.h>
+#include "blinkit/http/request_impl.h"
 
 namespace BlinKit {
-#if 0
+
 class AppleRequest final : public RequestImpl
 {
 public:
     AppleRequest(const char *URL, const BkRequestClient &client);
-    ~AppleRequest(void);
+    ~AppleRequest(void) override;
 private:
     void RequestComplete(NSData *data, NSURLResponse *response, NSError *error);
 
-    // BkRequest
-    int Perform(void) override;
     // RequestImpl
+    int Perform(void) override;
+    ControllerImpl* GetController(void) override;
     void Cancel(void) override;
-
-    NSURLSessionTask *m_sessionTask;
 };
-#endif
+
 } // namespace BlinKit
 
 #endif // BLINKIT_BLINKIT_APPLE_REQUEST_H
