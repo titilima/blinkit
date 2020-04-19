@@ -12,9 +12,8 @@
 #include "curl_request.h"
 
 #include "base/strings/string_util.h"
-#include "url/gurl.h"
-
-#include "http/response_impl.h"
+#include "blinkit/common/bk_url.h"
+#include "blinkit/http/response_impl.h"
 
 namespace BlinKit {
 
@@ -32,8 +31,8 @@ CURLRequest::CURLRequest(const char *URL, const BkRequestClient &client)
 
 CURLRequest::~CURLRequest(void)
 {
-    if (nullptr != m_headers)
-        curl_slist_free_all(m_headers);
+    if (nullptr != m_headersList)
+        curl_slist_free_all(m_headersList);
     curl_easy_cleanup(m_curl);
 }
 
@@ -82,7 +81,7 @@ int CURLRequest::Perform(void)
     int err = BK_ERR_UNKNOWN;
     do {
         // 1. Check URL.
-        GURL u(m_URL);
+        BkURL u(m_URL);
         if (!u.SchemeIsHTTPOrHTTPS())
         {
             err = BK_ERR_URI;
@@ -94,7 +93,7 @@ int CURLRequest::Perform(void)
             curl_easy_setopt(m_curl, CURLOPT_POST, OPT_TRUE);
 
         // 3. Process headers.
-        for (const auto &it : RawHeaders())
+        for (const auto &it : m_headers.GetRawMap())
         {
             CURLoption opt = TranslateOption(it.first);
             if (CURLOPT_HTTPHEADER == opt)
@@ -102,15 +101,15 @@ int CURLRequest::Perform(void)
                 std::string header(it.first);
                 header.append(": ");
                 header.append(it.second);
-                m_headers = curl_slist_append(m_headers, header.c_str());
+                m_headersList = curl_slist_append(m_headersList, header.c_str());
             }
             else
             {
                 curl_easy_setopt(m_curl, opt, it.second.c_str());
             }
         }
-        if (nullptr != m_headers)
-            curl_easy_setopt(m_curl, CURLOPT_HTTPHEADER, m_headers);
+        if (nullptr != m_headersList)
+            curl_easy_setopt(m_curl, CURLOPT_HTTPHEADER, m_headersList);
 
         // 4. Fill body.
         assert(m_body.empty()); // BKTODO:

@@ -1,10 +1,14 @@
 config=debug
 
+CC = clang
+CCFLAGS = -fPIC
 CXX = clang++
-CXXFLAGS = -fPIC -fvisibility=hidden -std=c++17 -stdlib=libc++ -include _pc.h
+CXXFLAGS = -std=c++17 -stdlib=libc++
 ifeq ($(config), release)
+CCFLAGS += -DNDEBUG
 CXXFLAGS += -DNDEBUG
 else
+CCFLAGS += -g
 CXXFLAGS += -g
 endif
 
@@ -18,14 +22,15 @@ help:
 	@echo '    make all                # Build BlinKit for debugging'
 	@echo '    make all config=release # Build BlinKit for release'
 	@echo '    make clean              # Cleanup all object files'
+	@echo '    make test               # Build test program using BkTest.cpp'
 
-include base.mk blink.mk url.mk BlinKit.mk
+include base.mk blink.mk duktape.mk net.mk stub.mk url.mk BlinKit.mk
 
-AllObjects = $(BaseObjects) $(BlinkObjects) $(URLObjects) $(CrawlerObjects)
+AllObjects = $(BaseObjects) $(BlinkObjects) $(DuktapeObjects) $(NetObjects) $(StubObjects) $(URLObjects) $(CrawlerObjects)
 
 all: $(AllObjects)
-	$(CXX) -fPIC -shared $(AllObjects) -lcurl -o libBlinKit.so
+	ar -rcs libBlinKit.a $(AllObjects)
 test: BkTest.cpp
-	$(CXX) -g -std=c++17 -stdlib=libc++ -I$(BkRoot)sdk/include BkTest.cpp -L . -lBlinKit -o BkTest
+	$(CXX) -g -std=c++17 -stdlib=libc++ -I$(BkRoot)sdk/include BkTest.cpp -L . -lBlinKit -lcurl -lpthread -lz -o BkTest
 clean:
 	rm -f $(AllObjects)

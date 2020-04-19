@@ -17,7 +17,7 @@
 #include <pthread.h>
 #include <curl/curl.h>
 #include <curl/easy.h>
-#include "request_impl.h"
+#include "blinkit/http/request_impl.h"
 
 namespace BlinKit {
 
@@ -39,7 +39,7 @@ private:
 
     CURL *m_curl;
     pthread_t m_thread = 0;
-    curl_slist *m_headers = nullptr;
+    curl_slist *m_headersList = nullptr;
 };
 
 } // namespace BlinKit

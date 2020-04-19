@@ -220,11 +220,13 @@
 /renderer/platform/wtf/text/text_codec_latin1.cc
 /renderer/platform/wtf/text/text_codec_replacement.cc
 /renderer/platform/wtf/text/text_codec_user_defined.cpp
+/renderer/platform/wtf/text/text_codec_user_defined_posix.cpp
 /renderer/platform/wtf/text/text_codec_utf16.cc
 /renderer/platform/wtf/text/text_codec_utf8.cc
 /renderer/platform/wtf/text/text_encoding.cc
 /renderer/platform/wtf/text/text_encoding_registry.cpp
 /renderer/platform/wtf/text/text_position.cc
+/renderer/platform/wtf/text/unicode_posix.cpp
 /renderer/platform/wtf/text/utf8.cc
 /renderer/platform/wtf/text/wtf_string.cc
 /renderer/platform/wtf/threading.cc
