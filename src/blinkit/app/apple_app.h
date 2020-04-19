@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "app_impl.h"
+#include "blinkit/app/app_impl.h"
 
 namespace BlinKit {
 

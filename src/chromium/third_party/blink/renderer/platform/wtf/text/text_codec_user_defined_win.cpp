@@ -52,7 +52,7 @@ std::unique_ptr<WTF::TextCodec> NewUserDefinedTextDecoder(const WTF::TextEncodin
     }
     else
     {
-        ASSERT(false); // Not reached: any other code pages to support?
+        NOTREACHED(); // Any other code pages to support?
         return nullptr;
     }
 

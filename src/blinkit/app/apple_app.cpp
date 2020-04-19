@@ -49,7 +49,10 @@ std::shared_ptr<base::SingleThreadTaskRunner> AppleApp::GetTaskRunner(void) cons
 int AppleApp::RunAndFinalize(void)
 {
     CFRunLoopRun();
-    return m_exitCode;
+
+    int exitCode = m_exitCode;
+    delete this;
+    return exitCode;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

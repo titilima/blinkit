@@ -43,7 +43,7 @@ namespace BlinKit {
 
 std::unique_ptr<WTF::TextCodec> NewUserDefinedTextDecoder(const WTF::TextEncoding &textEncoding, const void *)
 {
-    ASSERT(false); // Not reached: any other code pages to support?
+    NOTREACHED(); // Any other encodings to support?
     return nullptr;
 }
 
