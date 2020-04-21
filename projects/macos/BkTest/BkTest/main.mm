@@ -21,6 +21,11 @@ static const char UserScript[] = R"(
 })
 )";
 
+static const char ReadyCode[] = R"(
+    var e = document.querySelector('h1');
+    console.log(e.textContent);
+)";
+
 static const char URL[] = "https://example.org";
 
 class Client final : public BkCrawlerClientImpl
@@ -57,6 +62,9 @@ private:
     }
     void DocumentReady(void) override
     {
+        BkJSContext ctx = BkGetScriptContextFromCrawler(m_crawler);
+        BkJSEvaluate(ctx, ReadyCode, BK_EVAL_IGNORE_RETURN_VALUE);
+
         BkExitApp(EXIT_SUCCESS);
     }
 
