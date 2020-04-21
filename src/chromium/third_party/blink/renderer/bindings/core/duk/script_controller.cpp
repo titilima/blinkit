@@ -59,7 +59,7 @@ static void CommonCallback(ContextImpl *ctxImpl, duk_context *ctx)
     if (!duk_is_error(ctx, -1))
         return;
 
-#ifdef _DEBUG
+#ifndef NDEBUG
     duk_get_prop_string(ctx, -1, "stack");
 #endif
     std::string str = Duk::To<std::string>(ctx, -1);

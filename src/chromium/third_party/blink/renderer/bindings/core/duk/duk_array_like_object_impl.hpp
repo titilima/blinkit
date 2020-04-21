@@ -72,7 +72,7 @@ protected:
         }
         else
         {
-#ifdef _DEBUG
+#ifndef NDEBUG
             if (k == "nodeType") // Bypass jQuery.
                 return 0;
 #endif

@@ -66,7 +66,7 @@ WebMimeRegistry::SupportsType MimeRegistryImpl::supportsJavaScriptMIMEType(const
         return IsSupported;
     }
 
-#ifdef _DEBUG
+#ifndef NDEBUG
     if (mimeType.equals("text/html"))
         return IsNotSupported;
 

@@ -37,7 +37,7 @@ public:
 
     bool IsInGCPool(void) const { return m_inGCPool; }
     bool CanBePooled(void) const {
-#ifdef _DEBUG
+#ifndef NDEBUG
         return m_canBePooled;
 #else
         return true;
@@ -48,14 +48,14 @@ public:
 protected:
     ScriptWrappable(void)
         : m_contextRetained(false), m_inGCPool(false)
-#ifdef _DEBUG
+#ifndef NDEBUG
         , m_canBePooled(true)
 #endif
     {
     }
 
     void SetCannotBePooled(void) {
-#ifdef _DEBUG
+#ifndef NDEBUG
         m_canBePooled = false;
 #endif
     }
@@ -66,7 +66,7 @@ private:
 
     bool m_contextRetained : 1;
     bool m_inGCPool : 1;
-#ifdef _DEBUG
+#ifndef NDEBUG
     bool m_canBePooled : 1;
 #endif
     void *m_contextObject = nullptr;

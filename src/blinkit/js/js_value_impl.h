@@ -44,7 +44,7 @@ private:
 
     int m_code;
     std::string m_name, m_message, m_fileName;
-#ifdef _DEBUG
+#ifndef NDEBUG
     std::string m_stack;
 #endif
     int m_lineNumber = 0;

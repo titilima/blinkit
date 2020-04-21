@@ -23,7 +23,7 @@ SchedulerImpl::SchedulerImpl(ThreadImpl &thread) : m_thread(thread)
     // Nothing
 }
 
-#ifdef _DEBUG
+#ifndef NDEBUG
 SchedulerImpl::~SchedulerImpl(void)
 {
     assert(!m_pending);
@@ -32,7 +32,7 @@ SchedulerImpl::~SchedulerImpl(void)
 
 void SchedulerImpl::addPendingNavigation(void)
 {
-#ifdef _DEBUG
+#ifndef NDEBUG
     m_pending = true;
 #endif
 }
@@ -75,7 +75,7 @@ void SchedulerImpl::postNonNestableIdleTask(const WebTraceLocation &location, We
 
 void SchedulerImpl::removePendingNavigation(void)
 {
-#ifdef _DEBUG
+#ifndef NDEBUG
     m_pending = false;
 #endif
 }

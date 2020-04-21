@@ -55,7 +55,7 @@ private:
 
     duk_context *m_ctx;
     const char *m_name;
-#ifdef _DEBUG
+#ifndef NDEBUG
     const int m_top;
 #endif
 
@@ -87,7 +87,7 @@ public:
     static duk_idx_t CreateScriptObject(duk_context *ctx, const char *protoName, blink::ScriptWrappable *nativeObject);
 private:
     duk_context *m_ctx;
-#ifdef _DEBUG
+#ifndef NDEBUG
     void *m_heapPtr;
 #endif
 };

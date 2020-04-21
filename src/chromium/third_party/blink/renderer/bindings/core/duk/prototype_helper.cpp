@@ -22,7 +22,7 @@ static const char Prototypes[] = "prototypes";
 
 PrototypeHelper::PrototypeHelper(duk_context *ctx)
     : m_ctx(ctx)
-#ifdef _DEBUG
+#ifndef NDEBUG
     , m_heapPtr(duk_get_heapptr(ctx, -1))
 #endif
 {
@@ -31,7 +31,7 @@ PrototypeHelper::PrototypeHelper(duk_context *ctx)
 
 PrototypeHelper::~PrototypeHelper(void)
 {
-#ifdef _DEBUG
+#ifndef NDEBUG
     ASSERT(duk_get_heapptr(m_ctx, -2) == m_heapPtr);
 #endif
     duk_put_prop_string(m_ctx, -2, Prototypes);
@@ -85,7 +85,7 @@ const char PrototypeEntry::NameKey[] = DUK_HIDDEN_SYMBOL("name");
 
 PrototypeEntry::PrototypeEntry(duk_context *ctx, const char *name)
     : m_ctx(ctx), m_name(name)
-#ifdef _DEBUG
+#ifndef NDEBUG
     , m_top(duk_get_top(ctx))
 #endif
 {
@@ -93,7 +93,7 @@ PrototypeEntry::PrototypeEntry(duk_context *ctx, const char *name)
 
 PrototypeEntry::~PrototypeEntry(void)
 {
-#ifdef _DEBUG
+#ifndef NDEBUG
     ASSERT(duk_get_top(m_ctx) == m_top);
 #endif
 

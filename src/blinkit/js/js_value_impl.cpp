@@ -79,7 +79,7 @@ JSErrorImpl::JSErrorImpl(duk_context *ctx, duk_idx_t idx)
     m_name = Extract(ctx, idx, "name");
     m_message = Extract(ctx, idx, "message");
     m_fileName = Extract(ctx, idx, "fileName");
-#ifdef _DEBUG
+#ifndef NDEBUG
     m_stack = Extract(ctx, idx, "stack");
 #endif
     if (duk_get_prop_string(ctx, idx, "lineNumber"))

@@ -720,7 +720,7 @@ void Node::SetParentOrShadowHostNode(ContainerNode *parent)
 {
     ASSERT(IsMainThread());
     m_parentOrShadowHostNode = parent;
-#ifdef _DEBUG
+#ifndef NDEBUG
     if (nullptr != parent && !parent->IsShadowRoot())
         ASSERT(!IsContextRetained());
 #endif
