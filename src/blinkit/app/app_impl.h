@@ -14,12 +14,11 @@
 
 #pragma once
 
+#include "bk_app.h"
 #include "third_party/blink/public/platform/platform.h"
 #include "blinkit/blink_impl/thread_impl.h"
 
 namespace BlinKit {
-
-class BkAppClient;
 
 class CookieJarImpl;
 class MimeRegistryImpl;
@@ -27,10 +26,10 @@ class MimeRegistryImpl;
 class AppImpl : public blink::Platform, public ThreadImpl
 {
 public:
-    static AppImpl* CreateInstance(int mode);
+    static AppImpl* CreateInstance(int mode, BkAppClient *client);
     virtual ~AppImpl(void);
 
-    static void InitializeBackgroundInstance(void);
+    static void InitializeBackgroundInstance(BkAppClient *client);
 
     static AppImpl& Get(void);
     int Mode(void) const { return m_mode; }
@@ -52,7 +51,7 @@ public:
     blink::WebThread* currentThread(void) final;
 #endif
 protected:
-    AppImpl(int mode);
+    AppImpl(int mode, BkAppClient *client);
 private:
     // blink::Platform
     std::unique_ptr<blink::WebURLLoader> CreateURLLoader(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner) final;
@@ -71,6 +70,7 @@ private:
     std::unordered_map<blink::PlatformThreadId, ThreadImpl *> m_threads;
 #endif
     const int m_mode;
+    BkAppClient m_client;
     std::unique_ptr<blink::scheduler::WebThreadScheduler> m_mainThreadScheduler;
 };
 

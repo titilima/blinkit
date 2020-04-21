@@ -25,7 +25,7 @@ class WinThemeEngine;
 class WinApp final : public AppImpl
 {
 public:
-    WinApp(int mode, HANDLE hBackgroundThread = nullptr);
+    WinApp(int mode, BkAppClient *client, HANDLE hBackgroundThread = nullptr);
     ~WinApp(void) override;
 
     static WinApp& Get(void);

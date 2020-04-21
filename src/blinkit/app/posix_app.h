@@ -23,7 +23,7 @@ class TaskLoop;
 class PosixApp final : public AppImpl
 {
 public:
-    PosixApp(int mode);
+    PosixApp(int mode, BkAppClient *client);
     ~PosixApp(void) override;
 private:
     // Thread

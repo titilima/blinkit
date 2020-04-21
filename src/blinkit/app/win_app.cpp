@@ -11,7 +11,6 @@
 
 #include "win_app.h"
 
-#include "bk_app.h"
 #include "base/strings/sys_string_conversions.h"
 #include "blinkit/blink_impl/win_single_thread_task_runner.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
@@ -39,11 +38,12 @@ struct BackgoundThreadData
     }
 
     HANDLE hEvent;
+    BkAppClient *client = nullptr;
     HANDLE hThread = nullptr;
 };
 
-WinApp::WinApp(int mode, HANDLE hBackgroundThread)
-    : AppImpl(mode)
+WinApp::WinApp(int mode, BkAppClient *client, HANDLE hBackgroundThread)
+    : AppImpl(mode, client)
     , m_taskRunner(std::make_shared<WinSingleThreadTaskRunner>())
     , m_backgroundThread(hBackgroundThread)
 {
@@ -61,7 +61,7 @@ DWORD WINAPI WinApp::BackgroundThread(PVOID param)
 {
     BackgoundThreadData *data = reinterpret_cast<BackgoundThreadData *>(param);
 
-    WinApp *app = new WinApp(BK_APP_BACKGROUND_MODE, data->hThread);
+    WinApp *app = new WinApp(BK_APP_BACKGROUND_MODE, data->client, data->hThread);
     if (nullptr == app)
     {
         ASSERT(nullptr != app);
@@ -188,14 +188,15 @@ blink::WebThemeEngine* WinApp::themeEngine(void)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-AppImpl* AppImpl::CreateInstance(int mode)
+AppImpl* AppImpl::CreateInstance(int mode, BkAppClient *client)
 {
-    return new WinApp(mode);
+    return new WinApp(mode, client);
 }
 
-void AppImpl::InitializeBackgroundInstance(void)
+void AppImpl::InitializeBackgroundInstance(BkAppClient *client)
 {
     BackgoundThreadData data;
+    data.client = client;
     data.hThread = CreateThread(nullptr, 0, WinApp::BackgroundThread, &data, 0, nullptr);
     WaitForSingleObject(data.hEvent, INFINITE);
 }

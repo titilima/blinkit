@@ -21,7 +21,7 @@ namespace BlinKit {
 class AppleApp final : public AppImpl
 {
 public:
-    AppleApp(int mode);
+    AppleApp(int mode, BkAppClient *client);
     ~AppleApp(void) override;
 private:
     // Thread

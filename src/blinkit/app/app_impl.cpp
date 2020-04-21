@@ -11,7 +11,6 @@
 
 #include "app_impl.h"
 
-#include "bk_app.h"
 #include "base/single_thread_task_runner.h"
 #include "blinkit/app/app_constants.h"
 #include "blinkit/blink_impl/url_loader_impl.h"
@@ -26,13 +25,26 @@
 
 namespace BlinKit {
 
-AppImpl::AppImpl(int mode) : m_mode(mode)
+AppImpl::AppImpl(int mode, BkAppClient *client) : m_mode(mode)
 {
+    memset(&m_client, 0, sizeof(BkAppClient));
+    if (nullptr != client)
+    {
+        size_t size = sizeof(BkAppClient);
+        if (client->SizeOfStruct < size)
+            size = client->SizeOfStruct;
+        memcpy(&m_client, client, size);
+    }
+
     m_threadId = ThreadImpl::CurrentThreadId();
     AttachMainThread(this);
 }
 
-AppImpl::~AppImpl(void) = default;
+AppImpl::~AppImpl(void)
+{
+    if (nullptr != m_client.Exit)
+        m_client.Exit(m_client.UserData);
+}
 
 std::unique_ptr<blink::WebURLLoader> AppImpl::CreateURLLoader(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner)
 {
@@ -211,7 +223,7 @@ BKEXPORT void BKAPI BkFinalize(void)
     }
 }
 
-BKEXPORT bool_t BKAPI BkInitialize(int mode, void *reserved)
+BKEXPORT bool_t BKAPI BkInitialize(int mode, BkAppClient *client)
 {
     if (nullptr != Platform::Current())
         return false;
@@ -220,7 +232,7 @@ BKEXPORT bool_t BKAPI BkInitialize(int mode, void *reserved)
     {
         case BK_APP_MAINTHREAD_MODE:
         {
-            AppImpl *app = AppImpl::CreateInstance(mode);
+            AppImpl *app = AppImpl::CreateInstance(mode, client);
             if (nullptr == app)
             {
                 ASSERT(nullptr != app);
@@ -232,7 +244,7 @@ BKEXPORT bool_t BKAPI BkInitialize(int mode, void *reserved)
         }
         case BK_APP_BACKGROUND_MODE:
         {
-            AppImpl::InitializeBackgroundInstance();
+            AppImpl::InitializeBackgroundInstance(client);
             break;
         }
 

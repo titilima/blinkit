@@ -11,7 +11,6 @@
 
 #include "apple_app.h"
 
-#include "bk_app.h"
 #include "blinkit/apple/cf.h"
 #include "blinkit/blink_impl/apple_task_runner.h"
 
@@ -29,7 +28,7 @@ static std::shared_ptr<base::SingleThreadTaskRunner> CreateTaskRunner(int appMod
     return nullptr;
 }
 
-AppleApp::AppleApp(int mode) : AppImpl(mode), m_taskRunner(CreateTaskRunner(mode))
+AppleApp::AppleApp(int mode, BkAppClient *client) : AppImpl(mode, client), m_taskRunner(CreateTaskRunner(mode))
 {
 }
 
@@ -57,12 +56,12 @@ int AppleApp::RunAndFinalize(void)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-AppImpl* AppImpl::CreateInstance(int mode)
+AppImpl* AppImpl::CreateInstance(int mode, BkAppClient *client)
 {
-    return new AppleApp(mode);
+    return new AppleApp(mode, client);
 }
 
-void AppImpl::InitializeBackgroundInstance(void)
+void AppImpl::InitializeBackgroundInstance(BkAppClient *client)
 {
     ASSERT(false); // BKTODO:
 }

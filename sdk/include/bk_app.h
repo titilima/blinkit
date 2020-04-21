@@ -24,7 +24,13 @@ enum BkAppMode {
     BK_APP_BACKGROUND_MODE
 };
 
-BKEXPORT bool_t BKAPI BkInitialize(int mode, void *reserved);
+struct BkAppClient {
+    size_t SizeOfStruct; // sizeof(BkAppClient)
+    void *UserData;
+    void (BKAPI * Exit)(void *);
+};
+
+BKEXPORT bool_t BKAPI BkInitialize(int mode, struct BkAppClient *client);
 
 /**
  * If you have your own message loops, call BkFinalize before application exiting.
