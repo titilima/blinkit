@@ -18,6 +18,8 @@
 
 namespace BlinKit {
 
+class TaskLoop;
+
 class PosixApp final : public AppImpl
 {
 public:
@@ -29,6 +31,8 @@ private:
     // AppImpl
     int RunAndFinalize(void) override;
     void Exit(int code) override;
+
+    std::unique_ptr<TaskLoop> m_taskLoop;
 };
 
 } // namespace BlinKit

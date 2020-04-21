@@ -12,10 +12,12 @@
 #include "posix_app.h"
 
 #include "bk_app.h"
+#include "blinkit/blink_impl/posix_task_runner.h"
+#include "blinkit/posix/task_loop.h"
 
 namespace BlinKit {
 
-PosixApp::PosixApp(int mode) : AppImpl(mode)
+PosixApp::PosixApp(int mode) : AppImpl(mode), m_taskLoop(std::make_unique<TaskLoop>())
 {
 }
 
@@ -23,19 +25,19 @@ PosixApp::~PosixApp(void) = default;
 
 void PosixApp::Exit(int code)
 {
-    ASSERT(false); // BKTODO:
+    m_taskLoop->Exit(code);
 }
 
 std::shared_ptr<base::SingleThreadTaskRunner> PosixApp::GetTaskRunner(void) const
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
+    return m_taskLoop->GetTaskRunner();
 }
 
 int PosixApp::RunAndFinalize(void)
 {
-    ASSERT(false); // BKTODO:
-    return 0;
+    int exitCode = m_taskLoop->Run();
+    delete this;
+    return exitCode;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +54,7 @@ void AppImpl::InitializeBackgroundInstance(void)
 
 void AppImpl::Log(const char *s)
 {
-    ASSERT(false); // BKTODO:
+    fputs(s, stderr);
 }
 
 } // namespace BlinKit

@@ -18,13 +18,17 @@
 
 namespace BlinKit {
 
-class PosixThreadTaskRunner final : public base::SingleThreadTaskRunner
+class PosixTaskRunner final : public base::SingleThreadTaskRunner
 {
 public:
-    PosixThreadTaskRunner(void) = default;
+    typedef std::function<void(const base::Location &, const std::function<void()> &)> TaskPoster;
+
+    PosixTaskRunner(const TaskPoster &taskPoster);
 private:
     // TaskRunner overrides
     bool PostDelayedTask(const base::Location &fromHere, const std::function<void()> &task, base::TimeDelta delay) override;
+
+    const TaskPoster m_taskPoster;
 };
 
 } // namespace BlinKit

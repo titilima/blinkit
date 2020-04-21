@@ -11,6 +11,8 @@
 
 #include "unicode.h"
 
+#include <cctype>
+
 namespace WTF {
 namespace Unicode {
 
@@ -28,8 +30,7 @@ CharDirection Direction(UChar32 c)
 
 UChar32 FoldCase(UChar32 c)
 {
-    ASSERT(false); // BKTODO:
-    return c;
+    return tolower(c);
 }
 
 int FoldCase(UChar *result, int resultLength, const UChar *src, int srcLength, bool *error)

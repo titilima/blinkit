@@ -7,7 +7,8 @@ CrawlerObjects = app_constants.o app_impl.o posix_app.o \
 	curl_request.o request_impl.o response_impl.o \
 	context_impl.o js_value_impl.o \
 	http_loader_task.o loader_task.o \
-	buffer.o controller.o
+	buffer.o controller.o \
+	task_loop.o
 
 app_constants.o: $(CrawlerSrc)/app/app_constants.cpp
 	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
@@ -61,4 +62,7 @@ loader_task.o: $(CrawlerSrc)/loader_tasks/loader_task.cpp
 buffer.o: $(CrawlerSrc)/misc/buffer.cpp
 	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
 controller.o: $(CrawlerSrc)/misc/controller.cpp
+	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
+
+task_loop.o: $(CrawlerSrc)/posix/task_loop.cpp
 	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
