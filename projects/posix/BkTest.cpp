@@ -1,16 +1,14 @@
 // -------------------------------------------------
 // BlinKit - Test Program
 // -------------------------------------------------
-//   File Name: win_main.cpp
-// Description: Application Entry
+//   File Name: BkTest.cpp
+// Description: Test Application
 //      Author: Ziming Li
-//     Created: 2019-09-03
+//     Created: 2019-09-10
 // -------------------------------------------------
-// Copyright (C) 2018 MingYang Software Technology.
+// Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#include <Windows.h>
-#include <tchar.h>
 #include <bk_app.h>
 #include <bk_js.h>
 #include <BlinKit.hpp>
@@ -40,7 +38,7 @@ public:
     {
         m_crawler = BkCreateCrawler(*this);
         BkRunCrawler(m_crawler, URL);
-        return BkRunApp();   
+        return BkRunApp();
     }
 private:
     static void BKAPI Exit(void *pThis)
@@ -66,7 +64,7 @@ private:
     BkCrawler m_crawler = nullptr;
 };
 
-int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE, PTSTR, int nShowCmd)
+int main(void)
 {
     Client client;
     BkInitialize(BK_APP_MAINTHREAD_MODE, client.GetAppClient());

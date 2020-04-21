@@ -26,12 +26,6 @@ projects/posix/BkTest
 !sdk/win32/BlinKit.props
 !PrefixHeader.pch
 
-*Test.cpp
-*Test.h
-*Test.mm
-*TestHelper.h
-*TestHelpers.cpp
-*TestHelpers.h
 *_unittest.cc
 
 *.cod

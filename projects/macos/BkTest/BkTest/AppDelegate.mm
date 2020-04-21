@@ -10,7 +10,7 @@
 // -------------------------------------------------
 
 #import "AppDelegate.h"
-#import <BkCrawler/BlinKit.h>
+#import <BkCrawler/bk_app.h>
 
 @interface AppDelegate ()
 
@@ -25,7 +25,7 @@
 
 - (void)applicationWillTerminate: (NSNotification *)aNotification
 {
-    BkGetApp()->Exit();
+    BkFinalize();
 }
 
 @end

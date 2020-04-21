@@ -10,10 +10,64 @@
 // -------------------------------------------------
 
 #import <Cocoa/Cocoa.h>
-#import <BkCrawler/BlinKit.h>
+#import <BkCrawler/bk_app.h>
+#import <BkCrawler/bk_js.h>
+#import <BkCrawler/BlinKit.hpp>
+
+using namespace BlinKit;
+
+static const char UserScript[] = R"(
+({
+})
+)";
+
+static const char URL[] = "https://example.org";
+
+class Client final : public BkCrawlerClientImpl
+{
+public:
+    Client(void)
+    {
+        memset(&m_appClient, 0, sizeof(BkAppClient));
+        m_appClient.SizeOfStruct = sizeof(BkAppClient);
+        m_appClient.UserData = this;
+        m_appClient.Exit = Exit;
+    }
+
+    BkAppClient* GetAppClient(void) { return &m_appClient; }
+    int Run(const char *URL)
+    {
+        m_crawler = BkCreateCrawler(*this);
+        BkRunCrawler(m_crawler, URL);
+        return BkRunApp();
+    }
+private:
+    static void BKAPI Exit(void *pThis)
+    {
+        BkDestroyCrawler(reinterpret_cast<Client *>(pThis)->m_crawler);
+    }
+    std::string GetCrawlerConfig(int cfg) override
+    {
+        switch (cfg)
+        {
+            case BK_CFG_OBJECT_SCRIPT:
+                return UserScript;
+        }
+        return std::string();
+    }
+    void DocumentReady(void) override
+    {
+        BkExitApp(EXIT_SUCCESS);
+    }
+
+    BkAppClient m_appClient;
+    BkCrawler m_crawler = nullptr;
+};
 
 int main(int argc, const char *argv[])
 {
-    BkInitialize(nullptr);
-    return NSApplicationMain(argc, argv);
+    Client client;
+    BkInitialize(BK_APP_MAINTHREAD_MODE, client.GetAppClient());
+    return client.Run(URL);
+    //return NSApplicationMain(argc, argv);
 }
