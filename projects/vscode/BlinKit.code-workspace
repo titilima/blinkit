@@ -18,7 +18,7 @@
             "{**/*.exe,**/*.dll,**/*.lib,**/*.exp,**/*.iobj,**/*.ipdb,**/*.pdb}": true,
             "{**/*.framework,**/*.dSYM}": true,
             "{**/*.o}": true,
-            "{BkTest,libBlinKit.so}": true
+            "{BkTest,libBlinKit.a}": true
         }
     }
 }
