@@ -43,6 +43,7 @@ public:
     int EffectiveIntPort(void) const;
     std::string Path(void) const { return ComponentString(m_parsed.path); }
     std::string PathForRequest(void) const;
+    std::string Query(void) const { return ComponentString(m_parsed.query); }
     bool HasRef(void) const { return m_parsed.ref.is_nonempty(); }
 
     BkURL Resolve(const std::string &relative) const;

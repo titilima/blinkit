@@ -77,6 +77,20 @@ static duk_ret_t ProtocolSetter(duk_context *ctx)
     return 0;
 }
 
+static duk_ret_t SearchGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Location *location = DukScriptObject::To<Location>(ctx, 0);
+    Duk::PushString(ctx, location->search());
+    return 1;
+}
+
+static duk_ret_t SearchSetter(duk_context *ctx)
+{
+    ASSERT(false); // BKTODO:
+    return 0;
+}
+
 } // namespace Impl
 
 void DukLocation::FillPrototypeEntry(PrototypeEntry &entry)
@@ -86,6 +100,7 @@ void DukLocation::FillPrototypeEntry(PrototypeEntry &entry)
         { "host",     Impl::HostGetter,     Impl::HostSetter     },
         { "href",     Impl::HrefGetter,     Impl::HrefSetter     },
         { "protocol", Impl::ProtocolGetter, Impl::ProtocolSetter },
+        { "search",   Impl::SearchGetter,   Impl::SearchSetter     },
     };
 
     DukScriptObject::FillPrototypeEntry(entry);

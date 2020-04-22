@@ -65,6 +65,7 @@
 
 namespace blink {
 
+class Comment;
 class DocumentFragment;
 class DocumentInit;
 class DocumentLoader;
@@ -132,11 +133,14 @@ public:
     // Exports for JS
     Element* body(void) const;
     DocumentFragment* createDocumentFragment(void);
+    Comment* createComment(const String &data);
     Element* createElement(const AtomicString &name, ExceptionState &exceptionState);
     Element* documentElement(void) const { return m_documentElement.Get(); }
     using TreeScope::getElementById;
     Location* location(void) const;
     void open(Document *enteredDocument, ExceptionState &exceptionState);
+    // Bind the url to document.url, if unavailable bind to about:blank.
+    BlinKit::BkURL urlForBinding(void) const;
     void write(const String &text, Document *enteredDocument = nullptr, ExceptionState &exceptionState = ASSERT_NO_EXCEPTION);
     void write(LocalDOMWindow *callingWindow, const std::vector<std::string> &text, ExceptionState &exceptionState);
     void writeln(const String &text, Document *enteredDocument = nullptr, ExceptionState &exceptionState = ASSERT_NO_EXCEPTION);
@@ -151,8 +155,6 @@ public:
     BlinKit::BkURL ValidBaseElementURL(void) const;
     // Creates URL based on passed relative url and passed base URL override.
     BlinKit::BkURL CompleteURLWithOverride(const String &url, const BlinKit::BkURL &baseUrlOverride) const;
-    // Bind the url to document.url, if unavailable bind to about:blank.
-    BlinKit::BkURL urlForBinding(void) const;
     // Fallback base URL.
     // https://html.spec.whatwg.org/multipage/urls-and-fetching.html#fallback-base-url
     BlinKit::BkURL FallbackBaseURL(void) const;

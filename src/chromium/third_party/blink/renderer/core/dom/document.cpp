@@ -43,6 +43,7 @@
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/css/selector_query.h"
+#include "third_party/blink/renderer/core/dom/comment.h"
 #include "third_party/blink/renderer/core/dom/document_init.h"
 #include "third_party/blink/renderer/core/dom/document_fragment.h"
 #include "third_party/blink/renderer/core/dom/document_parser.h"
@@ -595,6 +596,11 @@ Document* Document::ContextDocument(void) const
     if (m_frame)
         return const_cast<Document *>(this);
     return nullptr;
+}
+
+Comment* Document::createComment(const String &data)
+{
+    return Comment::Create(*this, data);
 }
 
 DocumentFragment* Document::createDocumentFragment(void)

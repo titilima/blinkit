@@ -23,6 +23,7 @@ using namespace blink;
 namespace BlinKit {
 
 namespace ProtoNames {
+const char Comment[] = "Comment";
 const char DocumentFragment[] = "DocumentFragment";
 const char Text[] = "Text";
 }
@@ -212,6 +213,11 @@ duk_idx_t DukNode::Push(duk_context *ctx, Node *node)
         if (node->IsAttributeNode())
         {
             PrototypeHelper::CreateScriptObject(ctx, DukAttr::ProtoName, node);
+            break;
+        }
+        if (node->getNodeType() == Node::kCommentNode)
+        {
+            PrototypeHelper::CreateScriptObject(ctx, ProtoNames::Comment, node);
             break;
         }
 

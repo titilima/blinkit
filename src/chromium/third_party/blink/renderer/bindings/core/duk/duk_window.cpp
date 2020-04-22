@@ -110,6 +110,8 @@ void DukWindow::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
         { "document",  Impl::DocumentGetter,  nullptr              },
         { "location",  Impl::LocationGetter,  Impl::LocationSetter },
         { "navigator", Impl::NavigatorGetter, nullptr              },
+        { "self",      Impl::WindowGetter,    nullptr              },
+        { "top",       Impl::WindowGetter,    nullptr              },
         { "window",    Impl::WindowGetter,    nullptr              },
     };
 

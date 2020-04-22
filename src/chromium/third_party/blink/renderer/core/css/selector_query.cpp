@@ -94,6 +94,21 @@ static inline bool MatchesTagName(const QualifiedName &tagName, const Element &e
 }
 
 template <typename SelectorQueryTrait>
+static void CollectElementsByClassName(ContainerNode &rootNode, const AtomicString &className, const CSSSelector *selector, typename SelectorQueryTrait::OutputType &output)
+{
+    for (Element &element : ElementTraversal::DescendantsOf(rootNode))
+    {
+        if (!element.HasClassName(className))
+            continue;
+        if (selector && !SelectorMatches(*selector, element, rootNode))
+            continue;
+        SelectorQueryTrait::AppendElement(output, element);
+        if (SelectorQueryTrait::kShouldOnlyMatchFirstElement)
+            return;
+    }
+}
+
+template <typename SelectorQueryTrait>
 static void CollectElementsByTagName(ContainerNode &rootNode, const QualifiedName &tagName, typename SelectorQueryTrait::OutputType &output)
 {
     ASSERT(tagName.NamespaceURI() == g_star_atom);
@@ -214,10 +229,7 @@ void SelectorQuery::Execute(ContainerNode &rootNode, typename SelectorQueryTrait
         switch (firstSelector.Match())
         {
         case CSSSelector::kClass:
-            ASSERT(false); // BKTODO:
-#if 0
             CollectElementsByClassName<SelectorQueryTrait>(rootNode, firstSelector.Value(), nullptr, output);
-#endif
             return;
         case CSSSelector::kTag:
             if (firstSelector.TagQName().NamespaceURI() == g_star_atom)

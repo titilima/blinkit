@@ -73,6 +73,7 @@ public:
     std::string host(void) const;
     std::string href(void) const;
     std::string protocol(void) const;
+    std::string search(void) const;
 private:
     explicit Location(DOMWindow *domWindow);
 

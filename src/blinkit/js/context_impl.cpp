@@ -227,6 +227,7 @@ void ContextImpl::RegisterPrototypesForCrawler(duk_context *ctx)
 {
     PrototypeHelper helper(ctx);
     DukAttr::RegisterPrototype(helper);
+    DukNode::RegisterPrototype(helper, ProtoNames::Comment);
     DukConsole::RegisterPrototype(helper);
     DukDocument::RegisterPrototypeForCrawler(helper);
     DukElement::RegisterPrototypeForCrawler(helper);
