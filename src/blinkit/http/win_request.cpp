@@ -146,13 +146,17 @@ bool WinRequest::OpenSession(void)
 {
     std::string proxy;
     DWORD proxyType = INTERNET_OPEN_TYPE_PRECONFIG;
-    if (HasProxy())
+    switch (ProxyType())
     {
-        proxy = Proxy();
-        if (proxy.empty())
+        case BK_PROXY_DIRECT:
             proxyType = INTERNET_OPEN_TYPE_DIRECT;
-        else
+            break;
+        case BK_PROXY_USER_SPECIFIED:
             proxyType = INTERNET_OPEN_TYPE_PROXY;
+            proxy = Proxy();
+            break;
+        default:
+            assert(ProxyType() == BK_PROXY_SYSTEM_DEFAULT);
     }
 
     if (!m_session.Open(m_userAgent, proxyType, proxy))

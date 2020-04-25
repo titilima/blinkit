@@ -68,6 +68,13 @@ enum BkError {
     BK_ERR_URI
 };
 
+enum BkProxyType {
+    BK_PROXY_RESERVED = -1,
+    BK_PROXY_SYSTEM_DEFAULT = 0,
+    BK_PROXY_DIRECT,
+    BK_PROXY_USER_SPECIFIED
+};
+
 BK_DECLARE_HANDLE(BkJSContext, ContextImpl);
 BK_DECLARE_HANDLE(BkResponse, ResponseImpl);
 BK_DECLARE_HANDLE(BkWorkController, ControllerImpl);

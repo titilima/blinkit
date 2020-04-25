@@ -15,7 +15,6 @@
 #pragma once
 
 #include <atomic>
-#include <optional>
 #include "bk_http.h"
 #include "blinkit/common/bk_http_header_map.h"
 
@@ -35,7 +34,7 @@ public:
     void SetHeaders(const BlinKit::BkHTTPHeaderMap &headers) { m_headers = headers; }
     void SetBody(const void *data, size_t dataLength);
     void SetTimeout(unsigned timeout) { m_timeoutInMs = timeout * 1000; }
-    void SetProxy(const char *proxy);
+    void SetProxy(int type, const char *proxy);
     virtual ControllerImpl* GetController(void);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -45,12 +44,8 @@ protected:
     RequestImpl(const char *URL, const BkRequestClient &client);
 
     unsigned long TimeoutInMs(void) const { return m_timeoutInMs; }
-    bool HasProxy(void) const { return m_proxy.has_value(); }
-    const std::string& Proxy(void) const
-    {
-        assert(m_proxy.has_value());
-        return *m_proxy;
-    }
+    int ProxyType(void) const { return m_proxyType; }
+    const std::string& Proxy(void) const;
 
     const std::string m_URL;
     BkRequestClient m_client;
@@ -61,7 +56,8 @@ protected:
 private:
     std::atomic<unsigned> m_refCount{ 1 };
     unsigned long m_timeoutInMs;
-    std::optional<std::string> m_proxy;
+    int m_proxyType = BK_PROXY_SYSTEM_DEFAULT;
+    std::string m_proxy;
 };
 
 #endif // BLINKIT_BLINKIT_REQUEST_IMPL_H

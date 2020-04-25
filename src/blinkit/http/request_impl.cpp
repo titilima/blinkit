@@ -31,6 +31,12 @@ ControllerImpl* RequestImpl::GetController(void)
     return new RequestControllerImpl(*this);
 }
 
+const std::string& RequestImpl::Proxy(void) const
+{
+    assert(BK_PROXY_USER_SPECIFIED == m_proxyType);
+    return m_proxy;
+}
+
 void RequestImpl::Release(void)
 {
     if (0 == --m_refCount)
@@ -48,12 +54,11 @@ void RequestImpl::SetHeader(const char *name, const char *value)
     m_headers.Set(name, value);
 }
 
-void RequestImpl::SetProxy(const char *proxy)
+void RequestImpl::SetProxy(int type, const char *proxy)
 {
-    if (nullptr == proxy)
-        m_proxy->clear();
-    else
-        m_proxy->assign(proxy);
+    m_proxyType = type;
+    if (BK_PROXY_USER_SPECIFIED == type)
+        m_proxy.assign(proxy);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -82,9 +87,9 @@ BKEXPORT void BKAPI BkSetRequestMethod(BkRequest request, const char *method)
     request->SetMethod(method);
 }
 
-BKEXPORT void BKAPI BkSetRequestProxy(BkRequest request, const char *proxy)
+BKEXPORT void BKAPI BkSetRequestProxy(BkRequest request, int type, const char *proxy)
 {
-    request->SetProxy(proxy);
+    request->SetProxy(type, proxy);
 }
 
 BKEXPORT void BKAPI BkSetRequestTimeout(BkRequest request, unsigned timeout)

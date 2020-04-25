@@ -37,7 +37,7 @@ BKEXPORT void BKAPI BkSetRequestMethod(BkRequest request, const char *method);
 BKEXPORT void BKAPI BkSetRequestHeader(BkRequest request, const char *name, const char *value);
 BKEXPORT void BKAPI BkSetRequestBody(BkRequest request, const void *data, size_t dataLength);
 BKEXPORT void BKAPI BkSetRequestTimeout(BkRequest request, unsigned timeout /* in seconds */);
-BKEXPORT void BKAPI BkSetRequestProxy(BkRequest request, const char *proxy);
+BKEXPORT void BKAPI BkSetRequestProxy(BkRequest request, int type, const char *proxy);
 
 BKEXPORT int BKAPI BkGetResponseStatusCode(BkResponse response);
 
