@@ -12,6 +12,7 @@
 #include "crawler_impl.h"
 
 #include "blinkit/common/bk_url.h"
+#include "blinkit/http/request_impl.h"
 #include "blinkit/http/response_impl.h"
 #include "blinkit/js/context_impl.h"
 #include "blinkit/misc/controller_impl.h"
@@ -46,6 +47,24 @@ bool CrawlerImpl::ApplyConsoleMessager(std::function<void(int, const char *)> &d
     return true;
 }
 
+void CrawlerImpl::ApplyProxyToRequest(BkRequest req)
+{
+    if (BK_PROXY_RESERVED == m_proxyType)
+    {
+        if (nullptr == m_client.GetConfig)
+            m_proxyType = BK_PROXY_SYSTEM_DEFAULT;
+        else if (GetConfig(BK_CFG_REQUEST_PROXY, m_proxy))
+            m_proxyType = m_proxy.empty() ? BK_PROXY_SYSTEM_DEFAULT : BK_PROXY_USER_SPECIFIED;
+        else
+            m_proxyType = BK_PROXY_DIRECT;
+    }
+
+    if (BK_PROXY_DIRECT == m_proxyType)
+        return;
+
+    req->SetProxy(m_proxyType, m_proxy.c_str());
+}
+
 void CrawlerImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 {
     const std::string URL = error.FailingURL();
@@ -58,12 +77,11 @@ void CrawlerImpl::DispatchDidFinishLoad(void)
     m_client.DocumentReady(m_client.UserData);
 }
 
-std::string CrawlerImpl::GetConfig(int cfg) const
+bool CrawlerImpl::GetConfig(int cfg, std::string &dst) const
 {
-    std::string ret;
     if (nullptr != m_client.GetConfig)
-        m_client.GetConfig(cfg, BkMakeBuffer(ret), m_client.UserData);
-    return ret;
+        return m_client.GetConfig(cfg, BkMakeBuffer(dst), m_client.UserData);
+    return false;
 }
 
 BkJSContext CrawlerImpl::GetScriptContext(void)

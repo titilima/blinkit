@@ -72,8 +72,9 @@ bool ContextImpl::AccessCrawler(const Callback &worker)
 void ContextImpl::CreateCrawlerObject(const CrawlerImpl &crawler)
 {
     do {
-        std::string objectScript = crawler.GetConfig(BK_CFG_OBJECT_SCRIPT);
-        base::TrimWhitespaceASCII(objectScript, base::TRIM_ALL, &objectScript);
+        std::string objectScript;
+        if (crawler.GetConfig(BK_CFG_OBJECT_SCRIPT, objectScript))
+            base::TrimWhitespaceASCII(objectScript, base::TRIM_ALL, &objectScript);
         if (objectScript.empty())
         {
             BKLOG("Default crawler object created.");

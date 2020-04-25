@@ -140,27 +140,40 @@ protected:
         rawClient.DocumentReady = DocumentReadyImpl;
         rawClient.Error = ErrorImpl;
     }
+    virtual bool GetCrawlerConfig(int cfg, std::string &dst)
+    {
+        switch (cfg)
+        {
+            case BK_CFG_OBJECT_SCRIPT:   // An empty object for storage.
+            case BK_CFG_REQUEST_PROXY:   // System default proxy.
+            case BK_CFG_USER_AGENT:      // Default `User-Agent` depends on current OS.
+            case BK_CFG_SCRIPT_DISABLED: // Script is enabled.
+                break;
+            default:
+                assert(false); // Not implemented!
+                return false;
+        }
+        return true;
+    }
     virtual void RequestComplete(BkResponse response, BkWorkController controller)
     {
         BkControllerContinueWorking(controller);
     }
 private:
-    virtual std::string GetCrawlerConfig(int cfg)
-    {
-        assert(false); // Not implemented!
-        return std::string();
-    }
     virtual void DocumentReady(void) = 0;
     virtual void Error(int errorCode, const char *URL)
     {
         assert(BK_ERR_SUCCESS == errorCode);
     }
 
-    static void BKAPI GetConfigImpl(int cfg, BkBuffer *dst, void *userData)
+    static bool_t BKAPI GetConfigImpl(int cfg, BkBuffer *dst, void *userData)
     {
-        std::string s = ToImpl(userData)->GetCrawlerConfig(cfg);
-        if (!s.empty())
-            BkSetBufferData(dst, s.data(), s.length());
+        std::string s;
+        if (!ToImpl(userData)->GetCrawlerConfig(cfg, s))
+            return false;
+
+        BkSetBufferData(dst, s.data(), s.length());
+        return true;
     }
     static void BKAPI RequestCompleteImpl(BkResponse response, BkWorkController controller, void *userData)
     {

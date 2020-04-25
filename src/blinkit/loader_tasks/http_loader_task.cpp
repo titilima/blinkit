@@ -189,8 +189,10 @@ int HTTPLoaderTask::Run(const ResourceRequest &request)
         return BK_ERR_UNKNOWN;
     }
 
+    m_crawler->ApplyProxyToRequest(req);
     req->SetMethod(request.HttpMethod().StdUtf8());
     req->SetHeaders(request.AllHeaders());
+
     BKLOG("// BKTODO: Add body.");
 
     int r = req->Perform();

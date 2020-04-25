@@ -23,6 +23,15 @@ BK_DECLARE_HANDLE(BkCrawler, CrawlerImpl);
 
 enum BkCrawlerConfig {
     BK_CFG_OBJECT_SCRIPT = 0,
+
+    // Return true:
+    //   * Empty string: BK_PROXY_SYSTEM_DEFAULT.
+    //   * Non-empty string: BK_PROXY_USER_SPECIFIED.
+    // Return false: BK_PROXY_DIRECT.
+    // Note:
+    //   A null `GetConfig` callback will apply BK_PROXY_SYSTEM_DEFAULT.
+    BK_CFG_REQUEST_PROXY,
+
     BK_CFG_USER_AGENT,
     BK_CFG_SCRIPT_DISABLED
 };
@@ -30,7 +39,7 @@ enum BkCrawlerConfig {
 struct BkCrawlerClient {
     size_t SizeOfStruct; // sizeof(BkCrawlerClient)
     void *UserData;
-    void (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
+    bool_t (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
     bool_t (BKAPI * HijackRequest)(const char *, struct BkBuffer *, void *);
     void (BKAPI * HijackResponse)(BkResponse, void *);
     void (BKAPI * RequestComplete)(BkResponse, BkWorkController, void *);

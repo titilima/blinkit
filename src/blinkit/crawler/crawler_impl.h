@@ -18,6 +18,8 @@
 #include "bk_crawler.h"
 #include "blinkit/blink_impl/local_frame_client_impl.h"
 
+class RequestImpl;
+
 class CrawlerImpl final : public BlinKit::LocalFrameClientImpl
 {
 public:
@@ -25,7 +27,8 @@ public:
     ~CrawlerImpl(void);
 
     // BkCrawlerClient Wrappers
-    std::string GetConfig(int cfg) const;
+    bool GetConfig(int cfg, std::string &dst) const;
+    void ApplyProxyToRequest(RequestImpl *req);
     void ProcessRequestComplete(BkResponse response, BkWorkController controller);
     bool HijackRequest(const char *URL, std::string &dst) const;
     void HijackResponse(BkResponse response);
@@ -59,6 +62,9 @@ private:
 
     BkCrawlerClient m_client;
     std::unique_ptr<blink::LocalFrame> m_frame;
+
+    int m_proxyType = BK_PROXY_RESERVED;
+    std::string m_proxy;
 };
 
 DEFINE_TYPE_CASTS(CrawlerImpl, ::blink::LocalFrameClient, client, client->IsCrawler(), client.IsCrawler());
