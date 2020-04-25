@@ -93,6 +93,17 @@ static inline bool MatchesTagName(const QualifiedName &tagName, const Element &e
     return false;
 }
 
+inline bool SelectorMatches(const CSSSelector &selector, Element &element, const ContainerNode &rootNode)
+{
+    SelectorChecker::Init init;
+    init.mode = SelectorChecker::kQueryingRules;
+    SelectorChecker checker(init);
+    SelectorChecker::SelectorCheckingContext context(&element, SelectorChecker::kVisitedMatchDisabled);
+    context.selector = &selector;
+    context.scope = &rootNode;
+    return checker.Match(context);
+}
+
 template <typename SelectorQueryTrait>
 static void CollectElementsByClassName(ContainerNode &rootNode, const AtomicString &className, const CSSSelector *selector, typename SelectorQueryTrait::OutputType &output)
 {
@@ -121,17 +132,6 @@ static void CollectElementsByTagName(ContainerNode &rootNode, const QualifiedNam
                 return;
         }
     }
-}
-
-inline bool SelectorMatches(const CSSSelector &selector, Element &element, const ContainerNode &rootNode)
-{
-    SelectorChecker::Init init;
-    init.mode = SelectorChecker::kQueryingRules;
-    SelectorChecker checker(init);
-    SelectorChecker::SelectorCheckingContext context(&element, SelectorChecker::kVisitedMatchDisabled);
-    context.selector = &selector;
-    context.scope = &rootNode;
-    return checker.Match(context);
 }
 
 SelectorQuery::SelectorQuery(CSSSelectorList selectorList)
