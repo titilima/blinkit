@@ -12,8 +12,11 @@
 static void* BKAPI Alloc(size_t cb, void *userData)
 {
     BkSimpleBuffer *buffer = reinterpret_cast<BkSimpleBuffer *>(userData);
-    buffer->Blob = malloc(cb);
-    buffer->Size = cb;
+    if (cb > 0)
+    {
+        buffer->Blob = malloc(cb);
+        buffer->Size = cb;
+    }
     return buffer->Blob;
 }
 
@@ -43,8 +46,11 @@ BkBuffer* BKAPI BkInitializeSimpleBuffer(BkSimpleBuffer *buffer)
 void BKAPI BkSetBufferData(BkBuffer *buffer, const void *data, size_t size)
 {
     assert(nullptr != buffer->Allocator);
-    void *dst = buffer->Allocator(size, buffer->UserData);
-    memcpy(dst, data, size);
+    if (size > 0)
+    {
+        void *dst = buffer->Allocator(size, buffer->UserData);
+        memcpy(dst, data, size);
+    }
 }
 
 } // extern "C"
