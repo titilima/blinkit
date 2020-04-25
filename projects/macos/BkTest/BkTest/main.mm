@@ -51,14 +51,17 @@ private:
     {
         BkDestroyCrawler(reinterpret_cast<Client *>(pThis)->m_crawler);
     }
-    std::string GetCrawlerConfig(int cfg) override
+    bool GetCrawlerConfig(int cfg, std::string &dst) override
     {
         switch (cfg)
         {
             case BK_CFG_OBJECT_SCRIPT:
-                return UserScript;
+                dst.assign(UserScript);
+                break;
+            default:
+                return BkCrawlerClientImpl::GetCrawlerConfig(cfg, dst);
         }
-        return std::string();
+        return true;
     }
     void DocumentReady(void) override
     {
