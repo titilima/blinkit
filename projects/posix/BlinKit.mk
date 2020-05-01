@@ -3,7 +3,7 @@ CrawlerFlags = -I$(CrawlerSrc) -I$(BkRoot)src/stub/icu -DBLINKIT_CRAWLER_ONLY $(
 CrawlerObjects = app_constants.o app_impl.o posix_app.o \
 	local_frame_client_impl.o posix_task_runner.o posix_thread.o thread_impl.o url_loader_impl.o \
 	bk_http_header_map.o bk_url.o \
-	crawler_document.o crawler_element.o crawler_impl.o crawler_script_element.o \
+	client_request_task.o client_response_task.o crawler_document.o crawler_element.o crawler_impl.o crawler_script_element.o login_proxy.o posix_login_proxy.o \
 	curl_request.o request_impl.o response_impl.o \
 	context_impl.o js_value_impl.o \
 	http_loader_task.o loader_task.o \
@@ -33,6 +33,10 @@ bk_http_header_map.o: $(CrawlerSrc)/common/bk_http_header_map.cpp
 bk_url.o: $(CrawlerSrc)/common/bk_url.cpp
 	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
 
+client_request_task.o: $(CrawlerSrc)/crawler/login/client_request_task.cpp
+	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
+client_response_task.o: $(CrawlerSrc)/crawler/login/client_response_task.cpp
+	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
 crawler_document.o: $(CrawlerSrc)/crawler/crawler_document.cpp
 	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
 crawler_element.o: $(CrawlerSrc)/crawler/crawler_element.cpp
@@ -40,6 +44,10 @@ crawler_element.o: $(CrawlerSrc)/crawler/crawler_element.cpp
 crawler_impl.o: $(CrawlerSrc)/crawler/crawler_impl.cpp
 	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
 crawler_script_element.o: $(CrawlerSrc)/crawler/crawler_script_element.cpp
+	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
+login_proxy.o: $(CrawlerSrc)/crawler/login_proxy.cpp
+	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
+posix_login_proxy.o: $(CrawlerSrc)/crawler/posix_login_proxy.cpp
 	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
 
 curl_request.o: $(CrawlerSrc)/http/curl_request.cpp

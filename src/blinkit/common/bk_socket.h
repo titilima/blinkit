@@ -19,6 +19,8 @@
 #   include <WS2tcpip.h>
 #elif defined(OS_POSIX)
 #   include <sys/socket.h>
+#   include <arpa/inet.h>
+#   include <netinet/in.h>
 #else
 #   error Not supported!
 #endif
@@ -29,7 +31,7 @@ typedef int SOCKET;
 
 enum {
     INVALID_SOCKET = -1,
-    SOCKET_ERROR   = -1
+    SOCKET_ERROR   = -1,
 };
 
 inline int closesocket(SOCKET s) { return close(s); }

@@ -29,7 +29,6 @@ class LoginTask;
 class LoginProxy
 {
 public:
-    LoginProxy(const BkLoginProxyClient &client);
     static std::unique_ptr<LoginProxy> Create(const BkLoginProxyClient &client);
     virtual ~LoginProxy(void);
 
@@ -41,6 +40,8 @@ public:
 
     int Run(const char *loginURL, uint16_t port);
 protected:
+    LoginProxy(const BkLoginProxyClient &client);
+
     void RunListeningThread(void);
     int RunTaskLoop(void);
 

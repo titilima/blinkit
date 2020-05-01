@@ -79,7 +79,7 @@ bool LoginProxy::InitSocket(uint16_t port)
     sockaddr_in addr = { 0 };
     addr.sin_family = AF_INET;
     addr.sin_port = htons(port);
-    addr.sin_addr.S_un.S_addr = INADDR_ANY;
+    addr.sin_addr.s_addr = htonl(INADDR_ANY);
     if (bind(m_socket, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) == SOCKET_ERROR)
     {
         BKLOG("Bind socket failed!");

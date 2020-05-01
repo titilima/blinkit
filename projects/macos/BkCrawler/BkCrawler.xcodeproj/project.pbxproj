@@ -10,6 +10,16 @@
 		F90384172449B1DB0046FCA3 /* cf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F90384152449B1DB0046FCA3 /* cf.cpp */; };
 		F90384182449B1DB0046FCA3 /* cf.h in Headers */ = {isa = PBXBuildFile; fileRef = F90384162449B1DB0046FCA3 /* cf.h */; };
 		F903841B2449E15E0046FCA3 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9427DBE2445BF020019233D /* CoreFoundation.framework */; };
+		F9062790245BD3E6003E813A /* login_proxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9062788245BD3E5003E813A /* login_proxy.cpp */; };
+		F9062791245BD3E6003E813A /* client_request_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F906278A245BD3E5003E813A /* client_request_task.cpp */; };
+		F9062792245BD3E6003E813A /* client_request_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F906278B245BD3E5003E813A /* client_request_task.h */; };
+		F9062793245BD3E6003E813A /* login_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F906278C245BD3E5003E813A /* login_task.h */; };
+		F9062794245BD3E6003E813A /* client_response_task.h in Headers */ = {isa = PBXBuildFile; fileRef = F906278D245BD3E5003E813A /* client_response_task.h */; };
+		F9062795245BD3E6003E813A /* client_response_task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F906278E245BD3E5003E813A /* client_response_task.cpp */; };
+		F9062796245BD3E6003E813A /* login_proxy.h in Headers */ = {isa = PBXBuildFile; fileRef = F906278F245BD3E6003E813A /* login_proxy.h */; };
+		F9062798245BD63C003E813A /* bk_socket.h in Headers */ = {isa = PBXBuildFile; fileRef = F9062797245BD63C003E813A /* bk_socket.h */; };
+		F906279A245BD824003E813A /* posix_login_proxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9062799245BD824003E813A /* posix_login_proxy.cpp */; };
+		F906279C245BE51A003E813A /* posix_login_proxy.h in Headers */ = {isa = PBXBuildFile; fileRef = F906279B245BE51A003E813A /* posix_login_proxy.h */; };
 		F92449C723040D8C009EE7CF /* PrefixHeader.pch in Headers */ = {isa = PBXBuildFile; fileRef = F92449C523040D8C009EE7CF /* PrefixHeader.pch */; };
 		F9244A2B23040DD2009EE7CF /* thread_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F92449CF23040DD1009EE7CF /* thread_impl.cpp */; };
 		F9244A3123040DD2009EE7CF /* url_loader_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = F92449D523040DD1009EE7CF /* url_loader_impl.h */; };
@@ -79,6 +89,16 @@
 		F90384152449B1DB0046FCA3 /* cf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cf.cpp; sourceTree = "<group>"; };
 		F90384162449B1DB0046FCA3 /* cf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cf.h; sourceTree = "<group>"; };
 		F90384192449E13A0046FCA3 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		F9062788245BD3E5003E813A /* login_proxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = login_proxy.cpp; sourceTree = "<group>"; };
+		F906278A245BD3E5003E813A /* client_request_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = client_request_task.cpp; sourceTree = "<group>"; };
+		F906278B245BD3E5003E813A /* client_request_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client_request_task.h; sourceTree = "<group>"; };
+		F906278C245BD3E5003E813A /* login_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = login_task.h; sourceTree = "<group>"; };
+		F906278D245BD3E5003E813A /* client_response_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client_response_task.h; sourceTree = "<group>"; };
+		F906278E245BD3E5003E813A /* client_response_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = client_response_task.cpp; sourceTree = "<group>"; };
+		F906278F245BD3E6003E813A /* login_proxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = login_proxy.h; sourceTree = "<group>"; };
+		F9062797245BD63C003E813A /* bk_socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bk_socket.h; sourceTree = "<group>"; };
+		F9062799245BD824003E813A /* posix_login_proxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = posix_login_proxy.cpp; sourceTree = "<group>"; };
+		F906279B245BE51A003E813A /* posix_login_proxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = posix_login_proxy.h; sourceTree = "<group>"; };
 		F92449BA23040CF6009EE7CF /* BkCrawler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BkCrawler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F92449BE23040CF6009EE7CF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F92449C523040D8C009EE7CF /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrefixHeader.pch; path = ../PrefixHeader.pch; sourceTree = SOURCE_ROOT; };
@@ -178,6 +198,18 @@
 			path = apple;
 			sourceTree = "<group>";
 		};
+		F9062789245BD3E5003E813A /* login */ = {
+			isa = PBXGroup;
+			children = (
+				F906278A245BD3E5003E813A /* client_request_task.cpp */,
+				F906278B245BD3E5003E813A /* client_request_task.h */,
+				F906278E245BD3E5003E813A /* client_response_task.cpp */,
+				F906278D245BD3E5003E813A /* client_response_task.h */,
+				F906278C245BD3E5003E813A /* login_task.h */,
+			);
+			path = login;
+			sourceTree = "<group>";
+		};
 		F92449B023040CF6009EE7CF = {
 			isa = PBXGroup;
 			children = (
@@ -263,6 +295,7 @@
 		F92449FB23040DD1009EE7CF /* crawler */ = {
 			isa = PBXGroup;
 			children = (
+				F9062789245BD3E5003E813A /* login */,
 				F9244A0023040DD1009EE7CF /* crawler_document.cpp */,
 				F9244A0223040DD1009EE7CF /* crawler_document.h */,
 				F92449FD23040DD1009EE7CF /* crawler_element.cpp */,
@@ -271,6 +304,10 @@
 				F9244A0323040DD1009EE7CF /* crawler_impl.h */,
 				F92449FF23040DD1009EE7CF /* crawler_script_element.cpp */,
 				F92449FC23040DD1009EE7CF /* crawler_script_element.h */,
+				F9062788245BD3E5003E813A /* login_proxy.cpp */,
+				F906278F245BD3E6003E813A /* login_proxy.h */,
+				F9062799245BD824003E813A /* posix_login_proxy.cpp */,
+				F906279B245BE51A003E813A /* posix_login_proxy.h */,
 			);
 			path = crawler;
 			sourceTree = "<group>";
@@ -321,6 +358,7 @@
 			children = (
 				F9427DA7244566390019233D /* bk_http_header_map.cpp */,
 				F9427DA6244566390019233D /* bk_http_header_map.h */,
+				F9062797245BD63C003E813A /* bk_socket.h */,
 				F9427DC02445D0D50019233D /* bk_url.cpp */,
 				F9427DC12445D0D50019233D /* bk_url.h */,
 			);
@@ -355,6 +393,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9062792245BD3E6003E813A /* client_request_task.h in Headers */,
 				F989FA6D2446B16B00D6C241 /* bk_crawler.h in Headers */,
 				F989FA6B2446B16B00D6C241 /* bk_app.h in Headers */,
 				F989FA702446B16B00D6C241 /* bk_def.h in Headers */,
@@ -377,9 +416,13 @@
 				F9244A5D23040DD2009EE7CF /* crawler_element.h in Headers */,
 				F90384182449B1DB0046FCA3 /* cf.h in Headers */,
 				F9244A6B23040DD2009EE7CF /* http_loader_task.h in Headers */,
+				F9062794245BD3E6003E813A /* client_response_task.h in Headers */,
 				F9244A5B23040DD2009EE7CF /* crawler_document.h in Headers */,
 				F9244A4A23040DD2009EE7CF /* app_constants.h in Headers */,
+				F9062798245BD63C003E813A /* bk_socket.h in Headers */,
 				F9427DB6244566390019233D /* js_value_impl.h in Headers */,
+				F9062793245BD3E6003E813A /* login_task.h in Headers */,
+				F9062796245BD3E6003E813A /* login_proxy.h in Headers */,
 				F9D2B05324482D3800F06512 /* apple_task_runner.h in Headers */,
 				F9244A6223040DD2009EE7CF /* loader_task.h in Headers */,
 				F9244A5C23040DD2009EE7CF /* crawler_impl.h in Headers */,
@@ -387,6 +430,7 @@
 				F9427DB1244566390019233D /* bk_http_header_map.h in Headers */,
 				F9427DBD244566580019233D /* local_frame_client_impl.h in Headers */,
 				F92449C723040D8C009EE7CF /* PrefixHeader.pch in Headers */,
+				F906279C245BE51A003E813A /* posix_login_proxy.h in Headers */,
 				F9244A7223040DD2009EE7CF /* request_controller_impl.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -460,6 +504,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9244A7023040DD2009EE7CF /* response_impl.cpp in Sources */,
+				F906279A245BD824003E813A /* posix_login_proxy.cpp in Sources */,
 				F9244A6A23040DD2009EE7CF /* http_loader_task.cpp in Sources */,
 				F9427DB2244566390019233D /* bk_http_header_map.cpp in Sources */,
 				F9244A6523040DD2009EE7CF /* loader_task.cpp in Sources */,
@@ -471,6 +516,7 @@
 				F9427DB4244566390019233D /* js_value_impl.cpp in Sources */,
 				F9427DBC244566580019233D /* local_frame_client_impl.cpp in Sources */,
 				F9D2B05224482D3800F06512 /* apple_task_runner.cpp in Sources */,
+				F9062790245BD3E6003E813A /* login_proxy.cpp in Sources */,
 				F9244A5623040DD2009EE7CF /* crawler_element.cpp in Sources */,
 				F9244A5923040DD2009EE7CF /* crawler_document.cpp in Sources */,
 				F9244A4F23040DD2009EE7CF /* app_constants.cpp in Sources */,
@@ -478,6 +524,8 @@
 				F90384172449B1DB0046FCA3 /* cf.cpp in Sources */,
 				F9244A3823040DD2009EE7CF /* url_loader_impl.cpp in Sources */,
 				F9244A4C23040DD2009EE7CF /* app_impl.cpp in Sources */,
+				F9062795245BD3E6003E813A /* client_response_task.cpp in Sources */,
+				F9062791245BD3E6003E813A /* client_request_task.cpp in Sources */,
 				F9244A7423040DD2009EE7CF /* request_impl.cpp in Sources */,
 				F9427DB8244566390019233D /* buffer.cpp in Sources */,
 				F989FA732446D43400D6C241 /* apple_thread.cpp in Sources */,
