@@ -38,8 +38,12 @@ public:
     int ErrorCode(void) const { return m_errorCode; }
     void SetErrorCode(int errorCode) { m_errorCode = errorCode; }
 
+    const std::string& HTTPVersion(void) const { return m_httpVersion; }
+    const std::string& Reason(void) const { return m_reason; }
+
     BlinKit::BkHTTPHeaderMap& MutableHeaders(void) { return m_headers; }
     const BlinKit::BkHTTPHeaderMap& Headers(void) const { return m_headers; }
+    const std::vector<std::string>& Cookies(void) const { return m_cookies; }
 
     const char* BodyData(void) const { return m_body.empty() ? nullptr : reinterpret_cast<const char *>(m_body.data()); }
     int BodyLength(void) const { return m_body.size(); }
@@ -56,7 +60,7 @@ public:
     void AppendData(const void *data, size_t cb);
     void GZipInflate(void);
 private:
-    std::string m_originURL, m_URL;
+    std::string m_originURL, m_URL, m_httpVersion, m_reason;
     int m_errorCode = BK_ERR_SUCCESS, m_statusCode = 0;
     BlinKit::BkHTTPHeaderMap m_headers;
     std::vector<std::string> m_cookies;

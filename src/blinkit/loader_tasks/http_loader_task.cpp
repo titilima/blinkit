@@ -193,6 +193,10 @@ int HTTPLoaderTask::Run(const ResourceRequest &request)
     req->SetMethod(request.HttpMethod().StdUtf8());
     req->SetHeaders(request.AllHeaders());
 
+    std::string cookies;
+    if (m_crawler->GetConfig(BK_CFG_REQUEST_COOKIE, cookies) && !cookies.empty())
+        req->SetHeader("Cookie", cookies.c_str());
+
     BKLOG("// BKTODO: Add body.");
 
     int r = req->Perform();

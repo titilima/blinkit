@@ -126,7 +126,7 @@ void ResponseImpl::Hijack(const void *newBody, size_t length)
 
 void ResponseImpl::ParseHeaders(const std::string &rawHeaders)
 {
-    std::regex pattern(R"(HTTP\/[\d+\.]+\s+(\d+))");
+    std::regex pattern(R"(HTTP\/([\d+\.]+)\s+(\d+)\s+(.*))");
     std::smatch match;
     if (!std::regex_search(rawHeaders, match, pattern))
     {
@@ -134,7 +134,9 @@ void ResponseImpl::ParseHeaders(const std::string &rawHeaders)
         return;
     }
 
-    m_statusCode = std::stoi(match.str(1));
+    m_httpVersion = match.str(1);
+    m_statusCode = std::stoi(match.str(2));
+    m_reason = match.str(3);
 
     std::string_view input(rawHeaders);
     size_t p = input.find('\n', match.length(0));
