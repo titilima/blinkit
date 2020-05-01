@@ -112,10 +112,14 @@ int CURLRequest::Perform(void)
             curl_easy_setopt(m_curl, CURLOPT_HTTPHEADER, m_headersList);
 
         // 4. Fill body.
-        assert(m_body.empty()); // BKTODO:
+        if (!m_body.empty())
+        {
+            curl_easy_setopt(m_curl, CURLOPT_POSTFIELDSIZE, m_body.size());
+            curl_easy_setopt(m_curl, CURLOPT_POSTFIELDS, m_body.data());
+        }
 
         // 5. Apply other options.
-        assert(!HasProxy()); // BKTODO:
+        assert(ProxyType() == BK_PROXY_SYSTEM_DEFAULT); // BKTODO:
         const long timeout = TimeoutInMs();
         curl_easy_setopt(m_curl, CURLOPT_TIMEOUT_MS, timeout);
 
