@@ -11,7 +11,7 @@
 
 #include "crawler_document.h"
 
-#include "blinkit/crawler/crawler_script_element.h"
+#include "blinkit/crawler/dom/crawler_script_element.h"
 #include "third_party/blink/renderer/core/dom/document_init.h"
 #include "third_party/blink/renderer/core/html_names.h"
 

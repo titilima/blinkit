@@ -183,10 +183,10 @@
     <ClInclude Include="..\..\..\src\blinkit\common\bk_http_header_map.h" />
     <ClInclude Include="..\..\..\src\blinkit\common\bk_socket.h" />
     <ClInclude Include="..\..\..\src\blinkit\common\bk_url.h" />
-    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_document.h" />
-    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_impl.h" />
-    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_script_element.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_document.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_element.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\login\client_request_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\login\client_response_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\login\login_task.h" />
@@ -223,10 +223,10 @@
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\common\bk_http_header_map.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\common\bk_url.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_document.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_impl.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_script_element.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_document.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_element.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\login\client_request_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\login\client_response_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\login_proxy.cpp" />

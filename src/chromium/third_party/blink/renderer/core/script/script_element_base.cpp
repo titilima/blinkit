@@ -15,7 +15,7 @@
 
 #include "script_element_base.h"
 
-#include "blinkit/crawler/crawler_script_element.h"
+#include "blinkit/crawler/dom/crawler_script_element.h"
 #include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"

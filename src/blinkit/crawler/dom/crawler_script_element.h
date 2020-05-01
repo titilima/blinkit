@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "blinkit/crawler/crawler_element.h"
+#include "blinkit/crawler/dom/crawler_element.h"
 #include "third_party/blink/renderer/core/dom/create_element_flags.h"
 #include "third_party/blink/renderer/core/script/script_element_base.h"
 

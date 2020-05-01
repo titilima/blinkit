@@ -43,6 +43,9 @@
     <Filter Include="crawler\login">
       <UniqueIdentifier>{fdcae593-8089-4d5a-97f5-7662584cef6d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="crawler\dom">
+      <UniqueIdentifier>{50cdeeab-4a27-4c13-bcf4-378aa79ea068}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\sdk\include\bk_app.h">
@@ -93,17 +96,11 @@
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\local_frame_client_impl.h">
       <Filter>blink_impl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_document.h">
-      <Filter>crawler</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\thread_impl.h">
       <Filter>blink_impl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_thread.h">
       <Filter>blink_impl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_element.h">
-      <Filter>crawler</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_single_thread_task_runner.h">
       <Filter>blink_impl</Filter>
@@ -119,9 +116,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\loader_task.h">
       <Filter>loader_tasks</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_script_element.h">
-      <Filter>crawler</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\sdk\include\bk_js.h">
       <Filter>Header Files</Filter>
@@ -158,6 +152,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\crawler\login_proxy.h">
       <Filter>crawler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_document.h">
+      <Filter>crawler\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_element.h">
+      <Filter>crawler\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.h">
+      <Filter>crawler\dom</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -205,17 +208,11 @@
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\local_frame_client_impl.cpp">
       <Filter>blink_impl</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_document.cpp">
-      <Filter>crawler</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\thread_impl.cpp">
       <Filter>blink_impl</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_thread.cpp">
       <Filter>blink_impl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_element.cpp">
-      <Filter>crawler</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_single_thread_task_runner.cpp">
       <Filter>blink_impl</Filter>
@@ -228,9 +225,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\loader_task.cpp">
       <Filter>loader_tasks</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_script_element.cpp">
-      <Filter>crawler</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\js\context_impl.cpp">
       <Filter>js</Filter>
@@ -255,6 +249,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\crawler\login_proxy.cpp">
       <Filter>crawler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_document.cpp">
+      <Filter>crawler\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_element.cpp">
+      <Filter>crawler\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.cpp">
+      <Filter>crawler\dom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

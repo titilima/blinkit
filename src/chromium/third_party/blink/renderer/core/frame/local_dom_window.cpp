@@ -37,7 +37,7 @@
 
 #include "local_dom_window.h"
 
-#include "blinkit/crawler/crawler_document.h"
+#include "blinkit/crawler/dom/crawler_document.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/document_init.h"

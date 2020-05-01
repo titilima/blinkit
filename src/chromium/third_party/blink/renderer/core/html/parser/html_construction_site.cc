@@ -38,7 +38,7 @@
 #include "third_party/blink/renderer/core/html/parser/html_construction_site.h"
 
 #include <limits>
-#include "blinkit/crawler/crawler_script_element.h"
+#include "blinkit/crawler/dom/crawler_script_element.h"
 #include "third_party/blink/renderer/core/dom/comment.h"
 #include "third_party/blink/renderer/core/dom/document_fragment.h"
 #include "third_party/blink/renderer/core/dom/document_type.h"
