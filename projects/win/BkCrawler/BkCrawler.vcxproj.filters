@@ -40,6 +40,9 @@
     <Filter Include="common">
       <UniqueIdentifier>{79349190-9b60-4652-8572-e59726b42f89}</UniqueIdentifier>
     </Filter>
+    <Filter Include="crawler\login">
+      <UniqueIdentifier>{fdcae593-8089-4d5a-97f5-7662584cef6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\sdk\include\bk_app.h">
@@ -138,6 +141,24 @@
     <ClInclude Include="..\..\..\src\blinkit\common\bk_url.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\crawler\win_login_proxy.h">
+      <Filter>crawler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\crawler\login\login_task.h">
+      <Filter>crawler\login</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\crawler\login\client_request_task.h">
+      <Filter>crawler\login</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\common\bk_socket.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\crawler\login\client_response_task.h">
+      <Filter>crawler\login</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\crawler\login_proxy.h">
+      <Filter>crawler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BkCrawler.def">
@@ -222,6 +243,18 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\common\bk_url.cpp">
       <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\crawler\win_login_proxy.cpp">
+      <Filter>crawler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\crawler\login\client_request_task.cpp">
+      <Filter>crawler\login</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\crawler\login\client_response_task.cpp">
+      <Filter>crawler\login</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\crawler\login_proxy.cpp">
+      <Filter>crawler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
