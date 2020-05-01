@@ -22,6 +22,7 @@ namespace BlinKit {
 namespace ProtoNames {
 extern const char Comment[];
 extern const char DocumentFragment[];
+extern const char DocumentType[];
 extern const char Text[];
 }
 

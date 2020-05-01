@@ -231,11 +231,12 @@ void ContextImpl::RegisterPrototypesForCrawler(duk_context *ctx)
     DukNode::RegisterPrototype(helper, ProtoNames::Comment);
     DukConsole::RegisterPrototype(helper);
     DukDocument::RegisterPrototypeForCrawler(helper);
+    DukNode::RegisterPrototype(helper, ProtoNames::DocumentFragment);
     DukElement::RegisterPrototypeForCrawler(helper);
     DukEvent::RegisterPrototype(helper);
     DukLocation::RegisterPrototype(helper);
     DukNavigator::RegisterPrototype(helper);
-    DukNode::RegisterPrototype(helper, ProtoNames::DocumentFragment);
+    DukNode::RegisterPrototype(helper, ProtoNames::DocumentType);
     DukNode::RegisterPrototype(helper, ProtoNames::Text);
     DukScriptElement::RegisterPrototypeForCrawler(helper);
     DukWindow::RegisterPrototypeForCrawler(helper);

@@ -25,6 +25,7 @@ namespace BlinKit {
 namespace ProtoNames {
 const char Comment[] = "Comment";
 const char DocumentFragment[] = "DocumentFragment";
+const char DocumentType[] = "DocumentType";
 const char Text[] = "Text";
 }
 
@@ -218,6 +219,11 @@ duk_idx_t DukNode::Push(duk_context *ctx, Node *node)
         if (node->getNodeType() == Node::kCommentNode)
         {
             PrototypeHelper::CreateScriptObject(ctx, ProtoNames::Comment, node);
+            break;
+        }
+        if (node->getNodeType() == Node::kDocumentTypeNode)
+        {
+            PrototypeHelper::CreateScriptObject(ctx, ProtoNames::DocumentType, node);
             break;
         }
 
