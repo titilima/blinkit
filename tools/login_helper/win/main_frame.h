@@ -25,8 +25,11 @@ class MainFrame : public CWindowImpl<MainFrame, CAxWindow, MainFrameTraits>
 {
 public:
     MainFrame(const std::wstring &URL);
+
+    bool TranslateAccelerator(LPMSG msg);
 private:
     std::wstring m_URL;
+    IOleInPlaceActiveObject *m_inPlaceObj = nullptr;
 public:
     BEGIN_MSG_MAP(MainFrame)
         MESSAGE_HANDLER(WM_DESTROY, OnDestroy)

@@ -30,6 +30,9 @@ LRESULT MainFrame::OnCreate(UINT, WPARAM, LPARAM, BOOL &)
     if (FAILED(hr))
         return -1;
 
+    wb2->QueryInterface(&m_inPlaceObj);
+    ATLASSERT(nullptr != m_inPlaceObj);
+
     CComVariant v(m_URL.c_str());
     wb2->Navigate2(&v, nullptr, nullptr, nullptr, nullptr);
     return 0;
@@ -37,6 +40,12 @@ LRESULT MainFrame::OnCreate(UINT, WPARAM, LPARAM, BOOL &)
 
 LRESULT MainFrame::OnDestroy(UINT, WPARAM, LPARAM, BOOL &)
 {
+    m_inPlaceObj->Release();
     PostQuitMessage(EXIT_SUCCESS);
     return 0;
+}
+
+bool MainFrame::TranslateAccelerator(LPMSG msg)
+{
+    return S_FALSE != m_inPlaceObj->TranslateAccelerator(msg);
 }

@@ -111,8 +111,11 @@ static int RunMainFrame(const std::wstring &URL, int nShowCmd)
     MSG msg;
     while (GetMessage(&msg, nullptr, 0, 0))
     {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
+        if (!mainFrame.TranslateAccelerator(&msg))
+        {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
     }
     return msg.wParam;
 }
