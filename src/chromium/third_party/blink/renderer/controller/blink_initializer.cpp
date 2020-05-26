@@ -11,6 +11,7 @@
 
 #include "third_party/blink/public/web/blink.h"
 
+#include "third_party/blink/renderer/core/css/parser/css_parser_token_range.h"
 #include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/html_tokenizer_names.h"
@@ -42,6 +43,8 @@ static void InitializeCommon(Platform *platform)
     event_type_names::Init();
     html_tokenizer_names::Init();
     http_names::Init();
+
+    CSSParserTokenRange::InitStaticEOFToken();
 }
 
 void Initialize(Platform *platform, scheduler::WebThreadScheduler* mainThreadScheduler)
