@@ -13,7 +13,6 @@
 
 #pragma once
 
-#include <stdint.h>
 #include "bk_def.h"
 
 #ifdef __cplusplus
@@ -64,20 +63,6 @@ BKEXPORT int BKAPI BkRunCrawler(BkCrawler crawler, const char *URL);
 BKEXPORT BkJSContext BKAPI BkGetScriptContextFromCrawler(BkCrawler crawler);
 
 BKEXPORT void BKAPI BkHijackResponse(BkResponse response, const void *newBody, size_t length);
-
-/**
- * Login Proxy
- */
-
-struct BkLoginProxyClient {
-    size_t SizeOfStruct; // sizeof(BkLoginProxyClient)
-    void *UserData;
-    void (BKAPI * SetCookie)(const char *, void *);
-    bool_t (BKAPI * IsLoginSuccessful)(const char *, void *);
-    bool_t (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
-};
-
-BKEXPORT int BKAPI BkRunLoginProxy(const char *loginURL, uint16_t port, BkLoginProxyClient *client);
 
 #ifdef __cplusplus
 } // extern "C"

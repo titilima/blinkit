@@ -34,7 +34,6 @@ BkCreateCrawler
 BkDestroyCrawler
 BkRunCrawler
 BkGetScriptContextFromCrawler
-BkRunLoginProxy
 
 BkReleaseValue
 BkGetValueType

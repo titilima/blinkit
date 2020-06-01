@@ -187,11 +187,6 @@
     <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_document.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.h" />
-    <ClInclude Include="..\..\..\src\blinkit\crawler\login\client_request_task.h" />
-    <ClInclude Include="..\..\..\src\blinkit\crawler\login\client_response_task.h" />
-    <ClInclude Include="..\..\..\src\blinkit\crawler\login\login_task.h" />
-    <ClInclude Include="..\..\..\src\blinkit\crawler\login_proxy.h" />
-    <ClInclude Include="..\..\..\src\blinkit\crawler\win_login_proxy.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\request_controller_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\request_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\http\response_impl.h" />
@@ -227,10 +222,6 @@
     <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_document.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\crawler\login\client_request_task.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\crawler\login\client_response_task.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\crawler\login_proxy.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\crawler\win_login_proxy.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\request_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\response_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\http\win_request.cpp" />
