@@ -25,6 +25,9 @@
     <Filter Include="misc">
       <UniqueIdentifier>{a8f38960-a948-4084-9981-011289483284}</UniqueIdentifier>
     </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{b207b1e4-5062-4315-b393-b9520e937f06}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -50,6 +53,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\misc\controller.cpp">
       <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\common\bk_http_header_map.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\common\bk_url.cpp">
+      <Filter>common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +94,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\sdk\include\bk_http.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\common\bk_http_header_map.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\common\bk_url.h">
+      <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
