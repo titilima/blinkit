@@ -1,0 +1,7 @@
+LIBRARY "BkLogin"
+
+EXPORTS
+
+BkCreatePrivateKey
+BkDestroyPrivateKey
+BkSavePrivateKey
