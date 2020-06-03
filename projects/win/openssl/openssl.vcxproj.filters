@@ -446,6 +446,18 @@
     <ClInclude Include="..\..\..\third_party\openssl\crypto\bn\bn_local.h">
       <Filter>crypto\bn</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\third_party\openssl\include\openssl\x509.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\third_party\openssl\include\openssl\ossl_typ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\third_party\openssl\include\openssl\pem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\third_party\openssl\include\openssl\rsa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\third_party\openssl\crypto\evp\p_lib.c">

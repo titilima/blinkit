@@ -220,6 +220,10 @@
     <ClInclude Include="..\..\..\third_party\openssl\crypto\x509\x509_local.h" />
     <ClInclude Include="..\..\..\third_party\openssl\include\openssl\bio.h" />
     <ClInclude Include="..\..\..\third_party\openssl\include\openssl\evp.h" />
+    <ClInclude Include="..\..\..\third_party\openssl\include\openssl\ossl_typ.h" />
+    <ClInclude Include="..\..\..\third_party\openssl\include\openssl\pem.h" />
+    <ClInclude Include="..\..\..\third_party\openssl\include\openssl\rsa.h" />
+    <ClInclude Include="..\..\..\third_party\openssl\include\openssl\x509.h" />
     <ClInclude Include="..\..\..\third_party\openssl\ssl\packet_local.h" />
     <ClInclude Include="..\..\..\third_party\openssl\ssl\record\record.h" />
     <ClInclude Include="..\..\..\third_party\openssl\ssl\record\record_local.h" />
