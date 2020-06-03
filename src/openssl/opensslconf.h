@@ -17,6 +17,7 @@
 #include <openssl/opensslv.h>
 
 #define OPENSSL_NO_ASYNC
+#define OPENSSL_NO_COMP
 #define OPENSSL_NO_CRYPTO_MDEBUG
 #define OPENSSL_NO_CRYPTO_MDEBUG_BACKTRACE
 #define OPENSSL_NO_DGRAM
@@ -25,6 +26,7 @@
 #ifdef NDEBUG
 #   define OPENSSL_NO_ERR
 #endif
+#define OPENSSL_NO_SCTP
 #define OPENSSL_NO_STDIO
 #define OPENSSL_RAND_SEED_OS
 
