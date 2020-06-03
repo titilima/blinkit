@@ -161,10 +161,10 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\sdk\include\bk_login.h" />
     <ClInclude Include="..\..\..\src\blinkit\common\bk_file.h" />
-    <ClInclude Include="..\..\..\src\blinkit\login\certificate.h" />
     <ClInclude Include="..\..\..\src\blinkit\login\login_globals.h" />
     <ClInclude Include="..\..\..\src\blinkit\login\private_key_impl.h" />
-    <ClInclude Include="..\..\..\src\blinkit\login\sign_request.h" />
+    <ClInclude Include="..\..\..\src\blinkit\login\ssl\certificate.h" />
+    <ClInclude Include="..\..\..\src\blinkit\login\ssl\sign_request.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
@@ -176,10 +176,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\blinkit\common\bk_file.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\login\certificate.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\login\login_globals.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\login\private_key_impl.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\login\sign_request.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\login\ssl\certificate.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\login\ssl\sign_request.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

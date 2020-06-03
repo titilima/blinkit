@@ -16,9 +16,9 @@
 #include <openssl/pem.h>
 #include <openssl/rsa.h>
 #include "blinkit/common/bk_file.h"
-#include "blinkit/login/certificate.h"
 #include "blinkit/login/login_globals.h"
-#include "blinkit/login/sign_request.h"
+#include "blinkit/login/ssl/certificate.h"
+#include "blinkit/login/ssl/sign_request.h"
 
 using namespace BlinKit;
 

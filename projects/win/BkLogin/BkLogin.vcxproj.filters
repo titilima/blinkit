@@ -19,6 +19,9 @@
     <Filter Include="common">
       <UniqueIdentifier>{76770441-3f51-47f2-b3ca-52ad9a38d2b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="login\ssl">
+      <UniqueIdentifier>{bc09e758-599e-485b-b707-789fb3b42813}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\sdk\include\bk_login.h">
@@ -39,11 +42,11 @@
     <ClInclude Include="..\..\..\src\blinkit\common\bk_file.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\login\sign_request.h">
-      <Filter>login</Filter>
+    <ClInclude Include="..\..\..\src\blinkit\login\ssl\certificate.h">
+      <Filter>login\ssl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\login\certificate.h">
-      <Filter>login</Filter>
+    <ClInclude Include="..\..\..\src\blinkit\login\ssl\sign_request.h">
+      <Filter>login\ssl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -69,11 +72,11 @@
     <ClCompile Include="..\..\..\src\blinkit\common\bk_file.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\login\sign_request.cpp">
-      <Filter>login</Filter>
+    <ClCompile Include="..\..\..\src\blinkit\login\ssl\certificate.cpp">
+      <Filter>login\ssl</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\login\certificate.cpp">
-      <Filter>login</Filter>
+    <ClCompile Include="..\..\..\src\blinkit\login\ssl\sign_request.cpp">
+      <Filter>login\ssl</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
