@@ -21,6 +21,8 @@
 #   ifndef BLINKIT_EXPORTS
 #       define BKEXPORT __declspec(dllimport)
 #   endif
+typedef wchar_t BkPathChar;
+#   define BK_PATH_CHAR_DEFINED
 #endif
 
 #ifdef __linux__
@@ -34,6 +36,10 @@
 #endif
 #ifndef BKEXPORT
 #   define BKEXPORT
+#endif
+
+#ifndef BK_PATH_CHAR_DEFINED
+typedef char    BkPathChar;
 #endif
 
 #ifdef __cplusplus
