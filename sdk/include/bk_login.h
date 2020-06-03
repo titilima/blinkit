@@ -30,6 +30,7 @@ BKEXPORT BkPrivateKey BKAPI BkCreatePrivateKey(void);
 BKEXPORT void BKAPI BkDestroyPrivateKey(BkPrivateKey key);
 
 BKEXPORT int BKAPI BkSavePrivateKey(BkPrivateKey key, const BkPathChar *fileName);
+BKEXPORT int BKAPI BkSignPrivateKey(BkPrivateKey key, const char *commonName, int days, const BkPathChar *certFileName);
 
 /**
  * Login Proxy

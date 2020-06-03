@@ -22,6 +22,8 @@ public:
     PrivateKeyImpl(int bits = 2048);
     ~PrivateKeyImpl(void);
 
+    operator EVP_PKEY*() { return m_key; }
+
     int Save(const BkPathChar *fileName);
 private:
     EVP_PKEY *m_key;

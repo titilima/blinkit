@@ -5,3 +5,4 @@ EXPORTS
 BkCreatePrivateKey
 BkDestroyPrivateKey
 BkSavePrivateKey
+BkSignPrivateKey

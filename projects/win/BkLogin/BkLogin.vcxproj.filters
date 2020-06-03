@@ -39,6 +39,12 @@
     <ClInclude Include="..\..\..\src\blinkit\common\bk_file.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\login\sign_request.h">
+      <Filter>login</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\login\certificate.h">
+      <Filter>login</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BkLogin.def">
@@ -62,6 +68,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\common\bk_file.cpp">
       <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\login\sign_request.cpp">
+      <Filter>login</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\login\certificate.cpp">
+      <Filter>login</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

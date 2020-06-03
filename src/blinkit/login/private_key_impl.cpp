@@ -16,7 +16,9 @@
 #include <openssl/pem.h>
 #include <openssl/rsa.h>
 #include "blinkit/common/bk_file.h"
+#include "blinkit/login/certificate.h"
 #include "blinkit/login/login_globals.h"
+#include "blinkit/login/sign_request.h"
 
 using namespace BlinKit;
 
@@ -44,11 +46,18 @@ int PrivateKeyImpl::Save(const BkPathChar *fileName)
         return BK_ERR_UNKNOWN;
     }
 
-    PEM_write_bio_RSAPrivateKey(mem, m_rsa, nullptr, nullptr, 0, nullptr, nullptr);
-
-    char *data = nullptr;
-    long l = BIO_get_mem_data(mem, &data);
-    int r = BkFile::WriteContent(fileName, data, l);
+    int r = PEM_write_bio_RSAPrivateKey(mem, m_rsa, nullptr, nullptr, 0, nullptr, nullptr);
+    if (0 != r)
+    {
+        char *data = nullptr;
+        long l = BIO_get_mem_data(mem, &data);
+        r = BkFile::WriteContent(fileName, data, l);
+    }
+    else
+    {
+        ASSERT(0 != r);
+        r = BK_ERR_UNKNOWN;
+    }
 
     BIO_free(mem);
     return r;
@@ -60,7 +69,7 @@ extern "C" {
 
 BKEXPORT BkPrivateKey BKAPI BkCreatePrivateKey(void)
 {
-    BlinKit::LoginGlobals::EnsureSSLInitialized();
+    LoginGlobals::EnsureSSLInitialized();
     return new PrivateKeyImpl;
 }
 
@@ -72,6 +81,21 @@ BKEXPORT void BKAPI BkDestroyPrivateKey(BkPrivateKey key)
 BKEXPORT int BKAPI BkSavePrivateKey(BkPrivateKey key, const BkPathChar *fileName)
 {
     return key->Save(fileName);
+}
+
+BKEXPORT int BKAPI BkSignPrivateKey(BkPrivateKey key, const char *commonName, int days, const BkPathChar *certFileName)
+{
+    SignRequest req;
+    req.SetCommonName(commonName);
+    int r = req.Sign(*key);
+    if (BK_ERR_SUCCESS != r)
+        return r;
+
+    Certificate cert;
+    r = cert.Sign(req, *key, days);
+    if (BK_ERR_SUCCESS != r)
+        return r;
+    return cert.Save(certFileName);
 }
 
 } // extern "C"
