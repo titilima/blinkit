@@ -81,9 +81,6 @@
     <Filter Include="crypto\async">
       <UniqueIdentifier>{9bb4b0a1-b03c-4453-9dba-39ab51e02f3e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="crypto\comp">
-      <UniqueIdentifier>{ffb3cfb6-7038-407a-9531-46c14d8216e2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="crypto\dso">
       <UniqueIdentifier>{431720fc-63c4-4efa-b470-51f3a07b28d4}</UniqueIdentifier>
     </Filter>
@@ -192,6 +189,21 @@
     <Filter Include="crypto\whrlpool">
       <UniqueIdentifier>{737186ca-e2e5-4b18-be6d-0ce6c52c8cf6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ssl">
+      <UniqueIdentifier>{af04735e-77e9-48d2-81f8-d30ae3df60c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ssl\statem">
+      <UniqueIdentifier>{0d39f270-642e-4484-b8ba-5338bf17d7e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ssl\record">
+      <UniqueIdentifier>{e42ab0e1-9ce6-4b54-9a7f-85d34bedba37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto\srp">
+      <UniqueIdentifier>{d733eb17-908c-494e-881c-e0b904563023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto\txt_db">
+      <UniqueIdentifier>{937b1b69-b4ef-4b1f-91bd-ca76b305473d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\third_party\openssl\include\openssl\evp.h">
@@ -247,9 +259,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\third_party\openssl\crypto\conf\conf_local.h">
       <Filter>crypto\conf</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\third_party\openssl\crypto\comp\comp_local.h">
-      <Filter>crypto\comp</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\third_party\openssl\crypto\dso\dso_local.h">
       <Filter>crypto\dso</Filter>
@@ -412,6 +421,30 @@
     </ClInclude>
     <ClInclude Include="..\..\..\third_party\openssl\crypto\ct\ct_local.h">
       <Filter>crypto\ct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\third_party\openssl\ssl\ssl_local.h">
+      <Filter>ssl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\third_party\openssl\ssl\packet_local.h">
+      <Filter>ssl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\third_party\openssl\ssl\ssl_cert_table.h">
+      <Filter>ssl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\third_party\openssl\ssl\statem\statem.h">
+      <Filter>ssl\statem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\third_party\openssl\ssl\statem\statem_local.h">
+      <Filter>ssl\statem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\third_party\openssl\ssl\record\record.h">
+      <Filter>ssl\record</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\third_party\openssl\ssl\record\record_local.h">
+      <Filter>ssl\record</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\third_party\openssl\crypto\bn\bn_local.h">
+      <Filter>crypto\bn</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -738,9 +771,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\third_party\openssl\crypto\conf\conf_mod.c">
       <Filter>crypto\conf</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\third_party\openssl\crypto\comp\c_zlib.c">
-      <Filter>crypto\comp</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\third_party\openssl\crypto\err\err_all.c">
       <Filter>crypto\err</Filter>
@@ -1086,9 +1116,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\third_party\openssl\crypto\bio\bio_err.c">
       <Filter>crypto\bio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\third_party\openssl\crypto\comp\comp_err.c">
-      <Filter>crypto\comp</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\third_party\openssl\crypto\rsa\rsa_err.c">
       <Filter>crypto\rsa</Filter>
@@ -2118,6 +2145,162 @@
     </ClCompile>
     <ClCompile Include="..\..\..\third_party\openssl\crypto\ct\ct_x509v3.c">
       <Filter>crypto\ct</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\ssl_init.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\ssl_err.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\ssl_ciph.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\ssl_lib.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\bio_ssl.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\d1_lib.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\d1_msg.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\d1_srtp.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\methods.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\packet.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\pqueue.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\s3_cbc.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\s3_enc.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\s3_lib.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\s3_msg.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\ssl_asn1.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\ssl_cert.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\ssl_conf.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\ssl_mcnf.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\ssl_rsa.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\ssl_sess.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\ssl_stat.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\ssl_txt.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\ssl_utst.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\t1_enc.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\t1_lib.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\t1_trce.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\tls_srp.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\tls13_enc.c">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\statem\extensions.c">
+      <Filter>ssl\statem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\statem\extensions_clnt.c">
+      <Filter>ssl\statem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\statem\extensions_cust.c">
+      <Filter>ssl\statem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\statem\extensions_srvr.c">
+      <Filter>ssl\statem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\statem\statem.c">
+      <Filter>ssl\statem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\statem\statem_clnt.c">
+      <Filter>ssl\statem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\statem\statem_dtls.c">
+      <Filter>ssl\statem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\statem\statem_lib.c">
+      <Filter>ssl\statem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\statem\statem_srvr.c">
+      <Filter>ssl\statem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\record\dtls1_bitmap.c">
+      <Filter>ssl\record</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\record\rec_layer_d1.c">
+      <Filter>ssl\record</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\record\rec_layer_s3.c">
+      <Filter>ssl\record</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\record\ssl3_buffer.c">
+      <Filter>ssl\record</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\record\ssl3_record.c">
+      <Filter>ssl\record</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\ssl\record\ssl3_record_tls13.c">
+      <Filter>ssl\record</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\crypto\srp\srp_lib.c">
+      <Filter>crypto\srp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\crypto\srp\srp_vfy.c">
+      <Filter>crypto\srp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\crypto\bn\bn_const.c">
+      <Filter>crypto\bn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\crypto\bn\bn_depr.c">
+      <Filter>crypto\bn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\crypto\bn\bn_mpi.c">
+      <Filter>crypto\bn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\crypto\bn\bn_srp.c">
+      <Filter>crypto\bn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\crypto\bn\bn_x931p.c">
+      <Filter>crypto\bn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\openssl\crypto\txt_db\txt_db.c">
+      <Filter>crypto\txt_db</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
