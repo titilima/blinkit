@@ -19,15 +19,16 @@
 class PrivateKeyImpl
 {
 public:
-    PrivateKeyImpl(int bits = 2048);
-    ~PrivateKeyImpl(void);
+    PrivateKeyImpl(const std::string &pem);
+    virtual ~PrivateKeyImpl(void);
 
-    operator EVP_PKEY*() { return m_key; }
+    operator EVP_PKEY*() const { return m_key; }
 
-    int Save(const BkPathChar *fileName);
-private:
-    EVP_PKEY *m_key;
-    RSA *m_rsa;
+    virtual int Save(const BkPathChar *fileName);
+protected:
+    PrivateKeyImpl(void) = default;
+
+    EVP_PKEY *m_key = nullptr;
 };
 
 #endif // BLINKIT_BKLOGIN_PRIVATE_KEY_IMPL_H
