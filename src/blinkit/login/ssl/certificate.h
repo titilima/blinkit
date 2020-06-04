@@ -22,7 +22,10 @@ class Certificate
 {
 public:
     Certificate(void);
+    Certificate(const std::string &pem);
     ~Certificate(void);
+
+    operator X509*() const { return m_cert; }
 
     int Sign(X509_REQ *req, EVP_PKEY *key, int days = 365);
 

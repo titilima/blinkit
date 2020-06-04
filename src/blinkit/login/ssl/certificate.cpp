@@ -32,9 +32,17 @@ Certificate::Certificate(void) : m_cert(X509_new())
     ASN1_INTEGER_free(sno);
 }
 
+Certificate::Certificate(const std::string &pem) : m_cert(nullptr)
+{
+    BIO *bio = BIO_new_mem_buf(pem.data(), pem.length());
+    m_cert = PEM_read_bio_X509(bio, nullptr, nullptr, nullptr);
+    BIO_free(bio);
+}
+
 Certificate::~Certificate(void)
 {
-    X509_free(m_cert);
+    if (nullptr != m_cert)
+        X509_free(m_cert);
 }
 
 int Certificate::Save(const BkPathChar *fileName)
