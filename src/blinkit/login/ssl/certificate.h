@@ -27,10 +27,13 @@ public:
 
     operator X509*() const { return m_cert; }
 
-    int Sign(X509_REQ *req, EVP_PKEY *key, int days = 365);
+    int SelfSign(X509_REQ *req, EVP_PKEY *key, int days = 365);
+    int Sign(X509_REQ *req, EVP_PKEY *caKey, X509 *caCert, int days = 365);
 
     int Save(const BkPathChar *fileName);
 private:
+    void FillBasicData(X509_REQ *req, int days);
+
     X509 *m_cert;
 #ifndef NDEBUG
     bool m_signed = false;

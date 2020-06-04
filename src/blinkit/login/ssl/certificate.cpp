@@ -45,6 +45,19 @@ Certificate::~Certificate(void)
         X509_free(m_cert);
 }
 
+void Certificate::FillBasicData(X509_REQ *req, int days)
+{
+#ifndef NDEBUG
+    ASSERT(m_signed);
+#endif
+    X509_set_subject_name(m_cert, X509_REQ_get_subject_name(req));
+
+    X509_gmtime_adj(X509_getm_notBefore(m_cert), 0);
+    X509_time_adj_ex(X509_getm_notAfter(m_cert), days, 0, nullptr);
+
+    X509_set_pubkey(m_cert, X509_REQ_get0_pubkey(req));
+}
+
 int Certificate::Save(const BkPathChar *fileName)
 {
 #ifndef NDEBUG
@@ -74,18 +87,43 @@ int Certificate::Save(const BkPathChar *fileName)
     return r;
 }
 
-int Certificate::Sign(X509_REQ *req, EVP_PKEY *key, int days)
+int Certificate::SelfSign(X509_REQ *req, EVP_PKEY *key, int days)
 {
+    FillBasicData(req, days);
     X509_set_issuer_name(m_cert, X509_REQ_get_subject_name(req));
 
-    X509_set_subject_name(m_cert, X509_REQ_get_subject_name(req));
-
-    X509_gmtime_adj(X509_getm_notBefore(m_cert), 0);
-    X509_time_adj_ex(X509_getm_notAfter(m_cert), days, 0, nullptr);
-
-    X509_set_pubkey(m_cert, key);
-
     int r = X509_sign(m_cert, key, nullptr);
+    if (0 == r)
+    {
+        ASSERT(0 != r);
+        return BK_ERR_UNKNOWN;
+    }
+#ifndef NDEBUG
+    m_signed = true;
+#endif
+    return BK_ERR_SUCCESS;
+}
+
+int Certificate::Sign(X509_REQ *req, EVP_PKEY *caKey, X509 *caCert, int days)
+{
+    FillBasicData(req, days);
+    X509_set_issuer_name(m_cert, X509_get_subject_name(caCert));
+
+    X509_STORE *ctx = X509_STORE_new();
+
+    X509_STORE_CTX *xsc = X509_STORE_CTX_new();
+    X509_STORE_CTX_init(xsc, ctx, m_cert, nullptr);
+    X509_STORE_CTX_set_cert(xsc, m_cert);
+    X509_STORE_CTX_set_flags(xsc, X509_V_FLAG_CHECK_SS_SIGNATURE);
+
+    EVP_MD_CTX *mctx = EVP_MD_CTX_new();
+    EVP_DigestSignInit(mctx, nullptr, nullptr, nullptr, caKey);
+    int r = X509_sign_ctx(m_cert, mctx);
+    EVP_MD_CTX_free(mctx);
+
+    X509_STORE_CTX_free(xsc);
+    X509_STORE_free(ctx);
+
     if (0 == r)
     {
         ASSERT(0 != r);
