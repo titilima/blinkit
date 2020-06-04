@@ -69,7 +69,7 @@ BKEXPORT int BKAPI BkSignPrivateKey(BkPrivateKey key, const char *commonName, in
         return r;
 
     Certificate cert;
-    r = cert.Sign(req, *key, days);
+    r = cert.SelfSign(req, *key, days);
     if (BK_ERR_SUCCESS != r)
         return r;
     return cert.Save(certFileName);
