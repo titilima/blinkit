@@ -1,0 +1,40 @@
+// -------------------------------------------------
+// BlinKit - BkLogin Library
+// -------------------------------------------------
+//   File Name: https_request_task.h
+// Description: HTTPSRequestTask Class
+//      Author: Ziming Li
+//     Created: 2020-06-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
+#ifndef BLINKIT_BKLOGIN_HTTPS_REQUEST_TASK_H
+#define BLINKIT_BKLOGIN_HTTPS_REQUEST_TASK_H
+
+#pragma once
+
+#include <openssl/ossl_typ.h>
+#include "blinkit/login/tasks/request_task_base.h"
+
+namespace BlinKit {
+
+class HTTPSRequestTask final : public RequestTaskBase
+{
+public:
+    HTTPSRequestTask(SOCKET client, const std::string &domain, const std::string &port, LoginProxyImpl &loginProxy);
+    ~HTTPSRequestTask(void) override;
+private:
+    SSL* DetachSSL(void);
+
+    int Recv(char *buf, int bufSize) const override;
+    std::string GetURL(void) const override;
+    ResponseTaskBase* CreateResponseTask(LoginProxyImpl &loginProxy) override;
+
+    SSL *m_ssl;
+    const std::string m_domain, m_port;
+};
+
+} // namespace BlinKit
+
+#endif // BLINKIT_BKLOGIN_HTTPS_REQUEST_TASK_H
