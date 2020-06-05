@@ -23,13 +23,12 @@ class SSLPair
 {
 public:
     SSLPair(const std::string &pemKey, const std::string &pemCert);
-    SSLPair(const std::string &domain, const SSLPair &caData);
 
     bool IsValid(void) const;
 
-    void AttachTo(SSL_CTX *ctx);
+    SSL_CTX* NewDomainContext(const std::string &domain);
 private:
-    std::unique_ptr<PrivateKeyImpl> m_key;
+    PrivateKeyImpl m_key;
     Certificate m_cert;
 };
 

@@ -17,29 +17,13 @@
 
 namespace BlinKit {
 
-SSLPair::SSLPair(const std::string &pemKey, const std::string &pemCert)
-    : m_key(std::make_unique<PrivateKeyImpl>(pemKey)), m_cert(pemCert)
+SSLPair::SSLPair(const std::string &pemKey, const std::string &pemCert) : m_key(pemKey), m_cert(pemCert)
 {
-}
-
-SSLPair::SSLPair(const std::string &domain, const SSLPair &caData) : m_key(std::make_unique<RSAKey>())
-{
-    SignRequest req;
-    req.SetCommonName(domain.c_str());
-    if (BK_ERR_SUCCESS == req.Sign(*m_key))
-        m_cert.Sign(req, *caData.m_key, caData.m_cert, 3650);
-}
-
-void SSLPair::AttachTo(SSL_CTX *ctx)
-{
-    ASSERT(IsValid());
-    SSL_CTX_use_certificate(ctx, m_cert);
-    SSL_CTX_use_PrivateKey(ctx, *m_key);
 }
 
 bool SSLPair::IsValid(void) const
 {
-    EVP_PKEY *k = *m_key;
+    EVP_PKEY *k = m_key;
     if (nullptr == k)
     {
         ASSERT(nullptr != k);
@@ -59,6 +43,25 @@ bool SSLPair::IsValid(void) const
         return false;
     }
     return true;
+}
+
+SSL_CTX* SSLPair::NewDomainContext(const std::string &domain)
+{
+    RSAKey key;
+
+    SignRequest req;
+    req.SetCommonName(domain.c_str());
+    if (BK_ERR_SUCCESS != req.Sign(key))
+        return nullptr;
+
+    Certificate cert;
+    if (BK_ERR_SUCCESS != cert.Sign(req, m_key, m_cert, 3650))
+        return nullptr;
+
+    SSL_CTX *ctx = SSL_CTX_new(SSLv23_server_method());
+    SSL_CTX_use_certificate(ctx, cert);
+    SSL_CTX_use_PrivateKey(ctx, key);
+    return ctx;
 }
 
 } // namespace BlinKit
