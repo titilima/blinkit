@@ -15,6 +15,24 @@ namespace BlinKit {
 
 #ifdef OS_WIN
 
+int BkFile::ReadContent(const BkPathChar *fileName, BkBuffer *dst)
+{
+    HANDLE hFile = CreateFileW(fileName, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
+    if (INVALID_HANDLE_VALUE == hFile)
+    {
+        ASSERT(INVALID_HANDLE_VALUE != hFile);
+        return BK_ERR_NOT_FOUND;
+    }
+
+    DWORD dwRead = 0;
+    const DWORD size = GetFileSize(hFile, nullptr);
+    void *buf = dst->Allocator(size, dst->UserData);
+    ReadFile(hFile, buf, size, &dwRead, nullptr);
+    ASSERT(size == dwRead);
+    CloseHandle(hFile);
+    return BK_ERR_SUCCESS;
+}
+
 int BkFile::WriteContent(const BkPathChar *fileName, const void *data, size_t size)
 {
     HANDLE hFile = CreateFileW(fileName, GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS,

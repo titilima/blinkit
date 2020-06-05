@@ -21,6 +21,7 @@ namespace BlinKit {
 class BkFile
 {
 public:
+    static int ReadContent(const BkPathChar *fileName, BkBuffer *dst);
     static int WriteContent(const BkPathChar *fileName, const void *data, size_t size);
 private:
     BkFile(void) = delete;
