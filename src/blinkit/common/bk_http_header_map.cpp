@@ -68,6 +68,11 @@ std::string BkHTTPHeaderMap::GetAllForRequest(void) const
     return ret;
 }
 
+bool BkHTTPHeaderMap::Has(const std::string &name) const
+{
+    return std::end(m_headers) != m_headers.find(name);
+}
+
 void BkHTTPHeaderMap::Remove(const std::string &name)
 {
     m_headers.erase(name);

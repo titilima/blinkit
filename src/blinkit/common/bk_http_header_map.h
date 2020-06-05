@@ -24,6 +24,7 @@ class BkHTTPHeaderMap
 public:
     void Clear(void) { m_headers.clear(); }
 
+    bool Has(const std::string &name) const;
     std::string Get(const std::string &name) const;
     void Set(const std::string &name, const std::string &val);
 
