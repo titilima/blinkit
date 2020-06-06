@@ -184,7 +184,16 @@ std::string ResponseImpl::ResolveRedirection(void)
     return ret;
 }
 
+void ResponseImpl::SetBody(const void *data, size_t length)
+{
+    m_body.resize(length);
+    if (length > 0)
+        memcpy(m_body.data(), data, length);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#ifndef BKLOGIN_BUILD
 
 extern "C" {
 
@@ -214,3 +223,5 @@ BKEXPORT int BKAPI BkGetResponseStatusCode(BkResponse response)
 }
 
 } // extern "C"
+
+#endif // BKLOGIN_BUILD

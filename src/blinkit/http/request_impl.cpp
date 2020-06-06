@@ -63,7 +63,14 @@ void RequestImpl::SetProxy(int type, const char *proxy)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef BKLOGIN_BUILD
+
 extern "C" {
+
+BKEXPORT BkRequest BKAPI BkCreateRequest(const char *URL, BkRequestClient *client)
+{
+    return RequestImpl::CreateInstance(URL, *client);
+}
 
 BKEXPORT int BKAPI BkPerformRequest(BkRequest request, BkWorkController *controller)
 {
@@ -98,3 +105,5 @@ BKEXPORT void BKAPI BkSetRequestTimeout(BkRequest request, unsigned timeout)
 }
 
 } // extern "C"
+
+#endif // BKLOGIN_BUILD

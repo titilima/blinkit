@@ -43,10 +43,12 @@ public:
 
     BlinKit::BkHTTPHeaderMap& MutableHeaders(void) { return m_headers; }
     const BlinKit::BkHTTPHeaderMap& Headers(void) const { return m_headers; }
+    std::vector<std::string>& MutableCookies(void) { return m_cookies; }
     const std::vector<std::string>& Cookies(void) const { return m_cookies; }
 
     const char* BodyData(void) const { return m_body.empty() ? nullptr : reinterpret_cast<const char *>(m_body.data()); }
     int BodyLength(void) const { return m_body.size(); }
+    void SetBody(const void *data, size_t length);
 
     const std::string& CurrentURL(void) const { return m_URL; }
     void SetCurrentURL(const std::string &URL) { m_URL = URL; }
