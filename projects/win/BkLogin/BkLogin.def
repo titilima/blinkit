@@ -6,3 +6,8 @@ BkCreatePrivateKey
 BkDestroyPrivateKey
 BkSavePrivateKey
 BkSignPrivateKey
+
+BkCreateLoginProxy
+BkDestroyLoginProxy
+BkSetupLoginProxyCA
+BkRunLoginProxy

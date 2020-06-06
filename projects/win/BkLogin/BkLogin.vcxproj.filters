@@ -22,6 +22,21 @@
     <Filter Include="login\ssl">
       <UniqueIdentifier>{bc09e758-599e-485b-b707-789fb3b42813}</UniqueIdentifier>
     </Filter>
+    <Filter Include="login\tasks">
+      <UniqueIdentifier>{af6266bb-d8f0-4b00-9f1d-94bc878a3c7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="http">
+      <UniqueIdentifier>{693dbbf6-aa2f-4731-a5b6-6cfeeda55666}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win">
+      <UniqueIdentifier>{3be2e8d8-54ac-477b-b8f0-420371de17a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app">
+      <UniqueIdentifier>{dbd58483-79cd-4111-bccc-09175a066ca0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="misc">
+      <UniqueIdentifier>{02e9227a-4cd0-4557-8601-c591c595ee29}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\sdk\include\bk_login.h">
@@ -47,6 +62,63 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\login\ssl\sign_request.h">
       <Filter>login\ssl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\login\win_login_proxy.h">
+      <Filter>login</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\login\login_proxy_impl.h">
+      <Filter>login</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\common\bk_socket.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\login\tasks\login_task.h">
+      <Filter>login\tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\login\tasks\request_task_base.h">
+      <Filter>login\tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\login\tasks\http_request_task.h">
+      <Filter>login\tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\common\bk_http_header_map.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\login\ssl\ssl_pair.h">
+      <Filter>login\ssl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\login\ssl\rsa_key.h">
+      <Filter>login\ssl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\login\tasks\https_request_task.h">
+      <Filter>login\tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\http\request_controller_impl.h">
+      <Filter>http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\http\request_impl.h">
+      <Filter>http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\http\response_impl.h">
+      <Filter>http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\http\win_request.h">
+      <Filter>http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\login\tasks\https_response_task.h">
+      <Filter>login\tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\login\tasks\response_task_base.h">
+      <Filter>login\tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\win\inet.h">
+      <Filter>win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\common\bk_url.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\app\app_constants.h">
+      <Filter>app</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +149,57 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\login\ssl\sign_request.cpp">
       <Filter>login\ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\login\win_login_proxy.cpp">
+      <Filter>login</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\login\login_proxy_impl.cpp">
+      <Filter>login</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\login\tasks\request_task_base.cpp">
+      <Filter>login\tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\login\tasks\http_request_task.cpp">
+      <Filter>login\tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\common\bk_http_header_map.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\login\ssl\ssl_pair.cpp">
+      <Filter>login\ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\login\ssl\rsa_key.cpp">
+      <Filter>login\ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\login\tasks\https_request_task.cpp">
+      <Filter>login\tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\http\request_impl.cpp">
+      <Filter>http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\http\response_impl.cpp">
+      <Filter>http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\http\win_request.cpp">
+      <Filter>http</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\login\tasks\https_response_task.cpp">
+      <Filter>login\tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\login\tasks\response_task_base.cpp">
+      <Filter>login\tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\win\inet.cpp">
+      <Filter>win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\common\bk_url.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\app\app_constants.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\misc\buffer.cpp">
+      <Filter>misc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
