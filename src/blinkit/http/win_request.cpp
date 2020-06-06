@@ -415,7 +415,7 @@ int WinRequest::WaitForIOPending(void)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-extern "C" BkRequest BKAPI BkCreateRequest(const char *URL, BkRequestClient *client)
+RequestImpl* RequestImpl::CreateInstance(const char *URL, const BkRequestClient &client)
 {
-    return new BlinKit::WinRequest(URL, *client);
+    return new BlinKit::WinRequest(URL, client);
 }
