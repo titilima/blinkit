@@ -36,19 +36,26 @@ BKEXPORT int BKAPI BkSignPrivateKey(BkPrivateKey key, const char *commonName, in
  * Login Proxy
  */
 
+enum BkLoginProxyConfig {
+    BK_LPCFG_USER_AGENT = 0,
+    BK_LPCFG_LOGGED_IN_HTML
+};
+
 BK_DECLARE_HANDLE(BkLoginProxy, LoginProxyImpl);
 
 struct BkLoginProxyClient {
     size_t SizeOfStruct; // sizeof(BkLoginProxyClient)
     void *UserData;
     void (BKAPI * SetCookie)(const char *, void *);
-    bool_t(BKAPI * IsLoginSuccessful)(const char *, void *);
-    bool_t(BKAPI * GetConfig)(int, struct BkBuffer *, void *);
+    bool_t (BKAPI * IsLoginSuccessful)(const char *, void *);
+    bool_t (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
 };
 
 BKEXPORT BkLoginProxy BKAPI BkCreateLoginProxy(struct BkLoginProxyClient *client);
+BKEXPORT void BKAPI BkDestroyLoginProxy(BkLoginProxy loginProxy);
 
-BKEXPORT int BKAPI BkRunLoginProxy(BkLoginProxy loginProxy, const char *loginURL, uint16_t port);
+BKEXPORT int BKAPI BkSetupLoginProxyCA(BkLoginProxy loginProxy, const BkPathChar *privateKeyFile, const BkPathChar *certFile);
+BKEXPORT int BKAPI BkRunLoginProxy(BkLoginProxy loginProxy, uint16_t port);
 
 #ifdef __cplusplus
 } // extern "C"

@@ -39,7 +39,6 @@ enum BkCrawlerConfig {
     BK_CFG_REQUEST_COOKIE,
     BK_CFG_USER_AGENT,
     BK_CFG_SCRIPT_DISABLED,
-    BK_CFG_LOGGED_IN_HTML
 };
 
 struct BkCrawlerClient {
