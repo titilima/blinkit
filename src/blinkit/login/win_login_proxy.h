@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BlinKit Library
+// BlinKit - BkLogin Library
 // -------------------------------------------------
 //   File Name: win_login_proxy.h
 // Description: WinLoginProxy Class
@@ -9,16 +9,16 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINKIT_WIN_LOGIN_PROXY_H
-#define BLINKIT_BLINKIT_WIN_LOGIN_PROXY_H
+#ifndef BLINKIT_BKLOGIN_WIN_LOGIN_PROXY_H
+#define BLINKIT_BKLOGIN_WIN_LOGIN_PROXY_H
 
 #pragma once
 
-#include "blinkit/crawler/login_proxy.h"
+#include "blinkit/login/login_proxy_impl.h"
 
 namespace BlinKit {
 
-class WinLoginProxy final : public LoginProxy
+class WinLoginProxy final : public LoginProxyImpl
 {
 public:
     WinLoginProxy(const BkLoginProxyClient &client);
@@ -33,4 +33,4 @@ private:
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BLINKIT_WIN_LOGIN_PROXY_H
+#endif // BLINKIT_BKLOGIN_WIN_LOGIN_PROXY_H

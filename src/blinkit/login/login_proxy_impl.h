@@ -1,59 +1,64 @@
 // -------------------------------------------------
-// BlinKit - BlinKit Library
+// BlinKit - BkLogin Library
 // -------------------------------------------------
-//   File Name: login_proxy.h
-// Description: LoginProxy Class
+//   File Name: login_proxy_impl.h
+// Description: LoginProxyImpl Class
 //      Author: Ziming Li
 //     Created: 2020-04-25
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINKIT_LOGIN_PROXY_H
-#define BLINKIT_BLINKIT_LOGIN_PROXY_H
+#ifndef BLINKIT_BKLOGIN_LOGIN_PROXY_IMPL_H
+#define BLINKIT_BKLOGIN_LOGIN_PROXY_IMPL_H
 
 #pragma once
 
 #include <condition_variable>
 #include <mutex>
 #include <queue>
-#include <string_view>
-#include <vector>
-#include "bk_crawler.h"
+#include "bk_login.h"
+#include <openssl/ossl_typ.h>
 #include "blinkit/common/bk_socket.h"
 
 namespace BlinKit {
-
 class LoginTask;
+class SSLPair;
+}
 
-class LoginProxy
+class LoginProxyImpl
 {
 public:
-    static std::unique_ptr<LoginProxy> Create(const BkLoginProxyClient &client);
-    virtual ~LoginProxy(void);
+    virtual ~LoginProxyImpl(void);
 
+    int SetupCA(const BkPathChar *privateKeyFile, const BkPathChar *certFile);
+    int Run(uint16_t port);
+
+    void AddTask(BlinKit::LoginTask *task);
+    SSL* NewSSL(const std::string &domain);
+    BkRequest CreateRequest(const std::string &URL, const BkRequestClient &client);
     const std::string& UserAgent(void) const;
-    BkRequest CreateRequest(const std::string &URL, SOCKET socket);
     void SetCookie(const std::string &cookie);
     bool IsLoginSuccessful(const std::string &currentURL) const;
-    std::string GetLoginSuccessfulResponseData(void) const;
-
-    int Run(const char *loginURL, uint16_t port);
+    std::string GetLoggedInHTML(void) const;
 protected:
-    LoginProxy(const BkLoginProxyClient &client);
+    LoginProxyImpl(const BkLoginProxyClient &client);
 
     void RunListeningThread(void);
+    void StopListeningThread(uint16_t port);
     int RunTaskLoop(void);
 
     virtual bool StartListeningThread(void) = 0;
 private:
+    int ApplyPEM(const std::string &privateKey, const std::string &cert);
+
     bool InitSocket(uint16_t port);
-    void ProcessRequestComplete(BkResponse response, SOCKET client);
-    static void BKAPI ProcessRequestComplete(BkResponse response, void *userData);
-    static void BKAPI ProcessRequestFailed(int errorCode, void *userData);
 
     BkLoginProxyClient m_client;
-    std::string m_loginURL;
+
+    std::unique_ptr<BlinKit::SSLPair> m_caData;
+    std::unordered_map<std::string, SSL_CTX *> m_sslData;
+
     mutable bool m_loggedIn = false;
     SOCKET m_socket = INVALID_SOCKET;
 
@@ -64,6 +69,4 @@ private:
     std::queue<BlinKit::LoginTask *> m_tasks;
 };
 
-} // namespace BlinKit
-
-#endif // BLINKIT_BLINKIT_LOGIN_PROXY_H
+#endif // BLINKIT_BKLOGIN_LOGIN_PROXY_IMPL_H

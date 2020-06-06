@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BlinKit Library
+// BlinKit - BkLogin Library
 // -------------------------------------------------
 //   File Name: win_login_proxy.cpp
 // Description: WinLoginProxy Class
@@ -13,7 +13,7 @@
 
 namespace BlinKit {
 
-WinLoginProxy::WinLoginProxy(const BkLoginProxyClient &client) : LoginProxy(client)
+WinLoginProxy::WinLoginProxy(const BkLoginProxyClient &client) : LoginProxyImpl(client)
 {
 }
 
@@ -39,9 +39,13 @@ bool WinLoginProxy::StartListeningThread(void)
     return nullptr != m_listeningThread;
 }
 
+} // namespace BlinKit
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<LoginProxy> LoginProxy::Create(const BkLoginProxyClient &client)
+extern "C" {
+
+BKEXPORT BkLoginProxy BKAPI BkCreateLoginProxy(struct BkLoginProxyClient *client)
 {
     WSADATA wsaData;
     int r = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -58,7 +62,7 @@ std::unique_ptr<LoginProxy> LoginProxy::Create(const BkLoginProxyClient &client)
         return nullptr;
     }
 
-    return std::make_unique<WinLoginProxy>(client);
+    return new BlinKit::WinLoginProxy(*client);
 }
 
-} // namespace BlinKit
+} // extern "C"
