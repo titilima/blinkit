@@ -48,7 +48,7 @@ Certificate::~Certificate(void)
 void Certificate::FillBasicData(X509_REQ *req, int days)
 {
 #ifndef NDEBUG
-    ASSERT(m_signed);
+    ASSERT(!m_signed);
 #endif
     X509_set_subject_name(m_cert, X509_REQ_get_subject_name(req));
 
