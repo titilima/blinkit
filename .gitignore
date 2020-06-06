@@ -1,22 +1,10 @@
+**/Debug/*.exe
 projects/posix/*.a
 projects/win/debug
 projects/win/release
 sdk/macos
 sdk/win32
 sdk/*.zip
-src/chromium/third_party/WebKit/LayoutTests
-src/chromium/third_party/WebKit/ManualTests
-src/chromium/third_party/WebKit/PerformanceTests
-src/chromium/third_party/WebKit/Source/core/paint/test_data
-src/chromium/third_party/WebKit/Source/core/testing
-src/chromium/third_party/WebKit/Source/gen
-src/chromium/third_party/WebKit/Source/platform/image-decoders/testing
-src/chromium/third_party/WebKit/Source/platform/testing
-src/chromium/third_party/WebKit/Source/web/resources
-src/chromium/third_party/WebKit/Source/web/tests
-src/chromium/third_party/WebKit/Tools
-src/chromium/third_party/WebKit/public/default_100_percent
-src/chromium/third_party/WebKit/public/default_200_percent
 src/duktape
 
 BUILD.gn
