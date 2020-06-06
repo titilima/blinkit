@@ -37,4 +37,6 @@ projects/posix/BkTest
 *.pyc
 *.FileListAbsolute.txt
 *.wav
+*.VC.db-shm
+*.VC.db-wal
 
