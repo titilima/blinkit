@@ -32,7 +32,10 @@ HTTPSRequestTask::HTTPSRequestTask(SOCKET client, const std::string &domain, con
 HTTPSRequestTask::~HTTPSRequestTask(void)
 {
     if (nullptr != m_ssl)
+    {
+        SSL_shutdown(m_ssl);
         SSL_free(m_ssl);
+    }
 }
 
 ResponseTaskBase* HTTPSRequestTask::CreateResponseTask(LoginProxyImpl &loginProxy)

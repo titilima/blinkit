@@ -29,7 +29,10 @@ RequestTaskBase::RequestTaskBase(SOCKET s, const std::string_view &leadChars)
 RequestTaskBase::~RequestTaskBase(void)
 {
     if (INVALID_SOCKET != m_socket)
+    {
+        shutdown(m_socket, SD_BOTH);
         closesocket(m_socket);
+    }
 }
 
 void RequestTaskBase::AdjustHeaders(BkHTTPHeaderMap &headers, LoginProxyImpl &loginProxy)

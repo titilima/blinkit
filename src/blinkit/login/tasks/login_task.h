@@ -14,16 +14,18 @@
 
 #pragma once
 
-namespace BlinKit {
+#include "blinkit/common/bk_socket.h"
 
-class LoginProxy;
+class LoginProxyImpl;
+
+namespace BlinKit {
 
 class LoginTask
 {
 public:
     virtual ~LoginTask(void) = default;
 
-    virtual void Execute(LoginProxy &loginProxy) = 0;
+    virtual LoginTask* Execute(LoginProxyImpl &loginProxy) = 0;
 protected:
     LoginTask(void) = default;
 };

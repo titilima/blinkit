@@ -44,7 +44,7 @@ private:
     virtual std::string GetURL(void) const = 0;
     virtual ResponseTaskBase* CreateResponseTask(LoginProxyImpl &loginProxy) = 0;
 
-    LoginTask* Execute(LoginProxyImpl &loginProxy) override;
+    LoginTask* Execute(LoginProxyImpl &loginProxy) override final;
 
     std::string m_leadData;
     std::string m_requestMethod, m_requestURI;
