@@ -90,18 +90,27 @@ static void GetRunParams(RunParams &dst, PCWSTR lpCmdLine)
     }
     else
     {
-        PCWSTR p = wcschr(lpCmdLine, ' ');
-        ATLASSERT(nullptr != p);
-        dst.URL.assign(lpCmdLine, p - lpCmdLine);
-        base::TrimString(dst.URL, base::kWhitespaceUTF16, &dst.URL);
-        dst.Proxy = base::SysWideToUTF8(p + 1);
-        base::TrimString(dst.Proxy, base::kWhitespaceASCII, &dst.Proxy);
+        std::wstring cmdLine(lpCmdLine);
+        base::TrimString(cmdLine, base::kWhitespaceUTF16, &cmdLine);
+
+        size_t p = cmdLine.find(' ');
+        if (std::wstring::npos != p)
+        {
+            dst.URL = cmdLine.substr(0, p);
+
+            dst.Proxy = base::SysWideToUTF8(cmdLine.substr(p + 1));
+            base::TrimString(dst.Proxy, base::kWhitespaceASCII, &dst.Proxy);
+        }
+        else
+        {
+            dst.URL.assign(cmdLine);
+        }
     }
 }
 
-static int RunMainFrame(const std::wstring &URL, int nShowCmd)
+static int RunMainFrame(const std::wstring &URL, bool useProxy, int nShowCmd)
 {
-    MainFrame mainFrame(URL);
+    MainFrame mainFrame(URL, useProxy);
     if (!mainFrame.Create(nullptr))
         return EXIT_FAILURE;
 
@@ -131,13 +140,15 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR lpCmdLine, int nShowCm
 
     RunParams params;
     GetRunParams(params, lpCmdLine);
+    if (!params.Proxy.empty())
+    {
+        INTERNET_PROXY_INFO proxyInfo = { 0 };
+        proxyInfo.dwAccessType = INTERNET_OPEN_TYPE_PROXY;
+        proxyInfo.lpszProxy = reinterpret_cast<PCTSTR>(params.Proxy.c_str());
+        InternetSetOptionA(nullptr, INTERNET_OPTION_PROXY, &proxyInfo, sizeof(INTERNET_PROXY_INFO));
+    }
 
-    INTERNET_PROXY_INFO proxyInfo = { 0 };
-    proxyInfo.dwAccessType = INTERNET_OPEN_TYPE_PROXY;
-    proxyInfo.lpszProxy = reinterpret_cast<PCTSTR>(params.Proxy.c_str());
-    InternetSetOptionA(nullptr, INTERNET_OPTION_PROXY, &proxyInfo, sizeof(INTERNET_PROXY_INFO));
-
-    int r = RunMainFrame(params.URL, nShowCmd);
+    int r = RunMainFrame(params.URL, !params.Proxy.empty(), nShowCmd);
 
     _Module.Term();
     CoUninitialize();

@@ -24,11 +24,14 @@ typedef CWinTraits<WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS, 0> M
 class MainFrame : public CWindowImpl<MainFrame, CAxWindow, MainFrameTraits>
 {
 public:
-    MainFrame(const std::wstring &URL);
+    MainFrame(const std::wstring &URL, bool useProxy);
 
     bool TranslateAccelerator(LPMSG msg);
 private:
+    void SetCaption(void);
+
     std::wstring m_URL;
+    bool m_useProxy;
     IOleInPlaceActiveObject *m_inPlaceObj = nullptr;
 public:
     BEGIN_MSG_MAP(MainFrame)

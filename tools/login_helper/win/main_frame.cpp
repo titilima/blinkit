@@ -11,15 +11,13 @@
 
 #include "main_frame.h"
 
-MainFrame::MainFrame(const std::wstring &URL) : m_URL(URL)
+MainFrame::MainFrame(const std::wstring &URL, bool useProxy) : m_URL(URL), m_useProxy(useProxy)
 {
 }
 
 LRESULT MainFrame::OnCreate(UINT, WPARAM, LPARAM, BOOL &)
 {
-    std::wstring caption(L"Login to ");
-    caption.append(m_URL);
-    ::SetWindowTextW(*this, caption.c_str());
+    SetCaption();
 
     HRESULT hr = CreateControl(L"{8856F961-340A-11D0-A96B-00C04FD705A2}");
     if (FAILED(hr))
@@ -43,6 +41,17 @@ LRESULT MainFrame::OnDestroy(UINT, WPARAM, LPARAM, BOOL &)
     m_inPlaceObj->Release();
     PostQuitMessage(EXIT_SUCCESS);
     return 0;
+}
+
+void MainFrame::SetCaption(void)
+{
+    size_t p = m_URL.find(L"://");
+    std::wstring caption = m_URL.substr(p + 3);
+    p = caption.find(L'/');
+    if (std::wstring::npos != p)
+        caption.resize(p);
+    caption.insert(0, m_useProxy ? L"Login to " : L"Navigating ");
+    ::SetWindowTextW(*this, caption.c_str());
 }
 
 bool MainFrame::TranslateAccelerator(LPMSG msg)
