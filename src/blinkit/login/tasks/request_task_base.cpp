@@ -115,7 +115,16 @@ void RequestTaskBase::ParseRequest(void)
     if (contentLength.empty() || contentLength == std::string(1, '0'))
         return; // Need not to process body.
 
-    ASSERT(false); // BKTODO:
+    const size_t bodySize = std::stoi(contentLength);
+    m_requestBody = rawData.substr(p + 4);
+    if (m_requestBody.size() < bodySize)
+    {
+        do {
+            size = Recv(buf, sizeof(buf));
+            m_requestBody.append(buf, size);
+        } while (m_requestBody.size() < bodySize);
+    }
+    ASSERT(m_requestBody.size() == bodySize);
 }
 
 bool RequestTaskBase::ParseHeaders(const std::string_view &s)
