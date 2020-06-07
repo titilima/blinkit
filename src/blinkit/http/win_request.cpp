@@ -254,9 +254,11 @@ int WinRequest::RequestComplete(void)
             {
                 m_referer = previousURL;
                 nextWorker = &WinRequest::RequestRedirect;
+                break;
             }
-            break;
         }
+        [[fallthrough]];
+
         default:
             m_client.RequestComplete(m_response.get(), m_client.UserData);
     }
