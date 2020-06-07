@@ -43,6 +43,7 @@ void ResponseTaskBase::AdjustHeaders(BkHTTPHeaderMap &headers, LoginProxyImpl &l
         headers.Remove("Content-Encoding");
         headers.Set("Content-Length", std::to_string(m_response->BodyLength()));
     }
+    headers.Remove("Transfer-Encoding");
 }
 
 LoginTask* ResponseTaskBase::Execute(LoginProxyImpl &loginProxy)
