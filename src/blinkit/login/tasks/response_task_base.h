@@ -40,6 +40,7 @@ private:
 
     static void BKAPI RequestCompleteImpl(BkResponse response, void *userData);
     static void BKAPI RequestFailedImpl(int errorCode, void *userData);
+    static bool_t BKAPI RequestRedirectImpl(BkResponse, void *) { return false; }
 
     virtual int Send(const char *buf, int bufSize) = 0;
 

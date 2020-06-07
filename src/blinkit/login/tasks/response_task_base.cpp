@@ -23,7 +23,7 @@ ResponseTaskBase::ResponseTaskBase(SOCKET s, LoginProxyImpl &loginProxy) : m_soc
     BkRequestClient::UserData = this;
     BkRequestClient::RequestComplete = RequestCompleteImpl;
     BkRequestClient::RequestFailed = RequestFailedImpl;
-    BkRequestClient::RequestRedirect = nullptr;
+    BkRequestClient::RequestRedirect = RequestRedirectImpl;
 }
 
 ResponseTaskBase::~ResponseTaskBase(void)
@@ -32,6 +32,7 @@ ResponseTaskBase::~ResponseTaskBase(void)
     {
         shutdown(m_socket, SD_BOTH);
         closesocket(m_socket);
+        BKLOG("closesocket in ~ResponseTaskBase");
     }
 }
 
