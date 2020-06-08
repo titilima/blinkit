@@ -163,6 +163,12 @@ void LoginProxyImpl::RunListeningThread(void)
 
         char lead[5];
         int size = recv(clientSocket, lead, std::size(lead), 0);
+        if (size < 0)
+        {
+            closesocket(clientSocket);
+            continue;
+        }
+
         if (size == std::size(EXIT) - 1 && 0 == strncmp(lead, EXIT, size))
         {
             closesocket(clientSocket);
