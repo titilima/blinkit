@@ -1,15 +1,15 @@
 // -------------------------------------------------
 // BlinKit - BkLogin Library
 // -------------------------------------------------
-//   File Name: response_task_base.cpp
-// Description: ResponseTaskBase Class
+//   File Name: response_task.cpp
+// Description: ResponseTask Class
 //      Author: Ziming Li
 //     Created: 2020-06-05
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "response_task_base.h"
+#include "response_task.h"
 
 #include "base/strings/stringprintf.h"
 #include "blinkit/http/response_impl.h"
@@ -17,7 +17,8 @@
 
 namespace BlinKit {
 
-ResponseTaskBase::ResponseTaskBase(SOCKET s, LoginProxyImpl &loginProxy) : m_socket(s), m_loginProxy(loginProxy)
+ResponseTask::ResponseTask(const std::shared_ptr<SocketWrapper> &socketWrapper, LoginProxyImpl &loginProxy)
+    : m_socketWrapper(socketWrapper), m_loginProxy(loginProxy)
 {
     BkRequestClient::SizeOfStruct = sizeof(BkRequestClient);
     BkRequestClient::UserData = this;
@@ -26,17 +27,7 @@ ResponseTaskBase::ResponseTaskBase(SOCKET s, LoginProxyImpl &loginProxy) : m_soc
     BkRequestClient::RequestRedirect = RequestRedirectImpl;
 }
 
-ResponseTaskBase::~ResponseTaskBase(void)
-{
-    if (INVALID_SOCKET != m_socket)
-    {
-        shutdown(m_socket, SD_BOTH);
-        closesocket(m_socket);
-        BKLOG("closesocket in ~ResponseTaskBase");
-    }
-}
-
-void ResponseTaskBase::AdjustHeaders(BkHTTPHeaderMap &headers, LoginProxyImpl &loginProxy)
+void ResponseTask::AdjustHeaders(BkHTTPHeaderMap &headers, LoginProxyImpl &loginProxy)
 {
     headers.Set("Connection", "close");
     if (headers.Has("Content-Encoding"))
@@ -47,7 +38,7 @@ void ResponseTaskBase::AdjustHeaders(BkHTTPHeaderMap &headers, LoginProxyImpl &l
     headers.Remove("Transfer-Encoding");
 }
 
-LoginTask* ResponseTaskBase::Execute(LoginProxyImpl &loginProxy)
+LoginTask* ResponseTask::Execute(LoginProxyImpl &loginProxy)
 {
     for (const std::string &cookie : m_response->Cookies())
         loginProxy.SetCookie(cookie);
@@ -58,7 +49,7 @@ LoginTask* ResponseTaskBase::Execute(LoginProxyImpl &loginProxy)
     return nullptr;
 }
 
-bool ResponseTaskBase::ProcessLoginOK(LoginProxyImpl &loginProxy)
+bool ResponseTask::ProcessLoginOK(LoginProxyImpl &loginProxy)
 {
     if (!loginProxy.IsLoginSuccessful(m_response->CurrentURL()))
         return false;
@@ -69,32 +60,32 @@ bool ResponseTaskBase::ProcessLoginOK(LoginProxyImpl &loginProxy)
         "Content-Type: text/html\r\n\r\n"
         ;
     response += loginProxy.GetLoggedInHTML();
-    Send(response.data(), response.length());
+    m_socketWrapper->Send(response.data(), response.length());
     return true;
 }
 
-void ResponseTaskBase::ProcessRequestComplete(BkResponse response)
+void ResponseTask::ProcessRequestComplete(BkResponse response)
 {
     m_response = response->shared_from_this();
     m_loginProxy.AddTask(this);
 }
 
-void ResponseTaskBase::ProcessRequestFailed(int errorCode)
+void ResponseTask::ProcessRequestFailed(int errorCode)
 {
     ASSERT(false); // BKTODO:
 }
 
-void BKAPI ResponseTaskBase::RequestCompleteImpl(BkResponse response, void *userData)
+void BKAPI ResponseTask::RequestCompleteImpl(BkResponse response, void *userData)
 {
-    reinterpret_cast<ResponseTaskBase *>(userData)->ProcessRequestComplete(response);
+    reinterpret_cast<ResponseTask *>(userData)->ProcessRequestComplete(response);
 }
 
-void BKAPI ResponseTaskBase::RequestFailedImpl(int errorCode, void *userData)
+void BKAPI ResponseTask::RequestFailedImpl(int errorCode, void *userData)
 {
-    reinterpret_cast<ResponseTaskBase *>(userData)->ProcessRequestFailed(errorCode);
+    reinterpret_cast<ResponseTask *>(userData)->ProcessRequestFailed(errorCode);
 }
 
-void ResponseTaskBase::ProcessResponse(LoginProxyImpl &loginProxy)
+void ResponseTask::ProcessResponse(LoginProxyImpl &loginProxy)
 {
     const std::string CRLF("\r\n");
 
@@ -119,7 +110,7 @@ void ResponseTaskBase::ProcessResponse(LoginProxyImpl &loginProxy)
 
     rawData.append(m_response->BodyData(), m_response->BodyLength());
 
-    Send(rawData.data(), rawData.length());
+    m_socketWrapper->Send(rawData.data(), rawData.length());
 }
 
 } // namespace BlinKit

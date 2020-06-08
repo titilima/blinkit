@@ -1,19 +1,20 @@
 // -------------------------------------------------
 // BlinKit - BkLogin Library
 // -------------------------------------------------
-//   File Name: response_task_base.h
-// Description: ResponseTaskBase Class
+//   File Name: response_task.h
+// Description: ResponseTask Class
 //      Author: Ziming Li
 //     Created: 2020-06-05
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BKLOGIN_RESPONSE_TASK_BASE_H
-#define BLINKIT_BKLOGIN_RESPONSE_TASK_BASE_H
+#ifndef BLINKIT_BKLOGIN_RESPONSE_TASK_H
+#define BLINKIT_BKLOGIN_RESPONSE_TASK_H
 
 #pragma once
 
+#include "blinkit/login/socket_wrapper.h"
 #include "blinkit/login/tasks/login_task.h"
 
 class ResponseImpl;
@@ -22,17 +23,13 @@ namespace BlinKit {
 
 class BkHTTPHeaderMap;
 
-class ResponseTaskBase : public LoginTask, public BkRequestClient
+class ResponseTask final : public LoginTask, public BkRequestClient
 {
 public:
-    ~ResponseTaskBase(void) override;
-protected:
-    ResponseTaskBase(SOCKET s, LoginProxyImpl &loginProxy);
-
-    virtual void AdjustHeaders(BkHTTPHeaderMap &headers, LoginProxyImpl &loginProxy);
-
-    SOCKET m_socket;
+    ResponseTask(const std::shared_ptr<SocketWrapper> &socketWrapper, LoginProxyImpl &loginProxy);
 private:
+    void AdjustHeaders(BkHTTPHeaderMap &headers, LoginProxyImpl &loginProxy);
+
     bool ProcessLoginOK(LoginProxyImpl &loginProxy);
     void ProcessResponse(LoginProxyImpl &loginProxy);
     void ProcessRequestComplete(BkResponse response);
@@ -42,14 +39,13 @@ private:
     static void BKAPI RequestFailedImpl(int errorCode, void *userData);
     static bool_t BKAPI RequestRedirectImpl(BkResponse, void *) { return false; }
 
-    virtual int Send(const char *buf, int bufSize) = 0;
-
     LoginTask* Execute(LoginProxyImpl &loginProxy) override;
 
+    std::shared_ptr<SocketWrapper> m_socketWrapper;
     LoginProxyImpl &m_loginProxy;
     std::shared_ptr<ResponseImpl> m_response;
 };
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BKLOGIN_RESPONSE_TASK_BASE_H
+#endif // BLINKIT_BKLOGIN_RESPONSE_TASK_H

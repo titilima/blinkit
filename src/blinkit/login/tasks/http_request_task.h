@@ -23,10 +23,8 @@ class HTTPRequestTask final : public RequestTaskBase
 public:
     HTTPRequestTask(SOCKET client, const char *leadChars, int leadSize);
 private:
-    int Recv(char *buf, int bufSize) const override;
     std::string GetURL(void) const override;
     void AdjustHeaders(BkHTTPHeaderMap &headers, LoginProxyImpl &loginProxy) override;
-    ResponseTaskBase* CreateResponseTask(LoginProxyImpl &loginProxy) override;
 };
 
 } // namespace BlinKit

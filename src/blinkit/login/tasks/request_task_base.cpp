@@ -17,22 +17,13 @@
 #include "blinkit/http/request_impl.h"
 #include "blinkit/login/login_proxy_impl.h"
 #include "blinkit/login/tasks/https_request_task.h"
-#include "blinkit/login/tasks/response_task_base.h"
+#include "blinkit/login/tasks/response_task.h"
 
 namespace BlinKit {
 
-RequestTaskBase::RequestTaskBase(SOCKET s, const std::string_view &leadChars)
-    : m_socket(s), m_leadData(leadChars.data(), leadChars.length())
+RequestTaskBase::RequestTaskBase(const std::shared_ptr<SocketWrapper> &socketWrapper, const std::string_view &leadChars)
+    : m_socketWrapper(socketWrapper), m_leadData(leadChars.data(), leadChars.length())
 {
-}
-
-RequestTaskBase::~RequestTaskBase(void)
-{
-    if (INVALID_SOCKET != m_socket)
-    {
-        shutdown(m_socket, SD_BOTH);
-        closesocket(m_socket);
-    }
 }
 
 void RequestTaskBase::AdjustHeaders(BkHTTPHeaderMap &headers, LoginProxyImpl &loginProxy)
@@ -40,16 +31,9 @@ void RequestTaskBase::AdjustHeaders(BkHTTPHeaderMap &headers, LoginProxyImpl &lo
     headers.Set("User-Agent", loginProxy.UserAgent());
 }
 
-SOCKET RequestTaskBase::DetachSocket(void)
-{
-    SOCKET ret = m_socket;
-    m_socket = INVALID_SOCKET;
-    return ret;
-}
-
 LoginTask* RequestTaskBase::DoRealRequest(LoginProxyImpl &loginProxy)
 {
-    ResponseTaskBase *responseTask = CreateResponseTask(loginProxy);
+    ResponseTask *responseTask = new ResponseTask(m_socketWrapper, loginProxy);
 
     RequestImpl *req = loginProxy.CreateRequest(GetURL(), *responseTask);
     req->SetMethod(m_requestMethod);
@@ -65,12 +49,14 @@ LoginTask* RequestTaskBase::DoRealRequest(LoginProxyImpl &loginProxy)
 
 LoginTask* RequestTaskBase::Execute(LoginProxyImpl &loginProxy)
 {
-    ParseRequest();
+    if (!ParseRequest())
+        return nullptr;
+
     AdjustHeaders(m_requestHeaders, loginProxy);
     if (m_requestMethod == "CONNECT")
     {
         static const char ConnectionEstablished[] = "HTTP/1.1 200 Connection Established\r\n\r\n";
-        send(m_socket, ConnectionEstablished, std::size(ConnectionEstablished) - 1, 0);
+        send(m_socketWrapper->GetSocket(), ConnectionEstablished, std::size(ConnectionEstablished) - 1, 0);
 
         std::string domain, port;
         size_t p = m_requestURI.find(':');
@@ -83,13 +69,17 @@ LoginTask* RequestTaskBase::Execute(LoginProxyImpl &loginProxy)
         {
             domain = m_requestURI;
         }
-        return new HTTPSRequestTask(DetachSocket(), domain, port, loginProxy);
+
+        SSL *ssl = loginProxy.NewSSL(domain);
+        ASSERT(nullptr != ssl);
+        std::shared_ptr<SocketWrapper> sslWrapper = SocketWrapper::SSLWrapper(m_socketWrapper, ssl);
+        return new HTTPSRequestTask(sslWrapper, domain, port, loginProxy);
     }
 
     return DoRealRequest(loginProxy);
 }
 
-void RequestTaskBase::ParseRequest(void)
+bool RequestTaskBase::ParseRequest(void)
 {
     std::string rawData(m_leadData);
 
@@ -100,7 +90,10 @@ void RequestTaskBase::ParseRequest(void)
     // Headers
     for (;;)
     {
-        size = Recv(buf, sizeof(buf));
+        size = m_socketWrapper->Recv(buf, sizeof(buf));
+        if (size < 0)
+            return false;
+
         rawData.append(buf, size);
 
         p = rawData.find("\r\n\r\n");
@@ -109,22 +102,26 @@ void RequestTaskBase::ParseRequest(void)
     }
 
     if (!ParseHeaders(std::string_view(rawData.data(), p)))
-        return;
+        return false;
 
     std::string contentLength = m_requestHeaders.Get("Content-Length");
     if (contentLength.empty() || contentLength == std::string(1, '0'))
-        return; // Need not to process body.
+        return true; // Need not to process body.
 
     const size_t bodySize = std::stoi(contentLength);
     m_requestBody = rawData.substr(p + 4);
     if (m_requestBody.size() < bodySize)
     {
         do {
-            size = Recv(buf, sizeof(buf));
+            size = m_socketWrapper->Recv(buf, sizeof(buf));
+            if (size < 0)
+                return false;
+
             m_requestBody.append(buf, size);
         } while (m_requestBody.size() < bodySize);
     }
     ASSERT(m_requestBody.size() == bodySize);
+    return true;
 }
 
 bool RequestTaskBase::ParseHeaders(const std::string_view &s)

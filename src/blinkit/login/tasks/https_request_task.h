@@ -22,16 +22,10 @@ namespace BlinKit {
 class HTTPSRequestTask final : public RequestTaskBase
 {
 public:
-    HTTPSRequestTask(SOCKET client, const std::string &domain, const std::string &port, LoginProxyImpl &loginProxy);
-    ~HTTPSRequestTask(void) override;
+    HTTPSRequestTask(const std::shared_ptr<SocketWrapper> &sslWrapper, const std::string &domain, const std::string &port, LoginProxyImpl &loginProxy);
 private:
-    SSL* DetachSSL(void);
-
-    int Recv(char *buf, int bufSize) const override;
     std::string GetURL(void) const override;
-    ResponseTaskBase* CreateResponseTask(LoginProxyImpl &loginProxy) override;
 
-    SSL *m_ssl;
     const std::string m_domain, m_port;
 };
 

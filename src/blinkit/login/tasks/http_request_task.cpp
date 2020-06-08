@@ -14,7 +14,7 @@
 namespace BlinKit {
 
 HTTPRequestTask::HTTPRequestTask(SOCKET client, const char *leadChars, int leadSize)
-    : RequestTaskBase(client, std::string_view(leadChars, leadSize))
+    : RequestTaskBase(SocketWrapper::PlainWrapper(client), std::string_view(leadChars, leadSize))
 {
 }
 
@@ -24,21 +24,10 @@ void HTTPRequestTask::AdjustHeaders(BkHTTPHeaderMap &headers, LoginProxyImpl &lo
     headers.Remove("Proxy-Connection");
 }
 
-ResponseTaskBase* HTTPRequestTask::CreateResponseTask(LoginProxyImpl &loginProxy)
-{
-    ASSERT(false); // BKTODO:
-    return nullptr;
-}
-
 std::string HTTPRequestTask::GetURL(void) const
 {
     ASSERT(false); // BKTODO:
     return std::string();
-}
-
-int HTTPRequestTask::Recv(char *buf, int bufSize) const
-{
-    return recv(m_socket, buf, bufSize, 0);
 }
 
 } // namespace BlinKit
