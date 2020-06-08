@@ -75,9 +75,6 @@
     <ClInclude Include="..\..\..\src\blinkit\login\tasks\login_task.h">
       <Filter>login\tasks</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\login\tasks\request_task_base.h">
-      <Filter>login\tasks</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\login\tasks\http_request_task.h">
       <Filter>login\tasks</Filter>
     </ClInclude>
@@ -105,12 +102,6 @@
     <ClInclude Include="..\..\..\src\blinkit\http\win_request.h">
       <Filter>http</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\login\tasks\https_response_task.h">
-      <Filter>login\tasks</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\login\tasks\response_task_base.h">
-      <Filter>login\tasks</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\win\inet.h">
       <Filter>win</Filter>
     </ClInclude>
@@ -119,6 +110,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\app\app_constants.h">
       <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\login\socket_wrapper.h">
+      <Filter>login</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\login\tasks\request_task_base.h">
+      <Filter>login\tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\login\tasks\response_task.h">
+      <Filter>login\tasks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -156,9 +156,6 @@
     <ClCompile Include="..\..\..\src\blinkit\login\login_proxy_impl.cpp">
       <Filter>login</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\login\tasks\request_task_base.cpp">
-      <Filter>login\tasks</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\login\tasks\http_request_task.cpp">
       <Filter>login\tasks</Filter>
     </ClCompile>
@@ -183,12 +180,6 @@
     <ClCompile Include="..\..\..\src\blinkit\http\win_request.cpp">
       <Filter>http</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\login\tasks\https_response_task.cpp">
-      <Filter>login\tasks</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\login\tasks\response_task_base.cpp">
-      <Filter>login\tasks</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\win\inet.cpp">
       <Filter>win</Filter>
     </ClCompile>
@@ -200,6 +191,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\misc\buffer.cpp">
       <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\login\socket_wrapper.cpp">
+      <Filter>login</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\login\tasks\request_task_base.cpp">
+      <Filter>login\tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\login\tasks\response_task.cpp">
+      <Filter>login\tasks</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
