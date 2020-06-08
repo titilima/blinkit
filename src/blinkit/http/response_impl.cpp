@@ -146,14 +146,19 @@ void ResponseImpl::ParseHeaders(const std::string &rawHeaders)
     input = input.substr(p + 1);
 
     base::StringPairs headers;
-    if (!base::SplitStringIntoKeyValuePairs(input, ':', '\n', &headers))
-        return;
-
-    for (const auto &kv : headers)
+    std::vector<std::string> lines = base::SplitString(input, "\n", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+    for (const std::string &line : lines)
     {
+        p = line.find(':');
+        if (std::string::npos == p)
+        {
+            ASSERT(std::string::npos != p); // Invalid line format!
+            continue;
+        }
+
         std::string k, v;
-        base::TrimWhitespaceASCII(kv.first, base::TRIM_ALL, &k);
-        base::TrimWhitespaceASCII(kv.second, base::TRIM_ALL, &v);
+        k = line.substr(0, p);
+        base::TrimWhitespaceASCII(line.substr(p + 1), base::TRIM_LEADING, &v);
         if (base::EqualsCaseInsensitiveASCII(k.c_str(), "Set-Cookie"))
             m_cookies.push_back(v);
         else
