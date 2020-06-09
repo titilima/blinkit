@@ -13,40 +13,16 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="app">
-      <UniqueIdentifier>{4c23c574-3634-40bc-aa0c-9a435479a678}</UniqueIdentifier>
-    </Filter>
     <Filter Include="http">
       <UniqueIdentifier>{eb00bc75-1b8e-4746-a37f-fc9ebfbc0357}</UniqueIdentifier>
     </Filter>
-    <Filter Include="win">
-      <UniqueIdentifier>{5fbca7bb-08d6-4430-a5b8-48c99fe694a3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="misc">
       <UniqueIdentifier>{a8f38960-a948-4084-9981-011289483284}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="common">
-      <UniqueIdentifier>{b207b1e4-5062-4315-b393-b9520e937f06}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\app\app_constants.cpp">
-      <Filter>app</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\http\request_impl.cpp">
-      <Filter>http</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\http\response_impl.cpp">
-      <Filter>http</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\http\win_request.cpp">
-      <Filter>http</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\win\inet.cpp">
-      <Filter>win</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\misc\buffer.cpp">
       <Filter>misc</Filter>
@@ -54,32 +30,11 @@
     <ClCompile Include="..\..\..\src\blinkit\misc\controller.cpp">
       <Filter>misc</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\common\bk_http_header_map.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\common\bk_url.cpp">
-      <Filter>common</Filter>
+    <ClCompile Include="..\..\..\src\blinkit\http\http_exports.cpp">
+      <Filter>http</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\blinkit\app\app_constants.h">
-      <Filter>app</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\http\request_controller_impl.h">
-      <Filter>http</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\http\request_impl.h">
-      <Filter>http</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\http\response_impl.h">
-      <Filter>http</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\http\win_request.h">
-      <Filter>http</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\win\inet.h">
-      <Filter>win</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -94,12 +49,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\sdk\include\bk_http.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\common\bk_http_header_map.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\common\bk_url.h">
-      <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

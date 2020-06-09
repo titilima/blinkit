@@ -160,15 +160,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\sdk\include\bk_login.h" />
-    <ClInclude Include="..\..\..\src\blinkit\app\app_constants.h" />
     <ClInclude Include="..\..\..\src\blinkit\common\bk_file.h" />
-    <ClInclude Include="..\..\..\src\blinkit\common\bk_http_header_map.h" />
     <ClInclude Include="..\..\..\src\blinkit\common\bk_socket.h" />
-    <ClInclude Include="..\..\..\src\blinkit\common\bk_url.h" />
-    <ClInclude Include="..\..\..\src\blinkit\http\request_controller_impl.h" />
-    <ClInclude Include="..\..\..\src\blinkit\http\request_impl.h" />
-    <ClInclude Include="..\..\..\src\blinkit\http\response_impl.h" />
-    <ClInclude Include="..\..\..\src\blinkit\http\win_request.h" />
     <ClInclude Include="..\..\..\src\blinkit\login\login_globals.h" />
     <ClInclude Include="..\..\..\src\blinkit\login\login_proxy_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\login\private_key_impl.h" />
@@ -183,7 +176,6 @@
     <ClInclude Include="..\..\..\src\blinkit\login\tasks\request_task_base.h" />
     <ClInclude Include="..\..\..\src\blinkit\login\tasks\response_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\login\win_login_proxy.h" />
-    <ClInclude Include="..\..\..\src\blinkit\win\inet.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
@@ -194,13 +186,7 @@
     <ResourceCompile Include="BkLogin.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\blinkit\app\app_constants.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\common\bk_file.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\common\bk_http_header_map.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\common\bk_url.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\http\request_impl.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\http\response_impl.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\http\win_request.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\login\login_globals.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\login\login_proxy_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\login\private_key_impl.cpp" />
@@ -215,7 +201,6 @@
     <ClCompile Include="..\..\..\src\blinkit\login\tasks\response_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\login\win_login_proxy.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\misc\buffer.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\win\inet.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -224,6 +209,9 @@
   <ItemGroup>
     <ProjectReference Include="..\base\base.vcxproj">
       <Project>{f8e8dc22-c9eb-4274-bbc9-011d4106f84d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\BkCommon\BkCommon.vcxproj">
+      <Project>{a3dd911e-272c-4dad-b537-7340ed0af312}</Project>
     </ProjectReference>
     <ProjectReference Include="..\openssl\openssl.vcxproj">
       <Project>{0250b8c0-4549-4760-a0e2-eddb970dc250}</Project>
