@@ -46,7 +46,7 @@ BK_DECLARE_HANDLE(BkLoginProxy, LoginProxyImpl);
 struct BkLoginProxyClient {
     size_t SizeOfStruct; // sizeof(BkLoginProxyClient)
     void *UserData;
-    void (BKAPI * SetCookie)(const char *, void *);
+    void (BKAPI * SetCookie)(const char *URL, const char *setCookieHeader, void *);
     bool_t (BKAPI * IsLoginSuccessful)(const char *, void *);
     bool_t (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
 };

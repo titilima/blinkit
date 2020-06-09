@@ -40,8 +40,13 @@ void ResponseTask::AdjustHeaders(BkHTTPHeaderMap &headers, LoginProxyImpl &login
 
 LoginTask* ResponseTask::Execute(LoginProxyImpl &loginProxy)
 {
-    for (const std::string &cookie : m_response->Cookies())
-        loginProxy.SetCookie(cookie);
+    const std::vector<std::string> &cookies = m_response->Cookies();
+    if (!cookies.empty())
+    {
+        const std::string &currentURL = m_response->CurrentURL();
+        for (const std::string &cookie : m_response->Cookies())
+            loginProxy.SetCookie(currentURL, cookie);
+    }
 
     if (!ProcessLoginOK(loginProxy))
         ProcessResponse(loginProxy);

@@ -203,9 +203,9 @@ int LoginProxyImpl::RunTaskLoop(void)
     return 0;
 }
 
-void LoginProxyImpl::SetCookie(const std::string &cookie)
+void LoginProxyImpl::SetCookie(const std::string &URL, const std::string &cookie)
 {
-    m_client.SetCookie(cookie.c_str(), m_client.UserData);
+    m_client.SetCookie(URL.c_str(), cookie.c_str(), m_client.UserData);
 }
 
 int LoginProxyImpl::SetupCA(const BkPathChar *privateKeyFile, const BkPathChar *certFile)

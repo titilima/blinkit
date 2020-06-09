@@ -38,7 +38,7 @@ public:
     SSL* NewSSL(const std::string &domain);
     BkRequest CreateRequest(const std::string &URL, const BkRequestClient &client);
     const std::string& UserAgent(void) const;
-    void SetCookie(const std::string &cookie);
+    void SetCookie(const std::string &URL, const std::string &cookie);
     bool IsLoginSuccessful(const std::string &currentURL) const;
     std::string GetLoggedInHTML(void) const;
 protected:
