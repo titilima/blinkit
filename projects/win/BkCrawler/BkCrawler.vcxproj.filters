@@ -37,9 +37,6 @@
     <Filter Include="js">
       <UniqueIdentifier>{5a0810f6-9254-4504-a53f-5455dc6182dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="common">
-      <UniqueIdentifier>{79349190-9b60-4652-8572-e59726b42f89}</UniqueIdentifier>
-    </Filter>
     <Filter Include="crawler\dom">
       <UniqueIdentifier>{50cdeeab-4a27-4c13-bcf4-378aa79ea068}</UniqueIdentifier>
     </Filter>
@@ -63,28 +60,10 @@
     <ClInclude Include="..\..\..\src\blinkit\misc\controller_impl.h">
       <Filter>misc</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\win\inet.h">
-      <Filter>win</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\http\request_controller_impl.h">
-      <Filter>http</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\http\request_impl.h">
-      <Filter>http</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\http\response_impl.h">
-      <Filter>http</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\http\win_request.h">
-      <Filter>http</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h">
       <Filter>app</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\app\win_app.h">
-      <Filter>app</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\app\app_constants.h">
       <Filter>app</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_impl.h">
@@ -126,15 +105,6 @@
     <ClInclude Include="..\..\..\sdk\include\BlinKit.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\common\bk_http_header_map.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\common\bk_url.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\common\bk_socket.h">
-      <Filter>common</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_document.h">
       <Filter>crawler\dom</Filter>
     </ClInclude>
@@ -143,6 +113,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.h">
       <Filter>crawler\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\crawler\cookie_jar_impl.h">
+      <Filter>crawler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -163,25 +136,10 @@
     <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp">
       <Filter>win</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\win\inet.cpp">
-      <Filter>win</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\http\request_impl.cpp">
-      <Filter>http</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\http\response_impl.cpp">
-      <Filter>http</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\http\win_request.cpp">
-      <Filter>http</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\app\app_impl.cpp">
       <Filter>app</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\app\win_app.cpp">
-      <Filter>app</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\app\app_constants.cpp">
       <Filter>app</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_impl.cpp">
@@ -214,12 +172,6 @@
     <ClCompile Include="..\..\..\src\blinkit\js\js_value_impl.cpp">
       <Filter>js</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\common\bk_http_header_map.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\common\bk_url.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_document.cpp">
       <Filter>crawler\dom</Filter>
     </ClCompile>
@@ -228,6 +180,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.cpp">
       <Filter>crawler\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\crawler\cookie_jar_impl.cpp">
+      <Filter>crawler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\http\http_exports.cpp">
+      <Filter>http</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

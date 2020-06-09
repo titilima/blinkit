@@ -182,7 +182,8 @@ int HTTPLoaderTask::Run(const ResourceRequest &request)
         return BK_ERR_SUCCESS;
     }
 
-    BkRequest req = BkCreateRequest(URL.c_str(), *this);
+    BkRequestClient *client = *this;
+    BkRequest req = RequestImpl::CreateInstance(URL.c_str(), *client);
     if (nullptr == req)
     {
         ASSERT(nullptr != req);
@@ -193,8 +194,8 @@ int HTTPLoaderTask::Run(const ResourceRequest &request)
     req->SetMethod(request.HttpMethod().StdUtf8());
     req->SetHeaders(request.AllHeaders());
 
-    std::string cookies;
-    if (m_crawler->GetConfig(BK_CFG_REQUEST_COOKIE, cookies) && !cookies.empty())
+    std::string cookies = m_crawler->GetCookies(URL);
+    if (cookies.empty())
         req->SetHeader("Cookie", cookies.c_str());
 
     BKLOG("// BKTODO: Add body.");

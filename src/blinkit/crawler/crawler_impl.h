@@ -18,6 +18,7 @@
 #include "bk_crawler.h"
 #include "blinkit/blink_impl/local_frame_client_impl.h"
 
+class CookieJarImpl;
 class RequestImpl;
 
 class CrawlerImpl final : public BlinKit::LocalFrameClientImpl
@@ -29,6 +30,7 @@ public:
     // BkCrawlerClient Wrappers
     bool GetConfig(int cfg, std::string &dst) const;
     void ApplyProxyToRequest(RequestImpl *req);
+    std::string GetCookies(const std::string &URL) const;
     void ProcessRequestComplete(BkResponse response, BkWorkController controller);
     bool HijackRequest(const char *URL, std::string &dst) const;
     void HijackResponse(BkResponse response);
@@ -38,6 +40,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
     int Run(const char *URL);
+    void SetCookieJar(CookieJarImpl *cookieJar, int mode);
     BkJSContext GetScriptContext(void);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -65,6 +68,8 @@ private:
 
     int m_proxyType = BK_PROXY_RESERVED;
     std::string m_proxy;
+    int m_cookieJarMode = BK_CJM_SHARED;
+    CookieJarImpl *m_cookieJar = nullptr;
 };
 
 DEFINE_TYPE_CASTS(CrawlerImpl, ::blink::LocalFrameClient, client, client->IsCrawler(), client.IsCrawler());

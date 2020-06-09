@@ -18,7 +18,6 @@
 #include "third_party/blink/public/web/blink.h"
 
 #if 0 // BKTODO:
-#include "blink_impl/cookie_jar_impl.h"
 #include "blink_impl/mime_registry_impl.h"
 #include "crawler/crawler_impl.h"
 #endif
@@ -58,17 +57,6 @@ blink::WebURLError AppImpl::cancelledError(const blink::WebURL &url) const
     ret.reason = BkError::Cancelled;
     ret.isCancellation = true;
     return ret;
-}
-
-CookieJarImpl& AppImpl::CookieJar(void)
-{
-    if (!m_cookieJar)
-    {
-        AutoLock lock(m_lock);
-        if (!m_cookieJar)
-            m_cookieJar = std::make_unique<CookieJarImpl>();
-    }
-    return *m_cookieJar;
 }
 
 blink::WebCookieJar* AppImpl::cookieJar(void)
@@ -128,16 +116,6 @@ void AppImpl::Initialize(BkAppClient *client)
 }
 
 #if 0 // BKTODO:
-blink::WebThread& AppImpl::IOThread(void)
-{
-    if (!m_IOThread)
-    {
-        AutoLock lock(m_lock);
-        if (!m_IOThread)
-            m_IOThread.reset(createThread("IO"));
-    }
-    return *m_IOThread;
-}
 
 blink::WebMimeRegistry* AppImpl::mimeRegistry(void)
 {

@@ -149,8 +149,6 @@ protected:
             case BK_CFG_USER_AGENT:      // Default `User-Agent` depends on current OS.
             case BK_CFG_SCRIPT_DISABLED: // Script is enabled.
                 break;
-            case BK_CFG_REQUEST_COOKIE:  // No cookies.
-                return false;
             default:
                 assert(false); // Not implemented!
                 return false;

@@ -39,15 +39,12 @@ public:
 
 #if 0 // BKTODO:
     ThreadImpl* CurrentThreadImpl(void);
-    blink::WebThread& IOThread(void);
-    CookieJarImpl& CookieJar(void);
 #endif
 
     void Log(const char *s);
 
 #if 0 // BKTODO:
     // blink::Platform
-    blink::WebCookieJar* cookieJar(void) final;
     blink::WebThread* currentThread(void) final;
 #endif
 protected:
@@ -63,9 +60,7 @@ private:
     double currentTimeSeconds(void) final;
     double monotonicallyIncreasingTimeSeconds(void) final;
 
-    std::unique_ptr<CookieJarImpl> m_cookieJar;
     std::unique_ptr<MimeRegistryImpl> m_mimeRegistry;
-    std::unique_ptr<blink::WebThread> m_IOThread;
     double m_firstMonotonicallyIncreasingTime;
     std::unordered_map<blink::PlatformThreadId, ThreadImpl *> m_threads;
 #endif

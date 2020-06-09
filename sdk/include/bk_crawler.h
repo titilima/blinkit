@@ -20,6 +20,18 @@ extern "C" {
 #endif
 
 /**
+ * Cookie Jar
+ */
+
+BK_DECLARE_HANDLE(BkCookieJar, CookieJarImpl);
+
+BKEXPORT BkCookieJar BKAPI BkCreateCookieJar(void);
+BKEXPORT void BKAPI BkDestroyCookieJar(BkCookieJar cookieJar);
+
+BKEXPORT void BKAPI BkGetCookie(BkCookieJar cookieJar, const char *URL, struct BkBuffer *dst);
+BKEXPORT bool BKAPI BkSetCookie(BkCookieJar cookieJar, const char *setCookieHeader, const char *URL);
+
+/**
  * Crawler
  */
 
@@ -36,9 +48,13 @@ enum BkCrawlerConfig {
     //   A null `GetConfig` callback will apply BK_PROXY_SYSTEM_DEFAULT.
     BK_CFG_REQUEST_PROXY,
 
-    BK_CFG_REQUEST_COOKIE,
     BK_CFG_USER_AGENT,
     BK_CFG_SCRIPT_DISABLED,
+};
+
+enum BkCookieJarMode {
+    BK_CJM_OWNED  =  0, // Need not to call BkDestroyCookieJar
+    BK_CJM_SHARED
 };
 
 struct BkCrawlerClient {
@@ -46,6 +62,7 @@ struct BkCrawlerClient {
     void *UserData;
     void (BKAPI * DocumentReady)(void *);
     bool_t (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
+    bool_t (BKAPI * GetCookie)(const char *URL, const char *cookiesFromJar, struct BkBuffer *cookiesToSet, void *);
     bool_t (BKAPI * HijackRequest)(const char *, struct BkBuffer *, void *);
     void (BKAPI * HijackResponse)(BkResponse, void *);
     void (BKAPI * RequestComplete)(BkResponse, BkWorkController, void *);
@@ -56,6 +73,8 @@ struct BkCrawlerClient {
 
 BKEXPORT BkCrawler BKAPI BkCreateCrawler(struct BkCrawlerClient *client);
 BKEXPORT void BKAPI BkDestroyCrawler(BkCrawler crawler);
+
+BKEXPORT void BKAPI BkSetCookieJar(BkCrawler crawler, BkCookieJar cookieJar, int mode);
 
 BKEXPORT int BKAPI BkRunCrawler(BkCrawler crawler, const char *URL);
 

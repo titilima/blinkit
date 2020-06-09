@@ -32,8 +32,14 @@ BkHijackResponse
 
 BkCreateCrawler
 BkDestroyCrawler
+BkSetCookieJar
 BkRunCrawler
 BkGetScriptContextFromCrawler
+
+BkCreateCookieJar
+BkDestroyCookieJar
+BkGetCookie
+BkSetCookie
 
 BkReleaseValue
 BkGetValueType

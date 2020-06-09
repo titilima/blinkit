@@ -11,6 +11,7 @@
 
 #include "crawler_impl.h"
 
+#include "blinkit/crawler/cookie_jar_impl.h"
 #include "blinkit/http/request_impl.h"
 #include "blinkit/http/response_impl.h"
 #include "blinkit/js/context_impl.h"
@@ -21,10 +22,6 @@
 #include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_error.h"
 #include "url/gurl.h"
-#if 0 // BKTODO:
-#include "app/app_impl.h"
-#include "blink_impl/cookie_jar_impl.h"
-#endif // 0
 
 using namespace blink;
 using namespace BlinKit;
@@ -37,6 +34,11 @@ CrawlerImpl::CrawlerImpl(const BkCrawlerClient &client) : m_client(client), m_fr
 CrawlerImpl::~CrawlerImpl(void)
 {
     m_frame->Detach(FrameDetachType::kRemove);
+    if (nullptr != m_cookieJar)
+    {
+        if (BK_CJM_OWNED == m_cookieJarMode)
+            delete m_cookieJar;
+    }
 }
 
 bool CrawlerImpl::ApplyConsoleMessager(std::function<void(int, const char *)> &dst) const
@@ -82,6 +84,23 @@ bool CrawlerImpl::GetConfig(int cfg, std::string &dst) const
     if (nullptr != m_client.GetConfig)
         return m_client.GetConfig(cfg, BkMakeBuffer(dst), m_client.UserData);
     return false;
+}
+
+std::string CrawlerImpl::GetCookies(const std::string &URL) const
+{
+    std::string ret;
+
+    if (nullptr != m_cookieJar)
+        ret = m_cookieJar->Get(URL.c_str());
+
+    if (nullptr != m_client.GetCookie)
+    {
+        std::string userSetCookies;
+        if (m_client.GetCookie(URL.c_str(), ret.c_str(), BkMakeBuffer(userSetCookies), m_client.UserData))
+            ret = userSetCookies;
+    }
+
+    return ret;
 }
 
 BkJSContext CrawlerImpl::GetScriptContext(void)
@@ -158,6 +177,18 @@ int CrawlerImpl::Run(const char *URL)
     return BK_ERR_SUCCESS;
 }
 
+void CrawlerImpl::SetCookieJar(CookieJarImpl *cookieJar, int mode)
+{
+    if (nullptr != m_cookieJar)
+    {
+        if (BK_CJM_OWNED == m_cookieJarMode)
+            delete m_cookieJar;
+    }
+
+    m_cookieJar = cookieJar;
+    m_cookieJarMode = mode;
+}
+
 void CrawlerImpl::TransitionToCommittedForNewPage(void)
 {
     // Nothing to do for crawlers.
@@ -202,6 +233,11 @@ BKEXPORT void BKAPI BkHijackResponse(BkResponse response, const void *newBody, s
 BKEXPORT int BKAPI BkRunCrawler(BkCrawler crawler, const char *URL)
 {
     return crawler->Run(URL);
+}
+
+BKEXPORT void BKAPI BkSetCookieJar(BkCrawler crawler, BkCookieJar cookieJar, int mode)
+{
+    crawler->SetCookieJar(cookieJar, mode);
 }
 
 } // extern "C"
