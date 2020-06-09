@@ -46,9 +46,7 @@
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
-namespace BlinKit {
-class BkURL;
-}
+class GURL;
 
 namespace blink {
 
@@ -81,7 +79,7 @@ private:
     // LocalDOMWindow.
     Document* GetDocument(void) const;
 
-    const BlinKit::BkURL& Url(void) const;
+    const GURL& Url(void) const;
 
     const Member<DOMWindow> m_domWindow;
 };

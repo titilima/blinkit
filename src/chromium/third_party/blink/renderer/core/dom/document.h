@@ -46,7 +46,6 @@
 #include <stack>
 #include <unordered_set>
 #include <vector>
-#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/core/dom/container_node.h"
 #include "third_party/blink/renderer/core/dom/create_element_flags.h"
 #include "third_party/blink/renderer/core/dom/document_encoding_data.h"
@@ -62,6 +61,7 @@
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/timer.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
+#include "url/gurl.h"
 
 namespace blink {
 
@@ -140,7 +140,7 @@ public:
     Location* location(void) const;
     void open(Document *enteredDocument, ExceptionState &exceptionState);
     // Bind the url to document.url, if unavailable bind to about:blank.
-    BlinKit::BkURL urlForBinding(void) const;
+    GURL urlForBinding(void) const;
     void write(const String &text, Document *enteredDocument = nullptr, ExceptionState &exceptionState = ASSERT_NO_EXCEPTION);
     void write(LocalDOMWindow *callingWindow, const std::vector<std::string> &text, ExceptionState &exceptionState);
     void writeln(const String &text, Document *enteredDocument = nullptr, ExceptionState &exceptionState = ASSERT_NO_EXCEPTION);
@@ -150,14 +150,14 @@ public:
 
     // Return the document URL, or an empty URL if it's unavailable.
     // This is not an implementation of web-exposed Document.prototype.URL.
-    const BlinKit::BkURL& Url(void) const final { return m_URL; }
-    void SetURL(const BlinKit::BkURL &url);
-    BlinKit::BkURL ValidBaseElementURL(void) const;
+    const GURL& Url(void) const final { return m_URL; }
+    void SetURL(const GURL &url);
+    GURL ValidBaseElementURL(void) const;
     // Creates URL based on passed relative url and passed base URL override.
-    BlinKit::BkURL CompleteURLWithOverride(const String &url, const BlinKit::BkURL &baseUrlOverride) const;
+    GURL CompleteURLWithOverride(const String &url, const GURL &baseUrlOverride) const;
     // Fallback base URL.
     // https://html.spec.whatwg.org/multipage/urls-and-fetching.html#fallback-base-url
-    BlinKit::BkURL FallbackBaseURL(void) const;
+    GURL FallbackBaseURL(void) const;
 
     const AtomicString& ContentLanguage(void) const { return m_contentLanguage; }
     void SetContentLanguage(const AtomicString &language);
@@ -307,11 +307,11 @@ public:
     void PopCurrentScript(ScriptElementBase *script);
 
     // ExecutionContext overrides
-    const BlinKit::BkURL& BaseURL(void) const override;
+    const GURL& BaseURL(void) const override;
     // Creates URL based on passed relative url and this documents base URL.
     // Depending on base URL value it is possible that parent document
     // base URL will be used instead. Uses CompleteURLWithOverride internally.
-    BlinKit::BkURL CompleteURL(const String &url) const final;
+    GURL CompleteURL(const String &url) const final;
     ResourceFetcher* Fetcher(void) const override { return m_fetcher.get(); }
     bool CanExecuteScripts(ReasonForCallingCanExecuteScripts reason) override;
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(TaskType type) override;
@@ -391,10 +391,10 @@ private:
     String m_title;
 
     // Document URLs.
-    BlinKit::BkURL m_URL;  // Document.URL: The URL from which this document was retrieved.
-    BlinKit::BkURL m_baseURL;  // Node.baseURI: The URL to use when resolving relative URLs.
-    BlinKit::BkURL m_baseURLOverride;
-    BlinKit::BkURL m_baseElementURL;  // The URL set by the <base> element.
+    GURL m_URL;  // Document.URL: The URL from which this document was retrieved.
+    GURL m_baseURL;  // Node.baseURI: The URL to use when resolving relative URLs.
+    GURL m_baseURLOverride;
+    GURL m_baseElementURL;  // The URL set by the <base> element.
 
     AtomicString m_contentLanguage;
 

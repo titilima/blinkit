@@ -22,7 +22,7 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/platform/loader/fetch/fetch_parameters.h"
 
-using namespace BlinKit;
+//using namespace BlinKit;
 
 namespace blink {
 
@@ -32,7 +32,7 @@ ClassicPendingScript::ClassicPendingScript(
     ScriptSourceLocationType sourceLocationType,
     bool isExternal)
     : PendingScript(element, startingPosition)
-    , m_baseUrlForInlineScript(isExternal ? BkURL() : element->GetDocument().BaseURL())
+    , m_baseUrlForInlineScript(isExternal ? GURL() : element->GetDocument().BaseURL())
     , m_sourceTextForInlineScript(isExternal ? String() : element->TextFromChildren())
     , m_sourceLocationType(sourceLocationType)
     , m_isExternal(isExternal)
@@ -156,7 +156,7 @@ void ClassicPendingScript::DisposeInternal(void)
 }
 
 std::shared_ptr<ClassicPendingScript> ClassicPendingScript::Fetch(
-    const BkURL &url,
+    const GURL &url,
     Document &elementDocument,
     const WTF::TextEncoding &encoding,
     ScriptElementBase *element)
@@ -216,7 +216,7 @@ void ClassicPendingScript::FinishWaitingForStreaming(void)
     AdvanceReadyState(errorOccurred ? kErrorOccurred : kReady);
 }
 
-std::unique_ptr<Script> ClassicPendingScript::GetSource(const BkURL &documentURL) const
+std::unique_ptr<Script> ClassicPendingScript::GetSource(const GURL &documentURL) const
 {
     CheckState();
     ASSERT(IsReady());
@@ -266,7 +266,7 @@ std::unique_ptr<Script> ClassicPendingScript::GetSource(const BkURL &documentURL
     // The base URL for external classic script is
     // "the URL from which the script was obtained" [spec text]
     // https://html.spec.whatwg.org/multipage/webappapis.html#concept-script-base-url
-    const BkURL &baseURL = sourceCode.Url();
+    const GURL &baseURL = sourceCode.Url();
     return ClassicScript::Create(sourceCode, baseURL);
 }
 

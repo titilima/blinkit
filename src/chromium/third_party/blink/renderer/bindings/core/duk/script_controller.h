@@ -48,10 +48,7 @@
 #include "third_party/blink/renderer/platform/wtf/noncopyable.h"
 
 class ContextImpl;
-
-namespace BlinKit {
-class BkURL;
-}
+class GURL;
 
 namespace blink {
 
@@ -72,7 +69,7 @@ public:
     ContextImpl& EnsureContext(void);
     bool ScriptEnabled(void);
 
-    void ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const BlinKit::BkURL &baseURL);
+    void ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const GURL &baseURL);
 
     void ClearWindowProxy(void);
     void UpdateDocument(void);

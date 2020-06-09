@@ -65,8 +65,6 @@
 #   include "third_party/blink/renderer/core/loader/link_loader.h"
 #endif
 
-using namespace BlinKit;
-
 namespace blink {
 
 using namespace html_names;
@@ -235,7 +233,7 @@ class TokenPreloadScanner::StartTagScanner {
 #endif
 
   std::unique_ptr<PreloadRequest> CreatePreloadRequest(
-      const BkURL& predicted_base_url,
+      const GURL& predicted_base_url,
       const SegmentedString& source,
       const PictureData& picture_data,
       const ReferrerPolicy document_referrer_policy) {
@@ -671,7 +669,7 @@ class TokenPreloadScanner::StartTagScanner {
 };
 
 TokenPreloadScanner::TokenPreloadScanner(
-    const BkURL& document_url,
+    const GURL& document_url,
     std::unique_ptr<CachedDocumentParameters> document_parameters,
     const MediaValuesCached::MediaValuesCachedData& media_values_cached_data,
     const ScannerType scanner_type)
@@ -690,7 +688,7 @@ TokenPreloadScanner::TokenPreloadScanner(
 #ifndef BLINKIT_CRAWLER_ONLY
   DCHECK(media_values_.Get());
 #endif
-  DCHECK(document_url.IsValid());
+  DCHECK(document_url.is_valid());
 #ifndef BLINKIT_CRAWLER_ONLY
   css_scanner_.SetReferrerPolicy(document_parameters_->referrer_policy);
 #endif
@@ -898,7 +896,7 @@ void TokenPreloadScanner::ScanCommon(const Token& token,
       }
       if (Match(tag_impl, kBaseTag)) {
         // The first <base> element is the one that wins.
-        if (!predicted_base_element_url_.IsEmpty())
+        if (!predicted_base_element_url_.is_empty())
           return;
         UpdatePredictedBaseURL(token);
         return;
@@ -948,7 +946,7 @@ void TokenPreloadScanner::ScanCommon(const Token& token,
 
 template <typename Token>
 void TokenPreloadScanner::UpdatePredictedBaseURL(const Token& token) {
-  DCHECK(predicted_base_element_url_.IsEmpty());
+  DCHECK(predicted_base_element_url_.is_empty());
   if (const typename Token::Attribute* href_attribute =
           token.GetAttributeItem(kHrefAttr)) {
     ASSERT(false); // BKTODO:
@@ -963,7 +961,7 @@ void TokenPreloadScanner::UpdatePredictedBaseURL(const Token& token) {
 
 HTMLPreloadScanner::HTMLPreloadScanner(
     const HTMLParserOptions& options,
-    const BkURL& document_url,
+    const GURL& document_url,
     std::unique_ptr<CachedDocumentParameters> document_parameters,
     const MediaValuesCached::MediaValuesCachedData& media_values_cached_data,
     const TokenPreloadScanner::ScannerType scanner_type)
@@ -983,14 +981,14 @@ void HTMLPreloadScanner::AppendToEnd(const SegmentedString& source) {
 }
 
 PreloadRequestStream HTMLPreloadScanner::Scan(
-    const BkURL& starting_base_element_url,
+    const GURL& starting_base_element_url,
     ViewportDescriptionWrapper* viewport) {
   // HTMLTokenizer::updateStateFor only works on the main thread.
   DCHECK(IsMainThread());
 
   // When we start scanning, our best prediction of the baseElementURL is the
   // real one!
-  if (!starting_base_element_url.IsEmpty())
+  if (!starting_base_element_url.is_empty())
     scanner_.SetPredictedBaseElementURL(starting_base_element_url);
 
   PreloadRequestStream requests;

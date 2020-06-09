@@ -31,12 +31,12 @@ protected:
 
     virtual const FetchClientSettingsObject* GetFetchClientSettingsObject(void) const = 0;
     // Used for security checks.
-    virtual bool AllowScriptFromSource(const BlinKit::BkURL &url) const { return true; }
+    virtual bool AllowScriptFromSource(const GURL &url) const { return true; }
 
     // FetchContext overrides
     void AddAdditionalRequestHeaders(ResourceRequest &request, FetchResourceType type) override;
     std::optional<ResourceRequestBlockedReason> CanRequest(ResourceType type, const ResourceRequest &resourceRequest,
-        const BlinKit::BkURL &url, const ResourceLoaderOptions &options, ResourceRequest::RedirectStatus redirectStatus) const override;
+        const GURL &url, const ResourceLoaderOptions &options, ResourceRequest::RedirectStatus redirectStatus) const override;
 };
 
 }  // namespace blink

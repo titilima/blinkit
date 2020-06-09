@@ -16,11 +16,11 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_SCRIPT_SCRIPT_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_SCRIPT_SCRIPT_H_
 
-#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+#include "url/gurl.h"
 
 namespace blink {
 
@@ -43,15 +43,15 @@ class CORE_EXPORT Script : public GarbageCollectedFinalized<Script> {
   // depending on the script type.
   virtual void RunScript(LocalFrame*) const = 0;
 
-  const BlinKit::BkURL& BaseURL() const { return base_url_; }
+  const GURL& BaseURL() const { return base_url_; }
 
  protected:
-  explicit Script(const BlinKit::BkURL& base_url)
+  explicit Script(const GURL& base_url)
       : base_url_(base_url) {}
 
  private:
   // https://html.spec.whatwg.org/multipage/webappapis.html#concept-script-base-url
-  const BlinKit::BkURL base_url_;
+  const GURL base_url_;
 };
 
 }  // namespace blink

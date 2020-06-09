@@ -52,8 +52,6 @@
 #include "third_party/blink/renderer/platform/wtf/not_found.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
-using namespace BlinKit;
-
 namespace blink {
 
 enum class ClassStringContent { kEmpty, kWhiteSpaceOnly, kHasClasses };
@@ -597,7 +595,7 @@ const AtomicString& Element::GetNameAttribute(void) const
     return HasName() ? FastGetAttribute(html_names::kNameAttr) : g_null_atom;
 }
 
-BkURL Element::GetURLAttribute(const QualifiedName &name) const
+GURL Element::GetURLAttribute(const QualifiedName &name) const
 {
 #if DCHECK_IS_ON()
     if (const ElementData *elementData = GetElementData())

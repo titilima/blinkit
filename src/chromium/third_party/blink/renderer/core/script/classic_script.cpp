@@ -19,16 +19,14 @@
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 
-using namespace BlinKit;
-
 namespace blink {
 
-ClassicScript::ClassicScript(const ScriptSourceCode &scriptSourceCode, const BkURL &baseURL)
+ClassicScript::ClassicScript(const ScriptSourceCode &scriptSourceCode, const GURL &baseURL)
     : Script(baseURL), m_scriptSourceCode(scriptSourceCode)
 {
 }
 
-std::unique_ptr<ClassicScript> ClassicScript::Create(const ScriptSourceCode &scriptSourceCode, const BkURL &baseURL)
+std::unique_ptr<ClassicScript> ClassicScript::Create(const ScriptSourceCode &scriptSourceCode, const GURL &baseURL)
 {
     return base::WrapUnique(new ClassicScript(scriptSourceCode, baseURL));
 }

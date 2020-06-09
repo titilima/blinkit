@@ -41,8 +41,6 @@
 #include "third_party/blink/renderer/core/script/script_loader.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 
-using namespace BlinKit;
-
 namespace blink {
 
 ScriptRunner::ScriptRunner(Document *document)
@@ -105,7 +103,7 @@ bool ScriptRunner::ExecuteAsyncTask(void)
     // Async scripts queue should not contain any in-order script.
     ASSERT(pendingScript->GetSchedulingType() == ScriptSchedulingType::kAsync);
 
-    pendingScript->ExecuteScriptBlock(BkURL());
+    pendingScript->ExecuteScriptBlock(GURL());
 
     m_document->DecrementLoadEventDelayCount();
     return true;
@@ -122,7 +120,7 @@ bool ScriptRunner::ExecuteInOrderTask(void)
     // In-order scripts queue should not contain any async script.
     ASSERT(pendingScript->GetSchedulingType() == ScriptSchedulingType::kInOrder);
 
-    pendingScript->ExecuteScriptBlock(BkURL());
+    pendingScript->ExecuteScriptBlock(GURL());
 
     m_document->DecrementLoadEventDelayCount();
     return true;

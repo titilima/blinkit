@@ -66,7 +66,7 @@ public:
     ResourceRequest& MutableResourceRequest(void) { return m_resourceRequest; }
     const ResourceRequest& GetResourceRequest(void) const { return m_resourceRequest; }
 
-    const BlinKit::BkURL& Url(void) const { return m_resourceRequest.Url(); }
+    const GURL& Url(void) const { return m_resourceRequest.Url(); }
 
     const TextResourceDecoderOptions& DecoderOptions(void) const { return m_decoderOptions; }
 

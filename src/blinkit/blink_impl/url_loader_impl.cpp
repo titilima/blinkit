@@ -28,7 +28,7 @@ URLLoaderImpl::~URLLoaderImpl(void) = default;
 
 void URLLoaderImpl::LoadAsynchronously(const ResourceRequest &request, WebURLLoaderClient *client)
 {
-    const BkURL &url = request.Url();
+    const GURL &url = request.Url();
 
     LoaderTask *task = nullptr;
     do {

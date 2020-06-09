@@ -39,11 +39,9 @@
 
 #include "third_party/blink/renderer/platform/network/http_names.h"
 
-using namespace BlinKit;
-
 namespace blink {
 
-ResourceRequest::ResourceRequest(const BkURL &URL)
+ResourceRequest::ResourceRequest(const GURL &URL)
     : m_URL(URL)
     , m_httpMethod(http_names::kGET)
     , m_downloadToBlob(false)

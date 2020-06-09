@@ -14,6 +14,7 @@
 
 #pragma once
 
+class GURL;
 namespace base {
 class SingleThreadTaskRunner;
 }
@@ -24,14 +25,12 @@ class WebURLLoaderClient;
 
 namespace BlinKit {
 
-class BkURL;
-
 class LoaderTask
 {
 public:
     virtual ~LoaderTask(void);
 
-    static void ReportError(blink::WebURLLoaderClient *client, base::SingleThreadTaskRunner *taskRunner, int errorCode, const BkURL &URL);
+    static void ReportError(blink::WebURLLoaderClient *client, base::SingleThreadTaskRunner *taskRunner, int errorCode, const GURL &URL);
 
     virtual int Run(const blink::ResourceRequest &request) = 0;
 protected:

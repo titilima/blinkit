@@ -44,8 +44,6 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/loader/document_loader.h"
 
-using namespace BlinKit;
-
 namespace blink {
 
 DocumentInit::DocumentInit(const DocumentInit&) = default;
@@ -59,7 +57,7 @@ LocalFrame* DocumentInit::GetFrame(void) const
 
 bool DocumentInit::ShouldSetURL(void) const
 {
-    return !m_URL.IsEmpty();
+    return !m_URL.is_empty();
 }
 
 DocumentInit& DocumentInit::WithDocumentLoader(DocumentLoader *loader)
@@ -69,9 +67,9 @@ DocumentInit& DocumentInit::WithDocumentLoader(DocumentLoader *loader)
     return *this;
 }
 
-DocumentInit& DocumentInit::WithURL(const BkURL &URL)
+DocumentInit& DocumentInit::WithURL(const GURL &URL)
 {
-    ASSERT(m_URL.IsEmpty());
+    ASSERT(m_URL.is_empty());
     m_URL = URL;
     return *this;
 }

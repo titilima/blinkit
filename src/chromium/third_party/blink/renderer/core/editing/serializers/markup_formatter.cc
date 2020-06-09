@@ -142,11 +142,11 @@ String MarkupFormatter::ResolveURLIfNeeded(const Element& element,
                                            const String& url_string) const {
   switch (resolve_urls_method_) {
     case kResolveAllURLs:
-      return String::FromStdUTF8(element.GetDocument().CompleteURL(url_string).AsString());
+      return String::FromStdUTF8(element.GetDocument().CompleteURL(url_string).spec());
 
     case kResolveNonLocalURLs:
       if (!element.GetDocument().Url().SchemeIsFile())
-        return String::FromStdUTF8(element.GetDocument().CompleteURL(url_string).AsString());
+        return String::FromStdUTF8(element.GetDocument().CompleteURL(url_string).spec());
       break;
 
     case kDoNotResolveURLs:

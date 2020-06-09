@@ -40,11 +40,9 @@
 #include "third_party/blink/renderer/platform/network/http_names.h"
 #include "third_party/blink/renderer/platform/network/http_parsers.h"
 
-using namespace BlinKit;
-
 namespace blink {
 
-ResourceResponse::ResourceResponse(const BkURL &URL) : m_isNull(false), m_URL(URL)
+ResourceResponse::ResourceResponse(const GURL &URL) : m_isNull(false), m_URL(URL)
 {
 }
 
@@ -77,7 +75,7 @@ void ResourceResponse::SetTextEncodingName(const AtomicString &encodingName)
     m_textEncodingName = encodingName;
 }
 
-void ResourceResponse::SetURL(const BkURL &URL)
+void ResourceResponse::SetURL(const GURL &URL)
 {
     m_isNull = false;
     m_URL = URL;

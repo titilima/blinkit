@@ -33,7 +33,7 @@ static void ErrorWorker(WebURLLoaderClient *client, const ResourceError error)
     client->DidFail(error);
 }
 
-void LoaderTask::ReportError(WebURLLoaderClient *client, base::SingleThreadTaskRunner *taskRunner, int errorCode, const BkURL &URL)
+void LoaderTask::ReportError(WebURLLoaderClient *client, base::SingleThreadTaskRunner *taskRunner, int errorCode, const GURL &URL)
 {
     ResourceError error(errorCode, URL);
     std::function<void()> callback = std::bind(&ErrorWorker, client, error);

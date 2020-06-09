@@ -39,11 +39,9 @@
 
 #include "bk_def.h"
 
-using namespace BlinKit;
-
 namespace blink {
 
-ResourceError::ResourceError(int errorCode, const BkURL &failingURL) : m_errorCode(errorCode), m_failingURL(failingURL)
+ResourceError::ResourceError(int errorCode, const GURL &failingURL) : m_errorCode(errorCode), m_failingURL(failingURL)
 {
 }
 

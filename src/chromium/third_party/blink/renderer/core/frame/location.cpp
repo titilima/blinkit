@@ -39,11 +39,9 @@
 
 #include "location.h"
 
-#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
-
-using namespace BlinKit;
+#include "third_party/blink/renderer/platform/weborigin/kurl.h"
 
 namespace blink {
 
@@ -58,23 +56,23 @@ Document* Location::GetDocument(void) const
 
 std::string Location::host(void) const
 {
-    return Url().Host();
+    return Url().host();
 }
 
 std::string Location::href(void) const
 {
-    return Url().StrippedForUseAsReferrer();
+    return Url().GetAsReferrer().spec();
 }
 
 std::string Location::protocol(void) const
 {
-    return Url().Scheme();
+    return Url().scheme();
 }
 
 std::string Location::search(void) const
 {
     std::string ret;
-    std::string query = Url().Query();
+    std::string query = Url().query();
     if (!query.empty())
     {
         ret.push_back('?');
@@ -83,14 +81,14 @@ std::string Location::search(void) const
     return ret;
 }
 
-const BkURL& Location::Url(void) const
+const GURL& Location::Url(void) const
 {
-    const BkURL& url = GetDocument()->Url();
-    if (!url.IsValid())
+    const GURL& url = GetDocument()->Url();
+    if (!url.is_valid())
     {
         // Use "about:blank" while the page is still loading (before we have a
         // frame).
-        return BkURL::Blank();
+        return BlankURL();
     }
 
     return url;

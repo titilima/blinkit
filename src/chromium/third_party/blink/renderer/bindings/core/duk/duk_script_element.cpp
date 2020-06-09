@@ -27,8 +27,8 @@ static duk_ret_t SrcGetter(duk_context *ctx)
     duk_push_this(ctx);
     Element *element = DukScriptObject::To<Element>(ctx, -1);
 
-    BkURL ret = element->GetURLAttribute(html_names::kSrcAttr);
-    Duk::PushString(ctx, ret.AsString());
+    GURL ret = element->GetURLAttribute(html_names::kSrcAttr);
+    Duk::PushString(ctx, ret.spec());
     return 1;
 }
 

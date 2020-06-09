@@ -51,9 +51,7 @@
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/core/loader/frame_loader_state_machine.h"
 
-namespace BlinKit {
-class BkURL;
-}
+class GURL;
 
 namespace blink {
 
@@ -114,12 +112,12 @@ private:
     std::unique_ptr<DocumentLoader> CreateDocumentLoader(const ResourceRequest &request,
         const SubstituteData &substituteData, WebFrameLoadType loadType,
         std::unique_ptr<WebDocumentLoader::ExtraData> extraData);
-    SubstituteData DefaultSubstituteDataForURL(const BlinKit::BkURL &url);
+    SubstituteData DefaultSubstituteDataForURL(const GURL &url);
 
     // Returns whether we should continue with new navigation.
     bool CancelProvisionalLoaderForNewNavigation(bool cancelScheduledNavigations);
     bool ShouldPerformFragmentNavigation(bool isFormSubmission, const String &httpMethod, WebFrameLoadType loadType,
-        const BlinKit::BkURL &url);
+        const GURL &url);
     std::unique_ptr<DocumentLoader> DetachDocumentLoader(std::unique_ptr<DocumentLoader> &loader, bool flushMicrotaskQueue = false);
 
     Member<LocalFrame> m_frame;

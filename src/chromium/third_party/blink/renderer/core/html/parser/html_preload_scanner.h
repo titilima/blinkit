@@ -43,7 +43,6 @@
 
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
-#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/html/parser/compact_html_token.h"
 #include "third_party/blink/renderer/core/html/parser/html_token.h"
@@ -51,6 +50,7 @@
 #include "third_party/blink/renderer/platform/text/segmented_string.h"
 #include "third_party/blink/renderer/platform/weborigin/security_policy.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
+#include "url/gurl.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/css/media_values_cached.h"
 #   include "third_party/blink/renderer/core/html/parser/css_preload_scanner.h"
@@ -118,7 +118,7 @@ class TokenPreloadScanner {
  public:
   enum class ScannerType { kMainDocument, kInsertion };
 
-  TokenPreloadScanner(const BlinKit::BkURL &document_url,
+  TokenPreloadScanner(const GURL &document_url,
                       std::unique_ptr<CachedDocumentParameters>,
                       const MediaValuesCached::MediaValuesCachedData&,
                       const ScannerType);
@@ -137,7 +137,7 @@ class TokenPreloadScanner {
             ViewportDescriptionWrapper*,
             bool* is_csp_meta_tag);
 
-  void SetPredictedBaseElementURL(const BlinKit::BkURL& url) {
+  void SetPredictedBaseElementURL(const GURL& url) {
     predicted_base_element_url_ = url;
   }
 
@@ -160,7 +160,7 @@ class TokenPreloadScanner {
   void UpdatePredictedBaseURL(const Token&);
 
   struct Checkpoint {
-    Checkpoint(const BlinKit::BkURL& predicted_base_element_url,
+    Checkpoint(const GURL& predicted_base_element_url,
                bool in_style,
                bool in_script,
                size_t template_count)
@@ -169,7 +169,7 @@ class TokenPreloadScanner {
           in_script(in_script),
           template_count(template_count) {}
 
-    BlinKit::BkURL predicted_base_element_url;
+    GURL predicted_base_element_url;
     bool in_style;
     bool in_script;
     size_t template_count;
@@ -188,8 +188,8 @@ class TokenPreloadScanner {
 
   CSSPreloadScanner css_scanner_;
 #endif
-  const BlinKit::BkURL document_url_;
-  BlinKit::BkURL predicted_base_element_url_;
+  const GURL document_url_;
+  GURL predicted_base_element_url_;
   bool in_style_;
   bool in_picture_;
   bool in_script_;
@@ -217,7 +217,7 @@ class CORE_EXPORT HTMLPreloadScanner {
  public:
   static std::unique_ptr<HTMLPreloadScanner> Create(
       const HTMLParserOptions& options,
-      const BlinKit::BkURL& document_url,
+      const GURL& document_url,
       std::unique_ptr<CachedDocumentParameters> document_parameters,
       const MediaValuesCached::MediaValuesCachedData& media_values_cached_data,
       const TokenPreloadScanner::ScannerType scanner_type) {
@@ -229,12 +229,12 @@ class CORE_EXPORT HTMLPreloadScanner {
   ~HTMLPreloadScanner();
 
   void AppendToEnd(const SegmentedString&);
-  PreloadRequestStream Scan(const BlinKit::BkURL& document_base_element_url,
+  PreloadRequestStream Scan(const GURL& document_base_element_url,
                             ViewportDescriptionWrapper*);
 
  private:
   HTMLPreloadScanner(const HTMLParserOptions&,
-                     const BlinKit::BkURL& document_url,
+                     const GURL& document_url,
                      std::unique_ptr<CachedDocumentParameters>,
                      const MediaValuesCached::MediaValuesCachedData&,
                      const TokenPreloadScanner::ScannerType);

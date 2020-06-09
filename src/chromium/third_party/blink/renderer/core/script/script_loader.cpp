@@ -44,8 +44,6 @@
 #include "third_party/blink/renderer/platform/loader/fetch/resource_loader_options.h"
 #include "third_party/blink/renderer/platform/network/mime/mime_type_registry.h"
 
-using namespace BlinKit;
-
 namespace blink {
 
 ScriptLoader::ScriptLoader(ScriptElementBase *element, bool parserInserted, bool alreadyStarted)
@@ -108,7 +106,7 @@ void ScriptLoader::DidNotifySubtreeInsertionsToDocument(void)
 }
 
 // https://html.spec.whatwg.org/multipage/webappapis.html#fetch-a-classic-script
-void ScriptLoader::FetchClassicScript(const BkURL &url, Document &elementDocument, const WTF::TextEncoding &encoding)
+void ScriptLoader::FetchClassicScript(const GURL &url, Document &elementDocument, const WTF::TextEncoding &encoding)
 {
     std::shared_ptr<ClassicPendingScript> pendingScript = ClassicPendingScript::Fetch(url, elementDocument,
         encoding, m_element);
@@ -404,12 +402,12 @@ bool ScriptLoader::PrepareScript(const TextPosition &scriptStartPosition, Legacy
 
         // <spec step="24.4">Parse src relative to the element's node
         // document.</spec>
-        BkURL url = elementDocument.CompleteURL(src);
+        GURL url = elementDocument.CompleteURL(src);
 
         // <spec step="24.5">If the previous step failed, queue a task to fire an
         // event named error at the element, and return. Otherwise, let url be the
         // resulting URL record.</spec>
-        if (!url.IsValid())
+        if (!url.is_valid())
         {
             ASSERT(false); // BKTODO:
 #if 0
@@ -494,7 +492,7 @@ bool ScriptLoader::PrepareScript(const TextPosition &scriptStartPosition, Legacy
 
         // <spec step="25.1">Let base URL be the script element's node document's
         // document base URL.</spec>
-        BkURL baseUrl = elementDocument.BaseURL();
+        GURL baseUrl = elementDocument.BaseURL();
 
         // <spec step="25.2">Switch on the script's type:</spec>
         switch (GetScriptType())
@@ -699,9 +697,9 @@ bool ScriptLoader::PrepareScript(const TextPosition &scriptStartPosition, Legacy
     // Note: this block is also duplicated in
     // HTMLParserScriptRunner::processScriptElementInternal().
     // TODO(hiroshige): Merge the duplicated code.
-    BkURL scriptUrl = (!isInDocumentWrite && m_parserInserted)
+    GURL scriptUrl = (!isInDocumentWrite && m_parserInserted)
         ? elementDocument.Url()
-        : BkURL();
+        : GURL();
     TakePendingScript(ScriptSchedulingType::kImmediate)->ExecuteScriptBlock(scriptUrl);
     return true;
 }

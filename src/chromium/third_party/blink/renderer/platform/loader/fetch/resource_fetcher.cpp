@@ -44,9 +44,8 @@
 #include "third_party/blink/renderer/platform/loader/fetch/resource_client.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_loader.h"
 #include "third_party/blink/renderer/platform/loader/fetch/unique_identifier.h"
+#include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
-
-using namespace BlinKit;
 
 namespace blink {
 
@@ -315,13 +314,14 @@ void ResourceFetcher::InsertAsPreloadIfNecessary(Resource *resource, const Fetch
     ASSERT(false); // BKTODO:
 }
 
-static BkURL RemoveFragmentIdentifierIfNeeded(const BkURL &originalUrl)
+static GURL RemoveFragmentIdentifierIfNeeded(const GURL &originalUrl)
 {
-    if (!originalUrl.HasRef() || !originalUrl.SchemeIsHTTPOrHTTPS())
+    if (!originalUrl.has_ref() || !originalUrl.SchemeIsHTTPOrHTTPS())
         return originalUrl;
-    BkURL url = originalUrl;
-    ASSERT(false); // BKTODO: url.RemoveFragmentIdentifier();
-    return url;
+
+    url::Replacements<char> replacements;
+    replacements.ClearRef();
+    return originalUrl.ReplaceComponents(replacements);
 }
 
 std::optional<ResourceRequestBlockedReason> ResourceFetcher::PrepareRequest(
@@ -338,7 +338,7 @@ std::optional<ResourceRequestBlockedReason> ResourceFetcher::PrepareRequest(
 
     params.OverrideContentType(factory.ContentType());
 
-    if (!params.Url().IsValid())
+    if (!params.Url().is_valid())
         return ResourceRequestBlockedReason::kOther;
 
     resourceRequest.SetPriority(ComputeLoadPriority(resourceType, params.GetResourceRequest(),
@@ -354,7 +354,7 @@ std::optional<ResourceRequestBlockedReason> ResourceFetcher::PrepareRequest(
         : kFetchSubresource;
     Context().AddAdditionalRequestHeaders(resourceRequest, fetchType);
 
-    BkURL url = RemoveFragmentIdentifierIfNeeded(params.Url());
+    GURL url = RemoveFragmentIdentifierIfNeeded(params.Url());
     std::optional<ResourceRequestBlockedReason> blockedReason = Context().CanRequest(resourceType, resourceRequest,
         url, options, resourceRequest.GetRedirectStatus());
     if (blockedReason)
@@ -364,7 +364,7 @@ std::optional<ResourceRequestBlockedReason> ResourceFetcher::PrepareRequest(
     // policy is determined.
     Context().PrepareRequest(resourceRequest, FetchContext::RedirectType::kNotForRedirect);
 
-    if (!params.Url().IsValid())
+    if (!params.Url().is_valid())
         return ResourceRequestBlockedReason::kOther;
 
     return std::nullopt;
@@ -409,8 +409,8 @@ std::shared_ptr<Resource> ResourceFetcher::RequestResource(
     // have data URI sources, which causes UKM to miss the metric recording.
     if (m_context)
     {
-        const BkURL &url = params.Url();
-        if (url.HasRef() && url.SchemeIsData())
+        const GURL &url = params.Url();
+        if (url.has_ref() && url.SchemeIs(url::kDataScheme))
             m_context->RecordDataUriWithOctothorpe();
     }
 

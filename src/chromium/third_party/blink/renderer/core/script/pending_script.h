@@ -41,7 +41,6 @@
 
 #include <functional>
 #include "base/macros.h"
-#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/core/script/script.h"
 #include "third_party/blink/renderer/core/script/script_element_base.h"
 #include "third_party/blink/renderer/core/script/script_scheduling_type.h"
@@ -86,7 +85,7 @@ public:
     }
 
     // Returns nullptr when "script's script is null", i.e. an error occurred.
-    virtual std::unique_ptr<Script> GetSource(const BlinKit::BkURL &documentURL) const = 0;
+    virtual std::unique_ptr<Script> GetSource(const GURL &documentURL) const = 0;
 
     virtual ScriptType GetScriptType(void) const = 0;
     virtual bool IsReady(void) const = 0;
@@ -102,7 +101,7 @@ public:
 
     bool WasCreatedDuringDocumentWrite(void) const { return m_createdDuringDocumentWrite; }
 
-    virtual void ExecuteScriptBlock(const BlinKit::BkURL &documentURL);
+    virtual void ExecuteScriptBlock(const GURL &documentURL);
 protected:
     PendingScript(ScriptElementBase *element, const TextPosition &startingPosition);
 

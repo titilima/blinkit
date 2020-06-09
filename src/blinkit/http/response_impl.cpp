@@ -15,9 +15,7 @@
 #include <zlib.h>
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "blinkit/common/bk_url.h"
-
-using namespace BlinKit;
+#include "url/gurl.h"
 
 ResponseImpl::ResponseImpl(const std::string &URL) : m_originURL(URL), m_URL(URL)
 {
@@ -184,7 +182,7 @@ std::string ResponseImpl::ResolveRedirection(void)
     if (!location.empty())
     {
         ret = m_URL;
-        m_URL = BkURL(m_URL).Resolve(location).AsString();
+        m_URL = GURL(m_URL).Resolve(location).spec();
     }
     return ret;
 }

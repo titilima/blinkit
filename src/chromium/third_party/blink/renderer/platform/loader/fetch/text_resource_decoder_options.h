@@ -16,9 +16,9 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_LOADER_FETCH_TEXT_RESOURCE_DECODER_OPTIONS_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_LOADER_FETCH_TEXT_RESOURCE_DECODER_OPTIONS_H_
 
-#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/platform/platform_export.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
+#include "url/gurl.h"
 
 namespace blink {
 
@@ -45,7 +45,7 @@ class PLATFORM_EXPORT TextResourceDecoderOptions final {
       ContentType,
       const WTF::TextEncoding& default_encoding,
       const WTF::TextEncoding& hint_encoding,
-      const BlinKit::BkURL& hint_url);
+      const GURL& hint_url);
 
   void SetUseLenientXMLDecoding() { use_lenient_xml_decoding_ = true; }
   void OverrideContentType(ContentType content_type) {
@@ -83,7 +83,7 @@ class PLATFORM_EXPORT TextResourceDecoderOptions final {
   bool GetUseLenientXMLDecoding() const { return use_lenient_xml_decoding_; }
 
   const char* HintEncoding() const { return hint_encoding_; }
-  const BlinKit::BkURL& HintURL() const { return hint_url_; }
+  const GURL& HintURL() const { return hint_url_; }
   const char* HintLanguage() const { return hint_language_; }
 
  private:
@@ -91,7 +91,7 @@ class PLATFORM_EXPORT TextResourceDecoderOptions final {
                              ContentType,
                              const WTF::TextEncoding& default_encoding,
                              const char* hint_encoding,
-                             const BlinKit::BkURL& hint_url);
+                             const GURL& hint_url);
 
   EncodingDetectionOption encoding_detection_option_;
   ContentType content_type_;
@@ -101,7 +101,7 @@ class PLATFORM_EXPORT TextResourceDecoderOptions final {
   // Hints for DetectTextEncoding().
   // Only used when |encoding_detection_option_| == |kUseAllAutoDetection|.
   const char* hint_encoding_;
-  BlinKit::BkURL hint_url_;
+  GURL hint_url_;
   char hint_language_[3];
 };
 

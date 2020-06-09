@@ -71,6 +71,7 @@
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 #include "third_party/blink/renderer/platform/network/http_parsers.h"
+#include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
 using namespace BlinKit;
@@ -308,11 +309,11 @@ void Document::AddMutationEventListenerTypeIfEnabled(ListenerType listenerType)
     AddListenerType(listenerType);
 }
 
-const BkURL& Document::BaseURL(void) const
+const GURL& Document::BaseURL(void) const
 {
-    if (!m_baseURL.IsEmpty())
+    if (!m_baseURL.is_empty())
         return m_baseURL;
-    return BkURL::Blank();
+    return BlankURL();
 }
 
 Element* Document::body(void) const
@@ -574,20 +575,20 @@ Node* Document::Clone(Document &factory, CloneChildrenFlag flag) const
     return nullptr;
 }
 
-BkURL Document::CompleteURL(const String &url) const
+GURL Document::CompleteURL(const String &url) const
 {
     return CompleteURLWithOverride(url, m_baseURL);
 }
 
-BkURL Document::CompleteURLWithOverride(const String &url, const BkURL &baseUrlOverride) const
+GURL Document::CompleteURLWithOverride(const String &url, const GURL &baseUrlOverride) const
 {
-    ASSERT(baseUrlOverride.IsEmpty() || baseUrlOverride.IsValid());
+    ASSERT(baseUrlOverride.is_empty() || baseUrlOverride.is_valid());
 
     // Always return a null URL when passed a null string.
     // FIXME: Should we change the KURL constructor to have this behavior?
     // See also [CSS]StyleSheet::completeURL(const String&)
     if (url.IsNull())
-        return BkURL();
+        return GURL();
     return baseUrlOverride.Resolve(url.StdUtf8()); // BKTODO: Resolve with encoding.
 }
 
@@ -763,7 +764,7 @@ LocalDOMWindow* Document::ExecutingWindow(void) const
     return nullptr;
 }
 
-BkURL Document::FallbackBaseURL(void) const
+GURL Document::FallbackBaseURL(void) const
 {
     return urlForBinding();
 }
@@ -1370,9 +1371,9 @@ void Document::SetReadyState(DocumentReadyState readyState)
     }
 }
 
-void Document::SetURL(const BkURL &url)
+void Document::SetURL(const GURL &url)
 {
-    const BkURL &newURL = url.IsEmpty() ? BkURL::Blank() : url;
+    const GURL &newURL = url.is_empty() ? BlankURL() : url;
     if (newURL == m_URL)
         return;
 
@@ -1560,14 +1561,14 @@ void Document::SuppressLoadEvent(void)
 
 void Document::UpdateBaseURL(void)
 {
-    BkURL oldBaseURL = m_baseURL;
+    GURL oldBaseURL = m_baseURL;
     // DOM 3 Core: When the Document supports the feature "HTML" [DOM Level 2
     // HTML], the base URI is computed using first the value of the href attribute
     // of the HTML BASE element if any, and the value of the documentURI attribute
     // from the Document interface otherwise (which we store, preparsed, in url_).
-    if (!m_baseElementURL.IsEmpty())
+    if (!m_baseElementURL.is_empty())
         m_baseURL = m_baseElementURL;
-    else if (!m_baseURLOverride.IsEmpty())
+    else if (!m_baseURLOverride.is_empty())
         m_baseURL = m_baseURLOverride;
     else
         m_baseURL = FallbackBaseURL();
@@ -1575,8 +1576,8 @@ void Document::UpdateBaseURL(void)
     if (m_selectorQueryCache)
         m_selectorQueryCache->Invalidate();
 
-    if (!m_baseURL.IsValid())
-        m_baseURL = BkURL();
+    if (!m_baseURL.is_valid())
+        m_baseURL = GURL();
 
 #ifndef BLINKIT_CRAWLER_ONLY
     if (ForCrawler())
@@ -1599,19 +1600,19 @@ void Document::UpdateBaseURL(void)
 #endif
 }
 
-BkURL Document::urlForBinding(void) const
+GURL Document::urlForBinding(void) const
 {
-    const BkURL &url = Url();
-    if (!url.IsEmpty())
+    const GURL &url = Url();
+    if (!url.is_empty())
         return url;
-    return BkURL::Blank();
+    return BlankURL();
 }
 
-BkURL Document::ValidBaseElementURL(void) const
+GURL Document::ValidBaseElementURL(void) const
 {
-    if (m_baseElementURL.IsValid())
+    if (m_baseElementURL.is_valid())
         return m_baseElementURL;
-    return BkURL();
+    return GURL();
 }
 
 void Document::WillInsertBody(void)

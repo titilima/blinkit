@@ -19,12 +19,10 @@
 #include "third_party/blink/renderer/core/dom/context_lifecycle_observer.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
+class GURL;
+
 namespace base {
 class SingleThreadTaskRunner;
-}
-
-namespace BlinKit {
-class BkURL;
 }
 
 namespace blink {
@@ -44,9 +42,9 @@ class ExecutionContext : public ContextLifecycleNotifier
 public:
     virtual bool IsDocument(void) const { return false; }
 
-    virtual const BlinKit::BkURL& Url(void) const = 0;
-    virtual const BlinKit::BkURL& BaseURL(void) const = 0;
-    virtual BlinKit::BkURL CompleteURL(const String &url) const = 0;
+    virtual const GURL& Url(void) const = 0;
+    virtual const GURL& BaseURL(void) const = 0;
+    virtual GURL CompleteURL(const String &url) const = 0;
     virtual LocalDOMWindow* ExecutingWindow(void) const { return nullptr; }
 
     virtual ResourceFetcher* Fetcher(void) const = 0;

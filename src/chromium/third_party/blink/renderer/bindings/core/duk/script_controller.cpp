@@ -98,11 +98,11 @@ ContextImpl& ScriptController::EnsureContext(void)
     return *m_context;
 }
 
-void ScriptController::ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const BkURL &baseURL)
+void ScriptController::ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const GURL &baseURL)
 {
     ContextImpl &ctx = EnsureContext();
     const ContextImpl::Callback callback = std::bind(CommonCallback, &ctx, std::placeholders::_1);
-    ctx.Eval(sourceCode.Source(), callback, sourceCode.FileName().c_str());
+    ctx.Eval(sourceCode.Source(), callback, sourceCode.Url().ExtractFileName().c_str());
 }
 
 bool ScriptController::ScriptEnabled(void)

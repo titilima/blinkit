@@ -1256,6 +1256,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\id_target_observer.h">
       <Filter>renderer\core\dom</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\weborigin\kurl.h">
+      <Filter>renderer\platform\weborigin</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\platform.cpp">
@@ -1968,6 +1971,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\xlink_names.cc">
       <Filter>renderer\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\weborigin\kurl.cpp">
+      <Filter>renderer\platform\weborigin</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

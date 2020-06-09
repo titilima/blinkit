@@ -44,12 +44,12 @@
 
 #pragma once
 
-#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_streamer.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_source_location_type.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+#include "url/gurl.h"
 
 namespace blink {
 
@@ -62,7 +62,7 @@ class ScriptSourceCode final
 public:
     // For inline scripts.
     ScriptSourceCode(const String &source, ScriptSourceLocationType sourceLocationType = ScriptSourceLocationType::kUnknown,
-        const BlinKit::BkURL &url = BlinKit::BkURL(), const TextPosition &startPosition = TextPosition::MinimumPosition());
+        const GURL &url = GURL(), const TextPosition &startPosition = TextPosition::MinimumPosition());
     // For external scripts.
     //
     // We lose the encoding information from ScriptResource.
@@ -71,11 +71,10 @@ public:
     ~ScriptSourceCode(void);
 
     const std::string& Source(void) const { return m_source; }
-    const BlinKit::BkURL &Url(void) const { return m_URL; }
-    std::string FileName(void) const;
+    const GURL &Url(void) const { return m_URL; }
 private:
     const std::string m_source;
-    const BlinKit::BkURL m_URL;
+    const GURL m_URL;
 };
 
 } // namespace blink

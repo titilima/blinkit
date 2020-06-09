@@ -41,8 +41,8 @@
 #pragma once
 
 #include "blinkit/common/bk_http_header_map.h"
-#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
+#include "url/gurl.h"
 
 namespace blink {
 
@@ -58,12 +58,12 @@ public:
     };
 
     ResourceResponse(void) = default;
-    explicit ResourceResponse(const BlinKit::BkURL &URL);
+    explicit ResourceResponse(const GURL &URL);
 
     bool IsNull(void) const { return m_isNull; }
 
-    const BlinKit::BkURL& Url(void) const { return m_URL; }
-    void SetURL(const BlinKit::BkURL &URL);
+    const GURL& Url(void) const { return m_URL; }
+    void SetURL(const GURL &URL);
 
     const AtomicString& MimeType(void) const { return m_mimeType; }
     void SetMimeType(const AtomicString &mimeType);
@@ -82,7 +82,7 @@ public:
     static bool Compare(const ResourceResponse &a, const ResourceResponse &b);
 private:
     bool m_isNull = true;
-    BlinKit::BkURL m_URL;
+    GURL m_URL;
     AtomicString m_mimeType, m_textEncodingName;
 
     int m_httpStatusCode = 0;

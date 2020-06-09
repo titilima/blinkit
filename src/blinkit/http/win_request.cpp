@@ -12,11 +12,10 @@
 #include "win_request.h"
 
 #include "base/strings/string_util.h"
-#include "blinkit/common/bk_url.h"
+#include "blinkit/app/app_constants.h"
+#include "blinkit/http/response_impl.h"
+#include "url/gurl.h"
 #include "url/url_constants.h"
-
-#include "app/app_constants.h"
-#include "http/response_impl.h"
 
 namespace BlinKit {
 
@@ -44,7 +43,7 @@ WinRequest::~WinRequest(void)
 
 void WinRequest::Cancel(void)
 {
-    assert(nullptr != m_hEventCancel);
+    ASSERT(nullptr != m_hEventCancel);
     SetEvent(m_hEventCancel);
     RequestImpl::Release();
 }
@@ -106,7 +105,7 @@ int WinRequest::EndRequest(void)
         DWORD err = GetLastError();
         if (ERROR_IO_PENDING != err)
         {
-            assert(ERROR_IO_PENDING == err);
+            ASSERT(ERROR_IO_PENDING == err);
             return BK_ERR_UNKNOWN;
         }
         signal = false;
@@ -117,7 +116,7 @@ int WinRequest::EndRequest(void)
 
 ControllerImpl* WinRequest::GetController(void)
 {
-    assert(nullptr == m_hEventCancel);
+    ASSERT(nullptr == m_hEventCancel);
     m_hEventCancel = CreateEvent(nullptr, TRUE, FALSE, nullptr);
 
     return RequestImpl::GetController();
@@ -125,16 +124,16 @@ ControllerImpl* WinRequest::GetController(void)
 
 int WinRequest::OpenRequest(const std::string &URL)
 {
-    BkURL u(URL);
+    GURL u(URL);
     if (!u.SchemeIsHTTPOrHTTPS())
         return BK_ERR_URI;
 
-    assert(!m_connection.IsValid());
-    m_connection = m_session.Connect(u.Host(), u.EffectiveIntPort(), u.Username(), u.Password());
+    ASSERT(!m_connection.IsValid());
+    m_connection = m_session.Connect(u.host(), u.EffectiveIntPort(), u.username(), u.password());
     if (!m_connection.IsValid())
         return BK_ERR_NETWORK;
 
-    assert(!m_request.IsValid());
+    ASSERT(!m_request.IsValid());
     m_request = m_connection.OpenRequest(m_method, u.PathForRequest(), m_referer, u.SchemeIs(url::kHttpsScheme));
     if (!m_request.IsValid())
         return BK_ERR_NETWORK;
@@ -156,7 +155,7 @@ bool WinRequest::OpenSession(void)
             proxy = Proxy();
             break;
         default:
-            assert(ProxyType() == BK_PROXY_SYSTEM_DEFAULT);
+            ASSERT(ProxyType() == BK_PROXY_SYSTEM_DEFAULT);
     }
 
     if (!m_session.Open(m_userAgent, proxyType, proxy))
@@ -215,7 +214,7 @@ int WinRequest::ReceiveData(void)
             DWORD err = GetLastError();
             if (ERROR_IO_PENDING != err)
             {
-                assert(ERROR_IO_PENDING == err);
+                ASSERT(ERROR_IO_PENDING == err);
                 return BK_ERR_NETWORK;
             }
 
@@ -283,13 +282,13 @@ int WinRequest::SendBody(void)
     bool signal = true;
 
     DWORD dwWritten = 0;
-    assert(!m_body.empty());
+    ASSERT(!m_body.empty());
     if (!m_request.Write(m_body.data(), m_body.size(), &dwWritten))
     {
         DWORD err = GetLastError();
         if (ERROR_IO_PENDING != err)
         {
-            assert(ERROR_IO_PENDING == err);
+            ASSERT(ERROR_IO_PENDING == err);
             return BK_ERR_NETWORK;
         }
 
@@ -315,7 +314,7 @@ int WinRequest::SendRequest(void)
         DWORD err = GetLastError();
         if (ERROR_IO_PENDING != err)
         {
-            assert(ERROR_IO_PENDING == err);
+            ASSERT(ERROR_IO_PENDING == err);
             return BK_ERR_NETWORK;
         }
 

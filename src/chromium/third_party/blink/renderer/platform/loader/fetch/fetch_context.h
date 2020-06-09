@@ -86,7 +86,7 @@ public:
     virtual void PrepareRequest(ResourceRequest &request, RedirectType redirectType) {}
 
     virtual std::optional<ResourceRequestBlockedReason> CanRequest(ResourceType type, const ResourceRequest &resourceRequest,
-        const BlinKit::BkURL &url, const ResourceLoaderOptions &options, ResourceRequest::RedirectStatus redirectStatus) const
+        const GURL &url, const ResourceLoaderOptions &options, ResourceRequest::RedirectStatus redirectStatus) const
     {
         return ResourceRequestBlockedReason::kOther;
     }
@@ -102,7 +102,7 @@ public:
     virtual void DispatchDidReceiveData(unsigned long identifier, const char *data, int dataLength) {}
     virtual void DispatchDidFinishLoading(unsigned long identifier) {}
     virtual void DidLoadResource(Resource *resource) {}
-    virtual void DispatchDidFail(const BlinKit::BkURL &url, unsigned long identifier, const ResourceError &error) {}
+    virtual void DispatchDidFail(const GURL &url, unsigned long identifier, const ResourceError &error) {}
 
     virtual bool IsDetached(void) const { return false; }
     bool DefersLoading(void) const { return false; } // BKTODO: This always returns false, because the page cannot be paused in BlinKit.

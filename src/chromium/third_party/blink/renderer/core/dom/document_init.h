@@ -43,8 +43,8 @@
 
 #pragma once
 
-#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
+#include "url/gurl.h"
 
 namespace blink {
 
@@ -66,15 +66,15 @@ public:
     DocumentInit& WithDocumentLoader(DocumentLoader *loader);
     LocalFrame* GetFrame(void) const;
 
-    DocumentInit& WithURL(const BlinKit::BkURL &URL);
-    const BlinKit::BkURL& Url(void) const { return m_URL; }
+    DocumentInit& WithURL(const GURL &URL);
+    const GURL& Url(void) const { return m_URL; }
 
     bool ShouldSetURL(void) const;
 private:
     DocumentInit(void) = default;
 
     Member<DocumentLoader> m_documentLoader;
-    BlinKit::BkURL m_URL;
+    GURL m_URL;
 };
 
 }  // namespace blink

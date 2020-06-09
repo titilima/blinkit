@@ -55,8 +55,7 @@
 #include "third_party/blink/renderer/platform/loader/fetch/resource_loader_options.h"
 #include "third_party/blink/renderer/platform/network/http_names.h"
 #include "third_party/blink/renderer/platform/network/mime/mime_type_registry.h"
-
-using namespace BlinKit;
+#include "third_party/blink/renderer/platform/weborigin/kurl.h"
 
 namespace blink {
 
@@ -91,7 +90,7 @@ void DocumentLoader::CommitData(const char *bytes, size_t length)
     m_parser->AppendBytes(bytes, length);
 }
 
-void DocumentLoader::CommitNavigation(const AtomicString &mimeType, const BkURL &overridingURL)
+void DocumentLoader::CommitNavigation(const AtomicString &mimeType, const GURL &overridingURL)
 {
     if (kProvisional != m_state)
         return;
@@ -258,13 +257,13 @@ LocalFrameClient& DocumentLoader::GetLocalFrameClient(void) const
 }
 
 void DocumentLoader::InstallNewDocument(
-    const BkURL &URL,
+    const GURL &URL,
     WebGlobalObjectReusePolicy reusePolicy,
     const AtomicString &mimeType,
     const AtomicString &encoding,
-    const BkURL &overridingURL)
+    const GURL &overridingURL)
 {
-    assert(nullptr == m_frame->GetDocument() || !m_frame->GetDocument()->IsActive());
+    ASSERT(nullptr == m_frame->GetDocument() || !m_frame->GetDocument()->IsActive());
 
     FrameLoaderStateMachine *stateMachine = GetFrameLoader().StateMachine();
     if (stateMachine->IsDisplayingInitialEmptyDocument())
@@ -277,8 +276,8 @@ void DocumentLoader::InstallNewDocument(
 
     DocumentInit init = DocumentInit::Create().WithDocumentLoader(this).WithURL(URL);
     Document *document = m_frame->DomWindow()->InstallNewDocument(init);
-    if (!overridingURL.IsEmpty())
-        assert(false); // BKTODO: document->SetBaseURLOverride(overridingURL);
+    if (!overridingURL.is_empty())
+        ASSERT(false); // BKTODO: document->SetBaseURLOverride(overridingURL);
     DidInstallNewDocument(document);
 
     DidCommitNavigation(reusePolicy);
@@ -333,14 +332,14 @@ void DocumentLoader::MarkAsCommitted(void)
 
 bool DocumentLoader::MaybeLoadEmpty(void)
 {
-    bool shouldLoadEmpty = !m_substituteData.IsValid() && m_currentRequest.Url().IsEmpty();
+    bool shouldLoadEmpty = !m_substituteData.IsValid() && m_currentRequest.Url().is_empty();
     if (!shouldLoadEmpty)
         return false;
 
-    if (m_currentRequest.Url().IsEmpty() &&
+    if (m_currentRequest.Url().is_empty() &&
         !GetFrameLoader().StateMachine()->CreatingInitialEmptyDocument())
     {
-        m_currentRequest.SetURL(BkURL::Blank());
+        m_currentRequest.SetURL(BlankURL());
     }
     m_response = ResourceResponse(m_currentRequest.Url());
     m_response.SetMimeType("text/html");

@@ -11,7 +11,6 @@
 
 #include "crawler_impl.h"
 
-#include "blinkit/common/bk_url.h"
 #include "blinkit/http/request_impl.h"
 #include "blinkit/http/response_impl.h"
 #include "blinkit/js/context_impl.h"
@@ -21,6 +20,7 @@
 #include "third_party/blink/renderer/core/loader/frame_load_request.h"
 #include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_error.h"
+#include "url/gurl.h"
 #if 0 // BKTODO:
 #include "app/app_impl.h"
 #include "blink_impl/cookie_jar_impl.h"
@@ -144,7 +144,7 @@ int BKAPI CrawlerImpl::RegisterCrawlerFunction(const char *name, BkCallback &fun
 
 int CrawlerImpl::Run(const char *URL)
 {
-    BkURL u(URL);
+    GURL u(URL);
     if (!u.SchemeIsHTTPOrHTTPS())
     {
         BKLOG("Invalid URL: %s", URL);

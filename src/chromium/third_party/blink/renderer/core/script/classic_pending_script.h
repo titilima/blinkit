@@ -44,7 +44,7 @@ public:
     //
     // For a script from an external file, calls ScriptResource::Fetch() and
     // creates ClassicPendingScript. Returns nullptr if Fetch() returns nullptr.
-    static std::shared_ptr<ClassicPendingScript> Fetch(const BlinKit::BkURL &url, Document &elementDocument,
+    static std::shared_ptr<ClassicPendingScript> Fetch(const GURL &url, Document &elementDocument,
         const WTF::TextEncoding &encoding, ScriptElementBase *element);
     // For an inline script.
     static std::shared_ptr<ClassicPendingScript> CreateInline(ScriptElementBase *element,
@@ -55,7 +55,7 @@ public:
     void SetStreamer(std::unique_ptr<ScriptStreamer> &streamer);
     void StreamingFinished(void);
 
-    std::unique_ptr<Script> GetSource(const BlinKit::BkURL &documentURL) const override;
+    std::unique_ptr<Script> GetSource(const GURL &documentURL) const override;
     ScriptType GetScriptType(void) const override { return ScriptType::kClassic; }
     bool IsReady(void) const override;
     bool IsExternal(void) const override { return m_isExternal; }
@@ -96,7 +96,7 @@ private:
     // https://html.spec.whatwg.org/multipage/scripting.html#prepare-a-script
     // which will eventually be used as #concept-script-base-url.
     // https://html.spec.whatwg.org/multipage/webappapis.html#concept-script-base-url
-    const BlinKit::BkURL m_baseUrlForInlineScript;
+    const GURL m_baseUrlForInlineScript;
 
     // "element's child text content" snapshot taken at
     // #prepare-a-script (Step 4).

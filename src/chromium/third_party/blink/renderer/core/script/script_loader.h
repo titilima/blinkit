@@ -86,7 +86,7 @@ private:
     // and must NOT be called from outside of PendingScript().
     //
     // https://html.spec.whatwg.org/multipage/webappapis.html#fetch-a-classic-script
-    void FetchClassicScript(const BlinKit::BkURL &url, Document &elementDocument, const WTF::TextEncoding &encoding);
+    void FetchClassicScript(const GURL &url, Document &elementDocument, const WTF::TextEncoding &encoding);
 
     bool IgnoresLoadRequest(void) const;
     bool IsScriptForEventSupported(void) const;

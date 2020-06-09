@@ -50,26 +50,24 @@
 #include "third_party/blink/renderer/core/script/script_element_base.h"
 #include "third_party/blink/renderer/core/script/script_loader.h"
 
-using namespace BlinKit;
-
 namespace blink {
 
 namespace {
 
-void DoExecuteScript(PendingScript *pending_script, const BkURL& document_url) {
+void DoExecuteScript(PendingScript *pending_script, const GURL& document_url) {
   pending_script->ExecuteScriptBlock(document_url);
 }
 
-static BkURL DocumentURLForScriptExecution(Document* document) {
+static GURL DocumentURLForScriptExecution(Document* document) {
   if (!document)
-    return BkURL();
+    return GURL();
 
   if (!document->GetFrame()) {
 #ifndef BLINKIT_CRAWLER_ONLY
     if (document->ImportsController())
       return document->Url();
 #endif
-    return BkURL();
+    return GURL();
   }
 
   // Use the URL of the currently active document for this frame.

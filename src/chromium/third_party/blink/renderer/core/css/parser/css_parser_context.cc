@@ -26,8 +26,6 @@
 #   include "third_party/blink/renderer/core/page/page.h"
 #endif
 
-using namespace BlinKit;
-
 namespace blink {
 
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -121,7 +119,7 @@ CSSParserContext* CSSParserContext::Create(const Document& document) {
 // static
 CSSParserContext* CSSParserContext::Create(
     const Document& document,
-    const BkURL& base_url_override,
+    const GURL& base_url_override,
     bool is_opaque_response_from_service_worker,
     const WTF::TextEncoding& charset,
     SelectorProfile profile) {
@@ -141,7 +139,7 @@ CSSParserContext* CSSParserContext::Create(
   }
 #endif
 
-  const std::string referrer = base_url_override.StrippedForUseAsReferrer();
+  const std::string referrer = base_url_override.GetAsReferrer().spec();
 
   bool use_legacy_background_size_shorthand_behavior = false;
 #if 0 // BKTODO: Check below
@@ -163,7 +161,7 @@ CSSParserContext* CSSParserContext::Create(
 }
 
 CSSParserContext::CSSParserContext(
-    const BkURL& base_url,
+    const GURL& base_url,
     bool is_opaque_response_from_service_worker,
     const WTF::TextEncoding& charset,
     CSSParserMode mode,

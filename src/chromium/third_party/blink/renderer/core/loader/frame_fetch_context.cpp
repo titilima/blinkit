@@ -233,7 +233,7 @@ void FrameFetchContext::SetFirstPartyCookie(ResourceRequest &request)
     // Set the first party for cookies url if it has not been set yet (new
     // requests). This value will be updated during redirects, consistent with
     // https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site-00#section-2.1.1?
-    if (request.SiteForCookies().IsEmpty())
+    if (request.SiteForCookies().is_empty())
         request.SetSiteForCookies(request.Url());
 }
 

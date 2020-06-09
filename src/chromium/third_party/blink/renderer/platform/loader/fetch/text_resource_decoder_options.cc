@@ -16,8 +16,6 @@
 #include "third_party/blink/renderer/platform/language.h"
 #include "third_party/blink/renderer/platform/loader/fetch/text_resource_decoder_options.h"
 
-using namespace BlinKit;
-
 namespace blink {
 
 TextResourceDecoderOptions::TextResourceDecoderOptions(
@@ -27,19 +25,19 @@ TextResourceDecoderOptions::TextResourceDecoderOptions(
                                  content_type,
                                  default_encoding,
                                  nullptr,
-                                 BkURL()) {}
+                                 GURL()) {}
 
 TextResourceDecoderOptions
 TextResourceDecoderOptions::CreateAlwaysUseUTF8ForText() {
   return TextResourceDecoderOptions(kAlwaysUseUTF8ForText, kPlainTextContent,
-                                    UTF8Encoding(), nullptr, BkURL());
+                                    UTF8Encoding(), nullptr, GURL());
 }
 
 TextResourceDecoderOptions TextResourceDecoderOptions::CreateWithAutoDetection(
     ContentType content_type,
     const WTF::TextEncoding& default_encoding,
     const WTF::TextEncoding& hint_encoding,
-    const BkURL& hint_url) {
+    const GURL& hint_url) {
   return TextResourceDecoderOptions(kUseAllAutoDetection, content_type,
                                     default_encoding, hint_encoding.GetName(),
                                     hint_url);
@@ -50,7 +48,7 @@ TextResourceDecoderOptions::TextResourceDecoderOptions(
     ContentType content_type,
     const WTF::TextEncoding& default_encoding,
     const char* hint_encoding,
-    const BkURL& hint_url)
+    const GURL& hint_url)
     : encoding_detection_option_(encoding_detection_option),
       content_type_(content_type),
       default_encoding_(default_encoding),
@@ -61,7 +59,7 @@ TextResourceDecoderOptions::TextResourceDecoderOptions(
   if (encoding_detection_option_ == kUseAllAutoDetection) {
     // Checking empty URL helps unit testing. Providing DefaultLanguage() is
     // sometimes difficult in tests.
-    if (!hint_url_.IsEmpty()) {
+    if (!hint_url_.is_empty()) {
       // This object is created in the main thread, but used in another thread.
       // We should not share an AtomicString.
       AtomicString locale = DefaultLanguage();

@@ -11,7 +11,7 @@
 
 #include "execution_context.h"
 
-#include "blinkit/common/bk_url.h"
+#include "url/gurl.h"
 
 namespace blink {
 
@@ -22,7 +22,7 @@ String ExecutionContext::OutgoingReferrer(void) const
     // This case is implemented in Document::OutgoingReferrer().
 
     // Step 3.2: "Otherwise, let referrerSource be environment's creation URL."
-    return String::FromStdUTF8(Url().StrippedForUseAsReferrer());
+    return String::FromStdUTF8(Url().GetAsReferrer().spec());
 }
 
 } // namespace blink

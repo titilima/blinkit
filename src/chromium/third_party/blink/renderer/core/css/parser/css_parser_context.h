@@ -16,7 +16,6 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_CSS_PARSER_CSS_PARSER_CONTEXT_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_PARSER_CSS_PARSER_CONTEXT_H_
 
-#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/css/parser/css_parser_mode.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
@@ -24,6 +23,7 @@
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_loader_options.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
+#include "url/gurl.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/css_property_names.h"
 #endif
@@ -70,7 +70,7 @@ class CORE_EXPORT CSSParserContext
 #endif // BLINKIT_CRAWLER_ONLY
   static CSSParserContext* Create(
       const Document&,
-      const BlinKit::BkURL& base_url_override,
+      const GURL& base_url_override,
       bool is_opaque_response_from_service_worker,
       const WTF::TextEncoding& charset = WTF::TextEncoding(),
       SelectorProfile = kLiveProfile);
@@ -86,7 +86,7 @@ class CORE_EXPORT CSSParserContext
 
   CSSParserMode Mode() const { return mode_; }
   CSSParserMode MatchMode() const { return match_mode_; }
-  const BlinKit::BkURL& BaseURL() const { return base_url_; }
+  const GURL& BaseURL() const { return base_url_; }
   const WTF::TextEncoding& Charset() const { return charset_; }
   const std::string& GetReferrer() const { return referrer_; }
   bool IsHTMLDocument() const { return is_html_document_; }
@@ -130,7 +130,7 @@ class CORE_EXPORT CSSParserContext
 #endif // BLINKIT_CRAWLER_ONLY
 
  private:
-  CSSParserContext(const BlinKit::BkURL& base_url,
+  CSSParserContext(const GURL& base_url,
                    bool is_opaque_response_from_service_worker,
                    const WTF::TextEncoding& charset,
                    CSSParserMode,
@@ -143,7 +143,7 @@ class CORE_EXPORT CSSParserContext
                    ContentSecurityPolicyDisposition,
                    const Document* use_counter_document);
 
-  BlinKit::BkURL base_url_;
+  GURL base_url_;
   const bool is_opaque_response_from_service_worker_;
   WTF::TextEncoding charset_;
   CSSParserMode mode_;

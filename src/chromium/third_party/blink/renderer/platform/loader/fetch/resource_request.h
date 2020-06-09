@@ -43,9 +43,9 @@
 
 #include "bk_crawler.h"
 #include "blinkit/common/bk_http_header_map.h"
-#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_load_priority.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
+#include "url/gurl.h"
 
 namespace blink {
 
@@ -63,19 +63,19 @@ class ResourceRequest final
 public:
     enum class RedirectStatus : uint8_t { kFollowedRedirect, kNoRedirect };
 
-    explicit ResourceRequest(const BlinKit::BkURL &URL);
+    explicit ResourceRequest(const GURL &URL);
 
     BkCrawler Crawler(void) const { return m_crawler; }
     void SetCrawler(BkCrawler crawler) { m_crawler = crawler; }
 
-    const BlinKit::BkURL& Url(void) const { return m_URL; }
-    void SetURL(const BlinKit::BkURL &URL) { m_URL = URL; }
+    const GURL& Url(void) const { return m_URL; }
+    void SetURL(const GURL &URL) { m_URL = URL; }
 
     void SetHTTPReferrer(const String &referrer);
     bool DidSetHTTPReferrer(void) const { return m_didSetHttpReferrer; }
 
-    const BlinKit::BkURL& SiteForCookies(void) const { return m_siteForCookies; }
-    void SetSiteForCookies(const BlinKit::BkURL &siteForCookies) { m_siteForCookies = siteForCookies; }
+    const GURL& SiteForCookies(void) const { return m_siteForCookies; }
+    void SetSiteForCookies(const GURL &siteForCookies) { m_siteForCookies = siteForCookies; }
 
     const AtomicString& HttpMethod(void) const { return m_httpMethod; }
 
@@ -103,7 +103,7 @@ public:
     RedirectStatus GetRedirectStatus(void) const { return m_redirectStatus; }
 private:
     BkCrawler m_crawler = nullptr;
-    BlinKit::BkURL m_URL, m_siteForCookies;
+    GURL m_URL, m_siteForCookies;
     AtomicString m_httpMethod;
     BlinKit::BkHTTPHeaderMap m_headers;
     bool m_downloadToBlob : 1;

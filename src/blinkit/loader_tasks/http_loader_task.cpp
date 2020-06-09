@@ -62,7 +62,7 @@ void HTTPLoaderTask::DoContinue(void)
 {
     ASSERT(IsMainThread());
 
-    ResourceResponse response(BkURL(m_response->CurrentURL()));
+    ResourceResponse response(GURL(m_response->CurrentURL()));
     PopulateResourceResponse(response);
     m_client->DidReceiveResponse(response);
     m_client->DidReceiveData(m_response->BodyData(), m_response->BodyLength());
@@ -174,7 +174,7 @@ int HTTPLoaderTask::Run(const ResourceRequest &request)
     m_url = request.Url();
     m_hijackType = request.GetHijackType();
 
-    const std::string URL = m_url.AsString();
+    const std::string URL = m_url.spec();
     if (ProcessHijackRequest(URL))
     {
         std::function<void()> callback = std::bind(&HTTPLoaderTask::DoContinue, this);

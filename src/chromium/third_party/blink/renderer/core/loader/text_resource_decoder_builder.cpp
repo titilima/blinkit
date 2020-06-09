@@ -45,8 +45,6 @@
 #include "third_party/blink/renderer/core/html/parser/text_resource_decoder.h"
 #include "third_party/blink/renderer/platform/loader/fetch/text_resource_decoder_options.h"
 
-using namespace BlinKit;
-
 namespace blink {
 
 struct LegacyEncoding {
@@ -74,9 +72,9 @@ static const LegacyEncoding kEncodings[] = {
     {"xb", "windows-1257"}
 };
 
-static const WTF::TextEncoding GetEncodingFromDomain(const BkURL &url)
+static const WTF::TextEncoding GetEncodingFromDomain(const GURL &url)
 {
-    std::string host = url.Host();
+    std::string host = url.host();
 
     size_t p = host.rfind('.');
     if (std::string::npos != p)

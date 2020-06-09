@@ -131,8 +131,8 @@ static duk_ret_t URLGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
     Document *document = DukScriptObject::To<Document>(ctx, -1);
-    BkURL ret = document->urlForBinding();
-    Duk::PushString(ctx, ret.AsString());
+    GURL ret = document->urlForBinding();
+    Duk::PushString(ctx, ret.spec());
     return 1;
 }
 

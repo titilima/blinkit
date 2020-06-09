@@ -27,11 +27,11 @@ namespace blink {
 class ClassicScript final : public Script
 {
 public:
-    static std::unique_ptr<ClassicScript> Create(const ScriptSourceCode &scriptSourceCode, const BlinKit::BkURL &baseURL);
+    static std::unique_ptr<ClassicScript> Create(const ScriptSourceCode &scriptSourceCode, const GURL &baseURL);
 
     const ScriptSourceCode& GetScriptSourceCode(void) const { return m_scriptSourceCode; }
 private:
-    ClassicScript(const ScriptSourceCode &scriptSourceCode, const BlinKit::BkURL &baseURL);
+    ClassicScript(const ScriptSourceCode &scriptSourceCode, const GURL &baseURL);
 
     ScriptType GetScriptType(void) const override { return ScriptType::kClassic; }
     void RunScript(LocalFrame *frame) const override;

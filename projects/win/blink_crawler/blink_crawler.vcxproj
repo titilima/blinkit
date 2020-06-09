@@ -432,6 +432,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\shared_buffer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\segmented_string.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\timer.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\weborigin\kurl.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\weborigin\referrer_policy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\weborigin\security_policy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\web_task_runner.h" />
@@ -720,6 +721,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\shared_buffer.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\segmented_string.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\timer.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\weborigin\kurl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\weborigin\security_policy.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\web_task_runner.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\ascii_ctype.cc" />

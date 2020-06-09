@@ -183,9 +183,9 @@ std::unique_ptr<DocumentLoader> FrameLoader::CreateDocumentLoader(
     return loader;
 }
 
-SubstituteData FrameLoader::DefaultSubstituteDataForURL(const BkURL &url)
+SubstituteData FrameLoader::DefaultSubstituteDataForURL(const GURL &url)
 {
-    ASSERT(url.AsString() != "about:src"); // BKTODO:
+    ASSERT(url.spec() != "about:src"); // BKTODO:
     return SubstituteData();
 }
 
@@ -306,7 +306,7 @@ void FrameLoader::Init(void)
 {
     ScriptForbiddenScope forbidScripts;
 
-    BkURL emptyURL;
+    GURL emptyURL;
     ResourceRequest initialRequest(emptyURL);
     m_provisionalDocumentLoader = Client()->CreateDocumentLoader(m_frame, initialRequest, SubstituteData(), nullptr);
     m_provisionalDocumentLoader->StartLoading();
@@ -375,13 +375,13 @@ void FrameLoader::SetReferrerForFrameRequest(FrameLoadRequest &frameRequest)
     ASSERT(false); // BKTODO:
 }
 
-bool FrameLoader::ShouldPerformFragmentNavigation(bool isFormSubmission, const String &httpMethod, WebFrameLoadType loadType, const BkURL &url)
+bool FrameLoader::ShouldPerformFragmentNavigation(bool isFormSubmission, const String &httpMethod, WebFrameLoadType loadType, const GURL &url)
 {
     if (!DeprecatedEqualIgnoringCase(httpMethod, http_names::kGET))
         return false;
     if (WebFrameLoadType::kReload == loadType)
         return false;
-    if (!url.HasRef())
+    if (!url.has_ref())
         return false;
     ASSERT(false); // BKTODO:
     return true;
@@ -398,7 +398,7 @@ void FrameLoader::StartNavigation(const FrameLoadRequest &passedRequest, WebFram
 
     FrameLoadRequest request(passedRequest);
     ResourceRequest &resourceRequest = request.GetResourceRequest();
-    const BkURL &url = resourceRequest.Url();
+    const GURL &url = resourceRequest.Url();
 
     SetReferrerForFrameRequest(request);
 

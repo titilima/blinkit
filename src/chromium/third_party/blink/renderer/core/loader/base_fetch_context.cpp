@@ -17,8 +17,6 @@
 
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 
-using namespace BlinKit;
-
 namespace blink {
 
 BaseFetchContext::BaseFetchContext(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner)
@@ -58,7 +56,7 @@ void BaseFetchContext::AddAdditionalRequestHeaders(ResourceRequest &request, Fet
 std::optional<ResourceRequestBlockedReason> BaseFetchContext::CanRequest(
     ResourceType type,
     const ResourceRequest &resourceRequest,
-    const BkURL &url,
+    const GURL &url,
     const ResourceLoaderOptions &options,
     ResourceRequest::RedirectStatus redirectStatus) const
 {

@@ -39,11 +39,11 @@
 #pragma once
 
 #include "base/memory/scoped_refptr.h"
-#include "blinkit/common/bk_url.h"
 #include "third_party/blink/renderer/core/css/css_selector.h"
 #include "third_party/blink/renderer/core/dom/container_node.h"
 #include "third_party/blink/renderer/core/dom/element_data.h"
 #include "third_party/blink/renderer/core/dom/qualified_name.h"
+#include "url/gurl.h"
 
 namespace blink {
 
@@ -100,7 +100,7 @@ public:
     AttributeCollection AttributesWithoutUpdate(void) const;
     const AtomicString& getAttribute(const QualifiedName &name) const;
     const AtomicString& FastGetAttribute(const QualifiedName &name) const;
-    BlinKit::BkURL GetURLAttribute(const QualifiedName &name) const;
+    GURL GetURLAttribute(const QualifiedName &name) const;
     bool FastHasAttribute(const QualifiedName &name) const;
     void setAttribute(const QualifiedName &name, const AtomicString &value);
     Attr* getAttributeNode(const AtomicString &name);

@@ -70,11 +70,11 @@ public:
     LocalFrame* GetFrame(void) const { return m_frame; }
     std::shared_ptr<ResourceFetcher> Fetcher(void) const { return m_fetcher; }
     const ResourceResponse& GetResponse(void) const { return m_response; }
-    const BlinKit::BkURL& Url(void) const { return m_currentRequest.Url(); }
+    const GURL& Url(void) const { return m_currentRequest.Url(); }
     WebFrameLoadType LoadType(void) const { return m_loadType; }
     void SetLoadType(WebFrameLoadType loadType) { m_loadType = loadType; }
 
-    void AppendRedirect(const BlinKit::BkURL &url) { m_redirectChain.push_back(url); }
+    void AppendRedirect(const GURL &url) { m_redirectChain.push_back(url); }
 
     // Without PlzNavigate, this is only false for a narrow window during
     // navigation start. For PlzNavigate, a navigation sent to the browser will
@@ -92,7 +92,7 @@ public:
 protected:
     DocumentLoader(LocalFrame *frame, const ResourceRequest &request, const SubstituteData &substituteData);
 
-    std::vector<BlinKit::BkURL> m_redirectChain;
+    std::vector<GURL> m_redirectChain;
 private:
     FrameLoader& GetFrameLoader(void) const;
     LocalFrameClient& GetLocalFrameClient(void) const;
@@ -101,12 +101,12 @@ private:
     // DocumentParser, as well as creating a new LocalDOMWindow if needed. It also
     // initalizes a bunch of state on the Document (e.g., the state based on
     // response headers).
-    void InstallNewDocument(const BlinKit::BkURL &URL, WebGlobalObjectReusePolicy reusePolicy,
-        const AtomicString &mimeType, const AtomicString &encoding, const BlinKit::BkURL &overridingURL);
+    void InstallNewDocument(const GURL &URL, WebGlobalObjectReusePolicy reusePolicy,
+        const AtomicString &mimeType, const AtomicString &encoding, const GURL &overridingURL);
     void DidInstallNewDocument(Document *document);
 
     void WillCommitNavigation(void);
-    void CommitNavigation(const AtomicString &mimeType, const BlinKit::BkURL &overridingURL = BlinKit::BkURL());
+    void CommitNavigation(const AtomicString &mimeType, const GURL &overridingURL = GURL());
     void DidCommitNavigation(WebGlobalObjectReusePolicy);
     void CommitData(const char *bytes, size_t length);
     void FinishedLoading(void);

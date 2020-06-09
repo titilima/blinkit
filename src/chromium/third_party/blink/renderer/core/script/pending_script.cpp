@@ -39,8 +39,6 @@
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/script/ignore_destructive_write_count_incrementer.h"
 
-using namespace BlinKit;
-
 namespace blink {
 
 PendingScript::PendingScript(ScriptElementBase *element, const TextPosition &startingPosition)
@@ -62,7 +60,7 @@ void PendingScript::Dispose(void)
     m_element = nullptr;
 }
 
-void PendingScript::ExecuteScriptBlock(const BkURL &documentURL)
+void PendingScript::ExecuteScriptBlock(const GURL &documentURL)
 {
     Document *contextDocument = m_element->GetDocument().ContextDocument();
     if (nullptr == contextDocument)
