@@ -18,6 +18,7 @@
 #include <mutex>
 #include <Windows.h>
 #include "base/bit_cast.h"
+#include "base/numerics/checked_math.h"
 
 namespace base {
 
@@ -48,6 +49,55 @@ static void InitializeClock(void)
 {
     g_initialTicks = TimeTicks::Now();
     g_initialTime = CurrentWallclockMicroseconds();
+}
+
+static bool SafeConvertToWord(int in, WORD *out)
+{
+    CheckedNumeric<WORD> result = in;
+    *out = result.ValueOrDefault(std::numeric_limits<WORD>::max());
+    return result.IsValid();
+}
+
+bool Time::FromExploded(bool isLocal, const Exploded &exploded, Time *time)
+{
+    // Create the system struct representing our exploded time. It will either be
+    // in local time or UTC.If casting from int to WORD results in overflow,
+    // fail and return Time(0).
+    SYSTEMTIME st;
+    if (!SafeConvertToWord(exploded.year, &st.wYear)
+        || !SafeConvertToWord(exploded.month, &st.wMonth)
+        || !SafeConvertToWord(exploded.day_of_week, &st.wDayOfWeek)
+        || !SafeConvertToWord(exploded.day_of_month, &st.wDay)
+        || !SafeConvertToWord(exploded.hour, &st.wHour)
+        || !SafeConvertToWord(exploded.minute, &st.wMinute)
+        || !SafeConvertToWord(exploded.second, &st.wSecond)
+        || !SafeConvertToWord(exploded.millisecond, &st.wMilliseconds))
+    {
+        *time = Time(0);
+        return false;
+    }
+
+    FILETIME ft;
+    bool success = true;
+    // Ensure that it's in UTC.
+    if (isLocal)
+    {
+        SYSTEMTIME utc;
+        success = TzSpecificLocalTimeToSystemTime(nullptr, &st, &utc) && SystemTimeToFileTime(&utc, &ft);
+    }
+    else
+    {
+        success = !!SystemTimeToFileTime(&st, &ft);
+    }
+
+    if (!success)
+    {
+        *time = Time(0);
+        return false;
+    }
+
+    *time = Time(FileTimeToMicroseconds(ft));
+    return true;
 }
 
 Time Time::Now(void)

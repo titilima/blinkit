@@ -46,12 +46,6 @@ int64_t SaturatedSub(TimeDelta delta, int64_t value)
 
 } // namespace time_internal
 
-bool Time::FromExploded(bool isLocal, const Exploded &exploded, Time *time)
-{
-    assert(false); // BKTODO:
-    return false;
-}
-
 double Time::ToDoubleT(void) const
 {
     assert(false); // BKTODO:
