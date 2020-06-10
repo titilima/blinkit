@@ -52,12 +52,6 @@ bool Time::FromExploded(bool isLocal, const Exploded &exploded, Time *time)
     return false;
 }
 
-Time Time::Now(void)
-{
-    assert(false); // BKTODO:
-    return Time();
-}
-
 double Time::ToDoubleT(void) const
 {
     assert(false); // BKTODO:
@@ -72,8 +66,7 @@ time_t Time::ToTimeT(void) const
 
 TimeDelta TimeDelta::FromMicroseconds(int64_t us)
 {
-    assert(false); // BKTODO:
-    return TimeDelta();
+    return TimeDelta(us);
 }
 
 TimeDelta TimeDelta::FromMilliseconds(int64_t ms)

@@ -61,6 +61,9 @@ public:
     constexpr bool is_max(void) const { return std::numeric_limits<int64_t>::max() == m_delta; }
     constexpr bool is_min(void) const { return std::numeric_limits<int64_t>::min() == m_delta; }
 
+    TimeDelta operator+(TimeDelta other) const {
+        return TimeDelta(time_internal::SaturatedAdd(*this, other.m_delta));
+    }
     TimeDelta operator-(TimeDelta other) const {
         return TimeDelta(time_internal::SaturatedSub(*this, other.m_delta));
     }
@@ -133,6 +136,12 @@ private:
 };
 
 } // namespace time_internal
+
+template<class TimeClass>
+inline TimeClass operator+(TimeDelta delta, TimeClass t)
+{
+    return t + delta;
+}
 
 /**
  * Time
