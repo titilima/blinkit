@@ -61,6 +61,8 @@ public:
     bool IsInclusiveOlderSiblingShadowRootOrAncestorTreeScopeOf(const TreeScope &scope) const;
 
     Element* getElementById(const AtomicString &elementId) const;
+    const std::vector<Member<Element>>& GetAllElementsById(const AtomicString &id) const;
+    bool ContainsMultipleElementsWithId(const AtomicString &id) const;
     void AddElementById(const AtomicString &elementId, Element &element);
     void RemoveElementById(const AtomicString &elementId, Element &element);
 

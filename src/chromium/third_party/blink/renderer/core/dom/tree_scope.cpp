@@ -84,6 +84,18 @@ void TreeScope::AdoptIfNeeded(Node &node)
         adopter.Execute();
 }
 
+bool TreeScope::ContainsMultipleElementsWithId(const AtomicString &id) const
+{
+    return m_elementsById && m_elementsById->ContainsMultiple(id);
+}
+
+const std::vector<Member<Element>>& TreeScope::GetAllElementsById(const AtomicString &id) const
+{
+    if (id.IsEmpty() || !m_elementsById)
+        return TreeOrderedMap::EmptyElementVector();
+    return m_elementsById->GetAllElementsById(id, *this);
+}
+
 Element* TreeScope::getElementById(const AtomicString &elementId) const
 {
     if (elementId.IsEmpty())

@@ -47,6 +47,11 @@
 
 namespace blink {
 
+inline bool KeyMatchesId(const AtomicString &key, const Element &element)
+{
+    return element.GetIdAttribute() == key;
+}
+
 #if DCHECK_IS_ON()
 int TreeOrderedMap::RemoveScope::s_removeScopeLevel = 0;
 #endif
@@ -74,6 +79,18 @@ std::unique_ptr<TreeOrderedMap> TreeOrderedMap::Create(void)
     return base::WrapUnique(new TreeOrderedMap);
 }
 
+bool TreeOrderedMap::ContainsMultiple(const AtomicString &id) const
+{
+    const auto it = m_map.find(id);
+    return std::end(m_map) != it && it->second.count > 1;
+}
+
+const std::vector<Member<Element>>& TreeOrderedMap::EmptyElementVector(void)
+{
+    static std::vector<Member<Element>> emptyVector;
+    return emptyVector;
+}
+
 Element* TreeOrderedMap::Get(const AtomicString &key, const TreeScope &scope, const Matcher &matcher) const
 {
     ASSERT(key);
@@ -99,6 +116,38 @@ Element* TreeOrderedMap::Get(const AtomicString &key, const TreeScope &scope, co
         return &element;
     }
     return nullptr;
+}
+
+const std::vector<Member<Element>>& TreeOrderedMap::GetAllElementsById(const AtomicString &key, const TreeScope &scope) const
+{
+    ASSERT(key);
+
+    auto it = m_map.find(key);
+    if (std::end(m_map) == it)
+        return EmptyElementVector();
+
+    MapEntry &entry = it->second;
+    ASSERT(entry.count > 0);
+
+    if (entry.orderedList.empty())
+    {
+        entry.orderedList.reserve(entry.count);
+
+        for (Element *element = entry.element ? entry.element.Get() : ElementTraversal::FirstWithin(scope.RootNode());
+            entry.orderedList.size() < entry.count;
+            element = ElementTraversal::Next(*element))
+        {
+            ASSERT(nullptr != element);
+            if (!KeyMatchesId(key, *element))
+                continue;
+            entry.orderedList.push_back(element);
+        }
+
+        if (!entry.element)
+            entry.element = entry.orderedList.front();
+    }
+
+    return entry.orderedList;
 }
 
 Element* TreeOrderedMap::GetElementById(const AtomicString &key, const TreeScope &scope) const

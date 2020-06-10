@@ -64,6 +64,11 @@ public:
 
     void Add(const AtomicString &key, Element &element);
     Element* GetElementById(const AtomicString &key, const TreeScope &scope) const;
+    const std::vector<Member<Element>>& GetAllElementsById(const AtomicString &key, const TreeScope &scope) const;
+
+    bool ContainsMultiple(const AtomicString &id) const;
+
+    static const std::vector<Member<Element>>& EmptyElementVector(void);
 
     // While removing a ContainerNode, ID lookups won't be precise should the tree
     // have elements with duplicate IDs contained in the element being removed.
@@ -105,7 +110,7 @@ private:
         unsigned count = 1;
         std::vector<Member<Element>> orderedList;
     };
-    std::unordered_map<AtomicString, MapEntry> m_map;
+    mutable std::unordered_map<AtomicString, MapEntry> m_map;
 };
 
 } // namespace blink
