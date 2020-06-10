@@ -75,6 +75,8 @@ private:
     template <typename SelectorQueryTrait>
     void ExecuteForTraverseRoot(ContainerNode &traverseRoot, ContainerNode &rootNode, typename SelectorQueryTrait::OutputType &output) const;
     template <typename SelectorQueryTrait>
+    void ExecuteWithId(ContainerNode &rootNode, typename SelectorQueryTrait::OutputType &output) const;
+    template <typename SelectorQueryTrait>
     void FindTraverseRootsAndExecute(ContainerNode &rootNode, typename SelectorQueryTrait::OutputType &output) const;
 
     CSSSelectorList m_selectorList;

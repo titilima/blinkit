@@ -215,10 +215,7 @@ void SelectorQuery::Execute(ContainerNode &rootNode, typename SelectorQueryTrait
     // the id fast path when we're in a standards mode document.
     if (m_selectorId && rootNode.IsInTreeScope() && !rootNode.GetDocument().InQuirksMode())
     {
-        ASSERT(false); // BKTODO:
-#if 0
         ExecuteWithId<SelectorQueryTrait>(rootNode, output);
-#endif
         return;
     }
 
@@ -266,6 +263,60 @@ void SelectorQuery::ExecuteForTraverseRoot(ContainerNode &traverseRoot, Containe
                 return;
         }
     }
+}
+
+template <typename SelectorQueryTrait>
+void SelectorQuery::ExecuteWithId(ContainerNode &rootNode, typename SelectorQueryTrait::OutputType &output) const
+{
+    ASSERT(m_selectors.size() == 1);
+    ASSERT(!rootNode.GetDocument().InQuirksMode());
+
+    const CSSSelector &firstSelector = *m_selectors[0];
+    const TreeScope &scope = rootNode.ContainingTreeScope();
+
+    if (scope.ContainsMultipleElementsWithId(m_selectorId))
+    {
+        // We don't currently handle cases where there's multiple elements with the
+        // id and it's not in the rightmost selector.
+        if (!m_selectorIdIsRightmost)
+        {
+            FindTraverseRootsAndExecute<SelectorQueryTrait>(rootNode, output);
+            return;
+        }
+        const auto &elements = scope.GetAllElementsById(m_selectorId);
+        for (const auto &element : elements)
+        {
+            if (!element->IsDescendantOf(&rootNode))
+                continue;
+            if (SelectorMatches(firstSelector, *element, rootNode))
+            {
+                SelectorQueryTrait::AppendElement(output, *element);
+                if (SelectorQueryTrait::kShouldOnlyMatchFirstElement)
+                    return;
+            }
+        }
+        return;
+    }
+
+    Element *element = scope.getElementById(m_selectorId);
+    if (nullptr == element)
+        return;
+    if (m_selectorIdIsRightmost)
+    {
+        if (!element->IsDescendantOf(&rootNode))
+            return;
+        if (SelectorMatches(firstSelector, *element, rootNode))
+            SelectorQueryTrait::AppendElement(output, *element);
+        return;
+    }
+    ContainerNode *start = &rootNode;
+    if (element->IsDescendantOf(&rootNode))
+        start = element;
+    if (m_selectorIdAffectedBySiblingCombinator)
+        start = start->parentNode();
+    if (nullptr == start)
+        return;
+    ExecuteForTraverseRoot<SelectorQueryTrait>(*start, rootNode, output);
 }
 
 inline static bool AncestorHasClassName(ContainerNode &rootNode, const AtomicString &className)
