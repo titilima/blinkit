@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: qualified_name.cc
-// Description: QualifiedName Class
-//      Author: Ziming Li
-//     Created: 2020-04-02
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2005, 2006, 2009 Apple Inc. All rights reserved.
  *
@@ -47,9 +36,6 @@ struct SameSizeAsQualifiedNameImpl
     : public RefCounted<SameSizeAsQualifiedNameImpl> {
   unsigned bitfield;
   void* pointers[4];
-#ifndef NDEBUG
-  std::shared_ptr<std::string> views[4];
-#endif
 };
 
 static_assert(sizeof(QualifiedName::QualifiedNameImpl) ==
