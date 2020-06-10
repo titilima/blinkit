@@ -49,7 +49,7 @@ bool CrawlerImpl::ApplyConsoleMessager(std::function<void(int, const char *)> &d
     return true;
 }
 
-void CrawlerImpl::ApplyProxyToRequest(BkRequest req)
+void CrawlerImpl::ApplyProxyToRequest(RequestImpl *req)
 {
     if (BK_PROXY_RESERVED == m_proxyType)
     {
@@ -146,15 +146,6 @@ void CrawlerImpl::CancelLoading(void)
     m_frame->loader().stopAllLoaders();
 }
 
-std::string CrawlerImpl::GetCookies(const std::string &URL) const
-{
-    std::string ret;
-    m_client.GetCookies(URL.c_str(), BkMakeBuffer(ret).Wrap());
-    if (ret.empty())
-        ret = AppImpl::Get().CookieJar().GetCookies(URL);
-    return ret;
-}
-
 int BKAPI CrawlerImpl::RegisterCrawlerFunction(const char *name, BkCallback &functionImpl)
 {
     return m_frame->script().RegisterFunction(name, functionImpl);
@@ -187,6 +178,15 @@ void CrawlerImpl::SetCookieJar(CookieJarImpl *cookieJar, int mode)
 
     m_cookieJar = cookieJar;
     m_cookieJarMode = mode;
+}
+
+void CrawlerImpl::SetCookies(const std::string &URL, const std::vector<std::string> &cookies)
+{
+    if (nullptr != m_cookieJar)
+    {
+        for (const std::string &cookieHeader : cookies)
+            m_cookieJar->Set(cookieHeader.c_str(), URL.c_str());
+    }
 }
 
 void CrawlerImpl::TransitionToCommittedForNewPage(void)

@@ -62,6 +62,8 @@ void HTTPLoaderTask::DoContinue(void)
 {
     ASSERT(IsMainThread());
 
+    m_crawler->SetCookies(m_response->CurrentURL(), m_response->Cookies());
+
     ResourceResponse response(GURL(m_response->CurrentURL()));
     PopulateResourceResponse(response);
     m_client->DidReceiveResponse(response);
@@ -195,7 +197,7 @@ int HTTPLoaderTask::Run(const ResourceRequest &request)
     req->SetHeaders(request.AllHeaders());
 
     std::string cookies = m_crawler->GetCookies(URL);
-    if (cookies.empty())
+    if (!cookies.empty())
         req->SetHeader("Cookie", cookies.c_str());
 
     BKLOG("// BKTODO: Add body.");

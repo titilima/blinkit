@@ -31,6 +31,7 @@ public:
     bool GetConfig(int cfg, std::string &dst) const;
     void ApplyProxyToRequest(RequestImpl *req);
     std::string GetCookies(const std::string &URL) const;
+    void SetCookies(const std::string &URL, const std::vector<std::string> &cookies);
     void ProcessRequestComplete(BkResponse response, BkWorkController controller);
     bool HijackRequest(const char *URL, std::string &dst) const;
     void HijackResponse(BkResponse response);
