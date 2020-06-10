@@ -22,22 +22,29 @@ CookieJarImpl::CookieJarImpl(void)
 
 CookieJarImpl::~CookieJarImpl(void) = default;
 
+void CookieJarImpl::Clear(void)
+{
+    m_cookies.clear();
+}
+
 std::string CookieJarImpl::Get(const char *URL) const
 {
-    std::string ret;
-
     GURL u(URL);
+    std::unordered_map<std::string, std::string> kv;
     for (const auto &cookie : m_cookies)
     {
-        if (!cookie->IncludeForRequestURL(u, m_options))
-            continue;
-
-        ret.append(cookie->Name());
+        if (cookie->IncludeForRequestURL(u, m_options))
+            kv[cookie->Name()] = cookie->Value();
+    }
+ 
+    std::string ret;
+    for (const auto &it : kv)
+    {
+        ret.append(it.first);
         ret.push_back('=');
-        ret.append(cookie->Value());
+        ret.append(it.second);
         ret.append("; ");
     }
-
     if (!ret.empty())
     {
         size_t s = ret.length();
@@ -51,6 +58,9 @@ bool CookieJarImpl::Set(const char *setCookieHeader, const char *URL)
     CanonicalCookie *c = CanonicalCookie::Create(GURL(URL), setCookieHeader, base::Time::Now(), m_options);
     if (nullptr != c)
     {
+        // BKTODO: Optimize the logic:
+        //   1. Check duplicate entries;
+        //   2. Improve performance.
         m_cookies.push_back(std::unique_ptr<CanonicalCookie>(c));
         return true;
     }
@@ -61,6 +71,11 @@ bool CookieJarImpl::Set(const char *setCookieHeader, const char *URL)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 extern "C" {
+
+BKEXPORT void BKAPI BkClearCookieJar(BkCookieJar cookieJar)
+{
+    cookieJar->Clear();
+}
 
 BKEXPORT BkCookieJar BKAPI BkCreateCookieJar(void)
 {

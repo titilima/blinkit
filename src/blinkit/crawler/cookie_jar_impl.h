@@ -27,6 +27,8 @@ public:
     CookieJarImpl(void);
     ~CookieJarImpl(void);
 
+    void Clear(void);
+
     std::string Get(const char *URL) const;
     bool Set(const char *setCookieHeader, const char *URL);
 private:

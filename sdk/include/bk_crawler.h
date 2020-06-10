@@ -31,6 +31,8 @@ BKEXPORT void BKAPI BkDestroyCookieJar(BkCookieJar cookieJar);
 BKEXPORT void BKAPI BkGetCookie(BkCookieJar cookieJar, const char *URL, struct BkBuffer *dst);
 BKEXPORT bool BKAPI BkSetCookie(BkCookieJar cookieJar, const char *setCookieHeader, const char *URL);
 
+BKEXPORT void BKAPI BkClearCookieJar(BkCookieJar cookieJar);
+
 /**
  * Crawler
  */
