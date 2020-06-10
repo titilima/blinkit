@@ -26,8 +26,7 @@ void HTTPRequestTask::AdjustHeaders(BkHTTPHeaderMap &headers, LoginProxyImpl &lo
 
 std::string HTTPRequestTask::GetURL(void) const
 {
-    ASSERT(false); // BKTODO:
-    return std::string();
+    return RequestURI();
 }
 
 } // namespace BlinKit
