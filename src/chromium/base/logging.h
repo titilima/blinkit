@@ -46,7 +46,7 @@ inline BlinKit::Asserter& operator<<(const BlinKit::Asserter &a, const T &) {
 
 #ifdef NDEBUG
 #   define DCHECK_IS_ON()   0
-#   define BKLOG(...)
+#   define BKLOG(...)       ((void)0)
 #else
 #   define DCHECK_IS_ON()   1
 #   define BKLOG            BlinKit::BkLog
