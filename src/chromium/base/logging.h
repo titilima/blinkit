@@ -23,7 +23,11 @@
 #   ifdef ASSERT
 #       undef ASSERT
 #   endif
-#   define ASSERT(e)    (!(e) ? __debugbreak() : (void)0)
+#   ifdef NDEBUG
+#       define ASSERT(...)  ((void)0)
+#   else
+#       define ASSERT(e)    (!(e) ? __debugbreak() : (void)0)
+#   endif
 #else
 #   define ASSERT   assert
 #endif
