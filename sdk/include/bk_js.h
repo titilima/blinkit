@@ -46,8 +46,12 @@ BKEXPORT int BKAPI BkGetBooleanValue(BkJSValue val, bool_t *dst);
 BKEXPORT int BKAPI BkGetIntegerValue(BkJSValue val, int *dst);
 BKEXPORT int BKAPI BkGetNumberValue(BkJSValue val, double *dst);
 BKEXPORT int BKAPI BkGetValueAsString(BkJSValue val, struct BkBuffer *dst);
+
 BKEXPORT BkJSError BKAPI BkValueToError(BkJSValue val);
+BKEXPORT int BKAPI BkGetErrorCode(BkJSError e);
+
 BKEXPORT BkJSObject BKAPI BkValueToObject(BkJSValue val);
+BKEXPORT int BKAPI BkObjectToJSON(BkJSObject o, struct BkBuffer *dst);
 
 /**
  * ArgList & Writers

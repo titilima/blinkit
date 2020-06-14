@@ -102,6 +102,7 @@ class JSHeapValue : public JSValueImpl
 public:
     ~JSHeapValue(void) override;
 
+    std::string ToJSON(void) const;
     void PushTo(duk_context *ctx) const final { duk_push_heapptr(ctx, m_heapPtr); }
 protected:
     JSHeapValue(duk_context *ctx, duk_idx_t idx);

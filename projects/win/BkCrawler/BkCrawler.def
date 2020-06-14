@@ -47,6 +47,10 @@ BkGetBooleanValue
 BkGetIntegerValue
 BkGetNumberValue
 BkGetValueAsString
+BkValueToError
+BkGetErrorCode
+BkValueToObject
+BkObjectToJSON
 BkGetUserObject
 BkCall
 BkEvaluate

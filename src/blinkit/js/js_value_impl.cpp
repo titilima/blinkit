@@ -228,6 +228,21 @@ std::string JSHeapValue::GetAsString(void) const
     return ret;
 }
 
+std::string JSHeapValue::ToJSON(void) const
+{
+    std::string ret;
+
+    duk_push_heapptr(m_ctx, m_heapPtr);
+    duk_json_encode(m_ctx, -1);
+
+    size_t l = 0;
+    const char *s = duk_get_lstring(m_ctx, -1, &l);
+    ret.assign(s, l);
+
+    duk_pop(m_ctx);
+    return ret;
+}
+
 } // namespace BlinKit
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -237,6 +252,11 @@ extern "C" {
 BKEXPORT int BKAPI BkGetBooleanValue(BkJSValue val, bool_t *dst)
 {
     return val->GetAsBoolean(dst);
+}
+
+BKEXPORT int BKAPI BkGetErrorCode(BkJSError e)
+{
+    return e->GetCode();
 }
 
 BKEXPORT int BKAPI BkGetIntegerValue(BkJSValue val, int *dst)
@@ -259,6 +279,13 @@ BKEXPORT int BKAPI BkGetValueAsString(BkJSValue val, struct BkBuffer *dst)
 BKEXPORT int BKAPI BkGetValueType(BkJSValue val)
 {
     return val->GetType();
+}
+
+BKEXPORT int BKAPI BkObjectToJSON(BkJSObject o, struct BkBuffer *dst)
+{
+    std::string s = o->ToJSON();
+    BkSetBufferData(dst, s.data(), s.length());
+    return BK_ERR_SUCCESS;
 }
 
 BKEXPORT void BKAPI BkReleaseValue(BkJSValue val)
