@@ -15,12 +15,17 @@
 
 #include "bk_def.h"
 
-BK_DECLARE_HANDLE(BkJSValue, JSValueImpl);
-BK_DECLARE_HANDLE(BkJSError, JSErrorImpl);
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/**
+ * Value
+ */
+
+BK_DECLARE_HANDLE(BkJSValue, JSValueImpl);
+BK_DECLARE_HANDLE(BkJSError, JSErrorImpl);
+BK_DECLARE_HANDLE(BkJSObject, JSObjectImpl);
 
 BKEXPORT void BKAPI BkReleaseValue(BkJSValue val);
 
@@ -42,13 +47,26 @@ BKEXPORT int BKAPI BkGetIntegerValue(BkJSValue val, int *dst);
 BKEXPORT int BKAPI BkGetNumberValue(BkJSValue val, double *dst);
 BKEXPORT int BKAPI BkGetValueAsString(BkJSValue val, struct BkBuffer *dst);
 BKEXPORT BkJSError BKAPI BkValueToError(BkJSValue val);
+BKEXPORT BkJSObject BKAPI BkValueToObject(BkJSValue val);
 
-enum BkEvalFlags {
-    BK_EVAL_DEFAULT             =   0,
-    BK_EVAL_IGNORE_RETURN_VALUE = 0x1
-};
+/**
+ * ArgList & Writers
+ */
 
-BKEXPORT BkJSValue BKAPI BkJSEvaluate(BkJSContext context, const char *code, unsigned flags);
+BK_DECLARE_HANDLE(BkJSArrayWriter, JSArrayWriterImpl);
+BK_DECLARE_HANDLE(BkJSObjectWriter, JSObjectWriterImpl);
+
+typedef BkJSArrayWriter BkJSArgList;
+
+/**
+ * Context
+ */
+
+BKEXPORT BkJSValue BKAPI BkGetUserObject(BkJSContext context);
+
+BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, BkJSValue *retVal);
+
+BKEXPORT int BKAPI BkCall(BkJSContext context, BkJSObject scope, const char *func, BkJSArgList argList, BkJSValue *retVal);
 
 enum BkConsoleMessageType {
     BK_CONSOLE_LOG = 0,

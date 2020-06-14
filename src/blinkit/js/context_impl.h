@@ -46,6 +46,7 @@ public:
 
     typedef std::function<void(duk_context *)> Callback;
     bool AccessCrawler(const Callback &worker);
+    int Call(JSObjectImpl *scope, const char *func, JSArrayWriterImpl *argList, JSValueImpl **retVal);
     void Eval(const std::string_view code, const Callback &callback, const char *fileName = "eval");
     void ConsoleOutput(int type, const char *msg) { m_consoleMessager(type, msg); }
 

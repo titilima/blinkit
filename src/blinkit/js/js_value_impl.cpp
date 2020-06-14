@@ -170,6 +170,30 @@ std::string JSSimpleValue::GetAsString(void) const
     return std::string();
 }
 
+void JSSimpleValue::PushTo(duk_context *ctx) const
+{
+    switch (m_type)
+    {
+        case BK_VT_UNDEFINED:
+            duk_push_undefined(ctx);
+            break;
+        case BK_VT_NULL:
+            duk_push_null(ctx);
+            break;
+        case BK_VT_BOOLEAN:
+            duk_push_boolean(ctx, m_booleanVal);
+            break;
+        case BK_VT_NUMBER:
+            if (CanBeTreatedAsInteger())
+                duk_push_int(ctx, static_cast<int>(m_numberVal));
+            else
+                duk_push_number(ctx, m_numberVal);
+            break;
+        default:
+            NOTREACHED();
+    }
+}
+
 JSHeapValue::JSHeapValue(duk_context *ctx, duk_idx_t idx) : m_ctx(ctx), m_heapPtr(duk_get_heapptr(ctx, idx))
 {
     char buf[128];
@@ -245,6 +269,11 @@ BKEXPORT void BKAPI BkReleaseValue(BkJSValue val)
 BKEXPORT BkJSError BKAPI BkValueToError(BkJSValue val)
 {
     return BK_VT_ERROR == val->GetType() ? static_cast<JSErrorImpl *>(val) : nullptr;
+}
+
+BKEXPORT BkJSObject BKAPI BkValueToObject(BkJSValue val)
+{
+    return BK_VT_OBJECT == val->GetType() ? static_cast<JSObjectImpl *>(val) : nullptr;
 }
 
 } // extern "C"

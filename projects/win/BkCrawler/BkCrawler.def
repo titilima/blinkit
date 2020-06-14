@@ -47,4 +47,6 @@ BkGetBooleanValue
 BkGetIntegerValue
 BkGetNumberValue
 BkGetValueAsString
-BkJSEvaluate
+BkGetUserObject
+BkCall
+BkEvaluate

@@ -28,6 +28,7 @@ public:
     virtual int GetAsInteger(int *dst) const { return BK_ERR_TYPE; }
     virtual int GetAsNumber(double *dst) const { return BK_ERR_TYPE; }
     virtual std::string GetAsString(void) const = 0;
+    virtual void PushTo(duk_context *ctx) const = 0;
 protected:
     virtual ~JSValueImpl(void) = default;
 };
@@ -36,11 +37,14 @@ class JSErrorImpl final : public JSValueImpl
 {
 public:
     JSErrorImpl(duk_context *ctx, duk_idx_t idx);
+
+    int GetCode(void) const { return m_code; }
 private:
     static std::string Extract(duk_context *ctx, duk_idx_t idx, const char *field);
 
     int GetType(void) const override { return BK_VT_ERROR; }
     std::string GetAsString(void) const override;
+    void PushTo(duk_context *ctx) const override { NOTREACHED(); }
 
     int m_code;
     std::string m_name, m_message, m_fileName;
@@ -72,6 +76,7 @@ private:
     int GetAsInteger(int *dst) const override;
     int GetAsNumber(double *dst) const override;
     std::string GetAsString(void) const override;
+    void PushTo(duk_context *ctx) const override;
 
     BkValueType m_type;
     union {
@@ -87,6 +92,7 @@ public:
 private:
     int GetType(void) const override { return BK_VT_STRING; }
     std::string GetAsString(void) const override { return m_stringVal; }
+    void PushTo(duk_context *ctx) const override { duk_push_lstring(ctx, m_stringVal.data(), m_stringVal.length()); }
 
     std::string m_stringVal;
 };
@@ -95,6 +101,8 @@ class JSHeapValue : public JSValueImpl
 {
 public:
     ~JSHeapValue(void) override;
+
+    void PushTo(duk_context *ctx) const final { duk_push_heapptr(ctx, m_heapPtr); }
 protected:
     JSHeapValue(duk_context *ctx, duk_idx_t idx);
 

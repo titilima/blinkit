@@ -69,6 +69,55 @@ bool ContextImpl::AccessCrawler(const Callback &worker)
     return ret;
 }
 
+int ContextImpl::Call(JSObjectImpl *scope, const char *func, JSArrayWriterImpl *argList, JSValueImpl **retVal)
+{
+    int err = BK_ERR_SUCCESS;
+    JSValueImpl *ret = nullptr;
+
+    const duk_idx_t top = duk_get_top(m_ctx);
+    if (nullptr == scope)
+    {
+        duk_push_global_object(m_ctx);
+        if (duk_get_prop_string(m_ctx, -1, func))
+        {
+            ASSERT(nullptr == argList); // BKTODO:
+            duk_pcall(m_ctx, 0);
+        }
+        else
+        {
+            err = BK_ERR_NOT_FOUND;
+        }
+    }
+    else
+    {
+        scope->PushTo(m_ctx);
+        if (duk_get_prop_string(m_ctx, -1, func))
+        {
+            scope->PushTo(m_ctx);
+            ASSERT(nullptr == argList); // BKTODO:
+            duk_pcall_method(m_ctx, 0);
+        }
+        else
+        {
+            err = BK_ERR_NOT_FOUND;
+        }
+    }
+    if (BK_ERR_SUCCESS == err)
+    {
+        ret = JSValueImpl::Create(m_ctx, -1);
+        err = ret->GetType() == BK_VT_ERROR
+            ? static_cast<JSErrorImpl *>(ret)->GetCode()
+            : BK_ERR_SUCCESS;
+    }
+    duk_set_top(m_ctx, top);
+
+    if (nullptr != retVal)
+        *retVal = ret;
+    else
+        ret->Release();
+    return err;
+}
+
 void ContextImpl::CreateCrawlerObject(const CrawlerImpl &crawler)
 {
     do {
@@ -262,16 +311,39 @@ void ContextImpl::Reset(void)
 
 extern "C" {
 
-BKEXPORT BkJSValue BKAPI BkJSEvaluate(BkJSContext context, const char *code, unsigned flags)
+BKEXPORT int BKAPI BkCall(BkJSContext context, BkJSObject scope, const char *func, BkJSArgList argList, BkJSValue *retVal)
+{
+    return context->Call(scope, func, argList, retVal);
+}
+
+BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, BkJSValue *retVal)
+{
+    JSValueImpl *ret = nullptr;
+    const auto callback = [&ret](duk_context *ctx)
+    {
+        ret = JSValueImpl::Create(ctx, -1);
+    };
+    context->Eval(code, callback);
+
+    int r = ret->GetType() == BK_VT_ERROR
+        ? static_cast<JSErrorImpl *>(ret)->GetCode()
+        : BK_ERR_SUCCESS;
+    if (nullptr != retVal)
+        *retVal = ret;
+    else
+        ret->Release();
+    return r;
+}
+
+BKEXPORT BkJSValue BKAPI BkGetUserObject(BkJSContext context)
 {
     JSValueImpl *ret = nullptr;
 
-    const auto callback = [flags, &ret](duk_context *ctx)
+    const auto callback = [&ret](duk_context *ctx)
     {
-        if (0 == (BK_EVAL_IGNORE_RETURN_VALUE & flags))
-            ret = JSValueImpl::Create(ctx, -1);
+        ret = JSValueImpl::Create(ctx, -1);
     };
-    context->Eval(code, callback);
+    context->AccessCrawler(callback);
 
     return ret;
 }
