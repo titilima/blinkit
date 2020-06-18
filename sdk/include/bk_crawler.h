@@ -62,14 +62,14 @@ enum BkCookieJarMode {
 struct BkCrawlerClient {
     size_t SizeOfStruct; // sizeof(BkCrawlerClient)
     void *UserData;
-    void (BKAPI * DocumentReady)(void *);
+    void (BKAPI * DocumentReady)(void *); // Required
     bool_t (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
     bool_t (BKAPI * GetCookie)(const char *URL, const char *cookiesFromJar, struct BkBuffer *cookiesToSet, void *);
     bool_t (BKAPI * HijackRequest)(const char *, struct BkBuffer *, void *);
     void (BKAPI * HijackResponse)(BkResponse, void *);
     void (BKAPI * RequestComplete)(BkResponse, BkWorkController, void *);
     void (BKAPI * DocumentReset)(void *);
-    void (BKAPI * Error)(int, const char *, void *);
+    void (BKAPI * Error)(int, const char *, void *); // Required
     void (BKAPI * ConsoleMessage)(int type, const char *, void *);
 };
 
