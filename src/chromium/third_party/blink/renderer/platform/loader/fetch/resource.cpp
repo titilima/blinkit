@@ -294,6 +294,13 @@ bool Resource::IsLoadEventBlockingResourceType(void) const
     return false;
 }
 
+const ResourceRequest& Resource::LastResourceRequest(void) const
+{
+    if (m_redirectChain.empty())
+        return GetResourceRequest();
+    return m_redirectChain.back().m_request;
+}
+
 void Resource::MarkClientFinished(ResourceClient *client)
 {
     auto it = m_clients.find(client);

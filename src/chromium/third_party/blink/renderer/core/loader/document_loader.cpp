@@ -442,7 +442,7 @@ void DocumentLoader::StopLoading(void)
 {
     m_fetcher->StopFetching();
     if (m_frame && !SentDidFinishLoad())
-        ASSERT(false); // BKTODO: LoadFailed(ResourceError::CancelledError(Url()));
+        LoadFailed(ResourceError(BK_ERR_CANCELLED, Url()));
 }
 
 void DocumentLoader::WillCommitNavigation(void)

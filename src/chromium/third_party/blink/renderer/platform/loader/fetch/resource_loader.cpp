@@ -81,7 +81,7 @@ void ResourceLoader::ActivateCacheAwareLoadingIfNeeded(const ResourceRequest & r
 
 void ResourceLoader::Cancel(void)
 {
-    ASSERT(false); // BKTODO:
+    HandleError(ResourceError(BK_ERR_CANCELLED, m_resource->LastResourceRequest().Url()));
 }
 
 FetchContext& ResourceLoader::Context(void) const

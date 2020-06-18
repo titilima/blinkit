@@ -386,11 +386,6 @@ void ResourceFetcher::RemoveResourceLoader(ResourceLoader *loader)
         else
             NOTREACHED();
     }
-
-#if 0 // BKTODO:
-    if (loaders_.IsEmpty() && non_blocking_loaders_.IsEmpty())
-        keepalive_loaders_task_handle_.Cancel();
-#endif
 }
 
 std::shared_ptr<Resource> ResourceFetcher::RequestResource(
@@ -696,40 +691,20 @@ bool ResourceFetcher::StartLoad(std::shared_ptr<Resource> &resource)
 
 void ResourceFetcher::StopFetching(void)
 {
-    StopFetchingInternal(StopFetchingTarget::kExcludingKeepaliveLoaders);
-}
-
-void ResourceFetcher::StopFetchingInternal(StopFetchingTarget target)
-{
-    if (StopFetchingTarget::kIncludingKeepaliveLoaders != target)
-        return;
-
-    // TODO(toyoshim): May want to suspend scheduler while canceling loaders so
-    // that the cancellations below do not awake unnecessary scheduling.
-
-    ASSERT(false); // BKTODO:
-#if 0
     std::vector<ResourceLoader *> loadersToCancel;
     for (const auto &loader : m_nonBlockingLoaders)
-    {
-        ASSERT(false); // BKTODO:
-        if (target == StopFetchingTarget::kIncludingKeepaliveLoaders ||
-            !loader->ShouldBeKeptAliveWhenDetached()) {
-            loaders_to_cancel.push_back(loader);
-        }
-    }
-    for (const auto& loader : loaders_) {
-        if (target == StopFetchingTarget::kIncludingKeepaliveLoaders ||
-            !loader->ShouldBeKeptAliveWhenDetached()) {
-            loaders_to_cancel.push_back(loader);
-        }
-    }
+        loadersToCancel.push_back(loader);
+    for (const auto &loader : m_loaders)
+        loadersToCancel.push_back(loader);
 
-    for (const auto& loader : loaders_to_cancel) {
-        if (loaders_.Contains(loader) || non_blocking_loaders_.Contains(loader))
+    for (const auto &loader : loadersToCancel)
+    {
+        if (std::end(m_loaders) != m_loaders.find(loader)
+            || std::end(m_nonBlockingLoaders) != m_nonBlockingLoaders.find(loader))
+        {
             loader->Cancel();
+        }
     }
-#endif
 }
 
-}  // namespace blink
+} // namespace blink

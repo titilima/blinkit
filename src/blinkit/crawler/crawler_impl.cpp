@@ -67,6 +67,11 @@ void CrawlerImpl::ApplyProxyToRequest(RequestImpl *req)
     req->SetProxy(m_proxyType, m_proxy.c_str());
 }
 
+void CrawlerImpl::CancelLoading(void)
+{
+    m_frame->Loader().StopAllLoaders();
+}
+
 void CrawlerImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 {
     const std::string URL = error.FailingURL();
@@ -134,23 +139,6 @@ void CrawlerImpl::ProcessRequestComplete(BkResponse response, BkWorkController c
     else
         controller->ContinueWorking();
 }
-
-#if 0 // BKTODO:
-int BKAPI CrawlerImpl::AccessCrawlerMember(const char *name, BkCallback &callback)
-{
-    return m_frame->script().AccessCrawlerMember(name, callback);
-}
-
-void CrawlerImpl::CancelLoading(void)
-{
-    m_frame->loader().stopAllLoaders();
-}
-
-int BKAPI CrawlerImpl::RegisterCrawlerFunction(const char *name, BkCallback &functionImpl)
-{
-    return m_frame->script().RegisterFunction(name, functionImpl);
-}
-#endif // 0
 
 int CrawlerImpl::Run(const char *URL)
 {

@@ -123,12 +123,6 @@ private:
     void RemoveResourceLoader(ResourceLoader *loader);
     void HandleLoadCompletion(Resource *resource);
 
-    enum class StopFetchingTarget {
-        kExcludingKeepaliveLoaders,
-        kIncludingKeepaliveLoaders,
-    };
-    void StopFetchingInternal(StopFetchingTarget target);
-
     std::unique_ptr<FetchContext> m_context;
     std::unordered_set<ResourceLoader *> m_loaders;
     std::unordered_set<ResourceLoader *> m_nonBlockingLoaders;

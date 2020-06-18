@@ -109,6 +109,7 @@ public:
 
     const ResourceRequest& GetResourceRequest(void) const { return m_resourceRequest; }
     void SetResourceRequest(const ResourceRequest &resourceRequest) { m_resourceRequest = resourceRequest; }
+    const ResourceRequest& LastResourceRequest(void) const;
     const GURL& Url(void) const { return GetResourceRequest().Url(); }
     
     ResourceLoader* Loader(void) const { return m_loader.get(); }

@@ -50,6 +50,7 @@ private:
     // BkRequestClientImpl
     void RequestComplete(BkResponse response) override;
     void RequestFailed(int errorCode) override;
+    bool_t RequestRedirect(BkResponse response) override;
     // ControllerImpl
     int Release(void) override { return CancelWork(); }
     int ContinueWorking(void) override;

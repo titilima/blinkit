@@ -55,7 +55,7 @@ int HTTPLoaderTask::ContinueWorking(void)
 void HTTPLoaderTask::DoCancel(void)
 {
     ASSERT(IsMainThread());
-    ASSERT(false); // BKTODO:
+    m_crawler->CancelLoading();
 }
 
 void HTTPLoaderTask::DoContinue(void)
@@ -169,6 +169,11 @@ void HTTPLoaderTask::RequestFailed(int errorCode)
     BKLOG("HTTPLoaderTask::RequestFailed: %d.", errorCode);
     LoaderTask::ReportError(m_client, m_taskRunner.get(), errorCode, m_url);
     delete this;
+}
+
+bool_t HTTPLoaderTask::RequestRedirect(BkResponse response)
+{
+    return false;
 }
 
 int HTTPLoaderTask::Run(const ResourceRequest &request)

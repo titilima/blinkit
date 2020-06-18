@@ -45,17 +45,8 @@ public:
     BkJSContext GetScriptContext(void);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#if 0 // BKTODO:
-    std::string GetCookies(const std::string &URL) const;
-
     void CancelLoading(void);
-#endif
 private:
-#if 0 // BKTODO:
-    // BkCrawler
-    int BKAPI RegisterCrawlerFunction(const char *name, BkCallback &functionImpl) override;
-    int BKAPI AccessCrawlerMember(const char *name, BkCallback &callback) override;
-#endif
     // LocalFrameClient
     bool IsCrawler(void) const override { return true; }
     String UserAgent(void) override;
