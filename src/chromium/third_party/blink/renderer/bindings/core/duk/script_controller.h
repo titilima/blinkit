@@ -44,6 +44,7 @@
 
 #pragma once
 
+#include <optional>
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/noncopyable.h"
 
@@ -80,6 +81,7 @@ private:
 
     const Member<LocalFrame> m_frame;
     std::unique_ptr<ContextImpl> m_context;
+    std::optional<bool> m_scriptDisabled;
 };
 
 } // namespace blink
