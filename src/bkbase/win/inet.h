@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BlinKit Library
+// BlinKit - BkBase Library
 // -------------------------------------------------
 //   File Name: inet.h
 // Description: WinInet Wrappers
@@ -9,11 +9,12 @@
 // Copyright (C) 2018 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINKIT_INET_H
-#define BLINKIT_BLINKIT_INET_H
+#ifndef BLINKIT_BKBASE_INET_H
+#define BLINKIT_BKBASE_INET_H
 
 #pragma once
 
+#include <Windows.h>
 #include <WinInet.h>
 
 namespace BlinKit {
@@ -80,4 +81,4 @@ private:
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BLINKIT_INET_H
+#endif // BLINKIT_BKBASE_INET_H

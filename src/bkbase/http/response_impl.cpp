@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BlinKit Library
+// BlinKit - BkBase Library
 // -------------------------------------------------
 //   File Name: response_impl.cpp
 // Description: ResponseImpl Class
@@ -16,21 +16,6 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "url/gurl.h"
-
-template <class T>
-static void SetBufferData(BkBuffer *dst, const T &data)
-{
-    ASSERT(nullptr != dst->Allocator);
-    if (!data.empty())
-    {
-        void *buf = dst->Allocator(data.size(), dst->UserData);
-        memcpy(buf, data.data(), data.size());
-    }
-}
-
-static void SetBufferString(BkBuffer *dst, const std::string &s)
-{
-}
 
 ResponseImpl::ResponseImpl(const std::string &URL) : m_originURL(URL), m_URL(URL)
 {
@@ -57,7 +42,8 @@ int ResponseImpl::GetCookie(size_t index, BkBuffer *dst) const
         return BK_ERR_NOT_FOUND;
     }
 
-    SetBufferData(dst, m_cookies.at(index));
+    const std::string &cookie = m_cookies.at(index);
+    BkSetBufferData(dst, cookie.data(), cookie.length());
     return BK_ERR_SUCCESS;
 }
 
@@ -66,13 +52,13 @@ int ResponseImpl::GetData(int data, BkBuffer *dst) const
     switch (data)
     {
         case BK_RE_CURRENT_URL:
-            SetBufferData(dst, m_URL);
+            BkSetBufferData(dst, m_URL.data(), m_URL.length());
             break;
         case BK_RE_ORIGINAL_URL:
-            SetBufferData(dst, m_originURL);
+            BkSetBufferData(dst, m_originURL.data(), m_originURL.length());
             break;
         case BK_RE_BODY:
-            SetBufferData(dst, m_body);
+            BkSetBufferData(dst, m_body.data(), m_body.size());
             break;
         default:
             NOTREACHED();
@@ -86,7 +72,8 @@ int ResponseImpl::GetHeader(const char *name, BkBuffer *dst) const
     std::string ret = m_headers.Get(name);
     if (ret.empty())
         return BK_ERR_NOT_FOUND;
-    SetBufferData(dst, ret);
+
+    BkSetBufferData(dst, ret.data(), ret.length());
     return BK_ERR_SUCCESS;
 }
 
@@ -206,3 +193,34 @@ void ResponseImpl::SetBody(const void *data, size_t length)
     if (length > 0)
         memcpy(m_body.data(), data, length);
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+extern "C" {
+
+BKEXPORT int BKAPI BkGetResponseCookie(BkResponse response, size_t index, BkBuffer *dst)
+{
+    return response->GetCookie(index, dst);
+}
+
+BKEXPORT size_t BKAPI BkGetResponseCookiesCount(BkResponse response)
+{
+    return response->CookiesCount();
+}
+
+BKEXPORT int BKAPI BkGetResponseData(BkResponse response, int data, BkBuffer *dst)
+{
+    return response->GetData(data, dst);
+}
+
+BKEXPORT int BKAPI BkGetResponseHeader(BkResponse response, const char *name, BkBuffer *dst)
+{
+    return response->GetHeader(name, dst);
+}
+
+BKEXPORT int BKAPI BkGetResponseStatusCode(BkResponse response)
+{
+    return response->StatusCode();
+}
+
+} // extern "C"

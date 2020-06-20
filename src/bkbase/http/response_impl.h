@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BlinKit Library
+// BlinKit - BkBase Library
 // -------------------------------------------------
 //   File Name: response_impl.h
 // Description: ResponseImpl Class
@@ -9,14 +9,14 @@
 // Copyright (C) 2018 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINKIT_RESPONSE_IMPL_H
-#define BLINKIT_BLINKIT_RESPONSE_IMPL_H
+#ifndef BLINKIT_BKBASE_RESPONSE_IMPL_H
+#define BLINKIT_BKBASE_RESPONSE_IMPL_H
 
 #pragma once
 
 #include <atomic>
 #include "bk_http.h"
-#include "blinkit/common/bk_http_header_map.h"
+#include "bkcommon/bk_http_header_map.h"
 
 class ResponseImpl final : public std::enable_shared_from_this<ResponseImpl>
 {
@@ -69,4 +69,4 @@ private:
     std::vector<unsigned char> m_body;
 };
 
-#endif // BLINKIT_BLINKIT_RESPONSE_IMPL_H
+#endif // BLINKIT_BKBASE_RESPONSE_IMPL_H

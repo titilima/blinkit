@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BlinKit Library
+// BlinKit - BkBase Library
 // -------------------------------------------------
 //   File Name: inet.cpp
 // Description: WinInet Wrappers

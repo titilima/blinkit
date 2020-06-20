@@ -1,26 +1,26 @@
 // -------------------------------------------------
-// BlinKit - BlinKit Library
+// BlinKit - BkBase Library
 // -------------------------------------------------
-//   File Name: app_constants.h
-// Description: Application Constants
+//   File Name: http_constants.h
+// Description: HTTP Constants
 //      Author: Ziming Li
-//     Created: 2019-03-13
+//     Created: 2020-06-20
 // -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
+// Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINKIT_APP_CONSTANTS_H
-#define BLINKIT_BLINKIT_APP_CONSTANTS_H
+#ifndef BLINKIT_BKBASE_HTTP_CONSTANTS_H
+#define BLINKIT_BKBASE_HTTP_CONSTANTS_H
 
 #pragma once
 
 namespace BlinKit {
-namespace AppConstants {
+namespace HttpConstants {
 
 extern const char DefaultUserAgent[];
 extern const unsigned long DefaultTimeoutInMs;
 
-} // namespace AppConstants
+} // namespace HttpConstants
 } // namespace BlinKit
 
-#endif // BLINKIT_BLINKIT_APP_CONSTANTS_H
+#endif // BLINKIT_BKBASE_HTTP_CONSTANTS_H

@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BlinKit Library
+// BlinKit - BkBase Library
 // -------------------------------------------------
 //   File Name: buffer.cpp
 // Description: Buffer Related Implementations
@@ -8,6 +8,8 @@
 // -------------------------------------------------
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
+
+#include "bk_def.h"
 
 static void* BKAPI Alloc(size_t cb, void *userData)
 {
@@ -45,7 +47,7 @@ BkBuffer* BKAPI BkInitializeSimpleBuffer(BkSimpleBuffer *buffer)
 
 void BKAPI BkSetBufferData(BkBuffer *buffer, const void *data, size_t size)
 {
-    assert(nullptr != buffer->Allocator);
+    ASSERT(nullptr != buffer->Allocator);
     if (size > 0)
     {
         void *dst = buffer->Allocator(size, buffer->UserData);

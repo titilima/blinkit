@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BlinKit Library
+// BlinKit - BkBase Library
 // -------------------------------------------------
 //   File Name: win_request.cpp
 // Description: WinRequest Class
@@ -12,8 +12,8 @@
 #include "win_request.h"
 
 #include "base/strings/string_util.h"
-#include "blinkit/app/app_constants.h"
-#include "blinkit/http/response_impl.h"
+#include "bkbase/http/http_constants.h"
+#include "bkbase/http/response_impl.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
@@ -21,7 +21,7 @@ namespace BlinKit {
 
 WinRequest::WinRequest(const char *URL, const BkRequestClient &client)
     : RequestImpl(URL, client)
-    , m_userAgent(AppConstants::DefaultUserAgent)
+    , m_userAgent(HttpConstants::DefaultUserAgent)
     , m_session(this)
 {
     // Nothing

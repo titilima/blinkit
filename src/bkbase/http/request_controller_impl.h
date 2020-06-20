@@ -14,8 +14,8 @@
 
 #pragma once
 
-#include "http/request_impl.h"
-#include "misc/controller_impl.h"
+#include "bkbase/http/request_impl.h"
+#include "bkcommon/controller_impl.h"
 
 namespace BlinKit {
 

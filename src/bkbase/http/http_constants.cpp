@@ -1,18 +1,18 @@
 // -------------------------------------------------
 // BlinKit - BlinKit Library
 // -------------------------------------------------
-//   File Name: app_constants.cpp
-// Description: Application Constants
+//   File Name: http_constants.cpp
+// Description: HTTP Constants
 //      Author: Ziming Li
-//     Created: 2019-03-13
+//     Created: 2020-06-20
 // -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
+// Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "app_constants.h"
+#include "http_constants.h"
 
 namespace BlinKit {
-namespace AppConstants {
+namespace HttpConstants {
 
 const char DefaultUserAgent[] =
     "Mozilla/5.0 ("
@@ -29,5 +29,5 @@ const char DefaultUserAgent[] =
 
 const unsigned long DefaultTimeoutInMs = 30000;
 
-} // namespace AppConstants
+} // namespace HttpConstants
 } // namespace BlinKit
