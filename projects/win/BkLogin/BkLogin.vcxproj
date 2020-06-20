@@ -23,7 +23,7 @@
     <ProjectGuid>{86137426-7833-4BD6-B665-E062D0859A76}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>BkLogin</RootNamespace>
-    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
