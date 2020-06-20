@@ -28,9 +28,9 @@
 using namespace blink;
 using namespace BlinKit;
 
-static const char CrawlerObject[] = "crawlerObject";
 static const char Globals[] = "globals";
 static const char NativeContext[] = "nativeContext";
+static const char UserObject[] = "userObject";
 
 static void DefaultConsoleOutput(int type, const char *msg)
 {
@@ -54,13 +54,13 @@ ContextImpl::~ContextImpl(void)
     duk_destroy_heap(m_ctx);
 }
 
-bool ContextImpl::AccessCrawler(const Callback &worker)
+bool ContextImpl::AccessUserObject(const Callback &worker)
 {
     const duk_idx_t top = duk_get_top(m_ctx);
 
     bool ret = true;
-    duk_push_heap_stash(m_ctx);
-    if (duk_get_prop_string(m_ctx, -1, CrawlerObject))
+    duk_push_global_stash(m_ctx);
+    if (duk_get_prop_string(m_ctx, -1, UserObject))
         worker(m_ctx);
     else
         ret = false;
@@ -69,38 +69,22 @@ bool ContextImpl::AccessCrawler(const Callback &worker)
     return ret;
 }
 
-int ContextImpl::Call(JSObjectImpl *scope, const char *func, JSArrayWriterImpl *argList, JSValueImpl **retVal)
+int ContextImpl::Call(int callContext, const char *func, JSArrayWriterImpl *argList, JSValueImpl **retVal)
 {
     int err = BK_ERR_SUCCESS;
     JSValueImpl *ret = nullptr;
 
     const duk_idx_t top = duk_get_top(m_ctx);
-    if (nullptr == scope)
+    switch (callContext)
     {
-        duk_push_global_object(m_ctx);
-        if (duk_get_prop_string(m_ctx, -1, func))
-        {
-            ASSERT(nullptr == argList); // BKTODO:
-            duk_pcall(m_ctx, 0);
-        }
-        else
-        {
+        case BK_CTX_GLOBAL:
+            err = CallGlobalFunction(m_ctx, func, argList);
+            break;
+        case BK_CTX_USER_OBJECT:
+            err = CallUserObjectMember(m_ctx, func, argList);
+            break;
+        default:
             err = BK_ERR_NOT_FOUND;
-        }
-    }
-    else
-    {
-        scope->PushTo(m_ctx);
-        if (duk_get_prop_string(m_ctx, -1, func))
-        {
-            scope->PushTo(m_ctx);
-            ASSERT(nullptr == argList); // BKTODO:
-            duk_pcall_method(m_ctx, 0);
-        }
-        else
-        {
-            err = BK_ERR_NOT_FOUND;
-        }
     }
     if (BK_ERR_SUCCESS == err)
     {
@@ -118,46 +102,77 @@ int ContextImpl::Call(JSObjectImpl *scope, const char *func, JSArrayWriterImpl *
     return err;
 }
 
-void ContextImpl::CreateCrawlerObject(const CrawlerImpl &crawler)
+int ContextImpl::CallGlobalFunction(duk_context *ctx, const char *func, JSArrayWriterImpl *argList)
 {
-    do {
+    duk_push_global_object(ctx);
+    if (!duk_get_prop_string(ctx, -1, func))
+        return BK_ERR_NOT_FOUND;
+    if (!duk_is_callable(ctx, -1))
+        return BK_ERR_TYPE;
+
+    ASSERT(nullptr == argList); // BKTODO:
+    duk_pcall(ctx, 0);
+    return BK_ERR_SUCCESS;
+}
+
+int ContextImpl::CallUserObjectMember(duk_context *ctx, const char *func, JSArrayWriterImpl *argList)
+{
+    duk_push_global_stash(ctx);
+    if (!duk_get_prop_string(ctx, -1, UserObject))
+        return BK_ERR_NOT_FOUND;
+
+    void *heapPtr = duk_get_heapptr(ctx, -1);
+
+    if (!duk_get_prop_string(ctx, -1, func))
+        return BK_ERR_NOT_FOUND;
+    if (!duk_is_callable(ctx, -1))
+        return BK_ERR_TYPE;
+
+    duk_push_heapptr(ctx, heapPtr);
+
+    ASSERT(nullptr == argList); // BKTODO:
+    duk_pcall_method(ctx, 0);
+    return BK_ERR_SUCCESS;
+}
+
+void ContextImpl::CreateUserObject(const CrawlerImpl &crawler)
+{
+    if (!m_objectScript.has_value())
+    {
         std::string objectScript;
         if (crawler.GetConfig(BK_CFG_OBJECT_SCRIPT, objectScript))
             base::TrimWhitespaceASCII(objectScript, base::TRIM_ALL, &objectScript);
-        if (objectScript.empty())
-        {
-            BKLOG("Default crawler object created.");
-            break;
-        }
+        m_objectScript = objectScript;
+    }
 
-        std::string errorLog;
-        const auto callback = [&errorLog](duk_context *ctx)
+    if (m_objectScript->empty())
+        return;
+
+    std::string errorLog;
+    const auto callback = [&errorLog](duk_context *ctx)
+    {
+        if (!duk_is_error(ctx, -1))
         {
-            if (!duk_is_error(ctx, -1))
+            if (duk_is_object(ctx, -1))
             {
-                if (duk_is_object(ctx, -1))
-                {
-                    duk_put_prop_string(ctx, -2, CrawlerObject);
-                    return;
-                }
-
-                duk_type_error(ctx, "Object type expected.");
+                void *heapPtr = duk_get_heapptr(ctx, -1);
+                duk_push_global_stash(ctx);
+                duk_push_heapptr(ctx, heapPtr);
+                duk_put_prop_string(ctx, -2, UserObject);
+                return;
             }
 
-            size_t len = 0;
-            const char *s = duk_safe_to_lstring(ctx, -1, &len);
-            errorLog.assign(s, len);
-        };
-        Eval(objectScript, callback, nullptr);
+            duk_type_error(ctx, "Object type expected.");
+        }
 
-        if (errorLog.empty())
-            return;
+        size_t len = 0;
+        const char *s = duk_safe_to_lstring(ctx, -1, &len);
+        errorLog.assign(s, len);
+    };
+    Eval(*m_objectScript, callback, "UserScript");
 
+    if (!errorLog.empty())
         m_consoleMessager(BK_CONSOLE_ERROR, errorLog.c_str());
-    } while (false);
-
-    duk_push_object(m_ctx);
-    duk_put_prop_string(m_ctx, -2, CrawlerObject);
 }
 
 void ContextImpl::Eval(const std::string_view code, const Callback &callback, const char *fileName)
@@ -246,7 +261,6 @@ void ContextImpl::InitializeHeapStash(void)
 
     CrawlerImpl *crawler = ToCrawlerImpl(m_frame.Client());
     crawler->ApplyConsoleMessager(m_consoleMessager);
-    CreateCrawlerObject(*crawler);
 #else
     if (frame.Client()->IsCrawler())
     {
@@ -254,7 +268,6 @@ void ContextImpl::InitializeHeapStash(void)
 
         CrawlerImpl *crawler = ToCrawlerImpl(m_frame.Client());
         crawler->ApplyLogger(m_logger);
-        CreateCrawlerObject(*crawler);
     }
     else
     {
@@ -304,16 +317,24 @@ void ContextImpl::Reset(void)
         return;
 #endif
 
-    ToCrawlerImpl(m_frame.Client())->ProcessDocumentReset();
+    CrawlerImpl *crawler = ToCrawlerImpl(m_frame.Client());
+
+    /**
+     * User object SHOULD BE created after new global object set.
+     * Otherwise, all the contexts of user object member functions won't be in correct status.
+     */
+    CreateUserObject(*crawler);
+
+    crawler->ProcessDocumentReset();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 extern "C" {
 
-BKEXPORT int BKAPI BkCall(BkJSContext context, BkJSObject scope, const char *func, BkJSArgList argList, BkJSValue *retVal)
+BKEXPORT int BKAPI BkCall(BkJSContext context, int callContext, const char *func, BkJSArgList argList, BkJSValue *retVal)
 {
-    return context->Call(scope, func, argList, retVal);
+    return context->Call(callContext, func, argList, retVal);
 }
 
 BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, BkJSValue *retVal)
@@ -343,7 +364,7 @@ BKEXPORT BkJSValue BKAPI BkGetUserObject(BkJSContext context)
     {
         ret = JSValueImpl::Create(ctx, -1);
     };
-    context->AccessCrawler(callback);
+    context->AccessUserObject(callback);
 
     return ret;
 }

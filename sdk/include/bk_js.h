@@ -70,7 +70,12 @@ BKEXPORT BkJSValue BKAPI BkGetUserObject(BkJSContext context);
 
 BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, BkJSValue *retVal);
 
-BKEXPORT int BKAPI BkCall(BkJSContext context, BkJSObject scope, const char *func, BkJSArgList argList, BkJSValue *retVal);
+enum BkCallContext {
+    BK_CTX_GLOBAL = 0,
+    BK_CTX_USER_OBJECT
+};
+
+BKEXPORT int BKAPI BkCall(BkJSContext context, int callContext, const char *func, BkJSArgList argList, BkJSValue *retVal);
 
 enum BkConsoleMessageType {
     BK_CONSOLE_LOG = 0,

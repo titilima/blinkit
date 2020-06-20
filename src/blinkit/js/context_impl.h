@@ -15,6 +15,7 @@
 #pragma once
 
 #include <functional>
+#include <optional>
 #include <string_view>
 #include <unordered_map>
 #include "bk_js.h"
@@ -45,8 +46,8 @@ public:
     const char* LookupPrototypeName(const std::string &tagName) const;
 
     typedef std::function<void(duk_context *)> Callback;
-    bool AccessCrawler(const Callback &worker);
-    int Call(JSObjectImpl *scope, const char *func, JSArrayWriterImpl *argList, JSValueImpl **retVal);
+    bool AccessUserObject(const Callback &worker);
+    int Call(int callContext, const char *func, JSArrayWriterImpl *argList, JSValueImpl **retVal);
     void Eval(const std::string_view code, const Callback &callback, const char *fileName = "eval");
     void ConsoleOutput(int type, const char *msg) { m_consoleMessager(type, msg); }
 
@@ -55,13 +56,17 @@ public:
 private:
     void InitializeHeapStash(void);
     static void RegisterPrototypesForCrawler(duk_context *ctx);
-    void CreateCrawlerObject(const CrawlerImpl &crawler);
+    void CreateUserObject(const CrawlerImpl &crawler);
     static void ExposeGlobals(duk_context *ctx, duk_idx_t dst);
+
+    static int CallGlobalFunction(duk_context *ctx, const char *func, JSArrayWriterImpl *argList);
+    static int CallUserObjectMember(duk_context *ctx, const char *func, JSArrayWriterImpl *argList);
 
     const blink::LocalFrame &m_frame;
     duk_context *m_ctx;
     std::function<void(int, const char *)> m_consoleMessager;
     const std::unordered_map<std::string, const char *> &m_prototypeMap;
+    std::optional<std::string> m_objectScript;
 };
 
 #endif // BLINKIT_BLINKIT_CONTEXT_IMPL_H
