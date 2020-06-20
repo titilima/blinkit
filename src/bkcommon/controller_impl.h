@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BlinKit Library
+// BlinKit - BkCommon Library
 // -------------------------------------------------
 //   File Name: controller_impl.h
 // Description: ControllerImpl Class
@@ -9,8 +9,8 @@
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINKIT_CONTROLLER_IMPL_H
-#define BLINKIT_BLINKIT_CONTROLLER_IMPL_H
+#ifndef BLINKIT_BKCOMMON_CONTROLLER_IMPL_H
+#define BLINKIT_BKCOMMON_CONTROLLER_IMPL_H
 
 #pragma once
 
@@ -22,4 +22,4 @@ public:
     virtual int CancelWork(void) = 0;
 };
 
-#endif // BLINKIT_BLINKIT_CONTROLLER_IMPL_H
+#endif // BLINKIT_BKCOMMON_CONTROLLER_IMPL_H
