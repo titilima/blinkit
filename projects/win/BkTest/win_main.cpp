@@ -68,7 +68,7 @@ private:
     void DocumentReady(void) override
     {
         BkJSContext ctx = BkGetScriptContextFromCrawler(m_crawler);
-        BkJSEvaluate(ctx, ReadyCode, BK_EVAL_IGNORE_RETURN_VALUE);
+        BkEvaluate(ctx, ReadyCode, nullptr);
 
         BkExitApp(EXIT_SUCCESS);
     }
