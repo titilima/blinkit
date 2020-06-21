@@ -26,14 +26,11 @@ public:
     void SetContentType(const char *contentType) { m_contentType = contentType; }
 private:
     int GetHeader(const char *name, BkBuffer *dst) const override;
+    int EnumerateHeaders(BkHttpHeaderEnumerator enumerator, void *userData) const override;
     size_t CookiesCount(void) const override { return 0; }
     int GetCookie(size_t index, BkBuffer *dst) const override;
 
     std::string m_contentType;
-};
-
-class HijackResponse final : ResponseImpl
-{
 };
 
 } // namespace BlinKit

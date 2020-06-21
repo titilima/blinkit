@@ -28,6 +28,7 @@ public:
     virtual int GetData(int data, BkBuffer *dst) const = 0;
 
     virtual int GetHeader(const char *name, BkBuffer *dst) const = 0;
+    virtual int EnumerateHeaders(BkHttpHeaderEnumerator enumerator, void *userData) const = 0;
 
     virtual size_t CookiesCount(void) const = 0;
     virtual int GetCookie(size_t index, BkBuffer *dst) const = 0;

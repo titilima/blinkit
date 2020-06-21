@@ -31,6 +31,20 @@ void HttpResponse::AppendData(const void *data, size_t cb)
     memcpy(m_body.data() + n, data, cb);
 }
 
+int HttpResponse::EnumerateHeaders(BkHttpHeaderEnumerator enumerator, void *userData) const
+{
+    const auto &rawHeaders = m_headers.GetRawMap();
+    if (rawHeaders.empty())
+        return BK_ERR_NOT_FOUND;
+
+    for (const auto &it : rawHeaders)
+    {
+        if (!enumerator(it.first.c_str(), it.second.c_str(), userData))
+            return BK_ERR_CANCELLED;
+    }
+    return BK_ERR_SUCCESS;
+}
+
 int HttpResponse::GetCookie(size_t index, BkBuffer *dst) const
 {
     if (m_cookies.size() <= index)
@@ -179,6 +193,11 @@ std::string HttpResponse::ResolveRedirection(void)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 extern "C" {
+
+BKEXPORT int BKAPI BkEnumerateResponseHeaders(BkResponse response, BkHttpHeaderEnumerator enumerator, void *userData)
+{
+    return response->EnumerateHeaders(enumerator, userData);
+}
 
 BKEXPORT int BKAPI BkGetResponseCookie(BkResponse response, size_t index, BkBuffer *dst)
 {

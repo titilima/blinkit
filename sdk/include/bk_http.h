@@ -57,6 +57,9 @@ BKEXPORT int BKAPI BkGetResponseData(BkResponse response, int data, struct BkBuf
 
 BKEXPORT int BKAPI BkGetResponseHeader(BkResponse response, const char *name, struct BkBuffer *dst);
 
+typedef bool_t (BKAPI * BkHttpHeaderEnumerator)(const char *, const char *, void *);
+BKEXPORT int BKAPI BkEnumerateResponseHeaders(BkResponse response, BkHttpHeaderEnumerator enumerator, void *userData);
+
 BKEXPORT size_t BKAPI BkGetResponseCookiesCount(BkResponse response);
 BKEXPORT int BKAPI BkGetResponseCookie(BkResponse response, size_t index, struct BkBuffer *dst);
 

@@ -42,6 +42,7 @@ public:
     int GetHeader(const char *name, BkBuffer *dst) const override;
 private:
     int GetData(int data, BkBuffer *dst) const override;
+    int EnumerateHeaders(BkHttpHeaderEnumerator enumerator, void *userData) const override;
     size_t CookiesCount(void) const override { return m_cookies.size(); }
     int GetCookie(size_t index, BkBuffer *dst) const override;
 
