@@ -35,11 +35,4 @@ int FakeResponse::GetHeader(const char *name, BkBuffer *dst) const
     return BK_ERR_SUCCESS;
 }
 
-void FakeResponse::Hijack(const char *body, size_t length)
-{
-    m_body.resize(length);
-    if (length > 0)
-        memcpy(m_body.data(), body, length);
-}
-
 } // namespace BlinKit

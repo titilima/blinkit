@@ -31,6 +31,8 @@ public:
 
     virtual size_t CookiesCount(void) const = 0;
     virtual int GetCookie(size_t index, BkBuffer *dst) const = 0;
+
+    virtual void HijackBody(const void *newBody, size_t length) = 0;
 };
 
 namespace BlinKit {
@@ -42,6 +44,7 @@ public:
 
     void Release(void) override final;
     int StatusCode(void) const override final { return m_statusCode; }
+    void HijackBody(const void *newBody, size_t length) override final;
 protected:
     ResponseBase(const std::string &URL);
 

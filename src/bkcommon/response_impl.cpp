@@ -37,6 +37,13 @@ int ResponseBase::GetData(int data, BkBuffer *dst) const
     return BK_ERR_SUCCESS;
 }
 
+void ResponseBase::HijackBody(const void *newBody, size_t length)
+{
+    m_body.resize(length);
+    if (length > 0)
+        memcpy(m_body.data(), newBody, length);
+}
+
 void ResponseBase::Release(void)
 {
     if (0 == --m_refCount)

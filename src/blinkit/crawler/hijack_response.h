@@ -24,7 +24,6 @@ public:
     FakeResponse(const std::string &URL);
 
     void SetContentType(const char *contentType) { m_contentType = contentType; }
-    void Hijack(const char *body, size_t length);
 private:
     int GetHeader(const char *name, BkBuffer *dst) const override;
     size_t CookiesCount(void) const override { return 0; }
