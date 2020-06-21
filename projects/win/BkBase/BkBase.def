@@ -16,6 +16,7 @@ BkSetRequestMethod
 BkSetRequestHeader
 BkSetRequestBody
 BkSetRequestTimeout
+BkSetRequestProxy
 
 BkGetResponseStatusCode
 BkGetResponseData

@@ -8,33 +8,13 @@ BkRunApp
 BkExitApp
 BkAppExecute
 
-BkSetBufferData
-BkInitializeSimpleBuffer
-BkFinalizeSimpleBuffer
-
-BkControllerContinueWorking
-BkControllerCancelWork
-BkReleaseController
-
-BkCreateRequest
-BkPerformRequest
-BkSetRequestMethod
-BkSetRequestHeader
-BkSetRequestBody
-BkSetRequestTimeout
-
-BkGetResponseStatusCode
-BkGetResponseData
-BkGetResponseHeader
-BkGetResponseCookiesCount
-BkGetResponseCookie
-BkHijackResponse
-
 BkCreateCrawler
 BkDestroyCrawler
 BkSetCookieJar
 BkRunCrawler
 BkGetScriptContextFromCrawler
+
+BkHijackResponse
 
 BkCreateCookieJar
 BkDestroyCookieJar
