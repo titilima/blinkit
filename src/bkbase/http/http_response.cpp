@@ -1,15 +1,15 @@
 // -------------------------------------------------
 // BlinKit - BkBase Library
 // -------------------------------------------------
-//   File Name: response_impl.cpp
-// Description: ResponseImpl Class
+//   File Name: http_response.cpp
+// Description: HttpResponse Class
 //      Author: Ziming Li
 //     Created: 2018-09-29
 // -------------------------------------------------
 // Copyright (C) 2018 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "response_impl.h"
+#include "http_response.h"
 
 #include <regex>
 #include <zlib.h>
@@ -17,24 +17,21 @@
 #include "base/strings/string_util.h"
 #include "url/gurl.h"
 
-ResponseImpl::ResponseImpl(const std::string &URL) : m_originURL(URL), m_URL(URL)
+namespace BlinKit {
+
+HttpResponse::HttpResponse(const std::string &URL) : ResponseBase(URL), m_currentURL(URL)
 {
     // Nothing
 }
 
-void ResponseImpl::AppendData(const void *data, size_t cb)
+void HttpResponse::AppendData(const void *data, size_t cb)
 {
     size_t n = m_body.size();
     m_body.resize(n + cb);
     memcpy(m_body.data() + n, data, cb);
 }
 
-void ResponseImpl::AppendHeader(const char *name, const char *val)
-{
-    m_headers.Set(name, val);
-}
-
-int ResponseImpl::GetCookie(size_t index, BkBuffer *dst) const
+int HttpResponse::GetCookie(size_t index, BkBuffer *dst) const
 {
     if (m_cookies.size() <= index)
     {
@@ -47,37 +44,31 @@ int ResponseImpl::GetCookie(size_t index, BkBuffer *dst) const
     return BK_ERR_SUCCESS;
 }
 
-int ResponseImpl::GetData(int data, BkBuffer *dst) const
+int HttpResponse::GetData(int data, BkBuffer *dst) const
 {
     switch (data)
     {
-        case BK_RE_CURRENT_URL:
-            BkSetBufferData(dst, m_URL.data(), m_URL.length());
-            break;
-        case BK_RE_ORIGINAL_URL:
-            BkSetBufferData(dst, m_originURL.data(), m_originURL.length());
-            break;
-        case BK_RE_BODY:
-            BkSetBufferData(dst, m_body.data(), m_body.size());
+        case BK_RESPONSE_CURRENT_URL:
+            BkSetBufferData(dst, m_currentURL.data(), m_currentURL.length());
             break;
         default:
-            NOTREACHED();
-            return BK_ERR_NOT_FOUND;
+            return ResponseBase::GetData(data, dst);
     }
     return BK_ERR_SUCCESS;
 }
 
-int ResponseImpl::GetHeader(const char *name, BkBuffer *dst) const
+int HttpResponse::GetHeader(const char *name, BkBuffer *dst) const
 {
-    std::string ret = m_headers.Get(name);
-    if (ret.empty())
+    std::string s(name);
+    if (!m_headers.Has(s))
         return BK_ERR_NOT_FOUND;
 
+    std::string ret = m_headers.Get(name);
     BkSetBufferData(dst, ret.data(), ret.length());
     return BK_ERR_SUCCESS;
 }
 
-void ResponseImpl::GZipInflate(void)
+void HttpResponse::GZipInflate(void)
 {
     const size_t BufSize = 4096;
     char buf[BufSize];
@@ -113,16 +104,7 @@ void ResponseImpl::GZipInflate(void)
     m_body.assign(uncompressedData.begin(), uncompressedData.end());
 }
 
-void ResponseImpl::Hijack(const void *newBody, size_t length)
-{
-    m_body.resize(length);
-    if (nullptr != newBody)
-        memcpy(m_body.data(), newBody, length);
-    else
-        ASSERT(0 == length);
-}
-
-void ResponseImpl::ParseHeaders(const std::string &rawHeaders)
+void HttpResponse::ParseHeaders(const std::string &rawHeaders)
 {
     std::regex pattern(R"(HTTP\/([\d+\.]+)\s+(\d+)\s+(.*))");
     std::smatch match;
@@ -164,35 +146,35 @@ void ResponseImpl::ParseHeaders(const std::string &rawHeaders)
     }
 }
 
-void ResponseImpl::ResetForRedirection(void)
+void HttpResponse::ResetForRedirection(void)
 {
     m_errorCode = BK_ERR_SUCCESS;
     m_statusCode = 0;
+    m_httpVersion.clear();
+    m_reason.clear();
     m_headers.Clear();
     m_cookies.clear();
     m_body.clear();
 }
 
-std::string ResponseImpl::ResolveRedirection(void)
+std::string HttpResponse::ResolveRedirection(void)
 {
     std::string ret;
 
     std::string location = m_headers.Get("Location");
-    ASSERT(!location.empty());
     if (!location.empty())
     {
-        ret = m_URL;
-        m_URL = GURL(m_URL).Resolve(location).spec();
+        ret = m_currentURL;
+        m_currentURL = GURL(m_currentURL).Resolve(location).spec();
+    }
+    else
+    {
+        ASSERT(!location.empty());
     }
     return ret;
 }
 
-void ResponseImpl::SetBody(const void *data, size_t length)
-{
-    m_body.resize(length);
-    if (length > 0)
-        memcpy(m_body.data(), data, length);
-}
+}; // namespace BlinKit
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
