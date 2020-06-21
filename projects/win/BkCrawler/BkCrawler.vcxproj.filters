@@ -45,9 +45,6 @@
     <ClInclude Include="..\..\..\sdk\include\bk_def.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\sdk\include\bk_http.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
       <Filter>Header Files</Filter>
     </ClInclude>

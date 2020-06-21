@@ -170,7 +170,6 @@
     <ClInclude Include="..\..\..\sdk\include\bk_crawler.h" />
     <ClInclude Include="..\..\..\sdk\include\BlinKit.hpp" />
     <ClInclude Include="..\..\..\sdk\include\bk_def.h" />
-    <ClInclude Include="..\..\..\sdk\include\bk_http.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_js.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\win_app.h" />
