@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BlinKit Library
+// BlinKit - BkCommon Library
 // -------------------------------------------------
 //   File Name: bk_file.h
 // Description: BkFile Class

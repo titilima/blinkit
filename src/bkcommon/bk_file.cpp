@@ -11,6 +11,10 @@
 
 #include "bk_file.h"
 
+#if defined(OS_WIN)
+#   include <Windows.h>
+#endif
+
 namespace BlinKit {
 
 #ifdef OS_WIN

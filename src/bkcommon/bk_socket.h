@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BlinKit Library
+// BlinKit - BkCommon Library
 // -------------------------------------------------
 //   File Name: bk_socket.h
 // Description: Cross Platform Stuff for Socket

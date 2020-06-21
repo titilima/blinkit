@@ -14,6 +14,9 @@
 
 #pragma once
 
+#include <string>
 #include "build/build_config.h"
+
+#include "base/logging.h"
 
 #endif // BLINKIT_BKCOMMON__PC_H
