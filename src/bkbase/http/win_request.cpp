@@ -171,18 +171,29 @@ bool WinRequest::OpenSession(void)
 
 int WinRequest::Perform(void)
 {
-    if (m_session.IsValid())
-        return BK_ERR_FORBIDDEN;
+    int r;
+    do {
+        if (m_session.IsValid())
+        {
+            r = BK_ERR_FORBIDDEN;
+            break;
+        }
 
-    if (!OpenSession())
-        return BK_ERR_NETWORK;
+        if (!OpenSession())
+        {
+            r = BK_ERR_NETWORK;
+            break;
+        }
 
-    int r = OpenRequest(m_URL);
-    if (BK_ERR_SUCCESS != r)
-        return r;
+        r = OpenRequest(m_URL);
+        if (BK_ERR_SUCCESS != r)
+            break;
 
-    StartWorkThread();
-    return Continue(&WinRequest::SendRequest, true);
+        StartWorkThread();
+        return Continue(&WinRequest::SendRequest, true);
+    } while (false);
+    delete this;
+    return r;
 }
 
 int WinRequest::QueryRequest(void)
