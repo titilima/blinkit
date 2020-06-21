@@ -184,11 +184,11 @@
     <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_document.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\hijack_response.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\context_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\js_value_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\loader_task.h" />
-    <ClInclude Include="..\..\..\src\blinkit\misc\controller_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
@@ -212,18 +212,19 @@
     <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_document.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\http\http_exports.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\hijack_response.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\js\context_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\js\js_value_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\loader_task.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\misc\buffer.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\misc\controller.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\base\base.vcxproj">
       <Project>{f8e8dc22-c9eb-4274-bbc9-011d4106f84d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\BkBase\BkBase.vcxproj">
+      <Project>{02c00b49-2a96-416c-b072-2dd01734b2f7}</Project>
     </ProjectReference>
     <ProjectReference Include="..\BkCommon\BkCommon.vcxproj">
       <Project>{a3dd911e-272c-4dad-b537-7340ed0af312}</Project>

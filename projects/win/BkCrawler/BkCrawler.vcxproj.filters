@@ -16,12 +16,6 @@
     <Filter Include="blink_impl">
       <UniqueIdentifier>{1303e05b-a696-49dd-8b6e-7d822fd1c5d7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="misc">
-      <UniqueIdentifier>{5cd0aa60-35fa-440c-95bb-6b83840ec9e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="http">
-      <UniqueIdentifier>{99a8fdd9-044e-450f-afc5-f174fe62ad6a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="win">
       <UniqueIdentifier>{1c972ffa-f5fa-46d8-9f33-8c5975aec476}</UniqueIdentifier>
     </Filter>
@@ -56,9 +50,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\misc\controller_impl.h">
-      <Filter>misc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h">
       <Filter>app</Filter>
@@ -117,6 +108,9 @@
     <ClInclude Include="..\..\..\src\blinkit\crawler\cookie_jar_impl.h">
       <Filter>crawler</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\crawler\hijack_response.h">
+      <Filter>crawler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BkCrawler.def">
@@ -126,12 +120,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\projects\win\_pch.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\misc\buffer.cpp">
-      <Filter>misc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\misc\controller.cpp">
-      <Filter>misc</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp">
       <Filter>win</Filter>
@@ -184,8 +172,8 @@
     <ClCompile Include="..\..\..\src\blinkit\crawler\cookie_jar_impl.cpp">
       <Filter>crawler</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\http\http_exports.cpp">
-      <Filter>http</Filter>
+    <ClCompile Include="..\..\..\src\blinkit\crawler\hijack_response.cpp">
+      <Filter>crawler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
