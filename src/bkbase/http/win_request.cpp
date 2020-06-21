@@ -12,8 +12,8 @@
 #include "win_request.h"
 
 #include "base/strings/string_util.h"
-#include "bkbase/http/http_constants.h"
-#include "bkbase/http/response_impl.h"
+#include "bkcommon/bk_strings.h"
+#include "bkbase/http/http_response.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
@@ -21,7 +21,7 @@ namespace BlinKit {
 
 WinRequest::WinRequest(const char *URL, const BkRequestClient &client)
     : RequestImpl(URL, client)
-    , m_userAgent(HttpConstants::DefaultUserAgent)
+    , m_userAgent(Strings::DefaultUserAgent)
     , m_session(this)
 {
     // Nothing
@@ -39,6 +39,9 @@ WinRequest::~WinRequest(void)
     m_request.Close();
     m_connection.Close();
     m_session.Close();
+
+    if (nullptr != m_response)
+        m_response->Release();
 }
 
 void WinRequest::Cancel(void)
@@ -237,7 +240,7 @@ int WinRequest::ReceiveData(void)
 int WinRequest::RequestComplete(void)
 {
     std::string contentEncoding;
-    if (BK_ERR_SUCCESS == m_response->GetHeader("Content-Encoding", BkMakeBuffer(contentEncoding)))
+    if (BK_ERR_SUCCESS == m_response->GetHeader(Strings::HttpHeader::ContentEncoding, BkMakeBuffer(contentEncoding)))
     {
         if (base::EqualsCaseInsensitiveASCII(contentEncoding, "gzip"))
             m_response->GZipInflate();
@@ -249,7 +252,7 @@ int WinRequest::RequestComplete(void)
         case 301: case 302:
         {
             std::string previousURL = m_response->ResolveRedirection();
-            if (nullptr == m_client.RequestRedirect || m_client.RequestRedirect(m_response.get(), m_client.UserData))
+            if (nullptr == m_client.RequestRedirect || m_client.RequestRedirect(m_response, m_client.UserData))
             {
                 m_referer = previousURL;
                 nextWorker = &WinRequest::RequestRedirect;
@@ -259,7 +262,7 @@ int WinRequest::RequestComplete(void)
         [[fallthrough]];
 
         default:
-            m_client.RequestComplete(m_response.get(), m_client.UserData);
+            m_client.RequestComplete(m_response, m_client.UserData);
     }
     return Continue(nextWorker, true);
 }
@@ -342,7 +345,7 @@ void WinRequest::SetHeader(const char *name, const char *value)
 
 void WinRequest::StartWorkThread(void)
 {
-    m_response = std::make_shared<ResponseImpl>(m_URL);
+    m_response = new HttpResponse(m_URL);
     m_hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
     m_hThread = CreateThread(nullptr, 0, ThreadProc, this, 0, nullptr);
 }

@@ -13,7 +13,6 @@
 
 #include "bkbase/http/http_constants.h"
 #include "bkbase/http/request_controller_impl.h"
-#include "bkbase/http/response_impl.h"
 
 using namespace BlinKit;
 
@@ -33,7 +32,7 @@ ControllerImpl* RequestImpl::GetController(void)
 
 const std::string& RequestImpl::Proxy(void) const
 {
-    assert(BK_PROXY_USER_SPECIFIED == m_proxyType);
+    ASSERT(BK_PROXY_USER_SPECIFIED == m_proxyType);
     return m_proxy;
 }
 

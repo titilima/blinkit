@@ -18,8 +18,9 @@
 #include "bk_http.h"
 #include "bkcommon/bk_http_header_map.h"
 
-class ControllerImpl;
-class ResponseImpl;
+namespace BlinKit {
+class HttpResponse;
+}
 
 class RequestImpl
 {
@@ -53,7 +54,7 @@ protected:
     std::string m_method;
     BlinKit::BkHTTPHeaderMap m_headers;
     std::vector<unsigned char> m_body;
-    std::shared_ptr<ResponseImpl> m_response;
+    BlinKit::HttpResponse *m_response = nullptr;
 private:
     std::atomic<unsigned> m_refCount{ 1 };
     unsigned long m_timeoutInMs;
