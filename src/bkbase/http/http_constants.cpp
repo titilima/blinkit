@@ -11,8 +11,6 @@
 
 #include "http_constants.h"
 
-#include <iterator>
-
 namespace BlinKit {
 namespace HttpConstants {
 
