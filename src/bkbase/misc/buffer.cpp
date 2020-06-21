@@ -11,6 +11,8 @@
 
 #include "bk_def.h"
 
+#include "bkcommon/buffer_impl.hpp"
+
 static void* BKAPI Alloc(size_t cb, void *userData)
 {
     BkSimpleBuffer *buffer = reinterpret_cast<BkSimpleBuffer *>(userData);
@@ -47,12 +49,7 @@ BkBuffer* BKAPI BkInitializeSimpleBuffer(BkSimpleBuffer *buffer)
 
 void BKAPI BkSetBufferData(BkBuffer *buffer, const void *data, size_t size)
 {
-    ASSERT(nullptr != buffer->Allocator);
-    if (size > 0)
-    {
-        void *dst = buffer->Allocator(size, buffer->UserData);
-        memcpy(dst, data, size);
-    }
+    BlinKit::BufferImpl::Set(buffer, data, size);
 }
 
 } // extern "C"
