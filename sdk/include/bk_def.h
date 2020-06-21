@@ -82,6 +82,7 @@ enum BkProxyType {
 };
 
 BK_DECLARE_HANDLE(BkJSContext, ContextImpl);
+BK_DECLARE_HANDLE(BkRequest, RequestImpl);
 BK_DECLARE_HANDLE(BkResponse, ResponseImpl);
 BK_DECLARE_HANDLE(BkWorkController, ControllerImpl);
 

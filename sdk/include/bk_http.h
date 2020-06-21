@@ -15,8 +15,6 @@
 
 #include "bk_def.h"
 
-BK_DECLARE_HANDLE(BkRequest, RequestImpl);
-
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -82,6 +82,10 @@ BKEXPORT int BKAPI BkRunCrawler(BkCrawler crawler, const char *URL);
 
 BKEXPORT BkJSContext BKAPI BkGetScriptContextFromCrawler(BkCrawler crawler);
 
+/**
+ * Miscellaneous
+ */
+
 BKEXPORT void BKAPI BkHijackResponse(BkResponse response, const void *newBody, size_t length);
 
 #ifdef __cplusplus
