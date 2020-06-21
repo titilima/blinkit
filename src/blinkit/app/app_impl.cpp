@@ -12,7 +12,6 @@
 #include "app_impl.h"
 
 #include "base/single_thread_task_runner.h"
-#include "blinkit/app/app_constants.h"
 #include "blinkit/blink_impl/url_loader_impl.h"
 #include "third_party/blink/public/platform/web_thread_scheduler.h"
 #include "third_party/blink/public/web/blink.h"
@@ -51,55 +50,10 @@ std::unique_ptr<blink::WebURLLoader> AppImpl::CreateURLLoader(const std::shared_
 }
 
 #if 0 // BKTODO:
-blink::WebURLError AppImpl::cancelledError(const blink::WebURL &url) const
-{
-    blink::WebURLError ret;
-    ret.reason = BkError::Cancelled;
-    ret.isCancellation = true;
-    return ret;
-}
-
-blink::WebCookieJar* AppImpl::cookieJar(void)
-{
-    CookieJarImpl &cookieJar = CookieJar();
-    return &cookieJar;
-}
-
-blink::WebThread* AppImpl::createThread(const char *name)
-{
-    ThreadImpl *thread = ThreadImpl::CreateInstance(name);
-
-    AutoLock lock(m_lock);
-    m_threads[thread->threadId()] = thread;
-
-    return thread;
-}
-
 BkView* BKAPI AppImpl::CreateView(BkViewClient &client)
 {
     assert(false); // Not reached!
     return nullptr;
-}
-
-blink::WebThread* AppImpl::currentThread(void)
-{
-    return CurrentThreadImpl();
-}
-
-ThreadImpl* AppImpl::CurrentThreadImpl(void)
-{
-    AutoLock lock(m_lock);
-    auto it = m_threads.find(ThreadImpl::CurrentThreadId());
-    if (std::end(m_threads) != it)
-        return it->second;
-
-    assert(std::end(m_threads) != it);
-    return nullptr;
-}
-
-double AppImpl::currentTimeSeconds(void)
-{
-    return base::Time::Now().ToDoubleT();
 }
 #endif // 0
 
@@ -114,31 +68,6 @@ void AppImpl::Initialize(BkAppClient *client)
     ASSERT(nullptr == client); // BKTODO:
     blink::Initialize(this, m_mainThreadScheduler.get());
 }
-
-#if 0 // BKTODO:
-
-blink::WebMimeRegistry* AppImpl::mimeRegistry(void)
-{
-    if (!m_mimeRegistry)
-    {
-        AutoLock lock(m_lock);
-        if (!m_mimeRegistry)
-            m_mimeRegistry = std::make_unique<MimeRegistryImpl>();
-    }
-    return m_mimeRegistry.get();
-}
-
-double AppImpl::monotonicallyIncreasingTimeSeconds(void)
-{
-    double t = currentTimeSeconds();
-    return t - m_firstMonotonicallyIncreasingTime;
-}
-
-blink::WebString AppImpl::userAgent(void)
-{
-    return blink::WebString::fromUTF8(AppConstants::DefaultUserAgent);
-}
-#endif // 0
 
 } // namespace BlinKit
 

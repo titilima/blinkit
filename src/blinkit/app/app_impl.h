@@ -37,33 +37,14 @@ public:
     virtual int RunAndFinalize(void) = 0;
     virtual void Exit(int code) = 0;
 
-#if 0 // BKTODO:
-    ThreadImpl* CurrentThreadImpl(void);
-#endif
-
     void Log(const char *s);
 
-#if 0 // BKTODO:
-    // blink::Platform
-    blink::WebThread* currentThread(void) final;
-#endif
 protected:
     AppImpl(int mode, BkAppClient *client);
 private:
     // blink::Platform
     std::unique_ptr<blink::WebURLLoader> CreateURLLoader(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner) final;
-#if 0 // BKTODO:
-    // blink::Platform
-    blink::WebMimeRegistry* mimeRegistry(void) final;
-    blink::WebURLError cancelledError(const blink::WebURL &url) const final;
-    blink::WebThread* createThread(const char *name) final;
-    double currentTimeSeconds(void) final;
-    double monotonicallyIncreasingTimeSeconds(void) final;
 
-    std::unique_ptr<MimeRegistryImpl> m_mimeRegistry;
-    double m_firstMonotonicallyIncreasingTime;
-    std::unordered_map<blink::PlatformThreadId, ThreadImpl *> m_threads;
-#endif
     const int m_mode;
     BkAppClient m_client;
     std::unique_ptr<blink::scheduler::WebThreadScheduler> m_mainThreadScheduler;
