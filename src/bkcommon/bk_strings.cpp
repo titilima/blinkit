@@ -31,6 +31,7 @@ namespace HttpHeader {
 
 const char ContentEncoding[] = "Content-Encoding";
 const char ContentType[] = "Content-Type";
+const char Cookie[] = "Cookie";
 
 } // namespace HttpHeader
 
