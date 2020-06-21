@@ -162,7 +162,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\src\bkbase\http\http_constants.cpp" />
     <ClCompile Include="..\..\..\src\bkbase\http\request_impl.cpp" />
-    <ClCompile Include="..\..\..\src\bkbase\http\response_impl.cpp" />
+    <ClCompile Include="..\..\..\src\bkbase\http\http_response.cpp" />
     <ClCompile Include="..\..\..\src\bkbase\http\win_request.cpp" />
     <ClCompile Include="..\..\..\src\bkbase\misc\buffer.cpp" />
     <ClCompile Include="..\..\..\src\bkbase\misc\controller.cpp" />
@@ -177,7 +177,7 @@
     <ClInclude Include="..\..\..\sdk\include\bk_http.h" />
     <ClInclude Include="..\..\..\src\bkbase\http\http_constants.h" />
     <ClInclude Include="..\..\..\src\bkbase\http\request_impl.h" />
-    <ClInclude Include="..\..\..\src\bkbase\http\response_impl.h" />
+    <ClInclude Include="..\..\..\src\bkbase\http\http_response.h" />
     <ClInclude Include="..\..\..\src\bkbase\http\win_request.h" />
     <ClInclude Include="..\..\..\src\bkbase\win\inet.h" />
     <ClInclude Include="..\..\..\src\bkbase\_pc.h" />

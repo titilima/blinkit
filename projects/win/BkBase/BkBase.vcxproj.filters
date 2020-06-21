@@ -30,9 +30,6 @@
     <ClCompile Include="..\..\..\src\bkbase\http\request_impl.cpp">
       <Filter>http</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\bkbase\http\response_impl.cpp">
-      <Filter>http</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\bkbase\http\win_request.cpp">
       <Filter>http</Filter>
     </ClCompile>
@@ -48,15 +45,15 @@
     <ClCompile Include="..\..\..\src\bkbase\misc\controller.cpp">
       <Filter>misc</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\bkbase\http\http_response.cpp">
+      <Filter>http</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\bkbase\http\http_constants.h">
       <Filter>http</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\bkbase\http\request_impl.h">
-      <Filter>http</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\bkbase\http\response_impl.h">
       <Filter>http</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\bkbase\http\win_request.h">
@@ -76,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\bkbase\win\inet.h">
       <Filter>win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\bkbase\http\http_response.h">
+      <Filter>http</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
