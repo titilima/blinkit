@@ -21,6 +21,10 @@ BK_DECLARE_HANDLE(BkRequest, RequestImpl);
 extern "C" {
 #endif
 
+/**
+ * Request
+ */
+
 struct BkRequestClient {
     size_t SizeOfStruct; // sizeof(BkRequestClient)
     void *UserData;
@@ -39,12 +43,16 @@ BKEXPORT void BKAPI BkSetRequestBody(BkRequest request, const void *data, size_t
 BKEXPORT void BKAPI BkSetRequestTimeout(BkRequest request, unsigned timeout /* in seconds */);
 BKEXPORT void BKAPI BkSetRequestProxy(BkRequest request, int type, const char *proxy);
 
+/**
+ * Response
+ */
+
 BKEXPORT int BKAPI BkGetResponseStatusCode(BkResponse response);
 
 enum ResponseData {
-    BK_RE_CURRENT_URL = 0,
-    BK_RE_ORIGINAL_URL,
-    BK_RE_BODY
+    BK_RESPONSE_CURRENT_URL = 0,
+    BK_RESPONSE_ORIGINAL_URL,
+    BK_RESPONSE_BODY
 };
 
 BKEXPORT int BKAPI BkGetResponseData(BkResponse response, int data, struct BkBuffer *dst);
