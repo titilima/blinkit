@@ -17,7 +17,6 @@
 namespace BlinKit {
 namespace HttpConstants {
 
-extern const char DefaultUserAgent[];
 extern const unsigned long DefaultTimeoutInMs;
 
 } // namespace HttpConstants
