@@ -11,11 +11,10 @@
 
 #include "crawler_impl.h"
 
+#include "bkcommon/controller_impl.h"
+#include "bkcommon/response_impl.h"
 #include "blinkit/crawler/cookie_jar_impl.h"
-#include "blinkit/http/request_impl.h"
-#include "blinkit/http/response_impl.h"
 #include "blinkit/js/context_impl.h"
-#include "blinkit/misc/controller_impl.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/loader/frame_load_request.h"
@@ -49,7 +48,7 @@ bool CrawlerImpl::ApplyConsoleMessager(std::function<void(int, const char *)> &d
     return true;
 }
 
-void CrawlerImpl::ApplyProxyToRequest(RequestImpl *req)
+void CrawlerImpl::ApplyProxyToRequest(BkRequest req)
 {
     if (BK_PROXY_RESERVED == m_proxyType)
     {
@@ -64,7 +63,7 @@ void CrawlerImpl::ApplyProxyToRequest(RequestImpl *req)
     if (BK_PROXY_DIRECT == m_proxyType)
         return;
 
-    req->SetProxy(m_proxyType, m_proxy.c_str());
+    BkSetRequestProxy(req, m_proxyType, m_proxy.c_str());
 }
 
 void CrawlerImpl::CancelLoading(void)
@@ -168,15 +167,6 @@ void CrawlerImpl::SetCookieJar(CookieJarImpl *cookieJar, int mode)
     m_cookieJarMode = mode;
 }
 
-void CrawlerImpl::SetCookies(const std::string &URL, const std::vector<std::string> &cookies)
-{
-    if (nullptr != m_cookieJar)
-    {
-        for (const std::string &cookieHeader : cookies)
-            m_cookieJar->Set(cookieHeader.c_str(), URL.c_str());
-    }
-}
-
 void CrawlerImpl::TransitionToCommittedForNewPage(void)
 {
     // Nothing to do for crawlers.
@@ -215,7 +205,7 @@ BKEXPORT BkJSContext BKAPI BkGetScriptContextFromCrawler(BkCrawler crawler)
 
 BKEXPORT void BKAPI BkHijackResponse(BkResponse response, const void *newBody, size_t length)
 {
-    response->Hijack(newBody, length);
+    response->HijackBody(newBody, length);
 }
 
 BKEXPORT int BKAPI BkRunCrawler(BkCrawler crawler, const char *URL)

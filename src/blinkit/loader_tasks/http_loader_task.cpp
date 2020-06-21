@@ -13,9 +13,11 @@
 
 #include "base/auto_reset.h"
 #include "base/single_thread_task_runner.h"
+#include "bkcommon/bk_strings.h"
+#include "bkcommon/response_impl.h"
+#include "blinkit/crawler/cookie_jar_impl.h"
 #include "blinkit/crawler/crawler_impl.h"
-#include "blinkit/http/request_impl.h"
-#include "blinkit/http/response_impl.h"
+#include "blinkit/crawler/hijack_response.h"
 #include "net/http/http_util.h"
 #include "third_party/blink/public/platform/web_url_loader_client.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
@@ -32,7 +34,11 @@ HTTPLoaderTask::HTTPLoaderTask(BkCrawler crawler, const std::shared_ptr<base::Si
 {
 }
 
-HTTPLoaderTask::~HTTPLoaderTask(void) = default;
+HTTPLoaderTask::~HTTPLoaderTask(void)
+{
+    if (nullptr != m_response)
+        m_response->Release();
+}
 
 int HTTPLoaderTask::CancelWork(void)
 {
@@ -52,6 +58,17 @@ int HTTPLoaderTask::ContinueWorking(void)
     return BK_ERR_SUCCESS;
 }
 
+BkRequest HTTPLoaderTask::CreateRequest(const std::string &URL)
+{
+    BkRequestClient client = { 0 };
+    client.SizeOfStruct = sizeof(BkRequestClient);
+    client.UserData = this;
+    client.RequestComplete = RequestCompleteImpl;
+    client.RequestFailed = RequestFailedImpl;
+    client.RequestRedirect = RequestRedirectImpl;
+    return BkCreateRequest(URL.c_str(), &client);
+}
+
 void HTTPLoaderTask::DoCancel(void)
 {
     ASSERT(IsMainThread());
@@ -62,50 +79,66 @@ void HTTPLoaderTask::DoContinue(void)
 {
     ASSERT(IsMainThread());
 
-    m_crawler->SetCookies(m_response->CurrentURL(), m_response->Cookies());
+    std::string currentURL;
+    m_response->GetData(BK_RESPONSE_CURRENT_URL, BkMakeBuffer(currentURL));
 
-    ResourceResponse response(GURL(m_response->CurrentURL()));
+    if (CookieJarImpl *cookieJar = m_crawler->GetCookieJar())
+    {
+        size_t n = m_response->CookiesCount();
+        for (size_t i = 0; i < n; ++n)
+        {
+            std::string cookie;
+            m_response->GetCookie(i, BkMakeBuffer(cookie));
+            cookieJar->Set(cookie.c_str(), currentURL.c_str());
+        }
+    }
+
+    GURL u(currentURL);
+    ResourceResponse response(u);
     PopulateResourceResponse(response);
     m_client->DidReceiveResponse(response);
-    m_client->DidReceiveData(m_response->BodyData(), m_response->BodyLength());
+
+    std::string body;
+    m_response->GetData(BK_RESPONSE_BODY, BkMakeBuffer(body));
+    m_client->DidReceiveData(body.data(), body.length());
+
     m_client->DidFinishLoading();
     delete this;
 }
 
 AtomicString HTTPLoaderTask::GetResponseHeader(const AtomicString &name) const
 {
-    std::string ret = m_response->Headers().Get(name.StdUtf8());
-    return ret.empty() ? g_null_atom : AtomicString::FromStdUTF8(ret);
+    std::string ret;
+    int r = m_response->GetHeader(name.StdUtf8().c_str(), BkMakeBuffer(ret));
+    return BK_ERR_SUCCESS == r ? AtomicString::FromStdUTF8(ret) : g_null_atom;
 }
 
 void HTTPLoaderTask::PopulateHijackedResponse(const std::string &URL, const std::string &hijack)
 {
-    ASSERT(!m_response);
-    m_response = std::make_shared<ResponseImpl>(URL);
-
-    m_response->SetStatusCode(200);
-
+    FakeResponse *response = new FakeResponse(URL);
     switch (m_hijackType)
     {
         case HijackType::kScript:
-        {
-            std::string name = http_names::kContentType.StdUtf8();
-            m_response->MutableHeaders().Set(name, "application/javascript; charset=utf-8");
+            response->SetContentType("application/javascript; charset=utf-8");
             break;
-        }
-        default: NOTREACHED();
+        default:
+            NOTREACHED();
     }
+    response->HijackBody(hijack.data(), hijack.length());
 
-    m_response->Hijack(hijack.data(), hijack.length());
+    ASSERT(nullptr == m_response);
+    m_response = response;
 }
 
 void HTTPLoaderTask::PopulateResourceResponse(ResourceResponse &response) const
 {
     response.SetHTTPStatusCode(m_response->StatusCode());
 
+    std::string contentType;
+    m_response->GetHeader(Strings::HttpHeader::ContentType, BkMakeBuffer(contentType));
+
     bool hasCharset = false;
     std::string mimeType, charset;
-    const std::string contentType = m_response->Headers().Get(http_names::kContentType.StdUtf8());
     net::HttpUtil::ParseContentType(contentType, &mimeType, &charset, &hasCharset, nullptr);
     response.SetMimeType(AtomicString::FromStdUTF8(mimeType));
     if (hasCharset)
@@ -129,7 +162,7 @@ bool HTTPLoaderTask::ProcessHijackResponse(void)
 {
     if (HijackType::kMainHTML == m_hijackType)
         return false;
-    m_crawler->HijackResponse(m_response.get());
+    m_crawler->HijackResponse(m_response);
     return true;
 }
 
@@ -142,7 +175,7 @@ void HTTPLoaderTask::ProcessRequestComplete(void)
 
         {
             base::AutoReset callingCrawler(&m_callingCrawler, true);
-            m_crawler->ProcessRequestComplete(m_response.get(), this);
+            m_crawler->ProcessRequestComplete(m_response, this);
         }
         if (!m_cancel.has_value())
             return;
@@ -158,10 +191,17 @@ void HTTPLoaderTask::ProcessRequestComplete(void)
 
 void HTTPLoaderTask::RequestComplete(BkResponse response)
 {
-    m_response = response->shared_from_this();
+    ASSERT(nullptr == m_response);
+    m_response = response;
+    m_response->Retain();
 
     std::function<void()> callback = std::bind(&HTTPLoaderTask::ProcessRequestComplete, this);
     m_taskRunner->PostTask(FROM_HERE, callback);
+}
+
+void BKAPI HTTPLoaderTask::RequestCompleteImpl(BkResponse response, void *userData)
+{
+    reinterpret_cast<HTTPLoaderTask *>(userData)->RequestComplete(response);
 }
 
 void HTTPLoaderTask::RequestFailed(int errorCode)
@@ -171,9 +211,9 @@ void HTTPLoaderTask::RequestFailed(int errorCode)
     delete this;
 }
 
-bool_t HTTPLoaderTask::RequestRedirect(BkResponse response)
+void BKAPI HTTPLoaderTask::RequestFailedImpl(int errorCode, void *userData)
 {
-    return false;
+    reinterpret_cast<HTTPLoaderTask *>(userData)->RequestFailed(errorCode);
 }
 
 int HTTPLoaderTask::Run(const ResourceRequest &request)
@@ -189,8 +229,7 @@ int HTTPLoaderTask::Run(const ResourceRequest &request)
         return BK_ERR_SUCCESS;
     }
 
-    BkRequestClient *client = *this;
-    BkRequest req = RequestImpl::CreateInstance(URL.c_str(), *client);
+    BkRequest req = CreateRequest(URL);
     if (nullptr == req)
     {
         ASSERT(nullptr != req);
@@ -198,21 +237,18 @@ int HTTPLoaderTask::Run(const ResourceRequest &request)
     }
 
     m_crawler->ApplyProxyToRequest(req);
-    req->SetMethod(request.HttpMethod().StdUtf8());
-    req->SetHeaders(request.AllHeaders());
+    BkSetRequestMethod(req, request.HttpMethod().StdUtf8().c_str());
+    for (const auto &it : request.AllHeaders().GetRawMap())
+        BkSetRequestHeader(req, it.first.c_str(), it.second.c_str());
 
     std::string cookies = m_crawler->GetCookies(URL);
     if (!cookies.empty())
-        req->SetHeader("Cookie", cookies.c_str());
+        BkSetRequestHeader(req, Strings::HttpHeader::Cookie, cookies.c_str());
 
     BKLOG("// BKTODO: Add body.");
 
-    int r = req->Perform();
-    if (BK_ERR_SUCCESS != r)
-    {
-        ASSERT(BK_ERR_SUCCESS == r);
-        delete req;
-    }
+    int r = BkPerformRequest(req, nullptr);
+    ASSERT(BK_ERR_SUCCESS == r);
     return r;
 }
 

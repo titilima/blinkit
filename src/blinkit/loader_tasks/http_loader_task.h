@@ -17,8 +17,8 @@
 #include <optional>
 #include "bk_crawler.h"
 #include "bk_http.h"
+#include "bkcommon/controller_impl.h"
 #include "blinkit/loader_tasks/loader_task.h"
-#include "blinkit/misc/controller_impl.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 #include "url/gurl.h"
@@ -29,12 +29,13 @@ class ResourceResponse;
 
 namespace BlinKit {
 
-class HTTPLoaderTask final : public LoaderTask, public BkRequestClientImpl, public ControllerImpl
+class HTTPLoaderTask final : public LoaderTask, public ControllerImpl
 {
 public:
     HTTPLoaderTask(BkCrawler crawler, const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
     ~HTTPLoaderTask(void) override;
 private:
+    BkRequest CreateRequest(const std::string &URL);
     AtomicString GetResponseHeader(const AtomicString &name) const;
 
     bool ProcessHijackRequest(const std::string &URL);
@@ -45,12 +46,14 @@ private:
     void DoContinue(void);
     void DoCancel(void);
 
+    void RequestComplete(BkResponse response);
+    static void BKAPI RequestCompleteImpl(BkResponse response, void *userData);
+    void RequestFailed(int errorCode);
+    static void BKAPI RequestFailedImpl(int errorCode, void *userData);
+    static bool_t BKAPI RequestRedirectImpl(BkResponse, void *) { return false; }
+
     // LoaderTask
     int Run(const blink::ResourceRequest &request) override;
-    // BkRequestClientImpl
-    void RequestComplete(BkResponse response) override;
-    void RequestFailed(int errorCode) override;
-    bool_t RequestRedirect(BkResponse response) override;
     // ControllerImpl
     int Release(void) override { return CancelWork(); }
     int ContinueWorking(void) override;
@@ -59,7 +62,7 @@ private:
     BkCrawler m_crawler;
     GURL m_url;
     blink::HijackType m_hijackType = blink::HijackType::kOther;
-    std::shared_ptr<ResponseImpl> m_response;
+    ResponseImpl *m_response = nullptr;
 
     bool m_callingCrawler = false;
     std::optional<bool> m_cancel;
