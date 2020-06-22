@@ -97,10 +97,7 @@ void HTTPLoaderTask::DoContinue(void)
     ResourceResponse response(u);
     PopulateResourceResponse(response);
     m_client->DidReceiveResponse(response);
-
-    std::string body;
-    m_response->GetData(BK_RESPONSE_BODY, BkMakeBuffer(body));
-    m_client->DidReceiveData(body.data(), body.length());
+    m_client->DidReceiveData(reinterpret_cast<const char *>(m_response->Content()), m_response->ContentLength());
 
     m_client->DidFinishLoading();
     delete this;
@@ -192,8 +189,7 @@ void HTTPLoaderTask::ProcessRequestComplete(void)
 void HTTPLoaderTask::RequestComplete(BkResponse response)
 {
     ASSERT(nullptr == m_response);
-    m_response = response;
-    m_response->Retain();
+    m_response = response->Retain();
 
     std::function<void()> callback = std::bind(&HTTPLoaderTask::ProcessRequestComplete, this);
     m_taskRunner->PostTask(FROM_HERE, callback);
