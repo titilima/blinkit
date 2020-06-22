@@ -65,6 +65,16 @@ int HttpResponse::GetData(int data, BkBuffer *dst) const
         case BK_RESPONSE_CURRENT_URL:
             BkSetBufferData(dst, m_currentURL.data(), m_currentURL.length());
             break;
+        case BK_RESPONSE_HTTP_VERSION:
+            if (m_httpVersion.empty())
+                return BK_ERR_NOT_FOUND;
+            BkSetBufferData(dst, m_httpVersion.data(), m_httpVersion.length());
+            break;
+        case BK_RESPONSE_STATUS_TEXT:
+            if (m_statusText.empty())
+                return BK_ERR_NOT_FOUND;
+            BkSetBufferData(dst, m_statusText.data(), m_statusText.length());
+            break;
         default:
             return ResponseBase::GetData(data, dst);
     }
@@ -130,7 +140,7 @@ void HttpResponse::ParseHeaders(const std::string &rawHeaders)
 
     m_httpVersion = match.str(1);
     m_statusCode = std::stoi(match.str(2));
-    m_reason = match.str(3);
+    m_statusText = match.str(3);
 
     std::string_view input(rawHeaders);
     size_t p = input.find('\n', match.length(0));
@@ -165,7 +175,7 @@ void HttpResponse::ResetForRedirection(void)
     m_errorCode = BK_ERR_SUCCESS;
     m_statusCode = 0;
     m_httpVersion.clear();
-    m_reason.clear();
+    m_statusText.clear();
     m_headers.Clear();
     m_cookies.clear();
     m_body.clear();

@@ -50,6 +50,8 @@ BKEXPORT int BKAPI BkGetResponseStatusCode(BkResponse response);
 enum ResponseData {
     BK_RESPONSE_CURRENT_URL = 0,
     BK_RESPONSE_ORIGINAL_URL,
+    BK_RESPONSE_HTTP_VERSION,
+    BK_RESPONSE_STATUS_TEXT,
     BK_RESPONSE_BODY
 };
 

@@ -47,7 +47,7 @@ private:
     int GetCookie(size_t index, BkBuffer *dst) const override;
 
     int m_errorCode = BK_ERR_SUCCESS;
-    std::string m_currentURL, m_httpVersion, m_reason;
+    std::string m_currentURL, m_httpVersion, m_statusText;
     BkHTTPHeaderMap m_headers;
     std::vector<std::string> m_cookies;
 };
