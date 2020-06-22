@@ -14,8 +14,9 @@
 
 #pragma once
 
-#include "blinkit/login/socket_wrapper.h"
-#include "blinkit/login/tasks/login_task.h"
+#include <unordered_map>
+#include "bklogin/login/socket_wrapper.h"
+#include "bklogin/login/tasks/login_task.h"
 
 class ResponseImpl;
 
@@ -23,12 +24,17 @@ namespace BlinKit {
 
 class BkHTTPHeaderMap;
 
-class ResponseTask final : public LoginTask, public BkRequestClient
+class ResponseTask final : public LoginTask
 {
 public:
     ResponseTask(const std::shared_ptr<SocketWrapper> &socketWrapper, LoginProxyImpl &loginProxy);
+    ~ResponseTask(void) override;
+
+    BkRequest CreateRequest(const std::string &URL);
 private:
-    void AdjustHeaders(BkHTTPHeaderMap &headers, LoginProxyImpl &loginProxy);
+    typedef std::unordered_map<std::string, std::string> HttpHeaders;
+    void AdjustHeaders(HttpHeaders &headers, LoginProxyImpl &loginProxy);
+    static bool_t BKAPI HeaderCallback(const char *k, const char *v, void *userData);
 
     bool ProcessLoginOK(LoginProxyImpl &loginProxy);
     void ProcessResponse(LoginProxyImpl &loginProxy);
@@ -43,7 +49,7 @@ private:
 
     std::shared_ptr<SocketWrapper> m_socketWrapper;
     LoginProxyImpl &m_loginProxy;
-    std::shared_ptr<ResponseImpl> m_response;
+    ResponseImpl *m_response = nullptr;
 };
 
 } // namespace BlinKit

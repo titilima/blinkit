@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "blinkit/login/login_proxy_impl.h"
+#include "bklogin/login/login_proxy_impl.h"
 
 namespace BlinKit {
 

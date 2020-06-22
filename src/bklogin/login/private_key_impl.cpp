@@ -15,9 +15,9 @@
 #include <openssl/evp.h>
 #include <openssl/pem.h>
 #include "bklogin/login/login_globals.h"
-#include "bklogin/login/ssl/certificate.h"
-#include "bklogin/login/ssl/rsa_key.h"
-#include "bklogin/login/ssl/sign_request.h"
+#include "bklogin/ssl/certificate.h"
+#include "bklogin/ssl/rsa_key.h"
+#include "bklogin/ssl/sign_request.h"
 
 using namespace BlinKit;
 

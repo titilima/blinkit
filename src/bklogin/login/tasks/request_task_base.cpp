@@ -14,10 +14,10 @@
 #include <regex>
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "blinkit/http/request_impl.h"
-#include "blinkit/login/login_proxy_impl.h"
-#include "blinkit/login/tasks/https_request_task.h"
-#include "blinkit/login/tasks/response_task.h"
+#include "bkcommon/bk_strings.h"
+#include "bklogin/login/login_proxy_impl.h"
+#include "bklogin/login/tasks/https_request_task.h"
+#include "bklogin/login/tasks/response_task.h"
 
 namespace BlinKit {
 
@@ -26,21 +26,22 @@ RequestTaskBase::RequestTaskBase(const std::shared_ptr<SocketWrapper> &socketWra
 {
 }
 
-void RequestTaskBase::AdjustHeaders(BkHTTPHeaderMap &headers, LoginProxyImpl &loginProxy)
+void RequestTaskBase::AdjustHeaders(HttpHeaders &headers, LoginProxyImpl &loginProxy)
 {
-    headers.Set("User-Agent", loginProxy.UserAgent());
+    headers[Strings::HttpHeader::UserAgent] = loginProxy.UserAgent();
 }
 
 LoginTask* RequestTaskBase::DoRealRequest(LoginProxyImpl &loginProxy)
 {
     ResponseTask *responseTask = new ResponseTask(m_socketWrapper, loginProxy);
 
-    RequestImpl *req = loginProxy.CreateRequest(GetURL(), *responseTask);
-    req->SetMethod(m_requestMethod);
-    req->SetHeaders(m_requestHeaders);
+    BkRequest req = responseTask->CreateRequest(GetURL());
+    BkSetRequestMethod(req, m_requestMethod.c_str());
+    for (const auto &kv : m_requestHeaders)
+        BkSetRequestHeader(req, kv.first.c_str(), kv.second.c_str());
     if (!m_requestBody.empty())
-        req->SetBody(m_requestBody.data(), m_requestBody.size());
-    if (BK_ERR_SUCCESS == req->Perform())
+        BkSetRequestBody(req, m_requestBody.data(), m_requestBody.size());
+    if (BK_ERR_SUCCESS == BkPerformRequest(req, nullptr))
         return nullptr;
 
     ASSERT(false); // BKTODO:
@@ -104,11 +105,11 @@ bool RequestTaskBase::ParseRequest(void)
     if (!ParseHeaders(std::string_view(rawData.data(), p)))
         return false;
 
-    std::string contentLength = m_requestHeaders.Get("Content-Length");
-    if (contentLength.empty() || contentLength == std::string(1, '0'))
+    auto it = m_requestHeaders.find(Strings::HttpHeader::ContentLength);
+    if (std::end(m_requestHeaders) == it || it->second == std::string(1, '0'))
         return true; // Need not to process body.
 
-    const size_t bodySize = std::stoi(contentLength);
+    const size_t bodySize = std::stoi(it->second);
     m_requestBody = rawData.substr(p + 4);
     if (m_requestBody.size() < bodySize)
     {
@@ -158,7 +159,7 @@ bool RequestTaskBase::ParseHeaders(const std::string_view &s)
         std::string k, v;
         base::TrimWhitespaceASCII(kv.first, base::TRIM_ALL, &k);
         base::TrimWhitespaceASCII(kv.second, base::TRIM_ALL, &v);
-        m_requestHeaders.Set(k, v);
+        m_requestHeaders[k] = v;
     }
     return true;
 }

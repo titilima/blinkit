@@ -14,12 +14,11 @@
 #include <iterator>
 #include <openssl/pem.h>
 #include <openssl/ssl.h>
-#include "blinkit/app/app_constants.h"
-#include "blinkit/common/bk_file.h"
-#include "blinkit/http/request_impl.h"
-#include "blinkit/login/login_globals.h"
-#include "blinkit/login/ssl/ssl_pair.h"
-#include "blinkit/login/tasks/http_request_task.h"
+#include "bkcommon/bk_file.h"
+#include "bkcommon/bk_strings.h"
+#include "bklogin/login/login_globals.h"
+#include "bklogin/login/tasks/http_request_task.h"
+#include "bklogin/ssl/ssl_pair.h"
 
 using namespace BlinKit;
 
@@ -57,11 +56,6 @@ int LoginProxyImpl::ApplyPEM(const std::string &privateKey, const std::string &c
         return BK_ERR_FORBIDDEN;
     }
     return BK_ERR_SUCCESS;
-}
-
-BkRequest LoginProxyImpl::CreateRequest(const std::string &URL, const BkRequestClient &client)
-{
-    return RequestImpl::CreateInstance(URL.c_str(), client);
 }
 
 std::string LoginProxyImpl::GetLoggedInHTML(void) const
@@ -252,8 +246,9 @@ const std::string& LoginProxyImpl::UserAgent(void) const
         if (nullptr != m_client.GetConfig)
             m_client.GetConfig(BK_LPCFG_USER_AGENT, BkMakeBuffer(m_userAgent), m_client.UserData);
         if (m_userAgent.empty())
-            m_userAgent.assign(AppConstants::DefaultUserAgent);
+            m_userAgent = Strings::DefaultUserAgent;
     }
+    ASSERT(!m_userAgent.empty());
     return m_userAgent;
 }
 

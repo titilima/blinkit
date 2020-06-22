@@ -99,7 +99,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;BLINKIT_EXPORTS;_WINDOWS;_USRDLL;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SrcRoot)bklogin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -130,7 +130,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;BLINKIT_EXPORTS;_WINDOWS;_USRDLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SrcRoot)bklogin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -161,23 +161,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\sdk\include\bk_login.h" />
-    <ClInclude Include="..\..\..\src\blinkit\common\bk_file.h" />
-    <ClInclude Include="..\..\..\src\blinkit\common\bk_socket.h" />
-    <ClInclude Include="..\..\..\src\blinkit\login\login_globals.h" />
-    <ClInclude Include="..\..\..\src\blinkit\login\login_proxy_impl.h" />
-    <ClInclude Include="..\..\..\src\blinkit\login\private_key_impl.h" />
-    <ClInclude Include="..\..\..\src\blinkit\login\socket_wrapper.h" />
-    <ClInclude Include="..\..\..\src\blinkit\login\ssl\certificate.h" />
-    <ClInclude Include="..\..\..\src\blinkit\login\ssl\rsa_key.h" />
-    <ClInclude Include="..\..\..\src\blinkit\login\ssl\sign_request.h" />
-    <ClInclude Include="..\..\..\src\blinkit\login\ssl\ssl_pair.h" />
-    <ClInclude Include="..\..\..\src\blinkit\login\tasks\https_request_task.h" />
-    <ClInclude Include="..\..\..\src\blinkit\login\tasks\http_request_task.h" />
-    <ClInclude Include="..\..\..\src\blinkit\login\tasks\login_task.h" />
-    <ClInclude Include="..\..\..\src\blinkit\login\tasks\request_task_base.h" />
-    <ClInclude Include="..\..\..\src\blinkit\login\tasks\response_task.h" />
-    <ClInclude Include="..\..\..\src\blinkit\login\win_login_proxy.h" />
-    <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
+    <ClInclude Include="..\..\..\src\bklogin\login\login_globals.h" />
+    <ClInclude Include="..\..\..\src\bklogin\login\login_proxy_impl.h" />
+    <ClInclude Include="..\..\..\src\bklogin\login\private_key_impl.h" />
+    <ClInclude Include="..\..\..\src\bklogin\login\socket_wrapper.h" />
+    <ClInclude Include="..\..\..\src\bklogin\login\tasks\https_request_task.h" />
+    <ClInclude Include="..\..\..\src\bklogin\login\tasks\http_request_task.h" />
+    <ClInclude Include="..\..\..\src\bklogin\login\tasks\login_task.h" />
+    <ClInclude Include="..\..\..\src\bklogin\login\tasks\request_task_base.h" />
+    <ClInclude Include="..\..\..\src\bklogin\login\tasks\response_task.h" />
+    <ClInclude Include="..\..\..\src\bklogin\login\win_login_proxy.h" />
+    <ClInclude Include="..\..\..\src\bklogin\ssl\certificate.h" />
+    <ClInclude Include="..\..\..\src\bklogin\ssl\rsa_key.h" />
+    <ClInclude Include="..\..\..\src\bklogin\ssl\sign_request.h" />
+    <ClInclude Include="..\..\..\src\bklogin\ssl\ssl_pair.h" />
+    <ClInclude Include="..\..\..\src\bklogin\_pc.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -187,21 +185,19 @@
     <ResourceCompile Include="BkLogin.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\blinkit\common\bk_file.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\login\login_globals.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\login\login_proxy_impl.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\login\private_key_impl.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\login\socket_wrapper.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\login\ssl\certificate.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\login\ssl\rsa_key.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\login\ssl\sign_request.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\login\ssl\ssl_pair.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\login\tasks\https_request_task.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\login\tasks\http_request_task.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\login\tasks\request_task_base.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\login\tasks\response_task.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\login\win_login_proxy.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\misc\buffer.cpp" />
+    <ClCompile Include="..\..\..\src\bklogin\login\login_globals.cpp" />
+    <ClCompile Include="..\..\..\src\bklogin\login\login_proxy_impl.cpp" />
+    <ClCompile Include="..\..\..\src\bklogin\login\private_key_impl.cpp" />
+    <ClCompile Include="..\..\..\src\bklogin\login\socket_wrapper.cpp" />
+    <ClCompile Include="..\..\..\src\bklogin\login\tasks\https_request_task.cpp" />
+    <ClCompile Include="..\..\..\src\bklogin\login\tasks\http_request_task.cpp" />
+    <ClCompile Include="..\..\..\src\bklogin\login\tasks\request_task_base.cpp" />
+    <ClCompile Include="..\..\..\src\bklogin\login\tasks\response_task.cpp" />
+    <ClCompile Include="..\..\..\src\bklogin\login\win_login_proxy.cpp" />
+    <ClCompile Include="..\..\..\src\bklogin\ssl\certificate.cpp" />
+    <ClCompile Include="..\..\..\src\bklogin\ssl\rsa_key.cpp" />
+    <ClCompile Include="..\..\..\src\bklogin\ssl\sign_request.cpp" />
+    <ClCompile Include="..\..\..\src\bklogin\ssl\ssl_pair.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -210,6 +206,9 @@
   <ItemGroup>
     <ProjectReference Include="..\base\base.vcxproj">
       <Project>{f8e8dc22-c9eb-4274-bbc9-011d4106f84d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\BkBase\BkBase.vcxproj">
+      <Project>{02c00b49-2a96-416c-b072-2dd01734b2f7}</Project>
     </ProjectReference>
     <ProjectReference Include="..\BkCommon\BkCommon.vcxproj">
       <Project>{a3dd911e-272c-4dad-b537-7340ed0af312}</Project>

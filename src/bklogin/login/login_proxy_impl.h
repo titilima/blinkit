@@ -17,9 +17,10 @@
 #include <condition_variable>
 #include <mutex>
 #include <queue>
+#include <unordered_map>
 #include "bk_login.h"
 #include <openssl/ossl_typ.h>
-#include "blinkit/common/bk_socket.h"
+#include "bkcommon/bk_socket.h"
 
 namespace BlinKit {
 class LoginTask;
@@ -36,7 +37,6 @@ public:
 
     void AddTask(BlinKit::LoginTask *task);
     SSL* NewSSL(const std::string &domain);
-    BkRequest CreateRequest(const std::string &URL, const BkRequestClient &client);
     const std::string& UserAgent(void) const;
     void SetCookie(const std::string &URL, const std::string &cookie);
     bool IsLoginSuccessful(const std::string &currentURL) const;

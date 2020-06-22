@@ -15,9 +15,10 @@
 #pragma once
 
 #include <string_view>
-#include "blinkit/common/bk_http_header_map.h"
-#include "blinkit/login/socket_wrapper.h"
-#include "blinkit/login/tasks/login_task.h"
+#include <unordered_map>
+#include <utility>
+#include "bklogin/login/socket_wrapper.h"
+#include "bklogin/login/tasks/login_task.h"
 
 namespace BlinKit {
 
@@ -30,7 +31,8 @@ protected:
 
     const std::string& RequestURI(void) const { return m_requestURI; }
 
-    virtual void AdjustHeaders(BkHTTPHeaderMap &headers, LoginProxyImpl &loginProxy);
+    typedef std::unordered_map<std::string, std::string> HttpHeaders;
+    virtual void AdjustHeaders(HttpHeaders &headers, LoginProxyImpl &loginProxy);
 
     std::shared_ptr<SocketWrapper> m_socketWrapper;
 private:
@@ -44,7 +46,7 @@ private:
 
     std::string m_leadData;
     std::string m_requestMethod, m_requestURI;
-    BkHTTPHeaderMap m_requestHeaders;
+    HttpHeaders m_requestHeaders;
     std::string m_requestBody;
 };
 

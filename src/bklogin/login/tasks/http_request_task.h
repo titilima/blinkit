@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "blinkit/login/tasks/request_task_base.h"
+#include "bklogin/login/tasks/request_task_base.h"
 
 namespace BlinKit {
 
@@ -24,7 +24,7 @@ public:
     HTTPRequestTask(SOCKET client, const char *leadChars, int leadSize);
 private:
     std::string GetURL(void) const override;
-    void AdjustHeaders(BkHTTPHeaderMap &headers, LoginProxyImpl &loginProxy) override;
+    void AdjustHeaders(HttpHeaders &headers, LoginProxyImpl &loginProxy) override;
 };
 
 } // namespace BlinKit

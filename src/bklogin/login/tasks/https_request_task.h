@@ -15,7 +15,7 @@
 #pragma once
 
 #include <openssl/ossl_typ.h>
-#include "blinkit/login/tasks/request_task_base.h"
+#include "bklogin/login/tasks/request_task_base.h"
 
 namespace BlinKit {
 
