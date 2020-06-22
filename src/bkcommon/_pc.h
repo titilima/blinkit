@@ -17,6 +17,10 @@
 #include <string>
 #include "build/build_config.h"
 
+#if OS_WIN
+#   define WIN32_LEAN_AND_MEAN
+#endif
+
 #include "base/logging.h"
 
 #endif // BLINKIT_BKCOMMON__PC_H
