@@ -50,9 +50,10 @@ void ResponseBase::Release(void)
         delete this;
 }
 
-void ResponseBase::Retain(void)
+ResponseImpl* ResponseBase::Retain(void)
 {
     ++m_refCount;
+    return this;
 }
 
 } // namespace BlinKit
