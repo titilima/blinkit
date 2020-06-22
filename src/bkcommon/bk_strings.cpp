@@ -30,8 +30,11 @@ const char DefaultUserAgent[] =
 namespace HttpHeader {
 
 const char ContentEncoding[] = "Content-Encoding";
+const char ContentLength[] = "Content-Length";
 const char ContentType[] = "Content-Type";
 const char Cookie[] = "Cookie";
+const char Referer[] = "Referer";
+const char UserAgent[] = "User-Agent";
 
 } // namespace HttpHeader
 

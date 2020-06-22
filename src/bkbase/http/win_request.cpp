@@ -346,7 +346,7 @@ int WinRequest::SendRequest(void)
 
 void WinRequest::SetHeader(const char *name, const char *value)
 {
-    if (base::EqualsCaseInsensitiveASCII(name, "User-Agent"))
+    if (base::EqualsCaseInsensitiveASCII(name, Strings::HttpHeader::UserAgent))
         m_userAgent = value;
     else if (base::EqualsCaseInsensitiveASCII(name, "Referer"))
         m_referer = value;

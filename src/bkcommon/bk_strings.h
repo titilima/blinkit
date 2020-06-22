@@ -22,8 +22,11 @@ extern const char DefaultUserAgent[];
 
 namespace HttpHeader {
 extern const char ContentEncoding[];
+extern const char ContentLength[];
 extern const char ContentType[];
 extern const char Cookie[];
+extern const char Referer[];
+extern const char UserAgent[];
 } // namespace HttpHeader
 
 } // namespace Strings
