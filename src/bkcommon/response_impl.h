@@ -21,7 +21,7 @@
 class ResponseImpl
 {
 public:
-    virtual void Retain(void) = 0;
+    virtual ResponseImpl* Retain(void) = 0;
     virtual void Release(void) = 0;
 
     virtual int StatusCode(void) const = 0;
@@ -29,6 +29,9 @@ public:
 
     virtual int GetHeader(const char *name, BkBuffer *dst) const = 0;
     virtual int EnumerateHeaders(BkHttpHeaderEnumerator enumerator, void *userData) const = 0;
+
+    virtual const void* Content(void) const = 0;
+    virtual size_t ContentLength(void) const = 0;
 
     virtual size_t CookiesCount(void) const = 0;
     virtual int GetCookie(size_t index, BkBuffer *dst) const = 0;
@@ -54,7 +57,9 @@ protected:
     int m_statusCode = 0;
     std::vector<unsigned char> m_body;
 private:
-    void Retain(void) override final;
+    ResponseImpl* Retain(void) override final;
+    const void* Content(void) const override final { return m_body.empty() ? nullptr : m_body.data(); }
+    size_t ContentLength(void) const override final { return m_body.size(); }
 
     std::atomic_uint m_refCount;
     std::string m_URL;
