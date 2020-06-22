@@ -12,8 +12,8 @@
 #include "ssl_pair.h"
 
 #include <openssl/ssl.h>
-#include "bklogin/login/ssl/rsa_key.h"
-#include "bklogin/login/ssl/sign_request.h"
+#include "bklogin/ssl/rsa_key.h"
+#include "bklogin/ssl/sign_request.h"
 
 namespace BlinKit {
 

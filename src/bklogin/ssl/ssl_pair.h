@@ -15,7 +15,7 @@
 #pragma once
 
 #include "bklogin/login/private_key_impl.h"
-#include "bklogin/login/ssl/certificate.h"
+#include "bklogin/ssl/certificate.h"
 
 namespace BlinKit {
 
