@@ -15,7 +15,7 @@
 #pragma once
 
 #include <openssl/ossl_typ.h>
-#include "blinkit/common/bk_socket.h"
+#include "bkcommon/bk_socket.h"
 
 namespace BlinKit {
 

@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "blinkit/login/private_key_impl.h"
+#include "bklogin/login/private_key_impl.h"
 
 namespace BlinKit {
 

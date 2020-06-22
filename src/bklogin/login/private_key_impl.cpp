@@ -14,10 +14,10 @@
 #include "bk_login.h"
 #include <openssl/evp.h>
 #include <openssl/pem.h>
-#include "blinkit/login/login_globals.h"
-#include "blinkit/login/ssl/certificate.h"
-#include "blinkit/login/ssl/rsa_key.h"
-#include "blinkit/login/ssl/sign_request.h"
+#include "bklogin/login/login_globals.h"
+#include "bklogin/login/ssl/certificate.h"
+#include "bklogin/login/ssl/rsa_key.h"
+#include "bklogin/login/ssl/sign_request.h"
 
 using namespace BlinKit;
 

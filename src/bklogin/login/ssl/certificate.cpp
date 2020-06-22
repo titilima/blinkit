@@ -12,7 +12,7 @@
 #include "certificate.h"
 
 #include <openssl/pem.h>
-#include "blinkit/common/bk_file.h"
+#include "bkcommon/bk_file.h"
 
 namespace BlinKit {
 

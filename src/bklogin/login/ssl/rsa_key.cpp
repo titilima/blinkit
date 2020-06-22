@@ -14,7 +14,7 @@
 #include <openssl/evp.h>
 #include <openssl/pem.h>
 #include <openssl/rsa.h>
-#include "blinkit/common/bk_file.h"
+#include "bkcommon/bk_file.h"
 
 namespace BlinKit {
 
