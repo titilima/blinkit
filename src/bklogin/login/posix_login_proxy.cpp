@@ -13,7 +13,7 @@
 
 namespace BlinKit {
 
-PosixLoginProxy::PosixLoginProxy(const BkLoginProxyClient &client) : LoginProxy(client)
+PosixLoginProxy::PosixLoginProxy(const BkLoginProxyClient &client) : LoginProxyImpl(client)
 {
 }
 
@@ -34,11 +34,15 @@ bool PosixLoginProxy::StartListeningThread(void)
     return 0 == r;
 }
 
+} // namespace BlinKit
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<LoginProxy> LoginProxy::Create(const BkLoginProxyClient &client)
+extern "C" {
+
+BKEXPORT BkLoginProxy BKAPI BkCreateLoginProxy(struct BkLoginProxyClient *client)
 {
-    return std::make_unique<PosixLoginProxy>(client);
+    return new BlinKit::PosixLoginProxy(*client);
 }
 
-} // namespace BlinKit
+} // extern "C"

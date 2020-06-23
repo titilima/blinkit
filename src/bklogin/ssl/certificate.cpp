@@ -52,10 +52,10 @@ void Certificate::FillBasicData(X509_REQ *req, int days)
 #endif
     X509_set_subject_name(m_cert, X509_REQ_get_subject_name(req));
 
-    X509_gmtime_adj(X509_getm_notBefore(m_cert), 0);
-    X509_time_adj_ex(X509_getm_notAfter(m_cert), days, 0, nullptr);
+    X509_gmtime_adj(X509_get_notBefore(m_cert), 0);
+    X509_time_adj_ex(X509_get_notAfter(m_cert), days, 0, nullptr);
 
-    X509_set_pubkey(m_cert, X509_REQ_get0_pubkey(req));
+    X509_set_pubkey(m_cert, X509_REQ_get_pubkey(req));
 }
 
 int Certificate::Save(const BkPathChar *fileName)
@@ -116,10 +116,10 @@ int Certificate::Sign(X509_REQ *req, EVP_PKEY *caKey, X509 *caCert, int days)
     X509_STORE_CTX_set_cert(xsc, m_cert);
     X509_STORE_CTX_set_flags(xsc, X509_V_FLAG_CHECK_SS_SIGNATURE);
 
-    EVP_MD_CTX *mctx = EVP_MD_CTX_new();
+    EVP_MD_CTX *mctx = EVP_MD_CTX_create();
     EVP_DigestSignInit(mctx, nullptr, nullptr, nullptr, caKey);
     int r = X509_sign_ctx(m_cert, mctx);
-    EVP_MD_CTX_free(mctx);
+    EVP_MD_CTX_destroy(mctx);
 
     X509_STORE_CTX_free(xsc);
     X509_STORE_free(ctx);

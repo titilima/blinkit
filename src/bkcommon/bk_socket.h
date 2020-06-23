@@ -32,6 +32,7 @@ typedef int SOCKET;
 enum {
     INVALID_SOCKET = -1,
     SOCKET_ERROR   = -1,
+    SD_BOTH        = SHUT_RDWR,
 };
 
 inline int closesocket(SOCKET s) { return close(s); }

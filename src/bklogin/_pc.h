@@ -25,4 +25,12 @@
 #include "BlinKit.hpp"
 #include "base/logging.h"
 
+#ifndef BN_RAND_TOP_ANY
+#   define BN_RAND_TOP_ANY  -1
+#endif
+
+#ifndef BN_RAND_BOTTOM_ANY
+#   define BN_RAND_BOTTOM_ANY   -1
+#endif
+
 #endif // BLINKIT_BKLOGIN__PC_H

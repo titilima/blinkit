@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BlinKit Library
+// BlinKit - BkLogin Library
 // -------------------------------------------------
 //   File Name: posix_login_proxy.cpp
 // Description: PosixLoginProxy Class
@@ -9,16 +9,16 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINKIT_POSIX_LOGIN_PROXY_H
-#define BLINKIT_BLINKIT_POSIX_LOGIN_PROXY_H
+#ifndef BLINKIT_BKLOGIN_POSIX_LOGIN_PROXY_H
+#define BLINKIT_BKLOGIN_POSIX_LOGIN_PROXY_H
 
 #pragma once
 
-#include "blinkit/crawler/login_proxy.h"
+#include "bklogin/login/login_proxy_impl.h"
 
 namespace BlinKit {
 
-class PosixLoginProxy final : public LoginProxy
+class PosixLoginProxy final : public LoginProxyImpl
 {
 public:
     PosixLoginProxy(const BkLoginProxyClient &client);
@@ -33,4 +33,4 @@ private:
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BLINKIT_POSIX_LOGIN_PROXY_H
+#endif // BLINKIT_BKLOGIN_POSIX_LOGIN_PROXY_H

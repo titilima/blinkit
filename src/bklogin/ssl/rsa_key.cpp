@@ -24,7 +24,7 @@ RSAKey::RSAKey(int bits) : m_rsa(RSA_new())
 
     BIGNUM *bn = BN_new();
     BN_set_word(bn, RSA_F4);
-    RSA_generate_multi_prime_key(m_rsa, bits, 2, bn, nullptr);
+    RSA_generate_key_ex(m_rsa, bits, bn, nullptr);
     BN_free(bn);
 
     EVP_PKEY_assign_RSA(m_key, m_rsa); // m_rsa is attached to m_key, so need not to free it.
