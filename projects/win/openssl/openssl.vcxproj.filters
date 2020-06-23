@@ -205,12 +205,6 @@
     <ClInclude Include="..\..\..\third_party\openssl\include\openssl\evp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\openssl\opensslconf.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\openssl\crypto\bn_conf.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\third_party\openssl\crypto\bio\bio_local.h">
       <Filter>crypto\bio</Filter>
     </ClInclude>
@@ -222,9 +216,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\third_party\openssl\crypto\lhash\lhash_local.h">
       <Filter>crypto\lhash</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\openssl\crypto\dso_conf.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\third_party\openssl\crypto\objects\obj_local.h">
       <Filter>crypto\objects</Filter>

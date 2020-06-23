@@ -80,14 +80,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(RepoRoot)third_party\openssl\include;$(SrcRoot);$(IncludePath)</IncludePath>
+    <IncludePath>$(RepoRoot)third_party\openssl\include;$(SrcRoot)stub;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(RepoRoot)third_party\openssl\include;$(SrcRoot);$(IncludePath)</IncludePath>
+    <IncludePath>$(RepoRoot)third_party\openssl\include;$(SrcRoot)stub;$(IncludePath)</IncludePath>
     <OutDir>$(RepoRoot)sdk\win32\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

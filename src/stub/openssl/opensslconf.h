@@ -1,16 +1,16 @@
 // -------------------------------------------------
-// BlinKit - openssl Library
+// BlinKit - stub Part
 // -------------------------------------------------
 //   File Name: opensslconf.h
-// Description: Configuration Header File
+// Description: Configurations for OpenSSL
 //      Author: Ziming Li
 //     Created: 2020-06-01
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_OPENSSL_OPENSSLCONF_H
-#define BLINKIT_OPENSSL_OPENSSLCONF_H
+#ifndef BLINKIT_STUB_OPENSSLCONF_H
+#define BLINKIT_STUB_OPENSSLCONF_H
 
 #pragma once
 
@@ -61,4 +61,4 @@ typedef unsigned int    RC4_INT;
 #   endif
 #endif
 
-#endif // BLINKIT_OPENSSL_OPENSSLCONF_H
+#endif // BLINKIT_STUB_OPENSSLCONF_H

@@ -249,6 +249,9 @@
     <ClInclude Include="..\..\..\src\stub\icu\unicode\utypes.h" />
     <ClInclude Include="..\..\..\src\stub\icu\uprops.h" />
     <ClInclude Include="..\..\..\src\stub\icu\utrie2.h" />
+    <ClInclude Include="..\..\..\src\stub\openssl\crypto\bn_conf.h" />
+    <ClInclude Include="..\..\..\src\stub\openssl\crypto\dso_conf.h" />
+    <ClInclude Include="..\..\..\src\stub\openssl\opensslconf.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
