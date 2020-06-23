@@ -16,9 +16,6 @@
     <Filter Include="blink_impl">
       <UniqueIdentifier>{1303e05b-a696-49dd-8b6e-7d822fd1c5d7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="win">
-      <UniqueIdentifier>{1c972ffa-f5fa-46d8-9f33-8c5975aec476}</UniqueIdentifier>
-    </Filter>
     <Filter Include="app">
       <UniqueIdentifier>{35dad8df-03c1-429e-bcd5-ab434e946865}</UniqueIdentifier>
     </Filter>
@@ -117,9 +114,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\projects\win\_pch.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp">
-      <Filter>win</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\app\app_impl.cpp">
       <Filter>app</Filter>

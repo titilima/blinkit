@@ -80,14 +80,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(RepoRoot)third_party\openssl\include;$(RepoRoot)third_party\zlib;$(SrcRoot);$(IncludePath)</IncludePath>
+    <IncludePath>$(RepoRoot)third_party\openssl\include;$(SrcRoot);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(RepoRoot)third_party\openssl\include;$(RepoRoot)third_party\zlib;$(SrcRoot);$(IncludePath)</IncludePath>
+    <IncludePath>$(RepoRoot)third_party\openssl\include;$(SrcRoot);$(IncludePath)</IncludePath>
     <OutDir>$(RepoRoot)sdk\win32\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -218,9 +218,6 @@
     </ProjectReference>
     <ProjectReference Include="..\url\url.vcxproj">
       <Project>{849ce42e-6457-4c6d-8ba0-854932a2aedb}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\zlib\zlib.vcxproj">
-      <Project>{1ee00a35-2f4a-45d0-8c75-80b936818a76}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
