@@ -85,7 +85,7 @@ void HTTPLoaderTask::DoContinue(void)
     if (CookieJarImpl *cookieJar = m_crawler->GetCookieJar())
     {
         size_t n = m_response->CookiesCount();
-        for (size_t i = 0; i < n; ++n)
+        for (size_t i = 0; i < n; ++i)
         {
             std::string cookie;
             m_response->GetCookie(i, BkMakeBuffer(cookie));

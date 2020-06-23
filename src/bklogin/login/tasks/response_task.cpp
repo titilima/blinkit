@@ -103,7 +103,7 @@ bool ResponseTask::ProcessLoginOK(LoginProxyImpl &loginProxy)
 
 void ResponseTask::ProcessRequestComplete(BkResponse response)
 {
-    ASSERT(nullptr != m_response);
+    ASSERT(nullptr == m_response);
     m_response = response->Retain();
 
     m_loginProxy.AddTask(this);
