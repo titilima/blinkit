@@ -13,7 +13,7 @@
 
 ### Linux
 
-1. Install packages: `clang`, `libc++-dev`, `libc++abi-dev`, `libcurl4-openssl-dev`.
+1. Install packages: `clang`, `libc++-dev`, `libc++abi-dev`, `libcurl4-openssl-dev`, `libssl-dev`.
 2. Run `helpers/config_duk.sh`.
 3. Run `make all` in `projects/posix` to generate `libBlinKit.a`.
 
