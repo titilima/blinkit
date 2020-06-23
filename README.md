@@ -5,6 +5,8 @@
 ### Required
 
 * python2
+* python-pip
+* pyyaml
 
 ### Windows
 
