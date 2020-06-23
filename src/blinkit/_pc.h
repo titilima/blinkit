@@ -41,7 +41,9 @@
 
 #ifdef OS_WIN
 #   include <Windows.h>
+#   ifndef BLINKIT_CRAWLER_ONLY
 extern HMODULE theModule;
+#   endif
 #endif
 
 #if defined(OS_MACOSX) || defined(OS_IOS)
