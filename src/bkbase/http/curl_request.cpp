@@ -12,8 +12,8 @@
 #include "curl_request.h"
 
 #include "base/strings/string_util.h"
-#include "blinkit/common/bk_url.h"
-#include "blinkit/http/response_impl.h"
+#include "bkbase/http/http_response.h"
+#include "url/gurl.h"
 
 namespace BlinKit {
 
@@ -38,7 +38,7 @@ CURLRequest::~CURLRequest(void)
 
 void CURLRequest::Cancel(void)
 {
-    assert(false); // BKTODO:
+    ASSERT(false); // BKTODO:
 }
 
 static size_t HeaderCallback(char *buffer, size_t, size_t nitems, void *userData)
@@ -58,7 +58,7 @@ void* CURLRequest::DoThreadWork(void)
     if (CURLE_OK == code)
     {
         m_response->ParseHeaders(headers);
-        m_client.RequestComplete(m_response.get(), m_client.UserData);
+        m_client.RequestComplete(m_response, m_client.UserData);
     }
     else
     {
@@ -72,7 +72,7 @@ void* CURLRequest::DoThreadWork(void)
 
 ControllerImpl* CURLRequest::GetController(void)
 {
-    assert(false); // BKTODO:
+    ASSERT(false); // BKTODO:
     return nullptr;
 }
 
@@ -81,7 +81,7 @@ int CURLRequest::Perform(void)
     int err = BK_ERR_UNKNOWN;
     do {
         // 1. Check URL.
-        BkURL u(m_URL);
+        GURL u(m_URL);
         if (!u.SchemeIsHTTPOrHTTPS())
         {
             err = BK_ERR_URI;
@@ -119,19 +119,19 @@ int CURLRequest::Perform(void)
         }
 
         // 5. Apply other options.
-        assert(ProxyType() == BK_PROXY_SYSTEM_DEFAULT); // BKTODO:
+        ASSERT(ProxyType() == BK_PROXY_SYSTEM_DEFAULT); // BKTODO:
         const long timeout = TimeoutInMs();
         curl_easy_setopt(m_curl, CURLOPT_TIMEOUT_MS, timeout);
 
         // 6. Initialize response & start worker thread.
-        m_response = std::make_unique<ResponseImpl>(m_URL);
-        curl_easy_setopt(m_curl, CURLOPT_WRITEDATA, m_response.get());
+        m_response = new HttpResponse(m_URL);
+        curl_easy_setopt(m_curl, CURLOPT_WRITEDATA, m_response);
         curl_easy_setopt(m_curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         if (0 == pthread_create(&m_thread, nullptr, ThreadProc, this))
             return BK_ERR_SUCCESS;
     } while (false);
 
-    assert(BK_ERR_SUCCESS == err);
+    ASSERT(BK_ERR_SUCCESS == err);
     delete this;
     return err;
 }
@@ -155,7 +155,7 @@ CURLoption CURLRequest::TranslateOption(const std::string &name)
 
 size_t CURLRequest::WriteCallback(char *ptr, size_t, size_t nmemb, void *userData)
 {
-    ResponseImpl *response = reinterpret_cast<ResponseImpl *>(userData);
+    HttpResponse *response = reinterpret_cast<HttpResponse *>(userData);
     response->AppendData(ptr, nmemb);
     return nmemb;
 }
@@ -164,11 +164,7 @@ size_t CURLRequest::WriteCallback(char *ptr, size_t, size_t nmemb, void *userDat
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-extern "C" {
-
-BKEXPORT BkRequest BKAPI BkCreateRequest(const char *URL, BkRequestClient *client)
+RequestImpl* RequestImpl::CreateInstance(const char *URL, const BkRequestClient &client)
 {
-    return new BlinKit::CURLRequest(URL, *client);
+    return new BlinKit::CURLRequest(URL, client);
 }
-
-} // extern "C"

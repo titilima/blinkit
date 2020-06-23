@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BlinKit Library
+// BlinKit - BkBase Library
 // -------------------------------------------------
 //   File Name: curl_request.h
 // Description: CURLRequest Class
@@ -9,15 +9,15 @@
 // Copyright (C) 2019 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINKIT_CURL_REQUEST_H
-#define BLINKIT_BLINKIT_CURL_REQUEST_H
+#ifndef BLINKIT_BKBASE_CURL_REQUEST_H
+#define BLINKIT_BKBASE_CURL_REQUEST_H
 
 #pragma once
 
 #include <pthread.h>
 #include <curl/curl.h>
 #include <curl/easy.h>
-#include "blinkit/http/request_impl.h"
+#include "bkbase/http/request_impl.h"
 
 namespace BlinKit {
 
@@ -44,4 +44,4 @@ private:
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BLINKIT_CURL_REQUEST_H
+#endif // BLINKIT_BKBASE_CURL_REQUEST_H
