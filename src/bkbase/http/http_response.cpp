@@ -15,6 +15,7 @@
 #include <zlib.h>
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "bkcommon/bk_strings.h"
 #include "url/gurl.h"
 
 namespace BlinKit {
@@ -126,6 +127,16 @@ void HttpResponse::GZipInflate(void)
 
     ASSERT(Z_STREAM_END == err);
     m_body.assign(uncompressedData.begin(), uncompressedData.end());
+}
+
+void HttpResponse::InflateBodyIfNecessary(void)
+{
+    if (m_body.empty())
+        return;
+
+    std::string contentEncoding = m_headers.Get(Strings::HttpHeader::ContentEncoding);
+    if (base::EqualsCaseInsensitiveASCII(contentEncoding, "gzip"))
+        GZipInflate();
 }
 
 void HttpResponse::ParseHeaders(const std::string &rawHeaders)

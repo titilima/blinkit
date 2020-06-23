@@ -250,12 +250,7 @@ int WinRequest::ReceiveData(void)
 
 int WinRequest::RequestComplete(void)
 {
-    std::string contentEncoding;
-    if (BK_ERR_SUCCESS == m_response->GetHeader(Strings::HttpHeader::ContentEncoding, BkMakeBuffer(contentEncoding)))
-    {
-        if (base::EqualsCaseInsensitiveASCII(contentEncoding, "gzip"))
-            m_response->GZipInflate();
-    }
+    m_response->InflateBodyIfNecessary();
 
     ThreadWorker nextWorker = nullptr;
     switch (m_response->StatusCode())
