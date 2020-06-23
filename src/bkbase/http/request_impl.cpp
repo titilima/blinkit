@@ -12,6 +12,7 @@
 #include "request_impl.h"
 
 #include "bkbase/http/http_constants.h"
+#include "bkbase/http/http_response.h"
 #include "bkbase/http/request_controller_impl.h"
 
 using namespace BlinKit;
@@ -22,7 +23,11 @@ RequestImpl::RequestImpl(const char *URL, const BkRequestClient &client)
     m_headers.Set("Accept", "*/*");
 }
 
-RequestImpl::~RequestImpl(void) = default;
+RequestImpl::~RequestImpl(void)
+{
+    if (nullptr != m_response)
+        m_response->Release();
+}
 
 ControllerImpl* RequestImpl::GetController(void)
 {

@@ -39,9 +39,6 @@ WinRequest::~WinRequest(void)
     m_request.Close();
     m_connection.Close();
     m_session.Close();
-
-    if (nullptr != m_response)
-        m_response->Release();
 }
 
 void WinRequest::Cancel(void)
