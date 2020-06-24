@@ -17,6 +17,20 @@
 
 namespace base {
 
+bool Time::FromExploded(bool isLocal, const Exploded &exploded, Time *time)
+{
+    assert(false); // BKTODO:
+    return false;
+}
+
+Time Time::Now(void)
+{
+    assert(false); // BKTODO:
+    return Time();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 TimeTicks TimeTicks::Now(void)
 {
     timespec tp;

@@ -13,11 +13,13 @@
 
 #if defined(OS_WIN)
 #   include <Windows.h>
+#elif defined(OS_POSIX)
+#   include <cstdio>
 #endif
 
 namespace BlinKit {
 
-#ifdef OS_WIN
+#if defined(OS_WIN)
 
 int BkFile::ReadContent(const BkPathChar *fileName, BkBuffer *dst)
 {
@@ -33,6 +35,7 @@ int BkFile::ReadContent(const BkPathChar *fileName, BkBuffer *dst)
     void *buf = dst->Allocator(size, dst->UserData);
     ReadFile(hFile, buf, size, &dwRead, nullptr);
     ASSERT(size == dwRead);
+
     CloseHandle(hFile);
     return BK_ERR_SUCCESS;
 }
@@ -50,7 +53,45 @@ int BkFile::WriteContent(const BkPathChar *fileName, const void *data, size_t si
     DWORD dwWritten = 0;
     WriteFile(hFile, data, size, &dwWritten, nullptr);
     ASSERT(size == dwWritten);
+
     CloseHandle(hFile);
+    return BK_ERR_SUCCESS;
+}
+
+#elif defined(OS_POSIX)
+
+int BkFile::ReadContent(const BkPathChar *fileName, BkBuffer *dst)
+{
+    FILE *fp = fopen(fileName, "rb");
+    if (nullptr == fp)
+    {
+        ASSERT(nullptr != fp);
+        return BK_ERR_NOT_FOUND;
+    }
+
+    fseek(fp, 0, SEEK_END);
+    size_t size = ftell(fp);
+    void *buf = dst->Allocator(size, dst->UserData);
+    fseek(fp, 0, SEEK_SET);
+    fread(buf, 1, size, fp);
+
+    fclose(fp);
+    return true;
+}
+
+int BkFile::WriteContent(const BkPathChar *fileName, const void *data, size_t size)
+{
+    FILE *fp = fopen(fileName, "wb");
+    if (nullptr == fp)
+    {
+        ASSERT(nullptr != fp);
+        return BK_ERR_FORBIDDEN;
+    }
+
+    size_t written = fwrite(data, 1, size, fp);
+    ASSERT(written == size);
+
+    fclose(fp);
     return BK_ERR_SUCCESS;
 }
 

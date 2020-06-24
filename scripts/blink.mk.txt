@@ -192,6 +192,7 @@
 /renderer/platform/shared_buffer.cpp
 /renderer/platform/text/segmented_string.cc
 /renderer/platform/timer.cpp
+/renderer/platform/weborigin/kurl.cpp
 /renderer/platform/weborigin/security_policy.cpp
 /renderer/platform/web_task_runner.cpp
 /renderer/platform/wtf/ascii_ctype.cc
