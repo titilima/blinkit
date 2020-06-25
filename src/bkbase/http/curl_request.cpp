@@ -58,6 +58,7 @@ void* CURLRequest::DoThreadWork(void)
     if (CURLE_OK == code)
     {
         m_response->ParseHeaders(headers);
+        m_response->InflateBodyIfNecessary();
         m_client.RequestComplete(m_response, m_client.UserData);
     }
     else
