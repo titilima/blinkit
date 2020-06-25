@@ -17,6 +17,12 @@
 namespace BlinKit {
 
 static const int SERIAL_RAND_BITS = 159;
+#ifndef BN_RAND_TOP_ANY
+static const int BN_RAND_TOP_ANY = -1;
+#endif
+#ifndef BN_RAND_BOTTOM_ANY
+static const int BN_RAND_BOTTOM_ANY = 0;
+#endif
 
 Certificate::Certificate(void) : m_cert(X509_new())
 {

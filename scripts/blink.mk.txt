@@ -218,6 +218,7 @@
 /renderer/platform/wtf/text/string_to_number.cc
 /renderer/platform/wtf/text/string_view.cc
 /renderer/platform/wtf/text/text_codec.cc
+/renderer/platform/wtf/text/text_codec_iconv.cpp
 /renderer/platform/wtf/text/text_codec_latin1.cc
 /renderer/platform/wtf/text/text_codec_replacement.cc
 /renderer/platform/wtf/text/text_codec_user_defined.cpp

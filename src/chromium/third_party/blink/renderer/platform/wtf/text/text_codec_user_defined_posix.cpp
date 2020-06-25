@@ -37,14 +37,14 @@
 #include "text_codec_user_defined.h"
 
 #include "third_party/blink/renderer/platform/wtf/text/text_codec.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_codec_iconv.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
 
 namespace BlinKit {
 
 std::unique_ptr<WTF::TextCodec> NewUserDefinedTextDecoder(const WTF::TextEncoding &textEncoding, const void *)
 {
-    NOTREACHED(); // Any other encodings to support?
-    return nullptr;
+    return std::make_unique<TextCodecIconv>(textEncoding.GetName());
 }
 
 } // namespace BlinKit
