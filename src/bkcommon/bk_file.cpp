@@ -25,10 +25,7 @@ int BkFile::ReadContent(const BkPathChar *fileName, BkBuffer *dst)
 {
     HANDLE hFile = CreateFileW(fileName, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
     if (INVALID_HANDLE_VALUE == hFile)
-    {
-        ASSERT(INVALID_HANDLE_VALUE != hFile);
         return BK_ERR_NOT_FOUND;
-    }
 
     DWORD dwRead = 0;
     const DWORD size = GetFileSize(hFile, nullptr);
@@ -64,10 +61,7 @@ int BkFile::ReadContent(const BkPathChar *fileName, BkBuffer *dst)
 {
     FILE *fp = fopen(fileName, "rb");
     if (nullptr == fp)
-    {
-        ASSERT(nullptr != fp);
         return BK_ERR_NOT_FOUND;
-    }
 
     fseek(fp, 0, SEEK_END);
     size_t size = ftell(fp);
@@ -76,7 +70,7 @@ int BkFile::ReadContent(const BkPathChar *fileName, BkBuffer *dst)
     fread(buf, 1, size, fp);
 
     fclose(fp);
-    return true;
+    return BK_ERR_SUCCESS;
 }
 
 int BkFile::WriteContent(const BkPathChar *fileName, const void *data, size_t size)
