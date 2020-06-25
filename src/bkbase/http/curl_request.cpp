@@ -13,6 +13,7 @@
 
 #include "base/strings/string_util.h"
 #include "bkbase/http/http_response.h"
+#include "bkcommon/bk_strings.h"
 #include "url/gurl.h"
 
 namespace BlinKit {
@@ -91,7 +92,10 @@ int CURLRequest::Perform(void)
 
         // 2. Adjust method.
         if (base::EqualsCaseInsensitiveASCII(m_method, "POST"))
+        {
+            m_headersList = curl_slist_append(m_headersList, "Expect:"); // Disable "HTTP 100" for response.
             curl_easy_setopt(m_curl, CURLOPT_POST, OPT_TRUE);
+        }
 
         // 3. Process headers.
         for (const auto &it : m_headers.GetRawMap())
@@ -145,11 +149,11 @@ void* CURLRequest::ThreadProc(void *arg)
 
 CURLoption CURLRequest::TranslateOption(const std::string &name)
 {
-    if (base::EqualsCaseInsensitiveASCII(name, "Cookie"))
+    if (base::EqualsCaseInsensitiveASCII(name, Strings::HttpHeader::Cookie))
         return CURLOPT_COOKIE;
-    if (base::EqualsCaseInsensitiveASCII(name, "Referer"))
+    if (base::EqualsCaseInsensitiveASCII(name, Strings::HttpHeader::Referer))
         return CURLOPT_REFERER;
-    if (base::EqualsCaseInsensitiveASCII(name, "User-Agent"))
+    if (base::EqualsCaseInsensitiveASCII(name, Strings::HttpHeader::UserAgent))
         return CURLOPT_USERAGENT;
     return CURLOPT_HTTPHEADER;
 }
