@@ -1,9 +1,21 @@
+// -------------------------------------------------
+// BlinKit - base Library
+// -------------------------------------------------
+//   File Name: time_exploded_posix.cc
+// Description: Date & Time Helpers
+//      Author: Ziming Li
+//     Created: 2020-06-25
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (c) 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "base/time/time.h"
 
+#include <mutex>
 #include <stdint.h>
 #include <sys/time.h>
 #include <time.h>
@@ -15,7 +27,6 @@
 #include <limits>
 
 #include "base/numerics/safe_math.h"
-#include "base/synchronization/lock.h"
 #include "build/build_config.h"
 
 #if defined(OS_ANDROID)
@@ -32,10 +43,7 @@ namespace {
 
 // This prevents a crash on traversing the environment global and looking up
 // the 'TZ' variable in libc. See: crbug.com/390567.
-base::Lock* GetSysTimeToTimeStructLock() {
-  static auto* lock = new base::Lock();
-  return lock;
-}
+std::mutex g_sysTimeToTimeStructLock;
 
 // Define a system-specific SysTime that wraps either to a time_t or
 // a time64_t depending on the host system, and associated convertion.
@@ -105,12 +113,12 @@ void SysTimeToTimeStruct(SysTime t, struct tm* timestruct, bool is_local) {
 typedef time_t SysTime;
 
 SysTime SysTimeFromTimeStruct(struct tm* timestruct, bool is_local) {
-  base::AutoLock locked(*GetSysTimeToTimeStructLock());
+  std::unique_lock<std::mutex> locked(g_sysTimeToTimeStructLock);
   return is_local ? mktime(timestruct) : timegm(timestruct);
 }
 
 void SysTimeToTimeStruct(SysTime t, struct tm* timestruct, bool is_local) {
-  base::AutoLock locked(*GetSysTimeToTimeStructLock());
+  std::unique_lock<std::mutex> locked(g_sysTimeToTimeStructLock);
   if (is_local)
     localtime_r(&t, timestruct);
   else
@@ -126,7 +134,7 @@ void Time::Explode(bool is_local, Exploded* exploded) const {
   // Time stores times with microsecond resolution, but Exploded only carries
   // millisecond resolution, so begin by being lossy.  Adjust from Windows
   // epoch (1601) to Unix epoch (1970);
-  int64_t microseconds = us_ - kTimeTToMicrosecondsOffset;
+  int64_t microseconds = m_us - kTimeTToMicrosecondsOffset;
   // The following values are all rounded towards -infinity.
   int64_t milliseconds;  // Milliseconds since epoch.
   SysTime seconds;       // Seconds since epoch.

@@ -46,6 +46,13 @@ int64_t SaturatedSub(TimeDelta delta, int64_t value)
 
 } // namespace time_internal
 
+bool Time::ExplodedMostlyEquals(const Exploded &lhs, const Exploded &rhs)
+{
+    return lhs.year == rhs.year && lhs.month == rhs.month && lhs.day_of_month == rhs.day_of_month
+        && lhs.hour == rhs.hour && lhs.minute == rhs.minute && lhs.second == rhs.second
+        && lhs.millisecond == rhs.millisecond;
+}
+
 double Time::ToDoubleT(void) const
 {
     assert(false); // BKTODO:
@@ -57,6 +64,8 @@ time_t Time::ToTimeT(void) const
     assert(false); // BKTODO:
     return 0;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 TimeDelta TimeDelta::FromMicroseconds(int64_t us)
 {

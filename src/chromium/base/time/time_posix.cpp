@@ -15,18 +15,19 @@
 
 #include "time.h"
 
-namespace base {
+#include <sys/time.h>
+#include "base/numerics/checked_math.h"
 
-bool Time::FromExploded(bool isLocal, const Exploded &exploded, Time *time)
-{
-    assert(false); // BKTODO:
-    return false;
-}
+namespace base {
 
 Time Time::Now(void)
 {
-    assert(false); // BKTODO:
-    return Time();
+    struct timeval tv;
+    struct timezone tz = {0, 0};
+    gettimeofday(&tv, &tz);
+
+    int64_t us = tv.tv_sec * Time::kMicrosecondsPerSecond + tv.tv_usec + kTimeTToMicrosecondsOffset;
+    return Time() + TimeDelta::FromMicroseconds(us);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

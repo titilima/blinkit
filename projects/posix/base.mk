@@ -3,7 +3,7 @@ BaseFlags = -I$(BkRoot)src/base -I$(BaseSrc) $(CrFlags) -include _pc.h
 BaseObjects = base_location.o logging_posix.o task_runner.o \
 	string_number_conversions.o stringprintf.o string_split.o string_util.o string_util_constants.o utf_string_conversion_utils.o \
 	thread_local_storage_posix.o thread_local_storage.o \
-	time_posix.o base_time.o
+	time_exploded_posix.o time_posix.o base_time.o
 
 base_location.o: $(BaseSrc)/location.cc
 	$(CXX) -c $(CXXFLAGS) $(BaseFlags) $< -o $@
@@ -26,6 +26,8 @@ utf_string_conversion_utils.o: $(BaseSrc)/strings/utf_string_conversion_utils.cp
 thread_local_storage_posix.o: $(BaseSrc)/threading/thread_local_storage_posix.cpp
 	$(CXX) -c $(CXXFLAGS) $(BaseFlags) $< -o $@
 thread_local_storage.o: $(BaseSrc)/threading/thread_local_storage.cpp
+	$(CXX) -c $(CXXFLAGS) $(BaseFlags) $< -o $@
+time_exploded_posix.o: $(BaseSrc)/time/time_exploded_posix.cc
 	$(CXX) -c $(CXXFLAGS) $(BaseFlags) $< -o $@
 time_posix.o: $(BaseSrc)/time/time_posix.cpp
 	$(CXX) -c $(CXXFLAGS) $(BaseFlags) $< -o $@
