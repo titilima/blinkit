@@ -78,16 +78,23 @@ std::string CookieJarImpl::Get(const char *URL) const
 
 bool CookieJarImpl::Set(const char *setCookieHeader, const char *URL)
 {
-    std::unique_ptr<CanonicalCookie> c(CanonicalCookie::Create(GURL(URL), setCookieHeader, base::Time::Now(), m_options));
+    base::Time now = base::Time::Now();
+
+    std::unique_ptr<CanonicalCookie> c(CanonicalCookie::Create(GURL(URL), setCookieHeader, now, m_options));
     if (nullptr == c)
     {
         BKLOG("Parse cookie failed! Cookie line: %s", setCookieHeader);
         return false;
     }
 
+    const bool isExpired = c->IsExpired(now);
+
     auto it = m_cookies.find(c->Domain());
     if (std::end(m_cookies) == it)
     {
+        if (isExpired)
+            return false;
+
         auto r = m_cookies.insert(std::make_pair(c->Domain(), CookiesMap()));
         if (!r.second)
         {
@@ -96,16 +103,24 @@ bool CookieJarImpl::Set(const char *setCookieHeader, const char *URL)
         }
 
         it = r.first;
+        it->second[c->Name()] = std::move(c);
+        return true;
     }
 
     auto it2 = it->second.find(c->Name());
     if (std::end(it->second) == it2)
     {
+        if (isExpired)
+            return false;
+
         it->second[c->Name()] = std::move(c);
         return true;
     }
 
-    it2->second = std::move(c);
+    if (isExpired)
+        it->second.erase(it2);
+    else
+        it2->second = std::move(c);
     return true;
 }
 
