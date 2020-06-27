@@ -33,7 +33,9 @@ public:
     bool Set(const char *setCookieHeader, const char *URL);
 private:
     net::CookieOptions m_options;
-    std::vector<std::unique_ptr<net::CanonicalCookie>> m_cookies;
+
+    typedef std::unordered_map<std::string, std::unique_ptr<net::CanonicalCookie>> CookiesMap;
+    std::unordered_map<std::string, CookiesMap> m_cookies;
 };
 
 #endif // BLINKIT_BLINKIT_COOKIE_JAR_IMPL_H

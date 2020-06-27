@@ -27,45 +27,86 @@ void CookieJarImpl::Clear(void)
     m_cookies.clear();
 }
 
+static bool DomainMatch(const std::string &domainInURL, const std::string &domainInCookie)
+{
+    if (domainInCookie.empty())
+        return false;
+    if (domainInCookie.front() != '.')
+        return domainInURL == domainInCookie; // Full domain
+
+    size_t l2 = domainInCookie.length();
+    if (0 == domainInCookie.compare(1, l2 - 1, domainInURL))
+        return true;
+
+    size_t l1 = domainInURL.length();
+    if (l1 <= l2)
+        return false;
+
+    return 0 == domainInURL.compare(l1 - l2, l2, domainInCookie);
+}
+
 std::string CookieJarImpl::Get(const char *URL) const
 {
-    GURL u(URL);
-    std::unordered_map<std::string, std::string> kv;
-    for (const auto &cookie : m_cookies)
-    {
-        if (cookie->IncludeForRequestURL(u, m_options))
-            kv[cookie->Name()] = cookie->Value();
-    }
- 
     std::string ret;
-    for (const auto &it : kv)
+
+    GURL u(URL);
+    for (const auto &it : m_cookies)
     {
-        ret.append(it.first);
-        ret.push_back('=');
-        ret.append(it.second);
-        ret.append("; ");
+        if (!DomainMatch(u.host(), it.first))
+            continue;
+
+        for (const auto &it2 : it.second)
+        {
+            CanonicalCookie *c = it2.second.get();
+            if (!c->IncludeForRequestURL(u, m_options))
+                continue;
+
+            ret.append(c->Name());
+            ret.push_back('=');
+            ret.append(c->Value());
+            ret.append("; ");
+        }
     }
+
     if (!ret.empty())
     {
         size_t s = ret.length();
-        ret.resize(s - 2); // For the last "; "
+        ret.resize(s - 2); // Remove the last "; "
     }
     return ret;
 }
 
 bool CookieJarImpl::Set(const char *setCookieHeader, const char *URL)
 {
-    CanonicalCookie *c = CanonicalCookie::Create(GURL(URL), setCookieHeader, base::Time::Now(), m_options);
-    if (nullptr != c)
+    std::unique_ptr<CanonicalCookie> c(CanonicalCookie::Create(GURL(URL), setCookieHeader, base::Time::Now(), m_options));
+    if (nullptr == c)
     {
-        // BKTODO: Optimize the logic:
-        //   1. Check duplicate entries;
-        //   2. Improve performance.
-        m_cookies.push_back(std::unique_ptr<CanonicalCookie>(c));
+        BKLOG("Parse cookie failed! Cookie line: %s", setCookieHeader);
+        return false;
+    }
+
+    auto it = m_cookies.find(c->Domain());
+    if (std::end(m_cookies) == it)
+    {
+        auto r = m_cookies.insert(std::make_pair(c->Domain(), CookiesMap()));
+        if (!r.second)
+        {
+            ASSERT(r.second);
+            return false;
+        }
+
+        it = r.first;
+    }
+
+    auto it2 = it->second.find(c->Name());
+    if (std::end(it->second) == it2)
+    {
+        it->second[c->Name()] = std::move(c);
         return true;
     }
-    BKLOG("Parse cookie failed! Cookie line: %s", setCookieHeader);
-    return false;
+
+    it2->second = std::move(c);
+    return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
