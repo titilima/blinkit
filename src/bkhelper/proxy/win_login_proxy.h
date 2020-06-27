@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "bkhelper/login/login_proxy_impl.h"
+#include "bkhelper/proxy/login_proxy_impl.h"
 
 namespace BlinKit {
 

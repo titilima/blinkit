@@ -161,17 +161,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\sdk\include\bk_helper.h" />
-    <ClInclude Include="..\..\..\src\bkhelper\login\login_globals.h" />
-    <ClInclude Include="..\..\..\src\bkhelper\login\login_proxy_impl.h" />
-    <ClInclude Include="..\..\..\src\bkhelper\login\private_key_impl.h" />
-    <ClInclude Include="..\..\..\src\bkhelper\login\socket_wrapper.h" />
-    <ClInclude Include="..\..\..\src\bkhelper\login\tasks\https_request_task.h" />
-    <ClInclude Include="..\..\..\src\bkhelper\login\tasks\http_request_task.h" />
-    <ClInclude Include="..\..\..\src\bkhelper\login\tasks\login_task.h" />
-    <ClInclude Include="..\..\..\src\bkhelper\login\tasks\request_task_base.h" />
-    <ClInclude Include="..\..\..\src\bkhelper\login\tasks\response_task.h" />
-    <ClInclude Include="..\..\..\src\bkhelper\login\win_login_proxy.h" />
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\login_globals.h" />
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\login_proxy_impl.h" />
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\socket_wrapper.h" />
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\tasks\https_request_task.h" />
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\tasks\http_request_task.h" />
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\tasks\login_task.h" />
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\tasks\request_task_base.h" />
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\tasks\response_task.h" />
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\win_login_proxy.h" />
     <ClInclude Include="..\..\..\src\bkhelper\ssl\certificate.h" />
+    <ClInclude Include="..\..\..\src\bkhelper\ssl\private_key_impl.h" />
     <ClInclude Include="..\..\..\src\bkhelper\ssl\rsa_key.h" />
     <ClInclude Include="..\..\..\src\bkhelper\ssl\sign_request.h" />
     <ClInclude Include="..\..\..\src\bkhelper\ssl\ssl_pair.h" />
@@ -185,16 +185,16 @@
     <ResourceCompile Include="BkHelper.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\bkhelper\login\login_globals.cpp" />
-    <ClCompile Include="..\..\..\src\bkhelper\login\login_proxy_impl.cpp" />
-    <ClCompile Include="..\..\..\src\bkhelper\login\private_key_impl.cpp" />
-    <ClCompile Include="..\..\..\src\bkhelper\login\socket_wrapper.cpp" />
-    <ClCompile Include="..\..\..\src\bkhelper\login\tasks\https_request_task.cpp" />
-    <ClCompile Include="..\..\..\src\bkhelper\login\tasks\http_request_task.cpp" />
-    <ClCompile Include="..\..\..\src\bkhelper\login\tasks\request_task_base.cpp" />
-    <ClCompile Include="..\..\..\src\bkhelper\login\tasks\response_task.cpp" />
-    <ClCompile Include="..\..\..\src\bkhelper\login\win_login_proxy.cpp" />
+    <ClCompile Include="..\..\..\src\bkhelper\proxy\login_globals.cpp" />
+    <ClCompile Include="..\..\..\src\bkhelper\proxy\login_proxy_impl.cpp" />
+    <ClCompile Include="..\..\..\src\bkhelper\proxy\socket_wrapper.cpp" />
+    <ClCompile Include="..\..\..\src\bkhelper\proxy\tasks\https_request_task.cpp" />
+    <ClCompile Include="..\..\..\src\bkhelper\proxy\tasks\http_request_task.cpp" />
+    <ClCompile Include="..\..\..\src\bkhelper\proxy\tasks\request_task_base.cpp" />
+    <ClCompile Include="..\..\..\src\bkhelper\proxy\tasks\response_task.cpp" />
+    <ClCompile Include="..\..\..\src\bkhelper\proxy\win_login_proxy.cpp" />
     <ClCompile Include="..\..\..\src\bkhelper\ssl\certificate.cpp" />
+    <ClCompile Include="..\..\..\src\bkhelper\ssl\private_key_impl.cpp" />
     <ClCompile Include="..\..\..\src\bkhelper\ssl\rsa_key.cpp" />
     <ClCompile Include="..\..\..\src\bkhelper\ssl\sign_request.cpp" />
     <ClCompile Include="..\..\..\src\bkhelper\ssl\ssl_pair.cpp" />

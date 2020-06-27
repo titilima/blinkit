@@ -13,14 +13,14 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="login">
-      <UniqueIdentifier>{953e28d7-4f74-4601-ab45-620e00a9224b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="login\tasks">
-      <UniqueIdentifier>{af6266bb-d8f0-4b00-9f1d-94bc878a3c7c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ssl">
       <UniqueIdentifier>{5b742283-ed8a-4b96-809b-29a6fdfb96df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="proxy">
+      <UniqueIdentifier>{953e28d7-4f74-4601-ab45-620e00a9224b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="proxy\tasks">
+      <UniqueIdentifier>{af6266bb-d8f0-4b00-9f1d-94bc878a3c7c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -33,35 +33,32 @@
     <ClInclude Include="..\..\..\src\bkhelper\_pc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\bkhelper\login\login_globals.h">
-      <Filter>login</Filter>
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\login_globals.h">
+      <Filter>proxy</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\bkhelper\login\login_proxy_impl.h">
-      <Filter>login</Filter>
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\login_proxy_impl.h">
+      <Filter>proxy</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\bkhelper\login\private_key_impl.h">
-      <Filter>login</Filter>
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\socket_wrapper.h">
+      <Filter>proxy</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\bkhelper\login\socket_wrapper.h">
-      <Filter>login</Filter>
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\win_login_proxy.h">
+      <Filter>proxy</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\bkhelper\login\win_login_proxy.h">
-      <Filter>login</Filter>
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\tasks\http_request_task.h">
+      <Filter>proxy\tasks</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\bkhelper\login\tasks\http_request_task.h">
-      <Filter>login\tasks</Filter>
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\tasks\https_request_task.h">
+      <Filter>proxy\tasks</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\bkhelper\login\tasks\https_request_task.h">
-      <Filter>login\tasks</Filter>
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\tasks\login_task.h">
+      <Filter>proxy\tasks</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\bkhelper\login\tasks\login_task.h">
-      <Filter>login\tasks</Filter>
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\tasks\request_task_base.h">
+      <Filter>proxy\tasks</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\bkhelper\login\tasks\request_task_base.h">
-      <Filter>login\tasks</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\bkhelper\login\tasks\response_task.h">
-      <Filter>login\tasks</Filter>
+    <ClInclude Include="..\..\..\src\bkhelper\proxy\tasks\response_task.h">
+      <Filter>proxy\tasks</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\bkhelper\ssl\certificate.h">
       <Filter>ssl</Filter>
@@ -73,6 +70,9 @@
       <Filter>ssl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\bkhelper\ssl\ssl_pair.h">
+      <Filter>ssl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\bkhelper\ssl\private_key_impl.h">
       <Filter>ssl</Filter>
     </ClInclude>
   </ItemGroup>
@@ -90,32 +90,29 @@
     <ClCompile Include="..\_pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\bkhelper\login\login_globals.cpp">
-      <Filter>login</Filter>
+    <ClCompile Include="..\..\..\src\bkhelper\proxy\login_globals.cpp">
+      <Filter>proxy</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\bkhelper\login\login_proxy_impl.cpp">
-      <Filter>login</Filter>
+    <ClCompile Include="..\..\..\src\bkhelper\proxy\login_proxy_impl.cpp">
+      <Filter>proxy</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\bkhelper\login\private_key_impl.cpp">
-      <Filter>login</Filter>
+    <ClCompile Include="..\..\..\src\bkhelper\proxy\socket_wrapper.cpp">
+      <Filter>proxy</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\bkhelper\login\socket_wrapper.cpp">
-      <Filter>login</Filter>
+    <ClCompile Include="..\..\..\src\bkhelper\proxy\win_login_proxy.cpp">
+      <Filter>proxy</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\bkhelper\login\win_login_proxy.cpp">
-      <Filter>login</Filter>
+    <ClCompile Include="..\..\..\src\bkhelper\proxy\tasks\http_request_task.cpp">
+      <Filter>proxy\tasks</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\bkhelper\login\tasks\http_request_task.cpp">
-      <Filter>login\tasks</Filter>
+    <ClCompile Include="..\..\..\src\bkhelper\proxy\tasks\https_request_task.cpp">
+      <Filter>proxy\tasks</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\bkhelper\login\tasks\https_request_task.cpp">
-      <Filter>login\tasks</Filter>
+    <ClCompile Include="..\..\..\src\bkhelper\proxy\tasks\request_task_base.cpp">
+      <Filter>proxy\tasks</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\bkhelper\login\tasks\request_task_base.cpp">
-      <Filter>login\tasks</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\bkhelper\login\tasks\response_task.cpp">
-      <Filter>login\tasks</Filter>
+    <ClCompile Include="..\..\..\src\bkhelper\proxy\tasks\response_task.cpp">
+      <Filter>proxy\tasks</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\bkhelper\ssl\certificate.cpp">
       <Filter>ssl</Filter>
@@ -127,6 +124,9 @@
       <Filter>ssl</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\bkhelper\ssl\ssl_pair.cpp">
+      <Filter>ssl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\bkhelper\ssl\private_key_impl.cpp">
       <Filter>ssl</Filter>
     </ClCompile>
   </ItemGroup>

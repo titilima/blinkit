@@ -16,8 +16,8 @@
 #include <openssl/ssl.h>
 #include "bkcommon/bk_file.h"
 #include "bkcommon/bk_strings.h"
-#include "bkhelper/login/login_globals.h"
-#include "bkhelper/login/tasks/http_request_task.h"
+#include "bkhelper/proxy/login_globals.h"
+#include "bkhelper/proxy/tasks/http_request_task.h"
 #include "bkhelper/ssl/ssl_pair.h"
 
 using namespace BlinKit;

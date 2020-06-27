@@ -14,7 +14,7 @@
 #include "bk_helper.h"
 #include <openssl/evp.h>
 #include <openssl/pem.h>
-#include "bkhelper/login/login_globals.h"
+#include "bkhelper/proxy/login_globals.h"
 #include "bkhelper/ssl/certificate.h"
 #include "bkhelper/ssl/rsa_key.h"
 #include "bkhelper/ssl/sign_request.h"

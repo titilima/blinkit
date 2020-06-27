@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "bkhelper/login/private_key_impl.h"
+#include "bkhelper/ssl/private_key_impl.h"
 #include "bkhelper/ssl/certificate.h"
 
 namespace BlinKit {

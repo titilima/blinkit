@@ -15,8 +15,8 @@
 #pragma once
 
 #include <unordered_map>
-#include "bkhelper/login/socket_wrapper.h"
-#include "bkhelper/login/tasks/login_task.h"
+#include "bkhelper/proxy/socket_wrapper.h"
+#include "bkhelper/proxy/tasks/login_task.h"
 
 class ResponseImpl;
 
