@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: _pc.h
 // Description: Pre-compiled Header File
@@ -9,8 +9,8 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BKLOGIN__PC_H
-#define BLINKIT_BKLOGIN__PC_H
+#ifndef BLINKIT_BKHELPER__PC_H
+#define BLINKIT_BKHELPER__PC_H
 
 #pragma once
 
@@ -25,4 +25,4 @@
 #include "BlinKit.hpp"
 #include "base/logging.h"
 
-#endif // BLINKIT_BKLOGIN__PC_H
+#endif // BLINKIT_BKHELPER__PC_H

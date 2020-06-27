@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: login_globals.h
 // Description: LoginGlobals Class
@@ -9,8 +9,8 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BKLOGIN_LOGIN_GLOBALS_H
-#define BLINKIT_BKLOGIN_LOGIN_GLOBALS_H
+#ifndef BLINKIT_BKHELPER_LOGIN_GLOBALS_H
+#define BLINKIT_BKHELPER_LOGIN_GLOBALS_H
 
 #pragma once
 
@@ -32,4 +32,4 @@ private:
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BKLOGIN_LOGIN_GLOBALS_H
+#endif // BLINKIT_BKHELPER_LOGIN_GLOBALS_H

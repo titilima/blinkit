@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: ssl_pair.cpp
 // Description: SSLPair Class
@@ -12,8 +12,8 @@
 #include "ssl_pair.h"
 
 #include <openssl/ssl.h>
-#include "bklogin/ssl/rsa_key.h"
-#include "bklogin/ssl/sign_request.h"
+#include "bkhelper/ssl/rsa_key.h"
+#include "bkhelper/ssl/sign_request.h"
 
 namespace BlinKit {
 

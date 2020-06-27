@@ -14,7 +14,7 @@
 #include "base/strings/stringprintf.h"
 #include "bkcommon/bk_strings.h"
 #include "bkcommon/response_impl.h"
-#include "bklogin/login/login_proxy_impl.h"
+#include "bkhelper/login/login_proxy_impl.h"
 
 namespace BlinKit {
 

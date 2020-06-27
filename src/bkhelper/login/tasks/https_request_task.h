@@ -9,13 +9,13 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BKLOGIN_HTTPS_REQUEST_TASK_H
-#define BLINKIT_BKLOGIN_HTTPS_REQUEST_TASK_H
+#ifndef BLINKIT_BKHELPER_HTTPS_REQUEST_TASK_H
+#define BLINKIT_BKHELPER_HTTPS_REQUEST_TASK_H
 
 #pragma once
 
 #include <openssl/ossl_typ.h>
-#include "bklogin/login/tasks/request_task_base.h"
+#include "bkhelper/login/tasks/request_task_base.h"
 
 namespace BlinKit {
 
@@ -31,4 +31,4 @@ private:
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BKLOGIN_HTTPS_REQUEST_TASK_H
+#endif // BLINKIT_BKHELPER_HTTPS_REQUEST_TASK_H

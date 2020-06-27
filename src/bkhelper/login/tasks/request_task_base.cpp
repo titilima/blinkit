@@ -15,9 +15,9 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "bkcommon/bk_strings.h"
-#include "bklogin/login/login_proxy_impl.h"
-#include "bklogin/login/tasks/https_request_task.h"
-#include "bklogin/login/tasks/response_task.h"
+#include "bkhelper/login/login_proxy_impl.h"
+#include "bkhelper/login/tasks/https_request_task.h"
+#include "bkhelper/login/tasks/response_task.h"
 
 namespace BlinKit {
 

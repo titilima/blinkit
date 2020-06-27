@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: sign_request.h
 // Description: SignRequest Class
@@ -9,8 +9,8 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BKLOGIN_SIGN_REQUEST_H
-#define BLINKIT_BKLOGIN_SIGN_REQUEST_H
+#ifndef BLINKIT_BKHELPER_SIGN_REQUEST_H
+#define BLINKIT_BKHELPER_SIGN_REQUEST_H
 
 #pragma once
 
@@ -44,4 +44,4 @@ private:
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BKLOGIN_SIGN_REQUEST_H
+#endif // BLINKIT_BKHELPER_SIGN_REQUEST_H

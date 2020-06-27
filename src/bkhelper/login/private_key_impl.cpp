@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: private_key_impl.cpp
 // Description: PrivateKeyImpl Class
@@ -11,13 +11,13 @@
 
 #include "private_key_impl.h"
 
-#include "bk_login.h"
+#include "bk_helper.h"
 #include <openssl/evp.h>
 #include <openssl/pem.h>
-#include "bklogin/login/login_globals.h"
-#include "bklogin/ssl/certificate.h"
-#include "bklogin/ssl/rsa_key.h"
-#include "bklogin/ssl/sign_request.h"
+#include "bkhelper/login/login_globals.h"
+#include "bkhelper/ssl/certificate.h"
+#include "bkhelper/ssl/rsa_key.h"
+#include "bkhelper/ssl/sign_request.h"
 
 using namespace BlinKit;
 

@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: certificate.h
 // Description: Certificate Class
@@ -9,8 +9,8 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BKLOGIN_CERTIFICATE_H
-#define BLINKIT_BKLOGIN_CERTIFICATE_H
+#ifndef BLINKIT_BKHELPER_CERTIFICATE_H
+#define BLINKIT_BKHELPER_CERTIFICATE_H
 
 #pragma once
 
@@ -42,4 +42,4 @@ private:
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BKLOGIN_CERTIFICATE_H
+#endif // BLINKIT_BKHELPER_CERTIFICATE_H

@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: ssl_pair.h
 // Description: SSLPair Class
@@ -9,13 +9,13 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BKLOGIN_SSL_PAIR_H
-#define BLINKIT_BKLOGIN_SSL_PAIR_H
+#ifndef BLINKIT_BKHELPER_SSL_PAIR_H
+#define BLINKIT_BKHELPER_SSL_PAIR_H
 
 #pragma once
 
-#include "bklogin/login/private_key_impl.h"
-#include "bklogin/ssl/certificate.h"
+#include "bkhelper/login/private_key_impl.h"
+#include "bkhelper/ssl/certificate.h"
 
 namespace BlinKit {
 
@@ -34,4 +34,4 @@ private:
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BKLOGIN_SSL_PAIR_H
+#endif // BLINKIT_BKHELPER_SSL_PAIR_H

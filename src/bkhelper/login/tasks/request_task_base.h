@@ -9,16 +9,16 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BKLOGIN_REQUEST_TASK_BASE_H
-#define BLINKIT_BKLOGIN_REQUEST_TASK_BASE_H
+#ifndef BLINKIT_BKHELPER_REQUEST_TASK_BASE_H
+#define BLINKIT_BKHELPER_REQUEST_TASK_BASE_H
 
 #pragma once
 
 #include <string_view>
 #include <unordered_map>
 #include <utility>
-#include "bklogin/login/socket_wrapper.h"
-#include "bklogin/login/tasks/login_task.h"
+#include "bkhelper/login/socket_wrapper.h"
+#include "bkhelper/login/tasks/login_task.h"
 
 namespace BlinKit {
 
@@ -52,4 +52,4 @@ private:
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BKLOGIN_REQUEST_TASK_BASE_H
+#endif // BLINKIT_BKHELPER_REQUEST_TASK_BASE_H

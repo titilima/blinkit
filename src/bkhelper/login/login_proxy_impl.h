@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: login_proxy_impl.h
 // Description: LoginProxyImpl Class
@@ -9,8 +9,8 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BKLOGIN_LOGIN_PROXY_IMPL_H
-#define BLINKIT_BKLOGIN_LOGIN_PROXY_IMPL_H
+#ifndef BLINKIT_BKHELPER_LOGIN_PROXY_IMPL_H
+#define BLINKIT_BKHELPER_LOGIN_PROXY_IMPL_H
 
 #pragma once
 
@@ -18,7 +18,7 @@
 #include <mutex>
 #include <queue>
 #include <unordered_map>
-#include "bk_login.h"
+#include "bk_helper.h"
 #include <openssl/ossl_typ.h>
 #include "bkcommon/bk_socket.h"
 
@@ -69,4 +69,4 @@ private:
     std::queue<BlinKit::LoginTask *> m_tasks;
 };
 
-#endif // BLINKIT_BKLOGIN_LOGIN_PROXY_IMPL_H
+#endif // BLINKIT_BKHELPER_LOGIN_PROXY_IMPL_H

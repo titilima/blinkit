@@ -1,15 +1,15 @@
 // -------------------------------------------------
 // BlinKit SDK
 // -------------------------------------------------
-//   File Name: bk_login.h
+//   File Name: bk_helper.h
 //      Author: Ziming Li
 //     Created: 2020-05-31
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_SDK_LOGIN_H
-#define BLINKIT_SDK_LOGIN_H
+#ifndef BLINKIT_SDK_HELPER_H
+#define BLINKIT_SDK_HELPER_H
 
 #pragma once
 
@@ -61,4 +61,4 @@ BKEXPORT int BKAPI BkRunLoginProxy(BkLoginProxy loginProxy, uint16_t port);
 } // extern "C"
 #endif // __cplusplus
 
-#endif // BLINKIT_SDK_LOGIN_H
+#endif // BLINKIT_SDK_HELPER_H

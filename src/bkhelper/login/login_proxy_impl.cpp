@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: login_proxy_impl.cpp
 // Description: LoginProxyImpl Class
@@ -16,9 +16,9 @@
 #include <openssl/ssl.h>
 #include "bkcommon/bk_file.h"
 #include "bkcommon/bk_strings.h"
-#include "bklogin/login/login_globals.h"
-#include "bklogin/login/tasks/http_request_task.h"
-#include "bklogin/ssl/ssl_pair.h"
+#include "bkhelper/login/login_globals.h"
+#include "bkhelper/login/tasks/http_request_task.h"
+#include "bkhelper/ssl/ssl_pair.h"
 
 using namespace BlinKit;
 

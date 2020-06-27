@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: private_key_impl.h
 // Description: PrivateKeyImpl Class
@@ -9,8 +9,8 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BKLOGIN_PRIVATE_KEY_IMPL_H
-#define BLINKIT_BKLOGIN_PRIVATE_KEY_IMPL_H
+#ifndef BLINKIT_BKHELPER_PRIVATE_KEY_IMPL_H
+#define BLINKIT_BKHELPER_PRIVATE_KEY_IMPL_H
 
 #pragma once
 
@@ -31,4 +31,4 @@ protected:
     EVP_PKEY *m_key = nullptr;
 };
 
-#endif // BLINKIT_BKLOGIN_PRIVATE_KEY_IMPL_H
+#endif // BLINKIT_BKHELPER_PRIVATE_KEY_IMPL_H

@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: socket_wrapper.h
 // Description: SocketWrapper Class
@@ -9,8 +9,8 @@
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BKLOGIN_SOCKET_WRAPPER_H
-#define BLINKIT_BKLOGIN_SOCKET_WRAPPER_H
+#ifndef BLINKIT_BKHELPER_SOCKET_WRAPPER_H
+#define BLINKIT_BKHELPER_SOCKET_WRAPPER_H
 
 #pragma once
 
@@ -35,4 +35,4 @@ protected:
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BKLOGIN_SOCKET_WRAPPER_H
+#endif // BLINKIT_BKHELPER_SOCKET_WRAPPER_H
