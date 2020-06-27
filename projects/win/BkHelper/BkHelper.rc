@@ -42,11 +42,11 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "CompanyName", "MingYang Software Technology"
-            VALUE "FileDescription", "BkLogin - Login Helper Module in BlinKit Framework"
+            VALUE "FileDescription", "BkHelper - Helper Module in BlinKit Framework"
             VALUE "FileVersion", "1.1.0.6"
-            VALUE "InternalName", "BkLogin.dll"
+            VALUE "InternalName", "BkHelper.dll"
             VALUE "LegalCopyright", "Copyright (C) 2001-2020"
-            VALUE "OriginalFilename", "BkLogin.dll"
+            VALUE "OriginalFilename", "BkHelper.dll"
             VALUE "ProductName", "BlinKit"
             VALUE "ProductVersion", "1.1.0.20"
         END

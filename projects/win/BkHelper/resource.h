@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by BkLogin.rc
+// Used by BkHelper.rc
 
 // Next default values for new objects
 // 

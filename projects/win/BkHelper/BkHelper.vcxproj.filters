@@ -77,12 +77,12 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BkLogin.def">
+    <None Include="BkHelper.def">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="BkLogin.rc">
+    <ResourceCompile Include="BkHelper.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
