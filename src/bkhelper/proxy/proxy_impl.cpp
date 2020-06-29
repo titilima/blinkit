@@ -2,33 +2,60 @@
 // BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: login_proxy_impl.cpp
-// Description: LoginProxyImpl Class
+// Description: ProxyImpl Class
 //      Author: Ziming Li
 //     Created: 2020-04-25
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "login_proxy_impl.h"
+#include "proxy_impl.h"
 
 #include <iterator>
 #include <openssl/pem.h>
 #include <openssl/ssl.h>
 #include "bkcommon/bk_file.h"
 #include "bkcommon/bk_strings.h"
-#include "bkhelper/proxy/login_globals.h"
+#include "bkhelper/proxy/proxy_globals.h"
 #include "bkhelper/proxy/tasks/http_request_task.h"
 #include "bkhelper/ssl/ssl_pair.h"
 
 using namespace BlinKit;
 
-static const char EXIT[] = "EXIT";
+static const size_t ExitStringLength = 4;
 
-LoginProxyImpl::LoginProxyImpl(const BkLoginProxyClient &client) : m_client(client)
+static std::string GenerateExitString(void)
+{
+    std::string ret;
+    srand(static_cast<unsigned>(time(nullptr)));
+    for (size_t i = 0; i < ExitStringLength; ++i)
+    {
+        int n = rand() % 62;
+        if (0 <= n && n < 26)
+        {
+            ret.push_back('a' + n);
+            continue;
+        }
+
+        n -= 26;
+        if (0 <= n && n < 26)
+        {
+            ret.push_back('A' + n);
+            continue;
+        }
+
+        n -= 26;
+        ASSERT(0 <= n && n < 10);
+        ret.push_back('0' + n);
+    }
+    return ret;
+}
+
+ProxyImpl::ProxyImpl(const BkProxyClient &client) : m_client(client), m_exitString(GenerateExitString())
 {
 }
 
-LoginProxyImpl::~LoginProxyImpl(void)
+ProxyImpl::~ProxyImpl(void)
 {
     // The socket SHOULD BE closed before dtor,
     // because WSACleanup is called in ~WinLoginProxy (which before ~LoginProxy).
@@ -38,16 +65,16 @@ LoginProxyImpl::~LoginProxyImpl(void)
         SSL_CTX_free(it.second);
 }
 
-void LoginProxyImpl::AddTask(LoginTask *task)
+void ProxyImpl::AddTask(ProxyTask *task)
 {
     std::unique_lock<std::mutex> lock(m_mutex);
     m_tasks.push(task);
     m_cond.notify_one();
 }
 
-int LoginProxyImpl::ApplyPEM(const std::string &privateKey, const std::string &cert)
+int ProxyImpl::ApplyPEM(const std::string &privateKey, const std::string &cert)
 {
-    LoginGlobals::EnsureSSLInitialized();
+    ProxyGlobals::EnsureSSLInitialized();
 
     m_caData = std::make_unique<SSLPair>(privateKey, cert);
     if (!m_caData->IsValid())
@@ -58,17 +85,21 @@ int LoginProxyImpl::ApplyPEM(const std::string &privateKey, const std::string &c
     return BK_ERR_SUCCESS;
 }
 
-std::string LoginProxyImpl::GetLoggedInHTML(void) const
+void ProxyImpl::ExitLoop(void)
+{
+    m_running = false;
+    StopListeningThread();
+}
+
+std::string ProxyImpl::GetExitBody(void) const
 {
     std::string ret;
     if (nullptr != m_client.GetConfig)
-        m_client.GetConfig(BK_LPCFG_LOGGED_IN_HTML, BkMakeBuffer(ret), m_client.UserData);
-    if (ret.empty())
-        ret.assign("<html><body>Login successfully!<body></html>");
+        m_client.GetConfig(BK_PROXY_CFG_EXIT_BODY, BkMakeBuffer(ret), m_client.UserData);
     return ret;
 }
 
-bool LoginProxyImpl::InitSocket(uint16_t port)
+bool ProxyImpl::InitSocket(uint16_t port)
 {
     ASSERT(INVALID_SOCKET == m_socket);
 
@@ -79,9 +110,11 @@ bool LoginProxyImpl::InitSocket(uint16_t port)
         return false;
     }
 
+    m_port = port;
+
     sockaddr_in addr = { 0 };
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(port);
+    addr.sin_port = htons(m_port);
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
     if (bind(m_socket, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) == SOCKET_ERROR)
     {
@@ -99,16 +132,7 @@ bool LoginProxyImpl::InitSocket(uint16_t port)
     return true;
 }
 
-bool LoginProxyImpl::IsLoginSuccessful(const std::string &currentURL) const
-{
-    if (!m_client.IsLoginSuccessful(currentURL.c_str(), m_client.UserData))
-        return false;
-
-    m_loggedIn = true;
-    return true;
-}
-
-SSL* LoginProxyImpl::NewSSL(const std::string &domain)
+SSL* ProxyImpl::NewSSL(const std::string &domain)
 {
     SSL_CTX *ctx = nullptr;
 
@@ -129,9 +153,21 @@ SSL* LoginProxyImpl::NewSSL(const std::string &domain)
     return SSL_new(ctx);
 }
 
-int LoginProxyImpl::Run(uint16_t port)
+bool ProxyImpl::PreProcessRequestComplete(BkResponse response)
 {
-    int r = BK_ERR_UNKNOWN;
+    m_client.RequestComplete(response, m_client.UserData);
+    return m_running;
+}
+
+bool ProxyImpl::PreProcessRequestPerform(RequestTaskBase *requestTask)
+{
+    m_client.BeforeRequestPerform(requestTask, m_client.UserData);
+    return m_running;
+}
+
+int ProxyImpl::RunLoop(uint16_t port)
+{
+    int r = BK_ERR_SUCCESS;
     do {
         if (!InitSocket(port))
         {
@@ -140,22 +176,24 @@ int LoginProxyImpl::Run(uint16_t port)
         }
 
         if (!StartListeningThread())
+        {
+            r = BK_ERR_UNKNOWN;
             break;
+        }
 
-        r = RunTaskLoop();
-
-        StopListeningThread(port);
+        RunTaskLoop();
     } while (false);
+    delete this;
     return r;
 }
 
-void LoginProxyImpl::RunListeningThread(void)
+void ProxyImpl::RunListeningThread(void)
 {
     for (;;)
     {
         SOCKET clientSocket = accept(m_socket, nullptr, nullptr);
 
-        char lead[5];
+        char lead[ExitStringLength + 1] = { 0 };
         int size = recv(clientSocket, lead, std::size(lead), 0);
         if (size < 0)
         {
@@ -163,10 +201,14 @@ void LoginProxyImpl::RunListeningThread(void)
             continue;
         }
 
-        if (size == std::size(EXIT) - 1 && 0 == strncmp(lead, EXIT, size))
+        if (ExitStringLength == size)
         {
-            closesocket(clientSocket);
-            break;
+            lead[ExitStringLength] = '\0';
+            if (m_exitString == lead)
+            {
+                closesocket(clientSocket);
+                break;
+            }
         }
 
         AddTask(new HTTPRequestTask(clientSocket, lead, size));
@@ -176,11 +218,11 @@ void LoginProxyImpl::RunListeningThread(void)
     m_socket = INVALID_SOCKET;
 }
 
-int LoginProxyImpl::RunTaskLoop(void)
+void ProxyImpl::RunTaskLoop(void)
 {
-    while (!m_loggedIn)
+    while (m_running)
     {
-        LoginTask *task = nullptr;
+        ProxyTask *task = nullptr;
         {
             std::unique_lock<std::mutex> lock(m_mutex);
             while (m_tasks.empty())
@@ -190,19 +232,13 @@ int LoginProxyImpl::RunTaskLoop(void)
         }
 
         do {
-            std::unique_ptr<LoginTask> currentTask(task);
+            std::unique_ptr<ProxyTask> currentTask(task);
             task = currentTask->Execute(*this);
         } while (nullptr != task);
     }
-    return 0;
 }
 
-void LoginProxyImpl::SetCookie(const std::string &URL, const std::string &cookie)
-{
-    m_client.SetCookie(URL.c_str(), cookie.c_str(), m_client.UserData);
-}
-
-int LoginProxyImpl::SetupCA(const BkPathChar *privateKeyFile, const BkPathChar *certFile)
+int ProxyImpl::SetupCA(const BkPathChar *privateKeyFile, const BkPathChar *certFile)
 {
     std::string privateKey, cert;
 
@@ -223,52 +259,39 @@ int LoginProxyImpl::SetupCA(const BkPathChar *privateKeyFile, const BkPathChar *
     return ApplyPEM(privateKey, cert);
 }
 
-void LoginProxyImpl::StopListeningThread(uint16_t port)
+void ProxyImpl::StopListeningThread(void)
 {
     SOCKET s = socket(AF_INET, SOCK_STREAM, 0);
 
     sockaddr_in addr = { 0 };
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(port);
+    addr.sin_port = htons(m_port);
     inet_pton(AF_INET, "127.0.0.1", &addr.sin_addr);
 
     connect(s, reinterpret_cast<sockaddr *>(&addr), sizeof(addr));
-    send(s, EXIT, std::size(EXIT) - 1, 0);
+    send(s, m_exitString.data(), m_exitString.length(), 0);
     shutdown(s, SD_BOTH);
 
     closesocket(s);
-}
-
-const std::string& LoginProxyImpl::UserAgent(void) const
-{
-    if (m_userAgent.empty())
-    {
-        if (nullptr != m_client.GetConfig)
-            m_client.GetConfig(BK_LPCFG_USER_AGENT, BkMakeBuffer(m_userAgent), m_client.UserData);
-        if (m_userAgent.empty())
-            m_userAgent = Strings::DefaultUserAgent;
-    }
-    ASSERT(!m_userAgent.empty());
-    return m_userAgent;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 extern "C" {
 
-BKEXPORT void BKAPI BkDestroyLoginProxy(BkLoginProxy loginProxy)
+BKEXPORT void BKAPI BkExitProxyLoop(BkProxy proxy)
 {
-    delete loginProxy;
+    proxy->ExitLoop();
 }
 
-BKEXPORT int BKAPI BkRunLoginProxy(BkLoginProxy loginProxy, uint16_t port)
+BKEXPORT int BKAPI BkRunProxyLoop(BkProxy proxy, uint16_t port)
 {
-    return loginProxy->Run(port);
+    return proxy->RunLoop(port);
 }
 
-BKEXPORT int BKAPI BkSetupLoginProxyCA(BkLoginProxy loginProxy, const BkPathChar *privateKeyFile, const BkPathChar *certFile)
+BKEXPORT int BKAPI BkSetupProxyCA(BkProxy proxy, const BkPathChar *privateKeyFile, const BkPathChar *certFile)
 {
-    return loginProxy->SetupCA(privateKeyFile, certFile);
+    return proxy->SetupCA(privateKeyFile, certFile);
 }
 
 } // extern "C"

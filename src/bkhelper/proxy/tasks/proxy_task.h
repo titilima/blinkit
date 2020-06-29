@@ -1,33 +1,33 @@
 // -------------------------------------------------
-// BlinKit - BlinKit Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
-//   File Name: login_task.h
-// Description: LoginTask Class
+//   File Name: proxy_task.h
+// Description: ProxyTask Class
 //      Author: Ziming Li
 //     Created: 2020-04-29
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINKIT_LOGIN_TASK_H
-#define BLINKIT_BLINKIT_LOGIN_TASK_H
+#ifndef BLINKIT_BKHELPER_PROXY_TASK_H
+#define BLINKIT_BKHELPER_PROXY_TASK_H
 
 #pragma once
 
-class LoginProxyImpl;
+class ProxyImpl;
 
 namespace BlinKit {
 
-class LoginTask
+class ProxyTask
 {
 public:
-    virtual ~LoginTask(void) = default;
+    virtual ~ProxyTask(void) = default;
 
-    virtual LoginTask* Execute(LoginProxyImpl &loginProxy) = 0;
+    virtual ProxyTask* Execute(ProxyImpl &proxy) = 0;
 protected:
-    LoginTask(void) = default;
+    ProxyTask(void) = default;
 };
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BLINKIT_LOGIN_TASK_H
+#endif // BLINKIT_BKHELPER_PROXY_TASK_H

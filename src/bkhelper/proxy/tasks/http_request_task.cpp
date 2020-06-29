@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: http_request_task.cpp
 // Description: HTTPRequestTask Class
@@ -18,9 +18,9 @@ HTTPRequestTask::HTTPRequestTask(SOCKET client, const char *leadChars, int leadS
 {
 }
 
-void HTTPRequestTask::AdjustHeaders(HttpHeaders &headers, LoginProxyImpl &loginProxy)
+void HTTPRequestTask::AdjustHeaders(HttpHeaders &headers, ProxyImpl &proxy)
 {
-    RequestTaskBase::AdjustHeaders(headers, loginProxy);
+    RequestTaskBase::AdjustHeaders(headers, proxy);
 
     auto it = headers.find("Proxy-Connection");
     if (std::end(headers) != it)

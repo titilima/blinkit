@@ -1,27 +1,23 @@
 // -------------------------------------------------
 // BlinKit - BkHelper Library
 // -------------------------------------------------
-//   File Name: login_globals.cpp
-// Description: LoginGlobals Class
+//   File Name: proxy_globals.cpp
+// Description: ProxyGlobals Class
 //      Author: Ziming Li
 //     Created: 2020-06-03
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "login_globals.h"
+#include "proxy_globals.h"
 
 #include <openssl/ssl.h>
 
 namespace BlinKit {
 
-LoginGlobals LoginGlobals::s_singleton;
+ProxyGlobals ProxyGlobals::s_singleton;
 
-LoginGlobals::~LoginGlobals(void)
-{
-}
-
-void LoginGlobals::EnsureSSLInitialized(void)
+void ProxyGlobals::EnsureSSLInitialized(void)
 {
     if (!s_singleton.m_sslInitialized)
     {

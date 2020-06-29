@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: http_request_task.h
 // Description: HTTPRequestTask Class
@@ -24,7 +24,7 @@ public:
     HTTPRequestTask(SOCKET client, const char *leadChars, int leadSize);
 private:
     std::string GetURL(void) const override;
-    void AdjustHeaders(HttpHeaders &headers, LoginProxyImpl &loginProxy) override;
+    void AdjustHeaders(HttpHeaders &headers, ProxyImpl &proxy) override;
 };
 
 } // namespace BlinKit

@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: https_request_task.cpp
 // Description: HTTPSRequestTask Class
@@ -13,7 +13,7 @@
 
 namespace BlinKit {
 
-HTTPSRequestTask::HTTPSRequestTask(const std::shared_ptr<SocketWrapper> &sslWrapper, const std::string &domain, const std::string &port, LoginProxyImpl &loginProxy)
+HTTPSRequestTask::HTTPSRequestTask(const std::shared_ptr<SocketWrapper> &sslWrapper, const std::string &domain, const std::string &port, ProxyImpl &)
     : RequestTaskBase(sslWrapper)
     , m_domain(domain), m_port(port)
 {

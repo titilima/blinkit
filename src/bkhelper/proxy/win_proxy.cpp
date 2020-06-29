@@ -1,23 +1,23 @@
 // -------------------------------------------------
 // BlinKit - BkHelper Library
 // -------------------------------------------------
-//   File Name: win_login_proxy.cpp
-// Description: WinLoginProxy Class
+//   File Name: win_proxy.cpp
+// Description: WinProxy Class
 //      Author: Ziming Li
 //     Created: 2020-04-27
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#include "win_login_proxy.h"
+#include "win_proxy.h"
 
 namespace BlinKit {
 
-WinLoginProxy::WinLoginProxy(const BkLoginProxyClient &client) : LoginProxyImpl(client)
+WinProxy::WinProxy(const BkProxyClient &client) : ProxyImpl(client)
 {
 }
 
-WinLoginProxy::~WinLoginProxy(void)
+WinProxy::~WinProxy(void)
 {
     if (nullptr != m_listeningThread)
     {
@@ -27,13 +27,13 @@ WinLoginProxy::~WinLoginProxy(void)
     WSACleanup();
 }
 
-DWORD WINAPI WinLoginProxy::ListeningThread(PVOID param)
+DWORD WINAPI WinProxy::ListeningThread(PVOID param)
 {
-    reinterpret_cast<WinLoginProxy *>(param)->RunListeningThread();
+    reinterpret_cast<WinProxy *>(param)->RunListeningThread();
     return EXIT_SUCCESS;
 }
 
-bool WinLoginProxy::StartListeningThread(void)
+bool WinProxy::StartListeningThread(void)
 {
     m_listeningThread = CreateThread(nullptr, 0, ListeningThread, this, 0, nullptr);
     return nullptr != m_listeningThread;
@@ -45,7 +45,7 @@ bool WinLoginProxy::StartListeningThread(void)
 
 extern "C" {
 
-BKEXPORT BkLoginProxy BKAPI BkCreateLoginProxy(struct BkLoginProxyClient *client)
+BKEXPORT BkProxy BKAPI BkCreateProxy(struct BkProxyClient *client)
 {
     WSADATA wsaData;
     int r = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -62,7 +62,7 @@ BKEXPORT BkLoginProxy BKAPI BkCreateLoginProxy(struct BkLoginProxyClient *client
         return nullptr;
     }
 
-    return new BlinKit::WinLoginProxy(*client);
+    return new BlinKit::WinProxy(*client);
 }
 
 } // extern "C"

@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: response_task.h
 // Description: ResponseTask Class
@@ -16,7 +16,7 @@
 
 #include <unordered_map>
 #include "bkhelper/proxy/socket_wrapper.h"
-#include "bkhelper/proxy/tasks/login_task.h"
+#include "bkhelper/proxy/tasks/proxy_task.h"
 
 class ResponseImpl;
 
@@ -24,20 +24,19 @@ namespace BlinKit {
 
 class BkHTTPHeaderMap;
 
-class ResponseTask final : public LoginTask
+class ResponseTask final : public ProxyTask
 {
 public:
-    ResponseTask(const std::shared_ptr<SocketWrapper> &socketWrapper, LoginProxyImpl &loginProxy);
+    ResponseTask(const std::shared_ptr<SocketWrapper> &socketWrapper, ProxyImpl &proxy);
     ~ResponseTask(void) override;
 
     BkRequest CreateRequest(const std::string &URL);
 private:
     typedef std::unordered_map<std::string, std::string> HttpHeaders;
-    void AdjustHeaders(HttpHeaders &headers, LoginProxyImpl &loginProxy);
+    void AdjustHeaders(HttpHeaders &headers, ProxyImpl &proxy);
     static bool_t BKAPI HeaderCallback(const char *k, const char *v, void *userData);
 
-    bool ProcessLoginOK(LoginProxyImpl &loginProxy);
-    void ProcessResponse(LoginProxyImpl &loginProxy);
+    void ProcessResponse(ProxyImpl &proxy);
     void ProcessRequestComplete(BkResponse response);
     void ProcessRequestFailed(int errorCode);
 
@@ -45,10 +44,10 @@ private:
     static void BKAPI RequestFailedImpl(int errorCode, void *userData);
     static bool_t BKAPI RequestRedirectImpl(BkResponse, void *) { return false; }
 
-    LoginTask* Execute(LoginProxyImpl &loginProxy) override;
+    ProxyTask* Execute(ProxyImpl &proxy) override;
 
     std::shared_ptr<SocketWrapper> m_socketWrapper;
-    LoginProxyImpl &m_loginProxy;
+    ProxyImpl &m_proxy;
     ResponseImpl *m_response = nullptr;
 };
 

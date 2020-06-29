@@ -14,7 +14,7 @@
 #include "bk_helper.h"
 #include <openssl/evp.h>
 #include <openssl/pem.h>
-#include "bkhelper/proxy/login_globals.h"
+#include "bkhelper/proxy/proxy_globals.h"
 #include "bkhelper/ssl/certificate.h"
 #include "bkhelper/ssl/rsa_key.h"
 #include "bkhelper/ssl/sign_request.h"
@@ -46,7 +46,7 @@ extern "C" {
 
 BKEXPORT BkPrivateKey BKAPI BkCreatePrivateKey(void)
 {
-    LoginGlobals::EnsureSSLInitialized();
+    ProxyGlobals::EnsureSSLInitialized();
     return new RSAKey;
 }
 

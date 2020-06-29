@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: response_task.cpp
 // Description: ResponseTask Class
@@ -14,12 +14,13 @@
 #include "base/strings/stringprintf.h"
 #include "bkcommon/bk_strings.h"
 #include "bkcommon/response_impl.h"
-#include "bkhelper/proxy/login_proxy_impl.h"
+#include "bkhelper/proxy/proxy_impl.h"
+#include "bkhelper/proxy/tasks/last_response_task.h"
 
 namespace BlinKit {
 
-ResponseTask::ResponseTask(const std::shared_ptr<SocketWrapper> &socketWrapper, LoginProxyImpl &loginProxy)
-    : m_socketWrapper(socketWrapper), m_loginProxy(loginProxy)
+ResponseTask::ResponseTask(const std::shared_ptr<SocketWrapper> &socketWrapper, ProxyImpl &proxy)
+    : m_socketWrapper(socketWrapper), m_proxy(proxy)
 {
 }
 
@@ -29,7 +30,7 @@ ResponseTask::~ResponseTask(void)
         m_response->Release();
 }
 
-void ResponseTask::AdjustHeaders(HttpHeaders &headers, LoginProxyImpl &loginProxy)
+void ResponseTask::AdjustHeaders(HttpHeaders &headers, ProxyImpl &proxy)
 {
     headers["Connection"] = "close";
 
@@ -56,24 +57,12 @@ BkRequest ResponseTask::CreateRequest(const std::string &URL)
     return BkCreateRequest(URL.c_str(), &client);
 }
 
-LoginTask* ResponseTask::Execute(LoginProxyImpl &loginProxy)
+ProxyTask* ResponseTask::Execute(ProxyImpl &proxy)
 {
-    size_t n = m_response->CookiesCount();
-    if (n > 0)
-    {
-        std::string currentURL;
-        m_response->GetData(BK_RESPONSE_CURRENT_URL, BkMakeBuffer(currentURL));
-        for (size_t i = 0; i < n; ++i)
-        {
-            std::string cookie;
-            m_response->GetCookie(i, BkMakeBuffer(cookie));
-            loginProxy.SetCookie(currentURL, cookie);
-        }
-    }
+    if (!proxy.PreProcessRequestComplete(m_response))
+        return new LastResponseTask(m_socketWrapper);
 
-    if (!ProcessLoginOK(loginProxy))
-        ProcessResponse(loginProxy);
-
+    ProcessResponse(proxy);
     return nullptr;
 }
 
@@ -84,11 +73,13 @@ bool_t BKAPI ResponseTask::HeaderCallback(const char *k, const char *v, void *us
     return true;
 }
 
-bool ResponseTask::ProcessLoginOK(LoginProxyImpl &loginProxy)
+#if 0
+bool ResponseTask::ProcessLoginOK(ProxyImpl &proxy)
 {
+    ASSERT(false); // BKTODO:
     std::string currentURL;
     m_response->GetData(BK_RESPONSE_CURRENT_URL, BkMakeBuffer(currentURL));
-    if (!loginProxy.IsLoginSuccessful(currentURL))
+    if (!proxy.IsLoginSuccessful(currentURL))
         return false;
 
     std::string response =
@@ -100,13 +91,14 @@ bool ResponseTask::ProcessLoginOK(LoginProxyImpl &loginProxy)
     m_socketWrapper->Send(response.data(), response.length());
     return true;
 }
+#endif
 
 void ResponseTask::ProcessRequestComplete(BkResponse response)
 {
     ASSERT(nullptr == m_response);
     m_response = response->Retain();
 
-    m_loginProxy.AddTask(this);
+    m_proxy.AddTask(this);
 }
 
 void ResponseTask::ProcessRequestFailed(int errorCode)
@@ -124,7 +116,7 @@ void BKAPI ResponseTask::RequestFailedImpl(int errorCode, void *userData)
     reinterpret_cast<ResponseTask *>(userData)->ProcessRequestFailed(errorCode);
 }
 
-void ResponseTask::ProcessResponse(LoginProxyImpl &loginProxy)
+void ResponseTask::ProcessResponse(ProxyImpl &proxy)
 {
     const std::string CRLF("\r\n");
 
@@ -137,7 +129,7 @@ void ResponseTask::ProcessResponse(LoginProxyImpl &loginProxy)
 
     HttpHeaders headers;
     m_response->EnumerateHeaders(HeaderCallback, &headers);
-    AdjustHeaders(headers, loginProxy);
+    AdjustHeaders(headers, proxy);
     for (const auto &it : headers)
     {
         rawData.append(base::StringPrintf("%s: %s", it.first.c_str(), it.second.c_str()));

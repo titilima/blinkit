@@ -1,35 +1,35 @@
 // -------------------------------------------------
 // BlinKit - BkHelper Library
 // -------------------------------------------------
-//   File Name: login_globals.h
-// Description: LoginGlobals Class
+//   File Name: proxy_globals.h
+// Description: ProxyGlobals Class
 //      Author: Ziming Li
 //     Created: 2020-06-03
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BKHELPER_LOGIN_GLOBALS_H
-#define BLINKIT_BKHELPER_LOGIN_GLOBALS_H
+#ifndef BLINKIT_BKHELPER_PROXY_GLOBALS_H
+#define BLINKIT_BKHELPER_PROXY_GLOBALS_H
 
 #pragma once
 
 namespace BlinKit {
 
-class LoginGlobals
+class ProxyGlobals
 {
 public:
-    ~LoginGlobals(void);
+    ~ProxyGlobals(void) = default;
 
     static void EnsureSSLInitialized(void);
 private:
-    LoginGlobals(void) = default;
+    ProxyGlobals(void) = default;
 
-    static LoginGlobals s_singleton;
+    static ProxyGlobals s_singleton;
 
     bool m_sslInitialized = false;
 };
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BKHELPER_LOGIN_GLOBALS_H
+#endif // BLINKIT_BKHELPER_PROXY_GLOBALS_H

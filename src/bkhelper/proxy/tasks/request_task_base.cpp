@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: request_task_base.cpp
 // Description: RequestTaskBase Class
@@ -15,8 +15,9 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "bkcommon/bk_strings.h"
-#include "bkhelper/proxy/login_proxy_impl.h"
+#include "bkhelper/proxy/proxy_impl.h"
 #include "bkhelper/proxy/tasks/https_request_task.h"
+#include "bkhelper/proxy/tasks/last_response_task.h"
 #include "bkhelper/proxy/tasks/response_task.h"
 
 namespace BlinKit {
@@ -26,14 +27,9 @@ RequestTaskBase::RequestTaskBase(const std::shared_ptr<SocketWrapper> &socketWra
 {
 }
 
-void RequestTaskBase::AdjustHeaders(HttpHeaders &headers, LoginProxyImpl &loginProxy)
+ProxyTask* RequestTaskBase::DoRealRequest(ProxyImpl &proxy)
 {
-    headers[Strings::HttpHeader::UserAgent] = loginProxy.UserAgent();
-}
-
-LoginTask* RequestTaskBase::DoRealRequest(LoginProxyImpl &loginProxy)
-{
-    ResponseTask *responseTask = new ResponseTask(m_socketWrapper, loginProxy);
+    ResponseTask *responseTask = new ResponseTask(m_socketWrapper, proxy);
 
     BkRequest req = responseTask->CreateRequest(GetURL());
     BkSetRequestMethod(req, m_requestMethod.c_str());
@@ -48,12 +44,12 @@ LoginTask* RequestTaskBase::DoRealRequest(LoginProxyImpl &loginProxy)
     return nullptr;
 }
 
-LoginTask* RequestTaskBase::Execute(LoginProxyImpl &loginProxy)
+ProxyTask* RequestTaskBase::Execute(ProxyImpl &proxy)
 {
     if (!ParseRequest())
         return nullptr;
 
-    AdjustHeaders(m_requestHeaders, loginProxy);
+    AdjustHeaders(m_requestHeaders, proxy);
     if (m_requestMethod == "CONNECT")
     {
         static const char ConnectionEstablished[] = "HTTP/1.1 200 Connection Established\r\n\r\n";
@@ -71,13 +67,42 @@ LoginTask* RequestTaskBase::Execute(LoginProxyImpl &loginProxy)
             domain = m_requestURI;
         }
 
-        SSL *ssl = loginProxy.NewSSL(domain);
+        SSL *ssl = proxy.NewSSL(domain);
         ASSERT(nullptr != ssl);
         std::shared_ptr<SocketWrapper> sslWrapper = SocketWrapper::SSLWrapper(m_socketWrapper, ssl);
-        return new HTTPSRequestTask(sslWrapper, domain, port, loginProxy);
+        return new HTTPSRequestTask(sslWrapper, domain, port, proxy);
     }
 
-    return DoRealRequest(loginProxy);
+    if (!proxy.PreProcessRequestPerform(this))
+        return new LastResponseTask(m_socketWrapper);
+
+    return DoRealRequest(proxy);
+}
+
+int RequestTaskBase::GetData(int data, BkBuffer *dst)
+{
+    std::string ret;
+    switch (data)
+    {
+        case BK_PROXY_REQUEST_URL:
+            ret = GetURL();
+            break;
+        default:
+            NOTREACHED();
+            return BK_ERR_NOT_FOUND;
+    }
+    BkSetBufferData(dst, ret.data(), ret.length());
+    return BK_ERR_SUCCESS;
+}
+
+int RequestTaskBase::GetHeader(const char *name, BkBuffer *dst)
+{
+    auto it = m_requestHeaders.find(name);
+    if (std::end(m_requestHeaders) == it)
+        return BK_ERR_NOT_FOUND;
+
+    BkSetBufferData(dst, it->second.data(), it->second.length());
+    return BK_ERR_SUCCESS;
 }
 
 bool RequestTaskBase::ParseRequest(void)
@@ -162,6 +187,20 @@ bool RequestTaskBase::ParseHeaders(const std::string_view &s)
         m_requestHeaders[k] = v;
     }
     return true;
+}
+
+void RequestTaskBase::SetHeader(const char *name, const char *value)
+{
+    if (nullptr == value)
+    {
+        auto it = m_requestHeaders.find(name);
+        if (std::end(m_requestHeaders) != it)
+            m_requestHeaders.erase(it);
+    }
+    else
+    {
+        m_requestHeaders[name] = value;
+    }
 }
 
 } // namespace BlinKit

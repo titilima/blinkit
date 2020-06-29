@@ -33,29 +33,38 @@ BKEXPORT int BKAPI BkSavePrivateKey(BkPrivateKey key, const BkPathChar *fileName
 BKEXPORT int BKAPI BkSignPrivateKey(BkPrivateKey key, const char *commonName, int days, const BkPathChar *certFileName);
 
 /**
- * Login Proxy
+ * Proxy
  */
 
-enum BkLoginProxyConfig {
-    BK_LPCFG_USER_AGENT = 0,
-    BK_LPCFG_LOGGED_IN_HTML
+BK_DECLARE_HANDLE(BkProxyRequest, ProxyRequestImpl);
+
+enum BkProxyRequestData {
+    BK_PROXY_REQUEST_URL = 0,
 };
 
-BK_DECLARE_HANDLE(BkLoginProxy, LoginProxyImpl);
+BKEXPORT int BKAPI BkGetProxyRequestData(BkProxyRequest request, int data, struct BkBuffer *dst);
 
-struct BkLoginProxyClient {
-    size_t SizeOfStruct; // sizeof(BkLoginProxyClient)
+BKEXPORT int BKAPI BkGetProxyRequestHeader(BkProxyRequest request, const char *name, struct BkBuffer *dst);
+BKEXPORT void BKAPI BkSetProxyRequestHeader(BkProxyRequest request, const char *name, const char *value);
+
+BK_DECLARE_HANDLE(BkProxy, ProxyImpl);
+
+enum BkProxyConfig {
+    BK_PROXY_CFG_EXIT_BODY = 0
+};
+
+struct BkProxyClient {
+    size_t SizeOfStruct; // sizeof(BkProxyClient)
     void *UserData;
-    void (BKAPI * SetCookie)(const char *URL, const char *setCookieHeader, void *);
-    bool_t (BKAPI * IsLoginSuccessful)(const char *, void *);
-    bool_t (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
+    void (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
+    void (BKAPI * BeforeRequestPerform)(BkProxyRequest, void *);
+    void (BKAPI * RequestComplete)(BkResponse, void *);
 };
 
-BKEXPORT BkLoginProxy BKAPI BkCreateLoginProxy(struct BkLoginProxyClient *client);
-BKEXPORT void BKAPI BkDestroyLoginProxy(BkLoginProxy loginProxy);
-
-BKEXPORT int BKAPI BkSetupLoginProxyCA(BkLoginProxy loginProxy, const BkPathChar *privateKeyFile, const BkPathChar *certFile);
-BKEXPORT int BKAPI BkRunLoginProxy(BkLoginProxy loginProxy, uint16_t port);
+BKEXPORT BkProxy BKAPI BkCreateProxy(struct BkProxyClient *client);
+BKEXPORT int BKAPI BkSetupProxyCA(BkProxy proxy, const BkPathChar *privateKeyFile, const BkPathChar *certFile);
+BKEXPORT int BKAPI BkRunProxyLoop(BkProxy proxy, uint16_t port);
+BKEXPORT void BKAPI BkExitProxyLoop(BkProxy proxy);
 
 #ifdef __cplusplus
 } // extern "C"

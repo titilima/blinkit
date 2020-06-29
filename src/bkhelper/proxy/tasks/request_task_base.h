@@ -1,5 +1,5 @@
 // -------------------------------------------------
-// BlinKit - BkLogin Library
+// BlinKit - BkHelper Library
 // -------------------------------------------------
 //   File Name: request_task_base.h
 // Description: RequestTaskBase Class
@@ -17,32 +17,38 @@
 #include <string_view>
 #include <unordered_map>
 #include <utility>
+#include "bkhelper/proxy/proxy_request_impl.h"
 #include "bkhelper/proxy/socket_wrapper.h"
-#include "bkhelper/proxy/tasks/login_task.h"
+#include "bkhelper/proxy/tasks/proxy_task.h"
 
 namespace BlinKit {
 
 class ResponseTaskBase;
 
-class RequestTaskBase : public LoginTask
+class RequestTaskBase : public ProxyTask, public ProxyRequestImpl
 {
+public:
+    virtual std::string GetURL(void) const = 0;
 protected:
     RequestTaskBase(const std::shared_ptr<SocketWrapper> &socketWrapper, const std::string_view &leadChars = std::string_view());
 
     const std::string& RequestURI(void) const { return m_requestURI; }
 
     typedef std::unordered_map<std::string, std::string> HttpHeaders;
-    virtual void AdjustHeaders(HttpHeaders &headers, LoginProxyImpl &loginProxy);
+    virtual void AdjustHeaders(HttpHeaders &headers, ProxyImpl &loginProxy) {}
 
     std::shared_ptr<SocketWrapper> m_socketWrapper;
 private:
     bool ParseRequest(void);
     bool ParseHeaders(const std::string_view &s);
-    LoginTask* DoRealRequest(LoginProxyImpl &loginProxy);
+    ProxyTask* DoRealRequest(ProxyImpl &proxy);
 
-    virtual std::string GetURL(void) const = 0;
-
-    LoginTask* Execute(LoginProxyImpl &loginProxy) override final;
+    // ProxyTask
+    ProxyTask* Execute(ProxyImpl &proxy) override final;
+    // ProxyRequestImpl
+    int GetData(int data, BkBuffer *dst) override final;
+    int GetHeader(const char *name, BkBuffer *dst) override final;
+    void SetHeader(const char *name, const char *value) override final;
 
     std::string m_leadData;
     std::string m_requestMethod, m_requestURI;
