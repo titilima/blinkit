@@ -64,7 +64,7 @@ struct BkCrawlerClient {
     void *UserData;
     void (BKAPI * DocumentReady)(void *); // Required
     bool_t (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
-    bool_t (BKAPI * GetCookie)(const char *URL, const char *cookiesFromJar, struct BkBuffer *cookiesToSet, void *);
+    bool_t (BKAPI * GetCookies)(const char *URL, const char *cookiesFromJar, struct BkBuffer *cookiesToSet, void *);
     bool_t (BKAPI * HijackRequest)(const char *, struct BkBuffer *, void *);
     void (BKAPI * HijackResponse)(BkResponse, void *);
     void (BKAPI * RequestComplete)(BkResponse, BkWorkController, void *);

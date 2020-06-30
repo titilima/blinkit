@@ -97,10 +97,10 @@ std::string CrawlerImpl::GetCookies(const std::string &URL) const
     if (nullptr != m_cookieJar)
         ret = m_cookieJar->Get(URL.c_str());
 
-    if (nullptr != m_client.GetCookie)
+    if (nullptr != m_client.GetCookies)
     {
         std::string userSetCookies;
-        if (m_client.GetCookie(URL.c_str(), ret.c_str(), BkMakeBuffer(userSetCookies), m_client.UserData))
+        if (m_client.GetCookies(URL.c_str(), ret.c_str(), BkMakeBuffer(userSetCookies), m_client.UserData))
             ret = userSetCookies;
     }
 
