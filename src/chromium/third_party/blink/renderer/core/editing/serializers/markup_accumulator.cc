@@ -50,7 +50,9 @@
 #include "third_party/blink/renderer/core/html_element_type_helpers.h"
 #include "third_party/blink/renderer/core/xlink_names.h"
 #include "third_party/blink/renderer/platform/wtf/text/character_names.h"
-#ifndef BLINKIT_CRAWLER_ONLY
+#ifdef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/platform/wtf/text/atomic_string_hash.h"
+#else
 #   include "third_party/blink/renderer/core/editing/editor.h"
 #   include "third_party/blink/renderer/core/html/html_element.h"
 #   include "third_party/blink/renderer/core/html/html_template_element.h"
@@ -242,6 +244,9 @@ String SerializeNodes(MarkupAccumulator& accumulator,
                       EChildrenOnly children_only) {
   bool success = accumulator.SerializeAsHTMLDocument(target_node);
   ASSERT(success);
+
+  SerializeNodesWithNamespaces<Strategy>(accumulator, target_node,
+                                         children_only, nullptr);
   return accumulator.ToString();
 }
 
