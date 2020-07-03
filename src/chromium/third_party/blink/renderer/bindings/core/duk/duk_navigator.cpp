@@ -21,6 +21,12 @@ const char DukNavigator::ProtoName[] = "Navigator";
 
 namespace Impl {
 
+static duk_ret_t CookieEnabledGetter(duk_context *ctx)
+{
+    duk_push_boolean(ctx, true);
+    return 1;
+}
+
 static duk_ret_t UserAgentGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -34,6 +40,7 @@ static duk_ret_t UserAgentGetter(duk_context *ctx)
 void DukNavigator::FillPrototypeEntry(PrototypeEntry &entry)
 {
     static const PrototypeEntry::Property Properties[] = {
+        { "cookieEnabled", Impl::CookieEnabledGetter, nullptr },
         { "userAgent",     Impl::UserAgentGetter,     nullptr },
     };
 
