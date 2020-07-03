@@ -147,6 +147,9 @@
     <ClCompile Include="win_main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BkBase\BkBase.vcxproj">
+      <Project>{02c00b49-2a96-416c-b072-2dd01734b2f7}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\BkCrawler\BkCrawler.vcxproj">
       <Project>{7527750d-c5ab-478b-87b0-b1043284f042}</Project>
     </ProjectReference>
