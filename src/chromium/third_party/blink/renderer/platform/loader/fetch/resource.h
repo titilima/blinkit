@@ -149,6 +149,7 @@ public:
         m_status = ResourceStatus::kPending;
     }
     virtual void ResponseReceived(const ResourceResponse &response);
+    virtual bool ShouldIgnoreHTTPStatusCodeErrors(void) const { return false; }
     // Computes the status of an object after loading.
     virtual void Finish(base::SingleThreadTaskRunner *taskRunner);
 

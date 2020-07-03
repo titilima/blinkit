@@ -180,12 +180,8 @@ void ResourceLoader::DidReceiveResponse(const ResourceResponse &response)
     if (nullptr == m_resource->Loader())
         return;
 
-    ASSERT(response.HttpStatusCode() < 400); // BKTODO:
-#if 0
-    if (response_to_pass.HttpStatusCode() >= 400 &&
-        !resource_->ShouldIgnoreHTTPStatusCodeErrors())
-        HandleError(ResourceError::CancelledError(response_to_pass.Url()));
-#endif
+    if (response.HttpStatusCode() >= 400 && !m_resource->ShouldIgnoreHTTPStatusCodeErrors())
+        HandleError(ResourceError(BK_ERR_CANCELLED, response.Url()));
 }
 
 void ResourceLoader::HandleError(const ResourceError &error)

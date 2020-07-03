@@ -69,6 +69,7 @@ private:
 
     // Resource
     void ResponseReceived(const ResourceResponse &response) override;
+    bool ShouldIgnoreHTTPStatusCodeErrors(void) const override { return !IsLinkPreload(); }
     void DidAddClient(ResourceClient *c) override;
 };
 
