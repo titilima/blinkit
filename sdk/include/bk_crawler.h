@@ -51,12 +51,18 @@ enum BkCrawlerConfig {
     BK_CFG_REQUEST_PROXY,
 
     BK_CFG_USER_AGENT,
-    BK_CFG_SCRIPT_DISABLED,
 };
 
 enum BkCookieJarMode {
     BK_CJM_OWNED  =  0, // Need not to call BkDestroyCookieJar
     BK_CJM_SHARED
+};
+
+enum BkScriptMode {
+    BK_ALWAYS_ENABLE_SCRIPT = 0,
+    BK_ALWAYS_DISABLE_SCRIPT,
+    BK_ENABLE_SCRIPT_ONCE,
+    BK_DISABLE_SCRIPT_ONCE
 };
 
 struct BkCrawlerClient {
@@ -65,6 +71,7 @@ struct BkCrawlerClient {
     void (BKAPI * DocumentReady)(void *); // Required
     bool_t (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
     bool_t (BKAPI * GetCookies)(const char *URL, const char *cookiesFromJar, struct BkBuffer *cookiesToSet, void *);
+    int (BKAPI * GetScriptMode)(const char *URL, void *);
     bool_t (BKAPI * HijackRequest)(const char *, struct BkBuffer *, void *);
     void (BKAPI * HijackResponse)(BkResponse, void *);
     void (BKAPI * RequestComplete)(BkResponse, BkWorkController, void *);

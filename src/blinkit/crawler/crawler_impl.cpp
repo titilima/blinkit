@@ -155,6 +155,39 @@ int CrawlerImpl::Run(const char *URL)
     return BK_ERR_SUCCESS;
 }
 
+bool CrawlerImpl::ScriptEnabled(const std::string &URL)
+{
+    bool ret = true;
+    do {
+        if (nullptr == m_client.GetScriptMode)
+            break;
+
+        auto it = m_scriptModeMap.find(URL);
+        if (std::end(m_scriptModeMap) != it)
+        {
+            ret = it->second;
+            break;
+        }
+
+        int mode = m_client.GetScriptMode(URL.c_str(), m_client.UserData);
+        switch (mode)
+        {
+            case BK_ALWAYS_ENABLE_SCRIPT:
+                m_scriptModeMap[URL] = true;
+                [[fallthrough]];
+            case BK_ENABLE_SCRIPT_ONCE:
+                break;
+            case BK_ALWAYS_DISABLE_SCRIPT:
+                m_scriptModeMap[URL] = false;
+                [[fallthrough]];
+            case BK_DISABLE_SCRIPT_ONCE:
+                ret = false;
+                break;
+        }
+    } while (false);
+    return ret;
+}
+
 void CrawlerImpl::SetCookieJar(CookieJarImpl *cookieJar, int mode)
 {
     if (nullptr != m_cookieJar)

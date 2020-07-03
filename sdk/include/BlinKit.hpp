@@ -147,7 +147,6 @@ protected:
             case BK_CFG_OBJECT_SCRIPT:   // An empty object for storage.
             case BK_CFG_REQUEST_PROXY:   // System default proxy.
             case BK_CFG_USER_AGENT:      // Default `User-Agent` depends on current OS.
-            case BK_CFG_SCRIPT_DISABLED: // Script is enabled.
                 break;
             default:
                 assert(false); // Not implemented!

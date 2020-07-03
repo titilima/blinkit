@@ -105,19 +105,13 @@ void ScriptController::ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCo
     ctx.Eval(sourceCode.Source(), callback, sourceCode.Url().ExtractFileName().c_str());
 }
 
-bool ScriptController::ScriptEnabled(void)
+bool ScriptController::ScriptEnabled(const std::string &URL)
 {
-    if (!m_scriptDisabled.has_value())
-    {
-        m_scriptDisabled = false;
-        if (CrawlerImpl *crawler = ToCrawlerImpl(m_frame->Client()))
-        {
-            std::string s;
-            if (crawler->GetConfig(BK_CFG_SCRIPT_DISABLED, s) && !s.empty())
-                m_scriptDisabled = true;
-        }
-    }
-    return !m_scriptDisabled.value();
+    if (URL.empty())
+        return true;
+    if (CrawlerImpl *crawler = ToCrawlerImpl(m_frame->Client()))
+        return crawler->ScriptEnabled(URL);
+    return true;
 }
 
 void ScriptController::UpdateDocument(void)

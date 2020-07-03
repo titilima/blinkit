@@ -44,7 +44,7 @@
 
 #pragma once
 
-#include <optional>
+#include <string>
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/noncopyable.h"
 
@@ -68,7 +68,7 @@ public:
 
     ContextImpl* GetContext(void) { return m_context.get(); }
     ContextImpl& EnsureContext(void);
-    bool ScriptEnabled(void);
+    bool ScriptEnabled(const std::string &URL);
 
     void ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const GURL &baseURL);
 
@@ -81,7 +81,6 @@ private:
 
     const Member<LocalFrame> m_frame;
     std::unique_ptr<ContextImpl> m_context;
-    std::optional<bool> m_scriptDisabled;
 };
 
 } // namespace blink

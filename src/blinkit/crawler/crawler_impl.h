@@ -15,6 +15,8 @@
 #pragma once
 
 #include <functional>
+#include <string>
+#include <unordered_map>
 #include "bk_crawler.h"
 #include "blinkit/blink_impl/local_frame_client_impl.h"
 
@@ -30,6 +32,7 @@ public:
     bool GetConfig(int cfg, std::string &dst) const;
     void ApplyProxyToRequest(BkRequest req);
     std::string GetCookies(const std::string &URL) const;
+    bool ScriptEnabled(const std::string &URL);
     void ProcessRequestComplete(BkResponse response, BkWorkController controller);
     bool HijackRequest(const char *URL, std::string &dst) const;
     void HijackResponse(BkResponse response);
@@ -61,6 +64,7 @@ private:
     std::string m_proxy;
     int m_cookieJarMode = BK_CJM_SHARED;
     CookieJarImpl *m_cookieJar = nullptr;
+    std::unordered_map<std::string, bool> m_scriptModeMap;
 };
 
 DEFINE_TYPE_CASTS(CrawlerImpl, ::blink::LocalFrameClient, client, client->IsCrawler(), client.IsCrawler());

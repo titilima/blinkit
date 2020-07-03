@@ -467,7 +467,7 @@ bool Document::CanExecuteScripts(ReasonForCallingCanExecuteScripts)
     if (!ForCrawler())
         return true;
 #endif
-    return m_frame->GetScriptController().ScriptEnabled();
+    return m_frame->GetScriptController().ScriptEnabled(m_URL.possibly_invalid_spec());
 }
 
 void Document::CheckCompleted(void)
