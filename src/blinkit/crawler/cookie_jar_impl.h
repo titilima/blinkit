@@ -25,13 +25,18 @@ class CookieJarImpl
 {
 public:
     CookieJarImpl(void);
-    ~CookieJarImpl(void);
+
+    void Retain(void) { ++m_refCount; }
+    void Release(void);
 
     void Clear(void);
 
     std::string Get(const char *URL) const;
     bool Set(const char *setCookieHeader, const char *URL);
 private:
+    ~CookieJarImpl(void) = default;
+
+    unsigned m_refCount = 1;
     net::CookieOptions m_options;
 
     typedef std::unordered_map<std::string, std::unique_ptr<net::CanonicalCookie>> CookiesMap;

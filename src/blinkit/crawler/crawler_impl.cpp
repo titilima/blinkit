@@ -34,10 +34,7 @@ CrawlerImpl::~CrawlerImpl(void)
 {
     m_frame->Detach(FrameDetachType::kRemove);
     if (nullptr != m_cookieJar)
-    {
-        if (BK_CJM_OWNED == m_cookieJarMode)
-            delete m_cookieJar;
-    }
+        m_cookieJar->Release();
 }
 
 bool CrawlerImpl::ApplyConsoleMessager(std::function<void(int, const char *)> &dst) const
@@ -88,6 +85,16 @@ bool CrawlerImpl::GetConfig(int cfg, std::string &dst) const
     if (nullptr != m_client.GetConfig)
         return m_client.GetConfig(cfg, BkMakeBuffer(dst), m_client.UserData);
     return false;
+}
+
+CookieJarImpl* CrawlerImpl::GetCookieJar(bool createIfNotExists)
+{
+    if (nullptr == m_cookieJar)
+    {
+        if (createIfNotExists)
+            m_cookieJar = new CookieJarImpl;
+    }
+    return m_cookieJar;
 }
 
 std::string CrawlerImpl::GetCookies(const std::string &URL) const
@@ -188,16 +195,12 @@ bool CrawlerImpl::ScriptEnabled(const std::string &URL)
     return ret;
 }
 
-void CrawlerImpl::SetCookieJar(CookieJarImpl *cookieJar, int mode)
+void CrawlerImpl::SetCookieJar(CookieJarImpl *cookieJar)
 {
+    cookieJar->Retain();
     if (nullptr != m_cookieJar)
-    {
-        if (BK_CJM_OWNED == m_cookieJarMode)
-            delete m_cookieJar;
-    }
-
+        m_cookieJar->Release();
     m_cookieJar = cookieJar;
-    m_cookieJarMode = mode;
 }
 
 void CrawlerImpl::TransitionToCommittedForNewPage(void)
@@ -220,6 +223,16 @@ String CrawlerImpl::UserAgent(void)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 extern "C" {
+
+BKEXPORT void BKAPI BkCrawlerEnableCookies(BkCrawler crawler, BkCookieJar *cookieJar)
+{
+    CookieJarImpl *cj = crawler->GetCookieJar(true);
+    if (nullptr != cookieJar)
+    {
+        cj->Retain();
+        *cookieJar = cj;
+    }
+}
 
 BKEXPORT BkCrawler BKAPI BkCreateCrawler(BkCrawlerClient *client)
 {
@@ -246,9 +259,9 @@ BKEXPORT int BKAPI BkRunCrawler(BkCrawler crawler, const char *URL)
     return crawler->Run(URL);
 }
 
-BKEXPORT void BKAPI BkSetCookieJar(BkCrawler crawler, BkCookieJar cookieJar, int mode)
+BKEXPORT void BKAPI BkSetCookieJar(BkCrawler crawler, BkCookieJar cookieJar)
 {
-    crawler->SetCookieJar(cookieJar, mode);
+    crawler->SetCookieJar(cookieJar);
 }
 
 } // extern "C"

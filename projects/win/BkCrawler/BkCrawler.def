@@ -10,6 +10,7 @@ BkAppExecute
 
 BkCreateCrawler
 BkDestroyCrawler
+BkCrawlerEnableCookies
 BkSetCookieJar
 BkRunCrawler
 BkGetScriptContextFromCrawler
@@ -17,7 +18,7 @@ BkGetScriptContextFromCrawler
 BkHijackResponse
 
 BkCreateCookieJar
-BkDestroyCookieJar
+BkReleaseCookieJar
 BkGetCookie
 BkSetCookie
 

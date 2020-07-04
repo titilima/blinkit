@@ -20,8 +20,6 @@ CookieJarImpl::CookieJarImpl(void)
     m_options.set_include_httponly();
 }
 
-CookieJarImpl::~CookieJarImpl(void) = default;
-
 void CookieJarImpl::Clear(void)
 {
     m_cookies.clear();
@@ -74,6 +72,12 @@ std::string CookieJarImpl::Get(const char *URL) const
         ret.resize(s - 2); // Remove the last "; "
     }
     return ret;
+}
+
+void CookieJarImpl::Release(void)
+{
+    if (0 == --m_refCount)
+        delete this;
 }
 
 bool CookieJarImpl::Set(const char *setCookieHeader, const char *URL)
@@ -138,9 +142,9 @@ BKEXPORT BkCookieJar BKAPI BkCreateCookieJar(void)
     return new CookieJarImpl;
 }
 
-BKEXPORT void BKAPI BkDestroyCookieJar(BkCookieJar cookieJar)
+BKEXPORT void BKAPI BkReleaseCookieJar(BkCookieJar cookieJar)
 {
-    delete cookieJar;
+    cookieJar->Release();
 }
 
 BKEXPORT void BKAPI BkGetCookie(BkCookieJar cookieJar, const char *URL, BkBuffer *dst)

@@ -42,8 +42,8 @@ public:
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
     int Run(const char *URL);
-    CookieJarImpl* GetCookieJar(void) { return m_cookieJar; }
-    void SetCookieJar(CookieJarImpl *cookieJar, int mode);
+    CookieJarImpl* GetCookieJar(bool createIfNotExists);
+    void SetCookieJar(CookieJarImpl *cookieJar);
     BkJSContext GetScriptContext(void);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -62,7 +62,6 @@ private:
 
     int m_proxyType = BK_PROXY_RESERVED;
     std::string m_proxy;
-    int m_cookieJarMode = BK_CJM_SHARED;
     CookieJarImpl *m_cookieJar = nullptr;
     std::unordered_map<std::string, bool> m_scriptModeMap;
 };

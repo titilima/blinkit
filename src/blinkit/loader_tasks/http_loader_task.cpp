@@ -82,7 +82,7 @@ void HTTPLoaderTask::DoContinue(void)
     std::string currentURL;
     m_response->GetData(BK_RESPONSE_CURRENT_URL, BkMakeBuffer(currentURL));
 
-    if (CookieJarImpl *cookieJar = m_crawler->GetCookieJar())
+    if (CookieJarImpl *cookieJar = m_crawler->GetCookieJar(false))
     {
         size_t n = m_response->CookiesCount();
         for (size_t i = 0; i < n; ++i)

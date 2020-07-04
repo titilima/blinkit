@@ -26,7 +26,7 @@ extern "C" {
 BK_DECLARE_HANDLE(BkCookieJar, CookieJarImpl);
 
 BKEXPORT BkCookieJar BKAPI BkCreateCookieJar(void);
-BKEXPORT void BKAPI BkDestroyCookieJar(BkCookieJar cookieJar);
+BKEXPORT void BKAPI BkReleaseCookieJar(BkCookieJar cookieJar);
 
 BKEXPORT void BKAPI BkGetCookie(BkCookieJar cookieJar, const char *URL, struct BkBuffer *dst);
 BKEXPORT bool BKAPI BkSetCookie(BkCookieJar cookieJar, const char *setCookieHeader, const char *URL);
@@ -51,11 +51,6 @@ enum BkCrawlerConfig {
     BK_CFG_REQUEST_PROXY,
 
     BK_CFG_USER_AGENT,
-};
-
-enum BkCookieJarMode {
-    BK_CJM_OWNED  =  0, // Need not to call BkDestroyCookieJar
-    BK_CJM_SHARED
 };
 
 enum BkScriptMode {
@@ -83,7 +78,8 @@ struct BkCrawlerClient {
 BKEXPORT BkCrawler BKAPI BkCreateCrawler(struct BkCrawlerClient *client);
 BKEXPORT void BKAPI BkDestroyCrawler(BkCrawler crawler);
 
-BKEXPORT void BKAPI BkSetCookieJar(BkCrawler crawler, BkCookieJar cookieJar, int mode);
+BKEXPORT void BKAPI BkCrawlerEnableCookies(BkCrawler crawler, BkCookieJar *cookieJar);
+BKEXPORT void BKAPI BkSetCookieJar(BkCrawler crawler, BkCookieJar cookieJar);
 
 BKEXPORT int BKAPI BkRunCrawler(BkCrawler crawler, const char *URL);
 
