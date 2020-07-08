@@ -23,7 +23,9 @@ namespace Impl {
 
 static duk_ret_t CookieEnabledGetter(duk_context *ctx)
 {
-    duk_push_boolean(ctx, true);
+    duk_push_this(ctx);
+    Navigator *navigator = DukScriptObject::To<Navigator>(ctx, 0);
+    duk_push_boolean(ctx, navigator->cookieEnabled());
     return 1;
 }
 

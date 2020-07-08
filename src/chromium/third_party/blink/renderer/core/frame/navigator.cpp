@@ -34,12 +34,23 @@
 
 #include "navigator.h"
 
+#include "blinkit/crawler/crawler_impl.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/platform/language.h"
 
 namespace blink {
 
 Navigator::Navigator(LocalFrame *frame) : m_frame(frame) {}
+
+bool Navigator::cookieEnabled(void) const
+{
+    if (CrawlerImpl *crawler = ToCrawlerImpl(m_frame->Client()))
+    {
+        if (nullptr != crawler->GetCookieJar(false))
+            return true;
+    }
+    return false;
+}
 
 Vector<String> Navigator::languages(void)
 {
