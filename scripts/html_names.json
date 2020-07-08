@@ -106,6 +106,7 @@
     { "name": "nowrap", "hash": 15804466, "is_attr": true },
     { "name": "object", "hash": 6907086, "is_tag": true, "is_attr": true },
     { "name": "ol", "hash": 6672076, "is_tag": true },
+    { "name": "onload", "hash": 1245164, "is_attr": true },
     { "name": "optgroup", "hash": 10180907, "is_tag": true },
     { "name": "option", "hash": 2998548, "is_tag": true },
     { "name": "p", "hash": 587733, "is_tag": true },

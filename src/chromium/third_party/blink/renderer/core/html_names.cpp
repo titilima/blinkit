@@ -4,7 +4,7 @@
 //   File Name: html_names.cpp
 // Description: HTML Names
 //      Author: Ziming Li
-//     Created: 2020-03-30
+//     Created: 2020-07-08
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
@@ -180,28 +180,29 @@ const QualifiedName &kNoresizeAttr = reinterpret_cast<QualifiedName *>(&attr_sto
 const QualifiedName &kNoshadeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[41];
 const QualifiedName &kNowrapAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[42];
 const QualifiedName &kObjectAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[43];
-const QualifiedName &kReadonlyAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[44];
-const QualifiedName &kReferrerpolicyAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[45];
-const QualifiedName &kRelAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[46];
-const QualifiedName &kRevAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[47];
-const QualifiedName &kRulesAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[48];
-const QualifiedName &kScopeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[49];
-const QualifiedName &kScrollingAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[50];
-const QualifiedName &kSelectAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[51];
-const QualifiedName &kSelectedAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[52];
-const QualifiedName &kShapeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[53];
-const QualifiedName &kSizeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[54];
-const QualifiedName &kSpanAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[55];
-const QualifiedName &kSrcAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[56];
-const QualifiedName &kStyleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[57];
-const QualifiedName &kSummaryAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[58];
-const QualifiedName &kTargetAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[59];
-const QualifiedName &kTextAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[60];
-const QualifiedName &kTitleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[61];
-const QualifiedName &kTypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[62];
-const QualifiedName &kValignAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[63];
-const QualifiedName &kValuetypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[64];
-const QualifiedName &kVlinkAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[65];
+const QualifiedName &kOnloadAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[44];
+const QualifiedName &kReadonlyAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[45];
+const QualifiedName &kReferrerpolicyAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[46];
+const QualifiedName &kRelAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[47];
+const QualifiedName &kRevAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[48];
+const QualifiedName &kRulesAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[49];
+const QualifiedName &kScopeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[50];
+const QualifiedName &kScrollingAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[51];
+const QualifiedName &kSelectAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[52];
+const QualifiedName &kSelectedAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[53];
+const QualifiedName &kShapeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[54];
+const QualifiedName &kSizeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[55];
+const QualifiedName &kSpanAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[56];
+const QualifiedName &kSrcAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[57];
+const QualifiedName &kStyleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[58];
+const QualifiedName &kSummaryAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[59];
+const QualifiedName &kTargetAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[60];
+const QualifiedName &kTextAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[61];
+const QualifiedName &kTitleAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[62];
+const QualifiedName &kTypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[63];
+const QualifiedName &kValignAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[64];
+const QualifiedName &kValuetypeAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[65];
+const QualifiedName &kVlinkAttr = reinterpret_cast<QualifiedName *>(&attr_storage)[66];
 
 void Init(void)
 {
@@ -327,6 +328,7 @@ void Init(void)
         { "nowrap", 15804466, 6, 0, 1 },
         { "object", 6907086, 6, 1, 1 },
         { "ol", 6672076, 2, 1, 0 },
+        { "onload", 1245164, 6, 0, 1 },
         { "optgroup", 10180907, 8, 1, 0 },
         { "option", 2998548, 6, 1, 0 },
         { "p", 587733, 1, 1, 0 },
