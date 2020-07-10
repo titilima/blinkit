@@ -48,7 +48,7 @@ static duk_ret_t AddEventListener(duk_context *ctx)
             return 0;
     }
 
-    std::shared_ptr<DukEventListener> listener = DukEventListener::Create(ctx, 1, eventTarget, type);
+    std::shared_ptr<EventListener> listener = DukEventListener::Get(ctx, 1, eventTarget, type, true);
     eventTarget->addEventListener(type, listener.get(), useCapture);
     return 0;
 }
@@ -80,9 +80,9 @@ static duk_ret_t RemoveEventListener(duk_context *ctx)
             return 0;
     }
 
-    EventListener *listener = DukEventListener::From(ctx, 1, eventTarget, type);
-    if (nullptr != listener)
-        eventTarget->removeEventListener(type, listener, useCapture);
+    std::shared_ptr<EventListener> listener = DukEventListener::Get(ctx, 1, eventTarget, type, false);
+    if (listener)
+        eventTarget->removeEventListener(type, listener.get(), useCapture);
     return 0;
 }
 

@@ -95,7 +95,9 @@ public:
     bool addEventListener(const AtomicString &eventType, EventListener *listener, bool useCapture);
     bool removeEventListener(const AtomicString &eventType, const EventListener *listener, bool useCapture);
 
+    bool SetAttributeEventListener(const AtomicString &eventType, EventListener *listener);
     bool HasCapturingEventListeners(const AtomicString &eventType);
+    EventListenerVector* GetEventListeners(const AtomicString &eventType);
 
     DispatchEventResult DispatchEvent(Event &event);
     DispatchEventResult FireEventListeners(Event &event);
@@ -127,6 +129,8 @@ private:
     LocalDOMWindow* ExecutingWindow(void);
     void SetDefaultAddEventListenerOptions(const AtomicString &eventType, EventListener *eventListener,
         AddEventListenerOptionsResolved &options);
+
+    RegisteredEventListener* GetAttributeRegisteredEventListener(const AtomicString &eventType);
 
     bool FireEventListeners(Event &event, EventTargetData *d, EventListenerVector &entry);
 };

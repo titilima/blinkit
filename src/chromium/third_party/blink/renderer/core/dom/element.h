@@ -202,6 +202,14 @@ protected:
 
     virtual NamedItemType GetNamedItemType(void) const { return NamedItemType::kNone; }
 
+    using AttributeChangedFunction = void (Element::*)(const Element::AttributeModificationParams &params);
+    struct AttributeTriggers {
+        const QualifiedName &attribute;
+        const AtomicString &event;
+        AttributeChangedFunction function;
+    };
+    virtual AttributeTriggers* TriggersForAttributeName(const QualifiedName &attrName);
+
     // ContainerNode overrides
 #ifndef BLINKIT_CRAWLER_ONLY
     void ChildrenChanged(const ChildrenChange &change) override;

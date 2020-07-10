@@ -45,6 +45,7 @@
 #include "third_party/blink/renderer/core/dom/mutation_observer_interest_group.h"
 #include "third_party/blink/renderer/core/dom/text.h"
 #include "third_party/blink/renderer/core/editing/serializers/serialization.h"
+#include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/platform/bindings/gc_pool.h"
@@ -745,9 +746,18 @@ String Element::nodeName(void) const
 
 void Element::ParseAttribute(const AttributeModificationParams &params)
 {
-#ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
-#endif
+    AttributeTriggers *triggers = TriggersForAttributeName(params.name);
+    if (nullptr == triggers)
+        return;
+
+    if (triggers->event != g_null_atom)
+    {
+        ASSERT(false); // BKTODO:
+        //SetAttributeEventListener()
+    }
+
+    if (nullptr != triggers->function)
+        (this->*(triggers->function))(params);
 }
 
 void Element::ParserSetAttributes(const Vector<Attribute> &attributeVector)
@@ -980,6 +990,26 @@ String Element::TextFromChildren(void) const
 
     ASSERT(content.length() == totalLength);
     return content.ToString();
+}
+
+Element::AttributeTriggers* Element::TriggersForAttributeName(const QualifiedName &attrName)
+{
+    const AtomicString &kNoEvent = g_null_atom;
+    static AttributeTriggers attributeTriggers[] = {
+        { html_names::kOnloadAttr, event_type_names::kLoad, nullptr },
+    };
+
+    static std::unordered_map<QualifiedName, uint32_t> s_attributeToTriggerIndexMap;
+    if (s_attributeToTriggerIndexMap.empty())
+    {
+        for (uint32_t i = 0; i < std::size(attributeTriggers); ++i)
+            s_attributeToTriggerIndexMap[attributeTriggers[i].attribute] = i;
+    }
+
+    auto it = s_attributeToTriggerIndexMap.find(attrName);
+    if (std::end(s_attributeToTriggerIndexMap) != it)
+        return &attributeTriggers[it->second];
+    return nullptr;
 }
 
 void Element::UpdateId(const AtomicString &oldId, const AtomicString &newId)

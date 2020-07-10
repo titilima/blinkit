@@ -47,36 +47,10 @@ DukEventListener::~DukEventListener(void)
     duk_pop(m_ctx);
 }
 
-std::shared_ptr<DukEventListener> DukEventListener::Create(duk_context *ctx, duk_idx_t idx, blink::EventTarget *target, const AtomicString &type)
+bool DukEventListener::BelongsToTheCurrentWorld(ExecutionContext *executionContext) const
 {
-    void *heapPtr = duk_get_heapptr(ctx, idx);
-    std::string key = GenerateKey(target, type, heapPtr);
-    return base::WrapShared(new DukEventListener(ctx, heapPtr, key));
-}
-
-EventListener* DukEventListener::From(duk_context *ctx, duk_idx_t idx, blink::EventTarget *target, const AtomicString &type)
-{
-    EventListener *ret = nullptr;
-
-    void *heapPtr = duk_get_heapptr(ctx, idx);
-    std::string key = GenerateKey(target, type, heapPtr);
-
-    const duk_idx_t top = duk_get_top(ctx);
-    do {
-        duk_push_global_object(ctx);
-        if (!duk_get_prop_lstring(ctx, -1, key.data(), key.length()))
-            break;
-
-        if (!duk_get_prop_string(ctx, -1, NativeLister))
-        {
-            NOTREACHED();
-            break;
-        }
-
-        ret = reinterpret_cast<DukEventListener *>(duk_to_pointer(ctx, -1));
-    } while (false);
-    duk_set_top(ctx, top);
-    return ret;
+    ContextImpl *ctxImpl = ContextImpl::From(executionContext);
+    return ctxImpl->GetRawContext() == m_ctx;
 }
 
 std::string DukEventListener::GenerateKey(EventTarget *target, const AtomicString &type, void *heapPtr)
@@ -86,14 +60,40 @@ std::string DukEventListener::GenerateKey(EventTarget *target, const AtomicStrin
     return ret;
 }
 
+std::shared_ptr<EventListener> DukEventListener::Get(duk_context *ctx, duk_idx_t idx, EventTarget *target, const AtomicString &type, bool createIfNotExists)
+{
+    std::shared_ptr<EventListener> ret;
+
+    void *heapPtr = duk_get_heapptr(ctx, idx);
+    std::string key = GenerateKey(target, type, heapPtr);
+
+    const duk_idx_t top = duk_get_top(ctx);
+    do {
+        duk_push_global_object(ctx);
+        if (!duk_get_prop_lstring(ctx, -1, key.data(), key.length()))
+        {
+            if (createIfNotExists)
+                ret = base::WrapShared(new DukEventListener(ctx, heapPtr, key));
+            break;
+        }
+
+        if (!duk_get_prop_string(ctx, -1, NativeLister))
+        {
+            NOTREACHED();
+            break;
+        }
+
+        ret = reinterpret_cast<DukEventListener *>(duk_to_pointer(ctx, -1))->shared_from_this();
+    } while (false);
+    duk_set_top(ctx, top);
+    return ret;
+}
+
 void DukEventListener::handleEvent(ExecutionContext *executionContext, Event *event)
 {
     ContextImpl *ctxImpl = ContextImpl::From(executionContext);
 
-    if (nullptr == m_ctx)
-        m_ctx = ctxImpl->GetRawContext();
-    else
-        ASSERT(ctxImpl->GetRawContext() == m_ctx);
+    ASSERT(ctxImpl->GetRawContext() == m_ctx);
 
     const duk_idx_t top = duk_get_top(m_ctx);
 

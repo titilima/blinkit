@@ -13,9 +13,11 @@
 
 #include "blinkit/js/context_impl.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_event_listener.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_exception_state.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_named_node_map.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_script_element.h"
+#include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappers.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
@@ -68,6 +70,17 @@ static duk_ret_t InnerHTMLSetter(duk_context *ctx)
     if (exceptionState.HadException())
         exceptionState.ThrowIfNeeded();
     return 0;
+}
+
+static duk_ret_t OnloadGetter(duk_context *ctx)
+{
+    ASSERT(false); // BKTODO:
+    return 0;
+}
+
+static duk_ret_t OnloadSetter(duk_context *ctx)
+{
+    return DukElement::SetAttributeEventListenerImpl(ctx, event_type_names::kLoad);
 }
 
 static duk_ret_t SetAttribute(duk_context *ctx)
@@ -126,6 +139,7 @@ void DukElement::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
     static const PrototypeEntry::Property Properties[] = {
         { "attributes",             Impl::AttributesGetter,             nullptr                    },
         { "innerHTML",              Impl::InnerHTMLGetter,              Impl::InnerHTMLSetter      },
+        { "onload",                 Impl::OnloadGetter,                 Impl::OnloadSetter         },
         { "tagName",                Impl::TagNameGetter,                nullptr                    },
     };
 
@@ -164,6 +178,17 @@ duk_idx_t DukElement::Push(duk_context *ctx, Element *element)
 void DukElement::RegisterPrototypeForCrawler(PrototypeHelper &helper)
 {
     helper.Register(ProtoName, FillPrototypeEntryForCrawler);
+}
+
+duk_ret_t DukElement::SetAttributeEventListenerImpl(duk_context *ctx, const AtomicString &attrName)
+{
+    duk_push_this(ctx);
+    Element *element = DukScriptObject::To<Element>(ctx, -1);
+
+    std::shared_ptr<EventListener> listener = DukEventListener::Get(ctx, 0, element, attrName, true);
+    element->SetAttributeEventListener(attrName, listener.get());
+
+    return 0;
 }
 
 } // namespace BlinKit

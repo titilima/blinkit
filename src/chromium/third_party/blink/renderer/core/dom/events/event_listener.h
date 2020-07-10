@@ -64,11 +64,13 @@ public:
 #if 0 // BKTODO:
     virtual const String& Code() const { return g_empty_string; }
     virtual bool IsEventHandlerForContentAttribute() const { return false; }
+#endif
     virtual bool BelongsToTheCurrentWorld(ExecutionContext*) const {
         return false;
     }
     virtual bool IsEventHandler() const { return false; }
 
+#if 0 // BKTODO:
     ListenerType GetType() const { return type_; }
 
     // Returns true if this EventListener is implemented based on JS object.

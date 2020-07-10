@@ -26,10 +26,9 @@ namespace BlinKit {
 class DukEventListener : public blink::EventListener
 {
 public:
-    static std::shared_ptr<DukEventListener> Create(duk_context *ctx, duk_idx_t idx, blink::EventTarget *target, const AtomicString &type);
+    static std::shared_ptr<EventListener> Get(duk_context *ctx, duk_idx_t idx, blink::EventTarget *target, const AtomicString &type, bool createIfNotExists);
     ~DukEventListener(void) override;
 
-    static EventListener* From(duk_context *ctx, duk_idx_t idx, blink::EventTarget *target, const AtomicString &type);
 private:
     DukEventListener(duk_context *ctx, void *heapPtr, const std::string &key);
 
@@ -38,9 +37,11 @@ private:
     // blink::EventListener
     bool operator==(const blink::EventListener &other) const final { return this == &other; }
     void handleEvent(blink::ExecutionContext *executionContext, blink::Event *event) final;
+    bool BelongsToTheCurrentWorld(blink::ExecutionContext *executionContext) const final;
+    bool IsEventHandler(void) const final { return true; }
 
-    duk_context *m_ctx = nullptr;
-    void *m_heapPtr = nullptr;
+    duk_context *m_ctx;
+    void *m_heapPtr;
     const std::string m_key;
 };
 

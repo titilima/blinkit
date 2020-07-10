@@ -232,6 +232,21 @@ bool EventTarget::FireEventListeners(Event &event, EventTargetData *d, EventList
     return firedListener;
 }
 
+RegisteredEventListener* EventTarget::GetAttributeRegisteredEventListener(const AtomicString &eventType)
+{
+    EventListenerVector *listenerVector = GetEventListeners(eventType);
+    if (nullptr == listenerVector)
+        return nullptr;
+
+    for (auto &eventListener : *listenerVector)
+    {
+        EventListener *listener = eventListener.Callback();
+        if (listener->IsEventHandler() && listener->BelongsToTheCurrentWorld(GetExecutionContext()))
+            return &eventListener;
+    }
+    return nullptr;
+}
+
 DispatchEventResult EventTarget::GetDispatchEventResult(const Event &event)
 {
     if (event.defaultPrevented())
@@ -239,6 +254,14 @@ DispatchEventResult EventTarget::GetDispatchEventResult(const Event &event)
     if (event.DefaultHandled())
         return DispatchEventResult::kCanceledByDefaultEventHandler;
     return DispatchEventResult::kNotCanceled;
+}
+
+EventListenerVector* EventTarget::GetEventListeners(const AtomicString &eventType)
+{
+    EventTargetData *data = GetEventTargetData();
+    if (nullptr == data)
+        return nullptr;
+    return data->eventListenerMap.Find(eventType);
 }
 
 bool EventTarget::HasCapturingEventListeners(const AtomicString &eventType)
@@ -321,6 +344,23 @@ bool EventTarget::RemoveEventListenerInternal(
     }
     RemovedEventListener(eventType, registeredListener);
     return true;
+}
+
+bool EventTarget::SetAttributeEventListener(const AtomicString &eventType, EventListener *listener)
+{
+    RegisteredEventListener *registeredListener = GetAttributeRegisteredEventListener(eventType);
+    if (nullptr == listener)
+    {
+        if (nullptr != registeredListener)
+            removeEventListener(eventType, registeredListener->Callback(), false);
+        return false;
+    }
+    if (nullptr != registeredListener)
+    {
+        registeredListener->SetCallback(listener);
+        return true;
+    }
+    return addEventListener(eventType, listener, false);
 }
 
 void EventTarget::SetDefaultAddEventListenerOptions(
