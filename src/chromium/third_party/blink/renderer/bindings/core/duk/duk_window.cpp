@@ -15,6 +15,8 @@
 #include "third_party/blink/renderer/bindings/core/duk/duk_document.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_location.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_navigator.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_timer.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_xhr.h"
 
 using namespace blink;
 
@@ -23,6 +25,12 @@ namespace BlinKit {
 const char DukWindow::ProtoName[] = "Window";
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * NOTE:
+ * As the Window object is the global object, `duk_push_this` will push `undefined` in strict mode.
+ * So in all members of Window, `duk_push_global_object` will be used instead of `duk_push_this`.
+ */
 
 namespace Crawler {
 
@@ -60,7 +68,7 @@ static duk_ret_t ConsoleGetter(duk_context *ctx)
 
 static duk_ret_t DocumentGetter(duk_context *ctx)
 {
-    duk_push_this(ctx);
+    duk_push_global_object(ctx);
     LocalDOMWindow *w = DukScriptObject::To<LocalDOMWindow>(ctx, -1);
     DukScriptObject::Push<DukDocument>(ctx, w->document());
     return 1;
@@ -68,7 +76,7 @@ static duk_ret_t DocumentGetter(duk_context *ctx)
 
 static duk_ret_t LocationGetter(duk_context *ctx)
 {
-    duk_push_this(ctx);
+    duk_push_global_object(ctx);
     LocalDOMWindow *w = DukScriptObject::To<LocalDOMWindow>(ctx, -1);
     DukScriptObject::Push<DukLocation>(ctx, w->location());
     return 1;
@@ -82,15 +90,25 @@ static duk_ret_t LocationSetter(duk_context *ctx)
 
 static duk_ret_t NavigatorGetter(duk_context *ctx)
 {
-    duk_push_this(ctx);
+    duk_push_global_object(ctx);
     LocalDOMWindow *w = DukScriptObject::To<LocalDOMWindow>(ctx, -1);
     DukScriptObject::Push<DukNavigator>(ctx, w->navigator());
     return 1;
 }
 
+static duk_ret_t SetInterval(duk_context *ctx)
+{
+    return DukWindow::SetTimerImpl(ctx, true);
+}
+
+static duk_ret_t SetTimeout(duk_context *ctx)
+{
+    return DukWindow::SetTimerImpl(ctx, false);
+}
+
 static duk_ret_t WindowGetter(duk_context *ctx)
 {
-    duk_push_this(ctx);
+    duk_push_global_object(ctx);
     return 1;
 }
 
@@ -104,6 +122,9 @@ void DukWindow::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
         { "atob",             Impl::AToB,                1           },
         { "btoa",             Impl::BToA,                1           },
         { "getComputedStyle", Crawler::GetComputedStyle, 2           },
+        { "setInterval",      Impl::SetInterval,         DUK_VARARGS },
+        { "setTimeout",       Impl::SetTimeout,          DUK_VARARGS },
+        { DukXHR::ProtoName,  DukXHR::Construct,         0           },
     };
     static const PrototypeEntry::Property Properties[] = {
         { "console",   Impl::ConsoleGetter,   nullptr              },
@@ -123,6 +144,24 @@ void DukWindow::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
 void DukWindow::RegisterPrototypeForCrawler(PrototypeHelper &helper)
 {
     helper.Register(ProtoName, FillPrototypeEntryForCrawler);
+}
+
+duk_ret_t DukWindow::SetTimerImpl(duk_context *ctx, bool repeatable)
+{
+    int argc = duk_get_top(ctx);
+    if (0 == argc)
+        return duk_type_error(ctx, "Not enough arguments");
+
+    std::unique_ptr<DukTimer> timer = std::make_unique<DukTimer>(ctx, 0, argc > 2 ? argc - 2 : 0);
+    if (repeatable)
+        timer->SetIsRepeatable();
+    if (argc > 1)
+        timer->SetInterval(duk_to_uint(ctx, 1));
+
+    duk_push_global_object(ctx);
+    LocalDOMWindow *w = DukScriptObject::To<LocalDOMWindow>(ctx, -1);
+    duk_push_uint(ctx, w->AddTimer(timer));
+    return 1;
 }
 
 } // namespace BlinKit

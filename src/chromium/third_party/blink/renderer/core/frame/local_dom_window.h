@@ -38,11 +38,16 @@
 #ifndef BLINKIT_BLINK_LOCAL_DOM_WINDOW_H
 #define BLINKIT_BLINK_LOCAL_DOM_WINDOW_H
 
+#include <unordered_map>
 #include <unordered_set>
 #include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/frame/dom_window.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
+
+namespace BlinKit {
+class DukTimer;
+}
 
 namespace blink {
 
@@ -61,6 +66,7 @@ public:
     ~LocalDOMWindow(void) override;
 
     // Exports for JS
+    unsigned AddTimer(std::unique_ptr<BlinKit::DukTimer> &timer);
     Navigator* navigator(void) const;
 
     LocalFrame* GetFrame(void) const;
@@ -93,6 +99,8 @@ private:
 
     void DispatchLoadEvent(void);
     void ClearDocument(void);
+    void LaunchTimer(unsigned id, unsigned delayInMs);
+    void ProcessTimer(unsigned id);
 
     ExecutionContext* GetExecutionContext(void) const final;
     const LocalDOMWindow* ToLocalDOMWindow(void) const final { return this; }
@@ -102,6 +110,9 @@ private:
     mutable std::unique_ptr<Navigator> m_navigator;
     
     std::unordered_set<EventListenerObserver *> m_eventListenerObservers;
+
+    unsigned m_nextTimerId = 1;
+    std::unordered_map<unsigned, std::unique_ptr<BlinKit::DukTimer>> m_timers;
 };
 
 DEFINE_TYPE_CASTS(LocalDOMWindow, DOMWindow, x, x->IsLocalDOMWindow(), x.IsLocalDOMWindow());

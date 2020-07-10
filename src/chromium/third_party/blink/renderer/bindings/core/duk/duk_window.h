@@ -26,6 +26,8 @@ class DukWindow final : public DukEventTarget
 public:
     static const char ProtoName[];
     static void RegisterPrototypeForCrawler(PrototypeHelper &helper);
+
+    static duk_ret_t SetTimerImpl(duk_context *ctx, bool repeatable);
 private:
     static void FillPrototypeEntryForCrawler(PrototypeEntry &entry);
 };

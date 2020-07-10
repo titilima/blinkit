@@ -37,7 +37,9 @@
 
 #include "local_dom_window.h"
 
+#include "base/single_thread_task_runner.h"
 #include "blinkit/crawler/dom/crawler_document.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_timer.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/document_init.h"
@@ -81,6 +83,17 @@ void LocalDOMWindow::AddedEventListener(const AtomicString &eventType, Registere
     else if (eventType == event_type_names::kBeforeunload)
         TrackBeforeUnloadEventListener(this);
 #endif
+}
+
+unsigned LocalDOMWindow::AddTimer(std::unique_ptr<DukTimer> &timer)
+{
+    unsigned delayInMs = timer->Interval();
+
+    unsigned id = m_nextTimerId++;
+    m_timers[id] = std::move(timer);
+
+    LaunchTimer(id, delayInMs);
+    return id;
 }
 
 void LocalDOMWindow::ClearDocument(void)
@@ -182,11 +195,37 @@ Document* LocalDOMWindow::InstallNewDocument(const DocumentInit &init)
     return m_document.get();
 }
 
+void LocalDOMWindow::LaunchTimer(unsigned id, unsigned delayInMs)
+{
+    if (auto taskRunner = GetFrame()->GetTaskRunner(TaskType::kJavascriptTimer))
+    {
+        auto callback = std::bind(&LocalDOMWindow::ProcessTimer, this, id);
+        taskRunner->PostDelayedTask(FROM_HERE, callback, TimeDelta::FromMilliseconds(delayInMs));
+    }
+}
+
 Navigator* LocalDOMWindow::navigator(void) const
 {
     if (!m_navigator)
         m_navigator = Navigator::Create(GetFrame());
     return m_navigator.get();
+}
+
+void LocalDOMWindow::ProcessTimer(unsigned id)
+{
+    auto it = m_timers.find(id);
+    if (std::end(m_timers) == it)
+        return;
+
+    if (it->second->Fire() && it->second->IsRepeatable())
+    {
+        unsigned delayInMs = it->second->Interval();
+        LaunchTimer(id, delayInMs);
+    }
+    else
+    {
+        m_timers.erase(it);
+    }
 }
 
 void LocalDOMWindow::RemoveAllEventListeners(void)
