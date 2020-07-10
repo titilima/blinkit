@@ -1,16 +1,16 @@
 // -------------------------------------------------
 // BlinKit - blink Library
 // -------------------------------------------------
-//   File Name: duk_script_element.h
-// Description: DukScriptElement class
+//   File Name: duk_anchor_element.h
+// Description: DukAnchorElement class
 //      Author: Ziming Li
-//     Created: 2020-04-01
+//     Created: 2020-07-10
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINK_DUK_SCRIPT_ELEMENT_H
-#define BLINKIT_BLINK_DUK_SCRIPT_ELEMENT_H
+#ifndef BLINKIT_BLINK_DUK_ANCHOR_ELEMENT_H
+#define BLINKIT_BLINK_DUK_ANCHOR_ELEMENT_H
 
 #pragma once
 
@@ -18,7 +18,7 @@
 
 namespace BlinKit {
 
-class DukScriptElement final : public DukElement
+class DukAnchorElement final : public DukElement
 {
 public:
     static const char ProtoName[];
@@ -30,4 +30,4 @@ private:
 
 } // namespace BlinKit
 
-#endif // BLINKIT_BLINK_DUK_SCRIPT_ELEMENT_H
+#endif // BLINKIT_BLINK_DUK_ANCHOR_ELEMENT_H

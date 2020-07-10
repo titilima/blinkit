@@ -149,6 +149,16 @@ void DukElement::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
     entry.Add("style", DUK_TYPE_OBJECT);
 }
 
+duk_ret_t DukElement::GetURLAttributeImpl(duk_context *ctx, const QualifiedName &name)
+{
+    duk_push_this(ctx);
+    Element *element = DukScriptObject::To<Element>(ctx, -1);
+
+    GURL ret = element->GetURLAttribute(name);
+    Duk::PushString(ctx, ret.spec());
+    return 1;
+}
+
 const std::unordered_map<std::string, const char *>& DukElement::PrototypeMapForCrawler(void)
 {
     static std::unordered_map<std::string, const char *> s_prototypeMapForCrawler;
@@ -188,6 +198,20 @@ duk_ret_t DukElement::SetAttributeEventListenerImpl(duk_context *ctx, const Atom
     std::shared_ptr<EventListener> listener = DukEventListener::Get(ctx, 0, element, attrName, true);
     element->SetAttributeEventListener(attrName, listener.get());
 
+    return 0;
+}
+
+duk_ret_t DukElement::SetAttributeImpl(duk_context *ctx, const QualifiedName &name)
+{
+    const AtomicString value = Duk::To<AtomicString>(ctx, 0);
+
+    duk_push_this(ctx);
+    Element *element = DukScriptObject::To<Element>(ctx, -1);
+
+    DukExceptionState exceptionState(ctx);
+    element->setAttribute(name.LocalName(), value, exceptionState);
+    if (exceptionState.HadException())
+        exceptionState.ThrowIfNeeded();
     return 0;
 }
 

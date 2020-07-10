@@ -28,6 +28,8 @@ public:
 
     static duk_idx_t Push(duk_context *ctx, blink::Element *element);
 
+    static duk_ret_t GetURLAttributeImpl(duk_context *ctx, const blink::QualifiedName &name);
+    static duk_ret_t SetAttributeImpl(duk_context *ctx, const blink::QualifiedName &name);
     static duk_ret_t SetAttributeEventListenerImpl(duk_context *ctx, const WTF::AtomicString &attrName);
 
     static const std::unordered_map<std::string, const char *>& PrototypeMapForCrawler(void);
