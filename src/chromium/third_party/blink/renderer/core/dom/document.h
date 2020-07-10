@@ -132,6 +132,7 @@ public:
 
     // Exports for JS
     Element* body(void) const;
+    String cookie(ExceptionState &exceptionState) const;
     DocumentFragment* createDocumentFragment(void);
     Comment* createComment(const String &data);
     Element* createElement(const AtomicString &name, ExceptionState &exceptionState);
@@ -139,6 +140,8 @@ public:
     using TreeScope::getElementById;
     Location* location(void) const;
     void open(Document *enteredDocument, ExceptionState &exceptionState);
+    String readyState(void) const;
+    void setCookie(const String &value, ExceptionState &exceptionState);
     // Bind the url to document.url, if unavailable bind to about:blank.
     GURL urlForBinding(void) const;
     void write(const String &text, Document *enteredDocument = nullptr, ExceptionState &exceptionState = ASSERT_NO_EXCEPTION);
@@ -158,6 +161,7 @@ public:
     // Fallback base URL.
     // https://html.spec.whatwg.org/multipage/urls-and-fetching.html#fallback-base-url
     GURL FallbackBaseURL(void) const;
+    const GURL& CookieURL(void) const { return m_cookieURL; }
 
     const AtomicString& ContentLanguage(void) const { return m_contentLanguage; }
     void SetContentLanguage(const AtomicString &language);
@@ -395,6 +399,7 @@ private:
     GURL m_baseURL;  // Node.baseURI: The URL to use when resolving relative URLs.
     GURL m_baseURLOverride;
     GURL m_baseElementURL;  // The URL set by the <base> element.
+    GURL m_cookieURL;       // The URL to use for cookie access.
 
     AtomicString m_contentLanguage;
 

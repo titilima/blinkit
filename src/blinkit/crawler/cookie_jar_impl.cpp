@@ -43,11 +43,12 @@ static bool DomainMatch(const std::string &domainInURL, const std::string &domai
     return 0 == domainInURL.compare(l1 - l2, l2, domainInCookie);
 }
 
-std::string CookieJarImpl::Get(const char *URL) const
+std::string CookieJarImpl::Get(const char *URL, const CookieOptions *options) const
 {
     std::string ret;
 
     GURL u(URL);
+    const CookieOptions &o = nullptr != options ? *options : m_options;
     for (const auto &it : m_cookies)
     {
         if (!DomainMatch(u.host(), it.first))
@@ -56,7 +57,7 @@ std::string CookieJarImpl::Get(const char *URL) const
         for (const auto &it2 : it.second)
         {
             CanonicalCookie *c = it2.second.get();
-            if (!c->IncludeForRequestURL(u, m_options))
+            if (!c->IncludeForRequestURL(u, o))
                 continue;
 
             ret.append(c->Name());

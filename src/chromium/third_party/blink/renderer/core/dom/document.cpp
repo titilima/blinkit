@@ -40,6 +40,9 @@
 
 #include "document.h"
 
+#include "blinkit/crawler/cookie_jar_impl.h"
+#include "blinkit/crawler/crawler_impl.h"
+#include "net/cookies/cookie_options.h"
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/css/selector_query.h"
@@ -220,6 +223,8 @@ Document::Document(const DocumentInit &initializer)
         // fallback base URL.
         UpdateBaseURL();
     }
+
+    m_cookieURL = m_URL;
 
     m_lifecycle.AdvanceTo(DocumentLifecycle::kInactive);
 }
@@ -597,6 +602,24 @@ Document* Document::ContextDocument(void) const
     if (m_frame)
         return const_cast<Document *>(this);
     return nullptr;
+}
+
+String Document::cookie(ExceptionState &exceptionState) const
+{
+    CookieJarImpl *cookieJar = nullptr;
+    if (CrawlerImpl *crawler = ToCrawlerImpl(m_frame->Client()))
+        cookieJar = crawler->GetCookieJar(false);
+    if (nullptr == cookieJar)
+        return String();
+
+    GURL cookieURL = CookieURL();
+    if (cookieURL.is_empty())
+        return String();
+
+    net::CookieOptions options;
+    options.set_exclude_httponly();
+    std::string ret = cookieJar->Get(cookieURL.spec().c_str(), &options);
+    return String::FromStdUTF8(ret);
 }
 
 Comment* Document::createComment(const String &data)
@@ -1246,6 +1269,31 @@ void Document::PushCurrentScript(ScriptElementBase *newCurrentScript)
     m_currentScriptStack.push(newCurrentScript);
 }
 
+String Document::readyState(void) const
+{
+    switch (m_readyState)
+    {
+        case kLoading:
+        {
+            static String loading("loading");
+            return loading;
+        }
+        case kInteractive:
+        {
+            static String interactive("interactive");
+            return interactive;
+        }
+        case kComplete:
+        {
+            static String complete("complete");
+            return complete;
+        }
+    }
+
+    NOTREACHED();
+    return String();
+}
+
 void Document::RegisterNodeList(const LiveNodeListBase *list)
 {
     m_nodeLists.Add(list, list->InvalidationType());
@@ -1282,6 +1330,22 @@ void Document::SetContentLanguage(const AtomicString &language)
     SetNeedsStyleRecalc(kSubtreeStyleChange, StyleChangeReasonForTracing::Create(
         StyleChangeReason::kLanguage));
 #endif
+}
+
+void Document::setCookie(const String &value, ExceptionState &exceptionState)
+{
+    CookieJarImpl *cookieJar = nullptr;
+    if (CrawlerImpl *crawler = ToCrawlerImpl(m_frame->Client()))
+        cookieJar = crawler->GetCookieJar(false);
+    if (nullptr == cookieJar)
+        return;
+
+    GURL cookieURL = CookieURL();
+    if (cookieURL.is_empty())
+        return;
+
+    std::string s = value.StdUtf8();
+    cookieJar->Set(s.c_str(), cookieURL.spec().c_str());
 }
 
 void Document::SetDoctype(DocumentType *docType)

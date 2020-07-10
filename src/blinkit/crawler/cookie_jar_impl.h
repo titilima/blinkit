@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <unordered_map>
 #include "bk_crawler.h"
 #include "net/cookies/cookie_options.h"
 
@@ -31,7 +32,7 @@ public:
 
     void Clear(void);
 
-    std::string Get(const char *URL) const;
+    std::string Get(const char *URL, const net::CookieOptions *options = nullptr) const;
     bool Set(const char *setCookieHeader, const char *URL);
 private:
     ~CookieJarImpl(void) = default;

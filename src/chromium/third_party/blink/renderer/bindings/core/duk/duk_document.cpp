@@ -41,6 +41,41 @@ static void CollectStringArgs(duk_context *ctx, std::vector<std::string> &dst)
     }
 }
 
+namespace Crawler {
+
+static duk_ret_t CookieGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Document *document = DukScriptObject::To<Document>(ctx, -1);
+
+    DukExceptionState exceptionState(ctx);
+    String ret = document->cookie(exceptionState);
+    if (exceptionState.HadException())
+    {
+        exceptionState.ThrowIfNeeded();
+        return 0;
+    }
+
+    Duk::PushString(ctx, ret);
+    return 1;
+}
+
+static duk_ret_t CookieSetter(duk_context *ctx)
+{
+    const String cookie = Duk::To<String>(ctx, 0);
+
+    duk_push_this(ctx);
+    Document *document = DukScriptObject::To<Document>(ctx, -1);
+
+    DukExceptionState exceptionState(ctx);
+    document->setCookie(cookie, exceptionState);
+    if (exceptionState.HadException())
+        exceptionState.ThrowIfNeeded();
+    return 0;
+}
+
+} // namespace Crawler
+
 namespace Impl {
 
 static duk_ret_t BodyGetter(duk_context *ctx)
@@ -127,6 +162,14 @@ static duk_ret_t LocationSetter(duk_context *ctx)
     return 0;
 }
 
+static duk_ret_t ReadyStateGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Document *document = DukScriptObject::To<Document>(ctx, -1);
+    Duk::PushString(ctx, document->readyState());
+    return 1;
+}
+
 static duk_ret_t URLGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -188,9 +231,11 @@ void DukDocument::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
     };
     static const PrototypeEntry::Property Properties[] = {
         { "body",            Impl::BodyGetter,            nullptr               },
+        { "cookie",          Crawler::CookieGetter,       Crawler::CookieSetter },
         { "documentElement", Impl::DocumentElementGetter, nullptr               },
         { "location",        Impl::LocationGetter,        Impl::LocationSetter  },
-        { "URL",             Impl::URLGetter,            nullptr               },
+        { "readyState",      Impl::ReadyStateGetter,      nullptr               },
+        { "URL",             Impl::URLGetter,             nullptr               },
     };
 
     DukContainerNode::FillPrototypeEntry(entry);
