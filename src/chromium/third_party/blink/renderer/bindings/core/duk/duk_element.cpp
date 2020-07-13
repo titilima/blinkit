@@ -13,6 +13,7 @@
 
 #include "blinkit/js/context_impl.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_anchor_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_event_listener.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_exception_state.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_named_node_map.h"
@@ -167,6 +168,7 @@ const std::unordered_map<std::string, const char *>& DukElement::PrototypeMapFor
     if (s_prototypeMapForCrawler.empty())
     {
         s_prototypeMapForCrawler.insert({
+            { "a",      DukAnchorElement::ProtoName },
             { "script", DukScriptElement::ProtoName }
         });
     }
