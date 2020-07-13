@@ -84,6 +84,7 @@ public:
     typedef void (*Worker)(PrototypeEntry &);
     void Register(const char *protoName, Worker worker);
 
+    static bool AttachToScriptObject(duk_context *ctx, duk_idx_t idx, const char *protoName);
     static duk_idx_t CreateScriptObject(duk_context *ctx, const char *protoName, blink::ScriptWrappable *nativeObject);
 private:
     duk_context *m_ctx;

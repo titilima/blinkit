@@ -37,6 +37,28 @@ PrototypeHelper::~PrototypeHelper(void)
     duk_put_prop_string(m_ctx, -2, Prototypes);
 }
 
+bool PrototypeHelper::AttachToScriptObject(duk_context *ctx, duk_idx_t idx, const char *protoName)
+{
+    bool ret = true;
+    idx = duk_normalize_index(ctx, idx);
+
+    const duk_idx_t top = duk_get_top(ctx);
+    // ... obj
+    duk_push_heap_stash(ctx);
+    // ... obj stash
+    duk_get_prop_string(ctx, -1, Prototypes);
+    // ... obj stash prototypes
+    duk_get_prop_string(ctx, -1, protoName);
+    // ... obj stash prototypes proto
+    if (duk_is_object(ctx, -1))
+        duk_set_prototype(ctx, idx);
+    else
+        ret = false;
+    duk_set_top(ctx, top);
+
+    return ret;
+}
+
 duk_idx_t PrototypeHelper::CreateScriptObject(duk_context *ctx, const char *protoName, ScriptWrappable *nativeObject)
 {
     duk_push_object(ctx);

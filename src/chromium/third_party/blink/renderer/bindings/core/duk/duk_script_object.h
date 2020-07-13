@@ -22,7 +22,6 @@ namespace BlinKit {
 
 class DukScriptObject
 {
-    STATIC_ONLY(DukScriptObject);
 public:
     template <class T>
     static inline duk_idx_t Create(duk_context *ctx)
@@ -48,6 +47,8 @@ public:
         return PushScriptWrappable(ctx, T::ProtoName, nativeObject);
     }
 protected:
+    DukScriptObject(void) = default;
+
     static void BindNative(duk_context *ctx, duk_idx_t idx, blink::ScriptWrappable &nativeObject);
     static duk_ret_t DefaultFinalizer(duk_context *ctx);
     static void FillPrototypeEntry(PrototypeEntry &entry);
