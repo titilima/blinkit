@@ -1259,6 +1259,15 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\weborigin\kurl.h">
       <Filter>renderer\platform\weborigin</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_timer.h">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_xhr.h">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_anchor_element.h">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\platform.cpp">
@@ -1974,6 +1983,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\weborigin\kurl.cpp">
       <Filter>renderer\platform\weborigin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_timer.cpp">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_xhr.cpp">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_anchor_element.cpp">
+      <Filter>renderer\bindings\core\duk</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

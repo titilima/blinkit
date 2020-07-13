@@ -165,6 +165,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\web\web_frame_load_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\web\web_global_object_reuse_policy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_anchor_element.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_array_like_object_impl.hpp" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_attr.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_console.h" />
@@ -183,7 +184,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_node_list.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_script_element.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_script_object.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_timer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_window.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_xhr.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\prototype_helper.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_controller.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_source_code.h" />
@@ -528,6 +531,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_anchor_element.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_attr.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_console.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_container_node.cpp" />
@@ -545,7 +549,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_node_list.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_script_element.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_script_object.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_timer.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_window.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_xhr.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\prototype_helper.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_controller.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_source_code.cpp" />
