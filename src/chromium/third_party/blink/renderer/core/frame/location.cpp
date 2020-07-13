@@ -54,6 +54,18 @@ Document* Location::GetDocument(void) const
     return ToLocalDOMWindow(m_domWindow)->document();
 }
 
+std::string Location::hash(void) const
+{
+    std::string ret;
+    const GURL &u = Url();
+    if (u.has_ref())
+    {
+        ret.push_back('#');
+        ret.append(u.ref());
+    }
+    return ret;
+}
+
 std::string Location::host(void) const
 {
     return Url().host();

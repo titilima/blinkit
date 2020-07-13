@@ -25,7 +25,7 @@ static duk_ret_t HashGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
     Location *location = DukScriptObject::To<Location>(ctx, 0);
-    ASSERT(false); // BKTODO:
+    Duk::PushString(ctx, location->hash());
     return 1;
 }
 

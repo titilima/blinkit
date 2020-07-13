@@ -68,6 +68,7 @@ public:
     }
 
     // Exports for JS
+    std::string hash(void) const;
     std::string host(void) const;
     std::string href(void) const;
     std::string protocol(void) const;
