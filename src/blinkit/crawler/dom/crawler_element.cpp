@@ -11,6 +11,7 @@
 
 #include "crawler_element.h"
 
+#include "third_party/blink/renderer/core/dom/attr.h"
 #include "third_party/blink/renderer/core/html_names.h"
 
 using namespace blink;
@@ -44,16 +45,16 @@ bool CrawlerElement::isFormControlElement(void) const
     }
     return false;
 }
+#endif // 0
 
-bool CrawlerElement::isURLAttribute(const Attribute &attribute) const
+bool CrawlerElement::IsURLAttribute(const Attribute &attribute) const
 {
-    const QualifiedName &name = attribute.name();
-    if (hasTagName(HTMLNames::aTag))
-        return name == HTMLNames::hrefAttr;
-    if (hasTagName(HTMLNames::imgTag))
-        return name == HTMLNames::srcAttr;
+    const QualifiedName &name = attribute.GetName();
+    if (HasTagName(html_names::kATag))
+        return name == html_names::kHrefAttr;
+    if (HasTagName(html_names::kImgTag))
+        return name == html_names::kSrcAttr;
     return false;
 }
-#endif // 0
 
 } // namespace BlinKit

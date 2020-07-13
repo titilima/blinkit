@@ -23,9 +23,7 @@ class CrawlerElement : public blink::Element
 public:
     CrawlerElement(const AtomicString &localName, blink::Document *document);
 protected:
-#if 0 // BKTODO:
-    bool IsURLAttribute(const blink::Attribute &attribute) const;
-#endif
+    bool IsURLAttribute(const blink::Attribute &attribute) const override;
 private:
 #if 0 // BKTODO:
     bool IsFormControlElement(void) const final;
