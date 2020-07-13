@@ -14,6 +14,7 @@
 #include "base/strings/string_util.h"
 #include "blinkit/crawler/crawler_impl.h"
 #include "blinkit/js/js_value_impl.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_anchor_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_attr.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_console.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_document.h"
@@ -22,6 +23,7 @@
 #include "third_party/blink/renderer/bindings/core/duk/duk_navigator.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_script_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_window.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_xhr.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 
@@ -289,6 +291,7 @@ const char* ContextImpl::LookupPrototypeName(const std::string &tagName) const
 void ContextImpl::RegisterPrototypesForCrawler(duk_context *ctx)
 {
     PrototypeHelper helper(ctx);
+    DukAnchorElement::RegisterPrototypeForCrawler(helper);
     DukAttr::RegisterPrototype(helper);
     DukNode::RegisterPrototype(helper, ProtoNames::Comment);
     DukConsole::RegisterPrototype(helper);
@@ -302,11 +305,13 @@ void ContextImpl::RegisterPrototypesForCrawler(duk_context *ctx)
     DukNode::RegisterPrototype(helper, ProtoNames::Text);
     DukScriptElement::RegisterPrototypeForCrawler(helper);
     DukWindow::RegisterPrototypeForCrawler(helper);
+    DukXHR::RegisterPrototype(helper);
 }
 
 void ContextImpl::Reset(void)
 {
     const duk_idx_t idx = DukScriptObject::Create<DukWindow>(m_ctx, *(m_frame.DomWindow()));
+    BKLOG("New DukWindow object: %p", duk_get_heapptr(m_ctx, idx));
     ExposeGlobals(m_ctx, idx);
     duk_set_global_object(m_ctx);
 
