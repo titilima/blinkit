@@ -11,6 +11,8 @@
 
 #include "sign_request.h"
 
+#include "bk_def.h"
+
 namespace BlinKit {
 
 SignRequest::SignRequest(void) : m_req(X509_REQ_new())

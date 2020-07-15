@@ -50,7 +50,6 @@ extern HMODULE theModule;
 #   include <CoreFoundation/CoreFoundation.h>
 #endif
 
-#include "BlinKit.hpp"
 #include "base/logging.h"
 
 #endif // BLINKIT_BLINKIT__PC_H

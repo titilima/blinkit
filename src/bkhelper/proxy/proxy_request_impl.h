@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "bk_def.h"
+
 class ProxyRequestImpl
 {
 public:

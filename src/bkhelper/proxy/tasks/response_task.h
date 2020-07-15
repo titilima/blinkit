@@ -15,6 +15,7 @@
 #pragma once
 
 #include <unordered_map>
+#include "bk_http.h"
 #include "bkhelper/proxy/socket_wrapper.h"
 #include "bkhelper/proxy/tasks/proxy_task.h"
 

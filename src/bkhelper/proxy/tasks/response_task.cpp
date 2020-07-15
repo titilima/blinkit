@@ -13,6 +13,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "bkcommon/bk_strings.h"
+#include "bkcommon/buffer_impl.hpp"
 #include "bkcommon/response_impl.h"
 #include "bkhelper/proxy/proxy_impl.h"
 #include "bkhelper/proxy/tasks/last_response_task.h"
@@ -121,8 +122,8 @@ void ResponseTask::ProcessResponse(ProxyImpl &proxy)
     const std::string CRLF("\r\n");
 
     std::string httpVersion, statusText;
-    m_response->GetData(BK_RESPONSE_HTTP_VERSION, BkMakeBuffer(httpVersion));
-    m_response->GetData(BK_RESPONSE_STATUS_TEXT, BkMakeBuffer(statusText));
+    m_response->GetData(BK_RESPONSE_HTTP_VERSION, BufferImpl::Wrap(httpVersion));
+    m_response->GetData(BK_RESPONSE_STATUS_TEXT, BufferImpl::Wrap(statusText));
 
     std::string rawData = base::StringPrintf("HTTP/%s %d %s", httpVersion.c_str(), m_response->StatusCode(), statusText.c_str());
     rawData.append(CRLF);
@@ -140,7 +141,7 @@ void ResponseTask::ProcessResponse(ProxyImpl &proxy)
     for (size_t i = 0; i < cookiesCount; ++i)
     {
         std::string cookie;
-        m_response->GetCookie(i, BkMakeBuffer(cookie));
+        m_response->GetCookie(i, BufferImpl::Wrap(cookie));
         rawData.append(base::StringPrintf("Set-Cookie: %s", cookie.c_str()));
         rawData.append(CRLF);
     }

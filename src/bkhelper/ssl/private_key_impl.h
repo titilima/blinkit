@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "bk_def.h"
 #include <openssl/ossl_typ.h>
 
 class PrivateKeyImpl

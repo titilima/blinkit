@@ -16,6 +16,7 @@
 #include <openssl/ssl.h>
 #include "bkcommon/bk_file.h"
 #include "bkcommon/bk_strings.h"
+#include "bkcommon/buffer_impl.hpp"
 #include "bkhelper/proxy/proxy_globals.h"
 #include "bkhelper/proxy/tasks/http_request_task.h"
 #include "bkhelper/ssl/ssl_pair.h"
@@ -95,7 +96,7 @@ std::string ProxyImpl::GetExitBody(void) const
 {
     std::string ret;
     if (nullptr != m_client.GetConfig)
-        m_client.GetConfig(BK_PROXY_CFG_EXIT_BODY, BkMakeBuffer(ret), m_client.UserData);
+        m_client.GetConfig(BK_PROXY_CFG_EXIT_BODY, BufferImpl::Wrap(ret), m_client.UserData);
     return ret;
 }
 
@@ -242,14 +243,14 @@ int ProxyImpl::SetupCA(const BkPathChar *privateKeyFile, const BkPathChar *certF
 {
     std::string privateKey, cert;
 
-    int r = BkFile::ReadContent(privateKeyFile, BkMakeBuffer(privateKey));
+    int r = BkFile::ReadContent(privateKeyFile, BufferImpl::Wrap(privateKey));
     if (BK_ERR_SUCCESS != r)
     {
         ASSERT(BK_ERR_SUCCESS == r);
         return r;
     }
 
-    r = BkFile::ReadContent(certFile, BkMakeBuffer(cert));
+    r = BkFile::ReadContent(certFile, BufferImpl::Wrap(cert));
     if (BK_ERR_SUCCESS != r)
     {
         ASSERT(BK_ERR_SUCCESS == r);

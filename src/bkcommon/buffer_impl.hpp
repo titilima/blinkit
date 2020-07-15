@@ -14,9 +14,32 @@
 
 #pragma once
 
+#include <string>
+#include <vector>
 #include "bk_def.h"
 
 namespace BlinKit {
+
+template <typename Container>
+class BufferAdaptor {
+public:
+    BufferAdaptor(Container &data)
+    {
+        m_buffer.Allocator = Alloc;
+        m_buffer.UserData = &data;
+    }
+    operator BkBuffer* (void) const {
+        BkBuffer *buf = const_cast<BkBuffer *>(&m_buffer);
+        return buf;
+    }
+private:
+    static void* BKAPI Alloc(size_t size, void *This) {
+        Container *c = reinterpret_cast<Container *>(This);
+        c->resize(size / sizeof(typename Container::value_type));
+        return const_cast<typename Container::value_type *>(c->data());
+    }
+    BkBuffer m_buffer;
+};
 
 class BufferImpl
 {
@@ -35,6 +58,17 @@ public:
             void *buf = dst->Allocator(size, dst->UserData);
             memcpy(buf, src, size);
         }
+    }
+
+    template <typename CharType>
+    static BufferAdaptor<std::basic_string<CharType>> Wrap(std::basic_string<CharType> &s)
+    {
+        return BufferAdaptor<std::basic_string<CharType>>(s);
+    }
+
+    static BufferAdaptor<std::vector<unsigned char>> Wrap(std::vector<unsigned char> &v)
+    {
+        return BufferAdaptor<std::vector<unsigned char>>(v);
     }
 };
 

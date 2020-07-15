@@ -11,6 +11,7 @@
 
 #include "crawler_impl.h"
 
+#include "bkcommon/buffer_impl.hpp"
 #include "bkcommon/controller_impl.h"
 #include "bkcommon/response_impl.h"
 #include "blinkit/crawler/cookie_jar_impl.h"
@@ -83,7 +84,7 @@ void CrawlerImpl::DispatchDidFinishLoad(void)
 bool CrawlerImpl::GetConfig(int cfg, std::string &dst) const
 {
     if (nullptr != m_client.GetConfig)
-        return m_client.GetConfig(cfg, BkMakeBuffer(dst), m_client.UserData);
+        return m_client.GetConfig(cfg, BufferImpl::Wrap(dst), m_client.UserData);
     return false;
 }
 
@@ -107,7 +108,7 @@ std::string CrawlerImpl::GetCookies(const std::string &URL) const
     if (nullptr != m_client.GetCookies)
     {
         std::string userSetCookies;
-        if (m_client.GetCookies(URL.c_str(), ret.c_str(), BkMakeBuffer(userSetCookies), m_client.UserData))
+        if (m_client.GetCookies(URL.c_str(), ret.c_str(), BufferImpl::Wrap(userSetCookies), m_client.UserData))
             ret = userSetCookies;
     }
 
@@ -123,7 +124,7 @@ bool CrawlerImpl::HijackRequest(const char *URL, std::string &dst) const
 {
     if (nullptr == m_client.HijackRequest)
         return false;
-    return m_client.HijackRequest(URL, BkMakeBuffer(dst), m_client.UserData);
+    return m_client.HijackRequest(URL, BufferImpl::Wrap(dst), m_client.UserData);
 }
 
 void CrawlerImpl::HijackResponse(BkResponse response)
@@ -213,7 +214,7 @@ String CrawlerImpl::UserAgent(void)
     if (nullptr != m_client.GetConfig)
     {
         std::string userAgent;
-        m_client.GetConfig(BK_CFG_USER_AGENT, BkMakeBuffer(userAgent), m_client.UserData);
+        m_client.GetConfig(BK_CFG_USER_AGENT, BufferImpl::Wrap(userAgent), m_client.UserData);
         if (!userAgent.empty())
             return String::FromStdUTF8(userAgent);
     }

@@ -12,6 +12,7 @@
 #include "request_task_base.h"
 
 #include <regex>
+#include "bk_http.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "bkcommon/bk_strings.h"

@@ -14,6 +14,7 @@
 #include "base/auto_reset.h"
 #include "base/single_thread_task_runner.h"
 #include "bkcommon/bk_strings.h"
+#include "bkcommon/buffer_impl.hpp"
 #include "bkcommon/response_impl.h"
 #include "blinkit/crawler/cookie_jar_impl.h"
 #include "blinkit/crawler/crawler_impl.h"
@@ -80,7 +81,7 @@ void HTTPLoaderTask::DoContinue(void)
     ASSERT(IsMainThread());
 
     std::string currentURL;
-    m_response->GetData(BK_RESPONSE_CURRENT_URL, BkMakeBuffer(currentURL));
+    m_response->GetData(BK_RESPONSE_CURRENT_URL, BufferImpl::Wrap(currentURL));
 
     if (CookieJarImpl *cookieJar = m_crawler->GetCookieJar(false))
     {
@@ -88,7 +89,7 @@ void HTTPLoaderTask::DoContinue(void)
         for (size_t i = 0; i < n; ++i)
         {
             std::string cookie;
-            m_response->GetCookie(i, BkMakeBuffer(cookie));
+            m_response->GetCookie(i, BufferImpl::Wrap(cookie));
             cookieJar->Set(cookie.c_str(), currentURL.c_str());
         }
     }
@@ -106,7 +107,7 @@ void HTTPLoaderTask::DoContinue(void)
 AtomicString HTTPLoaderTask::GetResponseHeader(const AtomicString &name) const
 {
     std::string ret;
-    int r = m_response->GetHeader(name.StdUtf8().c_str(), BkMakeBuffer(ret));
+    int r = m_response->GetHeader(name.StdUtf8().c_str(), BufferImpl::Wrap(ret));
     return BK_ERR_SUCCESS == r ? AtomicString::FromStdUTF8(ret) : g_null_atom;
 }
 
@@ -132,7 +133,7 @@ void HTTPLoaderTask::PopulateResourceResponse(ResourceResponse &response) const
     response.SetHTTPStatusCode(m_response->StatusCode());
 
     std::string contentType;
-    m_response->GetHeader(Strings::HttpHeader::ContentType, BkMakeBuffer(contentType));
+    m_response->GetHeader(Strings::HttpHeader::ContentType, BufferImpl::Wrap(contentType));
 
     bool hasCharset = false;
     std::string mimeType, charset;

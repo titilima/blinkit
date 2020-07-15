@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "bk_def.h"
 #include <openssl/x509.h>
 
 namespace BlinKit {

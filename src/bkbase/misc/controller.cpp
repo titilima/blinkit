@@ -11,6 +11,8 @@
 
 #include "bkcommon/controller_impl.h"
 
+#include "bk_def.h"
+
 extern "C" {
 
 BKEXPORT int BKAPI BkControllerCancelWork(BkWorkController controller)
