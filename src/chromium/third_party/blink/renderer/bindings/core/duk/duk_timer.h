@@ -15,15 +15,14 @@
 #pragma once
 
 #include <string>
-#include "duktape/duktape.h"
+#include "blinkit/js/heap_retained.h"
 
 namespace BlinKit {
 
-class DukTimer
+class DukTimer : public HeapRetainedValue
 {
 public:
     DukTimer(duk_context *ctx, duk_idx_t idx, int argc);
-    ~DukTimer(void);
 
     bool IsRepeatable(void) const { return m_repeatable; }
     void SetIsRepeatable(void) { m_repeatable = true; }
@@ -36,8 +35,6 @@ private:
     static void DoEval(duk_context *ctx);
     static void DoCall(duk_context *ctx, duk_idx_t idx);
 
-    duk_context *m_ctx;
-    std::string m_key;
     bool m_repeatable = false;
     unsigned m_intervalInMs = 0;
 };

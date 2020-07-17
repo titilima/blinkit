@@ -15,7 +15,7 @@
 #pragma once
 
 #include "bk_js.h"
-#include "duktape/duktape.h"
+#include "blinkit/js/heap_retained.h"
 
 class JSValueImpl
 {
@@ -97,22 +97,19 @@ private:
     std::string m_stringVal;
 };
 
-class JSHeapValue : public JSValueImpl
+class JSHeapValue : public JSValueImpl, BlinKit::HeapRetained
 {
 public:
     ~JSHeapValue(void) override;
 
     std::string ToJSON(void) const;
-    void PushTo(duk_context *ctx) const final { duk_push_heapptr(ctx, m_heapPtr); }
+    void PushTo(duk_context *ctx) const final { HeapRetained::PushTo(ctx); }
 protected:
     JSHeapValue(duk_context *ctx, duk_idx_t idx);
 
     duk_context *m_ctx;
-    void *m_heapPtr;
 private:
     std::string GetAsString(void) const final;
-
-    std::string m_key;
 };
 
 } // namespace BlinKit

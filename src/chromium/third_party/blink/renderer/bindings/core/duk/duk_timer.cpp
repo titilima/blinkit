@@ -23,15 +23,12 @@ namespace BlinKit {
  * ---------------------------------------
  */
 
-DukTimer::DukTimer(duk_context *ctx, duk_idx_t idx, int argc) : m_ctx(ctx)
+DukTimer::DukTimer(duk_context *ctx, duk_idx_t idx, int argc)
+    : HeapRetainedValue(ctx, HeapRetainedValue::Type::ARRAY, DUK_HIDDEN_SYMBOL("timer"))
 {
-    char buf[128];
-    sprintf(buf, "%p", this);
-    m_key.assign(DUK_HIDDEN_SYMBOL("timer"));
-    m_key.append(buf);
+    idx = duk_normalize_index(ctx, idx);
 
-    duk_push_global_object(m_ctx);
-    duk_push_bare_array(m_ctx);
+    HeapRetainedValue::PushTo(ctx);
 
     // Callback
     void *heapPtr = duk_get_heapptr(m_ctx, idx);
@@ -45,14 +42,6 @@ DukTimer::DukTimer(duk_context *ctx, duk_idx_t idx, int argc) : m_ctx(ctx)
         duk_put_prop_index(m_ctx, -2, i + 1);
     }
 
-    duk_put_prop_lstring(m_ctx, -2, m_key.data(), m_key.length());
-    duk_pop(m_ctx);
-}
-
-DukTimer::~DukTimer(void)
-{
-    duk_push_global_object(m_ctx);
-    duk_del_prop_lstring(m_ctx, -1, m_key.data(), m_key.length());
     duk_pop(m_ctx);
 }
 
@@ -85,28 +74,17 @@ void DukTimer::DoEval(duk_context *ctx)
 
 bool DukTimer::Fire(void)
 {
-    bool ret = true;
-
-    int top = duk_get_top(m_ctx);
-
-    duk_push_global_object(m_ctx);
-    if (duk_get_prop_lstring(m_ctx, -1, m_key.data(), m_key.length()))
+    const auto worker = [](duk_context *ctx, duk_idx_t idx)
     {
-        duk_get_prop_index(m_ctx, -1, 0);
-        if (duk_is_string(m_ctx, -1))
-            DoEval(m_ctx);
-        else if (duk_is_callable(m_ctx, -1))
-            DoCall(m_ctx, duk_normalize_index(m_ctx, -2));
+        duk_get_prop_index(ctx, -1, 0);
+        if (duk_is_string(ctx, -1))
+            DoEval(ctx);
+        else if (duk_is_callable(ctx, -1))
+            DoCall(ctx, duk_normalize_index(ctx, -2));
         else
             NOTREACHED();
-    }
-    else
-    {
-        ret = false; // Already unavailable, destroy it after `Fire`.
-    }
-
-    duk_set_top(m_ctx, top);
-    return ret;
+    };
+    return HeapRetainedValue::SafeAccess(m_ctx, worker);
 }
 
 } // namespace BlinKit

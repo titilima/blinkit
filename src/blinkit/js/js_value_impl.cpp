@@ -194,31 +194,16 @@ void JSSimpleValue::PushTo(duk_context *ctx) const
     }
 }
 
-JSHeapValue::JSHeapValue(duk_context *ctx, duk_idx_t idx) : m_ctx(ctx), m_heapPtr(duk_get_heapptr(ctx, idx))
+JSHeapValue::JSHeapValue(duk_context *ctx, duk_idx_t idx) : HeapRetained(DUK_HIDDEN_SYMBOL("val")), m_ctx(ctx)
 {
-    char buf[128];
-    sprintf(buf, "%p", this);
-    m_key.assign(DUK_HIDDEN_SYMBOL("val"));
-    m_key.append(buf);
-
-    duk_push_global_object(m_ctx);
-    duk_push_heapptr(m_ctx, m_heapPtr);
-    duk_put_prop_lstring(m_ctx, -2, m_key.data(), m_key.length());
-    duk_pop(m_ctx);
-}
-
-JSHeapValue::~JSHeapValue(void)
-{
-    duk_push_global_object(m_ctx);
-    duk_del_prop_lstring(m_ctx, -1, m_key.data(), m_key.length());
-    duk_pop(m_ctx);
+    HeapRetained::Retain(m_ctx, idx);
 }
 
 std::string JSHeapValue::GetAsString(void) const
 {
     std::string ret;
 
-    duk_push_heapptr(m_ctx, m_heapPtr);
+    HeapRetained::PushTo(m_ctx);
 
     size_t l = 0;
     const char *s = duk_safe_to_lstring(m_ctx, -1, &l);
@@ -228,11 +213,16 @@ std::string JSHeapValue::GetAsString(void) const
     return ret;
 }
 
+JSHeapValue::~JSHeapValue(void)
+{
+    HeapRetained::Release(m_ctx);
+}
+
 std::string JSHeapValue::ToJSON(void) const
 {
     std::string ret;
 
-    duk_push_heapptr(m_ctx, m_heapPtr);
+    HeapRetained::PushTo(m_ctx);
     duk_json_encode(m_ctx, -1);
 
     size_t l = 0;

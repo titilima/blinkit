@@ -11,11 +11,11 @@
 
 #include "duk_xhr.h"
 
-#include "BlinKit.hpp"
 #include "base/single_thread_task_runner.h"
-#include "base/strings/stringprintf.h"
+#include "bkcommon/buffer_impl.hpp"
 #include "bkcommon/response_impl.h"
 #include "bkcommon/bk_strings.h"
+#include "blinkit/js/heap_retained.h"
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
 #include "third_party/blink/renderer/core/dom/document.h"
@@ -59,11 +59,11 @@ public:
     {
         std::string ret;
         if (nullptr != m_response)
-            m_response->GetData(BK_RESPONSE_BODY, BkMakeBuffer(ret));
+            m_response->GetData(BK_RESPONSE_BODY, BufferImpl::Wrap(ret));
         return ret;
     }
 
-    virtual void OnRequestSent(duk_context *ctx) = 0;
+    virtual void OnRequestSent(duk_context *ctx) {}
     virtual void OnRequestComplete(BkResponse response)
     {
         ASSERT(nullptr == m_response);
@@ -91,42 +91,24 @@ protected:
     void *m_heapPtr;
 };
 
-class DukXHR::AsyncSession final : public DukXHR::Session
+class DukXHR::AsyncSession final : public DukXHR::Session, public HeapRetained
 {
 public:
     AsyncSession(duk_context *ctx, duk_idx_t idx)
-        : Session(ctx, idx)
+        : Session(ctx, idx), HeapRetained(DUK_HIDDEN_SYMBOL("xhr"))
         , m_ctx(ctx)
         , m_taskRunner(Platform::Current()->CurrentThread()->GetTaskRunner())
     {
         ASSERT(IsMainThread());
-        m_key = DUK_HIDDEN_SYMBOL("xhr_");
-        m_key += base::StringPrintf("%p", this);
+        HeapRetained::Retain(m_ctx, idx);
     }
 private:
-    void Retain(void)
-    {
-        duk_push_global_object(m_ctx);
-        duk_push_heapptr(m_ctx, m_heapPtr);
-        duk_put_prop_lstring(m_ctx, -2, m_key.data(), m_key.length());
-        duk_pop(m_ctx);
-    }
-    void Release(void)
-    {
-        duk_push_global_object(m_ctx);
-        duk_del_prop_lstring(m_ctx, -1, m_key.data(), m_key.length());
-        duk_pop(m_ctx);
-    }
     void ProcessResponse(void)
     {
         Session::ProcessResponse(m_ctx);
-        Release();
+        HeapRetained::Release(m_ctx);
     }
 
-    void OnRequestSent(duk_context *) override
-    {
-        Retain();
-    }
     void OnRequestComplete(BkResponse response) override
     {
         Session::OnRequestComplete(response);
@@ -136,7 +118,6 @@ private:
     }
 
     duk_context *m_ctx;
-    std::string m_key;
     std::shared_ptr<base::SingleThreadTaskRunner> m_taskRunner;
 };
 
