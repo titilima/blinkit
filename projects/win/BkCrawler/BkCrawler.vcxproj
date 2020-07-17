@@ -164,9 +164,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\sdk\include\bk.hpp" />
     <ClInclude Include="..\..\..\sdk\include\bk_app.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_crawler.h" />
-    <ClInclude Include="..\..\..\sdk\include\BlinKit.hpp" />
     <ClInclude Include="..\..\..\sdk\include\bk_def.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_js.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
@@ -183,6 +183,8 @@
     <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.h" />
     <ClInclude Include="..\..\..\src\blinkit\crawler\hijack_response.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\context_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\js\heap_retained.h" />
+    <ClInclude Include="..\..\..\src\blinkit\js\js_caller_context_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\js_value_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\loader_task.h" />
@@ -211,6 +213,8 @@
     <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\crawler\hijack_response.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\js\context_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\js\heap_retained.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\js\js_caller_context_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\js\js_value_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\loader_task.cpp" />
