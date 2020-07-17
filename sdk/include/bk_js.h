@@ -75,7 +75,17 @@ enum BkCallContext {
     BK_CTX_USER_OBJECT
 };
 
-BKEXPORT int BKAPI BkCall(BkJSContext context, int callContext, const char *func, BkJSArgList argList, BkJSValue *retVal);
+/**
+ * Function Calling
+ */
+
+BK_DECLARE_HANDLE(BkJSCallerContext, JSCallerContextImpl);
+
+BKEXPORT BkJSCallerContext BKAPI BkPrepareFunctionCall(BkJSContext context, int callContext, const char *functionName);
+BKEXPORT int BKAPI BkPushInteger(BkJSCallerContext callerContext, int n);
+BKEXPORT int BKAPI BkPushString(BkJSCallerContext callerContext, const char *s);
+BKEXPORT int BKAPI BkPushStringPiece(BkJSCallerContext callerContext, const char *s, size_t l);
+BKEXPORT int BKAPI BkCallFunction(BkJSCallerContext callerContext, BkJSValue *retVal);
 
 enum BkConsoleMessageType {
     BK_CONSOLE_LOG = 0,

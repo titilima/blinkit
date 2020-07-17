@@ -48,9 +48,9 @@ public:
 
     typedef std::function<void(duk_context *)> Callback;
     bool AccessUserObject(const Callback &worker);
-    int Call(int callContext, const char *func, JSArrayWriterImpl *argList, JSValueImpl **retVal);
     void Eval(const std::string_view code, const Callback &callback, const char *fileName = "eval");
     void ConsoleOutput(int type, const char *msg) { m_consoleMessager(type, msg); }
+    BkJSCallerContext PrepareFunctionCall(int callContext, const char *functionName);
 
     BlinKit::GCPool& GetGCPool(void);
     duk_context* GetRawContext(void) const { return m_ctx; }
@@ -59,9 +59,6 @@ private:
     static void RegisterPrototypesForCrawler(duk_context *ctx);
     void CreateUserObject(const CrawlerImpl &crawler);
     static void ExposeGlobals(duk_context *ctx, duk_idx_t dst);
-
-    static int CallGlobalFunction(duk_context *ctx, const char *func, JSArrayWriterImpl *argList);
-    static int CallUserObjectMember(duk_context *ctx, const char *func, JSArrayWriterImpl *argList);
 
     const blink::LocalFrame &m_frame;
     duk_context *m_ctx;

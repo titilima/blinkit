@@ -33,5 +33,9 @@ BkGetErrorCode
 BkValueToObject
 BkObjectToJSON
 BkGetUserObject
-BkCall
 BkEvaluate
+BkPrepareFunctionCall
+BkPushInteger
+BkPushString
+BkPushStringPiece
+BkCallFunction

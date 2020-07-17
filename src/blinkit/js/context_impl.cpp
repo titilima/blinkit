@@ -13,6 +13,7 @@
 
 #include "base/strings/string_util.h"
 #include "blinkit/crawler/crawler_impl.h"
+#include "blinkit/js/js_caller_context_impl.h"
 #include "blinkit/js/js_value_impl.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_anchor_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_attr.h"
@@ -69,72 +70,6 @@ bool ContextImpl::AccessUserObject(const Callback &worker)
 
     duk_set_top(m_ctx, top);
     return ret;
-}
-
-int ContextImpl::Call(int callContext, const char *func, JSArrayWriterImpl *argList, JSValueImpl **retVal)
-{
-    int err = BK_ERR_SUCCESS;
-    JSValueImpl *ret = nullptr;
-
-    const duk_idx_t top = duk_get_top(m_ctx);
-    switch (callContext)
-    {
-        case BK_CTX_GLOBAL:
-            err = CallGlobalFunction(m_ctx, func, argList);
-            break;
-        case BK_CTX_USER_OBJECT:
-            err = CallUserObjectMember(m_ctx, func, argList);
-            break;
-        default:
-            err = BK_ERR_NOT_FOUND;
-    }
-    if (BK_ERR_SUCCESS == err)
-    {
-        ret = JSValueImpl::Create(m_ctx, -1);
-        err = ret->GetType() == BK_VT_ERROR
-            ? static_cast<JSErrorImpl *>(ret)->GetCode()
-            : BK_ERR_SUCCESS;
-    }
-    duk_set_top(m_ctx, top);
-
-    if (nullptr != retVal)
-        *retVal = ret;
-    else
-        ret->Release();
-    return err;
-}
-
-int ContextImpl::CallGlobalFunction(duk_context *ctx, const char *func, JSArrayWriterImpl *argList)
-{
-    duk_push_global_object(ctx);
-    if (!duk_get_prop_string(ctx, -1, func))
-        return BK_ERR_NOT_FOUND;
-    if (!duk_is_callable(ctx, -1))
-        return BK_ERR_TYPE;
-
-    ASSERT(nullptr == argList); // BKTODO:
-    duk_pcall(ctx, 0);
-    return BK_ERR_SUCCESS;
-}
-
-int ContextImpl::CallUserObjectMember(duk_context *ctx, const char *func, JSArrayWriterImpl *argList)
-{
-    duk_push_global_stash(ctx);
-    if (!duk_get_prop_string(ctx, -1, UserObject))
-        return BK_ERR_NOT_FOUND;
-
-    void *heapPtr = duk_get_heapptr(ctx, -1);
-
-    if (!duk_get_prop_string(ctx, -1, func))
-        return BK_ERR_NOT_FOUND;
-    if (!duk_is_callable(ctx, -1))
-        return BK_ERR_TYPE;
-
-    duk_push_heapptr(ctx, heapPtr);
-
-    ASSERT(nullptr == argList); // BKTODO:
-    duk_pcall_method(ctx, 0);
-    return BK_ERR_SUCCESS;
 }
 
 void ContextImpl::CreateUserObject(const CrawlerImpl &crawler)
@@ -288,6 +223,43 @@ const char* ContextImpl::LookupPrototypeName(const std::string &tagName) const
     return it->second;
 }
 
+BkJSCallerContext ContextImpl::PrepareFunctionCall(int callContext, const char *functionName)
+{
+    JSCallerContextImpl *ret = nullptr;
+    const int top = duk_get_top(m_ctx);
+
+    do {
+        void *thisPtr = nullptr;
+        switch (callContext)
+        {
+            case BK_CTX_GLOBAL:
+                duk_push_global_object(m_ctx);
+                break;
+            case BK_CTX_USER_OBJECT:
+                duk_push_global_stash(m_ctx);
+                duk_get_prop_string(m_ctx, -1, UserObject);
+                thisPtr = duk_get_heapptr(m_ctx, -1);
+                break;
+            default:
+                NOTREACHED();
+        }
+
+        if (duk_get_top(m_ctx) == top || !duk_is_object(m_ctx, -1))
+            break;
+        if (!duk_get_prop_string(m_ctx, -1, functionName))
+            break;
+        if (!duk_is_callable(m_ctx, -1))
+            break;
+
+        ret = new JSCallerContextImpl(m_ctx, -1);
+        if (nullptr != thisPtr)
+            ret->SetThis(thisPtr);
+    } while (false);
+
+    duk_set_top(m_ctx, top);
+    return ret;
+}
+
 void ContextImpl::RegisterPrototypesForCrawler(duk_context *ctx)
 {
     PrototypeHelper helper(ctx);
@@ -337,11 +309,6 @@ void ContextImpl::Reset(void)
 
 extern "C" {
 
-BKEXPORT int BKAPI BkCall(BkJSContext context, int callContext, const char *func, BkJSArgList argList, BkJSValue *retVal)
-{
-    return context->Call(callContext, func, argList, retVal);
-}
-
 BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, BkJSValue *retVal)
 {
     JSValueImpl *ret = nullptr;
@@ -372,6 +339,11 @@ BKEXPORT BkJSValue BKAPI BkGetUserObject(BkJSContext context)
     context->AccessUserObject(callback);
 
     return ret;
+}
+
+BKEXPORT BkJSCallerContext BKAPI BkPrepareFunctionCall(BkJSContext context, int callContext, const char *functionName)
+{
+    return context->PrepareFunctionCall(callContext, functionName);
 }
 
 } // extern "C"
