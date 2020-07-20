@@ -349,10 +349,7 @@ void SelectorQuery::FindTraverseRootsAndExecute(ContainerNode &rootNode, typenam
         {
             if (isRightmostSelector)
             {
-                ASSERT(false); // BKTODO:
-#if 0
                 CollectElementsByClassName<SelectorQueryTrait>(rootNode, selector->Value(), m_selectors[0], output);
-#endif
                 return;
             }
             // Since there exists some ancestor element which has the class name, we
