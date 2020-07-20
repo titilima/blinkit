@@ -46,8 +46,8 @@ public:
 
     const char* LookupPrototypeName(const std::string &tagName) const;
 
+    JSObjectImpl* UserObject(void) { return m_userObject; }
     typedef std::function<void(duk_context *)> Callback;
-    bool AccessUserObject(const Callback &worker);
     void Eval(const std::string_view code, const Callback &callback, const char *fileName = "eval");
     void ConsoleOutput(int type, const char *msg) { m_consoleMessager(type, msg); }
     BkJSCallerContext PrepareFunctionCall(int callContext, const char *functionName);
@@ -65,6 +65,7 @@ private:
     std::function<void(int, const char *)> m_consoleMessager;
     const std::unordered_map<std::string, const char *> &m_prototypeMap;
     std::optional<std::string> m_objectScript;
+    JSObjectImpl *m_userObject = nullptr;
 };
 
 #endif // BLINKIT_BLINKIT_CONTEXT_IMPL_H

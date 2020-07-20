@@ -33,7 +33,6 @@ using namespace BlinKit;
 
 static const char Globals[] = "globals";
 static const char NativeContext[] = "nativeContext";
-static const char UserObject[] = "userObject";
 
 static void DefaultConsoleOutput(int type, const char *msg)
 {
@@ -54,22 +53,9 @@ ContextImpl::ContextImpl(const LocalFrame &frame)
 
 ContextImpl::~ContextImpl(void)
 {
+    if (nullptr != m_userObject)
+        delete m_userObject;
     duk_destroy_heap(m_ctx);
-}
-
-bool ContextImpl::AccessUserObject(const Callback &worker)
-{
-    const duk_idx_t top = duk_get_top(m_ctx);
-
-    bool ret = true;
-    duk_push_global_stash(m_ctx);
-    if (duk_get_prop_string(m_ctx, -1, UserObject))
-        worker(m_ctx);
-    else
-        ret = false;
-
-    duk_set_top(m_ctx, top);
-    return ret;
 }
 
 void ContextImpl::CreateUserObject(const CrawlerImpl &crawler)
@@ -85,17 +71,21 @@ void ContextImpl::CreateUserObject(const CrawlerImpl &crawler)
     if (m_objectScript->empty())
         return;
 
+    if (nullptr != m_userObject)
+    {
+        delete m_userObject;
+        m_userObject = nullptr;
+    }
+
     std::string errorLog;
-    const auto callback = [&errorLog](duk_context *ctx)
+    const auto callback = [this, &errorLog](duk_context *ctx)
     {
         if (!duk_is_error(ctx, -1))
         {
             if (duk_is_object(ctx, -1))
             {
-                void *heapPtr = duk_get_heapptr(ctx, -1);
-                duk_push_global_stash(ctx);
-                duk_push_heapptr(ctx, heapPtr);
-                duk_put_prop_string(ctx, -2, UserObject);
+                ASSERT(nullptr == m_userObject);
+                m_userObject = new JSObjectImpl(ctx, -1);
                 return;
             }
 
@@ -236,8 +226,7 @@ BkJSCallerContext ContextImpl::PrepareFunctionCall(int callContext, const char *
                 duk_push_global_object(m_ctx);
                 break;
             case BK_CTX_USER_OBJECT:
-                duk_push_global_stash(m_ctx);
-                duk_get_prop_string(m_ctx, -1, UserObject);
+                m_userObject->PushTo(m_ctx);
                 thisPtr = duk_get_heapptr(m_ctx, -1);
                 break;
             default:
@@ -328,17 +317,9 @@ BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, BkJSValue *
     return r;
 }
 
-BKEXPORT BkJSValue BKAPI BkGetUserObject(BkJSContext context)
+BKEXPORT BkJSObject BKAPI BkGetUserObject(BkJSContext context)
 {
-    JSValueImpl *ret = nullptr;
-
-    const auto callback = [&ret](duk_context *ctx)
-    {
-        ret = JSValueImpl::Create(ctx, -1);
-    };
-    context->AccessUserObject(callback);
-
-    return ret;
+    return context->UserObject();
 }
 
 BKEXPORT BkJSCallerContext BKAPI BkPrepareFunctionCall(BkJSContext context, int callContext, const char *functionName)
