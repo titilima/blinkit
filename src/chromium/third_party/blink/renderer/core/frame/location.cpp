@@ -76,6 +76,11 @@ std::string Location::href(void) const
     return Url().GetAsReferrer().spec();
 }
 
+std::string Location::pathname(void) const
+{
+    return Url().path();
+}
+
 std::string Location::protocol(void) const
 {
     return Url().scheme();

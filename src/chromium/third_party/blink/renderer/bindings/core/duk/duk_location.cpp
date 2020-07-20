@@ -63,6 +63,20 @@ static duk_ret_t HrefSetter(duk_context *ctx)
     return 0;
 }
 
+static duk_ret_t PathnameGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Location *location = DukScriptObject::To<Location>(ctx, 0);
+    Duk::PushString(ctx, location->pathname());
+    return 1;
+}
+
+static duk_ret_t PathnameSetter(duk_context *ctx)
+{
+    ASSERT(false); // BKTODO:
+    return 0;
+}
+
 static duk_ret_t ProtocolGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -99,6 +113,7 @@ void DukLocation::FillPrototypeEntry(PrototypeEntry &entry)
         { "hash",     Impl::HashGetter,     Impl::HashSetter     },
         { "host",     Impl::HostGetter,     Impl::HostSetter     },
         { "href",     Impl::HrefGetter,     Impl::HrefSetter     },
+        { "pathname", Impl::PathnameGetter, Impl::PathnameSetter },
         { "protocol", Impl::ProtocolGetter, Impl::ProtocolSetter },
         { "search",   Impl::SearchGetter,   Impl::SearchSetter     },
     };
