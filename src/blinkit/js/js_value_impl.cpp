@@ -235,6 +235,16 @@ std::string JSHeapValue::ToJSON(void) const
 
 } // namespace BlinKit
 
+JSValueImpl* JSObjectImpl::GetMember(const char *name)
+{
+    JSValueImpl *ret = nullptr;
+    HeapRetained::PushTo(m_ctx);
+    if (duk_get_prop_string(m_ctx, -1, name))
+        ret = JSValueImpl::Create(m_ctx, -1);
+    duk_pop_2(m_ctx);
+    return ret;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 extern "C" {
@@ -269,6 +279,11 @@ BKEXPORT int BKAPI BkGetValueAsString(BkJSValue val, struct BkBuffer *dst)
 BKEXPORT int BKAPI BkGetValueType(BkJSValue val)
 {
     return val->GetType();
+}
+
+BKEXPORT BkJSValue BKAPI BkObjectGetMember(BkJSObject o, const char *name)
+{
+    return o->GetMember(name);
 }
 
 BKEXPORT int BKAPI BkObjectToJSON(BkJSObject o, struct BkBuffer *dst)

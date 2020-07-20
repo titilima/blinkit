@@ -97,7 +97,7 @@ private:
     std::string m_stringVal;
 };
 
-class JSHeapValue : public JSValueImpl, BlinKit::HeapRetained
+class JSHeapValue : public JSValueImpl, public BlinKit::HeapRetained
 {
 public:
     ~JSHeapValue(void) override;
@@ -126,6 +126,8 @@ class JSObjectImpl final : public BlinKit::JSHeapValue
 {
 public:
     JSObjectImpl(duk_context *ctx, duk_idx_t idx) : JSHeapValue(ctx, idx) {}
+
+    JSValueImpl* GetMember(const char *name);
 private:
     int GetType(void) const override { return BK_VT_OBJECT; }
 };

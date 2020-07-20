@@ -52,21 +52,20 @@ BKEXPORT int BKAPI BkGetErrorCode(BkJSError e);
 
 BKEXPORT BkJSObject BKAPI BkValueToObject(BkJSValue val);
 BKEXPORT int BKAPI BkObjectToJSON(BkJSObject o, struct BkBuffer *dst);
+BKEXPORT BkJSValue BKAPI BkObjectGetMember(BkJSObject o, const char *name);
 
 /**
- * ArgList & Writers
+ * Writers
  */
 
 BK_DECLARE_HANDLE(BkJSArrayWriter, JSArrayWriterImpl);
 BK_DECLARE_HANDLE(BkJSObjectWriter, JSObjectWriterImpl);
 
-typedef BkJSArrayWriter BkJSArgList;
-
 /**
  * Context
  */
 
-BKEXPORT BkJSValue BKAPI BkGetUserObject(BkJSContext context);
+BKEXPORT BkJSObject BKAPI BkGetUserObject(BkJSContext context);
 
 BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, BkJSValue *retVal);
 
