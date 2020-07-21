@@ -63,11 +63,11 @@ template <class T, typename Client>
 class client_root_impl
 {
 protected:
-    Client get_client(void)
+    Client get_client(void) const
     {
         Client client = { 0 };
         client.SizeOfStruct = sizeof(Client);
-        client.UserData = static_cast<T *>(this);
+        client.UserData = const_cast<T *>(static_cast<const T *>(this));
         adjust_raw_client(client);
         return client;
     }
@@ -92,7 +92,7 @@ protected:
 class crawler_client_root : public client_root_impl<crawler_client_root, BkCrawlerClient>
 {
 public:
-    BkCrawler create_crawler(void)
+    BkCrawler create_crawler(void) const
     {
         BkCrawlerClient client = get_client();
         return BkCreateCrawler(&client);
@@ -101,6 +101,7 @@ protected:
     void adjust_raw_client(BkCrawlerClient &client) const override
     {
         client.DocumentReady = document_ready_callback;
+        client.GetConfig = get_config_callback;
         client.Error = error_callback;
     }
     virtual bool get_crawler_config(int cfg, std::string &dst) const
@@ -143,7 +144,7 @@ private:
 class request_client_root : public client_root_impl<request_client_root, BkRequestClient>
 {
 public:
-    BkRequest create_request(const char *url)
+    BkRequest create_request(const char *url) const
     {
         BkRequestClient client = get_client();
         return BkCreateRequest(url, &client);
@@ -192,7 +193,16 @@ public:
     }
 
     BkJSValue* operator&() { return &m_val; }
+    operator bool() const { return nullptr != m_val; }
+    operator BkJSValue() const { return m_val; }
 
+    bool to_boolean(bool def_val) const
+    {
+        bool_t ret = def_val;
+        if (nullptr != m_val)
+            BkGetBooleanValue(m_val, &ret);
+        return ret;
+    }
     std::string to_string(void) const
     {
         std::string ret;
@@ -202,6 +212,49 @@ public:
     }
 private:
     BkJSValue m_val;
+};
+
+class js_object
+{
+public:
+    js_object(BkJSObject obj) : m_obj(obj) {}
+    static js_object user_object_from(BkCrawler crawler)
+    {
+        BkJSContext ctx = BkGetScriptContextFromCrawler(crawler);
+        return js_object(BkGetUserObject(ctx));
+    }
+
+    bool get_boolean(const char *name, bool def_val) const
+    {
+        bool ret = def_val;
+        if (nullptr != m_obj)
+        {
+            js_value v(BkObjectGetMember(m_obj, name));
+            ret = v.to_boolean(def_val);
+        }
+        return ret;
+    }
+    std::string get_string(const char *name, const char *def_val = "") const
+    {
+        std::string ret(def_val);
+        if (nullptr != m_obj)
+        {
+            js_value v(BkObjectGetMember(m_obj, name));
+            if (v)
+                ret = v.to_string();
+        }
+        return ret;
+    }
+
+    std::string to_json(void) const
+    {
+        std::string ret("null");
+        if (nullptr != m_obj)
+            BkObjectToJSON(m_obj, make_buffer(ret));
+        return ret;
+    }
+private:
+    BkJSObject m_obj;
 };
 
 class js_function
@@ -217,9 +270,20 @@ public:
         return ret;
     }
 
+    int call(BkJSValue *ret = nullptr)
+    {
+        int r = BkCallFunction(m_ctx, ret);
+        delete this;
+        return r;
+    }
+
     class arg_list
     {
     public:
+        void push(int n)
+        {
+            BkPushInteger(m_ctx, n);
+        }
         void push(const std::string_view &s)
         {
             BkPushStringPiece(m_ctx, s.data(), s.length());
@@ -236,9 +300,7 @@ public:
     {
         arg_list args(m_ctx);
         cb(args);
-        int r = BkCallFunction(m_ctx, ret);
-        delete this;
-        return r;
+        return call(ret);
     }
 private:
     js_function(BkJSCallerContext ctx) : m_ctx(ctx) {}
