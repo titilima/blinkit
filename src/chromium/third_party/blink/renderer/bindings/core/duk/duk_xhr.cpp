@@ -351,9 +351,13 @@ duk_ret_t DukXHR::Open(
     m_method = method;
     m_currentSession = CreateSession(ctx, idx, async);
     m_URL = document->CompleteURL(URL).spec();
-    m_requestHeaders[Strings::HttpHeader::Cookie] = document->cookie(ASSERT_NO_EXCEPTION).StdUtf8();
     m_requestHeaders[Strings::HttpHeader::Referer] = document->Url().spec();
     m_requestHeaders[Strings::HttpHeader::UserAgent] = window->GetFrame()->Loader().UserAgent().StdUtf8();
+
+    std::string cookie = document->cookie(ASSERT_NO_EXCEPTION).StdUtf8();
+    if (!cookie.empty())
+        m_requestHeaders[Strings::HttpHeader::Cookie] = cookie;
+
     ASSERT(username.empty() && password.empty()); // BKTODO:
 
     SetReadyState(ctx, idx, ReadyState::Open);
