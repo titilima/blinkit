@@ -11,6 +11,8 @@
 
 #include "duk_xhr.h"
 
+#include <condition_variable>
+#include <mutex>
 #include "base/single_thread_task_runner.h"
 #include "bkcommon/buffer_impl.hpp"
 #include "bkcommon/response_impl.h"
@@ -68,6 +70,10 @@ public:
     {
         ASSERT(nullptr == m_response);
         m_response = response->Retain();
+    }
+    void OnRequestFailed(int errorCode)
+    {
+        ASSERT(false); // BKTODO:
     }
 protected:
     Session(duk_context *ctx, duk_idx_t idx) : m_heapPtr(duk_get_heapptr(ctx, idx))
@@ -128,13 +134,26 @@ public:
 private:
     void OnRequestSent(duk_context *ctx) override
     {
-        ASSERT(false); // BKTODO:
+        {
+            std::unique_lock<std::mutex> lock(m_mutex);
+            while (!m_signal)
+                m_cond.wait(lock);
+        }
+        ProcessResponse(ctx);
     }
     void OnRequestComplete(BkResponse response) override
     {
         Session::OnRequestComplete(response);
-        ASSERT(false); // BKTODO:
+        {
+            std::unique_lock<std::mutex> lock(m_mutex);
+            m_signal = true;
+        }
+        m_cond.notify_one();
     }
+
+    bool m_signal = false;
+    std::mutex m_mutex;
+    std::condition_variable m_cond;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -353,7 +372,7 @@ void BKAPI DukXHR::RequestCompleteImpl(BkResponse response, void *userData)
 
 void BKAPI DukXHR::RequestFailedImpl(int errorCode, void *userData)
 {
-    ASSERT(false); // BKTODO:
+    reinterpret_cast<Session *>(userData)->OnRequestFailed(errorCode);
 }
 
 void DukXHR::Reset(void)
