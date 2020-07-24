@@ -78,41 +78,43 @@ JSErrorImpl::JSErrorImpl(duk_context *ctx, duk_idx_t idx)
             m_code = BK_ERR_UNKNOWN;
     }
 
-    m_name = Extract(ctx, idx, "name");
-    m_message = Extract(ctx, idx, "message");
-    m_fileName = Extract(ctx, idx, "fileName");
-#ifndef NDEBUG
-    m_stack = Extract(ctx, idx, "stack");
-#endif
-    if (duk_get_prop_string(ctx, idx, "lineNumber"))
-        m_lineNumber = duk_to_int(ctx, -1);
+    const char* fields[] = { "name", "message", "fileName", "stack", "lineNumber" };
+    for (const char *field : fields)
+    {
+        if (duk_get_prop_string(ctx, idx, field))
+            m_infoMap[field] = Duk::To<std::string>(ctx, -1);
+    }
 }
 
 JSErrorImpl::JSErrorImpl(int code) : m_code(code)
 {
 }
 
-std::string JSErrorImpl::Extract(duk_context *ctx, duk_idx_t idx, const char *field)
+std::string JSErrorImpl::GetAsString(void) const
 {
     std::string ret;
-    if (duk_get_prop_string(ctx, idx, field))
+    auto it = m_infoMap.find("name");
+    if (std::end(m_infoMap) != it)
     {
-        ASSERT(duk_is_string(ctx, -1));
-
-        size_t l = 0;
-        const char *s = duk_get_lstring(ctx, -1, &l);
-        ret.assign(s, l);
+        ret = it->second;
+        it = m_infoMap.find("message");
+        if (std::end(m_infoMap) != it)
+        {
+            ret.push_back(':');
+            ret.push_back(' ');
+            ret.append(it->second);
+        }
     }
     return ret;
 }
 
-std::string JSErrorImpl::GetAsString(void) const
+int JSErrorImpl::GetInfo(const char *field, BkBuffer *dst) const
 {
-    std::string ret(m_name);
-    ret.push_back(':');
-    ret.push_back(' ');
-    ret.append(m_message);
-    return ret;
+    auto it = m_infoMap.find(field);
+    if (std::end(m_infoMap) == it)
+        return BK_ERR_NOT_FOUND;
+    BkSetBufferData(dst, it->second.data(), it->second.length());
+    return BK_ERR_SUCCESS;
 }
 
 namespace BlinKit {
@@ -261,6 +263,11 @@ BKEXPORT int BKAPI BkGetBooleanValue(BkJSValue val, bool_t *dst)
 BKEXPORT int BKAPI BkGetErrorCode(BkJSError e)
 {
     return e->GetCode();
+}
+
+BKEXPORT int BKAPI BkGetErrorInfo(BkJSError e, const char *field, struct BkBuffer *dst)
+{
+    return e->GetInfo(field, dst);
 }
 
 BKEXPORT int BKAPI BkGetIntegerValue(BkJSValue val, int *dst)

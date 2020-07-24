@@ -40,19 +40,14 @@ public:
     JSErrorImpl(int code);
 
     int GetCode(void) const { return m_code; }
+    int GetInfo(const char *field, BkBuffer *dst) const;
 private:
-    static std::string Extract(duk_context *ctx, duk_idx_t idx, const char *field);
-
     int GetType(void) const override { return BK_VT_ERROR; }
     std::string GetAsString(void) const override;
     void PushTo(duk_context *ctx) const override { NOTREACHED(); }
 
     int m_code;
-    std::string m_name, m_message, m_fileName;
-#ifndef NDEBUG
-    std::string m_stack;
-#endif
-    int m_lineNumber = 0;
+    std::unordered_map<std::string, std::string> m_infoMap;
 };
 
 namespace BlinKit {

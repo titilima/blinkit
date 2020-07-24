@@ -49,6 +49,7 @@ BKEXPORT int BKAPI BkGetValueAsString(BkJSValue val, struct BkBuffer *dst);
 
 BKEXPORT BkJSError BKAPI BkValueToError(BkJSValue val);
 BKEXPORT int BKAPI BkGetErrorCode(BkJSError e);
+BKEXPORT int BKAPI BkGetErrorInfo(BkJSError e, const char *field, struct BkBuffer *dst);
 
 BKEXPORT BkJSObject BKAPI BkValueToObject(BkJSValue val);
 BKEXPORT int BKAPI BkObjectToJSON(BkJSObject o, struct BkBuffer *dst);

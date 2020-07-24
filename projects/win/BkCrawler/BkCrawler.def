@@ -30,6 +30,7 @@ BkGetNumberValue
 BkGetValueAsString
 BkValueToError
 BkGetErrorCode
+BkGetErrorInfo
 BkValueToObject
 BkObjectToJSON
 BkObjectGetMember
