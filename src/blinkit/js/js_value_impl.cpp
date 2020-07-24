@@ -12,6 +12,7 @@
 #include "js_value_impl.h"
 
 #include <cfloat>
+#include "third_party/blink/renderer/bindings/core/duk/duk.h"
 
 using namespace BlinKit;
 
@@ -58,7 +59,8 @@ JSValueImpl* JSValueImpl::Create(duk_context *ctx, duk_idx_t idx)
 
 JSErrorImpl::JSErrorImpl(duk_context *ctx, duk_idx_t idx)
 {
-    const duk_idx_t top = duk_get_top(ctx);
+    Duk::StackGuard sg(ctx);
+
     idx = duk_normalize_index(ctx, idx);
 
     const duk_errcode_t code = duk_get_error_code(ctx, idx);
@@ -84,8 +86,10 @@ JSErrorImpl::JSErrorImpl(duk_context *ctx, duk_idx_t idx)
 #endif
     if (duk_get_prop_string(ctx, idx, "lineNumber"))
         m_lineNumber = duk_to_int(ctx, -1);
+}
 
-    duk_set_top(ctx, top);
+JSErrorImpl::JSErrorImpl(int code) : m_code(code)
+{
 }
 
 std::string JSErrorImpl::Extract(duk_context *ctx, duk_idx_t idx, const char *field)
@@ -295,7 +299,7 @@ BKEXPORT int BKAPI BkObjectToJSON(BkJSObject o, struct BkBuffer *dst)
 
 BKEXPORT void BKAPI BkReleaseValue(BkJSValue val)
 {
-    val->Release();
+    delete val;
 }
 
 BKEXPORT BkJSError BKAPI BkValueToError(BkJSValue val)

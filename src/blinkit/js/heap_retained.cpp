@@ -11,6 +11,7 @@
 
 #include "heap_retained.h"
 
+#include "third_party/blink/renderer/bindings/core/duk/duk.h"
 
 namespace BlinKit {
 
@@ -57,14 +58,14 @@ void HeapRetained::Retain(duk_context *ctx, duk_idx_t idx)
 
 bool HeapRetained::SafeAccess(duk_context *ctx, const Worker &worker)
 {
+    Duk::StackGuard sg(ctx);
+
     bool ret = true;
-    const int top = duk_get_top(ctx);
     duk_push_global_object(ctx);
     if (duk_get_prop_lstring(ctx, -1, m_heapKey.data(), m_heapKey.length()))
         worker(ctx, duk_normalize_index(ctx, -1));
     else
         ret = false;
-    duk_set_top(ctx, top);
     return ret;
 }
 

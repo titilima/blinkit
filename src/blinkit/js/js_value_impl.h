@@ -21,8 +21,8 @@ class JSValueImpl
 {
 public:
     static JSValueImpl* Create(duk_context *ctx, duk_idx_t idx);
+    virtual ~JSValueImpl(void) = default;
 
-    void Release(void) { delete this; }
     virtual int GetType(void) const = 0;
     virtual int GetAsBoolean(bool_t *dst) const { return BK_ERR_TYPE; }
     virtual int GetAsInteger(int *dst) const { return BK_ERR_TYPE; }
@@ -30,13 +30,14 @@ public:
     virtual std::string GetAsString(void) const = 0;
     virtual void PushTo(duk_context *ctx) const = 0;
 protected:
-    virtual ~JSValueImpl(void) = default;
+    JSValueImpl(void) = default;
 };
 
 class JSErrorImpl final : public JSValueImpl
 {
 public:
     JSErrorImpl(duk_context *ctx, duk_idx_t idx);
+    JSErrorImpl(int code);
 
     int GetCode(void) const { return m_code; }
 private:

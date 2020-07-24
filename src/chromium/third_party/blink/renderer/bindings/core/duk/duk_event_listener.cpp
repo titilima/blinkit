@@ -67,8 +67,8 @@ std::shared_ptr<EventListener> DukEventListener::Get(duk_context *ctx, duk_idx_t
     void *heapPtr = duk_get_heapptr(ctx, idx);
     std::string key = GenerateKey(target, type, heapPtr);
 
-    const duk_idx_t top = duk_get_top(ctx);
     do {
+        Duk::StackGuard sg(ctx);
         duk_push_global_object(ctx);
         if (!duk_get_prop_lstring(ctx, -1, key.data(), key.length()))
         {
@@ -85,7 +85,6 @@ std::shared_ptr<EventListener> DukEventListener::Get(duk_context *ctx, duk_idx_t
 
         ret = reinterpret_cast<DukEventListener *>(duk_to_pointer(ctx, -1))->shared_from_this();
     } while (false);
-    duk_set_top(ctx, top);
     return ret;
 }
 
@@ -95,7 +94,7 @@ void DukEventListener::handleEvent(ExecutionContext *executionContext, Event *ev
 
     ASSERT(ctxImpl->GetRawContext() == m_ctx);
 
-    const duk_idx_t top = duk_get_top(m_ctx);
+    Duk::StackGuard sg(m_ctx);
 
     duk_push_heapptr(m_ctx, m_heapPtr);
     DukEvent::Push(m_ctx, event);
@@ -126,8 +125,6 @@ void DukEventListener::handleEvent(ExecutionContext *executionContext, Event *ev
         std::string str = Duk::To<std::string>(m_ctx, -1);
         ctxImpl->ConsoleOutput(BK_CONSOLE_ERROR, str.c_str());
     }
-
-    duk_set_top(m_ctx, top);
 }
 
 } // namespace BlinKit

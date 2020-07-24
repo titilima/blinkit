@@ -51,6 +51,20 @@ bool TryToArrayIndex(duk_context *ctx, duk_idx_t idx, duk_uarridx_t &dst);
 const char* PushString(duk_context *ctx, const std::string &s);
 const char* PushString(duk_context *ctx, const WTF::String &s);
 
+class StackGuard
+{
+public:
+    StackGuard(duk_context *ctx) : m_ctx(ctx), m_top(duk_get_top(ctx)) {}
+    ~StackGuard(void) { duk_set_top(m_ctx, m_top); }
+
+    void Keep(int n) { m_top += n; }
+    bool IsChangedBy(int n) const { return duk_get_top(m_ctx) - n == m_top; }
+    bool IsNotChanged(void) const { return duk_get_top(m_ctx) == m_top; }
+private:
+    duk_context *m_ctx;
+    duk_idx_t m_top;
+};
+
 } // namespace Duk
 } // namespace BlinKit
 

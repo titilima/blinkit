@@ -11,6 +11,7 @@
 
 #include "prototype_helper.h"
 
+#include "third_party/blink/renderer/bindings/core/duk/duk.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_script_object.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 
@@ -39,10 +40,11 @@ PrototypeHelper::~PrototypeHelper(void)
 
 bool PrototypeHelper::AttachToScriptObject(duk_context *ctx, duk_idx_t idx, const char *protoName)
 {
+    Duk::StackGuard sg(ctx);
+
     bool ret = true;
     idx = duk_normalize_index(ctx, idx);
 
-    const duk_idx_t top = duk_get_top(ctx);
     // ... obj
     duk_push_heap_stash(ctx);
     // ... obj stash
@@ -54,8 +56,6 @@ bool PrototypeHelper::AttachToScriptObject(duk_context *ctx, duk_idx_t idx, cons
         duk_set_prototype(ctx, idx);
     else
         ret = false;
-    duk_set_top(ctx, top);
-
     return ret;
 }
 
@@ -84,7 +84,7 @@ duk_idx_t PrototypeHelper::CreateScriptObject(duk_context *ctx, const char *prot
     else
     {
         ASSERT(duk_is_object(ctx, -1));
-        duk_set_top(ctx, top - 1);
+        duk_set_top(ctx, top - 1); // Remove previously pushed object.
         duk_push_undefined(ctx);
     }
     return duk_get_top_index(ctx);
