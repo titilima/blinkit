@@ -101,6 +101,7 @@ public:
     // Returns the DOM ownerDocument attribute. This method never returns null,
     // except in the case of a Document node.
     Document* ownerDocument(void) const;
+    void remove(ExceptionState &exceptionState);
     Node* removeChild(Node *child, ExceptionState &exceptionState);
     String textContent(bool convertBrsToNewlines = false) const;
     void setTextContent(const String &text);

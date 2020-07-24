@@ -143,6 +143,18 @@ static duk_ret_t ParentNodeGetter(duk_context *ctx)
     return 1;
 }
 
+static duk_ret_t Remove(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Node *node = DukScriptObject::To<Node>(ctx, -1);
+
+    DukExceptionState exceptionState(ctx);
+    node->remove(exceptionState);
+    if (exceptionState.HadException())
+        exceptionState.ThrowIfNeeded();
+    return 0;
+}
+
 static duk_ret_t RemoveChild(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -171,6 +183,7 @@ void DukNode::FillPrototypeEntry(PrototypeEntry &entry)
         { "cloneNode",               Impl::CloneNode,               1 },
         { "insertBefore",            Impl::InsertBefore,            2 },
         { "removeChild",             Impl::RemoveChild,             1 },
+        { "remove",                  Impl::Remove,                  0 },
     };
     static const PrototypeEntry::Property Properties[] = {
         { "childNodes",      Impl::ChildNodesGetter,      nullptr               },

@@ -676,6 +676,12 @@ Node* Node::PseudoAwareLastChild(void) const
     return nullptr;
 }
 
+void Node::remove(ExceptionState &exceptionState)
+{
+    if (ContainerNode *parent = parentNode())
+        parent->RemoveChild(this, exceptionState);
+}
+
 void Node::RemoveAllEventListenersRecursively(void)
 {
     ScriptForbiddenScope forbidScriptDuringRawIteration;
