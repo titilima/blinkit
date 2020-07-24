@@ -308,6 +308,41 @@ private:
     BkJSCallerContext m_ctx;
 };
 
+class function_context
+{
+public:
+    operator BkJSCalleeContext() const { return m_ctx; }
+private:
+    friend class function_manager;
+    function_context(BkJSCalleeContext ctx) : m_ctx(ctx) {}
+    BkJSCalleeContext m_ctx;
+};
+
+typedef std::function<void(function_context &)> user_function;
+
+class function_manager
+{
+public:
+    function_manager(BkJSContext ctx) : m_ctx(ctx) {}
+
+    void register_function(int memberContext, const char *name, const user_function &fn)
+    {
+        m_functions.push_back(fn);
+        size_t i = m_functions.size();
+        BkRegisterFunction(m_ctx, memberContext, name, impl, m_functions.data() + i);
+    }
+private:
+    static void BKAPI impl(BkJSCalleeContext ctx, void *p)
+    {
+        function_context fnctx(ctx);
+        user_function *fn = reinterpret_cast<user_function *>(p);
+        (*fn)(fnctx);
+    }
+
+    BkJSContext m_ctx;
+    std::vector<user_function> m_functions;
+};
+
 } // namespace bk
 
 #endif // BLINKIT_SDK_BK_HPP

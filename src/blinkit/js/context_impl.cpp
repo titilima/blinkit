@@ -13,8 +13,10 @@
 
 #include "base/strings/string_util.h"
 #include "blinkit/crawler/crawler_impl.h"
+#include "blinkit/js/function_manager.h"
 #include "blinkit/js/js_caller_context_impl.h"
 #include "blinkit/js/js_value_impl.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_anchor_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_attr.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_console.h"
@@ -53,8 +55,7 @@ ContextImpl::ContextImpl(const LocalFrame &frame)
 
 ContextImpl::~ContextImpl(void)
 {
-    if (nullptr != m_userObject)
-        delete m_userObject;
+    m_userObject.reset();
     duk_destroy_heap(m_ctx);
 }
 
@@ -71,11 +72,7 @@ void ContextImpl::CreateUserObject(const CrawlerImpl &crawler)
     if (m_objectScript->empty())
         return;
 
-    if (nullptr != m_userObject)
-    {
-        delete m_userObject;
-        m_userObject = nullptr;
-    }
+    m_userObject.reset();
 
     std::string errorLog;
     const auto callback = [this, &errorLog](duk_context *ctx)
@@ -84,8 +81,8 @@ void ContextImpl::CreateUserObject(const CrawlerImpl &crawler)
         {
             if (duk_is_object(ctx, -1))
             {
-                ASSERT(nullptr == m_userObject);
-                m_userObject = new JSObjectImpl(ctx, -1);
+                ASSERT(!m_userObject);
+                m_userObject = std::make_unique<JSObjectImpl>(ctx, -1);
                 return;
             }
 
@@ -102,9 +99,16 @@ void ContextImpl::CreateUserObject(const CrawlerImpl &crawler)
         m_consoleMessager(BK_CONSOLE_ERROR, errorLog.c_str());
 }
 
+FunctionManager& ContextImpl::EnsureFunctionManager(void)
+{
+    if (!m_functionManager)
+        m_functionManager = std::make_unique<FunctionManager>(m_userObject);
+    return *m_functionManager;
+}
+
 void ContextImpl::Eval(const std::string_view code, const Callback &callback, const char *fileName)
 {
-    const duk_idx_t top = duk_get_top(m_ctx);
+    Duk::StackGuard sg(m_ctx);
 
     int r;
     if (nullptr == fileName || '\0' == *fileName)
@@ -120,13 +124,11 @@ void ContextImpl::Eval(const std::string_view code, const Callback &callback, co
     if (DUK_EXEC_SUCCESS == r)
         r = duk_pcall(m_ctx, 0);
     callback(m_ctx);
-
-    duk_set_top(m_ctx, top);
 }
 
 void ContextImpl::ExposeGlobals(duk_context *ctx, duk_idx_t dst)
 {
-    const duk_idx_t top = duk_get_top(ctx);
+    Duk::StackGuard sg(ctx);
 
     duk_push_heap_stash(ctx);
     duk_get_prop_string(ctx, -1, Globals);
@@ -138,8 +140,6 @@ void ContextImpl::ExposeGlobals(duk_context *ctx, duk_idx_t dst)
     duk_enum(ctx, -1, flags);
     while (duk_next(ctx, -1, true))
         duk_put_prop(ctx, dst);
-
-    duk_set_top(ctx, top);
 }
 
 ContextImpl* ContextImpl::From(duk_context *ctx)
@@ -215,9 +215,9 @@ const char* ContextImpl::LookupPrototypeName(const std::string &tagName) const
 
 BkJSCallerContext ContextImpl::PrepareFunctionCall(int callContext, const char *functionName)
 {
-    JSCallerContextImpl *ret = nullptr;
-    const int top = duk_get_top(m_ctx);
+    Duk::StackGuard sg(m_ctx);
 
+    JSCallerContextImpl *ret = nullptr;
     do {
         void *thisPtr = nullptr;
         switch (callContext)
@@ -233,7 +233,7 @@ BkJSCallerContext ContextImpl::PrepareFunctionCall(int callContext, const char *
                 NOTREACHED();
         }
 
-        if (duk_get_top(m_ctx) == top || !duk_is_object(m_ctx, -1))
+        if (sg.IsNotChanged() || !duk_is_object(m_ctx, -1))
             break;
         if (!duk_get_prop_string(m_ctx, -1, functionName))
             break;
@@ -244,8 +244,6 @@ BkJSCallerContext ContextImpl::PrepareFunctionCall(int callContext, const char *
         if (nullptr != thisPtr)
             ret->SetThis(thisPtr);
     } while (false);
-
-    duk_set_top(m_ctx, top);
     return ret;
 }
 
@@ -280,7 +278,11 @@ void ContextImpl::Reset(void)
     ASSERT(m_frame.Client()->IsCrawler());
 #else
     if (!m_frame.Client()->IsCrawler())
+    {
+        if (m_functionManager)
+            m_functionManager->RegisterTo(m_ctx);
         return;
+    }
 #endif
 
     CrawlerImpl *crawler = ToCrawlerImpl(m_frame.Client());
@@ -291,6 +293,8 @@ void ContextImpl::Reset(void)
      */
     CreateUserObject(*crawler);
 
+    if (m_functionManager)
+        m_functionManager->RegisterTo(m_ctx);
     crawler->ProcessDocumentReset();
 }
 
@@ -300,20 +304,18 @@ extern "C" {
 
 BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, BkJSValue *retVal)
 {
-    JSValueImpl *ret = nullptr;
+    std::unique_ptr<JSValueImpl> ret;
     const auto callback = [&ret](duk_context *ctx)
     {
-        ret = JSValueImpl::Create(ctx, -1);
+        ret.reset(JSValueImpl::Create(ctx, -1));
     };
     context->Eval(code, callback);
 
     int r = ret->GetType() == BK_VT_ERROR
-        ? static_cast<JSErrorImpl *>(ret)->GetCode()
+        ? static_cast<JSErrorImpl *>(ret.get())->GetCode()
         : BK_ERR_SUCCESS;
     if (nullptr != retVal)
-        *retVal = ret;
-    else
-        ret->Release();
+        *retVal = ret.release();
     return r;
 }
 
@@ -325,6 +327,11 @@ BKEXPORT BkJSObject BKAPI BkGetUserObject(BkJSContext context)
 BKEXPORT BkJSCallerContext BKAPI BkPrepareFunctionCall(BkJSContext context, int callContext, const char *functionName)
 {
     return context->PrepareFunctionCall(callContext, functionName);
+}
+
+BKEXPORT int BKAPI BkRegisterFunction(BkJSContext context, int memberContext, const char *functionName, BkFunctionImpl impl, void *userData)
+{
+    return context->EnsureFunctionManager().Register(memberContext, functionName, impl, userData);
 }
 
 } // extern "C"

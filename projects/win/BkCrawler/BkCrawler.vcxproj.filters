@@ -111,6 +111,12 @@
     <ClInclude Include="..\..\..\sdk\include\bk.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\js\function_manager.h">
+      <Filter>js</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\js\js_callee_context_impl.h">
+      <Filter>js</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BkCrawler.def">
@@ -176,6 +182,12 @@
       <Filter>js</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\js\heap_retained.cpp">
+      <Filter>js</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\js\function_manager.cpp">
+      <Filter>js</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\js\js_callee_context_impl.cpp">
       <Filter>js</Filter>
     </ClCompile>
   </ItemGroup>

@@ -40,3 +40,12 @@ BkPushInteger
 BkPushString
 BkPushStringPiece
 BkCallFunction
+BkRegisterFunction
+BkGetThis
+BkGetArgCount
+BkGetArgType
+BkGetArgAsBoolean
+BkGetArgAsInteger
+BkGetArgAsNumber
+BkGetArgAsString
+BkGetArgAsObject

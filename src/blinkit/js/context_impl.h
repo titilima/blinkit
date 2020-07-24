@@ -28,6 +28,7 @@ class LocalFrame;
 }
 
 namespace BlinKit {
+class FunctionManager;
 class GCPool;
 }
 
@@ -46,11 +47,12 @@ public:
 
     const char* LookupPrototypeName(const std::string &tagName) const;
 
-    JSObjectImpl* UserObject(void) { return m_userObject; }
+    JSObjectImpl* UserObject(void) { return m_userObject.get(); }
     typedef std::function<void(duk_context *)> Callback;
     void Eval(const std::string_view code, const Callback &callback, const char *fileName = "eval");
     void ConsoleOutput(int type, const char *msg) { m_consoleMessager(type, msg); }
     BkJSCallerContext PrepareFunctionCall(int callContext, const char *functionName);
+    BlinKit::FunctionManager& EnsureFunctionManager(void);
 
     BlinKit::GCPool& GetGCPool(void);
     duk_context* GetRawContext(void) const { return m_ctx; }
@@ -62,10 +64,11 @@ private:
 
     const blink::LocalFrame &m_frame;
     duk_context *m_ctx;
+    std::unique_ptr<BlinKit::FunctionManager> m_functionManager;
     std::function<void(int, const char *)> m_consoleMessager;
     const std::unordered_map<std::string, const char *> &m_prototypeMap;
     std::optional<std::string> m_objectScript;
-    JSObjectImpl *m_userObject = nullptr;
+    std::unique_ptr<JSObjectImpl> m_userObject;
 };
 
 #endif // BLINKIT_BLINKIT_CONTEXT_IMPL_H

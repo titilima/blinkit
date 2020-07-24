@@ -12,6 +12,7 @@
 #include "js_caller_context_impl.h"
 
 #include "blinkit/js/js_value_impl.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk.h"
 
 using namespace BlinKit;
 
@@ -28,9 +29,9 @@ JSCallerContextImpl::JSCallerContextImpl(duk_context *ctx, duk_idx_t idx)
 
 int JSCallerContextImpl::Call(BkJSValue *retVal)
 {
-    int err = BK_ERR_SUCCESS;
+    Duk::StackGuard sg(m_ctx);
 
-    const int top = duk_get_top(m_ctx);
+    int err = BK_ERR_SUCCESS;
 
     duk_idx_t idx = HeapRetainedValue::PushTo(m_ctx);
     size_t n = duk_get_length(m_ctx, idx);
@@ -50,33 +51,26 @@ int JSCallerContextImpl::Call(BkJSValue *retVal)
     else
         duk_pcall(m_ctx, n);
 
-    JSValueImpl *ret = JSValueImpl::Create(m_ctx, -1);
+    std::unique_ptr<JSValueImpl> ret(JSValueImpl::Create(m_ctx, -1));
     if (ret->GetType() == BK_VT_ERROR)
-        err = static_cast<JSErrorImpl *>(ret)->GetCode();
-
+        err = static_cast<JSErrorImpl *>(ret.get())->GetCode();
     if (nullptr != retVal)
-        *retVal = ret;
-    else
-        ret->Release();
-
-    duk_set_top(m_ctx, top);
+        *retVal = ret.release();
     delete this;
     return err;
 }
 
 int JSCallerContextImpl::DoPush(const std::function<void(duk_context *)> &worker)
 {
-    const int top = duk_get_top(m_ctx);
+    Duk::StackGuard sg(m_ctx);
 
     duk_idx_t idx = HeapRetainedValue::PushTo(m_ctx);
 
     worker(m_ctx);
 
-    ASSERT(duk_get_top(m_ctx) == top + 2);
+    ASSERT(sg.IsChangedBy(2));
     size_t i = duk_get_length(m_ctx, idx);
     duk_put_prop_index(m_ctx, idx, i);
-
-    duk_set_top(m_ctx, top);
     return BK_ERR_SUCCESS;
 }
 
