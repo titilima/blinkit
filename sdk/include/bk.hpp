@@ -327,8 +327,8 @@ public:
 
     void register_function(int memberContext, const char *name, const user_function &fn)
     {
-        m_functions.push_back(fn);
         size_t i = m_functions.size();
+        m_functions.push_back(fn);
         BkRegisterFunction(m_ctx, memberContext, name, impl, m_functions.data() + i);
     }
 private:
