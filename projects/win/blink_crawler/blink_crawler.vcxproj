@@ -272,6 +272,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\node_lists_node_data.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\node_rare_data.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\node_traversal.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\non_document_type_child_node.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\nth_index_cache.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\parser_content_policy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\processing_instruction.h" />
