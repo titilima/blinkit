@@ -34,7 +34,7 @@ protected:
     typedef std::function<void(duk_context *, duk_idx_t)> Worker;
     bool SafeAccess(duk_context *ctx, const Worker &worker);
 private:
-    void *m_heapPtr;
+    void *m_heapPtr = nullptr;
     std::string m_heapKey;
 };
 
