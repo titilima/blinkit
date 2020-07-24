@@ -97,14 +97,18 @@ typedef void (BKAPI * BkFunctionImpl)(BkJSCalleeContext, void *);
 
 BKEXPORT int BKAPI BkRegisterFunction(BkJSContext context, int memberContext, const char *functionName, BkFunctionImpl impl, void *userData);
 
-BKEXPORT BkJSObject BkGetThis(BkJSCalleeContext context);
-BKEXPORT unsigned BkGetArgCount(BkJSCalleeContext context);
-BKEXPORT int BkGetArgType(BkJSCalleeContext context, unsigned argIndex);
+BKEXPORT BkJSObject BKAPI BkGetThis(BkJSCalleeContext context);
+BKEXPORT unsigned BKAPI BkGetArgCount(BkJSCalleeContext context);
+BKEXPORT int BKAPI BkGetArgType(BkJSCalleeContext context, unsigned argIndex);
 BKEXPORT int BKAPI BkGetArgAsBoolean(BkJSCalleeContext context, unsigned argIndex, bool_t *dst);
 BKEXPORT int BKAPI BkGetArgAsInteger(BkJSCalleeContext context, unsigned argIndex, int *dst);
 BKEXPORT int BKAPI BkGetArgAsNumber(BkJSCalleeContext context, unsigned argIndex, double *dst);
 BKEXPORT int BKAPI BkGetArgAsString(BkJSCalleeContext context, unsigned argIndex, struct BkBuffer *dst);
 BKEXPORT BkJSObject BKAPI BkGetArgAsObject(BkJSCalleeContext context, unsigned argIndex);
+BKEXPORT int BKAPI BkReturnBoolean(BkJSCalleeContext context, bool_t retVal);
+BKEXPORT int BKAPI BkReturnNumber(BkJSCalleeContext context, double retVal);
+BKEXPORT int BKAPI BkReturnString(BkJSCalleeContext context, const char *retVal);
+BKEXPORT int BKAPI BkReturnStringPiece(BkJSCalleeContext context, const char *retVal, size_t l);
 
 enum BkConsoleMessageType {
     BK_CONSOLE_LOG = 0,

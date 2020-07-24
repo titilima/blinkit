@@ -13,6 +13,8 @@
 
 #include "blinkit/js/js_value_impl.h"
 
+using namespace BlinKit;
+
 JSCalleeContextImpl::JSCalleeContextImpl(duk_context *ctx, int argc) : m_ctx(ctx)
 {
     if (0 == argc)
@@ -37,26 +39,53 @@ JSValueImpl* JSCalleeContextImpl::GetArgAt(unsigned argIndex) const
 
 duk_ret_t JSCalleeContextImpl::Return(void)
 {
-    ASSERT(false); // BKTODO:
-    return 0;
+    if (!m_retVal)
+        return 0;
+
+    m_retVal->PushTo(m_ctx);
+    return 1;
+}
+
+int JSCalleeContextImpl::ReturnBoolean(bool b)
+{
+    if (m_retVal)
+        return BK_ERR_FORBIDDEN;
+    m_retVal = std::make_unique<JSSimpleValue>(b);
+    return BK_ERR_SUCCESS;
+}
+
+int JSCalleeContextImpl::ReturnNumber(double d)
+{
+    if (m_retVal)
+        return BK_ERR_FORBIDDEN;
+    m_retVal = std::make_unique<JSSimpleValue>(d);
+    return BK_ERR_SUCCESS;
+}
+
+int JSCalleeContextImpl::ReturnString(const std::string_view &s)
+{
+    if (m_retVal)
+        return BK_ERR_FORBIDDEN;
+    m_retVal = std::make_unique<JSStringValue>(s.data(), s.length());
+    return BK_ERR_SUCCESS;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 extern "C" {
 
-BKEXPORT unsigned BkGetArgCount(BkJSCalleeContext context)
+BKEXPORT unsigned BKAPI BkGetArgCount(BkJSCalleeContext context)
 {
     return context->ArgCount();
 }
 
-BKEXPORT int BkGetArgType(BkJSCalleeContext context, unsigned argIndex)
+BKEXPORT int BKAPI BkGetArgType(BkJSCalleeContext context, unsigned argIndex)
 {
     JSValueImpl *arg = context->GetArgAt(argIndex);
     return nullptr != arg ? arg->GetType() : BK_VT_ERROR;
 }
 
-BKEXPORT BkJSObject BkGetThis(BkJSCalleeContext context)
+BKEXPORT BkJSObject BKAPI BkGetThis(BkJSCalleeContext context)
 {
     return context->GetThis();
 }
@@ -94,6 +123,26 @@ BKEXPORT BkJSObject BKAPI BkGetArgAsObject(BkJSCalleeContext context, unsigned a
 {
     JSValueImpl *arg = context->GetArgAt(argIndex);
     return nullptr != arg ? BkValueToObject(arg) : nullptr;
+}
+
+BKEXPORT int BKAPI BkReturnBoolean(BkJSCalleeContext context, bool_t retVal)
+{
+    return context->ReturnBoolean(retVal);
+}
+
+BKEXPORT int BKAPI BkReturnNumber(BkJSCalleeContext context, double retVal)
+{
+    return context->ReturnNumber(retVal);
+}
+
+BKEXPORT int BKAPI BkReturnString(BkJSCalleeContext context, const char *retVal)
+{
+    return context->ReturnString(retVal);
+}
+
+BKEXPORT int BKAPI BkReturnStringPiece(BkJSCalleeContext context, const char *retVal, size_t l)
+{
+    return context->ReturnString(std::string_view(retVal, l));
 }
 
 } // extern "C"

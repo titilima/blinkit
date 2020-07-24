@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <string_view>
 #include "bk_js.h"
 #include "duktape/duktape.h"
 
@@ -30,10 +31,15 @@ public:
     void SetThis(JSObjectImpl *thisObject) { m_thisObject = thisObject; }
 
     duk_ret_t Return(void);
+
+    int ReturnBoolean(bool b);
+    int ReturnNumber(double d);
+    int ReturnString(const std::string_view &s);
 private:
     duk_context *m_ctx;
     std::vector<std::unique_ptr<JSValueImpl>> m_args;
     JSObjectImpl *m_thisObject = nullptr;
+    std::unique_ptr<JSValueImpl> m_retVal;
 };
 
 #endif // BLINKIT_BLINKIT_JS_CALLEE_CONTEXT_IMPL_H

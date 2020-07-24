@@ -50,3 +50,7 @@ BkGetArgAsInteger
 BkGetArgAsNumber
 BkGetArgAsString
 BkGetArgAsObject
+BkReturnBoolean
+BkReturnNumber
+BkReturnString
+BkReturnStringPiece
