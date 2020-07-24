@@ -19,6 +19,7 @@
 #include "third_party/blink/renderer/bindings/core/duk/duk_named_node_map.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_script_element.h"
 #include "third_party/blink/renderer/core/event_type_names.h"
+#include "third_party/blink/renderer/core/dom/non_document_type_child_node.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappers.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
@@ -73,6 +74,14 @@ static duk_ret_t InnerHTMLSetter(duk_context *ctx)
     return 0;
 }
 
+static duk_ret_t NextElementSiblingGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Element *element = DukScriptObject::To<Element>(ctx, -1);
+    DukElement::Push(ctx, NonDocumentTypeChildNode::nextElementSibling(*element));
+    return 1;
+}
+
 static duk_ret_t OnloadGetter(duk_context *ctx)
 {
     ASSERT(false); // BKTODO:
@@ -82,6 +91,14 @@ static duk_ret_t OnloadGetter(duk_context *ctx)
 static duk_ret_t OnloadSetter(duk_context *ctx)
 {
     return DukElement::SetAttributeEventListenerImpl(ctx, event_type_names::kLoad);
+}
+
+static duk_ret_t PreviousElementSiblingGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Element *element = DukScriptObject::To<Element>(ctx, -1);
+    DukElement::Push(ctx, NonDocumentTypeChildNode::previousElementSibling(*element));
+    return 1;
 }
 
 static duk_ret_t SetAttribute(duk_context *ctx)
@@ -140,7 +157,9 @@ void DukElement::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
     static const PrototypeEntry::Property Properties[] = {
         { "attributes",             Impl::AttributesGetter,             nullptr                    },
         { "innerHTML",              Impl::InnerHTMLGetter,              Impl::InnerHTMLSetter      },
+        { "nextElementSibling",     Impl::NextElementSiblingGetter,     nullptr                    },
         { "onload",                 Impl::OnloadGetter,                 Impl::OnloadSetter         },
+        { "previousElementSibling", Impl::PreviousElementSiblingGetter, nullptr                    },
         { "tagName",                Impl::TagNameGetter,                nullptr                    },
     };
 

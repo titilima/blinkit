@@ -148,6 +148,14 @@ static duk_ret_t GetElementById(duk_context *ctx)
     return 1;
 }
 
+static duk_ret_t HeadGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Document *document = DukScriptObject::To<Document>(ctx, -1);
+    DukElement::Push(ctx, document->head());
+    return 1;
+}
+
 static duk_ret_t LocationGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -233,6 +241,7 @@ void DukDocument::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
         { "body",            Impl::BodyGetter,            nullptr               },
         { "cookie",          Crawler::CookieGetter,       Crawler::CookieSetter },
         { "documentElement", Impl::DocumentElementGetter, nullptr               },
+        { "head",            Impl::HeadGetter,            nullptr               },
         { "location",        Impl::LocationGetter,        Impl::LocationSetter  },
         { "readyState",      Impl::ReadyStateGetter,      nullptr               },
         { "URL",             Impl::URLGetter,             nullptr               },

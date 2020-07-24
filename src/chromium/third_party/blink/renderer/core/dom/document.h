@@ -138,6 +138,7 @@ public:
     Element* createElement(const AtomicString &name, ExceptionState &exceptionState);
     Element* documentElement(void) const { return m_documentElement.Get(); }
     using TreeScope::getElementById;
+    Element* head(void) const;
     Location* location(void) const;
     void open(Document *enteredDocument, ExceptionState &exceptionState);
     String readyState(void) const;

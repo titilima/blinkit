@@ -323,17 +323,16 @@ const GURL& Document::BaseURL(void) const
 
 Element* Document::body(void) const
 {
-    if (nullptr == documentElement())
-        return nullptr;
-
-    for (Element *child = Traversal<Element>::FirstChild(*documentElement());
-        nullptr != child;
-        child = Traversal<Element>::NextSibling(*child))
+    if (Element *de = documentElement())
     {
-        if (IsHTMLBodyElement(*child))
-            return child;
+        for (Element *child = Traversal<Element>::FirstChild(*de);
+            nullptr != child;
+            child = Traversal<Element>::NextSibling(*child))
+        {
+            if (IsHTMLBodyElement(*child))
+                return child;
+        }
     }
-
     return nullptr;
 }
 
@@ -915,6 +914,21 @@ bool Document::HaveScriptBlockingStylesheetsLoaded(void) const
     ASSERT(false); // BKTODO:
     return false;
 #endif
+}
+
+Element* Document::head(void) const
+{
+    if (Element *de = documentElement())
+    {
+        for (Element *child = Traversal<Element>::FirstChild(*de);
+            nullptr != child;
+            child = Traversal<Element>::NextSibling(*child))
+        {
+            if (IsHTMLHeadElement(*child))
+                return child;
+        }
+    }
+    return nullptr;
 }
 
 void Document::ImplicitClose(void)
