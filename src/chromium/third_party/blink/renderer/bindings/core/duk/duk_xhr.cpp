@@ -76,7 +76,7 @@ public:
         ASSERT(false); // BKTODO:
     }
 protected:
-    Session(duk_context *ctx, duk_idx_t idx) : m_heapPtr(duk_get_heapptr(ctx, idx))
+    Session(duk_context *ctx, duk_idx_t idx) : m_heapXHR(duk_get_heapptr(ctx, idx))
     {
         ASSERT(duk_normalize_index(ctx, idx) == idx);
     }
@@ -85,7 +85,7 @@ protected:
     {
         ASSERT(IsMainThread());
 
-        duk_push_heapptr(ctx, m_heapPtr);
+        duk_push_heapptr(ctx, m_heapXHR);
         duk_idx_t idx = duk_normalize_index(ctx, -1);
 
         DukXHR *xhr = DukScriptObject::To<DukXHR>(ctx, idx);
@@ -94,10 +94,12 @@ protected:
     }
 
     BkResponse m_response = nullptr;
-    void *m_heapPtr;
+    void *m_heapXHR;
 };
 
-class DukXHR::AsyncSession final : public DukXHR::Session, public HeapRetained
+class DukXHR::AsyncSession final : public DukXHR::Session
+                                 , public HeapRetained
+                                 , public std::enable_shared_from_this<AsyncSession>
 {
 public:
     AsyncSession(duk_context *ctx, duk_idx_t idx)
@@ -111,6 +113,7 @@ public:
 private:
     void ProcessResponse(void)
     {
+        std::shared_ptr<AsyncSession> guard = shared_from_this();
         Session::ProcessResponse(m_ctx);
         HeapRetained::Release(m_ctx);
     }
@@ -272,12 +275,12 @@ static duk_ret_t StatusTextGetter(duk_context *ctx)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<DukXHR::Session> DukXHR::CreateSession(duk_context *ctx, duk_idx_t idx, bool async)
+std::shared_ptr<DukXHR::Session> DukXHR::CreateSession(duk_context *ctx, duk_idx_t idx, bool async)
 {
     if (async)
-        return std::make_unique<DukXHR::AsyncSession>(ctx, idx);
+        return std::make_shared<DukXHR::AsyncSession>(ctx, idx);
     else
-        return std::make_unique<DukXHR::SyncSession>(ctx, idx);
+        return std::make_shared<DukXHR::SyncSession>(ctx, idx);
 }
 
 void DukXHR::FillPrototypeEntry(PrototypeEntry &entry)

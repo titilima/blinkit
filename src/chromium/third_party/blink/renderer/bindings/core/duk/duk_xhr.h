@@ -58,7 +58,7 @@ private:
     class Session;
     class AsyncSession;
     class SyncSession;
-    std::unique_ptr<Session> CreateSession(duk_context *ctx, duk_idx_t idx, bool async);
+    std::shared_ptr<Session> CreateSession(duk_context *ctx, duk_idx_t idx, bool async);
 
     static void BKAPI RequestCompleteImpl(BkResponse response, void *userData);
     static void BKAPI RequestFailedImpl(int errorCode, void *userData);
@@ -69,7 +69,7 @@ private:
     std::string m_method, m_URL, m_key;
     std::unordered_map<std::string, std::string> m_requestHeaders;
 
-    std::unique_ptr<Session> m_currentSession;
+    std::shared_ptr<Session> m_currentSession;
 };
 
 } // namespace BlinKit
