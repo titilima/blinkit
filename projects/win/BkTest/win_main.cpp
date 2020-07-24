@@ -12,10 +12,9 @@
 #include <Windows.h>
 #include <tchar.h>
 #include <bk_app.h>
-#include <bk_js.h>
-#include <BlinKit.hpp>
+#include <bk.hpp>
 
-using namespace BlinKit;
+using namespace bk;
 
 static const char UserScript[] = R"(
 ({
@@ -29,21 +28,21 @@ static const char ReadyCode[] = R"(
 
 static const char URL[] = "https://example.org";
 
-class Client final : public BkCrawlerClientImpl
+class Client final : public crawler_client_impl<Client>
 {
 public:
     Client(void)
     {
-        memset(&m_appClient, 0, sizeof(BkAppClient));
-        m_appClient.SizeOfStruct = sizeof(BkAppClient);
-        m_appClient.UserData = this;
-        m_appClient.Exit = Exit;
+        BkAppClient appClient = { 0 };
+        appClient.SizeOfStruct = sizeof(BkAppClient);
+        appClient.UserData = this;
+        appClient.Exit = Exit;
+        BkInitialize(BK_APP_MAINTHREAD_MODE, &appClient);
     }
 
-    BkAppClient* GetAppClient(void) { return &m_appClient; }
     int Run(const char *URL)
     {
-        m_crawler = BkCreateCrawler(*this);
+        m_crawler = create_crawler();
         BkRunCrawler(m_crawler, URL);
         return BkRunApp();   
     }
@@ -53,7 +52,7 @@ private:
         BkDestroyCrawler(reinterpret_cast<Client *>(pThis)->m_crawler);
     }
 
-    bool GetCrawlerConfig(int cfg, std::string &dst) override
+    bool get_crawler_config(int cfg, std::string &dst) const
     {
         switch (cfg)
         {
@@ -61,11 +60,11 @@ private:
                 dst.assign(UserScript);
                 break;
             default:
-                return BkCrawlerClientImpl::GetCrawlerConfig(cfg, dst);
+                return crawler_client_impl::get_crawler_config(cfg, dst);
         }
         return true;
     }
-    void DocumentReady(void) override
+    void document_ready(void) override
     {
         BkJSContext ctx = BkGetScriptContextFromCrawler(m_crawler);
         BkEvaluate(ctx, ReadyCode, nullptr);
@@ -73,13 +72,11 @@ private:
         BkExitApp(EXIT_SUCCESS);
     }
 
-    BkAppClient m_appClient;
     BkCrawler m_crawler = nullptr;
 };
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE, PTSTR, int nShowCmd)
 {
     Client client;
-    BkInitialize(BK_APP_MAINTHREAD_MODE, client.GetAppClient());
     return client.Run(URL);
 }
