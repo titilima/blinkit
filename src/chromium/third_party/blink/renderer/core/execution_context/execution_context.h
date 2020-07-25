@@ -40,6 +40,8 @@ enum class SecureContextMode { kInsecureContext, kSecureContext };
 class ExecutionContext : public ContextLifecycleNotifier
 {
 public:
+    bool IsContextDestroyed(void) const { return m_isContextDestroyed; }
+
     virtual bool IsDocument(void) const { return false; }
 
     virtual const GURL& Url(void) const = 0;
@@ -57,6 +59,10 @@ public:
     virtual String OutgoingReferrer(void) const;
 
     virtual std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(TaskType) = 0;
+
+    void NotifyContextDestroyed(void) override;
+private:
+    bool m_isContextDestroyed = false;
 };
 
 } // namespace blink

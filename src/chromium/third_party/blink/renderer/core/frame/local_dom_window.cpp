@@ -152,6 +152,7 @@ void LocalDOMWindow::FinishedLoading(void)
 
 void LocalDOMWindow::FrameDestroyed(void)
 {
+    m_timers.clear();
     RemoveAllEventListeners();
     DisconnectFromFrame();
 }
@@ -246,7 +247,11 @@ void LocalDOMWindow::RemoveAllEventListeners(void)
 
 void LocalDOMWindow::Reset(void)
 {
-    ASSERT(false); // BKTODO:
+    ASSERT(nullptr != document());
+    ASSERT(document()->IsContextDestroyed());
+    FrameDestroyed();
+
+    m_navigator.reset();
 }
 
 }  // namespace blink

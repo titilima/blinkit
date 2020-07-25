@@ -111,6 +111,14 @@ static duk_ret_t LastChildGetter(duk_context *ctx)
     return 1;
 }
 
+static duk_ret_t NextSiblingGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Node *node = DukScriptObject::To<Node>(ctx, -1);
+    DukNode::Push(ctx, node->nextSibling());
+    return 1;
+}
+
 static duk_ret_t NodeNameGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -140,6 +148,14 @@ static duk_ret_t ParentNodeGetter(duk_context *ctx)
     duk_push_this(ctx);
     Node *node = DukScriptObject::To<Node>(ctx, -1);
     DukNode::Push(ctx, node->parentNode());
+    return 1;
+}
+
+static duk_ret_t PreviousSiblingGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Node *node = DukScriptObject::To<Node>(ctx, -1);
+    DukNode::Push(ctx, node->previousSibling());
     return 1;
 }
 
@@ -189,10 +205,12 @@ void DukNode::FillPrototypeEntry(PrototypeEntry &entry)
         { "childNodes",      Impl::ChildNodesGetter,      nullptr               },
         { "firstChild",      Impl::FirstChildGetter,      nullptr               },
         { "lastChild",       Impl::LastChildGetter,       nullptr               },
+        { "nextSibling",     Impl::NextSiblingGetter,     nullptr               },
         { "nodeName",        Impl::NodeNameGetter,        nullptr               },
         { "nodeType",        Impl::NodeTypeGetter,        nullptr               },
         { "ownerDocument",   Impl::OwnerDocumentGetter,   nullptr               },
         { "parentNode",      Impl::ParentNodeGetter,      nullptr               },
+        { "previousSibling", Impl::PreviousSiblingGetter, nullptr               },
         { "textContent",     TextContentGetter,           TextContentSetter     },
     };
 

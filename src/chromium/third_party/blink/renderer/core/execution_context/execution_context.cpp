@@ -15,6 +15,12 @@
 
 namespace blink {
 
+void ExecutionContext::NotifyContextDestroyed(void)
+{
+    m_isContextDestroyed = true;
+    ContextLifecycleNotifier::NotifyContextDestroyed();
+}
+
 // https://w3c.github.io/webappsec-referrer-policy/#determine-requests-referrer
 String ExecutionContext::OutgoingReferrer(void) const
 {

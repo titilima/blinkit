@@ -20,6 +20,7 @@
 #include "third_party/blink/renderer/bindings/core/duk/duk_script_element.h"
 #include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/core/dom/non_document_type_child_node.h"
+#include "third_party/blink/renderer/core/dom/parent_node.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappers.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
@@ -39,6 +40,14 @@ static duk_ret_t AttributesGetter(duk_context *ctx)
     Element *element = DukScriptObject::To<Element>(ctx, -1);
 
     DukNamedNodeMap::Push(ctx, element->attributes());
+    return 1;
+}
+
+static duk_ret_t FirstElementChildGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Element *element = DukScriptObject::To<Element>(ctx, -1);
+    DukElement::Push(ctx, ParentNode::firstElementChild(*element));
     return 1;
 }
 
@@ -72,6 +81,14 @@ static duk_ret_t InnerHTMLSetter(duk_context *ctx)
     if (exceptionState.HadException())
         exceptionState.ThrowIfNeeded();
     return 0;
+}
+
+static duk_ret_t LastElementChildGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Element *element = DukScriptObject::To<Element>(ctx, -1);
+    DukElement::Push(ctx, ParentNode::lastElementChild(*element));
+    return 1;
 }
 
 static duk_ret_t NextElementSiblingGetter(duk_context *ctx)
@@ -156,7 +173,9 @@ void DukElement::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
     };
     static const PrototypeEntry::Property Properties[] = {
         { "attributes",             Impl::AttributesGetter,             nullptr                    },
+        { "firstElementChild",      Impl::FirstElementChildGetter,      nullptr                    },
         { "innerHTML",              Impl::InnerHTMLGetter,              Impl::InnerHTMLSetter      },
+        { "lastElementChild",       Impl::LastElementChildGetter,       nullptr                    },
         { "nextElementSibling",     Impl::NextElementSiblingGetter,     nullptr                    },
         { "onload",                 Impl::OnloadGetter,                 Impl::OnloadSetter         },
         { "previousElementSibling", Impl::PreviousElementSiblingGetter, nullptr                    },

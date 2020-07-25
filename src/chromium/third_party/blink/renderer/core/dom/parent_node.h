@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: parent_node.h
+// Description: ParentNode Class
+//      Author: Ziming Li
+//     Created: 2020-07-24
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Samsung Electronics. All rights reserved.
  *
@@ -40,9 +51,11 @@ namespace blink {
 
 class ParentNode {
  public:
+#if 0 // BKTODO:
   static HTMLCollection* children(ContainerNode& node) {
     return node.Children();
   }
+#endif
 
   static Element* firstElementChild(ContainerNode& node) {
     return ElementTraversal::FirstChild(node);
@@ -60,6 +73,7 @@ class ParentNode {
     return count;
   }
 
+#if 0 // BKTODO:
   static void prepend(Node& node,
                       const HeapVector<NodeOrString>& nodes,
                       ExceptionState& exception_state) {
@@ -83,6 +97,7 @@ class ParentNode {
                                              ExceptionState& exception_state) {
     return node.QuerySelectorAll(selectors, exception_state);
   }
+#endif
 };
 
 }  // namespace blink
