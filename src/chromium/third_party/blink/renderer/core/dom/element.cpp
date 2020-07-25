@@ -37,6 +37,7 @@
 
 #include "element.h"
 
+#include "third_party/blink/renderer/bindings/core/duk/duk_event_listener.h"
 #include "third_party/blink/renderer/core/dom/attr.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/element_data.h"
@@ -52,6 +53,8 @@
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/wtf/not_found.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+
+using namespace BlinKit;
 
 namespace blink {
 
@@ -752,8 +755,8 @@ void Element::ParseAttribute(const AttributeModificationParams &params)
 
     if (triggers->event != g_null_atom)
     {
-        ASSERT(false); // BKTODO:
-        //SetAttributeEventListener()
+        std::shared_ptr<EventListener> eventListener = DukEventListener::CreateAttributeEventListener(this, params.name, params.newValue);
+        SetAttributeEventListener(triggers->event, eventListener.get());
     }
 
     if (nullptr != triggers->function)

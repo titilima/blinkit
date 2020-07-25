@@ -19,6 +19,7 @@
 
 namespace blink {
 class EventTarget;
+class QualifiedName;
 }
 
 namespace BlinKit {
@@ -27,6 +28,7 @@ class DukEventListener : public blink::EventListener
 {
 public:
     static std::shared_ptr<EventListener> Get(duk_context *ctx, duk_idx_t idx, blink::EventTarget *target, const AtomicString &type, bool createIfNotExists);
+    static std::shared_ptr<EventListener> CreateAttributeEventListener(blink::Node *node, const blink::QualifiedName &name, const AtomicString &value);
     ~DukEventListener(void) override;
 
 private:

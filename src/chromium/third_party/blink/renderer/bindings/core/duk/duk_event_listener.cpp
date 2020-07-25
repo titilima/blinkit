@@ -16,6 +16,9 @@
 #include "blinkit/js/context_impl.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_event.h"
+#include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
+#include "third_party/blink/renderer/core/dom/document.h"
+#include "third_party/blink/renderer/core/frame/local_frame.h"
 
 using namespace blink;
 
@@ -51,6 +54,24 @@ bool DukEventListener::BelongsToTheCurrentWorld(ExecutionContext *executionConte
 {
     ContextImpl *ctxImpl = ContextImpl::From(executionContext);
     return ctxImpl->GetRawContext() == m_ctx;
+}
+
+std::shared_ptr<EventListener> DukEventListener::CreateAttributeEventListener(Node *node, const QualifiedName &name, const AtomicString &value)
+{
+    ASSERT(nullptr != node);
+    if (value.IsNull())
+        return nullptr;
+
+    if (LocalFrame *frame = node->GetDocument().GetFrame())
+    {
+        ScriptController &scriptController = frame->GetScriptController();
+        if (!node->GetDocument().CanExecuteScripts(kAboutToExecuteScript))
+            return nullptr;
+
+        ASSERT(false); // BKTODO:
+    }
+    ASSERT(false); // BKTODO:
+    return nullptr;
 }
 
 std::string DukEventListener::GenerateKey(EventTarget *target, const AtomicString &type, void *heapPtr)
