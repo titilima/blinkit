@@ -32,7 +32,7 @@ duk_idx_t HeapRetained::PushTo(duk_context *ctx) const
 
 void HeapRetained::Release(duk_context *ctx)
 {
-    duk_push_global_object(ctx);
+    duk_push_global_stash(ctx);
     duk_del_prop_lstring(ctx, -1, m_heapKey.data(), m_heapKey.length());
     duk_pop(ctx);
 
@@ -50,7 +50,7 @@ void HeapRetained::Retain(duk_context *ctx, duk_idx_t idx)
     sprintf(buf, "%p", m_heapPtr);
     m_heapKey.append(buf);
 
-    duk_push_global_object(ctx);
+    duk_push_global_stash(ctx);
     duk_push_heapptr(ctx, m_heapPtr);
     duk_put_prop_lstring(ctx, -2, m_heapKey.data(), m_heapKey.length());
     duk_pop(ctx);
@@ -61,7 +61,7 @@ bool HeapRetained::SafeAccess(duk_context *ctx, const Worker &worker)
     Duk::StackGuard sg(ctx);
 
     bool ret = true;
-    duk_push_global_object(ctx);
+    duk_push_global_stash(ctx);
     if (duk_get_prop_lstring(ctx, -1, m_heapKey.data(), m_heapKey.length()))
         worker(ctx, duk_normalize_index(ctx, -1));
     else
