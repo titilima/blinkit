@@ -20,6 +20,9 @@ namespace BlinKit {
 
 CrawlerElement::CrawlerElement(const AtomicString &localName, Document *document)
     : Element(QualifiedName(g_null_atom, localName, html_names::xhtmlNamespaceURI), document, kCreateCrawlerElement)
+#ifndef NDEBUG
+    , m_localNameForDebug(localName.StdUtf8())
+#endif
 {
     // Nothing
 }

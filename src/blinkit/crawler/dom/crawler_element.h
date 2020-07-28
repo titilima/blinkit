@@ -29,6 +29,10 @@ private:
     bool IsFormControlElement(void) const final;
     bool IsDisabledFormControl(void) const final;
 #endif
+
+#ifndef NDEBUG
+    const std::string m_localNameForDebug;
+#endif
 };
 
 } // namespace BlinKit
