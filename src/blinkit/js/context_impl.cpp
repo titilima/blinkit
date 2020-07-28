@@ -52,6 +52,7 @@ ContextImpl::ContextImpl(const LocalFrame &frame)
 #endif
 {
     InitializeHeapStash();
+    NewGlobalObject();
 }
 
 ContextImpl::~ContextImpl(void)
@@ -66,8 +67,7 @@ ContextImpl::~ContextImpl(void)
 void ContextImpl::Clear(void)
 {
     GCPool gcPool(m_ctx);
-    duk_push_bare_object(m_ctx);
-    duk_set_global_object(m_ctx);
+    NewGlobalObject();
     duk_gc(m_ctx, 0);
 }
 
@@ -221,6 +221,25 @@ const char* ContextImpl::LookupPrototypeName(const std::string &tagName) const
     return it->second;
 }
 
+void ContextImpl::NewGlobalObject(void)
+{
+    duk_idx_t idx = duk_push_object(m_ctx);
+    ExposeGlobals(m_ctx, idx);
+    duk_set_global_object(m_ctx);
+
+    if (CrawlerImpl *crawler = ToCrawlerImpl(m_frame.Client()))
+    {
+        /**
+         * User object SHOULD BE created after new global object set.
+         * Otherwise, all the contexts of user object member functions won't be in correct status.
+         */
+        CreateUserObject(*crawler);
+
+        if (m_functionManager)
+            m_functionManager->RegisterTo(m_ctx);
+    }
+}
+
 BkJSCallerContext ContextImpl::PrepareFunctionCall(int callContext, const char *functionName)
 {
     Duk::StackGuard sg(m_ctx);
@@ -255,6 +274,13 @@ BkJSCallerContext ContextImpl::PrepareFunctionCall(int callContext, const char *
     return ret;
 }
 
+int ContextImpl::RegisterFunction(int memberContext, const char *functionName, BkFunctionImpl impl, void *userData)
+{
+    if (!m_functionManager)
+        m_functionManager = std::make_unique<FunctionManager>(m_userObject);
+    return m_functionManager->Register(m_ctx, memberContext, functionName, impl, userData);
+}
+
 void ContextImpl::RegisterPrototypesForCrawler(duk_context *ctx)
 {
     PrototypeHelper helper(ctx);
@@ -277,33 +303,11 @@ void ContextImpl::RegisterPrototypesForCrawler(duk_context *ctx)
 
 void ContextImpl::UpdateDocument(void)
 {
-    const duk_idx_t idx = DukScriptObject::Create<DukWindow>(m_ctx, *(m_frame.DomWindow()));
-    BKLOG("New DukWindow object: %p", duk_get_heapptr(m_ctx, idx));
-    ExposeGlobals(m_ctx, idx);
-    duk_set_global_object(m_ctx);
-
-#ifdef BLINKIT_CRAWLER_ONLY
-    ASSERT(m_frame.Client()->IsCrawler());
-#else
-    if (!m_frame.Client()->IsCrawler())
-    {
-        if (m_functionManager)
-            m_functionManager->RegisterTo(m_ctx);
-        return;
-    }
-#endif
-
-    CrawlerImpl *crawler = ToCrawlerImpl(m_frame.Client());
-
-    /**
-     * User object SHOULD BE created after new global object set.
-     * Otherwise, all the contexts of user object member functions won't be in correct status.
-     */
-    CreateUserObject(*crawler);
-
-    if (m_functionManager)
+    DukWindow::Attach(m_ctx, *(m_frame.DomWindow()));
+    if (CrawlerImpl *crawler = ToCrawlerImpl(m_frame.Client()))
+        crawler->ProcessDocumentReset();
+    else if (m_functionManager)
         m_functionManager->RegisterTo(m_ctx);
-    crawler->ProcessDocumentReset();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

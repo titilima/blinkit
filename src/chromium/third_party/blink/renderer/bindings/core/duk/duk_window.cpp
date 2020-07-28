@@ -116,6 +116,14 @@ static duk_ret_t WindowGetter(duk_context *ctx)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void DukWindow::Attach(duk_context *ctx, LocalDOMWindow &window)
+{
+    duk_push_global_object(ctx);
+    DukScriptObject::BindNative(ctx, -1, window);
+    PrototypeHelper::AttachToScriptObject(ctx, -1, ProtoName);
+    duk_pop(ctx);
+}
+
 void DukWindow::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
 {
     static const PrototypeEntry::Method Methods[] = {

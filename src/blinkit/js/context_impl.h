@@ -43,6 +43,7 @@ public:
     static ContextImpl* From(blink::ExecutionContext *executionContext);
 
     void Clear(void);
+    void NewGlobalObject(void);
     void UpdateDocument(void);
 
     const char* LookupPrototypeName(const std::string &tagName) const;

@@ -24,11 +24,13 @@ class PrototypeHelper;
 class DukWindow final : public DukEventTarget
 {
 public:
-    static const char ProtoName[];
+    static void Attach(duk_context *ctx, blink::LocalDOMWindow &window);
     static void RegisterPrototypeForCrawler(PrototypeHelper &helper);
 
     static duk_ret_t SetTimerImpl(duk_context *ctx, bool repeatable);
 private:
+    static const char ProtoName[]; // Make this private to forbid the call of DukScriptObject::Create<DukWindow>
+
     static void FillPrototypeEntryForCrawler(PrototypeEntry &entry);
 };
 
