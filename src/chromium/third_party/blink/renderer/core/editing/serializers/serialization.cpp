@@ -80,7 +80,7 @@ String CreateMarkup(const Node *node, EChildrenOnly childrenOnly, EAbsoluteURLs 
     return SerializeNodes<EditingStrategy>(accumulator, const_cast<Node &>(*node), childrenOnly);
 }
 
-void ReplaceChildrenWithFragment(ContainerNode *container, DocumentFragment *fragment, ExceptionState &exceptionState)
+void ReplaceChildrenWithFragment(ContainerNode *container, DocumentFragment *fragment, std::vector<Node *> &detachedChildren, ExceptionState &exceptionState)
 {
     ASSERT(nullptr != container);
     ContainerNode *containerNode = container;
@@ -89,7 +89,7 @@ void ReplaceChildrenWithFragment(ContainerNode *container, DocumentFragment *fra
 
     if (nullptr == fragment->firstChild())
     {
-        containerNode->RemoveChildren();
+        containerNode->RemoveChildren(detachedChildren);
         return;
     }
 
@@ -97,11 +97,11 @@ void ReplaceChildrenWithFragment(ContainerNode *container, DocumentFragment *fra
     // already == text.
     if (containerNode->HasOneChild())
     {
-        containerNode->ReplaceChild(fragment, containerNode->firstChild(), exceptionState);
+        containerNode->ReplaceChild(fragment, containerNode->firstChild(), detachedChildren, exceptionState);
         return;
     }
 
-    containerNode->RemoveChildren();
+    containerNode->RemoveChildren(detachedChildren);
     containerNode->appendChild(fragment, exceptionState);
 }
 

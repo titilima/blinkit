@@ -64,7 +64,7 @@ DocumentFragment* CreateFragmentForInnerOuterHTML(
 
 // These methods are used by HTMLElement & ShadowRoot to replace the
 // children with respected fragment/text.
-void ReplaceChildrenWithFragment(ContainerNode *container, DocumentFragment *fragment, ExceptionState &exceptionState);
+void ReplaceChildrenWithFragment(ContainerNode *container, DocumentFragment *fragment, std::vector<Node *> &detachedChildren, ExceptionState &exceptionState);
 
 String CreateMarkup(const Node *node, EChildrenOnly childrenOnly = kIncludeNode, EAbsoluteURLs shouldResolveUrls = kDoNotResolveURLs);
 

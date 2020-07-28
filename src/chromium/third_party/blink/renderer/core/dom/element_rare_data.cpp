@@ -60,8 +60,8 @@ ElementRareData::~ElementRareData(void)
     {
         for (Attr *attr : *m_attrNodeList)
         {
-            ASSERT(!attr->IsContextRetained());
-            delete attr;
+            if (!attr->IsMarkedForGC())
+                delete attr;
         }
         m_attrNodeList->clear();
     }

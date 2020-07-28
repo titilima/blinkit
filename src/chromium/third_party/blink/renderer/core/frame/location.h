@@ -83,6 +83,8 @@ private:
 
     const GURL& Url(void) const;
 
+    GCType GetGCType(void) const override { return GC_MANUAL; }
+
     const Member<DOMWindow> m_domWindow;
 };
 

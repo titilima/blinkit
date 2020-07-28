@@ -15,9 +15,11 @@
 #pragma once
 
 #include <unordered_set>
+#include <vector>
+#include "duktape/duktape.h"
 
 namespace blink {
-class Document;
+class Node;
 class ScriptWrappable;
 }
 
@@ -26,24 +28,18 @@ namespace BlinKit {
 class GCPool final
 {
 public:
-    GCPool(void) = default;
-    ~GCPool(void) { CollectGarbage(); }
-
-    static GCPool& From(const blink::Document &document);
+    GCPool(duk_context *ctx = nullptr);
+    ~GCPool(void);
+    static GCPool* From(duk_context *ctx);
 
     void CollectGarbage(void);
-
     void Save(blink::ScriptWrappable &object);
-    void Restore(blink::ScriptWrappable &object);
+    void Save(const std::vector<blink::Node *> &detachedNodes);
 
-    template <class T>
-    T* Save(T *object)
-    {
-        if (nullptr != object)
-            Save(*object);
-        return object;
-    }
+    void DetachContext(void) { m_ctx = nullptr; }
 private:
+    duk_context *m_ctx;
+    bool m_active = true;
     std::unordered_set<blink::ScriptWrappable *> m_objects;
 };
 

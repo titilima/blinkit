@@ -69,6 +69,8 @@ class CORE_EXPORT Navigator final : public ScriptWrappable,
  private:
   explicit Navigator(LocalFrame*);
 
+  GCType GetGCType(void) const override { return GC_MANUAL; }
+
   LocalFrame *m_frame;
 };
 

@@ -51,7 +51,6 @@
 #include "third_party/blink/renderer/core/dom/text.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/html_element_type_helpers.h"
-#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
@@ -135,8 +134,7 @@ Node* Node::cloneNode(bool deep, ExceptionState &exceptionState) const
 
     // 2. Return a clone of the context object, with the clone children
     // flag set if deep is true.
-    Node *ret = Clone(document, deep ? CloneChildrenFlag::kClone : CloneChildrenFlag::kSkip);
-    return GCPool::From(document).Save(ret);
+    return Clone(document, deep ? CloneChildrenFlag::kClone : CloneChildrenFlag::kSkip);
 }
 
 NodeList* Node::childNodes(void)
@@ -676,10 +674,10 @@ Node* Node::PseudoAwareLastChild(void) const
     return nullptr;
 }
 
-void Node::remove(ExceptionState &exceptionState)
+void Node::remove(NodeVector &detached, ExceptionState &exceptionState)
 {
     if (ContainerNode *parent = parentNode())
-        parent->RemoveChild(this, exceptionState);
+        parent->RemoveChild(this, detached, exceptionState);
 }
 
 void Node::RemoveAllEventListenersRecursively(void)
@@ -695,10 +693,10 @@ void Node::RemoveAllEventListenersRecursively(void)
     }
 }
 
-Node* Node::removeChild(Node *child, ExceptionState &exceptionState)
+Node* Node::removeChild(Node *child, NodeVector &detachedChildren, ExceptionState &exceptionState)
 {
     if (IsContainerNode())
-        return ToContainerNode(this)->RemoveChild(child, exceptionState);
+        return ToContainerNode(this)->RemoveChild(child, detachedChildren, exceptionState);
 
     exceptionState.ThrowDOMException(DOMExceptionCode::kNotFoundError,
         "This node type does not support this method.");
@@ -726,13 +724,9 @@ void Node::SetParentOrShadowHostNode(ContainerNode *parent)
 {
     ASSERT(IsMainThread());
     m_parentOrShadowHostNode = parent;
-#ifndef NDEBUG
-    if (nullptr != parent && !parent->IsShadowRoot())
-        ASSERT(!IsContextRetained());
-#endif
 }
 
-void Node::setTextContent(const String &text)
+void Node::setTextContent(const String &text, NodeVector &detachedChildren)
 {
     switch (getNodeType())
     {
@@ -763,7 +757,7 @@ void Node::setTextContent(const String &text)
             // https://dom.spec.whatwg.org/#dom-node-textcontent
             if (text.IsEmpty())
             {
-                container->RemoveChildren(kDispatchSubtreeModifiedEvent);
+                container->RemoveChildren(detachedChildren, kDispatchSubtreeModifiedEvent);
             }
             else
             {

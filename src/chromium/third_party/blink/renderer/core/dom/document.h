@@ -357,6 +357,7 @@ private:
 
     void LoadEventDelayTimerFired(TimerBase *);
 
+    GCType GetGCType(void) const final { return GC_MANUAL; }
     // EventTarget overrides
     void RemoveAllEventListeners(void) final;
     // Node overrides

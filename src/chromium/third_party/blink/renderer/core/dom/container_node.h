@@ -36,7 +36,6 @@
 #ifndef BLINKIT_BLINK_CONTAINER_NODE_H
 #define BLINKIT_BLINK_CONTAINER_NODE_H
 
-#include <vector>
 #include "third_party/blink/renderer/core/dom/node.h"
 #include "third_party/blink/renderer/core/html/collection_type.h"
 
@@ -79,8 +78,6 @@ enum SubtreeModificationAction {
     kOmitSubtreeModifiedEvent
 };
 
-using NodeVector = std::vector<Node *>;
-
 class ContainerNode : public Node
 {
 public:
@@ -91,8 +88,8 @@ public:
 
     Node* FirstChild(void) const { return m_firstChild; }
     Node* LastChild(void) const { return m_lastChild; }
-    Node* RemoveChild(Node *oldChild, ExceptionState &exceptionState);
-    Node* ReplaceChild(Node *newChild, Node *oldChild, ExceptionState &exceptionState);
+    Node* RemoveChild(Node *oldChild, NodeVector &detachedChildren, ExceptionState &exceptionState);
+    Node* ReplaceChild(Node *newChild, Node *oldChild, NodeVector &detachedChildren, ExceptionState &exceptionState);
 
     bool HasOneChild(void) const { return m_firstChild && nullptr == m_firstChild->nextSibling(); }
     bool HasOneTextChild(void) const { return HasOneChild() && m_firstChild->IsTextNode(); }
@@ -105,7 +102,7 @@ public:
     bool EnsurePreInsertionValidity(const Node &newChild, const Node *next, const Node *oldChild, ExceptionState &exceptionState) const;
     Node* InsertBefore(Node *newChild, Node *refChild, ExceptionState &exceptionState);
 
-    void RemoveChildren(SubtreeModificationAction action = kDispatchSubtreeModifiedEvent);
+    void RemoveChildren(NodeVector &detachedChildren, SubtreeModificationAction action = kDispatchSubtreeModifiedEvent);
     void CloneChildNodesFrom(const ContainerNode &node);
 
     // Utility functions for NodeListsNodeData API.
@@ -153,7 +150,7 @@ protected:
     void InvalidateNodeListCachesInAncestors(const QualifiedName *attrName, Element *attributeOwnerElement,
         const ChildrenChange *change);
 
-    void PreCollectGarbage(BlinKit::GCPool &gcPool) override;
+    void GetChildrenForGC(std::vector<ScriptWrappable *> &dst) override;
 private:
     class AdoptAndAppendChild;
     class AdoptAndInsertBefore;
@@ -176,7 +173,7 @@ private:
     void NotifyNodeInserted(Node &root, ChildrenChangeSource source = kChildrenChangeSourceAPI);
     void NotifyNodeInsertedInternal(Node &root, NodeVector &postInsertionNotificationTargets);
     void NotifyNodeRemoved(Node &root);
-    void RemoveBetween(Node *previousChild, Node* nextChild, Node &oldChild);
+    void RemoveBetween(Node *previousChild, Node* nextChild, Node &oldChild, NodeVector &detachedChildren);
     void WillRemoveChild(Node &child);
     void WillRemoveChildren(void);
 

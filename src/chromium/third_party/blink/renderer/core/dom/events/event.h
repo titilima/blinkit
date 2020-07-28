@@ -164,6 +164,8 @@ protected:
 
     virtual void ReceivedTarget(void) {}
 private:
+    GCType GetGCType(void) const override { return GC_MANUAL; }
+
     AtomicString m_type;
     unsigned m_bubbles : 1;
     unsigned m_cancelable : 1;

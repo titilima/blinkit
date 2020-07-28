@@ -50,10 +50,6 @@ namespace base {
 class SingleThreadTaskRunner;
 }
 
-namespace BlinKit {
-class GCPool;
-}
-
 namespace blink {
 
 class Document;
@@ -71,7 +67,6 @@ public:
 
     void Init(void) { m_loader.Init(); }
 
-    BlinKit::GCPool& GetGCPool(void) const { return *m_gcPool; }
     LocalFrameClient* Client(void) const;
     FrameLoader& Loader(void) const { return m_loader; }
     NavigationScheduler& GetNavigationScheduler(void) const { return *m_navigationScheduler; }
@@ -98,7 +93,6 @@ private:
     bool IsLocalFrame(void) const override { return true; }
     void DetachImpl(FrameDetachType type) override;
 
-    std::unique_ptr<BlinKit::GCPool> m_gcPool;
     std::unique_ptr<FrameScheduler> m_frameScheduler;
     mutable FrameLoader m_loader;
     std::unique_ptr<NavigationScheduler> m_navigationScheduler;

@@ -59,6 +59,8 @@ class EmptyNodeList final : public NodeList {
  private:
   explicit EmptyNodeList(Node& root_node) : owner_(root_node) {}
 
+  GCType GetGCType(void) const override { return GC_MANUAL; }
+
   unsigned length() const override { return 0; }
   Node* item(unsigned) const override { return nullptr; }
 

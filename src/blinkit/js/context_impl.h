@@ -29,7 +29,6 @@ class LocalFrame;
 
 namespace BlinKit {
 class FunctionManager;
-class GCPool;
 }
 
 class CrawlerImpl;
@@ -54,7 +53,6 @@ public:
     BkJSCallerContext PrepareFunctionCall(int callContext, const char *functionName);
     BlinKit::FunctionManager& EnsureFunctionManager(void);
 
-    BlinKit::GCPool& GetGCPool(void);
     duk_context* GetRawContext(void) const { return m_ctx; }
 private:
     void InitializeHeapStash(void);

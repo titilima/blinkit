@@ -61,10 +61,21 @@ duk_ret_t DukScriptObject::DefaultFinalizer(duk_context *ctx)
     if (nullptr != nativeThis)
     {
         nativeThis->m_contextObject = nullptr;
-        if (nativeThis->IsContextRetained())
+
+        ScriptWrappable::GCType gcType = nativeThis->GetGCType();
+        if (ScriptWrappable::GC_MANUAL != gcType && nativeThis->IsMarkedForGC())
         {
-            nativeThis->ReleaseFromContext();
-            ContextImpl::From(ctx)->GetGCPool().Save(*nativeThis);
+            switch (gcType)
+            {
+                case ScriptWrappable::GC_IN_FINALIZER:
+                    delete nativeThis;
+                    break;
+                case ScriptWrappable::GC_IN_POOL:
+                    GCPool::From(ctx)->Save(*nativeThis);
+                    break;
+                default:
+                    NOTREACHED();
+            }
         }
     }
     return 0;

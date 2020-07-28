@@ -81,6 +81,8 @@ class NamedNodeMap final : public ScriptWrappable {
     DCHECK(element_);
   }
 
+  GCType GetGCType(void) const override { return GC_MANUAL; }
+
   Member<Element> element_;
 };
 

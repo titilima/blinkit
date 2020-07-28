@@ -19,7 +19,6 @@
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/loader/frame_load_request.h"
-#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_error.h"
 #include "url/gurl.h"
 
@@ -77,7 +76,6 @@ void CrawlerImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 
 void CrawlerImpl::DispatchDidFinishLoad(void)
 {
-    m_frame->GetGCPool().CollectGarbage();
     m_client.DocumentReady(m_client.UserData);
 }
 

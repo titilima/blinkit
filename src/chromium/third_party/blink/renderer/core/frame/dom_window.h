@@ -44,6 +44,8 @@ public:
 protected:
     explicit DOMWindow(Frame &frame);
 private:
+    GCType GetGCType(void) const final { return GC_MANUAL; }
+
     Member<Frame> m_frame;
     mutable std::unique_ptr<Location> m_location;
 };

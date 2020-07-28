@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <vector>
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/noncopyable.h"
 
@@ -31,44 +32,39 @@ class ScriptWrappable : public GarbageCollectedFinalized<ScriptWrappable>
 public:
     virtual ~ScriptWrappable(void) = default;
 
-    bool IsContextRetained(void) const { return m_contextRetained; }
-    void RetainByContext(void) { m_contextRetained = true; }
-    void ReleaseFromContext(void) { m_contextRetained = false; }
+    enum GCType {
+        GC_MANUAL = 0,
+        GC_IN_FINALIZER,
+        GC_IN_POOL
+    };
+    virtual GCType GetGCType(void) const = 0;
 
-    bool IsInGCPool(void) const { return m_inGCPool; }
-    bool CanBePooled(void) const {
-#ifndef NDEBUG
-        return m_canBePooled;
-#else
-        return true;
-#endif
-    }
+    bool IsRetainedByContext(void) const { return nullptr != m_contextObject; }
 
-    virtual void PreCollectGarbage(BlinKit::GCPool &gcPool) {}
-protected:
-    ScriptWrappable(void)
-        : m_contextRetained(false), m_inGCPool(false)
-#ifndef NDEBUG
-        , m_canBePooled(true)
-#endif
+    bool IsMarkedForGC(void) const
     {
+        ASSERT(GetGCType() != GC_MANUAL);
+        return m_garbageFlag;
+    }
+    void SetGarbageFlag(void)
+    {
+        ASSERT(GetGCType() != GC_MANUAL);
+        m_garbageFlag = true;
+    }
+    void ClearGarbageFlag(void)
+    {
+        ASSERT(GetGCType() != GC_MANUAL);
+        m_garbageFlag = false;
     }
 
-    void SetCannotBePooled(void) {
-#ifndef NDEBUG
-        m_canBePooled = false;
-#endif
-    }
+    virtual void GetChildrenForGC(std::vector<ScriptWrappable *> &dst) {}
+protected:
+    ScriptWrappable(void) = default;
 private:
     friend class BlinKit::DukScriptObject;
-    friend class BlinKit::GCPool;
     friend class BlinKit::PushWrapper;
 
-    bool m_contextRetained : 1;
-    bool m_inGCPool : 1;
-#ifndef NDEBUG
-    bool m_canBePooled : 1;
-#endif
+    bool m_garbageFlag = false;
     void *m_contextObject = nullptr;
 };
 

@@ -56,7 +56,6 @@ namespace blink {
 
 LocalDOMWindow::LocalDOMWindow(LocalFrame &frame) : DOMWindow(frame)
 {
-    SetCannotBePooled();
 }
 
 LocalDOMWindow::~LocalDOMWindow(void) = default;

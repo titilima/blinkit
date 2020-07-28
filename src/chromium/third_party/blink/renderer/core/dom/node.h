@@ -39,6 +39,7 @@
 
 #pragma once
 
+#include <vector>
 #include "third_party/blink/renderer/core/dom/events/event_target.h"
 #include "third_party/blink/renderer/core/dom/node_rare_data.h"
 #include "third_party/blink/renderer/core/dom/tree_scope.h"
@@ -54,6 +55,8 @@ class ExceptionState;
 class NodeList;
 class NodeRareData;
 class ShadowRoot;
+
+using NodeVector = std::vector<Node *>;
 
 const int kNodeStyleChangeShift = 18;
 const int kNodeCustomElementShift = 20;
@@ -101,10 +104,10 @@ public:
     // Returns the DOM ownerDocument attribute. This method never returns null,
     // except in the case of a Document node.
     Document* ownerDocument(void) const;
-    void remove(ExceptionState &exceptionState);
-    Node* removeChild(Node *child, ExceptionState &exceptionState);
+    void remove(NodeVector &detached, ExceptionState &exceptionState);
+    Node* removeChild(Node *child, NodeVector &detachedChildren, ExceptionState &exceptionState);
     String textContent(bool convertBrsToNewlines = false) const;
-    void setTextContent(const String &text);
+    void setTextContent(const String &text, NodeVector &detachedChildren);
 
     Document& GetDocument(void) const { return GetTreeScope().GetDocument(); }
     TreeScope& GetTreeScope(void) const
@@ -376,6 +379,7 @@ private:
     NodeRareData& CreateRareData(void);
     void ClearRareData(void);
 
+    GCType GetGCType(void) const override { return GC_IN_POOL; }
     // EventTarget overrides
     ExecutionContext* GetExecutionContext(void) const final;
     Node* ToNode(void) final { return this; }

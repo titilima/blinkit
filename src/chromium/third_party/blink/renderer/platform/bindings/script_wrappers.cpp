@@ -12,8 +12,7 @@
 #include "script_wrappers.h"
 
 #include "blinkit/js/context_impl.h"
-#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
-#include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
+#include "third_party/blink/renderer/core/dom/node.h"
 
 using namespace blink;
 
@@ -29,15 +28,19 @@ PushWrapper::~PushWrapper(void)
         return;
 
     if (nullptr == m_nativeObject->m_contextObject)
-        m_nativeObject->m_contextObject = duk_get_heapptr(m_ctx, -1);
-    else
-        ASSERT(duk_get_heapptr(m_ctx, -1) == m_nativeObject->m_contextObject);
-
-    if (m_nativeObject->IsInGCPool())
     {
-        m_nativeObject->RetainByContext();
-        ContextImpl::From(m_ctx)->GetGCPool().Restore(*m_nativeObject);
+        m_nativeObject->m_contextObject = duk_get_heapptr(m_ctx, -1);
+        if (m_nativeObject->GetGCType() == ScriptWrappable::GC_IN_FINALIZER)
+            m_nativeObject->SetGarbageFlag();
     }
+
+    ASSERT(duk_get_heapptr(m_ctx, -1) == m_nativeObject->m_contextObject);
+}
+
+NodePushWrapper::NodePushWrapper(duk_context *ctx, Node *node) : PushWrapper(ctx, node)
+{
+    if (nullptr != node && nullptr == node->ParentOrShadowHostNode())
+        node->SetGarbageFlag();
 }
 
 } // namespace BlinKit

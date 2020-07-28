@@ -46,7 +46,6 @@
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/loader/navigation_scheduler.h"
-#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #include "third_party/blink/renderer/platform/scheduler/main_thread/frame_scheduler_impl.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
@@ -62,7 +61,6 @@ static std::unique_ptr<FrameScheduler> CreateFrameScheduler(Page *)
 
 LocalFrame::LocalFrame(LocalFrameClient *client, Page *page)
     : Frame(client, page)
-    , m_gcPool(std::make_unique<GCPool>())
     , m_frameScheduler(CreateFrameScheduler(page))
     , m_loader(this)
     , m_navigationScheduler(NavigationScheduler::Create(this))

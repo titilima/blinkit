@@ -13,11 +13,13 @@
 
 #include "blinkit/js/js_value_impl.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
+#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 
 using namespace BlinKit;
 
 JSCallerContextImpl::JSCallerContextImpl(duk_context *ctx, duk_idx_t idx)
     : HeapRetainedValue(ctx, HeapRetainedValue::Type::ARRAY, DUK_HIDDEN_SYMBOL("caller_ctx"))
+    , m_gcPool(std::make_unique<GCPool>(ctx))
 {
     void *heapPtr = duk_get_heapptr(m_ctx, idx);
 
@@ -26,6 +28,8 @@ JSCallerContextImpl::JSCallerContextImpl(duk_context *ctx, duk_idx_t idx)
     duk_put_prop_index(m_ctx, -2, 0);
     duk_pop(m_ctx);
 }
+
+JSCallerContextImpl::~JSCallerContextImpl(void) = default;
 
 int JSCallerContextImpl::Call(BkJSValue *retVal)
 {

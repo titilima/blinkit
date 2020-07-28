@@ -20,16 +20,22 @@
 #include "blinkit/js/heap_retained.h"
 #include "duktape/duktape.h"
 
+namespace BlinKit {
+class GCPool;
+}
+
 class JSCallerContextImpl : public BlinKit::HeapRetainedValue
 {
 public:
     JSCallerContextImpl(duk_context *ctx, duk_idx_t idx);
+    ~JSCallerContextImpl(void) override;
 
     void SetThis(void *thisPtr) { m_thisPtr = thisPtr; }
     int DoPush(const std::function<void(duk_context *)> &worker);
     int Call(BkJSValue *retVal);
 private:
     void *m_thisPtr = nullptr;
+    std::unique_ptr<BlinKit::GCPool> m_gcPool;
 };
 
 #endif // BLINKIT_BLINKIT_JS_CALLER_CONTEXT_IMPL_H

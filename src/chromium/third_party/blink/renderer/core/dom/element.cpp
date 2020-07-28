@@ -49,7 +49,6 @@
 #include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
-#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/wtf/not_found.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
@@ -858,11 +857,11 @@ void Element::SetElementFlag(ElementFlags mask, bool value)
     EnsureElementRareData().SetElementFlag(mask, value);
 }
 
-void Element::setInnerHTML(const String &html, ExceptionState &exceptionState)
+void Element::setInnerHTML(const String &html, NodeVector &detachedChildren, ExceptionState &exceptionState)
 {
     if (html.IsEmpty() && !HasNonInBodyInsertionMode())
     {
-        setTextContent(html);
+        setTextContent(html, detachedChildren);
     }
     else
     {
@@ -875,7 +874,7 @@ void Element::setInnerHTML(const String &html, ExceptionState &exceptionState)
             if (auto* template_element = ToHTMLTemplateElementOrNull(*this))
                 container = template_element->content();
 #endif
-            ReplaceChildrenWithFragment(container, fragment, exceptionState);
+            ReplaceChildrenWithFragment(container, fragment, detachedChildren, exceptionState);
         }
     }
 }

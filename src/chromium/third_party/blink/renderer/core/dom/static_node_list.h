@@ -52,9 +52,9 @@ class Node;
 template <typename NodeType>
 class StaticNodeTypeList final : public NodeList {
  public:
-  static StaticNodeTypeList* Adopt(std::vector<NodeType *> &nodes);
+  static StaticNodeTypeList* Adopt(std::vector<NodeType *> &nodes, GCType gcType);
 
-  static StaticNodeTypeList* CreateEmpty() { return new StaticNodeTypeList; }
+  static StaticNodeTypeList* CreateEmpty(GCType gcType) { return new StaticNodeTypeList(gcType); }
 
   ~StaticNodeTypeList() override;
 
@@ -62,6 +62,11 @@ class StaticNodeTypeList final : public NodeList {
   NodeType* item(unsigned index) const override;
 
  private:
+  StaticNodeTypeList(GCType gcType) : gcType_(gcType) {}
+
+  GCType GetGCType(void) const final { return gcType_; }
+
+  const GCType gcType_;
   std::vector<NodeType *> nodes_;
 };
 
@@ -69,8 +74,8 @@ using StaticNodeList = StaticNodeTypeList<Node>;
 
 template <typename NodeType>
 StaticNodeTypeList<NodeType>* StaticNodeTypeList<NodeType>::Adopt(
-    std::vector<NodeType *>& nodes) {
-  StaticNodeTypeList<NodeType>* node_list = new StaticNodeTypeList<NodeType>;
+    std::vector<NodeType *>& nodes, GCType gcType) {
+  StaticNodeTypeList<NodeType>* node_list = new StaticNodeTypeList<NodeType>(gcType);
   swap(node_list->nodes_, nodes);
   return node_list;
 }

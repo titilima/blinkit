@@ -178,7 +178,6 @@ Document::Document(const DocumentInit &initializer)
     , m_scriptRunner(ScriptRunner::Create(this))
     , m_loadEventDelayTimer(GetTaskRunner(TaskType::kNetworking), this, &Document::LoadEventDelayTimerFired)
 {
-    SetCannotBePooled();
     if (m_frame)
     {
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -231,6 +230,19 @@ Document::Document(const DocumentInit &initializer)
 
 Document::~Document(void)
 {
+    if (Node *n = firstChild())
+    {
+        GCPool gcPool;
+        do {
+            n->SetGarbageFlag();
+            gcPool.Save(*n);
+            n = n->nextSibling();
+        } while (nullptr != n);
+
+        SetFirstChild(nullptr);
+        SetLastChild(nullptr);
+    }
+
 #ifndef BLINKIT_CRAWLER_ONLY
     DCHECK(!GetLayoutView());
 #endif
@@ -628,8 +640,7 @@ Comment* Document::createComment(const String &data)
 
 DocumentFragment* Document::createDocumentFragment(void)
 {
-    DocumentFragment *ret = DocumentFragment::Create(*this);
-    return GCPool::From(*this).Save(ret);
+    return DocumentFragment::Create(*this);
 }
 
 Element* Document::createElement(const AtomicString &name, ExceptionState &exceptionState)
@@ -642,8 +653,7 @@ Element* Document::createElement(const AtomicString &name, ExceptionState &excep
     }
 
 #ifdef BLINKIT_CRAWLER_ONLY
-    Element *ret = CreateElement(name, CreateElementFlags::ByCreateElement());
-    return GCPool::From(*this).Save(ret);
+    return CreateElement(name, CreateElementFlags::ByCreateElement());
 #else
     // 2. If the context object is an HTML document, let localName be
     // converted to ASCII lowercase.
@@ -996,7 +1006,16 @@ void Document::ImplicitClose(void)
 
 std::shared_ptr<DocumentParser> Document::ImplicitOpen(void)
 {
-    RemoveChildren();
+    NodeVector oldChilden;
+    RemoveChildren(oldChilden);
+    {
+        GCPool gcPool;
+        for (Node *child : oldChilden)
+        {
+            child->SetGarbageFlag();
+            gcPool.Save(*child);
+        }
+    }
 #ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(!m_focusedElement);
 #endif

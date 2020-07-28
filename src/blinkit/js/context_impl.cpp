@@ -29,6 +29,7 @@
 #include "third_party/blink/renderer/bindings/core/duk/duk_xhr.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 
 using namespace blink;
 using namespace BlinKit;
@@ -56,7 +57,10 @@ ContextImpl::ContextImpl(const LocalFrame &frame)
 ContextImpl::~ContextImpl(void)
 {
     m_userObject.reset();
+
+    GCPool pool(m_ctx);
     duk_destroy_heap(m_ctx);
+    pool.DetachContext();
 }
 
 void ContextImpl::CreateUserObject(const CrawlerImpl &crawler)
@@ -108,6 +112,7 @@ FunctionManager& ContextImpl::EnsureFunctionManager(void)
 
 void ContextImpl::Eval(const std::string_view code, const Callback &callback, const char *fileName)
 {
+    GCPool gcPool(m_ctx);
     Duk::StackGuard sg(m_ctx);
 
     int r;
@@ -164,11 +169,6 @@ ContextImpl* ContextImpl::From(ExecutionContext *executionContext)
 
     NOTREACHED();
     return nullptr;
-}
-
-GCPool& ContextImpl::GetGCPool(void)
-{
-    return m_frame.GetGCPool();
 }
 
 void ContextImpl::InitializeHeapStash(void)
@@ -269,10 +269,15 @@ void ContextImpl::RegisterPrototypesForCrawler(duk_context *ctx)
 
 void ContextImpl::Reset(void)
 {
-    const duk_idx_t idx = DukScriptObject::Create<DukWindow>(m_ctx, *(m_frame.DomWindow()));
-    BKLOG("New DukWindow object: %p", duk_get_heapptr(m_ctx, idx));
-    ExposeGlobals(m_ctx, idx);
-    duk_set_global_object(m_ctx);
+    {
+        GCPool gcPool(m_ctx);
+
+        const duk_idx_t idx = DukScriptObject::Create<DukWindow>(m_ctx, *(m_frame.DomWindow()));
+        BKLOG("New DukWindow object: %p", duk_get_heapptr(m_ctx, idx));
+        ExposeGlobals(m_ctx, idx);
+        duk_set_global_object(m_ctx);
+        duk_gc(m_ctx, 0);
+    }
 
 #ifdef BLINKIT_CRAWLER_ONLY
     ASSERT(m_frame.Client()->IsCrawler());
