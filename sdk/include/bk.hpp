@@ -15,6 +15,7 @@
 
 #include <cassert>
 #include <functional>
+#include <list>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -327,9 +328,8 @@ public:
 
     void register_function(int memberContext, const char *name, const user_function &fn)
     {
-        size_t i = m_functions.size();
         m_functions.push_back(fn);
-        BkRegisterFunction(m_ctx, memberContext, name, impl, m_functions.data() + i);
+        BkRegisterFunction(m_ctx, memberContext, name, impl, &(m_functions.back()));
     }
 private:
     static void BKAPI impl(BkJSCalleeContext ctx, void *p)
@@ -340,7 +340,7 @@ private:
     }
 
     BkJSContext m_ctx;
-    std::vector<user_function> m_functions;
+    std::list<user_function> m_functions;
 };
 
 } // namespace bk
