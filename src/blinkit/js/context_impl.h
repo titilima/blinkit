@@ -53,7 +53,7 @@ public:
     void Eval(const std::string_view code, const Callback &callback, const char *fileName = "eval");
     void ConsoleOutput(int type, const char *msg) { m_consoleMessager(type, msg); }
     BkJSCallerContext PrepareFunctionCall(int callContext, const char *functionName);
-    BlinKit::FunctionManager& EnsureFunctionManager(void);
+    int RegisterFunction(int memberContext, const char *functionName, BkFunctionImpl impl, void *userData);
 
     duk_context* GetRawContext(void) const { return m_ctx; }
 private:

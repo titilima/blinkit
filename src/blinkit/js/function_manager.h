@@ -26,19 +26,21 @@ class FunctionManager
 public:
     FunctionManager(std::unique_ptr<JSObjectImpl> &userObject);
 
-    int Register(int memberContext, const char *functionName, BkFunctionImpl impl, void *userData);
+    int Register(duk_context *ctx, int memberContext, const char *functionName, BkFunctionImpl impl, void *userData);
     void RegisterTo(duk_context *ctx);
 private:
-    static std::string GetKey(void *heapPtr);
-    static duk_ret_t CalleeImpl(duk_context *ctx);
-
-    std::unique_ptr<JSObjectImpl> &m_userObject;
-
     struct FunctionData {
         std::unique_ptr<JSObjectImpl> *thisObject;
         BkFunctionImpl impl;
         void *userData;
     };
+
+    static std::string GetKey(void *heapPtr);
+    static void Flush(duk_context *ctx, const std::string &name, FunctionData &data);
+    static void Register(duk_context *ctx, duk_idx_t stashIdx, duk_idx_t objIdx, const std::string &name, FunctionData &data);
+    static duk_ret_t CalleeImpl(duk_context *ctx);
+
+    std::unique_ptr<JSObjectImpl> &m_userObject;
     std::unordered_map<std::string, FunctionData> m_functions;
 };
 

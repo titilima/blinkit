@@ -111,13 +111,6 @@ void ContextImpl::CreateUserObject(const CrawlerImpl &crawler)
         m_consoleMessager(BK_CONSOLE_ERROR, errorLog.c_str());
 }
 
-FunctionManager& ContextImpl::EnsureFunctionManager(void)
-{
-    if (!m_functionManager)
-        m_functionManager = std::make_unique<FunctionManager>(m_userObject);
-    return *m_functionManager;
-}
-
 void ContextImpl::Eval(const std::string_view code, const Callback &callback, const char *fileName)
 {
     GCPool gcPool(m_ctx);
@@ -343,7 +336,7 @@ BKEXPORT BkJSCallerContext BKAPI BkPrepareFunctionCall(BkJSContext context, int 
 
 BKEXPORT int BKAPI BkRegisterFunction(BkJSContext context, int memberContext, const char *functionName, BkFunctionImpl impl, void *userData)
 {
-    return context->EnsureFunctionManager().Register(memberContext, functionName, impl, userData);
+    return context->RegisterFunction(memberContext, functionName, impl, userData);
 }
 
 } // extern "C"

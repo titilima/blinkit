@@ -28,7 +28,7 @@ duk_ret_t FunctionManager::CalleeImpl(duk_context *ctx)
     duk_push_current_function(ctx);
 
     std::string key = GetKey(duk_get_heapptr(ctx, -1));
-    duk_push_global_object(ctx);
+    duk_push_global_stash(ctx);
     duk_get_prop_lstring(ctx, -1, key.data(), key.length());
 
     const FunctionData *fd = reinterpret_cast<FunctionData *>(duk_get_pointer(ctx, -1));
@@ -38,6 +38,22 @@ duk_ret_t FunctionManager::CalleeImpl(duk_context *ctx)
         calleeContext.SetThis(fd->thisObject->get());
     fd->impl(&calleeContext, fd->userData);
     return calleeContext.Return();
+}
+
+void FunctionManager::Flush(duk_context *ctx, const std::string &name, FunctionData &data)
+{
+    Duk::StackGuard sg(ctx);
+
+    duk_push_global_stash(ctx);
+    int stashIdx = duk_normalize_index(ctx, -1);
+
+    if (nullptr != data.thisObject)
+        data.thisObject->get()->PushTo(ctx);
+    else
+        duk_push_global_object(ctx);
+    int idx = duk_normalize_index(ctx, -1);
+
+    Register(ctx, stashIdx, idx, name, data);
 }
 
 std::string FunctionManager::GetKey(void *heapPtr)
@@ -51,7 +67,7 @@ std::string FunctionManager::GetKey(void *heapPtr)
     return ret;
 }
 
-int FunctionManager::Register(int memberContext, const char *functionName, BkFunctionImpl impl, void *userData)
+int FunctionManager::Register(duk_context *ctx, int memberContext, const char *functionName, BkFunctionImpl impl, void *userData)
 {
     FunctionData data = { 0 };
     switch (memberContext)
@@ -70,13 +86,29 @@ int FunctionManager::Register(int memberContext, const char *functionName, BkFun
     data.impl = impl;
     data.userData = userData;
 
-    m_functions[functionName] = data;
+    auto r = m_functions.insert(std::make_pair(std::string(functionName), data));
+    Flush(ctx, r.first->first, r.first->second);
     return BK_ERR_SUCCESS;
+}
+
+void FunctionManager::Register(duk_context *ctx, duk_idx_t stashIdx, duk_idx_t objIdx, const std::string &name, FunctionData &data)
+{
+    void *heapPtr;
+    duk_push_c_function(ctx, CalleeImpl, DUK_VARARGS);
+    heapPtr = duk_get_heapptr(ctx, -1);
+    duk_put_prop_lstring(ctx, objIdx, name.data(), name.length());
+
+    std::string key = GetKey(heapPtr);
+    duk_push_pointer(ctx, &data);
+    duk_put_prop_lstring(ctx, stashIdx, key.data(), key.length());
 }
 
 void FunctionManager::RegisterTo(duk_context *ctx)
 {
     Duk::StackGuard sg(ctx);
+
+    duk_push_global_stash(ctx);
+    int stashIdx = duk_normalize_index(ctx, -1);
 
     int globalIdx, userIdx;
     duk_push_global_object(ctx);
@@ -103,14 +135,7 @@ void FunctionManager::RegisterTo(duk_context *ctx)
         if (-1 == idx)
             continue;
 
-        duk_push_c_function(ctx, CalleeImpl, DUK_VARARGS);
-        void *heapPtr = duk_get_heapptr(ctx, -1);
-        duk_put_prop_lstring(ctx, idx, it.first.data(), it.first.length());
-
-        std::string key = GetKey(heapPtr);
-        FunctionData &fd = it.second;
-        duk_push_pointer(ctx, &fd);
-        duk_put_prop_lstring(ctx, globalIdx, key.data(), key.length());
+        Register(ctx, stashIdx, idx, it.first, it.second);
     }
 }
 
