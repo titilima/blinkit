@@ -71,7 +71,7 @@ public:
     FrameLoader& Loader(void) const { return m_loader; }
     NavigationScheduler& GetNavigationScheduler(void) const { return *m_navigationScheduler; }
     LocalDOMWindow* DomWindow(void) const;
-    void SetDOMWindow(std::unique_ptr<LocalDOMWindow> domWindow);
+    void SetDOMWindow(std::unique_ptr<LocalDOMWindow> &domWindow);
     Document* GetDocument(void) const;
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(TaskType type);
     ScriptController& GetScriptController(void) const { return *m_scriptController; }

@@ -63,6 +63,14 @@ ContextImpl::~ContextImpl(void)
     pool.DetachContext();
 }
 
+void ContextImpl::Clear(void)
+{
+    GCPool gcPool(m_ctx);
+    duk_push_bare_object(m_ctx);
+    duk_set_global_object(m_ctx);
+    duk_gc(m_ctx, 0);
+}
+
 void ContextImpl::CreateUserObject(const CrawlerImpl &crawler)
 {
     if (!m_objectScript.has_value())
@@ -267,17 +275,12 @@ void ContextImpl::RegisterPrototypesForCrawler(duk_context *ctx)
     DukXHR::RegisterPrototype(helper);
 }
 
-void ContextImpl::Reset(void)
+void ContextImpl::UpdateDocument(void)
 {
-    {
-        GCPool gcPool(m_ctx);
-
-        const duk_idx_t idx = DukScriptObject::Create<DukWindow>(m_ctx, *(m_frame.DomWindow()));
-        BKLOG("New DukWindow object: %p", duk_get_heapptr(m_ctx, idx));
-        ExposeGlobals(m_ctx, idx);
-        duk_set_global_object(m_ctx);
-        duk_gc(m_ctx, 0);
-    }
+    const duk_idx_t idx = DukScriptObject::Create<DukWindow>(m_ctx, *(m_frame.DomWindow()));
+    BKLOG("New DukWindow object: %p", duk_get_heapptr(m_ctx, idx));
+    ExposeGlobals(m_ctx, idx);
+    duk_set_global_object(m_ctx);
 
 #ifdef BLINKIT_CRAWLER_ONLY
     ASSERT(m_frame.Client()->IsCrawler());

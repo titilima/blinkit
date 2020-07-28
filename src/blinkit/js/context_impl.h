@@ -42,7 +42,8 @@ public:
     static ContextImpl* From(duk_context *ctx);
     static ContextImpl* From(blink::ExecutionContext *executionContext);
 
-    void Reset(void);
+    void Clear(void);
+    void UpdateDocument(void);
 
     const char* LookupPrototypeName(const std::string &tagName) const;
 

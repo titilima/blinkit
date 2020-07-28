@@ -202,7 +202,7 @@ std::shared_ptr<base::SingleThreadTaskRunner> LocalFrame::GetTaskRunner(TaskType
     return m_frameScheduler->GetTaskRunner(type);
 }
 
-void LocalFrame::SetDOMWindow(std::unique_ptr<LocalDOMWindow> domWindow)
+void LocalFrame::SetDOMWindow(std::unique_ptr<LocalDOMWindow> &domWindow)
 {
     if (domWindow)
         GetScriptController().ClearWindowProxy();
