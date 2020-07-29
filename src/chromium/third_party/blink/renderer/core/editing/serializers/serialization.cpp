@@ -43,6 +43,7 @@
 #include "third_party/blink/renderer/core/dom/child_list_mutation_scope.h"
 #include "third_party/blink/renderer/core/dom/document_fragment.h"
 #include "third_party/blink/renderer/core/dom/element.h"
+#include "third_party/blink/renderer/core/dom/text.h"
 #include "third_party/blink/renderer/core/editing/serializers/markup_accumulator.h"
 
 using namespace BlinKit;
@@ -78,6 +79,19 @@ String CreateMarkup(const Node *node, EChildrenOnly childrenOnly, EAbsoluteURLs 
 
     MarkupAccumulator accumulator(shouldResolveUrls);
     return SerializeNodes<EditingStrategy>(accumulator, const_cast<Node &>(*node), childrenOnly);
+}
+
+void MergeWithNextTextNode(Text *textNode, std::vector<Node *> &detachedNodes, ExceptionState &exceptionState)
+{
+    ASSERT(nullptr != textNode);
+    Node *next = textNode->nextSibling();
+    if (nullptr == next || !next->IsTextNode())
+        return;
+
+    Text *textNext = ToText(next);
+    textNode->appendData(textNext->data());
+    if (nullptr != textNext->parentNode())  // Might have been removed by mutation event.
+        textNext->remove(detachedNodes, exceptionState);
 }
 
 void ReplaceChildrenWithFragment(ContainerNode *container, DocumentFragment *fragment, std::vector<Node *> &detachedChildren, ExceptionState &exceptionState)

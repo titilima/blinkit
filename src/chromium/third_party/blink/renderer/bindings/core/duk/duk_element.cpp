@@ -16,6 +16,7 @@
 #include "third_party/blink/renderer/bindings/core/duk/duk_anchor_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_event_listener.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_exception_state.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_image_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_named_node_map.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_script_element.h"
 #include "third_party/blink/renderer/core/event_type_names.h"
@@ -114,6 +115,29 @@ static duk_ret_t OnloadSetter(duk_context *ctx)
     return DukElement::SetAttributeEventListenerImpl(ctx, event_type_names::kLoad);
 }
 
+static duk_ret_t OuterHTMLGetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Element *element = DukScriptObject::To<Element>(ctx, -1);
+    Duk::PushString(ctx, element->outerHTML());
+    return 1;
+}
+
+static duk_ret_t OuterHTMLSetter(duk_context *ctx)
+{
+    duk_push_this(ctx);
+    Element *element = DukScriptObject::To<Element>(ctx, -1);
+
+    NodeVector detachedNodes;
+    DukExceptionState exceptionState(ctx);
+    element->setOuterHTML(Duk::To<String>(ctx, 0), detachedNodes, exceptionState);
+    if (exceptionState.HadException())
+        exceptionState.ThrowIfNeeded();
+
+    GCPool::From(ctx)->Save(detachedNodes);
+    return 0;
+}
+
 static duk_ret_t PreviousElementSiblingGetter(duk_context *ctx)
 {
     duk_push_this(ctx);
@@ -182,6 +206,7 @@ void DukElement::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
         { "lastElementChild",       Impl::LastElementChildGetter,       nullptr                    },
         { "nextElementSibling",     Impl::NextElementSiblingGetter,     nullptr                    },
         { "onload",                 Impl::OnloadGetter,                 Impl::OnloadSetter         },
+        { "outerHTML",              Impl::OuterHTMLGetter,              Impl::OuterHTMLSetter      },
         { "previousElementSibling", Impl::PreviousElementSiblingGetter, nullptr                    },
         { "tagName",                Impl::TagNameGetter,                nullptr                    },
     };
@@ -211,6 +236,7 @@ const std::unordered_map<std::string, const char *>& DukElement::PrototypeMapFor
     {
         s_prototypeMapForCrawler.insert({
             { "a",      DukAnchorElement::ProtoName },
+            { "img",    DukImageElement::ProtoName  },
             { "script", DukScriptElement::ProtoName }
         });
     }

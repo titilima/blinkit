@@ -22,6 +22,7 @@
 #include "third_party/blink/renderer/bindings/core/duk/duk_console.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_document.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_event.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_image_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_location.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_navigator.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_script_element.h"
@@ -285,6 +286,7 @@ void ContextImpl::RegisterPrototypesForCrawler(duk_context *ctx)
     DukNode::RegisterPrototype(helper, ProtoNames::DocumentFragment);
     DukElement::RegisterPrototypeForCrawler(helper);
     DukEvent::RegisterPrototype(helper);
+    DukImageElement::RegisterPrototypeForCrawler(helper);
     DukLocation::RegisterPrototype(helper);
     DukNavigator::RegisterPrototype(helper);
     DukNode::RegisterPrototype(helper, ProtoNames::DocumentType);

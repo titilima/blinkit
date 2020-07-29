@@ -1274,6 +1274,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\parent_node.h">
       <Filter>renderer\core\dom</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_image_element.h">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\platform.cpp">
@@ -1997,6 +2000,9 @@
       <Filter>renderer\bindings\core\duk</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_anchor_element.cpp">
+      <Filter>renderer\bindings\core\duk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_image_element.cpp">
       <Filter>renderer\bindings\core\duk</Filter>
     </ClCompile>
   </ItemGroup>

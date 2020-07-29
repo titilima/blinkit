@@ -50,6 +50,7 @@ class DocumentFragment;
 class Element;
 class ExceptionState;
 class Node;
+class Text;
 
 enum EChildrenOnly { kIncludeNode, kChildrenOnly };
 enum EAbsoluteURLs { kDoNotResolveURLs, kResolveAllURLs, kResolveNonLocalURLs };
@@ -67,6 +68,8 @@ DocumentFragment* CreateFragmentForInnerOuterHTML(
 void ReplaceChildrenWithFragment(ContainerNode *container, DocumentFragment *fragment, std::vector<Node *> &detachedChildren, ExceptionState &exceptionState);
 
 String CreateMarkup(const Node *node, EChildrenOnly childrenOnly = kIncludeNode, EAbsoluteURLs shouldResolveUrls = kDoNotResolveURLs);
+
+void MergeWithNextTextNode(Text *textNode, std::vector<Node *> &detachedNodes, ExceptionState &exceptionState);
 
 } // namespace blink
 

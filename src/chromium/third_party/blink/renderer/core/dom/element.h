@@ -83,8 +83,10 @@ public:
     NamedNodeMap* attributes(void) const;
     bool hasAttribute(const AtomicString &name) const;
     String innerHTML(void) const;
-    void setInnerHTML(const String &html, NodeVector &detachedChildren, ExceptionState &exceptionState);
+    String outerHTML(void) const;
     void setAttribute(const AtomicString &localName, const AtomicString &value, ExceptionState &exceptionState);
+    void setInnerHTML(const String &html, NodeVector &detachedChildren, ExceptionState &exceptionState);
+    void setOuterHTML(const String &html, NodeVector &detachedNodes, ExceptionState &exceptionState);
     String tagName(void) const { return nodeName(); }
 
     const QualifiedName& TagQName(void) const { return m_tagName; }

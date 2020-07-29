@@ -40,6 +40,7 @@
 #include "third_party/blink/renderer/bindings/core/duk/duk_event_listener.h"
 #include "third_party/blink/renderer/core/dom/attr.h"
 #include "third_party/blink/renderer/core/dom/document.h"
+#include "third_party/blink/renderer/core/dom/document_fragment.h"
 #include "third_party/blink/renderer/core/dom/element_data.h"
 #include "third_party/blink/renderer/core/dom/element_data_cache.h"
 #include "third_party/blink/renderer/core/dom/element_rare_data.h"
@@ -746,6 +747,11 @@ String Element::nodeName(void) const
     return m_tagName.ToString();
 }
 
+String Element::outerHTML(void) const
+{
+    return CreateMarkup(this, kIncludeNode);
+}
+
 void Element::ParseAttribute(const AttributeModificationParams &params)
 {
     AttributeTriggers *triggers = TriggersForAttributeName(params.name);
@@ -787,7 +793,11 @@ void Element::ParserSetAttributes(const Vector<Attribute> &attributeVector)
 
 void Element::setAttribute(const QualifiedName &name, const AtomicString &value)
 {
-    ASSERT(false); // BKTODO:
+    SynchronizeAttribute(name);
+    wtf_size_t index = GetElementData()
+        ? GetElementData()->Attributes().FindIndex(name)
+        : kNotFound;
+    SetAttributeInternal(index, name, value, kNotInSynchronizationOfLazyAttribute);
 }
 
 void Element::setAttribute(const AtomicString &localName, const AtomicString &value, ExceptionState &exceptionState)
@@ -877,6 +887,39 @@ void Element::setInnerHTML(const String &html, NodeVector &detachedChildren, Exc
             ReplaceChildrenWithFragment(container, fragment, detachedChildren, exceptionState);
         }
     }
+}
+
+void Element::setOuterHTML(const String &html, NodeVector &detachedNodes, ExceptionState &exceptionState)
+{
+    Node *p = parentNode();
+    if (nullptr == p)
+    {
+        exceptionState.ThrowDOMException(DOMExceptionCode::kNoModificationAllowedError,
+            "This element has no parent node.");
+        return;
+    }
+    if (!p->IsElementNode())
+    {
+        exceptionState.ThrowDOMException(DOMExceptionCode::kNoModificationAllowedError,
+            "This element's parent is of type '" + p->nodeName() + "', which is not an element node.");
+        return;
+    }
+
+    Element *parent = ToElement(p);
+    Node *prev = previousSibling();
+    Node *next = nextSibling();
+
+    DocumentFragment *fragment = CreateFragmentForInnerOuterHTML(html, parent, kAllowScriptingContent, "outerHTML", exceptionState);
+    if (exceptionState.HadException())
+        return;
+
+    parent->ReplaceChild(fragment, this, detachedNodes, exceptionState);
+    Node *node = nullptr != next ? next->previousSibling() : nullptr;
+    if (!exceptionState.HadException() && nullptr != node && node->IsTextNode())
+        MergeWithNextTextNode(ToText(node), detachedNodes, exceptionState);
+
+    if (!exceptionState.HadException() && nullptr != prev && prev->IsTextNode())
+        MergeWithNextTextNode(ToText(prev), detachedNodes, exceptionState);
 }
 
 void Element::SetIsValue(const AtomicString &isValue)
