@@ -11,6 +11,7 @@
 
 #include "crawler_impl.h"
 
+#include "base/single_thread_task_runner.h"
 #include "bkcommon/buffer_impl.hpp"
 #include "bkcommon/controller_impl.h"
 #include "bkcommon/response_impl.h"
@@ -70,13 +71,22 @@ void CrawlerImpl::CancelLoading(void)
 
 void CrawlerImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 {
-    const std::string URL = error.FailingURL();
-    m_client.Error(error.ErrorCode(), URL.c_str(), m_client.UserData);
+    int errorCode = error.ErrorCode();
+    std::string URL = error.FailingURL();
+    const auto task = [this, errorCode, URL]
+    {
+        m_client.Error(errorCode, URL.c_str(), m_client.UserData);
+    };
+    m_frame->GetTaskRunner(TaskType::kInternalLoading)->PostTask(FROM_HERE, task);
 }
 
 void CrawlerImpl::DispatchDidFinishLoad(void)
 {
-    m_client.DocumentReady(m_client.UserData);
+    const auto task = [this]
+    {
+        m_client.DocumentReady(m_client.UserData);
+    };
+    m_frame->GetTaskRunner(TaskType::kInternalLoading)->PostTask(FROM_HERE, task);
 }
 
 bool CrawlerImpl::GetConfig(int cfg, std::string &dst) const
