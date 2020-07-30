@@ -22,6 +22,7 @@
 #include "third_party/blink/renderer/bindings/core/duk/duk_console.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_document.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_event.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_global.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_image_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_location.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_navigator.h"
@@ -181,6 +182,7 @@ void ContextImpl::InitializeHeapStash(void)
     duk_put_prop_string(m_ctx, -2, NativeContext);
 
     duk_push_global_object(m_ctx);
+    DukGlobal::Attach(m_ctx, -1);
     duk_put_prop_string(m_ctx, -2, Globals);
 
 #ifdef BLINKIT_CRAWLER_ONLY

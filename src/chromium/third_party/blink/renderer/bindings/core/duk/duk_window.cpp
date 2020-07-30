@@ -44,28 +44,6 @@ static duk_ret_t GetComputedStyle(duk_context *ctx)
 
 namespace Impl {
 
-static duk_ret_t AToB(duk_context *ctx)
-{
-    duk_dup(ctx, 0);
-    duk_base64_decode(ctx, -1);
-    duk_buffer_to_string(ctx, -1);
-    return 1;
-}
-
-static duk_ret_t BToA(duk_context *ctx)
-{
-    duk_dup(ctx, 0);
-    duk_base64_encode(ctx, -1);
-    duk_buffer_to_string(ctx, -1);
-    return 1;
-}
-
-static duk_ret_t ConsoleGetter(duk_context *ctx)
-{
-    DukScriptObject::Create<DukConsole>(ctx);
-    return 1;
-}
-
 static duk_ret_t DocumentGetter(duk_context *ctx)
 {
     duk_push_global_object(ctx);
@@ -127,15 +105,12 @@ void DukWindow::Attach(duk_context *ctx, LocalDOMWindow &window)
 void DukWindow::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
 {
     static const PrototypeEntry::Method Methods[] = {
-        { "atob",             Impl::AToB,                1           },
-        { "btoa",             Impl::BToA,                1           },
         { "getComputedStyle", Crawler::GetComputedStyle, 2           },
         { "setInterval",      Impl::SetInterval,         DUK_VARARGS },
         { "setTimeout",       Impl::SetTimeout,          DUK_VARARGS },
         { DukXHR::ProtoName,  DukXHR::Construct,         0           },
     };
     static const PrototypeEntry::Property Properties[] = {
-        { "console",   Impl::ConsoleGetter,   nullptr              },
         { "document",  Impl::DocumentGetter,  nullptr              },
         { "location",  Impl::LocationGetter,  Impl::LocationSetter },
         { "navigator", Impl::NavigatorGetter, nullptr              },
