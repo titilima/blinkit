@@ -1,7 +1,0 @@
-LIBRARY "BlinKit"
-
-EXPORTS
-
-BkInitialize
-BkGetApp
-BkCreateRequest
