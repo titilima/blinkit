@@ -47,6 +47,14 @@ namespace blink {
 
 #ifdef BLINKIT_CRAWLER_ONLY
 NodeRareData::NodeRareData(void) : m_elementFlags(0), m_restyleFlags(0) {}
+#else
+NodeRareData::NodeRareData(NodeRenderingData *nodeLayoutData)
+    : NodeRareDataBase(nodeLayoutData)
+    , m_elementFlags(0)
+    , m_restyleFlags(0)
+{
+    ASSERT(nullptr != nodeLayoutData);
+}
 #endif
 
 NodeRareData::~NodeRareData(void) = default;

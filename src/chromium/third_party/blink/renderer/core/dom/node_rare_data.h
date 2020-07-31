@@ -40,11 +40,37 @@ namespace blink {
 
 enum class DynamicRestyleFlags;
 enum class ElementFlags;
+#ifndef BLINKIT_CRAWLER_ONLY
+class LayoutObject;
+#endif
 class NodeListsNodeData;
+
+#ifndef BLINKIT_CRAWLER_ONLY
+class NodeRenderingData
+{
+public:
+    bool IsSharedEmptyData(void)
+    {
+        ASSERT(false); // BKTODO:
+        return false;
+    }
+};
+#endif
 
 class NodeRareDataBase
 {
 public:
+protected:
+#ifndef BLINKIT_CRAWLER_ONLY
+    explicit NodeRareDataBase(NodeRenderingData *nodeLayoutData) : m_nodeLayoutData(nodeLayoutData) {}
+    ~NodeRareDataBase(void)
+    {
+        if (nullptr != m_nodeLayoutData && !m_nodeLayoutData->IsSharedEmptyData())
+            delete m_nodeLayoutData;
+    }
+
+    NodeRenderingData *m_nodeLayoutData;
+#endif
 };
 
 class NodeRareData : public GarbageCollectedFinalized<NodeRareData>, public NodeRareDataBase
@@ -53,8 +79,9 @@ public:
 #ifdef BLINKIT_CRAWLER_ONLY
     static NodeRareData* Create(void) { return new NodeRareData; }
 #else
-    static NodeRareData* Create(NodeRenderingData* node_layout_data) {
-        return new NodeRareData(node_layout_data);
+    static NodeRareData* Create(NodeRenderingData *nodeLayoutData)
+    {
+        return new NodeRareData(nodeLayoutData);
     }
 #endif
     ~NodeRareData(void);
@@ -97,14 +124,7 @@ protected:
 #ifdef BLINKIT_CRAWLER_ONLY
     explicit NodeRareData(void);
 #else
-    explicit NodeRareData(NodeRenderingData* node_layout_data)
-        : NodeRareDataBase(node_layout_data),
-        connected_frame_count_(0),
-        element_flags_(0),
-        restyle_flags_(0),
-        is_element_rare_data_(false) {
-        CHECK_NE(node_layout_data, nullptr);
-    }
+    explicit NodeRareData(NodeRenderingData *nodeLayoutData);
 #endif
 private:
     void CreateNodeLists(void);
