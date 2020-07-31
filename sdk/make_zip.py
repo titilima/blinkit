@@ -3,16 +3,21 @@
 
 files = (
     'BlinKit.Credits.html',
-    'include/BlinKit.h',
+    'include/bk.hpp',
+    'include/bk_app.h',
+    'include/bk_crawler.h',
+    'include/bk_def.h',
+    'include/bk_helper.h',
+    'include/bk_http.h',
+    'include/bk_js.h',
+    'win32/BkBase.dll',
+    'win32/BkBase.lib',
     'win32/BkCrawler.dll',
     'win32/BkCrawler.lib',
-    'win32/BkCrawler.pdb',
-    'win32/BkRequest.dll',
-    'win32/BkRequest.lib',
-    'win32/BkRequest.pdb',
+    'win32/BkHelper.dll',
+    'win32/BkHelper.lib',
 #    'win32/BlinKit.dll',
 #    'win32/BlinKit.lib',
-#    'win32/BlinKit.pdb',
     'win32/BlinKit.props'
 )
 
@@ -25,7 +30,7 @@ def get_full_path(rel_path):
 import re
 
 file_name = 'blinkit_sdk'
-with open(get_full_path('../projects/win/BlinKit/BlinKit.rc'), 'r') as f:
+with open(get_full_path('../projects/win/BkBase/BkBase.rc'), 'r') as f:
     r = re.findall(r'PRODUCTVERSION (\d+),(\d+),(\d+),(\d+)', f.read())
     r = r[0]
     file_name += '_' + r[0] + '.' + r[1] + '.' + r[2] + '.' + r[3]
