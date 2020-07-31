@@ -153,10 +153,81 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\blinkit\app\app_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\app\win_app.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\local_frame_client_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\thread_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\url_loader_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_single_thread_task_runner.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\blink_impl\win_thread.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\cookie_jar_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\crawler_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_document.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_element.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\crawler\hijack_response.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\js\context_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\js\function_manager.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\js\heap_retained.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\js\js_callee_context_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\js\js_caller_context_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\js\js_value_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\loader_task.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\app\win_app.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\local_frame_client_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\thread_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\url_loader_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_single_thread_task_runner.h" />
+    <ClInclude Include="..\..\..\src\blinkit\blink_impl\win_thread.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\cookie_jar_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\crawler_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_document.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_element.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\dom\crawler_script_element.h" />
+    <ClInclude Include="..\..\..\src\blinkit\crawler\hijack_response.h" />
+    <ClInclude Include="..\..\..\src\blinkit\js\context_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\js\function_manager.h" />
+    <ClInclude Include="..\..\..\src\blinkit\js\heap_retained.h" />
+    <ClInclude Include="..\..\..\src\blinkit\js\js_callee_context_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\js\js_caller_context_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\js\js_value_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\loader_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\base\base.vcxproj">
+      <Project>{f8e8dc22-c9eb-4274-bbc9-011d4106f84d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\BkBase\BkBase.vcxproj">
+      <Project>{02c00b49-2a96-416c-b072-2dd01734b2f7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\BkCommon\BkCommon.vcxproj">
+      <Project>{a3dd911e-272c-4dad-b537-7340ed0af312}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\blink\blink.vcxproj">
+      <Project>{fb173629-f68b-4830-9934-3378de76d6aa}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\duktape\duktape.vcxproj">
+      <Project>{c8a7568b-b29b-430c-99a1-e43120933154}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\net\net.vcxproj">
+      <Project>{103e87cb-36eb-49c3-adfc-6c036aa14b21}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\stub\stub.vcxproj">
+      <Project>{5c7fcbe4-3630-4def-ac58-916eafbe1e97}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\url\url.vcxproj">
+      <Project>{849ce42e-6457-4c6d-8ba0-854932a2aedb}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
