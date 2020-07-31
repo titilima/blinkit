@@ -50,6 +50,9 @@
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/dom/slot_assignment_recalc_forbidden_scope.h"
+#endif
 
 using namespace BlinKit;
 
@@ -251,7 +254,7 @@ Node* ContainerNode::AppendChild(Node *newChild, ExceptionState &exceptionState)
     NodeVector postInsertionNotificationTargets;
     {
 #ifndef BLINKIT_CRAWLER_ONLY
-        SlotAssignmentRecalcForbiddenScope forbid_slot_recalc(GetDocument());
+        SlotAssignmentRecalcForbiddenScope forbidSlotRecalc(GetDocument());
 #endif
         ChildListMutationScope mutation(*this);
         InsertNodeVector(targets, nullptr, AdoptAndAppendChild(), &postInsertionNotificationTargets);
@@ -305,13 +308,20 @@ void ContainerNode::ChildrenChanged(const ChildrenChange &change)
     //   * HTML Elements
     //   * ShadowRoot
     //   * V0InsertionPoint
-    ASSERT(false); // BKTODO:
-    if (change.IsChildInsertion()) {
-        if (change.sibling_changed->NeedsStyleRecalc())
-            MarkAncestorsWithChildNeedsStyleRecalc(change.sibling_changed);
+    if (change.IsChildInsertion())
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        if (change.siblingChanged->NeedsStyleRecalc())
+            MarkAncestorsWithChildNeedsStyleRecalc(change.siblingChanged);
+#endif
     }
-    else if (change.IsChildRemoval() || change.type == kAllChildrenRemoved) {
+    else if (change.IsChildRemoval() || change.type == kAllChildrenRemoved)
+    {
+        ASSERT(false); // BKTODO:
+#if 0
         GetDocument().GetStyleEngine().ChildrenRemoved(*this);
+#endif
     }
 #endif
 }
@@ -598,7 +608,7 @@ void ContainerNode::InsertNodeVector(const NodeVector &targets, Node *next, cons
         ChildListMutationScope(*this).ChildAdded(*targetNode);
 #ifndef BLINKIT_CRAWLER_ONLY
         if (GetDocument().ContainsV1ShadowTree())
-            child.CheckSlotChangeAfterInserted();
+            targetNode->CheckSlotChangeAfterInserted();
 #endif
         NotifyNodeInsertedInternal(*targetNode, *postInsertionNotificationTargets);
     }
@@ -695,8 +705,10 @@ void ContainerNode::NotifyNodeInserted(Node &root, ChildrenChangeSource source)
 #endif
     DCHECK(!root.IsShadowRoot());
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (GetDocument().ContainsV1ShadowTree())
         root.CheckSlotChangeAfterInserted();
+#endif
 
     NodeVector postInsertionNotificationTargets;
     NotifyNodeInsertedInternal(root, postInsertionNotificationTargets);

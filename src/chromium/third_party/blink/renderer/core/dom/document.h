@@ -331,6 +331,14 @@ public:
     InDOMNodeRemovedHandlerState GetInDOMNodeRemovedHandlerState(void) const { return m_inDomNodeRemovedHandlerState; }
     bool InDOMNodeRemovedHandler(void) const { return m_inDomNodeRemovedHandlerState != InDOMNodeRemovedHandlerState::kNone; }
     void CountDetachingNodeAccessInDOMNodeRemovedHandler(void) { ASSERT(GetInDOMNodeRemovedHandlerState() != InDOMNodeRemovedHandlerState::kNone); } // Just a placeholder
+#ifndef BLINKIT_CRAWLER_ONLY
+#   if DCHECK_IS_ON()
+    unsigned& SlotAssignmentRecalcForbiddenRecursionDepth(void) { return m_slotAssignmentRecalcForbiddenRecursionDepth; }
+    bool IsSlotAssignmentRecalcForbidden(void) { return m_slotAssignmentRecalcForbiddenRecursionDepth > 0; }
+#   else
+    bool IsSlotAssignmentRecalcForbidden(void) { return false; }
+#   endif
+#endif // BLINKIT_CRAWLER_ONLY
 protected:
     Document(const DocumentInit &initializer);
 private:
@@ -451,6 +459,10 @@ private:
     unsigned m_writeRecursionDepth = 0;
 
     std::stack<ScriptElementBase *> m_currentScriptStack;
+
+#if DCHECK_IS_ON()
+    unsigned m_slotAssignmentRecalcForbiddenRecursionDepth = 0;
+#endif
 };
 
 DEFINE_COMPARISON_OPERATORS_WITH_REFERENCES(Document)

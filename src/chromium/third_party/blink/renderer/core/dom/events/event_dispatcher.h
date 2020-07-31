@@ -47,6 +47,9 @@
 namespace blink {
 
 class Event;
+#ifndef BLINKIT_CRAWLER_ONLY
+class LocalFrameView;
+#endif
 class Node;
 
 class EventDispatchHandlingState : public GarbageCollected<EventDispatchHandlingState>

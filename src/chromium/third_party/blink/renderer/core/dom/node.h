@@ -76,6 +76,11 @@ enum StyleChangeType {
     kNeedsReattachStyleChange = 3 << kNodeStyleChangeShift,
 };
 
+enum class SlotChangeType {
+    kSignalSlotChangeEvent,
+    kSuppressSlotChangeEvent,
+};
+
 enum class CloneChildrenFlag { kClone, kSkip };
 
 class Node : public EventTarget
@@ -205,7 +210,19 @@ public:
     bool ChildNeedsDistributionRecalc(void) const { return GetFlag(kChildNeedsDistributionRecalcFlag); }
 #ifndef BLINKIT_CRAWLER_ONLY
     void MarkAncestorsWithChildNeedsDistributionRecalc(void);
-#endif
+    StyleChangeType GetStyleChangeType(void) const { return static_cast<StyleChangeType>(m_nodeFlags & kStyleChangeMask); }
+    bool NeedsAttach(void) const { return GetStyleChangeType() == kNeedsReattachStyleChange; }
+    // True if the style recalc process should recalculate style for this node.
+    bool NeedsStyleRecalc(void) const
+    {
+        // We do not ClearNeedsStyleRecalc() if the recalc triggers a layout re-
+        // attachment (see Element::RecalcStyle()). In order to avoid doing an extra
+        // StyleForLayoutObject for slotted elements, also check if we have been
+        // marked for re-attachment (which mean we have already gone through
+        // RecalcStyleForReattachment as a slot-assigned element).
+        return GetStyleChangeType() != kNoStyleChange && !NeedsReattachLayoutTree();
+    }
+#endif // BLINKIT_CRAWLER_ONLY
     bool HasName(void) const
     {
         ASSERT(!IsTextNode());
@@ -218,6 +235,7 @@ public:
     }
     bool HasEventTargetData(void) const { return GetFlag(kHasEventTargetDataFlag); }
     void SetHasEventTargetData(bool flag) { SetFlag(flag, kHasEventTargetDataFlag); }
+    bool NeedsReattachLayoutTree(void) const { return GetFlag(kNeedsReattachLayoutTree); }
     bool HasDuplicateAttribute(void) const { return GetFlag(kHasDuplicateAttributes); }
     void SetHasDuplicateAttributes(void) { SetFlag(kHasDuplicateAttributes); }
 
@@ -244,10 +262,11 @@ public:
     virtual void DidNotifySubtreeInsertionsToDocument(void);
     virtual void RemovedFrom(ContainerNode &insertionPoint);
 
-    void CheckSlotChangeAfterInserted(void)
-    {
-        ASSERT(false); // BKTODO:
-    }
+#ifndef BLINKIT_CRAWLER_ONLY
+    void CheckSlotChange(SlotChangeType slotChangeType);
+    void CheckSlotChangeAfterInserted(void) { CheckSlotChange(SlotChangeType::kSignalSlotChangeEvent); }
+    void CheckSlotChangeBeforeRemoved(void) { CheckSlotChange(SlotChangeType::kSignalSlotChangeEvent); }
+#endif
 
     bool MayContainLegacyNodeTreeWhereDistributionShouldBeSupported(void) const;
     // This is not what you might want to call in most cases.

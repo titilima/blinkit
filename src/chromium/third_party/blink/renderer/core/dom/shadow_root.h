@@ -41,13 +41,28 @@
 #pragma once
 
 #include "third_party/blink/renderer/core/dom/document_fragment.h"
+#include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/tree_scope.h"
 
 namespace blink {
 
 class ShadowRoot final : public DocumentFragment, public TreeScope
 {
+public:
+    Element& host(void) const
+    {
+        DCHECK(ParentOrShadowHostNode());
+        return *ToElement(ParentOrShadowHostNode());
+    }
 };
+
+DEFINE_NODE_TYPE_CASTS(ShadowRoot, IsShadowRoot());
+DEFINE_TYPE_CASTS(ShadowRoot,
+    TreeScope,
+    treeScope,
+    treeScope->RootNode().IsShadowRoot(),
+    treeScope.RootNode().IsShadowRoot());
+DEFINE_TYPE_CASTS(TreeScope, ShadowRoot, shadowRoot, true, true);
 
 } // namespace blink
 
