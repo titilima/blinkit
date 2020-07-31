@@ -695,8 +695,10 @@ void ContainerNode::NotifyNodeInserted(Node &root, ChildrenChangeSource source)
 #endif
     DCHECK(!root.IsShadowRoot());
 
+#ifndef BLINKIT_CRAWLER_ONLY
     if (GetDocument().ContainsV1ShadowTree())
         root.CheckSlotChangeAfterInserted();
+#endif
 
     NodeVector postInsertionNotificationTargets;
     NotifyNodeInsertedInternal(root, postInsertionNotificationTargets);

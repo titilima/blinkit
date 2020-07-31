@@ -233,10 +233,12 @@ public:
     virtual void DidNotifySubtreeInsertionsToDocument(void);
     virtual void RemovedFrom(ContainerNode &insertionPoint);
 
+#ifndef BLINKIT_CRAWLER_ONLY
     void CheckSlotChangeAfterInserted(void)
     {
         ASSERT(false); // BKTODO:
     }
+#endif
 
     bool MayContainLegacyNodeTreeWhereDistributionShouldBeSupported(void) const;
     // This is not what you might want to call in most cases.
