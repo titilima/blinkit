@@ -54,6 +54,9 @@
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/dom/shadow_root.h"
+#endif
 
 using namespace BlinKit;
 
@@ -82,8 +85,8 @@ Node::~Node(void)
     if (HasRareData())
         ClearRareData();
 #ifndef BLINKIT_CRAWLER_ONLY
-    else if (!HasRareData() && !m_data.node_layout_data_->IsSharedEmptyData())
-        delete data_.node_layout_data_;
+    else if (!HasRareData() && !m_data.m_nodeLayoutData->IsSharedEmptyData())
+        delete m_data.m_nodeLayoutData;
 #endif
 }
 
@@ -235,9 +238,9 @@ NodeRareData& Node::CreateRareData(void)
         m_data.m_rareData = NodeRareData::Create();
 #else
     if (IsElementNode())
-        m_data.m_rareData = ElementRareData::Create(data_.node_layout_data_);
+        m_data.m_rareData = ElementRareData::Create(m_data.m_nodeLayoutData);
     else
-        data_.rare_data_ = NodeRareData::Create(data_.node_layout_data_);
+        m_data.m_rareData = NodeRareData::Create(m_data.m_nodeLayoutData);
 #endif
 
     ASSERT(m_data.m_rareData);
@@ -250,8 +253,9 @@ void Node::DefaultEventHandler(Event &event)
     if (event.target() != this)
         return;
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
     const AtomicString &eventType = event.type();
+    ASSERT(false); // BKTODO:
+#if 0
     if (event_type == EventTypeNames::keydown ||
         event_type == EventTypeNames::keypress) {
         if (event.IsKeyboardEvent()) {
@@ -332,6 +336,7 @@ void Node::DefaultEventHandler(Event &event)
             }
         }
     }
+#endif
 #endif
 }
 
@@ -429,9 +434,8 @@ Node* Node::insertBefore(Node *newChild, Node *refChild, ExceptionState &excepti
 Node::InsertionNotificationRequest Node::InsertedInto(ContainerNode &insertionPoint)
 {
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
-    DCHECK(!ChildNeedsStyleInvalidation());
-    DCHECK(!NeedsStyleInvalidation());
+    ASSERT(!ChildNeedsStyleInvalidation());
+    ASSERT(!NeedsStyleInvalidation());
 #endif
     ASSERT(insertionPoint.isConnected() || insertionPoint.IsInShadowTree() || IsContainerNode());
     if (insertionPoint.isConnected())
@@ -442,9 +446,8 @@ Node::InsertionNotificationRequest Node::InsertedInto(ContainerNode &insertionPo
     if (ParentOrShadowHostNode()->IsInShadowTree())
         SetFlag(kIsInShadowTreeFlag);
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
-    if (ChildNeedsDistributionRecalc() && !insertion_point.ChildNeedsDistributionRecalc())
-        insertion_point.MarkAncestorsWithChildNeedsDistributionRecalc();
+    if (ChildNeedsDistributionRecalc() && !insertionPoint.ChildNeedsDistributionRecalc())
+        insertionPoint.MarkAncestorsWithChildNeedsDistributionRecalc();
 #endif
     return kInsertionDone;
 }
@@ -515,6 +518,13 @@ Node* Node::lastChild(void) const
         return nullptr;
     return ToContainerNode(this)->LastChild();
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void Node::MarkAncestorsWithChildNeedsDistributionRecalc(void)
+{
+    ASSERT(false); // BKTODO:
+}
+#endif
 
 bool Node::MayContainLegacyNodeTreeWhereDistributionShouldBeSupported(void) const
 {

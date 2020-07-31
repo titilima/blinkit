@@ -49,6 +49,9 @@
 
 namespace blink {
 
+#ifndef BLINKIT_CRAWLER_ONLY
+class ComputedStyle;
+#endif
 class Document;
 class Element;
 class ExceptionState;
@@ -197,7 +200,12 @@ public:
     bool IsInShadowTree(void) const { return GetFlag(kIsInShadowTreeFlag); }
     bool IsFinishedParsingChildren(void) const { return GetFlag(kIsFinishedParsingChildrenFlag); }
     bool IsInTreeScope(void) const { return GetFlag(static_cast<NodeFlags>(kIsConnectedFlag | kIsInShadowTreeFlag)); }
+    bool ChildNeedsStyleInvalidation(void) const { return GetFlag(kChildNeedsStyleInvalidationFlag); }
+    bool NeedsStyleInvalidation(void) const { return GetFlag(kNeedsStyleInvalidationFlag); }
     bool ChildNeedsDistributionRecalc(void) const { return GetFlag(kChildNeedsDistributionRecalcFlag); }
+#ifndef BLINKIT_CRAWLER_ONLY
+    void MarkAncestorsWithChildNeedsDistributionRecalc(void);
+#endif
     bool HasName(void) const
     {
         ASSERT(!IsTextNode());
@@ -224,6 +232,9 @@ public:
     virtual bool IsAttributeNode(void) const { return false; }
 
     virtual bool ChildTypeAllowed(NodeType) const { return false; }
+#ifndef BLINKIT_CRAWLER_ONLY
+    virtual bool CanContainRangeEndPoint(void) const { return false; }
+#endif
 
     enum InsertionNotificationRequest {
         kInsertionDone,
@@ -268,6 +279,7 @@ public:
 
         AttachContext() {}
     };
+    virtual void AttachLayoutTree(AttachContext &context);
     virtual void DetachLayoutTree(const AttachContext &context = AttachContext());
 #endif
 private:
@@ -396,11 +408,14 @@ private:
 #ifdef BLINKIT_CRAWLER_ONLY
         NodeRareDataBase *m_rareData = nullptr;
 #else
-        DataUnion() : node_layout_data_(&NodeRenderingData::SharedEmptyData()) {}
+        DataUnion(void) : m_nodeLayoutData(nullptr) // BKTODO: &NodeRenderingData::SharedEmptyData())
+        {
+            ASSERT(false); // BKTODO:
+        }
         // LayoutObjects are fully owned by their DOM node. See LayoutObject's
         // LIFETIME documentation section.
-        NodeRenderingData* node_layout_data_;
-        NodeRareDataBase* rare_data_;
+        NodeRenderingData *m_nodeLayoutData;
+        NodeRareDataBase *m_rareData;
 #endif
     } m_data;
  };
