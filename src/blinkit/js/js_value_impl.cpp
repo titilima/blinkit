@@ -241,6 +241,25 @@ std::string JSHeapValue::ToJSON(void) const
 
 } // namespace BlinKit
 
+unsigned JSArrayImpl::GetSize(void) const
+{
+    duk_size_t ret = 0;
+    HeapRetained::PushTo(m_ctx);
+    ret = duk_get_length(m_ctx, -1);
+    duk_pop(m_ctx);
+    return ret;
+}
+
+JSValueImpl* JSArrayImpl::GetMember(unsigned index)
+{
+    JSValueImpl *ret = nullptr;
+    HeapRetained::PushTo(m_ctx);
+    if (duk_get_prop_index(m_ctx, -1, index))
+        ret = JSValueImpl::Create(m_ctx, -1);
+    duk_pop_2(m_ctx);
+    return ret;
+}
+
 JSValueImpl* JSObjectImpl::GetMember(const char *name)
 {
     JSValueImpl *ret = nullptr;
@@ -254,6 +273,23 @@ JSValueImpl* JSObjectImpl::GetMember(const char *name)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 extern "C" {
+
+BKEXPORT int BKAPI BkArrayToJSON(BkJSArray a, struct BkBuffer *dst)
+{
+    std::string s = a->ToJSON();
+    BkSetBufferData(dst, s.data(), s.length());
+    return BK_ERR_SUCCESS;
+}
+
+BKEXPORT unsigned BKAPI BkArrayGetSize(BkJSArray a)
+{
+    return a->GetSize();
+}
+
+BKEXPORT BkJSValue BKAPI BkArrayGetMember(BkJSArray a, unsigned index)
+{
+    return a->GetMember(index);
+}
 
 BKEXPORT int BKAPI BkGetBooleanValue(BkJSValue val, bool_t *dst)
 {
@@ -307,6 +343,11 @@ BKEXPORT int BKAPI BkObjectToJSON(BkJSObject o, struct BkBuffer *dst)
 BKEXPORT void BKAPI BkReleaseValue(BkJSValue val)
 {
     delete val;
+}
+
+BKEXPORT BkJSArray BKAPI BkValueToArray(BkJSValue val)
+{
+    return BK_VT_ARRAY == val->GetType() ? static_cast<JSArrayImpl *>(val) : nullptr;
 }
 
 BKEXPORT BkJSError BKAPI BkValueToError(BkJSValue val)

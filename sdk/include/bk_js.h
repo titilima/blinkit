@@ -25,6 +25,7 @@ extern "C" {
 
 BK_DECLARE_HANDLE(BkJSValue, JSValueImpl);
 BK_DECLARE_HANDLE(BkJSError, JSErrorImpl);
+BK_DECLARE_HANDLE(BkJSArray, JSArrayImpl);
 BK_DECLARE_HANDLE(BkJSObject, JSObjectImpl);
 
 BKEXPORT void BKAPI BkReleaseValue(BkJSValue val);
@@ -50,6 +51,11 @@ BKEXPORT int BKAPI BkGetValueAsString(BkJSValue val, struct BkBuffer *dst);
 BKEXPORT BkJSError BKAPI BkValueToError(BkJSValue val);
 BKEXPORT int BKAPI BkGetErrorCode(BkJSError e);
 BKEXPORT int BKAPI BkGetErrorInfo(BkJSError e, const char *field, struct BkBuffer *dst);
+
+BKEXPORT BkJSArray BKAPI BkValueToArray(BkJSValue val);
+BKEXPORT int BKAPI BkArrayToJSON(BkJSArray a, struct BkBuffer *dst);
+BKEXPORT unsigned BKAPI BkArrayGetSize(BkJSArray a);
+BKEXPORT BkJSValue BKAPI BkArrayGetMember(BkJSArray a, unsigned index);
 
 BKEXPORT BkJSObject BKAPI BkValueToObject(BkJSValue val);
 BKEXPORT int BKAPI BkObjectToJSON(BkJSObject o, struct BkBuffer *dst);

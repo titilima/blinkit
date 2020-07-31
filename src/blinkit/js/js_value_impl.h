@@ -114,6 +114,9 @@ class JSArrayImpl final : public BlinKit::JSHeapValue
 {
 public:
     JSArrayImpl(duk_context *ctx, duk_idx_t idx) : JSHeapValue(ctx, idx) {}
+
+    unsigned GetSize(void) const;
+    JSValueImpl* GetMember(unsigned index);
 private:
     int GetType(void) const override { return BK_VT_ARRAY; }
 };

@@ -215,10 +215,50 @@ private:
     BkJSValue m_val;
 };
 
+class js_array
+{
+public:
+    js_array(BkJSArray arr) : m_arr(arr) {}
+    operator BkJSArray() const { return m_arr; }
+
+    bool get_boolean(unsigned i, bool def_val) const
+    {
+        bool ret = def_val;
+        if (nullptr != m_arr)
+        {
+            js_value v(BkArrayGetMember(m_arr, i));
+            ret = v.to_boolean(def_val);
+        }
+        return ret;
+    }
+    std::string get_string(unsigned i, const char *def_val = "") const
+    {
+        std::string ret(def_val);
+        if (nullptr != m_arr)
+        {
+            js_value v(BkArrayGetMember(m_arr, i));
+            if (v)
+                ret = v.to_string();
+        }
+        return ret;
+    }
+
+    std::string to_json(void) const
+    {
+        std::string ret("null");
+        if (nullptr != m_arr)
+            BkArrayToJSON(m_arr, make_buffer(ret));
+        return ret;
+    }
+private:
+    BkJSArray m_arr;
+};
+
 class js_object
 {
 public:
     js_object(BkJSObject obj) : m_obj(obj) {}
+    operator BkJSObject() const { return m_obj; }
     static js_object user_object_from(BkCrawler crawler)
     {
         BkJSContext ctx = BkGetScriptContextFromCrawler(crawler);
