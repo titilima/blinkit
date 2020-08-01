@@ -39,13 +39,33 @@
 
 namespace WTF {
 
-template <class T>
-class RefCounted : public base::RefCounted<T>
+template <typename T, typename Traits>
+class RefCounted;
+
+template <typename T>
+struct DefaultRefCountedTraits
+{
+    static void Destruct(const T* x)
+    {
+        WTF::RefCounted<T, DefaultRefCountedTraits>::DeleteInternal(x);
+    }
+};
+
+template <class T, typename Traits = DefaultRefCountedTraits<T>>
+class RefCounted : public base::RefCounted<T, Traits>
 {
 protected:
     RefCounted(void)
     {
         this->AddRef(); // Adoption required
+    }
+private:
+    friend struct DefaultRefCountedTraits<T>;
+
+    template <typename U>
+    static void DeleteInternal(const U *x)
+    {
+        delete x;
     }
 };
 

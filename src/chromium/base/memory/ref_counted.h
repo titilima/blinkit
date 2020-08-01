@@ -59,19 +59,39 @@ private:
 #endif
 };
 
-template <class T>
+template <class T, typename Traits>
+class RefCounted;
+
+template <typename T>
+struct DefaultRefCountedTraits
+{
+    static void Destruct(const T *x)
+    {
+        RefCounted<T, DefaultRefCountedTraits>::DeleteInternal(x);
+    }
+};
+
+template <class T, typename Traits = DefaultRefCountedTraits<T>>
 class RefCounted : public RefCountedBase<unsigned>
 {
 public:
     void Release(void)
     {
         if (RefCountedBase::Release())
-            delete static_cast<T *>(this);
+            Traits::Destruct(static_cast<const T *>(this));
     }
 protected:
     RefCounted(void) = default;
     ~RefCounted(void) = default;
 private:
+private:
+    friend struct DefaultRefCountedTraits<T>;
+    template <typename U>
+    static void DeleteInternal(const U *x)
+    {
+        delete x;
+    }
+
     DISALLOW_COPY_AND_ASSIGN(RefCounted);
 };
 
