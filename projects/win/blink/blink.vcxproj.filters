@@ -141,6 +141,9 @@
     <Filter Include="public\web">
       <UniqueIdentifier>{9bcfc8a9-cf60-4430-b7b9-10b443d5ba26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\css\invalidation">
+      <UniqueIdentifier>{652e671c-534e-4830-befc-63e96cbbee8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -871,6 +874,36 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\script_streamer.cpp">
       <Filter>renderer\bindings\core\duk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_engine.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\active_style_sheets.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_global_rule_set.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\rule_feature_set.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\invalidation\invalidation_flags.cc">
+      <Filter>renderer\core\css\invalidation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\invalidation\invalidation_set.cc">
+      <Filter>renderer\core\css\invalidation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\media_query_evaluator.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\document_style_sheet_collection.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\tree_scope_style_sheet_collection.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_sheet_collection.cc">
+      <Filter>renderer\core\css</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2013,6 +2046,42 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\slot_assignment_recalc_forbidden_scope.h">
       <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_engine.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\web\web_document.h">
+      <Filter>public\web</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\active_style_sheets.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\heap\heap_allocator.h">
+      <Filter>renderer\platform\heap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_global_rule_set.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\rule_feature_set.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\invalidation\invalidation_flags.h">
+      <Filter>renderer\core\css\invalidation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\invalidation\invalidation_set.h">
+      <Filter>renderer\core\css\invalidation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\media_query_evaluator.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\document_style_sheet_collection.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\tree_scope_style_sheet_collection.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_sheet_collection.h">
+      <Filter>renderer\core\css</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
