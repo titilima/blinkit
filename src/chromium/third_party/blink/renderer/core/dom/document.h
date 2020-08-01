@@ -331,7 +331,14 @@ public:
     InDOMNodeRemovedHandlerState GetInDOMNodeRemovedHandlerState(void) const { return m_inDomNodeRemovedHandlerState; }
     bool InDOMNodeRemovedHandler(void) const { return m_inDomNodeRemovedHandlerState != InDOMNodeRemovedHandlerState::kNone; }
     void CountDetachingNodeAccessInDOMNodeRemovedHandler(void) { ASSERT(GetInDOMNodeRemovedHandlerState() != InDOMNodeRemovedHandlerState::kNone); } // Just a placeholder
+
 #ifndef BLINKIT_CRAWLER_ONLY
+    void RemoveFocusedElementOfSubtree(Node *node, bool amongChildrenOnly = false);
+
+    // A non-null template_document_host_ implies that |this| was created by
+    // EnsureTemplateDocument().
+    bool IsTemplateDocument(void) const { return !!m_templateDocumentHost; }
+
 #   if DCHECK_IS_ON()
     unsigned& SlotAssignmentRecalcForbiddenRecursionDepth(void) { return m_slotAssignmentRecalcForbiddenRecursionDepth; }
     bool IsSlotAssignmentRecalcForbidden(void) { return m_slotAssignmentRecalcForbiddenRecursionDepth > 0; }
@@ -432,6 +439,7 @@ private:
 #ifndef BLINKIT_CRAWLER_ONLY
     LayoutView *m_layoutView = nullptr;
     Member<Element> m_focusedElement;
+    Member<Document> m_templateDocumentHost;
 #endif
 
     std::unique_ptr<ElementDataCache> m_elementDataCache;

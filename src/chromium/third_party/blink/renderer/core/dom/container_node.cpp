@@ -51,6 +51,8 @@
 #include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/style_engine.h"
+#   include "third_party/blink/renderer/core/dom/shadow_root.h"
 #   include "third_party/blink/renderer/core/dom/slot_assignment_recalc_forbidden_scope.h"
 #endif
 
@@ -737,10 +739,8 @@ void ContainerNode::NotifyNodeInsertedInternal(Node &root, NodeVector &postInser
         if (Node::kInsertionShouldCallDidNotifySubtreeInsertions == node.InsertedInto(*this))
             postInsertionNotificationTargets.push_back(&node);
 #ifndef BLINKIT_CRAWLER_ONLY
-        ASSERT(false); // BKTODO:
         if (ShadowRoot *shadowRoot = node.GetShadowRoot())
-            NotifyNodeInsertedInternal(*shadow_root,
-                post_insertion_notification_targets);
+            NotifyNodeInsertedInternal(*shadowRoot, postInsertionNotificationTargets);
 #endif
     }
 }
@@ -850,10 +850,11 @@ void ContainerNode::RemoveBetween(Node *previousChild, Node* nextChild, Node &ol
     ASSERT(oldChild.parentNode() == this);
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (!old_child.NeedsAttach()) {
+    if (!oldChild.NeedsAttach())
+    {
         AttachContext context;
         context.clear_invalidation = true;
-        old_child.DetachLayoutTree(context);
+        oldChild.DetachLayoutTree(context);
     }
 #endif
 
@@ -919,7 +920,7 @@ Node* ContainerNode::RemoveChild(Node *oldChild, NodeVector &detachedChildren, E
         {
 #ifndef BLINKIT_CRAWLER_ONLY
             SlotAssignmentRecalcForbiddenScope forbid_slot_recalc(GetDocument());
-            StyleEngine::DOMRemovalScope style_scope(GetDocument().GetStyleEngine());
+            StyleEngine::DOMRemovalScope styleScope(GetDocument().GetStyleEngine());
 #endif
             RemoveBetween(prev, next, *child, detachedChildren);
             NotifyNodeRemoved(*child);

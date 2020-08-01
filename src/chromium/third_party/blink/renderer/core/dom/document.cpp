@@ -1342,6 +1342,13 @@ void Document::RemoveAllEventListeners(void)
         domWindow->RemoveAllEventListeners();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+void Document::RemoveFocusedElementOfSubtree(Node *node, bool amongChildrenOnly)
+{
+    ASSERT(false); // BKTOOD:
+}
+#endif
+
 void Document::SetCompatibilityMode(CompatibilityMode mode)
 {
     if (m_compatibilityModeLocked || mode == m_compatibilityMode)
