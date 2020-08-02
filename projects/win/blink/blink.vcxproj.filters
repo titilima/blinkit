@@ -1133,6 +1133,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\at_rule_descriptor_parser.cc">
       <Filter>renderer\core\css\parser</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\at_rule_descriptors.cc">
+      <Filter>renderer\core\css\parser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -2558,6 +2561,9 @@
       <Filter>renderer\platform\fonts</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\at_rule_descriptor_parser.h">
+      <Filter>renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\at_rule_descriptors.h">
       <Filter>renderer\core\css\parser</Filter>
     </ClInclude>
   </ItemGroup>
