@@ -7,6 +7,8 @@ src/chromium/third_party/blink/renderer/core/css_value_keywords.cc
 src/chromium/third_party/blink/renderer/core/css_value_keywords.h
 src/chromium/third_party/blink/renderer/core/css/media_feature_names.cc
 src/chromium/third_party/blink/renderer/core/css/media_feature_names.h
+src/chromium/third_party/blink/renderer/core/css/parser/at_rule_descriptors.cc
+src/chromium/third_party/blink/renderer/core/css/parser/at_rule_descriptors.h
 src/chromium/third_party/blink/renderer/core/css/properties/css_property.cc
 src/chromium/third_party/blink/renderer/core/css/properties/css_property.h
 src/chromium/third_party/blink/renderer/core/css/properties/css_unresolved_property.cc

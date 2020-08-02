@@ -53,6 +53,11 @@ run_script('build/scripts/core/css/make_media_feature_names.py',   \
     '--output_dir ' + os.path.normpath('core/css')  \
 )
 
+run_script('build/scripts/core/css/parser/make_atrule_names.py',    \
+    os.path.normpath('core/css/parser/at_rule_names.json5') + ' ' + \
+    '--output_dir ' + os.path.normpath('core/css/parser') + GPERF_ARG   \
+)
+
 run_script('build/scripts/core/css/properties/make_css_property_base.py',   \
     os.path.normpath('core/css/css_properties.json5') + ' ' +   \
     os.path.normpath('core/css/computed_style_field_aliases.json5') + ' ' + \
