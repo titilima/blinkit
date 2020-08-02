@@ -16,7 +16,6 @@
 #include "third_party/blink/renderer/bindings/core/duk/duk_location.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_navigator.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_timer.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_xhr.h"
 
 using namespace blink;
 
@@ -108,7 +107,6 @@ void DukWindow::FillPrototypeEntryForCrawler(PrototypeEntry &entry)
         { "getComputedStyle", Crawler::GetComputedStyle, 2           },
         { "setInterval",      Impl::SetInterval,         DUK_VARARGS },
         { "setTimeout",       Impl::SetTimeout,          DUK_VARARGS },
-        { DukXHR::ProtoName,  DukXHR::Construct,         0           },
     };
     static const PrototypeEntry::Property Properties[] = {
         { "document",  Impl::DocumentGetter,  nullptr              },

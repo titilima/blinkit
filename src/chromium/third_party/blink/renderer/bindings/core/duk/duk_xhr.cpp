@@ -17,12 +17,14 @@
 #include "bkcommon/buffer_impl.hpp"
 #include "bkcommon/response_impl.h"
 #include "bkcommon/bk_strings.h"
+#include "blinkit/js/context_impl.h"
 #include "blinkit/js/heap_retained.h"
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
 using namespace blink;
@@ -347,19 +349,28 @@ duk_ret_t DukXHR::Open(
     idx = duk_normalize_index(ctx, idx);
 
     duk_push_global_object(ctx);
-    LocalDOMWindow *window = DukScriptObject::To<LocalDOMWindow>(ctx, -1);
-    Document *document = window->document();
+    LocalDOMWindow* window = DukScriptObject::To<LocalDOMWindow>(ctx, -1);
 
     Reset();
     m_method = method;
     m_currentSession = CreateSession(ctx, idx, async);
-    m_URL = document->CompleteURL(URL).spec();
-    m_requestHeaders[Strings::HttpHeader::Referer] = document->Url().spec();
-    m_requestHeaders[Strings::HttpHeader::UserAgent] = window->GetFrame()->Loader().UserAgent().StdUtf8();
+    if (nullptr != window)
+    {
+        Document* document = window->document();
+        m_URL = document->CompleteURL(URL).spec();
+        m_requestHeaders[Strings::HttpHeader::Referer] = document->Url().spec();
 
-    std::string cookie = document->cookie(ASSERT_NO_EXCEPTION).StdUtf8();
-    if (!cookie.empty())
-        m_requestHeaders[Strings::HttpHeader::Cookie] = cookie;
+        std::string cookie = document->cookie(ASSERT_NO_EXCEPTION).StdUtf8();
+        if (!cookie.empty())
+            m_requestHeaders[Strings::HttpHeader::Cookie] = cookie;
+    }
+    else
+    {
+        m_URL = URL.StdUtf8();
+    }
+
+    String userAgent = ContextImpl::From(ctx)->GetFrame().Client()->UserAgent();
+    m_requestHeaders[Strings::HttpHeader::UserAgent] = userAgent.StdUtf8();
 
     ASSERT(username.empty() && password.empty()); // BKTODO:
 
