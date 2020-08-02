@@ -12,6 +12,7 @@
 #include "duk_global.h"
 
 #include "third_party/blink/renderer/bindings/core/duk/duk_console.h"
+#include "third_party/blink/renderer/bindings/core/duk/duk_xhr.h"
 
 namespace BlinKit {
 
@@ -72,6 +73,7 @@ void DukGlobal::Attach(duk_context *ctx, duk_idx_t dst)
 
     AddMethod(ctx, dst, "atob", Impl::AToB, 1);
     AddMethod(ctx, dst, "btoa", Impl::BToA, 1);
+    AddMethod(ctx, dst, DukXHR::ProtoName, DukXHR::Construct, 0);
 
     AddProperty(ctx, dst, "console", Impl::ConsoleGetter);
 }

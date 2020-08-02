@@ -42,6 +42,8 @@ public:
     static ContextImpl* From(duk_context *ctx);
     static ContextImpl* From(blink::ExecutionContext *executionContext);
 
+    const blink::LocalFrame& GetFrame(void) const { return m_frame; }
+
     void Clear(void);
     void NewGlobalObject(void);
     void UpdateDocument(void);
