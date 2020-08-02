@@ -51,9 +51,9 @@ class Element;
 class IdTargetObserverRegistry;
 class Node;
 class ScopedStyleResolver;
+class TreeOrderedMap;
 #ifndef BLINKIT_CRAWLER_ONLY
 class StyleSheetList;
-class TreeOrderedMap;
 #endif
 
 class TreeScope : public GarbageCollectedMixin

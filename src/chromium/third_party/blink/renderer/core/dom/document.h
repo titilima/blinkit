@@ -445,11 +445,6 @@ private:
     std::shared_ptr<ResourceFetcher> m_fetcher;
     std::shared_ptr<DocumentParser> m_parser;
     std::unique_ptr<ScriptRunner> m_scriptRunner;
-#ifndef BLINKIT_CRAWLER_ONLY
-    LayoutView *m_layoutView = nullptr;
-    Member<Element> m_focusedElement;
-    Member<Document> m_templateDocumentHost;
-#endif
 
     std::unique_ptr<ElementDataCache> m_elementDataCache;
     std::unique_ptr<SelectorQueryCache> m_selectorQueryCache;
@@ -477,10 +472,16 @@ private:
 
     std::stack<ScriptElementBase *> m_currentScriptStack;
 
-#if DCHECK_IS_ON()
-    unsigned m_slotAssignmentRecalcForbiddenRecursionDepth = 0;
+#ifndef BLINKIT_CRAWLER_ONLY
+    LayoutView* m_layoutView = nullptr;
+    Member<Element> m_focusedElement;
+    Member<Document> m_templateDocumentHost;
 
     std::unique_ptr<StyleEngine> m_styleEngine;
+
+#   if DCHECK_IS_ON()
+    unsigned m_slotAssignmentRecalcForbiddenRecursionDepth = 0;
+#   endif
 #endif
 };
 
