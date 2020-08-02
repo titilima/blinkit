@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_property_value.h
+// Description: CSSPropertyValue Class
+//      Author: Ziming Li
+//     Created: 2020-08-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006 Apple Computer, Inc.
@@ -92,8 +103,6 @@ class CSSPropertyValue {
   const CSSPropertyValueMetadata& Metadata() const { return metadata_; }
 
   bool operator==(const CSSPropertyValue& other) const;
-
-  void Trace(blink::Visitor* visitor) { visitor->Trace(value_); }
 
  private:
   CSSPropertyValueMetadata metadata_;

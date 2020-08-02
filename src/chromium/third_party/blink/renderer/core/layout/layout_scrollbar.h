@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_scrollbar.h
+// Description: LayoutScrollbar Class
+//      Author: Ziming Li
+//     Created: 2020-08-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2009 Apple Inc. All Rights Reserved.
  *
@@ -75,8 +86,6 @@ class LayoutScrollbar final : public Scrollbar {
   void InvalidateDisplayItemClientsOfScrollbarParts();
 
   void SetVisualRect(const LayoutRect&) final;
-
-  void Trace(blink::Visitor*) override;
 
  protected:
   LayoutScrollbar(ScrollableArea*, ScrollbarOrientation, Element*);

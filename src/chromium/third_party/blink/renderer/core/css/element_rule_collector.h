@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: element_rule_collector.h
+// Description: ElementRuleCollector Class
+//      Author: Ziming Li
+//     Created: 2020-08-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc.
@@ -76,10 +87,6 @@ class MatchedRule {
     return GetRuleData()->Specificity() + specificity_;
   }
   const CSSStyleSheet* ParentStyleSheet() const { return parent_style_sheet_; }
-  void Trace(blink::Visitor* visitor) {
-    visitor->Trace(parent_style_sheet_);
-    visitor->Trace(rule_data_);
-  }
 
  private:
   Member<const RuleData> rule_data_;

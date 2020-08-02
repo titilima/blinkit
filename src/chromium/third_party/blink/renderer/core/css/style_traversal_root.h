@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_traversal_root.h
+// Description: StyleTraversalRoot Class
+//      Author: Ziming Li
+//     Created: 2020-08-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -45,8 +56,6 @@ class CORE_EXPORT StyleTraversalRoot {
     root_node_ = nullptr;
     root_type_ = RootType::kSingleRoot;
   }
-
-  void Trace(blink::Visitor* visitor) { visitor->Trace(root_node_); }
 
  protected:
   virtual ~StyleTraversalRoot() = default;

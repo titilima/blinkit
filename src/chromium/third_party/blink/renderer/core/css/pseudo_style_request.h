@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: pseudo_style_request.h
+// Description: PseudoStyleRequest Class
+//      Author: Ziming Li
+//     Created: 2020-08-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc.
@@ -50,8 +61,6 @@ class PseudoStyleRequest {
         type(request_type),
         scrollbar_part(kNoPart),
         scrollbar(nullptr) {}
-
-  void Trace(blink::Visitor* visitor) { visitor->Trace(scrollbar); }
 
   // The spec disallows inheritance for ::backdrop.
   bool AllowsInheritance(const ComputedStyle* parent_style) const {

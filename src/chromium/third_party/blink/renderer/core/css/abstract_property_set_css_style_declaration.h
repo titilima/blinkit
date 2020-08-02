@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: abstract_property_set_css_style_declaration.h
+// Description: AbstractPropertySetCSSStyleDeclaration Class
+//      Author: Ziming Li
+//     Created: 2020-08-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -43,8 +54,6 @@ class AbstractPropertySetCSSStyleDeclaration : public CSSStyleDeclaration {
  public:
   virtual Element* ParentElement() const { return nullptr; }
   StyleSheetContents* ContextStyleSheet() const;
-
-  void Trace(blink::Visitor*) override;
 
  private:
   CSSRule* parentRule() const override { return nullptr; }
