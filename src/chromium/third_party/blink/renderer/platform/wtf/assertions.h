@@ -42,7 +42,8 @@
 
 #include "third_party/blink/renderer/platform/wtf/wtf_export.h"
 
-#define SECURITY_DCHECK assert
+#define SECURITY_CHECK  ASSERT
+#define SECURITY_DCHECK ASSERT
 
 // DEFINE_COMPARISON_OPERATORS_WITH_REFERENCES
 // Allow equality comparisons of Objects by reference or pointer,
