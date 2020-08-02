@@ -83,6 +83,9 @@ class ScriptElementBase;
 class ScriptRunner;
 class SelectorQueryCache;
 class Text;
+#ifndef BLINKIT_CRAWLER_ONLY
+class StyleEngine;
+#endif
 
 enum NodeListInvalidationType : int {
     kDoNotInvalidateOnAttributeChanges = 0,
@@ -339,6 +342,12 @@ public:
     // EnsureTemplateDocument().
     bool IsTemplateDocument(void) const { return !!m_templateDocumentHost; }
 
+    StyleEngine& GetStyleEngine(void)
+    {
+        ASSERT(m_styleEngine);
+        return *m_styleEngine;
+    }
+
 #   if DCHECK_IS_ON()
     unsigned& SlotAssignmentRecalcForbiddenRecursionDepth(void) { return m_slotAssignmentRecalcForbiddenRecursionDepth; }
     bool IsSlotAssignmentRecalcForbidden(void) { return m_slotAssignmentRecalcForbiddenRecursionDepth > 0; }
@@ -470,6 +479,8 @@ private:
 
 #if DCHECK_IS_ON()
     unsigned m_slotAssignmentRecalcForbiddenRecursionDepth = 0;
+
+    std::unique_ptr<StyleEngine> m_styleEngine;
 #endif
 };
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_style_declaration.h
+// Description: CSSStyleDeclaration Class
+//      Author: Ziming Li
+//     Created: 2020-08-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2008, 2012 Apple Inc. All rights reserved.
@@ -46,6 +57,7 @@ class CORE_EXPORT CSSStyleDeclaration : public ScriptWrappable {
 
   virtual CSSRule* parentRule() const = 0;
   String cssFloat() { return GetPropertyValueInternal(CSSPropertyFloat); }
+#if 0 // BKTODO:
   void setCSSFloat(const ExecutionContext* execution_context,
                    const String& value,
                    ExceptionState& exception_state) {
@@ -53,6 +65,7 @@ class CORE_EXPORT CSSStyleDeclaration : public ScriptWrappable {
                         execution_context->GetSecureContextMode(),
                         exception_state);
   }
+#endif
   virtual String cssText() const = 0;
   virtual void setCSSText(const ExecutionContext*,
                           const String&,
@@ -91,12 +104,14 @@ class CORE_EXPORT CSSStyleDeclaration : public ScriptWrappable {
   virtual CSSStyleSheet* ParentStyleSheet() const { return nullptr; }
 
   String AnonymousNamedGetter(const AtomicString& name);
+#if 0 // BKTODO:
   // Note: AnonymousNamedSetter() can end up throwing an exception via
   // SetPropertyInternal() even though it does not take an |ExceptionState| as
   // an argument (see bug 829408).
   bool AnonymousNamedSetter(ScriptState*,
                             const AtomicString& name,
                             const String& value);
+#endif
   void NamedPropertyEnumerator(Vector<String>& names, ExceptionState&);
   bool NamedPropertyQuery(const AtomicString&, ExceptionState&);
 

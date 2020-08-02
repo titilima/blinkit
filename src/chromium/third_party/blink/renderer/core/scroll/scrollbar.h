@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scrollbar.h
+// Description: Scrollbar Class
+//      Author: Ziming Li
+//     Created: 2020-08-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2006 Apple Computer, Inc.  All rights reserved.
  *
@@ -27,7 +38,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_SCROLL_SCROLLBAR_H_
 
 #include "third_party/blink/renderer/core/core_export.h"
-#include "third_party/blink/renderer/platform/graphics/compositor_element_id.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/compositor_element_id.h"
 #include "third_party/blink/renderer/platform/graphics/paint/display_item.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/scroll/scroll_types.h"
@@ -188,13 +199,14 @@ class CORE_EXPORT Scrollbar : public GarbageCollectedFinalized<Scrollbar>,
   // part.
   void SetNeedsPaintInvalidation(ScrollbarPart invalid_parts);
 
+#if 0 // BKTODO:
   CompositorElementId GetElementId();
 
   // Promptly unregister from the theme manager + run finalizers of derived
   // Scrollbars.
   EAGERLY_FINALIZE();
   DECLARE_EAGER_FINALIZATION_OPERATOR_NEW();
-  virtual void Trace(blink::Visitor*);
+#endif
 
  protected:
   Scrollbar(ScrollableArea*,

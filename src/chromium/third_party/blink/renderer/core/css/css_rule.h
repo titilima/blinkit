@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_rule.h
+// Description: CSSRule Class
+//      Author: Ziming Li
+//     Created: 2020-08-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -66,8 +77,6 @@ class CORE_EXPORT CSSRule : public ScriptWrappable {
 
   void SetParentRule(CSSRule*);
 
-  void Trace(blink::Visitor*) override;
-
   CSSStyleSheet* parentStyleSheet() const {
     if (parent_is_rule_)
       return parent_rule_ ? parent_rule_->parentStyleSheet() : nullptr;
@@ -95,6 +104,12 @@ class CORE_EXPORT CSSRule : public ScriptWrappable {
   const CSSParserContext* ParserContext(SecureContextMode) const;
 
  private:
+  GCType GetGCType(void) const final
+  {
+    ASSERT(false); // BKTODO:
+    return GC_MANUAL;
+  }
+
   mutable unsigned char has_cached_selector_text_ : 1;
   unsigned char parent_is_rule_ : 1;
 

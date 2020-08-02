@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_style_sheet.h
+// Description: CSSStyleSheet Class
+//      Author: Ziming Li
+//     Created: 2020-08-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All rights
@@ -28,7 +39,6 @@
 #include "third_party/blink/renderer/core/css/media_query_evaluator.h"
 #include "third_party/blink/renderer/core/css/style_sheet.h"
 #include "third_party/blink/renderer/core/dom/tree_scope.h"
-#include "third_party/blink/renderer/platform/bindings/trace_wrapper_member.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/noncopyable.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
@@ -190,8 +200,6 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
   bool IsAlternate() const;
   bool CanBeActivated(const String& current_preferrable_name) const;
 
-  void Trace(blink::Visitor*) override;
-
  private:
   CSSStyleSheet(StyleSheetContents*, CSSImportRule* owner_rule);
   CSSStyleSheet(StyleSheetContents*,
@@ -245,14 +253,14 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
 
   Member<Node> owner_node_;
   Member<CSSRule> owner_rule_;
-  HeapHashSet<Member<TreeScope>> adopted_tree_scopes_;
+  HeapHashSet<TreeScope *> adopted_tree_scopes_;
   Member<Document> associated_document_;
   HashSet<AtomicString> custom_element_tag_names_;
 
   TextPosition start_position_;
   Member<MediaList> media_cssom_wrapper_;
-  mutable HeapVector<TraceWrapperMember<CSSRule>> child_rule_cssom_wrappers_;
-  mutable TraceWrapperMember<CSSRuleList> rule_list_cssom_wrapper_;
+  mutable HeapVector<std::unique_ptr<CSSRule>> child_rule_cssom_wrappers_;
+  mutable std::unique_ptr<CSSRuleList> rule_list_cssom_wrapper_;
   DISALLOW_COPY_AND_ASSIGN(CSSStyleSheet);
 };
 

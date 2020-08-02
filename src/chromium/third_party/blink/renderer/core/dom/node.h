@@ -283,6 +283,8 @@ public:
     void NotifyMutationObserversNodeWillDetach(void);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    const ComputedStyle* GetComputedStyle(void) const;
+
     struct AttachContext {
         STACK_ALLOCATED();
 

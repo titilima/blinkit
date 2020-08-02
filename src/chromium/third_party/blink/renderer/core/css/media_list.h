@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: media_list.h
+// Description: MediaList Class
+//      Author: Ziming Li
+//     Created: 2020-08-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2008, 2009, 2010, 2012 Apple Inc. All rights
@@ -98,11 +109,15 @@ class MediaList final : public ScriptWrappable {
 
   void Reattach(scoped_refptr<MediaQuerySet>);
 
-  void Trace(blink::Visitor*) override;
-
  private:
   MediaList(scoped_refptr<MediaQuerySet>, CSSStyleSheet* parent_sheet);
   MediaList(scoped_refptr<MediaQuerySet>, CSSRule* parent_rule);
+
+  GCType GetGCType(void) const override
+  {
+      ASSERT(false); // BKTODO:
+      return GC_MANUAL;
+  }
 
   scoped_refptr<MediaQuerySet> media_queries_;
   Member<CSSStyleSheet> parent_style_sheet_;

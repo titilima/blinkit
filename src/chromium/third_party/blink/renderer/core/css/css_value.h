@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_value.h
+// Description: CSSValue Class
+//      Author: Ziming Li
+//     Created: 2020-08-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008 Apple Inc. All rights reserved.
@@ -33,21 +44,6 @@ class Length;
 
 class CORE_EXPORT CSSValue : public GarbageCollectedFinalized<CSSValue> {
  public:
-  // Override operator new to allocate CSSValue subtype objects onto
-  // a dedicated heap.
-  GC_PLUGIN_IGNORE("crbug.com/443854")
-  void* operator new(size_t size) { return AllocateObject(size, false); }
-  static void* AllocateObject(size_t size, bool is_eager) {
-    ThreadState* state =
-        ThreadStateFor<ThreadingTrait<CSSValue>::kAffinity>::GetState();
-    const char* type_name = "blink::CSSValue";
-    return state->Heap().AllocateOnArenaIndex(
-        state, size,
-        is_eager ? BlinkGC::kEagerSweepArenaIndex
-                 : BlinkGC::kCSSValueArenaIndex,
-        GCInfoTrait<CSSValue>::Index(), type_name);
-  }
-
   // TODO(sashab): Remove this method and move logic to the caller.
   static CSSValue* Create(const Length& value, float zoom);
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: tree_ordered_list.h
+// Description: TreeOrderedList Class
+//      Author: Ziming Li
+//     Created: 2020-08-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -30,9 +41,9 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_DOM_TREE_ORDERED_LIST_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_DOM_TREE_ORDERED_LIST_H_
 
+#include <set>
 #include "base/macros.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
-#include "third_party/blink/renderer/platform/wtf/list_hash_set.h"
 
 namespace blink {
 
@@ -46,14 +57,13 @@ class TreeOrderedList final {
 
   void Add(Node*);
   void Remove(const Node*);
-  bool IsEmpty() const { return nodes_.IsEmpty(); }
+  bool IsEmpty() const { return nodes_.empty(); }
   void Clear() { nodes_.clear(); }
   wtf_size_t size() const { return nodes_.size(); }
 
-  using iterator = HeapListHashSet<Member<Node>, 32>::iterator;
-  using const_iterator = HeapListHashSet<Member<Node>, 32>::const_iterator;
-  using const_reverse_iterator =
-      HeapListHashSet<Member<Node>, 32>::const_reverse_iterator;
+  using iterator = std::set<Node *>::iterator;
+  using const_iterator = std::set<Node *>::const_iterator;
+  using const_reverse_iterator = std::set<Node *>::const_reverse_iterator;
 
   iterator begin() { return nodes_.begin(); }
   iterator end() { return nodes_.end(); }
@@ -66,7 +76,7 @@ class TreeOrderedList final {
   void Trace(blink::Visitor*);
 
  private:
-  HeapListHashSet<Member<Node>, 32> nodes_;
+  std::set<Node *> nodes_;
   DISALLOW_COPY_AND_ASSIGN(TreeOrderedList);
 };
 
