@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_unit.h
+// Description: LayoutUnit Class
+//      Author: Ziming Li
+//     Created: 2020-08-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2012, Google Inc. All rights reserved.
  *
@@ -42,13 +53,7 @@
 
 namespace blink {
 
-#if DCHECK_IS_ON()
-#define REPORT_OVERFLOW(doesOverflow)                                          \
-  DLOG_IF(ERROR, !(doesOverflow)) << "LayoutUnit overflow !(" << #doesOverflow \
-                                  << ") in " << WTF_PRETTY_FUNCTION
-#else
-#define REPORT_OVERFLOW(doesOverflow) ((void)0)
-#endif
+#define REPORT_OVERFLOW ASSERT
 
 static const unsigned kLayoutUnitFractionalBits = 6;
 static const int kFixedPointDenominator = 1 << kLayoutUnitFractionalBits;

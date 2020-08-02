@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_sheet_collection.h
+// Description: StyleSheetCollection Class
+//      Author: Ziming Li
+//     Created: 2020-08-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -34,7 +45,6 @@
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/css/active_style_sheets.h"
 #include "third_party/blink/renderer/platform/bindings/name_client.h"
-#include "third_party/blink/renderer/platform/bindings/trace_wrapper_member.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
@@ -55,7 +65,7 @@ class CORE_EXPORT StyleSheetCollection
   const ActiveStyleSheetVector& ActiveAuthorStyleSheets() const {
     return active_author_style_sheets_;
   }
-  const HeapVector<TraceWrapperMember<StyleSheet>>&
+  const HeapVector<std::unique_ptr<StyleSheet>>&
   StyleSheetsForStyleSheetList() const {
     return style_sheets_for_style_sheet_list_;
   }
@@ -76,7 +86,7 @@ class CORE_EXPORT StyleSheetCollection
  protected:
   StyleSheetCollection();
 
-  HeapVector<TraceWrapperMember<StyleSheet>> style_sheets_for_style_sheet_list_;
+  HeapVector<std::unique_ptr<StyleSheet>> style_sheets_for_style_sheet_list_;
   ActiveStyleSheetVector active_author_style_sheets_;
   bool sheet_list_dirty_ = true;
 

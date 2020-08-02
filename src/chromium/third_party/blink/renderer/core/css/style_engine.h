@@ -53,7 +53,6 @@
 #include "third_party/blink/renderer/core/css/invalidation/style_invalidator.h"
 #include "third_party/blink/renderer/core/css/layout_tree_rebuild_root.h"
 #include "third_party/blink/renderer/core/css/resolver/style_resolver.h"
-#include "third_party/blink/renderer/core/css/resolver/style_resolver_stats.h"
 #include "third_party/blink/renderer/core/css/style_engine_context.h"
 #include "third_party/blink/renderer/core/css/style_invalidation_root.h"
 #include "third_party/blink/renderer/core/css/style_recalc_root.h"
@@ -122,11 +121,11 @@ class CORE_EXPORT StyleEngine final
 
   ~StyleEngine() override;
 
-  const HeapVector<TraceWrapperMember<StyleSheet>>&
+  const HeapVector<std::unique_ptr<StyleSheet>>&
   StyleSheetsForStyleSheetList(TreeScope&);
 
   const HeapVector<
-      std::pair<StyleSheetKey, TraceWrapperMember<CSSStyleSheet>>>&
+      std::pair<StyleSheetKey, std::unique_ptr<CSSStyleSheet>>>&
   InjectedAuthorStyleSheets() const {
     return injected_author_style_sheets_;
   }
@@ -321,12 +320,6 @@ class CORE_EXPORT StyleEngine final
   void NodeWillBeRemoved(Node&);
   void ChildrenRemoved(ContainerNode& parent);
 
-  unsigned StyleForElementCount() const { return style_for_element_count_; }
-  void IncStyleForElementCount() { style_for_element_count_++; }
-
-  StyleResolverStats* Stats() { return style_resolver_stats_.get(); }
-  void SetStatsEnabled(bool);
-
   void ApplyRuleSetChanges(TreeScope&,
                            const ActiveStyleSheetVector& old_style_sheets,
                            const ActiveStyleSheetVector& new_style_sheets);
@@ -357,7 +350,6 @@ class CORE_EXPORT StyleEngine final
   void RebuildLayoutTree();
   bool InRebuildLayoutTree() const { return in_layout_tree_rebuild_; }
 
-  void Trace(blink::Visitor*) override;
   const char* NameInHeapSnapshot() const override { return "StyleEngine"; }
 
  private:
@@ -462,7 +454,7 @@ class CORE_EXPORT StyleEngine final
 
   Member<CSSStyleSheet> inspector_style_sheet_;
 
-  TraceWrapperMember<DocumentStyleSheetCollection>
+  std::unique_ptr<DocumentStyleSheetCollection>
       document_style_sheet_collection_;
 
   Member<StyleRuleUsageTracker> tracker_;
@@ -502,7 +494,7 @@ class CORE_EXPORT StyleEngine final
   // children removed since the last lifecycle update. For such elements we need
   // to re-attach whitespace children. Also see reattach_all_whitespace_nodes_
   // in the WhitespaceAttacher class.
-  HeapHashSet<Member<Element>> whitespace_reattach_set_;
+  HeapHashSet<Element *> whitespace_reattach_set_;
 
   Member<CSSFontSelector> font_selector_;
 
@@ -511,12 +503,9 @@ class CORE_EXPORT StyleEngine final
   HeapHashMap<WeakMember<StyleSheetContents>, AtomicString>
       sheet_to_text_cache_;
 
-  std::unique_ptr<StyleResolverStats> style_resolver_stats_;
-  unsigned style_for_element_count_ = 0;
-
-  HeapVector<std::pair<StyleSheetKey, TraceWrapperMember<CSSStyleSheet>>>
+  HeapVector<std::pair<StyleSheetKey, std::unique_ptr<CSSStyleSheet>>>
       injected_user_style_sheets_;
-  HeapVector<std::pair<StyleSheetKey, TraceWrapperMember<CSSStyleSheet>>>
+  HeapVector<std::pair<StyleSheetKey, std::unique_ptr<CSSStyleSheet>>>
       injected_author_style_sheets_;
 
   ActiveStyleSheetVector active_user_style_sheets_;

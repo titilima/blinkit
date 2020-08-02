@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: pending_invalidations.h
+// Description: PendingInvalidations Class
+//      Author: Ziming Li
+//     Created: 2020-08-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_INVALIDATION_PENDING_INVALIDATIONS_H_
 
 #include <memory>
-
+#include <unordered_map>
 #include "base/macros.h"
 #include "third_party/blink/renderer/core/css/invalidation/node_invalidation_sets.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
@@ -17,8 +28,7 @@ class ContainerNode;
 class Document;
 class Element;
 
-using PendingInvalidationMap =
-    HeapHashMap<Member<ContainerNode>, NodeInvalidationSets>;
+using PendingInvalidationMap = std::unordered_map<ContainerNode *, NodeInvalidationSets>;
 
 // Performs deferred style invalidation for DOM subtrees.
 //
@@ -80,9 +90,6 @@ class CORE_EXPORT PendingInvalidations {
 
   PendingInvalidationMap& GetPendingInvalidationMap() {
     return pending_invalidation_map_;
-  }
-  void Trace(blink::Visitor* visitor) {
-    visitor->Trace(pending_invalidation_map_);
   }
 
  private:
