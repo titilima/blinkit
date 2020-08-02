@@ -1,3 +1,17 @@
+src/chromium/third_party/blink/renderer/core/computed_style_base.cc
+src/chromium/third_party/blink/renderer/core/computed_style_base.h
+src/chromium/third_party/blink/renderer/core/computed_style_base_constants.h
+src/chromium/third_party/blink/renderer/core/css_property_names.cc
+src/chromium/third_party/blink/renderer/core/css_property_names.h
+src/chromium/third_party/blink/renderer/core/css_value_keywords.cc
+src/chromium/third_party/blink/renderer/core/css_value_keywords.h
+src/chromium/third_party/blink/renderer/core/css/media_feature_names.cc
+src/chromium/third_party/blink/renderer/core/css/media_feature_names.h
+src/chromium/third_party/blink/renderer/core/css/properties/css_property.cc
+src/chromium/third_party/blink/renderer/core/css/properties/css_property.h
+src/chromium/third_party/blink/renderer/core/css/properties/css_unresolved_property.cc
+src/chromium/third_party/blink/renderer/core/css/properties/css_unresolved_property.h
+
 **/Debug/*.exe
 projects/posix/*.a
 projects/win/debug
