@@ -15,18 +15,34 @@
 #pragma once
 
 #include <vector>
+#include <unordered_map>
 #include <unordered_set>
+#include "third_party/blink/renderer/platform/wtf/wtf_size_t.h"
 
 namespace blink {
 
-template <typename T>
-class HeapHashSet : public std::unordered_set<T>
+template <typename K, typename V>
+class HeapHashMap : public std::unordered_map<K, V>
 {
 };
 
 template <typename T>
+class HeapHashSet : public std::unordered_set<T>
+{
+public:
+    bool Contains(const T& o) const
+    {
+        auto it = this->find(o);
+        return this->end() != it;
+    }
+    bool IsEmpty(void) const { return this->empty(); }
+};
+
+template <typename T, wtf_size_t inlineCapacity = 0>
 class HeapVector : public std::vector<T>
 {
+public:
+    bool IsEmpty(void) const { return this->empty(); }
 };
 
 } // namespace blink
