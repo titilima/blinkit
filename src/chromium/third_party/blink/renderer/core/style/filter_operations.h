@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: filter_operations.h
+// Description: FilterOperations Class
+//      Author: Ziming Li
+//     Created: 2020-08-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -94,8 +105,6 @@ class FilterOperationsWrapper
   }
 
   const FilterOperations& Operations() const { return operations_; }
-
-  void Trace(blink::Visitor* visitor) { visitor->Trace(operations_); }
 
  private:
   FilterOperationsWrapper() = default;

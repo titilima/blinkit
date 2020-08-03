@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_filter_data.h
+// Description: StyleFilterData Class
+//      Author: Ziming Li
+//     Created: 2020-08-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -39,8 +50,6 @@ class StyleFilterData final : public GarbageCollected<StyleFilterData> {
 
   bool operator==(const StyleFilterData&) const;
   bool operator!=(const StyleFilterData& o) const { return !(*this == o); }
-
-  void Trace(blink::Visitor* visitor) { visitor->Trace(operations_); }
 
   FilterOperations operations_;
 
