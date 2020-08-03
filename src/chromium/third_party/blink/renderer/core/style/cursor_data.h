@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: cursor_data.h
+// Description: CursorData Class
+//      Author: Ziming Li
+//     Created: 2020-08-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -55,8 +66,6 @@ class CursorData {
 
   // Hot spot in the image in logical pixels.
   const IntPoint& HotSpot() const { return hot_spot_; }
-
-  void Trace(blink::Visitor* visitor) { visitor->Trace(image_); }
 
  private:
   Member<StyleImage> image_;
