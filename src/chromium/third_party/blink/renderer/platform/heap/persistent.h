@@ -20,11 +20,21 @@ template <class T>
 class Persistent
 {
 public:
-    Persistent(void)
+    Persistent(const T *)
     {
         ASSERT(false); // BKTODO:
     }
+    explicit operator bool() const
+    {
+        ASSERT(false); // BKTODO:
+        return false;
+    }
     T* Get(void) const
+    {
+        ASSERT(false); // BKTODO:
+        return nullptr;
+    }
+    T* operator->() const
     {
         ASSERT(false); // BKTODO:
         return nullptr;
