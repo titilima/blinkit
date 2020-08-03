@@ -13,6 +13,7 @@ src/chromium/third_party/blink/renderer/core/css/properties/css_property.cc
 src/chromium/third_party/blink/renderer/core/css/properties/css_property.h
 src/chromium/third_party/blink/renderer/core/css/properties/css_unresolved_property.cc
 src/chromium/third_party/blink/renderer/core/css/properties/css_unresolved_property.h
+src/chromium/third_party/blink/renderer/core/style/computed_style_initial_values.h
 
 **/Debug/*.exe
 projects/posix/*.a
