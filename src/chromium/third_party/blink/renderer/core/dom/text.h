@@ -62,7 +62,7 @@ class CORE_EXPORT Text : public CharacterData {
   // DOM Level 3: http://www.w3.org/TR/DOM-Level-3-Core/core.html#ID-1312295772
 
   String wholeText() const;
-  Text* ReplaceWholeText(const String&);
+  Text* ReplaceWholeText(const String&, NodeVector &detached);
 
 #ifndef BLINKIT_CRAWLER_ONLY
   void RecalcTextStyle(StyleRecalcChange);

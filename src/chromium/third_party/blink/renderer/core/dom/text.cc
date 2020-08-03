@@ -38,7 +38,7 @@
 // BKTODO: #include "third_party/blink/renderer/core/dom/first_letter_pseudo_element.h"
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
 // BKTODO: #include "third_party/blink/renderer/platform/bindings/dom_data_store.h"
-// BKTODO: #include "third_party/blink/renderer/platform/bindings/exception_state.h"
+#include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/wtf/text/cstring.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -215,10 +215,7 @@ String Text::wholeText() const {
   return result.ToString();
 }
 
-Text* Text::ReplaceWholeText(const String& new_text) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
+Text* Text::ReplaceWholeText(const String& new_text, NodeVector& detached) {
   // Remove all adjacent text nodes, and replace the contents of this one.
 
   // Protect startText and endText against mutation event handlers removing the
@@ -232,7 +229,7 @@ Text* Text::ReplaceWholeText(const String& new_text) {
        n && n != this && n->IsTextNode() && n->parentNode() == parent;) {
     Node* node_to_remove = n;
     n = node_to_remove->nextSibling();
-    parent->RemoveChild(node_to_remove, IGNORE_EXCEPTION_FOR_TESTING);
+    parent->RemoveChild(node_to_remove, detached, IGNORE_EXCEPTION_FOR_TESTING);
   }
 
   if (this != end_text) {
@@ -242,19 +239,18 @@ Text* Text::ReplaceWholeText(const String& new_text) {
                                   n->parentNode() == parent;) {
       Node* node_to_remove = n;
       n = node_to_remove->nextSibling();
-      parent->RemoveChild(node_to_remove, IGNORE_EXCEPTION_FOR_TESTING);
+      parent->RemoveChild(node_to_remove, detached, IGNORE_EXCEPTION_FOR_TESTING);
     }
   }
 
   if (new_text.IsEmpty()) {
     if (parent && parentNode() == parent)
-      parent->RemoveChild(this, IGNORE_EXCEPTION_FOR_TESTING);
+      parent->RemoveChild(this, detached, IGNORE_EXCEPTION_FOR_TESTING);
     return nullptr;
   }
 
   setData(new_text);
   return this;
-#endif
 }
 
 String Text::nodeName() const {
