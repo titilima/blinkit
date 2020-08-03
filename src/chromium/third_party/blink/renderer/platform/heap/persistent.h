@@ -24,20 +24,24 @@ public:
     {
         ASSERT(false); // BKTODO:
     }
-    explicit operator bool() const
+    operator bool() const
     {
         ASSERT(false); // BKTODO:
         return false;
+    }
+    T* operator->() const
+    {
+        ASSERT(false); // BKTODO:
+        return nullptr;
     }
     T* Get(void) const
     {
         ASSERT(false); // BKTODO:
         return nullptr;
     }
-    T* operator->() const
+    void Clear(void)
     {
         ASSERT(false); // BKTODO:
-        return nullptr;
     }
 };
 
