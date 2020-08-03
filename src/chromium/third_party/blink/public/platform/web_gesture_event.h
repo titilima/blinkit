@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/platform/geometry/int_rect.h"
+
 namespace blink {
 
 class WebGestureEvent
