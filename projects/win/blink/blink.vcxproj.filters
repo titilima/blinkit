@@ -1214,6 +1214,60 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\graphics_types.cc">
       <Filter>renderer\platform\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\grid_positions_resolver.cc">
+      <Filter>renderer\core\style</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_description.cc">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_fallback_iterator.cc">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_fallback_list.cc">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_fallback_priority.cc">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\simple_font_data.cc">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\font_family_names.cc">
+      <Filter>renderer\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_family.cc">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_orientation.cc">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_smoothing_mode.cc">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_variant_east_asian.cc">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_variant_numeric.cc">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_width_variant.cc">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\text_rendering_mode.cc">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\typesetting_features.cc">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\layout_locale.cc">
+      <Filter>renderer\platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character.cc">
+      <Filter>renderer\platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_run.cc">
+      <Filter>renderer\platform\text</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -2793,6 +2847,87 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\cursor_data.h">
       <Filter>renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\length_size.h">
+      <Filter>renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\grid_positions_resolver.h">
+      <Filter>renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\border_image_length.h">
+      <Filter>renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\border_image_length_box.h">
+      <Filter>renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\length_box.h">
+      <Filter>renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_description.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\fallback_list_composite_key.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_fallback_iterator.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_fallback_list.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_fallback_priority.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\simple_font_data.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\tab_size.h">
+      <Filter>renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\font_family_names.h">
+      <Filter>renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_cache_key.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_family.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_orientation.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_smoothing_mode.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_variant_east_asian.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_variant_numeric.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_width_variant.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\text_rendering_mode.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\typesetting_features.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\layout_locale.h">
+      <Filter>renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_face_creation_params.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character.h">
+      <Filter>renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character_property.h">
+      <Filter>renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_run.h">
+      <Filter>renderer\platform\text</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
