@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: computed_style.h
+// Description: ComputedStyle Class
+//      Author: Ziming Li
+//     Created: 2020-08-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -982,6 +993,7 @@ class ComputedStyle : public ComputedStyleBase,
   // widows
   void SetWidows(short w) { SetWidowsInternal(clampTo<short>(w, 1)); }
 
+#if 0 // BKTODO:
   // SVG properties.
   const SVGComputedStyle& SvgStyle() const { return *svg_style_.Get(); }
   SVGComputedStyle& AccessSVGStyle() { return *svg_style_.Access(); }
@@ -1071,6 +1083,7 @@ class ComputedStyle : public ComputedStyleBase,
   void SetStrokeWidth(const UnzoomedLength& w) {
     AccessSVGStyle().SetStrokeWidth(w);
   }
+#endif // 0
 
   // Comparison operators
   // FIXME: Replace callers of operator== wth a named method instead, e.g.
@@ -2480,9 +2493,11 @@ class ComputedStyle : public ComputedStyleBase,
 
   StyleColor DecorationColorIncludingFallback(bool visited_link) const;
 
+#if 0 // BKTODO:
   Color StopColor() const { return SvgStyle().StopColor(); }
   StyleColor FloodColor() const { return SvgStyle().FloodColor(); }
   StyleColor LightingColor() const { return SvgStyle().LightingColor(); }
+#endif
 
   void AddAppliedTextDecoration(const AppliedTextDecoration&);
   void OverrideTextDecorationColors(Color propagated_color);

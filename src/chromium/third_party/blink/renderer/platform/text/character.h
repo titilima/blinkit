@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: character.h
+// Description: Character Class
+//      Author: Ziming Li
+//     Created: 2020-08-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All rights reserved.
  *
@@ -137,8 +148,12 @@ class PLATFORM_EXPORT Character {
   static bool CanReceiveTextEmphasis(UChar32);
 
   static bool IsGraphemeExtended(UChar32 c) {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     // http://unicode.org/reports/tr29/#Extend
     return u_hasBinaryProperty(c, UCHAR_GRAPHEME_EXTEND);
+#endif
   }
 
   // Returns true if the character has a Emoji property.
