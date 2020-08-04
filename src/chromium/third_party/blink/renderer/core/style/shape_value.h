@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: shape_value.h
+// Description: ShapeValue Class
+//      Author: Ziming Li
+//     Created: 2020-08-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Adobe Systems Incorporated. All rights reserved.
  *
@@ -73,8 +84,6 @@ class ShapeValue final : public GarbageCollectedFinalized<ShapeValue> {
   CSSBoxType CssBox() const { return css_box_; }
 
   bool operator==(const ShapeValue& other) const;
-
-  virtual void Trace(blink::Visitor* visitor) { visitor->Trace(image_); }
 
  private:
   ShapeValue(scoped_refptr<BasicShape> shape, CSSBoxType css_box)
