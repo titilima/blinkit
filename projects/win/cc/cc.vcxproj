@@ -151,6 +151,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\chromium\cc\animation\keyframe_model.cc" />
+    <ClCompile Include="..\..\..\src\chromium\cc\animation\timing_function.cc" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -158,6 +160,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\cc\_pc.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\animation\animation_export.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\animation\keyframe_model.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\animation\timing_function.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\cc_export.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\input\scroll_snap_data.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\input\snap_fling_controller.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\input\touch_action.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_export.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\paint\paint_font.h" />
+    <ClInclude Include="..\..\..\src\chromium\cc\trees\target_property.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
