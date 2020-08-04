@@ -42,10 +42,6 @@ class CORE_EXPORT CSSParserContext
       bool is_opaque_response_from_service_worker,
       const WTF::TextEncoding& charset = WTF::TextEncoding(),
       SelectorProfile = kLiveProfile);
-  ~CSSParserContext(void)
-  {
-      int x = 0;
-  }
 
   CSSParserMode Mode() const { return mode_; }
   CSSParserMode MatchMode() const { return match_mode_; }
