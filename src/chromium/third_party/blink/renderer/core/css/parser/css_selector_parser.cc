@@ -22,18 +22,14 @@
 #include "third_party/blink/renderer/core/css/parser/css_parser_token_stream.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
-#ifndef BLINKIT_CRAWLER_ONLY
-#   include "third_party/blink/renderer/core/css/style_sheet_contents.h"
-#endif
 
 namespace blink {
 
 // static
 CSSSelectorList CSSSelectorParser::ParseSelector(
     CSSParserTokenRange range,
-    const CSSParserContext* context,
-    StyleSheetContents* style_sheet) {
-  CSSSelectorParser parser(context, style_sheet);
+    std::unique_ptr<CSSParserContext> &context) {
+  CSSSelectorParser parser(context);
   range.ConsumeWhitespace();
   CSSSelectorList result = parser.ConsumeComplexSelectorList(range);
   if (!range.AtEnd())
@@ -49,10 +45,9 @@ CSSSelectorList CSSSelectorParser::ParseSelector(
 // static
 CSSSelectorList CSSSelectorParser::ConsumeSelector(
     CSSParserTokenStream& stream,
-    const CSSParserContext* context,
-    StyleSheetContents* style_sheet,
+    std::unique_ptr<CSSParserContext>& context,
     CSSParserObserver* observer) {
-  CSSSelectorParser parser(context, style_sheet);
+  CSSSelectorParser parser(context);
   stream.ConsumeWhitespace();
   CSSSelectorList result = parser.ConsumeComplexSelectorList(stream, observer);
   parser.RecordUsageAndDeprecations(result);
@@ -62,9 +57,8 @@ CSSSelectorList CSSSelectorParser::ConsumeSelector(
   return result;
 }
 
-CSSSelectorParser::CSSSelectorParser(const CSSParserContext* context,
-                                     StyleSheetContents* style_sheet)
-    : context_(context), style_sheet_(style_sheet) {}
+CSSSelectorParser::CSSSelectorParser(std::unique_ptr<CSSParserContext> &context)
+    : context_(std::move(context)) {}
 
 CSSSelectorList CSSSelectorParser::ConsumeComplexSelectorList(
     CSSParserTokenRange& range) {
@@ -344,7 +338,6 @@ std::unique_ptr<CSSParserSelector> CSSSelectorParser::ConsumeCompoundSelector(
     }
     if (namespace_uri == DefaultNamespace())
       namespace_prefix = g_null_atom;
-    context_->Count(WebFeature::kHasIDClassTagAttribute);
     return CSSParserSelector::Create(
         QualifiedName(namespace_prefix, element_name, namespace_uri));
   }
@@ -431,7 +424,6 @@ std::unique_ptr<CSSParserSelector> CSSSelectorParser::ConsumeId(
   selector->SetMatch(CSSSelector::kId);
   AtomicString value = range.Consume().Value().ToAtomicString();
   selector->SetValue(value, IsQuirksModeBehavior(context_->MatchMode()));
-  context_->Count(WebFeature::kHasIDClassTagAttribute);
   return selector;
 }
 
@@ -446,7 +438,6 @@ std::unique_ptr<CSSParserSelector> CSSSelectorParser::ConsumeClass(
   selector->SetMatch(CSSSelector::kClass);
   AtomicString value = range.Consume().Value().ToAtomicString();
   selector->SetValue(value, IsQuirksModeBehavior(context_->MatchMode()));
-  context_->Count(WebFeature::kHasIDClassTagAttribute);
   return selector;
 }
 
@@ -481,7 +472,6 @@ std::unique_ptr<CSSParserSelector> CSSSelectorParser::ConsumeAttribute(
   if (block.AtEnd()) {
     selector->SetAttribute(qualified_name, CSSSelector::kCaseSensitive);
     selector->SetMatch(CSSSelector::kAttributeSet);
-    context_->Count(WebFeature::kHasIDClassTagAttribute);
     return selector;
   }
 
@@ -496,7 +486,6 @@ std::unique_ptr<CSSParserSelector> CSSSelectorParser::ConsumeAttribute(
 
   if (!block.AtEnd())
     return nullptr;
-  context_->Count(WebFeature::kHasIDClassTagAttribute);
   return selector;
 }
 
@@ -522,12 +511,6 @@ std::unique_ptr<CSSParserSelector> CSSSelectorParser::ConsumePseudo(
   AtomicString value = token.Value().ToAtomicString().LowerASCII();
   bool has_arguments = token.GetType() == kFunctionToken;
   selector->UpdatePseudoType(value, *context_, has_arguments, context_->Mode());
-
-  if (selector->Match() == CSSSelector::kPseudoElement &&
-      (selector->GetPseudoType() == CSSSelector::kPseudoBefore ||
-       selector->GetPseudoType() == CSSSelector::kPseudoAfter)) {
-    context_->Count(WebFeature::kHasBeforeOrAfterPseudoElement);
-  }
 
   if (selector->Match() == CSSSelector::kPseudoElement &&
       disallow_pseudo_elements_)

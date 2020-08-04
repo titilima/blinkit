@@ -24,15 +24,11 @@
 #include "third_party/blink/renderer/platform/loader/fetch/resource_loader_options.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
 #include "url/gurl.h"
-#ifndef BLINKIT_CRAWLER_ONLY
-#   include "third_party/blink/renderer/core/css_property_names.h"
-#endif
 
 namespace blink {
 
 class CSSStyleSheet;
 class Document;
-class StyleSheetContents;
 
 class CORE_EXPORT CSSParserContext
     : public GarbageCollectedFinalized<CSSParserContext> {
@@ -40,49 +36,16 @@ class CORE_EXPORT CSSParserContext
   // https://drafts.csswg.org/selectors/#profiles
   enum SelectorProfile { kLiveProfile, kSnapshotProfile };
 
-#ifndef BLINKIT_CRAWLER_ONLY
-  // All three of these factories copy the context and override the current
-  // Document handle used for UseCounter.
-  static CSSParserContext* CreateWithStyleSheet(const CSSParserContext*,
-                                                const CSSStyleSheet*);
-  static CSSParserContext* CreateWithStyleSheetContents(
-      const CSSParserContext*,
-      const StyleSheetContents*);
-  // FIXME: This constructor shouldn't exist if we properly piped the UseCounter
-  // through the CSS subsystem. Currently the UseCounter life time is too crazy
-  // and we need a way to override it.
-  static CSSParserContext* Create(const CSSParserContext* other,
-                                  const Document* use_counter_document);
-
-  static CSSParserContext* Create(const CSSParserContext* other,
-                                  const BlinKit::BkURL& base_url_override,
-                                  bool is_opaque_response_from_service_worker,
-                                  ReferrerPolicy referrer_policy_override,
-                                  const WTF::TextEncoding& charset_override,
-                                  const Document* use_counter_document);
-
-  static CSSParserContext* Create(
-      CSSParserMode,
-      SecureContextMode,
-      SelectorProfile = kLiveProfile,
-      const Document* use_counter_document = nullptr);
-  static CSSParserContext* Create(const Document&);
-#endif // BLINKIT_CRAWLER_ONLY
-  static CSSParserContext* Create(
+  static std::unique_ptr<CSSParserContext> Create(
       const Document&,
       const GURL& base_url_override,
       bool is_opaque_response_from_service_worker,
       const WTF::TextEncoding& charset = WTF::TextEncoding(),
       SelectorProfile = kLiveProfile);
-#ifndef BLINKIT_CRAWLER_ONLY
-  // This is used for workers, where we don't have a document.
-  static CSSParserContext* Create(const ExecutionContext&);
-
-  bool operator==(const CSSParserContext&) const;
-  bool operator!=(const CSSParserContext& other) const {
-    return !(*this == other);
+  ~CSSParserContext(void)
+  {
+      int x = 0;
   }
-#endif
 
   CSSParserMode Mode() const { return mode_; }
   CSSParserMode MatchMode() const { return match_mode_; }
@@ -91,43 +54,6 @@ class CORE_EXPORT CSSParserContext
   const std::string& GetReferrer() const { return referrer_; }
   bool IsHTMLDocument() const { return is_html_document_; }
   bool IsLiveProfile() const { return profile_ == kLiveProfile; }
-
-#ifndef BLINKIT_CRAWLER_ONLY
-  // See documentation in StyleSheetContents for this function.
-  bool IsOpaqueResponseFromServiceWorker() const;
-
-  bool IsSecureContext() const;
-
-  // This quirk is to maintain compatibility with Android apps built on
-  // the Android SDK prior to and including version 18. Presumably, this
-  // can be removed any time after 2015. See http://crbug.com/277157.
-  bool UseLegacyBackgroundSizeShorthandBehavior() const {
-    return use_legacy_background_size_shorthand_behavior_;
-  }
-
-  // FIXME: This setter shouldn't exist, however the current lifetime of
-  // CSSParserContext is not well understood and thus we sometimes need to
-  // override this field.
-  void SetMode(CSSParserMode mode) { mode_ = mode; }
-
-  KURL CompleteURL(const String& url) const;
-
-  SecureContextMode GetSecureContextMode() const {
-    return secure_context_mode_;
-  }
-#endif // BLINKIT_CRAWLER_ONLY
-
-  void Count(WebFeature) const;
-#ifndef BLINKIT_CRAWLER_ONLY
-  void Count(CSSParserMode, CSSPropertyID) const;
-  void CountDeprecation(WebFeature) const;
-  bool IsUseCounterRecordingEnabled() const { return document_; }
-  bool IsDocumentHandleEqual(const Document* other) const;
-
-  ContentSecurityPolicyDisposition ShouldCheckContentSecurityPolicy() const {
-    return should_check_content_security_policy_;
-  }
-#endif // BLINKIT_CRAWLER_ONLY
 
  private:
   CSSParserContext(const GURL& base_url,
@@ -157,10 +83,6 @@ class CORE_EXPORT CSSParserContext
 
   WeakMember<const Document> document_;
 };
-
-#ifndef BLINKIT_CRAWLER_ONLY
-CORE_EXPORT const CSSParserContext* StrictCSSParserContext(SecureContextMode);
-#endif
 
 }  // namespace blink
 

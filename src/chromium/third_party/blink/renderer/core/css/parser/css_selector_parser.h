@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_selector_parser.h
+// Description: CSSSelectorParser Class
+//      Author: Ziming Li
+//     Created: 2020-08-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -17,7 +28,6 @@ class CSSParserContext;
 class CSSParserTokenStream;
 class CSSParserObserver;
 class CSSSelectorList;
-class StyleSheetContents;
 
 // FIXME: We should consider building CSSSelectors directly instead of using
 // the intermediate CSSParserSelector.
@@ -26,17 +36,15 @@ class CORE_EXPORT CSSSelectorParser {
 
  public:
   static CSSSelectorList ParseSelector(CSSParserTokenRange,
-                                       const CSSParserContext*,
-                                       StyleSheetContents*);
+                                       std::unique_ptr<CSSParserContext> &);
   static CSSSelectorList ConsumeSelector(CSSParserTokenStream&,
-                                         const CSSParserContext*,
-                                         StyleSheetContents*,
+                                         std::unique_ptr<CSSParserContext> &,
                                          CSSParserObserver*);
 
   static bool ConsumeANPlusB(CSSParserTokenRange&, std::pair<int, int>&);
 
  private:
-  CSSSelectorParser(const CSSParserContext*, StyleSheetContents*);
+  CSSSelectorParser(std::unique_ptr<CSSParserContext> &);
 
   // These will all consume trailing comments if successful
 
@@ -81,8 +89,7 @@ class CORE_EXPORT CSSSelectorParser {
       std::unique_ptr<CSSParserSelector> compound_selector);
   void RecordUsageAndDeprecations(const CSSSelectorList&);
 
-  Member<const CSSParserContext> context_;
-  Member<const StyleSheetContents> style_sheet_;
+  std::unique_ptr<const CSSParserContext> context_;
 
   bool failed_parsing_ = false;
   bool disallow_pseudo_elements_ = false;

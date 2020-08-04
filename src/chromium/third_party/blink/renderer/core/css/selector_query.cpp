@@ -417,8 +417,8 @@ SelectorQuery* SelectorQueryCache::Add(const AtomicString &selectors, const Docu
     if (std::end(m_entries) != it)
         return it->second.get();
 
-    std::unique_ptr<CSSParserContext> context(CSSParserContext::Create(document, document.BaseURL(), false, WTF::TextEncoding(), CSSParserContext::kSnapshotProfile));
-    CSSSelectorList selectorList = CSSParser::ParseSelector(context.get(), nullptr, selectors);
+    std::unique_ptr<CSSParserContext> context = CSSParserContext::Create(document, document.BaseURL(), false, WTF::TextEncoding(), CSSParserContext::kSnapshotProfile);
+    CSSSelectorList selectorList = CSSParser::ParseSelector(context, selectors);
     if (nullptr == selectorList.First())
     {
         exceptionState.ThrowDOMException(DOMExceptionCode::kSyntaxError,
