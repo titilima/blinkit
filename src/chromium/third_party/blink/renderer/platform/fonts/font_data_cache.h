@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_data_cache.h
+// Description: FontDataCache Class
+//      Author: Ziming Li
+//     Created: 2020-08-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,10 +42,10 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_FONTS_FONT_DATA_CACHE_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_FONTS_FONT_DATA_CACHE_H_
 
+#include <set>
 #include "third_party/blink/renderer/platform/fonts/font_platform_data.h"
 #include "third_party/blink/renderer/platform/fonts/simple_font_data.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
-#include "third_party/blink/renderer/platform/wtf/linked_hash_set.h"
 
 namespace blink {
 
@@ -92,7 +103,7 @@ class FontDataCache {
                   FontDataCacheKeyHash>
       Cache;
   Cache cache_;
-  LinkedHashSet<scoped_refptr<SimpleFontData>> inactive_font_data_;
+  std::set<scoped_refptr<SimpleFontData>> inactive_font_data_;
 };
 
 }  // namespace blink

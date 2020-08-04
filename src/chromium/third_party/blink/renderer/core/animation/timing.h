@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: timing.h
+// Description: Timing Struct
+//      Author: Ziming Li
+//     Created: 2020-08-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,8 +42,8 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_ANIMATION_TIMING_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_ANIMATION_TIMING_H_
 
+#include <optional>
 #include "base/memory/scoped_refptr.h"
-#include "base/optional.h"
 #include "third_party/blink/renderer/core/animation/animation_time_delta.h"
 #include "third_party/blink/renderer/core/style/data_equivalency.h"
 #include "third_party/blink/renderer/platform/animation/compositor_keyframe_model.h"
@@ -63,7 +74,7 @@ struct Timing {
         fill_mode(FillMode::AUTO),
         iteration_start(0),
         iteration_count(1),
-        iteration_duration(base::nullopt),
+        iteration_duration(std::nullopt),
         direction(PlaybackDirection::NORMAL),
         timing_function(LinearTimingFunction::Shared()) {}
 
@@ -96,7 +107,7 @@ struct Timing {
   double iteration_start;
   double iteration_count;
   // If empty, indicates the 'auto' value.
-  base::Optional<AnimationTimeDelta> iteration_duration;
+  std::optional<AnimationTimeDelta> iteration_duration;
 
   PlaybackDirection direction;
   scoped_refptr<TimingFunction> timing_function;

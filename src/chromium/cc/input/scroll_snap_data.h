@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - cc Library
+// -------------------------------------------------
+//   File Name: scroll_snap_data.h
+// Description: Scroll Snap Data Types
+//      Author: Ziming Li
+//     Created: 2020-08-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,9 +16,8 @@
 #ifndef CC_INPUT_SCROLL_SNAP_DATA_H_
 #define CC_INPUT_SCROLL_SNAP_DATA_H_
 
+#include <optional>
 #include <vector>
-
-#include "base/optional.h"
 #include "cc/cc_export.h"
 #include "ui/gfx/geometry/rect_f.h"
 #include "ui/gfx/geometry/scroll_offset.h"
@@ -232,7 +242,7 @@ class CC_EXPORT SnapContainerData {
   // or the original scroll offset if this is the first iteration of search.
   // Returns the candidate as SnapSearchResult that includes the area's
   // |snap_offset| and its visible range on the cross axis.
-  base::Optional<SnapSearchResult> FindClosestValidArea(
+  std::optional<SnapSearchResult> FindClosestValidArea(
       SearchAxis axis,
       float current_offset,
       const SnapSearchResult& cross_axis_snap_result) const;
@@ -272,8 +282,10 @@ class CC_EXPORT SnapContainerData {
   std::vector<SnapAreaData> snap_area_list_;
 };
 
+#if 0 // BKTODO:
 CC_EXPORT std::ostream& operator<<(std::ostream&, const SnapAreaData&);
 CC_EXPORT std::ostream& operator<<(std::ostream&, const SnapContainerData&);
+#endif // 0
 
 }  // namespace cc
 
