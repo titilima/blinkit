@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_property_source_data.h
+// Description: CSSPropertySourceData Class
+//      Author: Ziming Li
+//     Created: 2020-08-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2010 Google Inc. All rights reserved.
  *
@@ -86,7 +97,6 @@ namespace blink {
 class CSSRuleSourceData : public GarbageCollectedFinalized<CSSRuleSourceData> {
  public:
   explicit CSSRuleSourceData(StyleRule::RuleType type) : type(type) {}
-  void Trace(blink::Visitor* visitor) { visitor->Trace(child_rules); };
 
   bool HasProperties() const {
     return type == StyleRule::kStyle || type == StyleRule::kFontFace ||
