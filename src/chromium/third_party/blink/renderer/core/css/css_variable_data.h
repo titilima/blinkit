@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_variable_data.h
+// Description: CSSVariableData Class
+//      Author: Ziming Li
+//     Created: 2020-08-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,10 +19,10 @@
 #include "base/macros.h"
 #include "third_party/blink/renderer/core/css/parser/css_parser_token.h"
 #include "third_party/blink/renderer/core/css/parser/css_parser_token_range.h"
-#include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/forward.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+#include "url/gurl.h"
 
 namespace blink {
 
@@ -30,7 +41,7 @@ class CORE_EXPORT CSSVariableData : public RefCounted<CSSVariableData> {
       const CSSParserTokenRange& range,
       bool is_animation_tainted,
       bool needs_variable_resolution,
-      const KURL& base_url,
+      const GURL& base_url,
       const WTF::TextEncoding& charset) {
     return base::AdoptRef(new CSSVariableData(range, is_animation_tainted,
                                               needs_variable_resolution,
@@ -74,7 +85,7 @@ class CORE_EXPORT CSSVariableData : public RefCounted<CSSVariableData> {
   // is required for e.g. registered properties with 'em' units.
   bool IsAbsolutized() const { return absolutized_; }
 
-  const KURL& BaseURL() const { return base_url_; }
+  const GURL& BaseURL() const { return base_url_; }
 
   const WTF::TextEncoding& Charset() const { return charset_; }
 
@@ -93,7 +104,7 @@ class CORE_EXPORT CSSVariableData : public RefCounted<CSSVariableData> {
   CSSVariableData(const CSSParserTokenRange&,
                   bool is_animation_tainted,
                   bool needs_variable_resolution,
-                  const KURL& base_url,
+                  const GURL& base_url,
                   const WTF::TextEncoding& charset);
 
   CSSVariableData(const Vector<CSSParserToken>& resolved_tokens,
@@ -124,7 +135,7 @@ class CORE_EXPORT CSSVariableData : public RefCounted<CSSVariableData> {
   bool has_font_units_;
   bool has_root_font_units_;
   bool absolutized_;
-  KURL base_url_;
+  GURL base_url_;
   WTF::TextEncoding charset_;
   DISALLOW_COPY_AND_ASSIGN(CSSVariableData);
 };
