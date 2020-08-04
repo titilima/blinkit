@@ -26,7 +26,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 VS_VERSION_INFO VERSIONINFO
  FILEVERSION 1,2,0,2
- PRODUCTVERSION 1,2,0,4
+ PRODUCTVERSION 1,2,0,5
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -48,7 +48,7 @@ BEGIN
             VALUE "LegalCopyright", "Copyright (C) 2001-2020"
             VALUE "OriginalFilename", "BkCrawler.dll"
             VALUE "ProductName", "BlinKit"
-            VALUE "ProductVersion", "1.2.0.4"
+            VALUE "ProductVersion", "1.2.0.5"
         END
     END
     BLOCK "VarFileInfo"
