@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_sheet.h
+// Description: StyleSheet Class
+//      Author: Ziming Li
+//     Created: 2020-08-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2008, 2012 Apple Inc. All rights reserved.
@@ -29,7 +40,7 @@
 namespace blink {
 
 class CSSRule;
-class KURL;
+class GURL;
 class MediaList;
 class Node;
 class StyleSheet;
@@ -52,7 +63,7 @@ class CORE_EXPORT StyleSheet : public ScriptWrappable {
 
   virtual CSSRule* ownerRule() const { return nullptr; }
   virtual void ClearOwnerNode() = 0;
-  virtual KURL BaseURL() const = 0;
+  virtual GURL BaseURL() const = 0;
   virtual bool IsLoading() const = 0;
   virtual bool IsCSSStyleSheet() const { return false; }
 };
