@@ -44,6 +44,7 @@
 namespace blink {
 
 class Node;
+class Text;
 
 class Range final : public ScriptWrappable
 {

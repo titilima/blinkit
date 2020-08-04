@@ -44,6 +44,9 @@
 #include "third_party/blink/renderer/core/dom/element_data.h"
 #include "third_party/blink/renderer/core/dom/qualified_name.h"
 #include "url/gurl.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/dom/whitespace_attacher.h"
+#endif
 
 namespace blink {
 
