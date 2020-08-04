@@ -75,7 +75,7 @@ template <class T, typename Traits = DefaultRefCountedTraits<T>>
 class RefCounted : public RefCountedBase<unsigned>
 {
 public:
-    void Release(void)
+    void Release(void) const
     {
         if (RefCountedBase::Release())
             Traits::Destruct(static_cast<const T *>(this));
