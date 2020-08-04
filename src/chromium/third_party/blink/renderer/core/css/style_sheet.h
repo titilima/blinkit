@@ -37,10 +37,11 @@
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/forward.h"
 
+class GURL;
+
 namespace blink {
 
 class CSSRule;
-class GURL;
 class MediaList;
 class Node;
 class StyleSheet;
