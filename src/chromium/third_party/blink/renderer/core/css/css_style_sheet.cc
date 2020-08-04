@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_style_sheet.cc
+// Description: CSSStyleSheet Class
+//      Author: Ziming Li
+//     Created: 2020-08-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2007, 2012 Apple Inc. All rights reserved.
@@ -20,8 +31,6 @@
 
 #include "third_party/blink/renderer/core/css/css_style_sheet.h"
 
-#include "third_party/blink/renderer/bindings/core/v8/media_list_or_string.h"
-#include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h"
 #include "third_party/blink/renderer/core/css/css_import_rule.h"
 #include "third_party/blink/renderer/core/css/css_rule_list.h"
 #include "third_party/blink/renderer/core/css/css_style_sheet_init.h"
@@ -34,30 +43,22 @@
 #include "third_party/blink/renderer/core/css/style_sheet_contents.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/node.h"
-#include "third_party/blink/renderer/core/frame/deprecation.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_link_element.h"
 #include "third_party/blink/renderer/core/html/html_style_element.h"
+#endif
 #include "third_party/blink/renderer/core/html_names.h"
-#include "third_party/blink/renderer/core/probe/core_probes.h"
-#include "third_party/blink/renderer/core/svg/svg_style_element.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
-#include "third_party/blink/renderer/platform/bindings/v8_per_isolate_data.h"
-#include "third_party/blink/renderer/platform/weborigin/security_origin.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 class StyleSheetCSSRuleList final : public CSSRuleList {
  public:
-  static StyleSheetCSSRuleList* Create(CSSStyleSheet* sheet) {
-    return new StyleSheetCSSRuleList(sheet);
-  }
-
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(style_sheet_);
-    CSSRuleList::Trace(visitor);
+  static std::unique_ptr<StyleSheetCSSRuleList> Create(CSSStyleSheet* sheet) {
+    return base::WrapUnique(new StyleSheetCSSRuleList(sheet));
   }
 
  private:
@@ -70,17 +71,20 @@ class StyleSheetCSSRuleList final : public CSSRuleList {
 
   CSSStyleSheet* GetStyleSheet() const override { return style_sheet_; }
 
-  TraceWrapperMember<CSSStyleSheet> style_sheet_;
+  Member<CSSStyleSheet> style_sheet_;
 };
 
 #if DCHECK_IS_ON()
 static bool IsAcceptableCSSStyleSheetParent(const Node& parent_node) {
+  ASSERT(false); // BKTODO:
+  return true;
+#if 0
   // Only these nodes can be parents of StyleSheets, and they need to call
   // clearOwnerNode() when moved out of document. Note that destructor of
   // the nodes don't call clearOwnerNode() with Oilpan.
-  return parent_node.IsDocumentNode() || IsHTMLLinkElement(parent_node) ||
-         IsHTMLStyleElement(parent_node) || IsSVGStyleElement(parent_node) ||
-         parent_node.getNodeType() == Node::kProcessingInstructionNode;
+  return parent_node.IsDocumentNode() || IsHTMLLinkElement(parent_node) || IsHTMLStyleElement(parent_node)
+    || parent_node.getNodeType() == Node::kProcessingInstructionNode;
+#endif
 }
 #endif
 
@@ -92,18 +96,20 @@ const Document* CSSStyleSheet::SingleOwnerDocument(
   return nullptr;
 }
 
-CSSStyleSheet* CSSStyleSheet::Create(Document& document,
-                                     const CSSStyleSheetInit& options,
-                                     ExceptionState& exception_state) {
+std::unique_ptr<CSSStyleSheet> CSSStyleSheet::Create(Document& document,
+                                                     const CSSStyleSheetInit& options,
+                                                     ExceptionState& exception_state) {
   if (!RuntimeEnabledFeatures::ConstructableStylesheetsEnabled()) {
     exception_state.ThrowTypeError("Illegal constructor");
     return nullptr;
   }
   // Folowing steps at spec draft
   // https://wicg.github.io/construct-stylesheets/#dom-cssstylesheet-cssstylesheet
-  CSSParserContext* parser_context = CSSParserContext::Create(document);
-  StyleSheetContents* contents = StyleSheetContents::Create(parser_context);
-  CSSStyleSheet* sheet = new CSSStyleSheet(contents, nullptr);
+  std::unique_ptr<CSSParserContext> parser_context = CSSParserContext::Create(document);
+  std::unique_ptr<StyleSheetContents> contents = StyleSheetContents::Create(parser_context);
+  std::unique_ptr<CSSStyleSheet> sheet(new CSSStyleSheet(contents, nullptr));
+  ASSERT(false); // BKTODO:
+#if 0
   sheet->SetTitle(options.title());
   sheet->ClearOwnerNode();
   sheet->ClearOwnerRule();
@@ -119,53 +125,52 @@ CSSStyleSheet* CSSStyleSheet::Create(Document& document,
     sheet->SetAlternateFromConstructor(true);
   if (options.disabled())
     sheet->setDisabled(true);
+#endif
   return sheet;
 }
 
-CSSStyleSheet* CSSStyleSheet::Create(StyleSheetContents* sheet,
-                                     CSSImportRule* owner_rule) {
-  return new CSSStyleSheet(sheet, owner_rule);
+std::unique_ptr<CSSStyleSheet> CSSStyleSheet::Create(std::unique_ptr<StyleSheetContents> &sheet,
+                                                     CSSImportRule* owner_rule) {
+  return base::WrapUnique(new CSSStyleSheet(sheet, owner_rule));
 }
 
-CSSStyleSheet* CSSStyleSheet::Create(StyleSheetContents* sheet,
-                                     Node& owner_node) {
-  return new CSSStyleSheet(sheet, owner_node, false,
-                           TextPosition::MinimumPosition());
+std::unique_ptr<CSSStyleSheet> CSSStyleSheet::Create(std::unique_ptr<StyleSheetContents> &sheet,
+                                                     Node& owner_node) {
+  return base::WrapUnique(new CSSStyleSheet(sheet, owner_node, false, TextPosition::MinimumPosition()));
 }
 
-CSSStyleSheet* CSSStyleSheet::CreateInline(StyleSheetContents* sheet,
-                                           Node& owner_node,
-                                           const TextPosition& start_position) {
+std::unique_ptr<CSSStyleSheet> CSSStyleSheet::CreateInline(std::unique_ptr<StyleSheetContents> &sheet,
+                                                           Node& owner_node,
+                                                           const TextPosition& start_position) {
   DCHECK(sheet);
-  return new CSSStyleSheet(sheet, owner_node, true, start_position);
+  return base::WrapUnique(new CSSStyleSheet(sheet, owner_node, true, start_position));
 }
 
-CSSStyleSheet* CSSStyleSheet::CreateInline(Node& owner_node,
-                                           const KURL& base_url,
-                                           const TextPosition& start_position,
-                                           const WTF::TextEncoding& encoding) {
-  CSSParserContext* parser_context = CSSParserContext::Create(
+std::unique_ptr<CSSStyleSheet> CSSStyleSheet::CreateInline(Node& owner_node,
+                                                           const GURL& base_url,
+                                                           const TextPosition& start_position,
+                                                           const WTF::TextEncoding& encoding) {
+  std::unique_ptr<CSSParserContext> parser_context = CSSParserContext::Create(
       owner_node.GetDocument(), owner_node.GetDocument().BaseURL(),
-      false /* is_opaque_response_from_service_worker */,
-      owner_node.GetDocument().GetReferrerPolicy(), encoding);
-  StyleSheetContents* sheet =
-      StyleSheetContents::Create(base_url.GetString(), parser_context);
-  return new CSSStyleSheet(sheet, owner_node, true, start_position);
+      false /* is_opaque_response_from_service_worker */, encoding);
+  std::unique_ptr<StyleSheetContents> sheet =
+      StyleSheetContents::Create(String::FromStdUTF8(base_url.spec()), parser_context);
+  return base::WrapUnique(new CSSStyleSheet(sheet, owner_node, true, start_position));
 }
 
-CSSStyleSheet::CSSStyleSheet(StyleSheetContents* contents,
+CSSStyleSheet::CSSStyleSheet(std::unique_ptr<StyleSheetContents> &contents,
                              CSSImportRule* owner_rule)
-    : contents_(contents),
+    : contents_(std::move(contents)),
       owner_rule_(owner_rule),
       start_position_(TextPosition::MinimumPosition()) {
   contents_->RegisterClient(this);
 }
 
-CSSStyleSheet::CSSStyleSheet(StyleSheetContents* contents,
+CSSStyleSheet::CSSStyleSheet(std::unique_ptr<StyleSheetContents> &contents,
                              Node& owner_node,
                              bool is_inline_stylesheet,
                              const TextPosition& start_position)
-    : contents_(contents),
+    : contents_(std::move(contents)),
       is_inline_stylesheet_(is_inline_stylesheet),
       owner_node_(&owner_node),
       start_position_(start_position) {
@@ -206,11 +211,14 @@ void CSSStyleSheet::DidMutateRules() {
 
   Document* owner = OwnerDocument();
 
-  if ((associated_document_ || owner) && !custom_element_tag_names_.IsEmpty()) {
+  if ((associated_document_ || owner) && !custom_element_tag_names_.empty()) {
+    ASSERT(false); // BKTODO:
+#if 0
     Document* document =
         associated_document_ ? associated_document_.Get() : owner;
     document->GetStyleEngine().ScheduleCustomElementInvalidations(
         custom_element_tag_names_);
+#endif
   }
 
   if (owner && ownerNode() && ownerNode()->isConnected()) {
@@ -299,13 +307,16 @@ CSSRule* CSSStyleSheet::item(unsigned index) {
     return nullptr;
 
   if (child_rule_cssom_wrappers_.IsEmpty())
-    child_rule_cssom_wrappers_.Grow(rule_count);
+    child_rule_cssom_wrappers_.resize(rule_count);
   DCHECK_EQ(child_rule_cssom_wrappers_.size(), rule_count);
 
-  TraceWrapperMember<CSSRule>& css_rule = child_rule_cssom_wrappers_[index];
+  std::unique_ptr<CSSRule>& css_rule = child_rule_cssom_wrappers_[index];
+  ASSERT(false); // BKTODO:
+#if 0
   if (!css_rule)
     css_rule = contents_->RuleAt(index)->CreateCSSOMWrapper(this);
-  return css_rule.Get();
+#endif
+  return css_rule.get();
 }
 
 void CSSStyleSheet::ClearOwnerNode() {
@@ -316,6 +327,8 @@ void CSSStyleSheet::ClearOwnerNode() {
 }
 
 bool CSSStyleSheet::CanAccessRules() const {
+  return true; // BKTODO: Is this OK enough?
+#if 0
   if (enable_rule_access_for_inspector_)
     return true;
 
@@ -326,8 +339,8 @@ bool CSSStyleSheet::CanAccessRules() const {
 
   if (is_inline_stylesheet_)
     return true;
-  KURL base_url = contents_->BaseURL();
-  if (base_url.IsEmpty())
+  GURL base_url = contents_->BaseURL();
+  if (base_url.is_empty())
     return true;
   Document* document = OwnerDocument();
   if (!document)
@@ -340,6 +353,7 @@ bool CSSStyleSheet::CanAccessRules() const {
     return true;
   }
   return false;
+#endif
 }
 
 CSSRuleList* CSSStyleSheet::rules(ExceptionState& exception_state) {
@@ -366,8 +380,10 @@ unsigned CSSStyleSheet::insertRule(const String& rule_string,
             ").");
     return 0;
   }
-  const CSSParserContext* context =
+  std::unique_ptr<CSSParserContext> context =
       CSSParserContext::CreateWithStyleSheet(contents_->ParserContext(), this);
+  ASSERT(false); // BKTODO:
+#if 0
   StyleRuleBase* rule =
       CSSParser::ParseRule(context, contents_.Get(), rule_string);
 
@@ -390,7 +406,8 @@ unsigned CSSStyleSheet::insertRule(const String& rule_string,
     return 0;
   }
   if (!child_rule_cssom_wrappers_.IsEmpty())
-    child_rule_cssom_wrappers_.insert(index, Member<CSSRule>(nullptr));
+      child_rule_cssom_wrappers_.insert(child_rule_cssom_wrappers_.begin() + index, nullptr);
+#endif
 
   return index;
 }
@@ -426,7 +443,7 @@ void CSSStyleSheet::deleteRule(unsigned index,
   if (!child_rule_cssom_wrappers_.IsEmpty()) {
     if (child_rule_cssom_wrappers_[index])
       child_rule_cssom_wrappers_[index]->SetParentStyleSheet(nullptr);
-    child_rule_cssom_wrappers_.EraseAt(index);
+    child_rule_cssom_wrappers_.erase(child_rule_cssom_wrappers_.begin() + index);
   }
 }
 
@@ -460,14 +477,14 @@ CSSRuleList* CSSStyleSheet::cssRules(ExceptionState& exception_state) {
   }
   if (!rule_list_cssom_wrapper_)
     rule_list_cssom_wrapper_ = StyleSheetCSSRuleList::Create(this);
-  return rule_list_cssom_wrapper_.Get();
+  return rule_list_cssom_wrapper_.get();
 }
 
 String CSSStyleSheet::href() const {
   return contents_->OriginalURL();
 }
 
-KURL CSSStyleSheet::BaseURL() const {
+GURL CSSStyleSheet::BaseURL() const {
   return contents_->BaseURL();
 }
 
@@ -500,20 +517,15 @@ Document* CSSStyleSheet::OwnerDocument() const {
   return root->ownerNode() ? &root->ownerNode()->GetDocument() : nullptr;
 }
 
-void CSSStyleSheet::SetAllowRuleAccessFromOrigin(
-    scoped_refptr<const SecurityOrigin> allowed_origin) {
-  allow_rule_access_from_origin_ = std::move(allowed_origin);
-}
-
 bool CSSStyleSheet::SheetLoaded() {
   DCHECK(owner_node_);
-  SetLoadCompleted(owner_node_->SheetLoaded());
+  ASSERT(false); // BKTODO: SetLoadCompleted(owner_node_->SheetLoaded());
   return load_completed_;
 }
 
 void CSSStyleSheet::StartLoadingDynamicSheet() {
   SetLoadCompleted(false);
-  owner_node_->StartLoadingDynamicSheet();
+  ASSERT(false); // BKTODO: owner_node_->StartLoadingDynamicSheet();
 }
 
 void CSSStyleSheet::SetLoadCompleted(bool completed) {
@@ -551,7 +563,7 @@ void CSSStyleSheet::SetAlternateFromConstructor(
 bool CSSStyleSheet::IsAlternate() const {
   if (owner_node_) {
     return owner_node_->IsElementNode() &&
-           ToElement(owner_node_)->getAttribute(relAttr).Contains("alternate");
+           ToElement(owner_node_)->getAttribute(kRelAttr).Contains("alternate");
   }
   return alternate_from_constructor_;
 }
@@ -561,6 +573,8 @@ bool CSSStyleSheet::CanBeActivated(
   if (disabled())
     return false;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (owner_node_ && owner_node_->IsInShadowTree()) {
     if (IsHTMLStyleElement(owner_node_) || IsSVGStyleElement(owner_node_))
       return true;
@@ -576,23 +590,12 @@ bool CSSStyleSheet::CanBeActivated(
     if (!title_.IsEmpty() && title_ != current_preferrable_name)
       return false;
   }
+#endif
 
   if (IsAlternate() && title_.IsEmpty())
     return false;
 
   return true;
-}
-
-void CSSStyleSheet::Trace(blink::Visitor* visitor) {
-  visitor->Trace(contents_);
-  visitor->Trace(owner_node_);
-  visitor->Trace(owner_rule_);
-  visitor->Trace(media_cssom_wrapper_);
-  visitor->Trace(child_rule_cssom_wrappers_);
-  visitor->Trace(rule_list_cssom_wrapper_);
-  visitor->Trace(adopted_tree_scopes_);
-  visitor->Trace(associated_document_);
-  StyleSheet::Trace(visitor);
 }
 
 }  // namespace blink

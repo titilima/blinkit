@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_sheet_contents.h
+// Description: StyleSheetContents Class
+//      Author: Ziming Li
+//     Created: 2020-08-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All rights
@@ -22,6 +33,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_CSS_STYLE_SHEET_CONTENTS_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_STYLE_SHEET_CONTENTS_H_
 
+#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/css/parser/css_parser_context.h"
 #include "third_party/blink/renderer/core/css/rule_set.h"
@@ -39,7 +51,6 @@ class CSSStyleSheet;
 class CSSStyleSheetResource;
 class Document;
 class Node;
-class SecurityOrigin;
 class StyleRuleBase;
 class StyleRuleFontFace;
 class StyleRuleImport;
@@ -49,17 +60,17 @@ enum class ParseSheetResult;
 class CORE_EXPORT StyleSheetContents
     : public GarbageCollectedFinalized<StyleSheetContents> {
  public:
-  static StyleSheetContents* Create(const CSSParserContext* context) {
-    return new StyleSheetContents(nullptr, String(), context);
+  static std::unique_ptr<StyleSheetContents> Create(std::unique_ptr<CSSParserContext> &context) {
+    return base::WrapUnique(new StyleSheetContents(nullptr, String(), context));
   }
-  static StyleSheetContents* Create(const String& original_url,
-                                    const CSSParserContext* context) {
-    return new StyleSheetContents(nullptr, original_url, context);
+  static std::unique_ptr<StyleSheetContents> Create(const String& original_url,
+                                                    std::unique_ptr<CSSParserContext> &context) {
+    return base::WrapUnique(new StyleSheetContents(nullptr, original_url, context));
   }
-  static StyleSheetContents* Create(StyleRuleImport* owner_rule,
-                                    const String& original_url,
-                                    const CSSParserContext* context) {
-    return new StyleSheetContents(owner_rule, original_url, context);
+  static std::unique_ptr<StyleSheetContents> Create(StyleRuleImport* owner_rule,
+                                                    const String& original_url,
+                                                    std::unique_ptr<CSSParserContext> &context) {
+    return base::WrapUnique(new StyleSheetContents(owner_rule, original_url, context));
   }
 
   static const Document* SingleOwnerDocument(const StyleSheetContents*);
@@ -71,8 +82,10 @@ class CORE_EXPORT StyleSheetContents
   const AtomicString& DefaultNamespace() const { return default_namespace_; }
   const AtomicString& NamespaceURIFromPrefix(const AtomicString& prefix) const;
 
+#if 0 // BKTODO:
   void ParseAuthorStyleSheet(const CSSStyleSheetResource*,
                              const SecurityOrigin*);
+#endif
   ParseSheetResult ParseString(const String&, bool allow_import_rules = true);
   ParseSheetResult ParseStringAtPosition(const String&,
                                          const TextPosition&,
@@ -146,7 +159,7 @@ class CORE_EXPORT StyleSheetContents
   // using this for security checks. It can be different from the actual
   // response URL if a service worker is involved. See
   // IsOpaqueResponseFromServiceWorker().
-  const KURL& BaseURL() const { return parser_context_->BaseURL(); }
+  const GURL& BaseURL() const { return parser_context_->BaseURL(); }
 
   // True if a service worker intercepted the request for this style sheet and
   // returned an opaque response. This context should NOT have access to the
@@ -174,7 +187,7 @@ class CORE_EXPORT StyleSheetContents
   bool WrapperInsertRule(StyleRuleBase*, unsigned index);
   bool WrapperDeleteRule(unsigned index);
 
-  StyleSheetContents* Copy() const { return new StyleSheetContents(*this); }
+  std::unique_ptr<StyleSheetContents> Copy() const { return base::WrapUnique(new StyleSheetContents(*this)); }
 
   void RegisterClient(CSSStyleSheet*);
   void UnregisterClient(CSSStyleSheet*);
@@ -216,7 +229,7 @@ class CORE_EXPORT StyleSheetContents
  private:
   StyleSheetContents(StyleRuleImport* owner_rule,
                      const String& original_url,
-                     const CSSParserContext*);
+                     std::unique_ptr<CSSParserContext> &);
   StyleSheetContents(const StyleSheetContents&);
   StyleSheetContents() = delete;
   StyleSheetContents& operator=(const StyleSheetContents&) = delete;

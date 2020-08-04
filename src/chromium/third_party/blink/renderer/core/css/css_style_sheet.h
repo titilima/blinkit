@@ -33,6 +33,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_CSS_CSS_STYLE_SHEET_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_CSS_STYLE_SHEET_H_
 
+#include <unordered_set>
 #include "base/macros.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/css/css_rule.h"
@@ -54,7 +55,6 @@ class CSSStyleSheetInit;
 class Document;
 class ExceptionState;
 class MediaQuerySet;
-class SecurityOrigin;
 class StyleSheetContents;
 
 class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
@@ -63,20 +63,20 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
  public:
   static const Document* SingleOwnerDocument(const CSSStyleSheet*);
 
-  static CSSStyleSheet* Create(Document&,
-                               const CSSStyleSheetInit&,
-                               ExceptionState&);
+  static std::unique_ptr<CSSStyleSheet> Create(Document&,
+                                               const CSSStyleSheetInit&,
+                                               ExceptionState&);
 
-  static CSSStyleSheet* Create(StyleSheetContents*,
-                               CSSImportRule* owner_rule = nullptr);
-  static CSSStyleSheet* Create(StyleSheetContents*, Node& owner_node);
-  static CSSStyleSheet* CreateInline(
+  static std::unique_ptr<CSSStyleSheet> Create(std::unique_ptr<StyleSheetContents> &,
+                                               CSSImportRule* owner_rule = nullptr);
+  static std::unique_ptr<CSSStyleSheet> Create(std::unique_ptr<StyleSheetContents> &, Node& owner_node);
+  static std::unique_ptr<CSSStyleSheet> CreateInline(
       Node&,
-      const KURL&,
+      const GURL&,
       const TextPosition& start_position = TextPosition::MinimumPosition(),
       const WTF::TextEncoding& = WTF::TextEncoding());
-  static CSSStyleSheet* CreateInline(
-      StyleSheetContents*,
+  static std::unique_ptr<CSSStyleSheet> CreateInline(
+      std::unique_ptr<StyleSheetContents> &,
       Node& owner_node,
       const TextPosition& start_position = TextPosition::MinimumPosition());
 
@@ -112,7 +112,7 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
   void ClearOwnerNode() override;
 
   CSSRule* ownerRule() const override { return owner_rule_; }
-  KURL BaseURL() const override;
+  GURL BaseURL() const override;
   bool IsLoading() const override;
 
   void ClearOwnerRule() { owner_rule_ = nullptr; }
@@ -131,10 +131,6 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
     return device_dependent_media_query_results_;
   }
   void SetTitle(const String& title) { title_ = title; }
-  // Set by LinkStyle iff CORS-enabled fetch of stylesheet succeeded from this
-  // origin.
-  void SetAllowRuleAccessFromOrigin(
-      scoped_refptr<const SecurityOrigin> allowed_origin);
 
   void AddedAdoptedToTreeScope(TreeScope& tree_scope) {
     adopted_tree_scopes_.insert(&tree_scope);
@@ -186,7 +182,7 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
   void EnableRuleAccessForInspector();
   void DisableRuleAccessForInspector();
 
-  StyleSheetContents* Contents() const { return contents_.Get(); }
+  StyleSheetContents* Contents() const { return contents_.get(); }
 
   bool IsInline() const { return is_inline_stylesheet_; }
   TextPosition StartPositionInSource() const { return start_position_; }
@@ -201,8 +197,8 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
   bool CanBeActivated(const String& current_preferrable_name) const;
 
  private:
-  CSSStyleSheet(StyleSheetContents*, CSSImportRule* owner_rule);
-  CSSStyleSheet(StyleSheetContents*,
+  CSSStyleSheet(std::unique_ptr<StyleSheetContents> &, CSSImportRule* owner_rule);
+  CSSStyleSheet(std::unique_ptr<StyleSheetContents> &,
                 Node& owner_node,
                 bool is_inline_stylesheet,
                 const TextPosition& start_position);
@@ -235,7 +231,9 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
 
   bool AlternateFromConstructor() const { return alternate_from_constructor_; }
 
-  Member<StyleSheetContents> contents_;
+  GCType GetGCType(void) const override { return GC_MANUAL; }
+
+  std::unique_ptr<StyleSheetContents> contents_;
   bool is_inline_stylesheet_ = false;
   bool is_disabled_ = false;
   bool load_completed_ = false;
@@ -249,13 +247,11 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
   MediaQueryResultList viewport_dependent_media_query_results_;
   MediaQueryResultList device_dependent_media_query_results_;
 
-  scoped_refptr<const SecurityOrigin> allow_rule_access_from_origin_;
-
   Member<Node> owner_node_;
   Member<CSSRule> owner_rule_;
   HeapHashSet<TreeScope *> adopted_tree_scopes_;
   Member<Document> associated_document_;
-  HashSet<AtomicString> custom_element_tag_names_;
+  std::unordered_set<AtomicString> custom_element_tag_names_;
 
   TextPosition start_position_;
   Member<MediaList> media_cssom_wrapper_;

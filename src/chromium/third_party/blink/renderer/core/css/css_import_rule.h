@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_import_rule.h
+// Description: CSSImportRule Class
+//      Author: Ziming Li
+//     Created: 2020-08-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -46,8 +57,6 @@ class CSSImportRule final : public CSSRule {
   String href() const;
   MediaList* media() const;
   CSSStyleSheet* styleSheet() const;
-
-  void Trace(blink::Visitor*) override;
 
  private:
   CSSImportRule(StyleRuleImport*, CSSStyleSheet*);

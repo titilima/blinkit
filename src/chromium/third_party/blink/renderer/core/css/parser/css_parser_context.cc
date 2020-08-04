@@ -64,7 +64,7 @@ CSSParserContext* CSSParserContext::CreateWithStyleSheetContents(
 }
 
 // static
-CSSParserContext* CSSParserContext::Create(
+std::unique_ptr<CSSParserContext> CSSParserContext::Create(
     const CSSParserContext* other,
     const Document* use_counter_document) {
   return new CSSParserContext(
@@ -117,7 +117,7 @@ CSSParserContext* CSSParserContext::Create(const Document& document) {
 #endif // BLINKIT_CRAWLER_ONLY
 
 // static
-CSSParserContext* CSSParserContext::Create(
+std::unique_ptr<CSSParserContext> CSSParserContext::Create(
     const Document& document,
     const GURL& base_url_override,
     bool is_opaque_response_from_service_worker,
@@ -151,13 +151,13 @@ CSSParserContext* CSSParserContext::Create(
 
   ContentSecurityPolicyDisposition policy_disposition = kDoNotCheckContentSecurityPolicy;
 
-  return new CSSParserContext(
+  return base::WrapUnique(new CSSParserContext(
       base_url_override, is_opaque_response_from_service_worker, charset, mode,
       match_mode, profile, referrer, document.IsHTMLDocument(),
       use_legacy_background_size_shorthand_behavior,
       SecureContextMode::kSecureContext,
       // BKTODO: document.GetSecureContextMode(),
-      policy_disposition, &document);
+      policy_disposition, &document));
 }
 
 CSSParserContext::CSSParserContext(

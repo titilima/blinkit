@@ -56,7 +56,7 @@ void CSSParser::ParseDeclarationListForInspector(
 #endif
 
 CSSSelectorList CSSParser::ParseSelector(
-    const CSSParserContext* context,
+    std::unique_ptr<CSSParserContext> &context,
     StyleSheetContents* style_sheet_contents,
     const String& selector) {
   CSSTokenizer tokenizer(selector);
