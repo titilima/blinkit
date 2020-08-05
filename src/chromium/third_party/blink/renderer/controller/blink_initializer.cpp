@@ -18,8 +18,11 @@
 #include "third_party/blink/renderer/core/xlink_names.h"
 #include "third_party/blink/renderer/core/xml_names.h"
 #include "third_party/blink/renderer/core/xmlns_names.h"
-#include "third_party/blink/renderer/platform/wtf/text/atomic_string_table.h"
 #include "third_party/blink/renderer/platform/network/http_names.h"
+#include "third_party/blink/renderer/platform/wtf/text/atomic_string_table.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/platform/font_family_names.h"
+#endif
 
 namespace blink {
 
@@ -28,7 +31,11 @@ static void InitializeCommon(Platform *platform)
     const unsigned kQualifiedNamesCount = html_names::kTagsCount + html_names::kAttrsCount
         + xlink_names::kAttrsCount + xml_names::kAttrsCount + xmlns_names::kAttrsCount;
 
-    const unsigned kCoreStaticStringsCount = event_type_names::kNamesCount + html_tokenizer_names::kNamesCount + http_names::kNamesCount;
+    const unsigned kCoreStaticStringsCount = event_type_names::kNamesCount + html_tokenizer_names::kNamesCount + http_names::kNamesCount
+#ifndef BLINKIT_CRAWLER_ONLY
+        + FontFamilyNames::FontFamilyNamesCount
+#endif
+        ;
 
     StringImpl::ReserveStaticStringsCapacityForSize(kCoreStaticStringsCount + StringImpl::AllStaticStrings().size());
     QualifiedName::InitAndReserveCapacityForSize(kQualifiedNamesCount);
@@ -43,6 +50,9 @@ static void InitializeCommon(Platform *platform)
     event_type_names::Init();
     html_tokenizer_names::Init();
     http_names::Init();
+#ifndef BLINKIT_CRAWLER_ONLY
+    FontFamilyNames::init();
+#endif
 
     CSSParserTokenRange::InitStaticEOFToken();
 }
