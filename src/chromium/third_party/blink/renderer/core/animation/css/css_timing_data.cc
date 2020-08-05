@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_timing_data.cc
+// Description: CSSTimingData Class
+//      Author: Ziming Li
+//     Created: 2020-08-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -22,8 +33,8 @@ Timing CSSTimingData::ConvertToTiming(size_t index) const {
   double duration = GetRepeated(duration_list_, index);
   timing.iteration_duration =
       std::isnan(duration)
-          ? base::nullopt
-          : base::make_optional(AnimationTimeDelta::FromSecondsD(duration));
+          ? std::nullopt
+          : std::make_optional(AnimationTimeDelta::FromSecondsD(duration));
   timing.timing_function = GetRepeated(timing_function_list_, index);
   timing.AssertValid();
   return timing;
