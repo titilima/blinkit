@@ -63,4 +63,15 @@ public:
 
 } // namespace blink
 
+namespace std {
+
+template <typename U>
+struct hash<blink::Member<U>> {
+  std::size_t operator()(const blink::Member<U> &m) const noexcept {
+    return reinterpret_cast<std::size_t>(m.Get());
+  }
+};
+
+}
+
 #endif // BLINKIT_BLINK_MEMBER_H
