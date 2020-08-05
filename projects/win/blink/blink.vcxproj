@@ -243,6 +243,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\element_resolve_context.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\matched_properties_cache.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\match_result.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\scoped_style_resolver.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\style_builder.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\style_resolver.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\rule_feature_set.cc" />
@@ -251,6 +252,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_filter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_query.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_attribute_mutation_scope.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_change_reason.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_color.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_engine.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_engine_context.cc" />
@@ -683,6 +685,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\match_request.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\match_result.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\media_query_result.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\scoped_style_resolver.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\style_builder.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\style_resolver.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\style_resolver_stats.h" />
@@ -693,6 +696,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_query.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_attribute_mutation_scope.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_auto_color.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_change_reason.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_color.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_engine.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_engine_context.h" />

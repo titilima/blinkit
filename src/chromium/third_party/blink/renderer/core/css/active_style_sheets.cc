@@ -84,16 +84,16 @@ ActiveSheetsChange CompareActiveStyleSheets(
   // merged vector of old and new sheets.
 
   ActiveStyleSheetVector merged_sorted;
-  merged_sorted.ReserveCapacity(old_style_sheet_count + new_style_sheet_count -
-                                2 * index);
-  merged_sorted.AppendRange(old_style_sheets.begin() + index,
-                            old_style_sheets.end());
-  merged_sorted.AppendRange(new_style_sheets.begin() + index,
-                            new_style_sheets.end());
+  merged_sorted.reserve(old_style_sheet_count + new_style_sheet_count -
+                        2 * index);
+  merged_sorted.insert(merged_sorted.end(), old_style_sheets.begin() + index,
+                       old_style_sheets.end());
+  merged_sorted.insert(merged_sorted.end(), new_style_sheets.begin() + index,
+                       new_style_sheets.end());
 
   std::sort(merged_sorted.begin(), merged_sorted.end());
 
-  auto* merged_iterator = merged_sorted.begin();
+  auto merged_iterator = merged_sorted.begin();
   while (merged_iterator != merged_sorted.end()) {
     const auto& sheet1 = *merged_iterator++;
     if (merged_iterator == merged_sorted.end() ||
