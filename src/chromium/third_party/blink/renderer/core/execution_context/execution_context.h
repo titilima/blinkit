@@ -42,6 +42,12 @@ class ExecutionContext : public ContextLifecycleNotifier
 public:
     bool IsContextDestroyed(void) const { return m_isContextDestroyed; }
 
+    SecureContextMode GetSecureContextMode(void) const
+    {
+        ASSERT(false); // BKTODO:
+        return SecureContextMode::kSecureContext;
+    }
+
     virtual bool IsDocument(void) const { return false; }
 
     virtual const GURL& Url(void) const = 0;

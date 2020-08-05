@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: abstract_property_set_css_style_declaration.cc
+// Description: AbstractPropertySetCSSStyleDeclaration Class
+//      Author: Ziming Li
+//     Created: 2020-08-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All
@@ -213,7 +224,7 @@ void AbstractPropertySetCSSStyleDeclaration::SetPropertyInternal(
   Element* parent = ParentElement();
   if (parent) {
     parent->GetDocument().GetStyleEngine().AttributeChangedForElement(
-        HTMLNames::styleAttr, *parent);
+        html_names::kStyleAttr, *parent);
   }
   mutation_scope.EnqueueMutationRecord();
 }
@@ -229,10 +240,6 @@ bool AbstractPropertySetCSSStyleDeclaration::CssPropertyMatches(
     CSSPropertyID property_id,
     const CSSValue& property_value) const {
   return PropertySet().PropertyMatches(property_id, property_value);
-}
-
-void AbstractPropertySetCSSStyleDeclaration::Trace(blink::Visitor* visitor) {
-  CSSStyleDeclaration::Trace(visitor);
 }
 
 }  // namespace blink
