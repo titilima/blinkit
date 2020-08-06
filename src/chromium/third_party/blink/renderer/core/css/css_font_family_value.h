@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_font_family_value.h
+// Description: CSSFontFamilyValue Class
+//      Author: Ziming Li
+//     Created: 2020-08-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -12,7 +23,7 @@ namespace blink {
 
 class CORE_EXPORT CSSFontFamilyValue : public CSSValue {
  public:
-  static CSSFontFamilyValue* Create(const String& family_name);
+  static std::shared_ptr<CSSFontFamilyValue> Create(const String& family_name);
 
   String Value() const { return string_; }
 
@@ -21,8 +32,6 @@ class CORE_EXPORT CSSFontFamilyValue : public CSSValue {
   bool Equals(const CSSFontFamilyValue& other) const {
     return string_ == other.string_;
   }
-
-  void TraceAfterDispatch(blink::Visitor*);
 
  private:
   friend class CSSValuePool;

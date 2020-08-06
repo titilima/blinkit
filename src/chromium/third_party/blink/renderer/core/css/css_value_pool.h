@@ -69,7 +69,7 @@ class CORE_EXPORT CSSValuePool
   using FontFaceValueCache =
       HeapHashMap<AtomicString, Member<const CSSValueList>>;
   static const unsigned kMaximumFontFaceCacheSize = 128;
-  using FontFamilyValueCache = HeapHashMap<String, Member<CSSFontFamilyValue>>;
+  using FontFamilyValueCache = HeapHashMap<String, std::shared_ptr<CSSFontFamilyValue>>;
 
   // Cached individual values.
   std::shared_ptr<CSSColorValue> TransparentColor() { return color_transparent_; }
@@ -116,11 +116,11 @@ class CORE_EXPORT CSSValuePool
       color_value_cache_.clear();
     return color_value_cache_[rgb_value];
   }
-#if 0 // BKTODO:
-  FontFamilyValueCache::AddResult GetFontFamilyCacheEntry(
+  std::shared_ptr<CSSFontFamilyValue>& GetFontFamilyCacheEntry(
       const String& family_name) {
-    return font_family_value_cache_.insert(family_name, nullptr);
+    return font_family_value_cache_[family_name];
   }
+#if 0 // BKTODO:
   FontFaceValueCache::AddResult GetFontFaceCacheEntry(
       const AtomicString& string) {
     // Just wipe out the cache and start rebuilding if it gets too big.
