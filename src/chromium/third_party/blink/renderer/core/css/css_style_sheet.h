@@ -63,20 +63,20 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
  public:
   static const Document* SingleOwnerDocument(const CSSStyleSheet*);
 
-  static std::unique_ptr<CSSStyleSheet> Create(Document&,
+  static std::shared_ptr<CSSStyleSheet> Create(Document&,
                                                const CSSStyleSheetInit&,
                                                ExceptionState&);
 
-  static std::unique_ptr<CSSStyleSheet> Create(std::unique_ptr<StyleSheetContents> &,
+  static std::shared_ptr<CSSStyleSheet> Create(StyleSheetContents*,
                                                CSSImportRule* owner_rule = nullptr);
-  static std::unique_ptr<CSSStyleSheet> Create(std::unique_ptr<StyleSheetContents> &, Node& owner_node);
-  static std::unique_ptr<CSSStyleSheet> CreateInline(
+  static std::shared_ptr<CSSStyleSheet> Create(StyleSheetContents*, Node& owner_node);
+  static std::shared_ptr<CSSStyleSheet> CreateInline(
       Node&,
       const GURL&,
       const TextPosition& start_position = TextPosition::MinimumPosition(),
       const WTF::TextEncoding& = WTF::TextEncoding());
-  static std::unique_ptr<CSSStyleSheet> CreateInline(
-      std::unique_ptr<StyleSheetContents> &,
+  static std::shared_ptr<CSSStyleSheet> CreateInline(
+      StyleSheetContents*,
       Node& owner_node,
       const TextPosition& start_position = TextPosition::MinimumPosition());
 
@@ -197,8 +197,8 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
   bool CanBeActivated(const String& current_preferrable_name) const;
 
  private:
-  CSSStyleSheet(std::unique_ptr<StyleSheetContents> &, CSSImportRule* owner_rule);
-  CSSStyleSheet(std::unique_ptr<StyleSheetContents> &,
+  CSSStyleSheet(StyleSheetContents*, CSSImportRule* owner_rule);
+  CSSStyleSheet(StyleSheetContents*,
                 Node& owner_node,
                 bool is_inline_stylesheet,
                 const TextPosition& start_position);
@@ -233,7 +233,7 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
 
   GCType GetGCType(void) const override { return GC_MANUAL; }
 
-  std::unique_ptr<StyleSheetContents> contents_;
+  std::shared_ptr<StyleSheetContents> contents_;
   bool is_inline_stylesheet_ = false;
   bool is_disabled_ = false;
   bool load_completed_ = false;

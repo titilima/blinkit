@@ -68,6 +68,11 @@ public:
     virtual bool IsRawResourceClient(void) const { return false; }
 
     Resource* GetResource(void) const { return m_resource.get(); }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    // Name for debugging, e.g. shown in memory-infra.
+    virtual String DebugName(void) const = 0;
+#endif
 protected:
     ResourceClient(void) = default;
 

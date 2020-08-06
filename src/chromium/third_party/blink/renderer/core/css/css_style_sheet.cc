@@ -96,7 +96,7 @@ const Document* CSSStyleSheet::SingleOwnerDocument(
   return nullptr;
 }
 
-std::unique_ptr<CSSStyleSheet> CSSStyleSheet::Create(Document& document,
+std::shared_ptr<CSSStyleSheet> CSSStyleSheet::Create(Document& document,
                                                      const CSSStyleSheetInit& options,
                                                      ExceptionState& exception_state) {
   if (!RuntimeEnabledFeatures::ConstructableStylesheetsEnabled()) {
@@ -106,8 +106,8 @@ std::unique_ptr<CSSStyleSheet> CSSStyleSheet::Create(Document& document,
   // Folowing steps at spec draft
   // https://wicg.github.io/construct-stylesheets/#dom-cssstylesheet-cssstylesheet
   std::unique_ptr<CSSParserContext> parser_context = CSSParserContext::Create(document);
-  std::unique_ptr<StyleSheetContents> contents = StyleSheetContents::Create(parser_context);
-  std::unique_ptr<CSSStyleSheet> sheet(new CSSStyleSheet(contents, nullptr));
+  std::shared_ptr<StyleSheetContents> contents = StyleSheetContents::Create(parser_context);
+  std::shared_ptr<CSSStyleSheet> sheet(new CSSStyleSheet(contents.get(), nullptr));
   ASSERT(false); // BKTODO:
 #if 0
   sheet->SetTitle(options.title());
@@ -129,48 +129,48 @@ std::unique_ptr<CSSStyleSheet> CSSStyleSheet::Create(Document& document,
   return sheet;
 }
 
-std::unique_ptr<CSSStyleSheet> CSSStyleSheet::Create(std::unique_ptr<StyleSheetContents> &sheet,
+std::shared_ptr<CSSStyleSheet> CSSStyleSheet::Create(StyleSheetContents* sheet,
                                                      CSSImportRule* owner_rule) {
-  return base::WrapUnique(new CSSStyleSheet(sheet, owner_rule));
+  return base::WrapShared(new CSSStyleSheet(sheet, owner_rule));
 }
 
-std::unique_ptr<CSSStyleSheet> CSSStyleSheet::Create(std::unique_ptr<StyleSheetContents> &sheet,
+std::shared_ptr<CSSStyleSheet> CSSStyleSheet::Create(StyleSheetContents* sheet,
                                                      Node& owner_node) {
-  return base::WrapUnique(new CSSStyleSheet(sheet, owner_node, false, TextPosition::MinimumPosition()));
+  return base::WrapShared(new CSSStyleSheet(sheet, owner_node, false, TextPosition::MinimumPosition()));
 }
 
-std::unique_ptr<CSSStyleSheet> CSSStyleSheet::CreateInline(std::unique_ptr<StyleSheetContents> &sheet,
+std::shared_ptr<CSSStyleSheet> CSSStyleSheet::CreateInline(StyleSheetContents* sheet,
                                                            Node& owner_node,
                                                            const TextPosition& start_position) {
   DCHECK(sheet);
-  return base::WrapUnique(new CSSStyleSheet(sheet, owner_node, true, start_position));
+  return base::WrapShared(new CSSStyleSheet(sheet, owner_node, true, start_position));
 }
 
-std::unique_ptr<CSSStyleSheet> CSSStyleSheet::CreateInline(Node& owner_node,
+std::shared_ptr<CSSStyleSheet> CSSStyleSheet::CreateInline(Node& owner_node,
                                                            const GURL& base_url,
                                                            const TextPosition& start_position,
                                                            const WTF::TextEncoding& encoding) {
   std::unique_ptr<CSSParserContext> parser_context = CSSParserContext::Create(
       owner_node.GetDocument(), owner_node.GetDocument().BaseURL(),
       false /* is_opaque_response_from_service_worker */, encoding);
-  std::unique_ptr<StyleSheetContents> sheet =
+  std::shared_ptr<StyleSheetContents> sheet =
       StyleSheetContents::Create(String::FromStdUTF8(base_url.spec()), parser_context);
-  return base::WrapUnique(new CSSStyleSheet(sheet, owner_node, true, start_position));
+  return base::WrapShared(new CSSStyleSheet(sheet.get(), owner_node, true, start_position));
 }
 
-CSSStyleSheet::CSSStyleSheet(std::unique_ptr<StyleSheetContents> &contents,
+CSSStyleSheet::CSSStyleSheet(StyleSheetContents* contents,
                              CSSImportRule* owner_rule)
-    : contents_(std::move(contents)),
+    : contents_(nullptr != contents ? contents->shared_from_this() : nullptr),
       owner_rule_(owner_rule),
       start_position_(TextPosition::MinimumPosition()) {
   contents_->RegisterClient(this);
 }
 
-CSSStyleSheet::CSSStyleSheet(std::unique_ptr<StyleSheetContents> &contents,
+CSSStyleSheet::CSSStyleSheet(StyleSheetContents* contents,
                              Node& owner_node,
                              bool is_inline_stylesheet,
                              const TextPosition& start_position)
-    : contents_(std::move(contents)),
+    : contents_(nullptr != contents ? contents->shared_from_this() : nullptr),
       is_inline_stylesheet_(is_inline_stylesheet),
       owner_node_(&owner_node),
       start_position_(start_position) {

@@ -33,6 +33,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_CSS_CSS_IMPORT_RULE_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_CSS_IMPORT_RULE_H_
 
+#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/css/css_rule.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 
@@ -45,8 +46,8 @@ class CSSImportRule final : public CSSRule {
   DEFINE_WRAPPERTYPEINFO();
 
  public:
-  static CSSImportRule* Create(StyleRuleImport* rule, CSSStyleSheet* sheet) {
-    return new CSSImportRule(rule, sheet);
+  static std::shared_ptr<CSSImportRule> Create(StyleRuleImport* rule, CSSStyleSheet* sheet) {
+    return base::WrapShared(new CSSImportRule(rule, sheet));
   }
 
   ~CSSImportRule() override;
@@ -63,9 +64,9 @@ class CSSImportRule final : public CSSRule {
 
   CSSRule::Type type() const override { return kImportRule; }
 
-  Member<StyleRuleImport> import_rule_;
-  mutable Member<MediaList> media_cssom_wrapper_;
-  mutable Member<CSSStyleSheet> style_sheet_cssom_wrapper_;
+  std::shared_ptr<StyleRuleImport> import_rule_;
+  mutable std::shared_ptr<MediaList> media_cssom_wrapper_;
+  mutable std::shared_ptr<CSSStyleSheet> style_sheet_cssom_wrapper_;
 };
 
 DEFINE_CSS_RULE_TYPE_CASTS(CSSImportRule, kImportRule);

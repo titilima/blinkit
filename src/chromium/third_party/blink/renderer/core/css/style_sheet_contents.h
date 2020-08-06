@@ -58,19 +58,20 @@ class StyleRuleNamespace;
 enum class ParseSheetResult;
 
 class CORE_EXPORT StyleSheetContents
-    : public GarbageCollectedFinalized<StyleSheetContents> {
+    : public GarbageCollectedFinalized<StyleSheetContents>
+    , public std::enable_shared_from_this<StyleSheetContents> {
  public:
-  static std::unique_ptr<StyleSheetContents> Create(std::unique_ptr<CSSParserContext> &context) {
-    return base::WrapUnique(new StyleSheetContents(nullptr, String(), context));
+  static std::shared_ptr<StyleSheetContents> Create(std::unique_ptr<CSSParserContext> &context) {
+    return base::WrapShared(new StyleSheetContents(nullptr, String(), context));
   }
-  static std::unique_ptr<StyleSheetContents> Create(const String& original_url,
+  static std::shared_ptr<StyleSheetContents> Create(const String& original_url,
                                                     std::unique_ptr<CSSParserContext> &context) {
-    return base::WrapUnique(new StyleSheetContents(nullptr, original_url, context));
+    return base::WrapShared(new StyleSheetContents(nullptr, original_url, context));
   }
-  static std::unique_ptr<StyleSheetContents> Create(StyleRuleImport* owner_rule,
+  static std::shared_ptr<StyleSheetContents> Create(StyleRuleImport* owner_rule,
                                                     const String& original_url,
                                                     std::unique_ptr<CSSParserContext> &context) {
-    return base::WrapUnique(new StyleSheetContents(owner_rule, original_url, context));
+    return base::WrapShared(new StyleSheetContents(owner_rule, original_url, context));
   }
 
   static const Document* SingleOwnerDocument(const StyleSheetContents*);

@@ -33,6 +33,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_CSS_MEDIA_LIST_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_MEDIA_LIST_H_
 
+#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/css/media_query.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
@@ -83,14 +84,14 @@ class MediaList final : public ScriptWrappable {
   DEFINE_WRAPPERTYPEINFO();
 
  public:
-  static MediaList* Create(scoped_refptr<MediaQuerySet> media_queries,
-                           CSSStyleSheet* parent_sheet) {
-    return new MediaList(std::move(media_queries), parent_sheet);
+  static std::shared_ptr<MediaList> Create(scoped_refptr<MediaQuerySet> media_queries,
+                                           CSSStyleSheet* parent_sheet) {
+    return base::WrapShared(new MediaList(std::move(media_queries), parent_sheet));
   }
 
-  static MediaList* Create(scoped_refptr<MediaQuerySet> media_queries,
+  static std::shared_ptr<MediaList> Create(scoped_refptr<MediaQuerySet> media_queries,
                            CSSRule* parent_rule) {
-    return new MediaList(std::move(media_queries), parent_rule);
+    return base::WrapShared(new MediaList(std::move(media_queries), parent_rule));
   }
 
   unsigned length() const { return media_queries_->QueryVector().size(); }
