@@ -43,6 +43,13 @@ run_script('build/scripts/make_css_property_names.py',  \
     '--output_dir ' + os.path.normpath('core') + GPERF_ARG  \
 )
 
+run_script('build/scripts/make_css_value_id_mappings.py',   \
+    os.path.normpath('core/css/css_properties.json5') + ' ' +   \
+    os.path.normpath('core/css/computed_style_field_aliases.json5') + ' ' + \
+    os.path.normpath('core/css/css_value_keywords.json5') + ' ' +   \
+    '--output_dir ' + os.path.normpath('core')  \
+)
+
 run_script('build/scripts/make_names.py',   \
     os.path.normpath('platform/fonts/font_family_names.json5') + ' ' +  \
     '--output_dir ' + os.path.normpath('platform')  \
