@@ -72,8 +72,6 @@ class StyleRuleKeyframes final : public StyleRuleBase {
 
   StyleRuleKeyframes* Copy() const { return new StyleRuleKeyframes(*this); }
 
-  void TraceAfterDispatch(blink::Visitor*);
-
   void StyleChanged() { version_++; }
   unsigned Version() const { return version_; }
 
@@ -131,7 +129,7 @@ class CSSKeyframesRule final : public CSSRule {
 
   Member<StyleRuleKeyframes> keyframes_rule_;
   mutable HeapVector<Member<CSSKeyframeRule>> child_rule_cssom_wrappers_;
-  mutable Member<CSSRuleList> rule_list_cssom_wrapper_;
+  mutable std::unique_ptr<CSSRuleList> rule_list_cssom_wrapper_;
   bool is_prefixed_;
 };
 

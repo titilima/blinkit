@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_parser_impl.cc
+// Description: CSSParserImpl Class
+//      Author: Ziming Li
+//     Created: 2020-08-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -61,9 +72,9 @@ AtomicString ConsumeStringOrURI(CSSParserTokenStream& stream) {
 
 }  // namespace
 
-CSSParserImpl::CSSParserImpl(const CSSParserContext* context,
+CSSParserImpl::CSSParserImpl(std::unique_ptr<CSSParserContext> &context,
                              StyleSheetContents* style_sheet)
-    : context_(context), style_sheet_(style_sheet), observer_(nullptr) {}
+    : context_(std::move(context)), style_sheet_(style_sheet), observer_(nullptr) {}
 
 MutableCSSPropertyValueSet::SetResult CSSParserImpl::ParseValue(
     MutableCSSPropertyValueSet* declaration,
@@ -220,7 +231,7 @@ bool CSSParserImpl::ParseDeclarationList(
 }
 
 StyleRuleBase* CSSParserImpl::ParseRule(const String& string,
-                                        const CSSParserContext* context,
+                                        std::unique_ptr<CSSParserContext> &context,
                                         StyleSheetContents* style_sheet,
                                         AllowedRulesType allowed_rules) {
   CSSParserImpl parser(context, style_sheet);

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_calculation_value.h
+// Description: CSSCalcValue Class
+//      Author: Ziming Li
+//     Created: 2020-08-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011, 2012 Google Inc. All rights reserved.
  *
@@ -143,8 +154,6 @@ class CORE_EXPORT CSSCalcValue : public GarbageCollected<CSSCalcValue> {
 
   String CustomCSSText() const;
   bool Equals(const CSSCalcValue&) const;
-
-  void Trace(blink::Visitor* visitor) { visitor->Trace(expression_); }
 
  private:
   CSSCalcValue(CSSCalcExpressionNode* expression, ValueRange range)

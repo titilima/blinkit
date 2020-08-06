@@ -708,15 +708,4 @@ bool CSSPrimitiveValue::Equals(const CSSPrimitiveValue& other) const {
   return false;
 }
 
-void CSSPrimitiveValue::TraceAfterDispatch(blink::Visitor* visitor) {
-  switch (GetType()) {
-    case UnitType::kCalc:
-      visitor->Trace(value_.calc);
-      break;
-    default:
-      break;
-  }
-  CSSValue::TraceAfterDispatch(visitor);
-}
-
 }  // namespace blink

@@ -292,8 +292,6 @@ class CORE_EXPORT CSSPrimitiveValue : public CSSValue {
 
   bool Equals(const CSSPrimitiveValue&) const;
 
-  void TraceAfterDispatch(blink::Visitor*);
-
   static UnitType CanonicalUnitTypeForCategory(UnitCategory);
   static double ConversionToCanonicalUnitsScaleFactor(UnitType);
 

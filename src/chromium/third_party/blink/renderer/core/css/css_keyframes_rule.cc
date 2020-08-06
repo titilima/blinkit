@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_keyframes_rule.h
+// Description: StyleRuleKeyframes Class
+//      Author: Ziming Li
+//     Created: 2020-08-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2012 Apple Inc. All rights reserved.
  *
@@ -70,11 +81,6 @@ int StyleRuleKeyframes::FindKeyframeIndex(const String& key) const {
   return -1;
 }
 
-void StyleRuleKeyframes::TraceAfterDispatch(blink::Visitor* visitor) {
-  visitor->Trace(keyframes_);
-  StyleRuleBase::TraceAfterDispatch(visitor);
-}
-
 CSSKeyframesRule::CSSKeyframesRule(StyleRuleKeyframes* keyframes_rule,
                                    CSSStyleSheet* parent)
     : CSSRule(parent),
@@ -96,7 +102,7 @@ void CSSKeyframesRule::appendRule(const ExecutionContext* execution_context,
             keyframes_rule_->Keyframes().size());
 
   CSSStyleSheet* style_sheet = parentStyleSheet();
-  CSSParserContext* context = CSSParserContext::CreateWithStyleSheet(
+  std::unique_ptr<CSSParserContext> context = CSSParserContext::CreateWithStyleSheet(
       ParserContext(execution_context->GetSecureContextMode()), style_sheet);
   StyleRuleKeyframe* keyframe =
       CSSParser::ParseKeyframeRule(context, rule_text);
@@ -171,12 +177,6 @@ CSSKeyframeRule* CSSKeyframesRule::Item(unsigned index) const {
 
 CSSKeyframeRule* CSSKeyframesRule::AnonymousIndexedGetter(
     unsigned index) const {
-  const Document* parent_document =
-      CSSStyleSheet::SingleOwnerDocument(parentStyleSheet());
-  if (parent_document) {
-    UseCounter::Count(*parent_document,
-                      WebFeature::kCSSKeyframesRuleAnonymousIndexedGetter);
-  }
   return Item(index);
 }
 
@@ -184,19 +184,12 @@ CSSRuleList* CSSKeyframesRule::cssRules() const {
   if (!rule_list_cssom_wrapper_)
     rule_list_cssom_wrapper_ = LiveCSSRuleList<CSSKeyframesRule>::Create(
         const_cast<CSSKeyframesRule*>(this));
-  return rule_list_cssom_wrapper_.Get();
+  return rule_list_cssom_wrapper_.get();
 }
 
 void CSSKeyframesRule::Reattach(StyleRuleBase* rule) {
   DCHECK(rule);
   keyframes_rule_ = ToStyleRuleKeyframes(rule);
-}
-
-void CSSKeyframesRule::Trace(blink::Visitor* visitor) {
-  CSSRule::Trace(visitor);
-  visitor->Trace(child_rule_cssom_wrappers_);
-  visitor->Trace(keyframes_rule_);
-  visitor->Trace(rule_list_cssom_wrapper_);
 }
 
 }  // namespace blink

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_rule_import.cc
+// Description: StyleRuleImport Class
+//      Author: Ziming Li
+//     Created: 2020-08-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -49,7 +60,9 @@ StyleRuleImport::StyleRuleImport(const String& href,
     media_queries_ = MediaQuerySet::Create(String());
 }
 
-StyleRuleImport::~StyleRuleImport() = default;
+StyleRuleImport::~StyleRuleImport() {
+  Dispose();
+}
 
 void StyleRuleImport::Dispose() {
   style_sheet_client_->Dispose();

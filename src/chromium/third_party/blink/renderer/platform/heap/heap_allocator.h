@@ -42,7 +42,16 @@ template <typename T, wtf_size_t inlineCapacity = 0>
 class HeapVector : public std::vector<T>
 {
 public:
+    HeapVector(void) = default;
+    explicit HeapVector(wtf_size_t size) : std::vector<T>(size) {}
+
     bool IsEmpty(void) const { return this->empty(); }
+    void Grow(wtf_size_t size) { this->resize(size); }
+
+    void EraseAt(wtf_size_t position)
+    {
+        this->erase(this->begin() + position);
+    }
 };
 
 } // namespace blink

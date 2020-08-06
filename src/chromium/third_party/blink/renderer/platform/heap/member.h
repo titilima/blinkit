@@ -51,7 +51,7 @@ class Member : public MemberBase<T>
 public:
     Member(T *ptr = nullptr) : MemberBase<T>(ptr) {}
     Member(const Member &other) : MemberBase<T>(other) {}
-    explicit Member(T &rawObj) : MemberBase<T>(rawObj) {}
+    Member(T &rawObj) : MemberBase<T>(rawObj) {}
 };
 
 template<typename T>

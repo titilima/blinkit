@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_value_pool.h
+// Description: CSSValuePool Class
+//      Author: Ziming Li
+//     Created: 2020-08-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011, 2012 Apple Inc. All rights reserved.
  *
@@ -98,6 +109,7 @@ class CORE_EXPORT CSSValuePool
     return number_value_cache_[int_value] = css_value;
   }
 
+#if 0 // BKTODO:
   // Hash map caches.
   ColorValueCache::AddResult GetColorCacheEntry(RGBA32 rgb_value) {
     // Just wipe out the cache and start rebuilding if it gets too big.
@@ -116,8 +128,7 @@ class CORE_EXPORT CSSValuePool
       font_face_value_cache_.clear();
     return font_face_value_cache_.insert(string, nullptr);
   }
-
-  void Trace(blink::Visitor*);
+#endif
 
  private:
   CSSValuePool();

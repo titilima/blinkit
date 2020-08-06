@@ -106,7 +106,7 @@ class CORE_EXPORT CSSParser {
       Element*);
 
   static std::unique_ptr<Vector<double>> ParseKeyframeKeyList(const String&);
-  static StyleRuleKeyframe* ParseKeyframeRule(const CSSParserContext*,
+  static StyleRuleKeyframe* ParseKeyframeRule(std::unique_ptr<CSSParserContext> &,
                                               const String&);
 
   static bool ParseSupportsCondition(const String&, SecureContextMode);

@@ -209,7 +209,7 @@ std::unique_ptr<Vector<double>> CSSParser::ParseKeyframeKeyList(
   return CSSParserImpl::ParseKeyframeKeyList(key_list);
 }
 
-StyleRuleKeyframe* CSSParser::ParseKeyframeRule(const CSSParserContext* context,
+StyleRuleKeyframe* CSSParser::ParseKeyframeRule(std::unique_ptr<CSSParserContext> &context,
                                                 const String& rule) {
   StyleRuleBase* keyframe = CSSParserImpl::ParseRule(
       rule, context, nullptr, CSSParserImpl::kKeyframeRules);
