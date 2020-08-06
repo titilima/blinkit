@@ -18,6 +18,9 @@
 #include "third_party/blink/renderer/core/dom/context_lifecycle_notifier.h"
 #include "third_party/blink/renderer/core/dom/context_lifecycle_observer.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/platform/supplementable.h"
+#endif
 
 class GURL;
 
@@ -42,11 +45,13 @@ class ExecutionContext : public ContextLifecycleNotifier
 public:
     bool IsContextDestroyed(void) const { return m_isContextDestroyed; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     SecureContextMode GetSecureContextMode(void) const
     {
         ASSERT(false); // BKTODO:
         return SecureContextMode::kSecureContext;
     }
+#endif
 
     virtual bool IsDocument(void) const { return false; }
 

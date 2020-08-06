@@ -1427,6 +1427,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\data_resource_helper.cc">
       <Filter>renderer\platform</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\supplementable.cc">
+      <Filter>renderer\platform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -3296,6 +3299,9 @@
       <Filter>renderer\platform\wtf</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\data_resource_helper.h">
+      <Filter>renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\supplementable.h">
       <Filter>renderer\platform</Filter>
     </ClInclude>
   </ItemGroup>

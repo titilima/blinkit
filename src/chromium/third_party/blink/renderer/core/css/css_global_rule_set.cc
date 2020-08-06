@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_global_rule_set.cc
+// Description: CSSGlobalRuleSet Class
+//      Author: Ziming Li
+//     Created: 2020-08-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -35,17 +46,11 @@ void CSSGlobalRuleSet::Update(Document& document) {
 
   is_dirty_ = false;
   features_.Clear();
-  has_fullscreen_ua_style_ = false;
 
   CSSDefaultStyleSheets& default_style_sheets =
       CSSDefaultStyleSheets::Instance();
-  if (default_style_sheets.DefaultStyle()) {
+  if (default_style_sheets.DefaultStyle())
     features_.Add(default_style_sheets.DefaultStyle()->Features());
-    has_fullscreen_ua_style_ = default_style_sheets.FullscreenStyleSheet();
-  }
-
-  if (document.IsViewSource())
-    features_.Add(default_style_sheets.DefaultViewSourceStyle()->Features());
 
   if (watched_selectors_rule_set_)
     features_.Add(watched_selectors_rule_set_->Features());
@@ -56,12 +61,7 @@ void CSSGlobalRuleSet::Update(Document& document) {
 void CSSGlobalRuleSet::Dispose() {
   features_.Clear();
   watched_selectors_rule_set_ = nullptr;
-  has_fullscreen_ua_style_ = false;
   is_dirty_ = true;
-}
-
-void CSSGlobalRuleSet::Trace(blink::Visitor* visitor) {
-  visitor->Trace(watched_selectors_rule_set_);
 }
 
 }  // namespace blink

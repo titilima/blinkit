@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: supplementable.h
+// Description: Supplementable Classes
+//      Author: Ziming Li
+//     Created: 2020-08-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google, Inc. All Rights Reserved.
  *
@@ -26,10 +37,9 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_SUPPLEMENTABLE_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_SUPPLEMENTABLE_H_
 
-#include "third_party/blink/renderer/platform/bindings/trace_wrapper_member.h"
+#include <unordered_map>
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
-#include "third_party/blink/renderer/platform/wtf/hash_map.h"
 #include "third_party/blink/renderer/platform/wtf/noncopyable.h"
 
 #if DCHECK_IS_ON()
@@ -131,7 +141,7 @@ class Supplement : public GarbageCollectedMixin {
 
   template <typename SupplementType>
   static void ProvideTo(Supplementable<T>& supplementable,
-                        SupplementType* supplement) {
+                        std::unique_ptr<SupplementType> &supplement) {
     supplementable.ProvideSupplement(supplement);
   }
 
@@ -147,10 +157,6 @@ class Supplement : public GarbageCollectedMixin {
                : nullptr;
   }
 
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(supplementable_);
-  }
-
  private:
   Member<T> supplementable_;
 };
@@ -161,7 +167,7 @@ class Supplementable : public GarbageCollectedMixin {
 
  public:
   template <typename SupplementType>
-  void ProvideSupplement(SupplementType* supplement) {
+  void ProvideSupplement(std::unique_ptr<SupplementType> &supplement) {
 #if DCHECK_IS_ON()
     DCHECK_EQ(creation_thread_id_, CurrentThread());
 #endif
@@ -169,7 +175,7 @@ class Supplementable : public GarbageCollectedMixin {
         std::is_array<decltype(SupplementType::kSupplementName)>::value,
         "Declare a const char array kSupplementName. See Supplementable.h for "
         "details.");
-    this->supplements_.Set(SupplementType::kSupplementName, supplement);
+    this->supplements_.insert({ SupplementType::kSupplementName, supplement });
   }
 
   template <typename SupplementType>
@@ -194,7 +200,7 @@ class Supplementable : public GarbageCollectedMixin {
         "Declare a const char array kSupplementName. See Supplementable.h for "
         "details.");
     return static_cast<SupplementType*>(
-        this->supplements_.at(SupplementType::kSupplementName));
+        this->supplements_.at(SupplementType::kSupplementName).get());
   }
 
   void ReattachThread() {
@@ -203,12 +209,8 @@ class Supplementable : public GarbageCollectedMixin {
 #endif
   }
 
-  void Trace(blink::Visitor* visitor) override { visitor->Trace(supplements_); }
-
  protected:
-  using SupplementMap = HeapHashMap<const char*,
-                                    TraceWrapperMember<Supplement<T>>,
-                                    PtrHash<const char>>;
+  using SupplementMap = std::unordered_map<const char *, std::unique_ptr<Supplement<T>>>;
   SupplementMap supplements_;
 
   Supplementable()
@@ -224,16 +226,6 @@ class Supplementable : public GarbageCollectedMixin {
   ThreadIdentifier attached_thread_id_;
   ThreadIdentifier creation_thread_id_;
 #endif
-};
-
-template <typename T>
-struct ThreadingTrait<Supplement<T>> {
-  static const ThreadAffinity kAffinity = ThreadingTrait<T>::kAffinity;
-};
-
-template <typename T>
-struct ThreadingTrait<Supplementable<T>> {
-  static const ThreadAffinity kAffinity = ThreadingTrait<T>::Affinity;
 };
 
 }  // namespace blink

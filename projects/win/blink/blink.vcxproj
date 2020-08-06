@@ -508,6 +508,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\network\server_timing_header.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\scheduler\main_thread\frame_scheduler_impl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\shared_buffer.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\supplementable.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\hyphenation.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\layout_locale.cc" />
@@ -1074,6 +1075,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\scroll\scroll_snap_data.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\scroll\scroll_types.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\shared_buffer.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\supplementable.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character_property.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\hyphenation.h" />

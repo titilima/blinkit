@@ -111,6 +111,9 @@ class Document : public ContainerNode
                , public TreeScope
                , public DocumentShutdownNotifier
                , public SynchronousMutationNotifier
+#ifndef BLINKIT_CRAWLER_ONLY
+               , public Supplementable<Document>
+#endif
 {
 public:
     ~Document(void) override;
