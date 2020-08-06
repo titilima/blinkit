@@ -1430,6 +1430,15 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\supplementable.cc">
       <Filter>renderer\platform</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_keyframe.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\keyframe_style_rule_css_style_declaration.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_css_style_declaration.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -3303,6 +3312,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\supplementable.h">
       <Filter>renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_keyframe.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\keyframe_style_rule_css_style_declaration.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_css_style_declaration.h">
+      <Filter>renderer\core\css</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

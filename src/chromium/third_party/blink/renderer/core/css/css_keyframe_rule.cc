@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_keyframe_rule.cc
+// Description: CSSKeyframeRule Class
+//      Author: Ziming Li
+//     Created: 2020-08-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2012 Apple Inc. All rights reserved.
  *
@@ -56,18 +67,12 @@ CSSStyleDeclaration* CSSKeyframeRule::style() const {
   if (!properties_cssom_wrapper_)
     properties_cssom_wrapper_ = KeyframeStyleRuleCSSStyleDeclaration::Create(
         keyframe_->MutableProperties(), const_cast<CSSKeyframeRule*>(this));
-  return properties_cssom_wrapper_.Get();
+  return properties_cssom_wrapper_.get();
 }
 
 void CSSKeyframeRule::Reattach(StyleRuleBase*) {
   // No need to reattach, the underlying data is shareable on mutation.
   NOTREACHED();
-}
-
-void CSSKeyframeRule::Trace(blink::Visitor* visitor) {
-  visitor->Trace(keyframe_);
-  visitor->Trace(properties_cssom_wrapper_);
-  CSSRule::Trace(visitor);
 }
 
 }  // namespace blink

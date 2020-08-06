@@ -79,10 +79,10 @@ static const MediaQueryEvaluator& PrintEval() {
 }
 #endif
 
-static std::unique_ptr<StyleSheetContents> ParseUASheet(const String& str) {
+static std::shared_ptr<StyleSheetContents> ParseUASheet(const String& str) {
   // UA stylesheets always parse in the insecure context mode.
   std::unique_ptr<CSSParserContext> context = CSSParserContext::Create(kUASheetMode, SecureContextMode::kInsecureContext);
-  std::unique_ptr<StyleSheetContents> sheet = StyleSheetContents::Create(context);
+  std::shared_ptr<StyleSheetContents> sheet = StyleSheetContents::Create(context);
   sheet->ParseString(str);
   // User Agent stylesheets are parsed once for the lifetime of the renderer
   // process and are intentionally leaked.

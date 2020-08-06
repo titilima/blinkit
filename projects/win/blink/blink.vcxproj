@@ -221,6 +221,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\invalidation\invalidation_set.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\invalidation\pending_invalidations.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\invalidation\style_invalidator.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\keyframe_style_rule_css_style_declaration.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\layout_tree_rebuild_root.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\media_feature_names.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\media_list.cc" />
@@ -260,7 +261,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_engine_context.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_invalidation_root.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_recalc_root.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_css_style_declaration.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_import.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_keyframe.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_sheet.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_sheet_collection.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_sheet_contents.cc" />
@@ -660,6 +663,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\invalidation\node_invalidation_sets.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\invalidation\pending_invalidations.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\invalidation\style_invalidator.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\keyframe_style_rule_css_style_declaration.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\layout_tree_rebuild_root.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\media_feature_names.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\media_list.h" />
@@ -709,7 +713,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_invalidation_root.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_recalc_root.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_css_style_declaration.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_import.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_keyframe.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_sheet.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_sheet_collection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_sheet_contents.h" />

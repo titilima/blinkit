@@ -94,13 +94,13 @@ class CSSDefaultStyleSheets
   std::unique_ptr<RuleSet> default_style_;
   std::unique_ptr<RuleSet> default_quirks_style_;
 
-  std::unique_ptr<StyleSheetContents> default_style_sheet_;
-  std::unique_ptr<StyleSheetContents> mobile_viewport_style_sheet_;
-  std::unique_ptr<StyleSheetContents> television_viewport_style_sheet_;
-  std::unique_ptr<StyleSheetContents> xhtml_mobile_profile_style_sheet_;
-  std::unique_ptr<StyleSheetContents> quirks_style_sheet_;
-  std::unique_ptr<StyleSheetContents> mathml_style_sheet_;
-  std::unique_ptr<StyleSheetContents> media_controls_style_sheet_;
+  std::shared_ptr<StyleSheetContents> default_style_sheet_;
+  std::shared_ptr<StyleSheetContents> mobile_viewport_style_sheet_;
+  std::shared_ptr<StyleSheetContents> television_viewport_style_sheet_;
+  std::shared_ptr<StyleSheetContents> xhtml_mobile_profile_style_sheet_;
+  std::shared_ptr<StyleSheetContents> quirks_style_sheet_;
+  std::shared_ptr<StyleSheetContents> mathml_style_sheet_;
+  std::shared_ptr<StyleSheetContents> media_controls_style_sheet_;
 
   std::unique_ptr<UAStyleSheetLoader> media_controls_style_sheet_loader_;
   DISALLOW_COPY_AND_ASSIGN(CSSDefaultStyleSheets);

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_rule_css_style_declaration.h
+// Description: StyleRuleCSSStyleDeclaration Class
+//      Author: Ziming Li
+//     Created: 2020-08-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -26,8 +37,8 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_CSS_STYLE_RULE_CSS_STYLE_DECLARATION_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_STYLE_RULE_CSS_STYLE_DECLARATION_H_
 
+#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/css/property_set_css_style_declaration.h"
-#include "third_party/blink/renderer/platform/bindings/trace_wrapper_member.h"
 
 namespace blink {
 
@@ -36,19 +47,17 @@ class MutableCSSPropertyValueSet;
 
 class StyleRuleCSSStyleDeclaration : public PropertySetCSSStyleDeclaration {
  public:
-  static StyleRuleCSSStyleDeclaration* Create(
+  static std::shared_ptr<StyleRuleCSSStyleDeclaration> Create(
       MutableCSSPropertyValueSet& property_set,
       CSSRule* parent_rule) {
-    return new StyleRuleCSSStyleDeclaration(property_set, parent_rule);
+    return base::WrapShared(new StyleRuleCSSStyleDeclaration(property_set, parent_rule));
   }
+  ~StyleRuleCSSStyleDeclaration() override;
 
   void Reattach(MutableCSSPropertyValueSet&);
 
-  void Trace(blink::Visitor*) override;
-
  protected:
   StyleRuleCSSStyleDeclaration(MutableCSSPropertyValueSet&, CSSRule*);
-  ~StyleRuleCSSStyleDeclaration() override;
 
   CSSStyleSheet* ParentStyleSheet() const override;
 
@@ -58,7 +67,7 @@ class StyleRuleCSSStyleDeclaration : public PropertySetCSSStyleDeclaration {
   void DidMutate(MutationType) override;
   PropertyRegistry* GetPropertyRegistry() const final;
 
-  TraceWrapperMember<CSSRule> parent_rule_;
+  Member<CSSRule> parent_rule_;
 };
 
 }  // namespace blink
