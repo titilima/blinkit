@@ -272,11 +272,6 @@ class CSSCalcPrimitiveValue final : public CSSCalcExpressionNode {
     return kCalcAdd;
   }
 
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(value_);
-    CSSCalcExpressionNode::Trace(visitor);
-  }
-
  private:
   CSSCalcPrimitiveValue(CSSPrimitiveValue* value, bool is_integer)
       : CSSCalcExpressionNode(UnitCategory(value->TypeWithCalcResolved()),
@@ -618,12 +613,6 @@ class CSSCalcBinaryOperation final : public CSSCalcExpressionNode {
     }
     NOTREACHED();
     return CSSPrimitiveValue::UnitType::kUnknown;
-  }
-
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(left_side_);
-    visitor->Trace(right_side_);
-    CSSCalcExpressionNode::Trace(visitor);
   }
 
  private:

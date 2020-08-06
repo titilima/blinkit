@@ -104,8 +104,6 @@ class CSSCalcExpressionNode : public GarbageCollected<CSSCalcExpressionNode> {
   bool IsNestedCalc() const { return is_nested_calc_; }
   void SetIsNestedCalc() { is_nested_calc_ = true; }
 
-  virtual void Trace(blink::Visitor* visitor) {}
-
  protected:
   CSSCalcExpressionNode(CalculationCategory category, bool is_integer)
       : category_(category), is_integer_(is_integer) {

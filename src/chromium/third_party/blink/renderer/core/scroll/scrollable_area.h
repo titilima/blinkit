@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scrollable_area.h
+// Description: ScrollableArea Class
+//      Author: Ziming Li
+//     Created: 2020-08-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2011 Apple Inc. All Rights Reserved.
  *
@@ -31,7 +42,7 @@
 #include "third_party/blink/renderer/platform/geometry/float_quad.h"
 #include "third_party/blink/renderer/platform/geometry/layout_rect.h"
 #include "third_party/blink/renderer/platform/graphics/color.h"
-#include "third_party/blink/renderer/platform/graphics/compositor_element_id.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/compositor_element_id.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/scroll/scroll_types.h"
@@ -269,10 +280,12 @@ class CORE_EXPORT ScrollableArea : public GarbageCollectedMixin {
   // of the top-level FrameView.
   virtual IntRect ScrollableAreaBoundingBox() const = 0;
 
+#if 0 // BKTODO:
   virtual CompositorElementId GetCompositorElementId() const = 0;
 
   virtual CompositorElementId GetScrollbarElementId(
       ScrollbarOrientation orientation);
+#endif
 
   virtual bool ScrollAnimatorEnabled() const { return false; }
 
@@ -374,10 +387,6 @@ class CORE_EXPORT ScrollableArea : public GarbageCollectedMixin {
   // Returns true if the scroller adjusts the scroll offset to compensate
   // for layout movements (bit.ly/scroll-anchoring).
   virtual bool ShouldPerformScrollAnchoring() const { return false; }
-
-  // Need to promptly let go of owned animator objects.
-  EAGERLY_FINALIZE();
-  void Trace(blink::Visitor*) override;
 
   virtual void ClearScrollableArea();
 

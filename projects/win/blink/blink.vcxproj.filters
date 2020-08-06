@@ -1475,6 +1475,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_value_list.cc">
       <Filter>renderer\core\css</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scrollable_area.cc">
+      <Filter>renderer\core\scroll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_quad.cc">
+      <Filter>renderer\platform\geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -3408,6 +3414,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css_value_id_mappings_generated.h">
       <Filter>renderer\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_primitive_value_mappings.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scrollable_area.h">
+      <Filter>renderer\core\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_quad.h">
+      <Filter>renderer\platform\geometry</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

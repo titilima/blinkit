@@ -409,6 +409,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\script_element_base.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\script_loader.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\script_runner.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scrollable_area.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scrollbar.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scroll_customization.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\applied_text_decoration.cc" />
@@ -477,6 +478,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\double_size.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_point.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_point_3d.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_quad.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_rect.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_rect_outsets.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_size.cc" />
@@ -662,6 +664,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_keyframe_rule.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_markup.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_primitive_value.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_primitive_value_mappings.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_property_source_data.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_property_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_property_value_set.h" />
@@ -923,6 +926,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\script_loader.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\script_runner.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\script_scheduling_type.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scrollable_area.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scrollbar.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scroll_customization.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\applied_text_decoration.h" />
@@ -1034,6 +1038,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\double_size.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_point.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_point_3d.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_quad.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_rect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_rect_outsets.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_size.h" />

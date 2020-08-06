@@ -47,6 +47,7 @@ public:
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(IsolatedCodeCache)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(WorkStealingInScriptRunner)
 
+    BLINKIT_DISABLE_FEATURE(FractionalScrollOffsets)
     BLINKIT_DISABLE_FEATURE(FullscreenUnprefixed)
     BLINKIT_DISABLE_FEATURE(LayoutNG)
     BLINKIT_DISABLE_FEATURE(SlimmingPaintV2)

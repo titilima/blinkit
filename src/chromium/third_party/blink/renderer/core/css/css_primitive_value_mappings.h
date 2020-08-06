@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_primitive_value_mappings.h
+// Description: CSS Primitive Value Mappings
+//      Author: Ziming Li
+//     Created: 2020-08-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007 Alexey Proskuryakov <ap@nypop.com>.
  * Copyright (C) 2008, 2009, 2010, 2011 Apple Inc. All rights reserved.
@@ -950,23 +961,20 @@ template <>
 inline CSSIdentifierValue::CSSIdentifierValue(LineCap e)
     : CSSValue(kIdentifierClass) {
   switch (e) {
-    case kButtCap:
-      value_id_ = CSSValueButt;
-      break;
     case kRoundCap:
       value_id_ = CSSValueRound;
       break;
     case kSquareCap:
       value_id_ = CSSValueSquare;
       break;
+    default:
+      NOTREACHED();
   }
 }
 
 template <>
 inline LineCap CSSIdentifierValue::ConvertTo() const {
   switch (value_id_) {
-    case CSSValueButt:
-      return kButtCap;
     case CSSValueRound:
       return kRoundCap;
     case CSSValueSquare:
@@ -983,27 +991,19 @@ template <>
 inline CSSIdentifierValue::CSSIdentifierValue(LineJoin e)
     : CSSValue(kIdentifierClass) {
   switch (e) {
-    case kMiterJoin:
-      value_id_ = CSSValueMiter;
-      break;
     case kRoundJoin:
       value_id_ = CSSValueRound;
       break;
-    case kBevelJoin:
-      value_id_ = CSSValueBevel;
-      break;
+    default:
+      NOTREACHED();
   }
 }
 
 template <>
 inline LineJoin CSSIdentifierValue::ConvertTo() const {
   switch (value_id_) {
-    case CSSValueMiter:
-      return kMiterJoin;
     case CSSValueRound:
       return kRoundJoin;
-    case CSSValueBevel:
-      return kBevelJoin;
     default:
       break;
   }
@@ -1038,425 +1038,6 @@ inline WindRule CSSIdentifierValue::ConvertTo() const {
 
   NOTREACHED();
   return RULE_NONZERO;
-}
-
-template <>
-inline CSSIdentifierValue::CSSIdentifierValue(EAlignmentBaseline e)
-    : CSSValue(kIdentifierClass) {
-  switch (e) {
-    case AB_AUTO:
-      value_id_ = CSSValueAuto;
-      break;
-    case AB_BASELINE:
-      value_id_ = CSSValueBaseline;
-      break;
-    case AB_BEFORE_EDGE:
-      value_id_ = CSSValueBeforeEdge;
-      break;
-    case AB_TEXT_BEFORE_EDGE:
-      value_id_ = CSSValueTextBeforeEdge;
-      break;
-    case AB_MIDDLE:
-      value_id_ = CSSValueMiddle;
-      break;
-    case AB_CENTRAL:
-      value_id_ = CSSValueCentral;
-      break;
-    case AB_AFTER_EDGE:
-      value_id_ = CSSValueAfterEdge;
-      break;
-    case AB_TEXT_AFTER_EDGE:
-      value_id_ = CSSValueTextAfterEdge;
-      break;
-    case AB_IDEOGRAPHIC:
-      value_id_ = CSSValueIdeographic;
-      break;
-    case AB_ALPHABETIC:
-      value_id_ = CSSValueAlphabetic;
-      break;
-    case AB_HANGING:
-      value_id_ = CSSValueHanging;
-      break;
-    case AB_MATHEMATICAL:
-      value_id_ = CSSValueMathematical;
-      break;
-  }
-}
-
-template <>
-inline EAlignmentBaseline CSSIdentifierValue::ConvertTo() const {
-  switch (value_id_) {
-    case CSSValueAuto:
-      return AB_AUTO;
-    case CSSValueBaseline:
-      return AB_BASELINE;
-    case CSSValueBeforeEdge:
-      return AB_BEFORE_EDGE;
-    case CSSValueTextBeforeEdge:
-      return AB_TEXT_BEFORE_EDGE;
-    case CSSValueMiddle:
-      return AB_MIDDLE;
-    case CSSValueCentral:
-      return AB_CENTRAL;
-    case CSSValueAfterEdge:
-      return AB_AFTER_EDGE;
-    case CSSValueTextAfterEdge:
-      return AB_TEXT_AFTER_EDGE;
-    case CSSValueIdeographic:
-      return AB_IDEOGRAPHIC;
-    case CSSValueAlphabetic:
-      return AB_ALPHABETIC;
-    case CSSValueHanging:
-      return AB_HANGING;
-    case CSSValueMathematical:
-      return AB_MATHEMATICAL;
-    default:
-      break;
-  }
-
-  NOTREACHED();
-  return AB_AUTO;
-}
-
-template <>
-inline CSSIdentifierValue::CSSIdentifierValue(EBufferedRendering e)
-    : CSSValue(kIdentifierClass) {
-  switch (e) {
-    case BR_AUTO:
-      value_id_ = CSSValueAuto;
-      break;
-    case BR_DYNAMIC:
-      value_id_ = CSSValueDynamic;
-      break;
-    case BR_STATIC:
-      value_id_ = CSSValueStatic;
-      break;
-  }
-}
-
-template <>
-inline EBufferedRendering CSSIdentifierValue::ConvertTo() const {
-  switch (value_id_) {
-    case CSSValueAuto:
-      return BR_AUTO;
-    case CSSValueDynamic:
-      return BR_DYNAMIC;
-    case CSSValueStatic:
-      return BR_STATIC;
-    default:
-      break;
-  }
-
-  NOTREACHED();
-  return BR_AUTO;
-}
-
-template <>
-inline CSSIdentifierValue::CSSIdentifierValue(EColorInterpolation e)
-    : CSSValue(kIdentifierClass) {
-  switch (e) {
-    case CI_AUTO:
-      value_id_ = CSSValueAuto;
-      break;
-    case CI_SRGB:
-      value_id_ = CSSValueSRGB;
-      break;
-    case CI_LINEARRGB:
-      value_id_ = CSSValueLinearrgb;
-      break;
-  }
-}
-
-template <>
-inline EColorInterpolation CSSIdentifierValue::ConvertTo() const {
-  switch (value_id_) {
-    case CSSValueSRGB:
-      return CI_SRGB;
-    case CSSValueLinearrgb:
-      return CI_LINEARRGB;
-    case CSSValueAuto:
-      return CI_AUTO;
-    default:
-      break;
-  }
-
-  NOTREACHED();
-  return CI_AUTO;
-}
-
-template <>
-inline CSSIdentifierValue::CSSIdentifierValue(EColorRendering e)
-    : CSSValue(kIdentifierClass) {
-  switch (e) {
-    case CR_AUTO:
-      value_id_ = CSSValueAuto;
-      break;
-    case CR_OPTIMIZESPEED:
-      value_id_ = CSSValueOptimizespeed;
-      break;
-    case CR_OPTIMIZEQUALITY:
-      value_id_ = CSSValueOptimizequality;
-      break;
-  }
-}
-
-template <>
-inline EColorRendering CSSIdentifierValue::ConvertTo() const {
-  switch (value_id_) {
-    case CSSValueOptimizespeed:
-      return CR_OPTIMIZESPEED;
-    case CSSValueOptimizequality:
-      return CR_OPTIMIZEQUALITY;
-    case CSSValueAuto:
-      return CR_AUTO;
-    default:
-      break;
-  }
-
-  NOTREACHED();
-  return CR_AUTO;
-}
-
-template <>
-inline CSSIdentifierValue::CSSIdentifierValue(EDominantBaseline e)
-    : CSSValue(kIdentifierClass) {
-  switch (e) {
-    case DB_AUTO:
-      value_id_ = CSSValueAuto;
-      break;
-    case DB_USE_SCRIPT:
-      value_id_ = CSSValueUseScript;
-      break;
-    case DB_NO_CHANGE:
-      value_id_ = CSSValueNoChange;
-      break;
-    case DB_RESET_SIZE:
-      value_id_ = CSSValueResetSize;
-      break;
-    case DB_CENTRAL:
-      value_id_ = CSSValueCentral;
-      break;
-    case DB_MIDDLE:
-      value_id_ = CSSValueMiddle;
-      break;
-    case DB_TEXT_BEFORE_EDGE:
-      value_id_ = CSSValueTextBeforeEdge;
-      break;
-    case DB_TEXT_AFTER_EDGE:
-      value_id_ = CSSValueTextAfterEdge;
-      break;
-    case DB_IDEOGRAPHIC:
-      value_id_ = CSSValueIdeographic;
-      break;
-    case DB_ALPHABETIC:
-      value_id_ = CSSValueAlphabetic;
-      break;
-    case DB_HANGING:
-      value_id_ = CSSValueHanging;
-      break;
-    case DB_MATHEMATICAL:
-      value_id_ = CSSValueMathematical;
-      break;
-  }
-}
-
-template <>
-inline EDominantBaseline CSSIdentifierValue::ConvertTo() const {
-  switch (value_id_) {
-    case CSSValueAuto:
-      return DB_AUTO;
-    case CSSValueUseScript:
-      return DB_USE_SCRIPT;
-    case CSSValueNoChange:
-      return DB_NO_CHANGE;
-    case CSSValueResetSize:
-      return DB_RESET_SIZE;
-    case CSSValueIdeographic:
-      return DB_IDEOGRAPHIC;
-    case CSSValueAlphabetic:
-      return DB_ALPHABETIC;
-    case CSSValueHanging:
-      return DB_HANGING;
-    case CSSValueMathematical:
-      return DB_MATHEMATICAL;
-    case CSSValueCentral:
-      return DB_CENTRAL;
-    case CSSValueMiddle:
-      return DB_MIDDLE;
-    case CSSValueTextAfterEdge:
-      return DB_TEXT_AFTER_EDGE;
-    case CSSValueTextBeforeEdge:
-      return DB_TEXT_BEFORE_EDGE;
-    default:
-      break;
-  }
-
-  NOTREACHED();
-  return DB_AUTO;
-}
-
-template <>
-inline CSSIdentifierValue::CSSIdentifierValue(EShapeRendering e)
-    : CSSValue(kIdentifierClass) {
-  switch (e) {
-    case SR_AUTO:
-      value_id_ = CSSValueAuto;
-      break;
-    case SR_OPTIMIZESPEED:
-      value_id_ = CSSValueOptimizespeed;
-      break;
-    case SR_CRISPEDGES:
-      value_id_ = CSSValueCrispedges;
-      break;
-    case SR_GEOMETRICPRECISION:
-      value_id_ = CSSValueGeometricprecision;
-      break;
-  }
-}
-
-template <>
-inline EShapeRendering CSSIdentifierValue::ConvertTo() const {
-  switch (value_id_) {
-    case CSSValueAuto:
-      return SR_AUTO;
-    case CSSValueOptimizespeed:
-      return SR_OPTIMIZESPEED;
-    case CSSValueCrispedges:
-      return SR_CRISPEDGES;
-    case CSSValueGeometricprecision:
-      return SR_GEOMETRICPRECISION;
-    default:
-      break;
-  }
-
-  NOTREACHED();
-  return SR_AUTO;
-}
-
-template <>
-inline CSSIdentifierValue::CSSIdentifierValue(ETextAnchor e)
-    : CSSValue(kIdentifierClass) {
-  switch (e) {
-    case TA_START:
-      value_id_ = CSSValueStart;
-      break;
-    case TA_MIDDLE:
-      value_id_ = CSSValueMiddle;
-      break;
-    case TA_END:
-      value_id_ = CSSValueEnd;
-      break;
-  }
-}
-
-template <>
-inline ETextAnchor CSSIdentifierValue::ConvertTo() const {
-  switch (value_id_) {
-    case CSSValueStart:
-      return TA_START;
-    case CSSValueMiddle:
-      return TA_MIDDLE;
-    case CSSValueEnd:
-      return TA_END;
-    default:
-      break;
-  }
-
-  NOTREACHED();
-  return TA_START;
-}
-
-template <>
-inline CSSIdentifierValue::CSSIdentifierValue(EVectorEffect e)
-    : CSSValue(kIdentifierClass) {
-  switch (e) {
-    case VE_NONE:
-      value_id_ = CSSValueNone;
-      break;
-    case VE_NON_SCALING_STROKE:
-      value_id_ = CSSValueNonScalingStroke;
-      break;
-  }
-}
-
-template <>
-inline EVectorEffect CSSIdentifierValue::ConvertTo() const {
-  switch (value_id_) {
-    case CSSValueNone:
-      return VE_NONE;
-    case CSSValueNonScalingStroke:
-      return VE_NON_SCALING_STROKE;
-    default:
-      break;
-  }
-
-  NOTREACHED();
-  return VE_NONE;
-}
-
-template <>
-inline CSSIdentifierValue::CSSIdentifierValue(EPaintOrderType e)
-    : CSSValue(kIdentifierClass) {
-  switch (e) {
-    case PT_FILL:
-      value_id_ = CSSValueFill;
-      break;
-    case PT_STROKE:
-      value_id_ = CSSValueStroke;
-      break;
-    case PT_MARKERS:
-      value_id_ = CSSValueMarkers;
-      break;
-    default:
-      NOTREACHED();
-      value_id_ = CSSValueFill;
-      break;
-  }
-}
-
-template <>
-inline EPaintOrderType CSSIdentifierValue::ConvertTo() const {
-  switch (value_id_) {
-    case CSSValueFill:
-      return PT_FILL;
-    case CSSValueStroke:
-      return PT_STROKE;
-    case CSSValueMarkers:
-      return PT_MARKERS;
-    default:
-      break;
-  }
-
-  NOTREACHED();
-  return PT_NONE;
-}
-
-template <>
-inline CSSIdentifierValue::CSSIdentifierValue(EMaskType e)
-    : CSSValue(kIdentifierClass) {
-  switch (e) {
-    case MT_LUMINANCE:
-      value_id_ = CSSValueLuminance;
-      break;
-    case MT_ALPHA:
-      value_id_ = CSSValueAlpha;
-      break;
-  }
-}
-
-template <>
-inline EMaskType CSSIdentifierValue::ConvertTo() const {
-  switch (value_id_) {
-    case CSSValueLuminance:
-      return MT_LUMINANCE;
-    case CSSValueAlpha:
-      return MT_ALPHA;
-    default:
-      break;
-  }
-
-  NOTREACHED();
-  return MT_LUMINANCE;
 }
 
 template <>
