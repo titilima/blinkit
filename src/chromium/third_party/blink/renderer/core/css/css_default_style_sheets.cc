@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_default_style_sheets.cc
+// Description: CSSDefaultStyleSheets Class
+//      Author: Ziming Li
+//     Created: 2020-08-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -33,8 +44,13 @@
 #include "third_party/blink/renderer/core/css/media_query_evaluator.h"
 #include "third_party/blink/renderer/core/css/rule_set.h"
 #include "third_party/blink/renderer/core/css/style_sheet_contents.h"
+#include "third_party/blink/renderer/core/css/style_sheet_contents.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_anchor_element.h"
 #include "third_party/blink/renderer/core/html/html_html_element.h"
+#else
+#include "third_party/blink/renderer/core/html_names.h"
+#endif
 #include "third_party/blink/renderer/core/layout/layout_theme.h"
 #include "third_party/blink/renderer/core/mathml_names.h"
 #include "third_party/blink/renderer/platform/data_resource_helper.h"
@@ -43,31 +59,30 @@
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 CSSDefaultStyleSheets& CSSDefaultStyleSheets::Instance() {
-  DEFINE_STATIC_LOCAL(Persistent<CSSDefaultStyleSheets>,
-                      css_default_style_sheets, (new CSSDefaultStyleSheets));
-  return *css_default_style_sheets;
+  static CSSDefaultStyleSheets css_default_style_sheets;
+  return css_default_style_sheets;
 }
 
 static const MediaQueryEvaluator& ScreenEval() {
-  DEFINE_STATIC_LOCAL(Persistent<MediaQueryEvaluator>, static_screen_eval,
-                      (new MediaQueryEvaluator("screen")));
-  return *static_screen_eval;
+  static MediaQueryEvaluator static_screen_eval("screen");
+  return static_screen_eval;
 }
 
+#if 0 // BKTODO:
 static const MediaQueryEvaluator& PrintEval() {
   DEFINE_STATIC_LOCAL(Persistent<MediaQueryEvaluator>, static_print_eval,
                       (new MediaQueryEvaluator("print")));
   return *static_print_eval;
 }
+#endif
 
-static StyleSheetContents* ParseUASheet(const String& str) {
+static std::unique_ptr<StyleSheetContents> ParseUASheet(const String& str) {
   // UA stylesheets always parse in the insecure context mode.
-  StyleSheetContents* sheet =
-      StyleSheetContents::Create(CSSParserContext::Create(
-          kUASheetMode, SecureContextMode::kInsecureContext));
+  std::unique_ptr<CSSParserContext> context = CSSParserContext::Create(kUASheetMode, SecureContextMode::kInsecureContext);
+  std::unique_ptr<StyleSheetContents> sheet = StyleSheetContents::Create(context);
   sheet->ParseString(str);
   // User Agent stylesheets are parsed once for the lifetime of the renderer
   // process and are intentionally leaked.
@@ -91,87 +106,75 @@ CSSDefaultStyleSheets::CSSDefaultStyleSheets()
 
 #if DCHECK_IS_ON()
   default_style_->CompactRulesIfNeeded();
-  default_print_style_->CompactRulesIfNeeded();
   default_quirks_style_->CompactRulesIfNeeded();
   DCHECK(default_style_->UniversalRules()->IsEmpty());
-  DCHECK(default_print_style_->UniversalRules()->IsEmpty());
   DCHECK(default_quirks_style_->UniversalRules()->IsEmpty());
 #endif
 }
 
 void CSSDefaultStyleSheets::PrepareForLeakDetection() {
   // Clear the optional style sheets.
+  ASSERT(false); // BKTODO:
+#if 0
   media_controls_style_sheet_.Clear();
   mobile_viewport_style_sheet_.Clear();
   television_viewport_style_sheet_.Clear();
   xhtml_mobile_profile_style_sheet_.Clear();
-  svg_style_sheet_.Clear();
   mathml_style_sheet_.Clear();
-  fullscreen_style_sheet_.Clear();
+#endif
   // Initialize the styles that have the lazily loaded style sheets.
   InitializeDefaultStyles();
-  default_view_source_style_.Clear();
 }
 
 void CSSDefaultStyleSheets::InitializeDefaultStyles() {
   // This must be called only from constructor / PrepareForLeakDetection.
   default_style_ = RuleSet::Create();
-  default_print_style_ = RuleSet::Create();
   default_quirks_style_ = RuleSet::Create();
 
   default_style_->AddRulesFromSheet(DefaultStyleSheet(), ScreenEval());
-  default_print_style_->AddRulesFromSheet(DefaultStyleSheet(), PrintEval());
   default_quirks_style_->AddRulesFromSheet(QuirksStyleSheet(), ScreenEval());
-}
-
-RuleSet* CSSDefaultStyleSheets::DefaultViewSourceStyle() {
-  if (!default_view_source_style_) {
-    default_view_source_style_ = RuleSet::Create();
-    // Loaded stylesheet is leaked on purpose.
-    StyleSheetContents* stylesheet =
-        ParseUASheet(GetDataResourceAsASCIIString("view-source.css"));
-    default_view_source_style_->AddRulesFromSheet(stylesheet, ScreenEval());
-  }
-  return default_view_source_style_;
 }
 
 StyleSheetContents*
 CSSDefaultStyleSheets::EnsureXHTMLMobileProfileStyleSheet() {
   if (!xhtml_mobile_profile_style_sheet_) {
+    ASSERT(false); // BKTODO:
+#if 0
     xhtml_mobile_profile_style_sheet_ =
         ParseUASheet(GetDataResourceAsASCIIString("xhtmlmp.css"));
+#endif
   }
-  return xhtml_mobile_profile_style_sheet_;
+  return xhtml_mobile_profile_style_sheet_.get();
 }
 
 StyleSheetContents* CSSDefaultStyleSheets::EnsureMobileViewportStyleSheet() {
   if (!mobile_viewport_style_sheet_) {
+    ASSERT(false); // BKTODO:
+#if 0
     mobile_viewport_style_sheet_ =
         ParseUASheet(GetDataResourceAsASCIIString("viewportAndroid.css"));
+#endif
   }
-  return mobile_viewport_style_sheet_;
+  return mobile_viewport_style_sheet_.get();
 }
 
 StyleSheetContents*
 CSSDefaultStyleSheets::EnsureTelevisionViewportStyleSheet() {
   if (!television_viewport_style_sheet_) {
+    ASSERT(false); // BKTODO:
+#if 0
     television_viewport_style_sheet_ =
         ParseUASheet(GetDataResourceAsASCIIString("viewportTelevision.css"));
+#endif
   }
-  return television_viewport_style_sheet_;
+  return television_viewport_style_sheet_.get();
 }
 
 bool CSSDefaultStyleSheets::EnsureDefaultStyleSheetsForElement(
     const Element& element) {
   bool changed_default_style = false;
-  // FIXME: We should assert that the sheet only styles SVG elements.
-  if (element.IsSVGElement() && !svg_style_sheet_) {
-    svg_style_sheet_ = ParseUASheet(GetDataResourceAsASCIIString("svg.css"));
-    default_style_->AddRulesFromSheet(SvgStyleSheet(), ScreenEval());
-    default_print_style_->AddRulesFromSheet(SvgStyleSheet(), PrintEval());
-    changed_default_style = true;
-  }
-
+  ASSERT(false); // BKTODO:
+#if 0
   // FIXME: We should assert that the sheet only styles MathML elements.
   if (element.namespaceURI() == MathMLNames::mathmlNamespaceURI &&
       !mathml_style_sheet_) {
@@ -193,6 +196,7 @@ bool CSSDefaultStyleSheets::EnsureDefaultStyleSheetsForElement(
                                             PrintEval());
     changed_default_style = true;
   }
+#endif
 
   DCHECK(!default_style_->Features().HasIdsInSelectors());
   return changed_default_style;
@@ -201,34 +205,6 @@ bool CSSDefaultStyleSheets::EnsureDefaultStyleSheetsForElement(
 void CSSDefaultStyleSheets::SetMediaControlsStyleSheetLoader(
     std::unique_ptr<UAStyleSheetLoader> loader) {
   media_controls_style_sheet_loader_.swap(loader);
-}
-
-void CSSDefaultStyleSheets::EnsureDefaultStyleSheetForFullscreen() {
-  if (fullscreen_style_sheet_)
-    return;
-
-  String fullscreen_rules = GetDataResourceAsASCIIString("fullscreen.css") +
-                            LayoutTheme::GetTheme().ExtraFullscreenStyleSheet();
-  fullscreen_style_sheet_ = ParseUASheet(fullscreen_rules);
-  default_style_->AddRulesFromSheet(FullscreenStyleSheet(), ScreenEval());
-  default_quirks_style_->AddRulesFromSheet(FullscreenStyleSheet(),
-                                           ScreenEval());
-}
-
-void CSSDefaultStyleSheets::Trace(blink::Visitor* visitor) {
-  visitor->Trace(default_style_);
-  visitor->Trace(default_quirks_style_);
-  visitor->Trace(default_print_style_);
-  visitor->Trace(default_view_source_style_);
-  visitor->Trace(default_style_sheet_);
-  visitor->Trace(mobile_viewport_style_sheet_);
-  visitor->Trace(television_viewport_style_sheet_);
-  visitor->Trace(xhtml_mobile_profile_style_sheet_);
-  visitor->Trace(quirks_style_sheet_);
-  visitor->Trace(svg_style_sheet_);
-  visitor->Trace(mathml_style_sheet_);
-  visitor->Trace(media_controls_style_sheet_);
-  visitor->Trace(fullscreen_style_sheet_);
 }
 
 }  // namespace blink

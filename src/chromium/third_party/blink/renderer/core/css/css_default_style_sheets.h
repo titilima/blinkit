@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_default_style_sheets.h
+// Description: CSSDefaultStyleSheets Class
+//      Author: Ziming Li
+//     Created: 2020-08-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc.
@@ -43,26 +54,19 @@ class CSSDefaultStyleSheets
   CORE_EXPORT static CSSDefaultStyleSheets& Instance();
 
   bool EnsureDefaultStyleSheetsForElement(const Element&);
-  void EnsureDefaultStyleSheetForFullscreen();
 
-  RuleSet* DefaultStyle() { return default_style_.Get(); }
-  RuleSet* DefaultQuirksStyle() { return default_quirks_style_.Get(); }
-  RuleSet* DefaultPrintStyle() { return default_print_style_.Get(); }
-  RuleSet* DefaultViewSourceStyle();
+  RuleSet* DefaultStyle() { return default_style_.get(); }
+  RuleSet* DefaultQuirksStyle() { return default_quirks_style_.get(); }
 
   StyleSheetContents* EnsureMobileViewportStyleSheet();
   StyleSheetContents* EnsureTelevisionViewportStyleSheet();
   StyleSheetContents* EnsureXHTMLMobileProfileStyleSheet();
 
-  StyleSheetContents* DefaultStyleSheet() { return default_style_sheet_.Get(); }
-  StyleSheetContents* QuirksStyleSheet() { return quirks_style_sheet_.Get(); }
-  StyleSheetContents* SvgStyleSheet() { return svg_style_sheet_.Get(); }
-  StyleSheetContents* MathmlStyleSheet() { return mathml_style_sheet_.Get(); }
+  StyleSheetContents* DefaultStyleSheet() { return default_style_sheet_.get(); }
+  StyleSheetContents* QuirksStyleSheet() { return quirks_style_sheet_.get(); }
+  StyleSheetContents* MathmlStyleSheet() { return mathml_style_sheet_.get(); }
   StyleSheetContents* MediaControlsStyleSheet() {
-    return media_controls_style_sheet_.Get();
-  }
-  StyleSheetContents* FullscreenStyleSheet() {
-    return fullscreen_style_sheet_.Get();
+    return media_controls_style_sheet_.get();
   }
 
   CORE_EXPORT void PrepareForLeakDetection();
@@ -83,26 +87,20 @@ class CSSDefaultStyleSheets
     return media_controls_style_sheet_loader_.get();
   }
 
-  void Trace(blink::Visitor*);
-
  private:
   CSSDefaultStyleSheets();
   void InitializeDefaultStyles();
 
-  Member<RuleSet> default_style_;
-  Member<RuleSet> default_quirks_style_;
-  Member<RuleSet> default_print_style_;
-  Member<RuleSet> default_view_source_style_;
+  std::unique_ptr<RuleSet> default_style_;
+  std::unique_ptr<RuleSet> default_quirks_style_;
 
-  Member<StyleSheetContents> default_style_sheet_;
-  Member<StyleSheetContents> mobile_viewport_style_sheet_;
-  Member<StyleSheetContents> television_viewport_style_sheet_;
-  Member<StyleSheetContents> xhtml_mobile_profile_style_sheet_;
-  Member<StyleSheetContents> quirks_style_sheet_;
-  Member<StyleSheetContents> svg_style_sheet_;
-  Member<StyleSheetContents> mathml_style_sheet_;
-  Member<StyleSheetContents> media_controls_style_sheet_;
-  Member<StyleSheetContents> fullscreen_style_sheet_;
+  std::unique_ptr<StyleSheetContents> default_style_sheet_;
+  std::unique_ptr<StyleSheetContents> mobile_viewport_style_sheet_;
+  std::unique_ptr<StyleSheetContents> television_viewport_style_sheet_;
+  std::unique_ptr<StyleSheetContents> xhtml_mobile_profile_style_sheet_;
+  std::unique_ptr<StyleSheetContents> quirks_style_sheet_;
+  std::unique_ptr<StyleSheetContents> mathml_style_sheet_;
+  std::unique_ptr<StyleSheetContents> media_controls_style_sheet_;
 
   std::unique_ptr<UAStyleSheetLoader> media_controls_style_sheet_loader_;
   DISALLOW_COPY_AND_ASSIGN(CSSDefaultStyleSheets);

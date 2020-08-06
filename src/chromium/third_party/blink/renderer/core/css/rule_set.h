@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: rule_set.h
+// Description: RuleSet Class
+//      Author: Ziming Li
+//     Created: 2020-08-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc.
@@ -24,6 +35,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_RULE_SET_H_
 
 #include "base/macros.h"
+#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/css/css_keyframes_rule.h"
 #include "third_party/blink/renderer/core/css/media_query_evaluator.h"
@@ -55,12 +67,10 @@ class MinimalRuleData {
   DISALLOW_NEW();
 
  public:
-  MinimalRuleData(StyleRule* rule, unsigned selector_index, AddRuleFlags flags)
-      : rule_(rule), selector_index_(selector_index), flags_(flags) {}
+  MinimalRuleData(std::unique_ptr<StyleRule> &rule, unsigned selector_index, AddRuleFlags flags)
+      : rule_(std::move(rule)), selector_index_(selector_index), flags_(flags) {}
 
-  void Trace(blink::Visitor*);
-
-  Member<StyleRule> rule_;
+  std::unique_ptr<StyleRule> rule_;
   unsigned selector_index_;
   AddRuleFlags flags_;
 };
@@ -79,13 +89,13 @@ namespace blink {
 // and makes it accessible cheaply.
 class CORE_EXPORT RuleData : public GarbageCollected<RuleData> {
  public:
-  RuleData(StyleRule*,
+  RuleData(std::unique_ptr<StyleRule> &,
            unsigned selector_index,
            unsigned position,
            AddRuleFlags);
 
   unsigned GetPosition() const { return position_; }
-  StyleRule* Rule() const { return rule_; }
+  StyleRule* Rule() const { return rule_.get(); }
   const CSSSelector& Selector() const {
     return rule_->SelectorList().SelectorAt(selector_index_);
   }
@@ -112,10 +122,8 @@ class CORE_EXPORT RuleData : public GarbageCollected<RuleData> {
     return descendant_selector_identifier_hashes_;
   }
 
-  void Trace(blink::Visitor*);
-
  private:
-  Member<StyleRule> rule_;
+  std::unique_ptr<StyleRule> rule_;
   // This number is picked fairly arbitrary. If lowered, be aware that there
   // might be sites and extensions using style rules with selector lists
   // exceeding the number of simple selectors to fit in this bitfield.
@@ -161,7 +169,7 @@ static_assert(sizeof(RuleData) == sizeof(SameSizeAsRuleData),
 // ElementRuleCollector::CollectMatchingRules.
 class CORE_EXPORT RuleSet : public GarbageCollectedFinalized<RuleSet> {
  public:
-  static RuleSet* Create() { return new RuleSet; }
+  static std::unique_ptr<RuleSet> Create() { return base::WrapUnique(new RuleSet); }
 
   void AddRulesFromSheet(StyleSheetContents*,
                          const MediaQueryEvaluator&,
