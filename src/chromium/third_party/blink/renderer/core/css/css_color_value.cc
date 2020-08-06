@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_color_value.cc
+// Description: CSSColorValue Class
+//      Author: Ziming Li
+//     Created: 2020-08-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -9,7 +20,7 @@
 namespace blink {
 namespace cssvalue {
 
-CSSColorValue* CSSColorValue::Create(RGBA32 color) {
+std::shared_ptr<CSSColorValue> CSSColorValue::Create(RGBA32 color) {
   // These are the empty and deleted values of the hash table.
   if (color == Color::kTransparent)
     return CssValuePool().TransparentColor();
@@ -19,11 +30,11 @@ CSSColorValue* CSSColorValue::Create(RGBA32 color) {
   if (color == Color::kBlack)
     return CssValuePool().BlackColor();
 
-  CSSValuePool::ColorValueCache::AddResult entry =
+  std::shared_ptr<CSSColorValue> &entry =
       CssValuePool().GetColorCacheEntry(color);
-  if (entry.is_new_entry)
-    entry.stored_value->value = new CSSColorValue(color);
-  return entry.stored_value->value;
+  if (!entry)
+    entry.reset(new CSSColorValue(color));
+  return entry;
 }
 
 }  // namespace cssvalue

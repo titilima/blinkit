@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_color_value.h
+// Description: CSSColorValue Class
+//      Author: Ziming Li
+//     Created: 2020-08-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -19,7 +30,7 @@ namespace cssvalue {
 class CSSColorValue : public CSSValue {
  public:
   // TODO(sashab): Make this create() method take a Color instead.
-  static CSSColorValue* Create(RGBA32 color);
+  static std::shared_ptr<CSSColorValue> Create(RGBA32 color);
 
   String CustomCSSText() const {
     return color_.SerializedAsCSSComponentValue();
@@ -29,10 +40,6 @@ class CSSColorValue : public CSSValue {
 
   bool Equals(const CSSColorValue& other) const {
     return color_ == other.color_;
-  }
-
-  void TraceAfterDispatch(blink::Visitor* visitor) {
-    CSSValue::TraceAfterDispatch(visitor);
   }
 
  private:

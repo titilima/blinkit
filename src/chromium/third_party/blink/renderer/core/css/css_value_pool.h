@@ -64,7 +64,7 @@ class CORE_EXPORT CSSValuePool
   static const int kMaximumCacheableIntegerValue = 255;
   using CSSColorValue = cssvalue::CSSColorValue;
   using CSSUnsetValue = cssvalue::CSSUnsetValue;
-  using ColorValueCache = HeapHashMap<unsigned, Member<CSSColorValue>>;
+  using ColorValueCache = HeapHashMap<unsigned, std::shared_ptr<CSSColorValue>>;
   static const unsigned kMaximumColorCacheSize = 512;
   using FontFaceValueCache =
       HeapHashMap<AtomicString, Member<const CSSValueList>>;
@@ -72,9 +72,9 @@ class CORE_EXPORT CSSValuePool
   using FontFamilyValueCache = HeapHashMap<String, Member<CSSFontFamilyValue>>;
 
   // Cached individual values.
-  CSSColorValue* TransparentColor() { return color_transparent_; }
-  CSSColorValue* WhiteColor() { return color_white_; }
-  CSSColorValue* BlackColor() { return color_black_; }
+  std::shared_ptr<CSSColorValue> TransparentColor() { return color_transparent_; }
+  std::shared_ptr<CSSColorValue> WhiteColor() { return color_white_; }
+  std::shared_ptr<CSSColorValue> BlackColor() { return color_black_; }
   CSSInheritedValue* InheritedValue() { return inherited_value_; }
   CSSInitialValue* InitialValue() { return initial_value_; }
   CSSUnsetValue* UnsetValue() { return unset_value_; }
@@ -109,14 +109,14 @@ class CORE_EXPORT CSSValuePool
     return number_value_cache_[int_value] = css_value;
   }
 
-#if 0 // BKTODO:
   // Hash map caches.
-  ColorValueCache::AddResult GetColorCacheEntry(RGBA32 rgb_value) {
+  std::shared_ptr<CSSColorValue>& GetColorCacheEntry(RGBA32 rgb_value) {
     // Just wipe out the cache and start rebuilding if it gets too big.
     if (color_value_cache_.size() > kMaximumColorCacheSize)
       color_value_cache_.clear();
-    return color_value_cache_.insert(rgb_value, nullptr);
+    return color_value_cache_[rgb_value];
   }
+#if 0 // BKTODO:
   FontFamilyValueCache::AddResult GetFontFamilyCacheEntry(
       const String& family_name) {
     return font_family_value_cache_.insert(family_name, nullptr);
@@ -137,9 +137,9 @@ class CORE_EXPORT CSSValuePool
   Member<CSSInheritedValue> inherited_value_;
   Member<CSSInitialValue> initial_value_;
   Member<CSSUnsetValue> unset_value_;
-  Member<CSSColorValue> color_transparent_;
-  Member<CSSColorValue> color_white_;
-  Member<CSSColorValue> color_black_;
+  std::shared_ptr<CSSColorValue> color_transparent_;
+  std::shared_ptr<CSSColorValue> color_white_;
+  std::shared_ptr<CSSColorValue> color_black_;
 
   // Vector caches.
   HeapVector<Member<CSSIdentifierValue>, numCSSValueKeywords>
