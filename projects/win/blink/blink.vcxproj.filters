@@ -1481,6 +1481,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_quad.cc">
       <Filter>renderer\platform\geometry</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style_property_shorthand.cc">
+      <Filter>renderer\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_property_serializer.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -3423,6 +3429,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_quad.h">
       <Filter>renderer\platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\hex_number.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style_property_shorthand.h">
+      <Filter>renderer\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_property_serializer.h">
+      <Filter>renderer\core\css</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

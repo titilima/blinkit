@@ -272,6 +272,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_engine.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_engine_context.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_invalidation_root.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_property_serializer.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_recalc_root.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_css_style_declaration.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_import.cc" />
@@ -430,6 +431,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_image.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_inherited_variables.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_non_inherited_variables.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style_property_shorthand.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\xlink_names.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\xmlns_names.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\xml_names.cc" />
@@ -740,6 +742,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_engine.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_engine_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_invalidation_root.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_property_serializer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_recalc_root.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_css_style_declaration.h" />
@@ -974,6 +977,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_self_alignment_data.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\text_size_adjust.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\transform_origin.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style_property_shorthand.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\svg_names.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\xlink_names.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\xmlns_names.h" />
@@ -1180,6 +1184,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\hash_table.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\hash_table_deleted_value_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\hash_traits.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\hex_number.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\leak_annotations.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\math_extras.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\noncopyable.h" />
