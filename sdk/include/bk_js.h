@@ -72,6 +72,9 @@ BK_DECLARE_HANDLE(BkJSObjectWriter, JSObjectWriterImpl);
  * Context
  */
 
+BKEXPORT BkJSContext BKAPI BkCreateJSContext(void);
+BKEXPORT int BKAPI BkDestroyJSContext(BkJSContext context);
+
 BKEXPORT BkJSObject BKAPI BkGetUserObject(BkJSContext context);
 
 BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, BkJSValue *retVal);

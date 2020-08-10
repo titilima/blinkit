@@ -17,7 +17,7 @@
 #include "bkcommon/buffer_impl.hpp"
 #include "bkcommon/response_impl.h"
 #include "bkcommon/bk_strings.h"
-#include "blinkit/js/context_impl.h"
+#include "blinkit/js/browser_context.h"
 #include "blinkit/js/heap_retained.h"
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
@@ -369,7 +369,7 @@ duk_ret_t DukXHR::Open(
         m_URL = URL.StdUtf8();
     }
 
-    String userAgent = ContextImpl::From(ctx)->GetFrame().Client()->UserAgent();
+    String userAgent = BrowserContext::From(ctx)->GetFrame().Client()->UserAgent();
     m_requestHeaders[Strings::HttpHeader::UserAgent] = userAgent.StdUtf8();
 
     ASSERT(username.empty() && password.empty()); // BKTODO:

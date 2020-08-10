@@ -11,13 +11,14 @@
 
 #include "function_manager.h"
 
+#include "blinkit/js/context_impl.h"
 #include "blinkit/js/js_callee_context_impl.h"
 #include "blinkit/js/js_value_impl.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
 
 namespace BlinKit {
 
-FunctionManager::FunctionManager(std::unique_ptr<JSObjectImpl> &userObject) : m_userObject(userObject)
+FunctionManager::FunctionManager(ContextImpl &ctx) : m_ctx(ctx)
 {
 }
 
@@ -35,7 +36,7 @@ duk_ret_t FunctionManager::CalleeImpl(duk_context *ctx)
 
     JSCalleeContextImpl calleeContext(ctx, argc);
     if (nullptr != fd->thisObject)
-        calleeContext.SetThis(fd->thisObject->get());
+        calleeContext.SetThis(fd->thisObject);
     fd->impl(&calleeContext, fd->userData);
     return calleeContext.Return();
 }
@@ -48,7 +49,7 @@ void FunctionManager::Flush(duk_context *ctx, const std::string &name, FunctionD
     int stashIdx = duk_normalize_index(ctx, -1);
 
     if (nullptr != data.thisObject)
-        data.thisObject->get()->PushTo(ctx);
+        data.thisObject->PushTo(ctx);
     else
         duk_push_global_object(ctx);
     int idx = duk_normalize_index(ctx, -1);
@@ -75,14 +76,16 @@ int FunctionManager::Register(duk_context *ctx, int memberContext, const char *f
         case BK_CTX_GLOBAL:
             break;
         case BK_CTX_USER_OBJECT:
-            if (!m_userObject)
+            if (JSObjectImpl *userObject = m_ctx.GetContextObject(BK_CTX_USER_OBJECT))
+                data.thisObject = userObject;
+            else
                 return BK_ERR_FORBIDDEN;
-            data.thisObject = &m_userObject;
             break;
         default:
             NOTREACHED();
             return BK_ERR_FORBIDDEN;
     }
+    data.memberContext = memberContext;
     data.impl = impl;
     data.userData = userData;
 
@@ -113,9 +116,10 @@ void FunctionManager::RegisterTo(duk_context *ctx)
     int globalIdx, userIdx;
     duk_push_global_object(ctx);
     globalIdx = duk_normalize_index(ctx, -1);
-    if (m_userObject)
+    JSObjectImpl *userObject = m_ctx.GetContextObject(BK_CTX_USER_OBJECT);
+    if (nullptr != userObject)
     {
-        m_userObject->PushTo(ctx);
+        userObject->PushTo(ctx);
         userIdx = duk_normalize_index(ctx, -1);
     }
     else
@@ -126,12 +130,19 @@ void FunctionManager::RegisterTo(duk_context *ctx)
     for (auto &it : m_functions)
     {
         int idx = -1;
-        if (nullptr == it.second.thisObject)
-            idx = globalIdx;
-        else if (it.second.thisObject == &m_userObject)
-            idx = userIdx;
-        else
-            NOTREACHED();
+        switch (it.second.memberContext)
+        {
+            case BK_CTX_GLOBAL:
+                idx = globalIdx;
+                break;
+            case BK_CTX_USER_OBJECT:
+                it.second.thisObject = userObject;
+                idx = userIdx;
+                break;
+            default:
+                NOTREACHED();
+        }
+
         if (-1 == idx)
             continue;
 

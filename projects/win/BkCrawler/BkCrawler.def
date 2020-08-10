@@ -38,6 +38,8 @@ BkArrayGetMember
 BkValueToObject
 BkObjectToJSON
 BkObjectGetMember
+BkCreateJSContext
+BkDestroyJSContext
 BkGetUserObject
 BkEvaluate
 BkPrepareFunctionCall

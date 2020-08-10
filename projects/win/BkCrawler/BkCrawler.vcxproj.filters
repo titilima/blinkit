@@ -117,6 +117,15 @@
     <ClInclude Include="..\..\..\src\blinkit\js\js_callee_context_impl.h">
       <Filter>js</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\js\browser_context.h">
+      <Filter>js</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\js\crawler_context.h">
+      <Filter>js</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\js\simple_context.h">
+      <Filter>js</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BkCrawler.def">
@@ -188,6 +197,15 @@
       <Filter>js</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\js\js_callee_context_impl.cpp">
+      <Filter>js</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\js\browser_context.cpp">
+      <Filter>js</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\js\crawler_context.cpp">
+      <Filter>js</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\js\simple_context.cpp">
       <Filter>js</Filter>
     </ClCompile>
   </ItemGroup>

@@ -11,106 +11,26 @@
 
 #include "context_impl.h"
 
-#include "base/strings/string_util.h"
-#include "blinkit/crawler/crawler_impl.h"
+#include "blinkit/js/browser_context.h"
 #include "blinkit/js/function_manager.h"
 #include "blinkit/js/js_caller_context_impl.h"
 #include "blinkit/js/js_value_impl.h"
+#include "blinkit/js/simple_context.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_anchor_element.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_attr.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_console.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_document.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_event.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_global.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_image_element.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_location.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_navigator.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_script_element.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_window.h"
-#include "third_party/blink/renderer/bindings/core/duk/duk_xhr.h"
-#include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
-#include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/platform/bindings/gc_pool.h"
 
-using namespace blink;
 using namespace BlinKit;
 
-static const char Globals[] = "globals";
-static const char NativeContext[] = "nativeContext";
-
-static void DefaultConsoleOutput(int type, const char *msg)
+ContextImpl::ContextImpl(void)
+    : m_ctx(duk_create_heap_default())
 {
-    BkLog("%s", msg);
-}
-
-ContextImpl::ContextImpl(const LocalFrame &frame)
-    : m_frame(frame)
-    , m_ctx(duk_create_heap_default())
-    , m_consoleMessager(std::bind(DefaultConsoleOutput, std::placeholders::_1, std::placeholders::_2))
-#ifdef BLINKIT_CRAWLER_ONLY
-    , m_prototypeMap(DukElement::PrototypeMapForCrawler())
-#else
-#endif
-{
-    InitializeHeapStash();
-    NewGlobalObject();
 }
 
 ContextImpl::~ContextImpl(void)
 {
-    m_userObject.reset();
-
     GCPool pool(m_ctx);
     duk_destroy_heap(m_ctx);
     pool.DetachContext();
-}
-
-void ContextImpl::Clear(void)
-{
-    GCPool gcPool(m_ctx);
-    NewGlobalObject();
-    duk_gc(m_ctx, 0);
-}
-
-void ContextImpl::CreateUserObject(const CrawlerImpl &crawler)
-{
-    if (!m_objectScript.has_value())
-    {
-        std::string objectScript;
-        if (crawler.GetConfig(BK_CFG_OBJECT_SCRIPT, objectScript))
-            base::TrimWhitespaceASCII(objectScript, base::TRIM_ALL, &objectScript);
-        m_objectScript = objectScript;
-    }
-
-    if (m_objectScript->empty())
-        return;
-
-    m_userObject.reset();
-
-    std::string errorLog;
-    const auto callback = [this, &errorLog](duk_context *ctx)
-    {
-        if (!duk_is_error(ctx, -1))
-        {
-            if (duk_is_object(ctx, -1))
-            {
-                ASSERT(!m_userObject);
-                m_userObject = std::make_unique<JSObjectImpl>(ctx, -1);
-                return;
-            }
-
-            duk_type_error(ctx, "Object type expected.");
-        }
-
-        size_t len = 0;
-        const char *s = duk_safe_to_lstring(ctx, -1, &len);
-        errorLog.assign(s, len);
-    };
-    Eval(*m_objectScript, callback, "UserScript");
-
-    if (!errorLog.empty())
-        m_consoleMessager(BK_CONSOLE_ERROR, errorLog.c_str());
 }
 
 void ContextImpl::Eval(const std::string_view code, const Callback &callback, const char *fileName)
@@ -134,108 +54,6 @@ void ContextImpl::Eval(const std::string_view code, const Callback &callback, co
     callback(m_ctx);
 }
 
-void ContextImpl::ExposeGlobals(duk_context *ctx, duk_idx_t dst)
-{
-    Duk::StackGuard sg(ctx);
-
-    duk_push_heap_stash(ctx);
-    duk_get_prop_string(ctx, -1, Globals);
-
-    static const duk_uint_t flags =
-        DUK_ENUM_OWN_PROPERTIES_ONLY
-        | DUK_ENUM_INCLUDE_NONENUMERABLE
-        | DUK_ENUM_INCLUDE_SYMBOLS;
-    duk_enum(ctx, -1, flags);
-    while (duk_next(ctx, -1, true))
-        duk_put_prop(ctx, dst);
-}
-
-ContextImpl* ContextImpl::From(duk_context *ctx)
-{
-    ContextImpl *ret = nullptr;
-
-    duk_push_heap_stash(ctx);
-    duk_get_prop_string(ctx, -1, NativeContext);
-    ret = reinterpret_cast<ContextImpl *>(duk_get_pointer(ctx, -1));
-    duk_pop_2(ctx);
-
-    return ret;
-}
-
-ContextImpl* ContextImpl::From(ExecutionContext *executionContext)
-{
-    if (executionContext->IsDocument())
-    {
-        Document *document = static_cast<Document *>(executionContext);
-        return document->GetFrame()->GetScriptController().GetContext();
-    }
-
-    NOTREACHED();
-    return nullptr;
-}
-
-void ContextImpl::InitializeHeapStash(void)
-{
-    duk_push_heap_stash(m_ctx);
-
-    duk_push_pointer(m_ctx, this);
-    duk_put_prop_string(m_ctx, -2, NativeContext);
-
-    duk_push_global_object(m_ctx);
-    DukGlobal::Attach(m_ctx, -1);
-    duk_put_prop_string(m_ctx, -2, Globals);
-
-#ifdef BLINKIT_CRAWLER_ONLY
-    ASSERT(m_frame.Client()->IsCrawler());
-
-    RegisterPrototypesForCrawler(m_ctx);
-
-    CrawlerImpl *crawler = ToCrawlerImpl(m_frame.Client());
-    crawler->ApplyConsoleMessager(m_consoleMessager);
-#else
-    if (frame.Client()->IsCrawler())
-    {
-        RegisterPrototypesForCrawler(m_ctx);
-
-        CrawlerImpl *crawler = ToCrawlerImpl(m_frame.Client());
-        crawler->ApplyLogger(m_logger);
-    }
-    else
-    {
-        ASSERT(false); // BKTODO:
-    }
-#endif
-
-    duk_pop(m_ctx);
-}
-
-const char* ContextImpl::LookupPrototypeName(const std::string &tagName) const
-{
-    auto it = m_prototypeMap.find(tagName);
-    if (std::end(m_prototypeMap) == it)
-        return DukElement::ProtoName;
-    return it->second;
-}
-
-void ContextImpl::NewGlobalObject(void)
-{
-    duk_idx_t idx = duk_push_object(m_ctx);
-    ExposeGlobals(m_ctx, idx);
-    duk_set_global_object(m_ctx);
-
-    if (CrawlerImpl *crawler = ToCrawlerImpl(m_frame.Client()))
-    {
-        /**
-         * User object SHOULD BE created after new global object set.
-         * Otherwise, all the contexts of user object member functions won't be in correct status.
-         */
-        CreateUserObject(*crawler);
-
-        if (m_functionManager)
-            m_functionManager->RegisterTo(m_ctx);
-    }
-}
-
 BkJSCallerContext ContextImpl::PrepareFunctionCall(int callContext, const char *functionName)
 {
     Duk::StackGuard sg(m_ctx);
@@ -243,20 +61,22 @@ BkJSCallerContext ContextImpl::PrepareFunctionCall(int callContext, const char *
     JSCallerContextImpl *ret = nullptr;
     do {
         void *thisPtr = nullptr;
-        switch (callContext)
+        if (BK_CTX_GLOBAL == callContext)
         {
-            case BK_CTX_GLOBAL:
-                duk_push_global_object(m_ctx);
+            duk_push_global_object(m_ctx);
+        }
+        else
+        {
+            JSObjectImpl *contextObject = GetContextObject(callContext);
+            if (nullptr == contextObject)
                 break;
-            case BK_CTX_USER_OBJECT:
-                m_userObject->PushTo(m_ctx);
-                thisPtr = duk_get_heapptr(m_ctx, -1);
-                break;
-            default:
-                NOTREACHED();
+
+            contextObject->PushTo(m_ctx);
+            thisPtr = duk_get_heapptr(m_ctx, -1);
         }
 
-        if (sg.IsNotChanged() || !duk_is_object(m_ctx, -1))
+        ASSERT(!sg.IsNotChanged());
+        if (!duk_is_object(m_ctx, -1))
             break;
         if (!duk_get_prop_string(m_ctx, -1, functionName))
             break;
@@ -270,46 +90,40 @@ BkJSCallerContext ContextImpl::PrepareFunctionCall(int callContext, const char *
     return ret;
 }
 
+void ContextImpl::RegisterFunctions(void)
+{
+    if (m_functionManager)
+        m_functionManager->RegisterTo(m_ctx);
+}
+
 int ContextImpl::RegisterFunction(int memberContext, const char *functionName, BkFunctionImpl impl, void *userData)
 {
     if (!m_functionManager)
-        m_functionManager = std::make_unique<FunctionManager>(m_userObject);
+        m_functionManager = std::make_unique<FunctionManager>(*this);
     return m_functionManager->Register(m_ctx, memberContext, functionName, impl, userData);
-}
-
-void ContextImpl::RegisterPrototypesForCrawler(duk_context *ctx)
-{
-    PrototypeHelper helper(ctx);
-    DukAnchorElement::RegisterPrototypeForCrawler(helper);
-    DukAttr::RegisterPrototype(helper);
-    DukNode::RegisterPrototype(helper, ProtoNames::Comment);
-    DukConsole::RegisterPrototype(helper);
-    DukDocument::RegisterPrototypeForCrawler(helper);
-    DukNode::RegisterPrototype(helper, ProtoNames::DocumentFragment);
-    DukElement::RegisterPrototypeForCrawler(helper);
-    DukEvent::RegisterPrototype(helper);
-    DukImageElement::RegisterPrototypeForCrawler(helper);
-    DukLocation::RegisterPrototype(helper);
-    DukNavigator::RegisterPrototype(helper);
-    DukNode::RegisterPrototype(helper, ProtoNames::DocumentType);
-    DukNode::RegisterPrototype(helper, ProtoNames::Text);
-    DukScriptElement::RegisterPrototypeForCrawler(helper);
-    DukWindow::RegisterPrototypeForCrawler(helper);
-    DukXHR::RegisterPrototype(helper);
-}
-
-void ContextImpl::UpdateDocument(void)
-{
-    DukWindow::Attach(m_ctx, *(m_frame.DomWindow()));
-    if (CrawlerImpl *crawler = ToCrawlerImpl(m_frame.Client()))
-        crawler->ProcessDocumentReset();
-    else if (m_functionManager)
-        m_functionManager->RegisterTo(m_ctx);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 extern "C" {
+
+BKEXPORT BkJSContext BKAPI BkCreateJSContext(void)
+{
+    return new BlinKit::SimpleContext;
+}
+
+BKEXPORT int BKAPI BkDestroyJSContext(BkJSContext context)
+{
+    if (context->QueryDestroy())
+    {
+        delete context;
+        return BK_ERR_SUCCESS;
+    }
+    else
+    {
+        return BK_ERR_FORBIDDEN;
+    }
+}
 
 BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, BkJSValue *retVal)
 {
@@ -330,7 +144,7 @@ BKEXPORT int BKAPI BkEvaluate(BkJSContext context, const char *code, BkJSValue *
 
 BKEXPORT BkJSObject BKAPI BkGetUserObject(BkJSContext context)
 {
-    return context->UserObject();
+    return context->GetContextObject(BK_CTX_USER_OBJECT);
 }
 
 BKEXPORT BkJSCallerContext BKAPI BkPrepareFunctionCall(BkJSContext context, int callContext, const char *functionName)
