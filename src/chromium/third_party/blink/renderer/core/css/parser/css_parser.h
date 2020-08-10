@@ -57,14 +57,14 @@ class CORE_EXPORT CSSParser {
           CSSDeferPropertyParsing::kNo,
       bool allow_import_rules = true);
 #endif
-  static CSSSelectorList ParseSelector(const CSSParserContext*,
+  static CSSSelectorList ParseSelector(std::unique_ptr<CSSParserContext> &,
                                        StyleSheetContents*,
                                        const String&);
 #ifndef BLINKIT_CRAWLER_ONLY
   static CSSSelectorList ParsePageSelector(const CSSParserContext&,
                                            StyleSheetContents*,
                                            const String&);
-  static bool ParseDeclarationList(const CSSParserContext*,
+  static bool ParseDeclarationList(std::unique_ptr<CSSParserContext> &,
                                    MutableCSSPropertyValueSet*,
                                    const String&);
 

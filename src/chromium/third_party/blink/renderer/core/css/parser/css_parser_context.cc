@@ -15,6 +15,7 @@
 
 #include "third_party/blink/renderer/core/css/parser/css_parser_context.h"
 
+#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #ifndef BLINKIT_CRAWLER_ONLY

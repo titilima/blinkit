@@ -39,7 +39,7 @@ namespace blink {
 #ifndef BLINKIT_CRAWLER_ONLY
 using namespace cssvalue;
 
-bool CSSParser::ParseDeclarationList(const CSSParserContext* context,
+bool CSSParser::ParseDeclarationList(std::unique_ptr<CSSParserContext> &context,
                                      MutableCSSPropertyValueSet* property_set,
                                      const String& declaration) {
   return CSSParserImpl::ParseDeclarationList(property_set, declaration,
