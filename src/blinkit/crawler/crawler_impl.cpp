@@ -46,24 +46,6 @@ bool CrawlerImpl::ApplyConsoleMessager(std::function<void(int, const char *)> &d
     return true;
 }
 
-void CrawlerImpl::ApplyProxyToRequest(BkRequest req)
-{
-    if (BK_PROXY_RESERVED == m_proxyType)
-    {
-        if (nullptr == m_client.GetConfig)
-            m_proxyType = BK_PROXY_SYSTEM_DEFAULT;
-        else if (GetConfig(BK_CFG_REQUEST_PROXY, m_proxy))
-            m_proxyType = m_proxy.empty() ? BK_PROXY_SYSTEM_DEFAULT : BK_PROXY_USER_SPECIFIED;
-        else
-            m_proxyType = BK_PROXY_DIRECT;
-    }
-
-    if (BK_PROXY_DIRECT == m_proxyType)
-        return;
-
-    BkSetRequestProxy(req, m_proxyType, m_proxy.c_str());
-}
-
 void CrawlerImpl::CancelLoading(void)
 {
     m_frame->Loader().StopAllLoaders();
@@ -139,6 +121,12 @@ void CrawlerImpl::HijackResponse(BkResponse response)
 {
     if (nullptr != m_client.HijackResponse)
         m_client.HijackResponse(response, m_client.UserData);
+}
+
+void CrawlerImpl::ModifyRequest(const char *URL, BkRequest req)
+{
+    if (nullptr != m_client.ModifyRequest)
+        m_client.ModifyRequest(URL, req, m_client.UserData);
 }
 
 void CrawlerImpl::ProcessDocumentReset(void)

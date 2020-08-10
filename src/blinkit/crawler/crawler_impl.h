@@ -30,11 +30,11 @@ public:
 
     // BkCrawlerClient Wrappers
     bool GetConfig(int cfg, std::string &dst) const;
-    void ApplyProxyToRequest(BkRequest req);
     std::string GetCookies(const std::string &URL) const;
     bool ScriptEnabled(const std::string &URL);
     void ProcessRequestComplete(BkResponse response, BkWorkController controller);
     bool HijackRequest(const char *URL, std::string &dst) const;
+    void ModifyRequest(const char *URL, BkRequest req);
     void HijackResponse(BkResponse response);
     bool ApplyConsoleMessager(std::function<void(int, const char *)> &dst) const;
     void ProcessDocumentReset(void);

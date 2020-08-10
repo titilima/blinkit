@@ -105,18 +105,7 @@ protected:
         client.GetConfig = get_config_callback;
         client.Error = error_callback;
     }
-    virtual bool get_crawler_config(int cfg, std::string &dst) const
-    {
-        switch (cfg)
-        {
-            case BK_CFG_REQUEST_PROXY:
-                // Leave it empty to apply system proxy.
-                break;
-            default:
-                return false;
-        }
-        return true;
-    }
+    virtual bool get_crawler_config(int cfg, std::string &dst) const { return false; }
 private:
     virtual void document_ready(void) = 0;
     virtual void on_crawler_error(int code, const char *url)
@@ -301,14 +290,18 @@ private:
 class js_function
 {
 public:
-    static js_function* prepare(BkCrawler crawler, int ctx, const char *name)
+    static js_function* prepare(BkJSContext js_ctx, int ctx, const char *name)
     {
         js_function *ret = nullptr;
-        BkJSContext js_ctx = BkGetScriptContextFromCrawler(crawler);
         BkJSCallerContext fn_ctx = BkPrepareFunctionCall(js_ctx, ctx, name);
         if (nullptr != fn_ctx)
             ret = new js_function(fn_ctx);
         return ret;
+    }
+    static js_function* prepare(BkCrawler crawler, int ctx, const char *name)
+    {
+        BkJSContext js_ctx = BkGetScriptContextFromCrawler(crawler);
+        return prepare(js_ctx, ctx, name);
     }
 
     int call(BkJSValue *ret = nullptr)

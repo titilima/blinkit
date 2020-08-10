@@ -233,7 +233,6 @@ int HTTPLoaderTask::Run(const ResourceRequest &request)
         return BK_ERR_UNKNOWN;
     }
 
-    m_crawler->ApplyProxyToRequest(req);
     BkSetRequestMethod(req, request.HttpMethod().StdUtf8().c_str());
     for (const auto &it : request.AllHeaders().GetRawMap())
         BkSetRequestHeader(req, it.first.c_str(), it.second.c_str());
@@ -243,6 +242,8 @@ int HTTPLoaderTask::Run(const ResourceRequest &request)
         BkSetRequestHeader(req, Strings::HttpHeader::Cookie, cookies.c_str());
 
     BKLOG("// BKTODO: Add body.");
+
+    m_crawler->ModifyRequest(URL.c_str(), req);
 
     int r = BkPerformRequest(req, nullptr);
     ASSERT(BK_ERR_SUCCESS == r);

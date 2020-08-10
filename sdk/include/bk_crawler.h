@@ -41,15 +41,6 @@ BK_DECLARE_HANDLE(BkCrawler, CrawlerImpl);
 
 enum BkCrawlerConfig {
     BK_CFG_OBJECT_SCRIPT = 0,
-
-    // Return true:
-    //   * Empty string: BK_PROXY_SYSTEM_DEFAULT.
-    //   * Non-empty string: BK_PROXY_USER_SPECIFIED.
-    // Return false: BK_PROXY_DIRECT.
-    // Note:
-    //   A null `GetConfig` callback will apply BK_PROXY_SYSTEM_DEFAULT.
-    BK_CFG_REQUEST_PROXY,
-
     BK_CFG_USER_AGENT,
 };
 
@@ -67,7 +58,8 @@ struct BkCrawlerClient {
     bool_t (BKAPI * GetConfig)(int, struct BkBuffer *, void *);
     bool_t (BKAPI * GetCookies)(const char *URL, const char *cookiesFromJar, struct BkBuffer *cookiesToSet, void *);
     int (BKAPI * GetScriptMode)(const char *URL, void *);
-    bool_t (BKAPI * HijackRequest)(const char *, struct BkBuffer *, void *);
+    bool_t (BKAPI * HijackRequest)(const char *URL, struct BkBuffer *, void *);
+    void (BKAPI * ModifyRequest)(const char *URL, BkRequest, void *);
     void (BKAPI * HijackResponse)(BkResponse, void *);
     void (BKAPI * RequestComplete)(BkResponse, BkWorkController, void *);
     void (BKAPI * DocumentReset)(void *);
