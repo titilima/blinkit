@@ -45,7 +45,7 @@
 
 #include "base/memory/ptr_util.h"
 #include "blinkit/crawler/crawler_impl.h"
-#include "blinkit/js/context_impl.h"
+#include "blinkit/js/crawler_context.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_source_code.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -54,7 +54,7 @@ using namespace BlinKit;
 
 namespace blink {
 
-static void CommonCallback(ContextImpl *ctxImpl, duk_context *ctx)
+static void CommonCallback(BrowserContext *ctxImpl, duk_context *ctx)
 {
     if (!duk_is_error(ctx, -1))
         return;
@@ -88,16 +88,16 @@ std::unique_ptr<ScriptController> ScriptController::Create(LocalFrame &frame)
     return base::WrapUnique(new ScriptController(frame));
 }
 
-ContextImpl& ScriptController::EnsureContext(void)
+BrowserContext& ScriptController::EnsureContext(void)
 {
     if (!m_context)
-        m_context = std::make_unique<ContextImpl>(*m_frame);
+        m_context = std::make_unique<CrawlerContext>(*m_frame);
     return *m_context;
 }
 
 void ScriptController::ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const GURL &baseURL)
 {
-    ContextImpl &ctx = EnsureContext();
+    BrowserContext &ctx = EnsureContext();
     const ContextImpl::Callback callback = std::bind(CommonCallback, &ctx, std::placeholders::_1);
     ctx.Eval(sourceCode.Source(), callback, sourceCode.Url().ExtractFileName().c_str());
 }

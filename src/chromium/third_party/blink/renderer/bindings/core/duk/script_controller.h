@@ -48,8 +48,11 @@
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/noncopyable.h"
 
-class ContextImpl;
 class GURL;
+
+namespace BlinKit {
+class BrowserContext;
+}
 
 namespace blink {
 
@@ -66,8 +69,8 @@ public:
     static std::unique_ptr<ScriptController> Create(LocalFrame &frame);
     ~ScriptController(void);
 
-    ContextImpl* GetContext(void) { return m_context.get(); }
-    ContextImpl& EnsureContext(void);
+    BlinKit::BrowserContext* GetContext(void) { return m_context.get(); }
+    BlinKit::BrowserContext& EnsureContext(void);
     bool ScriptEnabled(const std::string &URL);
 
     void ExecuteScriptInMainWorld(const ScriptSourceCode &sourceCode, const GURL &baseURL);
@@ -80,7 +83,7 @@ private:
     ScriptController(LocalFrame &frame);
 
     const Member<LocalFrame> m_frame;
-    std::unique_ptr<ContextImpl> m_context;
+    std::unique_ptr<BlinKit::BrowserContext> m_context;
 };
 
 } // namespace blink

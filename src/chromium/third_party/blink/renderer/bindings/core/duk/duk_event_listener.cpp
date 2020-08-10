@@ -13,7 +13,7 @@
 
 #include "base/memory/ptr_util.h"
 #include "base/strings/stringprintf.h"
-#include "blinkit/js/context_impl.h"
+#include "blinkit/js/browser_context.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_event.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
@@ -52,7 +52,7 @@ DukEventListener::~DukEventListener(void)
 
 bool DukEventListener::BelongsToTheCurrentWorld(ExecutionContext *executionContext) const
 {
-    ContextImpl *ctxImpl = ContextImpl::From(executionContext);
+    BrowserContext *ctxImpl = BrowserContext::From(executionContext);
     return ctxImpl->GetRawContext() == m_ctx;
 }
 
@@ -111,7 +111,7 @@ std::shared_ptr<EventListener> DukEventListener::Get(duk_context *ctx, duk_idx_t
 
 void DukEventListener::handleEvent(ExecutionContext *executionContext, Event *event)
 {
-    ContextImpl *ctxImpl = ContextImpl::From(executionContext);
+    BrowserContext *ctxImpl = BrowserContext::From(executionContext);
 
     ASSERT(ctxImpl->GetRawContext() == m_ctx);
 

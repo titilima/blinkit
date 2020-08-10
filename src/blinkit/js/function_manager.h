@@ -24,13 +24,14 @@ namespace BlinKit {
 class FunctionManager
 {
 public:
-    FunctionManager(std::unique_ptr<JSObjectImpl> &userObject);
+    FunctionManager(ContextImpl &ctx);
 
     int Register(duk_context *ctx, int memberContext, const char *functionName, BkFunctionImpl impl, void *userData);
     void RegisterTo(duk_context *ctx);
 private:
     struct FunctionData {
-        std::unique_ptr<JSObjectImpl> *thisObject;
+        int memberContext;
+        JSObjectImpl *thisObject;
         BkFunctionImpl impl;
         void *userData;
     };
@@ -40,7 +41,7 @@ private:
     static void Register(duk_context *ctx, duk_idx_t stashIdx, duk_idx_t objIdx, const std::string &name, FunctionData &data);
     static duk_ret_t CalleeImpl(duk_context *ctx);
 
-    std::unique_ptr<JSObjectImpl> &m_userObject;
+    ContextImpl &m_ctx;
     std::unordered_map<std::string, FunctionData> m_functions;
 };
 

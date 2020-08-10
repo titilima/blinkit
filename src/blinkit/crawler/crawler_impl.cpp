@@ -16,7 +16,7 @@
 #include "bkcommon/controller_impl.h"
 #include "bkcommon/response_impl.h"
 #include "blinkit/crawler/cookie_jar_impl.h"
-#include "blinkit/js/context_impl.h"
+#include "blinkit/js/browser_context.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/loader/frame_load_request.h"

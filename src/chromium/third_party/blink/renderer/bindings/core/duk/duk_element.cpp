@@ -11,7 +11,7 @@
 
 #include "duk_element.h"
 
-#include "blinkit/js/context_impl.h"
+#include "blinkit/js/browser_context.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_anchor_element.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_event_listener.h"
@@ -188,7 +188,7 @@ static duk_ret_t ToString(duk_context *ctx)
 
 void DukElement::Create(duk_context *ctx, Element &element)
 {
-    const char *protoName = ContextImpl::From(ctx)->LookupPrototypeName(element.nodeName().StdUtf8());
+    const char *protoName = BrowserContext::From(ctx)->LookupPrototypeName(element.nodeName().StdUtf8());
     PrototypeHelper::CreateScriptObject(ctx, protoName, &element);
 }
 
