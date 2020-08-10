@@ -91,7 +91,16 @@ std::unique_ptr<ScriptController> ScriptController::Create(LocalFrame &frame)
 BrowserContext& ScriptController::EnsureContext(void)
 {
     if (!m_context)
+    {
+#ifdef BLINKIT_CRAWLER_ONLY
         m_context = std::make_unique<CrawlerContext>(*m_frame);
+#else
+        if (m_frame->Client()->IsCrawler())
+            m_context = std::make_unique<CrawlerContext>(*m_frame);
+        else
+            ASSERT(false); // BKTODO:
+#endif
+    }
     return *m_context;
 }
 
