@@ -52,7 +52,7 @@ private:
         BkDestroyCrawler(reinterpret_cast<Client *>(pThis)->m_crawler);
     }
 
-    bool get_crawler_config(int cfg, std::string &dst) const
+    bool get_crawler_config(int cfg, std::string &dst) const override
     {
         switch (cfg)
         {
