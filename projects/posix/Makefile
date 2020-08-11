@@ -19,18 +19,18 @@ CrFlags = -I$(BkRoot)sdk/include -I$(BkRoot)src -I$(BkRoot)src/chromium
 
 help:
 	@echo Usage:
-	@echo '    make all                    # Build BlinKit for debugging'
-	@echo '    make all config=release     # Build BlinKit for release'
+	@echo '    make all                    # Build BlinKit (BkCrawler + BkHelper) for debugging'
+	@echo '    make all config=release     # Build BlinKit (BkCrawler + BkHelper) for release'
 	@echo '    make crawler                # Build BkCrawler for debugging'
 	@echo '    make crawler config=release # Build BkCrawler for release'
 	@echo '    make clean                  # Cleanup all object files'
 	@echo '    make test                   # Build test program using BkTest.cpp'
 
-include base.mk blink.mk duktape.mk net.mk stub.mk url.mk bkbase.mk bkcommon.mk bklogin.mk BlinKit.mk
+include base.mk blink.mk duktape.mk net.mk stub.mk url.mk bkbase.mk bkcommon.mk bkhelper.mk BlinKit.mk
 
 BkCrawlerObjects = $(BaseObjects) $(BlinkObjects) $(DuktapeObjects) $(NetObjects) $(StubObjects) $(URLObjects) \
 	$(BkBaseObjects) $(BkCommonObjects) $(CrawlerObjects)
-AllObjects = $(BkCrawlerObjects) $(BkLoginObjects)
+AllObjects = $(BkCrawlerObjects) $(BkHelperObjects)
 
 all: $(AllObjects)
 	ar -rcs libBlinKit.a $(AllObjects)

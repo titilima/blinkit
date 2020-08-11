@@ -39,15 +39,15 @@
 
 #pragma once
 
-#include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
+#include "third_party/blink/renderer/platform/wtf/allocator.h"
 
 namespace blink {
 
 class Node;
-class Text;
 
-class Range final : public ScriptWrappable
+class Range
 {
+    STATIC_ONLY(Range);
 public:
     static Node* commonAncestorContainer(const Node *container1, const Node *container2);
 };

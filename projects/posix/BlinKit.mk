@@ -3,7 +3,7 @@ CrawlerFlags = -I$(CrawlerSrc) -I$(BkRoot)src/stub/icu -DBLINKIT_CRAWLER_ONLY $(
 CrawlerObjects = app_impl.o posix_app.o \
 	local_frame_client_impl.o posix_task_runner.o posix_thread.o thread_impl.o url_loader_impl.o	\
 	crawler_document.o crawler_element.o crawler_script_element.o cookie_jar_impl.o crawler_impl.o hijack_response.o	\
-	context_impl.o js_value_impl.o \
+	browser_context.o context_impl.o crawler_context.o function_manager.o heap_retained.o js_callee_context_impl.o js_caller_context_impl.o js_value_impl.o simple_context.o	\
 	http_loader_task.o loader_task.o \
 	task_loop.o
 
@@ -36,9 +36,23 @@ crawler_impl.o: $(CrawlerSrc)/crawler/crawler_impl.cpp
 hijack_response.o: $(CrawlerSrc)/crawler/hijack_response.cpp
 	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
 
+browser_context.o: $(CrawlerSrc)/js/browser_context.cpp
+	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
 context_impl.o: $(CrawlerSrc)/js/context_impl.cpp
 	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
+crawler_context.o: $(CrawlerSrc)/js/crawler_context.cpp
+	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
+function_manager.o: $(CrawlerSrc)/js/function_manager.cpp
+	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
+heap_retained.o: $(CrawlerSrc)/js/heap_retained.cpp
+	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
+js_callee_context_impl.o: $(CrawlerSrc)/js/js_callee_context_impl.cpp
+	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
+js_caller_context_impl.o: $(CrawlerSrc)/js/js_caller_context_impl.cpp
+	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
 js_value_impl.o: $(CrawlerSrc)/js/js_value_impl.cpp
+	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
+simple_context.o: $(CrawlerSrc)/js/simple_context.cpp
 	$(CXX) -c $(CXXFLAGS) $(CrawlerFlags) $< -o $@
 
 http_loader_task.o: $(CrawlerSrc)/loader_tasks/http_loader_task.cpp
