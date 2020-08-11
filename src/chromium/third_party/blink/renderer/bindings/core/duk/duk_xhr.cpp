@@ -35,7 +35,7 @@ const char DukXHR::ProtoName[] = "XMLHttpRequest";
 static const char NativeXHR[] = DUK_HIDDEN_SYMBOL("nativeXHR");
 
 template <>
-static inline DukXHR* DukScriptObject::To<DukXHR>(duk_context *ctx, duk_idx_t idx)
+inline DukXHR* DukScriptObject::To<DukXHR>(duk_context *ctx, duk_idx_t idx)
 {
     DukXHR *ret = nullptr;
     if (duk_get_prop_string(ctx, idx, NativeXHR))
