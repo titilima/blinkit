@@ -48,6 +48,7 @@
 #include "blinkit/js/crawler_context.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_source_code.h"
+#include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 
 using namespace BlinKit;
@@ -91,7 +92,14 @@ std::unique_ptr<ScriptController> ScriptController::Create(LocalFrame &frame)
 BrowserContext& ScriptController::EnsureContext(void)
 {
     if (!m_context)
+    {
         m_context = std::make_unique<CrawlerContext>(*m_frame);
+        if (Document *document = m_frame->GetDocument())
+        {
+            if (document->IsActive())
+                m_context->UpdateDocument();
+        }
+    }
     return *m_context;
 }
 
