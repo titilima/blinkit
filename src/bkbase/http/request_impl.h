@@ -15,6 +15,7 @@
 #pragma once
 
 #include <atomic>
+#include <vector>
 #include "bk_http.h"
 #include "bkcommon/bk_http_header_map.h"
 
