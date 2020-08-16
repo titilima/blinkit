@@ -43,6 +43,7 @@ BkDestroyJSContext
 BkGetUserObject
 BkEvaluate
 BkPrepareFunctionCall
+BkPrepareScriptFunction
 BkPushInteger
 BkPushString
 BkPushStringPiece

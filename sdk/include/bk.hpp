@@ -303,6 +303,19 @@ public:
         BkJSContext js_ctx = BkGetScriptContextFromCrawler(crawler);
         return prepare(js_ctx, ctx, name);
     }
+    static js_function* prepare(BkJSContext js_ctx, const char *code)
+    {
+        js_function *ret = nullptr;
+        BkJSCallerContext fn_ctx = BkPrepareScriptFunction(js_ctx, code);
+        if (nullptr != fn_ctx)
+            ret = new js_function(fn_ctx);
+        return ret;
+    }
+    static js_function* prepare(BkCrawler crawler, const char *code)
+    {
+        BkJSContext js_ctx = BkGetScriptContextFromCrawler(crawler);
+        return prepare(js_ctx, code);
+    }
 
     int call(BkJSValue *ret = nullptr)
     {

@@ -90,6 +90,15 @@ BkJSCallerContext ContextImpl::PrepareFunctionCall(int callContext, const char *
     return ret;
 }
 
+BkJSCallerContext ContextImpl::PrepareScriptFunction(const char *code)
+{
+    Duk::StackGuard sg(m_ctx);
+    int r = duk_peval_string(m_ctx, code);
+    if (DUK_EXEC_SUCCESS != r || !duk_is_function(m_ctx, -1))
+        return nullptr;
+    return new JSCallerContextImpl(m_ctx, -1);
+}
+
 void ContextImpl::RegisterFunctions(void)
 {
     if (m_functionManager)
@@ -150,6 +159,11 @@ BKEXPORT BkJSObject BKAPI BkGetUserObject(BkJSContext context)
 BKEXPORT BkJSCallerContext BKAPI BkPrepareFunctionCall(BkJSContext context, int callContext, const char *functionName)
 {
     return context->PrepareFunctionCall(callContext, functionName);
+}
+
+BKEXPORT BkJSCallerContext BKAPI BkPrepareScriptFunction(BkJSContext context, const char *code)
+{
+    return context->PrepareScriptFunction(code);
 }
 
 BKEXPORT int BKAPI BkRegisterFunction(BkJSContext context, int memberContext, const char *functionName, BkFunctionImpl impl, void *userData)

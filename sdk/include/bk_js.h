@@ -91,6 +91,7 @@ enum BkCallContext {
 BK_DECLARE_HANDLE(BkJSCallerContext, JSCallerContextImpl);
 
 BKEXPORT BkJSCallerContext BKAPI BkPrepareFunctionCall(BkJSContext context, int callContext, const char *functionName);
+BKEXPORT BkJSCallerContext BKAPI BkPrepareScriptFunction(BkJSContext context, const char *code);
 BKEXPORT int BKAPI BkPushInteger(BkJSCallerContext callerContext, int n);
 BKEXPORT int BKAPI BkPushString(BkJSCallerContext callerContext, const char *s);
 BKEXPORT int BKAPI BkPushStringPiece(BkJSCallerContext callerContext, const char *s, size_t l);
