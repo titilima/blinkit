@@ -38,6 +38,7 @@ public:
     void Eval(const std::string_view code, const Callback &callback, const char *fileName = "eval");
     virtual JSObjectImpl* GetContextObject(int callContext) { return nullptr; }
     BkJSCallerContext PrepareFunctionCall(int callContext, const char *functionName);
+    BkJSCallerContext PrepareScriptFunction(const char *code);
     int RegisterFunction(int memberContext, const char *functionName, BkFunctionImpl impl, void *userData);
 
     duk_context* GetRawContext(void) const { return m_ctx; }
