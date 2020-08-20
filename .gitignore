@@ -24,6 +24,7 @@ BUILD.gn
 DEPS
 PRESUBMIT.py
 projects/posix/BkTest
+!.gitkeep
 !sdk/win32/BlinKit.props
 !PrefixHeader.pch
 
