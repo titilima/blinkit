@@ -33,9 +33,9 @@ BkCrawlerObjects = $(BaseObjects) $(BlinkObjects) $(DuktapeObjects) $(NetObjects
 AllObjects = $(BkCrawlerObjects) $(BkHelperObjects)
 
 all: $(AllObjects)
-	ar -rcs libBlinKit.a $(AllObjects)
+	ar -rcs ../../sdk/posix/libBlinKit.a $(AllObjects)
 crawler: $(BkCrawlerObjects)
-	ar -rcs libBkCrawler.a $(BkCrawlerObjects)
+	ar -rcs ../../sdk/posix/libBkCrawler.a $(BkCrawlerObjects)
 test: BkTest.cpp
 	$(CXX) -g -std=c++17 -stdlib=libc++ -I$(BkRoot)sdk/include BkTest.cpp -L . -lBlinKit -lcurl -lpthread -lz -o BkTest
 clean:
