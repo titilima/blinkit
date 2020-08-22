@@ -213,6 +213,35 @@ void BKAPI HTTPLoaderTask::RequestFailedImpl(int errorCode, void *userData)
     reinterpret_cast<HTTPLoaderTask *>(userData)->RequestFailed(errorCode);
 }
 
+bool HTTPLoaderTask::RequestRedirect(BkResponse response, BkRequest request)
+{
+    size_t n = response->CookiesCount();
+    if (n > 0)
+    {
+        if (CookieJarImpl *cookieJar = m_crawler->GetCookieJar(false))
+        {
+            std::unique_lock<CookieJarImpl> lock(*cookieJar);
+            const char *URL = m_url.spec().c_str();
+            for (size_t i = 0; i < n; ++i)
+            {
+                std::string cookie;
+                response->GetCookie(i, BufferImpl::Wrap(cookie));
+                cookieJar->Set(cookie.c_str(), URL);
+            }
+
+            std::string cookies = cookieJar->Get(URL);
+            if (!cookies.empty())
+                BkSetRequestHeader(request, Strings::HttpHeader::Cookie, cookies.c_str());
+        }
+    }
+    return true;
+}
+
+bool_t BKAPI HTTPLoaderTask::RequestRedirectImpl(BkResponse response, BkRequest request, void *userData)
+{
+    return reinterpret_cast<HTTPLoaderTask *>(userData)->RequestRedirect(response, request);
+}
+
 int HTTPLoaderTask::Run(const ResourceRequest &request)
 {
     m_url = request.Url();
