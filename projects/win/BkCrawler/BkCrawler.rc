@@ -25,8 +25,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,1,1,25
- PRODUCTVERSION 1,1,1,28
+ FILEVERSION 1,1,1,26
+ PRODUCTVERSION 1,1,1,29
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -43,12 +43,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "MingYang Software Technology"
             VALUE "FileDescription", "BkCrawler - Crawler Module in BlinKit Framework"
-            VALUE "FileVersion", "1.1.1.25"
+            VALUE "FileVersion", "1.1.1.26"
             VALUE "InternalName", "BkCrawler.dll"
             VALUE "LegalCopyright", "Copyright (C) 2001-2020"
             VALUE "OriginalFilename", "BkCrawler.dll"
             VALUE "ProductName", "BlinKit"
-            VALUE "ProductVersion", "1.1.1.28"
+            VALUE "ProductVersion", "1.1.1.29"
         END
     END
     BLOCK "VarFileInfo"
