@@ -28,7 +28,7 @@ struct BkRequestClient {
     void *UserData;
     void (BKAPI * RequestComplete)(BkResponse, void *);
     void (BKAPI * RequestFailed)(int errorCode, void *);
-    bool_t (BKAPI * RequestRedirect)(BkResponse, void *);
+    bool_t (BKAPI * RequestRedirect)(BkResponse, BkRequest, void *);
 };
 
 BKEXPORT BkRequest BKAPI BkCreateRequest(const char *URL, struct BkRequestClient *client);

@@ -50,7 +50,8 @@ private:
     static void BKAPI RequestCompleteImpl(BkResponse response, void *userData);
     void RequestFailed(int errorCode);
     static void BKAPI RequestFailedImpl(int errorCode, void *userData);
-    static bool_t BKAPI RequestRedirectImpl(BkResponse, void *) { return false; }
+    bool RequestRedirect(BkResponse response, BkRequest request);
+    static bool_t BKAPI RequestRedirectImpl(BkResponse response, BkRequest request, void *userData);
 
     // LoaderTask
     int Run(const blink::ResourceRequest &request) override;

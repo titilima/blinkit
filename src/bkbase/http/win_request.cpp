@@ -255,7 +255,7 @@ int WinRequest::RequestComplete(void)
         case 301: case 302:
         {
             std::string previousURL = m_response->ResolveRedirection();
-            if (nullptr == m_client.RequestRedirect || m_client.RequestRedirect(m_response, m_client.UserData))
+            if (nullptr == m_client.RequestRedirect || m_client.RequestRedirect(m_response, this, m_client.UserData))
             {
                 m_referer = previousURL;
                 nextWorker = &WinRequest::RequestRedirect;

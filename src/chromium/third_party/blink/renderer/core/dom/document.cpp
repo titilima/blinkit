@@ -629,6 +629,8 @@ String Document::cookie(ExceptionState &exceptionState) const
 
     net::CookieOptions options;
     options.set_exclude_httponly();
+
+    std::shared_lock<CookieJarImpl> lock(*cookieJar);
     std::string ret = cookieJar->Get(cookieURL.spec().c_str(), &options);
     return String::FromStdUTF8(ret);
 }

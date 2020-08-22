@@ -93,7 +93,10 @@ std::string CrawlerImpl::GetCookies(const std::string &URL) const
     std::string ret;
 
     if (nullptr != m_cookieJar)
+    {
+        std::shared_lock<CookieJarImpl> lock(*m_cookieJar);
         ret = m_cookieJar->Get(URL.c_str());
+    }
 
     if (nullptr != m_client.GetCookies)
     {
@@ -161,7 +164,7 @@ int CrawlerImpl::Run(const char *URL)
 
 bool CrawlerImpl::ScriptEnabled(const std::string &URL)
 {
-    bool ret = true;
+    bool ret = false;
     do {
         if (nullptr == m_client.GetScriptMode)
             break;

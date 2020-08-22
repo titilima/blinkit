@@ -150,6 +150,7 @@ BKEXPORT void BKAPI BkReleaseCookieJar(BkCookieJar cookieJar)
 
 BKEXPORT void BKAPI BkGetCookie(BkCookieJar cookieJar, const char *URL, BkBuffer *dst)
 {
+    std::shared_lock<CookieJarImpl> lock(*cookieJar);
     std::string ret = cookieJar->Get(URL);
     if (!ret.empty())
         BkSetBufferData(dst, ret.data(), ret.length());

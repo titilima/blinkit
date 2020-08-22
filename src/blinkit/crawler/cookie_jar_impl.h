@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <shared_mutex>
 #include <unordered_map>
 #include "bk_crawler.h"
 #include "net/cookies/cookie_options.h"
@@ -34,11 +35,17 @@ public:
 
     std::string Get(const char *URL, const net::CookieOptions *options = nullptr) const;
     bool Set(const char *setCookieHeader, const char *URL);
+
+    void lock_shared(void) { m_mutex.lock_shared(); }
+    void unlock_shared(void) { m_mutex.unlock_shared(); }
+    void lock(void) { m_mutex.lock(); }
+    void unlock(void) { m_mutex.unlock(); }
 private:
     ~CookieJarImpl(void) = default;
 
     unsigned m_refCount = 1;
     net::CookieOptions m_options;
+    std::shared_mutex m_mutex;
 
     typedef std::unordered_map<std::string, std::unique_ptr<net::CanonicalCookie>> CookiesMap;
     std::unordered_map<std::string, CookiesMap> m_cookies;

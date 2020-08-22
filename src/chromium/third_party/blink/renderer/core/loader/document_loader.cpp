@@ -372,7 +372,6 @@ void DocumentLoader::NotifyFinished(Resource *resource)
 
 void DocumentLoader::ProcessData(const char *data, size_t length)
 {
-    // BKTODO: time_of_last_data_received_ = CurrentTimeTicks();
     CommitData(data, length);
 }
 
