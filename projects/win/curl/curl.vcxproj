@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\third_party\curl\include\curl\curl.h" />
     <ClInclude Include="..\..\..\third_party\curl\include\curl\easy.h" />
   </ItemGroup>
   <ItemGroup>

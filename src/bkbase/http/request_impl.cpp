@@ -11,40 +11,197 @@
 
 #include "request_impl.h"
 
+#include <atomic>
+#include <mutex>
+#include "base/strings/string_util.h"
 #include "bkbase/http/http_constants.h"
 #include "bkbase/http/http_response.h"
-#include "bkbase/http/request_controller_impl.h"
+#include "bkcommon/bk_strings.h"
+#include "bkcommon/controller_impl.h"
+#include "url/gurl.h"
 
 using namespace BlinKit;
 
-RequestImpl::RequestImpl(const char *URL, const BkRequestClient &client)
-    : m_URL(URL), m_client(client), m_method("GET"), m_timeoutInMs(HttpConstants::DefaultTimeoutInMs)
+static const long OPT_TRUE = true;
+static const long OPT_FALSE = false;
+
+class RequestImpl::Controller final : public ControllerImpl
 {
-    m_headers.Set("Accept", "*/*");
+public:
+    void AddRef(void) { ++m_refCnt; }
+    bool Cancelled(void) const { return m_cancelled; }
+
+    void lock(void) { m_mutex.lock(); }
+    void unlock(void) { m_mutex.unlock(); }
+
+    // ControllerImpl
+    int Release(void) override
+    {
+        if (0 == --m_refCnt)
+            delete this;
+        return BK_ERR_SUCCESS;
+    }
+private:
+    void DoCancel(void)
+    {
+        std::unique_lock<std::mutex> lock(m_mutex);
+        m_cancelled = true;
+    }
+
+    // ControllerImpl
+    int ContinueWorking(void) override
+    {
+        NOTREACHED();
+        return BK_ERR_FORBIDDEN;
+    }
+    int CancelWork(void) override
+    {
+        DoCancel(); 
+        return Release();
+    }
+
+    std::atomic<unsigned> m_refCnt{ 1 };
+    std::mutex m_mutex;
+    bool m_cancelled = false;
+};
+
+RequestImpl::RequestImpl(const char *URL, const BkRequestClient &client)
+    : m_URL(URL), m_client(client), m_controller(new Controller)
+    , m_method("GET"), m_timeoutInMs(HttpConstants::DefaultTimeoutInMs)
+{
+    m_userHeaders.Set("Accept", "*/*");
 }
 
 RequestImpl::~RequestImpl(void)
 {
+    m_controller->Release();
+
+    if (nullptr != m_headersList)
+        curl_slist_free_all(m_headersList);
+    if (nullptr != m_curl)
+        curl_easy_cleanup(m_curl);
     if (nullptr != m_response)
         m_response->Release();
 }
 
-ControllerImpl* RequestImpl::GetController(void)
+void RequestImpl::DoThreadWork(void)
 {
-    ++m_refCount;
-    return new RequestControllerImpl(*this);
+    std::string headers;
+    curl_easy_setopt(m_curl, CURLOPT_HEADERDATA, &headers);
+    curl_easy_setopt(m_curl, CURLOPT_HEADERFUNCTION, HeaderCallback);
+
+    CURLcode code = curl_easy_perform(m_curl);
+    if (CURLE_OK == code)
+    {
+        m_response->ParseHeaders(headers);
+        m_response->InflateBodyIfNecessary();
+
+        std::unique_lock<Controller> lock(*m_controller);
+        if (!m_controller->Cancelled())
+            m_client.RequestComplete(m_response, m_client.UserData);
+    }
+    else
+    {
+        BKLOG("ERROR: curl_easy_perform failed, code = %d.", code);
+
+        std::unique_lock<Controller> lock(*m_controller);
+        if (!m_controller->Cancelled())
+            m_client.RequestFailed(BK_ERR_NETWORK, m_client.UserData);
+    }
+
+    delete this;
+}
+
+size_t RequestImpl::HeaderCallback(char *buffer, size_t, size_t nitems, void *userData)
+{
+    std::string *headers = reinterpret_cast<std::string *>(userData);
+    headers->append(buffer, nitems);
+    return nitems;
+}
+
+int RequestImpl::Perform(void)
+{
+    int err = BK_ERR_UNKNOWN;
+    do {
+        // 1. Check URL.
+        GURL u(m_URL);
+        if (!u.SchemeIsHTTPOrHTTPS())
+        {
+            err = BK_ERR_URI;
+            break;
+        }
+
+        // 2. Prepare request.
+        ASSERT(nullptr == m_curl);
+        m_curl = curl_easy_init();
+        if (nullptr == m_curl)
+        {
+            err = BK_ERR_UNKNOWN;
+            break;
+        }
+        curl_easy_setopt(m_curl, CURLOPT_URL, m_URL.c_str());
+        curl_easy_setopt(m_curl, CURLOPT_SSL_VERIFYPEER, OPT_FALSE);
+        curl_easy_setopt(m_curl, CURLOPT_SSL_VERIFYHOST, OPT_FALSE);
+
+        // 3. Adjust method.
+        if (base::EqualsCaseInsensitiveASCII(m_method, "POST"))
+        {
+            m_headersList = curl_slist_append(m_headersList, "Expect:"); // Disable "HTTP 100" for response.
+            curl_easy_setopt(m_curl, CURLOPT_POST, OPT_TRUE);
+        }
+
+        // 4. Process standard headers.
+        for (const auto &it : m_standardHeaders)
+            curl_easy_setopt(m_curl, it.first, it.second.c_str());
+
+        // 5. Process user headers.
+        if (nullptr != m_headersList)
+        {
+            curl_slist_free_all(m_headersList);
+            m_headersList = nullptr;
+        }
+        for (const auto &it : m_userHeaders.GetRawMap())
+        {
+            std::string header(it.first);
+            header.append(": ");
+            header.append(it.second);
+            m_headersList = curl_slist_append(m_headersList, header.c_str());
+        }
+        if (nullptr != m_headersList)
+        {
+            curl_easy_setopt(m_curl, CURLOPT_HTTPHEADER, m_headersList);
+        }
+
+        // 6. Fill body.
+        if (!m_body.empty())
+        {
+            curl_easy_setopt(m_curl, CURLOPT_POSTFIELDSIZE, m_body.size());
+            curl_easy_setopt(m_curl, CURLOPT_POSTFIELDS, m_body.data());
+        }
+
+        // 7. Apply other options.
+        ASSERT(ProxyType() == BK_PROXY_SYSTEM_DEFAULT); // BKTODO:
+        const long timeout = TimeoutInMs();
+        curl_easy_setopt(m_curl, CURLOPT_TIMEOUT_MS, timeout);
+
+        // 8. Initialize response & start worker thread.
+        m_response = new HttpResponse(m_URL);
+        curl_easy_setopt(m_curl, CURLOPT_WRITEDATA, m_response);
+        curl_easy_setopt(m_curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+
+        if (StartWorkThread())
+            return BK_ERR_SUCCESS;
+    } while (false);
+
+    ASSERT(BK_ERR_SUCCESS == err);
+    delete this;
+    return err;
 }
 
 const std::string& RequestImpl::Proxy(void) const
 {
     ASSERT(BK_PROXY_USER_SPECIFIED == m_proxyType);
     return m_proxy;
-}
-
-void RequestImpl::Release(void)
-{
-    if (0 == --m_refCount)
-        delete this;
 }
 
 void RequestImpl::SetBody(const void *data, size_t dataLength)
@@ -55,7 +212,11 @@ void RequestImpl::SetBody(const void *data, size_t dataLength)
 
 void RequestImpl::SetHeader(const char *name, const char *value)
 {
-    m_headers.Set(name, value);
+    CURLoption opt = TranslateOption(name);
+    if (CURLOPT_HTTPHEADER != opt)
+        m_standardHeaders[opt] = value;
+    else
+        m_userHeaders.Set(name, value);
 }
 
 void RequestImpl::SetProxy(int type, const char *proxy)
@@ -63,6 +224,24 @@ void RequestImpl::SetProxy(int type, const char *proxy)
     m_proxyType = type;
     if (BK_PROXY_USER_SPECIFIED == type)
         m_proxy.assign(proxy);
+}
+
+CURLoption RequestImpl::TranslateOption(const char *name)
+{
+    if (base::EqualsCaseInsensitiveASCII(name, Strings::HttpHeader::Cookie))
+        return CURLOPT_COOKIE;
+    if (base::EqualsCaseInsensitiveASCII(name, Strings::HttpHeader::Referer))
+        return CURLOPT_REFERER;
+    if (base::EqualsCaseInsensitiveASCII(name, Strings::HttpHeader::UserAgent))
+        return CURLOPT_USERAGENT;
+    return CURLOPT_HTTPHEADER;
+}
+
+size_t RequestImpl::WriteCallback(char *ptr, size_t, size_t nmemb, void *userData)
+{
+    HttpResponse *response = reinterpret_cast<HttpResponse *>(userData);
+    response->AppendData(ptr, nmemb);
+    return nmemb;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,7 +256,11 @@ BKEXPORT BkRequest BKAPI BkCreateRequest(const char *URL, BkRequestClient *clien
 BKEXPORT int BKAPI BkPerformRequest(BkRequest request, BkWorkController *controller)
 {
     if (nullptr != controller)
-        *controller = request->GetController();
+    {
+        RequestImpl::Controller *c = request->GetController();
+        c->AddRef();
+        *controller = c;
+    }
     return request->Perform();
 }
 

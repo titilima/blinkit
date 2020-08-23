@@ -14,8 +14,9 @@
 
 #pragma once
 
-#include <atomic>
 #include <vector>
+#include <curl/curl.h>
+#include <curl/easy.h>
 #include "bk_http.h"
 #include "bkcommon/bk_http_header_map.h"
 
@@ -31,18 +32,16 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
-    virtual int Perform(void) = 0;
+    int Perform(void);
     void SetMethod(const std::string &method) { m_method = method; }
-    virtual void SetHeader(const char *name, const char *value);
-    void SetHeaders(const BlinKit::BkHTTPHeaderMap &headers) { m_headers = headers; }
+    void SetHeader(const char *name, const char *value);
     void SetBody(const void *data, size_t dataLength);
     void SetTimeout(unsigned timeout) { m_timeoutInMs = timeout * 1000; }
     void SetProxy(int type, const char *proxy);
-    virtual ControllerImpl* GetController(void);
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    void Release(void);
-    virtual void Cancel(void) = 0;
+    class Controller;
+    Controller* GetController(void) { return m_controller; }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 protected:
     RequestImpl(const char *URL, const BkRequestClient &client);
 
@@ -50,14 +49,26 @@ protected:
     int ProxyType(void) const { return m_proxyType; }
     const std::string& Proxy(void) const;
 
+    void DoThreadWork(void);
+private:
+    virtual bool StartWorkThread(void) = 0;
+    static CURLoption TranslateOption(const char *name);
+    static size_t HeaderCallback(char *ptr, size_t, size_t nmemb, void *userData);
+    static size_t WriteCallback(char *ptr, size_t, size_t nmemb, void *userData);
+
     const std::string m_URL;
     BkRequestClient m_client;
+    Controller *m_controller;
+
     std::string m_method;
-    BlinKit::BkHTTPHeaderMap m_headers;
+    std::unordered_map<CURLoption, std::string> m_standardHeaders;
+    BlinKit::BkHTTPHeaderMap m_userHeaders;
     std::vector<unsigned char> m_body;
+
+    CURL *m_curl = nullptr;;
+    curl_slist *m_headersList = nullptr;
     BlinKit::HttpResponse *m_response = nullptr;
-private:
-    std::atomic<unsigned> m_refCount{ 1 };
+
     unsigned long m_timeoutInMs;
     int m_proxyType = BK_PROXY_SYSTEM_DEFAULT;
     std::string m_proxy;

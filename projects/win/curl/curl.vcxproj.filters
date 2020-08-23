@@ -17,6 +17,9 @@
     <ClInclude Include="..\..\..\third_party\curl\include\curl\easy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\third_party\curl\include\curl\curl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\third_party\curl\lib\easy.c">
