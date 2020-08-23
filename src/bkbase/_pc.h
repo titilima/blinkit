@@ -22,6 +22,9 @@
 #   define WIN32_LEAN_AND_MEAN
 #endif
 
+#define CURL_STATICLIB
+#define CURL_STRICTER
+
 #include "base/logging.h"
 
 #endif // BLINKIT_BKBASE__PC_H

@@ -21,32 +21,32 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{02c00b49-2a96-416c-b072-2dd01734b2f7}</ProjectGuid>
-    <RootNamespace>BkBase</RootNamespace>
+    <ProjectGuid>{6755af57-3c12-476d-ab7d-32bbdeb75223}</ProjectGuid>
+    <RootNamespace>curl</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141_xp</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -60,16 +60,12 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\_debug.props" />
-    <Import Project="..\_pch.props" />
     <Import Project="..\BlinKit.props" />
-    <Import Project="..\blink.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\_release.props" />
-    <Import Project="..\_pch.props" />
     <Import Project="..\BlinKit.props" />
-    <Import Project="..\blink.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -80,12 +76,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(RepoRoot)third_party\curl\include;$(RepoRoot)third_party\zlib;$(IncludePath)</IncludePath>
+    <IncludePath>$(RepoRoot)third_party\curl\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(RepoRoot)sdk\win32\</OutDir>
-    <IncludePath>$(RepoRoot)third_party\curl\include;$(RepoRoot)third_party\zlib;$(IncludePath)</IncludePath>
+    <IncludePath>$(RepoRoot)third_party\curl\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -97,16 +92,14 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;BLINKIT_EXPORTS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_LIB;BUILDING_LIBCURL;CURL_DISABLE_COOKIES;CURL_DISABLE_CRYPTO_AUTH;CURL_DISABLE_DICT;CURL_DISABLE_FILE;CURL_DISABLE_FTP;CURL_DISABLE_GOPHER;CURL_DISABLE_IMAP;CURL_DISABLE_LDAP;CURL_DISABLE_NTLM;CURL_DISABLE_POP3;CURL_DISABLE_RTSP;CURL_DISABLE_SMB;CURL_DISABLE_SMTP;CURL_DISABLE_TELNET;CURL_DISABLE_TFTP;CURL_STATICLIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SrcRoot)bkbase;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(RepoRoot)third_party\curl\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>Wininet.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ModuleDefinitionFile>BkBase.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -115,31 +108,29 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_USRDLL;BLINKIT_EXPORTS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_LIB;BUILDING_LIBCURL;CURL_DISABLE_COOKIES;CURL_DISABLE_CRYPTO_AUTH;CURL_DISABLE_DICT;CURL_DISABLE_FILE;CURL_DISABLE_FTP;CURL_DISABLE_GOPHER;CURL_DISABLE_IMAP;CURL_DISABLE_LDAP;CURL_DISABLE_NTLM;CURL_DISABLE_POP3;CURL_DISABLE_RTSP;CURL_DISABLE_SMB;CURL_DISABLE_SMTP;CURL_DISABLE_TELNET;CURL_DISABLE_TFTP;CURL_STATICLIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SrcRoot)bkbase;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(RepoRoot)third_party\curl\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>Wininet.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ModuleDefinitionFile>BkBase.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;BKBASE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableUAC>false</EnableUAC>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -148,63 +139,80 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;BKBASE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableUAC>false</EnableUAC>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\bkbase\http\http_constants.cpp" />
-    <ClCompile Include="..\..\..\src\bkbase\http\request_impl.cpp" />
-    <ClCompile Include="..\..\..\src\bkbase\http\http_response.cpp" />
-    <ClCompile Include="..\..\..\src\bkbase\http\win_request.cpp" />
-    <ClCompile Include="..\..\..\src\bkbase\misc\buffer.cpp" />
-    <ClCompile Include="..\..\..\src\bkbase\misc\controller.cpp" />
-    <ClCompile Include="..\..\..\src\bkbase\win\inet.cpp" />
-    <ClCompile Include="..\_pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
+    <ClInclude Include="..\..\..\third_party\curl\include\curl\easy.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\sdk\include\bk_def.h" />
-    <ClInclude Include="..\..\..\sdk\include\bk_http.h" />
-    <ClInclude Include="..\..\..\src\bkbase\http\http_constants.h" />
-    <ClInclude Include="..\..\..\src\bkbase\http\request_impl.h" />
-    <ClInclude Include="..\..\..\src\bkbase\http\http_response.h" />
-    <ClInclude Include="..\..\..\src\bkbase\http\win_request.h" />
-    <ClInclude Include="..\..\..\src\bkbase\win\inet.h" />
-    <ClInclude Include="..\..\..\src\bkbase\_pc.h" />
-    <ClInclude Include="resource.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="BkBase.def" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="BkBase.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\base\base.vcxproj">
-      <Project>{f8e8dc22-c9eb-4274-bbc9-011d4106f84d}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\BkCommon\BkCommon.vcxproj">
-      <Project>{a3dd911e-272c-4dad-b537-7340ed0af312}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\curl\curl.vcxproj">
-      <Project>{6755af57-3c12-476d-ab7d-32bbdeb75223}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\url\url.vcxproj">
-      <Project>{849ce42e-6457-4c6d-8ba0-854932a2aedb}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\zlib\zlib.vcxproj">
-      <Project>{1ee00a35-2f4a-45d0-8c75-80b936818a76}</Project>
-    </ProjectReference>
+    <ClCompile Include="..\..\..\third_party\curl\lib\asyn-thread.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\base64.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\conncache.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\connect.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\content_encoding.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\curl_addrinfo.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\curl_ctype.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\curl_threads.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\doh.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\dotdot.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\easy.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\escape.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\fileinfo.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\formdata.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\getenv.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\getinfo.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\hash.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\hostasyn.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\hostip.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\hostip4.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\http.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\http_chunks.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\http_digest.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\http_proxy.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\if2ip.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\inet_ntop.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\inet_pton.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\llist.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\mime.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\mprintf.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\multi.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\netrc.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\nonblock.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\parsedate.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\pipeline.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\progress.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\rand.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\select.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\sendf.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\setopt.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\share.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\slist.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\socks.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\speedcheck.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\splay.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\strcase.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\strdup.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\strerror.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\strtok.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\strtoofft.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\system_win32.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\timeval.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\transfer.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\url.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\urlapi.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\version.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\vtls\vtls.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\warnless.c" />
+    <ClCompile Include="..\..\..\third_party\curl\lib\wildcard.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
