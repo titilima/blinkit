@@ -80,12 +80,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(RepoRoot)third_party\zlib;$(IncludePath)</IncludePath>
+    <IncludePath>$(RepoRoot)third_party\curl\include;$(RepoRoot)third_party\zlib;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(RepoRoot)sdk\win32\</OutDir>
-    <IncludePath>$(RepoRoot)third_party\zlib;$(IncludePath)</IncludePath>
+    <IncludePath>$(RepoRoot)third_party\curl\include;$(RepoRoot)third_party\zlib;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -105,7 +105,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Crypt32.lib;Wininet.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>BkBase.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
@@ -125,7 +125,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Crypt32.lib;Wininet.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>BkBase.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
@@ -166,7 +166,6 @@
     <ClCompile Include="..\..\..\src\bkbase\http\win_request.cpp" />
     <ClCompile Include="..\..\..\src\bkbase\misc\buffer.cpp" />
     <ClCompile Include="..\..\..\src\bkbase\misc\controller.cpp" />
-    <ClCompile Include="..\..\..\src\bkbase\win\inet.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -179,7 +178,6 @@
     <ClInclude Include="..\..\..\src\bkbase\http\request_impl.h" />
     <ClInclude Include="..\..\..\src\bkbase\http\http_response.h" />
     <ClInclude Include="..\..\..\src\bkbase\http\win_request.h" />
-    <ClInclude Include="..\..\..\src\bkbase\win\inet.h" />
     <ClInclude Include="..\..\..\src\bkbase\_pc.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
@@ -195,6 +193,9 @@
     </ProjectReference>
     <ProjectReference Include="..\BkCommon\BkCommon.vcxproj">
       <Project>{a3dd911e-272c-4dad-b537-7340ed0af312}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\curl\curl.vcxproj">
+      <Project>{6755af57-3c12-476d-ab7d-32bbdeb75223}</Project>
     </ProjectReference>
     <ProjectReference Include="..\url\url.vcxproj">
       <Project>{849ce42e-6457-4c6d-8ba0-854932a2aedb}</Project>

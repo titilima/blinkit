@@ -19,9 +19,6 @@
     <Filter Include="misc">
       <UniqueIdentifier>{9c5c4338-10bb-4e89-806a-943cd97a6103}</UniqueIdentifier>
     </Filter>
-    <Filter Include="win">
-      <UniqueIdentifier>{d75e9a0c-815c-4c6a-b323-4402c3e9ed78}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\bkbase\http\http_constants.cpp">
@@ -38,9 +35,6 @@
     </ClCompile>
     <ClCompile Include="..\_pch.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\bkbase\win\inet.cpp">
-      <Filter>win</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\bkbase\misc\controller.cpp">
       <Filter>misc</Filter>
@@ -70,9 +64,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\bkbase\_pc.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\bkbase\win\inet.h">
-      <Filter>win</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\bkbase\http\http_response.h">
       <Filter>http</Filter>

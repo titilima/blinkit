@@ -24,18 +24,16 @@ class HttpResponse final : public ResponseBase
 public:
     HttpResponse(const std::string &URL);
 
+    void Reset(void);
+    void ParseHeaders(const std::string &rawHeaders);
+
     int ErrorCode(void) const { return m_errorCode; }
     void SetErrorCode(int errorCode) { m_errorCode = errorCode; }
 
     const std::string& CurrentURL(void) const { return m_currentURL; }
     void SetCurrentURL(const std::string &URL) { m_currentURL = URL; }
 
-    void ParseHeaders(const std::string &rawHeaders);
 
-    std::string ResolveRedirection(void);
-    void ResetForRedirection(void);
-
-    void PrepareBody(size_t cb) { m_body.reserve(cb); }
     void AppendData(const void *data, size_t cb);
     void InflateBodyIfNecessary(void);
 
