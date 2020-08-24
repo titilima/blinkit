@@ -22,6 +22,12 @@
 #include "bkcommon/bk_http_header_map.h"
 #include "url/gurl.h"
 
+#if (LIBCURL_VERSION_NUM < 0x073600) // `CURLOPT_SUPPRESS_CONNECT_HEADERS` is available in libcurl 7.54.0.
+#   define MANUALLY_SUPPRESS_CONNECT_HEADERS    1
+#else
+#   define MANUALLY_SUPPRESS_CONNECT_HEADERS    0
+#endif
+
 namespace BlinKit {
 class HttpResponse;
 }
@@ -80,6 +86,9 @@ private:
 
     CURL *m_curl = nullptr;
     curl_slist *m_headersList = nullptr;
+#if MANUALLY_SUPPRESS_CONNECT_HEADERS
+    bool m_suppressConnectHeaders = false;
+#endif
 };
 
 #endif // BLINKIT_BKBASE_REQUEST_IMPL_H
