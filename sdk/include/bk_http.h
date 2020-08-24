@@ -39,6 +39,16 @@ BKEXPORT void BKAPI BkSetRequestMethod(BkRequest request, const char *method);
 BKEXPORT void BKAPI BkSetRequestHeader(BkRequest request, const char *name, const char *value);
 BKEXPORT void BKAPI BkSetRequestBody(BkRequest request, const void *data, size_t dataLength);
 BKEXPORT void BKAPI BkSetRequestTimeout(BkRequest request, unsigned timeout /* in seconds */);
+
+enum BkProxyType {
+    BK_PROXY_RESERVED = -1,
+    BK_PROXY_SYSTEM_DEFAULT = 0,
+    BK_PROXY_DIRECT,
+    BK_PROXY_HTTP,
+    BK_PROXY_SOCKS,
+    BK_PROXY_SOCKS5
+};
+
 BKEXPORT void BKAPI BkSetRequestProxy(BkRequest request, int type, const char *proxy);
 
 /**
