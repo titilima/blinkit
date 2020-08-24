@@ -49,33 +49,37 @@ public:
 protected:
     RequestImpl(const char *URL, const BkRequestClient &client);
 
+    const GURL& CurrentURL(void) const { return m_URL; }
+
     int ProxyType(void) const { return m_proxyType; }
     virtual std::optional<CURLProxy> GetProxyForCURL(void) const;
 
     void DoThreadWork(void);
-
-    const GURL m_URL;
 private:
+    bool PrepareCURLSession(void);
+    void CleanupCURLSession(void);
     virtual bool StartWorkThread(void) = 0;
     static CURLoption TranslateOption(const char *name);
+    bool ProcessResponse(void);
     static size_t HeaderCallback(char *ptr, size_t, size_t nmemb, void *userData);
     static size_t WriteCallback(char *ptr, size_t, size_t nmemb, void *userData);
 
     BkRequestClient m_client;
     Controller *m_controller;
 
+    GURL m_URL;
     std::string m_method;
     std::unordered_map<CURLoption, std::string> m_standardHeaders;
     BlinKit::BkHTTPHeaderMap m_userHeaders;
     std::vector<unsigned char> m_body;
+    BlinKit::HttpResponse *m_response = nullptr;
 
     int m_proxyType = BK_PROXY_SYSTEM_DEFAULT;
     std::string m_proxy;
     unsigned long m_timeoutInMs;
 
-    CURL *m_curl = nullptr;;
+    CURL *m_curl = nullptr;
     curl_slist *m_headersList = nullptr;
-    BlinKit::HttpResponse *m_response = nullptr;
 };
 
 #endif // BLINKIT_BKBASE_REQUEST_IMPL_H

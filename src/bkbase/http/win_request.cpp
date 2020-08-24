@@ -94,7 +94,7 @@ std::optional<CURLProxy> WinRequest::ParseProxyForCURL(const std::string &proxy)
             return std::make_pair(CURLPROXY_HTTP, part);
 
         std::string scheme = part.substr(0, p);
-        if (m_URL.SchemeIs(scheme))
+        if (CurrentURL().SchemeIs(scheme))
             return std::make_pair(CURLPROXY_HTTP, part.substr(p + 1));
     }
     return std::nullopt;

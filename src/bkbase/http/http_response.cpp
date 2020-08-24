@@ -181,7 +181,7 @@ void HttpResponse::ParseHeaders(const std::string &rawHeaders)
     }
 }
 
-void HttpResponse::ResetForRedirection(void)
+void HttpResponse::Reset(void)
 {
     m_errorCode = BK_ERR_SUCCESS;
     m_statusCode = 0;
@@ -190,23 +190,6 @@ void HttpResponse::ResetForRedirection(void)
     m_headers.Clear();
     m_cookies.clear();
     m_body.clear();
-}
-
-std::string HttpResponse::ResolveRedirection(void)
-{
-    std::string ret;
-
-    std::string location = m_headers.Get("Location");
-    if (!location.empty())
-    {
-        ret = m_currentURL;
-        m_currentURL = GURL(m_currentURL).Resolve(location).spec();
-    }
-    else
-    {
-        ASSERT(!location.empty());
-    }
-    return ret;
 }
 
 }; // namespace BlinKit
