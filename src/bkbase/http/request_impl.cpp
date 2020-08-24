@@ -13,6 +13,7 @@
 
 #include <atomic>
 #include <mutex>
+#include <regex>
 #include "base/strings/string_util.h"
 #include "bkbase/http/http_constants.h"
 #include "bkbase/http/http_response.h"
@@ -82,6 +83,9 @@ RequestImpl::~RequestImpl(void)
 
 void RequestImpl::CleanupCURLSession(void)
 {
+#if MANUALLY_SUPPRESS_CONNECT_HEADERS
+    m_suppressConnectHeaders = false;
+#endif
     if (nullptr != m_headersList)
     {
         curl_slist_free_all(m_headersList);
@@ -93,6 +97,21 @@ void RequestImpl::CleanupCURLSession(void)
         m_curl = nullptr;
     }
 }
+
+#if MANUALLY_SUPPRESS_CONNECT_HEADERS
+static bool HasConnectHeader(const std::string &headers)
+{
+    size_t p = headers.find("\r\n");
+    std::string line1 = headers.substr(0, p);
+
+    std::regex pattern(R"(HTTP\/([\d+\.]+)\s+(\d+)\s+(.*))");
+    std::smatch match;
+    if (!std::regex_search(line1, match, pattern))
+        return false;
+
+    return match.str(2) == "200" && base::EqualsCaseInsensitiveASCII(match.str(3), "Connection Established");
+}
+#endif
 
 void RequestImpl::DoThreadWork(void)
 {
@@ -114,6 +133,15 @@ void RequestImpl::DoThreadWork(void)
             break;
         }
 
+#if MANUALLY_SUPPRESS_CONNECT_HEADERS
+        if (m_suppressConnectHeaders)
+        {
+            ASSERT(HasConnectHeader(headers));
+
+            size_t p = headers.find("\r\n\r\n");
+            headers = headers.substr(p + 4);
+        }
+#endif
         m_response->ParseHeaders(headers);
         m_response->InflateBodyIfNecessary();
         if (ProcessResponse())
@@ -228,7 +256,11 @@ bool RequestImpl::PrepareCURLSession(void)
         if (m_URL.SchemeIs(url::kHttpsScheme))
         {
             curl_easy_setopt(m_curl, CURLOPT_HTTPPROXYTUNNEL, OPT_TRUE);
+#if MANUALLY_SUPPRESS_CONNECT_HEADERS
+            m_suppressConnectHeaders = true;
+#else
             curl_easy_setopt(m_curl, CURLOPT_SUPPRESS_CONNECT_HEADERS, OPT_TRUE);
+#endif
         }
         // BKTODO: curl_easy_setopt(m_curl, CURLOPT_PROXYUSERPWD, "<usr>:<pwd>");
     }
