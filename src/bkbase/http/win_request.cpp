@@ -11,6 +11,7 @@
 
 #include "win_request.h"
 
+#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "bkcommon/bk_strings.h"
 #include "bkbase/http/http_response.h"
@@ -29,6 +30,74 @@ WinRequest::~WinRequest(void)
 {
     if (nullptr != m_hThread)
         CloseHandle(m_hThread);
+}
+
+std::optional<CURLProxy> WinRequest::GetProxyForCURL(void) const
+{
+    if (BK_PROXY_SYSTEM_DEFAULT != ProxyType())
+        return RequestImpl::GetProxyForCURL();
+
+    std::optional<CURLProxy> ret = std::nullopt;
+
+    HKEY hKey = nullptr;
+    do {
+        LSTATUS l = RegOpenKeyExA(HKEY_CURRENT_USER,
+            R"(Software\Microsoft\Windows\CurrentVersion\Internet Settings)",
+            0, KEY_QUERY_VALUE, &hKey);
+        if (ERROR_SUCCESS != l)
+            break;
+
+        DWORD proxyEnable = 0;
+        DWORD cb = sizeof(DWORD);
+        l = RegQueryValueExA(hKey, "ProxyEnable", nullptr, nullptr, reinterpret_cast<LPBYTE>(&proxyEnable), &cb);
+        if (ERROR_SUCCESS != l || 0 == proxyEnable)
+            break;
+
+        static const char ProxyServer[] = "ProxyServer";
+
+        std::string proxyServer(128, '\0');
+        cb = proxyServer.length();
+        l = RegQueryValueExA(hKey, ProxyServer, nullptr, nullptr,
+            reinterpret_cast<LPBYTE>(const_cast<char *>(proxyServer.data())), &cb);
+        switch (l)
+        {
+            case ERROR_SUCCESS:
+                proxyServer.resize(cb - 1); // 1 for '\0';
+                break;
+            case ERROR_MORE_DATA:
+                proxyServer.resize(cb - 1); // 1 for '\0';
+                l = RegQueryValueExA(hKey, ProxyServer, nullptr, nullptr,
+                    reinterpret_cast<LPBYTE>(const_cast<char *>(proxyServer.data())), &cb);
+                break;
+            default:
+                NOTREACHED();
+        }
+
+        if (ERROR_SUCCESS != l)
+            break;
+
+        ret = ParseProxyForCURL(proxyServer);
+    } while (false);
+
+    if (nullptr != hKey)
+        RegCloseKey(hKey);
+    return ret;
+}
+
+std::optional<CURLProxy> WinRequest::ParseProxyForCURL(const std::string &proxy) const
+{
+    std::vector<std::string> parts = base::SplitString(proxy, ";", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+    for (const std::string &part : parts)
+    {
+        size_t p = part.find('=');
+        if (std::string::npos == p)
+            return std::make_pair(CURLPROXY_HTTP, part);
+
+        std::string scheme = part.substr(0, p);
+        if (m_URL.SchemeIs(scheme))
+            return std::make_pair(CURLPROXY_HTTP, part.substr(p + 1));
+    }
+    return std::nullopt;
 }
 
 bool WinRequest::StartWorkThread(void)

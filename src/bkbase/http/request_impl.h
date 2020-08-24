@@ -14,15 +14,19 @@
 
 #pragma once
 
+#include <optional>
 #include <vector>
 #include <curl/curl.h>
 #include <curl/easy.h>
 #include "bk_http.h"
 #include "bkcommon/bk_http_header_map.h"
+#include "url/gurl.h"
 
 namespace BlinKit {
 class HttpResponse;
 }
+
+typedef std::pair<curl_proxytype, std::string> CURLProxy;
 
 class RequestImpl
 {
@@ -45,18 +49,18 @@ public:
 protected:
     RequestImpl(const char *URL, const BkRequestClient &client);
 
-    unsigned long TimeoutInMs(void) const { return m_timeoutInMs; }
     int ProxyType(void) const { return m_proxyType; }
-    const std::string& Proxy(void) const;
+    virtual std::optional<CURLProxy> GetProxyForCURL(void) const;
 
     void DoThreadWork(void);
+
+    const GURL m_URL;
 private:
     virtual bool StartWorkThread(void) = 0;
     static CURLoption TranslateOption(const char *name);
     static size_t HeaderCallback(char *ptr, size_t, size_t nmemb, void *userData);
     static size_t WriteCallback(char *ptr, size_t, size_t nmemb, void *userData);
 
-    const std::string m_URL;
     BkRequestClient m_client;
     Controller *m_controller;
 
@@ -65,13 +69,13 @@ private:
     BlinKit::BkHTTPHeaderMap m_userHeaders;
     std::vector<unsigned char> m_body;
 
+    int m_proxyType = BK_PROXY_SYSTEM_DEFAULT;
+    std::string m_proxy;
+    unsigned long m_timeoutInMs;
+
     CURL *m_curl = nullptr;;
     curl_slist *m_headersList = nullptr;
     BlinKit::HttpResponse *m_response = nullptr;
-
-    unsigned long m_timeoutInMs;
-    int m_proxyType = BK_PROXY_SYSTEM_DEFAULT;
-    std::string m_proxy;
 };
 
 #endif // BLINKIT_BKBASE_REQUEST_IMPL_H

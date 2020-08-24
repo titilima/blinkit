@@ -18,7 +18,6 @@
 #include "bkbase/http/http_response.h"
 #include "bkcommon/bk_strings.h"
 #include "bkcommon/controller_impl.h"
-#include "url/gurl.h"
 
 using namespace BlinKit;
 
@@ -112,6 +111,25 @@ void RequestImpl::DoThreadWork(void)
     delete this;
 }
 
+std::optional<CURLProxy> RequestImpl::GetProxyForCURL(void) const
+{
+    switch (m_proxyType)
+    {
+        case BK_PROXY_SYSTEM_DEFAULT:
+        case BK_PROXY_DIRECT:
+            break;
+        case BK_PROXY_HTTP:
+            return std::make_pair(CURLPROXY_HTTP, m_proxy);
+        case BK_PROXY_SOCKS:
+            return std::make_pair(CURLPROXY_SOCKS4, m_proxy);
+        case BK_PROXY_SOCKS5:
+            return std::make_pair(CURLPROXY_SOCKS5, m_proxy);
+        default:
+            NOTREACHED();
+    }
+    return std::nullopt;
+}
+
 size_t RequestImpl::HeaderCallback(char *buffer, size_t, size_t nitems, void *userData)
 {
     std::string *headers = reinterpret_cast<std::string *>(userData);
@@ -124,8 +142,7 @@ int RequestImpl::Perform(void)
     int err = BK_ERR_UNKNOWN;
     do {
         // 1. Check URL.
-        GURL u(m_URL);
-        if (!u.SchemeIsHTTPOrHTTPS())
+        if (!m_URL.SchemeIsHTTPOrHTTPS())
         {
             err = BK_ERR_URI;
             break;
@@ -135,11 +152,9 @@ int RequestImpl::Perform(void)
         ASSERT(nullptr == m_curl);
         m_curl = curl_easy_init();
         if (nullptr == m_curl)
-        {
-            err = BK_ERR_UNKNOWN;
             break;
-        }
-        curl_easy_setopt(m_curl, CURLOPT_URL, m_URL.c_str());
+
+        curl_easy_setopt(m_curl, CURLOPT_URL, m_URL.spec().c_str());
         curl_easy_setopt(m_curl, CURLOPT_SSL_VERIFYPEER, OPT_FALSE);
         curl_easy_setopt(m_curl, CURLOPT_SSL_VERIFYHOST, OPT_FALSE);
 
@@ -179,13 +194,26 @@ int RequestImpl::Perform(void)
             curl_easy_setopt(m_curl, CURLOPT_POSTFIELDS, m_body.data());
         }
 
-        // 7. Apply other options.
-        ASSERT(ProxyType() == BK_PROXY_SYSTEM_DEFAULT); // BKTODO:
-        const long timeout = TimeoutInMs();
+        // 7. Apply proxy.
+        std::optional<CURLProxy> proxy = GetProxyForCURL();
+        if (proxy.has_value())
+        {
+            curl_easy_setopt(m_curl, CURLOPT_PROXYTYPE, proxy->first);
+            curl_easy_setopt(m_curl, CURLOPT_PROXY, proxy->second.c_str());
+            if (m_URL.SchemeIs(url::kHttpsScheme))
+            {
+                curl_easy_setopt(m_curl, CURLOPT_HTTPPROXYTUNNEL, OPT_TRUE);
+                curl_easy_setopt(m_curl, CURLOPT_SUPPRESS_CONNECT_HEADERS, OPT_TRUE);
+            }
+            // BKTODO: curl_easy_setopt(m_curl, CURLOPT_PROXYUSERPWD, "<usr>:<pwd>");
+        }
+
+        // 8. Apply other options.
+        const long timeout = m_timeoutInMs;
         curl_easy_setopt(m_curl, CURLOPT_TIMEOUT_MS, timeout);
 
-        // 8. Initialize response & start worker thread.
-        m_response = new HttpResponse(m_URL);
+        // 9. Initialize response & start worker thread.
+        m_response = new HttpResponse(m_URL.spec());
         curl_easy_setopt(m_curl, CURLOPT_WRITEDATA, m_response);
         curl_easy_setopt(m_curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 
@@ -196,12 +224,6 @@ int RequestImpl::Perform(void)
     ASSERT(BK_ERR_SUCCESS == err);
     delete this;
     return err;
-}
-
-const std::string& RequestImpl::Proxy(void) const
-{
-    ASSERT(BK_PROXY_USER_SPECIFIED == m_proxyType);
-    return m_proxy;
 }
 
 void RequestImpl::SetBody(const void *data, size_t dataLength)
@@ -221,9 +243,21 @@ void RequestImpl::SetHeader(const char *name, const char *value)
 
 void RequestImpl::SetProxy(int type, const char *proxy)
 {
+    switch (type)
+    {
+        case BK_PROXY_SYSTEM_DEFAULT:
+        case BK_PROXY_DIRECT:
+            break;
+        case BK_PROXY_HTTP:
+        case BK_PROXY_SOCKS:
+        case BK_PROXY_SOCKS5:
+            m_proxy.assign(proxy);
+            break;
+        default:
+            NOTREACHED();
+            type = BK_PROXY_DIRECT;
+    }
     m_proxyType = type;
-    if (BK_PROXY_USER_SPECIFIED == type)
-        m_proxy.assign(proxy);
 }
 
 CURLoption RequestImpl::TranslateOption(const char *name)

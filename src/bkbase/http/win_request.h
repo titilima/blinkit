@@ -24,8 +24,10 @@ public:
     WinRequest(const char *URL, const BkRequestClient &client);
     ~WinRequest(void) override;
 private:
+    std::optional<CURLProxy> ParseProxyForCURL(const std::string &proxy) const;
     static DWORD WINAPI ThreadProc(PVOID param);
 
+    std::optional<CURLProxy> GetProxyForCURL(void) const override;
     bool StartWorkThread(void) override;
 
     HANDLE m_hThread = nullptr;
