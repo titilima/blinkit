@@ -60,8 +60,6 @@ private:
     BkCrawlerClient m_client;
     std::unique_ptr<blink::LocalFrame> m_frame;
 
-    int m_proxyType = BK_PROXY_RESERVED;
-    std::string m_proxy;
     CookieJarImpl *m_cookieJar = nullptr;
     std::unordered_map<std::string, bool> m_scriptModeMap;
 };
