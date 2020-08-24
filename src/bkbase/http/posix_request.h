@@ -23,7 +23,7 @@ class PosixRequest final : public RequestImpl
 {
 public:
     PosixRequest(const char *URL, const BkRequestClient &client);
-    ~PosixRequest(void);
+    ~PosixRequest(void) override;
 private:
     static void* ThreadProc(void *arg);
 
