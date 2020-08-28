@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_rule_list.cc
+// Description: CSSRuleList Classes
+//      Author: Ziming Li
+//     Created: 2020-08-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -26,10 +37,5 @@
 namespace blink {
 
 StaticCSSRuleList::StaticCSSRuleList() = default;
-
-void StaticCSSRuleList::Trace(blink::Visitor* visitor) {
-  visitor->Trace(rules_);
-  CSSRuleList::Trace(visitor);
-}
 
 }  // namespace blink

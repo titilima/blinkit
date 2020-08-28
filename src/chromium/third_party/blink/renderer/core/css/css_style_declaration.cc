@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_style_declaration.cc
+// Description: CSSStyleDeclaration Class
+//      Author: Ziming Li
+//     Created: 2020-08-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007-2011 Google Inc. All rights reserved.
  *
@@ -40,7 +51,7 @@
 #include "third_party/blink/renderer/core/css/properties/css_property.h"
 #include "third_party/blink/renderer/core/css_property_names.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
-#include "third_party/blink/renderer/platform/bindings/script_state.h"
+// BKTODO: #include "third_party/blink/renderer/platform/bindings/script_state.h"
 #include "third_party/blink/renderer/platform/wtf/ascii_ctype.h"
 #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
@@ -159,6 +170,7 @@ String CSSStyleDeclaration::AnonymousNamedGetter(const AtomicString& name) {
   return GetPropertyValueInternal(resolveCSSPropertyID(unresolved_property));
 }
 
+#if 0 // BKTODO:
 bool CSSStyleDeclaration::AnonymousNamedSetter(ScriptState* script_state,
                                                const AtomicString& name,
                                                const String& value) {
@@ -185,6 +197,7 @@ bool CSSStyleDeclaration::AnonymousNamedSetter(ScriptState* script_state,
     return false;
   return true;
 }
+#endif // 0
 
 void CSSStyleDeclaration::NamedPropertyEnumerator(Vector<String>& names,
                                                   ExceptionState&) {

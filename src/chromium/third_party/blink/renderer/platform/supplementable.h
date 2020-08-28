@@ -175,7 +175,7 @@ class Supplementable : public GarbageCollectedMixin {
         std::is_array<decltype(SupplementType::kSupplementName)>::value,
         "Declare a const char array kSupplementName. See Supplementable.h for "
         "details.");
-    this->supplements_.insert({ SupplementType::kSupplementName, supplement });
+    this->supplements_.insert({ SupplementType::kSupplementName, std::move(supplement) });
   }
 
   template <typename SupplementType>

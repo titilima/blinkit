@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_selector_watch.cc
+// Description: CSSSelectorWatch Class
+//      Author: Ziming Li
+//     Created: 2020-08-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -56,7 +67,8 @@ CSSSelectorWatch& CSSSelectorWatch::From(Document& document) {
   CSSSelectorWatch* watch = FromIfExists(document);
   if (!watch) {
     watch = new CSSSelectorWatch(document);
-    ProvideTo(document, watch);
+    std::unique_ptr<CSSSelectorWatch> p(watch);
+    ProvideTo(document, p);
   }
   return *watch;
 }
@@ -74,6 +86,7 @@ void CSSSelectorWatch::CallbackSelectorChangeTimerFired(TimerBase*) {
     callback_selector_change_timer_.StartOneShot(TimeDelta(), FROM_HERE);
     return;
   }
+#if 0 // BKTODO: Are SelectorMatchChanged & WebLocalFrameClient::DidMatchCSS needed?
   if (GetSupplementable()->GetFrame()) {
     Vector<String> added_selectors;
     Vector<String> removed_selectors;
@@ -82,6 +95,7 @@ void CSSSelectorWatch::CallbackSelectorChangeTimerFired(TimerBase*) {
     GetSupplementable()->GetFrame()->Client()->SelectorMatchChanged(
         added_selectors, removed_selectors);
   }
+#endif
   added_selectors_.clear();
   removed_selectors_.clear();
   timer_expirations_ = 0;
@@ -125,7 +139,10 @@ void CSSSelectorWatch::UpdateSelectorMatches(
   if (removed_selectors_.IsEmpty() && added_selectors_.IsEmpty()) {
     if (callback_selector_change_timer_.IsActive()) {
       timer_expirations_ = 0;
+      ASSERT(false); // BKTODO:
+#if 0
       callback_selector_change_timer_.Stop();
+#endif
     }
   } else {
     timer_expirations_ = 0;
@@ -151,7 +168,7 @@ void CSSSelectorWatch::WatchCSSSelectors(const Vector<String>& selectors) {
       ImmutableCSSPropertyValueSet::Create(nullptr, 0, kUASheetMode);
 
   // UA stylesheets always parse in the insecure context mode.
-  CSSParserContext* context = CSSParserContext::Create(
+  std::unique_ptr<CSSParserContext> context = CSSParserContext::Create(
       kUASheetMode, SecureContextMode::kInsecureContext);
   for (const auto& selector : selectors) {
     CSSSelectorList selector_list =
@@ -167,11 +184,6 @@ void CSSSelectorWatch::WatchCSSSelectors(const Vector<String>& selectors) {
         StyleRule::Create(std::move(selector_list), callback_property_set));
   }
   GetSupplementable()->GetStyleEngine().WatchedSelectorsChanged();
-}
-
-void CSSSelectorWatch::Trace(blink::Visitor* visitor) {
-  visitor->Trace(watched_callback_selectors_);
-  Supplement<Document>::Trace(visitor);
 }
 
 }  // namespace blink

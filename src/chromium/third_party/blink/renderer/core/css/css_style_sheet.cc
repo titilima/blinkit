@@ -499,10 +499,10 @@ MediaList* CSSStyleSheet::media() {
   if (!media_cssom_wrapper_)
     media_cssom_wrapper_ = MediaList::Create(media_queries_.get(),
                                              const_cast<CSSStyleSheet*>(this));
-  return media_cssom_wrapper_.Get();
+  return media_cssom_wrapper_.get();
 }
 
-void CSSStyleSheet::SetMedia(MediaList* media_list) {
+void CSSStyleSheet::SetMedia(const std::shared_ptr<MediaList> &media_list) {
   media_cssom_wrapper_ = media_list;
 }
 

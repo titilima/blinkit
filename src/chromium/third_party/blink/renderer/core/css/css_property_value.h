@@ -74,6 +74,7 @@ class CSSPropertyValue {
   DISALLOW_NEW();
 
  public:
+  CSSPropertyValue(void);
   CSSPropertyValue(const CSSProperty& property,
                    const CSSValue& value,
                    bool important = false,

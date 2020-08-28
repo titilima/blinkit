@@ -191,7 +191,7 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
   bool LoadCompleted() const { return load_completed_; }
   void StartLoadingDynamicSheet();
   void SetText(const String&, bool allow_import_rules, ExceptionState&);
-  void SetMedia(MediaList*);
+  void SetMedia(const std::shared_ptr<MediaList> &);
   void SetAlternateFromConstructor(bool);
   bool IsAlternate() const;
   bool CanBeActivated(const String& current_preferrable_name) const;
@@ -254,7 +254,7 @@ class CORE_EXPORT CSSStyleSheet final : public StyleSheet {
   std::unordered_set<AtomicString> custom_element_tag_names_;
 
   TextPosition start_position_;
-  Member<MediaList> media_cssom_wrapper_;
+  std::shared_ptr<MediaList> media_cssom_wrapper_;
   mutable HeapVector<std::unique_ptr<CSSRule>> child_rule_cssom_wrappers_;
   mutable std::unique_ptr<CSSRuleList> rule_list_cssom_wrapper_;
   DISALLOW_COPY_AND_ASSIGN(CSSStyleSheet);

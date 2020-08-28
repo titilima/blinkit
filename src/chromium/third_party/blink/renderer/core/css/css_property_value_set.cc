@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_property_value_set.cc
+// Description: CSSPropertyValueSet Class
+//      Author: Ziming Li
+//     Created: 2020-08-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012, 2013 Apple Inc.
@@ -53,7 +64,7 @@ ImmutableCSSPropertyValueSet* ImmutableCSSPropertyValueSet::Create(
     unsigned count,
     CSSParserMode css_parser_mode) {
   DCHECK_LE(count, static_cast<unsigned>(kMaxArraySize));
-  void* slot = ThreadHeap::Allocate<CSSPropertyValueSet>(
+  void* slot = malloc(
       SizeForImmutableCSSPropertyValueSetWithPropertyCount(count));
   return new (slot)
       ImmutableCSSPropertyValueSet(properties, count, css_parser_mode);
@@ -166,13 +177,6 @@ template CORE_EXPORT int ImmutableCSSPropertyValueSet::FindPropertyIndex(
 template CORE_EXPORT int ImmutableCSSPropertyValueSet::FindPropertyIndex(
     AtRuleDescriptorID) const;
 
-void ImmutableCSSPropertyValueSet::TraceAfterDispatch(blink::Visitor* visitor) {
-  const Member<const CSSValue>* values = ValueArray();
-  for (unsigned i = 0; i < array_size_; i++)
-    visitor->Trace(values[i]);
-  CSSPropertyValueSet::TraceAfterDispatch(visitor);
-}
-
 MutableCSSPropertyValueSet::MutableCSSPropertyValueSet(
     const CSSPropertyValueSet& other)
     : CSSPropertyValueSet(other.CssParserMode()) {
@@ -240,13 +244,6 @@ template CORE_EXPORT const CSSValue* CSSPropertyValueSet::GetPropertyCSSValue<
     AtRuleDescriptorID>(AtRuleDescriptorID) const;
 template CORE_EXPORT const CSSValue*
     CSSPropertyValueSet::GetPropertyCSSValue<AtomicString>(AtomicString) const;
-
-void CSSPropertyValueSet::Trace(blink::Visitor* visitor) {
-  if (is_mutable_)
-    ToMutableCSSPropertyValueSet(this)->TraceAfterDispatch(visitor);
-  else
-    ToImmutableCSSPropertyValueSet(this)->TraceAfterDispatch(visitor);
-}
 
 void CSSPropertyValueSet::FinalizeGarbageCollectedObject() {
   if (is_mutable_)
@@ -441,7 +438,7 @@ void MutableCSSPropertyValueSet::ParseDeclarationList(
     StyleSheetContents* context_style_sheet) {
   property_vector_.clear();
 
-  CSSParserContext* context;
+  std::unique_ptr<CSSParserContext> context;
   if (context_style_sheet) {
     context = CSSParserContext::CreateWithStyleSheetContents(
         context_style_sheet->ParserContext(), context_style_sheet);
@@ -641,12 +638,6 @@ template CORE_EXPORT int MutableCSSPropertyValueSet::FindPropertyIndex(
 template CORE_EXPORT int MutableCSSPropertyValueSet::FindPropertyIndex(
     AtomicString) const;
 
-void MutableCSSPropertyValueSet::TraceAfterDispatch(blink::Visitor* visitor) {
-  visitor->Trace(cssom_wrapper_);
-  visitor->Trace(property_vector_);
-  CSSPropertyValueSet::TraceAfterDispatch(visitor);
-}
-
 unsigned CSSPropertyValueSet::AverageSizeInBytes() {
   // Please update this if the storage scheme changes so that this longer
   // reflects the actual size.
@@ -678,7 +669,5 @@ MutableCSSPropertyValueSet* MutableCSSPropertyValueSet::Create(
     unsigned count) {
   return new MutableCSSPropertyValueSet(properties, count);
 }
-
-void CSSLazyPropertyParser::Trace(blink::Visitor* visitor) {}
 
 }  // namespace blink

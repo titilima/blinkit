@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_value_pool.cc
+// Description: CSSValuePool Class
+//      Author: Ziming Li
+//     Created: 2020-08-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011, 2012 Apple Inc. All rights reserved.
  *
@@ -25,22 +36,13 @@
 
 #include "third_party/blink/renderer/core/css/css_value_pool.h"
 
-#include "third_party/blink/renderer/platform/heap/handle.h"
-#include "third_party/blink/renderer/platform/wtf/threading.h"
-
 namespace blink {
 
 using namespace cssvalue;
 
 CSSValuePool& CssValuePool() {
-  DEFINE_THREAD_SAFE_STATIC_LOCAL(ThreadSpecific<Persistent<CSSValuePool>>,
-                                  thread_specific_pool, ());
-  Persistent<CSSValuePool>& pool_handle = *thread_specific_pool;
-  if (!pool_handle) {
-    pool_handle = new CSSValuePool;
-    pool_handle.RegisterAsStaticReference();
-  }
-  return *pool_handle;
+  static CSSValuePool s_pool;
+  return s_pool;
 }
 
 CSSValuePool::CSSValuePool()
@@ -54,22 +56,6 @@ CSSValuePool::CSSValuePool()
   pixel_value_cache_.resize(kMaximumCacheableIntegerValue + 1);
   percent_value_cache_.resize(kMaximumCacheableIntegerValue + 1);
   number_value_cache_.resize(kMaximumCacheableIntegerValue + 1);
-}
-
-void CSSValuePool::Trace(blink::Visitor* visitor) {
-  visitor->Trace(inherited_value_);
-  visitor->Trace(initial_value_);
-  visitor->Trace(unset_value_);
-  visitor->Trace(color_transparent_);
-  visitor->Trace(color_white_);
-  visitor->Trace(color_black_);
-  visitor->Trace(identifier_value_cache_);
-  visitor->Trace(pixel_value_cache_);
-  visitor->Trace(percent_value_cache_);
-  visitor->Trace(number_value_cache_);
-  visitor->Trace(color_value_cache_);
-  visitor->Trace(font_face_value_cache_);
-  visitor->Trace(font_family_value_cache_);
 }
 
 }  // namespace blink

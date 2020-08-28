@@ -2,7 +2,7 @@
 // BlinKit - blink Library
 // -------------------------------------------------
 //   File Name: css_rule_list.h
-// Description: CSSRuleList Class
+// Description: CSSRuleList Classes
 //      Author: Ziming Li
 //     Created: 2020-08-04
 // -------------------------------------------------

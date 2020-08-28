@@ -21,6 +21,34 @@ namespace blink {
 template <typename T>
 class HashCountedSet
 {
+public:
+    struct AddResult {
+        bool is_new_entry;
+    };
+    AddResult insert(const T &value)
+    {
+        AddResult ret;
+        auto it = m_impl.find(value);
+        if (std::end(m_impl) == it)
+        {
+            m_impl.insert({ value, 1 });
+            ret.is_new_entry = true;
+        }
+        else
+        {
+            ++(it->second);
+            ret.is_new_entry = false;
+        }
+        return ret;
+    }
+    bool erase(const T &value)
+    {
+        auto it = m_impl.find(value);
+        if (std::end(m_impl) == it)
+            return false;
+        m_impl.erase(it);
+        return true;
+    }
 private:
     std::unordered_map<T, unsigned> m_impl;
 };

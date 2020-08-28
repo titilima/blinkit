@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_rule.cc
+// Description: CSSRule Class
+//      Author: Ziming Li
+//     Created: 2020-08-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -24,7 +35,6 @@
 #include "third_party/blink/renderer/core/css/css_style_sheet.h"
 #include "third_party/blink/renderer/core/css/style_rule.h"
 #include "third_party/blink/renderer/core/css/style_sheet_contents.h"
-#include "third_party/blink/renderer/platform/bindings/script_wrappable_visitor.h"
 
 namespace blink {
 
@@ -48,26 +58,11 @@ const CSSParserContext* CSSRule::ParserContext(
 void CSSRule::SetParentStyleSheet(CSSStyleSheet* style_sheet) {
   parent_is_rule_ = false;
   parent_style_sheet_ = style_sheet;
-  ScriptWrappableMarkingVisitor::WriteBarrier(parent_style_sheet_);
-  MarkingVisitor::WriteBarrier(parent_style_sheet_);
 }
 
 void CSSRule::SetParentRule(CSSRule* rule) {
   parent_is_rule_ = true;
   parent_rule_ = rule;
-  ScriptWrappableMarkingVisitor::WriteBarrier(parent_rule_);
-  MarkingVisitor::WriteBarrier(parent_rule_);
-}
-
-void CSSRule::Trace(blink::Visitor* visitor) {
-  // This makes the parent link strong, which is different from the
-  // pre-oilpan world, where the parent link is mysteriously zeroed under
-  // some circumstances.
-  if (parent_is_rule_)
-    visitor->TraceWithWrappers(parent_rule_);
-  else
-    visitor->TraceWithWrappers(parent_style_sheet_);
-  ScriptWrappable::Trace(visitor);
 }
 
 }  // namespace blink

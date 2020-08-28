@@ -47,10 +47,17 @@ public:
 
     bool IsEmpty(void) const { return this->empty(); }
     void Grow(wtf_size_t size) { this->resize(size); }
+    void ReserveCapacity(wtf_size_t new_capacity) { this->reserve(new_capacity); }
+    void ReserveInitialCapacity(wtf_size_t initial_capacity) { this->reserve(initial_capacity); }
+    void Shrink(wtf_size_t size) { this->resize(size); }
 
     void EraseAt(wtf_size_t position)
     {
         this->erase(this->begin() + position);
+    }
+    void UncheckedAppend(const T &val)
+    {
+        this->push_back(val);
     }
 };
 
