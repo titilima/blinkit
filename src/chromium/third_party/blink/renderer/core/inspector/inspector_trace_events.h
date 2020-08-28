@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
+
 namespace blink {
 
 typedef int LayoutInvalidationReasonForTracing;
