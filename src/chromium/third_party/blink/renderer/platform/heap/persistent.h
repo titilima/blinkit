@@ -20,6 +20,7 @@ template <class T>
 class Persistent
 {
 public:
+    Persistent(void) = default;
     Persistent(const T *)
     {
         ASSERT(false); // BKTODO:
