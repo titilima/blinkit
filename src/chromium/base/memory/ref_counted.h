@@ -84,7 +84,6 @@ protected:
     RefCounted(void) = default;
     ~RefCounted(void) = default;
 private:
-private:
     friend struct DefaultRefCountedTraits<T>;
     template <typename U>
     static void DeleteInternal(const U *x)
@@ -95,18 +94,27 @@ private:
     DISALLOW_COPY_AND_ASSIGN(RefCounted);
 };
 
-template <class T>
+template <class T, typename Traits = DefaultRefCountedTraits<T>>
 class RefCountedThreadSafe : public RefCountedBase<std::atomic<unsigned>>
 {
-    DISALLOW_COPY_AND_ASSIGN(RefCountedThreadSafe<T>);
 public:
     void Release(void) const
     {
         if (RefCountedBase::Release())
-            delete static_cast<T *>(this);
+            Traits::Destruct(static_cast<const T *>(this));
     }
 protected:
+    RefCountedThreadSafe(void) = default;
     ~RefCountedThreadSafe(void) = default;
+private:
+    friend struct DefaultRefCountedTraits<T>;
+    template <typename U>
+    static void DeleteInternal(const U *x)
+    {
+        delete x;
+    }
+
+    DISALLOW_COPY_AND_ASSIGN(RefCountedThreadSafe);
 };
 
 } // namespace base

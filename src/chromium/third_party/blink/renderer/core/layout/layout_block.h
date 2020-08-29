@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_block.h
+// Description: LayoutBlock Class
+//      Author: Ziming Li
+//     Created: 2020-08-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,9 +36,9 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_LAYOUT_LAYOUT_BLOCK_H_
 
 #include <memory>
+#include <set>
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/layout/layout_box.h"
-#include "third_party/blink/renderer/platform/wtf/list_hash_set.h"
 
 namespace blink {
 
@@ -36,7 +47,7 @@ class LineLayoutBox;
 class NGConstraintSpace;
 class WordMeasurement;
 
-typedef WTF::ListHashSet<LayoutBox*, 16> TrackedLayoutBoxListHashSet;
+typedef std::set<LayoutBox*> TrackedLayoutBoxListHashSet;
 typedef WTF::HashMap<const LayoutBlock*,
                      std::unique_ptr<TrackedLayoutBoxListHashSet>>
     TrackedDescendantsMap;
@@ -168,7 +179,7 @@ class CORE_EXPORT LayoutBlock : public LayoutBox {
   }
   bool HasPositionedObjects() const {
     DCHECK(has_positioned_objects_ ? (PositionedObjectsInternal() &&
-                                      !PositionedObjectsInternal()->IsEmpty())
+                                      !PositionedObjectsInternal()->empty())
                                    : !PositionedObjectsInternal());
     return has_positioned_objects_;
   }
@@ -176,8 +187,12 @@ class CORE_EXPORT LayoutBlock : public LayoutBox {
   void AddPercentHeightDescendant(LayoutBox*);
   void RemovePercentHeightDescendant(LayoutBox*);
   bool HasPercentHeightDescendant(LayoutBox* o) const {
-    return HasPercentHeightDescendants() &&
-           PercentHeightDescendantsInternal()->Contains(o);
+    if (TrackedLayoutBoxListHashSet *p = PercentHeightDescendants()) {
+      auto it = p->find(o);
+      if (std::end(*p) != it)
+        return true;
+    }
+    return false;
   }
 
   TrackedLayoutBoxListHashSet* PercentHeightDescendants() const {
@@ -187,7 +202,7 @@ class CORE_EXPORT LayoutBlock : public LayoutBox {
   bool HasPercentHeightDescendants() const {
     DCHECK(has_percent_height_descendants_
                ? (PercentHeightDescendantsInternal() &&
-                  !PercentHeightDescendantsInternal()->IsEmpty())
+                  !PercentHeightDescendantsInternal()->empty())
                : !PercentHeightDescendantsInternal());
     return has_percent_height_descendants_;
   }

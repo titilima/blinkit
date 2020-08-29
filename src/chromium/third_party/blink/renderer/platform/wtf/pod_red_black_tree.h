@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: pod_red_black_tree.h
+// Description: PODRedBlackTree Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -759,7 +770,7 @@ class PODRedBlackTree {
 #else
   void LogIfVerbose(const char* output) const {
     if (verbose_debugging_)
-      DLOG(ERROR) << output;
+      BKLOG("ERROR: %s", output);
   }
 #endif
 
@@ -775,7 +786,7 @@ class PODRedBlackTree {
       builder.Append(ValueToString<T>::GetString(node->Data()));
       builder.Append((node->GetColor() == kBlack) ? " (black)" : " (red)");
     }
-    DLOG(ERROR) << builder.ToString();
+    BKLOG("ERROR: %s", builder.ToString().StdUtf8().c_str());
     if (node) {
       DumpFromNode(node->Left(), indentation + 2);
       DumpFromNode(node->Right(), indentation + 2);

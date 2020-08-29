@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: clip_paint_property_node.h
+// Description: ClipPaintPropertyNode Class
+//      Author: Ziming Li
+//     Created: 2020-08-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,8 +16,8 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_GRAPHICS_PAINT_CLIP_PAINT_PROPERTY_NODE_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_GRAPHICS_PAINT_CLIP_PAINT_PROPERTY_NODE_H_
 
+#include <optional>
 #include "base/memory/scoped_refptr.h"
-#include "base/optional.h"
 #include "third_party/blink/renderer/platform/geometry/float_rounded_rect.h"
 #include "third_party/blink/renderer/platform/graphics/paint/geometry_mapper_clip_cache.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_property_node.h"
@@ -33,7 +44,7 @@ class PLATFORM_EXPORT ClipPaintPropertyNode
   struct State {
     scoped_refptr<const TransformPaintPropertyNode> local_transform_space;
     FloatRoundedRect clip_rect;
-    base::Optional<FloatRoundedRect> clip_rect_excluding_overlay_scrollbars;
+    std::optional<FloatRoundedRect> clip_rect_excluding_overlay_scrollbars;
     scoped_refptr<const RefCountedPath> clip_path;
     CompositingReasons direct_compositing_reasons = CompositingReason::kNone;
 
@@ -75,7 +86,7 @@ class PLATFORM_EXPORT ClipPaintPropertyNode
     if (state == state_)
       return parent_changed;
 
-    DCHECK(!IsParentAlias()) << "Changed the state of an alias node.";
+    DCHECK(!IsParentAlias()); // Changed the state of an alias node.
     state_ = std::move(state);
     SetChanged();
     return true;
@@ -141,7 +152,7 @@ class PLATFORM_EXPORT ClipPaintPropertyNode
     // fixed, change the following condition to
     //   DCHECK(!clip_cache_ || !clip_cache_->IsValid());
     if (clip_cache_ && clip_cache_->IsValid()) {
-      DLOG(WARNING) << "Clip tree changed without invalidating the cache.";
+      BKLOG("WARNING: Clip tree changed without invalidating the cache.");
       GeometryMapperClipCache::ClearCache();
     }
     PaintPropertyNode::SetChanged();

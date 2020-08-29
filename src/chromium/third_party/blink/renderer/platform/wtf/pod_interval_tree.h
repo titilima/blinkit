@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: pod_interval_tree.h
+// Description: PODIntervalTree Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Google Inc. All rights reserved.
  *
@@ -231,9 +242,10 @@ class PODIntervalTree final : public PODRedBlackTree<PODInterval<T, UserData>> {
 #ifndef NDEBUG
       String local_max_value_string =
           ValueToString<T>::ToString(local_max_value);
-      DLOG(ERROR) << "PODIntervalTree verification failed at node " << node
-                  << ": localMaxValue=" << local_max_value_string
-                  << " and data=" << node->Data().ToString();
+      BKLOG("ERROR: PODIntervalTree verification failed at node %p"
+                  ": localMaxValue=%s"
+                  " and data=%s",
+                  node, local_max_value_string.StdUtf8().c_str(), node->Data().ToString().StdUtf8().c_str());
 #endif
       return false;
     }

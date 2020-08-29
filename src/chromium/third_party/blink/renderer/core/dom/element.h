@@ -190,6 +190,10 @@ public:
     void BeginParsingChildren(void) { SetIsFinishedParsingChildren(false); }
     virtual void FinishParsingChildren(void);
 
+#ifndef BLINKIT_CRAWLER_ONLY
+    virtual bool LayoutObjectIsNeeded(const ComputedStyle &style) const;
+#endif
+
     // Node overrides
     String nodeName(void) const override;
     NodeType getNodeType(void) const final { return kElementNode; }
@@ -215,6 +219,10 @@ protected:
     };
     virtual AttributeTriggers* TriggersForAttributeName(const QualifiedName &attrName);
 
+#ifndef BLINKIT_CRAWLER_ONLY
+    virtual void DidRecalcStyle(StyleRecalcChange change);
+#endif
+    
     // ContainerNode overrides
 #ifndef BLINKIT_CRAWLER_ONLY
     void ChildrenChanged(const ChildrenChange &change) override;

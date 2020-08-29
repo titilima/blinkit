@@ -72,7 +72,6 @@ class DocumentLoader;
 class DocumentParser;
 class DocumentType;
 class ElementDataCache;
-class LayoutView;
 class LocalDOMWindow;
 class LocalFrame;
 class Location;
@@ -84,6 +83,8 @@ class ScriptRunner;
 class SelectorQueryCache;
 class Text;
 #ifndef BLINKIT_CRAWLER_ONLY
+class LayoutView;
+class LocalFrameView;
 class StyleEngine;
 #endif
 
@@ -135,6 +136,11 @@ public:
     LocalFrame* ExecutingFrame(void);
     Document* ContextDocument(void) const;
     ScriptRunner* GetScriptRunner(void) { return m_scriptRunner.get(); }
+    DocumentLifecycle& Lifecycle(void) { return m_lifecycle; }
+#ifndef BLINKIT_CRAWLER_ONLY
+    LayoutView* GetLayoutView(void) const { return m_layoutView; }
+    LocalFrameView* View(void) const;                    // can be null
+#endif
 
     // Exports for JS
     Element* body(void) const;
@@ -476,7 +482,7 @@ private:
     std::stack<ScriptElementBase *> m_currentScriptStack;
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    LayoutView* m_layoutView = nullptr;
+    LayoutView *m_layoutView = nullptr;
     Member<Element> m_focusedElement;
     Member<Document> m_templateDocumentHost;
 

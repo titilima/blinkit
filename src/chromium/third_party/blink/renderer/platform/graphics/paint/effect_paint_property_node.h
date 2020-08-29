@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: effect_paint_property_node.h
+// Description: EffectPaintPropertyNode Class
+//      Author: Ziming Li
+//     Created: 2020-08-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -81,7 +92,7 @@ class PLATFORM_EXPORT EffectPaintPropertyNode
     if (state == state_)
       return parent_changed;
 
-    DCHECK(!IsParentAlias()) << "Changed the state of an alias node.";
+    DCHECK(!IsParentAlias()); // Changed the state of an alias node.
     state_ = std::move(state);
     SetChanged();
     return true;

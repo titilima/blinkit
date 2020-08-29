@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: hit_test_result.h
+// Description: HitTestResult Class
+//      Author: Ziming Li
+//     Created: 2020-08-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.
  * Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies)
@@ -22,6 +33,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_LAYOUT_HIT_TEST_RESULT_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_LAYOUT_HIT_TEST_RESULT_H_
 
+#include <set>
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/editing/forward.h"
 #include "third_party/blink/renderer/core/layout/hit_test_location.h"
@@ -57,7 +69,7 @@ class CORE_EXPORT HitTestResult {
   DISALLOW_NEW();
 
  public:
-  typedef HeapListHashSet<Member<Node>> NodeSet;
+  typedef std::set<Node *> NodeSet;
 
   HitTestResult();
   HitTestResult(const HitTestRequest&, const HitTestLocation&);

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_object.h
+// Description: LayoutObject Class
+//      Author: Ziming Li
+//     Created: 2020-08-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -639,7 +650,7 @@ class CORE_EXPORT LayoutObject : public ImageResourceObserver,
   }
   // isBody is called from LayoutBox::styleWillChange and is thus quite hot.
   bool IsBody() const {
-    return GetNode() && GetNode()->HasTagName(HTMLNames::bodyTag);
+    return GetNode() && GetNode()->HasTagName(html_names::kBodyTag);
   }
   bool IsHR() const;
 
@@ -2414,8 +2425,7 @@ class CORE_EXPORT LayoutObject : public ImageResourceObserver,
 
   scoped_refptr<ComputedStyle> style_;
 
-  // Oilpan: This untraced pointer to the owning Node is considered safe.
-  UntracedMember<Node> node_;
+  Node *node_ = nullptr;
 
   LayoutObject* parent_;
   LayoutObject* previous_;

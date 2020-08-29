@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: prepopulated_computed_style_property_map.h
+// Description: PrepopulatedComputedStylePropertyMap Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 the Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -39,7 +50,6 @@ class CORE_EXPORT PrepopulatedComputedStylePropertyMap
   void UpdateStyle(const Document&, const ComputedStyle&);
 
   unsigned size() override;
-  void Trace(blink::Visitor*) override;
 
  protected:
   const CSSValue* GetProperty(CSSPropertyID) override;

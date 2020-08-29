@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scroll_paint_property_node.h
+// Description: ScrollPaintPropertyNode Class
+//      Author: Ziming Li
+//     Created: 2020-08-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_GRAPHICS_PAINT_SCROLL_PAINT_PROPERTY_NODE_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_GRAPHICS_PAINT_SCROLL_PAINT_PROPERTY_NODE_H_
 
-#include "base/optional.h"
+#include <optional>
 #include "third_party/blink/renderer/platform/geometry/float_point.h"
 #include "third_party/blink/renderer/platform/geometry/float_size.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
@@ -52,7 +63,7 @@ class PLATFORM_EXPORT ScrollPaintPropertyNode
     CompositorElementId compositor_element_id;
     OverscrollBehavior overscroll_behavior = blink::OverscrollBehavior(
         blink::OverscrollBehavior::kOverscrollBehaviorTypeAuto);
-    base::Optional<SnapContainerData> snap_container_data;
+    std::optional<SnapContainerData> snap_container_data;
 
     bool operator==(const State& o) const {
       return container_rect == o.container_rect &&
@@ -105,7 +116,7 @@ class PLATFORM_EXPORT ScrollPaintPropertyNode
     return state_.overscroll_behavior.y;
   }
 
-  base::Optional<SnapContainerData> GetSnapContainerData() const {
+  std::optional<SnapContainerData> GetSnapContainerData() const {
     return state_.snap_container_data;
   }
 

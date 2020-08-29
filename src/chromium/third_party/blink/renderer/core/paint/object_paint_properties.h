@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: object_paint_properties.h
+// Description: ObjectPaintProperties Class
+//      Author: Ziming Li
+//     Created: 2020-08-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -75,15 +86,11 @@ class CORE_EXPORT ObjectPaintProperties {
     auto result = is_parent_alias                                            \
                       ? UpdateAlias(variable, parent)                        \
                       : Update(variable, parent, std::move(state));          \
-    DCHECK(!is_immutable_ || result.Unchanged())                             \
-        << "Value changed while immutable. New state:\n"                     \
-        << *variable;                                                        \
+    DCHECK(!is_immutable_ || result.Unchanged());                            \
     return result;                                                           \
   }                                                                          \
   bool Clear##function() {                                                   \
-    DCHECK(!is_immutable_ || !variable)                                      \
-        << "Value cleared while immutable. Old state:\n"                     \
-        << *variable;                                                        \
+    DCHECK(!is_immutable_ || !variable);                                     \
     return Clear(variable);                                                  \
   }                                                                          \
                                                                              \
@@ -228,17 +235,17 @@ class CORE_EXPORT ObjectPaintProperties {
   void SetMutable() const { is_immutable_ = false; }
 
   void Validate() {
-    DCHECK(!ScrollTranslation() || !ReplacedContentTransform())
-        << "Replaced elements don't scroll so there should never be both a "
-           "scroll translation and a replaced content transform.";
-    DCHECK(!ClipPathClip() || !ClipPath())
-        << "ClipPathClip and ClipPathshould be mutually exclusive.";
+    DCHECK(!ScrollTranslation() || !ReplacedContentTransform());
+        // Replaced elements don't scroll so there should never be both a
+        // scroll translation and a replaced content transform.
+    DCHECK(!ClipPathClip() || !ClipPath());
+        // ClipPathClip and ClipPathshould be mutually exclusive.
     DCHECK((!TransformIsolationNode() && !ClipIsolationNode() &&
             !EffectIsolationNode()) ||
            (TransformIsolationNode() && ClipIsolationNode() &&
-            EffectIsolationNode()))
-        << "Isolation nodes have to be created for all of transform, clip, and "
-           "effect trees.";
+            EffectIsolationNode()));
+        // Isolation nodes have to be created for all of transform, clip, and
+        //   effect trees.
   }
 #endif
 

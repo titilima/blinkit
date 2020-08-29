@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: v0_insertion_point.h
+// Description: V0InsertionPoint Class
+//      Author: Ziming Li
+//     Created: 2020-08-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -75,8 +86,6 @@ class CORE_EXPORT V0InsertionPoint : public HTMLElement {
     return distributed_nodes_.PreviousTo(node);
   }
 
-  void Trace(blink::Visitor*) override;
-
  protected:
   V0InsertionPoint(const QualifiedName&, Document&);
   bool LayoutObjectIsNeeded(const ComputedStyle&) const override;
@@ -95,7 +104,7 @@ class CORE_EXPORT V0InsertionPoint : public HTMLElement {
 
 using DestinationInsertionPoints = HeapVector<Member<V0InsertionPoint>, 1>;
 
-DEFINE_ELEMENT_TYPE_CASTS(V0InsertionPoint, IsV0InsertionPoint());
+DEFINE_NODE_TYPE_CASTS(V0InsertionPoint, IsV0InsertionPoint());
 
 inline bool IsActiveV0InsertionPoint(const Node& node) {
   return node.IsV0InsertionPoint() && ToV0InsertionPoint(node).IsActive();

@@ -1,3 +1,13 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_view.h
+// Description: LayoutView Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2006 Apple Computer, Inc.
@@ -293,7 +303,7 @@ class CORE_EXPORT LayoutView final : public LayoutBlockFlow {
 
   bool UpdateLogicalWidthAndColumnWidth() override;
 
-  UntracedMember<LocalFrameView> frame_view_;
+  LocalFrameView *frame_view_;
 
   // The page logical height.
   // This is only used during printing to split the content into pages.

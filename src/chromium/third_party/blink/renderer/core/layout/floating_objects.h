@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: floating_objects.h
+// Description: FloatingObject Class
+//      Author: Ziming Li
+//     Created: 2020-08-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -26,10 +37,10 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_LAYOUT_FLOATING_OBJECTS_H_
 
 #include <memory>
+#include <set>
 #include "base/macros.h"
 #include "third_party/blink/renderer/platform/geometry/layout_rect.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
-#include "third_party/blink/renderer/platform/wtf/list_hash_set.h"
 #include "third_party/blink/renderer/platform/wtf/pod_free_list_arena.h"
 #include "third_party/blink/renderer/platform/wtf/pod_interval_tree.h"
 
@@ -182,10 +193,7 @@ struct FloatingObjectHashTranslator {
     return a->GetLayoutObject() == b;
   }
 };
-typedef ListHashSet<std::unique_ptr<FloatingObject>,
-                    4,
-                    FloatingObjectHashFunctions>
-    FloatingObjectSet;
+typedef std::set<std::unique_ptr<FloatingObject>> FloatingObjectSet;
 typedef FloatingObjectSet::const_iterator FloatingObjectSetIterator;
 typedef WTF::PODInterval<LayoutUnit, FloatingObject*> FloatingObjectInterval;
 typedef WTF::PODIntervalTree<LayoutUnit, FloatingObject*> FloatingObjectTree;

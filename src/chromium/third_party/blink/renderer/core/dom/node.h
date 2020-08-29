@@ -57,9 +57,11 @@ class Element;
 class ExceptionState;
 class NodeList;
 class NodeRareData;
-class ShadowRoot;
-
 using NodeVector = std::vector<Node *>;
+class ShadowRoot;
+template <typename NodeType>
+class StaticNodeTypeList;
+using StaticNodeList = StaticNodeTypeList<Node>;
 
 const int kNodeStyleChangeShift = 18;
 const int kNodeCustomElementShift = 20;
@@ -199,6 +201,9 @@ public:
     bool ForCrawler(void) const { return GetFlag(kForCrawlerFlag); }
 #endif
     bool IsDocumentFragment(void) const { return GetFlag(kIsDocumentFragmentFlag); }
+#ifndef BLINKIT_CRAWLER_ONLY
+    bool IsV0InsertionPoint(void) const { return GetFlag(kIsV0InsertionPointFlag); }
+#endif
     bool IsLink(void) const { return GetFlag(kIsLinkFlag); }
     bool IsUserActionElement(void) const { return GetFlag(kIsUserActionElementFlag); }
     bool isConnected(void) const { return GetFlag(kIsConnectedFlag); }
@@ -212,6 +217,7 @@ public:
     void MarkAncestorsWithChildNeedsDistributionRecalc(void);
     StyleChangeType GetStyleChangeType(void) const { return static_cast<StyleChangeType>(m_nodeFlags & kStyleChangeMask); }
     bool NeedsAttach(void) const { return GetStyleChangeType() == kNeedsReattachStyleChange; }
+    bool NeedsDistributionRecalc(void) const;
     // True if the style recalc process should recalculate style for this node.
     bool NeedsStyleRecalc(void) const
     {
@@ -284,6 +290,18 @@ public:
 
 #ifndef BLINKIT_CRAWLER_ONLY
     const ComputedStyle* GetComputedStyle(void) const;
+
+    bool CanParticipateInFlatTree(void) const;
+
+    // As layoutObject() includes a branch you should avoid calling it repeatedly
+    // in hot code paths.
+    // Note that if a Node has a layoutObject, it's parentNode is guaranteed to
+    // have one as well.
+    LayoutObject* GetLayoutObject(void) const
+    {
+        ASSERT(false); // BKTODO:
+        return nullptr;
+    }
 
     struct AttachContext {
         STACK_ALLOCATED();

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: line_layout_text.h
+// Description: LineLayoutText Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -123,10 +134,12 @@ class LineLayoutText : public LineLayoutItem {
 
   UChar PreviousCharacter() const { return ToText()->PreviousCharacter(); }
 
+#if 0 // BKTODO:
   struct LayoutTextSelectionStatus SelectionStatus() const {
     return ToText()->GetFrame()->Selection().ComputeLayoutSelectionStatus(
         *ToText());
   }
+#endif
 
  private:
   LayoutText* ToText() { return ToLayoutText(GetLayoutObject()); }

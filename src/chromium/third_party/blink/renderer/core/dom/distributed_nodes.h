@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: distributed_nodes.h
+// Description: DistributedNodes Class
+//      Author: Ziming Li
+//     Created: 2020-08-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -55,9 +66,9 @@ class DistributedNodes final {
     nodes_.clear();
     indices_.clear();
   }
-  void ShrinkToFit() { nodes_.ShrinkToFit(); }
+  void ShrinkToFit() { nodes_.shrink_to_fit(); }
 
-  bool Contains(const Node* node) const { return indices_.Contains(node); }
+  bool Contains(const Node* node) const { return std::end(indices_) != indices_.find(node); }
   wtf_size_t Find(const Node*) const;
   Node* NextTo(const Node*) const;
   Node* PreviousTo(const Node*) const;

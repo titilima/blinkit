@@ -49,7 +49,7 @@
 #include "third_party/blink/renderer/core/style/computed_style_initial_values.h"
 #include "third_party/blink/renderer/core/style/cursor_list.h"
 #include "third_party/blink/renderer/core/style/data_ref.h"
-#include "third_party/blink/renderer/core/style/svg_computed_style.h"
+// BKTODO: #include "third_party/blink/renderer/core/style/svg_computed_style.h"
 #include "third_party/blink/renderer/core/style/transform_origin.h"
 #include "third_party/blink/renderer/platform/geometry/layout_rect_outsets.h"
 #include "third_party/blink/renderer/platform/graphics/color.h"
@@ -239,7 +239,7 @@ class ComputedStyle : public ComputedStyleBase,
   // list of associated pseudo styles
   std::unique_ptr<PseudoStyleCache> cached_pseudo_styles_;
 
-  DataRef<SVGComputedStyle> svg_style_;
+  // BKTODO: DataRef<SVGComputedStyle> svg_style_;
 
  private:
   // TODO(sashab): Move these private members to the bottom of ComputedStyle.

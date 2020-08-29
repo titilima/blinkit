@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_property_map_read_only.h
+// Description: StylePropertyMapReadOnly Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,6 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_CSSOM_STYLE_PROPERTY_MAP_READ_ONLY_H_
 
 #include "base/macros.h"
-#include "third_party/blink/renderer/bindings/core/v8/iterable.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/css/cssom/css_style_value.h"
 #include "third_party/blink/renderer/core/css_property_names.h"
@@ -17,8 +27,8 @@ namespace blink {
 class CSSProperty;
 
 class CORE_EXPORT StylePropertyMapReadOnly
-    : public ScriptWrappable,
-      public PairIterable<String, CSSStyleValueVector> {
+    : public ScriptWrappable {
+      // BKTODO: public PairIterable<String, CSSStyleValueVector> {
   DEFINE_WRAPPERTYPEINFO();
 
  public:
@@ -51,7 +61,7 @@ class CORE_EXPORT StylePropertyMapReadOnly
   virtual String SerializationForShorthand(const CSSProperty&) = 0;
 
  private:
-  IterationSource* StartIteration(ScriptState*, ExceptionState&) override;
+  // BKTODO: IterationSource* StartIteration(ScriptState*, ExceptionState&) override;
 
   CSSStyleValue* GetShorthandProperty(const CSSProperty&);
   const CSSValue* GetCustomProperty(const ExecutionContext&,

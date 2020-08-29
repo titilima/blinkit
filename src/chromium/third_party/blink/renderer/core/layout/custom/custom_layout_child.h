@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: custom_layout_child.h
+// Description: CustomLayoutChild Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -31,10 +42,12 @@ class CustomLayoutChild : public ScriptWrappable {
 
   // LayoutChild.idl
   PrepopulatedComputedStylePropertyMap* styleMap() const { return style_map_; }
+#if 0 // BKTODO:
   CustomLayoutFragmentRequest* layoutNextFragment(
       ScriptState*,
       const CustomLayoutConstraintsOptions&,
       ExceptionState&);
+#endif
 
   LayoutBox* GetLayoutBox() const {
     DCHECK(box_);
@@ -46,8 +59,6 @@ class CustomLayoutChild : public ScriptWrappable {
   // possible for a web developer to hold onto a LayoutChild object after its
   // underlying LayoutObject has been destroyed).
   bool IsValid() const { return box_; }
-
-  void Trace(blink::Visitor*) override;
 
  private:
   LayoutBox* box_;

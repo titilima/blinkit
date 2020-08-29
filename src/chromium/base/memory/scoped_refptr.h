@@ -156,6 +156,18 @@ void scoped_refptr<T>::AddRef(T *ptr) { ptr->AddRef(); }
 template <typename T>
 void scoped_refptr<T>::Release(T *ptr) { ptr->Release(); }
 
+template <typename T, typename U>
+inline bool operator==(const scoped_refptr<T> &lhs, const U *rhs)
+{
+    return lhs.get() == rhs;
+}
+
+template <typename T, typename U>
+inline bool operator==(const T *lhs, const scoped_refptr<U> &rhs)
+{
+    return lhs == rhs.get();
+}
+
 namespace base {
 
 template <typename T>
