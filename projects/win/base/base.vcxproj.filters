@@ -268,5 +268,8 @@
     <ClInclude Include="..\..\..\src\chromium\base\hash.h">
       <Filter>base</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\base\optional.h">
+      <Filter>base</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

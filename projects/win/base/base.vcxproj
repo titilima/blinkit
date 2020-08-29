@@ -295,6 +295,7 @@
     <ClInclude Include="..\..\..\src\chromium\base\numerics\safe_math.h" />
     <ClInclude Include="..\..\..\src\chromium\base\numerics\safe_math_impl.h" />
     <ClInclude Include="..\..\..\src\chromium\base\numerics\safe_math_shared_impl.h" />
+    <ClInclude Include="..\..\..\src\chromium\base\optional.h" />
     <ClInclude Include="..\..\..\src\chromium\base\rand_util.h" />
     <ClInclude Include="..\..\..\src\chromium\base\sequenced_task_runner.h" />
     <ClInclude Include="..\..\..\src\chromium\base\single_thread_task_runner.h" />

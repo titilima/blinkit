@@ -192,6 +192,36 @@
     <Filter Include="renderer\platform\animation">
       <UniqueIdentifier>{bb73ea10-72e1-48e9-ad20-14b55a189458}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\layout\api">
+      <UniqueIdentifier>{af20ad73-cf47-4e73-bdc9-376ed9b4ee5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\paint">
+      <UniqueIdentifier>{5c855862-747c-41a8-8c2a-54c4e2b2f961}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\layout\ng">
+      <UniqueIdentifier>{7563fee8-3bce-46ec-b4a2-b6c659406e39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\inspector">
+      <UniqueIdentifier>{1d703216-e711-47a4-a0b2-d7d06867e3d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\paint\compositing">
+      <UniqueIdentifier>{9cd4c876-8cb4-4907-a746-ccc881c71ab1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\platform\instrumentation">
+      <UniqueIdentifier>{bc3c3975-e9a2-4cb1-a557-eb3bea2c9e93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\platform\instrumentation\tracing">
+      <UniqueIdentifier>{35d2fbc0-9a1f-4a84-a77c-207a8a8e47c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\layout\line">
+      <UniqueIdentifier>{9f13ddc2-7a7f-4c9c-8377-5a96f9bd9c48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\layout\custom">
+      <UniqueIdentifier>{344294b9-3095-42db-bfac-38e6355e9d34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\css\cssom">
+      <UniqueIdentifier>{1488a567-a93d-402c-a2c7-158913f29f73}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -1486,6 +1516,183 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_property_serializer.cc">
       <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_view.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\hit_test_cache.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\hit_test_result.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_block_flow.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_state.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\hit_test_location.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\position_with_affinity.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\position.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\flat_tree_traversal.cc">
+      <Filter>renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\layout_tree_builder_traversal.cc">
+      <Filter>renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\v0_insertion_point.cc">
+      <Filter>renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\distributed_nodes.cc">
+      <Filter>renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_element.cpp">
+      <Filter>renderer\core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_object.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_text.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_paint_invalidator.cc">
+      <Filter>renderer\core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\selection_state.cc">
+      <Filter>renderer\core\layout\api</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_object_child_list.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\subtree_layout_scope.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\fragment_data.cc">
+      <Filter>renderer\core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_phase.cc">
+      <Filter>renderer\core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_difference.cc">
+      <Filter>renderer\core\style</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\clip_paint_property_node.cc">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_rounded_rect.cc">
+      <Filter>renderer\platform\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\geometry_mapper_clip_cache.cc">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\paint_property_node.cc">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\transform_paint_property_node.cc">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\compositing_reasons.cc">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\compositor_element_id.cc">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\geometry_mapper_transform_cache.cc">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\scroll_paint_property_node.cc">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\path.cc">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\effect_paint_property_node.cc">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\compositor_filter_operations.cc">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\ref_counted_property_tree_state.cc">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\property_tree_state.cc">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\hit_test_rect.cc">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\image_orientation.cc">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\subtree_paint_property_update_reason.cc">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\transforms\affine_transform.cc">
+      <Filter>renderer\platform\transforms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_box_list.cc">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_run_constructor.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\floating_objects.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_block.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_box.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\custom\custom_layout_child.cc">
+      <Filter>renderer\core\layout\custom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\prepopulated_computed_style_property_map.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\style_property_map_read_only.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_style_value.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_box_model_object.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\min_max_size.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\root_inline_box.cc">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_flow_box.cc">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_box.cc">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_context.cc">
+      <Filter>renderer\platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\trailing_objects.cc">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\frame_selection.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\set_selection_options.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\scroll\scroll_alignment.cc">
+      <Filter>renderer\platform\scroll</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3438,6 +3645,273 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_property_serializer.h">
       <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_property_id_templates.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_view.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\hit_test_cache.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\hit_test_result.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_block_flow.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_state.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\forward.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\hit_test_location.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\hit_test_request.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_item.h">
+      <Filter>renderer\core\layout\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\position_with_affinity.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\position.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\flat_tree_traversal.h">
+      <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\layout_tree_builder_traversal.h">
+      <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\v0_insertion_point.h">
+      <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\distributed_nodes.h">
+      <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_element.h">
+      <Filter>renderer\core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_object.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_object_inlines.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_text.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_paint_invalidator.h">
+      <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\hit_test_action.h">
+      <Filter>renderer\core\layout\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\selection_state.h">
+      <Filter>renderer\core\layout\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_object_child_list.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\map_coordinates_flags.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_outline_type.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\subtree_layout_scope.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\inspector\inspector_trace_events.h">
+      <Filter>renderer\core\inspector</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\image_resource_observer.h">
+      <Filter>renderer\core\loader\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\image_animation_policy.h">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\compositing_state.h">
+      <Filter>renderer\core\paint\compositing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\fragment_data.h">
+      <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_phase.h">
+      <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_difference.h">
+      <Filter>renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_paint_properties.h">
+      <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\clip_paint_property_node.h">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_rounded_rect.h">
+      <Filter>renderer\platform\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\geometry_mapper_clip_cache.h">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\float_clip_rect.h">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\paint_property_node.h">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\transform_paint_property_node.h">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\compositing_reasons.h">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\compositor_element_id.h">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\geometry_mapper_transform_cache.h">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\scroll_paint_property_node.h">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\scroll\main_thread_scrolling_reason.h">
+      <Filter>renderer\platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\scroll\overscroll_behavior.h">
+      <Filter>renderer\platform\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\path.h">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\effect_paint_property_node.h">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\compositor_filter_operations.h">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\paint_filter.h">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\ref_counted_property_tree_state.h">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\property_tree_state.h">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\hit_test_rect.h">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\image_orientation.h">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\subtree_paint_property_update_reason.h">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\transforms\affine_transform.h">
+      <Filter>renderer\platform\transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\instrumentation\tracing\trace_event.h">
+      <Filter>renderer\platform\instrumentation\tracing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_box_list.h">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_run_constructor.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\floating_objects.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\pod_interval.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\pod_free_list_arena.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\pod_arena.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\pod_interval_tree.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\pod_red_black_tree.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_block.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_box.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\custom\custom_layout_child.h">
+      <Filter>renderer\core\layout\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\prepopulated_computed_style_property_map.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\style_property_map_read_only.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_style_value.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_box_model_object.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\background_bleed_avoidance.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\content_change_type.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\min_max_size.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\overflow_model.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\root_inline_box.h">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_flow_box.h">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_box.h">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_box_model.h">
+      <Filter>renderer\core\layout\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_context.h">
+      <Filter>renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\thread_safe_ref_counted.h">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\trailing_objects.h">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_text.h">
+      <Filter>renderer\core\layout\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\frame_selection.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\set_selection_options.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\text_granularity.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\scroll\scroll_alignment.h">
+      <Filter>renderer\platform\scroll</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
