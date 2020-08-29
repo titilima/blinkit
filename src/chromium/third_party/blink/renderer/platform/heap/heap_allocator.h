@@ -24,6 +24,14 @@ namespace blink {
 template <typename K, typename V>
 class HeapHashMap : public std::unordered_map<K, V>
 {
+public:
+    bool IsEmpty(void) const { return this->empty(); }
+
+    bool Contains(const K &k) const
+    {
+        auto it = this->find(k);
+        return this->end() != it;
+    }
 };
 
 template <typename T>
@@ -58,6 +66,10 @@ public:
     void UncheckedAppend(const T &val)
     {
         this->push_back(val);
+    }
+    void AppendVector(const HeapVector<T> &v)
+    {
+        this->insert(this->end(), v.begin(), v.end());
     }
 };
 

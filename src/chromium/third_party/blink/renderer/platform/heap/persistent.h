@@ -35,6 +35,11 @@ public:
         ASSERT(false); // BKTODO:
         return nullptr;
     }
+    T& operator*() const
+    {
+        ASSERT(false); // BKTODO:
+        return *Get();
+    }
     T* Get(void) const
     {
         ASSERT(false); // BKTODO:
@@ -45,6 +50,8 @@ public:
         ASSERT(false); // BKTODO:
     }
 };
+
+template <class T> using WeakPersistent = Persistent<T>;
 
 } // BLINKIT_BLINK_PERSISTENT_H
 
