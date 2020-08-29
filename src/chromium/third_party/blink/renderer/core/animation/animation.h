@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: animation.h
+// Description: Animation Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -36,9 +47,6 @@
 #include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/optional.h"
-#include "third_party/blink/renderer/bindings/core/v8/active_script_wrappable.h"
-#include "third_party/blink/renderer/bindings/core/v8/script_promise.h"
-#include "third_party/blink/renderer/bindings/core/v8/script_promise_property.h"
 #include "third_party/blink/renderer/core/animation/animation_effect.h"
 #include "third_party/blink/renderer/core/animation/animation_effect_owner.h"
 #include "third_party/blink/renderer/core/animation/compositor_animations.h"
@@ -62,7 +70,7 @@ class ExceptionState;
 class TreeScope;
 
 class CORE_EXPORT Animation final : public EventTargetWithInlineData,
-                                    public ActiveScriptWrappable<Animation>,
+                                    // BKTODO: public ActiveScriptWrappable<Animation>,
                                     public ContextLifecycleObserver,
                                     public CompositorAnimationDelegate,
                                     public CompositorAnimationClient,
@@ -134,8 +142,10 @@ class CORE_EXPORT Animation final : public EventTargetWithInlineData,
   void reverse(ExceptionState& = ASSERT_NO_EXCEPTION);
   void finish(ExceptionState& = ASSERT_NO_EXCEPTION);
 
+#if 0 // BKTODO:
   ScriptPromise finished(ScriptState*);
   ScriptPromise ready(ScriptState*);
+#endif
 
   bool Playing() const override {
     return !(PlayStateInternal() == kIdle || Limited() || paused_ ||
@@ -144,12 +154,12 @@ class CORE_EXPORT Animation final : public EventTargetWithInlineData,
   bool Limited() const { return Limited(CurrentTimeInternal()); }
   bool FinishedInternal() const { return finished_; }
 
-  DEFINE_ATTRIBUTE_EVENT_LISTENER(finish);
-  DEFINE_ATTRIBUTE_EVENT_LISTENER(cancel);
+  // BKTODO: DEFINE_ATTRIBUTE_EVENT_LISTENER(finish);
+  // BKTODO: DEFINE_ATTRIBUTE_EVENT_LISTENER(cancel);
 
-  const AtomicString& InterfaceName() const override;
+  // BKTODO: const AtomicString& InterfaceName() const override;
   ExecutionContext* GetExecutionContext() const override;
-  bool HasPendingActivity() const final;
+  // BKTODO: bool HasPendingActivity() const final;
   void ContextDestroyed(ExecutionContext*) override;
 
   double playbackRate() const;
@@ -223,8 +233,6 @@ class CORE_EXPORT Animation final : public EventTargetWithInlineData,
 
   void InvalidateKeyframeEffect(const TreeScope&);
 
-  void Trace(blink::Visitor*) override;
-
   bool CompositorPendingForTesting() const { return compositor_pending_; }
 
  protected:
@@ -266,12 +274,14 @@ class CORE_EXPORT Animation final : public EventTargetWithInlineData,
   void NotifyAnimationFinished(double monotonic_time, int group) override {}
   void NotifyAnimationAborted(double monotonic_time, int group) override {}
 
+#if 0 // BKTODO:
   using AnimationPromise = ScriptPromiseProperty<Member<Animation>,
                                                  Member<Animation>,
                                                  Member<DOMException>>;
   void ResolvePromiseMaybeAsync(AnimationPromise*);
   void RejectAndResetPromise(AnimationPromise*);
   void RejectAndResetPromiseMaybeAsync(AnimationPromise*);
+#endif
 
   String id_;
 
@@ -282,8 +292,10 @@ class CORE_EXPORT Animation final : public EventTargetWithInlineData,
 
   unsigned sequence_number_;
 
+#if 0 // BKTODO:
   Member<AnimationPromise> finished_promise_;
   Member<AnimationPromise> ready_promise_;
+#endif
 
   Member<AnimationEffect> content_;
   Member<DocumentTimeline> timeline_;
@@ -351,14 +363,12 @@ class CORE_EXPORT Animation final : public EventTargetWithInlineData,
   // that.
   class CompositorAnimationHolder
       : public GarbageCollectedFinalized<CompositorAnimationHolder> {
-    USING_PRE_FINALIZER(CompositorAnimationHolder, Dispose);
+    // BKTODO: USING_PRE_FINALIZER(CompositorAnimationHolder, Dispose);
 
    public:
     static CompositorAnimationHolder* Create(Animation*);
 
     void Detach();
-
-    void Trace(blink::Visitor* visitor) { visitor->Trace(animation_); }
 
     CompositorAnimation* GetAnimation() const {
       return compositor_animation_.get();

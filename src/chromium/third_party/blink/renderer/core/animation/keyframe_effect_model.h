@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: keyframe_effect_model.h
+// Description: KeyframeEffectModelBase Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -66,8 +77,6 @@ class CORE_EXPORT KeyframeEffectModelBase : public EffectModel {
       return keyframes_;
     }
 
-    void Trace(Visitor* visitor) { visitor->Trace(keyframes_); }
-
    private:
     void RemoveRedundantKeyframes();
     bool AddSyntheticKeyframeIfRequired(
@@ -95,7 +104,7 @@ class CORE_EXPORT KeyframeEffectModelBase : public EffectModel {
   const PropertySpecificKeyframeVector& GetPropertySpecificKeyframes(
       const PropertyHandle& property) const {
     EnsureKeyframeGroups();
-    return keyframe_groups_->at(property)->Keyframes();
+    return keyframe_groups_->find(property)->second->Keyframes();
   }
 
   using KeyframeGroupMap =
@@ -231,7 +240,7 @@ class KeyframeEffectModel final : public KeyframeEffectModelBase {
                       CompositeOperation composite,
                       scoped_refptr<TimingFunction> default_keyframe_easing)
       : KeyframeEffectModelBase(composite, std::move(default_keyframe_easing)) {
-    keyframes_.AppendVector(keyframes);
+    ASSERT(false); // BKTODO: keyframes_.AppendVector(keyframes);
   }
 
   bool IsStringKeyframeEffectModel() const override { return false; }

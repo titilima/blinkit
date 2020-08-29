@@ -48,9 +48,9 @@
 #include "third_party/blink/renderer/core/dom/events/add_event_listener_options_resolved.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_result.h"
 #include "third_party/blink/renderer/core/dom/events/event_listener_map.h"
+#include "third_party/blink/renderer/core/event_type_names.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
-#include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
 namespace blink {
 
@@ -95,6 +95,7 @@ public:
     bool addEventListener(const AtomicString &eventType, EventListener *listener, bool useCapture);
     bool removeEventListener(const AtomicString &eventType, const EventListener *listener, bool useCapture);
 
+    EventListener* GetAttributeEventListener(const AtomicString &eventType);
     bool SetAttributeEventListener(const AtomicString &eventType, EventListener *listener);
     bool HasCapturingEventListeners(const AtomicString &eventType);
     EventListenerVector* GetEventListeners(const AtomicString &eventType);
@@ -145,5 +146,15 @@ private:
 };
 
 } // namespace blink
+
+// FIXME: These macros should be split into separate DEFINE and DECLARE
+// macros to avoid causing so many header includes.
+#define DEFINE_ATTRIBUTE_EVENT_LISTENER(attribute)                          \
+    EventListener* on##attribute() {                                        \
+        return GetAttributeEventListener(event_type_names::attribute);      \
+    }                                                                       \
+    void setOn##attribute(EventListener *listener) {                        \
+        SetAttributeEventListener(event_type_names::attribute, listener);   \
+    }
 
 #endif // BLINKIT_BLINK_EVENT_TARGET_H

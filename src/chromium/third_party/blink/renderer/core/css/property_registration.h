@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: property_registration.h
+// Description: PropertyRegistration Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -41,8 +52,6 @@ class CORE_EXPORT PropertyRegistration
   const InterpolationTypes& GetInterpolationTypes() const {
     return interpolation_types_;
   }
-
-  void Trace(blink::Visitor* visitor) { visitor->Trace(initial_); }
 
  private:
   PropertyRegistration(const AtomicString& name,

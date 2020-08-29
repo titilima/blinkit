@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_animation_update.h
+// Description: CSSAnimationUpdate Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -41,11 +52,6 @@ class NewCSSAnimation {
         style_rule_version(this->style_rule->Version()),
         play_state_list(play_state_list) {}
 
-  void Trace(blink::Visitor* visitor) {
-    visitor->Trace(effect);
-    visitor->Trace(style_rule);
-  }
-
   AtomicString name;
   size_t name_index;
   Member<const InertEffect> effect;
@@ -72,12 +78,6 @@ class UpdatedCSSAnimation {
         style_rule(style_rule),
         style_rule_version(this->style_rule->Version()),
         play_state_list(play_state_list) {}
-
-  void Trace(blink::Visitor* visitor) {
-    visitor->Trace(animation);
-    visitor->Trace(effect);
-    visitor->Trace(style_rule);
-  }
 
   wtf_size_t index;
   Member<Animation> animation;
@@ -180,7 +180,6 @@ class CSSAnimationUpdate final {
    public:
     NewTransition();
     ~NewTransition();
-    void Trace(blink::Visitor* visitor) { visitor->Trace(effect); }
 
     PropertyHandle property = HashTraits<blink::PropertyHandle>::EmptyValue();
     scoped_refptr<const ComputedStyle> from;
@@ -250,18 +249,6 @@ class CSSAnimationUpdate final {
            active_interpolations_for_custom_transitions_.IsEmpty() &&
            active_interpolations_for_standard_transitions_.IsEmpty() &&
            updated_compositor_keyframes_.IsEmpty();
-  }
-
-  void Trace(blink::Visitor* visitor) {
-    visitor->Trace(new_transitions_);
-    visitor->Trace(new_animations_);
-    visitor->Trace(suppressed_animations_);
-    visitor->Trace(animations_with_updates_);
-    visitor->Trace(updated_compositor_keyframes_);
-    visitor->Trace(active_interpolations_for_custom_animations_);
-    visitor->Trace(active_interpolations_for_standard_animations_);
-    visitor->Trace(active_interpolations_for_custom_transitions_);
-    visitor->Trace(active_interpolations_for_standard_transitions_);
   }
 
  private:

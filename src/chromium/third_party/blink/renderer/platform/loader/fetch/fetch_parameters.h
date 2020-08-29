@@ -60,6 +60,15 @@ public:
         kInDocument,  // The request was discovered in the main document
         kInserted     // The request was discovered in a document.write()
     };
+#ifndef BLINKIT_CRAWLER_ONLY
+    enum ImageRequestOptimization {
+        kNone = 0,          // No optimization.
+        kAllowPlaceholder,  // The image is allowed to be a placeholder.
+        kDeferImageLoad,  // Defer loading the image from network. Full image might
+                          // still load if the request is already-loaded or in
+                          // memory cache.
+    };
+#endif
 
     FetchParameters(const ResourceRequest &resourceRequest, const ResourceLoaderOptions &options);
 

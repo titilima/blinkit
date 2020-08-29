@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: document_timeline.h
+// Description: DocumentTimeline Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -121,8 +132,6 @@ class CORE_EXPORT DocumentTimeline : public AnimationTimeline {
   void Wake();
   void ResetForTesting();
   bool HasAnimations() { return !animations_.IsEmpty(); }
-
-  void Trace(blink::Visitor*) override;
 
  private:
   DocumentTimeline(Document*, TimeDelta origin_time, PlatformTiming*);

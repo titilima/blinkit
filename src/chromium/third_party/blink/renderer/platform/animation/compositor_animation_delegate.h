@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: compositor_animation_delegate.h
+// Description: CompositorAnimationDelegate Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_ANIMATION_COMPOSITOR_ANIMATION_DELEGATE_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_ANIMATION_COMPOSITOR_ANIMATION_DELEGATE_H_
 
-#include "cc/animation/animation_curve.h"
+// BKTODO: #include "cc/animation/animation_curve.h"
 #include "third_party/blink/renderer/platform/platform_export.h"
 
 #include <memory>
@@ -21,6 +32,7 @@ class PLATFORM_EXPORT CompositorAnimationDelegate {
   virtual void NotifyAnimationStarted(double monotonic_time, int group) = 0;
   virtual void NotifyAnimationFinished(double monotonic_time, int group) = 0;
   virtual void NotifyAnimationAborted(double monotonic_time, int group) = 0;
+#if 0 // BKTODO:
   // In the current state of things, notifyAnimationTakeover only applies to
   // scroll offset animations since main thread scrolling reasons can be added
   // while the compositor is animating. Keeping this non-pure virtual since
@@ -29,6 +41,7 @@ class PLATFORM_EXPORT CompositorAnimationDelegate {
       double monotonic_time,
       double animation_start_time,
       std::unique_ptr<cc::AnimationCurve> curve) {}
+#endif
 };
 
 }  // namespace blink

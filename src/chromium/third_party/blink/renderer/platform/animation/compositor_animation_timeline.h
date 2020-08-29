@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: compositor_animation_timeline.h
+// Description: CompositorAnimationTimeline Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -9,7 +20,7 @@
 
 #include "base/memory/ptr_util.h"
 #include "base/memory/scoped_refptr.h"
-#include "cc/animation/animation_timeline.h"
+// BKTODO: #include "cc/animation/animation_timeline.h"
 #include "third_party/blink/renderer/platform/platform_export.h"
 #include "third_party/blink/renderer/platform/wtf/noncopyable.h"
 
@@ -28,15 +39,17 @@ class PLATFORM_EXPORT CompositorAnimationTimeline {
 
   ~CompositorAnimationTimeline();
 
+#if 0 // BKTODO:
   cc::AnimationTimeline* GetAnimationTimeline() const;
 
   void AnimationAttached(const CompositorAnimationClient&);
   void AnimationDestroyed(const CompositorAnimationClient&);
+#endif
 
  private:
   CompositorAnimationTimeline();
 
-  scoped_refptr<cc::AnimationTimeline> animation_timeline_;
+  // BKTODO: scoped_refptr<cc::AnimationTimeline> animation_timeline_;
 };
 
 }  // namespace blink

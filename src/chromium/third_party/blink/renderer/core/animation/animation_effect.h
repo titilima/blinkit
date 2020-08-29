@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: animation_effect.h
+// Description: AnimationEffect Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -136,8 +147,6 @@ class CORE_EXPORT AnimationEffect : public ScriptWrappable {
   }
 
   const Animation* GetAnimationForTesting() const { return GetAnimation(); }
-
-  void Trace(blink::Visitor*) override;
 
  protected:
   explicit AnimationEffect(const Timing&, EventDelegate* = nullptr);

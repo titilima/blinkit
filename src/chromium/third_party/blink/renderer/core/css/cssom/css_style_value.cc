@@ -1,11 +1,20 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_style_value.cc
+// Description: CSSStyleValue Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/core/css/cssom/css_style_value.h"
 
-#include "third_party/blink/renderer/bindings/core/v8/script_value.h"
-#include "third_party/blink/renderer/bindings/core/v8/to_v8_for_core.h"
 #include "third_party/blink/renderer/core/css/cssom/style_value_factory.h"
 #include "third_party/blink/renderer/core/css/parser/css_parser_context.h"
 #include "third_party/blink/renderer/core/css/properties/css_property.h"
@@ -40,9 +49,10 @@ CSSStyleValueVector ParseCSSStyleValue(
           ? PropertyRegistration::From(execution_context, custom_property_name)
           : nullptr;
 
+  std::unique_ptr<CSSParserContext> parserContext = CSSParserContext::Create(*execution_context);
   const auto style_values = StyleValueFactory::FromString(
       property_id, custom_property_name, registration, value,
-      CSSParserContext::Create(*execution_context));
+      parserContext);
   if (style_values.IsEmpty()) {
     exception_state.ThrowTypeError("The value provided ('" + value +
                                    "') could not be parsed as a '" +

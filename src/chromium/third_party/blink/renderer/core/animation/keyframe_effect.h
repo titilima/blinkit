@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: keyframe_effect.h
+// Description: KeyframeEffect Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,7 +42,6 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_ANIMATION_KEYFRAME_EFFECT_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_ANIMATION_KEYFRAME_EFFECT_H_
 
-#include "third_party/blink/renderer/bindings/core/v8/script_value.h"
 #include "third_party/blink/renderer/core/animation/animation_effect.h"
 #include "third_party/blink/renderer/core/animation/compositor_animations.h"
 #include "third_party/blink/renderer/core/animation/keyframe_effect_model.h"
@@ -58,6 +68,7 @@ class CORE_EXPORT KeyframeEffect final : public AnimationEffect {
                                 const Timing&,
                                 Priority = kDefaultPriority,
                                 EventDelegate* = nullptr);
+#if 0 // BKTODO:
   // Web Animations API Bindings constructors.
   static KeyframeEffect* Create(
       ScriptState*,
@@ -70,6 +81,7 @@ class CORE_EXPORT KeyframeEffect final : public AnimationEffect {
                                 const ScriptValue&,
                                 ExceptionState&);
   static KeyframeEffect* Create(ScriptState*, KeyframeEffect*, ExceptionState&);
+#endif
 
   ~KeyframeEffect() override;
 
@@ -80,10 +92,12 @@ class CORE_EXPORT KeyframeEffect final : public AnimationEffect {
   void setTarget(Element*);
   String composite() const;
   void setComposite(String);
+#if 0 // BKTODO:
   Vector<ScriptValue> getKeyframes(ScriptState*);
   void setKeyframes(ScriptState*,
                     const ScriptValue& keyframes,
                     ExceptionState&);
+#endif
 
   void SetKeyframes(StringKeyframeVector keyframes);
 
@@ -124,8 +138,6 @@ class CORE_EXPORT KeyframeEffect final : public AnimationEffect {
 
   bool HasAnimation() const;
   bool HasPlayingAnimation() const;
-
-  void Trace(blink::Visitor*) override;
 
  private:
   KeyframeEffect(Element*,
