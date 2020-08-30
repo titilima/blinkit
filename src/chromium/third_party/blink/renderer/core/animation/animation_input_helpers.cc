@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: animation_input_helpers.cc
+// Description: AnimationInputHelpers Class
+//      Author: Ziming Li
+//     Created: 2020-08-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -10,10 +21,6 @@
 #include "third_party/blink/renderer/core/css/parser/css_variable_parser.h"
 #include "third_party/blink/renderer/core/css/resolver/css_to_style_map.h"
 #include "third_party/blink/renderer/core/dom/document.h"
-#include "third_party/blink/renderer/core/frame/deprecation.h"
-#include "third_party/blink/renderer/core/svg/animation/svg_smil_element.h"
-#include "third_party/blink/renderer/core/svg/svg_element.h"
-#include "third_party/blink/renderer/core/svg_names.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
@@ -84,128 +91,7 @@ CSSPropertyID AnimationInputHelpers::KeyframeAttributeToCSSProperty(
 CSSPropertyID AnimationInputHelpers::KeyframeAttributeToPresentationAttribute(
     const String& property,
     const Element* element) {
-  if (!RuntimeEnabledFeatures::WebAnimationsSVGEnabled() || !element ||
-      !element->IsSVGElement() || !IsSVGPrefixed(property))
-    return CSSPropertyInvalid;
-
-  String unprefixed_property = RemoveSVGPrefix(property);
-  if (SVGElement::IsAnimatableCSSProperty(QualifiedName(
-          g_null_atom, AtomicString(unprefixed_property), g_null_atom)))
-    return cssPropertyID(unprefixed_property);
-
   return CSSPropertyInvalid;
-}
-
-using AttributeNameMap = HashMap<QualifiedName, const QualifiedName*>;
-
-const AttributeNameMap& GetSupportedAttributes() {
-  DEFINE_STATIC_LOCAL(AttributeNameMap, supported_attributes, ());
-  if (supported_attributes.IsEmpty()) {
-    // Fill the set for the first use.
-    // Animatable attributes from http://www.w3.org/TR/SVG/attindex.html
-    const QualifiedName* attributes[] = {
-        &HTMLNames::classAttr,
-        &SVGNames::amplitudeAttr,
-        &SVGNames::azimuthAttr,
-        &SVGNames::baseFrequencyAttr,
-        &SVGNames::biasAttr,
-        &SVGNames::clipPathUnitsAttr,
-        &SVGNames::cxAttr,
-        &SVGNames::cyAttr,
-        &SVGNames::dAttr,
-        &SVGNames::diffuseConstantAttr,
-        &SVGNames::divisorAttr,
-        &SVGNames::dxAttr,
-        &SVGNames::dyAttr,
-        &SVGNames::edgeModeAttr,
-        &SVGNames::elevationAttr,
-        &SVGNames::exponentAttr,
-        &SVGNames::filterUnitsAttr,
-        &SVGNames::fxAttr,
-        &SVGNames::fyAttr,
-        &SVGNames::gradientTransformAttr,
-        &SVGNames::gradientUnitsAttr,
-        &SVGNames::heightAttr,
-        &SVGNames::hrefAttr,
-        &SVGNames::in2Attr,
-        &SVGNames::inAttr,
-        &SVGNames::interceptAttr,
-        &SVGNames::k1Attr,
-        &SVGNames::k2Attr,
-        &SVGNames::k3Attr,
-        &SVGNames::k4Attr,
-        &SVGNames::kernelMatrixAttr,
-        &SVGNames::kernelUnitLengthAttr,
-        &SVGNames::lengthAdjustAttr,
-        &SVGNames::limitingConeAngleAttr,
-        &SVGNames::markerHeightAttr,
-        &SVGNames::markerUnitsAttr,
-        &SVGNames::markerWidthAttr,
-        &SVGNames::maskContentUnitsAttr,
-        &SVGNames::maskUnitsAttr,
-        &SVGNames::methodAttr,
-        &SVGNames::modeAttr,
-        &SVGNames::numOctavesAttr,
-        &SVGNames::offsetAttr,
-        &SVGNames::operatorAttr,
-        &SVGNames::orderAttr,
-        &SVGNames::orientAttr,
-        &SVGNames::pathLengthAttr,
-        &SVGNames::patternContentUnitsAttr,
-        &SVGNames::patternTransformAttr,
-        &SVGNames::patternUnitsAttr,
-        &SVGNames::pointsAtXAttr,
-        &SVGNames::pointsAtYAttr,
-        &SVGNames::pointsAtZAttr,
-        &SVGNames::pointsAttr,
-        &SVGNames::preserveAlphaAttr,
-        &SVGNames::preserveAspectRatioAttr,
-        &SVGNames::primitiveUnitsAttr,
-        &SVGNames::rAttr,
-        &SVGNames::radiusAttr,
-        &SVGNames::refXAttr,
-        &SVGNames::refYAttr,
-        &SVGNames::resultAttr,
-        &SVGNames::rotateAttr,
-        &SVGNames::rxAttr,
-        &SVGNames::ryAttr,
-        &SVGNames::scaleAttr,
-        &SVGNames::seedAttr,
-        &SVGNames::slopeAttr,
-        &SVGNames::spacingAttr,
-        &SVGNames::specularConstantAttr,
-        &SVGNames::specularExponentAttr,
-        &SVGNames::spreadMethodAttr,
-        &SVGNames::startOffsetAttr,
-        &SVGNames::stdDeviationAttr,
-        &SVGNames::stitchTilesAttr,
-        &SVGNames::surfaceScaleAttr,
-        &SVGNames::tableValuesAttr,
-        &SVGNames::targetAttr,
-        &SVGNames::targetXAttr,
-        &SVGNames::targetYAttr,
-        &SVGNames::textLengthAttr,
-        &SVGNames::transformAttr,
-        &SVGNames::typeAttr,
-        &SVGNames::valuesAttr,
-        &SVGNames::viewBoxAttr,
-        &SVGNames::widthAttr,
-        &SVGNames::x1Attr,
-        &SVGNames::x2Attr,
-        &SVGNames::xAttr,
-        &SVGNames::xChannelSelectorAttr,
-        &SVGNames::y1Attr,
-        &SVGNames::y2Attr,
-        &SVGNames::yAttr,
-        &SVGNames::yChannelSelectorAttr,
-        &SVGNames::zAttr,
-    };
-    for (size_t i = 0; i < arraysize(attributes); i++) {
-      DCHECK(!SVGElement::IsAnimatableCSSProperty(*attributes[i]));
-      supported_attributes.Set(*attributes[i], attributes[i]);
-    }
-  }
-  return supported_attributes;
 }
 
 QualifiedName SvgAttributeName(const String& property) {
@@ -216,23 +102,7 @@ QualifiedName SvgAttributeName(const String& property) {
 const QualifiedName* AnimationInputHelpers::KeyframeAttributeToSVGAttribute(
     const String& property,
     Element* element) {
-  if (!RuntimeEnabledFeatures::WebAnimationsSVGEnabled() || !element ||
-      !element->IsSVGElement() || !IsSVGPrefixed(property))
-    return nullptr;
-
-  SVGElement* svg_element = ToSVGElement(element);
-  if (IsSVGSMILElement(svg_element))
-    return nullptr;
-
-  String unprefixed_property = RemoveSVGPrefix(property);
-  QualifiedName attribute_name = SvgAttributeName(unprefixed_property);
-  const AttributeNameMap& supported_attributes = GetSupportedAttributes();
-  auto iter = supported_attributes.find(attribute_name);
-  if (iter == supported_attributes.end() ||
-      !svg_element->PropertyFromAttribute(*iter->value))
-    return nullptr;
-
-  return iter->value;
+  return nullptr;
 }
 
 scoped_refptr<TimingFunction> AnimationInputHelpers::ParseTimingFunction(

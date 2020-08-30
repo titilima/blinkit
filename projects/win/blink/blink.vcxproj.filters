@@ -1847,6 +1847,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\effect_input.cc">
       <Filter>renderer\core\animation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_variable_parser.cc">
+      <Filter>renderer\core\css\parser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -4290,6 +4293,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\effect_timing.h">
       <Filter>renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_variable_parser.h">
+      <Filter>renderer\core\css\parser</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
