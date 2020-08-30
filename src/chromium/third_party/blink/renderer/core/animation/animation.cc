@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: animation.cc
+// Description: Animation Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -97,7 +108,8 @@ Animation* Animation::Create(ExecutionContext* execution_context,
   DCHECK(RuntimeEnabledFeatures::WebAnimationsAPIEnabled());
 
   Document* document = To<Document>(execution_context);
-  return Create(effect, &document->Timeline(), exception_state);
+  ASSERT(false); // BKTODO:
+  return nullptr; // BKTODO: Create(effect, &document->Timeline(), exception_state);
 }
 
 Animation* Animation::Create(ExecutionContext* execution_context,
@@ -683,6 +695,7 @@ void Animation::finish(ExceptionState& exception_state) {
   ForceServiceOnNextFrame();
 }
 
+#if 0 // BKTODO:
 ScriptPromise Animation::finished(ScriptState* script_state) {
   if (!finished_promise_) {
     finished_promise_ =
@@ -707,11 +720,13 @@ ScriptPromise Animation::ready(ScriptState* script_state) {
 const AtomicString& Animation::InterfaceName() const {
   return EventTargetNames::Animation;
 }
+#endif // 0
 
 ExecutionContext* Animation::GetExecutionContext() const {
   return ContextLifecycleObserver::GetExecutionContext();
 }
 
+#if 0 // BKTODO:
 bool Animation::HasPendingActivity() const {
   bool has_pending_promise =
       finished_promise_ &&
@@ -720,6 +735,7 @@ bool Animation::HasPendingActivity() const {
   return pending_finished_event_ || has_pending_promise ||
          (!finished_ && HasEventListeners(EventTypeNames::finish));
 }
+#endif
 
 void Animation::ContextDestroyed(ExecutionContext*) {
   PlayStateUpdateScope update_scope(*this, kTimingUpdateOnDemand);
@@ -906,7 +922,7 @@ void Animation::SetCompositorPending(bool effect_changed) {
       compositor_state_->start_time != start_time_ ||
       !compositor_state_->start_time || !start_time_) {
     compositor_pending_ = true;
-    TimelineInternal()->GetDocument()->GetPendingAnimations().Add(this);
+    ASSERT(false); // BKTODO: TimelineInternal()->GetDocument()->GetPendingAnimations().Add(this);
   }
 }
 
@@ -971,6 +987,8 @@ bool Animation::Update(TimingUpdateReason reason) {
   if ((idle || Limited()) && !finished_) {
     if (reason == kTimingUpdateForAnimationFrame && (idle || start_time_)) {
       if (idle) {
+        ASSERT(false); // BKTODO:
+#if 0
         const AtomicString& event_type = EventTypeNames::cancel;
         if (GetExecutionContext() && HasEventListeners(event_type)) {
           double event_current_time = NullValue();
@@ -982,7 +1000,10 @@ bool Animation::Update(TimingUpdateReason reason) {
           timeline_->GetDocument()->EnqueueAnimationFrameEvent(
               pending_cancelled_event_);
         }
+#endif
       } else {
+        ASSERT(false); // BKTODO:
+#if 0
         const AtomicString& event_type = EventTypeNames::finish;
         if (GetExecutionContext() && HasEventListeners(event_type)) {
           double event_current_time = CurrentTimeInternal() * 1000;
@@ -994,6 +1015,7 @@ bool Animation::Update(TimingUpdateReason reason) {
           timeline_->GetDocument()->EnqueueAnimationFrameEvent(
               pending_finished_event_);
         }
+#endif
       }
       finished_ = true;
     }
@@ -1061,12 +1083,15 @@ void Animation::EndUpdatingState() {
 }
 
 void Animation::CreateCompositorAnimation() {
+    ASSERT(false); // BKTODO:
+#if 0
   if (Platform::Current()->IsThreadedAnimationEnabled() &&
       !compositor_animation_) {
     compositor_animation_ = CompositorAnimationHolder::Create(this);
     DCHECK(compositor_animation_);
     AttachCompositorTimeline();
   }
+#endif
 
   AttachCompositedLayers();
 }
@@ -1086,7 +1111,7 @@ void Animation::AttachCompositorTimeline() {
     CompositorAnimationTimeline* timeline =
         timeline_ ? timeline_->CompositorTimeline() : nullptr;
     if (timeline)
-      timeline->AnimationAttached(*this);
+      ASSERT(false); // BKTODO: timeline->AnimationAttached(*this);
   }
 }
 
@@ -1095,7 +1120,7 @@ void Animation::DetachCompositorTimeline() {
     CompositorAnimationTimeline* timeline =
         timeline_ ? timeline_->CompositorTimeline() : nullptr;
     if (timeline)
-      timeline->AnimationDestroyed(*this);
+      ASSERT(false); // BKTODO: timeline->AnimationDestroyed(*this);
   }
 }
 
@@ -1116,10 +1141,13 @@ void Animation::DetachCompositedLayers() {
 }
 
 void Animation::NotifyAnimationStarted(double monotonic_time, int group) {
+  ASSERT(false); // BKTODO:
+#if 0
   TimelineInternal()
       ->GetDocument()
       ->GetPendingAnimations()
       .NotifyCompositorAnimationStarted(monotonic_time, group);
+#endif
 }
 
 Animation::PlayStateUpdateScope::PlayStateUpdateScope(
@@ -1156,7 +1184,9 @@ Animation::PlayStateUpdateScope::~PlayStateUpdateScope() {
           "blink.animations,devtools.timeline,benchmark,rail", "Animation",
           animation_, "data", InspectorAnimationStateEvent::Data(*animation_));
   }
-
+  
+  ASSERT(false); // BKTODO:
+#if 0
   // Ordering is important, the ready promise should resolve/reject before
   // the finished promise.
   if (animation_->ready_promise_ && new_play_state != old_play_state) {
@@ -1193,6 +1223,7 @@ Animation::PlayStateUpdateScope::~PlayStateUpdateScope() {
       animation_->finished_promise_->Reset();
     }
   }
+#endif
 
   if (old_play_state != new_play_state &&
       (old_play_state == kIdle || new_play_state == kIdle)) {
@@ -1231,8 +1262,6 @@ void Animation::AddedEventListener(
     RegisteredEventListener& registered_listener) {
   EventTargetWithInlineData::AddedEventListener(event_type,
                                                 registered_listener);
-  if (event_type == EventTypeNames::finish)
-    UseCounter::Count(GetExecutionContext(), WebFeature::kAnimationFinishEvent);
 }
 
 void Animation::PauseForTesting(double pause_time) {
@@ -1267,12 +1296,16 @@ void Animation::InvalidateKeyframeEffect(const TreeScope& tree_scope) {
   // keyframes.
   if (target &&
       CSSAnimations::IsAffectedByKeyframesFromScope(*target, tree_scope)) {
+    ASSERT(false); // BKTODO:
+#if 0
     target->SetNeedsStyleRecalc(kLocalStyleChange,
                                 StyleChangeReasonForTracing::Create(
                                     StyleChangeReason::kStyleSheetChange));
+#endif
   }
 }
 
+#if 0 // BKTODO:
 void Animation::ResolvePromiseMaybeAsync(AnimationPromise* promise) {
   if (ScriptForbiddenScope::IsScriptForbidden()) {
     GetExecutionContext()
@@ -1301,18 +1334,7 @@ void Animation::RejectAndResetPromiseMaybeAsync(AnimationPromise* promise) {
     RejectAndResetPromise(promise);
   }
 }
-
-void Animation::Trace(blink::Visitor* visitor) {
-  visitor->Trace(content_);
-  visitor->Trace(timeline_);
-  visitor->Trace(pending_finished_event_);
-  visitor->Trace(pending_cancelled_event_);
-  visitor->Trace(finished_promise_);
-  visitor->Trace(ready_promise_);
-  visitor->Trace(compositor_animation_);
-  EventTargetWithInlineData::Trace(visitor);
-  ContextLifecycleObserver::Trace(visitor);
-}
+#endif // 0
 
 Animation::CompositorAnimationHolder*
 Animation::CompositorAnimationHolder::Create(Animation* animation) {

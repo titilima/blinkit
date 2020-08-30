@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: paint_layer_resource_info.h
+// Description: PaintLayerResourceInfo Class
+//      Author: Ziming Li
+//     Created: 2020-08-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Adobe Systems Incorporated. All rights reserved.
  *
@@ -31,7 +42,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_PAINT_PAINT_LAYER_RESOURCE_INFO_H_
 
 #include "base/macros.h"
-#include "third_party/blink/renderer/core/svg/svg_resource_client.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_resource_client.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 
 namespace blink {
@@ -49,13 +60,13 @@ class PaintLayer;
 // painting non-hardware accelerated filters (FilterEffect). Hardware
 // accelerated CSS filters use CompositorFilterOperations, that is backed by cc.
 class PaintLayerResourceInfo final
-    : public GarbageCollectedFinalized<PaintLayerResourceInfo>,
-      public SVGResourceClient {
+    : public GarbageCollectedFinalized<PaintLayerResourceInfo> {
+      // BKTODO: public SVGResourceClient {
   USING_GARBAGE_COLLECTED_MIXIN(PaintLayerResourceInfo);
 
  public:
   explicit PaintLayerResourceInfo(PaintLayer*);
-  ~PaintLayerResourceInfo() override;
+  ~PaintLayerResourceInfo();
 
   void SetLastEffect(FilterEffect*);
   FilterEffect* LastEffect() const;
@@ -63,10 +74,10 @@ class PaintLayerResourceInfo final
 
   void ClearLayer() { layer_ = nullptr; }
 
+#if 0
   void ResourceContentChanged(InvalidationModeMask) override;
   void ResourceElementChanged() override;
-
-  void Trace(blink::Visitor*) override;
+#endif
 
  private:
   // |clearLayer| must be called before *m_layer becomes invalid.

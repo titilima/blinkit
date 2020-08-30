@@ -55,6 +55,9 @@ class Attribute;
 class ElementData;
 class ElementRareData;
 class NamedNodeMap;
+#ifndef BLINKIT_CRAWLER_ONLY
+class ElementAnimations;
+#endif
 
 enum class ElementFlags {
     kTabIndexWasSetExplicitly = 1 << 0,

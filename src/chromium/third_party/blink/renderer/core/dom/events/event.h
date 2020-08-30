@@ -98,6 +98,8 @@ public:
     const AtomicString& type(void) const { return m_type; }
     void SetType(const AtomicString &type) { m_type = type; }
 
+    virtual const AtomicString& InterfaceName(void) const;
+
     EventTarget* target(void) const { return m_target.Get(); }
     void SetTarget(EventTarget *target);
 

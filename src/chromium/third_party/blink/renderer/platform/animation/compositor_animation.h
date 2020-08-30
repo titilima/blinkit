@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: compositor_animation.h
+// Description: CompositorAnimation Class
+//      Author: Ziming Li
+//     Created: 2020-08-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,10 +19,12 @@
 #include <memory>
 #include "base/memory/scoped_refptr.h"
 #include "base/optional.h"
+#if 0 // BKTODO:
 #include "cc/animation/animation_delegate.h"
 #include "cc/animation/scroll_timeline.h"
 #include "cc/animation/single_keyframe_effect_animation.h"
 #include "cc/animation/worklet_animation.h"
+#endif
 #include "third_party/blink/renderer/platform/graphics/compositor_element_id.h"
 #include "third_party/blink/renderer/platform/platform_export.h"
 #include "third_party/blink/renderer/platform/wtf/noncopyable.h"
@@ -22,17 +35,18 @@ class AnimationCurve;
 
 namespace blink {
 
-using CompositorScrollTimeline = cc::ScrollTimeline;
+// BKTODO: using CompositorScrollTimeline = cc::ScrollTimeline;
 
 class CompositorAnimationDelegate;
 class CompositorKeyframeModel;
 
 // A compositor representation for Animation.
-class PLATFORM_EXPORT CompositorAnimation : public cc::AnimationDelegate {
+class PLATFORM_EXPORT CompositorAnimation { // BKTODO: : public cc::AnimationDelegate {
   WTF_MAKE_NONCOPYABLE(CompositorAnimation);
 
  public:
   static std::unique_ptr<CompositorAnimation> Create();
+#if 0 // BKTODO:
   static std::unique_ptr<CompositorAnimation> CreateWorkletAnimation(
       cc::WorkletAnimationId,
       const String& name,
@@ -44,6 +58,7 @@ class PLATFORM_EXPORT CompositorAnimation : public cc::AnimationDelegate {
   ~CompositorAnimation() override;
 
   cc::SingleKeyframeEffectAnimation* CcAnimation() const;
+#endif
 
   // An animation delegate is notified when animations are started and stopped.
   // The CompositorAnimation does not take ownership of the delegate, and
@@ -63,7 +78,8 @@ class PLATFORM_EXPORT CompositorAnimation : public cc::AnimationDelegate {
   void UpdateScrollTimelineId(base::Optional<cc::ElementId>);
 
  private:
-  // cc::AnimationDelegate implementation.
+#if 0 // BKTODO:
+     // cc::AnimationDelegate implementation.
   void NotifyAnimationStarted(base::TimeTicks monotonic_time,
                               int target_property,
                               int group) override;
@@ -79,6 +95,7 @@ class PLATFORM_EXPORT CompositorAnimation : public cc::AnimationDelegate {
                                std::unique_ptr<cc::AnimationCurve>) override;
 
   scoped_refptr<cc::SingleKeyframeEffectAnimation> animation_;
+#endif
   CompositorAnimationDelegate* delegate_;
 };
 

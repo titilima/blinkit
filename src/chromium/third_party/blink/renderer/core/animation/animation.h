@@ -269,6 +269,7 @@ class CORE_EXPORT Animation final : public EventTargetWithInlineData,
   void DetachCompositorTimeline();
   void AttachCompositedLayers();
   void DetachCompositedLayers();
+  GCType GetGCType(void) const override { return GC_MANUAL; }
   // CompositorAnimationDelegate implementation.
   void NotifyAnimationStarted(double monotonic_time, int group) override;
   void NotifyAnimationFinished(double monotonic_time, int group) override {}
