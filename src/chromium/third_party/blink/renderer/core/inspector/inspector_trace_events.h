@@ -18,6 +18,8 @@
 
 namespace blink {
 
+class GraphicsLayer;
+
 typedef int LayoutInvalidationReasonForTracing;
 namespace LayoutInvalidationReason {
 

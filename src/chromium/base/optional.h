@@ -20,6 +20,7 @@ namespace base {
 
 template <typename T> using Optional = std::optional<T>;
 
+using std::make_optional;
 using std::nullopt;
 
 } // namespace base

@@ -26,6 +26,7 @@ class UseCounter
     STATIC_ONLY(UseCounter);
 public:
     static void Count(Document &, WebFeature) {}
+    static void Count(ExecutionContext *, WebFeature) {}
 };
 
 } // namespace blink
