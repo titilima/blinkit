@@ -1838,6 +1838,15 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\clip_rect.cc">
       <Filter>renderer\core\paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animation_input_helpers.cc">
+      <Filter>renderer\core\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\timing_input.cc">
+      <Filter>renderer\core\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\effect_input.cc">
+      <Filter>renderer\core\animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -4260,6 +4269,27 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\probe\core_probes.h">
       <Filter>renderer\core\probe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animation_input_helpers.h">
+      <Filter>renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\computed_effect_timing.h">
+      <Filter>renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\optional_effect_timing.h">
+      <Filter>renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\timing_calculations.h">
+      <Filter>renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\timing_input.h">
+      <Filter>renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\effect_input.h">
+      <Filter>renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\effect_timing.h">
+      <Filter>renderer\core\animation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: animation_effect.cc
+// Description: AnimationEffect Class
+//      Author: Ziming Li
+//     Created: 2020-08-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -92,6 +103,8 @@ void AnimationEffect::UpdateSpecifiedTiming(const Timing& timing) {
 }
 
 void AnimationEffect::getTiming(EffectTiming& effect_timing) const {
+  ASSERT(false); // BKTODO:
+#if 0
   effect_timing.setDelay(SpecifiedTiming().start_delay * 1000);
   effect_timing.setEndDelay(SpecifiedTiming().end_delay * 1000);
   effect_timing.setFill(Timing::FillModeString(SpecifiedTiming().fill_mode));
@@ -108,6 +121,7 @@ void AnimationEffect::getTiming(EffectTiming& effect_timing) const {
   effect_timing.setDirection(
       Timing::PlaybackDirectionString(SpecifiedTiming().direction));
   effect_timing.setEasing(SpecifiedTiming().timing_function->ToString());
+#endif
 }
 
 EffectTiming AnimationEffect::getTiming() const {
@@ -118,6 +132,8 @@ EffectTiming AnimationEffect::getTiming() const {
 
 void AnimationEffect::getComputedTiming(
     ComputedEffectTiming& computed_timing) const {
+  ASSERT(false); // BKTODO:
+#if 0
   // ComputedEffectTiming members.
   computed_timing.setEndTime(EndTimeInternal() * 1000);
   computed_timing.setActiveDuration(RepeatedDuration() * 1000);
@@ -154,6 +170,7 @@ void AnimationEffect::getComputedTiming(
   computed_timing.setDirection(
       Timing::PlaybackDirectionString(SpecifiedTiming().direction));
   computed_timing.setEasing(SpecifiedTiming().timing_function->ToString());
+#endif
 }
 
 ComputedEffectTiming AnimationEffect::getComputedTiming() const {
@@ -307,12 +324,6 @@ Animation* AnimationEffect::GetAnimation() {
 }
 const Animation* AnimationEffect::GetAnimation() const {
   return owner_ ? owner_->GetAnimation() : nullptr;
-}
-
-void AnimationEffect::Trace(blink::Visitor* visitor) {
-  visitor->Trace(owner_);
-  visitor->Trace(event_delegate_);
-  ScriptWrappable::Trace(visitor);
 }
 
 }  // namespace blink

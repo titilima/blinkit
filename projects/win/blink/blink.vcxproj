@@ -187,6 +187,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animatable\animatable_value.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animation.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animation_effect.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animation_input_helpers.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animation_time_delta.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\compositor_animations.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\css\css_animatable_value_factory.cc" />
@@ -197,6 +198,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\css\css_transition_data.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\css_interpolation_type.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\document_timeline.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\effect_input.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\effect_model.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\effect_stack.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\inert_effect.cc" />
@@ -210,6 +212,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\sampled_effect.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\string_keyframe.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\timing.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\timing_input.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\transition_keyframe.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\underlying_value_owner.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\computed_style_base.cc" />
@@ -746,9 +749,11 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animation_effect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animation_effect_owner.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animation_input_helpers.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animation_timeline.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animation_time_delta.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\compositor_animations.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\computed_effect_timing.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\css\css_animatable_value_factory.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\css\css_animations.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\css\css_animation_data.h" />
@@ -758,8 +763,10 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\css_interpolation_environment.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\css_interpolation_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\document_timeline.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\effect_input.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\effect_model.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\effect_stack.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\effect_timing.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\inert_effect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\interpolable_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\interpolation.h" />
@@ -772,6 +779,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\keyframe_effect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\keyframe_effect_model.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\non_interpolable_value.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\optional_effect_timing.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\pairwise_interpolation_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\pending_animations.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\primitive_interpolation.h" />
@@ -779,6 +787,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\sampled_effect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\string_keyframe.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\timing.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\timing_calculations.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\timing_input.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\transition_keyframe.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\typed_interpolation_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\underlying_value_owner.h" />
