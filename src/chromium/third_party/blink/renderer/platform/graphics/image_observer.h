@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_observer.h
+// Description: ImageObserver Class
+//      Author: Ziming Li
+//     Created: 2020-09-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006 Apple Computer, Inc.  All rights reserved.
  *
@@ -51,8 +62,6 @@ class PLATFORM_EXPORT ImageObserver : public GarbageCollectedMixin {
 
   // See the comment of Image::SetData().
   virtual void AsyncLoadCompleted(const Image*) = 0;
-
-  void Trace(blink::Visitor* visitor) override {}
 };
 
 }  // namespace blink
