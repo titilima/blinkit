@@ -19,6 +19,7 @@
 
 namespace blink {
 
+enum CSSPropertyID;
 class Document;
 
 class UseCounter
@@ -27,6 +28,7 @@ class UseCounter
 public:
     static void Count(Document &, WebFeature) {}
     static void Count(ExecutionContext *, WebFeature) {}
+    static void CountAnimatedCSS(const Document &, CSSPropertyID) {}
 };
 
 } // namespace blink

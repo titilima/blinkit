@@ -1,28 +1,25 @@
 // -------------------------------------------------
 // BlinKit - blink Library
 // -------------------------------------------------
-//   File Name: visitor.h
-// Description: Placeholders for Heap Part
+//   File Name: animation_event_init.h
+// Description: AnimationEventInit Class
 //      Author: Ziming Li
-//     Created: 2020-08-29
+//     Created: 2020-09-03
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
 
-#ifndef BLINKIT_BLINK_VISITOR_H
-#define BLINKIT_BLINK_VISITOR_H
+#ifndef BLINKIT_BLINK_ANIMATION_EVENT_INIT_H
+#define BLINKIT_BLINK_ANIMATION_EVENT_INIT_H
 
 #pragma once
 
 namespace blink {
 
-class Visitor final
+class AnimationEventInit
 {
-public:
-    template <typename T>
-    inline void Trace(const T &) {}
 };
 
 } // namespace blink
 
-#endif // BLINKIT_BLINK_VISITOR_H
+#endif // BLINKIT_BLINK_ANIMATION_EVENT_INIT_H

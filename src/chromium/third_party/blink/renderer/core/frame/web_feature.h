@@ -19,6 +19,7 @@ namespace blink {
 enum class WebFeature {
     kAnimationSetPlaybackRateCompensatorySeek,
     kCaseInsensitiveAttrSelectorMatch,
+    kCSSAnimationsStackedNeutralKeyframe,
     kCSSDeepCombinatorAndShadow,
     kDeepCombinatorInStaticProfile,
     kDuplicatedAttribute,

@@ -54,6 +54,12 @@ public:
     HeapVector(void) = default;
     explicit HeapVector(wtf_size_t size) : std::vector<T>(size) {}
 
+    template <typename U>
+    void push_front(U &&v)
+    {
+        this->insert(this->begin(), std::forward<U>(v));
+    }
+
     bool IsEmpty(void) const { return this->empty(); }
     void Grow(wtf_size_t size) { this->resize(size); }
     void ReserveCapacity(wtf_size_t new_capacity) { this->reserve(new_capacity); }
