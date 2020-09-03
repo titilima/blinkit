@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: stroke_data.h
+// Description: StrokeData Classes
+//      Author: Ziming Li
+//     Created: 2020-09-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (C) 2013 Google Inc. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -51,8 +62,10 @@ class PLATFORM_EXPORT StrokeData final {
   StrokeData()
       : style_(kSolidStroke),
         thickness_(0),
+#if 0 // BKTODO:
         line_cap_(PaintFlags::kDefault_Cap),
         line_join_(PaintFlags::kDefault_Join),
+#endif
         miter_limit_(4) {}
 
   StrokeStyle Style() const { return style_; }
@@ -61,15 +74,18 @@ class PLATFORM_EXPORT StrokeData final {
   float Thickness() const { return thickness_; }
   void SetThickness(float thickness) { thickness_ = thickness; }
 
+#if 0 // BKTODO:
   void SetLineCap(LineCap cap) { line_cap_ = (PaintFlags::Cap)cap; }
 
   void SetLineJoin(LineJoin join) { line_join_ = (PaintFlags::Join)join; }
+#endif
 
   float MiterLimit() const { return miter_limit_; }
   void SetMiterLimit(float miter_limit) { miter_limit_ = miter_limit; }
 
   void SetLineDash(const DashArray&, float);
 
+#if 0 // BKTODO:
   // Sets everything on the paint except the pattern, gradient and color.
   // If a non-zero length is provided, the number of dashes/dots on a
   // dashed/dotted line will be adjusted to start and end that length with a
@@ -85,6 +101,7 @@ class PLATFORM_EXPORT StrokeData final {
   void SetupPaintDashPathEffect(PaintFlags*,
                                 const int path_length = 0,
                                 const int dash_thickness = 0) const;
+#endif
 
   // Determine whether a stroked line should be drawn using dashes. In practice,
   // we draw dashes when a dashed stroke is specified or when a dotted stroke
@@ -117,8 +134,10 @@ class PLATFORM_EXPORT StrokeData final {
  private:
   StrokeStyle style_;
   float thickness_;
+#if 0 // BKTODO:
   PaintFlags::Cap line_cap_;
   PaintFlags::Join line_join_;
+#endif
   float miter_limit_;
   sk_sp<SkPathEffect> dash_;
 };

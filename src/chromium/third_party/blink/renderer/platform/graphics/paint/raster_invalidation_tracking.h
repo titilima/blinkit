@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: raster_invalidation_tracking.h
+// Description: RasterInvalidationTracking Class
+//      Author: Ziming Li
+//     Created: 2020-09-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -86,6 +97,7 @@ class PLATFORM_EXPORT RasterInvalidationTracking {
   }
   void ClearInvalidations() { invalidations_.clear(); }
 
+#if 0 // BKTODO:
   // Compares the last recording against |new_record|, by rastering both into
   // bitmaps. If there are any differences outside of invalidated regions,
   // the corresponding pixels in UnderInvalidationRecord() will be drawn in
@@ -94,24 +106,31 @@ class PLATFORM_EXPORT RasterInvalidationTracking {
   void CheckUnderInvalidations(const String& layer_debug_name,
                                sk_sp<PaintRecord> new_record,
                                const IntRect& new_interest_rect);
+#endif
 
   void AsJSON(JSONObject*);
   void AddToTracedValue(base::trace_event::TracedValue&);
 
+#if 0 // BKTODO:
   // The record containing under-invalidated pixels in dark red.
   sk_sp<const PaintRecord> UnderInvalidationRecord() const {
     return under_invalidation_record_;
   }
+#endif
 
  private:
   Vector<RasterInvalidationInfo> invalidations_;
 
   // The following fields are for raster under-invalidation detection.
+#if 0 // BKTODO:
   sk_sp<PaintRecord> last_painted_record_;
+#endif
   IntRect last_interest_rect_;
   Region invalidation_region_since_last_paint_;
   Vector<RasterUnderInvalidation> under_invalidations_;
+#if 0 // BKTODO:
   sk_sp<PaintRecord> under_invalidation_record_;
+#endif
 };
 
 }  // namespace blink

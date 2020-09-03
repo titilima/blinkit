@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: gradient.h
+// Description: Gradient Class
+//      Author: Ziming Li
+//     Created: 2020-09-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2007 Alp Toker <alp@atoker.com>
@@ -97,22 +108,28 @@ class PLATFORM_EXPORT Gradient : public RefCounted<Gradient> {
   }
   void AddColorStops(const Vector<Gradient::ColorStop>&);
 
+#if 0 // BKTODO:
   void ApplyToFlags(PaintFlags&, const SkMatrix& local_matrix);
+#endif
 
  protected:
   Gradient(Type, GradientSpreadMethod, ColorInterpolation);
 
   using ColorBuffer = Vector<SkColor, 8>;
   using OffsetBuffer = Vector<SkScalar, 8>;
+#if 0 // BKTODO:
   virtual sk_sp<PaintShader> CreateShader(const ColorBuffer&,
                                           const OffsetBuffer&,
                                           SkShader::TileMode,
                                           uint32_t flags,
                                           const SkMatrix&,
                                           SkColor) const = 0;
+#endif
 
  private:
+#if 0 // BKTODO:
   sk_sp<PaintShader> CreateShaderInternal(const SkMatrix& local_matrix);
+#endif
 
   sk_sp<SkColorFilter> color_filter_;
 
@@ -126,7 +143,9 @@ class PLATFORM_EXPORT Gradient : public RefCounted<Gradient> {
   Vector<ColorStop, 2> stops_;
   bool stops_sorted_;
 
+#if 0 // BKTODO:
   mutable sk_sp<PaintShader> cached_shader_;
+#endif
 
   DISALLOW_COPY_AND_ASSIGN(Gradient);
 };

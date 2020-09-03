@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: region.h
+// Description: Region Class
+//      Author: Ziming Li
+//     Created: 2020-09-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010, 2011 Apple Inc. All rights reserved.
  *
@@ -26,7 +37,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_GEOMETRY_REGION_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_GEOMETRY_REGION_H_
 
-#include "cc/base/region.h"
+// BKTODO: #include "cc/base/region.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
 #include "third_party/blink/renderer/platform/platform_export.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
@@ -187,6 +198,7 @@ static inline Region Translate(const Region& region, const IntSize& offset) {
   return result;
 }
 
+#if 0 // BKTODO:
 // Creates a cc::Region with the same data as |region|.
 static inline cc::Region RegionToCCRegion(const Region& in_region) {
   Vector<IntRect> rects = in_region.Rects();
@@ -195,6 +207,7 @@ static inline cc::Region RegionToCCRegion(const Region& in_region) {
     out_region.Union(gfx::Rect(r.X(), r.Y(), r.Width(), r.Height()));
   return out_region;
 }
+#endif
 
 inline bool operator==(const Region& a, const Region& b) {
   return a.bounds_ == b.bounds_ && a.shape_ == b.shape_;

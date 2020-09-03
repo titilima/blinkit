@@ -1,3 +1,13 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: paint_controller.h
+// Description: PaintController Class
+//      Author: Ziming Li
+//     Created: 2020-09-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -186,7 +196,11 @@ class PLATFORM_EXPORT PaintController {
     return *current_paint_artifact_;
   }
   scoped_refptr<const PaintArtifact> GetPaintArtifactShared() const {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     return base::WrapRefCounted(&GetPaintArtifact());
+#endif
   }
   const DisplayItemList& GetDisplayItemList() const {
     return GetPaintArtifact().GetDisplayItemList();
@@ -221,8 +235,10 @@ class PLATFORM_EXPORT PaintController {
   // the last CommitNewDisplayItems(). Use with care.
   DisplayItemList& NewDisplayItemList() { return new_display_item_list_; }
 
+#if 0 // BKTODO:
   void AppendDebugDrawingAfterCommit(sk_sp<const PaintRecord>,
                                      const PropertyTreeState&);
+#endif
 
 #if DCHECK_IS_ON()
   void ShowDebugData() const;

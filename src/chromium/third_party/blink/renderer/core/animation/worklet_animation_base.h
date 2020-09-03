@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: worklet_animation_base.h
+// Description: WorkletAnimationBase Class
+//      Author: Ziming Li
+//     Created: 2020-08-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,7 +18,7 @@
 
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
-#include "third_party/blink/renderer/platform/graphics/animation_worklet_mutators_state.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/animation_worklet_mutators_state.h"
 #include "third_party/blink/renderer/platform/wtf/forward.h"
 
 namespace blink {
@@ -30,11 +41,15 @@ class CORE_EXPORT WorkletAnimationBase : public ScriptWrappable {
 
   virtual Document* GetDocument() const = 0;
   virtual KeyframeEffect* GetEffect() const = 0;
+#if 0 // BKTODO:
   virtual const WorkletAnimationId& GetWorkletAnimationId() const = 0;
+#endif
   virtual bool IsActiveAnimation() const = 0;
+#if 0 // BKTODO:
   virtual void UpdateInputState(AnimationWorkletDispatcherInput*) = 0;
   virtual void SetOutputState(
       const AnimationWorkletOutput::AnimationState&) = 0;
+#endif
   virtual AnimationTimeline* GetTimeline() const = 0;
 };
 

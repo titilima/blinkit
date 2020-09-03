@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: box_reflection.h
+// Description: BoxReflection Class
+//      Author: Ziming Li
+//     Created: 2020-09-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -11,14 +22,18 @@
 
 class SkMatrix;
 
+#if 0 // BKTODO:
 namespace cc {
 class PaintOpBuffer;
 using PaintRecord = PaintOpBuffer;
 }  // namespace cc
+#endif
 
 namespace blink {
 
+#if 0 // BKTODO:
 using cc::PaintRecord;
+#endif
 
 // A reflection, as created by -webkit-box-reflect. Consists of:
 // * a direction (either vertical or horizontal)
@@ -36,16 +51,20 @@ class PLATFORM_EXPORT BoxReflection {
   };
 
   BoxReflection(ReflectionDirection direction, float offset);
+#if 0 // BKTODO:
   BoxReflection(ReflectionDirection direction,
                 float offset,
                 sk_sp<PaintRecord> mask,
                 const FloatRect& mask_bounds);
+#endif
   BoxReflection(const BoxReflection& reflection);
   ~BoxReflection();
 
   ReflectionDirection Direction() const { return direction_; }
   float Offset() const { return offset_; }
+#if 0 // BKTODO:
   const sk_sp<PaintRecord>& Mask() const { return mask_; }
+#endif
   const FloatRect& MaskBounds() const { return mask_bounds_; }
 
   // Returns a matrix which maps points between the original content and its
@@ -62,13 +81,19 @@ class PLATFORM_EXPORT BoxReflection {
  private:
   ReflectionDirection direction_;
   float offset_;
+#if 0 // BKTODO:
   sk_sp<PaintRecord> mask_;
+#endif
   FloatRect mask_bounds_;
 };
 
 inline bool operator==(const BoxReflection& a, const BoxReflection& b) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0 // BKTODO:
   return a.Direction() == b.Direction() && a.Offset() == b.Offset() &&
          a.Mask() == b.Mask() && a.MaskBounds() == b.MaskBounds();
+#endif
 }
 
 inline bool operator!=(const BoxReflection& a, const BoxReflection& b) {

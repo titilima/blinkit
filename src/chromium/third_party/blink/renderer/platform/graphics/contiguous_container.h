@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: contiguous_container.h
+// Description: ContiguousContainer Classes
+//      Author: Ziming Li
+//     Created: 2020-09-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -89,6 +100,7 @@ class PLATFORM_EXPORT ContiguousContainerBase {
 template <class BaseElementType, unsigned alignment = sizeof(void*)>
 class ContiguousContainer : public ContiguousContainerBase {
  private:
+#if 0 // BKTODO:
   // Declares itself as a forward iterator, but also supports a few more
   // things. The whole random access iterator interface is a bit much.
   template <typename BaseIterator, typename ValueType>
@@ -127,8 +139,10 @@ class ContiguousContainer : public ContiguousContainerBase {
     BaseIterator it_;
     friend class ContiguousContainer;
   };
+#endif
 
  public:
+#if 0 // BKTODO:
   using iterator = IteratorWrapper<Vector<void*>::iterator, BaseElementType>;
   using const_iterator =
       IteratorWrapper<Vector<void*>::const_iterator, const BaseElementType>;
@@ -137,6 +151,7 @@ class ContiguousContainer : public ContiguousContainerBase {
   using const_reverse_iterator =
       IteratorWrapper<Vector<void*>::const_reverse_iterator,
                       const BaseElementType>;
+#endif
 
   explicit ContiguousContainer(size_t max_object_size)
       : ContiguousContainerBase(Align(max_object_size)) {}
@@ -151,10 +166,13 @@ class ContiguousContainer : public ContiguousContainerBase {
       : ContiguousContainerBase(std::move(source)) {}
 
   ~ContiguousContainer() {
+    ASSERT(false); // BKTODO:
+#if 0
     for (auto& element : *this) {
       (void)element;  // MSVC incorrectly reports this variable as unused.
       element.~BaseElementType();
     }
+#endif
   }
 
   ContiguousContainer& operator=(ContiguousContainer&& source) {
@@ -173,6 +191,7 @@ class ContiguousContainer : public ContiguousContainerBase {
   using ContiguousContainerBase::MemoryUsageInBytes;
   using ContiguousContainerBase::ShrinkToFit;
 
+#if 0 // BKTODO:
   iterator begin() { return iterator(elements_.begin()); }
   iterator end() { return iterator(elements_.end()); }
   const_iterator begin() const { return const_iterator(elements_.begin()); }
@@ -194,6 +213,7 @@ class ContiguousContainer : public ContiguousContainerBase {
   const BaseElementType& operator[](size_t index) const {
     return *(begin() + index);
   }
+#endif
 
   template <class DerivedElementType, typename... Args>
   DerivedElementType& AllocateAndConstruct(Args&&... args) {
@@ -207,16 +227,19 @@ class ContiguousContainer : public ContiguousContainerBase {
 
   void RemoveLast() {
     DCHECK(!IsEmpty());
-    Last().~BaseElementType();
+    ASSERT(false); // BKTODO: Last().~BaseElementType();
     ContiguousContainerBase::RemoveLast();
   }
 
   DISABLE_CFI_PERF
   void Clear() {
+    ASSERT(false); // BKTODO:
+#if 0
     for (auto& element : *this) {
       (void)element;  // MSVC incorrectly reports this variable as unused.
       element.~BaseElementType();
     }
+#endif
     ContiguousContainerBase::Clear();
   }
 

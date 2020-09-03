@@ -51,6 +51,7 @@ public:
     BLINKIT_DISABLE_FEATURE(FractionalScrollOffsets)
     BLINKIT_DISABLE_FEATURE(FullscreenUnprefixed)
     BLINKIT_DISABLE_FEATURE(LayoutNG)
+    BLINKIT_DISABLE_FEATURE(OffMainThreadCSSPaint)
     BLINKIT_DISABLE_FEATURE(SlimmingPaintV2)
 };
 

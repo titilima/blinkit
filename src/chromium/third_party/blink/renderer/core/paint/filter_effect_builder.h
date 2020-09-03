@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: filter_effect_builder.h
+// Description: FilterEffectBuilder Class
+//      Author: Ziming Li
+//     Created: 2020-09-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -47,10 +58,12 @@ class CORE_EXPORT FilterEffectBuilder final {
   STACK_ALLOCATED();
 
  public:
+#if 0 // BKTODO:
   FilterEffectBuilder(const FloatRect& reference_box,
                       float zoom,
                       const PaintFlags* fill_flags = nullptr,
                       const PaintFlags* stroke_flags = nullptr);
+#endif
 
   Filter* BuildReferenceFilter(SVGFilterElement&,
                                FilterEffect* previous_effect,
@@ -67,8 +80,10 @@ class CORE_EXPORT FilterEffectBuilder final {
 
   FloatRect reference_box_;
   float zoom_;
+#if 0 // BKTODO:
   const PaintFlags* fill_flags_;
   const PaintFlags* stroke_flags_;
+#endif
 };
 
 }  // namespace blink

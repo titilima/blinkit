@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: compositor_animations.cc
+// Description: CompositorAnimations Class
+//      Author: Ziming Li
+//     Created: 2020-08-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -106,6 +117,8 @@ bool IsTransformRelatedAnimation(const Element& target_element,
 bool HasIncompatibleAnimations(const Element& target_element,
                                const Animation& animation_to_add,
                                const EffectModel& effect_to_add) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!target_element.HasAnimations())
     return false;
 
@@ -139,6 +152,7 @@ bool HasIncompatibleAnimations(const Element& target_element,
       return true;
     }
   }
+#endif
 
   return false;
 }
@@ -297,6 +311,8 @@ CompositorAnimations::CheckCanStartEffectOnCompositor(
 CompositorAnimations::FailureCode
 CompositorAnimations::CheckCanStartElementOnCompositor(
     const Element& target_element) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!Platform::Current()->IsThreadedAnimationEnabled()) {
     return FailureCode::NonActionable("Accelerated animations are disabled");
   }
@@ -335,6 +351,7 @@ CompositorAnimations::CheckCanStartElementOnCompositor(
           "Element does not paint into own backing");
     }
   }
+#endif
 
   return FailureCode::None();
 }
@@ -369,6 +386,8 @@ void CompositorAnimations::CancelIncompatibleAnimationsOnCompositor(
   const bool affects_backdrop_filter =
       effect_to_add.Affects(PropertyHandle(GetCSSPropertyBackdropFilter()));
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!target_element.HasAnimations())
     return;
 
@@ -394,6 +413,7 @@ void CompositorAnimations::CancelIncompatibleAnimationsOnCompositor(
       attached_animation->CancelAnimationOnCompositor();
     }
   }
+#endif
 }
 
 void CompositorAnimations::StartAnimationOnCompositor(
@@ -538,6 +558,8 @@ void AddKeyframeToCurve(CompositorFilterAnimationCurve& curve,
                         Keyframe::PropertySpecificKeyframe* keyframe,
                         const AnimatableValue* value,
                         const TimingFunction& keyframe_timing_function) {
+  ASSERT(false); // BKTODO:
+#if 0
   FilterEffectBuilder builder(FloatRect(), 1);
   CompositorFilterKeyframe filter_keyframe(
       keyframe->Offset(),
@@ -545,6 +567,7 @@ void AddKeyframeToCurve(CompositorFilterAnimationCurve& curve,
           ToAnimatableFilterOperations(value)->Operations()),
       keyframe_timing_function);
   curve.AddKeyframe(filter_keyframe);
+#endif
 }
 
 void AddKeyframeToCurve(CompositorFloatAnimationCurve& curve,

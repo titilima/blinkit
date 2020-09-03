@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image.h
+// Description: Image Class
+//      Author: Ziming Li
+//     Created: 2020-09-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Samuel Weinig (sam.weinig@gmail.com)
  * Copyright (C) 2004, 2005, 2006 Apple Computer, Inc.  All rights reserved.
@@ -29,7 +40,7 @@
 
 #include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/memory/weak_ptr.h"
+// BKTODO: #include "base/memory/weak_ptr.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_types.h"
 #include "third_party/blink/renderer/platform/graphics/image_animation_policy.h"
@@ -129,7 +140,9 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
 
   virtual void DestroyDecodedData() = 0;
 
+#if 0 // BKTODO:
   virtual scoped_refptr<SharedBuffer> Data() { return encoded_image_data_; }
+#endif
 
   // Animation begins whenever someone draws the image, so startAnimation() is
   // not normally called. It will automatically pause once all observers no
@@ -153,7 +166,11 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
 
   // Typically the ImageResourceContent that owns us.
   ImageObserver* GetImageObserver() const {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     return image_observer_disabled_ ? nullptr : image_observer_;
+#endif
   }
   void ClearImageObserver() { image_observer_ = nullptr; }
   // To avoid interleaved accesses to |m_imageObserverDisabled|, do not call
@@ -177,6 +194,7 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
     kAsyncDecode
   };
 
+#if 0 // BKTODO:
   static PaintImage::DecodingMode ToPaintImageDecodingMode(
       ImageDecodingMode mode) {
     switch (mode) {
@@ -193,6 +211,7 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
   }
 
   virtual PaintImage PaintImageForCurrentFrame() = 0;
+#endif
 
   enum ImageClampingMode {
     kClampImageToSourceRect,
@@ -215,10 +234,12 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
   virtual WebGraphicsContext3DProvider* ContextProvider() const {
     return nullptr;
   }
+#if 0 // BKTODO:
   virtual base::WeakPtr<WebGraphicsContext3DProviderWrapper>
   ContextProviderWrapper() const {
     return nullptr;
   }
+#endif
 
   // Given the |size| that the whole image should draw at, and the
   // input phase requested by the content, and the space between repeated tiles,
@@ -247,6 +268,7 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
                                               const FloatRect& subset,
                                               const FloatSize& intrinsic_size);
 
+#if 0 // BKTODO:
   virtual sk_sp<PaintRecord> PaintRecordForContainer(
       const KURL& url,
       const IntSize& container_size,
@@ -255,6 +277,7 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
       bool flip_y) {
     return nullptr;
   }
+#endif
 
   HighContrastClassification GetHighContrastClassification() {
     return high_contrast_classification_;
@@ -267,10 +290,12 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
     high_contrast_classification_ = high_contrast_classification;
   }
 
+#if 0 // BKTODO:
   PaintImage::Id paint_image_id() const { return stable_image_id_; }
 
   // Returns an SkBitmap that is a copy of the image's current frame.
   SkBitmap AsSkBitmapForCurrentFrame(RespectImageOrientationEnum);
+#endif
 
  protected:
   Image(ImageObserver* = nullptr, bool is_multipart = false);
@@ -307,16 +332,20 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
                            const FloatRect&,
                            const FloatSize& repeat_spacing);
 
+#if 0 // BKTODO:
   // Creates and initializes a PaintImageBuilder with the metadata flags for the
   // PaintImage.
   PaintImageBuilder CreatePaintImageBuilder();
+#endif
 
   // Whether or not size is available yet.
   virtual bool IsSizeAvailable() { return true; }
 
  private:
   bool image_observer_disabled_;
+#if 0 // BKTODO:
   scoped_refptr<SharedBuffer> encoded_image_data_;
+#endif
   // TODO(Oilpan): consider having Image on the Oilpan heap and
   // turn this into a Member<>.
   //
@@ -325,7 +354,9 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
   // When the ImageResourceContent is garbage collected while Image is still
   // alive, |image_observer_| is cleared by WeakPersistent mechanism.
   WeakPersistent<ImageObserver> image_observer_;
+#if 0 // BKTODO:
   PaintImage::Id stable_image_id_;
+#endif
   const bool is_multipart_;
   HighContrastClassification high_contrast_classification_;
 

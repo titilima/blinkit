@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: graphics_layer.h
+// Description: GraphicsLayer Class
+//      Author: Ziming Li
+//     Created: 2020-09-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Intel Corporation. All rights reserved.
@@ -30,11 +41,11 @@
 #include <memory>
 
 #include "base/macros.h"
-#include "base/memory/weak_ptr.h"
+// BKTODO: #include "base/memory/weak_ptr.h"
 #include "cc/input/overscroll_behavior.h"
 #include "cc/input/scroll_snap_data.h"
-#include "cc/layers/content_layer_client.h"
-#include "cc/layers/layer_client.h"
+// BKTODO: #include "cc/layers/content_layer_client.h"
+// BKTODO: #include "cc/layers/layer_client.h"
 #include "cc/layers/layer_sticky_position_constraint.h"
 #include "third_party/blink/renderer/platform/geometry/float_point.h"
 #include "third_party/blink/renderer/platform/geometry/float_point_3d.h"
@@ -77,9 +88,9 @@ typedef Vector<GraphicsLayer*, 64> GraphicsLayerVector;
 
 // GraphicsLayer is an abstraction for a rendering surface with backing store,
 // which may have associated transformation and animations.
-class PLATFORM_EXPORT GraphicsLayer : public cc::LayerClient,
-                                      public DisplayItemClient,
-                                      private cc::ContentLayerClient {
+class PLATFORM_EXPORT GraphicsLayer : // BKTODO: public cc::LayerClient,
+                                      public DisplayItemClient {
+                                      // BKTODO: private cc::ContentLayerClient {
   USING_FAST_MALLOC(GraphicsLayer);
 
  public:
@@ -261,10 +272,12 @@ class PLATFORM_EXPORT GraphicsLayer : public cc::LayerClient,
   bool Paint(const IntRect* interest_rect,
              GraphicsContext::DisabledMode = GraphicsContext::kNothingDisabled);
 
+#if 0 // BKTODO:
   // cc::LayerClient implementation.
   std::unique_ptr<base::trace_event::TracedValue> TakeDebugInfo(
       cc::Layer*) override;
   void DidChangeScrollbarsHiddenIfOverlay(bool) override;
+#endif
 
   PaintController& GetPaintController() const;
 
@@ -302,9 +315,11 @@ class PLATFORM_EXPORT GraphicsLayer : public cc::LayerClient,
                                  : GetOffsetFromTransformNode();
   }
 
+#if 0 // BKTODO:
   // Capture the last painted result into a PaintRecord. This GraphicsLayer
   // must DrawsContent. The result is never nullptr.
   sk_sp<PaintRecord> CapturePaintRecord() const;
+#endif
 
   void SetNeedsCheckRasterInvalidation() {
     needs_check_raster_invalidation_ = true;
@@ -323,12 +338,14 @@ class PLATFORM_EXPORT GraphicsLayer : public cc::LayerClient,
   friend class GraphicsLayerTest;
 
  private:
+#if 0 // BKTODO:
   // cc::ContentLayerClient implementation.
   gfx::Rect PaintableRegion() final { return InterestRect(); }
   scoped_refptr<cc::DisplayItemList> PaintContentsToDisplayList(
       PaintingControlSetting painting_control) final;
   bool FillsBoundsCompletely() const override { return false; }
   size_t GetApproximateUnsharedMemoryUsage() const final;
+#endif
 
   void PaintRecursivelyInternal(Vector<GraphicsLayer*>& repainted_layers);
 
@@ -428,7 +445,9 @@ class PLATFORM_EXPORT GraphicsLayer : public cc::LayerClient,
 
   std::unique_ptr<RasterInvalidator> raster_invalidator_;
 
+#if 0 // BKTODO:
   base::WeakPtrFactory<GraphicsLayer> weak_ptr_factory_;
+#endif
 
   FRIEND_TEST_ALL_PREFIXES(CompositingLayerPropertyUpdaterTest, MaskLayerState);
 

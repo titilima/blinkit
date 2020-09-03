@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: graphics_context.h
+// Description: GraphicsContext Class
+//      Author: Ziming Li
+//     Created: 2020-09-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2006, 2007, 2008, 2009 Apple Inc. All rights reserved.
  * Copyright (C) 2008-2009 Torch Mobile, Inc.
@@ -116,7 +127,9 @@ class PLATFORM_EXPORT GraphicsContext {
     MutableState()->SetStrokeStyle(style);
   }
 
+#if 0 // BKTODO:
   Color StrokeColor() const { return ImmutableState()->StrokeColor(); }
+#endif
   void SetStrokeColor(const Color& color) {
     MutableState()->SetStrokeColor(color);
   }
@@ -128,7 +141,9 @@ class PLATFORM_EXPORT GraphicsContext {
   void SetLineJoin(LineJoin join) { MutableState()->SetLineJoin(join); }
   void SetMiterLimit(float limit) { MutableState()->SetMiterLimit(limit); }
 
+#if 0 // BKTODO:
   Color FillColor() const { return ImmutableState()->FillColor(); }
+#endif
   void SetFillColor(const Color& color) { MutableState()->SetFillColor(color); }
 
   void SetShouldAntialias(bool antialias) {
@@ -204,11 +219,13 @@ class PLATFORM_EXPORT GraphicsContext {
 
   void StrokeRect(const FloatRect&, float line_width);
 
+#if 0 // BKTODO:
   void DrawRecord(sk_sp<const PaintRecord>);
   void CompositeRecord(sk_sp<PaintRecord>,
                        const FloatRect& dest,
                        const FloatRect& src,
                        SkBlendMode);
+#endif
 
   void DrawImage(Image*,
                  Image::ImageDecodingMode,
@@ -240,6 +257,7 @@ class PLATFORM_EXPORT GraphicsContext {
                       Image::TileRule v_rule = Image::kStretchTile,
                       SkBlendMode = SkBlendMode::kSrcOver);
 
+#if 0 // BKTODO:
   // These methods write to the canvas.
   // Also drawLine(const IntPoint& point1, const IntPoint& point2) and
   // fillRoundedRect().
@@ -247,6 +265,7 @@ class PLATFORM_EXPORT GraphicsContext {
   void DrawPath(const SkPath&, const PaintFlags&);
   void DrawRect(const SkRect&, const PaintFlags&);
   void DrawRRect(const SkRRect&, const PaintFlags&);
+#endif
 
   void Clip(const IntRect& rect) { ClipRect(rect); }
   void Clip(const FloatRect& rect) { ClipRect(rect); }
@@ -271,6 +290,7 @@ class PLATFORM_EXPORT GraphicsContext {
   void DrawText(const Font&, const TextRunPaintInfo&, const FloatPoint&);
   void DrawText(const Font&, const NGTextFragmentPaintInfo&, const FloatPoint&);
 
+#if 0 // BKTODO:
   void DrawText(const Font&,
                 const TextRunPaintInfo&,
                 const FloatPoint&,
@@ -279,6 +299,7 @@ class PLATFORM_EXPORT GraphicsContext {
                 const NGTextFragmentPaintInfo&,
                 const FloatPoint&,
                 const PaintFlags&);
+#endif
 
   void DrawEmphasisMarks(const Font&,
                          const TextRunPaintInfo&,
@@ -304,6 +325,7 @@ class PLATFORM_EXPORT GraphicsContext {
 
   void DrawLineForText(const FloatPoint&, float width);
 
+#if 0 // BKTODO:
   // beginLayer()/endLayer() behave like save()/restore() for CTM and clip
   // states. Apply SkBlendMode when the layer is composited on the backdrop
   // (i.e. endLayer()).
@@ -312,6 +334,7 @@ class PLATFORM_EXPORT GraphicsContext {
                   const FloatRect* = nullptr,
                   ColorFilter = kColorFilterNone,
                   sk_sp<PaintFilter> = nullptr);
+#endif
   void EndLayer();
 
   // Instead of being dispatched to the active canvas, draw commands following
@@ -319,10 +342,12 @@ class PLATFORM_EXPORT GraphicsContext {
   // later time. Pass in the bounding rectangle for the content in the list.
   void BeginRecording(const FloatRect&);
 
+#if 0 // BKTODO:
   // Returns a record with any recorded draw commands since the prerequisite
   // call to beginRecording().  The record is guaranteed to be non-null (but
   // not necessarily non-empty), even when the context is disabled.
   sk_sp<PaintRecord> EndRecording();
+#endif
 
   void SetShadow(const FloatSize& offset,
                  float blur,
@@ -356,6 +381,7 @@ class PLATFORM_EXPORT GraphicsContext {
                        float shadow_spread,
                        Edges clipped_edges = kNoEdge);
 
+#if 0 // BKTODO:
   const PaintFlags& FillFlags() const { return ImmutableState()->FillFlags(); }
   // If the length of the path to be stroked is known, pass it in for correct
   // dash or dot placement. Border painting uses a stroke thickness determined
@@ -365,6 +391,7 @@ class PLATFORM_EXPORT GraphicsContext {
                                 const int dash_thickness = 0) const {
     return ImmutableState()->StrokeFlags(length, dash_thickness);
   }
+#endif
 
   // ---------- Transformation methods -----------------
   void ConcatCTM(const AffineTransform&);
@@ -409,11 +436,13 @@ class PLATFORM_EXPORT GraphicsContext {
     return paint_state_;
   }
 
+#if 0 // BKTODO:
   template <typename TextPaintInfo>
   void DrawTextInternal(const Font&,
                         const TextPaintInfo&,
                         const FloatPoint&,
                         const PaintFlags&);
+#endif
 
   template <typename TextPaintInfo>
   void DrawTextInternal(const Font&, const TextPaintInfo&, const FloatPoint&);
@@ -427,7 +456,9 @@ class PLATFORM_EXPORT GraphicsContext {
   template <typename DrawTextFunc>
   void DrawTextPasses(const DrawTextFunc&);
 
+#if 0 // BKTODO:
   void SaveLayer(const SkRect* bounds, const PaintFlags*);
+#endif
   void RestoreLayer();
 
   // Helpers for drawing a focus ring (drawFocusRing)
@@ -468,7 +499,9 @@ class PLATFORM_EXPORT GraphicsContext {
 
   bool ShouldApplyHighContrastFilterToImage(Image&);
   Color ApplyHighContrastFilter(const Color& input) const;
+#if 0 // BKTODO:
   PaintFlags ApplyHighContrastFilter(const PaintFlags* input) const;
+#endif
 
   // null indicates painting is contextDisabled. Never delete this object.
   cc::PaintCanvas* canvas_;
@@ -486,7 +519,9 @@ class PLATFORM_EXPORT GraphicsContext {
   // Raw pointer to the current state.
   GraphicsContextState* paint_state_;
 
+#if 0 // BKTODO:
   PaintRecorder paint_recorder_;
+#endif
 
   SkMetaData meta_data_;
 

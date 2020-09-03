@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: graphics_context_state.h
+// Description: GraphicsContextState Classes
+//      Author: Ziming Li
+//     Created: 2020-09-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (C) 2013 Google Inc. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -59,18 +70,22 @@ class PLATFORM_EXPORT GraphicsContextState final {
 
   void Copy(const GraphicsContextState&);
 
+#if 0 // BKTODO:
   // PaintFlags objects that reflect the current state. If the length of the
   // path to be stroked is known, pass it in for correct dash or dot placement.
   const PaintFlags& StrokeFlags(const int stroked_path_length = 0,
                                 const int dash_thickness = 0) const;
   const PaintFlags& FillFlags() const { return fill_flags_; }
+#endif
 
   uint16_t SaveCount() const { return save_count_; }
   void IncrementSaveCount() { ++save_count_; }
   void DecrementSaveCount() { --save_count_; }
 
   // Stroke data
+#if 0 // BKTODO:
   Color StrokeColor() const { return stroke_flags_.getColor(); }
+#endif
   void SetStrokeColor(const Color&);
 
   const StrokeData& GetStrokeData() const { return stroke_data_; }
@@ -82,13 +97,19 @@ class PLATFORM_EXPORT GraphicsContextState final {
   void SetLineDash(const DashArray&, float);
 
   // Fill data
+#if 0 // BKTODO:
   Color FillColor() const { return fill_flags_.getColor(); }
+#endif
   void SetFillColor(const Color&);
 
   // Shadow. (This will need tweaking if we use draw loopers for other things.)
   SkDrawLooper* DrawLooper() const {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     DCHECK_EQ(fill_flags_.getLooper(), stroke_flags_.getLooper());
     return fill_flags_.getLooper().get();
+#endif
   }
   void SetDrawLooper(sk_sp<SkDrawLooper>);
 
@@ -99,8 +120,12 @@ class PLATFORM_EXPORT GraphicsContextState final {
   }
 
   SkColorFilter* GetColorFilter() const {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     DCHECK_EQ(fill_flags_.getColorFilter(), stroke_flags_.getColorFilter());
     return fill_flags_.getColorFilter().get();
+#endif
   }
   void SetColorFilter(sk_sp<SkColorFilter>);
 
@@ -118,10 +143,12 @@ class PLATFORM_EXPORT GraphicsContextState final {
   explicit GraphicsContextState(const GraphicsContextState&);
   GraphicsContextState& operator=(const GraphicsContextState&) = delete;
 
+#if 0 // BKTODO:
   // This is mutable to enable dash path effect updates when the paint is
   // fetched for use.
   mutable PaintFlags stroke_flags_;
   PaintFlags fill_flags_;
+#endif
 
   StrokeData stroke_data_;
 
