@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_interpolation_type.cc
+// Description: CSSInterpolationType Class
+//      Author: Ziming Li
+//     Created: 2020-09-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -106,16 +117,22 @@ class ResolvedRegisteredCustomPropertyChecker
   static std::unique_ptr<ResolvedRegisteredCustomPropertyChecker> Create(
       const CSSCustomPropertyDeclaration& declaration,
       scoped_refptr<CSSVariableData> resolved_tokens) {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     return base::WrapUnique(new ResolvedRegisteredCustomPropertyChecker(
         declaration, std::move(resolved_tokens)));
+#endif
   }
 
  private:
+#if 0 // BKTODO:
   ResolvedRegisteredCustomPropertyChecker(
       const CSSCustomPropertyDeclaration& declaration,
       scoped_refptr<CSSVariableData> resolved_tokens)
       : declaration_(declaration),
         resolved_tokens_(std::move(resolved_tokens)) {}
+#endif
 
   bool IsValid(const InterpolationEnvironment& environment,
                const InterpolationValue&) const final {
@@ -310,7 +327,7 @@ void CSSInterpolationType::ApplyCustomPropertyValue(
   bool needs_variable_resolution = false;
   scoped_refptr<CSSVariableData> variable_data = CSSVariableData::Create(
       CSSParserTokenRange(tokens), is_animation_tainted,
-      needs_variable_resolution, KURL(), WTF::TextEncoding());
+      needs_variable_resolution, GURL(), WTF::TextEncoding());
   ComputedStyle& style = *state.Style();
   const PropertyHandle property = GetProperty();
   const AtomicString& property_name = property.CustomPropertyName();

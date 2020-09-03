@@ -1979,6 +1979,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\transition_event.cc">
       <Filter>renderer\core\events</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\computed_style_css_value_mapping.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\css_variable_resolver.cc">
+      <Filter>renderer\core\css\resolver</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -4602,6 +4608,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\histogram.h">
       <Filter>renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\computed_style_css_value_mapping.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\css_variable_resolver.h">
+      <Filter>renderer\core\css\resolver</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
