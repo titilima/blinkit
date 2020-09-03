@@ -1961,6 +1961,24 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\animation\compositor_transform_operations.cc">
       <Filter>renderer\platform\animation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\css_interpolation_types_map.cc">
+      <Filter>renderer\core\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\transition_interpolation.cc">
+      <Filter>renderer\core\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\property_registry.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\pseudo_element.cc">
+      <Filter>renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\animation_event.cc">
+      <Filter>renderer\core\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\transition_event.cc">
+      <Filter>renderer\core\events</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -4554,6 +4572,36 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\animation\compositor_transform_operations.h">
       <Filter>renderer\platform\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\css_interpolation_types_map.h">
+      <Filter>renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\transition_interpolation.h">
+      <Filter>renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\property_registry.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\node_computed_style.h">
+      <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\pseudo_element.h">
+      <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\animation_event.h">
+      <Filter>renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\transition_event.h">
+      <Filter>renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\animation_event_init.h">
+      <Filter>renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\transition_event_init.h">
+      <Filter>renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\histogram.h">
+      <Filter>renderer\platform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -290,8 +290,13 @@ public:
 
 #ifndef BLINKIT_CRAWLER_ONLY
     const ComputedStyle* GetComputedStyle(void) const;
+    const ComputedStyle& ComputedStyleRef(void) const;
+    ComputedStyle* MutableComputedStyle(void) const;
+    const ComputedStyle* ParentComputedStyle(void) const;
 
     bool CanParticipateInFlatTree(void) const;
+    // Whether or not a selection can be started in this object
+    virtual bool CanStartSelection(void) const;
 
     // As layoutObject() includes a branch you should avoid calling it repeatedly
     // in hot code paths.
@@ -429,6 +434,10 @@ private:
 
     NodeRareData& CreateRareData(void);
     void ClearRareData(void);
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    virtual const ComputedStyle* VirtualEnsureComputedStyle(PseudoId pseudoElementSpecifier = kPseudoIdNone);
+#endif
 
     GCType GetGCType(void) const override { return GC_IN_POOL; }
     // EventTarget overrides

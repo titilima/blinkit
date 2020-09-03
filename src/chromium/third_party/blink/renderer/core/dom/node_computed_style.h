@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: node_computed_style.h
+// Description: Node Class
+//      Author: Ziming Li
+//     Created: 2020-09-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -38,6 +49,8 @@ inline const ComputedStyle* Node::GetComputedStyle() const {
 }
 
 inline ComputedStyle* Node::MutableComputedStyle() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (NeedsReattachLayoutTree())
     return GetNonAttachedStyle();
 
@@ -46,6 +59,7 @@ inline ComputedStyle* Node::MutableComputedStyle() const {
 
   if (IsElementNode())
     return ToElement(this)->MutableNonLayoutObjectComputedStyle();
+#endif
 
   return nullptr;
 }

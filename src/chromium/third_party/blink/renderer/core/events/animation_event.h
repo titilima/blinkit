@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: animation_event.h
+// Description: AnimationEvent Class
+//      Author: Ziming Li
+//     Created: 2020-09-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -55,8 +66,6 @@ class AnimationEvent final : public Event {
   const String& pseudoElement() const;
 
   const AtomicString& InterfaceName() const override;
-
-  void Trace(blink::Visitor*) override;
 
  private:
   AnimationEvent();

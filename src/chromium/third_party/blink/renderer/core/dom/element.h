@@ -194,6 +194,7 @@ public:
     virtual void FinishParsingChildren(void);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    virtual scoped_refptr<ComputedStyle> CustomStyleForLayoutObject(void);
     virtual bool LayoutObjectIsNeeded(const ComputedStyle &style) const;
 #endif
 
@@ -328,6 +329,25 @@ inline bool IsShadowHost(const Node *node)
 #endif
 }
 
+inline bool IsShadowHost(const Node &node)
+{
+#ifdef BLINKIT_CRAWLER_ONLY
+    return false;
+#else
+    return nullptr != node.GetShadowRoot();
+#endif
+}
+
 }  // namespace blink
+
+// These macros do the same as their NODE equivalents but additionally provide a
+// template specialization for isElementOfType<>() so that the Traversal<> API
+// works for these Element types.
+#define DEFINE_ELEMENT_TYPE_CASTS(thisType, predicate)              \
+    template <>                                                     \
+    inline bool IsElementOfType<const thisType>(const Node& node) { \
+        return node.predicate;                                      \
+    }                                                               \
+    DEFINE_NODE_TYPE_CASTS(thisType, predicate)
 
 #endif // BLINKIT_BLINK_ELEMENT_H
