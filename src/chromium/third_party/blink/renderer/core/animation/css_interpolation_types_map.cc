@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_interpolation_types_map.cc
+// Description: CSSInterpolationTypesMap Class
+//      Author: Ziming Li
+//     Created: 2020-09-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -54,8 +65,11 @@ CSSInterpolationTypesMap::CSSInterpolationTypesMap(
     const PropertyRegistry* registry,
     const Document& document)
     : registry_(registry) {
+  ASSERT(false); // BKTODO:
+#if 0
   allow_all_animations_ = document.IsFeatureEnabled(
       blink::mojom::FeaturePolicyFeature::kAnimations);
+#endif
 }
 
 static const PropertyRegistration* GetRegistration(

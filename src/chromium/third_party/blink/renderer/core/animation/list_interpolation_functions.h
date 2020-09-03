@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: list_interpolation_functions.h
+// Description: ListInterpolationFunctions Class
+//      Author: Ziming Li
+//     Created: 2020-09-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -29,6 +40,7 @@ class CORE_EXPORT ListInterpolationFunctions {
     kPadToLargest
   };
 
+#if 0 // BKTODO:
   using MergeSingleItemConversionsCallback =
       base::RepeatingCallback<PairwiseInterpolationValue(InterpolationValue&&,
                                                          InterpolationValue&&)>;
@@ -38,6 +50,7 @@ class CORE_EXPORT ListInterpolationFunctions {
       InterpolationValue&& end,
       LengthMatchingStrategy,
       MergeSingleItemConversionsCallback);
+#endif
 
   using EqualNonInterpolableValuesCallback =
       bool (*)(const NonInterpolableValue*, const NonInterpolableValue*);
@@ -45,6 +58,7 @@ class CORE_EXPORT ListInterpolationFunctions {
                           const InterpolationValue&,
                           EqualNonInterpolableValuesCallback);
 
+#if 0 // BKTODO:
   using NonInterpolableValuesAreCompatibleCallback =
       base::RepeatingCallback<bool(const NonInterpolableValue*,
                                    const NonInterpolableValue*)>;
@@ -61,6 +75,7 @@ class CORE_EXPORT ListInterpolationFunctions {
                         LengthMatchingStrategy,
                         NonInterpolableValuesAreCompatibleCallback,
                         CompositeItemCallback);
+#endif
 };
 
 class CORE_EXPORT NonInterpolableList : public NonInterpolableValue {
