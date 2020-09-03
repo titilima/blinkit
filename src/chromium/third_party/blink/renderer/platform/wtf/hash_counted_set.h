@@ -22,6 +22,8 @@ template <typename T>
 class HashCountedSet
 {
 public:
+    bool IsEmpty(void) const { return m_impl.empty(); }
+
     struct AddResult {
         bool is_new_entry;
     };

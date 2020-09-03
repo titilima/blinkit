@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "base/optional.h"
+
 #define WILL_NOT_BE_EAGERLY_TRACED_CLASS(...)
 
 #endif // BLINKIT_BLINK_TRACE_TRAITS_H

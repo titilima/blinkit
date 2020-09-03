@@ -17,6 +17,7 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
+#include "third_party/blink/renderer/platform/wtf/hash_counted_set.h"
 #include "third_party/blink/renderer/platform/wtf/wtf_size_t.h"
 
 namespace blink {
@@ -71,6 +72,11 @@ public:
     {
         this->insert(this->end(), v.begin(), v.end());
     }
+};
+
+template <typename T>
+class HeapHashCountedSet : public HashCountedSet<T>
+{
 };
 
 } // namespace blink
