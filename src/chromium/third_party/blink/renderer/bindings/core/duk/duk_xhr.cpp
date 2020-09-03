@@ -246,7 +246,9 @@ static duk_ret_t ResponseXMLGetter(duk_context *ctx)
 
 static duk_ret_t Send(duk_context *ctx)
 {
-    const std::string body = Duk::To<std::string>(ctx, 0);
+    std::string body;
+    if (!duk_is_undefined(ctx, 0))
+        body = Duk::To<std::string>(ctx, 0);
 
     duk_push_this(ctx);
     return DukScriptObject::To<DukXHR>(ctx, -1)->Send(ctx, -1, body);
