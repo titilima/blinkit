@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_builder_converter.h
+// Description: StyleBuilderConverter Class
+//      Author: Ziming Li
+//     Created: 2020-09-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -177,7 +188,6 @@ class StyleBuilderConverter {
   static scoped_refptr<QuotesData> ConvertQuotes(StyleResolverState&,
                                                  const CSSValue&);
   static LengthSize ConvertRadius(StyleResolverState&, const CSSValue&);
-  static EPaintOrder ConvertPaintOrder(StyleResolverState&, const CSSValue&);
   static ShadowData ConvertShadow(const CSSToLengthConversionData&,
                                   StyleResolverState*,
                                   const CSSValue&);
@@ -189,15 +199,12 @@ class StyleBuilderConverter {
   static float ConvertSpacing(StyleResolverState&, const CSSValue&);
   template <CSSValueID IdForNone>
   static AtomicString ConvertString(StyleResolverState&, const CSSValue&);
-  static scoped_refptr<SVGDashArray> ConvertStrokeDasharray(StyleResolverState&,
-                                                            const CSSValue&);
   static StyleColor ConvertStyleColor(StyleResolverState&,
                                       const CSSValue&,
                                       bool for_visited_link = false);
   static StyleAutoColor ConvertStyleAutoColor(StyleResolverState&,
                                               const CSSValue&,
                                               bool for_visited_link = false);
-  static SVGPaint ConvertSVGPaint(StyleResolverState&, const CSSValue&);
   static TextEmphasisPosition ConvertTextTextEmphasisPosition(
       StyleResolverState&,
       const CSSValue&);
