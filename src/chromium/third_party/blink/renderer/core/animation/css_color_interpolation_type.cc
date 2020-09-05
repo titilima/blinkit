@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_color_interpolation_type.cc
+// Description: CSSColorInterpolationType Class
+//      Author: Ziming Li
+//     Created: 2020-09-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -293,7 +304,11 @@ const CSSValue* CSSColorInterpolationType::CreateCSSValue(
     const StyleResolverState& state) const {
   const InterpolableList& color_pair = ToInterpolableList(interpolable_value);
   Color color = ResolveInterpolableColor(*color_pair.Get(kUnvisited), state);
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return CSSColorValue::Create(color.Rgb());
+#endif
 }
 
 }  // namespace blink

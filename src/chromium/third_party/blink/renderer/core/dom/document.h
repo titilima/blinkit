@@ -62,6 +62,9 @@
 #include "third_party/blink/renderer/platform/timer.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 #include "url/gurl.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/dom/text_link_colors.h"
+#endif
 
 namespace blink {
 
@@ -357,6 +360,8 @@ public:
         return *m_styleEngine;
     }
 
+    TextLinkColors& GetTextLinkColors(void) { return m_textLinkColors; }
+
 #   if DCHECK_IS_ON()
     unsigned& SlotAssignmentRecalcForbiddenRecursionDepth(void) { return m_slotAssignmentRecalcForbiddenRecursionDepth; }
     bool IsSlotAssignmentRecalcForbidden(void) { return m_slotAssignmentRecalcForbiddenRecursionDepth > 0; }
@@ -487,6 +492,8 @@ private:
     Member<Document> m_templateDocumentHost;
 
     std::unique_ptr<StyleEngine> m_styleEngine;
+
+    TextLinkColors m_textLinkColors;
 
 #   if DCHECK_IS_ON()
     unsigned m_slotAssignmentRecalcForbiddenRecursionDepth = 0;
