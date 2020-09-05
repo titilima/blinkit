@@ -4885,5 +4885,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\text_link_colors.h">
       <Filter>renderer\core\dom</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\underlying_length_checker.h">
+      <Filter>renderer\core\animation</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

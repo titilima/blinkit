@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_custom_list_interpolation_type.cc
+// Description: CSSCustomListInterpolationType Class
+//      Author: Ziming Li
+//     Created: 2020-09-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -101,11 +112,15 @@ void CSSCustomListInterpolationType::Composite(
 PairwiseInterpolationValue CSSCustomListInterpolationType::MaybeMergeSingles(
     InterpolationValue&& start,
     InterpolationValue&& end) const {
+  ASSERT(false); // BKTODO:
+  return PairwiseInterpolationValue(nullptr);
+#if 0
   return ListInterpolationFunctions::MaybeMergeSingles(
       std::move(start), std::move(end),
       ListInterpolationFunctions::LengthMatchingStrategy::kEqual,
       WTF::BindRepeating(&CSSInterpolationType::MaybeMergeSingles,
                          WTF::Unretained(inner_interpolation_type_.get())));
+#endif
 }
 
 }  // namespace blink

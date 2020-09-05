@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: color_property_functions.cc
+// Description: ColorPropertyFunctions Class
+//      Author: Ziming Li
+//     Created: 2020-09-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -43,12 +54,6 @@ OptionalStyleColor ColorPropertyFunctions::GetUnvisitedColor(
       return style.TextFillColor();
     case CSSPropertyWebkitTextStrokeColor:
       return style.TextStrokeColor();
-    case CSSPropertyFloodColor:
-      return style.FloodColor();
-    case CSSPropertyLightingColor:
-      return style.LightingColor();
-    case CSSPropertyStopColor:
-      return style.StopColor();
     case CSSPropertyWebkitTapHighlightColor:
       return style.TapHighlightColor();
     case CSSPropertyTextDecorationColor:
@@ -91,12 +96,6 @@ OptionalStyleColor ColorPropertyFunctions::GetVisitedColor(
       return style.VisitedLinkTextFillColor();
     case CSSPropertyWebkitTextStrokeColor:
       return style.VisitedLinkTextStrokeColor();
-    case CSSPropertyFloodColor:
-      return style.FloodColor();
-    case CSSPropertyLightingColor:
-      return style.LightingColor();
-    case CSSPropertyStopColor:
-      return style.StopColor();
     case CSSPropertyWebkitTapHighlightColor:
       return style.TapHighlightColor();
     case CSSPropertyTextDecorationColor:
@@ -131,17 +130,8 @@ void ColorPropertyFunctions::SetUnvisitedColor(const CSSProperty& property,
     case CSSPropertyColor:
       style.SetColor(color);
       return;
-    case CSSPropertyFloodColor:
-      style.SetFloodColor(color);
-      return;
-    case CSSPropertyLightingColor:
-      style.SetLightingColor(color);
-      return;
     case CSSPropertyOutlineColor:
       style.SetOutlineColor(color);
-      return;
-    case CSSPropertyStopColor:
-      style.SetStopColor(color);
       return;
     case CSSPropertyTextDecorationColor:
       style.SetTextDecorationColor(color);
@@ -182,17 +172,8 @@ void ColorPropertyFunctions::SetVisitedColor(const CSSProperty& property,
     case CSSPropertyColor:
       style.SetVisitedLinkColor(color);
       return;
-    case CSSPropertyFloodColor:
-      style.SetFloodColor(color);
-      return;
-    case CSSPropertyLightingColor:
-      style.SetLightingColor(color);
-      return;
     case CSSPropertyOutlineColor:
       style.SetVisitedLinkOutlineColor(color);
-      return;
-    case CSSPropertyStopColor:
-      style.SetStopColor(color);
       return;
     case CSSPropertyTextDecorationColor:
       style.SetVisitedLinkTextDecorationColor(color);
