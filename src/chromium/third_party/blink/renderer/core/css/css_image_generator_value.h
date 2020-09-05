@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_image_generator_value.h
+// Description: CSSImageGeneratorValue Class
+//      Author: Ziming Li
+//     Created: 2020-09-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All rights reserved.
  *
@@ -31,7 +42,7 @@
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/css/css_value.h"
 #include "third_party/blink/renderer/platform/geometry/float_size.h"
-#include "third_party/blink/renderer/platform/heap/self_keep_alive.h"
+// BKTODO: #include "third_party/blink/renderer/platform/heap/self_keep_alive.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
 
 namespace blink {
@@ -135,7 +146,7 @@ class CORE_EXPORT CSSImageGeneratorValue : public CSSValue {
   // CSSImageGenerator value using a member we don't need to have this hack
   // where we keep a persistent to the instance as long as there are clients in
   // the ClientSizeCountMap.
-  SelfKeepAlive<CSSImageGeneratorValue> keep_alive_;
+  // BKTODO: SelfKeepAlive<CSSImageGeneratorValue> keep_alive_;
 };
 
 DEFINE_CSS_VALUE_TYPE_CASTS(CSSImageGeneratorValue, IsImageGeneratorValue());

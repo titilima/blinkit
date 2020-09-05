@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_image_interpolation_type.cc
+// Description: CSSImageInterpolationType Class
+//      Author: Ziming Li
+//     Created: 2020-09-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -53,6 +64,9 @@ class CSSImageNonInterpolableValue : public NonInterpolableValue {
       scoped_refptr<NonInterpolableValue> end);
 
   CSSValue* Crossfade(double progress) const {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     if (is_single_ || progress <= 0)
       return start_;
     if (progress >= 1)
@@ -61,6 +75,7 @@ class CSSImageNonInterpolableValue : public NonInterpolableValue {
         start_, end_,
         CSSPrimitiveValue::Create(progress,
                                   CSSPrimitiveValue::UnitType::kNumber));
+#endif
   }
 
   DECLARE_NON_INTERPOLABLE_VALUE_TYPE();
@@ -89,7 +104,11 @@ scoped_refptr<CSSImageNonInterpolableValue> CSSImageNonInterpolableValue::Merge(
       ToCSSImageNonInterpolableValue(*end);
   DCHECK(start_image_pair.is_single_);
   DCHECK(end_image_pair.is_single_);
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return Create(start_image_pair.start_, end_image_pair.end_);
+#endif
 }
 
 InterpolationValue CSSImageInterpolationType::MaybeConvertStyleImage(

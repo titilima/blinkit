@@ -41,7 +41,7 @@ namespace cssvalue {
 
 class CORE_EXPORT CSSCrossfadeValue final : public CSSImageGeneratorValue {
   friend class blink::CrossfadeSubimageObserverProxy;
-  USING_PRE_FINALIZER(CSSCrossfadeValue, Dispose);
+  // BKTODO: USING_PRE_FINALIZER(CSSCrossfadeValue, Dispose);
 
  public:
   static CSSCrossfadeValue* Create(CSSValue* from_value,
