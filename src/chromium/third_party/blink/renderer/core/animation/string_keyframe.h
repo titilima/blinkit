@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: string_keyframe.h
+// Description: StringKeyframe Class
+//      Author: Ziming Li
+//     Created: 2020-09-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -78,8 +89,6 @@ class CORE_EXPORT StringKeyframe : public Keyframe {
 
   void AddKeyframePropertiesToV8Object(V8ObjectBuilder&) const override;
 
-  void Trace(Visitor*) override;
-
   class CSSPropertySpecificKeyframe
       : public Keyframe::PropertySpecificKeyframe {
    public:
@@ -106,8 +115,6 @@ class CORE_EXPORT StringKeyframe : public Keyframe {
     Keyframe::PropertySpecificKeyframe* NeutralKeyframe(
         double offset,
         scoped_refptr<TimingFunction> easing) const final;
-
-    void Trace(Visitor*) override;
 
    private:
     CSSPropertySpecificKeyframe(double offset,

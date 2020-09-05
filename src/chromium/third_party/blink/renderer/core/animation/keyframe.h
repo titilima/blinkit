@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: keyframe.h
+// Description: Keyframe Class
+//      Author: Ziming Li
+//     Created: 2020-09-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -19,7 +30,7 @@
 
 namespace blink {
 
-using PropertyHandleSet = HashSet<PropertyHandle>;
+using PropertyHandleSet = std::unordered_set<PropertyHandle>;
 
 class Element;
 class ComputedStyle;
@@ -113,8 +124,6 @@ class CORE_EXPORT Keyframe : public GarbageCollectedFinalized<Keyframe> {
   virtual bool IsStringKeyframe() const { return false; }
   virtual bool IsTransitionKeyframe() const { return false; }
 
-  virtual void Trace(Visitor*) {}
-
   // Represents a property-specific keyframe as defined in the spec. Refer to
   // the Keyframe class-level documentation for more details.
   class CORE_EXPORT PropertySpecificKeyframe
@@ -155,8 +164,6 @@ class CORE_EXPORT Keyframe : public GarbageCollectedFinalized<Keyframe> {
     virtual Interpolation* CreateInterpolation(
         const PropertyHandle&,
         const Keyframe::PropertySpecificKeyframe& end) const;
-
-    virtual void Trace(Visitor*){};
 
    protected:
     PropertySpecificKeyframe(double offset,

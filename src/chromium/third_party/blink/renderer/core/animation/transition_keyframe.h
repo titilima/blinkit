@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: transition_keyframe.h
+// Description: TransitionKeyframe Class
+//      Author: Ziming Li
+//     Created: 2020-09-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -38,8 +49,6 @@ class CORE_EXPORT TransitionKeyframe : public Keyframe {
 
   void AddKeyframePropertiesToV8Object(V8ObjectBuilder&) const override;
 
-  void Trace(Visitor*) override;
-
   class PropertySpecificKeyframe : public Keyframe::PropertySpecificKeyframe {
    public:
     static PropertySpecificKeyframe* Create(
@@ -68,8 +77,6 @@ class CORE_EXPORT TransitionKeyframe : public Keyframe {
         const Keyframe::PropertySpecificKeyframe& other) const final;
 
     bool IsTransitionPropertySpecificKeyframe() const final { return true; }
-
-    void Trace(Visitor*) override;
 
    private:
     PropertySpecificKeyframe(double offset,
