@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_length_list_interpolation_type.cc
+// Description: CSSLengthListInterpolationType Class
+//      Author: Ziming Li
+//     Created: 2020-09-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -126,10 +137,14 @@ InterpolationValue CSSLengthListInterpolationType::MaybeConvertValue(
 PairwiseInterpolationValue CSSLengthListInterpolationType::MaybeMergeSingles(
     InterpolationValue&& start,
     InterpolationValue&& end) const {
+  ASSERT(false); // BKTODO:
+  return PairwiseInterpolationValue(nullptr);
+#if 0
   return ListInterpolationFunctions::MaybeMergeSingles(
       std::move(start), std::move(end),
       ListInterpolationFunctions::LengthMatchingStrategy::kLowestCommonMultiple,
       WTF::BindRepeating(LengthInterpolationFunctions::MergeSingles));
+#endif
 }
 
 InterpolationValue
@@ -147,12 +162,15 @@ void CSSLengthListInterpolationType::Composite(
     double underlying_fraction,
     const InterpolationValue& value,
     double interpolation_fraction) const {
+  ASSERT(false); // BKTODO:
+#if 0
   ListInterpolationFunctions::Composite(
       underlying_value_owner, underlying_fraction, *this, value,
       ListInterpolationFunctions::LengthMatchingStrategy::kLowestCommonMultiple,
       WTF::BindRepeating(
           LengthInterpolationFunctions::NonInterpolableValuesAreCompatible),
       WTF::BindRepeating(LengthInterpolationFunctions::Composite));
+#endif
 }
 
 void CSSLengthListInterpolationType::ApplyStandardPropertyValue(
