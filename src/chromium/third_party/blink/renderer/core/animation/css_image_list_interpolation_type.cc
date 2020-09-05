@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_image_list_interpolation_type.cc
+// Description: CSSImageListInterpolationType Class
+//      Author: Ziming Li
+//     Created: 2020-09-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -91,7 +102,11 @@ class InheritedImageListChecker
     StyleImageList* inherited_image_list = new StyleImageList;
     ImageListPropertyFunctions::GetImageList(property_, *state.ParentStyle(),
                                              inherited_image_list);
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return inherited_image_list_ == inherited_image_list;
+#endif
   }
 
   const CSSProperty& property_;
@@ -149,11 +164,15 @@ InterpolationValue CSSImageListInterpolationType::MaybeConvertValue(
 PairwiseInterpolationValue CSSImageListInterpolationType::MaybeMergeSingles(
     InterpolationValue&& start,
     InterpolationValue&& end) const {
+  ASSERT(false); // BKTODO:
+  return PairwiseInterpolationValue(nullptr);
+#if 0
   return ListInterpolationFunctions::MaybeMergeSingles(
       std::move(start), std::move(end),
       ListInterpolationFunctions::LengthMatchingStrategy::kLowestCommonMultiple,
       WTF::BindRepeating(
           CSSImageInterpolationType::StaticMergeSingleConversions));
+#endif
 }
 
 InterpolationValue
