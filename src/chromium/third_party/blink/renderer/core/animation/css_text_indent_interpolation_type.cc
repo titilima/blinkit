@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_text_indent_interpolation_type.cc
+// Description: CSSTextIndentInterpolationType Class
+//      Author: Ziming Li
+//     Created: 2020-09-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -167,6 +178,8 @@ InterpolationValue CSSTextIndentInterpolationType::MaybeConvertValue(
   TextIndentLine line = ComputedStyleInitialValues::InitialTextIndentLine();
   TextIndentType type = ComputedStyleInitialValues::InitialTextIndentType();
 
+  ASSERT(false); // BKTODO:
+#if 0
   for (const auto& item : ToCSSValueList(value)) {
     if (item->IsIdentifierValue() &&
         ToCSSIdentifierValue(*item).GetValueID() == CSSValueEachLine)
@@ -177,6 +190,7 @@ InterpolationValue CSSTextIndentInterpolationType::MaybeConvertValue(
     else
       length = LengthInterpolationFunctions::MaybeConvertCSSValue(*item);
   }
+#endif
   DCHECK(length);
 
   return InterpolationValue(
