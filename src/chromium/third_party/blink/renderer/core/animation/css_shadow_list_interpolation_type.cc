@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_shadow_list_interpolation_type.cc
+// Description: CSSShadowListInterpolationType Class
+//      Author: Ziming Li
+//     Created: 2020-09-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -130,10 +141,14 @@ InterpolationValue CSSShadowListInterpolationType::MaybeConvertValue(
 PairwiseInterpolationValue CSSShadowListInterpolationType::MaybeMergeSingles(
     InterpolationValue&& start,
     InterpolationValue&& end) const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return ListInterpolationFunctions::MaybeMergeSingles(
       std::move(start), std::move(end),
       ListInterpolationFunctions::LengthMatchingStrategy::kPadToLargest,
       WTF::BindRepeating(ShadowInterpolationFunctions::MaybeMergeSingles));
+#endif
 }
 
 InterpolationValue
@@ -148,12 +163,15 @@ void CSSShadowListInterpolationType::Composite(
     double underlying_fraction,
     const InterpolationValue& value,
     double interpolation_fraction) const {
+  ASSERT(false); // BKTODO:
+#if 0
   ListInterpolationFunctions::Composite(
       underlying_value_owner, underlying_fraction, *this, value,
       ListInterpolationFunctions::LengthMatchingStrategy::kPadToLargest,
       WTF::BindRepeating(
           ShadowInterpolationFunctions::NonInterpolableValuesAreCompatible),
       WTF::BindRepeating(ShadowInterpolationFunctions::Composite));
+#endif
 }
 
 static scoped_refptr<ShadowList> CreateShadowList(

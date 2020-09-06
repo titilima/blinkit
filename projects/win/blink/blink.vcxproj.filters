@@ -2153,6 +2153,15 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_path.cc">
       <Filter>renderer\core\style</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\basic_shape_functions.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_ray.cc">
+      <Filter>renderer\core\style</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\shadow_interpolation_functions.cc">
+      <Filter>renderer\core\animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -4974,6 +4983,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_path.h">
       <Filter>renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\basic_shape_functions.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_ray.h">
+      <Filter>renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\shadow_interpolation_functions.h">
+      <Filter>renderer\core\animation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
