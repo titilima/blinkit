@@ -25,6 +25,10 @@ public:
     {
         ASSERT(false); // BKTODO:
     }
+    Persistent(const T &)
+    {
+        ASSERT(false); // BKTODO:
+    }
     operator bool() const
     {
         ASSERT(false); // BKTODO:
