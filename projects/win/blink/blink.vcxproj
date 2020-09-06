@@ -254,6 +254,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\length_property_functions.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\list_interpolation_functions.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\number_property_functions.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\path_interpolation_functions.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\pending_animations.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\property_handle.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\sampled_effect.cc" />
@@ -291,6 +292,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_keyframes_rule.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_keyframe_rule.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_markup.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_path_value.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_pending_substitution_value.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_primitive_value.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_primitive_value_unit_trie.cc" />
@@ -585,6 +587,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_image.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_inherited_variables.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_non_inherited_variables.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_path.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style_property_shorthand.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\xlink_names.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\xmlns_names.cc" />
@@ -931,6 +934,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\number_property_functions.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\optional_effect_timing.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\pairwise_interpolation_value.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\path_interpolation_functions.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\pending_animations.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\primitive_interpolation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\property_handle.h" />
@@ -976,6 +980,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_keyframes_rule.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_keyframe_rule.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_markup.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_path_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_pending_substitution_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_primitive_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_primitive_value_mappings.h" />
@@ -1385,6 +1390,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_inherited_variables.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_non_inherited_variables.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_offset_rotation.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_path.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_reflection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_self_alignment_data.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\text_size_adjust.h" />

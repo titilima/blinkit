@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_path_interpolation_type.cc
+// Description: CSSPathInterpolationType Class
+//      Author: Ziming Li
+//     Created: 2020-09-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -20,6 +31,9 @@ namespace {
 // Returns the property's path() value.
 // If the property's value is not a path(), returns nullptr.
 StylePath* GetPath(const CSSProperty& property, const ComputedStyle& style) {
+  ASSERT(false); // BKTODO: Check if necessary.
+  return nullptr;
+#if 0
   switch (property.PropertyID()) {
     case CSSPropertyD:
       return style.SvgStyle().D();
@@ -33,6 +47,7 @@ StylePath* GetPath(const CSSProperty& property, const ComputedStyle& style) {
       NOTREACHED();
       return nullptr;
   }
+#endif
 }
 
 // Set the property to the given path() value.
@@ -41,7 +56,7 @@ void SetPath(const CSSProperty& property,
              scoped_refptr<blink::StylePath> path) {
   switch (property.PropertyID()) {
     case CSSPropertyD:
-      style.SetD(std::move(path));
+      ASSERT(false); // BKTODO: style.SetD(std::move(path));
       return;
     case CSSPropertyOffsetPath:
       style.SetOffsetPath(std::move(path));
@@ -58,6 +73,8 @@ void CSSPathInterpolationType::ApplyStandardPropertyValue(
     const InterpolableValue& interpolable_value,
     const NonInterpolableValue* non_interpolable_value,
     StyleResolverState& state) const {
+  ASSERT(false); // BKTODO:
+#if 0
   std::unique_ptr<SVGPathByteStream> path_byte_stream =
       PathInterpolationFunctions::AppliedValue(interpolable_value,
                                                non_interpolable_value);
@@ -67,6 +84,7 @@ void CSSPathInterpolationType::ApplyStandardPropertyValue(
   }
   SetPath(CssProperty(), *state.Style(),
           StylePath::Create(std::move(path_byte_stream)));
+#endif
 }
 
 void CSSPathInterpolationType::Composite(
@@ -135,9 +153,13 @@ InterpolationValue CSSPathInterpolationType::MaybeConvertValue(
   if (!value.IsPathValue()) {
     return nullptr;
   }
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return PathInterpolationFunctions::ConvertValue(
       cssvalue::ToCSSPathValue(value).ByteStream(),
       PathInterpolationFunctions::ForceAbsolute);
+#endif
 }
 
 InterpolationValue

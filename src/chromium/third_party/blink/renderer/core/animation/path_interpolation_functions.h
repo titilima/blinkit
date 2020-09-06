@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: path_interpolation_functions.h
+// Description: PathInterpolationFunctions Class
+//      Author: Ziming Li
+//     Created: 2020-09-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,7 +18,7 @@
 
 #include <memory>
 #include "third_party/blink/renderer/core/animation/interpolation_type.h"
-#include "third_party/blink/renderer/core/svg/svg_path_byte_stream.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_path_byte_stream.h"
 
 namespace blink {
 
@@ -17,17 +28,21 @@ class PathInterpolationFunctions {
  public:
   enum CoordinateConversion { PreserveCoordinates, ForceAbsolute };
 
+#if 0 // BKTODO:
   static std::unique_ptr<SVGPathByteStream> AppliedValue(
       const InterpolableValue&,
       const NonInterpolableValue*);
+#endif
 
   static void Composite(UnderlyingValueOwner&,
                         double underlying_fraction,
                         const InterpolationType&,
                         const InterpolationValue&);
 
+#if 0 // BKTODO:
   static InterpolationValue ConvertValue(const SVGPathByteStream&,
                                          CoordinateConversion);
+#endif
 
   static InterpolationValue ConvertValue(const StylePath*,
                                          CoordinateConversion);
