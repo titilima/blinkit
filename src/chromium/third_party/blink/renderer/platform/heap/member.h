@@ -72,6 +72,13 @@ struct hash<blink::Member<U>> {
   }
 };
 
+template <typename U>
+struct hash<blink::WeakMember<U>> {
+  std::size_t operator()(const blink::WeakMember<U> &m) const noexcept {
+    return reinterpret_cast<std::size_t>(m.Get());
+  }
+};
+
 }
 
 #endif // BLINKIT_BLINK_MEMBER_H
