@@ -231,6 +231,9 @@
     <Filter Include="renderer\platform\graphics\skia">
       <UniqueIdentifier>{6ddb9c0a-c028-413f-b26d-2810b4bd8f69}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\page">
+      <UniqueIdentifier>{e9d5e574-e2c1-4124-a640-a7f61ca0e74f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -2167,6 +2170,18 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\size_list_property_functions.cc">
       <Filter>renderer\core\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\transform_builder.cc">
+      <Filter>renderer\core\css\resolver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animation_clock.cc">
+      <Filter>renderer\core\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_frame_view.cpp">
+      <Filter>renderer\core\frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page.cpp">
+      <Filter>renderer\core\page</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -5004,6 +5019,24 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\size_list_property_functions.h">
       <Filter>renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\length_units_checker.h">
+      <Filter>renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\transform_builder.h">
+      <Filter>renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animation_clock.h">
+      <Filter>renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\document_timeline_options.h">
+      <Filter>renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_frame_view.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page.h">
+      <Filter>renderer\core\page</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

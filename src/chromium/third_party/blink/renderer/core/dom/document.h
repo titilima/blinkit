@@ -88,6 +88,7 @@ class Text;
 #ifndef BLINKIT_CRAWLER_ONLY
 class LayoutView;
 class LocalFrameView;
+class Page;
 class StyleEngine;
 #endif
 
@@ -142,6 +143,7 @@ public:
     DocumentLifecycle& Lifecycle(void) { return m_lifecycle; }
 #ifndef BLINKIT_CRAWLER_ONLY
     LayoutView* GetLayoutView(void) const { return m_layoutView; }
+    Page* GetPage(void) const;                           // can be null
     LocalFrameView* View(void) const;                    // can be null
 #endif
 
@@ -353,6 +355,8 @@ public:
     // A non-null template_document_host_ implies that |this| was created by
     // EnsureTemplateDocument().
     bool IsTemplateDocument(void) const { return !!m_templateDocumentHost; }
+
+    void UpdateStyleAndLayoutTree(void);
 
     StyleEngine& GetStyleEngine(void)
     {
