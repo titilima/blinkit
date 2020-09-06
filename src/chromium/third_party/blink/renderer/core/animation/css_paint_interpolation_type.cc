@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_paint_interpolation_type.cc
+// Description: CSSPaintInterpolationType Class
+//      Author: Ziming Li
+//     Created: 2020-09-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -16,34 +27,6 @@
 
 namespace blink {
 
-namespace {
-
-static bool GetColorFromPaint(const SVGPaint& paint, StyleColor& result) {
-  if (!paint.IsColor())
-    return false;
-  if (paint.HasCurrentColor())
-    result = StyleColor::CurrentColor();
-  else
-    result = paint.GetColor();
-  return true;
-}
-
-bool GetColor(const CSSProperty& property,
-              const ComputedStyle& style,
-              StyleColor& result) {
-  switch (property.PropertyID()) {
-    case CSSPropertyFill:
-      return GetColorFromPaint(style.SvgStyle().FillPaint(), result);
-    case CSSPropertyStroke:
-      return GetColorFromPaint(style.SvgStyle().StrokePaint(), result);
-    default:
-      NOTREACHED();
-      return false;
-  }
-}
-
-}  // namespace
-
 InterpolationValue CSSPaintInterpolationType::MaybeConvertNeutral(
     const InterpolationValue&,
     ConversionCheckers&) const {
@@ -54,11 +37,15 @@ InterpolationValue CSSPaintInterpolationType::MaybeConvertNeutral(
 InterpolationValue CSSPaintInterpolationType::MaybeConvertInitial(
     const StyleResolverState&,
     ConversionCheckers& conversion_checkers) const {
+  ASSERT(false); // BKTODO: Check if necessary.
+  return nullptr;
+#if 0
   StyleColor initial_color;
   if (!GetColor(CssProperty(), ComputedStyle::InitialStyle(), initial_color))
     return nullptr;
   return InterpolationValue(
       CSSColorInterpolationType::CreateInterpolableColor(initial_color));
+#endif
 }
 
 class InheritedPaintChecker
@@ -82,10 +69,14 @@ class InheritedPaintChecker
 
   bool IsValid(const StyleResolverState& state,
                const InterpolationValue& underlying) const final {
+    ASSERT(false); // BKTODO: Check if necessary.
+    return !valid_color_;
+#if 0
     StyleColor parent_color;
     if (!GetColor(property_, *state.ParentStyle(), parent_color))
       return !valid_color_;
     return valid_color_ && parent_color == color_;
+#endif
   }
 
   const CSSProperty& property_;
@@ -98,6 +89,10 @@ InterpolationValue CSSPaintInterpolationType::MaybeConvertInherit(
     ConversionCheckers& conversion_checkers) const {
   if (!state.ParentStyle())
     return nullptr;
+  ASSERT(false); // BKTODO: Check if necessary.
+  conversion_checkers.push_back(InheritedPaintChecker::Create(CssProperty()));
+  return nullptr;
+#if 0
   StyleColor parent_color;
   if (!GetColor(CssProperty(), *state.ParentStyle(), parent_color)) {
     conversion_checkers.push_back(InheritedPaintChecker::Create(CssProperty()));
@@ -107,6 +102,7 @@ InterpolationValue CSSPaintInterpolationType::MaybeConvertInherit(
       InheritedPaintChecker::Create(CssProperty(), parent_color));
   return InterpolationValue(
       CSSColorInterpolationType::CreateInterpolableColor(parent_color));
+#endif
 }
 
 InterpolationValue CSSPaintInterpolationType::MaybeConvertValue(
@@ -123,6 +119,9 @@ InterpolationValue CSSPaintInterpolationType::MaybeConvertValue(
 InterpolationValue
 CSSPaintInterpolationType::MaybeConvertStandardPropertyUnderlyingValue(
     const ComputedStyle& style) const {
+  ASSERT(false); // BKTODO: Check if necessary.
+  return nullptr;
+#if 0
   // TODO(alancutter): Support capturing and animating with the visited paint
   // color.
   StyleColor underlying_color;
@@ -130,12 +129,15 @@ CSSPaintInterpolationType::MaybeConvertStandardPropertyUnderlyingValue(
     return nullptr;
   return InterpolationValue(
       CSSColorInterpolationType::CreateInterpolableColor(underlying_color));
+#endif
 }
 
 void CSSPaintInterpolationType::ApplyStandardPropertyValue(
     const InterpolableValue& interpolable_color,
     const NonInterpolableValue*,
     StyleResolverState& state) const {
+  ASSERT(false); // BKTODO: Check if necessary.
+#if 0
   Color color = CSSColorInterpolationType::ResolveInterpolableColor(
       interpolable_color, state);
   SVGComputedStyle& mutable_svg_style = state.Style()->AccessSVGStyle();
@@ -151,6 +153,7 @@ void CSSPaintInterpolationType::ApplyStandardPropertyValue(
     default:
       NOTREACHED();
   }
+#endif
 }
 
 }  // namespace blink
