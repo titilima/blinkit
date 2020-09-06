@@ -2162,6 +2162,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\shadow_interpolation_functions.cc">
       <Filter>renderer\core\animation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\size_interpolation_functions.cc">
+      <Filter>renderer\core\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\size_list_property_functions.cc">
+      <Filter>renderer\core\animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -4991,6 +4997,12 @@
       <Filter>renderer\core\style</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\shadow_interpolation_functions.h">
+      <Filter>renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\size_interpolation_functions.h">
+      <Filter>renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\size_list_property_functions.h">
       <Filter>renderer\core\animation</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_size_list_interpolation_type.cc
+// Description: CSSSizeListInterpolationType Class
+//      Author: Ziming Li
+//     Created: 2020-09-06
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -154,10 +165,14 @@ InterpolationValue CSSSizeListInterpolationType::MaybeConvertValue(
 PairwiseInterpolationValue CSSSizeListInterpolationType::MaybeMergeSingles(
     InterpolationValue&& start,
     InterpolationValue&& end) const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return ListInterpolationFunctions::MaybeMergeSingles(
       std::move(start), std::move(end),
       ListInterpolationFunctions::LengthMatchingStrategy::kLowestCommonMultiple,
       WTF::BindRepeating(SizeInterpolationFunctions::MaybeMergeSingles));
+#endif
 }
 
 InterpolationValue
@@ -173,12 +188,15 @@ void CSSSizeListInterpolationType::Composite(
     double underlying_fraction,
     const InterpolationValue& value,
     double interpolation_fraction) const {
+  ASSERT(false); // BKTODO:
+#if 0
   ListInterpolationFunctions::Composite(
       underlying_value_owner, underlying_fraction, *this, value,
       ListInterpolationFunctions::LengthMatchingStrategy::kLowestCommonMultiple,
       WTF::BindRepeating(
           SizeInterpolationFunctions::NonInterpolableValuesAreCompatible),
       WTF::BindRepeating(SizeInterpolationFunctions::Composite));
+#endif
 }
 
 void CSSSizeListInterpolationType::ApplyStandardPropertyValue(

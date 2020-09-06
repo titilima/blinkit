@@ -259,6 +259,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\property_handle.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\sampled_effect.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\shadow_interpolation_functions.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\size_interpolation_functions.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\size_list_property_functions.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\string_keyframe.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\timing.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\timing_input.cc" />
@@ -944,6 +946,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\sampled_effect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\shadow_interpolation_functions.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\side_index.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\size_interpolation_functions.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\size_list_property_functions.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\string_keyframe.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\timing.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\timing_calculations.h" />
