@@ -45,6 +45,7 @@ public:
     static TimeDelta FromSecondsD(double secs);
     static TimeDelta FromMilliseconds(int64_t ms);
     static TimeDelta FromMicroseconds(int64_t us);
+    static TimeDelta FromMillisecondsD(double ms);
 
     double InSecondsF(void) const;
     int64_t InMilliseconds(void) const;
@@ -76,6 +77,7 @@ private:
 
     constexpr explicit TimeDelta(int64_t deltaUs) : m_delta(deltaUs) {}
 
+    static TimeDelta FromDouble(double value);
     static TimeDelta FromProduct(int64_t value, int64_t positiveValue);
 
     template <typename T>
