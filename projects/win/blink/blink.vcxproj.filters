@@ -5038,5 +5038,11 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page.h">
       <Filter>renderer\core\page</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\base_keyframe.h">
+      <Filter>renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\base_property_indexed_keyframe.h">
+      <Filter>renderer\core\animation</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

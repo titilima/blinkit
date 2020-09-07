@@ -866,6 +866,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animation_input_helpers.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animation_timeline.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\animation_time_delta.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\base_keyframe.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\base_property_indexed_keyframe.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\basic_shape_interpolation_functions.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\color_property_functions.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\compositor_animations.h" />

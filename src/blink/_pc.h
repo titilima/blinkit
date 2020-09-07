@@ -41,6 +41,7 @@
 #define INSIDE_BLINK                    1
 #define WTF_USE_DEFAULT_RENDER_THEME    1
 
+#include <functional>
 #include <memory>
 
 #include "base/logging.h"

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: effect_input.cc
+// Description: EffectInput Class
+//      Author: Ziming Li
+//     Created: 2020-09-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -30,6 +41,7 @@
 
 #include "third_party/blink/renderer/core/animation/effect_input.h"
 
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/bindings/core/v8/array_value.h"
 #include "third_party/blink/renderer/bindings/core/v8/dictionary.h"
 #include "third_party/blink/renderer/bindings/core/v8/idl_types.h"
@@ -38,6 +50,7 @@
 #include "third_party/blink/renderer/bindings/core/v8/string_or_string_sequence.h"
 #include "third_party/blink/renderer/bindings/core/v8/v8_base_keyframe.h"
 #include "third_party/blink/renderer/bindings/core/v8/v8_base_property_indexed_keyframe.h"
+#endif
 #include "third_party/blink/renderer/core/animation/animation_input_helpers.h"
 #include "third_party/blink/renderer/core/animation/base_keyframe.h"
 #include "third_party/blink/renderer/core/animation/base_property_indexed_keyframe.h"
@@ -48,18 +61,18 @@
 #include "third_party/blink/renderer/core/css/css_style_sheet.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/element.h"
-#include "third_party/blink/renderer/core/frame/frame_console.h"
+// BKTODO: #include "third_party/blink/renderer/core/frame/frame_console.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
-#include "third_party/blink/renderer/core/inspector/console_message.h"
+// BKTODO: #include "third_party/blink/renderer/core/inspector/console_message.h"
 #include "third_party/blink/renderer/platform/wtf/ascii_ctype.h"
 #include "third_party/blink/renderer/platform/wtf/hash_set.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
-#include "v8/include/v8.h"
 
 namespace blink {
 
 namespace {
 
+#if 0 // BKTODO:
 // Converts the composite property of a BasePropertyIndexedKeyframe into a
 // vector of base::Optional<EffectModel::CompositeOperation> enums.
 Vector<base::Optional<EffectModel::CompositeOperation>> ParseCompositeProperty(
@@ -80,6 +93,7 @@ Vector<base::Optional<EffectModel::CompositeOperation>> ParseCompositeProperty(
   }
   return result;
 }
+#endif
 
 void SetKeyframeValue(Element* element,
                       Document& document,
@@ -87,6 +101,8 @@ void SetKeyframeValue(Element* element,
                       const String& property,
                       const String& value,
                       ExecutionContext* execution_context) {
+  ASSERT(false); // BKTODO:
+#if 0
   StyleSheetContents* style_sheet_contents = document.ElementSheet().Contents();
   CSSPropertyID css_property =
       AnimationInputHelpers::KeyframeAttributeToCSSProperty(property, document);
@@ -121,6 +137,7 @@ void SetKeyframeValue(Element* element,
       AnimationInputHelpers::KeyframeAttributeToSVGAttribute(property, element);
   if (svg_attribute)
     keyframe.SetSVGAttributeValue(*svg_attribute, value);
+#endif
 }
 
 bool ValidatePartialKeyframes(const StringKeyframeVector& keyframes) {
@@ -157,7 +174,8 @@ bool ValidatePartialKeyframes(const StringKeyframeVector& keyframes) {
       if (computed_offsets[i] == 0.0) {
         properties_with_offset_0.insert(property);
       } else {
-        if (!properties_with_offset_0.Contains(property))
+        auto it = properties_with_offset_0.find(property);
+        if (std::end(properties_with_offset_0) == it)
           return false;
         if (computed_offsets[i] == 1.0) {
           properties_with_offset_1.insert(property);
@@ -211,6 +229,7 @@ struct KeyframeOutput {
   Vector<std::pair<String, String>> property_value_pairs;
 };
 
+#if 0 // BKTODO:
 void AddPropertyValuePairsForKeyframe(
     v8::Isolate* isolate,
     v8::Local<v8::Object> keyframe_obj,
@@ -635,14 +654,15 @@ StringKeyframeVector ConvertObjectForm(Element* element,
   DCHECK(!exception_state.HadException());
   return results;
 }
+#endif // 0
 
 bool HasAdditiveCompositeCSSKeyframe(
     const KeyframeEffectModelBase::KeyframeGroupMap& keyframe_groups) {
   for (const auto& keyframe_group : keyframe_groups) {
-    PropertyHandle property = keyframe_group.key;
+    PropertyHandle property = keyframe_group.first;
     if (!property.IsCSSProperty())
       continue;
-    for (const auto& keyframe : keyframe_group.value->Keyframes()) {
+    for (const auto& keyframe : keyframe_group.second->Keyframes()) {
       if (keyframe->Composite() == EffectModel::kCompositeAdd)
         return true;
     }
@@ -683,6 +703,8 @@ StringKeyframeVector EffectInput::ParseKeyframesArgument(
     const ScriptValue& keyframes,
     ScriptState* script_state,
     ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   // Per the spec, a null keyframes object maps to a valid but empty sequence.
   v8::Local<v8::Value> keyframes_value = keyframes.V8Value();
   if (keyframes_value->IsNullOrUndefined())
@@ -700,8 +722,10 @@ StringKeyframeVector EffectInput::ParseKeyframesArgument(
   Document& document =
       element ? element->GetDocument()
               : *To<Document>(ExecutionContext::From(script_state));
+#endif
 
   StringKeyframeVector parsed_keyframes;
+#if 0 // BKTODO:
   if (iterator_method.IsEmpty()) {
     parsed_keyframes = ConvertObjectForm(element, document, keyframes_obj,
                                          script_state, exception_state);
@@ -713,6 +737,7 @@ StringKeyframeVector EffectInput::ParseKeyframesArgument(
     parsed_keyframes = ConvertArrayForm(element, document, iterator,
                                         script_state, exception_state);
   }
+#endif
 
   if (!ValidatePartialKeyframes(parsed_keyframes)) {
     exception_state.ThrowDOMException(DOMExceptionCode::kNotSupportedError,
