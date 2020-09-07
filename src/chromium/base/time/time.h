@@ -108,6 +108,9 @@ public:
     T operator+(TimeDelta delta) const {
         return T(time_internal::SaturatedAdd(delta, m_us));
     }
+    T operator-(TimeDelta delta) const {
+        return T(time_internal::SaturatedSub(delta, m_us));
+    }
     TimeDelta operator-(T other) const {
         return TimeDelta::FromMicroseconds(m_us - other.m_us);
     }
@@ -143,6 +146,12 @@ template<class TimeClass>
 inline TimeClass operator+(TimeDelta delta, TimeClass t)
 {
     return t + delta;
+}
+
+template<class TimeClass>
+inline TimeClass operator-(TimeDelta delta, TimeClass t)
+{
+    return t - delta;
 }
 
 /**
@@ -219,6 +228,7 @@ private:
 /**
  * TimeTicks
  */
+
 class TimeTicks : public time_internal::TimeBase<TimeTicks>
 {
 public:
