@@ -171,7 +171,7 @@ CompositorAnimations::CheckCanStartEffectOnCompositor(
       ToKeyframeEffectModelBase(effect);
 
   PropertyHandleSet properties = keyframe_effect.Properties();
-  if (properties.IsEmpty()) {
+  if (properties.empty()) {
     return FailureCode::Actionable("Animation does not affect any properties");
   }
 
@@ -627,7 +627,7 @@ void CompositorAnimations::GetAnimationOnCompositor(
   ALLOW_UNUSED_LOCAL(timing_valid);
 
   PropertyHandleSet properties = effect.Properties();
-  DCHECK(!properties.IsEmpty());
+  DCHECK(!properties.empty());
   for (const auto& property : properties) {
     // If the animation duration is infinite, it doesn't make sense to scale
     // the keyframe offset, so use a scale of 1.0. This is connected to
