@@ -1,16 +1,25 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: string_keyframe.cc
+// Description: StringKeyframe Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/core/animation/string_keyframe.h"
 
-#include "third_party/blink/renderer/bindings/core/v8/v8_object_builder.h"
 #include "third_party/blink/renderer/core/animation/animation_input_helpers.h"
 #include "third_party/blink/renderer/core/animation/css/css_animations.h"
 #include "third_party/blink/renderer/core/css/css_custom_property_declaration.h"
 #include "third_party/blink/renderer/core/css/resolver/style_resolver.h"
 #include "third_party/blink/renderer/core/style_property_shorthand.h"
-#include "third_party/blink/renderer/core/svg/svg_element.h"
 
 namespace blink {
 
@@ -81,9 +90,8 @@ PropertyHandleSet StringKeyframe::Properties() const {
     CSSPropertyValueSet::PropertyReference property_reference =
         css_property_map_->PropertyAt(i);
     const CSSProperty& property = property_reference.Property();
-    DCHECK(!property.IsShorthand())
-        << "Web Animations: Encountered unexpanded shorthand CSS property ("
-        << property.PropertyID() << ").";
+    ASSERT(!property.IsShorthand());
+        // Web Animations: Encountered unexpanded shorthand CSS property.
     if (property.IDEquals(CSSPropertyVariable)) {
       properties.insert(PropertyHandle(
           ToCSSCustomPropertyDeclaration(property_reference.Value())
@@ -116,6 +124,8 @@ bool StringKeyframe::HasCssProperty() const {
 void StringKeyframe::AddKeyframePropertiesToV8Object(
     V8ObjectBuilder& object_builder) const {
   Keyframe::AddKeyframePropertiesToV8Object(object_builder);
+  ASSERT(false); // BKTODO:
+#if 0
   for (const PropertyHandle& property : Properties()) {
     String property_name =
         AnimationInputHelpers::PropertyHandleToKeyframeAttribute(property);
@@ -132,12 +142,7 @@ void StringKeyframe::AddKeyframePropertiesToV8Object(
 
     object_builder.Add(property_name, value);
   }
-}
-
-void StringKeyframe::Trace(Visitor* visitor) {
-  visitor->Trace(css_property_map_);
-  visitor->Trace(presentation_attribute_map_);
-  Keyframe::Trace(visitor);
+#endif
 }
 
 Keyframe* StringKeyframe::Clone() const {
@@ -183,12 +188,6 @@ StringKeyframe::CSSPropertySpecificKeyframe::NeutralKeyframe(
     double offset,
     scoped_refptr<TimingFunction> easing) const {
   return Create(offset, std::move(easing), nullptr, EffectModel::kCompositeAdd);
-}
-
-void StringKeyframe::CSSPropertySpecificKeyframe::Trace(Visitor* visitor) {
-  visitor->Trace(value_);
-  visitor->Trace(animatable_value_cache_);
-  Keyframe::PropertySpecificKeyframe::Trace(visitor);
 }
 
 Keyframe::PropertySpecificKeyframe*
