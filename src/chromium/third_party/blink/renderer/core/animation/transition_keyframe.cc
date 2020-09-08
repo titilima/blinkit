@@ -1,10 +1,20 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: transition_keyframe.cc
+// Description: TransitionKeyframe Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/core/animation/transition_keyframe.h"
 
-#include "third_party/blink/renderer/bindings/core/v8/v8_object_builder.h"
 #include "third_party/blink/renderer/core/animation/compositor_animations.h"
 #include "third_party/blink/renderer/core/animation/interpolation_type.h"
 #include "third_party/blink/renderer/core/animation/pairwise_interpolation_value.h"
@@ -28,11 +38,6 @@ void TransitionKeyframe::AddKeyframePropertiesToV8Object(
     V8ObjectBuilder& object_builder) const {
   Keyframe::AddKeyframePropertiesToV8Object(object_builder);
   // TODO(crbug.com/777971): Add in the property/value for TransitionKeyframe.
-}
-
-void TransitionKeyframe::Trace(Visitor* visitor) {
-  visitor->Trace(compositor_value_);
-  Keyframe::Trace(visitor);
 }
 
 Keyframe::PropertySpecificKeyframe*
@@ -59,11 +64,6 @@ TransitionKeyframe::PropertySpecificKeyframe::CreateInterpolation(
       property, value_->GetType(), value_->Value().Clone(),
       other.value_->Value().Clone(), compositor_value_,
       other.compositor_value_);
-}
-
-void TransitionKeyframe::PropertySpecificKeyframe::Trace(Visitor* visitor) {
-  visitor->Trace(compositor_value_);
-  Keyframe::PropertySpecificKeyframe::Trace(visitor);
 }
 
 }  // namespace blink
