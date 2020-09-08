@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: list_interpolation_functions.cc
+// Description: ListInterpolationFunctions Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,6 @@
 #include "third_party/blink/renderer/core/animation/list_interpolation_functions.h"
 
 #include <memory>
-#include "base/callback.h"
 #include "third_party/blink/renderer/core/animation/underlying_value_owner.h"
 #include "third_party/blink/renderer/core/css/css_value_list.h"
 #include "third_party/blink/renderer/platform/wtf/math_extras.h"
@@ -78,6 +88,7 @@ static wtf_size_t MatchLengths(
   return std::max(start_length, end_length);
 }
 
+#if 0 // BKTODO:
 PairwiseInterpolationValue ListInterpolationFunctions::MaybeMergeSingles(
     InterpolationValue&& start,
     InterpolationValue&& end,
@@ -179,6 +190,7 @@ PairwiseInterpolationValue ListInterpolationFunctions::MaybeMergeSingles(
       std::move(result_end_interpolable_list),
       NonInterpolableList::Create(std::move(result_non_interpolable_values)));
 }
+#endif
 
 static void RepeatToLength(InterpolationValue& value, wtf_size_t length) {
   InterpolableList& interpolable_list =
@@ -243,6 +255,7 @@ static void PadToSameLength(InterpolationValue& value,
       NonInterpolableList::Create(std::move(new_non_interpolable_values));
 }
 
+#if 0 // BKTODO:
 static bool NonInterpolableListsAreCompatible(
     const NonInterpolableList& a,
     const NonInterpolableList& b,
@@ -357,5 +370,6 @@ void ListInterpolationFunctions::Composite(
     }
   }
 }
+#endif
 
 }  // namespace blink
