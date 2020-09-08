@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: interpolation_effect.cc
+// Description: InterpolationEffect Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -44,10 +55,6 @@ void InterpolationEffect::AddInterpolationsFromKeyframes(
   AddInterpolation(keyframe_a.CreateInterpolation(property, keyframe_b),
                    &keyframe_a.Easing(), keyframe_a.Offset(),
                    keyframe_b.Offset(), apply_from, apply_to);
-}
-
-void InterpolationEffect::Trace(Visitor* visitor) {
-  visitor->Trace(interpolations_);
 }
 
 }  // namespace blink
