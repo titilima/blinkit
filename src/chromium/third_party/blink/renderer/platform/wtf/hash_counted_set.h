@@ -24,6 +24,9 @@ class HashCountedSet
 public:
     bool IsEmpty(void) const { return m_impl.empty(); }
 
+    auto begin(void) { return m_impl.begin(); }
+    auto end(void) { return m_impl.end(); }
+
     struct AddResult {
         bool is_new_entry;
     };
