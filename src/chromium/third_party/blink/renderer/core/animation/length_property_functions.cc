@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: length_property_functions.cc
+// Description: LengthPropertyFunctions Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -129,12 +140,6 @@ bool LengthPropertyFunctions::GetLength(const CSSProperty& property,
     case CSSPropertyBottom:
       result = style.Bottom();
       return true;
-    case CSSPropertyCx:
-      result = style.SvgStyle().Cx();
-      return true;
-    case CSSPropertyCy:
-      result = style.SvgStyle().Cy();
-      return true;
     case CSSPropertyFlexBasis:
       result = style.FlexBasis();
       return true;
@@ -183,23 +188,11 @@ bool LengthPropertyFunctions::GetLength(const CSSProperty& property,
     case CSSPropertyPaddingTop:
       result = style.PaddingTop();
       return true;
-    case CSSPropertyR:
-      result = style.SvgStyle().R();
-      return true;
     case CSSPropertyRight:
       result = style.Right();
       return true;
-    case CSSPropertyRx:
-      result = style.SvgStyle().Rx();
-      return true;
-    case CSSPropertyRy:
-      result = style.SvgStyle().Ry();
-      return true;
     case CSSPropertyShapeMargin:
       result = style.ShapeMargin();
-      return true;
-    case CSSPropertyStrokeDashoffset:
-      result = style.StrokeDashOffset();
       return true;
     case CSSPropertyTextIndent:
       result = style.TextIndent();
@@ -221,12 +214,6 @@ bool LengthPropertyFunctions::GetLength(const CSSProperty& property,
       return true;
     case CSSPropertyWidth:
       result = style.Width();
-      return true;
-    case CSSPropertyX:
-      result = style.SvgStyle().X();
-      return true;
-    case CSSPropertyY:
-      result = style.SvgStyle().Y();
       return true;
 
     case CSSPropertyBorderBottomWidth:
@@ -276,11 +263,6 @@ bool LengthPropertyFunctions::GetLength(const CSSProperty& property,
       result = Length(style.WordSpacing(), kFixed);
       return true;
 
-    case CSSPropertyBaselineShift:
-      if (style.BaselineShift() != BS_LENGTH)
-        return false;
-      result = style.BaselineShiftValue();
-      return true;
     case CSSPropertyLineHeight:
       // Percent Lengths are used to represent numbers on line-height.
       if (style.SpecifiedLineHeight().IsPercentOrCalc())
@@ -291,10 +273,6 @@ bool LengthPropertyFunctions::GetLength(const CSSProperty& property,
       if (!style.HasPerspective())
         return false;
       result = Length(style.Perspective(), kFixed);
-      return true;
-    case CSSPropertyStrokeWidth:
-      DCHECK(!IsZoomedLength(CSSProperty::Get(CSSPropertyStrokeWidth)));
-      result = style.StrokeWidth().length();
       return true;
     case CSSPropertyVerticalAlign:
       if (style.VerticalAlign() != EVerticalAlign::kLength)
@@ -316,17 +294,8 @@ bool LengthPropertyFunctions::SetLength(const CSSProperty& property,
                                         const Length& value) {
   switch (property.PropertyID()) {
     // Setters that take a Length value.
-    case CSSPropertyBaselineShift:
-      style.SetBaselineShiftValue(value);
-      return true;
     case CSSPropertyBottom:
       style.SetBottom(value);
-      return true;
-    case CSSPropertyCx:
-      style.SetCx(value);
-      return true;
-    case CSSPropertyCy:
-      style.SetCy(value);
       return true;
     case CSSPropertyFlexBasis:
       style.SetFlexBasis(value);
@@ -376,23 +345,11 @@ bool LengthPropertyFunctions::SetLength(const CSSProperty& property,
     case CSSPropertyPaddingTop:
       style.SetPaddingTop(value);
       return true;
-    case CSSPropertyR:
-      style.SetR(value);
-      return true;
-    case CSSPropertyRx:
-      style.SetRx(value);
-      return true;
-    case CSSPropertyRy:
-      style.SetRy(value);
-      return true;
     case CSSPropertyRight:
       style.SetRight(value);
       return true;
     case CSSPropertyShapeMargin:
       style.SetShapeMargin(value);
-      return true;
-    case CSSPropertyStrokeDashoffset:
-      style.SetStrokeDashOffset(value);
       return true;
     case CSSPropertyTop:
       style.SetTop(value);
@@ -411,12 +368,6 @@ bool LengthPropertyFunctions::SetLength(const CSSProperty& property,
       return true;
     case CSSPropertyWebkitTransformOriginY:
       style.SetTransformOriginY(value);
-      return true;
-    case CSSPropertyX:
-      style.SetX(value);
-      return true;
-    case CSSPropertyY:
-      style.SetY(value);
       return true;
 
     case CSSPropertyLineHeight:
