@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: path_interpolation_functions.cc
+// Description: PathInterpolationFunctions Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,17 +19,18 @@
 #include <utility>
 
 #include "base/memory/ptr_util.h"
-#include "third_party/blink/renderer/core/animation/interpolated_svg_path_source.h"
+// BKTODO: #include "third_party/blink/renderer/core/animation/interpolated_svg_path_source.h"
 #include "third_party/blink/renderer/core/animation/interpolation_environment.h"
-#include "third_party/blink/renderer/core/animation/svg_path_seg_interpolation_functions.h"
+// BKTODO: #include "third_party/blink/renderer/core/animation/svg_path_seg_interpolation_functions.h"
 #include "third_party/blink/renderer/core/css/css_path_value.h"
-#include "third_party/blink/renderer/core/svg/svg_path.h"
-#include "third_party/blink/renderer/core/svg/svg_path_byte_stream_builder.h"
-#include "third_party/blink/renderer/core/svg/svg_path_byte_stream_source.h"
-#include "third_party/blink/renderer/core/svg/svg_path_parser.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_path.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_path_byte_stream_builder.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_path_byte_stream_source.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_path_parser.h"
 
 namespace blink {
 
+#if 0 // BKTODO:
 class SVGPathNonInterpolableValue : public NonInterpolableValue {
  public:
   ~SVGPathNonInterpolableValue() override = default;
@@ -42,6 +54,7 @@ class SVGPathNonInterpolableValue : public NonInterpolableValue {
 
 DEFINE_NON_INTERPOLABLE_VALUE_TYPE(SVGPathNonInterpolableValue);
 DEFINE_NON_INTERPOLABLE_VALUE_TYPE_CASTS(SVGPathNonInterpolableValue);
+#endif
 
 enum PathComponentIndex : unsigned {
   kPathArgsIndex,
@@ -49,6 +62,7 @@ enum PathComponentIndex : unsigned {
   kPathComponentIndexCount,
 };
 
+#if 0 // BKTODO:
 InterpolationValue PathInterpolationFunctions::ConvertValue(
     const SVGPathByteStream& byte_stream,
     CoordinateConversion coordinateConversion) {
@@ -83,17 +97,23 @@ InterpolationValue PathInterpolationFunctions::ConvertValue(
   return InterpolationValue(
       std::move(result), SVGPathNonInterpolableValue::Create(path_seg_types));
 }
+#endif
 
 InterpolationValue PathInterpolationFunctions::ConvertValue(
     const StylePath* style_path,
     CoordinateConversion coordinateConversion) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (style_path)
     return ConvertValue(style_path->ByteStream(), coordinateConversion);
 
   std::unique_ptr<SVGPathByteStream> empty_path = SVGPathByteStream::Create();
   return ConvertValue(*empty_path, ForceAbsolute);
+#endif
 }
 
+#if 0 // BKTODO:
 class UnderlyingPathSegTypesChecker
     : public InterpolationType::ConversionChecker {
  public:
@@ -122,10 +142,14 @@ class UnderlyingPathSegTypesChecker
 
   Vector<SVGPathSegType> path_seg_types_;
 };
+#endif
 
 InterpolationValue PathInterpolationFunctions::MaybeConvertNeutral(
     const InterpolationValue& underlying,
     InterpolationType::ConversionCheckers& conversion_checkers) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   conversion_checkers.push_back(
       UnderlyingPathSegTypesChecker::Create(underlying));
   std::unique_ptr<InterpolableList> result =
@@ -136,8 +160,10 @@ InterpolationValue PathInterpolationFunctions::MaybeConvertNeutral(
   result->Set(kPathNeutralIndex, InterpolableNumber::Create(1));
   return InterpolationValue(std::move(result),
                             underlying.non_interpolable_value.get());
+#endif
 }
 
+#if 0 // BKTODO:
 static bool PathSegTypesMatch(const Vector<SVGPathSegType>& a,
                               const Vector<SVGPathSegType>& b) {
   if (a.size() != b.size())
@@ -150,10 +176,14 @@ static bool PathSegTypesMatch(const Vector<SVGPathSegType>& a,
 
   return true;
 }
+#endif
 
 PairwiseInterpolationValue PathInterpolationFunctions::MaybeMergeSingles(
     InterpolationValue&& start,
     InterpolationValue&& end) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   const Vector<SVGPathSegType>& start_types =
       ToSVGPathNonInterpolableValue(*start.non_interpolable_value)
           .PathSegTypes();
@@ -165,6 +195,7 @@ PairwiseInterpolationValue PathInterpolationFunctions::MaybeMergeSingles(
   return PairwiseInterpolationValue(std::move(start.interpolable_value),
                                     std::move(end.interpolable_value),
                                     std::move(end.non_interpolable_value));
+#endif
 }
 
 void PathInterpolationFunctions::Composite(
@@ -181,6 +212,8 @@ void PathInterpolationFunctions::Composite(
     return;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(PathSegTypesMatch(
       ToSVGPathNonInterpolableValue(
           *underlying_value_owner.Value().non_interpolable_value)
@@ -191,8 +224,10 @@ void PathInterpolationFunctions::Composite(
       neutral_component, *value.interpolable_value);
   underlying_value_owner.MutableValue().non_interpolable_value =
       value.non_interpolable_value.get();
+#endif
 }
 
+#if 0 // BKTODO:
 std::unique_ptr<SVGPathByteStream> PathInterpolationFunctions::AppliedValue(
     const InterpolableValue& interpolable_value,
     const NonInterpolableValue* non_interpolable_value) {
@@ -206,5 +241,6 @@ std::unique_ptr<SVGPathByteStream> PathInterpolationFunctions::AppliedValue(
   SVGPathParser::ParsePath(source, builder);
   return path_byte_stream;
 }
+#endif
 
 }  // namespace blink
