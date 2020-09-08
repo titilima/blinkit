@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: shadow_interpolation_functions.cc
+// Description: ShadowInterpolationFunctions Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -114,7 +125,7 @@ InterpolationValue ShadowInterpolationFunctions::MaybeConvertCSSValue(
   const CSSPrimitiveValue* lengths[] = {
       shadow.x.Get(), shadow.y.Get(), shadow.blur.Get(), shadow.spread.Get(),
   };
-  for (wtf_size_t i = 0; i < base::size(lengths); i++) {
+  for (wtf_size_t i = 0; i < std::size(lengths); i++) {
     if (lengths[i]) {
       InterpolationValue length_field =
           LengthInterpolationFunctions::MaybeConvertCSSValue(*lengths[i]);
