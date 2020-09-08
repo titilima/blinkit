@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: pending_animations.cc
+// Description: PendingAnimations Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -41,6 +52,8 @@ namespace blink {
 
 void PendingAnimations::Add(Animation* animation) {
   DCHECK(animation);
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK_EQ(pending_.Find(animation), kNotFound);
   pending_.push_back(animation);
 
@@ -52,6 +65,7 @@ void PendingAnimations::Add(Animation* animation) {
   if (!visible && !timer_.IsActive()) {
     timer_.StartOneShot(TimeDelta(), FROM_HERE);
   }
+#endif
 }
 
 bool PendingAnimations::Update(
