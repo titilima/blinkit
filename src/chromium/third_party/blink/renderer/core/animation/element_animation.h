@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: element_animation.h
+// Description: ElementAnimation Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,7 +42,6 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_ANIMATION_ELEMENT_ANIMATION_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_ANIMATION_ELEMENT_ANIMATION_H_
 
-#include "third_party/blink/renderer/bindings/core/v8/unrestricted_double_or_keyframe_animation_options.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/platform/heap/heap_allocator.h"
 #include "third_party/blink/renderer/platform/heap/member.h"
@@ -52,6 +62,7 @@ class CORE_EXPORT ElementAnimation {
   STATIC_ONLY(ElementAnimation);
 
  public:
+#if 0 // BKTODO:
   static Animation* animate(ScriptState*,
                             Element&,
                             const ScriptValue&,
@@ -62,6 +73,7 @@ class CORE_EXPORT ElementAnimation {
                             Element&,
                             const ScriptValue&,
                             ExceptionState&);
+#endif
 
   static HeapVector<Member<Animation>> getAnimations(Element&);
 
