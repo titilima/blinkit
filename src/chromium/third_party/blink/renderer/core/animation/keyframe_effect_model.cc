@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: keyframe_effect_model.cc
+// Description: KeyframeEffectModel Classes
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -65,7 +76,10 @@ void KeyframeEffectModelBase::SetFrames(HeapVector<K>& keyframes) {
   keyframe_groups_ = nullptr;
   interpolation_effect_->Clear();
   last_fraction_ = std::numeric_limits<double>::quiet_NaN();
+  ASSERT(false); // BKTODO:
+#if 0
   keyframes_.AppendVector(keyframes);
+#endif
   needs_compositor_keyframes_snapshot_ = true;
 }
 
@@ -303,6 +317,8 @@ void KeyframeEffectModelBase::EnsureKeyframeGroups() const {
 
     for (const PropertyHandle& property : keyframe->Properties()) {
       KeyframeGroupMap::iterator group_iter = keyframe_groups_->find(property);
+      ASSERT(false); // BKTODO:
+#if 0
       PropertySpecificKeyframeGroup* group;
       if (group_iter == keyframe_groups_->end()) {
         group = keyframe_groups_
@@ -314,23 +330,29 @@ void KeyframeEffectModelBase::EnsureKeyframeGroups() const {
 
       group->AppendKeyframe(keyframe->CreatePropertySpecificKeyframe(
           property, composite_, computed_offset));
+#endif
     }
   }
 
   // Add synthetic keyframes.
   has_synthetic_keyframes_ = false;
+  ASSERT(false); // BKTODO:
+#if 0
   for (const auto& entry : *keyframe_groups_) {
     if (entry.value->AddSyntheticKeyframeIfRequired(zero_offset_easing))
       has_synthetic_keyframes_ = true;
 
     entry.value->RemoveRedundantKeyframes();
   }
+#endif
 }
 
 void KeyframeEffectModelBase::EnsureInterpolationEffectPopulated() const {
   if (interpolation_effect_->IsPopulated())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   for (const auto& entry : *keyframe_groups_) {
     const PropertySpecificKeyframeVector& keyframes = entry.value->Keyframes();
     for (wtf_size_t i = 0; i < keyframes.size() - 1; i++) {
@@ -366,18 +388,22 @@ void KeyframeEffectModelBase::EnsureInterpolationEffectPopulated() const {
       // else the interpolation will never be used in sampling
     }
   }
+#endif
 
   interpolation_effect_->SetPopulated();
 }
 
 bool KeyframeEffectModelBase::IsReplaceOnly() const {
   EnsureKeyframeGroups();
+  ASSERT(false); // BKTODO:
+#if 0
   for (const auto& entry : *keyframe_groups_) {
     for (const auto& keyframe : entry.value->Keyframes()) {
       if (keyframe->Composite() != EffectModel::kCompositeReplace)
         return false;
     }
   }
+#endif
   return true;
 }
 
@@ -416,8 +442,11 @@ bool KeyframeEffectModelBase::PropertySpecificKeyframeGroup::
   bool added_synthetic_keyframe = false;
 
   if (keyframes_.front()->Offset() != 0.0) {
+    ASSERT(false); // BKTODO:
+#if 0
     keyframes_.insert(0, keyframes_.front()->NeutralKeyframe(
                              0, std::move(zero_offset_easing)));
+#endif
     added_synthetic_keyframe = true;
   }
   if (keyframes_.back()->Offset() != 1.0) {

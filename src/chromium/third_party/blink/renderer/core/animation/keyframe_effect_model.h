@@ -2,7 +2,7 @@
 // BlinKit - blink Library
 // -------------------------------------------------
 //   File Name: keyframe_effect_model.h
-// Description: KeyframeEffectModelBase Class
+// Description: KeyframeEffectModel Classes
 //      Author: Ziming Li
 //     Created: 2020-08-29
 // -------------------------------------------------
