@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: effect_stack.cc
+// Description: EffectStack Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -48,18 +59,17 @@ void CopyToActiveInterpolationsMap(
     PropertyHandle property = interpolation->GetProperty();
     if (property_handle_filter && !property_handle_filter(property))
       continue;
-    ActiveInterpolationsMap::AddResult entry =
-        target.insert(property, ActiveInterpolations(1));
-    ActiveInterpolations& active_interpolations = entry.stored_value->value;
-    if (!entry.is_new_entry &&
+    auto it = target.find(property);
+    if (std::end(target) != it &&
         (RuntimeEnabledFeatures::StackedCSSPropertyAnimationsEnabled() ||
          !property.IsCSSProperty() || property.IsPresentationAttribute()) &&
         interpolation->IsInvalidatableInterpolation() &&
         ToInvalidatableInterpolation(*interpolation)
             .DependsOnUnderlyingValue()) {
-      active_interpolations.push_back(interpolation);
+      it->second.push_back(interpolation);
     } else {
-      active_interpolations.at(0) = interpolation;
+      auto r = target.insert(std::make_pair(property, ActiveInterpolations(1)));
+      r.first->second.push_back(interpolation);
     }
   }
 }

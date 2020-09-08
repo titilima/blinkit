@@ -247,6 +247,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\inert_effect.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\interpolable_value.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\interpolation_effect.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\invalidatable_interpolation.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\keyframe.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\keyframe_effect.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\keyframe_effect_model.cc" />
@@ -936,9 +937,11 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\interpolation_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\interpolation_types_map.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\interpolation_value.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\invalidatable_interpolation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\keyframe.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\keyframe_effect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\keyframe_effect_model.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\keyframe_effect_options.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\length_interpolation_functions.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\length_list_property_functions.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\length_property_functions.h" />
