@@ -1,11 +1,20 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: timing_input.cc
+// Description: TimingInput Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/core/animation/timing_input.h"
 
-#include "third_party/blink/renderer/bindings/core/v8/unrestricted_double_or_keyframe_animation_options.h"
-#include "third_party/blink/renderer/bindings/core/v8/unrestricted_double_or_keyframe_effect_options.h"
 #include "third_party/blink/renderer/core/animation/animation_effect.h"
 #include "third_party/blink/renderer/core/animation/animation_input_helpers.h"
 #include "third_party/blink/renderer/core/animation/effect_timing.h"
@@ -39,6 +48,7 @@ Timing::PlaybackDirection ConvertPlaybackDirection(const String& direction) {
   return Timing::PlaybackDirection::NORMAL;
 }
 
+#if 0 // BKTODO:
 base::Optional<AnimationTimeDelta> ConvertIterationDuration(
     const UnrestrictedDoubleOrString& duration) {
   if (duration.IsUnrestrictedDouble()) {
@@ -47,6 +57,7 @@ base::Optional<AnimationTimeDelta> ConvertIterationDuration(
   }
   return base::nullopt;
 }
+#endif
 
 Timing ConvertEffectTiming(const EffectTiming& timing_input,
                            Document* document,
@@ -74,6 +85,9 @@ Timing TimingInput::Convert(
     const UnrestrictedDoubleOrKeyframeEffectOptions& options,
     Document* document,
     ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+  return Timing::Defaults();
+#if 0
   if (options.IsNull()) {
     return Timing::Defaults();
   }
@@ -93,12 +107,16 @@ Timing TimingInput::Convert(
   timing_input.setDuration(UnrestrictedDoubleOrString::FromUnrestrictedDouble(
       options.GetAsUnrestrictedDouble()));
   return ConvertEffectTiming(timing_input, document, exception_state);
+#endif
 }
 
 Timing TimingInput::Convert(
     const UnrestrictedDoubleOrKeyframeAnimationOptions& options,
     Document* document,
     ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+  return Timing::Defaults();
+#if 0
   if (options.IsNull()) {
     return Timing::Defaults();
   }
@@ -118,6 +136,7 @@ Timing TimingInput::Convert(
   timing_input.setDuration(UnrestrictedDoubleOrString::FromUnrestrictedDouble(
       options.GetAsUnrestrictedDouble()));
   return ConvertEffectTiming(timing_input, document, exception_state);
+#endif
 }
 
 template <class InputTiming>
@@ -125,6 +144,9 @@ bool TimingInput::Update(Timing& timing,
                          const InputTiming& input,
                          Document* document,
                          ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // 1. If the iterationStart member of input is present and less than zero,
   // throw a TypeError and abort this procedure.
   if (input.hasIterationStart() && input.iterationStart() < 0) {
@@ -211,6 +233,7 @@ bool TimingInput::Update(Timing& timing,
   }
 
   return changed;
+#endif
 }
 
 // Export the OptionalEffectTiming version for AnimationEffect::updateTiming.
