@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: keyframe_effect.cc
+// Description: KeyframeEffect Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -30,8 +41,6 @@
 
 #include "third_party/blink/renderer/core/animation/keyframe_effect.h"
 
-#include "third_party/blink/renderer/bindings/core/v8/unrestricted_double_or_keyframe_effect_options.h"
-#include "third_party/blink/renderer/bindings/core/v8/v8_object_builder.h"
 #include "third_party/blink/renderer/core/animation/effect_input.h"
 #include "third_party/blink/renderer/core/animation/element_animations.h"
 #include "third_party/blink/renderer/core/animation/keyframe_effect_options.h"
@@ -42,7 +51,6 @@
 #include "third_party/blink/renderer/core/frame/use_counter.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
-#include "third_party/blink/renderer/core/svg/svg_element.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 
@@ -56,6 +64,7 @@ KeyframeEffect* KeyframeEffect::Create(Element* target,
   return new KeyframeEffect(target, model, timing, priority, event_delegate);
 }
 
+#if 0 // BKTODO:
 KeyframeEffect* KeyframeEffect::Create(
     ScriptState* script_state,
     Element* element,
@@ -113,6 +122,7 @@ KeyframeEffect* KeyframeEffect::Create(ScriptState* script_state,
   return new KeyframeEffect(source->target(), model, new_timing,
                             source->GetPriority(), source->GetEventDelegate());
 }
+#endif
 
 KeyframeEffect::KeyframeEffect(Element* target,
                                KeyframeEffectModelBase* model,
@@ -149,6 +159,7 @@ void KeyframeEffect::setComposite(String composite_string) {
       EffectModel::StringToCompositeOperation(composite_string).value());
 }
 
+#if 0 // BKTODO:
 Vector<ScriptValue> KeyframeEffect::getKeyframes(ScriptState* script_state) {
   Vector<ScriptValue> computed_keyframes;
   if (!model_->HasFrames())
@@ -194,6 +205,7 @@ void KeyframeEffect::setKeyframes(ScriptState* script_state,
 
   SetKeyframes(new_keyframes);
 }
+#endif
 
 void KeyframeEffect::SetKeyframes(StringKeyframeVector keyframes) {
   Model()->SetComposite(
@@ -333,13 +345,6 @@ bool KeyframeEffect::HasPlayingAnimation() const {
   return owner_ && owner_->Playing();
 }
 
-void KeyframeEffect::Trace(blink::Visitor* visitor) {
-  visitor->Trace(target_);
-  visitor->Trace(model_);
-  visitor->Trace(sampled_effect_);
-  AnimationEffect::Trace(visitor);
-}
-
 EffectModel::CompositeOperation KeyframeEffect::CompositeInternal() const {
   return model_->Composite();
 }
@@ -369,7 +374,10 @@ void KeyframeEffect::ApplyEffects() {
           SampledEffect::Create(this, owner_->SequenceNumber());
       sampled_effect->MutableInterpolations().swap(interpolations);
       sampled_effect_ = sampled_effect;
+      ASSERT(false); // BKTODO:
+#if 0
       target_->EnsureElementAnimations().GetEffectStack().Add(sampled_effect);
+#endif
       changed = true;
     } else {
       return;
@@ -377,10 +385,10 @@ void KeyframeEffect::ApplyEffects() {
   }
 
   if (changed) {
+    ASSERT(false); // BKTODO:
+#if 0
     target_->SetNeedsAnimationStyleRecalc();
-    if (RuntimeEnabledFeatures::WebAnimationsSVGEnabled() &&
-        target_->IsSVGElement())
-      ToSVGElement(*target_).SetWebAnimationsPending();
+#endif
   }
 }
 
@@ -391,10 +399,10 @@ void KeyframeEffect::ClearEffects() {
   sampled_effect_ = nullptr;
   if (GetAnimation())
     GetAnimation()->RestartAnimationOnCompositor();
+  ASSERT(false); // BKTODO:
+#if 0
   target_->SetNeedsAnimationStyleRecalc();
-  if (RuntimeEnabledFeatures::WebAnimationsSVGEnabled() &&
-      target_->IsSVGElement())
-    ToSVGElement(*target_).ClearWebAnimatedAttributes();
+#endif
   Invalidate();
 }
 
@@ -421,16 +429,19 @@ void KeyframeEffect::Detach() {
 void KeyframeEffect::AttachTarget(Animation* animation) {
   if (!target_ || !animation)
     return;
+  ASSERT(false); // BKTODO:
+#if 0
   target_->EnsureElementAnimations().Animations().insert(animation);
   target_->SetNeedsAnimationStyleRecalc();
-  if (RuntimeEnabledFeatures::WebAnimationsSVGEnabled() &&
-      target_->IsSVGElement())
-    ToSVGElement(target_)->SetWebAnimationsPending();
+#endif
 }
 
 void KeyframeEffect::DetachTarget(Animation* animation) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (target_ && animation)
     target_->GetElementAnimations()->Animations().erase(animation);
+#endif
   // If we have sampled this effect previously, we need to purge that state.
   // ClearEffects takes care of clearing the cached sampled effect, informing
   // the target that it needs to refresh its style, and doing any necessary
