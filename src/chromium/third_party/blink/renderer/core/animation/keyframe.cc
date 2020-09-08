@@ -1,10 +1,20 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: keyframe.cc
+// Description: Keyframe Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/core/animation/keyframe.h"
 
-#include "third_party/blink/renderer/bindings/core/v8/v8_object_builder.h"
 #include "third_party/blink/renderer/core/animation/effect_model.h"
 #include "third_party/blink/renderer/core/animation/invalidatable_interpolation.h"
 
@@ -31,6 +41,8 @@ Interpolation* Keyframe::PropertySpecificKeyframe::CreateInterpolation(
 
 void Keyframe::AddKeyframePropertiesToV8Object(
     V8ObjectBuilder& object_builder) const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (offset_) {
     object_builder.Add("offset", offset_.value());
   } else {
@@ -39,6 +51,7 @@ void Keyframe::AddKeyframePropertiesToV8Object(
   object_builder.Add("easing", easing_->ToString());
   object_builder.AddString("composite",
                            EffectModel::CompositeOperationToString(composite_));
+#endif
 }
 
 }  // namespace blink
