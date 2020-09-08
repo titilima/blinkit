@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: element_animations.cc
+// Description: ElementAnimations Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -84,7 +95,7 @@ ElementAnimations::~ElementAnimations() = default;
 
 void ElementAnimations::UpdateAnimationFlags(ComputedStyle& style) {
   for (const auto& entry : animations_) {
-    const Animation& animation = *entry.key;
+    const Animation& animation = *entry.first;
     DCHECK(animation.effect());
     // FIXME: Needs to consider AnimationGroup once added.
     DCHECK(animation.effect()->IsKeyframeEffect());
@@ -126,7 +137,7 @@ void ElementAnimations::UpdateAnimationFlags(ComputedStyle& style) {
 
 void ElementAnimations::RestartAnimationOnCompositor() {
   for (const auto& entry : animations_)
-    entry.key->RestartAnimationOnCompositor();
+    entry.first->RestartAnimationOnCompositor();
 }
 
 void ElementAnimations::Trace(blink::Visitor* visitor) {
