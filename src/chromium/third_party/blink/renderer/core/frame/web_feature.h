@@ -27,6 +27,7 @@ enum class WebFeature {
     kHasIDClassTagAttribute,
     kHTMLParseErrorNestedForm,
     kPseudoShadowInStaticProfile,
+    kSyntheticKeyframesInCompositedCSSAnimation,
 };
 
 } // namespace blink
