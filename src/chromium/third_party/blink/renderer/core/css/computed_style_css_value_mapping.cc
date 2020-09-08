@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: computed_style_css_value_mapping.cc
+// Description: ComputedStyleCSSValueMapping Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004 Zack Rusin <zack@kde.org>
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple Inc.
@@ -68,8 +79,11 @@ ComputedStyleCSSValueMapping::GetVariables(const ComputedStyle& style,
     for (const auto& name : inherited->GetCustomPropertyNames()) {
       const CSSValue* value =
           ComputedStyleCSSValueMapping::Get(name, style, registry);
+      ASSERT(false); // BKTODO:
+#if 0
       if (value)
         variables.Set(name, value);
+#endif
     }
   }
 
@@ -79,8 +93,11 @@ ComputedStyleCSSValueMapping::GetVariables(const ComputedStyle& style,
     for (const auto& name : non_inherited->GetCustomPropertyNames()) {
       const CSSValue* value =
           ComputedStyleCSSValueMapping::Get(name, style, registry);
+      ASSERT(false); // BKTODO:
+#if 0
       if (value)
         variables.Set(name, value);
+#endif
     }
   }
 
@@ -92,11 +109,14 @@ ComputedStyleCSSValueMapping::GetVariables(const ComputedStyle& style,
   // iterate though all registrations and add the initial values, if necessary.
   if (registry) {
     for (const auto& entry : *registry) {
-      if (variables.Contains(entry.key))
+      if (variables.Contains(entry.first))
         continue;
-      const CSSValue* initial = entry.value->Initial();
+      const CSSValue* initial = entry.second->Initial();
+      ASSERT(false); // BKTODO:
+#if 0
       if (initial)
         variables.Set(entry.key, initial);
+#endif
     }
   }
 

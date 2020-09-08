@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: basic_shape_functions.cc
+// Description: Basic Shape Functions
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Adobe Systems Incorporated. All rights reserved.
  *
@@ -129,7 +140,11 @@ CSSValue* ValueForBasicShape(const ComputedStyle& style,
     }
 
     case BasicShape::kStylePathType:
+      ASSERT(false); // BKTODO:
+      return nullptr;
+#if 0
       return ToStylePath(basic_shape)->ComputedCSSValue();
+#endif
 
     case BasicShape::kBasicShapeCircleType: {
       const BasicShapeCircle* circle = ToBasicShapeCircle(basic_shape);
