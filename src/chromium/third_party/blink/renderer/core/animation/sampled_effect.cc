@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: sampled_effect.cc
+// Description: SampledEffect Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -24,12 +35,13 @@ bool SampledEffect::WillNeverChange() const {
 
 void SampledEffect::RemoveReplacedInterpolations(
     const HashSet<PropertyHandle>& replaced_properties) {
-  auto* new_end = std::remove_if(
+  auto new_end = std::remove_if(
       interpolations_.begin(), interpolations_.end(),
       [&](const auto& interpolation) {
         return replaced_properties.Contains(interpolation->GetProperty());
       });
-  interpolations_.Shrink(new_end - interpolations_.begin());
+  interpolations_.erase(new_end, interpolations_.end());
+  interpolations_.shrink_to_fit();
 }
 
 void SampledEffect::UpdateReplacedProperties(
