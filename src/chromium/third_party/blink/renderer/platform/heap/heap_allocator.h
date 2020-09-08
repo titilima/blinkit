@@ -17,6 +17,7 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
+#include "third_party/blink/renderer/platform/heap/heap.h"
 #include "third_party/blink/renderer/platform/wtf/hash_counted_set.h"
 #include "third_party/blink/renderer/platform/wtf/wtf_size_t.h"
 
