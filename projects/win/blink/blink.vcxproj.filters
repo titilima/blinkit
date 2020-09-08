@@ -2186,6 +2186,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\invalidatable_interpolation.cc">
       <Filter>renderer\core\animation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\filter_operation_resolver.cc">
+      <Filter>renderer\core\css\resolver</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -5052,6 +5055,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\animation\invalidatable_interpolation.h">
       <Filter>renderer\core\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\filter_operation_resolver.h">
+      <Filter>renderer\core\css\resolver</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

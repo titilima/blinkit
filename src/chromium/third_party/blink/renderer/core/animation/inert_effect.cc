@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: inert_effect.cc
+// Description: InertEffect Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -65,11 +76,6 @@ void InertEffect::Sample(HeapVector<Member<Interpolation>>& result) const {
 
 double InertEffect::CalculateTimeToEffectChange(bool, double, double) const {
   return std::numeric_limits<double>::infinity();
-}
-
-void InertEffect::Trace(blink::Visitor* visitor) {
-  visitor->Trace(model_);
-  AnimationEffect::Trace(visitor);
 }
 
 }  // namespace blink

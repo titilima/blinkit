@@ -195,6 +195,8 @@ class CORE_EXPORT AnimationEffect : public ScriptWrappable {
   String name_;
 
   const CalculatedTiming& EnsureCalculated() const;
+ private:
+  GCType GetGCType(void) const final { return GC_MANUAL; }
 };
 
 }  // namespace blink
