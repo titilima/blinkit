@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: length_list_property_functions.cc
+// Description: LengthListPropertyFunctions Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -134,8 +145,11 @@ bool LengthListPropertyFunctions::GetLengthList(const CSSProperty& property,
 
   switch (property.PropertyID()) {
     case CSSPropertyStrokeDasharray: {
+      ASSERT(false); // BKTODO:
+#if 0
       if (style.StrokeDashArray())
         result.AppendVector(style.StrokeDashArray()->GetVector());
+#endif
       return true;
     }
 
@@ -205,10 +219,13 @@ void LengthListPropertyFunctions::SetLengthList(const CSSProperty& property,
                                                 Vector<Length>&& length_list) {
   switch (property.PropertyID()) {
     case CSSPropertyStrokeDasharray:
+      ASSERT(false); // BKTODO:
+#if 0
       style.SetStrokeDashArray(
           length_list.IsEmpty()
               ? nullptr
               : RefVector<Length>::Create(std::move(length_list)));
+#endif
       return;
 
     case CSSPropertyObjectPosition:
