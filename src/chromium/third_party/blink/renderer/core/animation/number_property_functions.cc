@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: number_property_functions.cc
+// Description: NumberPropertyFunctions Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -17,14 +28,10 @@ base::Optional<double> NumberPropertyFunctions::GetNumber(
     const CSSProperty& property,
     const ComputedStyle& style) {
   switch (property.PropertyID()) {
-    case CSSPropertyFillOpacity:
-      return style.FillOpacity();
     case CSSPropertyFlexGrow:
       return style.FlexGrow();
     case CSSPropertyFlexShrink:
       return style.FlexShrink();
-    case CSSPropertyFloodOpacity:
-      return style.FloodOpacity();
     case CSSPropertyOpacity:
       return style.Opacity();
     case CSSPropertyOrder:
@@ -33,12 +40,6 @@ base::Optional<double> NumberPropertyFunctions::GetNumber(
       return style.Orphans();
     case CSSPropertyShapeImageThreshold:
       return style.ShapeImageThreshold();
-    case CSSPropertyStopOpacity:
-      return style.StopOpacity();
-    case CSSPropertyStrokeMiterlimit:
-      return style.StrokeMiterLimit();
-    case CSSPropertyStrokeOpacity:
-      return style.StrokeOpacity();
     case CSSPropertyWidows:
       return style.Widows();
 
@@ -127,17 +128,11 @@ bool NumberPropertyFunctions::SetNumber(const CSSProperty& property,
                                         double value) {
   DCHECK_EQ(value, ClampNumber(property, value));
   switch (property.PropertyID()) {
-    case CSSPropertyFillOpacity:
-      style.SetFillOpacity(value);
-      return true;
     case CSSPropertyFlexGrow:
       style.SetFlexGrow(value);
       return true;
     case CSSPropertyFlexShrink:
       style.SetFlexShrink(value);
-      return true;
-    case CSSPropertyFloodOpacity:
-      style.SetFloodOpacity(value);
       return true;
     case CSSPropertyLineHeight:
       style.SetLineHeight(Length(value * 100, kPercent));
@@ -153,15 +148,6 @@ bool NumberPropertyFunctions::SetNumber(const CSSProperty& property,
       return true;
     case CSSPropertyShapeImageThreshold:
       style.SetShapeImageThreshold(value);
-      return true;
-    case CSSPropertyStopOpacity:
-      style.SetStopOpacity(value);
-      return true;
-    case CSSPropertyStrokeMiterlimit:
-      style.SetStrokeMiterLimit(value);
-      return true;
-    case CSSPropertyStrokeOpacity:
-      style.SetStrokeOpacity(value);
       return true;
     case CSSPropertyColumnCount:
       style.SetColumnCount(value);
