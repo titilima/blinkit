@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: generated_image.h
+// Description: GeneratedImage Class
+//      Author: Ziming Li
+//     Created: 2020-09-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Computer, Inc.  All rights reserved.
  *
@@ -44,7 +55,9 @@ class PLATFORM_EXPORT GeneratedImage : public Image {
   // Assume that generated content has no decoded data we need to worry about
   void DestroyDecodedData() override {}
 
+#if 0 // BKTODO:
   PaintImage PaintImageForCurrentFrame() override;
+#endif
 
  protected:
   void DrawPattern(GraphicsContext&,

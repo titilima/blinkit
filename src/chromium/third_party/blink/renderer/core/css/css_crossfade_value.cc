@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_crossfade_value.cc
+// Description: CSSCrossfadeValue Class
+//      Author: Ziming Li
+//     Created: 2020-09-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc.  All rights reserved.
  *
@@ -28,7 +39,7 @@
 #include "third_party/blink/renderer/core/css/css_image_value.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 #include "third_party/blink/renderer/core/style/style_fetched_image.h"
-#include "third_party/blink/renderer/core/svg/graphics/svg_image_for_container.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/graphics/svg_image_for_container.h"
 #include "third_party/blink/renderer/platform/graphics/crossfade_generated_image.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
@@ -98,11 +109,11 @@ static Image* RenderableImageForCSSValue(CSSValue* value,
   return cached_image->GetImage();
 }
 
-static KURL UrlForCSSValue(const CSSValue& value) {
+static GURL UrlForCSSValue(const CSSValue& value) {
   if (!value.IsImageValue())
-    return KURL();
+    return GURL();
 
-  return KURL(ToCSSImageValue(value).Url());
+  return GURL(ToCSSImageValue(value).Url().StdUtf8());
 }
 
 CSSCrossfadeValue::CSSCrossfadeValue(CSSValue* from_value,
@@ -143,11 +154,16 @@ String CSSCrossfadeValue::CustomCSSText() const {
 
 CSSCrossfadeValue* CSSCrossfadeValue::ValueWithURLsMadeAbsolute() {
   CSSValue* from_value = from_value_;
+  ASSERT(false); // BKTODO:
+#if 0
   if (from_value_->IsImageValue())
     from_value = ToCSSImageValue(*from_value_).ValueWithURLMadeAbsolute();
+#endif
   CSSValue* to_value = to_value_;
+#if 0 // BKTODO:
   if (to_value_->IsImageValue())
     to_value = ToCSSImageValue(*to_value_).ValueWithURLMadeAbsolute();
+#endif
   return CSSCrossfadeValue::Create(from_value, to_value, percentage_value_);
 }
 
@@ -163,6 +179,8 @@ FloatSize CSSCrossfadeValue::FixedSize(
   FloatSize from_image_size(from_image->Size());
   FloatSize to_image_size(to_image->Size());
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (from_image->IsSVGImage()) {
     from_image_size =
         ToSVGImage(from_image)->ConcreteObjectSize(default_object_size);
@@ -172,6 +190,7 @@ FloatSize CSSCrossfadeValue::FixedSize(
     to_image_size =
         ToSVGImage(to_image)->ConcreteObjectSize(default_object_size);
   }
+#endif
 
   // Rounding issues can cause transitions between images of equal size to
   // return a different fixed size; avoid performing the interpolation if the
@@ -239,6 +258,8 @@ scoped_refptr<Image> CSSCrossfadeValue::GetImage(
   scoped_refptr<Image> from_image_ref(from_image);
   scoped_refptr<Image> to_image_ref(to_image);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (from_image->IsSVGImage()) {
     from_image_ref = SVGImageForContainer::Create(
         ToSVGImage(from_image), size, 1, UrlForCSSValue(*from_value_));
@@ -248,6 +269,7 @@ scoped_refptr<Image> CSSCrossfadeValue::GetImage(
     to_image_ref = SVGImageForContainer::Create(ToSVGImage(to_image), size, 1,
                                                 UrlForCSSValue(*to_value_));
   }
+#endif
 
   return CrossfadeGeneratedImage::Create(from_image_ref, to_image_ref,
                                          percentage_value_->GetFloatValue(),

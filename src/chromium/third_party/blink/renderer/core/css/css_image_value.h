@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_image_value.h
+// Description: CSSImageValue Class
+//      Author: Ziming Li
+//     Created: 2020-09-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2008, 2012 Apple Inc. All rights reserved.
@@ -26,37 +37,40 @@
 #include "third_party/blink/renderer/core/css/css_value.h"
 #include "third_party/blink/renderer/platform/cross_origin_attribute_value.h"
 #include "third_party/blink/renderer/platform/loader/fetch/fetch_parameters.h"
-#include "third_party/blink/renderer/platform/weborigin/referrer.h"
+// BKTODO: #include "third_party/blink/renderer/platform/weborigin/referrer.h"
+
+class GURL;
 
 namespace blink {
 
 class Document;
-class KURL;
 class StyleImage;
 class ComputedStyle;
 
 class CORE_EXPORT CSSImageValue : public CSSValue {
  public:
-  static CSSImageValue* Create(const KURL& url, StyleImage* image = nullptr) {
+#if 0 // BKTODO:
+  static CSSImageValue* Create(const GURL& url, StyleImage* image = nullptr) {
     return Create(url.GetString(), url, Referrer(), image);
   }
   static CSSImageValue* Create(const AtomicString& relative_url,
-                               const KURL& absolute_url,
+                               const GURL& absolute_url,
                                StyleImage* image = nullptr) {
     return Create(relative_url, absolute_url, Referrer(), image);
   }
   static CSSImageValue* Create(const String& raw_value,
-                               const KURL& url,
+                               const GURL& url,
                                const Referrer& referrer,
                                StyleImage* image = nullptr) {
     return Create(AtomicString(raw_value), url, referrer, image);
   }
   static CSSImageValue* Create(const AtomicString& raw_value,
-                               const KURL& url,
+                               const GURL& url,
                                const Referrer& referrer,
                                StyleImage* image = nullptr) {
     return new CSSImageValue(raw_value, url, referrer, image);
   }
+#endif
   static CSSImageValue* Create(const AtomicString& absolute_url) {
     return new CSSImageValue(absolute_url);
   }
@@ -75,7 +89,9 @@ class CORE_EXPORT CSSImageValue : public CSSValue {
   const String& Url() const { return absolute_url_; }
   const String& RelativeUrl() const { return relative_url_; }
 
+#if 0 // BKTODO:
   const Referrer& GetReferrer() const { return referrer_; }
+#endif
 
   void ReResolveURL(const Document&) const;
 
@@ -87,13 +103,15 @@ class CORE_EXPORT CSSImageValue : public CSSValue {
 
   bool KnownToBeOpaque(const Document&, const ComputedStyle&) const;
 
+#if 0 // BKTODO:
   CSSImageValue* ValueWithURLMadeAbsolute() const {
-    return Create(KURL(absolute_url_), cached_image_.Get());
+    return Create(GURL(absolute_url_), cached_image_.Get());
   }
 
   CSSImageValue* Clone() const {
-    return Create(relative_url_, KURL(absolute_url_), cached_image_.Get());
+    return Create(relative_url_, GURL(absolute_url_), cached_image_.Get());
   }
+#endif
 
   void SetInitiator(const AtomicString& name) { initiator_name_ = name; }
 
@@ -101,14 +119,16 @@ class CORE_EXPORT CSSImageValue : public CSSValue {
   void RestoreCachedResourceIfNeeded(const Document&) const;
 
  private:
+#if 0 // BKTODO:
   CSSImageValue(const AtomicString& raw_value,
-                const KURL&,
+                const GURL&,
                 const Referrer&,
                 StyleImage*);
+#endif
   CSSImageValue(const AtomicString& absolute_url);
 
   AtomicString relative_url_;
-  Referrer referrer_;
+  // BKTODO: Referrer referrer_;
   AtomicString initiator_name_;
 
   // Cached image data.

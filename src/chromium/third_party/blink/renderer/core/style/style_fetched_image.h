@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_fetched_image.h
+// Description: StyleFetchedImage Class
+//      Author: Ziming Li
+//     Created: 2020-09-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -26,7 +37,7 @@
 
 #include "third_party/blink/renderer/core/loader/resource/image_resource_observer.h"
 #include "third_party/blink/renderer/core/style/style_image.h"
-#include "third_party/blink/renderer/platform/weborigin/kurl.h"
+#include "url/gurl.h"
 
 namespace blink {
 
@@ -37,7 +48,7 @@ class FetchParameters;
 // url(...) function.)
 class StyleFetchedImage final : public StyleImage,
                                 public ImageResourceObserver {
-  USING_PRE_FINALIZER(StyleFetchedImage, Dispose);
+  // BKTODO: USING_PRE_FINALIZER(StyleFetchedImage, Dispose);
 
  public:
   static StyleFetchedImage* Create(const Document& document,
@@ -86,7 +97,7 @@ class StyleFetchedImage final : public StyleImage,
 
   Member<ImageResourceContent> image_;
   Member<const Document> document_;
-  const KURL url_;
+  const GURL url_;
 };
 
 DEFINE_STYLE_IMAGE_TYPE_CASTS(StyleFetchedImage, IsImageResource());
