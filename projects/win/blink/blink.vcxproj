@@ -276,6 +276,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\computed_style_css_value_mapping.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\computed_style_property_map.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_style_value.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_style_variable_reference_value.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_unparsed_value.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\prepopulated_computed_style_property_map.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\style_property_map_read_only.cc" />
@@ -625,6 +626,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\animation\compositor_transform_keyframe.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\animation\compositor_transform_operations.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\animation\timing_function.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\exception_messages.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\exception_state.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\gc_pool.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\script_forbidden_scope.cpp" />
@@ -995,6 +997,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\computed_style_css_value_mapping.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\computed_style_property_map.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_style_value.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_style_variable_reference_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_unparsed_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\prepopulated_computed_style_property_map.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\style_property_map_read_only.h" />
@@ -1471,6 +1474,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\animation\compositor_transform_operations.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\animation\timing_function.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\exception_code.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\exception_messages.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\exception_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\gc_pool.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\name_client.h" />

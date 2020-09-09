@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_unparsed_value.cc
+// Description: CSSUnparsedValue Class
+//      Author: Ziming Li
+//     Created: 2020-09-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -21,6 +32,7 @@ StringView FindVariableName(CSSParserTokenRange& range) {
   return range.Consume().Value();
 }
 
+#if 0 // BKTODO:
 CSSUnparsedSegment VariableReferenceValue(
     const StringView& variable_name,
     const HeapVector<CSSUnparsedSegment>& tokens) {
@@ -63,6 +75,7 @@ HeapVector<CSSUnparsedSegment> ParserTokenRangeToTokens(
   }
   return tokens;
 }
+#endif
 
 }  // namespace
 
@@ -83,9 +96,14 @@ CSSUnparsedValue* CSSUnparsedValue::FromCSSValue(
 
 CSSUnparsedValue* CSSUnparsedValue::FromCSSVariableData(
     const CSSVariableData& value) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return CSSUnparsedValue::Create(ParserTokenRangeToTokens(value.TokenRange()));
+#endif
 }
 
+#if 0 // BKTODO:
 CSSUnparsedSegment CSSUnparsedValue::AnonymousIndexedGetter(
     unsigned index,
     ExceptionState& exception_state) const {
@@ -113,22 +131,28 @@ bool CSSUnparsedValue::AnonymousIndexedSetter(unsigned index,
           ExceptionMessages::kInclusiveBound));
   return false;
 }
+#endif
 
 const CSSValue* CSSUnparsedValue::ToCSSValue() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (tokens_.IsEmpty()) {
     return CSSVariableReferenceValue::Create(CSSVariableData::Create());
   }
+#endif
 
   CSSTokenizer tokenizer(ToString());
   const auto tokens = tokenizer.TokenizeToEOF();
   return CSSVariableReferenceValue::Create(CSSVariableData::Create(
       CSSParserTokenRange(tokens), false /* is_animation_tainted */,
-      false /* needs_variable_resolution */, KURL(), WTF::TextEncoding()));
+      false /* needs_variable_resolution */, GURL(), WTF::TextEncoding()));
 }
 
 String CSSUnparsedValue::ToString() const {
   StringBuilder input;
 
+  ASSERT(false); // BKTODO:
+#if 0
   for (unsigned i = 0; i < tokens_.size(); i++) {
     if (i) {
       input.Append("/**/");
@@ -148,6 +172,7 @@ String CSSUnparsedValue::ToString() const {
       NOTREACHED();
     }
   }
+#endif
 
   return input.ToString();
 }
