@@ -181,6 +181,7 @@ public:
     typedef ContainerNode* (*ParentGetter)(const Node &);
     Node* CommonAncestor(const Node &other, ParentGetter getParent) const;
 
+    bool InActiveDocument(void) const;
     bool IsShadowIncludingInclusiveAncestorOf(const Node *node) const;
     bool IsDescendantOf(const Node *other) const;
     bool IsDocumentNode(void) const;

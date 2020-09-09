@@ -421,6 +421,11 @@ bool Node::HasTagName(const HTMLQualifiedName &name) const
     return IsHTMLElement() && ToElement(*this).HasTagName(name);
 }
 
+bool Node::InActiveDocument(void) const
+{
+    return isConnected() && GetDocument().IsActive();
+}
+
 Node* Node::insertBefore(Node *newChild, Node *refChild, ExceptionState &exceptionState)
 {
     if (IsContainerNode())

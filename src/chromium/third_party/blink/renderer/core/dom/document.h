@@ -357,6 +357,7 @@ public:
     bool IsTemplateDocument(void) const { return !!m_templateDocumentHost; }
 
     void UpdateStyleAndLayoutTree(void);
+    void UpdateStyleAndLayoutTreeForNode(const Node *node);
 
     StyleEngine& GetStyleEngine(void)
     {

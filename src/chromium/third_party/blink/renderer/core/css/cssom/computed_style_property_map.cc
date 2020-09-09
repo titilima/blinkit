@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: computed_style_property_map.cc
+// Description: ComputedStylePropertyMap Class
+//      Author: Ziming Li
+//     Created: 2020-09-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 the Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -168,10 +179,14 @@ unsigned int ComputedStylePropertyMap::size() {
     return 0;
 
   DCHECK(StyledNode());
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return CSSComputedStyleDeclaration::ComputableProperties().size() +
          ComputedStyleCSSValueMapping::GetVariables(
              *style, StyledNode()->GetDocument().GetPropertyRegistry())
              .size();
+#endif
 }
 
 bool ComputedStylePropertyMap::ComparePropertyNames(const String& a,
@@ -190,10 +205,13 @@ Node* ComputedStylePropertyMap::StyledNode() const {
   if (!pseudo_id_)
     return node_;
   if (node_->IsElementNode()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (PseudoElement* element =
             (ToElement(node_))->GetPseudoElement(pseudo_id_)) {
       return element;
     }
+#endif
   }
   return nullptr;
 }
@@ -210,6 +228,9 @@ const ComputedStyle* ComputedStylePropertyMap::UpdateStyle() {
   node = StyledNode();
   if (!node)
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   // This is copied from CSSComputedStyleDeclaration::computeComputedStyle().
   // PseudoIdNone must be used if node() is a PseudoElement.
   const ComputedStyle* style = node->EnsureComputedStyle(
@@ -218,6 +239,7 @@ const ComputedStyle* ComputedStylePropertyMap::UpdateStyle() {
   if (!node || !node->InActiveDocument() || !style)
     return nullptr;
   return style;
+#endif
 }
 
 const CSSValue* ComputedStylePropertyMap::GetProperty(
@@ -243,8 +265,12 @@ const CSSValue* ComputedStylePropertyMap::GetCustomProperty(
   const ComputedStyle* style = UpdateStyle();
   if (!style)
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return ComputedStyleCSSValueMapping::Get(
       property_name, *style, node_->GetDocument().GetPropertyRegistry());
+#endif
 }
 
 void ComputedStylePropertyMap::ForEachProperty(
@@ -266,12 +292,14 @@ void ComputedStylePropertyMap::ForEachProperty(
       values.emplace_back(property->GetPropertyNameAtomicString(), value);
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   PropertyRegistry* registry =
       StyledNode()->GetDocument().GetPropertyRegistry();
 
   for (const auto& name_value :
        ComputedStyleCSSValueMapping::GetVariables(*style, registry)) {
-    values.emplace_back(name_value.key, name_value.value);
+    values.emplace_back(name_value.first, name_value.second);
   }
 
   std::sort(values.begin(), values.end(), [](const auto& a, const auto& b) {
@@ -280,6 +308,7 @@ void ComputedStylePropertyMap::ForEachProperty(
 
   for (const auto& value : values)
     callback(value.first, *value.second);
+#endif
 }
 
 String ComputedStylePropertyMap::SerializationForShorthand(
