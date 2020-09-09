@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: prepopulated_computed_style_property_map.cc
+// Description: PrepopulatedComputedStylePropertyMap Class
+//      Author: Ziming Li
+//     Created: 2020-09-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 the Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -47,6 +58,8 @@ unsigned PrepopulatedComputedStylePropertyMap::size() {
 void PrepopulatedComputedStylePropertyMap::UpdateStyle(
     const Document& document,
     const ComputedStyle& style) {
+  ASSERT(false); // BKTODO:
+#if 0
   for (const auto& property_id : native_values_.Keys()) {
     DCHECK_NE(property_id, CSSPropertyInvalid);
     UpdateNativeProperty(style, property_id);
@@ -55,28 +68,35 @@ void PrepopulatedComputedStylePropertyMap::UpdateStyle(
   for (const auto& property_name : custom_values_.Keys()) {
     UpdateCustomProperty(document, style, property_name);
   }
+#endif
 }
 
 void PrepopulatedComputedStylePropertyMap::UpdateNativeProperty(
     const ComputedStyle& style,
     CSSPropertyID property_id) {
+  ASSERT(false); // BKTODO:
+#if 0
   native_values_.Set(property_id,
                      CSSProperty::Get(property_id)
                          .CSSValueFromComputedStyle(
                              style, /* layout_object */ nullptr, styled_node_,
                              /* allow_visited_style */ false));
+#endif
 }
 
 void PrepopulatedComputedStylePropertyMap::UpdateCustomProperty(
     const Document& document,
     const ComputedStyle& style,
     const AtomicString& property_name) {
+  ASSERT(false); // BKTODO:
+#if 0
   const CSSValue* value = ComputedStyleCSSValueMapping::Get(
       property_name, style, document.GetPropertyRegistry());
   if (!value)
     value = CSSUnparsedValue::Create()->ToCSSValue();
 
   custom_values_.Set(property_name, value);
+#endif
 }
 
 const CSSValue* PrepopulatedComputedStylePropertyMap::GetProperty(
@@ -96,14 +116,14 @@ void PrepopulatedComputedStylePropertyMap::ForEachProperty(
   HeapVector<std::pair<AtomicString, Member<const CSSValue>>> values;
 
   for (const auto& entry : native_values_) {
-    DCHECK(entry.value);
+    DCHECK(entry.second);
     values.emplace_back(
-        CSSProperty::Get(entry.key).GetPropertyNameAtomicString(), entry.value);
+        CSSProperty::Get(entry.first).GetPropertyNameAtomicString(), entry.second);
   }
 
   for (const auto& entry : custom_values_) {
-    DCHECK(entry.value);
-    values.emplace_back(entry.key, entry.value);
+    DCHECK(entry.second);
+    values.emplace_back(entry.first, entry.second);
   }
 
   std::sort(values.begin(), values.end(), [](const auto& a, const auto& b) {
@@ -119,13 +139,6 @@ String PrepopulatedComputedStylePropertyMap::SerializationForShorthand(
   // TODO(816722): Shorthands not yet supported for this style map.
   NOTREACHED();
   return "";
-}
-
-void PrepopulatedComputedStylePropertyMap::Trace(blink::Visitor* visitor) {
-  visitor->Trace(styled_node_);
-  visitor->Trace(native_values_);
-  visitor->Trace(custom_values_);
-  StylePropertyMapReadOnly::Trace(visitor);
 }
 
 }  // namespace blink

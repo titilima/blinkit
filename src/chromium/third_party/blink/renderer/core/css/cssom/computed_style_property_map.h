@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: computed_style_property_map.h
+// Description: ComputedStylePropertyMap Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 the Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -27,11 +38,6 @@ class CORE_EXPORT ComputedStylePropertyMap : public StylePropertyMapReadOnly {
     return new ComputedStylePropertyMap(node);
   }
 
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(node_);
-    StylePropertyMapReadOnly::Trace(visitor);
-  }
-
   unsigned int size() override;
 
   // ComputedStylePropertyMap needs to be sorted. This puts CSS properties
@@ -52,6 +58,12 @@ class CORE_EXPORT ComputedStylePropertyMap : public StylePropertyMapReadOnly {
   String SerializationForShorthand(const CSSProperty&) final;
 
  private:
+  GCType GetGCType(void) const final
+  {
+    ASSERT(false); // BKTODO:
+    return GC_MANUAL;
+  }
+
   // TODO: Pseudo-element support requires reintroducing Element.pseudo(...).
   // See
   // https://github.com/w3c/css-houdini-drafts/issues/350#issuecomment-294690156

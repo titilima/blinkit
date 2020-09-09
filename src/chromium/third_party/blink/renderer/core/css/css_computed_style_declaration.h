@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_computed_style_declaration.h
+// Description: CSSComputedStyleDeclaration Class
+//      Author: Ziming Li
+//     Created: 2020-09-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004 Zack Rusin <zack@kde.org>
  * Copyright (C) 2004, 2005, 2006, 2008, 2012 Apple Inc. All rights reserved.
@@ -71,8 +82,6 @@ class CORE_EXPORT CSSComputedStyleDeclaration final
   // CSSOM functions.
   unsigned length() const override;
   String item(unsigned index) const override;
-
-  void Trace(blink::Visitor*) override;
 
  private:
   CSSComputedStyleDeclaration(Node*, bool allow_visited_style, const String&);
