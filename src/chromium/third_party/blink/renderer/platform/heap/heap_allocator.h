@@ -34,6 +34,7 @@ public:
         auto it = this->find(k);
         return this->end() != it;
     }
+    void ReserveCapacityForSize(size_t size) {}
 };
 
 template <typename T>
