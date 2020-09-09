@@ -1127,6 +1127,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_sheet_contents.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_traversal_root.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\tree_scope_style_sheet_collection.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\zoom_adjusted_pixel_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css_property_names.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css_value_id_mappings_generated.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css_value_keywords.h" />
@@ -1301,6 +1302,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html_tokenizer_names.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\inspector\inspector_trace_events.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\intersection_observer\element_intersection_observer_data.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\adjust_for_absolute_zoom.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\hit_test_action.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_box_model.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_item.h" />

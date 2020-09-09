@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_computed_style_declaration.cc
+// Description: CSSComputedStyleDeclaration Class
+//      Author: Ziming Li
+//     Created: 2020-09-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004 Zack Rusin <zack@kde.org>
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple Inc.
@@ -38,7 +49,7 @@
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/pseudo_element.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
-#include "third_party/blink/renderer/core/html/html_frame_owner_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_frame_owner_element.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
@@ -185,8 +196,7 @@ void LogUnimplementedPropertyID(const CSSProperty& property) {
   if (!property_id_set.insert(property.PropertyID()).is_new_entry)
     return;
 
-  DLOG(ERROR) << "Blink does not yet implement getComputedStyle for '"
-              << property.GetPropertyName() << "'.";
+  BKLOG("ERROR: BlinKit does not yet implement getComputedStyle for '%s'.", property.GetPropertyName());
 }
 
 }  // namespace
@@ -241,6 +251,9 @@ CSSComputedStyleDeclaration::GetFontSizeCSSValuePreferringKeyword() const {
   if (!node_)
     return nullptr;
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   node_->GetDocument().UpdateStyleAndLayoutIgnorePendingStylesheets();
 
   const ComputedStyle* style =
@@ -255,34 +268,46 @@ CSSComputedStyleDeclaration::GetFontSizeCSSValuePreferringKeyword() const {
 
   return ZoomAdjustedPixelValue(style->GetFontDescription().ComputedPixelSize(),
                                 *style);
+#endif
 }
 
 bool CSSComputedStyleDeclaration::IsMonospaceFont() const {
   if (!node_)
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   const ComputedStyle* style =
       node_->EnsureComputedStyle(pseudo_element_specifier_);
   if (!style)
     return false;
 
   return style->GetFontDescription().IsMonospace();
+#endif
 }
 const ComputedStyle* CSSComputedStyleDeclaration::ComputeComputedStyle() const {
   Node* styled_node = this->StyledNode();
   DCHECK(styled_node);
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return styled_node->EnsureComputedStyle(styled_node->IsPseudoElement()
                                               ? kPseudoIdNone
                                               : pseudo_element_specifier_);
+#endif
 }
 
 Node* CSSComputedStyleDeclaration::StyledNode() const {
   if (!node_)
     return nullptr;
   if (node_->IsElementNode()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (PseudoElement* element =
             ToElement(node_)->GetPseudoElement(pseudo_element_specifier_))
       return element;
+#endif
   }
   return node_.Get();
 }
@@ -309,11 +334,15 @@ const CSSValue* CSSComputedStyleDeclaration::GetPropertyCSSValue(
   const ComputedStyle* style = ComputeComputedStyle();
   if (!style)
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   // Don't use styled_node in case it was discarded or replaced in
   // UpdateStyleAndLayoutTreeForNode.
   return ComputedStyleCSSValueMapping::Get(
       custom_property_name, *style,
       StyledNode()->GetDocument().GetPropertyRegistry());
+#endif
 }
 
 HeapHashMap<AtomicString, Member<const CSSValue>>
@@ -322,8 +351,12 @@ CSSComputedStyleDeclaration::GetVariables() const {
   if (!style)
     return {};
   DCHECK(StyledNode());
+  ASSERT(false); // BKTODO:
+  return {};
+#if 0
   return ComputedStyleCSSValueMapping::GetVariables(
       *style, StyledNode()->GetDocument().GetPropertyRegistry());
+#endif
 }
 
 const CSSValue* CSSComputedStyleDeclaration::GetPropertyCSSValue(
@@ -334,6 +367,8 @@ const CSSValue* CSSComputedStyleDeclaration::GetPropertyCSSValue(
 
   Document& document = styled_node->GetDocument();
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (HTMLFrameOwnerElement* owner = document.LocalOwner()) {
     // We are inside an iframe. If any of our ancestor iframes needs a style
     // and/or layout update, we need to make that up-to-date to resolve viewport
@@ -351,6 +386,7 @@ const CSSValue* CSSComputedStyleDeclaration::GetPropertyCSSValue(
       styled_node = StyledNode();
     }
   }
+#endif
 
   document.UpdateStyleAndLayoutTreeForNode(styled_node);
 
@@ -361,7 +397,10 @@ const CSSValue* CSSComputedStyleDeclaration::GetPropertyCSSValue(
   const ComputedStyle* style = ComputeComputedStyle();
 
   if (property_class.IsLayoutDependent(style, layout_object)) {
+    ASSERT(false); // BKTODO:
+#if 0
     document.UpdateStyleAndLayoutIgnorePendingStylesheetsForNode(styled_node);
+#endif
     styled_node = StyledNode();
     style = ComputeComputedStyle();
     layout_object = StyledLayoutObject();
@@ -412,6 +451,8 @@ bool CSSComputedStyleDeclaration::CssPropertyMatches(
       (property_value.IsPrimitiveValue() ||
        property_value.IsIdentifierValue()) &&
       node_) {
+    ASSERT(false); // BKTODO:
+#if 0
     node_->GetDocument().UpdateStyleAndLayoutIgnorePendingStylesheets();
     const ComputedStyle* style =
         node_->EnsureComputedStyle(pseudo_element_specifier_);
@@ -422,6 +463,7 @@ bool CSSComputedStyleDeclaration::CssPropertyMatches(
           ToCSSIdentifierValue(property_value).GetValueID() == size_value)
         return true;
     }
+#endif
   }
   const CSSValue* value = GetPropertyCSSValue(CSSProperty::Get(property_id));
   return DataEquivalent(value, &property_value);
@@ -531,11 +573,6 @@ void CSSComputedStyleDeclaration::SetPropertyInternal(
       "These styles are computed, and therefore the '" +
           CSSUnresolvedProperty::Get(id).GetPropertyNameString() +
           "' property is read-only.");
-}
-
-void CSSComputedStyleDeclaration::Trace(blink::Visitor* visitor) {
-  visitor->Trace(node_);
-  CSSStyleDeclaration::Trace(visitor);
 }
 
 }  // namespace blink

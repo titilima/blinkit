@@ -5125,5 +5125,11 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\transforms\transform_state.h">
       <Filter>renderer\platform\transforms</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\zoom_adjusted_pixel_value.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\adjust_for_absolute_zoom.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
