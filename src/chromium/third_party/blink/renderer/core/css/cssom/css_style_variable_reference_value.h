@@ -19,6 +19,7 @@
 #include "base/macros.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/css/cssom/css_unparsed_value.h"
+#include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 
 namespace blink {
@@ -58,6 +59,11 @@ class CORE_EXPORT CSSStyleVariableReferenceValue final
   Member<CSSUnparsedValue> fallback_;
 
  private:
+  GCType GetGCType(void) const override
+  {
+    ASSERT(false); // BKTODO:
+    return GC_MANUAL;
+  }
   DISALLOW_COPY_AND_ASSIGN(CSSStyleVariableReferenceValue);
 };
 
