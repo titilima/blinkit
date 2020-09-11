@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_property_map_read_only.cc
+// Description: StylePropertyMapReadOnly Class
+//      Author: Ziming Li
+//     Created: 2020-09-11
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 the chromium authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -22,6 +33,7 @@ namespace blink {
 
 namespace {
 
+#if 0 // BKTODO:
 class StylePropertyMapIterationSource final
     : public PairIterable<String, CSSStyleValueVector>::IterationSource {
  public:
@@ -52,6 +64,7 @@ class StylePropertyMapIterationSource final
   wtf_size_t index_;
   const HeapVector<StylePropertyMapReadOnly::StylePropertyMapEntry> values_;
 };
+#endif
 
 }  // namespace
 
@@ -133,6 +146,7 @@ bool StylePropertyMapReadOnly::has(const ExecutionContext* execution_context,
   return !getAll(execution_context, property_name, exception_state).IsEmpty();
 }
 
+#if 0 // BKTODO:
 StylePropertyMapReadOnly::IterationSource*
 StylePropertyMapReadOnly::StartIteration(ScriptState* script_state,
                                          ExceptionState&) {
@@ -165,6 +179,7 @@ StylePropertyMapReadOnly::StartIteration(ScriptState* script_state,
 
   return new StylePropertyMapIterationSource(result);
 }
+#endif
 
 CSSStyleValue* StylePropertyMapReadOnly::GetShorthandProperty(
     const CSSProperty& property) {
