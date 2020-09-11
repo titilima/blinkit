@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_font_selector.cc
+// Description: CSSFontSelector Class
+//      Author: Ziming Li
+//     Created: 2020-09-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2011 Apple Inc. All rights reserved.
  *           (C) 2007, 2008 Nikolas Zimmermann <zimmermann@kde.org>
@@ -33,7 +44,6 @@
 #include "third_party/blink/renderer/core/css/resolver/style_resolver.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
-#include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
 #include "third_party/blink/renderer/core/loader/frame_loader.h"
 #include "third_party/blink/renderer/platform/fonts/font_cache.h"
@@ -44,9 +54,14 @@
 namespace blink {
 
 CSSFontSelector::CSSFontSelector(Document* document)
+#if 0 // BKTODO:
     : document_(document),
       generic_font_family_settings_(
           document->GetFrame()->GetSettings()->GetGenericFontFamilySettings()) {
+#else
+    : document_(document) {
+#endif
+  ASSERT(false); // BKTODO:
   // FIXME: An old comment used to say there was no need to hold a reference to
   // document_ because "we are guaranteed to be destroyed before the document".
   // But there does not seem to be any such guarantee.
@@ -74,7 +89,7 @@ void CSSFontSelector::DispatchInvalidationCallbacks() {
   font_face_cache_.IncrementVersion();
 
   HeapVector<Member<FontSelectorClient>> clients;
-  CopyToVector(clients_, clients);
+  ASSERT(false); // BKTODO: CopyToVector(clients_, clients);
   for (auto& client : clients)
     client->FontsNeedUpdate(this);
 }
@@ -133,10 +148,13 @@ bool CSSFontSelector::IsPlatformFamilyMatchAvailable(
 }
 
 void CSSFontSelector::UpdateGenericFontFamilySettings(Document& document) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!document.GetSettings())
     return;
   generic_font_family_settings_ =
       document.GetSettings()->GetGenericFontFamilySettings();
+#endif
   FontCacheInvalidated();
 }
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_face.h
+// Description: FontFace Class
+//      Author: Ziming Li
+//     Created: 2020-09-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -32,9 +43,11 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_FONT_FACE_H_
 
 #include "base/macros.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/bindings/core/v8/active_script_wrappable.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_promise.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_promise_property.h"
+#endif
 #include "third_party/blink/renderer/core/css/css_value.h"
 #include "third_party/blink/renderer/core/css/parser/at_rule_descriptors.h"
 #include "third_party/blink/renderer/core/dom/context_lifecycle_observer.h"
@@ -56,9 +69,9 @@ class StringOrArrayBufferOrArrayBufferView;
 class CSSPropertyValueSet;
 class StyleRuleFontFace;
 
-class CORE_EXPORT FontFace : public ScriptWrappable,
-                             public ActiveScriptWrappable<FontFace>,
-                             public ContextClient {
+class CORE_EXPORT FontFace : public ScriptWrappable {
+                             // BKTODO: public ActiveScriptWrappable<FontFace>,
+                             // BKTODO: public ContextClient {
   DEFINE_WRAPPERTYPEINFO();
   USING_GARBAGE_COLLECTED_MIXIN(FontFace);
 
@@ -95,11 +108,13 @@ class CORE_EXPORT FontFace : public ScriptWrappable,
   void setDisplay(ExecutionContext*, const String&, ExceptionState&);
 
   String status() const;
+#if 0 // BKTODO:
   ScriptPromise loaded(ScriptState* script_state) {
     return FontStatusPromise(script_state);
   }
 
   ScriptPromise load(ScriptState*);
+#endif
 
   LoadStatusType LoadStatus() const { return status_; }
   void SetLoadStatus(LoadStatusType);
@@ -109,8 +124,6 @@ class CORE_EXPORT FontFace : public ScriptWrappable,
   CSSFontFace* CssFontFace() { return css_font_face_.Get(); }
   size_t ApproximateBlankCharacterCount() const;
 
-  void Trace(blink::Visitor*) override;
-
   bool HadBlankText() const;
 
   class CORE_EXPORT LoadFontCallback : public GarbageCollectedMixin {
@@ -118,13 +131,14 @@ class CORE_EXPORT FontFace : public ScriptWrappable,
     virtual ~LoadFontCallback() = default;
     virtual void NotifyLoaded(FontFace*) = 0;
     virtual void NotifyError(FontFace*) = 0;
-    void Trace(blink::Visitor* visitor) override {}
   };
   void LoadWithCallback(LoadFontCallback*);
   void AddCallback(LoadFontCallback*);
 
+#if 0 // BKTODO:
   // ScriptWrappable:
   bool HasPendingActivity() const final;
+#endif
 
  private:
   static FontFace* Create(ExecutionContext*,
@@ -154,12 +168,16 @@ class CORE_EXPORT FontFace : public ScriptWrappable,
   bool SetPropertyFromStyle(const CSSPropertyValueSet&, AtRuleDescriptorID);
   bool SetPropertyValue(const CSSValue*, AtRuleDescriptorID);
   bool SetFamilyValue(const CSSValue&);
+#if 0 // BKTODO:
   ScriptPromise FontStatusPromise(ScriptState*);
+#endif
   void RunCallbacks();
 
+#if 0 // BKTODO:
   using LoadedProperty = ScriptPromiseProperty<Member<FontFace>,
                                                Member<FontFace>,
                                                Member<DOMException>>;
+#endif
 
   AtomicString family_;
   String ots_parse_message_;
@@ -173,7 +191,9 @@ class CORE_EXPORT FontFace : public ScriptWrappable,
   LoadStatusType status_;
   Member<DOMException> error_;
 
+#if 0 // BKTODO:
   Member<LoadedProperty> loaded_property_;
+#endif
   Member<CSSFontFace> css_font_face_;
   HeapVector<Member<LoadFontCallback>> callbacks_;
   DISALLOW_COPY_AND_ASSIGN(FontFace);

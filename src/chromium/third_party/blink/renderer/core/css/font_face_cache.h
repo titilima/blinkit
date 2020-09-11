@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_face_cache.h
+// Description: FontFaceCache Class
+//      Author: Ziming Li
+//     Created: 2020-09-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -84,6 +95,7 @@ class CORE_EXPORT FontFaceCache final {
   // CSSSegmentedFontFace>>
   using CapabilitiesSet =
       HeapHashMap<FontSelectionCapabilities, Member<CSSSegmentedFontFace>>;
+#if 0 // BKTODO:
   using SegmentedFacesByFamily =
       HeapHashMap<String, Member<CapabilitiesSet>, CaseFoldingHash>;
   using FontSelectionQueryResult =
@@ -100,6 +112,7 @@ class CORE_EXPORT FontFaceCache final {
   // FontSelectionRequest. A family bucket of this cache gets invalidated when a
   // new face of the same family is added or removed.
   FontSelectionQueryCache font_selection_query_cache_;
+#endif
 
   // Used for removing font faces from the segmented_faces_ list when a CSS rule
   // is removed.

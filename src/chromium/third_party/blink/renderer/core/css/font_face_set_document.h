@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_face_set_document.h
+// Description: FontFaceSetDocument Class
+//      Author: Ziming Li
+//     Created: 2020-09-11
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -27,8 +38,6 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_FONT_FACE_SET_DOCUMENT_H_
 
 #include "base/macros.h"
-#include "third_party/blink/renderer/bindings/core/v8/iterable.h"
-#include "third_party/blink/renderer/bindings/core/v8/script_promise.h"
 #include "third_party/blink/renderer/core/css/css_font_selector.h"
 #include "third_party/blink/renderer/core/css/font_face.h"
 #include "third_party/blink/renderer/core/css/font_face_set.h"
@@ -54,7 +63,9 @@ class CORE_EXPORT FontFaceSetDocument final : public FontFaceSet,
 
   ~FontFaceSetDocument() override;
 
+#if 0 // BKTODO:
   ScriptPromise ready(ScriptState*) override;
+#endif
 
   AtomicString status() const override;
 
@@ -73,8 +84,6 @@ class CORE_EXPORT FontFaceSetDocument final : public FontFaceSet,
   static void DidLayout(Document&);
   static size_t ApproximateBlankCharacterCount(Document&);
 
-  void Trace(blink::Visitor*) override;
-
  protected:
   bool InActiveContext() const override;
   FontSelector* GetFontSelector() const override {
@@ -90,6 +99,11 @@ class CORE_EXPORT FontFaceSetDocument final : public FontFaceSet,
 
   explicit FontFaceSetDocument(Document&);
 
+  GCType GetGCType(void) const override
+  {
+    ASSERT(false); // BKTODO:
+    return GC_MANUAL;
+  }
   void FireDoneEventIfPossible() override;
   const HeapLinkedHashSet<Member<FontFace>>& CSSConnectedFontFaceList()
       const override;
