@@ -359,6 +359,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_token.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_token_range.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_token_stream.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_property_parser.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_selector_parser.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_tokenizer.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_tokenizer_input_stream.cc" />
@@ -1094,6 +1095,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_token.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_token_range.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_token_stream.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_property_parser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_selector_parser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_tokenizer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_tokenizer_input_stream.h" />
