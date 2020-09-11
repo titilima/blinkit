@@ -23,6 +23,7 @@ enum class WebFeature {
     kCSSDeepCombinatorAndShadow,
     kDeepCombinatorInStaticProfile,
     kDuplicatedAttribute,
+    kFontShapingNotDefGlyphObserved,
     kGetComputedStyleWebkitAppearance,
     kHasBeforeOrAfterPseudoElement,
     kHasIDClassTagAttribute,

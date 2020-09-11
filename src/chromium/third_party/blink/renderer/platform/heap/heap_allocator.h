@@ -16,8 +16,9 @@
 
 #include <vector>
 #include <unordered_map>
-#include <unordered_set>
 #include "third_party/blink/renderer/platform/heap/heap.h"
+#include "third_party/blink/renderer/platform/wtf/linked_hash_set.h"
+#include "third_party/blink/renderer/platform/wtf/list_hash_set.h"
 #include "third_party/blink/renderer/platform/wtf/hash_counted_set.h"
 #include "third_party/blink/renderer/platform/wtf/wtf_size_t.h"
 
@@ -47,6 +48,16 @@ public:
         return this->end() != it;
     }
     bool IsEmpty(void) const { return this->empty(); }
+};
+
+template <typename T>
+class HeapLinkedHashSet : public LinkedHashSet<T, int, int, int>
+{
+};
+
+template <typename T>
+class HeapListHashSet : public ListHashSet<T>
+{
 };
 
 template <typename T, wtf_size_t inlineCapacity = 0>

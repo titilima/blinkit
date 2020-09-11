@@ -83,6 +83,10 @@ public:
     {
         WTF::Partitions::FastFree(address);
     }
+    static void DeleteArray(void *ptr)
+    {
+        Free(ptr);  // Not the system free, the one from this class.
+    }
 
     static inline bool ExpandVectorBacking(void *, size_t) { return false; }
     static inline bool ExpandInlineVectorBacking(void *, size_t) { return false; }
