@@ -87,12 +87,14 @@ protected:
     {
         ASSERT(IsMainThread());
 
+        Duk::StackGuard sg(ctx);
         duk_push_heapptr(ctx, m_heapXHR);
         duk_idx_t idx = duk_normalize_index(ctx, -1);
 
         DukXHR *xhr = DukScriptObject::To<DukXHR>(ctx, idx);
         xhr->SetReadyState(ctx, idx, ReadyState::Receiving);
         xhr->SetReadyState(ctx, idx, ReadyState::Loaded);
+        ASSERT(sg.IsChangedBy(1));
     }
 
     BkResponse m_response = nullptr;
@@ -105,7 +107,7 @@ class DukXHR::AsyncSession final : public DukXHR::Session
 {
 public:
     AsyncSession(duk_context *ctx, duk_idx_t idx)
-        : Session(ctx, idx), HeapRetained(DUK_HIDDEN_SYMBOL("xhr"))
+        : Session(ctx, idx), HeapRetained("xhr")
         , m_ctx(ctx)
         , m_taskRunner(Platform::Current()->CurrentThread()->GetTaskRunner())
     {
