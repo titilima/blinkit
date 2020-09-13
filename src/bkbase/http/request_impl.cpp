@@ -214,8 +214,8 @@ bool RequestImpl::PrepareCURLSession(void)
     // 2. Adjust method.
     if (base::EqualsCaseInsensitiveASCII(m_method, "POST"))
     {
-        m_headersList = curl_slist_append(m_headersList, "Expect:"); // Disable "HTTP 100" for response.
         curl_easy_setopt(m_curl, CURLOPT_POST, OPT_TRUE);
+        m_headersList = curl_slist_append(m_headersList, "Expect:"); // Disable "HTTP 100" for response.
     }
 
     // 3. Process standard headers.
@@ -223,11 +223,6 @@ bool RequestImpl::PrepareCURLSession(void)
         curl_easy_setopt(m_curl, it.first, it.second.c_str());
 
     // 4. Process user headers.
-    if (nullptr != m_headersList)
-    {
-        curl_slist_free_all(m_headersList);
-        m_headersList = nullptr;
-    }
     for (const auto &it : m_userHeaders.GetRawMap())
     {
         std::string header(it.first);

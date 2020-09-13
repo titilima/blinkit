@@ -21,8 +21,19 @@
 
 using namespace BlinKit;
 
+#ifndef NDEBUG
+static void FatalCallback(void *, const char *msg)
+{
+    NOTREACHED();
+}
+#endif
+
 ContextImpl::ContextImpl(void)
+#ifdef NDEBUG
     : m_ctx(duk_create_heap_default())
+#else
+    : m_ctx(duk_create_heap(nullptr, nullptr, nullptr, nullptr, FatalCallback))
+#endif
 {
 }
 
