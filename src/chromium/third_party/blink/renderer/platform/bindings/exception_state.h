@@ -30,6 +30,7 @@ public:
     bool HadException(void) const { return 0 != m_exceptionCode; }
 
     virtual void ThrowDOMException(DOMExceptionCode code, const String &message);
+    virtual void ThrowRangeError(const String &message);
     virtual void ThrowTypeError(const String &message);
     virtual void ThrowSecurityError(const String &sanitizedMessage, const String &unsanitizedMessage = String());
 

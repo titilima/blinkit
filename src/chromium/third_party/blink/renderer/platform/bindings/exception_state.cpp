@@ -33,14 +33,19 @@ void ExceptionState::ThrowException(void)
     NOTREACHED();
 }
 
+void ExceptionState::ThrowRangeError(const String &message)
+{
+    ASSERT(false); // BKTODO:
+}
+
 void ExceptionState::ThrowSecurityError(const String &sanitizedMessage, const String &unsanitizedMessage)
 {
-    assert(false); // BKTODO:
+    ASSERT(false); // BKTODO:
 }
 
 void ExceptionState::ThrowTypeError(const String &message)
 {
-    assert(false); // BKTODO:
+    ASSERT(false); // BKTODO:
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

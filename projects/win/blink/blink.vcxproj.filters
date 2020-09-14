@@ -2297,6 +2297,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_math_value.cc">
       <Filter>renderer\core\css\cssom</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_transform_component.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -5303,6 +5306,9 @@
       <Filter>renderer\core\css\cssom</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_numeric_array.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_transform_component.h">
       <Filter>renderer\core\css\cssom</Filter>
     </ClInclude>
   </ItemGroup>
