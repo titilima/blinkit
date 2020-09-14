@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_position_value.h
+// Description: CSSPositionValue Class
+//      Author: Ziming Li
+//     Created: 2020-09-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -39,12 +50,6 @@ class CORE_EXPORT CSSPositionValue final : public CSSStyleValue {
   StyleValueType GetType() const final { return kPositionType; }
 
   const CSSValue* ToCSSValue() const final;
-
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(x_);
-    visitor->Trace(y_);
-    CSSStyleValue::Trace(visitor);
-  }
 
  private:
   static bool IsValidCoordinate(CSSNumericValue* coord);
