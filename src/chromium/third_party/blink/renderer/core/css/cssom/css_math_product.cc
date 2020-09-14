@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_math_product.cc
+// Description: CSSMathProduct Class
+//      Author: Ziming Li
+//     Created: 2020-09-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -31,6 +42,7 @@ CSSNumericSumValue::UnitMap MultiplyUnitMaps(
 
 }  // namespace
 
+#if 0 // BKTODO:
 CSSMathProduct* CSSMathProduct::Create(const HeapVector<CSSNumberish>& args,
                                        ExceptionState& exception_state) {
   if (args.IsEmpty()) {
@@ -47,6 +59,7 @@ CSSMathProduct* CSSMathProduct::Create(const HeapVector<CSSNumberish>& args,
 
   return result;
 }
+#endif
 
 CSSMathProduct* CSSMathProduct::Create(CSSNumericValueVector values) {
   bool error = false;
