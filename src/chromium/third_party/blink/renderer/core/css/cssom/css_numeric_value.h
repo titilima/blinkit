@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_numeric_value.h
+// Description: CSSNumericValue Class
+//      Author: Ziming Li
+//     Created: 2020-09-11
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,6 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_CSSOM_CSS_NUMERIC_VALUE_H_
 
 #include "base/macros.h"
-#include "third_party/blink/renderer/bindings/core/v8/double_or_css_numeric_value.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/css/css_primitive_value.h"
 #include "third_party/blink/renderer/core/css/cssom/css_numeric_sum_value.h"
@@ -24,7 +34,9 @@ class CSSCalcExpressionNode;
 
 class CSSNumericValue;
 class CSSMathSum;
+#if 0 // BKTODO:
 using CSSNumberish = DoubleOrCSSNumericValue;
+#endif
 using CSSNumericValueVector = HeapVector<Member<CSSNumericValue>>;
 
 class CORE_EXPORT CSSNumericValue : public CSSStyleValue {
@@ -34,6 +46,7 @@ class CORE_EXPORT CSSNumericValue : public CSSStyleValue {
   static CSSNumericValue* parse(const String& css_text, ExceptionState&);
   // Blink-internal ways of creating CSSNumericValues.
   static CSSNumericValue* FromCSSValue(const CSSPrimitiveValue&);
+#if 0 // BKTODO:
   // https://drafts.css-houdini.org/css-typed-om/#rectify-a-numberish-value
   static CSSNumericValue* FromNumberish(const CSSNumberish& value);
 
@@ -45,6 +58,7 @@ class CORE_EXPORT CSSNumericValue : public CSSStyleValue {
   CSSNumericValue* min(const HeapVector<CSSNumberish>&, ExceptionState&);
   CSSNumericValue* max(const HeapVector<CSSNumberish>&, ExceptionState&);
   bool equals(const HeapVector<CSSNumberish>&);
+#endif
 
   // Converts between compatible types, as defined in the IDL.
   CSSUnitValue* to(const String&, ExceptionState&);
@@ -84,8 +98,10 @@ class CORE_EXPORT CSSNumericValue : public CSSStyleValue {
   DISALLOW_COPY_AND_ASSIGN(CSSNumericValue);
 };
 
+#if 0 // BKTODO:
 CSSNumericValueVector CSSNumberishesToNumericValues(
     const HeapVector<CSSNumberish>&);
+#endif
 
 }  // namespace blink
 

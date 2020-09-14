@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_numeric_value.cc
+// Description: CSSNumericValue Class
+//      Author: Ziming Li
+//     Created: 2020-09-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -27,10 +38,13 @@ template <CSSStyleValue::StyleValueType type>
 void PrependValueForArithmetic(CSSNumericValueVector& vector,
                                CSSNumericValue* value) {
   DCHECK(value);
+  ASSERT(false); // BKTODO:
+#if 0
   if (value->GetType() == type)
     vector.PrependVector(static_cast<CSSMathVariadic*>(value)->NumericValues());
   else
     vector.push_front(value);
+#endif
 }
 
 template <class BinaryOperation>
@@ -249,6 +263,7 @@ CSSNumericValue* CSSNumericValue::FromCSSValue(const CSSPrimitiveValue& value) {
   return CSSUnitValue::FromCSSValue(value);
 }
 
+#if 0 // BKTODO:
 /* static */
 CSSNumericValue* CSSNumericValue::FromNumberish(const CSSNumberish& value) {
   if (value.IsDouble()) {
@@ -257,6 +272,7 @@ CSSNumericValue* CSSNumericValue::FromNumberish(const CSSNumberish& value) {
   }
   return value.GetAsCSSNumericValue();
 }
+#endif
 
 CSSUnitValue* CSSNumericValue::to(const String& unit_string,
                                   ExceptionState& exception_state) {
@@ -367,6 +383,8 @@ CSSMathSum* CSSNumericValue::toSum(const Vector<String>& unit_strings,
 void CSSNumericValue::type(CSSNumericType& type) const {
   using BaseType = CSSNumericValueType::BaseType;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (int exponent = type_.Exponent(BaseType::kLength))
     type.setLength(exponent);
   if (int exponent = type_.Exponent(BaseType::kAngle))
@@ -385,8 +403,10 @@ void CSSNumericValue::type(CSSNumericType& type) const {
     type.setPercentHint(
         CSSNumericValueType::BaseTypeToString(type_.PercentHint()));
   }
+#endif
 }
 
+#if 0 // BKTODO:
 CSSNumericValue* CSSNumericValue::add(
     const HeapVector<CSSNumberish>& numberishes,
     ExceptionState& exception_state) {
@@ -477,6 +497,7 @@ bool CSSNumericValue::equals(const HeapVector<CSSNumberish>& args) {
   return std::all_of(values.begin(), values.end(),
                      [this](const auto& v) { return this->Equals(*v); });
 }
+#endif
 
 String CSSNumericValue::toString() const {
   StringBuilder result;
@@ -492,6 +513,7 @@ CSSNumericValue* CSSNumericValue::Invert() {
   return CSSMathInvert::Create(this);
 }
 
+#if 0 // BKTODO:
 CSSNumericValueVector CSSNumberishesToNumericValues(
     const HeapVector<CSSNumberish>& values) {
   CSSNumericValueVector result;
@@ -500,5 +522,6 @@ CSSNumericValueVector CSSNumberishesToNumericValues(
   }
   return result;
 }
+#endif
 
 }  // namespace blink

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_math_max.h
+// Description: CSSMathMax Class
+//      Author: Ziming Li
+//     Created: 2020-09-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -16,9 +27,11 @@ class CORE_EXPORT CSSMathMax final : public CSSMathVariadic {
   DEFINE_WRAPPERTYPEINFO();
 
  public:
+#if 0 // BKTODO:
   // The constructor defined in the IDL.
   static CSSMathMax* Create(const HeapVector<CSSNumberish>& args,
                             ExceptionState&);
+#endif
   // Blink-internal constructor.
   static CSSMathMax* Create(CSSNumericValueVector);
 

@@ -2258,6 +2258,45 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_property_parser.cc">
       <Filter>renderer\core\css\parser</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_numeric_value.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_position_value.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_transform_value.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_url_image_value.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_numeric_value_type.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_math_invert.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_math_max.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_math_min.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_math_negate.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_math_product.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_math_sum.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_unit_value.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_math_value.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -5211,6 +5250,60 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_property_parser.h">
       <Filter>renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_numeric_value.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_position_value.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_transform_value.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_url_image_value.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\cssom_types.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_numeric_sum_value.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_numeric_type.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_numeric_value_type.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_math_invert.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_math_max.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_math_min.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_math_negate.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_math_product.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_math_sum.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_unit_value.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_math_value.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_math_variadic.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_numeric_array.h">
+      <Filter>renderer\core\css\cssom</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

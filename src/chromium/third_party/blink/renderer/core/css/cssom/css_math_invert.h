@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_math_invert.h
+// Description: CSSMathInvert Class
+//      Author: Ziming Li
+//     Created: 2020-09-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -16,10 +27,12 @@ class CORE_EXPORT CSSMathInvert : public CSSMathValue {
   DEFINE_WRAPPERTYPEINFO();
 
  public:
+#if 0 // BKTODO:
   // The constructor defined in the IDL.
   static CSSMathInvert* Create(const CSSNumberish& arg) {
     return Create(CSSNumericValue::FromNumberish(arg));
   }
+#endif
   // Blink-internal constructor
   static CSSMathInvert* Create(CSSNumericValue* value) {
     return new CSSMathInvert(
@@ -28,18 +41,15 @@ class CORE_EXPORT CSSMathInvert : public CSSMathValue {
 
   String getOperator() const final { return "invert"; }
 
+#if 0 // BKTODO:
   void value(CSSNumberish& value) { value.SetCSSNumericValue(value_); }
+#endif
 
   // Blink-internal methods
   const CSSNumericValue& Value() const { return *value_; }
 
   // From CSSStyleValue.
   StyleValueType GetType() const final { return CSSStyleValue::kInvertType; }
-
-  void Trace(Visitor* visitor) override {
-    visitor->Trace(value_);
-    CSSMathValue::Trace(visitor);
-  }
 
   bool Equals(const CSSNumericValue& other) const final {
     if (other.GetType() != kNegateType)

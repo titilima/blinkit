@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_numeric_array.h
+// Description: CSSNumericArray Class
+//      Author: Ziming Li
+//     Created: 2020-09-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -19,15 +30,12 @@ class CORE_EXPORT CSSNumericArray final : public ScriptWrappable {
   static CSSNumericArray* Create(CSSNumericValueVector values) {
     return new CSSNumericArray(std::move(values));
   }
+#if 0 // BKTODO:
   static CSSNumericArray* FromNumberishes(
       const HeapVector<CSSNumberish>& values) {
     return new CSSNumericArray(CSSNumberishesToNumericValues(values));
   }
-
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(values_);
-    ScriptWrappable::Trace(visitor);
-  }
+#endif
 
   unsigned length() const { return values_.size(); }
   CSSNumericValue* AnonymousIndexedGetter(unsigned index) {
@@ -41,6 +49,12 @@ class CORE_EXPORT CSSNumericArray final : public ScriptWrappable {
  private:
   explicit CSSNumericArray(CSSNumericValueVector values)
       : values_(std::move(values)) {}
+
+  GCType GetGCType(void) const override
+  {
+    ASSERT(false); // BKTODO:
+    return GC_MANUAL;
+  }
 
   CSSNumericValueVector values_;
   DISALLOW_COPY_AND_ASSIGN(CSSNumericArray);
