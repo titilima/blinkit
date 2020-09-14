@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_math_min.cc
+// Description: CSSMathMin Class
+//      Author: Ziming Li
+//     Created: 2020-09-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -9,6 +20,7 @@
 
 namespace blink {
 
+#if 0 // BKTODO:
 CSSMathMin* CSSMathMin::Create(const HeapVector<CSSNumberish>& args,
                                ExceptionState& exception_state) {
   if (args.IsEmpty()) {
@@ -25,6 +37,7 @@ CSSMathMin* CSSMathMin::Create(const HeapVector<CSSNumberish>& args,
 
   return result;
 }
+#endif
 
 CSSMathMin* CSSMathMin::Create(CSSNumericValueVector values) {
   bool error = false;
