@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_math_sum.cc
+// Description: CSSMathSum Class
+//      Author: Ziming Li
+//     Created: 2020-09-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -49,6 +60,7 @@ bool operator==(const CSSNumericSumValue::Term& a, const UnitMapComparator& b) {
 
 }  // namespace
 
+#if 0 // BKTODO:
 CSSMathSum* CSSMathSum::Create(const HeapVector<CSSNumberish>& args,
                                ExceptionState& exception_state) {
   if (args.IsEmpty()) {
@@ -65,6 +77,7 @@ CSSMathSum* CSSMathSum::Create(const HeapVector<CSSNumberish>& args,
 
   return result;
 }
+#endif
 
 CSSMathSum* CSSMathSum::Create(CSSNumericValueVector values) {
   bool error = false;
