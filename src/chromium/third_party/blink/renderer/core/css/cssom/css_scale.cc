@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_scale.cc
+// Description: CSSScale Class
+//      Author: Ziming Li
+//     Created: 2020-09-15
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -62,6 +73,7 @@ CSSScale* FromScale3d(const CSSFunctionValue& value) {
 
 }  // namespace
 
+#if 0 // BKTODO:
 CSSScale* CSSScale::Create(const CSSNumberish& x,
                            const CSSNumberish& y,
                            ExceptionState& exception_state) {
@@ -92,6 +104,7 @@ CSSScale* CSSScale::Create(const CSSNumberish& x,
 
   return CSSScale::Create(x_value, y_value, z_value);
 }
+#endif
 
 CSSScale* CSSScale::FromCSSValue(const CSSFunctionValue& value) {
   switch (value.FunctionType()) {
@@ -109,6 +122,7 @@ CSSScale* CSSScale::FromCSSValue(const CSSFunctionValue& value) {
   }
 }
 
+#if 0 // BKTODO:
 void CSSScale::setX(const CSSNumberish& x, ExceptionState& exception_state) {
   CSSNumericValue* value = CSSNumericValue::FromNumberish(x);
 
@@ -141,6 +155,7 @@ void CSSScale::setZ(const CSSNumberish& z, ExceptionState& exception_state) {
 
   z_ = value;
 }
+#endif
 
 DOMMatrix* CSSScale::toMatrix(ExceptionState& exception_state) const {
   CSSUnitValue* x = x_->to(CSSPrimitiveValue::UnitType::kNumber);
@@ -153,6 +168,9 @@ DOMMatrix* CSSScale::toMatrix(ExceptionState& exception_state) const {
     return nullptr;
   }
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   DOMMatrix* matrix = DOMMatrix::Create();
   if (is2D())
     matrix->scaleSelf(x->value(), y->value());
@@ -160,6 +178,7 @@ DOMMatrix* CSSScale::toMatrix(ExceptionState& exception_state) const {
     matrix->scaleSelf(x->value(), y->value(), z->value());
 
   return matrix;
+#endif
 }
 
 const CSSFunctionValue* CSSScale::ToCSSValue() const {

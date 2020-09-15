@@ -21,6 +21,8 @@
 #include "third_party/blink/renderer/core/css/cssom/css_unit_value.h"
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/geometry/dom_matrix.h"
+#else
+#include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #endif
 
 namespace blink {
