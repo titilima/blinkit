@@ -723,6 +723,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\draw_looper_builder.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\generated_image.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\gradient.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\gradient_generated_image.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\graphics_context.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\graphics_context_state.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\graphics_layer.cc" />
@@ -1617,6 +1618,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\animation_worklet_mutators_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\box_reflection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\color.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\color_blend.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\compositing_reasons.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\compositor_element_id.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\compositor_filter_operations.h" />
@@ -1626,6 +1628,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\draw_looper_builder.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\generated_image.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\gradient.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\gradient_generated_image.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\graphics_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\graphics_context_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\graphics_layer.h" />

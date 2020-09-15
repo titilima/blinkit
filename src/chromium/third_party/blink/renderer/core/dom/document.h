@@ -366,6 +366,7 @@ public:
     }
 
     TextLinkColors& GetTextLinkColors(void) { return m_textLinkColors; }
+    const TextLinkColors& GetTextLinkColors(void) const { return m_textLinkColors; }
 
 #   if DCHECK_IS_ON()
     unsigned& SlotAssignmentRecalcForbiddenRecursionDepth(void) { return m_slotAssignmentRecalcForbiddenRecursionDepth; }

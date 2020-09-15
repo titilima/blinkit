@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: gradient_generated_image.h
+// Description: GradientGeneratedImage Class
+//      Author: Ziming Li
+//     Created: 2020-09-15
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2012 Apple Computer, Inc.  All rights reserved.
  *
@@ -37,15 +48,22 @@ class PLATFORM_EXPORT GradientGeneratedImage final : public GeneratedImage {
   static scoped_refptr<GradientGeneratedImage> Create(
       scoped_refptr<Gradient> generator,
       const FloatSize& size) {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     return base::AdoptRef(
         new GradientGeneratedImage(std::move(generator), size));
+#endif
   }
 
   ~GradientGeneratedImage() override = default;
 
+#if 0 // BKTODO:
   bool ApplyShader(PaintFlags&, const SkMatrix&) override;
+#endif
 
  protected:
+#if 0 // BKTODO:
   void Draw(cc::PaintCanvas*,
             const PaintFlags&,
             const FloatRect&,
@@ -53,6 +71,7 @@ class PLATFORM_EXPORT GradientGeneratedImage final : public GeneratedImage {
             RespectImageOrientationEnum,
             ImageClampingMode,
             ImageDecodingMode) override;
+#endif
   void DrawTile(GraphicsContext&, const FloatRect&) override;
 
   GradientGeneratedImage(scoped_refptr<Gradient> generator,
