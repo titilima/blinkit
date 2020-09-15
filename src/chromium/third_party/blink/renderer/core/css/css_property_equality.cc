@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_property_equality.cc
+// Description: CSSPropertyEquality Class
+//      Author: Ziming Li
+//     Created: 2020-09-15
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -84,8 +95,6 @@ bool CSSPropertyEquality::PropertiesEqual(const PropertyHandle& property,
     case CSSPropertyBackgroundSize:
       return FillLayersEqual<CSSPropertyBackgroundSize>(a.BackgroundLayers(),
                                                         b.BackgroundLayers());
-    case CSSPropertyBaselineShift:
-      return a.BaselineShiftValue() == b.BaselineShiftValue();
     case CSSPropertyBorderBottomColor:
       return a.BorderBottomColor() == b.BorderBottomColor() &&
              a.VisitedLinkBorderBottomColor() ==
@@ -135,25 +144,12 @@ bool CSSPropertyEquality::PropertiesEqual(const PropertyHandle& property,
     case CSSPropertyColor:
       return a.GetColor() == b.GetColor() &&
              a.VisitedLinkColor() == b.VisitedLinkColor();
-    case CSSPropertyFill: {
-      const SVGComputedStyle& a_svg = a.SvgStyle();
-      const SVGComputedStyle& b_svg = b.SvgStyle();
-      return a_svg.FillPaint().EqualTypeOrColor(b_svg.FillPaint()) &&
-             a_svg.VisitedLinkFillPaint().EqualTypeOrColor(
-                 b_svg.VisitedLinkFillPaint());
-    }
-    case CSSPropertyFillOpacity:
-      return a.FillOpacity() == b.FillOpacity();
     case CSSPropertyFlexBasis:
       return a.FlexBasis() == b.FlexBasis();
     case CSSPropertyFlexGrow:
       return a.FlexGrow() == b.FlexGrow();
     case CSSPropertyFlexShrink:
       return a.FlexShrink() == b.FlexShrink();
-    case CSSPropertyFloodColor:
-      return a.FloodColor() == b.FloodColor();
-    case CSSPropertyFloodOpacity:
-      return a.FloodOpacity() == b.FloodOpacity();
     case CSSPropertyFontSize:
       // CSSPropertyFontSize: Must pass a specified size to setFontSize if Text
       // Autosizing is enabled, but a computed size if text zoom is enabled (if
@@ -177,8 +173,6 @@ bool CSSPropertyEquality::PropertiesEqual(const PropertyHandle& property,
       return a.Left() == b.Left();
     case CSSPropertyLetterSpacing:
       return a.LetterSpacing() == b.LetterSpacing();
-    case CSSPropertyLightingColor:
-      return a.LightingColor() == b.LightingColor();
     case CSSPropertyLineHeight:
       return a.SpecifiedLineHeight() == b.SpecifiedLineHeight();
     case CSSPropertyListStyleImage:
@@ -240,27 +234,6 @@ bool CSSPropertyEquality::PropertiesEqual(const PropertyHandle& property,
       return a.ShapeMargin() == b.ShapeMargin();
     case CSSPropertyShapeOutside:
       return DataEquivalent(a.ShapeOutside(), b.ShapeOutside());
-    case CSSPropertyStopColor:
-      return a.StopColor() == b.StopColor();
-    case CSSPropertyStopOpacity:
-      return a.StopOpacity() == b.StopOpacity();
-    case CSSPropertyStroke: {
-      const SVGComputedStyle& a_svg = a.SvgStyle();
-      const SVGComputedStyle& b_svg = b.SvgStyle();
-      return a_svg.StrokePaint().EqualTypeOrColor(b_svg.StrokePaint()) &&
-             a_svg.VisitedLinkStrokePaint().EqualTypeOrColor(
-                 b_svg.VisitedLinkStrokePaint());
-    }
-    case CSSPropertyStrokeDasharray:
-      return a.StrokeDashArray() == b.StrokeDashArray();
-    case CSSPropertyStrokeDashoffset:
-      return a.StrokeDashOffset() == b.StrokeDashOffset();
-    case CSSPropertyStrokeMiterlimit:
-      return a.StrokeMiterLimit() == b.StrokeMiterLimit();
-    case CSSPropertyStrokeOpacity:
-      return a.StrokeOpacity() == b.StrokeOpacity();
-    case CSSPropertyStrokeWidth:
-      return a.StrokeWidth() == b.StrokeWidth();
     case CSSPropertyTextDecorationColor:
       return a.TextDecorationColor() == b.TextDecorationColor() &&
              a.VisitedLinkTextDecorationColor() ==
@@ -359,22 +332,6 @@ bool CSSPropertyEquality::PropertiesEqual(const PropertyHandle& property,
       return a.Width() == b.Width();
     case CSSPropertyWordSpacing:
       return a.WordSpacing() == b.WordSpacing();
-    case CSSPropertyD:
-      return DataEquivalent(a.SvgStyle().D(), b.SvgStyle().D());
-    case CSSPropertyCx:
-      return a.SvgStyle().Cx() == b.SvgStyle().Cx();
-    case CSSPropertyCy:
-      return a.SvgStyle().Cy() == b.SvgStyle().Cy();
-    case CSSPropertyX:
-      return a.SvgStyle().X() == b.SvgStyle().X();
-    case CSSPropertyY:
-      return a.SvgStyle().Y() == b.SvgStyle().Y();
-    case CSSPropertyR:
-      return a.SvgStyle().R() == b.SvgStyle().R();
-    case CSSPropertyRx:
-      return a.SvgStyle().Rx() == b.SvgStyle().Rx();
-    case CSSPropertyRy:
-      return a.SvgStyle().Ry() == b.SvgStyle().Ry();
     case CSSPropertyZIndex:
       return a.HasAutoZIndex() == b.HasAutoZIndex() &&
              (a.HasAutoZIndex() || a.ZIndex() == b.ZIndex());
