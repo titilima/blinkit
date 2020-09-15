@@ -2336,6 +2336,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_initiator_type_names.cpp">
       <Filter>renderer\platform\loader\fetch</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_uri_value.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_property_parser_helpers.cc">
+      <Filter>renderer\core\css\parser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -5388,6 +5394,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_initiator_type_names.h">
       <Filter>renderer\platform\loader\fetch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_uri_value.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_property_parser_helpers.h">
+      <Filter>renderer\core\css\parser</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
