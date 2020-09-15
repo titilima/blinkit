@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_image_generator_value.cc
+// Description: CSSImageGeneratorValue Class
+//      Author: Ziming Li
+//     Created: 2020-09-15
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc.  All rights reserved.
  *
@@ -84,8 +95,11 @@ CSSImageGeneratorValue::~CSSImageGeneratorValue() = default;
 void CSSImageGeneratorValue::AddClient(const ImageResourceObserver* client) {
   DCHECK(client);
   if (clients_.IsEmpty()) {
+    ASSERT(false); // BKTODO:
+#if 0
     DCHECK(!keep_alive_);
     keep_alive_ = this;
+#endif
   }
 
   SizeAndCount& size_count =
@@ -114,8 +128,11 @@ void CSSImageGeneratorValue::RemoveClient(const ImageResourceObserver* client) {
     clients_.erase(client);
 
   if (clients_.IsEmpty()) {
+    ASSERT(false); // BKTODO:
+#if 0
     DCHECK(keep_alive_);
     keep_alive_.Clear();
+#endif
   }
 }
 
@@ -123,7 +140,10 @@ Image* CSSImageGeneratorValue::GetImage(const ImageResourceObserver* client,
                                         const FloatSize& size) const {
   ClientSizeCountMap::iterator it = clients_.find(client);
   if (it != clients_.end()) {
+    ASSERT(false); // BKTODO:
+#if 0
     DCHECK(keep_alive_);
+#endif
     SizeAndCount& size_count = it->value;
     if (size_count.size != size) {
       if (!size_count.size.IsEmpty()) {
