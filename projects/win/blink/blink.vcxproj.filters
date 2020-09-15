@@ -2333,6 +2333,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\gradient_generated_image.cc">
       <Filter>renderer\platform\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_initiator_type_names.cpp">
+      <Filter>renderer\platform\loader\fetch</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -5382,6 +5385,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\gradient_generated_image.h">
       <Filter>renderer\platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_initiator_type_names.h">
+      <Filter>renderer\platform\loader\fetch</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

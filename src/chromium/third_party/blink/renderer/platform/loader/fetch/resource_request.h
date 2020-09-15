@@ -63,6 +63,7 @@ class ResourceRequest final
 public:
     enum class RedirectStatus : uint8_t { kFollowedRedirect, kNoRedirect };
 
+    explicit ResourceRequest(const String &urlString);
     explicit ResourceRequest(const GURL &URL);
 
     BkCrawler Crawler(void) const { return m_crawler; }

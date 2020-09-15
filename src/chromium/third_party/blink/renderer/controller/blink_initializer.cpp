@@ -22,6 +22,7 @@
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string_table.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/platform/font_family_names.h"
+#   include "third_party/blink/renderer/platform/loader/fetch/fetch_initiator_type_names.h"
 #endif
 
 namespace blink {
@@ -33,7 +34,7 @@ static void InitializeCommon(Platform *platform)
 
     const unsigned kCoreStaticStringsCount = event_type_names::kNamesCount + html_tokenizer_names::kNamesCount + http_names::kNamesCount
 #ifndef BLINKIT_CRAWLER_ONLY
-        + FontFamilyNames::FontFamilyNamesCount
+        + FontFamilyNames::FontFamilyNamesCount + fetch_initiator_type_names::kNamesCount
 #endif
         ;
 
@@ -52,6 +53,7 @@ static void InitializeCommon(Platform *platform)
     http_names::Init();
 #ifndef BLINKIT_CRAWLER_ONLY
     FontFamilyNames::init();
+    fetch_initiator_type_names::Init();
 #endif
 
     CSSParserTokenRange::InitStaticEOFToken();

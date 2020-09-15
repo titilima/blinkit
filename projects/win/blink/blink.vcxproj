@@ -765,6 +765,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\length.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\length_functions.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_context.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_initiator_type_names.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_parameters.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\raw_resource.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource.cpp" />
@@ -1701,6 +1702,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_client_settings_object.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_initiator_info.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_initiator_type_names.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_parameters.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\raw_resource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource.h" />

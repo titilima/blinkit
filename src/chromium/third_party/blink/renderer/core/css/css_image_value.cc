@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_image_value.cc
+// Description: CSSImageValue Class
+//      Author: Ziming Li
+//     Created: 2020-09-15
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2008 Apple Inc. All rights reserved.
@@ -35,6 +46,7 @@
 
 namespace blink {
 
+#if 0 // BKTODO:
 CSSImageValue::CSSImageValue(const AtomicString& raw_value,
                              const KURL& url,
                              const Referrer& referrer,
@@ -44,6 +56,7 @@ CSSImageValue::CSSImageValue(const AtomicString& raw_value,
       referrer_(referrer),
       absolute_url_(url.GetString()),
       cached_image_(image) {}
+#endif
 
 CSSImageValue::CSSImageValue(const AtomicString& absolute_url)
     : CSSValue(kImageClass),
@@ -60,24 +73,33 @@ StyleImage* CSSImageValue::CacheImage(
     if (absolute_url_.IsEmpty())
       ReResolveURL(document);
     ResourceRequest resource_request(absolute_url_);
+    ASSERT(false); // BKTODO:
+#if 0
     resource_request.SetHTTPReferrer(SecurityPolicy::GenerateReferrer(
         referrer_.referrer_policy, resource_request.Url(), referrer_.referrer));
+#endif
     ResourceLoaderOptions options;
     options.initiator_info.name = initiator_name_.IsEmpty()
-                                      ? FetchInitiatorTypeNames::css
+                                      ? fetch_initiator_type_names::kCSS
                                       : initiator_name_;
     FetchParameters params(resource_request, options);
 
     if (cross_origin != kCrossOriginAttributeNotSet) {
+      ASSERT(false); // BKTODO:
+#if 0
       params.SetCrossOriginAccessControl(document.GetSecurityOrigin(),
                                          cross_origin);
+#endif
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (document.GetFrame() &&
         image_request_optimization == FetchParameters::kAllowPlaceholder &&
         document.GetFrame()->IsClientLoFiAllowed(params.GetResourceRequest())) {
       params.SetClientLoFiPlaceholder();
     }
+#endif
     cached_image_ = StyleFetchedImage::Create(
         document, params,
         image_request_optimization == FetchParameters::kDeferImageLoad);
@@ -95,10 +117,13 @@ void CSSImageValue::RestoreCachedResourceIfNeeded(
   if (!resource)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   resource->EmulateLoadStartedForInspector(
-      document.Fetcher(), KURL(absolute_url_),
-      initiator_name_.IsEmpty() ? FetchInitiatorTypeNames::css
+      document.Fetcher(), GURL(absolute_url_.StdUtf8()),
+      initiator_name_.IsEmpty() ? fetch_initiator_type_names::kCSS
                                 : initiator_name_);
+#endif
 }
 
 bool CSSImageValue::HasFailedOrCanceledSubresources() const {
@@ -131,12 +156,15 @@ void CSSImageValue::TraceAfterDispatch(blink::Visitor* visitor) {
 }
 
 void CSSImageValue::ReResolveURL(const Document& document) const {
-  KURL url = document.CompleteURL(relative_url_);
-  AtomicString url_string(url.GetString());
+  GURL url = document.CompleteURL(relative_url_);
+  AtomicString url_string = AtomicString::FromStdUTF8(url.spec());
   if (url_string == absolute_url_)
     return;
   absolute_url_ = url_string;
+  ASSERT(false); // BKTODO:
+#if 0
   cached_image_.Clear();
+#endif
 }
 
 }  // namespace blink

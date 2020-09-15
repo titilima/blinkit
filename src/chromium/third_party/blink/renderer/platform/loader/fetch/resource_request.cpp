@@ -41,6 +41,10 @@
 
 namespace blink {
 
+ResourceRequest::ResourceRequest(const String &urlString) : ResourceRequest(GURL(urlString.StdUtf8()))
+{
+}
+
 ResourceRequest::ResourceRequest(const GURL &URL)
     : m_URL(URL)
     , m_httpMethod(http_names::kGET)
