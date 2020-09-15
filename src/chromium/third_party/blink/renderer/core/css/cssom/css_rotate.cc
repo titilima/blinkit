@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_rotate.cc
+// Description: CSSRotate Class
+//      Author: Ziming Li
+//     Created: 2020-09-15
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,7 +18,7 @@
 #include "third_party/blink/renderer/core/css/css_function_value.h"
 #include "third_party/blink/renderer/core/css/css_primitive_value.h"
 #include "third_party/blink/renderer/core/css/cssom/css_unit_value.h"
-#include "third_party/blink/renderer/core/geometry/dom_matrix.h"
+// BKTODO: #include "third_party/blink/renderer/core/geometry/dom_matrix.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 
 namespace blink {
@@ -79,6 +90,7 @@ CSSRotate* CSSRotate::Create(CSSNumericValue* angle,
                        CSSUnitValue::Create(1), angle, true /* is2D */);
 }
 
+#if 0 // BKTODO:
 CSSRotate* CSSRotate::Create(const CSSNumberish& x,
                              const CSSNumberish& y,
                              const CSSNumberish& z,
@@ -99,6 +111,7 @@ CSSRotate* CSSRotate::Create(const CSSNumberish& x,
   }
   return new CSSRotate(x_value, y_value, z_value, angle, false /* is2D */);
 }
+#endif
 
 CSSRotate* CSSRotate::Create(CSSNumericValue* angle) {
   return new CSSRotate(CSSUnitValue::Create(0), CSSUnitValue::Create(0),
@@ -147,6 +160,9 @@ DOMMatrix* CSSRotate::toMatrix(ExceptionState& exception_state) const {
     return nullptr;
   }
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   DOMMatrix* matrix = DOMMatrix::Create();
   CSSUnitValue* angle = angle_->to(CSSPrimitiveValue::UnitType::kDegrees);
   if (is2D()) {
@@ -156,6 +172,7 @@ DOMMatrix* CSSRotate::toMatrix(ExceptionState& exception_state) const {
                                 angle->value());
   }
   return matrix;
+#endif
 }
 
 const CSSFunctionValue* CSSRotate::ToCSSValue() const {
@@ -186,6 +203,7 @@ const CSSFunctionValue* CSSRotate::ToCSSValue() const {
   return result;
 }
 
+#if 0 // BKTODO:
 void CSSRotate::setX(const CSSNumberish& x, ExceptionState& exception_state) {
   CSSNumericValue* value = CSSNumericValue::FromNumberish(x);
   if (!IsValidRotateCoord(value)) {
@@ -212,6 +230,7 @@ void CSSRotate::setZ(const CSSNumberish& z, ExceptionState& exception_state) {
   }
   z_ = value;
 }
+#endif
 
 CSSRotate::CSSRotate(CSSNumericValue* x,
                      CSSNumericValue* y,
