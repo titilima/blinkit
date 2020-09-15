@@ -65,6 +65,7 @@ public:
     virtual void DataReceived(Resource *resource, const char *data, size_t length) {}
     virtual void NotifyFinished(Resource *resource) {}
 
+    virtual bool IsFontResourceClient(void) const { return false; }
     virtual bool IsRawResourceClient(void) const { return false; }
 
     Resource* GetResource(void) const { return m_resource.get(); }

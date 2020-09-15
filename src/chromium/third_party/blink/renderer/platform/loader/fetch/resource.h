@@ -266,4 +266,9 @@ private:
 
 }  // namespace blink
 
+#define DEFINE_RESOURCE_TYPE_CASTS(typeName)                            \
+    DEFINE_TYPE_CASTS(typeName##Resource, Resource, resource,           \
+                      resource->GetType() == ResourceType::k##typeName, \
+                      resource.GetType() == ResourceType::k##typeName);
+
 #endif

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_resource.h
+// Description: FontResource Class
+//      Author: Ziming Li
+//     Created: 2020-09-15
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -51,7 +62,9 @@ class CORE_EXPORT FontResource final : public Resource {
 
   void DidAddClient(ResourceClient*) override;
 
+#if 0 // BKTODO:
   void SetRevalidatingRequest(const ResourceRequest&) override;
+#endif
 
   void AllClientsAndObserversRemoved() override;
   void StartLoadLimitTimersIfNecessary(base::SingleThreadTaskRunner*);
@@ -65,19 +78,21 @@ class CORE_EXPORT FontResource final : public Resource {
   // font is not needed for painting the text.
   bool IsLowPriorityLoadingAllowedForRemoteFont() const;
 
+#if 0 // BKTODO:
   void WillReloadAfterDiskCacheMiss() override;
 
   void OnMemoryDump(WebMemoryDumpLevelOfDetail,
                     WebProcessMemoryDump*) const override;
+#endif
 
  private:
   class FontResourceFactory : public NonTextResourceFactory {
    public:
     FontResourceFactory() : NonTextResourceFactory(ResourceType::kFont) {}
 
-    Resource* Create(const ResourceRequest& request,
+    std::shared_ptr<Resource> Create(const ResourceRequest& request,
                      const ResourceLoaderOptions& options) const override {
-      return new FontResource(request, options);
+      return std::shared_ptr<Resource>(new FontResource(request, options));
     }
   };
   FontResource(const ResourceRequest&, const ResourceLoaderOptions&);

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_font_face_src_value.h
+// Description: CSSFontFaceSrcValue Class
+//      Author: Ziming Li
+//     Created: 2020-09-15
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -29,7 +40,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "third_party/blink/renderer/core/css/css_value.h"
 #include "third_party/blink/renderer/core/loader/resource/font_resource.h"
-#include "third_party/blink/renderer/platform/weborigin/referrer.h"
+// BKTODO: #include "third_party/blink/renderer/platform/weborigin/referrer.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace blink {
@@ -38,6 +49,7 @@ class ExecutionContext;
 
 class CORE_EXPORT CSSFontFaceSrcValue : public CSSValue {
  public:
+#if 0 // BKTODO:
   static CSSFontFaceSrcValue* Create(
       const String& specified_resource,
       const String& absolute_resource,
@@ -54,6 +66,7 @@ class CORE_EXPORT CSSFontFaceSrcValue : public CSSValue {
                                    Referrer(), true,
                                    should_check_content_security_policy);
   }
+#endif
 
   const String& GetResource() const { return absolute_resource_; }
   const String& Format() const { return format_; }
@@ -77,6 +90,7 @@ class CORE_EXPORT CSSFontFaceSrcValue : public CSSValue {
   }
 
  private:
+#if 0 // BKTODO:
   CSSFontFaceSrcValue(
       const String& specified_resource,
       const String& absolute_resource,
@@ -90,13 +104,14 @@ class CORE_EXPORT CSSFontFaceSrcValue : public CSSValue {
         is_local_(local),
         should_check_content_security_policy_(
             should_check_content_security_policy) {}
+#endif
 
   void RestoreCachedResourceIfNeeded(ExecutionContext*) const;
 
   String absolute_resource_;
   String specified_resource_;
   String format_;
-  Referrer referrer_;
+  // BKTODO: Referrer referrer_;
   bool is_local_;
   ContentSecurityPolicyDisposition should_check_content_security_policy_;
 
@@ -112,14 +127,13 @@ class CORE_EXPORT CSSFontFaceSrcValue : public CSSValue {
       return new FontResourceHelper(resource, task_runner);
     }
 
-    void Trace(blink::Visitor* visitor) override {
-      FontResourceClient::Trace(visitor);
-    }
-
    private:
     FontResourceHelper(FontResource* resource,
                        base::SingleThreadTaskRunner* task_runner) {
+      ASSERT(false); // BKTODO:
+#if 0
       SetResource(resource, task_runner);
+#endif
     }
 
     String DebugName() const override {
