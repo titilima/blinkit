@@ -5359,5 +5359,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_translate.h">
       <Filter>renderer\core\css\cssom</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_matrix_component_options.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_matrix_component.cc
+// Description: CSSMatrixComponent Class
+//      Author: Ziming Li
+//     Created: 2020-09-15
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,13 +17,14 @@
 
 #include "third_party/blink/renderer/core/css/css_primitive_value.h"
 #include "third_party/blink/renderer/core/css/cssom/css_matrix_component_options.h"
-#include "third_party/blink/renderer/core/geometry/dom_matrix.h"
+// BKTODO: #include "third_party/blink/renderer/core/geometry/dom_matrix.h"
 #include "third_party/blink/renderer/platform/wtf/math_extras.h"
 
 namespace blink {
 
 namespace {
 
+#if 0 // BKTODO:
 DOMMatrix* To2DMatrix(DOMMatrixReadOnly* matrix) {
   DOMMatrix* twoDimensionalMatrix = DOMMatrix::Create();
   twoDimensionalMatrix->setA(matrix->m11());
@@ -23,20 +35,27 @@ DOMMatrix* To2DMatrix(DOMMatrixReadOnly* matrix) {
   twoDimensionalMatrix->setF(matrix->m42());
   return twoDimensionalMatrix;
 }
+#endif
 
 }  // namespace
 
+#if 0 // BKTODO:
 CSSMatrixComponent* CSSMatrixComponent::Create(
     DOMMatrixReadOnly* matrix,
     const CSSMatrixComponentOptions& options) {
   return new CSSMatrixComponent(
       matrix, options.hasIs2D() ? options.is2D() : matrix->is2D());
 }
+#endif
 
 DOMMatrix* CSSMatrixComponent::toMatrix(ExceptionState&) const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (is2D() && !matrix_->is2D())
     return To2DMatrix(matrix_);
   return DOMMatrix::Create(matrix_.Get());
+#endif
 }
 
 CSSMatrixComponent* CSSMatrixComponent::FromCSSValue(
@@ -45,15 +64,21 @@ CSSMatrixComponent* CSSMatrixComponent::FromCSSValue(
   for (const auto& item : value)
     entries.push_back(ToCSSPrimitiveValue(*item).GetDoubleValue());
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return CSSMatrixComponent::Create(
       DOMMatrixReadOnly::CreateForSerialization(entries.data(), entries.size()),
       CSSMatrixComponentOptions());
+#endif
 }
 
 const CSSFunctionValue* CSSMatrixComponent::ToCSSValue() const {
   CSSFunctionValue* result =
       CSSFunctionValue::Create(is2D() ? CSSValueMatrix : CSSValueMatrix3d);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (is2D()) {
     double values[6] = {matrix_->a(), matrix_->b(), matrix_->c(),
                         matrix_->d(), matrix_->e(), matrix_->f()};
@@ -72,6 +97,7 @@ const CSSFunctionValue* CSSMatrixComponent::ToCSSValue() const {
           value, CSSPrimitiveValue::UnitType::kNumber));
     }
   }
+#endif
 
   return result;
 }
