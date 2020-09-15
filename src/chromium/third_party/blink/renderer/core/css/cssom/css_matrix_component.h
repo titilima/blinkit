@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_matrix_component.h
+// Description: CSSMatrixComponent Class
+//      Author: Ziming Li
+//     Created: 2020-09-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,8 +18,10 @@
 
 #include "base/macros.h"
 #include "third_party/blink/renderer/core/css/cssom/css_transform_component.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/geometry/dom_matrix.h"
 #include "third_party/blink/renderer/core/geometry/dom_matrix_read_only.h"
+#endif
 
 namespace blink {
 
@@ -21,9 +34,11 @@ class CORE_EXPORT CSSMatrixComponent final : public CSSTransformComponent {
   DEFINE_WRAPPERTYPEINFO();
 
  public:
+#if 0 // BKTODO:
   // Constructors defined in the IDL.
   static CSSMatrixComponent* Create(DOMMatrixReadOnly*,
                                     const CSSMatrixComponentOptions&);
+#endif
 
   // Blink-internal ways of creating CSSMatrixComponents.
   static CSSMatrixComponent* FromCSSValue(const CSSFunctionValue&);
@@ -38,14 +53,11 @@ class CORE_EXPORT CSSMatrixComponent final : public CSSTransformComponent {
   TransformComponentType GetType() const final { return kMatrixType; }
   const CSSFunctionValue* ToCSSValue() const final;
 
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(matrix_);
-    CSSTransformComponent::Trace(visitor);
-  }
-
  private:
+#if 0 // BKTODO:
   CSSMatrixComponent(DOMMatrixReadOnly* matrix, bool is2D)
       : CSSTransformComponent(is2D), matrix_(DOMMatrix::Create(matrix)) {}
+#endif
 
   Member<DOMMatrix> matrix_;
   DISALLOW_COPY_AND_ASSIGN(CSSMatrixComponent);

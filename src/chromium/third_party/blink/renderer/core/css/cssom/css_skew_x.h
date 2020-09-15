@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_skew_x.h
+// Description: CSSSkewX Class
+//      Author: Ziming Li
+//     Created: 2020-09-15
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -42,11 +53,6 @@ class CORE_EXPORT CSSSkewX final : public CSSTransformComponent {
   // Internal methods - from CSSTransformComponent.
   TransformComponentType GetType() const override { return kSkewXType; }
   const CSSFunctionValue* ToCSSValue() const override;
-
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(ax_);
-    CSSTransformComponent::Trace(visitor);
-  }
 
  private:
   CSSSkewX(CSSNumericValue* ax);

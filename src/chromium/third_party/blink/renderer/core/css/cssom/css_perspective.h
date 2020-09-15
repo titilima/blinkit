@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_perspective.h
+// Description: CSSPerspective Class
+//      Author: Ziming Li
+//     Created: 2020-09-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -42,11 +53,6 @@ class CORE_EXPORT CSSPerspective final : public CSSTransformComponent {
   // Internal methods - from CSSTransformComponent.
   TransformComponentType GetType() const final { return kPerspectiveType; }
   const CSSFunctionValue* ToCSSValue() const final;
-
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(length_);
-    CSSTransformComponent::Trace(visitor);
-  }
 
  private:
   CSSPerspective(CSSNumericValue* length);

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_rotate.h
+// Description: CSSRotate Class
+//      Author: Ziming Li
+//     Created: 2020-09-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -24,11 +35,13 @@ class CORE_EXPORT CSSRotate final : public CSSTransformComponent {
  public:
   // Constructors defined in the IDL.
   static CSSRotate* Create(CSSNumericValue* angle, ExceptionState&);
+#if 0 // BKTODO:
   static CSSRotate* Create(const CSSNumberish& x,
                            const CSSNumberish& y,
                            const CSSNumberish& z,
                            CSSNumericValue* angle,
                            ExceptionState&);
+#endif
 
   // Blink-internal ways of creating CSSRotates.
   static CSSRotate* Create(CSSNumericValue* angle);
@@ -41,26 +54,20 @@ class CORE_EXPORT CSSRotate final : public CSSTransformComponent {
   // Getters and setters for attributes defined in the IDL.
   CSSNumericValue* angle() { return angle_.Get(); }
   void setAngle(CSSNumericValue* angle, ExceptionState&);
+#if 0 // BKTODO:
   void x(CSSNumberish& x) { x.SetCSSNumericValue(x_); }
   void y(CSSNumberish& y) { y.SetCSSNumericValue(y_); }
   void z(CSSNumberish& z) { z.SetCSSNumericValue(z_); }
   void setX(const CSSNumberish&, ExceptionState&);
   void setY(const CSSNumberish&, ExceptionState&);
   void setZ(const CSSNumberish&, ExceptionState&);
+#endif
 
   DOMMatrix* toMatrix(ExceptionState&) const final;
 
   // Internal methods - from CSSTransformComponent.
   TransformComponentType GetType() const final { return kRotationType; }
   const CSSFunctionValue* ToCSSValue() const final;
-
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(angle_);
-    visitor->Trace(x_);
-    visitor->Trace(y_);
-    visitor->Trace(z_);
-    CSSTransformComponent::Trace(visitor);
-  }
 
  private:
   CSSRotate(CSSNumericValue* x,

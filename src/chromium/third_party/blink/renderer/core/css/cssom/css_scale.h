@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_scale.h
+// Description: CSSScale Class
+//      Author: Ziming Li
+//     Created: 2020-09-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,7 +19,9 @@
 #include "base/macros.h"
 #include "third_party/blink/renderer/core/css/cssom/css_transform_component.h"
 #include "third_party/blink/renderer/core/css/cssom/css_unit_value.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/geometry/dom_matrix.h"
+#endif
 
 namespace blink {
 
@@ -22,6 +35,7 @@ class CORE_EXPORT CSSScale final : public CSSTransformComponent {
   DEFINE_WRAPPERTYPEINFO();
 
  public:
+#if 0 // BKTODO:
   // Constructors defined in the IDL.
   static CSSScale* Create(const CSSNumberish&,
                           const CSSNumberish&,
@@ -30,6 +44,7 @@ class CORE_EXPORT CSSScale final : public CSSTransformComponent {
                           const CSSNumberish&,
                           const CSSNumberish&,
                           ExceptionState&);
+#endif
 
   // Blink-internal ways of creating CSSScales.
   static CSSScale* Create(CSSNumericValue* x, CSSNumericValue* y) {
@@ -42,6 +57,7 @@ class CORE_EXPORT CSSScale final : public CSSTransformComponent {
   }
   static CSSScale* FromCSSValue(const CSSFunctionValue&);
 
+#if 0 // BKTODO:
   // Getters and setters for attributes defined in the IDL.
   void x(CSSNumberish& x) { x.SetCSSNumericValue(x_); }
   void y(CSSNumberish& y) { y.SetCSSNumericValue(y_); }
@@ -49,19 +65,13 @@ class CORE_EXPORT CSSScale final : public CSSTransformComponent {
   void setX(const CSSNumberish&, ExceptionState&);
   void setY(const CSSNumberish&, ExceptionState&);
   void setZ(const CSSNumberish&, ExceptionState&);
+#endif
 
   DOMMatrix* toMatrix(ExceptionState&) const final;
 
   // Internal methods - from CSSTransformComponent.
   TransformComponentType GetType() const final { return kScaleType; }
   const CSSFunctionValue* ToCSSValue() const final;
-
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(x_);
-    visitor->Trace(y_);
-    visitor->Trace(z_);
-    CSSTransformComponent::Trace(visitor);
-  }
 
  private:
   CSSScale(CSSNumericValue* x,
