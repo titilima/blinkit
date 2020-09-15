@@ -2396,6 +2396,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\font_resource.cc">
       <Filter>renderer\core\loader\resource</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_style_image_value.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -5511,6 +5514,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\font_resource.h">
       <Filter>renderer\core\loader\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_style_image_value.h">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\css_resource_value.h">
+      <Filter>renderer\core\css\cssom</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

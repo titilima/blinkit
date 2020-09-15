@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_url_image_value.cc
+// Description: CSSURLImageValue Class
+//      Author: Ziming Li
+//     Created: 2020-09-15
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -9,13 +20,15 @@
 #include "third_party/blink/renderer/core/loader/resource/image_resource_content.h"
 #include "third_party/blink/renderer/core/style/style_image.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
-#include "third_party/blink/renderer/platform/bindings/script_state.h"
 
 namespace blink {
 
 CSSURLImageValue* CSSURLImageValue::Create(ScriptState* script_state,
                                            const AtomicString& url,
                                            ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   const auto* execution_context = ExecutionContext::From(script_state);
   DCHECK(execution_context);
   KURL parsed_url = execution_context->CompleteURL(url);
@@ -27,6 +40,7 @@ CSSURLImageValue* CSSURLImageValue::Create(ScriptState* script_state,
   // getter and serialization.
   return new CSSURLImageValue(
       *CSSImageValue::Create(url, parsed_url, Referrer()));
+#endif
 }
 
 CSSURLImageValue* CSSURLImageValue::FromCSSValue(const CSSImageValue& value) {
@@ -54,6 +68,7 @@ ResourceStatus CSSURLImageValue::Status() const {
   return value_->CachedImage()->CachedImage()->GetContentStatus();
 }
 
+#if 0 // BKTODO:
 scoped_refptr<Image> CSSURLImageValue::GetSourceImageForCanvas(
     SourceImageStatus*,
     AccelerationHint,
@@ -76,14 +91,10 @@ scoped_refptr<Image> CSSURLImageValue::GetImage() const {
 bool CSSURLImageValue::IsAccelerated() const {
   return GetImage() && GetImage()->IsTextureBacked();
 }
+#endif
 
 const CSSValue* CSSURLImageValue::ToCSSValue() const {
   return value_;
-}
-
-void CSSURLImageValue::Trace(blink::Visitor* visitor) {
-  visitor->Trace(value_);
-  CSSStyleImageValue::Trace(visitor);
 }
 
 }  // namespace blink
