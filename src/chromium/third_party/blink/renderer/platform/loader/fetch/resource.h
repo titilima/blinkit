@@ -96,6 +96,7 @@ public:
         return *m_error;
     }
     bool WasCanceled(void) const { return m_error && m_error->IsCancellation(); }
+    bool LoadFailedOrCanceled(void) const { return !!m_error; }
 
     unsigned long Identifier(void) const { return m_identifier; }
     void SetIdentifier(unsigned long identifier) { m_identifier = identifier; }

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_font_face_src_value.cc
+// Description: CSSFontFaceSrcValue Class
+//      Author: Ziming Li
+//     Created: 2020-09-15
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2010 Apple Inc. All rights reserved.
  *
@@ -25,13 +36,13 @@
 
 #include "third_party/blink/renderer/core/css/css_font_face_src_value.h"
 
-#include "third_party/blink/public/platform/web_url_request.h"
+// BKTODO: #include "third_party/blink/public/platform/web_url_request.h"
 #include "third_party/blink/renderer/core/css/css_markup.h"
 #include "third_party/blink/renderer/core/css/style_sheet_contents.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/node.h"
 #include "third_party/blink/renderer/core/loader/resource/font_resource.h"
-#include "third_party/blink/renderer/core/workers/worker_global_scope.h"
+// BKTODO: #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
 #include "third_party/blink/renderer/platform/cross_origin_attribute_value.h"
 #include "third_party/blink/renderer/platform/fonts/font_cache.h"
 #include "third_party/blink/renderer/platform/fonts/font_custom_platform_data.h"
@@ -83,6 +94,8 @@ FontResource& CSSFontFaceSrcValue::Fetch(ExecutionContext* context,
                                          FontResourceClient* client) const {
   if (!fetched_) {
     ResourceRequest resource_request(absolute_resource_);
+    ASSERT(false); // BKTODO:
+#if 0
     resource_request.SetHTTPReferrer(SecurityPolicy::GenerateReferrer(
         referrer_.referrer_policy, resource_request.Url(), referrer_.referrer));
     ResourceLoaderOptions options;
@@ -107,14 +120,18 @@ FontResource& CSSFontFaceSrcValue::Fetch(ExecutionContext* context,
     fetched_ = FontResourceHelper::Create(
         FontResource::Fetch(params, context->Fetcher(), client),
         context->GetTaskRunner(TaskType::kInternalLoading).get());
+#endif
   } else {
     // FIXME: CSSFontFaceSrcValue::Fetch is invoked when @font-face rule
     // is processed by StyleResolver / StyleEngine.
     RestoreCachedResourceIfNeeded(context);
     if (client) {
+      ASSERT(false); // BKTODO:
+#if 0
       client->SetResource(
           fetched_->GetResource(),
           context->GetTaskRunner(TaskType::kInternalLoading).get());
+#endif
     }
   }
   return *ToFontResource(fetched_->GetResource());
@@ -126,12 +143,15 @@ void CSSFontFaceSrcValue::RestoreCachedResourceIfNeeded(
   DCHECK(context);
   DCHECK(context->Fetcher());
 
+  ASSERT(false); // BKTODO:
+#if 0
   const String resource_url = context->CompleteURL(absolute_resource_);
   DCHECK_EQ(should_check_content_security_policy_,
             fetched_->GetResource()->Options().content_security_policy_option);
   context->Fetcher()->EmulateLoadStartedForInspector(
       fetched_->GetResource(), KURL(resource_url),
       mojom::RequestContextType::FONT, FetchInitiatorTypeNames::css);
+#endif
 }
 
 bool CSSFontFaceSrcValue::Equals(const CSSFontFaceSrcValue& other) const {
