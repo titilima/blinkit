@@ -123,28 +123,24 @@ void RequestImpl::DoThreadWork(void)
         curl_easy_setopt(m_curl, CURLOPT_HEADERFUNCTION, HeaderCallback);
 
         CURLcode code = curl_easy_perform(m_curl);
-        if (CURLE_OK != code)
+
+        if (!headers.empty())
         {
-            BKLOG("ERROR: curl_easy_perform failed, code = %d.", code);
-
-            std::unique_lock<Controller> lock(*m_controller);
-            if (!m_controller->Cancelled())
-                m_client.RequestFailed(BK_ERR_NETWORK, m_client.UserData);
-            break;
-        }
-
 #if MANUALLY_SUPPRESS_CONNECT_HEADERS
-        if (m_suppressConnectHeaders)
-        {
-            ASSERT(HasConnectHeader(headers));
+            if (m_suppressConnectHeaders)
+            {
+                ASSERT(HasConnectHeader(headers));
 
-            size_t p = headers.find("\r\n\r\n");
-            headers = headers.substr(p + 4);
-        }
+                size_t p = headers.find("\r\n\r\n");
+                headers = headers.substr(p + 4);
+            }
 #endif
-        m_response->ParseHeaders(headers);
-        m_response->InflateBodyIfNecessary();
-        if (ProcessResponse())
+            m_response->ParseHeaders(headers);
+
+            code = m_response->InflateBodyIfNecessary(code);
+        }
+
+        if (ProcessResponse(code))
             break;
 
         m_response->Reset();
@@ -263,6 +259,7 @@ bool RequestImpl::PrepareCURLSession(void)
     // 7. Apply other options.
     const long timeout = m_timeoutInMs;
     curl_easy_setopt(m_curl, CURLOPT_TIMEOUT_MS, timeout);
+    curl_easy_setopt(m_curl, CURLOPT_HTTP_CONTENT_DECODING, OPT_FALSE);
     curl_easy_setopt(m_curl, CURLOPT_SSL_VERIFYPEER, OPT_FALSE);
     curl_easy_setopt(m_curl, CURLOPT_SSL_VERIFYHOST, OPT_FALSE);
 
@@ -275,11 +272,18 @@ bool RequestImpl::PrepareCURLSession(void)
     return true;
 }
 
-bool RequestImpl::ProcessResponse(void)
+bool RequestImpl::ProcessResponse(CURLcode code)
 {
     std::unique_lock<Controller> lock(*m_controller);
     if (m_controller->Cancelled())
         return true;
+
+    if (CURLE_OK != code)
+    {
+        BKLOG("ERROR: curl_easy_perform failed, code = %d.", code);
+        m_client.RequestFailed(BK_ERR_NETWORK, m_client.UserData);
+        return true;
+    }
 
     switch (m_response->StatusCode())
     {
@@ -337,6 +341,8 @@ void RequestImpl::SetProxy(int type, const char *proxy)
 
 CURLoption RequestImpl::TranslateOption(const char *name)
 {
+    if (base::EqualsCaseInsensitiveASCII(name, Strings::HttpHeader::AcceptEncoding))
+        return CURLOPT_ACCEPT_ENCODING;
     if (base::EqualsCaseInsensitiveASCII(name, Strings::HttpHeader::Referer))
         return CURLOPT_REFERER;
     if (base::EqualsCaseInsensitiveASCII(name, Strings::HttpHeader::UserAgent))

@@ -66,7 +66,7 @@ private:
     void CleanupCURLSession(void);
     virtual bool StartWorkThread(void) = 0;
     static CURLoption TranslateOption(const char *name);
-    bool ProcessResponse(void);
+    bool ProcessResponse(CURLcode code);
     static size_t HeaderCallback(char *ptr, size_t, size_t nmemb, void *userData);
     static size_t WriteCallback(char *ptr, size_t, size_t nmemb, void *userData);
 

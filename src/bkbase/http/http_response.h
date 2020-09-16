@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <curl/curl.h>
 #include "bkcommon/bk_http_header_map.h"
 #include "bkcommon/response_impl.h"
 
@@ -35,7 +36,7 @@ public:
 
 
     void AppendData(const void *data, size_t cb);
-    void InflateBodyIfNecessary(void);
+    CURLcode InflateBodyIfNecessary(CURLcode code);
 
     int GetHeader(const char *name, BkBuffer *dst) const override;
 private:
@@ -43,7 +44,7 @@ private:
     int EnumerateHeaders(BkHttpHeaderEnumerator enumerator, void *userData) const override;
     size_t CookiesCount(void) const override { return m_cookies.size(); }
     int GetCookie(size_t index, BkBuffer *dst) const override;
-    void GZipInflate(void);
+    bool GZipInflate(void);
 
     int m_errorCode = BK_ERR_SUCCESS;
     std::string m_currentURL, m_httpVersion, m_statusText;

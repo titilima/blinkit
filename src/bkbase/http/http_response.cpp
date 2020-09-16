@@ -93,7 +93,7 @@ int HttpResponse::GetHeader(const char *name, BkBuffer *dst) const
     return BK_ERR_SUCCESS;
 }
 
-void HttpResponse::GZipInflate(void)
+bool HttpResponse::GZipInflate(void)
 {
     const size_t BufSize = 4096;
     char buf[BufSize];
@@ -107,7 +107,7 @@ void HttpResponse::GZipInflate(void)
     {
         BKLOG("inflateInit2 failed, code = %d", err);
         ASSERT(Z_OK == err);
-        return;
+        return false;
     }
 
     std::string uncompressedData;
@@ -119,7 +119,7 @@ void HttpResponse::GZipInflate(void)
         {
             BKLOG("inflate failed, code = %d", err);
             ASSERT(err >= 0);
-            return;
+            return false;
         }
 
         uncompressedData.append(buf, BufSize - stm.avail_out);
@@ -127,16 +127,27 @@ void HttpResponse::GZipInflate(void)
 
     ASSERT(Z_STREAM_END == err);
     m_body.assign(uncompressedData.begin(), uncompressedData.end());
+    return true;
 }
 
-void HttpResponse::InflateBodyIfNecessary(void)
+CURLcode HttpResponse::InflateBodyIfNecessary(CURLcode code)
 {
     if (m_body.empty())
-        return;
+        return code;
 
     std::string contentEncoding = m_headers.Get(Strings::HttpHeader::ContentEncoding);
-    if (base::EqualsCaseInsensitiveASCII(contentEncoding, "gzip"))
-        GZipInflate();
+    if (contentEncoding.empty())
+        return code;
+
+    if (!base::EqualsCaseInsensitiveASCII(contentEncoding, "gzip"))
+    {
+        NOTREACHED(); // Unexpected content encoding!
+        return CURLE_BAD_CONTENT_ENCODING;
+    }
+
+    // In some cases, CURL may return `CURLE_RECV_ERROR` with a correctly-deflated body.
+    // So the returning code SHOULD BE verified by inflating the body data.
+    return GZipInflate() ? CURLE_OK : CURLE_RECV_ERROR;
 }
 
 void HttpResponse::ParseHeaders(const std::string &rawHeaders)
