@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_value_factory.cc
+// Description: StyleValueFactory Class
+//      Author: Ziming Li
+//     Created: 2020-09-16
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -37,7 +48,10 @@ CSSStyleValue* CreateStyleValue(const CSSValue& value) {
   if (value.IsPrimitiveValue())
     return CSSNumericValue::FromCSSValue(ToCSSPrimitiveValue(value));
   if (value.IsImageValue()) {
+    ASSERT(false); // BKTODO:
+#if 0
     return CSSURLImageValue::FromCSSValue(*ToCSSImageValue(value).Clone());
+#endif
   }
   return nullptr;
 }
@@ -235,7 +249,7 @@ CSSStyleValueVector StyleValueFactory::FromString(
     const AtomicString& custom_property_name,
     const PropertyRegistration* registration,
     const String& css_text,
-    const CSSParserContext* parser_context) {
+    std::unique_ptr<CSSParserContext> &parser_context) {
   DCHECK_NE(property_id, CSSPropertyInvalid);
   DCHECK_EQ(property_id == CSSPropertyVariable, !custom_property_name.IsNull());
   CSSTokenizer tokenizer(css_text);
@@ -243,6 +257,8 @@ CSSStyleValueVector StyleValueFactory::FromString(
   const CSSParserTokenRange range(tokens);
 
   HeapVector<CSSPropertyValue, 256> parsed_properties;
+  ASSERT(false); // BKTODO:
+#if 0
   if (property_id != CSSPropertyVariable &&
       CSSPropertyParser::ParseValue(property_id, false, range, parser_context,
                                     parsed_properties,
@@ -264,9 +280,12 @@ CSSStyleValueVector StyleValueFactory::FromString(
         CSSUnsupportedStyleValue::Create(property_id, g_null_atom, css_text));
     return result;
   }
+#endif
 
   if (property_id == CSSPropertyVariable && registration) {
     const bool is_animation_tainted = false;
+    ASSERT(false); // BKTODO:
+#if 0
     const CSSValue* value = registration->Syntax().Parse(tokens, parser_context,
                                                          is_animation_tainted);
     if (!value)
@@ -274,6 +293,7 @@ CSSStyleValueVector StyleValueFactory::FromString(
 
     return StyleValueFactory::CssValueToStyleValueVector(
         property_id, custom_property_name, *value);
+#endif
   }
 
   if ((property_id == CSSPropertyVariable && !tokens.IsEmpty()) ||
@@ -305,6 +325,7 @@ CSSStyleValue* StyleValueFactory::CssValueToStyleValue(
   return style_value;
 }
 
+#if 0 // BKTODO:
 CSSStyleValueVector StyleValueFactory::CoerceStyleValuesOrStrings(
     const CSSProperty& property,
     const AtomicString& custom_property_name,
@@ -336,6 +357,7 @@ CSSStyleValueVector StyleValueFactory::CoerceStyleValuesOrStrings(
   }
   return style_values;
 }
+#endif
 
 CSSStyleValueVector StyleValueFactory::CssValueToStyleValueVector(
     CSSPropertyID property_id,
