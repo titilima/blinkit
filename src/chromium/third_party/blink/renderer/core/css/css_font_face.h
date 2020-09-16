@@ -1,13 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: css_font_face.h
-// Description: CSSFontFace Class
-//      Author: Ziming Li
-//     Created: 2020-09-16
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-
 /*
  * Copyright (C) 2007, 2008 Apple Inc. All rights reserved.
  *
