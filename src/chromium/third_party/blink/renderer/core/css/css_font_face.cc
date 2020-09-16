@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_font_face.cc
+// Description: CSSFontFace Class
+//      Author: Ziming Li
+//     Created: 2020-09-16
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2011 Apple Inc. All rights reserved.
  *
@@ -30,10 +41,12 @@
 #include "third_party/blink/renderer/core/css/css_font_selector.h"
 #include "third_party/blink/renderer/core/css/css_segmented_font_face.h"
 #include "third_party/blink/renderer/core/css/font_face_set_document.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/css/font_face_set_worker.h"
 #include "third_party/blink/renderer/core/css/remote_font_face_source.h"
+#endif
 #include "third_party/blink/renderer/core/frame/use_counter.h"
-#include "third_party/blink/renderer/core/workers/worker_global_scope.h"
+// BKTODO: #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
 #include "third_party/blink/renderer/platform/fonts/font_description.h"
 #include "third_party/blink/renderer/platform/fonts/simple_font_data.h"
 
@@ -55,6 +68,8 @@ void CSSFontFace::DidBeginLoad() {
 }
 
 bool CSSFontFace::FontLoaded(RemoteFontFaceSource* source) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!IsValid() || source != sources_.front())
     return false;
 
@@ -69,6 +84,7 @@ bool CSSFontFace::FontLoaded(RemoteFontFaceSource* source) {
       Load();
     }
   }
+#endif
 
   if (segmented_font_face_)
     segmented_font_face_->FontFaceInvalidated();
@@ -89,8 +105,11 @@ size_t CSSFontFace::ApproximateBlankCharacterCount() const {
 }
 
 bool CSSFontFace::FallbackVisibilityChanged(RemoteFontFaceSource* source) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!IsValid() || source != sources_.front())
     return false;
+#endif
   if (segmented_font_face_)
     segmented_font_face_->FontFaceInvalidated();
   return true;
@@ -202,6 +221,8 @@ void CSSFontFace::SetLoadStatus(FontFace::LoadStatusType new_status) {
   else
     font_face_->SetLoadStatus(new_status);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!segmented_font_face_ || !font_face_->GetExecutionContext())
     return;
 
@@ -216,6 +237,7 @@ void CSSFontFace::SetLoadStatus(FontFace::LoadStatusType new_status) {
     if (new_status == FontFace::kLoading)
       FontFaceSetWorker::From(*scope)->BeginFontLoading(font_face_);
   }
+#endif
 }
 
 void CSSFontFace::Trace(blink::Visitor* visitor) {
