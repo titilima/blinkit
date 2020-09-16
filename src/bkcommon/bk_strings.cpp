@@ -29,6 +29,7 @@ const char DefaultUserAgent[] =
 
 namespace HttpHeader {
 
+const char AcceptEncoding[] = "Accept-Encoding";
 const char ContentEncoding[] = "Content-Encoding";
 const char ContentLength[] = "Content-Length";
 const char ContentType[] = "Content-Type";
