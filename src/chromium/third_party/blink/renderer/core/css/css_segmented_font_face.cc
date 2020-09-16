@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_segmented_font_face.cc
+// Description: CSSSegmentedFontFace Class
+//      Author: Ziming Li
+//     Created: 2020-09-16
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All rights reserved.
  *
@@ -68,6 +79,8 @@ void CSSSegmentedFontFace::AddFontFace(FontFace* font_face,
                                        bool css_connected) {
   PruneTable();
   font_face->CssFontFace()->SetSegmentedFontFace(this);
+  ASSERT(false); // BKTODO:
+#if 0
   if (css_connected) {
     font_faces_.InsertBefore(first_non_css_connected_face_, font_face);
   } else {
@@ -76,6 +89,7 @@ void CSSSegmentedFontFace::AddFontFace(FontFace* font_face,
     if (first_non_css_connected_face_ == font_faces_.end())
       first_non_css_connected_face_ = iterator;
   }
+#endif
 }
 
 void CSSSegmentedFontFace::RemoveFontFace(FontFace* font_face) {
@@ -122,6 +136,8 @@ scoped_refptr<FontData> CSSSegmentedFontFace::GetFontData(
         font_selection_request.slope == ItalicSlopeValue());
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   for (FontFaceList::reverse_iterator it = font_faces_.rbegin();
        it != font_faces_.rend(); ++it) {
     if (!(*it)->CssFontFace()->IsValid())
@@ -138,6 +154,7 @@ scoped_refptr<FontData> CSSSegmentedFontFace::GetFontData(
       }
     }
   }
+#endif
   if (font_data->NumFaces()) {
     // No release, we have a reference to an object in the cache which should
     // retain the ref count it has.
@@ -151,6 +168,8 @@ void CSSSegmentedFontFace::WillUseFontData(
     const FontDescription& font_description,
     const String& text) {
   approximate_character_count_ += text.length();
+  ASSERT(false); // BKTODO:
+#if 0
   for (FontFaceList::reverse_iterator it = font_faces_.rbegin();
        it != font_faces_.rend(); ++it) {
     if ((*it)->LoadStatus() != FontFace::kUnloaded)
@@ -158,6 +177,7 @@ void CSSSegmentedFontFace::WillUseFontData(
     if ((*it)->CssFontFace()->MaybeLoadFont(font_description, text))
       break;
   }
+#endif
 }
 
 void CSSSegmentedFontFace::WillUseRange(
@@ -166,12 +186,15 @@ void CSSSegmentedFontFace::WillUseRange(
   // Iterating backwards since later defined unicode-range faces override
   // previously defined ones, according to the CSS3 fonts module.
   // https://drafts.csswg.org/css-fonts/#composite-fonts
+  ASSERT(false); // BKTODO:
+#if 0
   for (FontFaceList::reverse_iterator it = font_faces_.rbegin();
        it != font_faces_.rend(); ++it) {
     CSSFontFace* css_font_face = (*it)->CssFontFace();
     if (css_font_face->MaybeLoadFont(font_description, range_set))
       break;
   }
+#endif
 }
 
 bool CSSSegmentedFontFace::CheckFont(const String& text) const {

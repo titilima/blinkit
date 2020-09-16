@@ -318,6 +318,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_custom_ident_value.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_custom_property_declaration.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_default_style_sheets.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_face.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_face_source.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_face_src_value.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_family_value.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_feature_value.cc" />
@@ -381,6 +383,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\font_face_cache.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\font_face_set.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\font_face_set_document.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\font_face_source.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\font_size_functions.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\invalidation\invalidation_flags.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\invalidation\invalidation_set.cc" />
@@ -1101,6 +1104,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_custom_ident_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_custom_property_declaration.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_default_style_sheets.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_face.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_face_source.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_face_src_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_family_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_feature_value.h" />
@@ -1170,6 +1175,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\font_face_cache.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\font_face_set.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\font_face_set_document.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\font_face_source.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\font_size_functions.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\invalidation\invalidation_flags.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\invalidation\invalidation_set.h" />

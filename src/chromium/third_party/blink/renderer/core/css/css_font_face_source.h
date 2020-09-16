@@ -1,3 +1,13 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_font_face_source.h
+// Description: CSSFontFaceSource Class
+//      Author: Ziming Li
+//     Created: 2020-09-16
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+
 /*
  * Copyright (C) 2007, 2008, 2011 Apple Inc. All rights reserved.
  *
@@ -87,11 +97,15 @@ class CORE_EXPORT CSSFontFaceSource
                                 scoped_refptr<SimpleFontData>,
                                 FontCacheKeyHash,
                                 FontCacheKeyTraits>;
+#if 0 // BKTODO:
   using FontCacheKeyAgeList =
       LinkedHashSet<FontCacheKey, FontCacheKeyHash, FontCacheKeyTraits>;
+#endif
 
   FontDataTable font_data_table_;
+#if 0 // BKTODO:
   FontCacheKeyAgeList font_cache_key_age;
+#endif
   DISALLOW_COPY_AND_ASSIGN(CSSFontFaceSource);
 };
 
