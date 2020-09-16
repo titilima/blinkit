@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_image_set_value.cc
+// Description: CSSImageSetValue Class
+//      Author: Ziming Li
+//     Created: 2020-09-16
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -64,9 +75,12 @@ void CSSImageSetValue::FillImageSet() {
 
     ImageWithScale image;
     image.image_url = image_url;
+    ASSERT(false); // BKTODO:
+#if 0
     image.referrer = SecurityPolicy::GenerateReferrer(
         image_value.GetReferrer().referrer_policy, KURL(image_url),
         image_value.GetReferrer().referrer);
+#endif
     image.scale_factor = scale_factor;
     images_in_set_.push_back(image);
     ++i;
@@ -114,6 +128,8 @@ StyleImage* CSSImageSetValue::CacheImage(
     // transforms. https://bugs.webkit.org/show_bug.cgi?id=81698
     ImageWithScale image = BestImageForScaleFactor(device_scale_factor);
     ResourceRequest resource_request(document.CompleteURL(image.image_url));
+    ASSERT(false); // BKTODO:
+#if 0
     resource_request.SetHTTPReferrer(image.referrer);
     ResourceLoaderOptions options;
     options.initiator_info.name = parser_mode_ == kUASheetMode
@@ -135,6 +151,7 @@ StyleImage* CSSImageSetValue::CacheImage(
     cached_image_ = StyleFetchedImageSet::Create(
         ImageResourceContent::Fetch(params, document.Fetcher()),
         image.scale_factor, this, params.Url());
+#endif
     cached_scale_factor_ = device_scale_factor;
   }
 
@@ -186,10 +203,13 @@ void CSSImageSetValue::TraceAfterDispatch(blink::Visitor* visitor) {
 
 CSSImageSetValue* CSSImageSetValue::ValueWithURLsMadeAbsolute() {
   CSSImageSetValue* value = CSSImageSetValue::Create(parser_mode_);
+  ASSERT(false); // BKTODO:
+#if 0
   for (auto& item : *this)
     item->IsImageValue()
         ? value->Append(*ToCSSImageValue(*item).ValueWithURLMadeAbsolute())
         : value->Append(*item);
+#endif
   return value;
 }
 

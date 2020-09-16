@@ -2402,6 +2402,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_custom_platform_data.cc">
       <Filter>renderer\platform\fonts</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_fetched_image_set.cc">
+      <Filter>renderer\core\style</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -5526,6 +5529,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_custom_platform_data.h">
       <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_fetched_image_set.h">
+      <Filter>renderer\core\style</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

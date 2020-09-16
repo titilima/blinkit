@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_fetched_image_set.h
+// Description: StyleFetchedImageSet Class
+//      Author: Ziming Li
+//     Created: 2020-09-16
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -29,7 +40,7 @@
 #include "third_party/blink/renderer/core/loader/resource/image_resource_observer.h"
 #include "third_party/blink/renderer/core/style/style_image.h"
 #include "third_party/blink/renderer/platform/geometry/layout_size.h"
-#include "third_party/blink/renderer/platform/weborigin/kurl.h"
+#include "url/gurl.h"
 
 namespace blink {
 
@@ -43,13 +54,13 @@ class ImageResourceObserver;
 // alternatives via the referenced CSSImageSetValue.
 class StyleFetchedImageSet final : public StyleImage,
                                    public ImageResourceObserver {
-  USING_PRE_FINALIZER(StyleFetchedImageSet, Dispose);
+  // BKTODO: USING_PRE_FINALIZER(StyleFetchedImageSet, Dispose);
 
  public:
   static StyleFetchedImageSet* Create(ImageResourceContent* image,
                                       float image_scale_factor,
                                       CSSImageSetValue* value,
-                                      const KURL& url) {
+                                      const GURL& url) {
     return new StyleFetchedImageSet(image, image_scale_factor, value, url);
   }
   ~StyleFetchedImageSet() override;
@@ -86,7 +97,7 @@ class StyleFetchedImageSet final : public StyleImage,
   StyleFetchedImageSet(ImageResourceContent*,
                        float image_scale_factor,
                        CSSImageSetValue*,
-                       const KURL&);
+                       const GURL&);
 
   bool IsEqual(const StyleImage& other) const override;
   void Dispose();
@@ -97,7 +108,7 @@ class StyleFetchedImageSet final : public StyleImage,
   float image_scale_factor_;
 
   Member<CSSImageSetValue> image_set_value_;  // Not retained; it owns us.
-  const KURL url_;
+  const GURL url_;
 };
 
 DEFINE_STYLE_IMAGE_TYPE_CASTS(StyleFetchedImageSet, IsImageResourceSet());
