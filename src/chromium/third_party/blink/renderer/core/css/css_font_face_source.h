@@ -7,6 +7,7 @@
 //     Created: 2020-09-16
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
 
 /*
  * Copyright (C) 2007, 2008, 2011 Apple Inc. All rights reserved.
