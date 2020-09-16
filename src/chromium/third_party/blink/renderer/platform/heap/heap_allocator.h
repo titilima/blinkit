@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <deque>
 #include <vector>
 #include <unordered_map>
 #include "third_party/blink/renderer/platform/heap/heap.h"
@@ -23,6 +24,13 @@
 #include "third_party/blink/renderer/platform/wtf/wtf_size_t.h"
 
 namespace blink {
+
+template <typename T>
+class HeapDeque : public std::deque<T>
+{
+public:
+    bool IsEmpty(void) const { return this->empty(); }
+};
 
 template <typename K, typename V>
 class HeapHashMap : public std::unordered_map<K, V>
