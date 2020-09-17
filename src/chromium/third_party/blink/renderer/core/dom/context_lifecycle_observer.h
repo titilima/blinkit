@@ -40,6 +40,7 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/platform/lifecycle_observer.h"
 
 namespace blink {

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_font_face_source.cc
+// Description: CSSFontFaceSource Class
+//      Author: Ziming Li
+//     Created: 2020-09-16
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2010, 2011 Apple Inc. All rights reserved.
  *
@@ -70,7 +81,7 @@ scoped_refptr<SimpleFontData> CSSFontFaceSource::GetFontData(
     font_data = it->value;
   }
 
-  font_cache_key_age.PrependOrMoveToFirst(key);
+  ASSERT(false); // BKTODO: font_cache_key_age.PrependOrMoveToFirst(key);
   PruneOldestIfNeeded();
 
   DCHECK_LE(font_data_table_.size(), kMaxCachedFontData);
@@ -80,6 +91,8 @@ scoped_refptr<SimpleFontData> CSSFontFaceSource::GetFontData(
 }
 
 void CSSFontFaceSource::PruneOldestIfNeeded() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (font_cache_key_age.size() > kMaxCachedFontData) {
     DCHECK_EQ(font_cache_key_age.size() - 1, kMaxCachedFontData);
     FontCacheKey& key = font_cache_key_age.back();
@@ -89,6 +102,7 @@ void CSSFontFaceSource::PruneOldestIfNeeded() {
     if (font_data_entry && font_data_entry->GetCustomFontData())
       font_data_entry->GetCustomFontData()->ClearFontFaceSource();
   }
+#endif
 }
 
 void CSSFontFaceSource::PruneTable() {
@@ -100,7 +114,7 @@ void CSSFontFaceSource::PruneTable() {
     if (font_data && font_data->GetCustomFontData())
       font_data->GetCustomFontData()->ClearFontFaceSource();
   }
-  font_cache_key_age.clear();
+  ASSERT(false); // BKTODO: font_cache_key_age.clear();
   font_data_table_.clear();
 }
 

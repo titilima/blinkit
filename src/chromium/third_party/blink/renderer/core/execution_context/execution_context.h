@@ -41,6 +41,9 @@ enum ReasonForCallingCanExecuteScripts {
 enum class SecureContextMode { kInsecureContext, kSecureContext };
 
 class ExecutionContext : public ContextLifecycleNotifier
+#ifndef BLINKIT_CRAWLER_ONLY
+                       , public Supplementable<ExecutionContext>
+#endif
 {
 public:
     bool IsContextDestroyed(void) const { return m_isContextDestroyed; }

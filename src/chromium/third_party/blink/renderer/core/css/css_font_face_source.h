@@ -83,8 +83,6 @@ class CORE_EXPORT CSSFontFaceSource
   // For UMA reporting
   virtual bool HadBlankText() { return false; }
 
-  virtual void Trace(blink::Visitor* visitor) {}
-
  protected:
   CSSFontFaceSource() = default;
   virtual scoped_refptr<SimpleFontData> CreateFontData(
