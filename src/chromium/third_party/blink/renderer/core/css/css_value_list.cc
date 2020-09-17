@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_value_list.cc
+// Description: CSSValueList Class
+//      Author: Ziming Li
+//     Created: 2020-09-17
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2010 Apple Inc. All rights reserved.
@@ -28,7 +39,7 @@
 namespace blink {
 
 struct SameSizeAsCSSValueList : CSSValue {
-  Vector<Member<CSSValue>, 4> list_values;
+  HeapVector<Member<CSSValue>, 4> list_values;
 };
 ASSERT_SIZE(CSSValueList, SameSizeAsCSSValueList);
 
