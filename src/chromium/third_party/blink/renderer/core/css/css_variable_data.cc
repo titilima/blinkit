@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_variable_data.cc
+// Description: CSSVariableData Class
+//      Author: Ziming Li
+//     Created: 2020-09-17
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -79,7 +90,7 @@ void CSSVariableData::ConsumeAndUpdateTokens(const CSSParserTokenRange& range) {
 CSSVariableData::CSSVariableData(const CSSParserTokenRange& range,
                                  bool is_animation_tainted,
                                  bool needs_variable_resolution,
-                                 const KURL& base_url,
+                                 const GURL& base_url,
                                  const WTF::TextEncoding& charset)
     : is_animation_tainted_(is_animation_tainted),
       needs_variable_resolution_(needs_variable_resolution),
