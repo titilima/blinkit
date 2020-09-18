@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_grouping_rule.cc
+// Description: CSSGroupingRule Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Adobe Systems Incorporated. All rights reserved.
  * Copyright (C) 2012 Apple Inc. All rights reserved.
@@ -64,6 +75,8 @@ unsigned CSSGroupingRule::insertRule(const ExecutionContext* execution_context,
   }
 
   CSSStyleSheet* style_sheet = parentStyleSheet();
+  ASSERT(false); // BKTODO:
+#if 0
   CSSParserContext* context = CSSParserContext::CreateWithStyleSheet(
       ParserContext(execution_context->GetSecureContextMode()), style_sheet);
   StyleRuleBase* new_rule = CSSParser::ParseRule(
@@ -96,6 +109,7 @@ unsigned CSSGroupingRule::insertRule(const ExecutionContext* execution_context,
   group_rule_->WrapperInsertRule(index, new_rule);
 
   child_rule_cssom_wrappers_.insert(index, Member<CSSRule>(nullptr));
+#endif
   return index;
 }
 
@@ -147,10 +161,14 @@ CSSRule* CSSGroupingRule::Item(unsigned index) const {
 }
 
 CSSRuleList* CSSGroupingRule::cssRules() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (!rule_list_cssom_wrapper_)
     rule_list_cssom_wrapper_ = LiveCSSRuleList<CSSGroupingRule>::Create(
         const_cast<CSSGroupingRule*>(this));
   return rule_list_cssom_wrapper_.Get();
+#endif
 }
 
 void CSSGroupingRule::Reattach(StyleRuleBase* rule) {
@@ -161,13 +179,6 @@ void CSSGroupingRule::Reattach(StyleRuleBase* rule) {
       child_rule_cssom_wrappers_[i]->Reattach(
           group_rule_->ChildRules()[i].Get());
   }
-}
-
-void CSSGroupingRule::Trace(blink::Visitor* visitor) {
-  CSSRule::Trace(visitor);
-  visitor->Trace(child_rule_cssom_wrappers_);
-  visitor->Trace(group_rule_);
-  visitor->Trace(rule_list_cssom_wrapper_);
 }
 
 }  // namespace blink
