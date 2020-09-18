@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_sheet_list.h
+// Description: StyleSheetList Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2007 Apple Inc. All rights reserved.
@@ -42,7 +53,11 @@ class CORE_EXPORT StyleSheetList final : public ScriptWrappable {
                                 ExceptionState&);
 
   static StyleSheetList* Create(TreeScope* tree_scope) {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     return new StyleSheetList(tree_scope);
+#endif
   }
 
   unsigned length();
@@ -56,13 +71,13 @@ class CORE_EXPORT StyleSheetList final : public ScriptWrappable {
 
   CSSStyleSheet* AnonymousNamedGetter(const AtomicString&);
 
-  void Trace(blink::Visitor*) override;
-
  private:
   explicit StyleSheetList(const HeapVector<Member<CSSStyleSheet>>&);
   explicit StyleSheetList(TreeScope*);
   StyleSheetList() {}
+#if 0 // BKTODO:
   const HeapVector<TraceWrapperMember<StyleSheet>>& StyleSheets() const;
+#endif
 
   Member<TreeScope> tree_scope_;
   HeapVector<Member<CSSStyleSheet>> style_sheet_vector_;

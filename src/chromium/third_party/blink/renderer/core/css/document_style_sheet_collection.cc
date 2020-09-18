@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: document_style_sheet_collection.cc
+// Description: DocumentStyleSheetCollection Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -50,6 +61,8 @@ DocumentStyleSheetCollection::DocumentStyleSheetCollection(
 void DocumentStyleSheetCollection::CollectStyleSheetsFromCandidates(
     StyleEngine& master_engine,
     DocumentStyleSheetCollector& collector) {
+  ASSERT(false); // BKTODO:
+#if 0
   // TODO(keishi) Check added for crbug.com/699269 diagnosis. Remove once done.
   CHECK(HeapObjectHeader::FromPayload(this)->IsValid());
   CHECK(ThreadState::Current()->IsOnThreadHeap(this));
@@ -106,17 +119,21 @@ void DocumentStyleSheetCollection::CollectStyleSheetsFromCandidates(
     collector.AppendActiveStyleSheet(
         std::make_pair(css_sheet, master_engine.RuleSetForSheet(*css_sheet)));
   }
+#endif
 }
 
 void DocumentStyleSheetCollection::CollectStyleSheets(
     StyleEngine& master_engine,
     DocumentStyleSheetCollector& collector) {
+  ASSERT(false); // BKTODO:
+#if 0
   for (auto& sheet :
        GetDocument().GetStyleEngine().InjectedAuthorStyleSheets()) {
     collector.AppendActiveStyleSheet(std::make_pair(
         sheet.second,
         GetDocument().GetStyleEngine().RuleSetForSheet(*sheet.second)));
   }
+#endif
   CollectStyleSheetsFromCandidates(master_engine, collector);
   if (CSSStyleSheet* inspector_sheet =
           GetDocument().GetStyleEngine().InspectorStyleSheet()) {

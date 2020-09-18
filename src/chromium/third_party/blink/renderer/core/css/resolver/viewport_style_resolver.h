@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: viewport_style_resolver.h
+// Description: ViewportStyleResolver Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Intel Corporation. All rights reserved.
  *
@@ -79,7 +90,9 @@ class CORE_EXPORT ViewportStyleResolver
 
   float ViewportArgumentValue(CSSPropertyID) const;
   Length ViewportLengthValue(CSSPropertyID);
+#if 0 // BKTODO:
   mojom::ViewportFit ViewportFitValue() const;
+#endif
 
   Member<Document> document_;
   Member<MutableCSSPropertyValueSet> property_set_;

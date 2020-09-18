@@ -295,6 +295,8 @@ public:
     ComputedStyle* MutableComputedStyle(void) const;
     const ComputedStyle* ParentComputedStyle(void) const;
 
+    virtual bool SheetLoaded(void) { return true; }
+
     bool CanParticipateInFlatTree(void) const;
     // Whether or not a selection can be started in this object
     virtual bool CanStartSelection(void) const;

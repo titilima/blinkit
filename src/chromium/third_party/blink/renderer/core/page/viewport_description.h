@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: viewport_description.h
+// Description: ViewportDescription Struct
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -30,7 +41,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_PAGE_VIEWPORT_DESCRIPTION_H_
 
 #include "base/optional.h"
-#include "third_party/blink/public/mojom/page/display_cutout.mojom-blink.h"
+// BKTODO: #include "third_party/blink/public/mojom/page/display_cutout.mojom-blink.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/frame/page_scale_constraints.h"
 #include "third_party/blink/renderer/platform/geometry/float_size.h"
@@ -120,12 +131,15 @@ struct CORE_EXPORT ViewportDescription {
   bool max_zoom_is_explicit;
   bool user_zoom_is_explicit;
 
+#if 0 // BKTODO:
   mojom::ViewportFit GetViewportFit() const {
     return viewport_fit_.value_or(mojom::ViewportFit::kAuto);
   }
   void SetViewportFit(mojom::ViewportFit value) { viewport_fit_ = value; }
+#endif
 
   bool operator==(const ViewportDescription& other) const {
+    ASSERT(false); // BKTODO:
     // Used for figuring out whether to reset the viewport or not,
     // thus we are not taking type into account.
     return min_width == other.min_width && max_width == other.max_width &&
@@ -139,7 +153,11 @@ struct CORE_EXPORT ViewportDescription {
            min_zoom_is_explicit == other.min_zoom_is_explicit &&
            max_zoom_is_explicit == other.max_zoom_is_explicit &&
            user_zoom_is_explicit == other.user_zoom_is_explicit &&
+#if 0 // BKTODO:
            viewport_fit_ == other.viewport_fit_;
+#else
+           true;
+#endif
   }
 
   bool operator!=(const ViewportDescription& other) const {
@@ -164,11 +182,13 @@ struct CORE_EXPORT ViewportDescription {
                                      const FloatSize& initial_viewport_size,
                                      Direction);
 
+#if 0 // BKTODO:
   // Optional is used to identify if |viewport_fit_| has been explicitly set.
   // This is because a Document will have multiple ViewportDescriptions are
   // which one that will be used is dependent on whether any values have been
   // explicitly set.
   base::Optional<mojom::ViewportFit> viewport_fit_;
+#endif
 };
 
 }  // namespace blink
