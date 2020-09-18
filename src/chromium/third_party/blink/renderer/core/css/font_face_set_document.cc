@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_face_set_document.cc
+// Description: FontFaceSetDocument Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -25,7 +36,6 @@
 
 #include "third_party/blink/renderer/core/css/font_face_set_document.h"
 
-#include "third_party/blink/renderer/bindings/core/v8/dictionary.h"
 #include "third_party/blink/renderer/core/css/css_font_selector.h"
 #include "third_party/blink/renderer/core/css/css_property_value_set.h"
 #include "third_party/blink/renderer/core/css/css_segmented_font_face.h"
@@ -38,7 +48,6 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
-#include "third_party/blink/renderer/platform/bindings/script_state.h"
 #include "third_party/blink/renderer/platform/histogram.h"
 
 namespace blink {
@@ -70,8 +79,11 @@ AtomicString FontFaceSetDocument::status() const {
 }
 
 void FontFaceSetDocument::DidLayout() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (GetDocument()->GetFrame()->IsMainFrame() && loading_fonts_.IsEmpty())
     histogram_.Record();
+#endif
   if (!ShouldSignalReady())
     return;
   HandlePendingEventsAndPromisesSoon();
@@ -101,6 +113,7 @@ size_t FontFaceSetDocument::ApproximateBlankCharacterCount() const {
   return count;
 }
 
+#if 0 // BKTODO:
 ScriptPromise FontFaceSetDocument::ready(ScriptState* script_state) {
   if (ready_->GetState() != ReadyProperty::kPending && InActiveContext()) {
     // |ready_| is already resolved, but there may be pending stylesheet
@@ -111,11 +124,12 @@ ScriptPromise FontFaceSetDocument::ready(ScriptState* script_state) {
   }
   return ready_->Promise(script_state->World());
 }
+#endif
 
 const HeapLinkedHashSet<Member<FontFace>>&
 FontFaceSetDocument::CSSConnectedFontFaceList() const {
   Document* document = this->GetDocument();
-  document->UpdateActiveStyle();
+  ASSERT(false); // BKTODO: document->UpdateActiveStyle();
   return GetFontSelector()->GetFontFaceCache()->CssConnectedFontFaces();
 }
 
@@ -128,11 +142,14 @@ void FontFaceSetDocument::FireDoneEventIfPossible() {
   if (!d)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   // If the layout was invalidated in between when we thought layout
   // was updated and when we're ready to fire the event, just wait
   // until after the next layout before firing events.
   if (!d->View() || d->View()->NeedsLayout())
     return;
+#endif
 
   FireDoneEvent();
 }
@@ -170,8 +187,11 @@ bool FontFaceSetDocument::ResolveFontStyle(const String& font_string,
 
   style->GetFont().Update(style->GetFont().GetFontSelector());
 
+  ASSERT(false); // BKTODO:
+#if 0
   GetDocument()->UpdateActiveStyle();
   GetDocument()->EnsureStyleResolver().ComputeFont(style.get(), *parsed_style);
+#endif
 
   font = style->GetFont();
   font.Update(GetFontSelector());
@@ -183,7 +203,10 @@ FontFaceSetDocument* FontFaceSetDocument::From(Document& document) {
       Supplement<Document>::From<FontFaceSetDocument>(document);
   if (!fonts) {
     fonts = FontFaceSetDocument::Create(document);
+    ASSERT(false); // BKTODO:
+#if 0
     Supplement<Document>::ProvideTo(document, fonts);
+#endif
   }
 
   return fonts;
@@ -202,11 +225,6 @@ size_t FontFaceSetDocument::ApproximateBlankCharacterCount(Document& document) {
   return 0;
 }
 
-void FontFaceSetDocument::Trace(blink::Visitor* visitor) {
-  Supplement<Document>::Trace(visitor);
-  FontFaceSet::Trace(visitor);
-}
-
 void FontFaceSetDocument::FontLoadHistogram::UpdateStatus(FontFace* font_face) {
   if (status_ == kReported)
     return;
@@ -217,6 +235,8 @@ void FontFaceSetDocument::FontLoadHistogram::UpdateStatus(FontFace* font_face) {
 }
 
 void FontFaceSetDocument::FontLoadHistogram::Record() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!recorded_) {
     recorded_ = true;
     DEFINE_STATIC_LOCAL(CustomCountHistogram, web_fonts_in_page_histogram,
@@ -229,6 +249,7 @@ void FontFaceSetDocument::FontLoadHistogram::Record() {
     had_blank_text_histogram.Count(status_ == kHadBlankText ? 1 : 0);
     status_ = kReported;
   }
+#endif
 }
 
 }  // namespace blink

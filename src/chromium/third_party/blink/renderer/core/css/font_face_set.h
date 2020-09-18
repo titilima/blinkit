@@ -48,10 +48,10 @@ class CORE_EXPORT FontFaceSet : public EventTargetWithInlineData,
   DEFINE_WRAPPERTYPEINFO();
 
  public:
-#if 0 // BKTODO:
   FontFaceSet(ExecutionContext& context)
       : PausableObject(&context),
         is_loading_(false),
+#if 0 // BKTODO:
         should_fire_loading_event_(false),
         ready_(new ReadyProperty(GetExecutionContext(),
                                  this,
@@ -60,6 +60,10 @@ class CORE_EXPORT FontFaceSet : public EventTargetWithInlineData,
             this,
             &FontFaceSet::HandlePendingEventsAndPromises,
             context.GetTaskRunner(TaskType::kInternalDefault))) {}
+#else
+        should_fire_loading_event_(false) {
+    ASSERT(false); // BKTODO:
+  }
 #endif
   ~FontFaceSet() override = default;
 
