@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_media_rule.cc
+// Description: CSSMediaRule Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -58,9 +69,12 @@ String CSSMediaRule::conditionText() const {
 MediaList* CSSMediaRule::media() const {
   if (!MediaQueries())
     return nullptr;
+  ASSERT(false); // BKTODO:
+#if 0
   if (!media_cssom_wrapper_)
     media_cssom_wrapper_ =
         MediaList::Create(MediaQueries(), const_cast<CSSMediaRule*>(this));
+#endif
   return media_cssom_wrapper_.Get();
 }
 
@@ -70,8 +84,4 @@ void CSSMediaRule::Reattach(StyleRuleBase* rule) {
     media_cssom_wrapper_->Reattach(MediaQueries());
 }
 
-void CSSMediaRule::Trace(blink::Visitor* visitor) {
-  visitor->Trace(media_cssom_wrapper_);
-  CSSConditionRule::Trace(visitor);
-}
 }  // namespace blink
