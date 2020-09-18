@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_face_set_load_event.cc
+// Description: FontFaceSetLoadEvent Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -36,20 +47,21 @@ FontFaceSetLoadEvent::FontFaceSetLoadEvent(const AtomicString& type,
                                            const FontFaceArray& fontfaces)
     : Event(type, Bubbles::kNo, Cancelable::kNo), fontfaces_(fontfaces) {}
 
+#if 0 // BKTODO:
 FontFaceSetLoadEvent::FontFaceSetLoadEvent(
     const AtomicString& type,
     const FontFaceSetLoadEventInit& initializer)
     : Event(type, initializer), fontfaces_(initializer.fontfaces()) {}
+#endif
 
 FontFaceSetLoadEvent::~FontFaceSetLoadEvent() = default;
 
 const AtomicString& FontFaceSetLoadEvent::InterfaceName() const {
+  ASSERT(false); // BKTODO:
+  return g_null_atom;
+#if 0
   return EventNames::FontFaceSetLoadEvent;
-}
-
-void FontFaceSetLoadEvent::Trace(blink::Visitor* visitor) {
-  visitor->Trace(fontfaces_);
-  Event::Trace(visitor);
+#endif
 }
 
 }  // namespace blink

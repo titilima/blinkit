@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_face_set_worker.h
+// Description: FontFaceSetWorker Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,13 +17,11 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_FONT_FACE_SET_WORKER_H_
 
 #include "base/macros.h"
-#include "third_party/blink/renderer/bindings/core/v8/iterable.h"
-#include "third_party/blink/renderer/bindings/core/v8/script_promise.h"
 #include "third_party/blink/renderer/core/css/font_face.h"
 #include "third_party/blink/renderer/core/css/font_face_set.h"
 #include "third_party/blink/renderer/core/css/offscreen_font_selector.h"
 #include "third_party/blink/renderer/core/dom/pausable_object.h"
-#include "third_party/blink/renderer/core/workers/worker_global_scope.h"
+// BKTODO: #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
 #include "third_party/blink/renderer/platform/async_method_runner.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
@@ -31,7 +40,9 @@ class CORE_EXPORT FontFaceSetWorker final
 
   ~FontFaceSetWorker() override;
 
+#if 0 // BKTODO:
   ScriptPromise ready(ScriptState*) override;
+#endif
 
   AtomicString status() const override;
 
@@ -45,13 +56,13 @@ class CORE_EXPORT FontFaceSetWorker final
 
   static FontFaceSetWorker* From(WorkerGlobalScope&);
 
-  void Trace(Visitor*) override;
-
  protected:
   bool InActiveContext() const override { return true; }
+#if 0 // BKTODO:
   FontSelector* GetFontSelector() const override {
     return GetWorker()->GetFontSelector();
   }
+#endif
   // For workers, this is always an empty list.
   const HeapLinkedHashSet<Member<FontFace>>& CSSConnectedFontFaceList()
       const override {
@@ -65,7 +76,11 @@ class CORE_EXPORT FontFaceSetWorker final
 
  private:
   static FontFaceSetWorker* Create(WorkerGlobalScope& worker) {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     return new FontFaceSetWorker(worker);
+#endif
   }
 
   explicit FontFaceSetWorker(WorkerGlobalScope&);

@@ -2459,6 +2459,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\font_face_set_load_event.cc">
       <Filter>renderer\core\css</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\font_face_set_worker.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\offscreen_font_selector.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -5648,6 +5654,12 @@
       <Filter>renderer\core\css</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\font_face_set_load_event_init.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\font_face_set_worker.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\offscreen_font_selector.h">
       <Filter>renderer\core\css</Filter>
     </ClInclude>
   </ItemGroup>
