@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_media_rule.h
+// Description: CSSMediaRule Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -45,8 +56,6 @@ class CSSMediaRule final : public CSSConditionRule {
   String conditionText() const override;
 
   MediaList* media() const;
-
-  void Trace(blink::Visitor*) override;
 
  private:
   CSSMediaRule(StyleRuleMedia*, CSSStyleSheet*);

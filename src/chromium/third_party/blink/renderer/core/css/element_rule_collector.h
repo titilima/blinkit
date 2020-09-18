@@ -161,8 +161,6 @@ class ElementRuleCollector {
     return pseudo_style_request_.pseudo_id != kPseudoIdNone;
   }
 
-  void AddMatchedRulesToTracker(StyleRuleUsageTracker*) const;
-
  private:
   template <typename RuleDataListType>
   void CollectMatchingRulesForList(const RuleDataListType*,

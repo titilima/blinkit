@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_style_rule.h
+// Description: CSSStyleRule Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -55,8 +66,6 @@ class CORE_EXPORT CSSStyleRule final : public CSSRule {
 
   // FIXME: Not CSSOM. Remove.
   StyleRule* GetStyleRule() const { return style_rule_.Get(); }
-
-  void Trace(blink::Visitor*) override;
 
  private:
   CSSStyleRule(StyleRule*, CSSStyleSheet*);

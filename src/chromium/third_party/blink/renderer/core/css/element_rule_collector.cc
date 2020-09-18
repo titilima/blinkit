@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: element_rule_collector.cc
+// Description: ElementRuleCollector Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -41,7 +52,6 @@
 #include "third_party/blink/renderer/core/css/css_supports_rule.h"
 #include "third_party/blink/renderer/core/css/resolver/style_resolver.h"
 #include "third_party/blink/renderer/core/css/resolver/style_resolver_stats.h"
-#include "third_party/blink/renderer/core/css/resolver/style_rule_usage_tracker.h"
 #include "third_party/blink/renderer/core/css/style_engine.h"
 #include "third_party/blink/renderer/core/dom/shadow_root.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
@@ -89,9 +99,13 @@ inline StyleRuleList* ElementRuleCollector::EnsureStyleRuleList() {
 }
 
 inline StaticCSSRuleList* ElementRuleCollector::EnsureRuleList() {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (!css_rule_list_)
     css_rule_list_ = StaticCSSRuleList::Create();
   return css_rule_list_.Get();
+#endif
 }
 
 void ElementRuleCollector::AddElementStyleProperties(
@@ -173,16 +187,6 @@ void ElementRuleCollector::CollectMatchingRulesForList(
     matched++;
     DidMatchRule(rule_data, result, cascade_order, match_request);
   }
-
-  StyleEngine& style_engine =
-      context_.GetElement()->GetDocument().GetStyleEngine();
-  if (!style_engine.Stats())
-    return;
-
-  INCREMENT_STYLE_STATS_COUNTER(style_engine, rules_rejected, rejected);
-  INCREMENT_STYLE_STATS_COUNTER(style_engine, rules_fast_rejected,
-                                fast_rejected);
-  INCREMENT_STYLE_STATS_COUNTER(style_engine, rules_matched, matched);
 }
 
 DISABLE_CFI_PERF
@@ -194,6 +198,8 @@ void ElementRuleCollector::CollectMatchingRules(
   DCHECK(context_.GetElement());
 
   Element& element = *context_.GetElement();
+  ASSERT(false); // BKTODO:
+#if 0
   const AtomicString& pseudo_id = element.ShadowPseudoId();
   if (!pseudo_id.IsEmpty()) {
     DCHECK(element.IsStyledElement());
@@ -240,6 +246,7 @@ void ElementRuleCollector::CollectMatchingRules(
       cascade_order, match_request);
   CollectMatchingRulesForList(match_request.rule_set->UniversalRules(),
                               cascade_order, match_request);
+#endif
 }
 
 void ElementRuleCollector::CollectMatchingShadowHostRules(
@@ -367,14 +374,6 @@ static inline bool CompareRules(const MatchedRule& matched_rule1,
 
 void ElementRuleCollector::SortMatchedRules() {
   std::sort(matched_rules_.begin(), matched_rules_.end(), CompareRules);
-}
-
-void ElementRuleCollector::AddMatchedRulesToTracker(
-    StyleRuleUsageTracker* tracker) const {
-  for (auto matched_rule : matched_rules_) {
-    tracker->Track(matched_rule.ParentStyleSheet(),
-                   matched_rule.GetRuleData()->Rule());
-  }
 }
 
 }  // namespace blink

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_grouping_rule.h
+// Description: CSSGroupingRule Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -51,8 +62,6 @@ class CSSGroupingRule : public CSSRule {
   // For CSSRuleList
   unsigned length() const;
   CSSRule* Item(unsigned index) const;
-
-  void Trace(blink::Visitor*) override;
 
  protected:
   CSSGroupingRule(StyleRuleGroup* group_rule, CSSStyleSheet* parent);
