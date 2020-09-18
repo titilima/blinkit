@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_property_map.cc
+// Description: StylePropertyMap Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 the chromium authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -57,9 +68,12 @@ const CSSValue* StyleValueToCSSValue(
       // Registered custom properties must enter the CSSPropertyVariable
       // switch-case below, for proper parsing according to registered syntax.
       !(property_id == CSSPropertyVariable && registration)) {
+    ASSERT(false); // BKTODO:
+#if 0
     return CSSParser::ParseSingleValue(
         property.PropertyID(), style_value.toString(),
         CSSParserContext::Create(execution_context));
+#endif
   }
 
   // Handle properties that use ad-hoc structures for their CSSValues:
@@ -72,10 +86,13 @@ const CSSValue* StyleValueToCSSValue(
         CSSTokenizer tokenizer(style_value.toString());
         const auto tokens = tokenizer.TokenizeToEOF();
         CSSParserTokenRange range(tokens);
+        ASSERT(false); // BKTODO:
+#if 0
         CSSParserContext* context = CSSParserContext::Create(execution_context);
         scoped_refptr<CSSVariableData> variable_data = CSSVariableData::Create(
             range, false, false, context->BaseURL(), context->Charset());
         return CSSVariableReferenceValue::Create(variable_data, *context);
+#endif
       }
       break;
     case CSSPropertyBorderBottomLeftRadius:
@@ -201,6 +218,7 @@ const CSSValue* StyleValueToCSSValue(
   return style_value.ToCSSValueWithProperty(property_id);
 }
 
+#if 0
 const CSSValue* CoerceStyleValueOrString(
     const CSSProperty& property,
     const AtomicString& custom_property_name,
@@ -262,9 +280,11 @@ const CSSValue* CoerceStyleValuesOrStrings(
 
   return result;
 }
+#endif
 
 }  // namespace
 
+#if 0
 void StylePropertyMap::set(const ExecutionContext* execution_context,
                            const String& property_name,
                            const HeapVector<CSSStyleValueOrString>& values,
@@ -386,6 +406,7 @@ void StylePropertyMap::append(const ExecutionContext* execution_context,
 
   SetProperty(property_id, *current_value);
 }
+#endif
 
 void StylePropertyMap::remove(const String& property_name,
                               ExceptionState& exception_state) {
