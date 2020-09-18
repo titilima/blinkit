@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_face_cache.cc
+// Description: FontFaceCache Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -26,7 +37,7 @@
 
 #include "third_party/blink/renderer/core/css/font_face_cache.h"
 
-#include "base/atomic_sequence_num.h"
+// BKTODO: #include "base/atomic_sequence_num.h"
 #include "third_party/blink/renderer/core/css/css_segmented_font_face.h"
 #include "third_party/blink/renderer/core/css/css_value_list.h"
 #include "third_party/blink/renderer/core/loader/resource/font_resource.h"
@@ -42,12 +53,17 @@ FontFaceCache::FontFaceCache() : version_(0) {}
 
 void FontFaceCache::Add(const StyleRuleFontFace* font_face_rule,
                         FontFace* font_face) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!style_rule_to_font_face_.insert(font_face_rule, font_face).is_new_entry)
     return;
+#endif
   AddFontFace(font_face, true);
 }
 
 void FontFaceCache::AddFontFace(FontFace* font_face, bool css_connected) {
+  ASSERT(false); // BKTODO:
+#if 0
   SegmentedFacesByFamily::AddResult capabilities_result =
       segmented_faces_.insert(font_face->family(), nullptr);
 
@@ -72,6 +88,7 @@ void FontFaceCache::AddFontFace(FontFace* font_face, bool css_connected) {
     css_connected_font_faces_.insert(font_face);
 
   font_selection_query_cache_.erase(font_face->family());
+#endif
   IncrementVersion();
 }
 
@@ -79,12 +96,17 @@ void FontFaceCache::Remove(const StyleRuleFontFace* font_face_rule) {
   StyleRuleToFontFace::iterator it =
       style_rule_to_font_face_.find(font_face_rule);
   if (it != style_rule_to_font_face_.end()) {
+    ASSERT(false); // BKTODO:
+#if 0
     RemoveFontFace(it->value.Get(), true);
+#endif
     style_rule_to_font_face_.erase(it);
   }
 }
 
 void FontFaceCache::RemoveFontFace(FontFace* font_face, bool css_connected) {
+  ASSERT(false); // BKTODO:
+#if 0
   SegmentedFacesByFamily::iterator segmented_faces_iter =
       segmented_faces_.find(font_face->family());
   if (segmented_faces_iter == segmented_faces_.end())
@@ -108,6 +130,7 @@ void FontFaceCache::RemoveFontFace(FontFace* font_face, bool css_connected) {
   }
 
   font_selection_query_cache_.erase(font_face->family());
+#endif
 
   if (css_connected)
     css_connected_font_faces_.erase(font_face);
@@ -118,33 +141,45 @@ void FontFaceCache::RemoveFontFace(FontFace* font_face, bool css_connected) {
 bool FontFaceCache::ClearCSSConnected() {
   if (style_rule_to_font_face_.IsEmpty())
     return false;
+  ASSERT(false); // BKTODO:
+#if 0
   for (const auto& item : style_rule_to_font_face_)
     RemoveFontFace(item.value.Get(), true);
+#endif
   style_rule_to_font_face_.clear();
   return true;
 }
 
 void FontFaceCache::ClearAll() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (segmented_faces_.IsEmpty())
     return;
 
   segmented_faces_.clear();
   font_selection_query_cache_.clear();
+#endif
   style_rule_to_font_face_.clear();
   css_connected_font_faces_.clear();
   IncrementVersion();
 }
 
 void FontFaceCache::IncrementVersion() {
+  ASSERT(false); // BKTODO:
+#if 0
   // Versions are guaranteed to be monotonically increasing, but not necessary
   // sequential within a thread.
   static base::AtomicSequenceNumber g_version;
   version_ = g_version.GetNext();
+#endif
 }
 
 CSSSegmentedFontFace* FontFaceCache::Get(
     const FontDescription& font_description,
     const AtomicString& family) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   SegmentedFacesByFamily::iterator segmented_faces_for_family =
       segmented_faces_.find(family);
   if (segmented_faces_for_family == segmented_faces_.end() ||
@@ -193,21 +228,18 @@ CSSSegmentedFontFace* FontFaceCache::Get(
     }
   }
   return face_entry.stored_value->value;
+#endif
 }
 
 size_t FontFaceCache::GetNumSegmentedFacesForTesting() {
   size_t count = 0;
+  ASSERT(false); // BKTODO:
+#if 0
   for (auto& family_faces : segmented_faces_) {
     count += family_faces.value->size();
   }
+#endif
   return count;
-}
-
-void FontFaceCache::Trace(blink::Visitor* visitor) {
-  visitor->Trace(segmented_faces_);
-  visitor->Trace(font_selection_query_cache_);
-  visitor->Trace(style_rule_to_font_face_);
-  visitor->Trace(css_connected_font_faces_);
 }
 
 }  // namespace blink

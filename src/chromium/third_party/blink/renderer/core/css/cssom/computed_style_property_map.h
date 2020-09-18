@@ -58,12 +58,6 @@ class CORE_EXPORT ComputedStylePropertyMap : public StylePropertyMapReadOnly {
   String SerializationForShorthand(const CSSProperty&) final;
 
  private:
-  GCType GetGCType(void) const final
-  {
-    ASSERT(false); // BKTODO:
-    return GC_MANUAL;
-  }
-
   // TODO: Pseudo-element support requires reintroducing Element.pseudo(...).
   // See
   // https://github.com/w3c/css-houdini-drafts/issues/350#issuecomment-294690156
