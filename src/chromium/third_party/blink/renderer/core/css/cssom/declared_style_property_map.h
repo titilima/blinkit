@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: declared_style_property_map.h
+// Description: DeclaredStylePropertyMap Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 the Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -23,11 +34,6 @@ class StyleRule;
 class CORE_EXPORT DeclaredStylePropertyMap final : public StylePropertyMap {
  public:
   explicit DeclaredStylePropertyMap(CSSStyleRule* owner_rule);
-
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(owner_rule_);
-    StylePropertyMap::Trace(visitor);
-  }
 
   unsigned int size() final;
 

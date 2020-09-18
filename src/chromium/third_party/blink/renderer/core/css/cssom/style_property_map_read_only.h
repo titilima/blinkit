@@ -67,6 +67,12 @@ class CORE_EXPORT StylePropertyMapReadOnly
   const CSSValue* GetCustomProperty(const ExecutionContext&,
                                     const AtomicString&);
 
+  GCType GetGCType(void) const final
+  {
+    ASSERT(false); // BKTODO:
+    return GC_MANUAL;
+  }
+
  private:
   DISALLOW_COPY_AND_ASSIGN(StylePropertyMapReadOnly);
 };

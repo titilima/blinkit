@@ -2450,6 +2450,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\style_property_map.cc">
       <Filter>renderer\core\css\cssom</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\declared_style_property_map.cc">
+      <Filter>renderer\core\css\cssom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -5628,6 +5631,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\style_resolver_stats.h">
       <Filter>renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\declared_style_property_map.h">
+      <Filter>renderer\core\css\cssom</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

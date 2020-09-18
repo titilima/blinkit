@@ -50,8 +50,11 @@ CSSStyleRule::~CSSStyleRule() = default;
 
 CSSStyleDeclaration* CSSStyleRule::style() const {
   if (!properties_cssom_wrapper_) {
+    ASSERT(false); // BKTODO:
+#if 0
     properties_cssom_wrapper_ = StyleRuleCSSStyleDeclaration::Create(
         style_rule_->MutableProperties(), const_cast<CSSStyleRule*>(this));
+#endif
   }
   return properties_cssom_wrapper_.Get();
 }
@@ -64,13 +67,15 @@ String CSSStyleRule::selectorText() const {
 
   DCHECK(!GetSelectorTextCache().Contains(this));
   String text = style_rule_->SelectorList().SelectorsText();
-  GetSelectorTextCache().Set(this, text);
+  ASSERT(false); // BKTODO: GetSelectorTextCache().Set(this, text);
   SetHasCachedSelectorText(true);
   return text;
 }
 
 void CSSStyleRule::setSelectorText(const ExecutionContext* execution_context,
                                    const String& selector_text) {
+  ASSERT(false); // BKTODO:
+#if 0
   const CSSParserContext* context = CSSParserContext::Create(
       ParserContext(execution_context->GetSecureContextMode()), nullptr);
   CSSSelectorList selector_list = CSSParser::ParseSelector(
@@ -82,6 +87,7 @@ void CSSStyleRule::setSelectorText(const ExecutionContext* execution_context,
   CSSStyleSheet::RuleMutationScope mutation_scope(this);
 
   style_rule_->WrapperAdoptSelectorList(std::move(selector_list));
+#endif
 
   if (HasCachedSelectorText()) {
     GetSelectorTextCache().erase(this);
@@ -106,13 +112,6 @@ void CSSStyleRule::Reattach(StyleRuleBase* rule) {
   style_rule_ = ToStyleRule(rule);
   if (properties_cssom_wrapper_)
     properties_cssom_wrapper_->Reattach(style_rule_->MutableProperties());
-}
-
-void CSSStyleRule::Trace(blink::Visitor* visitor) {
-  visitor->Trace(style_rule_);
-  visitor->Trace(properties_cssom_wrapper_);
-  visitor->Trace(style_map_);
-  CSSRule::Trace(visitor);
 }
 
 }  // namespace blink
