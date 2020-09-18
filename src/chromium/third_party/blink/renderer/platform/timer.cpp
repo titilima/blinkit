@@ -55,17 +55,6 @@ void TimerBase::RunInternal(void)
     Fired();
 }
 
-void TimerBase::Start(TimeDelta nextFireInterval, TimeDelta repeatInterval, const base::Location &caller)
-{
-#if DCHECK_IS_ON()
-    ASSERT(CurrentThread() == m_thread);
-#endif
-
-    m_location = caller;
-    m_repeatInterval = repeatInterval;
-    SetNextFireTime(base::TimeTicks::Now(), nextFireInterval);
-}
-
 void TimerBase::SetNextFireTime(TimeTicks now, TimeDelta delay)
 {
 #if DCHECK_IS_ON()
@@ -87,6 +76,22 @@ void TimerBase::SetNextFireTime(TimeTicks now, TimeDelta delay)
         m_isActive = true;
         m_webTaskRunner->PostDelayedTask(m_location, callback, delay);
     }
+}
+
+void TimerBase::Start(TimeDelta nextFireInterval, TimeDelta repeatInterval, const base::Location &caller)
+{
+#if DCHECK_IS_ON()
+    ASSERT(CurrentThread() == m_thread);
+#endif
+
+    m_location = caller;
+    m_repeatInterval = repeatInterval;
+    SetNextFireTime(base::TimeTicks::Now(), nextFireInterval);
+}
+
+void TimerBase::Stop(void)
+{
+    ASSERT(false); // BKTODO:
 }
 
 } // namespace blink

@@ -35,6 +35,9 @@ public:
     bool IsActive(void) const { return m_isActive; }
 
     void Start(TimeDelta nextFireInterval, TimeDelta repeatInterval, const base::Location &caller);
+    // Call this method to stop and cancel the timer.  It is a no-op if the timer
+    // is not running.
+    virtual void Stop(void);
 
     void StartOneShot(TimeDelta interval, const base::Location &caller) { Start(interval, TimeDelta(), caller); }
 private:

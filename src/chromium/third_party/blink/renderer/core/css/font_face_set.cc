@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_face_set.cc
+// Description: FontFaceSet Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -38,11 +49,15 @@ void FontFaceSet::HandlePendingEventsAndPromises() {
 void FontFaceSet::FireLoadingEvent() {
   if (should_fire_loading_event_) {
     should_fire_loading_event_ = false;
+    ASSERT(false); // BKTODO:
+#if 0
     DispatchEvent(
         *FontFaceSetLoadEvent::CreateForFontFaces(EventTypeNames::loading));
+#endif
   }
 }
 
+#if 0 // BKTODO:
 FontFaceSet* FontFaceSet::addForBinding(ScriptState*,
                                         FontFace* font_face,
                                         ExceptionState&) {
@@ -105,18 +120,7 @@ bool FontFaceSet::hasForBinding(ScriptState*,
   return non_css_connected_faces_.Contains(font_face) ||
          IsCSSConnectedFontFace(font_face);
 }
-
-void FontFaceSet::Trace(blink::Visitor* visitor) {
-  visitor->Trace(non_css_connected_faces_);
-  visitor->Trace(loading_fonts_);
-  visitor->Trace(loaded_fonts_);
-  visitor->Trace(failed_fonts_);
-  visitor->Trace(ready_);
-  visitor->Trace(async_runner_);
-  PausableObject::Trace(visitor);
-  EventTargetWithInlineData::Trace(visitor);
-  FontFace::LoadFontCallback::Trace(visitor);
-}
+#endif
 
 wtf_size_t FontFaceSet::size() const {
   if (!InActiveContext())
@@ -133,8 +137,11 @@ void FontFaceSet::AddToLoadingFonts(FontFace* font_face) {
   if (!is_loading_) {
     is_loading_ = true;
     should_fire_loading_event_ = true;
+    ASSERT(false); // BKTODO:
+#if 0
     if (ready_->GetState() != ReadyProperty::kPending)
       ready_->Reset();
+#endif
     HandlePendingEventsAndPromisesSoon();
   }
   loading_fonts_.insert(font_face);
@@ -149,7 +156,10 @@ void FontFaceSet::RemoveFromLoadingFonts(FontFace* font_face) {
 
 void FontFaceSet::LoadFontPromiseResolver::LoadFonts() {
   if (!num_loading_) {
+    ASSERT(false); // BKTODO:
+#if 0
     resolver_->Resolve(font_faces_);
+#endif
     return;
   }
 
@@ -157,6 +167,7 @@ void FontFaceSet::LoadFontPromiseResolver::LoadFonts() {
     font_faces_[i]->LoadWithCallback(this);
 }
 
+#if 0 // BKTODO:
 ScriptPromise FontFaceSet::load(ScriptState* script_state,
                                 const String& font_string,
                                 const String& text) {
@@ -191,6 +202,7 @@ ScriptPromise FontFaceSet::load(ScriptState* script_state,
   resolver->LoadFonts();
   return promise;
 }
+#endif
 
 bool FontFaceSet::check(const String& font_string,
                         const String& text,
@@ -235,6 +247,8 @@ void FontFaceSet::FireDoneEvent() {
   if (is_loading_) {
     FontFaceSetLoadEvent* done_event = nullptr;
     FontFaceSetLoadEvent* error_event = nullptr;
+    ASSERT(false); // BKTODO:
+#if 0
     done_event = FontFaceSetLoadEvent::CreateForFontFaces(
         EventTypeNames::loadingdone, loaded_fonts_);
     loaded_fonts_.clear();
@@ -243,20 +257,28 @@ void FontFaceSet::FireDoneEvent() {
           EventTypeNames::loadingerror, failed_fonts_);
       failed_fonts_.clear();
     }
+#endif
     is_loading_ = false;
     DispatchEvent(*done_event);
     if (error_event)
       DispatchEvent(*error_event);
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (ready_->GetState() == ReadyProperty::kPending)
     ready_->Resolve(this);
+#endif
 }
 
 bool FontFaceSet::ShouldSignalReady() const {
   if (!loading_fonts_.IsEmpty())
     return false;
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return is_loading_ || ready_->GetState() == ReadyProperty::kPending;
+#endif
 }
 
 void FontFaceSet::LoadFontPromiseResolver::NotifyLoaded(FontFace* font_face) {
@@ -264,23 +286,24 @@ void FontFaceSet::LoadFontPromiseResolver::NotifyLoaded(FontFace* font_face) {
   if (num_loading_ || error_occured_)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   resolver_->Resolve(font_faces_);
+#endif
 }
 
 void FontFaceSet::LoadFontPromiseResolver::NotifyError(FontFace* font_face) {
   num_loading_--;
   if (!error_occured_) {
     error_occured_ = true;
+    ASSERT(false); // BKTODO:
+#if 0
     resolver_->Reject(font_face->GetError());
+#endif
   }
 }
 
-void FontFaceSet::LoadFontPromiseResolver::Trace(blink::Visitor* visitor) {
-  visitor->Trace(font_faces_);
-  visitor->Trace(resolver_);
-  LoadFontCallback::Trace(visitor);
-}
-
+#if 0 // BKTODO:
 bool FontFaceSet::IterationSource::Next(ScriptState*,
                                         Member<FontFace>& key,
                                         Member<FontFace>& value,
@@ -310,5 +333,6 @@ FontFaceSetIterable::IterationSource* FontFaceSet::StartIteration(
   }
   return new IterationSource(font_faces);
 }
+#endif
 
 }  // namespace blink

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_face_set_load_event.h
+// Description: FontFaceSetLoadEvent Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -59,8 +70,6 @@ class FontFaceSetLoadEvent final : public Event {
   FontFaceArray fontfaces() const { return fontfaces_; }
 
   const AtomicString& InterfaceName() const override;
-
-  void Trace(blink::Visitor*) override;
 
  private:
   FontFaceSetLoadEvent(const AtomicString&, const FontFaceArray&);
