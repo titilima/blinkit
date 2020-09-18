@@ -433,6 +433,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\element_style_resources.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\filter_operation_resolver.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\font_builder.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\font_style_resolver.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\matched_properties_cache.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\match_result.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\scoped_style_resolver.cc" />
@@ -1249,6 +1250,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\element_style_resources.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\filter_operation_resolver.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\font_builder.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\font_style_resolver.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\matched_properties_cache.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\match_request.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\match_result.h" />

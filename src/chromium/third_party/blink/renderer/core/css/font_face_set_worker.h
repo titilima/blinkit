@@ -31,8 +31,12 @@ namespace blink {
 class Font;
 
 class CORE_EXPORT FontFaceSetWorker final
+#if 0 // BKTODO:
     : public FontFaceSet,
       public Supplement<WorkerGlobalScope> {
+#else
+    : public FontFaceSet {
+#endif
   USING_GARBAGE_COLLECTED_MIXIN(FontFaceSetWorker);
 
  public:
@@ -46,7 +50,9 @@ class CORE_EXPORT FontFaceSetWorker final
 
   AtomicString status() const override;
 
+#if 0 // BKTODO:
   WorkerGlobalScope* GetWorker() const;
+#endif
 
   // FontFace::LoadFontCallback
   void NotifyLoaded(FontFace*) override;
@@ -54,7 +60,9 @@ class CORE_EXPORT FontFaceSetWorker final
 
   void BeginFontLoading(FontFace*);
 
+#if 0 // BKTODO:
   static FontFaceSetWorker* From(WorkerGlobalScope&);
+#endif
 
  protected:
   bool InActiveContext() const override { return true; }
@@ -75,15 +83,13 @@ class CORE_EXPORT FontFaceSetWorker final
   bool ResolveFontStyle(const String&, Font&) override;
 
  private:
+#if 0 // BKTODO:
   static FontFaceSetWorker* Create(WorkerGlobalScope& worker) {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
     return new FontFaceSetWorker(worker);
-#endif
   }
 
   explicit FontFaceSetWorker(WorkerGlobalScope&);
+#endif
 
   void FireDoneEventIfPossible() override;
   DISALLOW_COPY_AND_ASSIGN(FontFaceSetWorker);

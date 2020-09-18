@@ -1,11 +1,20 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_face_set_worker.cc
+// Description: FontFaceSetWorker Class
+//      Author: Ziming Li
+//     Created: 2020-09-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/core/css/font_face_set_worker.h"
 
-#include "third_party/blink/renderer/bindings/core/v8/dictionary.h"
-#include "third_party/blink/renderer/bindings/core/v8/script_promise_resolver.h"
 #include "third_party/blink/renderer/core/css/css_property_value_set.h"
 #include "third_party/blink/renderer/core/css/css_segmented_font_face.h"
 #include "third_party/blink/renderer/core/css/font_face_cache.h"
@@ -17,23 +26,26 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
-#include "third_party/blink/renderer/platform/bindings/script_state.h"
 
 namespace blink {
 
 // static
 const char FontFaceSetWorker::kSupplementName[] = "FontFaceSetWorker";
 
+#if 0 // BKTODO:
 FontFaceSetWorker::FontFaceSetWorker(WorkerGlobalScope& worker)
     : FontFaceSet(worker), Supplement<WorkerGlobalScope>(worker) {
   PauseIfNeeded();
 }
+#endif
 
 FontFaceSetWorker::~FontFaceSetWorker() = default;
 
+#if 0 // BKTODO:
 WorkerGlobalScope* FontFaceSetWorker::GetWorker() const {
   return ToWorkerGlobalScope(GetExecutionContext());
 }
+#endif
 
 AtomicString FontFaceSetWorker::status() const {
   DEFINE_STATIC_LOCAL(AtomicString, loading, ("loading"));
@@ -55,9 +67,11 @@ void FontFaceSetWorker::NotifyError(FontFace* font_face) {
   RemoveFromLoadingFonts(font_face);
 }
 
+#if 0 // BKTODO:
 ScriptPromise FontFaceSetWorker::ready(ScriptState* script_state) {
   return ready_->Promise(script_state->World());
 }
+#endif
 
 void FontFaceSetWorker::FireDoneEventIfPossible() {
   if (should_fire_loading_event_)
@@ -94,15 +108,19 @@ bool FontFaceSetWorker::ResolveFontStyle(const String& font_string,
   default_font_description.SetSpecifiedSize(FontFaceSet::kDefaultFontSize);
   default_font_description.SetComputedSize(FontFaceSet::kDefaultFontSize);
 
+  ASSERT(false); // BKTODO:
+#if 0
   FontDescription description = FontStyleResolver::ComputeFont(
       *parsed_style, GetWorker()->GetFontSelector());
 
   font = Font(description);
   font.Update(GetWorker()->GetFontSelector());
+#endif
 
   return true;
 }
 
+#if 0 // BKTODO:
 FontFaceSetWorker* FontFaceSetWorker::From(WorkerGlobalScope& worker) {
   FontFaceSetWorker* fonts =
       Supplement<WorkerGlobalScope>::From<FontFaceSetWorker>(worker);
@@ -113,10 +131,6 @@ FontFaceSetWorker* FontFaceSetWorker::From(WorkerGlobalScope& worker) {
 
   return fonts;
 }
-
-void FontFaceSetWorker::Trace(Visitor* visitor) {
-  Supplement<WorkerGlobalScope>::Trace(visitor);
-  FontFaceSet::Trace(visitor);
-}
+#endif
 
 }  // namespace blink
