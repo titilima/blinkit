@@ -213,6 +213,10 @@ public:
     bool IsFinishedParsingChildren(void) const { return GetFlag(kIsFinishedParsingChildrenFlag); }
     bool IsInTreeScope(void) const { return GetFlag(static_cast<NodeFlags>(kIsConnectedFlag | kIsInShadowTreeFlag)); }
     bool ChildNeedsStyleInvalidation(void) const { return GetFlag(kChildNeedsStyleInvalidationFlag); }
+#ifndef BLINKIT_CRAWLER_ONLY
+    void SetChildNeedsStyleInvalidation(void) { SetFlag(kChildNeedsStyleInvalidationFlag); }
+    void ClearChildNeedsStyleInvalidation(void) { ClearFlag(kChildNeedsStyleInvalidationFlag); }
+#endif
     bool NeedsStyleInvalidation(void) const { return GetFlag(kNeedsStyleInvalidationFlag); }
 #ifndef BLINKIT_CRAWLER_ONLY
     void SetNeedsStyleInvalidation(void);

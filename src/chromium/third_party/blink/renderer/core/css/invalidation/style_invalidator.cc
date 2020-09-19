@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_invalidator.cc
+// Description: StyleInvalidator Class
+//      Author: Ziming Li
+//     Created: 2020-09-19
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -10,23 +21,13 @@
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/element_traversal.h"
 #include "third_party/blink/renderer/core/dom/shadow_root.h"
-#include "third_party/blink/renderer/core/html/html_slot_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_slot_element.h"
 #include "third_party/blink/renderer/core/inspector/inspector_trace_events.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 
 namespace blink {
 
-// StyleInvalidator methods are super sensitive to performance benchmarks.
-// We easily get 1% regression per additional if statement on recursive
-// invalidate methods.
-// To minimize performance impact, we wrap trace events with a lookup of
-// cached flag. The cached flag is made "static const" and is not shared
-// with InvalidationSet to avoid additional GOT lookup cost.
-static const unsigned char* g_style_invalidator_tracing_enabled = nullptr;
-
-#define TRACE_STYLE_INVALIDATOR_INVALIDATION_IF_ENABLED(element, reason) \
-  if (UNLIKELY(*g_style_invalidator_tracing_enabled))                    \
-    TRACE_STYLE_INVALIDATOR_INVALIDATION(element, reason);
+#define TRACE_STYLE_INVALIDATOR_INVALIDATION_IF_ENABLED(element, reason)    ((void)0)
 
 void StyleInvalidator::Invalidate(Document& document, Element* root_element) {
   SiblingData sibling_data;
@@ -58,9 +59,6 @@ void StyleInvalidator::Invalidate(Document& document, Element* root_element) {
 StyleInvalidator::StyleInvalidator(
     PendingInvalidationMap& pending_invalidation_map)
     : pending_invalidation_map_(pending_invalidation_map) {
-  g_style_invalidator_tracing_enabled =
-      TRACE_EVENT_API_GET_CATEGORY_GROUP_ENABLED(
-          TRACE_DISABLED_BY_DEFAULT("devtools.timeline.invalidationTracking"));
 }
 
 StyleInvalidator::~StyleInvalidator() = default;
@@ -188,7 +186,7 @@ void StyleInvalidator::PushInvalidationSetsForContainerNode(
   auto pending_invalidations_iterator = pending_invalidation_map_.find(&node);
   DCHECK(pending_invalidations_iterator != pending_invalidation_map_.end());
   NodeInvalidationSets& pending_invalidations =
-      pending_invalidations_iterator->value;
+      pending_invalidations_iterator->second;
 
   for (const auto& invalidation_set : pending_invalidations.Siblings()) {
     CHECK(invalidation_set->IsAlive());
@@ -203,14 +201,6 @@ void StyleInvalidator::PushInvalidationSetsForContainerNode(
     for (const auto& invalidation_set : pending_invalidations.Descendants()) {
       CHECK(invalidation_set->IsAlive());
       PushInvalidationSet(*invalidation_set);
-    }
-    if (UNLIKELY(*g_style_invalidator_tracing_enabled)) {
-      TRACE_EVENT_INSTANT1(
-          TRACE_DISABLED_BY_DEFAULT("devtools.timeline.invalidationTracking"),
-          "StyleInvalidatorInvalidationTracking", TRACE_EVENT_SCOPE_THREAD,
-          "data",
-          InspectorStyleInvalidatorInvalidateEvent::InvalidationList(
-              node, pending_invalidations.Descendants()));
     }
   }
 }
@@ -281,6 +271,8 @@ void StyleInvalidator::Invalidate(Element& element, SiblingData& sibling_data) {
     if (UNLIKELY(element.NeedsStyleInvalidation()))
       PushInvalidationSetsForContainerNode(element, sibling_data);
 
+    ASSERT(false); // BKTODO:
+#if 0
     // When a slot element is invalidated, the slotted elements are also
     // invalidated by HTMLSlotElement::DidRecalcStyle. So if WholeSubtreeInvalid
     // is true, they will be included even though they are not part of the
@@ -291,6 +283,7 @@ void StyleInvalidator::Invalidate(Element& element, SiblingData& sibling_data) {
     // if-block.
     if (InvalidatesSlotted() && IsHTMLSlotElement(element))
       InvalidateSlotDistributedElements(ToHTMLSlotElement(element));
+#endif
 
     if (InsertionPointCrossing() && element.IsV0InsertionPoint()) {
       element.SetNeedsStyleRecalc(kSubtreeStyleChange,
@@ -315,6 +308,8 @@ void StyleInvalidator::Invalidate(Element& element, SiblingData& sibling_data) {
 
 void StyleInvalidator::InvalidateSlotDistributedElements(
     HTMLSlotElement& slot) const {
+  ASSERT(false); // BKTODO:
+#if 0
   for (auto& distributed_node : slot.FlattenedAssignedNodes()) {
     if (distributed_node->NeedsStyleRecalc())
       continue;
@@ -325,6 +320,7 @@ void StyleInvalidator::InvalidateSlotDistributedElements(
           kLocalStyleChange, StyleChangeReasonForTracing::Create(
                                  StyleChangeReason::kStyleInvalidator));
   }
+#endif
 }
 
 }  // namespace blink

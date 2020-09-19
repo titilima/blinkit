@@ -194,6 +194,8 @@ public:
     virtual void FinishParsingChildren(void);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    virtual const AtomicString& ShadowPseudoId(void) const;
+
     virtual scoped_refptr<ComputedStyle> CustomStyleForLayoutObject(void);
     virtual bool LayoutObjectIsNeeded(const ComputedStyle &style) const;
 #endif
