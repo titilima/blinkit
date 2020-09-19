@@ -256,6 +256,10 @@ public:
     bool HasEventTargetData(void) const { return GetFlag(kHasEventTargetDataFlag); }
     void SetHasEventTargetData(bool flag) { SetFlag(flag, kHasEventTargetDataFlag); }
     bool NeedsReattachLayoutTree(void) const { return GetFlag(kNeedsReattachLayoutTree); }
+    bool ChildNeedsReattachLayoutTree(void) const { return GetFlag(kChildNeedsReattachLayoutTree); }
+#ifndef BLINKIT_CRAWLER_ONLY
+    void ClearChildNeedsReattachLayoutTree(void) { ClearFlag(kChildNeedsReattachLayoutTree); }
+#endif
     bool HasDuplicateAttribute(void) const { return GetFlag(kHasDuplicateAttributes); }
     void SetHasDuplicateAttributes(void) { SetFlag(kHasDuplicateAttributes); }
 
@@ -303,6 +307,8 @@ public:
     void NotifyMutationObserversNodeWillDetach(void);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ContainerNode* GetReattachParent(void) const;
+
     const ComputedStyle* GetComputedStyle(void) const;
     const ComputedStyle& ComputedStyleRef(void) const;
     ComputedStyle* MutableComputedStyle(void) const;

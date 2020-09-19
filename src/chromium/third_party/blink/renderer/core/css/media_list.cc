@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: media_list.cc
+// Description: MediaList Class
+//      Author: Ziming Li
+//     Created: 2020-09-19
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2010, 2012 Apple Inc. All rights reserved.
@@ -210,12 +221,6 @@ void MediaList::Reattach(scoped_refptr<MediaQuerySet> media_queries) {
     CHECK(query);
   }
   media_queries_ = media_queries;
-}
-
-void MediaList::Trace(blink::Visitor* visitor) {
-  visitor->Trace(parent_style_sheet_);
-  visitor->Trace(parent_rule_);
-  ScriptWrappable::Trace(visitor);
 }
 
 }  // namespace blink
