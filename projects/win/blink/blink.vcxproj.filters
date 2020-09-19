@@ -5668,5 +5668,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\font_style_resolver.h">
       <Filter>renderer\core\css\resolver</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\instrumentation\tracing\traced_value.h">
+      <Filter>renderer\platform\instrumentation\tracing</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

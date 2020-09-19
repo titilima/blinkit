@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: invalidation_set.cc
+// Description: InvalidationSet Class
+//      Author: Ziming Li
+//     Created: 2020-09-19
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All rights reserved.
  *
@@ -42,13 +53,7 @@
 
 namespace blink {
 
-static const unsigned char* g_tracing_enabled = nullptr;
-
-#define TRACE_STYLE_INVALIDATOR_INVALIDATION_SELECTORPART_IF_ENABLED( \
-    element, reason, invalidationSet, singleSelectorPart)             \
-  if (UNLIKELY(*g_tracing_enabled))                                   \
-    TRACE_STYLE_INVALIDATOR_INVALIDATION_SELECTORPART(                \
-        element, reason, invalidationSet, singleSelectorPart);
+#define TRACE_STYLE_INVALIDATOR_INVALIDATION_SELECTORPART_IF_ENABLED(...)   ((void)0)
 
 // static
 void InvalidationSetDeleter::Destruct(const InvalidationSet* obj) {
@@ -56,8 +61,6 @@ void InvalidationSetDeleter::Destruct(const InvalidationSet* obj) {
 }
 
 void InvalidationSet::CacheTracingFlag() {
-  g_tracing_enabled = TRACE_EVENT_API_GET_CATEGORY_GROUP_ENABLED(
-      TRACE_DISABLED_BY_DEFAULT("devtools.timeline.invalidationTracking"));
 }
 
 InvalidationSet::InvalidationSet(InvalidationType type)
@@ -69,6 +72,8 @@ bool InvalidationSet::InvalidatesElement(Element& element) const {
   if (invalidation_flags_.WholeSubtreeInvalid())
     return true;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (tag_names_ &&
       tag_names_->Contains(element.LocalNameForSelectorMatching())) {
     TRACE_STYLE_INVALIDATOR_INVALIDATION_SELECTORPART_IF_ENABLED(
@@ -76,6 +81,7 @@ bool InvalidationSet::InvalidatesElement(Element& element) const {
         element.LocalNameForSelectorMatching());
     return true;
   }
+#endif
 
   if (element.HasID() && ids_ &&
       ids_->Contains(element.IdForStyleResolution())) {
@@ -96,6 +102,8 @@ bool InvalidationSet::InvalidatesElement(Element& element) const {
     }
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (element.hasAttributes() && attributes_) {
     for (const auto& attribute : *attributes_) {
       if (element.hasAttribute(attribute)) {
@@ -111,11 +119,14 @@ bool InvalidationSet::InvalidatesElement(Element& element) const {
         element, kInvalidationSetMatchedPart, *this, "");
     return true;
   }
+#endif
 
   return false;
 }
 
 bool InvalidationSet::InvalidatesTagName(Element& element) const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (tag_names_ &&
       tag_names_->Contains(element.LocalNameForSelectorMatching())) {
     TRACE_STYLE_INVALIDATOR_INVALIDATION_SELECTORPART_IF_ENABLED(
@@ -123,6 +134,7 @@ bool InvalidationSet::InvalidatesTagName(Element& element) const {
         element.LocalNameForSelectorMatching());
     return true;
   }
+#endif
 
   return false;
 }
@@ -313,61 +325,10 @@ InvalidationSet* InvalidationSet::PartInvalidationSet() {
 }
 
 void InvalidationSet::ToTracedValue(TracedValue* value) const {
-  value->BeginDictionary();
-
-  value->SetString("id", DescendantInvalidationSetToIdString(*this));
-
-  if (invalidation_flags_.WholeSubtreeInvalid())
-    value->SetBoolean("allDescendantsMightBeInvalid", true);
-  if (invalidation_flags_.InvalidateCustomPseudo())
-    value->SetBoolean("customPseudoInvalid", true);
-  if (invalidation_flags_.TreeBoundaryCrossing())
-    value->SetBoolean("treeBoundaryCrossing", true);
-  if (invalidation_flags_.InsertionPointCrossing())
-    value->SetBoolean("insertionPointCrossing", true);
-  if (invalidation_flags_.InvalidatesSlotted())
-    value->SetBoolean("invalidatesSlotted", true);
-  if (invalidation_flags_.InvalidatesParts())
-    value->SetBoolean("invalidatesParts", true);
-
-  if (ids_) {
-    value->BeginArray("ids");
-    for (const auto& id : *ids_)
-      value->PushString(id);
-    value->EndArray();
-  }
-
-  if (classes_) {
-    value->BeginArray("classes");
-    for (const auto& class_name : *classes_)
-      value->PushString(class_name);
-    value->EndArray();
-  }
-
-  if (tag_names_) {
-    value->BeginArray("tagNames");
-    for (const auto& tag_name : *tag_names_)
-      value->PushString(tag_name);
-    value->EndArray();
-  }
-
-  if (attributes_) {
-    value->BeginArray("attributes");
-    for (const auto& attribute : *attributes_)
-      value->PushString(attribute);
-    value->EndArray();
-  }
-
-  value->EndDictionary();
 }
 
 #ifndef NDEBUG
 void InvalidationSet::Show() const {
-  std::unique_ptr<TracedValue> value = TracedValue::Create();
-  value->BeginArray("InvalidationSet");
-  ToTracedValue(value.get());
-  value->EndArray();
-  fprintf(stderr, "%s\n", value->ToString().Ascii().data());
 }
 #endif  // NDEBUG
 
