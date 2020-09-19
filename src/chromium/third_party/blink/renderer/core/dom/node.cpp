@@ -702,7 +702,7 @@ void Node::RemoveAllEventListenersRecursively(void)
     {
         node.RemoveAllEventListeners();
 #ifndef BLINKIT_CRAWLER_ONLY
-        if (ShadowRoot* root = node.GetShadowRoot())
+        if (ShadowRoot *root = node.GetShadowRoot())
             root->RemoveAllEventListenersRecursively();
 #endif
     }
@@ -729,6 +729,20 @@ void Node::RemovedFrom(ContainerNode &insertionPoint)
     if (IsInShadowTree() && !ContainingTreeScope().RootNode().IsShadowRoot())
         ClearFlag(kIsInShadowTreeFlag);
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void Node::SetNeedsStyleInvalidation(void)
+{
+    ASSERT(IsContainerNode());
+    SetFlag(kNeedsStyleInvalidationFlag);
+    MarkAncestorsWithChildNeedsStyleInvalidation();
+}
+
+void Node::SetNeedsStyleRecalc(StyleChangeType changeType, const StyleChangeReasonForTracing &)
+{
+    ASSERT(false); // BKTODO:
+}
+#endif
 
 void Node::setNodeValue(const String &nodeValue)
 {

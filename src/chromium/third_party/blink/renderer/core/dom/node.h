@@ -49,9 +49,6 @@
 
 namespace blink {
 
-#ifndef BLINKIT_CRAWLER_ONLY
-class ComputedStyle;
-#endif
 class Document;
 class Element;
 class ExceptionState;
@@ -62,6 +59,10 @@ class ShadowRoot;
 template <typename NodeType>
 class StaticNodeTypeList;
 using StaticNodeList = StaticNodeTypeList<Node>;
+#ifndef BLINKIT_CRAWLER_ONLY
+class ComputedStyle;
+class StyleChangeReasonForTracing;
+#endif
 
 const int kNodeStyleChangeShift = 18;
 const int kNodeCustomElementShift = 20;
@@ -213,9 +214,14 @@ public:
     bool IsInTreeScope(void) const { return GetFlag(static_cast<NodeFlags>(kIsConnectedFlag | kIsInShadowTreeFlag)); }
     bool ChildNeedsStyleInvalidation(void) const { return GetFlag(kChildNeedsStyleInvalidationFlag); }
     bool NeedsStyleInvalidation(void) const { return GetFlag(kNeedsStyleInvalidationFlag); }
+#ifndef BLINKIT_CRAWLER_ONLY
+    void SetNeedsStyleInvalidation(void);
+    void ClearNeedsStyleInvalidation(void) { ClearFlag(kNeedsStyleInvalidationFlag); }
+#endif
     bool ChildNeedsDistributionRecalc(void) const { return GetFlag(kChildNeedsDistributionRecalcFlag); }
 #ifndef BLINKIT_CRAWLER_ONLY
     void MarkAncestorsWithChildNeedsDistributionRecalc(void);
+    void MarkAncestorsWithChildNeedsStyleInvalidation(void);
     StyleChangeType GetStyleChangeType(void) const { return static_cast<StyleChangeType>(m_nodeFlags & kStyleChangeMask); }
     bool NeedsAttach(void) const { return GetStyleChangeType() == kNeedsReattachStyleChange; }
     bool NeedsDistributionRecalc(void) const;
@@ -229,6 +235,9 @@ public:
         // RecalcStyleForReattachment as a slot-assigned element).
         return GetStyleChangeType() != kNoStyleChange && !NeedsReattachLayoutTree();
     }
+    // Sets the flag for the current node and also calls
+    // MarkAncestorsWithChildNeedsStyleRecalc
+    void SetNeedsStyleRecalc(StyleChangeType changeType, const StyleChangeReasonForTracing &);
 #endif // BLINKIT_CRAWLER_ONLY
     bool HasName(void) const
     {

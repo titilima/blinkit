@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: pending_invalidations.cc
+// Description: PendingInvalidations Class
+//      Author: Ziming Li
+//     Created: 2020-09-19
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -11,7 +22,7 @@
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/element_traversal.h"
 #include "third_party/blink/renderer/core/dom/shadow_root.h"
-#include "third_party/blink/renderer/core/html/html_slot_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_slot_element.h"
 #include "third_party/blink/renderer/core/inspector/inspector_trace_events.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 
@@ -121,10 +132,10 @@ void PendingInvalidations::RescheduleSiblingInvalidationsAsDescendants(
   auto pending_invalidations_iterator =
       pending_invalidation_map_.find(&element);
   if (pending_invalidations_iterator == pending_invalidation_map_.end() ||
-      pending_invalidations_iterator->value.Siblings().IsEmpty())
+      pending_invalidations_iterator->second.Siblings().IsEmpty())
     return;
   NodeInvalidationSets& pending_invalidations =
-      pending_invalidations_iterator->value;
+      pending_invalidations_iterator->second;
 
   InvalidationLists invalidation_lists;
   for (const auto& invalidation_set : pending_invalidations.Siblings()) {
@@ -148,10 +159,14 @@ NodeInvalidationSets& PendingInvalidations::EnsurePendingInvalidations(
     ContainerNode& node) {
   auto it = pending_invalidation_map_.find(&node);
   if (it != pending_invalidation_map_.end())
-    return it->value;
+    return it->second;
+  ASSERT(false); // BKTODO:
+  return it->second;
+#if 0
   PendingInvalidationMap::AddResult add_result =
       pending_invalidation_map_.insert(&node, NodeInvalidationSets());
   return add_result.stored_value->value;
+#endif
 }
 
 }  // namespace blink
