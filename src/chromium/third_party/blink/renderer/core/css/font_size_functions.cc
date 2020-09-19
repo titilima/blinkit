@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_size_functions.cc
+// Description: FontSizeFunctions Class
+//      Author: Ziming Li
+//     Created: 2020-09-19
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -32,7 +43,6 @@
 
 #include "third_party/blink/renderer/core/css_value_keywords.h"
 #include "third_party/blink/renderer/core/dom/document.h"
-#include "third_party/blink/renderer/core/frame/settings.h"
 
 namespace blink {
 
@@ -49,6 +59,9 @@ float FontSizeFunctions::GetComputedSizeFromSpecifiedSize(
   if (fabsf(specified_size) < std::numeric_limits<float>::epsilon())
     return 0.0f;
 
+  ASSERT(false); // BKTODO:
+  return 1.0f;
+#if 0
   // We support two types of minimum font size. The first is a hard override
   // that applies to all fonts. This is "minSize." The second type of minimum
   // font size is a "smart minimum" that is applied only when the Web page can't
@@ -87,6 +100,7 @@ float FontSizeFunctions::GetComputedSizeFromSpecifiedSize(
   // Also clamp to a reasonable maximum to prevent insane font sizes from
   // causing crashes on various platforms (I'm looking at you, Windows.)
   return std::min(kMaximumAllowedFontSize, zoomed_size);
+#endif
 }
 
 const int kFontSizeTableMax = 16;
@@ -128,6 +142,7 @@ static const int kStrictFontSizeTable[kFontSizeTableMax - kFontSizeTableMin +
 static const float kFontSizeFactors[kTotalKeywords] = {
     0.60f, 0.75f, 0.89f, 1.0f, 1.2f, 1.5f, 2.0f, 3.0f};
 
+#if 0 // BKTODO:
 static int inline RowFromMediumFontSizeInRange(const Settings* settings,
                                                bool quirks_mode,
                                                bool is_monospace,
@@ -139,10 +154,14 @@ static int inline RowFromMediumFontSizeInRange(const Settings* settings,
     return medium_size - kFontSizeTableMin;
   return -1;
 }
+#endif
 
 float FontSizeFunctions::FontSizeForKeyword(const Document* document,
                                             unsigned keyword,
                                             bool is_monospace) {
+  ASSERT(false); // BKTODO:
+  return kDefaultMediumFontSize;
+#if 0
   DCHECK_GE(keyword, 1u);
   DCHECK_LE(keyword, 8u);
   const Settings* settings = document ? document->GetSettings() : nullptr;
@@ -162,6 +181,7 @@ float FontSizeFunctions::FontSizeForKeyword(const Document* document,
       settings ? std::max(settings->GetMinimumLogicalFontSize(), 1) : 1;
   return std::max(kFontSizeFactors[keyword - 1] * medium_size,
                   min_logical_size);
+#endif
 }
 
 template <typename T>
@@ -180,6 +200,9 @@ static int FindNearestLegacyFontSize(int pixel_font_size,
 int FontSizeFunctions::LegacyFontSize(const Document* document,
                                       int pixel_font_size,
                                       bool is_monospace) {
+  ASSERT(false); // BKTODO:
+  return 1;
+#if 0
   const Settings* settings = document->GetSettings();
   if (!settings)
     return 1;
@@ -196,6 +219,7 @@ int FontSizeFunctions::LegacyFontSize(const Document* document,
 
   return FindNearestLegacyFontSize<float>(pixel_font_size, kFontSizeFactors,
                                           medium_size);
+#endif
 }
 
 }  // namespace blink
