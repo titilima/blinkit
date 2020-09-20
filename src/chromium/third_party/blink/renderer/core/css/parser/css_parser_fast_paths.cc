@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_parser_fast_paths.cc
+// Description: CSSParserFastPaths Class
+//      Author: Ziming Li
+//     Created: 2020-09-20
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -539,7 +550,11 @@ CSSValue* CSSParserFastPaths::ParseColor(const String& string,
                                           string.length(), quirks_mode);
   if (!parse_result)
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return CSSColorValue::Create(color);
+#endif
 }
 
 bool CSSParserFastPaths::IsValidKeywordPropertyAndValue(
@@ -553,10 +568,14 @@ bool CSSParserFastPaths::IsValidKeywordPropertyAndValue(
   // For range checks, enum ordering is defined by CSSValueKeywords.in.
   switch (property_id) {
     case CSSPropertyAlignmentBaseline:
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       return value_id == CSSValueAuto || value_id == CSSValueAlphabetic ||
              value_id == CSSValueBaseline || value_id == CSSValueMiddle ||
              (value_id >= CSSValueBeforeEdge &&
               value_id <= CSSValueMathematical);
+#endif
     case CSSPropertyAll:
       return false;  // Only accepts css-wide keywords
     case CSSPropertyBackgroundRepeatX:
@@ -577,8 +596,12 @@ bool CSSParserFastPaths::IsValidKeywordPropertyAndValue(
     case CSSPropertyBoxSizing:
       return value_id == CSSValueBorderBox || value_id == CSSValueContentBox;
     case CSSPropertyBufferedRendering:
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       return value_id == CSSValueAuto || value_id == CSSValueDynamic ||
              value_id == CSSValueStatic;
+#endif
     case CSSPropertyCaptionSide:
       return value_id == CSSValueTop || value_id == CSSValueBottom;
     case CSSPropertyClear:
@@ -592,8 +615,12 @@ bool CSSParserFastPaths::IsValidKeywordPropertyAndValue(
       return value_id == CSSValueNonzero || value_id == CSSValueEvenodd;
     case CSSPropertyColorInterpolation:
     case CSSPropertyColorInterpolationFilters:
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       return value_id == CSSValueAuto || value_id == CSSValueSRGB ||
              value_id == CSSValueLinearrgb;
+#endif
     case CSSPropertyColorRendering:
       return value_id == CSSValueAuto || value_id == CSSValueOptimizespeed ||
              value_id == CSSValueOptimizequality;
@@ -606,10 +633,14 @@ bool CSSParserFastPaths::IsValidKeywordPropertyAndValue(
              value_id == CSSValueGrid || value_id == CSSValueInlineGrid ||
              value_id == CSSValueContents;
     case CSSPropertyDominantBaseline:
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       return value_id == CSSValueAuto || value_id == CSSValueAlphabetic ||
              value_id == CSSValueMiddle ||
              (value_id >= CSSValueUseScript && value_id <= CSSValueResetSize) ||
              (value_id >= CSSValueCentral && value_id <= CSSValueMathematical);
+#endif
     case CSSPropertyEmptyCells:
       return value_id == CSSValueShow || value_id == CSSValueHide;
     case CSSPropertyFloat:
@@ -630,7 +661,11 @@ bool CSSParserFastPaths::IsValidKeywordPropertyAndValue(
       return (value_id >= CSSValueDisc && value_id <= CSSValueKatakanaIroha) ||
              value_id == CSSValueNone;
     case CSSPropertyMaskType:
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       return value_id == CSSValueLuminance || value_id == CSSValueAlpha;
+#endif
     case CSSPropertyObjectFit:
       return value_id == CSSValueFill || value_id == CSSValueContain ||
              value_id == CSSValueCover || value_id == CSSValueNone ||
@@ -690,11 +725,19 @@ bool CSSParserFastPaths::IsValidKeywordPropertyAndValue(
              value_id == CSSValueLiteralPunctuation ||
              value_id == CSSValueNoPunctuation;
     case CSSPropertyStrokeLinejoin:
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       return value_id == CSSValueMiter || value_id == CSSValueRound ||
              value_id == CSSValueBevel;
+#endif
     case CSSPropertyStrokeLinecap:
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       return value_id == CSSValueButt || value_id == CSSValueRound ||
              value_id == CSSValueSquare;
+#endif
     case CSSPropertyTableLayout:
       return value_id == CSSValueAuto || value_id == CSSValueFixed;
     case CSSPropertyTextAlign:
@@ -747,7 +790,11 @@ bool CSSParserFastPaths::IsValidKeywordPropertyAndValue(
              value_id == CSSValueIsolateOverride ||
              value_id == CSSValuePlaintext;
     case CSSPropertyVectorEffect:
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       return value_id == CSSValueNone || value_id == CSSValueNonScalingStroke;
+#endif
     case CSSPropertyVisibility:
       return value_id == CSSValueVisible || value_id == CSSValueHidden ||
              value_id == CSSValueCollapse;
