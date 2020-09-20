@@ -415,6 +415,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\at_rule_descriptor_parser.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_context.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_fast_paths.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_impl.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_selector.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_token.cc" />
@@ -423,6 +424,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_property_parser.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_property_parser_helpers.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_selector_parser.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_supports_parser.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_tokenizer.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_tokenizer_input_stream.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_variable_parser.cc" />
@@ -1223,6 +1225,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\font_face_set_worker.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\font_face_source.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\font_size_functions.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\hash_tools.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\invalidation\invalidation_flags.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\invalidation\invalidation_set.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\invalidation\node_invalidation_sets.h" />
@@ -1244,6 +1247,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\at_rule_descriptor_parser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_context.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_fast_paths.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_idioms.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_impl.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_mode.h" />
@@ -1255,6 +1259,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_property_parser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_property_parser_helpers.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_selector_parser.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_supports_parser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_tokenizer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_tokenizer_input_stream.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_variable_parser.h" />
