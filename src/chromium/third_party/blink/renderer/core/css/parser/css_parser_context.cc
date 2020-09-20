@@ -21,8 +21,7 @@
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/css/css_style_sheet.h"
 #   include "third_party/blink/renderer/core/css/style_sheet_contents.h"
-#   include "third_party/blink/renderer/core/frame/deprecation.h"
-#   include "third_party/blink/renderer/core/html/imports/html_imports_controller.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/imports/html_imports_controller.h"
 #   include "third_party/blink/renderer/core/loader/document_loader.h"
 #   include "third_party/blink/renderer/core/page/page.h"
 #endif
@@ -31,7 +30,10 @@ namespace blink {
 
 #ifndef BLINKIT_CRAWLER_ONLY
 // static
-CSSParserContext* CSSParserContext::Create(const ExecutionContext& context) {
+std::unique_ptr<CSSParserContext> CSSParserContext::Create(const ExecutionContext& context) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   const Referrer referrer(context.Url().StrippedForUseAsReferrer(),
                           context.GetReferrerPolicy());
 
@@ -46,10 +48,11 @@ CSSParserContext* CSSParserContext::Create(const ExecutionContext& context) {
       WTF::TextEncoding(), kHTMLStandardMode, kHTMLStandardMode, kLiveProfile,
       referrer, true, false, context.GetSecureContextMode(), policy_disposition,
       DynamicTo<Document>(context));
+#endif
 }
 
 // static
-CSSParserContext* CSSParserContext::CreateWithStyleSheet(
+std::unique_ptr<CSSParserContext> CSSParserContext::CreateWithStyleSheet(
     const CSSParserContext* other,
     const CSSStyleSheet* style_sheet) {
   return CSSParserContext::Create(
@@ -57,7 +60,7 @@ CSSParserContext* CSSParserContext::CreateWithStyleSheet(
 }
 
 // static
-CSSParserContext* CSSParserContext::CreateWithStyleSheetContents(
+std::unique_ptr<CSSParserContext> CSSParserContext::CreateWithStyleSheetContents(
     const CSSParserContext* other,
     const StyleSheetContents* style_sheet_contents) {
   return CSSParserContext::Create(
@@ -68,6 +71,9 @@ CSSParserContext* CSSParserContext::CreateWithStyleSheetContents(
 std::unique_ptr<CSSParserContext> CSSParserContext::Create(
     const CSSParserContext* other,
     const Document* use_counter_document) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return new CSSParserContext(
       other->base_url_, other->is_opaque_response_from_service_worker_,
       other->charset_, other->mode_, other->match_mode_, other->profile_,
@@ -75,16 +81,19 @@ std::unique_ptr<CSSParserContext> CSSParserContext::Create(
       other->use_legacy_background_size_shorthand_behavior_,
       other->secure_context_mode_, other->should_check_content_security_policy_,
       use_counter_document);
+#endif
 }
 
 // static
-CSSParserContext* CSSParserContext::Create(
+std::unique_ptr<CSSParserContext> CSSParserContext::Create(
     const CSSParserContext* other,
-    const KURL& base_url,
+    const GURL& base_url,
     bool is_opaque_response_from_service_worker,
-    ReferrerPolicy referrer_policy,
     const WTF::TextEncoding& charset,
     const Document* use_counter_document) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return new CSSParserContext(
       base_url, is_opaque_response_from_service_worker, charset, other->mode_,
       other->match_mode_, other->profile_,
@@ -93,27 +102,36 @@ CSSParserContext* CSSParserContext::Create(
       other->use_legacy_background_size_shorthand_behavior_,
       other->secure_context_mode_, other->should_check_content_security_policy_,
       use_counter_document);
+#endif
 }
 
 // static
-CSSParserContext* CSSParserContext::Create(
+std::unique_ptr<CSSParserContext> CSSParserContext::Create(
     CSSParserMode mode,
     SecureContextMode secure_context_mode,
     SelectorProfile profile,
     const Document* use_counter_document) {
-  return new CSSParserContext(
-      KURL(), false /* is_opaque_response_from_service_worker */,
-      WTF::TextEncoding(), mode, mode, profile, Referrer(), false, false,
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
+  return base::WrapUnique(new CSSParserContext(
+      GURL(), false /* is_opaque_response_from_service_worker */,
+      WTF::TextEncoding(), mode, mode, profile, false, false,
       secure_context_mode, kDoNotCheckContentSecurityPolicy,
-      use_counter_document);
+      use_counter_document));
+#endif
 }
 
 // static
-CSSParserContext* CSSParserContext::Create(const Document& document) {
+std::unique_ptr<CSSParserContext> CSSParserContext::Create(const Document& document) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return CSSParserContext::Create(
       document, document.BaseURL(),
       false /* is_opaque_response_from_service_worker */,
       document.GetReferrerPolicy(), WTF::TextEncoding(), kLiveProfile);
+#endif
 }
 #endif // BLINKIT_CRAWLER_ONLY
 
@@ -130,6 +148,8 @@ std::unique_ptr<CSSParserContext> CSSParserContext::Create(
   CSSParserMode match_mode = mode;
 #else
   CSSParserMode match_mode;
+  ASSERT(false); // BKTODO:
+#if 0
   HTMLImportsController* imports_controller = document.ImportsController();
   if (imports_controller && profile == kLiveProfile) {
     match_mode = imports_controller->Master()->InQuirksMode()
@@ -138,6 +158,9 @@ std::unique_ptr<CSSParserContext> CSSParserContext::Create(
   } else {
     match_mode = mode;
   }
+#else
+  match_mode = mode;
+#endif
 #endif
 
   const std::string referrer = base_url_override.GetAsReferrer().spec();
@@ -202,6 +225,9 @@ bool CSSParserContext::operator==(const CSSParserContext& other) const {
 
 const CSSParserContext* StrictCSSParserContext(
     SecureContextMode secure_context_mode) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   DEFINE_THREAD_SAFE_STATIC_LOCAL(ThreadSpecific<Persistent<CSSParserContext>>,
                                   strict_context_pool, ());
   DEFINE_THREAD_SAFE_STATIC_LOCAL(ThreadSpecific<Persistent<CSSParserContext>>,
@@ -217,6 +243,7 @@ const CSSParserContext* StrictCSSParserContext(
   }
 
   return context;
+#endif
 }
 
 bool CSSParserContext::IsOpaqueResponseFromServiceWorker() const {
@@ -227,12 +254,16 @@ bool CSSParserContext::IsSecureContext() const {
   return secure_context_mode_ == SecureContextMode::kSecureContext;
 }
 
-KURL CSSParserContext::CompleteURL(const String& url) const {
+GURL CSSParserContext::CompleteURL(const String& url) const {
   if (url.IsNull())
-    return KURL();
+    return GURL();
   if (!Charset().IsValid())
-    return KURL(BaseURL(), url);
-  return KURL(BaseURL(), url, Charset());
+    return BaseURL().Resolve(url.StdUtf8());
+  ASSERT(false); // BKTODO:
+  return BaseURL().Resolve(url.StdUtf8());
+#if 0
+  return GURL(BaseURL(), url, Charset());
+#endif
 }
 #endif // BLINKIT_CRAWLER_ONLY
 
@@ -242,16 +273,11 @@ void CSSParserContext::Count(WebFeature) const {
 
 #ifndef BLINKIT_CRAWLER_ONLY
 void CSSParserContext::CountDeprecation(WebFeature feature) const {
-  if (IsUseCounterRecordingEnabled())
-    Deprecation::CountDeprecation(*document_, feature);
+  // Nothing to do, just a placeholder.
 }
 
 void CSSParserContext::Count(CSSParserMode mode, CSSPropertyID property) const {
-  if (IsUseCounterRecordingEnabled() && document_->Loader()) {
-    UseCounter* use_counter = &document_->Loader()->GetUseCounter();
-    if (use_counter)
-      use_counter->Count(mode, property, document_->GetFrame());
-  }
+  // Nothing to do, just a placeholder.
 }
 
 bool CSSParserContext::IsDocumentHandleEqual(const Document* other) const {
