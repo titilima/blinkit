@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: media_values_dynamic.cc
+// Description: MediaValuesDynamic Class
+//      Author: Ziming Li
+//     Created: 2020-09-20
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -14,13 +25,21 @@
 namespace blink {
 
 MediaValues* MediaValuesDynamic::Create(Document& document) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return MediaValuesDynamic::Create(document.GetFrameOfMasterDocument());
+#endif
 }
 
 MediaValues* MediaValuesDynamic::Create(LocalFrame* frame) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (!frame || !frame->View() || !frame->GetDocument() ||
       !frame->GetDocument()->GetLayoutView())
     return MediaValuesCached::Create();
+#endif
   return new MediaValuesDynamic(frame);
 }
 
@@ -125,9 +144,11 @@ const String MediaValuesDynamic::MediaType() const {
   return CalculateMediaType(frame_);
 }
 
+#if 0 // BKTODO:
 WebDisplayMode MediaValuesDynamic::DisplayMode() const {
   return CalculateDisplayMode(frame_);
 }
+#endif
 
 bool MediaValuesDynamic::StrictMode() const {
   return CalculateStrictMode(frame_);
@@ -147,11 +168,6 @@ Document* MediaValuesDynamic::GetDocument() const {
 
 bool MediaValuesDynamic::HasValues() const {
   return frame_;
-}
-
-void MediaValuesDynamic::Trace(blink::Visitor* visitor) {
-  visitor->Trace(frame_);
-  MediaValues::Trace(visitor);
 }
 
 void MediaValuesDynamic::OverrideViewportDimensions(double width,
