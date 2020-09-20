@@ -45,6 +45,7 @@
 #include "third_party/blink/public/platform/task_type.h"
 #include "third_party/blink/renderer/core/frame/frame.h"
 #include "third_party/blink/renderer/core/loader/frame_loader.h"
+#include "third_party/blink/renderer/platform/wtf/wtf.h"
 
 namespace base {
 class SingleThreadTaskRunner;

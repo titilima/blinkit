@@ -11,22 +11,20 @@
 
 #include "script_forbidden_scope.h"
 
-#include "third_party/blink/renderer/platform/wtf/wtf.h"
-
 namespace blink {
 
 static unsigned s_scriptForbiddenCount = 0;
 
 void ScriptForbiddenScope::Enter(void)
 {
-    assert(IsMainThread());
+    ASSERT(IsMainThread());
     ++s_scriptForbiddenCount;
 }
 
 void ScriptForbiddenScope::Exit(void)
 {
-    assert(IsMainThread());
-    assert(0 != s_scriptForbiddenCount);
+    ASSERT(IsMainThread());
+    ASSERT(0 != s_scriptForbiddenCount);
     --s_scriptForbiddenCount;
 }
 

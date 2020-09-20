@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: media_values_cached.cc
+// Description: MediaValuesCached Class
+//      Author: Ziming Li
+//     Created: 2020-09-20
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -28,7 +39,9 @@ MediaValuesCached::MediaValuesCachedData::MediaValuesCachedData()
       three_d_enabled(false),
       immersive_mode(false),
       strict_mode(true),
+#if 0 // BKTODO:
       display_mode(kWebDisplayModeBrowser),
+#endif
       display_shape(kDisplayShapeRect),
       color_gamut(ColorSpaceGamut::kUnknown) {}
 
@@ -36,6 +49,8 @@ MediaValuesCached::MediaValuesCachedData::MediaValuesCachedData(
     Document& document)
     : MediaValuesCached::MediaValuesCachedData() {
   DCHECK(IsMainThread());
+  ASSERT(false); // BKTODO:
+#if 0
   LocalFrame* frame = document.GetFrameOfMasterDocument();
   // TODO(hiroshige): Clean up |frame->view()| conditions.
   DCHECK(!frame || frame->View());
@@ -70,6 +85,7 @@ MediaValuesCached::MediaValuesCachedData::MediaValuesCachedData(
     display_shape = MediaValues::CalculateDisplayShape(frame);
     color_gamut = MediaValues::CalculateColorGamut(frame);
   }
+#endif
 }
 
 MediaValuesCached* MediaValuesCached::Create() {
@@ -166,9 +182,11 @@ const String MediaValuesCached::MediaType() const {
   return data_.media_type;
 }
 
+#if 0 // BKTODO:
 WebDisplayMode MediaValuesCached::DisplayMode() const {
   return data_.display_mode;
 }
+#endif
 
 Document* MediaValuesCached::GetDocument() const {
   return nullptr;

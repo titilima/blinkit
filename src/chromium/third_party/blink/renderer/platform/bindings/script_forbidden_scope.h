@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/platform/wtf/wtf.h"
+
 namespace blink {
 
 class ScriptForbiddenScope final
