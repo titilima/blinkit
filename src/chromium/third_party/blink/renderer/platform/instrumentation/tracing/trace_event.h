@@ -14,6 +14,10 @@
 
 #pragma once
 
+#define TRACE_EVENT_BEGIN0(...)                     ((void)0)
+#define TRACE_EVENT_BEGIN2(...)                     ((void)0)
+#define TRACE_EVENT_END0(...)                       ((void)0)
+#define TRACE_EVENT_END2(...)                       ((void)0)
 #define TRACE_EVENT_INSTANT1(...)                   ((void)0)
 #define TRACE_EVENT_NESTABLE_ASYNC_BEGIN1(...)      ((void)0)
 #define TRACE_EVENT_NESTABLE_ASYNC_END1(...)        ((void)0)

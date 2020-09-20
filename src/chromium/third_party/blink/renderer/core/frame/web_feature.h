@@ -33,6 +33,7 @@ enum class WebFeature {
     kPrefixedMinDevicePixelRatioMediaFeature,
     kPrefixedTransform3dMediaFeature,
     kPseudoShadowInStaticProfile,
+    kQuotedKeyframesRule,
     kSyntheticKeyframesInCompositedCSSAnimation,
 };
 

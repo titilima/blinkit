@@ -413,6 +413,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\offscreen_font_selector.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\at_rule_descriptors.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\at_rule_descriptor_parser.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_at_rule_id.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_lazy_parsing_state.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_lazy_property_parser_impl.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_context.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_fast_paths.cc" />
@@ -1245,6 +1248,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\offscreen_font_selector.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\at_rule_descriptors.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\at_rule_descriptor_parser.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_at_rule_id.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_lazy_parsing_state.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_lazy_property_parser_impl.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_parser_fast_paths.h" />
@@ -1310,6 +1316,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_css_style_declaration.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_import.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_keyframe.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_namespace.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_sheet.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_sheet_candidate.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_sheet_collection.h" />
