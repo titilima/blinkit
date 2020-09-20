@@ -428,6 +428,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_variable_parser.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\media_query_block_watcher.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\media_query_parser.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_parsing_utils.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_property.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_unresolved_property.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\property_registration.cc" />
@@ -1259,6 +1260,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_variable_parser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\media_query_block_watcher.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\media_query_parser.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_parsing_utils.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_property.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_unresolved_property.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\property_registration.h" />
@@ -1444,6 +1446,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\navigator_id.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\navigator_language.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\settings.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\use_counter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\web_feature.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\web_feature_forward.h" />

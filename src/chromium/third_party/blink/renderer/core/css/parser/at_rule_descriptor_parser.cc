@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: at_rule_descriptor_parser.cc
+// Description: AtRuleDescriptorParser Class
+//      Author: Ziming Li
+//     Created: 2020-09-20
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -72,6 +83,9 @@ CSSValue* ConsumeFontFaceSrcURI(CSSParserTokenRange& range,
       CSSPropertyParserHelpers::ConsumeUrlAsStringView(range).ToString();
   if (url.IsNull())
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   CSSFontFaceSrcValue* uri_value(CSSFontFaceSrcValue::Create(
       url, context.CompleteURL(url), context.GetReferrer(),
       context.ShouldCheckContentSecurityPolicy()));
@@ -88,6 +102,7 @@ CSSValue* ConsumeFontFaceSrcURI(CSSParserTokenRange& range,
     return nullptr;
   uri_value->SetFormat(arg.Value().ToString());
   return uri_value;
+#endif
 }
 
 CSSValue* ConsumeFontFaceSrcLocal(CSSParserTokenRange& range,
@@ -95,6 +110,8 @@ CSSValue* ConsumeFontFaceSrcLocal(CSSParserTokenRange& range,
   CSSParserTokenRange args = CSSPropertyParserHelpers::ConsumeFunction(range);
   ContentSecurityPolicyDisposition should_check_content_security_policy =
       context.ShouldCheckContentSecurityPolicy();
+  ASSERT(false); // BKTODO:
+#if 0
   if (args.Peek().GetType() == kStringToken) {
     const CSSParserToken& arg = args.ConsumeIncludingWhitespace();
     if (!args.AtEnd())
@@ -109,6 +126,7 @@ CSSValue* ConsumeFontFaceSrcLocal(CSSParserTokenRange& range,
     return CSSFontFaceSrcValue::CreateLocal(
         family_name, should_check_content_security_policy);
   }
+#endif
   return nullptr;
 }
 

@@ -2504,6 +2504,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\compositing_reason_finder.cc">
       <Filter>renderer\core\paint\compositing</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_parsing_utils.cc">
+      <Filter>renderer\core\css\properties</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -5757,6 +5760,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\compositing_triggers.h">
       <Filter>renderer\core\paint\compositing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\settings.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_parsing_utils.h">
+      <Filter>renderer\core\css\properties</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
