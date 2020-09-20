@@ -21,6 +21,7 @@ namespace blink {
 
 enum CSSPropertyID;
 class Document;
+class ExecutionContext;
 
 class UseCounter
 {

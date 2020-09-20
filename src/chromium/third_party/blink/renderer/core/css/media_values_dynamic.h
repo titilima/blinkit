@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: media_values_dynamic.h
+// Description: MediaValuesDynamic Class
+//      Author: Ziming Li
+//     Created: 2020-09-19
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -38,14 +49,14 @@ class CORE_EXPORT MediaValuesDynamic : public MediaValues {
   bool InImmersiveMode() const override;
   bool StrictMode() const override;
   const String MediaType() const override;
+#if 0 // BKTODO:
   WebDisplayMode DisplayMode() const override;
+#endif
   DisplayShape GetDisplayShape() const override;
   ColorSpaceGamut ColorGamut() const override;
   Document* GetDocument() const override;
   bool HasValues() const override;
   void OverrideViewportDimensions(double width, double height) override;
-
-  void Trace(blink::Visitor*) override;
 
  protected:
   MediaValuesDynamic(LocalFrame*);

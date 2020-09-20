@@ -19,6 +19,7 @@ namespace media_type_names {
 void *namesStorage[kNamesCount * ((sizeof(AtomicString) + sizeof(void *) - 1) / sizeof(void *))];
 
 const AtomicString &kAll = reinterpret_cast<AtomicString*>(&namesStorage)[0];
+const AtomicString &kScreen = reinterpret_cast<AtomicString*>(&namesStorage)[1];
 
 void Init(void)
 {
@@ -29,13 +30,14 @@ void Init(void)
     isLoaded = true;
 
     struct NameEntry {
-        const char* name;
+        const char *name;
         unsigned hash;
         unsigned char length;
     };
 
     static const NameEntry kNames[] = {
-      { "all", 10505778, 3 },
+        { "all", 10505778, 3 },
+        { "screen", 13980269, 6 },
     };
 
     for (size_t i = 0; i < std::size(kNames); ++i)

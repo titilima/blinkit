@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: media_values.h
+// Description: MediaValues Class
+//      Author: Ziming Li
+//     Created: 2020-09-19
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_CSS_MEDIA_VALUES_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_CSS_MEDIA_VALUES_H_
 
-#include "third_party/blink/public/common/manifest/web_display_mode.h"
+// BKTODO: #include "third_party/blink/public/common/manifest/web_display_mode.h"
 #include "third_party/blink/public/platform/pointer_properties.h"
 #include "third_party/blink/public/platform/shape_properties.h"
 #include "third_party/blink/renderer/core/core_export.h"
@@ -22,7 +33,6 @@ enum class ColorSpaceGamut;
 class CORE_EXPORT MediaValues : public GarbageCollectedFinalized<MediaValues> {
  public:
   virtual ~MediaValues() = default;
-  virtual void Trace(blink::Visitor* visitor) {}
 
   static MediaValues* CreateDynamicIfFrameExists(LocalFrame*);
   virtual MediaValues* Copy() const = 0;
@@ -68,7 +78,9 @@ class CORE_EXPORT MediaValues : public GarbageCollectedFinalized<MediaValues> {
   virtual bool ThreeDEnabled() const = 0;
   virtual bool InImmersiveMode() const = 0;
   virtual const String MediaType() const = 0;
+#if 0 // BKTODO:
   virtual WebDisplayMode DisplayMode() const = 0;
+#endif
   virtual bool StrictMode() const = 0;
   virtual Document* GetDocument() const = 0;
   virtual bool HasValues() const = 0;
@@ -88,7 +100,9 @@ class CORE_EXPORT MediaValues : public GarbageCollectedFinalized<MediaValues> {
   static int CalculateMonochromeBitsPerComponent(LocalFrame*);
   static int CalculateDefaultFontSize(LocalFrame*);
   static const String CalculateMediaType(LocalFrame*);
+#if 0 // BKTODO:
   static WebDisplayMode CalculateDisplayMode(LocalFrame*);
+#endif
   static bool CalculateThreeDEnabled(LocalFrame*);
   static bool CalculateInImmersiveMode(LocalFrame*);
   static PointerType CalculatePrimaryPointerType(LocalFrame*);

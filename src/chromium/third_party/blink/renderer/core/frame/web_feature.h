@@ -28,6 +28,10 @@ enum class WebFeature {
     kHasBeforeOrAfterPseudoElement,
     kHasIDClassTagAttribute,
     kHTMLParseErrorNestedForm,
+    kPrefixedDevicePixelRatioMediaFeature,
+    kPrefixedMaxDevicePixelRatioMediaFeature,
+    kPrefixedMinDevicePixelRatioMediaFeature,
+    kPrefixedTransform3dMediaFeature,
     kPseudoShadowInStaticProfile,
     kSyntheticKeyframesInCompositedCSSAnimation,
 };

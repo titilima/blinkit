@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: media_query_evaluator.cc
+// Description: MediaQueryEvaluator Class
+//      Author: Ziming Li
+//     Created: 2020-09-19
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * CSS Media Query Evaluator
  *
@@ -29,14 +40,14 @@
 
 #include "third_party/blink/renderer/core/css/media_query_evaluator.h"
 
-#include "third_party/blink/public/common/manifest/web_display_mode.h"
+// BKTODO: #include "third_party/blink/public/common/manifest/web_display_mode.h"
 #include "third_party/blink/public/platform/pointer_properties.h"
 #include "third_party/blink/public/platform/shape_properties.h"
 #include "third_party/blink/renderer/core/css/css_primitive_value.h"
 #include "third_party/blink/renderer/core/css/css_resolution_units.h"
 #include "third_party/blink/renderer/core/css/css_to_length_conversion_data.h"
 #include "third_party/blink/renderer/core/css/media_feature_names.h"
-#include "third_party/blink/renderer/core/css/media_features.h"
+// BKTODO: #include "third_party/blink/renderer/core/css/media_features.h"
 #include "third_party/blink/renderer/core/css/media_list.h"
 #include "third_party/blink/renderer/core/css/media_query.h"
 #include "third_party/blink/renderer/core/css/media_values_dynamic.h"
@@ -45,7 +56,6 @@
 #include "third_party/blink/renderer/core/css_value_keywords.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
-#include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
 #include "third_party/blink/renderer/core/media_type_names.h"
 #include "third_party/blink/renderer/core/probe/core_probes.h"
@@ -100,7 +110,7 @@ bool MediaQueryEvaluator::MediaTypeMatch(
     const String& media_type_to_match) const {
   return media_type_to_match.IsEmpty() ||
          DeprecatedEqualIgnoringCase(media_type_to_match,
-                                     MediaTypeNames::all) ||
+                                     media_type_names::kAll) ||
          DeprecatedEqualIgnoringCase(media_type_to_match, MediaType());
 }
 
@@ -253,6 +263,9 @@ static bool DisplayModeMediaFeatureEval(const MediaQueryExpValue& value,
   if (!value.is_id)
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   WebDisplayMode mode = media_values.DisplayMode();
   switch (value.id) {
     case CSSValueFullscreen:
@@ -267,6 +280,7 @@ static bool DisplayModeMediaFeatureEval(const MediaQueryExpValue& value,
       NOTREACHED();
       return false;
   }
+#endif
 }
 
 static bool OrientationMediaFeatureEval(const MediaQueryExpValue& value,
@@ -317,12 +331,14 @@ static bool EvalResolution(const MediaQueryExpValue& value,
   // https://www.w3.org/Style/CSS/Tracker/issues/348
   float actual_resolution = 0;
 
+  ASSERT(false); // BKTODO:
+#if 0
   // This checks the actual media type applied to the document, and we know
   // this method only got called if this media type matches the one defined
   // in the query. Thus, if if the document's media type is "print", the
   // media type of the query will either be "print" or "all".
   if (DeprecatedEqualIgnoringCase(media_values.MediaType(),
-                                  MediaTypeNames::screen)) {
+                                  media_type_names::kScreen)) {
     actual_resolution = clampTo<float>(media_values.DevicePixelRatio());
   } else if (DeprecatedEqualIgnoringCase(media_values.MediaType(),
                                          MediaTypeNames::print)) {
@@ -331,6 +347,7 @@ static bool EvalResolution(const MediaQueryExpValue& value,
     // we use 300px which is considered minimum for current printers.
     actual_resolution = 300 / kCssPixelsPerInch;
   }
+#endif
 
   if (!value.IsValid())
     return !!actual_resolution;
@@ -750,6 +767,9 @@ static bool AnyPointerMediaFeatureEval(const MediaQueryExpValue& value,
 static bool ScanMediaFeatureEval(const MediaQueryExpValue& value,
                                  MediaFeaturePrefix,
                                  const MediaValues& media_values) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // Scan only applies to 'tv' media.
   if (!DeprecatedEqualIgnoringCase(media_values.MediaType(),
                                    MediaTypeNames::tv))
@@ -765,6 +785,7 @@ static bool ScanMediaFeatureEval(const MediaQueryExpValue& value,
   // future, it needs to be handled here. For now, assume a modern TV with
   // progressive display.
   return (value.id == CSSValueProgressive);
+#endif
 }
 
 static bool ColorGamutMediaFeatureEval(const MediaQueryExpValue& value,
@@ -779,6 +800,8 @@ static bool ColorGamutMediaFeatureEval(const MediaQueryExpValue& value,
   if (!value.is_id)
     return false;
 
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(value.id == CSSValueSRGB || value.id == CSSValueP3 ||
          value.id == CSSValueRec2020);
 
@@ -803,6 +826,7 @@ static bool ColorGamutMediaFeatureEval(const MediaQueryExpValue& value,
       NOTREACHED();
       return false;
   }
+#endif
 
   // This is for some compilers that do not understand that it can't be reached.
   NOTREACHED();
@@ -812,11 +836,14 @@ static bool ColorGamutMediaFeatureEval(const MediaQueryExpValue& value,
 void MediaQueryEvaluator::Init() {
   // Create the table.
   g_function_map = new FunctionMap;
+  ASSERT(false); // BKTODO:
+#if 0
 #define ADD_TO_FUNCTIONMAP(constantPrefix, methodPrefix)   \
   g_function_map->Set(constantPrefix##MediaFeature.Impl(), \
                       methodPrefix##MediaFeatureEval);
   CSS_MEDIAQUERY_NAMES_FOR_EACH_MEDIAFEATURE(ADD_TO_FUNCTIONMAP);
 #undef ADD_TO_FUNCTIONMAP
+#endif
 }
 
 bool MediaQueryEvaluator::Eval(const MediaQueryExp& expr) const {

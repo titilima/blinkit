@@ -20,8 +20,9 @@ namespace blink {
 namespace media_type_names {
 
 extern const WTF::AtomicString &kAll;
+extern const WTF::AtomicString &kScreen;
 
-constexpr unsigned kNamesCount = 1;
+constexpr unsigned kNamesCount = 2;
 
 void Init(void);
 
