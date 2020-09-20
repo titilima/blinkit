@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: media_query_exp.cc
+// Description: MediaQueryExp Class
+//      Author: Ziming Li
+//     Created: 2020-09-20
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * CSS Media Query
  *
@@ -68,8 +79,11 @@ static inline bool FeatureWithValidIdent(const String& media_feature,
   }
 
   if (media_feature == colorGamutMediaFeature) {
+    ASSERT(false); // BKTODO:
+#if 0
     return ident == CSSValueSRGB || ident == CSSValueP3 ||
            ident == CSSValueRec2020;
+#endif
   }
 
   return false;
