@@ -1,10 +1,21 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: media_values.cc
+// Description: MediaValues Class
+//      Author: Ziming Li
+//     Created: 2020-09-20
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/core/css/media_values.h"
 
-#include "third_party/blink/public/platform/web_screen_info.h"
+// BKTODO: #include "third_party/blink/public/platform/web_screen_info.h"
 #include "third_party/blink/renderer/core/css/css_resolution_units.h"
 #include "third_party/blink/renderer/core/css/media_values_cached.h"
 #include "third_party/blink/renderer/core/css/media_values_dynamic.h"
@@ -12,7 +23,6 @@
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
-#include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
@@ -30,19 +40,30 @@ MediaValues* MediaValues::CreateDynamicIfFrameExists(LocalFrame* frame) {
 
 double MediaValues::CalculateViewportWidth(LocalFrame* frame) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   DCHECK(frame->View());
   DCHECK(frame->GetDocument());
   return frame->View()->ViewportSizeForMediaQueries().Width();
+#endif
 }
 
 double MediaValues::CalculateViewportHeight(LocalFrame* frame) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   DCHECK(frame->View());
   DCHECK(frame->GetDocument());
   return frame->View()->ViewportSizeForMediaQueries().Height();
+#endif
 }
 
 int MediaValues::CalculateDeviceWidth(LocalFrame* frame) {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   DCHECK(frame && frame->View() && frame->GetSettings() && frame->GetPage());
   blink::WebScreenInfo screen_info =
       frame->GetPage()->GetChromeClient().GetScreenInfo();
@@ -52,9 +73,13 @@ int MediaValues::CalculateDeviceWidth(LocalFrame* frame) {
         lroundf(device_width * screen_info.device_scale_factor));
   }
   return device_width;
+#endif
 }
 
 int MediaValues::CalculateDeviceHeight(LocalFrame* frame) {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   DCHECK(frame && frame->View() && frame->GetSettings() && frame->GetPage());
   blink::WebScreenInfo screen_info =
       frame->GetPage()->GetChromeClient().GetScreenInfo();
@@ -64,6 +89,7 @@ int MediaValues::CalculateDeviceHeight(LocalFrame* frame) {
         lroundf(device_height * screen_info.device_scale_factor));
   }
   return device_height;
+#endif
 }
 
 bool MediaValues::CalculateStrictMode(LocalFrame* frame) {
@@ -73,11 +99,18 @@ bool MediaValues::CalculateStrictMode(LocalFrame* frame) {
 }
 
 float MediaValues::CalculateDevicePixelRatio(LocalFrame* frame) {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return frame->DevicePixelRatio();
+#endif
 }
 
 int MediaValues::CalculateColorBitsPerComponent(LocalFrame* frame) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   DCHECK(frame->GetPage());
   if (frame->GetPage()->GetChromeClient().GetScreenInfo().is_monochrome)
     return 0;
@@ -85,10 +118,14 @@ int MediaValues::CalculateColorBitsPerComponent(LocalFrame* frame) {
       ->GetChromeClient()
       .GetScreenInfo()
       .depth_per_component;
+#endif
 }
 
 int MediaValues::CalculateMonochromeBitsPerComponent(LocalFrame* frame) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   DCHECK(frame->GetPage());
   if (!frame->GetPage()->GetChromeClient().GetScreenInfo().is_monochrome)
     return 0;
@@ -96,19 +133,29 @@ int MediaValues::CalculateMonochromeBitsPerComponent(LocalFrame* frame) {
       ->GetChromeClient()
       .GetScreenInfo()
       .depth_per_component;
+#endif
 }
 
 int MediaValues::CalculateDefaultFontSize(LocalFrame* frame) {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return frame->GetPage()->GetSettings().GetDefaultFontSize();
+#endif
 }
 
 const String MediaValues::CalculateMediaType(LocalFrame* frame) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+  return g_empty_atom;
+#if 0
   if (!frame->View())
     return g_empty_atom;
   return frame->View()->MediaType();
+#endif
 }
 
+#if 0 // BKTODO:
 WebDisplayMode MediaValues::CalculateDisplayMode(LocalFrame* frame) {
   DCHECK(frame);
   WebDisplayMode mode =
@@ -122,58 +169,92 @@ WebDisplayMode MediaValues::CalculateDisplayMode(LocalFrame* frame) {
 
   return frame->View()->DisplayMode();
 }
+#endif
 
 bool MediaValues::CalculateThreeDEnabled(LocalFrame* frame) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(frame->ContentLayoutObject());
   DCHECK(frame->ContentLayoutObject()->Compositor());
+#endif
   bool three_d_enabled = false;
+#if 0 // BKTODO:
   if (LayoutView* view = frame->ContentLayoutObject())
     three_d_enabled = view->Compositor()->HasAcceleratedCompositing();
+#endif
   return three_d_enabled;
 }
 
 bool MediaValues::CalculateInImmersiveMode(LocalFrame* frame) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   DCHECK(frame->GetSettings());
   return frame->GetSettings()->GetImmersiveModeEnabled();
+#endif
 }
 
 PointerType MediaValues::CalculatePrimaryPointerType(LocalFrame* frame) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+  return kPointerTypeNone;
+#if 0
   DCHECK(frame->GetSettings());
   return frame->GetSettings()->GetPrimaryPointerType();
+#endif
 }
 
 int MediaValues::CalculateAvailablePointerTypes(LocalFrame* frame) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   DCHECK(frame->GetSettings());
   return frame->GetSettings()->GetAvailablePointerTypes();
+#endif
 }
 
 HoverType MediaValues::CalculatePrimaryHoverType(LocalFrame* frame) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+  return kHoverTypeNone;
+#if 0
   DCHECK(frame->GetSettings());
   return frame->GetSettings()->GetPrimaryHoverType();
+#endif
 }
 
 int MediaValues::CalculateAvailableHoverTypes(LocalFrame* frame) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   DCHECK(frame->GetSettings());
   return frame->GetSettings()->GetAvailableHoverTypes();
+#endif
 }
 
 DisplayShape MediaValues::CalculateDisplayShape(LocalFrame* frame) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+  return kDisplayShapeRect;
+#if 0
   DCHECK(frame->GetPage());
   return frame->GetPage()->GetChromeClient().GetScreenInfo().display_shape;
+#endif
 }
 
 ColorSpaceGamut MediaValues::CalculateColorGamut(LocalFrame* frame) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+  return ColorSpaceGamut::kUnknown;
+#if 0
   DCHECK(frame->GetPage());
   return color_space_utilities::GetColorSpaceGamut(
       frame->GetPage()->GetChromeClient().GetScreenInfo());
+#endif
 }
 
 bool MediaValues::ComputeLengthImpl(double value,

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: media_values_cached.h
+// Description: MediaValuesCached Class
+//      Author: Ziming Li
+//     Created: 2020-09-20
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,7 +18,7 @@
 
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/css/media_values.h"
-#include "third_party/blink/renderer/platform/cross_thread_copier.h"
+// BKTODO: #include "third_party/blink/renderer/platform/cross_thread_copier.h"
 
 namespace blink {
 
@@ -33,7 +44,9 @@ class CORE_EXPORT MediaValuesCached final : public MediaValues {
     bool immersive_mode;
     bool strict_mode;
     String media_type;
+#if 0 // BKTODO:
     WebDisplayMode display_mode;
+#endif
     DisplayShape display_shape;
     ColorSpaceGamut color_gamut;
 
@@ -58,7 +71,10 @@ class CORE_EXPORT MediaValuesCached final : public MediaValues {
       data.immersive_mode = immersive_mode;
       data.strict_mode = strict_mode;
       data.media_type = media_type.IsolatedCopy();
+      ASSERT(false); // BKTODO:
+#if 0
       data.display_mode = display_mode;
+#endif
       data.display_shape = display_shape;
       data.color_gamut = color_gamut;
       return data;
@@ -92,7 +108,9 @@ class CORE_EXPORT MediaValuesCached final : public MediaValues {
   Document* GetDocument() const override;
   bool HasValues() const override;
   const String MediaType() const override;
+#if 0 // BKTODO:
   WebDisplayMode DisplayMode() const override;
+#endif
   DisplayShape GetDisplayShape() const override;
   ColorSpaceGamut ColorGamut() const override;
 
@@ -106,6 +124,7 @@ class CORE_EXPORT MediaValuesCached final : public MediaValues {
   MediaValuesCachedData data_;
 };
 
+#if 0 // BKTODO:
 template <>
 struct CrossThreadCopier<MediaValuesCached::MediaValuesCachedData> {
   typedef MediaValuesCached::MediaValuesCachedData Type;
@@ -113,6 +132,7 @@ struct CrossThreadCopier<MediaValuesCached::MediaValuesCachedData> {
     return data.DeepCopy();
   }
 };
+#endif
 
 }  // namespace blink
 

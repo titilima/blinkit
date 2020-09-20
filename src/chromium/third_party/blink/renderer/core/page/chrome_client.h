@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: chrome_client.h
+// Description: ChromeClient Class
+//      Author: Ziming Li
+//     Created: 2020-09-20
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple, Inc. All rights
  * reserved.
@@ -26,16 +37,16 @@
 #include <memory>
 #include "base/gtest_prod_util.h"
 #include "base/optional.h"
-#include "cc/input/event_listener_properties.h"
-#include "third_party/blink/public/platform/blame_context.h"
+// BKTODO: #include "cc/input/event_listener_properties.h"
+// BKTODO: #include "third_party/blink/public/platform/blame_context.h"
 #include "third_party/blink/public/platform/web_drag_operation.h"
 #include "third_party/blink/public/platform/web_focus_type.h"
-#include "third_party/blink/public/platform/web_layer_tree_view.h"
-#include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
+// BKTODO: #include "third_party/blink/public/platform/web_layer_tree_view.h"
+// BKTODO: #include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
 #include "third_party/blink/renderer/core/core_export.h"
-#include "third_party/blink/renderer/core/frame/sandbox_flags.h"
-#include "third_party/blink/renderer/core/html/forms/popup_menu.h"
-#include "third_party/blink/renderer/core/inspector/console_types.h"
+// BKTODO: #include "third_party/blink/renderer/core/frame/sandbox_flags.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/forms/popup_menu.h"
+// BKTODO: #include "third_party/blink/renderer/core/inspector/console_types.h"
 #include "third_party/blink/renderer/core/loader/frame_loader.h"
 #include "third_party/blink/renderer/core/loader/navigation_policy.h"
 #include "third_party/blink/renderer/core/style/computed_style_constants.h"
@@ -135,14 +146,17 @@ class CORE_EXPORT ChromeClient
 
   virtual void BeginLifecycleUpdates() = 0;
 
+#if 0 // BKTODO:
   // Start a system drag and drop operation.
   virtual void StartDragging(LocalFrame*,
                              const WebDragData&,
                              WebDragOperationsMask,
                              const SkBitmap& drag_image,
                              const WebPoint& drag_image_offset) = 0;
+#endif
   virtual bool AcceptsLoadDrops() const = 0;
 
+#if 0 // BKTODO:
   // The LocalFrame pointer provides the ChromeClient with context about which
   // LocalFrame wants to create the new Page. Also, the newly created window
   // should not be shown to the user until the ChromeClient of the newly
@@ -154,6 +168,7 @@ class CORE_EXPORT ChromeClient
                              const WebWindowFeatures&,
                              NavigationPolicy,
                              SandboxFlags) = 0;
+#endif
   virtual void Show(NavigationPolicy) = 0;
 
   // All the parameters should be in viewport space. That is, if an event
@@ -168,6 +183,7 @@ class CORE_EXPORT ChromeClient
 
   virtual bool ShouldReportDetailedMessageForSource(LocalFrame&,
                                                     const String& source) = 0;
+#if 0 // BKTODO:
   virtual void AddMessageToConsole(LocalFrame*,
                                    MessageSource,
                                    MessageLevel,
@@ -175,6 +191,7 @@ class CORE_EXPORT ChromeClient
                                    unsigned line_number,
                                    const String& source_id,
                                    const String& stack_trace) = 0;
+#endif
 
   virtual bool CanOpenBeforeUnloadConfirmPanel() = 0;
   bool OpenBeforeUnloadConfirmPanel(const String& message,
@@ -198,8 +215,10 @@ class CORE_EXPORT ChromeClient
 
   virtual void SetCursorOverridden(bool) = 0;
 
+#if 0 // BKTODO:
   virtual void AutoscrollStart(WebFloatPoint position, LocalFrame*) {}
   virtual void AutoscrollFling(WebFloatSize velocity, LocalFrame*) {}
+#endif
   virtual void AutoscrollEnd(LocalFrame*) {}
 
   virtual Cursor LastSetCursorForTesting() const = 0;
@@ -280,6 +299,7 @@ class CORE_EXPORT ChromeClient
                                         Element* new_element) {}
 
   virtual void ClearLayerSelection(LocalFrame*) {}
+#if 0 // BKTODO:
   virtual void UpdateLayerSelection(LocalFrame*, const cc::LayerSelection&) {}
 
   virtual void SetEventListenerProperties(LocalFrame*,
@@ -288,6 +308,7 @@ class CORE_EXPORT ChromeClient
   virtual cc::EventListenerProperties EventListenerProperties(
       LocalFrame*,
       cc::EventListenerClass) const = 0;
+#endif
   virtual void SetHasScrollEventHandlers(LocalFrame*, bool) = 0;
   virtual void SetNeedsLowLatencyInput(LocalFrame*, bool) = 0;
   virtual void RequestUnbufferedInputEvents(LocalFrame*) = 0;
@@ -295,7 +316,9 @@ class CORE_EXPORT ChromeClient
 
   // Checks if there is an opened popup, called by LayoutMenuList::showPopup().
   virtual bool HasOpenedPopup() const = 0;
+#if 0 // BKTODO:
   virtual PopupMenu* OpenPopupMenu(LocalFrame&, HTMLSelectElement&) = 0;
+#endif
   virtual PagePopup* OpenPagePopup(PagePopupClient*) = 0;
   virtual void ClosePagePopup(PagePopup*) = 0;
   virtual DOMWindow* PagePopupWindowForTesting() const = 0;
@@ -362,13 +385,13 @@ class CORE_EXPORT ChromeClient
 
   virtual WebLayerTreeView* GetWebLayerTreeView(LocalFrame*) { return nullptr; }
 
+#if 0 // BKTODO:
   virtual void RequestDecode(LocalFrame*,
                              const PaintImage& image,
                              base::OnceCallback<void(bool)> callback) {
     std::move(callback).Run(false);
   }
-
-  virtual void Trace(blink::Visitor*);
+#endif
 
  protected:
   ChromeClient() = default;

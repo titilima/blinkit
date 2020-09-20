@@ -2489,6 +2489,21 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\media_values.cc">
       <Filter>renderer\core\css</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\media_values_cached.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\chrome_client.cc">
+      <Filter>renderer\core\page</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\paint_layer_compositor.cc">
+      <Filter>renderer\core\paint\compositing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\cursor.cc">
+      <Filter>renderer\platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\compositing_reason_finder.cc">
+      <Filter>renderer\core\paint\compositing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -5718,6 +5733,30 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\media_values.h">
       <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\media_values_cached.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\chrome_client.h">
+      <Filter>renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\paint_layer_compositor.h">
+      <Filter>renderer\core\paint\compositing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_drag_operation.h">
+      <Filter>public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_focus_type.h">
+      <Filter>public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\cursor.h">
+      <Filter>renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\compositing_reason_finder.h">
+      <Filter>renderer\core\paint\compositing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\compositing_triggers.h">
+      <Filter>renderer\core\paint\compositing</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
