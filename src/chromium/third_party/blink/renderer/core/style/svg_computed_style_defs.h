@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/core/style/style_path.h"
+
 namespace blink {
 
 struct SVGPaint {};

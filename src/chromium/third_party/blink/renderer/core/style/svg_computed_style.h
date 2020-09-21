@@ -15,6 +15,7 @@
 #pragma once
 
 #include "third_party/blink/renderer/core/style/svg_computed_style_defs.h"
+#include "third_party/blink/renderer/platform/length.h"
 
 namespace blink {
 
@@ -22,6 +23,30 @@ class SVGComputedStyle
 {
 public:
     void NotReached(void) { NOTREACHED(); }
+
+    static StylePath* InitialD(void) { return nullptr; }
+    StylePath* D(void) const
+    {
+        NOTREACHED();
+        return nullptr;
+    }
+    void SetD(scoped_refptr<StylePath>) { NOTREACHED(); }
+
+    static Length InitialX(void) { return Length(kFixed); }
+    Length X(void) const
+    {
+        NOTREACHED();
+        return InitialX();
+    }
+    void SetX(const Length &) { NOTREACHED(); }
+
+    static Length InitialY(void) { return Length(kFixed); }
+    Length Y(void) const
+    {
+        NOTREACHED();
+        return InitialY();
+    }
+    void SetY(const Length &) { NOTREACHED(); }
 };
 
 } // namespace blink
@@ -36,7 +61,6 @@ public:
 #define SetColorRendering(...)              NotReached()
 #define SetCx(...)                          NotReached()
 #define SetCy(...)                          NotReached()
-#define SetD(...)                           NotReached()
 #define SetDominantBaseline(...)            NotReached()
 #define SetFillOpacity(...)                 NotReached()
 #define SetFillPaint(...)                   NotReached()
@@ -67,7 +91,5 @@ public:
 #define SetVectorEffect(...)                NotReached()
 #define SetVisitedLinkFillPaint(...)        NotReached()
 #define SetVisitedLinkStrokePaint(...)      NotReached()
-#define SetX(...)                           NotReached()
-#define SetY(...)                           NotReached()
 
 #endif // BLINKIT_BLINK_SVG_COMPUTED_STYLE_H

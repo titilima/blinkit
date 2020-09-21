@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: variable.cc
+// Description: Variable Class
+//      Author: Ziming Li
+//     Created: 2020-09-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -52,9 +63,12 @@ void Variable::ApplyValue(StyleResolverState& state,
       ToCSSCustomPropertyDeclaration(value);
   const AtomicString& name = declaration.GetName();
   const PropertyRegistration* registration = nullptr;
+  ASSERT(false); // BKTODO:
+#if 0
   const PropertyRegistry* registry = state.GetDocument().GetPropertyRegistry();
   if (registry)
     registration = registry->Registration(name);
+#endif
 
   bool is_inherited_property = !registration || registration->Inherits();
   bool initial = declaration.IsInitial(is_inherited_property);
