@@ -7,6 +7,14 @@ src/chromium/third_party/blink/renderer/core/css/media_feature_names.*
 src/chromium/third_party/blink/renderer/core/css/parser/at_rule_descriptors.*
 src/chromium/third_party/blink/renderer/core/css/properties/css_property.*
 src/chromium/third_party/blink/renderer/core/css/properties/css_unresolved_property.*
+
+!src/chromium/third_party/blink/renderer/core/css/properties/longhands/variable.*
+src/chromium/third_party/blink/renderer/core/css/properties/longhands/*.cc
+src/chromium/third_party/blink/renderer/core/css/properties/longhands/*.h
+
+src/chromium/third_party/blink/renderer/core/css/properties/shorthands/*.cc
+src/chromium/third_party/blink/renderer/core/css/properties/shorthands/*.h
+
 src/chromium/third_party/blink/renderer/core/style/computed_style_initial_values.h
 src/chromium/third_party/blink/renderer/core/style_property_shorthand.*
 src/chromium/third_party/blink/renderer/platform/font_family_names.*

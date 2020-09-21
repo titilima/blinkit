@@ -82,6 +82,20 @@ run_script('build/scripts/core/css/properties/make_css_property_base.py',   \
     '--output_dir ' + os.path.normpath('core/css/properties')   \
 )
 
+run_script('build/scripts/core/css/properties/make_css_property_subclasses.py',   \
+    os.path.normpath('core/css/css_properties.json5') + ' ' +   \
+    os.path.normpath('core/css/computed_style_field_aliases.json5') + ' ' + \
+    os.path.normpath('core/css/properties/css_property_methods.json5') + ' ' +  \
+    '--output_dir ' + os.path.normpath('core/css/properties/longhands')   \
+)
+
+run_script('build/scripts/core/css/properties/make_css_property_subclasses.py',   \
+    os.path.normpath('core/css/css_properties.json5') + ' ' +   \
+    os.path.normpath('core/css/computed_style_field_aliases.json5') + ' ' + \
+    os.path.normpath('core/css/properties/css_property_methods.json5') + ' ' +  \
+    '--output_dir ' + os.path.normpath('core/css/properties/shorthands')   \
+)
+
 run_script('build/scripts/core/style/make_computed_style_initial_values.py',    \
     os.path.normpath('core/css/css_properties.json5') + ' ' +   \
     os.path.normpath('core/css/computed_style_field_aliases.json5') + ' ' + \
