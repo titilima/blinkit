@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_property_parser_helpers.cc
+// Description: CSS Property Parser Helpers
+//      Author: Ziming Li
+//     Created: 2020-09-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -716,7 +727,11 @@ CSSValue* ConsumeColor(CSSParserTokenRange& range,
   if (!ParseHexColor(range, color, accept_quirky_colors) &&
       !ParseColorFunction(range, color))
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return CSSColorValue::Create(color);
+#endif
 }
 
 CSSValue* ConsumeLineWidth(CSSParserTokenRange& range,
@@ -1527,9 +1542,13 @@ static CSSValue* ConsumeGeneratedImage(CSSParserTokenRange& range,
 static CSSValue* CreateCSSImageValueWithReferrer(
     const AtomicString& raw_value,
     const CSSParserContext* context) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   CSSValue* image_value = CSSImageValue::Create(
       raw_value, context->CompleteURL(raw_value), context->GetReferrer());
   return image_value;
+#endif
 }
 
 static CSSValue* ConsumeImageSet(CSSParserTokenRange& range,
