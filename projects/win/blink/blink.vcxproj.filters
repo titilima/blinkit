@@ -2642,6 +2642,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_stroke_color.cc">
       <Filter>renderer\core\css\properties\longhands</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\document_style_environment_variables.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_environment_variables.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -7610,6 +7616,12 @@
       <Filter>renderer\core\css\properties\shorthands</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\property_descriptor.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\document_style_environment_variables.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_environment_variables.h">
       <Filter>renderer\core\css</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_variable_resolver.h
+// Description: CSSVariableResolver Class
+//      Author: Ziming Li
+//     Created: 2020-09-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -11,6 +22,8 @@
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string_hash.h"
 
+class GURL;
+
 namespace WTF {
 class TextEncoding;
 }  // namespace WTF
@@ -22,7 +35,6 @@ class CSSParserTokenRange;
 class CSSPendingSubstitutionValue;
 class CSSVariableData;
 class CSSVariableReferenceValue;
-class KURL;
 class PropertyRegistration;
 class PropertyRegistry;
 class StyleInheritedVariables;
@@ -168,7 +180,7 @@ class CORE_EXPORT CSSVariableResolver {
   // absolute URLs.
   void ResolveRelativeUrls(Vector<CSSParserToken>& tokens,
                            Vector<String>& backing_strings,
-                           const KURL& base_url,
+                           const GURL& base_url,
                            const WTF::TextEncoding& charset);
 
   bool ShouldResolveRelativeUrls(const AtomicString& name,

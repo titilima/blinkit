@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_variable_resolver.cc
+// Description: CSSVariableResolver Class
+//      Author: Ziming Li
+//     Created: 2020-09-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -27,9 +38,9 @@
 #include "third_party/blink/renderer/core/style/style_inherited_variables.h"
 #include "third_party/blink/renderer/core/style/style_non_inherited_variables.h"
 #include "third_party/blink/renderer/core/style_property_shorthand.h"
-#include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
+#include "url/gurl.h"
 
 namespace blink {
 
@@ -37,7 +48,7 @@ namespace {
 
 CSSParserToken ResolveUrl(const CSSParserToken& token,
                           Vector<String>& backing_strings,
-                          const KURL& base_url,
+                          const GURL& base_url,
                           WTF::TextEncoding charset) {
   DCHECK(token.GetType() == kUrlToken || token.GetType() == kStringToken);
 
@@ -47,10 +58,15 @@ CSSParserToken ResolveUrl(const CSSParserToken& token,
     return token;
 
   String relative_url = string_view.ToString();
+  ASSERT(!charset.IsValid()); // BKTODO:
+#if 0
   KURL absolute_url = charset.IsValid() ? KURL(base_url, relative_url, charset)
                                         : KURL(base_url, relative_url);
+#else
+  GURL absolute_url = base_url.Resolve(relative_url.StdUtf8());
+#endif
 
-  backing_strings.push_back(absolute_url.GetString());
+  backing_strings.push_back(String::FromStdUTF8(absolute_url.spec()));
 
   return token.CopyWithUpdatedString(StringView(backing_strings.back()));
 }
@@ -121,8 +137,11 @@ scoped_refptr<CSSVariableData> CSSVariableResolver::ValueForCustomProperty(
   }
 
   if (!registration) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (resolved_data != variable_data && options.absolutize)
       SetVariable(name, registration, resolved_data);
+#endif
     return resolved_data;
   }
 
@@ -161,8 +180,11 @@ scoped_refptr<CSSVariableData> CSSVariableResolver::ValueForCustomProperty(
       resolved_data =
           ComputedVariableData(*resolved_data.get(), *resolved_value);
     }
+    ASSERT(false); // BKTODO:
+#if 0
     if (resolved_data != variable_data)
       SetVariable(name, registration, resolved_data);
+#endif
   }
 
   // Even if options.absolutize=false, we store the resolved_value if we
@@ -232,7 +254,7 @@ CSSVariableResolver::ResolveCustomPropertyIfNeeded(
 void CSSVariableResolver::ResolveRelativeUrls(
     Vector<CSSParserToken>& tokens,
     Vector<String>& backing_strings,
-    const KURL& base_url,
+    const GURL& base_url,
     const WTF::TextEncoding& charset) {
   CSSParserToken* token = tokens.begin();
   CSSParserToken* end = tokens.end();
@@ -364,6 +386,9 @@ scoped_refptr<CSSVariableData> CSSVariableResolver::ValueForEnvironmentVariable(
     const AtomicString& name) {
   // If we are in a User Agent Shadow DOM then we should not record metrics.
   ContainerNode& scope_root = state_.GetTreeScope().RootNode();
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   bool is_ua_scope =
       scope_root.IsShadowRoot() && ToShadowRoot(scope_root).IsUserAgent();
 
@@ -371,6 +396,7 @@ scoped_refptr<CSSVariableData> CSSVariableResolver::ValueForEnvironmentVariable(
       .GetStyleEngine()
       .EnsureEnvironmentVariables()
       .ResolveVariable(name, !is_ua_scope);
+#endif
 }
 
 bool CSSVariableResolver::ResolveTokenRange(CSSParserTokenRange range,
@@ -465,8 +491,11 @@ const CSSValue* CSSVariableResolver::ResolvePendingSubstitutions(
               StyleRule::RuleType::kStyle)) {
         unsigned parsed_properties_count = parsed_properties.size();
         for (unsigned i = 0; i < parsed_properties_count; ++i) {
+          ASSERT(false); // BKTODO:
+#if 0
           property_cache.Set(parsed_properties[i].Id(),
                              parsed_properties[i].Value());
+#endif
         }
       }
     }
@@ -527,11 +556,11 @@ void CSSVariableResolver::ComputeRegisteredVariables() {
 
   if (inherited_variables_) {
     for (auto& variable : *inherited_variables_->registered_data_)
-      ValueForCustomProperty(variable.key, options);
+      ValueForCustomProperty(variable.first, options);
   }
   if (non_inherited_variables_) {
     for (auto& variable : *non_inherited_variables_->registered_data_)
-      ValueForCustomProperty(variable.key, options);
+      ValueForCustomProperty(variable.first, options);
   }
 }
 

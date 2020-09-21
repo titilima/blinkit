@@ -143,6 +143,8 @@ public:
     DocumentLifecycle& Lifecycle(void) { return m_lifecycle; }
 #ifndef BLINKIT_CRAWLER_ONLY
     LayoutView* GetLayoutView(void) const { return m_layoutView; }
+    const PropertyRegistry* GetPropertyRegistry(void) const;
+    PropertyRegistry* GetPropertyRegistry(void);
     Page* GetPage(void) const;                           // can be null
     LocalFrameView* View(void) const;                    // can be null
 #endif
