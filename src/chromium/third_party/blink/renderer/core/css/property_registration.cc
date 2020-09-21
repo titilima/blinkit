@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: property_registration.cc
+// Description: PropertyRegistration Class
+//      Author: Ziming Li
+//     Created: 2020-09-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -28,8 +39,12 @@ const PropertyRegistration* PropertyRegistration::From(
   const auto* document = DynamicTo<Document>(execution_context);
   if (!document)
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   const PropertyRegistry* registry = document->GetPropertyRegistry();
   return registry ? registry->Registration(property_name) : nullptr;
+#endif
 }
 
 PropertyRegistration::PropertyRegistration(
@@ -92,6 +107,8 @@ void PropertyRegistration::registerProperty(
     ExecutionContext* execution_context,
     const PropertyDescriptor& descriptor,
     ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   // Bindings code ensures these are set.
   DCHECK(descriptor.hasName());
   DCHECK(descriptor.hasInherits());
@@ -164,6 +181,7 @@ void PropertyRegistration::registerProperty(
                                              std::move(initial_variable_data)));
 
   document->GetStyleEngine().CustomPropertyRegistered();
+#endif
 }
 
 }  // namespace blink

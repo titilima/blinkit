@@ -1872,6 +1872,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_text_stroke.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_transition.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\style_building_utils.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\property_descriptor.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\property_registration.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\property_registry.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\property_set_css_style_declaration.h" />
