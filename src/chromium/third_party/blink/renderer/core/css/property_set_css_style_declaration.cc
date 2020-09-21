@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: property_set_css_style_declaration.cc
+// Description: PropertySetCSSStyleDeclaration Class
+//      Author: Ziming Li
+//     Created: 2020-09-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All
@@ -26,10 +37,5 @@
 #include "third_party/blink/renderer/core/css/css_property_value_set.h"
 
 namespace blink {
-
-void PropertySetCSSStyleDeclaration::Trace(blink::Visitor* visitor) {
-  visitor->Trace(property_set_);
-  AbstractPropertySetCSSStyleDeclaration::Trace(visitor);
-}
 
 }  // namespace blink
