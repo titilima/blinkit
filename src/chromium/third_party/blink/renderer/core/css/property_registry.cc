@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: property_registry.cc
+// Description: PropertyRegistry Class
+//      Author: Ziming Li
+//     Created: 2020-09-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -10,7 +21,10 @@ namespace blink {
 void PropertyRegistry::RegisterProperty(const AtomicString& name,
                                         PropertyRegistration& registration) {
   DCHECK(!Registration(name));
+  ASSERT(false); // BKTODO:
+#if 0
   registrations_.Set(name, &registration);
+#endif
 }
 
 const PropertyRegistration* PropertyRegistry::Registration(
@@ -35,6 +49,9 @@ const CSSValue* PropertyRegistry::ParseIfRegistered(
   if (!value || !value->IsCustomPropertyDeclaration())
     return value;
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   const PropertyRegistry* registry = document.GetPropertyRegistry();
 
   if (!registry)
@@ -55,6 +72,7 @@ const CSSValue* PropertyRegistry::ParseIfRegistered(
       registration->Syntax(), document.GetSecureContextMode());
 
   return parsed_value ? parsed_value : value;
+#endif
 }
 
 }  // namespace blink
