@@ -49,7 +49,7 @@
 #include "third_party/blink/renderer/core/style/computed_style_initial_values.h"
 #include "third_party/blink/renderer/core/style/cursor_list.h"
 #include "third_party/blink/renderer/core/style/data_ref.h"
-// BKTODO: #include "third_party/blink/renderer/core/style/svg_computed_style.h"
+#include "third_party/blink/renderer/core/style/svg_computed_style.h"
 #include "third_party/blink/renderer/core/style/transform_origin.h"
 #include "third_party/blink/renderer/platform/geometry/layout_rect_outsets.h"
 #include "third_party/blink/renderer/platform/graphics/color.h"
@@ -240,6 +240,7 @@ class ComputedStyle : public ComputedStyleBase,
   std::unique_ptr<PseudoStyleCache> cached_pseudo_styles_;
 
   // BKTODO: DataRef<SVGComputedStyle> svg_style_;
+  static SVGComputedStyle svg_style_; // Just a placeholder.
 
  private:
   // TODO(sashab): Move these private members to the bottom of ComputedStyle.
@@ -993,11 +994,11 @@ class ComputedStyle : public ComputedStyleBase,
   // widows
   void SetWidows(short w) { SetWidowsInternal(clampTo<short>(w, 1)); }
 
-#if 0 // BKTODO:
   // SVG properties.
-  const SVGComputedStyle& SvgStyle() const { return *svg_style_.Get(); }
-  SVGComputedStyle& AccessSVGStyle() { return *svg_style_.Access(); }
+  const SVGComputedStyle& SvgStyle() const { return svg_style_; }
+  SVGComputedStyle& AccessSVGStyle() { return svg_style_; }
 
+#if 0 // BKTODO:
   // baseline-shift
   EBaselineShift BaselineShift() const { return SvgStyle().BaselineShift(); }
   const Length& BaselineShiftValue() const {

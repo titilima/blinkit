@@ -234,6 +234,12 @@
     <Filter Include="renderer\core\page">
       <UniqueIdentifier>{e9d5e574-e2c1-4124-a640-a7f61ca0e74f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\css\properties\longhands">
+      <UniqueIdentifier>{aad2dbed-1c8b-4d4c-907c-788be90e8b81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\css\properties\shorthands">
+      <UniqueIdentifier>{7a835178-3140-43e1-a078-c8cd2efeea80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -2527,6 +2533,114 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_border_image.cc">
       <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\variable.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_attachment.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_blend_mode.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_clip.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_color.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_image.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_origin.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_position_x.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_position_y.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_repeat_x.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_repeat_y.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_size.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_bottom_color.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_left_color.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_right_color.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_top_color.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\column_rule_color.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\counter_increment.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\counter_reset.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\grid_template_columns.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\grid_template_rows.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\mask_source_type.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\outline_color.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_decoration_color.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_clip.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_composite.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_image.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_origin.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_position_x.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_position_y.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_repeat_x.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_repeat_y.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_size.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_emphasis_color.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_fill_color.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_stroke_color.cc">
+      <Filter>renderer\core\css\properties\longhands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -5820,6 +5934,1680 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_border_image.h">
       <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\variable.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\align_content.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\align_items.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\align_self.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\alignment_baseline.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\all.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\animation_delay.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\animation_direction.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\animation_duration.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\animation_fill_mode.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\animation_iteration_count.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\animation_name.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\animation_play_state.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\animation_timing_function.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\backdrop_filter.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\backface_visibility.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_attachment.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_blend_mode.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_clip.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_image.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_origin.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_position_x.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_position_y.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_repeat_x.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_repeat_y.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\background_size.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\baseline_shift.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\block_size.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_block_end_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_block_end_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_block_end_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_block_start_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_block_start_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_block_start_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_bottom_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_bottom_left_radius.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_bottom_right_radius.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_bottom_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_bottom_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_collapse.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_image_outset.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_image_repeat.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_image_slice.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_image_source.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_image_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_inline_end_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_inline_end_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_inline_end_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_inline_start_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_inline_start_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_inline_start_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_left_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_left_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_left_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_right_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_right_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_right_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_top_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_top_left_radius.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_top_right_radius.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_top_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\border_top_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\bottom.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\box_shadow.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\box_sizing.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\break_after.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\break_before.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\break_inside.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\buffered_rendering.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\caption_side.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\caret_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\clear.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\clip.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\clip_path.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\clip_rule.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\color_interpolation.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\color_interpolation_filters.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\color_rendering.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\column_count.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\column_fill.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\column_gap.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\column_rule_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\column_rule_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\column_rule_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\column_span.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\column_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\contain.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\content.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\counter_increment.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\counter_reset.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\cursor.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\cx.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\cy.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\d.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\direction.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\display.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\dominant_baseline.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\empty_cells.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\epub_caption_side.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\epub_text_combine.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\epub_text_emphasis_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\epub_text_emphasis_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\epub_text_orientation.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\epub_text_transform.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\epub_word_break.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\epub_writing_mode.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\fill.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\fill_opacity.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\fill_rule.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\filter.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\flex_basis.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\flex_direction.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\flex_grow.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\flex_shrink.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\flex_wrap.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\float.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\flood_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\flood_opacity.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\font_display.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\font_family.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\font_feature_settings.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\font_kerning.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\font_size.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\font_size_adjust.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\font_stretch.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\font_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\font_variant_caps.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\font_variant_east_asian.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\font_variant_ligatures.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\font_variant_numeric.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\font_variation_settings.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\font_weight.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\grid_auto_columns.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\grid_auto_flow.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\grid_auto_rows.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\grid_column_end.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\grid_column_start.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\grid_row_end.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\grid_row_start.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\grid_template_areas.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\grid_template_columns.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\grid_template_rows.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\height.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\hyphens.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\image_orientation.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\image_rendering.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\inline_size.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\inset_block_end.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\inset_block_start.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\inset_inline_end.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\inset_inline_start.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\isolation.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\justify_content.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\justify_items.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\justify_self.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\left.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\letter_spacing.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\lighting_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\line_break.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\line_height.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\line_height_step.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\list_style_image.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\list_style_position.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\list_style_type.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\margin_block_end.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\margin_block_start.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\margin_bottom.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\margin_inline_end.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\margin_inline_start.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\margin_left.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\margin_right.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\margin_top.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\marker_end.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\marker_mid.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\marker_start.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\mask.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\mask_source_type.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\mask_type.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\max_block_size.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\max_height.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\max_inline_size.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\max_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\max_zoom.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\min_block_size.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\min_height.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\min_inline_size.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\min_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\min_zoom.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\mix_blend_mode.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\object_fit.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\object_position.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\offset_anchor.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\offset_distance.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\offset_path.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\offset_position.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\offset_rotate.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\opacity.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\order.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\orientation.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\orphans.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\outline_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\outline_offset.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\outline_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\outline_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\overflow_anchor.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\overflow_wrap.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\overflow_x.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\overflow_y.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\overscroll_behavior_x.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\overscroll_behavior_y.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\padding_block_end.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\padding_block_start.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\padding_bottom.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\padding_inline_end.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\padding_inline_start.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\padding_left.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\padding_right.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\padding_top.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\page.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\paint_order.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\perspective.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\perspective_origin.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\pointer_events.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\position.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\quotes.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\r.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\resize.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\right.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\rotate.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\row_gap.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\rx.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\ry.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scale.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_behavior.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_customization.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_margin_block_end.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_margin_block_start.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_margin_bottom.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_margin_inline_end.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_margin_inline_start.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_margin_left.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_margin_right.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_margin_top.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_padding_block_end.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_padding_block_start.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_padding_bottom.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_padding_inline_end.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_padding_inline_start.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_padding_left.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_padding_right.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_padding_top.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_snap_align.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_snap_stop.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\scroll_snap_type.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\shape_image_threshold.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\shape_margin.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\shape_outside.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\shape_rendering.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\size.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\speak.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\src.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\stop_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\stop_opacity.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\stroke.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\stroke_dasharray.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\stroke_dashoffset.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\stroke_linecap.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\stroke_linejoin.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\stroke_miterlimit.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\stroke_opacity.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\stroke_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\tab_size.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\table_layout.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_align.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_align_last.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_anchor.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_combine_upright.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_decoration_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_decoration_line.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_decoration_skip_ink.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_decoration_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_indent.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_justify.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_orientation.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_overflow.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_rendering.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_shadow.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_size_adjust.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_transform.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\text_underline_position.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\top.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\touch_action.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\transform.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\transform_box.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\transform_origin.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\transform_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\transition_delay.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\transition_duration.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\transition_property.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\transition_timing_function.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\translate.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\unicode_bidi.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\unicode_range.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\user_select.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\user_zoom.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\vector_effect.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\vertical_align.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\viewport_fit.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\visibility.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_align_content.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_align_items.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_align_self.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_animation_delay.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_animation_direction.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_animation_duration.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_animation_fill_mode.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_animation_iteration_count.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_animation_name.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_animation_play_state.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_animation_timing_function.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_app_region.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_appearance.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_backface_visibility.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_background_clip.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_background_origin.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_background_size.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_after_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_after_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_after_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_before_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_before_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_before_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_bottom_left_radius.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_bottom_right_radius.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_end_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_end_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_end_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_horizontal_spacing.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_image.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_start_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_start_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_start_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_top_left_radius.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_top_right_radius.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_border_vertical_spacing.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_box_align.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_box_decoration_break.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_box_direction.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_box_flex.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_box_ordinal_group.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_box_orient.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_box_pack.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_box_reflect.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_box_shadow.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_box_sizing.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_clip_path.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_column_count.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_column_gap.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_column_rule_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_column_rule_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_column_rule_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_column_span.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_column_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_filter.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_flex_basis.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_flex_direction.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_flex_grow.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_flex_shrink.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_flex_wrap.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_font_feature_settings.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_font_size_delta.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_font_smoothing.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_highlight.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_hyphenate_character.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_justify_content.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_line_break.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_line_clamp.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_locale.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_logical_height.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_logical_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_margin_after.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_margin_after_collapse.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_margin_before.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_margin_before_collapse.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_margin_bottom_collapse.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_margin_end.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_margin_start.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_margin_top_collapse.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_box_image_outset.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_box_image_repeat.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_box_image_slice.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_box_image_source.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_box_image_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_clip.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_composite.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_image.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_origin.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_position_x.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_position_y.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_repeat_x.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_repeat_y.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_mask_size.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_max_logical_height.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_max_logical_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_min_logical_height.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_min_logical_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_opacity.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_order.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_padding_after.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_padding_before.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_padding_end.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_padding_start.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_perspective.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_perspective_origin.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_perspective_origin_x.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_perspective_origin_y.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_print_color_adjust.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_rtl_ordering.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_ruby_position.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_shape_image_threshold.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_shape_margin.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_shape_outside.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_tap_highlight_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_combine.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_decorations_in_effect.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_emphasis_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_emphasis_position.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_emphasis_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_fill_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_orientation.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_security.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_size_adjust.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_stroke_color.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_stroke_width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_transform.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_transform_origin.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_transform_origin_x.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_transform_origin_y.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_transform_origin_z.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_transform_style.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_transition_delay.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_transition_duration.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_transition_property.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_transition_timing_function.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_user_drag.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_user_modify.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_user_select.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_writing_mode.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\white_space.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\widows.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\width.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\will_change.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\word_break.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\word_spacing.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\word_wrap.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\writing_mode.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\x.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\y.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\z_index.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\zoom.h">
+      <Filter>renderer\core\css\properties\longhands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\style_building_utils.h">
+      <Filter>renderer\core\css\properties</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\svg_computed_style.h">
+      <Filter>renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\svg_computed_style_defs.h">
+      <Filter>renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\animation.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\background.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\background_position.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\background_repeat.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_block.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_block_color.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_block_end.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_block_start.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_block_style.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_block_width.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_bottom.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_color.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_image.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_inline.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_inline_color.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_inline_end.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_inline_start.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_inline_style.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_inline_width.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_left.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_radius.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_right.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_spacing.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_style.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_top.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_width.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\column_rule.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\columns.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\epub_text_emphasis.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\flex.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\flex_flow.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\font.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\font_variant.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\gap.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\grid.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\grid_area.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\grid_column.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\grid_column_gap.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\grid_gap.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\grid_row.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\grid_row_gap.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\grid_template.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\inset.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\inset_block.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\inset_inline.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\list_style.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\margin.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\margin_block.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\margin_inline.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\marker.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\offset.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\outline.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\overflow.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\overscroll_behavior.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\padding.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\padding_block.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\padding_inline.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\page_break_after.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\page_break_before.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\page_break_inside.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\place_content.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\place_items.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\place_self.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\scroll_margin.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\scroll_margin_block.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\scroll_margin_inline.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\scroll_padding.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\scroll_padding_block.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\scroll_padding_inline.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\text_decoration.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\transition.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_animation.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_border_after.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_border_before.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_border_end.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_border_radius.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_border_start.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_column_break_after.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_column_break_before.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_column_break_inside.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_column_rule.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_columns.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_flex.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_flex_flow.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_margin_collapse.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_mask.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_mask_box_image.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_mask_position.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_mask_repeat.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_text_emphasis.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_text_stroke.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_transition.h">
+      <Filter>renderer\core\css\properties\shorthands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
