@@ -309,6 +309,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\style_property_map_read_only.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\style_value_factory.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_basic_shape_values.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_border_image.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_border_image_slice_value.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_calculation_value.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_color_value.cc" />
@@ -1136,6 +1137,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\style_property_map_read_only.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\style_value_factory.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_basic_shape_values.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_border_image.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_border_image_slice_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_calculation_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_color_value.h" />

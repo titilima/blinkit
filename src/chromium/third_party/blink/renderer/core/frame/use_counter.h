@@ -27,7 +27,7 @@ class UseCounter
 {
     STATIC_ONLY(UseCounter);
 public:
-    static void Count(Document &, WebFeature) {}
+    static void Count(const Document &, WebFeature) {}
     static void Count(ExecutionContext *, WebFeature) {}
     static void CountAnimatedCSS(const Document &, CSSPropertyID) {}
 };

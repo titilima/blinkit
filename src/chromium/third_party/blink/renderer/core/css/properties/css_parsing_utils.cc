@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_parsing_utils.cc
+// Description: CSS Parsing Utils
+//      Author: Ziming Li
+//     Created: 2020-09-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -39,8 +50,8 @@
 #include "third_party/blink/renderer/core/frame/use_counter.h"
 #include "third_party/blink/renderer/core/frame/web_feature.h"
 #include "third_party/blink/renderer/core/style_property_shorthand.h"
-#include "third_party/blink/renderer/core/svg/svg_parsing_error.h"
-#include "third_party/blink/renderer/core/svg/svg_path_utilities.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_parsing_error.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_path_utilities.h"
 #include "third_party/blink/renderer/platform/animation/timing_function.h"
 #include "third_party/blink/renderer/platform/length.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
@@ -640,8 +651,12 @@ CSSValue* ConsumeBackgroundComposite(CSSParserTokenRange& range) {
 
 CSSValue* ConsumeMaskSourceType(CSSParserTokenRange& range) {
   DCHECK(RuntimeEnabledFeatures::CSSMaskSourceTypeEnabled());
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return CSSPropertyParserHelpers::ConsumeIdent<CSSValueAuto, CSSValueAlpha,
                                                 CSSValueLuminance>(range);
+#endif
 }
 
 CSSPrimitiveValue* ConsumeLengthOrPercentCountNegative(
@@ -1316,15 +1331,23 @@ CSSValue* ConsumeGenericFamily(CSSParserTokenRange& range) {
 
 CSSValue* ConsumeFamilyName(CSSParserTokenRange& range) {
   if (range.Peek().GetType() == kStringToken) {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     return CSSFontFamilyValue::Create(
         range.ConsumeIncludingWhitespace().Value().ToString());
+#endif
   }
   if (range.Peek().GetType() != kIdentToken)
     return nullptr;
   String family_name = ConcatenateFamilyName(range);
   if (family_name.IsNull())
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return CSSFontFamilyValue::Create(family_name);
+#endif
 }
 
 String ConcatenateFamilyName(CSSParserTokenRange& range) {
@@ -2138,6 +2161,9 @@ CSSValue* ConsumePath(CSSParserTokenRange& range) {
   String path_string =
       function_args.ConsumeIncludingWhitespace().Value().ToString();
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   std::unique_ptr<SVGPathByteStream> byte_stream = SVGPathByteStream::Create();
   if (BuildByteStreamFromString(path_string, *byte_stream) !=
           SVGParseStatus::kNoError ||
@@ -2149,6 +2175,7 @@ CSSValue* ConsumePath(CSSParserTokenRange& range) {
   if (byte_stream->IsEmpty())
     return CSSIdentifierValue::Create(CSSValueNone);
   return CSSPathValue::Create(std::move(byte_stream));
+#endif
 }
 
 CSSValue* ConsumeRay(CSSParserTokenRange& range,
