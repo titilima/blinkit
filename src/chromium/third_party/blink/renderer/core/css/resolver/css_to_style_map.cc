@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_to_style_map.cc
+// Description: CSSToStyleMap Class
+//      Author: Ziming Li
+//     Created: 2020-09-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -40,7 +51,6 @@
 #include "third_party/blink/renderer/core/css/resolver/style_builder_converter.h"
 #include "third_party/blink/renderer/core/css/resolver/style_resolver_state.h"
 #include "third_party/blink/renderer/core/css_value_keywords.h"
-#include "third_party/blink/renderer/core/frame/deprecation.h"
 #include "third_party/blink/renderer/core/style/border_image_length_box.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
 #include "third_party/blink/renderer/core/style/fill_layer.h"
@@ -297,6 +307,8 @@ void CSSToStyleMap::MapFillMaskSourceType(StyleResolverState&,
   if (!value.IsIdentifierValue())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   switch (ToCSSIdentifierValue(value).GetValueID()) {
     case CSSValueAlpha:
       type = EMaskSourceType::kAlpha;
@@ -309,6 +321,7 @@ void CSSToStyleMap::MapFillMaskSourceType(StyleResolverState&,
     default:
       NOTREACHED();
   }
+#endif
 
   layer->SetMaskSourceType(type);
 }
@@ -442,10 +455,6 @@ scoped_refptr<TimingFunction> CSSToStyleMap::MapAnimationTimingFunction(
       case CSSValueStepMiddle:
         if (allow_step_middle) {
           DCHECK(document);
-          if (document) {
-            Deprecation::CountDeprecation(
-                *document, WebFeature::kDeprecatedTimingFunctionStepMiddle);
-          }
           return StepsTimingFunction::Preset(
               StepsTimingFunction::StepPosition::MIDDLE);
         }
@@ -485,10 +494,6 @@ scoped_refptr<TimingFunction> CSSToStyleMap::MapAnimationTimingFunction(
       return CSSTimingData::InitialTimingFunction();
     }
     DCHECK(document);
-    if (document) {
-      Deprecation::CountDeprecation(
-          *document, WebFeature::kDeprecatedTimingFunctionStepMiddle);
-    }
   }
   return StepsTimingFunction::Create(steps_timing_function.NumberOfSteps(),
                                      steps_timing_function.GetStepPosition());
