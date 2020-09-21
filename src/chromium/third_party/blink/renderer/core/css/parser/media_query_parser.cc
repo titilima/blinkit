@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: media_query_parser.cc
+// Description: MediaQueryParser Class
+//      Author: Ziming Li
+//     Created: 2020-09-21
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -288,12 +299,12 @@ bool MediaQueryParser::IsMediaFeatureAllowedInMode(
 
 MediaQueryData::MediaQueryData()
     : restrictor_(MediaQuery::kNone),
-      media_type_(MediaTypeNames::all),
+      media_type_(media_type_names::kAll),
       media_type_set_(false) {}
 
 void MediaQueryData::Clear() {
   restrictor_ = MediaQuery::kNone;
-  media_type_ = MediaTypeNames::all;
+  media_type_ = media_type_names::kAll;
   media_type_set_ = false;
   media_feature_ = String();
   expressions_.clear();
