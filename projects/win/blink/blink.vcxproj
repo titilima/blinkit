@@ -569,6 +569,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\mutation_observer_interest_group.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\mutation_record.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\named_node_map.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\names_map.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\node.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\node_child_removal_tracker.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\node_lists_node_data.cpp" />
@@ -2000,6 +2001,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\mutation_observer_options.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\mutation_record.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\named_node_map.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\names_map.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\node.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\node_child_removal_tracker.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\node_computed_style.h" />

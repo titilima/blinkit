@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_builder.cc
+// Description: StyleBuilder Class
+//      Author: Ziming Li
+//     Created: 2020-09-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
@@ -70,8 +81,8 @@ void StyleBuilder::ApplyProperty(const CSSProperty& property,
     return;
   }
 
-  DCHECK(!property.IsShorthand())
-      << "Shorthand property id = " << id << " wasn't expanded at parsing time";
+  DCHECK(!property.IsShorthand());
+      // Shorthand property id wasn't expanded at parsing time
 
   bool is_inherit = state.ParentNode() && value.IsInheritedValue();
   bool is_initial = value.IsInitialValue() ||
