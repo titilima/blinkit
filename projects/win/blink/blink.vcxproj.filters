@@ -2657,6 +2657,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_generated_image.cc">
       <Filter>renderer\core\style</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_autosizer.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\drag_caret.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -7644,6 +7650,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_pending_image.h">
       <Filter>renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_autosizer.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_boundary.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\drag_caret.h">
+      <Filter>renderer\core\editing</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_builder.cc
+// Description: FontBuilder Class
+//      Author: Ziming Li
+//     Created: 2020-09-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc.
@@ -41,6 +52,8 @@ FontBuilder::FontBuilder(const Document* document)
 }
 
 void FontBuilder::SetInitial(float effective_zoom) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(document_->GetSettings());
   if (!document_->GetSettings())
     return;
@@ -48,6 +61,7 @@ void FontBuilder::SetInitial(float effective_zoom) {
   SetFamilyDescription(font_description_,
                        FontBuilder::InitialFamilyDescription());
   SetSize(font_description_, FontBuilder::InitialSize());
+#endif
 }
 
 void FontBuilder::DidChangeEffectiveZoom() {
@@ -69,9 +83,12 @@ FontFamily FontBuilder::StandardFontFamily() const {
 }
 
 AtomicString FontBuilder::StandardFontFamilyName() const {
+  ASSERT(false); // BKTODO:
+#if 0
   Settings* settings = document_->GetSettings();
   if (settings)
     return settings->GetGenericFontFamilySettings().Standard();
+#endif
   return AtomicString();
 }
 
@@ -238,6 +255,9 @@ float FontBuilder::GetComputedSizeFromSpecifiedSize(
     float specified_size) {
   DCHECK(document_);
   float zoom_factor = effective_zoom;
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   // FIXME: Why is this here!!!!?!
   if (LocalFrame* frame = document_->GetFrame())
     zoom_factor *= frame->TextZoomFactor();
@@ -245,6 +265,7 @@ float FontBuilder::GetComputedSizeFromSpecifiedSize(
   return FontSizeFunctions::GetComputedSizeFromSpecifiedSize(
       document_, zoom_factor, font_description.IsAbsoluteSize(),
       specified_size);
+#endif
 }
 
 void FontBuilder::CheckForGenericFamilyChange(
@@ -271,6 +292,8 @@ void FontBuilder::CheckForGenericFamilyChange(
     size = FontSizeForKeyword(new_description.KeywordSize(),
                               new_description.IsMonospace());
   } else {
+    ASSERT(false); // BKTODO:
+#if 0
     Settings* settings = document_->GetSettings();
     float fixed_scale_factor =
         (settings && settings->GetDefaultFixedFontSize() &&
@@ -281,6 +304,7 @@ void FontBuilder::CheckForGenericFamilyChange(
     size = old_description.IsMonospace()
                ? new_description.SpecifiedSize() / fixed_scale_factor
                : new_description.SpecifiedSize() * fixed_scale_factor;
+#endif
   }
 
   new_description.SetSpecifiedSize(size);

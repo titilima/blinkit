@@ -591,6 +591,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\v0_insertion_point.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\visited_link_state.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\whitespace_attacher.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\drag_caret.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_utilities.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\frame_selection.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\position.cc" />
@@ -670,6 +671,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\trailing_objects.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\min_max_size.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\subtree_layout_scope.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_autosizer.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_run_constructor.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\base_fetch_context.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\document_loader.cpp" />
@@ -2032,6 +2034,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\visited_link_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\weak_identifier_map.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\whitespace_attacher.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\drag_caret.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_boundary.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_strategy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_utilities.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\forward.h" />
@@ -2146,6 +2150,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_outline_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\overflow_model.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\subtree_layout_scope.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_autosizer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_run_constructor.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\base_fetch_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\document_loader.h" />
