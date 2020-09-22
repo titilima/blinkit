@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_resolver_state.cc
+// Description: StyleResolverState Class
+//      Author: Ziming Li
+//     Created: 2020-09-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc.
@@ -169,8 +180,11 @@ StyleResolverState::ParsedPropertiesForPendingSubstitutionCache(
   HeapHashMap<CSSPropertyID, Member<const CSSValue>>* map =
       parsed_properties_for_pending_substitution_cache_.at(&value);
   if (!map) {
+    ASSERT(false); // BKTODO:
+#if 0
     map = new HeapHashMap<CSSPropertyID, Member<const CSSValue>>;
     parsed_properties_for_pending_substitution_cache_.Set(&value, map);
+#endif
   }
   return *map;
 }
