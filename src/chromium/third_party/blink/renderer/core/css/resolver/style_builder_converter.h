@@ -73,10 +73,10 @@ class ScaleTransformOperation;
 class StyleAutoColor;
 class StylePath;
 class StyleResolverState;
-class StyleSVGResource;
+// BKTODO: class StyleSVGResource;
 class TextSizeAdjust;
 class TranslateTransformOperation;
-class UnzoomedLength;
+// BKTODO: class UnzoomedLength;
 
 class StyleBuilderConverterBase {
   STATIC_ONLY(StyleBuilderConverterBase);
@@ -113,9 +113,11 @@ class StyleBuilderConverter {
   static LengthBox ConvertClip(StyleResolverState&, const CSSValue&);
   static scoped_refptr<ClipPathOperation> ConvertClipPath(StyleResolverState&,
                                                           const CSSValue&);
+#if 0 // BKTODO:
   static scoped_refptr<StyleSVGResource> ConvertElementReference(
       StyleResolverState&,
       const CSSValue&);
+#endif
   static FilterOperations ConvertFilterOperations(StyleResolverState&,
                                                   const CSSValue&);
   static FilterOperations ConvertOffscreenFilterOperations(const CSSValue&,
@@ -170,8 +172,10 @@ class StyleBuilderConverter {
   static float ConvertBorderWidth(StyleResolverState&, const CSSValue&);
   static GapLength ConvertGapLength(const StyleResolverState&, const CSSValue&);
   static Length ConvertLength(const StyleResolverState&, const CSSValue&);
+#if 0 // BKTODO:
   static UnzoomedLength ConvertUnzoomedLength(const StyleResolverState&,
                                               const CSSValue&);
+#endif
   static Length ConvertLengthOrAuto(const StyleResolverState&, const CSSValue&);
   static Length ConvertLengthSizing(StyleResolverState&, const CSSValue&);
   static Length ConvertLengthMaxSizing(StyleResolverState&, const CSSValue&);

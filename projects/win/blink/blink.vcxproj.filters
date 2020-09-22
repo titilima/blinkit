@@ -2672,6 +2672,21 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\names_map.cc">
       <Filter>renderer\core\dom</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\reference_clip_path_operation.cc">
+      <Filter>renderer\core\style</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\animated_style_builder.cc">
+      <Filter>renderer\core\css\resolver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\viewport_data.cc">
+      <Filter>renderer\core\frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\selector_filter_parent_scope.cc">
+      <Filter>renderer\core\css\resolver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\css_style_sheet_resource.cc">
+      <Filter>renderer\core\loader\resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -7677,6 +7692,21 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\names_map.h">
       <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\reference_clip_path_operation.h">
+      <Filter>renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\animated_style_builder.h">
+      <Filter>renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\viewport_data.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\selector_filter_parent_scope.h">
+      <Filter>renderer\core\css\resolver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\css_style_sheet_resource.h">
+      <Filter>renderer\core\loader\resource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

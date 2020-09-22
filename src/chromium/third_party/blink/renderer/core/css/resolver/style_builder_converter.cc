@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_builder_converter.cc
+// Description: StyleBuilderConverter Class
+//      Author: Ziming Li
+//     Created: 2020-09-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -111,17 +122,19 @@ Color StyleBuilderConverter::ConvertColor(StyleResolverState& state,
       value, state.Style()->GetColor(), for_visited_link);
 }
 
+#if 0 // BKTODO:
 scoped_refptr<StyleSVGResource> StyleBuilderConverter::ConvertElementReference(
     StyleResolverState& state,
     const CSSValue& value) {
   if (!value.IsURIValue())
-    return nullptr;
+    return nullptr;B
   const CSSURIValue& url_value = ToCSSURIValue(value);
   SVGResource* resource =
       state.GetElementStyleResources().GetSVGResourceFromValue(
           state.GetTreeScope(), url_value);
   return StyleSVGResource::Create(resource, url_value.ValueForSerialization());
 }
+#endif
 
 LengthBox StyleBuilderConverter::ConvertClip(StyleResolverState& state,
                                              const CSSValue& value) {
@@ -139,6 +152,9 @@ scoped_refptr<ClipPathOperation> StyleBuilderConverter::ConvertClipPath(
   if (value.IsBasicShapeValue())
     return ShapeClipPathOperation::Create(BasicShapeForValue(state, value));
   if (value.IsURIValue()) {
+    ASSERT(false); // BKTODO: Support SVG?
+    return nullptr;
+#if 0
     const CSSURIValue& url_value = ToCSSURIValue(value);
     SVGResource* resource =
         state.GetElementStyleResources().GetSVGResourceFromValue(
@@ -146,6 +162,7 @@ scoped_refptr<ClipPathOperation> StyleBuilderConverter::ConvertClipPath(
     // TODO(fs): Doesn't work with external SVG references (crbug.com/109212.)
     return ReferenceClipPathOperation::Create(url_value.ValueForSerialization(),
                                               resource);
+#endif
   }
   DCHECK(value.IsIdentifierValue() &&
          ToCSSIdentifierValue(value).GetValueID() == CSSValueNone);
@@ -248,10 +265,14 @@ FontDescription::FamilyDescription StyleBuilderConverterBase::ConvertFontFamily(
 FontDescription::FamilyDescription StyleBuilderConverter::ConvertFontFamily(
     StyleResolverState& state,
     const CSSValue& value) {
+  ASSERT(false); // BKTODO:
+  return FontDescription::FamilyDescription(FontDescription::kNoFamily);
+#if 0
   return StyleBuilderConverterBase::ConvertFontFamily(
       value,
       state.GetDocument().GetSettings() ? &state.GetFontBuilder() : nullptr,
       &state.GetDocument());
+#endif
 }
 
 scoped_refptr<FontFeatureSettings>
@@ -799,6 +820,8 @@ GridPosition StyleBuilderConverter::ConvertGridPosition(StyleResolverState&,
   int grid_line_number = 1;
   AtomicString grid_line_name;
 
+  ASSERT(false); // BKTODO:
+#if 0
   auto* it = values.begin();
   const CSSValue* current_value = it->Get();
   if (current_value->IsIdentifierValue() &&
@@ -825,6 +848,7 @@ GridPosition StyleBuilderConverter::ConvertGridPosition(StyleResolverState&,
     position.SetSpanPosition(grid_line_number, grid_line_name);
   else
     position.SetExplicitPosition(grid_line_number, grid_line_name);
+#endif
 
   return position;
 }
@@ -1024,12 +1048,14 @@ Length StyleBuilderConverter::ConvertLength(const StyleResolverState& state,
       state.CssToLengthConversionData());
 }
 
+#if 0 // BKTODO:
 UnzoomedLength StyleBuilderConverter::ConvertUnzoomedLength(
     const StyleResolverState& state,
     const CSSValue& value) {
   return UnzoomedLength(ToCSSPrimitiveValue(value).ConvertToLength(
       state.CssToLengthConversionData().CopyWithAdjustedZoom(1.0f)));
 }
+#endif
 
 Length StyleBuilderConverter::ConvertLengthOrAuto(
     const StyleResolverState& state,
@@ -1088,8 +1114,11 @@ TabSize StyleBuilderConverter::ConvertLengthOrTabSpaces(
 static CSSToLengthConversionData LineHeightToLengthConversionData(
     StyleResolverState& state) {
   float multiplier = state.Style()->EffectiveZoom();
+  ASSERT(false); // BKTODO:
+#if 0
   if (LocalFrame* frame = state.GetDocument().GetFrame())
     multiplier *= frame->TextZoomFactor();
+#endif
   return state.CssToLengthConversionData().CopyWithAdjustedZoom(multiplier);
 }
 
@@ -1198,6 +1227,7 @@ float StyleBuilderConverter::ConvertPerspective(StyleResolverState& state,
   return ConvertPerspectiveLength(state, ToCSSPrimitiveValue(value));
 }
 
+#if 0 // BKTODO:
 EPaintOrder StyleBuilderConverter::ConvertPaintOrder(
     StyleResolverState&,
     const CSSValue& css_paint_order) {
@@ -1221,6 +1251,7 @@ EPaintOrder StyleBuilderConverter::ConvertPaintOrder(
 
   return kPaintOrderNormal;
 }
+#endif
 
 Length StyleBuilderConverter::ConvertQuirkyLength(StyleResolverState& state,
                                                   const CSSValue& value) {
@@ -1362,6 +1393,7 @@ float StyleBuilderConverter::ConvertSpacing(StyleResolverState& state,
       state.CssToLengthConversionData());
 }
 
+#if 0 // BKTODO:
 scoped_refptr<SVGDashArray> StyleBuilderConverter::ConvertStrokeDasharray(
     StyleResolverState& state,
     const CSSValue& value) {
@@ -1378,6 +1410,7 @@ scoped_refptr<SVGDashArray> StyleBuilderConverter::ConvertStrokeDasharray(
 
   return array;
 }
+#endif
 
 StyleColor StyleBuilderConverter::ConvertStyleColor(StyleResolverState& state,
                                                     const CSSValue& value,
@@ -1403,6 +1436,7 @@ StyleAutoColor StyleBuilderConverter::ConvertStyleAutoColor(
       value, Color(), for_visited_link);
 }
 
+#if 0 // BKTODO:
 SVGPaint StyleBuilderConverter::ConvertSVGPaint(StyleResolverState& state,
                                                 const CSSValue& value) {
   const CSSValue* local_value = &value;
@@ -1433,6 +1467,7 @@ SVGPaint StyleBuilderConverter::ConvertSVGPaint(StyleResolverState& state,
   }
   return paint;
 }
+#endif
 
 TextEmphasisPosition StyleBuilderConverter::ConvertTextTextEmphasisPosition(
     StyleResolverState& state,

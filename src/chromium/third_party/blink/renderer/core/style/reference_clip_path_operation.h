@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: reference_clip_path_operation.h
+// Description: ReferenceClipPathOperation Class
+//      Author: Ziming Li
+//     Created: 2020-09-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Adobe Systems Incorporated. All rights reserved.
  *
@@ -33,7 +44,7 @@
 #include <memory>
 
 #include "third_party/blink/renderer/core/style/clip_path_operation.h"
-#include "third_party/blink/renderer/core/svg/svg_resource.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_resource.h"
 #include "third_party/blink/renderer/platform/heap/persistent.h"
 
 namespace blink {
@@ -42,26 +53,32 @@ class SVGResourceClient;
 
 class ReferenceClipPathOperation final : public ClipPathOperation {
  public:
+#if 0 // BKTODO: Is this class necessary?
   static scoped_refptr<ReferenceClipPathOperation> Create(
       const AtomicString& url,
       SVGResource* resource) {
     return base::AdoptRef(new ReferenceClipPathOperation(url, resource));
   }
+#endif
 
   void AddClient(SVGResourceClient&);
   void RemoveClient(SVGResourceClient&);
 
+#if 0 // BKTODO:
   SVGResource* Resource() const;
+#endif
   const AtomicString& Url() const { return url_; }
 
  private:
   bool operator==(const ClipPathOperation&) const override;
   OperationType GetType() const override { return REFERENCE; }
 
+#if 0 // BKTODO:
   ReferenceClipPathOperation(const String& url, SVGResource* resource)
       : resource_(resource), url_(url) {}
 
   Persistent<SVGResource> resource_;
+#endif
   AtomicString url_;
 };
 

@@ -243,6 +243,13 @@ public:
     // MarkAncestorsWithChildNeedsStyleRecalc
     void SetNeedsStyleRecalc(StyleChangeType changeType, const StyleChangeReasonForTracing &);
 #endif // BLINKIT_CRAWLER_ONLY
+    // True if the style recalculation process should traverse this node's
+    // children when looking for nodes that need recalculation.
+    bool ChildNeedsStyleRecalc(void) const { return GetFlag(kChildNeedsStyleRecalcFlag); }
+#ifndef BLINKIT_CRAWLER_ONLY
+    void SetChildNeedsStyleRecalc(void) { SetFlag(kChildNeedsStyleRecalcFlag); }
+    void ClearChildNeedsStyleRecalc(void) { ClearFlag(kChildNeedsStyleRecalcFlag); }
+#endif
     bool HasName(void) const
     {
         ASSERT(!IsTextNode());
