@@ -2654,6 +2654,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\link_hash.cc">
       <Filter>renderer\platform</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_generated_image.cc">
+      <Filter>renderer\core\style</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -7635,6 +7638,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\link_hash.h">
       <Filter>renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_generated_image.h">
+      <Filter>renderer\core\style</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_pending_image.h">
+      <Filter>renderer\core\style</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

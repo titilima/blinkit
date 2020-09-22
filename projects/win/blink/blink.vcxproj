@@ -732,6 +732,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_fetched_image.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_fetched_image_set.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_filter_data.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_generated_image.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_image.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_inherited_variables.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_non_inherited_variables.cc" />
@@ -2246,11 +2247,13 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_fetched_image.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_fetched_image_set.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_filter_data.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_generated_image.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_image.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_inherited_variables.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_non_inherited_variables.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_offset_rotation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_path.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_pending_image.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_ray.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_reflection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\style_self_alignment_data.h" />

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: element_style_resources.cc
+// Description: ElementStyleResources Class
+//      Author: Ziming Li
+//     Created: 2020-09-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc.
@@ -31,7 +42,7 @@
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/tree_scope.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
-#include "third_party/blink/renderer/core/html/lazy_load_image_observer.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/lazy_load_image_observer.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
 #include "third_party/blink/renderer/core/style/content_data.h"
 #include "third_party/blink/renderer/core/style/cursor_data.h"
@@ -42,8 +53,10 @@
 #include "third_party/blink/renderer/core/style/style_generated_image.h"
 #include "third_party/blink/renderer/core/style/style_image.h"
 #include "third_party/blink/renderer/core/style/style_pending_image.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/svg/svg_resource.h"
 #include "third_party/blink/renderer/core/svg/svg_tree_scope_resources.h"
+#endif
 #include "third_party/blink/renderer/platform/length.h"
 #include "third_party/blink/renderer/platform/loader/fetch/fetch_parameters.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
@@ -104,6 +117,8 @@ SVGResource* ElementStyleResources::GetSVGResourceFromValue(
     TreeScope& tree_scope,
     const CSSURIValue& value,
     AllowExternal allow_external) const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (value.IsLocal(element_->GetDocument())) {
     SVGTreeScopeResources& tree_scope_resources =
         tree_scope.EnsureSVGTreeScopedResources();
@@ -113,11 +128,14 @@ SVGResource* ElementStyleResources::GetSVGResourceFromValue(
   }
   if (allow_external == kAllowExternalResource)
     return value.EnsureResourceReference();
+#endif
   return nullptr;
 }
 
 void ElementStyleResources::LoadPendingSVGResources(
     ComputedStyle* computed_style) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!computed_style->HasFilter())
     return;
   FilterOperations::FilterOperationVector& filter_operations =
@@ -130,6 +148,7 @@ void ElementStyleResources::LoadPendingSVGResources(
     if (SVGResource* resource = reference_operation.Resource())
       resource->Load(element_->GetDocument());
   }
+#endif
 }
 
 static bool BackgroundLayerMayBeSprite(const FillLayer& background_layer) {
@@ -203,6 +222,8 @@ void ElementStyleResources::LoadPendingImages(ComputedStyle* style) {
             FetchParameters::ImageRequestOptimization
                 image_request_optimization = FetchParameters::kNone;
             if (!BackgroundLayerMayBeSprite(*background_layer)) {
+              ASSERT(false); // BKTODO:
+#if 0
               if (element_->GetDocument()
                       .GetFrame()
                       ->IsLazyLoadingImageAllowed()) {
@@ -210,12 +231,16 @@ void ElementStyleResources::LoadPendingImages(ComputedStyle* style) {
               } else {
                 image_request_optimization = FetchParameters::kAllowPlaceholder;
               }
+#endif
             }
             StyleImage* new_image =
                 LoadPendingImage(style, ToStylePendingImage(background_image),
                                  image_request_optimization);
+            ASSERT(false); // BKTODO:
+#if 0
             if (new_image && new_image->IsLazyloadPossiblyDeferred())
               LazyLoadImageObserver::StartMonitoring(element_);
+#endif
             background_layer->SetImage(new_image);
           }
         }
