@@ -493,6 +493,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\match_result.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\scoped_style_resolver.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\selector_filter_parent_scope.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\style_adjuster.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\style_builder.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\style_builder_converter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\style_resolver.cc" />
@@ -564,6 +565,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\events\registered_event_listener.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\events\tree_scope_event_context.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\events\window_event_context.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\first_letter_pseudo_element.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\flat_tree_traversal.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\id_target_observer_registry.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\layout_tree_builder_traversal.cc" />
@@ -1912,6 +1914,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\media_query_result.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\scoped_style_resolver.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\selector_filter_parent_scope.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\style_adjuster.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\style_builder.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\style_builder_converter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\style_resolver.h" />
@@ -1999,6 +2002,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\events\registered_event_listener.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\events\tree_scope_event_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\events\window_event_context.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\first_letter_pseudo_element.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\flat_tree_traversal.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\id_target_observer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\id_target_observer_registry.h" />

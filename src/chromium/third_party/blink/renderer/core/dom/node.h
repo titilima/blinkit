@@ -275,6 +275,7 @@ public:
     bool IsShadowRoot(void) const { return IsDocumentFragment() && IsTreeScope(); }
 
     virtual PseudoId GetPseudoId(void) const { return kPseudoIdNone; }
+    bool IsFirstLetterPseudoElement(void) const { return GetPseudoId() == kPseudoIdFirstLetter; }
     bool IsPseudoElement(void) const { return GetPseudoId() != kPseudoIdNone; }
 
     virtual bool IsCharacterDataNode(void) const { return false; }

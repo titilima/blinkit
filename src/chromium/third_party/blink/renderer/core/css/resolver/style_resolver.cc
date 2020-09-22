@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_resolver.cc
+// Description: StyleResolver Class
+//      Author: Ziming Li
+//     Created: 2020-09-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -70,7 +81,7 @@
 #include "third_party/blink/renderer/core/css/resolver/style_adjuster.h"
 #include "third_party/blink/renderer/core/css/resolver/style_resolver_state.h"
 #include "third_party/blink/renderer/core/css/resolver/style_resolver_stats.h"
-#include "third_party/blink/renderer/core/css/resolver/style_rule_usage_tracker.h"
+// BKTODO: #include "third_party/blink/renderer/core/css/resolver/style_rule_usage_tracker.h"
 #include "third_party/blink/renderer/core/css/style_engine.h"
 #include "third_party/blink/renderer/core/css/style_rule_import.h"
 #include "third_party/blink/renderer/core/css/style_sheet_contents.h"
@@ -84,15 +95,17 @@
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/custom/custom_element_definition.h"
 #include "third_party/blink/renderer/core/html/html_iframe_element.h"
 #include "third_party/blink/renderer/core/html/html_slot_element.h"
+#endif
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/media_type_names.h"
 #include "third_party/blink/renderer/core/probe/core_probes.h"
 #include "third_party/blink/renderer/core/style/style_inherited_variables.h"
 #include "third_party/blink/renderer/core/style_property_shorthand.h"
-#include "third_party/blink/renderer/core/svg/svg_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_element.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/wtf/hash_set.h"
 #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
@@ -104,17 +117,20 @@ namespace blink {
 namespace {
 
 void SetAnimationUpdateIfNeeded(StyleResolverState& state, Element& element) {
+  ASSERT(false); // BKTODO:
+#if 0
   // If any changes to CSS Animations were detected, stash the update away for
   // application after the layout object is updated if we're in the appropriate
   // scope.
   if (!state.AnimationUpdate().IsEmpty())
     element.EnsureElementAnimations().CssAnimations().SetPendingUpdate(
         state.AnimationUpdate());
+#endif
 }
 
 }  // namespace
 
-using namespace HTMLNames;
+using namespace html_names;
 
 ComputedStyle* StyleResolver::style_not_yet_available_;
 
@@ -143,9 +159,12 @@ static void CollectScopedResolversForHostedShadowTrees(
   if (!root)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Adding scoped resolver for active shadow roots for shadow host styling.
   if (ScopedStyleResolver* resolver = root->GetScopedStyleResolver())
     resolvers.push_back(resolver);
+#endif
 }
 
 StyleResolver::StyleResolver(Document& document) : document_(document) {
@@ -177,6 +196,8 @@ static inline ScopedStyleResolver* ScopedResolverFor(const Element& element) {
   // author styling.
 
   TreeScope* tree_scope = &element.GetTreeScope();
+  ASSERT(false); // BKTODO:
+#if 0
   if (ScopedStyleResolver* resolver = tree_scope->GetScopedStyleResolver()) {
 #if DCHECK_IS_ON()
     if (!element.HasMediaControlAncestor())
@@ -185,13 +206,18 @@ static inline ScopedStyleResolver* ScopedResolverFor(const Element& element) {
     DCHECK(!element.IsVTTElement());
     return resolver;
   }
+#endif
 
   tree_scope = tree_scope->ParentTreeScope();
   if (!tree_scope)
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (element.ShadowPseudoId().IsEmpty() && !element.IsVTTElement())
     return nullptr;
   return tree_scope->GetScopedStyleResolver();
+#endif
 }
 
 // Matches :host and :host-context rules if the element is a shadow host.
@@ -202,8 +228,11 @@ static void MatchHostRules(const Element& element,
   ShadowRoot* shadow_root = element.GetShadowRoot();
   if (!shadow_root)
     return;
+  ASSERT(false); // BKTODO:
+#if 0
   if (ScopedStyleResolver* resolver = shadow_root->GetScopedStyleResolver())
     resolver->CollectMatchingShadowHostRules(collector);
+#endif
 }
 
 // Matches custom element rules from Custom Element Default Style.
@@ -211,6 +240,8 @@ static void MatchCustomElementRules(const Element& element,
                                     ElementRuleCollector& collector) {
   if (!RuntimeEnabledFeatures::CustomElementDefaultStyleEnabled())
     return;
+  ASSERT(false); // BKTODO:
+#if 0
   if (CustomElementDefinition* definition =
           element.GetCustomElementDefinition()) {
     if (definition->HasDefaultStyleSheets()) {
@@ -220,6 +251,7 @@ static void MatchCustomElementRules(const Element& element,
       }
     }
   }
+#endif
 }
 
 // Matches :host and :host-context rules
@@ -227,10 +259,13 @@ static void MatchCustomElementRules(const Element& element,
 static void MatchHostAndCustomElementRules(const Element& element,
                                            ElementRuleCollector& collector) {
   ShadowRoot* shadow_root = element.GetShadowRoot();
+  ASSERT(false); // BKTODO:
+#if 0
   ScopedStyleResolver* resolver =
       shadow_root ? shadow_root->GetScopedStyleResolver() : nullptr;
   if (!resolver && !RuntimeEnabledFeatures::CustomElementDefaultStyleEnabled())
     return;
+#endif
   collector.ClearMatchedRules();
   MatchCustomElementRules(element, collector);
   MatchHostRules(element, collector);
@@ -244,6 +279,8 @@ static void MatchHostAndCustomElementRules(const Element& element,
 // descending from the element's own scope.
 static void MatchSlottedRules(const Element& element,
                               ElementRuleCollector& collector) {
+  ASSERT(false); // BKTODO:
+#if 0
   HTMLSlotElement* slot = element.AssignedSlot();
   if (!slot)
     return;
@@ -260,6 +297,7 @@ static void MatchSlottedRules(const Element& element,
     collector.SortAndTransferMatchedRules();
     collector.FinishAddingAuthorRulesForTreeScope();
   }
+#endif
 }
 
 // Matches rules from the element's scope. The selectors may cross shadow
@@ -274,6 +312,8 @@ static void MatchElementScopeRules(const Element& element,
     collector.SortAndTransferMatchedRules();
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (element.IsStyledElement() && element.InlineStyle() &&
       !collector.IsCollectingForPseudoElement()) {
     // Inline style is immutable as long as there is no CSSOM wrapper.
@@ -281,6 +321,7 @@ static void MatchElementScopeRules(const Element& element,
     collector.AddElementStyleProperties(element.InlineStyle(),
                                         is_inline_style_cacheable);
   }
+#endif
 
   collector.FinishAddingAuthorRulesForTreeScope();
 }
@@ -290,6 +331,8 @@ void StyleResolver::MatchPseudoPartRules(const Element& element,
   if (!RuntimeEnabledFeatures::CSSPartPseudoElementEnabled())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   const SpaceSplitString* part_names = element.PartNames();
   if (!part_names)
     return;
@@ -323,6 +366,7 @@ void StyleResolver::MatchPseudoPartRules(const Element& element,
 
     current_names.PushMap(*part_map);
   }
+#endif
 }
 
 static bool ShouldCheckScope(const Element& element,
@@ -349,11 +393,15 @@ static bool ShouldCheckScope(const Element& element,
           element.GetTreeScope().RootNode().ParentOrShadowHostNode())
     return true;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // Obviously cases when ancestor scope has /deep/ or ::shadow rule should be
   // included.  Skip otherwise.
   return scoping_node.GetTreeScope()
       .GetScopedStyleResolver()
       ->HasDeepOrShadowSelector();
+#endif
 }
 
 void StyleResolver::MatchScopedRulesV0(
@@ -366,6 +414,8 @@ void StyleResolver::MatchScopedRulesV0(
   // tree-of-trees order wins. From other treeScopes than the element's own
   // scope, only tree-boundary-crossing rules may match.
 
+  ASSERT(false); // BKTODO:
+#if 0
   bool match_element_scope_done =
       !element_scope_resolver && !element.InlineStyle();
 
@@ -407,15 +457,19 @@ void StyleResolver::MatchScopedRulesV0(
 
   if (!match_element_scope_done)
     MatchElementScopeRules(element, element_scope_resolver, collector);
+#endif
 }
 
 void StyleResolver::MatchAuthorRules(const Element& element,
                                      ElementRuleCollector& collector) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (GetDocument().GetShadowCascadeOrder() ==
       ShadowCascadeOrder::kShadowCascadeV0) {
     MatchAuthorRulesV0(element, collector);
     return;
   }
+#endif
 
   MatchHostAndCustomElementRules(element, collector);
 
@@ -463,6 +517,8 @@ void StyleResolver::MatchUserRules(ElementRuleCollector& collector) {
 void StyleResolver::MatchUARules(ElementRuleCollector& collector) {
   collector.SetMatchingUARules(true);
 
+  ASSERT(false); // BKTODO:
+#if 0
   CSSDefaultStyleSheets& default_style_sheets =
       CSSDefaultStyleSheets::Instance();
   RuleSet* user_agent_style_sheet =
@@ -478,6 +534,7 @@ void StyleResolver::MatchUARules(ElementRuleCollector& collector) {
   // mode), then we match rules from the view source style sheet.
   if (GetDocument().IsViewSource())
     MatchRuleSet(collector, default_style_sheets.DefaultViewSourceStyle());
+#endif
 
   collector.FinishAddingUARules();
   collector.SetMatchingUARules(false);
@@ -497,6 +554,8 @@ void StyleResolver::MatchAllRules(StyleResolverState& state,
   MatchUARules(collector);
   MatchUserRules(collector);
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Now check author rules, beginning first with presentational attributes
   // mapped from HTML.
   if (state.GetElement()->IsStyledElement()) {
@@ -523,9 +582,12 @@ void StyleResolver::MatchAllRules(StyleResolverState& state,
       }
     }
   }
+#endif
 
   MatchAuthorRules(*state.GetElement(), collector);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (state.GetElement()->IsStyledElement()) {
     // For Shadow DOM V1, inline style is already collected in
     // matchScopedRules().
@@ -545,6 +607,7 @@ void StyleResolver::MatchAllRules(StyleResolverState& state,
           ToSVGElement(state.GetElement())->AnimatedSMILStyleProperties(),
           false /* isCacheable */);
   }
+#endif
 
   collector.FinishAddingAuthorRulesForTreeScope();
 }
@@ -565,6 +628,8 @@ void StyleResolver::CollectTreeBoundaryCrossingRulesV0CascadeOrder(
       tree_boundary_crossing_scopes.size();
 
   for (const auto& scoping_node : tree_boundary_crossing_scopes) {
+    ASSERT(false); // BKTODO:
+#if 0
     // Skip rule collection for element when tree boundary crossing rules of
     // scopingNode's scope can never apply to it.
     bool is_inner_tree_scope =
@@ -578,6 +643,7 @@ void StyleResolver::CollectTreeBoundaryCrossingRulesV0CascadeOrder(
     scoping_node->GetTreeScope()
         .GetScopedStyleResolver()
         ->CollectMatchingTreeBoundaryCrossingRules(collector, cascade_order);
+#endif
 
     ++inner_cascade_order;
     --outer_cascade_order;
@@ -614,6 +680,9 @@ static const ComputedStyle* CalculateBaseComputedStyle(
   if (!animating_element)
     return nullptr;
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   ElementAnimations* element_animations =
       animating_element->GetElementAnimations();
   if (!element_animations)
@@ -628,6 +697,7 @@ static const ComputedStyle* CalculateBaseComputedStyle(
   }
 
   return element_animations->BaseComputedStyle();
+#endif
 }
 
 static void UpdateBaseComputedStyle(StyleResolverState& state,
@@ -635,6 +705,8 @@ static void UpdateBaseComputedStyle(StyleResolverState& state,
   if (!animating_element)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   ElementAnimations* element_animations =
       animating_element->GetElementAnimations();
   if (element_animations) {
@@ -644,6 +716,7 @@ static void UpdateBaseComputedStyle(StyleResolverState& state,
       element_animations->UpdateBaseComputedStyle(state.Style());
     }
   }
+#endif
 }
 
 scoped_refptr<ComputedStyle> StyleResolver::StyleForElement(
@@ -652,6 +725,9 @@ scoped_refptr<ComputedStyle> StyleResolver::StyleForElement(
     const ComputedStyle* default_layout_parent,
     RuleMatchingBehavior matching_behavior) {
   DCHECK(GetDocument().GetFrame());
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   DCHECK(GetDocument().GetSettings());
 
   // Once an element has a layout object or non-layout style, we don't try to
@@ -811,6 +887,7 @@ scoped_refptr<ComputedStyle> StyleResolver::StyleForElement(
 
   // Now return the style.
   return state.TakeStyle();
+#endif
 }
 
 // TODO(alancutter): Create compositor keyframe values directly instead of
@@ -841,6 +918,8 @@ bool StyleResolver::PseudoStyleForElementInternal(
     const PseudoStyleRequest& pseudo_style_request,
     StyleResolverState& state) {
   DCHECK(GetDocument().GetFrame());
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(GetDocument().GetSettings());
   DCHECK(pseudo_style_request.pseudo_id != kPseudoIdFirstLineInherited);
   DCHECK(state.ParentStyle());
@@ -913,6 +992,7 @@ bool StyleResolver::PseudoStyleForElementInternal(
 
   if (state.Style()->HasViewportUnits())
     GetDocument().SetHasViewportUnits();
+#endif
 
   return true;
 }
@@ -934,9 +1014,12 @@ scoped_refptr<ComputedStyle> StyleResolver::PseudoStyleForElement(
     return state.TakeStyle();
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (PseudoElement* pseudo_element =
           element->GetPseudoElement(pseudo_style_request.pseudo_id))
     SetAnimationUpdateIfNeeded(state, *pseudo_element);
+#endif
 
   // Now return the style.
   return state.TakeStyle();
@@ -958,12 +1041,15 @@ scoped_refptr<ComputedStyle> StyleResolver::StyleForPage(int page_index) {
 
   PageRuleCollector collector(root_element_style, page_index);
 
+  ASSERT(false); // BKTODO:
+#if 0
   collector.MatchPageRules(
       CSSDefaultStyleSheets::Instance().DefaultPrintStyle());
 
   if (ScopedStyleResolver* scoped_resolver =
           GetDocument().GetScopedStyleResolver())
     scoped_resolver->MatchPageRules(collector);
+#endif
 
   bool inherited_only = false;
 
@@ -992,6 +1078,8 @@ scoped_refptr<ComputedStyle> StyleResolver::InitialStyleForElement(
 
   scoped_refptr<ComputedStyle> initial_style = ComputedStyle::Create();
 
+  ASSERT(false); // BKTODO:
+#if 0
   initial_style->SetRtlOrdering(document.VisuallyOrdered() ? EOrder::kVisual
                                                            : EOrder::kLogical);
   initial_style->SetZoom(frame && !document.Printing() ? frame->PageZoomFactor()
@@ -1008,6 +1096,7 @@ scoped_refptr<ComputedStyle> StyleResolver::InitialStyleForElement(
                                    ? EUserModify::kReadWrite
                                    : EUserModify::kReadOnly);
   document.SetupFontBuilder(*initial_style);
+#endif
   return initial_style;
 }
 
@@ -1030,7 +1119,10 @@ void StyleResolver::UpdateFont(StyleResolverState& state) {
 
 void StyleResolver::AddMatchedRulesToTracker(
     const ElementRuleCollector& collector) {
+  ASSERT(false); // BKTODO:
+#if 0
   collector.AddMatchedRulesToTracker(tracker_);
+#endif
 }
 
 StyleRuleList* StyleResolver::StyleRulesForElement(Element* element,
@@ -1098,6 +1190,8 @@ bool StyleResolver::ApplyAnimatedStandardProperties(
   DCHECK(animating_element == element || !animating_element ||
          animating_element->ParentOrShadowHostElement() == element);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (state.Style()->Animations() ||
       (animating_element && animating_element->HasAnimations())) {
     if (!state.IsAnimationInterpolationMapReady())
@@ -1105,6 +1199,7 @@ bool StyleResolver::ApplyAnimatedStandardProperties(
   } else if (!state.Style()->Transitions()) {
     return false;
   }
+#endif
 
   CSSAnimations::CalculateCompositorAnimationUpdate(
       state.AnimationUpdate(), animating_element, *element, *state.Style(),
@@ -1152,9 +1247,12 @@ StyleRuleKeyframes* StyleResolver::FindKeyframesRule(
     const AtomicString& animation_name) {
   HeapVector<Member<ScopedStyleResolver>, 8> resolvers;
   CollectScopedResolversForHostedShadowTrees(*element, resolvers);
+  ASSERT(false); // BKTODO:
+#if 0
   if (ScopedStyleResolver* scoped_resolver =
           element->GetTreeScope().GetScopedStyleResolver())
     resolvers.push_back(scoped_resolver);
+#endif
 
   for (auto& resolver : resolvers) {
     if (StyleRuleKeyframes* keyframes_rule =
@@ -1183,17 +1281,17 @@ void StyleResolver::ApplyAnimatedStandardProperties(
   // SVGElement::CollectStyleForPresentationAttribute().
   for (const auto& entry : active_interpolations_map) {
     CSSPropertyID property =
-        entry.key.IsCSSProperty()
-            ? entry.key.GetCSSProperty().PropertyID()
-            : entry.key.PresentationAttribute().PropertyID();
+        entry.first.IsCSSProperty()
+            ? entry.first.GetCSSProperty().PropertyID()
+            : entry.first.PresentationAttribute().PropertyID();
     if (!CSSPropertyPriorityData<priority>::PropertyHasPriority(property))
       continue;
-    const Interpolation& interpolation = *entry.value.front();
+    const Interpolation& interpolation = *entry.second.front();
     if (interpolation.IsInvalidatableInterpolation()) {
       CSSInterpolationTypesMap map(state.GetDocument().GetPropertyRegistry(),
                                    state.GetDocument());
       CSSInterpolationEnvironment environment(map, state, nullptr);
-      InvalidatableInterpolation::ApplyStack(entry.value, environment);
+      InvalidatableInterpolation::ApplyStack(entry.second, environment);
     } else {
       ToTransitionInterpolation(interpolation).Apply(state);
     }
@@ -1371,6 +1469,8 @@ static inline bool IsValidFirstLetterStyleProperty(CSSPropertyID id) {
 }
 
 static bool ShouldIgnoreTextTrackAuthorStyle(const Document& document) {
+  ASSERT(false); // BKTODO:
+#if 0
   Settings* settings = document.GetSettings();
   if (!settings)
     return false;
@@ -1384,6 +1484,7 @@ static bool ShouldIgnoreTextTrackAuthorStyle(const Document& document) {
       !settings->GetTextTrackTextShadow().IsEmpty() ||
       !settings->GetTextTrackTextSize().IsEmpty())
     return true;
+#endif
   return false;
 }
 
@@ -1584,6 +1685,8 @@ void StyleResolver::ApplyMatchedPropertiesAndCustomPropertyAnimations(
     ApplyMatchedAnimationProperties(state, match_result, cache_success,
                                     needs_apply_pass);
   }
+  ASSERT(false); // BKTODO:
+#if 0
   if (state.Style()->Animations() || state.Style()->Transitions() ||
       (animating_element && animating_element->HasAnimations())) {
     CalculateAnimationUpdate(state, animating_element);
@@ -1593,6 +1696,7 @@ void StyleResolver::ApplyMatchedPropertiesAndCustomPropertyAnimations(
                             cache_success, needs_apply_pass);
     }
   }
+#endif
   if (!cache_success.IsFullCacheHit()) {
     ApplyMatchedStandardProperties(state, match_result, cache_success,
                                    needs_apply_pass);
@@ -1627,6 +1731,8 @@ StyleResolver::CacheSuccess StyleResolver::ApplyMatchedCache(
     // reusing the style data structures.
     state.Style()->CopyNonInheritedFromCached(
         *cached_matched_properties->computed_style);
+    ASSERT(false); // BKTODO:
+#if 0
     if (state.ParentStyle()->InheritedDataShared(
             *cached_matched_properties->parent_computed_style) &&
         !IsAtShadowBoundary(element) &&
@@ -1648,6 +1754,7 @@ StyleResolver::CacheSuccess StyleResolver::ApplyMatchedCache(
       UpdateFont(state);
       is_inherited_cache_hit = true;
     }
+#endif
 
     is_non_inherited_cache_hit = true;
   }
@@ -1705,8 +1812,11 @@ void StyleResolver::ApplyMatchedAnimationProperties(
 
 void StyleResolver::CalculateAnimationUpdate(StyleResolverState& state,
                                              const Element* animating_element) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(state.Style()->Animations() || state.Style()->Transitions() ||
          (animating_element && animating_element->HasAnimations()));
+#endif
   DCHECK(!state.IsAnimationInterpolationMapReady());
 
   CSSAnimations::CalculateAnimationUpdate(
@@ -1762,6 +1872,8 @@ void StyleResolver::ApplyMatchedStandardProperties(
       state, match_result.UaRules(), true, apply_inherited_only,
       needs_apply_pass);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (UNLIKELY(IsSVGForeignObjectElement(state.GetElement()))) {
     // LayoutSVGRoot handles zooming for the whole SVG subtree, so foreignObject
     // content should not be scaled again.
@@ -1775,6 +1887,7 @@ void StyleResolver::ApplyMatchedStandardProperties(
     // need to find another way of handling the SVG zoom model.
     state.SetEffectiveZoom(ComputedStyleInitialValues::InitialZoom());
   }
+#endif
 
   if (cache_success.cached_matched_properties &&
       cache_success.cached_matched_properties->computed_style
@@ -1927,6 +2040,8 @@ void StyleResolver::ComputeFont(ComputedStyle* style,
 }
 
 void StyleResolver::UpdateMediaType() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (LocalFrameView* view = GetDocument().View()) {
     bool was_print = print_media_type_;
     print_media_type_ =
@@ -1934,6 +2049,7 @@ void StyleResolver::UpdateMediaType() {
     if (was_print != print_media_type_)
       matched_properties_cache_.ClearViewportDependent();
   }
+#endif
 }
 
 void StyleResolver::Trace(blink::Visitor* visitor) {
