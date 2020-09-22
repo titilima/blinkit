@@ -589,6 +589,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\tree_scope.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\tree_scope_adopter.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\v0_insertion_point.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\visited_link_state.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\whitespace_attacher.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_utilities.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\frame_selection.cc" />
@@ -866,6 +867,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\layout_unit.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\length.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\length_functions.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\link_hash.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_context.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_initiator_type_names.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_parameters.cpp" />
@@ -2026,6 +2028,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\tree_scope.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\tree_scope_adopter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\v0_insertion_point.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\visited_link_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\weak_identifier_map.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\whitespace_attacher.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_strategy.h" />
@@ -2441,6 +2444,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\length_size.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\lifecycle_notifier.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\lifecycle_observer.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\link_hash.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\cached_metadata_handler.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_client_settings_object.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\fetch_context.h" />

@@ -89,7 +89,9 @@ class Text;
 class LayoutView;
 class LocalFrameView;
 class Page;
+class PropertyRegistry;
 class StyleEngine;
+class VisitedLinkState;
 #endif
 
 enum NodeListInvalidationType : int {
@@ -147,6 +149,7 @@ public:
     PropertyRegistry* GetPropertyRegistry(void);
     Page* GetPage(void) const;                           // can be null
     LocalFrameView* View(void) const;                    // can be null
+    VisitedLinkState& GetVisitedLinkState(void) const { return *m_visitedLinkState; }
 #endif
 
     // Exports for JS
@@ -502,6 +505,7 @@ private:
     std::unique_ptr<StyleEngine> m_styleEngine;
 
     TextLinkColors m_textLinkColors;
+    const std::unique_ptr<VisitedLinkState> m_visitedLinkState;
 
 #   if DCHECK_IS_ON()
     unsigned m_slotAssignmentRecalcForbiddenRecursionDepth = 0;

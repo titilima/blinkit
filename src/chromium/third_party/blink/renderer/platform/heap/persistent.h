@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/platform/heap/heap_allocator.h"
+
 namespace blink {
 
 template <class T>
@@ -44,6 +46,11 @@ public:
         ASSERT(false); // BKTODO:
         return *Get();
     }
+    operator T*() const
+    {
+        ASSERT(false); // BKTODO:
+        return Get();
+    }
     T* Get(void) const
     {
         ASSERT(false); // BKTODO:
@@ -54,6 +61,18 @@ public:
         ASSERT(false); // BKTODO:
     }
 };
+
+template <typename T, typename U>
+inline bool operator==(const Persistent<T> &a, const Persistent<U> &b)
+{
+    return a.Get() == b.Get();
+}
+
+template <typename T, typename U>
+inline bool operator!=(const Persistent<T> &a, const Persistent<U> &b)
+{
+    return a.Get() != b.Get();
+}
 
 template <class T> using WeakPersistent = Persistent<T>;
 
