@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scoped_style_resolver.cc
+// Description: ScopedStyleResolver Class
+//      Author: Ziming Li
+//     Created: 2020-09-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc.
@@ -42,17 +53,20 @@
 #include "third_party/blink/renderer/core/css/style_sheet_contents.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/shadow_root.h"
-#include "third_party/blink/renderer/core/html/html_style_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_style_element.h"
 #include "third_party/blink/renderer/core/html_names.h"
-#include "third_party/blink/renderer/core/svg/svg_style_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_style_element.h"
 
 namespace blink {
 
 ScopedStyleResolver* ScopedStyleResolver::Parent() const {
   for (TreeScope* scope = GetTreeScope().ParentTreeScope(); scope;
        scope = scope->ParentTreeScope()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (ScopedStyleResolver* resolver = scope->GetScopedStyleResolver())
       return resolver;
+#endif
   }
   return nullptr;
 }
@@ -79,13 +93,18 @@ void ScopedStyleResolver::AddFontFaceRules(const RuleSet& rule_set) {
     if (FontFace* font_face = FontFace::Create(&document, font_face_rule))
       css_font_selector->GetFontFaceCache()->Add(font_face_rule, font_face);
   }
+  ASSERT(false); // BKTODO:
+#if 0
   if (font_face_rules.size() && document.GetStyleResolver())
     document.GetStyleResolver()->InvalidateMatchedPropertiesCache();
+#endif
 }
 
 void ScopedStyleResolver::AppendActiveStyleSheets(
     unsigned index,
     const ActiveStyleSheetVector& active_sheets) {
+  ASSERT(false); // BKTODO:
+#if 0
   for (auto* active_iterator = active_sheets.begin() + index;
        active_iterator != active_sheets.end(); active_iterator++) {
     CSSStyleSheet* sheet = active_iterator->first;
@@ -102,6 +121,7 @@ void ScopedStyleResolver::AppendActiveStyleSheets(
     AddTreeBoundaryCrossingRules(rule_set, sheet, index);
     AddSlottedRules(rule_set, sheet, index++);
   }
+#endif
 }
 
 void ScopedStyleResolver::CollectFeaturesTo(
@@ -117,9 +137,12 @@ void ScopedStyleResolver::CollectFeaturesTo(
     if (!RuntimeEnabledFeatures::ConstructableStylesheetsEnabled())
       DCHECK(sheet->ownerNode());
     StyleSheetContents* contents = sheet->Contents();
+    ASSERT(false); // BKTODO:
+#if 0
     if (contents->HasOneClient() ||
         visited_shared_style_sheet_contents.insert(contents).is_new_entry)
       features.Add(contents->GetRuleSet().Features());
+#endif
   }
 
   if (tree_boundary_crossing_rule_set_) {
@@ -152,12 +175,14 @@ StyleRuleKeyframes* ScopedStyleResolver::KeyframeStylesForAnimation(
   if (it == keyframes_rule_map_.end())
     return nullptr;
 
-  return it->value.Get();
+  return it->second.Get();
 }
 
 void ScopedStyleResolver::AddKeyframeStyle(StyleRuleKeyframes* rule) {
   AtomicString s(rule->GetName());
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (rule->IsVendorPrefixed()) {
     KeyframesRuleMap::iterator it = keyframes_rule_map_.find(s.Impl());
     if (it == keyframes_rule_map_.end())
@@ -167,6 +192,7 @@ void ScopedStyleResolver::AddKeyframeStyle(StyleRuleKeyframes* rule) {
   } else {
     keyframes_rule_map_.Set(s.Impl(), rule);
   }
+#endif
 }
 
 ContainerNode& ScopedStyleResolver::InvalidationRootForTreeScope(
@@ -182,6 +208,8 @@ void ScopedStyleResolver::KeyframesRulesAdded(const TreeScope& tree_scope) {
   // same TreeScope as the stylesheet, or the host element in the parent
   // TreeScope if the TreeScope is a shadow tree.
 
+  ASSERT(false); // BKTODO:
+#if 0
   ScopedStyleResolver* resolver = tree_scope.GetScopedStyleResolver();
   ScopedStyleResolver* parent_resolver =
       tree_scope.ParentTreeScope()
@@ -212,6 +240,7 @@ void ScopedStyleResolver::KeyframesRulesAdded(const TreeScope& tree_scope) {
 
   // If we have animations running, added/removed @keyframes may affect these.
   tree_scope.GetDocument().Timeline().InvalidateKeyframeEffects(tree_scope);
+#endif
 }
 
 void ScopedStyleResolver::CollectMatchingAuthorRules(
@@ -301,8 +330,11 @@ void ScopedStyleResolver::Trace(blink::Visitor* visitor) {
 
 static void AddRules(RuleSet* rule_set,
                      const HeapVector<MinimalRuleData>& rules) {
+  ASSERT(false); // BKTODO:
+#if 0
   for (const auto& info : rules)
     rule_set->AddRule(info.rule_, info.selector_index_, info.flags_);
+#endif
 }
 
 void ScopedStyleResolver::AddTreeBoundaryCrossingRules(
@@ -318,6 +350,8 @@ void ScopedStyleResolver::AddTreeBoundaryCrossingRules(
   if (!author_rules.DeepCombinatorOrShadowPseudoRules().IsEmpty())
     has_deep_or_shadow_selector_ = true;
 
+  ASSERT(false); // BKTODO:
+#if 0
   RuleSet* rule_set_for_scope = RuleSet::Create();
   AddRules(rule_set_for_scope,
            author_rules.DeepCombinatorOrShadowPseudoRules());
@@ -333,6 +367,7 @@ void ScopedStyleResolver::AddTreeBoundaryCrossingRules(
 
   tree_boundary_crossing_rule_set_->push_back(
       RuleSubSet::Create(parent_style_sheet, sheet_index, rule_set_for_scope));
+#endif
 }
 
 void ScopedStyleResolver::V0ShadowAddedOnV1Document() {
@@ -356,6 +391,8 @@ void ScopedStyleResolver::AddSlottedRules(const RuleSet& author_rules,
   if (is_document_scope || author_rules.SlottedPseudoElementRules().IsEmpty())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   RuleSet* slotted_rule_set = RuleSet::Create();
   AddRules(slotted_rule_set, author_rules.SlottedPseudoElementRules());
 
@@ -383,6 +420,7 @@ void ScopedStyleResolver::AddSlottedRules(const RuleSet& author_rules,
     slotted_rule_set_ = new CSSStyleSheetRuleSubSet();
   slotted_rule_set_->push_back(
       RuleSubSet::Create(parent_style_sheet, sheet_index, slotted_rule_set));
+#endif
 }
 
 void ScopedStyleResolver::RuleSubSet::Trace(blink::Visitor* visitor) {

@@ -413,6 +413,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\media_values_dynamic.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\media_values_initial_viewport.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\offscreen_font_selector.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\page_rule_collector.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\at_rule_descriptors.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\at_rule_descriptor_parser.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_at_rule_id.cc" />
@@ -436,6 +437,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_variable_parser.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\media_query_block_watcher.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\media_query_parser.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\part_names.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_parsing_utils.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_property.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_unresolved_property.cc" />
@@ -1293,6 +1295,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\media_values_dynamic.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\media_values_initial_viewport.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\offscreen_font_selector.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\page_rule_collector.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\at_rule_descriptors.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\at_rule_descriptor_parser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_at_rule_id.h" />
@@ -1319,6 +1322,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\css_variable_parser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\media_query_block_watcher.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\media_query_parser.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\part_names.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_parsing_utils.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_property.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_unresolved_property.h" />
