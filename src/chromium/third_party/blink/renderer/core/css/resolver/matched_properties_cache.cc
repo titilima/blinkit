@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: matched_properties_cache.cc
+// Description: MatchedPropertiesCache Class
+//      Author: Ziming Li
+//     Created: 2020-09-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -39,7 +50,10 @@ namespace blink {
 void CachedMatchedProperties::Set(const ComputedStyle& style,
                                   const ComputedStyle& parent_style,
                                   const MatchedPropertiesVector& properties) {
+  ASSERT(false); // BKTODO:
+#if 0
   matched_properties.AppendVector(properties);
+#endif
 
   // Note that we don't cache the original ComputedStyle instance. It may be
   // further modified.  The ComputedStyle in the cache is really just a holder
@@ -65,7 +79,10 @@ const CachedMatchedProperties* MatchedPropertiesCache::Find(
   Cache::iterator it = cache_.find(hash);
   if (it == cache_.end())
     return nullptr;
-  CachedMatchedProperties* cache_item = it->value.Get();
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
+  CachedMatchedProperties* cache_item = it->second.Get();
   if (!cache_item)
     return nullptr;
 
@@ -80,6 +97,7 @@ const CachedMatchedProperties* MatchedPropertiesCache::Find(
       return nullptr;
   }
   return cache_item;
+#endif
 }
 
 void MatchedPropertiesCache::Add(const ComputedStyle& style,
@@ -87,6 +105,8 @@ void MatchedPropertiesCache::Add(const ComputedStyle& style,
                                  unsigned hash,
                                  const MatchedPropertiesVector& properties) {
   DCHECK(hash);
+  ASSERT(false); // BKTODO:
+#if 0
   Cache::AddResult add_result = cache_.insert(hash, nullptr);
   if (add_result.is_new_entry || !add_result.stored_value->value)
     add_result.stored_value->value = new CachedMatchedProperties;
@@ -96,6 +116,7 @@ void MatchedPropertiesCache::Add(const ComputedStyle& style,
     cache_item->Clear();
 
   cache_item->Set(style, parent_style, properties);
+#endif
 }
 
 void MatchedPropertiesCache::Clear() {
@@ -103,20 +124,26 @@ void MatchedPropertiesCache::Clear() {
   // destructors in the properties (e.g., ~FontFallbackList) expect that
   // the destructors are called promptly without relying on a GC timing.
   for (auto& cache_entry : cache_) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (cache_entry.value)
       cache_entry.value->Clear();
+#endif
   }
   cache_.clear();
 }
 
 void MatchedPropertiesCache::ClearViewportDependent() {
   Vector<unsigned, 16> to_remove;
+  ASSERT(false); // BKTODO:
+#if 0
   for (const auto& cache_entry : cache_) {
     CachedMatchedProperties* cache_item = cache_entry.value.Get();
     if (cache_item && cache_item->computed_style->HasViewportUnits())
       to_remove.push_back(cache_entry.key);
   }
   cache_.RemoveAll(to_remove);
+#endif
 }
 
 bool MatchedPropertiesCache::IsStyleCacheable(const ComputedStyle& style) {
