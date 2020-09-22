@@ -91,6 +91,7 @@ class LocalFrameView;
 class Page;
 class PropertyRegistry;
 class StyleEngine;
+class StyleResolver;
 class VisitedLinkState;
 #endif
 
@@ -149,7 +150,9 @@ public:
     PropertyRegistry* GetPropertyRegistry(void);
     Page* GetPage(void) const;                           // can be null
     LocalFrameView* View(void) const;                    // can be null
+    StyleResolver* GetStyleResolver(void) const;
     VisitedLinkState& GetVisitedLinkState(void) const { return *m_visitedLinkState; }
+    float DevicePixelRatio(void) const;
 #endif
 
     // Exports for JS

@@ -2687,6 +2687,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\css_style_sheet_resource.cc">
       <Filter>renderer\core\loader\resource</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\css_variable_animator.cc">
+      <Filter>renderer\core\css\resolver</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -7707,6 +7710,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\css_style_sheet_resource.h">
       <Filter>renderer\core\loader\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\css_variable_animator.h">
+      <Filter>renderer\core\css\resolver</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

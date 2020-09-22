@@ -482,6 +482,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\property_set_css_style_declaration.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\animated_style_builder.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\css_to_style_map.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\css_variable_animator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\css_variable_resolver.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\element_resolve_context.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\element_style_resources.cc" />
@@ -1898,6 +1899,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\animated_style_builder.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\css_property_priority.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\css_to_style_map.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\css_variable_animator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\css_variable_resolver.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\element_resolve_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\resolver\element_style_resources.h" />

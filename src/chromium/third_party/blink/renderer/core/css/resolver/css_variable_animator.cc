@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_variable_animator.cc
+// Description: CSSVariableAnimator Class
+//      Author: Ziming Li
+//     Created: 2020-09-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -16,9 +27,9 @@ namespace {
 HashSet<PropertyHandle> CollectPending(const CSSAnimationUpdate& update) {
   HashSet<PropertyHandle> pending;
   for (const auto& entry : update.ActiveInterpolationsForCustomAnimations())
-    pending.insert(entry.key);
+    pending.insert(entry.first);
   for (const auto& entry : update.ActiveInterpolationsForCustomTransitions())
-    pending.insert(entry.key);
+    pending.insert(entry.first);
   return pending;
 }
 
@@ -35,11 +46,11 @@ const ActiveInterpolations& ActiveInterpolationsForCustomProperty(
   const auto& animation = animations_map.find(property);
   if (animation != animations_map.end()) {
     DCHECK_EQ(transitions_map.find(property), transitions_map.end());
-    return animation->value;
+    return animation->second;
   }
   const auto& transition = transitions_map.find(property);
   DCHECK_NE(transition, transitions_map.end());
-  return transition->value;
+  return transition->second;
 }
 
 }  // namespace
