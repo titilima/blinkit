@@ -2696,6 +2696,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\first_letter_pseudo_element.cc">
       <Filter>renderer\core\dom</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_replaced.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -7725,6 +7728,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\first_letter_pseudo_element.h">
       <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_replaced.h">
+      <Filter>renderer\core\layout</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

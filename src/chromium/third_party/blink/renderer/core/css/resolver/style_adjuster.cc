@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_adjuster.cc
+// Description: StyleAdjuster Class
+//      Author: Ziming Li
+//     Created: 2020-09-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -41,6 +52,7 @@
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_text_area_element.h"
 #include "third_party/blink/renderer/core/html/html_iframe_element.h"
@@ -48,13 +60,14 @@
 #include "third_party/blink/renderer/core/html/html_plugin_element.h"
 #include "third_party/blink/renderer/core/html/html_table_cell_element.h"
 #include "third_party/blink/renderer/core/html/media/html_media_element.h"
+#endif
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 #include "third_party/blink/renderer/core/layout/layout_replaced.h"
 #include "third_party/blink/renderer/core/layout/layout_theme.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
 #include "third_party/blink/renderer/core/style/computed_style_constants.h"
-#include "third_party/blink/renderer/core/svg/svg_svg_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_svg_element.h"
 #include "third_party/blink/renderer/core/svg_names.h"
 #include "third_party/blink/renderer/platform/length.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
@@ -63,24 +76,29 @@
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 namespace {
 
 TouchAction AdjustTouchActionForElement(TouchAction touch_action,
                                         const ComputedStyle& style,
                                         Element* element) {
+  ASSERT(false); // BKTODO:
+#if 0
   bool is_child_document =
       element && element == element->GetDocument().documentElement() &&
       element->GetDocument().LocalOwner();
   if (style.ScrollsOverflow() || is_child_document)
     return touch_action | TouchAction::kTouchActionPan;
+#endif
   return touch_action;
 }
 
 bool ShouldForceLegacyLayout(const ComputedStyle& style,
                              const ComputedStyle& layout_parent_style,
                              const Element& element) {
+  ASSERT(false); // BKTODO:
+#if 0
   // Form controls are not supported yet.
   if (element.ShouldForceLegacyLayout())
     return true;
@@ -128,6 +146,7 @@ bool ShouldForceLegacyLayout(const ComputedStyle& style,
   // 'text-combine-upright' property is not supported yet.
   if (style.HasTextCombine() && !style.IsHorizontalWritingMode())
     return true;
+#endif
 
   return false;
 }
@@ -177,8 +196,12 @@ static EDisplay EquivalentBlockDisplay(EDisplay display) {
 }
 
 static bool IsOutermostSVGElement(const Element* element) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return element && element->IsSVGElement() &&
          ToSVGElement(*element).IsOutermostSVGSVGElement();
+#endif
 }
 
 // CSS requires text-decoration to be reset at each DOM element for
@@ -187,12 +210,16 @@ static bool IsOutermostSVGElement(const Element* element) {
 // considered to be atomic inline-level.
 static bool DoesNotInheritTextDecoration(const ComputedStyle& style,
                                          const Element* element) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return style.Display() == EDisplay::kInlineTable ||
          style.Display() == EDisplay::kInlineBlock ||
          style.Display() == EDisplay::kWebkitInlineBox ||
          IsAtShadowBoundary(element) || style.IsFloating() ||
          style.HasOutOfFlowPosition() || IsOutermostSVGElement(element) ||
          IsHTMLRTElement(element);
+#endif
 }
 
 // Certain elements (<a>, <font>) override text decoration colors.  "The font
@@ -201,15 +228,23 @@ static bool DoesNotInheritTextDecoration(const ComputedStyle& style,
 // (https://html.spec.whatwg.org/multipage/rendering.html#phrasing-content-3)
 // The <a> behavior is non-standard.
 static bool OverridesTextDecorationColors(const Element* element) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return element &&
          (IsHTMLFontElement(element) || IsHTMLAnchorElement(element));
+#endif
 }
 
 // FIXME: This helper is only needed because pseudoStyleForElement passes a null
 // element to adjustComputedStyle, so we can't just use element->isInTopLayer().
 static bool IsInTopLayer(const Element* element, const ComputedStyle& style) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return (element && element->IsInTopLayer()) ||
          style.StyleType() == kPseudoIdBackdrop;
+#endif
 }
 
 static bool LayoutParentStyleForcesZIndexToCreateStackingContext(
@@ -242,6 +277,8 @@ static void AdjustStyleForFirstLetter(ComputedStyle& style) {
 
 static void AdjustStyleForHTMLElement(ComputedStyle& style,
                                       HTMLElement& element) {
+  ASSERT(false); // BKTODO:
+#if 0
   // <div> and <span> are the most common elements on the web, we skip all the
   // work for them.
   if (IsHTMLDivElement(element) || IsHTMLSpanElement(element))
@@ -357,6 +394,7 @@ static void AdjustStyleForHTMLElement(ComputedStyle& style,
       style.SetDisplay(EDisplay::kNone);
     }
   }
+#endif
 }
 
 static void AdjustOverflow(ComputedStyle& style) {
@@ -490,6 +528,8 @@ static void AdjustEffectiveTouchAction(ComputedStyle& style,
                                        bool is_svg_root) {
   TouchAction inherited_action = parent_style.GetEffectiveTouchAction();
 
+  ASSERT(false); // BKTODO:
+#if 0
   bool is_replaced_canvas =
       element && IsHTMLCanvasElement(element) &&
       element->GetDocument().GetFrame() &&
@@ -551,6 +591,7 @@ static void AdjustEffectiveTouchAction(ComputedStyle& style,
           style.GetEffectiveTouchAction());
     }
   }
+#endif
 }
 
 void StyleAdjuster::AdjustComputedStyle(StyleResolverState& state,
@@ -564,7 +605,10 @@ void StyleAdjuster::AdjustComputedStyle(StyleResolverState& state,
   if (element && element->IsHTMLElement() &&
       (style.Display() != EDisplay::kNone ||
        element->LayoutObjectIsNeeded(style))) {
+    ASSERT(false); // BKTODO:
+#if 0
     AdjustStyleForHTMLElement(style, ToHTMLElement(*element));
+#endif
   }
   if (style.Display() != EDisplay::kNone) {
     bool is_document_element =
@@ -640,6 +684,8 @@ void StyleAdjuster::AdjustComputedStyle(StyleResolverState& state,
   AdjustStyleForEditing(style);
 
   bool is_svg_root = false;
+  ASSERT(false); // BKTODO:
+#if 0
   bool is_svg_element = element && element->IsSVGElement();
 
   if (is_svg_element) {
@@ -671,6 +717,7 @@ void StyleAdjuster::AdjustComputedStyle(StyleResolverState& state,
     if (IsSVGTextElement(*element))
       style.ClearMultiCol();
   }
+#endif
 
   // If this node is sticky it marks the creation of a sticky subtree, which we
   // must track to properly handle document lifecycle in some cases.
@@ -705,6 +752,8 @@ void StyleAdjuster::AdjustComputedStyle(StyleResolverState& state,
     const AtomicString& pseudo_id = element->ShadowPseudoId();
     if (pseudo_id == "-webkit-input-placeholder" ||
         pseudo_id == "-internal-input-suggested") {
+      ASSERT(false); // BKTODO:
+#if 0
       TextControlElement* text_control =
           ToTextControl(element->OwnerShadowHost());
       DCHECK(text_control);
@@ -716,6 +765,7 @@ void StyleAdjuster::AdjustComputedStyle(StyleResolverState& state,
       // instead return false when text is being edited inside that block.
       // https://crbug.com/814954
       style.SetTextOverflow(text_control->ValueForTextOverflow());
+#endif
     }
   }
 

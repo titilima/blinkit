@@ -82,6 +82,8 @@ enum class WebFeature {
     kDeprecatedWebKitRepeatingLinearGradient,
     kDeprecatedWebKitRepeatingRadialGradient,
     kDuplicatedAttribute,
+    kFlexboxPercentageMarginVertical,
+    kFlexboxPercentagePaddingVertical,
     kFontShapingNotDefGlyphObserved,
     kGetComputedStyleWebkitAppearance,
     kHasBeforeOrAfterPseudoElement,
