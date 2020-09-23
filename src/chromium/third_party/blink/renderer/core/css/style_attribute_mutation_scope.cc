@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_attribute_mutation_scope.cc
+// Description: StyleAttributeMutationScope Class
+//      Author: Ziming Li
+//     Created: 2020-09-23
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All
@@ -25,14 +36,17 @@
 #include "third_party/blink/renderer/core/css/abstract_property_set_css_style_declaration.h"
 #include "third_party/blink/renderer/core/dom/mutation_observer_interest_group.h"
 #include "third_party/blink/renderer/core/dom/mutation_record.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/custom/custom_element.h"
 #include "third_party/blink/renderer/core/html/custom/custom_element_definition.h"
+#endif
 #include "third_party/blink/renderer/core/probe/core_probes.h"
 
 namespace blink {
 
 namespace {
 
+#if 0 // BKTODO:
 static CustomElementDefinition* DefinitionIfStyleChangedCallback(
     Element* element) {
   CustomElementDefinition* definition =
@@ -41,6 +55,7 @@ static CustomElementDefinition* DefinitionIfStyleChangedCallback(
              ? definition
              : nullptr;
 }
+#endif
 
 }  // namespace
 
@@ -68,23 +83,26 @@ StyleAttributeMutationScope::StyleAttributeMutationScope(
 
   mutation_recipients_ =
       MutationObserverInterestGroup::CreateForAttributesMutation(
-          *current_decl_->ParentElement(), HTMLNames::styleAttr);
+          *current_decl_->ParentElement(), html_names::kStyleAttr);
+  ASSERT(false); // BKTODO:
+#if 0
   bool should_read_old_value =
       (mutation_recipients_ && mutation_recipients_->IsOldValueRequested()) ||
       DefinitionIfStyleChangedCallback(current_decl_->ParentElement());
 
   if (should_read_old_value) {
     old_value_ =
-        current_decl_->ParentElement()->getAttribute(HTMLNames::styleAttr);
+        current_decl_->ParentElement()->getAttribute(html_names::kStyleAttr);
   }
 
   if (mutation_recipients_) {
     AtomicString requested_old_value =
         mutation_recipients_->IsOldValueRequested() ? old_value_ : g_null_atom;
     mutation_ = MutationRecord::CreateAttributes(current_decl_->ParentElement(),
-                                                 HTMLNames::styleAttr,
+                                                 html_names::kStyleAttr,
                                                  requested_old_value);
   }
+#endif
 }
 
 DISABLE_CFI_PERF
@@ -98,12 +116,15 @@ StyleAttributeMutationScope::~StyleAttributeMutationScope() {
       mutation_recipients_->EnqueueMutationRecord(mutation_);
 
     Element* element = current_decl_->ParentElement();
+    ASSERT(false); // BKTODO:
+#if 0
     if (CustomElementDefinition* definition =
             DefinitionIfStyleChangedCallback(element)) {
       definition->EnqueueAttributeChangedCallback(
           element, HTMLNames::styleAttr, old_value_,
           element->getAttribute(HTMLNames::styleAttr));
     }
+#endif
 
     should_deliver_ = false;
   }

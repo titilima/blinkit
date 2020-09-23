@@ -21,6 +21,7 @@ namespace probe {
 
 inline void animationPlayStateChanged(Document *, Animation *, Animation::AnimationPlayState, Animation::AnimationPlayState) {}
 inline void didCreateAnimation(Document *, unsigned) {}
+inline void didInvalidateStyleAttr(Node *) {}
 
 } // namespace probe
 } // namespace blink
