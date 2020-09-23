@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_sheet_candidate.cc
+// Description: StyleSheetCandidate Class
+//      Author: Ziming Li
+//     Created: 2020-09-23
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -29,18 +40,20 @@
 #include "third_party/blink/renderer/core/css/style_engine.h"
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/processing_instruction.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_link_element.h"
 #include "third_party/blink/renderer/core/html/html_style_element.h"
 #include "third_party/blink/renderer/core/html/imports/html_import.h"
+#endif
 #include "third_party/blink/renderer/core/html_names.h"
-#include "third_party/blink/renderer/core/svg/svg_style_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_style_element.h"
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 AtomicString StyleSheetCandidate::Title() const {
-  return IsElement() ? ToElement(GetNode()).FastGetAttribute(titleAttr)
+  return IsElement() ? ToElement(GetNode()).FastGetAttribute(kTitleAttr)
                      : g_null_atom;
 }
 
@@ -50,7 +63,11 @@ bool StyleSheetCandidate::IsXSL() const {
 }
 
 bool StyleSheetCandidate::IsImport() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return type_ == kHTMLLink && ToHTMLLinkElement(GetNode()).IsImport();
+#endif
 }
 
 bool StyleSheetCandidate::IsCSSStyle() const {
@@ -59,16 +76,28 @@ bool StyleSheetCandidate::IsCSSStyle() const {
 
 Document* StyleSheetCandidate::ImportedDocument() const {
   DCHECK(IsImport());
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return ToHTMLLinkElement(GetNode()).import();
+#endif
 }
 
 bool StyleSheetCandidate::IsEnabledViaScript() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return IsHTMLLink() && ToHTMLLinkElement(GetNode()).IsEnabledViaScript();
+#endif
 }
 
 bool StyleSheetCandidate::IsEnabledAndLoading() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return IsHTMLLink() && !ToHTMLLinkElement(GetNode()).IsDisabled() &&
          ToHTMLLinkElement(GetNode()).StyleSheetIsLoading();
+#endif
 }
 
 bool StyleSheetCandidate::CanBeActivated(
@@ -84,17 +113,23 @@ StyleSheetCandidate::Type StyleSheetCandidate::TypeOf(Node& node) {
     return kPi;
 
   if (node.IsHTMLElement()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (IsHTMLLinkElement(node))
       return kHTMLLink;
     if (IsHTMLStyleElement(node))
       return kHTMLStyle;
+#endif
 
     NOTREACHED();
     return kInvalid;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsSVGStyleElement(node))
     return kSVGStyle;
+#endif
 
   NOTREACHED();
   return kInvalid;
@@ -102,12 +137,14 @@ StyleSheetCandidate::Type StyleSheetCandidate::TypeOf(Node& node) {
 
 StyleSheet* StyleSheetCandidate::Sheet() const {
   switch (type_) {
+#if 0 // BKTODO:
     case kHTMLLink:
       return ToHTMLLinkElement(GetNode()).sheet();
     case kHTMLStyle:
       return ToHTMLStyleElement(GetNode()).sheet();
     case kSVGStyle:
       return ToSVGStyleElement(GetNode()).sheet();
+#endif
     case kPi:
       return ToProcessingInstruction(GetNode()).sheet();
     default:
