@@ -17,11 +17,17 @@
 #include "third_party/blink/renderer/core/animation/animation.h"
 
 namespace blink {
+
+class FontCustomPlatformData;
+class FontFace;
+
 namespace probe {
 
+inline void activeStyleSheetsUpdated(Document *) {}
 inline void animationPlayStateChanged(Document *, Animation *, Animation::AnimationPlayState, Animation::AnimationPlayState) {}
 inline void didCreateAnimation(Document *, unsigned) {}
 inline void didInvalidateStyleAttr(Node *) {}
+inline void fontsUpdated(ExecutionContext *, const FontFace *, const String &, const FontCustomPlatformData *) {}
 
 } // namespace probe
 } // namespace blink

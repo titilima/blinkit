@@ -91,6 +91,7 @@ enum class WebFeature {
     kHTMLParseErrorNestedForm,
     kNegativeBackgroundSize,
     kNegativeMaskSize,
+    kPendingStylesheetAddedAfterBodyStarted,
     kPrefixedDevicePixelRatioMediaFeature,
     kPrefixedMaxDevicePixelRatioMediaFeature,
     kPrefixedMinDevicePixelRatioMediaFeature,

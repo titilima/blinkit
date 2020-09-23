@@ -23,5 +23,6 @@
 #define TRACE_EVENT_NESTABLE_ASYNC_END1(...)        ((void)0)
 #define TRACE_EVENT_NESTABLE_ASYNC_INSTANT1(...)    ((void)0)
 #define TRACE_EVENT0(...)                           ((void)0)
+#define TRACE_EVENT1(...)                           ((void)0)
 
 #endif // BLINKIT_BLINK_TRACE_EVENT_H

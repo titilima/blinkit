@@ -505,6 +505,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_checker.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_filter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_query.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\shadow_tree_style_sheet_collection.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_attribute_mutation_scope.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_change_reason.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_color.cc" />
@@ -1928,6 +1929,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_checker.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_filter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_query.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\shadow_tree_style_sheet_collection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_attribute_mutation_scope.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_auto_color.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_change_reason.h" />
