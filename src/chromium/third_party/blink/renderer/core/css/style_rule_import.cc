@@ -33,6 +33,7 @@
 
 #include "third_party/blink/renderer/core/css/style_rule_import.h"
 
+#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/css/style_sheet_contents.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.h"
@@ -43,19 +44,20 @@
 
 namespace blink {
 
-StyleRuleImport* StyleRuleImport::Create(const String& href,
+std::shared_ptr<StyleRuleImport> StyleRuleImport::Create(const String& href,
                                          scoped_refptr<MediaQuerySet> media) {
-  return new StyleRuleImport(href, media);
+  return base::WrapShared(new StyleRuleImport(href, media));
 }
 
 StyleRuleImport::StyleRuleImport(const String& href,
                                  scoped_refptr<MediaQuerySet> media)
     : StyleRuleBase(kImport),
       parent_style_sheet_(nullptr),
-      style_sheet_client_(new ImportedStyleSheetClient(this)),
+      // BKTODO: style_sheet_client_(new ImportedStyleSheetClient(this)),
       str_href_(href),
       media_queries_(media),
       loading_(false) {
+  ASSERT(false); // BKTODO:
   if (!media_queries_)
     media_queries_ = MediaQuerySet::Create(String());
 }
@@ -91,6 +93,8 @@ void StyleRuleImport::NotifyFinished(Resource* resource) {
     document = parent_style_sheet_->SingleOwnerDocument();
     context = parent_style_sheet_->ParserContext();
   }
+  ASSERT(false); // BKTODO:
+#if 0
   context = CSSParserContext::Create(
       context, cached_style_sheet->GetResponse().Url(),
       cached_style_sheet->GetResponse().IsOpaqueResponseFromServiceWorker(),
@@ -102,6 +106,7 @@ void StyleRuleImport::NotifyFinished(Resource* resource) {
 
   style_sheet_->ParseAuthorStyleSheet(
       cached_style_sheet, document ? document->GetSecurityOrigin() : nullptr);
+#endif
 
   loading_ = false;
 
@@ -126,10 +131,10 @@ void StyleRuleImport::RequestStyleSheet() {
   if (!fetcher)
     return;
 
-  KURL abs_url;
-  if (!parent_style_sheet_->BaseURL().IsNull()) {
+  GURL abs_url;
+  if (!parent_style_sheet_->BaseURL().is_empty()) {
     // use parent styleheet's URL as the base URL
-    abs_url = KURL(parent_style_sheet_->BaseURL(), str_href_);
+    abs_url = parent_style_sheet_->BaseURL().Resolve(str_href_.StdUtf8());
   } else {
     abs_url = document->CompleteURL(str_href_);
   }
@@ -147,6 +152,8 @@ void StyleRuleImport::RequestStyleSheet() {
   }
 
   ResourceLoaderOptions options;
+  ASSERT(false); // BKTODO:
+#if 0
   options.initiator_info.name = FetchInitiatorTypeNames::css;
   FetchParameters params(ResourceRequest(abs_url), options);
   params.SetCharset(parent_style_sheet_->Charset());
@@ -162,6 +169,7 @@ void StyleRuleImport::RequestStyleSheet() {
       parent_style_sheet_->StartLoadingDynamicSheet();
     }
   }
+#endif
 }
 
 }  // namespace blink

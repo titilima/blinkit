@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_style_sheet_resource.h
+// Description: CSSStyleSheetResource Class
+//      Author: Ziming Li
+//     Created: 2020-09-23
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller <mueller@kde.org>
@@ -51,13 +62,14 @@ class CORE_EXPORT CSSStyleSheetResource final : public TextResource {
                                               const WTF::TextEncoding&);
 
   ~CSSStyleSheetResource() override;
-  void Trace(blink::Visitor*) override;
 
   const String SheetText(const CSSParserContext*,
                          MIMETypeCheck = MIMETypeCheck::kStrict) const;
   StyleSheetContents* CreateParsedStyleSheetFromCache(const CSSParserContext*);
   void SaveParsedStyleSheet(StyleSheetContents*);
+#if 0 // BKTODO:
   ReferrerPolicy GetReferrerPolicy() const;
+#endif
 
  private:
   class CSSStyleSheetResourceFactory : public ResourceFactory {
@@ -66,11 +78,15 @@ class CORE_EXPORT CSSStyleSheetResource final : public TextResource {
         : ResourceFactory(ResourceType::kCSSStyleSheet,
                           TextResourceDecoderOptions::kCSSContent) {}
 
-    Resource* Create(
+    std::shared_ptr<Resource> Create(
         const ResourceRequest& request,
         const ResourceLoaderOptions& options,
         const TextResourceDecoderOptions& decoder_options) const override {
+      ASSERT(false); // BKTODO:
+      return nullptr;
+#if 0
       return new CSSStyleSheetResource(request, options, decoder_options);
+#endif
     }
   };
   CSSStyleSheetResource(const ResourceRequest&,
@@ -83,8 +99,10 @@ class CORE_EXPORT CSSStyleSheetResource final : public TextResource {
   void SetParsedStyleSheetCache(StyleSheetContents*);
   void SetDecodedSheetText(const String&);
 
+#if 0 // BKTODO:
   void DestroyDecodedDataIfPossible() override;
   void DestroyDecodedDataForFailedRevalidation() override;
+#endif
   void UpdateDecodedSize();
 
   // Decoded sheet text cache is available iff loading this CSS resource is
