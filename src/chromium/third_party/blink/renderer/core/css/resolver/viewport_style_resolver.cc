@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: viewport_style_resolver.cc
+// Description: ViewportStyleResolver Class
+//      Author: Ziming Li
+//     Created: 2020-09-23
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012-2013 Intel Corporation. All rights reserved.
  *
@@ -84,6 +95,8 @@ void ViewportStyleResolver::Reset() {
 void ViewportStyleResolver::CollectViewportRulesFromUASheets() {
   CSSDefaultStyleSheets& default_style_sheets =
       CSSDefaultStyleSheets::Instance();
+  ASSERT(false); // BKTODO:
+#if 0
   WebViewportStyle viewport_style =
       document_->GetSettings() ? document_->GetSettings()->GetViewportStyle()
                                : WebViewportStyle::kDefault;
@@ -108,6 +121,7 @@ void ViewportStyleResolver::CollectViewportRulesFromUASheets() {
         default_style_sheets.EnsureXHTMLMobileProfileStyleSheet()->ChildRules(),
         kUserAgentOrigin);
   }
+#endif
   DCHECK(!default_style_sheets.DefaultStyleSheet()->HasViewportRule());
 }
 
@@ -197,6 +211,8 @@ void ViewportStyleResolver::AddViewportRule(StyleRuleViewport& viewport_rule,
 }
 
 void ViewportStyleResolver::Resolve() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!property_set_) {
     document_->GetViewportData().SetViewportDescription(
         ViewportDescription(ViewportDescription::kUserAgentStyleSheet));
@@ -220,6 +236,7 @@ void ViewportStyleResolver::Resolve() {
     description.SetViewportFit(ViewportFitValue());
 
   document_->GetViewportData().SetViewportDescription(description);
+#endif
 
   DCHECK(initial_style_);
   if (initial_style_->HasViewportUnits())
@@ -303,6 +320,9 @@ Length ViewportStyleResolver::ViewportLengthValue(CSSPropertyID id) {
 
   const CSSPrimitiveValue* primitive_value = ToCSSPrimitiveValue(value);
 
+  ASSERT(false); // BKTODO:
+  return Length();
+#if 0
   LocalFrameView* view = document_->GetFrame()->View();
   DCHECK(view);
 
@@ -321,8 +341,10 @@ Length ViewportStyleResolver::ViewportLengthValue(CSSPropertyID id) {
     result.SetValue(scaled_value);
   }
   return result;
+#endif
 }
 
+#if 0 // BKTODO:
 mojom::ViewportFit ViewportStyleResolver::ViewportFitValue() const {
   const CSSValue* value =
       property_set_->GetPropertyCSSValue(CSSPropertyViewportFit);
@@ -341,6 +363,7 @@ mojom::ViewportFit ViewportStyleResolver::ViewportFitValue() const {
   NOTREACHED();
   return mojom::ViewportFit::kAuto;
 }
+#endif
 
 void ViewportStyleResolver::InitialStyleChanged() {
   initial_style_ = nullptr;
@@ -365,12 +388,18 @@ void ViewportStyleResolver::InitialViewportChanged() {
   }
   if (needs_update_ == kNoUpdate)
     return;
+  ASSERT(false); // BKTODO:
+#if 0
   document_->ScheduleLayoutTreeUpdateIfNeeded();
+#endif
 }
 
 void ViewportStyleResolver::SetNeedsCollectRules() {
   needs_update_ = kCollectRules;
+  ASSERT(false); // BKTODO:
+#if 0
   document_->ScheduleLayoutTreeUpdateIfNeeded();
+#endif
 }
 
 void ViewportStyleResolver::UpdateViewport(
