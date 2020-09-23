@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: shadow_tree_style_sheet_collection.cc
+// Description: ShadowTreeStyleSheetCollection Class
+//      Author: Ziming Li
+//     Created: 2020-09-23
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -35,12 +46,12 @@
 #include "third_party/blink/renderer/core/css/style_sheet_candidate.h"
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/shadow_root.h"
-#include "third_party/blink/renderer/core/html/html_style_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_style_element.h"
 #include "third_party/blink/renderer/core/html_names.h"
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 ShadowTreeStyleSheetCollection::ShadowTreeStyleSheetCollection(
     ShadowRoot& shadow_root)
@@ -64,6 +75,8 @@ void ShadowTreeStyleSheetCollection::CollectStyleSheets(
           std::make_pair(css_sheet, master_engine.RuleSetForSheet(*css_sheet)));
     }
   }
+  ASSERT(false); // BKTODO:
+#if 0
   if (!GetTreeScope().HasAdoptedStyleSheets())
     return;
 
@@ -79,6 +92,7 @@ void ShadowTreeStyleSheetCollection::CollectStyleSheets(
     collection.AppendActiveStyleSheet(
         std::make_pair(css_sheet, master_engine.RuleSetForSheet(*css_sheet)));
   }
+#endif
 }
 
 void ShadowTreeStyleSheetCollection::UpdateActiveStyleSheets(
