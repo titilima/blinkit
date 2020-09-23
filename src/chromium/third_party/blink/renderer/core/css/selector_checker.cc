@@ -60,7 +60,7 @@
 #   include "third_party/blink/renderer/core/dom/v0_insertion_point.h"
 #   include "third_party/blink/renderer/core/editing/frame_selection.h"
 #   include "third_party/blink/renderer/core/frame/local_frame.h"
-#   include "third_party/blink/renderer/core/fullscreen/fullscreen.h"
+#if 0 // BKTODO:
 #   include "third_party/blink/renderer/core/html/forms/html_form_control_element.h"
 #   include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 #   include "third_party/blink/renderer/core/html/forms/html_option_element.h"
@@ -69,12 +69,13 @@
 #   include "third_party/blink/renderer/core/html/html_slot_element.h"
 #   include "third_party/blink/renderer/core/html/media/html_video_element.h"
 #   include "third_party/blink/renderer/core/html/track/vtt/vtt_element.h"
+#endif
 #   include "third_party/blink/renderer/core/html_names.h"
-#   include "third_party/blink/renderer/core/page/focus_controller.h"
+// BKTODO: #include "third_party/blink/renderer/core/page/focus_controller.h"
 #   include "third_party/blink/renderer/core/page/page.h"
 #   include "third_party/blink/renderer/core/probe/core_probes.h"
 #   include "third_party/blink/renderer/core/scroll/scrollable_area.h"
-#   include "third_party/blink/renderer/core/scroll/scrollbar_theme.h"
+// BKTODO: #include "third_party/blink/renderer/core/scroll/scrollbar_theme.h"
 #   include "third_party/blink/renderer/core/style/computed_style.h"
 #endif
 
@@ -84,10 +85,14 @@ using namespace html_names;
 
 #ifndef BLINKIT_CRAWLER_ONLY
 static bool IsFrameFocused(const Element& element) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return element.GetDocument().GetFrame() && element.GetDocument()
                                                  .GetFrame()
                                                  ->Selection()
                                                  .FrameIsFocusedAndActive();
+#endif
 }
 #endif
 
@@ -95,9 +100,13 @@ static bool MatchesSpatialNavigationFocusPseudoClass(const Element& element) {
 #ifdef BLINKIT_CRAWLER_ONLY
   return false;
 #else
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return IsHTMLOptionElement(element) &&
          ToHTMLOptionElement(element).SpatialNavigationFocused() &&
          IsFrameFocused(element);
+#endif
 #endif
 }
 
@@ -105,8 +114,12 @@ static bool MatchesListBoxPseudoClass(const Element& element) {
 #ifdef BLINKIT_CRAWLER_ONLY
   return false; // BKTODO: Implementation for <select> tag.
 #else
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return IsHTMLSelectElement(element) &&
          !ToHTMLSelectElement(element).UsesMenuList();
+#endif
 #endif
 }
 
@@ -151,6 +164,8 @@ static Element* ParentElement(
 // the assigned slot for scope-less matching of ::slotted pseudo element.
 static const HTMLSlotElement* FindSlotElementInScope(
     const SelectorChecker::SelectorCheckingContext& context) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!context.scope)
     return context.element->AssignedSlot();
 
@@ -159,6 +174,7 @@ static const HTMLSlotElement* FindSlotElementInScope(
     if (slot->GetTreeScope() == context.scope->GetTreeScope())
       return slot;
   }
+#endif
   return nullptr;
 }
 #endif
@@ -312,8 +328,12 @@ SelectorChecker::MatchStatus SelectorChecker::MatchForSubSelector(
 
 #ifndef BLINKIT_CRAWLER_ONLY
 static inline bool IsV0ShadowRoot(const Node* node) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return node && node->IsShadowRoot() &&
          ToShadowRoot(node)->GetType() == ShadowRootType::V0;
+#endif
 }
 #endif
 
@@ -335,8 +355,11 @@ SelectorChecker::MatchStatus SelectorChecker::MatchForPseudoShadow(
 static inline Element* ParentOrV0ShadowHostElement(const Element& element) {
 #ifndef BLINKIT_CRAWLER_ONLY
   if (element.parentNode() && element.parentNode()->IsShadowRoot()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (ToShadowRoot(element.parentNode())->GetType() != ShadowRootType::V0)
       return nullptr;
+#endif
   }
 #endif
   return element.ParentOrShadowHostElement();
@@ -487,8 +510,11 @@ SelectorChecker::MatchStatus SelectorChecker::MatchForRelation(
                         WebFeature::kDeepCombinatorInStaticProfile);
 #ifndef BLINKIT_CRAWLER_ONLY
       if (ShadowRoot* root = context.element->ContainingShadowRoot()) {
+        ASSERT(false); // BKTODO:
+#if 0
         if (root->IsUserAgent())
           return kSelectorFailsCompletely;
+#endif
       }
 #endif
 
@@ -530,6 +556,8 @@ SelectorChecker::MatchStatus SelectorChecker::MatchForRelation(
 #ifdef BLINKIT_CRAWLER_ONLY
       return kSelectorFailsCompletely;
 #else
+      ASSERT(false); // BKTODO:
+#if 0
       if (ToHTMLSlotElementIfSupportsAssignmentOrNull(*context.element))
         return kSelectorFailsCompletely;
       const HTMLSlotElement* slot = FindSlotElementInScope(context);
@@ -537,6 +565,7 @@ SelectorChecker::MatchStatus SelectorChecker::MatchForRelation(
         return kSelectorFailsCompletely;
 
       next_context.element = const_cast<HTMLSlotElement*>(slot);
+#endif
       return MatchSelector(next_context, result);
 #endif
     }
@@ -574,7 +603,10 @@ SelectorChecker::MatchStatus SelectorChecker::MatchForPseudoContent(
   CollectDestinationInsertionPoints(element, insertion_points);
   SelectorCheckingContext next_context(context);
   for (const auto& insertion_point : insertion_points) {
+    ASSERT(false); // BKTODO:
+#if 0
     next_context.element = insertion_point;
+#endif
     if (Match(next_context, result))
       return kSelectorMatches;
   }
@@ -888,8 +920,11 @@ bool SelectorChecker::CheckPseudoClass(const SelectorCheckingContext& context,
     }
     case CSSSelector::kPseudoPlaceholderShown:
 #ifndef BLINKIT_CRAWLER_ONLY
+      ASSERT(false); // BKTODO:
+#if 0
       if (auto* text_control = ToTextControlOrNull(element))
         return text_control->IsPlaceholderVisible();
+#endif
 #endif
       break;
     case CSSSelector::kPseudoNthChild:
@@ -926,7 +961,11 @@ bool SelectorChecker::CheckPseudoClass(const SelectorCheckingContext& context,
 #ifdef BLINKIT_CRAWLER_ONLY
       return false;
 #else
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       return element == element.GetDocument().CssTarget();
+#endif
 #endif
     case CSSSelector::kPseudoAny: {
       SelectorCheckingContext sub_context(context);
@@ -943,24 +982,36 @@ bool SelectorChecker::CheckPseudoClass(const SelectorCheckingContext& context,
 #ifdef BLINKIT_CRAWLER_ONLY
       return false;
 #else
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       return element.IsFormControlElement() &&
              ToHTMLFormControlElement(element).IsAutofilled();
+#endif
 #endif
     case CSSSelector::kPseudoAutofillPreviewed:
 #ifdef BLINKIT_CRAWLER_ONLY
       return false;
 #else
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       return element.IsFormControlElement() &&
              ToHTMLFormControlElement(element).GetAutofillState() ==
                  WebAutofillState::kPreviewed;
+#endif
 #endif
     case CSSSelector::kPseudoAutofillSelected:
 #ifdef BLINKIT_CRAWLER_ONLY
       return false;
 #else
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       return element.IsFormControlElement() &&
              ToHTMLFormControlElement(element).GetAutofillState() ==
                  WebAutofillState::kAutofilled;
+#endif
 #endif
     case CSSSelector::kPseudoAnyLink:
     case CSSSelector::kPseudoWebkitAnyLink:
@@ -973,6 +1024,9 @@ bool SelectorChecker::CheckPseudoClass(const SelectorCheckingContext& context,
 #ifdef BLINKIT_CRAWLER_ONLY
       return false;
 #else
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       if (mode_ == kResolvingStyle) {
         if (context.in_rightmost_compound)
           element_style_->SetAffectedByDrag();
@@ -980,6 +1034,7 @@ bool SelectorChecker::CheckPseudoClass(const SelectorCheckingContext& context,
           element.SetChildrenOrSiblingsAffectedByDrag();
       }
       return element.IsDragged();
+#endif
 #endif
     case CSSSelector::kPseudoFocus:
       if (mode_ == kResolvingStyle && !context.in_rightmost_compound)
@@ -993,6 +1048,9 @@ bool SelectorChecker::CheckPseudoClass(const SelectorCheckingContext& context,
 #ifdef BLINKIT_CRAWLER_ONLY
       return false;
 #else
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       if (mode_ == kResolvingStyle) {
         if (context.in_rightmost_compound)
           element_style_->SetAffectedByFocusWithin();
@@ -1003,10 +1061,14 @@ bool SelectorChecker::CheckPseudoClass(const SelectorCheckingContext& context,
         return true;
       return element.HasFocusWithin();
 #endif
+#endif
     case CSSSelector::kPseudoHover:
 #ifdef BLINKIT_CRAWLER_ONLY
       return false;
 #else
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       if (mode_ == kResolvingStyle) {
         if (context.in_rightmost_compound)
           element_style_->SetAffectedByHover();
@@ -1019,15 +1081,19 @@ bool SelectorChecker::CheckPseudoClass(const SelectorCheckingContext& context,
         return true;
       return element.IsHovered();
 #endif
+#endif
     case CSSSelector::kPseudoActive:
 #ifdef BLINKIT_CRAWLER_ONLY
       return false;
 #else
       if (mode_ == kResolvingStyle) {
+        ASSERT(false); // BKTODO:
+#if 0
         if (context.in_rightmost_compound)
           element_style_->SetAffectedByActive();
         else
           element.SetChildrenOrSiblingsAffectedByActive();
+#endif
       }
       if (!ShouldMatchHoverOrActive(context))
         return false;
@@ -1055,16 +1121,22 @@ bool SelectorChecker::CheckPseudoClass(const SelectorCheckingContext& context,
 #ifdef BLINKIT_CRAWLER_ONLY
       return false;
 #else
+      ASSERT(false); // BKTODO:
+#if 0
       if (mode_ == kResolvingStyle)
         element.GetDocument().SetContainsValidityStyleRules();
+#endif
       return element.MatchesValidityPseudoClasses() && element.IsValidElement();
 #endif
     case CSSSelector::kPseudoInvalid:
 #ifdef BLINKIT_CRAWLER_ONLY
       return false;
 #else
+      ASSERT(false); // BKTODO:
+#if 0
       if (mode_ == kResolvingStyle)
         element.GetDocument().SetContainsValidityStyleRules();
+#endif
       return element.MatchesValidityPseudoClasses() &&
              !element.IsValidElement();
 #endif
@@ -1072,6 +1144,9 @@ bool SelectorChecker::CheckPseudoClass(const SelectorCheckingContext& context,
 #ifdef BLINKIT_CRAWLER_ONLY
       return false; // BKTODO: Process form element classes.
 #else
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       if (auto* input_element = ToHTMLInputElementOrNull(element)) {
         // Even though WinIE allows checked and indeterminate to
         // co-exist, the CSS selector spec says that you can't be
@@ -1086,6 +1161,7 @@ bool SelectorChecker::CheckPseudoClass(const SelectorCheckingContext& context,
         return true;
       }
       break;
+#endif
 #endif
     }
     case CSSSelector::kPseudoIndeterminate:
@@ -1113,17 +1189,25 @@ bool SelectorChecker::CheckPseudoClass(const SelectorCheckingContext& context,
 #ifdef BLINKIT_CRAWLER_ONLY
       return false;
 #else
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       if (mode_ == kResolvingStyle)
         element.GetDocument().SetContainsValidityStyleRules();
       return element.IsInRange();
+#endif
 #endif
     case CSSSelector::kPseudoOutOfRange:
 #ifdef BLINKIT_CRAWLER_ONLY
       return false;
 #else
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       if (mode_ == kResolvingStyle)
         element.GetDocument().SetContainsValidityStyleRules();
       return element.IsOutOfRange();
+#endif
 #endif
     case CSSSelector::kPseudoFutureCue:
     case CSSSelector::kPseudoPastCue:
@@ -1142,13 +1226,21 @@ bool SelectorChecker::CheckPseudoClass(const SelectorCheckingContext& context,
 #ifdef BLINKIT_CRAWLER_ONLY
       return false;
 #else
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       return !element.IsDefined() && element.IsUnresolvedV0CustomElement();
+#endif
 #endif
     case CSSSelector::kPseudoDefined:
 #ifdef BLINKIT_CRAWLER_ONLY
       return false;
 #else
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       return element.IsDefined() || element.IsUpgradedV0CustomElement();
+#endif
 #endif
     case CSSSelector::kPseudoHost:
     case CSSSelector::kPseudoHostContext:
@@ -1166,8 +1258,11 @@ bool SelectorChecker::CheckPseudoClass(const SelectorCheckingContext& context,
 #ifndef BLINKIT_CRAWLER_ONLY
       DCHECK(is_ua_rule_);
       if (ShadowRoot* root = element.ContainingShadowRoot()) {
+        ASSERT(false); // BKTODO:
+#if 0
         if (!root->IsUserAgent())
           return false;
+#endif
         const ComputedStyle* style = root->host().GetComputedStyle();
         return style && style->HasAppearance();
       }
@@ -1179,7 +1274,11 @@ bool SelectorChecker::CheckPseudoClass(const SelectorCheckingContext& context,
 #else
       if (!context.has_selection_pseudo)
         return false;
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       return !element.GetDocument().GetPage()->GetFocusController().IsActive();
+#endif
 #endif
     case CSSSelector::kPseudoHorizontal:
     case CSSSelector::kPseudoVertical:
@@ -1235,25 +1334,34 @@ bool SelectorChecker::CheckPseudoElement(const SelectorCheckingContext& context,
     case CSSSelector::kPseudoPlaceholder:
 #ifndef BLINKIT_CRAWLER_ONLY
       if (ShadowRoot* root = element.ContainingShadowRoot()) {
+        ASSERT(false); // BKTODO:
+#if 0
         return root->IsUserAgent() &&
                element.ShadowPseudoId() == "-webkit-input-placeholder";
+#endif
       }
 #endif
       return false;
     case CSSSelector::kPseudoWebKitCustomElement: {
 #ifndef BLINKIT_CRAWLER_ONLY
+      ASSERT(false); // BKTODO:
+#if 0
       if (ShadowRoot* root = element.ContainingShadowRoot())
         return root->IsUserAgent() &&
                element.ShadowPseudoId() == selector.Value();
+#endif
 #endif
       return false;
     }
     case CSSSelector::kPseudoBlinkInternalElement:
 #ifndef BLINKIT_CRAWLER_ONLY
       DCHECK(is_ua_rule_);
+      ASSERT(false); // BKTODO:
+#if 0
       if (ShadowRoot* root = element.ContainingShadowRoot())
         return root->IsUserAgent() &&
                element.ShadowPseudoId() == selector.Value();
+#endif
 #endif
       return false;
     case CSSSelector::kPseudoSlotted: {
@@ -1306,6 +1414,8 @@ bool SelectorChecker::CheckPseudoHost(const SelectorCheckingContext& context,
     return false;
   DCHECK(IsShadowHost(element));
   DCHECK(element.GetShadowRoot());
+  ASSERT(false); // BKTODO:
+#if 0
   bool is_v1_shadow = element.GetShadowRoot()->IsV1();
 
   // For the case with no parameters, i.e. just :host.
@@ -1360,6 +1470,7 @@ bool SelectorChecker::CheckPseudoHost(const SelectorCheckingContext& context,
     return true;
   }
 #endif
+#endif
 
   // FIXME: this was a fallthrough condition.
   return false;
@@ -1376,6 +1487,8 @@ bool SelectorChecker::CheckScrollbarPseudoClass(
 #ifdef BLINKIT_CRAWLER_ONLY
   return false;
 #else
+  ASSERT(false); // BKTODO:
+#if 0
   // FIXME: This is a temporary hack for resizers and scrollbar corners.
   // Eventually :window-inactive should become a real
   // pseudo class and just apply to everything.
@@ -1384,6 +1497,7 @@ bool SelectorChecker::CheckScrollbarPseudoClass(
                 .GetPage()
                 ->GetFocusController()
                 .IsActive();
+#endif
 
   if (!scrollbar_)
     return false;
@@ -1432,6 +1546,8 @@ bool SelectorChecker::CheckScrollbarPseudoClass(
              scrollbar_part_ == kForwardButtonEndPart ||
              scrollbar_part_ == kForwardTrackPart;
     case CSSSelector::kPseudoDoubleButton: {
+      ASSERT(false); // BKTODO:
+#if 0
       WebScrollbarButtonsPlacement buttons_placement =
           scrollbar_->GetTheme().ButtonsPlacement();
       if (scrollbar_part_ == kBackButtonStartPart ||
@@ -1444,9 +1560,12 @@ bool SelectorChecker::CheckScrollbarPseudoClass(
           scrollbar_part_ == kForwardTrackPart)
         return buttons_placement == kWebScrollbarButtonsPlacementDoubleEnd ||
                buttons_placement == kWebScrollbarButtonsPlacementDoubleBoth;
+#endif
       return false;
     }
     case CSSSelector::kPseudoSingleButton: {
+      ASSERT(false); // BKTODO:
+#if 0
       WebScrollbarButtonsPlacement buttons_placement =
           scrollbar_->GetTheme().ButtonsPlacement();
       if (scrollbar_part_ == kBackButtonStartPart ||
@@ -1454,9 +1573,12 @@ bool SelectorChecker::CheckScrollbarPseudoClass(
           scrollbar_part_ == kBackTrackPart ||
           scrollbar_part_ == kForwardTrackPart)
         return buttons_placement == kWebScrollbarButtonsPlacementSingle;
+#endif
       return false;
     }
     case CSSSelector::kPseudoNoButton: {
+      ASSERT(false); // BKTODO:
+#if 0
       WebScrollbarButtonsPlacement buttons_placement =
           scrollbar_->GetTheme().ButtonsPlacement();
       if (scrollbar_part_ == kBackTrackPart)
@@ -1465,6 +1587,7 @@ bool SelectorChecker::CheckScrollbarPseudoClass(
       if (scrollbar_part_ == kForwardTrackPart)
         return buttons_placement == kWebScrollbarButtonsPlacementNone ||
                buttons_placement == kWebScrollbarButtonsPlacementDoubleStart;
+#endif
       return false;
     }
     case CSSSelector::kPseudoCornerPresent:
@@ -1480,7 +1603,11 @@ bool SelectorChecker::MatchesFocusPseudoClass(const Element& element) {
 #ifdef BLINKIT_CRAWLER_ONLY
   return false;
 #else
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return element.IsFocused() && IsFrameFocused(element);
+#endif
 #endif
 }
 
@@ -1489,6 +1616,9 @@ bool SelectorChecker::MatchesFocusVisiblePseudoClass(const Element& element) {
   return false;
 #else
   const Document& document = element.GetDocument();
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   bool always_show_focus_ring = element.MayTriggerVirtualKeyboard();
   bool last_focus_from_mouse =
       document.GetFrame() &&
@@ -1498,6 +1628,7 @@ bool SelectorChecker::MatchesFocusVisiblePseudoClass(const Element& element) {
 
   return element.IsFocused() && (!last_focus_from_mouse || had_keyboard_event ||
                                  always_show_focus_ring);
+#endif
 #endif
 }
 
