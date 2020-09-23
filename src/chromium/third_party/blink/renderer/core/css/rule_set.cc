@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: rule_set.cc
+// Description: RuleSet Class
+//      Author: Ziming Li
+//     Created: 2020-09-23
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -36,38 +47,46 @@
 #include "third_party/blink/renderer/core/css/selector_filter.h"
 #include "third_party/blink/renderer/core/css/style_rule_import.h"
 #include "third_party/blink/renderer/core/css/style_sheet_contents.h"
-#include "third_party/blink/renderer/core/html/track/text_track_cue.h"
+#if 0 // BKTODO:
+#   include "third_party/blink/renderer/core/html/track/text_track_cue.h"
+#else
+#   include "third_party/blink/renderer/core/dom/element.h"
+#endif
 #include "third_party/blink/renderer/core/html_names.h"
-#include "third_party/blink/renderer/platform/heap/heap_terminated_array_builder.h"
+#include "third_party/blink/renderer/platform/runtime_enabled_features.h"
+// BKTODO: #include "third_party/blink/renderer/platform/heap/heap_terminated_array_builder.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
-#include "third_party/blink/renderer/platform/weborigin/security_origin.h"
+// BKTODO: #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
 
-#include "third_party/blink/renderer/platform/wtf/terminated_array_builder.h"
+// BKTODO: #include "third_party/blink/renderer/platform/wtf/terminated_array_builder.h"
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 static inline PropertyWhitelistType DeterminePropertyWhitelistType(
     const AddRuleFlags add_rule_flags,
     const CSSSelector& selector) {
   for (const CSSSelector* component = &selector; component;
        component = component->TagHistory()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (component->GetPseudoType() == CSSSelector::kPseudoCue ||
         (component->Match() == CSSSelector::kPseudoElement &&
          component->Value() == TextTrackCue::CueShadowPseudoId()))
       return kPropertyWhitelistCue;
+#endif
     if (component->GetPseudoType() == CSSSelector::kPseudoFirstLetter)
       return kPropertyWhitelistFirstLetter;
   }
   return kPropertyWhitelistNone;
 }
 
-RuleData::RuleData(StyleRule* rule,
+RuleData::RuleData(std::unique_ptr<StyleRule> &rule,
                    unsigned selector_index,
                    unsigned position,
                    AddRuleFlags add_rule_flags)
-    : rule_(rule),
+    : rule_(std::move(rule)),
       selector_index_(selector_index),
       position_(position),
       specificity_(Selector().Specificity()),
@@ -85,11 +104,14 @@ RuleData::RuleData(StyleRule* rule,
 void RuleSet::AddToRuleSet(const AtomicString& key,
                            PendingRuleMap& map,
                            const RuleData* rule_data) {
+  ASSERT(false); // BKTODO:
+#if 0
   Member<HeapLinkedStack<Member<const RuleData>>>& rules =
       map.insert(key, nullptr).stored_value->value;
   if (!rules)
     rules = new HeapLinkedStack<Member<const RuleData>>;
   rules->Push(rule_data);
+#endif
 }
 
 static void ExtractSelectorValues(const CSSSelector* selector,
@@ -233,6 +255,8 @@ void RuleSet::AddRule(StyleRule* rule,
   // See https://crbug.com/804179
   if (selector_index >= 8192)
     return;
+  ASSERT(false); // BKTODO:
+#if 0
   RuleData* rule_data =
       new RuleData(rule, selector_index, rule_count_++, add_rule_flags);
   if (features_.CollectFeaturesFromRuleData(rule_data) ==
@@ -244,6 +268,7 @@ void RuleSet::AddRule(StyleRule* rule,
     // rules.
     universal_rules_.push_back(rule_data);
   }
+#endif
 }
 
 void RuleSet::AddPageRule(StyleRulePage* rule) {
@@ -271,6 +296,8 @@ void RuleSet::AddChildRules(const HeapVector<Member<StyleRuleBase>>& rules,
       StyleRule* style_rule = ToStyleRule(rule);
 
       const CSSSelectorList& selector_list = style_rule->SelectorList();
+      ASSERT(false); // BKTODO:
+#if 0
       for (const CSSSelector* selector = selector_list.First(); selector;
            selector = selector_list.Next(*selector)) {
         wtf_size_t selector_index = selector_list.SelectorIndex(*selector);
@@ -287,6 +314,7 @@ void RuleSet::AddChildRules(const HeapVector<Member<StyleRuleBase>>& rules,
           AddRule(style_rule, selector_index, add_rule_flags);
         }
       }
+#endif
     } else if (rule->IsPageRule()) {
       AddPageRule(ToStyleRulePage(rule));
     } else if (rule->IsMediaRule()) {
@@ -342,10 +370,12 @@ void RuleSet::AddStyleRule(StyleRule* rule, AddRuleFlags add_rule_flags) {
 void RuleSet::CompactPendingRules(PendingRuleMap& pending_map,
                                   CompactRuleMap& compact_map) {
   for (auto& item : pending_map) {
+    ASSERT(false); // BKTODO:
+#if 0
     HeapLinkedStack<Member<const RuleData>>* pending_rules =
-        item.value.Release();
+        item.second.Release();
     Member<HeapVector<Member<const RuleData>>>& rules =
-        compact_map.insert(item.key, nullptr).stored_value->value;
+        compact_map.insert(item.first, nullptr).stored_value->value;
     if (!rules) {
       rules = new HeapVector<Member<const RuleData>>();
       rules->ReserveInitialCapacity(pending_rules->size());
@@ -356,6 +386,7 @@ void RuleSet::CompactPendingRules(PendingRuleMap& pending_map,
       rules->push_back(pending_rules->Peek());
       pending_rules->Pop();
     }
+#endif
   }
 }
 
@@ -367,26 +398,18 @@ void RuleSet::CompactRules() {
   CompactPendingRules(pending_rules->tag_rules, tag_rules_);
   CompactPendingRules(pending_rules->shadow_pseudo_element_rules,
                       shadow_pseudo_element_rules_);
-  link_pseudo_class_rules_.ShrinkToFit();
-  cue_pseudo_rules_.ShrinkToFit();
-  focus_pseudo_class_rules_.ShrinkToFit();
-  universal_rules_.ShrinkToFit();
-  shadow_host_rules_.ShrinkToFit();
-  page_rules_.ShrinkToFit();
-  font_face_rules_.ShrinkToFit();
-  keyframes_rules_.ShrinkToFit();
-  deep_combinator_or_shadow_pseudo_rules_.ShrinkToFit();
-  part_pseudo_rules_.ShrinkToFit();
-  content_pseudo_element_rules_.ShrinkToFit();
-  slotted_pseudo_element_rules_.ShrinkToFit();
-}
-
-void MinimalRuleData::Trace(blink::Visitor* visitor) {
-  visitor->Trace(rule_);
-}
-
-void RuleData::Trace(blink::Visitor* visitor) {
-  visitor->Trace(rule_);
+  link_pseudo_class_rules_.shrink_to_fit();
+  cue_pseudo_rules_.shrink_to_fit();
+  focus_pseudo_class_rules_.shrink_to_fit();
+  universal_rules_.shrink_to_fit();
+  shadow_host_rules_.shrink_to_fit();
+  page_rules_.shrink_to_fit();
+  font_face_rules_.shrink_to_fit();
+  keyframes_rules_.shrink_to_fit();
+  deep_combinator_or_shadow_pseudo_rules_.shrink_to_fit();
+  part_pseudo_rules_.shrink_to_fit();
+  content_pseudo_element_rules_.shrink_to_fit();
+  slotted_pseudo_element_rules_.shrink_to_fit();
 }
 
 void RuleSet::PendingRuleMaps::Trace(blink::Visitor* visitor) {

@@ -39,6 +39,13 @@
 #include "third_party/blink/renderer/core/dom/node_rare_data.h"
 #include "third_party/blink/renderer/core/dom/pseudo_element_data.h"
 #include "third_party/blink/renderer/core/intersection_observer/element_intersection_observer_data.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   if 0 // BKTODO:
+#       include "third_party/blink/renderer/core/dom/dataset_dom_string_map.h"
+#   else
+#       include "third_party/blink/renderer/platform/runtime_enabled_features.h"
+#   endif
+#endif
 
 namespace blink {
 
