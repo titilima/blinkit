@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_rule_css_style_declaration.cc
+// Description: StyleRuleCSSStyleDeclaration Class
+//      Author: Ziming Li
+//     Created: 2020-09-23
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All
@@ -65,11 +76,6 @@ PropertyRegistry* StyleRuleCSSStyleDeclaration::GetPropertyRegistry() const {
   if (!node)
     return nullptr;
   return node->GetDocument().GetPropertyRegistry();
-}
-
-void StyleRuleCSSStyleDeclaration::Trace(blink::Visitor* visitor) {
-  visitor->Trace(parent_rule_);
-  PropertySetCSSStyleDeclaration::Trace(visitor);
 }
 
 }  // namespace blink
