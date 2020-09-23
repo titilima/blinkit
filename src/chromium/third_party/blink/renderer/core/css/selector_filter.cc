@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: selector_filter.cc
+// Description: SelectorFilter Class
+//      Author: Ziming Li
+//     Created: 2020-09-23
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -42,13 +53,18 @@ enum { kTagNameSalt = 13, kIdAttributeSalt = 17, kClassAttributeSalt = 19 };
 static inline void CollectElementIdentifierHashes(
     const Element& element,
     Vector<unsigned, 4>& identifier_hashes) {
+  ASSERT(false); // BKTODO:
+#if 0
   identifier_hashes.push_back(
       element.LocalNameForSelectorMatching().Impl()->ExistingHash() *
       kTagNameSalt);
+#endif
   if (element.HasID())
     identifier_hashes.push_back(
         element.IdForStyleResolution().Impl()->ExistingHash() *
         kIdAttributeSalt);
+  ASSERT(false); // BKTODO:
+#if 0
   if (element.IsStyledElement() && element.HasClass()) {
     const SpaceSplitString& class_names = element.ClassNames();
     wtf_size_t count = class_names.size();
@@ -60,6 +76,7 @@ static inline void CollectElementIdentifierHashes(
                                     kClassAttributeSalt);
     }
   }
+#endif
 }
 
 void SelectorFilter::PushParentStackFrame(Element& parent) {
