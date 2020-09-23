@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_sheet_contents.cc
+// Description: StyleSheetContents Class
+//      Author: Ziming Li
+//     Created: 2020-09-23
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2007, 2012 Apple Inc. All rights reserved.
@@ -34,7 +45,7 @@
 #include "third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.h"
 #include "third_party/blink/renderer/platform/histogram.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
-#include "third_party/blink/renderer/platform/weborigin/security_origin.h"
+// BKTODO: #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
 
 namespace blink {
 
@@ -68,7 +79,7 @@ unsigned StyleSheetContents::EstimatedSizeInBytes() const {
 
 StyleSheetContents::StyleSheetContents(StyleRuleImport* owner_rule,
                                        const String& original_url,
-                                       const CSSParserContext* context)
+                                       std::unique_ptr<CSSParserContext> &context)
     : owner_rule_(owner_rule),
       original_url_(original_url),
       default_namespace_(g_star_atom),
@@ -79,8 +90,15 @@ StyleSheetContents::StyleSheetContents(StyleRuleImport* owner_rule,
       has_viewport_rule_(false),
       has_media_queries_(false),
       has_single_owner_document_(true),
+#if 0 // BKTODO:
       is_used_from_text_cache_(false),
-      parser_context_(context) {}
+      parser_context_(std::move(context)) {}
+#else
+      is_used_from_text_cache_(false) {
+  ASSERT(false); // BKTODO:
+}
+#endif
+
 
 StyleSheetContents::StyleSheetContents(const StyleSheetContents& o)
     : owner_rule_(nullptr),
@@ -238,7 +256,10 @@ bool StyleSheetContents::WrapperInsertRule(StyleRuleBase* rule,
     if (import_rule->MediaQueries())
       SetHasMediaQueries();
 
+    ASSERT(false); // BKTODO:
+#if 0
     import_rules_.insert(index, import_rule);
+#endif
     import_rules_[index]->SetParentStyleSheet(this);
     import_rules_[index]->RequestStyleSheet();
     // FIXME: Stylesheet doesn't actually change meaningfully before the
@@ -263,7 +284,10 @@ bool StyleSheetContents::WrapperInsertRule(StyleRuleBase* rule,
       return false;
 
     StyleRuleNamespace* namespace_rule = ToStyleRuleNamespace(rule);
+    ASSERT(false); // BKTODO:
+#if 0
     namespace_rules_.insert(index, namespace_rule);
+#endif
     // For now to be compatible with IE and Firefox if namespace rule with same
     // prefix is added irrespective of adding the rule at any index, last added
     // rule's value is considered.
@@ -280,7 +304,10 @@ bool StyleSheetContents::WrapperInsertRule(StyleRuleBase* rule,
 
   index -= namespace_rules_.size();
 
+  ASSERT(false); // BKTODO:
+#if 0
   child_rules_.insert(index, rule);
+#endif
   return true;
 }
 
@@ -329,6 +356,7 @@ const AtomicString& StyleSheetContents::NamespaceURIFromPrefix(
   return namespaces_.at(prefix);
 }
 
+#if 0 // BKTODO:
 void StyleSheetContents::ParseAuthorStyleSheet(
     const CSSStyleSheetResource* cached_style_sheet,
     const SecurityOrigin* security_origin) {
@@ -376,6 +404,7 @@ void StyleSheetContents::ParseAuthorStyleSheet(
   TimeDelta parse_duration = (CurrentTimeTicks() - start_time);
   parse_histogram.CountMicroseconds(parse_duration);
 }
+#endif
 
 ParseSheetResult StyleSheetContents::ParseString(const String& sheet_text,
                                                  bool allow_import_rules) {
@@ -387,9 +416,10 @@ ParseSheetResult StyleSheetContents::ParseStringAtPosition(
     const String& sheet_text,
     const TextPosition& start_position,
     bool allow_import_rules) {
-  const CSSParserContext* context =
+  ASSERT(false); // BKTODO:
+  std::unique_ptr<CSSParserContext> context =
       CSSParserContext::CreateWithStyleSheetContents(ParserContext(), this);
-  return CSSParser::ParseSheet(context, this, sheet_text,
+  return CSSParser::ParseSheet(context.get(), this, sheet_text,
                                CSSDeferPropertyParsing::kNo,
                                allow_import_rules);
 }
@@ -434,6 +464,8 @@ void StyleSheetContents::CheckLoaded() {
   // to the set of completed clients. We therefore need the copy in order to
   // not modify the set while iterating it.
   HeapVector<Member<CSSStyleSheet>> loading_clients;
+  ASSERT(false); // BKTODO:
+#if 0
   CopyToVector(loading_clients_, loading_clients);
 
   for (unsigned i = 0; i < loading_clients.size(); ++i) {
@@ -449,6 +481,7 @@ void StyleSheetContents::CheckLoaded() {
                                   : Node::kNoErrorLoadingSubresource);
     }
   }
+#endif
 }
 
 void StyleSheetContents::NotifyLoadedSheet(const CSSStyleSheetResource* sheet) {
@@ -471,7 +504,10 @@ void StyleSheetContents::StartLoadingDynamicSheet() {
   // therefore need the copy in order to not modify the set of completed clients
   // while iterating it.
   HeapVector<Member<CSSStyleSheet>> completed_clients;
+  ASSERT(false); // BKTODO:
+#if 0
   CopyToVector(root->completed_clients_, completed_clients);
+#endif
   for (unsigned i = 0; i < completed_clients.size(); ++i)
     completed_clients[i]->StartLoadingDynamicSheet();
 }
@@ -623,7 +659,10 @@ void StyleSheetContents::ClearReferencedFromResource() {
 RuleSet& StyleSheetContents::EnsureRuleSet(const MediaQueryEvaluator& medium,
                                            AddRuleFlags add_rule_flags) {
   if (!rule_set_) {
+    ASSERT(false); // BKTODO:
+#if 0
     rule_set_ = RuleSet::Create();
+#endif
     rule_set_->AddRulesFromSheet(this, medium, add_rule_flags);
   }
   return *rule_set_.Get();
@@ -647,7 +686,10 @@ void StyleSheetContents::ClearRuleSet() {
   if (!rule_set_)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   rule_set_.Clear();
+#endif
   SetNeedsActiveStyleUpdateForClients(loading_clients_);
   SetNeedsActiveStyleUpdateForClients(completed_clients_);
 }
@@ -655,9 +697,12 @@ void StyleSheetContents::ClearRuleSet() {
 static void RemoveFontFaceRules(HeapHashSet<WeakMember<CSSStyleSheet>>& clients,
                                 const StyleRuleFontFace* font_face_rule) {
   for (const auto& sheet : clients) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (Node* owner_node = sheet->ownerNode())
       owner_node->GetDocument().GetStyleEngine().RemoveFontFaceRules(
           HeapVector<Member<const StyleRuleFontFace>>(1, font_face_rule));
+#endif
   }
 }
 
