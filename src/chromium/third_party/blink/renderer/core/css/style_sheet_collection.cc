@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_sheet_collection.cc
+// Description: StyleSheetCollection Class
+//      Author: Ziming Li
+//     Created: 2020-09-23
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -41,15 +52,21 @@ void StyleSheetCollection::Dispose() {
 }
 
 void StyleSheetCollection::Swap(StyleSheetCollection& other) {
+  ASSERT(false); // BKTODO:
+#if 0
   ::blink::swap(style_sheets_for_style_sheet_list_,
                 other.style_sheets_for_style_sheet_list_);
+#endif
   active_author_style_sheets_.swap(other.active_author_style_sheets_);
   sheet_list_dirty_ = false;
 }
 
 void StyleSheetCollection::SwapSheetsForSheetList(
     HeapVector<Member<StyleSheet>>& sheets) {
+  ASSERT(false); // BKTODO:
+#if 0
   ::blink::swap(style_sheets_for_style_sheet_list_, sheets);
+#endif
   sheet_list_dirty_ = false;
 }
 
@@ -59,7 +76,10 @@ void StyleSheetCollection::AppendActiveStyleSheet(
 }
 
 void StyleSheetCollection::AppendSheetForList(StyleSheet* sheet) {
+  ASSERT(false); // BKTODO:
+#if 0
   style_sheets_for_style_sheet_list_.push_back(sheet);
+#endif
 }
 
 void StyleSheetCollection::Trace(blink::Visitor* visitor) {
