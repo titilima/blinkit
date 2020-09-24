@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: tree_scope_style_sheet_collection.cc
+// Description: TreeScopeStyleSheetCollection Class
+//      Author: Ziming Li
+//     Created: 2020-09-24
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -36,8 +47,10 @@
 #include "third_party/blink/renderer/core/css/style_sheet_candidate.h"
 #include "third_party/blink/renderer/core/css/style_sheet_contents.h"
 #include "third_party/blink/renderer/core/dom/element.h"
+#if 0
 #include "third_party/blink/renderer/core/html/html_link_element.h"
 #include "third_party/blink/renderer/core/html/html_style_element.h"
+#endif
 
 namespace blink {
 
