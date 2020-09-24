@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: dom_exception.cc
+// Description: DOMException Class
+//      Author: Ziming Li
+//     Created: 2020-09-24
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -174,15 +185,23 @@ DOMException* DOMException::Create(DOMExceptionCode exception_code,
                                    const String& sanitized_message,
                                    const String& unsanitized_message) {
   const DOMExceptionEntry* entry = FindErrorEntry(exception_code);
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return new DOMException(
       ToLegacyErrorCode(entry->code), entry->name ? entry->name : "Error",
       sanitized_message.IsNull() ? String(entry->message) : sanitized_message,
       unsanitized_message);
+#endif
 }
 
 // static
 DOMException* DOMException::Create(const String& message, const String& name) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return new DOMException(FindLegacyErrorCode(name), name, message, String());
+#endif
 }
 
 // static
