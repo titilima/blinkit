@@ -108,6 +108,8 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
 {
     const QualifiedName &name = params.name;
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     if (ShadowRoot* parent_shadow_root =
         ShadowRootWhereNodeCanBeDistributedForV0(*this)) {
         if (ShouldInvalidateDistributionWhenAttributeChanged(
@@ -118,6 +120,7 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
         if (ShadowRoot* root = V1ShadowRootOfParent())
             root->DidChangeHostChildSlotName(params.old_value, params.new_value);
     }
+#endif
 #endif
 
     ParseAttribute(params);
@@ -132,7 +135,7 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
         {
             GetElementData()->SetIdForStyleResolution(newId);
 #ifndef BLINKIT_CRAWLER_ONLY
-            GetDocument().GetStyleEngine().IdChangedForElement(old_id, new_id, *this);
+            ASSERT(false); // BKTODO: GetDocument().GetStyleEngine().IdChangedForElement(oldId, newId, *this);
 #endif
         }
     }
@@ -156,6 +159,7 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
         SetHasName(!params.newValue.IsNull());
     }
 #ifndef BLINKIT_CRAWLER_ONLY
+#if 0 // BKTODO:
     else if (name == HTMLNames::partAttr) {
         if (RuntimeEnabledFeatures::CSSPartPseudoElementEnabled()) {
             EnsureElementRareData().SetPart(params.new_value);
@@ -184,10 +188,13 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
         }
     }
 #endif
+#endif
 
     InvalidateNodeListCachesInAncestors(&name, this, nullptr);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     if (params.reason == AttributeModificationReason::kDirectly &&
         name == tabindexAttr && AdjustedFocusedElementInTreeScope() == this) {
         // The attribute change may cause supportsFocus() to return false
@@ -199,6 +206,7 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
         if (!SupportsFocus())
             blur();
     }
+#endif
 #endif
 }
 
@@ -320,7 +328,7 @@ void Element::ClassAttributeChanged(const AtomicString &newClassString)
             const SpaceSplitString oldClasses = elementData->ClassNames();
             elementData->SetClass(newClassString, shouldFoldCase);
             const SpaceSplitString& new_classes = elementData->ClassNames();
-            GetDocument().GetStyleEngine().ClassChangedForElement(old_classes, new_classes, *this);
+            ASSERT(false); // BKTODO: GetDocument().GetStyleEngine().ClassChangedForElement(old_classes, new_classes, *this);
         }
 #endif
     }
@@ -330,7 +338,7 @@ void Element::ClassAttributeChanged(const AtomicString &newClassString)
         if (!ForCrawler())
         {
             const SpaceSplitString& old_classes = elementData->ClassNames();
-            GetDocument().GetStyleEngine().ClassChangedForElement(old_classes, *this);
+            ASSERT(false); // BKTODO: GetDocument().GetStyleEngine().ClassChangedForElement(old_classes, *this);
         }
 #endif
         if (classStringContentType == ClassStringContent::kWhiteSpaceOnly)
@@ -462,8 +470,10 @@ AtomicString Element::ComputeInheritedLanguage(void) const
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
-void Element::DefaultEventHandler(Event & event)
+void Element::DefaultEventHandler(Event &event)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     if (RuntimeEnabledFeatures::InvisibleDOMEnabled() &&
         event.type() == EventTypeNames::activateinvisible &&
         event.target() == this) {
@@ -471,6 +481,7 @@ void Element::DefaultEventHandler(Event & event)
         event.SetDefaultHandled();
         return;
     }
+#endif
     ContainerNode::DefaultEventHandler(event);
 }
 #endif
@@ -541,8 +552,10 @@ void Element::FinishParsingChildren(void)
     SetIsFinishedParsingChildren(true);
 #ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(false); // BKTODO:
+#if 0
     CheckForEmptyStyleChange(this, this);
     CheckForSiblingStyleChanges(kFinishedParsingChildren, nullptr, lastChild(), nullptr);
+#endif
 #endif
     // BKTODO: Check HTML element overrides.
 }
@@ -717,13 +730,14 @@ bool Element::IsInDescendantTreeOf(const Element *shadowHost) const
 #ifdef BLINKIT_CRAWLER_ONLY
     NOTREACHED();
 #else
-    DCHECK(shadow_host);
-    DCHECK(IsShadowHost(shadow_host));
+    DCHECK(nullptr != shadowHost);
+    DCHECK(IsShadowHost(shadowHost));
 
-    for (const Element* ancestor_shadow_host = OwnerShadowHost();
-        ancestor_shadow_host;
-        ancestor_shadow_host = ancestor_shadow_host->OwnerShadowHost()) {
-        if (ancestor_shadow_host == shadow_host)
+    for (const Element *ancestorShadowHost = OwnerShadowHost();
+        nullptr != ancestorShadowHost;
+        ancestorShadowHost = ancestorShadowHost->OwnerShadowHost())
+    {
+        if (ancestorShadowHost == shadowHost)
             return true;
     }
 #endif
@@ -958,8 +972,11 @@ void Element::SynchronizeAllAttributes(void) const
     // fix that code.
     if (GetElementData()->style_attribute_is_dirty_)
     {
+        ASSERT(false); // BKTODO:
+#if 0
         DCHECK(IsStyledElement());
         SynchronizeStyleAttributeInternal();
+#endif
     }
 #endif
 }
@@ -971,12 +988,15 @@ void Element::SynchronizeAttribute(const AtomicString &localName) const
     // you don't have a full QualifiedName, e.g when called from DOM API.
     if (!GetElementData())
         return;
+    ASSERT(false); // BKTODO:
+#if 0
     if (GetElementData()->style_attribute_is_dirty_ &&
-        LowercaseIfNecessary(local_name) == styleAttr.LocalName()) {
+        LowercaseIfNecessary(localName) == kStyleAttr.LocalName()) {
         DCHECK(IsStyledElement());
         SynchronizeStyleAttributeInternal();
         return;
     }
+#endif
 #endif
 }
 
@@ -985,12 +1005,15 @@ void Element::SynchronizeAttribute(const QualifiedName &name) const
 #ifndef BLINKIT_CRAWLER_ONLY
     if (!GetElementData())
         return;
+    ASSERT(false); // BKTODO:
+#if 0
     if (UNLIKELY(name == styleAttr &&
         GetElementData()->style_attribute_is_dirty_)) {
         DCHECK(IsStyledElement());
         SynchronizeStyleAttributeInternal();
         return;
     }
+#endif
 #endif
 }
 
@@ -1112,6 +1135,8 @@ void Element::WillModifyAttribute(const QualifiedName &name, const AtomicString 
         UpdateName(oldValue, newValue);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     if (GetCustomElementState() == CustomElementState::kCustom) {
         CustomElement::EnqueueAttributeChangedCallback(this, name, old_value,
             new_value);
@@ -1124,6 +1149,7 @@ void Element::WillModifyAttribute(const QualifiedName &name, const AtomicString 
                 new_value);
         }
     }
+#endif
 #endif
 
     if (MutationObserverInterestGroup *recipients = MutationObserverInterestGroup::CreateForAttributesMutation(*this, name))
