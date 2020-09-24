@@ -47,6 +47,8 @@
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
 #include "third_party/blink/renderer/core/dom/events/event_listener.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/core/frame/use_counter.h"
+#include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 
 namespace blink {
 
@@ -143,9 +145,12 @@ DispatchEventResult EventTarget::FireEventListeners(Event &event)
 
     EventListenerVector *legacyListenersVector = nullptr;
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     AtomicString legacyTypeName = LegacyType(event);
-    if (!legacy_type_name.IsEmpty())
-        legacy_listeners_vector = d->event_listener_map.Find(legacy_type_name);
+    if (!legacyTypeName.IsEmpty())
+        legacyListenersVector = d->event_listener_map.Find(legacyTypeName);
+#endif
 #endif
 
     EventListenerVector *listenersVector = d->eventListenerMap.Find(event.type());
@@ -159,7 +164,7 @@ DispatchEventResult EventTarget::FireEventListeners(Event &event)
     else if (event.isTrusted() && legacyListenersVector)
     {
         AtomicString unprefixedTypeName = event.type();
-        event.SetType(legacyTypeName);
+        ASSERT(false); // BKTODO: event.SetType(legacyTypeName);
         firedEventListeners = FireEventListeners(event, d, *legacyListenersVector);
         event.SetType(unprefixedTypeName);
     }
@@ -380,18 +385,25 @@ void EventTarget::SetDefaultAddEventListenerOptions(
 #ifdef BLINKIT_CRAWLER_ONLY
     NOTREACHED();
 #else
-    LocalDOMWindow* executing_window = ExecutingWindow();
+    LocalDOMWindow *executingWindow = ExecutingWindow();
 
-    if (RuntimeEnabledFeatures::PassiveDocumentEventListenersEnabled() &&
-        IsTouchScrollBlockingEvent(event_type)) {
-        if (!options.hasPassive() && IsTopLevelNode()) {
+    if (RuntimeEnabledFeatures::PassiveDocumentEventListenersEnabled() && IsTouchScrollBlockingEvent(eventType))
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        if (!options.hasPassive() && IsTopLevelNode())
+        {
             options.setPassive(true);
             options.SetPassiveForcedForDocumentTarget(true);
             return;
         }
+#endif
     }
 
-    if (IsWheelScrollBlockingEvent(event_type) && IsTopLevelNode()) {
+    ASSERT(false); // BKTODO:
+#if 0
+    if (IsWheelScrollBlockingEvent(eventType) && IsTopLevelNode())
+    {
         if (options.hasPassive()) {
             if (executing_window) {
                 UseCounter::Count(
@@ -483,6 +495,7 @@ void EventTarget::SetDefaultAddEventListenerOptions(
             GetExecutionContext(), PerformanceMonitor::kDiscouragedAPIUse,
             message_text, base::TimeDelta(), nullptr);
     }
+#endif
 #endif
 }
 
