@@ -40,11 +40,13 @@
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/dom/node.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#if 0 // BKTODO:
 #   include "third_party/blink/renderer/core/events/focus_event.h"
 #   include "third_party/blink/renderer/core/events/mouse_event.h"
 #   include "third_party/blink/renderer/core/events/pointer_event.h"
 #   include "third_party/blink/renderer/core/events/touch_event_context.h"
 #   include "third_party/blink/renderer/core/input/touch_list.h"
+#endif
 #endif
 
 namespace blink {
@@ -59,11 +61,14 @@ void NodeEventContext::HandleLocalEvents(Event& event) const {
   if (EventTarget *relatedTarget = RelatedTarget())
      event.SetRelatedTargetIfExists(relatedTarget);
 #else
+  ASSERT(false); // BKTODO:
+#if 0
   if (TouchEventContext* touch_context = GetTouchEventContext()) {
     touch_context->HandleLocalEvents(event);
   } else if (RelatedTarget()) {
     event.SetRelatedTargetIfExists(RelatedTarget());
   }
+#endif
 #endif
   event.SetTarget(Target());
   event.SetCurrentTarget(current_target_.Get());
