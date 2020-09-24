@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: distributed_nodes.cc
+// Description: DistributedNodes Class
+//      Author: Ziming Li
+//     Created: 2020-09-24
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -39,7 +50,7 @@ void DistributedNodes::Append(Node* node) {
   DCHECK(node);
   DCHECK(node->CanParticipateInFlatTree());
   wtf_size_t size = nodes_.size();
-  indices_.Set(node, size);
+  ASSERT(false); // BKTODO: indices_.Set(node, size);
   nodes_.push_back(node);
 }
 
@@ -49,7 +60,7 @@ wtf_size_t DistributedNodes::Find(const Node* node) const {
   if (it == indices_.end())
     return kNotFound;
 
-  return it.Get()->value;
+  return it->second;
 }
 
 Node* DistributedNodes::NextTo(const Node* node) const {
