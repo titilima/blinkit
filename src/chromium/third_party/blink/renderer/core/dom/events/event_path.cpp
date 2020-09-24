@@ -98,6 +98,7 @@ void EventPath::CalculatePath(void)
             nodesInPath.push_back(current);
 #else
         ASSERT(false); // BKTODO:
+#if 0
         std::vector<V0InsertionPoint *> insertionPoints;
         HeapVector<Member<V0InsertionPoint>, 8> insertion_points;
         CollectDestinationInsertionPoints(*current, insertion_points);
@@ -126,6 +127,7 @@ void EventPath::CalculatePath(void)
             if (current)
                 nodes_in_path.push_back(current);
         }
+#endif
 #endif
     }
 
