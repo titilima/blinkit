@@ -99,6 +99,8 @@ enum class WebFeature {
     kPseudoShadowInStaticProfile,
     kQuotedAnimationName,
     kQuotedKeyframesRule,
+    kStyleSheetListAnonymousNamedGetter,
+    kStyleSheetListNonNullAnonymousNamedGetter,
     kSyntheticKeyframesInCompositedCSSAnimation,
     kThreeValuedPositionBackground,
     kUnitlessPerspectiveInTransformProperty,

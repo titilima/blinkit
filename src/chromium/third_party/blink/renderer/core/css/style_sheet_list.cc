@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_sheet_list.cc
+// Description: StyleSheetList Class
+//      Author: Ziming Li
+//     Created: 2020-09-24
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2006, 2007 Apple Inc. All rights reserved.
@@ -23,17 +34,21 @@
 #include "third_party/blink/renderer/core/css/style_engine.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
-#include "third_party/blink/renderer/core/html/html_style_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_style_element.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 StyleSheetList* StyleSheetList::Create() {
   DCHECK(RuntimeEnabledFeatures::ConstructableStylesheetsEnabled());
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return new StyleSheetList();
+#endif
 }
 
 StyleSheetList* StyleSheetList::Create(
@@ -43,7 +58,11 @@ StyleSheetList* StyleSheetList::Create(
     exception_state.ThrowTypeError("Illegal constructor");
     return nullptr;
   }
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return new StyleSheetList(style_sheet_vector);
+#endif
 }
 
 StyleSheetList::StyleSheetList(
@@ -55,16 +74,22 @@ StyleSheetList::StyleSheetList(TreeScope* tree_scope)
   CHECK(tree_scope);
 }
 
+#if 0 // BKTODO:
 inline const HeapVector<TraceWrapperMember<StyleSheet>>&
 StyleSheetList::StyleSheets() const {
   return GetDocument()->GetStyleEngine().StyleSheetsForStyleSheetList(
       *tree_scope_);
 }
+#endif
 
 unsigned StyleSheetList::length() {
   if (!tree_scope_)
     return style_sheet_vector_.size();
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return StyleSheets().size();
+#endif
 }
 
 StyleSheet* StyleSheetList::item(unsigned index) {
@@ -72,8 +97,12 @@ StyleSheet* StyleSheetList::item(unsigned index) {
     return index < style_sheet_vector_.size() ? style_sheet_vector_[index].Get()
                                               : nullptr;
   }
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   const HeapVector<TraceWrapperMember<StyleSheet>>& sheets = StyleSheets();
   return index < sheets.size() ? sheets[index].Get() : nullptr;
+#endif
 }
 
 HTMLStyleElement* StyleSheetList::GetNamedItem(const AtomicString& name) const {
@@ -87,7 +116,11 @@ HTMLStyleElement* StyleSheetList::GetNamedItem(const AtomicString& name) const {
   // practice anyway ;)
   // FIXME: We should figure out if we should change this or fix the spec.
   Element* element = tree_scope_->getElementById(name);
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return IsHTMLStyleElement(element) ? ToHTMLStyleElement(element) : nullptr;
+#endif
 }
 
 CSSStyleSheet* StyleSheetList::AnonymousNamedGetter(const AtomicString& name) {
@@ -98,18 +131,16 @@ CSSStyleSheet* StyleSheetList::AnonymousNamedGetter(const AtomicString& name) {
   HTMLStyleElement* item = GetNamedItem(name);
   if (!item)
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   CSSStyleSheet* sheet = item->sheet();
   if (sheet) {
     UseCounter::Count(*GetDocument(),
                       WebFeature::kStyleSheetListNonNullAnonymousNamedGetter);
   }
   return sheet;
-}
-
-void StyleSheetList::Trace(blink::Visitor* visitor) {
-  visitor->Trace(tree_scope_);
-  visitor->Trace(style_sheet_vector_);
-  ScriptWrappable::Trace(visitor);
+#endif
 }
 
 }  // namespace blink
