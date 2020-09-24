@@ -76,6 +76,7 @@ DispatchEventResult EventDispatcher::Dispatch(void)
     Node *activationTarget = nullptr;
 #else
     ASSERT(false); // BKTODO:
+#if 0
     // 6. Let isActivationEvent be true, if event is a MouseEvent object and
     // event's type attribute is "click", and false otherwise.
     //
@@ -100,6 +101,9 @@ DispatchEventResult EventDispatcher::Dispatch(void)
             }
         }
     }
+#else
+    Node *activationTarget = nullptr;
+#endif
 #endif
 
     m_event->SetTarget(EventPath::EventTargetRespectingTargetRules(*m_node));
@@ -227,14 +231,12 @@ EventDispatchContinuation EventDispatcher::DispatchEventAtTarget(void)
 EventDispatchContinuation EventDispatcher::DispatchEventPreProcess(Node *activationTarget, EventDispatchHandlingState *&preDispatchEventHandlerResult)
 {
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
     // 11. If activationTarget is non-null and activationTarget has
     // legacy-pre-activation behavior, then run activationTarget's
     // legacy-pre-activation behavior.
     if (nullptr != activationTarget)
     {
-        pre_dispatch_event_handler_result =
-            activation_target->PreDispatchEventHandler(*event_);
+        ASSERT(false); // BKTODO: preDispatchEventHandlerResult = activationTarget->PreDispatchEventHandler(*event_);
     }
 #endif
     return (m_event->GetEventPath().IsEmpty() || m_event->PropagationStopped())
@@ -259,9 +261,12 @@ void EventDispatcher::DispatchEventPostProcess(Node *activationTarget, EventDisp
 #ifdef BLINKIT_CRAWLER_ONLY
     bool isClick = false;
 #else
+    ASSERT(false); // BKTODO:
+#if 0
     bool is_click = event_->IsMouseEvent() &&
         ToMouseEvent(*event_).type() == EventTypeNames::click;
-    if (is_click) {
+    if (is_click)
+    {
         // Fire an accessibility event indicating a node was clicked on.  This is
         // safe if event_->target()->ToNode() returns null.
         if (AXObjectCache* cache = node_->GetDocument().ExistingAXObjectCache())
@@ -277,6 +282,9 @@ void EventDispatcher::DispatchEventPostProcess(Node *activationTarget, EventDisp
         // TODO(tkent): Is it safe to kick DefaultEventHandler() with such altered
         // event_?
     }
+#else
+    bool isClick = false;
+#endif
 #endif
 
     // The DOM Events spec says that events dispatched by JS (other than "click")
@@ -285,17 +293,20 @@ void EventDispatcher::DispatchEventPostProcess(Node *activationTarget, EventDisp
         || m_event->isTrusted() || isClick;
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     // For Android WebView (distinguished by wideViewportQuirkEnabled)
     // enable untrusted events for mouse down on select elements because
     // fastclick.js seems to generate these. crbug.com/642698
     // TODO(dtapuska): Change this to a target SDK quirk crbug.com/643705
-    if (!is_trusted_or_click && event_->IsMouseEvent() &&
+    if (!isTrustedOrClick && event_->IsMouseEvent() &&
         event_->type() == EventTypeNames::mousedown &&
         IsHTMLSelectElement(*node_)) {
         if (Settings* settings = node_->GetDocument().GetSettings()) {
             is_trusted_or_click = settings->GetWideViewportQuirkEnabled();
         }
     }
+#endif
 #endif
 
     EventPath &eventPath = m_event->GetEventPath();
