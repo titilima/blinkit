@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_preload_scanner.h
+// Description: CSSPreloadScanner Class
+//      Author: Ziming Li
+//     Created: 2020-09-24
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * Copyright (C) 2010 Google Inc. All Rights Reserved.
@@ -48,11 +59,11 @@ class CSSPreloadScanner {
   void Scan(const HTMLToken::DataVector&,
             const SegmentedString&,
             PreloadRequestStream&,
-            const KURL&);
+            const GURL&);
   void Scan(const String&,
             const SegmentedString&,
             PreloadRequestStream&,
-            const KURL&);
+            const GURL&);
 
   void SetReferrerPolicy(const ReferrerPolicy);
 
@@ -75,7 +86,7 @@ class CSSPreloadScanner {
                   const Char* end,
                   const SegmentedString&,
                   PreloadRequestStream&,
-                  const KURL&);
+                  const GURL&);
 
   inline void Tokenize(UChar, const SegmentedString&);
   void EmitRule(const SegmentedString&);
@@ -88,7 +99,7 @@ class CSSPreloadScanner {
 
   // Below members only non-null during scan()
   PreloadRequestStream* requests_ = nullptr;
-  const KURL* predicted_base_element_url_ = nullptr;
+  const GURL* predicted_base_element_url_ = nullptr;
 
   DISALLOW_COPY_AND_ASSIGN(CSSPreloadScanner);
 };

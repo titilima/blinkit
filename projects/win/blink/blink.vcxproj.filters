@@ -2702,6 +2702,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\shadow_tree_style_sheet_collection.cc">
       <Filter>renderer\core\css</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\css_preload_scanner.cc">
+      <Filter>renderer\core\html\parser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -7737,6 +7740,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\shadow_tree_style_sheet_collection.h">
       <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\css_preload_scanner.h">
+      <Filter>renderer\core\html\parser</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

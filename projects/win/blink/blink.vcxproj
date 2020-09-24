@@ -633,6 +633,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_tag_collection.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\atomic_html_token.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\compact_html_token.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\css_preload_scanner.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\html_construction_site.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\html_document_parser.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\html_element_stack.cc" />
@@ -2104,6 +2105,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_tag_collection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\atomic_html_token.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\compact_html_token.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\css_preload_scanner.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\html_construction_site.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\html_document_parser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\html_element_stack.h" />

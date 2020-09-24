@@ -76,6 +76,10 @@
 #include "third_party/blink/renderer/platform/network/http_parsers.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/style_engine.h"
+#   include "third_party/blink/renderer/core/dom/visited_link_state.h"
+#endif
 
 using namespace BlinKit;
 
@@ -182,13 +186,17 @@ Document::Document(const DocumentInit &initializer)
     {
 #ifndef BLINKIT_CRAWLER_ONLY
         ASSERT(false); // BKTODO: DCHECK(frame_->GetPage());
+#if 0
         ProvideContextFeaturesToDocumentFrom(*this, *frame_->GetPage());
+#endif
 #endif
 
         m_fetcher = m_frame->Loader().GetDocumentLoader()->Fetcher();
         FrameFetchContext::ProvideDocumentToContext(m_fetcher->Context(), this);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+        ASSERT(false); // BKTODO:
+#if 0
         // TODO(dcheng): Why does this need to check that DOMWindow is non-null?
         CustomElementRegistry* registry =
             frame_->DomWindow() ? frame_->DomWindow()->MaybeCustomElements()
@@ -196,14 +204,18 @@ Document::Document(const DocumentInit &initializer)
         if (registry && registration_context_)
             registry->Entangle(registration_context_);
 #endif
+#endif
     }
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     else if (imports_controller_) {
         fetcher_ = FrameFetchContext::CreateFetcherFromDocument(this);
     }
     else {
         fetcher_ = ResourceFetcher::Create(nullptr);
     }
+#endif
 #endif
     ASSERT(m_fetcher);
 
@@ -281,6 +293,7 @@ void Document::AddListenerTypeIfNeeded(const AtomicString &eventType, EventTarge
         AddMutationEventListenerTypeIfEnabled(kDOMCharacterDataModifiedListener);
     }
 #ifndef BLINKIT_CRAWLER_ONLY
+#if 0 // BKTODO:
     else if (event_type == EventTypeNames::webkitAnimationStart ||
         event_type == EventTypeNames::animationstart) {
         AddListenerType(kAnimationStartListener);
@@ -301,6 +314,7 @@ void Document::AddListenerTypeIfNeeded(const AtomicString &eventType, EventTarge
         event_type == EventTypeNames::transitionend) {
         AddListenerType(kTransitionEndListener);
     }
+#endif
     else if (eventType == event_type_names::kScroll)
     {
         AddListenerType(kScrollListener);
@@ -309,8 +323,10 @@ void Document::AddListenerTypeIfNeeded(const AtomicString &eventType, EventTarge
     else if (eventType == event_type_names::kLoad)
     {
 #ifndef BLINKIT_CRAWLER_ONLY
-        if (Node* node = event_target.ToNode()) {
-            if (IsHTMLStyleElement(*node)) {
+        if (Node *node = eventTarget.ToNode())
+        {
+            if (IsHTMLStyleElement(*node))
+            {
                 AddListenerType(kLoadListenerAtCapturePhaseOrAtStyleElement);
                 return;
             }
@@ -522,15 +538,18 @@ bool Document::CheckCompletedInternal(void)
     m_frame->GetNavigationScheduler().StartTimer();
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    View()->HandleLoadCompleted();
+    ASSERT(false); // BKTODO: View()->HandleLoadCompleted();
 #endif
 
     // No need to repeat if we've already notified this load as finished.
     if (!Loader()->SentDidFinishLoad())
     {
 #ifndef BLINKIT_CRAWLER_ONLY
+        ASSERT(false); // BKTODO:
+#if 0
         if (frame_->IsMainFrame())
             GetViewportData().GetViewportDescription().ReportMobilePageStats(frame_);
+#endif
 #endif
         Loader()->SetSentDidFinishLoad();
         m_frame->Client()->DispatchDidFinishLoad();
@@ -538,7 +557,7 @@ bool Document::CheckCompletedInternal(void)
             return false;
 
 #ifndef BLINKIT_CRAWLER_ONLY
-        AnchorElementMetrics::MaybeReportViewportMetricsOnLoad(*this);
+        ASSERT(false); // BKTODO: AnchorElementMetrics::MaybeReportViewportMetricsOnLoad(*this);
 #endif
     }
 
@@ -657,6 +676,9 @@ Element* Document::createElement(const AtomicString &name, ExceptionState &excep
 #ifdef BLINKIT_CRAWLER_ONLY
     return CreateElement(name, CreateElementFlags::ByCreateElement());
 #else
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     // 2. If the context object is an HTML document, let localName be
     // converted to ASCII lowercase.
     AtomicString local_name = ConvertLocalName(name);
@@ -673,6 +695,7 @@ Element* Document::createElement(const AtomicString &name, ExceptionState &excep
     if (RegistrationContext() && V0CustomElement::IsValidName(local_name))
         return RegistrationContext()->CreateCustomTagElement(*this, q_name);
     return HTMLUnknownElement::Create(q_name, *this);
+#endif
 #endif
 }
 
@@ -714,15 +737,21 @@ void Document::DispatchUnloadEvents(void)
     if (m_loadEventProgress <= kUnloadEventInProgress)
     {
 #ifndef BLINKIT_CRAWLER_ONLY
+        ASSERT(false); // BKTODO:
+#if 0
         Element* current_focused_element = FocusedElement();
         if (auto* input = ToHTMLInputElementOrNull(current_focused_element))
             input->EndEditing();
+#endif
 #endif
         if (m_loadEventProgress < kPageHideInProgress)
         {
 #ifndef BLINKIT_CRAWLER_ONLY
             m_loadEventProgress = kPageHideInProgress;
-            if (LocalDOMWindow* window = domWindow()) {
+            if (LocalDOMWindow *window = domWindow())
+            {
+                ASSERT(false); // BKTODO:
+#if 0
                 const TimeTicks pagehide_event_start = CurrentTimeTicks();
                 window->DispatchEvent(
                     *PageTransitionEvent::Create(EventTypeNames::pagehide, false),
@@ -733,7 +762,10 @@ void Document::DispatchUnloadEvents(void)
                     ("DocumentEventTiming.PageHideDuration", 0, 10000000, 50));
                 pagehide_histogram.CountMicroseconds(pagehide_event_end -
                     pagehide_event_start);
+#endif
             }
+            ASSERT(false); // BKTODO:
+#if 0
             if (!frame_)
                 return;
 
@@ -756,6 +788,7 @@ void Document::DispatchUnloadEvents(void)
             }
             if (!frame_)
                 return;
+#endif
 #endif
 
             m_loadEventProgress = kUnloadEventInProgress;
@@ -792,8 +825,11 @@ LocalDOMWindow* Document::ExecutingWindow(void) const
     if (LocalDOMWindow *owningWindow = domWindow())
         return owningWindow;
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     if (HTMLImportsController* import = ImportsController())
         return import->Master()->domWindow();
+#endif
 #endif
     return nullptr;
 }
@@ -851,7 +887,7 @@ void Document::FinishedParsing(void)
         if (mainResourceWasAlreadyRequested)
             UpdateStyleAndLayoutTree();
 
-        BeginLifecycleUpdatesIfRenderingReady();
+        ASSERT(false); // BKTODO: BeginLifecycleUpdatesIfRenderingReady();
 #endif
 
         frame->Loader().FinishedParsing();
@@ -985,6 +1021,8 @@ void Document::ImplicitClose(void)
 #endif
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     // We used to force a synchronous display and flush here.  This really isn't
     // necessary and can in fact be actively harmful if pages are loading at a
     // rate of > 60fps
@@ -1001,6 +1039,7 @@ void Document::ImplicitClose(void)
 
     if (View())
         View()->ScrollAndFocusFragmentAnchor();
+#endif
 #endif
 
     m_loadEventProgress = kLoadEventCompleted;
@@ -1042,6 +1081,8 @@ void Document::Initialize(void)
 #ifndef BLINKIT_CRAWLER_ONLY
     if (!ForCrawler())
     {
+        ASSERT(false); // BKTODO:
+#if 0
         layout_view_ = new LayoutView(this);
         SetLayoutObject(layout_view_);
 
@@ -1061,6 +1102,7 @@ void Document::Initialize(void)
         // detached, so update now in case anything changed.
         if (TextAutosizer* autosizer = GetTextAutosizer())
             autosizer->UpdatePageInfo();
+#endif
     }
 #endif
 
@@ -1068,6 +1110,8 @@ void Document::Initialize(void)
     m_lifecycle.AdvanceTo(DocumentLifecycle::kStyleClean);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     if (View())
         View()->DidAttachDocument();
 
@@ -1075,6 +1119,7 @@ void Document::Initialize(void)
     // attached to a frame. Otherwise ContextLifecycleObserver::contextDestroyed
     // wouldn't be fired.
     network_state_observer_ = new NetworkStateObserver(*this);
+#endif
 #endif
 }
 
@@ -1192,8 +1237,11 @@ void Document::NodeChildrenWillBeRemoved(ContainerNode &container)
 {
     EventDispatchForbiddenScope assertNoEventDispatch;
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     for (Range* range : ranges_)
         range->NodeChildrenWillBeRemoved(container);
+#endif
 #endif
 
 #if 0 // BKTODO: Check if necessary.
@@ -1226,8 +1274,11 @@ void Document::NodeWillBeRemoved(Node &n)
 #endif
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     for (Range* range : ranges_)
         range->NodeWillBeRemoved(n);
+#endif
 #endif
 
     NotifyNodeWillBeRemoved(n);
@@ -1236,8 +1287,11 @@ void Document::NodeWillBeRemoved(Node &n)
     if (ContainsV1ShadowTree())
         n.CheckSlotChangeBeforeRemoved();
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (n.InActiveDocument())
         GetStyleEngine().NodeWillBeRemoved(n);
+#endif
 #endif
 }
 
@@ -1368,9 +1422,12 @@ void Document::SetContentLanguage(const AtomicString &language)
     m_contentLanguage = language;
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     // Document's style depends on the content language.
     SetNeedsStyleRecalc(kSubtreeStyleChange, StyleChangeReasonForTracing::Create(
         StyleChangeReason::kLanguage));
+#endif
 #endif
 }
 
@@ -1401,11 +1458,14 @@ void Document::SetDoctype(DocumentType *docType)
         AdoptIfNeeded(*doc_type_);
 #endif
 #ifndef BLINKIT_CRAWLER_ONLY
+        ASSERT(false); // BKTODO:
+#if 0
         if (doc_type_->publicId().StartsWithIgnoringASCIICase(
             "-//wapforum//dtd xhtml mobile 1.")) {
             is_mobile_document_ = true;
             style_engine_->ViewportRulesChanged();
         }
+#endif
 #endif
     }
 }
@@ -1448,6 +1508,8 @@ void Document::SetEncodingData(const DocumentEncodingData &newData)
     if (ForCrawler())
         return;
 
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: Should be removed as part of
     // https://code.google.com/p/chromium/issues/detail?id=319643
     bool should_use_visual_ordering = encoding_data_.Encoding().UsesVisualOrdering();
@@ -1457,6 +1519,7 @@ void Document::SetEncodingData(const DocumentEncodingData &newData)
             StyleChangeReasonForTracing::Create(
                 StyleChangeReason::kVisuallyOrdered));
     }
+#endif
 #endif
 }
 
@@ -1540,7 +1603,10 @@ void Document::Shutdown(void)
         return;
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     GetViewportData().Shutdown();
+#endif
 #endif
 
     // Frame navigation can cause a new Document to be attached. Don't allow that,
@@ -1555,12 +1621,17 @@ void Document::Shutdown(void)
 
     m_lifecycle.AdvanceTo(DocumentLifecycle::kStopping);
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     View()->Dispose();
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
     CHECK(!View()->IsAttached());
 #endif
+#endif
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     markers_->PrepareForDestruction();
 
     if (GetPage())
@@ -1606,6 +1677,7 @@ void Document::Shutdown(void)
 
     frame_->GetEventHandlerRegistry().DocumentDetached(*this);
 #endif
+#endif
 
     // Signal destruction to mutation observers.
     DocumentShutdownNotifier::NotifyContextDestroyed();
@@ -1619,6 +1691,8 @@ void Document::Shutdown(void)
     if (nullptr == Loader())
         m_fetcher->ClearContext();
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     // If this document is the master for an HTMLImportsController, sever that
     // relationship. This ensures that we don't leave import loads in flight,
     // thinking they should have access to a valid frame when they don't.
@@ -1630,11 +1704,12 @@ void Document::Shutdown(void)
     if (media_query_matcher_)
         media_query_matcher_->DocumentDetached();
 #endif
+#endif
 
     m_lifecycle.AdvanceTo(DocumentLifecycle::kStopped);
 #ifndef BLINKIT_CRAWLER_ONLY
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
-    CHECK(!View()->IsAttached());
+    ASSERT(false); // BKTODO: CHECK(!View()->IsAttached());
 #endif
 
     // TODO(haraken): Call contextDestroyed() before we start any disruptive
@@ -1648,7 +1723,7 @@ void Document::Shutdown(void)
     ExecutionContext::NotifyContextDestroyed();
 #ifndef BLINKIT_CRAWLER_ONLY
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
-    CHECK(!View()->IsAttached());
+    ASSERT(false); // BKTODO: CHECK(!View()->IsAttached());
 #endif
 
     // This is required, as our LocalFrame might delete itself as soon as it
@@ -1689,7 +1764,10 @@ void Document::UpdateBaseURL(void)
     if (ForCrawler())
         return;
 
-    if (elem_sheet_) {
+    ASSERT(false); // BKTODO:
+#if 0
+    if (elem_sheet_)
+    {
         // Element sheet is silly. It never contains anything.
         DCHECK(!elem_sheet_->Contents()->RuleCount());
         elem_sheet_ = CSSStyleSheet::CreateInline(*this, base_url_);
@@ -1703,6 +1781,7 @@ void Document::UpdateBaseURL(void)
             Traversal<HTMLAnchorElement>::StartsAfter(*this))
             anchor.InvalidateCachedVisitedLinkHash();
     }
+#endif
 #endif
 }
 
@@ -1725,6 +1804,7 @@ void Document::WillInsertBody(void)
 {
 #ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(false); // BKTODO:
+#if 0
     if (auto* loader = Loader())
         loader->Fetcher()->LoosenLoadThrottlingPolicy();
 
@@ -1735,6 +1815,7 @@ void Document::WillInsertBody(void)
     // isVisuallyNonEmpty() ?
     BeginLifecycleUpdatesIfRenderingReady();
 #endif
+#endif
 }
 
 void Document::write(const String &text, Document *enteredDocument, ExceptionState &exceptionState)
@@ -1743,13 +1824,15 @@ void Document::write(const String &text, Document *enteredDocument, ExceptionSta
 
 #ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(false); // BKTODO:
+#if 0
     if (ImportLoader())
     {
-        exception_state.ThrowDOMException(
+        exceptionState.ThrowDOMException(
             DOMExceptionCode::kInvalidStateError,
             "Imported document doesn't support write().");
         return;
     }
+#endif
 #endif
 
     if (throw_on_dynamic_markup_insertion_count_ > 0)

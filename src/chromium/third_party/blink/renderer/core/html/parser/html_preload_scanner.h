@@ -200,7 +200,7 @@ class TokenPreloadScanner {
   size_t template_count_;
   std::unique_ptr<CachedDocumentParameters> document_parameters_;
 #ifndef BLINKIT_CRAWLER_ONLY
-  Persistent<MediaValuesCached> media_values_;
+  // BKTODO: Persistent<MediaValuesCached> media_values_;
 #endif
   ScannerType scanner_type_;
 
