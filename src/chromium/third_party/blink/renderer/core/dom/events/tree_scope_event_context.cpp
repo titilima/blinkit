@@ -51,10 +51,13 @@ int TreeScopeEventContext::CalculateTreeOrderAndSetNearestAncestorClosedTree(int
 #ifdef BLINKIT_CRAWLER_ONLY
     m_containingClosedShadowTree = nearestAncestorClosedTreeScopeEventContext;
 #else
-    containing_closed_shadow_tree_ =
+    ASSERT(false); // BKTODO:
+#if 0
+    m_containingClosedShadowTree =
         (RootNode().IsShadowRoot() && !ToShadowRoot(RootNode()).IsOpenOrV0())
         ? this
-        : nearest_ancestor_closed_tree_scope_event_context;
+        : nearestAncestorClosedTreeScopeEventContext;
+#endif
 #endif
     for (TreeScopeEventContext *context : m_children)
     {
