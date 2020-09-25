@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: range.h
-// Description: Range Class
-//      Author: Ziming Li
-//     Created: 2019-11-16
-// -------------------------------------------------
-// Copyright (C) 2019 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * (C) 2000 Gunnstein Lye (gunnstein@netcom.no)
@@ -34,24 +23,208 @@
  *
  */
 
-#ifndef BLINKIT_BLINK_RANGE_H
-#define BLINKIT_BLINK_RANGE_H
+#ifndef THIRD_PARTY_BLINK_RENDERER_CORE_DOM_RANGE_H_
+#define THIRD_PARTY_BLINK_RENDERER_CORE_DOM_RANGE_H_
 
-#pragma once
-
-#include "third_party/blink/renderer/platform/wtf/allocator.h"
+#include "third_party/blink/renderer/core/core_export.h"
+#include "third_party/blink/renderer/core/dom/range_boundary_point.h"
+#include "third_party/blink/renderer/platform/bindings/exception_state.h"
+#include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
+#include "third_party/blink/renderer/platform/geometry/float_rect.h"
+#include "third_party/blink/renderer/platform/geometry/int_rect.h"
+#include "third_party/blink/renderer/platform/heap/handle.h"
+#include "third_party/blink/renderer/platform/wtf/forward.h"
 
 namespace blink {
 
+class DOMRect;
+class DOMRectList;
+class ContainerNode;
+class Document;
+class DocumentFragment;
+class ExceptionState;
+class FloatQuad;
 class Node;
+class NodeWithIndex;
+class StringOrTrustedHTML;
+class Text;
 
-class Range
-{
-    STATIC_ONLY(Range);
-public:
-    static Node* commonAncestorContainer(const Node *container1, const Node *container2);
+class CORE_EXPORT Range final : public ScriptWrappable {
+  DEFINE_WRAPPERTYPEINFO();
+
+ public:
+  static Range* Create(Document&);
+  static Range* Create(Document&,
+                       Node* start_container,
+                       unsigned start_offset,
+                       Node* end_container,
+                       unsigned end_offset);
+  static Range* Create(Document&, const Position&, const Position&);
+
+  void Dispose();
+
+  Document& OwnerDocument() const {
+    DCHECK(owner_document_);
+    return *owner_document_.Get();
+  }
+  Node* startContainer() const { return &start_.Container(); }
+  unsigned startOffset() const { return start_.Offset(); }
+  Node* endContainer() const { return &end_.Container(); }
+  unsigned endOffset() const { return end_.Offset(); }
+
+  bool collapsed() const { return start_ == end_; }
+  bool IsConnected() const;
+
+  Node* commonAncestorContainer() const;
+  static Node* commonAncestorContainer(const Node* container_a,
+                                       const Node* container_b);
+  void setStart(Node* container,
+                unsigned offset,
+                ExceptionState& = ASSERT_NO_EXCEPTION);
+  void setEnd(Node* container,
+              unsigned offset,
+              ExceptionState& = ASSERT_NO_EXCEPTION);
+  void collapse(bool to_start);
+  bool isPointInRange(Node* ref_node, unsigned offset, ExceptionState&) const;
+  short comparePoint(Node* ref_node, unsigned offset, ExceptionState&) const;
+  enum CompareResults {
+    NODE_BEFORE,
+    NODE_AFTER,
+    NODE_BEFORE_AND_AFTER,
+    NODE_INSIDE
+  };
+  enum CompareHow { kStartToStart, kStartToEnd, kEndToEnd, kEndToStart };
+  short compareBoundaryPoints(unsigned how,
+                              const Range* source_range,
+                              ExceptionState&) const;
+  static short compareBoundaryPoints(Node* container_a,
+                                     unsigned offset_a,
+                                     Node* container_b,
+                                     unsigned offset_b,
+                                     ExceptionState&);
+  static short compareBoundaryPoints(const RangeBoundaryPoint& boundary_a,
+                                     const RangeBoundaryPoint& boundary_b,
+                                     ExceptionState&);
+  bool BoundaryPointsValid() const;
+  bool intersectsNode(Node* ref_node, ExceptionState&);
+  void deleteContents(ExceptionState&);
+  DocumentFragment* extractContents(ExceptionState&);
+  DocumentFragment* cloneContents(ExceptionState&);
+  void insertNode(Node*, ExceptionState&);
+  String toString() const;
+
+  String GetText() const;
+
+  DocumentFragment* createContextualFragment(const StringOrTrustedHTML& html,
+                                             ExceptionState&);
+
+  void detach();
+  Range* cloneRange() const;
+
+  void setStartAfter(Node*, ExceptionState& = ASSERT_NO_EXCEPTION);
+  void setEndBefore(Node*, ExceptionState& = ASSERT_NO_EXCEPTION);
+  void setEndAfter(Node*, ExceptionState& = ASSERT_NO_EXCEPTION);
+  void selectNode(Node*, ExceptionState& = ASSERT_NO_EXCEPTION);
+  void selectNodeContents(Node*, ExceptionState&);
+  static bool selectNodeContents(Node*, Position&, Position&);
+  void surroundContents(Node*, ExceptionState&);
+  void setStartBefore(Node*, ExceptionState& = ASSERT_NO_EXCEPTION);
+
+  const Position StartPosition() const { return start_.ToPosition(); }
+  const Position EndPosition() const { return end_.ToPosition(); }
+  void setStart(const Position&, ExceptionState& = ASSERT_NO_EXCEPTION);
+  void setEnd(const Position&, ExceptionState& = ASSERT_NO_EXCEPTION);
+
+  Node* FirstNode() const;
+  Node* PastLastNode() const;
+
+  // Not transform-friendly
+  IntRect BoundingBox() const;
+
+  // Transform-friendly
+  void GetBorderAndTextQuads(Vector<FloatQuad>&) const;
+  FloatRect BoundingRect() const;
+
+  void NodeChildrenWillBeRemoved(ContainerNode&);
+  void NodeWillBeRemoved(Node&);
+
+  void DidInsertText(const CharacterData&, unsigned offset, unsigned length);
+  void DidRemoveText(const CharacterData&, unsigned offset, unsigned length);
+  void DidMergeTextNodes(const NodeWithIndex& old_node, unsigned offset);
+  void DidSplitTextNode(const Text& old_node);
+  void UpdateOwnerDocumentIfNeeded();
+
+  // Expand range to a unit (word or sentence or block or document) boundary.
+  // Please refer to https://bugs.webkit.org/show_bug.cgi?id=27632 comment #5
+  // for details.
+  void expand(const String&, ExceptionState&);
+
+  DOMRectList* getClientRects() const;
+  DOMRect* getBoundingClientRect() const;
+
+  static Node* CheckNodeWOffset(Node*, unsigned offset, ExceptionState&);
+
+  void Trace(blink::Visitor*) override;
+
+ private:
+  explicit Range(Document&);
+  Range(Document&,
+        Node* start_container,
+        unsigned start_offset,
+        Node* end_container,
+        unsigned end_offset);
+
+  void SetDocument(Document&);
+
+  void CheckNodeBA(Node*, ExceptionState&) const;
+  void CheckExtractPrecondition(ExceptionState&);
+  bool HasSameRoot(const Node&) const;
+
+  enum ActionType { DELETE_CONTENTS, EXTRACT_CONTENTS, CLONE_CONTENTS };
+  DocumentFragment* ProcessContents(ActionType, ExceptionState&);
+  static Node* ProcessContentsBetweenOffsets(ActionType,
+                                             DocumentFragment*,
+                                             Node*,
+                                             unsigned start_offset,
+                                             unsigned end_offset,
+                                             ExceptionState&);
+  static void ProcessNodes(ActionType,
+                           HeapVector<Member<Node>>&,
+                           Node* old_container,
+                           Node* new_container,
+                           ExceptionState&);
+  enum ContentsProcessDirection {
+    kProcessContentsForward,
+    kProcessContentsBackward
+  };
+  static Node* ProcessAncestorsAndTheirSiblings(ActionType,
+                                                Node* container,
+                                                ContentsProcessDirection,
+                                                Node* cloned_container,
+                                                Node* common_root,
+                                                ExceptionState&);
+  void UpdateSelectionIfAddedToSelection();
+  void RemoveFromSelectionIfInDifferentRoot(Document& old_document);
+
+  DocumentFragment* createContextualFragmentFromString(const String& html,
+                                                       ExceptionState&);
+
+  Member<Document> owner_document_;  // Cannot be null.
+  RangeBoundaryPoint start_;
+  RangeBoundaryPoint end_;
+
+  friend class RangeUpdateScope;
 };
 
-} // namespace blink
+CORE_EXPORT bool AreRangesEqual(const Range*, const Range*);
 
-#endif // BLINKIT_BLINK_RANGE_H
+using RangeVector = HeapVector<Member<Range>>;
+
+}  // namespace blink
+
+#ifndef NDEBUG
+// Outside the WebCore namespace for ease of invocation from gdb.
+void showTree(const blink::Range*);
+#endif
+
+#endif  // THIRD_PARTY_BLINK_RENDERER_CORE_DOM_RANGE_H_
