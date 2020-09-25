@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: range.h
+// Description: Range Class
+//      Author: Ziming Li
+//     Created: 2019-11-16
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * (C) 2000 Gunnstein Lye (gunnstein@netcom.no)
@@ -27,16 +38,22 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_DOM_RANGE_H_
 
 #include "third_party/blink/renderer/core/core_export.h"
-#include "third_party/blink/renderer/core/dom/range_boundary_point.h"
-#include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
-#include "third_party/blink/renderer/platform/geometry/float_rect.h"
-#include "third_party/blink/renderer/platform/geometry/int_rect.h"
-#include "third_party/blink/renderer/platform/heap/handle.h"
-#include "third_party/blink/renderer/platform/wtf/forward.h"
+#ifdef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/platform/wtf/allocator.h"
+#else
+#   include "third_party/blink/renderer/core/dom/range_boundary_point.h"
+#   include "third_party/blink/renderer/platform/bindings/exception_state.h"
+#   include "third_party/blink/renderer/platform/geometry/float_rect.h"
+#   include "third_party/blink/renderer/platform/geometry/int_rect.h"
+#   include "third_party/blink/renderer/platform/heap/handle.h"
+#   include "third_party/blink/renderer/platform/wtf/forward.h"
+#endif
 
 namespace blink {
 
+class Node;
+#ifndef BLINKIT_CRAWLER_ONLY
 class DOMRect;
 class DOMRectList;
 class ContainerNode;
@@ -44,15 +61,20 @@ class Document;
 class DocumentFragment;
 class ExceptionState;
 class FloatQuad;
-class Node;
 class NodeWithIndex;
 class StringOrTrustedHTML;
 class Text;
+#endif
 
 class CORE_EXPORT Range final : public ScriptWrappable {
+#ifdef BLINKIT_CRAWLER_ONLY
+  STATIC_ONLY(Range);
+#else
   DEFINE_WRAPPERTYPEINFO();
+#endif
 
  public:
+#ifndef BLINKIT_CRAWLER_ONLY
   static Range* Create(Document&);
   static Range* Create(Document&,
                        Node* start_container,
@@ -76,8 +98,10 @@ class CORE_EXPORT Range final : public ScriptWrappable {
   bool IsConnected() const;
 
   Node* commonAncestorContainer() const;
+#endif
   static Node* commonAncestorContainer(const Node* container_a,
                                        const Node* container_b);
+#ifndef BLINKIT_CRAWLER_ONLY
   void setStart(Node* container,
                 unsigned offset,
                 ExceptionState& = ASSERT_NO_EXCEPTION);
@@ -214,11 +238,14 @@ class CORE_EXPORT Range final : public ScriptWrappable {
   RangeBoundaryPoint end_;
 
   friend class RangeUpdateScope;
+#endif // BLINKIT_CRAWLER_ONLY
 };
 
+#ifndef BLINKIT_CRAWLER_ONLY
 CORE_EXPORT bool AreRangesEqual(const Range*, const Range*);
 
 using RangeVector = HeapVector<Member<Range>>;
+#endif
 
 }  // namespace blink
 

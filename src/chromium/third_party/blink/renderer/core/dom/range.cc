@@ -1,3 +1,13 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: range.cc
+// Description: Range Class
+//      Author: Ziming Li
+//     Created: 2019-11-16
+// -------------------------------------------------
+// Copyright (C) 2019 MingYang Software Technology.
+// -------------------------------------------------
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * (C) 2000 Gunnstein Lye (gunnstein@netcom.no)
@@ -25,48 +35,49 @@
 
 #include "third_party/blink/renderer/core/dom/range.h"
 
-#include "third_party/blink/renderer/bindings/core/v8/string_or_trusted_html.h"
-#include "third_party/blink/renderer/core/dom/character_data.h"
-#include "third_party/blink/renderer/core/dom/container_node.h"
-#include "third_party/blink/renderer/core/dom/document_fragment.h"
-#include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
-#include "third_party/blink/renderer/core/dom/events/scoped_event_queue.h"
-#include "third_party/blink/renderer/core/dom/node.h"
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
-#include "third_party/blink/renderer/core/dom/node_with_index.h"
-#include "third_party/blink/renderer/core/dom/processing_instruction.h"
-#include "third_party/blink/renderer/core/dom/text.h"
-#include "third_party/blink/renderer/core/editing/editing_utilities.h"
-#include "third_party/blink/renderer/core/editing/ephemeral_range.h"
-#include "third_party/blink/renderer/core/editing/frame_selection.h"
-#include "third_party/blink/renderer/core/editing/iterators/text_iterator.h"
-#include "third_party/blink/renderer/core/editing/selection_template.h"
-#include "third_party/blink/renderer/core/editing/serializers/serialization.h"
-#include "third_party/blink/renderer/core/editing/set_selection_options.h"
-#include "third_party/blink/renderer/core/editing/visible_position.h"
-#include "third_party/blink/renderer/core/editing/visible_units.h"
-#include "third_party/blink/renderer/core/frame/local_frame.h"
-#include "third_party/blink/renderer/core/frame/settings.h"
-#include "third_party/blink/renderer/core/geometry/dom_rect.h"
-#include "third_party/blink/renderer/core/geometry/dom_rect_list.h"
-#include "third_party/blink/renderer/core/html/html_body_element.h"
-#include "third_party/blink/renderer/core/html/html_element.h"
-#include "third_party/blink/renderer/core/layout/layout_object.h"
-#include "third_party/blink/renderer/core/layout/layout_text.h"
-#include "third_party/blink/renderer/core/layout/layout_text_fragment.h"
-#include "third_party/blink/renderer/core/svg/svg_svg_element.h"
-#include "third_party/blink/renderer/core/trustedtypes/trusted_types_util.h"
-#include "third_party/blink/renderer/platform/bindings/exception_state.h"
-#include "third_party/blink/renderer/platform/geometry/float_quad.h"
-#include "third_party/blink/renderer/platform/runtime_enabled_features.h"
-#include "third_party/blink/renderer/platform/wtf/text/cstring.h"
-#include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
-#ifndef NDEBUG
-#include <stdio.h>
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/bindings/core/v8/string_or_trusted_html.h"
+#   include "third_party/blink/renderer/core/dom/character_data.h"
+#   include "third_party/blink/renderer/core/dom/document_fragment.h"
+#   include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
+#   include "third_party/blink/renderer/core/dom/events/scoped_event_queue.h"
+#   include "third_party/blink/renderer/core/dom/node_with_index.h"
+#   include "third_party/blink/renderer/core/dom/processing_instruction.h"
+#   include "third_party/blink/renderer/core/dom/text.h"
+#   include "third_party/blink/renderer/core/editing/editing_utilities.h"
+#   include "third_party/blink/renderer/core/editing/ephemeral_range.h"
+#   include "third_party/blink/renderer/core/editing/frame_selection.h"
+#   include "third_party/blink/renderer/core/editing/iterators/text_iterator.h"
+#   include "third_party/blink/renderer/core/editing/selection_template.h"
+#   include "third_party/blink/renderer/core/editing/serializers/serialization.h"
+#   include "third_party/blink/renderer/core/editing/set_selection_options.h"
+#   include "third_party/blink/renderer/core/editing/visible_position.h"
+#   include "third_party/blink/renderer/core/editing/visible_units.h"
+#   include "third_party/blink/renderer/core/frame/local_frame.h"
+#   include "third_party/blink/renderer/core/frame/settings.h"
+#   include "third_party/blink/renderer/core/geometry/dom_rect.h"
+#   include "third_party/blink/renderer/core/geometry/dom_rect_list.h"
+#   include "third_party/blink/renderer/core/html/html_body_element.h"
+#   include "third_party/blink/renderer/core/html/html_element.h"
+#   include "third_party/blink/renderer/core/layout/layout_object.h"
+#   include "third_party/blink/renderer/core/layout/layout_text.h"
+#   include "third_party/blink/renderer/core/layout/layout_text_fragment.h"
+#   include "third_party/blink/renderer/core/svg/svg_svg_element.h"
+#   include "third_party/blink/renderer/core/trustedtypes/trusted_types_util.h"
+#   include "third_party/blink/renderer/platform/bindings/exception_state.h"
+#   include "third_party/blink/renderer/platform/geometry/float_quad.h"
+#   include "third_party/blink/renderer/platform/runtime_enabled_features.h"
+#   include "third_party/blink/renderer/platform/wtf/text/cstring.h"
+#   include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+#   ifndef NDEBUG
+#       include <stdio.h>
+#   endif
 #endif
 
 namespace blink {
 
+#ifndef BLINKIT_CRAWLER_ONLY
 class RangeUpdateScope {
   STACK_ALLOCATED();
 
@@ -189,6 +200,7 @@ void Range::SetDocument(Document& document) {
 Node* Range::commonAncestorContainer() const {
   return commonAncestorContainer(&start_.Container(), &end_.Container());
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 Node* Range::commonAncestorContainer(const Node* container_a,
                                      const Node* container_b) {
@@ -197,6 +209,7 @@ Node* Range::commonAncestorContainer(const Node* container_a,
   return container_a->CommonAncestor(*container_b, NodeTraversal::Parent);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 static inline bool CheckForDifferentRootContainer(
     const RangeBoundaryPoint& start,
     const RangeBoundaryPoint& end) {
@@ -1789,9 +1802,11 @@ void Range::Trace(blink::Visitor* visitor) {
   visitor->Trace(end_);
   ScriptWrappable::Trace(visitor);
 }
+#endif // BLINKIT_CRAWLER_ONLY
 
 }  // namespace blink
 
+#ifndef BLINKIT_CRAWLER_ONLY
 #ifndef NDEBUG
 
 void showTree(const blink::Range* range) {
@@ -1810,4 +1825,5 @@ void showTree(const blink::Range* range) {
   }
 }
 
+#endif
 #endif
