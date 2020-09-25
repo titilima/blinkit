@@ -626,7 +626,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\node_traversal.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\nth_index_cache.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\qualified_name.cc" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\range.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\range.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\scriptable_document_parser.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\space_split_string.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\synchronous_mutation_notifier.cc" />

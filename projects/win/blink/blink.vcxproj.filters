@@ -240,6 +240,18 @@
     <Filter Include="renderer\core\css\properties\shorthands">
       <UniqueIdentifier>{7a835178-3140-43e1-a078-c8cd2efeea80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\layout\ng\list">
+      <UniqueIdentifier>{1f2bb226-312a-4eea-96c6-2ea4fbffea37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\layout\ng\exclusions">
+      <UniqueIdentifier>{4bef14e3-ff02-48eb-b448-088fb9f36909}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\layout\ng\geometry">
+      <UniqueIdentifier>{a8ed12e7-6b19-44d5-9a9c-b2eb5a901d9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\layout\ng\inline">
+      <UniqueIdentifier>{95376d13-0f3d-4f53-a4f9-4176f0a4148d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -666,9 +678,6 @@
       <Filter>renderer\core\dom</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\qualified_name.cc">
-      <Filter>renderer\core\dom</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\range.cpp">
       <Filter>renderer\core\dom</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\scriptable_document_parser.cc">
@@ -2704,6 +2713,99 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\css_preload_scanner.cc">
       <Filter>renderer\core\html\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_text_fragment.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\list\layout_ng_list_item.cc">
+      <Filter>renderer\core\layout\ng\list</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_break_iterator.cc">
+      <Filter>renderer\platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\range.cc">
+      <Filter>renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\input_event.cc">
+      <Filter>renderer\core\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\ui_event.cc">
+      <Filter>renderer\core\events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\static_range.cc">
+      <Filter>renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_block_flow.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_mixin.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_table_caption.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_table_cell.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_constraint_space.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\collapsed_border_value.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_table_row.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_table_section.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_table.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_table_box_component.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\table_grid_cell.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\cull_rect.cc">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\exclusions\ng_exclusion_space.cc">
+      <Filter>renderer\core\layout\ng\exclusions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_bfc_offset.cc">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_logical_size.cc">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_margin_strut.cc">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_physical_size.cc">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_baseline.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_floats_utils.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\exclusions\ng_exclusion.cc">
+      <Filter>renderer\core\layout\ng\exclusions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\exclusions\ng_layout_opportunity.cc">
+      <Filter>renderer\core\layout\ng\exclusions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_bfc_rect.cc">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_box_strut.cc">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_logical_offset.cc">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -7743,6 +7845,117 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\css_preload_scanner.h">
       <Filter>renderer\core\html\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\generated_children.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_text_fragment.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\list\layout_ng_list_item.h">
+      <Filter>renderer\core\layout\ng\list</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_break_iterator.h">
+      <Filter>renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\input_event.h">
+      <Filter>renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\ui_event.h">
+      <Filter>renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\static_range.h">
+      <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\input_event_init.h">
+      <Filter>renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\range_boundary_point.h">
+      <Filter>renderer\core\dom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\ui_event_init.h">
+      <Filter>renderer\core\events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_block_flow.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_mixin.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_table_caption.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_table_cell.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_constraint_space.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\collapsed_border_value.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_table_row.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_table_section.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_table.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_table_box_component.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\table_grid_cell.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\cull_rect.h">
+      <Filter>renderer\platform\graphics\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\exclusions\ng_exclusion_space.h">
+      <Filter>renderer\core\layout\ng\exclusions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_bfc_offset.h">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_logical_size.h">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_margin_strut.h">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_physical_size.h">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_baseline.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_floats_utils.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\exclusions\ng_exclusion.h">
+      <Filter>renderer\core\layout\ng\exclusions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\exclusions\ng_layout_opportunity.h">
+      <Filter>renderer\core\layout\ng\exclusions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_bfc_rect.h">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_box_strut.h">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_logical_offset.h">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\exclusions\ng_line_layout_opportunity.h">
+      <Filter>renderer\core\layout\ng\exclusions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\exclusions\ng_shape_exclusions.h">
+      <Filter>renderer\core\layout\ng\exclusions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_unpositioned_float_vector.h">
+      <Filter>renderer\core\layout\ng</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

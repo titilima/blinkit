@@ -1681,9 +1681,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\node_traversal.cc">
       <Filter>renderer\core\dom</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\range.cpp">
-      <Filter>renderer\core\dom</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\element_rare_data.cpp">
       <Filter>renderer\core\dom</Filter>
     </ClCompile>
@@ -2010,6 +2007,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\bindings\core\duk\duk_global.cpp">
       <Filter>renderer\bindings\core\duk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\range.cc">
+      <Filter>renderer\core\dom</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

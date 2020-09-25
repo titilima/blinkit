@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_ng_list_item.h
+// Description: LayoutNGListItem Class
+//      Author: Ziming Li
+//     Created: 2020-09-25
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_LAYOUT_NG_LIST_LAYOUT_NG_LIST_ITEM_H_
 
 #include "third_party/blink/renderer/core/core_export.h"
-#include "third_party/blink/renderer/core/html/list_item_ordinal.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/list_item_ordinal.h"
 #include "third_party/blink/renderer/core/layout/ng/layout_ng_block_flow.h"
 
 namespace blink {
@@ -16,7 +27,9 @@ class CORE_EXPORT LayoutNGListItem final : public LayoutNGBlockFlow {
  public:
   explicit LayoutNGListItem(Element*);
 
+#if 0 // BKTODO:
   ListItemOrdinal& Ordinal() { return ordinal_; }
+#endif
 
   int Value() const;
   String MarkerTextWithoutSuffix() const;
@@ -60,7 +73,9 @@ class CORE_EXPORT LayoutNGListItem final : public LayoutNGBlockFlow {
   void UpdateMarker();
   void DestroyMarker();
 
+#if 0 // BKTODO:
   ListItemOrdinal ordinal_;
+#endif
   LayoutObject* marker_ = nullptr;
 
   unsigned marker_type_ : 2;  // MarkerType

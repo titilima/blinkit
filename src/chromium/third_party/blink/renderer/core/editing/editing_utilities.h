@@ -333,9 +333,11 @@ HTMLSpanElement* CreateTabSpanElement(Document&, const String& tab_text);
 
 Element* FindEventTargetFrom(LocalFrame&, const VisibleSelection&);
 
+#if 0 // BKTODO:
 // Note: ImageElementFromImageDocument() is both used in ExecuteCopy() and
 // Editor::CanCopy()
 HTMLImageElement* ImageElementFromImageDocument(const Document*);
+#endif
 
 #endif // BLINKIT_CRAWLER_ONLY
 
@@ -398,9 +400,11 @@ DispatchEventResult DispatchBeforeInputInsertText(
 DispatchEventResult DispatchBeforeInputEditorCommand(Node*,
                                                      InputEvent::InputType,
                                                      const StaticRangeVector*);
+#if 0 // BKTODO:
 DispatchEventResult DispatchBeforeInputDataTransfer(Node*,
                                                     InputEvent::InputType,
                                                     DataTransfer*);
+#endif
 
 #endif // BLINKIT_CRAWLER_ONLY
 

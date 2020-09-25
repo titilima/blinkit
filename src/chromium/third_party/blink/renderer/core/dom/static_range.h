@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: static_range.h
+// Description: StaticRange Class
+//      Author: Ziming Li
+//     Created: 2020-09-25
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -21,20 +32,32 @@ class CORE_EXPORT StaticRange final : public ScriptWrappable {
 
  public:
   static StaticRange* Create(Document& document) {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     return new StaticRange(document);
+#endif
   }
   static StaticRange* Create(Document& document,
                              Node* start_container,
                              unsigned start_offset,
                              Node* end_container,
                              unsigned end_offset) {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     return new StaticRange(document, start_container, start_offset,
                            end_container, end_offset);
+#endif
   }
   static StaticRange* Create(const Range* range) {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     return new StaticRange(range->OwnerDocument(), range->startContainer(),
                            range->startOffset(), range->endContainer(),
                            range->endOffset());
+#endif
   }
   static StaticRange* Create(const EphemeralRange&);
 
@@ -60,8 +83,6 @@ class CORE_EXPORT StaticRange final : public ScriptWrappable {
   void setEnd(Node* container, unsigned offset);
 
   Range* toRange(ExceptionState& = ASSERT_NO_EXCEPTION) const;
-
-  void Trace(blink::Visitor*) override;
 
  private:
   explicit StaticRange(Document&);

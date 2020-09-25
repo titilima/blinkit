@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_text_fragment.h
+// Description: LayoutTextFragment Class
+//      Author: Ziming Li
+//     Created: 2020-09-25
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * (C) 2000 Dirk Mueller (mueller@kde.org)
@@ -81,12 +92,14 @@ class CORE_EXPORT LayoutTextFragment final : public LayoutText {
 
   const char* GetName() const override { return "LayoutTextFragment"; }
 
+#if 0 // BKTODO:
   void SetFirstLetterPseudoElement(FirstLetterPseudoElement* element) {
     first_letter_pseudo_element_ = element;
   }
   FirstLetterPseudoElement* GetFirstLetterPseudoElement() const {
     return first_letter_pseudo_element_;
   }
+#endif
 
   void SetIsRemainingTextLayoutObject(bool is_remaining_text) {
     is_remaining_text_layout_object_ = is_remaining_text;
@@ -111,9 +124,11 @@ class CORE_EXPORT LayoutTextFragment final : public LayoutText {
   unsigned fragment_length_;
   bool is_remaining_text_layout_object_;
   scoped_refptr<StringImpl> content_string_;
+#if 0 // BKTODO:
   // Reference back to FirstLetterPseudoElement; cleared by
   // FirstLetterPseudoElement::detachLayoutTree() if it goes away first.
   UntracedMember<FirstLetterPseudoElement> first_letter_pseudo_element_;
+#endif
 };
 
 DEFINE_TYPE_CASTS(LayoutTextFragment,

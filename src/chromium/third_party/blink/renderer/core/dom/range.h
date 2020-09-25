@@ -188,8 +188,6 @@ class CORE_EXPORT Range final : public ScriptWrappable {
 
   static Node* CheckNodeWOffset(Node*, unsigned offset, ExceptionState&);
 
-  void Trace(blink::Visitor*) override;
-
  private:
   explicit Range(Document&);
   Range(Document&,

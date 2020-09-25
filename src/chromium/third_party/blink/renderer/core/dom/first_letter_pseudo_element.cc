@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: first_letter_pseudo_element.cc
+// Description: FirstLetterPseudoElement Class
+//      Author: Ziming Li
+//     Created: 2020-09-25
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -220,8 +231,11 @@ void FirstLetterPseudoElement::UpdateTextFragments() {
     if (!child->IsText() || !ToLayoutText(child)->IsTextFragment())
       continue;
     LayoutTextFragment* child_fragment = ToLayoutTextFragment(child);
+    ASSERT(false); // BKTODO:
+#if 0
     if (child_fragment->GetFirstLetterPseudoElement() != this)
       continue;
+#endif
 
     child_fragment->SetTextFragment(old_text.Impl()->Substring(0, length), 0,
                                     length);
@@ -270,7 +284,7 @@ void FirstLetterPseudoElement::DetachLayoutTree(const AttachContext& context) {
       remaining_text_layout_object_->SetTextFragment(
           text_node->DataImpl(), 0, text_node->DataImpl()->length());
     }
-    remaining_text_layout_object_->SetFirstLetterPseudoElement(nullptr);
+    ASSERT(false); // BKTODO: remaining_text_layout_object_->SetFirstLetterPseudoElement(nullptr);
     remaining_text_layout_object_->SetIsRemainingTextLayoutObject(false);
   }
   remaining_text_layout_object_ = nullptr;
@@ -285,9 +299,13 @@ FirstLetterPseudoElement::CustomStyleForLayoutObject() {
   if (!first_letter_text)
     return nullptr;
   DCHECK(first_letter_text->Parent());
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return ParentOrShadowHostElement()->StyleForPseudoElement(
       PseudoStyleRequest(GetPseudoId()),
       first_letter_text->Parent()->FirstLineStyle());
+#endif
 }
 
 void FirstLetterPseudoElement::AttachFirstLetterTextLayoutObjects(LayoutText* first_letter_text) {
@@ -318,12 +336,15 @@ void FirstLetterPseudoElement::AttachFirstLetterTextLayoutObjects(LayoutText* fi
         *this, old_text.Impl(), length, remaining_length);
   }
 
-  remaining_text->SetFirstLetterPseudoElement(this);
+  ASSERT(false); // BKTODO: remaining_text->SetFirstLetterPseudoElement(this);
   remaining_text->SetIsRemainingTextLayoutObject(true);
   remaining_text->SetStyle(first_letter_text->MutableStyle());
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (remaining_text->GetNode())
     remaining_text->GetNode()->SetLayoutObject(remaining_text);
+#endif
 
   remaining_text_layout_object_ = remaining_text;
 
@@ -333,7 +354,7 @@ void FirstLetterPseudoElement::AttachFirstLetterTextLayoutObjects(LayoutText* fi
   // Construct text fragment for the first letter.
   LayoutTextFragment* letter =
       LayoutTextFragment::CreateAnonymous(*this, old_text.Impl(), 0, length);
-  letter->SetFirstLetterPseudoElement(this);
+  ASSERT(false); // BKTODO: letter->SetFirstLetterPseudoElement(this);
   letter->SetStyle(MutableComputedStyle());
   GetLayoutObject()->AddChild(letter);
 

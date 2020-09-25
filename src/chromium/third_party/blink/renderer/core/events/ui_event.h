@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ui_event.h
+// Description: UIEvent Class
+//      Author: Ziming Li
+//     Created: 2020-09-25
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -70,8 +81,6 @@ class CORE_EXPORT UIEvent : public Event {
   bool IsUIEvent() const final;
 
   virtual unsigned which() const;
-
-  void Trace(blink::Visitor*) override;
 
  protected:
   UIEvent();
