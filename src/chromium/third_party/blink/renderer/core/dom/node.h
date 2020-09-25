@@ -275,6 +275,8 @@ public:
     bool IsShadowRoot(void) const { return IsDocumentFragment() && IsTreeScope(); }
 
     virtual PseudoId GetPseudoId(void) const { return kPseudoIdNone; }
+    bool IsAfterPseudoElement(void) const { return GetPseudoId() == kPseudoIdAfter; }
+    bool IsBeforePseudoElement(void) const { return GetPseudoId() == kPseudoIdBefore; }
     bool IsFirstLetterPseudoElement(void) const { return GetPseudoId() == kPseudoIdFirstLetter; }
     bool IsPseudoElement(void) const { return GetPseudoId() != kPseudoIdNone; }
 

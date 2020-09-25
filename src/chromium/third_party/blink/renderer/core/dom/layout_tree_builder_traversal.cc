@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_tree_builder_traversal.cc
+// Description: LayoutTreeBuilderTraversal Class
+//      Author: Ziming Li
+//     Created: 2020-09-25
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -34,13 +45,21 @@
 namespace blink {
 
 inline static bool HasDisplayContentsStyle(const Node& node) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return node.IsElementNode() && ToElement(node).HasDisplayContentsStyle();
+#endif
 }
 
 static bool IsLayoutObjectReparented(const LayoutObject* layout_object) {
   if (!layout_object->GetNode()->IsElementNode())
     return false;
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return ToElement(layout_object->GetNode())->IsInTopLayer();
+#endif
 }
 
 void LayoutTreeBuilderTraversal::ParentDetails::DidTraverseInsertionPoint(
@@ -98,8 +117,11 @@ Node* LayoutTreeBuilderTraversal::NextSibling(const Node& node) {
   }
 
   Node* parent = FlatTreeTraversal::Parent(node);
+  ASSERT(false); // BKTODO:
+#if 0
   if (parent && parent->IsElementNode())
     return ToElement(parent)->GetPseudoElement(kPseudoIdAfter);
+#endif
 
   return nullptr;
 }
@@ -117,8 +139,11 @@ Node* LayoutTreeBuilderTraversal::PreviousSibling(const Node& node) {
   }
 
   Node* parent = FlatTreeTraversal::Parent(node);
+  ASSERT(false); // BKTODO:
+#if 0
   if (parent && parent->IsElementNode())
     return ToElement(parent)->GetPseudoElement(kPseudoIdBefore);
+#endif
 
   return nullptr;
 }
@@ -127,6 +152,9 @@ Node* LayoutTreeBuilderTraversal::LastChild(const Node& node) {
   if (!node.IsElementNode())
     return FlatTreeTraversal::LastChild(node);
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   const Element& current_element = ToElement(node);
   Node* last = current_element.GetPseudoElement(kPseudoIdAfter);
   if (last)
@@ -135,6 +163,7 @@ Node* LayoutTreeBuilderTraversal::LastChild(const Node& node) {
   if (!last)
     last = current_element.GetPseudoElement(kPseudoIdBefore);
   return last;
+#endif
 }
 
 Node* LayoutTreeBuilderTraversal::Previous(const Node& node,
@@ -155,6 +184,9 @@ Node* LayoutTreeBuilderTraversal::FirstChild(const Node& node) {
     return FlatTreeTraversal::FirstChild(node);
 
   const Element& current_element = ToElement(node);
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   Node* first = current_element.GetPseudoElement(kPseudoIdBefore);
   if (first)
     return first;
@@ -162,6 +194,7 @@ Node* LayoutTreeBuilderTraversal::FirstChild(const Node& node) {
   if (!first)
     first = current_element.GetPseudoElement(kPseudoIdAfter);
   return first;
+#endif
 }
 
 static Node* NextAncestorSibling(const Node& node, const Node* stay_within) {
@@ -271,7 +304,10 @@ Node* LayoutTreeBuilderTraversal::FirstLayoutChild(const Node& node) {
 LayoutObject* LayoutTreeBuilderTraversal::NextSiblingLayoutObject(
     const Node& node,
     int32_t limit) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(limit == kTraverseAllSiblings || limit >= 0) << limit;
+#endif
   for (Node* sibling = NextLayoutSibling(node, limit); sibling && limit != -1;
        sibling = NextLayoutSibling(*sibling, limit)) {
     LayoutObject* layout_object = sibling->GetLayoutObject();
@@ -284,7 +320,10 @@ LayoutObject* LayoutTreeBuilderTraversal::NextSiblingLayoutObject(
 LayoutObject* LayoutTreeBuilderTraversal::PreviousSiblingLayoutObject(
     const Node& node,
     int32_t limit) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(limit == kTraverseAllSiblings || limit >= 0) << limit;
+#endif
   for (Node* sibling = PreviousLayoutSibling(node, limit);
        sibling && limit != -1;
        sibling = PreviousLayoutSibling(*sibling, limit)) {
@@ -297,6 +336,8 @@ LayoutObject* LayoutTreeBuilderTraversal::PreviousSiblingLayoutObject(
 
 LayoutObject* LayoutTreeBuilderTraversal::NextInTopLayer(
     const Element& element) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!element.IsInTopLayer())
     return nullptr;
   const HeapVector<Member<Element>>& top_layer_elements =
@@ -307,6 +348,7 @@ LayoutObject* LayoutTreeBuilderTraversal::NextInTopLayer(
     if (LayoutObject* layout_object = top_layer_elements[i]->GetLayoutObject())
       return layout_object;
   }
+#endif
   return nullptr;
 }
 
