@@ -16,6 +16,7 @@
 
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/html_names.h"
+#include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 
 namespace blink {
 
@@ -52,6 +53,16 @@ inline bool IsHTMLHeadElement(const Element &element)
 inline bool IsHTMLHeadElement(const Node &node)
 {
     return node.IsHTMLElement() && IsHTMLHeadElement(ToElement(node));
+}
+
+inline bool IsHTMLInputElement(const Element &element)
+{
+    return element.HasTagName(html_names::kInputTag);
+}
+
+inline bool IsHTMLInputElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLInputElement(ToElement(node));
 }
 
 inline bool IsHTMLScriptElement(const Element &element)

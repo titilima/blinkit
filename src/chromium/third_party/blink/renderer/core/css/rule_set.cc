@@ -50,10 +50,9 @@
 #if 0 // BKTODO:
 #   include "third_party/blink/renderer/core/html/track/text_track_cue.h"
 #else
-#   include "third_party/blink/renderer/core/dom/element.h"
+#   include "third_party/blink/renderer/core/html/html_element.h"
 #endif
 #include "third_party/blink/renderer/core/html_names.h"
-#include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 // BKTODO: #include "third_party/blink/renderer/platform/heap/heap_terminated_array_builder.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 // BKTODO: #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
