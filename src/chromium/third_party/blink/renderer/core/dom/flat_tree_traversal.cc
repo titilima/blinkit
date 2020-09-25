@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: flat_tree_traversal.cc
+// Description: FlatTreeTraversal Class
+//      Author: Ziming Li
+//     Created: 2020-09-25
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -27,17 +38,25 @@
 #include "third_party/blink/renderer/core/dom/flat_tree_traversal.h"
 
 #include "third_party/blink/renderer/core/dom/element.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_shadow_element.h"
 #include "third_party/blink/renderer/core/html/html_slot_element.h"
+#endif
 
 namespace blink {
 
 bool CanBeDistributedToV0InsertionPoint(const Node& node) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return node.IsInV0ShadowTree() || node.IsChildOfV0ShadowHost();
+#endif
 }
 
 Node* FlatTreeTraversal::TraverseChild(const Node& node,
                                        TraversalDirection direction) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (auto* slot = ToHTMLSlotElementIfSupportsAssignmentOrNull(node)) {
     if (slot->AssignedNodes().IsEmpty()) {
       return direction == kTraversalDirectionForward ? slot->firstChild()
@@ -46,6 +65,7 @@ Node* FlatTreeTraversal::TraverseChild(const Node& node,
     return direction == kTraversalDirectionForward ? slot->FirstAssignedNode()
                                                    : slot->LastAssignedNode();
   }
+#endif
   Node* child;
   if (ShadowRoot* shadow_root = node.GetShadowRoot()) {
     child = direction == kTraversalDirectionForward ? shadow_root->firstChild()
@@ -58,16 +78,22 @@ Node* FlatTreeTraversal::TraverseChild(const Node& node,
   if (!child)
     return nullptr;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (child->IsInV0ShadowTree()) {
     return V0ResolveDistributionStartingAt(*child, direction);
   }
+#endif
   return child;
 }
 
 Node* FlatTreeTraversal::V0ResolveDistributionStartingAt(
     const Node& node,
     TraversalDirection direction) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!ToHTMLSlotElementIfSupportsAssignmentOrNull(node));
+#endif
   for (const Node* sibling = &node; sibling;
        sibling = (direction == kTraversalDirectionForward
                       ? sibling->nextSibling()
@@ -79,9 +105,12 @@ Node* FlatTreeTraversal::V0ResolveDistributionStartingAt(
                            ? insertion_point.FirstDistributedNode()
                            : insertion_point.LastDistributedNode()))
       return found;
+    ASSERT(false); // BKTODO:
+#if 0
     DCHECK(IsHTMLShadowElement(insertion_point) ||
            (IsHTMLContentElement(insertion_point) &&
             !insertion_point.HasChildren()));
+#endif
   }
   return nullptr;
 }
@@ -91,6 +120,8 @@ Node* FlatTreeTraversal::V0ResolveDistributionStartingAt(
 // details.
 Node* FlatTreeTraversal::TraverseSiblings(const Node& node,
                                           TraversalDirection direction) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (node.IsChildOfV1ShadowHost())
     return TraverseSiblingsForV1HostChild(node, direction);
 
@@ -108,18 +139,23 @@ Node* FlatTreeTraversal::TraverseSiblings(const Node& node,
     if (Node* found = V0ResolveDistributionStartingAt(*sibling, direction))
       return found;
   }
+#endif
   return nullptr;
 }
 
 Node* FlatTreeTraversal::TraverseSiblingsForV1HostChild(
     const Node& node,
     TraversalDirection direction) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   HTMLSlotElement* slot = node.AssignedSlot();
   if (!slot)
     return nullptr;
   return direction == kTraversalDirectionForward
              ? slot->AssignedNodeNextTo(node)
              : slot->AssignedNodePreviousTo(node);
+#endif
 }
 
 Node* FlatTreeTraversal::TraverseSiblingsForV0Distribution(
@@ -143,6 +179,8 @@ ContainerNode* FlatTreeTraversal::TraverseParent(
   if (node.IsPseudoElement())
     return node.ParentOrShadowHostNode();
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (node.IsChildOfV1ShadowHost())
     return node.AssignedSlot();
 
@@ -152,6 +190,7 @@ ContainerNode* FlatTreeTraversal::TraverseParent(
       return nullptr;
     return parent_slot;
   }
+#endif
 
   if (CanBeDistributedToV0InsertionPoint(node))
     return TraverseParentForV0(node, details);
