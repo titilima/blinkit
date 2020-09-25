@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: pausable_object.cc
+// Description: PausableObject Class
+//      Author: Ziming Li
+//     Created: 2020-09-25
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Apple Inc. All Rights Reserved.
  *
@@ -27,7 +38,6 @@
 #include "third_party/blink/renderer/core/dom/pausable_object.h"
 
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
-#include "third_party/blink/renderer/platform/instance_counters.h"
 
 namespace blink {
 
@@ -38,13 +48,10 @@ PausableObject::PausableObject(ExecutionContext* execution_context)
       pause_if_needed_called_(false)
 #endif
 {
-  DCHECK(!execution_context || execution_context->IsContextThread());
-  InstanceCounters::IncrementCounter(InstanceCounters::kPausableObjectCounter);
+  ASSERT(false); // BKTODO: DCHECK(!execution_context || execution_context->IsContextThread());
 }
 
 PausableObject::~PausableObject() {
-  InstanceCounters::DecrementCounter(InstanceCounters::kPausableObjectCounter);
-
 #if DCHECK_IS_ON()
   DCHECK(pause_if_needed_called_);
 #endif
@@ -56,7 +63,7 @@ void PausableObject::PauseIfNeeded() {
   pause_if_needed_called_ = true;
 #endif
   if (ExecutionContext* context = GetExecutionContext())
-    context->PausePausableObjectIfNeeded(this);
+    ASSERT(false); // BKTODO: context->PausePausableObjectIfNeeded(this);
 }
 
 void PausableObject::Pause() {}
@@ -71,10 +78,13 @@ void PausableObject::DidMoveToNewExecutionContext(ExecutionContext* context) {
     return;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (context->IsContextPaused()) {
     Pause();
     return;
   }
+#endif
 
   Unpause();
 }
