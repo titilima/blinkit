@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: shadow_root_v0.cc
+// Description: ShadowRootV0 Class
+//      Author: Ziming Li
+//     Created: 2020-09-26
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -29,8 +40,10 @@
 #include "third_party/blink/renderer/core/dom/element_traversal.h"
 #include "third_party/blink/renderer/core/dom/shadow_root.h"
 #include "third_party/blink/renderer/core/dom/v0_insertion_point.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_content_element.h"
 #include "third_party/blink/renderer/core/html/html_shadow_element.h"
+#endif
 #include "third_party/blink/renderer/core/probe/core_probes.h"
 
 namespace blink {
@@ -65,8 +78,11 @@ inline void DistributionPool::PopulateChildren(const ContainerNode& parent) {
   Clear();
   for (Node* child = parent.firstChild(); child; child = child->nextSibling()) {
     // Re-distribution across v0 and v1 shadow trees is not supported
+    ASSERT(false); // BKTODO:
+#if 0
     if (IsHTMLSlotElement(child))
       continue;
+#endif
 
     if (IsActiveV0InsertionPoint(*child)) {
       V0InsertionPoint* insertion_point = ToV0InsertionPoint(child);
@@ -88,6 +104,8 @@ void DistributionPool::DistributeTo(V0InsertionPoint* insertion_point,
     if (distributed_[i])
       continue;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (IsHTMLContentElement(*insertion_point) &&
         !ToHTMLContentElement(insertion_point)->CanSelectNode(nodes_, i))
       continue;
@@ -95,6 +113,7 @@ void DistributionPool::DistributeTo(V0InsertionPoint* insertion_point,
     Node* node = nodes_[i];
     distributed_nodes.Append(node);
     shadow_root->V0().DidDistributeNode(node, insertion_point);
+#endif
     distributed_[i] = true;
   }
 
@@ -104,7 +123,7 @@ void DistributionPool::DistributeTo(V0InsertionPoint* insertion_point,
     for (Node* fallback_node = insertion_point->firstChild(); fallback_node;
          fallback_node = fallback_node->nextSibling()) {
       distributed_nodes.Append(fallback_node);
-      shadow_root->V0().DidDistributeNode(fallback_node, insertion_point);
+      ASSERT(false); // BKTODO: shadow_root->V0().DidDistributeNode(fallback_node, insertion_point);
     }
   }
   insertion_point->SetDistributedNodes(distributed_nodes);
@@ -118,13 +137,18 @@ inline void DistributionPool::DetachNonDistributedNodes() {
   for (wtf_size_t i = 0; i < nodes_.size(); ++i) {
     if (distributed_[i])
       continue;
+    ASSERT(false); // BKTODO:
+#if 0
     if (nodes_[i]->GetLayoutObject())
       nodes_[i]->LazyReattachIfAttached();
+#endif
   }
 }
 
 const HeapVector<Member<V0InsertionPoint>>&
 ShadowRootV0::DescendantInsertionPoints() {
+  ASSERT(false); // BKTODO:
+#if 0
   DEFINE_STATIC_LOCAL(Persistent<HeapVector<Member<V0InsertionPoint>>>,
                       empty_list, (new HeapVector<Member<V0InsertionPoint>>));
   if (descendant_insertion_points_is_valid_)
@@ -141,6 +165,7 @@ ShadowRootV0::DescendantInsertionPoints() {
     insertion_points.push_back(&insertion_point);
 
   descendant_insertion_points_.swap(insertion_points);
+#endif
   return descendant_insertion_points_;
 }
 
@@ -150,7 +175,7 @@ const V0InsertionPoint* ShadowRootV0::FinalDestinationInsertionPointFor(
   DCHECK(!key->NeedsDistributionRecalc());
   NodeToDestinationInsertionPoints::const_iterator it =
       node_to_insertion_points_.find(key);
-  return it == node_to_insertion_points_.end() ? nullptr : it->value->back();
+  return it == node_to_insertion_points_.end() ? nullptr : it->second->back();
 }
 
 const DestinationInsertionPoints* ShadowRootV0::DestinationInsertionPointsFor(
@@ -159,10 +184,12 @@ const DestinationInsertionPoints* ShadowRootV0::DestinationInsertionPointsFor(
   DCHECK(!key->NeedsDistributionRecalc());
   NodeToDestinationInsertionPoints::const_iterator it =
       node_to_insertion_points_.find(key);
-  return it == node_to_insertion_points_.end() ? nullptr : it->value;
+  return it == node_to_insertion_points_.end() ? nullptr : it->second;
 }
 
 void ShadowRootV0::Distribute() {
+  ASSERT(false); // BKTODO:
+#if 0
   DistributionPool pool(GetShadowRoot().host());
   HTMLShadowElement* shadow_insertion_point = nullptr;
 
@@ -189,15 +216,19 @@ void ShadowRootV0::Distribute() {
       shadow_root->SetNeedsDistributionRecalc();
   }
   probe::didPerformElementShadowDistribution(&GetShadowRoot().host());
+#endif
 }
 
 void ShadowRootV0::DidDistributeNode(const Node* node,
                                      V0InsertionPoint* insertion_point) {
+  ASSERT(false); // BKTODO:
+#if 0
   NodeToDestinationInsertionPoints::AddResult result =
       node_to_insertion_points_.insert(node, nullptr);
   if (result.is_new_entry)
     result.stored_value->value = new DestinationInsertionPoints;
   result.stored_value->value->push_back(insertion_point);
+#endif
 }
 
 void ShadowRootV0::ClearDistribution() {
@@ -205,6 +236,8 @@ void ShadowRootV0::ClearDistribution() {
 }
 
 void ShadowRootV0::WillAffectSelector() {
+  ASSERT(false); // BKTODO:
+#if 0
   for (ShadowRoot* shadow_root = &GetShadowRoot(); shadow_root;
        shadow_root = shadow_root->host().ContainingShadowRoot()) {
     if (shadow_root->IsV1() || shadow_root->V0().NeedsSelectFeatureSet())
@@ -212,6 +245,7 @@ void ShadowRootV0::WillAffectSelector() {
     shadow_root->V0().SetNeedsSelectFeatureSet();
   }
   GetShadowRoot().SetNeedsDistributionRecalc();
+#endif
 }
 
 const SelectRuleFeatureSet& ShadowRootV0::EnsureSelectFeatureSet() {
@@ -225,6 +259,8 @@ const SelectRuleFeatureSet& ShadowRootV0::EnsureSelectFeatureSet() {
 }
 
 void ShadowRootV0::CollectSelectFeatureSetFrom() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!GetShadowRoot().ContainsShadowRoots() && !ContainsContentElements())
     return;
 
@@ -237,6 +273,7 @@ void ShadowRootV0::CollectSelectFeatureSetFrom() {
     if (auto* content = ToHTMLContentElementOrNull(element))
       select_features.CollectFeaturesFromSelectorList(content->SelectorList());
   }
+#endif
 }
 
 }  // namespace blink
