@@ -20,6 +20,7 @@ namespace blink {
 
 class FontCustomPlatformData;
 class FontFace;
+class PseudoElement;
 
 namespace probe {
 

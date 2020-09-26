@@ -37,6 +37,7 @@
 
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#if 0 // BKTODO:
 #   include "third_party/blink/renderer/bindings/core/v8/string_or_trusted_html.h"
 #   include "third_party/blink/renderer/core/dom/character_data.h"
 #   include "third_party/blink/renderer/core/dom/document_fragment.h"
@@ -74,10 +75,12 @@
 #       include <stdio.h>
 #   endif
 #endif
+#endif
 
 namespace blink {
 
 #ifndef BLINKIT_CRAWLER_ONLY
+#if 0 // BKTODO:
 class RangeUpdateScope {
   STACK_ALLOCATED();
 
@@ -200,6 +203,7 @@ void Range::SetDocument(Document& document) {
 Node* Range::commonAncestorContainer() const {
   return commonAncestorContainer(&start_.Container(), &end_.Container());
 }
+#endif // 0
 #endif // BLINKIT_CRAWLER_ONLY
 
 Node* Range::commonAncestorContainer(const Node* container_a,
@@ -210,6 +214,7 @@ Node* Range::commonAncestorContainer(const Node* container_a,
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+#if 0 // BKTODO:
 static inline bool CheckForDifferentRootContainer(
     const RangeBoundaryPoint& start,
     const RangeBoundaryPoint& end) {
@@ -1795,35 +1800,7 @@ void Range::RemoveFromSelectionIfInDifferentRoot(Document& old_document) {
   selection.Clear();
   selection.ClearDocumentCachedRange();
 }
-
-void Range::Trace(blink::Visitor* visitor) {
-  visitor->Trace(owner_document_);
-  visitor->Trace(start_);
-  visitor->Trace(end_);
-  ScriptWrappable::Trace(visitor);
-}
+#endif // 0
 #endif // BLINKIT_CRAWLER_ONLY
 
 }  // namespace blink
-
-#ifndef BLINKIT_CRAWLER_ONLY
-#ifndef NDEBUG
-
-void showTree(const blink::Range* range) {
-  if (range && range->BoundaryPointsValid()) {
-    LOG(INFO) << "\n"
-              << range->startContainer()
-                     ->ToMarkedTreeString(range->startContainer(), "S",
-                                          range->endContainer(), "E")
-                     .Utf8()
-                     .data()
-              << "start offset: " << range->startOffset()
-              << ", end offset: " << range->endOffset();
-  } else {
-    LOG(INFO) << "Cannot show tree if range is null, or if boundary points are "
-                 "invalid.";
-  }
-}
-
-#endif
-#endif

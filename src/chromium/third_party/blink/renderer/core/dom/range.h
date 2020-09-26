@@ -42,12 +42,14 @@
 #ifdef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/platform/wtf/allocator.h"
 #else
+#if 0
 #   include "third_party/blink/renderer/core/dom/range_boundary_point.h"
 #   include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #   include "third_party/blink/renderer/platform/geometry/float_rect.h"
 #   include "third_party/blink/renderer/platform/geometry/int_rect.h"
 #   include "third_party/blink/renderer/platform/heap/handle.h"
 #   include "third_party/blink/renderer/platform/wtf/forward.h"
+#endif
 #endif
 
 namespace blink {
@@ -75,6 +77,7 @@ class CORE_EXPORT Range final : public ScriptWrappable {
 
  public:
 #ifndef BLINKIT_CRAWLER_ONLY
+#if 0 // BKTODO:
   static Range* Create(Document&);
   static Range* Create(Document&,
                        Node* start_container,
@@ -99,9 +102,11 @@ class CORE_EXPORT Range final : public ScriptWrappable {
 
   Node* commonAncestorContainer() const;
 #endif
+#endif
   static Node* commonAncestorContainer(const Node* container_a,
                                        const Node* container_b);
 #ifndef BLINKIT_CRAWLER_ONLY
+#if 0 // BKTODO:
   void setStart(Node* container,
                 unsigned offset,
                 ExceptionState& = ASSERT_NO_EXCEPTION);
@@ -236,20 +241,18 @@ class CORE_EXPORT Range final : public ScriptWrappable {
   RangeBoundaryPoint end_;
 
   friend class RangeUpdateScope;
+#endif // 0
 #endif // BLINKIT_CRAWLER_ONLY
 };
 
 #ifndef BLINKIT_CRAWLER_ONLY
+#if 0 // BKTODO:
 CORE_EXPORT bool AreRangesEqual(const Range*, const Range*);
 
 using RangeVector = HeapVector<Member<Range>>;
 #endif
+#endif
 
 }  // namespace blink
-
-#ifndef NDEBUG
-// Outside the WebCore namespace for ease of invocation from gdb.
-void showTree(const blink::Range*);
-#endif
 
 #endif  // THIRD_PARTY_BLINK_RENDERER_CORE_DOM_RANGE_H_
