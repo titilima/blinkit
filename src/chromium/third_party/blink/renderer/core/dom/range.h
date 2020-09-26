@@ -39,7 +39,7 @@
 
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
-#ifdef BLINKIT_CRAWLER_ONLY
+#ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/platform/wtf/allocator.h"
 #   include "third_party/blink/renderer/core/dom/range_boundary_point.h"
 #   include "third_party/blink/renderer/platform/bindings/exception_state.h"
