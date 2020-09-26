@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: v0_insertion_point.cc
+// Description: V0InsertionPoint Class
+//      Author: Ziming Li
+//     Created: 2020-09-26
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -41,13 +52,13 @@
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 V0InsertionPoint::V0InsertionPoint(const QualifiedName& tag_name,
                                    Document& document)
     : HTMLElement(tag_name, document, kCreateV0InsertionPoint),
       registered_with_shadow_root_(false) {
-  SetHasCustomStyleCallbacks();
+  ASSERT(false); // BKTODO: SetHasCustomStyleCallbacks();
 }
 
 V0InsertionPoint::~V0InsertionPoint() = default;
@@ -60,6 +71,8 @@ void V0InsertionPoint::SetDistributedNodes(
   wtf_size_t i = 0;
   wtf_size_t j = 0;
 
+  ASSERT(false); // BKTODO:
+#if 0
   for (; i < distributed_nodes_.size() && j < distributed_nodes.size();
        ++i, ++j) {
     if (distributed_nodes_.size() < distributed_nodes.size()) {
@@ -95,6 +108,7 @@ void V0InsertionPoint::SetDistributedNodes(
 
   for (; j < distributed_nodes.size(); ++j)
     distributed_nodes.at(j)->LazyReattachIfAttached();
+#endif
 
   distributed_nodes_.Swap(distributed_nodes);
   // Deallocate a Vector and a HashMap explicitly so that
@@ -122,20 +136,26 @@ void V0InsertionPoint::AttachLayoutTree(AttachContext& context) {
 }
 
 void V0InsertionPoint::DetachLayoutTree(const AttachContext& context) {
+  ASSERT(false); // BKTODO:
+#if 0
   for (wtf_size_t i = 0; i < distributed_nodes_.size(); ++i)
     distributed_nodes_.at(i)->LazyReattachIfAttached();
+#endif
 
   HTMLElement::DetachLayoutTree(context);
 }
 
 void V0InsertionPoint::RebuildDistributedChildrenLayoutTrees(
     WhitespaceAttacher& whitespace_attacher) {
+  ASSERT(false); // BKTODO:
+#if 0
   // This loop traverses the nodes from right to left for the same reason as the
   // one described in ContainerNode::RebuildChildrenLayoutTrees().
   for (wtf_size_t i = distributed_nodes_.size(); i > 0; --i) {
     RebuildLayoutTreeForChild(distributed_nodes_.at(i - 1),
                               whitespace_attacher);
   }
+#endif
 }
 
 void V0InsertionPoint::DidRecalcStyle(StyleRecalcChange change) {
@@ -151,11 +171,14 @@ void V0InsertionPoint::DidRecalcStyle(StyleRecalcChange change) {
 
   for (wtf_size_t i = 0; i < distributed_nodes_.size(); ++i) {
     Node* node = distributed_nodes_.at(i);
+    ASSERT(false); // BKTODO:
+#if 0
     if (change == kReattach && node->IsElementNode()) {
       if (node->ShouldCallRecalcStyle(kReattach))
         ToElement(node)->RecalcStyle(kReattach);
       continue;
     }
+#endif
     node->SetNeedsStyleRecalc(
         style_change_type,
         StyleChangeReasonForTracing::Create(
@@ -167,8 +190,11 @@ bool V0InsertionPoint::CanBeActive() const {
   ShadowRoot* shadow_root = ContainingShadowRoot();
   if (!shadow_root)
     return false;
+  ASSERT(false); // BKTODO:
+#if 0
   if (shadow_root->IsV1())
     return false;
+#endif
   return !Traversal<V0InsertionPoint>::FirstAncestor(*this);
 }
 
@@ -177,6 +203,8 @@ bool V0InsertionPoint::IsActive() const {
     return false;
   ShadowRoot* shadow_root = ContainingShadowRoot();
   DCHECK(shadow_root);
+  ASSERT(false); // BKTODO:
+#if 0
   if (!IsHTMLShadowElement(*this) ||
       shadow_root->V0().DescendantShadowElementCount() <= 1)
     return true;
@@ -187,11 +215,16 @@ bool V0InsertionPoint::IsActive() const {
     if (IsHTMLShadowElement(*point))
       return point == this;
   }
+#endif
   return true;
 }
 
 bool V0InsertionPoint::IsContentInsertionPoint() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return IsHTMLContentElement(*this) && IsActive();
+#endif
 }
 
 StaticNodeList* V0InsertionPoint::getDistributedNodes() {
@@ -202,7 +235,11 @@ StaticNodeList* V0InsertionPoint::getDistributedNodes() {
   for (wtf_size_t i = 0; i < distributed_nodes_.size(); ++i)
     nodes.UncheckedAppend(distributed_nodes_.at(i));
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return StaticNodeList::Adopt(nodes);
+#endif
 }
 
 bool V0InsertionPoint::LayoutObjectIsNeeded(const ComputedStyle& style) const {
@@ -212,8 +249,11 @@ bool V0InsertionPoint::LayoutObjectIsNeeded(const ComputedStyle& style) const {
 void V0InsertionPoint::ChildrenChanged(const ChildrenChange& change) {
   HTMLElement::ChildrenChanged(change);
   if (ShadowRoot* root = ContainingShadowRoot()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!root->IsV1())
       root->SetNeedsDistributionRecalc();
+#endif
   }
 }
 
@@ -221,6 +261,8 @@ Node::InsertionNotificationRequest V0InsertionPoint::InsertedInto(
     ContainerNode& insertion_point) {
   HTMLElement::InsertedInto(insertion_point);
   if (ShadowRoot* root = ContainingShadowRoot()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!root->IsV1()) {
       root->SetNeedsDistributionRecalc();
       if (CanBeActive() && !registered_with_shadow_root_ &&
@@ -231,6 +273,7 @@ Node::InsertionNotificationRequest V0InsertionPoint::InsertedInto(
           root->V0().WillAffectSelector();
       }
     }
+#endif
   }
 
   // We could have been distributed into in a detached subtree, make sure to
@@ -245,6 +288,8 @@ void V0InsertionPoint::RemovedFrom(ContainerNode& insertion_point) {
   if (!root)
     root = insertion_point.ContainingShadowRoot();
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (root && !root->IsV1())
     root->SetNeedsDistributionRecalc();
 
@@ -260,13 +305,9 @@ void V0InsertionPoint::RemovedFrom(ContainerNode& insertion_point) {
     if (!root->IsV1() && CanAffectSelector())
       root->V0().WillAffectSelector();
   }
+#endif
 
   HTMLElement::RemovedFrom(insertion_point);
-}
-
-void V0InsertionPoint::Trace(blink::Visitor* visitor) {
-  visitor->Trace(distributed_nodes_);
-  HTMLElement::Trace(visitor);
 }
 
 const V0InsertionPoint* ResolveReprojection(const Node* projected_node) {
@@ -274,6 +315,8 @@ const V0InsertionPoint* ResolveReprojection(const Node* projected_node) {
   const V0InsertionPoint* insertion_point = nullptr;
   const Node* current = projected_node;
   ShadowRoot* last_shadow_root = nullptr;
+  ASSERT(false); // BKTODO:
+#if 0
   while (true) {
     ShadowRoot* shadow_root =
         ShadowRootWhereNodeCanBeDistributedForV0(*current);
@@ -288,6 +331,7 @@ const V0InsertionPoint* ResolveReprojection(const Node* projected_node) {
     current = inserted_to;
     insertion_point = inserted_to;
   }
+#endif
   return insertion_point;
 }
 
@@ -296,6 +340,8 @@ void CollectDestinationInsertionPoints(
     HeapVector<Member<V0InsertionPoint>, 8>& results) {
   const Node* current = &node;
   ShadowRoot* last_shadow_root = nullptr;
+  ASSERT(false); // BKTODO:
+#if 0
   while (true) {
     ShadowRoot* shadow_root =
         ShadowRootWhereNodeCanBeDistributedForV0(*current);
@@ -311,6 +357,7 @@ void CollectDestinationInsertionPoints(
     DCHECK_NE(current, insertion_points->back().Get());
     current = insertion_points->back().Get();
   }
+#endif
 }
 
 }  // namespace blink

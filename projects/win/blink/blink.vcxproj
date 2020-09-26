@@ -505,6 +505,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_checker.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_filter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_query.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\select_rule_feature_set.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\shadow_tree_style_sheet_collection.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_attribute_mutation_scope.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_change_reason.cc" />
@@ -588,6 +589,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\qualified_name.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\range.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\scriptable_document_parser.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\shadow_root_v0.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\space_split_string.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\static_range.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\synchronous_mutation_notifier.cc" />
@@ -1969,6 +1971,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_checker.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_filter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\selector_query.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\select_rule_feature_set.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\shadow_tree_style_sheet_collection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_attribute_mutation_scope.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_auto_color.h" />
@@ -2079,6 +2082,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\range_boundary_point.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\scriptable_document_parser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\shadow_root.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\shadow_root_v0.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\slot_assignment_recalc_forbidden_scope.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\space_split_string.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\static_node_list.h" />

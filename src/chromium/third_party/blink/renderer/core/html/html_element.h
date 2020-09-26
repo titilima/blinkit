@@ -20,6 +20,8 @@ namespace blink {
 
 class HTMLElement : public Element
 {
+protected:
+    HTMLElement(const QualifiedName &tagName, Document &document, ConstructionType type);
 };
 
 } // namespace blink

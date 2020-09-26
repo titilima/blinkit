@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: shadow_root_v0.h
+// Description: ShadowRootV0 Class
+//      Author: Ziming Li
+//     Created: 2020-09-26
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -43,7 +54,9 @@ class CORE_EXPORT ShadowRootV0 final
   using NodeToDestinationInsertionPoints =
       HeapHashMap<Member<const Node>, Member<DestinationInsertionPoints>>;
 
+#if 0 // BKTODO:
   explicit ShadowRootV0(ShadowRoot& shadow_root) : shadow_root_(&shadow_root) {}
+#endif
 
   bool ContainsShadowElements() const {
     return descendant_shadow_element_count_;
@@ -81,15 +94,17 @@ class CORE_EXPORT ShadowRootV0 final
   SelectRuleFeatureSet& SelectFeatures() { return select_features_; }
 
   void Trace(blink::Visitor* visitor) {
-    visitor->Trace(shadow_root_);
+    ASSERT(false); // BKTODO: visitor->Trace(shadow_root_);
     visitor->Trace(descendant_insertion_points_);
     visitor->Trace(node_to_insertion_points_);
   }
 
  private:
+#if 0 // BKTODO:
   ShadowRoot& GetShadowRoot() const { return *shadow_root_; }
 
   TraceWrapperMember<ShadowRoot> shadow_root_;
+#endif
   unsigned descendant_shadow_element_count_ = 0;
   unsigned descendant_content_element_count_ = 0;
   HeapVector<Member<V0InsertionPoint>> descendant_insertion_points_;
@@ -104,17 +119,22 @@ class CORE_EXPORT ShadowRootV0 final
 
 inline void ShadowRootV0::DidAddInsertionPoint(V0InsertionPoint* point) {
   DCHECK(point);
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsHTMLShadowElement(*point))
     ++descendant_shadow_element_count_;
   else if (IsHTMLContentElement(*point))
     ++descendant_content_element_count_;
   else
     NOTREACHED();
+#endif
   InvalidateDescendantInsertionPoints();
 }
 
 inline void ShadowRootV0::DidRemoveInsertionPoint(V0InsertionPoint* point) {
   DCHECK(point);
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsHTMLShadowElement(*point)) {
     DCHECK_GT(descendant_shadow_element_count_, 0u);
     --descendant_shadow_element_count_;
@@ -124,6 +144,7 @@ inline void ShadowRootV0::DidRemoveInsertionPoint(V0InsertionPoint* point) {
   } else {
     NOTREACHED();
   }
+#endif
   InvalidateDescendantInsertionPoints();
 }
 

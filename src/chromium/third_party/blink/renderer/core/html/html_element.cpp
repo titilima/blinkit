@@ -13,4 +13,10 @@
 
 namespace blink {
 
+HTMLElement::HTMLElement(const QualifiedName &tagName, Document &document, ConstructionType type)
+    : Element(tagName, &document, type)
+{
+    ASSERT(!tagName.LocalName().IsNull());
+}
+
 } // namespace blink
