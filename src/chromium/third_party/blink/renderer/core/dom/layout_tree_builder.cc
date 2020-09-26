@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_tree_builder.cc
+// Description: LayoutTreeBuilder Classes
+//      Author: Ziming Li
+//     Created: 2020-09-26
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -42,8 +53,10 @@
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 #include "third_party/blink/renderer/core/layout/layout_text.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/svg/svg_element.h"
 #include "third_party/blink/renderer/core/svg_names.h"
+#endif
 
 namespace blink {
 
@@ -91,8 +104,11 @@ LayoutTreeBuilderForElement::LayoutTreeBuilderForElement(Element& element,
 LayoutObject* LayoutTreeBuilderForElement::NextLayoutObject() const {
   DCHECK(layout_object_parent_);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (node_->IsInTopLayer())
     return LayoutTreeBuilderTraversal::NextInTopLayer(*node_);
+#endif
 
   if (node_->IsFirstLetterPseudoElement())
     return FirstLetterPseudoElement::FirstLetterTextLayoutObject(*node_);
@@ -102,12 +118,15 @@ LayoutObject* LayoutTreeBuilderForElement::NextLayoutObject() const {
 
 LayoutObject* LayoutTreeBuilderForElement::ParentLayoutObject() const {
   if (layout_object_parent_) {
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: Guarding this by ParentLayoutObject isn't quite right as the spec
     // for top layer only talks about display: none ancestors so putting a
     // <dialog> inside an <optgroup> seems like it should still work even though
     // this check will prevent it.
     if (node_->IsInTopLayer())
       return node_->GetDocument().GetLayoutView();
+#endif
   }
 
   return layout_object_parent_;
@@ -132,11 +151,14 @@ bool LayoutTreeBuilderForElement::ShouldCreateLayoutObject() const {
 
 ComputedStyle& LayoutTreeBuilderForElement::Style() const {
   if (!style_) {
+    ASSERT(false); // BKTODO:
+#if 0
     // TODO(futhark@chromium.org): this should never happen, but we currently
     // have crashes in the wild because of this (https://crbug.com/875796).
     // Please report if you ever end up here.
     NOTREACHED();
     style_ = node_->StyleForLayoutObject();
+#endif
   }
   return *style_;
 }
@@ -144,6 +166,8 @@ ComputedStyle& LayoutTreeBuilderForElement::Style() const {
 DISABLE_CFI_PERF
 void LayoutTreeBuilderForElement::CreateLayoutObject() {
   ComputedStyle& style = Style();
+  ASSERT(false); // BKTODO:
+#if 0
   ReattachLegacyLayoutObjectList& legacy_layout_objects =
       node_->GetDocument().GetReattachLegacyLayoutObjectList();
   if (legacy_layout_objects.IsForcingLegacyLayout()) {
@@ -179,6 +203,7 @@ void LayoutTreeBuilderForElement::CreateLayoutObject() {
   if (!legacy_layout_objects.IsCollecting())
     return;
   legacy_layout_objects.AddForceLegacyAtBFCAncestor(*new_layout_object);
+#endif
 }
 
 LayoutObject*
@@ -207,6 +232,8 @@ LayoutTreeBuilderForText::CreateInlineWrapperForDisplayContentsIfNeeded() {
 void LayoutTreeBuilderForText::CreateLayoutObject() {
   ComputedStyle& style = *style_;
 
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(style_ == layout_object_parent_->Style() ||
          ToElement(LayoutTreeBuilderTraversal::Parent(*node_))
              ->HasDisplayContentsStyle());
@@ -235,6 +262,7 @@ void LayoutTreeBuilderForText::CreateLayoutObject() {
   node_->SetLayoutObject(new_layout_object);
   new_layout_object->SetStyle(&style);
   layout_object_parent_->AddChild(new_layout_object, next_layout_object);
+#endif
 }
 
 // ----
@@ -244,19 +272,25 @@ ReattachLegacyLayoutObjectList::ReattachLegacyLayoutObjectList(
       state_(RuntimeEnabledFeatures::LayoutNGEnabled()
                  ? State::kCollecting
                  : State::kBuildingLegacyLayoutTree) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!document_->reattach_legacy_object_list_);
   document_->reattach_legacy_object_list_ = this;
+#endif
 }
 
 ReattachLegacyLayoutObjectList::~ReattachLegacyLayoutObjectList() {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK_EQ(document_->reattach_legacy_object_list_, this);
   DCHECK_EQ(state_, State::kClosed);
   document_->reattach_legacy_object_list_ = nullptr;
+#endif
 }
 
 void ReattachLegacyLayoutObjectList::AddForceLegacyAtBFCAncestor(
     const LayoutObject& start) {
-  DCHECK(IsCollecting()) << static_cast<int>(state_);
+  DCHECK(IsCollecting()); // BKTODO: << static_cast<int>(state_);
   if (!start.Style()->ForceLegacyLayout())
     return;
   if (start.Parent()->Style()->ForceLegacyLayout()) {
@@ -266,7 +300,7 @@ void ReattachLegacyLayoutObjectList::AddForceLegacyAtBFCAncestor(
   const LayoutObject* const bfc = FindBlockFormattingContext(start);
   if (start == bfc)
     return;
-  DCHECK(bfc) << start;
+  DCHECK(bfc); // BKTODO: << start;
   if (std::any_of(blocks_.begin(), blocks_.end(),
                   [bfc](const LayoutObject* object) {
                     return bfc == object ||
@@ -295,8 +329,11 @@ void ReattachLegacyLayoutObjectList::ForceLegacyLayoutIfNeeded() {
   DCHECK_EQ(state, State::kCollecting);
   if (blocks_.IsEmpty())
     return;
+  ASSERT(false); // BKTODO:
+#if 0
   for (const LayoutObject* block : blocks_)
     ToElement(*block->GetNode()).LazyReattachIfAttached();
+#endif
   state_ = State::kForcingLegacyLayout;
   document_->GetStyleEngine().RecalcStyle(kNoChange);
   document_->GetStyleEngine().RebuildLayoutTree();
@@ -307,9 +344,11 @@ void ReattachLegacyLayoutObjectList::Trace(blink::Visitor* visitor) {
   visitor->Trace(document_);
 }
 
+#if 0 // BKTODO:
 ReattachLegacyLayoutObjectList& Document::GetReattachLegacyLayoutObjectList() {
   DCHECK(reattach_legacy_object_list_);
   return *reattach_legacy_object_list_;
 }
+#endif
 
 }  // namespace blink
