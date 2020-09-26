@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: static_range.cc
+// Description: StaticRange Class
+//      Author: Ziming Li
+//     Created: 2020-09-26
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,10 +16,9 @@
 #include "third_party/blink/renderer/core/dom/static_range.h"
 
 #include "third_party/blink/renderer/core/dom/range.h"
-#include "third_party/blink/renderer/core/editing/ephemeral_range.h"
+// BKTODO: #include "third_party/blink/renderer/core/editing/ephemeral_range.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
-#include "third_party/blink/renderer/platform/bindings/script_state.h"
 
 namespace blink {
 
@@ -32,12 +42,16 @@ StaticRange::StaticRange(Document& document,
 
 // static
 StaticRange* StaticRange::Create(const EphemeralRange& range) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   DCHECK(!range.IsNull());
   return new StaticRange(range.GetDocument(),
                          range.StartPosition().ComputeContainerNode(),
                          range.StartPosition().ComputeOffsetInContainerNode(),
                          range.EndPosition().ComputeContainerNode(),
                          range.EndPosition().ComputeOffsetInContainerNode());
+#endif
 }
 
 void StaticRange::setStart(Node* container, unsigned offset) {
@@ -51,18 +65,15 @@ void StaticRange::setEnd(Node* container, unsigned offset) {
 }
 
 Range* StaticRange::toRange(ExceptionState& exception_state) const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   Range* range = Range::Create(*owner_document_.Get());
   // Do the offset checking.
   range->setStart(start_container_, start_offset_, exception_state);
   range->setEnd(end_container_, end_offset_, exception_state);
   return range;
-}
-
-void StaticRange::Trace(blink::Visitor* visitor) {
-  visitor->Trace(owner_document_);
-  visitor->Trace(start_container_);
-  visitor->Trace(end_container_);
-  ScriptWrappable::Trace(visitor);
+#endif
 }
 
 }  // namespace blink
