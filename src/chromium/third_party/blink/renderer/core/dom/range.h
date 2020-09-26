@@ -41,15 +41,12 @@
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 #ifdef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/platform/wtf/allocator.h"
-#else
-#if 0
 #   include "third_party/blink/renderer/core/dom/range_boundary_point.h"
 #   include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #   include "third_party/blink/renderer/platform/geometry/float_rect.h"
 #   include "third_party/blink/renderer/platform/geometry/int_rect.h"
 #   include "third_party/blink/renderer/platform/heap/handle.h"
 #   include "third_party/blink/renderer/platform/wtf/forward.h"
-#endif
 #endif
 
 namespace blink {

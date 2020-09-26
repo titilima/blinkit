@@ -134,9 +134,11 @@ class InputEvent final : public UIEvent {
 #endif
   bool is_composing_;
 
+#if 0 // BKTODO:
   // We have to stored |Range| internally and only expose |StaticRange|, please
   // see comments in |dispatchEvent()|.
   RangeVector ranges_;
+#endif
 };
 
 DEFINE_EVENT_TYPE_CASTS(InputEvent);
