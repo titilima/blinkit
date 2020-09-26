@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: pseudo_element.cc
+// Description: PseudoElement Class
+//      Author: Ziming Li
+//     Created: 2020-09-26
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -95,15 +106,18 @@ PseudoElement::PseudoElement(Element* parent, PseudoId pseudo_id)
   DCHECK_NE(pseudo_id, kPseudoIdNone);
   parent->GetTreeScope().AdoptIfNeeded(*this);
   SetParentOrShadowHostNode(parent);
-  SetHasCustomStyleCallbacks();
+  ASSERT(false); // BKTODO: SetHasCustomStyleCallbacks();
   if ((pseudo_id == kPseudoIdBefore || pseudo_id == kPseudoIdAfter) &&
-      parent->HasTagName(HTMLNames::inputTag)) {
+      parent->HasTagName(html_names::kInputTag)) {
     UseCounter::Count(parent->GetDocument(),
                       WebFeature::kPseudoBeforeAfterForInputElement);
   }
 }
 
 scoped_refptr<ComputedStyle> PseudoElement::CustomStyleForLayoutObject() {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   scoped_refptr<ComputedStyle> original_style =
       ParentOrShadowHostElement()->StyleForPseudoElement(
           PseudoStyleRequest(pseudo_id_));
@@ -111,6 +125,7 @@ scoped_refptr<ComputedStyle> PseudoElement::CustomStyleForLayoutObject() {
     return original_style;
 
   return StoreOriginalAndReturnLayoutStyle(std::move(original_style));
+#endif
 }
 
 scoped_refptr<ComputedStyle> PseudoElement::StoreOriginalAndReturnLayoutStyle(
@@ -126,7 +141,7 @@ scoped_refptr<ComputedStyle> PseudoElement::StoreOriginalAndReturnLayoutStyle(
 
   // Store the actual ComputedStyle to be able to return the correct values from
   // getComputedStyle().
-  StoreNonLayoutObjectComputedStyle(std::move(original_style));
+  ASSERT(false); // BKTODO: StoreNonLayoutObjectComputedStyle(std::move(original_style));
   return layout_style;
 }
 
@@ -213,6 +228,9 @@ Node* PseudoElement::InnerNodeForHitTesting() const {
 
 const ComputedStyle* PseudoElement::VirtualEnsureComputedStyle(
     PseudoId pseudo_element_specifier) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (HasRareData()) {
     // Prefer NonLayoutObjectComputedStyle() for display:contents pseudos
     // instead of the ComputedStyle for the fictional inline box (see
@@ -225,6 +243,7 @@ const ComputedStyle* PseudoElement::VirtualEnsureComputedStyle(
     }
   }
   return EnsureComputedStyle(pseudo_element_specifier);
+#endif
 }
 
 bool PseudoElementLayoutObjectIsNeeded(const ComputedStyle* style) {

@@ -96,6 +96,7 @@ enum class WebFeature {
     kPrefixedMaxDevicePixelRatioMediaFeature,
     kPrefixedMinDevicePixelRatioMediaFeature,
     kPrefixedTransform3dMediaFeature,
+    kPseudoBeforeAfterForInputElement,
     kPseudoShadowInStaticProfile,
     kQuotedAnimationName,
     kQuotedKeyframesRule,

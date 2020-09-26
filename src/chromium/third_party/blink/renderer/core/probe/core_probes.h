@@ -28,6 +28,7 @@ inline void animationPlayStateChanged(Document *, Animation *, Animation::Animat
 inline void didCreateAnimation(Document *, unsigned) {}
 inline void didInvalidateStyleAttr(Node *) {}
 inline void fontsUpdated(ExecutionContext *, const FontFace *, const String &, const FontCustomPlatformData *) {}
+inline void pseudoElementDestroyed(PseudoElement *) {}
 
 } // namespace probe
 } // namespace blink

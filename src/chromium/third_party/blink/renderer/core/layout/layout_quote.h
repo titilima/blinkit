@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_quote.h
+// Description: LayoutQuote Class
+//      Author: Ziming Li
+//     Created: 2020-09-26
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Nokia Inc. All rights reserved.
  * Copyright (C) 2012 Google Inc. All rights reserved.
@@ -81,10 +92,12 @@ class LayoutQuote final : public LayoutInline {
   LayoutQuote* next_;
   LayoutQuote* previous_;
 
+#if 0 // BKTODO:
   // The pseudo-element that owns us.
   //
   // Lifetime is the same as LayoutObject::m_node, so this is safe.
   UntracedMember<PseudoElement> owning_pseudo_;
+#endif
 
   // This tracks whether this LayoutQuote was inserted into the layout tree
   // and its position in the linked list is correct (m_next and m_previous).
