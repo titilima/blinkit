@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: visited_link_state.cc
+// Description: VisitedLinkState Class
+//      Author: Ziming Li
+//     Created: 2020-09-26
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 2004-2005 Allan Sandfeld Jensen (kde@carewolf.com)
@@ -33,30 +44,40 @@
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/renderer/core/dom/element_traversal.h"
 #include "third_party/blink/renderer/core/dom/shadow_root.h"
-#include "third_party/blink/renderer/core/html/html_anchor_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_anchor_element.h"
 #include "third_party/blink/renderer/core/html_names.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/svg/svg_element.h"
 #include "third_party/blink/renderer/core/svg/svg_uri_reference.h"
+#endif
 
 namespace blink {
 
 static inline const AtomicString& LinkAttribute(const Element& element) {
   DCHECK(element.IsLink());
   if (element.IsHTMLElement())
-    return element.FastGetAttribute(HTMLNames::hrefAttr);
+    return element.FastGetAttribute(html_names::kHrefAttr);
+  ASSERT(false); // BKTODO:
+  return g_null_atom;
+#if 0
   DCHECK(element.IsSVGElement());
   return SVGURIReference::LegacyHrefString(ToSVGElement(element));
+#endif
 }
 
 static inline LinkHash LinkHashForElement(
     const Element& element,
     const AtomicString& attribute = AtomicString()) {
   DCHECK(attribute.IsNull() || LinkAttribute(element) == attribute);
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   if (auto* anchor = ToHTMLAnchorElementOrNull(element))
     return anchor->VisitedLinkHash();
   return VisitedLinkHash(
       element.GetDocument().BaseURL(),
       attribute.IsNull() ? LinkAttribute(element) : attribute);
+#endif
 }
 
 VisitedLinkState::VisitedLinkState(const Document& document)
@@ -67,12 +88,15 @@ static void InvalidateStyleForAllLinksRecursively(
     bool invalidate_visited_link_hashes) {
   for (Node& node : NodeTraversal::StartsAt(root_node)) {
     if (node.IsLink()) {
+      ASSERT(false); // BKTODO:
+#if 0
       if (invalidate_visited_link_hashes && IsHTMLAnchorElement(node))
         ToHTMLAnchorElement(node).InvalidateCachedVisitedLinkHash();
       ToElement(node).PseudoStateChanged(CSSSelector::kPseudoLink);
       ToElement(node).PseudoStateChanged(CSSSelector::kPseudoVisited);
       ToElement(node).PseudoStateChanged(CSSSelector::kPseudoWebkitAnyLink);
       ToElement(node).PseudoStateChanged(CSSSelector::kPseudoAnyLink);
+#endif
     }
     if (ShadowRoot* root = node.GetShadowRoot()) {
       InvalidateStyleForAllLinksRecursively(*root,
@@ -83,19 +107,25 @@ static void InvalidateStyleForAllLinksRecursively(
 
 void VisitedLinkState::InvalidateStyleForAllLinks(
     bool invalidate_visited_link_hashes) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!links_checked_for_visited_state_.IsEmpty() && GetDocument().firstChild())
     InvalidateStyleForAllLinksRecursively(*GetDocument().firstChild(),
                                           invalidate_visited_link_hashes);
+#endif
 }
 
 static void InvalidateStyleForLinkRecursively(Node& root_node,
                                               LinkHash link_hash) {
   for (Node& node : NodeTraversal::StartsAt(root_node)) {
     if (node.IsLink() && LinkHashForElement(ToElement(node)) == link_hash) {
+      ASSERT(false); // BKTODO:
+#if 0
       ToElement(node).PseudoStateChanged(CSSSelector::kPseudoLink);
       ToElement(node).PseudoStateChanged(CSSSelector::kPseudoVisited);
       ToElement(node).PseudoStateChanged(CSSSelector::kPseudoWebkitAnyLink);
       ToElement(node).PseudoStateChanged(CSSSelector::kPseudoAnyLink);
+#endif
     }
     if (ShadowRoot* root = node.GetShadowRoot())
       InvalidateStyleForLinkRecursively(*root, link_hash);
@@ -103,14 +133,19 @@ static void InvalidateStyleForLinkRecursively(Node& root_node,
 }
 
 void VisitedLinkState::InvalidateStyleForLink(LinkHash link_hash) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (links_checked_for_visited_state_.Contains(link_hash) &&
       GetDocument().firstChild())
     InvalidateStyleForLinkRecursively(*GetDocument().firstChild(), link_hash);
+#endif
 }
 
 EInsideLink VisitedLinkState::DetermineLinkStateSlowCase(
     const Element& element) {
   DCHECK(element.IsLink());
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(GetDocument().IsActive());
   DCHECK(GetDocument() == element.GetDocument());
 
@@ -131,6 +166,7 @@ EInsideLink VisitedLinkState::DetermineLinkStateSlowCase(
     if (Platform::Current()->IsLinkVisited(hash))
       return EInsideLink::kInsideVisitedLink;
   }
+#endif
 
   return EInsideLink::kInsideUnvisitedLink;
 }
