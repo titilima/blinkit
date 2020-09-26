@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: tree_ordered_list.cc
+// Description: TreeOrderedList Class
+//      Author: Ziming Li
+//     Created: 2020-09-26
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -34,7 +45,7 @@
 namespace blink {
 
 void TreeOrderedList::Add(Node* node) {
-  if (nodes_.IsEmpty()) {
+  if (nodes_.empty()) {
     nodes_.insert(node);
     return;
   }
@@ -44,6 +55,8 @@ void TreeOrderedList::Add(Node* node) {
   iterator end = nodes_.end();
   iterator it = end;
   Node* following_node = nullptr;
+  ASSERT(false); // BKTODO:
+#if 0
   do {
     --it;
     Node* n = *it;
@@ -57,6 +70,7 @@ void TreeOrderedList::Add(Node* node) {
   } while (it != begin);
 
   nodes_.InsertBefore(following_node, node);
+#endif
 }
 
 void TreeOrderedList::Remove(const Node* node) {
