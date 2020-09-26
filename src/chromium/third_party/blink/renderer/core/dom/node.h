@@ -260,9 +260,19 @@ public:
         ASSERT(!IsTextNode());
         SetFlag(f, kHasNameOrIsEditingTextFlag);
     }
+#ifndef BLINKIT_CRAWLER_ONLY
+    bool IsEditingText(void) const
+    {
+        DCHECK(IsTextNode());
+        return GetFlag(kHasNameOrIsEditingTextFlag);
+    }
+#endif
     bool HasEventTargetData(void) const { return GetFlag(kHasEventTargetDataFlag); }
     void SetHasEventTargetData(bool flag) { SetFlag(flag, kHasEventTargetDataFlag); }
     bool NeedsReattachLayoutTree(void) const { return GetFlag(kNeedsReattachLayoutTree); }
+#ifndef BLINKIT_CRAWLER_ONLY
+    void ClearNeedsReattachLayoutTree(void) { ClearFlag(kNeedsReattachLayoutTree); }
+#endif
     bool ChildNeedsReattachLayoutTree(void) const { return GetFlag(kChildNeedsReattachLayoutTree); }
 #ifndef BLINKIT_CRAWLER_ONLY
     void ClearChildNeedsReattachLayoutTree(void) { ClearFlag(kChildNeedsReattachLayoutTree); }

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_offset_mapping.h
+// Description: NGOffsetMapping Classes
+//      Author: Ziming Li
+//     Created: 2020-09-26
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -101,15 +112,21 @@ class NGMappingUnitRange {
 class CORE_EXPORT NGOffsetMapping {
  public:
   using UnitVector = Vector<NGOffsetMappingUnit>;
+#if 0 // BKTODO:
   using RangeMap =
       HashMap<Persistent<const Node>, std::pair<unsigned, unsigned>>;
+#endif
 
   NGOffsetMapping(NGOffsetMapping&&);
+#if 0 // BKTODO:
   NGOffsetMapping(UnitVector&&, RangeMap&&, String);
+#endif
   ~NGOffsetMapping();
 
   const UnitVector& GetUnits() const { return units_; }
+#if 0 // BKTODO:
   const RangeMap& GetRanges() const { return ranges_; }
+#endif
   const String& GetText() const { return text_; }
 
   // ------ Mapping APIs from DOM to text content ------
@@ -196,8 +213,10 @@ class CORE_EXPORT NGOffsetMapping {
   // The NGOffsetMappingUnits of the inline formatting context in osrted order.
   UnitVector units_;
 
+#if 0 // BKTODO:
   // Stores the unit range for each node in inline formatting context.
   RangeMap ranges_;
+#endif
 
   // The text content string of the inline formatting context. Same string as
   // |NGInlineNodeData::text_content_|.

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_inline_item.h
+// Description: NGInlineItem Class
+//      Author: Ziming Li
+//     Created: 2020-09-26
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -13,8 +24,10 @@
 #include "third_party/blink/renderer/platform/fonts/shaping/shape_result.h"
 #include "third_party/blink/renderer/platform/text/text_direction.h"
 
+#if 0 // BKTODO:
 #include <unicode/ubidi.h>
 #include <unicode/uscript.h>
+#endif
 
 namespace blink {
 
@@ -98,12 +111,14 @@ class CORE_EXPORT NGInlineItem {
   unsigned EndOffset() const { return end_offset_; }
   unsigned Length() const { return end_offset_ - start_offset_; }
 
+#if 0 // BKTODO:
   TextDirection Direction() const { return DirectionFromLevel(BidiLevel()); }
   UBiDiLevel BidiLevel() const { return static_cast<UBiDiLevel>(bidi_level_); }
   // Resolved bidi level for the reordering algorithm. Certain items have
   // artificial bidi level for the reordering algorithm without affecting its
   // direction.
   UBiDiLevel BidiLevelForReorder() const;
+#endif
 
   const ComputedStyle* Style() const { return style_.get(); }
   LayoutObject* GetLayoutObject() const { return layout_object_; }
@@ -161,11 +176,13 @@ class CORE_EXPORT NGInlineItem {
       OrientationIterator::RenderOrientation);
   void SetFontOrientation(OrientationIterator::RenderOrientation);
 
+#if 0 // BKTODO:
   void SetBidiLevel(UBiDiLevel);
   static unsigned SetBidiLevel(Vector<NGInlineItem>&,
                                unsigned index,
                                unsigned end_offset,
                                UBiDiLevel);
+#endif
 
   void AssertOffset(unsigned offset) const;
   void AssertEndOffset(unsigned offset) const;

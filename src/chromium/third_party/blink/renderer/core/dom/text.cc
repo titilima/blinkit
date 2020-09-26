@@ -35,7 +35,7 @@
 
 #include "third_party/blink/renderer/core/dom/document.h"
  // BKTODO: #include "third_party/blink/renderer/core/dom/events/scoped_event_queue.h"
-// BKTODO: #include "third_party/blink/renderer/core/dom/first_letter_pseudo_element.h"
+#include "third_party/blink/renderer/core/dom/first_letter_pseudo_element.h"
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
 // BKTODO: #include "third_party/blink/renderer/platform/bindings/dom_data_store.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
@@ -52,9 +52,11 @@
 #   include "third_party/blink/renderer/core/layout/layout_text_combine.h"
 #   include "third_party/blink/renderer/core/layout/layout_text_fragment.h"
 #   include "third_party/blink/renderer/core/layout/ng/inline/layout_ng_text.h"
+#if 0 // BKTODO:
 #   include "third_party/blink/renderer/core/layout/svg/layout_svg_inline_text.h"
 #   include "third_party/blink/renderer/core/svg/svg_foreign_object_element.h"
 #   include "third_party/blink/renderer/core/svg_names.h"
+#endif
 #endif
 
 namespace blink {
@@ -342,15 +344,22 @@ bool Text::TextLayoutObjectIsNeeded(const AttachContext& context,
 }
 
 static bool IsSVGText(Text* text) {
+  ASSERT(false); // BKTODO: Is this necessary?
+  return false;
+#if 0
   Node* parent_or_shadow_host_node = text->ParentOrShadowHostNode();
   DCHECK(parent_or_shadow_host_node);
   return parent_or_shadow_host_node->IsSVGElement() &&
          !IsSVGForeignObjectElement(*parent_or_shadow_host_node);
+#endif
 }
 
 LayoutText* Text::CreateTextLayoutObject(const ComputedStyle& style) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsSVGText(this))
     return new LayoutSVGInlineText(this, DataImpl());
+#endif
 
   if (style.HasTextCombine())
     return new LayoutTextCombine(this, DataImpl());
@@ -410,6 +419,8 @@ void Text::ReattachLayoutTreeIfNeeded(const AttachContext& context) {
 }
 
 void Text::RecalcTextStyle(StyleRecalcChange change) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (LayoutText* layout_text = GetLayoutObject()) {
     if (change != kNoChange || NeedsStyleRecalc()) {
       scoped_refptr<ComputedStyle> new_style =
@@ -431,6 +442,7 @@ void Text::RecalcTextStyle(StyleRecalcChange change) {
   } else if (NeedsStyleRecalc() || NeedsWhitespaceLayoutObject()) {
     SetNeedsReattachLayoutTree();
   }
+#endif
 }
 
 void Text::RebuildTextLayoutTree(WhitespaceAttacher& whitespace_attacher) {
@@ -438,7 +450,7 @@ void Text::RebuildTextLayoutTree(WhitespaceAttacher& whitespace_attacher) {
   DCHECK(NeedsReattachLayoutTree());
   DCHECK(parentNode());
 
-  ReattachLayoutTree();
+  ASSERT(false); // BKTODO: ReattachLayoutTree();
   whitespace_attacher.DidReattachText(this);
   ClearNeedsReattachLayoutTree();
 }
@@ -469,10 +481,13 @@ static bool ShouldUpdateLayoutByReattaching(const Text& text_node,
     return true;
   }
   if (text_layout_object->IsTextFragment()) {
+    ASSERT(false); // BKTODO:
+#if 0
     // Changes of |textNode| may change first letter part, so we should
     // reattach.
     return ToLayoutTextFragment(text_layout_object)
         ->GetFirstLetterPseudoElement();
+#endif
   }
   return false;
 }
@@ -483,7 +498,7 @@ void Text::UpdateTextLayoutObject(unsigned offset_of_replaced_data,
     return;
   LayoutText* text_layout_object = GetLayoutObject();
   if (ShouldUpdateLayoutByReattaching(*this, text_layout_object)) {
-    LazyReattachIfAttached();
+    ASSERT(false); // BKTODO: LazyReattachIfAttached();
     return;
   }
 
