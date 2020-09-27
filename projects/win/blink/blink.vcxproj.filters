@@ -2960,6 +2960,18 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_style_utilities.cc">
       <Filter>renderer\core\editing</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_behavior.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\search_buffer.cc">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\kill_ring_none.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\empty_clients.cc">
+      <Filter>renderer\core\loader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -8282,6 +8294,21 @@
       <Filter>renderer\core\editing</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\writing_direction.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_behavior.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\search_buffer.h">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\kill_ring.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\empty_clients.h">
+      <Filter>renderer\core\loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_behavior_types.h">
       <Filter>renderer\core\editing</Filter>
     </ClInclude>
   </ItemGroup>

@@ -606,6 +606,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\whitespace_attacher.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\caret_display_item_client.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\drag_caret.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_behavior.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_style.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_style_utilities.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_utilities.cc" />
@@ -615,11 +616,13 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\bit_stack.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\forwards_text_buffer.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\fully_clipped_state_stack.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\search_buffer.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_buffer_base.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_iterator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_iterator_behavior.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_iterator_text_node_handler.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_iterator_text_state.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\kill_ring_none.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\local_caret_rect.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\plain_text_range.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\position.cc" />
@@ -752,6 +755,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_run_constructor.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\base_fetch_context.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\document_loader.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\empty_clients.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_fetch_context.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_loader.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_loader_state_machine.cc" />
@@ -2142,6 +2146,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\whitespace_attacher.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\caret_display_item_client.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\drag_caret.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_behavior.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_behavior_types.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_boundary.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_strategy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_style.h" />
@@ -2155,11 +2161,13 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\bit_stack.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\forwards_text_buffer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\fully_clipped_state_stack.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\search_buffer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_buffer_base.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_iterator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_iterator_behavior.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_iterator_text_node_handler.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_iterator_text_state.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\kill_ring.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\local_caret_rect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\plain_text_range.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\position.h" />
@@ -2335,6 +2343,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_run_constructor.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\base_fetch_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\document_loader.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\empty_clients.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_fetch_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_loader.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\frame_loader_state_machine.h" />

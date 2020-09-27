@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: search_buffer.h
+// Description: SearchBuffer Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2006, 2009 Apple Inc. All rights reserved.
  *
@@ -30,7 +41,7 @@
 
 #include "base/macros.h"
 #include "third_party/blink/renderer/core/core_export.h"
-#include "third_party/blink/renderer/core/editing/finder/find_options.h"
+// BKTODO: #include "third_party/blink/renderer/core/editing/finder/find_options.h"
 #include "third_party/blink/renderer/core/editing/forward.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/forward.h"
@@ -50,7 +61,9 @@ class SearchBuffer {
   STACK_ALLOCATED();
 
  public:
+#if 0 // BKTODO:
   SearchBuffer(const String& target, FindOptions);
+#endif
   ~SearchBuffer();
 
   // Returns number of characters appended; guaranteed to be in the range
@@ -76,7 +89,9 @@ class SearchBuffer {
   bool IsWordStartMatch(wtf_size_t start, wtf_size_t length) const;
 
   Vector<UChar> target_;
+#if 0 // BKTODO:
   FindOptions options_;
+#endif
 
   Vector<UChar> buffer_;
   wtf_size_t overlap_;
@@ -94,6 +109,7 @@ class SearchBuffer {
   DISALLOW_COPY_AND_ASSIGN(SearchBuffer);
 };
 
+#if 0 // BKTODO:
 CORE_EXPORT EphemeralRange FindPlainText(const EphemeralRange& input_range,
                                          const String&,
                                          FindOptions);
@@ -101,6 +117,7 @@ CORE_EXPORT EphemeralRangeInFlatTree
 FindPlainText(const EphemeralRangeInFlatTree& input_range,
               const String&,
               FindOptions);
+#endif
 
 }  // namespace blink
 

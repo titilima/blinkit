@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: editor.cc
+// Description: Editor Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2008 Nokia Corporation and/or its subsidiary(-ies)
@@ -26,21 +37,24 @@
 
 #include "third_party/blink/renderer/core/editing/editor.h"
 
+#if 0 // BKTODO:
 #include "third_party/blink/public/platform/web_scroll_into_view_params.h"
 #include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
 #include "third_party/blink/renderer/core/clipboard/data_object.h"
 #include "third_party/blink/renderer/core/clipboard/data_transfer.h"
 #include "third_party/blink/renderer/core/clipboard/data_transfer_access_policy.h"
 #include "third_party/blink/renderer/core/clipboard/system_clipboard.h"
+#endif
 #include "third_party/blink/renderer/core/css/css_computed_style_declaration.h"
 #include "third_party/blink/renderer/core/css/css_property_value_set.h"
 #include "third_party/blink/renderer/core/css_property_names.h"
 #include "third_party/blink/renderer/core/dom/document_fragment.h"
 #include "third_party/blink/renderer/core/dom/element_traversal.h"
-#include "third_party/blink/renderer/core/dom/events/scoped_event_queue.h"
+// BKTODO: #include "third_party/blink/renderer/core/dom/events/scoped_event_queue.h"
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
 #include "third_party/blink/renderer/core/dom/parser_content_policy.h"
 #include "third_party/blink/renderer/core/dom/text.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/editing/commands/apply_style_command.h"
 #include "third_party/blink/renderer/core/editing/commands/delete_selection_command.h"
 #include "third_party/blink/renderer/core/editing/commands/indent_outdent_command.h"
@@ -49,43 +63,52 @@
 #include "third_party/blink/renderer/core/editing/commands/simplify_markup_command.h"
 #include "third_party/blink/renderer/core/editing/commands/typing_command.h"
 #include "third_party/blink/renderer/core/editing/commands/undo_stack.h"
+#endif
 #include "third_party/blink/renderer/core/editing/editing_behavior.h"
 #include "third_party/blink/renderer/core/editing/editing_style_utilities.h"
 #include "third_party/blink/renderer/core/editing/editing_tri_state.h"
 #include "third_party/blink/renderer/core/editing/editing_utilities.h"
 #include "third_party/blink/renderer/core/editing/ephemeral_range.h"
 #include "third_party/blink/renderer/core/editing/frame_selection.h"
-#include "third_party/blink/renderer/core/editing/ime/input_method_controller.h"
+// BKTODO: #include "third_party/blink/renderer/core/editing/ime/input_method_controller.h"
 #include "third_party/blink/renderer/core/editing/iterators/search_buffer.h"
 #include "third_party/blink/renderer/core/editing/kill_ring.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/editing/markers/document_marker.h"
 #include "third_party/blink/renderer/core/editing/markers/document_marker_controller.h"
+#endif
 #include "third_party/blink/renderer/core/editing/selection_template.h"
 #include "third_party/blink/renderer/core/editing/serializers/serialization.h"
 #include "third_party/blink/renderer/core/editing/set_selection_options.h"
-#include "third_party/blink/renderer/core/editing/spellcheck/spell_checker.h"
+// BKTODO: #include "third_party/blink/renderer/core/editing/spellcheck/spell_checker.h"
 #include "third_party/blink/renderer/core/editing/visible_position.h"
 #include "third_party/blink/renderer/core/editing/visible_units.h"
 #include "third_party/blink/renderer/core/editing/writing_direction.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/event_names.h"
 #include "third_party/blink/renderer/core/events/keyboard_event.h"
 #include "third_party/blink/renderer/core/events/text_event.h"
+#endif
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_text_area_element.h"
 #include "third_party/blink/renderer/core/html/html_image_element.h"
+#endif
 #include "third_party/blink/renderer/core/html_names.h"
-#include "third_party/blink/renderer/core/input/event_handler.h"
+// BKTODO: #include "third_party/blink/renderer/core/input/event_handler.h"
 #include "third_party/blink/renderer/core/input_type_names.h"
 #include "third_party/blink/renderer/core/layout/hit_test_result.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 #include "third_party/blink/renderer/core/loader/empty_clients.h"
 #include "third_party/blink/renderer/core/loader/resource/image_resource_content.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/page/drag_data.h"
 #include "third_party/blink/renderer/core/page/focus_controller.h"
+#endif
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/scroll/scroll_alignment.h"
@@ -94,15 +117,18 @@
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 namespace {
 
 bool IsInPasswordFieldWithUnrevealedPassword(const Position& position) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (auto* input = ToHTMLInputElementOrNull(EnclosingTextControl(position))) {
     return (input->type() == InputTypeNames::password) &&
            !input->ShouldRevealPassword();
   }
+#endif
   return false;
 }
 
@@ -115,6 +141,9 @@ SelectionInDOMTree Editor::SelectionForCommand(Event* event) {
       GetFrameSelection().GetSelectionInDOMTree();
   if (!event)
     return selection;
+  ASSERT(false); // BKTODO:
+  return selection;
+#if 0
   // If the target is a text control, and the current selection is outside of
   // its shadow tree, then use the saved selection for that text control.
   if (!IsTextControl(*event->target()->ToNode()))
@@ -129,15 +158,20 @@ SelectionInDOMTree Editor::SelectionForCommand(Event* event) {
   if (select.IsNone())
     return selection;
   return select;
+#endif
 }
 
 // Function considers Mac editing behavior a fallback when Page or Settings is
 // not available.
 EditingBehavior Editor::Behavior() const {
+  ASSERT(false); // BKTODO:
+  return EditingBehavior(kEditingMacBehavior);
+#if 0
   if (!GetFrame().GetSettings())
     return EditingBehavior(kEditingMacBehavior);
 
   return EditingBehavior(GetFrame().GetSettings()->GetEditingBehaviorType());
+#endif
 }
 
 static bool IsCaretAtStartOfWrappedLine(const FrameSelection& selection) {
@@ -165,6 +199,9 @@ static bool IsCaretAtStartOfWrappedLine(const FrameSelection& selection) {
 }
 
 bool Editor::HandleTextEvent(TextEvent* event) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // Default event handling for Drag and Drop will be handled by DragController
   // so we leave the event for it.
   if (event->IsDrop())
@@ -211,21 +248,30 @@ bool Editor::HandleTextEvent(TextEvent* event) {
   }
 
   return InsertTextWithoutSendingTextEvent(data, false, event);
+#endif
 }
 
 bool Editor::CanEdit() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return GetFrame()
       .Selection()
       .ComputeVisibleSelectionInDOMTreeDeprecated()
       .RootEditableElement();
+#endif
 }
 
 bool Editor::CanEditRichly() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return IsRichlyEditablePosition(
       GetFrame()
           .Selection()
           .ComputeVisibleSelectionInDOMTreeDeprecated()
           .Base());
+#endif
 }
 
 bool Editor::CanCut() const {
@@ -233,6 +279,9 @@ bool Editor::CanCut() const {
 }
 
 bool Editor::CanCopy() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (ImageElementFromImageDocument(GetFrame().GetDocument()))
     return true;
   FrameSelection& selection = GetFrameSelection();
@@ -244,6 +293,7 @@ bool Editor::CanCopy() const {
   return visible_selection.IsRange() &&
          !IsInPasswordFieldWithUnrevealedPassword(
              ToPositionInDOMTree(visible_selection.Start()));
+#endif
 }
 
 bool Editor::CanPaste() const {
@@ -257,14 +307,20 @@ bool Editor::CanDelete() const {
 }
 
 bool Editor::SmartInsertDeleteEnabled() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (Settings* settings = GetFrame().GetSettings())
     return settings->GetSmartInsertDeleteEnabled();
+#endif
   return false;
 }
 
 bool Editor::IsSelectTrailingWhitespaceEnabled() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (Settings* settings = GetFrame().GetSettings())
     return settings->GetSelectTrailingWhitespaceEnabled();
+#endif
   return false;
 }
 
@@ -272,6 +328,8 @@ void Editor::DeleteSelectionWithSmartDelete(
     DeleteMode delete_mode,
     InputEvent::InputType input_type,
     const Position& reference_move_position) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (GetFrame()
           .Selection()
           .ComputeVisibleSelectionInDOMTreeDeprecated()
@@ -289,6 +347,7 @@ void Editor::DeleteSelectionWithSmartDelete(
           .Build(),
       input_type, reference_move_position)
       ->Apply();
+#endif
 }
 
 void Editor::ReplaceSelectionWithFragment(DocumentFragment* fragment,
@@ -296,6 +355,8 @@ void Editor::ReplaceSelectionWithFragment(DocumentFragment* fragment,
                                           bool smart_replace,
                                           bool match_style,
                                           InputEvent::InputType input_type) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!GetFrame().GetDocument()->NeedsLayoutTreeUpdate());
   const VisibleSelection& selection =
       GetFrameSelection().ComputeVisibleSelectionInDOMTree();
@@ -315,6 +376,7 @@ void Editor::ReplaceSelectionWithFragment(DocumentFragment* fragment,
   ReplaceSelectionCommand::Create(*GetFrame().GetDocument(), fragment, options,
                                   input_type)
       ->Apply();
+#endif
   RevealSelectionAfterEditingOperation();
 }
 
@@ -322,14 +384,19 @@ void Editor::ReplaceSelectionWithText(const String& text,
                                       bool select_replacement,
                                       bool smart_replace,
                                       InputEvent::InputType input_type) {
+  ASSERT(false); // BKTODO:
+#if 0
   ReplaceSelectionWithFragment(CreateFragmentFromText(SelectedRange(), text),
                                select_replacement, smart_replace, true,
                                input_type);
+#endif
 }
 
 void Editor::ReplaceSelectionAfterDragging(DocumentFragment* fragment,
                                            InsertMode insert_mode,
                                            DragSourceType drag_source_type) {
+  ASSERT(false); // BKTODO:
+#if 0
   ReplaceSelectionCommand::CommandOptions options =
       ReplaceSelectionCommand::kSelectReplacement |
       ReplaceSelectionCommand::kPreventNesting;
@@ -341,6 +408,7 @@ void Editor::ReplaceSelectionAfterDragging(DocumentFragment* fragment,
   ReplaceSelectionCommand::Create(*GetFrame().GetDocument(), fragment, options,
                                   InputEvent::InputType::kInsertFromDrop)
       ->Apply();
+#endif
 }
 
 bool Editor::DeleteSelectionAfterDraggingWithEvents(
@@ -381,6 +449,8 @@ bool Editor::ReplaceSelectionAfterDraggingWithEvents(
   if (!drop_target || !drop_target->isConnected())
     return true;
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Dispatch 'beforeinput'.
   DataTransfer* data_transfer = DataTransfer::Create(
       DataTransfer::kDragAndDrop, DataTransferAccessPolicy::kReadable,
@@ -398,18 +468,25 @@ bool Editor::ReplaceSelectionAfterDraggingWithEvents(
 
   if (should_insert && drop_target->isConnected())
     ReplaceSelectionAfterDragging(fragment, insert_mode, drag_source_type);
+#endif
 
   return true;
 }
 
 EphemeralRange Editor::SelectedRange() {
+  ASSERT(false); // BKTODO:
+  return EphemeralRange();
+#if 0
   return GetFrame()
       .Selection()
       .ComputeVisibleSelectionInDOMTreeDeprecated()
       .ToNormalizedEphemeralRange();
+#endif
 }
 
 void Editor::RespondToChangedContents(const Position& position) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (AXObjectCache* cache =
           GetFrame().GetDocument()->ExistingAXObjectCache()) {
     cache->HandleEditableTextContentChanged(position.AnchorNode());
@@ -417,15 +494,21 @@ void Editor::RespondToChangedContents(const Position& position) {
 
   GetSpellChecker().RespondToChangedContents();
   frame_->Client()->DidChangeContents();
+#endif
 }
 
 void Editor::RegisterCommandGroup(CompositeEditCommand* command_group_wrapper) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(command_group_wrapper->IsCommandGroupWrapper());
   last_edit_command_ = command_group_wrapper;
+#endif
 }
 
 void Editor::ApplyParagraphStyle(CSSPropertyValueSet* style,
                                  InputEvent::InputType input_type) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (GetFrame()
           .Selection()
           .ComputeVisibleSelectionInDOMTreeDeprecated()
@@ -437,6 +520,7 @@ void Editor::ApplyParagraphStyle(CSSPropertyValueSet* style,
                             EditingStyle::Create(style), input_type,
                             ApplyStyleCommand::kForceBlockProperties)
       ->Apply();
+#endif
 }
 
 void Editor::ApplyParagraphStyleToSelection(CSSPropertyValueSet* style,
@@ -453,7 +537,7 @@ Editor* Editor::Create(LocalFrame& frame) {
 
 Editor::Editor(LocalFrame& frame)
     : frame_(&frame),
-      undo_stack_(UndoStack::Create()),
+      // BKTODO: undo_stack_(UndoStack::Create()),
       prevent_reveal_selection_(0),
       should_start_new_kill_ring_sequence_(false),
       // This is off by default, since most editors want this behavior (this
@@ -470,19 +554,26 @@ void Editor::Clear() {
   should_style_with_css_ = false;
   default_paragraph_separator_ = EditorParagraphSeparator::kIsDiv;
   last_edit_command_ = nullptr;
+  ASSERT(false); // BKTODO:
+#if 0
   undo_stack_->Clear();
+#endif
 }
 
+#if 0 // BKTODO:
 bool Editor::InsertText(const String& text, KeyboardEvent* triggering_event) {
   return GetFrame().GetEventHandler().HandleTextInputEvent(text,
                                                            triggering_event);
 }
+#endif
 
 bool Editor::InsertTextWithoutSendingTextEvent(
     const String& text,
     bool select_inserted_text,
     TextEvent* triggering_event,
     InputEvent::InputType input_type) {
+  ASSERT(false); // BKTODO:
+#if 0
   const VisibleSelection& selection =
       CreateVisibleSelection(SelectionForCommand(triggering_event));
   if (!selection.IsContentEditable())
@@ -510,6 +601,7 @@ bool Editor::InsertTextWithoutSendingTextEvent(
           ScrollAlignment::kAlignCenterIfNeeded);
     }
   }
+#endif
 
   return true;
 }
@@ -522,8 +614,11 @@ bool Editor::InsertLineBreak() {
       GetFrameSelection().ComputeVisibleSelectionInDOMTree().VisibleStart();
   bool align_to_edge = IsEndOfEditableOrNonEditableContent(caret);
   DCHECK(GetFrame().GetDocument());
+  ASSERT(false); // BKTODO:
+#if 0
   if (!TypingCommand::InsertLineBreak(*GetFrame().GetDocument()))
     return false;
+#endif
   RevealSelectionAfterEditingOperation(
       align_to_edge ? ScrollAlignment::kAlignToEdgeIfNeeded
                     : ScrollAlignment::kAlignCenterIfNeeded);
@@ -542,9 +637,12 @@ bool Editor::InsertParagraphSeparator() {
       GetFrameSelection().ComputeVisibleSelectionInDOMTree().VisibleStart();
   bool align_to_edge = IsEndOfEditableOrNonEditableContent(caret);
   DCHECK(GetFrame().GetDocument());
+  ASSERT(false); // BKTODO:
+#if 0
   EditingState editing_state;
   if (!TypingCommand::InsertParagraphSeparator(*GetFrame().GetDocument()))
     return false;
+#endif
   RevealSelectionAfterEditingOperation(
       align_to_edge ? ScrollAlignment::kAlignToEdgeIfNeeded
                     : ScrollAlignment::kAlignCenterIfNeeded);
@@ -565,6 +663,8 @@ static void CountEditingEvent(ExecutionContext* execution_context,
     return;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsHTMLInputElement(node)) {
     UseCounter::Count(execution_context, feature_on_input);
     return;
@@ -585,6 +685,7 @@ static void CountEditingEvent(ExecutionContext* execution_context,
     UseCounter::Count(execution_context, feature_on_text_area);
     return;
   }
+#endif
 
   UseCounter::Count(execution_context, feature_on_content_editable);
 }
@@ -594,7 +695,9 @@ void Editor::CountEvent(ExecutionContext* execution_context,
   if (!execution_context)
     return;
 
-  if (event.type() == EventTypeNames::textInput) {
+  ASSERT(false); // BKTODO:
+#if 0
+  if (event.type() == event_type_names::kTextInput) {
     CountEditingEvent(execution_context, event,
                       WebFeature::kTextInputEventOnInput,
                       WebFeature::kTextInputEventOnTextArea,
@@ -620,6 +723,7 @@ void Editor::CountEvent(ExecutionContext* execution_context,
         WebFeature::kWebkitEditableContentChangedOnContentEditable,
         WebFeature::kWebkitEditableContentChangedOnNotNode);
   }
+#endif
 }
 
 void Editor::CopyImage(const HitTestResult& result) {
@@ -628,22 +732,38 @@ void Editor::CopyImage(const HitTestResult& result) {
 }
 
 bool Editor::CanUndo() {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return undo_stack_->CanUndo();
+#endif
 }
 
 void Editor::Undo() {
+  ASSERT(false); // BKTODO:
+#if 0
   undo_stack_->Undo();
+#endif
 }
 
 bool Editor::CanRedo() {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return undo_stack_->CanRedo();
+#endif
 }
 
 void Editor::Redo() {
+  ASSERT(false); // BKTODO:
+#if 0
   undo_stack_->Redo();
+#endif
 }
 
 void Editor::SetBaseWritingDirection(WritingDirection direction) {
+  ASSERT(false); // BKTODO:
+#if 0
   Element* focused_element = GetFrame().GetDocument()->FocusedElement();
   if (IsTextControl(focused_element)) {
     if (direction == WritingDirection::kNatural)
@@ -653,6 +773,7 @@ void Editor::SetBaseWritingDirection(WritingDirection direction) {
     focused_element->DispatchInputEvent();
     return;
   }
+#endif
 
   MutableCSSPropertyValueSet* style =
       MutableCSSPropertyValueSet::Create(kHTMLQuirksMode);
@@ -679,13 +800,18 @@ void Editor::AddToKillRing(const EphemeralRange& range) {
   if (should_start_new_kill_ring_sequence_)
     GetKillRing().StartNewSequence();
 
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!GetFrame().GetDocument()->NeedsLayoutTreeUpdate());
   String text = PlainText(range);
   GetKillRing().Append(text);
+#endif
   should_start_new_kill_ring_sequence_ = false;
 }
 
 EphemeralRange Editor::RangeForPoint(const IntPoint& frame_point) const {
+  ASSERT(false); // BKTODO:
+#if 0
   const PositionWithAffinity position_with_affinity =
       GetFrame().PositionForPoint(frame_point);
   if (position_with_affinity.IsNull())
@@ -709,6 +835,7 @@ EphemeralRange Editor::RangeForPoint(const IntPoint& frame_point) const {
     if (rect.Contains(frame_point))
       return EphemeralRange(next_character_range);
   }
+#endif
 
   return EphemeralRange();
 }
@@ -726,6 +853,8 @@ void Editor::ComputeAndSetTypingStyle(CSSPropertyValueSet* style,
   else
     typing_style_ = EditingStyle::Create(style);
 
+  ASSERT(false); // BKTODO:
+#if 0
   typing_style_->PrepareToApplyAt(
       GetFrame()
           .Selection()
@@ -733,17 +862,22 @@ void Editor::ComputeAndSetTypingStyle(CSSPropertyValueSet* style,
           .VisibleStart()
           .DeepEquivalent(),
       EditingStyle::kPreserveWritingDirection);
+#endif
 
   // Handle block styles, substracting these from the typing style.
   EditingStyle* block_style = typing_style_->ExtractAndRemoveBlockProperties();
   if (!block_style->IsEmpty()) {
     DCHECK(GetFrame().GetDocument());
+    ASSERT(false); // BKTODO:
+#if 0
     ApplyStyleCommand::Create(*GetFrame().GetDocument(), block_style,
                               input_type)
         ->Apply();
+#endif
   }
 }
 
+#if 0 // BKTODO:
 bool Editor::FindString(LocalFrame& frame,
                         const String& target,
                         FindOptions options) {
@@ -890,29 +1024,44 @@ Range* Editor::FindRangeOfString(Document& document,
   return FindRangeOfStringAlgorithm<EditingInFlatTreeStrategy>(
       document, target, reference, options);
 }
+#endif
 
 void Editor::SetMarkedTextMatchesAreHighlighted(bool flag) {
   if (flag == are_marked_text_matches_highlighted_)
     return;
 
   are_marked_text_matches_highlighted_ = flag;
+  ASSERT(false); // BKTODO:
+#if 0
   GetFrame().GetDocument()->Markers().RepaintMarkers(
       DocumentMarker::MarkerTypes::TextMatch());
+#endif
 }
 
 void Editor::RespondToChangedSelection() {
+  ASSERT(false); // BKTODO:
+#if 0
   GetSpellChecker().RespondToChangedSelection();
   frame_->Client()->DidChangeSelection(
       GetFrameSelection().GetSelectionInDOMTree().Type() != kRangeSelection);
   SetStartNewKillRingSequence(true);
+#endif
 }
 
 SpellChecker& Editor::GetSpellChecker() const {
+  ASSERT(false); // BKTODO:
+  exit(0);
+#if 0
   return GetFrame().GetSpellChecker();
+#endif
 }
 
 FrameSelection& Editor::GetFrameSelection() const {
+  ASSERT(false); // BKTODO:
+  exit(0);
+#if 0
   return GetFrame().Selection();
+#endif
 }
 
 void Editor::SetMark() {
@@ -926,7 +1075,10 @@ void Editor::ToggleOverwriteModeEnabled() {
 }
 
 void Editor::ReplaceSelection(const String& text) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!GetFrame().GetDocument()->NeedsLayoutTreeUpdate());
+#endif
   bool select_replacement = Behavior().ShouldSelectReplacement();
   bool smart_replace = false;
   ReplaceSelectionWithText(text, select_replacement, smart_replace,

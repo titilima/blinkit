@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: empty_clients.h
+// Description: Empty Client Classes
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Eric Seidel (eric@webkit.org)
  * Copyright (C) 2008, 2009, 2010, 2011, 2012 Apple Inc. All rights reserved.
@@ -32,22 +43,29 @@
 #include <memory>
 
 #include "base/macros.h"
+#if 0 // BKTODO:
 #include "cc/paint/paint_canvas.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
+#endif
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/public/platform/web_focus_type.h"
+#if 0 // BKTODO:
 #include "third_party/blink/public/platform/web_menu_source_type.h"
 #include "third_party/blink/public/platform/web_screen_info.h"
 #include "third_party/blink/public/platform/web_spell_check_panel_host_client.h"
+#endif
 #include "third_party/blink/public/platform/web_url_loader.h"
 #include "third_party/blink/renderer/core/core_export.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/frame/content_settings_client.h"
+#endif
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
-#include "third_party/blink/renderer/core/frame/remote_frame_client.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/drag_image.h"
 #include "third_party/blink/renderer/platform/exported/wrapped_resource_request.h"
+#endif
 #include "third_party/blink/renderer/platform/geometry/float_point.h"
 #include "third_party/blink/renderer/platform/geometry/float_rect.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
@@ -55,7 +73,6 @@
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_error.h"
 #include "third_party/blink/renderer/platform/wtf/forward.h"
-#include "v8/include/v8.h"
 
 /*
  This file holds empty Client stubs for use by WebCore.
@@ -77,7 +94,9 @@ namespace blink {
 
 class CORE_EXPORT EmptyChromeClient : public ChromeClient {
  public:
+#if 0 // BKTODO:
   static EmptyChromeClient* Create() { return new EmptyChromeClient; }
+#endif
 
   ~EmptyChromeClient() override = default;
   void ChromeDestroyed() override {}
@@ -94,6 +113,7 @@ class CORE_EXPORT EmptyChromeClient : public ChromeClient {
   void TakeFocus(WebFocusType) override {}
 
   void FocusedNodeChanged(Node*, Node*) override {}
+#if 0 // BKTODO:
   Page* CreateWindow(LocalFrame*,
                      const FrameLoadRequest&,
                      const WebWindowFeatures&,
@@ -101,6 +121,7 @@ class CORE_EXPORT EmptyChromeClient : public ChromeClient {
                      SandboxFlags) override {
     return nullptr;
   }
+#endif
   void Show(NavigationPolicy) override {}
 
   void DidOverscroll(const FloatSize&,
@@ -113,17 +134,20 @@ class CORE_EXPORT EmptyChromeClient : public ChromeClient {
 
   bool HadFormInteraction() const override { return false; }
 
+#if 0 // BKTODO:
   void StartDragging(LocalFrame*,
                      const WebDragData&,
                      WebDragOperationsMask,
                      const SkBitmap& drag_image,
                      const WebPoint& drag_image_offset) override {}
+#endif
   bool AcceptsLoadDrops() const override { return true; }
 
   bool ShouldReportDetailedMessageForSource(LocalFrame&,
                                             const String&) override {
     return false;
   }
+#if 0 // BKTODO:
   void AddMessageToConsole(LocalFrame*,
                            MessageSource,
                            MessageLevel,
@@ -131,6 +155,7 @@ class CORE_EXPORT EmptyChromeClient : public ChromeClient {
                            unsigned,
                            const String&,
                            const String&) override {}
+#endif
 
   bool CanOpenBeforeUnloadConfirmPanel() override { return false; }
   bool OpenBeforeUnloadConfirmPanelDelegate(LocalFrame*, bool) override {
@@ -153,7 +178,9 @@ class CORE_EXPORT EmptyChromeClient : public ChromeClient {
   }
 
   bool HasOpenedPopup() const override { return false; }
+#if 0 // BKTODO:
   PopupMenu* OpenPopupMenu(LocalFrame&, HTMLSelectElement&) override;
+#endif
   PagePopup* OpenPagePopup(PagePopupClient*) override { return nullptr; }
   void ClosePagePopup(PagePopup*) override {}
   DOMWindow* PagePopupWindowForTesting() const override { return nullptr; }
@@ -168,7 +195,9 @@ class CORE_EXPORT EmptyChromeClient : public ChromeClient {
     return r;
   }
   float WindowToViewportScalar(const float s) const override { return s; }
+#if 0 // BKTODO:
   WebScreenInfo GetScreenInfo() const override { return WebScreenInfo(); }
+#endif
   void ContentsSizeChanged(LocalFrame*, const IntSize&) const override {}
 
   void ShowMouseOverURL(const HitTestResult&) override {}
@@ -197,6 +226,7 @@ class CORE_EXPORT EmptyChromeClient : public ChromeClient {
   void AttachRootLayer(scoped_refptr<cc::Layer>,
                        LocalFrame* local_root) override;
 
+#if 0 // BKTODO:
   void SetEventListenerProperties(LocalFrame*,
                                   cc::EventListenerClass,
                                   cc::EventListenerProperties) override {}
@@ -205,6 +235,7 @@ class CORE_EXPORT EmptyChromeClient : public ChromeClient {
       cc::EventListenerClass event_class) const override {
     return cc::EventListenerProperties::kNone;
   }
+#endif
   void SetHasScrollEventHandlers(LocalFrame*, bool) override {}
   void SetNeedsLowLatencyInput(LocalFrame*, bool) override {}
   void RequestUnbufferedInputEvents(LocalFrame*) override {}
@@ -225,6 +256,7 @@ class CORE_EXPORT EmptyChromeClient : public ChromeClient {
 
 class CORE_EXPORT EmptyLocalFrameClient : public LocalFrameClient {
  public:
+#if 0 // BKTODO:
   static EmptyLocalFrameClient* Create() { return new EmptyLocalFrameClient; }
   ~EmptyLocalFrameClient() override = default;
 
@@ -393,10 +425,12 @@ class CORE_EXPORT EmptyLocalFrameClient : public LocalFrameClient {
 
   ContentSettingsClient content_settings_client_;
   service_manager::InterfaceProvider interface_provider_;
+#endif
 
   DISALLOW_COPY_AND_ASSIGN(EmptyLocalFrameClient);
 };
 
+#if 0 // BKTODO:
 class EmptySpellCheckPanelHostClient : public WebSpellCheckPanelHostClient {
   USING_FAST_MALLOC(EmptySpellCheckPanelHostClient);
 
@@ -409,53 +443,11 @@ class EmptySpellCheckPanelHostClient : public WebSpellCheckPanelHostClient {
 
   DISALLOW_COPY_AND_ASSIGN(EmptySpellCheckPanelHostClient);
 };
+#endif
 
-class CORE_EXPORT EmptyRemoteFrameClient : public RemoteFrameClient {
- public:
-  EmptyRemoteFrameClient();
-
-  // RemoteFrameClient implementation.
-  void Navigate(const ResourceRequest&,
-                bool should_replace_current_entry,
-                mojom::blink::BlobURLTokenPtr) override {}
-  unsigned BackForwardLength() override { return 0; }
-  void CheckCompleted() override {}
-  void ForwardPostMessage(MessageEvent*,
-                          scoped_refptr<const SecurityOrigin> target,
-                          LocalFrame* source_frame,
-                          bool has_user_gesture) const override {}
-  void FrameRectsChanged(const IntRect& local_frame_rect,
-                         const IntRect& transformed_frame_rect) override {}
-  void UpdateRemoteViewportIntersection(const IntRect& viewport_intersection,
-                                        bool occluded_or_obscured) override {}
-  void AdvanceFocus(WebFocusType, LocalFrame* source) override {}
-  void VisibilityChanged(bool visible) override {}
-  void SetIsInert(bool) override {}
-  void SetInheritedEffectiveTouchAction(TouchAction) override {}
-  void UpdateRenderThrottlingStatus(bool is_throttled,
-                                    bool subtree_throttled) override {}
-  uint32_t Print(const IntRect& rect, cc::PaintCanvas* canvas) const override {
-    return 0;
-  }
-
-  // FrameClient implementation.
-  bool InShadowTree() const override { return false; }
-  void Detached(FrameDetachType) override {}
-  Frame* Opener() const override { return nullptr; }
-  void SetOpener(Frame*) override {}
-  Frame* Parent() const override { return nullptr; }
-  Frame* Top() const override { return nullptr; }
-  Frame* NextSibling() const override { return nullptr; }
-  Frame* FirstChild() const override { return nullptr; }
-  void FrameFocused() const override {}
-  base::UnguessableToken GetDevToolsFrameToken() const override {
-    return base::UnguessableToken::Create();
-  };
-
-  DISALLOW_COPY_AND_ASSIGN(EmptyRemoteFrameClient);
-};
-
+#if 0 // BKTODO:
 CORE_EXPORT void FillWithEmptyClients(Page::PageClients&);
+#endif
 
 }  // namespace blink
 
