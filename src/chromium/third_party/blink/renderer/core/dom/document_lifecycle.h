@@ -102,6 +102,34 @@ public:
 
     bool StateAllowsTreeMutations(void) const;
     bool StateTransitionDisallowed(void) const { return m_disallowTransitionCount > 0; }
+    void IncrementNoTransitionCount(void) { ++m_disallowTransitionCount; }
+    void DecrementNoTransitionCount(void)
+    {
+        ASSERT(m_disallowTransitionCount > 0);
+        --m_disallowTransitionCount;
+    }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    // Within this scope, state transitions are not allowed.
+    // Any attempts to advance or rewind will result in a DCHECK.
+    class DisallowTransitionScope
+    {
+        STACK_ALLOCATED();
+    public:
+        explicit DisallowTransitionScope(DocumentLifecycle &documentLifecycle) : m_documentLifecycle(documentLifecycle)
+        {
+            m_documentLifecycle.IncrementNoTransitionCount();
+        }
+        ~DisallowTransitionScope(void)
+        {
+            m_documentLifecycle.DecrementNoTransitionCount();
+        }
+    private:
+        DocumentLifecycle &m_documentLifecycle;
+        DISALLOW_COPY_AND_ASSIGN(DisallowTransitionScope);
+    };
+#endif
+
 private:
 #ifndef NDEBUG
     bool CanAdvanceTo(LifecycleState nextState) const;

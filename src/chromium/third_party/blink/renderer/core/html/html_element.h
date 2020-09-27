@@ -24,6 +24,8 @@ protected:
     HTMLElement(const QualifiedName &tagName, Document &document, ConstructionType type);
 };
 
+DEFINE_ELEMENT_TYPE_CASTS(HTMLElement, IsHTMLElement());
+
 } // namespace blink
 
 #include "third_party/blink/renderer/core/html_element_type_helpers.h"

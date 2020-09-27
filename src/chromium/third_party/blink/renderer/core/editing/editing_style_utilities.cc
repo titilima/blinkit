@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: editing_style_utilities.cc
+// Description: EditingStyleUtilities Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2009 Apple Computer, Inc.
  * Copyright (C) 2010, 2011 Google Inc. All rights reserved.
@@ -115,11 +126,14 @@ EditingStyle* EditingStyleUtilities::CreateWrappingStyleForSerialization(
   for (Node& node : NodeTraversal::InclusiveAncestorsOf(*context)) {
     if (node.IsDocumentNode())
       break;
+    ASSERT(false); // BKTODO:
+#if 0
     if (node.IsStyledElement() && !IsMailHTMLBlockquoteElement(&node)) {
       wrapping_style->MergeInlineAndImplicitStyleOfElement(
           ToElement(&node), EditingStyle::kDoNotOverrideValues,
           EditingStyle::kEditingPropertiesInEffect);
     }
+#endif
   }
 
   return wrapping_style;
@@ -134,7 +148,7 @@ EditingStyle* EditingStyleUtilities::CreateStyleAtSelectionStart(
 
   Document& document = *selection.Start().GetDocument();
 
-  DCHECK(!document.NeedsLayoutTreeUpdate());
+  ASSERT(false); // BKTODO: DCHECK(!document.NeedsLayoutTreeUpdate());
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       document.Lifecycle());
 
