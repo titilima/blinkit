@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: drag_caret.h
+// Description: DragCaret Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights
  * reserved.
@@ -66,8 +77,6 @@ class DragCaret final : public GarbageCollectedFinalized<DragCaret>,
   const PositionWithAffinity& CaretPosition() { return position_; }
   void SetCaretPosition(const PositionWithAffinity&);
   void Clear() { SetCaretPosition(PositionWithAffinity()); }
-
-  void Trace(blink::Visitor*) override;
 
  private:
   DragCaret();

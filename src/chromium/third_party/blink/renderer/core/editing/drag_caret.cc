@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: drag_caret.cc
+// Description: DragCaret Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2008, 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -94,11 +105,6 @@ void DragCaret::NodeWillBeRemoved(Node& node) {
   if (!node.IsShadowIncludingInclusiveAncestorOf(anchor_node))
     return;
   Clear();
-}
-
-void DragCaret::Trace(blink::Visitor* visitor) {
-  visitor->Trace(position_);
-  SynchronousMutationObserver::Trace(visitor);
 }
 
 bool DragCaret::ShouldPaintCaret(const LayoutBlock& block) const {

@@ -615,6 +615,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\serializers\markup_formatter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\serializers\serialization.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\set_selection_options.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\text_affinity.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_position.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_units.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\animation_event.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\animation_playback_event.cc" />
@@ -2124,7 +2126,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\serializers\markup_formatter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\serializers\serialization.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\set_selection_options.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\text_affinity.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\text_granularity.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_position.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_units.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\animation_event.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\animation_event_init.h" />
