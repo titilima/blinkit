@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: frame_caret.cc
+// Description: FrameCaret Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2008, 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -36,9 +47,9 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
-#include "third_party/blink/renderer/core/html/forms/text_control_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/forms/text_control_element.h"
 #include "third_party/blink/renderer/core/layout/layout_block.h"
-#include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
 #include "third_party/blink/renderer/core/layout/layout_theme.h"
 #include "third_party/blink/renderer/core/page/page.h"
 
@@ -115,8 +126,11 @@ void FrameCaret::StartBlinkCaret() {
     return;
 
   TimeDelta blink_interval = LayoutTheme::GetTheme().CaretBlinkInterval();
+  ASSERT(false); // BKTODO:
+#if 0
   if (!blink_interval.is_zero())
     caret_blink_timer_->StartRepeating(blink_interval, FROM_HERE);
+#endif
 
   should_paint_caret_ = true;
   ScheduleVisualUpdateForPaintInvalidationIfNeeded();
@@ -173,7 +187,10 @@ static IntRect AbsoluteBoundsForLocalRect(Node* node, const LayoutRect& rect) {
 IntRect FrameCaret::AbsoluteCaretBounds() const {
   DCHECK_NE(frame_->GetDocument()->Lifecycle().GetState(),
             DocumentLifecycle::kInPrePaint);
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!frame_->GetDocument()->NeedsLayoutTreeUpdate());
+#endif
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       frame_->GetDocument()->Lifecycle());
 
@@ -208,11 +225,15 @@ bool FrameCaret::ShouldBlinkCaret() const {
   if (!root)
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   Element* focused_element = root->GetDocument().FocusedElement();
   if (!focused_element)
     return false;
 
   return frame_->Selection().SelectionHasFocus();
+#endif
 }
 
 void FrameCaret::CaretBlinkTimerFired(TimerBase*) {
@@ -224,14 +245,19 @@ void FrameCaret::CaretBlinkTimerFired(TimerBase*) {
 }
 
 void FrameCaret::ScheduleVisualUpdateForPaintInvalidationIfNeeded() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (LocalFrameView* frame_view = frame_->View())
     frame_view->ScheduleVisualUpdateForPaintInvalidationIfNeeded();
+#endif
 }
 
+#if 0 // BKTODO:
 void FrameCaret::RecreateCaretBlinkTimerForTesting(
     scoped_refptr<base::SingleThreadTaskRunner> task_runner) {
   caret_blink_timer_.reset(new TaskRunnerTimer<FrameCaret>(
       std::move(task_runner), this, &FrameCaret::CaretBlinkTimerFired));
 }
+#endif
 
 }  // namespace blink
