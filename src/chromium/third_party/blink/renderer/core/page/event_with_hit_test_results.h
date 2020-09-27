@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: event_with_hit_test_results.h
+// Description: EventWithHitTestResults Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
    Copyright (C) 2000 Simon Hausmann <hausmann@kde.org>
    Copyright (C) 2006 Apple Computer, Inc.
@@ -22,7 +33,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_PAGE_EVENT_WITH_HIT_TEST_RESULTS_H_
 
 #include "third_party/blink/public/platform/web_gesture_event.h"
-#include "third_party/blink/public/platform/web_mouse_event.h"
+// BKTODO: #include "third_party/blink/public/platform/web_mouse_event.h"
 #include "third_party/blink/renderer/core/layout/hit_test_result.h"
 
 namespace blink {
@@ -68,7 +79,7 @@ class EventWithHitTestResults {
   HitTestLocation hit_test_location_;
 };
 
-using MouseEventWithHitTestResults = EventWithHitTestResults<WebMouseEvent>;
+// BKTODO: using MouseEventWithHitTestResults = EventWithHitTestResults<WebMouseEvent>;
 
 using GestureEventWithHitTestResults = EventWithHitTestResults<WebGestureEvent>;
 

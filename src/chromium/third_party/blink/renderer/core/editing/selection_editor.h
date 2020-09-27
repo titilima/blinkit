@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: selection_editor.h
+// Description: SelectionEditor Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights
  * reserved.
@@ -62,8 +73,6 @@ class SelectionEditor final : public GarbageCollectedFinalized<SelectionEditor>,
   void CacheRangeOfDocument(Range*);
   Range* DocumentCachedRange() const;
   void ClearDocumentCachedRange();
-
-  void Trace(blink::Visitor*) override;
 
  private:
   explicit SelectionEditor(LocalFrame&);

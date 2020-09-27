@@ -342,10 +342,4 @@ class CORE_EXPORT FrameSelection final
 
 }  // namespace blink
 
-#ifndef NDEBUG
-// Outside the WebCore namespace for ease of invocation from gdb.
-void showTree(const blink::FrameSelection&);
-void showTree(const blink::FrameSelection*);
-#endif
-
 #endif  // THIRD_PARTY_BLINK_RENDERER_CORE_EDITING_FRAME_SELECTION_H_

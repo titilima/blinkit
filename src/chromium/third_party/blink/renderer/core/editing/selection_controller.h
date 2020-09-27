@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: selection_controller.h
+// Description: SelectionController Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2009, 2010, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2015 Google Inc. All rights reserved.
@@ -50,8 +61,8 @@ class CORE_EXPORT SelectionController final
  public:
   static SelectionController* Create(LocalFrame&);
   virtual ~SelectionController();
-  void Trace(blink::Visitor*) override;
 
+#if 0 // BKTODO:
   bool HandleMousePressEvent(const MouseEventWithHitTestResults&);
   void HandleMouseDraggedEvent(const MouseEventWithHitTestResults&,
                                const IntPoint&,
@@ -60,6 +71,7 @@ class CORE_EXPORT SelectionController final
   bool HandleMouseReleaseEvent(const MouseEventWithHitTestResults&,
                                const LayoutPoint&);
   bool HandlePasteGlobalSelection(const WebMouseEvent&);
+#endif
   bool HandleGestureLongPress(const HitTestResult&);
   void HandleGestureTwoFingerTap(const GestureEventWithHitTestResults&);
   void HandleGestureLongTap(const GestureEventWithHitTestResults&);
@@ -68,9 +80,11 @@ class CORE_EXPORT SelectionController final
   void UpdateSelectionForMouseDrag(const HitTestResult&,
                                    const LayoutPoint&,
                                    const LayoutPoint&);
+#if 0 // BKTODO:
   void SendContextMenuEvent(const MouseEventWithHitTestResults&,
                             const LayoutPoint&);
   void PassMousePressEventToSubframe(const MouseEventWithHitTestResults&);
+#endif
 
   void InitializeSelectionState();
   void SetMouseDownMayStartSelect(bool);
@@ -101,12 +115,14 @@ class CORE_EXPORT SelectionController final
                                           SelectInputEventType);
   void SelectClosestMisspellingFromHitTestResult(const HitTestResult&,
                                                  AppendTrailingWhitespace);
+#if 0 // BKTODO:
   // Returns |true| if a word was selected.
   bool SelectClosestWordFromMouseEvent(const MouseEventWithHitTestResults&);
   void SelectClosestMisspellingFromMouseEvent(
       const MouseEventWithHitTestResults&);
   void SelectClosestWordOrLinkFromMouseEvent(
       const MouseEventWithHitTestResults&);
+#endif
   void SetNonDirectionalSelectionIfNeeded(const SelectionInFlatTree&,
                                           const SetSelectionOptions&,
                                           EndPointsAdjustmentMode);
@@ -123,12 +139,14 @@ class CORE_EXPORT SelectionController final
   // changed.
   void ContextDestroyed(Document*) final;
 
+#if 0 // BKTODO:
   bool HandleSingleClick(const MouseEventWithHitTestResults&);
   bool HandleDoubleClick(const MouseEventWithHitTestResults&);
   bool HandleTripleClick(const MouseEventWithHitTestResults&);
 
   bool HandleTapInsideSelection(const MouseEventWithHitTestResults&,
                                 const SelectionInFlatTree&);
+#endif
 
   Member<LocalFrame> const frame_;
   // Used to store base before the adjustment at bidi boundary
@@ -146,8 +164,10 @@ class CORE_EXPORT SelectionController final
   DISALLOW_COPY_AND_ASSIGN(SelectionController);
 };
 
+#if 0 // BKTODO:
 bool IsLinkSelection(const MouseEventWithHitTestResults&);
 bool IsExtendingSelection(const MouseEventWithHitTestResults&);
+#endif
 CORE_EXPORT SelectionInFlatTree
 AdjustSelectionWithTrailingWhitespace(const SelectionInFlatTree&);
 }  // namespace blink

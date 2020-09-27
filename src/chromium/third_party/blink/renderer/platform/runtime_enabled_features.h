@@ -73,6 +73,7 @@ public:
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(WebAnimationsAPI)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(WorkStealingInScriptRunner)
 
+    BLINKIT_DISABLE_FEATURE(CompositedSelectionUpdate)
     BLINKIT_DISABLE_FEATURE(DisplayCutoutAPI)
     BLINKIT_DISABLE_FEATURE(FractionalScrollOffsets)
     BLINKIT_DISABLE_FEATURE(FullscreenUnprefixed)
