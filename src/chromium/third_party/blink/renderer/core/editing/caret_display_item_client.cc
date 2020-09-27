@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: caret_display_item_client.cc
+// Description: CaretDisplayItemClient Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2008, 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -66,8 +77,7 @@ LayoutBlock* CaretDisplayItemClient::CaretLayoutBlock(const Node* node) {
   // DocumentLifeCycle::LayoutClean but caretRendersInsideNode above can
   // layout. Thus |node->layoutObject()| can be changed then this is bad
   // design. We should make caret painting algorithm clean.
-  CHECK_EQ(layout_object, node->GetLayoutObject())
-      << "Layout tree should not changed";
+  CHECK_EQ(layout_object, node->GetLayoutObject()); // Layout tree should not changed
   return painted_by_block ? ToLayoutBlock(layout_object)
                           : layout_object->ContainingBlock();
 }

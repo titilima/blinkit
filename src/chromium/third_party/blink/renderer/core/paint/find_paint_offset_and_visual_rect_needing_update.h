@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: find_paint_offset_and_visual_rect_needing_update.h
+// Description: FindPaintOffsetNeedingUpdateScope Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -43,7 +54,7 @@ class FindPaintOffsetNeedingUpdateScope {
     if (is_actually_needed_)
       return;
     LayoutPoint paint_offset = fragment_data_.PaintOffset();
-    DCHECK_EQ(old_paint_offset_, paint_offset) << object_.DebugName();
+    DCHECK_EQ(old_paint_offset_, paint_offset);
 
     const TransformPaintPropertyNode* new_parent = nullptr;
     base::Optional<TransformationMatrix> new_translation;
@@ -53,10 +64,10 @@ class FindPaintOffsetNeedingUpdateScope {
         new_translation = translation->Matrix();
       }
     }
-    DCHECK_EQ(!!old_translation_, !!new_translation) << object_.DebugName();
-    DCHECK_EQ(old_parent_, new_parent) << object_.DebugName();
+    DCHECK_EQ(!!old_translation_, !!new_translation);
+    DCHECK_EQ(old_parent_, new_parent);
     if (old_translation_ && new_translation)
-      DCHECK_EQ(*old_translation_, *new_translation) << object_.DebugName();
+      DCHECK_EQ(*old_translation_, *new_translation);
   }
 
  private:
@@ -110,11 +121,8 @@ class FindVisualRectNeedingUpdateScopeBase {
            // rects. TODO(wangxianzhu): Look into whether we can tighten this
            // for SPv2.
            (InflatedRect(old_visual_rect_).Contains(new_visual_rect) &&
-            InflatedRect(new_visual_rect).Contains(old_visual_rect_)))
-        << "Visual rect changed without needing update"
-        << " object=" << object_.DebugName()
-        << " old=" << old_visual_rect_.ToString()
-        << " new=" << new_visual_rect.ToString();
+            InflatedRect(new_visual_rect).Contains(old_visual_rect_)));
+        // Visual rect changed without needing update
   }
 
   const LayoutObject& object_;

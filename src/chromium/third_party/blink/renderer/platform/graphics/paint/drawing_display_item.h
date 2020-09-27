@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: drawing_display_item.h
+// Description: DrawingDisplayItem Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -27,18 +38,22 @@ namespace blink {
 // around what the user can actually see from the PaintRecord.
 class PLATFORM_EXPORT DrawingDisplayItem final : public DisplayItem {
  public:
+#if 0 // BKTODO:
   DISABLE_CFI_PERF
   DrawingDisplayItem(const DisplayItemClient& client,
                      Type type,
                      sk_sp<const PaintRecord> record,
                      bool known_to_be_opaque);
+#endif
 
   void Replay(GraphicsContext&) const override;
   void AppendToDisplayItemList(const FloatSize& visual_rect_offset,
                                cc::DisplayItemList&) const override;
   bool DrawsContent() const override;
 
+#if 0 // BKTODO:
   const sk_sp<const PaintRecord>& GetPaintRecord() const { return record_; }
+#endif
 
   bool KnownToBeOpaque() const {
     DCHECK(RuntimeEnabledFeatures::SlimmingPaintV2Enabled());
@@ -52,12 +67,15 @@ class PLATFORM_EXPORT DrawingDisplayItem final : public DisplayItem {
   void PropertiesAsJSON(JSONObject&) const override;
 #endif
 
+#if 0 // BKTODO:
   sk_sp<const PaintRecord> record_;
+#endif
 
   // True if there are no transparent areas. Only used for SlimmingPaintV2.
   const bool known_to_be_opaque_;
 };
 
+#if 0 // BKTODO:
 // TODO(dcheng): Move this ctor back inline once the clang plugin is fixed.
 DISABLE_CFI_PERF
 inline DrawingDisplayItem::DrawingDisplayItem(const DisplayItemClient& client,
@@ -69,6 +87,7 @@ inline DrawingDisplayItem::DrawingDisplayItem(const DisplayItemClient& client,
       known_to_be_opaque_(known_to_be_opaque) {
   DCHECK(IsDrawingType(type));
 }
+#endif
 
 }  // namespace blink
 
