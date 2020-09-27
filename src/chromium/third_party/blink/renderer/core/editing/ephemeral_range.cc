@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ephemeral_range.cc
+// Description: EphemeralRange Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -61,11 +72,14 @@ template <typename Strategy>
 EphemeralRangeTemplate<Strategy>::EphemeralRangeTemplate(const Range* range) {
   if (!range)
     return;
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(range->IsConnected());
   start_position_ = FromPositionInDOMTree<Strategy>(range->StartPosition());
   end_position_ = FromPositionInDOMTree<Strategy>(range->EndPosition());
 #if DCHECK_IS_ON()
   dom_tree_version_ = range->OwnerDocument().DomTreeVersion();
+#endif
 #endif
 }
 
@@ -165,6 +179,8 @@ bool EphemeralRangeTemplate<Strategy>::IsValid() const {
 
 template <typename Strategy>
 void EphemeralRangeTemplate<Strategy>::ShowTreeForThis() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsNull()) {
     LOG(INFO) << "<null range>" << std::endl;
     return;
@@ -181,6 +197,7 @@ void EphemeralRangeTemplate<Strategy>::ShowTreeForThis() const {
             << std::endl
             << "end: "
             << EndPosition().ToAnchorTypeAndOffsetString().Utf8().data();
+#endif
 }
 
 #endif
@@ -188,8 +205,12 @@ void EphemeralRangeTemplate<Strategy>::ShowTreeForThis() const {
 Range* CreateRange(const EphemeralRange& range) {
   if (range.IsNull())
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return Range::Create(range.GetDocument(), range.StartPosition(),
                        range.EndPosition());
+#endif
 }
 
 template <typename Strategy>
