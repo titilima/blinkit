@@ -19,6 +19,8 @@
 
 namespace blink {
 
+class Node;
+
 template <typename T>
 class GarbageCollected
 {

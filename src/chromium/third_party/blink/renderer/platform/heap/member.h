@@ -14,6 +14,9 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/platform/heap/heap.h"
+#include "third_party/blink/renderer/platform/wtf/allocator.h"
+
 namespace blink {
 
 template<typename T>

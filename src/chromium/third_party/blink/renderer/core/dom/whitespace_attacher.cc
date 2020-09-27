@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: whitespace_attacher.cc
+// Description: WhitespaceAttacher Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -89,8 +100,11 @@ void WhitespaceAttacher::DidVisitElement(Element* element) {
     // be re-attached. See the comments in DidVisitText() above.
     if (last_text_node_needs_reattach_)
       return;
+    ASSERT(false); // BKTODO:
+#if 0
     if (element->HasDisplayContentsStyle())
       last_display_contents_ = element;
+#endif
     return;
   }
   if (!last_text_node_ || !last_text_node_needs_reattach_) {
@@ -149,7 +163,10 @@ void WhitespaceAttacher::ForceLastTextNodeNeedsReattach() {
 
 void WhitespaceAttacher::UpdateLastTextNodeFromDisplayContents() {
   DCHECK(last_display_contents_);
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(last_display_contents_->HasDisplayContentsStyle());
+#endif
   Element* contents_element = last_display_contents_.Release();
   Node* sibling =
       LayoutTreeBuilderTraversal::FirstLayoutChild(*contents_element);
@@ -162,8 +179,11 @@ void WhitespaceAttacher::UpdateLastTextNodeFromDisplayContents() {
     return;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!sibling->IsElementNode() ||
          !ToElement(sibling)->HasDisplayContentsStyle());
+#endif
 
   for (; sibling && sibling != last_text_node_;
        sibling = LayoutTreeBuilderTraversal::NextLayoutSibling(*sibling)) {
