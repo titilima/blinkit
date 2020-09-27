@@ -252,6 +252,15 @@
     <Filter Include="renderer\core\layout\ng\inline">
       <UniqueIdentifier>{95376d13-0f3d-4f53-a4f9-4176f0a4148d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\editing\iterators">
+      <UniqueIdentifier>{dd5cb4a6-0981-465f-9671-1b127e86a3c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\core\editing\state_machines">
+      <UniqueIdentifier>{c205c930-9f86-497f-908e-b3532e144b6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\platform\wtf\typed_arrays">
+      <UniqueIdentifier>{6b1fc4fb-dbf6-43de-907f-b2a8b2f6b779}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -2866,6 +2875,87 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\text_affinity.cc">
       <Filter>renderer\core\editing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editor.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\ephemeral_range.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_iterator.cc">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\plain_text_range.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\position_iterator.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\selection_template.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\serializers\html_interchange.cc">
+      <Filter>renderer\core\editing\serializers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\state_machines\backspace_state_machine.cc">
+      <Filter>renderer\core\editing\state_machines</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\state_machines\backward_grapheme_boundary_state_machine.cc">
+      <Filter>renderer\core\editing\state_machines</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\state_machines\forward_grapheme_boundary_state_machine.cc">
+      <Filter>renderer\core\editing\state_machines</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_selection.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_style.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\fully_clipped_state_stack.cc">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_iterator_behavior.cc">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_iterator_text_node_handler.cc">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_iterator_text_state.cc">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\bit_stack.cc">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\forwards_text_buffer.cc">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_buffer_base.cc">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\state_machines\text_segmentation_machine_state.cc">
+      <Filter>renderer\core\editing\state_machines</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\input_type_names.cpp">
+      <Filter>renderer\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_image.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\static_bitmap_image.cc">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_image_resource.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\typed_arrays\array_buffer.cc">
+      <Filter>renderer\platform\wtf\typed_arrays</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\typed_arrays\array_buffer_view.cc">
+      <Filter>renderer\platform\wtf\typed_arrays</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\typed_arrays\array_buffer_contents.cc">
+      <Filter>renderer\platform\wtf\typed_arrays</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -8088,6 +8178,99 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\text_affinity.h">
       <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editor.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\ephemeral_range.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_iterator.h">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\plain_text_range.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\position_iterator.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\selection_template.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\serializers\html_interchange.h">
+      <Filter>renderer\core\editing\serializers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\state_machines\backspace_state_machine.h">
+      <Filter>renderer\core\editing\state_machines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\state_machines\backward_grapheme_boundary_state_machine.h">
+      <Filter>renderer\core\editing\state_machines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\state_machines\forward_grapheme_boundary_state_machine.h">
+      <Filter>renderer\core\editing\state_machines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_selection.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_style.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\selection_type.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\fully_clipped_state_stack.h">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_iterator_behavior.h">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_iterator_text_node_handler.h">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_iterator_text_state.h">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\bit_stack.h">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\forwards_text_buffer.h">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\text_buffer_base.h">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\state_machines\text_segmentation_machine_state.h">
+      <Filter>renderer\core\editing\state_machines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\input_type_names.h">
+      <Filter>renderer\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_image.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\static_bitmap_image.h">
+      <Filter>renderer\platform\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_image_resource.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\typed_arrays\uint8_array.h">
+      <Filter>renderer\platform\wtf\typed_arrays</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\typed_arrays\integral_typed_array_base.h">
+      <Filter>renderer\platform\wtf\typed_arrays</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\typed_arrays\typed_array_base.h">
+      <Filter>renderer\platform\wtf\typed_arrays</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\typed_arrays\array_buffer.h">
+      <Filter>renderer\platform\wtf\typed_arrays</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\typed_arrays\array_buffer_view.h">
+      <Filter>renderer\platform\wtf\typed_arrays</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\typed_arrays\array_buffer_contents.h">
+      <Filter>renderer\platform\wtf\typed_arrays</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

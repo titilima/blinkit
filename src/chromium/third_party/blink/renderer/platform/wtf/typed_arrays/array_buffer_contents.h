@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: array_buffer_contents.h
+// Description: ArrayBufferContents Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -27,7 +38,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_WTF_TYPED_ARRAYS_ARRAY_BUFFER_CONTENTS_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_WTF_TYPED_ARRAYS_ARRAY_BUFFER_CONTENTS_H_
 
-#include "base/allocator/partition_allocator/page_allocator.h"
+// BKTODO: #include "base/allocator/partition_allocator/page_allocator.h"
 #include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: array_buffer.h
+// Description: ArrayBuffer Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All rights reserved.
  *
@@ -26,7 +37,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_WTF_TYPED_ARRAYS_ARRAY_BUFFER_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_WTF_TYPED_ARRAYS_ARRAY_BUFFER_H_
 
-#include "base/allocator/partition_allocator/oom.h"
+// BKTODO: #include "base/allocator/partition_allocator/oom.h"
 #include "base/memory/scoped_refptr.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
 #include "third_party/blink/renderer/platform/wtf/hash_set.h"
@@ -139,8 +150,11 @@ scoped_refptr<ArrayBuffer> ArrayBuffer::Create(const void* source,
                                                unsigned byte_length) {
   ArrayBufferContents contents(byte_length, 1, ArrayBufferContents::kNotShared,
                                ArrayBufferContents::kDontInitialize);
+  ASSERT(false); // BKTODO:
+#if 0
   if (UNLIKELY(!contents.Data()))
     OOM_CRASH();
+#endif
   scoped_refptr<ArrayBuffer> buffer = base::AdoptRef(new ArrayBuffer(contents));
   memcpy(buffer->Data(), source, byte_length);
   return buffer;
@@ -171,8 +185,11 @@ scoped_refptr<ArrayBuffer> ArrayBuffer::Create(
     ArrayBufferContents::InitializationPolicy policy) {
   ArrayBufferContents contents(num_elements, element_byte_size,
                                ArrayBufferContents::kNotShared, policy);
+  ASSERT(false); // BKTODO:
+#if 0
   if (UNLIKELY(!contents.Data()))
     OOM_CRASH();
+#endif
   return base::AdoptRef(new ArrayBuffer(contents));
 }
 

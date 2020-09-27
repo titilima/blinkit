@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: editor.h
+// Description: Editor Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -31,7 +42,7 @@
 #include "base/macros.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/editing/editing_style.h"
-#include "third_party/blink/renderer/core/editing/finder/find_options.h"
+// BKTODO: #include "third_party/blink/renderer/core/editing/finder/find_options.h"
 #include "third_party/blink/renderer/core/editing/forward.h"
 #include "third_party/blink/renderer/core/editing/visible_selection.h"
 #include "third_party/blink/renderer/core/events/input_event.h"
@@ -71,7 +82,9 @@ class CORE_EXPORT Editor final : public GarbageCollectedFinalized<Editor> {
     last_edit_command_ = last_edit_command;
   }
 
+#if 0 // BKTODO:
   void HandleKeyboardEvent(KeyboardEvent*);
+#endif
   bool HandleTextEvent(TextEvent*);
 
   bool CanEdit() const;
@@ -112,7 +125,9 @@ class CORE_EXPORT Editor final : public GarbageCollectedFinalized<Editor> {
   bool ExecuteCommand(const String& command_name, const String& value);
   bool IsCommandEnabled(const String&) const;
 
+#if 0 // BKTODO:
   bool InsertText(const String&, KeyboardEvent* triggering_event);
+#endif
   bool InsertTextWithoutSendingTextEvent(
       const String&,
       bool select_inserted_text,
@@ -158,6 +173,7 @@ class CORE_EXPORT Editor final : public GarbageCollectedFinalized<Editor> {
 
   void AddToKillRing(const EphemeralRange&);
 
+#if 0 // BKTODO:
   static bool FindString(LocalFrame&, const String&, FindOptions);
 
   static Range* FindRangeOfString(Document&,
@@ -169,6 +185,7 @@ class CORE_EXPORT Editor final : public GarbageCollectedFinalized<Editor> {
       const String& target,
       const EphemeralRangeInFlatTree& reference_range,
       FindOptions);
+#endif
 
   const VisibleSelection& Mark() const;  // Mark, to be used as emacs uses it.
   bool MarkIsDirectional() const;
@@ -255,7 +272,9 @@ class CORE_EXPORT Editor final : public GarbageCollectedFinalized<Editor> {
   SpellChecker& GetSpellChecker() const;
   FrameSelection& GetFrameSelection() const;
 
+#if 0 // BKTODO:
   bool HandleEditingKeyboardEvent(KeyboardEvent*);
+#endif
 
   DISALLOW_COPY_AND_ASSIGN(Editor);
 };
@@ -281,7 +300,7 @@ inline EditingStyle* Editor::TypingStyle() const {
 }
 
 inline void Editor::ClearTypingStyle() {
-  typing_style_.Clear();
+  ASSERT(false); // BKTODO: typing_style_.Clear();
 }
 
 inline void Editor::SetTypingStyle(EditingStyle* style) {

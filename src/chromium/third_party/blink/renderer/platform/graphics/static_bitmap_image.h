@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: static_bitmap_image.h
+// Description: StaticBitmapImage Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,14 +16,16 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_GRAPHICS_STATIC_BITMAP_IMAGE_H_
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_GRAPHICS_STATIC_BITMAP_IMAGE_H_
 
+#if 0 // BKTODO:
 #include "base/memory/weak_ptr.h"
 #include "gpu/command_buffer/common/mailbox.h"
 #include "gpu/command_buffer/common/sync_token.h"
 #include "third_party/blink/renderer/platform/graphics/canvas_color_params.h"
+#endif
 #include "third_party/blink/renderer/platform/graphics/graphics_types.h"
 #include "third_party/blink/renderer/platform/graphics/image.h"
 #include "third_party/blink/renderer/platform/wtf/typed_arrays/uint8_array.h"
-#include "third_party/khronos/GLES2/gl2.h"
+// BKTODO: #include "third_party/khronos/GLES2/gl2.h"
 #include "third_party/skia/include/core/SkRefCnt.h"
 
 namespace WTF {
@@ -33,6 +46,7 @@ class WebGraphicsContext3DProviderWrapper;
 
 class PLATFORM_EXPORT StaticBitmapImage : public Image {
  public:
+#if 0 // BKTODO:
   // WebGraphicsContext3DProviderWrapper argument only needs to be provided if
   // The SkImage is texture backed, in which case it must be a reference to the
   // context provider that owns the GrContext with which the SkImage is
@@ -41,6 +55,7 @@ class PLATFORM_EXPORT StaticBitmapImage : public Image {
       sk_sp<SkImage>,
       base::WeakPtr<WebGraphicsContext3DProviderWrapper> = nullptr);
   static scoped_refptr<StaticBitmapImage> Create(PaintImage);
+#endif
   static scoped_refptr<StaticBitmapImage> Create(scoped_refptr<Uint8Array>&&,
                                                  const SkImageInfo&);
   static scoped_refptr<StaticBitmapImage> Create(WTF::ArrayBufferContents&,
@@ -50,11 +65,13 @@ class PLATFORM_EXPORT StaticBitmapImage : public Image {
 
   // Methods overridden by all sub-classes
   ~StaticBitmapImage() override = default;
+#if 0 // BKTODO:
   // Creates a gpu copy of the image using the given ContextProvider. Should
   // not be called if IsTextureBacked() is already true. May return null if the
   // conversion failed (for instance if the context had an error).
   virtual scoped_refptr<StaticBitmapImage> MakeAccelerated(
       base::WeakPtr<WebGraphicsContext3DProviderWrapper> context_wrapper) = 0;
+#endif
 
   // Methods have common implementation for all sub-classes
   bool CurrentFrameIsComplete() override { return true; }
@@ -71,6 +88,7 @@ class PLATFORM_EXPORT StaticBitmapImage : public Image {
   // non-gpu.
   virtual scoped_refptr<StaticBitmapImage> MakeUnaccelerated() { return this; }
 
+#if 0 // BKTODO:
   // Methods overridden by AcceleratedStaticBitmapImage only
   // Assumes the destination texture has already been allocated.
   virtual bool CopyToTexture(gpu::gles2::GLES2Interface*,
@@ -108,6 +126,7 @@ class PLATFORM_EXPORT StaticBitmapImage : public Image {
   }
   virtual const gpu::SyncToken& GetSyncToken() const;
   virtual void UpdateSyncToken(gpu::SyncToken) { NOTREACHED(); }
+#endif
   virtual bool IsPremultiplied() const { return true; }
 
   // Methods have exactly the same implementation for all sub-classes
@@ -117,14 +136,17 @@ class PLATFORM_EXPORT StaticBitmapImage : public Image {
       sk_sp<SkColorSpace>,
       SkColorType = kN32_SkColorType);
 
+#if 0 // BKTODO:
   static bool ConvertToArrayBufferContents(
       scoped_refptr<StaticBitmapImage> src_image,
       WTF::ArrayBufferContents& dest_contents,
       const IntRect&,
       const CanvasColorParams&,
       bool is_accelerated = false);
+#endif
 
  protected:
+#if 0 // BKTODO:
   // Helper for sub-classes
   void DrawHelper(cc::PaintCanvas*,
                   const cc::PaintFlags&,
@@ -132,6 +154,7 @@ class PLATFORM_EXPORT StaticBitmapImage : public Image {
                   const FloatRect&,
                   ImageClampingMode,
                   const PaintImage&);
+#endif
 
   // The following property is here because the SkImage API doesn't expose the
   // info. It is applied to both UnacceleratedStaticBitmapImage and

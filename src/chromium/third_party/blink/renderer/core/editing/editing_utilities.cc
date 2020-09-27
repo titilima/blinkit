@@ -39,9 +39,11 @@
 #ifdef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/dom/element.h"
 #else
+#if 0 // BKTODO:
 #   include "third_party/blink/renderer/core/clipboard/clipboard_mime_types.h"
 #   include "third_party/blink/renderer/core/clipboard/data_object.h"
 #   include "third_party/blink/renderer/core/clipboard/system_clipboard.h"
+#endif
 #   include "third_party/blink/renderer/core/dom/document.h"
 #   include "third_party/blink/renderer/core/dom/element_traversal.h"
 #   include "third_party/blink/renderer/core/dom/node_computed_style.h"
@@ -68,6 +70,7 @@
 #   include "third_party/blink/renderer/core/frame/local_frame.h"
 #   include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #   include "third_party/blink/renderer/core/frame/use_counter.h"
+#if 0 // BKTODO:
 #   include "third_party/blink/renderer/core/html/canvas/html_canvas_element.h"
 #   include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 #   include "third_party/blink/renderer/core/html/html_br_element.h"
@@ -78,14 +81,15 @@
 #   include "third_party/blink/renderer/core/html/html_span_element.h"
 #   include "third_party/blink/renderer/core/html/html_table_cell_element.h"
 #   include "third_party/blink/renderer/core/html/html_ulist_element.h"
+#endif
 #   include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
-#   include "third_party/blink/renderer/core/html_element_factory.h"
+// BKTODO: #include "third_party/blink/renderer/core/html_element_factory.h"
 #   include "third_party/blink/renderer/core/html_names.h"
 #   include "third_party/blink/renderer/core/input_type_names.h"
 #   include "third_party/blink/renderer/core/layout/layout_image.h"
 #   include "third_party/blink/renderer/core/layout/layout_object.h"
 #   include "third_party/blink/renderer/core/layout/layout_table_cell.h"
-#   include "third_party/blink/renderer/core/svg/svg_image_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_image_element.h"
 #   include "third_party/blink/renderer/platform/graphics/static_bitmap_image.h"
 #   include "third_party/blink/renderer/platform/wtf/assertions.h"
 #   include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
@@ -97,7 +101,7 @@ namespace blink {
 
 #ifndef BLINKIT_CRAWLER_ONLY
 
-using namespace HTMLNames;
+using namespace html_names;
 
 namespace {
 
@@ -105,8 +109,8 @@ std::ostream& operator<<(std::ostream& os, PositionMoveType type) {
   static const char* const kTexts[] = {"CodeUnit", "BackwardDeletion",
                                        "GraphemeCluster"};
   auto* const* const it = std::begin(kTexts) + static_cast<size_t>(type);
-  DCHECK_GE(it, std::begin(kTexts)) << "Unknown PositionMoveType value";
-  DCHECK_LT(it, std::end(kTexts)) << "Unknown PositionMoveType value";
+  DCHECK_GE(it, std::begin(kTexts)); // Unknown PositionMoveType value
+  DCHECK_LT(it, std::end(kTexts)); // Unknown PositionMoveType value
   return os << *it;
 }
 
@@ -165,11 +169,15 @@ UChar WhitespaceRebalancingCharToAppend(const String& string,
 
 bool NeedsLayoutTreeUpdate(const Node& node) {
   const Document& document = node.GetDocument();
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (document.NeedsLayoutTreeUpdate())
     return true;
   // TODO(yosin): We should make |document::needsLayoutTreeUpdate()| to
   // check |LayoutView::needsLayout()|.
   return document.View() && document.View()->NeedsLayout();
+#endif
 }
 
 template <typename PositionType>
@@ -321,6 +329,9 @@ int ComparePositions(const Position& a, const Position& b) {
   if (!common_scope)
     return 0;
 
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   Node* node_a = common_scope->AncestorInThisScope(a.ComputeContainerNode());
   DCHECK(node_a);
   bool has_descendent_a = node_a != a.ComputeContainerNode();
@@ -341,6 +352,7 @@ int ComparePositions(const Position& a, const Position& b) {
 
   int result = ComparePositionsInDOMTree(node_a, offset_a, node_b, offset_b);
   return result ? result : bias;
+#endif
 }
 
 int ComparePositions(const PositionWithAffinity& a,
@@ -368,8 +380,12 @@ bool IsNodeFullyContained(const EphemeralRange& range, const Node& node) {
 // TODO(editing-dev): We should make |SelectionAdjuster| to use this funciton
 // instead of |isSelectionBondary()|.
 bool IsUserSelectContain(const Node& node) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return IsHTMLTextAreaElement(node) || IsHTMLInputElement(node) ||
          IsHTMLSelectElement(node);
+#endif
 }
 
 enum EditableLevel { kEditable, kRichlyEditable };
@@ -455,6 +471,8 @@ ContainerNode* HighestEditableRoot(
   if (!highest_root)
     return nullptr;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsHTMLBodyElement(*highest_root))
     return highest_root;
 
@@ -466,6 +484,7 @@ ContainerNode* HighestEditableRoot(
       break;
     node = node->parentNode();
   }
+#endif
 
   return highest_root;
 }
@@ -485,7 +504,7 @@ bool IsEditablePosition(const Position& position) {
     // https://codereview.chromium.org/2665823002/ avoided this function from
     // being called during InStyleRecalc.
   } else {
-    DCHECK(!NeedsLayoutTreeUpdate(position)) << position;
+    DCHECK(!NeedsLayoutTreeUpdate(position)); // BKTODO: << position;
   }
 
   if (IsDisplayInsideTable(node))
@@ -674,8 +693,7 @@ template <typename Strategy>
 PositionTemplate<Strategy> FirstEditablePositionAfterPositionInRootAlgorithm(
     const PositionTemplate<Strategy>& position,
     const Node& highest_root) {
-  DCHECK(!NeedsLayoutTreeUpdate(highest_root))
-      << position << ' ' << highest_root;
+  DCHECK(!NeedsLayoutTreeUpdate(highest_root));
   // position falls before highestRoot.
   if (position.CompareTo(PositionTemplate<Strategy>::FirstPositionInNode(
           highest_root)) == -1 &&
@@ -685,12 +703,15 @@ PositionTemplate<Strategy> FirstEditablePositionAfterPositionInRootAlgorithm(
   PositionTemplate<Strategy> editable_position = position;
 
   if (position.AnchorNode()->GetTreeScope() != highest_root.GetTreeScope()) {
+    ASSERT(false); // BKTODO:
+#if 0
     Node* shadow_ancestor = highest_root.GetTreeScope().AncestorInThisScope(
         editable_position.AnchorNode());
     if (!shadow_ancestor)
       return PositionTemplate<Strategy>();
 
     editable_position = PositionTemplate<Strategy>::AfterNode(*shadow_ancestor);
+#endif
   }
 
   Node* non_editable_node = nullptr;
@@ -751,8 +772,7 @@ template <typename Strategy>
 PositionTemplate<Strategy> LastEditablePositionBeforePositionInRootAlgorithm(
     const PositionTemplate<Strategy>& position,
     const Node& highest_root) {
-  DCHECK(!NeedsLayoutTreeUpdate(highest_root))
-      << position << ' ' << highest_root;
+  DCHECK(!NeedsLayoutTreeUpdate(highest_root));
   // When position falls after highestRoot, the result is easy to compute.
   if (position.CompareTo(
           PositionTemplate<Strategy>::LastPositionInNode(highest_root)) == 1)
@@ -761,6 +781,8 @@ PositionTemplate<Strategy> LastEditablePositionBeforePositionInRootAlgorithm(
   PositionTemplate<Strategy> editable_position = position;
 
   if (position.AnchorNode()->GetTreeScope() != highest_root.GetTreeScope()) {
+    ASSERT(false); // BKTODO:
+#if 0
     Node* shadow_ancestor = highest_root.GetTreeScope().AncestorInThisScope(
         editable_position.AnchorNode());
     if (!shadow_ancestor)
@@ -768,6 +790,7 @@ PositionTemplate<Strategy> LastEditablePositionBeforePositionInRootAlgorithm(
 
     editable_position = PositionTemplate<Strategy>::FirstPositionInOrBeforeNode(
         *shadow_ancestor);
+#endif
   }
 
   while (editable_position.AnchorNode() &&
@@ -894,7 +917,7 @@ PositionTemplate<Strategy> PreviousPositionOfAlgorithm(
         return PositionTemplate<Strategy>(
             node, PreviousGraphemeBoundaryOf(*node, offset));
       default:
-        NOTREACHED() << "Unhandled moveType: " << move_type;
+        NOTREACHED(); // Unhandled moveType
     }
   }
 
@@ -950,14 +973,13 @@ PositionTemplate<Strategy> NextPositionOfAlgorithm(
       case PositionMoveType::kCodeUnit:
         return PositionTemplate<Strategy>::EditingPositionOf(node, offset + 1);
       case PositionMoveType::kBackwardDeletion:
-        NOTREACHED() << "BackwardDeletion is only available for prevPositionOf "
-                     << "functions.";
+        NOTREACHED(); // BackwardDeletion is only available for prevPositionOf functions.
         return PositionTemplate<Strategy>::EditingPositionOf(node, offset + 1);
       case PositionMoveType::kGraphemeCluster:
         return PositionTemplate<Strategy>::EditingPositionOf(
             node, NextGraphemeBoundaryOf(*node, offset));
       default:
-        NOTREACHED() << "Unhandled moveType: " << move_type;
+        NOTREACHED(); // Unhandled moveType
     }
   }
 
@@ -1018,16 +1040,22 @@ Element* EnclosingBlockFlowElement(const Node& node) {
   if (IsBlockFlowElement(node))
     return const_cast<Element*>(&ToElement(node));
 
+  ASSERT(false); // BKTODO:
+#if 0
   for (Node& runner : NodeTraversal::AncestorsOf(node)) {
     if (IsBlockFlowElement(runner) || IsHTMLBodyElement(runner))
       return ToElement(&runner);
   }
+#endif
   return nullptr;
 }
 
 EUserSelect UsedValueOfUserSelect(const Node& node) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (node.IsHTMLElement() && ToHTMLElement(node).IsTextControl())
     return EUserSelect::kText;
+#endif
   if (!node.GetLayoutObject())
     return EUserSelect::kNone;
 
@@ -1140,8 +1168,8 @@ VisiblePosition VisiblePositionBeforeNode(const Node& node) {
   DCHECK(!NeedsLayoutTreeUpdate(node));
   if (node.hasChildren())
     return CreateVisiblePosition(FirstPositionInOrBeforeNode(node));
-  DCHECK(node.parentNode()) << node;
-  DCHECK(!node.parentNode()->IsShadowRoot()) << node.parentNode();
+  DCHECK(node.parentNode());
+  DCHECK(!node.parentNode()->IsShadowRoot());
   return VisiblePosition::InParentBeforeNode(node);
 }
 
@@ -1150,14 +1178,18 @@ VisiblePosition VisiblePositionAfterNode(const Node& node) {
   DCHECK(!NeedsLayoutTreeUpdate(node));
   if (node.hasChildren())
     return CreateVisiblePosition(LastPositionInOrAfterNode(node));
-  DCHECK(node.parentNode()) << node.parentNode();
-  DCHECK(!node.parentNode()->IsShadowRoot()) << node.parentNode();
+  DCHECK(node.parentNode());
+  DCHECK(!node.parentNode()->IsShadowRoot());
   return VisiblePosition::InParentAfterNode(node);
 }
 
 bool IsHTMLListElement(const Node* n) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return (n && (IsHTMLUListElement(*n) || IsHTMLOListElement(*n) ||
                 IsHTMLDListElement(*n)));
+#endif
 }
 
 bool IsListItem(const Node* n) {
@@ -1168,11 +1200,15 @@ bool IsPresentationalHTMLElement(const Node* node) {
   if (!node->IsHTMLElement())
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   const HTMLElement& element = ToHTMLElement(*node);
   return element.HasTagName(uTag) || element.HasTagName(sTag) ||
          element.HasTagName(strikeTag) || element.HasTagName(iTag) ||
          element.HasTagName(emTag) || element.HasTagName(bTag) ||
          element.HasTagName(strongTag);
+#endif
 }
 
 Element* AssociatedElementOf(const Position& position) {
@@ -1209,9 +1245,7 @@ static Node* EnclosingNodeOfTypeAlgorithm(const PositionTemplate<Strategy>& p,
                                           bool (*node_is_of_type)(const Node*),
                                           EditingBoundaryCrossingRule rule) {
   // TODO(yosin) support CanSkipCrossEditingBoundary
-  DCHECK(rule == kCanCrossEditingBoundary ||
-         rule == kCannotCrossEditingBoundary)
-      << rule;
+  DCHECK(rule == kCanCrossEditingBoundary || rule == kCannotCrossEditingBoundary);
   if (p.IsNull())
     return nullptr;
 
@@ -1280,30 +1314,44 @@ Element* EnclosingAnchorElement(const Position& p) {
 }
 
 bool IsDisplayInsideTable(const Node* node) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return node && node->GetLayoutObject() && IsHTMLTableElement(node);
+#endif
 }
 
 bool IsTableCell(const Node* node) {
   DCHECK(node);
   LayoutObject* r = node->GetLayoutObject();
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return r ? r->IsTableCell() : IsHTMLTableCellElement(*node);
+#endif
 }
 
 HTMLElement* CreateDefaultParagraphElement(Document& document) {
+  ASSERT(false); // BKTODO:
+#if 0
   switch (document.GetFrame()->GetEditor().DefaultParagraphSeparator()) {
     case EditorParagraphSeparator::kIsDiv:
       return HTMLDivElement::Create(document);
     case EditorParagraphSeparator::kIsP:
       return HTMLParagraphElement::Create(document);
   }
+#endif
 
   NOTREACHED();
   return nullptr;
 }
 
 bool IsTabHTMLSpanElement(const Node* node) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!IsHTMLSpanElement(node))
     return false;
+#endif
   const Node* const first_child = NodeTraversal::FirstChild(*node);
   if (!first_child || !first_child->IsTextNode())
     return false;
@@ -1322,13 +1370,20 @@ bool IsTabHTMLSpanElementTextNode(const Node* node) {
 }
 
 HTMLSpanElement* TabSpanElement(const Node* node) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return IsTabHTMLSpanElementTextNode(node)
              ? ToHTMLSpanElement(node->parentNode())
              : nullptr;
+#endif
 }
 
 static HTMLSpanElement* CreateTabSpanElement(Document& document,
                                              Text* tab_text_node) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   // Make the span to hold the tab.
   HTMLSpanElement* span_element = HTMLSpanElement::Create(document);
   span_element->setAttribute(styleAttr, "white-space:pre");
@@ -1340,11 +1395,16 @@ static HTMLSpanElement* CreateTabSpanElement(Document& document,
   span_element->AppendChild(tab_text_node);
 
   return span_element;
+#endif
 }
 
 HTMLSpanElement* CreateTabSpanElement(Document& document,
                                       const String& tab_text) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return CreateTabSpanElement(document, document.createTextNode(tab_text));
+#endif
 }
 
 HTMLSpanElement* CreateTabSpanElement(Document& document) {
@@ -1413,7 +1473,7 @@ Position ComputePositionForNodeRemoval(const Position& position,
         return position;
       return Position::InParentBeforeNode(node);
   }
-  NOTREACHED() << "We should handle all PositionAnchorType";
+  NOTREACHED(); // We should handle all PositionAnchorType
   return position;
 }
 
@@ -1421,9 +1481,13 @@ bool IsMailHTMLBlockquoteElement(const Node* node) {
   if (!node || !node->IsHTMLElement())
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   const HTMLElement& element = ToHTMLElement(*node);
   return element.HasTagName(blockquoteTag) &&
          element.getAttribute("type") == "cite";
+#endif
 }
 
 #endif // BLINKIT_CRAWLER_ONLY
@@ -1452,6 +1516,9 @@ int IndexForVisiblePosition(const VisiblePosition& visible_position,
   if (visible_position.IsNull())
     return 0;
 
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   Position p(visible_position.DeepEquivalent());
   Document& document = *p.GetDocument();
   DCHECK(!document.NeedsLayoutTreeUpdate());
@@ -1473,6 +1540,7 @@ int IndexForVisiblePosition(const VisiblePosition& visible_position,
           .Build();
   return TextIterator::RangeLength(range.StartPosition(), range.EndPosition(),
                                    behavior);
+#endif
 }
 
 EphemeralRange MakeRange(const VisiblePosition& start,
@@ -1492,9 +1560,12 @@ template <typename Strategy>
 static EphemeralRangeTemplate<Strategy> NormalizeRangeAlgorithm(
     const EphemeralRangeTemplate<Strategy>& range) {
   DCHECK(range.IsNotNull());
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!range.GetDocument().NeedsLayoutTreeUpdate());
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       range.GetDocument().Lifecycle());
+#endif
 
   // TODO(yosin) We should not call |parentAnchoredEquivalent()|, it is
   // redundant.
@@ -1521,9 +1592,12 @@ EphemeralRangeInFlatTree NormalizeRange(const EphemeralRangeInFlatTree& range) {
 VisiblePosition VisiblePositionForIndex(int index, ContainerNode* scope) {
   if (!scope)
     return VisiblePosition();
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!scope->GetDocument().NeedsLayoutTreeUpdate());
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       scope->GetDocument().Lifecycle());
+#endif
 
   EphemeralRange range =
       PlainTextRange(index).CreateRangeForSelectionIndexing(*scope);
@@ -1549,6 +1623,9 @@ bool IsNonTableCellHTMLBlockElement(const Node* node) {
   if (!node->IsHTMLElement())
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   const HTMLElement& element = ToHTMLElement(*node);
   return element.HasTagName(listingTag) || element.HasTagName(olTag) ||
          element.HasTagName(preTag) || element.HasTagName(tableTag) ||
@@ -1556,6 +1633,7 @@ bool IsNonTableCellHTMLBlockElement(const Node* node) {
          element.HasTagName(h1Tag) || element.HasTagName(h2Tag) ||
          element.HasTagName(h3Tag) || element.HasTagName(h4Tag) ||
          element.HasTagName(h5Tag);
+#endif
 }
 
 bool IsBlockFlowElement(const Node& node) {
@@ -1565,9 +1643,13 @@ bool IsBlockFlowElement(const Node& node) {
 }
 
 bool IsInPasswordField(const Position& position) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   TextControlElement* text_control = EnclosingTextControl(position);
   return IsHTMLInputElement(text_control) &&
          ToHTMLInputElement(text_control)->type() == InputTypeNames::password;
+#endif
 }
 
 // If current position is at grapheme boundary, return 0; otherwise, return the
@@ -1604,6 +1686,9 @@ FloatQuad LocalToAbsoluteQuadOf(const LocalCaretRect& caret_rect) {
 }
 
 const StaticRangeVector* TargetRangesForInputEvent(const Node& node) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   // TODO(editing-dev): The use of updateStyleAndLayoutIgnorePendingStylesheets
   // needs to be audited. see http://crbug.com/590369 for more details.
   node.GetDocument().UpdateStyleAndLayoutIgnorePendingStylesheets();
@@ -1617,6 +1702,7 @@ const StaticRangeVector* TargetRangesForInputEvent(const Node& node) {
   if (range.IsNull())
     return nullptr;
   return new StaticRangeVector(1, StaticRange::Create(range));
+#endif
 }
 
 DispatchEventResult DispatchBeforeInputInsertText(
@@ -1647,6 +1733,7 @@ DispatchEventResult DispatchBeforeInputEditorCommand(
   return target->DispatchEvent(*before_input_event);
 }
 
+#if 0 // BKTODO:
 DispatchEventResult DispatchBeforeInputDataTransfer(
     Node* target,
     InputEvent::InputType input_type,
@@ -1678,6 +1765,7 @@ DispatchEventResult DispatchBeforeInputDataTransfer(
   }
   return target->DispatchEvent(*before_input_event);
 }
+#endif
 
 // |IsEmptyNonEditableNodeInEditable()| is introduced for fixing
 // http://crbug.com/428986.
@@ -1715,6 +1803,9 @@ ContainerNode* RootEditableElementOrTreeScopeRootNodeOf(
 }
 
 static scoped_refptr<Image> ImageFromNode(const Node& node) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   DCHECK(!node.GetDocument().NeedsLayoutTreeUpdate());
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       node.GetDocument().Lifecycle());
@@ -1736,9 +1827,12 @@ static scoped_refptr<Image> ImageFromNode(const Node& node) {
   if (!cached_image || cached_image->ErrorOccurred())
     return nullptr;
   return cached_image->GetImage();
+#endif
 }
 
 AtomicString GetUrlStringFromNode(const Node& node) {
+  ASSERT(false); // BKTODO:
+#if 0
   // TODO(editing-dev): This should probably be reconciled with
   // HitTestResult::absoluteImageURL.
   if (IsHTMLImageElement(node) || IsHTMLInputElement(node))
@@ -1748,16 +1842,20 @@ AtomicString GetUrlStringFromNode(const Node& node) {
   if (IsHTMLEmbedElement(node) || IsHTMLObjectElement(node) ||
       IsHTMLCanvasElement(node))
     return ToHTMLElement(node).ImageSourceURL();
+#endif
   return AtomicString();
 }
 
 void WriteImageNodeToClipboard(const Node& node, const String& title) {
+  ASSERT(false); // BKTODO:
+#if 0
   const scoped_refptr<Image> image = ImageFromNode(node);
   if (!image.get())
     return;
-  const KURL url_string = node.GetDocument().CompleteURL(
+  const GURL url_string = node.GetDocument().CompleteURL(
       StripLeadingAndTrailingHTMLSpaces(GetUrlStringFromNode(node)));
   SystemClipboard::GetInstance().WriteImage(image.get(), url_string, title);
+#endif
 }
 
 Element* FindEventTargetFrom(LocalFrame& frame,
@@ -1765,11 +1863,15 @@ Element* FindEventTargetFrom(LocalFrame& frame,
   Element* const target = AssociatedElementOf(selection.Start());
   if (!target)
     return frame.GetDocument()->body();
+  ASSERT(false); // BKTODO:
+#if 0
   if (target->IsInUserAgentShadowRoot())
     return target->OwnerShadowHost();
+#endif
   return target;
 }
 
+#if 0 // BKTODO:
 HTMLImageElement* ImageElementFromImageDocument(const Document* document) {
   if (!document)
     return nullptr;
@@ -1782,6 +1884,7 @@ HTMLImageElement* ImageElementFromImageDocument(const Document* document) {
 
   return ToHTMLImageElementOrNull(body->firstChild());
 }
+#endif
 
 #endif // BLINKIT_CRAWLER_ONLY
 

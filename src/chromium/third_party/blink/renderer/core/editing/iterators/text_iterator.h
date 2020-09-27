@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_iterator.h
+// Description: TextIterator Classes
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2006, 2009 Apple Inc. All rights reserved.
  *
@@ -28,7 +39,7 @@
 
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/range.h"
-#include "third_party/blink/renderer/core/editing/finder/find_options.h"
+// BKTODO: #include "third_party/blink/renderer/core/editing/finder/find_options.h"
 #include "third_party/blink/renderer/core/editing/forward.h"
 #include "third_party/blink/renderer/core/editing/iterators/fully_clipped_state_stack.h"
 #include "third_party/blink/renderer/core/editing/iterators/text_iterator_behavior.h"
