@@ -109,6 +109,7 @@ public:
     const AtomicString& getAttribute(const QualifiedName &name) const;
     const AtomicString& FastGetAttribute(const QualifiedName &name) const;
     GURL GetURLAttribute(const QualifiedName &name) const;
+    bool hasAttribute(const QualifiedName &name) const;
     bool FastHasAttribute(const QualifiedName &name) const;
     void setAttribute(const QualifiedName &name, const AtomicString &value);
     Attr* getAttributeNode(const AtomicString &name);

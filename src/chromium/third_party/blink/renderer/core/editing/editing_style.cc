@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: editing_style.cc
+// Description: EditingStyle Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2009 Apple Computer, Inc.
  * Copyright (C) 2010, 2011 Google Inc. All rights reserved.
@@ -46,7 +57,7 @@
 #include "third_party/blink/renderer/core/dom/node_computed_style.h"
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
 #include "third_party/blink/renderer/core/dom/qualified_name.h"
-#include "third_party/blink/renderer/core/editing/commands/apply_style_command.h"
+// BKTODO: #include "third_party/blink/renderer/core/editing/commands/apply_style_command.h"
 #include "third_party/blink/renderer/core/editing/editing_style_utilities.h"
 #include "third_party/blink/renderer/core/editing/editing_tri_state.h"
 #include "third_party/blink/renderer/core/editing/editing_utilities.h"
@@ -57,8 +68,10 @@
 #include "third_party/blink/renderer/core/editing/visible_selection.h"
 #include "third_party/blink/renderer/core/editing/writing_direction.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_font_element.h"
 #include "third_party/blink/renderer/core/html/html_span_element.h"
+#endif
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/layout/layout_box.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
@@ -384,8 +397,8 @@ class HTMLFontSizeEquivalent final : public HTMLAttributeEquivalent {
 
 HTMLFontSizeEquivalent::HTMLFontSizeEquivalent()
     : HTMLAttributeEquivalent(CSSPropertyFontSize,
-                              HTMLNames::fontTag,
-                              HTMLNames::sizeAttr) {}
+                              html_names::kFontTag,
+                              html_names::kSizeAttr) {}
 
 const CSSValue* HTMLFontSizeEquivalent::AttributeValueAsCSSValue(
     Element* element) const {
@@ -393,10 +406,14 @@ const CSSValue* HTMLFontSizeEquivalent::AttributeValueAsCSSValue(
   const AtomicString& value = element->getAttribute(attr_name_);
   if (value.IsNull())
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   CSSValueID size;
   if (!HTMLFontElement::CssValueFromFontSizeNumber(value, size))
     return nullptr;
   return CSSIdentifierValue::Create(size);
+#endif
 }
 
 float EditingStyle::no_font_delta_ = 0.0f;
@@ -492,10 +509,13 @@ static int TextAlignResolvingStartAndEnd(T* style) {
 }
 
 void EditingStyle::Init(Node* node, PropertiesToInclude properties_to_include) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsTabHTMLSpanElementTextNode(node))
     node = TabSpanElement(node)->parentNode();
   else if (IsTabHTMLSpanElement(node))
     node = node->parentNode();
+#endif
 
   CSSComputedStyleDeclaration* computed_style_at_position =
       CSSComputedStyleDeclaration::Create(node);
@@ -519,6 +539,8 @@ void EditingStyle::Init(Node* node, PropertiesToInclude properties_to_include) {
     }
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (node && node->EnsureComputedStyle()) {
     const ComputedStyle* computed_style = node->EnsureComputedStyle();
 
@@ -543,6 +565,7 @@ void EditingStyle::Init(Node* node, PropertiesToInclude properties_to_include) {
         computed_style, node->GetDocument().GetSecureContextMode(),
         computed_style_at_position);
   }
+#endif
 
   is_monospace_font_ = computed_style_at_position->IsMonospaceFont();
   ExtractFontSizeDelta();
@@ -662,7 +685,7 @@ void EditingStyle::OverrideWithStyle(const CSSPropertyValueSet* style) {
 }
 
 void EditingStyle::Clear() {
-  mutable_style_.Clear();
+  ASSERT(false); // BKTODO: mutable_style_.Clear();
   is_monospace_font_ = false;
   font_size_delta_ = no_font_delta_;
 }
@@ -905,6 +928,9 @@ bool EditingStyle::ConflictsWithInlineStyleOfElement(
   DCHECK(element);
   DCHECK(!conflicting_properties || conflicting_properties->IsEmpty());
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   const CSSPropertyValueSet* inline_style = element->InlineStyle();
   if (!mutable_style_ || !inline_style)
     return false;
@@ -966,6 +992,7 @@ bool EditingStyle::ConflictsWithInlineStyleOfElement(
   }
 
   return conflicting_properties && !conflicting_properties->IsEmpty();
+#endif
 }
 
 static const HeapVector<Member<HTMLElementEquivalent>>&
@@ -975,24 +1002,24 @@ HtmlElementEquivalents() {
                       (new HeapVector<Member<HTMLElementEquivalent>>));
   if (!html_element_equivalents->size()) {
     html_element_equivalents->push_back(HTMLElementEquivalent::Create(
-        CSSPropertyFontWeight, CSSValueBold, HTMLNames::bTag));
+        CSSPropertyFontWeight, CSSValueBold, html_names::kBTag));
     html_element_equivalents->push_back(HTMLElementEquivalent::Create(
-        CSSPropertyFontWeight, CSSValueBold, HTMLNames::strongTag));
+        CSSPropertyFontWeight, CSSValueBold, html_names::kStrongTag));
     html_element_equivalents->push_back(HTMLElementEquivalent::Create(
-        CSSPropertyVerticalAlign, CSSValueSub, HTMLNames::subTag));
+        CSSPropertyVerticalAlign, CSSValueSub, html_names::kSubTag));
     html_element_equivalents->push_back(HTMLElementEquivalent::Create(
-        CSSPropertyVerticalAlign, CSSValueSuper, HTMLNames::supTag));
+        CSSPropertyVerticalAlign, CSSValueSuper, html_names::kSupTag));
     html_element_equivalents->push_back(HTMLElementEquivalent::Create(
-        CSSPropertyFontStyle, CSSValueItalic, HTMLNames::iTag));
+        CSSPropertyFontStyle, CSSValueItalic, html_names::kITag));
     html_element_equivalents->push_back(HTMLElementEquivalent::Create(
-        CSSPropertyFontStyle, CSSValueItalic, HTMLNames::emTag));
+        CSSPropertyFontStyle, CSSValueItalic, html_names::kEmTag));
 
     html_element_equivalents->push_back(HTMLTextDecorationEquivalent::Create(
-        CSSValueUnderline, HTMLNames::uTag));
+        CSSValueUnderline, html_names::kUTag));
     html_element_equivalents->push_back(HTMLTextDecorationEquivalent::Create(
-        CSSValueLineThrough, HTMLNames::sTag));
+        CSSValueLineThrough, html_names::kSTag));
     html_element_equivalents->push_back(HTMLTextDecorationEquivalent::Create(
-        CSSValueLineThrough, HTMLNames::strikeTag));
+        CSSValueLineThrough, html_names::kStrikeTag));
   }
 
   return *html_element_equivalents;
@@ -1031,15 +1058,15 @@ HtmlAttributeEquivalents() {
     // HTMLAttriuteEquivalent matches exactly one attribute of exactly one
     // element except dirAttr.
     html_attribute_equivalents->push_back(HTMLAttributeEquivalent::Create(
-        CSSPropertyColor, HTMLNames::fontTag, HTMLNames::colorAttr));
+        CSSPropertyColor, html_names::kFontTag, html_names::kColorAttr));
     html_attribute_equivalents->push_back(HTMLAttributeEquivalent::Create(
-        CSSPropertyFontFamily, HTMLNames::fontTag, HTMLNames::faceAttr));
+        CSSPropertyFontFamily, html_names::kFontTag, html_names::kFaceAttr));
     html_attribute_equivalents->push_back(HTMLFontSizeEquivalent::Create());
 
     html_attribute_equivalents->push_back(HTMLAttributeEquivalent::Create(
-        CSSPropertyDirection, HTMLNames::dirAttr));
+        CSSPropertyDirection, html_names::kDirAttr));
     html_attribute_equivalents->push_back(HTMLAttributeEquivalent::Create(
-        CSSPropertyUnicodeBidi, HTMLNames::dirAttr));
+        CSSPropertyUnicodeBidi, html_names::kDirAttr));
   }
 
   return *html_attribute_equivalents;
@@ -1086,7 +1113,7 @@ bool EditingStyle::ExtractConflictingImplicitStyleOfAttributes(
     // unicode-bidi and direction are pushed down separately so don't push down
     // with other styles.
     if (should_preserve_writing_direction == kPreserveWritingDirection &&
-        equivalent->AttributeName() == HTMLNames::dirAttr)
+        equivalent->AttributeName() == html_names::kDirAttr)
       continue;
 
     if (!equivalent->Matches(element) ||
@@ -1116,6 +1143,8 @@ bool EditingStyle::ElementIsStyledSpanOrHTMLEquivalent(
     const HTMLElement* element) {
   DCHECK(element);
   bool element_is_span_or_element_equivalent = false;
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsHTMLSpanElement(*element)) {
     element_is_span_or_element_equivalent = true;
   } else {
@@ -1129,6 +1158,7 @@ bool EditingStyle::ElementIsStyledSpanOrHTMLEquivalent(
       }
     }
   }
+#endif
 
   AttributeCollection attributes = element->Attributes();
   if (attributes.IsEmpty()) {
@@ -1141,7 +1171,7 @@ bool EditingStyle::ElementIsStyledSpanOrHTMLEquivalent(
       html_attribute_equivalents = HtmlAttributeEquivalents();
   for (const auto& equivalent : html_attribute_equivalents) {
     if (equivalent->Matches(element) &&
-        equivalent->AttributeName() != HTMLNames::dirAttr)
+        equivalent->AttributeName() != html_names::kDirAttr)
       matched_attributes++;
   }
 
@@ -1150,7 +1180,9 @@ bool EditingStyle::ElementIsStyledSpanOrHTMLEquivalent(
     return false;
   }
 
-  if (element->hasAttribute(HTMLNames::styleAttr)) {
+  if (element->hasAttribute(html_names::kStyleAttr)) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (const CSSPropertyValueSet* style = element->InlineStyle()) {
       unsigned property_count = style->PropertyCount();
       for (unsigned i = 0; i < property_count; ++i) {
@@ -1158,6 +1190,7 @@ bool EditingStyle::ElementIsStyledSpanOrHTMLEquivalent(
           return false;
       }
     }
+#endif
     matched_attributes++;
   }
 
@@ -1218,11 +1251,14 @@ void EditingStyle::PrepareToApplyAt(
 void EditingStyle::MergeTypingStyle(Document* document) {
   DCHECK(document);
 
+  ASSERT(false); // BKTODO:
+#if 0
   EditingStyle* typing_style = document->GetFrame()->GetEditor().TypingStyle();
   if (!typing_style || typing_style == this)
     return;
 
   MergeStyle(typing_style->Style(), kOverrideValues);
+#endif
 }
 
 void EditingStyle::MergeInlineStyleOfElement(
@@ -1230,6 +1266,8 @@ void EditingStyle::MergeInlineStyleOfElement(
     CSSPropertyOverrideMode mode,
     PropertiesToInclude properties_to_include) {
   DCHECK(element);
+  ASSERT(false); // BKTODO:
+#if 0
   if (!element->InlineStyle())
     return;
 
@@ -1248,6 +1286,7 @@ void EditingStyle::MergeInlineStyleOfElement(
           mode);
       return;
   }
+#endif
 }
 
 static inline bool ElementMatchesAndPropertyIsNotInInlineStyleDecl(
@@ -1255,11 +1294,15 @@ static inline bool ElementMatchesAndPropertyIsNotInInlineStyleDecl(
     const Element* element,
     EditingStyle::CSSPropertyOverrideMode mode,
     CSSPropertyValueSet* style) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return equivalent->Matches(element) &&
          (!element->InlineStyle() ||
           !equivalent->PropertyExistsInStyle(element->InlineStyle())) &&
          (mode == EditingStyle::kOverrideValues ||
           !equivalent->PropertyExistsInStyle(style));
+#endif
 }
 
 static MutableCSSPropertyValueSet* ExtractEditingProperties(
@@ -1287,9 +1330,12 @@ void EditingStyle::MergeInlineAndImplicitStyleOfElement(
   EditingStyle* style_from_rules = EditingStyle::Create();
   style_from_rules->MergeStyleFromRulesForSerialization(element);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (element->InlineStyle())
     style_from_rules->mutable_style_->MergeAndOverrideOnConflict(
         element->InlineStyle());
+#endif
 
   style_from_rules->mutable_style_ = ExtractEditingProperties(
       style_from_rules->mutable_style_.Get(), properties_to_include);
@@ -1306,7 +1352,7 @@ void EditingStyle::MergeInlineAndImplicitStyleOfElement(
   const HeapVector<Member<HTMLAttributeEquivalent>>& attribute_equivalents =
       HtmlAttributeEquivalents();
   for (const auto& attribute : attribute_equivalents) {
-    if (attribute->AttributeName() == HTMLNames::dirAttr)
+    if (attribute->AttributeName() == html_names::kDirAttr)
       continue;  // We don't want to include directionality
     if (ElementMatchesAndPropertyIsNotInInlineStyleDecl(
             attribute.Get(), element, mode, mutable_style_.Get()))
@@ -1374,6 +1420,8 @@ static MutableCSSPropertyValueSet* StyleFromMatchedRulesForElement(
     unsigned rules_to_include) {
   MutableCSSPropertyValueSet* style =
       MutableCSSPropertyValueSet::Create(kHTMLQuirksMode);
+  ASSERT(false); // BKTODO:
+#if 0
   StyleRuleList* matched_rules =
       element->GetDocument().EnsureStyleResolver().StyleRulesForElement(
           element, rules_to_include);
@@ -1381,6 +1429,7 @@ static MutableCSSPropertyValueSet* StyleFromMatchedRulesForElement(
     for (unsigned i = 0; i < matched_rules->size(); ++i)
       style->MergeAndOverrideOnConflict(&matched_rules->at(i)->Properties());
   }
+#endif
   return style;
 }
 
@@ -1486,6 +1535,8 @@ void EditingStyle::RemoveStyleFromRulesAndContext(Element* element,
         secure_context_mode);
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   // 3. If this element is a span and has display: inline or float: none, remove
   // them unless they are overriden by rules. These rules are added by
   // serialization code to wrap text nodes.
@@ -1499,6 +1550,7 @@ void EditingStyle::RemoveStyleFromRulesAndContext(Element* element,
             CSSValueNone)
       mutable_style_->RemoveProperty(CSSPropertyFloat);
   }
+#endif
 }
 
 void EditingStyle::RemovePropertiesInElementDefaultStyle(Element* element) {
@@ -1576,9 +1628,12 @@ StyleChange::StyleChange(EditingStyle* style, const Position& position)
 
   ReconcileTextDecorationProperties(mutable_style,
                                     document->GetSecureContextMode());
+  ASSERT(false); // BKTODO:
+#if 0
   if (!document->GetFrame()->GetEditor().ShouldStyleWithCSS())
     ExtractTextStyles(document, mutable_style,
                       computed_style->IsMonospaceFont());
+#endif
 
   // Changing the whitespace style in a tab span would collapse the tab into a
   // space.
@@ -1865,6 +1920,9 @@ int LegacyFontSizeFromCSSValue(Document* document,
 EditingTriState EditingStyle::SelectionHasStyle(const LocalFrame& frame,
                                                 CSSPropertyID property_id,
                                                 const String& value) {
+  ASSERT(false); // BKTODO:
+  return EditingTriState::kFalse;
+#if 0
   const SecureContextMode secure_context_mode =
       frame.GetDocument()->GetSecureContextMode();
 
@@ -1872,6 +1930,7 @@ EditingTriState EditingStyle::SelectionHasStyle(const LocalFrame& frame,
       ->TriStateOfStyle(
           frame.Selection().ComputeVisibleSelectionInDOMTreeDeprecated(),
           secure_context_mode);
+#endif
 }
 
 }  // namespace blink

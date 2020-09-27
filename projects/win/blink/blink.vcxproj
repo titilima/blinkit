@@ -607,6 +607,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\caret_display_item_client.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\drag_caret.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_style.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_style_utilities.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_utilities.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editor.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\ephemeral_range.cc" />
@@ -2144,6 +2145,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_boundary.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_strategy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_style.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_style_utilities.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_tri_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_utilities.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editor.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\ephemeral_range.h" />
@@ -2178,6 +2181,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_position.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_selection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_units.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\writing_direction.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\animation_event.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\animation_event_init.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\animation_playback_event.h" />

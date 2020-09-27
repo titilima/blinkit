@@ -634,6 +634,12 @@ bool Element::hasAttribute(const AtomicString &name) const
     return false;
 }
 
+bool Element::hasAttribute(const QualifiedName &name) const
+{
+    ASSERT(false); // BKTODO:
+    return false;
+}
+
 bool Element::HasClass(void) const
 {
     if (const ElementData *elementData = GetElementData())

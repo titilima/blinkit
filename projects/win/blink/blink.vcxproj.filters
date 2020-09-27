@@ -2957,6 +2957,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\typed_arrays\array_buffer_contents.cc">
       <Filter>renderer\platform\wtf\typed_arrays</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_style_utilities.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -8271,6 +8274,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\typed_arrays\array_buffer_contents.h">
       <Filter>renderer\platform\wtf\typed_arrays</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_style_utilities.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_tri_state.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\writing_direction.h">
+      <Filter>renderer\core\editing</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
