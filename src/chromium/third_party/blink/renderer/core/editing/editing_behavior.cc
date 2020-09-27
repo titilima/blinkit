@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: editing_behavior.cc
+// Description: EditingBehavior Class
+//      Author: Ziming Li
+//     Created: 2020-09-27
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Apple, Inc.  All rights reserved.
  * Copyright (C) 2012 Google, Inc.  All rights reserved.
@@ -27,9 +38,13 @@
 #include "third_party/blink/renderer/core/editing/editing_behavior.h"
 
 #include "build/build_config.h"
+#if 0 // BKTODO:
 #include "third_party/blink/public/platform/web_input_event.h"
 #include "third_party/blink/public/web/web_settings.h"
 #include "third_party/blink/renderer/core/events/keyboard_event.h"
+#else
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+#endif
 #include "third_party/blink/renderer/platform/keyboard_codes.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
 
@@ -41,10 +56,12 @@ namespace {
 // The below code was adapted from the WebKit file webview.cpp
 //
 
+#if 0 // BKTODO:
 const unsigned kCtrlKey = WebInputEvent::kControlKey;
 const unsigned kAltKey = WebInputEvent::kAltKey;
 const unsigned kShiftKey = WebInputEvent::kShiftKey;
 const unsigned kMetaKey = WebInputEvent::kMetaKey;
+#endif
 #if defined(OS_MACOSX)
 // Aliases for the generic key defintions to make kbd shortcuts definitions more
 // readable on OS X.
@@ -82,6 +99,7 @@ struct DomKeyKeyDownEntry {
   const char* name;
 };
 
+#if 0 // BKTODO:
 // Key bindings with command key on Mac and alt key on other platforms are
 // marked as system key events and will be ignored (with the exception
 // of Command-B and Command-I) so they shouldn't be added here.
@@ -192,14 +210,18 @@ const DomKeyKeyDownEntry kDomKeyKeyDownEntries[] = {
     {"Cut", 0, "Cut"},
     {"Paste", 0, "Paste"},
 };
+#endif
 
 const char* LookupCommandNameFromDomKeyKeyDown(const String& key,
                                                unsigned modifiers) {
+  ASSERT(false); // BKTODO:
+#if 0
   // This table is not likely to grow, so sequential search is fine here.
   for (const auto& entry : kDomKeyKeyDownEntries) {
     if (key == entry.key && modifiers == entry.modifiers)
       return entry.name;
   }
+#endif
   return nullptr;
 }
 
@@ -207,6 +229,9 @@ const char* LookupCommandNameFromDomKeyKeyDown(const String& key,
 
 const char* EditingBehavior::InterpretKeyEvent(
     const KeyboardEvent& event) const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   const WebKeyboardEvent* key_event = event.KeyEvent();
   if (!key_event)
     return "";
@@ -242,9 +267,12 @@ const char* EditingBehavior::InterpretKeyEvent(
 
   int map_key = modifiers << 16 | event.charCode();
   return map_key ? key_press_commands_map->at(map_key) : nullptr;
+#endif
 }
 
 bool EditingBehavior::ShouldInsertCharacter(const KeyboardEvent& event) const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (event.KeyEvent()->text[1] != 0)
     return true;
 
@@ -288,14 +316,17 @@ bool EditingBehavior::ShouldInsertCharacter(const KeyboardEvent& event) const {
 #endif
   }
 #endif
+#endif // 0
 
   return true;
 }
 
+#if 0 // BKTODO:
 STATIC_ASSERT_ENUM(WebSettings::kEditingBehaviorMac, kEditingMacBehavior);
 STATIC_ASSERT_ENUM(WebSettings::kEditingBehaviorWin, kEditingWindowsBehavior);
 STATIC_ASSERT_ENUM(WebSettings::kEditingBehaviorUnix, kEditingUnixBehavior);
 STATIC_ASSERT_ENUM(WebSettings::kEditingBehaviorAndroid,
                    kEditingAndroidBehavior);
+#endif
 
 }  // namespace blink

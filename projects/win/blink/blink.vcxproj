@@ -2646,6 +2646,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\instrumentation\tracing\traced_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\instrumentation\tracing\trace_event.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\json\json_values.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\keyboard_codes.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\language.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\layout_unit.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\length.h" />
@@ -2732,6 +2733,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\weborigin\referrer_policy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\weborigin\security_policy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\web_task_runner.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\windows_keyboard_codes.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\address_sanitizer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\alignment.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\allocator.h" />
