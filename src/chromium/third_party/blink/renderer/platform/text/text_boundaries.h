@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_boundaries.h
+// Description: Text Boundary Helpers
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2006 Apple Computer, Inc.  All rights reserved.
  *
@@ -34,7 +45,11 @@
 namespace blink {
 
 inline bool RequiresContextForWordBoundary(UChar32 ch) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return WTF::Unicode::HasLineBreakingPropertyComplexContext(ch);
+#endif
 }
 
 PLATFORM_EXPORT int EndOfFirstWordBoundaryContext(const UChar* characters,

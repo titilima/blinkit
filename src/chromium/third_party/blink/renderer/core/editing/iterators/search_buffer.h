@@ -104,7 +104,9 @@ class SearchBuffer {
   Vector<UChar> normalized_target_;
   mutable Vector<UChar> normalized_match_;
 
+#if 0 // BKTODO:
   std::unique_ptr<TextSearcherICU> text_searcher_;
+#endif
 
   DISALLOW_COPY_AND_ASSIGN(SearchBuffer);
 };

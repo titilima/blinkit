@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: search_buffer.cc
+// Description: SearchBuffer Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All
  * rights reserved.
@@ -31,7 +42,7 @@
 #include "third_party/blink/renderer/core/editing/ephemeral_range.h"
 #include "third_party/blink/renderer/core/editing/iterators/character_iterator.h"
 #include "third_party/blink/renderer/core/editing/iterators/simplified_backwards_text_iterator.h"
-#include "third_party/blink/renderer/core/editing/iterators/text_searcher_icu.h"
+// BKTODO: #include "third_party/blink/renderer/core/editing/iterators/text_searcher_icu.h"
 #include "third_party/blink/renderer/platform/text/character.h"
 #include "third_party/blink/renderer/platform/text/text_boundaries.h"
 #include "third_party/blink/renderer/platform/text/unicode_utilities.h"
@@ -51,6 +62,7 @@ UChar32 GetCodePointAt(const UChar* str, wtf_size_t index, wtf_size_t length) {
 
 }  // namespace
 
+#if 0 // BKTODO:
 inline SearchBuffer::SearchBuffer(const String& target, FindOptions options)
     : options_(options),
       prefix_length_(0),
@@ -93,6 +105,7 @@ inline SearchBuffer::SearchBuffer(const String& target, FindOptions options)
     NormalizeCharactersIntoNFCForm(target_.data(), target_.size(),
                                    normalized_target_);
 }
+#endif
 
 inline SearchBuffer::~SearchBuffer() = default;
 
@@ -178,6 +191,8 @@ inline bool SearchBuffer::IsBadMatch(const UChar* match,
 
 inline bool SearchBuffer::IsWordStartMatch(wtf_size_t start,
                                            wtf_size_t length) const {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(options_ & kWholeWord);
 
   if (!start)
@@ -204,10 +219,14 @@ inline bool SearchBuffer::IsWordStartMatch(wtf_size_t start,
     return static_cast<int>(start + length) ==
            FindWordEndBoundary(buffer_.data(), buffer_.size(),
                                word_break_search_start);
+#endif
   return true;
 }
 
 inline wtf_size_t SearchBuffer::Search(wtf_size_t& start) {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   wtf_size_t size = buffer_.size();
   if (at_break_) {
     if (!size)
@@ -265,6 +284,7 @@ nextMatch:
 
   start = size - match.start;
   return match.length;
+#endif
 }
 
 // Check if there's any unpaird surrogate code point.
@@ -284,6 +304,7 @@ static bool IsValidUTF16(const String& s) {
   return true;
 }
 
+#if 0 // BKTODO:
 template <typename Strategy>
 static wtf_size_t FindPlainTextInternal(
     CharacterIteratorAlgorithm<Strategy>& it,
@@ -397,5 +418,6 @@ EphemeralRangeInFlatTree FindPlainText(
   return FindPlainTextAlgorithm<EditingInFlatTreeStrategy>(input_range, target,
                                                            options);
 }
+#endif
 
 }  // namespace blink

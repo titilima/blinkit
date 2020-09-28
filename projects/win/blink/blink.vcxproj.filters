@@ -2990,6 +2990,21 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\selection_modifier.cc">
       <Filter>renderer\core\editing</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\character_iterator.cc">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\simplified_backwards_text_iterator.cc">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_boundaries.cc">
+      <Filter>renderer\platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\unicode_utilities.cc">
+      <Filter>renderer\platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\backwards_text_buffer.cc">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -8361,6 +8376,21 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\event_with_hit_test_results.h">
       <Filter>renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\character_iterator.h">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\simplified_backwards_text_iterator.h">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_boundaries.h">
+      <Filter>renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\unicode_utilities.h">
+      <Filter>renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\backwards_text_buffer.h">
+      <Filter>renderer\core\editing\iterators</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
