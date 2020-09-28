@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: simplified_backwards_text_iterator.cc
+// Description: SimplifiedBackwardsTextIterator Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All
  * rights reserved.
@@ -33,7 +44,7 @@
 #include "third_party/blink/renderer/core/editing/iterators/text_iterator.h"
 #include "third_party/blink/renderer/core/editing/position.h"
 #include "third_party/blink/renderer/core/editing/visible_units.h"
-#include "third_party/blink/renderer/core/html/forms/html_form_control_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/forms/html_form_control_element.h"
 #include "third_party/blink/renderer/core/layout/layout_text_fragment.h"
 
 namespace blink {
@@ -135,11 +146,14 @@ void SimplifiedBackwardsTextIteratorAlgorithm<Strategy>::Advance() {
   if (should_stop_)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (behavior_.StopsOnFormControls() &&
       HTMLFormControlElement::EnclosingFormControlElement(node_)) {
     should_stop_ = true;
     return;
   }
+#endif
 
   text_state_.ResetRunInformation();
 
@@ -280,6 +294,9 @@ LayoutText* SimplifiedBackwardsTextIteratorAlgorithm<
   offset_in_node = 0;
 
   DCHECK(fragment->IsRemainingTextLayoutObject());
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   DCHECK(fragment->GetFirstLetterPseudoElement());
 
   LayoutObject* pseudo_element_layout_object =
@@ -297,6 +314,7 @@ LayoutText* SimplifiedBackwardsTextIteratorAlgorithm<
       end_offset + CollapsedSpaceLength(first_letter_layout_object, end_offset);
 
   return first_letter_layout_object;
+#endif
 }
 
 template <typename Strategy>
