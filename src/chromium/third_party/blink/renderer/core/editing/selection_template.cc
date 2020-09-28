@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: selection_template.cc
+// Description: SelectionTemplate Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -37,7 +48,7 @@ bool SelectionTemplate<Strategy>::operator==(
     return other.IsNone();
   if (other.IsNone())
     return false;
-  DCHECK_EQ(base_.GetDocument(), other.GetDocument()) << *this << ' ' << other;
+  DCHECK_EQ(base_.GetDocument(), other.GetDocument());
   return base_ == other.base_ && extent_ == other.extent_ &&
          affinity_ == other.affinity_;
 }
@@ -57,7 +68,7 @@ void SelectionTemplate<Strategy>::Trace(blink::Visitor* visitor) {
 template <typename Strategy>
 PositionTemplate<Strategy> SelectionTemplate<Strategy>::Base() const {
   DCHECK(AssertValid());
-  DCHECK(!base_.IsOrphan()) << base_;
+  DCHECK(!base_.IsOrphan());
   return base_;
 }
 
@@ -70,7 +81,7 @@ Document* SelectionTemplate<Strategy>::GetDocument() const {
 template <typename Strategy>
 PositionTemplate<Strategy> SelectionTemplate<Strategy>::Extent() const {
   DCHECK(AssertValid());
-  DCHECK(!extent_.IsOrphan()) << extent_;
+  DCHECK(!extent_.IsOrphan());
   return extent_;
 }
 
@@ -98,7 +109,7 @@ bool SelectionTemplate<Strategy>::AssertValidFor(
     return false;
   if (base_.IsNull())
     return true;
-  DCHECK_EQ(base_.GetDocument(), document) << *this;
+  DCHECK_EQ(base_.GetDocument(), document);
   return true;
 }
 
@@ -107,9 +118,9 @@ template <typename Strategy>
 bool SelectionTemplate<Strategy>::AssertValid() const {
   if (base_.IsNull())
     return true;
-  DCHECK_EQ(base_.GetDocument()->DomTreeVersion(), dom_tree_version_) << *this;
-  DCHECK(!base_.IsOrphan()) << *this;
-  DCHECK(!extent_.IsOrphan()) << *this;
+  DCHECK_EQ(base_.GetDocument()->DomTreeVersion(), dom_tree_version_);
+  DCHECK(!base_.IsOrphan());
+  DCHECK(!extent_.IsOrphan());
   DCHECK_EQ(base_.GetDocument(), extent_.GetDocument());
   return true;
 }
@@ -123,6 +134,8 @@ bool SelectionTemplate<Strategy>::AssertValid() const {
 #ifndef NDEBUG
 template <typename Strategy>
 void SelectionTemplate<Strategy>::ShowTreeForThis() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (base_.IsNull()) {
     LOG(INFO) << "\nbase is null";
     return;
@@ -138,6 +151,7 @@ void SelectionTemplate<Strategy>::ShowTreeForThis() const {
             << "\n"
             << "extent: "
             << extent_.ToAnchorTypeAndOffsetString().Utf8().data();
+#endif
 }
 #endif
 
@@ -259,7 +273,7 @@ template <typename Strategy>
 typename SelectionTemplate<Strategy>::Builder&
 SelectionTemplate<Strategy>::Builder::Collapse(
     const PositionTemplate<Strategy>& position) {
-  DCHECK(position.IsConnected()) << position;
+  DCHECK(position.IsConnected());
   selection_.base_ = position;
   selection_.extent_ = position;
 #if DCHECK_IS_ON()
@@ -281,9 +295,9 @@ template <typename Strategy>
 typename SelectionTemplate<Strategy>::Builder&
 SelectionTemplate<Strategy>::Builder::Extend(
     const PositionTemplate<Strategy>& position) {
-  DCHECK(position.IsConnected()) << position;
+  DCHECK(position.IsConnected());
   DCHECK_EQ(selection_.GetDocument(), position.GetDocument());
-  DCHECK(selection_.Base().IsConnected()) << selection_.Base();
+  DCHECK(selection_.Base().IsConnected());
   DCHECK(selection_.AssertValid());
   selection_.extent_ = position;
   selection_.direction_ = Direction::kNotComputed;
@@ -293,7 +307,7 @@ SelectionTemplate<Strategy>::Builder::Extend(
 template <typename Strategy>
 typename SelectionTemplate<Strategy>::Builder&
 SelectionTemplate<Strategy>::Builder::SelectAllChildren(const Node& node) {
-  DCHECK(node.CanContainRangeEndPoint()) << node;
+  DCHECK(node.CanContainRangeEndPoint());
   return SetBaseAndExtent(
       EphemeralRangeTemplate<Strategy>::RangeOfContents(node));
 }
@@ -311,7 +325,7 @@ SelectionTemplate<Strategy>::Builder::SetAsBackwardSelection(
     const EphemeralRangeTemplate<Strategy>& range) {
   DCHECK(range.IsNotNull());
   DCHECK(!range.IsCollapsed());
-  DCHECK(selection_.IsNone()) << selection_;
+  DCHECK(selection_.IsNone());
   selection_.base_ = range.EndPosition();
   selection_.extent_ = range.StartPosition();
   selection_.direction_ = Direction::kBackward;
@@ -327,7 +341,7 @@ typename SelectionTemplate<Strategy>::Builder&
 SelectionTemplate<Strategy>::Builder::SetAsForwardSelection(
     const EphemeralRangeTemplate<Strategy>& range) {
   DCHECK(range.IsNotNull());
-  DCHECK(selection_.IsNone()) << selection_;
+  DCHECK(selection_.IsNone());
   selection_.base_ = range.StartPosition();
   selection_.extent_ = range.EndPosition();
   selection_.direction_ = Direction::kForward;
@@ -359,7 +373,7 @@ SelectionTemplate<Strategy>::Builder::SetBaseAndExtent(
     const PositionTemplate<Strategy>& base,
     const PositionTemplate<Strategy>& extent) {
   if (base.IsNull()) {
-    DCHECK(extent.IsNull()) << extent;
+    DCHECK(extent.IsNull());
     return SetBaseAndExtent(EphemeralRangeTemplate<Strategy>());
   }
   DCHECK(extent.IsNotNull());
