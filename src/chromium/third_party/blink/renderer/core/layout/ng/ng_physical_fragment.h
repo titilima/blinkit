@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_physical_fragment.h
+// Description: NGPhysicalFragment Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -16,7 +27,7 @@
 #include "third_party/blink/renderer/platform/graphics/touch_action.h"
 #include "third_party/blink/renderer/platform/wtf/ref_counted.h"
 
-#include <unicode/ubidi.h>
+// BKTODO: #include <unicode/ubidi.h>
 
 namespace blink {
 
@@ -197,8 +208,10 @@ class CORE_EXPORT NGPhysicalFragment
   // (from style) and blocking touch event handlers.
   TouchAction EffectiveWhitelistedTouchAction() const;
 
+#if 0 // BKTODO:
   // Returns the bidi level of a text or atomic inline fragment.
   virtual UBiDiLevel BidiLevel() const;
+#endif
 
   // Returns the resolved direction of a text or atomic inline fragment. Not to
   // be confused with the CSS 'direction' property.

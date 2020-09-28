@@ -261,6 +261,9 @@
     <Filter Include="renderer\platform\wtf\typed_arrays">
       <UniqueIdentifier>{6b1fc4fb-dbf6-43de-907f-b2a8b2f6b779}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\paint\ng">
+      <UniqueIdentifier>{d8b1d15e-370b-40c3-9086-9846d298110a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -3007,6 +3010,39 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_text_box.cc">
       <Filter>renderer\core\layout\line</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_physical_line_box_fragment.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_physical_text_fragment.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment.cc">
+      <Filter>renderer\core\paint\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_line_height_metrics.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_physical_container_fragment.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_physical_offset_rect.cc">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_physical_fragment.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_physical_offset.cc">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_break_token.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_layout_input_node.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\list\layout_ng_list_marker.cc">
+      <Filter>renderer\core\layout\ng\list</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -8400,6 +8436,48 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\truncation.h">
       <Filter>renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_physical_line_box_fragment.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_physical_text_fragment.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment.h">
+      <Filter>renderer\core\paint\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_line_height_metrics.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_physical_container_fragment.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_physical_offset_rect.h">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_link.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_physical_fragment.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_physical_offset.h">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_break_token.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_layout_input_node.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\list\layout_ng_list_marker.h">
+      <Filter>renderer\core\layout\ng\list</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_text_end_effect.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\ng_text_fragment_paint_info.h">
+      <Filter>renderer\platform\fonts</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

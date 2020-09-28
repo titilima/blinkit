@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_selection.cc
+// Description: LayoutSelection Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights
@@ -29,7 +40,7 @@
 #include "third_party/blink/renderer/core/editing/selection_template.h"
 #include "third_party/blink/renderer/core/editing/visible_position.h"
 #include "third_party/blink/renderer/core/editing/visible_units.h"
-#include "third_party/blink/renderer/core/html/forms/text_control_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/forms/text_control_element.h"
 #include "third_party/blink/renderer/core/layout/layout_text.h"
 #include "third_party/blink/renderer/core/layout/layout_text_fragment.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
@@ -195,11 +206,11 @@ struct NewPaintRangeAndSelectedNodes {
 #if DCHECK_IS_ON()
     paint_range->AssertSanity();
     if (paint_range->start_node) {
-      DCHECK(selected_objects.Contains(paint_range->start_node)) << this;
-      DCHECK(selected_objects.Contains(paint_range->end_node)) << this;
+      DCHECK(selected_objects.Contains(paint_range->start_node));
+      DCHECK(selected_objects.Contains(paint_range->end_node));
       return;
     }
-    DCHECK(selected_objects.IsEmpty()) << this;
+    DCHECK(selected_objects.IsEmpty());
 #endif
   }
 
@@ -256,8 +267,8 @@ static void SetShouldInvalidateIfNeeded(const Node& node) {
 }
 
 static void SetSelectionStateIfNeeded(const Node& node, SelectionState state) {
-  DCHECK_NE(state, SelectionState::kContain) << node;
-  DCHECK_NE(state, SelectionState::kNone) << node;
+  DCHECK_NE(state, SelectionState::kContain);
+  DCHECK_NE(state, SelectionState::kNone);
   LayoutObject* layout_object = node.GetLayoutObject();
   if (layout_object->GetSelectionState() == state)
     return;
@@ -288,8 +299,8 @@ static void SetShouldInvalidateSelection(
       continue;
     const SelectionState new_state =
         node->GetLayoutObject()->GetSelectionState();
-    DCHECK_NE(new_state, SelectionState::kContain) << node;
-    DCHECK_NE(new_state, SelectionState::kNone) << node;
+    DCHECK_NE(new_state, SelectionState::kContain);
+    DCHECK_NE(new_state, SelectionState::kNone);
     SetShouldInvalidateIfNeeded(*node);
   }
   // For LayoutObject in old SelectionPaintRange, we invalidate LayoutObjects
@@ -297,17 +308,16 @@ static void SetShouldInvalidateSelection(
   // 1. LayoutObject was painted and would not be painted.
   // 2. LayoutObject was not painted and would be painted.
   for (const auto& key_value : old_selected_objects.selected_map) {
-    const Node* const node = key_value.key;
-    const SelectionState old_state = key_value.value;
+    const Node* const node = key_value.first;
+    const SelectionState old_state = key_value.second;
     const SelectionState new_state =
         node->GetLayoutObject()->GetSelectionState();
     if (new_state == old_state)
       continue;
     DCHECK(new_state != SelectionState::kNone ||
-           old_state != SelectionState::kNone)
-        << node;
-    DCHECK_NE(new_state, SelectionState::kContain) << node;
-    DCHECK_NE(old_state, SelectionState::kContain) << node;
+           old_state != SelectionState::kNone);
+    DCHECK_NE(new_state, SelectionState::kContain);
+    DCHECK_NE(old_state, SelectionState::kContain);
     SetShouldInvalidateIfNeeded(*node);
   }
 
@@ -353,7 +363,11 @@ static void VisitSelectedInclusiveDescendantsOfInternal(const Node& node,
 }
 
 static inline bool IsFlatTreeClean(const Node& node) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return !node.GetDocument().IsSlotAssignmentOrLegacyDistributionDirty();
+#endif
 }
 
 template <typename Visitor>
@@ -379,11 +393,11 @@ static OldSelectedNodes ResetOldSelectedNodes(
     void Visit(const Node& node) {
       LayoutObject* layout_object = node.GetLayoutObject();
       const SelectionState old_state = layout_object->GetSelectionState();
-      DCHECK_NE(old_state, SelectionState::kNone) << node;
+      DCHECK_NE(old_state, SelectionState::kNone);
       layout_object->SetSelectionState(SelectionState::kNone);
       if (old_state == SelectionState::kContain)
         return;
-      old_selected_objects.selected_map.insert(&node, old_state);
+      ASSERT(false); // BKTODO: old_selected_objects.selected_map.insert(&node, old_state);
       if (old_state == SelectionState::kInside)
         return;
       switch (old_state) {
@@ -450,10 +464,13 @@ static base::Optional<unsigned> ComputeEndOffset(
 static bool IsPositionValidText(const Position& position) {
   if (position.AnchorNode()->IsTextNode() && position.IsOffsetInAnchor())
     return true;
+  ASSERT(false);
+#if 0
   if ((IsHTMLBRElement(position.AnchorNode()) ||
        IsHTMLWBRElement(position.AnchorNode())) &&
       (position.IsBeforeAnchor() || position.IsAfterAnchor()))
     return true;
+#endif
   return false;
 }
 #endif
@@ -481,12 +498,12 @@ static base::Optional<unsigned> GetTextContentOffsetStart(
   if (!node.GetLayoutObject()->IsText())
     return base::nullopt;
   if (node.IsTextNode()) {
-    DCHECK(node_offset.has_value()) << node;
+    DCHECK(node_offset.has_value());
     return GetTextContentOffset(Position(node, node_offset.value()));
   }
 
-  DCHECK(IsHTMLWBRElement(node) || IsHTMLBRElement(node)) << node;
-  DCHECK(!node_offset.has_value()) << node;
+  ASSERT(false); // BKTODO: DCHECK(IsHTMLWBRElement(node) || IsHTMLBRElement(node)) << node;
+  DCHECK(!node_offset.has_value());
   return GetTextContentOffset(Position::BeforeNode(node));
 }
 
@@ -498,12 +515,12 @@ static base::Optional<unsigned> GetTextContentOffsetEnd(
   if (!node.GetLayoutObject()->IsText())
     return {};
   if (node.IsTextNode()) {
-    DCHECK(node_offset.has_value()) << node;
+    DCHECK(node_offset.has_value());
     return GetTextContentOffset(Position(node, node_offset.value()));
   }
 
-  DCHECK(IsHTMLWBRElement(node) || IsHTMLBRElement(node)) << node;
-  DCHECK(!node_offset.has_value()) << node;
+  // BKTODO: DCHECK(IsHTMLWBRElement(node) || IsHTMLBRElement(node)) << node;
+  DCHECK(!node_offset.has_value());
   return GetTextContentOffset(Position::AfterNode(node));
 }
 
@@ -551,8 +568,11 @@ static bool IsLastLineInInlineBlock(const NGPaintFragment& line) {
 }
 
 static bool IsBeforeSoftLineBreak(const NGPaintFragment& fragment) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (ToNGPhysicalTextFragmentOrDie(fragment.PhysicalFragment()).IsLineBreak())
     return false;
+#endif
 
   // TODO(yoichio): InlineBlock should not be container line box.
   // See paint/selection/text-selection-inline-block.html.
@@ -664,6 +684,9 @@ LayoutTextSelectionStatus FrameSelection::ComputeLayoutSelectionStatus(
 // LayoutText and not of each NGPhysicalTextFragment for it.
 LayoutSelectionStatus LayoutSelection::ComputeSelectionStatus(
     const NGPaintFragment& fragment) const {
+  ASSERT(false); // BKTODO:
+  return { 0, 0, SelectSoftLineBreak::kNotSelected };
+#if 0
   const NGPhysicalTextFragment& text_fragment =
       ToNGPhysicalTextFragmentOrDie(fragment.PhysicalFragment());
   // We don't paint selection on ellipsis.
@@ -712,6 +735,7 @@ LayoutSelectionStatus LayoutSelection::ComputeSelectionStatus(
       // This block is not included in selection.
       return {0, 0, SelectSoftLineBreak::kNotSelected};
   }
+#endif
 }
 
 static NewPaintRangeAndSelectedNodes CalcSelectionRangeAndSetSelectionState(
@@ -789,7 +813,7 @@ void LayoutSelection::Commit() {
     return;
   has_pending_selection_ = false;
 
-  DCHECK(!frame_selection_->GetDocument().NeedsLayoutTreeUpdate());
+  ASSERT(false); // BKTODO: DCHECK(!frame_selection_->GetDocument().NeedsLayoutTreeUpdate());
   DCHECK_GE(frame_selection_->GetDocument().Lifecycle().GetState(),
             DocumentLifecycle::kLayoutClean);
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
@@ -917,8 +941,8 @@ std::ostream& operator<<(
   ostream << "[";
   const char* comma = "";
   for (const auto& key_value : map) {
-    const Node* const node = key_value.key;
-    const SelectionState old_state = key_value.value;
+    const Node* const node = key_value.first;
+    const SelectionState old_state = key_value.second;
     ostream << comma << node << "." << old_state;
     comma = ", ";
   }
@@ -933,9 +957,7 @@ std::ostream& operator<<(std::ostream& ostream,
 }
 
 void PrintOldSelectedNodes(const OldSelectedNodes& old_node) {
-  std::stringstream stream;
-  stream << std::endl << old_node;
-  LOG(INFO) << stream.str();
+  ASSERT(false); // BKTODO:
 }
 
 std::ostream& operator<<(
@@ -959,21 +981,11 @@ std::ostream& operator<<(std::ostream& ostream,
 }
 
 void PrintSelectedNodes(const NewPaintRangeAndSelectedNodes& new_range) {
-  std::stringstream stream;
-  stream << std::endl << new_range;
-  LOG(INFO) << stream.str();
+  ASSERT(false); // BKTODO:
 }
 
 void PrintSelectionStateInDocument(const FrameSelection& selection) {
-  class PrintVisitor {
-    STACK_ALLOCATED();
-
-   public:
-    void Visit(const Node& node) { PrintSelectionStatus(stream, node); }
-    std::stringstream stream;
-  } visitor;
-  VisitSelectedInclusiveDescendantsOf(selection.GetDocument(), &visitor);
-  LOG(INFO) << std::endl << visitor.stream.str();
+  ASSERT(false); // BKTODO:
 }
 #endif
 

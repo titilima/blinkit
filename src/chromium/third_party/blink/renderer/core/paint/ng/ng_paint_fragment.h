@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_paint_fragment.h
+// Description: NGPaintFragment Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -189,6 +200,7 @@ class CORE_EXPORT NGPaintFragment : public RefCounted<NGPaintFragment>,
 
     bool IsEmpty() const { return !first_; }
 
+#if 0 // BKTODO:
     class iterator final
         : public std::iterator<std::forward_iterator_tag, NGPaintFragment*> {
      public:
@@ -214,6 +226,7 @@ class CORE_EXPORT NGPaintFragment : public RefCounted<NGPaintFragment>,
 
     iterator begin() const { return iterator(first_); }
     iterator end() const { return iterator(nullptr); }
+#endif
 
     // Returns the first |NGPaintFragment| in |FragmentRange| as STL container.
     // It is error to call |front()| for empty range.
