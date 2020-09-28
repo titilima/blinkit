@@ -736,6 +736,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_view.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_box.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_flow_box.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_text_box.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_box_list.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\root_inline_box.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\trailing_objects.cc" />
@@ -2329,6 +2330,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_view.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_box.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_flow_box.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_text_box.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_box_list.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\root_inline_box.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\trailing_objects.h" />
@@ -2735,6 +2737,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_direction.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_justify.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_run.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\truncation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\unicode_bidi.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\unicode_utilities.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\writing_mode.h" />

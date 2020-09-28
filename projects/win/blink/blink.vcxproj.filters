@@ -3005,6 +3005,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\backwards_text_buffer.cc">
       <Filter>renderer\core\editing\iterators</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_text_box.cc">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -8391,6 +8394,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\backwards_text_buffer.h">
       <Filter>renderer\core\editing\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_text_box.h">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\truncation.h">
+      <Filter>renderer\platform\text</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_iterator_text_node_handler.cc
+// Description: TextIteratorTextNodeHandler Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -39,9 +50,13 @@ bool ShouldSkipInvisibleTextAt(const Text& text,
 EVisibility FirstLetterVisibilityOf(const LayoutObject* layout_object) {
   const LayoutTextFragment* text_fragment = ToLayoutTextFragment(layout_object);
   DCHECK(text_fragment->IsRemainingTextLayoutObject());
+  ASSERT(false); // BKTODO:
+  return EVisibility::kVisible;
+#if 0
   return text_fragment->GetFirstLetterPseudoElement()
       ->ComputedStyleRef()
       .Visibility();
+#endif
 }
 
 struct StringAndOffsetRange {
@@ -166,12 +181,16 @@ static bool HasVisibleTextNode(const LayoutText* layout_object) {
   if (!fragment->IsRemainingTextLayoutObject())
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   DCHECK(fragment->GetFirstLetterPseudoElement());
   LayoutObject* pseudo_element_layout_object =
       fragment->GetFirstLetterPseudoElement()->GetLayoutObject();
   return pseudo_element_layout_object &&
          pseudo_element_layout_object->Style()->Visibility() ==
              EVisibility::kVisible;
+#endif
 }
 
 void TextIteratorTextNodeHandler::HandlePreFormattedTextNode() {
@@ -523,6 +542,8 @@ void TextIteratorTextNodeHandler::HandleTextNodeFirstLetter(
   if (!layout_object->IsRemainingTextLayoutObject())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   FirstLetterPseudoElement* first_letter_element =
       layout_object->GetFirstLetterPseudoElement();
   if (!first_letter_element)
@@ -540,6 +561,7 @@ void TextIteratorTextNodeHandler::HandleTextNodeFirstLetter(
   CHECK(first_letter && first_letter->IsText());
   first_letter_text_ = ToLayoutText(first_letter);
   text_box_ = first_letter_text_->FirstTextBox();
+#endif
 }
 
 bool TextIteratorTextNodeHandler::ShouldFixLeadingWhiteSpaceForReplacedElement()
