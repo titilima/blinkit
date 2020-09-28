@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: local_caret_rect.cc
+// Description: LocalCaretRect Struct
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights
  * reserved.
@@ -179,7 +190,7 @@ LocalCaretRect LocalSelectionRectOfPosition(
 template <typename Strategy>
 static IntRect AbsoluteCaretBoundsOfAlgorithm(
     const VisiblePositionTemplate<Strategy>& visible_position) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   const LocalCaretRect& caret_rect =
       LocalCaretRectOfPosition(visible_position.ToPositionWithAffinity());
   if (caret_rect.IsEmpty())
@@ -211,7 +222,7 @@ IntRect AbsoluteCaretRectOfPosition(const PositionWithAffinity& position,
 template <typename Strategy>
 static IntRect AbsoluteSelectionBoundsOfAlgorithm(
     const VisiblePositionTemplate<Strategy>& visible_position) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   const LocalCaretRect& caret_rect =
       LocalSelectionRectOfPosition(visible_position.ToPositionWithAffinity());
   if (caret_rect.IsEmpty())

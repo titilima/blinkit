@@ -615,6 +615,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\frame_caret.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\frame_selection.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\granularity_strategy.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\inline_box_position.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\backwards_text_buffer.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\bit_stack.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\character_iterator.cc" />
@@ -630,6 +631,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\kill_ring_none.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\layout_selection.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\local_caret_rect.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\ng_flat_tree_shorthands.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\plain_text_range.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\position.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\position_iterator.cc" />
@@ -754,6 +756,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_physical_offset_rect.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_physical_size.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_baseline.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_caret_rect.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_item.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_line_height_metrics.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_offset_mapping.cc" />
@@ -2184,6 +2187,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\frame_caret.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\frame_selection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\granularity_strategy.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\inline_box_position.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\backwards_text_buffer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\bit_stack.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\character_iterator.h" />
@@ -2199,6 +2203,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\kill_ring.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\layout_selection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\local_caret_rect.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\ng_flat_tree_shorthands.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\plain_text_range.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\position.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\position_iterator.h" />
@@ -2299,6 +2304,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\intersection_observer\element_intersection_observer_data.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\adjust_for_absolute_zoom.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\hit_test_action.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_api_shim.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_box_model.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_item.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_text.h" />
@@ -2363,6 +2369,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_physical_size.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\layout_ng_text.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_baseline.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_caret_rect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_item.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_line_height_metrics.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_offset_mapping.h" />
