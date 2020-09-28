@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: selection_modifier.cc
+// Description: SelectionModifier Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights
  * reserved.
@@ -42,7 +53,7 @@
 #include "third_party/blink/renderer/core/layout/ng/inline/ng_caret_position.h"
 #include "third_party/blink/renderer/core/layout/ng/inline/ng_offset_mapping.h"
 #include "third_party/blink/renderer/core/layout/ng/ng_physical_fragment.h"
-#include "third_party/blink/renderer/core/page/spatial_navigation.h"
+// BKTODO: #include "third_party/blink/renderer/core/page/spatial_navigation.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment.h"
 
 namespace blink {
@@ -51,14 +62,14 @@ namespace {
 
 VisiblePosition LeftBoundaryOfLine(const VisiblePosition& c,
                                    TextDirection direction) {
-  DCHECK(c.IsValid()) << c;
+  DCHECK(c.IsValid());
   return direction == TextDirection::kLtr ? LogicalStartOfLine(c)
                                           : LogicalEndOfLine(c);
 }
 
 VisiblePosition RightBoundaryOfLine(const VisiblePosition& c,
                                     TextDirection direction) {
-  DCHECK(c.IsValid()) << c;
+  DCHECK(c.IsValid());
   return direction == TextDirection::kLtr ? LogicalEndOfLine(c)
                                           : LogicalStartOfLine(c);
 }
@@ -66,7 +77,7 @@ VisiblePosition RightBoundaryOfLine(const VisiblePosition& c,
 VisiblePosition PreviousParagraphPosition(
     const VisiblePosition& passed_position,
     LayoutUnit x_point) {
-  DCHECK(passed_position.IsValid()) << passed_position;
+  DCHECK(passed_position.IsValid());
   VisiblePosition position = passed_position;
   do {
     const VisiblePosition& new_position =
@@ -81,7 +92,7 @@ VisiblePosition PreviousParagraphPosition(
 
 VisiblePosition NextParagraphPosition(const VisiblePosition& passed_position,
                                       LayoutUnit x_point) {
-  DCHECK(passed_position.IsValid()) << passed_position;
+  DCHECK(passed_position.IsValid());
   VisiblePosition position = passed_position;
   do {
     const VisiblePosition& new_position = NextLinePosition(position, x_point);
@@ -101,7 +112,11 @@ LayoutUnit NoXPosForVerticalArrowNavigation() {
 
 bool SelectionModifier::ShouldAlwaysUseDirectionalSelection(
     const LocalFrame& frame) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return frame.GetEditor().Behavior().ShouldConsiderSelectionAsDirectional();
+#endif
 }
 
 SelectionModifier::SelectionModifier(
@@ -194,7 +209,7 @@ static bool IsBaseStart(const VisibleSelection& visible_selection,
     case SelectionModifyDirection::kBackward:
       return false;
   }
-  NOTREACHED() << "We should handle " << static_cast<int>(direction);
+  NOTREACHED(); // We should handle
   return true;
 }
 
@@ -233,9 +248,12 @@ VisibleSelection SelectionModifier::PrepareToModifySelection(
 
 VisiblePosition SelectionModifier::PositionForPlatform(
     bool is_get_start) const {
+  ASSERT(false); // BKTODO:
+#if 0
   Settings* settings = GetFrame().GetSettings();
   if (settings && settings->GetEditingBehaviorType() == kEditingMacBehavior)
     return is_get_start ? selection_.VisibleStart() : selection_.VisibleEnd();
+#endif
   // Linux and Windows always extend selections from the extent endpoint.
   // FIXME: VisibleSelection should be fixed to ensure as an invariant that
   // base/extent always point to the same nodes as start/end, but which points
@@ -258,8 +276,11 @@ VisiblePosition SelectionModifier::NextWordPositionForPlatform(
   VisiblePosition position_after_current_word =
       NextWordPosition(original_position);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!GetFrame().GetEditor().Behavior().ShouldSkipSpaceWhenMovingRight())
     return position_after_current_word;
+#endif
   return CreateVisiblePosition(
       SkipWhitespace(position_after_current_word.DeepEquivalent()));
 }
@@ -318,7 +339,7 @@ VisiblePosition SelectionModifier::ModifyExtendingRightInternal(
       // TODO(editing-dev): implement all of the above?
       return ModifyExtendingForwardInternal(granularity);
   }
-  NOTREACHED() << static_cast<int>(granularity);
+  NOTREACHED();
   return VisiblePosition();
 }
 
@@ -362,7 +383,7 @@ VisiblePosition SelectionModifier::ModifyExtendingForwardInternal(
       return EndOfDocument(pos);
     }
   }
-  NOTREACHED() << static_cast<int>(granularity);
+  NOTREACHED();
   return VisiblePosition();
 }
 
@@ -385,10 +406,13 @@ VisiblePosition SelectionModifier::ModifyMovingRight(
         return CreateVisiblePosition(selection_.End(), selection_.Affinity());
       return CreateVisiblePosition(selection_.Start(), selection_.Affinity());
     case TextGranularity::kWord: {
+      ASSERT(false); // BKTODO:
+#if 0
       const bool skips_space_when_moving_right =
           GetFrame().GetEditor().Behavior().ShouldSkipSpaceWhenMovingRight();
       return RightWordPosition(ComputeVisibleExtent(selection_),
                                skips_space_when_moving_right);
+#endif
     }
     case TextGranularity::kSentence:
     case TextGranularity::kLine:
@@ -402,7 +426,7 @@ VisiblePosition SelectionModifier::ModifyMovingRight(
       return RightBoundaryOfLine(StartForPlatform(),
                                  DirectionOfEnclosingBlock());
   }
-  NOTREACHED() << static_cast<int>(granularity);
+  NOTREACHED();
   return VisiblePosition();
 }
 
@@ -448,7 +472,7 @@ VisiblePosition SelectionModifier::ModifyMovingForward(
       return EndOfDocument(pos);
     }
   }
-  NOTREACHED() << static_cast<int>(granularity);
+  NOTREACHED();
   return VisiblePosition();
 }
 
@@ -485,7 +509,7 @@ VisiblePosition SelectionModifier::ModifyExtendingLeftInternal(
     case TextGranularity::kDocumentBoundary:
       return ModifyExtendingBackwardInternal(granularity);
   }
-  NOTREACHED() << static_cast<int>(granularity);
+  NOTREACHED();
   return VisiblePosition();
 }
 
@@ -532,7 +556,7 @@ VisiblePosition SelectionModifier::ModifyExtendingBackwardInternal(
       return StartOfDocument(pos);
     }
   }
-  NOTREACHED() << static_cast<int>(granularity);
+  NOTREACHED();
   return VisiblePosition();
 }
 
@@ -555,10 +579,13 @@ VisiblePosition SelectionModifier::ModifyMovingLeft(
         return CreateVisiblePosition(selection_.Start(), selection_.Affinity());
       return CreateVisiblePosition(selection_.End(), selection_.Affinity());
     case TextGranularity::kWord: {
+      ASSERT(false); // BKTODO:
+#if 0
       const bool skips_space_when_moving_right =
           GetFrame().GetEditor().Behavior().ShouldSkipSpaceWhenMovingRight();
       return LeftWordPosition(ComputeVisibleExtent(selection_),
                               skips_space_when_moving_right);
+#endif
     }
     case TextGranularity::kSentence:
     case TextGranularity::kLine:
@@ -572,7 +599,7 @@ VisiblePosition SelectionModifier::ModifyMovingLeft(
       return LeftBoundaryOfLine(StartForPlatform(),
                                 DirectionOfEnclosingBlock());
   }
-  NOTREACHED() << static_cast<int>(granularity);
+  NOTREACHED();
   return VisiblePosition();
 }
 
@@ -652,13 +679,15 @@ VisiblePosition SelectionModifier::ComputeModifyPosition(
         return ModifyExtendingBackward(granularity);
       return ModifyMovingBackward(granularity);
   }
-  NOTREACHED() << static_cast<int>(direction);
+  NOTREACHED();
   return VisiblePosition();
 }
 
 bool SelectionModifier::Modify(SelectionModifyAlteration alter,
                                SelectionModifyDirection direction,
                                TextGranularity granularity) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!GetFrame().GetDocument()->NeedsLayoutTreeUpdate());
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       GetFrame().GetDocument()->Lifecycle());
@@ -761,6 +790,7 @@ bool SelectionModifier::Modify(SelectionModifyAlteration alter,
   if (granularity == TextGranularity::kLine ||
       granularity == TextGranularity::kParagraph)
     x_pos_for_vertical_arrow_navigation_ = x;
+#endif
 
   return true;
 }
@@ -781,7 +811,10 @@ bool SelectionModifier::ModifyWithPageGranularity(
   if (!vertical_distance)
     return false;
 
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!GetFrame().GetDocument()->NeedsLayoutTreeUpdate());
+#endif
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       GetFrame().GetDocument()->Lifecycle());
 
