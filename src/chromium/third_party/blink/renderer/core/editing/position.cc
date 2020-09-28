@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: position.cc
+// Description: Position Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2009 Apple Inc. All rights reserved.
  *
@@ -61,8 +72,12 @@ const TreeScope* PositionTemplate<Strategy>::CommonAncestorTreeScope(
     const PositionTemplate<Strategy>& b) {
   if (!a.ComputeContainerNode() || !b.ComputeContainerNode())
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return a.ComputeContainerNode()->GetTreeScope().CommonAncestorTreeScope(
       b.ComputeContainerNode()->GetTreeScope());
+#endif
 }
 
 template <typename Strategy>
@@ -100,17 +115,16 @@ PositionTemplate<Strategy>::PositionTemplate(const Node* anchor_node,
 #if DCHECK_IS_ON()
   DCHECK(anchor_node_);
   DCHECK_NE(anchor_type_, PositionAnchorType::kOffsetInAnchor);
-  DCHECK(CanBeAnchorNode<Strategy>(anchor_node_.Get())) << anchor_node_;
+  DCHECK(CanBeAnchorNode<Strategy>(anchor_node_.Get()));
   if (anchor_node_->IsTextNode()) {
     DCHECK(anchor_type_ == PositionAnchorType::kBeforeAnchor ||
-           anchor_type_ == PositionAnchorType::kAfterAnchor)
-        << *this;
+           anchor_type_ == PositionAnchorType::kAfterAnchor);
     return;
   }
   if (!Strategy::Parent(*anchor_node_)) {
     // Before/After |anchor_node_| should have a parent node for converting
     // to offset in anchor position.
-    DCHECK(IsBeforeChildren() || IsAfterChildren()) << *this;
+    DCHECK(IsBeforeChildren() || IsAfterChildren());
     return;
   }
 #endif
@@ -126,7 +140,7 @@ PositionTemplate<Strategy>::PositionTemplate(const Node* anchor_node,
       offset_(offset),
       anchor_type_(PositionAnchorType::kOffsetInAnchor) {
 #if DCHECK_IS_ON()
-  DCHECK(CanBeAnchorNode<Strategy>(anchor_node_.Get())) << anchor_node_;
+  DCHECK(CanBeAnchorNode<Strategy>(anchor_node_.Get()));
   if (!anchor_node_) {
     DCHECK_EQ(offset, 0);
     return;
@@ -134,14 +148,12 @@ PositionTemplate<Strategy>::PositionTemplate(const Node* anchor_node,
   if (anchor_node_->IsCharacterDataNode()) {
     DCHECK_GE(offset, 0);
     DCHECK_LE(static_cast<unsigned>(offset),
-              ToCharacterData(anchor_node_)->length())
-        << anchor_node_;
+              ToCharacterData(anchor_node_)->length());
     return;
   }
   DCHECK_GE(offset, 0);
   DCHECK_LE(static_cast<unsigned>(offset),
-            Strategy::CountChildren(*anchor_node))
-      << anchor_node_;
+            Strategy::CountChildren(*anchor_node));
 #endif
 }
 
@@ -400,9 +412,9 @@ int ComparePositions(const PositionInFlatTree& position_a,
   DCHECK(position_a.IsNotNull());
   DCHECK(position_b.IsNotNull());
 
-  position_a.AnchorNode()->UpdateDistributionForFlatTreeTraversal();
+  ASSERT(false); // BKTODO: position_a.AnchorNode()->UpdateDistributionForFlatTreeTraversal();
   Node* container_a = position_a.ComputeContainerNode();
-  position_b.AnchorNode()->UpdateDistributionForFlatTreeTraversal();
+  ASSERT(false); // BKTODO: position_b.AnchorNode()->UpdateDistributionForFlatTreeTraversal();
   Node* container_b = position_b.ComputeContainerNode();
   int offset_a = position_a.ComputeOffsetInContainerNode();
   int offset_b = position_b.ComputeOffsetInContainerNode();
@@ -519,7 +531,7 @@ PositionTemplate<Strategy> PositionTemplate<Strategy>::InParentBeforeNode(
 template <typename Strategy>
 PositionTemplate<Strategy> PositionTemplate<Strategy>::InParentAfterNode(
     const Node& node) {
-  DCHECK(node.parentNode()) << node;
+  DCHECK(node.parentNode());
   return PositionTemplate<Strategy>(Strategy::Parent(node),
                                     Strategy::Index(node) + 1);
 }
@@ -603,7 +615,7 @@ PositionInFlatTree ToPositionInFlatTree(const Position& pos) {
                                   PositionAnchorType::kAfterChildren);
       return PositionInFlatTree(anchor, PositionAnchorType::kAfterChildren);
     }
-    child->UpdateDistributionForFlatTreeTraversal();
+    ASSERT(false); // BKTODO: child->UpdateDistributionForFlatTreeTraversal();
     if (!child->CanParticipateInFlatTree()) {
       if (anchor->IsShadowRoot())
         return PositionInFlatTree(anchor->OwnerShadowHost(), offset);
@@ -706,6 +718,8 @@ String PositionTemplate<Strategy>::ToAnchorTypeAndOffsetString() const {
 
 template <typename Strategy>
 void PositionTemplate<Strategy>::ShowTreeForThis() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!AnchorNode()) {
     LOG(INFO) << "\nposition is null";
     return;
@@ -713,10 +727,13 @@ void PositionTemplate<Strategy>::ShowTreeForThis() const {
   LOG(INFO) << "\n"
             << AnchorNode()->ToTreeStringForThis().Utf8().data()
             << ToAnchorTypeAndOffsetString().Utf8().data();
+#endif
 }
 
 template <typename Strategy>
 void PositionTemplate<Strategy>::ShowTreeForThisInFlatTree() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!AnchorNode()) {
     LOG(INFO) << "\nposition is null";
     return;
@@ -724,6 +741,7 @@ void PositionTemplate<Strategy>::ShowTreeForThisInFlatTree() const {
   LOG(INFO) << "\n"
             << AnchorNode()->ToFlatTreeStringForThis().Utf8().data()
             << ToAnchorTypeAndOffsetString().Utf8().data();
+#endif
 }
 
 #endif
@@ -776,10 +794,13 @@ void showTree(const blink::Position& pos) {
 }
 
 void showTree(const blink::Position* pos) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (pos)
     pos->ShowTreeForThis();
   else
     LOG(INFO) << "Cannot showTree for <null>";
+#endif
 }
 
 #endif
