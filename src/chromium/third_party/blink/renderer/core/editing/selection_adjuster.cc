@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: selection_adjuster.cc
+// Description: SelectionAdjuster Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights
  * reserved.
@@ -406,8 +417,12 @@ class ShadowBoundaryAdjuster final {
   }
 
   static bool IsSelectionBoundary(const Node& node) {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return IsHTMLTextAreaElement(node) || IsHTMLInputElement(node) ||
            IsHTMLSelectElement(node);
+#endif
   }
 
   static Node* EnclosingShadowHostForStart(const PositionInFlatTree& position) {
@@ -458,12 +473,15 @@ class ShadowBoundaryAdjuster final {
     DCHECK(current_position.ComputeContainerNode()->GetTreeScope() !=
            tree_scope);
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (Node* ancestor = tree_scope.AncestorInThisScope(
             current_position.ComputeContainerNode())) {
       if (ancestor->contains(start_container_node))
         return Position::AfterNode(*ancestor);
       return Position::BeforeNode(*ancestor);
     }
+#endif
 
     if (Node* last_child = tree_scope.RootNode().lastChild())
       return Position::AfterNode(*last_child);
@@ -495,12 +513,15 @@ class ShadowBoundaryAdjuster final {
     DCHECK(current_position.ComputeContainerNode()->GetTreeScope() !=
            tree_scope);
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (Node* ancestor = tree_scope.AncestorInThisScope(
             current_position.ComputeContainerNode())) {
       if (ancestor->contains(end_container_node))
         return Position::BeforeNode(*ancestor);
       return Position::AfterNode(*ancestor);
     }
+#endif
 
     if (Node* first_child = tree_scope.RootNode().firstChild())
       return Position::BeforeNode(*first_child);
@@ -636,7 +657,7 @@ class EditingBoundaryAdjuster final {
   template <typename Strategy>
   static PositionTemplate<Strategy> AdjustExtent(
       const SelectionTemplate<Strategy>& selection) {
-    DCHECK(!selection.IsNone()) << selection;
+    DCHECK(!selection.IsNone());
 
     const Node* const base_node = selection.Base().ComputeContainerNode();
     const Node* const extent_node = selection.Extent().ComputeContainerNode();
@@ -718,7 +739,7 @@ class SelectionTypeAdjuster final {
     if (selection.IsNone())
       return selection;
     const EphemeralRangeTemplate<Strategy>& range = selection.ComputeRange();
-    DCHECK(!NeedsLayoutTreeUpdate(range.StartPosition())) << range;
+    DCHECK(!NeedsLayoutTreeUpdate(range.StartPosition()));
     if (range.IsCollapsed() ||
         // TODO(editing-dev): Consider this canonicalization is really needed.
         MostBackwardCaretPosition(range.StartPosition()) ==
