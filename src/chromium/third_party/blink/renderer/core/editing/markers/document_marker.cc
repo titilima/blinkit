@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: document_marker.cc
+// Description: DocumentMarker Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -30,6 +41,7 @@
 
 #include "third_party/blink/renderer/core/editing/markers/document_marker.h"
 
+#if 0 // BKTODO: Check if necessary.
 #include "third_party/blink/public/web/web_ax_enums.h"
 #include "third_party/blink/renderer/core/editing/markers/text_match_marker.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
@@ -96,3 +108,4 @@ void DocumentMarker::ShiftOffsets(int delta) {
 }
 
 }  // namespace blink
+#endif

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: document_marker_controller.cc
+// Description: DocumentMarkerController Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -29,15 +40,18 @@
 #include "third_party/blink/renderer/core/editing/markers/document_marker_controller.h"
 
 #include <algorithm>
-#include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
+// BKTODO: #include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
 #include "third_party/blink/renderer/core/dom/node.h"
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
 #include "third_party/blink/renderer/core/dom/text.h"
 #include "third_party/blink/renderer/core/editing/ephemeral_range.h"
 #include "third_party/blink/renderer/core/editing/iterators/text_iterator.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/editing/markers/active_suggestion_marker.h"
 #include "third_party/blink/renderer/core/editing/markers/active_suggestion_marker_list_impl.h"
+#endif
 #include "third_party/blink/renderer/core/editing/markers/composition_marker.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/editing/markers/composition_marker_list_impl.h"
 #include "third_party/blink/renderer/core/editing/markers/grammar_marker.h"
 #include "third_party/blink/renderer/core/editing/markers/grammar_marker_list_impl.h"
@@ -48,6 +62,7 @@
 #include "third_party/blink/renderer/core/editing/markers/suggestion_marker_list_impl.h"
 #include "third_party/blink/renderer/core/editing/markers/text_match_marker.h"
 #include "third_party/blink/renderer/core/editing/markers/text_match_marker_list_impl.h"
+#endif
 #include "third_party/blink/renderer/core/editing/position.h"
 #include "third_party/blink/renderer/core/editing/visible_position.h"
 #include "third_party/blink/renderer/core/editing/visible_units.h"
@@ -63,6 +78,7 @@ namespace blink {
 
 namespace {
 
+#if 0 // BKTODO:
 DocumentMarker::MarkerTypeIndex MarkerTypeToMarkerIndex(
     DocumentMarker::MarkerType type) {
   switch (type) {
@@ -103,6 +119,7 @@ DocumentMarkerList* CreateListForType(DocumentMarker::MarkerType type) {
   NOTREACHED();
   return nullptr;
 }
+#endif
 
 void InvalidatePaintForNode(const Node& node) {
   if (!node.GetLayoutObject())
@@ -111,6 +128,8 @@ void InvalidatePaintForNode(const Node& node) {
   node.GetLayoutObject()->SetShouldDoFullPaintInvalidation(
       PaintInvalidationReason::kDocumentMarker);
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Tell accessibility about the new marker.
   AXObjectCache* ax_object_cache = node.GetDocument().ExistingAXObjectCache();
   if (!ax_object_cache)
@@ -119,10 +138,12 @@ void InvalidatePaintForNode(const Node& node) {
   // correctness.
   Node* non_const_node = &const_cast<Node&>(node);
   ax_object_cache->HandleTextMarkerDataAdded(non_const_node, non_const_node);
+#endif
 }
 
 }  // namespace
 
+#if 0 // BKTODO:
 Member<DocumentMarkerList>& DocumentMarkerController::ListForType(
     MarkerLists* marker_lists,
     DocumentMarker::MarkerType type) {
@@ -141,30 +162,41 @@ inline bool DocumentMarkerController::PossiblyHasMarkers(
          possibly_existing_marker_types_ == DocumentMarker::MarkerTypes(0));
   return possibly_existing_marker_types_.Intersects(types);
 }
+#endif
 
 DocumentMarkerController::DocumentMarkerController(Document& document)
     : document_(&document) {}
 
 void DocumentMarkerController::Clear() {
+  ASSERT(false); // BKTODO:
+#if 0
   markers_.clear();
   possibly_existing_marker_types_ = DocumentMarker::MarkerTypes();
+#endif
   SetContext(nullptr);
 }
 
 void DocumentMarkerController::AddSpellingMarker(const EphemeralRange& range,
                                                  const String& description) {
+  ASSERT(false); // BKTODO:
+#if 0
   AddMarkerInternal(range, [&description](int start_offset, int end_offset) {
     return new SpellingMarker(start_offset, end_offset, description);
   });
+#endif
 }
 
 void DocumentMarkerController::AddGrammarMarker(const EphemeralRange& range,
                                                 const String& description) {
+  ASSERT(false); // BKTODO:
+#if 0
   AddMarkerInternal(range, [&description](int start_offset, int end_offset) {
     return new GrammarMarker(start_offset, end_offset, description);
   });
+#endif
 }
 
+#if 0 // BKTODO:
 void DocumentMarkerController::AddTextMatchMarker(
     const EphemeralRange& range,
     TextMatchMarker::MatchStatus match_status) {
@@ -211,11 +243,13 @@ void DocumentMarkerController::AddSuggestionMarker(
         return new SuggestionMarker(start_offset, end_offset, properties);
       });
 }
+#endif
 
 void DocumentMarkerController::PrepareForDestruction() {
   Clear();
 }
 
+#if 0 // BKTODO:
 void DocumentMarkerController::RemoveMarkers(
     TextIterator& marked_text,
     DocumentMarker::MarkerTypes marker_types) {
@@ -296,6 +330,7 @@ void DocumentMarkerController::AddMarkerToNode(const Text& text,
 
   InvalidatePaintForNode(text);
 }
+#endif
 
 // Moves markers from src_node to dst_node. Markers are moved if their start
 // offset is less than length. Markers that run past that point are truncated.
@@ -305,6 +340,8 @@ void DocumentMarkerController::MoveMarkers(const Text& src_node,
   if (length <= 0)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!PossiblyHasMarkers(DocumentMarker::MarkerTypes::All()))
     return;
   DCHECK(!markers_.IsEmpty());
@@ -335,10 +372,12 @@ void DocumentMarkerController::MoveMarkers(const Text& src_node,
 
   if (!doc_dirty)
     return;
+#endif
 
   InvalidatePaintForNode(dst_node);
 }
 
+#if 0 // BKTODO:
 void DocumentMarkerController::RemoveMarkersInternal(
     const Text& text,
     unsigned start_offset,
@@ -676,13 +715,19 @@ DocumentMarkerVector DocumentMarkerController::ComputeMarkersToPaint(
 
   return markers_to_paint;
 }
+#endif
 
 Vector<IntRect> DocumentMarkerController::LayoutRectsForTextMatchMarkers() {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!document_->View()->NeedsLayout());
   DCHECK(!document_->NeedsLayoutTreeUpdate());
+#endif
 
   Vector<IntRect> result;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!PossiblyHasMarkers(DocumentMarker::kTextMatch))
     return result;
   DCHECK(!(markers_.IsEmpty()));
@@ -702,6 +747,7 @@ Vector<IntRect> DocumentMarkerController::LayoutRectsForTextMatchMarkers() {
       continue;
     result.AppendVector(ToTextMatchMarkerListImpl(list)->LayoutRects(node));
   }
+#endif
 
   return result;
 }
@@ -716,6 +762,8 @@ void DocumentMarkerController::InvalidateRectsForTextMatchMarkersInNode(
   // TODO(yoichio): Make this function to take Text instead of Node.
   if (!node.IsTextNode())
     return;
+  ASSERT(false); // BKTODO:
+#if 0
   MarkerLists* markers = markers_.at(&ToText(node));
 
   const DocumentMarkerList* const marker_list =
@@ -727,33 +775,30 @@ void DocumentMarkerController::InvalidateRectsForTextMatchMarkersInNode(
       marker_list->GetMarkers();
   for (auto& marker : markers_in_list)
     ToTextMatchMarker(marker)->Invalidate();
+#endif
 
   InvalidatePaintForTickmarks(node);
 }
 
 void DocumentMarkerController::InvalidateRectsForAllTextMatchMarkers() {
+  ASSERT(false); // BKTODO:
+#if 0
   for (auto& node_markers : markers_) {
     const Text& node = *node_markers.key;
     InvalidateRectsForTextMatchMarkersInNode(node);
   }
+#endif
 }
 
 void DocumentMarkerController::DidProcessMarkerMap(Visitor* visitor) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (markers_.IsEmpty())
     Clear();
+#endif
 }
 
-void DocumentMarkerController::Trace(blink::Visitor* visitor) {
-  // Note: To make |DidProcessMarkerMap()| called after weak members callback
-  // of |markers_|, we should register it before tracing |markers_|.
-  visitor->template RegisterWeakMembers<
-      DocumentMarkerController, &DocumentMarkerController::DidProcessMarkerMap>(
-      this);
-  visitor->Trace(markers_);
-  visitor->Trace(document_);
-  SynchronousMutationObserver::Trace(visitor);
-}
-
+#if 0 // BKTODO:
 void DocumentMarkerController::RemoveMarkersForNode(
     const Text& text,
     DocumentMarker::MarkerTypes marker_types) {
@@ -765,9 +810,12 @@ void DocumentMarkerController::RemoveMarkersForNode(
   if (iterator != markers_.end())
     RemoveMarkersFromList(iterator, marker_types);
 }
+#endif
 
 void DocumentMarkerController::RemoveSpellingMarkersUnderWords(
     const Vector<String>& words) {
+  ASSERT(false); // BKTODO:
+#if 0
   for (auto& node_markers : markers_) {
     const Text& text = *node_markers.key;
     MarkerLists* markers = node_markers.value;
@@ -782,18 +830,23 @@ void DocumentMarkerController::RemoveSpellingMarkersUnderWords(
       }
     }
   }
+#endif
 }
 
 void DocumentMarkerController::RemoveSuggestionMarkerByTag(const Text& text,
                                                            int32_t marker_tag) {
+  ASSERT(false); // BKTODO:
+#if 0
   MarkerLists* markers = markers_.at(&text);
   SuggestionMarkerListImpl* const list = ToSuggestionMarkerListImpl(
       ListForType(markers, DocumentMarker::kSuggestion));
   if (!list->RemoveMarkerByTag(marker_tag))
     return;
+#endif
   InvalidatePaintForNode(text);
 }
 
+#if 0 // BKTODO:
 void DocumentMarkerController::RemoveMarkersOfTypes(
     DocumentMarker::MarkerTypes marker_types) {
   if (!PossiblyHasMarkers(marker_types))
@@ -881,10 +934,14 @@ void DocumentMarkerController::RepaintMarkers(
     }
   }
 }
+#endif
 
 bool DocumentMarkerController::SetTextMatchMarkersActive(
     const EphemeralRange& range,
     bool active) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (!PossiblyHasMarkers(DocumentMarker::kTextMatch))
     return false;
 
@@ -909,6 +966,7 @@ bool DocumentMarkerController::SetTextMatchMarkersActive(
         SetTextMatchMarkersActive(&node, start_offset, end_offset, active);
   }
   return marker_found;
+#endif
 }
 
 bool DocumentMarkerController::SetTextMatchMarkersActive(const Node* node,
@@ -918,6 +976,8 @@ bool DocumentMarkerController::SetTextMatchMarkersActive(const Node* node,
   // TODO(yoichio): Make this function to take Text instead of Node.
   if (!node->IsTextNode())
     return false;
+  ASSERT(false); // BKTODO:
+#if 0
   MarkerLists* markers = markers_.at(ToText(node));
   if (!markers)
     return false;
@@ -932,12 +992,15 @@ bool DocumentMarkerController::SetTextMatchMarkersActive(const Node* node,
 
   if (!doc_dirty)
     return false;
+#endif
   InvalidatePaintForNode(*node);
   return true;
 }
 
 #ifndef NDEBUG
 void DocumentMarkerController::ShowMarkers() const {
+  ASSERT(false); // BKTODO:
+#if 0
   StringBuilder builder;
   for (auto& node_iterator : markers_) {
     const Text* node = node_iterator.key;
@@ -968,6 +1031,7 @@ void DocumentMarkerController::ShowMarkers() const {
   }
   LOG(INFO) << markers_.size() << " nodes have markers:\n"
             << builder.ToString().Utf8().data();
+#endif
 }
 #endif
 
@@ -976,6 +1040,8 @@ void DocumentMarkerController::DidUpdateCharacterData(CharacterData* node,
                                                       unsigned offset,
                                                       unsigned old_length,
                                                       unsigned new_length) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!PossiblyHasMarkers(DocumentMarker::MarkerTypes::All()))
     return;
   DCHECK(!markers_.IsEmpty());
@@ -996,6 +1062,7 @@ void DocumentMarkerController::DidUpdateCharacterData(CharacterData* node,
 
   if (!did_shift_marker)
     return;
+#endif
   if (!node->GetLayoutObject())
     return;
   InvalidateRectsForTextMatchMarkersInNode(*node);
