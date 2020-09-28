@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: inline_box_position.cc
+// Description: InlineBoxPosition Struct
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights
  * reserved.
@@ -232,8 +243,8 @@ PositionWithAffinityTemplate<Strategy> ComputeInlineAdjustedPositionAlgorithm(
     int recursion_depth) {
   // TODO(yoichio): We don't assume |position| is canonicalized no longer and
   // there are few cases failing to compute. Fix it: crbug.com/812535.
-  DCHECK(!position.AnchorNode()->IsShadowRoot()) << position;
-  DCHECK(position.GetPosition().AnchorNode()->GetLayoutObject()) << position;
+  DCHECK(!position.AnchorNode()->IsShadowRoot());
+  DCHECK(position.GetPosition().AnchorNode()->GetLayoutObject());
   const LayoutObject& layout_object =
       *position.GetPosition().AnchorNode()->GetLayoutObject();
 
@@ -322,8 +333,8 @@ InlineBoxPosition ComputeInlineBoxPositionForInlineAdjustedPositionAlgorithm(
     return ComputeInlineBoxPositionForLineEnd(adjusted);
 
   const PositionTemplate<Strategy>& position = adjusted.GetPosition();
-  DCHECK(!position.AnchorNode()->IsShadowRoot()) << adjusted;
-  DCHECK(position.AnchorNode()->GetLayoutObject()) << adjusted;
+  DCHECK(!position.AnchorNode()->IsShadowRoot());
+  DCHECK(position.AnchorNode()->GetLayoutObject());
   const LayoutObject& layout_object = *position.AnchorNode()->GetLayoutObject();
   const int caret_offset = position.ComputeEditingOffset();
   const int round_offset =
@@ -367,7 +378,7 @@ InlineBoxPosition ComputeInlineBoxPosition(
 }
 
 InlineBoxPosition ComputeInlineBoxPosition(const VisiblePosition& position) {
-  DCHECK(position.IsValid()) << position;
+  DCHECK(position.IsValid());
   return ComputeInlineBoxPosition(position.ToPositionWithAffinity());
 }
 
@@ -383,7 +394,7 @@ PositionInFlatTreeWithAffinity ComputeInlineAdjustedPosition(
 
 PositionWithAffinity ComputeInlineAdjustedPosition(
     const VisiblePosition& position) {
-  DCHECK(position.IsValid()) << position;
+  DCHECK(position.IsValid());
   return ComputeInlineAdjustedPositionAlgorithm(
       position.ToPositionWithAffinity(), 0);
 }
