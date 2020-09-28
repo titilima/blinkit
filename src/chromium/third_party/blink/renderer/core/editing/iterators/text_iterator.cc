@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_iterator.cc
+// Description: TextIterator Classes
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All
  * rights reserved.
@@ -37,10 +48,12 @@
 #include "third_party/blink/renderer/core/editing/visible_units.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 #include "third_party/blink/renderer/core/html/forms/text_control_element.h"
+#endif
 #include "third_party/blink/renderer/core/html/html_element.h"
-#include "third_party/blink/renderer/core/html/html_image_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_image_element.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/input_type_names.h"
 #include "third_party/blink/renderer/core/layout/layout_table_cell.h"
@@ -50,7 +63,7 @@
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 namespace {
 
@@ -79,7 +92,11 @@ TextIteratorBehavior AdjustBehaviorFlags<EditingInFlatTreeStrategy>(
 }
 
 static inline bool HasDisplayContents(const Node& node) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return node.IsElementNode() && ToElement(node).HasDisplayContentsStyle();
+#endif
 }
 
 // Checks if |advance()| skips the descendants of |node|, which is the case if
@@ -140,6 +157,9 @@ unsigned ShadowDepthOf(const Node& start_container, const Node& end_container);
 template <>
 unsigned ShadowDepthOf<EditingStrategy>(const Node& start_container,
                                         const Node& end_container) {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   const TreeScope* common_ancestor_tree_scope =
       start_container.GetTreeScope().CommonAncestorTreeScope(
           end_container.GetTreeScope());
@@ -150,6 +170,7 @@ unsigned ShadowDepthOf<EditingStrategy>(const Node& start_container,
        tree_scope = tree_scope->ParentTreeScope())
     ++shadow_depth;
   return shadow_depth;
+#endif
 }
 
 template <>
@@ -196,12 +217,15 @@ TextIteratorAlgorithm<Strategy>::TextIteratorAlgorithm(
   DCHECK(start_container_);
   DCHECK(end_container_);
 
+  ASSERT(false); // BKTODO:
+#if 0
   // TODO(dglazkov): TextIterator should not be created for documents that don't
   // have a frame, but it currently still happens in some cases. See
   // http://crbug.com/591877 for details.
   DCHECK(!start.GetDocument()->View() ||
          !start.GetDocument()->View()->NeedsLayout());
   DCHECK(!start.GetDocument()->NeedsLayoutTreeUpdate());
+#endif
   // To avoid renderer hang, we use |CHECK_LE()| to catch the bad callers
   // in release build.
   CHECK_LE(start, end);
@@ -269,6 +293,8 @@ void TextIteratorAlgorithm<Strategy>::Advance() {
   if (should_stop_)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (node_)
     DCHECK(!node_->GetDocument().NeedsLayoutTreeUpdate()) << node_;
 
@@ -446,20 +472,23 @@ void TextIteratorAlgorithm<Strategy>::Advance() {
     if (text_state_.PositionNode())
       return;
   }
+#endif
 }
 
 template <typename Strategy>
 void TextIteratorAlgorithm<Strategy>::HandleTextNode() {
   if (ExcludesAutofilledValue()) {
+    ASSERT(false); // BKTODO:
+#if 0
     TextControlElement* control = EnclosingTextControl(node_);
     // For security reason, we don't expose suggested value if it is
     // auto-filled.
     if (control && control->IsAutofilled())
       return;
+#endif
   }
 
-  DCHECK_NE(last_text_node_, node_)
-      << "We should never call HandleTextNode on the same node twice";
+  DCHECK_NE(last_text_node_, node_); // We should never call HandleTextNode on the same node twice
   const Text* text = ToText(node_);
   last_text_node_ = text;
 
@@ -485,12 +514,15 @@ bool TextIteratorAlgorithm<Strategy>::SupportsAltText(const Node& node) {
     return false;
   const HTMLElement& element = ToHTMLElement(node);
 
+  ASSERT(false); // BKTODO:
+#if 0
   // FIXME: Add isSVGImageElement.
   if (IsHTMLImageElement(element))
     return true;
   if (IsHTMLInputElement(element) &&
       ToHTMLInputElement(node).type() == InputTypeNames::image)
     return true;
+#endif
   return false;
 }
 
@@ -577,22 +609,25 @@ static bool ShouldEmitNewlinesBeforeAndAfterNode(const Node& node) {
   if (!r) {
     if (HasDisplayContents(node))
       return false;
-    return (node.HasTagName(blockquoteTag) || node.HasTagName(ddTag) ||
-            node.HasTagName(divTag) || node.HasTagName(dlTag) ||
-            node.HasTagName(dtTag) || node.HasTagName(h1Tag) ||
-            node.HasTagName(h2Tag) || node.HasTagName(h3Tag) ||
-            node.HasTagName(h4Tag) || node.HasTagName(h5Tag) ||
-            node.HasTagName(h6Tag) || node.HasTagName(hrTag) ||
-            node.HasTagName(liTag) || node.HasTagName(listingTag) ||
-            node.HasTagName(olTag) || node.HasTagName(pTag) ||
-            node.HasTagName(preTag) || node.HasTagName(trTag) ||
-            node.HasTagName(ulTag));
+    return (node.HasTagName(kBlockquoteTag) || node.HasTagName(kDdTag) ||
+            node.HasTagName(kDivTag) || node.HasTagName(kDlTag) ||
+            node.HasTagName(kDtTag) || node.HasTagName(kH1Tag) ||
+            node.HasTagName(kH2Tag) || node.HasTagName(kH3Tag) ||
+            node.HasTagName(kH4Tag) || node.HasTagName(kH5Tag) ||
+            node.HasTagName(kH6Tag) || node.HasTagName(kHrTag) ||
+            node.HasTagName(kLiTag) || node.HasTagName(kListingTag) ||
+            node.HasTagName(kOlTag) || node.HasTagName(kPTag) ||
+            node.HasTagName(kPreTag) || node.HasTagName(kTrTag) ||
+            node.HasTagName(kUlTag));
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Need to make an exception for option and optgroup, because we want to
   // keep the legacy behavior before we added layoutObjects to them.
   if (IsHTMLOptionElement(node) || IsHTMLOptGroupElement(node))
     return false;
+#endif
 
   // Need to make an exception for table cells, because they are blocks, but we
   // want them tab-delimited rather than having newlines before and after.
@@ -642,7 +677,7 @@ static bool ShouldEmitExtraNewlineForNode(const Node* node) {
   if (!r || !r->IsBox())
     return false;
 
-  return node->HasTagName(pTag);
+  return node->HasTagName(kPTag);
 }
 
 // Whether or not we should emit a character as we enter node_ (if it's a

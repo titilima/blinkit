@@ -89,6 +89,7 @@ enum class WebFeature {
     kHasBeforeOrAfterPseudoElement,
     kHasIDClassTagAttribute,
     kHTMLParseErrorNestedForm,
+    kInnerTextWithShadowTree,
     kNegativeBackgroundSize,
     kNegativeMaskSize,
     kPendingStylesheetAddedAfterBodyStarted,
@@ -100,6 +101,7 @@ enum class WebFeature {
     kPseudoShadowInStaticProfile,
     kQuotedAnimationName,
     kQuotedKeyframesRule,
+    kSelectionToStringWithShadowTree,
     kStyleSheetListAnonymousNamedGetter,
     kStyleSheetListNonNullAnonymousNamedGetter,
     kSyntheticKeyframesInCompositedCSSAnimation,
@@ -109,6 +111,7 @@ enum class WebFeature {
     kUnitlessZeroAngleGradient,
     kUnitlessZeroAngleTransform,
     kWebkitCrossFade,
+    kWindowFindWithShadowTree,
 
     kNumberOfFeatures
 };
