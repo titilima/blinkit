@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_iterator_text_state.cc
+// Description: TextIteratorTextState Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All
  * rights reserved.
@@ -144,13 +155,16 @@ void TextIteratorTextState::UpdatePositionOffsets(
       NOTREACHED();
       return;
   }
-  NOTREACHED() << static_cast<int>(position_node_type_);
+  NOTREACHED();
 }
 
 void TextIteratorTextState::EmitAltText(const HTMLElement& element) {
   ResetPositionContainerNode(PositionNodeType::kAltText, element);
+  ASSERT(false); // BKTODO:
+#if 0
   const String text = element.AltText();
   PopulateStringBuffer(text, 0, text.length());
+#endif
 }
 
 void TextIteratorTextState::EmitChar16AfterNode(UChar code_unit,
