@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: selection_editor.cc
+// Description: SelectionEditor Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2008, 2009, 2010 Apple Inc. All rights reserved.
  *
@@ -142,7 +153,7 @@ void SelectionEditor::DidFinishDOMMutation() {
 
 void SelectionEditor::DocumentAttached(Document* document) {
   DCHECK(document);
-  DCHECK(!LifecycleContext()) << LifecycleContext();
+  DCHECK(!LifecycleContext());
   style_version_for_dom_tree_ = static_cast<uint64_t>(-1);
   style_version_for_flat_tree_ = static_cast<uint64_t>(-1);
   ClearVisibleSelection();
@@ -164,7 +175,7 @@ static Position ComputePositionForChildrenRemoval(const Position& position,
                                                   ContainerNode& container) {
   Node* node = position.ComputeContainerNode();
 #if DCHECK_IS_ON()
-  DCHECK(node) << position;
+  DCHECK(node);
 #else
   // TODO(https://crbug.com/882592): Once we know the root cause, we should
   // get rid of following if-statement.
@@ -302,7 +313,7 @@ static Position UpdatePostionAfterAdoptingTextNodesMerged(
       return position;
     }
   }
-  NOTREACHED() << position;
+  NOTREACHED();
   return position;
 }
 
@@ -352,15 +363,23 @@ void SelectionEditor::DidSplitTextNode(const Text& old_node) {
 }
 
 bool SelectionEditor::ShouldAlwaysUseDirectionalSelection() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return GetFrame()
       ->GetEditor()
       .Behavior()
       .ShouldConsiderSelectionAsDirectional();
+#endif
 }
 
 bool SelectionEditor::NeedsUpdateVisibleSelection() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return cached_visible_selection_in_dom_tree_is_dirty_ ||
          style_version_for_dom_tree_ != GetDocument().StyleVersion();
+#endif
 }
 
 void SelectionEditor::UpdateCachedVisibleSelectionIfNeeded() const {
@@ -372,6 +391,8 @@ void SelectionEditor::UpdateCachedVisibleSelectionIfNeeded() const {
   AssertSelectionValid();
   if (!NeedsUpdateVisibleSelection())
     return;
+  ASSERT(false); // BKTODO:
+#if 0
   style_version_for_dom_tree_ = GetDocument().StyleVersion();
   cached_visible_selection_in_dom_tree_is_dirty_ = false;
   cached_visible_selection_in_dom_tree_ = CreateVisibleSelection(selection_);
@@ -380,11 +401,16 @@ void SelectionEditor::UpdateCachedVisibleSelectionIfNeeded() const {
   style_version_for_flat_tree_ = GetDocument().StyleVersion();
   cached_visible_selection_in_flat_tree_is_dirty_ = false;
   cached_visible_selection_in_flat_tree_ = VisibleSelectionInFlatTree();
+#endif
 }
 
 bool SelectionEditor::NeedsUpdateVisibleSelectionInFlatTree() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return cached_visible_selection_in_flat_tree_is_dirty_ ||
          style_version_for_flat_tree_ != GetDocument().StyleVersion();
+#endif
 }
 
 void SelectionEditor::UpdateCachedVisibleSelectionInFlatTreeIfNeeded() const {
@@ -396,6 +422,8 @@ void SelectionEditor::UpdateCachedVisibleSelectionInFlatTreeIfNeeded() const {
   AssertSelectionValid();
   if (!NeedsUpdateVisibleSelectionInFlatTree())
     return;
+  ASSERT(false); // BKTODO:
+#if 0
   style_version_for_flat_tree_ = GetDocument().StyleVersion();
   cached_visible_selection_in_flat_tree_is_dirty_ = false;
   SelectionInFlatTree::Builder builder;
@@ -413,6 +441,7 @@ void SelectionEditor::UpdateCachedVisibleSelectionInFlatTreeIfNeeded() const {
   if (!cached_visible_selection_in_flat_tree_.IsNone())
     return;
   style_version_for_dom_tree_ = GetDocument().StyleVersion();
+#endif
   cached_visible_selection_in_dom_tree_is_dirty_ = false;
   cached_visible_selection_in_dom_tree_ = VisibleSelection();
 }
@@ -427,15 +456,6 @@ Range* SelectionEditor::DocumentCachedRange() const {
 
 void SelectionEditor::ClearDocumentCachedRange() {
   cached_range_ = nullptr;
-}
-
-void SelectionEditor::Trace(blink::Visitor* visitor) {
-  visitor->Trace(frame_);
-  visitor->Trace(selection_);
-  visitor->Trace(cached_visible_selection_in_dom_tree_);
-  visitor->Trace(cached_visible_selection_in_flat_tree_);
-  visitor->Trace(cached_range_);
-  SynchronousMutationObserver::Trace(visitor);
 }
 
 }  // namespace blink
