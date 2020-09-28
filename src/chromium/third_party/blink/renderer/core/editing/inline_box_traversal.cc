@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: inline_box_traversal.cc
+// Description: InlineBoxTraversal Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -70,11 +81,13 @@ class AbstractInlineBox {
     return *paint_fragment_.GetFragment();
   }
 
+#if 0 // BKTODO:
   UBiDiLevel BidiLevel() const {
     DCHECK(IsNotNull());
     return IsOldLayout() ? GetInlineBox().BidiLevel()
                          : GetNGPaintFragment().PhysicalFragment().BidiLevel();
   }
+#endif
 
   TextDirection Direction() const {
     DCHECK(IsNotNull());
@@ -136,6 +149,9 @@ class AbstractInlineBox {
       if (block_style.GetUnicodeBidi() != UnicodeBidi::kPlaintext)
         return block_style.Direction();
 
+      ASSERT(false); // BKTODO:
+      return TextDirection::kLtr;
+#if 0
       // There is no reliable way to get the paragraph direction in legacy
       // layout when 'unicode-bidi: plaintext' is set. Use the lowest-level
       // inline box's direction as a workaround.
@@ -145,11 +161,16 @@ class AbstractInlineBox {
         min_level = std::min(min_level, runner->BidiLevel());
       }
       return DirectionFromLevel(min_level);
+#endif
     }
+    ASSERT(false); // BKTODO:
+    return TextDirection::kLtr;
+#if 0
     const NGPhysicalLineBoxFragment& line_box =
         ToNGPhysicalLineBoxFragmentOrDie(
             GetNGPaintFragment().ContainerLineBox()->PhysicalFragment());
     return line_box.BaseDirection();
+#endif
   }
 
  private:
@@ -393,8 +414,11 @@ AbstractInlineBox FindBidiRun(const AbstractInlineBox& start,
   DCHECK(start.IsNotNull());
   for (AbstractInlineBox runner = TraversalStrategy::Forward(start);
        runner.IsNotNull(); runner = TraversalStrategy::Forward(runner)) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (runner.BidiLevel() <= bidi_level)
       return runner;
+#endif
   }
   return AbstractInlineBox();
 }
@@ -429,8 +453,11 @@ AbstractInlineBox FindBoundaryOfEntireBidiRunInternal(
   AbstractInlineBox last_runner = start;
   for (AbstractInlineBox runner = forward(start); runner.IsNotNull();
        runner = forward(runner)) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (runner.BidiLevel() < bidi_level)
       return last_runner;
+#endif
     last_runner = runner;
   }
   return last_runner;
@@ -474,6 +501,9 @@ class CaretPositionResolutionAdjuster {
     if (IsStartOfDifferentDirection(box))
       return UnadjustedCaretPosition(box);
 
+    ASSERT(false);
+    return UnadjustedCaretPosition(box);
+#if 0
     const unsigned level = TraversalStrategy::Backward(box).BidiLevel();
     const AbstractInlineBox forward_box =
         FindBidiRun<TraversalStrategy>(box, level);
@@ -487,6 +517,7 @@ class CaretPositionResolutionAdjuster {
         FindBoundaryOfEntireBidiRun<Backwards<TraversalStrategy>>(box, level);
     return AbstractInlineBoxAndBackwardSideAffinity<TraversalStrategy>(
         result_box);
+#endif
   }
 
   static AbstractInlineBoxAndSideAffinity AdjustFor(
@@ -497,6 +528,9 @@ class CaretPositionResolutionAdjuster {
     if (box.Direction() == primary_direction)
       return AdjustForPrimaryDirectionAlgorithm(box);
 
+    ASSERT(false); // BKTODO:
+    return AdjustForPrimaryDirectionAlgorithm(box);
+#if 0
     const unsigned char level = box.BidiLevel();
     const AbstractInlineBox backward_box =
         TraversalStrategy::BackwardIgnoringLineBreak(box);
@@ -519,6 +553,7 @@ class CaretPositionResolutionAdjuster {
             box, level);
     return AbstractInlineBoxAndBackwardSideAffinity<TraversalStrategy>(
         result_box);
+#endif
   }
 };
 
@@ -530,7 +565,11 @@ bool CaretPositionResolutionAdjuster<TraverseLeft>::IsStartOfDifferentDirection(
   const AbstractInlineBox backward_box = TraverseRight::Forward(box);
   if (backward_box.IsNull())
     return true;
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return backward_box.BidiLevel() >= box.BidiLevel();
+#endif
 }
 
 template <>
@@ -542,7 +581,11 @@ bool CaretPositionResolutionAdjuster<
     return true;
   if (backward_box.Direction() == box.Direction())
     return true;
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return backward_box.BidiLevel() > box.BidiLevel();
+#endif
 }
 
 // Adjustment algorithm at the end of hit tests.
@@ -558,6 +601,9 @@ class HitTestAdjuster {
 
   static AbstractInlineBoxAndSideAffinity AdjustFor(
       const AbstractInlineBox& box) {
+    ASSERT(false); // BKTODO:
+    return UnadjustedHitTestPosition(box);
+#if 0
     // TODO(editing-dev): Fix handling of left on 12CBA
     if (box.Direction() == box.ParagraphDirection())
       return UnadjustedHitTestPosition(box);
@@ -588,6 +634,7 @@ class HitTestAdjuster {
                      forward_most_box)
                : AbstractInlineBoxAndBackwardSideAffinity<TraversalStrategy>(
                      forward_most_box);
+#endif
   }
 };
 
@@ -663,7 +710,11 @@ class RangeSelectionAdjuster {
         return false;
       if (bidi_boundary_type_ == other.bidi_boundary_type_)
         return false;
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       return box_.BidiLevel() >= other.box_.BidiLevel();
+#endif
     }
 
     // Callable only when |this| is at boundary of a bidi run. Returns true if
@@ -671,6 +722,9 @@ class RangeSelectionAdjuster {
     bool BidiRunContains(const RenderedPosition& other) const {
       DCHECK(AtBidiBoundary());
       DCHECK(!other.IsNull());
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       UBiDiLevel level = box_.BidiLevel();
       if (level > other.box_.BidiLevel())
         return false;
@@ -681,6 +735,7 @@ class RangeSelectionAdjuster {
               : FindBoundaryOfEntireBidiRunIgnoringLineBreak<TraverseRight>(
                     other.box_, level);
       return box_ == boundary_of_other;
+#endif
     }
 
     PositionInFlatTree GetPosition() const {
@@ -783,6 +838,8 @@ RangeSelectionAdjuster::RenderedPosition::Create(
   // For example, abc FED |ghi should be changed into abc FED| ghi
   if (potential_type == BidiBoundaryType::kLeftBoundary) {
     const AbstractInlineBox prev_box = box.PrevLeafChildIgnoringLineBreak();
+    ASSERT(false); // BKTODO:
+#if 0
     if (prev_box.IsNotNull() && prev_box.BidiLevel() > box.BidiLevel())
       return RenderedPosition(prev_box, BidiBoundaryType::kRightBoundary);
     BidiBoundaryType type =
@@ -790,8 +847,12 @@ RangeSelectionAdjuster::RenderedPosition::Create(
             ? BidiBoundaryType::kNotBoundary
             : BidiBoundaryType::kLeftBoundary;
     return RenderedPosition(box, type);
+#endif
   }
 
+  ASSERT(false); // BKTODO:
+  return uncanonicalized;
+#if 0
   // potential_type == BidiBoundaryType::kRightBoundary
   // For example, abc| FED ghi should be changed into abc |FED ghi
   const AbstractInlineBox next_box = box.NextLeafChildIgnoringLineBreak();
@@ -802,6 +863,7 @@ RangeSelectionAdjuster::RenderedPosition::Create(
           ? BidiBoundaryType::kNotBoundary
           : BidiBoundaryType::kRightBoundary;
   return RenderedPosition(box, type);
+#endif
 }
 
 }  // namespace

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_paint_fragment_traversal.h
+// Description: NGPaintFragmentTraversal Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -103,6 +114,7 @@ class CORE_EXPORT NGPaintFragmentTraversal {
     STACK_ALLOCATED();
 
    public:
+#if 0 // BKTODO:
     class Iterator final
         : public std::iterator<std::forward_iterator_tag, NGPaintFragment*> {
       STACK_ALLOCATED();
@@ -125,13 +137,16 @@ class CORE_EXPORT NGPaintFragmentTraversal {
      private:
       NGPaintFragment* current_;
     };
+#endif
 
     explicit AncestorRange(const NGPaintFragment& start) : start_(&start) {}
 
+#if 0 // BKTODO:
     Iterator begin() const {
       return Iterator(const_cast<NGPaintFragment*>(start_));
     }
     Iterator end() const { return Iterator(nullptr); }
+#endif
 
    private:
     const NGPaintFragment* const start_;
