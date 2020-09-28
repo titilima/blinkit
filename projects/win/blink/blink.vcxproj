@@ -632,6 +632,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\kill_ring_none.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\layout_selection.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\local_caret_rect.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\markers\composition_marker.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\markers\document_marker.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\markers\document_marker_controller.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\ng_flat_tree_shorthands.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\plain_text_range.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\position.cc" />
@@ -1108,6 +1111,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_focus_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_font_render_style.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_gesture_event.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_menu_source_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_scroll_types.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_thread_scheduler.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_url_loader.h" />
@@ -2212,6 +2216,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\kill_ring.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\layout_selection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\local_caret_rect.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\markers\composition_marker.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\markers\document_marker.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\markers\document_marker_controller.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\ng_flat_tree_shorthands.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\plain_text_range.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\position.h" />

@@ -264,6 +264,9 @@
     <Filter Include="renderer\core\paint\ng">
       <UniqueIdentifier>{d8b1d15e-370b-40c3-9086-9846d298110a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\editing\markers">
+      <UniqueIdentifier>{038bb15d-9315-415a-bde2-f2c9ea5f6549}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -3076,6 +3079,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_line_utils.cc">
       <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\markers\document_marker_controller.cc">
+      <Filter>renderer\core\editing\markers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\markers\composition_marker.cc">
+      <Filter>renderer\core\editing\markers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\markers\document_marker.cc">
+      <Filter>renderer\core\editing\markers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -8562,6 +8574,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_inline.h">
       <Filter>renderer\core\layout\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_menu_source_type.h">
+      <Filter>public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\markers\document_marker_controller.h">
+      <Filter>renderer\core\editing\markers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\markers\composition_marker.h">
+      <Filter>renderer\core\editing\markers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\markers\document_marker.h">
+      <Filter>renderer\core\editing\markers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: document_marker_controller.h
+// Description: DocumentMarkerController Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -38,8 +49,10 @@
 #include "third_party/blink/renderer/core/editing/iterators/text_iterator.h"
 #include "third_party/blink/renderer/core/editing/markers/composition_marker.h"
 #include "third_party/blink/renderer/core/editing/markers/document_marker.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/editing/markers/suggestion_marker.h"
 #include "third_party/blink/renderer/core/editing/markers/text_match_marker.h"
+#endif
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
@@ -64,6 +77,7 @@ class CORE_EXPORT DocumentMarkerController final
                          const String& description = g_empty_string);
   void AddGrammarMarker(const EphemeralRange&,
                         const String& description = g_empty_string);
+#if 0 // BKTODO:
   void AddTextMatchMarker(const EphemeralRange&, TextMatchMarker::MatchStatus);
   void AddCompositionMarker(const EphemeralRange&,
                             Color underline_color,
@@ -73,21 +87,26 @@ class CORE_EXPORT DocumentMarkerController final
                                  Color underline_color,
                                  ws::mojom::ImeTextSpanThickness,
                                  Color background_color);
+#endif
   void AddSuggestionMarker(const EphemeralRange&,
                            const SuggestionMarkerProperties&);
 
   void MoveMarkers(const Text& src_node, int length, const Text& dst_node);
 
   void PrepareForDestruction();
+#if 0 // BKTODO:
   void RemoveMarkersInRange(const EphemeralRange&, DocumentMarker::MarkerTypes);
   void RemoveMarkersOfTypes(DocumentMarker::MarkerTypes);
   void RemoveMarkersForNode(
       const Text&,
       DocumentMarker::MarkerTypes = DocumentMarker::MarkerTypes::All());
+#endif
   void RemoveSpellingMarkersUnderWords(const Vector<String>& words);
   void RemoveSuggestionMarkerByTag(const Text&, int32_t marker_tag);
+#if 0 // BKTODO:
   void RepaintMarkers(
       DocumentMarker::MarkerTypes = DocumentMarker::MarkerTypes::All());
+#endif
   // Returns true if markers within a range are found.
   bool SetTextMatchMarkersActive(const EphemeralRange&, bool);
   // Returns true if markers within a range defined by a node, |startOffset| and
@@ -100,6 +119,7 @@ class CORE_EXPORT DocumentMarkerController final
   // TODO(rlanday): can these methods for retrieving markers be consolidated
   // without hurting efficiency?
 
+#if 0 // BKTODO:
   // If the given position is either at the boundary or inside a word, expands
   // the position to the surrounding word and then looks for a marker having the
   // specified type. If the position is neither at the boundary or inside a
@@ -141,12 +161,11 @@ class CORE_EXPORT DocumentMarkerController final
       DocumentMarker::MarkerTypes = DocumentMarker::MarkerTypes::All()) const;
   DocumentMarkerVector Markers() const;
   DocumentMarkerVector ComputeMarkersToPaint(const Text&) const;
+#endif
 
   Vector<IntRect> LayoutRectsForTextMatchMarkers();
   void InvalidateRectsForAllTextMatchMarkers();
   void InvalidateRectsForTextMatchMarkersInNode(const Node&);
-
-  void Trace(blink::Visitor*) override;
 
 #ifndef NDEBUG
   void ShowMarkers() const;
@@ -161,6 +180,7 @@ class CORE_EXPORT DocumentMarkerController final
                               unsigned new_length) final;
 
  private:
+#if 0 // BKTODO:
   void AddMarkerInternal(
       const EphemeralRange&,
       std::function<DocumentMarker*(int, int)> create_marker_from_offsets);
@@ -179,14 +199,17 @@ class CORE_EXPORT DocumentMarkerController final
                              unsigned start_offset,
                              int length,
                              DocumentMarker::MarkerTypes);
+#endif
 
   // Called after weak processing of |markers_| is done.
   void DidProcessMarkerMap(Visitor* visitor);
 
+#if 0 // BKTODO:
   MarkerMap markers_;
   // Provide a quick way to determine whether a particular marker type is absent
   // without going through the map.
   DocumentMarker::MarkerTypes possibly_existing_marker_types_;
+#endif
   const Member<Document> document_;
 
   DISALLOW_COPY_AND_ASSIGN(DocumentMarkerController);

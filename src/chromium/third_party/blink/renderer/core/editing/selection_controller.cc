@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: selection_controller.cc
+// Description: SelectionController Class
+//      Author: Ziming Li
+//     Created: 2020-09-28
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc. All rights
  * reserved.
@@ -45,17 +56,19 @@
 #include "third_party/blink/renderer/core/editing/markers/document_marker_controller.h"
 #include "third_party/blink/renderer/core/editing/selection_template.h"
 #include "third_party/blink/renderer/core/editing/set_selection_options.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/editing/spellcheck/spell_checker.h"
 #include "third_party/blink/renderer/core/editing/suggestion/text_suggestion_controller.h"
+#endif
 #include "third_party/blink/renderer/core/editing/visible_position.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/html_names.h"
-#include "third_party/blink/renderer/core/input/event_handler.h"
+// BKTODO: #include "third_party/blink/renderer/core/input/event_handler.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
-#include "third_party/blink/renderer/core/page/focus_controller.h"
+// BKTODO: #include "third_party/blink/renderer/core/page/focus_controller.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
 
@@ -71,20 +84,18 @@ SelectionController::SelectionController(LocalFrame& frame)
       mouse_down_allows_multi_click_(false),
       selection_state_(SelectionState::kHaveNotStartedSelection) {}
 
-void SelectionController::Trace(blink::Visitor* visitor) {
-  visitor->Trace(frame_);
-  visitor->Trace(original_base_in_flat_tree_);
-  DocumentShutdownObserver::Trace(visitor);
-}
-
 namespace {
 
 DispatchEventResult DispatchSelectStart(Node* node) {
   if (!node || !node->GetLayoutObject())
     return DispatchEventResult::kNotCanceled;
 
+  ASSERT(false); // BKTODO:
+  return DispatchEventResult::kCanceledBeforeDispatch;
+#if 0
   return node->DispatchEvent(
       *Event::CreateCancelableBubble(EventTypeNames::selectstart));
+#endif
 }
 
 SelectionInFlatTree ExpandSelectionToRespectUserSelectAll(
@@ -130,12 +141,14 @@ VisiblePositionInFlatTree VisiblePositionOfHitTestResult(
           hit_test_result.LocalPoint())));
 }
 
+#if 0 // BKTODO:
 DocumentMarker* SpellCheckMarkerAtPosition(
     DocumentMarkerController& document_marker_controller,
     const PositionInFlatTree& position) {
   return document_marker_controller.FirstMarkerAroundPosition(
       position, DocumentMarker::MarkerTypes::Misspelling());
 }
+#endif
 
 }  // namespace
 
@@ -290,6 +303,7 @@ static SelectionInFlatTree ExtendSelectionAsNonDirectional(
       .Build();
 }
 
+#if 0 // BKTODO:
 // Updating the selection is considered side-effect of the event and so it
 // doesn't impact the handled state.
 bool SelectionController::HandleSingleClick(
@@ -436,6 +450,7 @@ bool SelectionController::HandleTapInsideSelection(
   }
   return true;
 }
+#endif
 
 // Returns true if selection starts from |SVGText| node and |target_node| is
 // not the containing block of |SVGText| node.
@@ -469,7 +484,7 @@ void SelectionController::UpdateSelectionForMouseDrag(
 
   // TODO(editing-dev): Use of updateStyleAndLayoutIgnorePendingStylesheets
   // needs to be audited.  See http://crbug.com/590369 for more details.
-  frame_->GetDocument()->UpdateStyleAndLayoutIgnorePendingStylesheets();
+  ASSERT(false); // BKTODO: frame_->GetDocument()->UpdateStyleAndLayoutIgnorePendingStylesheets();
 
   const PositionWithAffinity& raw_target_position =
       Selection().SelectionHasFocus()
@@ -558,7 +573,7 @@ bool SelectionController::UpdateSelectionForMouseDownDispatchingSelectStart(
 
   // TODO(editing-dev): Use of updateStyleAndLayoutIgnorePendingStylesheets
   // needs to be audited.  See http://crbug.com/590369 for more details.
-  GetDocument().UpdateStyleAndLayoutIgnorePendingStylesheets();
+  ASSERT(false); // BKTODO: GetDocument().UpdateStyleAndLayoutIgnorePendingStylesheets();
   const VisibleSelectionInFlatTree& visible_selection =
       CreateVisibleSelection(selection);
 
@@ -669,6 +684,8 @@ void SelectionController::SelectClosestMisspellingFromHitTestResult(
 
   const PositionInFlatTree& marker_position =
       pos.DeepEquivalent().ParentAnchoredEquivalent();
+  ASSERT(false); // BKTODO:
+#if 0
   const DocumentMarker* const marker = SpellCheckMarkerAtPosition(
       inner_node->GetDocument().Markers(), marker_position);
   if (!marker) {
@@ -695,8 +712,10 @@ void SelectionController::SelectClosestMisspellingFromHitTestResult(
       SetSelectionOptions::Builder()
           .SetGranularity(TextGranularity::kWord)
           .Build());
+#endif
 }
 
+#if 0 // BKTODO:
 bool SelectionController::SelectClosestWordFromMouseEvent(
     const MouseEventWithHitTestResults& result) {
   if (!mouse_down_may_start_select_)
@@ -760,6 +779,7 @@ void SelectionController::SelectClosestWordOrLinkFromMouseEvent(
           .SetGranularity(TextGranularity::kWord)
           .Build());
 }
+#endif
 
 // TODO(yosin): We should take |granularity| and |handleVisibility| from
 // |newSelection|.
@@ -771,7 +791,7 @@ void SelectionController::SetNonDirectionalSelectionIfNeeded(
     EndPointsAdjustmentMode endpoints_adjustment_mode) {
   // TODO(editing-dev): The use of updateStyleAndLayoutIgnorePendingStylesheets
   // needs to be audited.  See http://crbug.com/590369 for more details.
-  GetDocument().UpdateStyleAndLayoutIgnorePendingStylesheets();
+  ASSERT(false); // BKTODO: GetDocument().UpdateStyleAndLayoutIgnorePendingStylesheets();
 
   const VisibleSelectionInFlatTree& new_selection =
       CreateVisibleSelection(passed_selection);
@@ -813,6 +833,8 @@ void SelectionController::SetNonDirectionalSelectionIfNeeded(
     original_base_in_flat_tree_ = PositionInFlatTreeWithAffinity();
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   const bool selection_is_directional =
       frame_->GetEditor().Behavior().ShouldConsiderSelectionAsDirectional() ||
       set_selection_options.IsDirectional();
@@ -836,6 +858,7 @@ void SelectionController::SetNonDirectionalSelectionIfNeeded(
           .SetIsDirectional(selection_is_directional)
           .SetCursorAlignOnScroll(CursorAlignOnScroll::kIfNeeded)
           .Build());
+#endif
 }
 
 void SelectionController::SetCaretAtHitTestResult(
@@ -865,6 +888,7 @@ void SelectionController::SetCaretAtHitTestResult(
       SetSelectionOptions::Builder().SetShouldShowHandle(true).Build());
 }
 
+#if 0
 bool SelectionController::HandleDoubleClick(
     const MouseEventWithHitTestResults& event) {
   TRACE_EVENT0("blink",
@@ -1001,10 +1025,13 @@ void SelectionController::HandleMouseDraggedEvent(
   UpdateSelectionForMouseDrag(event.GetHitTestResult(), drag_start_pos,
                               last_known_mouse_position);
 }
+#endif
 
 void SelectionController::UpdateSelectionForMouseDrag(
     const LayoutPoint& drag_start_pos,
     const LayoutPoint& last_known_mouse_position) {
+  ASSERT(false); // BKTODO:
+#if 0
   LocalFrameView* view = frame_->View();
   if (!view)
     return;
@@ -1019,8 +1046,10 @@ void SelectionController::UpdateSelectionForMouseDrag(
   layout_view->HitTest(location, result);
   UpdateSelectionForMouseDrag(result, drag_start_pos,
                               last_known_mouse_position);
+#endif
 }
 
+#if 0 // BKTODO:
 bool SelectionController::HandleMouseReleaseEvent(
     const MouseEventWithHitTestResults& event,
     const LayoutPoint& drag_start_pos) {
@@ -1111,6 +1140,7 @@ bool SelectionController::HandlePasteGlobalSelection(
 
   return false;
 }
+#endif
 
 bool SelectionController::HandleGestureLongPress(
     const HitTestResult& hit_test_result) {
@@ -1154,6 +1184,7 @@ void SelectionController::HandleGestureLongTap(
   SetCaretAtHitTestResult(targeted_event.GetHitTestResult());
 }
 
+#if 0 // BKTODO:
 static bool HitTestResultIsMisspelled(const HitTestResult& result) {
   Node* inner_node = result.InnerNode();
   if (!inner_node || !inner_node->GetLayoutObject())
@@ -1228,6 +1259,7 @@ void SelectionController::PassMousePressEventToSubframe(
           .Collapse(visible_pos.ToPositionWithAffinity())
           .Build()));
 }
+#endif
 
 void SelectionController::InitializeSelectionState() {
   selection_state_ = SelectionState::kHaveNotStartedSelection;
@@ -1265,13 +1297,18 @@ void SelectionController::NotifySelectionChanged() {
       selection_state_ = SelectionState::kExtendedSelection;
       return;
   }
-  NOTREACHED() << "We should handle all SelectionType" << selection;
+  NOTREACHED(); // We should handle all SelectionType
 }
 
 FrameSelection& SelectionController::Selection() const {
+  ASSERT(false); // BKTODO:
+  exit(0);
+#if 0
   return frame_->Selection();
+#endif
 }
 
+#if 0 // BKTODO:
 bool IsLinkSelection(const MouseEventWithHitTestResults& event) {
   return (event.Event().GetModifiers() & WebInputEvent::Modifiers::kAltKey) !=
              0 &&
@@ -1300,5 +1337,6 @@ bool IsExtendingSelection(const MouseEventWithHitTestResults& event) {
              0 &&
          !is_mouse_down_on_link_or_image && !IsUserNodeDraggable(event);
 }
+#endif
 
 }  // namespace blink
