@@ -57,7 +57,7 @@
 #include "third_party/blink/renderer/core/xlink_names.h"
 #include "third_party/blink/renderer/core/xml_names.h"
 #include "third_party/blink/renderer/core/xmlns_names.h"
-// BKTODO: #include "third_party/blink/renderer/platform/bindings/exception_state.h"
+#include "third_party/blink/renderer/platform/bindings/exception_state.h"
 // BKTODO: #include "third_party/blink/renderer/platform/bindings/runtime_call_stats.h"
 // BKTODO: #include "third_party/blink/renderer/platform/bindings/v8_per_isolate_data.h"
 // BKTODO: #include "third_party/blink/renderer/platform/text/platform_locale.h"
@@ -65,9 +65,11 @@
 #include "third_party/blink/renderer/platform/wtf/text/character_names.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#if 0 // BKTODO:
 #   include "third_party/blink/renderer/core/html/forms/html_form_control_element.h"
 #   include "third_party/blink/renderer/core/html/forms/html_form_element.h"
 #   include "third_party/blink/renderer/core/html/html_template_element.h"
+#endif
 #endif
 
 namespace blink {
@@ -2470,8 +2472,11 @@ void HTMLTreeBuilder::ProcessEndOfFile(AtomicHTMLToken* token) {
       }
       Element* el = tree_.OpenElements()->Top();
 #ifndef BLINKIT_CRAWLER_ONLY
+      ASSERT(false); // BKTODO:
+#if 0
       if (IsHTMLTextAreaElement(el))
         ToHTMLFormControlElement(el)->SetBlocksFormSubmission(true);
+#endif
 #endif
       tree_.OpenElements()->Pop();
       DCHECK_NE(original_insertion_mode_, kTextMode);
