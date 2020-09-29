@@ -19,6 +19,7 @@
 #pragma once
 
 #include <vector>
+#include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 
 namespace blink {
 

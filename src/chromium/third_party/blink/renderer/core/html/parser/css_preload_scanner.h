@@ -65,7 +65,9 @@ class CSSPreloadScanner {
             PreloadRequestStream&,
             const GURL&);
 
+#if 0 // BKTODO:
   void SetReferrerPolicy(const ReferrerPolicy);
+#endif
 
  private:
   enum State {
@@ -95,7 +97,9 @@ class CSSPreloadScanner {
   StringBuilder rule_;
   StringBuilder rule_value_;
 
+#if 0 // BKTODO:
   ReferrerPolicy referrer_policy_ = kReferrerPolicyDefault;
+#endif
 
   // Below members only non-null during scan()
   PreloadRequestStream* requests_ = nullptr;

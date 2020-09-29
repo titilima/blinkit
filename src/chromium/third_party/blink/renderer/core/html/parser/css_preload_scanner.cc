@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_preload_scanner.cc
+// Description: CSSPreloadScanner Class
+//      Author: Ziming Li
+//     Created: 2020-09-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2010 Apple Inc. All Rights Reserved.
  * Copyright (C) 2009 Torch Mobile, Inc. http://www.torchmobile.com/
@@ -51,7 +62,7 @@ void CSSPreloadScanner::ScanCommon(const Char* begin,
                                    const Char* end,
                                    const SegmentedString& source,
                                    PreloadRequestStream& requests,
-                                   const KURL& predicted_base_element_url) {
+                                   const GURL& predicted_base_element_url) {
   requests_ = &requests;
   predicted_base_element_url_ = &predicted_base_element_url;
 
@@ -66,7 +77,7 @@ void CSSPreloadScanner::ScanCommon(const Char* begin,
 void CSSPreloadScanner::Scan(const HTMLToken::DataVector& data,
                              const SegmentedString& source,
                              PreloadRequestStream& requests,
-                             const KURL& predicted_base_element_url) {
+                             const GURL& predicted_base_element_url) {
   ScanCommon(data.data(), data.data() + data.size(), source, requests,
              predicted_base_element_url);
 }
@@ -74,7 +85,7 @@ void CSSPreloadScanner::Scan(const HTMLToken::DataVector& data,
 void CSSPreloadScanner::Scan(const String& tag_name,
                              const SegmentedString& source,
                              PreloadRequestStream& requests,
-                             const KURL& predicted_base_element_url) {
+                             const GURL& predicted_base_element_url) {
   if (tag_name.Is8Bit()) {
     const LChar* begin = tag_name.Characters8();
     ScanCommon(begin, begin + tag_name.length(), source, requests,
@@ -86,9 +97,11 @@ void CSSPreloadScanner::Scan(const String& tag_name,
              predicted_base_element_url);
 }
 
+#if 0 // BKTODO:
 void CSSPreloadScanner::SetReferrerPolicy(const ReferrerPolicy policy) {
   referrer_policy_ = policy;
 }
+#endif
 
 inline void CSSPreloadScanner::Tokenize(UChar c,
                                         const SegmentedString& source) {
@@ -232,6 +245,8 @@ void CSSPreloadScanner::EmitRule(const SegmentedString& source) {
     String url = ParseCSSStringOrURL(rule_value_.ToString());
     TextPosition position =
         TextPosition(source.CurrentLine(), source.CurrentColumn());
+    ASSERT(false); // BKTODO:
+#if 0
     auto request = PreloadRequest::CreateIfNeeded(
         FetchInitiatorTypeNames::css, position, url,
         *predicted_base_element_url_, ResourceType::kCSSStyleSheet,
@@ -241,6 +256,7 @@ void CSSPreloadScanner::EmitRule(const SegmentedString& source) {
       // FIXME: Should this be including the charset in the preload request?
       requests_->push_back(std::move(request));
     }
+#endif
     state_ = kInitial;
   } else if (DeprecatedEqualIgnoringCase(rule_, "charset"))
     state_ = kInitial;
