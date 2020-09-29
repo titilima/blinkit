@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: forward_grapheme_boundary_state_machine.cc
+// Description: ForwardGraphemeBoundaryStateMachine Class
+//      Author: Ziming Li
+//     Created: 2020-09-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -46,8 +57,8 @@ std::ostream& operator<<(
 #undef V
   };
   auto* const* const it = std::begin(kTexts) + static_cast<size_t>(state);
-  DCHECK_GE(it, std::begin(kTexts)) << "Unknown state value";
-  DCHECK_LT(it, std::end(kTexts)) << "Unknown state value";
+  DCHECK_GE(it, std::begin(kTexts)); // Unknown state value
+  DCHECK_LT(it, std::end(kTexts)); // Unknown state value
   return os << *it;
 }
 
@@ -84,15 +95,13 @@ ForwardGraphemeBoundaryStateMachine::FeedPrecedingCodeUnit(UChar code_unit) {
     case InternalState::kStartForwardWaitTrailSurrgate:  // Fallthrough
     case InternalState::kSearch:                         // Fallthrough
     case InternalState::kSearchWaitTrailSurrogate:       // Fallthrough
-      NOTREACHED() << "Do not call feedPrecedingCodeUnit() once "
-                   << TextSegmentationMachineState::kNeedFollowingCodeUnit
-                   << " is returned. InternalState: " << internal_state_;
+      NOTREACHED(); // Do not call feedPrecedingCodeUnit() once TextSegmentationMachineState::kNeedFollowingCodeUnit is returned.
       return Finish();
     case InternalState::kFinished:
-      NOTREACHED() << "Do not call feedPrecedingCodeUnit() once it finishes.";
+      NOTREACHED(); // Do not call feedPrecedingCodeUnit() once it finishes.
       return Finish();
   }
-  NOTREACHED() << "Unhandled state: " << internal_state_;
+  NOTREACHED(); // Unhandled state
   return Finish();
 }
 
@@ -101,9 +110,7 @@ ForwardGraphemeBoundaryStateMachine::FeedFollowingCodeUnit(UChar code_unit) {
   switch (internal_state_) {
     case InternalState::kCountRIS:  // Fallthrough
     case InternalState::kCountRISWaitLeadSurrogate:
-      NOTREACHED() << "Do not call feedFollowingCodeUnit() until "
-                   << TextSegmentationMachineState::kNeedFollowingCodeUnit
-                   << " is returned. InternalState: " << internal_state_;
+      NOTREACHED(); // Do not call feedFollowingCodeUnit() until TextSegmentationMachineState::kNeedFollowingCodeUnit is returned.
       return Finish();
     case InternalState::kStartForward:
       DCHECK_EQ(prev_code_point_, kUnsetCodePoint);
@@ -175,20 +182,17 @@ ForwardGraphemeBoundaryStateMachine::FeedFollowingCodeUnit(UChar code_unit) {
         return MoveToNextState(InternalState::kSearch);
       }
     case InternalState::kFinished:
-      NOTREACHED() << "Do not call feedFollowingCodeUnit() once it finishes.";
+      NOTREACHED(); // Do not call feedFollowingCodeUnit() once it finishes.
       return Finish();
   }
-  NOTREACHED() << "Unhandled staet: " << internal_state_;
+  NOTREACHED(); // Unhandled state
   return Finish();
 }
 
 TextSegmentationMachineState
 ForwardGraphemeBoundaryStateMachine::TellEndOfPrecedingText() {
-  DCHECK(internal_state_ == InternalState::kCountRIS ||
-         internal_state_ == InternalState::kCountRISWaitLeadSurrogate)
-      << "Do not call tellEndOfPrecedingText() once "
-      << TextSegmentationMachineState::kNeedFollowingCodeUnit
-      << " is returned. InternalState: " << internal_state_;
+  // Do not call tellEndOfPrecedingText() once TextSegmentationMachineState::kNeedFollowingCodeUnit is returned.
+  DCHECK(internal_state_ == InternalState::kCountRIS || internal_state_ == InternalState::kCountRISWaitLeadSurrogate);
 
   // Clear pending code unit since preceding buffer may end with lonely trail
   // surrogate. We can just ignore it since preceding buffer is only used for
@@ -220,8 +224,8 @@ TextSegmentationMachineState ForwardGraphemeBoundaryStateMachine::Finish() {
 
 TextSegmentationMachineState
 ForwardGraphemeBoundaryStateMachine::MoveToNextState(InternalState next_state) {
-  DCHECK_NE(next_state, InternalState::kFinished) << "Use finish() instead";
-  DCHECK_NE(next_state, internal_state_) << "Use staySameSatate() instead";
+  DCHECK_NE(next_state, InternalState::kFinished); // Use finish() instead
+  DCHECK_NE(next_state, internal_state_); // Use staySameSatate() instead
   internal_state_ = next_state;
   if (next_state == InternalState::kStartForward)
     return TextSegmentationMachineState::kNeedFollowingCodeUnit;
@@ -230,8 +234,7 @@ ForwardGraphemeBoundaryStateMachine::MoveToNextState(InternalState next_state) {
 
 TextSegmentationMachineState
 ForwardGraphemeBoundaryStateMachine::StaySameState() {
-  DCHECK_EQ(internal_state_, InternalState::kSearch)
-      << "Only Search can stay the same state.";
+  DCHECK_EQ(internal_state_, InternalState::kSearch); // Only Search can stay the same state.
   return TextSegmentationMachineState::kNeedMoreCodeUnit;
 }
 
@@ -249,8 +252,8 @@ void ForwardGraphemeBoundaryStateMachine::FinishWithEndOfText() {
     case InternalState::kSearchWaitTrailSurrogate:  // Fallthrough
       return;
     case InternalState::kFinished:  // Fallthrough
-      NOTREACHED() << "Do not call finishWithEndOfText() once it finishes.";
+      NOTREACHED(); // Do not call finishWithEndOfText() once it finishes.
   }
-  NOTREACHED() << "Unhandled state: " << internal_state_;
+  NOTREACHED(); // Unhandled state
 }
 }  // namespace blink
