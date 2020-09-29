@@ -53,13 +53,6 @@
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
 #include "third_party/blink/renderer/core/html_element_type_helpers.h"
-// BKTODO: #include "third_party/blink/renderer/core/html/custom/ce_reactions_scope.h"
-// BKTODO: #include "third_party/blink/renderer/core/html/custom/custom_element.h"
-// BKTODO: #include "third_party/blink/renderer/core/html/custom/custom_element_definition.h"
-// BKTODO: #include "third_party/blink/renderer/core/html/custom/custom_element_descriptor.h"
-// BKTODO: #include "third_party/blink/renderer/core/html/custom/custom_element_registry.h"
-// BKTODO: #include "third_party/blink/renderer/core/html/forms/form_associated.h"
-// BKTODO: #include "third_party/blink/renderer/core/html/forms/html_form_element.h"
 #include "third_party/blink/renderer/core/html/parser/atomic_html_token.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_reentry_permit.h"
@@ -71,12 +64,21 @@
 // BKTODO: #include "third_party/blink/renderer/platform/bindings/microtask.h"
 // BKTODO: #include "third_party/blink/renderer/platform/text/text_break_iterator.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#if 0 // BKTODO:
 #   include "third_party/blink/renderer/core/html_element_factory.h"
+#   include "third_party/blink/renderer/core/html/custom/ce_reactions_scope.h"
+#   include "third_party/blink/renderer/core/html/custom/custom_element.h"
+#   include "third_party/blink/renderer/core/html/custom/custom_element_definition.h"
+#   include "third_party/blink/renderer/core/html/custom/custom_element_descriptor.h"
+#   include "third_party/blink/renderer/core/html/custom/custom_element_registry.h"
+#   include "third_party/blink/renderer/core/html/forms/form_associated.h"
+#   include "third_party/blink/renderer/core/html/forms/html_form_element.h"
 #   include "third_party/blink/renderer/core/html/html_html_element.h"
 #   include "third_party/blink/renderer/core/html/html_plugin_element.h"
 #   include "third_party/blink/renderer/core/html/html_script_element.h"
 #   include "third_party/blink/renderer/core/html/html_style_element.h"
 #   include "third_party/blink/renderer/core/html/html_template_element.h"
+#endif
 #endif
 
 using namespace BlinKit;
@@ -397,8 +399,11 @@ void HTMLConstructionSite::InitFragmentParsing(DocumentFragment* fragment,
 #ifdef BLINKIT_CRAWLER_ONLY
   form_ = FirstFormAncestorOrSelf(*context_element);
 #else
+  ASSERT(false); // BKTODO:
+#if 0
   if (!context_element->GetDocument().IsTemplateDocument())
     form_ = Traversal<HTMLFormElement>::FirstAncestorOrSelf(*context_element);
+#endif
 #endif
 }
 
@@ -745,6 +750,8 @@ void HTMLConstructionSite::InsertScriptElement(AtomicHTMLToken* token) {
 #ifdef BLINKIT_CRAWLER_ONLY
   element = CrawlerScriptElement::Create(document, flags);
 #else
+  ASSERT(false); // BKTODO:
+#if 0
   HTMLScriptElement* element = nullptr;
   if (const auto* is_attribute = token->GetAttributeItem(HTMLNames::isAttr)) {
     element = ToHTMLScriptElement(OwnerDocumentForCurrentNode().CreateElement(
@@ -752,6 +759,7 @@ void HTMLConstructionSite::InsertScriptElement(AtomicHTMLToken* token) {
   } else {
     element = HTMLScriptElement::Create(OwnerDocumentForCurrentNode(), flags);
   }
+#endif
 #endif
   SetAttributes(element, token, parser_content_policy_);
   if (ScriptingContentIsAllowed(parser_content_policy_))
@@ -785,9 +793,11 @@ void HTMLConstructionSite::InsertTextNode(const StringView& string,
 
 #ifndef BLINKIT_CRAWLER_ONLY
   ASSERT(false); // BKTODO:
+#if 0
   // FIXME: This probably doesn't need to be done both here and in insert(Task).
   if (auto* template_element = ToHTMLTemplateElementOrNull(*dummy_task.parent))
     dummy_task.parent = template_element->content();
+#endif
 #endif
 
   // Unclear when parent != case occurs. Somehow we insert text into two
@@ -851,8 +861,10 @@ CreateElementFlags HTMLConstructionSite::GetCreateElementFlags() const {
 inline Document& HTMLConstructionSite::OwnerDocumentForCurrentNode() {
 #ifndef BLINKIT_CRAWLER_ONLY
   ASSERT(false); // BKTODO:
+#if 0
   if (auto* template_element = ToHTMLTemplateElementOrNull(*CurrentNode()))
     return template_element->content()->GetDocument();
+#endif
 #endif
   return CurrentNode()->GetDocument();
 }
@@ -876,6 +888,8 @@ CustomElementDefinition* HTMLConstructionSite::LookUpCustomElementDefinition(
     return nullptr;
 
   ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   // "3. Let registry be document's browsing context's Window's
   // CustomElementRegistry object."
   CustomElementRegistry* registry = window->MaybeCustomElements();
@@ -888,6 +902,7 @@ CustomElementDefinition* HTMLConstructionSite::LookUpCustomElementDefinition(
 
   // 4.-6.
   return registry->DefinitionFor(descriptor);
+#endif
 #endif
 }
 
@@ -952,6 +967,8 @@ Element* HTMLConstructionSite::CreateElement(
     element = document.CreateElement(tag_name.LocalName(), GetCreateElementFlags());
 #else
     ASSERT(false); // BKTODO:
+    element = nullptr;
+#if 0
     if (definition) {
       DCHECK(GetCreateElementFlags().IsAsyncCustomElements());
       element = definition->CreateElement(document, tag_name,
@@ -1015,6 +1032,7 @@ Element* HTMLConstructionSite::CreateElement(
       //   to reset the form association.
       form_associated_element->AssociateWith(form_.Get());
     }
+#endif
 #endif
     // "8. Append each attribute in the given token to element."
     SetAttributes(element, token, parser_content_policy_);

@@ -141,6 +141,7 @@ public:
     void ClearDOMWindow(void) { m_domWindow = nullptr; }
     LocalFrame* GetFrame(void) const { return m_frame; }  // can be null
     LocalFrame* ExecutingFrame(void);
+    LocalDOMWindow* ExecutingWindow(void) const final;
     Document* ContextDocument(void) const;
     ScriptRunner* GetScriptRunner(void) { return m_scriptRunner.get(); }
     DocumentLifecycle& Lifecycle(void) { return m_lifecycle; }
@@ -421,7 +422,6 @@ private:
     void ChildrenChanged(const ChildrenChange &change) override;
     // ExecutionContext overrides
     bool IsDocument(void) const final { return true; }
-    LocalDOMWindow* ExecutingWindow(void) const final;
 
     static uint64_t m_globalTreeVersion;
     uint64_t m_domTreeVersion;
