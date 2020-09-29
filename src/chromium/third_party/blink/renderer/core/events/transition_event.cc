@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: transition_event.cc
+// Description: TransitionEvent Class
+//      Author: Ziming Li
+//     Created: 2020-09-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Intel Corporation. All rights reserved.
@@ -26,7 +37,7 @@
 
 #include "third_party/blink/renderer/core/events/transition_event.h"
 
-#include "third_party/blink/renderer/core/event_names.h"
+// BKTODO: #include "third_party/blink/renderer/core/event_names.h"
 
 namespace blink {
 
@@ -43,6 +54,7 @@ TransitionEvent::TransitionEvent(const AtomicString& type,
 
 TransitionEvent::TransitionEvent(const AtomicString& type,
                                  const TransitionEventInit& initializer)
+#if 0 // BKTODO:
     : Event(type, initializer), elapsed_time_(0) {
   if (initializer.hasPropertyName())
     property_name_ = initializer.propertyName();
@@ -51,6 +63,11 @@ TransitionEvent::TransitionEvent(const AtomicString& type,
   if (initializer.hasPseudoElement())
     pseudo_element_ = initializer.pseudoElement();
 }
+#else
+{
+  ASSERT(false); // BKTODO:
+}
+#endif
 
 TransitionEvent::~TransitionEvent() = default;
 
@@ -67,11 +84,11 @@ const String& TransitionEvent::pseudoElement() const {
 }
 
 const AtomicString& TransitionEvent::InterfaceName() const {
+  ASSERT(false); // BKTODO:
+  return g_null_atom;
+#if 0
   return EventNames::TransitionEvent;
-}
-
-void TransitionEvent::Trace(blink::Visitor* visitor) {
-  Event::Trace(visitor);
+#endif
 }
 
 }  // namespace blink
