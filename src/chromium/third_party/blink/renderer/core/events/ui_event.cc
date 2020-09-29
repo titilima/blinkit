@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ui_event.cc
+// Description: UIEvent Class
+//      Author: Ziming Li
+//     Created: 2020-09-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2001 Peter Kelly (pmk@post.com)
  * Copyright (C) 2001 Tobias Anton (anton@stud.fbi.fh-darmstadt.de)
@@ -22,7 +33,7 @@
 
 #include "third_party/blink/renderer/core/events/ui_event.h"
 
-#include "third_party/blink/renderer/core/input/input_device_capabilities.h"
+// BKTODO: #include "third_party/blink/renderer/core/input/input_device_capabilities.h"
 
 namespace blink {
 
@@ -48,10 +59,16 @@ UIEvent::UIEvent(const AtomicString& event_type,
 UIEvent::UIEvent(const AtomicString& event_type,
                  const UIEventInit& initializer,
                  TimeTicks platform_time_stamp)
+#if 0 // BKTODO:
     : Event(event_type, initializer, platform_time_stamp),
       view_(initializer.view()),
       detail_(initializer.detail()),
       source_capabilities_(initializer.sourceCapabilities()) {}
+#else
+{
+  ASSERT(false); // BKTODO:
+}
+#endif
 
 UIEvent::~UIEvent() = default;
 
@@ -72,10 +89,13 @@ void UIEvent::InitUIEventInternal(
     AbstractView* view_arg,
     int detail_arg,
     InputDeviceCapabilities* source_capabilities_arg) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsBeingDispatched())
     return;
 
   initEvent(type_arg, bubbles_arg, cancelable_arg, related_target);
+#endif
 
   view_ = view_arg;
   detail_ = detail_arg;
@@ -87,17 +107,15 @@ bool UIEvent::IsUIEvent() const {
 }
 
 const AtomicString& UIEvent::InterfaceName() const {
+  ASSERT(false); // BKTODO:
+  return g_null_atom;
+#if 0
   return EventNames::UIEvent;
+#endif
 }
 
 unsigned UIEvent::which() const {
   return 0;
-}
-
-void UIEvent::Trace(blink::Visitor* visitor) {
-  visitor->Trace(view_);
-  visitor->Trace(source_capabilities_);
-  Event::Trace(visitor);
 }
 
 }  // namespace blink
