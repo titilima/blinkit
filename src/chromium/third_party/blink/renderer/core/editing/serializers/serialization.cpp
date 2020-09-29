@@ -61,10 +61,15 @@ DocumentFragment* CreateFragmentForInnerOuterHTML(
 #ifdef BLINKIT_CRAWLER_ONLY
     Document &document = contextElement->GetDocument();
 #else
-    Document& document =
-        IsHTMLTemplateElement(*context_element)
+    ASSERT(false); // BKTODO:
+#if 0
+    Document &document =
+        IsHTMLTemplateElement(*contextElement)
         ? context_element->GetDocument().EnsureTemplateDocument()
         : context_element->GetDocument();
+#else
+    Document &document = contextElement->GetDocument();
+#endif
 #endif
 
     DocumentFragment *fragment = DocumentFragment::Create(document);
