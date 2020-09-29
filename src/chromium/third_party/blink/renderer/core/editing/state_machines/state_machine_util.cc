@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: state_machine_util.cc
+// Description: State Machine Utils
+//      Author: Ziming Li
+//     Created: 2020-09-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -36,6 +47,8 @@ bool IsIndicSyllabicCategoryVirama(uint32_t code_point) {
 }  // namespace
 
 bool IsGraphemeBreak(UChar32 prev_code_point, UChar32 next_code_point) {
+  ASSERT(false); // BKTODO:
+#if 0
   // The following breaking rules come from Unicode Standard Annex #29 on
   // Unicode Text Segmaentation. See http://www.unicode.org/reports/tr29/
   int prev_prop =
@@ -105,6 +118,7 @@ bool IsGraphemeBreak(UChar32 prev_code_point, UChar32 next_code_point) {
   if (prev_code_point == kZeroWidthJoinerCharacter &&
       (Character::IsEmoji(next_code_point)))
     return false;
+#endif
 
   // GB12 for RI(Regional Indicator) is handled elsewhere because it requires
   // counting the number of consecutive RIs.
