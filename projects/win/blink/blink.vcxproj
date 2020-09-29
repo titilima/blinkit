@@ -617,6 +617,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\granularity_strategy.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\inline_box_position.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\inline_box_traversal.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\backwards_character_iterator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\backwards_text_buffer.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\bit_stack.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\character_iterator.cc" />
@@ -2202,6 +2203,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\granularity_strategy.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\inline_box_position.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\inline_box_traversal.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\backwards_character_iterator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\backwards_text_buffer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\bit_stack.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\character_iterator.h" />
@@ -2333,6 +2335,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_text.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\selection_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\background_bleed_avoidance.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\bidi_run.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\collapsed_border_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\content_change_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\custom\custom_layout_child.h" />
@@ -2374,6 +2377,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\breaking_context_inline_headers.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_box.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_flow_box.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_iterator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_text_box.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_box_list.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\root_inline_box.h" />
@@ -2787,7 +2791,10 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\scroll\scroll_types.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\shared_buffer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\supplementable.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_character_run.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_context.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_resolver.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_run_list.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character_property.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\hyphenation.h" />

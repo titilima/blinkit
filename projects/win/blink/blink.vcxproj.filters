@@ -3092,6 +3092,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\state_machines\state_machine_util.cc">
       <Filter>renderer\core\editing\state_machines</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\backwards_character_iterator.cc">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -8592,6 +8595,24 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\state_machines\state_machine_util.h">
       <Filter>renderer\core\editing\state_machines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\backwards_character_iterator.h">
+      <Filter>renderer\core\editing\iterators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_iterator.h">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\bidi_run.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_resolver.h">
+      <Filter>renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_character_run.h">
+      <Filter>renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_run_list.h">
+      <Filter>renderer\platform\text</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

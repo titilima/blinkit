@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: visible_units.cc
+// Description: Visible Units
+//      Author: Ziming Li
+//     Created: 2020-09-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights
  * reserved.
@@ -49,8 +60,10 @@
 #include "third_party/blink/renderer/core/editing/visible_selection.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/text_control_element.h"
 #include "third_party/blink/renderer/core/html/html_br_element.h"
+#endif
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_item.h"
 #include "third_party/blink/renderer/core/layout/hit_test_request.h"
@@ -60,7 +73,7 @@
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/layout/line/inline_iterator.h"
 #include "third_party/blink/renderer/core/layout/line/inline_text_box.h"
-#include "third_party/blink/renderer/core/svg_element_type_helpers.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg_element_type_helpers.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/text/text_boundaries.h"
 
@@ -94,7 +107,7 @@ static PositionType CanonicalPosition(const PositionType& position) {
     return PositionType();
 
   DCHECK(position.GetDocument());
-  DCHECK(!position.GetDocument()->NeedsLayoutTreeUpdate());
+  ASSERT(false); // BKTODO: DCHECK(!position.GetDocument()->NeedsLayoutTreeUpdate());
 
   const PositionType& backward_candidate = MostBackwardCaretPosition(position);
   if (IsVisuallyEquivalentCandidate(backward_candidate))
@@ -220,7 +233,7 @@ VisiblePositionTemplate<Strategy>
 AdjustBackwardPositionToAvoidCrossingEditingBoundariesAlgorithm(
     const VisiblePositionTemplate<Strategy>& pos,
     const PositionTemplate<Strategy>& anchor) {
-  DCHECK(pos.IsValid()) << pos;
+  DCHECK(pos.IsValid());
   return CreateVisiblePosition(
       AdjustBackwardPositionToAvoidCrossingEditingBoundaries(
           pos.ToPositionWithAffinity(), anchor));
@@ -302,7 +315,7 @@ AdjustForwardPositionToAvoidCrossingEditingBoundaries(
 VisiblePosition AdjustForwardPositionToAvoidCrossingEditingBoundaries(
     const VisiblePosition& pos,
     const Position& anchor) {
-  DCHECK(pos.IsValid()) << pos;
+  DCHECK(pos.IsValid());
   return CreateVisiblePosition(
       AdjustForwardPositionToAvoidCrossingEditingBoundaries(
           pos.ToPositionWithAffinity(), anchor));
@@ -311,7 +324,7 @@ VisiblePosition AdjustForwardPositionToAvoidCrossingEditingBoundaries(
 VisiblePositionInFlatTree AdjustForwardPositionToAvoidCrossingEditingBoundaries(
     const VisiblePositionInFlatTree& pos,
     const PositionInFlatTree& anchor) {
-  DCHECK(pos.IsValid()) << pos;
+  DCHECK(pos.IsValid());
   return CreateVisiblePosition(
       AdjustForwardPositionToAvoidCrossingEditingBoundaries(
           pos.ToPositionWithAffinity(), anchor));
@@ -347,7 +360,7 @@ template <typename Strategy>
 static PositionTemplate<Strategy> PreviousBoundaryAlgorithm(
     const VisiblePositionTemplate<Strategy>& c,
     BoundarySearchFunction search_function) {
-  DCHECK(c.IsValid()) << c;
+  DCHECK(c.IsValid());
   const PositionTemplate<Strategy> pos = c.DeepEquivalent();
   Node* boundary = ParentEditingBoundary(pos);
   if (!boundary)
@@ -441,7 +454,7 @@ PositionInFlatTree PreviousBoundary(
 template <typename Strategy>
 static VisiblePositionTemplate<Strategy> StartOfDocumentAlgorithm(
     const VisiblePositionTemplate<Strategy>& visible_position) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   Node* node = visible_position.DeepEquivalent().AnchorNode();
   if (!node || !node->GetDocument().documentElement())
     return VisiblePositionTemplate<Strategy>();
@@ -461,7 +474,7 @@ VisiblePositionInFlatTree StartOfDocument(const VisiblePositionInFlatTree& c) {
 template <typename Strategy>
 static VisiblePositionTemplate<Strategy> EndOfDocumentAlgorithm(
     const VisiblePositionTemplate<Strategy>& visible_position) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   Node* node = visible_position.DeepEquivalent().AnchorNode();
   if (!node || !node->GetDocument().documentElement())
     return VisiblePositionTemplate<Strategy>();
@@ -480,13 +493,13 @@ VisiblePositionInFlatTree EndOfDocument(const VisiblePositionInFlatTree& c) {
 }
 
 bool IsStartOfDocument(const VisiblePosition& p) {
-  DCHECK(p.IsValid()) << p;
+  DCHECK(p.IsValid());
   return p.IsNotNull() &&
          PreviousPositionOf(p, kCanCrossEditingBoundary).IsNull();
 }
 
 bool IsEndOfDocument(const VisiblePosition& p) {
-  DCHECK(p.IsValid()) << p;
+  DCHECK(p.IsValid());
   return p.IsNotNull() && NextPositionOf(p, kCanCrossEditingBoundary).IsNull();
 }
 
@@ -494,7 +507,7 @@ bool IsEndOfDocument(const VisiblePosition& p) {
 
 VisiblePosition StartOfEditableContent(
     const VisiblePosition& visible_position) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   ContainerNode* highest_root =
       HighestEditableRoot(visible_position.DeepEquivalent());
   if (!highest_root)
@@ -504,7 +517,7 @@ VisiblePosition StartOfEditableContent(
 }
 
 VisiblePosition EndOfEditableContent(const VisiblePosition& visible_position) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   ContainerNode* highest_root =
       HighestEditableRoot(visible_position.DeepEquivalent());
   if (!highest_root)
@@ -514,7 +527,7 @@ VisiblePosition EndOfEditableContent(const VisiblePosition& visible_position) {
 }
 
 bool IsEndOfEditableOrNonEditableContent(const VisiblePosition& position) {
-  DCHECK(position.IsValid()) << position;
+  DCHECK(position.IsValid());
   return position.IsNotNull() && NextPositionOf(position).IsNull();
 }
 
@@ -522,7 +535,7 @@ bool IsEndOfEditableOrNonEditableContent(const VisiblePosition& position) {
 // this function does, e.g. |isLastVisiblePositionOrEndOfInnerEditor()|.
 bool IsEndOfEditableOrNonEditableContent(
     const VisiblePositionInFlatTree& position) {
-  DCHECK(position.IsValid()) << position;
+  DCHECK(position.IsValid());
   if (position.IsNull())
     return false;
   const VisiblePositionInFlatTree next_position = NextPositionOf(position);
@@ -533,7 +546,11 @@ bool IsEndOfEditableOrNonEditableContent(
   // an inner editor is an only leaf node.
   if (!next_position.DeepEquivalent().IsAfterAnchor())
     return false;
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return IsTextControl(next_position.DeepEquivalent().AnchorNode());
+#endif
 }
 
 static LayoutUnit BoundingBoxLogicalHeight(LayoutObject* o,
@@ -574,9 +591,12 @@ VisiblePosition VisiblePositionForContentsPoint(const IntPoint& contents_point,
   frame->GetDocument()->GetLayoutView()->HitTest(location, result);
 
   if (Node* node = result.InnerNode()) {
+    ASSERT(false); // BKTODO:
+#if 0
     return CreateVisiblePosition(PositionRespectingEditingBoundary(
         frame->Selection().ComputeVisibleSelectionInDOMTreeDeprecated().Start(),
         result.LocalPoint(), node));
+#endif
   }
   return VisiblePosition();
 }
@@ -645,6 +665,8 @@ bool EndsOfNodeAreVisuallyDistinctPositions(const Node* node) {
   if (!layout_object->IsInline())
     return true;
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Don't include inline tables.
   if (IsHTMLTableElement(*node))
     return false;
@@ -653,6 +675,7 @@ bool EndsOfNodeAreVisuallyDistinctPositions(const Node* node) {
   // visibily distinct.
   if (IsHTMLMarqueeElement(*node))
     return true;
+#endif
 
   // There is a VisiblePosition inside an empty inline-block container.
   return layout_object->IsAtomicInlineLevel() &&
@@ -698,7 +721,7 @@ template <typename Strategy>
 static PositionTemplate<Strategy> MostBackwardCaretPosition(
     const PositionTemplate<Strategy>& position,
     EditingBoundaryCrossingRule rule) {
-  DCHECK(!NeedsLayoutTreeUpdate(position)) << position;
+  DCHECK(!NeedsLayoutTreeUpdate(position));
   TRACE_EVENT0("input", "VisibleUnits::mostBackwardCaretPosition");
 
   Node* const start_node = position.AnchorNode();
@@ -729,9 +752,12 @@ static PositionTemplate<Strategy> MostBackwardCaretPosition(
       last_node = current_node;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     // There is no caret position in non-text svg elements.
     if (current_node->IsSVGElement() && !IsSVGTextElement(current_node))
       continue;
+#endif
 
     // If we've moved to a position that is visually distinct, return the last
     // saved position. There is code below that terminates early if we're
@@ -831,7 +857,7 @@ template <typename Strategy>
 PositionTemplate<Strategy> MostForwardCaretPosition(
     const PositionTemplate<Strategy>& position,
     EditingBoundaryCrossingRule rule) {
-  DCHECK(!NeedsLayoutTreeUpdate(position)) << position;
+  DCHECK(!NeedsLayoutTreeUpdate(position));
   TRACE_EVENT0("input", "VisibleUnits::mostForwardCaretPosition");
 
   Node* const start_node = position.AnchorNode();
@@ -872,9 +898,12 @@ PositionTemplate<Strategy> MostForwardCaretPosition(
     if (IsHTMLBodyElement(*current_node) && current_pos.AtEndOfNode())
       break;
 
+    ASSERT(false); // BKTODO:
+#if 0
     // There is no caret position in non-text svg elements.
     if (current_node->IsSVGElement() && !IsSVGTextElement(current_node))
       continue;
+#endif
 
     // Do not move to a visually distinct position.
     if (EndsOfNodeAreVisuallyDistinctPositions(current_node) &&
@@ -1056,7 +1085,7 @@ template <typename Strategy>
 static VisiblePositionTemplate<Strategy> SkipToEndOfEditingBoundary(
     const VisiblePositionTemplate<Strategy>& pos,
     const PositionTemplate<Strategy>& anchor) {
-  DCHECK(pos.IsValid()) << pos;
+  DCHECK(pos.IsValid());
   if (pos.IsNull())
     return pos;
 
@@ -1086,7 +1115,7 @@ static VisiblePositionTemplate<Strategy> SkipToEndOfEditingBoundary(
 template <typename Strategy>
 static UChar32 CharacterAfterAlgorithm(
     const VisiblePositionTemplate<Strategy>& visible_position) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   // We canonicalize to the first of two equivalent candidates, but the second
   // of the two candidates is the one that will be inside the text node
   // containing the character after this visible position.
@@ -1117,7 +1146,7 @@ UChar32 CharacterAfter(const VisiblePositionInFlatTree& visible_position) {
 template <typename Strategy>
 static UChar32 CharacterBeforeAlgorithm(
     const VisiblePositionTemplate<Strategy>& visible_position) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   return CharacterAfter(PreviousPositionOf(visible_position));
 }
 
@@ -1153,7 +1182,7 @@ static VisiblePositionTemplate<Strategy> NextPositionOfAlgorithm(
 
 VisiblePosition NextPositionOf(const VisiblePosition& visible_position,
                                EditingBoundaryCrossingRule rule) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   return NextPositionOfAlgorithm<EditingStrategy>(
       visible_position.ToPositionWithAffinity(), rule);
 }
@@ -1161,7 +1190,7 @@ VisiblePosition NextPositionOf(const VisiblePosition& visible_position,
 VisiblePositionInFlatTree NextPositionOf(
     const VisiblePositionInFlatTree& visible_position,
     EditingBoundaryCrossingRule rule) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   return NextPositionOfAlgorithm<EditingInFlatTreeStrategy>(
       visible_position.ToPositionWithAffinity(), rule);
 }
@@ -1170,7 +1199,7 @@ template <typename Strategy>
 static VisiblePositionTemplate<Strategy> SkipToStartOfEditingBoundary(
     const VisiblePositionTemplate<Strategy>& pos,
     const PositionTemplate<Strategy>& anchor) {
-  DCHECK(pos.IsValid()) << pos;
+  DCHECK(pos.IsValid());
   if (pos.IsNull())
     return pos;
 
@@ -1233,7 +1262,7 @@ static VisiblePositionTemplate<Strategy> PreviousPositionOfAlgorithm(
 
 VisiblePosition PreviousPositionOf(const VisiblePosition& visible_position,
                                    EditingBoundaryCrossingRule rule) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   return PreviousPositionOfAlgorithm<EditingStrategy>(
       visible_position.DeepEquivalent(), rule);
 }
@@ -1241,7 +1270,7 @@ VisiblePosition PreviousPositionOf(const VisiblePosition& visible_position,
 VisiblePositionInFlatTree PreviousPositionOf(
     const VisiblePositionInFlatTree& visible_position,
     EditingBoundaryCrossingRule rule) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   return PreviousPositionOfAlgorithm<EditingInFlatTreeStrategy>(
       visible_position.DeepEquivalent(), rule);
 }
@@ -1306,7 +1335,7 @@ static Vector<FloatQuad> ComputeTextBounds(
   DCHECK(start_container);
   Node* const end_container = end_position.ComputeContainerNode();
   DCHECK(end_container);
-  DCHECK(!start_container->GetDocument().NeedsLayoutTreeUpdate());
+  ASSERT(false); // BKTODO: DCHECK(!start_container->GetDocument().NeedsLayoutTreeUpdate());
 
   Vector<FloatQuad> result;
   for (const Node& node : range.Nodes()) {
@@ -1346,7 +1375,7 @@ FloatRect ComputeTextFloatRect(const EphemeralRange& range) {
 }
 
 IntRect FirstRectForRange(const EphemeralRange& range) {
-  DCHECK(!range.GetDocument().NeedsLayoutTreeUpdate());
+  ASSERT(false); // BKTODO: DCHECK(!range.GetDocument().NeedsLayoutTreeUpdate());
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       range.GetDocument().Lifecycle());
 
