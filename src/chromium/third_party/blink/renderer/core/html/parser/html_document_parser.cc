@@ -66,7 +66,7 @@
 #   include "third_party/blink/renderer/core/css/media_values_cached.h"
 #   include "third_party/blink/renderer/core/css/resolver/style_resolver.h"
 #   include "third_party/blink/renderer/core/html/html_document.h"
-#   include "third_party/blink/renderer/core/loader/link_loader.h"
+// BKTODO: #include "third_party/blink/renderer/core/loader/link_loader.h"
 #endif
 
 namespace blink {
