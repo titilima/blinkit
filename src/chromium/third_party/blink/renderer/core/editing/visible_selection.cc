@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: visible_selection.cc
+// Description: VisibleSelection Class
+//      Author: Ziming Li
+//     Created: 2020-09-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006 Apple Computer, Inc.  All rights reserved.
  *
@@ -198,7 +209,7 @@ VisibleSelectionTemplate<Strategy>::ToNormalizedEphemeralRange() const {
   // in the course of running edit commands which modify the DOM.
   // Failing to ensure this can result in equivalentXXXPosition calls returning
   // incorrect results.
-  DCHECK(!NeedsLayoutTreeUpdate(Start())) << *this;
+  DCHECK(!NeedsLayoutTreeUpdate(Start()));
 
   if (IsCaret()) {
     // If the selection is a caret, move the range start upstream. This
@@ -371,6 +382,8 @@ void VisibleSelectionTemplate<Strategy>::Trace(blink::Visitor* visitor) {
 
 template <typename Strategy>
 void VisibleSelectionTemplate<Strategy>::ShowTreeForThis() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!Start().AnchorNode()) {
     LOG(INFO) << "\nselection is null";
     return;
@@ -385,6 +398,7 @@ void VisibleSelectionTemplate<Strategy>::ShowTreeForThis() const {
             << "start: " << Start().ToAnchorTypeAndOffsetString().Utf8().data()
             << "\n"
             << "end: " << End().ToAnchorTypeAndOffsetString().Utf8().data();
+#endif
 }
 
 #endif
