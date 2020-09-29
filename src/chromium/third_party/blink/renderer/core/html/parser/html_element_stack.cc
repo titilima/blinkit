@@ -42,8 +42,10 @@
 #ifdef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/html_element_type_helpers.h"
 #else
+#if 0 // BKTODO:
 #   include "third_party/blink/renderer/core/html/forms/html_form_control_element.h"
 #   include "third_party/blink/renderer/core/html/forms/html_select_element.h"
+#endif
 #   include "third_party/blink/renderer/core/html/html_element.h"
 #endif
 
@@ -168,8 +170,10 @@ void HTMLElementStack::PopAll() {
       ToElement(node).FinishParsingChildren();
 #ifndef BLINKIT_CRAWLER_ONLY
       ASSERT(false); // BKTODO:
+#if 0
       if (auto* select = ToHTMLSelectElementOrNull(node))
         select->SetBlocksFormSubmission(true);
+#endif
 #endif
     }
     top_ = top_->ReleaseNext();
