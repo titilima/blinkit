@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: input_event.cc
+// Description: InputEvent Class
+//      Author: Ziming Li
+//     Created: 2020-09-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -85,6 +96,7 @@ InputEvent::InputType ConvertStringToInputType(const String& string_name) {
 
 InputEvent::InputEvent(const AtomicString& type,
                        const InputEventInit& initializer)
+#if 0 // BKTODO:
     : UIEvent(type, initializer) {
   // TODO(ojan): We should find a way to prevent conversion like
   // String->enum->String just in order to use initializer.
@@ -102,6 +114,11 @@ InputEvent::InputEvent(const AtomicString& type,
   for (const auto& range : initializer.targetRanges())
     ranges_.push_back(range->toRange());
 }
+#else
+{
+  ASSERT(false); // BKTODO:
+}
+#endif
 
 /* static */
 InputEvent* InputEvent::CreateBeforeInput(InputType input_type,
@@ -109,6 +126,9 @@ InputEvent* InputEvent::CreateBeforeInput(InputType input_type,
                                           EventCancelable cancelable,
                                           EventIsComposing is_composing,
                                           const StaticRangeVector* ranges) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   InputEventInit input_event_init;
 
   input_event_init.setBubbles(true);
@@ -123,8 +143,10 @@ InputEvent* InputEvent::CreateBeforeInput(InputType input_type,
     input_event_init.setTargetRanges(*ranges);
   input_event_init.setComposed(true);
   return InputEvent::Create(EventTypeNames::beforeinput, input_event_init);
+#endif
 }
 
+#if 0 // BKTODO:
 /* static */
 InputEvent* InputEvent::CreateBeforeInput(InputType input_type,
                                           DataTransfer* data_transfer,
@@ -143,12 +165,16 @@ InputEvent* InputEvent::CreateBeforeInput(InputType input_type,
   input_event_init.setComposed(true);
   return InputEvent::Create(EventTypeNames::beforeinput, input_event_init);
 }
+#endif
 
 /* static */
 InputEvent* InputEvent::CreateInput(InputType input_type,
                                     const String& data,
                                     EventIsComposing is_composing,
                                     const StaticRangeVector* ranges) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   InputEventInit input_event_init;
 
   input_event_init.setBubbles(true);
@@ -163,6 +189,7 @@ InputEvent* InputEvent::CreateInput(InputType input_type,
     input_event_init.setTargetRanges(*ranges);
   input_event_init.setComposed(true);
   return InputEvent::Create(EventTypeNames::input, input_event_init);
+#endif
 }
 
 String InputEvent::inputType() const {
@@ -171,8 +198,11 @@ String InputEvent::inputType() const {
 
 StaticRangeVector InputEvent::getTargetRanges() const {
   StaticRangeVector static_ranges;
+  ASSERT(false); // BKTODO:
+#if 0
   for (const auto& range : ranges_)
     static_ranges.push_back(StaticRange::Create(range));
+#endif
   return static_ranges;
 }
 
@@ -180,14 +210,10 @@ bool InputEvent::IsInputEvent() const {
   return true;
 }
 
-void InputEvent::Trace(blink::Visitor* visitor) {
-  UIEvent::Trace(visitor);
-  visitor->Trace(data_transfer_);
-  visitor->Trace(ranges_);
-}
-
 DispatchEventResult InputEvent::DispatchEvent(EventDispatcher& dispatcher) {
   DispatchEventResult result = dispatcher.Dispatch();
+  ASSERT(false); // BKTODO:
+#if 0
   // It's weird to hold and clear live |Range| objects internally, and only
   // expose |StaticRange| through |getTargetRanges()|. However there is no
   // better solutions due to the following issues:
@@ -203,6 +229,7 @@ DispatchEventResult InputEvent::DispatchEvent(EventDispatcher& dispatcher) {
   //
   // This is the only Event::DispatchEvent() that modifies the event.
   ranges_.clear();
+#endif
   return result;
 }
 

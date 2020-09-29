@@ -1110,6 +1110,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\task_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_common.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_drag_operation.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_editing_command_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_focus_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_font_render_style.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_gesture_event.h" />
