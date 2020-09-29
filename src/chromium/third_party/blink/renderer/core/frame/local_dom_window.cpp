@@ -138,9 +138,12 @@ void LocalDOMWindow::DocumentWasClosed(void)
 {
     DispatchWindowLoadEvent();
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     EnqueuePageshowEvent(kPageshowEventNotPersisted);
     if (pending_state_object_)
         EnqueuePopstateEvent(std::move(pending_state_object_));
+#endif
 #endif
 }
 
@@ -188,7 +191,7 @@ Document* LocalDOMWindow::InstallNewDocument(const DocumentInit &init)
     {
         frame->GetScriptController().UpdateDocument();
 #ifndef BLINKIT_CRAWLER_ONLY
-        m_document->GetViewportData().UpdateViewportDescription();
+        ASSERT(false); // BKTODO: m_document->GetViewportData().UpdateViewportDescription();
 #endif
     }
 

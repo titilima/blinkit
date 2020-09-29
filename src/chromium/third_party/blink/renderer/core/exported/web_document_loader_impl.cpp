@@ -55,7 +55,11 @@ std::unique_ptr<WebDocumentLoaderImpl> WebDocumentLoaderImpl::Create(
     const ResourceRequest &request,
     const SubstituteData &substituteData)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     return base::WrapUnique(new WebDocumentLoaderImpl(frame, request, substituteData));
+#endif
 }
 
 }  // namespace blink

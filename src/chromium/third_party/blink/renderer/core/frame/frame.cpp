@@ -79,7 +79,7 @@ void Frame::Detach(FrameDetachType type)
     // also assert that it is only accessed when the frame is not detached.
     m_lifecycle.AdvanceTo(FrameLifecycle::kDetached);
 #ifndef BLINKIT_CRAWLER_ONLY
-    page_ = nullptr;
+    ASSERT(false); // BKTODO: page_ = nullptr;
 #endif
 }
 

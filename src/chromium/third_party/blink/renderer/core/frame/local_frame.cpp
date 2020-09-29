@@ -105,6 +105,8 @@ void LocalFrame::DetachImpl(FrameDetachType type)
     m_loader.Detach();
     GetDocument()->Shutdown();
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
     // It seems to crash because Frame is detached before LocalFrameView.
     // Verify here that any LocalFrameView has been detached by now.
@@ -114,6 +116,7 @@ void LocalFrame::DetachImpl(FrameDetachType type)
         CHECK_EQ(view_, DeprecatedLocalOwner()->OwnedEmbeddedContentView());
     }
     CHECK(!view_ || !view_->IsAttached());
+#endif
 #endif
 
     // This is the earliest that scripting can be disabled:
@@ -133,7 +136,7 @@ void LocalFrame::DetachImpl(FrameDetachType type)
 
 #ifndef BLINKIT_CRAWLER_ONLY
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
-    CHECK(!view_->IsAttached());
+    ASSERT(false); // BKTODO: CHECK(!view_->IsAttached());
 #endif
     Client()->WillBeDetached();
     // Notify ScriptController that the frame is closing, since its cleanup ends
@@ -141,9 +144,12 @@ void LocalFrame::DetachImpl(FrameDetachType type)
     GetScriptController().ClearForClose();
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
     CHECK(!view_->IsAttached());
     SetView(nullptr);
+#endif
 #endif
 
 #if 0 // BKTODO:
@@ -153,8 +159,11 @@ void LocalFrame::DetachImpl(FrameDetachType type)
     DomWindow()->FrameDestroyed();
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     if (GetPage() && GetPage()->GetFocusController().FocusedFrame() == this)
         GetPage()->GetFocusController().SetFocusedFrame(nullptr);
+#endif
 #endif
 
 #if 0 // BKTODO:
@@ -174,6 +183,8 @@ void LocalFrame::DocumentAttached(void)
         return;
 
     Document *document = GetDocument();
+    ASSERT(false); // BKTODO:
+#if 0
     GetEditor().Clear();
     GetEventHandler().Clear();
     Selection().DocumentAttached(GetDocument());
@@ -181,6 +192,7 @@ void LocalFrame::DocumentAttached(void)
     GetSpellChecker().DocumentAttached(GetDocument());
     GetTextSuggestionController().DocumentAttached(GetDocument());
     previews_resource_loading_hints_receiver_.reset();
+#endif
 #endif
 }
 
