@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: visible_position.cc
+// Description: VisiblePosition Class
+//      Author: Ziming Li
+//     Created: 2020-09-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights
  * reserved.
@@ -41,7 +52,7 @@
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 template <typename Strategy>
 VisiblePositionTemplate<Strategy>::VisiblePositionTemplate()
@@ -59,7 +70,11 @@ VisiblePositionTemplate<Strategy>::VisiblePositionTemplate(
 #if DCHECK_IS_ON()
       ,
       dom_tree_version_(position_with_affinity.GetDocument()->DomTreeVersion()),
-      style_version_(position_with_affinity.GetDocument()->StyleVersion())
+#if 0
+      // BKTODO: style_version_(position_with_affinity.GetDocument()->StyleVersion())
+#else
+    style_version_(0)
+#endif
 #endif
 {
 }
@@ -74,10 +89,10 @@ VisiblePositionTemplate<Strategy> VisiblePositionTemplate<Strategy>::Create(
     const PositionWithAffinityTemplate<Strategy>& position_with_affinity) {
   if (position_with_affinity.IsNull())
     return VisiblePositionTemplate<Strategy>();
-  DCHECK(position_with_affinity.IsConnected()) << position_with_affinity;
+  DCHECK(position_with_affinity.IsConnected());
 
   Document& document = *position_with_affinity.GetDocument();
-  DCHECK(!document.NeedsLayoutTreeUpdate());
+  ASSERT(false); // BKTODO: DCHECK(!document.NeedsLayoutTreeUpdate());
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       document.Lifecycle());
 
@@ -177,10 +192,14 @@ bool VisiblePositionTemplate<Strategy>::IsValid() const {
 #if DCHECK_IS_ON()
   if (IsNull())
     return true;
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   Document& document = *position_with_affinity_.GetDocument();
   return dom_tree_version_ == document.DomTreeVersion() &&
          style_version_ == document.StyleVersion() &&
          !document.NeedsLayoutTreeUpdate();
+#endif
 #else
   return true;
 #endif
