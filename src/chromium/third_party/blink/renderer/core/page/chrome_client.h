@@ -415,7 +415,7 @@ class CORE_EXPORT ChromeClient
   void SetToolTip(LocalFrame&, const HitTestLocation&, const HitTestResult&);
 
   WeakMember<Node> last_mouse_over_node_;
-  LayoutPoint last_tool_tip_point_;
+  // BKTODO: LayoutPoint last_tool_tip_point_;
   String last_tool_tip_text_;
 
   FRIEND_TEST_ALL_PREFIXES(ChromeClientTest, SetToolTipFlood);

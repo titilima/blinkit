@@ -1,10 +1,21 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: viewport_data.cc
+// Description: ViewportData Class
+//      Author: Ziming Li
+//     Created: 2020-09-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/core/frame/viewport_data.h"
 
-#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+// BKTODO: #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
@@ -23,15 +34,22 @@ void ViewportData::Trace(Visitor* visitor) {
 void ViewportData::Shutdown() {
   // TODO(https://crbug.com/800641): Use InterfaceInvalidator once it works with
   // associated interfaces.
+  ASSERT(false); // BKTODO:
+#if 0
   display_cutout_host_.reset();
+#endif
 }
 
 bool ViewportData::ShouldMergeWithLegacyDescription(
     ViewportDescription::Type origin) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return document_->GetSettings() &&
          document_->GetSettings()->GetViewportMetaMergeContentQuirk() &&
          legacy_viewport_description_.IsMetaViewportType() &&
          legacy_viewport_description_.type == origin;
+#endif
 }
 
 void ViewportData::SetViewportDescription(
@@ -56,6 +74,8 @@ void ViewportData::SetViewportDescription(
 
 ViewportDescription ViewportData::GetViewportDescription() const {
   ViewportDescription applied_viewport_description = viewport_description_;
+  ASSERT(false); // BKTODO:
+#if 0
   bool viewport_meta_enabled =
       document_->GetSettings() &&
       document_->GetSettings()->GetViewportMetaEnabled();
@@ -65,6 +85,7 @@ ViewportDescription ViewportData::GetViewportDescription() const {
     applied_viewport_description = legacy_viewport_description_;
   if (ShouldOverrideLegacyDescription(viewport_description_.type))
     applied_viewport_description = viewport_description_;
+#endif
 
   return applied_viewport_description;
 }
@@ -73,6 +94,8 @@ void ViewportData::UpdateViewportDescription() {
   if (!document_->GetFrame())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   // If the viewport_fit has changed we should send this to the browser. We
   // use the legacy viewport description which contains the viewport_fit
   // defined from the layout meta tag.
@@ -107,6 +130,7 @@ void ViewportData::UpdateViewportDescription() {
     document_->GetPage()->GetChromeClient().DispatchViewportPropertiesDidChange(
         GetViewportDescription());
   }
+#endif
 }
 
 void ViewportData::SetExpandIntoDisplayCutout(bool expand) {
