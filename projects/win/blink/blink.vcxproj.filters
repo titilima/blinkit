@@ -3089,6 +3089,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\markers\document_marker.cc">
       <Filter>renderer\core\editing\markers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\state_machines\state_machine_util.cc">
+      <Filter>renderer\core\editing\state_machines</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -8586,6 +8589,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\markers\document_marker.h">
       <Filter>renderer\core\editing\markers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\state_machines\state_machine_util.h">
+      <Filter>renderer\core\editing\state_machines</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

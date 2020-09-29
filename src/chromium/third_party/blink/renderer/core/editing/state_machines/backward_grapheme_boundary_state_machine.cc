@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: backward_grapheme_boundary_state_machine.cc
+// Description: BackwardGraphemeBoundaryStateMachine Class
+//      Author: Ziming Li
+//     Created: 2020-09-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -48,8 +59,8 @@ std::ostream& operator<<(
 #undef V
   };
   auto* const* const it = std::begin(kTexts) + static_cast<size_t>(state);
-  DCHECK_GE(it, std::begin(kTexts)) << "Unknown state value";
-  DCHECK_LT(it, std::end(kTexts)) << "Unknown state value";
+  DCHECK_GE(it, std::begin(kTexts)); // Unknown state value
+  DCHECK_LT(it, std::end(kTexts)); // Unknown state value
   return os << *it;
 }
 
@@ -162,9 +173,9 @@ BackwardGraphemeBoundaryStateMachine::FeedPrecedingCodeUnit(UChar code_unit) {
         boundary_offset_ -= 2;
       return Finish();
     case InternalState::kFinished:
-      NOTREACHED() << "Do not call feedPrecedingCodeUnit() once it finishes.";
+      NOTREACHED(); // Do not call feedPrecedingCodeUnit() once it finishes.
   }
-  NOTREACHED() << "Unhandled state: " << internal_state_;
+  NOTREACHED(); // Unhandled state
   return Finish();
 }
 
@@ -190,9 +201,9 @@ BackwardGraphemeBoundaryStateMachine::TellEndOfPrecedingText() {
         boundary_offset_ -= 2;
       return Finish();
     case InternalState::kFinished:
-      NOTREACHED() << "Do not call tellEndOfPrecedingText() once it finishes.";
+      NOTREACHED(); // Do not call tellEndOfPrecedingText() once it finishes.
   }
-  NOTREACHED() << "Unhandled state: " << internal_state_;
+  NOTREACHED(); // Unhandled state
   return Finish();
 }
 
@@ -212,16 +223,16 @@ int BackwardGraphemeBoundaryStateMachine::FinalizeAndGetBoundaryOffset() {
 TextSegmentationMachineState
 BackwardGraphemeBoundaryStateMachine::MoveToNextState(
     InternalState next_state) {
-  DCHECK_NE(next_state, InternalState::kFinished) << "Use finish() instead";
-  DCHECK_NE(next_state, InternalState::kStart) << "Unable to move to Start";
-  DCHECK_NE(internal_state_, next_state) << "Use staySameState() instead.";
+  DCHECK_NE(next_state, InternalState::kFinished); // Use finish() instead
+  DCHECK_NE(next_state, InternalState::kStart); // Unable to move to Start
+  DCHECK_NE(internal_state_, next_state); // Use staySameState() instead.
   internal_state_ = next_state;
   return TextSegmentationMachineState::kNeedMoreCodeUnit;
 }
 
 TextSegmentationMachineState
 BackwardGraphemeBoundaryStateMachine::StaySameState() {
-  DCHECK_EQ(internal_state_, InternalState::kSearch) << "Only Search can stay.";
+  DCHECK_EQ(internal_state_, InternalState::kSearch); // Only Search can stay.
   return TextSegmentationMachineState::kNeedMoreCodeUnit;
 }
 
