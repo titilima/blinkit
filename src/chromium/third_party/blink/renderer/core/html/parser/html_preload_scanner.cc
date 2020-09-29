@@ -965,10 +965,8 @@ void TokenPreloadScanner::ScanCommon(const Token& token,
 
 #ifdef BLINKIT_CRAWLER_ONLY
       MediaValuesCached *media_values_ = nullptr;
-#endif
-      ASSERT(false); // BKTODO:
-#if 0
 #else
+      ASSERT(false); // BKTODO:
       MediaValuesCached *media_values_ = nullptr;
 #endif
       StartTagScanner scanner(tag_impl, media_values_, scanner_type_);

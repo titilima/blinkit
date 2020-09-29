@@ -3098,6 +3098,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\sizes_attribute_parser.cc">
       <Filter>renderer\core\css\parser</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\sizes_calc_parser.cc">
+      <Filter>renderer\core\css\parser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -8621,6 +8624,9 @@
       <Filter>public\platform</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\sizes_attribute_parser.h">
+      <Filter>renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\sizes_calc_parser.h">
       <Filter>renderer\core\css\parser</Filter>
     </ClInclude>
   </ItemGroup>
