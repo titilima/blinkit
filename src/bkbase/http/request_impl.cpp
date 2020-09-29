@@ -70,6 +70,7 @@ RequestImpl::RequestImpl(const char *URL, const BkRequestClient &client)
     : m_URL(URL), m_client(client), m_controller(new Controller)
     , m_method("GET"), m_timeoutInMs(HttpConstants::DefaultTimeoutInMs)
 {
+    m_standardHeaders[CURLOPT_USERAGENT] = Strings::DefaultUserAgent;
     m_userHeaders.Set("Accept", "*/*");
 }
 
