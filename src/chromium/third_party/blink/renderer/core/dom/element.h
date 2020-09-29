@@ -42,6 +42,7 @@
 #include "third_party/blink/renderer/core/css/css_selector.h"
 #include "third_party/blink/renderer/core/dom/container_node.h"
 #include "third_party/blink/renderer/core/dom/element_data.h"
+#include "third_party/blink/renderer/core/dom/names_map.h"
 #include "third_party/blink/renderer/core/dom/qualified_name.h"
 #include "url/gurl.h"
 #ifndef BLINKIT_CRAWLER_ONLY

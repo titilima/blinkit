@@ -98,7 +98,9 @@ public:
     const AtomicString& type(void) const { return m_type; }
     void SetType(const AtomicString &type) { m_type = type; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     virtual const AtomicString& InterfaceName(void) const;
+#endif
 
     // These events are general classes of events.
     virtual bool IsUIEvent(void) const { return false; }

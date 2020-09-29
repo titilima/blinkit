@@ -35,7 +35,6 @@
 
 #include "third_party/blink/renderer/core/dom/document.h"
  // BKTODO: #include "third_party/blink/renderer/core/dom/events/scoped_event_queue.h"
-#include "third_party/blink/renderer/core/dom/first_letter_pseudo_element.h"
 #include "third_party/blink/renderer/core/dom/node_traversal.h"
 // BKTODO: #include "third_party/blink/renderer/platform/bindings/dom_data_store.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
@@ -43,6 +42,7 @@
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/css/resolver/style_resolver.h"
+#   include "third_party/blink/renderer/core/dom/first_letter_pseudo_element.h"
 #   include "third_party/blink/renderer/core/dom/layout_tree_builder.h"
 #   include "third_party/blink/renderer/core/dom/layout_tree_builder_traversal.h"
 #   include "third_party/blink/renderer/core/dom/node_computed_style.h"

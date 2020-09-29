@@ -50,12 +50,10 @@
 #include "third_party/blink/renderer/core/html_element_type_helpers.h"
 #include "third_party/blink/renderer/core/xlink_names.h"
 #include "third_party/blink/renderer/platform/wtf/text/character_names.h"
-#ifdef BLINKIT_CRAWLER_ONLY
-#   include "third_party/blink/renderer/platform/wtf/text/atomic_string_hash.h"
-#else
+#ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/editing/editor.h"
 #   include "third_party/blink/renderer/core/html/html_element.h"
-#   include "third_party/blink/renderer/core/html/html_template_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_template_element.h"
 #endif
 
 namespace blink {
@@ -203,10 +201,14 @@ static void SerializeNodesWithNamespaces(MarkupAccumulator& accumulator,
     Node* current = Strategy::FirstChild(target_node);
     ASSERT(!IsHTMLTemplateElement(target_node)); // BKTODO:
 #else
+    ASSERT(false); // BKTODO:
+    Node* current = Strategy::FirstChild(target_node);
+#if 0
     Node* current = IsHTMLTemplateElement(target_node)
                         ? Strategy::FirstChild(
                               *ToHTMLTemplateElement(target_node).content())
                         : Strategy::FirstChild(target_node);
+#endif
 #endif
     for (; current; current = Strategy::NextSibling(*current))
       SerializeNodesWithNamespaces<Strategy>(accumulator, *current,
