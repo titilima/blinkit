@@ -56,13 +56,15 @@
 #   include "third_party/blink/renderer/core/css/media_values_cached.h"
 #   include "third_party/blink/renderer/core/css/parser/sizes_attribute_parser.h"
 #   include "third_party/blink/renderer/core/frame/viewport_data.h"
+#if 0 // BKTODO:
 #   include "third_party/blink/renderer/core/html/html_dimension.h"
 #   include "third_party/blink/renderer/core/html/html_image_element.h"
 #   include "third_party/blink/renderer/core/html/html_meta_element.h"
 #   include "third_party/blink/renderer/core/html/link_rel_attribute.h"
 #   include "third_party/blink/renderer/core/html/parser/html_srcset_parser.h"
+#endif
 #   include "third_party/blink/renderer/core/input_type_names.h"
-#   include "third_party/blink/renderer/core/loader/link_loader.h"
+// BKTODO: #include "third_party/blink/renderer/core/loader/link_loader.h"
 #endif
 
 namespace blink {
@@ -126,9 +128,13 @@ static bool IsDimensionSmallAndAbsoluteForLazyLoad(
     const String& attribute_value) {
   // Minimum height or width of the image to start lazyloading.
   const unsigned kMinDimensionToLazyLoad = 10;
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   HTMLDimension dimension;
   return ParseDimensionValue(attribute_value, dimension) &&
          dimension.IsAbsolute() && dimension.Value() <= kMinDimensionToLazyLoad;
+#endif
 }
 #endif // BLINKIT_CRAWLER_ONLY
 
@@ -160,7 +166,7 @@ class TokenPreloadScanner::StartTagScanner {
         referrer_policy_set_(false),
         referrer_policy_(kReferrerPolicyDefault),
 #ifndef BLINKIT_CRAWLER_ONLY
-        lazyload_attr_set_to_off_(false),
+        // BKTODO: lazyload_attr_set_to_off_(false),
         width_attr_small_absolute_(false),
         height_attr_small_absolute_(false),
 #endif
@@ -174,7 +180,7 @@ class TokenPreloadScanner::StartTagScanner {
       source_size_ = SizesAttributeParser(media_values_, String()).length();
       return;
     }
-    if (!Match(tag_impl_, inputTag) && !Match(tag_impl_, linkTag) && !Match(tag_impl_, scriptTag))
+    if (!Match(tag_impl_, kInputTag) && !Match(tag_impl_, kLinkTag) && !Match(tag_impl_, kScriptTag))
       tag_impl_ = nullptr;
 #endif
   }
@@ -205,17 +211,22 @@ class TokenPreloadScanner::StartTagScanner {
 
   void PostProcessAfterAttributes() {
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (Match(tag_impl_, imgTag) ||
+    ASSERT(false); // BKTODO:
+#if 0
+    if (Match(tag_impl_, kImgTag) ||
         (link_is_preload_ && as_attribute_value_ == "image" &&
          RuntimeEnabledFeatures::PreloadImageSrcSetEnabled()))
       SetUrlFromImageAttributes();
+#endif
 #endif
   }
 
 #ifndef BLINKIT_CRAWLER_ONLY
   void HandlePictureSourceURL(PictureData& picture_data) {
-    if (Match(tag_impl_, sourceTag) && matched_ &&
+    if (Match(tag_impl_, kSourceTag) && matched_ &&
         picture_data.source_url.IsEmpty()) {
+      ASSERT(false); // BKTODO:
+#if 0
       // Must create an IsolatedCopy() since the srcset attribute value will get
       // sent back to the main thread between when we set this, and when we
       // process the closing tag which would clear picture_data_. Having any ref
@@ -226,7 +237,8 @@ class TokenPreloadScanner::StartTagScanner {
       picture_data.source_size_set = source_size_set_;
       picture_data.source_size = source_size_;
       picture_data.picked = true;
-    } else if (Match(tag_impl_, imgTag) && !picture_data.source_url.IsEmpty()) {
+#endif
+    } else if (Match(tag_impl_, kImgTag) && !picture_data.source_url.IsEmpty()) {
       SetUrlToLoad(picture_data.source_url, kAllowURLReplacement);
     }
   }
@@ -351,6 +363,8 @@ class TokenPreloadScanner::StartTagScanner {
   template <typename NameType>
   void ProcessImgAttribute(const NameType& attribute_name,
                            const String& attribute_value) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (Match(attribute_name, kSrcAttr) && img_src_url_.IsNull()) {
       img_src_url_ = attribute_value;
     } else if (Match(attribute_name, crossoriginAttr)) {
@@ -383,9 +397,12 @@ class TokenPreloadScanner::StartTagScanner {
       height_attr_small_absolute_ =
           IsDimensionSmallAndAbsoluteForLazyLoad(attribute_value);
     }
+#endif
   }
 
   void SetUrlFromImageAttributes() {
+    ASSERT(false); // BKTODO:
+#if 0
     srcset_image_candidate_ =
         BestFitSourceForSrcsetAttribute(media_values_->DevicePixelRatio(),
                                         source_size_, srcset_attribute_value_);
@@ -393,17 +410,20 @@ class TokenPreloadScanner::StartTagScanner {
                      media_values_->DevicePixelRatio(), source_size_,
                      img_src_url_, srcset_image_candidate_),
                  kAllowURLReplacement);
+#endif
   }
 
   template <typename NameType>
   void ProcessLinkAttribute(const NameType& attribute_name,
                             const String& attribute_value) {
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME - Don't set rel/media/crossorigin multiple times.
-    if (Match(attribute_name, hrefAttr)) {
+    if (Match(attribute_name, kHrefAttr)) {
       SetUrlToLoad(attribute_value, kDisallowURLReplacement);
       // Used in SetUrlFromImageAttributes() when as=image.
       img_src_url_ = attribute_value;
-    } else if (Match(attribute_name, relAttr)) {
+    } else if (Match(attribute_name, kRelAttr)) {
       LinkRelAttribute rel(attribute_value);
       link_is_style_sheet_ = rel.IsStyleSheet() && !rel.IsAlternate() &&
                              rel.GetIconType() == kInvalidIcon &&
@@ -440,23 +460,29 @@ class TokenPreloadScanner::StartTagScanner {
                RuntimeEnabledFeatures::PriorityHintsEnabled()) {
       SetImportance(attribute_value);
     }
+#endif
   }
 
   template <typename NameType>
   void ProcessInputAttribute(const NameType& attribute_name,
                              const String& attribute_value) {
     // FIXME - Don't set type multiple times.
-    if (Match(attribute_name, srcAttr)) {
+    if (Match(attribute_name, kSrcAttr)) {
       SetUrlToLoad(attribute_value, kDisallowURLReplacement);
-    } else if (Match(attribute_name, typeAttr)) {
+    } else if (Match(attribute_name, kTypeAttr)) {
+      ASSERT(false); // BKTODO:
+#if 0
       input_is_image_ =
           DeprecatedEqualIgnoringCase(attribute_value, InputTypeNames::image);
+#endif
     }
   }
 
   template <typename NameType>
   void ProcessSourceAttribute(const NameType& attribute_name,
                               const String& attribute_value) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (Match(attribute_name, srcsetAttr) &&
         srcset_image_candidate_.IsEmpty()) {
       srcset_attribute_value_ = attribute_value;
@@ -476,6 +502,7 @@ class TokenPreloadScanner::StartTagScanner {
       matched_ &= MIMETypeRegistry::IsSupportedImagePrefixedMIMEType(
           ContentType(attribute_value).GetType());
     }
+#endif
   }
 #endif // BLINKIT_CRAWLER_ONLY
 
@@ -488,13 +515,13 @@ class TokenPreloadScanner::StartTagScanner {
     if (Match(tag_impl_, kScriptTag))
       ProcessScriptAttribute(attribute_name, attribute_value);
 #ifndef BLINKIT_CRAWLER_ONLY
-    else if (Match(tag_impl_, imgTag))
+    else if (Match(tag_impl_, kImgTag))
       ProcessImgAttribute(attribute_name, attribute_value);
-    else if (Match(tag_impl_, linkTag))
+    else if (Match(tag_impl_, kLinkTag))
       ProcessLinkAttribute(attribute_name, attribute_value);
-    else if (Match(tag_impl_, inputTag))
+    else if (Match(tag_impl_, kInputTag))
       ProcessInputAttribute(attribute_name, attribute_value);
-    else if (Match(tag_impl_, sourceTag))
+    else if (Match(tag_impl_, kSourceTag))
       ProcessSourceAttribute(attribute_name, attribute_value);
 #endif
   }
@@ -523,7 +550,11 @@ class TokenPreloadScanner::StartTagScanner {
 #ifndef BLINKIT_CRAWLER_ONLY
   std::optional<ResourceType> ResourceTypeForLinkPreload() const {
     DCHECK(link_is_preload_);
+    ASSERT(false); // BKTODO:
+    return std::nullopt;
+#if 0
     return LinkLoader::GetResourceTypeFromAsAttribute(as_attribute_value_);
+#endif
   }
 #endif
 
@@ -634,7 +665,7 @@ class TokenPreloadScanner::StartTagScanner {
   const StringImpl* tag_impl_;
   String url_to_load_;
 #ifndef BLINKIT_CRAWLER_ONLY
-  ImageCandidate srcset_image_candidate_;
+  // BKTODO: ImageCandidate srcset_image_candidate_;
 #endif
   String charset_;
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -680,17 +711,17 @@ TokenPreloadScanner::TokenPreloadScanner(
       template_count_(0),
       document_parameters_(std::move(document_parameters)),
 #ifndef BLINKIT_CRAWLER_ONLY
-      media_values_(MediaValuesCached::Create(media_values_cached_data)),
+      // BKTODO: media_values_(MediaValuesCached::Create(media_values_cached_data)),
 #endif
       scanner_type_(scanner_type),
       did_rewind_(false) {
   DCHECK(document_parameters_.get());
 #ifndef BLINKIT_CRAWLER_ONLY
-  DCHECK(media_values_.Get());
+  ASSERT(false); // BKTODO: DCHECK(media_values_.Get());
 #endif
   DCHECK(document_url.is_valid());
 #ifndef BLINKIT_CRAWLER_ONLY
-  css_scanner_.SetReferrerPolicy(document_parameters_->referrer_policy);
+  ASSERT(false); // BKTODO: css_scanner_.SetReferrerPolicy(document_parameters_->referrer_policy);
 #endif
 }
 
@@ -746,9 +777,12 @@ static void HandleMetaViewport(
   if (!document_parameters->viewport_meta_enabled)
     return;
   ViewportDescription description(ViewportDescription::kViewportMeta);
+  ASSERT(false); // BKTODO:
+#if 0
   HTMLMetaElement::GetViewportDescriptionFromContentAttribute(
       attribute_value, description, nullptr,
       document_parameters->viewport_meta_zero_values_quirk);
+#endif
   if (viewport) {
     viewport->description = description;
     viewport->set = true;
@@ -775,7 +809,7 @@ static void HandleMetaReferrer(const String& attribute_value,
 #ifdef BLINKIT_CRAWLER_ONLY
   ASSERT(nullptr == css_scanner);
 #else
-  css_scanner->SetReferrerPolicy(document_parameters->referrer_policy);
+  ASSERT(false); // BKTODO: css_scanner->SetReferrerPolicy(document_parameters->referrer_policy);
 #endif
 }
 
@@ -845,21 +879,24 @@ void TokenPreloadScanner::ScanCommon(const Token& token,
       }
 #else
       if (!for_crawler_) {
-        if (Match(tag_impl, templateTag)) {
+        if (Match(tag_impl, kTemplateTag)) {
           if (template_count_)
             --template_count_;
           return;
         }
-        if (Match(tag_impl, styleTag)) {
+        if (Match(tag_impl, kStyleTag)) {
           if (in_style_)
             css_scanner_.Reset();
           in_style_ = false;
           return;
         }
-        if (Match(tag_impl, pictureTag)) {
+        ASSERT(false); // BKTODO:
+#if 0
+        if (Match(tag_impl, kPictureTag)) {
           in_picture_ = false;
           picture_data_.picked = false;
         }
+#endif
       }
       if (Match(tag_impl, kScriptTag)) {
         in_script_ = false;
@@ -878,15 +915,18 @@ void TokenPreloadScanner::ScanCommon(const Token& token,
       }
 #ifndef BLINKIT_CRAWLER_ONLY
       if (!for_crawler_) {
-        if (Match(tag_impl, styleTag)) {
+        if (Match(tag_impl, kStyleTag)) {
           in_style_ = true;
           return;
         }
-        if (Match(tag_impl, pictureTag)) {
+        ASSERT(false); // BKTODO:
+#if 0
+        if (Match(tag_impl, kPictureTag)) {
           in_picture_ = true;
           picture_data_ = PictureData();
           return;
         }
+#endif
       }
 #endif
       // Don't early return, because the StartTagScanner needs to look at these
@@ -915,12 +955,20 @@ void TokenPreloadScanner::ScanCommon(const Token& token,
 #ifdef BLINKIT_CRAWLER_ONLY
         HandleMetaNameAttribute(token, document_parameters_.get(), nullptr, nullptr, nullptr);
 #else
+        ASSERT(false); // BKTODO:
+#if 0
         HandleMetaNameAttribute(token, document_parameters_.get(),
                                 media_values_.Get(), &css_scanner_, viewport);
+#endif
 #endif
       }
 
 #ifdef BLINKIT_CRAWLER_ONLY
+      MediaValuesCached *media_values_ = nullptr;
+#endif
+      ASSERT(false); // BKTODO:
+#if 0
+#else
       MediaValuesCached *media_values_ = nullptr;
 #endif
       StartTagScanner scanner(tag_impl, media_values_, scanner_type_);
@@ -928,11 +976,14 @@ void TokenPreloadScanner::ScanCommon(const Token& token,
 #ifdef BLINKIT_CRAWLER_ONLY
       PictureData picture_data_;
 #else
+      ASSERT(false); // BKTODO:
+#if 0
       // TODO(yoav): ViewportWidth is currently racy and might be zero in some
       // cases, at least in tests. That problem will go away once
       // ParseHTMLOnMainThread lands and MediaValuesCached is eliminated.
       if (for_crawler_ && in_picture_ && media_values_->ViewportWidth())
         scanner.HandlePictureSourceURL(picture_data_);
+#endif
 #endif
       std::unique_ptr<PreloadRequest> request = scanner.CreatePreloadRequest(predicted_base_element_url_, source,
           picture_data_, document_parameters_->referrer_policy);
@@ -1016,6 +1067,7 @@ CachedDocumentParameters::CachedDocumentParameters(Document* document) {
   do_html_preload_scanning = false;
 #ifndef BLINKIT_CRAWLER_ONLY
   ASSERT(false); // BKTODO:
+#if 0
   do_html_preload_scanning =
       !document->GetSettings() ||
       document->GetSettings()->GetDoHtmlPreloadScanning();
@@ -1028,6 +1080,7 @@ CachedDocumentParameters::CachedDocumentParameters(Document* document) {
                           document->GetSettings()->GetViewportMetaEnabled();
   referrer_policy = document->GetReferrerPolicy();
   integrity_features = SubresourceIntegrityHelper::GetFeatures(document);
+#endif
 #endif
   referrer_policy = kReferrerPolicyDefault;
 }

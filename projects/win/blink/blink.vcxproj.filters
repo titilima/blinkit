@@ -3095,6 +3095,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\iterators\backwards_character_iterator.cc">
       <Filter>renderer\core\editing\iterators</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\sizes_attribute_parser.cc">
+      <Filter>renderer\core\css\parser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -8616,6 +8619,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_editing_command_type.h">
       <Filter>public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\sizes_attribute_parser.h">
+      <Filter>renderer\core\css\parser</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
