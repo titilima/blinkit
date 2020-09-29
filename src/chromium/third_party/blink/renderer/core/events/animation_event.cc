@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: animation_event.cc
+// Description: AnimationEvent Class
+//      Author: Ziming Li
+//     Created: 2020-09-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008 Apple Inc. All rights reserved.
  *
@@ -25,7 +36,7 @@
 
 #include "third_party/blink/renderer/core/events/animation_event.h"
 
-#include "third_party/blink/renderer/core/event_names.h"
+// BKTODO: #include "third_party/blink/renderer/core/event_names.h"
 
 namespace blink {
 
@@ -33,10 +44,16 @@ AnimationEvent::AnimationEvent() : elapsed_time_(0.0) {}
 
 AnimationEvent::AnimationEvent(const AtomicString& type,
                                const AnimationEventInit& initializer)
+#if 0 // BKTODO:
     : Event(type, initializer),
       animation_name_(initializer.animationName()),
       elapsed_time_(initializer.elapsedTime()),
       pseudo_element_(initializer.pseudoElement()) {}
+#else
+  {
+    ASSERT(false); // BKTODO:
+  }
+#endif
 
 AnimationEvent::AnimationEvent(const AtomicString& type,
                                const String& animation_name,
@@ -62,11 +79,11 @@ const String& AnimationEvent::pseudoElement() const {
 }
 
 const AtomicString& AnimationEvent::InterfaceName() const {
+  ASSERT(false); // BKTODO:
+  return g_null_atom;
+#if 0
   return EventNames::AnimationEvent;
-}
-
-void AnimationEvent::Trace(blink::Visitor* visitor) {
-  Event::Trace(visitor);
+#endif
 }
 
 }  // namespace blink

@@ -39,6 +39,11 @@
 
 namespace blink {
 
+Event::Event(void) : Event(g_null_atom, Bubbles::kNo, Cancelable::kNo)
+{
+    m_wasInitialized = false;
+}
+
 Event::Event(const AtomicString &eventType, Bubbles bubbles, Cancelable cancelable, ComposedMode composedMode, TimeTicks platformTimeStamp)
     : m_type(eventType)
     , m_bubbles(Bubbles::kYes == bubbles)

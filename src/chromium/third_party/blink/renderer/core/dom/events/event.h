@@ -167,6 +167,7 @@ public:
     // is dangerous.
     virtual void DoneDispatchingEventAtCurrentTarget(void);
 protected:
+    Event(void);
     Event(const AtomicString &eventType, Bubbles bubbles, Cancelable cancelable, ComposedMode composedMode, TimeTicks platformTimeStamp);
     Event(const AtomicString &eventType, Bubbles bubbles, Cancelable cancelable, ComposedMode composedMode = ComposedMode::kScoped);
 
