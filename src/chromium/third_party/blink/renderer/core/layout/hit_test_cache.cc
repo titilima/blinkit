@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: hit_test_cache.cc
+// Description: HitTestCache Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright (c) 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -32,11 +43,14 @@ bool HitTestCache::LookupCachedResult(const HitTestLocation& location,
       }
     }
   }
+  ASSERT(false); // BKTODO:
+#if 0
   DEFINE_STATIC_LOCAL(
       EnumerationHistogram, hit_test_histogram,
       ("Event.HitTest",
        static_cast<int32_t>(HitHistogramMetric::MAX_HIT_METRIC)));
   hit_test_histogram.Count(static_cast<int32_t>(metric));
+#endif
   return result;
 }
 
