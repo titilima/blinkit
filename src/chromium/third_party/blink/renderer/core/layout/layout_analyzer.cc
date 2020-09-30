@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_analyzer.cc
+// Description: LayoutAnalyzer Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -14,7 +25,11 @@
 namespace blink {
 
 LayoutAnalyzer::Scope::Scope(const LayoutObject& o)
+#if 0 // BKTODO:
     : layout_object_(o), analyzer_(o.GetFrameView()->GetLayoutAnalyzer()) {
+#else
+    : layout_object_(o), analyzer_(nullptr) {
+#endif
   if (analyzer_)
     analyzer_->Push(o);
 }
@@ -30,6 +45,8 @@ LayoutAnalyzer::BlockScope::BlockScope(const LayoutBlock& block)
       height_(block.FrameRect().Height()) {}
 
 LayoutAnalyzer::BlockScope::~BlockScope() {
+  ASSERT(false); // BKTODO:
+#if 0
   LayoutAnalyzer* analyzer = block_.GetFrameView()->GetLayoutAnalyzer();
   if (!analyzer)
     return;
@@ -44,6 +61,7 @@ LayoutAnalyzer::BlockScope::~BlockScope() {
   }
   analyzer->Increment(changed ? kLayoutBlockSizeChanged
                               : kLayoutBlockSizeDidNotChange);
+#endif
 }
 
 void LayoutAnalyzer::Reset() {
@@ -95,6 +113,7 @@ void LayoutAnalyzer::Pop(const LayoutObject& o) {
   --depth_;
 }
 
+#if 0 // BKTODO:
 std::unique_ptr<TracedValue> LayoutAnalyzer::ToTracedValue() {
   std::unique_ptr<TracedValue> traced_value(TracedValue::Create());
   for (size_t i = 0; i < kNumCounters; ++i) {
@@ -105,6 +124,7 @@ std::unique_ptr<TracedValue> LayoutAnalyzer::ToTracedValue() {
   }
   return traced_value;
 }
+#endif
 
 const char* LayoutAnalyzer::NameForCounter(Counter counter) const {
   switch (counter) {
