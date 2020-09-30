@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: floating_objects.cc
+// Description: FloatingObject Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -311,6 +322,8 @@ LayoutUnit FloatingObjects::FindNextFloatLogicalBottomBelowForBlock(
 
 FloatingObjects::~FloatingObjects() = default;
 void FloatingObjects::ClearLineBoxTreePointers() {
+  ASSERT(false); // BKTODO:
+#if 0
   // Clear references to originating lines, since the lines are being deleted
   FloatingObjectSetIterator end = set_.end();
   for (FloatingObjectSetIterator it = set_.begin(); it != end; ++it) {
@@ -319,6 +332,7 @@ void FloatingObjects::ClearLineBoxTreePointers() {
         (*it)->OriginatingLine()->GetLineLayoutItem().IsEqual(layout_object_));
     (*it)->SetOriginatingLine(nullptr);
   }
+#endif
 }
 
 FloatingObjects::FloatingObjects(const LayoutBlockFlow* layout_object,
@@ -331,7 +345,7 @@ FloatingObjects::FloatingObjects(const LayoutBlockFlow* layout_object,
       cached_horizontal_writing_mode_(false) {}
 
 void FloatingObjects::Clear() {
-  set_.clear();
+  ASSERT(false); // BKTODO: set_.clear();
   placed_floats_tree_.Clear();
   left_objects_count_ = 0;
   right_objects_count_ = 0;
@@ -357,6 +371,8 @@ LayoutUnit FloatingObjects::LowestFloatLogicalBottom(
   }
 
   LayoutUnit lowest_float_bottom;
+  ASSERT(false); // BKTODO:
+#if 0
   const FloatingObjectSet& floating_object_set = Set();
   FloatingObjectSetIterator end = floating_object_set.end();
   if (float_type == FloatingObject::kFloatLeftRight) {
@@ -409,6 +425,7 @@ LayoutUnit FloatingObjects::LowestFloatLogicalBottom(
     SetCachedLowestFloatLogicalBottom(is_in_horizontal_writing_mode, float_type,
                                       lowest_floating_object);
   }
+#endif
 
   return lowest_float_bottom;
 }
@@ -482,11 +499,14 @@ void FloatingObjects::MarkLowestFloatLogicalBottomCacheAsDirty() {
 }
 
 void FloatingObjects::MoveAllToFloatInfoMap(LayoutBoxToFloatInfoMap& map) {
+  ASSERT(false); // BKTODO:
+#if 0
   while (!set_.IsEmpty()) {
     std::unique_ptr<FloatingObject> floating_object = set_.TakeFirst();
     LayoutBox* layout_object = floating_object->GetLayoutObject();
     map.insert(layout_object, std::move(floating_object));
   }
+#endif
   Clear();
 }
 
@@ -549,7 +569,7 @@ FloatingObject* FloatingObjects::Add(
     std::unique_ptr<FloatingObject> floating_object) {
   FloatingObject* new_object = floating_object.release();
   IncreaseObjectsCount(new_object->GetType());
-  set_.insert(base::WrapUnique(new_object));
+  ASSERT(false); // BKTODO: set_.insert(base::WrapUnique(new_object));
   if (new_object->IsPlaced())
     AddPlacedObject(*new_object);
   MarkLowestFloatLogicalBottomCacheAsDirty();
@@ -558,16 +578,21 @@ FloatingObject* FloatingObjects::Add(
 
 void FloatingObjects::Remove(FloatingObject* to_be_removed) {
   DecreaseObjectsCount(to_be_removed->GetType());
+  ASSERT(false); // BKTODO:
+#if 0
   std::unique_ptr<FloatingObject> floating_object = set_.Take(to_be_removed);
   DCHECK(floating_object->IsPlaced() || !floating_object->IsInPlacedTree());
   if (floating_object->IsPlaced())
     RemovePlacedObject(*floating_object);
   MarkLowestFloatLogicalBottomCacheAsDirty();
   DCHECK(!floating_object->OriginatingLine());
+#endif
 }
 
 void FloatingObjects::ComputePlacedFloatsTree() {
   DCHECK(!placed_floats_tree_.IsInitialized());
+  ASSERT(false); // BKTODO:
+#if 0
   if (set_.IsEmpty())
     return;
   placed_floats_tree_.InitIfNeeded(layout_object_->View()->GetIntervalArena());
@@ -578,6 +603,7 @@ void FloatingObjects::ComputePlacedFloatsTree() {
     if (floating_object.IsPlaced())
       placed_floats_tree_.Add(IntervalForFloatingObject(floating_object));
   }
+#endif
 }
 
 LayoutUnit FloatingObjects::LogicalLeftOffsetForPositioningFloat(

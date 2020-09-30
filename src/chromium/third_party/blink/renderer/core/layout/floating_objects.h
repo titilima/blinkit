@@ -37,10 +37,10 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_LAYOUT_FLOATING_OBJECTS_H_
 
 #include <memory>
-#include <set>
 #include "base/macros.h"
 #include "third_party/blink/renderer/platform/geometry/layout_rect.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
+#include "third_party/blink/renderer/platform/wtf/list_hash_set.h"
 #include "third_party/blink/renderer/platform/wtf/pod_free_list_arena.h"
 #include "third_party/blink/renderer/platform/wtf/pod_interval_tree.h"
 
@@ -193,8 +193,13 @@ struct FloatingObjectHashTranslator {
     return a->GetLayoutObject() == b;
   }
 };
-typedef std::set<std::unique_ptr<FloatingObject>> FloatingObjectSet;
+#if 0 // BKTODO:
+typedef ListHashSet<std::unique_ptr<FloatingObject>,
+                    4,
+                    FloatingObjectHashFunctions>
+    FloatingObjectSet;
 typedef FloatingObjectSet::const_iterator FloatingObjectSetIterator;
+#endif
 typedef WTF::PODInterval<LayoutUnit, FloatingObject*> FloatingObjectInterval;
 typedef WTF::PODIntervalTree<LayoutUnit, FloatingObject*> FloatingObjectTree;
 typedef WTF::PODFreeListArena<
@@ -220,8 +225,10 @@ class FloatingObjects {
 
   bool HasLeftObjects() const { return left_objects_count_ > 0; }
   bool HasRightObjects() const { return right_objects_count_ > 0; }
+#if 0 // BKTODO:
   const FloatingObjectSet& Set() const { return set_; }
   FloatingObjectSet& MutableSet() { return set_; }
+#endif
   void ClearLineBoxTreePointers();
 
   LayoutUnit LogicalLeftOffset(LayoutUnit fixed_offset,
@@ -272,7 +279,7 @@ class FloatingObjects {
   void DecreaseObjectsCount(FloatingObject::Type);
   FloatingObjectInterval IntervalForFloatingObject(FloatingObject&);
 
-  FloatingObjectSet set_;
+  // BKTODO: FloatingObjectSet set_;
   FloatingObjectTree placed_floats_tree_;
   unsigned left_objects_count_;
   unsigned right_objects_count_;

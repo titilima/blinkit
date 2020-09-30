@@ -267,6 +267,9 @@
     <Filter Include="renderer\core\editing\markers">
       <UniqueIdentifier>{038bb15d-9315-415a-bde2-f2c9ea5f6549}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\layout\shapes">
+      <UniqueIdentifier>{c40d2336-88ff-46f6-a3f7-4bd46654b203}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -3100,6 +3103,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\sizes_calc_parser.cc">
       <Filter>renderer\core\css\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\shape_outside_info.cc">
+      <Filter>renderer\core\layout\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\shape.cc">
+      <Filter>renderer\core\layout\shapes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -8628,6 +8637,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\sizes_calc_parser.h">
       <Filter>renderer\core\css\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\shape_outside_info.h">
+      <Filter>renderer\core\layout\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\shape.h">
+      <Filter>renderer\core\layout\shapes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
