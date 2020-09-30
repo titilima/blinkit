@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: grid.cc
+// Description: Grid Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -73,6 +84,7 @@ size_t Grid::AutoRepeatTracks(GridTrackSizingDirection direction) const {
   return direction == kForRows ? auto_repeat_rows_ : auto_repeat_columns_;
 }
 
+#if 0 // BKTODO:
 void Grid::SetAutoRepeatEmptyColumns(
     std::unique_ptr<OrderedTrackIndexSet> auto_repeat_empty_columns) {
   auto_repeat_empty_columns_ = std::move(auto_repeat_empty_columns);
@@ -87,19 +99,26 @@ bool Grid::HasAutoRepeatEmptyTracks(GridTrackSizingDirection direction) const {
   return direction == kForColumns ? !!auto_repeat_empty_columns_
                                   : !!auto_repeat_empty_rows_;
 }
+#endif
 
 bool Grid::IsEmptyAutoRepeatTrack(GridTrackSizingDirection direction,
                                   size_t line) const {
   DCHECK(HasAutoRepeatEmptyTracks(direction));
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return AutoRepeatEmptyTracks(direction)->Contains(line);
+#endif
 }
 
+#if 0 // BKTODO:
 OrderedTrackIndexSet* Grid::AutoRepeatEmptyTracks(
     GridTrackSizingDirection direction) const {
   DCHECK(HasAutoRepeatEmptyTracks(direction));
   return direction == kForColumns ? auto_repeat_empty_columns_.get()
                                   : auto_repeat_empty_rows_.get();
 }
+#endif
 
 GridSpan Grid::GridItemSpan(const LayoutBox& grid_item,
                             GridTrackSizingDirection direction) const {
@@ -122,8 +141,11 @@ void Grid::SetNeedsItemsPlacement(bool needs_items_placement) {
   smallest_column_start_ = 0;
   auto_repeat_columns_ = 0;
   auto_repeat_rows_ = 0;
+  ASSERT(false); // BKTODO:
+#if 0
   auto_repeat_empty_columns_ = nullptr;
   auto_repeat_empty_rows_ = nullptr;
+#endif
 }
 
 Grid::GridIterator::GridIterator(GridTrackSizingDirection direction,
@@ -136,6 +158,7 @@ Grid::GridIterator::GridIterator(GridTrackSizingDirection direction,
                                                : varying_track_index),
       child_index_(0) {}
 
+#if 0 // BKTODO:
 ListGrid::GridCell* ListGrid::GridTrack::Find(size_t index) const {
   auto orthogonal_axis = OrthogonalDirection(direction_);
   for (auto* cell = cells_.Head(); cell;
@@ -247,10 +270,13 @@ ListGrid::GridTrack::~GridTrack() {
     delete cells_.RemoveHead();
   }
 }
+#endif
 
 const GridItemList& ListGrid::Cell(size_t row_index,
                                    size_t column_index) const {
   DEFINE_STATIC_LOCAL(const GridItemList, empty_vector, ());
+  ASSERT(false); // BKTODO:
+#if 0
   for (auto* row = rows_.Head(); row; row = row->Next()) {
     if (row->Index() == row_index) {
       auto* cell = row->Find(column_index);
@@ -259,9 +285,11 @@ const GridItemList& ListGrid::Cell(size_t row_index,
     if (row->Index() > row_index)
       return empty_vector;
   }
+#endif
   return empty_vector;
 }
 
+#if 0 // BKTODO:
 ListGrid::GridTrack* ListGrid::InsertTracks(
     DoublyLinkedList<GridTrack>& tracks,
     const GridSpan& span,
@@ -292,12 +320,15 @@ ListGrid::GridTrack* ListGrid::InsertTracks(
 
   return track;
 }
+#endif
 
 void ListGrid::Insert(LayoutBox& item, const GridArea& area) {
   DCHECK(area.rows.IsTranslatedDefinite() &&
          area.columns.IsTranslatedDefinite());
   EnsureGridSize(area.rows.EndLine(), area.columns.EndLine());
 
+  ASSERT(false); // BKTODO:
+#if 0
   GridTrack* first_row = InsertTracks(rows_, area.rows, kForRows);
   DCHECK(first_row);
   GridTrack* first_column = InsertTracks(columns_, area.columns, kForColumns);
@@ -328,6 +359,7 @@ void ListGrid::Insert(LayoutBox& item, const GridArea& area) {
     above_cell = result.node;
     row = row->Next();
   }
+#endif
 
   SetGridItemArea(item, area);
 }
@@ -340,18 +372,22 @@ void ListGrid::EnsureGridSize(size_t maximum_row_size,
 
 void ListGrid::ClearGridDataStructure() {
   num_rows_ = num_columns_ = 0;
+  ASSERT(false); // BKTODO:
+#if 0
   while (!rows_.IsEmpty())
     delete rows_.RemoveHead();
   DCHECK(rows_.IsEmpty());
   while (!columns_.IsEmpty())
     delete columns_.RemoveHead();
   DCHECK(columns_.IsEmpty());
+#endif
 }
 
 ListGrid::~ListGrid() {
   ClearGridDataStructure();
 }
 
+#if 0 // BKTODO:
 void ListGrid::GridCell::SetTraversalMode(GridTrackSizingDirection direction) {
   if (direction == direction_)
     return;
@@ -364,6 +400,7 @@ ListGrid::GridCell* ListGrid::GridCell::NextInDirection(
     GridTrackSizingDirection direction) const {
   return direction_ == direction ? next_ : next_ortho_;
 }
+#endif
 
 std::unique_ptr<Grid::GridIterator> ListGrid::CreateIterator(
     GridTrackSizingDirection direction,
@@ -385,6 +422,9 @@ LayoutBox* ListGridIterator::NextGridItem() {
   DCHECK(grid_.NumTracks(kForColumns));
 
   bool is_row_axis = direction_ == kForColumns;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (!cell_node_) {
     auto* track = is_row_axis ? grid_.columns_.Head() : grid_.rows_.Head();
     DCHECK(track);
@@ -412,11 +452,14 @@ LayoutBox* ListGridIterator::NextGridItem() {
 
   DCHECK(!cell_node_->Items().IsEmpty());
   return cell_node_->Items()[child_index_++];
+#endif
 }
 
 std::unique_ptr<GridArea> ListGridIterator::NextEmptyGridArea(
     size_t fixed_track_span,
     size_t varying_track_span) {
+  ASSERT(false); // BKTODO:
+#if 0
   auto FindCellOrClosest = [](ListGrid::GridCell* cell_node,
                               GridTrackSizingDirection direction,
                               size_t index) {
@@ -475,6 +518,7 @@ std::unique_ptr<GridArea> ListGridIterator::NextEmptyGridArea(
       return CreateUniqueGridArea();
     track_node = track_node->Next();
   } while (true);  // track_node will eventually be nullptr
+#endif
 
   return nullptr;
 }
