@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_fieldset.cc
+// Description: LayoutFieldset Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -24,14 +35,14 @@
 #include "third_party/blink/renderer/core/layout/layout_fieldset.h"
 
 #include "third_party/blink/renderer/core/css_property_names.h"
-#include "third_party/blink/renderer/core/html/forms/html_legend_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/forms/html_legend_element.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/paint/fieldset_painter.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 LayoutFieldset::LayoutFieldset(Element* element) : LayoutBlockFlow(element) {}
 
@@ -158,8 +169,11 @@ LayoutBox* LayoutFieldset::FindInFlowLegend(const LayoutBlock& fieldset) {
     if (legend->IsFloatingOrOutOfFlowPositioned())
       continue;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (IsHTMLLegendElement(legend->GetNode()))
       return ToLayoutBox(legend);
+#endif
   }
   return nullptr;
 }
