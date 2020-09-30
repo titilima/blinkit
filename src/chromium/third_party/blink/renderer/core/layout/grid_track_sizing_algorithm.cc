@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: grid_track_sizing_algorithm.cc
+// Description: GridTrackSizingAlgorithm Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -857,11 +868,6 @@ GridTrackSize GridTrackSizingAlgorithm::GetGridTrackSize(
   // If the logical width/height of the grid container is indefinite, percentage
   // values are treated as <auto>.
   if (IsRelativeSizedTrackAsAuto(track_size, direction)) {
-    if (direction == kForRows) {
-      Deprecation::CountDeprecation(
-          layout_grid_->GetDocument(),
-          WebFeature::kGridRowTrackPercentIndefiniteHeight);
-    }
     if (min_track_breadth.HasPercentage())
       min_track_breadth = Length(kAuto);
     if (max_track_breadth.HasPercentage())
@@ -1236,9 +1242,7 @@ void GridTrackSizingAlgorithm::DistributeSpaceToTracks(
               : std::min(available_logical_space_share,
                          track.GrowthLimit() - track_breadth);
       ClampGrowthShareIfNeeded(phase, track, growth_share);
-      DCHECK_GE(growth_share, 0) << "We must never shrink any grid track or "
-                                    "else we can't guarantee we abide by our "
-                                    "min-sizing function.";
+      DCHECK_GE(growth_share, 0); // We must never shrink any grid track or else we can't guarantee we abide by our min-sizing function.
       track.GrowSizeDuringDistribution(growth_share);
       available_logical_space -= growth_share;
     }
@@ -1261,9 +1265,7 @@ void GridTrackSizingAlgorithm::DistributeSpaceToTracks(
       LayoutUnit growth_share =
           available_logical_space / (tracks_growing_above_max_breadth_size - i);
       ClampGrowthShareIfNeeded(phase, *track, growth_share);
-      DCHECK_GE(growth_share, 0) << "We must never shrink any grid track or "
-                                    "else we can't guarantee we abide by our "
-                                    "min-sizing function.";
+      DCHECK_GE(growth_share, 0); // We must never shrink any grid track or else we can't guarantee we abide by our min-sizing function.
       track->GrowSizeDuringDistribution(growth_share);
       available_logical_space -= growth_share;
     }

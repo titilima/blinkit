@@ -8710,5 +8710,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\block_painter.h">
       <Filter>renderer\core\paint</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\deprecation.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
