@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: flexible_box_algorithm.cc
+// Description: FlexLayoutAlgorithm Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -50,8 +61,7 @@ FlexItem::FlexItem(LayoutBox* box,
       frozen(false),
       ng_input_node(/* LayoutBox* */ nullptr) {
   DCHECK(!box->IsOutOfFlowPositioned());
-  DCHECK_GE(min_max_sizes.max_size, LayoutUnit())
-      << "Use LayoutUnit::Max() for no max size";
+  DCHECK_GE(min_max_sizes.max_size, LayoutUnit()); // Use LayoutUnit::Max() for no max size
 }
 
 bool FlexItem::HasOrthogonalFlow() const {
@@ -141,7 +151,7 @@ void FlexItem::UpdateAutoMarginsInMainAxis(LayoutUnit auto_margin_offset) {
 
 void FlexLine::FreezeViolations(ViolationsVector& violations) {
   for (size_t i = 0; i < violations.size(); ++i) {
-    DCHECK(!violations[i]->frozen) << i;
+    DCHECK(!violations[i]->frozen);
     LayoutBox* child = violations[i]->box;
     LayoutUnit child_size = violations[i]->flexed_content_size;
     remaining_free_space -= child_size - violations[i]->flex_base_content_size;
@@ -171,7 +181,7 @@ void FlexLine::FreezeInflexibleItems() {
     FlexItem& flex_item = line_items[i];
     LayoutBox* child = flex_item.box;
     DCHECK(!flex_item.box->IsOutOfFlowPositioned());
-    DCHECK(!flex_item.frozen) << i;
+    DCHECK(!flex_item.frozen);
     float flex_factor = (flex_sign == kPositiveFlexibility)
                             ? child->StyleRef().FlexGrow()
                             : child->StyleRef().FlexShrink();
