@@ -718,6 +718,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\custom\custom_layout_child.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\flexible_box_algorithm.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\floating_objects.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\fragmentainer_iterator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\grid.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\grid_baseline_alignment.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\grid_layout_utils.cc" />
@@ -742,6 +743,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_inline.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_list_marker.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_multi_column_flow_thread.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_multi_column_set.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_multi_column_spanner_placeholder.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_object.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_object_child_list.cc" />
@@ -770,6 +772,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\root_inline_box.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\trailing_objects.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\min_max_size.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\multi_column_fragmentainer_group.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\exclusions\ng_exclusion.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\exclusions\ng_exclusion_space.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\exclusions\ng_layout_opportunity.cc" />
@@ -2387,6 +2390,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\custom\custom_layout_child.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\flexible_box_algorithm.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\floating_objects.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\fragmentainer_iterator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\fragmentation_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\generated_children.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\grid.h" />
@@ -2415,6 +2419,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_inline.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_list_marker.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_multi_column_flow_thread.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_multi_column_set.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_multi_column_spanner_placeholder.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_object.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_object_child_list.h" />
@@ -2448,6 +2453,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\trailing_objects.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\map_coordinates_flags.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\min_max_size.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\multi_column_fragmentainer_group.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\exclusions\ng_exclusion.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\exclusions\ng_exclusion_space.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\exclusions\ng_layout_opportunity.h" />

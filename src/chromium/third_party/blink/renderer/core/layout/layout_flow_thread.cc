@@ -77,7 +77,7 @@ LayoutFlowThread* LayoutFlowThread::LocateFlowThreadContainingBlockOf(
 void LayoutFlowThread::RemoveColumnSetFromThread(
     LayoutMultiColumnSet* column_set) {
   DCHECK(column_set);
-  multi_column_set_list_.erase(column_set);
+  ASSERT(false); // BKTODO: multi_column_set_list_.erase(column_set);
   InvalidateColumnSets();
   // Clear the interval tree right away, instead of leaving it around with dead
   // objects. Not that anyone _should_ try to access the interval tree when the
@@ -122,12 +122,15 @@ void LayoutFlowThread::ComputeLogicalHeight(
   computed_values.position_ = logical_top;
   computed_values.extent_ = LayoutUnit();
 
+  ASSERT(false); // BKTODO:
+#if 0
   for (LayoutMultiColumnSetList::const_iterator iter =
            multi_column_set_list_.begin();
        iter != multi_column_set_list_.end(); ++iter) {
     LayoutMultiColumnSet* column_set = *iter;
     computed_values.extent_ += column_set->LogicalHeightInFlowThread();
   }
+#endif
 }
 
 void LayoutFlowThread::AbsoluteQuadsForDescendant(const LayoutBox& descendant,
@@ -217,11 +220,14 @@ void LayoutFlowThread::GenerateColumnSetIntervalTree() {
   // manually managing the tree nodes lifecycle.
   multi_column_set_interval_tree_.Clear();
   multi_column_set_interval_tree_.InitIfNeeded();
+  ASSERT(false); // BKTODO:
+#if 0
   for (auto* column_set : multi_column_set_list_)
     multi_column_set_interval_tree_.Add(
         MultiColumnSetIntervalTree::CreateInterval(
             column_set->LogicalTopInFlowThread(),
             column_set->LogicalBottomInFlowThread(), column_set));
+#endif
 }
 
 LayoutUnit LayoutFlowThread::NextLogicalTopForUnbreakableContent(
@@ -240,8 +246,11 @@ LayoutRect LayoutFlowThread::FragmentsBoundingBox(
   DCHECK(!column_sets_invalidated_);
 
   LayoutRect result;
+  ASSERT(false); // BKTODO:
+#if 0
   for (auto* column_set : multi_column_set_list_)
     result.Unite(column_set->FragmentsBoundingBox(layer_bounding_box));
+#endif
 
   return result;
 }
