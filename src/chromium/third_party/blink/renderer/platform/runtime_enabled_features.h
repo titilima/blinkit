@@ -84,6 +84,7 @@ public:
     BLINKIT_DISABLE_FEATURE(PassiveDocumentWheelEventListeners)
     BLINKIT_DISABLE_FEATURE(ScrollCustomization)
     BLINKIT_DISABLE_FEATURE(SlimmingPaintV2)
+    BLINKIT_DISABLE_FEATURE(TrackLayoutPassesPerBlock)
 };
 
 } // namespace blink

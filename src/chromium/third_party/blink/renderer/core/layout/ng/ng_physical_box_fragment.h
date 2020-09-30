@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_physical_box_fragment.h
+// Description: NGPhysicalBoxFragment Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -81,7 +92,9 @@ class CORE_EXPORT NGPhysicalBoxFragment final
                            const LayoutPoint& additional_offset,
                            NGOutlineType include_block_overflows) const;
 
+#if 0 // BKTODO:
   UBiDiLevel BidiLevel() const override;
+#endif
 
   scoped_refptr<const NGPhysicalFragment> CloneWithoutOffset() const;
 

@@ -54,6 +54,7 @@ enum class WebFeature {
     kCSSFilterSepia,
     kCSSGradient,
     kCSSOffsetInEffect,
+    kCSSOverflowPaged,
     kCSSPaintFunction,
     kCSSValueAppearanceButton,
     kCSSValueAppearanceCaret,
