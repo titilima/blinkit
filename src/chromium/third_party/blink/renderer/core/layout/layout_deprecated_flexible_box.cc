@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_deprecated_flexible_box.cc
+// Description: LayoutDeprecatedFlexibleBox Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * This file is part of the layout object implementation for KHTML.
  *
@@ -31,7 +42,7 @@
 #include "third_party/blink/renderer/core/layout/text_autosizer.h"
 #include "third_party/blink/renderer/core/layout/text_run_constructor.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/platform/fonts/font.h"
 #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
 #include "third_party/blink/renderer/platform/wtf/text/character_names.h"
@@ -284,7 +295,9 @@ LayoutDeprecatedFlexibleBox::LayoutDeprecatedFlexibleBox(Element& element)
   DCHECK(!ChildrenInline());
   stretching_children_ = false;
   if (!IsAnonymous()) {
-    const KURL& url = GetDocument().Url();
+    const GURL& url = GetDocument().Url();
+    ASSERT(false); // BKTODO:
+#if 0
     if (url.ProtocolIs("chrome")) {
       UseCounter::Count(GetDocument(), WebFeature::kDeprecatedFlexboxChrome);
     } else if (url.ProtocolIs("chrome-extension")) {
@@ -294,6 +307,7 @@ LayoutDeprecatedFlexibleBox::LayoutDeprecatedFlexibleBox(Element& element)
       UseCounter::Count(GetDocument(),
                         WebFeature::kDeprecatedFlexboxWebContent);
     }
+#endif
   }
 }
 
@@ -510,7 +524,7 @@ void LayoutDeprecatedFlexibleBox::LayoutHorizontalBox(bool relayout_children) {
   bool have_flex = false, flexing_children = false;
   GatherFlexChildrenInfo(iterator, GetDocument(), relayout_children, have_flex);
 
-  PaintLayerScrollableArea::DelayScrollOffsetClampScope delay_clamp_scope;
+  ASSERT(false); // BKTODO: PaintLayerScrollableArea::DelayScrollOffsetClampScope delay_clamp_scope;
 
   // We do 2 passes.  The first pass is simply to lay everyone out at
   // their preferred widths.  The second pass handles flexing the children.
@@ -841,7 +855,7 @@ void LayoutDeprecatedFlexibleBox::LayoutVerticalBox(bool relayout_children) {
   if (StyleRef().HasLineClamp())
     ApplyLineClamp(iterator, relayout_children);
 
-  PaintLayerScrollableArea::DelayScrollOffsetClampScope delay_clamp_scope;
+  ASSERT(false); // BKTODO: PaintLayerScrollableArea::DelayScrollOffsetClampScope delay_clamp_scope;
 
   // We do 2 passes.  The first pass is simply to lay everyone out at
   // their preferred widths.  The second pass handles flexing the children.
