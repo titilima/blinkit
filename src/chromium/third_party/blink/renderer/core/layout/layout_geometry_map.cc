@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_geometry_map.cc
+// Description: LayoutGeometryMap Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -180,11 +191,7 @@ FloatQuad LayoutGeometryMap::MapToAncestor(
     DCHECK(layout_object_mapped_result.EqualWithinEpsilon(result.BoundingBox(),
                                                           1.1f) ||
            layout_object_mapped_result.MayNotHaveExactIntRectRepresentation() ||
-           result.BoundingBox().MayNotHaveExactIntRectRepresentation())
-        << "Rounded: " << RoundedIntRect(layout_object_mapped_result) << " vs "
-        << RoundedIntRect(result.BoundingBox())
-        << ". Original: " << layout_object_mapped_result << " vs "
-        << result.BoundingBox();
+           result.BoundingBox().MayNotHaveExactIntRectRepresentation());
   }
 #endif
 
@@ -400,7 +407,11 @@ bool LayoutGeometryMap::IsTopmostLayoutView(
   if (!(map_coordinates_flags_ & kTraverseDocumentBoundaries))
     return true;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return layout_object->GetFrame()->IsLocalRoot();
+#endif
 }
 #endif
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_grid.cc
+// Description: LayoutGrid Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -36,7 +47,7 @@
 #include "third_party/blink/renderer/core/layout/text_autosizer.h"
 #include "third_party/blink/renderer/core/paint/block_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
 #include "third_party/blink/renderer/core/style/grid_area.h"
 #include "third_party/blink/renderer/platform/length_functions.h"
@@ -255,7 +266,7 @@ void LayoutGrid::UpdateBlockLayout(bool relayout_children) {
 
   SubtreeLayoutScope layout_scope(*this);
 
-  PaintLayerScrollableArea::DelayScrollOffsetClampScope delay_clamp_scope;
+  ASSERT(false); // BKTODO: PaintLayerScrollableArea::DelayScrollOffsetClampScope delay_clamp_scope;
 
   {
     // LayoutState needs this deliberate scope to pop before updating scroll
@@ -449,6 +460,8 @@ LayoutUnit LayoutGrid::GuttersSize(
   size_t non_empty_tracks_before_start_line = 0;
   if (start_line && grid.IsEmptyAutoRepeatTrack(direction, start_line)) {
     non_empty_tracks_before_start_line = start_line;
+    ASSERT(false); // BKTODO:
+#if 0
     auto begin = grid.AutoRepeatEmptyTracks(direction)->begin();
     for (auto it = begin; *it != start_line; ++it) {
       DCHECK(non_empty_tracks_before_start_line);
@@ -456,6 +469,7 @@ LayoutUnit LayoutGrid::GuttersSize(
     }
     if (non_empty_tracks_before_start_line)
       gap_accumulator += gap;
+#endif
   }
 
   // If the endLine is the end line of a collapsed track we need to go forward
@@ -464,6 +478,8 @@ LayoutUnit LayoutGrid::GuttersSize(
   if (grid.IsEmptyAutoRepeatTrack(direction, end_line - 1)) {
     size_t non_empty_tracks_after_end_line =
         grid.NumTracks(direction) - end_line;
+    ASSERT(false); // BKTODO:
+#if 0
     auto current_empty_track =
         grid.AutoRepeatEmptyTracks(direction)->find(end_line - 1);
     auto end_empty_track = grid.AutoRepeatEmptyTracks(direction)->end();
@@ -484,6 +500,7 @@ LayoutUnit LayoutGrid::GuttersSize(
       // at the end of the grid).
       gap_accumulator -= gap;
     }
+#endif
   }
 
   return gap_accumulator;
@@ -691,6 +708,7 @@ size_t LayoutGrid::ComputeAutoRepeatTracksCount(
   return repetitions * auto_repeat_track_list_length;
 }
 
+#if 0 // BKTODO:
 std::unique_ptr<OrderedTrackIndexSet>
 LayoutGrid::ComputeEmptyTracksForAutoRepeat(
     Grid& grid,
@@ -729,6 +747,7 @@ LayoutGrid::ComputeEmptyTracksForAutoRepeat(
   }
   return empty_track_indexes;
 }
+#endif
 
 size_t LayoutGrid::ClampAutoRepeatTracks(GridTrackSizingDirection direction,
                                          size_t auto_repeat_tracks) const {
@@ -836,10 +855,13 @@ void LayoutGrid::PlaceItemsOnGrid(
                                      specified_major_axis_auto_grid_items);
   PlaceAutoMajorAxisItemsOnGrid(grid, auto_major_axis_auto_grid_items);
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Compute collapsable tracks for auto-fit.
   grid.SetAutoRepeatEmptyColumns(
       ComputeEmptyTracksForAutoRepeat(grid, kForColumns));
   grid.SetAutoRepeatEmptyRows(ComputeEmptyTracksForAutoRepeat(grid, kForRows));
+#endif
 
   grid.SetNeedsItemsPlacement(false);
 
@@ -870,8 +892,11 @@ static bool PrepareOrthogonalWritingModeRootForLayout(LayoutObject& root) {
 void LayoutGrid::PerformGridItemsPreLayout(
     const GridTrackSizingAlgorithm& algorithm) const {
   DCHECK(!algorithm.GetGrid().NeedsItemsPlacement());
+  ASSERT(false); // BKTODO:
+#if 0
   if (!GetDocument().View()->IsInPerformLayout())
     return;
+#endif
   for (auto* child = FirstInFlowChildBox(); child;
        child = child->NextInFlowSiblingBox()) {
     // Blink does a pre-layout of all the orthogonal boxes in the layout
@@ -1183,6 +1208,8 @@ Vector<LayoutUnit> LayoutGrid::TrackSizesForComputedStyle(
   if (!has_collapsed_tracks)
     return tracks;
 
+  ASSERT(false); // BKTODO:
+#if 0
   size_t remaining_empty_tracks =
       grid_->AutoRepeatEmptyTracks(direction)->size();
   size_t last_line = tracks.size();
@@ -1201,6 +1228,7 @@ Vector<LayoutUnit> LayoutGrid::TrackSizesForComputedStyle(
         tracks[i - 1] -= gap;
     }
   }
+#endif
 
   return tracks;
 }
@@ -1396,6 +1424,8 @@ void LayoutGrid::PopulateGridPositionsForDirection(
   size_t number_of_lines = number_of_tracks + 1;
   size_t last_line = number_of_lines - 1;
   bool has_collapsed_tracks = grid_->HasAutoRepeatEmptyTracks(direction);
+  ASSERT(false); // BKTODO:
+#if 0
   size_t number_of_collapsed_tracks =
       has_collapsed_tracks ? grid_->AutoRepeatEmptyTracks(direction)->size()
                            : 0;
@@ -1444,6 +1474,7 @@ void LayoutGrid::PopulateGridPositionsForDirection(
       positions[last_line] += gap_accumulator - offset_accumulator;
     }
   }
+#endif
 }
 
 static LayoutUnit ComputeOverflowAlignmentOffset(OverflowAlignment overflow,
@@ -2249,7 +2280,7 @@ void LayoutGrid::ComputeContentPositionAndDistributionOffset(
       break;
     // Only used in flex layout, for other layout, it's equivalent to 'End'.
     case ContentPosition::kFlexEnd:
-      U_FALLTHROUGH;
+      [[fallthrough]];
     case ContentPosition::kEnd:
       if (is_row_axis) {
         position_offset = StyleRef().IsLeftToRightDirection()
@@ -2261,7 +2292,7 @@ void LayoutGrid::ComputeContentPositionAndDistributionOffset(
       break;
     // Only used in flex layout, for other layout, it's equivalent to 'Start'.
     case ContentPosition::kFlexStart:
-      U_FALLTHROUGH;
+      [[fallthrough]];
     case ContentPosition::kStart:
       if (is_row_axis) {
         position_offset = StyleRef().IsLeftToRightDirection()
@@ -2272,7 +2303,7 @@ void LayoutGrid::ComputeContentPositionAndDistributionOffset(
       }
       break;
     case ContentPosition::kBaseline:
-      U_FALLTHROUGH;
+      [[fallthrough]];
     case ContentPosition::kLastBaseline:
       // FIXME: These two require implementing Baseline Alignment. For now, we
       // always 'start' align the child. crbug.com/234191
@@ -2285,7 +2316,7 @@ void LayoutGrid::ComputeContentPositionAndDistributionOffset(
       }
       break;
     case ContentPosition::kNormal:
-      U_FALLTHROUGH;
+      [[fallthrough]];
     default:
       NOTREACHED();
       return;
@@ -2373,10 +2404,14 @@ size_t LayoutGrid::NonCollapsedTracks(
   auto& tracks = track_sizing_algorithm_.Tracks(direction);
   size_t number_of_tracks = tracks.size();
   bool has_collapsed_tracks = grid_->HasAutoRepeatEmptyTracks(direction);
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   size_t number_of_collapsed_tracks =
       has_collapsed_tracks ? grid_->AutoRepeatEmptyTracks(direction)->size()
                            : 0;
   return number_of_tracks - number_of_collapsed_tracks;
+#endif
 }
 
 size_t LayoutGrid::NumTracks(GridTrackSizingDirection direction,
