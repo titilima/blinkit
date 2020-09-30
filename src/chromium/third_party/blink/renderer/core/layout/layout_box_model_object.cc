@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_box_model_object.cc
+// Description: LayoutBoxModelObject Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -27,7 +38,7 @@
 
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
-#include "third_party/blink/renderer/core/html/html_body_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_body_element.h"
 #include "third_party/blink/renderer/core/layout/layout_block.h"
 #include "third_party/blink/renderer/core/layout/layout_flexible_box.h"
 #include "third_party/blink/renderer/core/layout/layout_geometry_map.h"
@@ -37,7 +48,7 @@
 #include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #include "third_party/blink/renderer/core/paint/object_paint_invalidator.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/style/shadow_list.h"
 #include "third_party/blink/renderer/platform/length_functions.h"
 #include "third_party/blink/renderer/platform/scroll/main_thread_scrolling_reason.h"
@@ -92,8 +103,12 @@ LayoutBoxModelObject::LayoutBoxModelObject(ContainerNode* node)
     : LayoutObject(node) {}
 
 bool LayoutBoxModelObject::UsesCompositedScrolling() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return HasOverflowClip() && HasLayer() &&
          Layer()->GetScrollableArea()->UsesCompositedScrolling();
+#endif
 }
 
 BackgroundPaintLocation LayoutBoxModelObject::GetBackgroundPaintLocation(
@@ -102,12 +117,15 @@ BackgroundPaintLocation LayoutBoxModelObject::GetBackgroundPaintLocation(
   // TODO(flackr): Detect opaque custom scrollbars which would cover up a
   // border-box background.
   if (PaintLayerScrollableArea* scrollable_area = GetScrollableArea()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if ((scrollable_area->HorizontalScrollbar() &&
          scrollable_area->HorizontalScrollbar()->IsCustomScrollbar()) ||
         (scrollable_area->VerticalScrollbar() &&
          scrollable_area->VerticalScrollbar()->IsCustomScrollbar())) {
       has_custom_scrollbars = true;
     }
+#endif
   }
 
   // TODO(flackr): When we correctly clip the scrolling contents layer we can
@@ -190,11 +208,14 @@ void LayoutBoxModelObject::WillBeDestroyed() {
     // Don't use view() because the document's layoutView has been set to
     // 0 during destruction.
     if (LocalFrame* frame = GetFrame()) {
+      ASSERT(false); // BKTODO:
+#if 0
       if (LocalFrameView* frame_view = frame->View()) {
         if (StyleRef().HasViewportConstrainedPosition() ||
             StyleRef().HasStickyConstrainedPosition())
           frame_view->RemoveViewportConstrainedObject(*this);
       }
+#endif
     }
   }
 
@@ -353,6 +374,8 @@ void LayoutBoxModelObject::StyleDidChange(StyleDifference diff,
   // Refer to backgroundStolenForBeingBody() and
   // http://www.w3.org/TR/css3-background/#body-background for more info.
   if (IsDocumentElement()) {
+    ASSERT(false); // BKTODO:
+#if 0
     HTMLBodyElement* body = GetDocument().FirstBodyElement();
     LayoutObject* body_layout = body ? body->GetLayoutObject() : nullptr;
     if (body_layout && body_layout->IsBoxModelObject()) {
@@ -367,6 +390,7 @@ void LayoutBoxModelObject::StyleDidChange(StyleDifference diff,
         body_layout->SetShouldDoFullPaintInvalidation();
       }
     }
+#endif
   }
 
   if (LocalFrameView* frame_view = View()->GetFrameView()) {
@@ -390,6 +414,8 @@ void LayoutBoxModelObject::StyleDidChange(StyleDifference diff,
         // invalidate the scroll paint property subtree for this so main thread
         // scroll reasons are recomputed.
       } else {
+        ASSERT(false); // BKTODO:
+#if 0
         // This may get re-added to viewport constrained objects if the object
         // went from sticky to fixed.
         frame_view->RemoveViewportConstrainedObject(*this);
@@ -404,6 +430,7 @@ void LayoutBoxModelObject::StyleDidChange(StyleDifference diff,
               scrollable_area->InvalidateStickyConstraintsFor(Layer());
           }
         }
+#endif
 
         // TODO(pdr): When slimming paint v2 is enabled, we will need to
         // invalidate the scroll paint property subtree for this so main thread
@@ -412,10 +439,13 @@ void LayoutBoxModelObject::StyleDidChange(StyleDifference diff,
     }
 
     if (new_style_is_viewport_constained != old_style_is_viewport_constrained) {
+      ASSERT(false); // BKTODO:
+#if 0
       if (new_style_is_viewport_constained && Layer())
         frame_view->AddViewportConstrainedObject(*this);
       else
         frame_view->RemoveViewportConstrainedObject(*this);
+#endif
     }
   }
 
@@ -451,7 +481,10 @@ void LayoutBoxModelObject::InvalidateStickyConstraints() {
 
   if (PaintLayerScrollableArea* scrollable_area =
           enclosing->GetScrollableArea()) {
+    ASSERT(false); // BKTODO:
+#if 0
     scrollable_area->InvalidateAllStickyConstraints();
+#endif
     // If this object doesn't have a layer and its enclosing layer is a scroller
     // then we don't need to invalidate the sticky constraints on the ancestor
     // scroller because the enclosing scroller won't have changed size.
@@ -465,9 +498,12 @@ void LayoutBoxModelObject::InvalidateStickyConstraints() {
   DisableCompositingQueryAsserts disabler;
   if (const PaintLayer* ancestor_overflow_layer =
           enclosing->AncestorOverflowLayer()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (PaintLayerScrollableArea* ancestor_scrollable_area =
             ancestor_overflow_layer->GetScrollableArea())
       ancestor_scrollable_area->InvalidateAllStickyConstraints();
+#endif
   }
 }
 
@@ -843,6 +879,8 @@ void LayoutBoxModelObject::UpdateStickyPositionConstraints() const {
 
   const FloatSize constraining_size = ComputeStickyConstrainingRect().Size();
 
+  ASSERT(false); // BKTODO:
+#if 0
   StickyPositionScrollingConstraints constraints;
   FloatSize skipped_containers_offset;
   LayoutBlock* containing_block = ContainingBlock();
@@ -1020,6 +1058,7 @@ void LayoutBoxModelObject::UpdateStickyPositionConstraints() const {
   PaintLayerScrollableArea* scrollable_area =
       Layer()->AncestorOverflowLayer()->GetScrollableArea();
   scrollable_area->GetStickyConstraintsMap().Set(Layer(), constraints);
+#endif
 }
 
 bool LayoutBoxModelObject::IsSlowRepaintConstrainedObject() const {
@@ -1075,6 +1114,9 @@ LayoutSize LayoutBoxModelObject::StickyPositionOffset() const {
   if (!ancestor_overflow_layer || !ancestor_overflow_layer->GetScrollableArea())
     return LayoutSize();
 
+  ASSERT(false); // BKTODO:
+  return LayoutSize();
+#if 0
   StickyConstraintsMap& constraints_map =
       ancestor_overflow_layer->GetScrollableArea()->GetStickyConstraintsMap();
   auto it = constraints_map.find(Layer());
@@ -1089,6 +1131,7 @@ LayoutSize LayoutBoxModelObject::StickyPositionOffset() const {
       ancestor_overflow_layer->GetScrollableArea()->ScrollPosition());
   return LayoutSize(
       constraints->ComputeStickyOffset(constraining_rect, constraints_map));
+#endif
 }
 
 LayoutPoint LayoutBoxModelObject::AdjustedPositionRelativeTo(
@@ -1106,6 +1149,8 @@ LayoutPoint LayoutBoxModelObject::AdjustedPositionRelativeTo(
   if (!offset_parent)
     return reference_point;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (const LayoutBoxModelObject* offset_parent_object =
           offset_parent->GetLayoutBoxModelObject()) {
     if (!IsOutOfFlowPositioned()) {
@@ -1153,6 +1198,7 @@ LayoutPoint LayoutBoxModelObject::AdjustedPositionRelativeTo(
                            -ToLayoutBox(offset_parent_object)->BorderTop());
     }
   }
+#endif
 
   return reference_point;
 }
@@ -1269,6 +1315,9 @@ LayoutRect LayoutBoxModelObject::LocalCaretRectForEmptyElement(
 
   LayoutUnit x = BorderLeft() + PaddingLeft();
   LayoutUnit max_x = width - BorderRight() - PaddingRight();
+  ASSERT(false); // BKTODO:
+  return LayoutRect();
+#if 0
   LayoutUnit caret_width = GetFrameView()->CaretWidth();
 
   switch (alignment) {
@@ -1308,6 +1357,7 @@ LayoutRect LayoutBoxModelObject::LocalCaretRectForEmptyElement(
   return current_style.IsHorizontalWritingMode()
              ? LayoutRect(x, y, caret_width, height)
              : LayoutRect(y, x, height, caret_width);
+#endif
 }
 
 const LayoutObject* LayoutBoxModelObject::PushMappingToContainer(
@@ -1463,6 +1513,8 @@ bool LayoutBoxModelObject::BackgroundStolenForBeingBody(
     return false;
 
   Element* root_element = GetDocument().documentElement();
+  ASSERT(false); // BKTODO:
+#if 0
   if (!IsHTMLHtmlElement(root_element))
     return false;
 
@@ -1473,6 +1525,7 @@ bool LayoutBoxModelObject::BackgroundStolenForBeingBody(
 
   if (GetNode() != GetDocument().FirstBodyElement())
     return false;
+#endif
 
   return true;
 }

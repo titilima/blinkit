@@ -734,6 +734,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_fieldset.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_flexible_box.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_flow_thread.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_geometry_map.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_grid.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_image.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_image_resource.cc" />
@@ -2403,6 +2404,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_fieldset.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_flexible_box.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_flow_thread.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_geometry_map.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_geometry_map_step.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_grid.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_image.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_image_resource.h" />
