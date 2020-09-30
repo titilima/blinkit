@@ -716,6 +716,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\selection_state.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\collapsed_border_value.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\custom\custom_layout_child.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\flexible_box_algorithm.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\floating_objects.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\grid.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\grid_baseline_alignment.cc" />
@@ -2384,6 +2385,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\collapsed_border_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\content_change_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\custom\custom_layout_child.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\flexible_box_algorithm.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\floating_objects.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\fragmentation_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\generated_children.h" />

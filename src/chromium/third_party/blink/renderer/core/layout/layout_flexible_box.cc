@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_flexible_box.cc
+// Description: LayoutFlexibleBox Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -42,7 +53,7 @@
 #include "third_party/blink/renderer/core/layout/text_autosizer.h"
 #include "third_party/blink/renderer/core/paint/block_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
 #include "third_party/blink/renderer/platform/length_functions.h"
 #include "third_party/blink/renderer/platform/wtf/math_extras.h"
@@ -325,7 +336,7 @@ void LayoutFlexibleBox::UpdateBlockLayout(bool relayout_children) {
   LayoutUnit previous_height = LogicalHeight();
   SetLogicalHeight(BorderAndPaddingLogicalHeight() + ScrollbarLogicalHeight());
 
-  PaintLayerScrollableArea::DelayScrollOffsetClampScope delay_clamp_scope;
+  ASSERT(false); // BKTODO: PaintLayerScrollableArea::DelayScrollOffsetClampScope delay_clamp_scope;
 
   {
     TextAutosizer::LayoutScope text_autosizer_layout_scope(this, &layout_scope);
@@ -336,6 +347,8 @@ void LayoutFlexibleBox::UpdateBlockLayout(bool relayout_children) {
     PrepareOrderIteratorAndMargins();
 
     LayoutFlexItems(relayout_children, layout_scope);
+    ASSERT(false); // BKTODO:
+#if 0
     if (PaintLayerScrollableArea::PreventRelayoutScope::RelayoutNeeded()) {
       // Recompute the logical width, because children may have added or removed
       // scrollbars.
@@ -345,6 +358,7 @@ void LayoutFlexibleBox::UpdateBlockLayout(bool relayout_children) {
       LayoutFlexItems(true, layout_scope);
       PaintLayerScrollableArea::PreventRelayoutScope::ResetRelayoutNeeded();
     }
+#endif
 
     if (LogicalHeight() != previous_height)
       relayout_children = true;
@@ -594,6 +608,7 @@ LayoutUnit LayoutFlexibleBox::FlowAwareContentInsetBefore() const {
       return ContentInsetRight();
   }
   NOTREACHED();
+  return LayoutUnit();
 }
 
 DISABLE_CFI_PERF
@@ -609,6 +624,7 @@ LayoutUnit LayoutFlexibleBox::FlowAwareContentInsetAfter() const {
       return ContentLeft();
   }
   NOTREACHED();
+  return LayoutUnit();
 }
 
 LayoutUnit LayoutFlexibleBox::CrossAxisScrollbarExtent() const {
@@ -801,15 +817,17 @@ LayoutUnit LayoutFlexibleBox::ComputeInnerFlexBaseSizeForChild(
     // width includes the scrollbar, even for overflow: auto.
     main_axis_extent = child.MaxPreferredLogicalWidth();
   }
-  DCHECK_GE(main_axis_extent - main_axis_border_and_padding, LayoutUnit())
-      << main_axis_extent << " - " << main_axis_border_and_padding;
+  DCHECK_GE(main_axis_extent - main_axis_border_and_padding, LayoutUnit());
   return main_axis_extent - main_axis_border_and_padding;
 }
 
 void LayoutFlexibleBox::LayoutFlexItems(bool relayout_children,
                                         SubtreeLayoutScope& layout_scope) {
+  ASSERT(false); // BKTODO:
+#if 0
   PaintLayerScrollableArea::PreventRelayoutScope prevent_relayout_scope(
       layout_scope);
+#endif
 
   // Set up our master list of flex items. All of the rest of the algorithm
   // should work off this list of a subset.

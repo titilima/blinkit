@@ -18,6 +18,7 @@ namespace blink {
 
 enum class WebFeature {
     kAnimationSetPlaybackRateCompensatorySeek,
+    kAspectRatioFlexItem,
     kBasicShapeEllipseNoRadius,
     kBasicShapeEllipseOneRadius,
     kBasicShapeEllipseTwoRadius,
@@ -83,6 +84,7 @@ enum class WebFeature {
     kDeprecatedWebKitRepeatingLinearGradient,
     kDeprecatedWebKitRepeatingRadialGradient,
     kDuplicatedAttribute,
+    kFlexboxIntrinsicSizeAlgorithmIsDifferent,
     kFlexboxPercentageMarginVertical,
     kFlexboxPercentagePaddingVertical,
     kFontShapingNotDefGlyphObserved,
