@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_flow_thread.h
+// Description: LayoutFlowThread Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Adobe Systems Incorporated. All rights reserved.
  *
@@ -38,7 +49,7 @@ namespace blink {
 
 class LayoutMultiColumnSet;
 
-typedef LinkedHashSet<LayoutMultiColumnSet*> LayoutMultiColumnSetList;
+// BKTODO: typedef LinkedHashSet<LayoutMultiColumnSet*> LayoutMultiColumnSetList;
 
 // Layout state for multicol. To be stored when laying out a block child, so
 // that we can roll back to the initial state if we need to re-lay out said
@@ -136,12 +147,18 @@ class CORE_EXPORT LayoutFlowThread : public LayoutBlockFlow {
                             LayoutUnit logical_top,
                             LogicalExtentComputedValues&) const override;
 
+#if 0 // BKTODO:
   bool HasColumnSets() const { return multi_column_set_list_.size(); }
+#endif
 
   void ValidateColumnSets();
   void InvalidateColumnSets() { column_sets_invalidated_ = true; }
   bool HasValidColumnSetInfo() const {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return !column_sets_invalidated_ && !multi_column_set_list_.IsEmpty();
+#endif
   }
 
   bool MapToVisualRectInAncestorSpaceInternal(
@@ -198,7 +215,7 @@ class CORE_EXPORT LayoutFlowThread : public LayoutBlockFlow {
  protected:
   void GenerateColumnSetIntervalTree();
 
-  LayoutMultiColumnSetList multi_column_set_list_;
+  // BKTODO: LayoutMultiColumnSetList multi_column_set_list_;
 
   typedef WTF::PODInterval<LayoutUnit, LayoutMultiColumnSet*>
       MultiColumnSetInterval;

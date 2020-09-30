@@ -79,6 +79,7 @@ public:
     BLINKIT_DISABLE_FEATURE(FullscreenUnprefixed)
     BLINKIT_DISABLE_FEATURE(ImageOrientation)
     BLINKIT_DISABLE_FEATURE(LayoutNG)
+    BLINKIT_DISABLE_FEATURE(LayoutNGFieldset)
     BLINKIT_DISABLE_FEATURE(OffMainThreadCSSPaint)
     BLINKIT_DISABLE_FEATURE(PassiveDocumentWheelEventListeners)
     BLINKIT_DISABLE_FEATURE(ScrollCustomization)

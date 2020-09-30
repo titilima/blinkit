@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_block.cc
+// Description: LayoutBlock Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -39,7 +50,7 @@
 #include "third_party/blink/renderer/core/editing/text_affinity.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
-#include "third_party/blink/renderer/core/html/html_marquee_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_marquee_element.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_box.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_item.h"
@@ -58,12 +69,12 @@
 #include "third_party/blink/renderer/core/layout/ng/ng_constraint_space.h"
 #include "third_party/blink/renderer/core/layout/text_autosizer.h"
 #include "third_party/blink/renderer/core/page/page.h"
-#include "third_party/blink/renderer/core/page/scrolling/root_scroller_controller.h"
+// BKTODO: #include "third_party/blink/renderer/core/page/scrolling/root_scroller_controller.h"
 #include "third_party/blink/renderer/core/paint/block_paint_invalidator.h"
 #include "third_party/blink/renderer/core/paint/block_painter.h"
 #include "third_party/blink/renderer/core/paint/object_paint_invalidator.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
@@ -116,6 +127,8 @@ LayoutBlock::LayoutBlock(ContainerNode* node)
 }
 
 void LayoutBlock::RemoveFromGlobalMaps() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (HasPositionedObjects()) {
     std::unique_ptr<TrackedLayoutBoxListHashSet> descendants =
         g_positioned_descendants_map->Take(this);
@@ -134,6 +147,7 @@ void LayoutBlock::RemoveFromGlobalMaps() {
       descendant->SetPercentHeightContainer(nullptr);
     }
   }
+#endif
 }
 
 LayoutBlock::~LayoutBlock() {
@@ -144,6 +158,8 @@ void LayoutBlock::WillBeDestroyed() {
   if (!DocumentBeingDestroyed() && Parent())
     Parent()->DirtyLinesFromChangedChild(this);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (LocalFrame* frame = GetFrame()) {
     frame->Selection().LayoutBlockWillBeDestroyed(*this);
     frame->GetPage()->GetDragCaret().LayoutBlockWillBeDestroyed(*this);
@@ -151,6 +167,7 @@ void LayoutBlock::WillBeDestroyed() {
 
   if (TextAutosizer* text_autosizer = GetDocument().GetTextAutosizer())
     text_autosizer->Destroy(this);
+#endif
 
   LayoutBox::WillBeDestroyed();
 }
@@ -251,8 +268,11 @@ void LayoutBlock::StyleDidChange(StyleDifference diff,
     }
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (TextAutosizer* text_autosizer = GetDocument().GetTextAutosizer())
     text_autosizer->Record(this);
+#endif
 
   PropagateStyleToAnonymousChildren();
 
@@ -288,8 +308,11 @@ void LayoutBlock::UpdateFromStyle() {
   bool should_clip_overflow =
       !StyleRef().IsOverflowVisible() && AllowsOverflowClip();
   if (should_clip_overflow != HasOverflowClip()) {
+  ASSERT(false); // BKTODO:
+#if 0
     if (!should_clip_overflow)
       GetScrollableArea()->InvalidateAllStickyConstraints();
+#endif
     SetSubtreeShouldCheckForPaintInvalidation();
     // The overflow clip paint property depends on whether overflow clip is
     // present so we need to update paint properties if this changes.
@@ -301,8 +324,12 @@ void LayoutBlock::UpdateFromStyle() {
 }
 
 bool LayoutBlock::AllowsOverflowClip() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // If overflow has been propagated to the viewport, it has no effect here.
   return GetNode() != GetDocument().ViewportDefiningElement();
+#endif
 }
 
 void LayoutBlock::AddChildBeforeDescendant(LayoutObject* new_child,
@@ -429,6 +456,8 @@ void LayoutBlock::UpdateAfterLayout() {
 }
 
 void LayoutBlock::UpdateLayout() {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!GetScrollableArea() || GetScrollableArea()->GetScrollAnchor());
 
   LayoutAnalyzer::Scope analyzer(*this);
@@ -437,6 +466,7 @@ void LayoutBlock::UpdateLayout() {
       HasOverflowClip() && GetScrollableArea()->ShouldPerformScrollAnchoring();
   if (needs_scroll_anchoring)
     GetScrollableArea()->GetScrollAnchor()->NotifyBeforeLayout();
+#endif
 
   // Table cells call UpdateBlockLayout directly, as does
   // PaintLayerScrollableArea for nested scrollbar layouts. Most logic should be
@@ -517,9 +547,12 @@ void LayoutBlock::ComputeVisualOverflow(
   AddVisualOverflowFromTheme();
 
   if (VisualOverflowRect() != previous_visual_overflow_rect) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (Layer())
       Layer()->SetNeedsCompositingInputsUpdate();
     GetFrameView()->SetIntersectionObservationState(LocalFrameView::kDesired);
+#endif
   }
 }
 
@@ -735,8 +768,11 @@ bool LayoutBlock::SimplifiedLayout() {
 
   ClearNeedsLayout();
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (LayoutAnalyzer* analyzer = GetFrameView()->GetLayoutAnalyzer())
     analyzer->Increment(LayoutAnalyzer::kLayoutObjectsThatNeedSimplifiedLayout);
+#endif
 
   return true;
 }
@@ -959,7 +995,10 @@ void LayoutBlock::InsertPositionedObject(LayoutBox* o) {
     if (container_map_it != g_positioned_container_map->end()) {
       if (container_map_it->value == this) {
         DCHECK(HasPositionedObjects());
+        ASSERT(false); // BKTODO:
+#if 0
         DCHECK(PositionedObjects()->Contains(o));
+#endif
         return;
       }
       RemovePositionedObject(o);
@@ -993,12 +1032,15 @@ void LayoutBlock::RemovePositionedObject(LayoutBox* o) {
   TrackedLayoutBoxListHashSet* positioned_descendants =
       g_positioned_descendants_map->at(container);
   DCHECK(positioned_descendants);
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(positioned_descendants->Contains(o));
   positioned_descendants->erase(o);
   if (positioned_descendants->IsEmpty()) {
     g_positioned_descendants_map->erase(container);
     container->has_positioned_objects_ = false;
   }
+#endif
 
   // Need to clear the anchor of the positioned object in its container box.
   // The anchors are created in the logical container box, not in the CSS
@@ -1069,10 +1111,13 @@ void LayoutBlock::RemovePositionedObjects(
     positioned_descendants->erase(object);
     g_positioned_container_map->erase(object);
   }
+  ASSERT(false); // BKTODO:
+#if 0
   if (positioned_descendants->IsEmpty()) {
     g_positioned_descendants_map->erase(this);
     has_positioned_objects_ = false;
   }
+#endif
 }
 
 void LayoutBlock::AddPercentHeightDescendant(LayoutBox* descendant) {
@@ -1103,10 +1148,13 @@ void LayoutBlock::RemovePercentHeightDescendant(LayoutBox* descendant) {
   if (TrackedLayoutBoxListHashSet* descendants = PercentHeightDescendants()) {
     descendants->erase(descendant);
     descendant->SetPercentHeightContainer(nullptr);
+    ASSERT(false); // BKTODO:
+#if 0
     if (descendants->IsEmpty()) {
       g_percent_height_descendants_map->erase(this);
       has_percent_height_descendants_ = false;
     }
+#endif
   }
 }
 
@@ -1151,9 +1199,13 @@ bool LayoutBlock::IsPointInOverflowControl(
   if (!ScrollsOverflow())
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return Layer()->GetScrollableArea()->HitTestOverflowControls(
       result, RoundedIntPoint(location_in_container -
                               ToLayoutSize(accumulated_offset)));
+#endif
 }
 
 bool LayoutBlock::HitTestOverflowControl(
@@ -1426,9 +1478,12 @@ void LayoutBlock::ComputeIntrinsicLogicalWidths(
 
   max_logical_width = std::max(min_logical_width, max_logical_width);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsHTMLMarqueeElement(GetNode()) &&
       ToHTMLMarqueeElement(GetNode())->IsHorizontal())
     min_logical_width = LayoutUnit();
+#endif
 
   if (IsTableCell()) {
     Length table_cell_width = ToLayoutTableCell(this)->StyleOrColLogicalWidth();
@@ -1761,8 +1816,11 @@ LayoutUnit LayoutBlock::BaselinePosition(
 LayoutUnit LayoutBlock::MinLineHeightForReplacedObject(
     bool is_first_line,
     LayoutUnit replaced_height) const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!GetDocument().InNoQuirksMode() && replaced_height)
     return replaced_height;
+#endif
 
   return std::max<LayoutUnit>(
       replaced_height,
@@ -1894,11 +1952,19 @@ inline bool LayoutBlock::IsInlineBoxWrapperActuallyChild() const {
 }
 
 bool LayoutBlock::ShouldPaintCursorCaret() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return GetFrame()->Selection().ShouldPaintCaret(*this);
+#endif
 }
 
 bool LayoutBlock::ShouldPaintDragCaret() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return GetFrame()->GetPage()->GetDragCaret().ShouldPaintCaret(*this);
+#endif
 }
 
 LayoutRect LayoutBlock::LocalCaretRect(
@@ -2139,8 +2205,11 @@ bool LayoutBlock::RecalcSelfOverflow() {
                                          : ClientLogicalBottom();
   ComputeOverflow(old_client_after_edge, true);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (HasOverflowClip())
     Layer()->GetScrollableArea()->UpdateAfterOverflowRecalc();
+#endif
 
   return !HasOverflowClip() || self_needs_overflow_recalc;
 }

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: grid.h
+// Description: Grid Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -11,7 +22,7 @@
 #include "third_party/blink/renderer/core/style/grid_area.h"
 #include "third_party/blink/renderer/core/style/grid_positions_resolver.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
-#include "third_party/blink/renderer/platform/wtf/doubly_linked_list.h"
+// BKTODO: #include "third_party/blink/renderer/platform/wtf/doubly_linked_list.h"
 #include "third_party/blink/renderer/platform/wtf/linked_hash_set.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 
@@ -19,7 +30,7 @@ namespace blink {
 
 // TODO(svillar): Perhaps we should use references here.
 typedef Vector<LayoutBox*, 1> GridItemList;
-typedef LinkedHashSet<size_t> OrderedTrackIndexSet;
+// BKTODO: typedef LinkedHashSet<size_t> OrderedTrackIndexSet;
 
 class LayoutGrid;
 class GridIterator;
@@ -60,14 +71,18 @@ class CORE_EXPORT Grid {
   size_t AutoRepeatTracks(GridTrackSizingDirection) const;
   void SetAutoRepeatTracks(size_t auto_repeat_rows, size_t auto_repeat_columns);
 
+#if 0 // BKTODO:
   typedef LinkedHashSet<size_t> OrderedTrackIndexSet;
   void SetAutoRepeatEmptyColumns(std::unique_ptr<OrderedTrackIndexSet>);
   void SetAutoRepeatEmptyRows(std::unique_ptr<OrderedTrackIndexSet>);
+#endif
 
   bool HasAutoRepeatEmptyTracks(GridTrackSizingDirection) const;
   bool IsEmptyAutoRepeatTrack(GridTrackSizingDirection, size_t) const;
 
+#if 0 // BKTODO:
   OrderedTrackIndexSet* AutoRepeatEmptyTracks(GridTrackSizingDirection) const;
+#endif
 
   OrderIterator& GetOrderIterator() { return order_iterator_; }
 
@@ -130,8 +145,10 @@ class CORE_EXPORT Grid {
   HashMap<const LayoutBox*, GridArea> grid_item_area_;
   HashMap<const LayoutBox*, size_t> grid_items_indexes_map_;
 
+#if 0 // BKTODO:
   std::unique_ptr<OrderedTrackIndexSet> auto_repeat_empty_columns_{nullptr};
   std::unique_ptr<OrderedTrackIndexSet> auto_repeat_empty_rows_{nullptr};
+#endif
 };
 
 // This is a Grid specialization which uses doubly linked lists (DLL)
@@ -153,6 +170,7 @@ class CORE_EXPORT ListGrid final : public Grid {
 
   ~ListGrid() final;
 
+#if 0 // BKTODO:
   // This is the class representing a cell in the grid. GridCell's are
   // only created for those cells which do have items inside. Each
   // GridCell will be part of two different DLL, one representing the
@@ -243,22 +261,27 @@ class CORE_EXPORT ListGrid final : public Grid {
     GridTrack* prev_;
     GridTrack* next_;
   };
+#endif
 
  private:
   friend class ListGridIterator;
 
+#if 0 // BKTODO:
   // Returns a pointer to the first track.
   GridTrack* InsertTracks(DoublyLinkedList<GridTrack>&,
                           const GridSpan&,
                           GridTrackSizingDirection);
+#endif
 
   void ClearGridDataStructure() override;
   void ConsolidateGridDataStructure() override {}
 
+#if 0 // BKTODO:
   const DoublyLinkedList<GridTrack>& Tracks(
       GridTrackSizingDirection direction) const {
     return direction == kForRows ? rows_ : columns_;
   }
+#endif
 
   std::unique_ptr<GridIterator> CreateIterator(
       GridTrackSizingDirection,
@@ -268,8 +291,10 @@ class CORE_EXPORT ListGrid final : public Grid {
   size_t num_rows_{0};
   size_t num_columns_{0};
 
+#if 0 // BKTODO:
   DoublyLinkedList<GridTrack> columns_;
   DoublyLinkedList<GridTrack> rows_;
+#endif
 };
 
 class ListGridIterator final : public Grid::GridIterator {
@@ -288,7 +313,9 @@ class ListGridIterator final : public Grid::GridIterator {
 
  private:
   const ListGrid& grid_;
+#if 0 // BKTODO:
   ListGrid::GridCell* cell_node_{nullptr};
+#endif
   DISALLOW_COPY_AND_ASSIGN(ListGridIterator);
 };
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_grid.h
+// Description: LayoutGrid Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -159,9 +170,11 @@ class LayoutGrid final : public LayoutBlock {
   size_t ClampAutoRepeatTracks(GridTrackSizingDirection,
                                size_t auto_repeat_tracks) const;
 
+#if 0 // BKTODO:
   std::unique_ptr<OrderedTrackIndexSet> ComputeEmptyTracksForAutoRepeat(
       Grid&,
       GridTrackSizingDirection) const;
+#endif
 
   void PerformGridItemsPreLayout(const GridTrackSizingAlgorithm&) const;
 
