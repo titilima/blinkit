@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: hit_test_result.cc
+// Description: HitTestResult Class
+//      Author: Ziming Li
+//     Created: 2020-09-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2008, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2012 Nokia Corporation and/or its subsidiary(-ies)
@@ -29,24 +40,26 @@
 #include "third_party/blink/renderer/core/editing/position_with_affinity.h"
 #include "third_party/blink/renderer/core/editing/visible_units.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_text_area_element.h"
 #include "third_party/blink/renderer/core/html/html_area_element.h"
 #include "third_party/blink/renderer/core/html/html_image_element.h"
 #include "third_party/blink/renderer/core/html/html_map_element.h"
 #include "third_party/blink/renderer/core/html/media/html_media_element.h"
+#endif
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/input_type_names.h"
 #include "third_party/blink/renderer/core/layout/layout_image.h"
 #include "third_party/blink/renderer/core/scroll/scrollbar.h"
-#include "third_party/blink/renderer/core/svg/svg_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_element.h"
 #include "third_party/blink/renderer/platform/geometry/region.h"
-#include "third_party/blink/renderer/platform/mediastream/media_stream_descriptor.h"
+// BKTODO: #include "third_party/blink/renderer/platform/mediastream/media_stream_descriptor.h"
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 HitTestResult::HitTestResult()
     : hit_test_request_(HitTestRequest::kReadOnly | HitTestRequest::kActive),
@@ -153,6 +166,8 @@ void HitTestResult::SetToShadowHostIfInRestrictedShadowRoot() {
   ShadowRoot* containing_shadow_root = node->ContainingShadowRoot();
   Element* shadow_host = nullptr;
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Consider a closed shadow tree of SVG's <use> element as a special
   // case so that a toolip title in the shadow tree works.
   while (containing_shadow_root &&
@@ -162,6 +177,7 @@ void HitTestResult::SetToShadowHostIfInRestrictedShadowRoot() {
     containing_shadow_root = shadow_host->ContainingShadowRoot();
     SetInnerNode(node->OwnerShadowHost());
   }
+#endif
 
   if (shadow_host)
     SetInnerNode(shadow_host);
@@ -169,6 +185,9 @@ void HitTestResult::SetToShadowHostIfInRestrictedShadowRoot() {
 
 HTMLAreaElement* HitTestResult::ImageAreaForImage() const {
   DCHECK(inner_node_);
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   HTMLImageElement* image_element = ToHTMLImageElementOrNull(inner_node_);
   if (!image_element && inner_node_->IsInShadowTree()) {
     if (inner_node_->ContainingShadowRoot()->IsUserAgent()) {
@@ -186,6 +205,7 @@ HTMLAreaElement* HitTestResult::ImageAreaForImage() const {
     return nullptr;
 
   return map->AreaForPoint(LocalPoint(), image_element->GetLayoutObject());
+#endif
 }
 
 void HitTestResult::SetInnerNode(Node* n) {
@@ -198,8 +218,11 @@ void HitTestResult::SetInnerNode(Node* n) {
     n = ToPseudoElement(n)->InnerNodeForHitTesting();
   inner_node_ = n;
   if (HTMLAreaElement* area = ImageAreaForImage()) {
+    ASSERT(false); // BKTODO:
+#if 0
     inner_node_ = area;
     inner_possibly_pseudo_node_ = area;
+#endif
   }
 }
 
@@ -221,27 +244,36 @@ bool HitTestResult::IsSelected(const HitTestLocation& location) const {
   if (!inner_node_)
     return false;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (LocalFrame* frame = inner_node_->GetDocument().GetFrame())
     return frame->Selection().Contains(location.Point());
+#endif
   return false;
 }
 
 String HitTestResult::Title(TextDirection& dir) const {
   dir = TextDirection::kLtr;
+  ASSERT(false); // BKTODO:
+#if 0
   // Find the title in the nearest enclosing DOM node.
   // For <area> tags in image maps, walk the tree for the <area>, not the <img>
   // using it.
   if (inner_node_.Get())
     inner_node_->UpdateDistributionForFlatTreeTraversal();
+#endif
   for (Node* title_node = inner_node_.Get(); title_node;
        title_node = FlatTreeTraversal::Parent(*title_node)) {
     if (title_node->IsElementNode()) {
+      ASSERT(false); // BKTODO:
+#if 0
       String title = ToElement(title_node)->title();
       if (!title.IsNull()) {
         if (LayoutObject* layout_object = title_node->GetLayoutObject())
           dir = layout_object->StyleRef().Direction();
         return title;
       }
+#endif
     }
   }
   return String();
@@ -252,11 +284,14 @@ const AtomicString& HitTestResult::AltDisplayString() const {
   if (!inner_node_or_image_map_image)
     return g_null_atom;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (auto* image = ToHTMLImageElementOrNull(*inner_node_or_image_map_image))
     return image->getAttribute(altAttr);
 
   if (auto* input = ToHTMLInputElementOrNull(*inner_node_or_image_map_image))
     return input->Alt();
+#endif
 
   return g_null_atom;
 }
@@ -280,18 +315,24 @@ Image* HitTestResult::GetImage() const {
 IntRect HitTestResult::ImageRect() const {
   if (!GetImage())
     return IntRect();
+  ASSERT(false); // BKTODO:
+  return IntRect();
+#if 0
   return InnerNodeOrImageMapImage()
       ->GetLayoutBox()
       ->AbsoluteContentQuad()
       .EnclosingBoundingBox();
+#endif
 }
 
-KURL HitTestResult::AbsoluteImageURL() const {
+GURL HitTestResult::AbsoluteImageURL() const {
   Node* inner_node_or_image_map_image = InnerNodeOrImageMapImage();
   if (!inner_node_or_image_map_image)
-    return KURL();
+    return GURL();
 
   AtomicString url_string;
+  ASSERT(false); // BKTODO:
+#if 0
   // Always return a url for image elements and input elements with type=image,
   // even if they don't have a LayoutImage (e.g. because the image didn't load
   // and we are using an alt container). For other elements we don't create alt
@@ -307,22 +348,29 @@ KURL HitTestResult::AbsoluteImageURL() const {
             IsHTMLObjectElement(*inner_node_or_image_map_image) ||
             IsSVGImageElement(*inner_node_or_image_map_image)))
     url_string = ToElement(*inner_node_or_image_map_image).ImageSourceURL();
+#endif
   if (url_string.IsEmpty())
-    return KURL();
+    return GURL();
 
   return inner_node_or_image_map_image->GetDocument().CompleteURL(
       StripLeadingAndTrailingHTMLSpaces(url_string));
 }
 
-KURL HitTestResult::AbsoluteMediaURL() const {
+GURL HitTestResult::AbsoluteMediaURL() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (HTMLMediaElement* media_elt = MediaElement())
     return media_elt->currentSrc();
-  return KURL();
+#endif
+  return GURL();
 }
 
 MediaStreamDescriptor* HitTestResult::GetMediaStreamDescriptor() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (HTMLMediaElement* media_elt = MediaElement())
     return media_elt->GetSrcObject();
+#endif
   return nullptr;
 }
 
@@ -330,23 +378,34 @@ HTMLMediaElement* HitTestResult::MediaElement() const {
   if (!inner_node_)
     return nullptr;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!(inner_node_->GetLayoutObject() &&
         inner_node_->GetLayoutObject()->IsMedia()))
     return nullptr;
 
   if (IsHTMLMediaElement(*inner_node_))
     return ToHTMLMediaElement(inner_node_);
+#endif
   return nullptr;
 }
 
-KURL HitTestResult::AbsoluteLinkURL() const {
+GURL HitTestResult::AbsoluteLinkURL() const {
   if (!inner_url_element_)
-    return KURL();
+    return GURL();
+  ASSERT(false); // BKTODO:
+  return GURL();
+#if 0
   return inner_url_element_->HrefURL();
+#endif
 }
 
 bool HitTestResult::IsLiveLink() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return inner_url_element_ && inner_url_element_->IsLiveLink();
+#endif
 }
 
 bool HitTestResult::IsOverLink() const {
@@ -368,11 +427,14 @@ bool HitTestResult::IsContentEditable() const {
   if (!inner_node_)
     return false;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (auto* textarea = ToHTMLTextAreaElementOrNull(*inner_node_))
     return !textarea->IsDisabledOrReadOnly();
 
   if (auto* input = ToHTMLInputElementOrNull(*inner_node_))
     return !input->IsDisabledOrReadOnly() && input->IsTextField();
+#endif
 
   return HasEditableStyle(*inner_node_);
 }
@@ -486,6 +548,9 @@ Node* HitTestResult::InnerNodeOrImageMapImage() const {
   if (!inner_node_)
     return nullptr;
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   HTMLImageElement* image_map_image_element = nullptr;
   if (auto* area = ToHTMLAreaElementOrNull(inner_node_))
     image_map_image_element = area->ImageElement();
@@ -496,6 +561,7 @@ Node* HitTestResult::InnerNodeOrImageMapImage() const {
     return inner_node_.Get();
 
   return image_map_image_element;
+#endif
 }
 
 }  // namespace blink

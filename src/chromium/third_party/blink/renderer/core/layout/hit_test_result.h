@@ -33,7 +33,6 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_LAYOUT_HIT_TEST_RESULT_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_LAYOUT_HIT_TEST_RESULT_H_
 
-#include <set>
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/editing/forward.h"
 #include "third_party/blink/renderer/core/layout/hit_test_location.h"
@@ -46,6 +45,8 @@
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 #include "third_party/blink/renderer/platform/wtf/vector_traits.h"
 
+class GURL;
+
 namespace blink {
 
 class Element;
@@ -53,7 +54,6 @@ class LocalFrame;
 class HTMLAreaElement;
 class HTMLMediaElement;
 class Image;
-class KURL;
 class MediaStreamDescriptor;
 class Node;
 class LayoutObject;
@@ -69,7 +69,7 @@ class CORE_EXPORT HitTestResult {
   DISALLOW_NEW();
 
  public:
-  typedef std::set<Node *> NodeSet;
+  typedef HeapListHashSet<Member<Node>> NodeSet;
 
   HitTestResult();
   HitTestResult(const HitTestRequest&, const HitTestLocation&);
@@ -147,10 +147,10 @@ class CORE_EXPORT HitTestResult {
   const AtomicString& AltDisplayString() const;
   Image* GetImage() const;
   IntRect ImageRect() const;
-  KURL AbsoluteImageURL() const;
-  KURL AbsoluteMediaURL() const;
+  GURL AbsoluteImageURL() const;
+  GURL AbsoluteMediaURL() const;
   MediaStreamDescriptor* GetMediaStreamDescriptor() const;
-  KURL AbsoluteLinkURL() const;
+  GURL AbsoluteLinkURL() const;
   String TextContent() const;
   bool IsLiveLink() const;
   bool IsContentEditable() const;
