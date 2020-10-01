@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_image_resource.cc
+// Description: LayoutImageResource Class
+//      Author: Ziming Li
+//     Created: 2020-10-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll <knoll@kde.org>
  * Copyright (C) 1999 Antti Koivisto <koivisto@kde.org>
@@ -31,7 +42,7 @@
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/layout/layout_image.h"
 #include "third_party/blink/renderer/core/page/page.h"
-#include "third_party/blink/renderer/core/svg/graphics/svg_image_for_container.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/graphics/svg_image_for_container.h"
 
 namespace blink {
 
@@ -120,7 +131,11 @@ FloatSize LayoutImageResource::ImageSizeWithDefaultSize(
 }
 
 float LayoutImageResource::DeviceScaleFactor() const {
+  ASSERT(false); // BKTODO:
+  return 1;
+#if 0
   return DeviceScaleFactorDeprecated(layout_object_->GetFrame());
+#endif
 }
 
 Image* LayoutImageResource::BrokenImage(float device_scale_factor) {
@@ -157,7 +172,10 @@ scoped_refptr<Image> LayoutImageResource::GetImage(
   if (!image->IsSVGImage())
     return image;
 
-  KURL url;
+  ASSERT(false);
+  return Image::NullImage();
+#if 0
+  GURL url;
   Node* node = layout_object_->GetNode();
   if (node && node->IsElementNode()) {
     const AtomicString& url_string = ToElement(node)->ImageSourceURL();
@@ -166,6 +184,7 @@ scoped_refptr<Image> LayoutImageResource::GetImage(
   return SVGImageForContainer::Create(
       ToSVGImage(image), FloatSize(container_size),
       layout_object_->StyleRef().EffectiveZoom(), url);
+#endif
 }
 
 bool LayoutImageResource::MaybeAnimated() const {

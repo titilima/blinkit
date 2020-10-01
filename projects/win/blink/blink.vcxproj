@@ -741,6 +741,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_image.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_image_resource.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_inline.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_list_item.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_list_marker.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_multi_column_flow_thread.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_multi_column_set.cc" />
@@ -771,6 +772,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_width.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\root_inline_box.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\trailing_objects.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\list_marker_text.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\min_max_size.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\multi_column_fragmentainer_group.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\exclusions\ng_exclusion.cc" />
@@ -790,6 +792,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_baseline.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_caret_position.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_caret_rect.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_fragment_traversal.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_item.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_node.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_line_height_metrics.cc" />
@@ -848,6 +851,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\block_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\block_paint_invalidator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_painter.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_painter_base.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_paint_invalidator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\clip_rect.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\composited_layer_mapping.cc" />
@@ -859,6 +863,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\fragment_data.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_element_timing.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_painter.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\inline_painter.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\list_marker_painter.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_box_fragment_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment_traversal.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_paint_invalidator.cc" />
@@ -2420,6 +2427,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_image.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_image_resource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_inline.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_list_item.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_list_marker.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_multi_column_flow_thread.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_multi_column_set.h" />
@@ -2454,6 +2462,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_width.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\root_inline_box.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\trailing_objects.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\list_marker_text.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\map_coordinates_flags.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\min_max_size.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\multi_column_fragmentainer_group.h" />
@@ -2477,6 +2486,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_baseline.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_caret_position.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_caret_rect.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_fragment_traversal.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_item.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_node.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_line_height_metrics.h" />
@@ -2547,6 +2557,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\block_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\block_paint_invalidator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_painter.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_painter_base.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_paint_invalidator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\clip_rect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\clip_rects.h" />
@@ -2563,6 +2574,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\fragment_data.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_element_timing.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_painter.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\inline_painter.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\list_marker_painter.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_box_fragment_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment_traversal.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_paint_invalidator.h" />

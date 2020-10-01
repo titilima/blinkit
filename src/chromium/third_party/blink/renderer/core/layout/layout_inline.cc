@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_inline.cc
+// Description: LayoutInline Class
+//      Author: Ziming Li
+//     Created: 2020-10-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -25,7 +36,7 @@
 
 #include "third_party/blink/renderer/core/css/style_engine.h"
 #include "third_party/blink/renderer/core/editing/position_with_affinity.h"
-#include "third_party/blink/renderer/core/fullscreen/fullscreen.h"
+// BKTOOD: #include "third_party/blink/renderer/core/fullscreen/fullscreen.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_box_model.h"
 #include "third_party/blink/renderer/core/layout/hit_test_result.h"
 #include "third_party/blink/renderer/core/layout/layout_block.h"
@@ -40,7 +51,7 @@
 #include "third_party/blink/renderer/core/paint/inline_painter.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_box_fragment_painter.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment.h"
-#include "third_party/blink/renderer/core/paint/object_painter.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/object_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
 #include "third_party/blink/renderer/platform/geometry/float_quad.h"
 #include "third_party/blink/renderer/platform/geometry/region.h"
@@ -299,6 +310,8 @@ void LayoutInline::UpdateAlwaysCreateLineBoxes(bool full_layout) {
   const ComputedStyle& parent_style = Parent()->StyleRef();
   LayoutInline* parent_layout_inline =
       Parent()->IsLayoutInline() ? ToLayoutInline(Parent()) : nullptr;
+  ASSERT(false); // BKTODO:
+#if 0
   bool check_fonts = GetDocument().InNoQuirksMode();
   bool always_create_line_boxes_new =
       (parent_layout_inline && parent_layout_inline->AlwaysCreateLineBoxes()) ||
@@ -327,6 +340,7 @@ void LayoutInline::UpdateAlwaysCreateLineBoxes(bool full_layout) {
       DirtyLineBoxes(false);
     SetAlwaysCreateLineBoxes();
   }
+#endif
 }
 
 LayoutRect LayoutInline::LocalCaretRect(
@@ -941,6 +955,8 @@ bool LayoutInline::NodeAtPoint(HitTestResult& result,
     // PaintLayer::HitTestContents() without going through any ancestor, in
     // which case the element must have self painting layer.
     DCHECK(HasSelfPaintingLayer());
+    ASSERT(false); // BKTODO:
+#if 0
     for (const NGPaintFragment* fragment :
          NGPaintFragment::InlineFragmentsFor(this)) {
       // NGBoxFragmentPainter::NodeAtPoint() takes an offset that is accumulated
@@ -953,6 +969,7 @@ bool LayoutInline::NodeAtPoint(HitTestResult& result,
               hit_test_action))
         return true;
     }
+#endif
     return false;
   }
 
@@ -1309,6 +1326,8 @@ LayoutRect LayoutInline::VisualOverflowRect() const {
   LayoutUnit outline_outset(StyleRef().OutlineOutsetExtent());
   if (outline_outset) {
     Vector<LayoutRect> rects;
+    ASSERT(false); // BKTODO:
+#if 0
     if (GetDocument().InNoQuirksMode()) {
       // We have already included outline extents of line boxes in
       // linesVisualOverflowBoundingBox(), so the following just add outline
@@ -1323,6 +1342,7 @@ LayoutRect LayoutInline::VisualOverflowRect() const {
       AddOutlineRects(rects, LayoutPoint(),
                       OutlineRectsShouldIncludeBlockVisualOverflow());
     }
+#endif
     if (!rects.IsEmpty()) {
       LayoutRect outline_rect = UnionRectEvenIfEmpty(rects);
       outline_rect.Inflate(outline_outset);
@@ -1705,10 +1725,13 @@ void LayoutInline::InvalidateDisplayItemClients(
         Container()->InvalidateDisplayItemClients(
             PaintInvalidationReason::kOutline);
       }
+      ASSERT(false); // BKTODO:
+#if 0
       for (NGPaintFragment* fragment : fragments) {
         paint_invalidator.InvalidateDisplayItemClient(*fragment,
                                                       invalidation_reason);
       }
+#endif
       return;
     }
   }
