@@ -3260,6 +3260,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\list_item_painter.cc">
       <Filter>renderer\core\paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\view_fragmentation_context.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -8967,6 +8970,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\list_item_painter.h">
       <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\view_fragmentation_context.h">
+      <Filter>renderer\core\layout</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

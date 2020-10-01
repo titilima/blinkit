@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_multi_column_flow_thread.cc
+// Description: LayoutMultiColumnFlowThread Class
+//      Author: Ziming Li
+//     Created: 2020-10-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -462,6 +473,8 @@ LayoutMultiColumnSet* LayoutMultiColumnFlowThread::ColumnSetAtBlockOffset(
     }
   } else {
     DCHECK(!column_sets_invalidated_);
+    ASSERT(false); // BKTODO:
+#if 0
     if (multi_column_set_list_.IsEmpty())
       return nullptr;
     if (offset < LayoutUnit()) {
@@ -477,6 +490,7 @@ LayoutMultiColumnSet* LayoutMultiColumnFlowThread::ColumnSetAtBlockOffset(
       else
         column_set = adapter.Result();
     }
+#endif
   }
   if (page_boundary_rule == kAssociateWithFormerPage && column_set &&
       offset == column_set->LogicalTopInFlowThread()) {
@@ -917,6 +931,8 @@ bool LayoutMultiColumnFlowThread::DescendantIsValidColumnSpanner(
 
 void LayoutMultiColumnFlowThread::AddColumnSetToThread(
     LayoutMultiColumnSet* column_set) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (LayoutMultiColumnSet* next_set =
           column_set->NextSiblingMultiColumnSet()) {
     LayoutMultiColumnSetList::iterator it =
@@ -926,6 +942,7 @@ void LayoutMultiColumnFlowThread::AddColumnSetToThread(
   } else {
     multi_column_set_list_.insert(column_set);
   }
+#endif
 }
 
 void LayoutMultiColumnFlowThread::WillBeRemovedFromTree() {

@@ -827,6 +827,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\table_grid_cell.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_autosizer.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_run_constructor.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\view_fragmentation_context.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\base_fetch_context.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\document_loader.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\empty_clients.cc" />
@@ -2530,6 +2531,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\table_grid_cell.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_autosizer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_run_constructor.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\view_fragmentation_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\base_fetch_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\document_loader.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\empty_clients.h" />
