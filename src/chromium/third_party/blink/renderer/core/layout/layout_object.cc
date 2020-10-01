@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_object.cc
+// Description: LayoutObject Class
+//      Author: Ziming Li
+//     Created: 2020-10-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -31,8 +42,10 @@
 #include <algorithm>
 #include <memory>
 
+#if 0 // BKTODO:
 #include "third_party/blink/public/platform/web_scroll_into_view_params.h"
 #include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
+#endif
 #include "third_party/blink/renderer/core/animation/element_animations.h"
 #include "third_party/blink/renderer/core/css/resolver/style_resolver.h"
 #include "third_party/blink/renderer/core/css/style_change_reason.h"
@@ -47,22 +60,26 @@
 #include "third_party/blink/renderer/core/editing/position_with_affinity.h"
 #include "third_party/blink/renderer/core/editing/text_affinity.h"
 #include "third_party/blink/renderer/core/editing/visible_units.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/frame/deprecated_schedule_style_recalc_during_layout.h"
 #include "third_party/blink/renderer/core/frame/event_handler_registry.h"
+#endif
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
 #include "third_party/blink/renderer/core/html/html_element.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_html_element.h"
 #include "third_party/blink/renderer/core/html/html_table_cell_element.h"
 #include "third_party/blink/renderer/core/html/html_table_element.h"
 #include "third_party/blink/renderer/core/input/event_handler.h"
 #include "third_party/blink/renderer/core/layout/custom/layout_custom.h"
+#endif
 #include "third_party/blink/renderer/core/layout/hit_test_result.h"
 #include "third_party/blink/renderer/core/layout/layout_counter.h"
 #include "third_party/blink/renderer/core/layout/layout_deprecated_flexible_box.h"
-#include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
 #include "third_party/blink/renderer/core/layout/layout_fieldset.h"
 #include "third_party/blink/renderer/core/layout/layout_flexible_box.h"
 #include "third_party/blink/renderer/core/layout/layout_flow_thread.h"
@@ -73,7 +90,7 @@
 #include "third_party/blink/renderer/core/layout/layout_list_item.h"
 #include "third_party/blink/renderer/core/layout/layout_multi_column_spanner_placeholder.h"
 #include "third_party/blink/renderer/core/layout/layout_object_factory.h"
-#include "third_party/blink/renderer/core/layout/layout_scrollbar_part.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_scrollbar_part.h"
 #include "third_party/blink/renderer/core/layout/layout_table_caption.h"
 #include "third_party/blink/renderer/core/layout/layout_table_cell.h"
 #include "third_party/blink/renderer/core/layout/layout_table_col.h"
@@ -85,17 +102,21 @@
 #include "third_party/blink/renderer/core/layout/ng/ng_block_node.h"
 #include "third_party/blink/renderer/core/layout/ng/ng_layout_result.h"
 #include "third_party/blink/renderer/core/layout/ng/ng_unpositioned_float.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/layout/svg/layout_svg_resource_clipper.h"
 #include "third_party/blink/renderer/core/layout/svg/svg_resources.h"
 #include "third_party/blink/renderer/core/layout/svg/svg_resources_cache.h"
 #include "third_party/blink/renderer/core/page/autoscroll_controller.h"
+#endif
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment.h"
 #include "third_party/blink/renderer/core/paint/object_paint_invalidator.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/paint/paint_tracker.h"
 #include "third_party/blink/renderer/core/scroll/smooth_scroll_sequencer.h"
+#endif
 #include "third_party/blink/renderer/core/style/content_data.h"
 #include "third_party/blink/renderer/core/style/cursor_data.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
@@ -198,13 +219,20 @@ bool LayoutObject::affects_parent_block_ = false;
 
 void* LayoutObject::operator new(size_t sz) {
   DCHECK(IsMainThread());
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return WTF::Partitions::LayoutPartition()->Alloc(
       sz, WTF_HEAP_PROFILER_TYPE_NAME(LayoutObject));
+#endif
 }
 
 void LayoutObject::operator delete(void* ptr) {
   DCHECK(IsMainThread());
+  ASSERT(false); // BKTODO:
+#if 0
   base::PartitionFree(ptr);
+#endif
 }
 
 LayoutObject* LayoutObject::CreateObject(Element* element,
@@ -276,7 +304,11 @@ LayoutObject* LayoutObject::CreateObject(Element* element,
       return new LayoutGrid(element);
     case EDisplay::kLayoutCustom:
     case EDisplay::kInlineLayoutCustom:
+      ASSERT(false); // BKTODO:
+      break;
+#if 0
       return new LayoutCustom(element);
+#endif
   }
 
   NOTREACHED();
@@ -296,8 +328,11 @@ LayoutObject::LayoutObject(Node* node)
 #endif
       bitfields_(node) {
   InstanceCounters::IncrementCounter(InstanceCounters::kLayoutObjectCounter);
+  ASSERT(false); // BKTODO:
+#if 0
   if (node_)
     GetFrameView()->IncrementLayoutObjectCount();
+#endif
 }
 
 LayoutObject::~LayoutObject() {
@@ -316,7 +351,11 @@ bool LayoutObject::IsDescendantOf(const LayoutObject* obj) const {
 }
 
 bool LayoutObject::IsHR() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return IsHTMLHRElement(GetNode());
+#endif
 }
 
 void LayoutObject::SetIsInsideFlowThreadIncludingDescendants(
@@ -438,11 +477,14 @@ void LayoutObject::NotifyOfSubtreeChange() {
 
   NotifyAncestorsOfSubtreeChange();
 
+  ASSERT(false); // BKTODO:
+#if 0
   // We can modify the layout tree during layout which means that we may
   // try to schedule this during performLayout. This should no longer
   // happen when crbug.com/370457 is fixed.
   DeprecatedScheduleStyleRecalcDuringLayout marker(GetDocument().Lifecycle());
   GetDocument().ScheduleLayoutTreeUpdateIfNeeded();
+#endif
 }
 
 void LayoutObject::HandleSubtreeModifications() {
@@ -490,8 +532,12 @@ bool LayoutObject::HasClipRelatedProperty() const {
 }
 
 bool LayoutObject::IsRenderedLegend() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (!IsBox() || !IsHTMLLegendElement(GetNode()))
     return false;
+#endif
   if (IsFloatingOrOutOfFlowPositioned())
     return false;
   const auto* parent = Parent();
@@ -501,9 +547,13 @@ bool LayoutObject::IsRenderedLegend() const {
     if (parent->IsAnonymous() && parent->Parent()->IsLayoutNGFieldset())
       parent = parent->Parent();
   }
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return parent && parent->IsLayoutBlock() &&
          IsHTMLFieldSetElement(parent->GetNode()) &&
          LayoutFieldset::FindInFlowLegend(*ToLayoutBlock(parent)) == this;
+#endif
 }
 
 LayoutObject* LayoutObject::NextInPreOrderAfterChildren() const {
@@ -724,6 +774,9 @@ LayoutRect LayoutObject::ScrollRectToVisible(
   if (!enclosing_box)
     return rect;
 
+  ASSERT(false); // BKTODO:
+  return rect;
+#if 0
   GetDocument().GetFrame()->GetSmoothScrollSequencer().AbortAnimations();
   WebScrollIntoViewParams new_params(params);
   new_params.is_for_scroll_sequence |=
@@ -733,6 +786,7 @@ LayoutRect LayoutObject::ScrollRectToVisible(
   GetDocument().GetFrame()->GetSmoothScrollSequencer().RunQueuedAnimations();
 
   return new_location;
+#endif
 }
 
 LayoutBox* LayoutObject::EnclosingBox() const {
@@ -889,11 +943,14 @@ void LayoutObject::MarkContainerChainForLayout(bool schedule_relayout,
   DCHECK(!IsSetNeedsLayoutForbidden());
 #endif
   DCHECK(!layouter || this != layouter->Root());
+  ASSERT(false); // BKTODO:
+#if 0
   // When we're in layout, we're marking a descendant as needing layout with
   // the intention of visiting it during this layout. We shouldn't be
   // scheduling it to be laid out later. Also, scheduleRelayout() must not be
   // called while iterating LocalFrameView::layout_subtree_root_list_.
   schedule_relayout &= !GetFrameView()->IsInPerformLayout();
+#endif
 
   LayoutObject* object = Container();
   LayoutObject* last = this;
@@ -1060,8 +1117,11 @@ const LayoutBlock* LayoutObject::InclusiveContainingBlock() const {
 
 LayoutBlock* LayoutObject::ContainingBlock(AncestorSkipInfo* skip_info) const {
   LayoutObject* object = Parent();
+  ASSERT(false); // BKTODO:
+#if 0
   if (!object && IsLayoutScrollbarPart())
     object = ToLayoutScrollbarPart(this)->GetScrollableArea()->GetLayoutBox();
+#endif
   if (!IsTextOrSVGChild()) {
     if (style_->GetPosition() == EPosition::kFixed)
       return ContainingBlockForFixedPosition(skip_info);
@@ -1279,8 +1339,11 @@ bool LayoutObject::GetUpperLeftCorner(ExpandScrollMargin expand,
   // document. Scroll to the bottom.
   // FIXME: who said anything about scrolling?
   if (!runner && GetDocument().View()) {
+    ASSERT(false); // BKTODO:
+#if 0
     point = FloatPoint(
         0, GetDocument().View()->LayoutViewport()->ContentsSize().Height());
+#endif
     return true;
   }
   return false;
@@ -1367,7 +1430,10 @@ FloatRect LayoutObject::AbsoluteBoundingBoxRectForRange(
   if (range.IsNull() || !range.StartPosition().ComputeContainerNode())
     return FloatRect();
 
+  ASSERT(false); // BKTODO:
+#if 0
   range.GetDocument().UpdateStyleAndLayout();
+#endif
 
   return ComputeTextFloatRect(range);
 }
@@ -1401,9 +1467,12 @@ const LayoutBoxModelObject& LayoutObject::ContainerForPaintInvalidation()
   // If the current frame is not composited, we send just return the main
   // frame's LayoutView so that we generate invalidations on the window.
   const LayoutView* layout_view = View();
+  ASSERT(false); // BKTODO:
+#if 0
   while (const LayoutObject* owner_object =
              layout_view->GetFrame()->OwnerLayoutObject())
     layout_view = owner_object->View();
+#endif
 
   DCHECK(layout_view);
   return *layout_view;
@@ -1455,6 +1524,8 @@ bool LayoutObject::HasDistortingVisualEffects() const {
     }
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   PropertyTreeState root_properties = GetDocument()
                                           .GetFrame()
                                           ->LocalFrameRoot()
@@ -1468,6 +1539,7 @@ bool LayoutObject::HasDistortingVisualEffects() const {
           paint_properties.Transform(), root_properties.Transform());
   if (!matrix.Is2DProportionalUpscaleAndOr2DTranslation())
     return true;
+#endif
 
   return false;
 }
@@ -1514,7 +1586,10 @@ String LayoutObject::DebugName() const {
 
   if (const Node* node = GetNode()) {
     name.Append(' ');
+    ASSERT(false); // BKTODO:
+#if 0
     name.Append(node->DebugName());
+#endif
   }
   return name.ToString();
 }
@@ -1571,8 +1646,11 @@ LayoutRect LayoutObject::AbsoluteSelectionRect() const {
   if (!selection_rect.IsEmpty())
     MapToVisualRectInAncestorSpace(View(), selection_rect);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (LocalFrameView* frame_view = GetFrameView())
     selection_rect = frame_view->DocumentToFrame(selection_rect);
+#endif
 
   return selection_rect;
 }
@@ -1612,10 +1690,13 @@ void LayoutObject::ClearPreviousVisualRects() {
   if (IsInline()) {
     auto fragments = NGPaintFragment::InlineFragmentsFor(this);
     if (fragments.IsInLayoutNGInlineFormattingContext()) {
+      ASSERT(false); // BKTODO:
+#if 0
       for (auto* fragment : fragments) {
         fragment->SetVisualRect(LayoutRect());
         fragment->SetSelectionVisualRect(LayoutRect());
       }
+#endif
     }
   }
 
@@ -1728,6 +1809,9 @@ bool LayoutObject::MapToVisualRectInAncestorSpaceInternal(
 HitTestResult LayoutObject::HitTestForOcclusion(
     const LayoutRect& hit_rect) const {
   LocalFrame* frame = GetDocument().GetFrame();
+  ASSERT(false); // BKTODO:
+  return HitTestResult();
+#if 0
   DCHECK(!frame->View()->NeedsLayout());
   HitTestRequest::HitTestRequestType hit_type =
       HitTestRequest::kIgnorePointerEventsNone | HitTestRequest::kReadOnly |
@@ -1737,6 +1821,7 @@ HitTestResult LayoutObject::HitTestForOcclusion(
   HitTestLocation location(hit_rect);
   return frame->GetEventHandler().HitTestResultAtLocation(location, hit_type,
                                                           this, true);
+#endif
 }
 
 void LayoutObject::DirtyLinesFromChangedChild(LayoutObject*, MarkingBehavior) {}
@@ -1756,8 +1841,11 @@ std::ostream& operator<<(std::ostream& out, const LayoutObject* object) {
 #ifndef NDEBUG
 
 void LayoutObject::ShowTreeForThis() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (GetNode())
     ::showTree(GetNode());
+#endif
 }
 
 void LayoutObject::ShowLayoutTreeForThis() const {
@@ -1773,9 +1861,12 @@ void LayoutObject::ShowLineTreeForThis() const {
 }
 
 void LayoutObject::ShowLayoutObject() const {
+  ASSERT(false); // BKTODO:
+#if 0
   StringBuilder string_builder;
   DumpLayoutObject(string_builder, true, kShowTreeCharacterOffset);
   DLOG(INFO) << "\n" << string_builder.ToString().Utf8().data();
+#endif
 }
 
 #endif  // NDEBUG
@@ -1783,6 +1874,8 @@ void LayoutObject::ShowLayoutObject() const {
 void LayoutObject::DumpLayoutObject(StringBuilder& string_builder,
                                     bool dump_address,
                                     unsigned show_tree_character_offset) const {
+  ASSERT(false); // BKTODO:
+#if 0
   string_builder.Append(DecoratedName());
 
   if (dump_address)
@@ -1802,6 +1895,7 @@ void LayoutObject::DumpLayoutObject(StringBuilder& string_builder,
     string_builder.Append('\t');
     string_builder.Append(GetNode()->ToString().Utf8().data());
   }
+#endif
 }
 
 #ifndef NDEBUG
@@ -1812,6 +1906,8 @@ void LayoutObject::DumpLayoutTreeAndMark(StringBuilder& string_builder,
                                          const LayoutObject* marked_object2,
                                          const char* marked_label2,
                                          unsigned depth) const {
+  ASSERT(false); // BKTODO:
+#if 0
   StringBuilder object_info;
   if (marked_object1 == this && marked_label1)
     object_info.Append(marked_label1);
@@ -1829,6 +1925,7 @@ void LayoutObject::DumpLayoutTreeAndMark(StringBuilder& string_builder,
     child->DumpLayoutTreeAndMark(string_builder, marked_object1, marked_label1,
                                  marked_object2, marked_label2, depth + 1);
   }
+#endif
 }
 
 #endif  // NDEBUG
@@ -1879,6 +1976,8 @@ StyleDifference LayoutObject::AdjustStyleDifference(
   if (diff.CssClipChanged())
     diff.SetNeedsPaintInvalidationSubtree();
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Optimization: for decoration/color property changes, invalidation is only
   // needed if we have style or text affected by these properties.
   if (diff.TextDecorationOrColorChanged() &&
@@ -1895,6 +1994,7 @@ StyleDifference LayoutObject::AdjustStyleDifference(
         IsListMarker() || IsDetailsMarker())
       diff.SetNeedsPaintInvalidationObject();
   }
+#endif
 
   // The answer to layerTypeRequired() for plugins, iframes, and canvas can
   // change without the actual style changing, since it depends on whether we
@@ -2133,6 +2233,8 @@ void LayoutObject::StyleWillChange(StyleDifference diff,
     // we need to dirty our stacking context's z-order list.
     if (visibility_changed || style_->ZIndex() != new_style.ZIndex() ||
         style_->IsStackingContext() != new_style.IsStackingContext()) {
+      ASSERT(false); // BKTODO:
+#if 0
       GetDocument().SetAnnotatedRegionsDirty(true);
       if (AXObjectCache* cache = GetDocument().ExistingAXObjectCache()) {
         if (GetNode())
@@ -2140,11 +2242,15 @@ void LayoutObject::StyleWillChange(StyleDifference diff,
         else
           cache->ChildrenChanged(Parent());
       }
+#endif
     }
 
     if (diff.TransformChanged()) {
+      ASSERT(false); // BKTODO:
+#if 0
       if (AXObjectCache* cache = GetDocument().ExistingAXObjectCache())
         cache->LocationChanged(this);
+#endif
     }
 
     // Keep layer hierarchy visibility bits up to date if visibility changes.
@@ -2204,6 +2310,8 @@ void LayoutObject::StyleWillChange(StyleDifference diff,
   if (GetNode() && !GetNode()->IsTextNode() &&
       (old_touch_action == TouchAction::kTouchActionAuto) !=
           (new_touch_action == TouchAction::kTouchActionAuto)) {
+    ASSERT(false); // BKTODO:
+#if 0
     EventHandlerRegistry& registry =
         GetDocument().GetFrame()->GetEventHandlerRegistry();
     if (new_touch_action != TouchAction::kTouchActionAuto) {
@@ -2213,6 +2321,7 @@ void LayoutObject::StyleWillChange(StyleDifference diff,
       registry.DidRemoveEventHandler(*GetNode(),
                                      EventHandlerRegistry::kTouchAction);
     }
+#endif
     if (RuntimeEnabledFeatures::PaintTouchActionRectsEnabled())
       MarkEffectiveWhitelistedTouchActionChanged();
   }
@@ -2223,9 +2332,12 @@ void LayoutObject::ClearBaseComputedStyle() {
     return;
   if (!GetNode()->IsElementNode())
     return;
+  ASSERT(false); // BKTODO:
+#if 0
   if (ElementAnimations* animations =
           ToElement(GetNode())->GetElementAnimations())
     animations->ClearBaseComputedStyle();
+#endif
 }
 
 static bool AreNonIdenticalCursorListsEqual(const ComputedStyle* a,
@@ -2244,6 +2356,8 @@ void LayoutObject::SetScrollAnchorDisablingStyleChangedOnAncestor() {
   // Walk up the parent chain and find the first scrolling block to disable
   // scroll anchoring on.
   LayoutObject* object = Parent();
+  ASSERT(false); // BKTODO:
+#if 0
   Element* viewport_defining_element = GetDocument().ViewportDefiningElement();
   while (object) {
     if (object->IsLayoutBlock()) {
@@ -2256,6 +2370,7 @@ void LayoutObject::SetScrollAnchorDisablingStyleChangedOnAncestor() {
     }
     object = object->Parent();
   }
+#endif
 }
 
 void LayoutObject::StyleDidChange(StyleDifference diff,
@@ -2303,11 +2418,14 @@ void LayoutObject::StyleDidChange(StyleDifference diff,
 
   if (old_style && !AreCursorsEqual(old_style, Style())) {
     if (LocalFrame* frame = GetFrame()) {
+      ASSERT(false); // BKTODO:
+#if 0
       // Cursor update scheduling is done by the local root, which is the main
       // frame if there are no RemoteFrame ancestors in the frame tree. Use of
       // localFrameRoot() is discouraged but will change when cursor update
       // scheduling is moved from EventHandler to PageEventHandler.
       frame->LocalFrameRoot().GetEventHandler().ScheduleCursorUpdate();
+#endif
     }
   }
 
@@ -2798,9 +2916,13 @@ LayoutSize LayoutObject::OffsetFromScrollableContainer(
   if (!ignore_scroll_offset)
     return -LayoutSize(box->ScrolledContentOffset());
 
+  ASSERT(false); // BKTODO:
+  return LayoutSize();
+#if 0
   // ScrollOrigin accounts for other writing modes whose content's origin is not
   // at the top-left.
   return LayoutSize(ToIntSize(box->GetScrollableArea()->ScrollOrigin()));
+#endif
 }
 
 LayoutSize LayoutObject::OffsetFromAncestor(
@@ -2971,6 +3093,8 @@ RespectImageOrientationEnum LayoutObject::ShouldRespectImageOrientation(
   if (!layout_object)
     return kDoNotRespectImageOrientation;
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Respect the image's orientation if it's being used as a full-page image or
   // it's an <img> and the setting to respect it everywhere is set or the <img>
   // has image-orientation: from-image style. FIXME: crbug.com/498233
@@ -2985,6 +3109,7 @@ RespectImageOrientationEnum LayoutObject::ShouldRespectImageOrientation(
           .GetSettings()
           ->GetShouldRespectImageOrientation())
     return kRespectImageOrientation;
+#endif
 
   if (layout_object->Style() &&
       layout_object->StyleRef().RespectImageOrientation() ==
@@ -3030,15 +3155,21 @@ LayoutObject* LayoutObject::Container(AncestorSkipInfo* skip_info) const {
 }
 
 inline LayoutObject* LayoutObject::ParentCrossingFrames() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsLayoutView())
     return GetFrame()->OwnerLayoutObject();
+#endif
   return Parent();
 }
 
 inline void LayoutObject::ClearLayoutRootIfNeeded() const {
   if (LocalFrameView* view = GetFrameView()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!DocumentBeingDestroyed())
       view->ClearLayoutSubtreeRoot(*this);
+#endif
   }
 }
 
@@ -3049,24 +3180,33 @@ void LayoutObject::WillBeDestroyed() {
     children->DestroyLeftoverChildren();
 
   if (LocalFrame* frame = GetFrame()) {
+    ASSERT(false); // BKTODO:
+#if 0
     // If this layoutObject is being autoscrolled, stop the autoscrolling.
     if (frame->GetPage())
       frame->GetPage()->GetAutoscrollController().StopAutoscrollIfNeeded(this);
+#endif
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   // For accessibility management, notify the parent of the imminent change to
   // its child set.
   // We do it now, before remove(), while the parent pointer is still available.
   if (AXObjectCache* cache = GetDocument().ExistingAXObjectCache())
     cache->ChildrenChanged(Parent());
+#endif
 
   Remove();
 
+  ASSERT(false); // BKTODO:
+#if 0
   // The remove() call above may invoke axObjectCache()->childrenChanged() on
   // the parent, which may require the AX layout object for this layoutObject.
   // So we remove the AX layout object now, after the layoutObject is removed.
   if (AXObjectCache* cache = GetDocument().ExistingAXObjectCache())
     cache->Remove(this);
+#endif
 
   // If this layoutObject had a parent, remove should have destroyed any
   // counters attached to this layoutObject and marked the affected other
@@ -3082,6 +3222,8 @@ void LayoutObject::WillBeDestroyed() {
   // previously may have already been removed by the Document independently.
   if (GetNode() && !GetNode()->IsTextNode() && style_ &&
       style_->GetTouchAction() != TouchAction::kTouchActionAuto) {
+    ASSERT(false); // BKTODO:
+#if 0
     EventHandlerRegistry& registry =
         GetDocument().GetFrame()->GetEventHandlerRegistry();
     if (registry.EventHandlerTargets(EventHandlerRegistry::kTouchAction)
@@ -3089,6 +3231,7 @@ void LayoutObject::WillBeDestroyed() {
       registry.DidRemoveEventHandler(*GetNode(),
                                      EventHandlerRegistry::kTouchAction);
     }
+#endif
   }
 
   SetAncestorLineBoxDirty(false);
@@ -3175,6 +3318,8 @@ static bool FindReferencingScrollAnchors(
   while (layer) {
     if (PaintLayerScrollableArea* scrollable_area =
             layer->GetScrollableArea()) {
+      ASSERT(false); // BKTODO:
+#if 0
       ScrollAnchor* anchor = scrollable_area->GetScrollAnchor();
       DCHECK(anchor);
       if (anchor->RefersTo(layout_object)) {
@@ -3184,6 +3329,7 @@ static bool FindReferencingScrollAnchors(
         else
           return true;
       }
+#endif
     }
     layer = layer->Parent();
   }
@@ -3229,7 +3375,10 @@ void LayoutObject::WillBeRemovedFromTree() {
 
   if (RuntimeEnabledFeatures::PaintTrackingEnabled()) {
     if (LocalFrameView* frame_view = GetFrameView()) {
+      ASSERT(false); // BKTODO:
+#if 0
       frame_view->GetPaintTracker().NotifyNodeRemoved(*this);
+#endif
     }
   }
 }
@@ -3238,12 +3387,15 @@ void LayoutObject::SetNeedsPaintPropertyUpdate() {
   if (bitfields_.NeedsPaintPropertyUpdate())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Anytime a layout object needs a paint property update, we should also do
   // intersection observation.
   // TODO(vmpstr): Figure out if there's a cleaner way to do this outside of
   // this function, since this is potentially called many times for a single
   // frame view subtree.
   GetFrameView()->SetIntersectionObservationState(LocalFrameView::kDesired);
+#endif
 
   bitfields_.SetNeedsPaintPropertyUpdate(true);
   for (auto* ancestor = ParentCrossingFrames();
@@ -3439,6 +3591,8 @@ bool LayoutObject::NodeAtPoint(HitTestResult&,
 }
 
 void LayoutObject::ScheduleRelayout() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsLayoutView()) {
     LocalFrameView* view = ToLayoutView(this)->GetFrameView();
     if (view)
@@ -3451,6 +3605,7 @@ void LayoutObject::ScheduleRelayout() {
       }
     }
   }
+#endif
 }
 
 void LayoutObject::ForceLayout() {
@@ -3558,8 +3713,12 @@ const ComputedStyle* LayoutObject::GetCachedPseudoStyle(
   if (!element)
     return nullptr;
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return element->CachedStyleForPseudoElement(PseudoStyleRequest(pseudo),
                                               parent_style);
+#endif
 }
 
 scoped_refptr<ComputedStyle> LayoutObject::GetUncachedPseudoStyle(
@@ -3576,7 +3735,11 @@ scoped_refptr<ComputedStyle> LayoutObject::GetUncachedPseudoStyle(
   if (element->IsPseudoElement())
     return nullptr;
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return element->StyleForPseudoElement(request, parent_style);
+#endif
 }
 
 void LayoutObject::AddAnnotatedRegions(Vector<AnnotatedRegionValue>& regions) {
@@ -3604,6 +3767,9 @@ bool LayoutObject::WillRenderImage() {
   if (StyleRef().Visibility() != EVisibility::kVisible)
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // We will not render a new image when PausableObjects is paused
   if (GetDocument().IsContextPaused())
     return false;
@@ -3615,12 +3781,16 @@ bool LayoutObject::WillRenderImage() {
   // If we're not in a window (i.e., we're dormant from being in a background
   // tab) then we don't want to render either.
   return GetDocument().View()->IsVisible();
+#endif
 }
 
 bool LayoutObject::GetImageAnimationPolicy(ImageAnimationPolicy& policy) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!GetDocument().GetSettings())
     return false;
   policy = GetDocument().GetSettings()->GetImageAnimationPolicy();
+#endif
   return true;
 }
 
@@ -3640,7 +3810,11 @@ bool LayoutObject::IsInert() const {
   const LayoutObject* layout_object = this;
   while (!layout_object->GetNode())
     layout_object = layout_object->Parent();
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return layout_object->GetNode()->IsInert();
+#endif
 }
 
 void LayoutObject::ImageChanged(ImageResourceContent* image,
@@ -3674,6 +3848,8 @@ Element* LayoutObject::OffsetParent(const Element* base) const {
     if (!node)
       continue;
 
+    ASSERT(false); // BKTODO:
+#if 0
     // TODO(kochi): If |base| or |node| is nested deep in shadow roots, this
     // loop may get expensive, as isUnclosedNodeOf() can take up to O(N+M) time
     // (N and M are depths).
@@ -3686,6 +3862,7 @@ Element* LayoutObject::OffsetParent(const Element* base) const {
         return nullptr;
       continue;
     }
+#endif
 
     if (ancestor->CanContainAbsolutePositionObjects())
       break;
@@ -3693,9 +3870,12 @@ Element* LayoutObject::OffsetParent(const Element* base) const {
     if (IsHTMLBodyElement(*node))
       break;
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (!IsPositioned() &&
         (IsHTMLTableElement(*node) || IsHTMLTableCellElement(*node)))
       break;
+#endif
 
     // Webkit specific extension where offsetParent stops at zoom level changes.
     if (effective_zoom != ancestor->StyleRef().EffectiveZoom())
@@ -3795,6 +3975,8 @@ bool LayoutObject::CanUpdateSelectionOnRootLineBoxes() const {
 }
 
 void LayoutObject::SetNeedsBoundariesUpdate() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsSVGChild()) {
     // The boundaries affect mask clip.
     auto* resources = SVGResourcesCache::CachedResourcesForLayoutObject(*this);
@@ -3803,6 +3985,7 @@ void LayoutObject::SetNeedsBoundariesUpdate() {
     if (resources && resources->Clipper())
       InvalidateClipPathCache();
   }
+#endif
   if (LayoutObject* layout_object = Parent())
     layout_object->SetNeedsBoundariesUpdate();
 }
@@ -3873,9 +4056,12 @@ void LayoutObject::SetShouldDoFullPaintInvalidationWithoutGeometryChange(
     PaintInvalidationReason reason) {
   // Only full invalidation reasons are allowed.
   DCHECK(IsFullPaintInvalidationReason(reason));
+  ASSERT(false); // BKTODO:
+#if 0
   // This is before the early return to ensure visual update is always scheduled
   // in case that this is called not during a document lifecycle update.
   GetFrameView()->ScheduleVisualUpdateForPaintInvalidationIfNeeded();
+#endif
 
   if (ShouldDoFullPaintInvalidation())
     return;
@@ -3896,7 +4082,10 @@ void LayoutObject::SetShouldCheckForPaintInvalidation() {
 void LayoutObject::SetShouldCheckForPaintInvalidationWithoutGeometryChange() {
   if (ShouldCheckForPaintInvalidation())
     return;
+  ASSERT(false); // BKTODO:
+#if 0
   GetFrameView()->ScheduleVisualUpdateForPaintInvalidationIfNeeded();
+#endif
 
   bitfields_.SetShouldCheckForPaintInvalidation(true);
   for (LayoutObject* parent = ParentCrossingFrames();
@@ -3931,10 +4120,13 @@ void LayoutObject::SetShouldDelayFullPaintInvalidation() {
     // This will also schedule a visual update.
     SetShouldCheckForPaintInvalidationWithoutGeometryChange();
   } else {
+    ASSERT(false); // BKTODO:
+#if 0
     // Schedule visual update for the next document cycle in which we will
     // check if the delayed invalidation should be promoted to a real
     // invalidation.
     GetFrameView()->ScheduleVisualUpdateForPaintInvalidationIfNeeded();
+#endif
   }
 }
 
@@ -3988,10 +4180,13 @@ void LayoutObject::SetIsBackgroundAttachmentFixedObject(
     return;
   bitfields_.SetIsBackgroundAttachmentFixedObject(
       is_background_attachment_fixed_object);
+  ASSERT(false); // BKTODO:
+#if 0
   if (is_background_attachment_fixed_object)
     GetFrameView()->AddBackgroundAttachmentFixedObject(this);
   else
     GetFrameView()->RemoveBackgroundAttachmentFixedObject(this);
+#endif
 }
 
 LayoutRect LayoutObject::DebugRect() const {
@@ -4161,6 +4356,8 @@ void showLayoutTree(const blink::LayoutObject* object1) {
 
 void showLayoutTree(const blink::LayoutObject* object1,
                     const blink::LayoutObject* object2) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (object1) {
     const blink::LayoutObject* root = object1;
     while (root->Parent())
@@ -4174,6 +4371,7 @@ void showLayoutTree(const blink::LayoutObject* object1,
   } else {
     DLOG(INFO) << "Cannot showLayoutTree. Root is (nil)";
   }
+#endif
 }
 
 #endif

@@ -100,6 +100,13 @@ public:
 
     void AdvanceTo(LifecycleState);
 
+#ifndef BLINKIT_CRAWLER_ONLY
+    bool StateAllowsLayoutTreeMutations(void) const
+    {
+        return m_detachCount > 0 || kInStyleRecalc == m_state || kInLayoutSubtreeChange == m_state;
+    }
+    bool StateAllowsLayoutTreeNotifications(void) const { return kInLayoutSubtreeChange == m_state; }
+#endif
     bool StateAllowsTreeMutations(void) const;
     bool StateTransitionDisallowed(void) const { return m_disallowTransitionCount > 0; }
     void IncrementNoTransitionCount(void) { ++m_disallowTransitionCount; }
@@ -136,6 +143,9 @@ private:
 #endif
 
     LifecycleState m_state = kUninitialized;
+#ifndef BLINKIT_CRAWLER_ONLY
+    int m_detachCount = 0;
+#endif
     int m_disallowTransitionCount = 0;
     bool m_checkNoTransition = false;
 
