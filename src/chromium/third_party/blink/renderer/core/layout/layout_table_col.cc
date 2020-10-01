@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_table_col.cc
+// Description: LayoutTableCol Class
+//      Author: Ziming Li
+//     Created: 2020-10-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1997 Martin Jones (mjones@kde.org)
  *           (C) 1997 Torben Weis (weis@kde.org)
@@ -25,14 +36,14 @@
 
 #include "third_party/blink/renderer/core/layout/layout_table_col.h"
 
-#include "third_party/blink/renderer/core/html/html_table_col_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_table_col_element.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/layout/layout_table.h"
 #include "third_party/blink/renderer/core/layout/layout_table_cell.h"
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 LayoutTableCol::LayoutTableCol(Element* element)
     : LayoutTableBoxComponent(element), span_(1) {
@@ -75,12 +86,15 @@ void LayoutTableCol::StyleDidChange(StyleDifference diff,
 void LayoutTableCol::UpdateFromElement() {
   unsigned old_span = span_;
   Node* n = GetNode();
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsHTMLTableColElement(n)) {
     HTMLTableColElement& tc = ToHTMLTableColElement(*n);
     span_ = tc.span();
   } else {
     span_ = 1;
   }
+#endif
   if (span_ != old_span && Style() && Parent())
     SetNeedsLayoutAndPrefWidthsRecalcAndFullPaintInvalidation(
         LayoutInvalidationReason::kAttributeChanged);
