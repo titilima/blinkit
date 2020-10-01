@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_quote.cc
+// Description: LayoutQuote Class
+//      Author: Ziming Li
+//     Created: 2020-10-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * Copyright (C) 2011 Nokia Inc.  All rights reserved.
  * Copyright (C) 2012 Google Inc. All rights reserved.
@@ -37,8 +48,9 @@ LayoutQuote::LayoutQuote(PseudoElement& pseudo, QuoteType quote)
       depth_(0),
       next_(nullptr),
       previous_(nullptr),
-      owning_pseudo_(&pseudo),
+      // BKTODO: owning_pseudo_(&pseudo),
       attached_(false) {
+  ASSERT(false); // BKTODO:
   SetDocumentForAnonymous(&pseudo.GetDocument());
 }
 
@@ -269,8 +281,11 @@ void LayoutQuote::UpdateText() {
     fragment->SetStyle(MutableStyle());
     fragment->SetContentString(text_.Impl());
   } else {
+    ASSERT(false); // BKTODO:
+#if 0
     fragment =
         LayoutTextFragment::CreateAnonymous(*owning_pseudo_, text_.Impl());
+#endif
     fragment->SetStyle(MutableStyle());
     AddChild(fragment);
   }
