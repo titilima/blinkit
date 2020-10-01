@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_table_row.cc
+// Description: LayoutTableRow Class
+//      Author: Ziming Li
+//     Created: 2020-10-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1997 Martin Jones (mjones@kde.org)
  *           (C) 1997 Torben Weis (weis@kde.org)
@@ -37,7 +48,7 @@
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 LayoutTableRow::LayoutTableRow(Element* element)
     : LayoutTableBoxComponent(element), row_index_(kUnsetRowIndex) {
