@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_scrollbar.cc
+// Description: LayoutScrollbar Class
+//      Author: Ziming Li
+//     Created: 2020-10-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2009 Apple Inc. All Rights Reserved.
  *
@@ -27,9 +38,11 @@
 
 #include "third_party/blink/renderer/core/css/pseudo_style_request.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
 #include "third_party/blink/renderer/core/layout/layout_scrollbar_part.h"
 #include "third_party/blink/renderer/core/layout/layout_scrollbar_theme.h"
+#endif
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/paint/object_paint_invalidator.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context.h"
@@ -50,7 +63,11 @@ LayoutScrollbar::LayoutScrollbar(ScrollableArea* scrollable_area,
                 orientation,
                 kRegularScrollbar,
                 nullptr,
+#if 0 // BKTODO:
                 LayoutScrollbarTheme::GetLayoutScrollbarTheme()),
+#else
+                nullptr),
+#endif
       style_source_(style_source) {
   DCHECK(style_source);
 
@@ -60,6 +77,8 @@ LayoutScrollbar::LayoutScrollbar(ScrollableArea* scrollable_area,
   // Update the scrollbar size.
   IntRect rect(0, 0, 0, 0);
   UpdateScrollbarPart(kScrollbarBGPart);
+  ASSERT(false); // BKTODO:
+#if 0
   if (LayoutScrollbarPart* part = parts_.at(kScrollbarBGPart)) {
     part->UpdateLayout();
     rect.SetSize(FlooredIntSize(part->Size()));
@@ -68,13 +87,17 @@ LayoutScrollbar::LayoutScrollbar(ScrollableArea* scrollable_area,
   } else {
     rect.SetHeight(Height());
   }
+#endif
 
   SetFrameRect(rect);
 }
 
 LayoutScrollbar::~LayoutScrollbar() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (parts_.IsEmpty())
     return;
+#endif
 
   // When a scrollbar is detached from its parent (causing all parts removal)
   // and ready to be destroyed, its destruction can be delayed because of
@@ -94,17 +117,16 @@ int LayoutScrollbar::HypotheticalScrollbarThickness(
       style_source.GetUncachedPseudoStyle(
           PseudoStyleRequest(kPseudoIdScrollbar, nullptr, kScrollbarBGPart),
           style_source.Style());
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   if (orientation == kHorizontalScrollbar) {
     return LayoutScrollbarPart::ComputeScrollbarHeight(
         enclosing_box.ClientHeight().ToInt(), part_style.get());
   }
   return LayoutScrollbarPart::ComputeScrollbarWidth(
       enclosing_box.ClientWidth().ToInt(), part_style.get());
-}
-
-void LayoutScrollbar::Trace(blink::Visitor* visitor) {
-  visitor->Trace(style_source_);
-  Scrollbar::Trace(visitor);
+#endif
 }
 
 void LayoutScrollbar::DisconnectFromScrollableArea() {
@@ -153,9 +175,13 @@ scoped_refptr<ComputedStyle> LayoutScrollbar::GetScrollbarPseudoStyle(
     PseudoId pseudo_id) {
   if (!style_source_->GetLayoutObject())
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return style_source_->StyleForPseudoElement(
       PseudoStyleRequest(pseudo_id, this, part_type),
       style_source_->GetLayoutObject()->Style());
+#endif
 }
 
 void LayoutScrollbar::UpdateScrollbarParts(bool destroy) {
@@ -177,12 +203,15 @@ void LayoutScrollbar::UpdateScrollbarParts(bool destroy) {
   bool is_horizontal = Orientation() == kHorizontalScrollbar;
   int old_thickness = is_horizontal ? Height() : Width();
   int new_thickness = 0;
+  ASSERT(false); // BKTODO:
+#if 0
   LayoutScrollbarPart* part = parts_.at(kScrollbarBGPart);
   if (part) {
     part->UpdateLayout();
     new_thickness =
         (is_horizontal ? part->Size().Height() : part->Size().Width()).ToInt();
   }
+#endif
 
   if (new_thickness != old_thickness) {
     SetFrameRect(
@@ -236,6 +265,8 @@ void LayoutScrollbar::UpdateScrollbarPart(ScrollbarPart part_type,
       !destroy && part_style && part_style->Display() != EDisplay::kNone;
 
   if (need_layout_object && part_style->Display() != EDisplay::kBlock) {
+    ASSERT(false); // BKTODO:
+#if 0
     // See if we are a button that should not be visible according to OS
     // settings.
     WebScrollbarButtonsPlacement buttons_placement =
@@ -266,8 +297,11 @@ void LayoutScrollbar::UpdateScrollbarPart(ScrollbarPart part_type,
       default:
         break;
     }
+#endif
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   LayoutScrollbarPart* part_layout_object = parts_.at(part_type);
   if (!part_layout_object && need_layout_object && scrollable_area_) {
     part_layout_object = LayoutScrollbarPart::CreateAnonymous(
@@ -284,9 +318,13 @@ void LayoutScrollbar::UpdateScrollbarPart(ScrollbarPart part_type,
 
   if (part_layout_object)
     part_layout_object->SetStyleWithWritingModeOfParent(std::move(part_style));
+#endif
 }
 
 IntRect LayoutScrollbar::ButtonRect(ScrollbarPart part_type) const {
+  ASSERT(false); // BKTODO:
+  return IntRect();
+#if 0
   LayoutScrollbarPart* part_layout_object = parts_.at(part_type);
   if (!part_layout_object)
     return IntRect();
@@ -331,9 +369,13 @@ IntRect LayoutScrollbar::ButtonRect(ScrollbarPart part_type) const {
                           part_layout_object->PixelSnappedHeight(),
       is_horizontal ? part_layout_object->PixelSnappedWidth() : Width(),
       is_horizontal ? Height() : part_layout_object->PixelSnappedHeight());
+#endif
 }
 
 IntRect LayoutScrollbar::TrackRect(int start_length, int end_length) const {
+  ASSERT(false); // BKTODO:
+  return IntRect();
+#if 0
   LayoutScrollbarPart* part = parts_.at(kTrackBGPart);
   if (part)
     part->UpdateLayout();
@@ -354,18 +396,24 @@ IntRect LayoutScrollbar::TrackRect(int start_length, int end_length) const {
   int total_length = start_length + end_length;
 
   return IntRect(X(), Y() + start_length, Width(), Height() - total_length);
+#endif
 }
 
 IntRect LayoutScrollbar::TrackPieceRectWithMargins(
     ScrollbarPart part_type,
     const IntRect& old_rect) const {
+  ASSERT(false); // BKTODO:
+#if 0
   LayoutScrollbarPart* part_layout_object = parts_.at(part_type);
   if (!part_layout_object)
     return old_rect;
 
   part_layout_object->UpdateLayout();
+#endif
 
   IntRect rect = old_rect;
+  ASSERT(false); // BKTODO:
+#if 0
   if (Orientation() == kHorizontalScrollbar) {
     rect.SetX((rect.X() + part_layout_object->MarginLeft()).ToInt());
     rect.SetWidth((rect.Width() - part_layout_object->MarginWidth()).ToInt());
@@ -374,10 +422,14 @@ IntRect LayoutScrollbar::TrackPieceRectWithMargins(
     rect.SetHeight(
         (rect.Height() - part_layout_object->MarginHeight()).ToInt());
   }
+#endif
   return rect;
 }
 
 int LayoutScrollbar::MinimumThumbLength() const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   LayoutScrollbarPart* part_layout_object = parts_.at(kThumbPart);
   if (!part_layout_object)
     return 0;
@@ -386,20 +438,27 @@ int LayoutScrollbar::MinimumThumbLength() const {
               ? part_layout_object->Size().Width()
               : part_layout_object->Size().Height())
       .ToInt();
+#endif
 }
 
 void LayoutScrollbar::InvalidateDisplayItemClientsOfScrollbarParts() {
+  ASSERT(false); // BKTODO:
+#if 0
   for (auto& part : parts_) {
     ObjectPaintInvalidator(*part.value)
         .InvalidateDisplayItemClientsIncludingNonCompositingDescendants(
             PaintInvalidationReason::kScrollControl);
   }
+#endif
 }
 
 void LayoutScrollbar::SetVisualRect(const LayoutRect& rect) {
   Scrollbar::SetVisualRect(rect);
+  ASSERT(false); // BKTODO:
+#if 0
   for (auto& part : parts_)
     part.value->GetMutableForPainting().FirstFragment().SetVisualRect(rect);
+#endif
 }
 
 }  // namespace blink

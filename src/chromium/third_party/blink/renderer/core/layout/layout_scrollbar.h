@@ -77,10 +77,18 @@ class LayoutScrollbar final : public Scrollbar {
   bool IsOverlayScrollbar() const override { return false; }
 
   LayoutScrollbarPart* GetPart(ScrollbarPart part_type) {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     return parts_.at(part_type);
+#endif
   }
   const LayoutScrollbarPart* GetPart(ScrollbarPart part_type) const {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     return parts_.at(part_type);
+#endif
   }
 
   void InvalidateDisplayItemClientsOfScrollbarParts();
@@ -111,7 +119,7 @@ class LayoutScrollbar final : public Scrollbar {
   // The element that supplies our style information.
   Member<Element> style_source_;
 
-  HashMap<unsigned, LayoutScrollbarPart*> parts_;
+  // BKTODO: HashMap<unsigned, LayoutScrollbarPart*> parts_;
 };
 
 DEFINE_TYPE_CASTS(LayoutScrollbar,
