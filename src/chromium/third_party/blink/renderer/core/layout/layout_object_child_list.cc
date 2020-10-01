@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_object_child_list.cc
+// Description: LayoutObjectChildList Class
+//      Author: Ziming Li
+//     Created: 2020-10-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2010 Apple Inc. All rights reserved.
  * Copyright (C) Research In Motion Limited 2010. All rights reserved.
@@ -26,7 +37,7 @@
 
 #include "third_party/blink/renderer/core/layout/layout_object_child_list.h"
 
-#include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
+// BKTODO: #include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
 #include "third_party/blink/renderer/core/layout/layout_counter.h"
 #include "third_party/blink/renderer/core/layout/layout_inline.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
@@ -68,11 +79,14 @@ void LayoutObjectChildList::DestroyLeftoverChildren() {
       continue;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     // Destroy any anonymous children remaining in the layout tree, as well as
     // implicit (shadow) DOM elements like those used in the engine-based text
     // fields.
     if (FirstChild()->GetNode())
       FirstChild()->GetNode()->SetLayoutObject(nullptr);
+#endif
     FirstChild()->Destroy();
   }
 }
@@ -137,8 +151,11 @@ LayoutObject* LayoutObjectChildList::RemoveChildNode(
   old_child->RegisterSubtreeChangeListenerOnDescendants(
       old_child->ConsumesSubtreeChangeNotification());
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (AXObjectCache* cache = owner->GetDocument().ExistingAXObjectCache())
     cache->ChildrenChanged(owner);
+#endif
 
   return old_child;
 }
@@ -227,8 +244,11 @@ void LayoutObjectChildList::InsertChildNode(LayoutObject* owner,
   if (!owner->DocumentBeingDestroyed())
     owner->NotifyOfSubtreeChange();
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (AXObjectCache* cache = owner->GetDocument().ExistingAXObjectCache())
     cache->ChildrenChanged(owner);
+#endif
 }
 
 void LayoutObjectChildList::InvalidatePaintOnRemoval(LayoutObject& old_child) {
