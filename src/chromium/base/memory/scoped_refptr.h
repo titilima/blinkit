@@ -168,6 +168,18 @@ inline bool operator==(const T *lhs, const scoped_refptr<U> &rhs)
     return lhs == rhs.get();
 }
 
+template <typename T, typename U>
+bool operator!=(const scoped_refptr<T> &lhs, const U *rhs)
+{
+    return !operator==(lhs, rhs);
+}
+
+template <typename T, typename U>
+bool operator!=(const T *lhs, const scoped_refptr<U> &rhs)
+{
+    return !operator==(lhs, rhs);
+}
+
 namespace base {
 
 template <typename T>
