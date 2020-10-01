@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_replaced.cc
+// Description: LayoutReplaced Class
+//      Author: Ziming Li
+//     Created: 2020-10-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2000 Dirk Mueller (mueller@kde.org)
@@ -30,7 +41,7 @@
 #include "third_party/blink/renderer/core/layout/layout_block.h"
 #include "third_party/blink/renderer/core/layout/layout_image.h"
 #include "third_party/blink/renderer/core/layout/layout_inline.h"
-#include "third_party/blink/renderer/core/layout/layout_video.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_video.h"
 #include "third_party/blink/renderer/core/layout/ng/geometry/ng_logical_offset.h"
 #include "third_party/blink/renderer/core/layout/ng/geometry/ng_logical_size.h"
 #include "third_party/blink/renderer/core/layout/ng/ng_physical_box_fragment.h"
@@ -905,6 +916,8 @@ static std::pair<LayoutUnit, LayoutUnit> SelectionTopAndBottom(
           ? NGPaintFragment::GetForInlineContainer(&layout_replaced)
           : nullptr;
   if (inline_container) {
+    ASSERT(false); // BKTODO:
+#if 0
     // Step 1: Find the line box containing |layout_replaced|.
     const NGPaintFragment* inline_fragment =
         *NGPaintFragment::InlineFragmentsFor(&layout_replaced).begin();
@@ -931,6 +944,7 @@ static std::pair<LayoutUnit, LayoutUnit> SelectionTopAndBottom(
         line_box_size.ConvertToLogical(writing_mode);
     return {logical_offset.block_offset,
             logical_offset.block_offset + logical_size.block_size};
+#endif
   }
 
   InlineBox* box = layout_replaced.InlineBoxWrapper();
@@ -984,11 +998,14 @@ LayoutRect LayoutReplaced::LocalSelectionRect() const {
     const auto fragments = NGPaintFragment::InlineFragmentsFor(this);
     if (fragments.IsInLayoutNGInlineFormattingContext()) {
       LayoutRect rect;
+      ASSERT(false); // BKTODO:
+#if 0
       for (const NGPaintFragment* fragment : fragments) {
         const NGPhysicalOffsetRect fragment_rect =
             fragment->ComputeLocalSelectionRectForReplaced();
         rect.Unite(fragment_rect.ToLayoutRect());
       }
+#endif
       return rect;
     }
   }
