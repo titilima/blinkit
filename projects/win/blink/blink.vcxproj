@@ -892,6 +892,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_property_tree_builder.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\replaced_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\rounded_inner_rect_clipper.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_cell_painter.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_cell_paint_invalidator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_paint_invalidator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_pending_script.cpp" />
@@ -2626,6 +2628,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_result.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\replaced_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\rounded_inner_rect_clipper.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_cell_painter.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_cell_paint_invalidator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_paint_invalidator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\probe\core_probes.h" />

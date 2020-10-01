@@ -3308,6 +3308,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_painter.cc">
       <Filter>renderer\core\paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_cell_paint_invalidator.cc">
+      <Filter>renderer\core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_cell_painter.cc">
+      <Filter>renderer\core\paint</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9069,6 +9075,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\table_layout_algorithm.h">
       <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_cell_paint_invalidator.h">
+      <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_cell_painter.h">
+      <Filter>renderer\core\paint</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
