@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_table.cc
+// Description: LayoutTable Class
+//      Author: Ziming Li
+//     Created: 2020-10-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1997 Martin Jones (mjones@kde.org)
  *           (C) 1997 Torben Weis (weis@kde.org)
@@ -28,7 +39,7 @@
 
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
-#include "third_party/blink/renderer/core/html/html_table_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_table_element.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/layout/hit_test_result.h"
 #include "third_party/blink/renderer/core/layout/layout_analyzer.h"
@@ -49,7 +60,7 @@
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 LayoutTable::LayoutTable(Element* element)
     : LayoutBlock(element),
@@ -412,6 +423,8 @@ LayoutUnit LayoutTable::ConvertStyleLogicalWidthToComputedWidth(
   // HTML tables' width styles already include borders and paddings, but CSS
   // tables' width styles do not.
   LayoutUnit borders;
+  ASSERT(false); // BKTODO:
+#if 0
   bool is_css_table = !IsHTMLTableElement(GetNode());
   if (is_css_table && style_logical_width.IsSpecified() &&
       style_logical_width.IsPositive() &&
@@ -420,6 +433,7 @@ LayoutUnit LayoutTable::ConvertStyleLogicalWidthToComputedWidth(
               (ShouldCollapseBorders() ? LayoutUnit()
                                        : PaddingStart() + PaddingEnd());
   }
+#endif
 
   return MinimumValueForLength(style_logical_width, available_width) + borders;
 }
@@ -438,12 +452,15 @@ LayoutUnit LayoutTable::ConvertStyleLogicalHeightToComputedHeight(
     // HTML tables size as though CSS height includes border/padding, CSS tables
     // do not.
     LayoutUnit borders = LayoutUnit();
+    ASSERT(false); // BKTODO:
+#if 0
     // FIXME: We cannot apply box-sizing: content-box on <table> which other
     // browsers allow.
     if (IsHTMLTableElement(GetNode()) ||
         StyleRef().BoxSizing() == EBoxSizing::kBorderBox) {
       borders = border_and_padding;
     }
+#endif
     computed_logical_height =
         LayoutUnit(style_logical_height.Value() - borders);
   } else if (style_logical_height.IsPercentOrCalc()) {

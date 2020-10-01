@@ -833,6 +833,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\shape_outside_info.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\subtree_layout_scope.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\table_grid_cell.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\table_layout_algorithm_auto.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\table_layout_algorithm_fixed.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_autosizer.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_run_constructor.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\view_fragmentation_context.cc" />
@@ -890,6 +892,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_property_tree_builder.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\replaced_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\rounded_inner_rect_clipper.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_painter.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_paint_invalidator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_pending_script.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_script.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\fetch_client_settings_object_impl.cpp" />
@@ -2548,6 +2552,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\shape_outside_info.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\subtree_layout_scope.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\table_grid_cell.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\table_layout_algorithm.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\table_layout_algorithm_auto.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\table_layout_algorithm_fixed.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_autosizer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_run_constructor.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\view_fragmentation_context.h" />
@@ -2619,6 +2626,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_result.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\replaced_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\rounded_inner_rect_clipper.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_painter.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_paint_invalidator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\probe\core_probes.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_pending_script.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_script.h" />

@@ -92,6 +92,7 @@ public:
     BLINKIT_DISABLE_FEATURE(ScrollCustomization)
     BLINKIT_DISABLE_FEATURE(SlimmingPaintV2)
     BLINKIT_DISABLE_FEATURE(TrackLayoutPassesPerBlock)
+    BLINKIT_DISABLE_FEATURE(VisibilityCollapseColumn)
 };
 
 } // namespace blink
