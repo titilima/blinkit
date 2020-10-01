@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_list_item.h
+// Description: LayoutListItem Class
+//      Author: Ziming Li
+//     Created: 2020-10-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -24,7 +35,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_LAYOUT_LAYOUT_LIST_ITEM_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_LAYOUT_LAYOUT_LIST_ITEM_H_
 
-#include "third_party/blink/renderer/core/html/list_item_ordinal.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/list_item_ordinal.h"
 #include "third_party/blink/renderer/core/layout/layout_block_flow.h"
 
 namespace blink {
@@ -43,7 +54,9 @@ class LayoutListItem final : public LayoutBlockFlow {
 
   LayoutListMarker* Marker() const { return marker_; }
 
+#if 0 // BKTODO:
   ListItemOrdinal& Ordinal() { return ordinal_; }
+#endif
   void OrdinalValueChanged();
 
   const char* GetName() const override { return "LayoutListItem"; }
@@ -77,7 +90,7 @@ class LayoutListItem final : public LayoutBlockFlow {
 
   bool PrepareForBlockDirectionAlign(const LayoutObject*);
 
-  ListItemOrdinal ordinal_;
+  // BKTODO: ListItemOrdinal ordinal_;
   LayoutListMarker* marker_;
   bool need_block_direction_align_;
 };
