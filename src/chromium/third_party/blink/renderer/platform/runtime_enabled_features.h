@@ -65,6 +65,7 @@ public:
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(CacheStyleSheetWithMediaQueries)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(ConstructableStylesheets)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(CustomElementDefaultStyle)
+    BLINK_DEFINE_EXPERIMENTAL_FEATURE(ExperimentalProductivityFeatures)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(FramesTimingFunction)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(InvisibleDOM)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(IsolatedCodeCache)
@@ -75,6 +76,7 @@ public:
 
     BLINKIT_DISABLE_FEATURE(CompositedSelectionUpdate)
     BLINKIT_DISABLE_FEATURE(DisplayCutoutAPI)
+    BLINKIT_DISABLE_FEATURE(ElementTiming)
     BLINKIT_DISABLE_FEATURE(FastMobileScrolling)
     BLINKIT_DISABLE_FEATURE(FractionalScrollOffsets)
     BLINKIT_DISABLE_FEATURE(FullscreenUnprefixed)

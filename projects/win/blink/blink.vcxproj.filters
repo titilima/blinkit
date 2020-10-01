@@ -3230,6 +3230,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\multi_column_fragmentainer_group.cc">
       <Filter>renderer\core\layout</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_element_timing.cc">
+      <Filter>renderer\core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_painter.cc">
+      <Filter>renderer\core\paint</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -8904,6 +8910,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\multi_column_fragmentainer_group.h">
       <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\intrinsic_sizing_info.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_element_timing.h">
+      <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_painter.h">
+      <Filter>renderer\core\paint</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

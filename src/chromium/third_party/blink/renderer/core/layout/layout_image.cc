@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_image.cc
+// Description: LayoutImage Class
+//      Author: Ziming Li
+//     Created: 2020-10-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -28,14 +39,16 @@
 
 #include "third_party/blink/renderer/core/layout/layout_image.h"
 
-#include "third_party/blink/public/common/feature_policy/feature_policy.h"
+// BKTODO: #include "third_party/blink/public/common/feature_policy/feature_policy.h"
 #include "third_party/blink/renderer/core/dom/pseudo_element.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_area_element.h"
 #include "third_party/blink/renderer/core/html/html_image_element.h"
 #include "third_party/blink/renderer/core/html/media/media_element_parser_helpers.h"
+#endif
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/layout/hit_test_result.h"
 #include "third_party/blink/renderer/core/layout/intrinsic_sizing_info.h"
@@ -44,7 +57,7 @@
 #include "third_party/blink/renderer/core/paint/image_element_timing.h"
 #include "third_party/blink/renderer/core/paint/image_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-#include "third_party/blink/renderer/core/svg/graphics/svg_image.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/graphics/svg_image.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 
 namespace blink {
@@ -55,6 +68,8 @@ constexpr float kmax_downscaling_ratio = 2.0f;
 bool CheckForOptimizedImagePolicy(const LocalFrame& frame,
                                   LayoutImage* layout_image,
                                   ImageResourceContent* new_image) {
+  ASSERT(false); // BKTODO:
+#if 0
   // Invert the image if the document does not have the 'legacy-image-formats'
   // feature enabled, and the image is not one of the allowed formats.
   if (RuntimeEnabledFeatures::ExperimentalProductivityFeaturesEnabled() &&
@@ -72,6 +87,7 @@ bool CheckForOptimizedImagePolicy(const LocalFrame& frame,
     if (!new_image->IsAcceptableCompressionRatio())
       return true;
   }
+#endif
   return false;
 }
 
@@ -79,10 +95,13 @@ bool CheckForMaxDownscalingImagePolicy(const LocalFrame& frame,
                                        ImageResourceContent* new_image,
                                        LayoutImage* layout_image) {
   DCHECK(new_image);
+  ASSERT(false); // BKTODO:
+#if 0
   if (!RuntimeEnabledFeatures::ExperimentalProductivityFeaturesEnabled() ||
       frame.DeprecatedIsFeatureEnabled(
           mojom::FeaturePolicyFeature::kMaxDownscalingImage))
     return false;
+#endif
   if (auto* image = new_image->GetImage()) {
     // Invert the image if the image's size is more than 2 times bigger than the
     // size it is being laid-out by.
@@ -93,12 +112,15 @@ bool CheckForMaxDownscalingImagePolicy(const LocalFrame& frame,
 
     if (layout_width > 0 && layout_height > 0 && image_width > 0 &&
         image_height > 0) {
+      ASSERT(false); // BKTODO:
+#if 0
       double device_pixel_ratio = frame.DevicePixelRatio();
       if (LayoutUnit(image_width / (kmax_downscaling_ratio *
                                     device_pixel_ratio)) > layout_width ||
           LayoutUnit(image_height / (kmax_downscaling_ratio *
                                      device_pixel_ratio)) > layout_height)
         return true;
+#endif
     }
   }
   return false;
@@ -106,7 +128,7 @@ bool CheckForMaxDownscalingImagePolicy(const LocalFrame& frame,
 
 }  // namespace
 
-using namespace HTMLNames;
+using namespace html_names;
 
 LayoutImage::LayoutImage(Element* element)
     : LayoutReplaced(element, LayoutSize()),
@@ -169,17 +191,22 @@ void LayoutImage::ImageChanged(WrappedImagePtr new_image,
   if (new_image != image_resource_->ImagePtr())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsGeneratedContent() && IsHTMLImageElement(GetNode()) &&
       image_resource_->ErrorOccurred()) {
     ToHTMLImageElement(GetNode())->EnsureFallbackForGeneratedContent();
     return;
   }
+#endif
 
   // If error occurred, image marker should be replaced by a LayoutText.
   // NotifyOfSubtreeChange to make list item updating its marker content.
   if (IsLayoutNGListMarkerImage() && image_resource_->ErrorOccurred())
     NotifyOfSubtreeChange();
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Per the spec, we let the server-sent header override srcset/other sources
   // of dpr.
   // https://github.com/igrigorik/http-client-hints/blob/master/draft-grigorik-http-client-hints-01.txt#L255
@@ -197,6 +224,7 @@ void LayoutImage::ImageChanged(WrappedImagePtr new_image,
         FlooredIntSize(ImageSizeOverriddenByIntrinsicSize(1.0f)));
     did_increment_visually_non_empty_pixel_count_ = true;
   }
+#endif
 
   // The replaced content transform depends on the intrinsic size (see:
   // FragmentPaintPropertyTreeBuilder::UpdateReplacedContentTransform).
@@ -274,6 +302,8 @@ void LayoutImage::ImageNotifyFinished(ImageResourceContent* new_image) {
   // Check for optimized image policies.
   if (View() && View()->GetFrameView()) {
     bool old_flag = ShouldInvertColor();
+    ASSERT(false); // BKTODO:
+#if 0
     const LocalFrame& frame = View()->GetFrameView()->GetFrame();
     is_legacy_format_or_compressed_image_ =
         CheckForOptimizedImagePolicy(frame, this, new_image);
@@ -281,6 +311,7 @@ void LayoutImage::ImageNotifyFinished(ImageResourceContent* new_image) {
       is_downscaled_image_ =
           CheckForMaxDownscalingImagePolicy(frame, new_image, this);
     }
+#endif
     if (old_flag != ShouldInvertColor())
       UpdateShouldInvertColor();
   }
@@ -302,10 +333,13 @@ void LayoutImage::Paint(const PaintInfo& paint_info) const {
 }
 
 void LayoutImage::AreaElementFocusChanged(HTMLAreaElement* area_element) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK_EQ(area_element->ImageElement(), GetNode());
 
   if (area_element->GetPath(this).IsEmpty())
     return;
+#endif
 
   InvalidatePaintAndMarkForLayoutIfNeeded(CanDeferInvalidation::kYes);
 }
@@ -361,9 +395,13 @@ LayoutUnit LayoutImage::MinimumReplacedHeight() const {
 }
 
 HTMLMapElement* LayoutImage::ImageMap() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   HTMLImageElement* i = ToHTMLImageElementOrNull(GetNode());
   return i ? i->GetTreeScope().GetImageMap(i->FastGetAttribute(usemapAttr))
            : nullptr;
+#endif
 }
 
 bool LayoutImage::NodeAtPoint(HitTestResult& result,
@@ -382,10 +420,13 @@ bool LayoutImage::NodeAtPoint(HitTestResult& result,
 }
 
 IntSize LayoutImage::GetOverriddenIntrinsicSize() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (auto* image_element = ToHTMLImageElementOrNull(GetNode())) {
     if (RuntimeEnabledFeatures::ExperimentalProductivityFeaturesEnabled())
       return image_element->GetOverriddenIntrinsicSize();
   }
+#endif
   return IntSize();
 }
 
@@ -424,6 +465,8 @@ void LayoutImage::ComputeIntrinsicSizingInfo(
     IntrinsicSizingInfo& intrinsic_sizing_info) const {
   if (!OverrideIntrinsicSizingInfo(intrinsic_sizing_info)) {
     if (SVGImage* svg_image = EmbeddedSVGImage()) {
+      ASSERT(false); // BKTODO:
+#if 0
       svg_image->GetIntrinsicSizingInfo(intrinsic_sizing_info);
 
       // Handle zoom & vertical writing modes here, as the embedded SVG document
@@ -434,6 +477,7 @@ void LayoutImage::ComputeIntrinsicSizingInfo(
 
       if (!IsHorizontalWritingMode())
         intrinsic_sizing_info.Transpose();
+#endif
       return;
     }
 
@@ -468,8 +512,12 @@ void LayoutImage::ComputeIntrinsicSizingInfo(
 bool LayoutImage::NeedsPreferredWidthsRecalculation() const {
   if (LayoutReplaced::NeedsPreferredWidthsRecalculation())
     return true;
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   SVGImage* svg_image = EmbeddedSVGImage();
   return svg_image && svg_image->HasIntrinsicSizingInfo();
+#endif
 }
 
 SVGImage* LayoutImage::EmbeddedSVGImage() const {
@@ -480,7 +528,11 @@ SVGImage* LayoutImage::EmbeddedSVGImage() const {
   // https://crbug.com/761026
   if (!cached_image || cached_image->IsCacheValidator())
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return ToSVGImageOrNull(cached_image->GetImage());
+#endif
 }
 
 bool LayoutImage::ShouldInvertColor() const {
@@ -503,6 +555,8 @@ void LayoutImage::UpdateShouldInvertColorForTest(bool value) {
 void LayoutImage::UpdateAfterLayout() {
   LayoutBox::UpdateAfterLayout();
   Node* node = GetNode();
+  ASSERT(false); // BKTODO:
+#if 0
   if (auto* image_element = ToHTMLImageElementOrNull(node)) {
     if (View() && View()->GetFrameView()) {
       const LocalFrame& frame = View()->GetFrameView()->GetFrame();
@@ -521,6 +575,7 @@ void LayoutImage::UpdateAfterLayout() {
     if (image_element->IsDefaultIntrinsicSize())
       MediaElementParserHelpers::ReportUnsizedMediaViolation(this);
   }
+#endif
 }
 
 }  // namespace blink

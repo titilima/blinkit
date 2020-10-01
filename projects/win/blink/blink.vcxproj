@@ -857,6 +857,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\fieldset_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\filter_effect_builder.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\fragment_data.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_element_timing.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment_traversal.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_paint_invalidator.cc" />
@@ -2402,6 +2404,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\hit_test_location.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\hit_test_request.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\hit_test_result.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\intrinsic_sizing_info.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_analyzer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_block.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\layout_block_flow.h" />
@@ -2558,6 +2561,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\filter_effect_builder.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\find_paint_offset_and_visual_rect_needing_update.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\fragment_data.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_element_timing.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment_traversal.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_paint_invalidator.h" />

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_element_timing.h
+// Description: ImageElementTiming Class
+//      Author: Ziming Li
+//     Created: 2020-10-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,10 +16,10 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_PAINT_IMAGE_ELEMENT_TIMING_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_PAINT_IMAGE_ELEMENT_TIMING_H_
 
-#include "third_party/blink/public/platform/web_layer_tree_view.h"
+// BKTODO: #include "third_party/blink/public/platform/web_layer_tree_view.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/platform/supplementable.h"
-#include "third_party/blink/renderer/platform/wtf/functional.h"
+// BKTODO: #include "third_party/blink/renderer/platform/wtf/functional.h"
 #include "third_party/blink/renderer/platform/wtf/hash_set.h"
 #include "third_party/blink/renderer/platform/wtf/time.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
@@ -41,14 +52,14 @@ class CORE_EXPORT ImageElementTiming final
   // Called when the LayoutImage will be destroyed.
   void NotifyWillBeDestroyed(const LayoutImage*);
 
-  void Trace(blink::Visitor*) override;
-
  private:
   explicit ImageElementTiming(LocalDOMWindow&);
 
+#if 0 // BKTODO:
   // Callback for the swap promise. Reports paint timestamps.
   void ReportImagePaintSwapTime(WebLayerTreeView::SwapResult,
                                 base::TimeTicks timestamp);
+#endif
 
   // Struct containing information about image element timing.
   struct ElementTimingInfo {
