@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_object_factory.cc
+// Description: LayoutObjectFactory Class
+//      Author: Ziming Li
+//     Created: 2020-10-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -28,6 +39,8 @@ namespace {
 inline bool ShouldUseNewLayout(Document& document, const ComputedStyle& style) {
   if (!RuntimeEnabledFeatures::LayoutNGEnabled())
     return false;
+  ASSERT(false); // BKTODO:
+#if 0
   bool requires_ng_block_fragmentation =
       document.Printing() ||
       (document.GetLayoutView() &&
@@ -35,6 +48,7 @@ inline bool ShouldUseNewLayout(Document& document, const ComputedStyle& style) {
   if (requires_ng_block_fragmentation &&
       !RuntimeEnabledFeatures::LayoutNGBlockFragmentationEnabled())
     return false;
+#endif
   return !style.ForceLegacyLayout();
 }
 

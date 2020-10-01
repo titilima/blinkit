@@ -805,7 +805,11 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_physical_line_box_fragment.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_physical_text_fragment.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_block_flow.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_fieldset.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_flexible_box.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_mixin.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_table_caption.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_table_cell.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\legacy_layout_tree_walking.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\list\layout_ng_list_item.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\list\layout_ng_list_marker.cc" />
@@ -2508,7 +2512,11 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_physical_text_fragment.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_text_end_effect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_block_flow.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_fieldset.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_flexible_box.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_mixin.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_table_caption.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_table_cell.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\legacy_layout_tree_walking.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\list\layout_ng_list_item.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\list\layout_ng_list_marker.h" />

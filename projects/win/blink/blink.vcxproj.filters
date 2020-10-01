@@ -3281,6 +3281,18 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\geometry_mapper.cc">
       <Filter>renderer\platform\graphics\paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_fieldset.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_flexible_box.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_table_caption.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_table_cell.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9012,6 +9024,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\instance_counters.h">
       <Filter>renderer\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_fieldset.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_flexible_box.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_table_caption.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_table_cell.h">
+      <Filter>renderer\core\layout\ng</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
