@@ -16,6 +16,7 @@
 
 #include <atomic>
 #include "base/macros.h"
+#include "base/memory/scoped_refptr.h"
 
 namespace base {
 
