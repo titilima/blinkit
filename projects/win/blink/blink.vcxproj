@@ -776,6 +776,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_flow_box.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_text_box.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_box_list.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_breaker.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_orientation_utils.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_width.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\root_inline_box.cc" />
@@ -2432,6 +2433,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_item.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_list_marker.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_text.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_text_combine.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\selection_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\background_bleed_avoidance.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\bidi_run.h" />
@@ -2506,11 +2508,15 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_flow_box.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_iterator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_text_box.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\layout_text_info.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_box_list.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_breaker.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_info.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_orientation_utils.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_width.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\root_inline_box.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\trailing_objects.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\word_measurement.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\list_marker_text.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\map_coordinates_flags.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\min_max_size.h" />

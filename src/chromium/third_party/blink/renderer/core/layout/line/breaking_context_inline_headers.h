@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: breaking_context_inline_headers.h
+// Description: BreakingContext Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc.
@@ -27,8 +38,10 @@
 
 #include "third_party/blink/renderer/core/layout/api/line_layout_box.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_list_marker.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/layout/api/line_layout_ruby_run.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_svg_inline_text.h"
+#endif
 #include "third_party/blink/renderer/core/layout/api/line_layout_text.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_text_combine.h"
 #include "third_party/blink/renderer/core/layout/line/inline_iterator.h"
@@ -252,12 +265,15 @@ inline bool ShouldCollapseWhiteSpace(const ComputedStyle& style,
 inline bool RequiresLineBoxForContent(LineLayoutInline flow,
                                       const LineInfo& line_info) {
   LineLayoutItem parent = flow.Parent();
+  ASSERT(false); // BKTODO:
+#if 0
   if (flow.GetDocument().InNoQuirksMode() &&
       (flow.Style(line_info.IsFirstLine())->LineHeight() !=
            parent.Style(line_info.IsFirstLine())->LineHeight() ||
        flow.StyleRef().VerticalAlign() != parent.StyleRef().VerticalAlign() ||
        !parent.StyleRef().HasIdenticalAscentDescentAndLineGap(flow.StyleRef())))
     return true;
+#endif
   return false;
 }
 
@@ -634,6 +650,8 @@ inline void BreakingContext::HandleReplaced() {
   if (at_start_)
     width_.UpdateAvailableWidth(replaced_box.LogicalHeight());
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Break on replaced elements if either has normal white-space,
   // or if the replaced element is ruby that can break before.
   if ((auto_wrap_ || ComputedStyle::AutoWrap(last_ws_)) &&
@@ -644,6 +662,7 @@ inline void BreakingContext::HandleReplaced() {
     width_.Commit();
     line_break_.MoveToStartOf(current_.GetLineLayoutItem());
   }
+#endif
 
   if (ignoring_spaces_) {
     line_midpoint_state_.StopIgnoringSpaces(
@@ -675,9 +694,12 @@ inline void BreakingContext::HandleReplaced() {
   } else {
     width_.AddUncommittedWidth(replaced_logical_width.ToFloat());
   }
+  ASSERT(false); // BKTODO:
+#if 0
   if (current_.GetLineLayoutItem().IsRubyRun())
     width_.ApplyOverhang(LineLayoutRubyRun(current_.GetLineLayoutItem()),
                          last_object_, next_object_);
+#endif
   // Update prior line break context characters, using U+FFFD (OBJECT
   // REPLACEMENT CHARACTER) for replaced element.
   layout_text_info_.line_break_iterator_.UpdatePriorContext(
@@ -1344,11 +1366,14 @@ inline void BreakingContext::PrepareForNextCharacter(
     bool& prohibit_break_inside,
     bool previous_character_is_space) {
   if (layout_text.IsSVGInlineText() && current_.Offset()) {
+    ASSERT(false); // BKTODO:
+#if 0
     // Force creation of new InlineBoxes for each absolute positioned character
     // (those that start new text chunks).
     if (LineLayoutSVGInlineText(layout_text)
             .CharacterStartsNewTextChunk(current_.Offset()))
       line_midpoint_state_.EnsureCharacterGetsLineBox(current_);
+#endif
   }
   if (prohibit_break_inside) {
     current_.SetNextBreakablePosition(layout_text.TextLength());
