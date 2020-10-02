@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_caret_rect.cc
+// Description: ComputeNGLocalCaretRect
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -32,6 +43,9 @@ NGPhysicalOffsetRect ComputeLocalCaretRectByBoxSide(
 
   const LocalFrameView* frame_view =
       fragment.GetLayoutObject()->GetDocument().View();
+  ASSERT(false); // BKTODO:
+  return NGPhysicalOffsetRect();
+#if 0
   LayoutUnit caret_width = frame_view->CaretWidth();
 
   const bool is_ltr = IsLtr(fragment.PhysicalFragment().ResolvedDirection());
@@ -51,6 +65,7 @@ NGPhysicalOffsetRect ComputeLocalCaretRectByBoxSide(
   const NGPhysicalOffset caret_location(caret_left, caret_top);
   const NGPhysicalSize caret_size(caret_width, caret_height);
   return NGPhysicalOffsetRect(caret_location, caret_size);
+#endif
 }
 
 NGPhysicalOffsetRect ComputeLocalCaretRectAtTextOffset(
@@ -63,6 +78,9 @@ NGPhysicalOffsetRect ComputeLocalCaretRectAtTextOffset(
 
   const LocalFrameView* frame_view =
       fragment.GetLayoutObject()->GetDocument().View();
+  ASSERT(false); // BKTODO:
+  return NGPhysicalOffsetRect();
+#if 0
   LayoutUnit caret_width = frame_view->CaretWidth();
 
   const bool is_horizontal = fragment.Style().IsHorizontalWritingMode();
@@ -113,6 +131,7 @@ NGPhysicalOffsetRect ComputeLocalCaretRectAtTextOffset(
   caret_location.top = std::min(caret_location.top, max_y - caret_height);
   caret_location.top = LayoutUnit(caret_location.top.Round());
   return NGPhysicalOffsetRect(caret_location, caret_size);
+#endif
 }
 
 LocalCaretRect ComputeLocalCaretRect(const NGCaretPosition& caret_position) {
