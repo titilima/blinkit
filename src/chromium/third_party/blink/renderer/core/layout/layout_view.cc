@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_view.cc
+// Description: LayoutView Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc.
@@ -25,7 +36,7 @@
 
 #include "build/build_config.h"
 #include "third_party/blink/public/platform/platform.h"
-#include "third_party/blink/public/platform/web_screen_info.h"
+// BKTODO: #include "third_party/blink/public/platform/web_screen_info.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/editing/frame_selection.h"
@@ -33,22 +44,24 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_iframe_element.h"
 #include "third_party/blink/renderer/core/input/event_handler.h"
+#endif
 #include "third_party/blink/renderer/core/layout/hit_test_result.h"
 #include "third_party/blink/renderer/core/layout/layout_counter.h"
-#include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
 #include "third_party/blink/renderer/core/layout/layout_geometry_map.h"
-#include "third_party/blink/renderer/core/layout/svg/layout_svg_root.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/svg/layout_svg_root.h"
 #include "third_party/blink/renderer/core/layout/view_fragmentation_context.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page.h"
-#include "third_party/blink/renderer/core/page/scrolling/scrolling_coordinator_context.h"
+// BKTODO: #include "third_party/blink/renderer/core/page/scrolling/scrolling_coordinator_context.h"
 #include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/paint/view_painter.h"
-#include "third_party/blink/renderer/core/svg/svg_document_extensions.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_document_extensions.h"
 #include "third_party/blink/renderer/platform/geometry/float_quad.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_controller.h"
 #include "third_party/blink/renderer/platform/histogram.h"
@@ -72,6 +85,8 @@ class HitTestLatencyRecorder {
         allows_child_frame_content_(allows_child_frame_content) {}
 
   ~HitTestLatencyRecorder() {
+    ASSERT(false); // BKTODO:
+#if 0
     TimeDelta duration = CurrentTimeTicks() - start_;
     if (allows_child_frame_content_) {
       DEFINE_STATIC_LOCAL(CustomCountHistogram, recursive_latency_histogram,
@@ -82,6 +97,7 @@ class HitTestLatencyRecorder {
                           ("Event.Latency.HitTest", 0, 10000000, 100));
       latency_histogram.CountMicroseconds(duration);
     }
+#endif
   }
 
  private:
@@ -117,6 +133,8 @@ LayoutView::~LayoutView() = default;
 
 bool LayoutView::HitTest(const HitTestLocation& location,
                          HitTestResult& result) {
+  ASSERT(false); // BKTODO:
+#if 0
   // We have to recursively update layout/style here because otherwise, when the
   // hit test recurses into a child document, it could trigger a layout on the
   // parent document, which can destroy PaintLayer that are higher up in the
@@ -127,6 +145,7 @@ bool LayoutView::HitTest(const HitTestLocation& location,
   // iframe's inner document.
   if (!GetFrameView()->UpdateAllLifecyclePhasesExceptPaint())
     return false;
+#endif
   HitTestLatencyRecorder hit_test_latency_recorder(
       result.GetHitTestRequest().AllowsChildFrameContent());
   return HitTestNoLifecycleUpdate(location, result);
@@ -149,6 +168,8 @@ bool LayoutView::HitTestNoLifecycleUpdate(const HitTestLocation& location,
     LocalFrameView* frame_view = GetFrameView();
     LayoutRect hit_test_area;
     if (frame_view) {
+      ASSERT(false); // BKTODO:
+#if 0
       // Start with a rect sized to the frame, to ensure we include the
       // scrollbars.
       hit_test_area = LayoutRect(LayoutPoint(), LayoutSize(frame_view->Size()));
@@ -156,6 +177,7 @@ bool LayoutView::HitTestNoLifecycleUpdate(const HitTestLocation& location,
         hit_test_area.Unite(
             frame_view->DocumentToFrame(LayoutRect(DocumentRect())));
       }
+#endif
     }
 
     hit_layer = Layer()->HitTest(location, result, hit_test_area);
@@ -180,7 +202,10 @@ bool LayoutView::HitTestNoLifecycleUpdate(const HitTestLocation& location,
           node = node->GetDocument().documentElement();
 
         result.SetInnerNode(node);
+        ASSERT(false); // BKTODO:
+#if 0
         result.SetURLElement(node->EnclosingLinkEventParentOrSelf());
+#endif
       }
     }
 
@@ -196,9 +221,12 @@ bool LayoutView::HitTestNoLifecycleUpdate(const HitTestLocation& location,
 
 void LayoutView::ClearHitTestCache() {
   hit_test_cache_->Clear();
+  ASSERT(false); // BKTODO:
+#if 0
   auto* object = GetFrame()->OwnerLayoutObject();
   if (object)
     object->View()->ClearHitTestCache();
+#endif
 }
 
 void LayoutView::ComputeLogicalHeight(
@@ -218,6 +246,9 @@ bool LayoutView::IsChildAllowed(LayoutObject* child,
 }
 
 bool LayoutView::CanHaveChildren() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   FrameOwner* owner = GetFrame()->Owner();
   if (!owner)
     return true;
@@ -235,6 +266,7 @@ bool LayoutView::CanHaveChildren() const {
   if (GetDocument().IsPluginDocument())
     return true;
   return !owner->IsDisplayNone();
+#endif
 }
 
 #if DCHECK_IS_ON()
@@ -267,6 +299,8 @@ void LayoutView::SetShouldDoFullPaintInvalidationOnResizeIfNeeded(
 }
 
 bool LayoutView::ShouldPlaceBlockDirectionScrollbarOnLogicalLeft() const {
+  ASSERT(false); // BKTODO:
+#if 0
   LocalFrame& frame = GetFrameView()->GetFrame();
   // See crbug.com/249860
   if (frame.IsMainFrame())
@@ -279,6 +313,7 @@ bool LayoutView::ShouldPlaceBlockDirectionScrollbarOnLogicalLeft() const {
           .ShouldPlaceBlockDirectionScrollbarOnLogicalLeft();
     }
   }
+#endif
   return false;
 }
 
@@ -306,10 +341,13 @@ void LayoutView::UpdateBlockLayout(bool relayout_children) {
         layout_scope.SetChildNeedsLayout(child);
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (GetDocument().SvgExtensions())
       GetDocument()
           .AccessSVGExtensions()
           .InvalidateSVGRootsWithRelativeLengthDescendents(&layout_scope);
+#endif
   }
 
   if (!NeedsLayout())
@@ -319,8 +357,11 @@ void LayoutView::UpdateBlockLayout(bool relayout_children) {
 }
 
 void LayoutView::UpdateLayout() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!GetDocument().Printing())
     SetPageLogicalHeight(LayoutUnit());
+#endif
 
   // TODO(wangxianzhu): Move this into ViewPaintInvalidator.
   SetShouldDoFullPaintInvalidationOnResizeIfNeeded(
@@ -392,6 +433,8 @@ void LayoutView::MapLocalToAncestor(const LayoutBoxModelObject* ancestor,
     return;
 
   if (mode & kTraverseDocumentBoundaries) {
+    ASSERT(false); // BKTODO:
+#if 0
     auto* parent_doc_layout_object = GetFrame()->OwnerLayoutObject();
     if (parent_doc_layout_object) {
       transform_state.Move(
@@ -401,6 +444,7 @@ void LayoutView::MapLocalToAncestor(const LayoutBoxModelObject* ancestor,
     } else {
       GetFrameView()->ApplyTransformForTopFrameSpace(transform_state);
     }
+#endif
   }
 }
 
@@ -411,10 +455,13 @@ const LayoutObject* LayoutView::PushMappingToContainer(
   LayoutObject* container = nullptr;
 
   if (geometry_map.GetMapCoordinatesFlags() & kTraverseDocumentBoundaries) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (auto* parent_doc_layout_object = GetFrame()->OwnerLayoutObject()) {
       offset += parent_doc_layout_object->PhysicalContentBoxOffset();
       container = parent_doc_layout_object;
     }
+#endif
   }
 
   // If a container was specified, and was not 0 or the LayoutView, then we
@@ -438,6 +485,8 @@ void LayoutView::MapAncestorToLocal(const LayoutBoxModelObject* ancestor,
                                     TransformState& transform_state,
                                     MapCoordinatesFlags mode) const {
   if (this != ancestor && (mode & kTraverseDocumentBoundaries)) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (auto* parent_doc_layout_object = GetFrame()->OwnerLayoutObject()) {
       // A LayoutView is a containing block for fixed-position elements, so
       // don't carry this state across frames.
@@ -447,6 +496,7 @@ void LayoutView::MapAncestorToLocal(const LayoutBoxModelObject* ancestor,
       transform_state.Move(
           parent_doc_layout_object->PhysicalContentBoxOffset());
     }
+#endif
   } else {
     DCHECK(this == ancestor || !ancestor);
   }
@@ -457,12 +507,15 @@ void LayoutView::MapAncestorToLocal(const LayoutBoxModelObject* ancestor,
 
 void LayoutView::ComputeSelfHitTestRects(Vector<LayoutRect>& rects,
                                          const LayoutPoint&) const {
+  ASSERT(false); // BKTODO:
+#if 0
   // Record the entire size of the contents of the frame. Note that we don't
   // just use the viewport size (containing block) here because we want to
   // ensure this includes all children (so we can avoid walking them
   // explicitly).
   rects.push_back(
       LayoutRect(LayoutPoint::Zero(), LayoutSize(GetFrameView()->Size())));
+#endif
 }
 
 void LayoutView::Paint(const PaintInfo& paint_info) const {
@@ -547,6 +600,8 @@ bool LayoutView::MapToVisualRectInAncestorSpaceInternal(
   if (ancestor == this)
     return true;
 
+  ASSERT(false); // BKTODO:
+#if 0
   Element* owner = GetDocument().LocalOwner();
   if (!owner) {
     LayoutRect rect(transform_state.LastPlanarQuad().BoundingBox());
@@ -580,6 +635,7 @@ bool LayoutView::MapToVisualRectInAncestorSpaceInternal(
     return obj->MapToVisualRectInAncestorSpaceInternal(
         ancestor, transform_state, visual_rect_flags);
   }
+#endif
 
   // This can happen, e.g., if the iframe element has display:none.
   transform_state.SetQuad(FloatQuad(FloatRect()));
@@ -605,20 +661,30 @@ void LayoutView::AbsoluteQuads(Vector<FloatQuad>& quads,
 void LayoutView::CommitPendingSelection() {
   TRACE_EVENT0("blink", "LayoutView::commitPendingSelection");
   DCHECK(!NeedsLayout());
+  ASSERT(false); // BKTODO:
+#if 0
   frame_view_->GetFrame().Selection().CommitAppearanceIfNeeded();
+#endif
 }
 
 bool LayoutView::ShouldUsePrintingLayout() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (!GetDocument().Printing() || !frame_view_)
     return false;
   return frame_view_->GetFrame().ShouldUsePrintingLayout();
+#endif
 }
 
 LayoutRect LayoutView::ViewRect() const {
   if (ShouldUsePrintingLayout())
     return LayoutRect(LayoutPoint(), Size());
+  ASSERT(false); // BKTODO:
+#if 0
   if (frame_view_)
     return LayoutRect(LayoutPoint(), LayoutSize(frame_view_->Size()));
+#endif
   return LayoutRect();
 }
 
@@ -665,11 +731,14 @@ void LayoutView::CalculateScrollbarModes(ScrollbarMode& h_mode,
   if (!frame)
     RETURN_SCROLLBAR_MODE(kScrollbarAlwaysOff);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (FrameOwner* owner = frame->Owner()) {
     // Setting scrolling="no" on an iframe element disables scrolling.
     if (owner->ScrollingMode() == kScrollbarAlwaysOff)
       RETURN_SCROLLBAR_MODE(kScrollbarAlwaysOff);
   }
+#endif
 
   Document& document = GetDocument();
   if (Node* body = document.body()) {
@@ -678,19 +747,27 @@ void LayoutView::CalculateScrollbarModes(ScrollbarMode& h_mode,
       RETURN_SCROLLBAR_MODE(kScrollbarAlwaysOff);
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (document.Printing()) {
     // When printing, frame-level scrollbars are never displayed.
     // TODO(szager): Figure out the right behavior when printing an overflowing
     // iframe.  https://bugs.chromium.org/p/chromium/issues/detail?id=777528
     RETURN_SCROLLBAR_MODE(kScrollbarAlwaysOff);
   }
+#endif
 
   if (LocalFrameView* frameView = GetFrameView()) {
+    ASSERT(false); // BKTODO:
+#if 0
     // Scrollbars can be disabled by LocalFrameView::setCanHaveScrollbars.
     if (!frameView->CanHaveScrollbars())
       RETURN_SCROLLBAR_MODE(kScrollbarAlwaysOff);
+#endif
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   Element* viewportDefiningElement = document.ViewportDefiningElement();
   if (!viewportDefiningElement)
     RETURN_SCROLLBAR_MODE(kScrollbarAuto);
@@ -737,14 +814,18 @@ void LayoutView::CalculateScrollbarModes(ScrollbarMode& h_mode,
     h_mode = kScrollbarAlwaysOn;
   if (overflow_y == EOverflow::kScroll)
     v_mode = kScrollbarAlwaysOn;
+#endif
 
 #undef RETURN_SCROLLBAR_MODE
 }
 
 void LayoutView::MayUpdateHoverWhenContentUnderMouseChanged(
     EventHandler& event_handler) {
+  ASSERT(false); // BKTODO:
+#if 0
   event_handler.MayUpdateHoverWhenContentUnderMouseChanged(
       MouseEventManager::UpdateHoverReason::kScrollOffsetChanged);
+#endif
 }
 
 IntRect LayoutView::DocumentRect() const {
@@ -762,10 +843,14 @@ IntSize LayoutView::GetLayoutSize(
   if (!frame_view_)
     return IntSize();
 
+  ASSERT(false); // BKTODO:
+  return IntSize();
+#if 0
   IntSize result = frame_view_->GetLayoutSize();
   if (scrollbar_inclusion == kExcludeScrollbars)
     result = frame_view_->LayoutViewport()->ExcludeScrollbars(result);
   return result;
+#endif
 }
 
 int LayoutView::ViewLogicalWidth(
@@ -787,7 +872,11 @@ LayoutUnit LayoutView::ViewLogicalHeightForPercentages() const {
 }
 
 float LayoutView::ZoomFactor() const {
+  ASSERT(false); // BKTODO:
+  return 1;
+#if 0
   return frame_view_->GetFrame().PageZoomFactor();
+#endif
 }
 
 const LayoutBox& LayoutView::RootBox() const {
@@ -799,6 +888,8 @@ const LayoutBox& LayoutView::RootBox() const {
 }
 
 void LayoutView::UpdateAfterLayout() {
+  ASSERT(false); // BKTODO:
+#if 0
   // Unlike every other layer, the root PaintLayer takes its size from the
   // layout viewport size.  The call to AdjustViewSize() will update the
   // frame's contents size, which will also update the page's minimum scale
@@ -812,6 +903,7 @@ void LayoutView::UpdateAfterLayout() {
     frame.GetChromeClient().ResizeAfterLayout();
   if (HasOverflowClip())
     GetScrollableArea()->ClampScrollOffsetAfterOverflowChange();
+#endif
   LayoutBlockFlow::UpdateAfterLayout();
 }
 
@@ -851,16 +943,24 @@ IntervalArena* LayoutView::GetIntervalArena() {
 }
 
 bool LayoutView::BackgroundIsKnownToBeOpaqueInRect(const LayoutRect&) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // FIXME: Remove this main frame check. Same concept applies to subframes too.
   if (!GetFrame()->IsMainFrame())
     return false;
 
   return frame_view_->HasOpaqueBackground();
+#endif
 }
 
 FloatSize LayoutView::ViewportSizeForViewportUnits() const {
+  ASSERT(false); // BKTODO:
+  return FloatSize();
+#if 0
   return GetFrameView() ? GetFrameView()->ViewportSizeForViewportUnits()
                         : FloatSize();
+#endif
 }
 
 void LayoutView::WillBeDestroyed() {
@@ -875,9 +975,12 @@ void LayoutView::WillBeDestroyed() {
 void LayoutView::UpdateFromStyle() {
   LayoutBlockFlow::UpdateFromStyle();
 
+  ASSERT(false); // BKTODO:
+#if 0
   // LayoutView of the main frame is responsible for painting base background.
   if (GetDocument().IsInMainFrame())
     SetHasBoxDecorationBackground(true);
+#endif
 }
 
 bool LayoutView::RecalcOverflow() {
@@ -885,6 +988,8 @@ bool LayoutView::RecalcOverflow() {
     return false;
   bool result = LayoutBlockFlow::RecalcOverflow();
   if (result) {
+    ASSERT(false); // BKTODO:
+#if 0
     // Changing overflow should notify scrolling coordinator to ensures that it
     // updates non-fast scroll rects even if there is no layout.
     if (ScrollingCoordinator* scrolling_coordinator =
@@ -897,6 +1002,7 @@ bool LayoutView::RecalcOverflow() {
     if (GetFrameView()->VisualViewportSuppliesScrollbars())
       SetShouldCheckForPaintInvalidation();
     GetFrameView()->AdjustViewSize();
+#endif
     SetNeedsPaintPropertyUpdate();
   }
   return result;
@@ -942,7 +1048,11 @@ Vector<IntRect> LayoutView::GetTickmarks() const {
   if (!tickmarks_override_.IsEmpty())
     return tickmarks_override_;
 
+  ASSERT(false); // BKTODO:
+  return tickmarks_override_;
+#if 0
   return GetDocument().Markers().LayoutRectsForTextMatchMarkers();
+#endif
 }
 
 void LayoutView::OverrideTickmarks(const Vector<IntRect>& tickmarks) {
@@ -951,6 +1061,8 @@ void LayoutView::OverrideTickmarks(const Vector<IntRect>& tickmarks) {
 }
 
 void LayoutView::InvalidatePaintForTickmarks() {
+  ASSERT(false); // BKTODO:
+#if 0
   ScrollableArea* scrollable_area = GetScrollableArea();
   if (!scrollable_area)
     return;
@@ -958,6 +1070,7 @@ void LayoutView::InvalidatePaintForTickmarks() {
   if (!scrollbar)
     return;
   scrollbar->SetNeedsPaintInvalidation(static_cast<ScrollbarPart>(~kThumbPart));
+#endif
 }
 
 }  // namespace blink
