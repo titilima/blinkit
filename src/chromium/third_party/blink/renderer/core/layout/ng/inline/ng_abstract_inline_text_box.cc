@@ -1,16 +1,27 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_abstract_inline_text_box.cc
+// Description: NGAbstractInlineTextBox Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/core/layout/ng/inline/ng_abstract_inline_text_box.h"
 
-#include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
+// BKTODO: #include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
 #include "third_party/blink/renderer/core/layout/ng/inline/ng_physical_line_box_fragment.h"
 #include "third_party/blink/renderer/core/layout/ng/inline/ng_physical_text_fragment.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment_traversal.h"
 #include "third_party/blink/renderer/platform/fonts/character_range.h"
-#include "third_party/blink/renderer/platform/fonts/shaping/shape_result_buffer.h"
+// BKTODO: #include "third_party/blink/renderer/platform/fonts/shaping/shape_result_buffer.h"
 
 namespace blink {
 
@@ -20,7 +31,7 @@ NGAbstractInlineTextBox::FragmentToNGAbstractInlineTextBoxHashMap*
 scoped_refptr<AbstractInlineTextBox> NGAbstractInlineTextBox::GetOrCreate(
     LineLayoutText line_layout_item,
     const NGPaintFragment& fragment) {
-  DCHECK(fragment.GetLayoutObject()->IsText()) << fragment.GetLayoutObject();
+  DCHECK(fragment.GetLayoutObject()->IsText());
   if (!g_abstract_inline_text_box_map_) {
     g_abstract_inline_text_box_map_ =
         new FragmentToNGAbstractInlineTextBoxHashMap();
@@ -48,7 +59,7 @@ NGAbstractInlineTextBox::NGAbstractInlineTextBox(
     LineLayoutText line_layout_item,
     const NGPaintFragment& fragment)
     : AbstractInlineTextBox(line_layout_item), fragment_(&fragment) {
-  DCHECK(fragment_->PhysicalFragment().IsText()) << fragment_;
+  DCHECK(fragment_->PhysicalFragment().IsText());
 }
 
 NGAbstractInlineTextBox::~NGAbstractInlineTextBox() {
@@ -57,8 +68,11 @@ NGAbstractInlineTextBox::~NGAbstractInlineTextBox() {
 
 void NGAbstractInlineTextBox::Detach() {
   if (Node* const node = GetNode()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (AXObjectCache* cache = node->GetDocument().ExistingAXObjectCache())
       cache->InlineTextBoxesUpdated(GetLineLayoutItem());
+#endif
   }
   AbstractInlineTextBox::Detach();
   fragment_ = nullptr;
@@ -93,12 +107,16 @@ const NGPaintFragment*
 NGAbstractInlineTextBox::NextTextFragmentForSameLayoutObject() const {
   const auto fragments =
       NGPaintFragment::InlineFragmentsFor(fragment_->GetLayoutObject());
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   const auto it =
       std::find_if(fragments.begin(), fragments.end(),
                    [&](const auto& sibling) { return fragment_ == sibling; });
   DCHECK(it != fragments.end());
   const auto next_it = std::next(it);
   return next_it == fragments.end() ? nullptr : *next_it;
+#endif
 }
 
 scoped_refptr<AbstractInlineTextBox>
