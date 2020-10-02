@@ -112,6 +112,8 @@ enum class WebFeature {
     kStyleSheetListAnonymousNamedGetter,
     kStyleSheetListNonNullAnonymousNamedGetter,
     kSyntheticKeyframesInCompositedCSSAnimation,
+    kTableRowDirectionDifferentFromTable,
+    kTableSectionDirectionDifferentFromTable,
     kThreeValuedPositionBackground,
     kUnitlessPerspectiveInTransformProperty,
     kUnitlessZeroAngleFilter,

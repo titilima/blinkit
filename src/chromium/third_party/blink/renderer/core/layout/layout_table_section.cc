@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_table_section.cc
+// Description: LayoutTableSection Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1997 Martin Jones (mjones@kde.org)
  *           (C) 1997 Torben Weis (weis@kde.org)
@@ -42,7 +53,7 @@
 
 namespace blink {
 
-using namespace HTMLNames;
+using namespace html_names;
 
 void LayoutTableSection::TableGridRow::
     SetRowLogicalHeightToRowStyleLogicalHeight() {
@@ -428,7 +439,7 @@ void LayoutTableSection::DistributeWholeExtraRowSpanHeightToPercentRows(
     row_pos_[row + 1] += accumulated_position_increase;
   }
 
-  DCHECK(!round(remainder)) << "remainder was " << remainder;
+  DCHECK(!round(remainder));
 
   extra_row_spanning_height -= accumulated_position_increase;
 }
@@ -458,7 +469,7 @@ void LayoutTableSection::DistributeExtraRowSpanHeightToAutoRows(
     row_pos_[row + 1] += accumulated_position_increase;
   }
 
-  DCHECK(!round(remainder)) << "remainder was " << remainder;
+  DCHECK(!round(remainder));
 
   extra_row_spanning_height -= accumulated_position_increase;
 }
@@ -489,7 +500,7 @@ void LayoutTableSection::DistributeExtraRowSpanHeightToRemainingRows(
     row_pos_[row + 1] += accumulated_position_increase;
   }
 
-  DCHECK(!round(remainder)) << "remainder was " << remainder;
+  DCHECK(!round(remainder));
 
   extra_row_spanning_height -= accumulated_position_increase;
 }
