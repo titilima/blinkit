@@ -3380,6 +3380,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\column_balancer.cc">
       <Filter>renderer\core\layout</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_outline_utils.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9240,6 +9243,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\column_balancer.h">
       <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_outline_utils.h">
+      <Filter>renderer\core\layout\ng</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_inline_item.cc
+// Description: NGInlineItem Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,7 +19,7 @@
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 #include "third_party/blink/renderer/core/layout/ng/ng_outline_utils.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
-#include "third_party/blink/renderer/platform/fonts/shaping/shape_result_buffer.h"
+// BKTODO: #include "third_party/blink/renderer/platform/fonts/shaping/shape_result_buffer.h"
 
 namespace blink {
 namespace {
@@ -29,11 +40,14 @@ bool IsInlineBoxEmpty(const ComputedStyle& style,
       style.BorderEnd().NonZero() || !style.PaddingEnd().IsZero())
     return false;
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Non-zero margin can prevent "empty" only in non-quirks mode.
   // https://quirks.spec.whatwg.org/#the-line-height-calculation-quirk
   if ((!style.MarginStart().IsZero() || !style.MarginEnd().IsZero()) &&
       !layout_object.GetDocument().InLineHeightQuirksMode())
     return false;
+#endif
 
   return true;
 }
@@ -66,7 +80,7 @@ NGInlineItem::NGInlineItem(NGInlineItemType type,
       script_(0),
       font_fallback_priority_(0),
       render_orientation_(0),
-      bidi_level_(UBIDI_LTR),
+      // BKTODO: bidi_level_(UBIDI_LTR),
       shape_options_(kPreContext | kPostContext),
       is_empty_item_(false),
       should_create_box_fragment_(false),
@@ -75,6 +89,7 @@ NGInlineItem::NGInlineItem(NGInlineItemType type,
       is_end_collapsible_newline_(false),
       is_symbol_marker_(false),
       is_generated_(false) {
+  ASSERT(false); // BKTODO:
   DCHECK_GE(end, start);
   ComputeBoxProperties();
 }
@@ -239,6 +254,7 @@ unsigned NGInlineItem::PopulateItemsFromFontOrientation(
   return index + 1;
 }
 
+#if 0 // BKTODO:
 void NGInlineItem::SetBidiLevel(UBiDiLevel level) {
   // Invalidate ShapeResult because it depends on the resolved direction.
   if (DirectionFromLevel(level) != DirectionFromLevel(bidi_level_))
@@ -281,6 +297,7 @@ UBiDiLevel NGInlineItem::BidiLevelForReorder() const {
   // unclosed inline boxes.
   return Type() != NGInlineItem::kListMarker ? BidiLevel() : 0;
 }
+#endif
 
 String NGInlineItem::ToString() const {
   return String::Format("NGInlineItem. Type: '%s'. LayoutObject: '%s'",
