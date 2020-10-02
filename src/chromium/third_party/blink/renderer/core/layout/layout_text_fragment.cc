@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_text_fragment.cc
+// Description: LayoutTextFragment Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * (C) 2000 Dirk Mueller (mueller@kde.org)
@@ -40,14 +51,20 @@ LayoutTextFragment::LayoutTextFragment(Node* node,
       start_(start_offset),
       fragment_length_(length),
       is_remaining_text_layout_object_(false),
+#if 0 // BKTODO:
       content_string_(str),
       first_letter_pseudo_element_(nullptr) {}
+#else
+      content_string_(str) {
+  ASSERT(false); // BKTODO:
+}
+#endif
 
 LayoutTextFragment::LayoutTextFragment(Node* node, StringImpl* str)
     : LayoutTextFragment(node, str, 0, str ? str->length() : 0) {}
 
 LayoutTextFragment::~LayoutTextFragment() {
-  DCHECK(!first_letter_pseudo_element_);
+  ASSERT(false); // BKTODO: DCHECK(!first_letter_pseudo_element_);
 }
 
 LayoutTextFragment* LayoutTextFragment::CreateAnonymous(PseudoElement& pseudo,
@@ -57,9 +74,12 @@ LayoutTextFragment* LayoutTextFragment::CreateAnonymous(PseudoElement& pseudo,
   LayoutTextFragment* fragment =
       new LayoutTextFragment(nullptr, text, start, length);
   fragment->SetDocumentForAnonymous(&pseudo.GetDocument());
+  ASSERT(false); // BKTODO:
+#if 0
   if (length)
     pseudo.GetDocument().View()->IncrementVisuallyNonEmptyCharacterCount(
         length);
+#endif
   return fragment;
 }
 
@@ -69,9 +89,12 @@ LayoutTextFragment* LayoutTextFragment::CreateAnonymous(PseudoElement& pseudo,
 }
 
 void LayoutTextFragment::WillBeDestroyed() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (is_remaining_text_layout_object_ && first_letter_pseudo_element_)
     first_letter_pseudo_element_->ClearRemainingTextLayoutObject();
   first_letter_pseudo_element_ = nullptr;
+#endif
   LayoutText::WillBeDestroyed();
 }
 
@@ -104,8 +127,11 @@ void LayoutTextFragment::SetText(scoped_refptr<StringImpl> text,
   // first letter pseudo element to reattach itself so it can re-calculate the
   // correct first-letter settings.
   if (IsRemainingTextLayoutObject()) {
+    ASSERT(false); // BKTODO:
+#if 0
     DCHECK(GetFirstLetterPseudoElement());
     GetFirstLetterPseudoElement()->UpdateTextFragments();
+#endif
   }
 }
 
@@ -139,6 +165,9 @@ UChar LayoutTextFragment::PreviousCharacter() const {
 // If this is the layoutObject for a first-letter pseudoNode then we have to
 // look at the node for the remaining text to find our content.
 Text* LayoutTextFragment::AssociatedTextNode() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   Node* node = GetFirstLetterPseudoElement();
   if (is_remaining_text_layout_object_ || !node) {
     // If we don't have a node, then we aren't part of a first-letter pseudo
@@ -160,11 +189,15 @@ Text* LayoutTextFragment::AssociatedTextNode() const {
     node = next_layout_object->GetNode();
   }
   return (node && node->IsTextNode()) ? ToText(node) : nullptr;
+#endif
 }
 
 LayoutText* LayoutTextFragment::GetFirstLetterPart() const {
   if (!is_remaining_text_layout_object_)
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   // Node: We assume first letter pseudo element has only one child and it
   // is LayoutTextFragment.
   LayoutObject* const first_letter_container =
@@ -173,6 +206,7 @@ LayoutText* LayoutTextFragment::GetFirstLetterPart() const {
   CHECK(child->IsText());
   DCHECK_EQ(child, first_letter_container->SlowLastChild());
   return ToLayoutTextFragment(child);
+#endif
 }
 
 void LayoutTextFragment::UpdateHitTestResult(HitTestResult& result,
@@ -182,11 +216,14 @@ void LayoutTextFragment::UpdateHitTestResult(HitTestResult& result,
 
   LayoutObject::UpdateHitTestResult(result, point);
 
+  ASSERT(false); // BKTODO:
+#if 0
   // If we aren't part of a first-letter element, or if we
   // are part of first-letter but we're the remaining text then return.
   if (is_remaining_text_layout_object_ || !GetFirstLetterPseudoElement())
     return;
   result.SetInnerNode(GetFirstLetterPseudoElement());
+#endif
 }
 
 Position LayoutTextFragment::PositionForCaretOffset(unsigned offset) const {
@@ -209,7 +246,7 @@ base::Optional<unsigned> LayoutTextFragment::CaretOffsetForPosition(
     // TODO(layout-dev): Support offset change due to text-transform.
     dom_offset = Start() + FragmentLength();
   } else {
-    DCHECK(position.IsOffsetInAnchor()) << position;
+    DCHECK(position.IsOffsetInAnchor());
     // TODO(layout-dev): Support offset change due to text-transform.
     dom_offset = position.OffsetInContainerNode();
   }
