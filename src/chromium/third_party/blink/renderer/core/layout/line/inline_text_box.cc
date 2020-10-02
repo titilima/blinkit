@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: inline_text_box.cc
+// Description: InlineTextBox Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * (C) 2000 Dirk Mueller (mueller@kde.org)
@@ -28,8 +39,10 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_box.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_br.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/layout/api/line_layout_ruby_run.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_ruby_text.h"
+#endif
 #include "third_party/blink/renderer/core/layout/hit_test_result.h"
 #include "third_party/blink/renderer/core/layout/line/abstract_inline_text_box.h"
 #include "third_party/blink/renderer/core/layout/line/ellipsis_box.h"
@@ -162,6 +175,9 @@ LayoutUnit InlineTextBox::VerticalPosition(
 
 // Compute if selection includes end of the InlineTextBox.
 bool InlineTextBox::IsBoxEndIncludedInSelection() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   const LayoutTextSelectionStatus& status =
       GetLineLayoutItem().SelectionStatus();
   if (status.IsEmpty())
@@ -175,15 +191,19 @@ bool InlineTextBox::IsBoxEndIncludedInSelection() const {
     return true;
   // status.end == box_end
   return status.include_end == SelectionIncludeEnd::kInclude;
+#endif
 }
 
 bool InlineTextBox::IsSelected() const {
+  ASSERT(false); // BKTODO:
+#if 0
   const LayoutTextSelectionStatus& status =
       GetLineLayoutItem().SelectionStatus();
   if (status.IsEmpty())
     return false;
   if (Start() < status.end && status.start < Start() + Len())
     return true;
+#endif
   return IsBoxEndIncludedInSelection();
 }
 
@@ -211,6 +231,8 @@ bool InlineTextBox::HasWrappedSelectionNewline() const {
   // next inline text box (if any) to paint a wrapped new line as needed.
   if (NextForSameLayoutObject())
     return true;
+  ASSERT(false); // BKTODO:
+#if 0
   auto root_block = Root().Block();
   if (root_block.IsInline() && root_block.InlineBoxWrapper()) {
     const InlineBox* next_root =
@@ -219,6 +241,7 @@ bool InlineTextBox::HasWrappedSelectionNewline() const {
     if (next_root)
       return false;
   }
+#endif
 
   return true;
 }
@@ -475,12 +498,16 @@ bool InlineTextBox::GetEmphasisMarkPosition(
   if (!containing_block.Parent().IsRubyRun())
     return true;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   LineLayoutRubyText ruby_text =
       LineLayoutRubyRun(containing_block.Parent()).RubyText();
 
   // The emphasis marks over are suppressed only if there is a ruby text box and
   // it not empty.
   return !ruby_text || !ruby_text.FirstLineBox();
+#endif
 }
 
 void InlineTextBox::Paint(const PaintInfo& paint_info,
@@ -495,10 +522,13 @@ void InlineTextBox::Paint(const PaintInfo& paint_info,
 }
 
 void InlineTextBox::SelectionStartEnd(int& s_pos, int& e_pos) const {
+  ASSERT(false); // BKTODO:
+#if 0
   const LayoutTextSelectionStatus& status =
       GetLineLayoutItem().SelectionStatus();
   s_pos = std::max(static_cast<int>(status.start) - start_, 0);
   e_pos = std::min(static_cast<int>(status.end) - start_, (int)len_);
+#endif
 }
 
 void InlineTextBox::PaintDocumentMarker(GraphicsContext& pt,
