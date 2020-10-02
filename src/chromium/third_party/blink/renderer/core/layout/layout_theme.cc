@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_theme.cc
+// Description: LayoutTheme Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * This file is part of the theme implementation for form controls in WebCore.
  *
@@ -23,18 +34,21 @@
 
 #include <string>
 
+#if 0 // BKTODO:
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
 #include "third_party/blink/public/common/features.h"
+#endif
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/public/platform/web_rect.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/renderer/core/css_value_keywords.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/editing/frame_selection.h"
-#include "third_party/blink/renderer/core/fileapi/file_list.h"
+// BKTODO: #include "third_party/blink/renderer/core/fileapi/file_list.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_data_list_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_data_list_options_collection.h"
 #include "third_party/blink/renderer/core/html/forms/html_form_control_element.h"
@@ -42,28 +56,31 @@
 #include "third_party/blink/renderer/core/html/forms/html_option_element.h"
 #include "third_party/blink/renderer/core/html/forms/spin_button_element.h"
 #include "third_party/blink/renderer/core/html/forms/text_control_inner_elements.h"
+#endif
 #include "third_party/blink/renderer/core/html/html_collection.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
-#include "third_party/blink/renderer/core/html/shadow/shadow_element_names.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/shadow/shadow_element_names.h"
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/input_type_names.h"
 #include "third_party/blink/renderer/core/layout/layout_box.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/layout/layout_theme_mobile.h"
 #include "third_party/blink/renderer/core/page/focus_controller.h"
+#endif
 #include "third_party/blink/renderer/core/page/page.h"
-#include "third_party/blink/renderer/core/paint/fallback_theme.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/fallback_theme.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
-#include "third_party/blink/renderer/platform/file_metadata.h"
+// BKTODO: #include "third_party/blink/renderer/platform/file_metadata.h"
 #include "third_party/blink/renderer/platform/fonts/font_selector.h"
 #include "third_party/blink/renderer/platform/fonts/string_truncator.h"
 #include "third_party/blink/renderer/platform/graphics/color.h"
 #include "third_party/blink/renderer/platform/graphics/touch_action.h"
-#include "third_party/blink/renderer/platform/layout_test_support.h"
+// BKTODO: #include "third_party/blink/renderer/platform/layout_test_support.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/text/platform_locale.h"
 #include "third_party/blink/renderer/platform/theme.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
-#include "ui/native_theme/native_theme.h"
+// BKTODO: #include "ui/native_theme/native_theme.h"
 
 // The methods in this file are shared by all themes on every platform.
 
@@ -76,6 +93,8 @@ void GetAutofillPreviewColorsFromFieldTrial(std::string* color,
   constexpr char kAutofillDefaultBackgroundColor[] = "#FAFFBD";
   constexpr char kAutofillDefaultColor[] = "#000000";
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (base::FeatureList::IsEnabled(features::kAutofillPreviewStyleExperiment)) {
     std::string bg_color_param = base::GetFieldTrialParamValueByFeature(
         features::kAutofillPreviewStyleExperiment,
@@ -90,6 +109,7 @@ void GetAutofillPreviewColorsFromFieldTrial(std::string* color,
       return;
     }
   }
+#endif
 
   // Fallback to the default colors if the experiment is not enabled or if a
   // color param is invalid.
@@ -101,18 +121,21 @@ void GetAutofillPreviewColorsFromFieldTrial(std::string* color,
 
 // Wrapper function defined in WebKit.h
 void SetMockThemeEnabledForTest(bool value) {
-  LayoutTestSupport::SetMockThemeEnabledForTest(value);
+  ASSERT(false); // BKTODO: LayoutTestSupport::SetMockThemeEnabledForTest(value);
   LayoutTheme::GetTheme().DidChangeThemeEngine();
 }
 
-using namespace HTMLNames;
+using namespace html_names;
 
 LayoutTheme& LayoutTheme::GetTheme() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (RuntimeEnabledFeatures::MobileLayoutThemeEnabled()) {
     DEFINE_STATIC_REF(LayoutTheme, layout_theme_mobile,
                       (LayoutThemeMobile::Create()));
     return *layout_theme_mobile;
   }
+#endif
   return NativeTheme();
 }
 
@@ -462,10 +485,13 @@ bool LayoutTheme::ShouldDrawDefaultFocusRing(const Node* node,
     return true;
   if (!style.HasAppearance() && !node->IsLink())
     return true;
+  ASSERT(false); // BKTODO:
+#if 0
   // We can't use LayoutTheme::isFocused because outline:auto might be
   // specified to non-:focus rulesets.
   if (node->IsFocused() && !node->ShouldHaveFocusAppearance())
     return false;
+#endif
   return true;
 }
 
@@ -519,22 +545,32 @@ bool LayoutTheme::IsActive(const Node* node) {
   if (!node)
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   Page* page = node->GetDocument().GetPage();
   if (!page)
     return false;
 
   return page->GetFocusController().IsActive();
+#endif
 }
 
 bool LayoutTheme::IsChecked(const Node* node) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (auto* input = ToHTMLInputElementOrNull(node))
     return input->ShouldAppearChecked();
+#endif
   return false;
 }
 
 bool LayoutTheme::IsIndeterminate(const Node* node) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (auto* input = ToHTMLInputElementOrNull(node))
     return input->ShouldAppearIndeterminate();
+#endif
   return false;
 }
 
@@ -548,12 +584,16 @@ bool LayoutTheme::IsFocused(const Node* node) {
   if (!node)
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   node = node->FocusDelegate();
   Document& document = node->GetDocument();
   LocalFrame* frame = document.GetFrame();
   return node == document.FocusedElement() && node->IsFocused() &&
          node->ShouldHaveFocusAppearance() && frame &&
          frame->Selection().FrameIsFocusedAndActive();
+#endif
 }
 
 bool LayoutTheme::IsPressed(const Node* node) {
@@ -563,37 +603,53 @@ bool LayoutTheme::IsPressed(const Node* node) {
 }
 
 bool LayoutTheme::IsSpinUpButtonPartPressed(const Node* node) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (!node || !node->IsActive() || !node->IsElementNode() ||
       !ToElement(node)->IsSpinButtonElement())
     return false;
   const SpinButtonElement* element = ToSpinButtonElement(node);
   return element->GetUpDownState() == SpinButtonElement::kUp;
+#endif
 }
 
 bool LayoutTheme::IsReadOnlyControl(const Node* node) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (!node || !node->IsElementNode() ||
       !ToElement(node)->IsFormControlElement())
     return false;
   const HTMLFormControlElement* element = ToHTMLFormControlElement(node);
   return element->IsReadOnly();
+#endif
 }
 
 bool LayoutTheme::IsHovered(const Node* node) {
   if (!node)
     return false;
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (!node->IsElementNode() || !ToElement(node)->IsSpinButtonElement())
     return node->IsHovered();
   const SpinButtonElement* element = ToSpinButtonElement(node);
   return element->IsHovered() &&
          element->GetUpDownState() != SpinButtonElement::kIndeterminate;
+#endif
 }
 
 bool LayoutTheme::IsSpinUpButtonPartHovered(const Node* node) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (!node || !node->IsElementNode() ||
       !ToElement(node)->IsSpinButtonElement())
     return false;
   const SpinButtonElement* element = ToSpinButtonElement(node);
   return element->GetUpDownState() == SpinButtonElement::kUp;
+#endif
 }
 
 void LayoutTheme::AdjustCheckboxStyle(ComputedStyle& style) const {
@@ -643,8 +699,12 @@ TimeDelta LayoutTheme::AnimationDurationForProgressBar() const {
 }
 
 bool LayoutTheme::ShouldHaveSpinButton(HTMLInputElement* input_element) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return input_element->IsSteppable() &&
          input_element->type() != InputTypeNames::range;
+#endif
 }
 
 void LayoutTheme::AdjustMenuListButtonStyle(ComputedStyle&, Element*) const {}
@@ -674,7 +734,7 @@ void LayoutTheme::AdjustSearchFieldStyle(ComputedStyle&) const {}
 void LayoutTheme::AdjustSearchFieldCancelButtonStyle(ComputedStyle&) const {}
 
 void LayoutTheme::PlatformColorsDidChange() {
-  Page::PlatformColorsChanged();
+  ASSERT(false); // BKTODO: Page::PlatformColorsChanged();
 }
 
 void LayoutTheme::SetCaretBlinkInterval(TimeDelta interval) {
@@ -682,10 +742,14 @@ void LayoutTheme::SetCaretBlinkInterval(TimeDelta interval) {
 }
 
 TimeDelta LayoutTheme::CaretBlinkInterval() const {
+  ASSERT(false); // BKTODO:
+  return caret_blink_interval_;
+#if 0
   // Disable the blinking caret in layout test mode, as it introduces
   // a race condition for the pixel tests. http://b/1198440
   return LayoutTestSupport::IsRunningLayoutTest() ? TimeDelta()
                                                   : caret_blink_interval_;
+#endif
 }
 
 static FontDescription& GetCachedFontDescription(CSSValueID system_font_id) {
@@ -852,6 +916,8 @@ String LayoutTheme::FileListNameForWidth(Locale& locale,
     return String();
 
   String string;
+  ASSERT(false); // BKTODO:
+#if 0
   if (file_list->IsEmpty()) {
     string =
         locale.QueryString(WebLocalizedString::kFileButtonNoFileSelectedLabel);
@@ -864,6 +930,7 @@ String LayoutTheme::FileListNameForWidth(Locale& locale,
                                String::Number(file_list->length()))),
         width, font);
   }
+#endif
 
   return StringTruncator::CenterTruncate(string, width, font);
 }
@@ -874,9 +941,13 @@ bool LayoutTheme::ShouldOpenPickerWithF4Key() const {
 
 bool LayoutTheme::SupportsCalendarPicker(const AtomicString& type) const {
   DCHECK(RuntimeEnabledFeatures::InputMultipleFieldsUIEnabled());
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return type == InputTypeNames::date || type == InputTypeNames::datetime ||
          type == InputTypeNames::datetime_local ||
          type == InputTypeNames::month || type == InputTypeNames::week;
+#endif
 }
 
 bool LayoutTheme::ShouldUseFallbackTheme(const ComputedStyle&) const {
@@ -936,6 +1007,8 @@ void LayoutTheme::AdjustCheckboxStyleUsingFallbackTheme(
   if (!style.Width().IsIntrinsicOrAuto() && !style.Height().IsAuto())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   IntSize size(GetFallbackTheme().GetPartSize(ui::NativeTheme::kCheckbox,
                                               ui::NativeTheme::kNormal,
                                               ui::NativeTheme::ExtraParams()));
@@ -944,6 +1017,7 @@ void LayoutTheme::AdjustCheckboxStyleUsingFallbackTheme(
   size.SetHeight(size.Height() * zoom_level);
   SetMinimumSizeIfAuto(style, size);
   SetSizeIfAuto(style, size);
+#endif
 
   // padding - not honored by WinIE, needs to be removed.
   style.ResetPadding();
@@ -960,6 +1034,8 @@ void LayoutTheme::AdjustRadioStyleUsingFallbackTheme(
   if (!style.Width().IsIntrinsicOrAuto() && !style.Height().IsAuto())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   IntSize size(GetFallbackTheme().GetPartSize(ui::NativeTheme::kRadio,
                                               ui::NativeTheme::kNormal,
                                               ui::NativeTheme::ExtraParams()));
@@ -968,6 +1044,7 @@ void LayoutTheme::AdjustRadioStyleUsingFallbackTheme(
   size.SetHeight(size.Height() * zoom_level);
   SetMinimumSizeIfAuto(style, size);
   SetSizeIfAuto(style, size);
+#endif
 
   // padding - not honored by WinIE, needs to be removed.
   style.ResetPadding();

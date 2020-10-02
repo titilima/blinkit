@@ -965,6 +965,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\bindings\script_wrappers.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\cursor.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\data_resource_helper.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\date_components.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\platform.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_cache.cc" />
@@ -996,6 +997,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\simple_font_data.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\small_caps_iterator.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\string_truncator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\symbols_iterator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\text_rendering_mode.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\typesetting_features.cc" />
@@ -1109,12 +1111,14 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\hyphenation.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\layout_locale.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\platform_locale.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\segmented_string.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_boundaries.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_break_iterator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_direction.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_run.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\unicode_utilities.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\theme.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\timer.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\transforms\affine_transform.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\transforms\matrix_3d_transform_operation.cc" />
@@ -1193,6 +1197,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_focus_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_font_render_style.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_gesture_event.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_localized_string.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_menu_source_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_rect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_scroll_types.h" />
@@ -2756,6 +2761,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\cross_origin_attribute_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\cursor.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\data_resource_helper.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\date_components.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\canvas_rotation_in_vertical.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\character_range.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\custom_font_data.h" />
@@ -2799,6 +2805,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\simple_font_data.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\small_caps_iterator.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\string_truncator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\symbols_iterator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\text_rendering_mode.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\typesetting_features.h" />
@@ -2969,6 +2976,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character_property.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\hyphenation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\layout_locale.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\platform_locale.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\segmented_string.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\tab_size.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_boundaries.h" />
@@ -2982,6 +2990,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\unicode_utilities.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\writing_mode.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\writing_mode_utils.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\theme.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\theme_types.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\timer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\transforms\affine_transform.h" />
