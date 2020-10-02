@@ -3320,6 +3320,21 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_section_painter.cc">
       <Filter>renderer\core\paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\abstract_inline_text_box.cc">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\ellipsis_box.cc">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_logical_rect.cc">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_abstract_inline_text_box.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_node_data.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9093,6 +9108,27 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_section_painter.h">
       <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\abstract_inline_text_box.h">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\ellipsis_box.h">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\geometry\ng_logical_rect.h">
+      <Filter>renderer\core\layout\ng\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_abstract_inline_text_box.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\character_range.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_node_data.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_run_iterator.h">
+      <Filter>renderer\platform\text</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_inline_node.h
+// Description: NGInlineNode Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -38,7 +49,11 @@ class CORE_EXPORT NGInlineNode : public NGLayoutInputNode {
   // quirks.
   // https://quirks.spec.whatwg.org/#the-line-height-calculation-quirk
   bool InLineHeightQuirksMode() const {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return GetDocument().InLineHeightQuirksMode();
+#endif
   }
 
   scoped_refptr<NGLayoutResult> Layout(const NGConstraintSpace&,

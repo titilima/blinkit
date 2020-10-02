@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_text.cc
+// Description: LayoutTableSection Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * (C) 2000 Dirk Mueller (mueller@kde.org)
@@ -27,7 +38,7 @@
 #include <algorithm>
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/public/platform/task_type.h"
-#include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
+// BKTODO: #include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
 #include "third_party/blink/renderer/core/dom/text.h"
 #include "third_party/blink/renderer/core/editing/ephemeral_range.h"
 #include "third_party/blink/renderer/core/editing/frame_selection.h"
@@ -63,7 +74,7 @@
 #include "third_party/blink/renderer/platform/geometry/float_quad.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/scheduler/public/thread.h"
-#include "third_party/blink/renderer/platform/scheduler/public/thread_scheduler.h"
+// BKTODO: #include "third_party/blink/renderer/platform/scheduler/public/thread_scheduler.h"
 #include "third_party/blink/renderer/platform/text/bidi_resolver.h"
 #include "third_party/blink/renderer/platform/text/character.h"
 #include "third_party/blink/renderer/platform/text/hyphenation.h"
@@ -98,11 +109,14 @@ class SecureTextTimer final : public TimerBase {
 
   void RestartWithNewText(unsigned last_typed_character_offset) {
     last_typed_character_offset_ = last_typed_character_offset;
+    ASSERT(false); // BKTODO:
+#if 0
     if (Settings* settings = layout_text_->GetDocument().GetSettings()) {
       StartOneShot(
           TimeDelta::FromSecondsD(settings->GetPasswordEchoDurationInSeconds()),
           FROM_HERE);
     }
+#endif
   }
   void Invalidate() { last_typed_character_offset_ = -1; }
   unsigned LastTypedCharacterOffset() { return last_typed_character_offset_; }
@@ -140,8 +154,11 @@ LayoutText::LayoutText(Node* node, scoped_refptr<StringImpl> str)
 
   SetIsText();
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (node)
     GetFrameView()->IncrementVisuallyNonEmptyCharacterCount(text_.length());
+#endif
 }
 
 LayoutText::~LayoutText() {
@@ -197,9 +214,12 @@ void LayoutText::StyleDidChange(StyleDifference diff,
   if (!GetText().ContainsOnlyWhitespace())
     new_style.GetFont().WillUseFontData(GetText());
 
+  ASSERT(false); // BKTODO:
+#if 0
   TextAutosizer* text_autosizer = GetDocument().GetTextAutosizer();
   if (!old_style && text_autosizer)
     text_autosizer->Record(this);
+#endif
 
   // TODO(layout-dev): This is only really needed for style changes that affect
   // how text is rendered. Font, text-decoration, etc.
@@ -260,8 +280,11 @@ void LayoutText::SetFirstInlineFragment(NGPaintFragment* first_fragment) {
   // associated fragments, when you reuse fragments, you should construct
   // NGAbstractInlineTextBox for them.
   if (has_abstract_inline_text_box_) {
+    ASSERT(false); // BKTODO:
+#if 0
     for (NGPaintFragment* fragment : NGPaintFragment::InlineFragmentsFor(this))
       NGAbstractInlineTextBox::WillDestroy(fragment);
+#endif
   }
   first_paint_fragment_ = first_fragment;
 }
@@ -277,6 +300,8 @@ void LayoutText::InLayoutNGInlineFormattingContextWillChange(bool new_value) {
 Vector<LayoutText::TextBoxInfo> LayoutText::GetTextBoxInfo() const {
   Vector<TextBoxInfo> results;
   if (const NGOffsetMapping* mapping = GetNGOffsetMapping()) {
+    ASSERT(false); // BKTODO:
+#if 0
     auto fragments = NGPaintFragment::InlineFragmentsFor(this);
     for (const NGPaintFragment* fragment : fragments) {
       const NGPhysicalTextFragment& text_fragment =
@@ -312,6 +337,7 @@ Vector<LayoutText::TextBoxInfo> LayoutText::GetTextBoxInfo() const {
         results.push_back(TextBoxInfo{rect, box_start.value(), box_length});
       }
     }
+#endif
     return results;
   }
 
@@ -334,6 +360,8 @@ base::Optional<FloatPoint> LayoutText::GetUpperLeftCorner() const {
   }
   auto fragments = NGPaintFragment::InlineFragmentsFor(this);
   if (!fragments.IsEmpty()) {
+    ASSERT(false); // BKTODO:
+#if 0
     const NGPaintFragment* line_box = fragments.begin()->ContainerLineBox();
     DCHECK(line_box);
     if (StyleRef().IsHorizontalWritingMode()) {
@@ -342,6 +370,7 @@ base::Optional<FloatPoint> LayoutText::GetUpperLeftCorner() const {
     }
     return FloatPoint(line_box->InlineOffsetToContainerBox().left.ToFloat(),
                       LinesBoundingBox().Y());
+#endif
   }
   return base::nullopt;
 }
@@ -349,8 +378,11 @@ base::Optional<FloatPoint> LayoutText::GetUpperLeftCorner() const {
 bool LayoutText::HasTextBoxes() const {
   if (RuntimeEnabledFeatures::LayoutNGEnabled()) {
     auto fragments = NGPaintFragment::InlineFragmentsFor(this);
+    ASSERT(false); // BKTODO:
+#if 0
     if (fragments.IsInLayoutNGInlineFormattingContext())
       return !(fragments.begin() == fragments.end());
+#endif
     // When legacy is forced, IsInLayoutNGInlineFormattingContext is false,
     // and we fall back to normal HasTextBox
     return FirstTextBox();
@@ -388,11 +420,14 @@ void LayoutText::AbsoluteRects(Vector<IntRect>& rects,
     auto fragments = NGPaintFragment::InlineFragmentsFor(this);
     if (fragments.IsInLayoutNGInlineFormattingContext()) {
       Vector<LayoutRect, 32> layout_rects;
+      ASSERT(false); // BKTODO:
+#if 0
       for (const NGPaintFragment* fragment : fragments) {
         layout_rects.push_back(
             LayoutRect(fragment->InlineOffsetToContainerBox().ToLayoutPoint(),
                        fragment->Size().ToLayoutSize()));
       }
+#endif
       // |rect| is in flipped block physical coordinate, but LayoutNG is in
       // physical coordinate. Flip if needed.
       if (UNLIKELY(HasFlippedBlocksWritingMode())) {
@@ -593,6 +628,8 @@ void LayoutText::AbsoluteQuadsForRange(Vector<FloatQuad>& quads,
     const LayoutBlock* block_for_flipping = nullptr;
     if (UNLIKELY(HasFlippedBlocksWritingMode()))
       block_for_flipping = ContainingBlock();
+    ASSERT(false); // BKTODO:
+#if 0
     for (const NGPaintFragment* fragment : fragments) {
       const NGPhysicalTextFragment& text_fragment =
           ToNGPhysicalTextFragment(fragment->PhysicalFragment());
@@ -615,6 +652,7 @@ void LayoutText::AbsoluteQuadsForRange(Vector<FloatQuad>& quads,
         collapsed_quads_candidates.push_back(quad);
       }
     }
+#endif
     if (!found_non_collapsed_quad)
       quads.AppendVector(collapsed_quads_candidates);
     return;
@@ -863,6 +901,9 @@ LayoutRect LayoutText::LocalCaretRect(
 
   // Go ahead and round left to snap it to the nearest pixel.
   LayoutUnit left = box->PositionForOffset(caret_offset);
+  ASSERT(false); // BKTODO:
+  return LayoutRect();
+#if 0
   LayoutUnit caret_width = GetFrameView()->CaretWidth();
 
   // Distribute the caret's width to either side of the offset.
@@ -930,6 +971,7 @@ LayoutRect LayoutText::LocalCaretRect(
       StyleRef().IsHorizontalWritingMode()
           ? IntRect(left.ToInt(), top, caret_width.ToInt(), height)
           : IntRect(top, left.ToInt(), height, caret_width.ToInt()));
+#endif
 }
 
 ALWAYS_INLINE float LayoutText::WidthFromFont(
@@ -1846,12 +1888,15 @@ void LayoutText::SetText(scoped_refptr<StringImpl> text,
   }
   known_to_have_no_overflow_and_no_fallback_fonts_ = false;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (AXObjectCache* cache = GetDocument().ExistingAXObjectCache())
     cache->TextChanged(this);
 
   TextAutosizer* text_autosizer = GetDocument().GetTextAutosizer();
   if (text_autosizer)
     text_autosizer->Record(this);
+#endif
 
   valid_ng_items_ = false;
 }
@@ -2076,6 +2121,9 @@ LayoutRect LayoutText::LocalSelectionRect() const {
   if (!cb)
     return LayoutRect();
 
+  ASSERT(false); // BKTODO:
+  return LayoutRect();
+#if 0
   const FrameSelection& frame_selection = GetFrame()->Selection();
   const auto fragments = NGPaintFragment::InlineFragmentsFor(this);
   if (fragments.IsInLayoutNGInlineFormattingContext()) {
@@ -2105,6 +2153,7 @@ LayoutRect LayoutText::LocalSelectionRect() const {
   }
 
   return rect;
+#endif
 }
 
 const NGOffsetMapping* LayoutText::GetNGOffsetMapping() const {
@@ -2145,14 +2194,13 @@ base::Optional<unsigned> LayoutText::CaretOffsetForPosition(
   // TODO(layout-dev): Support offset change due to text-transform.
   if (position.IsAfterAnchor())
     return TextLength();
-  DCHECK(position.IsOffsetInAnchor()) << position;
-  DCHECK_LE(position.OffsetInContainerNode(), static_cast<int>(TextLength()))
-      << position;
+  DCHECK(position.IsOffsetInAnchor());
+  DCHECK_LE(position.OffsetInContainerNode(), static_cast<int>(TextLength()));
   return position.OffsetInContainerNode();
 }
 
 int LayoutText::CaretMinOffset() const {
-  DCHECK(!GetDocument().NeedsLayoutTreeUpdate());
+  ASSERT(false); // BKTODO: DCHECK(!GetDocument().NeedsLayoutTreeUpdate());
 
   if (auto* mapping = GetNGOffsetMapping()) {
     const Position first_position = PositionForCaretOffset(0);
@@ -2176,7 +2224,7 @@ int LayoutText::CaretMinOffset() const {
 }
 
 int LayoutText::CaretMaxOffset() const {
-  DCHECK(!GetDocument().NeedsLayoutTreeUpdate());
+  ASSERT(false); // BKTODO: DCHECK(!GetDocument().NeedsLayoutTreeUpdate());
 
   if (auto* mapping = GetNGOffsetMapping()) {
     const Position last_position = PositionForCaretOffset(TextLength());
@@ -2205,16 +2253,16 @@ unsigned LayoutText::ResolvedTextLength() const {
     const Position start_position = PositionForCaretOffset(0);
     const Position end_position = PositionForCaretOffset(TextLength());
     if (start_position.IsNull()) {
-      DCHECK(end_position.IsNull()) << end_position;
+      DCHECK(end_position.IsNull());
       return 0;
     }
-    DCHECK(end_position.IsNotNull()) << start_position;
+    DCHECK(end_position.IsNotNull());
     base::Optional<unsigned> start =
         mapping->GetTextContentOffset(start_position);
     base::Optional<unsigned> end = mapping->GetTextContentOffset(end_position);
     if (!start.has_value() || !end.has_value()) {
-      DCHECK(!start.has_value()) << this;
-      DCHECK(!end.has_value()) << this;
+      DCHECK(!start.has_value());
+      DCHECK(!end.has_value());
       return 0;
     }
     DCHECK_LE(*start, *end);
@@ -2386,8 +2434,11 @@ scoped_refptr<AbstractInlineTextBox> LayoutText::FirstAbstractInlineTextBox() {
     if (!fragments.IsEmpty() &&
         fragments.IsInLayoutNGInlineFormattingContext()) {
       has_abstract_inline_text_box_ = true;
+      ASSERT(false); // BKTODO:
+#if 0
       return NGAbstractInlineTextBox::GetOrCreate(LineLayoutText(this),
                                                   **fragments.begin());
+#endif
     }
   }
   return LegacyAbstractInlineTextBox::GetOrCreate(LineLayoutText(this),
@@ -2401,10 +2452,13 @@ void LayoutText::InvalidateDisplayItemClients(
   if (RuntimeEnabledFeatures::LayoutNGEnabled()) {
     auto fragments = NGPaintFragment::InlineFragmentsFor(this);
     if (fragments.IsInLayoutNGInlineFormattingContext()) {
+      ASSERT(false); // BKTODO:
+#if 0
       for (NGPaintFragment* fragment : fragments) {
         paint_invalidator.InvalidateDisplayItemClient(*fragment,
                                                       invalidation_reason);
       }
+#endif
       return;
     }
   }
