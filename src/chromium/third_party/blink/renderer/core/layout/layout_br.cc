@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_br.cc
+// Description: LayoutBR Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2006 Apple Computer, Inc.
@@ -71,7 +82,7 @@ base::Optional<unsigned> LayoutBR::CaretOffsetForPosition(
     const Position& position) const {
   if (position.IsNull() || position.AnchorNode() != GetNode())
     return base::nullopt;
-  DCHECK(position.IsBeforeAnchor() || position.IsAfterAnchor()) << position;
+  DCHECK(position.IsBeforeAnchor() || position.IsAfterAnchor());
   return position.IsBeforeAnchor() ? 0 : 1;
 }
 
