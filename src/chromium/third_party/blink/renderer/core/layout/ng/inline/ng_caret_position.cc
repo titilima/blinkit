@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_caret_position.cc
+// Description: NGCaretPosition
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -240,7 +251,7 @@ NGCaretPosition ComputeNGCaretPosition(const LayoutBlockFlow& context,
                                        unsigned offset,
                                        TextAffinity affinity) {
   const NGPaintFragment* root_fragment = context.PaintFragment();
-  DCHECK(root_fragment) << "no paint fragment on layout object " << &context;
+  DCHECK(root_fragment); // no paint fragment on layout object
 
   NGCaretPosition candidate;
   for (const auto& child :
