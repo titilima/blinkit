@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: line_width.h
+// Description: LineWidth Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Adobe Systems Incorporated. All rights reserved.
  *
@@ -80,9 +91,11 @@ class LineWidth {
   void ShrinkAvailableWidthForNewFloatIfNeeded(const FloatingObject&);
   void AddUncommittedWidth(float delta) { uncommitted_width_ += delta; }
   void Commit();
+#if 0 // BKTODO:
   void ApplyOverhang(LineLayoutRubyRun,
                      LineLayoutItem start_layout_item,
                      LineLayoutItem end_layout_item);
+#endif
   void FitBelowFloats(bool is_first_line = false);
   void SetTrailingWhitespaceWidth(float width) {
     trailing_whitespace_width_ = width;
