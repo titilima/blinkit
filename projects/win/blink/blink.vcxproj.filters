@@ -3353,6 +3353,18 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ellipsis_box_painter.cc">
       <Filter>renderer\core\paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_orientation_utils.cc">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\inline_flow_box_painter.cc">
+      <Filter>renderer\core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_model_object_painter.cc">
+      <Filter>renderer\core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\inline_box_painter_base.cc">
+      <Filter>renderer\core\paint</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9167,6 +9179,21 @@
       <Filter>renderer\core\paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ellipsis_box_painter.h">
+      <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_list_marker.h">
+      <Filter>renderer\core\layout\api</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_orientation_utils.h">
+      <Filter>renderer\core\layout\line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\inline_flow_box_painter.h">
+      <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_model_object_painter.h">
+      <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\inline_box_painter_base.h">
       <Filter>renderer\core\paint</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: inline_flow_box.cc
+// Description: InlineFlowBox Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc.
  *               All rights reserved.
@@ -28,9 +39,11 @@
 #include "third_party/blink/renderer/core/layout/api/line_layout_box.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_inline.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_list_marker.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/layout/api/line_layout_ruby_base.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_ruby_run.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_ruby_text.h"
+#endif
 #include "third_party/blink/renderer/core/layout/hit_test_result.h"
 #include "third_party/blink/renderer/core/layout/line/glyph_overflow.h"
 #include "third_party/blink/renderer/core/layout/line/inline_text_box.h"
@@ -489,11 +502,14 @@ void InlineFlowBox::PlaceBoxRangeInInlineDirection(
                 .IsLeftToRightDirection()) {
           curr->SetLogicalLeft(logical_left);
         } else {
+          ASSERT(false); // BKTODO:
+#if 0
           // Our offset that we cache needs to be from the edge of the right
           // border box and not the left border box. We have to subtract |x|
           // from the width of the block (which can be obtained from the root
           // line box).
           curr->SetLogicalLeft(Root().Block().LogicalWidth() - logical_left);
+#endif
         }
         continue;  // The positioned object has no effect on the width.
       }
@@ -832,6 +848,8 @@ void InlineFlowBox::PlaceBoxesInBlockDirection(
         else
           has_annotations_after = true;
 
+        ASSERT(false); // BKTODO:
+#if 0
         LineLayoutRubyRun ruby_run =
             LineLayoutRubyRun(curr->GetLineLayoutItem());
         if (LineLayoutRubyBase ruby_base = ruby_run.RubyBase()) {
@@ -850,6 +868,7 @@ void InlineFlowBox::PlaceBoxesInBlockDirection(
                   : bottom_ruby_base_leading;
           box_height -= (top_ruby_base_leading + bottom_ruby_base_leading);
         }
+#endif
       }
       if (curr->IsInlineTextBox()) {
         TextEmphasisPosition emphasis_mark_position;
@@ -1537,6 +1556,8 @@ LayoutUnit InlineFlowBox::ComputeOverAnnotationAdjustment(
         curr->GetLineLayoutItem().IsRubyRun() &&
         curr->GetLineLayoutItem().StyleRef().GetRubyPosition() ==
             RubyPosition::kBefore) {
+      ASSERT(false); // BKTODO:
+#if 0
       LineLayoutRubyRun ruby_run = LineLayoutRubyRun(curr->GetLineLayoutItem());
       LineLayoutRubyText ruby_text = ruby_run.RubyText();
       if (!ruby_text)
@@ -1563,6 +1584,7 @@ LayoutUnit InlineFlowBox::ComputeOverAnnotationAdjustment(
         result =
             std::max(result, bottom_of_last_ruby_text_line - allowed_position);
       }
+#endif
     }
 
     if (curr->IsInlineTextBox()) {
@@ -1608,6 +1630,8 @@ LayoutUnit InlineFlowBox::ComputeUnderAnnotationAdjustment(
         curr->GetLineLayoutItem().IsRubyRun() &&
         curr->GetLineLayoutItem().StyleRef().GetRubyPosition() ==
             RubyPosition::kAfter) {
+      ASSERT(false); // BKTODO:
+#if 0
       LineLayoutRubyRun ruby_run = LineLayoutRubyRun(curr->GetLineLayoutItem());
       LineLayoutRubyText ruby_text = ruby_run.RubyText();
       if (!ruby_text)
@@ -1634,6 +1658,7 @@ LayoutUnit InlineFlowBox::ComputeUnderAnnotationAdjustment(
         result =
             std::max(result, bottom_of_last_ruby_text_line - allowed_position);
       }
+#endif
     }
 
     if (curr->IsInlineTextBox()) {

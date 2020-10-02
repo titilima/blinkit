@@ -775,6 +775,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_flow_box.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_text_box.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_box_list.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_orientation_utils.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_width.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\root_inline_box.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\trailing_objects.cc" />
@@ -866,6 +867,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\block_flow_paint_invalidator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\block_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\block_paint_invalidator.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_model_object_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_painter_base.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_paint_invalidator.cc" />
@@ -880,6 +882,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\fragment_data.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_element_timing.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_painter.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\inline_box_painter_base.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\inline_flow_box_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\inline_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\list_item_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\list_marker_painter.cc" />
@@ -2423,6 +2427,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_br.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_inline.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_item.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_list_marker.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\line_layout_text.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\api\selection_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\background_bleed_avoidance.h" />
@@ -2498,6 +2503,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_iterator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\inline_text_box.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_box_list.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_orientation_utils.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\line_width.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\root_inline_box.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\line\trailing_objects.h" />
@@ -2606,6 +2612,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\block_flow_paint_invalidator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\block_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\block_paint_invalidator.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_model_object_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_painter_base.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_paint_invalidator.h" />
@@ -2625,6 +2632,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\fragment_data.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_element_timing.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_painter.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\inline_box_painter_base.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\inline_flow_box_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\inline_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\list_item_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\list_marker_painter.h" />
