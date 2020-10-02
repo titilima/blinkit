@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_inline_fragment_traversal.cc
+// Description: NGInlineFragmentTraversal Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -257,11 +268,14 @@ Vector<Result> NGInlineFragmentTraversal::SelfFragmentsOf(
     }
   }
   Vector<Result> result;
+  ASSERT(false); // BKTODO:
+#if 0
   for (const NGPaintFragment* fragment :
        NGPaintFragment::InlineFragmentsFor(layout_object)) {
     result.push_back(Result{&fragment->PhysicalFragment(),
                             fragment->InlineOffsetToContainerBox()});
   }
+#endif
   return result;
 }
 
