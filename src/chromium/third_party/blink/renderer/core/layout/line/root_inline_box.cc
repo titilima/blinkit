@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: root_inline_box.cc
+// Description: RootInlineBox Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -252,6 +263,9 @@ LayoutUnit RootInlineBox::AlignBoxesInBlockDirection(
   bool set_max_ascent = false;
   bool set_max_descent = false;
 
+  ASSERT(false); // BKTODO:
+  return LayoutUnit();
+#if 0
   // Figure out if we're in no-quirks mode.
   bool no_quirks_mode = GetLineLayoutItem().GetDocument().InNoQuirksMode();
 
@@ -302,6 +316,7 @@ LayoutUnit RootInlineBox::AlignBoxesInBlockDirection(
   }
 
   return height_of_block + max_height;
+#endif
 }
 
 LayoutUnit RootInlineBox::BeforeAnnotationsAdjustment() const {
@@ -384,6 +399,9 @@ LayoutUnit RootInlineBox::SelectionTop() const {
 }
 
 LayoutUnit RootInlineBox::SelectionBottom() const {
+  ASSERT(false); // BKTODO:
+  return LayoutUnit();
+#if 0
   LayoutUnit selection_bottom =
       GetLineLayoutItem().GetDocument().InNoQuirksMode() ? selection_bottom_
                                                          : line_bottom_;
@@ -399,6 +417,7 @@ LayoutUnit RootInlineBox::SelectionBottom() const {
     return selection_bottom;
 
   return std::max(selection_bottom, NextRootBox()->SelectionTop());
+#endif
 }
 
 LayoutUnit RootInlineBox::BlockDirectionPointInLine() const {

@@ -3371,6 +3371,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\inline_text_box_painter.cc">
       <Filter>renderer\core\paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\root_inline_box_painter.cc">
+      <Filter>renderer\core\paint</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9206,6 +9209,12 @@
       <Filter>renderer\core\layout</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\inline_text_box_painter.h">
+      <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\vertical_position_cache.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\root_inline_box_painter.h">
       <Filter>renderer\core\paint</Filter>
     </ClInclude>
   </ItemGroup>

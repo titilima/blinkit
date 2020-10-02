@@ -903,6 +903,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_phase.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_property_tree_builder.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\replaced_painter.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\root_inline_box_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\rounded_inner_rect_clipper.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_cell_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_cell_paint_invalidator.cc" />
@@ -2587,6 +2588,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\table_layout_algorithm_fixed.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_autosizer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_run_constructor.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\vertical_position_cache.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\view_fragmentation_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\base_fetch_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\document_loader.h" />
@@ -2660,6 +2662,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_property_tree_builder.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_result.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\replaced_painter.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\root_inline_box_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\rounded_inner_rect_clipper.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_cell_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_cell_paint_invalidator.h" />
