@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_line_box_fragment_builder.h
+// Description: NGLineBoxFragmentBuilder Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -57,13 +68,14 @@ class CORE_EXPORT NGLineBoxFragmentBuilder final
     NGLogicalOffset offset;
     LayoutUnit inline_size;
     unsigned box_data_index = 0;
-    UBiDiLevel bidi_level = 0xff;
+    // BKTODO: UBiDiLevel bidi_level = 0xff;
 
     // Empty constructor needed for |resize()|.
     Child() = default;
     // Create a placeholder. A placeholder does not have a fragment nor a bidi
     // level.
     Child(NGLogicalOffset offset) : offset(offset) {}
+#if 0 // BKTODO:
     // Crete a bidi control. A bidi control does not have a fragment, but has
     // bidi level and affects bidi reordering.
     Child(UBiDiLevel bidi_level) : bidi_level(bidi_level) {}
@@ -100,14 +112,17 @@ class CORE_EXPORT NGLineBoxFragmentBuilder final
         : out_of_flow_positioned_box(out_of_flow_positioned_box),
           out_of_flow_containing_box(out_of_flow_containing_box),
           bidi_level(bidi_level) {}
+#endif
 
     bool HasInFlowFragment() const { return layout_result || fragment; }
     bool HasOutOfFlowFragment() const { return out_of_flow_positioned_box; }
     bool HasFragment() const {
       return HasInFlowFragment() || HasOutOfFlowFragment();
     }
+#if 0 // BKTODO:
     bool HasBidiLevel() const { return bidi_level != 0xff; }
     bool IsPlaceholder() const { return !HasFragment() && !HasBidiLevel(); }
+#endif
     const NGPhysicalFragment* PhysicalFragment() const;
   };
 
@@ -154,11 +169,13 @@ class CORE_EXPORT NGLineBoxFragmentBuilder final
     void AddChild(Args&&... args) {
       children_.emplace_back(std::forward<Args>(args)...);
     }
+#if 0 // BKTODO:
     void InsertChild(unsigned,
                      scoped_refptr<NGLayoutResult>,
                      const NGLogicalOffset&,
                      LayoutUnit inline_size,
                      UBiDiLevel);
+#endif
 
     void MoveInInlineDirection(LayoutUnit, unsigned start, unsigned end);
     void MoveInBlockDirection(LayoutUnit);

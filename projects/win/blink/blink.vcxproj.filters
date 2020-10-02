@@ -3383,6 +3383,51 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_outline_utils.cc">
       <Filter>renderer\core\layout\ng</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_bidi_paragraph.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_break_token.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_items_builder.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_layout_algorithm.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_line_breaker.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_constraint_space_builder.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_length_utils.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_positioned_float.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_space_utils.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_offset_mapping_builder.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_line_box_fragment_builder.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_container_fragment_builder.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_base_fragment_builder.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_fragment_builder.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_item_result.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9246,6 +9291,57 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_outline_utils.h">
       <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_bidi_paragraph.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_break_token.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_items_builder.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_layout_algorithm.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_line_breaker.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_constraint_space_builder.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_length_utils.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_positioned_float.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_space_utils.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\empty_offset_mapping_builder.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_offset_mapping_builder.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_line_box_fragment_builder.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_container_fragment_builder.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_base_fragment_builder.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_fragment_builder.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_layout_algorithm.h">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_item_result.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

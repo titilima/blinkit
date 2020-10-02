@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_inline_node.cc
+// Description: NGInlineNode Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -30,9 +41,9 @@
 #include "third_party/blink/renderer/core/layout/ng/ng_space_utils.h"
 #include "third_party/blink/renderer/core/layout/ng/ng_unpositioned_float.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
-#include "third_party/blink/renderer/platform/fonts/shaping/harfbuzz_shaper.h"
+// BKTODO: #include "third_party/blink/renderer/platform/fonts/shaping/harfbuzz_shaper.h"
 #include "third_party/blink/renderer/platform/fonts/shaping/run_segmenter.h"
-#include "third_party/blink/renderer/platform/fonts/shaping/shape_result_spacing.h"
+// BKTODO: #include "third_party/blink/renderer/platform/fonts/shaping/shape_result_spacing.h"
 #include "third_party/blink/renderer/platform/wtf/text/character_names.h"
 
 namespace blink {
@@ -280,7 +291,7 @@ const NGInlineNodeData& NGInlineNode::EnsureData() {
 }
 
 const NGOffsetMapping* NGInlineNode::ComputeOffsetMappingIfNeeded() {
-  DCHECK(!GetLayoutBlockFlow()->GetDocument().NeedsLayoutTreeUpdate());
+  ASSERT(false); // BKTODO: DCHECK(!GetLayoutBlockFlow()->GetDocument().NeedsLayoutTreeUpdate());
 
   NGInlineNodeData* data = MutableData();
   if (!data->offset_mapping) {
@@ -420,14 +431,19 @@ void NGInlineNode::SegmentBidiRuns(NGInlineNodeData* data) {
 
   data->SetBaseDirection(bidi.BaseDirection());
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (bidi.IsUnidirectional() && IsLtr(bidi.BaseDirection())) {
     // All runs are LTR, no need to reorder.
     data->is_bidi_enabled_ = false;
     return;
   }
+#endif
 
   Vector<NGInlineItem>& items = data->items;
   unsigned item_index = 0;
+  ASSERT(false); // BKTODO:
+#if 0
   for (unsigned start = 0; start < data->text_content.length();) {
     UBiDiLevel level;
     unsigned end = bidi.GetLogicalRun(start, &level);
@@ -435,6 +451,7 @@ void NGInlineNode::SegmentBidiRuns(NGInlineNodeData* data) {
     item_index = NGInlineItem::SetBidiLevel(items, item_index, end, level);
     start = end;
   }
+#endif
 #if DCHECK_IS_ON()
   // Check all items have bidi levels, except trailing non-length items.
   // Items that do not create break opportunities such as kOutOfFlowPositioned
@@ -455,6 +472,8 @@ void NGInlineNode::ShapeText(NGInlineItemsData* data,
 void NGInlineNode::ShapeText(const String& text_content,
                              Vector<NGInlineItem>* items,
                              const String* previous_text) {
+  ASSERT(false); // BKTODO:
+#if 0
   // Provide full context of the entire node to the shaper.
   HarfBuzzShaper shaper(text_content);
   ShapeResultSpacing<String> spacing(text_content);
@@ -569,6 +588,7 @@ void NGInlineNode::ShapeText(const String& text_content,
           shape_result->SubRange(item.StartOffset(), item.EndOffset());
     }
   }
+#endif
 }
 
 // Create Vector<NGInlineItem> with :first-line rules applied if needed.
@@ -699,6 +719,9 @@ static LayoutUnit ComputeContentSize(
     const MinMaxSizeInput& input,
     NGLineBreakerMode mode,
     const NGConstraintSpace* constraint_space) {
+  ASSERT(false); // BKTODO:
+  return LayoutUnit();
+#if 0
   const ComputedStyle& style = node.Style();
   WritingMode writing_mode = style.GetWritingMode();
   LayoutUnit available_inline_size =
@@ -708,9 +731,7 @@ static LayoutUnit ComputeContentSize(
                                 ? constraint_space->InitialContainingBlockSize()
                                 : node.InitialContainingBlockSize();
   DCHECK(!constraint_space || constraint_space->InitialContainingBlockSize() ==
-                                  node.InitialContainingBlockSize())
-      << constraint_space->InitialContainingBlockSize() << " vs "
-      << node.InitialContainingBlockSize();
+                                  node.InitialContainingBlockSize());
 
   NGConstraintSpace space =
       NGConstraintSpaceBuilder(writing_mode, icb_size)
@@ -808,6 +829,7 @@ static LayoutUnit ComputeContentSize(
   } while (!line_breaker.IsFinished());
 
   return result;
+#endif
 }
 
 MinMaxSize NGInlineNode::ComputeMinMaxSize(

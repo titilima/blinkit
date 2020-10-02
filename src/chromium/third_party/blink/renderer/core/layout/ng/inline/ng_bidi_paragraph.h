@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_bidi_paragraph.h
+// Description: NGBidiParagraph Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -10,7 +21,7 @@
 #include "third_party/blink/renderer/platform/wtf/forward.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 
-#include <unicode/ubidi.h>
+// BKTODO: #include <unicode/ubidi.h>
 
 namespace blink {
 
@@ -36,10 +47,12 @@ class NGBidiParagraph {
   // called.
   bool SetParagraph(const String&, const ComputedStyle&);
 
+#if 0 // BKTODO:
   // @return the entire text is unidirectional.
   bool IsUnidirectional() const {
     return ubidi_getDirection(ubidi_) != UBIDI_MIXED;
   }
+#endif
 
   // The base direction (a.k.a. paragraph direction) of this block.
   // This is determined by the 'direction' property of the block, or by the
@@ -52,6 +65,7 @@ class NGBidiParagraph {
   // http://unicode.org/reports/tr9/#The_Paragraph_Level
   static TextDirection BaseDirectionForString(const StringView&);
 
+#if 0 // BKTODO:
   // Returns the end offset of a logical run that starts from the |start|
   // offset.
   unsigned GetLogicalRun(unsigned start, UBiDiLevel*) const;
@@ -61,9 +75,10 @@ class NGBidiParagraph {
   static void IndicesInVisualOrder(
       const Vector<UBiDiLevel, 32>& levels,
       Vector<int32_t, 32>* indices_in_visual_order_out);
+#endif
 
  private:
-  UBiDi* ubidi_ = nullptr;
+  // BKTODO: UBiDi* ubidi_ = nullptr;
   TextDirection base_direction_ = TextDirection::kLtr;
 };
 

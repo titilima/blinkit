@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_line_breaker.h
+// Description: NGLineBreaker Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -10,8 +21,10 @@
 #include "third_party/blink/renderer/core/layout/ng/exclusions/ng_line_layout_opportunity.h"
 #include "third_party/blink/renderer/core/layout/ng/inline/ng_inline_item_result.h"
 #include "third_party/blink/renderer/core/layout/ng/inline/ng_inline_node.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/fonts/shaping/harfbuzz_shaper.h"
 #include "third_party/blink/renderer/platform/fonts/shaping/shape_result_spacing.h"
+#endif
 #include "third_party/blink/renderer/platform/text/text_break_iterator.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 
@@ -203,8 +216,10 @@ class CORE_EXPORT NGLineBreaker {
   scoped_refptr<const ComputedStyle> current_style_;
 
   LazyLineBreakIterator break_iterator_;
+#if 0 // BKTODO:
   HarfBuzzShaper shaper_;
   ShapeResultSpacing<String> spacing_;
+#endif
   bool previous_line_had_forced_break_ = false;
   const Hyphenation* hyphenation_ = nullptr;
 

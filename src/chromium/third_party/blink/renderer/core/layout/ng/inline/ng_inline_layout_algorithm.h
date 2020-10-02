@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_inline_layout_algorithm.h
+// Description: NGInlineLayoutAlgorithm Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -76,9 +87,11 @@ class CORE_EXPORT NGInlineLayoutAlgorithm final
                         const NGLineInfo&,
                         NGInlineItemResult*,
                         NGInlineBoxState*);
+#if 0 // BKTODO:
   void PlaceGeneratedContent(scoped_refptr<const NGPhysicalFragment>,
                              UBiDiLevel,
                              NGInlineBoxState*);
+#endif
   NGInlineBoxState* PlaceAtomicInline(const NGInlineItem&,
                                       NGInlineItemResult*,
                                       const NGLineInfo&);
