@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: abstract_inline_text_box.cc
+// Description: AbstractInlineTextBox Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -30,7 +41,7 @@
 
 #include "third_party/blink/renderer/core/layout/line/abstract_inline_text_box.h"
 
-#include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
+// BKTODO: #include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
 #include "third_party/blink/renderer/core/editing/ephemeral_range.h"
 #include "third_party/blink/renderer/core/editing/iterators/text_iterator.h"
 #include "third_party/blink/renderer/platform/text/text_break_iterator.h"
@@ -96,8 +107,11 @@ LegacyAbstractInlineTextBox::~LegacyAbstractInlineTextBox() {
 void AbstractInlineTextBox::Detach() {
   DCHECK(GetLineLayoutItem());
   if (Node* node = GetNode()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (AXObjectCache* cache = node->GetDocument().ExistingAXObjectCache())
       cache->Remove(this);
+#endif
   }
 
   line_layout_item_ = LineLayoutText(nullptr);
