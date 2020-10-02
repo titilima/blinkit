@@ -3350,6 +3350,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\view_painter.cc">
       <Filter>renderer\core\paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ellipsis_box_painter.cc">
+      <Filter>renderer\core\paint</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9161,6 +9164,9 @@
       <Filter>renderer\platform</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\view_painter.h">
+      <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ellipsis_box_painter.h">
       <Filter>renderer\core\paint</Filter>
     </ClInclude>
   </ItemGroup>

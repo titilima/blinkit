@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: inline_box.cc
+// Description: InlineBox Class
+//      Author: Ziming Li
+//     Created: 2020-10-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2004, 2005, 2006, 2007 Apple Inc. All rights reserved.
  *
@@ -79,12 +90,19 @@ void InlineBox::Remove(MarkLineBoxes mark_line_boxes) {
 }
 
 void* InlineBox::operator new(size_t sz) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return WTF::Partitions::LayoutPartition()->Alloc(
       sz, WTF_HEAP_PROFILER_TYPE_NAME(InlineBox));
+#endif
 }
 
 void InlineBox::operator delete(void* ptr) {
+  ASSERT(false); // BKTODO:
+#if 0
   base::PartitionFree(ptr);
+#endif
 }
 
 const char* InlineBox::BoxName() const {

@@ -874,6 +874,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\compositing_reason_finder.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\graphics_layer_updater.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\paint_layer_compositor.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ellipsis_box_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\fieldset_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\filter_effect_builder.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\fragment_data.cc" />
@@ -2617,6 +2618,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\compositing_triggers.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\graphics_layer_updater.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\paint_layer_compositor.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ellipsis_box_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\fieldset_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\filter_effect_builder.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\find_paint_offset_and_visual_rect_needing_update.h" />
