@@ -1,10 +1,20 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_ng_list_marker_image.cc
+// Description: LayoutNGListMarkerImage Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/core/layout/ng/list/layout_ng_list_marker_image.h"
 #include "third_party/blink/renderer/core/layout/intrinsic_sizing_info.h"
-#include "third_party/blink/renderer/core/svg/graphics/svg_image.h"
 
 namespace blink {
 
