@@ -86,6 +86,7 @@ public:
     BLINKIT_DISABLE_FEATURE(LayoutNGBlockFragmentation)
     BLINKIT_DISABLE_FEATURE(LayoutNGFieldset)
     BLINKIT_DISABLE_FEATURE(LayoutNGFlexBox)
+    BLINKIT_DISABLE_FEATURE(LayoutNGFragmentCaching)
     BLINKIT_DISABLE_FEATURE(OffMainThreadCSSPaint)
     BLINKIT_DISABLE_FEATURE(PaintTouchActionRects)
     BLINKIT_DISABLE_FEATURE(PaintTracking)

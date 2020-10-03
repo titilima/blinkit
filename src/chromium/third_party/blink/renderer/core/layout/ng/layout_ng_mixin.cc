@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_ng_mixin.cc
+// Description: LayoutNGMixin Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -245,7 +256,7 @@ void LayoutNGMixin<Base>::SetCachedLayoutResult(
 
 template <typename Base>
 void LayoutNGMixin<Base>::ClearCachedLayoutResult() {
-  cached_result_.reset();
+  ASSERT(false); // BKTODO: cached_result_.reset();
   Base::cached_constraint_space_.reset();
 }
 
