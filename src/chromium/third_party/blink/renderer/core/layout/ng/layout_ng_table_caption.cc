@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_ng_table_caption.cc
+// Description: LayoutNGTableCaption Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -54,7 +65,7 @@ void LayoutNGTableCaption::CalculateAndSetMargins(
 void LayoutNGTableCaption::UpdateBlockLayout(bool relayout_children) {
   LayoutAnalyzer::BlockScope analyzer(*this);
 
-  DCHECK(!IsOutOfFlowPositioned()) << "Out of flow captions are blockified.";
+  DCHECK(!IsOutOfFlowPositioned()); // Out of flow captions are blockified.
 
   NGConstraintSpace constraint_space =
       NGConstraintSpace::CreateFromLayoutObject(*this);
@@ -78,9 +89,7 @@ void LayoutNGTableCaption::UpdateBlockLayout(bool relayout_children) {
   // NGBoxFragmentPainter::Paint will have to handle it until table layout is
   // implemented in NG, in which case that algorithm will set each child's
   // offsets. See https://crbug.com/788590 for more info.
-  DCHECK(!result->PhysicalFragment()->IsPlacedByLayoutNG())
-      << "Only a table should be placing table caption fragments and the ng "
-         "table algorithm doesn't exist yet!";
+  DCHECK(!result->PhysicalFragment()->IsPlacedByLayoutNG()); // Only a table should be placing table caption fragments and the ng table algorithm doesn't exist yet!
 }
 
 }  // namespace blink
