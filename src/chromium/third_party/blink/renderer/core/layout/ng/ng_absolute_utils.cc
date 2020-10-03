@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_absolute_utils.cc
+// Description: NG Absolute Utils
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,12 +16,12 @@
 #include "third_party/blink/renderer/core/layout/ng/ng_absolute_utils.h"
 
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
-#include "third_party/blink/renderer/core/html/html_dialog_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_dialog_element.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 #include "third_party/blink/renderer/core/layout/ng/geometry/ng_static_position.h"
 #include "third_party/blink/renderer/core/layout/ng/ng_constraint_space.h"
 #include "third_party/blink/renderer/core/layout/ng/ng_length_utils.h"
-#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
 #include "third_party/blink/renderer/platform/length_functions.h"
 
@@ -492,6 +503,9 @@ bool AbsoluteNeedsChildInlineSize(const ComputedStyle& style) {
 base::Optional<LayoutUnit> ComputeAbsoluteDialogYPosition(
     const LayoutObject& dialog,
     LayoutUnit height) {
+  ASSERT(false); // BKTODO:
+  return base::nullopt;
+#if 0
   if (!IsHTMLDialogElement(dialog.GetNode()))
     return base::nullopt;
 
@@ -531,6 +545,7 @@ base::Optional<LayoutUnit> ComputeAbsoluteDialogYPosition(
     top += (visible_height - height) / 2;
   dialog_node->SetCentered(top);
   return top;
+#endif
 }
 
 NGAbsolutePhysicalPosition ComputePartialAbsoluteWithChildInlineSize(
