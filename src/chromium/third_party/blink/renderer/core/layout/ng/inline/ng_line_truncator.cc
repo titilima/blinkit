@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_line_truncator.cc
+// Description: NGLineTruncator Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,7 +18,7 @@
 #include "third_party/blink/renderer/core/layout/ng/inline/ng_inline_item_result.h"
 #include "third_party/blink/renderer/core/layout/ng/inline/ng_text_fragment_builder.h"
 #include "third_party/blink/renderer/platform/fonts/font_baseline.h"
-#include "third_party/blink/renderer/platform/fonts/shaping/harfbuzz_shaper.h"
+// BKTODO: #include "third_party/blink/renderer/platform/fonts/shaping/harfbuzz_shaper.h"
 
 namespace blink {
 
@@ -54,6 +65,9 @@ LayoutUnit NGLineTruncator::TruncateLine(
       font_data && font_data->GlyphForCharacter(kHorizontalEllipsisCharacter)
           ? String(&kHorizontalEllipsisCharacter, 1)
           : String(u"...");
+  ASSERT(false); // BKTODO:
+  return LayoutUnit();
+#if 0
   HarfBuzzShaper shaper(ellipsis_text);
   scoped_refptr<ShapeResult> ellipsis_shape_result =
       shaper.Shape(&font, line_direction_);
@@ -110,6 +124,7 @@ LayoutUnit NGLineTruncator::TruncateLine(
       NGLogicalOffset{ellipsis_inline_offset, -ellipsis_metrics.ascent},
       ellipsis_width, 0);
   return std::max(ellipsis_inline_offset + ellipsis_width, line_width);
+#endif
 }
 
 // Hide this child from being painted.
