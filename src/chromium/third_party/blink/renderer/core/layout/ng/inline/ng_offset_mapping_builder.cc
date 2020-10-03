@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_inline_layout_algorithm.cc
+// Description: NGInlineLayoutAlgorithm Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -62,7 +73,7 @@ NGOffsetMappingBuilder::SourceNodeScope::~SourceNodeScope() {
 }
 
 void NGOffsetMappingBuilder::ReserveCapacity(unsigned capacity) {
-  unit_ranges_.ReserveCapacityForSize(capacity);
+  ASSERT(false); // BKTODO: unit_ranges_.ReserveCapacityForSize(capacity);
   mapping_units_.ReserveCapacity(capacity * 1.5);
 }
 
@@ -184,6 +195,8 @@ void NGOffsetMappingBuilder::CollapseTrailingSpace(unsigned space_offset) {
 }
 
 void NGOffsetMappingBuilder::ShiftRanges(unsigned position, int delta) {
+  ASSERT(false); // BKTODO:
+#if 0
   for (auto& range : unit_ranges_) {
     auto& pair = range.value;
     if (pair.first > position)
@@ -191,6 +204,7 @@ void NGOffsetMappingBuilder::ShiftRanges(unsigned position, int delta) {
     if (pair.second > position)
       pair.second += delta;
   }
+#endif
 }
 
 void NGOffsetMappingBuilder::SetDestinationString(String string) {
@@ -199,12 +213,15 @@ void NGOffsetMappingBuilder::SetDestinationString(String string) {
 }
 
 NGOffsetMapping NGOffsetMappingBuilder::Build() {
+  ASSERT(false); // BKTODO:
+  exit(0);
+#if 0
   // All mapping units are already built. Scan them to build mapping ranges.
   for (unsigned range_start = 0; range_start < mapping_units_.size();) {
     const Node* node = &mapping_units_[range_start].GetOwner();
     // Units of the same node should be consecutive in the mapping function,
     // If not, the layout structure should be already broken.
-    DCHECK(!unit_ranges_.Contains(node)) << node;
+    DCHECK(!unit_ranges_.Contains(node));
     unsigned range_end = range_start + 1;
     while (range_end < mapping_units_.size() &&
            mapping_units_[range_end].GetOwner() == node)
@@ -215,6 +232,7 @@ NGOffsetMapping NGOffsetMappingBuilder::Build() {
 
   return NGOffsetMapping(std::move(mapping_units_), std::move(unit_ranges_),
                          destination_string_);
+#endif
 }
 
 void NGOffsetMappingBuilder::EnterInline(const LayoutObject& layout_object) {
@@ -227,9 +245,12 @@ void NGOffsetMappingBuilder::ExitInline(const LayoutObject& layout_object) {
   if (!layout_object.NonPseudoNode())
     return;
   DCHECK(open_inlines_.size());
+  ASSERT(false); // BKTODO:
+#if 0
   unit_ranges_.insert(
       layout_object.GetNode(),
       std::make_pair(open_inlines_.back(), mapping_units_.size()));
+#endif
   open_inlines_.pop_back();
 }
 
