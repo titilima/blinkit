@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_block_node.cc
+// Description: NGBlockNode Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,7 +18,7 @@
 #include <memory>
 
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
-#include "third_party/blink/renderer/core/html/html_marquee_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_marquee_element.h"
 #include "third_party/blink/renderer/core/layout/layout_block_flow.h"
 #include "third_party/blink/renderer/core/layout/layout_fieldset.h"
 #include "third_party/blink/renderer/core/layout/layout_multi_column_flow_thread.h"
@@ -33,7 +44,7 @@
 #include "third_party/blink/renderer/core/layout/ng/ng_page_layout_algorithm.h"
 #include "third_party/blink/renderer/core/layout/shapes/shape_outside_info.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/text/writing_mode.h"
 
@@ -248,6 +259,8 @@ scoped_refptr<NGLayoutResult> NGBlockNode::Layout(
 
   FinishLayout(constraint_space, break_token, layout_result);
   if (old_scrollbars != GetScrollbarSizes()) {
+    ASSERT(false); // BKTODO:
+#if 0
     // If our scrollbars have changed, we need to relayout because either:
     // - Our size has changed (if shrinking to fit), or
     // - Space available to our children has changed.
@@ -261,6 +274,7 @@ scoped_refptr<NGLayoutResult> NGBlockNode::Layout(
     layout_result = LayoutWithAlgorithm(*this, constraint_space, break_token,
                                         /* ignored */ nullptr);
     FinishLayout(constraint_space, break_token, layout_result);
+#endif
   }
 
   return layout_result;
@@ -271,8 +285,11 @@ void NGBlockNode::PrepareForLayout() {
     LayoutBlock* block = ToLayoutBlock(box_);
     if (block->HasOverflowClip()) {
       DCHECK(block->GetScrollableArea());
+      ASSERT(false); // BKTODO:
+#if 0
       if (block->GetScrollableArea()->ShouldPerformScrollAnchoring())
         block->GetScrollableArea()->GetScrollAnchor()->NotifyBeforeLayout();
+#endif
     }
   }
 
@@ -323,12 +340,15 @@ MinMaxSize NGBlockNode::ComputeMinMaxSize(
       !IsParallelWritingMode(container_writing_mode, Style().GetWritingMode());
 
   MinMaxSize sizes;
+  ASSERT(false); // BKTODO:
+#if 0
   // If we're orthogonal, we have to run layout to compute the sizes. However,
   // if we're outside of layout, we can't do that. This can happen on Mac.
   if ((!CanUseNewLayout() && !is_orthogonal_flow_root) ||
       (is_orthogonal_flow_root && !box_->GetFrameView()->IsInPerformLayout())) {
     return ComputeMinMaxSizeFromLegacy(input.size_type);
   }
+#endif
 
   NGPhysicalSize icb_size = constraint_space
                                 ? constraint_space->InitialContainingBlockSize()
@@ -366,17 +386,23 @@ MinMaxSize NGBlockNode::ComputeMinMaxSize(
       ComputeMinMaxSizeWithAlgorithm(*this, *constraint_space,
                                      /* break token */ nullptr, input);
   if (maybe_sizes.has_value()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (UNLIKELY(IsHTMLMarqueeElement(box_->GetNode()) &&
                  ToHTMLMarqueeElement(box_->GetNode())->IsHorizontal()))
       maybe_sizes->min_size = LayoutUnit();
+#endif
     return *maybe_sizes;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!box_->GetFrameView()->IsInPerformLayout()) {
     // We can't synthesize these using Layout() if we're not in PerformLayout.
     // This situation can happen on mac. Fall back to legacy instead.
     return ComputeMinMaxSizeFromLegacy(input.size_type);
   }
+#endif
 
   // Have to synthesize this value.
   scoped_refptr<NGLayoutResult> layout_result = Layout(zero_constraint_space);
@@ -516,8 +542,7 @@ void NGBlockNode::CopyFragmentDataToLayoutBox(
   if (IsFirstFragment(constraint_space, physical_fragment)) {
     box_->SetLogicalWidth(fragment_logical_size.inline_size);
   } else {
-    DCHECK_EQ(box_->LogicalWidth(), fragment_logical_size.inline_size)
-        << "Variable fragment inline size not supported";
+    DCHECK_EQ(box_->LogicalWidth(), fragment_logical_size.inline_size); // Variable fragment inline size not supported
     logical_height =
         PreviouslyUsedBlockSpace(constraint_space, physical_fragment);
     // TODO(layout-ng): We should store this on the break token instead of
@@ -635,7 +660,7 @@ void NGBlockNode::PlaceChildrenInLayoutBox(
     // LayoutNGFieldset for more details.
     LayoutBlock* content_wrapper = rendered_legend->ContainingBlock();
     DCHECK(content_wrapper->IsAnonymous());
-    DCHECK(IsHTMLFieldSetElement(content_wrapper->Parent()->GetNode()));
+    ASSERT(false); // BKTODO: DCHECK(IsHTMLFieldSetElement(content_wrapper->Parent()->GetNode()));
     LayoutPoint location = rendered_legend->Location();
     location -= content_wrapper->Location();
     rendered_legend->SetLocation(location);
@@ -671,7 +696,7 @@ void NGBlockNode::CopyChildFragmentPosition(
   if (!layout_box)
     return;
 
-  DCHECK(layout_box->Parent()) << "Should be called on children only.";
+  DCHECK(layout_box->Parent()); // Should be called on children only.
 
   // The containing block of |layout_box| on the legacy layout side is normally
   // |box_|, but this is not an invariant. Among other things, it does not apply
