@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_out_of_flow_layout_part.cc
+// Description: NGOutOfFlowLayoutPart Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -126,8 +137,7 @@ void NGOutOfFlowLayoutPart::ComputeInlineContainingBlocks(
       // ng layout algorithm did not run.
       DCHECK(block_info.key->IsLayoutInline());
       inline_cb_style = block_info.key->Style();
-      NOTIMPLEMENTED()
-          << "Inline containing block might need geometry information";
+      NOTIMPLEMENTED(); // Inline containing block might need geometry information
       // TODO(atotic) ContainingBlockInfo geometry
       // must be computed from Legacy algorithm
     } else {
