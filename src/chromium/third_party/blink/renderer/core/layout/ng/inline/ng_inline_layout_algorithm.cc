@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_inline_layout_algorithm.cc
+// Description: NGInlineLayoutAlgorithm Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -30,7 +41,7 @@
 #include "third_party/blink/renderer/core/layout/ng/ng_space_utils.h"
 #include "third_party/blink/renderer/core/layout/ng/ng_unpositioned_float.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
-#include "third_party/blink/renderer/platform/fonts/shaping/shape_result_spacing.h"
+// BKTODO: #include "third_party/blink/renderer/platform/fonts/shaping/shape_result_spacing.h"
 
 namespace blink {
 namespace {
@@ -266,8 +277,11 @@ void NGInlineLayoutAlgorithm::CreateLine(NGLineInfo* line_info,
                              line_info->ItemsData(), &item_result,
                              box->text_height);
       }
+      ASSERT(false); // BKTODO:
+#if 0
       line_box_.AddChild(text_builder.ToTextFragment(), box->text_top,
                          item_result.inline_size, item.BidiLevel());
+#endif
     } else if (item.Type() == NGInlineItem::kControl) {
       PlaceControlItem(item, *line_info, &item_result, box);
     } else if (item.Type() == NGInlineItem::kOpenTag) {
@@ -282,20 +296,29 @@ void NGInlineLayoutAlgorithm::CreateLine(NGLineInfo* line_info,
     } else if (item.Type() == NGInlineItem::kListMarker) {
       PlaceListMarker(item, &item_result, *line_info);
     } else if (item.Type() == NGInlineItem::kOutOfFlowPositioned) {
+      ASSERT(false); // BKTODO:
+#if 0
       line_box_.AddChild(
           item.GetLayoutObject(),
           box_states_->ContainingLayoutObjectForAbsolutePositionObjects(),
           item.BidiLevel());
+#endif
     } else if (item.Type() == NGInlineItem::kBidiControl) {
+      ASSERT(false); // BKTODO:
+#if 0
       line_box_.AddChild(item.BidiLevel());
+#endif
     }
   }
 
   if (line_info->LineEndFragment()) {
+    ASSERT(false); // BKTODO:
+#if 0
     // Add a generated text fragment, hyphen or ellipsis, at the logical end.
     // By using the paragraph bidi_level, it will appear at the visual end.
     PlaceGeneratedContent(std::move(line_info->LineEndFragment()),
                           IsLtr(line_info->BaseDirection()) ? 0 : 1, box);
+#endif
   }
 
   box_states_->OnEndPlaceItems(&line_box_, baseline_type_);
@@ -406,10 +429,14 @@ void NGInlineLayoutAlgorithm::PlaceControlItem(const NGInlineItem& item,
                                      ConstraintSpace().GetWritingMode());
   text_builder.SetItem(type, line_info.ItemsData(), item_result,
                        box->text_height);
+  ASSERT(false); // BKTODO:
+#if 0
   line_box_.AddChild(text_builder.ToTextFragment(), box->text_top,
                      item_result->inline_size, item.BidiLevel());
+#endif
 }
 
+#if 0 // BKTODO:
 // Place a generated content that does not exist in DOM nor in LayoutObject
 // tree.
 void NGInlineLayoutAlgorithm::PlaceGeneratedContent(
@@ -437,6 +464,7 @@ void NGInlineLayoutAlgorithm::PlaceGeneratedContent(
     box_states_->OnCloseTag(&line_box_, box, baseline_type_);
   }
 }
+#endif
 
 NGInlineBoxState* NGInlineLayoutAlgorithm::PlaceAtomicInline(
     const NGInlineItem& item,
@@ -474,9 +502,12 @@ void NGInlineLayoutAlgorithm::PlaceLayoutResult(NGInlineItemResult* item_result,
     box->metrics.Unite(metrics);
 
   LayoutUnit line_top = item_result->margins.line_over - metrics.ascent;
+  ASSERT(false); // BKTODO:
+#if 0
   line_box_.AddChild(std::move(item_result->layout_result),
                      NGLogicalOffset{inline_offset, line_top},
                      item_result->inline_size, item.BidiLevel());
+#endif
 }
 
 // Place all out-of-flow objects in |line_box_| and clear them.
@@ -566,6 +597,8 @@ bool NGInlineLayoutAlgorithm::ApplyJustify(NGLineInfo* line_info) {
   if (last_item_result.text_end_effect == NGTextEndEffect::kHyphen)
     line_text.append(last_item_result.item->Style()->HyphenString());
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Compute the spacing to justify.
   ShapeResultSpacing<String> spacing(line_text);
   spacing.SetExpansion(align.space, line_info->BaseDirection(),
@@ -603,6 +636,7 @@ bool NGInlineLayoutAlgorithm::ApplyJustify(NGLineInfo* line_info) {
       DCHECK_EQ(offset, 0.f);
     }
   }
+#endif
   return true;
 }
 
@@ -695,7 +729,7 @@ scoped_refptr<NGLayoutResult> NGInlineLayoutAlgorithm::Layout() {
 
   Vector<NGPositionedFloat> positioned_floats;
   // We shouldn't have any unpositioned floats if we aren't empty.
-  DCHECK(unpositioned_floats_.IsEmpty() || is_empty_inline);
+  ASSERT(false); // BKTODO: DCHECK(unpositioned_floats_.IsEmpty() || is_empty_inline);
 
   NGExclusionSpace exclusion_space;
   const NGInlineBreakToken* break_token = BreakToken();
@@ -726,7 +760,7 @@ scoped_refptr<NGLayoutResult> NGInlineLayoutAlgorithm::Layout() {
 
     // Reset any state that may have been modified in a previous pass.
     positioned_floats.clear();
-    unpositioned_floats_.clear();
+    ASSERT(false); // BKTODO: unpositioned_floats_.clear();
     container_builder_.Reset();
     exclusion_space = initial_exclusion_space;
 
@@ -735,6 +769,8 @@ scoped_refptr<NGLayoutResult> NGInlineLayoutAlgorithm::Layout() {
                                                  line_block_size, block_delta);
 
     NGLineInfo line_info;
+    ASSERT(false); // BKTODO:
+#if 0
     NGLineBreaker line_breaker(
         Node(), NGLineBreakerMode::kContent, constraint_space_,
         &positioned_floats, &unpositioned_floats_, &container_builder_,
@@ -826,10 +862,11 @@ scoped_refptr<NGLayoutResult> NGInlineLayoutAlgorithm::Layout() {
           ComputeContentSize(line_info, exclusion_space, line_height));
     }
     break;
+#endif
   }
 
   // We shouldn't have any unpositioned floats if we aren't empty.
-  DCHECK(unpositioned_floats_.IsEmpty() || is_empty_inline);
+  ASSERT(false); // BKTODO: DCHECK(unpositioned_floats_.IsEmpty() || is_empty_inline);
   container_builder_.SwapPositionedFloats(&positioned_floats_);
   container_builder_.SetExclusionSpace(std::move(exclusion_space));
   container_builder_.MoveOutOfFlowDescendantCandidatesToDescendants(nullptr);
@@ -849,9 +886,12 @@ unsigned NGInlineLayoutAlgorithm::PositionLeadingFloats(
     if (item.Type() == NGInlineItem::kFloating) {
       NGBlockNode node(ToLayoutBox(item.GetLayoutObject()));
 
+      ASSERT(false); // BKTODO:
+#if 0
       AddUnpositionedFloat(
           &unpositioned_floats_, &container_builder_,
           NGUnpositionedFloat(node, /* break_token */ nullptr));
+#endif
     }
 
     // Abort if we've found something that makes this a non-empty inline.
@@ -871,12 +911,10 @@ unsigned NGInlineLayoutAlgorithm::PositionLeadingFloats(
 void NGInlineLayoutAlgorithm::PositionPendingFloats(
     LayoutUnit content_size,
     NGExclusionSpace* exclusion_space) {
-  DCHECK(container_builder_.BfcBlockOffset() ||
-         ConstraintSpace().FloatsBfcBlockOffset())
-      << "The floats BFC block offset should be known here";
+  DCHECK(container_builder_.BfcBlockOffset() || ConstraintSpace().FloatsBfcBlockOffset()); // The floats BFC block offset should be known here
 
   if (BreakToken() && BreakToken()->IgnoreFloats()) {
-    unpositioned_floats_.clear();
+    ASSERT(false); // BKTODO: unpositioned_floats_.clear();
     return;
   }
 
@@ -888,6 +926,8 @@ void NGInlineLayoutAlgorithm::PositionPendingFloats(
   NGBfcOffset origin_bfc_offset = {ConstraintSpace().BfcOffset().line_offset,
                                    bfc_block_offset + content_size};
 
+  ASSERT(false); // BKTODO:
+#if 0
   const NGPositionedFloatVector positioned_floats =
       PositionFloats(ConstraintSpace().AvailableSize(),
                      ConstraintSpace().PercentageResolutionSize(),
@@ -897,6 +937,7 @@ void NGInlineLayoutAlgorithm::PositionPendingFloats(
 
   positioned_floats_.AppendVector(positioned_floats);
   unpositioned_floats_.clear();
+#endif
 }
 
 void NGInlineLayoutAlgorithm::BidiReorder() {
@@ -910,6 +951,8 @@ void NGInlineLayoutAlgorithm::BidiReorder() {
   // handle the direction of each run, we use |ubidi_reorderVisual()| to reorder
   // runs instead of characters.
   NGLineBoxFragmentBuilder::ChildList logical_items;
+  ASSERT(false); // BKTODO:
+#if 0
   Vector<UBiDiLevel, 32> levels;
   logical_items.ReserveInitialCapacity(line_box_.size());
   levels.ReserveInitialCapacity(line_box_.size());
@@ -930,6 +973,7 @@ void NGInlineLayoutAlgorithm::BidiReorder() {
     line_box_.AddChild(std::move(logical_items[logical_index]));
     DCHECK(!logical_items[logical_index].HasInFlowFragment());
   }
+#endif
 }
 
 }  // namespace blink

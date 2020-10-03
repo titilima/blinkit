@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_inline_items_builder.cc
+// Description: NGInlineItemsBuilder Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -41,11 +52,15 @@ bool IsAmbiguosEastAsianWidthWide(const ComputedStyle* style) {
 
 // Determine if a character has "Wide" East Asian Width.
 bool IsEastAsianWidthWide(UChar32 c, const ComputedStyle* style) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   UEastAsianWidth eaw = static_cast<UEastAsianWidth>(
       u_getIntPropertyValue(c, UCHAR_EAST_ASIAN_WIDTH));
   return eaw == U_EA_WIDE || eaw == U_EA_FULLWIDTH || eaw == U_EA_HALFWIDTH ||
          (eaw == U_EA_AMBIGUOUS && style &&
           IsAmbiguosEastAsianWidthWide(style));
+#endif
 }
 
 // Determine whether a newline should be removed or not.

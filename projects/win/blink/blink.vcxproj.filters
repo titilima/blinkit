@@ -3428,6 +3428,18 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_item_result.cc">
       <Filter>renderer\core\layout\ng\inline</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_box_state.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_child_layout_context.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_line_truncator.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_text_fragment_builder.cc">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9341,6 +9353,18 @@
       <Filter>renderer\core\layout\ng</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_item_result.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_box_state.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_inline_child_layout_context.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_line_truncator.h">
+      <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_text_fragment_builder.h">
       <Filter>renderer\core\layout\ng\inline</Filter>
     </ClInclude>
   </ItemGroup>
