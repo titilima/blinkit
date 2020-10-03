@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_bidi_paragraph.cc
+// Description: NGBidiParagraph Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,16 +16,18 @@
 #include "third_party/blink/renderer/core/layout/ng/inline/ng_bidi_paragraph.h"
 
 #include "third_party/blink/renderer/core/style/computed_style.h"
-#include "third_party/blink/renderer/platform/text/icu_error.h"
+// BKTODO: #include "third_party/blink/renderer/platform/text/icu_error.h"
 
 namespace blink {
 
 NGBidiParagraph::~NGBidiParagraph() {
-  ubidi_close(ubidi_);
+  ASSERT(false); // BKTODO: ubidi_close(ubidi_);
 }
 
 bool NGBidiParagraph::SetParagraph(const String& text,
                                    const ComputedStyle& block_style) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!ubidi_);
   ubidi_ = ubidi_open();
 
@@ -40,6 +53,7 @@ bool NGBidiParagraph::SetParagraph(const String& text,
 
   if (use_heuristic_base_direction)
     base_direction_ = DirectionFromLevel(ubidi_getParaLevel(ubidi_));
+#endif
 
   return true;
 }
@@ -48,11 +62,16 @@ TextDirection NGBidiParagraph::BaseDirectionForString(const StringView& text) {
   DCHECK(!text.Is8Bit());
   if (text.Is8Bit())
     return TextDirection::kLtr;
+  ASSERT(false); // BKTODO:
+  return TextDirection::kLtr;
+#if 0
   UBiDiDirection direction =
       ubidi_getBaseDirection(text.Characters16(), text.length());
   return direction == UBIDI_RTL ? TextDirection::kRtl : TextDirection::kLtr;
+#endif
 }
 
+#if 0 // BKTODO:
 unsigned NGBidiParagraph::GetLogicalRun(unsigned start,
                                         UBiDiLevel* level) const {
   int32_t end;
@@ -68,5 +87,6 @@ void NGBidiParagraph::IndicesInVisualOrder(
   ubidi_reorderVisual(levels.data(), levels.size(),
                       indices_in_visual_order_out->data());
 }
+#endif
 
 }  // namespace blink
