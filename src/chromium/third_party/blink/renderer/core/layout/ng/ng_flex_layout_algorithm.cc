@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_flex_layout_algorithm.cc
+// Description: NGFlexLayoutAlgorithm Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -21,10 +32,8 @@ NGFlexLayoutAlgorithm::NGFlexLayoutAlgorithm(NGBlockNode node,
     : NGLayoutAlgorithm(node, space, ToNGBlockBreakToken(break_token)) {}
 
 scoped_refptr<NGLayoutResult> NGFlexLayoutAlgorithm::Layout() {
-  DCHECK(!Style().IsColumnFlexDirection())
-      << "Column flexboxes aren't supported yet";
-  DCHECK(!NeedMinMaxSize(ConstraintSpace(), Style()))
-      << "Don't support that yet";
+  DCHECK(!Style().IsColumnFlexDirection()); // Column flexboxes aren't supported yet
+  DCHECK(!NeedMinMaxSize(ConstraintSpace(), Style())); // Don't support that yet
 
   NGLogicalSize flex_container_border_box_size =
       CalculateBorderBoxSize(ConstraintSpace(), Node());
