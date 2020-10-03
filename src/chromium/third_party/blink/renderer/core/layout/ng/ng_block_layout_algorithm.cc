@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_block_layout_algorithm.cc
+// Description: NGBlockLayoutAlgorithm Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -267,7 +278,7 @@ base::Optional<MinMaxSize> NGBlockLayoutAlgorithm::ComputeMinMaxSize(
           Style().GetWritingMode(), child, child_input,
           optional_constraint_space);
     }
-    DCHECK_LE(child_sizes.min_size, child_sizes.max_size) << child.ToString();
+    DCHECK_LE(child_sizes.min_size, child_sizes.max_size);
 
     // Determine the max inline contribution of the child.
     NGBoxStrut margins = ComputeMinMaxMargins(Style(), child);
@@ -334,7 +345,7 @@ base::Optional<MinMaxSize> NGBlockLayoutAlgorithm::ComputeMinMaxSize(
   }
 
   DCHECK_GE(sizes.min_size, LayoutUnit());
-  DCHECK_LE(sizes.min_size, sizes.max_size) << Node().ToString();
+  DCHECK_LE(sizes.min_size, sizes.max_size);
 
   if (input.size_type == NGMinMaxSizeType::kBorderBoxSize)
     sizes += border_padding.InlineSum() + node_.GetScrollbarSizes().InlineSum();
@@ -506,6 +517,8 @@ scoped_refptr<NGLayoutResult> NGBlockLayoutAlgorithm::Layout() {
 
   scoped_refptr<const NGBreakToken> previous_inline_break_token;
 
+  ASSERT(false); // BKTODO:
+#if 0
   NGBlockChildIterator child_iterator(Node().FirstChild(), BreakToken());
   for (auto entry = child_iterator.NextChild();
        NGLayoutInputNode child = entry.node;
@@ -550,6 +563,7 @@ scoped_refptr<NGLayoutResult> NGBlockLayoutAlgorithm::Layout() {
       has_processed_first_child_ = true;
     }
   }
+#endif
 
   NGMarginStrut end_margin_strut = previous_inflow_position.margin_strut;
 
@@ -674,6 +688,8 @@ scoped_refptr<NGLayoutResult> NGBlockLayoutAlgorithm::Layout() {
       ConstraintSpace().HasBlockFragmentation())
     FinalizeForFragmentation();
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Only layout absolute and fixed children if we aren't going to revisit this
   // layout.
   if (unpositioned_floats_.IsEmpty()) {
@@ -692,6 +708,7 @@ scoped_refptr<NGLayoutResult> NGBlockLayoutAlgorithm::Layout() {
     DCHECK(container_builder_.AdjoiningFloatTypes());
   }
 #endif
+#endif // 0
 
   PropagateBaselinesFromChildren();
 
@@ -735,8 +752,11 @@ void NGBlockLayoutAlgorithm::HandleFloat(
     const NGPreviousInflowPosition& previous_inflow_position,
     NGBlockNode child,
     const NGBlockBreakToken* child_break_token) {
+  ASSERT(false); // BKTODO:
+#if 0
   AddUnpositionedFloat(&unpositioned_floats_, &container_builder_,
                        NGUnpositionedFloat(child, child_break_token));
+#endif
 
   // If there is a break token for a float we must be resuming layout, we must
   // always know our position in the BFC.
@@ -806,6 +826,8 @@ bool NGBlockLayoutAlgorithm::HandleNewFormattingContext(
   bool had_pending_floats = false;
 
   if (!container_builder_.BfcBlockOffset()) {
+    ASSERT(false); // BKTODO:
+#if 0
     had_pending_floats = !unpositioned_floats_.IsEmpty();
 
     if (ConstraintSpace().FloatsBfcBlockOffset()) {
@@ -839,6 +861,7 @@ bool NGBlockLayoutAlgorithm::HandleNewFormattingContext(
 
     // We reset the block offset here as it may have been affected by clearance.
     child_bfc_offset_estimate = ContainerBfcOffset().block_offset;
+#endif
   }
 
   // If the child has a non-zero block-start margin, our initial estimate will
@@ -1185,6 +1208,8 @@ bool NGBlockLayoutAlgorithm::HandleInflow(
           child, child_space, child_data, *layout_result);
     }
   } else if (!has_clearance) {
+    ASSERT(false); // BKTODO:
+#if 0
     // We shouldn't have any pending floats here, since an in-flow child found
     // its BFC block offset.
     DCHECK(unpositioned_floats_.IsEmpty());
@@ -1195,6 +1220,7 @@ bool NGBlockLayoutAlgorithm::HandleInflow(
     if (!ResolveBfcBlockOffset(previous_inflow_position,
                                child_bfc_block_offset.value()))
       return false;
+#endif
   }
 
   // We need to re-layout a child if it was affected by clearance in order to
@@ -1529,9 +1555,7 @@ void NGBlockLayoutAlgorithm::FinalizeForFragmentation() {
       border_padding_);
 
   block_size -= used_block_size;
-  DCHECK_GE(block_size, LayoutUnit())
-      << "Adding and subtracting the used_block_size shouldn't leave the "
-         "block_size for this fragment smaller than zero.";
+  DCHECK_GE(block_size, LayoutUnit()); // Adding and subtracting the used_block_size shouldn't leave the block_size for this fragment smaller than zero.
 
   LayoutUnit space_left = FragmentainerSpaceAvailable();
 
@@ -2018,7 +2042,7 @@ bool NGBlockLayoutAlgorithm::ResolveBfcBlockOffset(
     NGPreviousInflowPosition* previous_inflow_position,
     LayoutUnit bfc_block_offset) {
   if (container_builder_.BfcBlockOffset()) {
-    DCHECK(unpositioned_floats_.IsEmpty());
+    ASSERT(false); // BKTODO: DCHECK(unpositioned_floats_.IsEmpty());
     return true;
   }
 
@@ -2067,9 +2091,7 @@ bool NGBlockLayoutAlgorithm::NeedsAbortOnBfcBlockOffsetChange() const {
 
 void NGBlockLayoutAlgorithm::PositionPendingFloats(
     LayoutUnit origin_block_offset) {
-  DCHECK(container_builder_.BfcBlockOffset() ||
-         ConstraintSpace().FloatsBfcBlockOffset())
-      << "The parent BFC block offset should be known here";
+  DCHECK(container_builder_.BfcBlockOffset() || ConstraintSpace().FloatsBfcBlockOffset()); // The parent BFC block offset should be known here
 
   NGBfcOffset origin_bfc_offset = {
       ConstraintSpace().BfcOffset().line_offset +
@@ -2081,6 +2103,8 @@ void NGBlockLayoutAlgorithm::PositionPendingFloats(
           ? container_builder_.BfcBlockOffset().value()
           : ConstraintSpace().FloatsBfcBlockOffset().value();
 
+  ASSERT(false); // BKTODO:
+#if 0
   const auto positioned_floats = PositionFloats(
       child_available_size_, child_percentage_size_,
       replaced_child_percentage_size_, origin_bfc_offset, bfc_block_offset,
@@ -2089,13 +2113,12 @@ void NGBlockLayoutAlgorithm::PositionPendingFloats(
   AddPositionedFloats(positioned_floats);
 
   unpositioned_floats_.clear();
+#endif
 }
 
 template <class Vec>
 void NGBlockLayoutAlgorithm::AddPositionedFloats(const Vec& positioned_floats) {
-  DCHECK(container_builder_.BfcBlockOffset() ||
-         ConstraintSpace().FloatsBfcBlockOffset())
-      << "The parent BFC block offset should be known here";
+  DCHECK(container_builder_.BfcBlockOffset() || ConstraintSpace().FloatsBfcBlockOffset()); // The parent BFC block offset should be known here
 
   LayoutUnit bfc_block_offset =
       container_builder_.BfcBlockOffset()
