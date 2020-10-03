@@ -164,12 +164,12 @@ class CORE_EXPORT NGLineBoxFragmentBuilder final
     Child* FirstInFlowChild();
     Child* LastInFlowChild();
 
+#if 0 // BKTODO:
     // Add a child. Accepts all constructor arguments for |Child|.
     template <class... Args>
     void AddChild(Args&&... args) {
       children_.emplace_back(std::forward<Args>(args)...);
     }
-#if 0 // BKTODO:
     void InsertChild(unsigned,
                      scoped_refptr<NGLayoutResult>,
                      const NGLogicalOffset&,

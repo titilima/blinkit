@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_line_box_fragment_builder.cc
+// Description: NGLineBoxFragmentBuilder Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -61,6 +72,7 @@ NGLineBoxFragmentBuilder::ChildList::LastInFlowChild() {
   return nullptr;
 }
 
+#if 0 // BKTODO:
 void NGLineBoxFragmentBuilder::ChildList::InsertChild(
     unsigned index,
     scoped_refptr<NGLayoutResult> layout_result,
@@ -70,6 +82,7 @@ void NGLineBoxFragmentBuilder::ChildList::InsertChild(
   children_.insert(
       index, Child{std::move(layout_result), offset, inline_size, bidi_level});
 }
+#endif
 
 void NGLineBoxFragmentBuilder::ChildList::MoveInInlineDirection(
     LayoutUnit delta,
@@ -118,7 +131,7 @@ void NGLineBoxFragmentBuilder::AddChildren(ChildList& children) {
     if (child.layout_result) {
       DCHECK(!child.fragment);
       AddChild(*child.layout_result, child.offset);
-      child.layout_result.reset();
+      ASSERT(false); // BKTODO: child.layout_result.reset();
     } else if (child.fragment) {
       AddChild(std::move(child.fragment), child.offset);
       DCHECK(!child.fragment);

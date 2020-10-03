@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_inline_box_state.cc
+// Description: NGInlineBoxState Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -296,6 +307,8 @@ void NGInlineLayoutStateStack::AddBoxFragmentPlaceholder(
   }
 
   if (fragment_end > box->fragment_start) {
+    ASSERT(false); // BKTODO:
+#if 0
     // The start is marked only in BoxData, while end is marked
     // in both BoxData and the list itself.
     // With a list of 4 text fragments:
@@ -307,6 +320,7 @@ void NGInlineLayoutStateStack::AddBoxFragmentPlaceholder(
     // The "null" is added to the list to compute baseline shift of the box
     // separately from text fragments.
     line_box->AddChild(offset);
+#endif
   } else {
     // Do not defer creating a box fragment if this is an empty inline box.
     // An empty box fragment is still flat that we do not have to defer.
@@ -316,8 +330,11 @@ void NGInlineLayoutStateStack::AddBoxFragmentPlaceholder(
                          box_data.margin_border_padding_line_right;
     box_data.size.inline_size =
         advance - box_data.margin_line_left - box_data.margin_line_right;
+    ASSERT(false); // BKTODO:
+#if 0
     line_box->AddChild(box_data.CreateBoxFragment(line_box), offset, advance,
                        0);
+#endif
     box_data_list_.pop_back();
   }
 }
@@ -353,8 +370,11 @@ void NGInlineLayoutStateStack::UpdateAfterReorder(
     box_data.fragment_start = box_data.fragment_end = 0;
   for (unsigned i = 0; i < line_box->size(); i++) {
     const NGLineBoxFragmentBuilder::Child& child = (*line_box)[i];
+    ASSERT(false); // BKTODO:
+#if 0
     if (child.IsPlaceholder())
       continue;
+#endif
     if (unsigned box_data_index = child.box_data_index) {
       BoxData& box_data = box_data_list_[box_data_index - 1];
       if (!box_data.fragment_end)
@@ -476,10 +496,13 @@ void NGInlineLayoutStateStack::CreateBoxFragments(
       start_child.layout_result = std::move(box_fragment);
       start_child.offset = box_data.offset;
     } else {
+      ASSERT(false); // BKTODO:
+#if 0
       // In most cases, |start_child| is moved to the children of the box, and
       // is empty. It's not empty when it's out-of-flow. Insert in such case.
       line_box->InsertChild(start, std::move(box_fragment), box_data.offset,
                             LayoutUnit(), 0);
+#endif
     }
   }
 
@@ -511,7 +534,7 @@ NGInlineLayoutStateStack::BoxData::CreateBoxFragment(
     NGLineBoxFragmentBuilder::Child& child = (*line_box)[i];
     if (child.layout_result) {
       box.AddChild(*child.layout_result, child.offset - offset);
-      child.layout_result.reset();
+      ASSERT(false); // BKTODO: child.layout_result.reset();
     } else if (child.fragment) {
       box.AddChild(std::move(child.fragment), child.offset - offset);
     }
