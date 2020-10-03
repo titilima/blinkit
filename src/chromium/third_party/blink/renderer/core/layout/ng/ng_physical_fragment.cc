@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_physical_fragment.cc
+// Description: NGPhysicalFragment Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -373,8 +384,7 @@ NGPhysicalOffsetRect NGPhysicalFragment::ScrollableOverflow() const {
     case kFragmentText:
       return {{}, Size()};
     case kFragmentLineBox:
-      NOTREACHED()
-          << "You must call NGLineBoxFragment::ScrollableOverflow explicitly.";
+      NOTREACHED(); // You must call NGLineBoxFragment::ScrollableOverflow explicitly.
       break;
   }
   NOTREACHED();
@@ -421,16 +431,22 @@ TouchAction NGPhysicalFragment::EffectiveWhitelistedTouchAction() const {
   return GetLayoutObject()->EffectiveWhitelistedTouchAction();
 }
 
+#if 0 // BKTODO:
 UBiDiLevel NGPhysicalFragment::BidiLevel() const {
   NOTREACHED();
   return 0;
 }
+#endif
 
 TextDirection NGPhysicalFragment::ResolvedDirection() const {
   DCHECK(IsInline());
   DCHECK(IsText() || IsAtomicInline());
+  ASSERT(false); // BKTODO:
+  return TextDirection::kLtr;
+#if 0
   // TODO(xiaochengh): Store direction in |base_direction_| flag.
   return DirectionFromLevel(BidiLevel());
+#endif
 }
 
 String NGPhysicalFragment::ToString() const {
@@ -471,8 +487,11 @@ String NGPhysicalFragment::DumpFragmentTree(
 
 #ifndef NDEBUG
 void NGPhysicalFragment::ShowFragmentTree() const {
+  ASSERT(false); // BKTODO:
+#if 0
   DumpFlags dump_flags = DumpAll;  // & ~DumpOverflow;
   LOG(INFO) << "\n" << DumpFragmentTree(dump_flags).Utf8().data();
+#endif
 }
 #endif  // !NDEBUG
 
