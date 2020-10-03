@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_constraint_space.cc
+// Description: NGConstraintSpace Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -75,13 +86,9 @@ NGConstraintSpace::NGConstraintSpace(WritingMode out_writing_mode,
   // writing mode. So we miss setting kOrthogonalWritingModeRoot on such
   // constraint spaces unless it is forced.
   if (builder.force_orthogonal_writing_mode_root_) {
-    DCHECK(is_in_parallel_flow)
-        << "Forced and inferred ortho writing mode shouldn't happen "
-           "simultaneously. Inferred means the constraints are in parent "
-           "writing mode, forced means they are in child writing mode. "
-           "parent_writing_mode_ = "
-        << static_cast<int>(builder.parent_writing_mode_)
-        << ", requested writing mode = " << static_cast<int>(out_writing_mode);
+    DCHECK(is_in_parallel_flow); // Forced and inferred ortho writing mode shouldn't happen
+                                 // simultaneously. Inferred means the constraints are in parent
+                                 // writing mode, forced means they are in child writing mode.
     SetResolvedFlag(kOrthogonalWritingModeRoot, true);
     SetResolvedFlag(kFixedSizeBlockIsDefinite, true);
   }
