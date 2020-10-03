@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_line_breaker.cc
+// Description: NGLineBreaker Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -17,7 +28,7 @@
 #include "third_party/blink/renderer/core/layout/ng/ng_positioned_float.h"
 #include "third_party/blink/renderer/core/layout/ng/ng_unpositioned_float.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
-#include "third_party/blink/renderer/platform/fonts/shaping/shaping_line_breaker.h"
+// BKTODO: #include "third_party/blink/renderer/platform/fonts/shaping/shaping_line_breaker.h"
 
 namespace blink {
 
@@ -70,10 +81,13 @@ NGLineBreaker::NGLineBreaker(NGInlineNode node,
       container_builder_(container_builder),
       exclusion_space_(exclusion_space),
       break_iterator_(items_data_.text_content),
+#if 0 // BKTODO:
       shaper_(items_data_.text_content),
       spacing_(items_data_.text_content),
+#endif
       handled_floats_end_item_index_(handled_float_index),
       base_direction_(node_.BaseDirection()) {
+  ASSERT(false); // BKTODO:
   break_iterator_.SetBreakSpace(BreakSpaceType::kBeforeSpaceRun);
 
   if (break_token) {
@@ -406,6 +420,8 @@ void NGLineBreaker::BreakText(NGInlineItemResult* item_result,
   DCHECK_EQ(item.TextShapeResult()->EndIndexForResult(), item.EndOffset());
   RunSegmenter::RunSegmenterRange segment_range =
       item.CreateRunSegmenterRange();
+  ASSERT(false); // BKTODO:
+#if 0
   ShapingLineBreaker breaker(&shaper_, &item.Style()->GetFont(),
                              item.TextShapeResult(), &break_iterator_,
                              &segment_range, &spacing_, hyphenation_);
@@ -464,6 +480,7 @@ void NGLineBreaker::BreakText(NGInlineItemResult* item_result,
     item_result->can_break_after =
         break_iterator_.IsBreakable(item_result->end_offset);
   }
+#endif
 }
 
 // Re-shape the specified range of |NGInlineItem|.
@@ -472,12 +489,16 @@ scoped_refptr<ShapeResult> NGLineBreaker::ShapeText(const NGInlineItem& item,
                                                     unsigned end) {
   RunSegmenter::RunSegmenterRange segment_range =
       item.CreateRunSegmenterRange();
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   scoped_refptr<ShapeResult> result = shaper_.Shape(
       &item.Style()->GetFont(), item.TextShapeResult()->Direction(), start, end,
       &segment_range);
   if (UNLIKELY(spacing_.HasSpacing()))
     result->ApplySpacing(spacing_);
   return result;
+#endif
 }
 
 // Compute a new ShapeResult for the specified end offset.
@@ -666,6 +687,8 @@ void NGLineBreaker::AppendHyphen(const NGInlineItem& item) {
   const ComputedStyle& style = *item.Style();
   TextDirection direction = style.Direction();
   String hyphen_string = style.HyphenString();
+  ASSERT(false); // BKTODO:
+#if 0
   HarfBuzzShaper shaper(hyphen_string);
   scoped_refptr<ShapeResult> hyphen_result =
       shaper.Shape(&style.GetFont(), direction);
@@ -673,6 +696,7 @@ void NGLineBreaker::AppendHyphen(const NGInlineItem& item) {
   builder.SetText(item.GetLayoutObject(), hyphen_string, &style,
                   /* is_ellipsis_style */ false, std::move(hyphen_result));
   SetLineEndFragment(builder.ToTextFragment());
+#endif
 }
 
 // Measure control items; new lines and tab, that are similar to text, affect
@@ -845,8 +869,11 @@ void NGLineBreaker::HandleFloat(const NGInlineItem& item) {
   // If we are currently computing our min/max-content size simply append
   // to the unpositioned floats list and abort.
   if (mode_ != NGLineBreakerMode::kContent) {
+    ASSERT(false); // BKTODO:
+#if 0
     AddUnpositionedFloat(unpositioned_floats_, container_builder_,
                          std::move(unpositioned_float));
+#endif
     return;
   }
 
@@ -883,8 +910,11 @@ void NGLineBreaker::HandleFloat(const NGInlineItem& item) {
   // Check if we already have a pending float. That's because a float cannot be
   // higher than any block or floated box generated before.
   if (!unpositioned_floats_->IsEmpty() || float_after_line) {
+    ASSERT(false); // BKTODO:
+#if 0
     AddUnpositionedFloat(unpositioned_floats_, container_builder_,
                          std::move(unpositioned_float));
+#endif
   } else {
     NGPositionedFloat positioned_float = PositionFloat(
         constraint_space_.AvailableSize(),
@@ -1201,7 +1231,7 @@ void NGLineBreaker::SetCurrentStyle(const ComputedStyle& style) {
   current_style_ = &style;
   if (auto_wrap_)
     break_iterator_.SetLocale(style.LocaleForLineBreakIterator());
-  spacing_.SetSpacing(style.GetFontDescription());
+  ASSERT(false); // BKTODO: spacing_.SetSpacing(style.GetFontDescription());
 }
 
 void NGLineBreaker::MoveToNextOf(const NGInlineItem& item) {
