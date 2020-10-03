@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_floats_utils.cc
+// Description: NG Floats Utils
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -339,14 +350,14 @@ void AddUnpositionedFloat(NGUnpositionedFloatVector* unpositioned_floats,
     fragment_builder->AddAdjoiningFloatTypes(
         unpositioned_float.IsLeft() ? kFloatTypeLeft : kFloatTypeRight);
   }
-  unpositioned_floats->push_back(std::move(unpositioned_float));
+  ASSERT(false); // BKTODO: unpositioned_floats->push_back(std::move(unpositioned_float));
 }
 
 bool RemoveUnpositionedFloat(NGUnpositionedFloatVector* unpositioned_floats,
                              NGBlockNode float_node) {
   for (NGUnpositionedFloat& unpositioned_float : *unpositioned_floats) {
     if (unpositioned_float.node == float_node) {
-      unpositioned_floats->erase(&unpositioned_float);
+      ASSERT(false); // BKTODO: unpositioned_floats->erase(&unpositioned_float);
       return true;
     }
   }
