@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_length_utils.cc
+// Description: NG Length Utils
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -135,7 +146,7 @@ LayoutUnit ResolveInlineLength(
     case kDeviceWidth:
     case kDeviceHeight:
     case kExtendToZoom:
-      NOTREACHED() << "These should only be used for viewport definitions";
+      NOTREACHED(); // These should only be used for viewport definitions
       FALLTHROUGH;
     case kMaxSizeNone:
     default:
@@ -247,7 +258,7 @@ LayoutUnit ResolveBlockLength(
     case kDeviceWidth:
     case kDeviceHeight:
     case kExtendToZoom:
-      NOTREACHED() << "These should only be used for viewport definitions";
+      NOTREACHED(); // These should only be used for viewport definitions
       FALLTHROUGH;
     case kMaxSizeNone:
     default:
@@ -809,7 +820,7 @@ void ResolveInlineMargins(const ComputedStyle& style,
                           LayoutUnit available_inline_size,
                           LayoutUnit inline_size,
                           NGBoxStrut* margins) {
-  DCHECK(margins) << "Margins cannot be NULL here";
+  DCHECK(margins); // Margins cannot be NULL here
   const LayoutUnit used_space = inline_size + margins->InlineSum();
   const LayoutUnit available_space = available_inline_size - used_space;
   if (available_space > LayoutUnit()) {
