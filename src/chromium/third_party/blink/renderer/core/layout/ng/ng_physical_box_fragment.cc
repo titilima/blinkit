@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_physical_box_fragment.cc
+// Description: NGPhysicalBoxFragment Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -234,6 +245,7 @@ NGPhysicalOffsetRect NGPhysicalBoxFragment::ComputeContentsInkOverflow() const {
   return overflow;
 }
 
+#if 0 // BKTODO:
 UBiDiLevel NGPhysicalBoxFragment::BidiLevel() const {
   // TODO(xiaochengh): Make the implementation more efficient.
   DCHECK(IsInline());
@@ -248,5 +260,6 @@ UBiDiLevel NGPhysicalBoxFragment::BidiLevel() const {
   DCHECK_NE(self_item, inline_items.end());
   return self_item->BidiLevel();
 }
+#endif
 
 }  // namespace blink
