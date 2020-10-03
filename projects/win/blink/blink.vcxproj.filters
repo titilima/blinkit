@@ -3440,6 +3440,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_text_fragment_builder.cc">
       <Filter>renderer\core\layout\ng\inline</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_relative_utils.cc">
+      <Filter>renderer\core\layout\ng</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9366,6 +9369,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_text_fragment_builder.h">
       <Filter>renderer\core\layout\ng\inline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_relative_utils.h">
+      <Filter>renderer\core\layout\ng</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

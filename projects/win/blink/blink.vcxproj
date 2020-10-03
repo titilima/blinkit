@@ -855,6 +855,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_physical_container_fragment.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_physical_fragment.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_positioned_float.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_relative_utils.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_space_utils.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_unpositioned_float.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\order_iterator.cc" />
@@ -2623,6 +2624,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_physical_container_fragment.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_physical_fragment.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_positioned_float.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_relative_utils.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_space_utils.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_style_variant.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_unpositioned_float.h" />

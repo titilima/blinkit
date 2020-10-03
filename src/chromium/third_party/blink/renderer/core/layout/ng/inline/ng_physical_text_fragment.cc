@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_physical_text_fragment.cc
+// Description: NGPhysicalTextFragment Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -53,7 +64,7 @@ NGPhysicalTextFragment::NGPhysicalTextFragment(
       line_orientation_(static_cast<unsigned>(line_orientation)),
       end_effect_(static_cast<unsigned>(end_effect)),
       is_anonymous_text_(IsPhysicalTextFragmentAnonymousText(layout_object)) {
-  DCHECK(shape_result_ || IsFlowControl()) << ToString();
+  DCHECK(shape_result_ || IsFlowControl());
   self_ink_overflow_ = ComputeSelfInkOverflow();
 }
 
@@ -241,6 +252,7 @@ unsigned NGPhysicalTextFragment::TextOffsetForPoint(
   return inline_offset <= size.inline_size / 2 ? StartOffset() : EndOffset();
 }
 
+#if 0 // BKTODO:
 UBiDiLevel NGPhysicalTextFragment::BidiLevel() const {
   // TODO(xiaochengh): Make the implementation more efficient with, e.g.,
   // binary search and/or LayoutNGText::InlineItems().
@@ -254,6 +266,7 @@ UBiDiLevel NGPhysicalTextFragment::BidiLevel() const {
   DCHECK_NE(containing_item, items.end());
   return containing_item->BidiLevel();
 }
+#endif
 
 TextDirection NGPhysicalTextFragment::ResolvedDirection() const {
   if (TextShapeResult())
