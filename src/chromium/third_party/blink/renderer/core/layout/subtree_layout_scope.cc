@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: subtree_layout_scope.c
+// Description: SubtreeLayoutScope Class
+//      Author: Ziming Li
+//     Created: 2020-10-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -36,7 +47,7 @@
 namespace blink {
 
 SubtreeLayoutScope::SubtreeLayoutScope(LayoutObject& root) : root_(root) {
-  CHECK(root_.GetDocument().View()->IsInPerformLayout());
+  ASSERT(false); // BKTODO: CHECK(root_.GetDocument().View()->IsInPerformLayout());
 }
 
 SubtreeLayoutScope::~SubtreeLayoutScope() {
