@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: resource_client_walker.h
+// Description: ResourceClientWalker Class
+//      Author: Ziming Li
+//     Created: 2020-10-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller <mueller@kde.org>
@@ -42,7 +53,7 @@ class ResourceClientWalker {
   explicit ResourceClientWalker(
       const HeapHashCountedSet<WeakMember<ResourceClient>>& set)
       : client_set_(set) {
-    CopyToVector(client_set_, client_vector_);
+    ASSERT(false); // BKTODO: CopyToVector(client_set_, client_vector_);
   }
 
   T* Next() {

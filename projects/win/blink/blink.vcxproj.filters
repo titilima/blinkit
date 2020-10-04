@@ -9472,5 +9472,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_text_run.h">
       <Filter>renderer\platform\text</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource_client_walker.h">
+      <Filter>renderer\platform\loader\fetch</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

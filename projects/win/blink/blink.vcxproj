@@ -3038,6 +3038,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\raw_resource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource_client.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource_client_walker.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource_error.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource_fetcher.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource_loader.h" />
