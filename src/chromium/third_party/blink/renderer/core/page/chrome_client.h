@@ -253,9 +253,11 @@ class CORE_EXPORT ChromeClient
 
   bool Print(LocalFrame*);
 
+#if 0 // BKTODO:
   virtual ColorChooser* OpenColorChooser(LocalFrame*,
                                          ColorChooserClient*,
                                          const Color&) = 0;
+#endif
 
   // This function is used for:
   //  - Mandatory date/time choosers if InputMultipleFieldsUI flag is not set
@@ -321,7 +323,9 @@ class CORE_EXPORT ChromeClient
 #endif
   virtual PagePopup* OpenPagePopup(PagePopupClient*) = 0;
   virtual void ClosePagePopup(PagePopup*) = 0;
+#if 0 // BKTODO:
   virtual DOMWindow* PagePopupWindowForTesting() const = 0;
+#endif
 
   virtual void SetBrowserControlsState(float top_height,
                                        float bottom_height,
@@ -337,6 +341,7 @@ class CORE_EXPORT ChromeClient
     kHTMLDialog = 3,
     kPrintDialog = 4
   };
+#if 0 // BKTODO:
   virtual bool ShouldOpenModalDialogDuringPageDismissal(
       LocalFrame&,
       DialogType,
@@ -344,6 +349,7 @@ class CORE_EXPORT ChromeClient
       Document::PageDismissalType) const {
     return true;
   }
+#endif
 
   virtual bool IsSVGImageChromeClient() const { return false; }
 

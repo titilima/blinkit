@@ -183,7 +183,9 @@ class CORE_EXPORT EmptyChromeClient : public ChromeClient {
 #endif
   PagePopup* OpenPagePopup(PagePopupClient*) override { return nullptr; }
   void ClosePagePopup(PagePopup*) override {}
+#if 0 // BKTODO:
   DOMWindow* PagePopupWindowForTesting() const override { return nullptr; }
+#endif
 
   bool TabsToLinks() override { return false; }
 
@@ -208,25 +210,29 @@ class CORE_EXPORT EmptyChromeClient : public ChromeClient {
 
   void EnumerateChosenDirectory(FileChooser*) override {}
 
+#if 0 // BKTODO:
   ColorChooser* OpenColorChooser(LocalFrame*,
                                  ColorChooserClient*,
                                  const Color&) override;
+#endif
   DateTimeChooser* OpenDateTimeChooser(
       DateTimeChooserClient*,
       const DateTimeChooserParameters&) override;
   void OpenTextDataListChooser(HTMLInputElement&) override;
 
+#if 0 // BKTODO:
   void OpenFileChooser(LocalFrame*, scoped_refptr<FileChooser>) override;
+#endif
 
   void SetCursor(const Cursor&, LocalFrame* local_root) override {}
   void SetCursorOverridden(bool) override {}
   Cursor LastSetCursorForTesting() const override { return PointerCursor(); }
 
   void AttachRootGraphicsLayer(GraphicsLayer*, LocalFrame* local_root) override;
+#if 0 // BKTODO:
   void AttachRootLayer(scoped_refptr<cc::Layer>,
                        LocalFrame* local_root) override;
 
-#if 0 // BKTODO:
   void SetEventListenerProperties(LocalFrame*,
                                   cc::EventListenerClass,
                                   cc::EventListenerProperties) override {}

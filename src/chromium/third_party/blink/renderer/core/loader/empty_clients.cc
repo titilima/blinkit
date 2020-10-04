@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: empty_clients.cc
+// Description: Empty Client Classes
+//      Author: Ziming Li
+//     Created: 2020-10-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Eric Seidel <eric@webkit.org>
  * Copyright (C) 2008, 2009, 2012 Apple Inc. All rights reserved.
@@ -28,23 +39,30 @@
 #include "third_party/blink/renderer/core/loader/empty_clients.h"
 
 #include <memory>
+#if 0 // BKTODO:
 #include "cc/layers/layer.h"
 #include "third_party/blink/public/platform/modules/service_worker/web_service_worker_provider.h"
 #include "third_party/blink/public/platform/modules/service_worker/web_service_worker_provider_client.h"
+#endif
 #include "third_party/blink/public/platform/platform.h"
+#if 0 // BKTODO:
 #include "third_party/blink/public/platform/web_application_cache_host.h"
 #include "third_party/blink/public/platform/web_media_player.h"
 #include "third_party/blink/renderer/core/frame/content_settings_client.h"
+#endif
 #include "third_party/blink/renderer/core/frame/local_frame.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
 #include "third_party/blink/renderer/core/html/forms/color_chooser.h"
 #include "third_party/blink/renderer/core/html/forms/date_time_chooser.h"
 #include "third_party/blink/renderer/core/html/forms/file_chooser.h"
 #include "third_party/blink/renderer/core/html/forms/html_form_element.h"
+#endif
 #include "third_party/blink/renderer/core/loader/document_loader.h"
 
 namespace blink {
 
+#if 0 // BKTODO:
 void FillWithEmptyClients(Page::PageClients& page_clients) {
   DEFINE_STATIC_LOCAL(Persistent<ChromeClient>, dummy_chrome_client,
                       (EmptyChromeClient::Create()));
@@ -68,6 +86,7 @@ ColorChooser* EmptyChromeClient::OpenColorChooser(LocalFrame*,
                                                   const Color&) {
   return nullptr;
 }
+#endif
 
 DateTimeChooser* EmptyChromeClient::OpenDateTimeChooser(
     DateTimeChooserClient*,
@@ -77,24 +96,32 @@ DateTimeChooser* EmptyChromeClient::OpenDateTimeChooser(
 
 void EmptyChromeClient::OpenTextDataListChooser(HTMLInputElement&) {}
 
+#if 0 // BKTODO:
 void EmptyChromeClient::OpenFileChooser(LocalFrame*,
                                         scoped_refptr<FileChooser>) {}
+#endif
 
 void EmptyChromeClient::AttachRootGraphicsLayer(GraphicsLayer* layer,
                                                 LocalFrame* local_root) {
+  ASSERT(false); // BKTODO:
+#if 0
   Page* page = local_root ? local_root->GetPage() : nullptr;
   if (!page)
     return;
   page->GetVisualViewport().AttachLayerTree(layer);
+#endif
 }
 
+#if 0 // BKTODO:
 void EmptyChromeClient::AttachRootLayer(scoped_refptr<cc::Layer>, LocalFrame*) {
 }
+#endif
 
 String EmptyChromeClient::AcceptLanguages() {
   return String();
 }
 
+#if 0 // BKTODO:
 NavigationPolicy EmptyLocalFrameClient::DecidePolicyForNavigation(
     const ResourceRequest&,
     Document* origin_document,
@@ -186,5 +213,6 @@ EmptyLocalFrameClient::CreateApplicationCacheHost(
 }
 
 EmptyRemoteFrameClient::EmptyRemoteFrameClient() = default;
+#endif
 
 }  // namespace blink
