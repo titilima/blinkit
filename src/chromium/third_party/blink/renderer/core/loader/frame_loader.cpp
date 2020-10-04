@@ -88,21 +88,25 @@ bool FrameLoader::CancelProvisionalLoaderForNewNavigation(bool cancelScheduledNa
     m_frame->GetDocument()->Abort();
 #ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(false); // BKTODO:
+#if 0
     // document.onreadystatechange can fire in Abort(), which can:
     // 1) Detach this frame.
     // 2) Stop the provisional DocumentLoader (i.e window.stop()).
     if (!frame_->GetPage())
         return false;
 #endif
+#endif
 
     DetachDocumentLoader(m_provisionalDocumentLoader);
 #ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(false); // BKTODO:
+#if 0
     // Detaching the provisional DocumentLoader above may leave the frame without
     // any loading DocumentLoader. It can causes the 'load' event to fire, which
     // can be used to detach this frame.
     if (!frame_->GetPage())
         return false;
+#endif
 #endif
 
     m_frame->SetIsLoading(true);
@@ -242,7 +246,7 @@ void FrameLoader::DidFinishNavigation(void)
 #ifndef BLINKIT_CRAWLER_ONLY
         // Retry restoring scroll offset since finishing loading disables content
         // size clamping.
-        RestoreScrollPositionAndViewState();
+        ASSERT(false); // BKTODO: RestoreScrollPositionAndViewState();
 #endif
         if (m_documentLoader)
             m_documentLoader->SetLoadType(WebFrameLoadType::kStandard);
@@ -293,10 +297,13 @@ void FrameLoader::FinishedParsing(void)
     }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     if (frame_->View()) {
         ProcessFragment(frame_->GetDocument()->Url(), document_loader_->LoadType(),
             kNavigationToDifferentDocument);
     }
+#endif
 #endif
 
     m_frame->GetDocument()->CheckCompleted();
@@ -432,10 +439,13 @@ void FrameLoader::StartNavigation(const FrameLoadRequest &passedRequest, WebFram
     NavigationPolicy policy = Client()->DecidePolicyForNavigation(resourceRequest);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     // 'beforeunload' can be fired above, which can detach this frame from inside
     // the event handler.
     if (!frame_->GetPage())
         return;
+#endif
 #endif
 
     if (kNavigationPolicyIgnore == policy)
