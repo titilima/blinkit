@@ -3491,6 +3491,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_text_run.cc">
       <Filter>renderer\platform\text</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\image_resource.cc">
+      <Filter>renderer\core\loader\resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9474,6 +9477,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\loader\fetch\resource_client_walker.h">
       <Filter>renderer\platform\loader\fetch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\image_resource.h">
+      <Filter>renderer\core\loader\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\image_resource_info.h">
+      <Filter>renderer\core\loader\resource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

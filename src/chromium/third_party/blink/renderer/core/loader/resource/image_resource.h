@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_resource.h
+// Description: ImageResource Class
+//      Author: Ziming Li
+//     Created: 2020-10-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller <mueller@kde.org>
@@ -27,7 +38,7 @@
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/loader/resource/image_resource_content.h"
 #include "third_party/blink/renderer/core/loader/resource/image_resource_info.h"
-#include "third_party/blink/renderer/core/loader/resource/multipart_image_resource_parser.h"
+// BKTODO: #include "third_party/blink/renderer/core/loader/resource/multipart_image_resource_parser.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 #include "third_party/blink/renderer/platform/timer.h"
@@ -52,8 +63,12 @@ class SecurityOrigin;
 // document:
 // https://docs.google.com/document/d/1v0yTAZ6wkqX2U_M6BNIGUJpM1s0TIw1VsqpxoL7aciY/edit?usp=sharing
 class CORE_EXPORT ImageResource final
+#if 0 // BKTODO:
     : public Resource,
       public MultipartImageResourceParser::Client {
+#else
+    : public Resource {
+#endif
   USING_GARBAGE_COLLECTED_MIXIN(ImageResource);
 
  public:
@@ -63,40 +78,52 @@ class CORE_EXPORT ImageResource final
 
   // TODO(hiroshige): Make Create() test-only by refactoring ImageDocument.
   static ImageResource* Create(const ResourceRequest&);
-  static ImageResource* CreateForTest(const KURL&);
+  static ImageResource* CreateForTest(const GURL&);
 
   ~ImageResource() override;
 
   ImageResourceContent* GetContent();
   const ImageResourceContent* GetContent() const;
 
+#if 0 // BKTODO:
   void ReloadIfLoFiOrPlaceholderImage(ResourceFetcher*,
                                       ReloadLoFiOrPlaceholderPolicy) override;
+#endif
 
   void DidAddClient(ResourceClient*) override;
 
+#if 0 // BKTODO:
   ResourcePriority PriorityFromObservers() override;
+#endif
 
   void AllClientsAndObserversRemoved() override;
 
+#if 0 // BKTODO:
   MatchStatus CanReuse(const FetchParameters&) const override;
   bool CanUseCacheValidator() const override;
 
   scoped_refptr<const SharedBuffer> ResourceBuffer() const override;
+#endif
   void NotifyStartLoad() override;
+#if 0 // BKTODO:
   void ResponseReceived(const ResourceResponse&,
                         std::unique_ptr<WebDataConsumerHandle>) override;
+#endif
   void AppendData(const char*, size_t) override;
+#if 0 // BKTODO:
   void Finish(TimeTicks finish_time, base::SingleThreadTaskRunner*) override;
+#endif
   void FinishAsError(const ResourceError&,
                      base::SingleThreadTaskRunner*) override;
 
   // For compatibility, images keep loading even if there are HTTP errors.
   bool ShouldIgnoreHTTPStatusCodeErrors() const override { return true; }
 
+#if 0 // BKTODO:
   // MultipartImageResourceParser::Client
   void OnePartInMultipartReceived(const ResourceResponse&) final;
   void MultipartDataReceived(const char*, size_t) final;
+#endif
 
   bool ShouldShowPlaceholder() const;
   bool ShouldShowLazyImagePlaceholder() const;
@@ -105,10 +132,10 @@ class CORE_EXPORT ImageResource final
   // flag it so that it can persist beyond navigation.
   void FlagAsUserAgentResource();
 
+#if 0 // BKTODO:
   void OnMemoryDump(WebMemoryDumpLevelOfDetail,
                     WebProcessMemoryDump*) const override;
-
-  void Trace(blink::Visitor*) override;
+#endif
 
  private:
   enum class MultipartParsingState : uint8_t {
@@ -140,8 +167,10 @@ class CORE_EXPORT ImageResource final
 
   void NotifyFinished() override;
 
+#if 0 // BKTODO:
   void DestroyDecodedDataIfPossible() override;
   void DestroyDecodedDataForFailedRevalidation() override;
+#endif
 
   void FlushImageIfNeeded();
 
@@ -149,7 +178,9 @@ class CORE_EXPORT ImageResource final
 
   Member<ImageResourceContent> content_;
 
+#if 0 // BKTODO:
   Member<MultipartImageResourceParser> multipart_parser_;
+#endif
   MultipartParsingState multipart_parsing_state_ =
       MultipartParsingState::kWaitingForFirstPart;
 

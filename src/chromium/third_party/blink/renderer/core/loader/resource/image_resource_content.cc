@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_resource_content.cc
+// Description: ImageResourceContent Class
+//      Author: Ziming Li
+//     Created: 2020-10-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -9,10 +20,12 @@
 #include "third_party/blink/renderer/core/loader/resource/image_resource.h"
 #include "third_party/blink/renderer/core/loader/resource/image_resource_info.h"
 #include "third_party/blink/renderer/core/loader/resource/image_resource_observer.h"
-#include "third_party/blink/renderer/core/svg/graphics/svg_image.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/graphics/svg_image.h"
 #include "third_party/blink/renderer/platform/geometry/int_size.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/graphics/bitmap_image.h"
 #include "third_party/blink/renderer/platform/graphics/placeholder_image.h"
+#endif
 #include "third_party/blink/renderer/platform/histogram.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 #include "third_party/blink/renderer/platform/network/http_parsers.h"
@@ -20,7 +33,6 @@
 #include "third_party/blink/renderer/platform/shared_buffer.h"
 #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
-#include "v8/include/v8.h"
 
 namespace blink {
 
@@ -34,12 +46,8 @@ class NullImageResourceInfo final
  public:
   NullImageResourceInfo() = default;
 
-  void Trace(blink::Visitor* visitor) override {
-    ImageResourceInfo::Trace(visitor);
-  }
-
  private:
-  const KURL& Url() const override { return url_; }
+  const GURL& Url() const override { return url_; }
   bool IsSchedulingReload() const override { return false; }
   const ResourceResponse& GetResponse() const override { return response_; }
   bool ShouldShowPlaceholder() const override { return false; }
@@ -63,12 +71,12 @@ class NullImageResourceInfo final
   void DidRemoveClientOrObserver() override {}
   void EmulateLoadStartedForInspector(
       ResourceFetcher*,
-      const KURL&,
+      const GURL&,
       const AtomicString& initiator_name) override {}
 
   void LoadDeferredImage(ResourceFetcher* fetcher) override {}
 
-  const KURL url_;
+  const GURL url_;
   const ResourceResponse response_;
 };
 
@@ -94,7 +102,11 @@ int64_t EstimateOriginalImageSizeForPlaceholder(
     return length;
   }
 
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return response.EncodedBodyLength();
+#endif
 }
 
 }  // namespace
@@ -104,9 +116,12 @@ ImageResourceContent::ImageResourceContent(scoped_refptr<blink::Image> image)
       device_pixel_ratio_header_value_(1.0),
       has_device_pixel_ratio_header_value_(false),
       image_(std::move(image)) {
+  ASSERT(false); // BKTODO:
+#if 0
   DEFINE_STATIC_LOCAL(Persistent<NullImageResourceInfo>, null_info,
                       (new NullImageResourceInfo()));
   info_ = null_info;
+#endif
 }
 
 ImageResourceContent* ImageResourceContent::CreateLoaded(
@@ -131,20 +146,18 @@ void ImageResourceContent::SetImageResourceInfo(ImageResourceInfo* info) {
   info_ = info;
 }
 
-void ImageResourceContent::Trace(blink::Visitor* visitor) {
-  visitor->Trace(info_);
-  ImageObserver::Trace(visitor);
-}
-
 void ImageResourceContent::MarkObserverFinished(
     ImageResourceObserver* observer) {
   ProhibitAddRemoveObserverInScope prohibit_add_remove_observer_in_scope(this);
 
+  ASSERT(false); // BKTODO:
+#if 0
   auto it = observers_.find(observer);
   if (it == observers_.end())
     return;
   observers_.erase(it);
   finished_observers_.insert(observer);
+#endif
 }
 
 void ImageResourceContent::AddObserver(ImageResourceObserver* observer) {
@@ -165,11 +178,14 @@ void ImageResourceContent::AddObserver(ImageResourceObserver* observer) {
     observer->ImageChanged(this, CanDeferInvalidation::kNo);
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (IsLoaded() && observers_.Contains(observer) &&
       !info_->SchedulingReloadOrShouldReloadBrokenPlaceholder()) {
     MarkObserverFinished(observer);
     observer->ImageNotifyFinished(this);
   }
+#endif
 }
 
 void ImageResourceContent::RemoveObserver(ImageResourceObserver* observer) {
@@ -177,6 +193,8 @@ void ImageResourceContent::RemoveObserver(ImageResourceObserver* observer) {
   CHECK(!is_add_remove_observer_prohibited_);
   ProhibitAddRemoveObserverInScope prohibit_add_remove_observer_in_scope(this);
 
+  ASSERT(false); // BKTODO:
+#if 0
   auto it = observers_.find(observer);
   if (it != observers_.end()) {
     observers_.erase(it);
@@ -186,6 +204,7 @@ void ImageResourceContent::RemoveObserver(ImageResourceObserver* observer) {
     finished_observers_.erase(it);
   }
   info_->DidRemoveClientOrObserver();
+#endif
 }
 
 static void PriorityFromObserver(const ImageResourceObserver* observer,
@@ -201,10 +220,13 @@ ResourcePriority ImageResourceContent::PriorityFromObservers() const {
   ProhibitAddRemoveObserverInScope prohibit_add_remove_observer_in_scope(this);
   ResourcePriority priority;
 
+  ASSERT(false); // BKTODO:
+#if 0
   for (const auto& it : finished_observers_)
     PriorityFromObserver(it.key, priority);
   for (const auto& it : observers_)
     PriorityFromObserver(it.key, priority);
+#endif
 
   return priority;
 }
@@ -221,11 +243,13 @@ void ImageResourceContent::DoResetAnimation() {
     image_->ResetAnimation();
 }
 
+#if 0 // BKTODO:
 scoped_refptr<const SharedBuffer> ImageResourceContent::ResourceBuffer() const {
   if (image_)
     return image_->Data();
   return nullptr;
 }
+#endif
 
 bool ImageResourceContent::ShouldUpdateImageImmediately() const {
   // If we don't have the size available yet, then update immediately since
@@ -247,9 +271,12 @@ IntSize ImageResourceContent::IntrinsicSize(
     RespectImageOrientationEnum should_respect_image_orientation) {
   if (!image_)
     return IntSize();
+  ASSERT(false); // BKTODO:
+#if 0
   if (should_respect_image_orientation == kRespectImageOrientation &&
       image_->IsBitmapImage())
     return ToBitmapImage(image_.get())->SizeRespectingOrientation();
+#endif
   return image_->Size();
 }
 
@@ -261,12 +288,18 @@ void ImageResourceContent::NotifyObservers(
     {
       ProhibitAddRemoveObserverInScope prohibit_add_remove_observer_in_scope(
           this);
+      ASSERT(false); // BKTODO:
+#if 0
       finished_observers_as_vector = finished_observers_.AsVector();
+#endif
     }
 
     for (auto* observer : finished_observers_as_vector) {
+      ASSERT(false); // BKTODO:
+#if 0
       if (finished_observers_.Contains(observer))
         observer->ImageChanged(this, defer);
+#endif
     }
   }
   {
@@ -274,10 +307,12 @@ void ImageResourceContent::NotifyObservers(
     {
       ProhibitAddRemoveObserverInScope prohibit_add_remove_observer_in_scope(
           this);
-      observers_as_vector = observers_.AsVector();
+      ASSERT(false); // BKTODO: observers_as_vector = observers_.AsVector();
     }
 
     for (auto* observer : observers_as_vector) {
+      ASSERT(false); // BKTODO:
+#if 0
       if (observers_.Contains(observer)) {
         observer->ImageChanged(this, defer);
         if (notifying_finish_option == kShouldNotifyFinish &&
@@ -287,11 +322,15 @@ void ImageResourceContent::NotifyObservers(
           observer->ImageNotifyFinished(this);
         }
       }
+#endif
     }
   }
 }
 
 scoped_refptr<Image> ImageResourceContent::CreateImage(bool is_multipart) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   device_pixel_ratio_header_value_ =
       info_->GetResponse()
           .HttpHeaderField(HTTPNames::Content_DPR)
@@ -304,13 +343,17 @@ scoped_refptr<Image> ImageResourceContent::CreateImage(bool is_multipart) {
   if (info_->GetResponse().MimeType() == "image/svg+xml")
     return SVGImage::Create(this, is_multipart);
   return BitmapImage::Create(this, is_multipart);
+#endif
 }
 
 void ImageResourceContent::ClearImage() {
   if (!image_)
     return;
+  ASSERT(false); // BKTODO:
+#if 0
   int64_t length = image_->Data() ? image_->Data()->size() : 0;
   v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(-length);
+#endif
 
   // If our Image has an observer, it's always us so we need to clear the back
   // pointer before dropping our reference.
@@ -381,6 +424,7 @@ void ImageResourceContent::AsyncLoadCompleted(const blink::Image* image) {
   NotifyObservers(kShouldNotifyFinish, CanDeferInvalidation::kNo);
 }
 
+#if 0 // BKTODO:
 ImageResourceContent::UpdateImageResult ImageResourceContent::UpdateImage(
     scoped_refptr<SharedBuffer> data,
     ResourceStatus status,
@@ -437,6 +481,8 @@ ImageResourceContent::UpdateImageResult ImageResourceContent::UpdateImage(
         if (image_ && !image_->IsNull()) {
           IntSize dimensions = image_->Size();
           ClearImage();
+          ASSERT(false); // BKTODO:
+#if 0
           if (info_->ShouldShowLazyImagePlaceholder()) {
             image_ = PlaceholderImage::CreateForLazyImages(this, dimensions);
           } else {
@@ -444,6 +490,7 @@ ImageResourceContent::UpdateImageResult ImageResourceContent::UpdateImage(
                 this, dimensions,
                 EstimateOriginalImageSizeForPlaceholder(info_->GetResponse()));
           }
+#endif
         }
       }
 
@@ -483,6 +530,7 @@ ImageResourceContent::UpdateImageResult ImageResourceContent::UpdateImage(
 
   return UpdateImageResult::kNoDecodeError;
 }
+#endif
 
 // Return true if the image type is one of the hard-coded 'modern' image
 // formats.
@@ -505,9 +553,13 @@ bool ImageResourceContent::IsAcceptableCompressionRatio() {
   uint64_t pixels = IntrinsicSize(kDoNotRespectImageOrientation).Area();
   if (!pixels)
     return true;
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   long long resource_length = GetResponse().DecodedBodyLength();
   // Allow no more than 10 bits per compressed pixel
   return (double)resource_length / pixels <= 1.25;
+#endif
 }
 
 void ImageResourceContent::DecodedSizeChangedTo(const blink::Image* image,
@@ -525,12 +577,12 @@ bool ImageResourceContent::ShouldPauseAnimation(const blink::Image* image) {
   ProhibitAddRemoveObserverInScope prohibit_add_remove_observer_in_scope(this);
 
   for (const auto& it : finished_observers_) {
-    if (it.key->WillRenderImage())
+    if (it.first->WillRenderImage())
       return false;
   }
 
   for (const auto& it : observers_) {
-    if (it.key->WillRenderImage())
+    if (it.first->WillRenderImage())
       return false;
   }
 
@@ -552,11 +604,11 @@ void ImageResourceContent::UpdateImageAnimationPolicy() {
     ProhibitAddRemoveObserverInScope prohibit_add_remove_observer_in_scope(
         this);
     for (const auto& it : finished_observers_) {
-      if (it.key->GetImageAnimationPolicy(new_policy))
+      if (it.first->GetImageAnimationPolicy(new_policy))
         break;
     }
     for (const auto& it : observers_) {
-      if (it.key->GetImageAnimationPolicy(new_policy))
+      if (it.first->GetImageAnimationPolicy(new_policy))
         break;
     }
   }
@@ -580,7 +632,7 @@ bool ImageResourceContent::IsAccessAllowed(
 
 void ImageResourceContent::EmulateLoadStartedForInspector(
     ResourceFetcher* fetcher,
-    const KURL& url,
+    const GURL& url,
     const AtomicString& initiator_name) {
   info_->EmulateLoadStartedForInspector(fetcher, url, initiator_name);
 }
@@ -608,7 +660,7 @@ ResourceStatus ImageResourceContent::GetContentStatus() const {
 
 // TODO(hiroshige): Consider removing the following methods, or stoping
 // redirecting to ImageResource.
-const KURL& ImageResourceContent::Url() const {
+const GURL& ImageResourceContent::Url() const {
   return info_->Url();
 }
 

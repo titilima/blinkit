@@ -114,7 +114,7 @@ class CORE_EXPORT ImageResourceContent final
   bool LoadFailedOrCanceled() const;
 
   // Redirecting methods to Resource.
-  const KURL& Url() const;
+  const GURL& Url() const;
   bool IsAccessAllowed(const SecurityOrigin*);
   const ResourceResponse& GetResponse() const;
   base::Optional<ResourceError> GetResourceError() const;
@@ -126,7 +126,7 @@ class CORE_EXPORT ImageResourceContent final
   bool HasCacheControlNoStoreHeader() const;
 
   void EmulateLoadStartedForInspector(ResourceFetcher*,
-                                      const KURL&,
+                                      const GURL&,
                                       const AtomicString& initiator_name);
 
   void SetNotRefetchableDataFromDiskCache() {
@@ -159,11 +159,13 @@ class CORE_EXPORT ImageResourceContent final
     // Only occurs when UpdateImage or ClearAndUpdateImage is specified.
     kShouldDecodeError,
   };
+#if 0 // BKTODO:
   WARN_UNUSED_RESULT UpdateImageResult UpdateImage(scoped_refptr<SharedBuffer>,
                                                    ResourceStatus,
                                                    UpdateImageOption,
                                                    bool all_data_received,
                                                    bool is_multipart);
+#endif
 
   void NotifyStartLoad();
   void DestroyDecodedData();
@@ -172,7 +174,9 @@ class CORE_EXPORT ImageResourceContent final
   void SetImageResourceInfo(ImageResourceInfo*);
 
   ResourcePriority PriorityFromObservers() const;
+#if 0 // BKTODO:
   scoped_refptr<const SharedBuffer> ResourceBuffer() const;
+#endif
   bool ShouldUpdateImageImmediately() const;
   bool HasObservers() const {
     return !observers_.IsEmpty() || !finished_observers_.IsEmpty();

@@ -891,6 +891,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\navigation_scheduler.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\css_style_sheet_resource.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\font_resource.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\image_resource.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\image_resource_content.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\script_resource.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\text_resource.cc" />
@@ -2683,7 +2684,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\navigation_scheduler.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\css_style_sheet_resource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\font_resource.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\image_resource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\image_resource_content.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\image_resource_info.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\image_resource_observer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\script_resource.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\text_resource.h" />

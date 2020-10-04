@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_resource_info.h
+// Description: ImageResourceInfo Class
+//      Author: Ziming Li
+//     Created: 2020-10-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -11,8 +22,8 @@
 #include "third_party/blink/renderer/platform/heap/heap.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_error.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_status.h"
-#include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/forward.h"
+#include "url/gurl.h"
 
 namespace blink {
 
@@ -29,7 +40,7 @@ class SecurityOrigin;
 class CORE_EXPORT ImageResourceInfo : public GarbageCollectedMixin {
  public:
   ~ImageResourceInfo() = default;
-  virtual const KURL& Url() const = 0;
+  virtual const GURL& Url() const = 0;
   virtual bool IsSchedulingReload() const = 0;
   virtual const ResourceResponse& GetResponse() const = 0;
   virtual bool ShouldShowPlaceholder() const = 0;
@@ -56,12 +67,10 @@ class CORE_EXPORT ImageResourceInfo : public GarbageCollectedMixin {
   // TODO(hiroshige): Remove this. crbug.com/666214
   virtual void EmulateLoadStartedForInspector(
       ResourceFetcher*,
-      const KURL&,
+      const GURL&,
       const AtomicString& initiator_name) = 0;
 
   virtual void LoadDeferredImage(ResourceFetcher* fetcher) = 0;
-
-  void Trace(blink::Visitor* visitor) override {}
 };
 
 }  // namespace blink
