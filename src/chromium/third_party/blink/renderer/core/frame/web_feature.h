@@ -121,6 +121,7 @@ enum class WebFeature {
     kSyntheticKeyframesInCompositedCSSAnimation,
     kTableRowDirectionDifferentFromTable,
     kTableSectionDirectionDifferentFromTable,
+    kTextAutosizing,
     kThreeValuedPositionBackground,
     kUnitlessPerspectiveInTransformProperty,
     kUnitlessZeroAngleFilter,

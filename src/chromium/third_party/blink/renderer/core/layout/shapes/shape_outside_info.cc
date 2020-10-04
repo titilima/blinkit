@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - blink Library
 // -------------------------------------------------
-//   File Name: shape_outside_info.c
+//   File Name: shape_outside_info.cc
 // Description: ShapeOutsideInfo Class
 //      Author: Ziming Li
 //     Created: 2020-10-04

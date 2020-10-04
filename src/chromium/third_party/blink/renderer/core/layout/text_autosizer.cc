@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_autosizer.cc
+// Description: TextAutosizer Class
+//      Author: Ziming Li
+//     Created: 2020-10-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -40,14 +51,16 @@
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/viewport_data.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
 #include "third_party/blink/renderer/core/html/forms/html_text_area_element.h"
+#endif
 #include "third_party/blink/renderer/core/layout/layout_block.h"
 #include "third_party/blink/renderer/core/layout/layout_inline.h"
 #include "third_party/blink/renderer/core/layout/layout_list_item.h"
 #include "third_party/blink/renderer/core/layout/layout_list_marker.h"
 #include "third_party/blink/renderer/core/layout/layout_multi_column_flow_thread.h"
-#include "third_party/blink/renderer/core/layout/layout_ruby_run.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_ruby_run.h"
 #include "third_party/blink/renderer/core/layout/layout_table.h"
 #include "third_party/blink/renderer/core/layout/layout_table_cell.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
@@ -79,7 +92,11 @@ static bool IsNonTextAreaFormControl(const LayoutObject* layout_object) {
     return false;
   const Element* element = ToElement(node);
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return (element->IsFormControlElement() && !IsHTMLTextAreaElement(element));
+#endif
 }
 
 static bool IsPotentialClusterRoot(const LayoutObject* layout_object) {
@@ -240,7 +257,7 @@ TextAutosizer::TextAutosizer(const Document* document)
 #if DCHECK_IS_ON()
       blocks_that_have_begun_layout_(),
 #endif
-      cluster_stack_(),
+      // BKTODO: cluster_stack_(),
       fingerprint_mapper_(),
       page_info_(),
       update_page_info_deferred_(false) {
@@ -294,7 +311,7 @@ void TextAutosizer::Destroy(LayoutBlock* block) {
     // Clear the cluster stack and the supercluster map to avoid stale pointers.
     // Speculative fix for http://crbug.com/369485.
     first_block_to_begin_layout_ = nullptr;
-    cluster_stack_.clear();
+    ASSERT(false); // BKTODO: cluster_stack_.clear();
   }
 }
 
@@ -328,8 +345,11 @@ void TextAutosizer::PrepareClusterStack(LayoutObject* layout_object) {
 #if DCHECK_IS_ON()
     blocks_that_have_begun_layout_.insert(block);
 #endif
+    ASSERT(false); // BKTODO:
+#if 0
     if (Cluster* cluster = MaybeCreateCluster(block))
       cluster_stack_.push_back(base::WrapUnique(cluster));
+#endif
   }
 }
 
@@ -344,6 +364,8 @@ void TextAutosizer::BeginLayout(LayoutBlock* block,
   if (block->IsRubyRun() || block->IsRubyBase() || block->IsRubyText())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!cluster_stack_.IsEmpty() || block->IsLayoutView());
 
   if (Cluster* cluster = MaybeCreateCluster(block))
@@ -357,6 +379,7 @@ void TextAutosizer::BeginLayout(LayoutBlock* block,
       !ToLayoutTableCell(block)->Table()->StyleRef().IsFixedTableLayout();
   if (!is_auto_table_cell && !cluster_stack_.IsEmpty())
     Inflate(block, layouter);
+#endif
 }
 
 void TextAutosizer::InflateAutoTable(LayoutTable* table) {
@@ -392,6 +415,8 @@ void TextAutosizer::InflateAutoTable(LayoutTable* table) {
 void TextAutosizer::EndLayout(LayoutBlock* block) {
   DCHECK(ShouldHandleLayout());
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (block == first_block_to_begin_layout_) {
     first_block_to_begin_layout_ = nullptr;
     cluster_stack_.clear();
@@ -404,6 +429,7 @@ void TextAutosizer::EndLayout(LayoutBlock* block) {
   } else if (!cluster_stack_.IsEmpty() && CurrentCluster()->root_ == block) {
     cluster_stack_.pop_back();
   }
+#endif
 }
 
 float TextAutosizer::Inflate(LayoutObject* parent,
@@ -419,7 +445,10 @@ float TextAutosizer::Inflate(LayoutObject* parent,
     // Inflate rubyRun's inner blocks.
     LayoutObject* run = parent->SlowFirstChild();
     if (run && run->IsRubyRun()) {
+      ASSERT(false); // BKTODO:
+#if 0
       child = ToLayoutRubyRun(run)->FirstChild();
+#endif
       behavior = kDescendToInnerBlocks;
     }
   } else if (parent->IsLayoutBlock() &&
@@ -544,6 +573,8 @@ void TextAutosizer::MarkSuperclusterForConsistencyCheck(LayoutObject* object) {
 }
 
 void TextAutosizer::UpdatePageInfoInAllFrames() {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(!document_->GetFrame() || document_->GetFrame()->IsMainFrame());
 
   for (Frame* frame = document_->GetFrame(); frame;
@@ -558,9 +589,12 @@ void TextAutosizer::UpdatePageInfoInAllFrames() {
     if (TextAutosizer* text_autosizer = document->GetTextAutosizer())
       text_autosizer->UpdatePageInfo();
   }
+#endif
 }
 
 void TextAutosizer::UpdatePageInfo() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (update_page_info_deferred_ || !document_->GetPage() ||
       !document_->GetSettings())
     return;
@@ -641,12 +675,17 @@ void TextAutosizer::UpdatePageInfo() {
     ResetMultipliers();
     page_info_.has_autosized_ = false;
   }
+#endif
 }
 
 IntSize TextAutosizer::WindowSize() const {
   Page* page = document_->GetPage();
   DCHECK(page);
+  ASSERT(false); // BKTODO:
+  return IntSize();
+#if 0
   return page->GetVisualViewport().Size();
+#endif
 }
 
 void TextAutosizer::ResetMultipliers() {
@@ -741,12 +780,15 @@ bool TextAutosizer::ClusterHasEnoughTextToAutosize(
   // 4 lines of text is considered enough to autosize.
   float minimum_text_length_to_autosize = WidthFromBlock(width_provider) * 4;
   if (LocalFrameView* view = document_->View()) {
+    ASSERT(false); // BKTODO:
+#if 0
     minimum_text_length_to_autosize =
         document_->GetPage()
             ->GetChromeClient()
             .ViewportToScreen(IntRect(0, 0, minimum_text_length_to_autosize, 0),
                               view)
             .Width();
+#endif
   }
 
   float length = 0;
@@ -832,6 +874,9 @@ TextAutosizer::Cluster* TextAutosizer::MaybeCreateCluster(LayoutBlock* block) {
   if (!(flags & POTENTIAL_ROOT))
     return nullptr;
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   Cluster* parent_cluster =
       cluster_stack_.IsEmpty() ? nullptr : CurrentCluster();
   DCHECK(parent_cluster || block->IsLayoutView());
@@ -849,6 +894,7 @@ TextAutosizer::Cluster* TextAutosizer::MaybeCreateCluster(LayoutBlock* block) {
       block, flags, parent_cluster,
       fingerprint_mapper_.CreateSuperclusterIfNeeded(block, is_new_entry));
   return cluster;
+#endif
 }
 
 TextAutosizer::Supercluster*
@@ -1148,10 +1194,13 @@ void TextAutosizer::ApplyMultiplier(LayoutObject* layout_object,
 
   switch (relayout_behavior) {
     case kAlreadyInLayout:
+      ASSERT(false); // BKTODO:
+#if 0
       // Don't free currentStyle until the end of the layout pass. This allows
       // other parts of the system to safely hold raw ComputedStyle* pointers
       // during layout, e.g. BreakingContext::m_currentStyle.
       styles_retained_during_layout_.push_back(&current_style);
+#endif
 
       layout_object->SetStyleInternal(std::move(style));
       if (layout_object->IsText())
@@ -1209,8 +1258,12 @@ bool TextAutosizer::IsWiderOrNarrowerDescendant(Cluster* cluster) {
 }
 
 TextAutosizer::Cluster* TextAutosizer::CurrentCluster() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   SECURITY_DCHECK(!cluster_stack_.IsEmpty());
   return cluster_stack_.back().get();
+#endif
 }
 
 TextAutosizer::Cluster::Cluster(const LayoutBlock* root,
@@ -1314,7 +1367,12 @@ TextAutosizer::FingerprintMapper::GetTentativeClusterRoots(
 
 TextAutosizer::LayoutScope::LayoutScope(LayoutBlock* block,
                                         SubtreeLayoutScope* layouter)
+#if 0 // BKTODO:
     : text_autosizer_(block->GetDocument().GetTextAutosizer()), block_(block) {
+#else
+{
+  ASSERT(false);
+#endif
   if (!text_autosizer_)
     return;
 
@@ -1338,18 +1396,31 @@ TextAutosizer::TableLayoutScope::TableLayoutScope(LayoutTable* table)
 }
 
 TextAutosizer::DeferUpdatePageInfo::DeferUpdatePageInfo(Page* page)
+#if 0 // BKTODO:
     : main_frame_(page->DeprecatedLocalMainFrame()) {
+#else
+{
+  ASSERT(false); // BKTODO:
+#endif
+  ASSERT(false); // BKTODO:
+#if 0
   if (TextAutosizer* text_autosizer =
           main_frame_->GetDocument()->GetTextAutosizer()) {
     DCHECK(!text_autosizer->update_page_info_deferred_);
     text_autosizer->update_page_info_deferred_ = true;
   }
+#endif
 }
 
 TextAutosizer::NGLayoutScope::NGLayoutScope(const NGBlockNode& node,
                                             LayoutUnit inline_size)
+#if 0 // BKTODO:
     : text_autosizer_(node.GetLayoutBox()->GetDocument().GetTextAutosizer()),
+#else
+    :
+#endif
       block_(ToLayoutBlockFlow(node.GetLayoutBox())) {
+  ASSERT(false); // BKTODO:
   if (!text_autosizer_ || !text_autosizer_->ShouldHandleLayout() ||
       block_->IsLayoutNGListMarker()) {
     // Bail if text autosizing isn't enabled, but also if this is a
@@ -1376,12 +1447,15 @@ TextAutosizer::NGLayoutScope::~NGLayoutScope() {
 }
 
 TextAutosizer::DeferUpdatePageInfo::~DeferUpdatePageInfo() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (TextAutosizer* text_autosizer =
           main_frame_->GetDocument()->GetTextAutosizer()) {
     DCHECK(text_autosizer->update_page_info_deferred_);
     text_autosizer->update_page_info_deferred_ = false;
     text_autosizer->UpdatePageInfoInAllFrames();
   }
+#endif
 }
 
 float TextAutosizer::ComputeAutosizedFontSize(float computed_size,

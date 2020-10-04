@@ -1155,6 +1155,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\shared_buffer.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\supplementable.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_context.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_text_run.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\hyphenation.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\layout_locale.cc" />
@@ -3075,6 +3076,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_resolver.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_run_list.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_text_run.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character_property.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\hyphenation.h" />
