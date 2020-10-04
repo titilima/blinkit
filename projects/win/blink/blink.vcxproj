@@ -868,6 +868,10 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_space_utils.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_unpositioned_float.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\order_iterator.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\box_shape.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\polygon_shape.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\raster_shape.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\rectangle_shape.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\shape.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\shape_outside_info.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\subtree_layout_scope.cc" />
@@ -1052,6 +1056,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_box.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_point.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_point_3d.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_polygon.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_quad.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_rect.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_rect_outsets.cc" />
@@ -2650,7 +2655,12 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_unpositioned_float_vector.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\order_iterator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\overflow_model.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\box_shape.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\polygon_shape.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\raster_shape.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\rectangle_shape.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\shape.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\shape_interval.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\shape_outside_info.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\subtree_layout_scope.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\table_grid_cell.h" />
@@ -2911,6 +2921,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_box.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_point.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_point_3d.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_polygon.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_quad.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_rect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_rect_outsets.h" />

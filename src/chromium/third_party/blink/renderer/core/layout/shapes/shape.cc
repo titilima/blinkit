@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: shape.cc
+// Description: Shape Class
+//      Author: Ziming Li
+//     Created: 2020-10-03
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Adobe Systems Incorporated. All rights reserved.
  *
@@ -39,13 +50,15 @@
 #include "third_party/blink/renderer/core/layout/shapes/polygon_shape.h"
 #include "third_party/blink/renderer/core/layout/shapes/raster_shape.h"
 #include "third_party/blink/renderer/core/layout/shapes/rectangle_shape.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/svg/graphics/svg_image.h"
 #include "third_party/blink/renderer/core/typed_arrays/dom_array_buffer.h"
 #include "third_party/blink/renderer/core/typed_arrays/dom_typed_array.h"
+#endif
 #include "third_party/blink/renderer/platform/geometry/float_rounded_rect.h"
 #include "third_party/blink/renderer/platform/geometry/float_size.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_types.h"
-#include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_flags.h"
 #include "third_party/blink/renderer/platform/graphics/static_bitmap_image.h"
 #include "third_party/blink/renderer/platform/length_functions.h"
@@ -237,6 +250,9 @@ static bool ExtractImageData(Image* image,
   if (!image)
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   CanvasColorParams color_params;
   SkImageInfo info = SkImageInfo::Make(
       image_size.Width(), image_size.Height(), color_params.GetSkColorType(),
@@ -268,6 +284,7 @@ static bool ExtractImageData(Image* image,
   return StaticBitmapImage::ConvertToArrayBufferContents(
       StaticBitmapImage::Create(surface->makeImageSnapshot()), contents,
       image_dest_rect, color_params);
+#endif
 }
 
 static std::unique_ptr<RasterShapeIntervals> ExtractIntervalsFromImageData(
@@ -275,6 +292,9 @@ static std::unique_ptr<RasterShapeIntervals> ExtractIntervalsFromImageData(
     float threshold,
     const IntRect& image_rect,
     const IntRect& margin_rect) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   DOMArrayBuffer* array_buffer = DOMArrayBuffer::Create(contents);
   DOMUint8ClampedArray* pixel_array =
       DOMUint8ClampedArray::Create(array_buffer, 0, array_buffer->ByteLength());
@@ -310,6 +330,7 @@ static std::unique_ptr<RasterShapeIntervals> ExtractIntervalsFromImageData(
     }
   }
   return intervals;
+#endif
 }
 
 static bool IsValidRasterShapeSize(const IntSize& size) {
@@ -317,8 +338,11 @@ static bool IsValidRasterShapeSize(const IntSize& size) {
   if (!max_image_size_bytes) {
     size_t size32_max_bytes =
         0xFFFFFFFF / 4;  // Some platforms don't limit MaxDecodedImageBytes.
+    ASSERT(false); // BKTODO:
+#if 0
     max_image_size_bytes =
         std::min(size32_max_bytes, Platform::Current()->MaxDecodedImageBytes());
+#endif
   }
   return size.Area() * 4 < max_image_size_bytes;
 }

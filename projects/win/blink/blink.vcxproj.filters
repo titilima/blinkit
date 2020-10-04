@@ -3473,6 +3473,21 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_block_child_iterator.cc">
       <Filter>renderer\core\layout\ng</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\box_shape.cc">
+      <Filter>renderer\core\layout\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\polygon_shape.cc">
+      <Filter>renderer\core\layout\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\raster_shape.cc">
+      <Filter>renderer\core\layout\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\rectangle_shape.cc">
+      <Filter>renderer\core\layout\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_polygon.cc">
+      <Filter>renderer\platform\geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9432,6 +9447,24 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_block_child_iterator.h">
       <Filter>renderer\core\layout\ng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\box_shape.h">
+      <Filter>renderer\core\layout\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\polygon_shape.h">
+      <Filter>renderer\core\layout\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\raster_shape.h">
+      <Filter>renderer\core\layout\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\rectangle_shape.h">
+      <Filter>renderer\core\layout\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\shape_interval.h">
+      <Filter>renderer\core\layout\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_polygon.h">
+      <Filter>renderer\platform\geometry</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
