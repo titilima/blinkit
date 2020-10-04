@@ -43,11 +43,12 @@
 #include "third_party/blink/renderer/platform/loader/fetch/text_resource_decoder_options.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
 
+class GURL;
+
 namespace blink {
 
 class CSSParserContext;
 class FetchParameters;
-class KURL;
 class ResourceFetcher;
 class StyleSheetContents;
 
@@ -58,7 +59,7 @@ class CORE_EXPORT CSSStyleSheetResource final : public TextResource {
   static CSSStyleSheetResource* Fetch(FetchParameters&,
                                       ResourceFetcher*,
                                       ResourceClient*);
-  static CSSStyleSheetResource* CreateForTest(const KURL&,
+  static CSSStyleSheetResource* CreateForTest(const GURL&,
                                               const WTF::TextEncoding&);
 
   ~CSSStyleSheetResource() override;

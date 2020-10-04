@@ -98,6 +98,8 @@ enum class WebFeature {
     kHTMLParseErrorNestedForm,
     kInnerTextWithShadowTree,
     kLineClamp,
+    kLocalCSSFile,
+    kLocalCSSFileExtensionRejected,
     kNegativeBackgroundSize,
     kNegativeMaskSize,
     kPendingStylesheetAddedAfterBodyStarted,

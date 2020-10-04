@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_style_sheet_resource.cc
+// Description: CSSStyleSheetResource Class
+//      Author: Ziming Li
+//     Created: 2020-10-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller (mueller@kde.org)
@@ -26,11 +37,11 @@
 
 #include "third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.h"
 
-#include "services/network/public/mojom/request_context_frame_type.mojom-blink.h"
+// BKTODO: #include "services/network/public/mojom/request_context_frame_type.mojom-blink.h"
 #include "third_party/blink/renderer/core/css/style_sheet_contents.h"
 #include "third_party/blink/renderer/core/frame/web_feature.h"
 #include "third_party/blink/renderer/platform/loader/fetch/fetch_parameters.h"
-#include "third_party/blink/renderer/platform/loader/fetch/memory_cache.h"
+// BKTODO: #include "third_party/blink/renderer/platform/loader/fetch/memory_cache.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_loader_options.h"
 #include "third_party/blink/renderer/platform/loader/fetch/text_resource_decoder_options.h"
@@ -45,23 +56,31 @@ namespace blink {
 CSSStyleSheetResource* CSSStyleSheetResource::Fetch(FetchParameters& params,
                                                     ResourceFetcher* fetcher,
                                                     ResourceClient* client) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   DCHECK_EQ(params.GetResourceRequest().GetFrameType(),
             network::mojom::RequestContextFrameType::kNone);
   params.SetRequestContext(mojom::RequestContextType::STYLE);
   CSSStyleSheetResource* resource = ToCSSStyleSheetResource(
       fetcher->RequestResource(params, CSSStyleSheetResourceFactory(), client));
   return resource;
+#endif
 }
 
 CSSStyleSheetResource* CSSStyleSheetResource::CreateForTest(
-    const KURL& url,
+    const GURL& url,
     const WTF::TextEncoding& encoding) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   ResourceRequest request(url);
   request.SetFetchCredentialsMode(network::mojom::FetchCredentialsMode::kOmit);
   ResourceLoaderOptions options;
   TextResourceDecoderOptions decoder_options(
       TextResourceDecoderOptions::kCSSContent, encoding);
   return new CSSStyleSheetResource(request, options, decoder_options);
+#endif
 }
 
 CSSStyleSheetResource::CSSStyleSheetResource(
@@ -87,11 +106,7 @@ void CSSStyleSheetResource::SetParsedStyleSheetCache(
   UpdateDecodedSize();
 }
 
-void CSSStyleSheetResource::Trace(blink::Visitor* visitor) {
-  visitor->Trace(parsed_style_sheet_cache_);
-  TextResource::Trace(visitor);
-}
-
+#if 0 // BKTODO:
 ReferrerPolicy CSSStyleSheetResource::GetReferrerPolicy() const {
   ReferrerPolicy referrer_policy = kReferrerPolicyDefault;
   String referrer_policy_header =
@@ -103,6 +118,7 @@ ReferrerPolicy CSSStyleSheetResource::GetReferrerPolicy() const {
   }
   return referrer_policy;
 }
+#endif
 
 const String CSSStyleSheetResource::SheetText(
     const CSSParserContext* parser_context,
@@ -114,13 +130,16 @@ const String CSSStyleSheetResource::SheetText(
   if (!decoded_sheet_text_.IsNull()) {
     // We should have the decoded sheet text cached when the resource is fully
     // loaded.
-    DCHECK_EQ(GetStatus(), ResourceStatus::kCached);
+    ASSERT(false); // BKTODO: DCHECK_EQ(GetStatus(), ResourceStatus::kCached);
 
     return decoded_sheet_text_;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!Data() || Data()->IsEmpty())
     return String();
+#endif
 
   return DecodedText();
 }
@@ -140,6 +159,7 @@ void CSSStyleSheetResource::NotifyFinished() {
   ClearData();
 }
 
+#if 0 // BKTODO:
 void CSSStyleSheetResource::DestroyDecodedDataIfPossible() {
   if (!parsed_style_sheet_cache_)
     return;
@@ -151,6 +171,7 @@ void CSSStyleSheetResource::DestroyDecodedDataForFailedRevalidation() {
   SetDecodedSheetText(String());
   DestroyDecodedDataIfPossible();
 }
+#endif
 
 bool CSSStyleSheetResource::CanUseSheet(const CSSParserContext* parser_context,
                                         MIMETypeCheck mime_type_check) const {
@@ -161,17 +182,18 @@ bool CSSStyleSheetResource::CanUseSheet(const CSSParserContext* parser_context,
   // Though we'll likely change this in the future, for the moment we're going
   // to enforce a file-extension requirement on stylesheets loaded from `file:`
   // URLs and see how far it gets us.
-  KURL sheet_url = GetResponse().Url();
-  if (sheet_url.IsLocalFile()) {
+  GURL sheet_url = GetResponse().Url();
+  if (sheet_url.SchemeIsFile()) {
     if (parser_context) {
       parser_context->Count(WebFeature::kLocalCSSFile);
     }
     // Grab |sheet_url|'s filename's extension (if present), and check whether
     // or not it maps to a `text/css` MIME type:
     String extension;
-    int last_dot = sheet_url.LastPathComponent().ReverseFind('.');
-    if (last_dot != -1)
-      extension = sheet_url.LastPathComponent().Substring(last_dot + 1);
+    std::string fileName = sheet_url.ExtractFileName();
+    size_t last_dot = fileName.rfind('.');
+    if (std::string::npos != last_dot)
+      extension = String::FromStdUTF8(fileName.substr(last_dot + 1));
     if (!EqualIgnoringASCIICase(
             MIMETypeRegistry::GetMIMETypeForExtension(extension), "text/css")) {
       if (parser_context) {
@@ -193,11 +215,15 @@ bool CSSStyleSheetResource::CanUseSheet(const CSSParserContext* parser_context,
   // folks can use standards mode for local HTML documents.
   if (mime_type_check == MIMETypeCheck::kLax)
     return true;
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   AtomicString content_type = HttpContentType();
   return content_type.IsEmpty() ||
          DeprecatedEqualIgnoringCase(content_type, "text/css") ||
          DeprecatedEqualIgnoringCase(content_type,
                                      "application/x-unknown-content-type");
+#endif
 }
 
 StyleSheetContents* CSSStyleSheetResource::CreateParsedStyleSheetFromCache(
@@ -223,7 +249,7 @@ StyleSheetContents* CSSStyleSheetResource::CreateParsedStyleSheetFromCache(
   // due to potential differences in the rule set.
   if (RuntimeEnabledFeatures::CacheStyleSheetWithMediaQueriesEnabled() &&
       parsed_style_sheet_cache_->HasMediaQueries()) {
-    return parsed_style_sheet_cache_->Copy();
+    ASSERT(false); // BKTODO: return parsed_style_sheet_cache_->Copy();
   }
 
   return parsed_style_sheet_cache_;
@@ -233,12 +259,15 @@ void CSSStyleSheetResource::SaveParsedStyleSheet(StyleSheetContents* sheet) {
   DCHECK(sheet);
   DCHECK(sheet->IsCacheableForResource());
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!GetMemoryCache()->Contains(this)) {
     // This stylesheet resource did conflict with another resource and was not
     // added to the cache.
     SetParsedStyleSheetCache(nullptr);
     return;
   }
+#endif
   SetParsedStyleSheetCache(sheet);
 }
 
@@ -252,7 +281,7 @@ void CSSStyleSheetResource::UpdateDecodedSize() {
   size_t decoded_size = decoded_sheet_text_.CharactersSizeInBytes();
   if (parsed_style_sheet_cache_)
     decoded_size += parsed_style_sheet_cache_->EstimatedSizeInBytes();
-  SetDecodedSize(decoded_size);
+  ASSERT(false); // BKTODO: SetDecodedSize(decoded_size);
 }
 
 }  // namespace blink
