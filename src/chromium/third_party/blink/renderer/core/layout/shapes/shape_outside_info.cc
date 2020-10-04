@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: shape_outside_info.c
+// Description: ShapeOutsideInfo Class
+//      Author: Ziming Li
+//     Created: 2020-10-04
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Adobe Systems Incorporated. All rights reserved.
  *
@@ -32,7 +43,7 @@
 #include <memory>
 #include "base/auto_reset.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
-#include "third_party/blink/renderer/core/inspector/console_message.h"
+// BKTODO: #include "third_party/blink/renderer/core/inspector/console_message.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_block_flow.h"
 #include "third_party/blink/renderer/core/layout/floating_objects.h"
 #include "third_party/blink/renderer/core/layout/layout_block_flow.h"
@@ -139,6 +150,8 @@ static bool CheckShapeImageOrigin(Document& document,
 
   DCHECK(style_image.CachedImage());
   ImageResourceContent& image_resource = *(style_image.CachedImage());
+  ASSERT(false); // BKTODO:
+#if 0
   if (image_resource.IsAccessAllowed(document.GetSecurityOrigin()))
     return true;
 
@@ -147,6 +160,7 @@ static bool CheckShapeImageOrigin(Document& document,
   document.AddConsoleMessage(
       ConsoleMessage::Create(kSecurityMessageSource, kErrorMessageLevel,
                              "Unsafe attempt to load URL " + url_string + "."));
+#endif
 
   return false;
 }
