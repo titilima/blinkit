@@ -2963,6 +2963,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\gradient_generated_image.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\graphics_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\graphics_context_state.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\graphics_context_state_saver.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\graphics_layer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\graphics_layer_client.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\graphics_types.h" />
