@@ -905,6 +905,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\block_flow_paint_invalidator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\block_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\block_paint_invalidator.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_decoration_data.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_model_object_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_painter_base.cc" />
@@ -932,6 +933,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_box_fragment_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment_traversal.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\nine_piece_image_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_paint_invalidator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_invalidator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_layer.cc" />
@@ -2706,6 +2708,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\block_flow_paint_invalidator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\block_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\block_paint_invalidator.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_decoration_data.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_model_object_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_painter_base.h" />
@@ -2738,6 +2741,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_box_fragment_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment_traversal.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\nine_piece_image_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_paint_invalidator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_paint_properties.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_info.h" />
@@ -2979,6 +2983,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\clip_paint_property_node.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\cull_rect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\display_item.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\display_item_cache_skipper.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\display_item_client.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\display_item_list.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\graphics\paint\drawing_display_item.h" />

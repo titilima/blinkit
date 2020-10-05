@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: box_painter.cc
+// Description: BoxPainter Class
+//      Author: Ziming Li
+//     Created: 2020-10-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -10,18 +21,20 @@
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 #include "third_party/blink/renderer/core/layout/layout_table.h"
 #include "third_party/blink/renderer/core/layout/layout_theme.h"
-#include "third_party/blink/renderer/core/layout/svg/layout_svg_foreign_object.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/svg/layout_svg_foreign_object.h"
 #include "third_party/blink/renderer/core/paint/background_image_geometry.h"
 #include "third_party/blink/renderer/core/paint/box_decoration_data.h"
 #include "third_party/blink/renderer/core/paint/box_model_object_painter.h"
 #include "third_party/blink/renderer/core/paint/box_painter_base.h"
 #include "third_party/blink/renderer/core/paint/compositing/composited_layer_mapping.h"
 #include "third_party/blink/renderer/core/paint/nine_piece_image_painter.h"
-#include "third_party/blink/renderer/core/paint/object_painter.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/object_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #include "third_party/blink/renderer/core/paint/scoped_paint_state.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/paint/svg_foreign_object_painter.h"
 #include "third_party/blink/renderer/core/paint/theme_painter.h"
+#endif
 #include "third_party/blink/renderer/platform/geometry/layout_point.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context_state_saver.h"
 #include "third_party/blink/renderer/platform/graphics/paint/display_item_cache_skipper.h"
@@ -42,8 +55,11 @@ void BoxPainter::PaintChildren(const PaintInfo& paint_info) {
   for (LayoutObject* child = layout_box_.SlowFirstChild(); child;
        child = child->NextSibling()) {
     if (child->IsSVGForeignObject()) {
+      ASSERT(false); // BKTODO:
+#if 0
       SVGForeignObjectPainter(ToLayoutSVGForeignObject(*child))
           .PaintLayer(paint_info);
+#endif
     } else {
       child->Paint(child_info);
     }
@@ -144,7 +160,7 @@ void BoxPainter::PaintBoxDecorationBackgroundWithRect(
       paint_info.context.ClipRoundedRect(border);
 
       if (box_decoration_data.bleed_avoidance == kBackgroundBleedClipLayer) {
-        paint_info.context.BeginLayer();
+        ASSERT(false); // BKTODO: paint_info.context.BeginLayer();
         needs_end_layer = true;
       }
     }
@@ -155,6 +171,8 @@ void BoxPainter::PaintBoxDecorationBackgroundWithRect(
   // CSS background.
   IntRect snapped_paint_rect(PixelSnappedIntRect(paint_rect));
   ThemePainter& theme_painter = LayoutTheme::GetTheme().Painter();
+  ASSERT(false); // BKTODO:
+#if 0
   bool theme_painted =
       box_decoration_data.has_appearance &&
       !theme_painter.Paint(layout_box_, paint_info, snapped_paint_rect);
@@ -191,6 +209,7 @@ void BoxPainter::PaintBoxDecorationBackgroundWithRect(
           paint_info, paint_rect, style, box_decoration_data.bleed_avoidance);
     }
   }
+#endif
 
   if (needs_end_layer)
     paint_info.context.EndLayer();
