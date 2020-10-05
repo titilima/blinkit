@@ -62,6 +62,7 @@ enum {
 
 } // namespace blink
 
+#define TRACE_LAYER_INVALIDATION(...)           ((void)0)
 #define TRACE_SCHEDULE_STYLE_INVALIDATION(...)  ((void)0)
 
 #endif // BLINKIT_BLINK_INSPECTOR_TRACE_EVENTS_H

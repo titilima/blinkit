@@ -3515,6 +3515,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_border_painter.cc">
       <Filter>renderer\core\paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\probe\core_probes.cpp">
+      <Filter>renderer\core\probe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">

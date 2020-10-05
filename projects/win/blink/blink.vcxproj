@@ -956,6 +956,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_section_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\text_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\view_painter.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\probe\core_probes.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_pending_script.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_script.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\fetch_client_settings_object_impl.cpp" />

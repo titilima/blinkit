@@ -135,6 +135,18 @@ public:
         DocumentLifecycle &m_documentLifecycle;
         DISALLOW_COPY_AND_ASSIGN(DisallowTransitionScope);
     };
+    // Throttling is disabled by default. Instantiating this class allows
+    // throttling (e.g., during BeginMainFrame). If a script needs to run inside
+    // this scope, DisallowThrottlingScope should be used to let the script
+    // perform a synchronous layout if necessary.
+    class AllowThrottlingScope
+    {
+        STACK_ALLOCATED();
+    public:
+        AllowThrottlingScope(DocumentLifecycle &lifecycle);
+        ~AllowThrottlingScope(void);
+        DISALLOW_COPY_AND_ASSIGN(AllowThrottlingScope);
+    };
 #endif
 
 private:
