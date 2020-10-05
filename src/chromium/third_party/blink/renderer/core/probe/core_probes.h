@@ -20,6 +20,9 @@ namespace blink {
 
 class FontCustomPlatformData;
 class FontFace;
+class GraphicsContext;
+class GraphicsLayer;
+class LayoutRect;
 class PseudoElement;
 
 namespace probe {
@@ -28,6 +31,7 @@ inline void activeStyleSheetsUpdated(Document *) {}
 inline void animationPlayStateChanged(Document *, Animation *, Animation::AnimationPlayState, Animation::AnimationPlayState) {}
 inline void didCreateAnimation(Document *, unsigned) {}
 inline void didInvalidateStyleAttr(Node *) {}
+inline void didPaint(LocalFrame *, const GraphicsLayer *, GraphicsContext &, const LayoutRect &) {}
 inline void fontsUpdated(ExecutionContext *, const FontFace *, const String &, const FontCustomPlatformData *) {}
 inline void pseudoElementDestroyed(PseudoElement *) {}
 
