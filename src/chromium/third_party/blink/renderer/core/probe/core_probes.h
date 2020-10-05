@@ -33,6 +33,7 @@ inline void didCreateAnimation(Document *, unsigned) {}
 inline void didInvalidateStyleAttr(Node *) {}
 inline void didPaint(LocalFrame *, const GraphicsLayer *, GraphicsContext &, const LayoutRect &) {}
 inline void fontsUpdated(ExecutionContext *, const FontFace *, const String &, const FontCustomPlatformData *) {}
+inline void layerTreeDidChange(LocalFrame *) {}
 inline void pseudoElementDestroyed(PseudoElement *) {}
 
 } // namespace probe
