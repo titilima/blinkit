@@ -110,9 +110,7 @@ class CORE_EXPORT ImageResource final
                         std::unique_ptr<WebDataConsumerHandle>) override;
 #endif
   void AppendData(const char*, size_t) override;
-#if 0 // BKTODO:
-  void Finish(TimeTicks finish_time, base::SingleThreadTaskRunner*) override;
-#endif
+  void Finish(base::SingleThreadTaskRunner*) override;
   void FinishAsError(const ResourceError&,
                      base::SingleThreadTaskRunner*) override;
 
@@ -161,9 +159,11 @@ class CORE_EXPORT ImageResource final
   bool HasClientsOrObservers() const override;
 
   void UpdateImageAndClearBuffer();
+#if 0 // BKTODO:
   void UpdateImage(scoped_refptr<SharedBuffer>,
                    ImageResourceContent::UpdateImageOption,
                    bool all_data_received);
+#endif
 
   void NotifyFinished() override;
 

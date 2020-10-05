@@ -76,6 +76,7 @@ public:
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(WebAnimationsAPI)
     BLINK_DEFINE_EXPERIMENTAL_FEATURE(WorkStealingInScriptRunner)
 
+    BLINKIT_DISABLE_FEATURE(ClientPlaceholdersForServerLoFi)
     BLINKIT_DISABLE_FEATURE(CompositedSelectionUpdate)
     BLINKIT_DISABLE_FEATURE(DisplayCutoutAPI)
     BLINKIT_DISABLE_FEATURE(ElementTiming)
@@ -88,6 +89,7 @@ public:
     BLINKIT_DISABLE_FEATURE(LayoutNGFieldset)
     BLINKIT_DISABLE_FEATURE(LayoutNGFlexBox)
     BLINKIT_DISABLE_FEATURE(LayoutNGFragmentCaching)
+    BLINKIT_DISABLE_FEATURE(LazyImageLoading)
     BLINKIT_DISABLE_FEATURE(OffMainThreadCSSPaint)
     BLINKIT_DISABLE_FEATURE(PaintTouchActionRects)
     BLINKIT_DISABLE_FEATURE(PaintTracking)

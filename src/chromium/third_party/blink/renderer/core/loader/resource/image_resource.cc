@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_resource.cc
+// Description: ImageResource Class
+//      Author: Ziming Li
+//     Created: 2020-10-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
     Copyright (C) 1998 Lars Knoll (knoll@mpi-hd.mpg.de)
     Copyright (C) 2001 Dirk Mueller (mueller@kde.org)
@@ -36,20 +47,19 @@
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 #include "third_party/blink/renderer/platform/loader/fetch/fetch_initiator_type_names.h"
 #include "third_party/blink/renderer/platform/loader/fetch/fetch_parameters.h"
-#include "third_party/blink/renderer/platform/loader/fetch/memory_cache.h"
+// BKTODO: #include "third_party/blink/renderer/platform/loader/fetch/memory_cache.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_client.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_loader.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_loader_options.h"
-#include "third_party/blink/renderer/platform/loader/fetch/resource_loading_log.h"
+// BKTODO: #include "third_party/blink/renderer/platform/loader/fetch/resource_loading_log.h"
 #include "third_party/blink/renderer/platform/network/http_parsers.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/shared_buffer.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
-#include "third_party/blink/renderer/platform/weborigin/security_violation_reporting_policy.h"
+// BKTODO: #include "third_party/blink/renderer/platform/weborigin/security_violation_reporting_policy.h"
 #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
 #include "third_party/blink/renderer/platform/wtf/time.h"
-#include "v8/include/v8.h"
 
 namespace blink {
 
@@ -58,7 +68,7 @@ namespace {
 // The amount of time to wait before informing the clients that the image has
 // been updated (in seconds). This effectively throttles invalidations that
 // result from new data arriving for this image.
-constexpr auto kFlushDelay = TimeDelta::FromSeconds(1);
+static const auto kFlushDelay = TimeDelta::FromSeconds(1);
 
 bool HasServerLoFiResponseHeaders(const ResourceResponse& response) {
   return response.HttpHeaderField("chrome-proxy-content-transform")
@@ -80,13 +90,9 @@ class ImageResource::ImageResourceInfoImpl final
       : resource_(resource) {
     DCHECK(resource_);
   }
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(resource_);
-    ImageResourceInfo::Trace(visitor);
-  }
 
  private:
-  const KURL& Url() const override { return resource_->Url(); }
+  const GURL& Url() const override { return resource_->Url(); }
   bool IsSchedulingReload() const override {
     return resource_->is_scheduling_reload_;
   }
@@ -114,7 +120,11 @@ class ImageResource::ImageResourceInfoImpl final
         security_origin, does_current_frame_has_single_security_origin);
   }
   bool HasCacheControlNoStoreHeader() const override {
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
     return resource_->HasCacheControlNoStoreHeader();
+#endif
   }
   base::Optional<ResourceError> GetResourceError() const override {
     if (resource_->LoadFailedOrCanceled())
@@ -122,7 +132,11 @@ class ImageResource::ImageResourceInfoImpl final
     return base::nullopt;
   }
 
+#if 0 // BKTODO:
   void SetDecodedSize(size_t size) override { resource_->SetDecodedSize(size); }
+#else
+  void SetDecodedSize(size_t size) override { ASSERT(false); }
+#endif
   void WillAddClientOrObserver() override {
     resource_->WillAddClientOrObserver();
   }
@@ -131,18 +145,24 @@ class ImageResource::ImageResourceInfoImpl final
   }
   void EmulateLoadStartedForInspector(
       ResourceFetcher* fetcher,
-      const KURL& url,
+      const GURL& url,
       const AtomicString& initiator_name) override {
+    ASSERT(false); // BKTODO:
+#if 0
     fetcher->EmulateLoadStartedForInspector(
         resource_.Get(), url, mojom::RequestContextType::IMAGE, initiator_name);
+#endif
   }
 
   void LoadDeferredImage(ResourceFetcher* fetcher) override {
+    ASSERT(false); // BKTODO:
+#if 0
     if (resource_->GetType() == ResourceType::kImage &&
         resource_->StillNeedsLoad() &&
         !fetcher->ShouldDeferImageLoad(resource_->Url())) {
       fetcher->StartLoad(resource_);
     }
+#endif
   }
 
   const Member<ImageResource> resource_;
@@ -156,12 +176,16 @@ class ImageResource::ImageResourceFactory : public NonTextResourceFactory {
       : NonTextResourceFactory(ResourceType::kImage),
         fetch_params_(&fetch_params) {}
 
-  Resource* Create(const ResourceRequest& request,
+  std::shared_ptr<Resource> Create(const ResourceRequest& request,
                    const ResourceLoaderOptions& options) const override {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     return new ImageResource(request, options,
                              ImageResourceContent::CreateNotStarted(),
                              fetch_params_->GetImageRequestOptimization() ==
                                  FetchParameters::kAllowPlaceholder);
+#endif
   }
 
  private:
@@ -171,6 +195,9 @@ class ImageResource::ImageResourceFactory : public NonTextResourceFactory {
 
 ImageResource* ImageResource::Fetch(FetchParameters& params,
                                     ResourceFetcher* fetcher) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (params.GetResourceRequest().GetRequestContext() ==
       mojom::RequestContextType::UNSPECIFIED) {
     params.SetRequestContext(mojom::RequestContextType::IMAGE);
@@ -184,8 +211,10 @@ ImageResource* ImageResource::Fetch(FetchParameters& params,
   if (params.Options().initiator_info.name == FetchInitiatorTypeNames::uacss)
     resource->FlagAsUserAgentResource();
   return resource;
+#endif
 }
 
+#if 0 // BKTODO:
 Resource::MatchStatus ImageResource::CanReuse(
     const FetchParameters& params) const {
   // If the image is a placeholder, but this fetch doesn't allow a
@@ -208,6 +237,7 @@ bool ImageResource::CanUseCacheValidator() const {
 
   return Resource::CanUseCacheValidator();
 }
+#endif
 
 ImageResource* ImageResource::Create(const ResourceRequest& request) {
   ResourceLoaderOptions options;
@@ -215,7 +245,7 @@ ImageResource* ImageResource::Create(const ResourceRequest& request) {
                            ImageResourceContent::CreateNotStarted(), false);
 }
 
-ImageResource* ImageResource::CreateForTest(const KURL& url) {
+ImageResource* ImageResource::CreateForTest(const GURL& url) {
   ResourceRequest request(url);
   return Create(request);
 }
@@ -231,17 +261,24 @@ ImageResource::ImageResource(const ResourceRequest& resource_request,
           is_placeholder ? PlaceholderOption::kShowAndReloadPlaceholderAlways
                          : PlaceholderOption::kDoNotReloadPlaceholder) {
   DCHECK(GetContent());
+  ASSERT(false); // BKTODO:
+#if 0
   RESOURCE_LOADING_DVLOG(1) << "new ImageResource(ResourceRequest) " << this;
+#endif
   GetContent()->SetImageResourceInfo(new ImageResourceInfoImpl(this));
 }
 
 ImageResource::~ImageResource() {
+  ASSERT(false); // BKTODO:
+#if 0
   RESOURCE_LOADING_DVLOG(1) << "~ImageResource " << this;
+#endif
 
   if (is_referenced_from_ua_stylesheet_)
     InstanceCounters::DecrementCounter(InstanceCounters::kUACSSResourceCounter);
 }
 
+#if 0 // BKTODO:
 void ImageResource::OnMemoryDump(WebMemoryDumpLevelOfDetail level_of_detail,
                                  WebProcessMemoryDump* memory_dump) const {
   Resource::OnMemoryDump(level_of_detail, memory_dump);
@@ -250,13 +287,7 @@ void ImageResource::OnMemoryDump(WebMemoryDumpLevelOfDetail level_of_detail,
   if (content_->HasImage() && content_->GetImage()->Data())
     dump->AddScalar("size", "bytes", content_->GetImage()->Data()->size());
 }
-
-void ImageResource::Trace(blink::Visitor* visitor) {
-  visitor->Trace(multipart_parser_);
-  visitor->Trace(content_);
-  Resource::Trace(visitor);
-  MultipartImageResourceParser::Client::Trace(visitor);
-}
+#endif
 
 void ImageResource::NotifyFinished() {
   // Don't notify clients of completion if this ImageResource is
@@ -272,8 +303,11 @@ bool ImageResource::HasClientsOrObservers() const {
 }
 
 void ImageResource::DidAddClient(ResourceClient* client) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK((multipart_parser_ && IsLoading()) || !Data() ||
          GetContent()->HasImage());
+#endif
 
   // Don't notify observers and clients of completion if this ImageResource is
   // about to be reloaded.
@@ -283,6 +317,7 @@ void ImageResource::DidAddClient(ResourceClient* client) {
   Resource::DidAddClient(client);
 }
 
+#if 0 // BKTODO:
 void ImageResource::DestroyDecodedDataForFailedRevalidation() {
   // Clears the image, as we must create a new image for the failed
   // revalidation response.
@@ -298,6 +333,7 @@ void ImageResource::DestroyDecodedDataIfPossible() {
                             EncodedSize() / 1024);
   }
 }
+#endif
 
 void ImageResource::AllClientsAndObserversRemoved() {
   // After ErrorOccurred() is set true in Resource::FinishAsError() before
@@ -308,6 +344,8 @@ void ImageResource::AllClientsAndObserversRemoved() {
   // TODO(hiroshige): Make the CHECK condition cleaner.
   CHECK(is_during_finish_as_error_ || !GetContent()->HasImage() ||
         !ErrorOccurred());
+  ASSERT(false); // BKTODO:
+#if 0
   // If possible, delay the resetting until back at the event loop. Doing so
   // after a conservative GC prevents resetAnimation() from upsetting ongoing
   // animation updates (crbug.com/613709)
@@ -320,16 +358,21 @@ void ImageResource::AllClientsAndObserversRemoved() {
   }
   if (multipart_parser_)
     multipart_parser_->Cancel();
+#endif
   Resource::AllClientsAndObserversRemoved();
 }
 
+#if 0 // BKTODO:
 scoped_refptr<const SharedBuffer> ImageResource::ResourceBuffer() const {
   if (Data())
     return Data();
   return GetContent()->ResourceBuffer();
 }
+#endif
 
 void ImageResource::AppendData(const char* data, size_t length) {
+  ASSERT(false); // BKTODO:
+#if 0
   v8::Isolate::GetCurrent()->AdjustAmountOfExternalAllocatedMemory(length);
   if (multipart_parser_) {
     multipart_parser_->AppendData(data, length);
@@ -371,6 +414,7 @@ void ImageResource::AppendData(const char* data, size_t length) {
       is_pending_flushing_ = true;
     }
   }
+#endif
 }
 
 void ImageResource::FlushImageIfNeeded() {
@@ -378,12 +422,14 @@ void ImageResource::FlushImageIfNeeded() {
   // to call |updateImage()|.
   if (IsLoading()) {
     last_flush_time_ = CurrentTimeTicks();
-    UpdateImage(Data(), ImageResourceContent::kUpdateImage, false);
+    ASSERT(false); // BKTODO: UpdateImage(Data(), ImageResourceContent::kUpdateImage, false);
   }
   is_pending_flushing_ = false;
 }
 
 void ImageResource::DecodeError(bool all_data_received) {
+  ASSERT(false); // BKTODO:
+#if 0
   size_t size = EncodedSize();
 
   ClearData();
@@ -411,21 +457,23 @@ void ImageResource::DecodeError(bool all_data_received) {
   }
 
   GetMemoryCache()->Remove(this);
+#endif
 }
 
 void ImageResource::UpdateImageAndClearBuffer() {
-  UpdateImage(Data(), ImageResourceContent::kClearAndUpdateImage, true);
+  ASSERT(false); // BKTODO: UpdateImage(Data(), ImageResourceContent::kClearAndUpdateImage, true);
   ClearData();
 }
 
 void ImageResource::NotifyStartLoad() {
   Resource::NotifyStartLoad();
-  CHECK_EQ(GetStatus(), ResourceStatus::kPending);
+  ASSERT(false); // BKTODO: CHECK_EQ(GetStatus(), ResourceStatus::kPending);
   GetContent()->NotifyStartLoad();
 }
 
-void ImageResource::Finish(TimeTicks load_finish_time,
-                           base::SingleThreadTaskRunner* task_runner) {
+void ImageResource::Finish(base::SingleThreadTaskRunner* task_runner) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (multipart_parser_) {
     if (!ErrorOccurred())
       multipart_parser_->Finish();
@@ -440,21 +488,28 @@ void ImageResource::Finish(TimeTicks load_finish_time,
     // https://docs.google.com/document/d/1v0yTAZ6wkqX2U_M6BNIGUJpM1s0TIw1VsqpxoL7aciY/edit?usp=sharing
     ClearData();
   }
-  Resource::Finish(load_finish_time, task_runner);
+#endif
+  Resource::Finish(task_runner);
 }
 
 void ImageResource::FinishAsError(const ResourceError& error,
                                   base::SingleThreadTaskRunner* task_runner) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (multipart_parser_)
     multipart_parser_->Cancel();
   // TODO(hiroshige): Move setEncodedSize() call to Resource::error() if it
   // is really needed, or remove it otherwise.
+#endif
   SetEncodedSize(0);
   is_during_finish_as_error_ = true;
   Resource::FinishAsError(error, task_runner);
   is_during_finish_as_error_ = false;
+  ASSERT(false); // BKTODO:
+#if 0
   UpdateImage(nullptr, ImageResourceContent::kClearImageAndNotifyObservers,
               true);
+#endif
 }
 
 // Determines if |response| likely contains the entire resource for the purposes
@@ -473,6 +528,7 @@ static bool IsEntireResource(const ResourceResponse& response) {
          first_byte_position == 0 && last_byte_position + 1 == instance_length;
 }
 
+#if 0 // BKTODO:
 void ImageResource::ResponseReceived(
     const ResourceResponse& response,
     std::unique_ptr<WebDataConsumerHandle> handle) {
@@ -533,8 +589,11 @@ void ImageResource::ResponseReceived(
     SetPreviewsState(new_previews_state);
   }
 }
+#endif
 
 bool ImageResource::ShouldShowPlaceholder() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (RuntimeEnabledFeatures::ClientPlaceholdersForServerLoFiEnabled() &&
       (GetResourceRequest().GetPreviewsState() &
        WebURLRequest::kServerLoFiOn)) {
@@ -543,6 +602,7 @@ bool ImageResource::ShouldShowPlaceholder() const {
     // have a consistent appearance.
     return true;
   }
+#endif
 
   switch (placeholder_option_) {
     case PlaceholderOption::kShowAndReloadPlaceholderAlways:
@@ -560,9 +620,13 @@ bool ImageResource::ShouldShowLazyImagePlaceholder() const {
   switch (placeholder_option_) {
     case PlaceholderOption::kShowAndReloadPlaceholderAlways:
     case PlaceholderOption::kShowAndDoNotReloadPlaceholder:
+      ASSERT(false); // BKTODO:
+      break;
+#if 0
       return RuntimeEnabledFeatures::LazyImageLoadingEnabled() &&
              (GetResourceRequest().GetPreviewsState() &
               WebURLRequest::kLazyImageLoadDeferred);
+#endif
     case PlaceholderOption::kReloadPlaceholderOnDecodeError:
     case PlaceholderOption::kDoNotReloadPlaceholder:
       return false;
@@ -576,7 +640,11 @@ bool ImageResource::ShouldReloadBrokenPlaceholder() const {
     case PlaceholderOption::kShowAndReloadPlaceholderAlways:
       return ErrorOccurred();
     case PlaceholderOption::kReloadPlaceholderOnDecodeError:
+      ASSERT(false); // BKTODO:
+      break;
+#if 0
       return GetStatus() == ResourceStatus::kDecodeError;
+#endif
     case PlaceholderOption::kShowAndDoNotReloadPlaceholder:
     case PlaceholderOption::kDoNotReloadPlaceholder:
       return false;
@@ -585,6 +653,7 @@ bool ImageResource::ShouldReloadBrokenPlaceholder() const {
   return false;
 }
 
+#if 0 // BKTODO:
 void ImageResource::ReloadIfLoFiOrPlaceholderImage(
     ResourceFetcher* fetcher,
     ReloadLoFiOrPlaceholderPolicy policy) {
@@ -697,11 +766,15 @@ void ImageResource::MultipartDataReceived(const char* bytes, size_t size) {
   DCHECK(multipart_parser_);
   Resource::AppendData(bytes, size);
 }
+#endif
 
 bool ImageResource::IsAccessAllowed(
     const SecurityOrigin* security_origin,
     ImageResourceInfo::DoesCurrentFrameHaveSingleSecurityOrigin
         does_current_frame_has_single_security_origin) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (GetResponse().WasFetchedViaServiceWorker())
     return GetResponse().IsCORSSameOrigin();
 
@@ -713,6 +786,7 @@ bool ImageResource::IsAccessAllowed(
     return true;
 
   return security_origin->CanReadContent(GetResponse().Url());
+#endif
 }
 
 ImageResourceContent* ImageResource::GetContent() {
@@ -723,9 +797,10 @@ const ImageResourceContent* ImageResource::GetContent() const {
   return content_;
 }
 
+#if 0 // BKTODO:
 ResourcePriority ImageResource::PriorityFromObservers() {
   return GetContent()->PriorityFromObservers();
-}
+}#endif
 
 void ImageResource::UpdateImage(
     scoped_refptr<SharedBuffer> shared_buffer,
@@ -753,6 +828,7 @@ void ImageResource::UpdateImage(
     DecodeError(all_data_received);
   }
 }
+#endif
 
 void ImageResource::FlagAsUserAgentResource() {
   if (is_referenced_from_ua_stylesheet_)

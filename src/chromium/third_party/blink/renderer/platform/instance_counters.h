@@ -23,7 +23,8 @@ class InstanceCounters
     STATIC_ONLY(InstanceCounters);
 public:
     enum CounterType {
-        kLayoutObjectCounter
+        kLayoutObjectCounter,
+        kUACSSResourceCounter
     };
     static inline void IncrementCounter(CounterType type) {}
     static inline void DecrementCounter(CounterType type) {}
