@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: box_border_painter.cc
+// Description: BoxBorderPainter Class
+//      Author: Ziming Li
+//     Created: 2020-10-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,7 @@
 
 #include <algorithm>
 #include "third_party/blink/renderer/core/paint/box_painter.h"
-#include "third_party/blink/renderer/core/paint/object_painter.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/object_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #include "third_party/blink/renderer/core/style/border_edge.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
@@ -330,11 +341,14 @@ void DrawBleedAdjustedDRRect(GraphicsContext& context,
       path.addRRect(inner);
       path.setFillType(SkPath::kInverseWinding_FillType);
 
+      ASSERT(false); // BKTODO:
+#if 0
       PaintFlags flags;
       flags.setColor(color.Rgb());
       flags.setStyle(PaintFlags::kFill_Style);
       flags.setAntiAlias(true);
       context.DrawPath(path, flags);
+#endif
 
       break;
     }
@@ -798,7 +812,7 @@ BorderEdgeFlags BoxBorderPainter::PaintOpacityGroup(
     const float group_opacity = static_cast<float>(group.alpha) / 255;
     DCHECK_LT(group_opacity, effective_opacity);
 
-    context.BeginLayer(group_opacity / effective_opacity);
+    ASSERT(false); // BKTODO: context.BeginLayer(group_opacity / effective_opacity);
     effective_opacity = group_opacity;
 
     // Group opacity is applied via a layer => we draw the members using opaque
@@ -1009,12 +1023,15 @@ void BoxBorderPainter::PaintOneBorderSide(
       miter1 = miter2 = kNoMiter;
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     ObjectPainter::DrawLineForBoxSide(
         graphics_context, side_rect.X(), side_rect.Y(), side_rect.MaxX(),
         side_rect.MaxY(), side, color, edge_to_render.BorderStyle(),
         miter1 != kNoMiter ? ClampOrRound(adjacent_edge1.Width()) : 0,
         miter2 != kNoMiter ? ClampOrRound(adjacent_edge2.Width()) : 0,
         antialias);
+#endif
   }
 }
 
