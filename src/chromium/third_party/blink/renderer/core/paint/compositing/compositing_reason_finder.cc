@@ -1,19 +1,30 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: compositing_reason_finder.cc
+// Description: CompositingReasonFinder Class
+//      Author: Ziming Li
+//     Created: 2020-10-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/core/paint/compositing/compositing_reason_finder.h"
 
-#include "third_party/blink/renderer/core/animation/scroll_timeline.h"
+// BKTODO: #include "third_party/blink/renderer/core/animation/scroll_timeline.h"
 #include "third_party/blink/renderer/core/css_property_names.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/page/page.h"
-#include "third_party/blink/renderer/core/page/scrolling/root_scroller_util.h"
+// BKTODO: #include "third_party/blink/renderer/core/page/scrolling/root_scroller_util.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 
 #include "third_party/blink/public/platform/platform.h"
 
@@ -29,16 +40,23 @@ CompositingReasonFinder::CompositingReasonFinder(LayoutView& layout_view)
 void CompositingReasonFinder::UpdateTriggers() {
   compositing_triggers_ = 0;
 
+  ASSERT(false); // BKTODO:
+#if 0
   Settings& settings = layout_view_.GetDocument().GetPage()->GetSettings();
   if (settings.GetPreferCompositingToLCDTextEnabled()) {
     compositing_triggers_ |= kScrollableInnerFrameTrigger;
     compositing_triggers_ |= kOverflowScrollTrigger;
     compositing_triggers_ |= kViewportConstrainedPositionedTrigger;
   }
+#endif
 }
 
 bool CompositingReasonFinder::IsMainFrame() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return layout_view_.GetDocument().IsInMainFrame();
+#endif
 }
 
 CompositingReasons CompositingReasonFinder::DirectReasons(
@@ -66,10 +84,14 @@ bool CompositingReasonFinder::RequiresCompositingForScrollableFrame() const {
   if (!(compositing_triggers_ & kScrollableInnerFrameTrigger))
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (layout_view_.GetFrameView()->Size().IsEmpty())
     return false;
 
   return layout_view_.GetFrameView()->LayoutViewport()->ScrollsOverflow();
+#endif
 }
 
 CompositingReasons
@@ -141,6 +163,9 @@ CompositingReasonFinder::PotentialCompositingReasonsFromStyle(
 
 bool CompositingReasonFinder::RequiresCompositingForTransform(
     const LayoutObject& layout_object) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // Note that we ask the layoutObject if it has a transform, because the style
   // may have transforms, but the layoutObject may be an inline that doesn't
   // support them.
@@ -151,6 +176,7 @@ bool CompositingReasonFinder::RequiresCompositingForTransform(
          // and per-composited-layer commit overhead.
          (!Platform::Current()->IsLowEndDevice() ||
           layout_object.StyleRef().Transform().HasNonTrivial3DComponent());
+#endif
 }
 
 CompositingReasons CompositingReasonFinder::NonStyleDeterminedDirectReasons(
@@ -178,6 +204,8 @@ CompositingReasons CompositingReasonFinder::NonStyleDeterminedDirectReasons(
   if (RequiresCompositingForScrollDependentPosition(layer, ignore_lcd_text))
     direct_reasons |= CompositingReason::kScrollDependentPosition;
 
+  ASSERT(false); // BKTODO:
+#if 0
   // TODO(crbug.com/839341): Remove once we support main-thread AnimationWorklet
   // and don't need to promote the scroll-source.
   if (layer->GetScrollableArea() && layer->GetLayoutObject().GetNode() &&
@@ -185,6 +213,7 @@ CompositingReasons CompositingReasonFinder::NonStyleDeterminedDirectReasons(
           layer->GetLayoutObject().GetNode())) {
     direct_reasons |= CompositingReason::kScrollTimelineTarget;
   }
+#endif
 
   // Video is special. It's the only PaintLayer type that can both have
   // PaintLayer children and whose children can't use its backing to render
@@ -194,10 +223,13 @@ CompositingReasons CompositingReasonFinder::NonStyleDeterminedDirectReasons(
       layer->CompositingContainer()->GetLayoutObject().IsVideo())
     direct_reasons |= CompositingReason::kVideoOverlay;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (layer->IsRootLayer() && (RequiresCompositingForScrollableFrame() ||
                                layout_view_.GetFrame()->IsLocalRoot())) {
     direct_reasons |= CompositingReason::kRoot;
   }
+#endif
 
   direct_reasons |= layout_object.AdditionalCompositingReasons();
 
@@ -250,6 +282,9 @@ bool CompositingReasonFinder::RequiresCompositingForTransformAnimation(
 
 bool CompositingReasonFinder::RequiresCompositingForRootScroller(
     const PaintLayer& layer) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // The root scroller needs composited scrolling layers even if it doesn't
   // actually have scrolling since CC has these assumptions baked in for the
   // viewport. Because this is only needed for CC, we can skip it if compositing
@@ -258,6 +293,7 @@ bool CompositingReasonFinder::RequiresCompositingForRootScroller(
   if (!settings.GetAcceleratedCompositingEnabled())
     return false;
   return RootScrollerUtil::IsGlobal(layer);
+#endif
 }
 
 bool CompositingReasonFinder::RequiresCompositingForScrollDependentPosition(
@@ -280,8 +316,11 @@ bool CompositingReasonFinder::RequiresCompositingForScrollDependentPosition(
   // container rather than the enclosing frame.
   EPosition position = layer->GetLayoutObject().StyleRef().GetPosition();
   if (position == EPosition::kFixed) {
+    ASSERT(false); // BKTODO:
+#if 0
     return layer->FixedToViewport() &&
            layout_view_.GetFrameView()->LayoutViewport()->ScrollsOverflow();
+#endif
   }
   DCHECK_EQ(position, EPosition::kSticky);
 
