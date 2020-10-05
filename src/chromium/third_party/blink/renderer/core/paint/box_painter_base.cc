@@ -38,8 +38,11 @@ void BoxPainterBase::PaintFillLayers(const PaintInfo& paint_info,
   // non-transparent background color and the bottom layer encloses all other
   // layers.
   GraphicsContext& context = paint_info.context;
+  ASSERT(false); // BKTODO:
+#if 0
   if (should_draw_background_in_separate_buffer)
     context.BeginLayer();
+#endif
 
   for (auto it = reversed_paint_list.rbegin(); it != reversed_paint_list.rend();
        ++it) {
@@ -231,10 +234,14 @@ void BoxPainterBase::PaintInsetBoxShadow(const PaintInfo& info,
 bool BoxPainterBase::ShouldForceWhiteBackgroundForPrintEconomy(
     const Document& document,
     const ComputedStyle& style) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return document.Printing() &&
          style.PrintColorAdjust() == EPrintColorAdjust::kEconomy &&
          (!document.GetSettings() ||
           !document.GetSettings()->GetShouldPrintBackgrounds());
+#endif
 }
 
 bool BoxPainterBase::CalculateFillLayerOcclusionCulling(
@@ -700,15 +707,21 @@ void BoxPainterBase::PaintFillLayerTextFillBox(
   GraphicsContextStateSaver background_clip_state_saver(context, false);
   background_clip_state_saver.Save();
   context.Clip(mask_rect);
+  ASSERT(false); // BKTODO:
+#if 0
   context.BeginLayer(1, composite_op);
+#endif
 
   PaintFillLayerBackground(context, info, node_, image, SkBlendMode::kSrcOver,
                            geometry, scrolled_paint_rect);
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Create the text mask layer and draw the text into the mask. We do this by
   // painting using a special paint phase that signals to InlineTextBoxes that
   // they should just add their contents to the clip.
   context.BeginLayer(1, SkBlendMode::kDstIn);
+#endif
 
   PaintTextClipMask(context, mask_rect, scrolled_paint_rect.Location(),
                     object_has_multiple_boxes);
