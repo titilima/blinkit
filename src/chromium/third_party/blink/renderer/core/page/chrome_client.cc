@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: chrome_client.cc
+// Description: ChromeClient Class
+//      Author: Ziming Li
+//     Created: 2020-10-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2009, 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2008, 2010 Nokia Corporation and/or its subsidiary(-ies)
@@ -22,33 +33,36 @@
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 
 #include <algorithm>
+#if 0 // BKTODO:
 #include "third_party/blink/public/platform/web_screen_info.h"
 #include "third_party/blink/renderer/core/core_initializer.h"
+#endif
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/element.h"
-#include "third_party/blink/renderer/core/frame/frame_console.h"
+// BKTODO: #include "third_party/blink/renderer/core/frame/frame_console.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
-#include "third_party/blink/renderer/core/inspector/console_message.h"
+// BKTODO: #include "third_party/blink/renderer/core/inspector/console_message.h"
 #include "third_party/blink/renderer/core/layout/hit_test_result.h"
-#include "third_party/blink/renderer/core/page/frame_tree.h"
+// BKTODO: #include "third_party/blink/renderer/core/page/frame_tree.h"
 #include "third_party/blink/renderer/core/page/page.h"
-#include "third_party/blink/renderer/core/page/scoped_page_pauser.h"
+// BKTODO: #include "third_party/blink/renderer/core/page/scoped_page_pauser.h"
 #include "third_party/blink/renderer/core/probe/core_probes.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
-#include "third_party/blink/renderer/platform/network/network_hints.h"
+// BKTODO: #include "third_party/blink/renderer/platform/network/network_hints.h"
 
 namespace blink {
 
-void ChromeClient::Trace(blink::Visitor* visitor) {
-  visitor->Trace(last_mouse_over_node_);
-}
-
 void ChromeClient::InstallSupplements(LocalFrame& frame) {
+  ASSERT(false); // BKTODO:
+#if 0
   CoreInitializer::GetInstance().InstallSupplements(frame);
+#endif
 }
 
 void ChromeClient::SetWindowRectWithAdjustment(const IntRect& pending_rect,
                                                LocalFrame& frame) {
+  ASSERT(false); // BKTODO:
+#if 0
   IntRect screen = GetScreenInfo().available_rect;
   IntRect window = pending_rect;
 
@@ -77,12 +91,15 @@ void ChromeClient::SetWindowRectWithAdjustment(const IntRect& pending_rect,
                std::min(window.Y(),
                         screen.MaxY() - size_for_constraining_move.Height())));
   SetWindowRect(window, frame);
+#endif
 }
 
 bool ChromeClient::CanOpenModalIfDuringPageDismissal(
     Frame& main_frame,
     ChromeClient::DialogType dialog,
     const String& message) {
+  ASSERT(false); // BKTODO:
+#if 0
   for (Frame* frame = &main_frame; frame;
        frame = frame->Tree().TraverseNext()) {
     if (!frame->IsLocalFrame())
@@ -95,6 +112,7 @@ bool ChromeClient::CanOpenModalIfDuringPageDismissal(
                                                       message, dismissal);
     }
   }
+#endif
   return true;
 }
 
@@ -103,6 +121,9 @@ static bool OpenJavaScriptDialog(LocalFrame* frame,
                                  const String& message,
                                  ChromeClient::DialogType dialog_type,
                                  const Delegate& delegate) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // Suspend pages in case the client method runs a new event loop that would
   // otherwise cause the load to continue while we're in the middle of
   // executing JavaScript.
@@ -111,6 +132,7 @@ static bool OpenJavaScriptDialog(LocalFrame* frame,
   bool result = delegate();
   probe::didRunJavaScriptDialog(frame);
   return result;
+#endif
 }
 
 bool ChromeClient::OpenBeforeUnloadConfirmPanel(const String& message,
@@ -126,6 +148,9 @@ bool ChromeClient::OpenBeforeUnloadConfirmPanel(const String& message,
 bool ChromeClient::OpenJavaScriptAlert(LocalFrame* frame,
                                        const String& message) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (!CanOpenModalIfDuringPageDismissal(frame->Tree().Top(),
                                          ChromeClient::kAlertDialog, message))
     return false;
@@ -133,11 +158,15 @@ bool ChromeClient::OpenJavaScriptAlert(LocalFrame* frame,
       frame, message, ChromeClient::kAlertDialog, [this, frame, &message]() {
         return OpenJavaScriptAlertDelegate(frame, message);
       });
+#endif
 }
 
 bool ChromeClient::OpenJavaScriptConfirm(LocalFrame* frame,
                                          const String& message) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (!CanOpenModalIfDuringPageDismissal(frame->Tree().Top(),
                                          ChromeClient::kConfirmDialog, message))
     return false;
@@ -145,6 +174,7 @@ bool ChromeClient::OpenJavaScriptConfirm(LocalFrame* frame,
       frame, message, ChromeClient::kConfirmDialog, [this, frame, &message]() {
         return OpenJavaScriptConfirmDelegate(frame, message);
       });
+#endif
 }
 
 bool ChromeClient::OpenJavaScriptPrompt(LocalFrame* frame,
@@ -152,6 +182,9 @@ bool ChromeClient::OpenJavaScriptPrompt(LocalFrame* frame,
                                         const String& default_value,
                                         String& result) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (!CanOpenModalIfDuringPageDismissal(frame->Tree().Top(),
                                          ChromeClient::kPromptDialog, prompt))
     return false;
@@ -161,14 +194,18 @@ bool ChromeClient::OpenJavaScriptPrompt(LocalFrame* frame,
         return OpenJavaScriptPromptDelegate(frame, prompt, default_value,
                                             result);
       });
+#endif
 }
 
 void ChromeClient::MouseDidMoveOverElement(LocalFrame& frame,
                                            const HitTestLocation& location,
                                            const HitTestResult& result) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!result.GetScrollbar() && result.InnerNode() &&
       result.InnerNode()->GetDocument().IsDNSPrefetchEnabled())
     PrefetchDNS(result.AbsoluteLinkURL().Host());
+#endif
 
   ShowMouseOverURL(result);
 
@@ -190,7 +227,10 @@ void ChromeClient::SetToolTip(LocalFrame& frame,
   if (tool_tip.IsNull()) {
     if (Node* node = result.InnerNode()) {
       if (node->IsElementNode()) {
+        ASSERT(false); // BKTODO:
+#if 0
         tool_tip = ToElement(node)->DefaultToolTip();
+#endif
 
         // FIXME: We should obtain text direction of tooltip from
         // ChromeClient or platform. As of October 2011, all client
@@ -202,9 +242,12 @@ void ChromeClient::SetToolTip(LocalFrame& frame,
     }
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (last_tool_tip_point_ == location.Point() &&
       last_tool_tip_text_ == tool_tip)
     return;
+#endif
 
   // If a tooltip was displayed earlier, and mouse cursor moves over
   // a different node with the same tooltip text, make sure the previous
@@ -216,7 +259,7 @@ void ChromeClient::SetToolTip(LocalFrame& frame,
       !last_tool_tip_text_.IsEmpty() && tool_tip == last_tool_tip_text_)
     ClearToolTip(frame);
 
-  last_tool_tip_point_ = location.Point();
+  ASSERT(false); // BKTODO: last_tool_tip_point_ = location.Point();
   last_tool_tip_text_ = tool_tip;
   last_mouse_over_node_ = result.InnerNodeOrImageMapImage();
   SetToolTip(frame, tool_tip, tool_tip_direction);
@@ -229,6 +272,8 @@ void ChromeClient::ClearToolTip(LocalFrame& frame) {
 }
 
 bool ChromeClient::Print(LocalFrame* frame) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!CanOpenModalIfDuringPageDismissal(*frame->GetPage()->MainFrame(),
                                          ChromeClient::kPrintDialog, "")) {
     return false;
@@ -247,6 +292,7 @@ bool ChromeClient::Print(LocalFrame* frame) {
   // otherwise cause the load to continue while we're in the middle of
   // executing JavaScript.
   ScopedPagePauser pauser;
+#endif
 
   PrintDelegate(frame);
   return true;
