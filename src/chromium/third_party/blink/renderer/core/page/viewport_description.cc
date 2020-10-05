@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: viewport_description.cc
+// Description: ViewportDescription Class
+//      Author: Ziming Li
+//     Created: 2020-10-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -34,7 +45,7 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
-#include "third_party/blink/renderer/core/frame/visual_viewport.h"
+// BKTODO: #include "third_party/blink/renderer/core/frame/visual_viewport.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/platform/histogram.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
@@ -239,6 +250,8 @@ PageScaleConstraints ViewportDescription::Resolve(
 
 void ViewportDescription::ReportMobilePageStats(
     const LocalFrame* main_frame) const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!main_frame || !main_frame->GetPage() || !main_frame->View() ||
       !main_frame->GetDocument())
     return;
@@ -298,6 +311,7 @@ void ViewportDescription::ReportMobilePageStats(
     meta_tag_type_histogram.Count(
         static_cast<int>(ViewportUMAType::kMetaMobileOptimized));
   }
+#endif
 }
 
 bool ViewportDescription::MatchesHeuristicsForGpuRasterization() const {
