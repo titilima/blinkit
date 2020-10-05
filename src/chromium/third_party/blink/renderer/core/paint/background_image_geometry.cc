@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: background_image_geometry.cc
+// Description: BackgroundImageGeometry Class
+//      Author: Ziming Li
+//     Created: 2020-10-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -12,7 +23,7 @@
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/paint/compositing/composited_layer_mapping.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/style/border_edge.h"
 #include "third_party/blink/renderer/platform/geometry/layout_rect.h"
 #include "third_party/blink/renderer/platform/layout_unit.h"
@@ -356,6 +367,9 @@ LayoutRect FixedAttachmentPositioningArea(const LayoutBoxModelObject& obj,
   if (!frame_view)
     return LayoutRect();
 
+  ASSERT(false); // BKTODO:
+  return LayoutRect();
+#if 0
   ScrollableArea* layout_viewport = frame_view->LayoutViewport();
   DCHECK(layout_viewport);
 
@@ -393,6 +407,7 @@ LayoutRect FixedAttachmentPositioningArea(const LayoutBoxModelObject& obj,
   }
 
   return rect;
+#endif
 }
 
 }  // Anonymous namespace

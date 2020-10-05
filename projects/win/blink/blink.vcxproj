@@ -963,6 +963,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scroll_customization.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\applied_text_decoration.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\basic_shapes.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\border_edge.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\cached_ua_style.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\computed_style.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\content_data.cc" />
@@ -2776,6 +2777,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\applied_text_decoration.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\applied_text_decoration_list.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\basic_shapes.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\border_edge.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\border_image_length.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\border_image_length_box.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\border_value.h" />

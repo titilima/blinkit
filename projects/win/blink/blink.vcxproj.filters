@@ -3494,6 +3494,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\image_resource.cc">
       <Filter>renderer\core\loader\resource</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\border_edge.cc">
+      <Filter>renderer\core\style</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9483,6 +9486,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\loader\resource\image_resource_info.h">
       <Filter>renderer\core\loader\resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\border_edge.h">
+      <Filter>renderer\core\style</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
