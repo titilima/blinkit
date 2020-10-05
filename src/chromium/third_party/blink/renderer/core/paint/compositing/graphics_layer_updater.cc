@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: graphics_layer_updater.cc
+// Description: GraphicsLayerUpdater Class
+//      Author: Ziming Li
+//     Created: 2020-10-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2014 Google Inc. All rights reserved.
@@ -26,13 +37,13 @@
 
 #include "third_party/blink/renderer/core/paint/compositing/graphics_layer_updater.h"
 
-#include "third_party/blink/renderer/core/html/media/html_media_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/media/html_media_element.h"
 #include "third_party/blink/renderer/core/inspector/inspector_trace_events.h"
 #include "third_party/blink/renderer/core/layout/layout_block.h"
 #include "third_party/blink/renderer/core/paint/compositing/composited_layer_mapping.h"
 #include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 
 namespace blink {
@@ -120,8 +131,11 @@ void GraphicsLayerUpdater::UpdateRecursive(
       mapping->UpdateGraphicsLayerGeometry(compositing_container,
                                            context.CompositingStackingContext(),
                                            layers_needing_paint_invalidation);
+      ASSERT(false); // BKTODO:
+#if 0
       if (PaintLayerScrollableArea* scrollable_area = layer.GetScrollableArea())
         scrollable_area->PositionOverflowControls();
+#endif
       update_type = mapping->UpdateTypeForChildren(update_type);
       mapping->ClearNeedsGraphicsLayerUpdate();
     }
