@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: box_paint_invalidator.cc
+// Description: BoxPaintInvalidator Class
+//      Author: Ziming Li
+//     Created: 2020-10-05
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -10,7 +21,7 @@
 #include "third_party/blink/renderer/core/paint/object_paint_invalidator.h"
 #include "third_party/blink/renderer/core/paint/paint_invalidator.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/platform/geometry/layout_rect.h"
 
 namespace blink {
@@ -231,8 +242,11 @@ void BoxPaintInvalidator::InvalidatePaint() {
   ObjectPaintInvalidatorWithContext(box_, context_)
       .InvalidatePaintWithComputedReason(ComputePaintInvalidationReason());
 
+  ASSERT(false);
+#if 0
   if (PaintLayerScrollableArea* area = box_.GetScrollableArea())
     area->InvalidatePaintOfScrollControlsIfNeeded(context_);
+#endif
 
   // This is for the next invalidatePaintIfNeeded so must be at the end.
   SavePreviousBoxGeometriesIfNeeded();

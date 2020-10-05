@@ -951,6 +951,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_paint_invalidator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_row_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_section_painter.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\text_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\view_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_pending_script.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_script.cpp" />
@@ -2761,6 +2762,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_paint_invalidator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_row_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\table_section_painter.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\text_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\view_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\probe\core_probes.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\classic_pending_script.h" />
