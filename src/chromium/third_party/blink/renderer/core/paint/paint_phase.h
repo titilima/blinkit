@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: paint_phase.h
+// Description: PaintPhase
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -127,7 +138,7 @@ enum GlobalPaintFlag {
   // Used when printing in order to adapt the output to the medium, for
   // instance by not painting shadows and selections on text, and add
   // URL metadata for links.
-  kGlobalPaintPrinting = 1 << 2
+  kGlobalPaintPrinting = 1 << 2 // BKTODO: Is this necessary?
 };
 
 typedef unsigned GlobalPaintFlags;
