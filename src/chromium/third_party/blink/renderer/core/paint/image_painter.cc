@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_painter.cc
+// Description: ImagePainter Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,8 +19,10 @@
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/editing/frame_selection.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_area_element.h"
 #include "third_party/blink/renderer/core/html/html_image_element.h"
+#endif
 #include "third_party/blink/renderer/core/layout/layout_image.h"
 #include "third_party/blink/renderer/core/layout/layout_replaced.h"
 #include "third_party/blink/renderer/core/layout/text_run_constructor.h"
@@ -36,6 +49,8 @@ void ImagePainter::Paint(const PaintInfo& paint_info) {
 void ImagePainter::PaintAreaElementFocusRing(const PaintInfo& paint_info) {
   Document& document = layout_image_.GetDocument();
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (paint_info.IsPrinting() ||
       !document.GetFrame()->Selection().FrameIsFocusedAndActive())
     return;
@@ -85,6 +100,7 @@ void ImagePainter::PaintAreaElementFocusRing(const PaintInfo& paint_info) {
       area_element_style.OutlineOffset(),
       layout_image_.ResolveColor(area_element_style,
                                  GetCSSPropertyOutlineColor()));
+#endif
   paint_info.context.Restore();
 }
 
@@ -179,6 +195,8 @@ void ImagePainter::PaintIntoRect(GraphicsContext& context,
       context, layout_image_.StyleRef().GetInterpolationQuality());
 
   Node* node = layout_image_.GetNode();
+  ASSERT(false); // BKTODO:
+#if 0
   Image::ImageDecodingMode decode_mode =
       IsHTMLImageElement(node)
           ? ToHTMLImageElement(node)->GetDecodingModeForPainting(
@@ -195,6 +213,7 @@ void ImagePainter::PaintIntoRect(GraphicsContext& context,
     ImageElementTiming::From(*window).NotifyImagePainted(
         ToHTMLImageElement(node), &layout_image_, painting_layer);
   }
+#endif
 }
 
 }  // namespace blink
