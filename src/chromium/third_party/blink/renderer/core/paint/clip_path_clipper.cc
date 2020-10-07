@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: clip_path_clipper.cc
+// Description: ClipPathClipper Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,10 +18,12 @@
 #include "third_party/blink/renderer/core/dom/element_traversal.h"
 #include "third_party/blink/renderer/core/layout/layout_box.h"
 #include "third_party/blink/renderer/core/layout/layout_inline.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/layout/svg/layout_svg_resource_clipper.h"
 #include "third_party/blink/renderer/core/layout/svg/svg_layout_support.h"
 #include "third_party/blink/renderer/core/layout/svg/svg_resources.h"
 #include "third_party/blink/renderer/core/layout/svg/svg_resources_cache.h"
+#endif
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #include "third_party/blink/renderer/core/style/clip_path_operation.h"
 #include "third_party/blink/renderer/core/style/reference_clip_path_operation.h"
@@ -18,13 +31,14 @@
 #include "third_party/blink/renderer/platform/graphics/paint/drawing_display_item.h"
 #include "third_party/blink/renderer/platform/graphics/paint/drawing_recorder.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_controller.h"
-#include "third_party/blink/renderer/platform/graphics/paint/paint_record_builder.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/paint/paint_record_builder.h"
 #include "third_party/blink/renderer/platform/graphics/paint/scoped_paint_chunk_properties.h"
 
 namespace blink {
 
 namespace {
 
+#if 0 // BKTODO:
 class SVGClipExpansionCycleHelper {
  public:
   void Lock(LayoutSVGResourceClipper& clipper) {
@@ -60,6 +74,7 @@ LayoutSVGResourceClipper* ResolveElementReference(
     return nullptr;
   return ToLayoutSVGResourceClipper(container);
 }
+#endif
 
 }  // namespace
 
@@ -90,6 +105,9 @@ base::Optional<FloatRect> ClipPathClipper::LocalClipPathBoundingBox(
     return bounding_box;
   }
 
+  ASSERT(false); // BKTODO:
+  return base::nullopt;
+#if 0
   DCHECK_EQ(clip_path.GetType(), ClipPathOperation::REFERENCE);
   LayoutSVGResourceClipper* clipper =
       ResolveElementReference(object, ToReferenceClipPathOperation(clip_path));
@@ -108,8 +126,10 @@ base::Optional<FloatRect> ClipPathClipper::LocalClipPathBoundingBox(
   }
   bounding_box.Intersect(LayoutRect::InfiniteIntRect());
   return bounding_box;
+#endif
 }
 
+#if 0 // BKTODO:
 // Note: Return resolved LayoutSVGResourceClipper for caller's convenience,
 // if the clip path is a reference to SVG.
 static bool IsClipPathOperationValid(
@@ -132,6 +152,7 @@ static bool IsClipPathOperationValid(
   }
   return true;
 }
+#endif
 
 ClipPathClipper::ClipPathClipper(GraphicsContext& context,
                                  const LayoutObject& layout_object,
@@ -142,6 +163,7 @@ ClipPathClipper::ClipPathClipper(GraphicsContext& context,
   DCHECK(layout_object.StyleRef().ClipPath());
 }
 
+#if 0 // BKTODO:
 static AffineTransform MaskToContentTransform(
     const LayoutSVGResourceClipper& resource_clipper,
     bool is_svg_child,
@@ -159,6 +181,7 @@ static AffineTransform MaskToContentTransform(
       resource_clipper.CalculateClipTransform(reference_box));
   return mask_to_content;
 }
+#endif
 
 ClipPathClipper::~ClipPathClipper() {
   const auto* properties = layout_object_.FirstFragment().PaintProperties();
@@ -179,6 +202,8 @@ ClipPathClipper::~ClipPathClipper() {
   context_.Save();
   context_.Translate(paint_offset_.X(), paint_offset_.Y());
 
+  ASSERT(false); // BKTODO:
+#if 0
   SVGClipExpansionCycleHelper locks;
   bool is_first = true;
   bool rest_of_the_chain_already_appled = false;
@@ -223,6 +248,7 @@ ClipPathClipper::~ClipPathClipper() {
     is_first = false;
     current_object = resource_clipper;
   }
+#endif
   context_.Restore();
 }
 
@@ -232,6 +258,9 @@ base::Optional<Path> ClipPathClipper::PathBasedClip(
     const FloatRect& reference_box,
     bool& is_valid) {
   const ClipPathOperation& clip_path = *clip_path_owner.StyleRef().ClipPath();
+  ASSERT(false); // BKTODO:
+  return base::nullopt;
+#if 0
   LayoutSVGResourceClipper* resource_clipper = nullptr;
   is_valid =
       IsClipPathOperationValid(clip_path, clip_path_owner, resource_clipper);
@@ -251,6 +280,7 @@ base::Optional<Path> ClipPathClipper::PathBasedClip(
   DCHECK_EQ(clip_path.GetType(), ClipPathOperation::SHAPE);
   auto& shape = ToShapeClipPathOperation(clip_path);
   return base::Optional<Path>(shape.GetPath(reference_box));
+#endif
 }
 
 }  // namespace blink
