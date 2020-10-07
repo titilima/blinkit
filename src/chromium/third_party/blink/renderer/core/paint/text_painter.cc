@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_painter.cc
+// Description: TextPainter Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -99,10 +110,13 @@ void TextPainter::ClipDecorationsStripe(float upper,
     return;
 
   Vector<Font::TextIntercept> text_intercepts;
+  ASSERT(false); // BKTODO:
+#if 0
   font_.GetTextIntercepts(
       text_run_paint_info, graphics_context_.DeviceScaleFactor(),
       graphics_context_.FillFlags(),
       std::make_tuple(upper, upper + stripe_width), text_intercepts);
+#endif
 
   DecorationsStripeIntercepts(upper, stripe_width, dilation, text_intercepts);
 }
