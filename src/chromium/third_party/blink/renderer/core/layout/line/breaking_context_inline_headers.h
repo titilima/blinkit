@@ -265,15 +265,12 @@ inline bool ShouldCollapseWhiteSpace(const ComputedStyle& style,
 inline bool RequiresLineBoxForContent(LineLayoutInline flow,
                                       const LineInfo& line_info) {
   LineLayoutItem parent = flow.Parent();
-  ASSERT(false); // BKTODO:
-#if 0
   if (flow.GetDocument().InNoQuirksMode() &&
       (flow.Style(line_info.IsFirstLine())->LineHeight() !=
            parent.Style(line_info.IsFirstLine())->LineHeight() ||
        flow.StyleRef().VerticalAlign() != parent.StyleRef().VerticalAlign() ||
        !parent.StyleRef().HasIdenticalAscentDescentAndLineGap(flow.StyleRef())))
     return true;
-#endif
   return false;
 }
 

@@ -310,8 +310,6 @@ void LayoutInline::UpdateAlwaysCreateLineBoxes(bool full_layout) {
   const ComputedStyle& parent_style = Parent()->StyleRef();
   LayoutInline* parent_layout_inline =
       Parent()->IsLayoutInline() ? ToLayoutInline(Parent()) : nullptr;
-  ASSERT(false); // BKTODO:
-#if 0
   bool check_fonts = GetDocument().InNoQuirksMode();
   bool always_create_line_boxes_new =
       (parent_layout_inline && parent_layout_inline->AlwaysCreateLineBoxes()) ||
@@ -340,7 +338,6 @@ void LayoutInline::UpdateAlwaysCreateLineBoxes(bool full_layout) {
       DirtyLineBoxes(false);
     SetAlwaysCreateLineBoxes();
   }
-#endif
 }
 
 LayoutRect LayoutInline::LocalCaretRect(
@@ -1326,8 +1323,6 @@ LayoutRect LayoutInline::VisualOverflowRect() const {
   LayoutUnit outline_outset(StyleRef().OutlineOutsetExtent());
   if (outline_outset) {
     Vector<LayoutRect> rects;
-    ASSERT(false); // BKTODO:
-#if 0
     if (GetDocument().InNoQuirksMode()) {
       // We have already included outline extents of line boxes in
       // linesVisualOverflowBoundingBox(), so the following just add outline
@@ -1342,7 +1337,6 @@ LayoutRect LayoutInline::VisualOverflowRect() const {
       AddOutlineRects(rects, LayoutPoint(),
                       OutlineRectsShouldIncludeBlockVisualOverflow());
     }
-#endif
     if (!rects.IsEmpty()) {
       LayoutRect outline_rect = UnionRectEvenIfEmpty(rects);
       outline_rect.Inflate(outline_outset);

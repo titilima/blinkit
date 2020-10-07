@@ -1816,11 +1816,8 @@ LayoutUnit LayoutBlock::BaselinePosition(
 LayoutUnit LayoutBlock::MinLineHeightForReplacedObject(
     bool is_first_line,
     LayoutUnit replaced_height) const {
-  ASSERT(false); // BKTODO:
-#if 0
   if (!GetDocument().InNoQuirksMode() && replaced_height)
     return replaced_height;
-#endif
 
   return std::max<LayoutUnit>(
       replaced_height,

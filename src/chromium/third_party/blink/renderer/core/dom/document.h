@@ -254,6 +254,7 @@ public:
     enum CompatibilityMode { kQuirksMode, kLimitedQuirksMode, kNoQuirksMode };
     CompatibilityMode GetCompatibilityMode(void) const { return m_compatibilityMode; }
     bool InQuirksMode(void) const { return kQuirksMode == m_compatibilityMode; }
+    bool InNoQuirksMode(void) const { return kNoQuirksMode == m_compatibilityMode; }
     void SetCompatibilityMode(CompatibilityMode mode);
 
     const WTF::TextEncoding& Encoding(void) const { return m_encodingData.Encoding(); }
