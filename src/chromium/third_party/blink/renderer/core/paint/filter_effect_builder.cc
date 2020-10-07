@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: filter_effect_builder.cc
+// Description: FilterEffectBuilder Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -29,11 +40,14 @@
 #include <algorithm>
 #include "third_party/blink/public/platform/web_point.h"
 #include "third_party/blink/renderer/core/style/filter_operations.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/svg/graphics/filters/svg_filter_builder.h"
 #include "third_party/blink/renderer/core/svg/svg_filter_element.h"
 #include "third_party/blink/renderer/core/svg/svg_length_context.h"
 #include "third_party/blink/renderer/core/svg/svg_resource.h"
+#endif
 #include "third_party/blink/renderer/platform/graphics/compositor_filter_operations.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/graphics/filters/fe_box_reflect.h"
 #include "third_party/blink/renderer/platform/graphics/filters/fe_color_matrix.h"
 #include "third_party/blink/renderer/platform/graphics/filters/fe_component_transfer.h"
@@ -44,6 +58,7 @@
 #include "third_party/blink/renderer/platform/graphics/filters/paint_filter_builder.h"
 #include "third_party/blink/renderer/platform/graphics/filters/source_graphic.h"
 #include "third_party/blink/renderer/platform/graphics/interpolation_space.h"
+#endif
 #include "third_party/blink/renderer/platform/length_functions.h"
 #include "third_party/blink/renderer/platform/wtf/math_extras.h"
 
@@ -120,6 +135,7 @@ Vector<float> SepiaMatrix(double amount) {
 
 }  // namespace
 
+#if 0 // BKTODO:
 FilterEffectBuilder::FilterEffectBuilder(const FloatRect& reference_box,
                                          float zoom,
                                          const PaintFlags* fill_flags,
@@ -128,10 +144,14 @@ FilterEffectBuilder::FilterEffectBuilder(const FloatRect& reference_box,
       zoom_(zoom),
       fill_flags_(fill_flags),
       stroke_flags_(stroke_flags) {}
+#endif
 
 FilterEffect* FilterEffectBuilder::BuildFilterEffect(
     const FilterOperations& operations,
     bool input_tainted) const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   // Create a parent filter for shorthand filters. These have already been
   // scaled by the CSS code for page zoom, so scale is 1.0 here.
   Filter* parent_filter = Filter::Create(1.0f);
@@ -290,10 +310,14 @@ FilterEffect* FilterEffectBuilder::BuildFilterEffect(
     }
   }
   return previous_effect;
+#endif
 }
 
 CompositorFilterOperations FilterEffectBuilder::BuildFilterOperations(
     const FilterOperations& operations) const {
+  ASSERT(false); // BKTODO:
+  return CompositorFilterOperations();
+#if 0
   InterpolationSpace current_interpolation_space = kInterpolationSpaceSRGB;
 
   CompositorFilterOperations filters;
@@ -403,15 +427,19 @@ CompositorFilterOperations FilterEffectBuilder::BuildFilterOperations(
     filters.SetReferenceBox(reference_box_);
 
   return filters;
+#endif
 }
 
 Filter* FilterEffectBuilder::BuildReferenceFilter(
     const ReferenceFilterOperation& reference_operation,
     FilterEffect* previous_effect) const {
+  ASSERT(false); // BKTODO:
+#if 0
   SVGResource* resource = reference_operation.Resource();
   if (auto* filter =
           ToSVGFilterElementOrNull(resource ? resource->Target() : nullptr))
     return BuildReferenceFilter(*filter, previous_effect);
+#endif
   return nullptr;
 }
 
@@ -419,6 +447,9 @@ Filter* FilterEffectBuilder::BuildReferenceFilter(
     SVGFilterElement& filter_element,
     FilterEffect* previous_effect,
     SVGFilterGraphNodeMap* node_map) const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   FloatRect filter_region =
       SVGLengthContext::ResolveRectangle<SVGFilterElement>(
           &filter_element,
@@ -444,6 +475,7 @@ Filter* FilterEffectBuilder::BuildReferenceFilter(
   builder.BuildGraph(result, filter_element, reference_box_);
   result->SetLastEffect(builder.LastEffect());
   return result;
+#endif
 }
 
 }  // namespace blink
