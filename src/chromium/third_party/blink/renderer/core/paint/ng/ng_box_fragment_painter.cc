@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_box_fragment_painter.cc
+// Description: NGBoxFragmentPainter Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -26,17 +37,19 @@
 #include "third_party/blink/renderer/core/paint/compositing/composited_layer_mapping.h"
 #include "third_party/blink/renderer/core/paint/list_marker_painter.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_fieldset_painter.h"
-#include "third_party/blink/renderer/core/paint/ng/ng_fragment_painter.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/ng/ng_fragment_painter.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_inline_box_fragment_painter.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_text_fragment_painter.h"
-#include "third_party/blink/renderer/core/paint/object_painter.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/object_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
 #include "third_party/blink/renderer/core/paint/paint_phase.h"
 #include "third_party/blink/renderer/core/paint/scoped_paint_state.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/paint/scrollable_area_painter.h"
 #include "third_party/blink/renderer/core/paint/theme_painter.h"
+#endif
 #include "third_party/blink/renderer/platform/geometry/layout_rect_outsets.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context_state_saver.h"
 #include "third_party/blink/renderer/platform/graphics/paint/display_item_cache_skipper.h"
@@ -64,10 +77,14 @@ bool ShouldPaintBoxFragmentBorders(const LayoutObject& object) {
 
 bool FragmentVisibleToHitTestRequest(const NGPaintFragment& fragment,
                                      const HitTestRequest& request) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return fragment.Style().Visibility() == EVisibility::kVisible &&
          (request.IgnorePointerEventsNone() ||
           fragment.Style().PointerEvents() != EPointerEvents::kNone) &&
          !(fragment.GetNode() && fragment.GetNode()->IsInert());
+#endif
 }
 
 // Hit tests inline ancestor elements of |fragment| who do not have their own
@@ -253,8 +270,11 @@ void NGBoxFragmentPainter::PaintObject(
     return PaintMask(paint_info, paint_offset);
 
   if (paint_phase == PaintPhase::kForeground && paint_info.IsPrinting()) {
+    ASSERT(false); // BKTODO:
+#if 0
     NGFragmentPainter(box_fragment_)
         .AddPDFURLRectIfNeeded(paint_info, paint_offset);
+#endif
   }
 
   if (paint_phase != PaintPhase::kSelfOutlineOnly) {
@@ -273,8 +293,11 @@ void NGBoxFragmentPainter::PaintObject(
     }
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (ShouldPaintSelfOutline(paint_phase))
     NGFragmentPainter(box_fragment_).PaintOutline(paint_info, paint_offset);
+#endif
 
   // If the caret's node's fragment's containing block is this block, and
   // the paint action is PaintPhaseForeground, then paint the caret.
@@ -287,6 +310,8 @@ void NGBoxFragmentPainter::PaintCarets(const PaintInfo& paint_info,
                                        const LayoutPoint& paint_offset) {
   LocalFrame* frame = box_fragment_.GetLayoutObject()->GetFrame();
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (box_fragment_.ShouldPaintCursorCaret())
     frame->Selection().PaintCaret(paint_info.context, paint_offset);
 
@@ -294,6 +319,7 @@ void NGBoxFragmentPainter::PaintCarets(const PaintInfo& paint_info,
     frame->GetPage()->GetDragCaret().PaintDragCaret(frame, paint_info.context,
                                                     paint_offset);
   }
+#endif
 }
 
 void NGBoxFragmentPainter::PaintBlockFlowContents(
@@ -305,10 +331,13 @@ void NGBoxFragmentPainter::PaintBlockFlowContents(
   // trigger a full paint invalidation.
   // TODO(layout-dev): Handle without delegating to LayoutObject.
   LayoutObject* layout_object = box_fragment_.GetLayoutObject();
+  ASSERT(false); // BKTODO:
+#if 0
   if (layout_object->GetDocument().DidLayoutWithPendingStylesheets() &&
       !layout_object->IsLayoutView()) {
     return;
   }
+#endif
 
   DCHECK(PhysicalFragment().ChildrenInline());
 
@@ -364,8 +393,7 @@ void NGBoxFragmentPainter::PaintBlockChildren(const PaintInfo& paint_info) {
       else
         NGBoxFragmentPainter(*child).Paint(paint_info);
     } else {
-      DCHECK(fragment.Type() == NGPhysicalFragment::kFragmentRenderedLegend)
-          << fragment.ToString();
+      DCHECK(fragment.Type() == NGPhysicalFragment::kFragmentRenderedLegend);
     }
   }
 }
@@ -378,6 +406,8 @@ void NGBoxFragmentPainter::PaintFloatingChildren(
     if (child->HasSelfPaintingLayer())
       continue;
     if (fragment.IsFloating()) {
+      ASSERT(false); // BKTODO:
+#if 0
       // TODO(kojii): The float is outside of the inline formatting context and
       // that it maybe another NG inline formatting context, NG block layout, or
       // legacy. NGBoxFragmentPainter can handle only the first case. In order
@@ -387,6 +417,7 @@ void NGBoxFragmentPainter::PaintFloatingChildren(
       // we're more stable.
       ObjectPainter(*child->GetLayoutObject())
           .PaintAllPhasesAtomically(paint_info);
+#endif
     } else {
       PaintFloatingChildren(child->Children(), paint_info);
     }
@@ -551,7 +582,10 @@ void NGBoxFragmentPainter::PaintBoxDecorationBackgroundWithRect(
       paint_info.context.ClipRoundedRect(border);
 
       if (box_decoration_data.bleed_avoidance == kBackgroundBleedClipLayer) {
+        ASSERT(false); // BKTODO:
+#if 0
         paint_info.context.BeginLayer();
+#endif
         needs_end_layer = true;
       }
     }
@@ -559,6 +593,8 @@ void NGBoxFragmentPainter::PaintBoxDecorationBackgroundWithRect(
 
   IntRect snapped_paint_rect(PixelSnappedIntRect(paint_rect));
   ThemePainter& theme_painter = LayoutTheme::GetTheme().Painter();
+  ASSERT(false); // BKTODO:
+#if 0
   bool theme_painted =
       box_decoration_data.has_appearance &&
       !theme_painter.Paint(layout_box, paint_info, snapped_paint_rect);
@@ -600,6 +636,7 @@ void NGBoxFragmentPainter::PaintBoxDecorationBackgroundWithRect(
 
   if (needs_end_layer)
     paint_info.context.EndLayer();
+#endif
 }
 
 // TODO(kojii): This logic is kept in sync with BoxPainter. Not much efforts to
@@ -638,9 +675,12 @@ void NGBoxFragmentPainter::PaintInlineChildBoxUsingLegacyFallback(
   }
 
   if (child_layout_object->IsAtomicInlineLevel()) {
+    ASSERT(false); // BKTODO:
+#if 0
     // Pre-NG painters also expect callers to use |PaintAllPhasesAtomically()|
     // for atomic inlines.
     ObjectPainter(*child_layout_object).PaintAllPhasesAtomically(paint_info);
+#endif
     return;
   }
 
@@ -734,8 +774,7 @@ void NGBoxFragmentPainter::PaintLineBoxChildren(
       PaintAtomicInlineChild(*line, paint_info);
       continue;
     }
-    DCHECK(line->PhysicalFragment().IsLineBox())
-        << line->PhysicalFragment().ToString();
+    DCHECK(line->PhysicalFragment().IsLineBox());
     PaintInlineChildren(line->Children(), paint_info, child_offset);
   }
 }
@@ -867,9 +906,12 @@ void NGBoxFragmentPainter::PaintOverflowControlsIfNeeded(
   if (box_fragment_.HasOverflowClip() &&
       box_fragment_.Style().Visibility() == EVisibility::kVisible &&
       ShouldPaintSelfBlockBackground(paint_info.phase)) {
+    ASSERT(false); // BKTODO:
+#if 0
     ScrollableAreaPainter(*PhysicalFragment().Layer()->GetScrollableArea())
         .PaintOverflowControls(paint_info, RoundedIntPoint(paint_offset),
                                false /* painting_overlay_controls */);
+#endif
   }
 }
 

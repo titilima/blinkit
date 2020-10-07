@@ -941,6 +941,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_inline_box_fragment_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment_traversal.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_text_fragment_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\nine_piece_image_grid.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\nine_piece_image_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_paint_invalidator.cc" />
@@ -2763,6 +2764,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_inline_box_fragment_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment_traversal.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_text_fragment_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\nine_piece_image_grid.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\nine_piece_image_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_paint_invalidator.h" />
