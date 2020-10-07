@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: selection_painting_utils.cc
+// Description: SelectionPaintingUtils Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -22,8 +33,12 @@ namespace blink {
 namespace {
 
 bool NodeIsSelectable(const ComputedStyle& style, Node* node) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return !node->IsInert() && !(style.UserSelect() == EUserSelect::kNone &&
                                style.UserModify() == EUserModify::kReadOnly);
+#endif
 }
 
 scoped_refptr<ComputedStyle> GetUncachedSelectionStyle(Node* node) {
@@ -36,12 +51,15 @@ scoped_refptr<ComputedStyle> GetUncachedSelectionStyle(Node* node) {
   // we calculate ::selection style on the shadow host for elements inside the
   // UA shadow.
   if (ShadowRoot* root = node->ContainingShadowRoot()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (root->IsUserAgent()) {
       if (Element* shadow_host = node->OwnerShadowHost()) {
         return shadow_host->StyleForPseudoElement(
             PseudoStyleRequest(kPseudoIdSelection));
       }
     }
+#endif
   }
 
   // If we request ::selection style for LayoutText, query ::selection style on
@@ -51,7 +69,11 @@ scoped_refptr<ComputedStyle> GetUncachedSelectionStyle(Node* node) {
   if (!element || element->IsPseudoElement())
     return nullptr;
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return element->StyleForPseudoElement(PseudoStyleRequest(kPseudoIdSelection));
+#endif
 }
 
 Color SelectionColor(const Document& document,
@@ -70,9 +92,13 @@ Color SelectionColor(const Document& document,
     return pseudo_style->VisitedDependentColor(color_property);
   if (!LayoutTheme::GetTheme().SupportsSelectionForegroundColors())
     return style.VisitedDependentColor(color_property);
+  ASSERT(false); // BKTODO:
+  return style.VisitedDependentColor(color_property);
+#if 0
   return document.GetFrame()->Selection().FrameIsFocusedAndActive()
              ? LayoutTheme::GetTheme().ActiveSelectionForegroundColor()
              : LayoutTheme::GetTheme().InactiveSelectionForegroundColor();
+#endif
 }
 
 const ComputedStyle* SelectionPseudoStyle(Node* node) {
@@ -81,8 +107,12 @@ const ComputedStyle* SelectionPseudoStyle(Node* node) {
   Element* element = Traversal<Element>::FirstAncestorOrSelf(*node);
   if (!element)
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return element->CachedStyleForPseudoElement(
       PseudoStyleRequest(kPseudoIdSelection));
+#endif
 }
 
 }  // anonymous namespace
@@ -100,9 +130,13 @@ Color SelectionPaintingUtils::SelectionBackgroundColor(
         .BlendWithWhite();
   }
 
+  ASSERT(false); // BKTODO:
+  return Color::kTransparent;
+#if 0
   return document.GetFrame()->Selection().FrameIsFocusedAndActive()
              ? LayoutTheme::GetTheme().ActiveSelectionBackgroundColor()
              : LayoutTheme::GetTheme().InactiveSelectionBackgroundColor();
+#endif
 }
 
 Color SelectionPaintingUtils::SelectionForegroundColor(
