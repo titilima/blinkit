@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: paint_invalidator.cc
+// Description: PaintInvalidator Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -14,15 +25,17 @@
 #include "third_party/blink/renderer/core/layout/layout_table_section.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/layout/ng/geometry/ng_physical_offset_rect.h"
-#include "third_party/blink/renderer/core/layout/svg/svg_layout_support.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/svg/svg_layout_support.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/paint/clip_path_clipper.h"
 #include "third_party/blink/renderer/core/paint/find_paint_offset_and_visual_rect_needing_update.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment.h"
 #include "third_party/blink/renderer/core/paint/object_paint_properties.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/paint/pre_paint_tree_walk.h"
+#endif
 #include "third_party/blink/renderer/platform/graphics/paint/geometry_mapper.h"
 
 namespace blink {
@@ -142,18 +155,25 @@ void PaintInvalidatorContext::MapLocalRectToVisualRect(
 
 const PaintInvalidatorContext*
 PaintInvalidatorContext::ParentContextAccessor::ParentContext() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return tree_walk_ ? &tree_walk_->ContextAt(parent_context_index_)
                            .paint_invalidator_context
                     : nullptr;
+#endif
 }
 
 LayoutRect PaintInvalidator::ComputeVisualRect(
     const LayoutObject& object,
     const PaintInvalidatorContext& context) {
   if (object.IsSVGChild()) {
+    ASSERT(false); // BKTODO:
+#if 0
     FloatRect local_rect = SVGLayoutSupport::LocalVisualRect(object);
     return MapLocalRectToVisualRect<FloatRect, FloatPoint>(object, local_rect,
                                                            context);
+#endif
   }
   LayoutRect local_rect = object.LocalVisualRect();
   return MapLocalRectToVisualRect<LayoutRect, LayoutPoint>(object, local_rect,
@@ -164,6 +184,9 @@ static LayoutRect ComputeFragmentLocalSelectionRect(
     const NGPaintFragment& fragment) {
   if (!fragment.PhysicalFragment().IsText())
     return LayoutRect();
+  ASSERT(false); // BKTODO:
+  return LayoutRect();
+#if 0
   const FrameSelection& frame_selection =
       fragment.GetLayoutObject()->GetFrame()->Selection();
   const LayoutSelectionStatus status =
@@ -171,6 +194,7 @@ static LayoutRect ComputeFragmentLocalSelectionRect(
   if (status.start == status.end)
     return LayoutRect();
   return fragment.ComputeLocalSelectionRectForText(status).ToLayoutRect();
+#endif
 }
 
 LayoutRect PaintInvalidator::MapFragmentLocalRectToVisualRect(
@@ -219,6 +243,8 @@ void PaintInvalidator::UpdatePaintingLayer(const LayoutObject& object,
   if (object.StyleRef().HasOutline())
     context.painting_layer->SetNeedsPaintPhaseDescendantOutlines();
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (object.HasBoxDecorationBackground()
       // We also paint overflow controls in background phase.
       || (object.HasOverflowClip() &&
@@ -231,6 +257,7 @@ void PaintInvalidator::UpdatePaintingLayer(const LayoutObject& object,
       context.painting_layer->SetNeedsPaintPhaseDescendantBlockBackgrounds();
     }
   }
+#endif
 }
 
 void PaintInvalidator::UpdatePaintInvalidationContainer(
@@ -333,6 +360,8 @@ void PaintInvalidator::UpdateVisualRect(const LayoutObject& object,
     // VisualRect for each fragment from |new_visual_rect|.
     auto fragments = NGPaintFragment::InlineFragmentsFor(&object);
     if (fragments.IsInLayoutNGInlineFormattingContext()) {
+       ASSERT(false); // BKTODO:
+#if 0
       for (NGPaintFragment* fragment : fragments) {
         LayoutRect local_selection_rect =
             ComputeFragmentLocalSelectionRect(*fragment);
@@ -355,6 +384,7 @@ void PaintInvalidator::UpdateVisualRect(const LayoutObject& object,
           fragment->SetSelectionVisualRect(selection_visual_rect);
         }
       }
+#endif
     }
   }
 }
@@ -364,6 +394,8 @@ void PaintInvalidator::InvalidatePaint(
     const PaintPropertyTreeBuilderContext* tree_builder_context,
 
     PaintInvalidatorContext& context) {
+  ASSERT(false); // BKTODO:
+#if 0
   LayoutView* layout_view = frame_view.GetLayoutView();
   CHECK(layout_view);
 
@@ -379,10 +411,13 @@ void PaintInvalidator::InvalidatePaint(
         tree_builder_context->is_actually_needed;
 #endif
   }
+#endif
 }
 
 static void InvalidateChromeClient(
     const LayoutBoxModelObject& paint_invalidation_container) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (paint_invalidation_container.GetDocument().Printing() &&
       !RuntimeEnabledFeatures::PrintBrowserEnabled())
     return;
@@ -395,6 +430,7 @@ static void InvalidateChromeClient(
   if (auto* client = frame_view->GetChromeClient()) {
     client->InvalidateRect(IntRect(IntPoint(), frame_view->Size()));
   }
+#endif
 }
 
 void PaintInvalidator::UpdateEmptyVisualRectFlag(

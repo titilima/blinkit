@@ -98,7 +98,7 @@ public:
     BLINKIT_DISABLE_FEATURE(PaintTracking)
     BLINKIT_DISABLE_FEATURE(PaintUnderInvalidationChecking)
     BLINKIT_DISABLE_FEATURE(PassiveDocumentWheelEventListeners)
-    BLINKIT_DISABLE_FEATURE(PrintBrowser)
+    BLINKIT_DISABLE_FEATURE(PrintBrowser) // BKTODO: Check if necessary.
     BLINKIT_DISABLE_FEATURE(ScrollCustomization)
     BLINKIT_DISABLE_FEATURE(SlimmingPaintV2)
     BLINKIT_DISABLE_FEATURE(TrackLayoutPassesPerBlock)
