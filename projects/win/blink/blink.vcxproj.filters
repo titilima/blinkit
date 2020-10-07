@@ -3566,6 +3566,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_reflection_utils.cc">
       <Filter>renderer\core\paint</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\css_mask_painter.cc">
+      <Filter>renderer\core\paint</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9647,6 +9650,12 @@
       <Filter>renderer\core\paint</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_reflection_utils.h">
+      <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\css_mask_painter.h">
+      <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\find_properties_needing_update.h">
       <Filter>renderer\core\paint</Filter>
     </ClInclude>
   </ItemGroup>

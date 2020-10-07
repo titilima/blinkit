@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: find_properties_needing_update.h
+// Description: FindPropertiesNeedingUpdateScope
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -72,18 +83,14 @@ class FindPropertiesNeedingUpdateScope {
         fragment_data_.HasLocalBorderBoxProperties()) {
       const auto object_border_box = fragment_data_.LocalBorderBoxProperties();
       DCHECK_EQ(original_local_border_box_properties_->Transform(),
-                object_border_box.Transform())
-          << object_.DebugName();
+                object_border_box.Transform());
       DCHECK_EQ(original_local_border_box_properties_->Clip(),
-                object_border_box.Clip())
-          << object_.DebugName();
+                object_border_box.Clip());
       DCHECK_EQ(original_local_border_box_properties_->Effect(),
-                object_border_box.Effect())
-          << object_.DebugName();
+                object_border_box.Effect());
     } else {
       DCHECK_EQ(!!original_local_border_box_properties_,
-                fragment_data_.HasLocalBorderBoxProperties())
-          << object_.DebugName();
+                fragment_data_.HasLocalBorderBoxProperties());
     }
 
     // Restore original clean bit.

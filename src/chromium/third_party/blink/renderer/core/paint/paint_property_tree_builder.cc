@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: paint_property_tree_builder.cc
+// Description: PaintPropertyTreeBuilder Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,27 +16,29 @@
 #include "third_party/blink/renderer/core/paint/paint_property_tree_builder.h"
 
 #include <memory>
-#include "third_party/blink/renderer/core/animation/scroll_timeline.h"
+// BKTODO: #include "third_party/blink/renderer/core/animation/scroll_timeline.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
-#include "third_party/blink/renderer/core/frame/link_highlights.h"
+// BKTODO: #include "third_party/blink/renderer/core/frame/link_highlights.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
-#include "third_party/blink/renderer/core/frame/visual_viewport.h"
+// BKTODO: #include "third_party/blink/renderer/core/frame/visual_viewport.h"
 #include "third_party/blink/renderer/core/layout/fragmentainer_iterator.h"
 #include "third_party/blink/renderer/core/layout/layout_image.h"
 #include "third_party/blink/renderer/core/layout/layout_inline.h"
 #include "third_party/blink/renderer/core/layout/layout_table_row.h"
 #include "third_party/blink/renderer/core/layout/layout_table_section.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/layout/svg/layout_svg_resource_masker.h"
 #include "third_party/blink/renderer/core/layout/svg/layout_svg_root.h"
 #include "third_party/blink/renderer/core/layout/svg/layout_svg_viewport_container.h"
 #include "third_party/blink/renderer/core/layout/svg/svg_layout_support.h"
 #include "third_party/blink/renderer/core/layout/svg/svg_resources.h"
 #include "third_party/blink/renderer/core/layout/svg/svg_resources_cache.h"
+#endif
 #include "third_party/blink/renderer/core/page/page.h"
-#include "third_party/blink/renderer/core/page/scrolling/snap_coordinator.h"
+// BKTODO: #include "third_party/blink/renderer/core/page/scrolling/snap_coordinator.h"
 #include "third_party/blink/renderer/core/paint/clip_path_clipper.h"
 #include "third_party/blink/renderer/core/paint/compositing/composited_layer_mapping.h"
 #include "third_party/blink/renderer/core/paint/compositing/compositing_reason_finder.h"
@@ -34,10 +47,12 @@
 #include "third_party/blink/renderer/core/paint/find_properties_needing_update.h"
 #include "third_party/blink/renderer/core/paint/object_paint_properties.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/paint/paint_property_tree_printer.h"
 #include "third_party/blink/renderer/core/paint/svg_root_painter.h"
 #include "third_party/blink/renderer/platform/graphics/bitmap_image.h"
+#endif
 #include "third_party/blink/renderer/platform/scroll/overscroll_behavior.h"
 #include "third_party/blink/renderer/platform/transforms/transform_state.h"
 #include "third_party/blink/renderer/platform/transforms/transformation_matrix.h"
@@ -86,6 +101,8 @@ void VisualViewportPaintPropertyTreeBuilder::Update(
 
   PaintPropertyTreeBuilderFragmentContext& context = full_context.fragments[0];
 
+  ASSERT(false); // BKTODO:
+#if 0
   visual_viewport.UpdatePaintPropertyNodesIfNeeded(context);
 
   context.current.transform = visual_viewport.GetScrollTranslationNode();
@@ -100,6 +117,7 @@ void VisualViewportPaintPropertyTreeBuilder::Update(
 #if DCHECK_IS_ON()
   PaintPropertyTreePrinter::UpdateDebugNames(visual_viewport);
 #endif
+#endif
 }
 
 void PaintPropertyTreeBuilder::SetupContextForFrame(
@@ -109,7 +127,7 @@ void PaintPropertyTreeBuilder::SetupContextForFrame(
     full_context.fragments.push_back(PaintPropertyTreeBuilderFragmentContext());
 
   PaintPropertyTreeBuilderFragmentContext& context = full_context.fragments[0];
-  context.current.paint_offset.MoveBy(frame_view.Location());
+  ASSERT(false); // BKTODO: context.current.paint_offset.MoveBy(frame_view.Location());
   context.current.rendering_context_id = 0;
   context.current.should_flatten_inherited_transform = true;
   context.absolute_position = context.current;
@@ -140,9 +158,12 @@ class FragmentPaintPropertyTreeBuilder {
       full_context_.force_subtree_update_reasons |=
           PaintPropertyTreeBuilderContext::kSubtreeUpdateIsolationBlocked;
     }
+    ASSERT(false); // BKTODO:
+#if 0
 #if DCHECK_IS_ON()
     if (properties_)
       PaintPropertyTreePrinter::UpdateDebugNames(object_, *properties_);
+#endif
 #endif
   }
 
@@ -236,16 +257,24 @@ class FragmentPaintPropertyTreeBuilder {
 static bool IsRootScroller(const LayoutBox& box) {
   auto* scrollable_area = box.GetScrollableArea();
   DCHECK(scrollable_area);
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   auto* layer = scrollable_area->Layer();
   return layer &&
          CompositingReasonFinder::RequiresCompositingForRootScroller(*layer);
+#endif
 }
 
 static bool HasScrollsOverflow(const LayoutBox& box) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // TODO(crbug.com/839341): Remove ScrollTimeline check once we support
   // main-thread AnimationWorklet and don't need to promote the scroll-source.
   return box.GetScrollableArea()->ScrollsOverflow() ||
          ScrollTimeline::HasActiveScrollTimeline(box.GetNode());
+#endif
 }
 
 static bool NeedsScrollNode(const LayoutObject& object) {
@@ -306,8 +335,11 @@ static bool NeedsReplacedContentTransform(const LayoutObject& object) {
 static bool NeedsPaintOffsetTranslationForScrollbars(
     const LayoutBoxModelObject& object) {
   if (auto* area = object.GetScrollableArea()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (area->HorizontalScrollbar() || area->VerticalScrollbar())
       return true;
+#endif
   }
   return false;
 }
@@ -323,8 +355,11 @@ static bool NeedsIsolationNodes(const LayoutObject& object) {
   // Layout view establishes isolation with the exception of local roots (since
   // they are already essentially isolated).
   if (object.IsLayoutView()) {
+    ASSERT(false); // BKTODO:
+#if 0
     const auto* parent_frame = object.GetFrame()->Tree().Parent();
     return parent_frame && parent_frame->IsLocalFrame();
+#endif
   }
   return false;
 }
@@ -489,6 +524,8 @@ void FragmentPaintPropertyTreeBuilder::UpdateStickyTranslation() {
       // incorrectly with clip escaping involved.
       if (scroller_properties &&
           scroller_properties->Scroll() == context_.current.scroll) {
+        ASSERT(false); // BKTODO:
+#if 0
         const StickyPositionScrollingConstraints& layout_constraint =
             layer->AncestorOverflowLayer()
                 ->GetScrollableArea()
@@ -528,6 +565,7 @@ void FragmentPaintPropertyTreeBuilder::UpdateStickyTranslation() {
                   CompositorElementIdNamespace::kStickyTranslation);
         }
         state.sticky_constraint = std::move(constraint);
+#endif
       }
 
       OnUpdate(properties_->UpdateStickyTranslation(*context_.current.transform,
@@ -724,6 +762,8 @@ static bool NeedsEffect(const LayoutObject& object) {
     return false;
 
   if (object.IsSVG()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (SVGLayoutSupport::IsIsolationRequired(&object))
       return true;
     if (SVGResources* resources =
@@ -732,6 +772,7 @@ static bool NeedsEffect(const LayoutObject& object) {
         return true;
       }
     }
+#endif
   }
 
   if (is_css_isolated_group) {
@@ -951,8 +992,12 @@ void FragmentPaintPropertyTreeBuilder::UpdateEffect() {
 }
 
 static bool NeedsLinkHighlightEffect(const LayoutObject& object) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   auto* page = object.GetFrame()->GetPage();
   return page->GetLinkHighlights().NeedsHighlightEffect(object);
+#endif
 }
 
 void FragmentPaintPropertyTreeBuilder::UpdateLinkHighlightEffect() {
@@ -964,9 +1009,12 @@ void FragmentPaintPropertyTreeBuilder::UpdateLinkHighlightEffect() {
       const auto& parent = EffectPaintPropertyNode::Root();
       EffectPaintPropertyNode::State link_highlight_state;
       link_highlight_state.local_transform_space = context_.current.transform;
+      ASSERT(false); // BKTODO:
+#if 0
       link_highlight_state.compositor_element_id =
           object_.GetFrame()->GetPage()->GetLinkHighlights().element_id(
               object_);
+#endif
       link_highlight_state.direct_compositing_reasons =
           CompositingReason::kActiveOpacityAnimation;
       // Unlike other property nodes, link highlight effect nodes are guaranteed
@@ -1163,6 +1211,7 @@ void FragmentPaintPropertyTreeBuilder::UpdateClipPathClip(
   }
 }
 
+#if 0 // BKTODO:
 // Returns true if we are printing which was initiated by the frame. We should
 // ignore clipping and scroll transform on contents. WebLocalFrameImpl will
 // issue artificial page clip for each page, and always print from the origin
@@ -1186,13 +1235,17 @@ static bool IsPrintingRootLayoutView(const LayoutObject& object) {
   // If the parent frame is printing, this frame should clip normally.
   return !ToLocalFrame(parent_frame)->GetDocument()->Printing();
 }
+#endif
 
 static bool NeedsOverflowClipForReplacedContents(
     const LayoutReplaced& replaced) {
+  ASSERT(false); // BKTODO:
+#if 0
   // <svg> may optionally allow overflow. If an overflow clip is required,
   // always create it without checking whether the actual content overflows.
   if (replaced.IsSVGRoot())
     return ToLayoutSVGRoot(replaced).ShouldApplyViewportClip();
+#endif
 
   if (replaced.StyleRef().HasBorderRadius())
     return true;
@@ -1215,12 +1268,16 @@ static bool NeedsOverflowClip(const LayoutObject& object) {
   if (object.IsLayoutReplaced())
     return NeedsOverflowClipForReplacedContents(ToLayoutReplaced(object));
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   if (object.IsSVGViewportContainer() &&
       SVGLayoutSupport::IsOverflowHidden(object))
     return true;
 
   return object.IsBox() && ToLayoutBox(object).ShouldClipOverflow() &&
          !IsPrintingRootLayoutView(object);
+#endif
 }
 
 void FragmentPaintPropertyTreeBuilder::UpdateLocalBorderBoxContext() {
@@ -1249,6 +1306,9 @@ bool FragmentPaintPropertyTreeBuilder::NeedsOverflowControlsClip() const {
 
   const auto& box = ToLayoutBox(object_);
   const auto* scrollable_area = box.GetScrollableArea();
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   IntRect scroll_controls_bounds =
       scrollable_area->ScrollCornerAndResizerRect();
   if (const auto* scrollbar = scrollable_area->HorizontalScrollbar())
@@ -1259,6 +1319,7 @@ bool FragmentPaintPropertyTreeBuilder::NeedsOverflowControlsClip() const {
       ToLayoutSize(context_.current.paint_offset));
   pixel_snapped_border_box_rect.SetLocation(IntPoint());
   return !pixel_snapped_border_box_rect.Contains(scroll_controls_bounds);
+#endif
 }
 
 static bool NeedsInnerBorderRadiusClip(const LayoutObject& object) {
@@ -1418,10 +1479,13 @@ void FragmentPaintPropertyTreeBuilder::UpdateOverflowClip() {
                 kExcludeOverlayScrollbarSizeForHitTesting));
       } else {
         DCHECK(object_.IsSVGViewportContainer());
+        ASSERT(false); // BKTODO:
+#if 0
         const auto& viewport_container = ToLayoutSVGViewportContainer(object_);
         state.clip_rect = FloatRoundedRect(
             viewport_container.LocalToSVGParentTransform().Inverse().MapRect(
                 viewport_container.Viewport()));
+#endif
       }
 
       const ClipPaintPropertyNode* existing = properties_->OverflowClip();
@@ -1485,10 +1549,14 @@ void FragmentPaintPropertyTreeBuilder::UpdatePerspective() {
 
 static bool ImageWasTransposed(const LayoutImage& layout_image,
                                const Image& image) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return LayoutObject::ShouldRespectImageOrientation(&layout_image) ==
              kRespectImageOrientation &&
          image.IsBitmapImage() &&
          ToBitmapImage(image).CurrentFrameOrientation().UsesWidthAsHeight();
+#endif
 }
 
 static AffineTransform RectToRect(const FloatRect& src_rect,
@@ -1508,9 +1576,12 @@ void FragmentPaintPropertyTreeBuilder::UpdateReplacedContentTransform() {
   } else if (NeedsPaintPropertyUpdate()) {
     AffineTransform content_to_parent_space;
     if (object_.IsSVGRoot()) {
+      ASSERT(false); // BKTODO:
+#if 0
       content_to_parent_space =
           SVGRootPainter(ToLayoutSVGRoot(object_))
               .TransformToPixelSnappedBorderBox(context_.current.paint_offset);
+#endif
     } else if (object_.IsImage()) {
       const LayoutImage& layout_image = ToLayoutImage(object_);
       LayoutRect layout_replaced_rect = layout_image.ReplacedContentRect();
@@ -1564,10 +1635,13 @@ static MainThreadScrollingReasons GetMainThreadScrollingReasons(
     return ancestor_reasons;
 
   auto reasons = ancestor_reasons;
+  ASSERT(false); // BKTODO:
+#if 0
   if (!object.GetFrame()->GetSettings()->GetThreadedScrollingEnabled())
     reasons |= MainThreadScrollingReason::kThreadedScrollingDisabled;
   if (object.GetFrameView()->HasBackgroundAttachmentFixedObjects())
     reasons |= MainThreadScrollingReason::kHasBackgroundAttachmentFixedObjects;
+#endif
   return reasons;
 }
 
@@ -1585,6 +1659,8 @@ void FragmentPaintPropertyTreeBuilder::UpdateScrollAndScrollTranslation() {
       // integer offsets used in CompositedLayerMapping.
       state.container_rect = PixelSnappedIntRect(
           box.OverflowClipRect(context_.current.paint_offset));
+      ASSERT(false); // BKTODO:
+#if 0
       state.contents_size = scrollable_area->PixelSnappedContentsSize(
           context_.current.paint_offset);
 
@@ -1654,6 +1730,7 @@ void FragmentPaintPropertyTreeBuilder::UpdateScrollAndScrollTranslation() {
       } else {
         OnClear(properties_->ClearHorizontalScrollbarEffect());
       }
+#endif
     } else {
       OnClear(properties_->ClearScroll());
       OnClear(properties_->ClearVerticalScrollbarEffect());
@@ -1845,7 +1922,10 @@ static LayoutRect BoundingBoxInPaginationContainer(
       bounds_rect = object.LocalVisualRect();
       containining_block.FlipForWritingMode(bounds_rect);
     } else {
+      ASSERT(false); // BKTODO:
+#if 0
       bounds_rect = LayoutRect(SVGLayoutSupport::LocalVisualRect(object));
+#endif
     }
 
     return MapLocalRectToAncestorLayer(containining_block, bounds_rect,
@@ -2101,8 +2181,11 @@ void FragmentPaintPropertyTreeBuilder::UpdateForObjectLocationAndSize(
     fragment_data_.SetPaintOffset(context_.current.paint_offset);
     fragment_data_.InvalidateClipPathCache();
 
+    ASSERT(false); // BKTODO:
+#if 0
     object_.GetFrameView()->SetIntersectionObservationState(
         LocalFrameView::kDesired);
+#endif
   }
 
   if (paint_offset_translation)

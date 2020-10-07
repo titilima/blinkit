@@ -924,6 +924,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\compositing_reason_finder.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\graphics_layer_updater.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\paint_layer_compositor.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\css_mask_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ellipsis_box_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\fieldset_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\fieldset_paint_info.cc" />
@@ -2750,12 +2751,14 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\compositing_triggers.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\graphics_layer_updater.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\compositing\paint_layer_compositor.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\css_mask_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\decoration_info.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ellipsis_box_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\fieldset_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\fieldset_paint_info.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\filter_effect_builder.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\find_paint_offset_and_visual_rect_needing_update.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\find_properties_needing_update.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\fragment_data.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_element_timing.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\image_painter.h" />
