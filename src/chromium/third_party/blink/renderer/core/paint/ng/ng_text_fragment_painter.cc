@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_text_fragment_painter.cc
+// Description: NGTextFragmentPainter Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,7 +19,7 @@
 #include "third_party/blink/renderer/core/editing/frame_selection.h"
 #include "third_party/blink/renderer/core/editing/markers/composition_marker.h"
 #include "third_party/blink/renderer/core/editing/markers/document_marker_controller.h"
-#include "third_party/blink/renderer/core/editing/markers/text_match_marker.h"
+// BKTODO: #include "third_party/blink/renderer/core/editing/markers/text_match_marker.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/layout/ng/geometry/ng_logical_rect.h"
 #include "third_party/blink/renderer/core/layout/ng/inline/ng_offset_mapping.h"
@@ -16,7 +27,7 @@
 #include "third_party/blink/renderer/core/layout/ng/inline/ng_text_fragment.h"
 #include "third_party/blink/renderer/core/layout/ng/ng_physical_box_fragment.h"
 #include "third_party/blink/renderer/core/layout/ng/ng_text_decoration_offset.h"
-#include "third_party/blink/renderer/core/paint/document_marker_painter.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/document_marker_painter.h"
 #include "third_party/blink/renderer/core/paint/inline_text_box_painter.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_text_painter.h"
@@ -69,6 +80,7 @@ Color SelectionBackgroundColor(const Document& document,
   return color;
 }
 
+#if 0 // BKTODO:
 DocumentMarkerVector ComputeMarkersToPaint(
     const NGPaintFragment& paint_fragment) {
   // TODO(yoichio): Handle first-letter
@@ -84,6 +96,7 @@ DocumentMarkerVector ComputeMarkersToPaint(
       node->GetDocument().Markers();
   return document_marker_controller.ComputeMarkersToPaint(ToText(*node));
 }
+#endif
 
 unsigned GetTextContentOffset(const Text& text, unsigned offset) {
   // TODO(yoichio): Sanitize DocumentMarker around text length.
@@ -140,6 +153,7 @@ LayoutRect MarkerRectForForeground(const NGPhysicalTextFragment& text_fragment,
   return {start_position, LayoutUnit(), end_position - start_position, height};
 }
 
+#if 0 // BKTODO:
 // Copied from InlineTextBoxPainter
 void PaintDocumentMarkers(GraphicsContext& context,
                           const NGPaintFragment& paint_fragment,
@@ -234,6 +248,7 @@ void PaintDocumentMarkers(GraphicsContext& context,
     }
   }
 }
+#endif
 
 }  // namespace
 
@@ -287,6 +302,8 @@ void NGTextFragmentPainter::Paint(const PaintInfo& paint_info,
 
   bool is_printing = paint_info.IsPrinting();
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Determine whether or not we're selected.
   const LayoutSelectionStatus& selection_status =
       document.GetFrame()->Selection().ComputeLayoutSelectionStatus(fragment_);
@@ -424,6 +441,7 @@ void NGTextFragmentPainter::Paint(const PaintInfo& paint_info,
     return;
   PaintDocumentMarkers(context, fragment_, markers_to_paint, box_origin, style,
                        DocumentMarkerPaintPhase::kForeground, &text_painter);
+#endif
 }
 
 }  // namespace blink

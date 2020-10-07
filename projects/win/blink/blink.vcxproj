@@ -824,6 +824,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_offset_mapping_builder.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_physical_line_box_fragment.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_physical_text_fragment.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_text_fragment.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_text_fragment_builder.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_block_flow.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_fieldset.cc" />
@@ -866,6 +867,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_positioned_float.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_relative_utils.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_space_utils.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_text_decoration_offset.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_unpositioned_float.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\order_iterator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\box_shape.cc" />
@@ -942,6 +944,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment_traversal.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_text_fragment_painter.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_text_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\nine_piece_image_grid.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\nine_piece_image_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_paint_invalidator.cc" />
@@ -2625,6 +2628,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_physical_line_box_fragment.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_physical_text_fragment.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_text_end_effect.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_text_fragment.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\inline\ng_text_fragment_builder.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_block_flow.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\layout_ng_fieldset.h" />
@@ -2673,6 +2677,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_relative_utils.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_space_utils.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_style_variant.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_text_decoration_offset.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_unpositioned_float.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_unpositioned_float_vector.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\order_iterator.h" />
@@ -2765,6 +2770,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_paint_fragment_traversal.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_text_fragment_painter.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\ng\ng_text_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\nine_piece_image_grid.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\nine_piece_image_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\object_paint_invalidator.h" />
