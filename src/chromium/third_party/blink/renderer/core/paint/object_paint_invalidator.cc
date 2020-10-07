@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: collapsed_border_painter.cc
+// Description: CollapsedBorderPainter Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,7 @@
 
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
-#include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/paint/compositing/composited_layer_mapping.h"
@@ -204,8 +215,11 @@ void ObjectPaintInvalidator::InvalidateDisplayItemClient(
 
   client.Invalidate(reason);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (LocalFrameView* frame_view = object_.GetFrameView())
     frame_view->TrackObjectPaintInvalidation(client, reason);
+#endif
 }
 
 void ObjectPaintInvalidator::SlowSetPaintingLayerNeedsRepaint() {
