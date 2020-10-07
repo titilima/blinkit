@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: line_box_list_painter.cc
+// Description: LineBoxListPainter Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -9,12 +20,13 @@
 #include "third_party/blink/renderer/core/layout/line/inline_flow_box.h"
 #include "third_party/blink/renderer/core/layout/line/line_box_list.h"
 #include "third_party/blink/renderer/core/layout/line/root_inline_box.h"
-#include "third_party/blink/renderer/core/paint/object_painter.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/object_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_controller.h"
 
 namespace blink {
 
+#if 0 // BKTODO:
 static void AddPDFURLRectsForInlineChildrenRecursively(
     const LayoutObject& layout_object,
     const PaintInfo& paint_info,
@@ -29,6 +41,7 @@ static void AddPDFURLRectsForInlineChildrenRecursively(
                                                paint_offset);
   }
 }
+#endif
 
 void LineBoxListPainter::Paint(const LayoutBoxModelObject& layout_object,
                                const PaintInfo& paint_info,
@@ -47,9 +60,12 @@ void LineBoxListPainter::Paint(const LayoutBoxModelObject& layout_object,
   DCHECK(layout_object.IsLayoutBlock() ||
          (layout_object.IsLayoutInline() && layout_object.HasLayer()));
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (paint_info.phase == PaintPhase::kForeground && paint_info.IsPrinting())
     AddPDFURLRectsForInlineChildrenRecursively(layout_object, paint_info,
                                                paint_offset);
+#endif
 
   // If we have no lines then we have no work to do.
   if (!line_box_list_.First())

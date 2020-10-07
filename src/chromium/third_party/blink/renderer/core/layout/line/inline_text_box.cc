@@ -537,8 +537,11 @@ void InlineTextBox::PaintDocumentMarker(GraphicsContext& pt,
                                         const ComputedStyle& style,
                                         const Font& font,
                                         bool grammar) const {
+  ASSERT(false); // BKTODO:
+#if 0
   InlineTextBoxPainter(*this).PaintDocumentMarker(pt, box_origin, marker, style,
                                                   font, grammar);
+#endif
 }
 
 void InlineTextBox::PaintTextMatchMarkerForeground(

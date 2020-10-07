@@ -9610,5 +9610,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\text_decoration_offset_base.h">
       <Filter>renderer\core\layout</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\text_run_paint_info.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
