@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: inline_text_box_painter.cc
+// Description: InlineTextBoxPainter Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,9 +17,11 @@
 
 #include "base/optional.h"
 #include "third_party/blink/renderer/core/editing/editor.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/editing/markers/composition_marker.h"
 #include "third_party/blink/renderer/core/editing/markers/document_marker_controller.h"
 #include "third_party/blink/renderer/core/editing/markers/text_match_marker.h"
+#endif
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_api_shim.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_box.h"
@@ -18,7 +31,7 @@
 #include "third_party/blink/renderer/core/layout/text_decoration_offset.h"
 #include "third_party/blink/renderer/core/paint/applied_decoration_painter.h"
 #include "third_party/blink/renderer/core/paint/decoration_info.h"
-#include "third_party/blink/renderer/core/paint/document_marker_painter.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/document_marker_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #include "third_party/blink/renderer/core/paint/selection_painting_utils.h"
 #include "third_party/blink/renderer/core/paint/text_painter.h"
@@ -46,6 +59,9 @@ std::pair<unsigned, unsigned> GetTextMatchMarkerPaintOffsets(
   const unsigned text_box_start =
       text_box.Start() + text_box.GetLineLayoutItem().TextStartOffset();
 
+  ASSERT(false); // BKTODO:
+  exit(0);
+#if 0
   DCHECK_EQ(DocumentMarker::kTextMatch, marker.GetType());
   const unsigned start_offset = marker.StartOffset() > text_box_start
                                     ? marker.StartOffset() - text_box_start
@@ -53,6 +69,7 @@ std::pair<unsigned, unsigned> GetTextMatchMarkerPaintOffsets(
   const unsigned end_offset =
       std::min(marker.EndOffset() - text_box_start, text_box.Len());
   return std::make_pair(start_offset, end_offset);
+#endif
 }
 
 }  // anonymous namespace
@@ -77,8 +94,11 @@ static LineLayoutItem EnclosingUnderlineObject(
       return current;
 
     if (Node* node = current.GetNode()) {
+      ASSERT(false); // BKTODO:
+#if 0
       if (IsHTMLAnchorElement(node) || node->HasTagName(HTMLNames::fontTag))
         return current;
+#endif
     }
   }
 }
@@ -263,6 +283,8 @@ void InlineTextBoxPainter::Paint(const PaintInfo& paint_info,
   int ascent = font_data ? font_data->GetFontMetrics().Ascent() : 0;
   LayoutPoint text_origin(box_origin.X(), box_origin.Y() + ascent);
 
+  ASSERT(false); // BKTODO:
+#if 0
   const DocumentMarkerVector& markers_to_paint = ComputeMarkersToPaint();
 
   // 1. Paint backgrounds behind text if needed. Examples of such backgrounds
@@ -281,6 +303,7 @@ void InlineTextBoxPainter::Paint(const PaintInfo& paint_info,
             context, box_rect, style_to_use, font, selection_style.fill_color);
     }
   }
+#endif
 
   // 2. Now paint the foreground, including text and decorations.
   int selection_start = 0;
@@ -406,8 +429,11 @@ void InlineTextBoxPainter::Paint(const PaintInfo& paint_info,
   }
 
   if (paint_info.phase == PaintPhase::kForeground) {
+    ASSERT(false); // BKTODO:
+#if 0
     PaintDocumentMarkers(markers_to_paint, paint_info, box_origin, style_to_use,
                          font, DocumentMarkerPaintPhase::kForeground);
+#endif
   }
 
   if (should_rotate) {
@@ -460,6 +486,7 @@ InlineTextBoxPainter::ApplyTruncationToPaintOffsets(
           std::max<unsigned>(offsets.end, truncation)};
 }
 
+#if 0 // BKTODO:
 InlineTextBoxPainter::PaintOffsets InlineTextBoxPainter::MarkerPaintStartAndEnd(
     const DocumentMarker& marker) {
   // Text match markers are painted differently (in an inline text box truncated
@@ -496,6 +523,7 @@ InlineTextBoxPainter::PaintOffsets InlineTextBoxPainter::MarkerPaintStartAndEnd(
 
   return ApplyTruncationToPaintOffsets({paint_start, paint_end});
 }
+#endif
 
 void InlineTextBoxPainter::PaintSingleMarkerBackgroundRun(
     GraphicsContext& context,
@@ -524,6 +552,7 @@ void InlineTextBoxPainter::PaintSingleMarkerBackgroundRun(
                                start_pos, end_pos);
 }
 
+#if 0 // BKTODO:
 DocumentMarkerVector InlineTextBoxPainter::ComputeMarkersToPaint() const {
   Node* const node = inline_text_box_.GetLineLayoutItem().GetNode();
   if (!node || !node->IsTextNode())
@@ -664,6 +693,7 @@ void InlineTextBoxPainter::PaintDocumentMarker(GraphicsContext& context,
       context, box_origin, style, marker.GetType(),
       LayoutRect(start, LayoutUnit(), width, inline_text_box_.LogicalHeight()));
 }
+#endif
 
 template <InlineTextBoxPainter::PaintOptions options>
 LayoutRect InlineTextBoxPainter::GetSelectionRect(
@@ -800,6 +830,8 @@ void InlineTextBoxPainter::PaintStyleableMarkerUnderline(
   if (inline_text_box_.Truncation() == kCFullTruncation)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   const PaintOffsets marker_offsets = MarkerPaintStartAndEnd(marker);
   const TextRun& run = inline_text_box_.ConstructTextRun(style);
   // Pass 0 for height since we only care about the width
@@ -808,6 +840,7 @@ void InlineTextBoxPainter::PaintStyleableMarkerUnderline(
   DocumentMarkerPainter::PaintStyleableMarkerUnderline(
       context, box_origin, marker, style, marker_rect,
       inline_text_box_.LogicalHeight());
+#endif
 }
 
 void InlineTextBoxPainter::PaintTextMatchMarkerForeground(
@@ -816,6 +849,8 @@ void InlineTextBoxPainter::PaintTextMatchMarkerForeground(
     const TextMatchMarker& marker,
     const ComputedStyle& style,
     const Font& font) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!InlineLayoutObject()
            .GetFrame()
            ->GetEditor()
@@ -845,6 +880,7 @@ void InlineTextBoxPainter::PaintTextMatchMarkerForeground(
 
   text_painter.Paint(paint_offsets.first, paint_offsets.second,
                      inline_text_box_.Len(), text_style);
+#endif
 }
 
 void InlineTextBoxPainter::PaintTextMatchMarkerBackground(
@@ -853,6 +889,8 @@ void InlineTextBoxPainter::PaintTextMatchMarkerBackground(
     const TextMatchMarker& marker,
     const ComputedStyle& style,
     const Font& font) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!LineLayoutAPIShim::LayoutObjectFrom(inline_text_box_.GetLineLayoutItem())
            ->GetFrame()
            ->GetEditor()
@@ -874,6 +912,7 @@ void InlineTextBoxPainter::PaintTextMatchMarkerBackground(
   context.DrawHighlightForText(font, run, FloatPoint(box_origin),
                                box_rect.Height().ToInt(), color,
                                paint_offsets.first, paint_offsets.second);
+#endif
 }
 
 }  // namespace blink

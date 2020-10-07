@@ -60,13 +60,13 @@ class InlineTextBoxPainter {
                             const ComputedStyle&,
                             const Font&,
                             DocumentMarkerPaintPhase);
-#endif
   void PaintDocumentMarker(GraphicsContext&,
                            const LayoutPoint& box_origin,
                            const DocumentMarker&,
                            const ComputedStyle&,
                            const Font&,
                            bool grammar);
+#endif
   void PaintTextMatchMarkerForeground(const PaintInfo&,
                                       const LayoutPoint& box_origin,
                                       const TextMatchMarker&,
@@ -113,9 +113,11 @@ class InlineTextBoxPainter {
     unsigned end;
   };
   PaintOffsets ApplyTruncationToPaintOffsets(const PaintOffsets&);
+#if 0 // BKTODO:
   // For markers that shouldn't draw over a truncation ellipsis (i.e., not
   // text match markers, which do draw over said ellipsis)
   PaintOffsets MarkerPaintStartAndEnd(const DocumentMarker&);
+#endif
 
   bool ShouldPaintTextBox(const PaintInfo&);
   void ExpandToIncludeNewlineForSelection(LayoutRect&);
