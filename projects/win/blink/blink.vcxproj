@@ -916,6 +916,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_painter_base.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_paint_invalidator.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_reflection_utils.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\clip_path_clipper.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\clip_rect.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\collapsed_border_painter.cc" />
@@ -2737,6 +2738,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_painter_base.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_paint_invalidator.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\box_reflection_utils.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\clip_path_clipper.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\clip_rect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\clip_rects.h" />

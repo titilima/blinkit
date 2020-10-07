@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: paint_layer.cc
+// Description: PaintLayer Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple Inc. All rights
  * reserved.
@@ -47,7 +58,7 @@
 #include <limits>
 
 #include "third_party/blink/public/platform/task_type.h"
-#include "third_party/blink/renderer/core/animation/scroll_timeline.h"
+// BKTODO: #include "third_party/blink/renderer/core/animation/scroll_timeline.h"
 #include "third_party/blink/renderer/core/css/pseudo_style_request.h"
 #include "third_party/blink/renderer/core/css_property_names.h"
 #include "third_party/blink/renderer/core/dom/document.h"
@@ -60,16 +71,20 @@
 #include "third_party/blink/renderer/core/layout/hit_test_request.h"
 #include "third_party/blink/renderer/core/layout/hit_test_result.h"
 #include "third_party/blink/renderer/core/layout/hit_testing_transform_state.h"
-#include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
 #include "third_party/blink/renderer/core/layout/layout_flow_thread.h"
 #include "third_party/blink/renderer/core/layout/layout_inline.h"
-#include "third_party/blink/renderer/core/layout/layout_tree_as_text.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_tree_as_text.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/layout/svg/layout_svg_resource_clipper.h"
 #include "third_party/blink/renderer/core/layout/svg/layout_svg_root.h"
+#endif
 #include "third_party/blink/renderer/core/page/page.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/page/scrolling/scrolling_coordinator.h"
 #include "third_party/blink/renderer/core/page/scrolling/sticky_position_scrolling_constraints.h"
+#endif
 #include "third_party/blink/renderer/core/paint/box_reflection_utils.h"
 #include "third_party/blink/renderer/core/paint/clip_path_clipper.h"
 #include "third_party/blink/renderer/core/paint/compositing/composited_layer_mapping.h"
@@ -77,16 +92,20 @@
 #include "third_party/blink/renderer/core/paint/filter_effect_builder.h"
 #include "third_party/blink/renderer/core/paint/object_paint_invalidator.h"
 #include "third_party/blink/renderer/core/paint/paint_info.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/paint/paint_layer_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+#endif
 #include "third_party/blink/renderer/core/style/reference_clip_path_operation.h"
 #include "third_party/blink/renderer/core/style/shape_clip_path_operation.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/bindings/runtime_call_stats.h"
 #include "third_party/blink/renderer/platform/bindings/v8_per_isolate_data.h"
+#endif
 #include "third_party/blink/renderer/platform/geometry/float_point_3d.h"
 #include "third_party/blink/renderer/platform/geometry/float_rect.h"
 #include "third_party/blink/renderer/platform/graphics/compositor_filter_operations.h"
-#include "third_party/blink/renderer/platform/graphics/filters/filter.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/filters/filter.h"
 #include "third_party/blink/renderer/platform/graphics/paint/geometry_mapper.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 #include "third_party/blink/renderer/platform/length_functions.h"
@@ -126,7 +145,7 @@ static_assert(sizeof(PaintLayer) == sizeof(SameSizeAsPaintLayer),
 
 }  // namespace
 
-using namespace HTMLNames;
+using namespace html_names;
 
 PaintLayerRareData::PaintLayerRareData()
     : enclosing_pagination_layer(nullptr),
@@ -195,6 +214,8 @@ PaintLayer::PaintLayer(LayoutBoxModelObject& layout_object)
 }
 
 PaintLayer::~PaintLayer() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (rare_data_ && rare_data_->resource_info) {
     const ComputedStyle& style = GetLayoutObject().StyleRef();
     if (style.HasFilter())
@@ -221,6 +242,7 @@ PaintLayer::~PaintLayer() {
 
   if (scrollable_area_)
     scrollable_area_->Dispose();
+#endif
 
 #if DCHECK_IS_ON()
   // stacking_parent_ should be cleared because DirtyStackingContextZOrderLists
@@ -300,7 +322,7 @@ void PaintLayer::SetSubpixelAccumulation(const LayoutSize& size) {
   if (rare_data_ || !size.IsZero()) {
     EnsureRareData().subpixel_accumulation = size;
     if (PaintLayerScrollableArea* scrollable_area = GetScrollableArea()) {
-      scrollable_area->PositionOverflowControls();
+      ASSERT(false); // BKTODO: scrollable_area->PositionOverflowControls();
     }
   }
 }
@@ -308,9 +330,12 @@ void PaintLayer::SetSubpixelAccumulation(const LayoutSize& size) {
 void PaintLayer::UpdateLayerPositionsAfterLayout() {
   TRACE_EVENT0("blink,benchmark",
                "PaintLayer::updateLayerPositionsAfterLayout");
+  ASSERT(false); // BKTODO:
+#if 0
   RUNTIME_CALL_TIMER_SCOPE(
       V8PerIsolateData::MainThreadIsolate(),
       RuntimeCallStats::CounterId::kUpdateLayerPositionsAfterLayout);
+#endif
 
   ClearClipRects();
   UpdateLayerPositionRecursive();
@@ -335,8 +360,11 @@ void PaintLayer::UpdateLayerPositionRecursive(
       if (GetLayoutObject().StyleRef().HasStickyConstrainedPosition())
         UpdateLayerPosition();
       if (PaintLayerScrollableArea* scroller = GetScrollableArea()) {
+        ASSERT(false); // BKTODO:
+#if 0
         if (!scroller->HasStickyDescendants())
           return;
+#endif
       }
       break;
     default:
@@ -415,6 +443,8 @@ bool PaintLayer::IsAffectedByScrollOf(const PaintLayer* ancestor) const {
 
 void PaintLayer::UpdateLayerPositionsAfterOverflowScroll() {
   if (IsRootLayer()) {
+    ASSERT(false); // BKTODO:
+#if 0
     // The root PaintLayer (i.e. the LayoutView) is special, in that scroll
     // offset is not included in clip rects. Therefore, we do not need to clear
     // them when that PaintLayer is scrolled. We also don't need to update layer
@@ -423,6 +453,7 @@ void PaintLayer::UpdateLayerPositionsAfterOverflowScroll() {
       UpdateLayerPositionRecursive(OnlyStickyLayers,
                                    /* dirty_compositing */ false);
     }
+#endif
     return;
   }
   ClearClipRects();
@@ -481,8 +512,11 @@ void PaintLayer::UpdateTransform(const ComputedStyle* old_style,
     MarkAncestorChainForDescendantDependentFlagsUpdate();
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (LocalFrameView* frame_view = GetLayoutObject().GetDocument().View())
     frame_view->SetNeedsUpdateGeometries();
+#endif
 }
 
 static PaintLayer* EnclosingLayerForContainingBlock(PaintLayer* layer) {
@@ -920,7 +954,7 @@ void PaintLayer::UpdateLayerPosition() {
 bool PaintLayer::UpdateSize() {
   LayoutSize old_size = size_;
   if (IsRootLayer()) {
-    size_ = LayoutSize(GetLayoutObject().GetDocument().View()->Size());
+    ASSERT(false); // BKTODO: size_ = LayoutSize(GetLayoutObject().GetDocument().View()->Size());
   } else if (GetLayoutObject().IsInline() &&
              GetLayoutObject().IsLayoutInline()) {
     LayoutInline& inline_flow = ToLayoutInline(GetLayoutObject());
@@ -939,9 +973,12 @@ void PaintLayer::UpdateSizeAndScrollingAfterLayout() {
   bool did_resize = UpdateSize();
   if (RequiresScrollableArea()) {
     DCHECK(scrollable_area_);
+    ASSERT(false); // BKTODO:
+#if 0
     scrollable_area_->UpdateAfterLayout();
     if (did_resize)
       scrollable_area_->VisibleSizeChanged();
+#endif
   }
 }
 
@@ -1080,10 +1117,13 @@ PaintLayer::EnclosingLayerForPaintInvalidationCrossingFrameBoundaries() const {
     composited_layer = layer->EnclosingLayerForPaintInvalidation();
     if (!composited_layer) {
       CHECK(layer->GetLayoutObject().GetFrame());
+      ASSERT(false); // BKTODO:
+#if 0
       auto* owner = layer->GetLayoutObject().GetFrame()->OwnerLayoutObject();
       if (!owner)
         break;
       layer = owner->EnclosingLayer();
+#endif
     }
   }
   return composited_layer;
@@ -1143,9 +1183,12 @@ bool PaintLayer::HasNonIsolatedDescendantWithBlendMode() const {
   DCHECK(!needs_descendant_dependent_flags_update_);
   if (has_non_isolated_descendant_with_blend_mode_)
     return true;
+  ASSERT(false); // BKTODO:
+#if 0
   if (GetLayoutObject().IsSVGRoot())
     return ToLayoutSVGRoot(GetLayoutObject())
         .HasNonIsolatedBlendingDescendants();
+#endif
   return false;
 }
 
@@ -1313,12 +1356,16 @@ LayoutRect PaintLayer::PaintingExtent(const PaintLayer* root_layer,
 }
 
 void* PaintLayer::operator new(size_t sz) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return WTF::Partitions::LayoutPartition()->Alloc(
       sz, WTF_HEAP_PROFILER_TYPE_NAME(PaintLayer));
+#endif
 }
 
 void PaintLayer::operator delete(void* ptr) {
-  base::PartitionFree(ptr);
+  ASSERT(false); // BKTODO: base::PartitionFree(ptr);
 }
 
 void PaintLayer::AddChild(PaintLayer* child, PaintLayer* before_child) {
@@ -1440,12 +1487,15 @@ void PaintLayer::RemoveOnlyThisLayerAfterStyleChange(
 
   bool did_set_paint_invalidation = false;
   if (!RuntimeEnabledFeatures::SlimmingPaintV2Enabled()) {
+    ASSERT(false); // BKTODO:
+#if 0
     // Destructing PaintLayer would cause CompositedLayerMapping and composited
     // layers to be destructed and detach from layer tree immediately. Layers
     // could have dangling scroll/clip parent if compositing update were
     // omitted.
     if (LocalFrameView* frame_view = layout_object_.GetDocument().View())
       frame_view->SetNeedsForcedCompositingUpdate();
+#endif
 
     // We need the current compositing status.
     DisableCompositingQueryAsserts disabler;
@@ -1653,6 +1703,8 @@ bool PaintLayer::RequiresScrollableArea() const {
 }
 
 void PaintLayer::UpdateScrollableArea() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (RequiresScrollableArea() && !scrollable_area_) {
     scrollable_area_ = PaintLayerScrollableArea::Create(*this);
     Compositor()->SetNeedsCompositingUpdate(kCompositingUpdateRebuildTree);
@@ -1661,13 +1713,18 @@ void PaintLayer::UpdateScrollableArea() {
     scrollable_area_.Clear();
     Compositor()->SetNeedsCompositingUpdate(kCompositingUpdateRebuildTree);
   }
+#endif
 }
 
 bool PaintLayer::HasOverflowControls() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return scrollable_area_ &&
          (scrollable_area_->HasScrollbar() ||
           scrollable_area_->ScrollCorner() ||
           GetLayoutObject().StyleRef().Resize() != EResize::kNone);
+#endif
 }
 
 void PaintLayer::AppendSingleFragmentIgnoringPagination(
@@ -1817,9 +1874,12 @@ bool PaintLayer::HitTest(const HitTestLocation& hit_test_location,
                          const LayoutRect& hit_test_area) {
   DCHECK(IsSelfPaintingLayer() || HasSelfPaintingLayerDescendant());
 
+  ASSERT(false); // BKTODO:
+#if 0
   // LayoutView should make sure to update layout before entering hit testing
   DCHECK(!GetLayoutObject().GetFrame()->View()->LayoutPending());
   DCHECK(!GetLayoutObject().GetDocument().GetLayoutView()->NeedsLayout());
+#endif
 
   const HitTestRequest& request = result.GetHitTestRequest();
 
@@ -1858,11 +1918,14 @@ bool PaintLayer::HitTest(const HitTestLocation& hit_test_location,
     }
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Now determine if the result is inside an anchor - if the urlElement isn't
   // already set.
   Node* node = result.InnerNode();
   if (node && !result.URLElement())
     result.SetURLElement(node->EnclosingLinkEventParentOrSelf());
+#endif
 
   // Now return whether we were inside this layer (this will always be true for
   // the root layer).
@@ -1880,7 +1943,11 @@ Node* PaintLayer::EnclosingNode() const {
 
 bool PaintLayer::IsInTopLayer() const {
   Node* node = GetLayoutObject().GetNode();
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return node && node->IsElementNode() && ToElement(node)->IsInTopLayer();
+#endif
 }
 
 // Compute the z-offset of the point in the transformState.
@@ -2150,12 +2217,15 @@ PaintLayer* PaintLayer::HitTestLayer(PaintLayer* root_layer,
                        clip_behavior);
     }
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (scrollable_area_ && scrollable_area_->HitTestResizerInFragments(
                                 *layer_fragments, recursion_data.location)) {
       layout_object.UpdateHitTestResult(result,
                                         recursion_data.location.Point());
       return this;
     }
+#endif
 
     // Next we want to see if the mouse pos is inside the child LayoutObjects of
     // the layer. Check every fragment in reverse order.
@@ -2492,6 +2562,9 @@ bool PaintLayer::HitTestClippedOutByClipPath(
     return !clip_path->GetPath(reference_box).Contains(point);
   }
   DCHECK_EQ(clip_path_operation->GetType(), ClipPathOperation::REFERENCE);
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   SVGResource* resource =
       ToReferenceClipPathOperation(*clip_path_operation).Resource();
   LayoutSVGResourceContainer* container =
@@ -2510,6 +2583,7 @@ bool PaintLayer::HitTestClippedOutByClipPath(
   point.Scale(inverse_zoom, inverse_zoom);
   reference_box.Scale(inverse_zoom);
   return !clipper->HitTestClipContent(reference_box, point);
+#endif
 }
 
 bool PaintLayer::IntersectsDamageRect(
@@ -2665,8 +2739,11 @@ LayoutRect PaintLayer::BoundingBoxForCompositingInternal(
     // layout viewport. In non-RLS mode, it is the union of the layout viewport
     // and the document's layout overflow rect.
     IntRect result = IntRect();
+    ASSERT(false); // BKTODO:
+#if 0
     if (LocalFrameView* frame_view = GetLayoutObject().GetFrameView())
       result = IntRect(IntPoint(), frame_view->Size());
+#endif
     return LayoutRect(result);
   }
 
@@ -2831,7 +2908,11 @@ void PaintLayer::SetGroupedMapping(CompositedLayerMapping* grouped_mapping,
 }
 
 bool PaintLayer::NeedsCompositedScrolling() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return scrollable_area_ && scrollable_area_->NeedsCompositedScrolling();
+#endif
 }
 
 bool PaintLayer::PaintsWithTransform(
@@ -2864,8 +2945,12 @@ bool PaintLayer::SupportsSubsequenceCaching() const {
 }
 
 ScrollingCoordinator* PaintLayer::GetScrollingCoordinator() {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   Page* page = GetLayoutObject().GetFrame()->GetPage();
   return (!page) ? nullptr : page->GetScrollingCoordinator();
+#endif
 }
 
 bool PaintLayer::CompositesWithTransform() const {
@@ -2949,12 +3034,16 @@ bool PaintLayer::ChildBackgroundIsKnownToBeOpaqueInRect(
 }
 
 bool PaintLayer::ShouldBeSelfPaintingLayer() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // TODO(crbug.com/839341): Remove ScrollTimeline check once we support
   // main-thread AnimationWorklet and don't need to promote the scroll-source.
   return GetLayoutObject().LayerTypeRequired() == kNormalPaintLayer ||
          (scrollable_area_ && scrollable_area_->HasOverlayScrollbars()) ||
          ScrollsOverflow() ||
          ScrollTimeline::HasActiveScrollTimeline(GetLayoutObject().GetNode());
+#endif
 }
 
 void PaintLayer::UpdateSelfPaintingLayer() {
@@ -3037,10 +3126,13 @@ void PaintLayer::UpdateFilters(const ComputedStyle* old_style,
     return;
 
   const bool had_resource_info = ResourceInfo();
+  ASSERT(false); // BKTODO:
+#if 0
   if (new_style.HasFilterInducingProperty())
     new_style.Filter().AddClient(EnsureResourceInfo());
   if (had_resource_info && old_style)
     old_style->Filter().RemoveClient(*ResourceInfo());
+#endif
   if (PaintLayerResourceInfo* resource_info = ResourceInfo())
     resource_info->InvalidateFilterChain();
 }
@@ -3052,12 +3144,15 @@ void PaintLayer::UpdateClipPath(const ComputedStyle* old_style,
   if (!new_clip && !old_clip)
     return;
   const bool had_resource_info = ResourceInfo();
+  ASSERT(false); // BKTODO:
+#if 0
   if (auto* reference_clip = ToReferenceClipPathOperationOrNull(new_clip))
     reference_clip->AddClient(EnsureResourceInfo());
   if (had_resource_info) {
     if (auto* old_reference_clip = ToReferenceClipPathOperationOrNull(old_clip))
       old_reference_clip->RemoveClient(*ResourceInfo());
   }
+#endif
 }
 
 bool PaintLayer::AttemptDirectCompositingUpdate(
@@ -3129,7 +3224,10 @@ bool PaintLayer::AttemptDirectCompositingUpdate(
 
   if (RequiresScrollableArea()) {
     DCHECK(scrollable_area_);
+    ASSERT(false); // BKTODO:
+#if 0
     scrollable_area_->UpdateAfterStyleChange(old_style);
+#endif
   }
 
   return true;
@@ -3150,7 +3248,10 @@ void PaintLayer::StyleDidChange(StyleDifference diff,
 
   if (RequiresScrollableArea()) {
     DCHECK(scrollable_area_);
+    ASSERT(false); // BKTODO:
+#if 0
     scrollable_area_->UpdateAfterStyleChange(old_style);
+#endif
   }
 
   // Overlay scrollbars can make this layer self-painting so we need
@@ -3176,6 +3277,8 @@ void PaintLayer::StyleDidChange(StyleDifference diff,
   if (diff.NeedsLayout())
     SetNeedsCompositingInputsUpdate();
 
+  ASSERT(false); // BKTODO:
+#if 0
   // A scroller that changes background color might become opaque or not
   // opaque, which in turn affects whether it can be composited on low-DPI
   // screens.
@@ -3183,6 +3286,7 @@ void PaintLayer::StyleDidChange(StyleDifference diff,
       diff.HasDifference()) {
     SetNeedsCompositingInputsUpdate();
   }
+#endif
 
   if (diff.TransformChanged() || diff.OpacityChanged() ||
       diff.ZIndexChanged() || diff.FilterChanged() ||
@@ -3208,6 +3312,8 @@ void PaintLayer::StyleDidChange(StyleDifference diff,
       // Raster invalidation will be issued if needed during paint.
       SetNeedsRepaint();
     } else if (old_style) {
+      ASSERT(false); // BKTODO:
+#if 0
       // Change of PaintedOutputInvisible() will affect existence of paint
       // chunks, so needs repaint.
       PaintLayerPainter painter(*this);
@@ -3217,6 +3323,7 @@ void PaintLayer::StyleDidChange(StyleDifference diff,
       if (painter.PaintedOutputInvisible(*old_style) !=
           painter.PaintedOutputInvisible(new_style))
         SetNeedsRepaint();
+#endif
     }
   }
 }
@@ -3237,8 +3344,11 @@ PaintLayerClipper PaintLayer::Clipper(
 }
 
 bool PaintLayer::ScrollsOverflow() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (PaintLayerScrollableArea* scrollable_area = GetScrollableArea())
     return scrollable_area->ScrollsOverflow();
+#endif
 
   return false;
 }
@@ -3264,8 +3374,11 @@ void PaintLayer::UpdateCompositorFilterOperationsForFilter(
       reference_box == operations.ReferenceBox())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   operations =
       FilterEffectBuilder(reference_box, zoom).BuildFilterOperations(filter);
+#endif
 }
 
 CompositorFilterOperations
@@ -3273,8 +3386,12 @@ PaintLayer::CreateCompositorFilterOperationsForBackdropFilter() const {
   const auto& style = GetLayoutObject().StyleRef();
   float zoom = style.EffectiveZoom();
   FloatRect reference_box = FilterReferenceBox(style.BackdropFilter(), zoom);
+  ASSERT(false); // BKTODO:
+  return CompositorFilterOperations();
+#if 0
   return FilterEffectBuilder(reference_box, zoom)
       .BuildFilterOperations(style.BackdropFilter());
+#endif
 }
 
 PaintLayerResourceInfo& PaintLayer::EnsureResourceInfo() {
@@ -3296,16 +3413,22 @@ void PaintLayer::RemoveAncestorOverflowLayer(const PaintLayer* removed_layer) {
     // constrained by the root.
     if (AncestorOverflowLayer()->IsRootLayer() &&
         GetLayoutObject().StyleRef().HasStickyConstrainedPosition()) {
+      ASSERT(false); // BKTODO:
+#if 0
       if (LocalFrameView* frame_view = GetLayoutObject().GetFrameView())
         frame_view->RemoveViewportConstrainedObject(GetLayoutObject());
+#endif
     }
 
     if (PaintLayerScrollableArea* ancestor_scrollable_area =
             AncestorOverflowLayer()->GetScrollableArea()) {
+      ASSERT(false); // BKTODO:
+#if 0
       // TODO(pdr): When slimming paint v2 is enabled, we will need to
       // invalidate the scroll paint property subtree for this so main
       // thread scroll reasons are recomputed.
       ancestor_scrollable_area->InvalidateStickyConstraintsFor(this);
+#endif
     }
   }
   UpdateAncestorOverflowLayer(nullptr);
@@ -3328,9 +3451,12 @@ FilterEffect* PaintLayer::LastFilterEffect() const {
 
   const auto& style = GetLayoutObject().StyleRef();
   float zoom = style.EffectiveZoom();
+  ASSERT(false); // BKTODO:
+#if 0
   FilterEffectBuilder builder(FilterReferenceBox(style.Filter(), zoom), zoom);
   resource_info->SetLastEffect(
       builder.BuildFilterEffect(FilterOperationsIncludingReflection()));
+#endif
   return resource_info->LastEffect();
 }
 
@@ -3380,6 +3506,8 @@ void PaintLayer::ComputeSelfHitTestRects(
         supported_fast_actions;
 
     if (GetLayoutBox() && GetLayoutBox()->ScrollsOverflow()) {
+      ASSERT(false); // BKTODO:
+#if 0
       // For scrolling layers, rects are taken to be in the space of the
       // contents.  We need to include the bounding box of the layer in the
       // space of its parent (eg. for border / scroll bars) and if it's
@@ -3390,6 +3518,7 @@ void PaintLayer::ComputeSelfHitTestRects(
         rect.push_back(HitTestRect(scrollable_area_->OverflowRect(),
                                    whitelisted_touch_action));
       }
+#endif
 
       rects.Set(this, rect);
       if (const PaintLayer* parent_layer = Parent()) {
@@ -3452,10 +3581,13 @@ void PaintLayer::MarkCompositingContainerChainForNeedsRepaint() {
 
     PaintLayer* container = layer->CompositingContainer();
     if (!container) {
+      ASSERT(false); // BKTODO:
+#if 0
       auto* owner = layer->GetLayoutObject().GetFrame()->OwnerLayoutObject();
       if (!owner)
         break;
       container = owner->EnclosingLayer();
+#endif
     }
 
     if (container->needs_repaint_)
@@ -3479,6 +3611,8 @@ DisableCompositingQueryAsserts::DisableCompositingQueryAsserts()
 
 #if DCHECK_IS_ON()
 void showLayerTree(const blink::PaintLayer* layer) {
+  ASSERT(false); // BKTODO:
+#if 0
   blink::DisableCompositingQueryAsserts disabler;
   if (!layer) {
     LOG(ERROR) << "Cannot showLayerTree. Root is (nil)";
@@ -3499,13 +3633,17 @@ void showLayerTree(const blink::PaintLayer* layer) {
                                layer);
     LOG(ERROR) << output.Utf8().data();
   }
+#endif
 }
 
 void showLayerTree(const blink::LayoutObject* layoutObject) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!layoutObject) {
     LOG(ERROR) << "Cannot showLayerTree. Root is (nil)";
     return;
   }
   showLayerTree(layoutObject->EnclosingLayer());
+#endif
 }
 #endif
