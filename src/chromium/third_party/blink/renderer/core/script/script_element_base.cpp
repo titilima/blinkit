@@ -21,7 +21,7 @@
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/script/script_loader.h"
 #ifndef BLINKIT_CRAWLER_ONLY
-#   include "third_party/blink/renderer/core/html/html_script_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_script_element.h"
 #endif
 
 using namespace BlinKit;
