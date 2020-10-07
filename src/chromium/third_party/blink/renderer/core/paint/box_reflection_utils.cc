@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: box_reflection_utils.cc
+// Description: BoxReflectionForPaintLayer
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -12,7 +23,7 @@
 #include "third_party/blink/renderer/platform/geometry/layout_rect.h"
 #include "third_party/blink/renderer/platform/graphics/box_reflection.h"
 #include "third_party/blink/renderer/platform/graphics/paint/drawing_recorder.h"
-#include "third_party/blink/renderer/platform/graphics/paint/paint_record_builder.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/paint/paint_record_builder.h"
 #include "third_party/blink/renderer/platform/length_functions.h"
 
 namespace blink {
@@ -52,6 +63,9 @@ BoxReflection BoxReflectionForPaintLayer(const PaintLayer& layer,
   }
 
   const NinePieceImage& mask_nine_piece = reflect_style->Mask();
+  ASSERT(false); // BKTODO:
+  exit(0);
+#if 0
   if (!mask_nine_piece.HasImage())
     return BoxReflection(direction, offset, nullptr, FloatRect());
 
@@ -74,6 +88,7 @@ BoxReflection BoxReflectionForPaintLayer(const PaintLayer& layer,
   }
   return BoxReflection(direction, offset, builder.EndRecording(),
                        FloatRect(mask_bounding_rect));
+#endif
 }
 
 }  // namespace blink
