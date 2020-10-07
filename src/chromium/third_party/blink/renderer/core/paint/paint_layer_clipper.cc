@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: paint_layer_clipper.cc
+// Description: PaintLayerClipper Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012 Apple Inc. All rights
  * reserved.
@@ -51,7 +62,7 @@
 #include "third_party/blink/renderer/core/paint/compositing/compositing_reason_finder.h"
 #include "third_party/blink/renderer/core/paint/object_paint_properties.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/platform/graphics/paint/geometry_mapper.h"
 
 namespace blink {
@@ -417,8 +428,11 @@ void PaintLayerClipper::CalculateClipRects(const ClipRectsContext& context,
     if (context.respect_overflow_clip == kIgnoreOverflowClipAndScroll &&
         context.root_layer->GetScrollableArea() &&
         layer_.IsAffectedByScrollOf(context.root_layer)) {
+      ASSERT(false); // BKTODO:
+#if 0
       offset.Move(LayoutSize(
           context.root_layer->GetScrollableArea()->GetScrollOffset()));
+#endif
     }
 
     ApplyClipRects(context, layout_object, offset, clip_rects);
