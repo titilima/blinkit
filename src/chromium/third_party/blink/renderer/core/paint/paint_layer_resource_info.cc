@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: paint_layer_resource_info.cc
+// Description: PaintLayerResourceInfo Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Adobe Systems Incorporated. All rights reserved.
  *
@@ -30,7 +41,7 @@
 #include "third_party/blink/renderer/core/paint/paint_layer_resource_info.h"
 
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-#include "third_party/blink/renderer/platform/graphics/filters/filter_effect.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/filters/filter_effect.h"
 
 namespace blink {
 
@@ -41,6 +52,7 @@ PaintLayerResourceInfo::~PaintLayerResourceInfo() {
   DCHECK(!layer_);
 }
 
+#if 0 // BKTODO:
 void PaintLayerResourceInfo::ResourceContentChanged(InvalidationModeMask) {
   DCHECK(layer_);
   LayoutObject& layout_object = layer_->GetLayoutObject();
@@ -68,6 +80,7 @@ void PaintLayerResourceInfo::ResourceElementChanged() {
   if (style.HasFilter() && style.Filter().HasReferenceFilter())
     InvalidateFilterChain();
 }
+#endif
 
 void PaintLayerResourceInfo::SetLastEffect(FilterEffect* last_effect) {
   last_effect_ = last_effect;
@@ -79,11 +92,6 @@ FilterEffect* PaintLayerResourceInfo::LastEffect() const {
 
 void PaintLayerResourceInfo::InvalidateFilterChain() {
   last_effect_ = nullptr;
-}
-
-void PaintLayerResourceInfo::Trace(blink::Visitor* visitor) {
-  visitor->Trace(last_effect_);
-  SVGResourceClient::Trace(visitor);
 }
 
 }  // namespace blink
