@@ -137,9 +137,13 @@ std::shared_ptr<ClassicPendingScript> ClassicPendingScript::CreateInline(
     const TextPosition &startingPosition,
     ScriptSourceLocationType sourceLocationType)
 {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     std::shared_ptr<ClassicPendingScript> pendingScript = base::WrapShared(new ClassicPendingScript(element, startingPosition, sourceLocationType, false));
     pendingScript->CheckState();
     return pendingScript;
+#endif
 }
 
 void ClassicPendingScript::DataReceived(Resource *resource, const char *data, size_t size)
@@ -174,6 +178,9 @@ std::shared_ptr<ClassicPendingScript> ClassicPendingScript::Fetch(
 
     FetchParameters params(request, resourceLoaderOptions);
 
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     std::shared_ptr<ClassicPendingScript> pendingScript = base::WrapShared(new ClassicPendingScript(
         element, TextPosition(), ScriptSourceLocationType::kExternalFile,
         true));
@@ -196,6 +203,7 @@ std::shared_ptr<ClassicPendingScript> ClassicPendingScript::Fetch(
     ScriptResource::Fetch(params, elementDocument.Fetcher(), pendingScript.get());
     pendingScript->CheckState();
     return pendingScript;
+#endif
 }
 
 void ClassicPendingScript::FinishReadyStreaming(void)
