@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_painter_base.cc
+// Description: TextPainterBase Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -77,14 +88,20 @@ void TextPainterBase::UpdateGraphicsContext(
     }
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (mode & kTextModeFill && text_style.fill_color != context.FillColor())
     context.SetFillColor(text_style.fill_color);
+#endif
 
   if (mode & kTextModeStroke) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (text_style.stroke_color != context.StrokeColor())
       context.SetStrokeColor(text_style.stroke_color);
     if (text_style.stroke_width != context.StrokeThickness())
       context.SetStrokeThickness(text_style.stroke_width);
+#endif
   }
 
   if (text_style.shadow) {
@@ -130,9 +147,12 @@ TextPaintStyle TextPainterBase::TextPaintingStyle(const Document& document,
     text_style.stroke_width = style.TextStrokeWidth();
     text_style.shadow = style.TextShadow();
 
+    ASSERT(false); // BKTODO:
+#if 0
     // Adjust text color when printing with a white background.
     DCHECK(document.Printing() == is_printing ||
            RuntimeEnabledFeatures::PrintBrowserEnabled());
+#endif
     bool force_background_to_white =
         BoxPainterBase::ShouldForceWhiteBackgroundForPrintEconomy(document,
                                                                   style);
