@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: collapsed_border_painter.cc
+// Description: CollapsedBorderPainter Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,7 @@
 #include "third_party/blink/renderer/core/paint/collapsed_border_painter.h"
 
 #include "third_party/blink/renderer/core/paint/block_painter.h"
-#include "third_party/blink/renderer/core/paint/object_painter.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/object_painter.h"
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #include "third_party/blink/renderer/core/paint/scoped_paint_state.h"
 #include "third_party/blink/renderer/core/paint/table_cell_painter.h"
@@ -359,6 +370,8 @@ void CollapsedBorderPainter::PaintCollapsedBorders(
   paint_rect.Expand(IntRectOutsets(before_.outer_width, end_.outer_width,
                                    after_.outer_width, start_.outer_width));
 
+  ASSERT(false); // BKTODO:
+#if 0
   // We never paint diagonals at the joins.  We simply let the border with the
   // highest precedence paint on top of borders with lower precedence.
   if (before_.value) {
@@ -391,6 +404,7 @@ void CollapsedBorderPainter::PaintCollapsedBorders(
         BoxSide::kRight, end_.value->GetColor(),
         CollapsedBorderStyle(end_.value->Style()), 0, 0, true);
   }
+#endif
 }
 
 }  // namespace blink
