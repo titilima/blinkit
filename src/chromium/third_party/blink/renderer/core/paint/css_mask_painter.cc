@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_mask_painter.cc
+// Description: CSSMaskPainter Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,9 +17,11 @@
 
 #include "third_party/blink/renderer/core/layout/layout_block.h"
 #include "third_party/blink/renderer/core/layout/layout_inline.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/layout/svg/layout_svg_resource_masker.h"
 #include "third_party/blink/renderer/core/layout/svg/svg_resources.h"
 #include "third_party/blink/renderer/core/layout/svg/svg_resources_cache.h"
+#endif
 
 namespace blink {
 
@@ -19,6 +32,8 @@ base::Optional<IntRect> CSSMaskPainter::MaskBoundingBox(
     return base::nullopt;
 
   if (object.IsSVG()) {
+    ASSERT(false); // BKTODO:
+#if 0
     SVGResources* resources =
         SVGResourcesCache::CachedResourcesForLayoutObject(object);
     LayoutSVGResourceMasker* masker = resources ? resources->Masker() : nullptr;
@@ -26,6 +41,7 @@ base::Optional<IntRect> CSSMaskPainter::MaskBoundingBox(
       return EnclosingIntRect(
           masker->ResourceBoundingBox(object.ObjectBoundingBox()));
     }
+#endif
   }
 
   if (object.IsSVGChild() && !object.IsSVGForeignObject())
@@ -61,6 +77,9 @@ ColorFilter CSSMaskPainter::MaskColorFilter(const LayoutObject& object) {
   if (!object.IsSVGChild())
     return kColorFilterNone;
 
+  ASSERT(false); // BKTODO:
+  return kColorFilterNone;
+#if 0
   SVGResources* resources =
       SVGResourcesCache::CachedResourcesForLayoutObject(object);
   LayoutSVGResourceMasker* masker = resources ? resources->Masker() : nullptr;
@@ -69,6 +88,7 @@ ColorFilter CSSMaskPainter::MaskColorFilter(const LayoutObject& object) {
   return masker->StyleRef().SvgStyle().MaskType() == MT_LUMINANCE
              ? kColorFilterLuminanceToAlpha
              : kColorFilterNone;
+#endif
 }
 
 }  // namespace blink
