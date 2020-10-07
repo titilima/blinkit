@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_text_painter.cc
+// Description: NGTextPainter Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -91,10 +102,13 @@ void NGTextPainter::ClipDecorationsStripe(float upper,
 
   NGTextFragmentPaintInfo fragment_paint_info = fragment_.PaintInfo();
   Vector<Font::TextIntercept> text_intercepts;
+  ASSERT(false); // BKTODO:
+#if 0
   font_.GetTextIntercepts(
       fragment_paint_info, graphics_context_.DeviceScaleFactor(),
       graphics_context_.FillFlags(),
       std::make_tuple(upper, upper + stripe_width), text_intercepts);
+#endif
 
   DecorationsStripeIntercepts(upper, stripe_width, dilation, text_intercepts);
 }
