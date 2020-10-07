@@ -139,6 +139,7 @@ public:
 
     String TextFromChildren(void) const;
 
+    bool IsInTopLayer(void) const { return HasElementFlag(ElementFlags::kIsInTopLayer); }
     void SetStyleAffectedByEmpty(void) { SetElementFlag(ElementFlags::kStyleAffectedByEmpty); }
 
     Element* CloneWithChildren(Document *nullableFactory = nullptr) const;
@@ -244,7 +245,12 @@ private:
     ElementRareData& EnsureElementRareData(void);
     UniqueElementData& EnsureUniqueElementData(void);
 
+    bool HasElementFlag(ElementFlags mask) const
+    {
+        return HasRareData() && HasElementFlagInternal(mask);
+    }
     void SetElementFlag(ElementFlags mask, bool value = true);
+    bool HasElementFlagInternal(ElementFlags mask) const;
 
     virtual Element* CloneWithoutAttributesAndChildren(Document &factory) const;
 

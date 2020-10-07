@@ -239,12 +239,8 @@ static bool OverridesTextDecorationColors(const Element* element) {
 // FIXME: This helper is only needed because pseudoStyleForElement passes a null
 // element to adjustComputedStyle, so we can't just use element->isInTopLayer().
 static bool IsInTopLayer(const Element* element, const ComputedStyle& style) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return (element && element->IsInTopLayer()) ||
          style.StyleType() == kPseudoIdBackdrop;
-#endif
 }
 
 static bool LayoutParentStyleForcesZIndexToCreateStackingContext(

@@ -652,6 +652,11 @@ bool Element::HasClassName(const AtomicString &className) const
     return HasClass() && ClassNames().Contains(className);
 }
 
+bool Element::HasElementFlagInternal(ElementFlags mask) const
+{
+    return GetElementRareData()->HasElementFlag(mask);
+}
+
 bool Element::HasID(void) const
 {
     if (const ElementData *elementData = GetElementData())

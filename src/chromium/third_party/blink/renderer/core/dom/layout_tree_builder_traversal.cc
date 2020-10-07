@@ -55,11 +55,7 @@ inline static bool HasDisplayContentsStyle(const Node& node) {
 static bool IsLayoutObjectReparented(const LayoutObject* layout_object) {
   if (!layout_object->GetNode()->IsElementNode())
     return false;
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return ToElement(layout_object->GetNode())->IsInTopLayer();
-#endif
 }
 
 void LayoutTreeBuilderTraversal::ParentDetails::DidTraverseInsertionPoint(
@@ -336,10 +332,10 @@ LayoutObject* LayoutTreeBuilderTraversal::PreviousSiblingLayoutObject(
 
 LayoutObject* LayoutTreeBuilderTraversal::NextInTopLayer(
     const Element& element) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (!element.IsInTopLayer())
     return nullptr;
+  ASSERT(false); // BKTODO:
+#if 0
   const HeapVector<Member<Element>>& top_layer_elements =
       element.GetDocument().TopLayerElements();
   wtf_size_t position = top_layer_elements.Find(&element);

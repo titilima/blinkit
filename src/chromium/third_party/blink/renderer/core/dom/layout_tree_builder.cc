@@ -104,11 +104,8 @@ LayoutTreeBuilderForElement::LayoutTreeBuilderForElement(Element& element,
 LayoutObject* LayoutTreeBuilderForElement::NextLayoutObject() const {
   DCHECK(layout_object_parent_);
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (node_->IsInTopLayer())
     return LayoutTreeBuilderTraversal::NextInTopLayer(*node_);
-#endif
 
   if (node_->IsFirstLetterPseudoElement())
     return FirstLetterPseudoElement::FirstLetterTextLayoutObject(*node_);
@@ -118,15 +115,12 @@ LayoutObject* LayoutTreeBuilderForElement::NextLayoutObject() const {
 
 LayoutObject* LayoutTreeBuilderForElement::ParentLayoutObject() const {
   if (layout_object_parent_) {
-    ASSERT(false); // BKTODO:
-#if 0
     // FIXME: Guarding this by ParentLayoutObject isn't quite right as the spec
     // for top layer only talks about display: none ancestors so putting a
     // <dialog> inside an <optgroup> seems like it should still work even though
     // this check will prevent it.
     if (node_->IsInTopLayer())
       return node_->GetDocument().GetLayoutView();
-#endif
   }
 
   return layout_object_parent_;

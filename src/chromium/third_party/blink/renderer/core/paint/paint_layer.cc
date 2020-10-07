@@ -1943,11 +1943,7 @@ Node* PaintLayer::EnclosingNode() const {
 
 bool PaintLayer::IsInTopLayer() const {
   Node* node = GetLayoutObject().GetNode();
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return node && node->IsElementNode() && ToElement(node)->IsInTopLayer();
-#endif
 }
 
 // Compute the z-offset of the point in the transformState.
