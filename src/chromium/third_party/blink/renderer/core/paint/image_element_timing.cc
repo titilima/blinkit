@@ -1,20 +1,33 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image_element_timing.cc
+// Description: ImageElementTiming Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/core/paint/image_element_timing.h"
 
-#include "third_party/blink/renderer/core/html/html_image_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_image_element.h"
 #include "third_party/blink/renderer/core/layout/layout_image.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
 #include "third_party/blink/renderer/core/layout/layout_replaced.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/timing/dom_window_performance.h"
 #include "third_party/blink/renderer/core/timing/window_performance.h"
 #include "third_party/blink/renderer/platform/cross_thread_functional.h"
+#endif
 #include "third_party/blink/renderer/platform/graphics/paint/geometry_mapper.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
@@ -28,6 +41,9 @@ const char ImageElementTiming::kSupplementName[] = "ImageElementTiming";
 
 // static
 ImageElementTiming& ImageElementTiming::From(LocalDOMWindow& window) {
+  ASSERT(false); // BKTODO:
+  exit(0);
+#if 0 // BKTODO:
   ImageElementTiming* timing =
       Supplement<LocalDOMWindow>::From<ImageElementTiming>(window);
   if (!timing) {
@@ -35,6 +51,7 @@ ImageElementTiming& ImageElementTiming::From(LocalDOMWindow& window) {
     ProvideTo(window, timing);
   }
   return *timing;
+#endif
 }
 
 ImageElementTiming::ImageElementTiming(LocalDOMWindow& window)
@@ -42,6 +59,7 @@ ImageElementTiming::ImageElementTiming(LocalDOMWindow& window)
   DCHECK(RuntimeEnabledFeatures::ElementTimingEnabled());
 }
 
+#if 0 // BKTODO:
 void ImageElementTiming::NotifyImagePainted(const HTMLImageElement* element,
                                             const LayoutImage* layout_image,
                                             const PaintLayer* painting_layer) {
@@ -121,13 +139,10 @@ void ImageElementTiming::ReportImagePaintSwapTime(WebLayerTreeView::SwapResult,
   }
   element_timings_.clear();
 }
+#endif
 
 void ImageElementTiming::NotifyWillBeDestroyed(const LayoutImage* image) {
   images_notified_.erase(image);
-}
-
-void ImageElementTiming::Trace(blink::Visitor* visitor) {
-  Supplement<LocalDOMWindow>::Trace(visitor);
 }
 
 }  // namespace blink

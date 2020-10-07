@@ -43,11 +43,13 @@ class CORE_EXPORT ImageElementTiming final
 
   static ImageElementTiming& From(LocalDOMWindow&);
 
+#if 0 // BKTODO:
   // Called when the LayoutImage has been painted. This method might queue a
   // swap promise to compute and report paint timestamps.
   void NotifyImagePainted(const HTMLImageElement*,
                           const LayoutImage*,
                           const PaintLayer*);
+#endif
 
   // Called when the LayoutImage will be destroyed.
   void NotifyWillBeDestroyed(const LayoutImage*);
@@ -59,7 +61,6 @@ class CORE_EXPORT ImageElementTiming final
   // Callback for the swap promise. Reports paint timestamps.
   void ReportImagePaintSwapTime(WebLayerTreeView::SwapResult,
                                 base::TimeTicks timestamp);
-#endif
 
   // Struct containing information about image element timing.
   struct ElementTimingInfo {
@@ -71,6 +72,7 @@ class CORE_EXPORT ImageElementTiming final
   // Vector containing the element timing infos that will be reported during the
   // next swap promise callback.
   WTF::Vector<ElementTimingInfo> element_timings_;
+#endif
   // Hashmap of LayoutImage objects for which paint has already been notified.
   WTF::HashSet<const LayoutImage*> images_notified_;
 
