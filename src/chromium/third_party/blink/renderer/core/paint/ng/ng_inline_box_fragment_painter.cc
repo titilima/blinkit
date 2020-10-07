@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_inline_box_fragment_painter.cc
+// Description: NGInlineBoxFragmentPainter Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -81,6 +92,8 @@ void NGInlineBoxFragmentPainter::PaintBackgroundBorderShadow(
   NGPaintFragment::FragmentRange fragments =
       inline_box_fragment_.InlineFragmentsFor(
           inline_box_fragment_.GetLayoutObject());
+  ASSERT(false); // BKTODO:
+#if 0
   NGPaintFragment::FragmentRange::iterator iter = fragments.begin();
   bool object_has_multiple_boxes = ++iter != fragments.end();
 
@@ -92,6 +105,7 @@ void NGInlineBoxFragmentPainter::PaintBackgroundBorderShadow(
       box_painter, paint_info, paint_offset, adjusted_frame_rect, geometry,
       object_has_multiple_boxes, border_edges_.line_left,
       border_edges_.line_right);
+#endif
 }
 
 void NGInlineBoxFragmentPainter::ComputeFragmentOffsetOnLine(
@@ -106,6 +120,8 @@ void NGInlineBoxFragmentPainter::ComputeFragmentOffsetOnLine(
   LayoutUnit before;
   LayoutUnit after;
   bool before_self = true;
+  ASSERT(false); // BKTODO:
+#if 0
   for (auto iter = fragments.begin(); iter != fragments.end(); ++iter) {
     if (*iter == &inline_box_fragment_) {
       before_self = false;
@@ -116,6 +132,7 @@ void NGInlineBoxFragmentPainter::ComputeFragmentOffsetOnLine(
     else
       after += NGFragment(writing_mode, iter->PhysicalFragment()).InlineSize();
   }
+#endif
 
   NGFragment logical_fragment(writing_mode,
                               inline_box_fragment_.PhysicalFragment());

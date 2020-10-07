@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ng_paint_fragment.cc
+// Description: NGPaintFragment Class
+//      Author: Ziming Li
+//     Created: 2020-10-07
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -465,12 +476,15 @@ bool NGPaintFragment::FlippedLocalVisualRectFor(
   if (!fragments.IsInLayoutNGInlineFormattingContext())
     return false;
 
+  ASSERT(false); // BKTODO:
+#if 0
   for (NGPaintFragment* fragment : fragments) {
     NGPhysicalOffsetRect child_visual_rect =
         fragment->PhysicalFragment().SelfInkOverflow();
     child_visual_rect.offset += fragment->InlineOffsetToContainerBox();
     visual_rect->Unite(child_visual_rect.ToLayoutRect());
   }
+#endif
   if (!layout_object->HasFlippedBlocksWritingMode())
     return true;
 
@@ -526,11 +540,14 @@ void NGPaintFragment::PaintInlineBoxForDescendants(
 
 const NGPaintFragment* NGPaintFragment::ContainerLineBox() const {
   DCHECK(PhysicalFragment().IsInline());
+  ASSERT(false); // BKTODO:
+#if 0
   for (const NGPaintFragment* fragment :
        NGPaintFragmentTraversal::InclusiveAncestorsOf(*this)) {
     if (fragment->PhysicalFragment().IsLineBox())
       return fragment;
   }
+#endif
   NOTREACHED();
   return nullptr;
 }
@@ -544,7 +561,7 @@ NGPaintFragment* NGPaintFragment::FirstLineBox() const {
 }
 
 void NGPaintFragment::MarkLineBoxesDirtyFor(const LayoutObject& layout_object) {
-  DCHECK(layout_object.IsInline()) << layout_object;
+  DCHECK(layout_object.IsInline());
   if (TryMarkLineBoxDirtyFor(layout_object))
     return;
   // Since |layout_object| isn't in fragment tree, check preceding siblings.
@@ -573,6 +590,8 @@ void NGPaintFragment::MarkLineBoxesDirtyFor(const LayoutObject& layout_object) {
 }
 
 void NGPaintFragment::MarkLineBoxDirty() {
+  ASSERT(false); // BKTODO:
+#if 0
   for (NGPaintFragment* fragment :
        NGPaintFragmentTraversal::InclusiveAncestorsOf(*this)) {
     if (fragment->is_dirty_inline_)
@@ -581,7 +600,8 @@ void NGPaintFragment::MarkLineBoxDirty() {
     if (fragment->PhysicalFragment().IsLineBox())
       return;
   }
-  NOTREACHED() << this;  // Should have a line box ancestor.
+#endif
+  NOTREACHED();  // Should have a line box ancestor.
 }
 
 bool NGPaintFragment::TryMarkLineBoxDirtyFor(
@@ -614,6 +634,9 @@ void NGPaintFragment::SetShouldDoFullPaintInvalidationForFirstLine() {
 
 NGPhysicalOffsetRect NGPaintFragment::ComputeLocalSelectionRectForText(
     const LayoutSelectionStatus& selection_status) const {
+  ASSERT(false); // BKTODO:
+  return NGPhysicalOffsetRect();
+#if 0
   const NGPhysicalTextFragment& text_fragment =
       ToNGPhysicalTextFragmentOrDie(PhysicalFragment());
   NGPhysicalOffsetRect selection_rect =
@@ -638,6 +661,7 @@ NGPhysicalOffsetRect NGPaintFragment::ComputeLocalSelectionRectForText(
   const NGPhysicalOffsetRect physical_rect =
       ComputePhysicalRectFor(line_height_expanded_rect, *this);
   return physical_rect;
+#endif
 }
 
 NGPhysicalOffsetRect NGPaintFragment::ComputeLocalSelectionRectForReplaced()
@@ -884,17 +908,23 @@ NGPaintFragment& NGPaintFragment::FragmentRange::front() const {
 NGPaintFragment& NGPaintFragment::FragmentRange::back() const {
   DCHECK(first_);
   NGPaintFragment* last = first_;
+  ASSERT(false); // BKTODO:
+#if 0
   for (NGPaintFragment* fragment : *this)
     last = fragment;
+#endif
   return *last;
 }
 
 wtf_size_t NGPaintFragment::FragmentRange::size() const {
   wtf_size_t size = 0;
+  ASSERT(false); // BKTODO:
+#if 0
   for (NGPaintFragment* fragment : *this) {
     ANALYZER_ALLOW_UNUSED(fragment);
     ++size;
   }
+#endif
   return size;
 }
 
