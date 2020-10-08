@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_inherited_variables.cc
+// Description: StyleInheritedVariables Class
+//      Author: Ziming Li
+//     Created: 2020-10-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -63,14 +74,17 @@ void StyleInheritedVariables::SetRegisteredVariable(
     const AtomicString& name,
     const CSSValue* parsed_value) {
   needs_resolution_ = true;
-  registered_data_->Set(name, const_cast<CSSValue*>(parsed_value));
+  ASSERT(false); // BKTODO: registered_data_->Set(name, const_cast<CSSValue*>(parsed_value));
 }
 
 const CSSValue* StyleInheritedVariables::RegisteredVariable(
     const AtomicString& name) const {
   auto result = registered_data_->find(name);
+  ASSERT(false); // BKTODO:
+#if 0
   if (result != registered_data_->end())
     return result->value.Get();
+#endif
   if (root_)
     return root_->RegisteredVariable(name);
   return nullptr;
@@ -80,7 +94,7 @@ void StyleInheritedVariables::RemoveVariable(const AtomicString& name) {
   data_.Set(name, nullptr);
   auto iterator = registered_data_->find(name);
   if (iterator != registered_data_->end()) {
-    iterator->value = nullptr;
+    ASSERT(false); // BKTODO: iterator->value = nullptr;
   } else if (root_ && root_->RegisteredVariable(name)) {
     SetRegisteredVariable(name, nullptr);
   }
