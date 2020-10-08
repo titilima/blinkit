@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: filter_operation.cc
+// Description: FilterOperation Class
+//      Author: Ziming Li
+//     Created: 2020-10-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -25,12 +36,14 @@
 
 #include "third_party/blink/renderer/core/style/filter_operation.h"
 
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/svg/svg_resource.h"
 #include "third_party/blink/renderer/platform/animation/animation_utilities.h"
 #include "third_party/blink/renderer/platform/graphics/filters/fe_drop_shadow.h"
 #include "third_party/blink/renderer/platform/graphics/filters/fe_gaussian_blur.h"
 #include "third_party/blink/renderer/platform/graphics/filters/filter.h"
 #include "third_party/blink/renderer/platform/graphics/filters/filter_effect.h"
+#endif
 #include "third_party/blink/renderer/platform/length_functions.h"
 
 namespace blink {
@@ -44,17 +57,15 @@ FilterOperation* FilterOperation::Blend(const FilterOperation* from,
   return from->Blend(nullptr, 1 - progress);
 }
 
-void ReferenceFilterOperation::Trace(blink::Visitor* visitor) {
-  visitor->Trace(resource_);
-  visitor->Trace(filter_);
-  FilterOperation::Trace(visitor);
-}
-
 FloatRect ReferenceFilterOperation::MapRect(const FloatRect& rect) const {
+  ASSERT(false); // BKTODO:
+  return FloatRect();
+#if 0
   const auto* last_effect = filter_ ? filter_->LastEffect() : nullptr;
   if (!last_effect)
     return rect;
   return last_effect->MapRect(rect);
+#endif
 }
 
 ReferenceFilterOperation::ReferenceFilterOperation(const AtomicString& url,
@@ -62,13 +73,19 @@ ReferenceFilterOperation::ReferenceFilterOperation(const AtomicString& url,
     : FilterOperation(REFERENCE), url_(url), resource_(resource) {}
 
 void ReferenceFilterOperation::AddClient(SVGResourceClient& client) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (resource_)
     resource_->AddClient(client);
+#endif
 }
 
 void ReferenceFilterOperation::RemoveClient(SVGResourceClient& client) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (resource_)
     resource_->RemoveClient(client);
+#endif
 }
 
 bool ReferenceFilterOperation::operator==(const FilterOperation& o) const {
@@ -101,6 +118,9 @@ FilterOperation* BasicColorMatrixFilterOperation::Blend(
     }
   }
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   double result = blink::Blend(from_amount, amount_, progress);
   switch (type_) {
     case HUE_ROTATE:
@@ -116,6 +136,7 @@ FilterOperation* BasicColorMatrixFilterOperation::Blend(
       NOTREACHED();
   }
   return BasicColorMatrixFilterOperation::Create(result, type_);
+#endif
 }
 
 FilterOperation* BasicComponentTransferFilterOperation::Blend(
@@ -141,6 +162,9 @@ FilterOperation* BasicComponentTransferFilterOperation::Blend(
     }
   }
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   double result = blink::Blend(from_amount, amount_, progress);
   switch (type_) {
     case BRIGHTNESS:
@@ -155,12 +179,17 @@ FilterOperation* BasicComponentTransferFilterOperation::Blend(
       NOTREACHED();
   }
   return BasicComponentTransferFilterOperation::Create(result, type_);
+#endif
 }
 
 FloatRect BlurFilterOperation::MapRect(const FloatRect& rect) const {
   float std_deviation = FloatValueForLength(std_deviation_, 0);
+  ASSERT(false); // BKTODO:
+  return FloatRect();
+#if 0
   return FEGaussianBlur::MapEffect(FloatSize(std_deviation, std_deviation),
                                    rect);
+#endif
 }
 
 FilterOperation* BlurFilterOperation::Blend(const FilterOperation* from,
@@ -177,8 +206,12 @@ FilterOperation* BlurFilterOperation::Blend(const FilterOperation* from,
 
 FloatRect DropShadowFilterOperation::MapRect(const FloatRect& rect) const {
   float std_deviation = shadow_.Blur();
+  ASSERT(false); // BKTODO:
+  return FloatRect();
+#if 0
   return FEDropShadow::MapEffect(FloatSize(std_deviation, std_deviation),
                                  shadow_.Location(), rect);
+#endif
 }
 
 FilterOperation* DropShadowFilterOperation::Blend(const FilterOperation* from,

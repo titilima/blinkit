@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: filter_operation.h
+// Description: FilterOperation
+//      Author: Ziming Li
+//     Created: 2020-10-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -88,7 +99,6 @@ class CORE_EXPORT FilterOperation
   }
 
   virtual ~FilterOperation() = default;
-  virtual void Trace(blink::Visitor* visitor) {}
 
   static FilterOperation* Blend(const FilterOperation* from,
                                 const FilterOperation* to,
@@ -148,8 +158,6 @@ class CORE_EXPORT ReferenceFilterOperation : public FilterOperation {
 
   void AddClient(SVGResourceClient&);
   void RemoveClient(SVGResourceClient&);
-
-  void Trace(blink::Visitor*) override;
 
  private:
   ReferenceFilterOperation(const AtomicString& url, SVGResource*);

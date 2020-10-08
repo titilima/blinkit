@@ -37,6 +37,7 @@
 
 #include "third_party/blink/renderer/core/loader/resource/image_resource_observer.h"
 #include "third_party/blink/renderer/core/style/style_image.h"
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 #include "url/gurl.h"
 
 namespace blink {
@@ -84,8 +85,6 @@ class StyleFetchedImage final : public StyleImage,
   ImageResourceContent* CachedImage() const override;
 
   void LoadDeferredImage(const Document& document);
-
-  void Trace(blink::Visitor*) override;
 
  private:
   StyleFetchedImage(const Document&,

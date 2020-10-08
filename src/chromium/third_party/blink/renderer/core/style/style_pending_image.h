@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_pending_image.h
+// Description: StylePendingImage
+//      Author: Ziming Li
+//     Created: 2020-10-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2010 Apple Inc. All rights reserved.
  *
@@ -90,11 +101,6 @@ class StylePendingImage final : public StyleImage {
   }
   bool KnownToBeOpaque(const Document&, const ComputedStyle&) const override {
     return false;
-  }
-
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(value_);
-    StyleImage::Trace(visitor);
   }
 
  private:

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_fetched_image_set.cc
+// Description: StyleFetchedImageSet Class
+//      Author: Ziming Li
+//     Created: 2020-10-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Apple Inc. All rights reserved.
  *
@@ -28,14 +39,14 @@
 #include "third_party/blink/renderer/core/css/css_image_set_value.h"
 #include "third_party/blink/renderer/core/loader/resource/image_resource_content.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
-#include "third_party/blink/renderer/core/svg/graphics/svg_image_for_container.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/graphics/svg_image_for_container.h"
 
 namespace blink {
 
 StyleFetchedImageSet::StyleFetchedImageSet(ImageResourceContent* image,
                                            float image_scale_factor,
                                            CSSImageSetValue* value,
-                                           const KURL& url)
+                                           const GURL& url)
     : best_fit_image_(image),
       image_scale_factor_(image_scale_factor),
       image_set_value_(value),
@@ -95,8 +106,11 @@ FloatSize StyleFetchedImageSet::ImageSize(
     const LayoutSize& default_object_size) const {
   Image* image = best_fit_image_->GetImage();
   if (image->IsSVGImage()) {
+    ASSERT(false); // BKTODO:
+#if 0
     return ImageSizeForSVGImage(ToSVGImage(image), multiplier,
                                 default_object_size);
+#endif
   }
   // Image orientation should only be respected for content images,
   // not decorative ones such as StyleImage (backgrounds,
@@ -133,19 +147,17 @@ scoped_refptr<Image> StyleFetchedImageSet::GetImage(
   Image* image = best_fit_image_->GetImage();
   if (!image->IsSVGImage())
     return image;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return SVGImageForContainer::Create(ToSVGImage(image), target_size,
                                       style.EffectiveZoom(), url_);
+#endif
 }
 
 bool StyleFetchedImageSet::KnownToBeOpaque(const Document&,
                                            const ComputedStyle&) const {
   return best_fit_image_->GetImage()->CurrentFrameKnownToBeOpaque();
-}
-
-void StyleFetchedImageSet::Trace(blink::Visitor* visitor) {
-  visitor->Trace(best_fit_image_);
-  visitor->Trace(image_set_value_);
-  StyleImage::Trace(visitor);
 }
 
 }  // namespace blink

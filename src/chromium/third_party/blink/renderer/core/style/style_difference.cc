@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_difference.cc
+// Description: StyleDifference Class
+//      Author: Ziming Li
+//     Created: 2020-10-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,6 +18,9 @@
 namespace blink {
 
 std::ostream& operator<<(std::ostream& out, const StyleDifference& diff) {
+  ASSERT(false); // BKTODO: Is this file necessary?
+  return out;
+#if 0
   out << "StyleDifference{layoutType=";
 
   switch (diff.layout_type_) {
@@ -86,6 +100,7 @@ std::ostream& operator<<(std::ostream& out, const StyleDifference& diff) {
       << diff.scroll_anchor_disabling_property_changed_;
 
   return out << "}";
+#endif
 }
 
 }  // namespace blink

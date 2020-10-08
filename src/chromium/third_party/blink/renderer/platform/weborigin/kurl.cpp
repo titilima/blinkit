@@ -11,8 +11,6 @@
 
 #include "kurl.h"
 
-#include "url/gurl.h"
-
 namespace blink {
 
 const GURL& BlankURL(void)

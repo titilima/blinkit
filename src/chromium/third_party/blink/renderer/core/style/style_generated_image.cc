@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_generated_image.cc
+// Description: StyleGeneratedImage
+//      Author: Ziming Li
+//     Created: 2020-10-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -88,11 +99,6 @@ scoped_refptr<Image> StyleGeneratedImage::GetImage(
 bool StyleGeneratedImage::KnownToBeOpaque(const Document& document,
                                           const ComputedStyle& style) const {
   return image_generator_value_->KnownToBeOpaque(document, style);
-}
-
-void StyleGeneratedImage::Trace(blink::Visitor* visitor) {
-  visitor->Trace(image_generator_value_);
-  StyleImage::Trace(visitor);
 }
 
 }  // namespace blink

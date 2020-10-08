@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_generated_image.h
+// Description: StyleGeneratedImage
+//      Author: Ziming Li
+//     Created: 2020-10-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -60,8 +71,6 @@ class CORE_EXPORT StyleGeneratedImage final : public StyleImage {
                                 const ComputedStyle&,
                                 const FloatSize& target_size) const override;
   bool KnownToBeOpaque(const Document&, const ComputedStyle&) const override;
-
-  void Trace(blink::Visitor*) override;
 
  private:
   StyleGeneratedImage(const CSSImageGeneratorValue&);

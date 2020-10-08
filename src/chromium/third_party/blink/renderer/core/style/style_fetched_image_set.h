@@ -40,7 +40,7 @@
 #include "third_party/blink/renderer/core/loader/resource/image_resource_observer.h"
 #include "third_party/blink/renderer/core/style/style_image.h"
 #include "third_party/blink/renderer/platform/geometry/layout_size.h"
-#include "url/gurl.h"
+#include "third_party/blink/renderer/platform/weborigin/kurl.h"
 
 namespace blink {
 
@@ -90,8 +90,6 @@ class StyleFetchedImageSet final : public StyleImage,
   float ImageScaleFactor() const override { return image_scale_factor_; }
   bool KnownToBeOpaque(const Document&, const ComputedStyle&) const override;
   ImageResourceContent* CachedImage() const override;
-
-  void Trace(blink::Visitor*) override;
 
  private:
   StyleFetchedImageSet(ImageResourceContent*,

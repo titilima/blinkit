@@ -14,7 +14,8 @@
 
 #pragma once
 
-class GURL;
+#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+#include "url/gurl.h"
 
 namespace blink {
 

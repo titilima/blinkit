@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: computed_style.cc
+// Description: ComputedStyle Class
+//      Author: Ziming Li
+//     Created: 2020-10-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Antti Koivisto (koivisto@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Apple Inc. All rights
@@ -39,7 +50,7 @@
 #include "third_party/blink/renderer/core/css/resolver/style_resolver.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
-#include "third_party/blink/renderer/core/layout/custom/layout_worklet.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/custom/layout_worklet.h"
 #include "third_party/blink/renderer/core/layout/layout_theme.h"
 #include "third_party/blink/renderer/core/layout/text_autosizer.h"
 #include "third_party/blink/renderer/core/style/applied_text_decoration.h"
@@ -94,11 +105,13 @@ struct SameSizeAsComputedStyle : public RefCounted<SameSizeAsComputedStyle> {
   void* data_ref_svg_style;
 };
 
+#if 0 // BKTODO:
 // If this assert fails, it means that size of ComputedStyle has changed. Please
 // check that you really *do* what to increase the size of ComputedStyle, then
 // update the SameSizeAsComputedStyle struct to match the updated storage of
 // ComputedStyle.
 ASSERT_SIZE(ComputedStyle, SameSizeAsComputedStyle);
+#endif
 
 scoped_refptr<ComputedStyle> ComputedStyle::Create() {
   return base::AdoptRef(new ComputedStyle(InitialStyle()));
@@ -109,7 +122,7 @@ scoped_refptr<ComputedStyle> ComputedStyle::CreateInitialStyle() {
 }
 
 ComputedStyle& ComputedStyle::MutableInitialStyle() {
-  LEAK_SANITIZER_DISABLED_SCOPE;
+  ASSERT(false); // BKTODO: LEAK_SANITIZER_DISABLED_SCOPE;
   DEFINE_STATIC_REF(ComputedStyle, initial_style,
                     (ComputedStyle::CreateInitialStyle()));
   return *initial_style;
@@ -148,13 +161,17 @@ scoped_refptr<ComputedStyle> ComputedStyle::Clone(const ComputedStyle& other) {
 
 ALWAYS_INLINE ComputedStyle::ComputedStyle()
     : ComputedStyleBase(), RefCounted<ComputedStyle>() {
-  svg_style_.Init();
+  ASSERT(false); // BKTODO: svg_style_.Init();
 }
 
 ALWAYS_INLINE ComputedStyle::ComputedStyle(const ComputedStyle& o)
     : ComputedStyleBase(o),
+#if 0 // BKTODO:
       RefCounted<ComputedStyle>(),
       svg_style_(o.svg_style_) {}
+#else
+      RefCounted<ComputedStyle>() {}
+#endif
 
 static StyleRecalcChange DiffPseudoStyles(const ComputedStyle& old_style,
                                           const ComputedStyle& new_style) {
@@ -354,8 +371,11 @@ void ComputedStyle::InheritFrom(const ComputedStyle& inherit_parent,
   EUserModify current_user_modify = UserModify();
 
   ComputedStyleBase::InheritFrom(inherit_parent, is_at_shadow_boundary);
+  ASSERT(false); // BKTODO:
+#if 0
   if (svg_style_ != inherit_parent.svg_style_)
     svg_style_.Access()->InheritFrom(inherit_parent.svg_style_.Get());
+#endif
 
   if (is_at_shadow_boundary == kAtShadowBoundary) {
     // Even if surrounding content is user-editable, shadow DOM should act as a
@@ -399,8 +419,11 @@ void ComputedStyle::CopyNonInheritedFromCached(const ComputedStyle& other) {
   // m_affectedByDrag
   // m_isLink
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (svg_style_ != other.svg_style_)
     svg_style_.Access()->CopyNonInheritedFromCached(other.svg_style_.Get());
+#endif
 }
 
 bool ComputedStyle::operator==(const ComputedStyle& o) const {
@@ -465,8 +488,12 @@ bool ComputedStyle::IndependentInheritedEqual(
 
 bool ComputedStyle::NonIndependentInheritedEqual(
     const ComputedStyle& other) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return ComputedStyleBase::NonIndependentInheritedEqual(other) &&
          svg_style_->InheritedEqual(*other.svg_style_);
+#endif
 }
 
 bool ComputedStyle::LoadingCustomFontsEqual(const ComputedStyle& other) const {
@@ -474,15 +501,23 @@ bool ComputedStyle::LoadingCustomFontsEqual(const ComputedStyle& other) const {
 }
 
 bool ComputedStyle::NonInheritedEqual(const ComputedStyle& other) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // compare everything except the pseudoStyle pointer
   return ComputedStyleBase::NonInheritedEqual(other) &&
          svg_style_->NonInheritedEqual(*other.svg_style_);
+#endif
 }
 
 bool ComputedStyle::InheritedDataShared(const ComputedStyle& other) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // This is a fast check that only looks if the data structures are shared.
   return ComputedStyleBase::InheritedDataShared(other) &&
          svg_style_.Get() == other.svg_style_.Get();
+#endif
 }
 
 static bool DependenceOnContentHeightHasChanged(const ComputedStyle& a,
@@ -503,8 +538,11 @@ StyleDifference ComputedStyle::VisualInvalidationDiff(
   // property inside this function anyway.
 
   StyleDifference diff;
+  ASSERT(false); // BKTODO:
+#if 0
   if (svg_style_.Get() != other.svg_style_.Get())
     diff = svg_style_->Diff(other.svg_style_.Get());
+#endif
 
   if ((!diff.NeedsFullLayout() || !diff.NeedsFullPaintInvalidation()) &&
       DiffNeedsFullLayoutAndPaintInvalidation(other)) {
@@ -650,6 +688,8 @@ bool ComputedStyle::DiffNeedsFullLayoutForLayoutCustom(
     const ComputedStyle& other) const {
   DCHECK(IsDisplayLayoutCustomBox());
 
+  ASSERT(false); // BKTODO:
+#if 0
   LayoutWorklet* worklet = LayoutWorklet::From(*document.domWindow());
   const AtomicString& name = DisplayLayoutCustomName();
 
@@ -666,6 +706,7 @@ bool ComputedStyle::DiffNeedsFullLayoutForLayoutCustom(
 
   if (!CustomPropertiesEqual(definition->CustomInvalidationProperties(), other))
     return true;
+#endif
 
   return false;
 }
@@ -673,6 +714,8 @@ bool ComputedStyle::DiffNeedsFullLayoutForLayoutCustom(
 bool ComputedStyle::DiffNeedsFullLayoutForLayoutCustomChild(
     const Document& document,
     const ComputedStyle& other) const {
+  ASSERT(false); // BKTODO:
+#if 0
   LayoutWorklet* worklet = LayoutWorklet::From(*document.domWindow());
   const AtomicString& name = DisplayLayoutCustomParentName();
 
@@ -690,6 +733,7 @@ bool ComputedStyle::DiffNeedsFullLayoutForLayoutCustomChild(
   if (!CustomPropertiesEqual(definition->ChildCustomInvalidationProperties(),
                              other))
     return true;
+#endif
 
   return false;
 }
@@ -2154,11 +2198,13 @@ bool ComputedStyle::ShadowListHasCurrentColor(const ShadowList* shadow_list) {
                      });
 }
 
+#if 0 // BKTODO:
 STATIC_ASSERT_ENUM(cc::OverscrollBehavior::kOverscrollBehaviorTypeAuto,
                    EOverscrollBehavior::kAuto);
 STATIC_ASSERT_ENUM(cc::OverscrollBehavior::kOverscrollBehaviorTypeContain,
                    EOverscrollBehavior::kContain);
 STATIC_ASSERT_ENUM(cc::OverscrollBehavior::kOverscrollBehaviorTypeNone,
                    EOverscrollBehavior::kNone);
+#endif
 
 }  // namespace blink

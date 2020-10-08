@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_fetched_image.cc
+// Description: StyleFetchedImage Class
+//      Author: Ziming Li
+//     Created: 2020-10-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -28,8 +39,10 @@
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/loader/resource/image_resource_content.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/svg/graphics/svg_image.h"
 #include "third_party/blink/renderer/core/svg/graphics/svg_image_for_container.h"
+#endif
 #include "third_party/blink/renderer/platform/geometry/layout_size.h"
 
 namespace blink {
@@ -73,7 +86,11 @@ ImageResourceContent* StyleFetchedImage::CachedImage() const {
 }
 
 CSSValue* StyleFetchedImage::CssValue() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return CSSImageValue::Create(url_, const_cast<StyleFetchedImage*>(this));
+#endif
 }
 
 CSSValue* StyleFetchedImage::ComputedCSSValue() const {
@@ -98,8 +115,12 @@ FloatSize StyleFetchedImage::ImageSize(
     const LayoutSize& default_object_size) const {
   Image* image = image_->GetImage();
   if (image->IsSVGImage()) {
+    ASSERT(false); // BKTODO:
+    return FloatSize();
+#if 0
     return ImageSizeForSVGImage(ToSVGImage(image), multiplier,
                                 default_object_size);
+#endif
   }
   // Image orientation should only be respected for content images,
   // not decorative images such as StyleImage (backgrounds,
@@ -130,14 +151,20 @@ void StyleFetchedImage::ImageNotifyFinished(ImageResourceContent*) {
   if (image_ && image_->HasImage()) {
     Image& image = *image_->GetImage();
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (document_ && image.IsSVGImage())
       ToSVGImage(image).UpdateUseCounters(*document_);
+#endif
 
     image_->UpdateImageAnimationPolicy();
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Oilpan: do not prolong the Document's lifetime.
   document_.Clear();
+#endif
 }
 
 scoped_refptr<Image> StyleFetchedImage::GetImage(
@@ -148,8 +175,12 @@ scoped_refptr<Image> StyleFetchedImage::GetImage(
   Image* image = image_->GetImage();
   if (!image->IsSVGImage())
     return image;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return SVGImageForContainer::Create(ToSVGImage(image), target_size,
                                       style.EffectiveZoom(), url_);
+#endif
 }
 
 bool StyleFetchedImage::KnownToBeOpaque(const Document&,
@@ -165,17 +196,14 @@ void StyleFetchedImage::LoadDeferredImage(const Document& document) {
 }
 
 bool StyleFetchedImage::GetImageAnimationPolicy(ImageAnimationPolicy& policy) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!document_ || !document_->GetSettings()) {
     return false;
   }
   policy = document_->GetSettings()->GetImageAnimationPolicy();
+#endif
   return true;
-}
-
-void StyleFetchedImage::Trace(blink::Visitor* visitor) {
-  visitor->Trace(image_);
-  visitor->Trace(document_);
-  StyleImage::Trace(visitor);
 }
 
 }  // namespace blink

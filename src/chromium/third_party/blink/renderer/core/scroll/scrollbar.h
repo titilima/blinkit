@@ -242,7 +242,9 @@ class CORE_EXPORT Scrollbar : public GarbageCollectedFinalized<Scrollbar>,
 
   bool enabled_;
 
+#if 0 // BKTODO:
   TaskRunnerTimer<Scrollbar> scroll_timer_;
+#endif
 
   float elastic_overscroll_;
 

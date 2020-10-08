@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scrollbar.cc
+// Description: Scrollbar Class
+//      Author: Ziming Li
+//     Created: 2020-10-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2006, 2008 Apple Inc. All rights reserved.
  *
@@ -27,12 +38,14 @@
 
 #include <algorithm>
 #include "third_party/blink/public/platform/web_gesture_event.h"
+#if 0 // BKTODO:
 #include "third_party/blink/public/platform/web_mouse_event.h"
 #include "third_party/blink/public/platform/web_scrollbar_overlay_color_theme.h"
+#endif
 #include "third_party/blink/renderer/core/page/chrome_client.h"
-#include "third_party/blink/renderer/core/scroll/scroll_animator_base.h"
+// BKTODO: #include "third_party/blink/renderer/core/scroll/scroll_animator_base.h"
 #include "third_party/blink/renderer/core/scroll/scrollable_area.h"
-#include "third_party/blink/renderer/core/scroll/scrollbar_theme.h"
+// BKTODO: #include "third_party/blink/renderer/core/scroll/scrollbar_theme.h"
 #include "third_party/blink/renderer/platform/geometry/float_rect.h"
 #include "third_party/blink/renderer/platform/graphics/paint/cull_rect.h"
 
@@ -59,12 +72,16 @@ Scrollbar::Scrollbar(ScrollableArea* scrollable_area,
       dragging_document_(false),
       document_drag_pos_(0),
       enabled_(true),
+#if 0 // BKTODO:
       scroll_timer_(scrollable_area->GetTimerTaskRunner(),
                     this,
                     &Scrollbar::AutoscrollTimerFired),
+#endif
       elastic_overscroll_(0),
       track_needs_repaint_(true),
       thumb_needs_repaint_(true) {
+  ASSERT(false); // BKTODO:
+#if 0
   theme_.RegisterScrollbar(*this);
 
   // FIXME: This is ugly and would not be necessary if we fix cross-platform
@@ -76,17 +93,13 @@ Scrollbar::Scrollbar(ScrollableArea* scrollable_area,
   if (chrome_client_)
     thickness = chrome_client_->WindowToViewportScalar(thickness);
   frame_rect_ = IntRect(0, 0, thickness, thickness);
+#endif
 
   current_pos_ = ScrollableAreaCurrentPos();
 }
 
 Scrollbar::~Scrollbar() {
-  theme_.UnregisterScrollbar(*this);
-}
-
-void Scrollbar::Trace(blink::Visitor* visitor) {
-  visitor->Trace(scrollable_area_);
-  visitor->Trace(chrome_client_);
+  ASSERT(false); // BKTODO: theme_.UnregisterScrollbar(*this);
 }
 
 void Scrollbar::SetFrameRect(const IntRect& frame_rect) {
@@ -134,6 +147,8 @@ void Scrollbar::OffsetDidChange() {
     return;
 
   float old_position = current_pos_;
+  ASSERT(false); // BKTODO:
+#if 0
   int old_thumb_position = GetTheme().ThumbPosition(*this);
   current_pos_ = position;
 
@@ -144,6 +159,7 @@ void Scrollbar::OffsetDidChange() {
   if (pressed_part_ == kThumbPart)
     SetPressedPos(pressed_pos_ + GetTheme().ThumbPosition(*this) -
                   old_thumb_position);
+#endif
 }
 
 void Scrollbar::DisconnectFromScrollableArea() {
@@ -165,18 +181,22 @@ void Scrollbar::Paint(GraphicsContext& context,
   if (!cull_rect.IntersectsCullRect(FrameRect()))
     return;
 
-  GetTheme().Paint(*this, context, cull_rect);
+  ASSERT(false); // BKTODO: GetTheme().Paint(*this, context, cull_rect);
 }
 
 void Scrollbar::AutoscrollTimerFired(TimerBase*) {
-  AutoscrollPressedPart(GetTheme().AutoscrollTimerDelay());
+  ASSERT(false); // BKTODO: AutoscrollPressedPart(GetTheme().AutoscrollTimerDelay());
 }
 
 bool Scrollbar::ThumbWillBeUnderMouse() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   int thumb_pos = GetTheme().TrackPosition(*this) +
                   GetTheme().ThumbPosition(*this, ScrollableAreaTargetPos());
   int thumb_length = GetTheme().ThumbLength(*this);
   return PressedPos() >= thumb_pos && PressedPos() < thumb_pos + thumb_length;
+#endif
 }
 
 void Scrollbar::AutoscrollPressedPart(TimeDelta delay) {
@@ -231,11 +251,11 @@ void Scrollbar::StartTimerIfNeeded(TimeDelta delay) {
     return;
   }
 
-  scroll_timer_.StartOneShot(delay, FROM_HERE);
+  ASSERT(false); // BKTODO: scroll_timer_.StartOneShot(delay, FROM_HERE);
 }
 
 void Scrollbar::StopTimerIfNeeded() {
-  scroll_timer_.Stop();
+  ASSERT(false); // BKTODO: scroll_timer_.Stop();
 }
 
 ScrollDirectionPhysical Scrollbar::PressedPartScrollDirectionPhysical() {
@@ -271,6 +291,8 @@ void Scrollbar::MoveThumb(int pos, bool dragging_document) {
     if (dragging_document_)
       delta = pos - document_drag_pos_;
     dragging_document_ = true;
+    ASSERT(false); // BKTODO:
+#if 0
     ScrollOffset current_position =
         scrollable_area_->GetScrollAnimator().CurrentOffset();
     float destination_position =
@@ -281,6 +303,7 @@ void Scrollbar::MoveThumb(int pos, bool dragging_document) {
         scrollable_area_->ClampScrollOffset(orientation_, destination_position);
     scrollable_area_->SetScrollOffsetSingleAxis(
         orientation_, destination_position, kUserScroll);
+#endif
     document_drag_pos_ = pos;
     return;
   }
@@ -290,6 +313,8 @@ void Scrollbar::MoveThumb(int pos, bool dragging_document) {
     dragging_document_ = false;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Drag the thumb.
   int thumb_pos = GetTheme().ThumbPosition(*this);
   int thumb_len = GetTheme().ThumbLength(*this);
@@ -312,18 +337,22 @@ void Scrollbar::MoveThumb(int pos, bool dragging_document) {
     scrollable_area_->SetScrollOffsetSingleAxis(orientation_, new_offset,
                                                 kUserScroll);
   }
+#endif
 }
 
 void Scrollbar::SetHoveredPart(ScrollbarPart part) {
   if (part == hovered_part_)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (((hovered_part_ == kNoPart || part == kNoPart) &&
        GetTheme().InvalidateOnMouseEnterExit())
       // When there's a pressed part, we don't draw a hovered state, so there's
       // no reason to invalidate.
       || pressed_part_ == kNoPart)
     SetNeedsPaintInvalidation(static_cast<ScrollbarPart>(hovered_part_ | part));
+#endif
 
   hovered_part_ = part;
 }
@@ -345,6 +374,9 @@ void Scrollbar::SetPressedPart(ScrollbarPart part) {
 bool Scrollbar::GestureEvent(const WebGestureEvent& evt,
                              bool* should_update_capture) {
   DCHECK(should_update_capture);
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   switch (evt.GetType()) {
     case WebInputEvent::kGestureTapDown: {
       IntPoint position = FlooredIntPoint(evt.PositionInRootFrame());
@@ -424,9 +456,12 @@ bool Scrollbar::GestureEvent(const WebGestureEvent& evt,
       // By default, we assume that gestures don't deselect the scrollbar.
       return true;
   }
+#endif
 }
 
 void Scrollbar::MouseMoved(const WebMouseEvent& evt) {
+  ASSERT(false); // BKTODO:
+#if 0
   IntPoint position = FlooredIntPoint(evt.PositionInRootFrame());
   if (pressed_part_ == kThumbPart) {
     if (GetTheme().ShouldSnapBackToDragOrigin(*this, evt)) {
@@ -467,6 +502,7 @@ void Scrollbar::MouseMoved(const WebMouseEvent& evt) {
 
     SetHoveredPart(part);
   }
+#endif
 
   return;
 }
@@ -494,16 +530,21 @@ void Scrollbar::MouseUp(const WebMouseEvent& mouse_event) {
       scrollable_area_->MouseReleasedScrollbar();
     scrollable_area_->SnapAfterScrollbarScrolling(orientation_);
 
+    ASSERT(false); // BKTODO:
+#if 0
     ScrollbarPart part = GetTheme().HitTest(
         *this, FlooredIntPoint(mouse_event.PositionInRootFrame()));
     if (part == kNoPart) {
       SetHoveredPart(kNoPart);
       scrollable_area_->MouseExitedScrollbar(*this);
     }
+#endif
   }
 }
 
 void Scrollbar::MouseDown(const WebMouseEvent& evt) {
+  ASSERT(false); // BKTODO:
+#if 0
   // Early exit for right click
   if (evt.button == WebPointerProperties::Button::kRight)
     return;
@@ -538,6 +579,7 @@ void Scrollbar::MouseDown(const WebMouseEvent& evt) {
   pressed_pos_ = pressed_pos;
 
   AutoscrollPressedPart(GetTheme().InitialAutoscrollTimerDelay());
+#endif
 }
 
 void Scrollbar::SetScrollbarsHiddenIfOverlay(bool hidden) {
@@ -549,7 +591,7 @@ void Scrollbar::SetEnabled(bool e) {
   if (enabled_ == e)
     return;
   enabled_ = e;
-  GetTheme().UpdateEnabledState(*this);
+  ASSERT(false); // BKTODO: GetTheme().UpdateEnabledState(*this);
 
   // We can skip thumb/track repaint when hiding an overlay scrollbar, but not
   // when showing (since the proportions may have changed while hidden).
@@ -566,7 +608,11 @@ int Scrollbar::ScrollbarThickness() const {
 }
 
 bool Scrollbar::IsOverlayScrollbar() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return theme_.UsesOverlayScrollbars();
+#endif
 }
 
 bool Scrollbar::ShouldParticipateInHitTesting() {
@@ -632,6 +678,9 @@ float Scrollbar::ScrollableAreaTargetPos() const {
   if (!scrollable_area_)
     return 0;
 
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   if (orientation_ == kHorizontalScrollbar) {
     return scrollable_area_->GetScrollAnimator().DesiredTargetOffset().Width() -
            scrollable_area_->MinimumScrollOffset().Width();
@@ -639,11 +688,15 @@ float Scrollbar::ScrollableAreaTargetPos() const {
 
   return scrollable_area_->GetScrollAnimator().DesiredTargetOffset().Height() -
          scrollable_area_->MinimumScrollOffset().Height();
+#endif
 }
 
 void Scrollbar::SetNeedsPaintInvalidation(ScrollbarPart invalid_parts) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (theme_.ShouldRepaintAllPartsOnInvalidation())
     invalid_parts = kAllParts;
+#endif
   if (invalid_parts & ~kThumbPart)
     track_needs_repaint_ = true;
   if (invalid_parts & kThumbPart)
@@ -652,6 +705,7 @@ void Scrollbar::SetNeedsPaintInvalidation(ScrollbarPart invalid_parts) {
     scrollable_area_->SetScrollbarNeedsPaintInvalidation(Orientation());
 }
 
+#if 0 // BKTODO:
 CompositorElementId Scrollbar::GetElementId() {
   DCHECK(scrollable_area_);
   return scrollable_area_->GetScrollbarElementId(orientation_);
@@ -661,5 +715,6 @@ STATIC_ASSERT_ENUM(kWebScrollbarOverlayColorThemeDark,
                    kScrollbarOverlayColorThemeDark);
 STATIC_ASSERT_ENUM(kWebScrollbarOverlayColorThemeLight,
                    kScrollbarOverlayColorThemeLight);
+#endif
 
 }  // namespace blink
