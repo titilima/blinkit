@@ -3575,6 +3575,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\transforms\interpolated_transform_operation.cc">
       <Filter>renderer\platform\transforms</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\date_math.cc">
+      <Filter>renderer\platform\wtf</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9669,6 +9672,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\transforms\interpolated_transform_operation.h">
       <Filter>renderer\platform\transforms</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_cursor_info.h">
+      <Filter>public\platform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

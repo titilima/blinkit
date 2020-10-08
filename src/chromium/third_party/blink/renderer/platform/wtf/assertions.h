@@ -96,4 +96,10 @@
     return static_cast<const Type*>(&argument);                      \
   }                                                                  \
 
+
+// Check at compile time that related enums stay in sync.
+#define STATIC_ASSERT_ENUM(a, b)                                \
+    static_assert(static_cast<int>(a) == static_cast<int>(b),   \
+                "mismatching enum: " #a)
+
 #endif  // BLINKIT_BLINK_ASSERTIONS_H
