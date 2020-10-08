@@ -1,8 +1,8 @@
 // -------------------------------------------------
 // BlinKit - blink Library
 // -------------------------------------------------
-//   File Name: path_interpolation_functions.h
-// Description: PathInterpolationFunctions Class
+//   File Name: css_path_value.h
+// Description: CSSPathValue Class
 //      Author: Ziming Li
 //     Created: 2020-09-06
 // -------------------------------------------------
@@ -47,9 +47,11 @@ class CSSPathValue : public CSSValue {
 
   void TraceAfterDispatch(blink::Visitor*);
 
+#if 0 // BKTODO:
   const SVGPathByteStream& ByteStream() const {
     return style_path_->ByteStream();
   }
+#endif
 
  private:
 #if 0 // BKTODO:

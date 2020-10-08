@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_non_inherited_variables.cc
+// Description: StyleNonInheritedVariables Class
+//      Author: Ziming Li
+//     Created: 2020-10-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -31,12 +42,12 @@ void StyleNonInheritedVariables::SetRegisteredVariable(
     const AtomicString& name,
     const CSSValue* parsed_value) {
   needs_resolution_ = true;
-  registered_data_->Set(name, const_cast<CSSValue*>(parsed_value));
+  ASSERT(false); // BKTODO: registered_data_->Set(name, const_cast<CSSValue*>(parsed_value));
 }
 
 void StyleNonInheritedVariables::RemoveVariable(const AtomicString& name) {
   data_.Set(name, nullptr);
-  registered_data_->Set(name, nullptr);
+  ASSERT(false); // BKTODO: registered_data_->Set(name, nullptr);
 }
 
 StyleNonInheritedVariables::StyleNonInheritedVariables()
