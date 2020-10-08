@@ -3572,6 +3572,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\capitalize.cc">
       <Filter>renderer\platform\text</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\transforms\interpolated_transform_operation.cc">
+      <Filter>renderer\platform\transforms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9663,6 +9666,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\capitalize.h">
       <Filter>renderer\platform\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\transforms\interpolated_transform_operation.h">
+      <Filter>renderer\platform\transforms</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
