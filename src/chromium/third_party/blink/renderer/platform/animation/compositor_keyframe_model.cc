@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: compositor_keyframe_model.cc
+// Description: CompositorKeyframeModel Class
+//      Author: Ziming Li
+//     Created: 2020-10-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,17 +17,21 @@
 
 #include <memory>
 #include "base/memory/ptr_util.h"
+#if 0 // BKTODO:
 #include "cc/animation/animation_curve.h"
 #include "cc/animation/animation_id_provider.h"
 #include "cc/animation/keyframed_animation_curve.h"
+#endif
 #include "third_party/blink/renderer/platform/animation/compositor_animation_curve.h"
 #include "third_party/blink/renderer/platform/animation/compositor_filter_animation_curve.h"
 #include "third_party/blink/renderer/platform/animation/compositor_float_animation_curve.h"
-#include "third_party/blink/renderer/platform/animation/compositor_scroll_offset_animation_curve.h"
+// BKTODO: #include "third_party/blink/renderer/platform/animation/compositor_scroll_offset_animation_curve.h"
 #include "third_party/blink/renderer/platform/animation/compositor_transform_animation_curve.h"
 
+#if 0 // BKTODO:
 using cc::KeyframeModel;
 using cc::AnimationIdProvider;
+#endif
 
 using blink::CompositorAnimationCurve;
 using blink::CompositorKeyframeModel;
@@ -28,6 +43,8 @@ CompositorKeyframeModel::CompositorKeyframeModel(
     CompositorTargetProperty::Type target_property,
     int keyframe_model_id,
     int group_id) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!keyframe_model_id)
     keyframe_model_id = AnimationIdProvider::NextKeyframeModelId();
   if (!group_id)
@@ -36,6 +53,7 @@ CompositorKeyframeModel::CompositorKeyframeModel(
   keyframe_model_ =
       KeyframeModel::Create(curve.CloneToAnimationCurve(), keyframe_model_id,
                             group_id, target_property);
+#endif
 }
 
 CompositorKeyframeModel::~CompositorKeyframeModel() = default;
@@ -74,8 +92,11 @@ double CompositorKeyframeModel::StartTime() const {
 }
 
 void CompositorKeyframeModel::SetStartTime(double monotonic_time) {
+  ASSERT(false); // BKTODO:
+#if 0
   keyframe_model_->set_start_time(base::TimeTicks::FromInternalValue(
       monotonic_time * base::Time::kMicrosecondsPerSecond));
+#endif
 }
 
 double CompositorKeyframeModel::TimeOffset() const {
@@ -122,12 +143,16 @@ CompositorKeyframeModel::ReleaseCcKeyframeModel() {
 std::unique_ptr<CompositorFloatAnimationCurve>
 CompositorKeyframeModel::FloatCurveForTesting() const {
   const cc::AnimationCurve* curve = keyframe_model_->curve();
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   DCHECK_EQ(cc::AnimationCurve::FLOAT, curve->Type());
 
   auto keyframed_curve = base::WrapUnique(
       static_cast<cc::KeyframedFloatAnimationCurve*>(curve->Clone().release()));
   return CompositorFloatAnimationCurve::CreateForTesting(
       std::move(keyframed_curve));
+#endif
 }
 
 }  // namespace blink

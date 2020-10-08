@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: compositor_transform_animation_curve.h
+// Description: CompositorTransformAnimationCurve Class
+//      Author: Ziming Li
+//     Created: 2020-10-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -31,7 +42,11 @@ class PLATFORM_EXPORT CompositorTransformAnimationCurve
 
  public:
   static std::unique_ptr<CompositorTransformAnimationCurve> Create() {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     return base::WrapUnique(new CompositorTransformAnimationCurve());
+#endif
   }
 
   ~CompositorTransformAnimationCurve() override;
@@ -40,13 +55,17 @@ class PLATFORM_EXPORT CompositorTransformAnimationCurve
   void SetTimingFunction(const TimingFunction&);
   void SetScaledDuration(double);
 
+#if 0 // BKTODO:
   // CompositorAnimationCurve implementation.
   std::unique_ptr<cc::AnimationCurve> CloneToAnimationCurve() const override;
+#endif
 
  private:
   CompositorTransformAnimationCurve();
 
+#if 0 // BKTODO:
   std::unique_ptr<cc::KeyframedTransformAnimationCurve> curve_;
+#endif
 };
 
 }  // namespace blink
