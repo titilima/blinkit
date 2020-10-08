@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: compositor_float_animation_curve.h
+// Description: CompositorFloatAnimationCurve Class
+//      Author: Ziming Li
+//     Created: 2020-10-08
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -33,7 +44,11 @@ class PLATFORM_EXPORT CompositorFloatAnimationCurve
 
  public:
   static std::unique_ptr<CompositorFloatAnimationCurve> Create() {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
     return base::WrapUnique(new CompositorFloatAnimationCurve());
+#endif
   }
 
   ~CompositorFloatAnimationCurve() override;
@@ -43,6 +58,7 @@ class PLATFORM_EXPORT CompositorFloatAnimationCurve
   void SetScaledDuration(double);
   float GetValue(double time) const;
 
+#if 0 // BKTODO:
   // CompositorAnimationCurve implementation.
   std::unique_ptr<cc::AnimationCurve> CloneToAnimationCurve() const override;
 
@@ -51,15 +67,18 @@ class PLATFORM_EXPORT CompositorFloatAnimationCurve
 
   using Keyframes = Vector<std::unique_ptr<CompositorFloatKeyframe>>;
   Keyframes KeyframesForTesting() const;
+#endif
 
   scoped_refptr<TimingFunction> GetTimingFunctionForTesting() const;
 
  private:
   CompositorFloatAnimationCurve();
+#if 0 // BKTODO:
   CompositorFloatAnimationCurve(
       std::unique_ptr<cc::KeyframedFloatAnimationCurve>);
 
   std::unique_ptr<cc::KeyframedFloatAnimationCurve> curve_;
+#endif
 };
 
 }  // namespace blink
