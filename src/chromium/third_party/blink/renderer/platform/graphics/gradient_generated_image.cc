@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: gradient_generated_image.cc
+// Description: GradientGeneratedImage Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008, 2009, 2010, 2012 Apple Inc. All rights reserved.
  *
@@ -31,6 +42,7 @@
 
 namespace blink {
 
+#if 0 // BKTODO:
 void GradientGeneratedImage::Draw(cc::PaintCanvas* canvas,
                                   const PaintFlags& flags,
                                   const FloatRect& dest_rect,
@@ -52,17 +64,22 @@ void GradientGeneratedImage::Draw(cc::PaintCanvas* canvas,
   gradient_->ApplyToFlags(gradient_flags, transform);
   canvas->drawRect(visible_dest_rect, gradient_flags);
 }
+#endif
 
 void GradientGeneratedImage::DrawTile(GraphicsContext& context,
                                       const FloatRect& src_rect) {
+  ASSERT(false); // BKTODO:
+#if 0
   // TODO(ccameron): This function should not ignore |context|'s color behavior.
   // https://crbug.com/672306
   PaintFlags gradient_flags(context.FillFlags());
   gradient_->ApplyToFlags(gradient_flags, SkMatrix::I());
 
   context.DrawRect(src_rect, gradient_flags);
+#endif
 }
 
+#if 0 // BKTODO:
 bool GradientGeneratedImage::ApplyShader(PaintFlags& flags,
                                          const SkMatrix& local_matrix) {
   DCHECK(gradient_);
@@ -70,5 +87,6 @@ bool GradientGeneratedImage::ApplyShader(PaintFlags& flags,
 
   return true;
 }
+#endif
 
 }  // namespace blink

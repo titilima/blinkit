@@ -83,8 +83,10 @@ void GeneratedImage::DrawPattern(GraphicsContext& dest_context,
 #endif
 }
 
+#if 0 // BKTODO:
 PaintImage GeneratedImage::PaintImageForCurrentFrame() {
   return PaintImage();
 }
+#endif
 
 }  // namespace blink
