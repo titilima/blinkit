@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: graphics_context.cc
+// Description: GraphicsContext Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2004, 2005, 2006, 2009 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -29,14 +40,16 @@
 #include <memory>
 
 #include "build/build_config.h"
-#include "skia/ext/platform_canvas.h"
+// BKTODO: #include "skia/ext/platform_canvas.h"
 #include "third_party/blink/renderer/platform/fonts/text_run_paint_info.h"
 #include "third_party/blink/renderer/platform/geometry/float_rect.h"
 #include "third_party/blink/renderer/platform/geometry/float_rounded_rect.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context_state_saver.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/graphics/interpolation_space.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
+#endif
 #include "third_party/blink/renderer/platform/graphics/paint/paint_controller.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_record.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_recorder.h"
@@ -83,10 +96,13 @@ GraphicsContext::GraphicsContext(PaintController& paint_controller,
   paint_state_ = paint_state_stack_.back().get();
 
   if (ContextDisabled()) {
+    ASSERT(false); // BKTODO:
+#if 0
     DEFINE_STATIC_LOCAL(SkCanvas*, null_sk_canvas,
                         (SkMakeNullCanvas().release()));
     DEFINE_STATIC_LOCAL(SkiaPaintCanvas, null_canvas, (null_sk_canvas));
     canvas_ = &null_canvas;
+#endif
   }
 }
 
@@ -108,7 +124,7 @@ void GraphicsContext::Save() {
   paint_state_->IncrementSaveCount();
 
   DCHECK(canvas_);
-  canvas_->save();
+  ASSERT(false); // BKTODO: canvas_->save();
 }
 
 void GraphicsContext::Restore() {
@@ -116,7 +132,10 @@ void GraphicsContext::Restore() {
     return;
 
   if (!paint_state_index_ && !paint_state_->SaveCount()) {
+    ASSERT(false); // BKTODO:
+#if 0
     DLOG(ERROR) << "ERROR void GraphicsContext::restore() stack is empty";
+#endif
     return;
   }
 
@@ -128,7 +147,7 @@ void GraphicsContext::Restore() {
   }
 
   DCHECK(canvas_);
-  canvas_->restore();
+  ASSERT(false); // BKTODO: canvas_->restore();
 }
 
 #if DCHECK_IS_ON()
@@ -176,6 +195,7 @@ void GraphicsContext::SetHighContrast(const HighContrastSettings& settings) {
   high_contrast_filter_ = SkHighContrastFilter::Make(config);
 }
 
+#if 0 // BKTODO:
 void GraphicsContext::SaveLayer(const SkRect* bounds, const PaintFlags* flags) {
   if (ContextDisabled())
     return;
@@ -183,6 +203,7 @@ void GraphicsContext::SaveLayer(const SkRect* bounds, const PaintFlags* flags) {
   DCHECK(canvas_);
   canvas_->saveLayer(bounds, flags);
 }
+#endif
 
 void GraphicsContext::RestoreLayer() {
   if (ContextDisabled())
@@ -190,7 +211,7 @@ void GraphicsContext::RestoreLayer() {
 
   DCHECK(canvas_);
 
-  canvas_->restore();
+  ASSERT(false); // BKTODO: canvas_->restore();
 }
 
 void GraphicsContext::SetInDrawingRecorder(bool val) {
@@ -256,9 +277,10 @@ void GraphicsContext::Concat(const SkMatrix& matrix) {
 
   DCHECK(canvas_);
 
-  canvas_->concat(matrix);
+  ASSERT(false); // BKTODO: canvas_->concat(matrix);
 }
 
+#if 0 // BKTODO:
 void GraphicsContext::BeginLayer(float opacity,
                                  SkBlendMode xfermode,
                                  const FloatRect* bounds,
@@ -284,6 +306,7 @@ void GraphicsContext::BeginLayer(float opacity,
   ++layer_count_;
 #endif
 }
+#endif
 
 void GraphicsContext::EndLayer() {
   if (ContextDisabled())
@@ -301,21 +324,27 @@ void GraphicsContext::BeginRecording(const FloatRect& bounds) {
     return;
 
   DCHECK(!canvas_);
+  ASSERT(false); // BKTODO:
+#if 0
   canvas_ = paint_recorder_.beginRecording(bounds);
   if (has_meta_data_)
     canvas_->getMetaData() = meta_data_;
+#endif
 }
 
 namespace {
 
+#if 0 // BKTODO:
 sk_sp<PaintRecord> CreateEmptyPaintRecord() {
   PaintRecorder recorder;
   recorder.beginRecording(SkRect::MakeEmpty());
   return recorder.finishRecordingAsPicture();
 }
+#endif
 
 }  // anonymous namespace
 
+#if 0 // BKTODO:
 sk_sp<PaintRecord> GraphicsContext::EndRecording() {
   if (ContextDisabled()) {
     // Clients expect endRecording() to always return a non-null paint record.
@@ -362,6 +391,7 @@ void GraphicsContext::CompositeRecord(sk_sp<PaintRecord> record,
                      0, 0, &flags);
   canvas_->restore();
 }
+#endif
 
 namespace {
 
@@ -418,6 +448,8 @@ void GraphicsContext::DrawFocusRing(const Vector<IntRect>& rects,
   if (!rect_count)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   SkRegion focus_ring_region;
   offset = AdjustedFocusRingOffset(offset);
   for (unsigned i = 0; i < rect_count; i++) {
@@ -439,6 +471,7 @@ void GraphicsContext::DrawFocusRing(const Vector<IntRect>& rects,
     if (focus_ring_region.getBoundaryPath(&path))
       DrawFocusRingPath(path, color, width);
   }
+#endif
 }
 
 static inline FloatRect AreaCastingShadowInHole(
@@ -521,6 +554,7 @@ void GraphicsContext::DrawInnerShadow(const FloatRoundedRect& rect,
   FillRectWithRoundedHole(outer_rect, rounded_hole, fill_color);
 }
 
+#if 0 // BKTODO:
 static void EnforceDotsAtEndpoints(GraphicsContext& context,
                                    FloatPoint& p1,
                                    FloatPoint& p2,
@@ -617,6 +651,7 @@ static void EnforceDotsAtEndpoints(GraphicsContext& context,
     }
   }
 }
+#endif
 
 void GraphicsContext::DrawLine(const IntPoint& point1, const IntPoint& point2) {
   if (ContextDisabled())
@@ -632,6 +667,8 @@ void GraphicsContext::DrawLine(const IntPoint& point1, const IntPoint& point2) {
   bool is_vertical_line = (p1.X() == p2.X());
   int width = roundf(StrokeThickness());
 
+  ASSERT(false); // BKTODO:
+#if 0
   // We know these are vertical or horizontal lines, so the length will just
   // be the sum of the displacement component vectors give or take 1 -
   // probably worth the speed up of no square root, which also won't be exact.
@@ -666,6 +703,7 @@ void GraphicsContext::DrawLine(const IntPoint& point1, const IntPoint& point2) {
   AdjustLineToPixelBoundaries(p1, p2, width);
   canvas_->drawLine(p1.X(), p1.Y(), p2.X(), p2.Y(),
                     ApplyHighContrastFilter(&flags));
+#endif
 }
 
 void GraphicsContext::DrawLineForText(const FloatPoint& pt, float width) {
@@ -675,6 +713,8 @@ void GraphicsContext::DrawLineForText(const FloatPoint& pt, float width) {
   if (width <= 0)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   PaintFlags flags;
   switch (GetStrokeStyle()) {
     case kNoStroke:
@@ -704,6 +744,7 @@ void GraphicsContext::DrawLineForText(const FloatPoint& pt, float width) {
     default:
       break;
   }
+#endif
 
   NOTREACHED();
 }
@@ -718,6 +759,8 @@ void GraphicsContext::DrawRect(const IntRect& rect) {
     return;
 
   SkRect sk_rect = rect;
+  ASSERT(false); // BKTODO:
+#if 0
   if (ImmutableState()->FillColor().Alpha())
     DrawRect(sk_rect, ImmutableState()->FillFlags());
 
@@ -732,8 +775,10 @@ void GraphicsContext::DrawRect(const IntRect& rect) {
     sk_rect.inset(0.5f, 0.5f);
     DrawRect(sk_rect, flags);
   }
+#endif
 }
 
+#if 0 // BKTODO:
 template <typename TextPaintInfo>
 void GraphicsContext::DrawTextInternal(const Font& font,
                                        const TextPaintInfo& text_info,
@@ -759,6 +804,7 @@ void GraphicsContext::DrawText(const Font& font,
                                const PaintFlags& flags) {
   DrawTextInternal(font, text_info, point, flags);
 }
+#endif
 
 template <typename DrawTextFunc>
 void GraphicsContext::DrawTextPasses(const DrawTextFunc& draw_text) {
@@ -770,12 +816,15 @@ void GraphicsContext::DrawTextPasses(const DrawTextFunc& draw_text) {
 
   if ((mode_flags & kTextModeStroke) && GetStrokeStyle() != kNoStroke &&
       StrokeThickness() > 0) {
+    ASSERT(false); // BKTODO:
+#if 0
     PaintFlags stroke_flags(ImmutableState()->StrokeFlags());
     if (mode_flags & kTextModeFill) {
       // shadow was already applied during fill pass
       stroke_flags.setLooper(nullptr);
     }
     draw_text(stroke_flags);
+#endif
   }
 }
 
@@ -786,10 +835,13 @@ void GraphicsContext::DrawTextInternal(const Font& font,
   if (ContextDisabled())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   DrawTextPasses([&font, &text_info, &point, this](const PaintFlags& flags) {
     font.DrawText(canvas_, text_info, point, device_scale_factor_,
                   ApplyHighContrastFilter(&flags));
   });
+#endif
 }
 
 void GraphicsContext::DrawText(const Font& font,
@@ -812,12 +864,15 @@ void GraphicsContext::DrawEmphasisMarksInternal(const Font& font,
   if (ContextDisabled())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   DrawTextPasses(
       [&font, &text_info, &mark, &point, this](const PaintFlags& flags) {
         font.DrawEmphasisMarks(canvas_, text_info, mark, point,
                                device_scale_factor_,
                                ApplyHighContrastFilter(&flags));
       });
+#endif
 }
 
 void GraphicsContext::DrawEmphasisMarks(const Font& font,
@@ -843,6 +898,8 @@ void GraphicsContext::DrawBidiText(
   if (ContextDisabled())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   DrawTextPasses([&font, &run_info, &point, custom_font_not_ready_action,
                   this](const PaintFlags& flags) {
     if (font.DrawBidiText(canvas_, run_info, point,
@@ -850,6 +907,7 @@ void GraphicsContext::DrawBidiText(
                           ApplyHighContrastFilter(&flags)))
       paint_controller_.SetTextPainted();
   });
+#endif
 }
 
 void GraphicsContext::DrawHighlightForText(const Font& font,
@@ -878,6 +936,8 @@ void GraphicsContext::DrawImage(
 
   const FloatRect src = src_ptr ? *src_ptr : FloatRect(image->Rect());
 
+  ASSERT(false); // BKTODO:
+#if 0
   PaintFlags image_flags = ImmutableState()->FillFlags();
   image_flags.setBlendMode(op);
   image_flags.setColor(SK_ColorBLACK);
@@ -887,6 +947,7 @@ void GraphicsContext::DrawImage(
     image_flags.setColorFilter(high_contrast_filter_);
   image->Draw(canvas_, image_flags, dest, src, should_respect_image_orientation,
               Image::kClampImageToSourceRect, decode_mode);
+#endif
   paint_controller_.SetImagePainted();
 }
 
@@ -913,6 +974,8 @@ void GraphicsContext::DrawImageRRect(
   if (dest.IsEmpty() || visible_src.IsEmpty())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   PaintFlags image_flags = ImmutableState()->FillFlags();
   image_flags.setBlendMode(op);
   image_flags.setColor(SK_ColorBLACK);
@@ -939,6 +1002,7 @@ void GraphicsContext::DrawImageRRect(
                 respect_orientation, Image::kClampImageToSourceRect,
                 decode_mode);
   }
+#endif
 
   paint_controller_.SetImagePainted();
 }
@@ -1006,6 +1070,7 @@ void GraphicsContext::DrawTiledImage(Image* image,
   paint_controller_.SetImagePainted();
 }
 
+#if 0 // BKTODO:
 void GraphicsContext::DrawOval(const SkRect& oval, const PaintFlags& flags) {
   if (ContextDisabled())
     return;
@@ -1037,12 +1102,13 @@ void GraphicsContext::DrawRRect(const SkRRect& rrect, const PaintFlags& flags) {
 
   canvas_->drawRRect(rrect, ApplyHighContrastFilter(&flags));
 }
+#endif
 
 void GraphicsContext::FillPath(const Path& path_to_fill) {
   if (ContextDisabled() || path_to_fill.IsEmpty())
     return;
 
-  DrawPath(path_to_fill.GetSkPath(), ImmutableState()->FillFlags());
+  ASSERT(false); // BKTODO: DrawPath(path_to_fill.GetSkPath(), ImmutableState()->FillFlags());
 }
 
 void GraphicsContext::FillRect(const IntRect& rect) {
@@ -1059,7 +1125,7 @@ void GraphicsContext::FillRect(const FloatRect& rect) {
   if (ContextDisabled())
     return;
 
-  DrawRect(rect, ImmutableState()->FillFlags());
+  ASSERT(false); // BKTODO: DrawRect(rect, ImmutableState()->FillFlags());
 }
 
 void GraphicsContext::FillRect(const FloatRect& rect,
@@ -1068,11 +1134,14 @@ void GraphicsContext::FillRect(const FloatRect& rect,
   if (ContextDisabled())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   PaintFlags flags = ImmutableState()->FillFlags();
   flags.setColor(color.Rgb());
   flags.setBlendMode(xfer_mode);
 
   DrawRect(rect, flags);
+#endif
 }
 
 void GraphicsContext::FillRoundedRect(const FloatRoundedRect& rrect,
@@ -1085,6 +1154,8 @@ void GraphicsContext::FillRoundedRect(const FloatRoundedRect& rrect,
     return;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (color == FillColor()) {
     DrawRRect(rrect, ImmutableState()->FillFlags());
     return;
@@ -1094,6 +1165,7 @@ void GraphicsContext::FillRoundedRect(const FloatRoundedRect& rrect,
   flags.setColor(color.Rgb());
 
   DrawRRect(rrect, flags);
+#endif
 }
 
 namespace {
@@ -1147,6 +1219,8 @@ void GraphicsContext::FillDRRect(const FloatRoundedRect& outer,
   DCHECK(canvas_);
 
   if (!IsSimpleDRRect(outer, inner)) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (color == FillColor()) {
       canvas_->drawDRRect(outer, inner, ImmutableState()->FillFlags());
     } else {
@@ -1154,6 +1228,7 @@ void GraphicsContext::FillDRRect(const FloatRoundedRect& outer,
       flags.setColor(ApplyHighContrastFilter(color).Rgb());
       canvas_->drawDRRect(outer, inner, flags);
     }
+#endif
 
     return;
   }
@@ -1163,19 +1238,22 @@ void GraphicsContext::FillDRRect(const FloatRoundedRect& outer,
   SkRRect stroke_r_rect = outer;
   stroke_r_rect.inset(stroke_width / 2, stroke_width / 2);
 
+  ASSERT(false); // BKTODO:
+#if 0
   PaintFlags stroke_flags(ImmutableState()->FillFlags());
   stroke_flags.setColor(ApplyHighContrastFilter(color).Rgb());
   stroke_flags.setStyle(PaintFlags::kStroke_Style);
   stroke_flags.setStrokeWidth(stroke_width);
 
   canvas_->drawRRect(stroke_r_rect, stroke_flags);
+#endif
 }
 
 void GraphicsContext::FillEllipse(const FloatRect& ellipse) {
   if (ContextDisabled())
     return;
 
-  DrawOval(ellipse, ImmutableState()->FillFlags());
+  ASSERT(false); // BKTODO: DrawOval(ellipse, ImmutableState()->FillFlags());
 }
 
 void GraphicsContext::StrokePath(const Path& path_to_stroke,
@@ -1184,14 +1262,19 @@ void GraphicsContext::StrokePath(const Path& path_to_stroke,
   if (ContextDisabled() || path_to_stroke.IsEmpty())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   DrawPath(path_to_stroke.GetSkPath(),
            ImmutableState()->StrokeFlags(length, dash_thickness));
+#endif
 }
 
 void GraphicsContext::StrokeRect(const FloatRect& rect, float line_width) {
   if (ContextDisabled())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   PaintFlags flags(ImmutableState()->StrokeFlags());
   flags.setStrokeWidth(WebCoreFloatToSkScalar(line_width));
   // Reset the dash effect to account for the width
@@ -1213,13 +1296,14 @@ void GraphicsContext::StrokeRect(const FloatRect& rect, float line_width) {
     path.close();
     DrawPath(path, flags);
   }
+#endif
 }
 
 void GraphicsContext::StrokeEllipse(const FloatRect& ellipse) {
   if (ContextDisabled())
     return;
 
-  DrawOval(ellipse, ImmutableState()->StrokeFlags());
+  ASSERT(false); // BKTODO: DrawOval(ellipse, ImmutableState()->StrokeFlags());
 }
 
 void GraphicsContext::ClipRoundedRect(const FloatRoundedRect& rrect,
@@ -1262,7 +1346,7 @@ void GraphicsContext::ClipRect(const SkRect& rect,
     return;
   DCHECK(canvas_);
 
-  canvas_->clipRect(rect, op, aa == kAntiAliased);
+  ASSERT(false); // BKTODO: canvas_->clipRect(rect, op, aa == kAntiAliased);
 }
 
 void GraphicsContext::ClipPath(const SkPath& path,
@@ -1272,7 +1356,7 @@ void GraphicsContext::ClipPath(const SkPath& path,
     return;
   DCHECK(canvas_);
 
-  canvas_->clipPath(path, op, aa == kAntiAliased);
+  ASSERT(false); // BKTODO: canvas_->clipPath(path, op, aa == kAntiAliased);
 }
 
 void GraphicsContext::ClipRRect(const SkRRect& rect,
@@ -1282,7 +1366,7 @@ void GraphicsContext::ClipRRect(const SkRRect& rect,
     return;
   DCHECK(canvas_);
 
-  canvas_->clipRRect(rect, op, aa == kAntiAliased);
+  ASSERT(false); // BKTODO: canvas_->clipRRect(rect, op, aa == kAntiAliased);
 }
 
 void GraphicsContext::Rotate(float angle_in_radians) {
@@ -1290,8 +1374,11 @@ void GraphicsContext::Rotate(float angle_in_radians) {
     return;
   DCHECK(canvas_);
 
+  ASSERT(false); // BKTODO:
+#if 0
   canvas_->rotate(
       WebCoreFloatToSkScalar(angle_in_radians * (180.0f / 3.14159265f)));
+#endif
 }
 
 void GraphicsContext::Translate(float x, float y) {
@@ -1302,7 +1389,7 @@ void GraphicsContext::Translate(float x, float y) {
   if (!x && !y)
     return;
 
-  canvas_->translate(WebCoreFloatToSkScalar(x), WebCoreFloatToSkScalar(y));
+  ASSERT(false); // BKTODO: canvas_->translate(WebCoreFloatToSkScalar(x), WebCoreFloatToSkScalar(y));
 }
 
 void GraphicsContext::Scale(float x, float y) {
@@ -1310,18 +1397,21 @@ void GraphicsContext::Scale(float x, float y) {
     return;
   DCHECK(canvas_);
 
-  canvas_->scale(WebCoreFloatToSkScalar(x), WebCoreFloatToSkScalar(y));
+  ASSERT(false); // BKTODO: canvas_->scale(WebCoreFloatToSkScalar(x), WebCoreFloatToSkScalar(y));
 }
 
-void GraphicsContext::SetURLForRect(const KURL& link,
+void GraphicsContext::SetURLForRect(const GURL& link,
                                     const IntRect& dest_rect) {
   if (ContextDisabled())
     return;
   DCHECK(canvas_);
 
-  sk_sp<SkData> url(SkData::MakeWithCString(link.GetString().Utf8().data()));
+  sk_sp<SkData> url(SkData::MakeWithCString(link.spec().c_str()));
+  ASSERT(false); // BKTODO:
+#if 0
   canvas_->Annotate(cc::PaintCanvas::AnnotationType::URL, dest_rect,
                     std::move(url));
+#endif
 }
 
 void GraphicsContext::SetURLFragmentForRect(const String& dest_name,
@@ -1331,8 +1421,11 @@ void GraphicsContext::SetURLFragmentForRect(const String& dest_name,
   DCHECK(canvas_);
 
   sk_sp<SkData> sk_dest_name(SkData::MakeWithCString(dest_name.Utf8().data()));
+  ASSERT(false); // BKTODO:
+#if 0
   canvas_->Annotate(cc::PaintCanvas::AnnotationType::LINK_TO_DESTINATION, rect,
                     std::move(sk_dest_name));
+#endif
 }
 
 void GraphicsContext::SetURLDestinationLocation(const String& name,
@@ -1343,8 +1436,11 @@ void GraphicsContext::SetURLDestinationLocation(const String& name,
 
   SkRect rect = SkRect::MakeXYWH(location.X(), location.Y(), 0, 0);
   sk_sp<SkData> sk_name(SkData::MakeWithCString(name.Utf8().data()));
+  ASSERT(false); // BKTODO:
+#if 0
   canvas_->Annotate(cc::PaintCanvas::AnnotationType::NAMED_DESTINATION, rect,
                     std::move(sk_name));
+#endif
 }
 
 void GraphicsContext::ConcatCTM(const AffineTransform& affine) {
@@ -1358,9 +1454,12 @@ void GraphicsContext::FillRectWithRoundedHole(
   if (ContextDisabled())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   PaintFlags flags(ImmutableState()->FillFlags());
   flags.setColor(ApplyHighContrastFilter(color).Rgb());
   canvas_->drawDRRect(SkRRect::MakeRect(rect), rounded_hole_rect, flags);
+#endif
 }
 
 void GraphicsContext::AdjustLineToPixelBoundaries(FloatPoint& p1,
@@ -1389,12 +1488,14 @@ sk_sp<SkColorFilter> GraphicsContext::WebCoreColorFilterToSkiaColorFilter(
   switch (color_filter) {
     case kColorFilterLuminanceToAlpha:
       return SkLumaColorFilter::Make();
+#if 0 // BKTODO:
     case kColorFilterLinearRGBToSRGB:
       return InterpolationSpaceUtilities::CreateInterpolationSpaceFilter(
           kInterpolationSpaceLinear, kInterpolationSpaceSRGB);
     case kColorFilterSRGBToLinearRGB:
       return InterpolationSpaceUtilities::CreateInterpolationSpaceFilter(
           kInterpolationSpaceSRGB, kInterpolationSpaceLinear);
+#endif
     case kColorFilterNone:
       break;
     default:
@@ -1431,6 +1532,7 @@ Color GraphicsContext::ApplyHighContrastFilter(const Color& input) const {
                         SkColorGetB(sk_output), SkColorGetA(sk_output)));
 }
 
+#if 0 // BKTODO:
 PaintFlags GraphicsContext::ApplyHighContrastFilter(
     const PaintFlags* input) const {
   if (input && !high_contrast_filter_)
@@ -1446,5 +1548,6 @@ PaintFlags GraphicsContext::ApplyHighContrastFilter(
   }
   return output;
 }
+#endif
 
 }  // namespace blink

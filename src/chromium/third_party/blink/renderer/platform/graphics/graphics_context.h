@@ -60,6 +60,7 @@
 #include "third_party/skia/include/core/SkMetaData.h"
 #include "third_party/skia/include/core/SkRefCnt.h"
 
+class GURL;
 class SkPath;
 class SkRRect;
 struct SkRect;
@@ -68,7 +69,6 @@ namespace blink {
 
 class FloatRect;
 class FloatRoundedRect;
-class KURL;
 class PaintController;
 class Path;
 struct TextRunPaintInfo;
@@ -406,7 +406,7 @@ class PLATFORM_EXPORT GraphicsContext {
                                        const FloatRect& src) const;
 
   // Sets target URL of a clickable area.
-  void SetURLForRect(const KURL&, const IntRect&);
+  void SetURLForRect(const GURL&, const IntRect&);
 
   // Sets the destination of a clickable area of a URL fragment (in a URL
   // pointing to the same web page). When the area is clicked, the page should
