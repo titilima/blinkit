@@ -84,6 +84,7 @@ public:
     BLINKIT_DISABLE_FEATURE(DisplayCutoutAPI)
     BLINKIT_DISABLE_FEATURE(ElementTiming)
     BLINKIT_DISABLE_FEATURE(FastMobileScrolling)
+    BLINKIT_DISABLE_FEATURE(FontCacheScaling)
     BLINKIT_DISABLE_FEATURE(FractionalScrollOffsets)
     BLINKIT_DISABLE_FEATURE(FullscreenUnprefixed)
     BLINKIT_DISABLE_FEATURE(ImageOrientation)

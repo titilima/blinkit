@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font.cc
+// Description: Font Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -24,16 +35,20 @@
 
 #include "third_party/blink/renderer/platform/fonts/font.h"
 
+#if 0 // BKTODO:
 #include "cc/paint/paint_canvas.h"
 #include "cc/paint/paint_flags.h"
+#endif
 #include "third_party/blink/renderer/platform/fonts/character_range.h"
 #include "third_party/blink/renderer/platform/fonts/font_cache.h"
 #include "third_party/blink/renderer/platform/fonts/font_fallback_iterator.h"
 #include "third_party/blink/renderer/platform/fonts/font_fallback_list.h"
 #include "third_party/blink/renderer/platform/fonts/ng_text_fragment_paint_info.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/fonts/paint_text_blob.h"
 #include "third_party/blink/renderer/platform/fonts/shaping/caching_word_shaper.h"
 #include "third_party/blink/renderer/platform/fonts/shaping/shape_result_bloberizer.h"
+#endif
 #include "third_party/blink/renderer/platform/fonts/simple_font_data.h"
 #include "third_party/blink/renderer/platform/fonts/text_run_paint_info.h"
 #include "third_party/blink/renderer/platform/geometry/float_rect.h"
@@ -106,6 +121,7 @@ void Font::Update(FontSelector* font_selector) const {
 
 namespace {
 
+#if 0 // BKTODO:
 void DrawBlobs(cc::PaintCanvas* canvas,
                const cc::PaintFlags& flags,
                const ShapeResultBloberizer::BlobBuffer& blobs,
@@ -124,6 +140,7 @@ void DrawBlobs(cc::PaintCanvas* canvas,
     canvas->drawTextBlob(blob_info.blob, point.X(), point.Y(), flags);
   }
 }
+#endif
 
 }  // anonymous ns
 
@@ -137,12 +154,15 @@ void Font::DrawText(cc::PaintCanvas* canvas,
   if (ShouldSkipDrawing())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   ShapeResultBloberizer bloberizer(*this, device_scale_factor);
   CachingWordShaper word_shaper(*this);
   ShapeResultBuffer buffer;
   word_shaper.FillResultBuffer(run_info, &buffer);
   bloberizer.FillGlyphs(run_info, buffer);
   DrawBlobs(canvas, flags, bloberizer.Blobs(), point);
+#endif
 }
 
 void Font::DrawText(cc::PaintCanvas* canvas,
@@ -155,10 +175,13 @@ void Font::DrawText(cc::PaintCanvas* canvas,
   if (ShouldSkipDrawing())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   ShapeResultBloberizer bloberizer(*this, device_scale_factor);
   bloberizer.FillGlyphs(text_info.text, text_info.from, text_info.to,
                         text_info.shape_result);
   DrawBlobs(canvas, flags, bloberizer.Blobs(), point);
+#endif
 }
 
 bool Font::DrawBidiText(cc::PaintCanvas* canvas,
@@ -192,6 +215,8 @@ bool Font::DrawBidiText(cc::PaintCanvas* canvas,
 
   FloatPoint curr_point = point;
   BidiCharacterRun* bidi_run = bidi_runs.FirstRun();
+  ASSERT(false); // BKTODO:
+#if 0
   CachingWordShaper word_shaper(*this);
   while (bidi_run) {
     TextRun subrun =
@@ -212,6 +237,7 @@ bool Font::DrawBidiText(cc::PaintCanvas* canvas,
     bidi_run = bidi_run->Next();
     curr_point.Move(run_width, 0);
   }
+#endif
 
   bidi_runs.DeleteRuns();
   return true;
@@ -232,12 +258,15 @@ void Font::DrawEmphasisMarks(cc::PaintCanvas* canvas,
   if (!emphasis_glyph_data.font_data)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   ShapeResultBloberizer bloberizer(*this, device_scale_factor);
   CachingWordShaper word_shaper(*this);
   ShapeResultBuffer buffer;
   word_shaper.FillResultBuffer(run_info, &buffer);
   bloberizer.FillTextEmphasisGlyphs(run_info, emphasis_glyph_data, buffer);
   DrawBlobs(canvas, flags, bloberizer.Blobs(), point);
+#endif
 }
 
 void Font::DrawEmphasisMarks(cc::PaintCanvas* canvas,
@@ -254,23 +283,31 @@ void Font::DrawEmphasisMarks(cc::PaintCanvas* canvas,
   if (!emphasis_glyph_data.font_data)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   ShapeResultBloberizer bloberizer(*this, device_scale_factor);
   bloberizer.FillTextEmphasisGlyphs(text_info.text, text_info.from,
                                     text_info.to, emphasis_glyph_data,
                                     text_info.shape_result);
   DrawBlobs(canvas, flags, bloberizer.Blobs(), point);
+#endif
 }
 
 float Font::Width(const TextRun& run,
                   HashSet<const SimpleFontData*>* fallback_fonts,
                   FloatRect* glyph_bounds) const {
   FontCachePurgePreventer purge_preventer;
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   CachingWordShaper shaper(*this);
   return shaper.Width(run, fallback_fonts, glyph_bounds);
+#endif
 }
 
 namespace {  // anonymous namespace
 
+#if 0 // BKTODO:
 unsigned InterceptsFromBlobs(const ShapeResultBloberizer::BlobBuffer& blobs,
                              const SkPaint& paint,
                              const std::tuple<float, float>& bounds,
@@ -315,6 +352,7 @@ void GetTextInterceptsInternal(const ShapeResultBloberizer::BlobBuffer& blobs,
   InterceptsFromBlobs(blobs, paint, bounds,
                       reinterpret_cast<SkScalar*>(intercepts.data()));
 }
+#endif
 
 }  // anonymous namespace
 
@@ -326,6 +364,8 @@ void Font::GetTextIntercepts(const TextRunPaintInfo& run_info,
   if (ShouldSkipDrawing())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   ShapeResultBloberizer bloberizer(
       *this, device_scale_factor, ShapeResultBloberizer::Type::kTextIntercepts);
   CachingWordShaper word_shaper(*this);
@@ -334,6 +374,7 @@ void Font::GetTextIntercepts(const TextRunPaintInfo& run_info,
   bloberizer.FillGlyphs(run_info, buffer);
 
   GetTextInterceptsInternal(bloberizer.Blobs(), flags, bounds, intercepts);
+#endif
 }
 
 void Font::GetTextIntercepts(const NGTextFragmentPaintInfo& text_info,
@@ -344,12 +385,15 @@ void Font::GetTextIntercepts(const NGTextFragmentPaintInfo& text_info,
   if (ShouldSkipDrawing())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   ShapeResultBloberizer bloberizer(
       *this, device_scale_factor, ShapeResultBloberizer::Type::kTextIntercepts);
   bloberizer.FillGlyphs(text_info.text, text_info.from, text_info.to,
                         text_info.shape_result);
 
   GetTextInterceptsInternal(bloberizer.Blobs(), flags, bounds, intercepts);
+#endif
 }
 
 static inline FloatRect PixelSnappedSelectionRect(FloatRect rect) {
@@ -369,19 +413,27 @@ FloatRect Font::SelectionRectForText(const TextRun& run,
 
   FontCachePurgePreventer purge_preventer;
 
+  ASSERT(false); // BKTODO:
+  return FloatRect();
+#if 0
   CachingWordShaper shaper(*this);
   CharacterRange range = shaper.GetCharacterRange(run, from, to);
 
   return PixelSnappedSelectionRect(
       FloatRect(point.X() + range.start, point.Y(), range.Width(), height));
+#endif
 }
 
 FloatRect Font::BoundingBox(const TextRun& run, int from, int to) const {
   to = (to == -1 ? run.length() : to);
   FontCachePurgePreventer purge_preventer;
+  ASSERT(false); // BKTODO:
+  return FloatRect();
+#if 0
   CachingWordShaper shaper(*this);
   CharacterRange range = shaper.GetCharacterRange(run, from, to);
   return FloatRect(range.start, -range.ascent, range.Width(), range.Height());
+#endif
 }
 
 int Font::OffsetForPosition(const TextRun& run,
@@ -389,12 +441,20 @@ int Font::OffsetForPosition(const TextRun& run,
                             IncludePartialGlyphsOption partial_glyphs,
                             BreakGlyphsOption break_glyphs) const {
   FontCachePurgePreventer purge_preventer;
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   CachingWordShaper shaper(*this);
   return shaper.OffsetForPosition(run, x_float, partial_glyphs, break_glyphs);
+#endif
 }
 
 ShapeCache* Font::GetShapeCache() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return font_fallback_list_->GetShapeCache(font_description_);
+#endif
 }
 
 bool Font::CanShapeWordByWord() const {
@@ -446,7 +506,11 @@ GlyphData Font::GetEmphasisMarkGlyphData(const AtomicString& mark) const {
     return GlyphData();
 
   TextRun emphasis_mark_run(mark, mark.length());
+  ASSERT(false); // BKTODO:
+  return GlyphData();
+#if 0
   return CachingWordShaper(*this).EmphasisMarkGlyphData(emphasis_mark_run);
+#endif
 }
 
 int Font::EmphasisMarkAscent(const AtomicString& mark) const {
@@ -486,13 +550,20 @@ CharacterRange Font::GetCharacterRange(const TextRun& run,
                                        unsigned from,
                                        unsigned to) const {
   FontCachePurgePreventer purge_preventer;
+  ASSERT(false); // BKTODO:
+  exit(0);
+#if 0
   CachingWordShaper shaper(*this);
   return shaper.GetCharacterRange(run, from, to);
+#endif
 }
 
 Vector<CharacterRange> Font::IndividualCharacterRanges(
     const TextRun& run) const {
   FontCachePurgePreventer purge_preventer;
+  ASSERT(false); // BKTODO:
+  return Vector<CharacterRange>();
+#if 0
   CachingWordShaper shaper(*this);
   auto ranges = shaper.IndividualCharacterRanges(run);
   // The shaper should return ranges.size == run.length but on some platforms
@@ -501,12 +572,17 @@ Vector<CharacterRange> Font::IndividualCharacterRanges(
   // more popular platforms, and to protect users, we are using a CHECK here.
   CHECK_EQ(ranges.size(), run.length());
   return ranges;
+#endif
 }
 
 Vector<double> Font::IndividualCharacterAdvances(const TextRun& run) const {
   FontCachePurgePreventer purge_preventer;
+  ASSERT(false); // BKTODO:
+  return Vector<double>();
+#if 0
   CachingWordShaper shaper(*this);
   return shaper.IndividualCharacterAdvances(run);
+#endif
 }
 
 void Font::ExpandRangeToIncludePartialGlyphs(const TextRun& text_run,
@@ -515,10 +591,13 @@ void Font::ExpandRangeToIncludePartialGlyphs(const TextRun& text_run,
   TextRunPaintInfo run_info(text_run);
   run_info.from = *from;
   run_info.to = *to;
+  ASSERT(false); // BKTODO:
+#if 0
   CachingWordShaper word_shaper(*this);
   ShapeResultBuffer buffer;
   word_shaper.FillResultBuffer(run_info, &buffer);
   buffer.ExpandRangeToIncludePartialGlyphs(from, to);
+#endif
 }
 
 LayoutUnit Font::TabWidth(const TabSize& tab_size, LayoutUnit position) const {

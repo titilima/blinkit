@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_cache.cc
+// Description: FontCache Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2008 Apple Inc. All rights reserved.
  * Copyright (C) 2007 Nicholas Shanks <webkit@nickshanks.com>
@@ -32,26 +43,28 @@
 #include <limits>
 #include <memory>
 
-#include "base/debug/alias.h"
+// BKTODO: #include "base/debug/alias.h"
 #include "base/memory/ptr_util.h"
-#include "base/trace_event/process_memory_dump.h"
+// BKTODO: #include "base/trace_event/process_memory_dump.h"
 #include "build/build_config.h"
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/renderer/platform/font_family_names.h"
-#include "third_party/blink/renderer/platform/fonts/alternate_font_family.h"
+// BKTODO: #include "third_party/blink/renderer/platform/fonts/alternate_font_family.h"
 #include "third_party/blink/renderer/platform/fonts/font_cache_client.h"
 #include "third_party/blink/renderer/platform/fonts/font_cache_key.h"
 #include "third_party/blink/renderer/platform/fonts/font_data_cache.h"
 #include "third_party/blink/renderer/platform/fonts/font_description.h"
-#include "third_party/blink/renderer/platform/fonts/font_global_context.h"
+// BKTODO: #include "third_party/blink/renderer/platform/fonts/font_global_context.h"
 #include "third_party/blink/renderer/platform/fonts/font_platform_data.h"
 #include "third_party/blink/renderer/platform/fonts/font_smoothing_mode.h"
 #include "third_party/blink/renderer/platform/fonts/shaping/shape_cache.h"
 #include "third_party/blink/renderer/platform/fonts/simple_font_data.h"
 #include "third_party/blink/renderer/platform/fonts/text_rendering_mode.h"
 #include "third_party/blink/renderer/platform/histogram.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/instrumentation/tracing/web_memory_allocator_dump.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/web_process_memory_dump.h"
+#endif
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/text/layout_locale.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
@@ -59,7 +72,7 @@
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string_hash.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_hash.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
-#include "ui/gfx/font_list.h"
+// BKTODO: #include "ui/gfx/font_list.h"
 
 namespace blink {
 
@@ -76,7 +89,11 @@ bool FontCache::use_skia_font_fallback_ = false;
 #endif  // defined(OS_WIN)
 
 FontCache* FontCache::GetFontCache() {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return &FontGlobalContext::GetFontCache();
+#endif
 }
 
 #if !defined(OS_WIN)
@@ -156,6 +173,8 @@ FontPlatformData* FontCache::GetFontPlatformData(
     found_result = result || !add_result.is_new_entry;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!found_result &&
       alternate_font_name == AlternateFontName::kAllowAlternate &&
       creation_params.CreationType() == kCreateFontByFamily) {
@@ -177,6 +196,7 @@ FontPlatformData* FontCache::GetFontPlatformData(
       adding->Set(rounded_size, std::make_unique<FontPlatformData>(*result));
     }
   }
+#endif
 
   return result;
 }
@@ -197,8 +217,11 @@ ShapeCache* FontCache::GetShapeCache(const FallbackListCompositeKey& key) {
   FallbackListShaperCache::iterator it = fallback_list_shaper_cache_.find(key);
   ShapeCache* result = nullptr;
   if (it == fallback_list_shaper_cache_.end()) {
+    ASSERT(false); // BKTODO:
+#if 0
     result = new ShapeCache();
     fallback_list_shaper_cache_.Set(key, base::WrapUnique(result));
+#endif
   } else {
     result = it->value.get();
   }
@@ -222,6 +245,8 @@ scoped_refptr<SimpleFontData> FontCache::GetFontData(
     const AtomicString& family,
     AlternateFontName altername_font_name,
     ShouldRetain should_retain) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (FontPlatformData* platform_data = GetFontPlatformData(
           font_description,
           FontFaceCreationParams(
@@ -230,6 +255,7 @@ scoped_refptr<SimpleFontData> FontCache::GetFontData(
     return FontDataFromFontPlatformData(
         platform_data, should_retain, font_description.SubpixelAscentDescent());
   }
+#endif
 
   return nullptr;
 }
@@ -250,10 +276,14 @@ scoped_refptr<SimpleFontData> FontCache::FontDataFromFontPlatformData(
 bool FontCache::IsPlatformFamilyMatchAvailable(
     const FontDescription& font_description,
     const AtomicString& family) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return GetFontPlatformData(
       font_description,
       FontFaceCreationParams(AdjustFamilyNameToAvoidUnsupportedFonts(family)),
       AlternateFontName::kNoAlternate);
+#endif
 }
 
 bool FontCache::IsPlatformFontUniqueNameMatchAvailable(
@@ -265,12 +295,16 @@ bool FontCache::IsPlatformFontUniqueNameMatchAvailable(
 }
 
 String FontCache::FirstAvailableOrFirst(const String& families) {
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   // The conversions involve at least two string copies, and more if non-ASCII.
   // For now we prefer shared code over the cost because a) inputs are
   // only from grd/xtb and all ASCII, and b) at most only a few times per
   // setting change/script.
   return String::FromUTF8(
       gfx::FontList::FirstAvailableOrFirst(families.Utf8().data()).c_str());
+#endif
 }
 
 SimpleFontData* FontCache::GetNonRetainedLastResortFallbackFont(
@@ -329,9 +363,12 @@ void FontCache::PurgeFallbackListShaperCache() {
     items += iter->value->size();
   }
   fallback_list_shaper_cache_.clear();
+  ASSERT(false); // BKTODO:
+#if 0
   DEFINE_THREAD_SAFE_STATIC_LOCAL(CustomCountHistogram, shape_cache_histogram,
                                   ("Blink.Fonts.ShapeCache", 1, 1000000, 50));
   shape_cache_histogram.Count(items);
+#endif
 }
 
 void FontCache::InvalidateShapeCache() {
@@ -355,8 +392,11 @@ void FontCache::Purge(PurgeSeverity purge_severity) {
 void FontCache::AddClient(FontCacheClient* client) {
   CHECK(client);
   if (!font_cache_clients_) {
+    ASSERT(false); // BKTODO:
+#if 0
     font_cache_clients_ = new HeapHashSet<WeakMember<FontCacheClient>>();
     font_cache_clients_.RegisterAsStaticReference();
+#endif
   }
   DCHECK(!font_cache_clients_->Contains(client));
   font_cache_clients_->insert(client);
@@ -383,6 +423,8 @@ void FontCache::CrashWithFontInfo(const FontDescription* font_description) {
   SkFontMgr* font_mgr = nullptr;
   int num_families = std::numeric_limits<int>::min();
   bool is_test_font_mgr = false;
+  ASSERT(false); // BKTODO:
+#if 0
   if (FontGlobalContext::Get(kDoNotCreate)) {
     font_cache = FontCache::GetFontCache();
     if (font_cache) {
@@ -407,12 +449,15 @@ void FontCache::CrashWithFontInfo(const FontDescription* font_description) {
   base::debug::Alias(&font_description_copy);
   base::debug::Alias(&is_test_font_mgr);
   base::debug::Alias(&num_families);
+#endif
 
   CHECK(false);
 }
 
 void FontCache::DumpFontPlatformDataCache(
     base::trace_event::ProcessMemoryDump* memory_dump) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(IsMainThread());
   base::trace_event::MemoryAllocatorDump* dump =
       memory_dump->CreateAllocatorDump("font_caches/font_platform_data_cache");
@@ -421,10 +466,13 @@ void FontCache::DumpFontPlatformDataCache(
   dump->AddScalar("size", "bytes", font_platform_data_objects_size);
   memory_dump->AddSuballocation(dump->guid(),
                                 WTF::Partitions::kAllocatedObjectPoolName);
+#endif
 }
 
 void FontCache::DumpShapeResultCache(
     base::trace_event::ProcessMemoryDump* memory_dump) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK(IsMainThread());
   base::trace_event::MemoryAllocatorDump* dump =
       memory_dump->CreateAllocatorDump("font_caches/shape_caches");
@@ -437,6 +485,7 @@ void FontCache::DumpShapeResultCache(
   dump->AddScalar("size", "bytes", shape_result_cache_size);
   memory_dump->AddSuballocation(dump->guid(),
                                 WTF::Partitions::kAllocatedObjectPoolName);
+#endif
 }
 
 }  // namespace blink
