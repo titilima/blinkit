@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_custom_platform_data.cc
+// Description: FontCustomPlatformData Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007 Apple Computer, Inc.
  * Copyright (c) 2007, 2008, 2009, Google Inc. All rights reserved.
@@ -35,10 +46,12 @@
 #include "build/build_config.h"
 #include "third_party/blink/renderer/platform/fonts/font_cache.h"
 #include "third_party/blink/renderer/platform/fonts/font_platform_data.h"
-#include "third_party/blink/renderer/platform/fonts/opentype/font_format_check.h"
+// BKTODO: #include "third_party/blink/renderer/platform/fonts/opentype/font_format_check.h"
 #include "third_party/blink/renderer/platform/fonts/opentype/font_settings.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/fonts/web_font_decoder.h"
 #include "third_party/blink/renderer/platform/fonts/web_font_typeface_factory.h"
+#endif
 #include "third_party/blink/renderer/platform/shared_buffer.h"
 #include "third_party/skia/include/core/SkStream.h"
 #include "third_party/skia/include/core/SkTypeface.h"
@@ -46,6 +59,7 @@
 namespace blink {
 
 namespace {
+#if 0 // BKTODO:
 sk_sp<SkFontMgr> FontManagerForSubType(
     FontFormatCheck::VariableFontSubType font_sub_type) {
   CHECK_NE(font_sub_type, FontFormatCheck::VariableFontSubType::kNotVariable);
@@ -53,6 +67,7 @@ sk_sp<SkFontMgr> FontManagerForSubType(
     return WebFontTypefaceFactory::FreeTypeFontManager();
   return WebFontTypefaceFactory::FontManagerForVariations();
 }
+#endif
 }  // namespace
 
 FontCustomPlatformData::FontCustomPlatformData(sk_sp<SkTypeface> typeface,
@@ -73,6 +88,9 @@ FontPlatformData FontCustomPlatformData::GetFontPlatformData(
 
   sk_sp<SkTypeface> return_typeface = base_typeface_;
 
+  ASSERT(false); // BKTODO:
+  return FontPlatformData();
+#if 0
   // Maximum axis count is maximum value for the OpenType USHORT,
   // which is a 16bit unsigned.
   // https://www.microsoft.com/typography/otspec/fvar.htm Variation
@@ -134,6 +152,7 @@ FontPlatformData FontCustomPlatformData::GetFontPlatformData(
   return FontPlatformData(std::move(return_typeface), CString(), size,
                           bold && !base_typeface_->isBold(),
                           italic && !base_typeface_->isItalic(), orientation);
+#endif
 }
 
 SkString FontCustomPlatformData::FamilyNameForInspector() const {
@@ -156,6 +175,9 @@ scoped_refptr<FontCustomPlatformData> FontCustomPlatformData::Create(
     SharedBuffer* buffer,
     String& ots_parse_message) {
   DCHECK(buffer);
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   WebFontDecoder decoder;
   sk_sp<SkTypeface> typeface = decoder.Decode(buffer);
   if (!typeface) {
@@ -164,6 +186,7 @@ scoped_refptr<FontCustomPlatformData> FontCustomPlatformData::Create(
   }
   return base::AdoptRef(
       new FontCustomPlatformData(std::move(typeface), decoder.DecodedSize()));
+#endif
 }
 
 bool FontCustomPlatformData::SupportsFormat(const String& format) {

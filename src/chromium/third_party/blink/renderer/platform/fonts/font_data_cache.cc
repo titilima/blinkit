@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_data_cache.cc
+// Description: FontDataCache Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -53,8 +64,7 @@ scoped_refptr<SimpleFontData> FontDataCache::Get(const FontPlatformData* platfor
   // do not have a reproduction for the crash that an empty typeface()
   // causes downstream from here.
   if (!platform_data->Typeface()) {
-    DLOG(ERROR)
-        << "Empty typeface() in FontPlatformData when accessing FontDataCache.";
+    BKLOG("Empty typeface() in FontPlatformData when accessing FontDataCache.");
     return nullptr;
   }
 
@@ -75,7 +85,7 @@ scoped_refptr<SimpleFontData> FontDataCache::Get(const FontPlatformData* platfor
   }
 
   if (!result.Get()->value.second) {
-    DCHECK(inactive_font_data_.Contains(result.Get()->value.first));
+    ASSERT(false); // BKTODO: DCHECK(inactive_font_data_.Contains(result.Get()->value.first));
     inactive_font_data_.erase(result.Get()->value.first);
   }
 
@@ -132,11 +142,14 @@ bool FontDataCache::PurgeLeastRecentlyUsed(int count) {
   auto end = inactive_font_data_.end();
   auto it = inactive_font_data_.begin();
   for (int i = 0; i < count && it != end; ++it, ++i) {
+    ASSERT(false); // BKTODO:
+#if 0
     scoped_refptr<SimpleFontData>& font_data = *it.Get();
     cache_.erase(&(font_data->PlatformData()));
     // We should not delete SimpleFontData here because deletion can modify
     // m_inactiveFontData. See http://trac.webkit.org/changeset/44011
     font_data_to_delete.push_back(font_data);
+#endif
   }
 
   if (it == end) {

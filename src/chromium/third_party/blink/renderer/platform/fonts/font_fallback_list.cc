@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_fallback_list.cc
+// Description: FontFallbackList Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
  *
@@ -29,7 +40,7 @@
 #include "third_party/blink/renderer/platform/fonts/font_fallback_list.h"
 
 #include "third_party/blink/renderer/platform/font_family_names.h"
-#include "third_party/blink/renderer/platform/fonts/alternate_font_family.h"
+// BKTODO: #include "third_party/blink/renderer/platform/fonts/alternate_font_family.h"
 #include "third_party/blink/renderer/platform/fonts/font_cache.h"
 #include "third_party/blink/renderer/platform/fonts/font_cache_key.h"
 #include "third_party/blink/renderer/platform/fonts/font_description.h"
@@ -188,6 +199,8 @@ FallbackListCompositeKey FontFallbackList::CompositeKey(
   const FontFamily* current_family = &font_description.Family();
   while (current_family) {
     if (current_family->Family().length()) {
+      ASSERT(false); // BKTODO:
+#if 0
       FontFaceCreationParams params(
           AdjustFamilyNameToAvoidUnsupportedFonts(current_family->Family()));
       scoped_refptr<FontData> result;
@@ -206,6 +219,7 @@ FallbackListCompositeKey FontFallbackList::CompositeKey(
         if (!result->IsSegmented() && !result->IsCustomFont())
           FontCache::GetFontCache()->ReleaseFontData(ToSimpleFontData(result));
       }
+#endif
     }
     current_family = current_family->Next();
   }
