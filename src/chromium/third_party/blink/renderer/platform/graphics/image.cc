@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: image.cc
+// Description: Image Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Samuel Weinig (sam.weinig@gmail.com)
  * Copyright (C) 2004, 2005, 2006 Apple Computer, Inc.  All rights reserved.
@@ -28,22 +39,26 @@
 
 #include "base/numerics/checked_math.h"
 #include "build/build_config.h"
-#include "cc/tiles/software_image_decode_cache.h"
+// BKTODO: #include "cc/tiles/software_image_decode_cache.h"
 #include "third_party/blink/public/platform/platform.h"
+#if 0 // BKTODO:
 #include "third_party/blink/public/platform/web_data.h"
 #include "third_party/blink/renderer/platform/drag_image.h"
+#endif
 #include "third_party/blink/renderer/platform/geometry/float_point.h"
 #include "third_party/blink/renderer/platform/geometry/float_rect.h"
 #include "third_party/blink/renderer/platform/geometry/float_size.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/graphics/bitmap_image.h"
 #include "third_party/blink/renderer/platform/graphics/deferred_image_decoder.h"
+#endif
 #include "third_party/blink/renderer/platform/graphics/graphics_context.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_image.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_recorder.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_shader.h"
 #include "third_party/blink/renderer/platform/graphics/scoped_interpolation_quality.h"
 #include "third_party/blink/renderer/platform/histogram.h"
-#include "third_party/blink/renderer/platform/instrumentation/platform_instrumentation.h"
+// BKTODO: #include "third_party/blink/renderer/platform/instrumentation/platform_instrumentation.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 #include "third_party/blink/renderer/platform/length.h"
 #include "third_party/blink/renderer/platform/shared_buffer.h"
@@ -59,7 +74,9 @@ namespace blink {
 Image::Image(ImageObserver* observer, bool is_multipart)
     : image_observer_disabled_(false),
       image_observer_(observer),
+#if 0 // BKTODO:
       stable_image_id_(PaintImage::GetNextId()),
+#endif
       is_multipart_(is_multipart),
       high_contrast_classification_(
           HighContrastClassification::kNotClassified) {}
@@ -67,13 +84,20 @@ Image::Image(ImageObserver* observer, bool is_multipart)
 Image::~Image() = default;
 
 Image* Image::NullImage() {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   DCHECK(IsMainThread());
   DEFINE_STATIC_REF(Image, null_image, (BitmapImage::Create()));
   return null_image;
+#endif
 }
 
 // static
 cc::ImageDecodeCache& Image::SharedCCDecodeCache(SkColorType color_type) {
+  ASSERT(false); // BKTODO:
+  exit(0);
+#if 0
   // This denotes the allocated locked memory budget for the cache used for
   // book-keeping. The cache indicates when the total memory locked exceeds this
   // budget in cc::DecodedDrawImage.
@@ -91,9 +115,13 @@ cc::ImageDecodeCache& Image::SharedCCDecodeCache(SkColorType color_type) {
                                   (kN32_SkColorType, kLockedMemoryLimitBytes,
                                    PaintImage::kDefaultGeneratorClientId));
   return image_decode_cache;
+#endif
 }
 
 scoped_refptr<Image> Image::LoadPlatformResource(const char* name) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   const WebData& resource = Platform::Current()->GetDataResource(name);
   if (resource.IsEmpty())
     return Image::NullImage();
@@ -101,8 +129,10 @@ scoped_refptr<Image> Image::LoadPlatformResource(const char* name) {
   scoped_refptr<Image> image = BitmapImage::Create();
   image->SetData(resource, true);
   return image;
+#endif
 }
 
+#if 0 // BKTODO:
 Image::SizeAvailability Image::SetData(scoped_refptr<SharedBuffer> data,
                                        bool all_data_received) {
   encoded_image_data_ = std::move(data);
@@ -115,6 +145,7 @@ Image::SizeAvailability Image::SetData(scoped_refptr<SharedBuffer> data,
 
   return DataChanged(all_data_received);
 }
+#endif
 
 String Image::FilenameExtension() const {
   return String();
@@ -281,6 +312,7 @@ void Image::DrawTiledBorder(GraphicsContext& ctxt,
 
 namespace {
 
+#if 0 // BKTODO:
 sk_sp<PaintShader> CreatePatternShader(const PaintImage& image,
                                        const SkMatrix& shader_matrix,
                                        const PaintFlags& paint,
@@ -303,6 +335,7 @@ sk_sp<PaintShader> CreatePatternShader(const PaintImage& image,
   return PaintShader::MakePaintRecord(recorder.finishRecordingAsPicture(),
                                       tile_rect, tmx, tmy, &shader_matrix);
 }
+#endif
 
 SkShader::TileMode ComputeTileMode(float left,
                                    float right,
@@ -327,6 +360,8 @@ void Image::DrawPattern(GraphicsContext& context,
   if (dest_rect.IsEmpty())
     return;  // nothing to draw
 
+  ASSERT(false); // BKTODO:
+#if 0
   PaintImage image = PaintImageForCurrentFrame();
   if (!image)
     return;  // nothing to draw
@@ -390,6 +425,7 @@ void Image::DrawPattern(GraphicsContext& context,
 
   if (CurrentFrameIsLazyDecoded())
     PlatformInstrumentation::DidDrawLazyPixelRef(image_id);
+#endif
 }
 
 scoped_refptr<Image> Image::ImageForDefaultFrame() {
@@ -398,6 +434,7 @@ scoped_refptr<Image> Image::ImageForDefaultFrame() {
   return image;
 }
 
+#if 0 // BKTODO:
 PaintImageBuilder Image::CreatePaintImageBuilder() {
   auto animation_type = MaybeAnimated() ? PaintImage::AnimationType::ANIMATED
                                         : PaintImage::AnimationType::STATIC;
@@ -426,6 +463,7 @@ bool Image::ApplyShader(PaintFlags& flags, const SkMatrix& local_matrix) {
 
   return true;
 }
+#endif
 
 FloatRect Image::ComputePhaseForBackground(const FloatPoint& destination_offset,
                                            const FloatSize& size,
@@ -454,6 +492,7 @@ FloatRect Image::ComputeSubsetForBackground(const FloatRect& phase_and_size,
                    subset.Height() / scale.Height());
 }
 
+#if 0 // BKTODO:
 SkBitmap Image::AsSkBitmapForCurrentFrame(
     RespectImageOrientationEnum should_respect_image_orientation) {
   PaintImage paint_image = PaintImageForCurrentFrame();
@@ -477,5 +516,6 @@ SkBitmap Image::AsSkBitmapForCurrentFrame(
   sk_image->asLegacyBitmap(&bitmap);
   return bitmap;
 }
+#endif
 
 }  // namespace blink

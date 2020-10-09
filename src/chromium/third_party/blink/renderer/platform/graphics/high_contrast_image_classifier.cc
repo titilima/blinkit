@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: high_contrast_image_classifier.cc
+// Description: HighContrastImageClassifier Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,7 @@
 
 #include "base/rand_util.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
-#include "third_party/blink/renderer/platform/graphics/highcontrast/highcontrast_classifier.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/highcontrast/highcontrast_classifier.h"
 #include "third_party/skia/include/utils/SkNullCanvas.h"
 
 namespace {
@@ -115,8 +126,11 @@ bool HighContrastImageClassifier::GetBitmap(Image& image, SkBitmap* bitmap) {
       SkImageInfo::MakeN32(image.width(), image.height(), kPremul_SkAlphaType));
   SkCanvas canvas(*bitmap);
   canvas.clear(SK_ColorTRANSPARENT);
+  ASSERT(false); // BKTODO:
+#if 0
   canvas.drawImageRect(image.PaintImageForCurrentFrame().GetSkImage(),
                        SkRect::MakeIWH(image.width(), image.height()), nullptr);
+#endif
   return true;
 }
 
@@ -294,6 +308,9 @@ void HighContrastImageClassifier::GetFeatures(
 float HighContrastImageClassifier::ComputeColorBucketsRatio(
     const std::vector<SkColor>& sampled_pixels,
     const ColorMode color_mode) {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   std::set<unsigned> buckets;
   // If image is in color, use 4 bits per color channel, otherwise 4 bits for
   // illumination.
@@ -319,6 +336,7 @@ float HighContrastImageClassifier::ComputeColorBucketsRatio(
   const float max_buckets[] = {16, 4096};
   return static_cast<float>(buckets.size()) /
          max_buckets[color_mode == ColorMode::kColor];
+#endif
 }
 
 HighContrastClassification
@@ -352,12 +370,15 @@ HighContrastClassification HighContrastImageClassifier::ClassifyImage(
   // If decision tree cannot decide, we use a neural network to decide whether
   // to filter or not based on all the features.
   if (result == HighContrastClassification::kNotClassified) {
+    ASSERT(false); // BKTODO:
+#if 0
     highcontrast_tfnative_model::FixedAllocations nn_temp;
     float nn_out;
     highcontrast_tfnative_model::Inference(&features[0], &nn_out, &nn_temp);
     result = nn_out > 0
                  ? HighContrastClassification::kApplyHighContrastFilter
                  : HighContrastClassification::kDoNotApplyHighContrastFilter;
+#endif
   }
 
   return result;

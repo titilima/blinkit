@@ -122,6 +122,7 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
     kSizeAvailable,
   };
 
+#if 0 // BKTODO:
   // If SetData() returns |kSizeAvailableAndLoadingAsynchronously|:
   //   Image loading is continuing asynchronously
   //   (only when |this| is SVGImage and |all_data_received| is true), and
@@ -131,6 +132,7 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
   //   ImageResourceObserver::AsyncLoadCompleted() is not called.
   virtual SizeAvailability SetData(scoped_refptr<SharedBuffer> data,
                                    bool all_data_received);
+#endif
   virtual SizeAvailability DataChanged(bool /*all_data_received*/) {
     return kSizeUnavailable;
   }

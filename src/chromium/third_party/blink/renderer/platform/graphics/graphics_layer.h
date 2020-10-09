@@ -256,12 +256,23 @@ class PLATFORM_EXPORT GraphicsLayer : // BKTODO: public cc::LayerClient,
   void AddLinkHighlight(LinkHighlight*);
   void RemoveLinkHighlight(LinkHighlight*);
   const Vector<LinkHighlight*>& GetLinkHighlights() const {
+    ASSERT(false); // BKTODO:
+    exit(0);
+#if 0
     return link_highlights_;
+#endif
   }
 
   int GetRenderingContext3D() const { return rendering_context3d_; }
 
+#if 0 // BKTODO:
   cc::PictureLayer* ContentLayer() const { return layer_.get(); }
+#else
+  cc::PictureLayer* ContentLayer() const {
+    ASSERT(false); // BKTODO:
+    return nullptr;
+  }
+#endif
 
   static void RegisterContentsLayer(cc::Layer*);
   static void UnregisterContentsLayer(cc::Layer*);
@@ -412,8 +423,10 @@ class PLATFORM_EXPORT GraphicsLayer : // BKTODO: public cc::LayerClient,
 
   int paint_count_;
 
+#if 0 // BKTODO:
   scoped_refptr<cc::PictureLayer> layer_;
   scoped_refptr<cc::PictureImageLayer> image_layer_;
+#endif
   IntSize image_size_;
   cc::Layer* contents_layer_;
   // We don't have ownership of contents_layer_, but we do want to know if a
@@ -423,7 +436,9 @@ class PLATFORM_EXPORT GraphicsLayer : // BKTODO: public cc::LayerClient,
   // point on.
   int contents_layer_id_;
 
+#if 0 // BKTODO:
   Vector<LinkHighlight*> link_highlights_;
+#endif
 
   int rendering_context3d_;
 
@@ -443,9 +458,9 @@ class PLATFORM_EXPORT GraphicsLayer : // BKTODO: public cc::LayerClient,
   std::unique_ptr<LayerState> layer_state_;
   std::unique_ptr<LayerState> contents_layer_state_;
 
+#if 0 // BKTODO:
   std::unique_ptr<RasterInvalidator> raster_invalidator_;
 
-#if 0 // BKTODO:
   base::WeakPtrFactory<GraphicsLayer> weak_ptr_factory_;
 #endif
 

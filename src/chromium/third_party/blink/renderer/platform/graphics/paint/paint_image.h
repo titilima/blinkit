@@ -27,6 +27,10 @@ using cc::PaintImageBuilder;
 using cc::PaintImageGenerator;
 using cc::SkiaPaintImageGenerator;
 }
+#else
+
+#include "third_party/skia/include/core/SkImage.h"
+
 #endif // 0
 
 #endif  // THIRD_PARTY_BLINK_RENDERER_PLATFORM_GRAPHICS_PAINT_PAINT_IMAGE_H_

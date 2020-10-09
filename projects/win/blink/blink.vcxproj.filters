@@ -9685,5 +9685,14 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_shape_helpers.h">
       <Filter>renderer\platform\geometry</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_float_point.h">
+      <Filter>public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_float_rect.h">
+      <Filter>public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_size.h">
+      <Filter>public\platform</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

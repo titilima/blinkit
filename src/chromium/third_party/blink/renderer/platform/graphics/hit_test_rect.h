@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: hit_test_rect.h
+// Description: HitTestRect Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -31,7 +42,9 @@ struct PLATFORM_EXPORT HitTestRect {
   HitTestRect(const LayoutRect& layout_rect, TouchAction action)
       : rect(layout_rect), whitelisted_touch_action(action) {}
 
+#if 0 // BKTODO:
   static cc::TouchActionRegion BuildRegion(const Vector<HitTestRect>&);
+#endif
   static LayoutRect GetBounds(const Vector<HitTestRect>&);
 
   bool operator==(const HitTestRect& rhs) const {

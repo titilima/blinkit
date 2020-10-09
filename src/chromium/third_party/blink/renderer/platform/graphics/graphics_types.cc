@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: graphics_types.cc
+// Description: Graphics Types
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2012 Rik Cabanier (cabanier@adobe.com)
@@ -26,7 +37,7 @@
 
 #include "third_party/blink/renderer/platform/graphics/graphics_types.h"
 
-#include "base/stl_util.h"
+#include <iterator>
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
 
@@ -50,8 +61,8 @@ static const char* const kBlendModeNames[] = {
     "darken",     "lighten",    "color-dodge", "color-burn",
     "hard-light", "soft-light", "difference",  "exclusion",
     "hue",        "saturation", "color",       "luminosity"};
-const int kNumCompositeOperatorNames = base::size(kCompositeOperatorNames);
-const int kNumBlendModeNames = base::size(kBlendModeNames);
+const int kNumCompositeOperatorNames = std::size(kCompositeOperatorNames);
+const int kNumBlendModeNames = std::size(kBlendModeNames);
 
 bool ParseCompositeAndBlendMode(const String& s,
                                 CompositeOperator& op,

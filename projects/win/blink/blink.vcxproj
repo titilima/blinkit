@@ -1273,6 +1273,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_cursor_info.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_drag_operation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_editing_command_type.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_float_point.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_float_rect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_focus_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_font_render_style.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_gesture_event.h" />
@@ -1281,6 +1283,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_point.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_rect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_scroll_types.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_size.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_thread_scheduler.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_url_loader.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_url_loader_client.h" />
