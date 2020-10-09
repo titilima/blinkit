@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: generated_image.cc
+// Description: GeneratedImage Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Google Inc. All rights reserved.
  *
@@ -52,6 +63,8 @@ void GeneratedImage::DrawPattern(GraphicsContext& dest_context,
   GraphicsContext context(*paint_controller);
   context.BeginRecording(tile_rect);
   DrawTile(context, src_rect);
+  ASSERT(false); // BKTODO:
+#if 0
   sk_sp<PaintRecord> record = context.EndRecording();
 
   SkMatrix pattern_matrix = SkMatrix::MakeTrans(phase.X(), phase.Y());
@@ -67,6 +80,7 @@ void GeneratedImage::DrawPattern(GraphicsContext& dest_context,
   fill_flags.setBlendMode(composite_op);
 
   dest_context.DrawRect(dest_rect, fill_flags);
+#endif
 }
 
 PaintImage GeneratedImage::PaintImageForCurrentFrame() {

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: contiguous_container.cc
+// Description: ContiguousContainer Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -23,15 +34,21 @@ class ContiguousContainerBase::Buffer {
 
  public:
   Buffer(size_t buffer_size, const char* type_name) {
+    ASSERT(false); // BKTODO:
+#if 0
     capacity_ = WTF::Partitions::BufferActualSize(buffer_size);
     begin_ = end_ =
         static_cast<char*>(WTF::Partitions::BufferMalloc(capacity_, type_name));
     ANNOTATE_NEW_BUFFER(begin_, capacity_, 0);
+#endif
   }
 
   ~Buffer() {
+    ASSERT(false); // BKTODO:
+#if 0
     ANNOTATE_DELETE_BUFFER(begin_, capacity_, UsedCapacity());
     WTF::Partitions::BufferFree(begin_);
+#endif
   }
 
   size_t Capacity() const { return capacity_; }

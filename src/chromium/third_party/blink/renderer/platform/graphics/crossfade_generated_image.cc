@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: crossfade_generated_image.cc
+// Description: CrossfadeGeneratedImage Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -27,7 +38,7 @@
 
 #include "third_party/blink/renderer/platform/geometry/float_rect.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context.h"
-#include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
 
 namespace blink {
 
@@ -43,6 +54,7 @@ CrossfadeGeneratedImage::CrossfadeGeneratedImage(
       percentage_(percentage),
       crossfade_size_(crossfade_size) {}
 
+#if 0 // BKTODO:
 void CrossfadeGeneratedImage::DrawCrossfade(cc::PaintCanvas* canvas,
                                             const PaintFlags& flags,
                                             ImageClampingMode clamp_mode,
@@ -97,6 +109,7 @@ void CrossfadeGeneratedImage::Draw(cc::PaintCanvas* canvas,
 
   DrawCrossfade(canvas, flags, clamp_mode, decode_mode);
 }
+#endif
 
 void CrossfadeGeneratedImage::DrawTile(GraphicsContext& context,
                                        const FloatRect& src_rect) {
@@ -104,6 +117,8 @@ void CrossfadeGeneratedImage::DrawTile(GraphicsContext& context,
   if (from_image_ == Image::NullImage() || to_image_ == Image::NullImage())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   PaintFlags flags = context.FillFlags();
   flags.setBlendMode(SkBlendMode::kSrcOver);
   flags.setAntiAlias(context.ShouldAntialias());
@@ -111,6 +126,7 @@ void CrossfadeGeneratedImage::DrawTile(GraphicsContext& context,
   flags.setFilterQuality(
       context.ComputeFilterQuality(this, dest_rect, src_rect));
   DrawCrossfade(context.Canvas(), flags, kClampImageToSourceRect, kSyncDecode);
+#endif
 }
 
 }  // namespace blink

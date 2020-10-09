@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: paint_controller.cc
+// Description: PaintController Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,7 @@
 
 #include <memory>
 #include "base/auto_reset.h"
-#include "third_party/blink/renderer/platform/graphics/logging_canvas.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/logging_canvas.h"
 #include "third_party/blink/renderer/platform/graphics/paint/drawing_display_item.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 
@@ -59,9 +70,12 @@ bool PaintController::UseCachedDrawingIfPossible(
 
   ++num_cached_new_items_;
   EnsureNewDisplayItemListInitialCapacity();
+  ASSERT(false); // BKTODO:
+#if 0
   // Visual rect can change without needing invalidation of the client, e.g.
   // when ancestor clip changes. Update the visual rect to the current value.
   current_paint_artifact_->GetDisplayItemList()[cached_item].UpdateVisualRect();
+#endif
   if (!RuntimeEnabledFeatures::PaintUnderInvalidationCheckingEnabled())
     ProcessNewItem(MoveItemFromCurrentListToNewList(cached_item));
 
@@ -110,6 +124,8 @@ bool PaintController::UseCachedSubsequenceIfPossible(
     return false;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (current_paint_artifact_->GetDisplayItemList()[markers->start]
           .IsTombstone()) {
     // The subsequence has already been copied, indicating that the same client
@@ -119,6 +135,7 @@ bool PaintController::UseCachedSubsequenceIfPossible(
     NOTREACHED();
     return false;
   }
+#endif
 
   EnsureNewDisplayItemListInitialCapacity();
 
@@ -196,15 +213,17 @@ void PaintController::EndSubsequence(const DisplayItemClient& client,
   // Force new paint chunk which is required for subsequence caching.
   new_paint_chunks_.ForceNewChunk();
 
-  DCHECK(!new_cached_subsequences_.Contains(&client))
-      << "Multiple subsequences for client: " << client.DebugName();
+  DCHECK(!new_cached_subsequences_.Contains(&client)); // Multiple subsequences for client
 
   new_cached_subsequences_.insert(&client, SubsequenceMarkers(start, end));
 }
 
 const DisplayItem* PaintController::LastDisplayItem(unsigned offset) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (offset < new_display_item_list_.size())
     return &new_display_item_list_[new_display_item_list_.size() - offset - 1];
+#endif
   return nullptr;
 }
 
@@ -239,11 +258,7 @@ void PaintController::ProcessNewItem(DisplayItem& display_item) {
         new_display_item_list_);
     if (index != kNotFound) {
       ShowDebugData();
-      NOTREACHED()
-          << "DisplayItem " << display_item.AsDebugString().Utf8().data()
-          << " has duplicated id with previous "
-          << new_display_item_list_[index].AsDebugString().Utf8().data()
-          << " (index=" << index << ")";
+      NOTREACHED(); // DisplayItem has duplicated id with previous
     }
     AddToIndicesByClientMap(display_item.Client(),
                             new_display_item_list_.size() - 1,
@@ -267,8 +282,12 @@ void PaintController::ProcessNewItem(DisplayItem& display_item) {
 }
 
 DisplayItem& PaintController::MoveItemFromCurrentListToNewList(size_t index) {
+  ASSERT(false); // BKTODO:
+  exit(0);
+#if 0
   return new_display_item_list_.AppendByMoving(
       current_paint_artifact_->GetDisplayItemList()[index]);
+#endif
 }
 
 void PaintController::InvalidateAll() {
@@ -312,12 +331,15 @@ size_t PaintController::FindMatchingItemFromIndex(
 
   const Vector<size_t>& indices = it->value;
   for (size_t index : indices) {
+    ASSERT(false); // BKTODO:
+#if 0
     const DisplayItem& existing_item = list[index];
     if (existing_item.IsTombstone())
       continue;
     DCHECK(existing_item.Client() == id.client);
     if (id == existing_item.GetId())
       return index;
+#endif
   }
 
   return kNotFound;
@@ -339,6 +361,8 @@ size_t PaintController::FindCachedItem(const DisplayItem::Id& id) {
 
   if (next_item_to_match_ <
       current_paint_artifact_->GetDisplayItemList().size()) {
+    ASSERT(false); // BKTODO:
+#if 0
     // If current_list[next_item_to_match_] matches the new item, we don't need
     // to update and lookup the index, which is fast. This is the common case
     // that the current list and the new list are in the same order around the
@@ -353,6 +377,7 @@ size_t PaintController::FindCachedItem(const DisplayItem::Id& id) {
 #endif
       return next_item_to_match_;
     }
+#endif
   }
 
   size_t found_index =
@@ -373,6 +398,8 @@ size_t PaintController::FindOutOfOrderCachedItemForward(
     const DisplayItem::Id& id) {
   for (size_t i = next_item_to_index_;
        i < current_paint_artifact_->GetDisplayItemList().size(); ++i) {
+    ASSERT(false); // BKTODO:
+#if 0
     const DisplayItem& item = current_paint_artifact_->GetDisplayItemList()[i];
     if (item.IsTombstone())
       continue;
@@ -389,6 +416,7 @@ size_t PaintController::FindOutOfOrderCachedItemForward(
       AddToIndicesByClientMap(item.Client(), i, out_of_order_item_indices_);
       next_item_to_index_ = i + 1;
     }
+#endif
   }
 
   // The display item newly appears while the client is not invalidated. The
@@ -402,8 +430,11 @@ size_t PaintController::FindOutOfOrderCachedItemForward(
 #endif
     // Ensure our paint invalidation tests don't trigger the less performant
     // situation which should be rare.
-    LOG(WARNING) << "Can't find cached display item: " << id.client.DebugName()
-                 << " " << id.ToString();
+#ifndef NDEBUG
+    std::string debugName = id.client.DebugName().StdUtf8();
+    std::string idString = id.ToString().StdUtf8();
+    BKLOG("WARNING: Can't find cached display item: %s %s", debugName.c_str(), idString.c_str());
+#endif
   }
   return kNotFound;
 }
@@ -416,6 +447,8 @@ void PaintController::CopyCachedSubsequence(size_t begin_index,
                                             size_t end_index) {
   DCHECK(!RuntimeEnabledFeatures::PaintUnderInvalidationCheckingEnabled());
 
+  ASSERT(false); // BKTODO:
+#if 0
   const DisplayItem* cached_item =
       &current_paint_artifact_->GetDisplayItemList()[begin_index];
 
@@ -449,10 +482,13 @@ void PaintController::CopyCachedSubsequence(size_t begin_index,
     // paths, there are false positives. Just log an error.
     if (cached_item->VisualRect() !=
         FloatRect(cached_item->Client().VisualRect())) {
-      LOG(ERROR) << "Visual rect changed in a cached subsequence: "
-                 << cached_item->Client().DebugName()
-                 << " old=" << cached_item->VisualRect().ToString()
-                 << " new=" << cached_item->Client().VisualRect().ToString();
+#ifndef NDEBUG
+      std::string debugName = cached_item->Client().DebugName().StdUtf8();
+      std::string oldRect = cached_item->VisualRect().ToString().StdUtf8();
+      std::string newRect = cached_item->Client().VisualRect().ToString().StdUtf8();
+      BKLOG("ERROR: Visual rect changed in a cached subsequence: %s old=%s new=%s",
+        debugName.c_str(), oldRect.c_str(), newRect.c_str());
+#endif
     }
 #endif
 
@@ -472,6 +508,7 @@ void PaintController::CopyCachedSubsequence(size_t begin_index,
     UpdateCurrentPaintChunkProperties(base::nullopt,
                                       properties_before_subsequence);
   }
+#endif
 }
 
 void PaintController::ResetCurrentListIndices() {
@@ -537,12 +574,15 @@ void PaintController::FinishCycle() {
       if (item.key->IsCacheable())
         item.key->Validate();
     }
+    ASSERT(false); // BKTODO:
+#if 0
     for (const auto& item : current_paint_artifact_->GetDisplayItemList()) {
       const auto& client = item.Client();
       client.ClearPartialInvalidationVisualRect();
       if (client.IsCacheable())
         client.Validate();
     }
+#endif
     for (const auto& chunk : current_paint_artifact_->PaintChunks()) {
       if (chunk.id.client.IsCacheable())
         chunk.id.client.Validate();
@@ -552,6 +592,8 @@ void PaintController::FinishCycle() {
   current_paint_artifact_->FinishCycle();
 
 #if DCHECK_IS_ON()
+  ASSERT(false); // BKTODO:
+#if 0
   if (VLOG_IS_ON(2)) {
     LOG(ERROR) << "PaintController::FinishCycle() done";
     if (VLOG_IS_ON(3))
@@ -559,6 +601,7 @@ void PaintController::FinishCycle() {
     else
       ShowDebugData();
   }
+#endif
 #endif
 }
 
@@ -600,6 +643,7 @@ class DebugDrawingClient final : public DisplayItemClient {
 
 }  // anonymous namespace
 
+#if 0 // BKTODO:
 void PaintController::AppendDebugDrawingAfterCommit(
     sk_sp<const PaintRecord> record,
     const PropertyTreeState& property_tree_state) {
@@ -617,11 +661,14 @@ void PaintController::AppendDebugDrawingAfterCommit(
       display_item_list.size() - 1, display_item_list.size(),
       display_item.GetId(), property_tree_state);
 }
+#endif
 
 void PaintController::ShowUnderInvalidationError(
     const char* reason,
     const DisplayItem& new_item,
     const DisplayItem* old_item) const {
+  ASSERT(false); // BKTODO:
+#if 0
   LOG(ERROR) << under_invalidation_message_prefix_ << " " << reason;
 #if DCHECK_IS_ON()
   LOG(ERROR) << "New display item: " << new_item.AsDebugString();
@@ -652,6 +699,7 @@ void PaintController::ShowUnderInvalidationError(
   LOG(ERROR) << "Run a build with DCHECK on to get more details.";
   LOG(ERROR) << "See http://crbug.com/619103.";
 #endif
+#endif
 }
 
 void PaintController::ShowSequenceUnderInvalidationError(
@@ -659,6 +707,8 @@ void PaintController::ShowSequenceUnderInvalidationError(
     const DisplayItemClient& client,
     int start,
     int end) {
+  ASSERT(false); // BKTODO:
+#if 0
   LOG(ERROR) << under_invalidation_message_prefix_ << " " << reason;
   LOG(ERROR) << "Subsequence client: " << client.DebugName();
 #if DCHECK_IS_ON()
@@ -667,6 +717,7 @@ void PaintController::ShowSequenceUnderInvalidationError(
   LOG(ERROR) << "Run a build with DCHECK on to get more details.";
 #endif
   LOG(ERROR) << "See http://crbug.com/619103.";
+#endif
 }
 
 void PaintController::CheckUnderInvalidation() {
@@ -686,6 +737,8 @@ void PaintController::CheckUnderInvalidation() {
     return;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   const DisplayItem& new_item = new_display_item_list_.Last();
   size_t old_item_index = under_invalidation_checking_begin_;
   DisplayItem* old_item =
@@ -711,6 +764,7 @@ void PaintController::CheckUnderInvalidation() {
   // painting.
   new_display_item_list_.RemoveLast();
   MoveItemFromCurrentListToNewList(old_item_index);
+#endif
 
   ++under_invalidation_checking_begin_;
 }
@@ -750,9 +804,12 @@ void PaintController::CheckDuplicatePaintChunkId(const PaintChunk::Id& id) {
       const auto& chunk = new_paint_chunks_.PaintChunkAt(index);
       if (chunk.id == id) {
         ShowDebugData();
+        ASSERT(false); // BKTODO:
+#if 0
         NOTREACHED() << "New paint chunk id " << id.ToString().Utf8().data()
                      << " has duplicated id with previous chuck "
                      << chunk.ToString().Utf8().data();
+#endif
       }
     }
   }

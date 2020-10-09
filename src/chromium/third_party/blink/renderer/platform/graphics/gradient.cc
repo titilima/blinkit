@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: gradient.cc
+// Description: Gradient Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007, 2008, 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2007 Alp Toker <alp@atoker.com>
@@ -63,7 +74,7 @@ void Gradient::AddColorStop(const Gradient::ColorStop& stop) {
   }
 
   stops_.push_back(stop);
-  cached_shader_.reset();
+  ASSERT(false); // BKTODO: cached_shader_.reset();
 }
 
 void Gradient::AddColorStops(const Vector<Gradient::ColorStop>& stops) {
@@ -129,6 +140,7 @@ void Gradient::FillSkiaStops(ColorBuffer& colors, OffsetBuffer& pos) const {
   }
 }
 
+#if 0 // BKTODO:
 sk_sp<PaintShader> Gradient::CreateShaderInternal(
     const SkMatrix& local_matrix) {
   SortStopsIfNecessary();
@@ -179,9 +191,11 @@ void Gradient::ApplyToFlags(PaintFlags& flags, const SkMatrix& local_matrix) {
   // Legacy behavior: gradients are always dithered.
   flags.setDither(true);
 }
+#endif
 
 namespace {
 
+#if 0 // BKTODO:
 class LinearGradient final : public Gradient {
  public:
   LinearGradient(const FloatPoint& p0,
@@ -306,6 +320,7 @@ class ConicGradient final : public Gradient {
   const float start_angle_;    // angle (deg) corresponding to color position 0
   const float end_angle_;      // angle (deg) corresponding to color position 1
 };
+#endif
 
 }  // anonymous ns
 
@@ -314,8 +329,12 @@ scoped_refptr<Gradient> Gradient::CreateLinear(
     const FloatPoint& p1,
     GradientSpreadMethod spread_method,
     ColorInterpolation interpolation) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return base::AdoptRef(
       new LinearGradient(p0, p1, spread_method, interpolation));
+#endif
 }
 
 scoped_refptr<Gradient> Gradient::CreateRadial(
@@ -326,8 +345,12 @@ scoped_refptr<Gradient> Gradient::CreateRadial(
     float aspect_ratio,
     GradientSpreadMethod spread_method,
     ColorInterpolation interpolation) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return base::AdoptRef(new RadialGradient(p0, r0, p1, r1, aspect_ratio,
                                            spread_method, interpolation));
+#endif
 }
 
 scoped_refptr<Gradient> Gradient::CreateConic(
@@ -337,9 +360,13 @@ scoped_refptr<Gradient> Gradient::CreateConic(
     float end_angle,
     GradientSpreadMethod spread_method,
     ColorInterpolation interpolation) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return base::AdoptRef(new ConicGradient(position, rotation, start_angle,
                                           end_angle, spread_method,
                                           interpolation));
+#endif
 }
 
 }  // namespace blink
