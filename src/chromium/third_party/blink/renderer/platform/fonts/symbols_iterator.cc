@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: symbols_iterator.cc
+// Description: SymbolsIterator Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,7 @@
 #include "third_party/blink/renderer/platform/fonts/symbols_iterator.h"
 
 #include <unicode/uchar.h>
-#include <unicode/uniset.h>
+// BKTODO: #include <unicode/uniset.h>
 #include <memory>
 
 namespace blink {

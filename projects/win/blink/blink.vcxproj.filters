@@ -3578,6 +3578,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\date_math.cc">
       <Filter>renderer\platform\wtf</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_stream.cc">
+      <Filter>renderer\platform\wtf\text</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9675,6 +9678,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_cursor_info.h">
       <Filter>public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_stream.h">
+      <Filter>renderer\platform\wtf\text</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\float_shape_helpers.h">
+      <Filter>renderer\platform\geometry</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: box_reflection.cc
+// Description: BoxReflection Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -13,8 +24,13 @@
 namespace blink {
 
 BoxReflection::BoxReflection(ReflectionDirection direction, float offset)
+#if 0 // BKTODO:
     : BoxReflection(direction, offset, nullptr, FloatRect()) {}
+#else
+{}
+#endif
 
+#if 0 // BKTODO:
 BoxReflection::BoxReflection(ReflectionDirection direction,
                              float offset,
                              sk_sp<PaintRecord> mask,
@@ -23,6 +39,7 @@ BoxReflection::BoxReflection(ReflectionDirection direction,
       offset_(offset),
       mask_(std::move(mask)),
       mask_bounds_(mask_bounds) {}
+#endif
 
 BoxReflection::BoxReflection(const BoxReflection& reflection) = default;
 

@@ -1,10 +1,21 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_platform_data.cc
+// Description: FontPlatformData Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/platform/graphics/color_space_gamut.h"
 
-#include "third_party/blink/public/platform/web_screen_info.h"
+// BKTODO: #include "third_party/blink/public/platform/web_screen_info.h"
 #include "third_party/skia/third_party/skcms/skcms.h"
 
 namespace blink {
@@ -12,6 +23,9 @@ namespace blink {
 namespace color_space_utilities {
 
 ColorSpaceGamut GetColorSpaceGamut(const WebScreenInfo& screen_info) {
+  ASSERT(false); // BKTODO:
+  return ColorSpaceGamut::kUnknown;
+#if 0
   const gfx::ColorSpace& color_space = screen_info.color_space;
   if (!color_space.IsValid())
     return ColorSpaceGamut::kUnknown;
@@ -20,6 +34,7 @@ ColorSpaceGamut GetColorSpaceGamut(const WebScreenInfo& screen_info) {
   skcms_ICCProfile color_profile;
   color_space.GetRasterColorSpace().ToSkColorSpace()->toProfile(&color_profile);
   return color_space_utilities::GetColorSpaceGamut(&color_profile);
+#endif
 }
 
 ColorSpaceGamut GetColorSpaceGamut(const skcms_ICCProfile* color_profile) {
