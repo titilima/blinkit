@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_platform_data.h
+// Description: FontPlatformData Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2006, 2007, 2008, Google Inc. All rights reserved.
  *
@@ -191,7 +202,9 @@ class PLATFORM_EXPORT FontPlatformData {
   WebFontRenderStyle style_;
 #endif
 
+#if 0 // BKTODO:
   mutable scoped_refptr<HarfBuzzFace> harfbuzz_face_;
+#endif
   bool is_hash_table_deleted_value_;
 #if defined(OS_WIN)
   // TODO(https://crbug.com/808221): Replace |paint_text_flags_| with |style_|.

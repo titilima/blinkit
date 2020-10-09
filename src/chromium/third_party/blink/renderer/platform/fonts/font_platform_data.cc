@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_platform_data.cc
+// Description: FontPlatformData Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Brent Fulgham
  *
@@ -22,13 +33,17 @@
 
 #include "SkTypeface.h"
 #include "build/build_config.h"
+#if 0 // BKTODO:
 #include "hb-ot.h"
 #include "hb.h"
 #include "third_party/blink/public/platform/linux/web_sandbox_support.h"
+#endif
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/renderer/platform/fonts/font_cache.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/platform/fonts/shaping/harfbuzz_face.h"
 #include "third_party/blink/renderer/platform/layout_test_support.h"
+#endif
 #include "third_party/blink/renderer/platform/text/character.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
 #include "third_party/blink/renderer/platform/wtf/text/character_names.h"
@@ -99,7 +114,9 @@ FontPlatformData::FontPlatformData(const FontPlatformData& source)
 #if !defined(OS_WIN) && !defined(OS_MACOSX)
       style_(source.style_),
 #endif
+#if 0 // BKTODO:
       harfbuzz_face_(nullptr),
+#endif
       is_hash_table_deleted_value_(false)
 #if defined(OS_WIN)
       ,
@@ -192,7 +209,7 @@ const FontPlatformData& FontPlatformData::operator=(
   synthetic_bold_ = other.synthetic_bold_;
   synthetic_italic_ = other.synthetic_italic_;
   avoid_embedded_bitmaps_ = other.avoid_embedded_bitmaps_;
-  harfbuzz_face_ = nullptr;
+  ASSERT(false); // BKTODO: harfbuzz_face_ = nullptr;
   orientation_ = other.orientation_;
 #if !defined(OS_WIN) && !defined(OS_MACOSX)
   style_ = other.style_;
@@ -246,20 +263,28 @@ SkTypeface* FontPlatformData::Typeface() const {
 }
 
 HarfBuzzFace* FontPlatformData::GetHarfBuzzFace() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (!harfbuzz_face_)
     harfbuzz_face_ =
         HarfBuzzFace::Create(const_cast<FontPlatformData*>(this), UniqueID());
 
   return harfbuzz_face_.get();
+#endif
 }
 
 bool FontPlatformData::HasSpaceInLigaturesOrKerning(
     TypesettingFeatures features) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   HarfBuzzFace* hb_face = GetHarfBuzzFace();
   if (!hb_face)
     return false;
 
   return hb_face->HasSpaceInLigaturesOrKerning(features);
+#endif
 }
 
 unsigned FontPlatformData::GetHash() const {

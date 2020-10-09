@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: script_run_iterator.cc
+// Description: ScriptRunIterator Class
+//      Author: Ziming Li
+//     Created: 2020-10-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,7 @@
 #include "third_party/blink/renderer/platform/fonts/script_run_iterator.h"
 
 #include <algorithm>
-#include "third_party/blink/renderer/platform/text/icu_error.h"
+// BKTODO:#include "third_party/blink/renderer/platform/text/icu_error.h"
 #include "third_party/blink/renderer/platform/wtf/threading.h"
 
 namespace blink {
@@ -18,6 +29,8 @@ constexpr int ScriptData::kMaxScriptCount;
 ScriptData::~ScriptData() = default;
 
 void ICUScriptData::GetScripts(UChar32 ch, UScriptCodeList& dst) const {
+  ASSERT(false); // BKTODO:
+#if 0
   ICUError status;
   // Leave room to insert primary script. It's not strictly necessary but
   // it ensures that the result won't ever be greater than kMaxScriptCount,
@@ -97,15 +110,24 @@ void ICUScriptData::GetScripts(UChar32 ch, UScriptCodeList& dst) const {
       std::swap(dst.at(1), dst.at(i));
     }
   }
+#endif
 }
 
 UChar32 ICUScriptData::GetPairedBracket(UChar32 ch) const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return u_getBidiPairedBracket(ch);
+#endif
 }
 
 PairedBracketType ICUScriptData::GetPairedBracketType(UChar32 ch) const {
+  ASSERT(false); // BKTODO:
+  return ScriptData::kBracketTypeNone;
+#if 0
   return static_cast<PairedBracketType>(
       u_getIntPropertyValue(ch, UCHAR_BIDI_PAIRED_BRACKET_TYPE));
+#endif
 }
 
 const ICUScriptData* ICUScriptData::Instance() {
