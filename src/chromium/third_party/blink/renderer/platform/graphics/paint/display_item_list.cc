@@ -1,15 +1,27 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: display_item_list.cc
+// Description: DisplayItemList Class
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/platform/graphics/paint/display_item_list.h"
 
-#include "third_party/blink/renderer/platform/graphics/logging_canvas.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/logging_canvas.h"
 #include "third_party/blink/renderer/platform/graphics/paint/drawing_display_item.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_chunk.h"
 
 namespace blink {
 
+#if 0 // BKTODO:
 DisplayItemList::Range<DisplayItemList::iterator>
 DisplayItemList::ItemsInPaintChunk(const PaintChunk& paint_chunk) {
   return Range<iterator>(begin() + paint_chunk.begin_index,
@@ -21,6 +33,7 @@ DisplayItemList::ItemsInPaintChunk(const PaintChunk& paint_chunk) const {
   return Range<const_iterator>(begin() + paint_chunk.begin_index,
                                begin() + paint_chunk.end_index);
 }
+#endif
 
 #if DCHECK_IS_ON()
 
@@ -37,6 +50,8 @@ void DisplayItemList::AppendSubsequenceAsJSON(size_t begin_index,
                                               size_t end_index,
                                               JsonFlags flags,
                                               JSONArray& json_array) const {
+  ASSERT(false); // BKTODO:
+#if 0
   for (size_t i = begin_index; i < end_index; ++i) {
     std::unique_ptr<JSONObject> json = JSONObject::Create();
 
@@ -65,6 +80,7 @@ void DisplayItemList::AppendSubsequenceAsJSON(size_t begin_index,
 
     json_array.PushObject(std::move(json));
   }
+#endif
 }
 
 #endif  // DCHECK_IS_ON()

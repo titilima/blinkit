@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: foreign_layer_display_item.cc
+// Description: ForeignLayerDisplayItem Class
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,13 +17,14 @@
 
 #include <utility>
 
-#include "cc/layers/layer.h"
+// BKTODO: #include "cc/layers/layer.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_controller.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
 
 namespace blink {
 
+#if 0 // BKTODO:
 ForeignLayerDisplayItem::ForeignLayerDisplayItem(
     const DisplayItemClient& client,
     Type type,
@@ -28,6 +40,7 @@ ForeignLayerDisplayItem::ForeignLayerDisplayItem(
   DCHECK(IsForeignLayerType(type));
   DCHECK(layer_);
 }
+#endif
 
 ForeignLayerDisplayItem::~ForeignLayerDisplayItem() = default;
 
@@ -46,17 +59,25 @@ bool ForeignLayerDisplayItem::DrawsContent() const {
 }
 
 bool ForeignLayerDisplayItem::Equals(const DisplayItem& other) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return DisplayItem::Equals(other) &&
          layer_ == static_cast<const ForeignLayerDisplayItem&>(other).layer_;
+#endif
 }
 
 #if DCHECK_IS_ON()
 void ForeignLayerDisplayItem::PropertiesAsJSON(JSONObject& json) const {
+  ASSERT(false); // BKTODO:
+#if 0
   DisplayItem::PropertiesAsJSON(json);
   json.SetInteger("layer", layer_->id());
+#endif
 }
 #endif
 
+#if 0 // BKTODO:
 void RecordForeignLayer(GraphicsContext& context,
                         const DisplayItemClient& client,
                         DisplayItem::Type type,
@@ -70,5 +91,6 @@ void RecordForeignLayer(GraphicsContext& context,
   paint_controller.CreateAndAppend<ForeignLayerDisplayItem>(
       client, type, std::move(layer), location, bounds);
 }
+#endif
 
 }  // namespace blink

@@ -1,12 +1,23 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: paint_artifact.cc
+// Description: PaintArtifact Class
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/platform/graphics/paint/paint_artifact.h"
 
-#include "cc/paint/display_item_list.h"
+// BKTODO: #include "cc/paint/display_item_list.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
-#include "third_party/blink/renderer/platform/graphics/compositing/paint_chunks_to_cc_layer.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/compositing/paint_chunks_to_cc_layer.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
 #include "third_party/blink/renderer/platform/graphics/paint/drawing_display_item.h"
 #include "third_party/blink/renderer/platform/graphics/paint/geometry_mapper.h"
@@ -26,6 +37,8 @@ void ComputeChunkBoundsAndOpaqueness(const DisplayItemList& display_items,
 
     FloatRect bounds;
     SkRegion known_to_be_opaque_region;
+    ASSERT(false); // BKTODO:
+#if 0
     for (const DisplayItem& item : display_items.ItemsInPaintChunk(chunk)) {
       bounds.Unite(item.VisualRect());
       if (!RuntimeEnabledFeatures::SlimmingPaintV2Enabled() ||
@@ -38,6 +51,7 @@ void ComputeChunkBoundsAndOpaqueness(const DisplayItemList& display_items,
             SkRegion::kUnion_Op);
       }
     }
+#endif
     chunk.bounds = bounds;
     if (known_to_be_opaque_region.contains(EnclosingIntRect(bounds)))
       chunk.known_to_be_opaque = true;
@@ -86,20 +100,26 @@ void PaintArtifact::Replay(cc::PaintCanvas& canvas,
                            const PropertyTreeState& replay_state,
                            const IntPoint& offset) const {
   TRACE_EVENT0("blink,benchmark", "PaintArtifact::replay");
+  ASSERT(false); // BKTODO:
+#if 0
   scoped_refptr<cc::DisplayItemList> display_item_list =
       PaintChunksToCcLayer::Convert(
           PaintChunks(), replay_state, gfx::Vector2dF(offset.X(), offset.Y()),
           GetDisplayItemList(),
           cc::DisplayItemList::kToBeReleasedAsPaintOpBuffer);
   canvas.drawPicture(display_item_list->ReleaseAsRecord());
+#endif
 }
 
 DISABLE_CFI_PERF
 void PaintArtifact::AppendToDisplayItemList(const FloatSize& visual_rect_offset,
                                             cc::DisplayItemList& list) const {
   TRACE_EVENT0("blink,benchmark", "PaintArtifact::AppendToDisplayItemList");
+  ASSERT(false); // BKTODO:
+#if 0
   for (const DisplayItem& item : display_item_list_)
     item.AppendToDisplayItemList(visual_rect_offset, list);
+#endif
 }
 
 void PaintArtifact::FinishCycle() {

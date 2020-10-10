@@ -1,12 +1,23 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: drawing_display_item.cc
+// Description: DrawingDisplayItem Class
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/platform/graphics/paint/drawing_display_item.h"
 
-#include "cc/paint/display_item_list.h"
+// BKTODO: #include "cc/paint/display_item_list.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context.h"
-#include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkData.h"
@@ -14,13 +25,18 @@
 namespace blink {
 
 void DrawingDisplayItem::Replay(GraphicsContext& context) const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (record_)
     context.DrawRecord(record_);
+#endif
 }
 
 void DrawingDisplayItem::AppendToDisplayItemList(
     const FloatSize& visual_rect_offset,
     cc::DisplayItemList& list) const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (record_) {
     list.StartPaint();
     list.push<cc::DrawRecordOp>(record_);
@@ -29,10 +45,15 @@ void DrawingDisplayItem::AppendToDisplayItemList(
     visual_rect.Move(-visual_rect_offset);
     list.EndPaintOfUnpaired(EnclosingIntRect(visual_rect));
   }
+#endif
 }
 
 bool DrawingDisplayItem::DrawsContent() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return record_.get();
+#endif
 }
 
 #if DCHECK_IS_ON()
@@ -42,6 +63,7 @@ void DrawingDisplayItem::PropertiesAsJSON(JSONObject& json) const {
 }
 #endif
 
+#if 0 // BKTODO:
 static SkBitmap RecordToBitmap(sk_sp<const PaintRecord> record,
                                const IntRect& bounds) {
   SkBitmap bitmap;
@@ -77,11 +99,15 @@ static bool BitmapsEqual(sk_sp<const PaintRecord> record1,
   }
   return !mismatch_count;
 }
+#endif
 
 bool DrawingDisplayItem::Equals(const DisplayItem& other) const {
   if (!DisplayItem::Equals(other))
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   const auto& record = GetPaintRecord();
   const auto& other_record =
       static_cast<const DrawingDisplayItem&>(other).GetPaintRecord();
@@ -104,6 +130,7 @@ bool DrawingDisplayItem::Equals(const DisplayItem& other) const {
   // Limit the bounds to prevent OOM.
   int_bounds.Intersect(IntRect(int_bounds.X(), int_bounds.Y(), 6000, 6000));
   return BitmapsEqual(std::move(record), std::move(other_record), int_bounds);
+#endif
 }
 
 }  // namespace blink

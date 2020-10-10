@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: drawing_recorder.cc
+// Description: DrawingRecorder Class
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -58,6 +69,8 @@ DrawingRecorder::~DrawingRecorder() {
   }
 #endif
 
+  ASSERT(false); // BKTODO:
+#if 0
   sk_sp<const PaintRecord> picture = context_.EndRecording();
 
 #if DCHECK_IS_ON()
@@ -72,6 +85,7 @@ DrawingRecorder::~DrawingRecorder() {
 
   context_.GetPaintController().CreateAndAppend<DrawingDisplayItem>(
       client_, type_, picture, known_to_be_opaque_);
+#endif
 }
 
 }  // namespace blink

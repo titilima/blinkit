@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: paint_property_node.cc
+// Description: PaintPropertyNode Class
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -59,8 +70,7 @@ const NodeType& LowestCommonAncestorTemplate(const NodeType& a,
     b_ptr = b_ptr->Parent();
   }
 
-  DCHECK(a_ptr) << "Malformed property tree. All nodes must be descendant of "
-                   "the same root.";
+  DCHECK(a_ptr); // Malformed property tree. All nodes must be descendant of the same root.
   return *a_ptr;
 }
 
