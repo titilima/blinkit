@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_block_flow_line.cc
+// Description: LayoutBlockFlow Class
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2003, 2004, 2006, 2007, 2008, 2009, 2010, 2011 Apple Inc.
@@ -22,12 +33,12 @@
  */
 
 #include "build/build_config.h"
-#include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
+// BKTODO: #include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
 #include "third_party/blink/renderer/core/editing/editing_utilities.h"
 #include "third_party/blink/renderer/core/layout/api/line_layout_item.h"
-#include "third_party/blink/renderer/core/layout/bidi_run_for_line.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/bidi_run_for_line.h"
 #include "third_party/blink/renderer/core/layout/layout_object.h"
-#include "third_party/blink/renderer/core/layout/layout_ruby_run.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_ruby_run.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/layout/line/breaking_context_inline_headers.h"
 #include "third_party/blink/renderer/core/layout/line/glyph_overflow.h"
@@ -35,7 +46,7 @@
 #include "third_party/blink/renderer/core/layout/line/line_layout_state.h"
 #include "third_party/blink/renderer/core/layout/line/line_width.h"
 #include "third_party/blink/renderer/core/layout/line/word_measurement.h"
-#include "third_party/blink/renderer/core/layout/svg/line/svg_root_inline_box.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/svg/line/svg_root_inline_box.h"
 #include "third_party/blink/renderer/core/layout/vertical_position_cache.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment.h"
 #include "third_party/blink/renderer/platform/text/bidi_resolver.h"
@@ -330,8 +341,11 @@ RootInlineBox* LayoutBlockFlow::ConstructLine(BidiRunList<BidiRun>& bidi_runs,
     box->SetBidiLevel(r->Level());
 
     if (box->IsInlineTextBox()) {
+      ASSERT(false); // BKTODO:
+#if 0
       if (AXObjectCache* cache = GetDocument().ExistingAXObjectCache())
         cache->InlineTextBoxesUpdated(r->line_layout_item_);
+#endif
     }
   }
 
@@ -470,6 +484,8 @@ void LayoutBlockFlow::SetMarginsForRubyRun(BidiRun* run,
                                            LayoutRubyRun* layout_ruby_run,
                                            LayoutObject* previous_object,
                                            const LineInfo& line_info) {
+  ASSERT(false); // BKTODO:
+#if 0
   int start_overhang;
   int end_overhang;
   LayoutObject* next_object = nullptr;
@@ -490,6 +506,7 @@ void LayoutBlockFlow::SetMarginsForRubyRun(BidiRun* run,
       start_overhang, end_overhang);
   SetMarginStartForChild(*layout_ruby_run, LayoutUnit(-start_overhang));
   SetMarginEndForChild(*layout_ruby_run, LayoutUnit(-end_overhang));
+#endif
 }
 
 static inline size_t FindWordMeasurement(
@@ -843,9 +860,12 @@ BidiRun* LayoutBlockFlow::ComputeInlineDirectionPositionsForSegment(
       if (!r->line_layout_item_.IsLayoutInline()) {
         LayoutBox* layout_box =
             ToLayoutBox(r->line_layout_item_.GetLayoutObject());
+        ASSERT(false); // BKTODO:
+#if 0
         if (layout_box->IsRubyRun())
           SetMarginsForRubyRun(r, ToLayoutRubyRun(layout_box), previous_object,
                                line_info);
+#endif
         r->box_->SetLogicalWidth(LogicalWidthForChild(*layout_box));
         total_logical_width +=
             MarginStartForChild(*layout_box) + MarginEndForChild(*layout_box);
@@ -947,6 +967,8 @@ RootInlineBox* LayoutBlockFlow::CreateLineBoxesFromBidiRuns(
                                         text_box_data_map,
                                         vertical_position_cache);
 
+  ASSERT(false); // BKTODO:
+#if 0
   // SVG text layout code computes vertical & horizontal positions on its own.
   // Note that we still need to execute computeVerticalPositionsForLine() as
   // it calls InlineTextBox::positionLineBox(), which tracks whether the box
@@ -956,6 +978,7 @@ RootInlineBox* LayoutBlockFlow::CreateLineBoxesFromBidiRuns(
     DCHECK(IsSVGText());
     ToSVGRootInlineBox(line_box)->ComputePerCharacterLayoutInformation();
   }
+#endif
 
   // Compute our overflow now.
   line_box->ComputeOverflow(line_box->LineTop(), line_box->LineBottom(),
@@ -983,8 +1006,11 @@ void LayoutBlockFlow::LayoutRunsAndFloats(LineLayoutState& layout_state) {
   InlineBidiResolver resolver;
   RootInlineBox* start_line = DetermineStartPosition(layout_state, resolver);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (ContainsFloats())
     layout_state.SetLastFloat(floating_objects_->Set().back().get());
+#endif
 
   // We also find the first clean line and extract these lines.  We will add
   // them back if we determine that we're able to synchronize after handling all
@@ -1023,6 +1049,8 @@ void LayoutBlockFlow::AppendFloatsToLastLine(
     const InlineIterator& clean_line_start,
     const InlineBidiResolver& resolver,
     const BidiStatus& clean_line_bidi_status) {
+  ASSERT(false); // BKTODO:
+#if 0
   const FloatingObjectSet& floating_object_set = floating_objects_->Set();
   FloatingObjectSetIterator it = floating_object_set.begin();
   FloatingObjectSetIterator end = floating_object_set.end();
@@ -1064,6 +1092,7 @@ void LayoutBlockFlow::AppendFloatsToLastLine(
   layout_state.SetLastFloat(!floating_object_set.IsEmpty()
                                 ? floating_object_set.back().get()
                                 : nullptr);
+#endif
 }
 
 void LayoutBlockFlow::LayoutRunsAndFloatsInRange(
@@ -1114,6 +1143,8 @@ void LayoutBlockFlow::LayoutRunsAndFloatsInRange(
     const InlineIterator previous_endof_line = end_of_line;
     bool is_new_uba_paragraph =
         layout_state.GetLineInfo().PreviousLineBrokeCleanly();
+    ASSERT(false); // BKTODO:
+#if 0
     FloatingObject* last_float_from_previous_line =
         (ContainsFloats()) ? floating_objects_->Set().back().get() : nullptr;
 
@@ -1287,6 +1318,7 @@ void LayoutBlockFlow::LayoutRunsAndFloatsInRange(
 
     line_midpoint_state.Reset();
     resolver.SetPosition(end_of_line, NumberOfIsolateAncestors(end_of_line));
+#endif
   }
 
   // The resolver runs should have been cleared, otherwise they're leaking.
@@ -2145,6 +2177,8 @@ RootInlineBox* LayoutBlockFlow::DetermineStartPosition(
     resolver.SetPosition(iter, NumberOfIsolateAncestors(iter));
     resolver.SetStatus(last->LineBreakBidiStatus());
   } else {
+    ASSERT(false); // BKTODO:
+#if 0
     TextDirection direction = StyleRef().Direction();
     if (StyleRef().GetUnicodeBidi() == UnicodeBidi::kPlaintext)
       direction = DeterminePlaintextDirectionality(LineLayoutItem(this));
@@ -2156,6 +2190,7 @@ RootInlineBox* LayoutBlockFlow::DetermineStartPosition(
                                       resolver.Runs(), &resolver),
         0);
     resolver.SetPosition(iter, NumberOfIsolateAncestors(iter));
+#endif
   }
   return curr;
 }
@@ -2246,6 +2281,8 @@ bool LayoutBlockFlow::CheckPaginationAndFloatsAtEndLine(
   LayoutUnit logical_bottom =
       last_line->LineBottomWithLeading() + AbsoluteValue(line_delta);
 
+  ASSERT(false); // BKTODO:
+#if 0
   const FloatingObjectSet& floating_object_set = floating_objects_->Set();
   FloatingObjectSetIterator end = floating_object_set.end();
   for (FloatingObjectSetIterator it = floating_object_set.begin(); it != end;
@@ -2255,6 +2292,7 @@ bool LayoutBlockFlow::CheckPaginationAndFloatsAtEndLine(
         LogicalBottomForFloat(floating_object) < logical_bottom)
       return false;
   }
+#endif
 
   return true;
 }

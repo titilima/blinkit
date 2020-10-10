@@ -88,6 +88,14 @@ void Event::InitEventPath(Node &node)
         m_eventPath->InitializeWith(node, this);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+const AtomicString& Event::InterfaceName(void) const
+{
+    ASSERT(false); // BKTODO: Check child classes.
+    return g_null_atom;
+}
+#endif
+
 void Event::preventDefault(void)
 {
     if (PassiveMode::kNotPassive != m_handlingPassive && PassiveMode::kNotPassiveDefault != m_handlingPassive)

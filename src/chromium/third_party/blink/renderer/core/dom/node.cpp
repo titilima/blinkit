@@ -110,6 +110,24 @@ Node* Node::appendChild(Node *newChild, ExceptionState &exceptionState)
     return nullptr;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+void Node::AttachLayoutTree(AttachContext &context)
+{
+    ASSERT(false); // BKTODO: Check child classes.
+}
+
+bool Node::CanStartSelection(void) const
+{
+    ASSERT(false); // BKTODO: Check child classes.
+    return false;
+}
+
+void Node::CheckSlotChange(SlotChangeType slotChangeType)
+{
+    ASSERT(false); // BKTODO:
+}
+#endif
+
 void Node::ClearRareData(void)
 {
     if (IsElementNode())
@@ -340,6 +358,13 @@ void Node::DefaultEventHandler(Event &event)
 #endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+void Node::DetachLayoutTree(const AttachContext &context)
+{
+    ASSERT(false); // BKTODO: Check child classes.
+}
+#endif
+
 void Node::DidNotifySubtreeInsertionsToDocument(void)
 {
     ASSERT(false); // BKTODO:
@@ -529,6 +554,11 @@ void Node::MarkAncestorsWithChildNeedsDistributionRecalc(void)
 {
     ASSERT(false); // BKTODO:
 }
+
+void Node::MarkAncestorsWithChildNeedsStyleInvalidation(void)
+{
+    ASSERT(false); // BKTODO:
+}
 #endif
 
 bool Node::MayContainLegacyNodeTreeWhereDistributionShouldBeSupported(void) const
@@ -543,6 +573,14 @@ bool Node::MayContainLegacyNodeTreeWhereDistributionShouldBeSupported(void) cons
     }
     return true;
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+bool Node::NeedsDistributionRecalc(void) const
+{
+    ASSERT(false); // BKTODO:
+    return false;
+}
+#endif
 
 unsigned Node::NodeIndex(void) const
 {
@@ -859,6 +897,14 @@ void Node::UpdateDistributionInternal(void)
         root.RecalcDistribution();
 #endif
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+const ComputedStyle* Node::VirtualEnsureComputedStyle(PseudoId pseudoElementSpecifier)
+{
+    ASSERT(false); // BKTODO: Check child classes.
+    return nullptr;
+}
+#endif
 
 void Node::WillCallDefaultEventHandler(const Event &event)
 {

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: local_font_face_source.cc
+// Description: LocalFontFaceSource Class
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -49,9 +60,12 @@ void LocalFontFaceSource::LocalFontHistograms::Record(bool load_success) {
   if (reported_)
     return;
   reported_ = true;
+  ASSERT(false); // BKTODO: Check if necessary.
+#if 0
   DEFINE_STATIC_LOCAL(EnumerationHistogram, local_font_used_histogram,
                       ("WebFont.LocalFontUsed", 2));
   local_font_used_histogram.Count(load_success ? 1 : 0);
+#endif
 }
 
 }  // namespace blink

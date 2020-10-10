@@ -1784,6 +1784,18 @@ void Document::UpdateBaseURL(void)
 #endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+void Document::UpdateStyleAndLayoutTree(void)
+{
+    ASSERT(false); // BKTODO:
+}
+
+void Document::UpdateStyleAndLayoutTreeForNode(const Node *node)
+{
+    ASSERT(false); // BKTODO:
+}
+#endif
+
 GURL Document::urlForBinding(void) const
 {
     const GURL &url = Url();

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_face.cc
+// Description: FontFace Class
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,7 +42,7 @@
 #include "third_party/blink/renderer/core/css/font_face.h"
 
 #include "third_party/blink/public/platform/task_type.h"
-#include "third_party/blink/renderer/bindings/core/v8/string_or_array_buffer_or_array_buffer_view.h"
+// BKTODO: #include "third_party/blink/renderer/bindings/core/v8/string_or_array_buffer_or_array_buffer_view.h"
 #include "third_party/blink/renderer/core/css/binary_data_font_face_source.h"
 #include "third_party/blink/renderer/core/css/css_font_face.h"
 #include "third_party/blink/renderer/core/css/css_font_face_src_value.h"
@@ -47,7 +58,7 @@
 #include "third_party/blink/renderer/core/css/offscreen_font_selector.h"
 #include "third_party/blink/renderer/core/css/parser/at_rule_descriptor_parser.h"
 #include "third_party/blink/renderer/core/css/parser/css_parser.h"
-#include "third_party/blink/renderer/core/css/remote_font_face_source.h"
+// BKTODO: #include "third_party/blink/renderer/core/css/remote_font_face_source.h"
 #include "third_party/blink/renderer/core/css/style_engine.h"
 #include "third_party/blink/renderer/core/css/style_rule.h"
 #include "third_party/blink/renderer/core/css_value_keywords.h"
@@ -57,11 +68,13 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/typed_arrays/dom_array_buffer.h"
 #include "third_party/blink/renderer/core/typed_arrays/dom_array_buffer_view.h"
 #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
+#endif
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
-#include "third_party/blink/renderer/platform/bindings/script_state.h"
+// BKTODO: #include "third_party/blink/renderer/platform/bindings/script_state.h"
 #include "third_party/blink/renderer/platform/font_family_names.h"
 #include "third_party/blink/renderer/platform/histogram.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
@@ -74,11 +87,15 @@ namespace {
 const CSSValue* ParseCSSValue(const ExecutionContext* context,
                               const String& value,
                               AtRuleDescriptorID descriptor_id) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   CSSParserContext* parser_context =
       IsA<Document>(context) ? CSSParserContext::Create(*To<Document>(context))
                              : CSSParserContext::Create(*context);
   return AtRuleDescriptorParser::ParseFontFaceDescriptor(descriptor_id, value,
                                                          *parser_context);
+#endif
 }
 
 FontDisplay CSSValueToFontDisplay(const CSSValue* value) {
@@ -122,6 +139,8 @@ FontFace* FontFace::Create(ExecutionContext* context,
                            const AtomicString& family,
                            StringOrArrayBufferOrArrayBufferView& source,
                            const FontFaceDescriptors& descriptors) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (source.IsString())
     return Create(context, family, source.GetAsString(), descriptors);
   if (source.IsArrayBuffer())
@@ -130,6 +149,7 @@ FontFace* FontFace::Create(ExecutionContext* context,
     return Create(context, family, source.GetAsArrayBufferView().View(),
                   descriptors);
   }
+#endif
   NOTREACHED();
   return nullptr;
 }
@@ -138,6 +158,9 @@ FontFace* FontFace::Create(ExecutionContext* context,
                            const AtomicString& family,
                            const String& source,
                            const FontFaceDescriptors& descriptors) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   FontFace* font_face = new FontFace(context, family, descriptors);
 
   const CSSValue* src = ParseCSSValue(context, source, AtRuleDescriptorID::Src);
@@ -150,27 +173,36 @@ FontFace* FontFace::Create(ExecutionContext* context,
 
   font_face->InitCSSFontFace(context, *src);
   return font_face;
+#endif
 }
 
 FontFace* FontFace::Create(ExecutionContext* context,
                            const AtomicString& family,
                            DOMArrayBuffer* source,
                            const FontFaceDescriptors& descriptors) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   FontFace* font_face = new FontFace(context, family, descriptors);
   font_face->InitCSSFontFace(static_cast<const unsigned char*>(source->Data()),
                              source->ByteLength());
   return font_face;
+#endif
 }
 
 FontFace* FontFace::Create(ExecutionContext* context,
                            const AtomicString& family,
                            DOMArrayBufferView* source,
                            const FontFaceDescriptors& descriptors) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   FontFace* font_face = new FontFace(context, family, descriptors);
   font_face->InitCSSFontFace(
       static_cast<const unsigned char*>(source->BaseAddress()),
       source->byteLength());
   return font_face;
+#endif
 }
 
 FontFace* FontFace::Create(Document* document,
@@ -186,6 +218,8 @@ FontFace* FontFace::Create(Document* document,
   if (!src || !src->IsValueList())
     return nullptr;
 
+  ASSERT(false); // BKTODO:
+#if 0
   FontFace* font_face = new FontFace(document);
 
   if (font_face->SetFamilyValue(*family) &&
@@ -208,16 +242,29 @@ FontFace* FontFace::Create(Document* document,
     font_face->InitCSSFontFace(document, *src);
     return font_face;
   }
+#endif
   return nullptr;
 }
 
 FontFace::FontFace(ExecutionContext* context)
+#if 0 // BKTODO:
     : ContextClient(context), status_(kUnloaded) {}
+#else
+{
+    ASSERT(false); // BKTODO:
+}
+#endif
 
 FontFace::FontFace(ExecutionContext* context,
                    const AtomicString& family,
                    const FontFaceDescriptors& descriptors)
+#if 0 // BKTODO:
     : ContextClient(context), family_(family), status_(kUnloaded) {
+#else
+{
+  ASSERT(false); // BKTODO:
+#endif
+#if 0 // BKTODO:
   SetPropertyFromString(context, descriptors.style(),
                         AtRuleDescriptorID::FontStyle);
   SetPropertyFromString(context, descriptors.weight(),
@@ -232,6 +279,7 @@ FontFace::FontFace(ExecutionContext* context,
                         AtRuleDescriptorID::FontFeatureSettings);
   SetPropertyFromString(context, descriptors.display(),
                         AtRuleDescriptorID::FontDisplay);
+#endif
 }
 
 FontFace::~FontFace() = default;
@@ -424,6 +472,8 @@ void FontFace::SetLoadStatus(LoadStatusType status) {
   status_ = status;
   DCHECK(status_ != kError || error_);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!GetExecutionContext())
     return;
 
@@ -450,6 +500,7 @@ void FontFace::SetLoadStatus(LoadStatusType status) {
         ->PostTask(FROM_HERE,
                    WTF::Bind(&FontFace::RunCallbacks, WrapPersistent(this)));
   }
+#endif
 }
 
 void FontFace::RunCallbacks() {
@@ -471,6 +522,7 @@ void FontFace::SetError(DOMException* error) {
   SetLoadStatus(kError);
 }
 
+#if 0 // BKTODO:
 ScriptPromise FontFace::FontStatusPromise(ScriptState* script_state) {
   if (!loaded_property_) {
     loaded_property_ = new LoadedProperty(ExecutionContext::From(script_state),
@@ -488,6 +540,7 @@ ScriptPromise FontFace::load(ScriptState* script_state) {
     css_font_face_->Load();
   return FontStatusPromise(script_state);
 }
+#endif
 
 void FontFace::LoadWithCallback(LoadFontCallback* callback) {
   if (status_ == kUnloaded)
@@ -695,10 +748,13 @@ bool ContextAllowsDownload(ExecutionContext* context) {
   if (!context) {
     return false;
   }
+  ASSERT(false); // BKTODO:
+#if 0
   if (const Document* document = DynamicTo<Document>(context)) {
     const Settings* settings = document->GetSettings();
     return settings && settings->GetDownloadableBinaryFontsEnabled();
   }
+#endif
   // TODO(fserb): ideally, we would like to have the settings value available
   // on workers. Right now, we don't support that.
   return true;
@@ -720,6 +776,8 @@ void FontFace::InitCSSFontFace(ExecutionContext* context, const CSSValue& src) {
     // (remote font to download).
     const CSSFontFaceSrcValue& item = ToCSSFontFaceSrcValue(src_list.Item(i));
 
+    ASSERT(false); // BKTODO:
+#if 0
     if (!item.IsLocal()) {
       if (ContextAllowsDownload(context) && item.IsSupportedFormat()) {
         FontSelector* font_selector = nullptr;
@@ -739,14 +797,18 @@ void FontFace::InitCSSFontFace(ExecutionContext* context, const CSSValue& src) {
     } else {
       css_font_face_->AddSource(new LocalFontFaceSource(item.GetResource()));
     }
+#endif
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (display_) {
     DEFINE_THREAD_SAFE_STATIC_LOCAL(
         EnumerationHistogram, font_display_histogram,
         ("WebFont.FontDisplayValue", kFontDisplayEnumMax));
     font_display_histogram.Count(CSSValueToFontDisplay(display_.Get()));
   }
+#endif
 }
 
 void FontFace::InitCSSFontFace(const unsigned char* data, size_t size) {
@@ -754,6 +816,8 @@ void FontFace::InitCSSFontFace(const unsigned char* data, size_t size) {
   if (error_)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   scoped_refptr<SharedBuffer> buffer = SharedBuffer::Create(data, size);
   BinaryDataFontFaceSource* source =
       new BinaryDataFontFaceSource(buffer.get(), ots_parse_message_);
@@ -763,30 +827,17 @@ void FontFace::InitCSSFontFace(const unsigned char* data, size_t size) {
     SetError(DOMException::Create(DOMExceptionCode::kSyntaxError,
                                   "Invalid font data in ArrayBuffer."));
   css_font_face_->AddSource(source);
-}
-
-void FontFace::Trace(blink::Visitor* visitor) {
-  visitor->Trace(style_);
-  visitor->Trace(weight_);
-  visitor->Trace(stretch_);
-  visitor->Trace(unicode_range_);
-  visitor->Trace(variant_);
-  visitor->Trace(feature_settings_);
-  visitor->Trace(display_);
-  visitor->Trace(error_);
-  visitor->Trace(loaded_property_);
-  visitor->Trace(css_font_face_);
-  visitor->Trace(callbacks_);
-  ScriptWrappable::Trace(visitor);
-  ContextClient::Trace(visitor);
+#endif
 }
 
 bool FontFace::HadBlankText() const {
   return css_font_face_->HadBlankText();
 }
 
+#if 0 // BKTODO:
 bool FontFace::HasPendingActivity() const {
   return status_ == kLoading && GetExecutionContext();
 }
+#endif
 
 }  // namespace blink

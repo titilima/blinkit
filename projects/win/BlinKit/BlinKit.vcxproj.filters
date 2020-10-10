@@ -99,6 +99,15 @@
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\loader_task.cpp">
       <Filter>loader_tasks</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\js\browser_context.cpp">
+      <Filter>js</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\js\crawler_context.cpp">
+      <Filter>js</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\js\simple_context.cpp">
+      <Filter>js</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -166,6 +175,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\loader_task.h">
       <Filter>loader_tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\js\browser_context.h">
+      <Filter>js</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\js\crawler_context.h">
+      <Filter>js</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\js\simple_context.h">
+      <Filter>js</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

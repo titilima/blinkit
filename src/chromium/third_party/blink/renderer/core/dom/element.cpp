@@ -53,6 +53,9 @@
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #include "third_party/blink/renderer/platform/wtf/not_found.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/layout/layout_view.h"
+#endif
 
 using namespace BlinKit;
 
@@ -470,6 +473,12 @@ AtomicString Element::ComputeInheritedLanguage(void) const
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+scoped_refptr<ComputedStyle> Element::CustomStyleForLayoutObject(void)
+{
+    ASSERT(false); // BKTODO: Check child classes.
+    return nullptr;
+}
+
 void Element::DefaultEventHandler(Event &event)
 {
     ASSERT(false); // BKTODO:
@@ -503,6 +512,13 @@ void Element::DidModifyAttribute(const QualifiedName &name, const AtomicString &
 {
     ASSERT(false); // BKTODO:
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void Element::DidRecalcStyle(StyleRecalcChange change)
+{
+    ASSERT(false); // BKTODO: Check child classes.
+}
+#endif
 
 Attr* Element::EnsureAttr(const QualifiedName &name)
 {
@@ -762,6 +778,14 @@ const AtomicString& Element::IsValue(void) const
     return g_null_atom;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+bool Element::LayoutObjectIsNeeded(const ComputedStyle &style) const
+{
+    ASSERT(false); // BKTODO: Check child classes.
+    return false;
+}
+#endif
+
 AtomicString Element::LowercaseIfNecessary(const AtomicString &name) const
 {
     return name.LowerASCII();
@@ -951,6 +975,14 @@ void Element::SetIsValue(const AtomicString &isValue)
 {
     ASSERT(false); // BKTODO:
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+const AtomicString& Element::ShadowPseudoId(void) const
+{
+    ASSERT(false); // BKTODO: Check child classes.
+    return g_null_atom;
+}
+#endif
 
 bool Element::ShouldSerializeEndTag(void) const
 {
