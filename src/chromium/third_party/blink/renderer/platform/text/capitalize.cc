@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: capitalize.cc
+// Description: Capitalize
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -45,10 +56,13 @@ String Capitalize(const String& string, UChar previous_character) {
   for (end_of_word = boundary->next(); end_of_word != kTextBreakDone;
        start_of_word = end_of_word, end_of_word = boundary->next()) {
     if (start_of_word) {  // Ignore first char of previous string
+      ASSERT(false); // BKTODO: Is this necessary?
+#if 0
       result.Append(
           input[start_of_word - 1] == kNoBreakSpaceCharacter
               ? kNoBreakSpaceCharacter
               : WTF::Unicode::ToTitleCase(string_with_previous[start_of_word]));
+#endif
     }
     for (int i = start_of_word + 1; i < end_of_word; i++)
       result.Append(input[i - 1]);

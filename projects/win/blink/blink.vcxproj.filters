@@ -3581,6 +3581,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\wtf\text\text_stream.cc">
       <Filter>renderer\platform\wtf\text</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\date_time_format.cc">
+      <Filter>renderer\platform\text</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9693,6 +9696,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_size.h">
       <Filter>public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\date_time_format.h">
+      <Filter>renderer\platform\text</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

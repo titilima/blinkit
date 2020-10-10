@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: character.cc
+// Description: Character Class
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2014 Google Inc. All rights reserved.
  *
@@ -30,10 +41,10 @@
 
 #include "third_party/blink/renderer/platform/text/character.h"
 
-#include <unicode/uobject.h>
+// BKTODO: #include <unicode/uobject.h>
 #include <unicode/uscript.h>
 #include <algorithm>
-#include "third_party/blink/renderer/platform/text/icu_error.h"
+// BKTODO: #include "third_party/blink/renderer/platform/text/icu_error.h"
 #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
@@ -76,6 +87,9 @@ extern const int32_t kSerializedCharacterDataSize;
 extern const uint8_t kSerializedCharacterData[];
 
 static UTrie2* CreateTrie() {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   // Create a Trie from the value array.
   ICUError error;
   UTrie2* trie = utrie2_openFromSerialized(
@@ -83,6 +97,7 @@ static UTrie2* CreateTrie() {
       kSerializedCharacterDataSize, nullptr, &error);
   DCHECK_EQ(error, U_ZERO_ERROR);
   return trie;
+#endif
 }
 
 static bool HasProperty(UChar32 c, CharacterProperty property) {
@@ -223,6 +238,9 @@ bool Character::CanTextDecorationSkipInk(UChar32 codepoint) {
   if (Character::IsCJKIdeographOrSymbol(codepoint))
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   UBlockCode block = ublock_getCode(codepoint);
   switch (block) {
     // These blocks contain CJK characters we don't want to skip ink, but are
@@ -237,6 +255,7 @@ bool Character::CanTextDecorationSkipInk(UChar32 codepoint) {
     default:
       return true;
   }
+#endif
 }
 
 bool Character::CanReceiveTextEmphasis(UChar32 c) {
@@ -289,10 +308,14 @@ String Character::NormalizeSpaces(const UChar* characters, unsigned length) {
 }
 
 bool Character::IsCommonOrInheritedScript(UChar32 character) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   ICUError status;
   UScriptCode script = uscript_getScript(character, &status);
   return U_SUCCESS(status) &&
          (script == USCRIPT_COMMON || script == USCRIPT_INHERITED);
+#endif
 }
 
 bool Character::IsPrivateUse(UChar32 character) {
@@ -300,16 +323,24 @@ bool Character::IsPrivateUse(UChar32 character) {
 }
 
 bool Character::IsNonCharacter(UChar32 character) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return U_IS_UNICODE_NONCHAR(character);
+#endif
 }
 
 bool Character::HasDefiniteScript(UChar32 character) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   ICUError err;
   UScriptCode hint_char_script = uscript_getScript(character, &err);
   if (!U_SUCCESS(err))
     return false;
   return hint_char_script != USCRIPT_INHERITED &&
          hint_char_script != USCRIPT_COMMON;
+#endif
 }
 
 }  // namespace blink

@@ -1184,6 +1184,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\bidi_text_run.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\capitalize.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\date_time_format.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\hyphenation.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\layout_locale.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\platform_locale.cc" />
@@ -3151,6 +3152,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\capitalize.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character_property.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\date_time_format.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\hyphenation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\layout_locale.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\platform_locale.h" />

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: link_hash.h
+// Description: LinkHash
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2008 Google Inc. All rights reserved.
  *
@@ -31,9 +42,9 @@
 #include "third_party/blink/renderer/platform/wtf/forward.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_hash.h"
 
-namespace blink {
+class GURL;
 
-class KURL;
+namespace blink {
 
 typedef uint64_t LinkHash;
 
@@ -59,7 +70,7 @@ struct LinkHashHash {
 // base URL, and returns the hash of the string that will be used for visited
 // link coloring. It will return the special value of 0 if attributeURL does not
 // look like a relative URL.
-PLATFORM_EXPORT LinkHash VisitedLinkHash(const KURL& base,
+PLATFORM_EXPORT LinkHash VisitedLinkHash(const GURL& base,
                                          const AtomicString& attribute_url);
 
 }  // namespace blink

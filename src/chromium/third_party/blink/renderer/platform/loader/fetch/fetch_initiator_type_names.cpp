@@ -18,7 +18,7 @@ namespace fetch_initiator_type_names {
 
 void* namesStorage[kNamesCount * ((sizeof(AtomicString) + sizeof(void *) - 1) / sizeof(void *))];
 
-const AtomicString &kCSS = reinterpret_cast<AtomicString *>(&names_storage)[0];
+const AtomicString &kCSS = reinterpret_cast<AtomicString *>(&namesStorage)[0];
 
 void Init(void)
 {

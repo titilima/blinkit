@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: link_hash.cc
+// Description: LinkHash
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2008, 2009, Google Inc. All rights reserved.
  *
@@ -37,31 +48,35 @@
 
 namespace blink {
 
-static bool ResolveRelative(const KURL& base,
+static bool ResolveRelative(const GURL& base,
                             const String& relative,
                             url::RawCanonOutput<2048>* buffer) {
   // We use these low-level GURL functions to avoid converting back and forth
   // from UTF-8 unnecessarily.
   url::Parsed parsed;
-  StringUTF8Adaptor base_utf8(base.GetString());
+  StringUTF8Adaptor base_utf8(String::FromStdUTF8(base.spec()));
   if (relative.Is8Bit()) {
     StringUTF8Adaptor relative_utf8(relative);
     return url::ResolveRelative(
-        base_utf8.Data(), base_utf8.length(), base.GetParsed(),
+        base_utf8.Data(), base_utf8.length(), base.parsed_for_possibly_invalid_spec(),
         relative_utf8.Data(), relative_utf8.length(), nullptr, buffer, &parsed);
   }
   return url::ResolveRelative(base_utf8.Data(), base_utf8.length(),
-                              base.GetParsed(), relative.Characters16(),
+                              base.parsed_for_possibly_invalid_spec(), relative.Characters16(),
                               relative.length(), nullptr, buffer, &parsed);
 }
 
-LinkHash VisitedLinkHash(const KURL& base, const AtomicString& relative) {
+LinkHash VisitedLinkHash(const GURL& base, const AtomicString& relative) {
   if (relative.IsNull())
     return 0;
   url::RawCanonOutput<2048> buffer;
   if (!ResolveRelative(base, relative.GetString(), &buffer))
     return 0;
+  ASSERT(false); // BKTODO: Is this necessary?
+  return 0;
+#if 0
   return Platform::Current()->VisitedLinkHash(buffer.data(), buffer.length());
+#endif
 }
 
 }  // namespace blink

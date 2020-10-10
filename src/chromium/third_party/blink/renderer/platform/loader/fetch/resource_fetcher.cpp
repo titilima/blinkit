@@ -214,7 +214,7 @@ std::shared_ptr<Resource> ResourceFetcher::CreateResourceForLoading(
     resource->SetLinkPreload(params.IsLinkPreload());
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    AddToMemoryCacheIfNeeded(params, resource);
+    ASSERT(false); // BKTODO: AddToMemoryCacheIfNeeded(params, resource);
 #endif
     return resource;
 }
@@ -421,6 +421,8 @@ std::shared_ptr<Resource> ResourceFetcher::RequestResource(
 #ifdef BLINKIT_CRAWLER_ONLY
     resource = CreateResourceForLoading(params, factory);
 #else
+    ASSERT(false); // BKTODO:
+#if 0
     bool is_data_url = resource_request.Url().ProtocolIsData();
     bool is_static_data = is_data_url || substitute_data.IsValid() || archive_;
     bool is_stale_revalidation = params.IsStaleRevalidation();
@@ -481,6 +483,7 @@ std::shared_ptr<Resource> ResourceFetcher::RequestResource(
         break;
     }
 #endif
+#endif
     ASSERT(nullptr != resource);
     ASSERT(resource->GetType() == resourceType);
 
@@ -509,12 +512,15 @@ std::shared_ptr<Resource> ResourceFetcher::RequestResource(
     // If only the fragment identifiers differ, it is the same resource.
     ASSERT(EqualIgnoringFragmentIdentifier(resource->Url(), params.Url()));
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     RequestLoadStarted(identifier, resource.get(), params, policy, isStaticData);
     if (!is_stale_revalidation) {
         cached_resources_map_.Set(
             MemoryCache::RemoveFragmentIdentifierIfNeeded(params.Url()), resource);
     }
     document_resources_.insert(resource);
+#endif
 #endif
 
     // Returns with an existing resource if the resource does not need to start
@@ -568,6 +574,8 @@ void ResourceFetcher::RequestLoadStarted(
     RevalidationPolicy policy,
     bool isStaticData)
 {
+    ASSERT(false); // BKTODO:
+#if 0
     BkURL url = RemoveFragmentIdentifierIfNeeded(params.Url());
     if (policy == kUse && resource->GetStatus() == ResourceStatus::kCached &&
         !cached_resources_map_.Contains(url)) {
@@ -593,6 +601,7 @@ void ResourceFetcher::RequestLoadStarted(
         if (!resource_timing_report_timer_.IsActive())
             resource_timing_report_timer_.StartOneShot(TimeDelta(), FROM_HERE);
     }
+#endif
 }
 #endif // BLINKIT_CRAWLER_ONLY
 
@@ -604,6 +613,8 @@ bool ResourceFetcher::ResourceNeedsLoad(Resource *resource, const FetchParameter
         return false;
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ASSERT(false); // BKTODO:
+#if 0
     // Defer loading images either when:
     // - images are disabled
     // - instructed to defer loading images from network
@@ -613,6 +624,7 @@ bool ResourceFetcher::ResourceNeedsLoad(Resource *resource, const FetchParameter
             FetchParameters::kDeferImageLoad)) {
         return false;
     }
+#endif
 #endif
     return policy != kUse || resource->StillNeedsLoad();
 }

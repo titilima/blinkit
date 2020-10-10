@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: platform_locale.cc
+// Description: Locale Class
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011,2012 Google Inc. All rights reserved.
  *
@@ -199,22 +210,34 @@ void Locale::ResetDefaultLocale() {
 Locale::~Locale() = default;
 
 String Locale::QueryString(WebLocalizedString::Name name) {
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   // FIXME: Returns a string locazlied for this locale.
   return Platform::Current()->QueryLocalizedString(name);
+#endif
 }
 
 String Locale::QueryString(WebLocalizedString::Name name,
                            const String& parameter) {
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   // FIXME: Returns a string locazlied for this locale.
   return Platform::Current()->QueryLocalizedString(name, parameter);
+#endif
 }
 
 String Locale::QueryString(WebLocalizedString::Name name,
                            const String& parameter1,
                            const String& parameter2) {
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   // FIXME: Returns a string locazlied for this locale.
   return Platform::Current()->QueryLocalizedString(name, parameter1,
                                                    parameter2);
+#endif
 }
 
 String Locale::ValidationMessageTooLongText(unsigned value_length,
