@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: skia_utils.cc
+// Description: Skia Utils
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (c) 2006,2007,2008, Google Inc. All rights reserved.
  *
@@ -35,7 +46,7 @@
 #include "third_party/blink/renderer/platform/graphics/paint/paint_flags.h"
 #include "third_party/skia/include/effects/SkCornerPathEffect.h"
 #include "third_party/skia/third_party/skcms/skcms.h"
-#include "ui/gfx/icc_profile.h"
+// BKTODO: #include "ui/gfx/icc_profile.h"
 
 #include <algorithm>
 #include <cmath>
@@ -319,6 +330,7 @@ SkColor ScaleAlpha(SkColor color, float alpha) {
   return SkColorSetA(color, rounded_alpha);
 }
 
+#if 0 // BKTODO:
 gfx::ColorSpace SkColorSpaceToGfxColorSpace(
     const sk_sp<SkColorSpace> color_space) {
   if (!color_space)
@@ -341,6 +353,7 @@ gfx::ColorSpace SkColorSpaceToGfxColorSpace(
   }
   return gfx::ColorSpace::CreateSRGB();
 }
+#endif
 
 bool ApproximatelyEqualSkColorSpaces(sk_sp<SkColorSpace> src_color_space,
                                      sk_sp<SkColorSpace> dst_color_space) {
@@ -355,6 +368,7 @@ bool ApproximatelyEqualSkColorSpaces(sk_sp<SkColorSpace> src_color_space,
   return skcms_ApproximatelyEqualProfiles(&src_profile, &dst_profile);
 }
 
+#if 0 // BKTODO:
 template <typename PrimitiveType>
 void DrawFocusRingPrimitive(const PrimitiveType&,
                             cc::PaintCanvas*,
@@ -384,12 +398,15 @@ void DrawFocusRingPrimitive<SkPath>(const SkPath& path,
       SkCornerPathEffect::Make(SkFloatToScalar(corner_radius)));
   canvas->drawPath(path, path_flags);
 }
+#endif
 
 template <typename PrimitiveType>
 void DrawPlatformFocusRing(const PrimitiveType& primitive,
                            cc::PaintCanvas* canvas,
                            SkColor color,
                            float width) {
+  ASSERT(false); // BKTODO:
+#if 0
   PaintFlags flags;
   flags.setAntiAlias(true);
   flags.setStyle(PaintFlags::kStroke_Style);
@@ -410,6 +427,7 @@ void DrawPlatformFocusRing(const PrimitiveType& primitive,
   flags.setAlpha(128);
   flags.setStrokeWidth(flags.getStrokeWidth() * 0.5f);
   DrawFocusRingPrimitive(primitive, canvas, flags, corner_radius);
+#endif
 #endif
 }
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: static_bitmap_image.cc
+// Description: StaticBitmapImage Class
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,12 +16,14 @@
 #include "third_party/blink/renderer/platform/graphics/static_bitmap_image.h"
 
 #include "base/numerics/checked_math.h"
+#if 0 // BKTODO:
 #include "gpu/command_buffer/client/gles2_interface.h"
 #include "third_party/blink/renderer/platform/graphics/accelerated_static_bitmap_image.h"
+#endif
 #include "third_party/blink/renderer/platform/graphics/graphics_context.h"
 #include "third_party/blink/renderer/platform/graphics/image_observer.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_image.h"
-#include "third_party/blink/renderer/platform/graphics/unaccelerated_static_bitmap_image.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/unaccelerated_static_bitmap_image.h"
 #include "third_party/blink/renderer/platform/wtf/typed_arrays/array_buffer_contents.h"
 #include "third_party/skia/include/core/SkCanvas.h"
 #include "third_party/skia/include/core/SkImage.h"
@@ -20,6 +33,7 @@
 
 namespace blink {
 
+#if 0 // BKTODO:
 scoped_refptr<StaticBitmapImage> StaticBitmapImage::Create(
     sk_sp<SkImage> image,
     base::WeakPtr<WebGraphicsContext3DProviderWrapper>
@@ -38,6 +52,7 @@ scoped_refptr<StaticBitmapImage> StaticBitmapImage::Create(PaintImage image) {
   DCHECK(!image.GetSkImage()->isTextureBacked());
   return UnacceleratedStaticBitmapImage::Create(std::move(image));
 }
+#endif
 
 scoped_refptr<StaticBitmapImage> StaticBitmapImage::Create(
     scoped_refptr<Uint8Array>&& image_pixels,
@@ -50,19 +65,28 @@ scoped_refptr<StaticBitmapImage> StaticBitmapImage::Create(
     image_pixels = nullptr;
   }
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return Create(SkImage::MakeFromRaster(
       pixmap,
       [](const void*, void* p) { static_cast<Uint8Array*>(p)->Release(); },
       pixels));
+#endif
 }
 
 scoped_refptr<StaticBitmapImage> StaticBitmapImage::Create(
     WTF::ArrayBufferContents& contents,
     const SkImageInfo& info) {
   SkPixmap pixmap(info, contents.Data(), info.minRowBytes());
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return Create(SkImage::MakeFromRaster(pixmap, nullptr, nullptr));
+#endif
 }
 
+#if 0 // BKTODO:
 void StaticBitmapImage::DrawHelper(cc::PaintCanvas* canvas,
                                    const PaintFlags& flags,
                                    const FloatRect& dst_rect,
@@ -78,11 +102,15 @@ void StaticBitmapImage::DrawHelper(cc::PaintCanvas* canvas,
   canvas->drawImageRect(image, adjusted_src_rect, dst_rect, &flags,
                         WebCoreClampingModeToSkiaRectConstraint(clamp_mode));
 }
+#endif
 
 scoped_refptr<StaticBitmapImage> StaticBitmapImage::ConvertToColorSpace(
     sk_sp<SkColorSpace> color_space,
     SkColorType color_type) {
   DCHECK(color_space);
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   sk_sp<SkImage> skia_image = PaintImageForCurrentFrame().GetSkImage();
   // If we don't need to change the color type, use SkImage::makeColorSpace()
   if (skia_image->colorType() == color_type) {
@@ -121,8 +149,10 @@ scoped_refptr<StaticBitmapImage> StaticBitmapImage::ConvertToColorSpace(
                                    converted_skia_image->isTextureBacked()
                                        ? ContextProviderWrapper()
                                        : nullptr);
+#endif
 }
 
+#if 0 // BKTODO:
 bool StaticBitmapImage::ConvertToArrayBufferContents(
     scoped_refptr<StaticBitmapImage> src_image,
     WTF::ArrayBufferContents& dest_contents,
@@ -184,5 +214,6 @@ const gpu::SyncToken& StaticBitmapImage::GetSyncToken() const {
   static const gpu::SyncToken sync_token;
   return sync_token;
 }
+#endif
 
 }  // namespace blink

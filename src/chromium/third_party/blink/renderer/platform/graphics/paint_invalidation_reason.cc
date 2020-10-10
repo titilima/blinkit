@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: paint_invalidation_reason.cc
+// Description: PaintInvalidationReason
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -78,7 +89,11 @@ const char* PaintInvalidationReasonToString(PaintInvalidationReason reason) {
 }
 
 std::ostream& operator<<(std::ostream& out, PaintInvalidationReason reason) {
+  ASSERT(false); // BKTODO:
+  return out;
+#if 0
   return out << PaintInvalidationReasonToString(reason);
+#endif
 }
 
 }  // namespace blink

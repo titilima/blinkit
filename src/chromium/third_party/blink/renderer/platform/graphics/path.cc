@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: path.cc
+// Description: Path Class
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2006 Apple Computer, Inc.  All rights reserved.
  *                     2006 Rob Buis <buis@kde.org>
@@ -86,6 +97,9 @@ bool Path::Contains(const FloatPoint& point, WindRule rule) const {
 // FIXME: this method ignores the CTM and may yield inaccurate results for large
 // scales.
 SkPath Path::StrokePath(const StrokeData& stroke_data) const {
+  ASSERT(false); // BKTODO:
+  return SkPath();
+#if 0
   PaintFlags flags;
   stroke_data.SetupPaint(&flags);
 
@@ -97,6 +111,7 @@ SkPath Path::StrokePath(const StrokeData& stroke_data) const {
   flags.getFillPath(path_, &stroke_path, nullptr, kResScale);
 
   return stroke_path;
+#endif
 }
 
 bool Path::StrokeContains(const FloatPoint& point,
