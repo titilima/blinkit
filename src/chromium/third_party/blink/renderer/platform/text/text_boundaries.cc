@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_boundaries.cc
+// Description: Text Boundary Helpers
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Apple Inc.  All rights reserved.
  * Copyright (C) 2009 Dominik Roettsches <dominik.roettsches@access-company.com>
@@ -59,12 +70,15 @@ int FindNextWordForward(const UChar* chars, int len, int position) {
 
     position = it->following(position);
     while (position != kTextBreakDone) {
+      ASSERT(false); // BKTODO:
+#if 0
       // We stop searching when the character preceeding the break
       // is alphanumeric or underscore.
       if (position < len &&
           (WTF::Unicode::IsAlphanumeric(chars[position - 1]) ||
            chars[position - 1] == kLowLineCharacter))
         return position;
+#endif
 
       position = it->following(position);
     }
@@ -77,11 +91,14 @@ int FindNextWordBackward(const UChar* chars, int len, int position) {
 
   position = it->preceding(position);
   while (position != kTextBreakDone) {
+    ASSERT(false); // BKTODO:
+#if 0
     // We stop searching when the character following the break
     // is alphanumeric or underscore.
     if (position > 0 && (WTF::Unicode::IsAlphanumeric(chars[position]) ||
                          chars[position] == kLowLineCharacter))
       return position;
+#endif
 
     position = it->preceding(position);
   }

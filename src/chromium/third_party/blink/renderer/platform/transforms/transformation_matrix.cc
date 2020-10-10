@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: transformation_matrix.cc
+// Description: TransformationMatrix Class
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2005, 2006 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2009 Torch Mobile, Inc.
@@ -42,7 +53,7 @@
 #include "third_party/blink/renderer/platform/wtf/cpu.h"
 #include "third_party/blink/renderer/platform/wtf/math_extras.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
-#include "ui/gfx/transform.h"
+// BKTODO: #include "ui/gfx/transform.h"
 
 #if defined(ARCH_CPU_X86_64)
 #include <emmintrin.h>
@@ -1923,10 +1934,12 @@ SkMatrix44 TransformationMatrix::ToSkMatrix44(
   return ret;
 }
 
+#if 0 // BKTODO:
 gfx::Transform TransformationMatrix::ToTransform(
     const TransformationMatrix& matrix) {
   return gfx::Transform(TransformationMatrix::ToSkMatrix44(matrix));
 }
+#endif
 
 String TransformationMatrix::ToString(bool as_matrix) const {
   if (as_matrix) {

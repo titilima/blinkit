@@ -3173,6 +3173,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\theme_types.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\timer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\transforms\affine_transform.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\transforms\identity_transform_operation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\transforms\interpolated_transform_operation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\transforms\matrix_3d_transform_operation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\transforms\matrix_transform_operation.h" />

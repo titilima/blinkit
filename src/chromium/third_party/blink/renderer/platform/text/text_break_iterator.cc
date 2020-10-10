@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_break_iterator.cc
+// Description: TextBreakIterator Classes
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2010 Apple Inc. All rights
@@ -29,7 +40,7 @@
 #include "third_party/blink/renderer/platform/wtf/text/character_names.h"
 
 #include <unicode/uchar.h>
-#include <unicode/uvernum.h>
+// BKTODO: #include <unicode/uvernum.h>
 
 namespace blink {
 
@@ -282,11 +293,15 @@ static inline bool ShouldBreakAfterBreakAll(ULineBreak last_line_break,
 static inline bool ShouldKeepAfterKeepAll(UChar last_ch,
                                           UChar ch,
                                           UChar next_ch) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   UChar pre_ch = U_MASK(u_charType(ch)) & U_GC_M_MASK ? last_ch : ch;
   return U_MASK(u_charType(pre_ch)) & (U_GC_L_MASK | U_GC_N_MASK) &&
          !WTF::Unicode::HasLineBreakingPropertyComplexContext(pre_ch) &&
          U_MASK(u_charType(next_ch)) & (U_GC_L_MASK | U_GC_N_MASK) &&
          !WTF::Unicode::HasLineBreakingPropertyComplexContext(next_ch);
+#endif
 }
 
 inline bool NeedsLineBreakIterator(UChar ch) {

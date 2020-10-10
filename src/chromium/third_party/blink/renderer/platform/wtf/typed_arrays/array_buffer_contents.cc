@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: array_buffer_contents.cc
+// Description: ArrayBufferContents Class
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Google Inc. All rights reserved.
@@ -28,7 +39,7 @@
 #include "third_party/blink/renderer/platform/wtf/typed_arrays/array_buffer_contents.h"
 
 #include <string.h>
-#include "base/allocator/partition_allocator/partition_alloc.h"
+// BKTODO: #include "base/allocator/partition_allocator/partition_alloc.h"
 #include "third_party/blink/renderer/platform/wtf/allocator/partitions.h"
 #include "third_party/blink/renderer/platform/wtf/assertions.h"
 
@@ -108,6 +119,9 @@ void ArrayBufferContents::CopyTo(ArrayBufferContents& other) {
 void* ArrayBufferContents::AllocateMemoryWithFlags(size_t size,
                                                    InitializationPolicy policy,
                                                    int flags) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (policy == kZeroInitialize) {
     flags |= base::PartitionAllocZeroFill;
   }
@@ -115,15 +129,20 @@ void* ArrayBufferContents::AllocateMemoryWithFlags(size_t size,
       Partitions::ArrayBufferPartition(), flags, size,
       WTF_HEAP_PROFILER_TYPE_NAME(ArrayBufferContents));
   return data;
+#endif
 }
 
 void* ArrayBufferContents::AllocateMemoryOrNull(size_t size,
                                                 InitializationPolicy policy) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return AllocateMemoryWithFlags(size, policy, base::PartitionAllocReturnNull);
+#endif
 }
 
 void ArrayBufferContents::FreeMemory(void* data) {
-  Partitions::ArrayBufferPartition()->Free(data);
+  ASSERT(false); // BKTODO: Partitions::ArrayBufferPartition()->Free(data);
 }
 
 ArrayBufferContents::DataHandle ArrayBufferContents::CreateDataHandle(

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_run.cc
+// Description: TextRun Class
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Apple Inc. All rights reserved.
  *
@@ -87,7 +98,7 @@ String TextRun::NormalizedUTF16() const {
       character = kZeroWidthSpaceCharacter;
     }
 
-    U16_APPEND(buffer.Characters(), result_length, len_, character, error);
+    ASSERT(false); // BKTODO: U16_APPEND(buffer.Characters(), result_length, len_, character, error);
     DCHECK(!error);
   }
 

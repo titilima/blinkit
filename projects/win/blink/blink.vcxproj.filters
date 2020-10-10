@@ -9700,5 +9700,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\date_time_format.h">
       <Filter>renderer\platform\text</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\transforms\identity_transform_operation.h">
+      <Filter>renderer\platform\transforms</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

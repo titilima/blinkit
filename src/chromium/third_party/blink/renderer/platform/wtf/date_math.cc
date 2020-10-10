@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: date_math.cc
+// Description: Date Math
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999-2000 Harri Porten (porten@kde.org)
  * Copyright (C) 2006, 2007 Apple Inc. All rights reserved.
@@ -87,7 +98,7 @@
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 #include "third_party/blink/renderer/platform/wtf/time.h"
 
-#include <unicode/timezone.h>
+// BKTODO: #include <unicode/timezone.h>
 
 #if defined(OS_WIN)
 #include <windows.h>
@@ -838,11 +849,15 @@ String MakeRFC2822DateString(const Time date, int utc_offset) {
 }
 
 double ConvertToLocalTime(double ms) {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   std::unique_ptr<icu::TimeZone> timezone(icu::TimeZone::createDefault());
   int32_t raw_offset, dst_offset;
   UErrorCode status = U_ZERO_ERROR;
   timezone->getOffset(ms, false, raw_offset, dst_offset, status);
   return (ms + static_cast<double>(raw_offset + dst_offset));
+#endif
 }
 
 }  // namespace WTF

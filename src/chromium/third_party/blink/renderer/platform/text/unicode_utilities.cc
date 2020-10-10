@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: unicode_utilities.cc
+// Description: Unicode Utilities
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2012 Apple Inc. All
  * rights reserved.
@@ -27,7 +38,7 @@
 
 #include "third_party/blink/renderer/platform/text/unicode_utilities.h"
 
-#include <unicode/normalizer2.h>
+// BKTODO: #include <unicode/normalizer2.h>
 #include "third_party/blink/renderer/platform/wtf/text/character_names.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_buffer.h"
 
@@ -296,6 +307,8 @@ void NormalizeCharactersIntoNFCForm(const UChar* characters,
   DCHECK(length);
 
   UErrorCode status = U_ZERO_ERROR;
+  ASSERT(false); // BKTODO:
+#if 0
   const icu::Normalizer2* normalizer = icu::Normalizer2::getNFCInstance(status);
   DCHECK(U_SUCCESS(status));
   int32_t input_length = static_cast<int32_t>(length);
@@ -315,6 +328,7 @@ void NormalizeCharactersIntoNFCForm(const UChar* characters,
 
   buffer.resize(static_cast<wtf_size_t>(buffer_size));
   normalized.extract(buffer.data(), buffer_size, status);
+#endif
   DCHECK(U_SUCCESS(status));
 }
 
