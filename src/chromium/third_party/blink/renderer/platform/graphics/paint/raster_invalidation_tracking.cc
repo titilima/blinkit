@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: raster_invalidation_tracking.cc
+// Description: RasterInvalidationTracking Class
+//      Author: Ziming Li
+//     Created: 2020-10-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,10 +17,10 @@
 
 #include "SkImageFilter.h"
 #include "base/trace_event/trace_event_argument.h"
-#include "third_party/blink/renderer/platform/geometry/geometry_as_json.h"
+// BKTODO: #include "third_party/blink/renderer/platform/geometry/geometry_as_json.h"
 #include "third_party/blink/renderer/platform/geometry/layout_rect.h"
 #include "third_party/blink/renderer/platform/graphics/color.h"
-#include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
 #include "third_party/blink/renderer/platform/graphics/paint/paint_recorder.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
@@ -27,10 +38,14 @@ bool RasterInvalidationTracking::ShouldAlwaysTrack() {
   if (RuntimeEnabledFeatures::PaintUnderInvalidationCheckingEnabled())
     return true;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   bool tracing_enabled;
   TRACE_EVENT_CATEGORY_GROUP_ENABLED(
       TRACE_DISABLED_BY_DEFAULT("blink.invalidation"), &tracing_enabled);
   return tracing_enabled;
+#endif
 }
 
 void RasterInvalidationTracking::AddInvalidation(
@@ -77,6 +92,8 @@ static bool CompareRasterInvalidationInfo(const RasterInvalidationInfo& a,
 }
 
 void RasterInvalidationTracking::AsJSON(JSONObject* json) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!invalidations_.IsEmpty()) {
     std::sort(invalidations_.begin(), invalidations_.end(),
               &CompareRasterInvalidationInfo);
@@ -117,6 +134,7 @@ void RasterInvalidationTracking::AsJSON(JSONObject* json) {
     json->SetArray("underPaintInvalidations",
                    std::move(under_paint_invalidations_json));
   }
+#endif
 }
 
 void RasterInvalidationTracking::AddToTracedValue(
@@ -124,6 +142,8 @@ void RasterInvalidationTracking::AddToTracedValue(
   if (!ShouldAlwaysTrack())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   // The names should be kept consistent with (except the intentional naming
   // style difference: 'naming_style' here vs 'namingStyle' in trace viewer)
   // third_party/catapult/tracing/tracing/extras/chrome/cc/layer_impl.html.
@@ -149,6 +169,7 @@ void RasterInvalidationTracking::AddToTracedValue(
     traced_value.EndDictionary();
   }
   traced_value.EndArray();
+#endif
 }
 
 static bool PixelComponentsDiffer(int c1, int c2) {
@@ -166,6 +187,7 @@ static bool PixelsDiffer(SkColor p1, SkColor p2) {
          PixelComponentsDiffer(SkColorGetB(p1), SkColorGetB(p2));
 }
 
+#if 0 // BKTODO:
 void RasterInvalidationTracking::CheckUnderInvalidations(
     const String& layer_debug_name,
     sk_sp<PaintRecord> new_record,
@@ -251,5 +273,6 @@ void RasterInvalidationTracking::CheckUnderInvalidations(
                     rect.X(), rect.Y());
   under_invalidation_record_ = recorder.finishRecordingAsPicture();
 }
+#endif
 
 }  // namespace blink
