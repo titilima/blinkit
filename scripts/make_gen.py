@@ -26,6 +26,11 @@ if 'win32' == sys.platform:
 current_dir = get_full_path('src/chromium/third_party/blink/renderer')
 os.chdir(current_dir)
 
+run_script('build/scripts/gperf.py',    \
+    GPERF + ' --key-positions=* -D -s 2 ' + os.path.normpath('platform/color_data.gperf') + ' ' +   \
+    '--output-file=' + os.path.normpath('platform/color_data.cc')   \
+)
+
 run_script('build/scripts/make_computed_style_base.py',  \
     os.path.normpath('core/css/css_properties.json5') + ' ' +   \
     os.path.normpath('core/css/computed_style_field_aliases.json5') + ' ' + \
