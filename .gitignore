@@ -12,7 +12,6 @@ src/chromium/third_party/blink/renderer/core/css/properties/css_unresolved_prope
 src/chromium/third_party/blink/renderer/core/css/properties/longhands/*.cc
 src/chromium/third_party/blink/renderer/core/css/properties/longhands/*.h
 
-src/chromium/third_party/blink/renderer/core/css/properties/shorthands/*.cc
 src/chromium/third_party/blink/renderer/core/css/properties/shorthands/*.h
 
 src/chromium/third_party/blink/renderer/core/style/computed_style_initial_values.h
