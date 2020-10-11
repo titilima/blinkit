@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_page_rule.h
+// Description: CSSPageRule Class
+//      Author: Ziming Li
+//     Created: 2020-10-11
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -50,8 +61,6 @@ class CORE_EXPORT CSSPageRule final : public CSSRule {
 
   String selectorText() const;
   void setSelectorText(const ExecutionContext*, const String&);
-
-  void Trace(blink::Visitor*) override;
 
  private:
   CSSPageRule(StyleRulePage*, CSSStyleSheet*);

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_font_face_rule.cc
+// Description: CSSFontFaceRule Class
+//      Author: Ziming Li
+//     Created: 2020-10-11
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -36,9 +47,12 @@ CSSFontFaceRule::~CSSFontFaceRule() = default;
 
 CSSStyleDeclaration* CSSFontFaceRule::style() const {
   if (!properties_cssom_wrapper_) {
+    ASSERT(false); // BKTODO:
+#if 0
     properties_cssom_wrapper_ = StyleRuleCSSStyleDeclaration::Create(
         font_face_rule_->MutableProperties(),
         const_cast<CSSFontFaceRule*>(this));
+#endif
   }
   return properties_cssom_wrapper_.Get();
 }
@@ -59,12 +73,6 @@ void CSSFontFaceRule::Reattach(StyleRuleBase* rule) {
   font_face_rule_ = ToStyleRuleFontFace(rule);
   if (properties_cssom_wrapper_)
     properties_cssom_wrapper_->Reattach(font_face_rule_->MutableProperties());
-}
-
-void CSSFontFaceRule::Trace(blink::Visitor* visitor) {
-  visitor->Trace(font_face_rule_);
-  visitor->Trace(properties_cssom_wrapper_);
-  CSSRule::Trace(visitor);
 }
 
 }  // namespace blink

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_viewport_rule.h
+// Description: CSSViewportRule Class
+//      Author: Ziming Li
+//     Created: 2020-10-11
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Intel Corporation. All rights reserved.
  * Copyright (C) 2012 Apple Inc. All rights reserved.
@@ -54,8 +65,6 @@ class CSSViewportRule final : public CSSRule {
   void Reattach(StyleRuleBase*) override;
 
   CSSStyleDeclaration* style() const;
-
-  void Trace(blink::Visitor*) override;
 
  private:
   CSSViewportRule(StyleRuleViewport*, CSSStyleSheet*);

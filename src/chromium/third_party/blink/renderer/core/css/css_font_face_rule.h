@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_font_face_rule.h
+// Description: CSSFontFaceRule Class
+//      Author: Ziming Li
+//     Created: 2020-10-11
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -48,8 +59,6 @@ class CSSFontFaceRule final : public CSSRule {
   CSSStyleDeclaration* style() const;
 
   StyleRuleFontFace* StyleRule() const { return font_face_rule_.Get(); }
-
-  void Trace(blink::Visitor*) override;
 
  private:
   CSSFontFaceRule(StyleRuleFontFace*, CSSStyleSheet* parent);

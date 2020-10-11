@@ -3605,6 +3605,18 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule.cc">
       <Filter>renderer\core\css</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_face_rule.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_namespace_rule.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_page_rule.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_viewport_rule.cc">
+      <Filter>renderer\core\css</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -9738,6 +9750,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\computed_style_utils.h">
       <Filter>renderer\core\css\properties</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_face_rule.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_namespace_rule.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_page_rule.h">
+      <Filter>renderer\core\css</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_viewport_rule.h">
+      <Filter>renderer\core\css</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

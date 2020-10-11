@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_namespace_rule.h
+// Description: CSSNamespaceRule Class
+//      Author: Ziming Li
+//     Created: 2020-10-11
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -27,8 +38,6 @@ class CSSNamespaceRule final : public CSSRule {
 
   AtomicString namespaceURI() const;
   AtomicString prefix() const;
-
-  void Trace(blink::Visitor*) override;
 
  private:
   CSSNamespaceRule(StyleRuleNamespace*, CSSStyleSheet*);

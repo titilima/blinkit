@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_page_rule.cc
+// Description: CSSPageRule Class
+//      Author: Ziming Li
+//     Created: 2020-10-11
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -38,9 +49,12 @@ CSSPageRule::CSSPageRule(StyleRulePage* page_rule, CSSStyleSheet* parent)
 CSSPageRule::~CSSPageRule() = default;
 
 CSSStyleDeclaration* CSSPageRule::style() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!properties_cssom_wrapper_)
     properties_cssom_wrapper_ = StyleRuleCSSStyleDeclaration::Create(
         page_rule_->MutableProperties(), const_cast<CSSPageRule*>(this));
+#endif
   return properties_cssom_wrapper_.Get();
 }
 
@@ -57,6 +71,8 @@ String CSSPageRule::selectorText() const {
 
 void CSSPageRule::setSelectorText(const ExecutionContext* execution_context,
                                   const String& selector_text) {
+  ASSERT(false); // BKTODO:
+#if 0
   CSSParserContext* context = CSSParserContext::Create(
       ParserContext(execution_context->GetSecureContextMode()), nullptr);
   DCHECK(context);
@@ -69,6 +85,7 @@ void CSSPageRule::setSelectorText(const ExecutionContext* execution_context,
   CSSStyleSheet::RuleMutationScope mutation_scope(this);
 
   page_rule_->WrapperAdoptSelectorList(std::move(selector_list));
+#endif
 }
 
 String CSSPageRule::cssText() const {
@@ -92,12 +109,6 @@ void CSSPageRule::Reattach(StyleRuleBase* rule) {
   page_rule_ = ToStyleRulePage(rule);
   if (properties_cssom_wrapper_)
     properties_cssom_wrapper_->Reattach(page_rule_->MutableProperties());
-}
-
-void CSSPageRule::Trace(blink::Visitor* visitor) {
-  visitor->Trace(page_rule_);
-  visitor->Trace(properties_cssom_wrapper_);
-  CSSRule::Trace(visitor);
 }
 
 }  // namespace blink

@@ -324,6 +324,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_custom_property_declaration.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_default_style_sheets.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_face.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_face_rule.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_face_source.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_face_src_value.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_family_value.cc" />
@@ -350,6 +351,8 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_layout_function_value.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_markup.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_media_rule.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_namespace_rule.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_page_rule.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_paint_image_generator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_paint_value.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_path_value.cc" />
@@ -387,6 +390,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_value_pool.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_variable_data.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_variable_reference_value.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_viewport_rule.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\document_style_environment_variables.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\document_style_sheet_collection.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\document_style_sheet_collector.cc" />
@@ -1508,6 +1512,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_custom_property_declaration.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_default_style_sheets.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_face.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_face_rule.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_face_source.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_face_src_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_font_family_value.h" />
@@ -1534,6 +1539,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_layout_function_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_markup.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_media_rule.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_namespace_rule.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_page_rule.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_paint_image_generator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_paint_value.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_path_value.h" />
@@ -1576,6 +1583,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_value_pool.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_variable_data.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_variable_reference_value.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\css_viewport_rule.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\document_style_environment_variables.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\document_style_sheet_collection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\document_style_sheet_collector.h" />

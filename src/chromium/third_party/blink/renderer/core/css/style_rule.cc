@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: style_rule.cc
+// Description: StyleRule Classes
+//      Author: Ziming Li
+//     Created: 2020-10-11
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * (C) 1999-2003 Lars Knoll (knoll@kde.org)
  * (C) 2002-2003 Dirk Mueller (mueller@kde.org)
@@ -182,7 +193,7 @@ CSSRule* StyleRuleBase::CreateCSSOMWrapper(CSSStyleSheet* parent_sheet,
       rule = CSSSupportsRule::Create(ToStyleRuleSupports(self), parent_sheet);
       break;
     case kImport:
-      rule = CSSImportRule::Create(ToStyleRuleImport(self), parent_sheet);
+      ASSERT(false); // BKTODO: rule = CSSImportRule::Create(ToStyleRuleImport(self), parent_sheet);
       break;
     case kKeyframes:
       rule = CSSKeyframesRule::Create(ToStyleRuleKeyframes(self), parent_sheet);
@@ -224,8 +235,11 @@ StyleRule::StyleRule(CSSSelectorList selector_list,
 
 const CSSPropertyValueSet& StyleRule::Properties() const {
   if (!properties_) {
+    ASSERT(false); // BKTODO:
+#if 0
     properties_ = lazy_property_parser_->ParseProperties();
     lazy_property_parser_.Clear();
+#endif
   }
   return *properties_;
 }
@@ -326,7 +340,7 @@ StyleRuleGroup::StyleRuleGroup(const StyleRuleGroup& group_rule)
 }
 
 void StyleRuleGroup::WrapperInsertRule(unsigned index, StyleRuleBase* rule) {
-  child_rules_.insert(index, rule);
+  ASSERT(false); // BKTODO: child_rules_.insert(index, rule);
 }
 
 void StyleRuleGroup::WrapperRemoveRule(unsigned index) {

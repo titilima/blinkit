@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_viewport_rule.cc
+// Description: CSSViewportRule Class
+//      Author: Ziming Li
+//     Created: 2020-10-11
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2012 Intel Corporation. All rights reserved.
  * Copyright (C) 2012 Apple Inc. All rights reserved.
@@ -44,10 +55,13 @@ CSSViewportRule::CSSViewportRule(StyleRuleViewport* viewport_rule,
 CSSViewportRule::~CSSViewportRule() = default;
 
 CSSStyleDeclaration* CSSViewportRule::style() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!properties_cssom_wrapper_)
     properties_cssom_wrapper_ = StyleRuleCSSStyleDeclaration::Create(
         viewport_rule_->MutableProperties(),
         const_cast<CSSViewportRule*>(this));
+#endif
 
   return properties_cssom_wrapper_.Get();
 }
@@ -71,12 +85,6 @@ void CSSViewportRule::Reattach(StyleRuleBase* rule) {
   viewport_rule_ = ToStyleRuleViewport(rule);
   if (properties_cssom_wrapper_)
     properties_cssom_wrapper_->Reattach(viewport_rule_->MutableProperties());
-}
-
-void CSSViewportRule::Trace(blink::Visitor* visitor) {
-  visitor->Trace(viewport_rule_);
-  visitor->Trace(properties_cssom_wrapper_);
-  CSSRule::Trace(visitor);
 }
 
 }  // namespace blink
