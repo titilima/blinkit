@@ -443,6 +443,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\sizes_attribute_parser.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\sizes_calc_parser.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\part_names.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\computed_style_utils.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_parsing_utils.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_property.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_unresolved_property.cc" />
@@ -482,6 +483,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_emphasis_color.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_fill_color.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\webkit_text_stroke_color.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\border_style_custom.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\property_registration.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\property_registry.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\property_set_css_style_declaration.cc" />
@@ -521,6 +523,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_invalidation_root.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_property_serializer.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_recalc_root.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_css_style_declaration.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_import.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_keyframe.cc" />
@@ -1636,6 +1639,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\sizes_attribute_parser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\parser\sizes_calc_parser.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\part_names.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\computed_style_utils.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_parsing_utils.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_property.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_unresolved_property.h" />

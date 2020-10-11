@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: computed_style_utils.h
+// Description: ComputedStyleUtils Class
+//      Author: Ziming Li
+//     Created: 2020-10-11
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -98,9 +109,13 @@ CSSValue* ComputedStyleUtils::ValueForOffset(const ComputedStyle& style,
 CSSValue* ComputedStyleUtils::CurrentColorOrValidColor(
     const ComputedStyle& style,
     const StyleColor& color) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   // This function does NOT look at visited information, so that computed style
   // doesn't expose that.
   return CSSColorValue::Create(color.Resolve(style.GetColor()).Rgb());
+#endif
 }
 
 const blink::Color ComputedStyleUtils::BorderSideColor(
@@ -727,7 +742,11 @@ CSSValueID IdentifierForFamily(const AtomicString& family) {
 CSSValue* ValueForFamily(const AtomicString& family) {
   if (CSSValueID family_identifier = IdentifierForFamily(family))
     return CSSIdentifierValue::Create(family_identifier);
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return CSSFontFamilyValue::Create(family.GetString());
+#endif
 }
 
 CSSValueList* ComputedStyleUtils::ValueForFontFamily(
@@ -1842,6 +1861,7 @@ CSSValueList* ComputedStyleUtils::ValueForBorderRadiusShorthand(
   return list;
 }
 
+#if 0 // BKTODO:
 CSSValue* ComputedStyleUtils::StrokeDashArrayToCSSValueList(
     const SVGDashArray& dashes,
     const ComputedStyle& style) {
@@ -1905,6 +1925,7 @@ CSSValue* ComputedStyleUtils::ValueForSVGResource(
     return CSSURIValue::Create(resource->Url());
   return CSSIdentifierValue::Create(CSSValueNone);
 }
+#endif
 
 CSSValue* ComputedStyleUtils::ValueForShadowData(const ShadowData& shadow,
                                                  const ComputedStyle& style,

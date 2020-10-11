@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: computed_style_utils.h
+// Description: ComputedStyleUtils Class
+//      Author: Ziming Li
+//     Created: 2020-10-11
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -141,11 +152,13 @@ class ComputedStyleUtils {
                                              bool is_increment);
   static CSSValue* ValueForShape(const ComputedStyle&, ShapeValue*);
   static CSSValueList* ValueForBorderRadiusShorthand(const ComputedStyle&);
+#if 0 // BKTODO:
   static CSSValue* StrokeDashArrayToCSSValueList(const SVGDashArray&,
                                                  const ComputedStyle&);
   static CSSValue* PaintOrderToCSSValueList(const SVGComputedStyle&);
   static CSSValue* AdjustSVGPaintForCurrentColor(const SVGPaint&, const Color&);
   static CSSValue* ValueForSVGResource(const StyleSVGResource*);
+#endif
   static CSSValue* ValueForShadowData(const ShadowData&,
                                       const ComputedStyle&,
                                       bool use_spread);
