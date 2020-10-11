@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: layout_theme_default.cc
+// Description: LayoutThemeDefault Class
+//      Author: Ziming Li
+//     Created: 2020-10-11
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007 Apple Inc.
  * Copyright (C) 2007 Alp Toker <alp@atoker.com>
@@ -25,14 +36,14 @@
 #include "third_party/blink/renderer/core/layout/layout_theme_default.h"
 
 #include "third_party/blink/public/platform/platform.h"
-#include "third_party/blink/public/platform/web_theme_engine.h"
+// BKTODO: #include "third_party/blink/public/platform/web_theme_engine.h"
 #include "third_party/blink/renderer/core/css_value_keywords.h"
-#include "third_party/blink/renderer/core/layout/layout_theme_font_provider.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_theme_font_provider.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
 #include "third_party/blink/renderer/platform/data_resource_helper.h"
 #include "third_party/blink/renderer/platform/graphics/color.h"
-#include "third_party/blink/renderer/platform/layout_test_support.h"
+// BKTODO: #include "third_party/blink/renderer/platform/layout_test_support.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
 namespace blink {
@@ -44,7 +55,10 @@ static const float kMinCancelButtonSize = 5;
 static const float kMaxCancelButtonSize = 21;
 
 static bool UseMockTheme() {
+  return false;
+#if 0 // BKTODO:
   return LayoutTestSupport::IsMockThemeEnabledForTest();
+#endif
 }
 
 unsigned LayoutThemeDefault::active_selection_background_color_ = 0xff1e90ff;
@@ -162,6 +176,8 @@ int LayoutThemeDefault::SliderTickOffsetFromTrackCenter() const {
 }
 
 void LayoutThemeDefault::AdjustSliderThumbSize(ComputedStyle& style) const {
+  ASSERT(false); // BKTODO:
+#if 0
   IntSize size = Platform::Current()->ThemeEngine()->GetSize(
       WebThemeEngine::kPartSliderThumb);
 
@@ -174,6 +190,7 @@ void LayoutThemeDefault::AdjustSliderThumbSize(ComputedStyle& style) const {
     style.SetWidth(Length(size.Height() * zoom_level, kFixed));
     style.SetHeight(Length(size.Width() * zoom_level, kFixed));
   }
+#endif
 }
 
 void LayoutThemeDefault::SetSelectionColors(
@@ -192,6 +209,8 @@ void LayoutThemeDefault::SetCheckboxSize(ComputedStyle& style) const {
   if (!style.Width().IsIntrinsicOrAuto() && !style.Height().IsAuto())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   IntSize size = Platform::Current()->ThemeEngine()->GetSize(
       WebThemeEngine::kPartCheckbox);
   float zoom_level = style.EffectiveZoom();
@@ -199,6 +218,7 @@ void LayoutThemeDefault::SetCheckboxSize(ComputedStyle& style) const {
   size.SetHeight(size.Height() * zoom_level);
   SetMinimumSizeIfAuto(style, size);
   SetSizeIfAuto(style, size);
+#endif
 }
 
 void LayoutThemeDefault::SetRadioSize(ComputedStyle& style) const {
@@ -206,6 +226,8 @@ void LayoutThemeDefault::SetRadioSize(ComputedStyle& style) const {
   if (!style.Width().IsIntrinsicOrAuto() && !style.Height().IsAuto())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   IntSize size =
       Platform::Current()->ThemeEngine()->GetSize(WebThemeEngine::kPartRadio);
   float zoom_level = style.EffectiveZoom();
@@ -213,16 +235,20 @@ void LayoutThemeDefault::SetRadioSize(ComputedStyle& style) const {
   size.SetHeight(size.Height() * zoom_level);
   SetMinimumSizeIfAuto(style, size);
   SetSizeIfAuto(style, size);
+#endif
 }
 
 void LayoutThemeDefault::AdjustInnerSpinButtonStyle(
     ComputedStyle& style) const {
+  ASSERT(false); // BKTODO:
+#if 0
   IntSize size = Platform::Current()->ThemeEngine()->GetSize(
       WebThemeEngine::kPartInnerSpinButton);
 
   float zoom_level = style.EffectiveZoom();
   style.SetWidth(Length(size.Width() * zoom_level, kFixed));
   style.SetMinWidth(Length(size.Width() * zoom_level, kFixed));
+#endif
 }
 
 bool LayoutThemeDefault::ShouldOpenPickerWithF4Key() const {
@@ -255,8 +281,11 @@ void LayoutThemeDefault::SystemFont(CSSValueID system_font_id,
                                     FontSelectionValue& font_weight,
                                     float& font_size,
                                     AtomicString& font_family) const {
+  ASSERT(false); // BKTODO:
+#if 0
   LayoutThemeFontProvider::SystemFont(system_font_id, font_slope, font_weight,
                                       font_size, font_family);
+#endif
 }
 
 int LayoutThemeDefault::MinimumMenuListSize(const ComputedStyle& style) const {
@@ -336,11 +365,15 @@ int LayoutThemeDefault::PopupInternalPaddingBottom(
 }
 
 int LayoutThemeDefault::MenuListArrowWidthInDIP() const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   int width = Platform::Current()
                   ->ThemeEngine()
                   ->GetSize(WebThemeEngine::kPartScrollbarUpArrow)
                   .width;
   return width > 0 ? width : 15;
+#endif
 }
 
 float LayoutThemeDefault::ClampedMenuListArrowPaddingSize(
@@ -384,7 +417,7 @@ int LayoutThemeDefault::MenuListInternalPadding(const ComputedStyle& style,
 // The following values come from the defaults of GTK+.
 //
 static const int kProgressAnimationFrames = 10;
-static constexpr TimeDelta kProgressAnimationInterval =
+static const TimeDelta kProgressAnimationInterval =
     TimeDelta::FromMilliseconds(125);
 
 TimeDelta LayoutThemeDefault::AnimationRepeatIntervalForProgressBar() const {

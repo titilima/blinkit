@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: theme_painter_default.h
+// Description: ThemePainterDefault Class
+//      Author: Ziming Li
+//     Created: 2020-10-11
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * This file is part of the WebKit project.
  *
@@ -29,7 +40,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_PAINT_THEME_PAINTER_DEFAULT_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_PAINT_THEME_PAINTER_DEFAULT_H_
 
-#include "third_party/blink/public/platform/web_theme_engine.h"
+// BKTODO: #include "third_party/blink/public/platform/web_theme_engine.h"
 #include "third_party/blink/renderer/core/paint/theme_painter.h"
 
 namespace blink {
@@ -96,10 +107,12 @@ class ThemePainterDefault final : public ThemePainter {
                                     const PaintInfo&,
                                     const IntRect&) override;
 
+#if 0 // BKTODO:
   void SetupMenuListArrow(const Document&,
                           const ComputedStyle&,
                           const IntRect&,
                           WebThemeEngine::ExtraParams&);
+#endif
 
   // ThemePaintDefault is a part object of m_theme.
   LayoutThemeDefault& theme_;

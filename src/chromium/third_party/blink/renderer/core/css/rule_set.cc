@@ -443,8 +443,11 @@ void RuleSet::Trace(blink::Visitor* visitor) {
 
 #ifndef NDEBUG
 void RuleSet::Show() const {
+  ASSERT(false); // BKTODO:
+#if 0
   for (const auto& rule : all_rules_)
     rule->Selector().Show();
+#endif
 }
 #endif
 

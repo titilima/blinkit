@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: theme_painter.cc
+// Description: ThemePainter Class
+//      Author: Ziming Li
+//     Created: 2020-10-11
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /**
  * This file is part of the theme implementation for form controls in WebCore.
  *
@@ -25,24 +36,26 @@
 #include "third_party/blink/public/platform/web_rect.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/forms/html_data_list_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_data_list_options_collection.h"
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_option_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_select_element.h"
 #include "third_party/blink/renderer/core/html/forms/html_text_area_element.h"
+#endif
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
-#include "third_party/blink/renderer/core/html/shadow/shadow_element_names.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/shadow/shadow_element_names.h"
 #include "third_party/blink/renderer/core/input_type_names.h"
 #include "third_party/blink/renderer/core/layout/layout_theme.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
-#include "third_party/blink/renderer/core/paint/fallback_theme.h"
+// BKTODO: #include "third_party/blink/renderer/core/paint/fallback_theme.h"
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_context_state_saver.h"
-#include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
+// BKTODO: #include "third_party/blink/renderer/platform/graphics/paint/paint_canvas.h"
 #include "third_party/blink/renderer/platform/theme.h"
-#include "ui/native_theme/native_theme.h"
+// BKTODO: #include "ui/native_theme/native_theme.h"
 
 // The methods in this file are shared by all themes on every platform.
 
@@ -50,6 +63,7 @@ namespace blink {
 
 namespace {
 
+#if 0 // BKTODO:
 ui::NativeTheme::State GetFallbackThemeState(const Node* node) {
   if (!LayoutTheme::IsEnabled(node))
     return ui::NativeTheme::kDisabled;
@@ -60,6 +74,7 @@ ui::NativeTheme::State GetFallbackThemeState(const Node* node) {
 
   return ui::NativeTheme::kNormal;
 }
+#endif
 
 }  // anonymous namespace
 
@@ -81,6 +96,8 @@ bool ThemePainter::Paint(const LayoutObject& o,
 
   if (part == kButtonPart && node) {
     UseCounter::Count(doc, WebFeature::kCSSValueAppearanceButtonRendered);
+    ASSERT(false); // BKTODO:
+#if 0
     if (IsHTMLAnchorElement(node)) {
       UseCounter::Count(doc, WebFeature::kCSSValueAppearanceButtonForAnchor);
     } else if (IsHTMLButtonElement(node)) {
@@ -92,8 +109,11 @@ bool ThemePainter::Paint(const LayoutObject& o,
       UseCounter::Count(doc,
                         WebFeature::kCSSValueAppearanceButtonForOtherButtons);
     }
+#endif
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Call the appropriate paint method based off the appearance value.
   switch (part) {
     case kCheckboxPart: {
@@ -221,6 +241,7 @@ bool ThemePainter::Paint(const LayoutObject& o,
     default:
       break;
   }
+#endif
 
   // We don't support the appearance, so let the normal background/border paint.
   return true;
@@ -236,6 +257,8 @@ bool ThemePainter::PaintBorderOnly(const Node* node,
       if (node) {
         UseCounter::Count(node->GetDocument(),
                           WebFeature::kCSSValueAppearanceTextFieldRendered);
+        ASSERT(false); // BKTODO:
+#if 0
         if (auto* input = ToHTMLInputElementOrNull(node)) {
           if (input->type() == InputTypeNames::search) {
             UseCounter::Count(
@@ -247,14 +270,18 @@ bool ThemePainter::PaintBorderOnly(const Node* node,
                 WebFeature::kCSSValueAppearanceTextFieldForTextField);
           }
         }
+#endif
       }
       return PaintTextField(node, style, paint_info, r);
     case kTextAreaPart:
       if (node) {
         const auto& doc = node->GetDocument();
         COUNT_APPEARANCE(doc, TextArea);
+        ASSERT(false); // BKTODO:
+#if 0
         if (!IsHTMLTextAreaElement(node))
           COUNT_APPEARANCE(doc, TextAreaForOthers);
+#endif
       }
       return PaintTextArea(node, style, paint_info, r);
     case kMenulistButtonPart:
@@ -290,8 +317,11 @@ bool ThemePainter::PaintDecorations(const Node* node,
   switch (style.Appearance()) {
     case kMenulistButtonPart:
       COUNT_APPEARANCE(document, MenuListButton);
+      ASSERT(false); // BKTODO:
+#if 0
       if (!IsHTMLSelectElement(node))
         COUNT_APPEARANCE(document, MenuListButtonForOthers);
+#endif
       return PaintMenuListButton(node, document, style, paint_info, r);
     case kTextFieldPart:
     case kTextAreaPart:
@@ -322,6 +352,8 @@ void ThemePainter::PaintSliderTicks(const LayoutObject& o,
                                     const PaintInfo& paint_info,
                                     const IntRect& rect) {
   Node* node = o.GetNode();
+  ASSERT(false); // BKTODO:
+#if 0
   if (!IsHTMLInputElement(node))
     return;
 
@@ -422,6 +454,7 @@ void ThemePainter::PaintSliderTicks(const LayoutObject& o,
     paint_info.context.FillRect(tick_rect,
                                 o.ResolveColor(GetCSSPropertyColor()));
   }
+#endif
 }
 
 bool ThemePainter::PaintUsingFallbackTheme(const Node* node,
@@ -445,6 +478,8 @@ bool ThemePainter::PaintCheckboxUsingFallbackTheme(const Node* node,
                                                    const ComputedStyle& style,
                                                    const PaintInfo& paint_info,
                                                    const IntRect& paint_rect) {
+  ASSERT(false); // BKTODO:
+#if 0
   ui::NativeTheme::ExtraParams extra_params;
   extra_params.button.checked = LayoutTheme::IsChecked(node);
   extra_params.button.indeterminate = LayoutTheme::IsIndeterminate(node);
@@ -463,6 +498,7 @@ bool ThemePainter::PaintCheckboxUsingFallbackTheme(const Node* node,
   GetFallbackTheme().Paint(
       paint_info.context.Canvas(), ui::NativeTheme::kCheckbox,
       GetFallbackThemeState(node), unzoomed_rect, extra_params);
+#endif
   return false;
 }
 
@@ -470,6 +506,8 @@ bool ThemePainter::PaintRadioUsingFallbackTheme(const Node* node,
                                                 const ComputedStyle& style,
                                                 const PaintInfo& paint_info,
                                                 const IntRect& paint_rect) {
+  ASSERT(false); // BKTODO:
+#if 0
   ui::NativeTheme::ExtraParams extra_params;
   extra_params.button.checked = LayoutTheme::IsChecked(node);
 
@@ -487,6 +525,7 @@ bool ThemePainter::PaintRadioUsingFallbackTheme(const Node* node,
   GetFallbackTheme().Paint(paint_info.context.Canvas(), ui::NativeTheme::kRadio,
                            GetFallbackThemeState(node), unzoomed_rect,
                            extra_params);
+#endif
   return false;
 }
 

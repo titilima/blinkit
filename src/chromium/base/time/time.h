@@ -23,6 +23,7 @@
 #include <cstdint>
 #include <ctime>
 #include <limits>
+#include "base/numerics/safe_math.h"
 
 namespace base {
 
@@ -67,6 +68,21 @@ public:
     }
     TimeDelta operator-(TimeDelta other) const {
         return TimeDelta(time_internal::SaturatedSub(*this, other.m_delta));
+    }
+    // Computations with numeric types. operator*() isn't constexpr because of a
+    // limitation around __builtin_mul_overflow (but operator/(1.0/a) works for
+    // |a|'s of "reasonable" size -- i.e. that don't risk overflow).
+    template <typename T>
+    TimeDelta operator*(T a) const
+    {
+        CheckedNumeric<int64_t> rv(m_delta);
+        rv *= a;
+        if (rv.IsValid())
+            return TimeDelta(rv.ValueOrDie());
+        // Matched sign overflows. Mismatched sign underflows.
+        if ((m_delta < 0) ^ (a < 0))
+            return TimeDelta(std::numeric_limits<int64_t>::min());
+        return TimeDelta(std::numeric_limits<int64_t>::max());
     }
     constexpr TimeDelta operator%(TimeDelta a) const {
         return TimeDelta(m_delta % a.m_delta);

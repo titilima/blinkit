@@ -422,6 +422,14 @@ ExecutionContext* Node::GetExecutionContext(void) const
     return GetDocument().ContextDocument();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+ContainerNode* Node::GetReattachParent(void) const
+{
+    ASSERT(false); // BKTODO:
+    return nullptr;
+}
+#endif
+
 ShadowRoot* Node::GetShadowRoot(void) const
 {
 #ifdef BLINKIT_CRAWLER_ONLY
