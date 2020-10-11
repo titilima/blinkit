@@ -125,6 +125,7 @@ enum class WebFeature {
     kTableSectionDirectionDifferentFromTable,
     kTextAutosizing,
     kThreeValuedPositionBackground,
+    kUnitlessPerspectiveInPerspectiveProperty,
     kUnitlessPerspectiveInTransformProperty,
     kUnitlessZeroAngleFilter,
     kUnitlessZeroAngleGradient,
