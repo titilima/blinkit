@@ -306,6 +306,9 @@ unsigned FontPlatformData::GetHash() const {
 
 #if !defined(OS_MACOSX)
 bool FontPlatformData::FontContainsCharacter(UChar32 character) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   PaintFont font;
   SetupPaintFont(&font);
   font.SetTextEncoding(SkPaint::kUTF32_TextEncoding);
@@ -313,6 +316,7 @@ bool FontPlatformData::FontContainsCharacter(UChar32 character) {
   uint16_t glyph;
   font.ToSkPaint().textToGlyphs(&character, sizeof(character), &glyph);
   return glyph;
+#endif
 }
 #endif
 

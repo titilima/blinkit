@@ -41,6 +41,9 @@ namespace blink {
 
 struct CSSPropertyValueMetadata {
   DISALLOW_NEW();
+  CSSPropertyValueMetadata(void) {
+    ASSERT(false); // BKTODO:
+  }
   CSSPropertyValueMetadata(const CSSProperty& property,
                            bool is_set_from_shorthand,
                            int index_in_shorthands_vector,
@@ -74,7 +77,7 @@ class CSSPropertyValue {
   DISALLOW_NEW();
 
  public:
-  CSSPropertyValue(void);
+  CSSPropertyValue(void) {}
   CSSPropertyValue(const CSSProperty& property,
                    const CSSValue& value,
                    bool important = false,

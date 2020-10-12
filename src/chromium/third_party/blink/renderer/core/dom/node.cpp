@@ -116,6 +116,12 @@ void Node::AttachLayoutTree(AttachContext &context)
     ASSERT(false); // BKTODO: Check child classes.
 }
 
+bool Node::CanParticipateInFlatTree(void) const
+{
+    ASSERT(false); // BKTODO:
+    return false;
+}
+
 bool Node::CanStartSelection(void) const
 {
     ASSERT(false); // BKTODO: Check child classes.

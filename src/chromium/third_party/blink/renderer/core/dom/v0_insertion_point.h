@@ -104,7 +104,7 @@ class CORE_EXPORT V0InsertionPoint : public HTMLElement {
 
 using DestinationInsertionPoints = HeapVector<Member<V0InsertionPoint>, 1>;
 
-DEFINE_NODE_TYPE_CASTS(V0InsertionPoint, IsV0InsertionPoint());
+DEFINE_ELEMENT_TYPE_CASTS(V0InsertionPoint, IsV0InsertionPoint());
 
 inline bool IsActiveV0InsertionPoint(const Node& node) {
   return node.IsV0InsertionPoint() && ToV0InsertionPoint(node).IsActive();

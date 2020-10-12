@@ -88,6 +88,8 @@ void SimpleFontData::PlatformInit(bool subpixel_ascent_descent) {
     return;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   SkPaint::FontMetrics metrics;
 
   PaintFont font;
@@ -177,6 +179,7 @@ void SimpleFontData::PlatformInit(bool subpixel_ascent_descent) {
   DCHECK(face);
   if (int units_per_em = face->getUnitsPerEm())
     font_metrics_.SetUnitsPerEm(units_per_em);
+#endif
 }
 
 void SimpleFontData::PlatformGlyphInit() {

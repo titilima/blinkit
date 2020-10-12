@@ -527,6 +527,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_environment_variables.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_invalidation_root.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_property_serializer.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_property_shorthand_custom.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_recalc_root.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_rule_css_style_declaration.cc" />
@@ -1094,6 +1095,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\unicode_range_set.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\utf16_text_iterator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\win\font_cache_skia_win.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\win\font_platform_data_win.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\font_family_names.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\double_point.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\double_rect.cc" />
@@ -1210,9 +1212,11 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\segmented_string.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_boundaries.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_break_iterator.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_break_iterator_impl.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_direction.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_run.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\unicode_utilities.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\win\hyphenation_win.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\theme.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\timer.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\transforms\affine_transform.cc" />

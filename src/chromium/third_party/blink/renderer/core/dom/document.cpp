@@ -719,6 +719,13 @@ void Document::DetachParser(void)
         m_parser.reset();
     }
 }
+#ifndef BLINKIT_CRAWLER_ONLY
+float Document::DevicePixelRatio(void) const
+{
+    ASSERT(false); // BKTODO:
+    return 0;
+}
+#endif
 
 void Document::DispatchDidReceiveTitle(void)
 {
@@ -918,6 +925,19 @@ Node::ConstructionType Document::GetConstructionType(const DocumentInit &init)
 {
     return init.GetFrame()->Client()->IsCrawler() ? kCreateCrawlerDocument : kCreateDocument;
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+const PropertyRegistry* Document::GetPropertyRegistry(void) const
+{
+    return const_cast<Document *>(this)->GetPropertyRegistry();
+}
+
+PropertyRegistry* Document::GetPropertyRegistry(void)
+{
+    ASSERT(false); // BKTODO:
+    return nullptr;
+}
+#endif
 
 ScriptableDocumentParser* Document::GetScriptableDocumentParser(void) const
 {

@@ -276,6 +276,9 @@
     <Filter Include="renderer\platform\fonts\win">
       <UniqueIdentifier>{cc4cc86c-273b-46f3-a4e5-dc4435ce5146}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\platform\text\win">
+      <UniqueIdentifier>{305784fe-2e0a-48b5-a380-6edb7ba8cc01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -3646,6 +3649,18 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\win\font_cache_skia_win.cc">
       <Filter>renderer\platform\fonts\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\text_break_iterator_impl.cpp">
+      <Filter>renderer\platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\win\hyphenation_win.cc">
+      <Filter>renderer\platform\text\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\win\font_platform_data_win.cc">
+      <Filter>renderer\platform\fonts\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_property_shorthand_custom.cc">
+      <Filter>renderer\core\css</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
