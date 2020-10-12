@@ -334,7 +334,7 @@ void ScriptRunIterator::FixupStack(UScriptCode resolved_script) {
   if (brackets_fixup_depth_ > 0) {
     if (brackets_fixup_depth_ > brackets_.size()) {
       // Should never happen unless someone breaks the code.
-      DLOG(ERROR) << "Brackets fixup depth exceeds size of bracket vector.";
+      BKLOG("ERROR: Brackets fixup depth exceeds size of bracket vector.");
       brackets_fixup_depth_ = brackets_.size();
     }
     auto it = brackets_.rbegin();

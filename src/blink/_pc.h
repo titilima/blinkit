@@ -45,8 +45,10 @@
 #include <memory>
 
 #include "base/logging.h"
+#include "third_party/blink/renderer/core/dom/document.h" // Used for speeding up compilation
 #ifndef BLINKIT_CRAWLER_ONLY
 // BKTODO: #   include "skia/_skia.h"
+#   include "third_party/blink/renderer/core/layout/layout_object.h" // Used for speeding up compilation
 #endif
 
 #endif // BLINKIT_BLINK__PC_H

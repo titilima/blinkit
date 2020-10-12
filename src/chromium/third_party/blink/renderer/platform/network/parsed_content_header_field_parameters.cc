@@ -49,24 +49,22 @@ ParsedContentHeaderFieldParameters::Parse(HeaderFieldTokenizer tokenizer,
   NameValuePairs parameters;
   while (!tokenizer.IsConsumed()) {
     if (!tokenizer.Consume(';')) {
-      DVLOG(1) << "Failed to find ';'";
+      BKLOG("Failed to find ';'");
       return std::nullopt;
     }
 
     StringView key;
     String value;
     if (!tokenizer.ConsumeToken(Mode::kNormal, key)) {
-      DVLOG(1) << "Invalid content parameter name. (at " << tokenizer.Index()
-               << ")";
+      BKLOG("Invalid content parameter name. (at %u)", tokenizer.Index());
       return std::nullopt;
     }
     if (!tokenizer.Consume('=')) {
-      DVLOG(1) << "Failed to find '='";
+      BKLOG("Failed to find '='");
       return std::nullopt;
     }
     if (!tokenizer.ConsumeTokenOrQuotedString(mode, value)) {
-      DVLOG(1) << "Invalid content parameter value (at " << tokenizer.Index()
-               << ", for '" << key.ToString() << "').";
+      BKLOG("Invalid content parameter value (at %u, for '%s').", tokenizer.Index(), key.ToString().StdUtf8().c_str());
       return std::nullopt;
     }
     parameters.emplace_back(key.ToString(), value);

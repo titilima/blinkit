@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: parsed_content_type.cc
+// Description: ParsedContentType Class
+//      Author: Ziming Li
+//     Created: 2020-10-11
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  * Copyright (C) 2012 Intel Corporation. All rights reserved.
@@ -87,15 +98,15 @@ ParsedContentType::ParsedContentType(const String& content_type, Mode mode) {
 
   StringView type, subtype;
   if (!tokenizer.ConsumeToken(Mode::kNormal, type)) {
-    DVLOG(1) << "Failed to find `type' in '" << content_type << "'";
+    BKLOG("Failed to find `type' in '%s'", type.ToString().StdUtf8().c_str());
     return;
   }
   if (!tokenizer.Consume('/')) {
-    DVLOG(1) << "Failed to find '/' in '" << content_type << "'";
+    BKLOG("Failed to find '/' in '%s'", content_type.StdUtf8().c_str());
     return;
   }
   if (!tokenizer.ConsumeToken(Mode::kNormal, subtype)) {
-    DVLOG(1) << "Failed to find `subtype' in '" << content_type << "'";
+    BKLOG("Failed to find `subtype' in ''", content_type.StdUtf8().c_str());
     return;
   }
 
