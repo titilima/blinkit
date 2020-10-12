@@ -230,6 +230,9 @@
     <ProjectReference Include="..\net\net.vcxproj">
       <Project>{103e87cb-36eb-49c3-adfc-6c036aa14b21}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\skia\skia.vcxproj">
+      <Project>{a31e4f43-99e2-4dd2-b26d-2bf134ed2cba}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\stub\stub.vcxproj">
       <Project>{5c7fcbe4-3630-4def-ac58-916eafbe1e97}</Project>
     </ProjectReference>
