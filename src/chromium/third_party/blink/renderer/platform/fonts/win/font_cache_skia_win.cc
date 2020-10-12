@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_cache_skia_win.cc
+// Description: FontCache Class
+//      Author: Ziming Li
+//     Created: 2020-10-12
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2007 Apple Computer, Inc.
  * Copyright (c) 2006, 2007, 2008, 2009, 2012 Google Inc. All rights reserved.
@@ -34,13 +45,15 @@
 #include <memory>
 #include <utility>
 
+#if 0 // BKTODO:
 #include "base/debug/alias.h"
 #include "third_party/blink/renderer/platform/fonts/bitmap_glyphs_blacklist.h"
+#endif
 #include "third_party/blink/renderer/platform/fonts/font_description.h"
 #include "third_party/blink/renderer/platform/fonts/font_face_creation_params.h"
 #include "third_party/blink/renderer/platform/fonts/font_platform_data.h"
 #include "third_party/blink/renderer/platform/fonts/simple_font_data.h"
-#include "third_party/blink/renderer/platform/fonts/win/font_fallback_win.h"
+// BKTODO: #include "third_party/blink/renderer/platform/fonts/win/font_fallback_win.h"
 #include "third_party/blink/renderer/platform/language.h"
 #include "third_party/skia/include/core/SkFontMgr.h"
 #include "third_party/skia/include/ports/SkTypeface_win.h"
@@ -136,6 +149,8 @@ scoped_refptr<SimpleFontData> FontCache::PlatformFallbackFontForCharacter(
       return font_data;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   UScriptCode script;
   const UChar* family = GetFallbackFamily(
       character, font_description.GenericFamily(), font_description.Locale(),
@@ -232,6 +247,7 @@ scoped_refptr<SimpleFontData> FontCache::PlatformFallbackFontForCharacter(
     if (data && data->FontContainsCharacter(character))
       return FontDataFromFontPlatformData(data, kDoNotRetain);
   }
+#endif
 
   return nullptr;
 }
@@ -417,8 +433,11 @@ std::unique_ptr<FontPlatformData> FontCache::CreateFontPlatformData(
           font_description.IsSyntheticItalic(),
       font_description.Orientation());
 
+  ASSERT(false); // BKTODO:
+#if 0
   result->SetAvoidEmbeddedBitmaps(
       BitmapGlyphsBlacklist::AvoidEmbeddedBitmapsForTypeface(typeface.get()));
+#endif
 
   return result;
 }

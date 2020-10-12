@@ -1085,6 +1085,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_cache.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\shaping\shape_result.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\simple_font_data.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\skia\font_cache_skia.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\small_caps_iterator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\string_truncator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\symbols_iterator.cc" />
@@ -1092,6 +1093,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\typesetting_features.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\unicode_range_set.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\utf16_text_iterator.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\win\font_cache_skia_win.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\font_family_names.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\double_point.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\geometry\double_rect.cc" />

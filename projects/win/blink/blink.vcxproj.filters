@@ -270,6 +270,12 @@
     <Filter Include="renderer\core\layout\shapes">
       <UniqueIdentifier>{c40d2336-88ff-46f6-a3f7-4bd46654b203}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\platform\fonts\skia">
+      <UniqueIdentifier>{a2021961-920c-4ad3-80d5-e960b0112a75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderer\platform\fonts\win">
+      <UniqueIdentifier>{cc4cc86c-273b-46f3-a4e5-dc4435ce5146}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -3634,6 +3640,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\theme_painter.cc">
       <Filter>renderer\core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\skia\font_cache_skia.cc">
+      <Filter>renderer\platform\fonts\skia</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\win\font_cache_skia_win.cc">
+      <Filter>renderer\platform\fonts\win</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
