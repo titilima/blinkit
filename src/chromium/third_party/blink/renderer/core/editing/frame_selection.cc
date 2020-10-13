@@ -192,10 +192,7 @@ VisibleSelectionInFlatTree FrameSelection::GetSelectionInFlatTree() const {
 }
 
 void FrameSelection::MoveCaretSelection(const IntPoint& point) {
-  ASSERT(false); // BKTODO:
-#if 0
   DCHECK(!GetDocument().NeedsLayoutTreeUpdate());
-#endif
 
   Element* const editable =
       ComputeVisibleSelectionInDOMTree().RootEditableElement();

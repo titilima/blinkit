@@ -113,6 +113,8 @@ struct SameSizeAsComputedStyle : public RefCounted<SameSizeAsComputedStyle> {
 ASSERT_SIZE(ComputedStyle, SameSizeAsComputedStyle);
 #endif
 
+SVGComputedStyle ComputedStyle::svg_style_;
+
 scoped_refptr<ComputedStyle> ComputedStyle::Create() {
   return base::AdoptRef(new ComputedStyle(InitialStyle()));
 }

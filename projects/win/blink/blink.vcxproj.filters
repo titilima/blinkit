@@ -4973,6 +4973,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\shorthands\webkit_text_stroke_custom.cc">
       <Filter>renderer\core\css\properties\shorthands</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_property_base_custom.cc">
+      <Filter>renderer\core\css\properties</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_units_line.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">

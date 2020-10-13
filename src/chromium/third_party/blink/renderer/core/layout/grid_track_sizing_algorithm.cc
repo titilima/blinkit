@@ -853,6 +853,9 @@ GridTrackSize GridTrackSizingAlgorithm::GetGridTrackSize(
     GridTrackSizingDirection direction,
     size_t translated_index) const {
   DCHECK(WasSetup());
+  ASSERT(false); // BKTODO:
+  exit(0);
+#if 0
   // Collapse empty auto repeat tracks if auto-fit.
   if (grid_.HasAutoRepeatEmptyTracks(direction) &&
       grid_.IsEmptyAutoRepeatTrack(direction, translated_index))
@@ -883,6 +886,7 @@ GridTrackSize GridTrackSizingAlgorithm::GetGridTrackSize(
     min_track_breadth = Length(kAuto);
 
   return GridTrackSize(min_track_breadth, max_track_breadth);
+#endif
 }
 
 LayoutUnit GridTrackSizingAlgorithm::InitialBaseSize(

@@ -148,7 +148,7 @@ EditingStyle* EditingStyleUtilities::CreateStyleAtSelectionStart(
 
   Document& document = *selection.Start().GetDocument();
 
-  ASSERT(false); // BKTODO: DCHECK(!document.NeedsLayoutTreeUpdate());
+  DCHECK(!document.NeedsLayoutTreeUpdate());
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       document.Lifecycle());
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: compositor_element_id.h
+// Description: CompositorElementId
+//      Author: Ziming Li
+//     Created: 2020-10-13
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -59,7 +70,11 @@ CompositorElementId PLATFORM_EXPORT CompositorElementIdFromDOMNodeId(DOMNodeId);
 // Blink's hash functions with Blink specific data structures.
 struct CompositorElementIdHash {
   static unsigned GetHash(const CompositorElementId& key) {
+    ASSERT(false); // BKTODO:
+    return 0;
+#if 0
     return WTF::HashInt(static_cast<cc::ElementIdType>(key.GetInternalValue()));
+#endif
   }
   static bool Equal(const CompositorElementId& a,
                     const CompositorElementId& b) {

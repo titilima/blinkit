@@ -291,7 +291,7 @@ const NGInlineNodeData& NGInlineNode::EnsureData() {
 }
 
 const NGOffsetMapping* NGInlineNode::ComputeOffsetMappingIfNeeded() {
-  ASSERT(false); // BKTODO: DCHECK(!GetLayoutBlockFlow()->GetDocument().NeedsLayoutTreeUpdate());
+  DCHECK(!GetLayoutBlockFlow()->GetDocument().NeedsLayoutTreeUpdate());
 
   NGInlineNodeData* data = MutableData();
   if (!data->offset_mapping) {

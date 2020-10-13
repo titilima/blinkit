@@ -107,7 +107,7 @@ static PositionType CanonicalPosition(const PositionType& position) {
     return PositionType();
 
   DCHECK(position.GetDocument());
-  ASSERT(false); // BKTODO: DCHECK(!position.GetDocument()->NeedsLayoutTreeUpdate());
+  DCHECK(!position.GetDocument()->NeedsLayoutTreeUpdate());
 
   const PositionType& backward_candidate = MostBackwardCaretPosition(position);
   if (IsVisuallyEquivalentCandidate(backward_candidate))
@@ -1335,7 +1335,7 @@ static Vector<FloatQuad> ComputeTextBounds(
   DCHECK(start_container);
   Node* const end_container = end_position.ComputeContainerNode();
   DCHECK(end_container);
-  ASSERT(false); // BKTODO: DCHECK(!start_container->GetDocument().NeedsLayoutTreeUpdate());
+  DCHECK(!start_container->GetDocument().NeedsLayoutTreeUpdate());
 
   Vector<FloatQuad> result;
   for (const Node& node : range.Nodes()) {
@@ -1375,7 +1375,7 @@ FloatRect ComputeTextFloatRect(const EphemeralRange& range) {
 }
 
 IntRect FirstRectForRange(const EphemeralRange& range) {
-  ASSERT(false); // BKTODO: DCHECK(!range.GetDocument().NeedsLayoutTreeUpdate());
+  DCHECK(!range.GetDocument().NeedsLayoutTreeUpdate());
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       range.GetDocument().Lifecycle());
 

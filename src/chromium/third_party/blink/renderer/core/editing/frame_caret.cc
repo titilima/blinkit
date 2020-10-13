@@ -187,10 +187,7 @@ static IntRect AbsoluteBoundsForLocalRect(Node* node, const LayoutRect& rect) {
 IntRect FrameCaret::AbsoluteCaretBounds() const {
   DCHECK_NE(frame_->GetDocument()->Lifecycle().GetState(),
             DocumentLifecycle::kInPrePaint);
-  ASSERT(false); // BKTODO:
-#if 0
   DCHECK(!frame_->GetDocument()->NeedsLayoutTreeUpdate());
-#endif
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       frame_->GetDocument()->Lifecycle());
 

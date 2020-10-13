@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: visible_units_line.cc
+// Description: Visible Units Implementations
+//      Author: Ziming Li
+//     Created: 2020-10-13
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights
  * reserved.
@@ -30,7 +41,7 @@
 
 #include "third_party/blink/renderer/core/editing/visible_units.h"
 
-#include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
+// BKTODO: #include "third_party/blink/renderer/core/accessibility/ax_object_cache.h"
 #include "third_party/blink/renderer/core/editing/editing_utilities.h"
 #include "third_party/blink/renderer/core/editing/inline_box_position.h"
 #include "third_party/blink/renderer/core/editing/ng_flat_tree_shorthands.h"
@@ -47,10 +58,13 @@ namespace {
 
 bool HasEditableStyle(const Node& node, EditableType editable_type) {
   if (editable_type == kHasEditableAXRole) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (AXObjectCache* cache = node.GetDocument().ExistingAXObjectCache()) {
       if (cache->RootAXEditableElement(&node))
         return true;
     }
+#endif
   }
 
   return HasEditableStyle(node);
@@ -58,8 +72,11 @@ bool HasEditableStyle(const Node& node, EditableType editable_type) {
 
 Element* RootEditableElement(const Node& node, EditableType editable_type) {
   if (editable_type == kHasEditableAXRole) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (AXObjectCache* cache = node.GetDocument().ExistingAXObjectCache())
       return const_cast<Element*>(cache->RootAXEditableElement(&node));
+#endif
   }
 
   return RootEditableElement(node);
@@ -311,7 +328,7 @@ Position PreviousRootInlineBoxCandidatePosition(
     Node* node,
     const VisiblePosition& visible_position,
     EditableType editable_type) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   ContainerNode* highest_root =
       HighestEditableRoot(visible_position.DeepEquivalent(), editable_type);
   Node* const previous_node =
@@ -335,7 +352,7 @@ Position NextRootInlineBoxCandidatePosition(
     Node* node,
     const VisiblePosition& visible_position,
     EditableType editable_type) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   ContainerNode* highest_root =
       HighestEditableRoot(visible_position.DeepEquivalent(), editable_type);
   Node* next_node = NextLeafWithSameEditability(node, editable_type);
@@ -357,14 +374,14 @@ Position NextRootInlineBoxCandidatePosition(
 
 // FIXME: Rename this function to reflect the fact it ignores bidi levels.
 VisiblePosition StartOfLine(const VisiblePosition& current_position) {
-  DCHECK(current_position.IsValid()) << current_position;
+  DCHECK(current_position.IsValid());
   return CreateVisiblePosition(
       StartOfLine(current_position.ToPositionWithAffinity()));
 }
 
 VisiblePositionInFlatTree StartOfLine(
     const VisiblePositionInFlatTree& current_position) {
-  DCHECK(current_position.IsValid()) << current_position;
+  DCHECK(current_position.IsValid());
   return CreateVisiblePosition(
       StartOfLine(current_position.ToPositionWithAffinity()));
 }
@@ -400,14 +417,14 @@ static PositionInFlatTreeWithAffinity LogicalStartOfLine(
 }
 
 VisiblePosition LogicalStartOfLine(const VisiblePosition& current_position) {
-  DCHECK(current_position.IsValid()) << current_position;
+  DCHECK(current_position.IsValid());
   return CreateVisiblePosition(
       LogicalStartOfLine(current_position.ToPositionWithAffinity()));
 }
 
 VisiblePositionInFlatTree LogicalStartOfLine(
     const VisiblePositionInFlatTree& current_position) {
-  DCHECK(current_position.IsValid()) << current_position;
+  DCHECK(current_position.IsValid());
   return CreateVisiblePosition(
       LogicalStartOfLine(current_position.ToPositionWithAffinity()));
 }
@@ -498,14 +515,14 @@ static PositionInFlatTreeWithAffinity EndOfLine(
 
 // TODO(yosin) Rename this function to reflect the fact it ignores bidi levels.
 VisiblePosition EndOfLine(const VisiblePosition& current_position) {
-  DCHECK(current_position.IsValid()) << current_position;
+  DCHECK(current_position.IsValid());
   return CreateVisiblePosition(
       EndOfLine(current_position.ToPositionWithAffinity()));
 }
 
 VisiblePositionInFlatTree EndOfLine(
     const VisiblePositionInFlatTree& current_position) {
-  DCHECK(current_position.IsValid()) << current_position;
+  DCHECK(current_position.IsValid());
   return CreateVisiblePosition(
       EndOfLine(current_position.ToPositionWithAffinity()));
 }
@@ -564,14 +581,14 @@ static PositionInFlatTreeWithAffinity LogicalEndOfLine(
 }
 
 VisiblePosition LogicalEndOfLine(const VisiblePosition& current_position) {
-  DCHECK(current_position.IsValid()) << current_position;
+  DCHECK(current_position.IsValid());
   return CreateVisiblePosition(
       LogicalEndOfLine(current_position.ToPositionWithAffinity()));
 }
 
 VisiblePositionInFlatTree LogicalEndOfLine(
     const VisiblePositionInFlatTree& current_position) {
-  DCHECK(current_position.IsValid()) << current_position;
+  DCHECK(current_position.IsValid());
   return CreateVisiblePosition(
       LogicalEndOfLine(current_position.ToPositionWithAffinity()));
 }
@@ -626,23 +643,23 @@ bool InSameLine(const PositionInFlatTreeWithAffinity& position1,
 
 bool InSameLine(const VisiblePosition& position1,
                 const VisiblePosition& position2) {
-  DCHECK(position1.IsValid()) << position1;
-  DCHECK(position2.IsValid()) << position2;
+  DCHECK(position1.IsValid());
+  DCHECK(position2.IsValid());
   return InSameLine(position1.ToPositionWithAffinity(),
                     position2.ToPositionWithAffinity());
 }
 
 bool InSameLine(const VisiblePositionInFlatTree& position1,
                 const VisiblePositionInFlatTree& position2) {
-  DCHECK(position1.IsValid()) << position1;
-  DCHECK(position2.IsValid()) << position2;
+  DCHECK(position1.IsValid());
+  DCHECK(position2.IsValid());
   return InSameLine(position1.ToPositionWithAffinity(),
                     position2.ToPositionWithAffinity());
 }
 
 template <typename Strategy>
 static bool IsStartOfLineAlgorithm(const VisiblePositionTemplate<Strategy>& p) {
-  DCHECK(p.IsValid()) << p;
+  DCHECK(p.IsValid());
   return p.IsNotNull() && p.DeepEquivalent() == StartOfLine(p).DeepEquivalent();
 }
 
@@ -656,7 +673,7 @@ bool IsStartOfLine(const VisiblePositionInFlatTree& p) {
 
 template <typename Strategy>
 static bool IsEndOfLineAlgorithm(const VisiblePositionTemplate<Strategy>& p) {
-  DCHECK(p.IsValid()) << p;
+  DCHECK(p.IsValid());
   return p.IsNotNull() && p.DeepEquivalent() == EndOfLine(p).DeepEquivalent();
 }
 
@@ -671,7 +688,7 @@ bool IsEndOfLine(const VisiblePositionInFlatTree& p) {
 template <typename Strategy>
 static bool IsLogicalEndOfLineAlgorithm(
     const VisiblePositionTemplate<Strategy>& p) {
-  DCHECK(p.IsValid()) << p;
+  DCHECK(p.IsValid());
   return p.IsNotNull() &&
          p.DeepEquivalent() == LogicalEndOfLine(p).DeepEquivalent();
 }
@@ -687,7 +704,7 @@ bool IsLogicalEndOfLine(const VisiblePositionInFlatTree& p) {
 VisiblePosition PreviousLinePosition(const VisiblePosition& visible_position,
                                      LayoutUnit line_direction_point,
                                      EditableType editable_type) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
 
   Position p = visible_position.DeepEquivalent();
   Node* node = p.AnchorNode();
@@ -754,7 +771,7 @@ VisiblePosition PreviousLinePosition(const VisiblePosition& visible_position,
 VisiblePosition NextLinePosition(const VisiblePosition& visible_position,
                                  LayoutUnit line_direction_point,
                                  EditableType editable_type) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
 
   Position p = visible_position.DeepEquivalent();
   Node* node = p.AnchorNode();

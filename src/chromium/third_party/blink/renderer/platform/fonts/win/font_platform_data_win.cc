@@ -56,6 +56,8 @@ void FontPlatformData::SetupPaintFont(PaintFont* font,
                                       float,
                                       const Font*) const {
   const float ts = text_size_ >= 0 ? text_size_ : 12;
+  ASSERT(false); // BKTODO:
+#if 0
   font->SetTextSize(SkFloatToScalar(text_size_));
   font->SetTypeface(typeface_);
   font->SetFakeBoldText(synthetic_bold_);
@@ -86,6 +88,7 @@ void FontPlatformData::SetupPaintFont(PaintFont* font,
   font->SetFlags(flags);
 
   font->SetEmbeddedBitmapText(!avoid_embedded_bitmaps_);
+#endif
 }
 
 static bool IsWebFont(const String& family_name) {

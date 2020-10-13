@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: compositor_element_id.cc
+// Description: CompositorElementId
+//      Author: Ziming Li
+//     Created: 2020-10-13
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -55,10 +66,14 @@ CompositorElementIdFromUniqueObjectId(UniqueObjectId id) {
 
 CompositorElementIdNamespace NamespaceFromCompositorElementId(
     CompositorElementId element_id) {
+  ASSERT(false); // BKTODO:
+  return CompositorElementIdNamespace::kMaxRepresentableNamespaceId;
+#if 0
   return static_cast<CompositorElementIdNamespace>(
       element_id.GetInternalValue() %
       static_cast<uint64_t>(
           CompositorElementIdNamespace::kMaxRepresentableNamespaceId));
+#endif
 }
 
 }  // namespace blink

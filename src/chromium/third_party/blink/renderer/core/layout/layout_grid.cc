@@ -428,6 +428,9 @@ LayoutUnit LayoutGrid::GuttersSize(
   if (span <= 1)
     return LayoutUnit();
 
+  ASSERT(false); // BKTODO:
+  return LayoutUnit();
+#if 0
   LayoutUnit gap = GridGap(direction, available_size);
 
   // Fast path, no collapsing tracks.
@@ -460,8 +463,6 @@ LayoutUnit LayoutGrid::GuttersSize(
   size_t non_empty_tracks_before_start_line = 0;
   if (start_line && grid.IsEmptyAutoRepeatTrack(direction, start_line)) {
     non_empty_tracks_before_start_line = start_line;
-    ASSERT(false); // BKTODO:
-#if 0
     auto begin = grid.AutoRepeatEmptyTracks(direction)->begin();
     for (auto it = begin; *it != start_line; ++it) {
       DCHECK(non_empty_tracks_before_start_line);
@@ -469,7 +470,6 @@ LayoutUnit LayoutGrid::GuttersSize(
     }
     if (non_empty_tracks_before_start_line)
       gap_accumulator += gap;
-#endif
   }
 
   // If the endLine is the end line of a collapsed track we need to go forward
@@ -478,8 +478,6 @@ LayoutUnit LayoutGrid::GuttersSize(
   if (grid.IsEmptyAutoRepeatTrack(direction, end_line - 1)) {
     size_t non_empty_tracks_after_end_line =
         grid.NumTracks(direction) - end_line;
-    ASSERT(false); // BKTODO:
-#if 0
     auto current_empty_track =
         grid.AutoRepeatEmptyTracks(direction)->find(end_line - 1);
     auto end_empty_track = grid.AutoRepeatEmptyTracks(direction)->end();
@@ -500,10 +498,10 @@ LayoutUnit LayoutGrid::GuttersSize(
       // at the end of the grid).
       gap_accumulator -= gap;
     }
-#endif
   }
 
   return gap_accumulator;
+#endif
 }
 
 void LayoutGrid::ComputeIntrinsicLogicalWidths(

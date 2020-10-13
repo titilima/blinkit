@@ -686,12 +686,12 @@ VisiblePosition SelectionModifier::ComputeModifyPosition(
 bool SelectionModifier::Modify(SelectionModifyAlteration alter,
                                SelectionModifyDirection direction,
                                TextGranularity granularity) {
-  ASSERT(false); // BKTODO:
-#if 0
   DCHECK(!GetFrame().GetDocument()->NeedsLayoutTreeUpdate());
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       GetFrame().GetDocument()->Lifecycle());
 
+  ASSERT(false); // BKTODO:
+#if 0
   selection_ = PrepareToModifySelection(alter, direction);
   if (selection_.IsNone())
     return false;
@@ -811,10 +811,7 @@ bool SelectionModifier::ModifyWithPageGranularity(
   if (!vertical_distance)
     return false;
 
-  ASSERT(false); // BKTODO:
-#if 0
   DCHECK(!GetFrame().GetDocument()->NeedsLayoutTreeUpdate());
-#endif
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       GetFrame().GetDocument()->Lifecycle());
 

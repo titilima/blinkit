@@ -927,6 +927,12 @@ Node::ConstructionType Document::GetConstructionType(const DocumentInit &init)
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+Page* Document::GetPage(void) const
+{
+    ASSERT(false); // BKTODO:
+    return nullptr;
+}
+
 const PropertyRegistry* Document::GetPropertyRegistry(void) const
 {
     return const_cast<Document *>(this)->GetPropertyRegistry();
@@ -1251,6 +1257,14 @@ void Document::MaybeHandleHttpRefresh(const String &content, HttpRefreshType ref
         return;
     ASSERT(false); // BKTODO:
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+bool Document::NeedsLayoutTreeUpdate(void) const
+{
+    ASSERT(false); // BKTODO:
+    return false;
+}
+#endif
 
 void Document::NodeChildrenWillBeRemoved(ContainerNode &container)
 {

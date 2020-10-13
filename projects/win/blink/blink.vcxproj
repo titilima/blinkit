@@ -450,6 +450,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\computed_style_utils.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_parsing_utils.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_property.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_property_base_custom.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\css_unresolved_property.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\alignment_baseline_custom.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\properties\longhands\align_content_custom.cc" />
@@ -1110,6 +1111,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_position.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_selection.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_units.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_units_line.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\animation_event.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\animation_playback_event.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\input_event.cc" />

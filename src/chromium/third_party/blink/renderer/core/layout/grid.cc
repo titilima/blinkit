@@ -103,10 +103,10 @@ bool Grid::HasAutoRepeatEmptyTracks(GridTrackSizingDirection direction) const {
 
 bool Grid::IsEmptyAutoRepeatTrack(GridTrackSizingDirection direction,
                                   size_t line) const {
-  DCHECK(HasAutoRepeatEmptyTracks(direction));
   ASSERT(false); // BKTODO:
   return false;
 #if 0
+  DCHECK(HasAutoRepeatEmptyTracks(direction));
   return AutoRepeatEmptyTracks(direction)->Contains(line);
 #endif
 }

@@ -224,8 +224,8 @@ TextIteratorAlgorithm<Strategy>::TextIteratorAlgorithm(
   // http://crbug.com/591877 for details.
   DCHECK(!start.GetDocument()->View() ||
          !start.GetDocument()->View()->NeedsLayout());
-  DCHECK(!start.GetDocument()->NeedsLayoutTreeUpdate());
 #endif
+  DCHECK(!start.GetDocument()->NeedsLayoutTreeUpdate());
   // To avoid renderer hang, we use |CHECK_LE()| to catch the bad callers
   // in release build.
   CHECK_LE(start, end);
@@ -293,11 +293,11 @@ void TextIteratorAlgorithm<Strategy>::Advance() {
   if (should_stop_)
     return;
 
+  if (node_)
+    DCHECK(!node_->GetDocument().NeedsLayoutTreeUpdate());
+
   ASSERT(false); // BKTODO:
 #if 0
-  if (node_)
-    DCHECK(!node_->GetDocument().NeedsLayoutTreeUpdate()) << node_;
-
   text_state_.ResetRunInformation();
 
   if (HandleRememberedProgress())

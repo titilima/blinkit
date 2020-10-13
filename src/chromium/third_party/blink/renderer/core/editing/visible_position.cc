@@ -92,7 +92,7 @@ VisiblePositionTemplate<Strategy> VisiblePositionTemplate<Strategy>::Create(
   DCHECK(position_with_affinity.IsConnected());
 
   Document& document = *position_with_affinity.GetDocument();
-  ASSERT(false); // BKTODO: DCHECK(!document.NeedsLayoutTreeUpdate());
+  DCHECK(!document.NeedsLayoutTreeUpdate());
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       document.Lifecycle());
 

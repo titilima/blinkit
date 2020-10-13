@@ -2200,7 +2200,7 @@ base::Optional<unsigned> LayoutText::CaretOffsetForPosition(
 }
 
 int LayoutText::CaretMinOffset() const {
-  ASSERT(false); // BKTODO: DCHECK(!GetDocument().NeedsLayoutTreeUpdate());
+  DCHECK(!GetDocument().NeedsLayoutTreeUpdate());
 
   if (auto* mapping = GetNGOffsetMapping()) {
     const Position first_position = PositionForCaretOffset(0);
@@ -2224,7 +2224,7 @@ int LayoutText::CaretMinOffset() const {
 }
 
 int LayoutText::CaretMaxOffset() const {
-  ASSERT(false); // BKTODO: DCHECK(!GetDocument().NeedsLayoutTreeUpdate());
+  DCHECK(!GetDocument().NeedsLayoutTreeUpdate());
 
   if (auto* mapping = GetNGOffsetMapping()) {
     const Position last_position = PositionForCaretOffset(TextLength());

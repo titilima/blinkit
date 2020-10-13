@@ -169,11 +169,11 @@ UChar WhitespaceRebalancingCharToAppend(const String& string,
 
 bool NeedsLayoutTreeUpdate(const Node& node) {
   const Document& document = node.GetDocument();
+  if (document.NeedsLayoutTreeUpdate())
+    return true;
   ASSERT(false); // BKTODO:
   return false;
 #if 0
-  if (document.NeedsLayoutTreeUpdate())
-    return true;
   // TODO(yosin): We should make |document::needsLayoutTreeUpdate()| to
   // check |LayoutView::needsLayout()|.
   return document.View() && document.View()->NeedsLayout();
@@ -504,7 +504,7 @@ bool IsEditablePosition(const Position& position) {
     // https://codereview.chromium.org/2665823002/ avoided this function from
     // being called during InStyleRecalc.
   } else {
-    DCHECK(!NeedsLayoutTreeUpdate(position)); // BKTODO: << position;
+    DCHECK(!NeedsLayoutTreeUpdate(position));;
   }
 
   if (IsDisplayInsideTable(node))
@@ -1560,12 +1560,9 @@ template <typename Strategy>
 static EphemeralRangeTemplate<Strategy> NormalizeRangeAlgorithm(
     const EphemeralRangeTemplate<Strategy>& range) {
   DCHECK(range.IsNotNull());
-  ASSERT(false); // BKTODO:
-#if 0
   DCHECK(!range.GetDocument().NeedsLayoutTreeUpdate());
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       range.GetDocument().Lifecycle());
-#endif
 
   // TODO(yosin) We should not call |parentAnchoredEquivalent()|, it is
   // redundant.
@@ -1592,12 +1589,9 @@ EphemeralRangeInFlatTree NormalizeRange(const EphemeralRangeInFlatTree& range) {
 VisiblePosition VisiblePositionForIndex(int index, ContainerNode* scope) {
   if (!scope)
     return VisiblePosition();
-  ASSERT(false); // BKTODO:
-#if 0
   DCHECK(!scope->GetDocument().NeedsLayoutTreeUpdate());
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       scope->GetDocument().Lifecycle());
-#endif
 
   EphemeralRange range =
       PlainTextRange(index).CreateRangeForSelectionIndexing(*scope);
@@ -1803,9 +1797,6 @@ ContainerNode* RootEditableElementOrTreeScopeRootNodeOf(
 }
 
 static scoped_refptr<Image> ImageFromNode(const Node& node) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   DCHECK(!node.GetDocument().NeedsLayoutTreeUpdate());
   DocumentLifecycle::DisallowTransitionScope disallow_transition(
       node.GetDocument().Lifecycle());
@@ -1814,6 +1805,9 @@ static scoped_refptr<Image> ImageFromNode(const Node& node) {
   if (!layout_object)
     return nullptr;
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (layout_object->IsCanvas()) {
     return ToHTMLCanvasElement(const_cast<Node&>(node))
         .Snapshot(kFrontBuffer, kPreferNoAcceleration);

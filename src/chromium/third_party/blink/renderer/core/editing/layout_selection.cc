@@ -813,7 +813,7 @@ void LayoutSelection::Commit() {
     return;
   has_pending_selection_ = false;
 
-  ASSERT(false); // BKTODO: DCHECK(!frame_selection_->GetDocument().NeedsLayoutTreeUpdate());
+  DCHECK(!frame_selection_->GetDocument().NeedsLayoutTreeUpdate());
   DCHECK_GE(frame_selection_->GetDocument().Lifecycle().GetState(),
             DocumentLifecycle::kLayoutClean);
   DocumentLifecycle::DisallowTransitionScope disallow_transition(

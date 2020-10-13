@@ -366,6 +366,7 @@ public:
     // EnsureTemplateDocument().
     bool IsTemplateDocument(void) const { return !!m_templateDocumentHost; }
 
+    bool NeedsLayoutTreeUpdate(void) const;
     void UpdateStyleAndLayoutTree(void);
     void UpdateStyleAndLayoutTreeForNode(const Node *node);
 
