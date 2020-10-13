@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: timing_function.h
+// Description: TimingFunction Classes
+//      Author: Ziming Li
+//     Created: 2020-10-13
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2000 Lars Knoll (knoll@kde.org)
  *           (C) 2000 Antti Koivisto (koivisto@kde.org)
@@ -106,27 +117,29 @@ class PLATFORM_EXPORT CubicBezierTimingFunction final : public TimingFunction {
   std::unique_ptr<cc::TimingFunction> CloneToCC() const override;
 
   double X1() const {
-    DCHECK_EQ(GetEaseType(), EaseType::CUSTOM);
+    ASSERT(false); // BKTODO: DCHECK_EQ(GetEaseType(), EaseType::CUSTOM);
     return x1_;
   }
   double Y1() const {
-    DCHECK_EQ(GetEaseType(), EaseType::CUSTOM);
+    ASSERT(false); // BKTODO: DCHECK_EQ(GetEaseType(), EaseType::CUSTOM);
     return y1_;
   }
   double X2() const {
-    DCHECK_EQ(GetEaseType(), EaseType::CUSTOM);
+    ASSERT(false); // BKTODO: DCHECK_EQ(GetEaseType(), EaseType::CUSTOM);
     return x2_;
   }
   double Y2() const {
-    DCHECK_EQ(GetEaseType(), EaseType::CUSTOM);
+    ASSERT(false); // BKTODO: DCHECK_EQ(GetEaseType(), EaseType::CUSTOM);
     return y2_;
   }
+#if 0 // BKTODO:
   EaseType GetEaseType() const { return bezier_->ease_type(); }
+#endif
 
  private:
   explicit CubicBezierTimingFunction(EaseType ease_type)
       : TimingFunction(Type::CUBIC_BEZIER),
-        bezier_(cc::CubicBezierTimingFunction::CreatePreset(ease_type)),
+        // BKTODO: bezier_(cc::CubicBezierTimingFunction::CreatePreset(ease_type)),
         x1_(),
         y1_(),
         x2_(),
@@ -134,13 +147,13 @@ class PLATFORM_EXPORT CubicBezierTimingFunction final : public TimingFunction {
 
   CubicBezierTimingFunction(double x1, double y1, double x2, double y2)
       : TimingFunction(Type::CUBIC_BEZIER),
-        bezier_(cc::CubicBezierTimingFunction::Create(x1, y1, x2, y2)),
+        // BKTODO: bezier_(cc::CubicBezierTimingFunction::Create(x1, y1, x2, y2)),
         x1_(x1),
         y1_(y1),
         x2_(x2),
         y2_(y2) {}
 
-  std::unique_ptr<cc::CubicBezierTimingFunction> bezier_;
+  // BKTODO: std::unique_ptr<cc::CubicBezierTimingFunction> bezier_;
 
   // TODO(loyso): Get these values from m_bezier->bezier_ (gfx::CubicBezier)
   const double x1_;
@@ -185,15 +198,21 @@ class PLATFORM_EXPORT StepsTimingFunction final : public TimingFunction {
   void Range(double* min_value, double* max_value) const override;
   std::unique_ptr<cc::TimingFunction> CloneToCC() const override;
 
+#if 0 // BKTODO:
   int NumberOfSteps() const { return steps_->steps(); }
   StepPosition GetStepPosition() const { return steps_->step_position(); }
+#endif
 
  private:
   StepsTimingFunction(int steps, StepPosition step_position)
+#if 0 // BKTODO:
       : TimingFunction(Type::STEPS),
         steps_(cc::StepsTimingFunction::Create(steps, step_position)) {}
+#else
+      : TimingFunction(Type::STEPS) {}
+#endif
 
-  std::unique_ptr<cc::StepsTimingFunction> steps_;
+  // BKTODO: std::unique_ptr<cc::StepsTimingFunction> steps_;
 };
 
 class PLATFORM_EXPORT FramesTimingFunction final : public TimingFunction {
@@ -210,16 +229,22 @@ class PLATFORM_EXPORT FramesTimingFunction final : public TimingFunction {
   void Range(double* min_value, double* max_value) const override;
   std::unique_ptr<cc::TimingFunction> CloneToCC() const override;
 
+#if 0 // BKTODO:
   int NumberOfFrames() const { return frames_->frames(); }
+#endif
 
  private:
   FramesTimingFunction(int frames)
+#if 0 // BKTODO:
       : TimingFunction(Type::FRAMES),
         frames_(cc::FramesTimingFunction::Create(frames)) {
+#else
+      : TimingFunction(Type::FRAMES) {
+#endif
     DCHECK(RuntimeEnabledFeatures::FramesTimingFunctionEnabled());
   }
 
-  std::unique_ptr<cc::FramesTimingFunction> frames_;
+  // BKTODO: std::unique_ptr<cc::FramesTimingFunction> frames_;
 };
 
 PLATFORM_EXPORT scoped_refptr<TimingFunction>
@@ -242,10 +267,12 @@ PLATFORM_EXPORT bool operator!=(const TimingFunction&, const TimingFunction&);
                     value->GetType() == TimingFunction::Type::enumName, \
                     value.GetType() == TimingFunction::Type::enumName)
 
+#if 0 // BKTODO:
 DEFINE_TIMING_FUNCTION_TYPE_CASTS(Linear, LINEAR);
 DEFINE_TIMING_FUNCTION_TYPE_CASTS(CubicBezier, CUBIC_BEZIER);
 DEFINE_TIMING_FUNCTION_TYPE_CASTS(Steps, STEPS);
 DEFINE_TIMING_FUNCTION_TYPE_CASTS(Frames, FRAMES);
+#endif
 
 }  // namespace blink
 

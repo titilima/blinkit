@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: timing_function.cc
+// Description: TimingFunction Classes
+//      Author: Ziming Li
+//     Created: 2020-10-13
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -53,6 +64,9 @@ CubicBezierTimingFunction* CubicBezierTimingFunction::Preset(
 }
 
 String CubicBezierTimingFunction::ToString() const {
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   switch (this->GetEaseType()) {
     case CubicBezierTimingFunction::EaseType::EASE:
       return "ease";
@@ -71,15 +85,22 @@ String CubicBezierTimingFunction::ToString() const {
       NOTREACHED();
       return "";
   }
+#endif
 }
 
 double CubicBezierTimingFunction::Evaluate(double fraction,
                                            double accuracy) const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return bezier_->bezier().SolveWithEpsilon(fraction, accuracy);
+#endif
 }
 
 void CubicBezierTimingFunction::Range(double* min_value,
                                       double* max_value) const {
+  ASSERT(false); // BKTODO:
+#if 0
   const double solution1 = bezier_->bezier().range_min();
   const double solution2 = bezier_->bezier().range_max();
 
@@ -93,14 +114,22 @@ void CubicBezierTimingFunction::Range(double* min_value,
   *max_value = std::max(std::max(solution_min, solution_max), 1.0);
   *min_value = std::min(std::min(*min_value, solution1), solution2);
   *max_value = std::max(std::max(*max_value, solution1), solution2);
+#endif
 }
 
 std::unique_ptr<cc::TimingFunction> CubicBezierTimingFunction::CloneToCC()
     const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return bezier_->Clone();
+#endif
 }
 
 String StepsTimingFunction::ToString() const {
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   const char* position_string = nullptr;
   switch (GetStepPosition()) {
     case StepPosition::START:
@@ -123,6 +152,7 @@ String StepsTimingFunction::ToString() const {
   }
   builder.Append(')');
   return builder.ToString();
+#endif
 }
 
 void StepsTimingFunction::Range(double* min_value, double* max_value) const {
@@ -131,19 +161,31 @@ void StepsTimingFunction::Range(double* min_value, double* max_value) const {
 }
 
 double StepsTimingFunction::Evaluate(double fraction, double) const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return steps_->GetPreciseValue(fraction);
+#endif
 }
 
 std::unique_ptr<cc::TimingFunction> StepsTimingFunction::CloneToCC() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return steps_->Clone();
+#endif
 }
 
 String FramesTimingFunction::ToString() const {
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   StringBuilder builder;
   builder.Append("frames(");
   builder.Append(String::NumberToStringECMAScript(this->NumberOfFrames()));
   builder.Append(")");
   return builder.ToString();
+#endif
 }
 
 void FramesTimingFunction::Range(double* min_value, double* max_value) const {
@@ -152,15 +194,26 @@ void FramesTimingFunction::Range(double* min_value, double* max_value) const {
 }
 
 double FramesTimingFunction::Evaluate(double fraction, double) const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return frames_->GetPreciseValue(fraction);
+#endif
 }
 
 std::unique_ptr<cc::TimingFunction> FramesTimingFunction::CloneToCC() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return frames_->Clone();
+#endif
 }
 
 scoped_refptr<TimingFunction> CreateCompositorTimingFunctionFromCC(
     const cc::TimingFunction* timing_function) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   if (!timing_function)
     return LinearTimingFunction::Shared();
 
@@ -190,6 +243,7 @@ scoped_refptr<TimingFunction> CreateCompositorTimingFunctionFromCC(
       NOTREACHED();
       return nullptr;
   }
+#endif
 }
 
 // Equals operators
@@ -202,6 +256,9 @@ bool operator==(const CubicBezierTimingFunction& lhs,
   if (rhs.GetType() != TimingFunction::Type::CUBIC_BEZIER)
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   const CubicBezierTimingFunction& ctf = ToCubicBezierTimingFunction(rhs);
   if ((lhs.GetEaseType() == CubicBezierTimingFunction::EaseType::CUSTOM) &&
       (ctf.GetEaseType() == CubicBezierTimingFunction::EaseType::CUSTOM))
@@ -209,28 +266,39 @@ bool operator==(const CubicBezierTimingFunction& lhs,
            (lhs.X2() == ctf.X2()) && (lhs.Y2() == ctf.Y2());
 
   return lhs.GetEaseType() == ctf.GetEaseType();
+#endif
 }
 
 bool operator==(const StepsTimingFunction& lhs, const TimingFunction& rhs) {
   if (rhs.GetType() != TimingFunction::Type::STEPS)
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   const StepsTimingFunction& stf = ToStepsTimingFunction(rhs);
   return (lhs.NumberOfSteps() == stf.NumberOfSteps()) &&
          (lhs.GetStepPosition() == stf.GetStepPosition());
+#endif
 }
 
 bool operator==(const FramesTimingFunction& lhs, const TimingFunction& rhs) {
   if (rhs.GetType() != TimingFunction::Type::FRAMES)
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   const FramesTimingFunction& ftf = ToFramesTimingFunction(rhs);
   return lhs.NumberOfFrames() == ftf.NumberOfFrames();
+#endif
 }
 
 // The generic operator== *must* come after the
 // non-generic operator== otherwise it will end up calling itself.
 bool operator==(const TimingFunction& lhs, const TimingFunction& rhs) {
+  ASSERT(false); // BKTODO:
+#if 0
   switch (lhs.GetType()) {
     case TimingFunction::Type::LINEAR: {
       const LinearTimingFunction& linear = ToLinearTimingFunction(lhs);
@@ -251,6 +319,7 @@ bool operator==(const TimingFunction& lhs, const TimingFunction& rhs) {
     default:
       NOTREACHED();
   }
+#endif
   return false;
 }
 

@@ -1477,6 +1477,9 @@ CSSValue* ComputedStyleUtils::ValueForAnimationPlayState(
 
 CSSValue* ComputedStyleUtils::CreateTimingFunctionValue(
     const TimingFunction* timing_function) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   switch (timing_function->GetType()) {
     case TimingFunction::Type::CUBIC_BEZIER: {
       const CubicBezierTimingFunction* bezier_timing_function =
@@ -1535,6 +1538,7 @@ CSSValue* ComputedStyleUtils::CreateTimingFunctionValue(
     default:
       return CSSIdentifierValue::Create(CSSValueLinear);
   }
+#endif
 }
 
 CSSValue* ComputedStyleUtils::ValueForAnimationTimingFunction(

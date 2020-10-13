@@ -365,7 +365,11 @@ bool ApproximatelyEqualSkColorSpaces(sk_sp<SkColorSpace> src_color_space,
   skcms_ICCProfile src_profile, dst_profile;
   src_color_space->toProfile(&src_profile);
   dst_color_space->toProfile(&dst_profile);
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return skcms_ApproximatelyEqualProfiles(&src_profile, &dst_profile);
+#endif
 }
 
 #if 0 // BKTODO:
