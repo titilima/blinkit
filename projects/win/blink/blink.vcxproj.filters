@@ -4979,6 +4979,15 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_units_line.cc">
       <Filter>renderer\core\editing</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\text\character_emoji.cc">
+      <Filter>renderer\platform\text</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\cssom_keywords.cc">
+      <Filter>renderer\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\cssom_types.cc">
+      <Filter>renderer\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -11139,6 +11148,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\generic_font_family_settings.h">
       <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\cssom_keywords.h">
+      <Filter>renderer\core\css\cssom</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

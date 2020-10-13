@@ -1,9 +1,21 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: character_emoji.cc
+// Description: Character Class
+//      Author: Ziming Li
+//     Created: 2020-10-13
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/platform/text/character.h"
 
+#if 0 // BKTODO:
 #include <unicode/uvernum.h>
 #include "third_party/blink/renderer/platform/text/icu_error.h"
 #include "third_party/blink/renderer/platform/wtf/threading_primitives.h"
@@ -20,6 +32,7 @@ Mutex& GetFreezePatternMutex() {
 
 #else
 #include <unicode/uchar.h>
+#endif
 #endif
 
 namespace blink {
@@ -204,6 +217,7 @@ static const char kEmojiModifierBasePattern[] =
     R"([\U0001F933-\U0001F939][\U0001F93D-\U0001F93E][\U0001F9B5-\U0001F9B6])"
     R"([\U0001F9B8-\U0001F9B9][\U0001F9D1-\U0001F9DD]])";
 
+#if 0 // BKTODO:
 static void applyPatternAndFreezeIfEmpty(icu::UnicodeSet* unicodeSet,
                                          const char* pattern) {
   MutexLocker mutexLocker(GetFreezePatternMutex());
@@ -215,6 +229,7 @@ static void applyPatternAndFreezeIfEmpty(icu::UnicodeSet* unicodeSet,
   unicodeSet->freeze();
   DCHECK_EQ(err, U_ZERO_ERROR);
 }
+#endif
 
 bool Character::IsEmoji(UChar32 ch) {
   return Character::IsEmojiTextDefault(ch) ||
@@ -222,22 +237,34 @@ bool Character::IsEmoji(UChar32 ch) {
 }
 
 bool Character::IsEmojiTextDefault(UChar32 ch) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   DEFINE_THREAD_SAFE_STATIC_LOCAL(icu::UnicodeSet, emojiTextSet, ());
   applyPatternAndFreezeIfEmpty(&emojiTextSet, kEmojiTextPattern);
   return emojiTextSet.contains(ch) && !IsEmojiEmojiDefault(ch);
+#endif
 }
 
 bool Character::IsEmojiEmojiDefault(UChar32 ch) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   DEFINE_THREAD_SAFE_STATIC_LOCAL(icu::UnicodeSet, emojiEmojiSet, ());
   applyPatternAndFreezeIfEmpty(&emojiEmojiSet, kEmojiEmojiPattern);
   return emojiEmojiSet.contains(ch);
+#endif
 }
 
 bool Character::IsEmojiModifierBase(UChar32 ch) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   DEFINE_THREAD_SAFE_STATIC_LOCAL(icu::UnicodeSet, emojieModifierBaseSet, ());
   applyPatternAndFreezeIfEmpty(&emojieModifierBaseSet,
                                kEmojiModifierBasePattern);
   return emojieModifierBaseSet.contains(ch);
+#endif
 }
 #else
 bool Character::IsEmoji(UChar32 ch) {

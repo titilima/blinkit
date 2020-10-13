@@ -62,6 +62,7 @@ run_script('build/scripts/make_names.py',   \
 
 run_script('build/scripts/core/css/make_css_value_keywords.py',  \
     os.path.normpath('core/css/css_value_keywords.json5') + ' ' +   \
+    os.path.normpath('core/css/svg_css_value_keywords.json5') + ' ' +   \
     '--output_dir ' + os.path.normpath('core') + GPERF_ARG  \
 )
 

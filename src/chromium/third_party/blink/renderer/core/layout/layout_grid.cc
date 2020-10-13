@@ -1195,6 +1195,8 @@ Vector<LayoutUnit> LayoutGrid::TrackSizesForComputedStyle(
     return tracks;
 
   DCHECK(!grid_->NeedsItemsPlacement());
+  ASSERT(false); // BKTODO:
+#if 0
   bool has_collapsed_tracks = grid_->HasAutoRepeatEmptyTracks(direction);
   LayoutUnit gap = !has_collapsed_tracks ? GridGap(direction) : LayoutUnit();
   tracks.ReserveCapacity(num_positions - 1);
@@ -1206,8 +1208,6 @@ Vector<LayoutUnit> LayoutGrid::TrackSizesForComputedStyle(
   if (!has_collapsed_tracks)
     return tracks;
 
-  ASSERT(false); // BKTODO:
-#if 0
   size_t remaining_empty_tracks =
       grid_->AutoRepeatEmptyTracks(direction)->size();
   size_t last_line = tracks.size();
@@ -1421,9 +1421,9 @@ void LayoutGrid::PopulateGridPositionsForDirection(
   size_t number_of_tracks = tracks.size();
   size_t number_of_lines = number_of_tracks + 1;
   size_t last_line = number_of_lines - 1;
-  bool has_collapsed_tracks = grid_->HasAutoRepeatEmptyTracks(direction);
   ASSERT(false); // BKTODO:
 #if 0
+  bool has_collapsed_tracks = grid_->HasAutoRepeatEmptyTracks(direction);
   size_t number_of_collapsed_tracks =
       has_collapsed_tracks ? grid_->AutoRepeatEmptyTracks(direction)->size()
                            : 0;
@@ -2140,6 +2140,8 @@ void LayoutGrid::GridAreaPositionForInFlowChild(
       direction == kForColumns ? column_positions_ : row_positions_;
   start = positions[span.StartLine()];
   end = positions[span.EndLine()];
+  ASSERT(false); // BKTODO:
+#if 0
   // The 'positions' vector includes distribution offset (because of content
   // alignment) and gutters so we need to subtract them to get the actual
   // end position for a given track (this does not have to be done for the
@@ -2149,6 +2151,7 @@ void LayoutGrid::GridAreaPositionForInFlowChild(
       !(grid.HasAutoRepeatEmptyTracks(direction) &&
         grid.IsEmptyAutoRepeatTrack(direction, span.EndLine())))
     end -= GridGap(direction) + GridItemOffset(direction);
+#endif
 }
 
 void LayoutGrid::GridAreaPositionForChild(const LayoutBox& child,
@@ -2401,10 +2404,10 @@ size_t LayoutGrid::NonCollapsedTracks(
     GridTrackSizingDirection direction) const {
   auto& tracks = track_sizing_algorithm_.Tracks(direction);
   size_t number_of_tracks = tracks.size();
-  bool has_collapsed_tracks = grid_->HasAutoRepeatEmptyTracks(direction);
   ASSERT(false); // BKTODO:
   return 0;
 #if 0
+  bool has_collapsed_tracks = grid_->HasAutoRepeatEmptyTracks(direction);
   size_t number_of_collapsed_tracks =
       has_collapsed_tracks ? grid_->AutoRepeatEmptyTracks(direction)->size()
                            : 0;

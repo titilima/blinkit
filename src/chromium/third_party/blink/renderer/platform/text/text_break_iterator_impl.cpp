@@ -25,6 +25,12 @@ NonSharedCharacterBreakIterator::~NonSharedCharacterBreakIterator(void)
     ASSERT(false); // BKTODO:
 }
 
+int NonSharedCharacterBreakIterator::Current(void)
+{
+    ASSERT(false); // BKTODO:
+    return 0;
+}
+
 int NonSharedCharacterBreakIterator::Following(int offset) const
 {
     ASSERT(false); // BKTODO:
@@ -37,10 +43,44 @@ bool NonSharedCharacterBreakIterator::IsBreak(int offset) const
     return false;
 }
 
+int NonSharedCharacterBreakIterator::Next(void)
+{
+    ASSERT(false); // BKTODO:
+    return 0;
+}
+
 int NonSharedCharacterBreakIterator::Preceding(int offset) const
 {
     ASSERT(false); // BKTODO:
     return 0;
+}
+
+TextBreakIterator* AcquireLineBreakIterator(
+    const UChar *string,
+    int length,
+    const AtomicString &locale,
+    const UChar *priorContext,
+    unsigned priorContextLength)
+{
+    ASSERT(false); // BKTODO:
+    return nullptr;
+}
+
+TextBreakIterator* AcquireLineBreakIterator(
+    const LChar *string,
+    int length,
+    const AtomicString &locale,
+    const UChar *priorContext,
+    unsigned priorContextLength)
+{
+    ASSERT(false); // BKTODO:
+    return nullptr;
+}
+
+bool IsWordTextBreak(TextBreakIterator *iterator)
+{
+    ASSERT(false); // BKTODO:
+    return false;
 }
 
 void ReleaseLineBreakIterator(TextBreakIterator *iterator)
