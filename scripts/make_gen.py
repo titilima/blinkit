@@ -65,6 +65,12 @@ run_script('build/scripts/core/css/make_css_value_keywords.py',  \
     '--output_dir ' + os.path.normpath('core') + GPERF_ARG  \
 )
 
+run_script('build/scripts/core/css/make_cssom_types.py',    \
+    os.path.normpath('core/css/css_properties.json5') + ' ' +   \
+    os.path.normpath('core/css/computed_style_field_aliases.json5') + ' ' + \
+    '--output_dir ' + os.path.normpath('core')  \
+)
+
 run_script('build/scripts/core/css/make_media_feature_names.py',   \
     os.path.normpath('core/css/media_feature_names.json5') + ' ' +   \
     '--output_dir ' + os.path.normpath('core/css')  \
