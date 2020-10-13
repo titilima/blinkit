@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ry_custom.cc
+// Description: Ry Class
+//      Author: Ziming Li
+//     Created: 2020-10-12
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -26,8 +37,12 @@ const CSSValue* Ry::CSSValueFromComputedStyleInternal(
     const LayoutObject*,
     Node*,
     bool allow_visited_style) const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return ComputedStyleUtils::ZoomAdjustedPixelValueForLength(svg_style.Ry(),
                                                              style);
+#endif
 }
 
 }  // namespace CSSLonghand

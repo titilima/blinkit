@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: flood_color_custom.cc
+// Description: FloodColor Class
+//      Author: Ziming Li
+//     Created: 2020-10-13
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -21,10 +32,14 @@ const CSSValue* FloodColor::ParseSingleValue(
 const blink::Color FloodColor::ColorIncludingFallback(
     bool visited_link,
     const ComputedStyle& style) const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   StyleColor result = style.FloodColor();
   if (!result.IsCurrentColor())
     return result.GetColor();
   return visited_link ? style.VisitedLinkColor() : style.GetColor();
+#endif
 }
 
 const CSSValue* FloodColor::CSSValueFromComputedStyleInternal(
@@ -33,8 +48,12 @@ const CSSValue* FloodColor::CSSValueFromComputedStyleInternal(
     const LayoutObject*,
     Node*,
     bool allow_visited_style) const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return ComputedStyleUtils::CurrentColorOrValidColor(style,
                                                       style.FloodColor());
+#endif
 }
 
 }  // namespace CSSLonghand

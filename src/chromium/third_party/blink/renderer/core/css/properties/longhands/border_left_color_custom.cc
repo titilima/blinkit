@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: border_left_color_custom.cc
+// Description: BorderLeftColor Class
+//      Author: Ziming Li
+//     Created: 2020-10-12
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -40,10 +51,14 @@ const CSSValue* BorderLeftColor::CSSValueFromComputedStyleInternal(
     const LayoutObject*,
     Node*,
     bool allow_visited_style) const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return allow_visited_style ? cssvalue::CSSColorValue::Create(
                                    style.VisitedDependentColor(*this).Rgb())
                              : ComputedStyleUtils::CurrentColorOrValidColor(
                                    style, style.BorderLeftColor());
+#endif
 }
 
 }  // namespace CSSLonghand

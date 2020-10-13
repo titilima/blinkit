@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: paint_order_custom.cc
+// Description: PaintOrder Class
+//      Author: Ziming Li
+//     Created: 2020-10-12
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -71,7 +82,11 @@ const CSSValue* PaintOrder::CSSValueFromComputedStyleInternal(
     const LayoutObject*,
     Node* styled_node,
     bool allow_visited_style) const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return ComputedStyleUtils::PaintOrderToCSSValueList(svg_style);
+#endif
 }
 
 }  // namespace CSSLonghand

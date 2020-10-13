@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_indent_custom.cc
+// Description: TextIndent Class
+//      Author: Ziming Li
+//     Created: 2020-10-13
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -35,10 +46,13 @@ const CSSValue* TextIndent::ParseSingleValue(
 
     if (RuntimeEnabledFeatures::CSS3TextEnabled()) {
       CSSValueID id = range.Peek().Id();
+      ASSERT(false); // BKTODO:
+#if 0
       if (!hanging && id == CSSValueHanging) {
         hanging = CSSPropertyParserHelpers::ConsumeIdent(range);
         continue;
       }
+#endif
       if (!each_line && id == CSSValueEachLine) {
         each_line = CSSPropertyParserHelpers::ConsumeIdent(range);
         continue;
@@ -71,8 +85,11 @@ const CSSValue* TextIndent::CSSValueFromComputedStyleInternal(
   list->Append(*ComputedStyleUtils::ZoomAdjustedPixelValueForLength(
       style.TextIndent(), style));
   if (RuntimeEnabledFeatures::CSS3TextEnabled()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (style.GetTextIndentType() == TextIndentType::kHanging)
       list->Append(*CSSIdentifierValue::Create(CSSValueHanging));
+#endif
     if (style.GetTextIndentLine() == TextIndentLine::kEachLine)
       list->Append(*CSSIdentifierValue::Create(CSSValueEachLine));
   }
@@ -102,6 +119,8 @@ void TextIndent::ApplyValue(StyleResolverState& state,
       ComputedStyleInitialValues::InitialTextIndentType();
 
   for (auto& list_value : ToCSSValueList(value)) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (list_value->IsPrimitiveValue()) {
       length_or_percentage_value =
           ToCSSPrimitiveValue(*list_value)
@@ -115,6 +134,7 @@ void TextIndent::ApplyValue(StyleResolverState& state,
     } else {
       NOTREACHED();
     }
+#endif
   }
 
   state.Style()->SetTextIndent(length_or_percentage_value);

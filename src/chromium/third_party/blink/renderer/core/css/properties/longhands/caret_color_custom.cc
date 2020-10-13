@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: caret_color_custom.cc
+// Description: CaretColor Class
+//      Author: Ziming Li
+//     Created: 2020-10-12
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -49,7 +60,11 @@ const CSSValue* CaretColor::CSSValueFromComputedStyleInternal(
     color = StyleColor::CurrentColor().Resolve(style.GetColor());
   else
     color = style.CaretColor().ToStyleColor().Resolve(style.GetColor());
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return cssvalue::CSSColorValue::Create(color.Rgb());
+#endif
 }
 
 void CaretColor::ApplyInitial(StyleResolverState& state) const {

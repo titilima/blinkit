@@ -1831,6 +1831,14 @@ GURL Document::ValidBaseElementURL(void) const
     return GURL();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+LocalFrameView* Document::View(void) const
+{
+    ASSERT(false); // BKTODO:
+    return nullptr;
+}
+#endif
+
 void Document::WillInsertBody(void)
 {
 #ifndef BLINKIT_CRAWLER_ONLY

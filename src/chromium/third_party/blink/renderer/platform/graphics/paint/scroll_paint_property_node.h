@@ -63,9 +63,10 @@ class PLATFORM_EXPORT ScrollPaintPropertyNode
     CompositorElementId compositor_element_id;
     OverscrollBehavior overscroll_behavior = blink::OverscrollBehavior(
         blink::OverscrollBehavior::kOverscrollBehaviorTypeAuto);
-    std::optional<SnapContainerData> snap_container_data;
+    // BKTODO: std::optional<SnapContainerData> snap_container_data;
 
     bool operator==(const State& o) const {
+      ASSERT(false); // BKTODO:
       return container_rect == o.container_rect &&
              contents_size == o.contents_size &&
              user_scrollable_horizontal == o.user_scrollable_horizontal &&
@@ -76,8 +77,12 @@ class PLATFORM_EXPORT ScrollPaintPropertyNode
                  o.max_scroll_offset_affected_by_page_scale &&
              main_thread_scrolling_reasons == o.main_thread_scrolling_reasons &&
              compositor_element_id == o.compositor_element_id &&
+#if 0 // BKTODO:
              overscroll_behavior == o.overscroll_behavior &&
              snap_container_data == o.snap_container_data;
+#else
+             overscroll_behavior == o.overscroll_behavior;
+#endif
     }
   };
 
@@ -116,9 +121,11 @@ class PLATFORM_EXPORT ScrollPaintPropertyNode
     return state_.overscroll_behavior.y;
   }
 
+#if 0 // BKTODO:
   std::optional<SnapContainerData> GetSnapContainerData() const {
     return state_.snap_container_data;
   }
+#endif
 
   // Rect of the container area that the contents scrolls in, in the space of
   // the parent of the associated transform node (ScrollTranslation).

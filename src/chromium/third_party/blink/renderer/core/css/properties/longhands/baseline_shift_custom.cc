@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: baseline_shift_custom.cc
+// Description: BaselineShift Class
+//      Author: Ziming Li
+//     Created: 2020-10-12
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -30,6 +41,8 @@ const CSSValue* BaselineShift::CSSValueFromComputedStyleInternal(
     const LayoutObject*,
     Node* styled_node,
     bool allow_visited_style) const {
+  ASSERT(false); // BKTODO:
+#if 0
   switch (svg_style.BaselineShift()) {
     case BS_SUPER:
       return CSSIdentifierValue::Create(CSSValueSuper);
@@ -39,21 +52,27 @@ const CSSValue* BaselineShift::CSSValueFromComputedStyleInternal(
       return ComputedStyleUtils::ZoomAdjustedPixelValueForLength(
           svg_style.BaselineShiftValue(), style);
   }
+#endif
   NOTREACHED();
   return nullptr;
 }
 
 void BaselineShift::ApplyInherit(StyleResolverState& state) const {
+  ASSERT(false); // BKTODO:
+#if 0
   const SVGComputedStyle& parent_svg_style = state.ParentStyle()->SvgStyle();
   EBaselineShift baseline_shift = parent_svg_style.BaselineShift();
   SVGComputedStyle& svg_style = state.Style()->AccessSVGStyle();
   svg_style.SetBaselineShift(baseline_shift);
   if (baseline_shift == BS_LENGTH)
     svg_style.SetBaselineShiftValue(parent_svg_style.BaselineShiftValue());
+#endif
 }
 
 void BaselineShift::ApplyValue(StyleResolverState& state,
                                const CSSValue& value) const {
+  ASSERT(false); // BKTODO:
+#if 0
   SVGComputedStyle& svg_style = state.Style()->AccessSVGStyle();
   if (!value.IsIdentifierValue()) {
     svg_style.SetBaselineShift(BS_LENGTH);
@@ -75,6 +94,7 @@ void BaselineShift::ApplyValue(StyleResolverState& state,
     default:
       NOTREACHED();
   }
+#endif
 }
 
 }  // namespace CSSLonghand

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_variant_custom.cc
+// Description: FontVariant Class
+//      Author: Ziming Li
+//     Created: 2020-10-13
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,9 +17,11 @@
 
 #include "third_party/blink/renderer/core/css/css_identifier_value.h"
 #include "third_party/blink/renderer/core/css/parser/css_property_parser_helpers.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/css/parser/font_variant_east_asian_parser.h"
 #include "third_party/blink/renderer/core/css/parser/font_variant_ligatures_parser.h"
 #include "third_party/blink/renderer/core/css/parser/font_variant_numeric_parser.h"
+#endif
 #include "third_party/blink/renderer/core/css/properties/computed_style_utils.h"
 #include "third_party/blink/renderer/core/style/computed_style.h"
 
@@ -43,6 +56,8 @@ bool FontVariant::ParseShorthand(
   }
 
   CSSIdentifierValue* caps_value = nullptr;
+  ASSERT(false); // BKTODO:
+#if 0
   FontVariantLigaturesParser ligatures_parser;
   FontVariantNumericParser numeric_parser;
   FontVariantEastAsianParser east_asian_parser;
@@ -104,6 +119,7 @@ bool FontVariant::ParseShorthand(
       caps_value ? *caps_value : *CSSIdentifierValue::Create(CSSValueNormal),
       important, CSSPropertyParserHelpers::IsImplicitProperty::kNotImplicit,
       properties);
+#endif
   return true;
 }
 

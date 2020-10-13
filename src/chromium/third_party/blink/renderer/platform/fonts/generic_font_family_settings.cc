@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: generic_font_family_settings.cc
+// Description: GenericFontFamilySettings Class
+//      Author: Ziming Li
+//     Created: 2020-10-12
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -48,6 +59,8 @@ GenericFontFamilySettings::GenericFontFamilySettings(
 void GenericFontFamilySettings::IsolatedCopyTo(
     GenericFontFamilySettings& dest) const {
   DCHECK(!IsIsolated());
+  ASSERT(false); // BKTODO:
+#if 0
   auto copy_to_vector = [](const ScriptFontFamilyMap& map,
                            IsolatedCopyVector& vector) {
     for (const auto& kv : map)
@@ -62,6 +75,7 @@ void GenericFontFamilySettings::IsolatedCopyTo(
   copy_to_vector(cursive_font_family_map_, dest.isolated_copy_[4]);
   copy_to_vector(fantasy_font_family_map_, dest.isolated_copy_[5]);
   copy_to_vector(pictograph_font_family_map_, dest.isolated_copy_[6]);
+#endif
 }
 
 void GenericFontFamilySettings::MakeAtomic() {

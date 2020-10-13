@@ -43,4 +43,10 @@ int NonSharedCharacterBreakIterator::Preceding(int offset) const
     return 0;
 }
 
+void ReleaseLineBreakIterator(TextBreakIterator *iterator)
+{
+    ASSERT(nullptr != iterator);
+    ASSERT(false); // BKTODO: LineBreakIteratorPool::SharedPool().Put(iterator);
+}
+
 } // namespace blink
