@@ -68,6 +68,7 @@ void PendingAnimations::Add(Animation* animation) {
 #endif
 }
 
+#if 0 // BKTODO:
 bool PendingAnimations::Update(
     const base::Optional<CompositorElementIdSet>& composited_element_ids,
     bool start_on_compositor) {
@@ -143,6 +144,7 @@ bool PendingAnimations::Update(
   DCHECK_EQ(pending_.size(), deferred.size());
   return false;
 }
+#endif
 
 void PendingAnimations::NotifyCompositorAnimationStarted(
     double monotonic_animation_start_time,

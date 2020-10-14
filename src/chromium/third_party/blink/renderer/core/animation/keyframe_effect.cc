@@ -227,6 +227,7 @@ void KeyframeEffect::NotifySampledEffectRemovedFromEffectStack() {
   sampled_effect_ = nullptr;
 }
 
+#if 0 // BKTODO:
 CompositorAnimations::FailureCode
 KeyframeEffect::CheckCanStartAnimationOnCompositor(
     const base::Optional<CompositorElementIdSet>& composited_element_ids,
@@ -258,6 +259,7 @@ KeyframeEffect::CheckCanStartAnimationOnCompositor(
       SpecifiedTiming(), *target_, GetAnimation(), *Model(),
       composited_element_ids, animation_playback_rate);
 }
+#endif
 
 void KeyframeEffect::StartAnimationOnCompositor(
     int group,
@@ -313,8 +315,11 @@ bool KeyframeEffect::CancelAnimationOnCompositor(
 
 void KeyframeEffect::CancelIncompatibleAnimationsOnCompositor() {
   if (target_ && GetAnimation() && model_->HasFrames()) {
+    ASSERT(false); // BKTODO:
+#if 0
     CompositorAnimations::CancelIncompatibleAnimationsOnCompositor(
         *target_, *GetAnimation(), *Model());
+#endif
   }
 }
 

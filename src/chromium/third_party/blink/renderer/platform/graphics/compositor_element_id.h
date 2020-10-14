@@ -97,9 +97,11 @@ struct CompositorElementIdHashTraits
   }
 };
 
+#if 0 // BKTODO:
 using CompositorElementIdSet = HashSet<CompositorElementId,
                                        CompositorElementIdHash,
                                        CompositorElementIdHashTraits>;
+#endif
 
 }  // namespace blink
 

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_segments.cc
+// Description: TextSegments Class
+//      Author: Ziming Li
+//     Created: 2020-10-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -29,7 +40,7 @@ TextSegments::Finder::Position TextSegments::Finder::Position::After(
 }
 
 unsigned TextSegments::Finder::Position::Offset() const {
-  DCHECK(type_ == kBefore || type_ == kAfter) << type_;
+  DCHECK(type_ == kBefore || type_ == kAfter);
   return offset_;
 }
 
@@ -39,6 +50,8 @@ PositionInFlatTree TextSegments::FindBoundaryForward(
     Finder* finder) {
   DCHECK(position.IsNotNull());
   PositionInFlatTree last_position = position;
+  ASSERT(false); // BKTODO:
+#if 0
   for (const auto& inline_contents :
        TextOffsetMapping::ForwardRangeOf(position)) {
     const TextOffsetMapping mapping(inline_contents);
@@ -53,6 +66,7 @@ PositionInFlatTree TextSegments::FindBoundaryForward(
     DCHECK(result.IsNone());
     last_position = mapping.GetRange().EndPosition();
   }
+#endif
   return last_position;
 }
 

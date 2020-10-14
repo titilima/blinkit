@@ -220,6 +220,7 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
     kDoNotClampImageToSourceRect
   };
 
+#if 0 // BKTODO:
   virtual void Draw(cc::PaintCanvas*,
                     const cc::PaintFlags&,
                     const FloatRect& dst_rect,
@@ -229,6 +230,7 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
                     ImageDecodingMode) = 0;
 
   virtual bool ApplyShader(cc::PaintFlags&, const SkMatrix& local_matrix);
+#endif
 
   // Use ContextProvider() for immediate use only, use
   // ContextProviderWrapper() to obtain a retainable reference. Note:

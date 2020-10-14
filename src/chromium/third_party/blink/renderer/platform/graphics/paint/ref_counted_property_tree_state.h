@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: ref_counted_property_tree_state.h
+// Description: RefCountedPropertyTreeState Class
+//      Author: Ziming Li
+//     Created: 2020-10-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -53,11 +64,13 @@ class PLATFORM_EXPORT RefCountedPropertyTreeState {
     return PropertyTreeState(transform_.get(), clip_.get(), effect_.get());
   }
 
+#if 0 // BKTODO:
   // Returns the compositor element id, if any, for this property state. If
   // neither the effect nor transform nodes have a compositor element id then a
   // default instance is returned.
   const CompositorElementId GetCompositorElementId(
       const CompositorElementIdSet& element_ids) const;
+#endif
 
   void ClearChangedToRoot() const {
     Transform()->ClearChangedToRoot();

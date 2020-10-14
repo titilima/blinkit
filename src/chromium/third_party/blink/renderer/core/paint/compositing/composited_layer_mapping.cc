@@ -392,6 +392,8 @@ void CompositedLayerMapping::UpdateStickyConstraints(
   if (RuntimeEnabledFeatures::BlinkGenPropertyTreesEnabled())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   cc::LayerStickyPositionConstraint constraint;
   if (!UsesCompositedStickyPosition(owning_layer_)) {
     // Clear the previous sticky position constraint - if set.
@@ -399,8 +401,6 @@ void CompositedLayerMapping::UpdateStickyConstraints(
     return;
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   const PaintLayer* ancestor_overflow_layer =
       owning_layer_.AncestorOverflowLayer();
   const StickyConstraintsMap& constraints_map =

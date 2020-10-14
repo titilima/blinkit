@@ -159,6 +159,7 @@ bool HasIncompatibleAnimations(const Element& target_element,
 
 }  // namespace
 
+#if 0 // BKTODO:
 CompositorAnimations::FailureCode
 CompositorAnimations::CheckCanStartEffectOnCompositor(
     const Timing& timing,
@@ -307,6 +308,7 @@ CompositorAnimations::CheckCanStartEffectOnCompositor(
 
   return FailureCode::None();
 }
+#endif
 
 CompositorAnimations::FailureCode
 CompositorAnimations::CheckCanStartElementOnCompositor(
@@ -356,6 +358,7 @@ CompositorAnimations::CheckCanStartElementOnCompositor(
   return FailureCode::None();
 }
 
+#if 0 // BKTODO:
 // TODO(crbug.com/809685): consider refactor this function.
 CompositorAnimations::FailureCode
 CompositorAnimations::CheckCanStartAnimationOnCompositor(
@@ -386,8 +389,6 @@ void CompositorAnimations::CancelIncompatibleAnimationsOnCompositor(
   const bool affects_backdrop_filter =
       effect_to_add.Affects(PropertyHandle(GetCSSPropertyBackdropFilter()));
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (!target_element.HasAnimations())
     return;
 
@@ -413,8 +414,8 @@ void CompositorAnimations::CancelIncompatibleAnimationsOnCompositor(
       attached_animation->CancelAnimationOnCompositor();
     }
   }
-#endif
 }
+#endif
 
 void CompositorAnimations::StartAnimationOnCompositor(
     const Element& element,
@@ -428,12 +429,15 @@ void CompositorAnimations::StartAnimationOnCompositor(
     Vector<int>& started_keyframe_model_ids,
     double animation_playback_rate) {
   DCHECK(started_keyframe_model_ids.IsEmpty());
+  ASSERT(false); // BKTODO:
+#if 0
   // TODO(petermayo): Find and pass the set of valid compositor elements before
   // BlinkGenPropertyTrees is always on.
   DCHECK(CheckCanStartAnimationOnCompositor(
              timing, element, animation, effect,
              base::Optional<CompositorElementIdSet>(), animation_playback_rate)
              .Ok());
+#endif
 
   const KeyframeEffectModelBase& keyframe_effect =
       ToKeyframeEffectModelBase(effect);

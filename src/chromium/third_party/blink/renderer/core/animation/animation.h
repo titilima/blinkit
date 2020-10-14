@@ -193,11 +193,13 @@ class CORE_EXPORT Animation final : public EventTargetWithInlineData,
   void SetOutdated();
   bool Outdated() { return outdated_; }
 
+#if 0 // BKTODO:
   CompositorAnimations::FailureCode CheckCanStartAnimationOnCompositor(
       const base::Optional<CompositorElementIdSet>& composited_element_ids)
       const;
   void StartAnimationOnCompositor(
       const base::Optional<CompositorElementIdSet>& composited_element_ids);
+#endif
   void CancelAnimationOnCompositor();
   void RestartAnimationOnCompositor();
   void CancelIncompatibleAnimationsOnCompositor();
@@ -213,11 +215,13 @@ class CORE_EXPORT Animation final : public EventTargetWithInlineData,
 
   bool Affects(const Element&, const CSSProperty&) const;
 
+#if 0 // BKTODO:
   // Returns whether we should continue with the commit for this animation or
   // wait until next commit.
   bool PreCommit(int compositor_group,
                  const base::Optional<CompositorElementIdSet>&,
                  bool start_on_compositor);
+#endif
   void PostCommit(double timeline_time);
 
   unsigned SequenceNumber() const override { return sequence_number_; }

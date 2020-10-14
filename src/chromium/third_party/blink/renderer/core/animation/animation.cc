@@ -310,6 +310,7 @@ double Animation::UnlimitedCurrentTimeInternal() const {
              : CalculateCurrentTime();
 }
 
+#if 0 // BKTODO:
 bool Animation::PreCommit(
     int compositor_group,
     const base::Optional<CompositorElementIdSet>& composited_element_ids,
@@ -366,6 +367,7 @@ bool Animation::PreCommit(
 
   return true;
 }
+#endif
 
 void Animation::PostCommit(double timeline_time) {
   PlayStateUpdateScope update_scope(*this, kTimingUpdateOnDemand,
@@ -809,6 +811,7 @@ void Animation::ForceServiceOnNextFrame() {
   timeline_->Wake();
 }
 
+#if 0 // BKTODO:
 CompositorAnimations::FailureCode Animation::CheckCanStartAnimationOnCompositor(
     const base::Optional<CompositorElementIdSet>& composited_element_ids)
     const {
@@ -821,6 +824,7 @@ CompositorAnimations::FailureCode Animation::CheckCanStartAnimationOnCompositor(
       ->CheckCanStartAnimationOnCompositor(composited_element_ids,
                                            playback_rate_);
 }
+#endif
 
 CompositorAnimations::FailureCode
 Animation::CheckCanStartAnimationOnCompositorInternal() const {
@@ -872,6 +876,7 @@ Animation::CheckCanStartAnimationOnCompositorInternal() const {
   return CompositorAnimations::FailureCode::None();
 }
 
+#if 0 // BKTODO:
 void Animation::StartAnimationOnCompositor(
     const base::Optional<CompositorElementIdSet>& composited_element_ids) {
   DCHECK(CheckCanStartAnimationOnCompositor(composited_element_ids).Ok());
@@ -898,6 +903,7 @@ void Animation::StartAnimationOnCompositor(
       ->StartAnimationOnCompositor(compositor_group_, start_time, time_offset,
                                    playback_rate_);
 }
+#endif
 
 void Animation::SetCompositorPending(bool effect_changed) {
   // FIXME: KeyframeEffect could notify this directly?

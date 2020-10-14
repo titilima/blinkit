@@ -72,7 +72,11 @@ int HighContrastImageClassifier::GetRandomInt(const int min, const int max) {
     return min + testing_random_generator_seed_ % (max - min);
   }
 
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return base::RandInt(min, max - 1);
+#endif
 }
 
 bool HighContrastImageClassifier::ShouldApplyHighContrastFilterToImage(

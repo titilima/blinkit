@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_offset_mapping.h
+// Description: TextOffsetMapping Class
+//      Author: Ziming Li
+//     Created: 2020-10-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -82,6 +93,7 @@ class CORE_EXPORT TextOffsetMapping final {
     STACK_ALLOCATED();
 
    public:
+#if 0 // BKTODO:
     class CORE_EXPORT Iterator
         : public std::iterator<std::input_iterator_tag, InlineContents> {
       STACK_ALLOCATED();
@@ -103,11 +115,14 @@ class CORE_EXPORT TextOffsetMapping final {
      private:
       InlineContents current_;
     };
+#endif
 
     explicit BackwardRange(const InlineContents& start) : start_(start) {}
 
+#if 0 // BKTODO:
     Iterator begin() const { return Iterator(start_); }
     Iterator end() const { return Iterator(); }
+#endif
 
    private:
     const InlineContents start_;
@@ -119,6 +134,7 @@ class CORE_EXPORT TextOffsetMapping final {
     STACK_ALLOCATED();
 
    public:
+#if 0 // BKTODO:
     class CORE_EXPORT Iterator
         : public std::iterator<std::forward_iterator_tag, InlineContents> {
       STACK_ALLOCATED();
@@ -140,11 +156,14 @@ class CORE_EXPORT TextOffsetMapping final {
      private:
       InlineContents current_;
     };
+#endif
 
     explicit ForwardRange(const InlineContents& start) : start_(start) {}
 
+#if 0 // BKTODO:
     Iterator begin() const { return Iterator(start_); }
     Iterator end() const { return Iterator(); }
+#endif
 
    private:
     const InlineContents start_;

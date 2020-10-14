@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: property_tree_state.cc
+// Description: PropertyTreeState Class
+//      Author: Ziming Li
+//     Created: 2020-10-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -22,6 +33,7 @@ PropertyTreeState PropertyTreeState::Unalias() const {
                            effect_ ? effect_->Unalias() : nullptr);
 }
 
+#if 0 // BKTODO:
 const CompositorElementId PropertyTreeState::GetCompositorElementId(
     const CompositorElementIdSet& element_ids) const {
   // The effect or transform nodes could have a compositor element id. The order
@@ -44,6 +56,7 @@ const CompositorElementId PropertyTreeState::GetCompositorElementId(
     return Transform()->GetCompositorElementId();
   return CompositorElementId();
 }
+#endif
 
 String PropertyTreeState::ToString() const {
   return String::Format("t:%p c:%p e:%p", Transform(), Clip(), Effect());

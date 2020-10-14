@@ -257,7 +257,7 @@ void PaintController::ProcessNewItem(DisplayItem& display_item) {
         display_item.GetId(), new_display_item_indices_by_client_,
         new_display_item_list_);
     if (index != kNotFound) {
-      ShowDebugData();
+      ASSERT(false); // BKTODO: ShowDebugData();
       NOTREACHED(); // DisplayItem has duplicated id with previous
     }
     AddToIndicesByClientMap(display_item.Client(),
@@ -426,7 +426,7 @@ size_t PaintController::FindOutOfOrderCachedItemForward(
   // should fall back to repaint the display item.
   if (RuntimeEnabledFeatures::PaintUnderInvalidationCheckingEnabled()) {
 #if DCHECK_IS_ON()
-    ShowDebugData();
+    ASSERT(false); // BKTODO: ShowDebugData();
 #endif
     // Ensure our paint invalidation tests don't trigger the less performant
     // situation which should be rare.
@@ -803,9 +803,9 @@ void PaintController::CheckDuplicatePaintChunkId(const PaintChunk::Id& id) {
     for (auto index : indices) {
       const auto& chunk = new_paint_chunks_.PaintChunkAt(index);
       if (chunk.id == id) {
-        ShowDebugData();
         ASSERT(false); // BKTODO:
 #if 0
+        ShowDebugData();
         NOTREACHED() << "New paint chunk id " << id.ToString().Utf8().data()
                      << " has duplicated id with previous chuck "
                      << chunk.ToString().Utf8().data();

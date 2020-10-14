@@ -1110,10 +1110,13 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\state_machines\state_machine_util.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\state_machines\text_segmentation_machine_state.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\text_affinity.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\text_offset_mapping.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\text_segments.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_position.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_selection.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_units.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_units_line.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_units_word.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\animation_event.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\animation_playback_event.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\events\input_event.cc" />
@@ -2892,6 +2895,8 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\state_machines\text_segmentation_machine_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\text_affinity.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\text_granularity.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\text_offset_mapping.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\text_segments.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_position.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_selection.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_units.h" />

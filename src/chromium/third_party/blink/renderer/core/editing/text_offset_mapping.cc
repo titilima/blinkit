@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: text_offset_mapping.cc
+// Description: TextOffsetMapping Class
+//      Author: Ziming Li
+//     Created: 2020-10-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -54,7 +65,7 @@ bool CanBeInlineContentsContainer(const LayoutObject& layout_object) {
 // Returns outer most nested inline formatting context.
 const LayoutBlockFlow& RootInlineContentsContainerOf(
     const LayoutBlockFlow& block_flow) {
-  DCHECK(block_flow.ChildrenInline()) << block_flow;
+  DCHECK(block_flow.ChildrenInline());
   const LayoutBlockFlow* root_block_flow = &block_flow;
   for (const LayoutBlock* runner = block_flow.ContainingBlock(); runner;
        runner = runner->ContainingBlock()) {
@@ -62,8 +73,7 @@ const LayoutBlockFlow& RootInlineContentsContainerOf(
       break;
     root_block_flow = ToLayoutBlockFlow(runner);
   }
-  DCHECK(!root_block_flow->IsAtomicInlineLevel())
-      << block_flow << ' ' << root_block_flow;
+  DCHECK(!root_block_flow->IsAtomicInlineLevel());
   return *root_block_flow;
 }
 
@@ -93,7 +103,7 @@ const LayoutBlockFlow* ComputeInlineContentsAsBlockFlow(
   const LayoutBlock* const block = layout_object.IsLayoutBlock()
                                        ? &ToLayoutBlock(layout_object)
                                        : layout_object.ContainingBlock();
-  DCHECK(block) << layout_object;
+  DCHECK(block);
   if (!block->IsLayoutBlockFlow())
     return nullptr;
   const LayoutBlockFlow& block_flow = ToLayoutBlockFlow(*block);
@@ -103,9 +113,7 @@ const LayoutBlockFlow* ComputeInlineContentsAsBlockFlow(
       block_flow.IsFloatingOrOutOfFlowPositioned()) {
     const LayoutBlockFlow& root_block_flow =
         RootInlineContentsContainerOf(block_flow);
-    DCHECK(CanBeInlineContentsContainer(root_block_flow))
-        << layout_object << " block_flow=" << block_flow
-        << " root_block_flow=" << root_block_flow;
+    DCHECK(CanBeInlineContentsContainer(root_block_flow));
     return &root_block_flow;
   }
   if (!CanBeInlineContentsContainer(block_flow))
@@ -124,7 +132,7 @@ TextOffsetMapping::InlineContents CreateInlineContentsFromBlockFlow(
     }
   }
   if (!first) {
-    DCHECK(block_flow.NonPseudoNode()) << block_flow;
+    DCHECK(block_flow.NonPseudoNode());
     return TextOffsetMapping::InlineContents(block_flow);
   }
   const LayoutObject* last = nullptr;
@@ -263,7 +271,7 @@ TextOffsetMapping::InlineContents::InlineContents(
     const LayoutBlockFlow& block_flow)
     : block_flow_(&block_flow) {
   DCHECK(block_flow_->NonPseudoNode());
-  DCHECK(CanBeInlineContentsContainer(*block_flow_)) << block_flow_;
+  DCHECK(CanBeInlineContentsContainer(*block_flow_));
 }
 
 // |first| and |last| should not be anonymous object.
@@ -274,9 +282,9 @@ TextOffsetMapping::InlineContents::InlineContents(
     const LayoutObject& first,
     const LayoutObject& last)
     : block_flow_(&block_flow), first_(&first), last_(&last) {
-  DCHECK(first_->NonPseudoNode()) << first_;
-  DCHECK(last_->NonPseudoNode()) << last_;
-  DCHECK(CanBeInlineContentsContainer(*block_flow_)) << block_flow_;
+  DCHECK(first_->NonPseudoNode());
+  DCHECK(last_->NonPseudoNode());
+  DCHECK(CanBeInlineContentsContainer(*block_flow_));
   DCHECK(first_->IsDescendantOf(block_flow_));
   DCHECK(last_->IsDescendantOf(block_flow_));
 }
@@ -333,7 +341,7 @@ TextOffsetMapping::InlineContents TextOffsetMapping::InlineContents::NextOf(
     const LayoutBlockFlow& block_flow = ToLayoutBlockFlow(*runner);
     if (block_flow.IsFloatingOrOutOfFlowPositioned())
       continue;
-    DCHECK(!block_flow.IsAtomicInlineLevel()) << block_flow;
+    DCHECK(!block_flow.IsAtomicInlineLevel());
     return CreateInlineContentsFromBlockFlow(block_flow);
   }
   return InlineContents();
@@ -348,9 +356,8 @@ TextOffsetMapping::InlineContents TextOffsetMapping::InlineContents::PreviousOf(
         ComputeInlineContentsAsBlockFlow(*runner);
     if (!block_flow || block_flow->IsFloatingOrOutOfFlowPositioned())
       continue;
-    DCHECK(!block_flow->IsDescendantOf(inline_contents.block_flow_))
-        << block_flow;
-    DCHECK(!block_flow->IsAtomicInlineLevel()) << block_flow;
+    DCHECK(!block_flow->IsDescendantOf(inline_contents.block_flow_));
+    DCHECK(!block_flow->IsAtomicInlineLevel());
     return CreateInlineContentsFromBlockFlow(*block_flow);
   }
   return InlineContents();
@@ -363,6 +370,7 @@ std::ostream& operator<<(
                  << inline_contents.LastLayoutObject() << ']';
 }
 
+#if 0 // BKTODO:
 // ----
 
 TextOffsetMapping::InlineContents TextOffsetMapping::BackwardRange::Iterator::
@@ -388,5 +396,6 @@ void TextOffsetMapping::ForwardRange::Iterator::operator++() {
   DCHECK(current_.IsNotNull());
   current_ = TextOffsetMapping::InlineContents::NextOf(current_);
 }
+#endif
 
 }  // namespace blink

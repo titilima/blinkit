@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: pending_animations.h
+// Description: PendingAnimations Class
+//      Author: Ziming Li
+//     Created: 2020-10-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -60,13 +71,18 @@ class CORE_EXPORT PendingAnimations final
     : public GarbageCollectedFinalized<PendingAnimations> {
  public:
   explicit PendingAnimations(Document& document)
+#if 0 // BKTODO:
       : timer_(document.GetTaskRunner(TaskType::kInternalDefault),
                this,
                &PendingAnimations::TimerFired),
+#else
+      :
+#endif
         compositor_group_(1) {}
 
   void Add(Animation*);
 
+#if 0 // BKTODO:
   // Attempts to start/update pending composited and non-composited animations.
   // At the end of this process all pending animations will fall into one of the
   // following buckets:
@@ -88,20 +104,23 @@ class CORE_EXPORT PendingAnimations final
   // again on the next frame.
   bool Update(const base::Optional<CompositorElementIdSet>&,
               bool start_on_compositor = true);
+#endif
   void NotifyCompositorAnimationStarted(double monotonic_animation_start_time,
                                         int compositor_group = 0);
 
   void Trace(blink::Visitor*);
 
  private:
+#if 0 // BKTODO:
   void TimerFired(TimerBase*) {
     Update(base::Optional<CompositorElementIdSet>(), false);
   }
+#endif
   int NextCompositorGroup();
 
   HeapVector<Member<Animation>> pending_;
   HeapVector<Member<Animation>> waiting_for_compositor_animation_start_;
-  TaskRunnerTimer<PendingAnimations> timer_;
+  // BKTODO: TaskRunnerTimer<PendingAnimations> timer_;
   int compositor_group_;
 };
 

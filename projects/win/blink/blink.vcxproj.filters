@@ -4988,6 +4988,15 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\cssom_types.cc">
       <Filter>renderer\core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\visible_units_word.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\text_segments.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\text_offset_mapping.cc">
+      <Filter>renderer\core\editing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -11151,6 +11160,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\cssom_keywords.h">
       <Filter>renderer\core\css\cssom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\text_segments.h">
+      <Filter>renderer\core\editing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\text_offset_mapping.h">
+      <Filter>renderer\core\editing</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

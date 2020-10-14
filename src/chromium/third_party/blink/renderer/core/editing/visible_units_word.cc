@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: visible_units_word.cc
+// Description: Visible Units Implementations
+//      Author: Ziming Li
+//     Created: 2020-10-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights
  * reserved.
@@ -97,12 +108,15 @@ PositionInFlatTree NextWordPositionInternal(
           WordBreakIterator(text.Characters16(), text.length());
       for (int runner = it->following(offset); runner != kTextBreakDone;
            runner = it->following(runner)) {
+        ASSERT(false); // BKTODO:
+#if 0
         // We stop searching when the character preceding the break is
         // alphanumeric or underscore.
         if (static_cast<unsigned>(runner) < text.length() &&
             (WTF::Unicode::IsAlphanumeric(text[runner - 1]) ||
              text[runner - 1] == kLowLineCharacter))
           return Position::After(runner - 1);
+#endif
       }
       return Position::After(text.length() - 1);
     }
@@ -147,7 +161,7 @@ template <typename Strategy>
 PositionTemplate<Strategy> StartOfWordAlgorithm(
     const VisiblePositionTemplate<Strategy>& c,
     EWordSide side) {
-  DCHECK(c.IsValid()) << c;
+  DCHECK(c.IsValid());
   // TODO(yosin) This returns a null VP for c at the start of the document
   // and |side| == |kPreviousWordIfOnBoundary|
   VisiblePositionTemplate<Strategy> p = c;
@@ -215,12 +229,12 @@ PositionWithAffinity NextWordPosition(const Position& start) {
 // TODO(yosin): This function will be removed by replacing call sites to use
 // |Position| version. since there are only two call sites, one is in test.
 VisiblePosition NextWordPosition(const VisiblePosition& c) {
-  DCHECK(c.IsValid()) << c;
+  DCHECK(c.IsValid());
   return CreateVisiblePosition(NextWordPosition(c.DeepEquivalent()));
 }
 
 VisiblePosition PreviousWordPosition(const VisiblePosition& c) {
-  DCHECK(c.IsValid()) << c;
+  DCHECK(c.IsValid());
   VisiblePosition prev =
       CreateVisiblePosition(PreviousBoundary(c, PreviousWordPositionBoundary));
   return AdjustBackwardPositionToAvoidCrossingEditingBoundaries(

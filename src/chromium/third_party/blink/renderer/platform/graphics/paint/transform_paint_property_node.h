@@ -68,7 +68,7 @@ class PLATFORM_EXPORT TransformPaintPropertyNode
     BackfaceVisibility backface_visibility = BackfaceVisibility::kInherited;
     unsigned rendering_context_id = 0;
     CompositingReasons direct_compositing_reasons = CompositingReason::kNone;
-    CompositorElementId compositor_element_id;
+    // BKTODO: CompositorElementId compositor_element_id;
     std::unique_ptr<CompositorStickyConstraint> sticky_constraint;
 
     bool operator==(const State& o) const {
@@ -77,7 +77,7 @@ class PLATFORM_EXPORT TransformPaintPropertyNode
              backface_visibility == o.backface_visibility &&
              rendering_context_id == o.rendering_context_id &&
              direct_compositing_reasons == o.direct_compositing_reasons &&
-             compositor_element_id == o.compositor_element_id &&
+            // BKTODO: compositor_element_id == o.compositor_element_id &&
              scroll == o.scroll &&
              affected_by_outer_viewport_bounds_delta ==
                  o.affected_by_outer_viewport_bounds_delta &&
@@ -191,9 +191,11 @@ class PLATFORM_EXPORT TransformPaintPropertyNode
     return state_.direct_compositing_reasons & CompositingReason::kRootScroller;
   }
 
+#if 0 // BKTODO:
   const CompositorElementId& GetCompositorElementId() const {
     return state_.compositor_element_id;
   }
+#endif
 
   // Content whose transform nodes have a common rendering context ID are 3D
   // sorted. If this is 0, content will not be 3D sorted.
@@ -235,7 +237,7 @@ class PLATFORM_EXPORT TransformPaintPropertyNode
       // translation for scroll offset.
       DCHECK(state_.is_identity_or_2d_translation);
       // The scroll compositor element id should be stored on the scroll node.
-      DCHECK(!state_.compositor_element_id);
+      ASSERT(false); // BKTODO: DCHECK(!state_.compositor_element_id);
     }
 #endif
   }

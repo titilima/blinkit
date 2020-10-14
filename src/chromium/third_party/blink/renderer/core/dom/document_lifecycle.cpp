@@ -45,6 +45,23 @@
 
 namespace blink {
 
+#ifndef BLINKIT_CRAWLER_ONLY
+// TODO(skyostil): Come up with a better way to store cross-frame lifecycle
+// related data to avoid this being a global setting.
+static unsigned g_allowThrottlingCount = 0;
+
+DocumentLifecycle::AllowThrottlingScope::AllowThrottlingScope(DocumentLifecycle &lifecycle)
+{
+    ++g_allowThrottlingCount;
+}
+
+DocumentLifecycle::AllowThrottlingScope::~AllowThrottlingScope(void)
+{
+    ASSERT(g_allowThrottlingCount > 0);
+    --g_allowThrottlingCount;
+}
+#endif
+
 #ifndef NDEBUG
 bool DocumentLifecycle::CanAdvanceTo(LifecycleState nextState) const
 {

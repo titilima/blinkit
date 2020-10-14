@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: compositor_animations.h
+// Description: CompositorAnimations Class
+//      Author: Ziming Li
+//     Created: 2020-10-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -81,6 +92,7 @@ class CORE_EXPORT CompositorAnimations {
           reason(reason) {}
   };
 
+#if 0 // BKTODO:
   static FailureCode CheckCanStartAnimationOnCompositor(
       const Timing&,
       const Element&,
@@ -91,6 +103,7 @@ class CORE_EXPORT CompositorAnimations {
   static void CancelIncompatibleAnimationsOnCompositor(const Element&,
                                                        const Animation&,
                                                        const EffectModel&);
+#endif
   static void StartAnimationOnCompositor(
       const Element&,
       int group,
@@ -137,6 +150,7 @@ class CORE_EXPORT CompositorAnimations {
       double animation_playback_rate);
 
  private:
+#if 0 // BKTODO:
   static FailureCode CheckCanStartEffectOnCompositor(
       const Timing&,
       const Element&,
@@ -144,6 +158,7 @@ class CORE_EXPORT CompositorAnimations {
       const EffectModel&,
       const base::Optional<CompositorElementIdSet>& composited_element_ids,
       double animation_playback_rate);
+#endif
   static FailureCode CheckCanStartElementOnCompositor(const Element&);
 
   friend class AnimationCompositorAnimationsTest;

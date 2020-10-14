@@ -502,9 +502,12 @@ void FragmentPaintPropertyTreeBuilder::UpdateStickyTranslation() {
       TransformPaintPropertyNode::State state{AffineTransform::Translation(
           sticky_offset.Width(), sticky_offset.Height())};
       state.is_identity_or_2d_translation = true;
+      ASSERT(false); // BKTODO:
+#if 0
       state.compositor_element_id = CompositorElementIdFromUniqueObjectId(
           box_model.UniqueId(),
           CompositorElementIdNamespace::kStickyTranslation);
+#endif
 
       auto* layer = box_model.Layer();
       const auto* scroller_properties = layer->AncestorOverflowLayer()
@@ -718,8 +721,11 @@ void FragmentPaintPropertyTreeBuilder::UpdateTransform() {
             object_.HasHiddenBackface()
                 ? TransformPaintPropertyNode::BackfaceVisibility::kHidden
                 : TransformPaintPropertyNode::BackfaceVisibility::kVisible;
+        ASSERT(false); // BKTODO:
+#if 0
         state.compositor_element_id = CompositorElementIdFromUniqueObjectId(
             object_.UniqueId(), CompositorElementIdNamespace::kPrimary);
+#endif
       }
 
       OnUpdate(properties_->UpdateTransform(*context_.current.transform,
@@ -929,8 +935,11 @@ void FragmentPaintPropertyTreeBuilder::UpdateEffect() {
           state.direct_compositing_reasons =
               CompositingReason::kActiveOpacityAnimation;
         }
+        ASSERT(false); // BKTODO:
+#if 0
         state.compositor_element_id = CompositorElementIdFromUniqueObjectId(
             object_.UniqueId(), CompositorElementIdNamespace::kPrimary);
+#endif
       }
       OnUpdate(properties_->UpdateEffect(*context_.current_effect,
                                          std::move(state)));
@@ -943,10 +952,13 @@ void FragmentPaintPropertyTreeBuilder::UpdateEffect() {
         mask_state.blend_mode = SkBlendMode::kDstIn;
         if (RuntimeEnabledFeatures::SlimmingPaintV2Enabled() ||
             RuntimeEnabledFeatures::BlinkGenPropertyTreesEnabled()) {
+          ASSERT(false); // BKTODO:
+#if 0
           mask_state.compositor_element_id =
               CompositorElementIdFromUniqueObjectId(
                   object_.UniqueId(),
                   CompositorElementIdNamespace::kEffectMask);
+#endif
         }
         OnUpdate(properties_->UpdateMask(*properties_->Effect(),
                                          std::move(mask_state)));
@@ -964,10 +976,13 @@ void FragmentPaintPropertyTreeBuilder::UpdateEffect() {
         clip_path_state.blend_mode = SkBlendMode::kDstIn;
         if (RuntimeEnabledFeatures::SlimmingPaintV2Enabled() ||
             RuntimeEnabledFeatures::BlinkGenPropertyTreesEnabled()) {
+          ASSERT(false); // BKTODO:
+#if 0
           clip_path_state.compositor_element_id =
               CompositorElementIdFromUniqueObjectId(
                   object_.UniqueId(),
                   CompositorElementIdNamespace::kEffectClipPath);
+#endif
         }
         OnUpdate(
             properties_->UpdateClipPath(parent, std::move(clip_path_state)));
@@ -1109,8 +1124,11 @@ void FragmentPaintPropertyTreeBuilder::UpdateFilter() {
         DCHECK(!style.HasCurrentFilterAnimation() ||
                state.direct_compositing_reasons != CompositingReason::kNone);
 
+        ASSERT(false); // BKTODO:
+#if 0
         state.compositor_element_id = CompositorElementIdFromUniqueObjectId(
             object_.UniqueId(), CompositorElementIdNamespace::kEffectFilter);
+#endif
       }
 
       OnUpdate(properties_->UpdateFilter(*context_.current_effect,
