@@ -58,9 +58,11 @@ class PLATFORM_EXPORT ScrollPaintPropertyNode
     bool max_scroll_offset_affected_by_page_scale = false;
     MainThreadScrollingReasons main_thread_scrolling_reasons =
         MainThreadScrollingReason::kNotScrollingOnMain;
+#if 0 // BKODO:
     // The scrolling element id is stored directly on the scroll node and not
     // on the associated TransformPaintPropertyNode used for scroll offset.
     CompositorElementId compositor_element_id;
+#endif
     OverscrollBehavior overscroll_behavior = blink::OverscrollBehavior(
         blink::OverscrollBehavior::kOverscrollBehaviorTypeAuto);
     // BKTODO: std::optional<SnapContainerData> snap_container_data;
@@ -76,8 +78,8 @@ class PLATFORM_EXPORT ScrollPaintPropertyNode
              max_scroll_offset_affected_by_page_scale ==
                  o.max_scroll_offset_affected_by_page_scale &&
              main_thread_scrolling_reasons == o.main_thread_scrolling_reasons &&
-             compositor_element_id == o.compositor_element_id &&
 #if 0 // BKTODO:
+             compositor_element_id == o.compositor_element_id &&
              overscroll_behavior == o.overscroll_behavior &&
              snap_container_data == o.snap_container_data;
 #else
@@ -165,9 +167,11 @@ class PLATFORM_EXPORT ScrollPaintPropertyNode
            MainThreadScrollingReason::kHasBackgroundAttachmentFixedObjects;
   }
 
+#if 0 // BKTODO:
   const CompositorElementId& GetCompositorElementId() const {
     return state_.compositor_element_id;
   }
+#endif
 
   std::unique_ptr<JSONObject> ToJSON() const;
 
@@ -179,9 +183,12 @@ class PLATFORM_EXPORT ScrollPaintPropertyNode
 
   void Validate() const {
 #if DCHECK_IS_ON()
+    ASSERT(false); // BKTODO:
+#if 0
     DCHECK(!state_.compositor_element_id ||
            NamespaceFromCompositorElementId(state_.compositor_element_id) ==
                CompositorElementIdNamespace::kScroll);
+#endif
 #endif
   }
 

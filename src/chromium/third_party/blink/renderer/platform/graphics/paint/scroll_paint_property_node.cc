@@ -59,10 +59,13 @@ std::unique_ptr<JSONObject> ScrollPaintPropertyNode::ToJSON() const {
             : "vertical");
   }
   if (state_.main_thread_scrolling_reasons) {
+  ASSERT(false); // BKTODO:
+#if 0
     json->SetString(
         "mainThreadReasons",
         MainThreadScrollingReason::AsText(state_.main_thread_scrolling_reasons)
             .c_str());
+#endif
   }
   if (state_.scrolls_inner_viewport)
     json->SetString("scrollsInnerViewport", "true");
@@ -70,10 +73,13 @@ std::unique_ptr<JSONObject> ScrollPaintPropertyNode::ToJSON() const {
     json->SetString("scrollsOuterViewport", "true");
   if (state_.max_scroll_offset_affected_by_page_scale)
     json->SetString("maxScrollOffsetAffectedByPageScale", "true");
+  ASSERT(false); // BKTODO:
+#if 0
   if (state_.compositor_element_id) {
     json->SetString("compositorElementId",
                     state_.compositor_element_id.ToString().c_str());
   }
+#endif
   if (state_.overscroll_behavior.x !=
       OverscrollBehavior::kOverscrollBehaviorTypeAuto) {
     json->SetString("overscroll-behavior-x", OverscrollBehaviorTypeToString(

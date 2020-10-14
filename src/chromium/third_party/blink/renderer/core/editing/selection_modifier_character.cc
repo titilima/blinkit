@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: selection_modifier_character.cc
+// Description: SelectionModifier Implementations
+//      Author: Ziming Li
+//     Created: 2020-10-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights
  * reserved.
@@ -345,7 +356,7 @@ bool FindForwardBoxInPossiblyBidiContext(const InlineBox*& box,
 template <typename Strategy, typename Traversal>
 static PositionTemplate<Strategy> TraverseInternalAlgorithm(
     const VisiblePositionTemplate<Strategy>& visible_position) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   if (visible_position.IsNull())
     return PositionTemplate<Strategy>();
 
@@ -480,7 +491,7 @@ static PositionTemplate<Strategy> TraverseInternalAlgorithm(
 template <typename Strategy, typename Traversal>
 VisiblePositionTemplate<Strategy> TraverseAlgorithm(
     const VisiblePositionTemplate<Strategy>& visible_position) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   const PositionTemplate<Strategy> pos =
       TraverseInternalAlgorithm<Strategy, Traversal>(visible_position);
   // TODO(yosin) Why can't we move left from the last position in a tree?

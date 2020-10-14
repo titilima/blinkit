@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: visible_units_paragraph.cc
+// Description: Visible Units Implementations
+//      Author: Ziming Li
+//     Created: 2020-10-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights
  * reserved.
@@ -147,7 +158,7 @@ template <typename Strategy>
 VisiblePositionTemplate<Strategy> StartOfParagraphAlgorithm(
     const VisiblePositionTemplate<Strategy>& visible_position,
     EditingBoundaryCrossingRule boundary_crossing_rule) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   return CreateVisiblePosition(StartOfParagraphAlgorithm(
       visible_position.DeepEquivalent(), boundary_crossing_rule));
 }
@@ -246,7 +257,7 @@ template <typename Strategy>
 VisiblePositionTemplate<Strategy> EndOfParagraphAlgorithm(
     const VisiblePositionTemplate<Strategy>& visible_position,
     EditingBoundaryCrossingRule boundary_crossing_rule) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   return CreateVisiblePosition(EndOfParagraphAlgorithm(
       visible_position.DeepEquivalent(), boundary_crossing_rule));
 }
@@ -255,7 +266,7 @@ template <typename Strategy>
 bool IsStartOfParagraphAlgorithm(
     const VisiblePositionTemplate<Strategy>& pos,
     EditingBoundaryCrossingRule boundary_crossing_rule) {
-  DCHECK(pos.IsValid()) << pos;
+  DCHECK(pos.IsValid());
   return pos.IsNotNull() &&
          pos.DeepEquivalent() ==
              StartOfParagraph(pos, boundary_crossing_rule).DeepEquivalent();
@@ -265,7 +276,7 @@ template <typename Strategy>
 bool IsEndOfParagraphAlgorithm(
     const VisiblePositionTemplate<Strategy>& pos,
     EditingBoundaryCrossingRule boundary_crossing_rule) {
-  DCHECK(pos.IsValid()) << pos;
+  DCHECK(pos.IsValid());
   return pos.IsNotNull() &&
          pos.DeepEquivalent() ==
              EndOfParagraph(pos, boundary_crossing_rule).DeepEquivalent();
@@ -302,7 +313,7 @@ VisiblePositionInFlatTree EndOfParagraph(
 // TODO(editing-dev): isStartOfParagraph(startOfNextParagraph(pos)) is not
 // always true
 VisiblePosition StartOfNextParagraph(const VisiblePosition& visible_position) {
-  DCHECK(visible_position.IsValid()) << visible_position;
+  DCHECK(visible_position.IsValid());
   VisiblePosition paragraph_end(
       EndOfParagraph(visible_position, kCanSkipOverEditingBoundary));
   VisiblePosition after_paragraph_end(
@@ -319,8 +330,8 @@ VisiblePosition StartOfNextParagraph(const VisiblePosition& visible_position) {
 bool InSameParagraph(const VisiblePosition& a,
                      const VisiblePosition& b,
                      EditingBoundaryCrossingRule boundary_crossing_rule) {
-  DCHECK(a.IsValid()) << a;
-  DCHECK(b.IsValid()) << b;
+  DCHECK(a.IsValid());
+  DCHECK(b.IsValid());
   return a.IsNotNull() &&
          StartOfParagraph(a, boundary_crossing_rule).DeepEquivalent() ==
              StartOfParagraph(b, boundary_crossing_rule).DeepEquivalent();
@@ -350,14 +361,14 @@ bool IsEndOfParagraph(const VisiblePositionInFlatTree& pos) {
 
 EphemeralRange ExpandToParagraphBoundary(const EphemeralRange& range) {
   const VisiblePosition& start = CreateVisiblePosition(range.StartPosition());
-  DCHECK(start.IsNotNull()) << range.StartPosition();
+  DCHECK(start.IsNotNull());
   const Position& paragraph_start = StartOfParagraph(start).DeepEquivalent();
-  DCHECK(paragraph_start.IsNotNull()) << range.StartPosition();
+  DCHECK(paragraph_start.IsNotNull());
 
   const VisiblePosition& end = CreateVisiblePosition(range.EndPosition());
-  DCHECK(end.IsNotNull()) << range.EndPosition();
+  DCHECK(end.IsNotNull());
   const Position& paragraph_end = EndOfParagraph(end).DeepEquivalent();
-  DCHECK(paragraph_end.IsNotNull()) << range.EndPosition();
+  DCHECK(paragraph_end.IsNotNull());
 
   // TODO(editing-dev): There are some cases (crbug.com/640112) where we get
   // |paragraphStart > paragraphEnd|, which is the reason we cannot directly

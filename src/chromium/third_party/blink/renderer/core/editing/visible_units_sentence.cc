@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: visible_units_sentence.cc
+// Description: Visible Units Implementations
+//      Author: Ziming Li
+//     Created: 2020-10-14
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Apple Inc. All rights
  * reserved.
@@ -144,7 +155,7 @@ PositionInFlatTree NextSentencePositionInternal(
 template <typename Strategy>
 VisiblePositionTemplate<Strategy> StartOfSentenceAlgorithm(
     const VisiblePositionTemplate<Strategy>& c) {
-  DCHECK(c.IsValid()) << c;
+  DCHECK(c.IsValid());
   return CreateVisiblePosition(PreviousBoundary(c, StartSentenceBoundary));
 }
 
@@ -234,7 +245,7 @@ VisiblePositionInFlatTree NextSentencePosition(
 // ----
 
 VisiblePosition PreviousSentencePosition(const VisiblePosition& c) {
-  DCHECK(c.IsValid()) << c;
+  DCHECK(c.IsValid());
   VisiblePosition prev = CreateVisiblePosition(
       PreviousBoundary(c, PreviousSentencePositionBoundary));
   return AdjustBackwardPositionToAvoidCrossingEditingBoundaries(

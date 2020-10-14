@@ -303,7 +303,9 @@ class PLATFORM_EXPORT GraphicsLayer : // BKTODO: public cc::LayerClient,
 
   void SetOverscrollBehavior(const cc::OverscrollBehavior&);
 
+#if 0 // BKTODO:
   void SetSnapContainerData(base::Optional<cc::SnapContainerData>);
+#endif
 
   void SetIsResizedByBrowserControls(bool);
   void SetIsContainerForFixedPositionLayers(bool);

@@ -163,10 +163,12 @@ void GraphicsLayer::SetOverscrollBehavior(
   ASSERT(false); // BKTODO: CcLayer()->SetOverscrollBehavior(behavior);
 }
 
+#if 0 // BKTODO:
 void GraphicsLayer::SetSnapContainerData(
     base::Optional<SnapContainerData> data) {
-  ASSERT(false); // BKTODO: CcLayer()->SetSnapContainerData(std::move(data));
+  CcLayer()->SetSnapContainerData(std::move(data));
 }
+#endif
 
 void GraphicsLayer::SetIsResizedByBrowserControls(
     bool is_resized_by_browser_controls) {
