@@ -48,6 +48,18 @@
     <Filter Include="src\utils\win">
       <UniqueIdentifier>{2e03175b-da0c-4850-8a63-95e4d79c8e1d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\jumper">
+      <UniqueIdentifier>{cea50634-3b64-4886-9bcc-ae00aa9fdad8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party">
+      <UniqueIdentifier>{cafcf6ea-694e-4fab-a4af-27813303365b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\skcms">
+      <UniqueIdentifier>{bbc08136-41cc-4ab7-bd2c-6d26ef5a2711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shaders">
+      <UniqueIdentifier>{9e9fb556-04ac-44c2-a23e-ac6f2f989c52}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -897,6 +909,45 @@
       <Filter>src\utils\win</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\third_party\skia\src\utils\SkUTF.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\jumper\SkJumper.cpp">
+      <Filter>src\jumper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\third_party\skcms\skcms.cc">
+      <Filter>third_party\skcms</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\SkBitmapProcShader.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\SkColorFilterShader.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\SkColorShader.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\SkComposeShader.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\SkImageShader.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\SkLightingShader.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\SkLocalMatrixShader.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\SkPerlinNoiseShader.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\SkPictureShader.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\SkShader.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkShadowUtils.cpp">
       <Filter>src\utils</Filter>
     </ClCompile>
   </ItemGroup>

@@ -89,6 +89,12 @@ void ReleaseLineBreakIterator(TextBreakIterator *iterator)
     ASSERT(false); // BKTODO: LineBreakIteratorPool::SharedPool().Put(iterator);
 }
 
+TextBreakIterator* SentenceBreakIterator(const UChar *string, int length)
+{
+    ASSERT(false); // BKTODO:
+    return nullptr;
+}
+
 TextBreakIterator* WordBreakIterator(const String &string, int start, int length)
 {
     if (string.IsEmpty())
