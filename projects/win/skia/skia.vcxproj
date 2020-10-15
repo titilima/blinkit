@@ -93,10 +93,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SrcRoot)skia;$(RepoRoot)third_party\skia\include\codec;$(RepoRoot)third_party\skia\include\pathops;$(RepoRoot)third_party\skia\include\private;$(RepoRoot)third_party\skia\src\codec;$(RepoRoot)third_party\skia\src\core;$(RepoRoot)third_party\skia\src\image;$(RepoRoot)third_party\skia\src\lazy;$(RepoRoot)third_party\skia\src\opts;$(RepoRoot)third_party\skia\src\sfnt;$(RepoRoot)third_party\skia\src\shaders;$(RepoRoot)third_party\skia\src\utils;$(RepoRoot)third_party\skia\src\utils\win;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SrcRoot)skia;$(RepoRoot)third_party\skia\include\codec;$(RepoRoot)third_party\skia\include\encode;$(RepoRoot)third_party\skia\include\pathops;$(RepoRoot)third_party\skia\include\private;$(RepoRoot)third_party\skia\src\codec;$(RepoRoot)third_party\skia\src\core;$(RepoRoot)third_party\skia\src\image;$(RepoRoot)third_party\skia\src\lazy;$(RepoRoot)third_party\skia\src\opts;$(RepoRoot)third_party\skia\src\sfnt;$(RepoRoot)third_party\skia\src\shaders;$(RepoRoot)third_party\skia\src\utils;$(RepoRoot)third_party\skia\src\utils\win;$(RepoRoot)third_party\skia\third_party\gif;$(SrcRoot)chromium;$(RepoRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -109,10 +108,9 @@
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SrcRoot)skia;$(RepoRoot)third_party\skia\include\codec;$(RepoRoot)third_party\skia\include\pathops;$(RepoRoot)third_party\skia\include\private;$(RepoRoot)third_party\skia\src\codec;$(RepoRoot)third_party\skia\src\core;$(RepoRoot)third_party\skia\src\image;$(RepoRoot)third_party\skia\src\lazy;$(RepoRoot)third_party\skia\src\opts;$(RepoRoot)third_party\skia\src\sfnt;$(RepoRoot)third_party\skia\src\shaders;$(RepoRoot)third_party\skia\src\utils;$(RepoRoot)third_party\skia\src\utils\win;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SrcRoot)skia;$(RepoRoot)third_party\skia\include\codec;$(RepoRoot)third_party\skia\include\encode;$(RepoRoot)third_party\skia\include\pathops;$(RepoRoot)third_party\skia\include\private;$(RepoRoot)third_party\skia\src\codec;$(RepoRoot)third_party\skia\src\core;$(RepoRoot)third_party\skia\src\image;$(RepoRoot)third_party\skia\src\lazy;$(RepoRoot)third_party\skia\src\opts;$(RepoRoot)third_party\skia\src\sfnt;$(RepoRoot)third_party\skia\src\shaders;$(RepoRoot)third_party\skia\src\utils;$(RepoRoot)third_party\skia\src\utils\win;$(RepoRoot)third_party\skia\third_party\gif;$(SrcRoot)chromium;$(RepoRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -153,6 +151,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\chromium\skia\ext\fontmgr_default_win.cc" />
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkBmpBaseCodec.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkBmpCodec.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkBmpMaskCodec.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkBmpRLECodec.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkBmpStandardCodec.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkCodec.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkCodecImageGenerator.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkColorTable.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkGifCodec.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkMasks.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkMaskSwizzler.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkSampler.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkStreamBuffer.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkSwizzler.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkWbmpCodec.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\core\SkAAClip.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\core\SkAlphaRuns.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\core\SkAnalyticEdge.cpp" />
@@ -213,6 +227,7 @@
     <ClCompile Include="..\..\..\third_party\skia\src\core\SkDraw_text.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\core\SkDraw_vertices.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\core\SkEdge.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\core\SkEdgeBuilder.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\core\SkEdgeClipper.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\core\SkExecutor.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\core\SkFDot6Constants.cpp" />
@@ -348,6 +363,24 @@
     <ClCompile Include="..\..\..\third_party\skia\src\core\SkXfermode.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\core\SkXfermodeInterpretation.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\core\SkYUVPlanesCache.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkAlphaThresholdFilter.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkArithmeticImageFilter.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkBlurImageFilter.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkColorFilterImageFilter.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkComposeImageFilter.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkDisplacementMapEffect.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkDropShadowImageFilter.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkImageSource.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkLightingImageFilter.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkMagnifierImageFilter.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkMatrixConvolutionImageFilter.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkMergeImageFilter.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkMorphologyImageFilter.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkOffsetImageFilter.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkPaintImageFilter.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkPictureImageFilter.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkTileImageFilter.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkXfermodeImageFilter.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\effects\Sk1DPathEffect.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\effects\Sk2DPathEffect.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\effects\SkColorMatrix.cpp" />
@@ -369,6 +402,7 @@
     <ClCompile Include="..\..\..\third_party\skia\src\effects\SkToSRGBColorFilter.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\effects\SkTrimPathEffect.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\fonts\SkFontMgr_indirect.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\images\SkImageEncoder.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\image\SkImage.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\image\SkImage_Lazy.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\image\SkImage_Raster.cpp" />
@@ -381,7 +415,9 @@
     <ClCompile Include="..\..\..\third_party\skia\src\opts\SkBitmapProcState_opts_SSSE3.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\opts\SkBlitRow_opts_SSE2.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\opts\SkOpts_avx.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\opts\SkOpts_hsw.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\opts\SkOpts_sse41.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\opts\SkOpts_sse42.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\opts\SkOpts_ssse3.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\pathops\SkAddIntersections.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\pathops\SkDConicLineIntersection.cpp" />
@@ -419,6 +455,8 @@
     <ClCompile Include="..\..\..\third_party\skia\src\ports\SkDebug_win.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\ports\SkDiscardableMemory_none.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\ports\SkFontHost_win.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\ports\SkGlobalInitialization_default.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\ports\SkGlobalInitialization_default_imagefilters.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\ports\SkImageGenerator_skia.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\ports\SkMemory_malloc.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\ports\SkOSFile_stdio.cpp" />
@@ -427,6 +465,13 @@
     <ClCompile Include="..\..\..\third_party\skia\src\ports\SkTLS_win.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\sfnt\SkOTTable_name.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\sfnt\SkOTUtils.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\gradients\Sk4fGradientBase.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\gradients\Sk4fLinearGradient.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\gradients\SkGradientShader.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\gradients\SkLinearGradient.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\gradients\SkRadialGradient.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\gradients\SkSweepGradient.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\gradients\SkTwoPointConicalGradient.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\shaders\SkBitmapProcShader.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\shaders\SkColorFilterShader.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\shaders\SkColorShader.cpp" />
@@ -444,9 +489,12 @@
     <ClCompile Include="..\..\..\third_party\skia\src\utils\SkNullCanvas.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\utils\SkNWayCanvas.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\utils\SkPatchUtils.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkPolyUtils.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkShadowTessellator.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\utils\SkShadowUtils.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\utils\SkUTF.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\src\utils\win\SkHRESULT.cpp" />
+    <ClCompile Include="..\..\..\third_party\skia\third_party\gif\SkGifImageReader.cpp" />
     <ClCompile Include="..\..\..\third_party\skia\third_party\skcms\skcms.cc" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

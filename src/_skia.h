@@ -15,8 +15,5 @@
 #pragma once
 
 #define SK_SUPPORT_GPU                          0
-// #define SK_SUPPORT_LEGACY_REFENCODEDDATA_NOCTX
-
-// #define SK_REF_CNT_MIXIN_INCLUDE                "skia/config/ref_cnt.h"
 
 #endif // BLINKIT__SKIA_H

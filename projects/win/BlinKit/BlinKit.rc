@@ -25,8 +25,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,4,25
- PRODUCTVERSION 1,0,4,25
+ FILEVERSION 1,2,0,18
+ PRODUCTVERSION 1,2,0,18
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -43,12 +43,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "MingYang Software Technology"
             VALUE "FileDescription", "BlinKit - Crawler & WebUI Framework Based on Blink"
-            VALUE "FileVersion", "1.0.4.25"
+            VALUE "FileVersion", "1.2.0.18"
             VALUE "InternalName", "BlinKit.dll"
-            VALUE "LegalCopyright", "Copyright (C) 2001-2019"
+            VALUE "LegalCopyright", "Copyright (C) 2001-2020"
             VALUE "OriginalFilename", "BlinKit.dll"
             VALUE "ProductName", "BlinKit"
-            VALUE "ProductVersion", "1.0.4.25"
+            VALUE "ProductVersion", "1.2.0.18"
         END
     END
     BLOCK "VarFileInfo"
@@ -56,17 +56,6 @@ BEGIN
         VALUE "Translation", 0x409, 1200
     END
 END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// RES
-//
-
-HTML.CSS                RES                     "..\\..\\..\\src\\chromium\\third_party\\WebKit\\Source\\core\\css\\html.css"
-THEMEWIN.CSS            RES                     "..\\..\\..\\src\\chromium\\third_party\\WebKit\\Source\\core\\css\\themeWin.css"
-QUIRKS.CSS              RES                     "..\\..\\..\\src\\chromium\\third_party\\WebKit\\Source\\core\\css\\quirks.css"
-THEMEWINQUIRKS.CSS      RES                     "..\\..\\..\\src\\chromium\\third_party\\WebKit\\Source\\core\\css\\themeWinQuirks.css"
 
 
 #ifdef APSTUDIO_INVOKED
@@ -108,4 +97,3 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
-

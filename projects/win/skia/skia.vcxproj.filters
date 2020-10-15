@@ -60,6 +60,21 @@
     <Filter Include="src\shaders">
       <UniqueIdentifier>{9e9fb556-04ac-44c2-a23e-ac6f2f989c52}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\codec">
+      <UniqueIdentifier>{412d3942-e23d-4207-88af-a04516eb865d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext">
+      <UniqueIdentifier>{3d83ae26-c407-4479-ab24-c010489d9730}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shaders\gradients">
+      <UniqueIdentifier>{51d6519b-c3ce-4904-88ba-41e86b34d414}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\gif">
+      <UniqueIdentifier>{fa2151fb-5f92-4ee7-8fcf-76613ecfb14d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\effects\imagefilters">
+      <UniqueIdentifier>{90f40d79-d1e4-4a66-869d-ab06bb0f88b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -949,6 +964,156 @@
     </ClCompile>
     <ClCompile Include="..\..\..\third_party\skia\src\utils\SkShadowUtils.cpp">
       <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\core\SkEdgeBuilder.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\opts\SkOpts_sse42.cpp">
+      <Filter>src\opts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkShadowTessellator.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\utils\SkPolyUtils.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkCodecImageGenerator.cpp">
+      <Filter>src\codec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\skia\ext\fontmgr_default_win.cc">
+      <Filter>ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\opts\SkOpts_hsw.cpp">
+      <Filter>src\opts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\ports\SkGlobalInitialization_default.cpp">
+      <Filter>src\ports</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkCodec.cpp">
+      <Filter>src\codec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\gradients\Sk4fGradientBase.cpp">
+      <Filter>src\shaders\gradients</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\gradients\Sk4fLinearGradient.cpp">
+      <Filter>src\shaders\gradients</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\gradients\SkGradientShader.cpp">
+      <Filter>src\shaders\gradients</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\gradients\SkLinearGradient.cpp">
+      <Filter>src\shaders\gradients</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\gradients\SkRadialGradient.cpp">
+      <Filter>src\shaders\gradients</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\gradients\SkSweepGradient.cpp">
+      <Filter>src\shaders\gradients</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\shaders\gradients\SkTwoPointConicalGradient.cpp">
+      <Filter>src\shaders\gradients</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\third_party\gif\SkGifImageReader.cpp">
+      <Filter>third_party\gif</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkBmpCodec.cpp">
+      <Filter>src\codec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkGifCodec.cpp">
+      <Filter>src\codec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkWbmpCodec.cpp">
+      <Filter>src\codec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkMasks.cpp">
+      <Filter>src\codec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkBmpMaskCodec.cpp">
+      <Filter>src\codec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkBmpRLECodec.cpp">
+      <Filter>src\codec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkBmpStandardCodec.cpp">
+      <Filter>src\codec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkSampler.cpp">
+      <Filter>src\codec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\ports\SkGlobalInitialization_default_imagefilters.cpp">
+      <Filter>src\ports</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkColorTable.cpp">
+      <Filter>src\codec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkStreamBuffer.cpp">
+      <Filter>src\codec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkSwizzler.cpp">
+      <Filter>src\codec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkAlphaThresholdFilter.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkArithmeticImageFilter.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkBlurImageFilter.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkColorFilterImageFilter.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkComposeImageFilter.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkDisplacementMapEffect.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkDropShadowImageFilter.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkImageSource.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkLightingImageFilter.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkMagnifierImageFilter.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkMatrixConvolutionImageFilter.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkMergeImageFilter.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkMorphologyImageFilter.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkOffsetImageFilter.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkPaintImageFilter.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkPictureImageFilter.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkTileImageFilter.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\effects\imagefilters\SkXfermodeImageFilter.cpp">
+      <Filter>src\effects\imagefilters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkMaskSwizzler.cpp">
+      <Filter>src\codec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\codec\SkBmpBaseCodec.cpp">
+      <Filter>src\codec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\third_party\skia\src\images\SkImageEncoder.cpp">
+      <Filter>src\images</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

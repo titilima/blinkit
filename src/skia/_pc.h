@@ -14,13 +14,11 @@
 
 #pragma once
 
-#include "chromium/build/build_config.h"
+#include "build/build_config.h"
 
 #if OS_WIN
 #   pragma warning(disable: 4244 4267 4291 4819)
-// #   pragma warning(disable: 4244 4267 4291 4334 4819)
 #   define _CRT_SECURE_NO_WARNINGS
-// #   define SK_GDI_ALWAYS_USE_TEXTMETRICS_FOR_FONT_METRICS
 #endif
 
 #if (OS_MACOSX || OS_IOS)
@@ -32,7 +30,5 @@
 #endif
 
 #include "_skia.h"
-
-// #define SK_CPU_SSE_LEVEL    SK_CPU_SSE_LEVEL_SSE41
 
 #endif // BLINKIT_SKIA__PC_H
