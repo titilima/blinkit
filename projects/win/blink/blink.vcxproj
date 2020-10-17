@@ -3224,6 +3224,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\chrome_client.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\event_with_hit_test_results.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_visibility_state.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\viewport_description.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\applied_decoration_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\background_image_geometry.h" />

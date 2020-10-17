@@ -15,12 +15,40 @@
 #pragma once
 
 #include "third_party/blink/renderer/core/frame/use_counter.h"
+#include "third_party/blink/renderer/core/page/page_visibility_state.h"
 
 namespace blink {
+
+class LocalFrame;
+class LocalFrameClient;
 
 class Page
 {
 public:
+    ~Page(void);
+
+    // It is up to the platform to ensure that non-null clients are provided where
+    // required.
+    struct PageClients final {
+        STACK_ALLOCATED();
+    public:
+        PageClients(void) = default;
+
+        ChromeClient *chromeClient = nullptr;
+        LocalFrameClient *frameClient = nullptr;
+        DISALLOW_COPY_AND_ASSIGN(PageClients);
+    };
+
+    static std::unique_ptr<Page> Create(PageClients &pageClients);
+
+    PageVisibilityState VisibilityState(void) const { return m_visibilityState; }
+    void SetVisibilityState(PageVisibilityState visibilityState, bool isInitialState);
+private:
+    explicit Page(PageClients &pageClients);
+
+    ChromeClient *m_chromeClient;
+    std::unique_ptr<LocalFrame> m_frame;
+    PageVisibilityState m_visibilityState = PageVisibilityState::kVisible;
 };
 
 } // namespace blink

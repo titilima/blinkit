@@ -15,15 +15,30 @@
 #pragma once
 
 #include "bk_ui.h"
+#include "blinkit/blink_impl/local_frame_client_impl.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
+#include "third_party/blink/renderer/core/page/page_visibility_state.h"
 
-class WebViewImpl
+class WebViewImpl : public BlinKit::LocalFrameClientImpl
 {
 public:
     virtual ~WebViewImpl(void);
+
+    // Returns the page object associated with this view. This may be null when
+    // the page is shutting down, but will be valid at all other times.
+    blink::Page* GetPage(void) const { return m_page.get(); }
+
 protected:
-    WebViewImpl(void);
+    WebViewImpl(blink::PageVisibilityState visibilityState);
 private:
+    void SetVisibilityState(blink::PageVisibilityState visibilityState, bool isInitialState);
+
+    // LocalFrameClient
+    bool IsCrawler(void) const final { return false; }
+    void TransitionToCommittedForNewPage(void) final;
+    void DispatchDidFailProvisionalLoad(const blink::ResourceError &error) final;
+    void DispatchDidFinishLoad(void) final;
+
     std::unique_ptr<blink::ChromeClient> m_chromeClient;
     std::unique_ptr<blink::Page> m_page;
 };

@@ -27,12 +27,15 @@ public:
     static bool ProcessWindowMessage(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private:
-    WinWebView(HWND hWnd);
+    WinWebView(HWND hWnd, bool isWindowVisible);
     ~WinWebView(void);
 
     bool ProcessWindowMessageImpl(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam, LRESULT *result);
     static BOOL OnNCCreate(HWND hwnd, LPCREATESTRUCT cs);
     void OnPaint(HWND hwnd);
+
+    // LocalFrameClient
+    void DispatchDidReceiveTitle(const String &title) override;
 
     static std::unordered_map<HWND, WinWebView *> s_viewMap;
     HWND m_hWnd;

@@ -20,7 +20,9 @@ namespace BlinKit {
 
 std::unordered_map<HWND, WinWebView *> WinWebView::s_viewMap;
 
-WinWebView::WinWebView(HWND hWnd) : m_hWnd(hWnd)
+WinWebView::WinWebView(HWND hWnd, bool isWindowVisible)
+    : WebViewImpl(isWindowVisible ? PageVisibilityState::kVisible : PageVisibilityState::kHidden)
+    , m_hWnd(hWnd)
 {
     ASSERT(IsMainThread());
     ASSERT(Lookup(m_hWnd) == nullptr);
@@ -34,6 +36,11 @@ WinWebView::~WinWebView(void)
     s_viewMap.erase(m_hWnd);
 }
 
+void WinWebView::DispatchDidReceiveTitle(const String &title)
+{
+    ASSERT(false); // BKTODO:
+}
+
 WinWebView* WinWebView::Lookup(HWND hWnd)
 {
     auto it = s_viewMap.find(hWnd);
@@ -43,9 +50,14 @@ WinWebView* WinWebView::Lookup(HWND hWnd)
 BOOL WinWebView::OnNCCreate(HWND hwnd, LPCREATESTRUCT cs)
 {
     if (nullptr == Lookup(hwnd))
-        new WinWebView(hwnd);
+    {
+        bool isWindowVisible = 0 != (cs->style & WS_VISIBLE);
+        new WinWebView(hwnd, isWindowVisible);
+    }
     else
+    {
         NOTREACHED();
+    }
     return TRUE;
 }
 
