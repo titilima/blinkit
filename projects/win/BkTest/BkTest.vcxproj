@@ -152,11 +152,11 @@
     <ProjectReference Include="..\BkBase\BkBase.vcxproj">
       <Project>{02c00b49-2a96-416c-b072-2dd01734b2f7}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\BkCrawler\BkCrawler.vcxproj">
-      <Project>{7527750d-c5ab-478b-87b0-b1043284f042}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\BkHelper\BkHelper.vcxproj">
       <Project>{86137426-7833-4bd6-b665-e062d0859a76}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\BlinKit\BlinKit.vcxproj">
+      <Project>{f5e9d3e3-7585-47f4-bab0-8c5e908757f8}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

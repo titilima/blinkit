@@ -22,6 +22,7 @@
 #include "bk_crawler.h"
 #include "bk_http.h"
 #include "bk_js.h"
+#include "bk_ui.h"
 
 namespace bk {
 

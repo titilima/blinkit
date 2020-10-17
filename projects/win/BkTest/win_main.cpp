@@ -75,8 +75,65 @@ private:
     BkCrawler m_crawler = nullptr;
 };
 
+static LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
+    LRESULT r = 0;
+    switch (Msg)
+    {
+        case WM_CREATE:
+        {
+            BkWebView v = BkGetWebView(hWnd);
+            assert(false); // BKTODO:
+            break;
+        }
+        default:
+            r = BkDefWindowProc(hWnd, Msg, wParam, lParam);
+    }
+    return r;
+}
+
+static const TCHAR ClassName[] = TEXT("BkTestWindow");
+
+static bool InitApplication(HINSTANCE hInstance)
+{
+    WNDCLASS wc = { 0 };
+    wc.style = CS_HREDRAW | CS_VREDRAW;
+    wc.lpfnWndProc = WndProc;
+    wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+    wc.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
+    wc.lpszClassName = ClassName;
+    return 0 != RegisterClass(&wc);
+}
+
+static int Run(HINSTANCE hInstance, int nShowCmd)
+{
+    if (!InitApplication(hInstance))
+        return EXIT_FAILURE;
+
+    HWND hWnd = CreateWindow(ClassName, TEXT("BlinKit Test Program"), WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+        nullptr, nullptr, nullptr, nullptr);
+    if (nullptr == hWnd)
+        return EXIT_FAILURE;
+
+    ShowWindow(hWnd, nShowCmd);
+    UpdateWindow(hWnd);
+
+    MSG msg;
+    while (GetMessage(&msg, nullptr, 0, 0))
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+    return EXIT_SUCCESS;
+}
+
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE, PTSTR, int nShowCmd)
 {
-    Client client;
-    return client.Run(URL);
+    int r;
+
+    BkInitialize(BK_APP_MAINTHREAD_MODE, nullptr);
+    r = Run(hInstance, nShowCmd);
+    BkFinalize();
+    return r;
 }
