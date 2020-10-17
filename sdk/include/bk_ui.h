@@ -24,6 +24,16 @@ extern "C" {
 
 BK_DECLARE_HANDLE(BkWebView, WebViewImpl);
 
+struct BkWebViewClient {
+    size_t SizeOfStruct; // sizeof(BkWebViewClient)
+    void *UserData;
+    void (BKAPI * DocumentReady)(void *);
+};
+
+BKEXPORT void BKAPI BkWebViewSetClient(BkWebView view, struct BkWebViewClient *client);
+
+BKEXPORT int BKAPI BkLoadUI(BkWebView view, const char *URI);
+
 #ifdef _WIN32
 
 BKEXPORT BkWebView BKAPI BkGetWebView(HWND hWnd);

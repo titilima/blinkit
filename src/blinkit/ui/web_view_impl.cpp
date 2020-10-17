@@ -18,6 +18,8 @@ using namespace blink;
 
 WebViewImpl::WebViewImpl(PageVisibilityState visibilityState) : m_chromeClient(ChromeClientImpl::Create(this))
 {
+    memset(&m_client, 0, sizeof(m_client));
+
     Page::PageClients pageClients;
     pageClients.chromeClient = m_chromeClient.get();
     pageClients.frameClient = this;
@@ -55,6 +57,22 @@ void WebViewImpl::DispatchDidFinishLoad(void)
     ASSERT(false); // BKTODO:
 }
 
+int WebViewImpl::LoadUI(const char *URI)
+{
+    ASSERT(false); // BKTODO:
+    return BK_ERR_FORBIDDEN;
+}
+
+void WebViewImpl::SetClient(const BkWebViewClient &client)
+{
+    memset(&m_client, 0, sizeof(m_client));
+
+    m_client.UserData = client.UserData;
+    m_client.DocumentReady = client.DocumentReady;
+
+    // Use `offsetof` macro for different client versions.
+}
+
 void WebViewImpl::SetVisibilityState(PageVisibilityState visibilityState, bool isInitialState)
 {
     ASSERT(m_page);
@@ -72,3 +90,19 @@ void WebViewImpl::TransitionToCommittedForNewPage(void)
 {
     ASSERT(false); // BKTODO:
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+extern "C" {
+
+BKEXPORT int BKAPI BkLoadUI(BkWebView view, const char *URI)
+{
+    return view->LoadUI(URI);
+}
+
+BKEXPORT void BKAPI BkWebViewSetClient(BkWebView view, BkWebViewClient *client)
+{
+    view->SetClient(*client);
+}
+
+} // extern "C"

@@ -8,6 +8,8 @@ BkRunApp
 BkExitApp
 BkAppExecute
 
+BkWebViewSetClient
+BkLoadUI
 BkGetWebView
 BkDefWindowProc
 BkProcessWindowMessage

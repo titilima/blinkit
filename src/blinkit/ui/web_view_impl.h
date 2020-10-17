@@ -24,6 +24,12 @@ class WebViewImpl : public BlinKit::LocalFrameClientImpl
 public:
     virtual ~WebViewImpl(void);
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Exports
+    int LoadUI(const char *URI);
+    void SetClient(const BkWebViewClient &client);
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     // Returns the page object associated with this view. This may be null when
     // the page is shutting down, but will be valid at all other times.
     blink::Page* GetPage(void) const { return m_page.get(); }
@@ -39,6 +45,7 @@ private:
     void DispatchDidFailProvisionalLoad(const blink::ResourceError &error) final;
     void DispatchDidFinishLoad(void) final;
 
+    BkWebViewClient m_client;
     std::unique_ptr<blink::ChromeClient> m_chromeClient;
     std::unique_ptr<blink::Page> m_page;
 };
