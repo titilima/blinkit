@@ -8,6 +8,10 @@ BkRunApp
 BkExitApp
 BkAppExecute
 
+BkGetWebView
+BkDefWindowProc
+BkProcessWindowMessage
+
 BkCreateCrawler
 BkDestroyCrawler
 BkCrawlerEnableCookies

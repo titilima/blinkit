@@ -60,6 +60,8 @@
 // To avoid conflicts with the CreateWindow macro from the Windows SDK...
 #undef CreateWindow
 
+class WebViewImpl;
+
 namespace cc {
 class Layer;
 struct OverscrollBehavior;
@@ -94,7 +96,6 @@ class PagePopupClient;
 class PopupOpeningObserver;
 class WebDragData;
 class WebLayerTreeView;
-class WebViewImpl;
 
 struct DateTimeChooserParameters;
 struct FrameLoadRequest;

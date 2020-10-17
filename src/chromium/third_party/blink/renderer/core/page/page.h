@@ -18,6 +18,11 @@
 
 namespace blink {
 
+class Page
+{
+public:
+};
+
 } // namespace blink
 
 #endif // BLINKIT_BLINK_PAGE_H

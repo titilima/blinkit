@@ -31,6 +31,9 @@
     <Filter Include="loader_tasks">
       <UniqueIdentifier>{c4ad9db6-07a1-473b-9af1-194e093fc6c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ui">
+      <UniqueIdentifier>{82c3ccb8-480c-4a0a-aba8-a43cd33110cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -107,6 +110,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\js\simple_context.cpp">
       <Filter>js</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\web_view_impl.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\ui\win_web_view.cpp">
+      <Filter>ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +196,30 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\sdk\include\bk.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\sdk\include\bk_app.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\sdk\include\bk_crawler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\sdk\include\bk_def.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\sdk\include\bk_js.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\sdk\include\bk_ui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\web_view_impl.h">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\ui\win_web_view.h">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -62,6 +62,7 @@
     <Import Project="..\_pch.props" />
     <Import Project="..\BlinKit.props" />
     <Import Project="..\blink.props" />
+    <Import Project="..\skia.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -69,6 +70,7 @@
     <Import Project="..\_pch.props" />
     <Import Project="..\BlinKit.props" />
     <Import Project="..\blink.props" />
+    <Import Project="..\skia.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -96,7 +98,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;BLINKIT_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;$(RepoRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -114,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;BLINKIT_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SrcRoot)blinkit;$(RepoRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -181,12 +183,20 @@
     <ClCompile Include="..\..\..\src\blinkit\js\simple_context.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader_tasks\loader_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\ui\web_view_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\ui\win_web_view.cpp" />
     <ClCompile Include="..\_pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\sdk\include\bk.hpp" />
+    <ClInclude Include="..\..\..\sdk\include\bk_app.h" />
+    <ClInclude Include="..\..\..\sdk\include\bk_crawler.h" />
+    <ClInclude Include="..\..\..\sdk\include\bk_def.h" />
+    <ClInclude Include="..\..\..\sdk\include\bk_js.h" />
+    <ClInclude Include="..\..\..\sdk\include\bk_ui.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\win_app.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\local_frame_client_impl.h" />
@@ -211,6 +221,8 @@
     <ClInclude Include="..\..\..\src\blinkit\js\simple_context.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader_tasks\loader_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\ui\web_view_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\ui\win_web_view.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
