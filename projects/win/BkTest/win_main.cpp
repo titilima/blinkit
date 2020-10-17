@@ -75,6 +75,11 @@ private:
     BkCrawler m_crawler = nullptr;
 };
 
+static void BKAPI DocumentReady(void *)
+{
+    assert(false); // BKTODO:
+}
+
 static LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
     LRESULT r = 0;
@@ -83,7 +88,13 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
         case WM_CREATE:
         {
             BkWebView v = BkGetWebView(hWnd);
-            assert(false); // BKTODO:
+
+            BkWebViewClient client = { 0 };
+            client.SizeOfStruct = sizeof(BkWebViewClient);
+            client.DocumentReady = DocumentReady;
+            BkWebViewSetClient(v, &client);
+
+            BkLoadUI(v, "res://hello.html");
             break;
         }
         default:
