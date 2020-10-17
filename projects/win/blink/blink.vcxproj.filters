@@ -5009,6 +5009,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\selection_modifier_character.cc">
       <Filter>renderer\core\editing</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\chrome_client_impl.cc">
+      <Filter>renderer\core\page</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\web_cursor_info.cc">
+      <Filter>renderer\platform\exported</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">

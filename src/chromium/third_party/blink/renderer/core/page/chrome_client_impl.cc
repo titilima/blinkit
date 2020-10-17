@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: chrome_client_impl.cc
+// Description: ChromeClientImpl Class
+//      Author: Ziming Li
+//     Created: 2020-10-16
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
@@ -36,12 +47,13 @@
 
 #include "base/optional.h"
 #include "build/build_config.h"
-#include "cc/layers/picture_layer.h"
+// BKTODO: #include "cc/layers/picture_layer.h"
 #include "third_party/blink/public/platform/web_cursor_info.h"
 #include "third_party/blink/public/platform/web_float_rect.h"
 #include "third_party/blink/public/platform/web_rect.h"
-#include "third_party/blink/public/platform/web_url_request.h"
+// BKTODO: #include "third_party/blink/public/platform/web_url_request.h"
 #include "third_party/blink/public/web/blink.h"
+#if 0 // BKTODO:
 #include "third_party/blink/public/web/web_autofill_client.h"
 #include "third_party/blink/public/web/web_console_message.h"
 #include "third_party/blink/public/web/web_input_element.h"
@@ -54,18 +66,22 @@
 #include "third_party/blink/public/web/web_view_client.h"
 #include "third_party/blink/public/web/web_window_features.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_controller.h"
+#endif
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/node.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/events/web_input_event_conversion.h"
 #include "third_party/blink/renderer/core/exported/web_plugin_container_impl.h"
 #include "third_party/blink/renderer/core/exported/web_remote_frame_impl.h"
 #include "third_party/blink/renderer/core/exported/web_settings_impl.h"
 #include "third_party/blink/renderer/core/exported/web_view_impl.h"
 #include "third_party/blink/renderer/core/frame/browser_controls.h"
+#endif
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
 #include "third_party/blink/renderer/core/frame/web_frame_widget_base.h"
 #include "third_party/blink/renderer/core/frame/web_local_frame_impl.h"
@@ -83,23 +99,26 @@
 #include "third_party/blink/renderer/core/html/forms/html_input_element.h"
 #include "third_party/blink/renderer/core/html/forms/internal_popup_menu.h"
 #include "third_party/blink/renderer/core/inspector/dev_tools_emulator.h"
+#endif
 #include "third_party/blink/renderer/core/layout/hit_test_result.h"
-#include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
 #include "third_party/blink/renderer/core/loader/document_loader.h"
 #include "third_party/blink/renderer/core/loader/frame_load_request.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/page/popup_opening_observer.h"
 #include "third_party/blink/renderer/platform/animation/compositor_animation_host.h"
+#endif
 #include "third_party/blink/renderer/platform/cursor.h"
-#include "third_party/blink/renderer/platform/exported/wrapped_resource_request.h"
+// BKTODO: #include "third_party/blink/renderer/platform/exported/wrapped_resource_request.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
 #include "third_party/blink/renderer/platform/graphics/touch_action.h"
 #include "third_party/blink/renderer/platform/histogram.h"
-#include "third_party/blink/renderer/platform/layout_test_support.h"
+// BKTODO: #include "third_party/blink/renderer/platform/layout_test_support.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
-#include "third_party/blink/renderer/platform/weborigin/security_origin.h"
+// BKTODO: #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
 #include "third_party/blink/renderer/platform/wtf/text/character_names.h"
 #include "third_party/blink/renderer/platform/wtf/text/cstring.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
@@ -153,16 +172,11 @@ ChromeClientImpl::ChromeClientImpl(WebViewImpl* web_view)
       did_request_non_empty_tool_tip_(false) {}
 
 ChromeClientImpl::~ChromeClientImpl() {
-  DCHECK(file_chooser_queue_.IsEmpty());
+  ASSERT(false); // BKTODO: DCHECK(file_chooser_queue_.IsEmpty());
 }
 
-ChromeClientImpl* ChromeClientImpl::Create(WebViewImpl* web_view) {
-  return new ChromeClientImpl(web_view);
-}
-
-void ChromeClientImpl::Trace(Visitor* visitor) {
-  visitor->Trace(popup_opening_observers_);
-  ChromeClient::Trace(visitor);
+std::unique_ptr<ChromeClientImpl> ChromeClientImpl::Create(WebViewImpl* web_view) {
+  return base::WrapUnique(new ChromeClientImpl(web_view));
 }
 
 WebViewImpl* ChromeClientImpl::GetWebView() const {
@@ -174,14 +188,19 @@ void ChromeClientImpl::ChromeDestroyed() {
 }
 
 void ChromeClientImpl::SetWindowRect(const IntRect& r, LocalFrame& frame) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK_EQ(&frame, web_view_->MainFrameImpl()->GetFrame());
   WebWidgetClient* client =
       WebLocalFrameImpl::FromFrame(&frame)->FrameWidgetImpl()->Client();
   client->SetWindowRect(r);
+#endif
 }
 
 IntRect ChromeClientImpl::RootWindowRect() {
   WebRect rect;
+  ASSERT(false); // BKTODO:
+#if 0
   if (web_view_->Client()) {
     rect = web_view_->Client()->RootWindowRect();
   } else {
@@ -191,6 +210,7 @@ IntRect ChromeClientImpl::RootWindowRect() {
     rect.width = web_view_->Size().width;
     rect.height = web_view_->Size().height;
   }
+#endif
   return IntRect(rect);
 }
 
@@ -202,28 +222,40 @@ IntRect ChromeClientImpl::PageRect() {
 }
 
 void ChromeClientImpl::Focus(LocalFrame* calling_frame) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (web_view_->Client()) {
     web_view_->Client()->DidFocus(
         calling_frame ? WebLocalFrameImpl::FromFrame(calling_frame) : nullptr);
   }
+#endif
 }
 
 bool ChromeClientImpl::CanTakeFocus(WebFocusType) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // For now the browser can always take focus if we're not running layout
   // tests.
   return !LayoutTestSupport::IsRunningLayoutTest();
+#endif
 }
 
 void ChromeClientImpl::TakeFocus(WebFocusType type) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!web_view_->Client())
     return;
   if (type == kWebFocusTypeBackward)
     web_view_->Client()->FocusPrevious();
   else
     web_view_->Client()->FocusNext();
+#endif
 }
 
 void ChromeClientImpl::FocusedNodeChanged(Node* from_node, Node* to_node) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!web_view_->Client())
     return;
 
@@ -234,13 +266,19 @@ void ChromeClientImpl::FocusedNodeChanged(Node* from_node, Node* to_node) {
       to_node->ShouldHaveFocusAppearance())
     focus_url = ToElement(to_node)->HrefURL();
   web_view_->Client()->SetKeyboardFocusURL(focus_url);
+#endif
 }
 
 bool ChromeClientImpl::HadFormInteraction() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return web_view_->PageImportanceSignals() &&
          web_view_->PageImportanceSignals()->HadFormInteraction();
+#endif
 }
 
+#if 0 // BKTODO:
 void ChromeClientImpl::StartDragging(LocalFrame* frame,
                                      const WebDragData& drag_data,
                                      WebDragOperationsMask mask,
@@ -251,11 +289,17 @@ void ChromeClientImpl::StartDragging(LocalFrame* frame,
   web_frame->LocalRootFrameWidget()->StartDragging(
       policy, drag_data, mask, drag_image, drag_image_offset);
 }
+#endif
 
 bool ChromeClientImpl::AcceptsLoadDrops() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return !web_view_->Client() || web_view_->Client()->AcceptsLoadDrops();
+#endif
 }
 
+#if 0 // BKTODO:
 Page* ChromeClientImpl::CreateWindow(LocalFrame* frame,
                                      const FrameLoadRequest& r,
                                      const WebWindowFeatures& features,
@@ -282,36 +326,48 @@ Page* ChromeClientImpl::CreateWindow(LocalFrame* frame,
     return nullptr;
   return new_view->GetPage();
 }
+#endif
 
 void ChromeClientImpl::DidOverscroll(const FloatSize& overscroll_delta,
                                      const FloatSize& accumulated_overscroll,
                                      const FloatPoint& position_in_viewport,
                                      const FloatSize& velocity_in_viewport,
                                      const cc::OverscrollBehavior& behavior) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!web_view_->WidgetClient())
     return;
 
   web_view_->WidgetClient()->DidOverscroll(
       overscroll_delta, accumulated_overscroll, position_in_viewport,
       velocity_in_viewport, behavior);
+#endif
 }
 
 void ChromeClientImpl::Show(NavigationPolicy navigation_policy) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (web_view_->WidgetClient()) {
     web_view_->WidgetClient()->Show(
         static_cast<WebNavigationPolicy>(navigation_policy));
   }
+#endif
 }
 
 bool ChromeClientImpl::ShouldReportDetailedMessageForSource(
     LocalFrame& local_frame,
     const String& url) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   WebLocalFrameImpl* webframe =
       WebLocalFrameImpl::FromFrame(&local_frame.LocalFrameRoot());
   return webframe && webframe->Client() &&
          webframe->Client()->ShouldReportDetailedMessageForSource(url);
+#endif
 }
 
+#if 0 // BKTODO:
 void ChromeClientImpl::AddMessageToConsole(LocalFrame* local_frame,
                                            MessageSource source,
                                            MessageLevel level,
@@ -327,22 +383,34 @@ void ChromeClientImpl::AddMessageToConsole(LocalFrame* local_frame,
         source_id, line_number, stack_trace);
   }
 }
+#endif
 
 bool ChromeClientImpl::CanOpenBeforeUnloadConfirmPanel() {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return !!web_view_->Client();
+#endif
 }
 
 bool ChromeClientImpl::OpenBeforeUnloadConfirmPanelDelegate(LocalFrame* frame,
                                                             bool is_reload) {
   NotifyPopupOpeningObservers();
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   WebLocalFrameImpl* webframe = WebLocalFrameImpl::FromFrame(frame);
   return webframe->Client() &&
          webframe->Client()->RunModalBeforeUnloadDialog(is_reload);
+#endif
 }
 
 void ChromeClientImpl::CloseWindowSoon() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (web_view_->WidgetClient())
     web_view_->WidgetClient()->CloseWidgetSoon();
+#endif
 }
 
 // Although a LocalFrame is passed in, we don't actually use it, since we
@@ -350,6 +418,8 @@ void ChromeClientImpl::CloseWindowSoon() {
 bool ChromeClientImpl::OpenJavaScriptAlertDelegate(LocalFrame* frame,
                                                    const String& message) {
   NotifyPopupOpeningObservers();
+  ASSERT(false); // BKTODO:
+#if 0
   WebLocalFrameImpl* webframe = WebLocalFrameImpl::FromFrame(frame);
   if (webframe->Client()) {
     if (UserGestureIndicator::ProcessingUserGesture())
@@ -357,6 +427,7 @@ bool ChromeClientImpl::OpenJavaScriptAlertDelegate(LocalFrame* frame,
     webframe->Client()->RunModalAlertDialog(message);
     return true;
   }
+#endif
   return false;
 }
 
@@ -364,12 +435,15 @@ bool ChromeClientImpl::OpenJavaScriptAlertDelegate(LocalFrame* frame,
 bool ChromeClientImpl::OpenJavaScriptConfirmDelegate(LocalFrame* frame,
                                                      const String& message) {
   NotifyPopupOpeningObservers();
+  ASSERT(false); // BKTODO:
+#if 0
   WebLocalFrameImpl* webframe = WebLocalFrameImpl::FromFrame(frame);
   if (webframe->Client()) {
     if (UserGestureIndicator::ProcessingUserGesture())
       UserGestureIndicator::SetTimeoutPolicy(UserGestureToken::kHasPaused);
     return webframe->Client()->RunModalConfirmDialog(message);
   }
+#endif
   return false;
 }
 
@@ -379,6 +453,8 @@ bool ChromeClientImpl::OpenJavaScriptPromptDelegate(LocalFrame* frame,
                                                     const String& default_value,
                                                     String& result) {
   NotifyPopupOpeningObservers();
+  ASSERT(false); // BKTODO:
+#if 0
   WebLocalFrameImpl* webframe = WebLocalFrameImpl::FromFrame(frame);
   if (webframe->Client()) {
     if (UserGestureIndicator::ProcessingUserGesture())
@@ -390,18 +466,28 @@ bool ChromeClientImpl::OpenJavaScriptPromptDelegate(LocalFrame* frame,
       result = actual_value;
     return ok;
   }
+#endif
   return false;
 }
 bool ChromeClientImpl::TabsToLinks() {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return web_view_->TabsToLinks();
+#endif
 }
 
 void ChromeClientImpl::InvalidateRect(const IntRect& update_rect) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!update_rect.IsEmpty())
     web_view_->InvalidateRect(update_rect);
+#endif
 }
 
 void ChromeClientImpl::ScheduleAnimation(const LocalFrameView* frame_view) {
+  ASSERT(false); // BKTODO:
+#if 0
   LocalFrame& frame = frame_view->GetFrame();
   WebLocalFrameImpl* web_frame = WebLocalFrameImpl::FromFrame(&frame);
   DCHECK(web_frame);
@@ -413,6 +499,7 @@ void ChromeClientImpl::ScheduleAnimation(const LocalFrameView* frame_view) {
   if (!web_frame->LocalRootFrameWidget())
     return;
   web_frame->LocalRootFrameWidget()->ScheduleAnimation();
+#endif
 }
 
 IntRect ChromeClientImpl::ViewportToScreen(
@@ -420,6 +507,8 @@ IntRect ChromeClientImpl::ViewportToScreen(
     const LocalFrameView* frame_view) const {
   WebRect screen_rect(rect_in_viewport);
 
+  ASSERT(false); // BKTODO:
+#if 0
   LocalFrame& frame = frame_view->GetFrame();
 
   WebWidgetClient* client =
@@ -432,58 +521,78 @@ IntRect ChromeClientImpl::ViewportToScreen(
     screen_rect.x += view_rect.x;
     screen_rect.y += view_rect.y;
   }
+#endif
 
   return screen_rect;
 }
 
 float ChromeClientImpl::WindowToViewportScalar(const float scalar_value) const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   if (!web_view_->WidgetClient())
     return scalar_value;
   WebFloatRect viewport_rect(0, 0, scalar_value, 0);
   web_view_->WidgetClient()->ConvertWindowToViewport(&viewport_rect);
   return viewport_rect.width;
+#endif
 }
 
+#if 0 // BKTODO:
 WebScreenInfo ChromeClientImpl::GetScreenInfo() const {
   if (!web_view_->WidgetClient())
     return {};
   return web_view_->WidgetClient()->GetScreenInfo();
 }
+#endif
 
 base::Optional<IntRect> ChromeClientImpl::VisibleContentRectForPainting()
     const {
+  ASSERT(false); // BKTODO:
+  return std::nullopt;
+#if 0
   return web_view_->GetDevToolsEmulator()->VisibleContentRectForPainting();
+#endif
 }
 
 void ChromeClientImpl::ContentsSizeChanged(LocalFrame* frame,
                                            const IntSize& size) const {
+  ASSERT(false); // BKTODO:
+#if 0
   web_view_->DidChangeContentsSize();
 
   WebLocalFrameImpl* webframe = WebLocalFrameImpl::FromFrame(frame);
   webframe->DidChangeContentsSize(size);
+#endif
 }
 
 void ChromeClientImpl::PageScaleFactorChanged() const {
-  web_view_->PageScaleFactorChanged();
+  ASSERT(false); // BKTODO: web_view_->PageScaleFactorChanged();
 }
 
 void ChromeClientImpl::MainFrameScrollOffsetChanged() const {
-  web_view_->MainFrameScrollOffsetChanged();
+  ASSERT(false); // BKTODO: web_view_->MainFrameScrollOffsetChanged();
 }
 
 float ChromeClientImpl::ClampPageScaleFactorToLimits(float scale) const {
+  ASSERT(false); // BKTODO:
+  return 0;
+#if 0
   return web_view_->ClampPageScaleFactorToLimits(scale);
+#endif
 }
 
 void ChromeClientImpl::ResizeAfterLayout() const {
-  web_view_->ResizeAfterLayout();
+  ASSERT(false); // BKTODO: web_view_->ResizeAfterLayout();
 }
 
 void ChromeClientImpl::MainFrameLayoutUpdated() const {
-  web_view_->MainFrameLayoutUpdated();
+  ASSERT(false); // BKTODO: web_view_->MainFrameLayoutUpdated();
 }
 
 void ChromeClientImpl::ShowMouseOverURL(const HitTestResult& result) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!web_view_->Client())
     return;
 
@@ -512,11 +621,14 @@ void ChromeClientImpl::ShowMouseOverURL(const HitTestResult& result) {
   }
 
   web_view_->Client()->SetMouseOverURL(url);
+#endif
 }
 
 void ChromeClientImpl::SetToolTip(LocalFrame& frame,
                                   const String& tooltip_text,
                                   TextDirection dir) {
+  ASSERT(false); // BKTODO:
+#if 0
   WebLocalFrameImpl* web_frame = WebLocalFrameImpl::FromFrame(&frame);
   if (!tooltip_text.IsEmpty()) {
     web_frame->LocalRootFrameWidget()->Client()->SetToolTipText(
@@ -529,19 +641,24 @@ void ChromeClientImpl::SetToolTip(LocalFrame& frame,
         tooltip_text, ToWebTextDirection(dir));
     did_request_non_empty_tool_tip_ = false;
   }
+#endif
 }
 
 void ChromeClientImpl::DispatchViewportPropertiesDidChange(
     const ViewportDescription& description) const {
-  web_view_->UpdatePageDefinedViewportConstraints(description);
+  ASSERT(false); // BKTODO: web_view_->UpdatePageDefinedViewportConstraints(description);
 }
 
 void ChromeClientImpl::PrintDelegate(LocalFrame* frame) {
   NotifyPopupOpeningObservers();
+  ASSERT(false); // BKTODO: Is this necessary?
+#if 0
   if (web_view_->Client())
     web_view_->Client()->PrintPage(WebLocalFrameImpl::FromFrame(frame));
+#endif
 }
 
+#if 0 // BKTODO:
 ColorChooser* ChromeClientImpl::OpenColorChooser(
     LocalFrame* frame,
     ColorChooserClient* chooser_client,
@@ -562,10 +679,14 @@ ColorChooser* ChromeClientImpl::OpenColorChooser(
   controller->OpenUI();
   return controller;
 }
+#endif
 
 DateTimeChooser* ChromeClientImpl::OpenDateTimeChooser(
     DateTimeChooserClient* picker_client,
     const DateTimeChooserParameters& parameters) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   // TODO(crbug.com/779126): add support for the chooser in immersive mode.
   if (picker_client->OwnerElement()
           .GetDocument()
@@ -578,8 +699,10 @@ DateTimeChooser* ChromeClientImpl::OpenDateTimeChooser(
     return DateTimeChooserImpl::Create(this, picker_client, parameters);
   return ExternalDateTimeChooser::Create(this, web_view_->Client(),
                                          picker_client, parameters);
+#endif
 }
 
+#if 0 // BKTODO:
 void ChromeClientImpl::OpenFileChooser(
     LocalFrame* frame,
     scoped_refptr<FileChooser> file_chooser) {
@@ -610,8 +733,11 @@ void ChromeClientImpl::OpenFileChooser(
     DidCompleteFileChooser(*file_chooser);
   }
 }
+#endif
 
 void ChromeClientImpl::DidCompleteFileChooser(FileChooser& chooser) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!file_chooser_queue_.IsEmpty() &&
       file_chooser_queue_.front().get() != &chooser) {
     // This function is called even if |chooser| wasn't stored in
@@ -626,9 +752,12 @@ void ChromeClientImpl::DidCompleteFileChooser(FileChooser& chooser) {
     return;
   // Choosing failed, so try the next chooser.
   DidCompleteFileChooser(*next_chooser);
+#endif
 }
 
 void ChromeClientImpl::EnumerateChosenDirectory(FileChooser* file_chooser) {
+  ASSERT(false); // BKTODO:
+#if 0
   WebViewClient* client = web_view_->Client();
   if (!client)
     return;
@@ -638,6 +767,7 @@ void ChromeClientImpl::EnumerateChosenDirectory(FileChooser* file_chooser) {
   if (client->EnumerateChosenDirectory(file_chooser->Params().selected_files[0],
                                        file_chooser))
     file_chooser->AddRef();
+#endif
 }
 
 Cursor ChromeClientImpl::LastSetCursorForTesting() const {
@@ -662,10 +792,13 @@ void ChromeClientImpl::SetCursor(const WebCursorInfo& cursor,
     return;
 #endif
 
+  ASSERT(false); // BKTODO:
+#if 0
   // TODO(dcheng): Why is this null check necessary?
   if (WebFrameWidgetBase* widget =
           WebLocalFrameImpl::FromFrame(local_frame)->LocalRootFrameWidget())
     widget->Client()->DidChangeCursor(cursor);
+#endif
 }
 
 void ChromeClientImpl::SetCursorForPlugin(const WebCursorInfo& cursor,
@@ -677,6 +810,7 @@ void ChromeClientImpl::SetCursorOverridden(bool overridden) {
   cursor_overridden_ = overridden;
 }
 
+#if 0 // BKTODO:
 void ChromeClientImpl::AutoscrollStart(WebFloatPoint viewport_point,
                                        LocalFrame* local_frame) {
   if (WebFrameWidgetBase* widget =
@@ -690,20 +824,30 @@ void ChromeClientImpl::AutoscrollFling(WebFloatSize velocity,
           WebLocalFrameImpl::FromFrame(local_frame)->LocalRootFrameWidget())
     widget->Client()->AutoscrollFling(velocity);
 }
+#endif
 
 void ChromeClientImpl::AutoscrollEnd(LocalFrame* local_frame) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (WebFrameWidgetBase* widget =
           WebLocalFrameImpl::FromFrame(local_frame)->LocalRootFrameWidget())
     widget->Client()->AutoscrollEnd();
+#endif
 }
 
 String ChromeClientImpl::AcceptLanguages() {
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   return web_view_->Client()->AcceptLanguages();
+#endif
 }
 
 void ChromeClientImpl::AttachRootGraphicsLayer(GraphicsLayer* root_layer,
                                                LocalFrame* local_frame) {
   DCHECK(!RuntimeEnabledFeatures::SlimmingPaintV2Enabled());
+  ASSERT(false); // BKTODO:
+#if 0
   // TODO(dcheng): This seems wrong. Non-local roots shouldn't be calling this
   // function.
   WebLocalFrameImpl* web_frame =
@@ -716,8 +860,10 @@ void ChromeClientImpl::AttachRootGraphicsLayer(GraphicsLayer* root_layer,
   DCHECK(web_frame->FrameWidgetImpl() || !root_layer);
   if (web_frame->FrameWidgetImpl())
     web_frame->FrameWidgetImpl()->SetRootGraphicsLayer(root_layer);
+#endif
 }
 
+#if 0 // BKTODO:
 void ChromeClientImpl::AttachRootLayer(scoped_refptr<cc::Layer> root_layer,
                                        LocalFrame* local_frame) {
   // TODO(dcheng): This seems wrong. Non-local roots shouldn't be calling this
@@ -733,19 +879,25 @@ void ChromeClientImpl::AttachRootLayer(scoped_refptr<cc::Layer> root_layer,
   if (web_frame->FrameWidgetImpl())
     web_frame->FrameWidgetImpl()->SetRootLayer(std::move(root_layer));
 }
+#endif
 
 void ChromeClientImpl::AttachCompositorAnimationTimeline(
     CompositorAnimationTimeline* compositor_timeline,
     LocalFrame* local_frame) {
+  ASSERT(false); // BKTODO:
+#if 0
   WebLocalFrameImpl* web_frame = WebLocalFrameImpl::FromFrame(local_frame);
   if (CompositorAnimationHost* animation_host =
           web_frame->LocalRootFrameWidget()->AnimationHost())
     animation_host->AddTimeline(*compositor_timeline);
+#endif
 }
 
 void ChromeClientImpl::DetachCompositorAnimationTimeline(
     CompositorAnimationTimeline* compositor_timeline,
     LocalFrame* local_frame) {
+  ASSERT(false); // BKTODO:
+#if 0
   WebLocalFrameImpl* web_frame = WebLocalFrameImpl::FromFrame(local_frame);
 
   // This method can be called when the frame is being detached, after the
@@ -756,23 +908,26 @@ void ChromeClientImpl::DetachCompositorAnimationTimeline(
             web_frame->LocalRootFrameWidget()->AnimationHost())
       animation_host->RemoveTimeline(*compositor_timeline);
   }
+#endif
 }
 
 void ChromeClientImpl::EnterFullscreen(LocalFrame& frame,
                                        const FullscreenOptions& options) {
-  web_view_->EnterFullscreen(frame, options);
+  ASSERT(false); // BKTODO: web_view_->EnterFullscreen(frame, options);
 }
 
 void ChromeClientImpl::ExitFullscreen(LocalFrame& frame) {
-  web_view_->ExitFullscreen(frame);
+  ASSERT(false); // BKTODO: web_view_->ExitFullscreen(frame);
 }
 
 void ChromeClientImpl::FullscreenElementChanged(Element* old_element,
                                                 Element* new_element) {
-  web_view_->FullscreenElementChanged(old_element, new_element);
+  ASSERT(false); // BKTODO: web_view_->FullscreenElementChanged(old_element, new_element);
 }
 
 void ChromeClientImpl::ClearLayerSelection(LocalFrame* frame) {
+  ASSERT(false); // BKTODO:
+#if 0
   WebFrameWidgetBase* widget =
       WebLocalFrameImpl::FromFrame(frame)->LocalRootFrameWidget();
   WebWidgetClient* client = widget->Client();
@@ -782,8 +937,10 @@ void ChromeClientImpl::ClearLayerSelection(LocalFrame* frame) {
 
   if (WebLayerTreeView* layer_tree_view = widget->GetLayerTreeView())
     layer_tree_view->ClearSelection();
+#endif
 }
 
+#if 0 // BKTODO:
 void ChromeClientImpl::UpdateLayerSelection(
     LocalFrame* frame,
     const cc::LayerSelection& selection) {
@@ -797,11 +954,17 @@ void ChromeClientImpl::UpdateLayerSelection(
   if (WebLayerTreeView* layer_tree_view = widget->GetLayerTreeView())
     layer_tree_view->RegisterSelection(selection);
 }
+#endif
 
 bool ChromeClientImpl::HasOpenedPopup() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return web_view_->HasOpenedPopup();
+#endif
 }
 
+#if 0 // BKTODO:
 PopupMenu* ChromeClientImpl::OpenPopupMenu(LocalFrame& frame,
                                            HTMLSelectElement& select) {
   NotifyPopupOpeningObservers();
@@ -811,34 +974,45 @@ PopupMenu* ChromeClientImpl::OpenPopupMenu(LocalFrame& frame,
   DCHECK(RuntimeEnabledFeatures::PagePopupEnabled());
   return InternalPopupMenu::Create(this, select);
 }
+#endif
 
 PagePopup* ChromeClientImpl::OpenPagePopup(PagePopupClient* client) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return web_view_->OpenPagePopup(client);
+#endif
 }
 
 void ChromeClientImpl::ClosePagePopup(PagePopup* popup) {
-  web_view_->ClosePagePopup(popup);
+  ASSERT(false); // BKTODO: web_view_->ClosePagePopup(popup);
 }
 
+#if 0 // BKTODO:
 DOMWindow* ChromeClientImpl::PagePopupWindowForTesting() const {
   return web_view_->PagePopupWindow();
 }
+#endif
 
 void ChromeClientImpl::SetBrowserControlsState(float top_height,
                                                float bottom_height,
                                                bool shrinks_layout) {
+  ASSERT(false); // BKTODO:
+#if 0
   WebSize size = web_view_->Size();
   if (shrinks_layout)
     size.height -= top_height + bottom_height;
 
   web_view_->ResizeWithBrowserControls(size, top_height, bottom_height,
                                        shrinks_layout);
+#endif
 }
 
 void ChromeClientImpl::SetBrowserControlsShownRatio(float ratio) {
-  web_view_->GetBrowserControls().SetShownRatio(ratio);
+  ASSERT(false); // BKTODO: web_view_->GetBrowserControls().SetShownRatio(ratio);
 }
 
+#if 0 // BKTODO:
 bool ChromeClientImpl::ShouldOpenModalDialogDuringPageDismissal(
     LocalFrame& frame,
     DialogType dialog_type,
@@ -852,16 +1026,21 @@ bool ChromeClientImpl::ShouldOpenModalDialogDuringPageDismissal(
 
   return false;
 }
+#endif
 
 WebLayerTreeView* ChromeClientImpl::GetWebLayerTreeView(LocalFrame* frame) {
   CHECK(frame);
+  ASSERT(false); // BKTODO:
+#if 0
   WebLocalFrameImpl* web_frame = WebLocalFrameImpl::FromFrame(frame);
   CHECK(web_frame);
   if (WebFrameWidgetBase* frame_widget = web_frame->LocalRootFrameWidget())
     return frame_widget->GetLayerTreeView();
+#endif
   return nullptr;
 }
 
+#if 0 // BKTODO:
 void ChromeClientImpl::RequestDecode(LocalFrame* frame,
                                      const PaintImage& image,
                                      base::OnceCallback<void(bool)> callback) {
@@ -924,15 +1103,20 @@ void ChromeClientImpl::SetEventListenerProperties(
     client->HasTouchEventHandlers(true);
   }
 }
+#endif
 
 void ChromeClientImpl::BeginLifecycleUpdates() {
+  ASSERT(false); // BKTODO:
+#if 0
   web_view_->StopDeferringCommits();
 
   if (WebLayerTreeView* tree_view = web_view_->LayerTreeView()) {
     tree_view->SetNeedsBeginFrame();
   }
+#endif
 }
 
+#if 0 // BKTODO:
 cc::EventListenerProperties ChromeClientImpl::EventListenerProperties(
     LocalFrame* frame,
     cc::EventListenerClass event_class) const {
@@ -946,6 +1130,7 @@ cc::EventListenerProperties ChromeClientImpl::EventListenerProperties(
     return cc::EventListenerProperties::kNone;
   return widget->GetLayerTreeView()->EventListenerProperties(event_class);
 }
+#endif
 
 void ChromeClientImpl::SetHasScrollEventHandlers(LocalFrame* frame,
                                                  bool has_event_handlers) {
@@ -956,6 +1141,8 @@ void ChromeClientImpl::SetHasScrollEventHandlers(LocalFrame* frame,
   if (!frame)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   WebFrameWidgetBase* widget =
       WebLocalFrameImpl::FromFrame(frame)->LocalRootFrameWidget();
   // While a frame is shutting down, we may get called after the layerTreeView
@@ -963,11 +1150,14 @@ void ChromeClientImpl::SetHasScrollEventHandlers(LocalFrame* frame,
   DCHECK(!widget || widget->GetLayerTreeView() || !has_event_handlers);
   if (widget && widget->GetLayerTreeView())
     widget->GetLayerTreeView()->SetHaveScrollEventHandlers(has_event_handlers);
+#endif
 }
 
 void ChromeClientImpl::SetNeedsLowLatencyInput(LocalFrame* frame,
                                                bool needs_low_latency) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+#if 0
   WebLocalFrameImpl* web_frame = WebLocalFrameImpl::FromFrame(frame);
   WebFrameWidgetBase* widget = web_frame->LocalRootFrameWidget();
   if (!widget)
@@ -975,10 +1165,13 @@ void ChromeClientImpl::SetNeedsLowLatencyInput(LocalFrame* frame,
 
   if (WebWidgetClient* client = widget->Client())
     client->SetNeedsLowLatencyInput(needs_low_latency);
+#endif
 }
 
 void ChromeClientImpl::RequestUnbufferedInputEvents(LocalFrame* frame) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+#if 0
   WebLocalFrameImpl* web_frame = WebLocalFrameImpl::FromFrame(frame);
   WebFrameWidgetBase* widget = web_frame->LocalRootFrameWidget();
   if (!widget)
@@ -986,11 +1179,14 @@ void ChromeClientImpl::RequestUnbufferedInputEvents(LocalFrame* frame) {
 
   if (WebWidgetClient* client = widget->Client())
     client->RequestUnbufferedInputEvents();
+#endif
 }
 
 void ChromeClientImpl::SetTouchAction(LocalFrame* frame,
                                       TouchAction touch_action) {
   DCHECK(frame);
+  ASSERT(false); // BKTODO:
+#if 0
   WebLocalFrameImpl* web_frame = WebLocalFrameImpl::FromFrame(frame);
   WebFrameWidgetBase* widget = web_frame->LocalRootFrameWidget();
   if (!widget)
@@ -998,54 +1194,76 @@ void ChromeClientImpl::SetTouchAction(LocalFrame* frame,
 
   if (WebWidgetClient* client = widget->Client())
     client->SetTouchAction(static_cast<TouchAction>(touch_action));
+#endif
 }
 
 bool ChromeClientImpl::RequestPointerLock(LocalFrame* frame) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return WebLocalFrameImpl::FromFrame(frame)
       ->LocalRootFrameWidget()
       ->Client()
       ->RequestPointerLock();
+#endif
 }
 
 void ChromeClientImpl::RequestPointerUnlock(LocalFrame* frame) {
+  ASSERT(false); // BKTODO:
+#if 0
   return WebLocalFrameImpl::FromFrame(frame)
       ->LocalRootFrameWidget()
       ->Client()
       ->RequestPointerUnlock();
+#endif
 }
 
 void ChromeClientImpl::DidAssociateFormControlsAfterLoad(LocalFrame* frame) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (auto* fill_client = AutofillClientFromFrame(frame))
     fill_client->DidAssociateFormControlsDynamically();
+#endif
 }
 
 void ChromeClientImpl::ShowVirtualKeyboardOnElementFocus(LocalFrame& frame) {
+  ASSERT(false); // BKTODO:
+#if 0
   WebLocalFrameImpl::FromFrame(frame)
       ->LocalRootFrameWidget()
       ->Client()
       ->ShowVirtualKeyboardOnElementFocus();
+#endif
 }
 
 void ChromeClientImpl::OnMouseDown(Node& mouse_down_node) {
   if (auto* fill_client =
           AutofillClientFromFrame(mouse_down_node.GetDocument().GetFrame())) {
+    ASSERT(false); // BKTODO:
+#if 0
     fill_client->DidReceiveLeftMouseDownOrGestureTapInNode(
         WebNode(&mouse_down_node));
+#endif
   }
 }
 
 void ChromeClientImpl::HandleKeyboardEventOnTextField(
     HTMLInputElement& input_element,
     KeyboardEvent& event) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (auto* fill_client =
           AutofillClientFromFrame(input_element.GetDocument().GetFrame())) {
     fill_client->TextFieldDidReceiveKeyDown(WebInputElement(&input_element),
                                             WebKeyboardEventBuilder(event));
   }
+#endif
 }
 
 void ChromeClientImpl::DidChangeValueInTextField(
     HTMLFormControlElement& element) {
+  ASSERT(false); // BKTODO:
+#if 0
   Document& doc = element.GetDocument();
   if (auto* fill_client = AutofillClientFromFrame(doc.GetFrame()))
     fill_client->TextFieldDidChange(WebFormControlElement(&element));
@@ -1059,62 +1277,84 @@ void ChromeClientImpl::DidChangeValueInTextField(
     doc.MaybeQueueSendDidEditFieldInInsecureContext();
     web_view_->PageImportanceSignals()->SetHadFormInteraction();
   }
+#endif
 }
 
 void ChromeClientImpl::DidEndEditingOnTextField(
     HTMLInputElement& input_element) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (auto* fill_client =
           AutofillClientFromFrame(input_element.GetDocument().GetFrame())) {
     fill_client->TextFieldDidEndEditing(WebInputElement(&input_element));
   }
+#endif
 }
 
 void ChromeClientImpl::OpenTextDataListChooser(HTMLInputElement& input) {
   NotifyPopupOpeningObservers();
+  ASSERT(false); // BKTODO:
+#if 0
   if (auto* fill_client =
           AutofillClientFromFrame(input.GetDocument().GetFrame())) {
     fill_client->OpenTextDataListChooser(WebInputElement(&input));
   }
+#endif
 }
 
 void ChromeClientImpl::TextFieldDataListChanged(HTMLInputElement& input) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (auto* fill_client =
           AutofillClientFromFrame(input.GetDocument().GetFrame())) {
     fill_client->DataListOptionsChanged(WebInputElement(&input));
   }
+#endif
 }
 
 void ChromeClientImpl::DidChangeSelectionInSelectControl(
     HTMLFormControlElement& element) {
+  ASSERT(false); // BKTODO:
+#if 0
   Document& doc = element.GetDocument();
   if (auto* fill_client = AutofillClientFromFrame(doc.GetFrame()))
     fill_client->SelectControlDidChange(WebFormControlElement(&element));
+#endif
 }
 
 void ChromeClientImpl::SelectFieldOptionsChanged(
     HTMLFormControlElement& element) {
+  ASSERT(false); // BKTODO:
+#if 0
   Document& doc = element.GetDocument();
   if (auto* fill_client = AutofillClientFromFrame(doc.GetFrame()))
     fill_client->SelectFieldOptionsChanged(WebFormControlElement(&element));
+#endif
 }
 
 void ChromeClientImpl::AjaxSucceeded(LocalFrame* frame) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (auto* fill_client = AutofillClientFromFrame(frame))
     fill_client->AjaxSucceeded();
+#endif
 }
 
 void ChromeClientImpl::RegisterViewportLayers() const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (web_view_->RootGraphicsLayer() && web_view_->LayerTreeView())
     web_view_->RegisterViewportLayersWithCompositor();
+#endif
 }
 
 void ChromeClientImpl::DidUpdateBrowserControls() const {
-  web_view_->DidUpdateBrowserControls();
+  ASSERT(false); // BKTODO: web_view_->DidUpdateBrowserControls();
 }
 
 void ChromeClientImpl::SetOverscrollBehavior(
     const cc::OverscrollBehavior& overscroll_behavior) {
-  web_view_->SetOverscrollBehavior(overscroll_behavior);
+  ASSERT(false); // BKTODO: web_view_->SetOverscrollBehavior(overscroll_behavior);
 }
 
 void ChromeClientImpl::RegisterPopupOpeningObserver(
@@ -1132,12 +1372,19 @@ void ChromeClientImpl::UnregisterPopupOpeningObserver(
 void ChromeClientImpl::NotifyPopupOpeningObservers() const {
   const HeapHashSet<WeakMember<PopupOpeningObserver>> observers(
       popup_opening_observers_);
+  ASSERT(false); // BKTODO:
+#if 0
   for (const auto& observer : observers)
     observer->WillOpenPopup();
+#endif
 }
 
 FloatSize ChromeClientImpl::ElasticOverscroll() const {
+  ASSERT(false); // BKTODO:
+  return FloatSize();
+#if 0
   return web_view_->ElasticOverscroll();
+#endif
 }
 
 WebAutofillClient* ChromeClientImpl::AutofillClientFromFrame(
@@ -1148,7 +1395,11 @@ WebAutofillClient* ChromeClientImpl::AutofillClientFromFrame(
     return nullptr;
   }
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return WebLocalFrameImpl::FromFrame(frame)->AutofillClient();
+#endif
 }
 
 }  // namespace blink

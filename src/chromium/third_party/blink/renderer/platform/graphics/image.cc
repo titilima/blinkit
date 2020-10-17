@@ -492,9 +492,11 @@ FloatRect Image::ComputeSubsetForBackground(const FloatRect& phase_and_size,
                    subset.Height() / scale.Height());
 }
 
-#if 0 // BKTODO:
 SkBitmap Image::AsSkBitmapForCurrentFrame(
     RespectImageOrientationEnum should_respect_image_orientation) {
+  ASSERT(false); // BKTODO:
+  return SkBitmap();
+#if 0
   PaintImage paint_image = PaintImageForCurrentFrame();
   if (!paint_image)
     return {};
@@ -515,7 +517,7 @@ SkBitmap Image::AsSkBitmapForCurrentFrame(
   SkBitmap bitmap;
   sk_image->asLegacyBitmap(&bitmap);
   return bitmap;
-}
 #endif
+}
 
 }  // namespace blink

@@ -296,10 +296,10 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
 
 #if 0 // BKTODO:
   PaintImage::Id paint_image_id() const { return stable_image_id_; }
+#endif
 
   // Returns an SkBitmap that is a copy of the image's current frame.
   SkBitmap AsSkBitmapForCurrentFrame(RespectImageOrientationEnum);
-#endif
 
  protected:
   Image(ImageObserver* = nullptr, bool is_multipart = false);

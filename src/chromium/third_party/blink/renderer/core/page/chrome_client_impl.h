@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: chrome_client_impl.h
+// Description: ChromeClientImpl Class
+//      Author: Ziming Li
+//     Created: 2020-10-16
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2009 Google Inc. All rights reserved.
  * Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
@@ -33,8 +44,10 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_PAGE_CHROME_CLIENT_IMPL_H_
 
 #include <memory>
+#if 0 // BKTODO:
 #include "third_party/blink/public/web/web_navigation_policy.h"
 #include "third_party/blink/public/web/web_window_features.h"
+#endif
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/platform/graphics/touch_action.h"
@@ -44,15 +57,13 @@ namespace blink {
 class PagePopup;
 class PagePopupClient;
 class WebAutofillClient;
-class WebViewImpl;
 struct WebCursorInfo;
 
 // Handles window-level notifications from core on behalf of a WebView.
 class CORE_EXPORT ChromeClientImpl final : public ChromeClient {
  public:
-  static ChromeClientImpl* Create(WebViewImpl*);
+  static std::unique_ptr<ChromeClientImpl> Create(WebViewImpl*);
   ~ChromeClientImpl() override;
-  void Trace(Visitor* visitor) override;
 
   WebViewImpl* GetWebView() const override;
 
@@ -67,17 +78,21 @@ class CORE_EXPORT ChromeClientImpl final : public ChromeClient {
   void FocusedNodeChanged(Node* from_node, Node* to_node) override;
   void BeginLifecycleUpdates() override;
   bool HadFormInteraction() const override;
+#if 0 // BKTODO:
   void StartDragging(LocalFrame*,
                      const WebDragData&,
                      WebDragOperationsMask,
                      const SkBitmap& drag_image,
                      const WebPoint& drag_image_offset) override;
+#endif
   bool AcceptsLoadDrops() const override;
+#if 0 // BKTODO:
   Page* CreateWindow(LocalFrame*,
                      const FrameLoadRequest&,
                      const WebWindowFeatures&,
                      NavigationPolicy,
                      SandboxFlags) override;
+#endif
   void Show(NavigationPolicy) override;
   void DidOverscroll(const FloatSize& overscroll_delta,
                      const FloatSize& accumulated_overscroll,
@@ -86,6 +101,7 @@ class CORE_EXPORT ChromeClientImpl final : public ChromeClient {
                      const cc::OverscrollBehavior&) override;
   bool ShouldReportDetailedMessageForSource(LocalFrame&,
                                             const String&) override;
+#if 0 // BKTODO:
   void AddMessageToConsole(LocalFrame*,
                            MessageSource,
                            MessageLevel,
@@ -93,6 +109,7 @@ class CORE_EXPORT ChromeClientImpl final : public ChromeClient {
                            unsigned line_number,
                            const String& source_id,
                            const String& stack_trace) override;
+#endif
   bool CanOpenBeforeUnloadConfirmPanel() override;
   bool OpenBeforeUnloadConfirmPanelDelegate(LocalFrame*,
                                             bool is_reload) override;
@@ -109,7 +126,9 @@ class CORE_EXPORT ChromeClientImpl final : public ChromeClient {
   IntRect ViewportToScreen(const IntRect&,
                            const LocalFrameView*) const override;
   float WindowToViewportScalar(const float) const override;
+#if 0 // BKTODO:
   WebScreenInfo GetScreenInfo() const override;
+#endif
   base::Optional<IntRect> VisibleContentRectForPainting() const override;
   void ContentsSizeChanged(LocalFrame*, const IntSize&) const override;
   void PageScaleFactorChanged() const override;
@@ -122,17 +141,22 @@ class CORE_EXPORT ChromeClientImpl final : public ChromeClient {
   void DispatchViewportPropertiesDidChange(
       const ViewportDescription&) const override;
   void PrintDelegate(LocalFrame*) override;
+#if 0 // BKTODO:
   ColorChooser* OpenColorChooser(LocalFrame*,
                                  ColorChooserClient*,
                                  const Color&) override;
+#endif
   DateTimeChooser* OpenDateTimeChooser(
       DateTimeChooserClient*,
       const DateTimeChooserParameters&) override;
+#if 0 // BKTODO:
   void OpenFileChooser(LocalFrame*, scoped_refptr<FileChooser>) override;
+#endif
   void EnumerateChosenDirectory(FileChooser*) override;
   void SetCursor(const Cursor&, LocalFrame*) override;
   void SetCursorOverridden(bool) override;
   Cursor LastSetCursorForTesting() const override;
+#if 0 // BKTODO:
   // The client keeps track of which touch/mousewheel event types have handlers,
   // and if they do, whether the handlers are passive and/or blocking. This
   // allows the client to know which optimizations can be used for the
@@ -143,6 +167,7 @@ class CORE_EXPORT ChromeClientImpl final : public ChromeClient {
   cc::EventListenerProperties EventListenerProperties(
       LocalFrame*,
       cc::EventListenerClass) const override;
+#endif
   // Informs client about the existence of handlers for scroll events so
   // appropriate scroll optimizations can be chosen.
   void SetHasScrollEventHandlers(LocalFrame*, bool has_event_handlers) override;
@@ -152,8 +177,10 @@ class CORE_EXPORT ChromeClientImpl final : public ChromeClient {
 
   void AttachRootGraphicsLayer(GraphicsLayer*, LocalFrame* local_root) override;
 
+#if 0 // BKTODO:
   void AttachRootLayer(scoped_refptr<cc::Layer>,
                        LocalFrame* local_root) override;
+#endif
 
   void AttachCompositorAnimationTimeline(CompositorAnimationTimeline*,
                                          LocalFrame*) override;
@@ -166,39 +193,51 @@ class CORE_EXPORT ChromeClientImpl final : public ChromeClient {
                                 Element* new_element) override;
 
   void ClearLayerSelection(LocalFrame*) override;
+#if 0 // BKTODO:
   void UpdateLayerSelection(LocalFrame*, const cc::LayerSelection&) override;
+#endif
 
   // ChromeClient methods:
   String AcceptLanguages() override;
   void SetCursorForPlugin(const WebCursorInfo&, LocalFrame*) override;
 
+#if 0 // BKTODO:
   // ChromeClientImpl:
   void SetNewWindowNavigationPolicy(WebNavigationPolicy);
+#endif
 
   // FileChooser calls this function to kick pending file chooser
   // requests.
   void DidCompleteFileChooser(FileChooser& file_chooser);
 
+#if 0 // BKTODO:
   void AutoscrollStart(WebFloatPoint viewport_point, LocalFrame*) override;
   void AutoscrollFling(WebFloatSize velocity, LocalFrame*) override;
+#endif
   void AutoscrollEnd(LocalFrame*) override;
 
   bool HasOpenedPopup() const override;
+#if 0 // BKTODO:
   PopupMenu* OpenPopupMenu(LocalFrame&, HTMLSelectElement&) override;
+#endif
   PagePopup* OpenPagePopup(PagePopupClient*) override;
   void ClosePagePopup(PagePopup*) override;
+#if 0 // BKTODO:
   DOMWindow* PagePopupWindowForTesting() const override;
+#endif
 
   void SetBrowserControlsState(float top_height,
                                float bottom_height,
                                bool shrinks_layout) override;
   void SetBrowserControlsShownRatio(float) override;
 
+#if 0 // BKTODO:
   bool ShouldOpenModalDialogDuringPageDismissal(
       LocalFrame&,
       DialogType,
       const String& dialog_message,
       Document::PageDismissalType) const override;
+#endif
 
   bool RequestPointerLock(LocalFrame*) override;
   void RequestPointerUnlock(LocalFrame*) override;
@@ -231,9 +270,11 @@ class CORE_EXPORT ChromeClientImpl final : public ChromeClient {
 
   WebLayerTreeView* GetWebLayerTreeView(LocalFrame*) override;
 
+#if 0 // BKTODO:
   void RequestDecode(LocalFrame*,
                      const PaintImage&,
                      base::OnceCallback<void(bool)>) override;
+#endif
 
  private:
   explicit ChromeClientImpl(WebViewImpl*);
@@ -248,7 +289,7 @@ class CORE_EXPORT ChromeClientImpl final : public ChromeClient {
 
   WebViewImpl* web_view_;  // Weak pointer.
   HeapHashSet<WeakMember<PopupOpeningObserver>> popup_opening_observers_;
-  Vector<scoped_refptr<FileChooser>> file_chooser_queue_;
+  // BKTODO: Vector<scoped_refptr<FileChooser>> file_chooser_queue_;
   Cursor last_set_mouse_cursor_for_testing_;
   bool cursor_overridden_;
   bool did_request_non_empty_tool_tip_;

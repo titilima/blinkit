@@ -211,7 +211,9 @@ class CORE_EXPORT ChromeClient
 
   virtual WebViewImpl* GetWebView() const = 0;
 
+#if 0 // BKTODO:
   virtual WebScreenInfo GetScreenInfo() const = 0;
+#endif
   virtual void SetCursor(const Cursor&, LocalFrame* local_root) = 0;
 
   virtual void SetCursorOverridden(bool) = 0;
@@ -273,7 +275,9 @@ class CORE_EXPORT ChromeClient
 
   virtual void OpenTextDataListChooser(HTMLInputElement&) = 0;
 
+#if 0 // BKTODO:
   virtual void OpenFileChooser(LocalFrame*, scoped_refptr<FileChooser>) = 0;
+#endif
 
   // Asychronous request to enumerate all files in a directory chosen by the
   // user.
@@ -285,11 +289,13 @@ class CORE_EXPORT ChromeClient
   virtual void AttachRootGraphicsLayer(GraphicsLayer*,
                                        LocalFrame* local_root) = 0;
 
+#if 0 // BKTODO:
   // Pass nullptr as the cc::Layer to detach the root layer.
   // This sets the cc::Layer for the LocalFrame's WebWidget, if it has
   // one. Otherwise it sets it for the WebViewImpl.
   virtual void AttachRootLayer(scoped_refptr<cc::Layer>,
                                LocalFrame* local_root) = 0;
+#endif
 
   virtual void AttachCompositorAnimationTimeline(CompositorAnimationTimeline*,
                                                  LocalFrame* local_root) {}
