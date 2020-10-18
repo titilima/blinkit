@@ -59,6 +59,10 @@ public:
 private:
     WebDocumentLoaderImpl(LocalFrame *frame, const ResourceRequest &request, const SubstituteData &substituteData);
 
+#ifndef BLINKIT_CRAWLER_ONLY
+    String DebugName(void) const override { return "WebDocumentLoaderImpl"; }
+#endif
+
     std::unique_ptr<ExtraData> m_extraData;
 };
 

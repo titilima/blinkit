@@ -72,6 +72,7 @@ public:
 
 #ifndef BLINKIT_CRAWLER_ONLY
     // Name for debugging, e.g. shown in memory-infra.
+    // BKTODO: Check if necessary.
     virtual String DebugName(void) const = 0;
 #endif
 protected:
