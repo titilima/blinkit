@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: page_scale_constraints_set.cc
+// Description: PageScaleConstraintsSet Class
+//      Author: Ziming Li
+//     Created: 2020-10-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -103,11 +114,14 @@ void PageScaleConstraintsSet::ComputeFinalConstraints() {
 }
 
 void PageScaleConstraintsSet::AdjustFinalConstraintsToContentsSize() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (page_->GetSettings().GetShrinksViewportContentToFit()) {
     final_constraints_.FitToContentsWidth(
         last_contents_width_,
         icb_size_.Width() - last_vertical_scrollbar_width_);
   }
+#endif
 
   final_constraints_.ResolveAutoInitialScale();
 }

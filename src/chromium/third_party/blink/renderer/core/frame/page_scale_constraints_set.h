@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: page_scale_constraints_set.h
+// Description: PageScaleConstraintsSet Class
+//      Author: Ziming Li
+//     Created: 2020-10-18
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -51,8 +62,8 @@ class Page;
 class CORE_EXPORT PageScaleConstraintsSet
     : public GarbageCollected<PageScaleConstraintsSet> {
  public:
-  static PageScaleConstraintsSet* Create(Page* page) {
-    return new PageScaleConstraintsSet(page);
+  static std::unique_ptr<PageScaleConstraintsSet> Create(Page* page) {
+    return base::WrapUnique(new PageScaleConstraintsSet(page));
   }
 
   void Trace(blink::Visitor*);
