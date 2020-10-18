@@ -11,8 +11,12 @@
 
 #include "web_view_impl.h"
 
+#include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "third_party/blink/renderer/core/frame/page_scale_constraints_set.h"
+#include "third_party/blink/renderer/core/loader/frame_load_request.h"
 #include "third_party/blink/renderer/core/page/chrome_client_impl.h"
 #include "third_party/blink/renderer/core/page/page.h"
+#include "url/gurl.h"
 
 using namespace blink;
 
@@ -57,10 +61,37 @@ void WebViewImpl::DispatchDidFinishLoad(void)
     ASSERT(false); // BKTODO:
 }
 
+IntSize WebViewImpl::FrameSize(void)
+{
+    // The frame size should match the viewport size at minimum scale, since the
+    // viewport must always be contained by the frame.
+    FloatSize frameSize(m_size);
+    frameSize.Scale(1 / MinimumPageScaleFactor());
+    return ExpandedIntSize(frameSize);
+}
+
+PageScaleConstraintsSet& WebViewImpl::GetPageScaleConstraintsSet(void) const
+{
+    return m_page->GetPageScaleConstraintsSet();
+}
+
 int WebViewImpl::LoadUI(const char *URI)
 {
-    ASSERT(false); // BKTODO:
-    return BK_ERR_FORBIDDEN;
+    GURL u(URI);
+    if (u.SchemeIsHTTPOrHTTPS())
+    {
+        BKLOG("URLs are not supported: %s", URI);
+        return BK_ERR_URI;
+    }
+
+    FrameLoadRequest request(nullptr, ResourceRequest(u));
+    m_page->GetFrame()->Loader().StartNavigation(request);
+    return BK_ERR_SUCCESS;
+}
+
+float WebViewImpl::MinimumPageScaleFactor(void) const
+{
+    return GetPageScaleConstraintsSet().FinalConstraints().minimum_scale;
 }
 
 void WebViewImpl::SetClient(const BkWebViewClient &client)
@@ -88,7 +119,34 @@ void WebViewImpl::SetVisibilityState(PageVisibilityState visibilityState, bool i
 
 void WebViewImpl::TransitionToCommittedForNewPage(void)
 {
+    // Check if we're shutting down.
+    if (!m_page)
+        return;
+
+    IntSize initialSize = FrameSize();
     ASSERT(false); // BKTODO:
+#if 0
+    Color base_background_color = web_view->BaseBackgroundColor();
+    if (!is_main_frame && Parent()->IsWebRemoteFrame())
+        base_background_color = Color::kTransparent;
+
+    GetFrame()->CreateView(initial_size, base_background_color);
+    if (is_main_frame) {
+        GetFrame()->View()->SetInitialViewportSize(
+            web_view->GetPageScaleConstraintsSet().InitialViewportSize());
+    }
+    if (web_view->ShouldAutoResize() && GetFrame()->IsLocalRoot()) {
+        GetFrame()->View()->EnableAutoSizeMode(web_view->MinAutoSize(),
+            web_view->MaxAutoSize());
+    }
+
+    GetFrame()->View()->SetInputEventsScaleForEmulation(
+        input_events_scale_factor_for_emulation_);
+    GetFrame()->View()->SetDisplayMode(web_view->DisplayMode());
+
+    if (frame_widget_)
+        frame_widget_->DidCreateLocalRootView();
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

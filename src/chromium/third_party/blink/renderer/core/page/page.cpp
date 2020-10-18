@@ -12,13 +12,16 @@
 #include "page.h"
 
 #include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "third_party/blink/renderer/core/frame/page_scale_constraints_set.h"
 
 namespace blink {
 
 Page::Page(PageClients &pageClients)
     : m_chromeClient(pageClients.chromeClient)
     , m_frame(LocalFrame::Create(pageClients.frameClient))
+    , m_pageScaleConstraintsSet(PageScaleConstraintsSet::Create(this))
 {
+    m_frame->Init();
 }
 
 Page::~Page(void) = default;
@@ -26,6 +29,16 @@ Page::~Page(void) = default;
 std::unique_ptr<Page> Page::Create(PageClients &pageClients)
 {
     return base::WrapUnique(new Page(pageClients));
+}
+
+PageScaleConstraintsSet& Page::GetPageScaleConstraintsSet(void)
+{
+    return *m_pageScaleConstraintsSet;
+}
+
+const PageScaleConstraintsSet& Page::GetPageScaleConstraintsSet(void) const
+{
+    return *m_pageScaleConstraintsSet;
 }
 
 void Page::SetVisibilityState(PageVisibilityState visibilityState, bool isInitialState)

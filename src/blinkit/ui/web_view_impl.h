@@ -16,8 +16,14 @@
 
 #include "bk_ui.h"
 #include "blinkit/blink_impl/local_frame_client_impl.h"
+#include "third_party/blink/public/platform/web_size.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page_visibility_state.h"
+#include "third_party/blink/renderer/platform/geometry/int_rect.h"
+
+namespace blink {
+class PageScaleConstraintsSet;
+}
 
 class WebViewImpl : public BlinKit::LocalFrameClientImpl
 {
@@ -37,6 +43,9 @@ public:
 protected:
     WebViewImpl(blink::PageVisibilityState visibilityState);
 private:
+    blink::IntSize FrameSize(void);
+    blink::PageScaleConstraintsSet& GetPageScaleConstraintsSet(void) const;
+    float MinimumPageScaleFactor(void) const;
     void SetVisibilityState(blink::PageVisibilityState visibilityState, bool isInitialState);
 
     // LocalFrameClient
@@ -47,6 +56,7 @@ private:
 
     BkWebViewClient m_client;
     std::unique_ptr<blink::ChromeClient> m_chromeClient;
+    blink::WebSize m_size;
     std::unique_ptr<blink::Page> m_page;
 };
 

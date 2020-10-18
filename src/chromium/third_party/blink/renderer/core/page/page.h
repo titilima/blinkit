@@ -21,6 +21,7 @@ namespace blink {
 
 class LocalFrame;
 class LocalFrameClient;
+class PageScaleConstraintsSet;
 
 class Page
 {
@@ -41,6 +42,9 @@ public:
 
     static std::unique_ptr<Page> Create(PageClients &pageClients);
 
+    LocalFrame* GetFrame(void) const { return m_frame.get(); }
+    PageScaleConstraintsSet& GetPageScaleConstraintsSet(void);
+    const PageScaleConstraintsSet& GetPageScaleConstraintsSet(void) const;
     PageVisibilityState VisibilityState(void) const { return m_visibilityState; }
     void SetVisibilityState(PageVisibilityState visibilityState, bool isInitialState);
 private:
@@ -48,6 +52,7 @@ private:
 
     ChromeClient *m_chromeClient;
     std::unique_ptr<LocalFrame> m_frame;
+    std::unique_ptr<PageScaleConstraintsSet> m_pageScaleConstraintsSet;
     PageVisibilityState m_visibilityState = PageVisibilityState::kVisible;
 };
 
