@@ -16,10 +16,6 @@
 
 #include "third_party/blink/renderer/core/dom/document.h"
 
-namespace blink {
-class DocumentInit;
-}
-
 namespace BlinKit {
 
 class CrawlerDocument final : public blink::Document
