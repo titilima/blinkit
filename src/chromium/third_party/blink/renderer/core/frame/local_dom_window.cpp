@@ -41,7 +41,6 @@
 #include "blinkit/crawler/dom/crawler_document.h"
 #include "third_party/blink/renderer/bindings/core/duk/duk_timer.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
-#include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/document_init.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
@@ -49,6 +48,9 @@
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/frame/navigator.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/html/html_document.h"
+#endif
 
 using namespace BlinKit;
 
@@ -183,7 +185,7 @@ Document* LocalDOMWindow::InstallNewDocument(const DocumentInit &init)
     if (init.GetFrame()->Client()->IsCrawler())
         m_document = std::make_unique<CrawlerDocument>(init);
     else
-        ASSERT(false); // BKTODO:
+        m_document = std::make_unique<HTMLDocument>(init);
 #endif
     m_document->Initialize();
 

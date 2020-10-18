@@ -42,8 +42,19 @@ namespace blink {
 
 class HTMLDocument : public Document
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    STATIC_ONLY(HTMLDocument);
+#endif
 public:
+#ifndef BLINKIT_CRAWLER_ONLY
+    HTMLDocument(const DocumentInit &init);
+#endif
+
     static bool IsCaseSensitiveAttribute(const QualifiedName &attributeName);
+private:
+#ifndef BLINKIT_CRAWLER_ONLY
+    Element* CreateElement(const AtomicString &localName, CreateElementFlags flags) override;
+#endif
 };
 
 } // namespace blink

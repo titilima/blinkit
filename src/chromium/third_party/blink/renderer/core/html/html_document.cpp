@@ -70,6 +70,24 @@
 
 namespace blink {
 
+#ifndef BLINKIT_CRAWLER_ONLY
+HTMLDocument::HTMLDocument(const DocumentInit &init) : Document(init)
+{
+#if 0 // BKTODO:
+    if (IsSrcdocDocument() || initializer.ImportsController()) {
+        DCHECK(InNoQuirksMode());
+        LockCompatibilityMode();
+    }
+#endif
+}
+
+Element* HTMLDocument::CreateElement(const AtomicString &localName, CreateElementFlags flags)
+{
+    ASSERT(false); // BKTODO:
+    return nullptr;
+}
+#endif
+
 static std::unordered_set<StringImpl *>* CreateHtmlCaseInsensitiveAttributesSet(void)
 {
     // This is the list of attributes in HTML 4.01 with values marked as "[CI]" or
