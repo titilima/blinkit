@@ -1139,6 +1139,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\navigator_id.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\navigator_language.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints_set.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\viewport_data.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_collection.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_document.cpp" />
@@ -2934,6 +2935,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\navigator_id.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\navigator_language.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints_set.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\settings.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\use_counter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\viewport_data.h" />

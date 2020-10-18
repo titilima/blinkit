@@ -5015,6 +5015,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\exported\web_cursor_info.cc">
       <Filter>renderer\platform\exported</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints_set.cc">
+      <Filter>renderer\core\frame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -11187,6 +11190,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_visibility_state.h">
       <Filter>renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints_set.h">
+      <Filter>renderer\core\frame</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
