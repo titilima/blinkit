@@ -40,28 +40,49 @@ namespace blink {
 
 enum class DynamicRestyleFlags;
 enum class ElementFlags;
+class NodeListsNodeData;
 #ifndef BLINKIT_CRAWLER_ONLY
+class ComputedStyle;
 class LayoutObject;
 #endif
-class NodeListsNodeData;
 
 #ifndef BLINKIT_CRAWLER_ONLY
 class NodeRenderingData
 {
 public:
-    bool IsSharedEmptyData(void)
+    explicit NodeRenderingData(LayoutObject *layoutObject);
+    explicit NodeRenderingData(LayoutObject *layoutObject, scoped_refptr<ComputedStyle> nonAttachedStyle);
+
+    LayoutObject* GetLayoutObject(void) const { return m_layoutObject; }
+    void SetLayoutObject(LayoutObject *layoutObject)
     {
-        ASSERT(false); // BKTODO:
-        return false;
+        ASSERT(!IsSharedEmptyData());
+        m_layoutObject = layoutObject;
     }
+
+    ComputedStyle* GetNonAttachedStyle(void) const { return m_nonAttachedStyle.get(); }
+    void SetNonAttachedStyle(scoped_refptr<ComputedStyle> nonAttachedStyle);
+
+    static NodeRenderingData* SharedEmptyData(void);
+    bool IsSharedEmptyData(void) { return this == SharedEmptyData(); }
+private:
+    LayoutObject *m_layoutObject;
+    scoped_refptr<ComputedStyle> m_nonAttachedStyle;
+    DISALLOW_COPY_AND_ASSIGN(NodeRenderingData);
 };
 #endif
 
 class NodeRareDataBase
 {
-public:
-protected:
 #ifndef BLINKIT_CRAWLER_ONLY
+public:
+    NodeRenderingData* GetNodeRenderingData(void) const { return m_nodeLayoutData; }
+    void SetNodeRenderingData(NodeRenderingData *nodeLayoutData)
+    {
+        ASSERT(nullptr != nodeLayoutData);
+        m_nodeLayoutData = m_nodeLayoutData;
+    }
+protected:
     explicit NodeRareDataBase(NodeRenderingData *nodeLayoutData) : m_nodeLayoutData(nodeLayoutData) {}
     ~NodeRareDataBase(void)
     {

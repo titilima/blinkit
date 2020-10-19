@@ -45,6 +45,30 @@
 
 namespace blink {
 
+#ifndef BLINKIT_CRAWLER_ONLY
+NodeRenderingData::NodeRenderingData(LayoutObject *layoutObject) : m_layoutObject(layoutObject)
+{
+}
+
+NodeRenderingData::NodeRenderingData(LayoutObject *layoutObject, scoped_refptr<ComputedStyle> nonAttachedStyle)
+    : m_layoutObject(layoutObject), m_nonAttachedStyle(nonAttachedStyle)
+{
+}
+
+void NodeRenderingData::SetNonAttachedStyle(scoped_refptr<ComputedStyle> nonAttachedStyle)
+{
+    ASSERT(!IsSharedEmptyData());
+    ASSERT(!nonAttachedStyle || !m_nonAttachedStyle);
+    m_nonAttachedStyle = nonAttachedStyle;
+}
+
+NodeRenderingData* NodeRenderingData::SharedEmptyData(void)
+{
+    static NodeRenderingData s_sharedEmptyData(nullptr);
+    return &s_sharedEmptyData;
+}
+#endif
+
 #ifdef BLINKIT_CRAWLER_ONLY
 NodeRareData::NodeRareData(void) : m_elementFlags(0), m_restyleFlags(0) {}
 #else
