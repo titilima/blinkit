@@ -549,10 +549,6 @@ class CORE_EXPORT LayoutObject : public ImageResourceObserver,
   // initial 'display' value is inline).
   static LayoutObject* CreateObject(Element*, const ComputedStyle&);
 
-  // LayoutObjects are allocated out of the rendering partition.
-  void* operator new(size_t);
-  void operator delete(void*);
-
   bool IsPseudoElement() const {
     return GetNode() && GetNode()->IsPseudoElement();
   }

@@ -217,24 +217,6 @@ static_assert(sizeof(LayoutObject) == sizeof(SameSizeAsLayoutObject),
 
 bool LayoutObject::affects_parent_block_ = false;
 
-void* LayoutObject::operator new(size_t sz) {
-  DCHECK(IsMainThread());
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
-  return WTF::Partitions::LayoutPartition()->Alloc(
-      sz, WTF_HEAP_PROFILER_TYPE_NAME(LayoutObject));
-#endif
-}
-
-void LayoutObject::operator delete(void* ptr) {
-  DCHECK(IsMainThread());
-  ASSERT(false); // BKTODO:
-#if 0
-  base::PartitionFree(ptr);
-#endif
-}
-
 LayoutObject* LayoutObject::CreateObject(Element* element,
                                          const ComputedStyle& style) {
   DCHECK(IsAllowedToModifyLayoutTreeStructure(element->GetDocument()));
@@ -328,11 +310,8 @@ LayoutObject::LayoutObject(Node* node)
 #endif
       bitfields_(node) {
   InstanceCounters::IncrementCounter(InstanceCounters::kLayoutObjectCounter);
-  ASSERT(false); // BKTODO:
-#if 0
   if (node_)
     GetFrameView()->IncrementLayoutObjectCount();
-#endif
 }
 
 LayoutObject::~LayoutObject() {
