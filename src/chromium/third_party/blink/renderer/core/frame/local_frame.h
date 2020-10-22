@@ -46,6 +46,9 @@
 #include "third_party/blink/renderer/core/frame/frame.h"
 #include "third_party/blink/renderer/core/loader/frame_loader.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/frame/local_frame_view.h"
+#endif
 
 namespace base {
 class SingleThreadTaskRunner;
@@ -73,6 +76,12 @@ public:
     NavigationScheduler& GetNavigationScheduler(void) const { return *m_navigationScheduler; }
     LocalDOMWindow* DomWindow(void) const;
     void SetDOMWindow(std::unique_ptr<LocalDOMWindow> &domWindow);
+#ifndef BLINKIT_CRAWLER_ONLY
+    LocalFrameView* View(void) const override { return m_view.get(); }
+    void SetView(std::shared_ptr<LocalFrameView> &view);
+    float PageZoomFactor(void) const { return m_pageZoomFactor; }
+    void SetPageZoomFactor(float factor);
+#endif
     Document* GetDocument(void) const;
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(TaskType type);
     ScriptController& GetScriptController(void) const { return *m_scriptController; }
@@ -97,6 +106,14 @@ private:
     std::unique_ptr<FrameScheduler> m_frameScheduler;
     mutable FrameLoader m_loader;
     std::unique_ptr<NavigationScheduler> m_navigationScheduler;
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    // Cleared by LocalFrame::Detach(), so as to keep the observable lifespan
+    // of LocalFrame::View().
+    std::shared_ptr<LocalFrameView> m_view;
+
+    float m_pageZoomFactor = 1.0;
+#endif
 
     const std::unique_ptr<ScriptController> m_scriptController;
 

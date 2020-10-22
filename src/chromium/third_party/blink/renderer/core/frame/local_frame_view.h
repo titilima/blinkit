@@ -14,6 +14,17 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/core/frame/frame_view.h"
 #include "third_party/blink/renderer/platform/geometry/layout_size.h"
+
+namespace blink {
+
+class LocalFrameView final : public FrameView
+{
+public:
+    void IncrementLayoutObjectCount(void) {} // Just a placeholder
+};
+
+} // namespace blink
 
 #endif // BLINKIT_BLINK_LOCAL_FRAME_VIEW_H

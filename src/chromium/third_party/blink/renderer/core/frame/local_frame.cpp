@@ -224,6 +224,18 @@ void LocalFrame::SetDOMWindow(std::unique_ptr<LocalDOMWindow> &domWindow)
     m_domWindow = std::move(domWindow);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+void LocalFrame::SetPageZoomFactor(float factor)
+{
+    ASSERT(false); // BKTODO:
+}
+
+void LocalFrame::SetView(std::shared_ptr<LocalFrameView> &view)
+{
+    ASSERT(false); // BKTODO:
+}
+#endif
+
 bool LocalFrame::ShouldReuseDefaultView(void) const
 {
     return m_loader.StateMachine()->IsDisplayingInitialEmptyDocument();

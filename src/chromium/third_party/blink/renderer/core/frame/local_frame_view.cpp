@@ -10,3 +10,7 @@
 // -------------------------------------------------
 
 #include "local_frame_view.h"
+
+namespace blink {
+
+} // namespace blink

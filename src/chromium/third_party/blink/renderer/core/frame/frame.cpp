@@ -46,8 +46,15 @@
 
 namespace blink {
 
-Frame::Frame(FrameClient *client, Page *page) : m_client(client), m_page(page)
+Frame::Frame(FrameClient *client, Page *page)
+    : m_client(client)
+#ifndef BLINKIT_CRAWLER_ONLY
+    , m_page(page)
+#endif
 {
+#ifdef BLINKIT_CRAWLER_ONLY
+    ASSERT(nullptr == page);
+#endif
 }
 
 Frame::~Frame(void) = default;
@@ -82,5 +89,12 @@ void Frame::Detach(FrameDetachType type)
     ASSERT(false); // BKTODO: page_ = nullptr;
 #endif
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+Page* Frame::GetPage(void) const
+{
+    return m_page;
+}
+#endif
 
 } // namespace blink

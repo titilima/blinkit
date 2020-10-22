@@ -44,6 +44,9 @@
 
 #include "third_party/blink/renderer/core/frame/frame_lifecycle.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/frame/frame_view.h"
+#endif
 
 namespace blink {
 
@@ -62,6 +65,10 @@ public:
 
     FrameClient* Client(void) const { return m_client; }
     DOMWindow* DomWindow(void) const { return m_domWindow.get(); }
+#ifndef BLINKIT_CRAWLER_ONLY
+    Page* GetPage(void) const;  // Null when the frame is detached.
+    virtual FrameView* View(void) const = 0;
+#endif
 
     void Detach(FrameDetachType type);
 
@@ -84,7 +91,9 @@ protected:
     // that are detaching are considered to be in neither state.
     bool IsDetached(void) const { return m_lifecycle.GetState() == FrameLifecycle::kDetached; }
 
+#ifndef BLINKIT_CRAWLER_ONLY
     Member<Page> m_page;
+#endif
     std::unique_ptr<DOMWindow> m_domWindow;
 private:
     Member<FrameClient> m_client;
