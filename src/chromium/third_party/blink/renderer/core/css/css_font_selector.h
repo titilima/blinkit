@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_font_selector.h
+// Description: CSSFontSelector Class
+//      Author: Ziming Li
+//     Created: 2020-10-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2007, 2008, 2011 Apple Inc. All rights reserved.
  *
@@ -30,7 +41,6 @@
 #include "third_party/blink/renderer/core/css/font_face_cache.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/platform/fonts/font_selector.h"
-#include "third_party/blink/renderer/platform/fonts/generic_font_family_settings.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/forward.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
@@ -73,12 +83,7 @@ class CORE_EXPORT CSSFontSelector : public FontSelector {
   ExecutionContext* GetExecutionContext() const override { return document_; }
   FontFaceCache* GetFontFaceCache() override { return &font_face_cache_; }
 
-  const GenericFontFamilySettings& GetGenericFontFamilySettings() const {
-    return generic_font_family_settings_;
-  }
   void UpdateGenericFontFamilySettings(Document&);
-
-  void Trace(blink::Visitor*) override;
 
  protected:
   explicit CSSFontSelector(Document*);
@@ -93,7 +98,6 @@ class CORE_EXPORT CSSFontSelector : public FontSelector {
   // FIXME: Move to Document or StyleEngine.
   FontFaceCache font_face_cache_;
   HeapHashSet<WeakMember<FontSelectorClient>> clients_;
-  GenericFontFamilySettings generic_font_family_settings_;
 };
 
 }  // namespace blink

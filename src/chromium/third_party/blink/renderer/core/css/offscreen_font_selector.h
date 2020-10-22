@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: offscreen_font_selector.h
+// Description: OffscreenFontSelector Class
+//      Author: Ziming Li
+//     Created: 2020-10-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -8,7 +19,6 @@
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/css/font_face_cache.h"
 #include "third_party/blink/renderer/platform/fonts/font_selector.h"
-#include "third_party/blink/renderer/platform/fonts/generic_font_family_settings.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/forward.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
@@ -42,14 +52,8 @@ class CORE_EXPORT OffscreenFontSelector : public FontSelector {
   void RegisterForInvalidationCallbacks(FontSelectorClient*) override;
   void UnregisterForInvalidationCallbacks(FontSelectorClient*) override;
 
-  const GenericFontFamilySettings& GetGenericFontFamilySettings() const {
-    return generic_font_family_settings_;
-  }
-
   void FontCacheInvalidated() override;
   void FontFaceInvalidated() override;
-
-  void UpdateGenericFontFamilySettings(const GenericFontFamilySettings&);
 
   FontFaceCache* GetFontFaceCache() override { return &font_face_cache_; }
 
@@ -61,16 +65,12 @@ class CORE_EXPORT OffscreenFontSelector : public FontSelector {
     return execution_context_;
   }
 
-  void Trace(blink::Visitor*) override;
-
  protected:
   explicit OffscreenFontSelector(ExecutionContext*);
 
   void DispatchInvalidationCallbacks();
 
  private:
-  GenericFontFamilySettings generic_font_family_settings_;
-
   FontFaceCache font_face_cache_;
 
   Member<ExecutionContext> execution_context_;

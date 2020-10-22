@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: offscreen_font_selector.cc
+// Description: OffscreenFontSelector Class
+//      Author: Ziming Li
+//     Created: 2020-10-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -26,11 +37,6 @@ OffscreenFontSelector::OffscreenFontSelector(ExecutionContext* context)
 
 OffscreenFontSelector::~OffscreenFontSelector() = default;
 
-void OffscreenFontSelector::UpdateGenericFontFamilySettings(
-    const GenericFontFamilySettings& settings) {
-  generic_font_family_settings_ = settings;
-}
-
 void OffscreenFontSelector::RegisterForInvalidationCallbacks(
     FontSelectorClient* client) {}
 
@@ -45,6 +51,9 @@ scoped_refptr<FontData> OffscreenFontSelector::GetFontData(
     return face->GetFontData(font_description);
   }
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   AtomicString settings_family_name = FamilyNameFromSettings(
       generic_font_family_settings_, font_description, family_name);
   if (settings_family_name.IsEmpty())
@@ -52,6 +61,7 @@ scoped_refptr<FontData> OffscreenFontSelector::GetFontData(
 
   return FontCache::GetFontCache()->GetFontData(font_description,
                                                 settings_family_name);
+#endif
 }
 
 void OffscreenFontSelector::WillUseFontData(
@@ -75,12 +85,16 @@ void OffscreenFontSelector::WillUseRange(
 bool OffscreenFontSelector::IsPlatformFamilyMatchAvailable(
     const FontDescription& font_description,
     const AtomicString& passed_family) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   AtomicString family = FamilyNameFromSettings(generic_font_family_settings_,
                                                font_description, passed_family);
   if (family.IsEmpty())
     family = passed_family;
   return FontCache::GetFontCache()->IsPlatformFamilyMatchAvailable(
       font_description, family);
+#endif
 }
 
 void OffscreenFontSelector::ReportNotDefGlyph() const {}
@@ -91,12 +105,6 @@ void OffscreenFontSelector::FontCacheInvalidated() {
 
 void OffscreenFontSelector::FontFaceInvalidated() {
   FontCacheInvalidated();
-}
-
-void OffscreenFontSelector::Trace(blink::Visitor* visitor) {
-  visitor->Trace(execution_context_);
-  visitor->Trace(font_face_cache_);
-  FontSelector::Trace(visitor);
 }
 
 }  // namespace blink

@@ -54,14 +54,7 @@
 namespace blink {
 
 CSSFontSelector::CSSFontSelector(Document* document)
-#if 0 // BKTODO:
-    : document_(document),
-      generic_font_family_settings_(
-          document->GetFrame()->GetSettings()->GetGenericFontFamilySettings()) {
-#else
     : document_(document) {
-#endif
-  ASSERT(false); // BKTODO:
   // FIXME: An old comment used to say there was no need to hold a reference to
   // document_ because "we are guaranteed to be destroyed before the document".
   // But there does not seem to be any such guarantee.
@@ -109,6 +102,9 @@ scoped_refptr<FontData> CSSFontSelector::GetFontData(
           font_face_cache_.Get(font_description, family_name))
     return face->GetFontData(font_description);
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   // Try to return the correct font based off our settings, in case we were
   // handed the generic font family name.
   AtomicString settings_family_name = FamilyNameFromSettings(
@@ -118,6 +114,7 @@ scoped_refptr<FontData> CSSFontSelector::GetFontData(
 
   return FontCache::GetFontCache()->GetFontData(font_description,
                                                 settings_family_name);
+#endif
 }
 
 void CSSFontSelector::WillUseFontData(const FontDescription& font_description,
@@ -139,12 +136,16 @@ void CSSFontSelector::WillUseRange(const FontDescription& font_description,
 bool CSSFontSelector::IsPlatformFamilyMatchAvailable(
     const FontDescription& font_description,
     const AtomicString& passed_family) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   AtomicString family = FamilyNameFromSettings(generic_font_family_settings_,
                                                font_description, passed_family);
   if (family.IsEmpty())
     family = passed_family;
   return FontCache::GetFontCache()->IsPlatformFamilyMatchAvailable(
       font_description, family);
+#endif
 }
 
 void CSSFontSelector::UpdateGenericFontFamilySettings(Document& document) {
@@ -161,13 +162,6 @@ void CSSFontSelector::UpdateGenericFontFamilySettings(Document& document) {
 void CSSFontSelector::ReportNotDefGlyph() const {
   DCHECK(document_);
   UseCounter::Count(document_, WebFeature::kFontShapingNotDefGlyphObserved);
-}
-
-void CSSFontSelector::Trace(blink::Visitor* visitor) {
-  visitor->Trace(document_);
-  visitor->Trace(font_face_cache_);
-  visitor->Trace(clients_);
-  FontSelector::Trace(visitor);
 }
 
 }  // namespace blink
