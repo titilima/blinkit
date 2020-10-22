@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "blinkit/app/heap_storage.h"
 #include "third_party/blink/renderer/platform/heap/heap_allocator.h"
 
 namespace blink {
@@ -23,11 +24,12 @@ class Persistent
 {
 public:
     Persistent(void) = default;
-    Persistent(const T *)
+    Persistent(T *raw) : m_raw(raw)
     {
-        ASSERT(false); // BKTODO:
+        if (nullptr != raw)
+            BlinKit::HeapStorage::SavePersistentObject(*raw);
     }
-    Persistent(const T &)
+    Persistent(T &raw)
     {
         ASSERT(false); // BKTODO:
     }
@@ -60,6 +62,8 @@ public:
     {
         ASSERT(false); // BKTODO:
     }
+private:
+    T *m_raw = nullptr;
 };
 
 template <typename T, typename U>

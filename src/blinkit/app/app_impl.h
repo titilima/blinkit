@@ -22,6 +22,9 @@ namespace BlinKit {
 
 class CookieJarImpl;
 class MimeRegistryImpl;
+#ifndef BLINKIT_CRAWLER_ONLY
+class HeapStorage;
+#endif
 
 class AppImpl : public blink::Platform, public ThreadImpl
 {
@@ -48,6 +51,9 @@ private:
     const int m_mode;
     BkAppClient m_client;
     std::unique_ptr<blink::scheduler::WebThreadScheduler> m_mainThreadScheduler;
+#ifndef BLINKIT_CRAWLER_ONLY
+    std::unique_ptr<HeapStorage> m_heapStorage;
+#endif
 };
 
 } // namespace BlinKit

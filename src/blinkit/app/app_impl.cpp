@@ -12,6 +12,7 @@
 #include "app_impl.h"
 
 #include "base/single_thread_task_runner.h"
+#include "blinkit/app/heap_storage.h"
 #include "blinkit/blink_impl/url_loader_impl.h"
 #include "third_party/blink/public/platform/web_thread_scheduler.h"
 #include "third_party/blink/public/web/blink.h"
@@ -23,7 +24,7 @@
 
 namespace BlinKit {
 
-AppImpl::AppImpl(int mode, BkAppClient *client) : m_mode(mode)
+AppImpl::AppImpl(int mode, BkAppClient *client) : m_mode(mode), m_heapStorage(new HeapStorage)
 {
     memset(&m_client, 0, sizeof(BkAppClient));
     if (nullptr != client)
