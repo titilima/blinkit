@@ -52,16 +52,9 @@ FontBuilder::FontBuilder(const Document* document)
 }
 
 void FontBuilder::SetInitial(float effective_zoom) {
-  ASSERT(false); // BKTODO:
-#if 0
-  DCHECK(document_->GetSettings());
-  if (!document_->GetSettings())
-    return;
-
   SetFamilyDescription(font_description_,
                        FontBuilder::InitialFamilyDescription());
   SetSize(font_description_, FontBuilder::InitialSize());
-#endif
 }
 
 void FontBuilder::DidChangeEffectiveZoom() {
@@ -83,13 +76,7 @@ FontFamily FontBuilder::StandardFontFamily() const {
 }
 
 AtomicString FontBuilder::StandardFontFamilyName() const {
-  ASSERT(false); // BKTODO:
-#if 0
-  Settings* settings = document_->GetSettings();
-  if (settings)
-    return settings->GetGenericFontFamilySettings().Standard();
-#endif
-  return AtomicString();
+  return Settings::StandardFontFamilyName();
 }
 
 AtomicString FontBuilder::GenericFontFamilyName(
@@ -255,9 +242,6 @@ float FontBuilder::GetComputedSizeFromSpecifiedSize(
     float specified_size) {
   DCHECK(document_);
   float zoom_factor = effective_zoom;
-  ASSERT(false); // BKTODO:
-  return 0;
-#if 0
   // FIXME: Why is this here!!!!?!
   if (LocalFrame* frame = document_->GetFrame())
     zoom_factor *= frame->TextZoomFactor();
@@ -265,7 +249,6 @@ float FontBuilder::GetComputedSizeFromSpecifiedSize(
   return FontSizeFunctions::GetComputedSizeFromSpecifiedSize(
       document_, zoom_factor, font_description.IsAbsoluteSize(),
       specified_size);
-#endif
 }
 
 void FontBuilder::CheckForGenericFamilyChange(
@@ -292,19 +275,13 @@ void FontBuilder::CheckForGenericFamilyChange(
     size = FontSizeForKeyword(new_description.KeywordSize(),
                               new_description.IsMonospace());
   } else {
-    ASSERT(false); // BKTODO:
-#if 0
-    Settings* settings = document_->GetSettings();
     float fixed_scale_factor =
-        (settings && settings->GetDefaultFixedFontSize() &&
-         settings->GetDefaultFontSize())
-            ? static_cast<float>(settings->GetDefaultFixedFontSize()) /
-                  settings->GetDefaultFontSize()
+        (Settings::DefaultFixedFontSize && Settings::DefaultFontSize)
+            ? static_cast<float>(Settings::DefaultFixedFontSize) / Settings::DefaultFontSize
             : 1;
     size = old_description.IsMonospace()
                ? new_description.SpecifiedSize() / fixed_scale_factor
                : new_description.SpecifiedSize() * fixed_scale_factor;
-#endif
   }
 
   new_description.SetSpecifiedSize(size);
