@@ -43,6 +43,7 @@
 
 #include "third_party/blink/renderer/core/css_value_keywords.h"
 #include "third_party/blink/renderer/core/dom/document.h"
+#include "third_party/blink/renderer/core/frame/settings.h"
 
 namespace blink {
 
@@ -59,9 +60,6 @@ float FontSizeFunctions::GetComputedSizeFromSpecifiedSize(
   if (fabsf(specified_size) < std::numeric_limits<float>::epsilon())
     return 0.0f;
 
-  ASSERT(false); // BKTODO:
-  return 1.0f;
-#if 0
   // We support two types of minimum font size. The first is a hard override
   // that applies to all fonts. This is "minSize." The second type of minimum
   // font size is a "smart minimum" that is applied only when the Web page can't
@@ -74,14 +72,10 @@ float FontSizeFunctions::GetComputedSizeFromSpecifiedSize(
   // explicit pixel size that is smaller, since sites will mis-render otherwise
   // (e.g., http://www.gamespot.com with a 9px minimum).
 
-  Settings* settings = document->GetSettings();
-  if (!settings)
-    return 1.0f;
-
   float zoomed_size = specified_size * zoom_factor;
   if (apply_minimum_font_size) {
-    int min_size = settings->GetMinimumFontSize();
-    int min_logical_size = settings->GetMinimumLogicalFontSize();
+    int min_size = Settings::MinimumFontSize;
+    int min_logical_size = Settings::MinimumLogicalFontSize;
 
     // Apply the hard minimum first. We only apply the hard minimum if after
     // zooming we're still too small.
@@ -100,7 +94,6 @@ float FontSizeFunctions::GetComputedSizeFromSpecifiedSize(
   // Also clamp to a reasonable maximum to prevent insane font sizes from
   // causing crashes on various platforms (I'm looking at you, Windows.)
   return std::min(kMaximumAllowedFontSize, zoomed_size);
-#endif
 }
 
 const int kFontSizeTableMax = 16;
@@ -142,33 +135,25 @@ static const int kStrictFontSizeTable[kFontSizeTableMax - kFontSizeTableMin +
 static const float kFontSizeFactors[kTotalKeywords] = {
     0.60f, 0.75f, 0.89f, 1.0f, 1.2f, 1.5f, 2.0f, 3.0f};
 
-#if 0 // BKTODO:
-static int inline RowFromMediumFontSizeInRange(const Settings* settings,
-                                               bool quirks_mode,
+static int inline RowFromMediumFontSizeInRange(bool quirks_mode,
                                                bool is_monospace,
                                                int& medium_size) {
-  medium_size = settings ? (is_monospace ? settings->GetDefaultFixedFontSize()
-                                         : settings->GetDefaultFontSize())
-                         : kDefaultMediumFontSize;
+  medium_size = is_monospace ? Settings::DefaultFixedFontSize
+                             : Settings::DefaultFontSize;
   if (medium_size >= kFontSizeTableMin && medium_size <= kFontSizeTableMax)
     return medium_size - kFontSizeTableMin;
   return -1;
 }
-#endif
 
 float FontSizeFunctions::FontSizeForKeyword(const Document* document,
                                             unsigned keyword,
                                             bool is_monospace) {
-  ASSERT(false); // BKTODO:
-  return kDefaultMediumFontSize;
-#if 0
   DCHECK_GE(keyword, 1u);
   DCHECK_LE(keyword, 8u);
-  const Settings* settings = document ? document->GetSettings() : nullptr;
   bool quirks_mode = document ? document->InQuirksMode() : false;
 
   int medium_size = 0;
-  int row = RowFromMediumFontSizeInRange(settings, quirks_mode, is_monospace,
+  int row = RowFromMediumFontSizeInRange(quirks_mode, is_monospace,
                                          medium_size);
   if (row >= 0) {
     int col = (keyword - 1);
@@ -177,11 +162,9 @@ float FontSizeFunctions::FontSizeForKeyword(const Document* document,
   }
 
   // Value is outside the range of the table. Apply the scale factor instead.
-  float min_logical_size =
-      settings ? std::max(settings->GetMinimumLogicalFontSize(), 1) : 1;
+  float min_logical_size = std::max(Settings::MinimumLogicalFontSize, 1);
   return std::max(kFontSizeFactors[keyword - 1] * medium_size,
                   min_logical_size);
-#endif
 }
 
 template <typename T>
@@ -200,16 +183,9 @@ static int FindNearestLegacyFontSize(int pixel_font_size,
 int FontSizeFunctions::LegacyFontSize(const Document* document,
                                       int pixel_font_size,
                                       bool is_monospace) {
-  ASSERT(false); // BKTODO:
-  return 1;
-#if 0
-  const Settings* settings = document->GetSettings();
-  if (!settings)
-    return 1;
-
   bool quirks_mode = document->InQuirksMode();
   int medium_size = 0;
-  int row = RowFromMediumFontSizeInRange(settings, quirks_mode, is_monospace,
+  int row = RowFromMediumFontSizeInRange(quirks_mode, is_monospace,
                                          medium_size);
   if (row >= 0) {
     return FindNearestLegacyFontSize<int>(
@@ -219,7 +195,6 @@ int FontSizeFunctions::LegacyFontSize(const Document* document,
 
   return FindNearestLegacyFontSize<float>(pixel_font_size, kFontSizeFactors,
                                           medium_size);
-#endif
 }
 
 }  // namespace blink
