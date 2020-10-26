@@ -975,12 +975,8 @@ void LayoutView::WillBeDestroyed() {
 void LayoutView::UpdateFromStyle() {
   LayoutBlockFlow::UpdateFromStyle();
 
-  ASSERT(false); // BKTODO:
-#if 0
   // LayoutView of the main frame is responsible for painting base background.
-  if (GetDocument().IsInMainFrame())
-    SetHasBoxDecorationBackground(true);
-#endif
+  SetHasBoxDecorationBackground(true);
 }
 
 bool LayoutView::RecalcOverflow() {

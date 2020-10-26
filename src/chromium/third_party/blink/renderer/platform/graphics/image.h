@@ -168,11 +168,7 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
 
   // Typically the ImageResourceContent that owns us.
   ImageObserver* GetImageObserver() const {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
     return image_observer_disabled_ ? nullptr : image_observer_;
-#endif
   }
   void ClearImageObserver() { image_observer_ = nullptr; }
   // To avoid interleaved accesses to |m_imageObserverDisabled|, do not call
@@ -357,7 +353,7 @@ class PLATFORM_EXPORT Image : public ThreadSafeRefCounted<Image> {
   // itself out when it switches to another Image.
   // When the ImageResourceContent is garbage collected while Image is still
   // alive, |image_observer_| is cleared by WeakPersistent mechanism.
-  WeakPersistent<ImageObserver> image_observer_;
+  ImageObserver *image_observer_;
 #if 0 // BKTODO:
   PaintImage::Id stable_image_id_;
 #endif

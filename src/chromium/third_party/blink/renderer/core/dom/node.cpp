@@ -783,6 +783,33 @@ void Node::RemovedFrom(ContainerNode &insertionPoint)
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+void Node::SetLayoutObject(LayoutObject *layoutObject)
+{
+    NodeRenderingData *nodeLayoutData = HasRareData()
+        ? m_data.m_rareData->GetNodeRenderingData()
+        : m_data.m_nodeLayoutData;
+
+    // Already pointing to a non empty NodeRenderingData so just set the pointer
+    // to the new LayoutObject.
+    if (!nodeLayoutData->IsSharedEmptyData())
+    {
+        nodeLayoutData->SetLayoutObject(layoutObject);
+        return;
+    }
+
+    if (nullptr == layoutObject)
+        return;
+
+    // Swap the NodeRenderingData to point to a new NodeRenderingData instead of
+    // the static SharedEmptyData instance.
+    ASSERT(nullptr == nodeLayoutData->GetNonAttachedStyle());
+    nodeLayoutData = new NodeRenderingData(layoutObject);
+    if (HasRareData())
+        m_data.m_rareData->SetNodeRenderingData(nodeLayoutData);
+    else
+        m_data.m_nodeLayoutData = nodeLayoutData;
+}
+
 void Node::SetNeedsStyleInvalidation(void)
 {
     ASSERT(IsContainerNode());

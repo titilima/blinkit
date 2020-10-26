@@ -124,9 +124,7 @@ scoped_refptr<ComputedStyle> ComputedStyle::CreateInitialStyle() {
 }
 
 ComputedStyle& ComputedStyle::MutableInitialStyle() {
-  ASSERT(false); // BKTODO: LEAK_SANITIZER_DISABLED_SCOPE;
-  DEFINE_STATIC_REF(ComputedStyle, initial_style,
-                    (ComputedStyle::CreateInitialStyle()));
+  static scoped_refptr<ComputedStyle> initial_style = CreateInitialStyle();
   return *initial_style;
 }
 
@@ -162,18 +160,10 @@ scoped_refptr<ComputedStyle> ComputedStyle::Clone(const ComputedStyle& other) {
 }
 
 ALWAYS_INLINE ComputedStyle::ComputedStyle()
-    : ComputedStyleBase(), RefCounted<ComputedStyle>() {
-  ASSERT(false); // BKTODO: svg_style_.Init();
-}
+    : ComputedStyleBase(), RefCounted<ComputedStyle>() {}
 
 ALWAYS_INLINE ComputedStyle::ComputedStyle(const ComputedStyle& o)
-    : ComputedStyleBase(o),
-#if 0 // BKTODO:
-      RefCounted<ComputedStyle>(),
-      svg_style_(o.svg_style_) {}
-#else
-      RefCounted<ComputedStyle>() {}
-#endif
+    : ComputedStyleBase(o), RefCounted<ComputedStyle>() {}
 
 static StyleRecalcChange DiffPseudoStyles(const ComputedStyle& old_style,
                                           const ComputedStyle& new_style) {

@@ -87,19 +87,15 @@ StyleEngine::StyleEngine(Document& document)
       is_master_(true), // BKTODO: !document.IsHTMLImport()),
       document_style_sheet_collection_(
           DocumentStyleSheetCollection::Create(document)) {
-  ASSERT(false); // BKTODO:
   if (document.GetFrame()) {
     // We don't need to create CSSFontSelector for imported document or
     // HTMLTemplateElement's document, because those documents have no frame.
     font_selector_ = CSSFontSelector::Create(&document);
     font_selector_->RegisterForInvalidationCallbacks(this);
   }
-#if 0
-  if (document.IsInMainFrame())
-    viewport_resolver_ = ViewportStyleResolver::Create(document);
+  viewport_resolver_ = ViewportStyleResolver::Create(document);
   if (IsMaster())
     global_rule_set_ = CSSGlobalRuleSet::Create();
-#endif
   // Document is initially style dirty.
   style_recalc_root_.Update(nullptr, &document);
 }

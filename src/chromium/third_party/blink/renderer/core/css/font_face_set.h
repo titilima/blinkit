@@ -62,7 +62,7 @@ class CORE_EXPORT FontFaceSet : public EventTargetWithInlineData,
             context.GetTaskRunner(TaskType::kInternalDefault))) {}
 #else
         should_fire_loading_event_(false) {
-    ASSERT(false); // BKTODO:
+    // BKTODO:
   }
 #endif
   ~FontFaceSet() override = default;

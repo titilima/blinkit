@@ -158,6 +158,7 @@ public:
     unsigned CountChildren(void) const;
     bool contains(const Node *node) const;
     bool ContainsIncludingHostElements(const Node &node) const;
+    Node* ToNode(void) final { return this; }
 
     // If this node is in a shadow tree, returns its shadow host. Otherwise,
     // returns nullptr.
@@ -346,9 +347,11 @@ public:
     // have one as well.
     LayoutObject* GetLayoutObject(void) const
     {
-        ASSERT(false); // BKTODO:
-        return nullptr;
+        return HasRareData()
+            ? m_data.m_rareData->GetNodeRenderingData()->GetLayoutObject()
+            : m_data.m_nodeLayoutData->GetLayoutObject();
     }
+    void SetLayoutObject(LayoutObject *layoutObject);
 
     struct AttachContext {
         STACK_ALLOCATED();
@@ -484,7 +487,6 @@ private:
     GCType GetGCType(void) const override { return GC_IN_POOL; }
     // EventTarget overrides
     ExecutionContext* GetExecutionContext(void) const final;
-    Node* ToNode(void) final { return this; }
     EventTargetData* GetEventTargetData(void) override;
     EventTargetData& EnsureEventTargetData(void) override;
 
@@ -493,21 +495,20 @@ private:
     Member<TreeScope> m_treeScope;
     Member<Node> m_previous;
     Member<Node> m_next;
+#ifdef BLINKIT_CRAWLER_ONLY
+    struct {
+        NodeRareDataBase *m_rareData = nullptr;
+    } m_data;
+#else
     // When a node has rare data we move the layoutObject into the rare data.
     union DataUnion {
-#ifdef BLINKIT_CRAWLER_ONLY
-        NodeRareDataBase *m_rareData = nullptr;
-#else
-        DataUnion(void) : m_nodeLayoutData(nullptr) // BKTODO: &NodeRenderingData::SharedEmptyData())
-        {
-            ASSERT(false); // BKTODO:
-        }
+        DataUnion(void) : m_nodeLayoutData(NodeRenderingData::SharedEmptyData()) {}
         // LayoutObjects are fully owned by their DOM node. See LayoutObject's
         // LIFETIME documentation section.
         NodeRenderingData *m_nodeLayoutData;
         NodeRareDataBase *m_rareData;
-#endif
     } m_data;
+#endif
  };
 
 DEFINE_COMPARISON_OPERATORS_WITH_REFERENCES(Node)

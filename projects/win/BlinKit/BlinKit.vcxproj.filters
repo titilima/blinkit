@@ -117,6 +117,9 @@
     <ClCompile Include="..\..\..\src\blinkit\ui\win_web_view.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\app\heap_storage.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -220,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\ui\win_web_view.h">
       <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\app\heap_storage.h">
+      <Filter>app</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

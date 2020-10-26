@@ -55,6 +55,8 @@ NodeRenderingData::NodeRenderingData(LayoutObject *layoutObject, scoped_refptr<C
 {
 }
 
+NodeRenderingData::~NodeRenderingData(void) = default;
+
 void NodeRenderingData::SetNonAttachedStyle(scoped_refptr<ComputedStyle> nonAttachedStyle)
 {
     ASSERT(!IsSharedEmptyData());

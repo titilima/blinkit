@@ -115,8 +115,8 @@ class CORE_EXPORT StyleEngine final
     base::AutoReset<bool> in_removal_;
   };
 
-  static StyleEngine* Create(Document& document) {
-    return new StyleEngine(document);
+  static std::unique_ptr<StyleEngine> Create(Document& document) {
+    return base::WrapUnique(new StyleEngine(document));
   }
 
   ~StyleEngine() override;
@@ -480,9 +480,9 @@ class CORE_EXPORT StyleEngine final
   bool in_dom_removal_ = false;
 
   Member<StyleResolver> resolver_;
-  Member<ViewportStyleResolver> viewport_resolver_;
+  std::unique_ptr<ViewportStyleResolver> viewport_resolver_;
   Member<MediaQueryEvaluator> media_query_evaluator_;
-  Member<CSSGlobalRuleSet> global_rule_set_;
+  std::unique_ptr<CSSGlobalRuleSet> global_rule_set_;
 
   PendingInvalidations pending_invalidations_;
 

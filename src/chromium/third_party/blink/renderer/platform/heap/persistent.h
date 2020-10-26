@@ -33,31 +33,12 @@ public:
     {
         ASSERT(false); // BKTODO:
     }
-    operator bool() const
-    {
-        ASSERT(false); // BKTODO:
-        return false;
-    }
-    T* operator->() const
-    {
-        ASSERT(false); // BKTODO:
-        return nullptr;
-    }
-    T& operator*() const
-    {
-        ASSERT(false); // BKTODO:
-        return *Get();
-    }
-    operator T*() const
-    {
-        ASSERT(false); // BKTODO:
-        return Get();
-    }
-    T* Get(void) const
-    {
-        ASSERT(false); // BKTODO:
-        return nullptr;
-    }
+    explicit operator bool() const { return nullptr != m_raw; }
+    T* operator->() const { return m_raw; }
+    T& operator*() const { return *m_raw; }
+    operator T*() const { return m_raw; }
+    T* Get(void) const { return m_raw; }
+
     void Clear(void)
     {
         ASSERT(false); // BKTODO:

@@ -66,6 +66,10 @@ class ResourceFetcher : public GarbageCollectedFinalized<ResourceFetcher>
 {
     WTF_MAKE_NONCOPYABLE(ResourceFetcher);
 public:
+    static std::shared_ptr<ResourceFetcher> Create(void)
+    {
+        return base::WrapShared(new ResourceFetcher);
+    }
     static std::shared_ptr<ResourceFetcher> Create(std::unique_ptr<FetchContext> &context)
     {
         return base::WrapShared(new ResourceFetcher(context));
@@ -95,6 +99,7 @@ public:
 
     int BlockingRequestCount(void) const;
 private:
+    ResourceFetcher(void);
     ResourceFetcher(std::unique_ptr<FetchContext> &context);
 
     std::shared_ptr<Resource> CreateResourceForLoading(const FetchParameters &params, const ResourceFactory &factory);

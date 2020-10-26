@@ -397,7 +397,7 @@ class CORE_EXPORT ScrollableArea : public GarbageCollectedMixin {
 
   // Returns the task runner to be used for scrollable area timers.
   // Ideally a frame-specific throttled one can be used.
-  virtual scoped_refptr<base::SingleThreadTaskRunner> GetTimerTaskRunner()
+  virtual std::shared_ptr<base::SingleThreadTaskRunner> GetTimerTaskRunner()
       const = 0;
 
   // Callback for compositor-side scrolling.

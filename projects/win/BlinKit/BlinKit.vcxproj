@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\blinkit\app\app_impl.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\app\heap_storage.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\app\win_app.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\local_frame_client_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\blink_impl\thread_impl.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="..\..\..\sdk\include\bk_js.h" />
     <ClInclude Include="..\..\..\sdk\include\bk_ui.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\app_impl.h" />
+    <ClInclude Include="..\..\..\src\blinkit\app\heap_storage.h" />
     <ClInclude Include="..\..\..\src\blinkit\app\win_app.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\local_frame_client_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\blink_impl\thread_impl.h" />

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_cache.h
+// Description: FontCache Class
+//      Author: Ziming Li
+//     Created: 2020-10-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2006, 2008 Apple Computer, Inc.  All rights reserved.
  * Copyright (C) 2007-2008 Torch Mobile, Inc.
@@ -31,8 +42,8 @@
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_FONTS_FONT_CACHE_H_
 
 #include <limits.h>
-
 #include <memory>
+#include <unordered_set>
 
 #include "base/memory/scoped_refptr.h"
 #include "build/build_config.h"
@@ -333,7 +344,7 @@ class PLATFORM_EXPORT FontCache {
 
   unsigned short generation_ = 0;
   bool platform_init_ = false;
-  Persistent<HeapHashSet<WeakMember<FontCacheClient>>> font_cache_clients_;
+  Persistent<std::unordered_set<FontCacheClient *>> font_cache_clients_;
   FontPlatformDataCache font_platform_data_cache_;
   FallbackListShaperCache fallback_list_shaper_cache_;
   FontDataCache font_data_cache_;

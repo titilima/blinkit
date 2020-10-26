@@ -60,6 +60,11 @@ inline bool IsHTMLHeadElement(const Node &node)
     return node.IsHTMLElement() && IsHTMLHeadElement(ToElement(node));
 }
 
+inline bool IsHTMLHtmlElement(const Element &element)
+{
+    return element.HasTagName(html_names::kHTMLTag);
+}
+
 inline bool IsHTMLInputElement(const Element &element)
 {
     return element.HasTagName(html_names::kInputTag);

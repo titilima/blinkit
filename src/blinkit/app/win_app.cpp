@@ -14,6 +14,11 @@
 #include "base/strings/sys_string_conversions.h"
 #include "blinkit/blink_impl/win_single_thread_task_runner.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/platform/fonts/font_cache.h"
+#   include "third_party/skia/include/ports/SkTypeface_win.h"
+#endif
+
 #if 0 // BKTODO:
 #include "base/win/resource_util.h"
 
@@ -24,6 +29,8 @@
 #   include "view/win_view.h"
 #endif
 #endif // 0
+
+using namespace blink;
 
 namespace BlinKit {
 
@@ -47,6 +54,10 @@ WinApp::WinApp(int mode, BkAppClient *client, HANDLE hBackgroundThread)
     , m_taskRunner(std::make_shared<WinSingleThreadTaskRunner>())
     , m_backgroundThread(hBackgroundThread)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
+    auto fontMgr = SkFontMgr_New_GDI();
+    FontCache::SetFontManager(std::move(fontMgr));
+#endif
     m_msgHook = SetWindowsHookEx(WH_GETMESSAGE, HookProc, nullptr, GetCurrentThreadId());
 }
 

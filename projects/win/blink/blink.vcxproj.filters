@@ -279,6 +279,9 @@
     <Filter Include="renderer\platform\text\win">
       <UniqueIdentifier>{305784fe-2e0a-48b5-a380-6edb7ba8cc01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\page\scrolling">
+      <UniqueIdentifier>{574e2047-56bf-4eca-aa74-b82280d81492}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -3662,9 +3665,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\style_property_shorthand_custom.cc">
       <Filter>renderer\core\css</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\generic_font_family_settings.cc">
-      <Filter>renderer\platform\fonts</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\editing\editing_strategy.cc">
       <Filter>renderer\core\editing</Filter>
     </ClCompile>
@@ -5017,6 +5017,21 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints_set.cc">
       <Filter>renderer\core\frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_global_context.cc">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\settings.cpp">
+      <Filter>renderer\core\frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_layer_scrollable_area.cc">
+      <Filter>renderer\core\paint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\scroll_anchor.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\sticky_position_scrolling_constraints.cc">
+      <Filter>renderer\core\page\scrolling</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -11176,9 +11191,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\theme_painter.h">
       <Filter>renderer\core\paint</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\generic_font_family_settings.h">
-      <Filter>renderer\platform\fonts</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\cssom\cssom_keywords.h">
       <Filter>renderer\core\css\cssom</Filter>
     </ClInclude>
@@ -11193,6 +11205,21 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints_set.h">
       <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\frame_view.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_global_context.h">
+      <Filter>renderer\platform\fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_layer_scrollable_area.h">
+      <Filter>renderer\core\paint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\scroll_anchor.h">
+      <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\sticky_position_scrolling_constraints.h">
+      <Filter>renderer\core\page\scrolling</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

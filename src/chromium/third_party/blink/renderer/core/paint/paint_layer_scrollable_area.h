@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: paint_layer_scrollable_area.h
+// Description: PaintLayerScrollableArea Class
+//      Author: Ziming Li
+//     Created: 2020-10-26
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2009, 2012 Apple Inc. All rights reserved.
  *
@@ -469,7 +480,7 @@ class CORE_EXPORT PaintLayerScrollableArea final
                                       const LayoutObject*,
                                       unsigned = 0) const final;
 
-  scoped_refptr<base::SingleThreadTaskRunner> GetTimerTaskRunner() const final;
+  std::shared_ptr<base::SingleThreadTaskRunner> GetTimerTaskRunner() const final;
 
   bool ShouldRebuildHorizontalScrollbarLayer() const {
     return rebuild_horizontal_scrollbar_layer_;
@@ -539,14 +550,14 @@ class CORE_EXPORT PaintLayerScrollableArea final
   void ClearPreviousVisualRects();
 
   void DidScrollWithScrollbar(ScrollbarPart, ScrollbarOrientation) override;
+#if 0 // BKTODO:
   CompositorElementId GetCompositorElementId() const override;
+#endif
 
   bool VisualViewportSuppliesScrollbars() const override;
 
   bool HasHorizontalOverflow() const;
   bool HasVerticalOverflow() const;
-
-  void Trace(blink::Visitor*) override;
 
  private:
   explicit PaintLayerScrollableArea(PaintLayer&);

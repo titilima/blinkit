@@ -58,8 +58,8 @@ class StyleRuleViewport;
 class CORE_EXPORT ViewportStyleResolver
     : public GarbageCollectedFinalized<ViewportStyleResolver> {
  public:
-  static ViewportStyleResolver* Create(Document& document) {
-    return new ViewportStyleResolver(document);
+  static std::unique_ptr<ViewportStyleResolver> Create(Document& document) {
+    return base::WrapUnique(new ViewportStyleResolver(document));
   }
 
   void InitialStyleChanged();

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: font_global_context.h
+// Description: FontGlobalContext Class
+//      Author: Ziming Li
+//     Created: 2020-10-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_FONTS_FONT_GLOBAL_CONTEXT_H_
 
 #include "third_party/blink/renderer/platform/fonts/font_cache.h"
-#include "third_party/blink/renderer/platform/fonts/shaping/harfbuzz_font_cache.h"
+// BKTODO: #include "third_party/blink/renderer/platform/fonts/shaping/harfbuzz_font_cache.h"
 #include "third_party/blink/renderer/platform/platform_export.h"
 #include "third_party/blink/renderer/platform/text/layout_locale.h"
 
@@ -29,9 +40,11 @@ class PLATFORM_EXPORT FontGlobalContext {
 
   static inline FontCache& GetFontCache() { return Get()->font_cache_; }
 
+#if 0 // BKTODO:
   static inline HarfBuzzFontCache& GetHarfBuzzFontCache() {
     return Get()->harfbuzz_font_cache_;
   }
+#endif
 
   static hb_font_funcs_t* GetHarfBuzzFontFuncs() {
     return Get()->harfbuzz_font_funcs_;
@@ -55,9 +68,9 @@ class PLATFORM_EXPORT FontGlobalContext {
   ~FontGlobalContext();
 
   FontCache font_cache_;
-  HarfBuzzFontCache harfbuzz_font_cache_;
+  // BKTODO: HarfBuzzFontCache harfbuzz_font_cache_;
   hb_font_funcs_t* harfbuzz_font_funcs_;
-  std::unique_ptr<FontUniqueNameLookup> font_unique_name_lookup_;
+  // BKTODO: std::unique_ptr<FontUniqueNameLookup> font_unique_name_lookup_;
 };
 
 }  // namespace blink

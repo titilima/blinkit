@@ -81,6 +81,8 @@ public:
     void SetView(std::shared_ptr<LocalFrameView> &view);
     float PageZoomFactor(void) const { return m_pageZoomFactor; }
     void SetPageZoomFactor(float factor);
+    float TextZoomFactor(void) const { return m_textZoomFactor; }
+    void SetTextZoomFactor(float factor);
 #endif
     Document* GetDocument(void) const;
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(TaskType type);
@@ -113,6 +115,7 @@ private:
     std::shared_ptr<LocalFrameView> m_view;
 
     float m_pageZoomFactor = 1.0;
+    float m_textZoomFactor = 1.0;
 #endif
 
     const std::unique_ptr<ScriptController> m_scriptController;

@@ -86,6 +86,7 @@ class ScriptRunner;
 class SelectorQueryCache;
 class Text;
 #ifndef BLINKIT_CRAWLER_ONLY
+class CSSStyleSheet;
 class LayoutView;
 class LocalFrameView;
 class Page;
@@ -153,7 +154,17 @@ public:
     LocalFrameView* View(void) const;                    // can be null
     StyleResolver* GetStyleResolver(void) const;
     VisitedLinkState& GetVisitedLinkState(void) const { return *m_visitedLinkState; }
+    // to get visually ordered hebrew and arabic pages right
+    bool VisuallyOrdered(void) const { return m_visuallyOrdered; }
     float DevicePixelRatio(void) const;
+    void SetupFontBuilder(ComputedStyle &documentStyle);
+    // Decide which element is to define the viewport's overflow policy. If
+    // |rootStyle| is set, use that as the style for the root element, rather than
+    // obtaining it on our own. The reason for this is that style may not have
+    // been associated with the elements yet - in which case it may have been
+    // calculated on the fly (without associating it with the actual element)
+    // somewhere.
+    Element* ViewportDefiningElement(const ComputedStyle *rootStyle = nullptr) const;
 #endif
 
     // Exports for JS
@@ -507,10 +518,12 @@ private:
     Member<Element> m_focusedElement;
     Member<Document> m_templateDocumentHost;
 
+    std::shared_ptr<CSSStyleSheet> m_elemSheet;
     std::unique_ptr<StyleEngine> m_styleEngine;
 
     TextLinkColors m_textLinkColors;
     const std::unique_ptr<VisitedLinkState> m_visitedLinkState;
+    bool m_visuallyOrdered = false;
 
 #   if DCHECK_IS_ON()
     unsigned m_slotAssignmentRecalcForbiddenRecursionDepth = 0;

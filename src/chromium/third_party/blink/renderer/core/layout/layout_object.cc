@@ -1955,8 +1955,6 @@ StyleDifference LayoutObject::AdjustStyleDifference(
   if (diff.CssClipChanged())
     diff.SetNeedsPaintInvalidationSubtree();
 
-  ASSERT(false); // BKTODO:
-#if 0
   // Optimization: for decoration/color property changes, invalidation is only
   // needed if we have style or text affected by these properties.
   if (diff.TextDecorationOrColorChanged() &&
@@ -1968,12 +1966,9 @@ StyleDifference LayoutObject::AdjustStyleDifference(
         // be skipped or we will miss invalidating decorations (e.g.,
         // underlines).
         (IsText() && !IsBR() && ToLayoutText(this)->HasTextBoxes()) ||
-        (IsSVG() && StyleRef().SvgStyle().IsFillColorCurrentColor()) ||
-        (IsSVG() && StyleRef().SvgStyle().IsStrokeColorCurrentColor()) ||
         IsListMarker() || IsDetailsMarker())
       diff.SetNeedsPaintInvalidationObject();
   }
-#endif
 
   // The answer to layerTypeRequired() for plugins, iframes, and canvas can
   // change without the actual style changing, since it depends on whether we
@@ -3134,11 +3129,8 @@ LayoutObject* LayoutObject::Container(AncestorSkipInfo* skip_info) const {
 }
 
 inline LayoutObject* LayoutObject::ParentCrossingFrames() const {
-  ASSERT(false); // BKTODO:
-#if 0
   if (IsLayoutView())
-    return GetFrame()->OwnerLayoutObject();
-#endif
+    return nullptr;
   return Parent();
 }
 

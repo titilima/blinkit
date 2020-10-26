@@ -52,6 +52,7 @@ class NodeRenderingData
 public:
     explicit NodeRenderingData(LayoutObject *layoutObject);
     explicit NodeRenderingData(LayoutObject *layoutObject, scoped_refptr<ComputedStyle> nonAttachedStyle);
+    ~NodeRenderingData(void);
 
     LayoutObject* GetLayoutObject(void) const { return m_layoutObject; }
     void SetLayoutObject(LayoutObject *layoutObject)

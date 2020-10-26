@@ -1355,19 +1355,6 @@ LayoutRect PaintLayer::PaintingExtent(const PaintLayer* root_layer,
                              global_paint_flags);
 }
 
-void* PaintLayer::operator new(size_t sz) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
-  return WTF::Partitions::LayoutPartition()->Alloc(
-      sz, WTF_HEAP_PROFILER_TYPE_NAME(PaintLayer));
-#endif
-}
-
-void PaintLayer::operator delete(void* ptr) {
-  ASSERT(false); // BKTODO: base::PartitionFree(ptr);
-}
-
 void PaintLayer::AddChild(PaintLayer* child, PaintLayer* before_child) {
   PaintLayer* prev_sibling =
       before_child ? before_child->PreviousSibling() : LastChild();
@@ -1703,17 +1690,17 @@ bool PaintLayer::RequiresScrollableArea() const {
 }
 
 void PaintLayer::UpdateScrollableArea() {
-  ASSERT(false); // BKTODO:
-#if 0
   if (RequiresScrollableArea() && !scrollable_area_) {
-    scrollable_area_ = PaintLayerScrollableArea::Create(*this);
+    ASSERT(false); // BKTODO: scrollable_area_ = PaintLayerScrollableArea::Create(*this);
     Compositor()->SetNeedsCompositingUpdate(kCompositingUpdateRebuildTree);
   } else if (!RequiresScrollableArea() && scrollable_area_) {
+    ASSERT(false); // BKTODO:
+#if 0
     scrollable_area_->Dispose();
     scrollable_area_.Clear();
+#endif
     Compositor()->SetNeedsCompositingUpdate(kCompositingUpdateRebuildTree);
   }
-#endif
 }
 
 bool PaintLayer::HasOverflowControls() const {
@@ -3030,15 +3017,21 @@ bool PaintLayer::ChildBackgroundIsKnownToBeOpaqueInRect(
 }
 
 bool PaintLayer::ShouldBeSelfPaintingLayer() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
+#if 0 // BKTODO:
   // TODO(crbug.com/839341): Remove ScrollTimeline check once we support
   // main-thread AnimationWorklet and don't need to promote the scroll-source.
   return GetLayoutObject().LayerTypeRequired() == kNormalPaintLayer ||
          (scrollable_area_ && scrollable_area_->HasOverlayScrollbars()) ||
          ScrollsOverflow() ||
          ScrollTimeline::HasActiveScrollTimeline(GetLayoutObject().GetNode());
+#else
+  if (GetLayoutObject().LayerTypeRequired() == kNormalPaintLayer)
+    return true;
+  ASSERT(!scrollable_area_); // BKTODO:
+  if (ScrollsOverflow())
+    return true;
+  ASSERT(false); // BKTODO:
+  return false;
 #endif
 }
 

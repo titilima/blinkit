@@ -46,6 +46,7 @@
 #include "third_party/blink/public/platform/platform.h"
 #include "third_party/blink/renderer/bindings/core/duk/script_controller.h"
 #include "third_party/blink/renderer/core/css/selector_query.h"
+#include "third_party/blink/renderer/core/css/style_change_reason.h"
 #include "third_party/blink/renderer/core/dom/comment.h"
 #include "third_party/blink/renderer/core/dom/document_init.h"
 #include "third_party/blink/renderer/core/dom/document_fragment.h"
@@ -76,8 +77,14 @@
 #include "third_party/blink/renderer/platform/network/http_parsers.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/css_font_selector.h"
+#   include "third_party/blink/renderer/core/css/css_style_sheet.h"
+#   include "third_party/blink/renderer/core/css/resolver/font_builder.h"
 #   include "third_party/blink/renderer/core/css/style_engine.h"
+#   include "third_party/blink/renderer/core/css/style_sheet_contents.h"
 #   include "third_party/blink/renderer/core/dom/visited_link_state.h"
+#   include "third_party/blink/renderer/core/layout/layout_view.h"
+#   include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #endif
 
 using namespace BlinKit;
@@ -181,12 +188,18 @@ Document::Document(const DocumentInit &initializer)
     , m_scriptRunner(ScriptRunner::Create(this))
     , m_loadEventDelayTimer(GetTaskRunner(TaskType::kNetworking), this, &Document::LoadEventDelayTimerFired)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
+    const bool isCrawler = ForCrawler();
+    ASSERT(isCrawler == m_frame->Client()->IsCrawler());
+#endif
     if (m_frame)
     {
 #ifndef BLINKIT_CRAWLER_ONLY
-        ASSERT(false); // BKTODO: DCHECK(frame_->GetPage());
-#if 0
-        ProvideContextFeaturesToDocumentFrom(*this, *frame_->GetPage());
+        ASSERT(nullptr != m_frame->GetPage() || isCrawler);
+
+#if 0 // BKTODO: Are there any features to support?
+        if (!isCrawler)
+            ProvideContextFeaturesToDocumentFrom(*this, m_frame->GetPage());
 #endif
 #endif
 
@@ -194,28 +207,35 @@ Document::Document(const DocumentInit &initializer)
         FrameFetchContext::ProvideDocumentToContext(m_fetcher->Context(), this);
 
 #ifndef BLINKIT_CRAWLER_ONLY
-        ASSERT(false); // BKTODO:
-#if 0
-        // TODO(dcheng): Why does this need to check that DOMWindow is non-null?
-        CustomElementRegistry* registry =
-            frame_->DomWindow() ? frame_->DomWindow()->MaybeCustomElements()
-            : nullptr;
-        if (registry && registration_context_)
-            registry->Entangle(registration_context_);
+        if (!isCrawler)
+        {
+#if 0 // BKTODO: CustomElement support.
+            // TODO(dcheng): Why does this need to check that DOMWindow is non-null?
+            CustomElementRegistry* registry =
+                frame_->DomWindow() ? frame_->DomWindow()->MaybeCustomElements()
+                : nullptr;
+            if (registry && registration_context_)
+                registry->Entangle(registration_context_);
 #endif
+        }
 #endif
     }
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
+    else if (!isCrawler)
+    {
+        ASSERT(false); // BKTODO:
 #if 0
-    else if (imports_controller_) {
-        fetcher_ = FrameFetchContext::CreateFetcherFromDocument(this);
-    }
-    else {
-        fetcher_ = ResourceFetcher::Create(nullptr);
+        if (imports_controller_)
+            fetcher_ = FrameFetchContext::CreateFetcherFromDocument(this);
+        else
+            fetcher_ = ResourceFetcher::Create(nullptr);
+#endif
     }
 #endif
-#endif
+    else
+    {
+        m_fetcher = ResourceFetcher::Create();
+    }
     ASSERT(m_fetcher);
 
     // We depend on the url getting immediately set in subframes, but we
@@ -237,6 +257,13 @@ Document::Document(const DocumentInit &initializer)
     m_cookieURL = m_URL;
 
     m_lifecycle.AdvanceTo(DocumentLifecycle::kInactive);
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    // Since CSSFontSelector requires Document::m_fetcher and StyleEngine owns
+    // CSSFontSelector, need to initialize m_styleEngine after initializing
+    // fetcher_.
+    m_styleEngine = StyleEngine::Create(*this);
+#endif
 }
 
 Document::~Document(void)
@@ -1106,16 +1133,15 @@ void Document::Initialize(void)
 #ifndef BLINKIT_CRAWLER_ONLY
     if (!ForCrawler())
     {
+        m_layoutView = new LayoutView(this);
+        SetLayoutObject(m_layoutView);
+
+        m_layoutView->SetIsInWindow(true);
+        m_layoutView->SetStyle(StyleResolver::StyleForViewport(*this));
+        m_layoutView->Compositor()->SetNeedsCompositingUpdate(kCompositingUpdateAfterCompositingInputChange);
+
         ASSERT(false); // BKTODO:
 #if 0
-        layout_view_ = new LayoutView(this);
-        SetLayoutObject(layout_view_);
-
-        layout_view_->SetIsInWindow(true);
-        layout_view_->SetStyle(StyleResolver::StyleForViewport(*this));
-        layout_view_->Compositor()->SetNeedsCompositingUpdate(
-            kCompositingUpdateAfterCompositingInputChange);
-
         {
             ReattachLegacyLayoutObjectList legacy_layout_objects(*this);
             AttachContext context;
@@ -1541,20 +1567,25 @@ void Document::SetEncodingData(const DocumentEncodingData &newData)
     if (ForCrawler())
         return;
 
-    ASSERT(false); // BKTODO:
-#if 0
     // FIXME: Should be removed as part of
     // https://code.google.com/p/chromium/issues/detail?id=319643
-    bool should_use_visual_ordering = encoding_data_.Encoding().UsesVisualOrdering();
-    if (should_use_visual_ordering != visually_ordered_) {
-        visually_ordered_ = should_use_visual_ordering;
-        SetNeedsStyleRecalc(kSubtreeStyleChange,
-            StyleChangeReasonForTracing::Create(
-                StyleChangeReason::kVisuallyOrdered));
+    bool shouldUseVisualOrdering = m_encodingData.Encoding().UsesVisualOrdering();
+    if (shouldUseVisualOrdering != m_visuallyOrdered)
+    {
+        m_visuallyOrdered = shouldUseVisualOrdering;
+        SetNeedsStyleRecalc(kSubtreeStyleChange, StyleChangeReasonForTracing::Create(StyleChangeReason::kVisuallyOrdered));
     }
 #endif
-#endif
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void Document::SetupFontBuilder(ComputedStyle &documentStyle)
+{
+    FontBuilder fontBuilder(this);
+    CSSFontSelector *selector = GetStyleEngine().GetFontSelector();
+    fontBuilder.CreateFontForDocument(selector, documentStyle);
+}
+#endif
 
 void Document::SetParsingState(ParsingState parsingState)
 {
@@ -1797,24 +1828,24 @@ void Document::UpdateBaseURL(void)
     if (ForCrawler())
         return;
 
-    ASSERT(false); // BKTODO:
-#if 0
-    if (elem_sheet_)
+    if (m_elemSheet)
     {
         // Element sheet is silly. It never contains anything.
-        DCHECK(!elem_sheet_->Contents()->RuleCount());
-        elem_sheet_ = CSSStyleSheet::CreateInline(*this, base_url_);
+        ASSERT(0 == m_elemSheet->Contents()->RuleCount());
+        m_elemSheet = CSSStyleSheet::CreateInline(*this, m_baseURL);
     }
 
-    if (!EqualIgnoringFragmentIdentifier(old_base_url, base_url_)) {
+    if (!EqualIgnoringFragmentIdentifier(oldBaseURL, m_baseURL))
+    {
+#if 0 // BKTODO: Check if necessary.
         // Base URL change changes any relative visited links.
         // FIXME: There are other URLs in the tree that would need to be
         // re-evaluated on dynamic base URL change. Style should be invalidated too.
         for (HTMLAnchorElement& anchor :
             Traversal<HTMLAnchorElement>::StartsAfter(*this))
             anchor.InvalidateCachedVisitedLinkHash();
-    }
 #endif
+    }
 #endif
 }
 
@@ -1848,8 +1879,32 @@ GURL Document::ValidBaseElementURL(void) const
 #ifndef BLINKIT_CRAWLER_ONLY
 LocalFrameView* Document::View(void) const
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
+    return m_frame ? m_frame->View() : nullptr;
+}
+
+Element* Document::ViewportDefiningElement(const ComputedStyle *rootStyle) const
+{
+    // If a BODY element sets non-visible overflow, it is to be propagated to the
+    // viewport, as long as the following conditions are all met:
+    // (1) The root element is HTML.
+    // (2) It is the primary BODY element (we only assert for this, expecting
+    //     callers to behave).
+    // (3) The root element has visible overflow.
+    // Otherwise it's the root element's properties that are to be propagated.
+    Element *rootElement = documentElement();
+    if (nullptr == rootElement)
+        return nullptr;
+    if (nullptr == rootStyle)
+    {
+        rootStyle = rootElement->GetComputedStyle();
+        if (nullptr == rootStyle)
+            return nullptr;
+    }
+
+    Element *bodyElement = body();
+    if (nullptr != bodyElement && rootStyle->IsOverflowVisible() && IsHTMLHtmlElement(*rootElement))
+        return bodyElement;
+    return rootElement;
 }
 #endif
 

@@ -203,10 +203,9 @@ FontFaceSetDocument* FontFaceSetDocument::From(Document& document) {
       Supplement<Document>::From<FontFaceSetDocument>(document);
   if (!fonts) {
     fonts = FontFaceSetDocument::Create(document);
-    ASSERT(false); // BKTODO:
-#if 0
-    Supplement<Document>::ProvideTo(document, fonts);
-#endif
+
+    auto p = base::WrapUnique(fonts);
+    Supplement<Document>::ProvideTo(document, p);
   }
 
   return fonts;

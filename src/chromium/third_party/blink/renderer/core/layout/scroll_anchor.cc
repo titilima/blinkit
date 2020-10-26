@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scroll_anchor.cc
+// Description: ScrollAnchor Class
+//      Author: Ziming Li
+//     Created: 2020-10-26
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -12,7 +23,7 @@
 #include "third_party/blink/renderer/core/dom/nth_index_cache.h"
 #include "third_party/blink/renderer/core/dom/static_node_list.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
-#include "third_party/blink/renderer/core/frame/root_frame_viewport.h"
+// BKTODO: #include "third_party/blink/renderer/core/frame/root_frame_viewport.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
 #include "third_party/blink/renderer/core/layout/layout_block_flow.h"
 #include "third_party/blink/renderer/core/layout/layout_box.h"
@@ -226,6 +237,9 @@ static const String ComputeUniqueSelector(Node* anchor_node) {
   }
 
   TRACE_EVENT0("blink", "ScrollAnchor::SerializeAnchor");
+  ASSERT(false); // BKTODO:
+  return String();
+#if 0
   SCOPED_BLINK_UMA_HISTOGRAM_TIMER(
       "Layout.ScrollAnchor.TimeToComputeAnchorNodeSelector");
 
@@ -262,6 +276,7 @@ static const String ComputeUniqueSelector(Node* anchor_node) {
   }
 
   return builder.ToString();
+#endif
 }
 
 ScrollAnchor::ExamineResult ScrollAnchor::Examine(
@@ -303,6 +318,8 @@ ScrollAnchor::ExamineResult ScrollAnchor::Examine(
 
 void ScrollAnchor::FindAnchor() {
   TRACE_EVENT0("blink", "ScrollAnchor::findAnchor");
+  ASSERT(false); // BKTODO:
+#if 0
   SCOPED_BLINK_UMA_HISTOGRAM_TIMER("Layout.ScrollAnchor.TimeToFindAnchor");
   FindAnchorRecursive(ScrollerLayoutBox(scroller_));
   if (anchor_object_) {
@@ -310,6 +327,7 @@ void ScrollAnchor::FindAnchor() {
     saved_relative_offset_ =
         ComputeRelativeOffset(anchor_object_, scroller_, corner_);
   }
+#endif
 }
 
 bool ScrollAnchor::FindAnchorRecursive(LayoutObject* candidate) {
@@ -399,11 +417,14 @@ void ScrollAnchor::NotifyBeforeLayout() {
       ComputeScrollAnchorDisablingStyleChanged();
 
   LocalFrameView* frame_view = ScrollerLayoutBox(scroller_)->GetFrameView();
+  ASSERT(false); // BKTODO:
+#if 0
   ScrollableArea* owning_scroller =
       scroller_->IsRootFrameViewport()
           ? &ToRootFrameViewport(scroller_)->LayoutViewport()
           : scroller_.Get();
   frame_view->EnqueueScrollAnchoringAdjustment(owning_scroller);
+#endif
   queued_ = true;
 }
 
@@ -438,6 +459,8 @@ void ScrollAnchor::Adjust() {
   if (adjustment.IsZero())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (scroll_anchor_disabling_style_changed_) {
     // Note that we only clear if the adjustment would have been non-zero.
     // This minimizes redundant calls to findAnchor.
@@ -460,6 +483,7 @@ void ScrollAnchor::Adjust() {
   adjusted_offset_histogram.Count(1);
   UseCounter::Count(ScrollerLayoutBox(scroller_)->GetDocument(),
                     WebFeature::kScrollAnchored);
+#endif
 }
 
 bool ScrollAnchor::RestoreAnchor(const SerializedAnchor& serialized_anchor) {
@@ -467,6 +491,8 @@ bool ScrollAnchor::RestoreAnchor(const SerializedAnchor& serialized_anchor) {
     return false;
   }
 
+  ASSERT(false); // BKTODO:
+#if 0
   SCOPED_BLINK_UMA_HISTOGRAM_TIMER("Layout.ScrollAnchor.TimeToRestoreAnchor");
   DEFINE_STATIC_LOCAL(EnumerationHistogram, restoration_status_histogram,
                       ("Layout.ScrollAnchor.RestorationStatus", kStatusCount));
@@ -544,6 +570,7 @@ bool ScrollAnchor::RestoreAnchor(const SerializedAnchor& serialized_anchor) {
   }
 
   restoration_status_histogram.Count(kFailedNoValidMatches);
+#endif
   return false;
 }
 
@@ -586,12 +613,15 @@ void ScrollAnchor::ClearSelf() {
 void ScrollAnchor::Dispose() {
   if (scroller_) {
     LocalFrameView* frame_view = ScrollerLayoutBox(scroller_)->GetFrameView();
+    ASSERT(false); // BKTODO:
+#if 0
     ScrollableArea* owning_scroller =
         scroller_->IsRootFrameViewport()
             ? &ToRootFrameViewport(scroller_)->LayoutViewport()
             : scroller_.Get();
     frame_view->DequeueScrollAnchoringAdjustment(owning_scroller);
     scroller_.Clear();
+#endif
   }
   anchor_object_ = nullptr;
   saved_selector_ = String();

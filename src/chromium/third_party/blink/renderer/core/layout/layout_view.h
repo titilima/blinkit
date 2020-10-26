@@ -326,7 +326,7 @@ class CORE_EXPORT LayoutView final : public LayoutBlockFlow {
 
   unsigned hit_test_count_;
   unsigned hit_test_cache_hits_;
-  Persistent<HitTestCache> hit_test_cache_;
+  std::unique_ptr<HitTestCache> hit_test_cache_;
 
   // FrameViewAutoSizeInfo controls scrollbar appearance manually rather than
   // relying on layout. These members are used to override the ScrollbarModes

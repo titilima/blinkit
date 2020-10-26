@@ -1140,6 +1140,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\navigator_language.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints_set.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\settings.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\viewport_data.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_collection.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_document.cpp" />
@@ -1333,6 +1334,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_text_decoration_offset.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_unpositioned_float.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\order_iterator.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\scroll_anchor.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\box_shape.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\polygon_shape.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\raster_shape.cc" />
@@ -1368,6 +1370,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\chrome_client.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\chrome_client_impl.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\sticky_position_scrolling_constraints.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\viewport_description.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\applied_decoration_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\background_image_geometry.cc" />
@@ -1419,6 +1422,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_layer.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_layer_clipper.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_layer_resource_info.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_layer_scrollable_area.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_layer_stacking_node.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_layer_stacking_node_iterator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_phase.cc" />
@@ -1518,6 +1522,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_fallback_list.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_fallback_priority.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_family.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_global_context.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_metrics.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_orientation.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_platform_data.cc" />
@@ -1528,7 +1533,6 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_variant_east_asian.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_variant_numeric.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_width_variant.cc" />
-    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\generic_font_family_settings.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\opentype\font_settings.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\orientation_iterator.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\script_run_iterator.cc" />
@@ -2926,6 +2930,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\frame.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\frame_client.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\frame_lifecycle.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\frame_view.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_dom_window.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_frame.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_frame_client.h" />
@@ -3184,6 +3189,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\ng\ng_unpositioned_float_vector.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\order_iterator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\overflow_model.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\scroll_anchor.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\box_shape.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\polygon_shape.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\shapes\raster_shape.h" />
@@ -3227,6 +3233,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\event_with_hit_test_results.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_visibility_state.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\sticky_position_scrolling_constraints.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\viewport_description.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\applied_decoration_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\background_image_geometry.h" />
@@ -3289,6 +3296,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_layer_fragment.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_layer_painting_info.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_layer_resource_info.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_layer_scrollable_area.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_layer_stacking_node.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_layer_stacking_node_iterator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\paint_phase.h" />
@@ -3442,6 +3450,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_fallback_list.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_fallback_priority.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_family.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_global_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_metrics.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_orientation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_platform_data.h" />
@@ -3454,7 +3463,6 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_variant_numeric.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_vertical_position_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\font_width_variant.h" />
-    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\generic_font_family_settings.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\glyph.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\ng_text_fragment_paint_info.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\platform\fonts\opentype\font_settings.h" />

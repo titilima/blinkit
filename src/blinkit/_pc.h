@@ -17,7 +17,7 @@
 #include "build/build_config.h"
 
 #if OS_WIN
-#   pragma warning(disable: 4244 4291 5033)
+#   pragma warning(disable: 4244 4291 4305 5033)
 #   define _CRT_SECURE_NO_WARNINGS
 #   define NOMINMAX
 #   define WIN32_LEAN_AND_MEAN

@@ -128,14 +128,6 @@ void SetMockThemeEnabledForTest(bool value) {
 using namespace html_names;
 
 LayoutTheme& LayoutTheme::GetTheme() {
-  ASSERT(false); // BKTODO:
-#if 0
-  if (RuntimeEnabledFeatures::MobileLayoutThemeEnabled()) {
-    DEFINE_STATIC_REF(LayoutTheme, layout_theme_mobile,
-                      (LayoutThemeMobile::Create()));
-    return *layout_theme_mobile;
-  }
-#endif
   return NativeTheme();
 }
 
@@ -742,14 +734,7 @@ void LayoutTheme::SetCaretBlinkInterval(TimeDelta interval) {
 }
 
 TimeDelta LayoutTheme::CaretBlinkInterval() const {
-  ASSERT(false); // BKTODO:
   return caret_blink_interval_;
-#if 0
-  // Disable the blinking caret in layout test mode, as it introduces
-  // a race condition for the pixel tests. http://b/1198440
-  return LayoutTestSupport::IsRunningLayoutTest() ? TimeDelta()
-                                                  : caret_blink_interval_;
-#endif
 }
 
 static FontDescription& GetCachedFontDescription(CSSValueID system_font_id) {

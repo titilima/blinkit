@@ -1078,12 +1078,9 @@ scoped_refptr<ComputedStyle> StyleResolver::InitialStyleForElement(
 
   scoped_refptr<ComputedStyle> initial_style = ComputedStyle::Create();
 
-  ASSERT(false); // BKTODO:
-#if 0
   initial_style->SetRtlOrdering(document.VisuallyOrdered() ? EOrder::kVisual
                                                            : EOrder::kLogical);
-  initial_style->SetZoom(frame && !document.Printing() ? frame->PageZoomFactor()
-                                                       : 1);
+  initial_style->SetZoom(nullptr != frame ? frame->PageZoomFactor() : 1);
   initial_style->SetEffectiveZoom(initial_style->Zoom());
 
   FontDescription document_font_description =
@@ -1092,11 +1089,8 @@ scoped_refptr<ComputedStyle> StyleResolver::InitialStyleForElement(
       LayoutLocale::Get(document.ContentLanguage()));
 
   initial_style->SetFontDescription(document_font_description);
-  initial_style->SetUserModify(document.InDesignMode()
-                                   ? EUserModify::kReadWrite
-                                   : EUserModify::kReadOnly);
+  initial_style->SetUserModify(EUserModify::kReadOnly);
   document.SetupFontBuilder(*initial_style);
-#endif
   return initial_style;
 }
 

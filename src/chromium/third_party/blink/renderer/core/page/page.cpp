@@ -18,7 +18,7 @@ namespace blink {
 
 Page::Page(PageClients &pageClients)
     : m_chromeClient(pageClients.chromeClient)
-    , m_frame(LocalFrame::Create(pageClients.frameClient))
+    , m_frame(LocalFrame::Create(pageClients.frameClient, this))
     , m_pageScaleConstraintsSet(PageScaleConstraintsSet::Create(this))
 {
     m_frame->Init();

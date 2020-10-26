@@ -54,7 +54,7 @@
 #include "third_party/blink/renderer/platform/fonts/font_cache_key.h"
 #include "third_party/blink/renderer/platform/fonts/font_data_cache.h"
 #include "third_party/blink/renderer/platform/fonts/font_description.h"
-// BKTODO: #include "third_party/blink/renderer/platform/fonts/font_global_context.h"
+#include "third_party/blink/renderer/platform/fonts/font_global_context.h"
 #include "third_party/blink/renderer/platform/fonts/font_platform_data.h"
 #include "third_party/blink/renderer/platform/fonts/font_smoothing_mode.h"
 #include "third_party/blink/renderer/platform/fonts/shaping/shape_cache.h"
@@ -89,11 +89,7 @@ bool FontCache::use_skia_font_fallback_ = false;
 #endif  // defined(OS_WIN)
 
 FontCache* FontCache::GetFontCache() {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return &FontGlobalContext::GetFontCache();
-#endif
 }
 
 #if !defined(OS_WIN)
@@ -392,13 +388,9 @@ void FontCache::Purge(PurgeSeverity purge_severity) {
 void FontCache::AddClient(FontCacheClient* client) {
   CHECK(client);
   if (!font_cache_clients_) {
-    ASSERT(false); // BKTODO:
-#if 0
-    font_cache_clients_ = new HeapHashSet<WeakMember<FontCacheClient>>();
-    font_cache_clients_.RegisterAsStaticReference();
-#endif
+    font_cache_clients_ = new std::unordered_set<FontCacheClient *>();
   }
-  DCHECK(!font_cache_clients_->Contains(client));
+  DCHECK(std::end(*font_cache_clients_) == font_cache_clients_->find(client));
   font_cache_clients_->insert(client);
 }
 

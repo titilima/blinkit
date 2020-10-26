@@ -49,6 +49,8 @@
 
 namespace blink {
 
+ResourceFetcher::ResourceFetcher(void) : m_imageFetched(false) {}
+
 ResourceFetcher::ResourceFetcher(std::unique_ptr<FetchContext> &context)
     : m_context(std::move(context))
     , m_imageFetched(false)

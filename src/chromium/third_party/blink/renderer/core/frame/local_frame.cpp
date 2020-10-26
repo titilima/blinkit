@@ -230,6 +230,11 @@ void LocalFrame::SetPageZoomFactor(float factor)
     ASSERT(false); // BKTODO:
 }
 
+void LocalFrame::SetTextZoomFactor(float factor)
+{
+    ASSERT(false); // BKTODO:
+}
+
 void LocalFrame::SetView(std::shared_ptr<LocalFrameView> &view)
 {
     ASSERT(false); // BKTODO:

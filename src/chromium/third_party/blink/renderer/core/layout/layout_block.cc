@@ -308,11 +308,8 @@ void LayoutBlock::UpdateFromStyle() {
   bool should_clip_overflow =
       !StyleRef().IsOverflowVisible() && AllowsOverflowClip();
   if (should_clip_overflow != HasOverflowClip()) {
-  ASSERT(false); // BKTODO:
-#if 0
     if (!should_clip_overflow)
-      GetScrollableArea()->InvalidateAllStickyConstraints();
-#endif
+      ASSERT(false); // BKTODO: GetScrollableArea()->InvalidateAllStickyConstraints();
     SetSubtreeShouldCheckForPaintInvalidation();
     // The overflow clip paint property depends on whether overflow clip is
     // present so we need to update paint properties if this changes.
@@ -324,12 +321,8 @@ void LayoutBlock::UpdateFromStyle() {
 }
 
 bool LayoutBlock::AllowsOverflowClip() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   // If overflow has been propagated to the viewport, it has no effect here.
   return GetNode() != GetDocument().ViewportDefiningElement();
-#endif
 }
 
 void LayoutBlock::AddChildBeforeDescendant(LayoutObject* new_child,

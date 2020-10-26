@@ -121,7 +121,7 @@ void FontCache::SetStatusFontMetrics(const wchar_t* family_name,
 FontCache::FontCache() : purge_prevent_count_(0) {
   font_manager_ = sk_ref_sp(static_font_manager_);
   if (!font_manager_) {
-    ASSERT(false); // BKTODO:
+    ASSERT(false); // BKTODO: Check if necessary.
 #if 0
     // This code path is only for unit tests. This SkFontMgr does not work in
     // sandboxed environments, but injecting this initialization code to all

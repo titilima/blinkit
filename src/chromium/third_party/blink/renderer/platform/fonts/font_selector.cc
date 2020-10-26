@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: FontSelector.cc
+// Description: FontCacheClient Class
+//      Author: Ziming Li
+//     Created: 2020-10-22
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,7 +18,6 @@
 #include "build/build_config.h"
 #include "third_party/blink/renderer/platform/fonts/font_cache.h"
 #include "third_party/blink/renderer/platform/fonts/font_description.h"
-#include "third_party/blink/renderer/platform/fonts/generic_font_family_settings.h"
 
 namespace blink {
 
@@ -26,6 +36,8 @@ AtomicString FontSelector::FamilyNameFromSettings(
                                                     font_description);
   }
 #else
+  ASSERT(false); // BKTODO:
+#if 0
   UScriptCode script = font_description.GetScript();
   if (font_description.GenericFamily() == FontDescription::kStandardFamily)
     return settings.Standard(script);
@@ -43,6 +55,7 @@ AtomicString FontSelector::FamilyNameFromSettings(
     return settings.Pictograph(script);
   if (generic_family_name == FontFamilyNames::webkit_standard)
     return settings.Standard(script);
+#endif
 #endif
   return g_empty_atom;
 }

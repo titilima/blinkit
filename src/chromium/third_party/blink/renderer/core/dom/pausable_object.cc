@@ -48,7 +48,9 @@ PausableObject::PausableObject(ExecutionContext* execution_context)
       pause_if_needed_called_(false)
 #endif
 {
-  ASSERT(false); // BKTODO: DCHECK(!execution_context || execution_context->IsContextThread());
+#if 0 // BKTODO: Check if IsContextThread necessary.
+  DCHECK(!execution_context || execution_context->IsContextThread());
+#endif
 }
 
 PausableObject::~PausableObject() {
@@ -62,8 +64,10 @@ void PausableObject::PauseIfNeeded() {
   DCHECK(!pause_if_needed_called_);
   pause_if_needed_called_ = true;
 #endif
+#if 0 // BKTODO: Check if necessary.
   if (ExecutionContext* context = GetExecutionContext())
-    ASSERT(false); // BKTODO: context->PausePausableObjectIfNeeded(this);
+    context->PausePausableObjectIfNeeded(this);
+#endif
 }
 
 void PausableObject::Pause() {}

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: paint_layer.h
+// Description: PaintLayer Class
+//      Author: Ziming Li
+//     Created: 2020-10-24
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003, 2009, 2012 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Intel Corporation. All rights reserved.
@@ -507,10 +518,6 @@ class CORE_EXPORT PaintLayer : public DisplayItemClient {
   bool HasFilterInducingProperty() const {
     return GetLayoutObject().HasFilterInducingProperty();
   }
-
-  void* operator new(size_t);
-  // Only safe to call from LayoutBoxModelObject::destroyLayer()
-  void operator delete(void*);
 
   CompositingState GetCompositingState() const;
 

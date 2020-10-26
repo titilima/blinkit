@@ -42,6 +42,11 @@ public:
 
     static std::unique_ptr<Page> Create(PageClients &pageClients);
 
+    ChromeClient& GetChromeClient(void) const
+    {
+        ASSERT(nullptr != m_chromeClient);
+        return *m_chromeClient;
+    }
     LocalFrame* GetFrame(void) const { return m_frame.get(); }
     PageScaleConstraintsSet& GetPageScaleConstraintsSet(void);
     const PageScaleConstraintsSet& GetPageScaleConstraintsSet(void) const;
