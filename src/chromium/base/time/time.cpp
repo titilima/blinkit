@@ -108,8 +108,7 @@ TimeDelta TimeDelta::FromSeconds(int64_t secs)
 
 TimeDelta TimeDelta::FromSecondsD(double secs)
 {
-    assert(false); // BKTODO:
-    return TimeDelta();
+    return FromDouble(secs * Time::kMicrosecondsPerSecond);
 }
 
 int64_t TimeDelta::InMilliseconds(void) const
