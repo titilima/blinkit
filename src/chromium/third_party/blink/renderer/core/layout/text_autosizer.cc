@@ -593,19 +593,17 @@ void TextAutosizer::UpdatePageInfoInAllFrames() {
 }
 
 void TextAutosizer::UpdatePageInfo() {
-  ASSERT(false); // BKTODO:
-#if 0
-  if (update_page_info_deferred_ || !document_->GetPage() ||
-      !document_->GetSettings())
+  if (update_page_info_deferred_ || !document_->GetPage())
     return;
 
   PageInfo previous_page_info(page_info_);
-  page_info_.setting_enabled_ =
-      document_->GetSettings()->TextAutosizingEnabled();
+  page_info_.setting_enabled_ = Settings::TextAutosizingEnabled;
 
-  if (!page_info_.setting_enabled_ || document_->Printing()) {
+  if (!page_info_.setting_enabled_) {
     page_info_.page_needs_autosizing_ = false;
   } else {
+    ASSERT(false); // BKTODO:
+#if 0
     auto* layout_view = document_->GetLayoutView();
     bool horizontal_writing_mode =
         IsHorizontalWritingMode(layout_view->StyleRef().GetWritingMode());
@@ -656,9 +654,12 @@ void TextAutosizer::UpdatePageInfo() {
              (static_cast<float>(page_info_.layout_width_) /
               page_info_.frame_width_) >
          1.0f);
+#endif
   }
 
   if (page_info_.page_needs_autosizing_) {
+    ASSERT(false); // BKTODO:
+#if 0
     // If page info has changed, multipliers may have changed. Force a layout to
     // recompute them.
     if (page_info_.frame_width_ != previous_page_info.frame_width_ ||
@@ -669,13 +670,13 @@ void TextAutosizer::UpdatePageInfo() {
             previous_page_info.device_scale_adjustment_ ||
         page_info_.setting_enabled_ != previous_page_info.setting_enabled_)
       SetAllTextNeedsLayout();
+#endif
   } else if (previous_page_info.has_autosized_) {
     // If we are no longer autosizing the page, we won't do anything during the
     // next layout. Set all the multipliers back to 1 now.
     ResetMultipliers();
     page_info_.has_autosized_ = false;
   }
-#endif
 }
 
 IntSize TextAutosizer::WindowSize() const {

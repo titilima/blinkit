@@ -62,6 +62,9 @@ class LocalDOMWindow;
 class LocalFrameClient;
 class NavigationScheduler;
 class ScriptController;
+#ifndef BLINKIT_CRAWLER_ONLY
+class LayoutView;
+#endif
 
 class LocalFrame final : public Frame
 {
@@ -77,8 +80,11 @@ public:
     LocalDOMWindow* DomWindow(void) const;
     void SetDOMWindow(std::unique_ptr<LocalDOMWindow> &domWindow);
 #ifndef BLINKIT_CRAWLER_ONLY
+    // Root of the layout tree for the document contained in this frame.
+    LayoutView* ContentLayoutObject(void) const;
     LocalFrameView* View(void) const override { return m_view.get(); }
-    void SetView(std::shared_ptr<LocalFrameView> &view);
+    void CreateView(const IntSize &viewportSize, const Color &backgroundColor);
+    void SetView(const std::shared_ptr<LocalFrameView> &view);
     float PageZoomFactor(void) const { return m_pageZoomFactor; }
     void SetPageZoomFactor(float factor);
     float TextZoomFactor(void) const { return m_textZoomFactor; }

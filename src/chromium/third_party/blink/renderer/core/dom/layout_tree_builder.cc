@@ -160,14 +160,14 @@ ComputedStyle& LayoutTreeBuilderForElement::Style() const {
 DISABLE_CFI_PERF
 void LayoutTreeBuilderForElement::CreateLayoutObject() {
   ComputedStyle& style = Style();
-  ASSERT(false); // BKTODO:
-#if 0
   ReattachLegacyLayoutObjectList& legacy_layout_objects =
       node_->GetDocument().GetReattachLegacyLayoutObjectList();
   if (legacy_layout_objects.IsForcingLegacyLayout()) {
     DCHECK(!node_->GetLayoutObject());
     style.SetForceLegacyLayout(true);
   }
+  ASSERT(false); // BKTODO:
+#if 0
   LayoutObject* new_layout_object = node_->CreateLayoutObject(style);
   if (!new_layout_object)
     return;
@@ -266,25 +266,19 @@ ReattachLegacyLayoutObjectList::ReattachLegacyLayoutObjectList(
       state_(RuntimeEnabledFeatures::LayoutNGEnabled()
                  ? State::kCollecting
                  : State::kBuildingLegacyLayoutTree) {
-  ASSERT(false); // BKTODO:
-#if 0
   DCHECK(!document_->reattach_legacy_object_list_);
   document_->reattach_legacy_object_list_ = this;
-#endif
 }
 
 ReattachLegacyLayoutObjectList::~ReattachLegacyLayoutObjectList() {
-  ASSERT(false); // BKTODO:
-#if 0
   DCHECK_EQ(document_->reattach_legacy_object_list_, this);
   DCHECK_EQ(state_, State::kClosed);
   document_->reattach_legacy_object_list_ = nullptr;
-#endif
 }
 
 void ReattachLegacyLayoutObjectList::AddForceLegacyAtBFCAncestor(
     const LayoutObject& start) {
-  DCHECK(IsCollecting()); // BKTODO: << static_cast<int>(state_);
+  DCHECK(IsCollecting());
   if (!start.Style()->ForceLegacyLayout())
     return;
   if (start.Parent()->Style()->ForceLegacyLayout()) {
@@ -338,11 +332,9 @@ void ReattachLegacyLayoutObjectList::Trace(blink::Visitor* visitor) {
   visitor->Trace(document_);
 }
 
-#if 0 // BKTODO:
 ReattachLegacyLayoutObjectList& Document::GetReattachLegacyLayoutObjectList() {
   DCHECK(reattach_legacy_object_list_);
   return *reattach_legacy_object_list_;
 }
-#endif
 
 }  // namespace blink

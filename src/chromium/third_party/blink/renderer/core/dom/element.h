@@ -232,9 +232,10 @@ protected:
     virtual void DidRecalcStyle(StyleRecalcChange change);
 #endif
     
-    // ContainerNode overrides
 #ifndef BLINKIT_CRAWLER_ONLY
     void ChildrenChanged(const ChildrenChange &change) override;
+    void AttachLayoutTree(AttachContext &context) override;
+    void DetachLayoutTree(const AttachContext &context = AttachContext()) override;
 #endif
     // classAttributeChanged() exists to share code between
     // parseAttribute (called via setAttribute()) and

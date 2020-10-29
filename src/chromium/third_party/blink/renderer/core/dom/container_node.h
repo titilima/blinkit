@@ -141,6 +141,11 @@ public:
     };
     struct ChildrenChange;
     virtual void ChildrenChanged(const ChildrenChange &change);
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    void AttachLayoutTree(AttachContext &context) override;
+    void DetachLayoutTree(const AttachContext &context = AttachContext()) override;
+#endif
 protected:
     ContainerNode(TreeScope *treeScope, ConstructionType type = kCreateContainer);
 

@@ -5033,6 +5033,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\sticky_position_scrolling_constraints.cc">
       <Filter>renderer\core\page\scrolling</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_animator.cc">
+      <Filter>renderer\core\page</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\visual_viewport.cc">
+      <Filter>renderer\core\frame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -11220,6 +11226,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\sticky_position_scrolling_constraints.h">
       <Filter>renderer\core\page\scrolling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_animator.h">
+      <Filter>renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\chrome_client_impl.h">
+      <Filter>renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\visual_viewport.h">
+      <Filter>renderer\core\frame</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

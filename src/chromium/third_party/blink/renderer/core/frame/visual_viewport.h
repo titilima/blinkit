@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: visual_viewport.h
+// Description: VisualViewport Class
+//      Author: Ziming Li
+//     Created: 2020-10-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * copyright (c) 2013 google inc. All rights reserved.
  *
@@ -37,7 +48,7 @@
 #include "third_party/blink/public/platform/web_size.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
-#include "third_party/blink/renderer/core/page/scrolling/scrolling_coordinator.h"
+// BKTODO: #include "third_party/blink/renderer/core/page/scrolling/scrolling_coordinator.h"
 #include "third_party/blink/renderer/core/scroll/scrollable_area.h"
 #include "third_party/blink/renderer/platform/geometry/float_rect.h"
 #include "third_party/blink/renderer/platform/geometry/float_size.h"
@@ -94,8 +105,6 @@ class CORE_EXPORT VisualViewport final
  public:
   static VisualViewport* Create(Page& host) { return new VisualViewport(host); }
   ~VisualViewport() override;
-
-  void Trace(blink::Visitor*) override;
 
   void CreateLayerTree();
   void AttachLayerTree(GraphicsLayer*);
@@ -212,7 +221,9 @@ class CORE_EXPORT VisualViewport final
   IntRect ScrollableAreaBoundingBox() const override;
   bool UserInputScrollable(ScrollbarOrientation) const override;
   bool ShouldPlaceVerticalScrollbarOnLeft() const override { return false; }
+#if 0 // BKTODO:
   CompositorElementId GetCompositorElementId() const override;
+#endif
   bool ScrollAnimatorEnabled() const override;
   void ScrollControlWasSetNeedsPaintInvalidation() override {}
   void UpdateScrollOffset(const ScrollOffset&, ScrollType) override;
@@ -225,7 +236,7 @@ class CORE_EXPORT VisualViewport final
   CompositorAnimationTimeline* GetCompositorAnimationTimeline() const override;
   IntRect VisibleContentRect(
       IncludeScrollbarsInRect = kExcludeScrollbars) const override;
-  scoped_refptr<base::SingleThreadTaskRunner> GetTimerTaskRunner() const final;
+  std::shared_ptr<base::SingleThreadTaskRunner> GetTimerTaskRunner() const final;
 
   // VisualViewport scrolling may involve pinch zoom and gets routed through
   // WebViewImpl explicitly rather than via ScrollingCoordinator::DidScroll
@@ -326,6 +337,7 @@ class CORE_EXPORT VisualViewport final
   std::unique_ptr<GraphicsLayer> page_scale_layer_;
   std::unique_ptr<GraphicsLayer> inner_viewport_scroll_layer_;
 
+#if 0 // BKTODO:
   // The layers of the ScrollbarLayerGroups are referenced from the
   // GraphicsLayers, so the GraphicsLayers must be destructed first (declared
   // after).
@@ -333,6 +345,7 @@ class CORE_EXPORT VisualViewport final
       scrollbar_layer_group_horizontal_;
   std::unique_ptr<ScrollingCoordinator::ScrollbarLayerGroup>
       scrollbar_layer_group_vertical_;
+#endif
   std::unique_ptr<GraphicsLayer> overlay_scrollbar_horizontal_;
   std::unique_ptr<GraphicsLayer> overlay_scrollbar_vertical_;
 

@@ -113,7 +113,21 @@ Node* Node::appendChild(Node *newChild, ExceptionState &exceptionState)
 #ifndef BLINKIT_CRAWLER_ONLY
 void Node::AttachLayoutTree(AttachContext &context)
 {
-    ASSERT(false); // BKTODO: Check child classes.
+    ASSERT(GetDocument().InStyleRecalc() || IsDocumentNode());
+    ASSERT(!GetDocument().Lifecycle().InDetach());
+    ASSERT(NeedsAttach());
+
+    LayoutObject *layoutObject = GetLayoutObject();
+    ASSERT(nullptr == layoutObject
+        || (nullptr != layoutObject->Style() && (nullptr != layoutObject->Parent() || layoutObject->IsLayoutView())));
+
+    ClearNeedsStyleRecalc();
+    ClearNeedsReattachLayoutTree();
+
+#if 0 // BKTODO: Check if necessary
+    if (AXObjectCache* cache = GetDocument().ExistingAXObjectCache())
+        cache->UpdateCacheAfterNodeIsAttached(this);
+#endif
 }
 
 bool Node::CanParticipateInFlatTree(void) const
@@ -131,6 +145,14 @@ bool Node::CanStartSelection(void) const
 void Node::CheckSlotChange(SlotChangeType slotChangeType)
 {
     ASSERT(false); // BKTODO:
+}
+
+void Node::ClearNeedsStyleRecalc(void)
+{
+    m_nodeFlags &= ~kStyleChangeMask;
+
+    if (IsElementNode() && HasRareData())
+        ASSERT(false); // BKTODO: ToElement(*this).SetAnimationStyleChange(false);
 }
 #endif
 

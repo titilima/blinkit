@@ -29,6 +29,7 @@ namespace probe {
 
 inline void activeStyleSheetsUpdated(Document *) {}
 inline void animationPlayStateChanged(Document *, Animation *, Animation::AnimationPlayState, Animation::AnimationPlayState) {}
+inline void didChangeViewport(LocalFrame *) {}
 inline void didCreateAnimation(Document *, unsigned) {}
 inline void didInvalidateStyleAttr(Node *) {}
 inline void didPaint(LocalFrame *, const GraphicsLayer *, GraphicsContext &, const LayoutRect &) {}

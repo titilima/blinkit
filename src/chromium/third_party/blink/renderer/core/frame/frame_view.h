@@ -20,6 +20,8 @@ class FrameView
 {
 public:
     virtual ~FrameView(void) = default;
+
+    virtual void Show(void) = 0;
 };
 
 } // namespace blink

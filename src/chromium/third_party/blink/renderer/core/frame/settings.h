@@ -27,6 +27,12 @@ public:
     static constexpr int MinimumLogicalFontSize = 6;
 
     static const AtomicString& StandardFontFamilyName(void);
+
+    static constexpr bool AcceleratedCompositingEnabled = false;
+    static constexpr bool IgnoreMainFrameOverflowHiddenQuirk = false;
+    static constexpr bool PreferCompositingToLCDTextEnabled = false;
+    static constexpr bool TextAutosizingEnabled = false;
+    static constexpr bool ViewportEnabled = false;
 };
 
 } // namespace blink

@@ -112,8 +112,8 @@
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment.h"
 #include "third_party/blink/renderer/core/paint/object_paint_invalidator.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/paint/paint_tracker.h"
 #include "third_party/blink/renderer/core/scroll/smooth_scroll_sequencer.h"
 #endif

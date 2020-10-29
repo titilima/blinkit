@@ -46,6 +46,7 @@
 #include <utility>
 
 #include "base/optional.h"
+#include "blinkit/ui/web_view_impl.h"
 #include "build/build_config.h"
 // BKTODO: #include "cc/layers/picture_layer.h"
 #include "third_party/blink/public/platform/web_cursor_info.h"
@@ -74,7 +75,6 @@
 #include "third_party/blink/renderer/core/exported/web_plugin_container_impl.h"
 #include "third_party/blink/renderer/core/exported/web_remote_frame_impl.h"
 #include "third_party/blink/renderer/core/exported/web_settings_impl.h"
-#include "third_party/blink/renderer/core/exported/web_view_impl.h"
 #include "third_party/blink/renderer/core/frame/browser_controls.h"
 #endif
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
@@ -486,20 +486,7 @@ void ChromeClientImpl::InvalidateRect(const IntRect& update_rect) {
 }
 
 void ChromeClientImpl::ScheduleAnimation(const LocalFrameView* frame_view) {
-  ASSERT(false); // BKTODO:
-#if 0
-  LocalFrame& frame = frame_view->GetFrame();
-  WebLocalFrameImpl* web_frame = WebLocalFrameImpl::FromFrame(&frame);
-  DCHECK(web_frame);
-  // If the frame is still being created, it might not yet have a WebWidget.
-  // TODO(dcheng): Is this the right thing to do? Is there a way to avoid having
-  // a local frame root that doesn't have a WebWidget? During initialization
-  // there is no content to draw so this call serves no purpose. Maybe the
-  // WebFrameWidget needs to be initialized before initializing the core frame?
-  if (!web_frame->LocalRootFrameWidget())
-    return;
-  web_frame->LocalRootFrameWidget()->ScheduleAnimation();
-#endif
+  web_view_->ScheduleAnimation();
 }
 
 IntRect ChromeClientImpl::ViewportToScreen(

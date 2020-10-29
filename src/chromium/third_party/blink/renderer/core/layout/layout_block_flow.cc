@@ -78,7 +78,7 @@
 #include "third_party/blink/renderer/core/paint/block_flow_paint_invalidator.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 
 namespace blink {
@@ -4579,12 +4579,8 @@ RootInlineBox* LayoutBlockFlow::CreateRootInlineBox() {
 }
 
 bool LayoutBlockFlow::IsPagedOverflow(const ComputedStyle& style) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return style.IsOverflowPaged() &&
          GetNode() != GetDocument().ViewportDefiningElement();
-#endif
 }
 
 LayoutBlockFlow::FlowThreadType LayoutBlockFlow::GetFlowThreadType(

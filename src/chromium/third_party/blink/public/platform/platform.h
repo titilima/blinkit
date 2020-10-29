@@ -68,6 +68,7 @@ public:
     static Platform* Current(void);
 
     Thread* CurrentThread(void);
+    constexpr bool IsLowEndDevice(void) const { return false; }
 
     virtual WTF::String DefaultLocale(void) { return String("en-US"); }
     virtual std::unique_ptr<WebURLLoader> CreateURLLoader(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner);

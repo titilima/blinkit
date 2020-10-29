@@ -70,7 +70,7 @@
 #endif
 #include "third_party/blink/renderer/core/paint/compositing/graphics_layer_updater.h"
 #include "third_party/blink/renderer/core/paint/object_paint_invalidator.h"
-// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/probe/core_probes.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #include "third_party/blink/renderer/platform/geometry/float_rect.h"
@@ -161,25 +161,14 @@ bool PaintLayerCompositor::RootShouldAlwaysComposite() const {
 
 void PaintLayerCompositor::UpdateAcceleratedCompositingSettings() {
   compositing_reason_finder_.UpdateTriggers();
-  ASSERT(false); // BKTODO:
-#if 0
-  has_accelerated_compositing_ = layout_view_.GetDocument()
-                                     .GetSettings()
-                                     ->GetAcceleratedCompositingEnabled();
-#endif
+  has_accelerated_compositing_ = Settings::AcceleratedCompositingEnabled;
   root_should_always_composite_dirty_ = true;
   if (root_layer_attachment_ != kRootLayerUnattached)
     RootLayer()->SetNeedsCompositingInputsUpdate();
 }
 
 bool PaintLayerCompositor::PreferCompositingToLCDTextEnabled() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
-  return layout_view_.GetDocument()
-      .GetSettings()
-      ->GetPreferCompositingToLCDTextEnabled();
-#endif
+  return Settings::PreferCompositingToLCDTextEnabled;
 }
 
 #if 0 // BKTODO:
@@ -341,12 +330,9 @@ void PaintLayerCompositor::SetNeedsCompositingUpdate(
     CompositingUpdateType update_type) {
   DCHECK_NE(update_type, kCompositingUpdateNone);
   pending_update_type_ = std::max(pending_update_type_, update_type);
-  ASSERT(false); // BKTODO:
-#if 0
   if (Page* page = GetPage())
     page->Animator().ScheduleVisualUpdate(layout_view_.GetFrame());
   Lifecycle().EnsureStateAtMost(DocumentLifecycle::kLayoutClean);
-#endif
 }
 
 void PaintLayerCompositor::DidLayout() {
@@ -1084,11 +1070,7 @@ ScrollingCoordinator* PaintLayerCompositor::GetScrollingCoordinator() const {
 }
 
 Page* PaintLayerCompositor::GetPage() const {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return layout_view_.GetFrameView()->GetFrame().GetPage();
-#endif
 }
 
 DocumentLifecycle& PaintLayerCompositor::Lifecycle() const {

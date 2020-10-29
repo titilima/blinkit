@@ -98,9 +98,11 @@ public:
 
     bool IsActive(void) const { return kInactive < m_state && m_state < kStopping; }
 
-    void AdvanceTo(LifecycleState);
+    void AdvanceTo(LifecycleState nextState);
+    void EnsureStateAtMost(LifecycleState);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    bool InDetach(void) const { return 0 != m_detachCount; }
     bool StateAllowsLayoutTreeMutations(void) const
     {
         return m_detachCount > 0 || kInStyleRecalc == m_state || kInLayoutSubtreeChange == m_state;
@@ -152,6 +154,7 @@ public:
 private:
 #ifndef NDEBUG
     bool CanAdvanceTo(LifecycleState nextState) const;
+    bool CanRewindTo(LifecycleState nextState) const;
 #endif
 
     LifecycleState m_state = kUninitialized;

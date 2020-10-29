@@ -20,7 +20,8 @@
 
 using namespace blink;
 
-WebViewImpl::WebViewImpl(PageVisibilityState visibilityState) : m_chromeClient(ChromeClientImpl::Create(this))
+WebViewImpl::WebViewImpl(PageVisibilityState visibilityState)
+    : m_chromeClient(ChromeClientImpl::Create(this)), m_baseBackgroundColor(Color::kWhite)
 {
     memset(&m_client, 0, sizeof(m_client));
 
@@ -47,9 +48,16 @@ WebViewImpl::WebViewImpl(PageVisibilityState visibilityState) : m_chromeClient(C
     page_importance_signals_.SetObserver(client);
     resize_viewport_anchor_ = new ResizeViewportAnchor(*page_);
 #endif
+
+    m_page->GetFrame()->Init();
 }
 
 WebViewImpl::~WebViewImpl(void) = default;
+
+Color WebViewImpl::BaseBackgroundColor(void) const
+{
+    return m_baseBackgroundColor;
+}
 
 void WebViewImpl::DispatchDidFailProvisionalLoad(const ResourceError &error)
 {
@@ -94,6 +102,19 @@ float WebViewImpl::MinimumPageScaleFactor(void) const
     return GetPageScaleConstraintsSet().FinalConstraints().minimum_scale;
 }
 
+void WebViewImpl::ScheduleAnimation(void)
+{
+#if 0 // BKTODO:
+    if (layer_tree_view_)
+    {
+        layer_tree_view_->SetNeedsBeginFrame();
+        return;
+    }
+    if (client_)
+        client_->WidgetClient()->ScheduleAnimation();
+#endif
+}
+
 void WebViewImpl::SetClient(const BkWebViewClient &client)
 {
     memset(&m_client, 0, sizeof(m_client));
@@ -124,25 +145,24 @@ void WebViewImpl::TransitionToCommittedForNewPage(void)
         return;
 
     IntSize initialSize = FrameSize();
-    ASSERT(false); // BKTODO:
+    Color baseBackgroundColor = BaseBackgroundColor();
+
+    LocalFrame *frame = m_page->GetFrame();
+    frame->CreateView(initialSize, baseBackgroundColor);
+
+    LocalFrameView *view = frame->View();
+    view->SetInitialViewportSize(GetPageScaleConstraintsSet().InitialViewportSize());
+    if (ShouldAutoResize())
+    {
+        ASSERT(false); // BKTODO:
 #if 0
-    Color base_background_color = web_view->BaseBackgroundColor();
-    if (!is_main_frame && Parent()->IsWebRemoteFrame())
-        base_background_color = Color::kTransparent;
-
-    GetFrame()->CreateView(initial_size, base_background_color);
-    if (is_main_frame) {
-        GetFrame()->View()->SetInitialViewportSize(
-            web_view->GetPageScaleConstraintsSet().InitialViewportSize());
-    }
-    if (web_view->ShouldAutoResize() && GetFrame()->IsLocalRoot()) {
-        GetFrame()->View()->EnableAutoSizeMode(web_view->MinAutoSize(),
-            web_view->MaxAutoSize());
+        view->EnableAutoSizeMode(MinAutoSize(), MaxAutoSize());
+#endif
     }
 
-    GetFrame()->View()->SetInputEventsScaleForEmulation(
-        input_events_scale_factor_for_emulation_);
-    GetFrame()->View()->SetDisplayMode(web_view->DisplayMode());
+#if 0 // BKTODO: Check if necessary
+    view->SetInputEventsScaleForEmulation(input_events_scale_factor_for_emulation_);
+    view->SetDisplayMode(DisplayMode());
 
     if (frame_widget_)
         frame_widget_->DidCreateLocalRootView();

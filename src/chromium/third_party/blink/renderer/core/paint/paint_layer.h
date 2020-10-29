@@ -686,7 +686,7 @@ class CORE_EXPORT PaintLayer : public DisplayItemClient {
   // FIXME: This should probably return a ScrollableArea but a lot of internal
   // methods are mistakenly exposed.
   PaintLayerScrollableArea* GetScrollableArea() const {
-    return scrollable_area_.Get();
+    return scrollable_area_.get();
   }
 
   enum GeometryMapperOption { kUseGeometryMapper, kDoNotUseGeometryMapper };
@@ -1342,7 +1342,7 @@ class CORE_EXPORT PaintLayer : public DisplayItemClient {
   mutable std::unique_ptr<AncestorDependentCompositingInputs>
       ancestor_dependent_compositing_inputs_;
 
-  Persistent<PaintLayerScrollableArea> scrollable_area_;
+  std::unique_ptr<PaintLayerScrollableArea> scrollable_area_;
 
   mutable std::unique_ptr<ClipRectsCache> clip_rects_cache_;
 

@@ -243,6 +243,7 @@ public:
     // Sets the flag for the current node and also calls
     // MarkAncestorsWithChildNeedsStyleRecalc
     void SetNeedsStyleRecalc(StyleChangeType changeType, const StyleChangeReasonForTracing &);
+    void ClearNeedsStyleRecalc(void);
 #endif // BLINKIT_CRAWLER_ONLY
     // True if the style recalculation process should traverse this node's
     // children when looking for nodes that need recalculation.

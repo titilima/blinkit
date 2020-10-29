@@ -290,6 +290,50 @@ void ContainerNode::AppendChildCommon(Node &child)
     SetLastChild(&child);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+
+#if DCHECK_IS_ON()
+namespace {
+
+bool AttachedAllowedWhenAttaching(Node *node)
+{
+    return node->getNodeType() == Node::kCommentNode || node->getNodeType() == Node::kProcessingInstructionNode;
+}
+
+bool ChildAttachedAllowedWhenAttachingChildren(ContainerNode *node)
+{
+    if (node->IsShadowRoot())
+        return true;
+    if (node->IsV0InsertionPoint())
+        return true;
+    if (IsHTMLSlotElement(*node))
+        return true;
+    if (IsShadowHost(node))
+        return true;
+    return false;
+}
+
+}  // namespace
+#endif // DCHECK_IS_ON
+
+void ContainerNode::AttachLayoutTree(AttachContext &context)
+{
+    for (Node *child = firstChild(); nullptr != child; child = child->nextSibling())
+    {
+#if DCHECK_IS_ON()
+        DCHECK(child->NeedsAttach() || AttachedAllowedWhenAttaching(child)
+            || ChildAttachedAllowedWhenAttachingChildren(this));
+#endif
+        if (child->NeedsAttach())
+            child->AttachLayoutTree(context);
+    }
+
+    ClearChildNeedsStyleRecalc();
+    ClearChildNeedsReattachLayoutTree();
+    Node::AttachLayoutTree(context);
+}
+#endif
+
 bool ContainerNode::CheckParserAcceptChild(const Node &newChild) const
 {
     if (!IsDocumentNode())
@@ -341,6 +385,13 @@ unsigned ContainerNode::CountChildren(void) const
         ++count;
     return count;
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void ContainerNode::DetachLayoutTree(const AttachContext &context)
+{
+    ASSERT(false); // BKTODO:
+}
+#endif
 
 static void DispatchChildInsertionEvents(Node &child)
 {

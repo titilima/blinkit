@@ -89,7 +89,7 @@
 #include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/style/shadow_list.h"
 #include "third_party/blink/renderer/platform/geometry/double_rect.h"
 #include "third_party/blink/renderer/platform/geometry/float_quad.h"
@@ -5359,11 +5359,16 @@ void LayoutBox::UnmarkOrthogonalWritingModeRoot() {
 // Children of LayoutCustom object's are only considered "items" when it has a
 // loaded algorithm.
 bool LayoutBox::IsCustomItem() const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
+#if 0 // BKTODO:
   return Parent() && Parent()->IsLayoutCustom() &&
          ToLayoutCustom(Parent())->State() == LayoutCustomState::kBlock;
+#else
+  if (LayoutObject *parent = Parent())
+  {
+    if (parent->IsLayoutCustom())
+      ASSERT(false); // BKTODO: return ToLayoutCustom(Parent())->State() == LayoutCustomState::kBlock;
+  }
+  return false;
 #endif
 }
 

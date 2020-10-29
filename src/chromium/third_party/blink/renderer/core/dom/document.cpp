@@ -82,8 +82,10 @@
 #   include "third_party/blink/renderer/core/css/resolver/font_builder.h"
 #   include "third_party/blink/renderer/core/css/style_engine.h"
 #   include "third_party/blink/renderer/core/css/style_sheet_contents.h"
+#   include "third_party/blink/renderer/core/dom/layout_tree_builder.h"
 #   include "third_party/blink/renderer/core/dom/visited_link_state.h"
 #   include "third_party/blink/renderer/core/layout/layout_view.h"
+#   include "third_party/blink/renderer/core/layout/text_autosizer.h"
 #   include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #endif
 
@@ -956,8 +958,7 @@ Node::ConstructionType Document::GetConstructionType(const DocumentInit &init)
 #ifndef BLINKIT_CRAWLER_ONLY
 Page* Document::GetPage(void) const
 {
-    ASSERT(false); // BKTODO:
-    return nullptr;
+    return m_frame ? m_frame->GetPage() : nullptr;
 }
 
 const PropertyRegistry* Document::GetPropertyRegistry(void) const
@@ -991,6 +992,15 @@ std::shared_ptr<base::SingleThreadTaskRunner> Document::GetTaskRunner(TaskType t
     ASSERT(IsMainThread());
     return Platform::Current()->CurrentThread()->GetTaskRunner();
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+TextAutosizer* Document::GetTextAutosizer(void)
+{
+    if (!m_textAutosizer)
+        m_textAutosizer.reset(TextAutosizer::Create(this));
+    return m_textAutosizer.get();
+}
+#endif
 
 bool Document::HaveImportsLoaded(void) const
 {
@@ -1140,20 +1150,17 @@ void Document::Initialize(void)
         m_layoutView->SetStyle(StyleResolver::StyleForViewport(*this));
         m_layoutView->Compositor()->SetNeedsCompositingUpdate(kCompositingUpdateAfterCompositingInputChange);
 
-        ASSERT(false); // BKTODO:
-#if 0
         {
-            ReattachLegacyLayoutObjectList legacy_layout_objects(*this);
+            ReattachLegacyLayoutObjectList legacyLayoutObjects(*this);
             AttachContext context;
             ContainerNode::AttachLayoutTree(context);
-            legacy_layout_objects.ForceLegacyLayoutIfNeeded();
+            legacyLayoutObjects.ForceLegacyLayoutIfNeeded();
         }
 
         // The TextAutosizer can't update layout view info while the Document is
         // detached, so update now in case anything changed.
-        if (TextAutosizer* autosizer = GetTextAutosizer())
+        if (TextAutosizer *autosizer = GetTextAutosizer())
             autosizer->UpdatePageInfo();
-#endif
     }
 #endif
 
@@ -1161,11 +1168,10 @@ void Document::Initialize(void)
     m_lifecycle.AdvanceTo(DocumentLifecycle::kStyleClean);
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
-#if 0
-    if (View())
-        View()->DidAttachDocument();
+    if (LocalFrameView *view = View())
+        view->DidAttachDocument();
 
+#if 0 // BKTODO: Check if necessary.
     // Observer(s) should not be initialized until the document is initialized /
     // attached to a frame. Otherwise ContextLifecycleObserver::contextDestroyed
     // wouldn't be fired.

@@ -70,7 +70,7 @@ LocalFrame::LocalFrame(LocalFrameClient *client, Page *page)
 
 LocalFrame::~LocalFrame(void)
 {
-    // BKTODO: assert(nullptr == m_view);
+    ASSERT(!m_view);
 }
 
 LocalFrameClient* LocalFrame::Client(void) const
@@ -78,10 +78,66 @@ LocalFrameClient* LocalFrame::Client(void) const
     return static_cast<LocalFrameClient *>(Frame::Client());
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+LayoutView* LocalFrame::ContentLayoutObject(void) const
+{
+    if (Document *document = GetDocument())
+        return document->GetLayoutView();
+    return nullptr;
+}
+#endif
+
 std::unique_ptr<LocalFrame> LocalFrame::Create(LocalFrameClient *client, Page *page)
 {
     return base::WrapUnique(new LocalFrame(client, page));
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void LocalFrame::CreateView(const IntSize &viewportSize, const Color &backgroundColor)
+{
+    ASSERT(nullptr != this);
+    ASSERT(nullptr != GetPage());
+
+#if 0 // BKTODO: Check if necessary
+    bool is_local_root = this->IsLocalRoot();
+
+    if (is_local_root && View())
+        View()->SetParentVisible(false);
+#endif
+
+    std::shared_ptr<LocalFrameView> previousView(m_view);
+    SetView(nullptr);
+
+    std::shared_ptr<LocalFrameView> frameView = LocalFrameView::Create(*this, viewportSize);
+    // The layout size is set by WebViewImpl to support @viewport
+    frameView->SetLayoutSizeFixedToFrameSize(false);
+
+    SetView(frameView);
+
+    frameView->UpdateBaseBackgroundColorRecursively(backgroundColor);
+
+#if 0 // BKTODO: Check if necessary
+    if (is_local_root)
+        frame_view->SetParentVisible(true);
+
+    // FIXME: Not clear what the right thing for OOPI is here.
+    if (OwnerLayoutObject()) {
+        HTMLFrameOwnerElement* owner = DeprecatedLocalOwner();
+        DCHECK(owner);
+        // FIXME: OOPI might lead to us temporarily lying to a frame and telling it
+        // that it's owned by a FrameOwner that knows nothing about it. If we're
+        // lying to this frame, don't let it clobber the existing
+        // EmbeddedContentView.
+        if (owner->ContentFrame() == this)
+            owner->SetEmbeddedContentView(frame_view);
+    }
+
+    if (Owner())
+        View()->SetCanHaveScrollbars(Owner()->ScrollingMode() !=
+            kScrollbarAlwaysOff);
+#endif
+}
+#endif
 
 void LocalFrame::DetachImpl(FrameDetachType type)
 {
@@ -183,8 +239,7 @@ void LocalFrame::DocumentAttached(void)
         return;
 
     Document *document = GetDocument();
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
     GetEditor().Clear();
     GetEventHandler().Clear();
     Selection().DocumentAttached(GetDocument());
@@ -235,9 +290,14 @@ void LocalFrame::SetTextZoomFactor(float factor)
     ASSERT(false); // BKTODO:
 }
 
-void LocalFrame::SetView(std::shared_ptr<LocalFrameView> &view)
+void LocalFrame::SetView(const std::shared_ptr<LocalFrameView> &view)
 {
-    ASSERT(false); // BKTODO:
+    ASSERT(!m_view || m_view != view);
+    ASSERT(nullptr == GetDocument() || !GetDocument()->IsActive());
+
+    if (m_view)
+        m_view->WillBeRemovedFromFrame();
+    m_view = view;
 }
 #endif
 

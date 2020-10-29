@@ -32,8 +32,8 @@
 #include "third_party/blink/renderer/core/paint/ng/ng_paint_fragment.h"
 #include "third_party/blink/renderer/core/paint/object_paint_properties.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/paint/pre_paint_tree_walk.h"
 #endif
 #include "third_party/blink/renderer/platform/graphics/paint/geometry_mapper.h"

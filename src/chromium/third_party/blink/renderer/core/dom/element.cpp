@@ -72,7 +72,7 @@ Element::Element(const QualifiedName &tagName, Document *document, ConstructionT
 Element::~Element(void)
 {
 #ifndef BLINKIT_CRAWLER_ONLY
-    DCHECK(NeedsAttach());
+    ASSERT(NeedsAttach());
 #endif
 }
 
@@ -86,6 +86,13 @@ void Element::AppendAttributeInternal(
     if (!inSynchronizationOfLazyAttribute)
         DidAddAttribute(name, value);
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void Element::AttachLayoutTree(AttachContext &context)
+{
+    ASSERT(false); // BKTODO:
+}
+#endif
 
 Attr* Element::AttrIfExists(const QualifiedName &name)
 {
@@ -499,6 +506,13 @@ void Element::DetachAllAttrNodesFromElement(void)
 {
     ASSERT(false); // BKTODO:
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void Element::DetachLayoutTree(const AttachContext &context)
+{
+    ASSERT(false); // BKTODO:
+}
+#endif
 
 void Element::DidAddAttribute(const QualifiedName &name, const AtomicString &value)
 {

@@ -15,6 +15,7 @@
 #pragma once
 
 #include "third_party/blink/renderer/core/frame/use_counter.h"
+#include "third_party/blink/renderer/core/page/page_animator.h"
 #include "third_party/blink/renderer/core/page/page_visibility_state.h"
 
 namespace blink {
@@ -22,6 +23,8 @@ namespace blink {
 class LocalFrame;
 class LocalFrameClient;
 class PageScaleConstraintsSet;
+class ScrollingCoordinator;
+class VisualViewport;
 
 class Page
 {
@@ -48,16 +51,22 @@ public:
         return *m_chromeClient;
     }
     LocalFrame* GetFrame(void) const { return m_frame.get(); }
+    PageAnimator& Animator(void) { return *m_animator; }
     PageScaleConstraintsSet& GetPageScaleConstraintsSet(void);
     const PageScaleConstraintsSet& GetPageScaleConstraintsSet(void) const;
+    VisualViewport& GetVisualViewport(void);
+    const VisualViewport& GetVisualViewport(void) const;
     PageVisibilityState VisibilityState(void) const { return m_visibilityState; }
     void SetVisibilityState(PageVisibilityState visibilityState, bool isInitialState);
+    ScrollingCoordinator* GetScrollingCoordinator(void);
 private:
     explicit Page(PageClients &pageClients);
 
     ChromeClient *m_chromeClient;
     std::unique_ptr<LocalFrame> m_frame;
+    std::unique_ptr<PageAnimator> m_animator;
     std::unique_ptr<PageScaleConstraintsSet> m_pageScaleConstraintsSet;
+    const std::unique_ptr<VisualViewport> m_visualViewport;
     PageVisibilityState m_visibilityState = PageVisibilityState::kVisible;
 };
 

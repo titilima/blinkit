@@ -91,8 +91,10 @@ class LayoutView;
 class LocalFrameView;
 class Page;
 class PropertyRegistry;
+class ReattachLegacyLayoutObjectList;
 class StyleEngine;
 class StyleResolver;
+class TextAutosizer;
 class VisitedLinkState;
 #endif
 
@@ -152,6 +154,7 @@ public:
     PropertyRegistry* GetPropertyRegistry(void);
     Page* GetPage(void) const;                           // can be null
     LocalFrameView* View(void) const;                    // can be null
+    TextAutosizer* GetTextAutosizer(void);
     StyleResolver* GetStyleResolver(void) const;
     VisitedLinkState& GetVisitedLinkState(void) const { return *m_visitedLinkState; }
     // to get visually ordered hebrew and arabic pages right
@@ -390,6 +393,9 @@ public:
     TextLinkColors& GetTextLinkColors(void) { return m_textLinkColors; }
     const TextLinkColors& GetTextLinkColors(void) const { return m_textLinkColors; }
 
+    // TODO(layout-dev): Once everything are LayoutNG, we can get rid of this.
+    ReattachLegacyLayoutObjectList& GetReattachLegacyLayoutObjectList(void);
+
 #   if DCHECK_IS_ON()
     unsigned& SlotAssignmentRecalcForbiddenRecursionDepth(void) { return m_slotAssignmentRecalcForbiddenRecursionDepth; }
     bool IsSlotAssignmentRecalcForbidden(void) { return m_slotAssignmentRecalcForbiddenRecursionDepth > 0; }
@@ -431,6 +437,10 @@ private:
     NodeType getNodeType(void) const final { return kDocumentNode; }
     Node* Clone(Document &factory, CloneChildrenFlag flag) const override;
     bool ChildTypeAllowed(NodeType type) const final;
+#ifndef BLINKIT_CRAWLER_ONLY
+    void AttachLayoutTree(AttachContext &) override { NOTREACHED(); }
+    void DetachLayoutTree(const AttachContext & = AttachContext()) override { NOTREACHED(); }
+#endif
     // ContainerNode overrides
     void ChildrenChanged(const ChildrenChange &change) override;
     // ExecutionContext overrides
@@ -515,6 +525,7 @@ private:
 
 #ifndef BLINKIT_CRAWLER_ONLY
     LayoutView *m_layoutView = nullptr;
+    std::unique_ptr<TextAutosizer> m_textAutosizer;
     Member<Element> m_focusedElement;
     Member<Document> m_templateDocumentHost;
 
@@ -524,6 +535,11 @@ private:
     TextLinkColors m_textLinkColors;
     const std::unique_ptr<VisitedLinkState> m_visitedLinkState;
     bool m_visuallyOrdered = false;
+
+    friend class ReattachLegacyLayoutObjectList;
+    // TODO(layout-dev): Once everything are LayoutNG, we can get rid of this.
+    // Used for legacy layout tree fallback
+    ReattachLegacyLayoutObjectList *reattach_legacy_object_list_ = nullptr;
 
 #   if DCHECK_IS_ON()
     unsigned m_slotAssignmentRecalcForbiddenRecursionDepth = 0;

@@ -59,7 +59,7 @@
 // BKTODO: #include "third_party/blink/renderer/core/page/scrolling/scrolling_coordinator_context.h"
 #include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/paint/view_painter.h"
 // BKTODO: #include "third_party/blink/renderer/core/svg/svg_document_extensions.h"
 #include "third_party/blink/renderer/platform/geometry/float_quad.h"
@@ -731,8 +731,7 @@ void LayoutView::CalculateScrollbarModes(ScrollbarMode& h_mode,
   if (!frame)
     RETURN_SCROLLBAR_MODE(kScrollbarAlwaysOff);
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO:
   if (FrameOwner* owner = frame->Owner()) {
     // Setting scrolling="no" on an iframe element disables scrolling.
     if (owner->ScrollingMode() == kScrollbarAlwaysOff)
@@ -747,27 +746,12 @@ void LayoutView::CalculateScrollbarModes(ScrollbarMode& h_mode,
       RETURN_SCROLLBAR_MODE(kScrollbarAlwaysOff);
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
-  if (document.Printing()) {
-    // When printing, frame-level scrollbars are never displayed.
-    // TODO(szager): Figure out the right behavior when printing an overflowing
-    // iframe.  https://bugs.chromium.org/p/chromium/issues/detail?id=777528
-    RETURN_SCROLLBAR_MODE(kScrollbarAlwaysOff);
-  }
-#endif
-
   if (LocalFrameView* frameView = GetFrameView()) {
-    ASSERT(false); // BKTODO:
-#if 0
     // Scrollbars can be disabled by LocalFrameView::setCanHaveScrollbars.
     if (!frameView->CanHaveScrollbars())
       RETURN_SCROLLBAR_MODE(kScrollbarAlwaysOff);
-#endif
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   Element* viewportDefiningElement = document.ViewportDefiningElement();
   if (!viewportDefiningElement)
     RETURN_SCROLLBAR_MODE(kScrollbarAuto);
@@ -780,6 +764,7 @@ void LayoutView::CalculateScrollbarModes(ScrollbarMode& h_mode,
   if (!style)
     RETURN_SCROLLBAR_MODE(kScrollbarAuto);
 
+#if 0 // BKTODO:
   if (viewport->IsSVGRoot()) {
     // Don't allow overflow to affect <img> and css backgrounds
     if (ToLayoutSVGRoot(viewport)->IsEmbeddedThroughSVGImage())
@@ -791,6 +776,7 @@ void LayoutView::CalculateScrollbarModes(ScrollbarMode& h_mode,
             ->IsEmbeddedThroughFrameContainingSVGDocument())
       RETURN_SCROLLBAR_MODE(kScrollbarAlwaysOff);
   }
+#endif
 
   h_mode = v_mode = kScrollbarAuto;
 
@@ -798,11 +784,8 @@ void LayoutView::CalculateScrollbarModes(ScrollbarMode& h_mode,
   EOverflow overflow_y = style->OverflowY();
 
   bool shouldIgnoreOverflowHidden = false;
-  if (Settings* settings = document.GetSettings()) {
-    if (settings->GetIgnoreMainFrameOverflowHiddenQuirk() &&
-        frame->IsMainFrame())
-      shouldIgnoreOverflowHidden = true;
-  }
+  if (Settings::IgnoreMainFrameOverflowHiddenQuirk)
+    shouldIgnoreOverflowHidden = true;
   if (!shouldIgnoreOverflowHidden) {
     if (overflow_x == EOverflow::kHidden)
       h_mode = kScrollbarAlwaysOff;
@@ -814,7 +797,6 @@ void LayoutView::CalculateScrollbarModes(ScrollbarMode& h_mode,
     h_mode = kScrollbarAlwaysOn;
   if (overflow_y == EOverflow::kScroll)
     v_mode = kScrollbarAlwaysOn;
-#endif
 
 #undef RETURN_SCROLLBAR_MODE
 }

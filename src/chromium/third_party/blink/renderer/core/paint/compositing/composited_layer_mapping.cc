@@ -83,8 +83,8 @@
 #include "third_party/blink/renderer/core/paint/paint_info.h"
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/paint/paint_layer_painter.h"
-#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #endif
+#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 #include "third_party/blink/renderer/core/paint/paint_layer_stacking_node_iterator.h"
 // BKTODO: #include "third_party/blink/renderer/core/paint/scrollable_area_painter.h"
 #include "third_party/blink/renderer/core/probe/core_probes.h"

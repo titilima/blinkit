@@ -62,6 +62,13 @@ DocumentLifecycle::AllowThrottlingScope::~AllowThrottlingScope(void)
 }
 #endif
 
+void DocumentLifecycle::AdvanceTo(LifecycleState nextState)
+{
+    ASSERT(CanAdvanceTo(nextState));
+    ASSERT(m_state == nextState || !m_checkNoTransition);
+    m_state = nextState;
+}
+
 #ifndef NDEBUG
 bool DocumentLifecycle::CanAdvanceTo(LifecycleState nextState) const
 {
@@ -257,13 +264,43 @@ bool DocumentLifecycle::CanAdvanceTo(LifecycleState nextState) const
     }
     return false;
 }
+
+bool DocumentLifecycle::CanRewindTo(LifecycleState nextState) const
+{
+    if (StateTransitionDisallowed())
+        return false;
+
+#if 0 // BKTODO: Check if necessary
+    // This transition is bogus, but we've whitelisted it anyway.
+    if (g_deprecated_transition_stack &&
+        state_ == g_deprecated_transition_stack->From() &&
+        next_state == g_deprecated_transition_stack->To())
+        return true;
+#endif
+    switch (m_state)
+    {
+        case kStyleClean:
+        case kLayoutSubtreeChangeClean:
+        case kAfterPerformLayout:
+        case kLayoutClean:
+        case kCompositingInputsClean:
+        case kCompositingClean:
+        case kPrePaintClean:
+        case kPaintClean:
+            return true;
+    }
+    return false;
+}
 #endif // NDEBUG
 
-void DocumentLifecycle::AdvanceTo(LifecycleState nextState)
+void DocumentLifecycle::EnsureStateAtMost(LifecycleState state)
 {
-    assert(CanAdvanceTo(nextState));
-    assert(m_state == nextState || !m_checkNoTransition);
-    m_state = nextState;
+    ASSERT(kVisualUpdatePending == state || kStyleClean == state || kLayoutClean == state);
+    if (m_state <= state)
+        return;
+    ASSERT(CanRewindTo(state));
+    ASSERT(m_state == state || !m_checkNoTransition);
+    m_state = state;
 }
 
 bool DocumentLifecycle::StateAllowsTreeMutations(void) const

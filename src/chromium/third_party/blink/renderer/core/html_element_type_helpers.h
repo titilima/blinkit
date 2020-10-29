@@ -85,6 +85,20 @@ inline bool IsHTMLScriptElement(const Node &node)
     return node.IsHTMLElement() && IsHTMLScriptElement(ToElement(node));
 }
 
+inline bool IsHTMLSlotElement(const Element &element)
+{
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
+    return element.HasTagName(html_names::kSlotTag);
+#endif
+}
+
+inline bool IsHTMLSlotElement(const Node &node)
+{
+    return node.IsHTMLElement() && IsHTMLSlotElement(ToElement(node));
+}
+
 inline bool IsHTMLStyleElement(const Element &element)
 {
     return element.HasTagName(html_names::kStyleTag);

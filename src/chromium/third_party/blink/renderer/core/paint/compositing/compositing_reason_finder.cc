@@ -24,7 +24,7 @@
 #include "third_party/blink/renderer/core/page/page.h"
 // BKTODO: #include "third_party/blink/renderer/core/page/scrolling/root_scroller_util.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
-// BKTODO: #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+#include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 
 #include "third_party/blink/public/platform/platform.h"
 
@@ -40,15 +40,11 @@ CompositingReasonFinder::CompositingReasonFinder(LayoutView& layout_view)
 void CompositingReasonFinder::UpdateTriggers() {
   compositing_triggers_ = 0;
 
-  ASSERT(false); // BKTODO:
-#if 0
-  Settings& settings = layout_view_.GetDocument().GetPage()->GetSettings();
-  if (settings.GetPreferCompositingToLCDTextEnabled()) {
+  if (Settings::PreferCompositingToLCDTextEnabled) {
     compositing_triggers_ |= kScrollableInnerFrameTrigger;
     compositing_triggers_ |= kOverflowScrollTrigger;
     compositing_triggers_ |= kViewportConstrainedPositionedTrigger;
   }
-#endif
 }
 
 bool CompositingReasonFinder::IsMainFrame() const {
@@ -163,9 +159,6 @@ CompositingReasonFinder::PotentialCompositingReasonsFromStyle(
 
 bool CompositingReasonFinder::RequiresCompositingForTransform(
     const LayoutObject& layout_object) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   // Note that we ask the layoutObject if it has a transform, because the style
   // may have transforms, but the layoutObject may be an inline that doesn't
   // support them.
@@ -176,7 +169,6 @@ bool CompositingReasonFinder::RequiresCompositingForTransform(
          // and per-composited-layer commit overhead.
          (!Platform::Current()->IsLowEndDevice() ||
           layout_object.StyleRef().Transform().HasNonTrivial3DComponent());
-#endif
 }
 
 CompositingReasons CompositingReasonFinder::NonStyleDeterminedDirectReasons(

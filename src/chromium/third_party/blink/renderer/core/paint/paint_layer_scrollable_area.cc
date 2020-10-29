@@ -1590,18 +1590,13 @@ void PaintLayerScrollableArea::ComputeScrollbarExistence(
     bool& needs_horizontal_scrollbar,
     bool& needs_vertical_scrollbar,
     ComputeScrollbarExistenceOption option) const {
-  ASSERT(false); // BKTODO:
-#if 0
   // Scrollbars may be hidden or provided by visual viewport or frame instead.
-  DCHECK(GetLayoutBox()->GetFrame()->GetSettings());
   if (VisualViewportSuppliesScrollbars() ||
-      !CanHaveOverflowScrollbars(*GetLayoutBox()) ||
-      GetLayoutBox()->GetFrame()->GetSettings()->GetHideScrollbars()) {
+      !CanHaveOverflowScrollbars(*GetLayoutBox())) {
     needs_horizontal_scrollbar = false;
     needs_vertical_scrollbar = false;
     return;
   }
-#endif
 
   needs_horizontal_scrollbar = GetLayoutBox()->ScrollsOverflowX();
   needs_vertical_scrollbar = GetLayoutBox()->ScrollsOverflowY();
@@ -1992,13 +1987,10 @@ void PaintLayerScrollableArea::UpdateResizerAreaSet() {
   LocalFrameView* frame_view = frame->View();
   if (!frame_view)
     return;
-  ASSERT(false); // BKTODO:
-#if 0
   if (GetLayoutBox()->CanResize())
     frame_view->AddResizerArea(*GetLayoutBox());
   else
     frame_view->RemoveResizerArea(*GetLayoutBox());
-#endif
 }
 
 void PaintLayerScrollableArea::UpdateResizerStyle(
@@ -2511,16 +2503,16 @@ void PaintLayerScrollableArea::UpdateNeedsCompositedScrolling(
 
 bool PaintLayerScrollableArea::VisualViewportSuppliesScrollbars() const {
   LocalFrame* frame = GetLayoutBox()->GetFrame();
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
-  if (!frame || !frame->GetSettings())
+  if (!frame)
     return false;
 
   // On desktop, we always use the layout viewport's scrollbars.
-  if (!frame->GetSettings()->GetViewportEnabled())
+  if (!Settings::ViewportEnabled)
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   const TopDocumentRootScrollerController& controller =
       GetLayoutBox()->GetDocument().GetPage()->GlobalRootScrollerController();
 

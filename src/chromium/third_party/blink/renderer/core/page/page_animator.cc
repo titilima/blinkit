@@ -5,14 +5,14 @@
 #include "third_party/blink/renderer/core/page/page_animator.h"
 
 #include "base/auto_reset.h"
-#include "third_party/blink/renderer/core/animation/document_animations.h"
+// BKTODO: #include "third_party/blink/renderer/core/animation/document_animations.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page.h"
-#include "third_party/blink/renderer/core/page/validation_message_client.h"
+// BKTODO: #include "third_party/blink/renderer/core/page/validation_message_client.h"
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
-#include "third_party/blink/renderer/core/svg/svg_document_extensions.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_document_extensions.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 
 namespace blink {
@@ -35,6 +35,8 @@ void PageAnimator::ServiceScriptedAnimations(
   base::AutoReset<bool> servicing(&servicing_animations_, true);
   Clock().UpdateTime(monotonic_animation_start_time);
 
+  ASSERT(false); // BKTODO:
+#if 0
   HeapVector<Member<Document>, 32> documents;
   for (Frame* frame = page_->MainFrame(); frame;
        frame = frame->Tree().TraverseNext()) {
@@ -83,6 +85,7 @@ void PageAnimator::ServiceScriptedAnimations(
   }
 
   page_->GetValidationMessageClient().LayoutOverlay();
+#endif
 }
 
 void PageAnimator::SetSuppressFrameRequestsWorkaroundFor704763Only(
@@ -107,21 +110,21 @@ void PageAnimator::UpdateAllLifecyclePhases(LocalFrame& root_frame) {
   LocalFrameView* view = root_frame.View();
   base::AutoReset<bool> servicing(&updating_layout_and_style_for_painting_,
                                   true);
-  view->UpdateAllLifecyclePhases();
+  ASSERT(false); // BKTODO: view->UpdateAllLifecyclePhases();
 }
 
 void PageAnimator::UpdateAllLifecyclePhasesExceptPaint(LocalFrame& root_frame) {
   LocalFrameView* view = root_frame.View();
   base::AutoReset<bool> servicing(&updating_layout_and_style_for_painting_,
                                   true);
-  view->UpdateAllLifecyclePhasesExceptPaint();
+  ASSERT(false); // BKTODO: view->UpdateAllLifecyclePhasesExceptPaint();
 }
 
 void PageAnimator::UpdateLifecycleToLayoutClean(LocalFrame& root_frame) {
   LocalFrameView* view = root_frame.View();
   base::AutoReset<bool> servicing(&updating_layout_and_style_for_painting_,
                                   true);
-  view->UpdateLifecycleToLayoutClean();
+  ASSERT(false); // BKTODO: view->UpdateLifecycleToLayoutClean();
 }
 
 }  // namespace blink

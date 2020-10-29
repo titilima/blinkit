@@ -20,6 +20,7 @@
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page_visibility_state.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
+#include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
 
 namespace blink {
 class PageScaleConstraintsSet;
@@ -40,13 +41,17 @@ public:
     // the page is shutting down, but will be valid at all other times.
     blink::Page* GetPage(void) const { return m_page.get(); }
 
+    void ScheduleAnimation(void);
+
 protected:
     WebViewImpl(blink::PageVisibilityState visibilityState);
 private:
     blink::IntSize FrameSize(void);
+    blink::Color BaseBackgroundColor(void) const;
     blink::PageScaleConstraintsSet& GetPageScaleConstraintsSet(void) const;
     float MinimumPageScaleFactor(void) const;
     void SetVisibilityState(blink::PageVisibilityState visibilityState, bool isInitialState);
+    bool ShouldAutoResize(void) const { return m_shouldAutoResize; }
 
     // LocalFrameClient
     bool IsCrawler(void) const final { return false; }
@@ -57,7 +62,10 @@ private:
     BkWebViewClient m_client;
     std::unique_ptr<blink::ChromeClient> m_chromeClient;
     blink::WebSize m_size;
+    // If true, automatically resize the layout view around its content.
+    bool m_shouldAutoResize = false;
     std::unique_ptr<blink::Page> m_page;
+    SkColor m_baseBackgroundColor;
 };
 
 #endif // BLINKIT_BLINKIT_WEB_VIEW_IMPL_H

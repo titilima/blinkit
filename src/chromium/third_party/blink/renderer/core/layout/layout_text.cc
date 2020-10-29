@@ -214,12 +214,9 @@ void LayoutText::StyleDidChange(StyleDifference diff,
   if (!GetText().ContainsOnlyWhitespace())
     new_style.GetFont().WillUseFontData(GetText());
 
-  ASSERT(false); // BKTODO:
-#if 0
   TextAutosizer* text_autosizer = GetDocument().GetTextAutosizer();
   if (!old_style && text_autosizer)
     text_autosizer->Record(this);
-#endif
 
   // TODO(layout-dev): This is only really needed for style changes that affect
   // how text is rendered. Font, text-decoration, etc.

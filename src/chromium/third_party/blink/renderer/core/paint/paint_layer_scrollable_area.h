@@ -254,8 +254,8 @@ class CORE_EXPORT PaintLayerScrollableArea final
 
   // FIXME: We should pass in the LayoutBox but this opens a window
   // for crashers during PaintLayer setup (see crbug.com/368062).
-  static PaintLayerScrollableArea* Create(PaintLayer& layer) {
-    return new PaintLayerScrollableArea(layer);
+  static std::unique_ptr<PaintLayerScrollableArea> Create(PaintLayer& layer) {
+    return base::WrapUnique(new PaintLayerScrollableArea(layer));
   }
 
   ~PaintLayerScrollableArea() override;
