@@ -40,6 +40,9 @@
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/events/node_event_context.h"
 #include "third_party/blink/renderer/core/dom/events/window_event_context.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/dom/v0_insertion_point.h"
+#endif
 
 namespace blink {
 
@@ -97,37 +100,43 @@ void EventPath::CalculatePath(void)
         if (nullptr != current)
             nodesInPath.push_back(current);
 #else
-        ASSERT(false); // BKTODO:
-#if 0
         std::vector<V0InsertionPoint *> insertionPoints;
-        HeapVector<Member<V0InsertionPoint>, 8> insertion_points;
-        CollectDestinationInsertionPoints(*current, insertion_points);
-        if (!insertion_points.IsEmpty()) {
-            for (const auto& insertion_point : insertion_points)
-                nodes_in_path.push_back(insertion_point);
-            current = insertion_points.back();
+        CollectDestinationInsertionPoints(*current, insertionPoints);
+        if (!insertionPoints.empty())
+        {
+            for (V0InsertionPoint *insertionPoint : insertionPoints)
+                nodesInPath.push_back(insertionPoint);
+            current = insertionPoints.back();
             continue;
         }
-        if (current->IsChildOfV1ShadowHost()) {
-            if (HTMLSlotElement* slot = current->AssignedSlot()) {
+        if (current->IsChildOfV1ShadowHost())
+        {
+            ASSERT(false); // BKTODO:
+#if 0
+            if (HTMLSlotElement* slot = current->AssignedSlot())
+            {
                 current = slot;
-                nodes_in_path.push_back(current);
+                nodesInPath.push_back(current);
                 continue;
             }
+#endif
         }
-        if (current->IsShadowRoot()) {
-            if (event_ &&
-                ShouldStopAtShadowRoot(*event_, *ToShadowRoot(current), *node_))
+        if (current->IsShadowRoot())
+        {
+            ASSERT(false); // BKTODO:
+#if 0
+            if (m_event && ShouldStopAtShadowRoot(*m_event, *ToShadowRoot(current), *m_node))
                 break;
             current = current->OwnerShadowHost();
-            nodes_in_path.push_back(current);
-        }
-        else {
-            current = current->parentNode();
-            if (current)
-                nodes_in_path.push_back(current);
-        }
 #endif
+            nodesInPath.push_back(current);
+        }
+        else
+        {
+            current = current->parentNode();
+            if (nullptr != current)
+                nodesInPath.push_back(current);
+        }
 #endif
     }
 

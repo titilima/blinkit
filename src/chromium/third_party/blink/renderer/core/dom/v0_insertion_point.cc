@@ -337,17 +337,17 @@ const V0InsertionPoint* ResolveReprojection(const Node* projected_node) {
 
 void CollectDestinationInsertionPoints(
     const Node& node,
-    HeapVector<Member<V0InsertionPoint>, 8>& results) {
+    std::vector<V0InsertionPoint *>& results) {
   const Node* current = &node;
   ShadowRoot* last_shadow_root = nullptr;
-  ASSERT(false); // BKTODO:
-#if 0
   while (true) {
     ShadowRoot* shadow_root =
         ShadowRootWhereNodeCanBeDistributedForV0(*current);
     if (!shadow_root || shadow_root->IsV1() || shadow_root == last_shadow_root)
       return;
     last_shadow_root = shadow_root;
+    ASSERT(false); // BKTODO:
+#if 0
     const DestinationInsertionPoints* insertion_points =
         shadow_root->V0().DestinationInsertionPointsFor(&node);
     if (!insertion_points)
@@ -356,8 +356,8 @@ void CollectDestinationInsertionPoints(
       results.push_back(insertion_points->at(i).Get());
     DCHECK_NE(current, insertion_points->back().Get());
     current = insertion_points->back().Get();
-  }
 #endif
+  }
 }
 
 }  // namespace blink

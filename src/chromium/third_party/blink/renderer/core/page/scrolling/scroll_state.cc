@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scroll_state.cc
+// Description: ScrollState Class
+//      Author: Ziming Li
+//     Created: 2020-10-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -25,6 +36,7 @@ Element* ElementForId(DOMNodeId element_id) {
 }
 }  // namespace
 
+#if 0 // BKTODO:
 ScrollState* ScrollState::Create(ScrollStateInit init) {
   std::unique_ptr<ScrollStateData> scroll_state_data =
       std::make_unique<ScrollStateData>();
@@ -53,10 +65,13 @@ ScrollState* ScrollState::Create(std::unique_ptr<ScrollStateData> data) {
 
 ScrollState::ScrollState(std::unique_ptr<ScrollStateData> data)
     : data_(std::move(data)) {}
+#endif
 
 void ScrollState::consumeDelta(double x,
                                double y,
                                ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   if ((data_->delta_x > 0 && 0 > x) || (data_->delta_x < 0 && 0 < x) ||
       (data_->delta_y > 0 && 0 > y) || (data_->delta_y < 0 && 0 < y)) {
     exception_state.ThrowDOMException(
@@ -70,6 +85,7 @@ void ScrollState::consumeDelta(double x,
         "Can't change direction of delta using consumeDelta");
     return;
   }
+#endif
   ConsumeDeltaNative(x, y);
 }
 
@@ -77,11 +93,13 @@ void ScrollState::distributeToScrollChainDescendant() {
   if (!scroll_chain_.empty()) {
     DOMNodeId descendant_id = scroll_chain_.front();
     scroll_chain_.pop_front();
-    ElementForId(descendant_id)->CallDistributeScroll(*this);
+    ASSERT(false); // BKTODO: ElementForId(descendant_id)->CallDistributeScroll(*this);
   }
 }
 
 void ScrollState::ConsumeDeltaNative(double x, double y) {
+  ASSERT(false); // BKTODO:
+#if 0
   data_->delta_x -= x;
   data_->delta_y -= y;
 
@@ -91,20 +109,27 @@ void ScrollState::ConsumeDeltaNative(double x, double y) {
     data_->caused_scroll_y = true;
   if (x || y)
     data_->delta_consumed_for_scroll_sequence = true;
+#endif
 }
 
 Element* ScrollState::CurrentNativeScrollingElement() {
+  ASSERT(false); // BKTODO:
+#if 0
   if (data_->current_native_scrolling_element() == CompositorElementId()) {
     element_.Clear();
     return nullptr;
   }
+#endif
   return element_;
 }
 
 void ScrollState::SetCurrentNativeScrollingElement(Element* element) {
   element_ = element;
+  ASSERT(false); // BKTODO:
+#if 0
   data_->set_current_native_scrolling_element(
       CompositorElementIdFromDOMNodeId(DOMNodeIds::IdForNode(element)));
+#endif
 }
 
 }  // namespace blink

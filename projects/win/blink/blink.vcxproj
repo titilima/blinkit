@@ -1041,6 +1041,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\qualified_name.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\range.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\scriptable_document_parser.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\shadow_root.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\shadow_root_v0.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\space_split_string.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\static_range.cc" />
@@ -1128,6 +1129,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\event_type_names.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\execution_context\execution_context.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\exported\web_document_loader_impl.cpp" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\browser_controls.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\dom_window.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\frame.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\frame_lifecycle.cc" />
@@ -1140,6 +1142,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\navigator_language.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints_set.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\root_frame_viewport.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\settings.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\viewport_data.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\visual_viewport.cc" />
@@ -1372,7 +1375,13 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\chrome_client_impl.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_animator.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\overscroll_controller.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\root_scroller_controller.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\scroll_state.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\scroll_state_callback.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\sticky_position_scrolling_constraints.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\top_document_root_scroller_controller.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\viewport_scroll_callback.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\viewport_description.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\applied_decoration_painter.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\background_image_geometry.cc" />
@@ -1762,6 +1771,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_gesture_event.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_localized_string.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_menu_source_type.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_native_scroll_behavior.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_point.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_rect.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_scroll_types.h" />
@@ -2927,6 +2937,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\event_type_names.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\execution_context\execution_context.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\exported\web_document_loader_impl.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\browser_controls.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\deprecation.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\dom_window.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\frame.h" />
@@ -2943,6 +2954,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\navigator_language.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\page_scale_constraints_set.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\root_frame_viewport.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\settings.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\use_counter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\viewport_data.h" />
@@ -3234,11 +3246,19 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\media_type_names.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\chrome_client.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\chrome_client_impl.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\display_cutout.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\event_with_hit_test_results.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_animator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\page_visibility_state.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\overscroll_controller.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\root_scroller_controller.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\scroll_state.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\scroll_state_callback.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\scroll_state_init.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\sticky_position_scrolling_constraints.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\top_document_root_scroller_controller.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\viewport_scroll_callback.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\viewport_description.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\applied_decoration_painter.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\paint\background_image_geometry.h" />

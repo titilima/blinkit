@@ -84,8 +84,10 @@
 #   include "third_party/blink/renderer/core/css/style_sheet_contents.h"
 #   include "third_party/blink/renderer/core/dom/layout_tree_builder.h"
 #   include "third_party/blink/renderer/core/dom/visited_link_state.h"
+#   include "third_party/blink/renderer/core/frame/viewport_data.h"
 #   include "third_party/blink/renderer/core/layout/layout_view.h"
 #   include "third_party/blink/renderer/core/layout/text_autosizer.h"
+#   include "third_party/blink/renderer/core/page/scrolling/root_scroller_controller.h"
 #   include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #endif
 
@@ -189,6 +191,9 @@ Document::Document(const DocumentInit &initializer)
     , m_elementDataCacheClearTimer(GetTaskRunner(TaskType::kInternalUserInteraction), this, &Document::ElementDataCacheClearTimerFired)
     , m_scriptRunner(ScriptRunner::Create(this))
     , m_loadEventDelayTimer(GetTaskRunner(TaskType::kNetworking), this, &Document::LoadEventDelayTimerFired)
+#ifndef BLINKIT_CRAWLER_ONLY
+    , m_viewportData(std::make_unique<ViewportData>(*this))
+#endif
 {
 #ifndef BLINKIT_CRAWLER_ONLY
     const bool isCrawler = ForCrawler();
@@ -239,6 +244,10 @@ Document::Document(const DocumentInit &initializer)
         m_fetcher = ResourceFetcher::Create();
     }
     ASSERT(m_fetcher);
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    m_rootScrollerController.reset(RootScrollerController::Create(*this));
+#endif
 
     // We depend on the url getting immediately set in subframes, but we
     // also depend on the url NOT getting immediately set in opened windows.

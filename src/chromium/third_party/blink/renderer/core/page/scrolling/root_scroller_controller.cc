@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: root_scroller_controller.cc
+// Description: RootScrollerController Class
+//      Author: Ziming Li
+//     Created: 2020-10-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -9,14 +20,16 @@
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/frame/browser_controls.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/fullscreen/document_fullscreen.h"
 #include "third_party/blink/renderer/core/html/html_frame_owner_element.h"
+#endif
 #include "third_party/blink/renderer/core/layout/layout_box.h"
-#include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
+// BKTODO: #include "third_party/blink/renderer/core/layout/layout_embedded_content.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page.h"
-#include "third_party/blink/renderer/core/page/scrolling/root_scroller_util.h"
+// BKTODO: #include "third_party/blink/renderer/core/page/scrolling/root_scroller_util.h"
 #include "third_party/blink/renderer/core/page/scrolling/top_document_root_scroller_controller.h"
 #include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
@@ -37,6 +50,9 @@ bool FillsViewport(const Element& element) {
 
   LayoutObject* layout_object = element.GetLayoutObject();
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   // TODO(bokan): Broken for OOPIF. crbug.com/642378.
   Document& top_document = element.GetDocument().TopDocument();
   if (!top_document.GetLayoutView())
@@ -61,11 +77,13 @@ bool FillsViewport(const Element& element) {
     return false;
 
   return bounding_box.Location() == IntPoint::Zero();
+#endif
 }
 
 // If the element is an iframe this grabs the ScrollableArea for the owned
 // LayoutView.
 PaintLayerScrollableArea* GetScrollableArea(const Element& element) {
+#if 0 // BKTODO: Check if necessary.
   if (element.IsFrameOwnerElement()) {
     const HTMLFrameOwnerElement* frame_owner =
         ToHTMLFrameOwnerElement(&element);
@@ -83,6 +101,7 @@ PaintLayerScrollableArea* GetScrollableArea(const Element& element) {
 
     return frame_view->LayoutViewport();
   }
+#endif
 
   DCHECK(element.GetLayoutObject()->IsBox());
   return ToLayoutBox(element.GetLayoutObject())->GetScrollableArea();
@@ -129,8 +148,11 @@ void RootScrollerController::Set(Element* new_root_scroller) {
 
   root_scroller_ = new_root_scroller;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (LocalFrame* frame = document_->GetFrame())
     frame->ScheduleVisualUpdateUnlessThrottled();
+#endif
 }
 
 Element* RootScrollerController::Get() const {
@@ -146,6 +168,8 @@ void RootScrollerController::DidResizeFrameView() {
   DCHECK(document_);
 
   Page* page = document_->GetPage();
+  ASSERT(false); // BKTODO:
+#if 0
   if (document_->GetFrame() && document_->GetFrame()->IsMainFrame() && page)
     page->GlobalRootScrollerController().DidResizeViewport();
 
@@ -156,10 +180,13 @@ void RootScrollerController::DidResizeFrameView() {
     UpdateIFrameGeometryAndLayoutSize(
         *ToHTMLFrameOwnerElement(&EffectiveRootScroller()));
   }
+#endif
 }
 
 void RootScrollerController::DidUpdateIFrameFrameView(
     HTMLFrameOwnerElement& element) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (&element != root_scroller_.Get() && &element != implicit_root_scroller_)
     return;
 
@@ -173,6 +200,7 @@ void RootScrollerController::DidUpdateIFrameFrameView(
   // effective root scroller (e.g.  demote it if it became remote).
   if (LocalFrame* frame = document_->GetFrame())
     frame->ScheduleVisualUpdateUnlessThrottled();
+#endif
 }
 
 void RootScrollerController::RecomputeEffectiveRootScroller() {
@@ -180,6 +208,8 @@ void RootScrollerController::RecomputeEffectiveRootScroller() {
 
   Node* new_effective_root_scroller = document_;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!DocumentFullscreen::fullscreenElement(*document_)) {
     bool root_scroller_valid =
         root_scroller_ && IsValidRootScroller(*root_scroller_);
@@ -188,6 +218,7 @@ void RootScrollerController::RecomputeEffectiveRootScroller() {
     else if (implicit_root_scroller_)
       new_effective_root_scroller = implicit_root_scroller_;
   }
+#endif
 
   // TODO(bokan): This is a terrible hack but required because the viewport
   // apply scroll works on Elements rather than Nodes. If we're going from
@@ -208,6 +239,8 @@ void RootScrollerController::RecomputeEffectiveRootScroller() {
   effective_root_scroller_ = new_effective_root_scroller;
 
   if (new_effective_root_scroller != old_effective_root_scroller) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (LayoutBoxModelObject* new_obj =
             new_effective_root_scroller->GetLayoutBoxModelObject()) {
       if (new_obj->Layer()) {
@@ -226,6 +259,7 @@ void RootScrollerController::RecomputeEffectiveRootScroller() {
         }
       }
     }
+#endif
     if (auto* object = old_effective_root_scroller->GetLayoutObject())
       object->SetIsEffectiveRootScroller(false);
 
@@ -254,6 +288,8 @@ bool RootScrollerController::IsValidRootScroller(const Element& element) const {
   if (element.GetLayoutObject()->IsInsideFlowThread())
     return false;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!element.GetLayoutObject()->HasOverflowClip() &&
       !element.IsFrameOwnerElement())
     return false;
@@ -272,6 +308,7 @@ bool RootScrollerController::IsValidRootScroller(const Element& element) const {
     if (!frame_owner->OwnedEmbeddedContentView()->IsLocalFrameView())
       return false;
   }
+#endif
 
   if (!FillsViewport(element))
     return false;
@@ -330,6 +367,8 @@ void RootScrollerController::ApplyRootScrollerProperties(Node& node) {
   if (!node.IsInTreeScope())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!node.IsFrameOwnerElement())
     return;
 
@@ -357,6 +396,7 @@ void RootScrollerController::ApplyRootScrollerProperties(Node& node) {
   } else {
     // TODO(bokan): Make work with OOPIF. crbug.com/642378.
   }
+#endif
 }
 
 void RootScrollerController::UpdateIFrameGeometryAndLayoutSize(
@@ -364,6 +404,8 @@ void RootScrollerController::UpdateIFrameGeometryAndLayoutSize(
   DCHECK(document_->GetFrame());
   DCHECK(document_->GetFrame()->View());
 
+  ASSERT(false); // BKTODO:
+#if 0
   LocalFrameView* child_view =
       ToLocalFrameView(frame_owner.OwnedEmbeddedContentView());
 
@@ -374,6 +416,7 @@ void RootScrollerController::UpdateIFrameGeometryAndLayoutSize(
 
   if (&EffectiveRootScroller() == frame_owner)
     child_view->SetLayoutSize(document_->GetFrame()->View()->GetLayoutSize());
+#endif
 }
 
 void RootScrollerController::ProcessImplicitCandidates() {
@@ -383,9 +426,6 @@ void RootScrollerController::ProcessImplicitCandidates() {
     return;
 
   if (!document_->GetLayoutView())
-    return;
-
-  if (!document_->GetFrame()->IsMainFrame())
     return;
 
   // If the main document has vertical scrolling, that's a good sign we
@@ -426,7 +466,11 @@ void RootScrollerController::ProcessImplicitCandidates() {
 }
 
 PaintLayer* RootScrollerController::RootScrollerPaintLayer() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return RootScrollerUtil::PaintLayerForRootScroller(effective_root_scroller_);
+#endif
 }
 
 bool RootScrollerController::ScrollsViewport(const Element& element) const {
@@ -440,15 +484,16 @@ void RootScrollerController::ElementRemoved(const Element& element) {
   if (element != effective_root_scroller_.Get())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   effective_root_scroller_ = document_;
   if (Page* page = document_->GetPage())
     page->GlobalRootScrollerController().DidChangeRootScroller();
+#endif
 }
 
 void RootScrollerController::ConsiderForImplicit(Node& node) {
   DCHECK(RuntimeEnabledFeatures::ImplicitRootScrollerEnabled());
-  if (!document_->GetFrame()->IsMainFrame())
-    return;
 
   if (document_->GetPage()->GetChromeClient().IsPopup())
     return;
@@ -469,6 +514,8 @@ void RootScrollerController::ForAllNonThrottledLocalControllers(
     return;
 
   LocalFrameView* frame_view = document_->View();
+  ASSERT(false); // BKTODO:
+#if 0
   if (frame_view->ShouldThrottleRendering())
     return;
 
@@ -482,6 +529,7 @@ void RootScrollerController::ForAllNonThrottledLocalControllers(
           .ForAllNonThrottledLocalControllers(function);
     }
   }
+#endif
 
   function(*this);
 }
@@ -489,6 +537,8 @@ void RootScrollerController::ForAllNonThrottledLocalControllers(
 void RootScrollerController::PerformRootScrollerSelection() {
   TRACE_EVENT0("blink", "RootScrollerController::PerformRootScrollerSelection");
 
+  ASSERT(false); // BKTODO:
+#if 0
   // Printing can cause a lifecycle update on a detached frame. In that case,
   // don't make any changes.
   if (!document_->GetFrame() || !document_->GetFrame()->IsLocalRoot())
@@ -499,6 +549,7 @@ void RootScrollerController::PerformRootScrollerSelection() {
   ForAllNonThrottledLocalControllers([](RootScrollerController& controller) {
     controller.RecomputeEffectiveRootScroller();
   });
+#endif
 }
 
 }  // namespace blink

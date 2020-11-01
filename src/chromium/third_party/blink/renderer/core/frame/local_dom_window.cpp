@@ -49,6 +49,7 @@
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/frame/navigator.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/frame/viewport_data.h"
 #   include "third_party/blink/renderer/core/html/html_document.h"
 #endif
 
@@ -193,7 +194,7 @@ Document* LocalDOMWindow::InstallNewDocument(const DocumentInit &init)
     {
         frame->GetScriptController().UpdateDocument();
 #ifndef BLINKIT_CRAWLER_ONLY
-        ASSERT(false); // BKTODO: m_document->GetViewportData().UpdateViewportDescription();
+        m_document->GetViewportData().UpdateViewportDescription();
 #endif
     }
 

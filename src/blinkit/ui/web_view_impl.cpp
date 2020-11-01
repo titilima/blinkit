@@ -13,6 +13,8 @@
 
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/page_scale_constraints_set.h"
+#include "third_party/blink/renderer/core/frame/settings.h"
+#include "third_party/blink/renderer/core/frame/viewport_data.h"
 #include "third_party/blink/renderer/core/loader/frame_load_request.h"
 #include "third_party/blink/renderer/core/page/chrome_client_impl.h"
 #include "third_party/blink/renderer/core/page/page.h"
@@ -166,6 +168,126 @@ void WebViewImpl::TransitionToCommittedForNewPage(void)
 
     if (frame_widget_)
         frame_widget_->DidCreateLocalRootView();
+#endif
+}
+
+void WebViewImpl::UpdateMainFrameLayoutSize(void)
+{
+    if (m_shouldAutoResize)
+        return;
+
+    LocalFrame *frame = m_page->GetFrame();
+    if (nullptr == frame)
+        return;
+
+    LocalFrameView *view = frame->View();
+    if (nullptr == view)
+        return;
+
+    WebSize layoutSize = m_size;
+    if (Settings::ViewportEnabled)
+        layoutSize = GetPageScaleConstraintsSet().GetLayoutSize();
+    if (Settings::ForceZeroLayoutHeight)
+        layoutSize.height = 0;
+    view->SetLayoutSize(layoutSize);
+}
+
+void WebViewImpl::UpdatePageDefinedViewportConstraints(const ViewportDescription &description)
+{
+    if (nullptr == GetPage() || (0 == m_size.width && 0 == m_size.height))
+        return;
+
+    // When viewport is disabled (non-mobile), we always use gpu rasterization.
+    // Otherwise, on platforms that do support viewport tags, we only enable it
+    // when they are present. But Why? Historically this was used to gate usage of
+    // gpu rasterization to a smaller set of less complex cases to avoid driver
+    // bugs dealing with websites designed for desktop. The concern is that on
+    // older android devices (<L according to https://crbug.com/419521#c9),
+    // drivers are more likely to encounter bugs with gpu raster when encountering
+    // the full possibility of desktop web content. Further, Adreno devices <=L
+    // have encountered problems that look like driver bugs when enabling
+    // OOP-Raster which is gpu-based. Thus likely a blacklist would be required
+    // for non-viewport-specified pages in order to avoid crashes or other
+    // problems on mobile devices with gpu rasterization.
+    bool viewportEnabled = Settings::ViewportEnabled;
+#if 0 // BKTODO:
+    matches_heuristics_for_gpu_rasterization_ =
+        viewport_enabled ? description.MatchesHeuristicsForGpuRasterization()
+        : true;
+    if (layer_tree_view_) {
+        layer_tree_view_->HeuristicsForGpuRasterizationUpdated(
+            matches_heuristics_for_gpu_rasterization_);
+    }
+#endif
+
+    if (!viewportEnabled)
+    {
+        GetPageScaleConstraintsSet().ClearPageDefinedConstraints();
+        UpdateMainFrameLayoutSize();
+        return;
+    }
+
+    ASSERT(false); // BKTODO:
+#if 0
+    Document* document = GetPage()->DeprecatedLocalMainFrame()->GetDocument();
+
+    Length default_min_width =
+        document->GetViewportData().ViewportDefaultMinWidth();
+    if (default_min_width.IsAuto())
+        default_min_width = Length(kExtendToZoom);
+
+    ViewportDescription adjusted_description = description;
+    if (SettingsImpl()->ViewportMetaLayoutSizeQuirk() &&
+        adjusted_description.type == ViewportDescription::kViewportMeta) {
+        const int kLegacyWidthSnappingMagicNumber = 320;
+        if (adjusted_description.max_width.IsFixed() &&
+            adjusted_description.max_width.Value() <=
+            kLegacyWidthSnappingMagicNumber)
+            adjusted_description.max_width = Length(kDeviceWidth);
+        if (adjusted_description.max_height.IsFixed() &&
+            adjusted_description.max_height.Value() <= size_.height)
+            adjusted_description.max_height = Length(kDeviceHeight);
+        adjusted_description.min_width = adjusted_description.max_width;
+        adjusted_description.min_height = adjusted_description.max_height;
+    }
+
+    float old_initial_scale =
+        GetPageScaleConstraintsSet().PageDefinedConstraints().initial_scale;
+    GetPageScaleConstraintsSet().UpdatePageDefinedConstraints(
+        adjusted_description, default_min_width);
+
+    if (SettingsImpl()->ClobberUserAgentInitialScaleQuirk() &&
+        GetPageScaleConstraintsSet().UserAgentConstraints().initial_scale != -1 &&
+        GetPageScaleConstraintsSet().UserAgentConstraints().initial_scale *
+        DeviceScaleFactor() <=
+        1) {
+        if (description.max_width == Length(kDeviceWidth) ||
+            (description.max_width.GetType() == kAuto &&
+                GetPageScaleConstraintsSet().PageDefinedConstraints().initial_scale ==
+                1.0f))
+            SetInitialPageScaleOverride(-1);
+    }
+
+    Settings& page_settings = GetPage()->GetSettings();
+    GetPageScaleConstraintsSet().AdjustForAndroidWebViewQuirks(
+        adjusted_description, default_min_width.IntValue(), DeviceScaleFactor(),
+        SettingsImpl()->SupportDeprecatedTargetDensityDPI(),
+        page_settings.GetWideViewportQuirkEnabled(),
+        page_settings.GetUseWideViewport(),
+        page_settings.GetLoadWithOverviewMode(),
+        SettingsImpl()->ViewportMetaNonUserScalableQuirk());
+    float new_initial_scale =
+        GetPageScaleConstraintsSet().PageDefinedConstraints().initial_scale;
+    if (old_initial_scale != new_initial_scale && new_initial_scale != -1) {
+        GetPageScaleConstraintsSet().SetNeedsReset(true);
+        if (MainFrameImpl() && MainFrameImpl()->GetFrameView())
+            MainFrameImpl()->GetFrameView()->SetNeedsLayout();
+    }
+
+    if (TextAutosizer* text_autosizer = document->GetTextAutosizer())
+        text_autosizer->UpdatePageInfoInAllFrames();
+
+    UpdateMainFrameLayoutSize();
 #endif
 }
 

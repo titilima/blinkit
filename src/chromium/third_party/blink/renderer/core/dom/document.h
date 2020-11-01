@@ -92,9 +92,11 @@ class LocalFrameView;
 class Page;
 class PropertyRegistry;
 class ReattachLegacyLayoutObjectList;
+class RootScrollerController;
 class StyleEngine;
 class StyleResolver;
 class TextAutosizer;
+class ViewportData;
 class VisitedLinkState;
 #endif
 
@@ -384,6 +386,11 @@ public:
     void UpdateStyleAndLayoutTree(void);
     void UpdateStyleAndLayoutTreeForNode(const Node *node);
 
+    RootScrollerController& GetRootScrollerController(void) const
+    {
+        ASSERT(m_rootScrollerController);
+        return *m_rootScrollerController;
+    }
     StyleEngine& GetStyleEngine(void)
     {
         ASSERT(m_styleEngine);
@@ -395,6 +402,8 @@ public:
 
     // TODO(layout-dev): Once everything are LayoutNG, we can get rid of this.
     ReattachLegacyLayoutObjectList& GetReattachLegacyLayoutObjectList(void);
+
+    ViewportData& GetViewportData(void) const { return *m_viewportData; }
 
 #   if DCHECK_IS_ON()
     unsigned& SlotAssignmentRecalcForbiddenRecursionDepth(void) { return m_slotAssignmentRecalcForbiddenRecursionDepth; }
@@ -527,6 +536,7 @@ private:
     LayoutView *m_layoutView = nullptr;
     std::unique_ptr<TextAutosizer> m_textAutosizer;
     Member<Element> m_focusedElement;
+    std::unique_ptr<RootScrollerController> m_rootScrollerController;
     Member<Document> m_templateDocumentHost;
 
     std::shared_ptr<CSSStyleSheet> m_elemSheet;
@@ -535,6 +545,9 @@ private:
     TextLinkColors m_textLinkColors;
     const std::unique_ptr<VisitedLinkState> m_visitedLinkState;
     bool m_visuallyOrdered = false;
+
+    // TODO(tkent): Should it be moved to LocalFrame or LocalFrameView?
+    std::unique_ptr<ViewportData> m_viewportData;
 
     friend class ReattachLegacyLayoutObjectList;
     // TODO(layout-dev): Once everything are LayoutNG, we can get rid of this.

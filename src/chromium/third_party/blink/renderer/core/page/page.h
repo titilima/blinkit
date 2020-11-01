@@ -20,10 +20,13 @@
 
 namespace blink {
 
+class BrowserControls;
 class LocalFrame;
 class LocalFrameClient;
+class OverscrollController;
 class PageScaleConstraintsSet;
 class ScrollingCoordinator;
+class TopDocumentRootScrollerController;
 class VisualViewport;
 
 class Page
@@ -52,12 +55,24 @@ public:
     }
     LocalFrame* GetFrame(void) const { return m_frame.get(); }
     PageAnimator& Animator(void) { return *m_animator; }
+
     PageScaleConstraintsSet& GetPageScaleConstraintsSet(void);
     const PageScaleConstraintsSet& GetPageScaleConstraintsSet(void) const;
+
+    BrowserControls& GetBrowserControls(void);
+    const BrowserControls& GetBrowserControls(void) const;
+
     VisualViewport& GetVisualViewport(void);
     const VisualViewport& GetVisualViewport(void) const;
+
+    OverscrollController& GetOverscrollController(void);
+    const OverscrollController& GetOverscrollController(void) const;
+
+    TopDocumentRootScrollerController& GlobalRootScrollerController(void) const;
+
     PageVisibilityState VisibilityState(void) const { return m_visibilityState; }
     void SetVisibilityState(PageVisibilityState visibilityState, bool isInitialState);
+
     ScrollingCoordinator* GetScrollingCoordinator(void);
 private:
     explicit Page(PageClients &pageClients);
@@ -66,7 +81,10 @@ private:
     std::unique_ptr<LocalFrame> m_frame;
     std::unique_ptr<PageAnimator> m_animator;
     std::unique_ptr<PageScaleConstraintsSet> m_pageScaleConstraintsSet;
+    const std::unique_ptr<BrowserControls> m_browserControls;
+    const std::unique_ptr<TopDocumentRootScrollerController> m_globalRootScrollerController;
     const std::unique_ptr<VisualViewport> m_visualViewport;
+    const std::unique_ptr<OverscrollController> m_overscrollController;
     PageVisibilityState m_visibilityState = PageVisibilityState::kVisible;
 };
 

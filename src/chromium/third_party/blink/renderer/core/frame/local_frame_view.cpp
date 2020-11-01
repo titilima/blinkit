@@ -12,11 +12,13 @@
 #include "local_frame_view.h"
 
 #include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "third_party/blink/renderer/core/frame/root_frame_viewport.h"
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/layout/text_autosizer.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
 #include "third_party/blink/renderer/core/page/page.h"
+#include "third_party/blink/renderer/core/page/scrolling/top_document_root_scroller_controller.h"
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
 
 namespace blink {
@@ -51,15 +53,9 @@ void LocalFrameView::DidAttachDocument(void)
     ScrollableArea *layoutViewport = LayoutViewport();
     ASSERT(nullptr != layoutViewport);
 
-    ASSERT(false); // BKTODO:
-#if 0
-    RootFrameViewport* root_frame_viewport =
-        RootFrameViewport::Create(visual_viewport, *layout_viewport);
-    viewport_scrollable_area_ = root_frame_viewport;
+    m_viewportScrollableArea.reset(RootFrameViewport::Create(visualViewport, *layoutViewport));
 
-    page->GlobalRootScrollerController().InitializeViewportScrollCallback(
-        *root_frame_viewport);
-#endif
+    page->GlobalRootScrollerController().InitializeViewportScrollCallback(*m_viewportScrollableArea);
 }
 
 LayoutView* LocalFrameView::GetLayoutView(void) const
@@ -154,6 +150,18 @@ void LocalFrameView::SetInitialViewportSize(const IntSize &viewportSize)
     m_initialViewportSize = viewportSize;
     if (Document *document = m_frame->GetDocument())
         document->GetStyleEngine().InitialViewportChanged();
+}
+
+void LocalFrameView::SetLayoutSize(const IntSize &size)
+{
+    ASSERT(!LayoutSizeFixedToFrameSize());
+    if (Document *document = m_frame->GetDocument())
+    {
+        if (document->Lifecycle().LifecyclePostponed())
+            return;
+    }
+
+    SetLayoutSizeInternal(size);
 }
 
 void LocalFrameView::SetLayoutSizeFixedToFrameSize(bool isFixed)

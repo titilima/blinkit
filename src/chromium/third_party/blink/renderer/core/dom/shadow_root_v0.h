@@ -54,9 +54,7 @@ class CORE_EXPORT ShadowRootV0 final
   using NodeToDestinationInsertionPoints =
       HeapHashMap<Member<const Node>, Member<DestinationInsertionPoints>>;
 
-#if 0 // BKTODO:
   explicit ShadowRootV0(ShadowRoot& shadow_root) : shadow_root_(&shadow_root) {}
-#endif
 
   bool ContainsShadowElements() const {
     return descendant_shadow_element_count_;
@@ -94,17 +92,15 @@ class CORE_EXPORT ShadowRootV0 final
   SelectRuleFeatureSet& SelectFeatures() { return select_features_; }
 
   void Trace(blink::Visitor* visitor) {
-    ASSERT(false); // BKTODO: visitor->Trace(shadow_root_);
+    visitor->Trace(shadow_root_);
     visitor->Trace(descendant_insertion_points_);
     visitor->Trace(node_to_insertion_points_);
   }
 
  private:
-#if 0 // BKTODO:
   ShadowRoot& GetShadowRoot() const { return *shadow_root_; }
 
-  TraceWrapperMember<ShadowRoot> shadow_root_;
-#endif
+  Member<ShadowRoot> shadow_root_;
   unsigned descendant_shadow_element_count_ = 0;
   unsigned descendant_content_element_count_ = 0;
   HeapVector<Member<V0InsertionPoint>> descendant_insertion_points_;

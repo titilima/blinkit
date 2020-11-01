@@ -70,7 +70,9 @@ LocalFrame::LocalFrame(LocalFrameClient *client, Page *page)
 
 LocalFrame::~LocalFrame(void)
 {
+#ifndef BLINKIT_CRAWLER_ONLY
     ASSERT(!m_view);
+#endif
 }
 
 LocalFrameClient* LocalFrame::Client(void) const

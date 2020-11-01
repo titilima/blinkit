@@ -1,16 +1,29 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: root_frame_viewport.cc
+// Description: RootFrameViewport Class
+//      Author: Ziming Li
+//     Created: 2020-10-29
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 #include "third_party/blink/renderer/core/frame/root_frame_viewport.h"
 
-#include "third_party/blink/public/platform/web_scroll_into_view_params.h"
+// BKTODO: #include "third_party/blink/public/platform/web_scroll_into_view_params.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/layout/layout_box.h"
 #include "third_party/blink/renderer/core/layout/scroll_anchor.h"
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/scroll/scroll_animator_base.h"
 #include "third_party/blink/renderer/core/scroll/smooth_scroll_sequencer.h"
+#endif
 #include "third_party/blink/renderer/platform/geometry/double_rect.h"
 #include "third_party/blink/renderer/platform/geometry/float_rect.h"
 #include "third_party/blink/renderer/platform/geometry/layout_rect.h"
@@ -144,7 +157,7 @@ FloatQuad RootFrameViewport::LocalToVisibleContentQuad(
   return viewport_quad;
 }
 
-scoped_refptr<base::SingleThreadTaskRunner>
+std::shared_ptr<base::SingleThreadTaskRunner>
 RootFrameViewport::GetTimerTaskRunner() const {
   return LayoutViewport().GetTimerTaskRunner();
 }
@@ -160,13 +173,20 @@ int RootFrameViewport::VerticalScrollbarWidth(
 }
 
 void RootFrameViewport::UpdateScrollAnimator() {
+  ASSERT(false); // BKTODO:
+#if 0
   GetScrollAnimator().SetCurrentOffset(
       ToFloatSize(ScrollOffsetFromScrollAnimators()));
+#endif
 }
 
 ScrollOffset RootFrameViewport::ScrollOffsetFromScrollAnimators() const {
+  ASSERT(false); // BKTODO:
+  return ScrollOffset();
+#if 0
   return VisualViewport().GetScrollAnimator().CurrentOffset() +
          LayoutViewport().GetScrollAnimator().CurrentOffset();
+#endif
 }
 
 IntRect RootFrameViewport::VisibleContentRect(
@@ -178,6 +198,9 @@ IntRect RootFrameViewport::VisibleContentRect(
 
 LayoutRect RootFrameViewport::VisibleScrollSnapportRect(
     IncludeScrollbarsInRect scrollbar_inclusion) const {
+  ASSERT(false); // BKTODO:
+  return LayoutRect();
+#if 0
   // The effective viewport is the intersection of the visual viewport with the
   // layout viewport. However, we don't use visibleContentRect directly since it
   // floors the scroll offset. Instead, we use ScrollAnimatorBase::currentOffset
@@ -209,6 +232,7 @@ LayoutRect RootFrameViewport::VisibleScrollSnapportRect(
   visible_scroll_snapport.Contract(padding);
 
   return visible_scroll_snapport;
+#endif
 }
 
 bool RootFrameViewport::ShouldUseIntegerScrollOffset() const {
@@ -286,6 +310,8 @@ LayoutRect RootFrameViewport::ScrollIntoView(
   LayoutRect rect_in_document = rect_in_absolute;
   rect_in_document.Move(LayoutSize(LayoutViewport().GetScrollOffset()));
 
+  ASSERT(false); // BKTODO:
+#if 0
   ScrollOffset new_scroll_offset =
       ClampScrollOffset(ScrollAlignment::GetScrollOffsetToExpose(
           scroll_snapport_rect, rect_in_document, params.GetScrollAlignmentX(),
@@ -311,6 +337,7 @@ LayoutRect RootFrameViewport::ScrollIntoView(
   // TODO(szager): PaintLayerScrollableArea::ScrollIntoView clips the return
   // value to the visible content rect, but this does not.
   rect_in_document.Move(-LayoutSize(LayoutViewport().GetScrollOffset()));
+#endif
   return rect_in_document;
 }
 
@@ -342,6 +369,8 @@ void RootFrameViewport::DistributeScrollBetweenViewports(
   ScrollableArea& secondary =
       scroll_first == kVisualViewport ? LayoutViewport() : VisualViewport();
 
+  ASSERT(false); // BKTODO:
+#if 0
   ScrollOffset target_offset = primary.ClampScrollOffset(
       primary.GetScrollAnimator().CurrentOffset() + delta);
 
@@ -364,6 +393,7 @@ void RootFrameViewport::DistributeScrollBetweenViewports(
   target_offset = secondary.ClampScrollOffset(
       secondary.GetScrollAnimator().CurrentOffset() + delta);
   secondary.SetScrollOffset(target_offset, scroll_type, behavior);
+#endif
 }
 
 IntSize RootFrameViewport::ScrollOffsetInt() const {
@@ -464,6 +494,9 @@ ScrollResult RootFrameViewport::UserScroll(ScrollGranularity granularity,
   FloatSize pixel_delta(delta);
   pixel_delta.Scale(step_x, step_y);
 
+  ASSERT(false); // BKTODO:
+  return ScrollResult();
+#if 0
   // Precompute the amount of possible scrolling since, when animated,
   // ScrollAnimator::userScroll will report having consumed the total given
   // scroll delta, regardless of how much will actually scroll, but we need to
@@ -515,12 +548,14 @@ ScrollResult RootFrameViewport::UserScroll(ScrollGranularity granularity,
       visual_result.did_scroll_y || layout_result.did_scroll_y,
       layout_result.unused_scroll_delta_x + unscrollable_axis_delta.Width(),
       layout_result.unused_scroll_delta_y + unscrollable_axis_delta.Height());
+#endif
 }
 
 bool RootFrameViewport::ScrollAnimatorEnabled() const {
   return LayoutViewport().ScrollAnimatorEnabled();
 }
 
+#if 0 // BKTODO:
 CompositorElementId RootFrameViewport::GetCompositorElementId() const {
   return LayoutViewport().GetCompositorElementId();
 }
@@ -531,6 +566,7 @@ CompositorElementId RootFrameViewport::GetScrollbarElementId(
              ? VisualViewport().GetScrollbarElementId(orientation)
              : LayoutViewport().GetScrollbarElementId(orientation);
 }
+#endif
 
 ChromeClient* RootFrameViewport::GetChromeClient() const {
   return LayoutViewport().GetChromeClient();
@@ -566,12 +602,6 @@ void RootFrameViewport::ClearScrollableArea() {
 
 ScrollbarTheme& RootFrameViewport::GetPageScrollbarTheme() const {
   return LayoutViewport().GetPageScrollbarTheme();
-}
-
-void RootFrameViewport::Trace(blink::Visitor* visitor) {
-  visitor->Trace(visual_viewport_);
-  visitor->Trace(layout_viewport_);
-  ScrollableArea::Trace(visitor);
 }
 
 }  // namespace blink

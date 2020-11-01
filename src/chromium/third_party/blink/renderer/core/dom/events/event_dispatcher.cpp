@@ -51,7 +51,7 @@ namespace blink {
 EventDispatcher::EventDispatcher(Node &node, Event &event) : m_node(node), m_event(event)
 {
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO: m_view = node.GetDocument().View();
+    m_view = node.GetDocument().View();
 #endif
     m_event->InitEventPath(*m_node);
 }

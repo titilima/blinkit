@@ -633,7 +633,7 @@ void ChromeClientImpl::SetToolTip(LocalFrame& frame,
 
 void ChromeClientImpl::DispatchViewportPropertiesDidChange(
     const ViewportDescription& description) const {
-  ASSERT(false); // BKTODO: web_view_->UpdatePageDefinedViewportConstraints(description);
+  web_view_->UpdatePageDefinedViewportConstraints(description);
 }
 
 void ChromeClientImpl::PrintDelegate(LocalFrame* frame) {

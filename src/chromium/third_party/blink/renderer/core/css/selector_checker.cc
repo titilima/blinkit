@@ -45,7 +45,6 @@
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/element_traversal.h"
 #include "third_party/blink/renderer/core/dom/nth_index_cache.h"
-#include "third_party/blink/renderer/core/dom/shadow_root.h"
 #include "third_party/blink/renderer/core/dom/text.h"
 #include "third_party/blink/renderer/core/html/html_document.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
@@ -57,6 +56,7 @@
 #   include "third_party/blink/renderer/core/css/style_engine.h"
 #   include "third_party/blink/renderer/core/dom/flat_tree_traversal.h"
 #   include "third_party/blink/renderer/core/dom/node_computed_style.h"
+#   include "third_party/blink/renderer/core/dom/shadow_root.h"
 #   include "third_party/blink/renderer/core/dom/v0_insertion_point.h"
 #   include "third_party/blink/renderer/core/editing/frame_selection.h"
 #   include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -146,6 +146,9 @@ static bool MatchesTagName(const Element& element,
 
 static Element* ParentElement(
     const SelectorChecker::SelectorCheckingContext& context) {
+#ifdef BLINKIT_CRAWLER_ONLY
+  ASSERT(nullptr == context.element->ContainingShadowRoot());
+#else
   // - If context.scope is a shadow root, we should walk up to its shadow host.
   // - If context.scope is some element in some shadow tree and querySelector
   //   initialized the context, e.g. shadowRoot.querySelector(':host *'),
@@ -156,6 +159,7 @@ static Element* ParentElement(
       (context.scope == context.element->ContainingShadowRoot() ||
        context.scope->GetTreeScope() == context.element->GetTreeScope()))
     return context.element->ParentOrShadowHostElement();
+#endif
   return context.element->parentElement();
 }
 
@@ -408,9 +412,13 @@ SelectorChecker::MatchStatus SelectorChecker::MatchForRelation(
         return kSelectorFailsCompletely;
       }
 
+#ifdef BLINKIT_CRAWLER_ONLY
+      ASSERT(CSSSelector::kPseudoShadow != next_context.selector->GetPseudoType());
+#else
       if (next_context.selector->GetPseudoType() == CSSSelector::kPseudoShadow)
         return MatchForPseudoShadow(
             next_context, context.element->ContainingShadowRoot(), result);
+#endif
 
       for (next_context.element = ParentElement(next_context);
            next_context.element;
@@ -599,14 +607,11 @@ SelectorChecker::MatchStatus SelectorChecker::MatchForPseudoContent(
     const Element& element,
     MatchResult& result) const {
 #ifndef BLINKIT_CRAWLER_ONLY
-  HeapVector<Member<V0InsertionPoint>, 8> insertion_points;
+  std::vector<V0InsertionPoint *> insertion_points;
   CollectDestinationInsertionPoints(element, insertion_points);
   SelectorCheckingContext next_context(context);
   for (const auto& insertion_point : insertion_points) {
-    ASSERT(false); // BKTODO:
-#if 0
     next_context.element = insertion_point;
-#endif
     if (Match(next_context, result))
       return kSelectorMatches;
   }

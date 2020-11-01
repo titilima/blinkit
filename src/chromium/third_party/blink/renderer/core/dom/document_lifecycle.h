@@ -119,6 +119,8 @@ public:
     }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    bool LifecyclePostponed(void) const { return m_lifeCyclePostponed; }
+
     // Within this scope, state transitions are not allowed.
     // Any attempts to advance or rewind will result in a DCHECK.
     class DisallowTransitionScope
@@ -160,6 +162,7 @@ private:
     LifecycleState m_state = kUninitialized;
 #ifndef BLINKIT_CRAWLER_ONLY
     int m_detachCount = 0;
+    bool m_lifeCyclePostponed = false;
 #endif
     int m_disallowTransitionCount = 0;
     bool m_checkNoTransition = false;

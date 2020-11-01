@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scroll_state_callback.h
+// Description: ScrollStateCallback Classes
+//      Author: Ziming Li
+//     Created: 2020-10-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -6,7 +17,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_PAGE_SCROLLING_SCROLL_STATE_CALLBACK_H_
 
 #include "third_party/blink/public/platform/web_native_scroll_behavior.h"
-#include "third_party/blink/renderer/bindings/core/v8/v8_scroll_state_callback.h"
+// BKTODO: #include "third_party/blink/renderer/bindings/core/v8/v8_scroll_state_callback.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 
 namespace blink {
@@ -17,8 +28,6 @@ class ScrollStateCallback
     : public GarbageCollectedFinalized<ScrollStateCallback> {
  public:
   virtual ~ScrollStateCallback() = default;
-
-  virtual void Trace(blink::Visitor* visitor) {}
 
   virtual void Invoke(ScrollState*) = 0;
 
@@ -36,6 +45,7 @@ class ScrollStateCallback
   const WebNativeScrollBehavior native_scroll_behavior_;
 };
 
+#if 0 // BKTODO:
 class ScrollStateCallbackV8Impl : public ScrollStateCallback {
  public:
   static ScrollStateCallbackV8Impl* Create(
@@ -64,6 +74,7 @@ class ScrollStateCallbackV8Impl : public ScrollStateCallback {
 
   Member<V8PersistentCallbackFunction<V8ScrollStateCallback>> callback_;
 };
+#endif
 
 }  // namespace blink
 

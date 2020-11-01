@@ -42,14 +42,9 @@ void ViewportData::Shutdown() {
 
 bool ViewportData::ShouldMergeWithLegacyDescription(
     ViewportDescription::Type origin) const {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
-  return document_->GetSettings() &&
-         document_->GetSettings()->GetViewportMetaMergeContentQuirk() &&
+  return Settings::ViewportMetaMergeContentQuirk &&
          legacy_viewport_description_.IsMetaViewportType() &&
          legacy_viewport_description_.type == origin;
-#endif
 }
 
 void ViewportData::SetViewportDescription(
@@ -74,18 +69,13 @@ void ViewportData::SetViewportDescription(
 
 ViewportDescription ViewportData::GetViewportDescription() const {
   ViewportDescription applied_viewport_description = viewport_description_;
-  ASSERT(false); // BKTODO:
-#if 0
-  bool viewport_meta_enabled =
-      document_->GetSettings() &&
-      document_->GetSettings()->GetViewportMetaEnabled();
+  bool viewport_meta_enabled = Settings::ViewportMetaEnabled;
   if (legacy_viewport_description_.type !=
           ViewportDescription::kUserAgentStyleSheet &&
       viewport_meta_enabled)
     applied_viewport_description = legacy_viewport_description_;
   if (ShouldOverrideLegacyDescription(viewport_description_.type))
     applied_viewport_description = viewport_description_;
-#endif
 
   return applied_viewport_description;
 }
@@ -94,20 +84,20 @@ void ViewportData::UpdateViewportDescription() {
   if (!document_->GetFrame())
     return;
 
-  ASSERT(false); // BKTODO:
-#if 0
   // If the viewport_fit has changed we should send this to the browser. We
   // use the legacy viewport description which contains the viewport_fit
   // defined from the layout meta tag.
-  mojom::ViewportFit current_viewport_fit =
+  ViewportFit current_viewport_fit =
       GetViewportDescription().GetViewportFit();
 
   // If we are forcing to expand into the display cutout then we should override
   // the viewport fit value.
   if (force_expand_display_cutout_)
-    current_viewport_fit = mojom::ViewportFit::kCoverForcedByUserAgent;
+    current_viewport_fit = ViewportFit::kCoverForcedByUserAgent;
 
   if (viewport_fit_ != current_viewport_fit) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (AssociatedInterfaceProvider* provider =
             document_->GetFrame()
                 ->Client()
@@ -122,15 +112,12 @@ void ViewportData::UpdateViewportDescription() {
       // where this will fail (e.g. unit tests).
       display_cutout_host_->NotifyViewportFitChanged(current_viewport_fit);
     }
+#endif
 
     viewport_fit_ = current_viewport_fit;
   }
 
-  if (document_->GetFrame()->IsMainFrame()) {
-    document_->GetPage()->GetChromeClient().DispatchViewportPropertiesDidChange(
-        GetViewportDescription());
-  }
-#endif
+  document_->GetPage()->GetChromeClient().DispatchViewportPropertiesDidChange(GetViewportDescription());
 }
 
 void ViewportData::SetExpandIntoDisplayCutout(bool expand) {

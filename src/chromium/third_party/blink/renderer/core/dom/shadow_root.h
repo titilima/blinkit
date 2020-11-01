@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: shadow_root.h
+// Description: ShadowRoot Class
+//      Author: Ziming Li
+//     Created: 2020-03-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -34,7 +45,7 @@
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/dom/tree_scope.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
-#include "third_party/blink/renderer/platform/bindings/script_wrappable_visitor.h"
+// BKTODO: #include "third_party/blink/renderer/platform/bindings/script_wrappable_visitor.h"
 #include "third_party/blink/renderer/platform/bindings/trace_wrapper_member.h"
 
 namespace blink {
@@ -64,9 +75,11 @@ class CORE_EXPORT ShadowRoot final : public DocumentFragment, public TreeScope {
   using TreeScope::GetDocument;
   using TreeScope::getElementById;
 
+#if 0 // BKTODO:
   // Make protected methods from base class public here.
   using TreeScope::SetDocument;
   using TreeScope::SetParentTreeScope;
+#endif
 
   Element& host() const {
     DCHECK(ParentOrShadowHostNode());
@@ -130,10 +143,12 @@ class CORE_EXPORT ShadowRoot final : public DocumentFragment, public TreeScope {
     return *slot_assignment_;
   }
 
+#if 0 // BKTODO:
   HTMLSlotElement* AssignedSlotFor(const Node&);
   void DidAddSlot(HTMLSlotElement&);
   void DidChangeHostChildSlotName(const AtomicString& old_value,
                                   const AtomicString& new_value);
+#endif
 
   void SetNeedsDistributionRecalcWillBeSetNeedsAssignmentRecalc();
   void SetNeedsDistributionRecalc();
@@ -166,11 +181,9 @@ class CORE_EXPORT ShadowRoot final : public DocumentFragment, public TreeScope {
   bool ContainsShadowRoots() const { return child_shadow_root_count_; }
 
   StyleSheetList& StyleSheets();
-  void SetStyleSheets(StyleSheetList* style_sheet_list) {
+  void SetStyleSheets(const std::shared_ptr<StyleSheetList> &style_sheet_list) {
     style_sheet_list_ = style_sheet_list;
   }
-
-  void Trace(blink::Visitor*) override;
 
  private:
   ShadowRoot(Document&, ShadowRootType);
@@ -178,7 +191,9 @@ class CORE_EXPORT ShadowRoot final : public DocumentFragment, public TreeScope {
 
   void ChildrenChanged(const ChildrenChange&) override;
 
+#if 0 // BKTODO:
   SlotAssignment& EnsureSlotAssignment();
+#endif
 
   void AddChildShadowRoot() { ++child_shadow_root_count_; }
   void RemoveChildShadowRoot() {
@@ -187,7 +202,7 @@ class CORE_EXPORT ShadowRoot final : public DocumentFragment, public TreeScope {
   }
   void Distribute();
 
-  TraceWrapperMember<StyleSheetList> style_sheet_list_;
+  std::shared_ptr<StyleSheetList> style_sheet_list_;
   Member<SlotAssignment> slot_assignment_;
   Member<ShadowRootV0> shadow_root_v0_;
   unsigned short child_shadow_root_count_;
@@ -202,12 +217,18 @@ class CORE_EXPORT ShadowRoot final : public DocumentFragment, public TreeScope {
 };
 
 inline Element* ShadowRoot::ActiveElement() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return AdjustedFocusedElement();
+#endif
 }
 
+#if 0 // BKTODO:
 inline bool Node::IsInUserAgentShadowRoot() const {
   return ContainingShadowRoot() && ContainingShadowRoot()->IsUserAgent();
 }
+#endif
 
 inline void ShadowRoot::DistributeIfNeeded() {
   if (needs_distribution_recalc_)
@@ -221,12 +242,14 @@ inline ShadowRoot* Node::GetShadowRoot() const {
   return ToElement(this)->GetShadowRoot();
 }
 
+#if 0 // BKTODO:
 inline ShadowRoot* Element::ShadowRootIfV1() const {
   ShadowRoot* root = GetShadowRoot();
   if (root && root->IsV1())
     return root;
   return nullptr;
 }
+#endif
 
 inline ShadowRootV0& ShadowRoot::V0() const {
   DCHECK(shadow_root_v0_);

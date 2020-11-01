@@ -115,6 +115,7 @@ public:
     // Returns the DOM ownerDocument attribute. This method never returns null,
     // except in the case of a Document node.
     Document* ownerDocument(void) const;
+    Element* parentElement(void) const;
     void remove(NodeVector &detached, ExceptionState &exceptionState);
     Node* removeChild(Node *child, NodeVector &detachedChildren, ExceptionState &exceptionState);
     String textContent(bool convertBrsToNewlines = false) const;
@@ -144,7 +145,6 @@ public:
     ContainerNode* parentNode(void) const;
     ContainerNode* ParentOrShadowHostNode(void) const;
     Element* ParentOrShadowHostElement(void) const;
-    Element* parentElement(void) const;
     ContainerNode* ParentElementOrShadowRoot(void) const;
     ContainerNode* ParentElementOrDocumentFragment(void) const;
     void SetParentOrShadowHostNode(ContainerNode *parent);
@@ -329,6 +329,9 @@ public:
     void NotifyMutationObserversNodeWillDetach(void);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ShadowRoot* ParentElementShadowRoot(void) const;
+    bool IsChildOfV1ShadowHost(void) const;
+
     ContainerNode* GetReattachParent(void) const;
 
     const ComputedStyle* GetComputedStyle(void) const;

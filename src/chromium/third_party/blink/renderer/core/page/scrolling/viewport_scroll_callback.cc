@@ -25,13 +25,6 @@ ViewportScrollCallback::ViewportScrollCallback(
 
 ViewportScrollCallback::~ViewportScrollCallback() = default;
 
-void ViewportScrollCallback::Trace(blink::Visitor* visitor) {
-  visitor->Trace(browser_controls_);
-  visitor->Trace(overscroll_controller_);
-  visitor->Trace(root_frame_viewport_);
-  ScrollStateCallback::Trace(visitor);
-}
-
 bool ViewportScrollCallback::ShouldScrollBrowserControls(
     const ScrollOffset& delta,
     ScrollGranularity granularity) const {
@@ -54,6 +47,8 @@ bool ViewportScrollCallback::ShouldScrollBrowserControls(
 bool ViewportScrollCallback::ScrollBrowserControls(ScrollState& state) {
   // Scroll browser controls.
   if (browser_controls_) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (state.isBeginning())
       browser_controls_->ScrollBegin();
 
@@ -66,6 +61,7 @@ bool ViewportScrollCallback::ScrollBrowserControls(ScrollState& state) {
       state.ConsumeDeltaNative(consumed.Width(), consumed.Height());
       return !consumed.IsZero();
     }
+#endif
   }
 
   return false;
@@ -85,9 +81,12 @@ void ViewportScrollCallback::Invoke(ScrollState* state) {
 
   // Handle Overscroll.
   if (overscroll_controller_) {
+    ASSERT(false); // BKTODO:
+#if 0
     FloatPoint position(state->positionX(), state->positionY());
     FloatSize velocity(state->velocityX(), state->velocityY());
     overscroll_controller_->HandleOverscroll(result, position, velocity);
+#endif
   }
 }
 
@@ -99,6 +98,9 @@ void ViewportScrollCallback::SetScroller(ScrollableArea* scroller) {
 ScrollResult ViewportScrollCallback::PerformNativeScroll(ScrollState& state) {
   DCHECK(root_frame_viewport_);
 
+  ASSERT(false); // BKTODO:
+  return ScrollResult();
+#if 0
   FloatSize delta(state.deltaX(), state.deltaY());
   ScrollGranularity granularity =
       ScrollGranularity(static_cast<int>(state.deltaGranularity()));
@@ -112,6 +114,7 @@ ScrollResult ViewportScrollCallback::PerformNativeScroll(ScrollState& state) {
                            delta.Height() - result.unused_scroll_delta_y);
 
   return result;
+#endif
 }
 
 }  // namespace blink

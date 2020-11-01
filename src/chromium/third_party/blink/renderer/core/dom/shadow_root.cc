@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: shadow_root.cc
+// Description: ShadowRoot Class
+//      Author: Ziming Li
+//     Created: 2020-11-01
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2011 Google Inc. All rights reserved.
  *
@@ -27,7 +38,6 @@
 #include "third_party/blink/renderer/core/dom/shadow_root.h"
 
 #include "third_party/blink/public/platform/platform.h"
-#include "third_party/blink/renderer/bindings/core/v8/string_or_trusted_html.h"
 #include "third_party/blink/renderer/core/css/resolver/style_resolver.h"
 #include "third_party/blink/renderer/core/css/style_change_reason.h"
 #include "third_party/blink/renderer/core/css/style_engine.h"
@@ -35,17 +45,21 @@
 #include "third_party/blink/renderer/core/dom/element_traversal.h"
 #include "third_party/blink/renderer/core/dom/events/event_dispatch_forbidden_scope.h"
 #include "third_party/blink/renderer/core/dom/shadow_root_v0.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/dom/slot_assignment.h"
 #include "third_party/blink/renderer/core/dom/slot_assignment_engine.h"
+#endif
 #include "third_party/blink/renderer/core/dom/text.h"
 #include "third_party/blink/renderer/core/dom/v0_insertion_point.h"
-#include "third_party/blink/renderer/core/dom/whitespace_attacher.h"
+// BKTODO: #include "third_party/blink/renderer/core/dom/whitespace_attacher.h"
 #include "third_party/blink/renderer/core/editing/serializers/serialization.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/html_content_element.h"
 #include "third_party/blink/renderer/core/html/html_shadow_element.h"
 #include "third_party/blink/renderer/core/html/html_slot_element.h"
+#endif
 #include "third_party/blink/renderer/core/layout/layout_object.h"
-#include "third_party/blink/renderer/core/trustedtypes/trusted_types_util.h"
+// BKTODO: #include "third_party/blink/renderer/core/trustedtypes/trusted_types_util.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 
 namespace blink {
@@ -81,6 +95,7 @@ ShadowRoot::ShadowRoot(Document& document, ShadowRootType type)
 
 ShadowRoot::~ShadowRoot() = default;
 
+#if 0 // BKTODO:
 SlotAssignment& ShadowRoot::EnsureSlotAssignment() {
   if (!slot_assignment_)
     slot_assignment_ = SlotAssignment::Create(*this);
@@ -104,9 +119,10 @@ void ShadowRoot::DidChangeHostChildSlotName(const AtomicString& old_value,
     return;
   slot_assignment_->DidChangeHostChildSlotName(old_value, new_value);
 }
+#endif
 
 Node* ShadowRoot::Clone(Document&, CloneChildrenFlag) const {
-  NOTREACHED() << "ShadowRoot nodes are not clonable.";
+  NOTREACHED(); // ShadowRoot nodes are not clonable.
   return nullptr;
 }
 
@@ -119,27 +135,35 @@ String ShadowRoot::InnerHTMLAsString() const {
 }
 
 void ShadowRoot::innerHTML(StringOrTrustedHTML& result) const {
-  result.SetString(InnerHTMLAsString());
+  ASSERT(false); // BKTODO: result.SetString(InnerHTMLAsString());
 }
 
 void ShadowRoot::SetInnerHTMLFromString(const String& markup,
                                         ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (DocumentFragment* fragment = CreateFragmentForInnerOuterHTML(
           markup, &host(), kAllowScriptingContent, "innerHTML",
           exception_state))
     ReplaceChildrenWithFragment(this, fragment, exception_state);
+#endif
 }
 
 void ShadowRoot::setInnerHTML(const StringOrTrustedHTML& stringOrHtml,
                               ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   String html =
       GetStringFromTrustedHTML(stringOrHtml, &GetDocument(), exception_state);
   if (!exception_state.HadException()) {
     SetInnerHTMLFromString(html, exception_state);
   }
+#endif
 }
 
 void ShadowRoot::RecalcStyle(StyleRecalcChange change) {
+  ASSERT(false); // BKTODO:
+#if 0
   // ShadowRoot doesn't support custom callbacks.
   DCHECK(!HasCustomStyleCallbacks());
 
@@ -155,12 +179,13 @@ void ShadowRoot::RecalcStyle(StyleRecalcChange change) {
 
   if (change >= kUpdatePseudoElements || ChildNeedsStyleRecalc())
     RecalcDescendantStyles(change);
+#endif
   ClearChildNeedsStyleRecalc();
 }
 
 void ShadowRoot::RebuildLayoutTree(WhitespaceAttacher& whitespace_attacher) {
   ClearNeedsReattachLayoutTree();
-  RebuildChildrenLayoutTrees(whitespace_attacher);
+  ASSERT(false); // BKTODO: RebuildChildrenLayoutTrees(whitespace_attacher);
   ClearChildNeedsReattachLayoutTree();
 }
 
@@ -186,7 +211,7 @@ Node::InsertionNotificationRequest ShadowRoot::InsertedInto(
   if (!insertion_point.isConnected())
     return kInsertionDone;
 
-  GetDocument().GetSlotAssignmentEngine().Connected(*this);
+  ASSERT(false); // BKTODO: GetDocument().GetSlotAssignmentEngine().Connected(*this);
 
   // FIXME: When parsing <video controls>, InsertedInto() is called many times
   // without invoking RemovedFrom().  For now, we check
@@ -206,6 +231,8 @@ Node::InsertionNotificationRequest ShadowRoot::InsertedInto(
 
 void ShadowRoot::RemovedFrom(ContainerNode& insertion_point) {
   if (insertion_point.isConnected()) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (NeedsSlotAssignmentRecalc())
       GetDocument().GetSlotAssignmentEngine().Disconnected(*this);
     GetDocument().GetStyleEngine().ShadowRootRemovedFromDocument(this);
@@ -223,6 +250,7 @@ void ShadowRoot::RemovedFrom(ContainerNode& insertion_point) {
           .GetPendingNodeInvalidations()
           .ClearInvalidation(*this);
     }
+#endif
   }
 
   DocumentFragment::RemovedFrom(insertion_point);
@@ -230,18 +258,27 @@ void ShadowRoot::RemovedFrom(ContainerNode& insertion_point) {
 
 void ShadowRoot::SetNeedsAssignmentRecalc() {
   DCHECK(IsV1());
+  ASSERT(false); // BKTODO:
+#if 0
   if (!slot_assignment_)
     return;
   return slot_assignment_->SetNeedsAssignmentRecalc();
+#endif
 }
 
 bool ShadowRoot::NeedsSlotAssignmentRecalc() const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return slot_assignment_ && slot_assignment_->NeedsAssignmentRecalc();
+#endif
 }
 
 void ShadowRoot::ChildrenChanged(const ChildrenChange& change) {
   ContainerNode::ChildrenChanged(change);
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (change.IsChildElementChange()) {
     CheckForSiblingStyleChanges(
         change.type == kElementRemoved ? kSiblingElementRemoved
@@ -249,6 +286,7 @@ void ShadowRoot::ChildrenChanged(const ChildrenChange& change) {
         ToElement(change.sibling_changed), change.sibling_before_change,
         change.sibling_after_change);
   }
+#endif
 }
 
 StyleSheetList& ShadowRoot::StyleSheets() {
@@ -272,14 +310,6 @@ void ShadowRoot::SetNeedsDistributionRecalc() {
   host().MarkAncestorsWithChildNeedsDistributionRecalc();
   if (!IsV1())
     V0().ClearDistribution();
-}
-
-void ShadowRoot::Trace(blink::Visitor* visitor) {
-  visitor->Trace(style_sheet_list_);
-  visitor->Trace(slot_assignment_);
-  visitor->Trace(shadow_root_v0_);
-  TreeScope::Trace(visitor);
-  DocumentFragment::Trace(visitor);
 }
 
 std::ostream& operator<<(std::ostream& ostream, const ShadowRootType& type) {

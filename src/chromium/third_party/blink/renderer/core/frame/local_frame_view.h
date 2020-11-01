@@ -26,6 +26,7 @@ namespace blink {
 class LayoutBox;
 class LayoutView;
 class PaintLayerScrollableArea;
+class RootFrameViewport;
 class ScrollingCoordinator;
 
 class LocalFrameView final : public FrameView
@@ -51,10 +52,14 @@ public:
     void SetSelfVisible(bool visible);
     bool CanHaveScrollbars(void) const { return m_canHaveScrollbars; }
 
+    bool LayoutSizeFixedToFrameSize(void) { return m_layoutSizeFixedToFrameSize; }
     // If this is set to false, the layout size will need to be explicitly set by
     // the owner.  E.g. WebViewImpl sets its mainFrame's layout size manually
     void SetLayoutSizeFixedToFrameSize(bool isFixed);
     void SetNeedsUpdateGeometries(void) { m_needsUpdateGeometries = true; }
+
+    IntSize GetLayoutSize(void) const { return m_layoutSize; }
+    void SetLayoutSize(const IntSize &size);
 
     void SetInitialViewportSize(const IntSize &viewportSize);
 
@@ -66,6 +71,12 @@ public:
     // viewport model.  Callers that need awareness of both inner and outer
     // viewports should use GetScrollableArea() instead.
     PaintLayerScrollableArea* LayoutViewport(void) const;
+
+    // If this is the main frame, this will return the RootFrameViewport used
+    // to scroll the main frame. Otherwise returns nullptr. Unless you need a
+    // unique method on RootFrameViewport, you should probably use
+    // getScrollableArea.
+    RootFrameViewport* GetRootFrameViewport(void) { return m_viewportScrollableArea.get(); }
 
     // With CSS style "resize:" enabled, a little resizer handle will appear at
     // the bottom right of the object. We keep track of these resizer areas for
@@ -101,6 +112,10 @@ private:
     Color m_baseBackgroundColor;
     bool m_layoutSizeFixedToFrameSize = true;
     bool m_needsUpdateGeometries = false;
+    // Exists only on root frame.
+    // TODO(bokan): crbug.com/484188. We should specialize LocalFrameView for the
+    // main frame.
+    std::unique_ptr<RootFrameViewport> m_viewportScrollableArea;
 };
 
 } // namespace blink

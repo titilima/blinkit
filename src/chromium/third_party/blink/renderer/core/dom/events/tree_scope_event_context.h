@@ -55,6 +55,7 @@ public:
     static std::shared_ptr<TreeScopeEventContext> Create(TreeScope &treeScope);
 
     TreeScope& GetTreeScope(void) const { return *m_treeScope; }
+    ContainerNode& RootNode(void) const { return m_treeScope->RootNode(); }
 
     EventTarget* Target(void) const { return m_target.Get(); }
     void SetTarget(EventTarget *target);

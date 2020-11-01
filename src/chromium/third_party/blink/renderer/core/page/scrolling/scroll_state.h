@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: scroll_state.h
+// Description: ScrollState Class
+//      Author: Ziming Li
+//     Created: 2020-10-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -11,7 +22,7 @@
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/page/scrolling/scroll_state_init.h"
-#include "third_party/blink/renderer/core/scroll/scroll_state_data.h"
+// BKTODO: #include "third_party/blink/renderer/core/scroll/scroll_state_data.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 #include "third_party/blink/renderer/platform/bindings/script_wrappable.h"
 #include "third_party/blink/renderer/platform/wtf/forward.h"
@@ -24,8 +35,10 @@ class CORE_EXPORT ScrollState final : public ScriptWrappable {
   DEFINE_WRAPPERTYPEINFO();
 
  public:
+#if 0 // BKTODO:
   static ScrollState* Create(ScrollStateInit);
   static ScrollState* Create(std::unique_ptr<ScrollStateData>);
+#endif
 
   ~ScrollState() override = default;
 
@@ -36,6 +49,7 @@ class CORE_EXPORT ScrollState final : public ScriptWrappable {
   // Pops the first element off of |m_scrollChain| and calls |distributeScroll|
   // on it.
   void distributeToScrollChainDescendant();
+#if 0 // BKTODO:
   int positionX() { return data_->position_x; };
   int positionY() { return data_->position_y; };
   // Positive when scrolling right.
@@ -64,6 +78,7 @@ class CORE_EXPORT ScrollState final : public ScriptWrappable {
   // True if this scroll is the result of the user interacting directly with
   // the screen, e.g., via touch.
   bool isDirectManipulation() const { return data_->is_direct_manipulation; }
+#endif
 
   // Non web exposed methods.
   void ConsumeDeltaNative(double x, double y);
@@ -76,6 +91,7 @@ class CORE_EXPORT ScrollState final : public ScriptWrappable {
   Element* CurrentNativeScrollingElement();
   void SetCurrentNativeScrollingElement(Element*);
 
+#if 0 // BKTODO:
   bool DeltaConsumedForScrollSequence() const {
     return data_->delta_consumed_for_scroll_sequence;
   }
@@ -88,17 +104,15 @@ class CORE_EXPORT ScrollState final : public ScriptWrappable {
   }
 
   ScrollStateData* Data() const { return data_.get(); }
-
-  void Trace(blink::Visitor* visitor) override {
-    visitor->Trace(element_);
-    ScriptWrappable::Trace(visitor);
-  }
+#endif
 
  private:
   ScrollState() = delete;
+#if 0 // BKTODO:
   explicit ScrollState(std::unique_ptr<ScrollStateData>);
 
   std::unique_ptr<ScrollStateData> data_;
+#endif
   std::deque<DOMNodeId> scroll_chain_;
   Member<Element> element_;
 };

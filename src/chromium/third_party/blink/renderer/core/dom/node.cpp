@@ -518,6 +518,15 @@ Node::InsertionNotificationRequest Node::InsertedInto(ContainerNode &insertionPo
     return kInsertionDone;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+bool Node::IsChildOfV1ShadowHost(void) const
+{
+    if (ShadowRoot *parentShadowRoot = ParentElementShadowRoot())
+        return parentShadowRoot->IsV1();
+    return false;
+}
+#endif
+
 bool Node::IsDescendantOf(const Node *other) const
 {
     // Return true if other is an ancestor of this, otherwise false
@@ -708,6 +717,15 @@ ContainerNode* Node::ParentElementOrShadowRoot(void) const
     }
     return nullptr;
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+ShadowRoot* Node::ParentElementShadowRoot(void) const
+{
+    if (Element* parent = parentElement())
+        return parent->GetShadowRoot();
+    return nullptr;
+}
+#endif
 
 Element* Node::ParentOrShadowHostElement(void) const
 {

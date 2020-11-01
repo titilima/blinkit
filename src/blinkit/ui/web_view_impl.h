@@ -24,6 +24,7 @@
 
 namespace blink {
 class PageScaleConstraintsSet;
+struct ViewportDescription;
 }
 
 class WebViewImpl : public BlinKit::LocalFrameClientImpl
@@ -42,7 +43,8 @@ public:
     blink::Page* GetPage(void) const { return m_page.get(); }
 
     void ScheduleAnimation(void);
-
+    void UpdateMainFrameLayoutSize(void);
+    void UpdatePageDefinedViewportConstraints(const blink::ViewportDescription &description);
 protected:
     WebViewImpl(blink::PageVisibilityState visibilityState);
 private:

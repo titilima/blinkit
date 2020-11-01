@@ -68,22 +68,28 @@ class PLATFORM_EXPORT TransformPaintPropertyNode
     BackfaceVisibility backface_visibility = BackfaceVisibility::kInherited;
     unsigned rendering_context_id = 0;
     CompositingReasons direct_compositing_reasons = CompositingReason::kNone;
-    // BKTODO: CompositorElementId compositor_element_id;
+#if 0 // BKTODO:
+    CompositorElementId compositor_element_id;
     std::unique_ptr<CompositorStickyConstraint> sticky_constraint;
+#endif
 
     bool operator==(const State& o) const {
+      ASSERT(false); // BKTODO:
+      return false;
+#if 0
       return matrix == o.matrix && origin == o.origin &&
              flattens_inherited_transform == o.flattens_inherited_transform &&
              backface_visibility == o.backface_visibility &&
              rendering_context_id == o.rendering_context_id &&
              direct_compositing_reasons == o.direct_compositing_reasons &&
-            // BKTODO: compositor_element_id == o.compositor_element_id &&
+             compositor_element_id == o.compositor_element_id &&
              scroll == o.scroll &&
              affected_by_outer_viewport_bounds_delta ==
                  o.affected_by_outer_viewport_bounds_delta &&
              ((!sticky_constraint && !o.sticky_constraint) ||
               (sticky_constraint && o.sticky_constraint &&
                *sticky_constraint == *o.sticky_constraint));
+#endif
     }
   };
 
@@ -137,9 +143,11 @@ class PLATFORM_EXPORT TransformPaintPropertyNode
     return state_.affected_by_outer_viewport_bounds_delta;
   }
 
+#if 0 // BKTODO:
   const cc::LayerStickyPositionConstraint* GetStickyConstraint() const {
     return state_.sticky_constraint.get();
   }
+#endif
 
   // If this is a scroll offset translation (i.e., has an associated scroll
   // node), returns this. Otherwise, returns the transform node that this node

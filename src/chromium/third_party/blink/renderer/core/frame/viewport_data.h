@@ -16,8 +16,8 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_VIEWPORT_DATA_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_VIEWPORT_DATA_H_
 
-// BKTODO: #include "third_party/blink/public/mojom/page/display_cutout.mojom-blink.h"
 #include "third_party/blink/renderer/core/core_export.h"
+#include "third_party/blink/renderer/core/page/display_cutout.h"
 #include "third_party/blink/renderer/core/page/viewport_description.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 
@@ -58,10 +58,8 @@ class ViewportData : public GarbageCollectedFinalized<ViewportData> {
   ViewportDescription legacy_viewport_description_;
   Length viewport_default_min_width_;
 
-#if 0 // BKTODO:
   // Stores the current value viewport-fit value.
-  mojom::ViewportFit viewport_fit_ = blink::mojom::ViewportFit::kAuto;
-#endif
+  ViewportFit viewport_fit_ = blink::ViewportFit::kAuto;
   bool force_expand_display_cutout_ = false;
 
 #if 0 // BKTODO:

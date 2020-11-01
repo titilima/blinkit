@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: top_document_root_scroller_controller.cc
+// Description: TopDocumentRootScrollerController Class
+//      Author: Ziming Li
+//     Created: 2020-10-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -10,12 +21,14 @@
 #include "third_party/blink/renderer/core/frame/page_scale_constraints_set.h"
 #include "third_party/blink/renderer/core/frame/root_frame_viewport.h"
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
-#include "third_party/blink/renderer/core/html/html_frame_owner_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_frame_owner_element.h"
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/page/scrolling/overscroll_controller.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/page/scrolling/root_scroller_util.h"
+#endif
 #include "third_party/blink/renderer/core/page/scrolling/viewport_scroll_callback.h"
 #include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
@@ -23,6 +36,8 @@
 #include "third_party/blink/renderer/core/scroll/scrollable_area.h"
 
 namespace blink {
+
+TopDocumentRootScrollerController::~TopDocumentRootScrollerController(void) = default;
 
 // static
 TopDocumentRootScrollerController* TopDocumentRootScrollerController::Create(
@@ -49,14 +64,18 @@ void TopDocumentRootScrollerController::DidResizeViewport() {
 
   // Top controls can resize the viewport without invalidating compositing or
   // paint so we need to do that manually here.
-  GlobalRootScroller()->SetNeedsCompositingUpdate();
+  ASSERT(false); // BKTODO: GlobalRootScroller()->SetNeedsCompositingUpdate();
 
   if (GlobalRootScroller()->GetLayoutObject())
     GlobalRootScroller()->GetLayoutObject()->SetNeedsPaintPropertyUpdate();
 }
 
 ScrollableArea* TopDocumentRootScrollerController::RootScrollerArea() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return RootScrollerUtil::ScrollableAreaForRootScroller(GlobalRootScroller());
+#endif
 }
 
 IntSize TopDocumentRootScrollerController::RootScrollerVisibleArea() const {
@@ -90,6 +109,9 @@ Element* TopDocumentRootScrollerController::FindGlobalRootScrollerElement() {
   DCHECK(effective_root_scroller->IsElementNode());
   Element* element = ToElement(effective_root_scroller);
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   while (element && element->IsFrameOwnerElement()) {
     HTMLFrameOwnerElement* frame_owner = ToHTMLFrameOwnerElement(element);
     DCHECK(frame_owner);
@@ -107,12 +129,15 @@ Element* TopDocumentRootScrollerController::FindGlobalRootScrollerElement() {
   }
 
   return element;
+#endif
 }
 
 void SetNeedsCompositingUpdateOnAncestors(Element* element) {
   if (!element || !element->GetDocument().IsActive())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   ScrollableArea* area =
       RootScrollerUtil::ScrollableAreaForRootScroller(element);
 
@@ -129,6 +154,7 @@ void SetNeedsCompositingUpdateOnAncestors(Element* element) {
     DCHECK(frame_root_layer);
     frame_root_layer->SetNeedsCompositingInputsUpdate();
   }
+#endif
 }
 
 void TopDocumentRootScrollerController::RecomputeGlobalRootScroller() {
@@ -139,6 +165,8 @@ void TopDocumentRootScrollerController::RecomputeGlobalRootScroller() {
   if (target == global_root_scroller_)
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   ScrollableArea* target_scroller =
       RootScrollerUtil::ScrollableAreaForRootScroller(target);
 
@@ -174,23 +202,18 @@ void TopDocumentRootScrollerController::RecomputeGlobalRootScroller() {
   }
 
   target_scroller->DidChangeGlobalRootScroller();
+#endif
 }
 
 Document* TopDocumentRootScrollerController::TopDocument() const {
-  if (!page_ || !page_->MainFrame() || !page_->MainFrame()->IsLocalFrame())
-    return nullptr;
-
-  return ToLocalFrame(page_->MainFrame())->GetDocument();
+  if (LocalFrame *frame = page_->GetFrame())
+    return frame->GetDocument();
+  return nullptr;
 }
 
 void TopDocumentRootScrollerController::DidUpdateCompositing(
     const LocalFrameView& frame_view) {
   if (!page_)
-    return;
-
-  // The only other way to get here is from a local root OOPIF but we ignore
-  // that case since the global root can't cross remote frames today.
-  if (!frame_view.GetFrame().IsMainFrame())
     return;
 
   // Let the compositor-side counterpart know about this change.
@@ -220,9 +243,9 @@ void TopDocumentRootScrollerController::DidDisposeScrollableArea(
 void TopDocumentRootScrollerController::InitializeViewportScrollCallback(
     RootFrameViewport& root_frame_viewport) {
   DCHECK(page_);
-  viewport_apply_scroll_ = ViewportScrollCallback::Create(
+  viewport_apply_scroll_.reset(ViewportScrollCallback::Create(
       &page_->GetBrowserControls(), &page_->GetOverscrollController(),
-      root_frame_viewport);
+      root_frame_viewport));
 
   RecomputeGlobalRootScroller();
 }
@@ -232,10 +255,17 @@ bool TopDocumentRootScrollerController::IsViewportScrollCallback(
   if (!callback)
     return false;
 
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return callback == viewport_apply_scroll_.Get();
+#endif
 }
 
 GraphicsLayer* TopDocumentRootScrollerController::RootScrollerLayer() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   ScrollableArea* area =
       RootScrollerUtil::ScrollableAreaForRootScroller(global_root_scroller_);
 
@@ -249,17 +279,26 @@ GraphicsLayer* TopDocumentRootScrollerController::RootScrollerLayer() const {
   // the root scroller gets composited.
 
   return graphics_layer;
+#endif
 }
 
 GraphicsLayer* TopDocumentRootScrollerController::RootContainerLayer() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   ScrollableArea* area =
       RootScrollerUtil::ScrollableAreaForRootScroller(global_root_scroller_);
 
   return area ? area->LayerForContainer() : nullptr;
+#endif
 }
 
 PaintLayer* TopDocumentRootScrollerController::RootScrollerPaintLayer() const {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return RootScrollerUtil::PaintLayerForRootScroller(global_root_scroller_);
+#endif
 }
 
 Element* TopDocumentRootScrollerController::GlobalRootScroller() const {

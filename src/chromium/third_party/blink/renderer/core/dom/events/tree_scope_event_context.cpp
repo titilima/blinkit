@@ -41,6 +41,7 @@
 #include "third_party/blink/renderer/core/dom/node.h"
 
 namespace blink {
+
 TreeScopeEventContext::TreeScopeEventContext(TreeScope &treeScope) : m_treeScope(treeScope)
 {
 }
@@ -51,13 +52,9 @@ int TreeScopeEventContext::CalculateTreeOrderAndSetNearestAncestorClosedTree(int
 #ifdef BLINKIT_CRAWLER_ONLY
     m_containingClosedShadowTree = nearestAncestorClosedTreeScopeEventContext;
 #else
-    ASSERT(false); // BKTODO:
-#if 0
-    m_containingClosedShadowTree =
-        (RootNode().IsShadowRoot() && !ToShadowRoot(RootNode()).IsOpenOrV0())
+    m_containingClosedShadowTree = (RootNode().IsShadowRoot() && !ToShadowRoot(RootNode()).IsOpenOrV0())
         ? this
         : nearestAncestorClosedTreeScopeEventContext;
-#endif
 #endif
     for (TreeScopeEventContext *context : m_children)
     {

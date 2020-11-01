@@ -11,9 +11,12 @@
 
 #include "page.h"
 
+#include "third_party/blink/renderer/core/frame/browser_controls.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/page_scale_constraints_set.h"
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
+#include "third_party/blink/renderer/core/page/scrolling/overscroll_controller.h"
+#include "third_party/blink/renderer/core/page/scrolling/top_document_root_scroller_controller.h"
 
 namespace blink {
 
@@ -22,7 +25,10 @@ Page::Page(PageClients &pageClients)
     , m_frame(LocalFrame::Create(pageClients.frameClient, this))
     , m_animator(PageAnimator::Create(*this))
     , m_pageScaleConstraintsSet(PageScaleConstraintsSet::Create(this))
+    , m_browserControls(BrowserControls::Create(*this))
+    , m_globalRootScrollerController(TopDocumentRootScrollerController::Create(*this))
     , m_visualViewport(VisualViewport::Create(*this))
+    , m_overscrollController(OverscrollController::Create(GetVisualViewport(), GetChromeClient()))
 {
 }
 
@@ -31,6 +37,26 @@ Page::~Page(void) = default;
 std::unique_ptr<Page> Page::Create(PageClients &pageClients)
 {
     return base::WrapUnique(new Page(pageClients));
+}
+
+BrowserControls& Page::GetBrowserControls(void)
+{
+    return *m_browserControls;
+}
+
+const BrowserControls& Page::GetBrowserControls(void) const
+{
+    return *m_browserControls;
+}
+
+OverscrollController& Page::GetOverscrollController(void)
+{
+    return *m_overscrollController;
+}
+
+const OverscrollController& Page::GetOverscrollController(void) const
+{
+    return *m_overscrollController;
 }
 
 PageScaleConstraintsSet& Page::GetPageScaleConstraintsSet(void)
@@ -60,6 +86,11 @@ VisualViewport& Page::GetVisualViewport(void)
 const VisualViewport& Page::GetVisualViewport(void) const
 {
     return *m_visualViewport;
+}
+
+TopDocumentRootScrollerController& Page::GlobalRootScrollerController(void) const
+{
+    return *m_globalRootScrollerController;
 }
 
 void Page::SetVisibilityState(PageVisibilityState visibilityState, bool isInitialState)

@@ -24,7 +24,11 @@
 
 namespace BlinKit {
 
-AppImpl::AppImpl(int mode, BkAppClient *client) : m_mode(mode), m_heapStorage(new HeapStorage)
+AppImpl::AppImpl(int mode, BkAppClient *client)
+    : m_mode(mode)
+#ifndef BLINKIT_CRAWLER_ONLY
+    , m_heapStorage(new HeapStorage)
+#endif
 {
     memset(&m_client, 0, sizeof(BkAppClient));
     if (nullptr != client)

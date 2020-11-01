@@ -29,10 +29,13 @@ public:
     static const AtomicString& StandardFontFamilyName(void);
 
     static constexpr bool AcceleratedCompositingEnabled = false;
+    static constexpr bool ForceZeroLayoutHeight = false;
     static constexpr bool IgnoreMainFrameOverflowHiddenQuirk = false;
     static constexpr bool PreferCompositingToLCDTextEnabled = false;
     static constexpr bool TextAutosizingEnabled = false;
     static constexpr bool ViewportEnabled = false;
+    static constexpr bool ViewportMetaEnabled = false;
+    static constexpr bool ViewportMetaMergeContentQuirk = false;
 };
 
 } // namespace blink

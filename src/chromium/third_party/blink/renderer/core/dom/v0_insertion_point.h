@@ -125,7 +125,7 @@ const V0InsertionPoint* ResolveReprojection(const Node*);
 
 void CollectDestinationInsertionPoints(
     const Node&,
-    HeapVector<Member<V0InsertionPoint>, 8>& results);
+    std::vector<V0InsertionPoint *>& results);
 
 }  // namespace blink
 

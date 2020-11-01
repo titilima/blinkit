@@ -52,7 +52,7 @@ class CORE_EXPORT StyleSheetList final : public ScriptWrappable {
   static StyleSheetList* Create(const HeapVector<Member<CSSStyleSheet>>&,
                                 ExceptionState&);
 
-  static StyleSheetList* Create(TreeScope* tree_scope) {
+  static std::shared_ptr<StyleSheetList> Create(TreeScope* tree_scope) {
     ASSERT(false); // BKTODO:
     return nullptr;
 #if 0

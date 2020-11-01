@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: browser_controls.h
+// Description: BrowserControls Class
+//      Author: Ziming Li
+//     Created: 2020-10-30
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,7 +16,7 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_BROWSER_CONTROLS_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_BROWSER_CONTROLS_H_
 
-#include "cc/input/browser_controls_state.h"
+// BKTODO: #include "cc/input/browser_controls_state.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/platform/heap/handle.h"
 
@@ -45,9 +56,11 @@ class CORE_EXPORT BrowserControls final
   float ShownRatio() const { return shown_ratio_; }
   void SetShownRatio(float);
 
+#if 0 // BKTODO:
   void UpdateConstraintsAndState(cc::BrowserControlsState constraints,
                                  cc::BrowserControlsState current,
                                  bool animate);
+#endif
 
   void ScrollBegin();
 
@@ -55,7 +68,9 @@ class CORE_EXPORT BrowserControls final
   // scroll amount.
   FloatSize ScrollBy(FloatSize scroll_delta);
 
+#if 0 // BKTODO:
   cc::BrowserControlsState PermittedState() const { return permitted_state_; }
+#endif
 
  private:
   explicit BrowserControls(const Page&);
@@ -88,8 +103,10 @@ class CORE_EXPORT BrowserControls final
   // controls height.
   bool shrink_viewport_;
 
+#if 0 // BKTODO:
   // Constraints on the browser controls state
   cc::BrowserControlsState permitted_state_;
+#endif
 };
 }  // namespace blink
 

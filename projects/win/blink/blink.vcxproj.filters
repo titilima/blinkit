@@ -5039,6 +5039,33 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\visual_viewport.cc">
       <Filter>renderer\core\frame</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\root_frame_viewport.cc">
+      <Filter>renderer\core\frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\top_document_root_scroller_controller.cc">
+      <Filter>renderer\core\page\scrolling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\viewport_scroll_callback.cc">
+      <Filter>renderer\core\page\scrolling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\scroll_state_callback.cc">
+      <Filter>renderer\core\page\scrolling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\browser_controls.cc">
+      <Filter>renderer\core\frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\overscroll_controller.cc">
+      <Filter>renderer\core\page\scrolling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\scroll_state.cc">
+      <Filter>renderer\core\page\scrolling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\root_scroller_controller.cc">
+      <Filter>renderer\core\page\scrolling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\shadow_root.cc">
+      <Filter>renderer\core\dom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -11235,6 +11262,39 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\visual_viewport.h">
       <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\root_frame_viewport.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\top_document_root_scroller_controller.h">
+      <Filter>renderer\core\page\scrolling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\viewport_scroll_callback.h">
+      <Filter>renderer\core\page\scrolling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\scroll_state_callback.h">
+      <Filter>renderer\core\page\scrolling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_native_scroll_behavior.h">
+      <Filter>public\platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\browser_controls.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\overscroll_controller.h">
+      <Filter>renderer\core\page\scrolling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\scroll_state.h">
+      <Filter>renderer\core\page\scrolling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\scroll_state_init.h">
+      <Filter>renderer\core\page\scrolling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\scrolling\root_scroller_controller.h">
+      <Filter>renderer\core\page\scrolling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\display_cutout.h">
+      <Filter>renderer\core\page</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
