@@ -282,6 +282,9 @@
     <Filter Include="renderer\core\page\scrolling">
       <UniqueIdentifier>{574e2047-56bf-4eca-aa74-b82280d81492}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\html\imports">
+      <UniqueIdentifier>{ed0c7a6e-6320-4dc9-baca-0cf8f75a71fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -5065,6 +5068,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\dom\shadow_root.cc">
       <Filter>renderer\core\dom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_element_factory.cpp">
+      <Filter>renderer\core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_html_element.cc">
+      <Filter>renderer\core\html</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -11295,6 +11304,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\page\display_cutout.h">
       <Filter>renderer\core\page</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_html_element.h">
+      <Filter>renderer\core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\imports\html_imports_controller.h">
+      <Filter>renderer\core\html\imports</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

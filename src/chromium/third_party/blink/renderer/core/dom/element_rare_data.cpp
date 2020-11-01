@@ -47,7 +47,11 @@ namespace blink {
 
 struct SameSizeAsElementRareData : NodeRareData
 {
+#ifdef BLINKIT_CRAWLER_ONLY
     void* pointersOrStrings[5];
+#else
+    void* pointersOrStrings[6];
+#endif
 };
 
 #ifdef BLINKIT_CRAWLER_ONLY

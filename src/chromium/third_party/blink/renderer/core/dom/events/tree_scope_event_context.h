@@ -48,11 +48,15 @@ namespace blink {
 class Event;
 class EventTarget;
 class TreeScope;
+#ifndef BLINKIT_CRAWLER_ONLY
+class TouchEventContext;
+#endif
 
 class TreeScopeEventContext final : public GarbageCollected<TreeScopeEventContext>
 {
 public:
     static std::shared_ptr<TreeScopeEventContext> Create(TreeScope &treeScope);
+    ~TreeScopeEventContext(void);
 
     TreeScope& GetTreeScope(void) const { return *m_treeScope; }
     ContainerNode& RootNode(void) const { return m_treeScope->RootNode(); }
@@ -70,6 +74,13 @@ public:
     int CalculateTreeOrderAndSetNearestAncestorClosedTree(int orderNumber, TreeScopeEventContext *nearestAncestorClosedTreeScopeEventContext);
 
     TreeScopeEventContext* ContainingClosedShadowTree(void) const { return m_containingClosedShadowTree.Get(); }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    TouchEventContext* GetTouchEventContext(void) const
+    {
+        return m_touchEventContext.get();
+    }
+#endif
 private:
     TreeScopeEventContext(TreeScope &treeScope);
 
@@ -77,6 +88,9 @@ private:
 
     Member<TreeScope> m_treeScope;
     Member<EventTarget> m_target, m_relatedTarget;
+#ifndef BLINKIT_CRAWLER_ONLY
+    std::unique_ptr<TouchEventContext> m_touchEventContext;
+#endif
     Member<TreeScopeEventContext> m_containingClosedShadowTree;
 
     std::vector<TreeScopeEventContext *> m_children;

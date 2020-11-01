@@ -197,6 +197,9 @@ public:
     virtual void FinishParsingChildren(void);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    // Returns the shadow root attached to this element if it is a shadow host.
+    ShadowRoot* GetShadowRoot(void) const;
+
     virtual const AtomicString& ShadowPseudoId(void) const;
 
     virtual scoped_refptr<ComputedStyle> CustomStyleForLayoutObject(void);

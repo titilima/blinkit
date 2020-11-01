@@ -43,10 +43,18 @@
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/loader/document_loader.h"
-
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/html/imports/html_imports_controller.h"
+#endif
 namespace blink {
 
-DocumentInit::DocumentInit(const DocumentInit&) = default;
+#ifndef BLINKIT_CRAWLER_ONLY
+DocumentInit::DocumentInit(const std::shared_ptr<HTMLImportsController> &importsController) : m_importsController(importsController)
+{
+}
+#endif
+
+DocumentInit::DocumentInit(const DocumentInit &) = default;
 
 DocumentInit::~DocumentInit(void) = default;
 

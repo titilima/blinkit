@@ -350,17 +350,10 @@ void ContainerNode::ChildrenChanged(const ChildrenChange &change)
     document.NotifyChangeChildren(*this);
     InvalidateNodeListCachesInAncestors(nullptr, nullptr, &change);
 #ifndef BLINKIT_CRAWLER_ONLY
-    // BKTODO: Check overrides:
-    //   * HTML Elements
-    //   * ShadowRoot
-    //   * V0InsertionPoint
     if (change.IsChildInsertion())
     {
-        ASSERT(false); // BKTODO:
-#if 0
         if (change.siblingChanged->NeedsStyleRecalc())
             MarkAncestorsWithChildNeedsStyleRecalc(change.siblingChanged);
-#endif
     }
     else if (change.IsChildRemoval() || change.type == kAllChildrenRemoved)
     {

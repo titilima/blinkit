@@ -473,6 +473,14 @@ protected:
         return CreateRareData();
     }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+    void MarkAncestorsWithChildNeedsStyleRecalc(void);
+    static void MarkAncestorsWithChildNeedsStyleRecalc(Node *child)
+    {
+        child->MarkAncestorsWithChildNeedsStyleRecalc();
+    }
+#endif
+
     // EventTarget overrides
     void AddedEventListener(const AtomicString& eventType, RegisteredEventListener &registeredListener) override;
     DispatchEventResult DispatchEventInternal(Event &event) override;

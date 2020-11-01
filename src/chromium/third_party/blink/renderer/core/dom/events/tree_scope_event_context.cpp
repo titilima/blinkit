@@ -39,12 +39,23 @@
 
 #include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/dom/node.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/dom/shadow_root.h"
+#endif
 
 namespace blink {
+
+#ifndef BLINKIT_CRAWLER_ONLY
+class TouchEventContext {
+    // BKTODO: Just a placeholder.
+};
+#endif
 
 TreeScopeEventContext::TreeScopeEventContext(TreeScope &treeScope) : m_treeScope(treeScope)
 {
 }
+
+TreeScopeEventContext::~TreeScopeEventContext(void) = default;
 
 int TreeScopeEventContext::CalculateTreeOrderAndSetNearestAncestorClosedTree(int orderNumber, TreeScopeEventContext *nearestAncestorClosedTreeScopeEventContext)
 {

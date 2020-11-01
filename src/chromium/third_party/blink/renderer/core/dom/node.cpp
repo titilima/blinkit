@@ -56,6 +56,7 @@
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/dom/shadow_root.h"
+#   include "third_party/blink/renderer/core/css/style_engine.h"
 #endif
 
 using namespace BlinKit;
@@ -300,7 +301,7 @@ void Node::DefaultEventHandler(Event &event)
         return;
 #ifndef BLINKIT_CRAWLER_ONLY
     const AtomicString &eventType = event.type();
-    ASSERT(false); // BKTODO:
+    BKLOG("// BKTODO: Process events.");
 #if 0
     if (event_type == EventTypeNames::keydown ||
         event_type == EventTypeNames::keypress) {
@@ -458,16 +459,12 @@ ContainerNode* Node::GetReattachParent(void) const
 }
 #endif
 
+#ifdef BLINKIT_CRAWLER_ONLY
 ShadowRoot* Node::GetShadowRoot(void) const
 {
-#ifdef BLINKIT_CRAWLER_ONLY
     return nullptr;
-#else
-    if (!IsElementNode())
-        return nullptr;
-    return ToElement(this)->GetShadowRoot();
-#endif
 }
+#endif
 
 void Node::HandleLocalEvents(Event &event)
 {
@@ -603,6 +600,30 @@ void Node::MarkAncestorsWithChildNeedsDistributionRecalc(void)
 void Node::MarkAncestorsWithChildNeedsStyleInvalidation(void)
 {
     ASSERT(false); // BKTODO:
+}
+
+void Node::MarkAncestorsWithChildNeedsStyleRecalc(void)
+{
+    ContainerNode *ancestor = ParentOrShadowHostNode();
+    bool parentDirty = nullptr != ancestor && ancestor->NeedsStyleRecalc();
+    do {
+        ancestor->SetChildNeedsStyleRecalc();
+        if (ancestor->NeedsStyleRecalc())
+            break;
+        ancestor = ancestor->ParentOrShadowHostNode();
+    } while (nullptr != ancestor && !ancestor->ChildNeedsStyleRecalc());
+
+    if (!isConnected())
+        return;
+
+    // If the parent node is already dirty, we can keep the same recalc root. The
+    // early return here is a performance optimization.
+    if (parentDirty)
+        return;
+
+    Document &document = GetDocument();
+    document.GetStyleEngine().UpdateStyleRecalcRoot(ancestor, this);
+    document.ScheduleLayoutTreeUpdateIfNeeded();
 }
 #endif
 
@@ -990,7 +1011,31 @@ const ComputedStyle* Node::VirtualEnsureComputedStyle(PseudoId pseudoElementSpec
 void Node::WillCallDefaultEventHandler(const Event &event)
 {
 #ifndef BLINKIT_CRAWLER_ONLY
+    if (ForCrawler() || !event.IsKeyboardEvent())
+        return;
+
     ASSERT(false); // BKTODO:
+#if 0
+    if (!IsFocused() || GetDocument().LastFocusType() != kWebFocusTypeMouse)
+        return;
+
+    if (event.type() != EventTypeNames::keydown ||
+        GetDocument().HadKeyboardEvent())
+        return;
+
+    GetDocument().SetHadKeyboardEvent(true);
+#endif
+
+    // Changes to HadKeyboardEvent may affect :focus-visible matching,
+    // ShouldHaveFocusAppearance and LayoutTheme::IsFocused().
+    // Inform LayoutTheme if HadKeyboardEvent changes.
+    if (LayoutObject *layoutObject = GetLayoutObject())
+    {
+        layoutObject->InvalidateIfControlStateChanged(kFocusControlState);
+
+        if (RuntimeEnabledFeatures::CSSFocusVisibleEnabled() && IsContainerNode())
+            ASSERT(false); // BKTODO: ToContainerNode(*this).FocusVisibleStateChanged();
+    }
 #endif
 }
 

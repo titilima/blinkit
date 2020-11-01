@@ -105,6 +105,9 @@ public:
     // These events are general classes of events.
     virtual bool IsUIEvent(void) const { return false; }
     virtual bool IsInputEvent(void) const { return false; }
+#ifndef BLINKIT_CRAWLER_ONLY
+    virtual bool IsKeyboardEvent(void) const { return false; }
+#endif
 
     EventTarget* target(void) const { return m_target.Get(); }
     void SetTarget(EventTarget *target);

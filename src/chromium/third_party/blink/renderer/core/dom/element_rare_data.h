@@ -45,6 +45,7 @@
 #   else
 #       include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #   endif
+#   include "third_party/blink/renderer/core/dom/shadow_root.h"
 #endif
 
 namespace blink {
@@ -81,6 +82,11 @@ public:
 
     void SetIsValue(const AtomicString &isValue) { m_isValue = isValue; }
     const AtomicString& IsValue(void) const { return m_isValue; }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    ShadowRoot* GetShadowRoot(void) const { return m_shadowRoot.get(); }
+#endif
+
 private:
 #ifdef BLINKIT_CRAWLER_ONLY
     ElementRareData(void);
@@ -88,6 +94,7 @@ private:
     explicit ElementRareData(NodeRenderingData*);
 #endif
 
+    std::unique_ptr<ShadowRoot> m_shadowRoot;
     std::unique_ptr<NamedNodeMap> m_attributeMap;
     std::unique_ptr<AttrNodeList> m_attrNodeList;
 

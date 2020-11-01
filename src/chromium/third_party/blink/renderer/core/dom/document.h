@@ -87,6 +87,7 @@ class SelectorQueryCache;
 class Text;
 #ifndef BLINKIT_CRAWLER_ONLY
 class CSSStyleSheet;
+class HTMLImportsController;
 class LayoutView;
 class LocalFrameView;
 class Page;
@@ -382,9 +383,13 @@ public:
     // EnsureTemplateDocument().
     bool IsTemplateDocument(void) const { return !!m_templateDocumentHost; }
 
+    bool IsRenderingReady(void) const;
+
+    bool ShouldScheduleLayout(void) const;
     bool NeedsLayoutTreeUpdate(void) const;
     void UpdateStyleAndLayoutTree(void);
     void UpdateStyleAndLayoutTreeForNode(const Node *node);
+    void ScheduleLayoutTreeUpdateIfNeeded(void);
 
     RootScrollerController& GetRootScrollerController(void) const
     {
@@ -446,14 +451,21 @@ private:
     NodeType getNodeType(void) const final { return kDocumentNode; }
     Node* Clone(Document &factory, CloneChildrenFlag flag) const override;
     bool ChildTypeAllowed(NodeType type) const final;
-#ifndef BLINKIT_CRAWLER_ONLY
-    void AttachLayoutTree(AttachContext &) override { NOTREACHED(); }
-    void DetachLayoutTree(const AttachContext & = AttachContext()) override { NOTREACHED(); }
-#endif
     // ContainerNode overrides
     void ChildrenChanged(const ChildrenChange &change) override;
     // ExecutionContext overrides
     bool IsDocument(void) const final { return true; }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    bool ShouldScheduleLayoutTreeUpdate(void) const;
+    void ScheduleLayoutTreeUpdate(void);
+
+    bool HasPendingVisualUpdate(void) const { return m_lifecycle.GetState() == DocumentLifecycle::kVisualUpdatePending; }
+    bool HaveRenderBlockingResourcesLoaded(void) const;
+
+    void AttachLayoutTree(AttachContext &) override { NOTREACHED(); }
+    void DetachLayoutTree(const AttachContext & = AttachContext()) override { NOTREACHED(); }
+#endif
 
     static uint64_t m_globalTreeVersion;
     uint64_t m_domTreeVersion;
@@ -533,6 +545,8 @@ private:
     std::stack<ScriptElementBase *> m_currentScriptStack;
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    std::shared_ptr<HTMLImportsController> m_importsController;
+
     LayoutView *m_layoutView = nullptr;
     std::unique_ptr<TextAutosizer> m_textAutosizer;
     Member<Element> m_focusedElement;

@@ -75,7 +75,7 @@ DispatchEventResult EventDispatcher::Dispatch(void)
 #ifdef BLINKIT_CRAWLER_ONLY
     Node *activationTarget = nullptr;
 #else
-    ASSERT(false); // BKTODO:
+    BKLOG("// BKTODO: Process events.");
 #if 0
     // 6. Let isActivationEvent be true, if event is a MouseEvent object and
     // event's type attribute is "click", and false otherwise.
@@ -261,7 +261,7 @@ void EventDispatcher::DispatchEventPostProcess(Node *activationTarget, EventDisp
 #ifdef BLINKIT_CRAWLER_ONLY
     bool isClick = false;
 #else
-    ASSERT(false); // BKTODO:
+    BKLOG("// BKTODO: Process click.");
 #if 0
     bool is_click = event_->IsMouseEvent() &&
         ToMouseEvent(*event_).type() == EventTypeNames::click;
@@ -293,7 +293,7 @@ void EventDispatcher::DispatchEventPostProcess(Node *activationTarget, EventDisp
         || m_event->isTrusted() || isClick;
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
+    BKLOG("// BKTODO: Process trusted or click.");
 #if 0
     // For Android WebView (distinguished by wideViewportQuirkEnabled)
     // enable untrusted events for mouse down on select elements because

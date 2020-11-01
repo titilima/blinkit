@@ -132,6 +132,26 @@ inline LocalDOMWindow* EventTarget::ExecutingWindow(void)
     return nullptr;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+static const AtomicString& LegacyType(const Event &event)
+{
+    BKLOG("// BKTODO: Translate event type names.");
+#if 0
+    if (event.type() == EventTypeNames::transitionend)
+        return EventTypeNames::webkitTransitionEnd;
+    if (event.type() == EventTypeNames::animationstart)
+        return EventTypeNames::webkitAnimationStart;
+    if (event.type() == EventTypeNames::animationend)
+        return EventTypeNames::webkitAnimationEnd;
+    if (event.type() == EventTypeNames::animationiteration)
+        return EventTypeNames::webkitAnimationIteration;
+    if (event.type() == EventTypeNames::wheel)
+        return EventTypeNames::mousewheel;
+#endif
+    return g_empty_atom;
+}
+#endif
+
 DispatchEventResult EventTarget::FireEventListeners(Event &event)
 {
 #if DCHECK_IS_ON()
@@ -145,12 +165,9 @@ DispatchEventResult EventTarget::FireEventListeners(Event &event)
 
     EventListenerVector *legacyListenersVector = nullptr;
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
-#if 0
     AtomicString legacyTypeName = LegacyType(event);
     if (!legacyTypeName.IsEmpty())
-        legacyListenersVector = d->event_listener_map.Find(legacyTypeName);
-#endif
+        legacyListenersVector = d->eventListenerMap.Find(legacyTypeName);
 #endif
 
     EventListenerVector *listenersVector = d->eventListenerMap.Find(event.type());

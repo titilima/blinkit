@@ -80,12 +80,6 @@ HTMLDocument::HTMLDocument(const DocumentInit &init) : Document(init)
     }
 #endif
 }
-
-Element* HTMLDocument::CreateElement(const AtomicString &localName, CreateElementFlags flags)
-{
-    ASSERT(false); // BKTODO:
-    return nullptr;
-}
 #endif
 
 static std::unordered_set<StringImpl *>* CreateHtmlCaseInsensitiveAttributesSet(void)

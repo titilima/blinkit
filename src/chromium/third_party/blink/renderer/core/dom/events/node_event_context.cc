@@ -59,16 +59,13 @@ NodeEventContext::NodeEventContext(Node* node, EventTarget* current_target)
 void NodeEventContext::HandleLocalEvents(Event& event) const {
 #ifdef BLINKIT_CRAWLER_ONLY
   if (EventTarget *relatedTarget = RelatedTarget())
-     event.SetRelatedTargetIfExists(relatedTarget);
+    event.SetRelatedTargetIfExists(relatedTarget);
 #else
-  ASSERT(false); // BKTODO:
-#if 0
-  if (TouchEventContext* touch_context = GetTouchEventContext()) {
-    touch_context->HandleLocalEvents(event);
+  if (TouchEventContext *touchContext = GetTouchEventContext()) {
+    ASSERT(false); // BKTODO: touch_context->HandleLocalEvents(event);
   } else if (RelatedTarget()) {
     event.SetRelatedTargetIfExists(RelatedTarget());
   }
-#endif
 #endif
   event.SetTarget(Target());
   event.SetCurrentTarget(current_target_.Get());

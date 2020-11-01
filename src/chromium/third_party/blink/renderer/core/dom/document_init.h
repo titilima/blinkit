@@ -50,6 +50,9 @@ namespace blink {
 
 class DocumentLoader;
 class LocalFrame;
+#ifndef BLINKIT_CRAWLER_ONLY
+class HTMLImportsController;
+#endif
 
 class DocumentInit final
 {
@@ -60,20 +63,40 @@ public:
 
     static DocumentInit Create(void)
     {
-        return DocumentInit();
+        return DocumentInit(nullptr);
     }
+#ifndef BLINKIT_CRAWLER_ONLY
+    static DocumentInit CreateWithImportsController(const std::shared_ptr<HTMLImportsController> &importsController)
+    {
+        return DocumentInit(importsController);
+    }
+#endif
 
     DocumentInit& WithDocumentLoader(DocumentLoader *loader);
     LocalFrame* GetFrame(void) const;
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    const std::shared_ptr<HTMLImportsController>& ImportsController(void) const
+    {
+        return m_importsController;
+    }
+#endif
 
     DocumentInit& WithURL(const GURL &URL);
     const GURL& Url(void) const { return m_URL; }
 
     bool ShouldSetURL(void) const;
 private:
+#ifdef BLINKIT_CRAWLER_ONLY
     DocumentInit(void) = default;
+#else
+    DocumentInit(const std::shared_ptr<HTMLImportsController> &importsController = nullptr);
+#endif
 
     Member<DocumentLoader> m_documentLoader;
+#ifndef BLINKIT_CRAWLER_ONLY
+    std::shared_ptr<HTMLImportsController> m_importsController;
+#endif
     GURL m_URL;
 };
 

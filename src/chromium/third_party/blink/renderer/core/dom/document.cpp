@@ -85,6 +85,7 @@
 #   include "third_party/blink/renderer/core/dom/layout_tree_builder.h"
 #   include "third_party/blink/renderer/core/dom/visited_link_state.h"
 #   include "third_party/blink/renderer/core/frame/viewport_data.h"
+#   include "third_party/blink/renderer/core/html/imports/html_imports_controller.h"
 #   include "third_party/blink/renderer/core/layout/layout_view.h"
 #   include "third_party/blink/renderer/core/layout/text_autosizer.h"
 #   include "third_party/blink/renderer/core/page/scrolling/root_scroller_controller.h"
@@ -192,6 +193,7 @@ Document::Document(const DocumentInit &initializer)
     , m_scriptRunner(ScriptRunner::Create(this))
     , m_loadEventDelayTimer(GetTaskRunner(TaskType::kNetworking), this, &Document::LoadEventDelayTimerFired)
 #ifndef BLINKIT_CRAWLER_ONLY
+    , m_importsController(initializer.ImportsController())
     , m_viewportData(std::make_unique<ViewportData>(*this))
 #endif
 {
@@ -230,13 +232,10 @@ Document::Document(const DocumentInit &initializer)
 #ifndef BLINKIT_CRAWLER_ONLY
     else if (!isCrawler)
     {
-        ASSERT(false); // BKTODO:
-#if 0
-        if (imports_controller_)
-            fetcher_ = FrameFetchContext::CreateFetcherFromDocument(this);
+        if (m_importsController)
+            ASSERT(false); // BKTODO: m_fetcher = FrameFetchContext::CreateFetcherFromDocument(this);
         else
-            fetcher_ = ResourceFetcher::Create(nullptr);
-#endif
+            m_fetcher = ResourceFetcher::Create();
     }
 #endif
     else
@@ -869,7 +868,7 @@ LocalDOMWindow* Document::ExecutingWindow(void) const
     if (LocalDOMWindow *owningWindow = domWindow())
         return owningWindow;
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
+    ASSERT(!m_importsController); // BKTODO:
 #if 0
     if (HTMLImportsController* import = ImportsController())
         return import->Master()->domWindow();
@@ -1018,10 +1017,20 @@ bool Document::HaveImportsLoaded(void) const
 #else
     if (ForCrawler())
         return true;
-    ASSERT(false); // BKTODO:
+    if (!m_importsController)
+        return true;
     return false;
 #endif
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+bool Document::HaveRenderBlockingResourcesLoaded(void) const
+{
+    if (RuntimeEnabledFeatures::CSSInBodyDoesNotBlockPaintEnabled())
+        return HaveImportsLoaded() && m_styleEngine->HaveRenderBlockingStylesheetsLoaded();
+    return HaveImportsLoaded() && m_styleEngine->HaveScriptBlockingStylesheetsLoaded();
+}
+#endif
 
 bool Document::HaveScriptBlockingStylesheetsLoaded(void) const
 {
@@ -1194,6 +1203,13 @@ void Document::InvalidateNodeListCaches(const QualifiedName *attrName)
     for (const LiveNodeListBase *list : m_listsInvalidatedAtDocument)
         list->InvalidateCacheForAttribute(attrName);
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+bool Document::IsRenderingReady(void) const
+{
+    return m_styleEngine->IgnoringPendingStylesheets() || HaveRenderBlockingResourcesLoaded();
+}
+#endif
 
 template <typename CharType>
 static inline bool IsValidNameASCII(const CharType *characters, unsigned length)
@@ -1477,6 +1493,31 @@ void Document::RemoveFocusedElementOfSubtree(Node *node, bool amongChildrenOnly)
 {
     ASSERT(false); // BKTOOD:
 }
+
+void Document::ScheduleLayoutTreeUpdate(void)
+{
+    ASSERT(!HasPendingVisualUpdate());
+    ASSERT(ShouldScheduleLayoutTreeUpdate());
+    ASSERT(NeedsLayoutTreeUpdate());
+
+    ASSERT(false); // BKTOOD:
+#if 0
+    if (!View()->CanThrottleRendering())
+        GetPage()->Animator().ScheduleVisualUpdate(GetFrame());
+    m_lifecycle.EnsureStateAtMost(DocumentLifecycle::kVisualUpdatePending);
+
+    ++m_styleVersion;
+#endif
+}
+
+void Document::ScheduleLayoutTreeUpdateIfNeeded(void)
+{
+    // Inline early out to avoid the function calls below.
+    if (HasPendingVisualUpdate())
+        return;
+    if (ShouldScheduleLayoutTreeUpdate() && NeedsLayoutTreeUpdate())
+        ScheduleLayoutTreeUpdate();
+}
 #endif
 
 void Document::SetCompatibilityMode(CompatibilityMode mode)
@@ -1496,12 +1537,8 @@ void Document::SetContentLanguage(const AtomicString &language)
     m_contentLanguage = language;
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
-#if 0
     // Document's style depends on the content language.
-    SetNeedsStyleRecalc(kSubtreeStyleChange, StyleChangeReasonForTracing::Create(
-        StyleChangeReason::kLanguage));
-#endif
+    SetNeedsStyleRecalc(kSubtreeStyleChange, StyleChangeReasonForTracing::Create(StyleChangeReason::kLanguage));
 #endif
 }
 
@@ -1675,6 +1712,45 @@ bool Document::ShouldInvalidateNodeListCaches(const QualifiedName *attrName) con
     // there is any node list present (with any invalidation type).
     return !m_nodeLists.IsEmpty();
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+bool Document::ShouldScheduleLayout(void) const
+{
+    // This function will only be called when LocalFrameView thinks a layout is
+    // needed. This enforces a couple extra rules.
+    //
+    //    (a) Only schedule a layout once the stylesheets are loaded.
+    //    (b) Only schedule layout once we have a body element.
+    if (!IsActive())
+        return false;
+
+    if (IsRenderingReady() && nullptr != body())
+        return true;
+
+    if (Element *de = documentElement())
+    {
+        if (!IsHTMLHtmlElement(*de))
+            return true;
+    }
+
+    return false;
+}
+
+bool Document::ShouldScheduleLayoutTreeUpdate(void) const
+{
+    if (!IsActive())
+        return false;
+    if (InStyleRecalc())
+        return false;
+    // InPreLayout will recalc style itself. There's no reason to schedule another
+    // recalc.
+    if (m_lifecycle.GetState() == DocumentLifecycle::kInPreLayout)
+        return false;
+    if (!ShouldScheduleLayout())
+        return false;
+    return true;
+}
+#endif
 
 void Document::Shutdown(void)
 {

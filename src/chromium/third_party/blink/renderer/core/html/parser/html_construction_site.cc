@@ -860,7 +860,7 @@ CreateElementFlags HTMLConstructionSite::GetCreateElementFlags() const {
 
 inline Document& HTMLConstructionSite::OwnerDocumentForCurrentNode() {
 #ifndef BLINKIT_CRAWLER_ONLY
-  ASSERT(false); // BKTODO:
+  BKLOG("// BKTODO: Process template element.");
 #if 0
   if (auto* template_element = ToHTMLTemplateElementOrNull(*CurrentNode()))
     return template_element->content()->GetDocument();
@@ -887,7 +887,7 @@ CustomElementDefinition* HTMLConstructionSite::LookUpCustomElementDefinition(
   if (!window)
     return nullptr;
 
-  ASSERT(false); // BKTODO:
+  BKLOG("// BKTODO: Process custom element logic.");
   return nullptr;
 #if 0
   // "3. Let registry be document's browsing context's Window's
@@ -966,73 +966,77 @@ Element* HTMLConstructionSite::CreateElement(
 #ifdef BLINKIT_CRAWLER_ONLY
     element = document.CreateElement(tag_name.LocalName(), GetCreateElementFlags());
 #else
-    ASSERT(false); // BKTODO:
-    element = nullptr;
-#if 0
-    if (definition) {
-      DCHECK(GetCreateElementFlags().IsAsyncCustomElements());
-      element = definition->CreateElement(document, tag_name,
-                                          GetCreateElementFlags());
+    if (document.ForCrawler()) {
+      element = document.CreateElement(tag_name.LocalName(), GetCreateElementFlags());
     } else {
-      element = CustomElement::CreateUncustomizedOrUndefinedElement(
-          document, tag_name, GetCreateElementFlags(), is);
-    }
-    // Definition for the created element does not exist here and it cannot be
-    // custom or failed.
-    DCHECK_NE(element->GetCustomElementState(), CustomElementState::kCustom);
-    DCHECK_NE(element->GetCustomElementState(), CustomElementState::kFailed);
+      ASSERT(false); // BKTODO:
+      element = nullptr;
+#if 0
+      if (definition) {
+        DCHECK(GetCreateElementFlags().IsAsyncCustomElements());
+        element = definition->CreateElement(document, tag_name,
+                                            GetCreateElementFlags());
+      } else {
+        element = CustomElement::CreateUncustomizedOrUndefinedElement(
+            document, tag_name, GetCreateElementFlags(), is);
+      }
+      // Definition for the created element does not exist here and it cannot be
+      // custom or failed.
+      DCHECK_NE(element->GetCustomElementState(), CustomElementState::kCustom);
+      DCHECK_NE(element->GetCustomElementState(), CustomElementState::kFailed);
 
-    // TODO(dominicc): Move these steps so they happen for custom
-    // elements as well as built-in elements when customized built in
-    // elements are implemented for resettable, listed elements.
+      // TODO(dominicc): Move these steps so they happen for custom
+      // elements as well as built-in elements when customized built in
+      // elements are implemented for resettable, listed elements.
 
-    // 10. If element has an xmlns attribute in the XMLNS namespace
-    // whose value is not exactly the same as the element's namespace,
-    // that is a parse error. Similarly, if element has an xmlns:xlink
-    // attribute in the XMLNS namespace whose value is not the XLink
-    // Namespace, that is a parse error.
+      // 10. If element has an xmlns attribute in the XMLNS namespace
+      // whose value is not exactly the same as the element's namespace,
+      // that is a parse error. Similarly, if element has an xmlns:xlink
+      // attribute in the XMLNS namespace whose value is not the XLink
+      // Namespace, that is a parse error.
 
-    // TODO(dominicc): Implement step 10 when the HTML parser does
-    // something useful with parse errors.
+      // TODO(dominicc): Implement step 10 when the HTML parser does
+      // something useful with parse errors.
 
-    // 11. If element is a resettable element, invoke its reset
-    // algorithm. (This initializes the element's value and
-    // checkedness based on the element's attributes.)
-    // TODO(dominicc): Implement step 11, resettable elements.
+      // 11. If element is a resettable element, invoke its reset
+      // algorithm. (This initializes the element's value and
+      // checkedness based on the element's attributes.)
+      // TODO(dominicc): Implement step 11, resettable elements.
 
-    // 12. If element is a form-associated element, and the form
-    // element pointer is not null, and there is no template element
-    // on the stack of open elements, ...
-    FormAssociated* form_associated_element =
-        element->IsHTMLElement()
-            ? ToHTMLElement(element)->ToFormAssociatedOrNull()
-            : nullptr;
-    if (form_associated_element && document.GetFrame() && form_.Get()) {
-      // ... and element is either not listed or doesn't have a form
-      // attribute, and the intended parent is in the same tree as the
-      // element pointed to by the form element pointer, associate
-      // element with the form element pointed to by the form element
-      // pointer, and suppress the running of the reset the form owner
-      // algorithm when the parser subsequently attempts to insert the
-      // element.
+      // 12. If element is a form-associated element, and the form
+      // element pointer is not null, and there is no template element
+      // on the stack of open elements, ...
+      FormAssociated* form_associated_element =
+          element->IsHTMLElement()
+              ? ToHTMLElement(element)->ToFormAssociatedOrNull()
+              : nullptr;
+      if (form_associated_element && document.GetFrame() && form_.Get()) {
+        // ... and element is either not listed or doesn't have a form
+        // attribute, and the intended parent is in the same tree as the
+        // element pointed to by the form element pointer, associate
+        // element with the form element pointed to by the form element
+        // pointer, and suppress the running of the reset the form owner
+        // algorithm when the parser subsequently attempts to insert the
+        // element.
 
-      // TODO(dominicc): There are many differences to the spec here;
-      // some of them are observable:
-      //
-      // - The HTML spec tracks whether there is a template element on
-      //   the stack both for manipulating the form element pointer
-      //   and using it here.
-      // - FormAssociated::AssociateWith implementations don't do the
-      //   "same tree" check; for example
-      //   HTMLImageElement::AssociateWith just checks whether the form
-      //   is in *a* tree. This check should be done here consistently.
-      // - ListedElement is a mixin; add IsListedElement and skip
-      //   setting the form for listed attributes with form=. Instead
-      //   we set attributes (step 8) out of order, after this step,
-      //   to reset the form association.
-      form_associated_element->AssociateWith(form_.Get());
-    }
+        // TODO(dominicc): There are many differences to the spec here;
+        // some of them are observable:
+        //
+        // - The HTML spec tracks whether there is a template element on
+        //   the stack both for manipulating the form element pointer
+        //   and using it here.
+        // - FormAssociated::AssociateWith implementations don't do the
+        //   "same tree" check; for example
+        //   HTMLImageElement::AssociateWith just checks whether the form
+        //   is in *a* tree. This check should be done here consistently.
+        // - ListedElement is a mixin; add IsListedElement and skip
+        //   setting the form for listed attributes with form=. Instead
+        //   we set attributes (step 8) out of order, after this step,
+        //   to reset the form association.
+        form_associated_element->AssociateWith(form_.Get());
+      }
 #endif
+    }
 #endif
     // "8. Append each attribute in the given token to element."
     SetAttributes(element, token, parser_content_policy_);

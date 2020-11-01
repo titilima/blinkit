@@ -70,11 +70,9 @@ class CORE_EXPORT NodeEventContext {
   EventTarget* RelatedTarget() const {
     return tree_scope_event_context_->RelatedTarget();
   }
-#if 0 // BKTODO:
   TouchEventContext* GetTouchEventContext() const {
     return tree_scope_event_context_->GetTouchEventContext();
   }
-#endif
 
   bool CurrentTargetSameAsTarget() const {
     return current_target_.Get() == Target();

@@ -642,6 +642,13 @@ const AtomicString& Element::GetNameAttribute(void) const
     return HasName() ? FastGetAttribute(html_names::kNameAttr) : g_null_atom;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+ShadowRoot* Element::GetShadowRoot(void) const
+{
+    return HasRareData() ? GetElementRareData()->GetShadowRoot() : nullptr;
+}
+#endif
+
 GURL Element::GetURLAttribute(const QualifiedName &name) const
 {
 #if DCHECK_IS_ON()
@@ -734,8 +741,7 @@ Node::InsertionNotificationRequest Element::InsertedInto(ContainerNode &insertio
 #ifndef BLINKIT_CRAWLER_ONLY
     if (isConnected())
     {
-        ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Process custom element logic.
         if (GetCustomElementState() == CustomElementState::kCustom)
             CustomElement::EnqueueConnectedCallback(this);
         else if (IsUpgradedV0CustomElement())
@@ -750,7 +756,6 @@ Node::InsertionNotificationRequest Element::InsertedInto(ContainerNode &insertio
 #ifdef BLINKIT_CRAWLER_ONLY
     ASSERT(GetTreeScope() == scope);
 #else
-    ASSERT(false); // BKTODO:
     if (GetTreeScope() != scope)
         return kInsertionDone;
 #endif
