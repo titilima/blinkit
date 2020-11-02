@@ -58,6 +58,7 @@ class ElementRareData;
 class NamedNodeMap;
 #ifndef BLINKIT_CRAWLER_ONLY
 class ElementAnimations;
+class MutableCSSPropertyValueSet;
 #endif
 
 enum class ElementFlags {
@@ -140,6 +141,7 @@ public:
     String TextFromChildren(void) const;
 
     bool IsInTopLayer(void) const { return HasElementFlag(ElementFlags::kIsInTopLayer); }
+    bool StyleAffectedByEmpty(void) const { return HasElementFlag(ElementFlags::kStyleAffectedByEmpty); }
     void SetStyleAffectedByEmpty(void) { SetElementFlag(ElementFlags::kStyleAffectedByEmpty); }
 
     Element* CloneWithChildren(Document *nullableFactory = nullptr) const;
@@ -163,7 +165,7 @@ public:
     // Elements that may have an insertion mode other than "in body" should
     // override this and return true.
     // https://html.spec.whatwg.org/multipage/parsing.html#reset-the-insertion-mode-appropriately
-    virtual bool HasNonInBodyInsertionMode(void) const { return false; } // BKTODO: Check overrides
+    virtual bool HasNonInBodyInsertionMode(void) const { return false; }
     virtual bool ShouldAppearIndeterminate(void) const { return false; }
 
     virtual bool MatchesDefaultPseudoClass(void) const { return false; }
@@ -179,13 +181,13 @@ public:
         STACK_ALLOCATED();
     public:
         AttributeModificationParams(const QualifiedName &qname, const AtomicString &oldValue, const AtomicString &newValue, AttributeModificationReason reason)
-            : name(qname), oldValue(oldValue), newValue(newValue), reason(reason)
+            : name(qname), old_value(oldValue), new_value(newValue), reason(reason)
         {
         }
 
         const QualifiedName &name;
-        const AtomicString &oldValue;
-        const AtomicString &newValue;
+        const AtomicString &old_value;
+        const AtomicString &new_value;
         const AttributeModificationReason reason;
     };
     virtual void AttributeChanged(const AttributeModificationParams &params);
@@ -197,10 +199,22 @@ public:
     virtual void FinishParsingChildren(void);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    // Whether this element can receive focus at all. Most elements are not
+    // focusable but some elements, such as form controls and links, are. Unlike
+    // layoutObjectIsFocusable(), this method may be called when layout is not up
+    // to date, so it must not use the layoutObject to determine focusability.
+    virtual bool SupportsFocus(void) const;
+
     // Returns the shadow root attached to this element if it is a shadow host.
     ShadowRoot* GetShadowRoot(void) const;
 
     virtual const AtomicString& ShadowPseudoId(void) const;
+    void PseudoStateChanged(CSSSelector::PseudoType pseudo);
+
+    virtual bool IsPresentationAttribute(const QualifiedName &) const { return false; }
+    virtual void CollectStyleForPresentationAttribute(const QualifiedName &name, const AtomicString &value, MutableCSSPropertyValueSet *style) {}
+    virtual bool HasLegalLinkAttribute(const QualifiedName &) const { return false; }
+    virtual const QualifiedName& SubResourceAttributeName(void) const { return QualifiedName::Null(); }
 
     virtual scoped_refptr<ComputedStyle> CustomStyleForLayoutObject(void);
     virtual bool LayoutObjectIsNeeded(const ComputedStyle &style) const;
@@ -233,9 +247,7 @@ protected:
 
 #ifndef BLINKIT_CRAWLER_ONLY
     virtual void DidRecalcStyle(StyleRecalcChange change);
-#endif
-    
-#ifndef BLINKIT_CRAWLER_ONLY
+
     void ChildrenChanged(const ChildrenChange &change) override;
     void AttachLayoutTree(AttachContext &context) override;
     void DetachLayoutTree(const AttachContext &context = AttachContext()) override;
@@ -281,6 +293,10 @@ private:
 
     // Node overrides
     bool ChildTypeAllowed(NodeType type) const final;
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    void CheckForEmptyStyleChange(const Node *nodeBeforeChange, const Node *nodeAfterChange);
+#endif
 
     QualifiedName m_tagName;
 

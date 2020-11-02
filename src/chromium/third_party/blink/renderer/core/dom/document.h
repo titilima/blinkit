@@ -97,6 +97,7 @@ class RootScrollerController;
 class StyleEngine;
 class StyleResolver;
 class TextAutosizer;
+class V0CustomElementRegistrationContext;
 class ViewportData;
 class VisitedLinkState;
 #endif
@@ -171,6 +172,11 @@ public:
     // calculated on the fly (without associating it with the actual element)
     // somewhere.
     Element* ViewportDefiningElement(const ComputedStyle *rootStyle = nullptr) const;
+    V0CustomElementRegistrationContext* RegistrationContext(void) const
+    {
+        ASSERT(false); // BKTODO: Test this.
+        return m_registrationContext.get();
+    }
 #endif
 
     // Exports for JS
@@ -401,6 +407,7 @@ public:
         ASSERT(m_styleEngine);
         return *m_styleEngine;
     }
+    bool HasPendingForcedStyleRecalc(void) const;
 
     TextLinkColors& GetTextLinkColors(void) { return m_textLinkColors; }
     const TextLinkColors& GetTextLinkColors(void) const { return m_textLinkColors; }
@@ -457,6 +464,8 @@ private:
     bool IsDocument(void) const final { return true; }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    void BeginLifecycleUpdatesIfRenderingReady(void);
+
     bool ShouldScheduleLayoutTreeUpdate(void) const;
     void ScheduleLayoutTreeUpdate(void);
 
@@ -555,6 +564,8 @@ private:
 
     std::shared_ptr<CSSStyleSheet> m_elemSheet;
     std::unique_ptr<StyleEngine> m_styleEngine;
+
+    std::shared_ptr<V0CustomElementRegistrationContext> m_registrationContext;
 
     TextLinkColors m_textLinkColors;
     const std::unique_ptr<VisitedLinkState> m_visitedLinkState;

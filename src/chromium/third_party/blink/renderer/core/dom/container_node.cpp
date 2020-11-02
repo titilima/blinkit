@@ -332,6 +332,80 @@ void ContainerNode::AttachLayoutTree(AttachContext &context)
     ClearChildNeedsReattachLayoutTree();
     Node::AttachLayoutTree(context);
 }
+
+void ContainerNode::CheckForSiblingStyleChanges(
+    SiblingCheckType changeType,
+    Element *changedElement,
+    Node *nodeBeforeChange, Node *nodeAfterChange)
+{
+    if (!InActiveDocument() || GetDocument().HasPendingForcedStyleRecalc()
+        || GetStyleChangeType() >= kSubtreeStyleChange)
+    {
+        return;
+    }
+
+    if (!HasRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByStructuralRules))
+        return;
+
+    ASSERT(false); // BKTODO:
+#if 0
+    Element* element_after_change =
+        !node_after_change || node_after_change->IsElementNode()
+        ? ToElement(node_after_change)
+        : ElementTraversal::NextSibling(*node_after_change);
+    Element* element_before_change =
+        !node_before_change || node_before_change->IsElementNode()
+        ? ToElement(node_before_change)
+        : ElementTraversal::PreviousSibling(*node_before_change);
+
+    // TODO(futhark@chromium.org): move this code into StyleEngine and collect the
+    // various invalidation sets into a single InvalidationLists object and
+    // schedule with a single scheduleInvalidationSetsForNode for efficiency.
+
+    // Forward positional selectors include :nth-child, :nth-of-type,
+    // :first-of-type, and only-of-type. Backward positional selectors include
+    // :nth-last-child, :nth-last-of-type, :last-of-type, and :only-of-type.
+    if ((ChildrenAffectedByForwardPositionalRules() && element_after_change) ||
+        (ChildrenAffectedByBackwardPositionalRules() && element_before_change)) {
+        GetDocument().GetStyleEngine().ScheduleNthPseudoInvalidations(*this);
+    }
+
+    if (ChildrenAffectedByFirstChildRules() && !element_before_change &&
+        element_after_change &&
+        element_after_change->AffectedByFirstChildRules()) {
+        DCHECK_NE(change_type, kFinishedParsingChildren);
+        element_after_change->PseudoStateChanged(CSSSelector::kPseudoFirstChild);
+        element_after_change->PseudoStateChanged(CSSSelector::kPseudoOnlyChild);
+    }
+
+    if (ChildrenAffectedByLastChildRules() && !element_after_change &&
+        element_before_change &&
+        element_before_change->AffectedByLastChildRules()) {
+        element_before_change->PseudoStateChanged(CSSSelector::kPseudoLastChild);
+        element_before_change->PseudoStateChanged(CSSSelector::kPseudoOnlyChild);
+    }
+
+    // For ~ and + combinators, succeeding siblings may need style invalidation
+    // after an element is inserted or removed.
+
+    if (!element_after_change)
+        return;
+
+    if (!ChildrenAffectedByIndirectAdjacentRules() &&
+        !ChildrenAffectedByDirectAdjacentRules())
+        return;
+
+    if (change_type == kSiblingElementInserted) {
+        GetDocument().GetStyleEngine().ScheduleInvalidationsForInsertedSibling(
+            element_before_change, *changed_element);
+        return;
+    }
+
+    DCHECK(change_type == kSiblingElementRemoved);
+    GetDocument().GetStyleEngine().ScheduleInvalidationsForRemovedSibling(
+        element_before_change, *changed_element, *element_after_change);
+#endif
+}
 #endif
 
 bool ContainerNode::CheckParserAcceptChild(const Node &newChild) const
@@ -561,6 +635,13 @@ HTMLCollection* ContainerNode::getElementsByTagName(const AtomicString &qualifie
     ASSERT(!qualifiedName.IsNull());
     return EnsureCachedCollection<HTMLTagCollection>(kHTMLTagCollectionType, qualifiedName);
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+bool ContainerNode::HasRestyleFlagInternal(DynamicRestyleFlags mask) const
+{
+    return RareData()->HasRestyleFlag(mask);
+}
+#endif
 
 Node* ContainerNode::InsertBefore(Node *newChild, Node *refChild, ExceptionState &exceptionState)
 {

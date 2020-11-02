@@ -46,6 +46,7 @@
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/html/imports/html_imports_controller.h"
 #endif
+
 namespace blink {
 
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -62,6 +63,19 @@ LocalFrame* DocumentInit::GetFrame(void) const
 {
     return m_documentLoader ? m_documentLoader->GetFrame() : nullptr;
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+std::shared_ptr<V0CustomElementRegistrationContext> DocumentInit::RegistrationContext(Document *document) const
+{
+    if (document->ForCrawler())
+        return nullptr;
+
+    if (m_createNewRegistrationContext)
+        return V0CustomElementRegistrationContext::Create();
+
+    return m_registrationContext;
+}
+#endif
 
 bool DocumentInit::ShouldSetURL(void) const
 {

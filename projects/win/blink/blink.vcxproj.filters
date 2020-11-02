@@ -285,6 +285,9 @@
     <Filter Include="renderer\core\html\imports">
       <UniqueIdentifier>{ed0c7a6e-6320-4dc9-baca-0cf8f75a71fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="renderer\core\html\custom">
+      <UniqueIdentifier>{19f71357-0573-476b-8f61-0eca484b1474}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -5073,6 +5076,24 @@
       <Filter>renderer\core\html</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_html_element.cc">
+      <Filter>renderer\core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\custom\custom_element.cc">
+      <Filter>renderer\core\html\custom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_unknown_element.cc">
+      <Filter>renderer\core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\custom\v0_custom_element.cc">
+      <Filter>renderer\core\html\custom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\custom\v0_custom_element_registration_context.cc">
+      <Filter>renderer\core\html\custom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_head_element.cc">
+      <Filter>renderer\core\html</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_body_element.cc">
       <Filter>renderer\core\html</Filter>
     </ClCompile>
   </ItemGroup>
@@ -11310,6 +11331,24 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\imports\html_imports_controller.h">
       <Filter>renderer\core\html\imports</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\custom\custom_element.h">
+      <Filter>renderer\core\html\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_unknown_element.h">
+      <Filter>renderer\core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\custom\v0_custom_element.h">
+      <Filter>renderer\core\html\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\custom\v0_custom_element_registration_context.h">
+      <Filter>renderer\core\html\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_head_element.h">
+      <Filter>renderer\core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_body_element.h">
+      <Filter>renderer\core\html</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

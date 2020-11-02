@@ -22,11 +22,19 @@ class HTMLElement : public Element
 {
 public:
     typedef Element* (*Creator)(Document &);
+
+    virtual bool IsHTMLUnknownElement(void) const { return false; }
 protected:
     HTMLElement(const QualifiedName &tagName, Document &document, ConstructionType type = kCreateHTMLElement);
 
+    static bool ParseColorWithLegacyRules(const String &attributevalue, Color &parsedColor);
+
     void ChildrenChanged(const ChildrenChange &change) override;
     InsertionNotificationRequest InsertedInto(ContainerNode &insertionPoint) override;
+
+    bool IsPresentationAttribute(const QualifiedName &name) const override;
+    void CollectStyleForPresentationAttribute(const QualifiedName &name, const AtomicString &value,
+        MutableCSSPropertyValueSet *style) override;
 private:
     bool SelfOrAncestorHasDirAutoAttribute(void) const;
     void AdjustDirectionalityIfNeededAfterChildrenChanged(const ChildrenChange &change);
@@ -43,6 +51,8 @@ DEFINE_ELEMENT_TYPE_CASTS(HTMLElement, IsHTMLElement());
     {                                       \
         return new T(document);             \
     }
+
+#define DEFINE_HTMLELEMENT_TYPE_CASTS_WITH_FUNCTION(...)
 
 #include "third_party/blink/renderer/core/html_element_type_helpers.h"
 

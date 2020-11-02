@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_body_element.cc
+// Description: HTMLBodyElement Class
+//      Author: Ziming Li
+//     Created: 2020-11-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -24,7 +35,7 @@
 
 #include "third_party/blink/renderer/core/html/html_body_element.h"
 
-#include "third_party/blink/renderer/bindings/core/v8/script_event_listener.h"
+// BKTODO: #include "third_party/blink/renderer/bindings/core/v8/script_event_listener.h"
 #include "third_party/blink/renderer/core/css/css_image_value.h"
 #include "third_party/blink/renderer/core/css/css_property_value_set.h"
 #include "third_party/blink/renderer/core/css/parser/css_parser.h"
@@ -34,7 +45,7 @@
 #include "third_party/blink/renderer/core/editing/editing_utilities.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
-#include "third_party/blink/renderer/core/html/html_frame_element_base.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/html_frame_element_base.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/core/html_names.h"
 
@@ -50,10 +61,13 @@ DEFINE_NODE_FACTORY(HTMLBodyElement)
 HTMLBodyElement::~HTMLBodyElement() = default;
 
 bool HTMLBodyElement::IsPresentationAttribute(const QualifiedName& name) const {
+  ASSERT(false); // BKTODO:
+#if 0
   if (name == backgroundAttr || name == marginwidthAttr ||
       name == leftmarginAttr || name == marginheightAttr ||
       name == topmarginAttr || name == bgcolorAttr || name == textAttr)
     return true;
+#endif
   return HTMLElement::IsPresentationAttribute(name);
 }
 
@@ -61,6 +75,8 @@ void HTMLBodyElement::CollectStyleForPresentationAttribute(
     const QualifiedName& name,
     const AtomicString& value,
     MutableCSSPropertyValueSet* style) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (name == backgroundAttr) {
     String url = StripLeadingAndTrailingHTMLSpaces(value);
     if (!url.IsEmpty()) {
@@ -85,6 +101,7 @@ void HTMLBodyElement::CollectStyleForPresentationAttribute(
   } else {
     HTMLElement::CollectStyleForPresentationAttribute(name, value, style);
   }
+#endif
 }
 
 void HTMLBodyElement::ParseAttribute(
@@ -116,6 +133,7 @@ void HTMLBodyElement::ParseAttribute(
     SetNeedsStyleRecalc(kSubtreeStyleChange,
                         StyleChangeReasonForTracing::Create(
                             StyleChangeReason::kLinkColorChange));
+#if 0 // BKTODO:
   } else if (name == onafterprintAttr) {
     GetDocument().SetWindowAttributeEventListener(
         EventTypeNames::afterprint,
@@ -211,6 +229,7 @@ void HTMLBodyElement::ParseAttribute(
     GetDocument().SetWindowAttributeEventListener(
         EventTypeNames::languagechange,
         CreateAttributeEventListener(GetDocument().GetFrame(), name, value));
+#endif
   } else {
     HTMLElement::ParseAttribute(params);
   }
@@ -223,6 +242,8 @@ Node::InsertionNotificationRequest HTMLBodyElement::InsertedInto(
 }
 
 void HTMLBodyElement::DidNotifySubtreeInsertionsToDocument() {
+  ASSERT(false); // BKTODO:
+#if 0
   // FIXME: It's surprising this is web compatible since it means a
   // marginwidth and marginheight attribute can magically appear on the <body>
   // of all documents embedded through <iframe> or <frame>.
@@ -234,19 +255,32 @@ void HTMLBodyElement::DidNotifySubtreeInsertionsToDocument() {
     if (margin_height != -1)
       SetIntegralAttribute(marginheightAttr, margin_height);
   }
+#endif
 }
 
 bool HTMLBodyElement::IsURLAttribute(const Attribute& attribute) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return attribute.GetName() == backgroundAttr ||
          HTMLElement::IsURLAttribute(attribute);
+#endif
 }
 
 bool HTMLBodyElement::HasLegalLinkAttribute(const QualifiedName& name) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return name == backgroundAttr || HTMLElement::HasLegalLinkAttribute(name);
+#endif
 }
 
 const QualifiedName& HTMLBodyElement::SubResourceAttributeName() const {
+  ASSERT(false); // BKTODO:
+  exit(0);
+#if 0
   return backgroundAttr;
+#endif
 }
 
 bool HTMLBodyElement::SupportsFocus() const {

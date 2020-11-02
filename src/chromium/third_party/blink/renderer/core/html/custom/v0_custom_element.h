@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: v0_custom_element.h
+// Description: V0CustomElement Class
+//      Author: Ziming Li
+//     Created: 2020-11-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -32,7 +43,7 @@
 #define THIRD_PARTY_BLINK_RENDERER_CORE_HTML_CUSTOM_V0_CUSTOM_ELEMENT_H_
 
 #include "third_party/blink/renderer/core/core_export.h"
-#include "third_party/blink/renderer/core/html/custom/v0_custom_element_definition.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/custom/v0_custom_element_definition.h"
 #include "third_party/blink/renderer/platform/wtf/allocator.h"
 #include "third_party/blink/renderer/platform/wtf/hash_map.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
@@ -54,8 +65,10 @@ class CORE_EXPORT V0CustomElement {
   static V0CustomElementMicrotaskImportStep* DidCreateImport(HTMLImportChild*);
   static void DidFinishLoadingImport(Document& master);
 
+#if 0 // BKTODO:
   // API for registration contexts
   static void Define(Element*, V0CustomElementDefinition*);
+#endif
 
   // API for Element to kick off changes
 

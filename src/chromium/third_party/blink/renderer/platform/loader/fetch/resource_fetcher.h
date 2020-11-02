@@ -97,6 +97,8 @@ public:
     void HandleLoaderFinish(Resource *resource, LoaderFinishType type);
     void HandleLoaderError(Resource *resource, const ResourceError &error);
 
+    void LoosenLoadThrottlingPolicy(void) { BKLOG("// BKTODO: scheduler_->LoosenThrottlingPolicy();"); }
+
     int BlockingRequestCount(void) const;
 private:
     ResourceFetcher(void);

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: custom_element.cc
+// Description: CustomElement Class
+//      Author: Ziming Li
+//     Created: 2020-11-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2016 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -7,15 +18,17 @@
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/qualified_name.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/custom/ce_reactions_scope.h"
 #include "third_party/blink/renderer/core/html/custom/custom_element_definition.h"
 #include "third_party/blink/renderer/core/html/custom/custom_element_reaction_stack.h"
 #include "third_party/blink/renderer/core/html/custom/custom_element_registry.h"
+#endif
 #include "third_party/blink/renderer/core/html/custom/v0_custom_element.h"
-#include "third_party/blink/renderer/core/html/custom/v0_custom_element_registration_context.h"
+// BKTODO: #include "third_party/blink/renderer/core/html/custom/v0_custom_element_registration_context.h"
 #include "third_party/blink/renderer/core/html/html_element.h"
 #include "third_party/blink/renderer/core/html/html_unknown_element.h"
-#include "third_party/blink/renderer/core/html_element_factory.h"
+// BKTODO: #include "third_party/blink/renderer/core/html_element_factory.h"
 #include "third_party/blink/renderer/core/html_element_type_helpers.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string_hash.h"
 
@@ -26,15 +39,22 @@ CustomElementRegistry* CustomElement::Registry(const Element& element) {
 }
 
 CustomElementRegistry* CustomElement::Registry(const Document& document) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (LocalDOMWindow* window = document.ExecutingWindow())
     return window->customElements();
+#endif
   return nullptr;
 }
 
 static CustomElementDefinition* DefinitionForElementWithoutCheck(
     const Element& element) {
   DCHECK_EQ(element.GetCustomElementState(), CustomElementState::kCustom);
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return element.GetCustomElementDefinition();
+#endif
 }
 
 CustomElementDefinition* CustomElement::DefinitionForElement(
@@ -52,7 +72,9 @@ Vector<AtomicString>& CustomElement::EmbedderCustomElementNames() {
 
 void CustomElement::AddEmbedderCustomElementName(const AtomicString& name) {
   DCHECK_EQ(name, name.LowerASCII());
-  DCHECK(Document::IsValidName(name)) << name;
+  DCHECK(Document::IsValidName(name));
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK_EQ(HTMLElementType::kHTMLUnknownElement, htmlElementTypeForTag(name))
       << name;
   DCHECK(!IsValidName(name, false)) << name;
@@ -60,11 +82,14 @@ void CustomElement::AddEmbedderCustomElementName(const AtomicString& name) {
   if (EmbedderCustomElementNames().Contains(name))
     return;
   EmbedderCustomElementNames().push_back(name);
+#endif
 }
 
 void CustomElement::AddEmbedderCustomElementNameForTesting(
     const AtomicString& name,
     ExceptionState& exception_state) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (name != name.LowerASCII() || !Document::IsValidName(name) ||
       HTMLElementType::kHTMLUnknownElement != htmlElementTypeForTag(name) ||
       IsValidName(name, false)) {
@@ -72,6 +97,7 @@ void CustomElement::AddEmbedderCustomElementNameForTesting(
                                       "Name cannot be used");
     return;
   }
+#endif
 
   AddEmbedderCustomElementName(name);
 }
@@ -98,21 +124,26 @@ bool CustomElement::ShouldCreateCustomElement(const AtomicString& name) {
 
 bool CustomElement::ShouldCreateCustomElement(const QualifiedName& tag_name) {
   return ShouldCreateCustomElement(tag_name.LocalName()) &&
-         tag_name.NamespaceURI() == HTMLNames::xhtmlNamespaceURI;
+         tag_name.NamespaceURI() == html_names::xhtmlNamespaceURI;
 }
 
 bool CustomElement::ShouldCreateCustomizedBuiltinElement(
     const AtomicString& local_name) {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return htmlElementTypeForTag(local_name) !=
          HTMLElementType::kHTMLUnknownElement;
+#endif
 }
 
 bool CustomElement::ShouldCreateCustomizedBuiltinElement(
     const QualifiedName& tag_name) {
   return ShouldCreateCustomizedBuiltinElement(tag_name.LocalName()) &&
-         tag_name.NamespaceURI() == HTMLNames::xhtmlNamespaceURI;
+         tag_name.NamespaceURI() == html_names::xhtmlNamespaceURI;
 }
 
+#if 0 // BKTODO:
 static CustomElementDefinition* DefinitionFor(
     const Document& document,
     const CustomElementDescriptor desc) {
@@ -120,12 +151,16 @@ static CustomElementDefinition* DefinitionFor(
     return registry->DefinitionFor(desc);
   return nullptr;
 }
+#endif
 
 // https://dom.spec.whatwg.org/#concept-create-element
 HTMLElement* CustomElement::CreateCustomElement(Document& document,
                                                 const QualifiedName& tag_name,
                                                 CreateElementFlags flags) {
-  DCHECK(ShouldCreateCustomElement(tag_name)) << tag_name;
+  DCHECK(ShouldCreateCustomElement(tag_name));
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   // 4. Let definition be the result of looking up a custom element
   // definition given document, namespace, localName, and is.
   if (auto* definition = DefinitionFor(
@@ -139,6 +174,7 @@ HTMLElement* CustomElement::CreateCustomElement(Document& document,
   return ToHTMLElement(
       CreateUncustomizedOrUndefinedElementTemplate<kQNameIsValid>(
           document, tag_name, flags, g_null_atom));
+#endif
 }
 
 // Step 7 of https://dom.spec.whatwg.org/#concept-create-element in
@@ -151,22 +187,30 @@ Element* CustomElement::CreateUncustomizedOrUndefinedElementTemplate(
     const AtomicString& is_value) {
   if (level == kQNameIsValid) {
     DCHECK(is_value.IsNull());
-    DCHECK(ShouldCreateCustomElement(tag_name)) << tag_name;
+    DCHECK(ShouldCreateCustomElement(tag_name));
   }
 
   Element* element;
   if (V0CustomElement::IsValidName(tag_name.LocalName()) &&
       document.RegistrationContext()) {
+    ASSERT(false); // BKTODO:
+    element = nullptr;
+#if 0
     element = document.RegistrationContext()->CreateCustomTagElement(document,
                                                                      tag_name);
+#endif
   } else {
+    ASSERT(tag_name.NamespaceURI() == html_names::xhtmlNamespaceURI);
     // 7.1. Let interface be the element interface for localName and namespace.
     // 7.2. Set result to a new element that implements interface, with ...
-    element = document.CreateRawElement(tag_name, flags);
+    element = document.CreateElement(tag_name.LocalName(), flags);
     if (level == kCheckAll && !is_value.IsNull()) {
+      ASSERT(false); // BKTODO:
+#if 0
       element->SetIsValue(is_value);
       if (flags.IsCustomElementsV0())
         V0CustomElementRegistrationContext::SetTypeExtension(element, is_value);
+#endif
     }
   }
 
@@ -205,7 +249,7 @@ HTMLElement* CustomElement::CreateFailedElement(Document& document,
   // to "failed", and node document set to document.
 
   HTMLElement* element = HTMLUnknownElement::Create(tag_name, document);
-  element->SetCustomElementState(CustomElementState::kFailed);
+  ASSERT(false); // BKTODO: element->SetCustomElementState(CustomElementState::kFailed);
   return element;
 }
 
@@ -213,6 +257,8 @@ void CustomElement::Enqueue(Element* element, CustomElementReaction* reaction) {
   // To enqueue an element on the appropriate element queue
   // https://html.spec.whatwg.org/multipage/scripting.html#enqueue-an-element-on-the-appropriate-element-queue
 
+  ASSERT(false); // BKTODO:
+#if 0
   // If the custom element reactions stack is not empty, then
   // Add element to the current element queue.
   if (CEReactionsScope* current = CEReactionsScope::Current()) {
@@ -223,30 +269,40 @@ void CustomElement::Enqueue(Element* element, CustomElementReaction* reaction) {
   // If the custom element reactions stack is empty, then
   // Add element to the backup element queue.
   CustomElementReactionStack::Current().EnqueueToBackupQueue(element, reaction);
+#endif
 }
 
 void CustomElement::EnqueueConnectedCallback(Element* element) {
   CustomElementDefinition* definition =
       DefinitionForElementWithoutCheck(*element);
+  ASSERT(false); // BKTODO:
+#if 0
   if (definition->HasConnectedCallback())
     definition->EnqueueConnectedCallback(element);
+#endif
 }
 
 void CustomElement::EnqueueDisconnectedCallback(Element* element) {
   CustomElementDefinition* definition =
       DefinitionForElementWithoutCheck(*element);
+  ASSERT(false); // BKTODO:
+#if 0
   if (definition->HasDisconnectedCallback())
     definition->EnqueueDisconnectedCallback(element);
+#endif
 }
 
 void CustomElement::EnqueueAdoptedCallback(Element* element,
                                            Document* old_owner,
                                            Document* new_owner) {
   DCHECK_EQ(element->GetCustomElementState(), CustomElementState::kCustom);
+  ASSERT(false); // BKTODO:
+#if 0
   CustomElementDefinition* definition =
       DefinitionForElementWithoutCheck(*element);
   if (definition->HasAdoptedCallback())
     definition->EnqueueAdoptedCallback(element, old_owner, new_owner);
+#endif
 }
 
 void CustomElement::EnqueueAttributeChangedCallback(
@@ -256,9 +312,12 @@ void CustomElement::EnqueueAttributeChangedCallback(
     const AtomicString& new_value) {
   CustomElementDefinition* definition =
       DefinitionForElementWithoutCheck(*element);
+  ASSERT(false); // BKTODO:
+#if 0
   if (definition->HasAttributeChangedCallback(name))
     definition->EnqueueAttributeChangedCallback(element, name, old_value,
                                                 new_value);
+#endif
 }
 
 void CustomElement::TryToUpgrade(Element* element,
@@ -272,6 +331,8 @@ void CustomElement::TryToUpgrade(Element* element,
   if (!registry)
     return;
   const AtomicString& is_value = element->IsValue();
+  ASSERT(false); // BKTODO:
+#if 0
   if (CustomElementDefinition* definition =
           registry->DefinitionFor(CustomElementDescriptor(
               is_value.IsNull() ? element->localName() : is_value,
@@ -279,6 +340,7 @@ void CustomElement::TryToUpgrade(Element* element,
     definition->EnqueueUpgradeReaction(element, upgrade_invisible_elements);
   else
     registry->AddCandidate(element);
+#endif
 }
 
 }  // namespace blink

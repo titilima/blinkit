@@ -606,12 +606,13 @@ void Node::MarkAncestorsWithChildNeedsStyleRecalc(void)
 {
     ContainerNode *ancestor = ParentOrShadowHostNode();
     bool parentDirty = nullptr != ancestor && ancestor->NeedsStyleRecalc();
-    do {
+    while (nullptr != ancestor && !ancestor->ChildNeedsStyleRecalc())
+    {
         ancestor->SetChildNeedsStyleRecalc();
         if (ancestor->NeedsStyleRecalc())
             break;
         ancestor = ancestor->ParentOrShadowHostNode();
-    } while (nullptr != ancestor && !ancestor->ChildNeedsStyleRecalc());
+    }
 
     if (!isConnected())
         return;
@@ -844,6 +845,45 @@ void Node::RemovedFrom(ContainerNode &insertionPoint)
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+void Node::SetCustomElementState(CustomElementState newState)
+{
+    CustomElementState oldState = GetCustomElementState();
+
+    switch (newState)
+    {
+        case CustomElementState::kUncustomized:
+            NOTREACHED();  // Everything starts in this state
+            return;
+        case CustomElementState::kUndefined:
+            ASSERT(CustomElementState::kUncustomized == oldState);
+            break;
+        case CustomElementState::kCustom:
+            ASSERT(CustomElementState::kUndefined == oldState);
+            break;
+        case CustomElementState::kFailed:
+            ASSERT(CustomElementState::kFailed != oldState);
+            break;
+    }
+
+    ASSERT(IsHTMLElement() && !ForCrawler());
+    ASSERT(false); // BKTODO:
+#if 0
+    DCHECK_NE(kV0Upgraded, GetV0CustomElementState());
+
+    Element* element = ToElement(this);
+    bool was_defined = element->IsDefined();
+
+    node_flags_ = (node_flags_ & ~kCustomElementStateMask) |
+        static_cast<NodeFlags>(new_state);
+    DCHECK(new_state == GetCustomElementState());
+
+    if (element->IsDefined() != was_defined) {
+        element->PseudoStateChanged(CSSSelector::kPseudoDefined);
+        element->PseudoStateChanged(CSSSelector::kPseudoUnresolved);
+    }
+#endif
+}
+
 void Node::SetLayoutObject(LayoutObject *layoutObject)
 {
     NodeRenderingData *nodeLayoutData = HasRareData()

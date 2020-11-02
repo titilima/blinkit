@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_body_element.h
+// Description: HTMLBodyElement Class
+//      Author: Ziming Li
+//     Created: 2020-11-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -39,6 +50,7 @@ class CORE_EXPORT HTMLBodyElement final : public HTMLElement {
   DECLARE_NODE_FACTORY(HTMLBodyElement);
   ~HTMLBodyElement() override;
 
+#if 0 // BKTODO:
   DEFINE_WINDOW_ATTRIBUTE_EVENT_LISTENER(blur);
   DEFINE_WINDOW_ATTRIBUTE_EVENT_LISTENER(error);
   DEFINE_WINDOW_ATTRIBUTE_EVENT_LISTENER(focus);
@@ -46,6 +58,7 @@ class CORE_EXPORT HTMLBodyElement final : public HTMLElement {
   DEFINE_WINDOW_ATTRIBUTE_EVENT_LISTENER(resize);
   DEFINE_WINDOW_ATTRIBUTE_EVENT_LISTENER(scroll);
   DEFINE_WINDOW_ATTRIBUTE_EVENT_LISTENER(orientationchange);
+#endif
 
  private:
   explicit HTMLBodyElement(Document&);

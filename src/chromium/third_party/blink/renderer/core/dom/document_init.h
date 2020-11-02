@@ -45,6 +45,9 @@
 
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "url/gurl.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/html/custom/v0_custom_element_registration_context.h"
+#endif
 
 namespace blink {
 
@@ -80,6 +83,8 @@ public:
     {
         return m_importsController;
     }
+
+    std::shared_ptr<V0CustomElementRegistrationContext> RegistrationContext(Document *document) const;
 #endif
 
     DocumentInit& WithURL(const GURL &URL);
@@ -96,6 +101,8 @@ private:
     Member<DocumentLoader> m_documentLoader;
 #ifndef BLINKIT_CRAWLER_ONLY
     std::shared_ptr<HTMLImportsController> m_importsController;
+    bool m_createNewRegistrationContext = false;
+    std::shared_ptr<V0CustomElementRegistrationContext> m_registrationContext;
 #endif
     GURL m_URL;
 };

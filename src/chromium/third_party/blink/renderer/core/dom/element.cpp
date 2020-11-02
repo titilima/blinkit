@@ -140,7 +140,7 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
     if (name == html_names::kIdAttr)
     {
         AtomicString oldId = GetElementData()->IdForStyleResolution();
-        AtomicString newId = MakeIdForStyleResolution(params.newValue, GetDocument().InQuirksMode());
+        AtomicString newId = MakeIdForStyleResolution(params.new_value, GetDocument().InQuirksMode());
         if (newId != oldId)
         {
             GetElementData()->SetIdForStyleResolution(newId);
@@ -151,7 +151,7 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
     }
     else if (name == html_names::kClassAttr)
     {
-        ClassAttributeChanged(params.newValue);
+        ClassAttributeChanged(params.new_value);
         if (HasRareData())
         {
             ASSERT(false); // BKTODO:
@@ -166,7 +166,7 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
     }
     else if (name == html_names::kNameAttr)
     {
-        SetHasName(!params.newValue.IsNull());
+        SetHasName(!params.new_value.IsNull());
     }
 #ifndef BLINKIT_CRAWLER_ONLY
 #if 0 // BKTODO:
@@ -249,25 +249,55 @@ AttributeCollection Element::AttributesWithoutUpdate(void) const
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+
+namespace {
+
+bool HasSiblingsForNonEmpty(const Node *sibling, Node* (*nextFunc)(const Node &))
+{
+    while (nullptr != sibling)
+    {
+        if (sibling->IsElementNode())
+            return true;
+        if (sibling->IsTextNode() && !ToText(sibling)->data().IsEmpty())
+            return true;
+        sibling = nextFunc(*sibling);
+    }
+    return false;
+}
+
+}  // namespace
+
+void Element::CheckForEmptyStyleChange(const Node *nodeBeforeChange, const Node *nodeAfterChange)
+{
+    if (!InActiveDocument())
+        return;
+    if (!StyleAffectedByEmpty())
+        return;
+    if (HasSiblingsForNonEmpty(nodeBeforeChange, NodeTraversal::PreviousSibling)
+        || HasSiblingsForNonEmpty(nodeAfterChange, NodeTraversal::NextSibling))
+    {
+        return;
+    }
+    PseudoStateChanged(CSSSelector::kPseudoEmpty);
+}
+
 void Element::ChildrenChanged(const ChildrenChange &change)
 {
     ContainerNode::ChildrenChanged(change);
 
-    ASSERT(false); // BKTODO:
-#if 0
-    CheckForEmptyStyleChange(change.sibling_before_change,
-        change.sibling_after_change);
+    CheckForEmptyStyleChange(change.siblingBeforeChange, change.siblingAfterChange);
 
-    if (!change.by_parser && change.IsChildElementChange())
-        CheckForSiblingStyleChanges(
-            change.type == kElementRemoved ? kSiblingElementRemoved
-            : kSiblingElementInserted,
-            ToElement(change.sibling_changed), change.sibling_before_change,
-            change.sibling_after_change);
+    if (!change.byParser && change.IsChildElementChange())
+    {
+        auto changeType = kElementRemoved == change.type
+            ? kSiblingElementRemoved
+            : kSiblingElementInserted;
+        CheckForSiblingStyleChanges(changeType, ToElement(change.siblingChanged),
+            change.siblingBeforeChange, change.siblingAfterChange);
+    }
 
-    if (ShadowRoot* shadow_root = GetShadowRoot())
-        shadow_root->SetNeedsDistributionRecalcWillBeSetNeedsAssignmentRecalc();
-#endif
+    if (ShadowRoot *shadowRoot = GetShadowRoot())
+        shadowRoot->SetNeedsDistributionRecalcWillBeSetNeedsAssignmentRecalc();
 }
 #endif
 
@@ -337,8 +367,8 @@ void Element::ClassAttributeChanged(const AtomicString &newClassString)
         {
             const SpaceSplitString oldClasses = elementData->ClassNames();
             elementData->SetClass(newClassString, shouldFoldCase);
-            const SpaceSplitString& new_classes = elementData->ClassNames();
-            ASSERT(false); // BKTODO: GetDocument().GetStyleEngine().ClassChangedForElement(old_classes, new_classes, *this);
+            const SpaceSplitString &newClasses = elementData->ClassNames();
+            GetDocument().GetStyleEngine().ClassChangedForElement(oldClasses, newClasses, *this);
         }
 #endif
     }
@@ -347,8 +377,8 @@ void Element::ClassAttributeChanged(const AtomicString &newClassString)
 #ifndef BLINKIT_CRAWLER_ONLY
         if (!ForCrawler())
         {
-            const SpaceSplitString& old_classes = elementData->ClassNames();
-            ASSERT(false); // BKTODO: GetDocument().GetStyleEngine().ClassChangedForElement(old_classes, *this);
+            const SpaceSplitString &oldClasses = elementData->ClassNames();
+            GetDocument().GetStyleEngine().ClassChangedForElement(oldClasses, *this);
         }
 #endif
         if (classStringContentType == ClassStringContent::kWhiteSpaceOnly)
@@ -581,13 +611,9 @@ void Element::FinishParsingChildren(void)
 {
     SetIsFinishedParsingChildren(true);
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
-#if 0
     CheckForEmptyStyleChange(this, this);
     CheckForSiblingStyleChanges(kFinishedParsingChildren, nullptr, lastChild(), nullptr);
 #endif
-#endif
-    // BKTODO: Check HTML element overrides.
 }
 
 AttrNodeList* Element::GetAttrNodeList(void)
@@ -828,7 +854,7 @@ void Element::ParseAttribute(const AttributeModificationParams &params)
 
     if (triggers->event != g_null_atom)
     {
-        std::shared_ptr<EventListener> eventListener = DukEventListener::CreateAttributeEventListener(this, params.name, params.newValue);
+        std::shared_ptr<EventListener> eventListener = DukEventListener::CreateAttributeEventListener(this, params.name, params.new_value);
         SetAttributeEventListener(triggers->event, eventListener.get());
     }
 
@@ -858,6 +884,19 @@ void Element::ParserSetAttributes(const Vector<Attribute> &attributeVector)
         AttributeChanged(params);
     }
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void Element::PseudoStateChanged(CSSSelector::PseudoType pseudo)
+{
+    // We can't schedule invaliation sets from inside style recalc otherwise
+    // we'd never process them.
+    // TODO(esprehn): Make this an ASSERT and fix places that call into this
+    // like HTMLSelectElement.
+    if (GetDocument().InStyleRecalc())
+        return;
+    GetDocument().GetStyleEngine().PseudoStateChangedForElement(pseudo, *this);
+}
+#endif
 
 void Element::setAttribute(const QualifiedName &name, const AtomicString &value)
 {
@@ -1023,6 +1062,27 @@ void Element::StripScriptingAttributes(Vector<Attribute> &attributeVector) const
 {
     ASSERT(false); // BKTODO:
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+bool Element::SupportsFocus(void) const
+{
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
+    // FIXME: supportsFocus() can be called when layout is not up to date.
+    // Logic that deals with the layoutObject should be moved to
+    // layoutObjectIsFocusable().
+    // But supportsFocus must return true when the element is editable, or else
+    // it won't be focusable. Furthermore, supportsFocus cannot just return true
+    // always or else tabIndex() will change for all HTML elements.
+    return HasElementFlag(ElementFlags::kTabIndexWasSetExplicitly) ||
+        IsRootEditableElement(*this) ||
+        (IsShadowHost(this) && AuthorShadowRoot() &&
+            AuthorShadowRoot()->delegatesFocus()) ||
+        SupportsSpatialNavigationFocus();
+#endif
+}
+#endif
 
 void Element::SynchronizeAllAttributes(void) const
 {

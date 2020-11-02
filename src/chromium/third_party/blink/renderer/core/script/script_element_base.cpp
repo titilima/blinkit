@@ -115,7 +115,7 @@ bool ScriptElementBase::NomoduleAttributeValue(void) const
 bool ScriptElementBase::ParseAttributeImpl(const Element::AttributeModificationParams &params)
 {
     if (params.name == kSrcAttr)
-        m_loader->HandleSourceAttribute(params.newValue);
+        m_loader->HandleSourceAttribute(params.new_value);
     else
         return false;
     return true;

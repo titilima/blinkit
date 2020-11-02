@@ -33,6 +33,11 @@ void LocalFrameView::AddResizerArea(LayoutBox &resizerBox)
     ASSERT(false); // BKTODO:
 }
 
+void LocalFrameView::BeginLifecycleUpdates(void)
+{
+    ASSERT(false); // BKTODO:
+}
+
 std::shared_ptr<LocalFrameView> LocalFrameView::Create(LocalFrame &frame, const IntSize &initialSize)
 {
     IntRect frameRect(IntPoint(), initialSize);

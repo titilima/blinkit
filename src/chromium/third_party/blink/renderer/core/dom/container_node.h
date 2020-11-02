@@ -112,11 +112,14 @@ public:
     Collection* EnsureCachedCollection(CollectionType, const AtomicString& name);
 
     void SetChildrenOrSiblingsAffectedByFocus(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenOrSiblingsAffectedByFocus); }
+    bool ChildrenAffectedByFirstChildRules(void) const { return HasRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByFirstChildRules); }
     void SetChildrenAffectedByFirstChildRules(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByFirstChildRules); }
     void SetChildrenAffectedByLastChildRules(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByLastChildRules); }
     void SetChildrenAffectedByDirectAdjacentRules(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByDirectAdjacentRules); }
     void SetChildrenAffectedByIndirectAdjacentRules(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByIndirectAdjacentRules); }
+    bool ChildrenAffectedByForwardPositionalRules(void) const { return HasRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByForwardPositionalRules); }
     void SetChildrenAffectedByForwardPositionalRules(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByForwardPositionalRules); }
+    bool ChildrenAffectedByBackwardPositionalRules(void) const { return HasRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByBackwardPositionalRules); }
     void SetChildrenAffectedByBackwardPositionalRules(void) { SetRestyleFlag(DynamicRestyleFlags::kChildrenAffectedByBackwardPositionalRules); }
     void SetAffectedByFirstChildRules(void) { SetRestyleFlag(DynamicRestyleFlags::kAffectedByFirstChildRules); }
     void SetAffectedByLastChildRules(void) { SetRestyleFlag(DynamicRestyleFlags::kAffectedByLastChildRules); }
@@ -143,6 +146,17 @@ public:
     virtual void ChildrenChanged(const ChildrenChange &change);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    // FIXME: These methods should all be renamed to something better than
+    // "check", since it's not clear that they alter the style bits of siblings
+    // and children.
+    enum SiblingCheckType {
+        kFinishedParsingChildren,
+        kSiblingElementInserted,
+        kSiblingElementRemoved
+    };
+    void CheckForSiblingStyleChanges(SiblingCheckType changeType, Element *changedElement,
+        Node *nodeBeforeChange, Node *nodeAfterChange);
+
     void AttachLayoutTree(AttachContext &context) override;
     void DetachLayoutTree(const AttachContext &context = AttachContext()) override;
 #endif
@@ -186,6 +200,11 @@ private:
     inline bool IsHostIncludingInclusiveAncestorOfThis(const Node &newChild, ExceptionState &exceptionState) const;
     inline bool IsChildTypeAllowed(const Node &child) const;
 
+#ifndef BLINKIT_CRAWLER_ONLY
+    bool HasRestyleFlag(DynamicRestyleFlags mask) const { return HasRareData() && HasRestyleFlagInternal(mask); }
+    bool HasRestyleFlagInternal(DynamicRestyleFlags mask) const;
+#endif
+
     Member<Node> m_firstChild;
     Member<Node> m_lastChild;
 };
@@ -217,6 +236,7 @@ public:
         return change;
     }
 
+    bool IsChildElementChange(void) const { return kElementInserted == type || kElementRemoved == type; }
     bool IsChildInsertion(void) const { return kElementInserted == type || kNonElementInserted == type; }
     bool IsChildRemoval(void) const { return kElementRemoved == type || kNonElementRemoved == type; }
 

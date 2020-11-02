@@ -92,6 +92,8 @@ public:
     // LocalFrame.
     void WillBeRemovedFromFrame(void);
 
+    void BeginLifecycleUpdates(void);
+
     void IncrementLayoutObjectCount(void) {} // Just a placeholder
 private:
     explicit LocalFrameView(LocalFrame &frame, const IntRect &frameRect);

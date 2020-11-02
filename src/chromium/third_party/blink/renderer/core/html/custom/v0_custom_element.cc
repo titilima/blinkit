@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: v0_custom_element.cc
+// Description: V0CustomElement Class
+//      Author: Ziming Li
+//     Created: 2020-11-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -33,9 +44,11 @@
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/custom/v0_custom_element_microtask_run_queue.h"
 #include "third_party/blink/renderer/core/html/custom/v0_custom_element_observer.h"
 #include "third_party/blink/renderer/core/html/custom/v0_custom_element_scheduler.h"
+#endif
 #include "third_party/blink/renderer/core/html_names.h"
 #include "third_party/blink/renderer/core/mathml_names.h"
 #include "third_party/blink/renderer/core/svg_names.h"
@@ -44,11 +57,18 @@ namespace blink {
 
 V0CustomElementMicrotaskImportStep* V0CustomElement::DidCreateImport(
     HTMLImportChild* import) {
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return V0CustomElementScheduler::ScheduleImport(import);
+#endif
 }
 
 void V0CustomElement::DidFinishLoadingImport(Document& master) {
+  ASSERT(false); // BKTODO:
+#if 0
   master.CustomElementMicrotaskRunQueue()->RequestDispatchIfNeeded();
+#endif
 }
 
 static inline bool IsValidNCName(const AtomicString& name) {
@@ -72,8 +92,11 @@ bool V0CustomElement::IsValidName(const AtomicString& name) {
   if (kNotFound != name.find('-')) {
     DEFINE_STATIC_LOCAL(Vector<AtomicString>, reserved_names, ());
     if (reserved_names.IsEmpty()) {
+      ASSERT(false); // BKTODO:
+#if 0
       // FIXME(crbug.com/426605): We should be able to remove this.
       reserved_names.push_back(MathMLNames::annotation_xmlTag.LocalName());
+#endif
     }
 
     if (kNotFound == reserved_names.Find(name))
@@ -83,6 +106,7 @@ bool V0CustomElement::IsValidName(const AtomicString& name) {
   return false;
 }
 
+#if 0 // BKTODO:
 void V0CustomElement::Define(Element* element,
                              V0CustomElementDefinition* definition) {
   switch (element->GetV0CustomElementState()) {
@@ -104,36 +128,48 @@ void V0CustomElement::Define(Element* element,
       break;
   }
 }
+#endif
 
 void V0CustomElement::AttributeDidChange(Element* element,
                                          const AtomicString& name,
                                          const AtomicString& old_value,
                                          const AtomicString& new_value) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK_EQ(element->GetV0CustomElementState(), Element::kV0Upgraded);
   V0CustomElementScheduler::ScheduleAttributeChangedCallback(
       element->GetV0CustomElementDefinition()->Callbacks(), element, name,
       old_value, new_value);
+#endif
 }
 
 void V0CustomElement::DidAttach(Element* element, const Document& document) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK_EQ(element->GetV0CustomElementState(), Element::kV0Upgraded);
   if (!document.domWindow())
     return;
   V0CustomElementScheduler::ScheduleCallback(
       element->GetV0CustomElementDefinition()->Callbacks(), element,
       V0CustomElementLifecycleCallbacks::kAttachedCallback);
+#endif
 }
 
 void V0CustomElement::DidDetach(Element* element, const Document& document) {
+  ASSERT(false); // BKTODO:
+#if 0
   DCHECK_EQ(element->GetV0CustomElementState(), Element::kV0Upgraded);
   if (!document.domWindow())
     return;
   V0CustomElementScheduler::ScheduleCallback(
       element->GetV0CustomElementDefinition()->Callbacks(), element,
       V0CustomElementLifecycleCallbacks::kDetachedCallback);
+#endif
 }
 
 void V0CustomElement::WasDestroyed(Element* element) {
+  ASSERT(false); // BKTODO:
+#if 0
   switch (element->GetV0CustomElementState()) {
     case Element::kV0NotCustomElement:
       NOTREACHED();
@@ -144,6 +180,7 @@ void V0CustomElement::WasDestroyed(Element* element) {
       V0CustomElementObserver::NotifyElementWasDestroyed(element);
       break;
   }
+#endif
 }
 
 }  // namespace blink

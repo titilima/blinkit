@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: v0_custom_element_registration_context.cc
+// Description: V0CustomElementRegistrationContext Class
+//      Author: Ziming Li
+//     Created: 2020-11-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -33,20 +44,27 @@
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/element.h"
 #include "third_party/blink/renderer/core/html/custom/v0_custom_element.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/custom/v0_custom_element_definition.h"
 #include "third_party/blink/renderer/core/html/custom/v0_custom_element_scheduler.h"
+#endif
 #include "third_party/blink/renderer/core/html/html_element.h"
 #include "third_party/blink/renderer/core/html/html_unknown_element.h"
 #include "third_party/blink/renderer/core/html_names.h"
-#include "third_party/blink/renderer/core/svg/svg_unknown_element.h"
+// BKTODO: #include "third_party/blink/renderer/core/svg/svg_unknown_element.h"
 #include "third_party/blink/renderer/core/svg_names.h"
 #include "third_party/blink/renderer/platform/bindings/exception_state.h"
 
 namespace blink {
 
 V0CustomElementRegistrationContext::V0CustomElementRegistrationContext()
+#if 0 // BKTODO:
     : candidates_(V0CustomElementUpgradeCandidateMap::Create()) {}
+#else
+    {}
+#endif
 
+#if 0 // BKTODO:
 void V0CustomElementRegistrationContext::RegisterElement(
     Document* document,
     V0CustomElementConstructorBuilder* constructor_builder,
@@ -68,12 +86,16 @@ void V0CustomElementRegistrationContext::RegisterElement(
   for (const auto& candidate : *upgrade_candidates)
     V0CustomElement::Define(candidate, definition);
 }
+#endif
 
 Element* V0CustomElementRegistrationContext::CreateCustomTagElement(
     Document& document,
     const QualifiedName& tag_name) {
   DCHECK(V0CustomElement::IsValidName(tag_name.LocalName()));
 
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   Element* element;
 
   if (HTMLNames::xhtmlNamespaceURI == tag_name.NamespaceURI()) {
@@ -88,6 +110,7 @@ Element* V0CustomElementRegistrationContext::CreateCustomTagElement(
   element->SetV0CustomElementState(Element::kV0WaitingForUpgrade);
   ResolveOrScheduleResolution(element, g_null_atom);
   return element;
+#endif
 }
 
 void V0CustomElementRegistrationContext::DidGiveTypeExtension(
@@ -106,14 +129,18 @@ void V0CustomElementRegistrationContext::ResolveOrScheduleResolution(
                                  : type_extension;
   DCHECK(!type.IsNull());
 
+  ASSERT(false); // BKTODO:
+#if 0
   V0CustomElementDescriptor descriptor(type, element->namespaceURI(),
                                        element->localName());
   DCHECK_EQ(element->GetV0CustomElementState(), Element::kV0WaitingForUpgrade);
 
   V0CustomElementScheduler::ResolveOrScheduleResolution(this, element,
                                                         descriptor);
+#endif
 }
 
+#if 0 // BKTODO:
 void V0CustomElementRegistrationContext::Resolve(
     Element* element,
     const V0CustomElementDescriptor& descriptor) {
@@ -126,19 +153,22 @@ void V0CustomElementRegistrationContext::Resolve(
     candidates_->Add(descriptor, element);
   }
 }
+#endif
 
 void V0CustomElementRegistrationContext::SetIsAttributeAndTypeExtension(
     Element* element,
     const AtomicString& type) {
   DCHECK(element);
   DCHECK(!type.IsEmpty());
-  element->setAttribute(HTMLNames::isAttr, type);
+  element->setAttribute(html_names::kIsAttr, type);
   SetTypeExtension(element, type);
 }
 
 void V0CustomElementRegistrationContext::SetTypeExtension(
     Element* element,
     const AtomicString& type) {
+  ASSERT(false); // BKTODO:
+#if 0
   if (!element->IsHTMLElement() && !element->IsSVGElement())
     return;
 
@@ -165,21 +195,29 @@ void V0CustomElementRegistrationContext::SetTypeExtension(
   element->SetV0CustomElementState(Element::kV0WaitingForUpgrade);
   context->DidGiveTypeExtension(element,
                                 element->GetDocument().ConvertLocalName(type));
+#endif
 }
 
 bool V0CustomElementRegistrationContext::NameIsDefined(
     const AtomicString& name) const {
+  ASSERT(false); // BKTODO:
+  return false;
+#if 0
   return registry_.NameIsDefined(name);
+#endif
 }
 
 void V0CustomElementRegistrationContext::SetV1(
     const CustomElementRegistry* v1) {
-  registry_.SetV1(v1);
+  ASSERT(false); // BKTODO: registry_.SetV1(v1);
 }
 
 void V0CustomElementRegistrationContext::Trace(blink::Visitor* visitor) {
+  ASSERT(false); // BKTODO:
+#if 0
   visitor->Trace(candidates_);
   visitor->Trace(registry_);
+#endif
 }
 
 }  // namespace blink

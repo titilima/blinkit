@@ -12,6 +12,8 @@
 #include "html_document.h"
 
 #include <unordered_map>
+#include "third_party/blink/renderer/core/html/html_body_element.h"
+#include "third_party/blink/renderer/core/html/html_head_element.h"
 #include "third_party/blink/renderer/core/html/html_html_element.h"
 
 namespace blink {
@@ -25,6 +27,8 @@ static void FillElementCreators(HTMLElementCreators &dst)
         const QualifiedName &tag;
         HTMLElement::Creator creator;
     } data[] = {
+        { html_names::kBodyTag, HTMLBodyElement::Create },
+        { html_names::kHeadTag, HTMLHeadElement::Create },
         { html_names::kHTMLTag, HTMLHtmlElement::Create }
     };
     for (const auto &e : data)
@@ -42,6 +46,7 @@ Element* HTMLDocument::CreateElement(const AtomicString &localName, CreateElemen
     auto it = s_creators.find(localName);
     if (std::end(s_creators) == it)
     {
+        BKLOG("Unknown tag name: %s", localName.StdUtf8().c_str());
         ASSERT(std::end(s_creators) != it);
         return nullptr;
     }

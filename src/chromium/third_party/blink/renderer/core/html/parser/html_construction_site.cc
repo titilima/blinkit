@@ -64,10 +64,10 @@
 // BKTODO: #include "third_party/blink/renderer/platform/bindings/microtask.h"
 // BKTODO: #include "third_party/blink/renderer/platform/text/text_break_iterator.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/html/custom/custom_element.h"
 #if 0 // BKTODO:
 #   include "third_party/blink/renderer/core/html_element_factory.h"
 #   include "third_party/blink/renderer/core/html/custom/ce_reactions_scope.h"
-#   include "third_party/blink/renderer/core/html/custom/custom_element.h"
 #   include "third_party/blink/renderer/core/html/custom/custom_element_definition.h"
 #   include "third_party/blink/renderer/core/html/custom/custom_element_descriptor.h"
 #   include "third_party/blink/renderer/core/html/custom/custom_element_registry.h"
@@ -969,13 +969,14 @@ Element* HTMLConstructionSite::CreateElement(
     if (document.ForCrawler()) {
       element = document.CreateElement(tag_name.LocalName(), GetCreateElementFlags());
     } else {
-      ASSERT(false); // BKTODO:
-      element = nullptr;
-#if 0
       if (definition) {
+        ASSERT(false); // BKTODO:
+        element = nullptr;
+#if 0
         DCHECK(GetCreateElementFlags().IsAsyncCustomElements());
         element = definition->CreateElement(document, tag_name,
                                             GetCreateElementFlags());
+#endif
       } else {
         element = CustomElement::CreateUncustomizedOrUndefinedElement(
             document, tag_name, GetCreateElementFlags(), is);
@@ -1003,6 +1004,7 @@ Element* HTMLConstructionSite::CreateElement(
       // checkedness based on the element's attributes.)
       // TODO(dominicc): Implement step 11, resettable elements.
 
+#if 0 // BKTODO: Support form?
       // 12. If element is a form-associated element, and the form
       // element pointer is not null, and there is no template element
       // on the stack of open elements, ...

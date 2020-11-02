@@ -194,6 +194,7 @@ Document::Document(const DocumentInit &initializer)
     , m_loadEventDelayTimer(GetTaskRunner(TaskType::kNetworking), this, &Document::LoadEventDelayTimerFired)
 #ifndef BLINKIT_CRAWLER_ONLY
     , m_importsController(initializer.ImportsController())
+    , m_registrationContext(initializer.RegistrationContext(this))
     , m_viewportData(std::make_unique<ViewportData>(*this))
 #endif
 {
@@ -384,6 +385,17 @@ const GURL& Document::BaseURL(void) const
         return m_baseURL;
     return BlankURL();
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void Document::BeginLifecycleUpdatesIfRenderingReady(void)
+{
+    if (!IsActive())
+        return;
+    if (!IsRenderingReady())
+        return;
+    View()->BeginLifecycleUpdates();
+}
+#endif
 
 Element* Document::body(void) const
 {
@@ -1007,6 +1019,12 @@ TextAutosizer* Document::GetTextAutosizer(void)
     if (!m_textAutosizer)
         m_textAutosizer.reset(TextAutosizer::Create(this));
     return m_textAutosizer.get();
+}
+
+bool Document::HasPendingForcedStyleRecalc(void) const
+{
+    ASSERT(false); // BKTODO:
+    return false;
 }
 #endif
 
@@ -2002,9 +2020,7 @@ Element* Document::ViewportDefiningElement(const ComputedStyle *rootStyle) const
 void Document::WillInsertBody(void)
 {
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
-#if 0
-    if (auto* loader = Loader())
+    if (DocumentLoader *loader = Loader())
         loader->Fetcher()->LoosenLoadThrottlingPolicy();
 
     // If we get to the <body> try to resume commits since we should have content
@@ -2013,7 +2029,6 @@ void Document::WillInsertBody(void)
     // for very little content, should we wait for some heuristic like
     // isVisuallyNonEmpty() ?
     BeginLifecycleUpdatesIfRenderingReady();
-#endif
 #endif
 }
 

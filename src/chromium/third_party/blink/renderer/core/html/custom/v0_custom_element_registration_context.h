@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: v0_custom_element_registration_context.h
+// Description: V0CustomElementRegistrationContext Class
+//      Author: Ziming Li
+//     Created: 2020-11-02
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2013 Google Inc. All rights reserved.
  *
@@ -31,10 +42,13 @@
 #ifndef THIRD_PARTY_BLINK_RENDERER_CORE_HTML_CUSTOM_V0_CUSTOM_ELEMENT_REGISTRATION_CONTEXT_H_
 #define THIRD_PARTY_BLINK_RENDERER_CORE_HTML_CUSTOM_V0_CUSTOM_ELEMENT_REGISTRATION_CONTEXT_H_
 
+#include "base/memory/ptr_util.h"
 #include "third_party/blink/renderer/core/dom/qualified_name.h"
+#if 0 // BKTODO:
 #include "third_party/blink/renderer/core/html/custom/v0_custom_element_descriptor.h"
 #include "third_party/blink/renderer/core/html/custom/v0_custom_element_registry.h"
 #include "third_party/blink/renderer/core/html/custom/v0_custom_element_upgrade_candidate_map.h"
+#endif
 #include "third_party/blink/renderer/platform/heap/handle.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
@@ -45,11 +59,12 @@ class CustomElementRegistry;
 class V0CustomElementRegistrationContext final
     : public GarbageCollectedFinalized<V0CustomElementRegistrationContext> {
  public:
-  static V0CustomElementRegistrationContext* Create() {
-    return new V0CustomElementRegistrationContext();
+  static std::shared_ptr<V0CustomElementRegistrationContext> Create() {
+    return base::WrapShared(new V0CustomElementRegistrationContext());
   }
 
   ~V0CustomElementRegistrationContext() = default;
+#if 0 // BKTODO:
   void DocumentWasDetached() { registry_.DocumentWasDetached(); }
 
   // Definitions
@@ -57,13 +72,16 @@ class V0CustomElementRegistrationContext final
                        V0CustomElementConstructorBuilder*,
                        const AtomicString& type,
                        ExceptionState&);
+#endif
 
   Element* CreateCustomTagElement(Document&, const QualifiedName&);
   static void SetIsAttributeAndTypeExtension(Element*,
                                              const AtomicString& type);
   static void SetTypeExtension(Element*, const AtomicString& type);
 
+#if 0 // BKTODO:
   void Resolve(Element*, const V0CustomElementDescriptor&);
+#endif
 
   bool NameIsDefined(const AtomicString& name) const;
   void SetV1(const CustomElementRegistry*);
@@ -80,10 +98,12 @@ class V0CustomElementRegistrationContext final
   void ResolveOrScheduleResolution(Element*,
                                    const AtomicString& type_extension);
 
+#if 0 // BKTODO:
   V0CustomElementRegistry registry_;
 
   // Element creation
   Member<V0CustomElementUpgradeCandidateMap> candidates_;
+#endif
 };
 
 }  // namespace blink

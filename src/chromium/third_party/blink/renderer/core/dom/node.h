@@ -84,6 +84,18 @@ enum class SlotChangeType {
     kSuppressSlotChangeEvent,
 };
 
+#ifndef BLINKIT_CRAWLER_ONLY
+enum class CustomElementState {
+    // https://dom.spec.whatwg.org/#concept-element-custom-element-state
+    kUncustomized = 0,
+    kCustom = 1 << kNodeCustomElementShift,
+    kUndefined = 2 << kNodeCustomElementShift,
+    kFailed = 3 << kNodeCustomElementShift,
+
+    kNotDefinedFlag = 2 << kNodeCustomElementShift,
+};
+#endif
+
 enum class CloneChildrenFlag { kClone, kSkip };
 
 class Node : public EventTarget
@@ -251,6 +263,8 @@ public:
 #ifndef BLINKIT_CRAWLER_ONLY
     void SetChildNeedsStyleRecalc(void) { SetFlag(kChildNeedsStyleRecalcFlag); }
     void ClearChildNeedsStyleRecalc(void) { ClearFlag(kChildNeedsStyleRecalcFlag); }
+    CustomElementState GetCustomElementState(void) const { return static_cast<CustomElementState>(m_nodeFlags & kCustomElementStateMask); }
+    void SetCustomElementState(CustomElementState newState);
 #endif
     bool HasName(void) const
     {

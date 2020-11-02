@@ -45,6 +45,13 @@ void HTMLElement::ChildrenChanged(const ChildrenChange &change)
     AdjustDirectionalityIfNeededAfterChildrenChanged(change);
 }
 
+void HTMLElement::CollectStyleForPresentationAttribute(
+    const QualifiedName &name, const AtomicString &value,
+    MutableCSSPropertyValueSet *style)
+{
+    ASSERT(false); // BKTODO:
+}
+
 Node::InsertionNotificationRequest HTMLElement::InsertedInto(ContainerNode &insertionPoint)
 {
     // Process the superclass first to ensure that `InActiveDocument()` is
@@ -59,6 +66,18 @@ Node::InsertionNotificationRequest HTMLElement::InsertedInto(ContainerNode &inse
 #endif
 
     return kInsertionDone;
+}
+
+bool HTMLElement::IsPresentationAttribute(const QualifiedName &name) const
+{
+    ASSERT(false); // BKTODO:
+    return false;
+}
+
+bool HTMLElement::ParseColorWithLegacyRules(const String &attributevalue, Color &parsedColor)
+{
+    ASSERT(false); // BKTODO:
+    return false;
 }
 
 bool HTMLElement::SelfOrAncestorHasDirAutoAttribute(void) const
