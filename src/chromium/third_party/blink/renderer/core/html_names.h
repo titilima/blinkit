@@ -4,7 +4,7 @@
 //   File Name: html_names.h
 // Description: HTML Names
 //      Author: Ziming Li
-//     Created: 2020-07-08
+//     Created: 2020-11-02
 // -------------------------------------------------
 // Copyright (C) 2020 MingYang Software Technology.
 // -------------------------------------------------
@@ -214,6 +214,193 @@ constexpr unsigned kAttrsCount = 67;
 void Init(void);
 
 } // namespace html_names
+
+namespace HTMLNames = html_names;
+
 } // namespace blink
+
+/**
+ * Aliases for Compatibility
+ */
+
+#define aTag kATag
+#define acceptAttr kAcceptAttr
+#define accept_charsetAttr kAcceptCharsetAttr
+#define addressTag kAddressTag
+#define alignAttr kAlignAttr
+#define alinkAttr kAlinkAttr
+#define appletTag kAppletTag
+#define areaTag kAreaTag
+#define articleTag kArticleTag
+#define asideTag kAsideTag
+#define axisAttr kAxisAttr
+#define bTag kBTag
+#define baseTag kBaseTag
+#define basefontTag kBasefontTag
+#define bgcolorAttr kBgcolorAttr
+#define bgsoundTag kBgsoundTag
+#define bigTag kBigTag
+#define blockquoteTag kBlockquoteTag
+#define bodyTag kBodyTag
+#define brTag kBrTag
+#define buttonTag kButtonTag
+#define captionTag kCaptionTag
+#define centerTag kCenterTag
+#define charsetAttr kCharsetAttr
+#define checkedAttr kCheckedAttr
+#define classAttr kClassAttr
+#define clearAttr kClearAttr
+#define codeTag kCodeTag
+#define codetypeAttr kCodetypeAttr
+#define colTag kColTag
+#define colgroupTag kColgroupTag
+#define colorAttr kColorAttr
+#define commandTag kCommandTag
+#define compactAttr kCompactAttr
+#define contentTag kContentTag
+#define contentAttr kContentAttr
+#define ddTag kDdTag
+#define declareAttr kDeclareAttr
+#define deferAttr kDeferAttr
+#define detailsTag kDetailsTag
+#define dirTag kDirTag
+#define dirAttr kDirAttr
+#define directionAttr kDirectionAttr
+#define disabledAttr kDisabledAttr
+#define divTag kDivTag
+#define dlTag kDlTag
+#define dtTag kDtTag
+#define emTag kEmTag
+#define embedTag kEmbedTag
+#define enctypeAttr kEnctypeAttr
+#define eventAttr kEventAttr
+#define faceAttr kFaceAttr
+#define fieldsetTag kFieldsetTag
+#define figcaptionTag kFigcaptionTag
+#define figureTag kFigureTag
+#define fontTag kFontTag
+#define footerTag kFooterTag
+#define forAttr kForAttr
+#define formTag kFormTag
+#define formAttr kFormAttr
+#define frameTag kFrameTag
+#define frameAttr kFrameAttr
+#define framesetTag kFramesetTag
+#define h1Tag kH1Tag
+#define h2Tag kH2Tag
+#define h3Tag kH3Tag
+#define h4Tag kH4Tag
+#define h5Tag kH5Tag
+#define h6Tag kH6Tag
+#define headTag kHeadTag
+#define headerTag kHeaderTag
+#define hgroupTag kHgroupTag
+#define hrTag kHrTag
+#define hrefAttr kHrefAttr
+#define hreflangAttr kHreflangAttr
+#define htmlTag kHTMLTag
+#define http_equivAttr kHttpEquivAttr
+#define iTag kITag
+#define idAttr kIdAttr
+#define iframeTag kIFrameTag
+#define imageTag kImageTag
+#define imgTag kImgTag
+#define inputTag kInputTag
+#define isAttr kIsAttr
+#define keygenTag kKeygenTag
+#define labelTag kLabelTag
+#define labelAttr kLabelAttr
+#define langAttr kLangAttr
+#define languageAttr kLanguageAttr
+#define liTag kLiTag
+#define linkTag kLinkTag
+#define linkAttr kLinkAttr
+#define listingTag kListingTag
+#define mainTag kMainTag
+#define marqueeTag kMarqueeTag
+#define mediaAttr kMediaAttr
+#define menuTag kMenuTag
+#define metaTag kMetaTag
+#define methodAttr kMethodAttr
+#define multipleAttr kMultipleAttr
+#define nameAttr kNameAttr
+#define navTag kNavTag
+#define nobrTag kNobrTag
+#define noembedTag kNoembedTag
+#define noframesTag kNoframesTag
+#define nohrefAttr kNohrefAttr
+#define nomoduleAttr kNomoduleAttr
+#define noresizeAttr kNoresizeAttr
+#define noscriptTag kNoscriptTag
+#define noshadeAttr kNoshadeAttr
+#define nowrapAttr kNowrapAttr
+#define objectTag kObjectTag
+#define objectAttr kObjectAttr
+#define olTag kOlTag
+#define onloadAttr kOnloadAttr
+#define optgroupTag kOptgroupTag
+#define optionTag kOptionTag
+#define pTag kPTag
+#define paramTag kParamTag
+#define plaintextTag kPlaintextTag
+#define preTag kPreTag
+#define rbTag kRbTag
+#define readonlyAttr kReadonlyAttr
+#define referrerpolicyAttr kReferrerpolicyAttr
+#define relAttr kRelAttr
+#define revAttr kRevAttr
+#define rpTag kRpTag
+#define rtTag kRtTag
+#define rtcTag kRTCTag
+#define rubyTag kRubyTag
+#define rulesAttr kRulesAttr
+#define sTag kSTag
+#define scopeAttr kScopeAttr
+#define scriptTag kScriptTag
+#define scrollingAttr kScrollingAttr
+#define sectionTag kSectionTag
+#define selectTag kSelectTag
+#define selectAttr kSelectAttr
+#define selectedAttr kSelectedAttr
+#define shapeAttr kShapeAttr
+#define sizeAttr kSizeAttr
+#define smallTag kSmallTag
+#define sourceTag kSourceTag
+#define spanTag kSpanTag
+#define spanAttr kSpanAttr
+#define srcAttr kSrcAttr
+#define strikeTag kStrikeTag
+#define strongTag kStrongTag
+#define styleTag kStyleTag
+#define styleAttr kStyleAttr
+#define subTag kSubTag
+#define summaryTag kSummaryTag
+#define summaryAttr kSummaryAttr
+#define supTag kSupTag
+#define tableTag kTableTag
+#define targetAttr kTargetAttr
+#define tbodyTag kTbodyTag
+#define tdTag kTdTag
+#define templateTag kTemplateTag
+#define textAttr kTextAttr
+#define textareaTag kTextareaTag
+#define tfootTag kTfootTag
+#define thTag kThTag
+#define theadTag kTheadTag
+#define titleTag kTitleTag
+#define titleAttr kTitleAttr
+#define trTag kTrTag
+#define trackTag kTrackTag
+#define ttTag kTtTag
+#define typeAttr kTypeAttr
+#define uTag kUTag
+#define ulTag kUlTag
+#define valignAttr kValignAttr
+#define valuetypeAttr kValuetypeAttr
+#define varTag kVarTag
+#define videoTag kVideoTag
+#define vlinkAttr kVlinkAttr
+#define wbrTag kWbrTag
+#define xmpTag kXmpTag
 
 #endif // BLINKIT_BLINK_HTML_NAMES_H

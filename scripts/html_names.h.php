@@ -58,6 +58,26 @@ constexpr unsigned kAttrsCount = <?php echo $attr_count; ?>;
 void Init(void);
 
 } // namespace html_names
+
+namespace HTMLNames = html_names;
+
 } // namespace blink
+
+/**
+ * Aliases for Compatibility
+ */
+
+<?php
+foreach ($names as $v) {
+    $macro_name = strtolower(str_replace('-', '_', $v['name']));
+    $var_name = isset($v['var_name']) ? $v['var_name'] : ucfirst($v['name']);
+    if ($v['is_tag']) {
+        echo "#define $macro_name" . 'Tag k' . $var_name . "Tag\n";
+    }
+    if ($v['is_attr']) {
+        echo "#define $macro_name" . 'Attr k' . $var_name . "Attr\n";
+    }
+}
+?>
 
 #endif // BLINKIT_BLINK_HTML_NAMES_H
