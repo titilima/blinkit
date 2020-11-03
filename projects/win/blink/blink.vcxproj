@@ -1133,6 +1133,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\dom_window.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\frame.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\frame_lifecycle.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\layout_subtree_root_list.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_dom_window.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_frame.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_frame_view.cpp" />
@@ -1190,6 +1191,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\column_balancer.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\counter_node.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\custom\custom_layout_child.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\depth_ordered_layout_object_list.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\flexible_box_algorithm.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\floating_objects.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\fragmentainer_iterator.cc" />
@@ -2952,6 +2954,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\frame_client.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\frame_lifecycle.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\frame_view.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\layout_subtree_root_list.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_dom_window.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_frame.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\local_frame_client.h" />
@@ -3039,6 +3042,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\content_change_type.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\counter_node.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\custom\custom_layout_child.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\depth_ordered_layout_object_list.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\flexible_box_algorithm.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\floating_objects.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\fragmentainer_iterator.h" />

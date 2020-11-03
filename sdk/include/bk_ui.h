@@ -28,6 +28,7 @@ struct BkWebViewClient {
     size_t SizeOfStruct; // sizeof(BkWebViewClient)
     void *UserData;
     void (BKAPI * DocumentReady)(void *);
+    bool_t (BKAPI * TitleChange)(const char *, void *);
 };
 
 BKEXPORT void BKAPI BkWebViewSetClient(BkWebView view, struct BkWebViewClient *client);

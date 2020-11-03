@@ -169,7 +169,7 @@ void HTMLElementStack::PopAll() {
     if (node.IsElementNode()) {
       ToElement(node).FinishParsingChildren();
 #ifndef BLINKIT_CRAWLER_ONLY
-      ASSERT(false); // BKTODO:
+      ASSERT(!ToElement(node).HasTagName(html_names::kSelectTag)); // BKTODO:
 #if 0
       if (auto* select = ToHTMLSelectElementOrNull(node))
         select->SetBlocksFormSubmission(true);

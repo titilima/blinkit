@@ -352,6 +352,12 @@ public:
     const ComputedStyle& ComputedStyleRef(void) const;
     ComputedStyle* MutableComputedStyle(void) const;
     const ComputedStyle* ParentComputedStyle(void) const;
+    ComputedStyle* GetNonAttachedStyle(void) const
+    {
+        return HasRareData()
+            ? m_data.m_rareData->GetNodeRenderingData()->GetNonAttachedStyle()
+            : m_data.m_nodeLayoutData->GetNonAttachedStyle();
+    }
 
     virtual bool SheetLoaded(void) { return true; }
 

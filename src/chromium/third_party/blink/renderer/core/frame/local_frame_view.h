@@ -16,6 +16,7 @@
 
 #include <unordered_set>
 #include "third_party/blink/renderer/core/frame/frame_view.h"
+#include "third_party/blink/renderer/core/frame/layout_subtree_root_list.h"
 #include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #include "third_party/blink/renderer/platform/geometry/int_rect.h"
 #include "third_party/blink/renderer/platform/geometry/layout_size.h"
@@ -23,6 +24,7 @@
 
 namespace blink {
 
+class DocumentLifecycle;
 class LayoutBox;
 class LayoutView;
 class PaintLayerScrollableArea;
@@ -51,6 +53,14 @@ public:
     bool IsSelfVisible(void) const { return m_selfVisible; }
     void SetSelfVisible(bool visible);
     bool CanHaveScrollbars(void) const { return m_canHaveScrollbars; }
+
+    bool LayoutPending(void) const;
+    bool IsInPerformLayout(void) const;
+    bool NeedsLayout(void) const;
+    // FIXME: This should probably be renamed as the 'inSubtreeLayout' parameter
+    // passed around the LocalFrameView layout methods can be true while this
+    // returns false.
+    bool IsSubtreeLayout(void) const { return !m_layoutSubtreeRootList.IsEmpty(); }
 
     bool LayoutSizeFixedToFrameSize(void) { return m_layoutSizeFixedToFrameSize; }
     // If this is set to false, the layout size will need to be explicitly set by
@@ -88,11 +98,14 @@ public:
     const ResizerAreaSet* ResizerAreas(void) const { return m_resizerAreas.get(); }
 
     void DidAttachDocument(void);
+    void HandleLoadCompleted(void);
     // Called when this view is going to be removed from its owning
     // LocalFrame.
     void WillBeRemovedFromFrame(void);
 
     void BeginLifecycleUpdates(void);
+
+    void ClearFragmentAnchor(void);
 
     void IncrementLayoutObjectCount(void) {} // Just a placeholder
 private:
@@ -102,12 +115,17 @@ private:
     void SetLayoutSizeInternal(const IntSize &size);
     void SetNeedsCompositingUpdate(CompositingUpdateType updateType);
 
+    DocumentLifecycle& Lifecycle(void) const;
+
     void Show(void) override;
 
     Member<LocalFrame> m_frame;
     IntRect m_frameRect;
     bool m_selfVisible = false;
     bool m_canHaveScrollbars = true;
+    bool m_hasPendingLayout = false;
+    LayoutSubtreeRootList m_layoutSubtreeRootList;
+    Member<Node> m_fragmentAnchor;
     std::unique_ptr<ResizerAreaSet> m_resizerAreas;
     IntSize m_layoutSize;
     IntSize m_initialViewportSize;

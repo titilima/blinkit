@@ -42,6 +42,9 @@
 #include "element_rare_data.h"
 
 #include "third_party/blink/renderer/core/dom/attr.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/style/computed_style.h"
+#endif
 
 namespace blink {
 
@@ -50,7 +53,7 @@ struct SameSizeAsElementRareData : NodeRareData
 #ifdef BLINKIT_CRAWLER_ONLY
     void* pointersOrStrings[5];
 #else
-    void* pointersOrStrings[6];
+    void* pointersOrStrings[7];
 #endif
 };
 

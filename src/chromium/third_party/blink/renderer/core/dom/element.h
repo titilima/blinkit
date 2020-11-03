@@ -199,6 +199,12 @@ public:
     virtual void FinishParsingChildren(void);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ComputedStyle* MutableNonLayoutObjectComputedStyle(void) const
+    {
+        return const_cast<ComputedStyle *>(NonLayoutObjectComputedStyle());
+    }
+    const ComputedStyle* NonLayoutObjectComputedStyle(void) const;
+
     // Whether this element can receive focus at all. Most elements are not
     // focusable but some elements, such as form controls and links, are. Unlike
     // layoutObjectIsFocusable(), this method may be called when layout is not up

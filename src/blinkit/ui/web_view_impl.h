@@ -32,6 +32,8 @@ class WebViewImpl : public BlinKit::LocalFrameClientImpl
 public:
     virtual ~WebViewImpl(void);
 
+    void Initialize(void);
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
     int LoadUI(const char *URI);
@@ -47,6 +49,8 @@ public:
     void UpdatePageDefinedViewportConstraints(const blink::ViewportDescription &description);
 protected:
     WebViewImpl(blink::PageVisibilityState visibilityState);
+
+    bool ProcessTitleChange(const std::string &newTitle) const;
 private:
     blink::IntSize FrameSize(void);
     blink::Color BaseBackgroundColor(void) const;
@@ -57,6 +61,7 @@ private:
 
     // LocalFrameClient
     bool IsCrawler(void) const final { return false; }
+    bool HasWebView(void) const final { return true; }
     void TransitionToCommittedForNewPage(void) final;
     void DispatchDidFailProvisionalLoad(const blink::ResourceError &error) final;
     void DispatchDidFinishLoad(void) final;

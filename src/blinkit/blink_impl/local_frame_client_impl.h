@@ -20,10 +20,10 @@ namespace BlinKit {
 
 class LocalFrameClientImpl : public blink::LocalFrameClient
 {
-public:
 protected:
     String UserAgent(void) override;
 private:
+    bool HasWebView(void) const override { return false; }
     void Detached(blink::FrameDetachType) override {}
     std::unique_ptr<blink::DocumentLoader> CreateDocumentLoader(blink::LocalFrame *frame,
         const blink::ResourceRequest &request, const blink::SubstituteData &data,

@@ -50,8 +50,6 @@ WebViewImpl::WebViewImpl(PageVisibilityState visibilityState)
     page_importance_signals_.SetObserver(client);
     resize_viewport_anchor_ = new ResizeViewportAnchor(*page_);
 #endif
-
-    m_page->GetFrame()->Init();
 }
 
 WebViewImpl::~WebViewImpl(void) = default;
@@ -85,6 +83,11 @@ PageScaleConstraintsSet& WebViewImpl::GetPageScaleConstraintsSet(void) const
     return m_page->GetPageScaleConstraintsSet();
 }
 
+void WebViewImpl::Initialize(void)
+{
+    m_page->GetFrame()->Init();
+}
+
 int WebViewImpl::LoadUI(const char *URI)
 {
     GURL u(URI);
@@ -102,6 +105,13 @@ int WebViewImpl::LoadUI(const char *URI)
 float WebViewImpl::MinimumPageScaleFactor(void) const
 {
     return GetPageScaleConstraintsSet().FinalConstraints().minimum_scale;
+}
+
+bool WebViewImpl::ProcessTitleChange(const std::string &title) const
+{
+    if (nullptr == m_client.TitleChange)
+        return false;
+    return m_client.TitleChange(title.c_str(), m_client.UserData);
 }
 
 void WebViewImpl::ScheduleAnimation(void)
@@ -123,6 +133,7 @@ void WebViewImpl::SetClient(const BkWebViewClient &client)
 
     m_client.UserData = client.UserData;
     m_client.DocumentReady = client.DocumentReady;
+    m_client.TitleChange = client.TitleChange;
 
     // Use `offsetof` macro for different client versions.
 }

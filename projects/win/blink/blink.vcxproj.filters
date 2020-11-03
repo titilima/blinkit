@@ -5096,6 +5096,12 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_body_element.cc">
       <Filter>renderer\core\html</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\layout_subtree_root_list.cc">
+      <Filter>renderer\core\frame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\depth_ordered_layout_object_list.cc">
+      <Filter>renderer\core\layout</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -11349,6 +11355,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_body_element.h">
       <Filter>renderer\core\html</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\frame\layout_subtree_root_list.h">
+      <Filter>renderer\core\frame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\depth_ordered_layout_object_list.h">
+      <Filter>renderer\core\layout</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

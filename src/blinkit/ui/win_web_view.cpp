@@ -12,6 +12,7 @@
 #include "win_web_view.h"
 
 #include <windowsx.h>
+#include "base/strings/sys_string_conversions.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 
 using namespace blink;
@@ -38,7 +39,12 @@ WinWebView::~WinWebView(void)
 
 void WinWebView::DispatchDidReceiveTitle(const String &title)
 {
-    ASSERT(false); // BKTODO:
+    std::string newTitle = title.StdUtf8();
+    if (ProcessTitleChange(newTitle))
+        return;
+
+    std::wstring ws = base::SysUTF8ToWide(newTitle);
+    SetWindowTextW(m_hWnd, ws.c_str());
 }
 
 WinWebView* WinWebView::Lookup(HWND hWnd)
@@ -52,7 +58,9 @@ BOOL WinWebView::OnNCCreate(HWND hwnd, LPCREATESTRUCT cs)
     if (nullptr == Lookup(hwnd))
     {
         bool isWindowVisible = 0 != (cs->style & WS_VISIBLE);
-        new WinWebView(hwnd, isWindowVisible);
+
+        auto v = new WinWebView(hwnd, isWindowVisible);
+        v->Initialize();
     }
     else
     {

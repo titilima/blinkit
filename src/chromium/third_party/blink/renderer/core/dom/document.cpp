@@ -586,7 +586,10 @@ bool Document::CheckCompletedInternal(void)
     m_frame->GetNavigationScheduler().StartTimer();
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO: View()->HandleLoadCompleted();
+    if (LocalFrameView *view = View())
+        view->HandleLoadCompleted();
+    else
+        ASSERT(ForCrawler());
 #endif
 
     // No need to repeat if we've already notified this load as finished.
@@ -768,6 +771,7 @@ void Document::DetachParser(void)
         m_parser.reset();
     }
 }
+
 #ifndef BLINKIT_CRAWLER_ONLY
 float Document::DevicePixelRatio(void) const
 {
@@ -923,7 +927,6 @@ void Document::FinishedParsing(void)
             DispatchDidReceiveTitle();
 
 #ifndef BLINKIT_CRAWLER_ONLY
-        ASSERT(false); // BKTODO:
         // Don't update the layout tree if we haven't requested the main resource
         // yet to avoid adding extra latency. Note that the first layout tree update
         // can be expensive since it triggers the parsing of the default stylesheets
@@ -942,7 +945,7 @@ void Document::FinishedParsing(void)
         if (mainResourceWasAlreadyRequested)
             UpdateStyleAndLayoutTree();
 
-        ASSERT(false); // BKTODO: BeginLifecycleUpdatesIfRenderingReady();
+        BeginLifecycleUpdatesIfRenderingReady();
 #endif
 
         frame->Loader().FinishedParsing();
@@ -1023,8 +1026,7 @@ TextAutosizer* Document::GetTextAutosizer(void)
 
 bool Document::HasPendingForcedStyleRecalc(void) const
 {
-    ASSERT(false); // BKTODO:
-    return false;
+    return HasPendingVisualUpdate() && !InStyleRecalc() && GetStyleChangeType() >= kSubtreeStyleChange;
 }
 #endif
 

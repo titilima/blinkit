@@ -841,6 +841,19 @@ String Element::nodeName(void) const
     return m_tagName.ToString();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+const ComputedStyle* Element::NonLayoutObjectComputedStyle(void) const
+{
+    if (NeedsReattachLayoutTree())
+        return GetNonAttachedStyle();
+
+    if (!HasRareData())
+        return nullptr;
+
+    return GetElementRareData()->GetComputedStyle();
+}
+#endif
+
 String Element::outerHTML(void) const
 {
     return CreateMarkup(this, kIncludeNode);

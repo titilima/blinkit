@@ -86,27 +86,29 @@ bool FrameLoader::CancelProvisionalLoaderForNewNavigation(bool cancelScheduledNa
     // "9. Abort the active document of browsingContext."
     // https://html.spec.whatwg.org/#navigate
     m_frame->GetDocument()->Abort();
+
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
-#if 0
-    // document.onreadystatechange can fire in Abort(), which can:
-    // 1) Detach this frame.
-    // 2) Stop the provisional DocumentLoader (i.e window.stop()).
-    if (!frame_->GetPage())
-        return false;
-#endif
+    bool isCrawler = Client()->IsCrawler();
+    if (!isCrawler)
+    {
+        // document.onreadystatechange can fire in Abort(), which can:
+        // 1) Detach this frame.
+        // 2) Stop the provisional DocumentLoader (i.e window.stop()).
+        if (nullptr == m_frame->GetPage())
+            return false;
+    }
 #endif
 
     DetachDocumentLoader(m_provisionalDocumentLoader);
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
-#if 0
-    // Detaching the provisional DocumentLoader above may leave the frame without
-    // any loading DocumentLoader. It can causes the 'load' event to fire, which
-    // can be used to detach this frame.
-    if (!frame_->GetPage())
-        return false;
-#endif
+    if (!isCrawler)
+    {
+        // Detaching the provisional DocumentLoader above may leave the frame without
+        // any loading DocumentLoader. It can causes the 'load' event to fire, which
+        // can be used to detach this frame.
+        if (nullptr == m_frame->GetPage())
+            return false;
+    }
 #endif
 
     m_frame->SetIsLoading(true);
@@ -131,7 +133,7 @@ void FrameLoader::CommitNavigation(
 {
     ASSERT(nullptr != m_frame->GetDocument());
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO: DCHECK(Client()->HasWebView());
+    ASSERT(Client()->IsCrawler() || Client()->HasWebView());
 #endif
 
     if (m_inStopAllLoaders || !m_frame->IsNavigationAllowed()
@@ -433,19 +435,19 @@ void FrameLoader::StartNavigation(const FrameLoadRequest &passedRequest, WebFram
     }
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO: DCHECK(Client()->HasWebView());
+    ASSERT(Client()->IsCrawler() || Client()->HasWebView());
 #endif
 
     NavigationPolicy policy = Client()->DecidePolicyForNavigation(resourceRequest);
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
-#if 0
-    // 'beforeunload' can be fired above, which can detach this frame from inside
-    // the event handler.
-    if (!frame_->GetPage())
-        return;
-#endif
+    if (!Client()->IsCrawler())
+    {
+        // 'beforeunload' can be fired above, which can detach this frame from inside
+        // the event handler.
+        if (nullptr == m_frame->GetPage())
+            return;
+    }
 #endif
 
     if (kNavigationPolicyIgnore == policy)

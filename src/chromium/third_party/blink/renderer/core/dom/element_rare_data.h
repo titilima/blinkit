@@ -85,6 +85,8 @@ public:
 
 #ifndef BLINKIT_CRAWLER_ONLY
     ShadowRoot* GetShadowRoot(void) const { return m_shadowRoot.get(); }
+
+    ComputedStyle* GetComputedStyle(void) const { return m_computedStyle.get(); }
 #endif
 
 private:
@@ -94,7 +96,10 @@ private:
     explicit ElementRareData(NodeRenderingData*);
 #endif
 
+#ifndef BLINKIT_CRAWLER_ONLY
     std::unique_ptr<ShadowRoot> m_shadowRoot;
+    scoped_refptr<ComputedStyle> m_computedStyle;
+#endif
     std::unique_ptr<NamedNodeMap> m_attributeMap;
     std::unique_ptr<AttrNodeList> m_attrNodeList;
 

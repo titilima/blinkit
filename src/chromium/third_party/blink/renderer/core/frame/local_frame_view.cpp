@@ -35,7 +35,35 @@ void LocalFrameView::AddResizerArea(LayoutBox &resizerBox)
 
 void LocalFrameView::BeginLifecycleUpdates(void)
 {
+    // Avoid pumping frames for the initially empty document.
+    if (!GetFrame().Loader().StateMachine()->CommittedFirstRealDocumentLoad())
+        return;
     ASSERT(false); // BKTODO:
+#if 0
+    lifecycle_updates_throttled_ = false;
+    if (auto* owner = GetFrame().OwnerLayoutObject())
+        owner->SetShouldCheckForPaintInvalidation();
+
+    LayoutView* layout_view = GetLayoutView();
+    bool layout_view_is_empty = layout_view && !layout_view->FirstChild();
+    if (layout_view_is_empty && !DidFirstLayout() && !NeedsLayout()) {
+        // Make sure a display:none iframe gets an initial layout pass.
+        layout_view->SetNeedsLayout(LayoutInvalidationReason::kAddedToLayout,
+            kMarkOnlyThis);
+    }
+
+    SetupRenderThrottling();
+    UpdateRenderThrottlingStatus(hidden_for_throttling_, subtree_throttled_);
+    // The compositor will "defer commits" for the main frame until we
+    // explicitly request them.
+    if (GetFrame().IsMainFrame())
+        GetFrame().GetPage()->GetChromeClient().BeginLifecycleUpdates();
+#endif
+}
+
+void LocalFrameView::ClearFragmentAnchor(void)
+{
+    m_fragmentAnchor = nullptr;
 }
 
 std::shared_ptr<LocalFrameView> LocalFrameView::Create(LocalFrame &frame, const IntSize &initialSize)
@@ -80,11 +108,44 @@ ScrollingCoordinator* LocalFrameView::GetScrollingCoordinator(void) const
     return nullptr;
 }
 
+void LocalFrameView::HandleLoadCompleted(void)
+{
+#if 0 // BKTODO:
+    // Once loading has completed, allow autoSize one last opportunity to
+    // reduce the size of the frame.
+    if (auto_size_info_)
+        auto_size_info_->AutoSizeIfNeeded();
+#endif
+
+    // If there is a pending layout, the fragment anchor will be cleared when it
+    // finishes.
+    if (!NeedsLayout())
+        ClearFragmentAnchor();
+}
+
+bool LocalFrameView::IsInPerformLayout(void) const
+{
+    return Lifecycle().GetState() == DocumentLifecycle::kInPerformLayout;
+}
+
+bool LocalFrameView::LayoutPending(void) const
+{
+    // FIXME: This should check Document::lifecycle instead.
+    return m_hasPendingLayout;
+}
+
 PaintLayerScrollableArea* LocalFrameView::LayoutViewport(void) const
 {
     if (LayoutView *layoutView = GetLayoutView())
         return layoutView->GetScrollableArea();
     return nullptr;
+}
+
+DocumentLifecycle& LocalFrameView::Lifecycle(void) const
+{
+    ASSERT(m_frame);
+    ASSERT(nullptr != m_frame->GetDocument());
+    return m_frame->GetDocument()->Lifecycle();
 }
 
 IntPoint LocalFrameView::Location(void) const
@@ -106,6 +167,15 @@ IntPoint LocalFrameView::Location(void) const
     }
 #endif
     return location;
+}
+
+bool LocalFrameView::NeedsLayout(void) const
+{
+    // This can return true in cases where the document does not have a body yet.
+    // Document::shouldScheduleLayout takes care of preventing us from scheduling
+    // layout in that case.
+    LayoutView *layoutView = GetLayoutView();
+    return LayoutPending() || (nullptr != layoutView && layoutView->NeedsLayout()) || IsSubtreeLayout();
 }
 
 void LocalFrameView::RemoveResizerArea(LayoutBox &resizerBox)
