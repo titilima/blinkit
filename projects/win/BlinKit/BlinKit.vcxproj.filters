@@ -28,11 +28,14 @@
     <Filter Include="js">
       <UniqueIdentifier>{a0cca361-2b22-4783-b400-ec602e1eef80}</UniqueIdentifier>
     </Filter>
-    <Filter Include="loader_tasks">
-      <UniqueIdentifier>{c4ad9db6-07a1-473b-9af1-194e093fc6c2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ui">
       <UniqueIdentifier>{82c3ccb8-480c-4a0a-aba8-a43cd33110cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="loader">
+      <UniqueIdentifier>{c4ad9db6-07a1-473b-9af1-194e093fc6c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="loader\tasks">
+      <UniqueIdentifier>{fe78d12c-5980-4506-b36c-03d39e5a6227}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -96,12 +99,6 @@
     <ClCompile Include="..\..\..\src\blinkit\js\js_value_impl.cpp">
       <Filter>js</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.cpp">
-      <Filter>loader_tasks</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\loader_task.cpp">
-      <Filter>loader_tasks</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\js\browser_context.cpp">
       <Filter>js</Filter>
     </ClCompile>
@@ -119,6 +116,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\app\heap_storage.cpp">
       <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\loader\loader_task.cpp">
+      <Filter>loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\loader\tasks\http_loader_task.cpp">
+      <Filter>loader\tasks</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -182,12 +185,6 @@
     <ClInclude Include="..\..\..\src\blinkit\js\js_value_impl.h">
       <Filter>js</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.h">
-      <Filter>loader_tasks</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\loader_task.h">
-      <Filter>loader_tasks</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\js\browser_context.h">
       <Filter>js</Filter>
     </ClInclude>
@@ -226,6 +223,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\app\heap_storage.h">
       <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\loader\loader_task.h">
+      <Filter>loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\loader\tasks\http_loader_task.h">
+      <Filter>loader\tasks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

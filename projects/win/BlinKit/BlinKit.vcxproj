@@ -182,8 +182,8 @@
     <ClCompile Include="..\..\..\src\blinkit\js\js_caller_context_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\js\js_value_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\js\simple_context.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.cpp" />
-    <ClCompile Include="..\..\..\src\blinkit\loader_tasks\loader_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader\loader_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader\tasks\http_loader_task.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\web_view_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\ui\win_web_view.cpp" />
     <ClCompile Include="..\_pch.cpp">
@@ -221,8 +221,8 @@
     <ClInclude Include="..\..\..\src\blinkit\js\js_caller_context_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\js_value_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\simple_context.h" />
-    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\http_loader_task.h" />
-    <ClInclude Include="..\..\..\src\blinkit\loader_tasks\loader_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader\loader_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader\tasks\http_loader_task.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\web_view_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\ui\win_web_view.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />

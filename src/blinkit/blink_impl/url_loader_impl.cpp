@@ -12,7 +12,7 @@
 #include "url_loader_impl.h"
 
 #include "base/single_thread_task_runner.h"
-#include "blinkit/loader_tasks/http_loader_task.h"
+#include "blinkit/loader/tasks/http_loader_task.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
 
 using namespace blink;
@@ -30,21 +30,32 @@ void URLLoaderImpl::LoadAsynchronously(const ResourceRequest &request, WebURLLoa
 {
     const GURL &url = request.Url();
 
+    int error = BK_ERR_URI;
+
     LoaderTask *task = nullptr;
     do {
-        if (url.SchemeIsHTTPOrHTTPS())
+        if (request.ForCrawler())
         {
-            ASSERT(nullptr != request.Crawler());
-            task = new HTTPLoaderTask(request.Crawler(), m_taskRunner, client);
+            if (url.SchemeIsHTTPOrHTTPS())
+                task = new HTTPLoaderTask(request.Crawler(), m_taskRunner, client);
+            else
+                NOTREACHED();
+            break;
         }
-
+#ifndef BLINKIT_CRAWLER_ONLY
+        ASSERT(false); // BKTODO:
+#endif
     } while (false);
-
-    int error = BK_ERR_URI;
     if (nullptr != task)
+    {
         error = task->Run(request);
-    if (BK_ERR_SUCCESS != error)
-        LoaderTask::ReportError(client, m_taskRunner.get(), error, url);
+        if (BK_ERR_SUCCESS == error)
+            return;
+
+        delete task;
+    }
+
+    LoaderTask::ReportError(client, m_taskRunner.get(), error, url);
 }
 
 } // namespace BlinKit

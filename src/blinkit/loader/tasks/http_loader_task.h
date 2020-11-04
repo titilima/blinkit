@@ -18,7 +18,7 @@
 #include "bk_crawler.h"
 #include "bk_http.h"
 #include "bkcommon/controller_impl.h"
-#include "blinkit/loader_tasks/loader_task.h"
+#include "blinkit/loader/loader_task.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 #include "url/gurl.h"
