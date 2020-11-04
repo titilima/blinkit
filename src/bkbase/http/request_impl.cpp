@@ -99,55 +99,9 @@ void RequestImpl::CleanupCURLSession(void)
     }
 }
 
-#if MANUALLY_SUPPRESS_CONNECT_HEADERS
-static bool HasConnectHeader(const std::string &headers)
-{
-    size_t p = headers.find("\r\n");
-    std::string line1 = headers.substr(0, p);
-
-    std::regex pattern(R"(HTTP\/([\d+\.]+)\s+(\d+)\s+(.*))");
-    std::smatch match;
-    if (!std::regex_search(line1, match, pattern))
-        return false;
-
-    return match.str(2) == "200" && base::EqualsCaseInsensitiveASCII(match.str(3), "Connection Established");
-}
-#endif
-
 void RequestImpl::DoThreadWork(void)
 {
-    static constexpr unsigned RetryCount = 3;
-    for (unsigned i = 0; i < RetryCount; ++i)
-    {
-        std::string headers;
-        curl_easy_setopt(m_curl, CURLOPT_HEADERDATA, &headers);
-        curl_easy_setopt(m_curl, CURLOPT_HEADERFUNCTION, HeaderCallback);
-
-        CURLcode code = curl_easy_perform(m_curl);
-
-        if (!headers.empty())
-        {
-#if MANUALLY_SUPPRESS_CONNECT_HEADERS
-            if (m_suppressConnectHeaders)
-            {
-                ASSERT(HasConnectHeader(headers));
-
-                size_t p = headers.find("\r\n\r\n");
-                headers = headers.substr(p + 4);
-            }
-#endif
-            m_response->ParseHeaders(headers);
-
-            code = m_response->InflateBodyIfNecessary(code);
-        }
-
-        if (ProcessResponse(code))
-            break;
-
-        m_response->Reset();
-        PrepareCURLSession();
-    }
-
+    PerformImpl();
     delete this;
 }
 
@@ -185,6 +139,91 @@ int RequestImpl::Perform(void)
     {
         if (PrepareCURLSession() && StartWorkThread())
             return BK_ERR_SUCCESS;
+    }
+    else
+    {
+        err = BK_ERR_URI;
+    }
+
+    ASSERT(BK_ERR_SUCCESS == err);
+    delete this;
+    return err;
+}
+
+#if MANUALLY_SUPPRESS_CONNECT_HEADERS
+static bool HasConnectHeader(const std::string &headers)
+{
+    size_t p = headers.find("\r\n");
+    std::string line1 = headers.substr(0, p);
+
+    std::regex pattern(R"(HTTP\/([\d+\.]+)\s+(\d+)\s+(.*))");
+    std::smatch match;
+    if (!std::regex_search(line1, match, pattern))
+        return false;
+
+    return match.str(2) == "200" && base::EqualsCaseInsensitiveASCII(match.str(3), "Connection Established");
+}
+#endif
+
+CURLcode RequestImpl::PerformCURLSession(void)
+{
+    std::string headers;
+    curl_easy_setopt(m_curl, CURLOPT_HEADERDATA, &headers);
+    curl_easy_setopt(m_curl, CURLOPT_HEADERFUNCTION, HeaderCallback);
+
+    CURLcode code = curl_easy_perform(m_curl);
+
+    std::unique_lock<Controller> lock(*m_controller);
+    if (!m_controller->Cancelled() && !headers.empty())
+    {
+#if MANUALLY_SUPPRESS_CONNECT_HEADERS
+        if (m_suppressConnectHeaders)
+        {
+            ASSERT(HasConnectHeader(headers));
+
+            size_t p = headers.find("\r\n\r\n");
+            headers = headers.substr(p + 4);
+        }
+#endif
+        m_response->ParseHeaders(headers);
+
+        code = m_response->InflateBodyIfNecessary(code);
+    }
+
+    return code;
+}
+
+CURLcode RequestImpl::PerformImpl(void)
+{
+    CURLcode code;
+
+    static constexpr unsigned RetryCount = 3;
+    for (unsigned i = 0; i < RetryCount; ++i)
+    {
+        code = PerformCURLSession();
+        if (ProcessResponse(code))
+            break;
+
+        m_response->Reset();
+        PrepareCURLSession();
+    }
+
+    return code;
+}
+
+int RequestImpl::PerformSynchronously(void)
+{
+    int err = BK_ERR_UNKNOWN;
+    if (m_URL.SchemeIsHTTPOrHTTPS())
+    {
+        if (PrepareCURLSession())
+        {
+            CURLcode code = PerformImpl();
+            if (CURLE_OK == code)
+                err = BK_ERR_SUCCESS;
+            else
+                err = BK_ERR_NETWORK;
+        }
     }
     else
     {
@@ -376,6 +415,11 @@ BKEXPORT int BKAPI BkPerformRequest(BkRequest request, BkWorkController *control
         *controller = c;
     }
     return request->Perform();
+}
+
+BKEXPORT int BKAPI BkPerformRequestSynchronously(BkRequest request)
+{
+    return request->PerformSynchronously();
 }
 
 BKEXPORT void BKAPI BkSetRequestBody(BkRequest request, const void *data, size_t dataLength)

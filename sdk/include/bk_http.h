@@ -34,6 +34,7 @@ struct BkRequestClient {
 BKEXPORT BkRequest BKAPI BkCreateRequest(const char *URL, struct BkRequestClient *client);
 
 BKEXPORT int BKAPI BkPerformRequest(BkRequest request, BkWorkController *controller);
+BKEXPORT int BKAPI BkPerformRequestSynchronously(BkRequest request);
 
 BKEXPORT void BKAPI BkSetRequestMethod(BkRequest request, const char *method);
 BKEXPORT void BKAPI BkSetRequestHeader(BkRequest request, const char *name, const char *value);

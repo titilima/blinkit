@@ -12,6 +12,7 @@ BkReleaseController
 
 BkCreateRequest
 BkPerformRequest
+BkPerformRequestSynchronously
 BkSetRequestMethod
 BkSetRequestHeader
 BkSetRequestBody
