@@ -29,9 +29,10 @@ using namespace blink;
 
 namespace BlinKit {
 
-HTTPLoaderTask::HTTPLoaderTask(BkCrawler crawler, const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, WebURLLoaderClient *client)
+HTTPLoaderTask::HTTPLoaderTask(BkCrawler crawler, ResourceRequest &request, const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, WebURLLoaderClient *client)
     : LoaderTask(taskRunner, client)
     , m_crawler(crawler)
+    , m_request(request)
 {
 }
 
@@ -204,7 +205,7 @@ void BKAPI HTTPLoaderTask::RequestCompleteImpl(BkResponse response, void *userDa
 void HTTPLoaderTask::RequestFailed(int errorCode)
 {
     BKLOG("HTTPLoaderTask::RequestFailed: %d.", errorCode);
-    LoaderTask::ReportError(m_client, m_taskRunner.get(), errorCode, m_url);
+    LoaderTask::ReportError(m_client, m_taskRunner.get(), errorCode, m_request.Url());
     delete this;
 }
 
@@ -221,7 +222,7 @@ bool HTTPLoaderTask::RequestRedirect(BkResponse response, BkRequest request)
         if (CookieJarImpl *cookieJar = m_crawler->GetCookieJar(false))
         {
             std::unique_lock<CookieJarImpl> lock(*cookieJar);
-            const char *URL = m_url.spec().c_str();
+            const char *URL = m_request.Url().spec().c_str();
             for (size_t i = 0; i < n; ++i)
             {
                 std::string cookie;
@@ -242,12 +243,12 @@ bool_t BKAPI HTTPLoaderTask::RequestRedirectImpl(BkResponse response, BkRequest 
     return reinterpret_cast<HTTPLoaderTask *>(userData)->RequestRedirect(response, request);
 }
 
-int HTTPLoaderTask::Run(const ResourceRequest &request)
+int HTTPLoaderTask::Run(void)
 {
-    m_url = request.Url();
-    m_hijackType = request.GetHijackType();
+    const GURL &url = m_request.Url();
+    m_hijackType = m_request.GetHijackType();
 
-    const std::string URL = m_url.spec();
+    const std::string URL = url.spec();
     if (ProcessHijackRequest(URL))
     {
         std::function<void()> callback = std::bind(&HTTPLoaderTask::DoContinue, this);
@@ -262,8 +263,8 @@ int HTTPLoaderTask::Run(const ResourceRequest &request)
         return BK_ERR_UNKNOWN;
     }
 
-    BkSetRequestMethod(req, request.HttpMethod().StdUtf8().c_str());
-    for (const auto &it : request.AllHeaders().GetRawMap())
+    BkSetRequestMethod(req, m_request.HttpMethod().StdUtf8().c_str());
+    for (const auto &it : m_request.AllHeaders().GetRawMap())
         BkSetRequestHeader(req, it.first.c_str(), it.second.c_str());
 
     std::string cookies = m_crawler->GetCookies(URL);

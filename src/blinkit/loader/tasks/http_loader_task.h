@@ -32,7 +32,7 @@ namespace BlinKit {
 class HTTPLoaderTask final : public LoaderTask, public ControllerImpl
 {
 public:
-    HTTPLoaderTask(BkCrawler crawler, const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
+    HTTPLoaderTask(BkCrawler crawler, blink::ResourceRequest &request, const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
     ~HTTPLoaderTask(void) override;
 private:
     BkRequest CreateRequest(const std::string &URL);
@@ -54,14 +54,14 @@ private:
     static bool_t BKAPI RequestRedirectImpl(BkResponse response, BkRequest request, void *userData);
 
     // LoaderTask
-    int Run(const blink::ResourceRequest &request) override;
+    int Run(void) override;
     // ControllerImpl
     int Release(void) override { return CancelWork(); }
     int ContinueWorking(void) override;
     int CancelWork(void) override;
 
     BkCrawler m_crawler;
-    GURL m_url;
+    blink::ResourceRequest m_request;
     blink::HijackType m_hijackType = blink::HijackType::kOther;
     ResponseImpl *m_response = nullptr;
 

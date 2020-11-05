@@ -32,7 +32,7 @@ public:
 
     static void ReportError(blink::WebURLLoaderClient *client, base::SingleThreadTaskRunner *taskRunner, int errorCode, const GURL &URL);
 
-    virtual int Run(const blink::ResourceRequest &request) = 0;
+    virtual int Run(void) = 0;
 protected:
     LoaderTask(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
 
