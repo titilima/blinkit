@@ -94,7 +94,7 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
             client.DocumentReady = DocumentReady;
             BkWebViewSetClient(v, &client);
 
-            BkLoadUI(v, "res://hello.html");
+            BkLoadUI(v, "res:ui.html");
             break;
         }
         default:
@@ -141,10 +141,15 @@ static int Run(HINSTANCE hInstance, int nShowCmd)
 
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE, PTSTR, int nShowCmd)
 {
+#if 1
     int r;
 
     BkInitialize(BK_APP_MAINTHREAD_MODE, nullptr);
     r = Run(hInstance, nShowCmd);
     BkFinalize();
     return r;
+#else
+    Client client;
+    return client.Run(URL);
+#endif
 }
