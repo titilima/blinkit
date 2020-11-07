@@ -37,7 +37,7 @@ static void CollectStringArgs(duk_context *ctx, std::vector<std::string> &dst)
         if (nullptr == s)
             continue;
 
-        dst.push_back(std::string(s, l));
+        dst.emplace_back(s, l);
     }
 }
 
