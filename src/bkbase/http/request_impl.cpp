@@ -193,36 +193,29 @@ CURLcode RequestImpl::PerformCURLSession(void)
     return code;
 }
 
-CURLcode RequestImpl::PerformImpl(void)
+void RequestImpl::PerformImpl(void)
 {
-    CURLcode code;
-
     static constexpr unsigned RetryCount = 3;
     for (unsigned i = 0; i < RetryCount; ++i)
     {
-        code = PerformCURLSession();
+        CURLcode code = PerformCURLSession();
         if (ProcessResponse(code))
             break;
 
         m_response->Reset();
         PrepareCURLSession();
     }
-
-    return code;
 }
 
-int RequestImpl::PerformSynchronously(void)
+void RequestImpl::PerformSynchronously(void)
 {
     int err = BK_ERR_UNKNOWN;
     if (m_URL.SchemeIsHTTPOrHTTPS())
     {
         if (PrepareCURLSession())
         {
-            CURLcode code = PerformImpl();
-            if (CURLE_OK == code)
-                err = BK_ERR_SUCCESS;
-            else
-                err = BK_ERR_NETWORK;
+            PerformImpl();
+            return;
         }
     }
     else
@@ -231,8 +224,8 @@ int RequestImpl::PerformSynchronously(void)
     }
 
     ASSERT(BK_ERR_SUCCESS == err);
+    m_client.RequestFailed(err, m_client.UserData);
     delete this;
-    return err;
 }
 
 bool RequestImpl::PrepareCURLSession(void)
@@ -417,9 +410,9 @@ BKEXPORT int BKAPI BkPerformRequest(BkRequest request, BkWorkController *control
     return request->Perform();
 }
 
-BKEXPORT int BKAPI BkPerformRequestSynchronously(BkRequest request)
+BKEXPORT void BKAPI BkPerformRequestSynchronously(BkRequest request)
 {
-    return request->PerformSynchronously();
+    request->PerformSynchronously();
 }
 
 BKEXPORT void BKAPI BkSetRequestBody(BkRequest request, const void *data, size_t dataLength)

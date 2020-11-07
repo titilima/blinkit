@@ -43,7 +43,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Exports
     int Perform(void);
-    int PerformSynchronously(void);
+    void PerformSynchronously(void);
     void SetMethod(const std::string &method) { m_method = method; }
     void SetHeader(const char *name, const char *value);
     void SetBody(const void *data, size_t dataLength);
@@ -68,7 +68,7 @@ private:
     void CleanupCURLSession(void);
     virtual bool StartWorkThread(void) = 0;
     static CURLoption TranslateOption(const char *name);
-    CURLcode PerformImpl(void);
+    void PerformImpl(void);
     bool ProcessResponse(CURLcode code);
     static size_t HeaderCallback(char *ptr, size_t, size_t nmemb, void *userData);
     static size_t WriteCallback(char *ptr, size_t, size_t nmemb, void *userData);
