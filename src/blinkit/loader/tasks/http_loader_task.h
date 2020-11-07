@@ -21,29 +21,22 @@
 #include "blinkit/loader/loader_task.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
-#include "url/gurl.h"
-
-namespace blink {
-class ResourceResponse;
-}
 
 namespace BlinKit {
 
 class HTTPLoaderTask final : public LoaderTask, public ControllerImpl
 {
 public:
-    HTTPLoaderTask(BkCrawler crawler, blink::ResourceRequest &request, const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
+    HTTPLoaderTask(const blink::ResourceRequest &request, const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner, blink::WebURLLoaderClient *client);
     ~HTTPLoaderTask(void) override;
 private:
-    BkRequest CreateRequest(const std::string &URL);
+    bool CreateRequest(const std::string &URL);
     AtomicString GetResponseHeader(const AtomicString &name) const;
 
     bool ProcessHijackRequest(const std::string &URL);
-    bool ProcessHijackResponse(void);
-    void ProcessRequestComplete(void);
     void PopulateHijackedResponse(const std::string &URL, const std::string &hijack);
     void PopulateResourceResponse(blink::ResourceResponse &response) const;
-    void DoContinue(void);
+    void CommitHijackedResponse(void);
     void DoCancel(void);
 
     void RequestComplete(BkResponse response);
@@ -54,18 +47,21 @@ private:
     static bool_t BKAPI RequestRedirectImpl(BkResponse response, BkRequest request, void *userData);
 
     // LoaderTask
-    int Run(void) override;
+    const GURL& URI(void) const override { return m_resourceRequest.Url(); }
+    int PreProcess(void) override;
+    int PerformRequest(void) override;
+    int PopulateResponse(blink::ResourceResponse &resourceResponse, std::string_view &body) const override;
     // ControllerImpl
     int Release(void) override { return CancelWork(); }
     int ContinueWorking(void) override;
     int CancelWork(void) override;
 
-    BkCrawler m_crawler;
-    blink::ResourceRequest m_request;
-    blink::HijackType m_hijackType = blink::HijackType::kOther;
+    const blink::ResourceRequest m_resourceRequest;
+    int m_errorCode = BK_ERR_SUCCESS;
+    BkRequest m_request = nullptr;
     ResponseImpl *m_response = nullptr;
 
-    bool m_callingCrawler = false;
+    mutable bool m_callingCrawler = false;
     std::optional<bool> m_cancel;
 };
 
