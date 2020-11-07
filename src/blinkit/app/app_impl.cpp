@@ -14,12 +14,13 @@
 #include "base/single_thread_task_runner.h"
 #include "blinkit/app/heap_storage.h"
 #include "blinkit/blink_impl/url_loader_impl.h"
+#include "blinkit/loader/loader_thread.h"
 #include "third_party/blink/public/platform/web_thread_scheduler.h"
 #include "third_party/blink/public/web/blink.h"
+#include "third_party/blink/renderer/platform/wtf/wtf.h"
 
 #if 0 // BKTODO:
 #include "blink_impl/mime_registry_impl.h"
-#include "crawler/crawler_impl.h"
 #endif
 
 namespace BlinKit {
@@ -54,18 +55,18 @@ std::unique_ptr<blink::WebURLLoader> AppImpl::CreateURLLoader(const std::shared_
     return std::make_unique<URLLoaderImpl>(taskRunner);
 }
 
-#if 0 // BKTODO:
-BkView* BKAPI AppImpl::CreateView(BkViewClient &client)
-{
-    assert(false); // Not reached!
-    return nullptr;
-}
-#endif // 0
-
 AppImpl& AppImpl::Get(void)
 {
     AppImpl *app = static_cast<AppImpl *>(Platform::Current());
     return *app;
+}
+
+LoaderThread& AppImpl::GetLoaderThread(void)
+{
+    ASSERT(IsMainThread());
+    if (!m_loaderThread)
+        m_loaderThread = LoaderThread::Create();
+    return *m_loaderThread;
 }
 
 void AppImpl::Initialize(BkAppClient *client)
