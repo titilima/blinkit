@@ -192,7 +192,9 @@
     <ClInclude Include="..\..\..\src\blinkit\js\js_value_impl.h" />
     <ClInclude Include="..\..\..\src\blinkit\js\simple_context.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\loader_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader\loader_thread.h" />
     <ClInclude Include="..\..\..\src\blinkit\loader\tasks\http_loader_task.h" />
+    <ClInclude Include="..\..\..\src\blinkit\loader\win_loader_thread.h" />
     <ClInclude Include="..\..\..\src\blinkit\_pc.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
@@ -227,7 +229,9 @@
     <ClCompile Include="..\..\..\src\blinkit\js\js_value_impl.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\js\simple_context.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\loader_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader\loader_thread.cpp" />
     <ClCompile Include="..\..\..\src\blinkit\loader\tasks\http_loader_task.cpp" />
+    <ClCompile Include="..\..\..\src\blinkit\loader\win_loader_thread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\base\base.vcxproj">

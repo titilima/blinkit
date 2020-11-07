@@ -66,7 +66,11 @@ public:
 
     static DocumentInit Create(void)
     {
+#ifdef BLINKIT_CRAWLER_ONLY
+        return DocumentInit();
+#else
         return DocumentInit(nullptr);
+#endif
     }
 #ifndef BLINKIT_CRAWLER_ONLY
     static DocumentInit CreateWithImportsController(const std::shared_ptr<HTMLImportsController> &importsController)
