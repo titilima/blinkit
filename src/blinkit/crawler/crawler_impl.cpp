@@ -138,12 +138,14 @@ void CrawlerImpl::ProcessDocumentReset(void)
         m_client.DocumentReset(m_client.UserData);
 }
 
-void CrawlerImpl::ProcessRequestComplete(BkResponse response, BkWorkController controller)
+bool CrawlerImpl::ProcessRequestComplete(BkResponse response, BkWorkController controller)
 {
     if (nullptr != m_client.RequestComplete)
+    {
         m_client.RequestComplete(response, controller, m_client.UserData);
-    else
-        controller->ContinueWorking();
+        return true;
+    }
+    return false;
 }
 
 int CrawlerImpl::Run(const char *URL)

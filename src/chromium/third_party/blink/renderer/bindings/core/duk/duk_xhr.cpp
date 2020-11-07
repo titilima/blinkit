@@ -11,12 +11,11 @@
 
 #include "duk_xhr.h"
 
-#include <condition_variable>
-#include <mutex>
 #include "base/single_thread_task_runner.h"
+#include "bkcommon/bk_strings.h"
+#include "bkcommon/bk_threading.hpp"
 #include "bkcommon/buffer_impl.hpp"
 #include "bkcommon/response_impl.h"
-#include "bkcommon/bk_strings.h"
 #include "blinkit/js/browser_context.h"
 #include "blinkit/js/heap_retained.h"
 #include "third_party/blink/public/platform/platform.h"
@@ -141,26 +140,16 @@ public:
 private:
     void OnRequestSent(duk_context *ctx) override
     {
-        {
-            std::unique_lock<std::mutex> lock(m_mutex);
-            while (!m_signal)
-                m_cond.wait(lock);
-        }
+        m_signal.Wait();
         ProcessResponse(ctx);
     }
     void OnRequestComplete(BkResponse response) override
     {
         Session::OnRequestComplete(response);
-        {
-            std::unique_lock<std::mutex> lock(m_mutex);
-            m_signal = true;
-        }
-        m_cond.notify_one();
+        m_signal.Signal();
     }
 
-    bool m_signal = false;
-    std::mutex m_mutex;
-    std::condition_variable m_cond;
+    BkSignal m_signal;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

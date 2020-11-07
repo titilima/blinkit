@@ -246,9 +246,12 @@ void FrameLoader::DidFinishNavigation(void)
     {
         m_frame->SetIsLoading(false);
 #ifndef BLINKIT_CRAWLER_ONLY
-        // Retry restoring scroll offset since finishing loading disables content
-        // size clamping.
-        ASSERT(false); // BKTODO: RestoreScrollPositionAndViewState();
+        if (!Client()->IsCrawler())
+        {
+            // Retry restoring scroll offset since finishing loading disables content
+            // size clamping.
+            ASSERT(false); // BKTODO: RestoreScrollPositionAndViewState();
+        }
 #endif
         if (m_documentLoader)
             m_documentLoader->SetLoadType(WebFrameLoadType::kStandard);
@@ -299,13 +302,14 @@ void FrameLoader::FinishedParsing(void)
     }
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
+    if (m_frame->View())
+    {
+        ASSERT(false); // BKTODO:
 #if 0
-    if (frame_->View()) {
         ProcessFragment(frame_->GetDocument()->Url(), document_loader_->LoadType(),
             kNavigationToDifferentDocument);
-    }
 #endif
+    }
 #endif
 
     m_frame->GetDocument()->CheckCompleted();

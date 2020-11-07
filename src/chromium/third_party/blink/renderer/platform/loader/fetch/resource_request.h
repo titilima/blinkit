@@ -67,6 +67,7 @@ public:
     explicit ResourceRequest(const GURL &URL);
 
     BkCrawler Crawler(void) const { return m_crawler; }
+    bool ForCrawler(void) const { return nullptr != m_crawler; }
     void SetCrawler(BkCrawler crawler) { m_crawler = crawler; }
 
     const GURL& Url(void) const { return m_URL; }

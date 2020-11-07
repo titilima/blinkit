@@ -473,6 +473,7 @@ protected:
         kCreatePseudoElement = kDefaultNodeFlags | kIsContainerFlag | kIsElementFlag | kNeedsReattachLayoutTree,
         kCreateCrawlerDocument = kCreateDocument | kForCrawlerFlag,
         kCreateCrawlerElement = kCreateHTMLElement | kForCrawlerFlag,
+        kCreateCrawlerText = kCreateText | kForCrawlerFlag,
     };
 
     Node(TreeScope *treeScope, ConstructionType type);

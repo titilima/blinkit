@@ -123,6 +123,18 @@
     <ClCompile Include="..\..\..\src\blinkit\loader\tasks\http_loader_task.cpp">
       <Filter>loader\tasks</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\loader\loader_thread.cpp">
+      <Filter>loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\loader\win_loader_thread.cpp">
+      <Filter>loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\loader\tasks\res_loader_task.cpp">
+      <Filter>loader\tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\loader\tasks\res_loader_task_win.cpp">
+      <Filter>loader\tasks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blinkit\_pc.h">
@@ -228,6 +240,15 @@
       <Filter>loader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\blinkit\loader\tasks\http_loader_task.h">
+      <Filter>loader\tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\loader\loader_thread.h">
+      <Filter>loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\loader\win_loader_thread.h">
+      <Filter>loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\loader\tasks\res_loader_task.h">
       <Filter>loader\tasks</Filter>
     </ClInclude>
   </ItemGroup>

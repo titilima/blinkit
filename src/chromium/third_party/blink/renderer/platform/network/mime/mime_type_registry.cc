@@ -30,6 +30,10 @@
 
 namespace blink {
 
+namespace MIMETypes {
+static const char TextHTML[] = "text/html";
+}
+
 namespace {
 
 #if 0 // BKTODO:
@@ -74,40 +78,30 @@ std::string ToLowerASCIIOrEmpty(const String& str) {
 }  // namespace
 
 String MIMETypeRegistry::GetMIMETypeForExtension(const String& ext) {
-  ASSERT(false); // BKTODO:
-  return String();
-#if 0
-  // The sandbox restricts our access to the registry, so we need to proxy
-  // these calls over to the browser process.
-  DEFINE_STATIC_LOCAL(MimeRegistryPtrHolder, registry_holder, ());
-  String mime_type;
-  if (!registry_holder.mime_registry->GetMimeTypeFromExtension(
-          ext.IsNull() ? "" : ext, &mime_type)) {
-    return String();
-  }
-  return mime_type;
-#endif
+  return GetWellKnownMIMETypeForExtension(ext);
 }
 
 String MIMETypeRegistry::GetWellKnownMIMETypeForExtension(const String& ext) {
+  using namespace WTF;
+  if (0 == CodePointCompareIgnoringASCIICase(ext, "html"))
+    return String::FromUTF8(MIMETypes::TextHTML);
+#ifndef NDEBUG
+  const std::string s = ext.StdUtf8();
   ASSERT(false); // BKTODO:
-  return String();
-#if 0
-  // This method must be thread safe and should not consult the OS/registry.
-  std::string mime_type;
-  net::GetWellKnownMimeTypeFromExtension(WebStringToFilePath(ext).value(),
-                                         &mime_type);
-  return String::FromUTF8(mime_type.data(), mime_type.length());
 #endif
+  return String();
 }
 
 bool MIMETypeRegistry::IsSupportedMIMEType(const String &mime_type)
 {
-    const std::string s = base::ToLowerASCII(mime_type.StdUtf8());
-    if (s == "text/html")
-        return true;
-    ASSERT(false); // BKTODO:
-    return false;
+  using namespace WTF;
+  if (0 == CodePointCompareIgnoringASCIICase(mime_type, MIMETypes::TextHTML))
+    return true;
+#ifndef NDEBUG
+  const std::string s = mime_type.StdUtf8();
+  ASSERT(false); // BKTODO:
+#endif
+  return false;
 }
 
 bool MIMETypeRegistry::IsSupportedImageMIMEType(const String& mime_type) {

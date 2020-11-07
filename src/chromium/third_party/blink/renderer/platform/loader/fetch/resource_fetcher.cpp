@@ -216,7 +216,7 @@ std::shared_ptr<Resource> ResourceFetcher::CreateResourceForLoading(
     resource->SetLinkPreload(params.IsLinkPreload());
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO: AddToMemoryCacheIfNeeded(params, resource);
+    // BKTODO: AddToMemoryCacheIfNeeded(params, resource);
 #endif
     return resource;
 }
@@ -423,76 +423,90 @@ std::shared_ptr<Resource> ResourceFetcher::RequestResource(
 #ifdef BLINKIT_CRAWLER_ONLY
     resource = CreateResourceForLoading(params, factory);
 #else
-    ASSERT(false); // BKTODO:
-#if 0
-    bool is_data_url = resource_request.Url().ProtocolIsData();
-    bool is_static_data = is_data_url || substitute_data.IsValid() || archive_;
-    bool is_stale_revalidation = params.IsStaleRevalidation();
-    if (!is_stale_revalidation && is_static_data) {
-        resource = ResourceForStaticData(params, factory, substitute_data);
-        if (resource) {
-            policy =
-                DetermineRevalidationPolicy(resource_type, params, *resource, true);
-        }
-        else if (!is_data_url && archive_) {
-            // Abort the request if the archive doesn't contain the resource, except
-            // in the case of data URLs which might have resources such as fonts that
-            // need to be decoded only on demand. These data URLs are allowed to be
-            // processed using the normal ResourceFetcher machinery.
-            return ResourceForBlockedRequest(
-                params, factory, ResourceRequestBlockedReason::kOther, client);
-        }
-    }
-
-    if (!is_stale_revalidation && !resource) {
-        resource = MatchPreload(params, resource_type);
-        if (resource) {
-            policy = kUse;
-            // If |params| is for a blocking resource and a preloaded resource is
-            // found, we may need to make it block the onload event.
-            MakePreloadedResourceBlockOnloadIfNeeded(resource, params);
-        }
-        else if (IsMainThread()) {
-            resource =
-                GetMemoryCache()->ResourceForURL(params.Url(), GetCacheIdentifier());
-            if (resource) {
-                policy = DetermineRevalidationPolicy(resource_type, params, *resource,
-                    is_static_data);
-            }
-        }
-    }
-
-    UpdateMemoryCacheStats(resource, policy, params, factory, is_static_data);
-
-    switch (policy) {
-    case kReload:
-        GetMemoryCache()->Remove(resource);
-        FALLTHROUGH;
-    case kLoad:
+    if (params.ForCrawler())
+    {
         resource = CreateResourceForLoading(params, factory);
-        break;
-    case kRevalidate:
-        InitializeRevalidation(resource_request, resource);
-        break;
-    case kUse:
-        if (resource_request.AllowsStaleResponse() &&
-            resource->ShouldRevalidateStaleResponse()) {
-            ScheduleStaleRevalidate(resource);
+    }
+    else
+    {
+        bool isDataURL = resourceRequest.Url().SchemeIs(url::kDataScheme);
+        bool isStaticData = isDataURL || substituteData.IsValid(); // BKTODO: || archive_;
+        bool isStaleRevalidation = params.IsStaleRevalidation();
+        if (!isStaleRevalidation && isStaticData)
+        {
+            ASSERT(false); // BKTODO:
+#if 0
+            resource = ResourceForStaticData(params, factory, substitute_data);
+            if (resource) {
+                policy =
+                    DetermineRevalidationPolicy(resource_type, params, *resource, true);
+            }
+            else if (!is_data_url && archive_) {
+                // Abort the request if the archive doesn't contain the resource, except
+                // in the case of data URLs which might have resources such as fonts that
+                // need to be decoded only on demand. These data URLs are allowed to be
+                // processed using the normal ResourceFetcher machinery.
+                return ResourceForBlockedRequest(
+                    params, factory, ResourceRequestBlockedReason::kOther, client);
+            }
+#endif
         }
 
-        if (resource->IsLinkPreload() && !params.IsLinkPreload())
-            resource->SetLinkPreload(false);
-        break;
+        if (!isStaleRevalidation && nullptr == resource)
+        {
+#if 0 // BKTODO: Check if necessary.
+            resource = MatchPreload(params, resource_type);
+            if (resource) {
+                policy = kUse;
+                // If |params| is for a blocking resource and a preloaded resource is
+                // found, we may need to make it block the onload event.
+                MakePreloadedResourceBlockOnloadIfNeeded(resource, params);
+            }
+            else if (IsMainThread()) {
+                resource =
+                    GetMemoryCache()->ResourceForURL(params.Url(), GetCacheIdentifier());
+                if (resource) {
+                    policy = DetermineRevalidationPolicy(resource_type, params, *resource,
+                        is_static_data);
+                }
+            }
+#endif
+        }
+
+#if 0 // BKTODO: Check if necessary.
+        UpdateMemoryCacheStats(resource, policy, params, factory, is_static_data);
+#endif
+
+        switch (policy)
+        {
+            case kReload:
+                ASSERT(false); // BKTODO: GetMemoryCache()->Remove(resource);
+                [[fallthrough]];
+            case kLoad:
+                resource = CreateResourceForLoading(params, factory);
+                break;
+            case kRevalidate:
+                ASSERT(false); // BKTODO: InitializeRevalidation(resource_request, resource);
+                break;
+            case kUse:
+                ASSERT(false); // BKTODO:
+#if 0
+                if (resource_request.AllowsStaleResponse() && resource->ShouldRevalidateStaleResponse())
+                    ScheduleStaleRevalidate(resource);
+                if (resource->IsLinkPreload() && !params.IsLinkPreload())
+                    resource->SetLinkPreload(false);
+#endif
+                break;
+        }
     }
-#endif
-#endif
+#endif // BLINKIT_CRAWLER_ONLY
     ASSERT(nullptr != resource);
     ASSERT(resource->GetType() == resourceType);
 
     if (policy != kUse)
         resource->SetIdentifier(identifier);
 
-    if (client)
+    if (nullptr != client)
         client->SetResource(resource, Context().GetLoadingTaskRunner().get());
 
     // TODO(yoav): It is not clear why preloads are exempt from this check. Can we
@@ -514,8 +528,7 @@ std::shared_ptr<Resource> ResourceFetcher::RequestResource(
     // If only the fragment identifiers differ, it is the same resource.
     ASSERT(EqualIgnoringFragmentIdentifier(resource->Url(), params.Url()));
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
     RequestLoadStarted(identifier, resource.get(), params, policy, isStaticData);
     if (!is_stale_revalidation) {
         cached_resources_map_.Set(
@@ -615,18 +628,20 @@ bool ResourceFetcher::ResourceNeedsLoad(Resource *resource, const FetchParameter
         return false;
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
-#if 0
     // Defer loading images either when:
     // - images are disabled
     // - instructed to defer loading images from network
-    if (resource->GetType() == ResourceType::kImage &&
-        (ShouldDeferImageLoad(resource->Url()) ||
-            params.GetImageRequestOptimization() ==
-            FetchParameters::kDeferImageLoad)) {
-        return false;
-    }
+    if (resource->GetType() == ResourceType::kImage)
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        if (ShouldDeferImageLoad(resource->Url())
+            || params.GetImageRequestOptimization() == FetchParameters::kDeferImageLoad))
+        {
+            return false;
+        }
 #endif
+    }
 #endif
     return policy != kUse || resource->StillNeedsLoad();
 }

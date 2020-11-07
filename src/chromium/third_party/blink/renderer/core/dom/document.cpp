@@ -193,14 +193,17 @@ Document::Document(const DocumentInit &initializer)
     , m_scriptRunner(ScriptRunner::Create(this))
     , m_loadEventDelayTimer(GetTaskRunner(TaskType::kNetworking), this, &Document::LoadEventDelayTimerFired)
 #ifndef BLINKIT_CRAWLER_ONLY
-    , m_importsController(initializer.ImportsController())
-    , m_registrationContext(initializer.RegistrationContext(this))
-    , m_viewportData(std::make_unique<ViewportData>(*this))
 #endif
 {
 #ifndef BLINKIT_CRAWLER_ONLY
     const bool isCrawler = ForCrawler();
     ASSERT(isCrawler == m_frame->Client()->IsCrawler());
+    if (!isCrawler)
+    {
+        m_importsController = initializer.ImportsController();
+        m_registrationContext = initializer.RegistrationContext(this);
+        m_viewportData = std::make_unique<ViewportData>(*this);
+    }
 #endif
     if (m_frame)
     {
@@ -246,7 +249,8 @@ Document::Document(const DocumentInit &initializer)
     ASSERT(m_fetcher);
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    m_rootScrollerController.reset(RootScrollerController::Create(*this));
+    if (!isCrawler)
+        m_rootScrollerController.reset(RootScrollerController::Create(*this));
 #endif
 
     // We depend on the url getting immediately set in subframes, but we
@@ -270,10 +274,13 @@ Document::Document(const DocumentInit &initializer)
     m_lifecycle.AdvanceTo(DocumentLifecycle::kInactive);
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    // Since CSSFontSelector requires Document::m_fetcher and StyleEngine owns
-    // CSSFontSelector, need to initialize m_styleEngine after initializing
-    // fetcher_.
-    m_styleEngine = StyleEngine::Create(*this);
+    if (!isCrawler)
+    {
+        // Since CSSFontSelector requires Document::m_fetcher and StyleEngine owns
+        // CSSFontSelector, need to initialize m_styleEngine after initializing
+        // fetcher_.
+        m_styleEngine = StyleEngine::Create(*this);
+    }
 #endif
 }
 
@@ -293,7 +300,7 @@ Document::~Document(void)
     }
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    DCHECK(!GetLayoutView());
+    ASSERT(nullptr == GetLayoutView());
 #endif
 }
 
@@ -596,11 +603,15 @@ bool Document::CheckCompletedInternal(void)
     if (!Loader()->SentDidFinishLoad())
     {
 #ifndef BLINKIT_CRAWLER_ONLY
-        ASSERT(false); // BKTODO:
+        const bool forUI = !ForCrawler();
+        if (forUI)
+        {
+            ASSERT(false); // BKTODO:
 #if 0
-        if (frame_->IsMainFrame())
-            GetViewportData().GetViewportDescription().ReportMobilePageStats(frame_);
+            if (frame_->IsMainFrame())
+                GetViewportData().GetViewportDescription().ReportMobilePageStats(frame_);
 #endif
+        }
 #endif
         Loader()->SetSentDidFinishLoad();
         m_frame->Client()->DispatchDidFinishLoad();
@@ -608,7 +619,8 @@ bool Document::CheckCompletedInternal(void)
             return false;
 
 #ifndef BLINKIT_CRAWLER_ONLY
-        ASSERT(false); // BKTODO: AnchorElementMetrics::MaybeReportViewportMetricsOnLoad(*this);
+        if (forUI)
+            ASSERT(false); // BKTODO: AnchorElementMetrics::MaybeReportViewportMetricsOnLoad(*this);
 #endif
     }
 
@@ -796,58 +808,65 @@ void Document::DispatchUnloadEvents(void)
     if (m_loadEventProgress <= kUnloadEventInProgress)
     {
 #ifndef BLINKIT_CRAWLER_ONLY
-        ASSERT(false); // BKTODO:
+        const bool forCrawler = ForCrawler();
+        if (!forCrawler)
+        {
+            ASSERT(false); // BKTODO:
 #if 0
-        Element* current_focused_element = FocusedElement();
-        if (auto* input = ToHTMLInputElementOrNull(current_focused_element))
-            input->EndEditing();
+            Element* current_focused_element = FocusedElement();
+            if (auto* input = ToHTMLInputElementOrNull(current_focused_element))
+                input->EndEditing();
 #endif
+        }
 #endif
         if (m_loadEventProgress < kPageHideInProgress)
         {
 #ifndef BLINKIT_CRAWLER_ONLY
             m_loadEventProgress = kPageHideInProgress;
-            if (LocalDOMWindow *window = domWindow())
+            if (!forCrawler)
             {
+                if (LocalDOMWindow *window = domWindow())
+                {
+                    ASSERT(false); // BKTODO:
+#if 0
+                    const TimeTicks pagehide_event_start = CurrentTimeTicks();
+                    window->DispatchEvent(
+                        *PageTransitionEvent::Create(EventTypeNames::pagehide, false),
+                        this);
+                    const TimeTicks pagehide_event_end = CurrentTimeTicks();
+                    DEFINE_STATIC_LOCAL(
+                        CustomCountHistogram, pagehide_histogram,
+                        ("DocumentEventTiming.PageHideDuration", 0, 10000000, 50));
+                    pagehide_histogram.CountMicroseconds(pagehide_event_end -
+                        pagehide_event_start);
+#endif
+                }
                 ASSERT(false); // BKTODO:
 #if 0
-                const TimeTicks pagehide_event_start = CurrentTimeTicks();
-                window->DispatchEvent(
-                    *PageTransitionEvent::Create(EventTypeNames::pagehide, false),
-                    this);
-                const TimeTicks pagehide_event_end = CurrentTimeTicks();
-                DEFINE_STATIC_LOCAL(
-                    CustomCountHistogram, pagehide_histogram,
-                    ("DocumentEventTiming.PageHideDuration", 0, 10000000, 50));
-                pagehide_histogram.CountMicroseconds(pagehide_event_end -
-                    pagehide_event_start);
-#endif
-            }
-            ASSERT(false); // BKTODO:
-#if 0
-            if (!frame_)
-                return;
+                if (!frame_)
+                    return;
 
-            mojom::PageVisibilityState visibility_state = GetPageVisibilityState();
-            load_event_progress_ = kUnloadVisibilityChangeInProgress;
-            if (visibility_state != mojom::PageVisibilityState::kHidden) {
-                // Dispatch visibilitychange event, but don't bother doing
-                // other notifications as we're about to be unloaded.
-                const TimeTicks pagevisibility_hidden_event_start = CurrentTimeTicks();
-                DispatchEvent(*Event::CreateBubble(EventTypeNames::visibilitychange));
-                const TimeTicks pagevisibility_hidden_event_end = CurrentTimeTicks();
-                DEFINE_STATIC_LOCAL(CustomCountHistogram, pagevisibility_histogram,
-                    ("DocumentEventTiming.PageVibilityHiddenDuration",
-                        0, 10000000, 50));
-                pagevisibility_histogram.CountMicroseconds(
-                    pagevisibility_hidden_event_end -
-                    pagevisibility_hidden_event_start);
-                DispatchEvent(
-                    *Event::CreateBubble(EventTypeNames::webkitvisibilitychange));
-            }
-            if (!frame_)
-                return;
+                mojom::PageVisibilityState visibility_state = GetPageVisibilityState();
+                load_event_progress_ = kUnloadVisibilityChangeInProgress;
+                if (visibility_state != mojom::PageVisibilityState::kHidden) {
+                    // Dispatch visibilitychange event, but don't bother doing
+                    // other notifications as we're about to be unloaded.
+                    const TimeTicks pagevisibility_hidden_event_start = CurrentTimeTicks();
+                    DispatchEvent(*Event::CreateBubble(EventTypeNames::visibilitychange));
+                    const TimeTicks pagevisibility_hidden_event_end = CurrentTimeTicks();
+                    DEFINE_STATIC_LOCAL(CustomCountHistogram, pagevisibility_histogram,
+                        ("DocumentEventTiming.PageVibilityHiddenDuration",
+                            0, 10000000, 50));
+                    pagevisibility_histogram.CountMicroseconds(
+                        pagevisibility_hidden_event_end -
+                        pagevisibility_hidden_event_start);
+                    DispatchEvent(
+                        *Event::CreateBubble(EventTypeNames::webkitvisibilitychange));
+                }
+                if (!frame_)
+                    return;
 #endif
+            }
 #endif
 
             m_loadEventProgress = kUnloadEventInProgress;
@@ -927,25 +946,28 @@ void Document::FinishedParsing(void)
             DispatchDidReceiveTitle();
 
 #ifndef BLINKIT_CRAWLER_ONLY
-        // Don't update the layout tree if we haven't requested the main resource
-        // yet to avoid adding extra latency. Note that the first layout tree update
-        // can be expensive since it triggers the parsing of the default stylesheets
-        // which are compiled-in.
-        const bool mainResourceWasAlreadyRequested = frame->Loader().StateMachine()->CommittedFirstRealDocumentLoad();
+        if (!ForCrawler())
+        {
+            // Don't update the layout tree if we haven't requested the main resource
+            // yet to avoid adding extra latency. Note that the first layout tree update
+            // can be expensive since it triggers the parsing of the default stylesheets
+            // which are compiled-in.
+            const bool mainResourceWasAlreadyRequested = frame->Loader().StateMachine()->CommittedFirstRealDocumentLoad();
 
-        // FrameLoader::finishedParsing() might end up calling
-        // Document::implicitClose() if all resource loads are
-        // complete. HTMLObjectElements can start loading their resources from post
-        // attach callbacks triggered by recalcStyle().  This means if we parse out
-        // an <object> tag and then reach the end of the document without updating
-        // styles, we might not have yet started the resource load and might fire
-        // the window load event too early.  To avoid this we force the styles to be
-        // up to date before calling FrameLoader::finishedParsing().  See
-        // https://bugs.webkit.org/show_bug.cgi?id=36864 starting around comment 35.
-        if (mainResourceWasAlreadyRequested)
-            UpdateStyleAndLayoutTree();
+            // FrameLoader::finishedParsing() might end up calling
+            // Document::implicitClose() if all resource loads are
+            // complete. HTMLObjectElements can start loading their resources from post
+            // attach callbacks triggered by recalcStyle().  This means if we parse out
+            // an <object> tag and then reach the end of the document without updating
+            // styles, we might not have yet started the resource load and might fire
+            // the window load event too early.  To avoid this we force the styles to be
+            // up to date before calling FrameLoader::finishedParsing().  See
+            // https://bugs.webkit.org/show_bug.cgi?id=36864 starting around comment 35.
+            if (mainResourceWasAlreadyRequested)
+                UpdateStyleAndLayoutTree();
 
-        BeginLifecycleUpdatesIfRenderingReady();
+            BeginLifecycleUpdatesIfRenderingReady();
+        }
 #endif
 
         frame->Loader().FinishedParsing();
@@ -1121,25 +1143,29 @@ void Document::ImplicitClose(void)
 #endif
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
+    if (!ForCrawler())
+    {
+        ASSERT(false); // BKTODO:
 #if 0
-    // We used to force a synchronous display and flush here.  This really isn't
-    // necessary and can in fact be actively harmful if pages are loading at a
-    // rate of > 60fps
-    // (if your platform is syncing flushes and limiting them to 60fps).
-    if (!LocalOwner() || (LocalOwner()->GetLayoutObject() &&
-        !LocalOwner()->GetLayoutObject()->NeedsLayout())) {
-        UpdateStyleAndLayoutTree();
+        // We used to force a synchronous display and flush here.  This really isn't
+        // necessary and can in fact be actively harmful if pages are loading at a
+        // rate of > 60fps
+        // (if your platform is syncing flushes and limiting them to 60fps).
+        if (!LocalOwner() || (LocalOwner()->GetLayoutObject() &&
+            !LocalOwner()->GetLayoutObject()->NeedsLayout()))
+        {
+            UpdateStyleAndLayoutTree();
 
-        // Always do a layout after loading if needed.
-        if (View() && GetLayoutView() &&
-            (!GetLayoutView()->FirstChild() || GetLayoutView()->NeedsLayout()))
-            View()->UpdateLayout();
-    }
+            // Always do a layout after loading if needed.
+            if (View() && GetLayoutView() &&
+                (!GetLayoutView()->FirstChild() || GetLayoutView()->NeedsLayout()))
+                View()->UpdateLayout();
+        }
 
-    if (View())
-        View()->ScrollAndFocusFragmentAnchor();
+        if (View())
+            View()->ScrollAndFocusFragmentAnchor();
 #endif
+    }
 #endif
 
     m_loadEventProgress = kLoadEventCompleted;
@@ -1516,6 +1542,7 @@ void Document::RemoveFocusedElementOfSubtree(Node *node, bool amongChildrenOnly)
 
 void Document::ScheduleLayoutTreeUpdate(void)
 {
+    ASSERT(!ForCrawler());
     ASSERT(!HasPendingVisualUpdate());
     ASSERT(ShouldScheduleLayoutTreeUpdate());
     ASSERT(NeedsLayoutTreeUpdate());
@@ -1557,8 +1584,11 @@ void Document::SetContentLanguage(const AtomicString &language)
     m_contentLanguage = language;
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    // Document's style depends on the content language.
-    SetNeedsStyleRecalc(kSubtreeStyleChange, StyleChangeReasonForTracing::Create(StyleChangeReason::kLanguage));
+    if (!ForCrawler())
+    {
+        // Document's style depends on the content language.
+        SetNeedsStyleRecalc(kSubtreeStyleChange, StyleChangeReasonForTracing::Create(StyleChangeReason::kLanguage));
+    }
 #endif
 }
 
@@ -1589,14 +1619,17 @@ void Document::SetDoctype(DocumentType *docType)
         AdoptIfNeeded(*doc_type_);
 #endif
 #ifndef BLINKIT_CRAWLER_ONLY
-        ASSERT(false); // BKTODO:
+        if (!ForCrawler())
+        {
+            ASSERT(false); // BKTODO:
 #if 0
-        if (doc_type_->publicId().StartsWithIgnoringASCIICase(
-            "-//wapforum//dtd xhtml mobile 1.")) {
-            is_mobile_document_ = true;
-            style_engine_->ViewportRulesChanged();
-        }
+            if (doc_type_->publicId().StartsWithIgnoringASCIICase(
+                "-//wapforum//dtd xhtml mobile 1.")) {
+                is_mobile_document_ = true;
+                style_engine_->ViewportRulesChanged();
+            }
 #endif
+        }
 #endif
     }
 }
@@ -1778,10 +1811,14 @@ void Document::Shutdown(void)
         return;
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
+    const bool forCrawler = ForCrawler();
+    if (!forCrawler)
+    {
+        ASSERT(false); // BKTODO:
 #if 0
-    GetViewportData().Shutdown();
+        GetViewportData().Shutdown();
 #endif
+    }
 #endif
 
     // Frame navigation can cause a new Document to be attached. Don't allow that,
@@ -1796,62 +1833,60 @@ void Document::Shutdown(void)
 
     m_lifecycle.AdvanceTo(DocumentLifecycle::kStopping);
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
+    if (!forCrawler)
+    {
+        ASSERT(false); // BKTODO:
 #if 0
-    View()->Dispose();
-    // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
-    CHECK(!View()->IsAttached());
-#endif
-#endif
+        View()->Dispose();
+        // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
+        CHECK(!View()->IsAttached());
 
-#ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
-#if 0
-    markers_->PrepareForDestruction();
+        markers_->PrepareForDestruction();
 
-    if (GetPage())
-        GetPage()->DocumentDetached(this);
-
-    if (frame_->Client()->GetSharedWorkerRepositoryClient())
-        frame_->Client()->GetSharedWorkerRepositoryClient()->DocumentDetached(this);
-
-    // FIXME: consider using PausableObject.
-    if (scripted_animation_controller_)
-        scripted_animation_controller_->ClearDocumentPointer();
-    scripted_animation_controller_.Clear();
-
-    scripted_idle_task_controller_.Clear();
-
-    if (layout_view_)
-        layout_view_->SetIsInWindow(false);
-
-    if (RegistrationContext())
-        RegistrationContext()->DocumentWasDetached();
-
-    MutationObserver::CleanSlotChangeList(*this);
-
-    hover_element_ = nullptr;
-    active_element_ = nullptr;
-    autofocus_element_ = nullptr;
-
-    if (focused_element_.Get()) {
-        Element* old_focused_element = focused_element_;
-        focused_element_ = nullptr;
         if (GetPage())
-            GetPage()->GetChromeClient().FocusedNodeChanged(old_focused_element,
-                nullptr);
-    }
-    sequential_focus_navigation_starting_point_ = nullptr;
+            GetPage()->DocumentDetached(this);
 
-    layout_view_ = nullptr;
-    ContainerNode::DetachLayoutTree();
-    // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
-    CHECK(!View()->IsAttached());
+        if (frame_->Client()->GetSharedWorkerRepositoryClient())
+            frame_->Client()->GetSharedWorkerRepositoryClient()->DocumentDetached(this);
 
-    GetStyleEngine().DidDetach();
+        // FIXME: consider using PausableObject.
+        if (scripted_animation_controller_)
+            scripted_animation_controller_->ClearDocumentPointer();
+        scripted_animation_controller_.Clear();
 
-    frame_->GetEventHandlerRegistry().DocumentDetached(*this);
+        scripted_idle_task_controller_.Clear();
+
+        if (layout_view_)
+            layout_view_->SetIsInWindow(false);
+
+        if (RegistrationContext())
+            RegistrationContext()->DocumentWasDetached();
+
+        MutationObserver::CleanSlotChangeList(*this);
+
+        hover_element_ = nullptr;
+        active_element_ = nullptr;
+        autofocus_element_ = nullptr;
+
+        if (focused_element_.Get()) {
+            Element* old_focused_element = focused_element_;
+            focused_element_ = nullptr;
+            if (GetPage())
+                GetPage()->GetChromeClient().FocusedNodeChanged(old_focused_element,
+                    nullptr);
+        }
+        sequential_focus_navigation_starting_point_ = nullptr;
+
+        layout_view_ = nullptr;
+        ContainerNode::DetachLayoutTree();
+        // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
+        CHECK(!View()->IsAttached());
+
+        GetStyleEngine().DidDetach();
+
+        frame_->GetEventHandlerRegistry().DocumentDetached(*this);
 #endif
+    }
 #endif
 
     // Signal destruction to mutation observers.
@@ -1866,25 +1901,28 @@ void Document::Shutdown(void)
     if (nullptr == Loader())
         m_fetcher->ClearContext();
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
+    if (!forCrawler)
+    {
+        ASSERT(false); // BKTODO:
 #if 0
-    // If this document is the master for an HTMLImportsController, sever that
-    // relationship. This ensures that we don't leave import loads in flight,
-    // thinking they should have access to a valid frame when they don't.
-    if (imports_controller_) {
-        imports_controller_->Dispose();
-        ClearImportsController();
-    }
+        // If this document is the master for an HTMLImportsController, sever that
+        // relationship. This ensures that we don't leave import loads in flight,
+        // thinking they should have access to a valid frame when they don't.
+        if (imports_controller_) {
+            imports_controller_->Dispose();
+            ClearImportsController();
+        }
 
-    if (media_query_matcher_)
-        media_query_matcher_->DocumentDetached();
+        if (media_query_matcher_)
+            media_query_matcher_->DocumentDetached();
 #endif
+    }
 #endif
 
     m_lifecycle.AdvanceTo(DocumentLifecycle::kStopped);
 #ifndef BLINKIT_CRAWLER_ONLY
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
-    ASSERT(false); // BKTODO: CHECK(!View()->IsAttached());
+    ASSERT(forCrawler); // BKTODO: CHECK(!View()->IsAttached());
 #endif
 
     // TODO(haraken): Call contextDestroyed() before we start any disruptive
@@ -1898,7 +1936,7 @@ void Document::Shutdown(void)
     ExecutionContext::NotifyContextDestroyed();
 #ifndef BLINKIT_CRAWLER_ONLY
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
-    ASSERT(false); // BKTODO: CHECK(!View()->IsAttached());
+    ASSERT(forCrawler); // BKTODO: CHECK(!View()->IsAttached());
 #endif
 
     // This is required, as our LocalFrame might delete itself as soon as it
@@ -2022,6 +2060,9 @@ Element* Document::ViewportDefiningElement(const ComputedStyle *rootStyle) const
 void Document::WillInsertBody(void)
 {
 #ifndef BLINKIT_CRAWLER_ONLY
+    if (ForCrawler())
+        return;
+
     if (DocumentLoader *loader = Loader())
         loader->Fetcher()->LoosenLoadThrottlingPolicy();
 

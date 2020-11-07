@@ -163,18 +163,19 @@ void LocalFrame::DetachImpl(FrameDetachType type)
     m_loader.Detach();
     GetDocument()->Shutdown();
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
-#if 0
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
     // It seems to crash because Frame is detached before LocalFrameView.
     // Verify here that any LocalFrameView has been detached by now.
-    if (view_ && view_->IsAttached()) {
+    if (m_view && m_view->IsAttached())
+    {
+        ASSERT(false); // BKTODO: Check if necessary.
+#if 0
         CHECK(DeprecatedLocalOwner());
         CHECK(DeprecatedLocalOwner()->OwnedEmbeddedContentView());
         CHECK_EQ(view_, DeprecatedLocalOwner()->OwnedEmbeddedContentView());
-    }
-    CHECK(!view_ || !view_->IsAttached());
 #endif
+    }
+    ASSERT(!m_view || !m_view->IsAttached());
 #endif
 
     // This is the earliest that scripting can be disabled:
@@ -194,7 +195,7 @@ void LocalFrame::DetachImpl(FrameDetachType type)
 
 #ifndef BLINKIT_CRAWLER_ONLY
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
-    ASSERT(false); // BKTODO: CHECK(!view_->IsAttached());
+    ASSERT(Client()->IsCrawler()); // BKTODO: CHECK(!view_->IsAttached());
 #endif
     Client()->WillBeDetached();
     // Notify ScriptController that the frame is closing, since its cleanup ends
@@ -202,7 +203,7 @@ void LocalFrame::DetachImpl(FrameDetachType type)
     GetScriptController().ClearForClose();
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
+    ASSERT(Client()->IsCrawler()); // BKTODO:
 #if 0
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
     CHECK(!view_->IsAttached());
@@ -217,7 +218,7 @@ void LocalFrame::DetachImpl(FrameDetachType type)
     DomWindow()->FrameDestroyed();
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
+    ASSERT(Client()->IsCrawler()); // BKTODO:
 #if 0
     if (GetPage() && GetPage()->GetFocusController().FocusedFrame() == this)
         GetPage()->GetFocusController().SetFocusedFrame(nullptr);

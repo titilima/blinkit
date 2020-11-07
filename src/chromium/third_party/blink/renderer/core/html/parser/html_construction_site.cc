@@ -792,7 +792,7 @@ void HTMLConstructionSite::InsertTextNode(const StringView& string,
     FindFosterSite(dummy_task);
 
 #ifndef BLINKIT_CRAWLER_ONLY
-  ASSERT(false); // BKTODO:
+  BKLOG("// BKTODO: Process template element.");
 #if 0
   // FIXME: This probably doesn't need to be done both here and in insert(Task).
   if (auto* template_element = ToHTMLTemplateElementOrNull(*dummy_task.parent))

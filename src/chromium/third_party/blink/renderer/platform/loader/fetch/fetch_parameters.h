@@ -74,6 +74,7 @@ public:
 
     ResourceRequest& MutableResourceRequest(void) { return m_resourceRequest; }
     const ResourceRequest& GetResourceRequest(void) const { return m_resourceRequest; }
+    bool ForCrawler(void) const { return m_resourceRequest.ForCrawler(); }
 
     const GURL& Url(void) const { return m_resourceRequest.Url(); }
 

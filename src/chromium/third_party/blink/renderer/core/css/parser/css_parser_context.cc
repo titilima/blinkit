@@ -148,7 +148,7 @@ std::unique_ptr<CSSParserContext> CSSParserContext::Create(
   CSSParserMode match_mode = mode;
 #else
   CSSParserMode match_mode;
-  ASSERT(false); // BKTODO:
+  ASSERT(document.ForCrawler()); // BKTODO:
 #if 0
   HTMLImportsController* imports_controller = document.ImportsController();
   if (imports_controller && profile == kLiveProfile) {

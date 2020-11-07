@@ -141,12 +141,15 @@ void LocalDOMWindow::DocumentWasClosed(void)
 {
     DispatchWindowLoadEvent();
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
+    if (!GetFrame()->Client()->IsCrawler())
+    {
+        ASSERT(false); // BKTODO:
 #if 0
-    EnqueuePageshowEvent(kPageshowEventNotPersisted);
-    if (pending_state_object_)
-        EnqueuePopstateEvent(std::move(pending_state_object_));
+        EnqueuePageshowEvent(kPageshowEventNotPersisted);
+        if (pending_state_object_)
+            EnqueuePopstateEvent(std::move(pending_state_object_));
 #endif
+    }
 #endif
 }
 
@@ -183,7 +186,8 @@ Document* LocalDOMWindow::InstallNewDocument(const DocumentInit &init)
     ASSERT(init.GetFrame()->Client()->IsCrawler());
     m_document = std::make_unique<CrawlerDocument>(init);
 #else
-    if (init.GetFrame()->Client()->IsCrawler())
+    const bool isCrawler = init.GetFrame()->Client()->IsCrawler();
+    if (isCrawler)
         m_document = std::make_unique<CrawlerDocument>(init);
     else
         m_document = std::make_unique<HTMLDocument>(init);
@@ -194,7 +198,8 @@ Document* LocalDOMWindow::InstallNewDocument(const DocumentInit &init)
     {
         frame->GetScriptController().UpdateDocument();
 #ifndef BLINKIT_CRAWLER_ONLY
-        m_document->GetViewportData().UpdateViewportDescription();
+        if (!isCrawler)
+            m_document->GetViewportData().UpdateViewportDescription();
 #endif
     }
 

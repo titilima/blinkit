@@ -118,19 +118,23 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
 {
     const QualifiedName &name = params.name;
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
+    const bool forCrawler = ForCrawler();
+    if (!forCrawler)
+    {
+        ASSERT(false); // BKTODO:
 #if 0
-    if (ShadowRoot* parent_shadow_root =
-        ShadowRootWhereNodeCanBeDistributedForV0(*this)) {
-        if (ShouldInvalidateDistributionWhenAttributeChanged(
-            *parent_shadow_root, name, params.new_value))
-            parent_shadow_root->SetNeedsDistributionRecalc();
-    }
-    if (name == HTMLNames::slotAttr && params.old_value != params.new_value) {
-        if (ShadowRoot* root = V1ShadowRootOfParent())
-            root->DidChangeHostChildSlotName(params.old_value, params.new_value);
-    }
+        if (ShadowRoot* parent_shadow_root =
+            ShadowRootWhereNodeCanBeDistributedForV0(*this)) {
+            if (ShouldInvalidateDistributionWhenAttributeChanged(
+                *parent_shadow_root, name, params.new_value))
+                parent_shadow_root->SetNeedsDistributionRecalc();
+        }
+        if (name == HTMLNames::slotAttr && params.old_value != params.new_value) {
+            if (ShadowRoot* root = V1ShadowRootOfParent())
+                root->DidChangeHostChildSlotName(params.old_value, params.new_value);
+        }
 #endif
+    }
 #endif
 
     ParseAttribute(params);
@@ -145,7 +149,8 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
         {
             GetElementData()->SetIdForStyleResolution(newId);
 #ifndef BLINKIT_CRAWLER_ONLY
-            ASSERT(false); // BKTODO: GetDocument().GetStyleEngine().IdChangedForElement(oldId, newId, *this);
+            if (!forCrawler)
+                ASSERT(false); // BKTODO: GetDocument().GetStyleEngine().IdChangedForElement(oldId, newId, *this);
 #endif
         }
     }
@@ -203,20 +208,24 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
     InvalidateNodeListCachesInAncestors(&name, this, nullptr);
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
+    if (!forCrawler)
+    {
+        ASSERT(false); // BKTODO:
 #if 0
-    if (params.reason == AttributeModificationReason::kDirectly &&
-        name == tabindexAttr && AdjustedFocusedElementInTreeScope() == this) {
-        // The attribute change may cause supportsFocus() to return false
-        // for the element which had focus.
-        //
-        // TODO(tkent): We should avoid updating style.  We'd like to check only
-        // DOM-level focusability here.
-        GetDocument().UpdateStyleAndLayoutTreeForNode(this);
-        if (!SupportsFocus())
-            blur();
-    }
+        if (params.reason == AttributeModificationReason::kDirectly &&
+            name == tabindexAttr && AdjustedFocusedElementInTreeScope() == this)
+        {
+            // The attribute change may cause supportsFocus() to return false
+            // for the element which had focus.
+            //
+            // TODO(tkent): We should avoid updating style.  We'd like to check only
+            // DOM-level focusability here.
+            GetDocument().UpdateStyleAndLayoutTreeForNode(this);
+            if (!SupportsFocus())
+                blur();
+        }
 #endif
+    }
 #endif
 }
 

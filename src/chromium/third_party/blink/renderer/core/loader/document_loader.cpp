@@ -196,7 +196,8 @@ void DocumentLoader::DidCommitNavigation(WebGlobalObjectReusePolicy reusePolicy)
 #endif
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO: m_frame->GetPage()->DidCommitLoad(frame_);
+    if (Page *page = m_frame->GetPage())
+        ASSERT(false); // BKTODO: m_frame->GetPage()->DidCommitLoad(frame_);
 #endif
 }
 

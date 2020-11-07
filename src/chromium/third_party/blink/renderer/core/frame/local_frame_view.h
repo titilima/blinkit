@@ -50,6 +50,7 @@ public:
     int Width(void) const { return Size().Width(); }
     int Height(void) const { return Size().Height(); }
     IntSize Size(void) const { return m_frameRect.Size(); }
+    bool IsAttached(void) const { return m_isAttached; }
     bool IsSelfVisible(void) const { return m_selfVisible; }
     void SetSelfVisible(bool visible);
     bool CanHaveScrollbars(void) const { return m_canHaveScrollbars; }
@@ -121,6 +122,7 @@ private:
 
     Member<LocalFrame> m_frame;
     IntRect m_frameRect;
+    bool m_isAttached = false;
     bool m_selfVisible = false;
     bool m_canHaveScrollbars = true;
     bool m_hasPendingLayout = false;

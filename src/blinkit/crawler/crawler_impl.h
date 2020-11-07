@@ -32,7 +32,7 @@ public:
     bool GetConfig(int cfg, std::string &dst) const;
     std::string GetCookies(const std::string &URL) const;
     bool ScriptEnabled(const std::string &URL);
-    void ProcessRequestComplete(BkResponse response, BkWorkController controller);
+    bool ProcessRequestComplete(BkResponse response, BkWorkController controller);
     bool HijackRequest(const char *URL, std::string &dst) const;
     void ModifyRequest(const char *URL, BkRequest req);
     void HijackResponse(BkResponse response);

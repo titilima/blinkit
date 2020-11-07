@@ -178,6 +178,8 @@ private:
 
     NodeListsNodeData& EnsureNodeLists(void);
 
+    bool HasRestyleFlag(DynamicRestyleFlags mask) const { return HasRareData() && HasRestyleFlagInternal(mask); }
+    bool HasRestyleFlagInternal(DynamicRestyleFlags mask) const;
     void SetRestyleFlag(DynamicRestyleFlags mask);
 
     void AppendChildCommon(Node &child);
@@ -199,11 +201,6 @@ private:
     bool RecheckNodeInsertionStructuralPrereq(const NodeVector &newChildren, const Node *next, ExceptionState &exceptionState);
     inline bool IsHostIncludingInclusiveAncestorOfThis(const Node &newChild, ExceptionState &exceptionState) const;
     inline bool IsChildTypeAllowed(const Node &child) const;
-
-#ifndef BLINKIT_CRAWLER_ONLY
-    bool HasRestyleFlag(DynamicRestyleFlags mask) const { return HasRareData() && HasRestyleFlagInternal(mask); }
-    bool HasRestyleFlagInternal(DynamicRestyleFlags mask) const;
-#endif
 
     Member<Node> m_firstChild;
     Member<Node> m_lastChild;

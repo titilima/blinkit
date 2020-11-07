@@ -12,8 +12,13 @@
 #include "url_loader_impl.h"
 
 #include "base/single_thread_task_runner.h"
+#include "blinkit/app/app_impl.h"
+#include "blinkit/loader/loader_thread.h"
 #include "blinkit/loader/tasks/http_loader_task.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_request.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "blinkit/loader/tasks/res_loader_task.h"
+#endif
 
 using namespace blink;
 
@@ -30,32 +35,38 @@ void URLLoaderImpl::LoadAsynchronously(const ResourceRequest &request, WebURLLoa
 {
     const GURL &url = request.Url();
 
-    int error = BK_ERR_URI;
-
     LoaderTask *task = nullptr;
     do {
-        if (request.ForCrawler())
+        if (url.SchemeIsHTTPOrHTTPS())
         {
-            if (url.SchemeIsHTTPOrHTTPS())
-                task = new HTTPLoaderTask(request.Crawler(), m_taskRunner, client);
+            if (request.ForCrawler())
+                task = new HTTPLoaderTask(request, m_taskRunner, client);
             else
                 NOTREACHED();
             break;
         }
+
 #ifndef BLINKIT_CRAWLER_ONLY
-        ASSERT(false); // BKTODO:
+        if (url.SchemeIs("res"))
+        {
+            task = new ResLoaderTask(request, m_taskRunner, client);
+            break;
+        }
 #endif
     } while (false);
+
+    int error = BK_ERR_URI;
     if (nullptr != task)
     {
-        error = task->Run(request);
-        if (BK_ERR_SUCCESS == error)
+        error = task->PreProcess();
+        if (BK_ERR_CANCELLED == error)
             return;
-
-        delete task;
     }
 
-    LoaderTask::ReportError(client, m_taskRunner.get(), error, url);
+    if (BK_ERR_SUCCESS == error)
+        AppImpl::Get().GetLoaderThread().AddTask(task);
+    else
+        LoaderTask::ReportError(client, m_taskRunner.get(), error, url);
 }
 
 } // namespace BlinKit

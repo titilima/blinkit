@@ -636,12 +636,10 @@ HTMLCollection* ContainerNode::getElementsByTagName(const AtomicString &qualifie
     return EnsureCachedCollection<HTMLTagCollection>(kHTMLTagCollectionType, qualifiedName);
 }
 
-#ifndef BLINKIT_CRAWLER_ONLY
 bool ContainerNode::HasRestyleFlagInternal(DynamicRestyleFlags mask) const
 {
     return RareData()->HasRestyleFlag(mask);
 }
-#endif
 
 Node* ContainerNode::InsertBefore(Node *newChild, Node *refChild, ExceptionState &exceptionState)
 {
