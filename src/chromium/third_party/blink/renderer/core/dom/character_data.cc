@@ -213,7 +213,7 @@ void CharacterData::SetDataAndUpdate(const String& new_data,
   ASSERT(IsTextNode());
 #else
   DCHECK(!GetLayoutObject() || IsTextNode());
-  if (IsTextNode())
+  if (IsTextNode() && !ForCrawler())
     ToText(this)->UpdateTextLayoutObject(offset_of_replaced_data, old_length);
 #endif
 

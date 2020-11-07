@@ -70,7 +70,7 @@ class CORE_EXPORT CharacterData : public Node {
                 const String& text,
                 ConstructionType type)
       : Node(&tree_scope, type), data_(!text.IsNull() ? text : g_empty_string) {
-    DCHECK(type == kCreateOther || type == kCreateText ||
+    DCHECK(type == kCreateOther || (type & kCreateText) == kCreateText ||
            type == kCreateEditingText);
   }
 

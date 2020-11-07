@@ -62,12 +62,20 @@
 namespace blink {
 
 Text* Text::Create(Document& document, const String& data) {
-  return new Text(document, data, kCreateText);
+#ifdef BLINKIT_CRAWLER_ONLY
+  ASSERT(document.ForCrawler());
+  return new Text(document, data, kCreateCrawlerText);
+#else
+  return new Text(document, data, document.ForCrawler() ? kCreateCrawlerText : kCreateText);
+#endif
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
 Text* Text::CreateEditingText(Document& document, const String& data) {
+  ASSERT(!document.ForCrawler());
   return new Text(document, data, kCreateEditingText);
 }
+#endif
 
 Node* Text::MergeNextSiblingNodesIfPossible() {
   ASSERT(false); // BKTODO:

@@ -50,7 +50,9 @@ class CORE_EXPORT Text : public CharacterData {
   static const unsigned kDefaultLengthLimit = 1 << 16;
 
   static Text* Create(Document&, const String&);
+#ifndef BLINKIT_CRAWLER_ONLY
   static Text* CreateEditingText(Document&, const String&);
+#endif
 
   LayoutText* GetLayoutObject() const;
 
