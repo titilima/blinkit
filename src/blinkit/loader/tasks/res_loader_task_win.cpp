@@ -11,30 +11,26 @@
 
 #include "res_loader_task.h"
 
-#include "sdk/include/BlinKit.h"
+#include "bk_def.h"
 #include "base/win/resource_util.h"
 
 #define RT_HTMLA    MAKEINTRESOURCEA(23)
 
-using namespace blink;
-
 namespace BlinKit {
 
-int ResLoaderTask::LoadResData(const KURL &URI, std::vector<unsigned char> &dst)
+int ResLoaderTask::LoadResData(const GURL &URI, std::string &dst)
 {
-    std::string path = URI.path().to_string();
-
     void *data;
     size_t size;
-    if (!base::GetResourceFromModule(nullptr, path.c_str(), RT_HTMLA, &data, &size))
+    if (!base::GetResourceFromModule(nullptr, URI.path().c_str(), RT_HTMLA, &data, &size))
     {
-        assert(false); // Resource not found!
-        return BkError::NotFound;
+        ASSERT(false); // Resource not found!
+        return BK_ERR_NOT_FOUND;
     }
 
     dst.resize(size);
     memcpy(dst.data(), data, size);
-    return BkError::Success;
+    return BK_ERR_SUCCESS;
 }
 
 } // namespace BlinKit
