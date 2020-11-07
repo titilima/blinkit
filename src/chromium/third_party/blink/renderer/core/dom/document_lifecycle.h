@@ -103,6 +103,14 @@ public:
 
 #ifndef BLINKIT_CRAWLER_ONLY
     bool InDetach(void) const { return 0 != m_detachCount; }
+    void IncrementDetachCount(void) { ++m_detachCount; }
+    void DecrementDetachCount(void)
+    {
+        ASSERT(m_detachCount > 0);
+        --m_detachCount;
+    }
+
+    bool StateAllowsDetach(void) const;
     bool StateAllowsLayoutTreeMutations(void) const
     {
         return m_detachCount > 0 || kInStyleRecalc == m_state || kInLayoutSubtreeChange == m_state;
@@ -138,6 +146,22 @@ public:
     private:
         DocumentLifecycle &m_documentLifecycle;
         DISALLOW_COPY_AND_ASSIGN(DisallowTransitionScope);
+    };
+    class DetachScope
+    {
+        STACK_ALLOCATED();
+    public:
+        explicit DetachScope(DocumentLifecycle &documentLifecycle) : m_documentLifecycle(documentLifecycle)
+        {
+            m_documentLifecycle.IncrementDetachCount();
+        }
+        ~DetachScope(void)
+        {
+            m_documentLifecycle.DecrementDetachCount();
+        }
+    private:
+        DocumentLifecycle &m_documentLifecycle;
+        DISALLOW_COPY_AND_ASSIGN(DetachScope);
     };
     // Throttling is disabled by default. Instantiating this class allows
     // throttling (e.g., during BeginMainFrame). If a script needs to run inside

@@ -303,6 +303,28 @@ void DocumentLifecycle::EnsureStateAtMost(LifecycleState state)
     m_state = state;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+bool DocumentLifecycle::StateAllowsDetach(void) const
+{
+    switch (m_state)
+    {
+        case kVisualUpdatePending:
+        case kInStyleRecalc:
+        case kStyleClean:
+        case kLayoutSubtreeChangeClean:
+        case kInPreLayout:
+        case kLayoutClean:
+        case kCompositingInputsClean:
+        case kCompositingClean:
+        case kPrePaintClean:
+        case kPaintClean:
+        case kStopping:
+            return true;
+    }
+    return false;
+}
+#endif
+
 bool DocumentLifecycle::StateAllowsTreeMutations(void) const
 {
     switch (m_state)

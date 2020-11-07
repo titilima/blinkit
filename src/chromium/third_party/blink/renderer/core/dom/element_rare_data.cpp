@@ -87,6 +87,19 @@ AttrNodeList& ElementRareData::EnsureAttrNodeList(void)
     return *m_attrNodeList;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+PseudoElement* ElementRareData::GetPseudoElement(PseudoId pseudoId) const
+{
+    if (!m_pseudoElementData)
+        return nullptr;
+    ASSERT(false); // BKTODO:
+    return nullptr;
+#if 0
+    return m_pseudoElementData->GetPseudoElement(pseudoId);
+#endif
+}
+#endif
+
 static_assert(sizeof(ElementRareData) == sizeof(SameSizeAsElementRareData), "ElementRareData should stay small");
 
 }  // namespace blink

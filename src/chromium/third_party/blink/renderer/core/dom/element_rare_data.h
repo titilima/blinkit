@@ -84,6 +84,8 @@ public:
     const AtomicString& IsValue(void) const { return m_isValue; }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    PseudoElement* GetPseudoElement(PseudoId pseudoId) const;
+
     ShadowRoot* GetShadowRoot(void) const { return m_shadowRoot.get(); }
 
     ComputedStyle* GetComputedStyle(void) const { return m_computedStyle.get(); }

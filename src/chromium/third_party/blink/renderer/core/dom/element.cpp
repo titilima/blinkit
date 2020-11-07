@@ -259,6 +259,13 @@ AttributeCollection Element::AttributesWithoutUpdate(void) const
 
 #ifndef BLINKIT_CRAWLER_ONLY
 
+void Element::CancelFocusAppearanceUpdate(void)
+{
+    ASSERT(!ForCrawler());
+    if (GetDocument().FocusedElement() == this)
+        ASSERT(false); // BKTODO: GetDocument().CancelFocusAppearanceUpdate();
+}
+
 namespace {
 
 bool HasSiblingsForNonEmpty(const Node *sibling, Node* (*nextFunc)(const Node &))
@@ -549,7 +556,78 @@ void Element::DetachAllAttrNodesFromElement(void)
 #ifndef BLINKIT_CRAWLER_ONLY
 void Element::DetachLayoutTree(const AttachContext &context)
 {
-    ASSERT(false); // BKTODO:
+    CancelFocusAppearanceUpdate();
+    RemoveCallbackSelectors();
+    if (HasRareData())
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        ElementRareData* data = GetElementRareData();
+        if (!context.performing_reattach)
+            data->ClearPseudoElements();
+
+        // attachLayoutTree() will clear the computed style for us when inside
+        // recalcStyle.
+        if (!GetDocument().InStyleRecalc())
+            data->ClearComputedStyle();
+
+        if (ElementAnimations* element_animations = data->GetElementAnimations()) {
+            if (context.performing_reattach) {
+                // FIXME: We call detach from within style recalc, so compositingState
+                // is not up to date.
+                // https://code.google.com/p/chromium/issues/detail?id=339847
+                DisableCompositingQueryAsserts disabler;
+
+                // FIXME: restart compositor animations rather than pull back to the
+                // main thread
+                element_animations->RestartAnimationOnCompositor();
+            }
+            else {
+                element_animations->CssAnimations().Cancel();
+                element_animations->SetAnimationStyleChange(false);
+            }
+            element_animations->ClearBaseComputedStyle();
+        }
+
+        DetachPseudoElement(kPseudoIdBefore, context);
+
+        if (ShadowRoot* shadow_root = data->GetShadowRoot())
+            shadow_root->DetachLayoutTree(context);
+#endif
+    }
+
+    ContainerNode::DetachLayoutTree(context);
+
+    DetachPseudoElement(kPseudoIdAfter, context);
+    DetachPseudoElement(kPseudoIdBackdrop, context);
+    DetachPseudoElement(kPseudoIdFirstLetter, context);
+
+    if (!context.performing_reattach && IsUserActionElement())
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        if (IsHovered())
+            GetDocument().HoveredElementDetached(*this);
+        if (InActiveChain())
+            GetDocument().ActiveChainNodeDetached(*this);
+        GetDocument().UserActionElements().DidDetach(*this);
+#endif
+    }
+
+    if (context.clear_invalidation)
+    {
+        GetDocument().GetStyleEngine().GetPendingNodeInvalidations().ClearInvalidation(*this);
+    }
+
+    SetNeedsResizeObserverUpdate();
+
+    DCHECK(NeedsAttach());
+}
+
+void Element::DetachPseudoElement(PseudoId pseudoId, const AttachContext &context)
+{
+    if (PseudoElement *pseudoElement = GetPseudoElement(pseudoId))
+        ASSERT(false); // BKTODO: pseudo_element->DetachLayoutTree(context);
 }
 #endif
 
@@ -678,6 +756,11 @@ const AtomicString& Element::GetNameAttribute(void) const
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+PseudoElement* Element::GetPseudoElement(PseudoId pseudoid) const
+{
+    return HasRareData() ? GetElementRareData()->GetPseudoElement(pseudoid) : nullptr;
+}
+
 ShadowRoot* Element::GetShadowRoot(void) const
 {
     return HasRareData() ? GetElementRareData()->GetShadowRoot() : nullptr;
@@ -918,6 +1001,11 @@ void Element::PseudoStateChanged(CSSSelector::PseudoType pseudo)
         return;
     GetDocument().GetStyleEngine().PseudoStateChangedForElement(pseudo, *this);
 }
+
+void Element::RemoveCallbackSelectors(void)
+{
+    UpdateCallbackSelectors(GetComputedStyle(), nullptr);
+}
 #endif
 
 void Element::setAttribute(const QualifiedName &name, const AtomicString &value)
@@ -1057,6 +1145,11 @@ void Element::SetIsValue(const AtomicString &isValue)
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+void Element::SetNeedsResizeObserverUpdate(void)
+{
+    ASSERT(!HasRareData()); // BKTODO:
+}
+
 const AtomicString& Element::ShadowPseudoId(void) const
 {
     ASSERT(false); // BKTODO: Check child classes.
@@ -1223,6 +1316,23 @@ Element::AttributeTriggers* Element::TriggersForAttributeName(const QualifiedNam
         return &attributeTriggers[it->second];
     return nullptr;
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void Element::UpdateCallbackSelectors(const ComputedStyle *oldStyle, const ComputedStyle *newStyle)
+{
+    Vector<String> emptyVector;
+    const Vector<String> &oldCallbackSelectors = nullptr != oldStyle ? oldStyle->CallbackSelectors() : emptyVector;
+    const Vector<String> &newCallbackSelectors = nullptr != newStyle ? newStyle->CallbackSelectors() : emptyVector;
+    if (oldCallbackSelectors.IsEmpty() && newCallbackSelectors.IsEmpty())
+        return;
+    ASSERT(false); // BKTODO:
+#if 0
+    if (oldCallbackSelectors != newCallbackSelectors)
+        CSSSelectorWatch::From(GetDocument())
+        .UpdateSelectorMatches(old_callback_selectors, new_callback_selectors);
+#endif
+}
+#endif
 
 void Element::UpdateId(const AtomicString &oldId, const AtomicString &newId)
 {

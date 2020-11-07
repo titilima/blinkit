@@ -390,7 +390,14 @@ void Node::DefaultEventHandler(Event &event)
 #ifndef BLINKIT_CRAWLER_ONLY
 void Node::DetachLayoutTree(const AttachContext &context)
 {
-    ASSERT(false); // BKTODO: Check child classes.
+    ASSERT(GetDocument().Lifecycle().StateAllowsDetach());
+    DocumentLifecycle::DetachScope willDetach(GetDocument().Lifecycle());
+
+    if (GetLayoutObject())
+        GetLayoutObject()->DestroyAndCleanupAnonymousWrappers();
+    SetLayoutObject(nullptr);
+    SetStyleChange(kNeedsReattachStyleChange);
+    ClearChildNeedsStyleInvalidation();
 }
 #endif
 

@@ -34,8 +34,7 @@ void ViewportData::Trace(Visitor* visitor) {
 void ViewportData::Shutdown() {
   // TODO(https://crbug.com/800641): Use InterfaceInvalidator once it works with
   // associated interfaces.
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   display_cutout_host_.reset();
 #endif
 }

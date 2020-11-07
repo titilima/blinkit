@@ -3527,8 +3527,8 @@ void PaintLayer::MarkCompositingContainerChainForNeedsRepaint() {
 
     PaintLayer* container = layer->CompositingContainer();
     if (!container) {
-      ASSERT(false); // BKTODO:
-#if 0
+      break;
+#if 0 // BKTODO: Check if necessary.
       auto* owner = layer->GetLayoutObject().GetFrame()->OwnerLayoutObject();
       if (!owner)
         break;

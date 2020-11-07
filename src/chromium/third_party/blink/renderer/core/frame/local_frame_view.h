@@ -35,6 +35,7 @@ class LocalFrameView final : public FrameView
 {
 public:
     static std::shared_ptr<LocalFrameView> Create(LocalFrame &frame, const IntSize &initialSize);
+    void Dispose(void);
 
     LocalFrame& GetFrame(void) const
     {
@@ -138,6 +139,11 @@ private:
     // TODO(bokan): crbug.com/484188. We should specialize LocalFrameView for the
     // main frame.
     std::unique_ptr<RootFrameViewport> m_viewportScrollableArea;
+
+#if DCHECK_IS_ON()
+    // Verified when finalizing.
+    bool m_hasBeenDisposed = false;
+#endif
 };
 
 } // namespace blink

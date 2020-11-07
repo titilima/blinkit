@@ -47,6 +47,7 @@ public:
     };
 
     static std::unique_ptr<Page> Create(PageClients &pageClients);
+    void DocumentDetached(Document *document);
 
     ChromeClient& GetChromeClient(void) const
     {

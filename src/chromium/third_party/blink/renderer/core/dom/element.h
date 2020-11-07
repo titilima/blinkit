@@ -59,6 +59,7 @@ class NamedNodeMap;
 #ifndef BLINKIT_CRAWLER_ONLY
 class ElementAnimations;
 class MutableCSSPropertyValueSet;
+class PseudoElement;
 #endif
 
 enum class ElementFlags {
@@ -215,6 +216,7 @@ public:
     ShadowRoot* GetShadowRoot(void) const;
 
     virtual const AtomicString& ShadowPseudoId(void) const;
+    PseudoElement* GetPseudoElement(PseudoId pseudoid) const;
     void PseudoStateChanged(CSSSelector::PseudoType pseudo);
 
     virtual bool IsPresentationAttribute(const QualifiedName &) const { return false; }
@@ -224,6 +226,8 @@ public:
 
     virtual scoped_refptr<ComputedStyle> CustomStyleForLayoutObject(void);
     virtual bool LayoutObjectIsNeeded(const ComputedStyle &style) const;
+
+    void SetNeedsResizeObserverUpdate(void);
 #endif
 
     // Node overrides
@@ -301,6 +305,13 @@ private:
     bool ChildTypeAllowed(NodeType type) const final;
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    void CancelFocusAppearanceUpdate(void);
+
+    void DetachPseudoElement(PseudoId pseudoId, const AttachContext &context);
+
+    void UpdateCallbackSelectors(const ComputedStyle *oldStyle, const ComputedStyle *newStyle);
+    void RemoveCallbackSelectors(void);
+
     void CheckForEmptyStyleChange(const Node *nodeBeforeChange, const Node *nodeAfterChange);
 #endif
 

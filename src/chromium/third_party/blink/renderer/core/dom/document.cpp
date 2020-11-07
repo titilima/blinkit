@@ -85,9 +85,12 @@
 #   include "third_party/blink/renderer/core/dom/layout_tree_builder.h"
 #   include "third_party/blink/renderer/core/dom/visited_link_state.h"
 #   include "third_party/blink/renderer/core/frame/viewport_data.h"
+#   include "third_party/blink/renderer/core/html/custom/v0_custom_element_registration_context.h"
 #   include "third_party/blink/renderer/core/html/imports/html_imports_controller.h"
 #   include "third_party/blink/renderer/core/layout/layout_view.h"
 #   include "third_party/blink/renderer/core/layout/text_autosizer.h"
+#   include "third_party/blink/renderer/core/page/chrome_client.h"
+#   include "third_party/blink/renderer/core/page/page.h"
 #   include "third_party/blink/renderer/core/page/scrolling/root_scroller_controller.h"
 #   include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #endif
@@ -808,12 +811,12 @@ void Document::DispatchUnloadEvents(void)
     if (m_loadEventProgress <= kUnloadEventInProgress)
     {
 #ifndef BLINKIT_CRAWLER_ONLY
-        const bool forCrawler = ForCrawler();
-        if (!forCrawler)
+        const bool forUI = !ForCrawler();
+        if (forUI)
         {
-            ASSERT(false); // BKTODO:
+            Element *currentFocusedElement = FocusedElement();
+            ASSERT(nullptr == currentFocusedElement); // BKTODO:
 #if 0
-            Element* current_focused_element = FocusedElement();
             if (auto* input = ToHTMLInputElementOrNull(current_focused_element))
                 input->EndEditing();
 #endif
@@ -823,11 +826,11 @@ void Document::DispatchUnloadEvents(void)
         {
 #ifndef BLINKIT_CRAWLER_ONLY
             m_loadEventProgress = kPageHideInProgress;
-            if (!forCrawler)
+            if (forUI)
             {
                 if (LocalDOMWindow *window = domWindow())
                 {
-                    ASSERT(false); // BKTODO:
+                    BKLOG("// BKTODO: Dispatch pagehide.");
 #if 0
                     const TimeTicks pagehide_event_start = CurrentTimeTicks();
                     window->DispatchEvent(
@@ -841,14 +844,15 @@ void Document::DispatchUnloadEvents(void)
                         pagehide_event_start);
 #endif
                 }
-                ASSERT(false); // BKTODO:
-#if 0
-                if (!frame_)
+                if (!m_frame)
                     return;
 
-                mojom::PageVisibilityState visibility_state = GetPageVisibilityState();
-                load_event_progress_ = kUnloadVisibilityChangeInProgress;
-                if (visibility_state != mojom::PageVisibilityState::kHidden) {
+                PageVisibilityState visibilityState = GetPageVisibilityState();
+                m_loadEventProgress = kUnloadVisibilityChangeInProgress;
+                if (visibilityState != PageVisibilityState::kHidden)
+                {
+                    ASSERT(false); // BKTODO:
+#if 0
                     // Dispatch visibilitychange event, but don't bother doing
                     // other notifications as we're about to be unloaded.
                     const TimeTicks pagevisibility_hidden_event_start = CurrentTimeTicks();
@@ -862,10 +866,10 @@ void Document::DispatchUnloadEvents(void)
                         pagevisibility_hidden_event_start);
                     DispatchEvent(
                         *Event::CreateBubble(EventTypeNames::webkitvisibilitychange));
-                }
-                if (!frame_)
-                    return;
 #endif
+                }
+                if (!m_frame)
+                    return;
             }
 #endif
 
@@ -1004,6 +1008,24 @@ Node::ConstructionType Document::GetConstructionType(const DocumentInit &init)
 Page* Document::GetPage(void) const
 {
     return m_frame ? m_frame->GetPage() : nullptr;
+}
+
+PageVisibilityState Document::GetPageVisibilityState(void) const
+{
+    // The visibility of the document is inherited from the visibility of the
+    // page. If there is no page associated with the document, we will assume
+    // that the page is hidden, as specified by the spec:
+    // https://w3c.github.io/page-visibility/#hidden-attribute
+    if (m_frame)
+    {
+        if (Page *page = m_frame->GetPage())
+        {
+            if (m_loadEventProgress >= kUnloadVisibilityChangeInProgress)
+                return PageVisibilityState::kHidden;
+            return page->VisibilityState();
+        }
+    }
+    return PageVisibilityState::kHidden;
 }
 
 const PropertyRegistry* Document::GetPropertyRegistry(void) const
@@ -1811,14 +1833,9 @@ void Document::Shutdown(void)
         return;
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    const bool forCrawler = ForCrawler();
-    if (!forCrawler)
-    {
-        ASSERT(false); // BKTODO:
-#if 0
+    const bool forUI = !ForCrawler();
+    if (forUI)
         GetViewportData().Shutdown();
-#endif
-    }
 #endif
 
     // Frame navigation can cause a new Document to be attached. Don't allow that,
@@ -1833,19 +1850,20 @@ void Document::Shutdown(void)
 
     m_lifecycle.AdvanceTo(DocumentLifecycle::kStopping);
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (!forCrawler)
+    if (forUI)
     {
-        ASSERT(false); // BKTODO:
-#if 0
         View()->Dispose();
         // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
-        CHECK(!View()->IsAttached());
+        ASSERT(!View()->IsAttached());
 
+#if 0 // BKTODO: Check this later
         markers_->PrepareForDestruction();
+#endif
 
-        if (GetPage())
-            GetPage()->DocumentDetached(this);
+        if (Page *page = GetPage())
+            page->DocumentDetached(this);
 
+#if 0 // BKTODO: Check this later
         if (frame_->Client()->GetSharedWorkerRepositoryClient())
             frame_->Client()->GetSharedWorkerRepositoryClient()->DocumentDetached(this);
 
@@ -1855,36 +1873,42 @@ void Document::Shutdown(void)
         scripted_animation_controller_.Clear();
 
         scripted_idle_task_controller_.Clear();
+#endif
 
-        if (layout_view_)
-            layout_view_->SetIsInWindow(false);
+        if (nullptr != m_layoutView)
+            m_layoutView->SetIsInWindow(false);
 
-        if (RegistrationContext())
-            RegistrationContext()->DocumentWasDetached();
+        if (V0CustomElementRegistrationContext *registrationContext = RegistrationContext())
+            ASSERT(false); // BKTODO: registrationContext->DocumentWasDetached();
 
+#if 0 // BKTODO: Check this later
         MutationObserver::CleanSlotChangeList(*this);
+#endif
 
-        hover_element_ = nullptr;
-        active_element_ = nullptr;
-        autofocus_element_ = nullptr;
+        m_hoverElement = nullptr;
+        m_activeElement = nullptr;
+        m_autofocusElement = nullptr;
 
-        if (focused_element_.Get()) {
-            Element* old_focused_element = focused_element_;
-            focused_element_ = nullptr;
-            if (GetPage())
-                GetPage()->GetChromeClient().FocusedNodeChanged(old_focused_element,
-                    nullptr);
+        if (nullptr != m_focusedElement.Get())
+        {
+            Element *oldFocusedElement = m_focusedElement;
+            m_focusedElement = nullptr;
+            if (Page *page = GetPage())
+                page->GetChromeClient().FocusedNodeChanged(oldFocusedElement, nullptr);
         }
+#if 0 // BKTODO:
         sequential_focus_navigation_starting_point_ = nullptr;
+#endif
 
-        layout_view_ = nullptr;
+        m_layoutView = nullptr;
         ContainerNode::DetachLayoutTree();
         // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
-        CHECK(!View()->IsAttached());
+        ASSERT(!View()->IsAttached());
 
         GetStyleEngine().DidDetach();
 
-        frame_->GetEventHandlerRegistry().DocumentDetached(*this);
+#if 0 // BKTODO: Check this later
+        m_frame->GetEventHandlerRegistry().DocumentDetached(*this);
 #endif
     }
 #endif
@@ -1901,18 +1925,21 @@ void Document::Shutdown(void)
     if (nullptr == Loader())
         m_fetcher->ClearContext();
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (!forCrawler)
+    if (forUI)
     {
-        ASSERT(false); // BKTODO:
-#if 0
         // If this document is the master for an HTMLImportsController, sever that
         // relationship. This ensures that we don't leave import loads in flight,
         // thinking they should have access to a valid frame when they don't.
-        if (imports_controller_) {
+        if (m_importsController)
+        {
+            ASSERT(false); // BKTODO:
+#if 0
             imports_controller_->Dispose();
             ClearImportsController();
+#endif
         }
 
+#if 0 // BKTODO:
         if (media_query_matcher_)
             media_query_matcher_->DocumentDetached();
 #endif
@@ -1922,7 +1949,7 @@ void Document::Shutdown(void)
     m_lifecycle.AdvanceTo(DocumentLifecycle::kStopped);
 #ifndef BLINKIT_CRAWLER_ONLY
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
-    ASSERT(forCrawler); // BKTODO: CHECK(!View()->IsAttached());
+    ASSERT(!forUI || !View()->IsAttached());
 #endif
 
     // TODO(haraken): Call contextDestroyed() before we start any disruptive
@@ -1936,7 +1963,7 @@ void Document::Shutdown(void)
     ExecutionContext::NotifyContextDestroyed();
 #ifndef BLINKIT_CRAWLER_ONLY
     // TODO(crbug.com/729196): Trace why LocalFrameView::DetachFromLayout crashes.
-    ASSERT(forCrawler); // BKTODO: CHECK(!View()->IsAttached());
+    ASSERT(!forUI || !View()->IsAttached());
 #endif
 
     // This is required, as our LocalFrame might delete itself as soon as it

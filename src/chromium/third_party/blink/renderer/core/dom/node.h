@@ -514,6 +514,11 @@ private:
     void ClearRareData(void);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    void SetStyleChange(StyleChangeType changeType)
+    {
+        m_nodeFlags = (m_nodeFlags & ~kStyleChangeMask) | changeType;
+    }
+
     virtual const ComputedStyle* VirtualEnsureComputedStyle(PseudoId pseudoElementSpecifier = kPseudoIdNone);
 #endif
 

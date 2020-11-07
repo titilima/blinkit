@@ -91,6 +91,7 @@ class HTMLImportsController;
 class LayoutView;
 class LocalFrameView;
 class Page;
+enum class PageVisibilityState;
 class PropertyRegistry;
 class ReattachLegacyLayoutObjectList;
 class RootScrollerController;
@@ -174,7 +175,6 @@ public:
     Element* ViewportDefiningElement(const ComputedStyle *rootStyle = nullptr) const;
     V0CustomElementRegistrationContext* RegistrationContext(void) const
     {
-        ASSERT(false); // BKTODO: Test this.
         return m_registrationContext.get();
     }
 #endif
@@ -383,6 +383,10 @@ public:
     void CountDetachingNodeAccessInDOMNodeRemovedHandler(void) { ASSERT(GetInDOMNodeRemovedHandlerState() != InDOMNodeRemovedHandlerState::kNone); } // Just a placeholder
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    PageVisibilityState GetPageVisibilityState(void) const;
+
+    Element* FocusedElement(void) const { return m_focusedElement.Get(); }
+
     void RemoveFocusedElementOfSubtree(Node *node, bool amongChildrenOnly = false);
 
     // A non-null template_document_host_ implies that |this| was created by
@@ -558,7 +562,10 @@ private:
 
     LayoutView *m_layoutView = nullptr;
     std::unique_ptr<TextAutosizer> m_textAutosizer;
+    Member<Element> m_autofocusElement;
     Member<Element> m_focusedElement;
+    Member<Element> m_hoverElement;
+    Member<Element> m_activeElement;
     std::unique_ptr<RootScrollerController> m_rootScrollerController;
     Member<Document> m_templateDocumentHost;
 

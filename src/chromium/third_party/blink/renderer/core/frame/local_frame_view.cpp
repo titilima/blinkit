@@ -91,6 +91,46 @@ void LocalFrameView::DidAttachDocument(void)
     page->GlobalRootScrollerController().InitializeViewportScrollCallback(*m_viewportScrollableArea);
 }
 
+void LocalFrameView::Dispose(void)
+{
+    ASSERT(!IsInPerformLayout());
+
+    // TODO(dcheng): It's wrong that the frame can be detached before the
+    // LocalFrameView. Figure out what's going on and fix LocalFrameView to be
+    // disposed with the correct timing.
+
+    // We need to clear the RootFrameViewport's animator since it gets called
+    // from non-GC'd objects and RootFrameViewport will still have a pointer to
+    // this class.
+    if (m_viewportScrollableArea)
+        m_viewportScrollableArea->ClearScrollableArea();
+
+#if 0 // BKTODO: Check this later.
+    // Destroy |m_autoSizeInfo| as early as possible, to avoid dereferencing
+    // partially destroyed |this| via |m_autoSizeInfo->m_frameView|.
+    m_autoSizeInfo.Clear();
+
+    // FIXME: Do we need to do something here for OOPI?
+    HTMLFrameOwnerElement* owner_element = frame_->DeprecatedLocalOwner();
+    // TODO(dcheng): It seems buggy that we can have an owner element that points
+    // to another EmbeddedContentView. This can happen when a plugin element loads
+    // a frame (EmbeddedContentView A of type LocalFrameView) and then loads a
+    // plugin (EmbeddedContentView B of type WebPluginContainerImpl). In this
+    // case, the frame's view is A and the frame element's
+    // OwnedEmbeddedContentView is B. See https://crbug.com/673170 for an example.
+    if (owner_element && owner_element->OwnedEmbeddedContentView() == this)
+        owner_element->SetEmbeddedContentView(nullptr);
+
+
+    ukm_aggregator_.reset();
+    jank_tracker_->Dispose();
+#endif
+
+#if DCHECK_IS_ON()
+    m_hasBeenDisposed = true;
+#endif
+}
+
 LayoutView* LocalFrameView::GetLayoutView(void) const
 {
     return GetFrame().ContentLayoutObject();

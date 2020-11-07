@@ -456,7 +456,14 @@ unsigned ContainerNode::CountChildren(void) const
 #ifndef BLINKIT_CRAWLER_ONLY
 void ContainerNode::DetachLayoutTree(const AttachContext &context)
 {
-    ASSERT(false); // BKTODO:
+    AttachContext childrenContext(context);
+    childrenContext.clear_invalidation = true;
+
+    for (Node *child = firstChild(); nullptr != child; child = child->nextSibling())
+        child->DetachLayoutTree(childrenContext);
+
+    SetChildNeedsStyleRecalc();
+    Node::DetachLayoutTree(context);
 }
 #endif
 

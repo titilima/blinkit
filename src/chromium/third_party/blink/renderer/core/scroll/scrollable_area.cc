@@ -113,11 +113,8 @@ void ScrollableArea::ClearScrollableArea() {
   if (scroll_animator_)
     scroll_animator_->Dispose();
 #endif
-  ASSERT(false); // BKTODO:
-#if 0
-  scroll_animator_.Clear();
-  programmatic_scroll_animator_.Clear();
-#endif
+  ASSERT(!scroll_animator_); // BKTODO: scroll_animator_.Clear();
+  ASSERT(!programmatic_scroll_animator_); // BKTODO: programmatic_scroll_animator_.Clear();
   if (fade_overlay_scrollbars_timer_)
     fade_overlay_scrollbars_timer_->Stop();
 }

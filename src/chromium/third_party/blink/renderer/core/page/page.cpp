@@ -39,6 +39,17 @@ std::unique_ptr<Page> Page::Create(PageClients &pageClients)
     return base::WrapUnique(new Page(pageClients));
 }
 
+void Page::DocumentDetached(Document *document)
+{
+#if 0 // BKTODO: Check this later
+    pointer_lock_controller_->DocumentDetached(document);
+    context_menu_controller_->DocumentDetached(document);
+    if (validation_message_client_)
+        validation_message_client_->DocumentDetached(*document);
+    hosts_using_features_.DocumentDetached(*document);
+#endif
+}
+
 BrowserControls& Page::GetBrowserControls(void)
 {
     return *m_browserControls;
