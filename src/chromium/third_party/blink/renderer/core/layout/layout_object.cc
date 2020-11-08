@@ -3136,11 +3136,8 @@ inline LayoutObject* LayoutObject::ParentCrossingFrames() const {
 
 inline void LayoutObject::ClearLayoutRootIfNeeded() const {
   if (LocalFrameView* view = GetFrameView()) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (!DocumentBeingDestroyed())
       view->ClearLayoutSubtreeRoot(*this);
-#endif
   }
 }
 
@@ -3151,16 +3148,14 @@ void LayoutObject::WillBeDestroyed() {
     children->DestroyLeftoverChildren();
 
   if (LocalFrame* frame = GetFrame()) {
-    ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check this later.
     // If this layoutObject is being autoscrolled, stop the autoscrolling.
     if (frame->GetPage())
       frame->GetPage()->GetAutoscrollController().StopAutoscrollIfNeeded(this);
 #endif
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   // For accessibility management, notify the parent of the imminent change to
   // its child set.
   // We do it now, before remove(), while the parent pointer is still available.
@@ -3170,8 +3165,7 @@ void LayoutObject::WillBeDestroyed() {
 
   Remove();
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   // The remove() call above may invoke axObjectCache()->childrenChanged() on
   // the parent, which may require the AX layout object for this layoutObject.
   // So we remove the AX layout object now, after the layoutObject is removed.

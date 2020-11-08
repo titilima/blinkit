@@ -64,6 +64,7 @@ class NavigationScheduler;
 class ScriptController;
 #ifndef BLINKIT_CRAWLER_ONLY
 class LayoutView;
+class SmoothScrollSequencer;
 #endif
 
 class LocalFrame final : public Frame
@@ -89,6 +90,7 @@ public:
     void SetPageZoomFactor(float factor);
     float TextZoomFactor(void) const { return m_textZoomFactor; }
     void SetTextZoomFactor(float factor);
+    SmoothScrollSequencer& GetSmoothScrollSequencer(void);
 #endif
     Document* GetDocument(void) const;
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(TaskType type);
@@ -119,6 +121,9 @@ private:
     // Cleared by LocalFrame::Detach(), so as to keep the observable lifespan
     // of LocalFrame::View().
     std::shared_ptr<LocalFrameView> m_view;
+    // SmoothScrollSequencer is only populated for local roots; all local frames
+    // use the instance owned by their local root.
+    std::unique_ptr<SmoothScrollSequencer> m_smoothScrollSequencer;
 
     float m_pageZoomFactor = 1.0;
     float m_textZoomFactor = 1.0;

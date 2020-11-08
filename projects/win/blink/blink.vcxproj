@@ -1476,6 +1476,7 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scrollable_area.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scrollbar.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scroll_customization.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\smooth_scroll_sequencer.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\applied_text_decoration.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\basic_shapes.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\border_edge.cc" />
@@ -3377,9 +3378,11 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\script_loader.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\script_runner.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\script\script_scheduling_type.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\programmatic_scroll_animator.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scrollable_area.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scrollbar.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\scroll_customization.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\smooth_scroll_sequencer.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\applied_text_decoration.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\applied_text_decoration_list.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\style\basic_shapes.h" />

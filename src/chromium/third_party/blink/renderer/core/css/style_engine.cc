@@ -616,7 +616,7 @@ RuleSet* StyleEngine::RuleSetForSheet(CSSStyleSheet& sheet) {
 }
 
 void StyleEngine::CreateResolver() {
-  resolver_ = StyleResolver::Create(*document_);
+  resolver_.reset(StyleResolver::Create(*document_));
   resolver_->SetRuleUsageTracker(tracker_);
 }
 
@@ -624,8 +624,6 @@ void StyleEngine::ClearResolvers() {
   DCHECK(!GetDocument().InStyleRecalc());
   DCHECK(IsMaster() || !resolver_);
 
-  ASSERT(false); // BKTODO:
-#if 0
   GetDocument().ClearScopedStyleResolver();
   for (TreeScope* tree_scope : active_tree_scopes_)
     tree_scope->ClearScopedStyleResolver();
@@ -634,9 +632,8 @@ void StyleEngine::ClearResolvers() {
     TRACE_EVENT1("blink", "StyleEngine::clearResolver", "frame",
                  ToTraceValue(GetDocument().GetFrame()));
     resolver_->Dispose();
-    resolver_.Clear();
+    resolver_.reset();
   }
-#endif
 }
 
 void StyleEngine::DidDetach() {

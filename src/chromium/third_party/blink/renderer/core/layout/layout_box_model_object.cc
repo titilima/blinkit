@@ -208,14 +208,11 @@ void LayoutBoxModelObject::WillBeDestroyed() {
     // Don't use view() because the document's layoutView has been set to
     // 0 during destruction.
     if (LocalFrame* frame = GetFrame()) {
-      ASSERT(false); // BKTODO:
-#if 0
       if (LocalFrameView* frame_view = frame->View()) {
         if (StyleRef().HasViewportConstrainedPosition() ||
             StyleRef().HasStickyConstrainedPosition())
           frame_view->RemoveViewportConstrainedObject(*this);
       }
-#endif
     }
   }
 

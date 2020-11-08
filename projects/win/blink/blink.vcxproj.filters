@@ -5102,6 +5102,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\depth_ordered_layout_object_list.cc">
       <Filter>renderer\core\layout</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\smooth_scroll_sequencer.cc">
+      <Filter>renderer\core\scroll</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\blink\_pc.h">
@@ -11361,6 +11364,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\layout\depth_ordered_layout_object_list.h">
       <Filter>renderer\core\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\smooth_scroll_sequencer.h">
+      <Filter>renderer\core\scroll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\scroll\programmatic_scroll_animator.h">
+      <Filter>renderer\core\scroll</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -151,7 +151,8 @@ bool FontFaceCache::ClearCSSConnected() {
 }
 
 void FontFaceCache::ClearAll() {
-  ASSERT(false); // BKTODO:
+  BKLOG("// BKTODO: Process segmented_faces_");
+  return;
 #if 0
   if (segmented_faces_.IsEmpty())
     return;

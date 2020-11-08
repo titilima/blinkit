@@ -29,6 +29,7 @@ class LayoutBox;
 class LayoutView;
 class PaintLayerScrollableArea;
 class RootFrameViewport;
+class ScrollableArea;
 class ScrollingCoordinator;
 
 class LocalFrameView final : public FrameView
@@ -59,10 +60,12 @@ public:
     bool LayoutPending(void) const;
     bool IsInPerformLayout(void) const;
     bool NeedsLayout(void) const;
+
     // FIXME: This should probably be renamed as the 'inSubtreeLayout' parameter
     // passed around the LocalFrameView layout methods can be true while this
     // returns false.
     bool IsSubtreeLayout(void) const { return !m_layoutSubtreeRootList.IsEmpty(); }
+    void ClearLayoutSubtreeRoot(const LayoutObject &root);
 
     bool LayoutSizeFixedToFrameSize(void) { return m_layoutSizeFixedToFrameSize; }
     // If this is set to false, the layout size will need to be explicitly set by
@@ -90,6 +93,15 @@ public:
     // getScrollableArea.
     RootFrameViewport* GetRootFrameViewport(void) { return m_viewportScrollableArea.get(); }
 
+    using ScrollableAreaSet = std::unordered_set<PaintLayerScrollableArea *>;
+    void AddScrollableArea(PaintLayerScrollableArea *scrollableArea);
+    void RemoveScrollableArea(PaintLayerScrollableArea *scrollableArea);
+    const ScrollableAreaSet* ScrollableAreas(void) const { return m_scrollableAreas.get(); }
+
+    void AddAnimatingScrollableArea(PaintLayerScrollableArea *scrollableArea);
+    void RemoveAnimatingScrollableArea(PaintLayerScrollableArea *scrollableArea);
+    const ScrollableAreaSet* AnimatingScrollableAreas(void) const { return m_animatingScrollableAreas.get(); }
+
     // With CSS style "resize:" enabled, a little resizer handle will appear at
     // the bottom right of the object. We keep track of these resizer areas for
     // checking if touches (implemented using Scroll gesture) are targeting the
@@ -98,6 +110,15 @@ public:
     void AddResizerArea(LayoutBox &resizerBox);
     void RemoveResizerArea(LayoutBox &resizerBox);
     const ResizerAreaSet* ResizerAreas(void) const { return m_resizerAreas.get(); }
+
+    void EnqueueScrollAnchoringAdjustment(ScrollableArea *scrollableArea);
+    void DequeueScrollAnchoringAdjustment(ScrollableArea *scrollableArea);
+
+    // Fixed-position objects.
+    typedef std::unordered_set<LayoutObject *> ViewportConstrainedObjectSet;
+    void AddViewportConstrainedObject(LayoutObject &object);
+    void RemoveViewportConstrainedObject(LayoutObject &object);
+    const ViewportConstrainedObjectSet* ViewportConstrainedObjects(void) const { return m_viewportConstrainedObjects.get(); }
 
     void DidAttachDocument(void);
     void HandleLoadCompleted(void);
@@ -129,7 +150,10 @@ private:
     bool m_hasPendingLayout = false;
     LayoutSubtreeRootList m_layoutSubtreeRootList;
     Member<Node> m_fragmentAnchor;
+    std::unique_ptr<ScrollableAreaSet> m_scrollableAreas;
+    std::unique_ptr<ScrollableAreaSet> m_animatingScrollableAreas;
     std::unique_ptr<ResizerAreaSet> m_resizerAreas;
+    std::unique_ptr<ViewportConstrainedObjectSet> m_viewportConstrainedObjects;
     IntSize m_layoutSize;
     IntSize m_initialViewportSize;
     Color m_baseBackgroundColor;

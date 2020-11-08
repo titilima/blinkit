@@ -127,9 +127,9 @@ LayoutBlock::LayoutBlock(ContainerNode* node)
 }
 
 void LayoutBlock::RemoveFromGlobalMaps() {
-  ASSERT(false); // BKTODO:
-#if 0
   if (HasPositionedObjects()) {
+    ASSERT(false); // BKTODO:
+#if 0
     std::unique_ptr<TrackedLayoutBoxListHashSet> descendants =
         g_positioned_descendants_map->Take(this);
     DCHECK(!descendants->IsEmpty());
@@ -137,8 +137,11 @@ void LayoutBlock::RemoveFromGlobalMaps() {
       DCHECK_EQ(g_positioned_container_map->at(descendant), this);
       g_positioned_container_map->erase(descendant);
     }
+#endif
   }
   if (HasPercentHeightDescendants()) {
+    ASSERT(false); // BKTODO:
+#if 0
     std::unique_ptr<TrackedLayoutBoxListHashSet> descendants =
         g_percent_height_descendants_map->Take(this);
     DCHECK(!descendants->IsEmpty());
@@ -146,8 +149,8 @@ void LayoutBlock::RemoveFromGlobalMaps() {
       DCHECK_EQ(descendant->PercentHeightContainer(), this);
       descendant->SetPercentHeightContainer(nullptr);
     }
-  }
 #endif
+  }
 }
 
 LayoutBlock::~LayoutBlock() {
@@ -158,13 +161,15 @@ void LayoutBlock::WillBeDestroyed() {
   if (!DocumentBeingDestroyed() && Parent())
     Parent()->DirtyLinesFromChangedChild(this);
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (LocalFrame* frame = GetFrame()) {
+    BKLOG("// BKTODO: Process selection & drag caret.");
+#if 0 // BKTODO:
     frame->Selection().LayoutBlockWillBeDestroyed(*this);
     frame->GetPage()->GetDragCaret().LayoutBlockWillBeDestroyed(*this);
+#endif
   }
 
+#if 0 // BKTODO: Check if necessary
   if (TextAutosizer* text_autosizer = GetDocument().GetTextAutosizer())
     text_autosizer->Destroy(this);
 #endif

@@ -30,6 +30,7 @@ public:
         m_rawPtr = nullptr;
         return result;
     }
+    void Clear(void) { m_rawPtr = nullptr; }
 
     operator T*() const { return m_rawPtr; }
     T& operator*() const { return *m_rawPtr; }

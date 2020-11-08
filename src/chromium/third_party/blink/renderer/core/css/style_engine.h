@@ -226,7 +226,7 @@ class CORE_EXPORT StyleEngine final
   }
   void ResetAuthorStyle(TreeScope&);
 
-  StyleResolver* Resolver() const { return resolver_; }
+  StyleResolver* Resolver() const { return resolver_.get(); }
 
   void SetRuleUsageTracker(StyleRuleUsageTracker*);
 
@@ -237,7 +237,7 @@ class CORE_EXPORT StyleEngine final
     return *resolver_;
   }
 
-  bool HasResolver() const { return resolver_; }
+  bool HasResolver() const { return !!resolver_; }
 
   PendingInvalidations& GetPendingNodeInvalidations() {
     return pending_invalidations_;
@@ -479,7 +479,7 @@ class CORE_EXPORT StyleEngine final
   bool in_layout_tree_rebuild_ = false;
   bool in_dom_removal_ = false;
 
-  Member<StyleResolver> resolver_;
+  std::unique_ptr<StyleResolver> resolver_;
   std::unique_ptr<ViewportStyleResolver> viewport_resolver_;
   Member<MediaQueryEvaluator> media_query_evaluator_;
   std::unique_ptr<CSSGlobalRuleSet> global_rule_set_;

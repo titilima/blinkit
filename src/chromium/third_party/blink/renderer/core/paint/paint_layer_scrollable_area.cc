@@ -74,7 +74,7 @@
 #include "third_party/blink/renderer/core/frame/local_frame_client.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
 #include "third_party/blink/renderer/core/frame/page_scale_constraints_set.h"
-// BKTODO: #include "third_party/blink/renderer/core/frame/root_frame_viewport.h"
+#include "third_party/blink/renderer/core/frame/root_frame_viewport.h"
 #include "third_party/blink/renderer/core/frame/settings.h"
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/frame/visual_viewport.h"
@@ -99,8 +99,8 @@
 #include "third_party/blink/renderer/core/page/scrolling/root_scroller_util.h"
 #include "third_party/blink/renderer/core/page/scrolling/scrolling_coordinator.h"
 #include "third_party/blink/renderer/core/page/scrolling/snap_coordinator.h"
-#include "third_party/blink/renderer/core/page/scrolling/top_document_root_scroller_controller.h"
 #endif
+#include "third_party/blink/renderer/core/page/scrolling/top_document_root_scroller_controller.h"
 #include "third_party/blink/renderer/core/paint/compositing/composited_layer_mapping.h"
 #include "third_party/blink/renderer/core/paint/compositing/paint_layer_compositor.h"
 #include "third_party/blink/renderer/core/paint/find_paint_offset_and_visual_rect_needing_update.h"
@@ -109,8 +109,8 @@
 #if 0 // BKTODO:
 #include "third_party/blink/renderer/core/scroll/scroll_animator_base.h"
 #include "third_party/blink/renderer/core/scroll/scrollbar_theme.h"
-#include "third_party/blink/renderer/core/scroll/smooth_scroll_sequencer.h"
 #endif
+#include "third_party/blink/renderer/core/scroll/smooth_scroll_sequencer.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
 #include "third_party/blink/renderer/platform/graphics/paint/drawing_recorder.h"
 #include "third_party/blink/renderer/platform/scroll/scroll_alignment.h"
@@ -200,21 +200,15 @@ void PaintLayerScrollableArea::Dispose() {
 
   if (LocalFrame* frame = GetLayoutBox()->GetFrame()) {
     if (LocalFrameView* frame_view = frame->View()) {
-      ASSERT(false); // BKTODO:
-#if 0
       frame_view->RemoveScrollableArea(this);
       frame_view->RemoveAnimatingScrollableArea(this);
-#endif
     }
   }
 
   non_composited_main_thread_scrolling_reasons_ = 0;
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (ScrollingCoordinator* scrolling_coordinator = GetScrollingCoordinator())
-    scrolling_coordinator->WillDestroyScrollableArea(this);
-#endif
+    ASSERT(false); // BKTODO: scrolling_coordinator->WillDestroyScrollableArea(this);
 
   if (!GetLayoutBox()->DocumentBeingDestroyed()) {
     Node* node = GetLayoutBox()->GetNode();
@@ -224,11 +218,8 @@ void PaintLayerScrollableArea::Dispose() {
   }
 
   if (LocalFrame* frame = GetLayoutBox()->GetFrame()) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (LocalFrameView* frame_view = frame->View())
       frame_view->RemoveResizerArea(*GetLayoutBox());
-#endif
   }
 
   // Note: it is not safe to call ScrollAnchor::clear if the document is being
@@ -237,32 +228,24 @@ void PaintLayerScrollableArea::Dispose() {
   // leaving the ScrollAnchor with a stale LayoutObject pointer.
   scroll_anchor_.Dispose();
 
-  ASSERT(false); // BKTODO:
-#if 0
   GetLayoutBox()
       ->GetDocument()
       .GetPage()
       ->GlobalRootScrollerController()
       .DidDisposeScrollableArea(*this);
-#endif
 
   scrollbar_manager_.Dispose();
 
-  ASSERT(false); // BKTODO:
-#if 0
+  
   if (scroll_corner_)
-    scroll_corner_->Destroy();
+    ASSERT(false); // BKTODO: scroll_corner_->Destroy();
   if (resizer_)
-    resizer_->Destroy();
-#endif
+    ASSERT(false); // BKTODO: resizer_->Destroy();
 
   ClearScrollableArea();
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (SmoothScrollSequencer* sequencer = GetSmoothScrollSequencer())
     sequencer->DidDisposeScrollableArea(*this);
-#endif
 
   layer_ = nullptr;
 }
@@ -292,11 +275,7 @@ SmoothScrollSequencer* PaintLayerScrollableArea::GetSmoothScrollSequencer()
   if (HasBeenDisposed())
     return nullptr;
 
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return &GetLayoutBox()->GetFrame()->GetSmoothScrollSequencer();
-#endif
 }
 
 GraphicsLayer* PaintLayerScrollableArea::LayerForScrolling() const {
@@ -336,13 +315,8 @@ GraphicsLayer* PaintLayerScrollableArea::LayerForScrollCorner() const {
 
 bool PaintLayerScrollableArea::ShouldUseIntegerScrollOffset() const {
   if (!HasBeenDisposed()) {
-    Frame* frame = GetLayoutBox()->GetFrame();
-    ASSERT(false); // BKTODO:
-#if 0
-    if (frame->GetSettings() &&
-        !frame->GetSettings()->GetPreferCompositingToLCDTextEnabled())
+    if (!Settings::PreferCompositingToLCDTextEnabled)
       return true;
-#endif
   }
 
   return ScrollableArea::ShouldUseIntegerScrollOffset();
@@ -845,9 +819,6 @@ bool PaintLayerScrollableArea::ScrollbarsCanBeActive() const {
   if (!view)
     return false;
 
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   // TODO(szager): This conditional is weird and likely obsolete. Originally
   // added in commit eb0d49caaee2b275ff524d3945a74e8d9180eb7d.
   LocalFrameView* frame_view = view->GetFrameView();
@@ -855,7 +826,6 @@ bool PaintLayerScrollableArea::ScrollbarsCanBeActive() const {
     return false;
 
   return !!frame_view->GetFrame().GetDocument();
-#endif
 }
 
 IntRect PaintLayerScrollableArea::ScrollableAreaBoundingBox() const {
@@ -875,11 +845,8 @@ void PaintLayerScrollableArea::RegisterForAnimation() {
   if (HasBeenDisposed())
     return;
   if (LocalFrame* frame = GetLayoutBox()->GetFrame()) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (LocalFrameView* frame_view = frame->View())
       frame_view->AddAnimatingScrollableArea(this);
-#endif
   }
 }
 
@@ -887,11 +854,8 @@ void PaintLayerScrollableArea::DeregisterForAnimation() {
   if (HasBeenDisposed())
     return;
   if (LocalFrame* frame = GetLayoutBox()->GetFrame()) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (LocalFrameView* frame_view = frame->View())
       frame_view->RemoveAnimatingScrollableArea(this);
-#endif
   }
 }
 
@@ -1205,14 +1169,11 @@ void PaintLayerScrollableArea::DidChangeGlobalRootScroller() {
     GetLayoutBox()->SetNeedsPaintPropertyUpdate();
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   // On Android, where the VisualViewport supplies scrollbars, we need to
   // remove the PLSA's scrollbars if we become the global root scroller.
   // In general, this would be problematic as that can cause layout but this
   // should only ever apply with overlay scrollbars.
-  if (GetLayoutBox()->GetFrame()->GetSettings() &&
-      GetLayoutBox()->GetFrame()->GetSettings()->GetViewportEnabled()) {
+  if (Settings::ViewportEnabled) {
     bool needs_horizontal_scrollbar;
     bool needs_vertical_scrollbar;
     ComputeScrollbarExistence(needs_horizontal_scrollbar,
@@ -1220,7 +1181,6 @@ void PaintLayerScrollableArea::DidChangeGlobalRootScroller() {
     SetHasHorizontalScrollbar(needs_horizontal_scrollbar);
     SetHasVerticalScrollbar(needs_vertical_scrollbar);
   }
-#endif
 }
 
 bool PaintLayerScrollableArea::ShouldPerformScrollAnchoring() const {
@@ -1837,20 +1797,20 @@ void PaintLayerScrollableArea::UpdateScrollCornerStyle() {
                 PseudoStyleRequest(kPseudoIdScrollbarCorner),
                 style_source.Style())
           : scoped_refptr<ComputedStyle>(nullptr);
-  ASSERT(false); // BKTODO:
-#if 0
   if (corner) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!scroll_corner_) {
       scroll_corner_ = LayoutScrollbarPart::CreateAnonymous(
           &GetLayoutBox()->GetDocument(), this);
       scroll_corner_->SetDangerousOneWayParent(GetLayoutBox());
     }
     scroll_corner_->SetStyleWithWritingModeOfParent(std::move(corner));
+#endif
   } else if (scroll_corner_) {
-    scroll_corner_->Destroy();
+    ASSERT(false); // BKTODO: scroll_corner_->Destroy();
     scroll_corner_ = nullptr;
   }
-#endif
 }
 
 bool PaintLayerScrollableArea::HitTestOverflowControls(
@@ -2011,20 +1971,20 @@ void PaintLayerScrollableArea::UpdateResizerStyle(
           ? style_source.GetUncachedPseudoStyle(
                 PseudoStyleRequest(kPseudoIdResizer), style_source.Style())
           : scoped_refptr<ComputedStyle>(nullptr);
-  ASSERT(false); // BKTODO:
-#if 0
   if (resizer) {
+    ASSERT(false); // BKTODO:
+#if 0
     if (!resizer_) {
       resizer_ = LayoutScrollbarPart::CreateAnonymous(
           &GetLayoutBox()->GetDocument(), this);
       resizer_->SetDangerousOneWayParent(GetLayoutBox());
     }
     resizer_->SetStyleWithWritingModeOfParent(std::move(resizer));
+#endif
   } else if (resizer_) {
-    resizer_->Destroy();
+    ASSERT(false); // BKTODO: resizer_->Destroy();
     resizer_ = nullptr;
   }
-#endif
 }
 
 void PaintLayerScrollableArea::InvalidateAllStickyConstraints() {
@@ -2300,8 +2260,6 @@ void PaintLayerScrollableArea::UpdateScrollableAreaSet() {
 #endif
   }
 
-  ASSERT(false); // BKTODO:
-#if 0
   // The scroll and scroll offset properties depend on |scrollsOverflow| (see:
   // PaintPropertyTreeBuilder::updateScrollAndScrollTranslation).
   GetLayoutBox()->SetNeedsPaintPropertyUpdate();
@@ -2314,7 +2272,6 @@ void PaintLayerScrollableArea::UpdateScrollableAreaSet() {
   }
 
   layer_->DidUpdateScrollsOverflow();
-#endif
 }
 
 void PaintLayerScrollableArea::UpdateCompositingLayersAfterScroll() {
@@ -2369,11 +2326,7 @@ ScrollingCoordinator* PaintLayerScrollableArea::GetScrollingCoordinator()
   if (!page)
     return nullptr;
 
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   return page->GetScrollingCoordinator();
-#endif
 }
 
 bool PaintLayerScrollableArea::ShouldScrollOnMainThread() const {

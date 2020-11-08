@@ -28,7 +28,22 @@ LocalFrameView::LocalFrameView(LocalFrame &frame, const IntRect &frameRect)
 {
 }
 
+void LocalFrameView::AddAnimatingScrollableArea(PaintLayerScrollableArea *scrollableArea)
+{
+    ASSERT(false); // BKTODO:
+}
+
 void LocalFrameView::AddResizerArea(LayoutBox &resizerBox)
+{
+    ASSERT(false); // BKTODO:
+}
+
+void LocalFrameView::AddScrollableArea(PaintLayerScrollableArea *scrollableArea)
+{
+    ASSERT(false); // BKTODO:
+}
+
+void LocalFrameView::AddViewportConstrainedObject(LayoutObject &object)
 {
     ASSERT(false); // BKTODO:
 }
@@ -66,6 +81,11 @@ void LocalFrameView::ClearFragmentAnchor(void)
     m_fragmentAnchor = nullptr;
 }
 
+void LocalFrameView::ClearLayoutSubtreeRoot(const LayoutObject &root)
+{
+    m_layoutSubtreeRootList.Remove(const_cast<LayoutObject &>(root));
+}
+
 std::shared_ptr<LocalFrameView> LocalFrameView::Create(LocalFrame &frame, const IntSize &initialSize)
 {
     IntRect frameRect(IntPoint(), initialSize);
@@ -73,6 +93,11 @@ std::shared_ptr<LocalFrameView> LocalFrameView::Create(LocalFrame &frame, const 
     view->SetLayoutSizeInternal(initialSize);
     view->Show();
     return view;
+}
+
+void LocalFrameView::DequeueScrollAnchoringAdjustment(ScrollableArea *scrollableArea)
+{
+    BKLOG("// BKTODO: Process while EnqueueScrollAnchoringAdjustment implemented.");
 }
 
 void LocalFrameView::DidAttachDocument(void)
@@ -129,6 +154,11 @@ void LocalFrameView::Dispose(void)
 #if DCHECK_IS_ON()
     m_hasBeenDisposed = true;
 #endif
+}
+
+void LocalFrameView::EnqueueScrollAnchoringAdjustment(ScrollableArea *scrollableArea)
+{
+    ASSERT(false); // BKTODO:
 }
 
 LayoutView* LocalFrameView::GetLayoutView(void) const
@@ -218,9 +248,33 @@ bool LocalFrameView::NeedsLayout(void) const
     return LayoutPending() || (nullptr != layoutView && layoutView->NeedsLayout()) || IsSubtreeLayout();
 }
 
+void LocalFrameView::RemoveAnimatingScrollableArea(PaintLayerScrollableArea *scrollableArea)
+{
+    if (!m_animatingScrollableAreas)
+        return;
+
+    ASSERT(false); // BKTODO:
+}
+
 void LocalFrameView::RemoveResizerArea(LayoutBox &resizerBox)
 {
     if (!m_resizerAreas)
+        return;
+
+    ASSERT(false); // BKTODO:
+}
+
+void LocalFrameView::RemoveScrollableArea(PaintLayerScrollableArea *scrollableArea)
+{
+    if (!m_scrollableAreas)
+        return;
+
+    ASSERT(false); // BKTODO:
+}
+
+void LocalFrameView::RemoveViewportConstrainedObject(LayoutObject &object)
+{
+    if (!m_viewportConstrainedObjects)
         return;
 
     ASSERT(false); // BKTODO:

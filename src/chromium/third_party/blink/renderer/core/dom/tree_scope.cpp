@@ -42,6 +42,9 @@
 #include "third_party/blink/renderer/core/dom/tree_ordered_map.h"
 #include "third_party/blink/renderer/core/dom/tree_scope_adopter.h"
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/css/resolver/scoped_style_resolver.h"
+#endif
 
 namespace blink {
 
@@ -83,6 +86,13 @@ void TreeScope::AdoptIfNeeded(Node &node)
     if (adopter.NeedsScopeChange())
         adopter.Execute();
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void TreeScope::ClearScopedStyleResolver(void)
+{
+    m_scopedStyleResolver.reset();
+}
+#endif
 
 bool TreeScope::ContainsMultipleElementsWithId(const AtomicString &id) const
 {

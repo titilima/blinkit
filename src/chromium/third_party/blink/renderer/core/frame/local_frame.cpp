@@ -49,6 +49,9 @@
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #include "third_party/blink/renderer/platform/scheduler/main_thread/frame_scheduler_impl.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/scroll/smooth_scroll_sequencer.h"
+#endif
 
 using namespace BlinKit;
 
@@ -265,6 +268,16 @@ Document* LocalFrame::GetDocument(void) const
     LocalDOMWindow *domWindow = DomWindow();
     return nullptr != domWindow ? domWindow->document() : nullptr;
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+SmoothScrollSequencer& LocalFrame::GetSmoothScrollSequencer(void)
+{
+    ASSERT(!Client()->IsCrawler());
+    if (!m_smoothScrollSequencer)
+        m_smoothScrollSequencer = std::make_unique<SmoothScrollSequencer>();
+    return *m_smoothScrollSequencer;
+}
+#endif
 
 std::shared_ptr<base::SingleThreadTaskRunner> LocalFrame::GetTaskRunner(TaskType type)
 {

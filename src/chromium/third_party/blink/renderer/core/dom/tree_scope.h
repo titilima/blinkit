@@ -53,6 +53,7 @@ class Node;
 class ScopedStyleResolver;
 class TreeOrderedMap;
 #ifndef BLINKIT_CRAWLER_ONLY
+class ScopedStyleResolver;
 class StyleSheetList;
 #endif
 
@@ -79,6 +80,10 @@ public:
     // Used by the basic DOM mutation methods (e.g., appendChild()).
     void AdoptIfNeeded(Node &node);
 
+#ifndef BLINKIT_CRAWLER_ONLY
+    void ClearScopedStyleResolver(void);
+#endif
+
 protected:
     TreeScope(ContainerNode &rootNode, Document &document);
     TreeScope(Document &document);
@@ -91,6 +96,8 @@ private:
     std::unique_ptr<TreeOrderedMap> m_elementsById;
 
     std::unique_ptr<IdTargetObserverRegistry> m_idTargetObserverRegistry;
+
+    std::unique_ptr<ScopedStyleResolver> m_scopedStyleResolver;
 };
 
 DEFINE_COMPARISON_OPERATORS_WITH_REFERENCES(TreeScope)

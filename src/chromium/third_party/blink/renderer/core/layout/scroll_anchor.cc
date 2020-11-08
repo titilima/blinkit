@@ -23,7 +23,7 @@
 #include "third_party/blink/renderer/core/dom/nth_index_cache.h"
 #include "third_party/blink/renderer/core/dom/static_node_list.h"
 #include "third_party/blink/renderer/core/frame/local_frame_view.h"
-// BKTODO: #include "third_party/blink/renderer/core/frame/root_frame_viewport.h"
+#include "third_party/blink/renderer/core/frame/root_frame_viewport.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
 #include "third_party/blink/renderer/core/layout/layout_block_flow.h"
 #include "third_party/blink/renderer/core/layout/layout_box.h"
@@ -613,15 +613,12 @@ void ScrollAnchor::ClearSelf() {
 void ScrollAnchor::Dispose() {
   if (scroller_) {
     LocalFrameView* frame_view = ScrollerLayoutBox(scroller_)->GetFrameView();
-    ASSERT(false); // BKTODO:
-#if 0
     ScrollableArea* owning_scroller =
         scroller_->IsRootFrameViewport()
             ? &ToRootFrameViewport(scroller_)->LayoutViewport()
             : scroller_.Get();
     frame_view->DequeueScrollAnchoringAdjustment(owning_scroller);
     scroller_.Clear();
-#endif
   }
   anchor_object_ = nullptr;
   saved_selector_ = String();

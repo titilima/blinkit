@@ -212,20 +212,21 @@ PaintLayer::PaintLayer(LayoutBoxModelObject& layout_object)
 }
 
 PaintLayer::~PaintLayer() {
-  ASSERT(false); // BKTODO:
-#if 0
   if (rare_data_ && rare_data_->resource_info) {
     const ComputedStyle& style = GetLayoutObject().StyleRef();
+    ASSERT(!style.HasFilter()); // BKTODO: Check if necessary.
+#if 0
     if (style.HasFilter())
       style.Filter().RemoveClient(*rare_data_->resource_info);
+#endif
     if (auto* reference_clip =
             ToReferenceClipPathOperationOrNull(style.ClipPath()))
-      reference_clip->RemoveClient(*rare_data_->resource_info);
+      ASSERT(false); // BKTODO: reference_clip->RemoveClient(*rare_data_->resource_info);
     rare_data_->resource_info->ClearLayer();
   }
   if (GetLayoutObject().GetFrame()) {
     if (ScrollingCoordinator* scrolling_coordinator = GetScrollingCoordinator())
-      scrolling_coordinator->WillDestroyLayer(this);
+      ASSERT(false); // BKTODO: scrolling_coordinator->WillDestroyLayer(this);
   }
 
   if (GroupedMapping()) {
@@ -240,7 +241,6 @@ PaintLayer::~PaintLayer() {
 
   if (scrollable_area_)
     scrollable_area_->Dispose();
-#endif
 
 #if DCHECK_IS_ON()
   // stacking_parent_ should be cleared because DirtyStackingContextZOrderLists
@@ -2900,12 +2900,8 @@ bool PaintLayer::SupportsSubsequenceCaching() const {
 }
 
 ScrollingCoordinator* PaintLayer::GetScrollingCoordinator() {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
   Page* page = GetLayoutObject().GetFrame()->GetPage();
   return (!page) ? nullptr : page->GetScrollingCoordinator();
-#endif
 }
 
 bool PaintLayer::CompositesWithTransform() const {
