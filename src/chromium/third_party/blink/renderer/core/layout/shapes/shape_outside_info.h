@@ -1,14 +1,3 @@
-// -------------------------------------------------
-// BlinKit - blink Library
-// -------------------------------------------------
-//   File Name: shape_outside_info.h
-// Description: ShapeOutsideInfo Class
-//      Author: Ziming Li
-//     Created: 2020-10-04
-// -------------------------------------------------
-// Copyright (C) 2020 MingYang Software Technology.
-// -------------------------------------------------
-
 /*
  * Copyright (C) 2012 Adobe Systems Incorporated. All rights reserved.
  *
@@ -144,38 +133,20 @@ class ShapeOutsideInfo final {
       LayoutUnit line_height);
 
   static ShapeOutsideInfo& EnsureInfo(const LayoutBox& key) {
-    ASSERT(false); // BKTODO:
-    exit(0);
-#if 0
     InfoMap& info_map = ShapeOutsideInfo::GetInfoMap();
     if (ShapeOutsideInfo* info = info_map.at(&key))
       return *info;
     InfoMap::AddResult result =
         info_map.insert(&key, ShapeOutsideInfo::CreateInfo(key));
     return *result.stored_value->value;
-#endif
   }
-#if 0 // BKTODO:
   static void RemoveInfo(const LayoutBox& key) { GetInfoMap().erase(&key); }
-#else
-  static void RemoveInfo(const LayoutBox&) { ASSERT(false); }
-#endif
   static ShapeOutsideInfo* Info(const LayoutBox& key) {
-    ASSERT(false); // BKTODO:
-    return nullptr;
-#if 0
     return GetInfoMap().at(&key);
-#endif
   }
 
-#if 0 // BKTODO:
   static bool IsEmpty() { return GetInfoMap().IsEmpty(); }
-#else
-  static bool IsEmpty() {
-    ASSERT(false);
-    return true;
-  }
-#endif
+
   void MarkShapeAsDirty() { shape_.reset(); }
   bool IsShapeDirty() { return !shape_.get(); }
   LayoutSize ShapeSize() const { return reference_box_logical_size_; }
@@ -199,13 +170,11 @@ class ShapeOutsideInfo final {
   LayoutUnit LogicalTopOffset() const;
   LayoutUnit LogicalLeftOffset() const;
 
-#if 0 // BKTODO:
   typedef HashMap<const LayoutBox*, std::unique_ptr<ShapeOutsideInfo>> InfoMap;
   static InfoMap& GetInfoMap() {
     DEFINE_STATIC_LOCAL(InfoMap, static_info_map, ());
     return static_info_map;
   }
-#endif
 
   const LayoutBox& layout_box_;
   mutable std::unique_ptr<Shape> shape_;
