@@ -134,6 +134,8 @@ class Supplement : public GarbageCollectedMixin {
 
   explicit Supplement(T& supplementable) : supplementable_(&supplementable) {}
 
+  virtual ~Supplement(void) = default;
+
   // Supplementable and its supplements live and die together.
   // Thus supplementable() should never return null (if the default constructor
   // is completely removed).

@@ -185,6 +185,7 @@ public:
     DocumentFragment* createDocumentFragment(void);
     Comment* createComment(const String &data);
     Element* createElement(const AtomicString &name, ExceptionState &exceptionState);
+    Text* createTextNode(const String &data);
     Element* documentElement(void) const { return m_documentElement.Get(); }
     using TreeScope::getElementById;
     Element* head(void) const;
@@ -221,6 +222,9 @@ public:
     // or move it and make it sensitive to the type of document.
     static bool IsValidName(const String &name);
     virtual Element* CreateElement(const AtomicString &name, CreateElementFlags flags) = 0;
+
+    void SetTitleElement(Element *titleElement);
+    void RemoveTitle(Element *titleElement);
 
     // keep track of what types of event listeners are registered, so we don't
     // dispatch events unnecessarily
@@ -438,6 +442,7 @@ private:
     static ConstructionType GetConstructionType(const DocumentInit &init);
 
     void DispatchDidReceiveTitle(void);
+    void UpdateTitle(const String &title);
     void UpdateBaseURL(void);
 
     // ImplicitClose() actually does the work of closing the input stream.
@@ -503,7 +508,7 @@ private:
 
     bool m_wellFormed = false;
 
-    String m_title;
+    String m_title, m_rawTitle;
 
     // Document URLs.
     GURL m_URL;  // Document.URL: The URL from which this document was retrieved.

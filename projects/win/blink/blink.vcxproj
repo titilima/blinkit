@@ -1157,7 +1157,9 @@
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_element_factory.cpp" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_head_element.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_html_element.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_meta_element.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_tag_collection.cc" />
+    <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_title_element.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_unknown_element.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\atomic_html_token.cc" />
     <ClCompile Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\compact_html_token.cc" />
@@ -2984,7 +2986,9 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_element.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_head_element.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_html_element.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_meta_element.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_tag_collection.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_title_element.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\html_unknown_element.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\imports\html_imports_controller.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\renderer\core\html\parser\atomic_html_token.h" />

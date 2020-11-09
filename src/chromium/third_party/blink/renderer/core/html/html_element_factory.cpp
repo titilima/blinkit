@@ -15,6 +15,8 @@
 #include "third_party/blink/renderer/core/html/html_body_element.h"
 #include "third_party/blink/renderer/core/html/html_head_element.h"
 #include "third_party/blink/renderer/core/html/html_html_element.h"
+#include "third_party/blink/renderer/core/html/html_meta_element.h"
+#include "third_party/blink/renderer/core/html/html_title_element.h"
 
 namespace blink {
 
@@ -27,9 +29,11 @@ static void FillElementCreators(HTMLElementCreators &dst)
         const QualifiedName &tag;
         HTMLElement::Creator creator;
     } data[] = {
-        { html_names::kBodyTag, HTMLBodyElement::Create },
-        { html_names::kHeadTag, HTMLHeadElement::Create },
-        { html_names::kHTMLTag, HTMLHtmlElement::Create }
+        { html_names::kBodyTag,  HTMLBodyElement::Create },
+        { html_names::kHeadTag,  HTMLHeadElement::Create },
+        { html_names::kHTMLTag,  HTMLHtmlElement::Create },
+        { html_names::kMetaTag,  HTMLMetaElement::Create },
+        { html_names::kTitleTag, HTMLTitleElement::Create }
     };
     for (const auto &e : data)
     {

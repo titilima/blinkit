@@ -39,6 +39,26 @@ std::unique_ptr<Page> Page::Create(PageClients &pageClients)
     return base::WrapUnique(new Page(pageClients));
 }
 
+void Page::DidCommitLoad(LocalFrame *frame)
+{
+#if 0 // BKTODO: Check if necessary
+    GetConsoleMessageStorage().Clear();
+    // TODO(loonybear): Most of this doesn't appear to take into account that
+    // each SVGImage gets it's own Page instance.
+    GetDeprecation().ClearSuppression();
+    GetVisualViewport().SendUMAMetrics();
+#endif
+    // Need to reset visual viewport position here since before commit load we
+    // would update the previous history item, Page::didCommitLoad is called
+    // after a new history item is created in FrameLoader.
+    // See crbug.com/642279
+    GetVisualViewport().SetScrollOffset(ScrollOffset(), kProgrammaticScroll);
+#if 0 // BKTODO: Check if necessary
+    hosts_using_features_.UpdateMeasurementsAndClear();
+    GetLinkHighlights().ResetForPageNavigation();
+#endif
+}
+
 void Page::DocumentDetached(Document *document)
 {
 #if 0 // BKTODO: Check this later

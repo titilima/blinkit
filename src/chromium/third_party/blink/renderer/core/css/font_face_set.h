@@ -51,20 +51,16 @@ class CORE_EXPORT FontFaceSet : public EventTargetWithInlineData,
   FontFaceSet(ExecutionContext& context)
       : PausableObject(&context),
         is_loading_(false),
-#if 0 // BKTODO:
         should_fire_loading_event_(false),
+#if 0 // BKTODO:
         ready_(new ReadyProperty(GetExecutionContext(),
                                  this,
                                  ReadyProperty::kReady)),
+#endif
         async_runner_(AsyncMethodRunner<FontFaceSet>::Create(
             this,
             &FontFaceSet::HandlePendingEventsAndPromises,
             context.GetTaskRunner(TaskType::kInternalDefault))) {}
-#else
-        should_fire_loading_event_(false) {
-    // BKTODO:
-  }
-#endif
   ~FontFaceSet() override = default;
 
 #if 0 // BKTODO:
@@ -141,7 +137,7 @@ class CORE_EXPORT FontFaceSet : public EventTargetWithInlineData,
   Member<ReadyProperty> ready_;
 #endif
 
-  Member<AsyncMethodRunner<FontFaceSet>> async_runner_;
+  std::unique_ptr<AsyncMethodRunner<FontFaceSet>> async_runner_;
 
 #if 0 // BKTODO:
   class IterationSource final : public FontFaceSetIterable::IterationSource {

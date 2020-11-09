@@ -75,6 +75,8 @@ public:
     void SetVisibilityState(PageVisibilityState visibilityState, bool isInitialState);
 
     ScrollingCoordinator* GetScrollingCoordinator(void);
+
+    void DidCommitLoad(LocalFrame *frame);
 private:
     explicit Page(PageClients &pageClients);
 

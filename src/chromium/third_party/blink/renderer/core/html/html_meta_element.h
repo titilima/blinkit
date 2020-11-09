@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_meta_element.h
+// Description: HTMLMetaElement Class
+//      Author: Ziming Li
+//     Created: 2020-11-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -105,8 +116,8 @@ class CORE_EXPORT HTMLMetaElement final : public HTMLElement {
                                        const String& key,
                                        const String& value);
 
-  static mojom::ViewportFit ParseViewportFitValueAsEnum(bool& unknown_value,
-                                                        const String& value);
+  static ViewportFit ParseViewportFitValueAsEnum(bool& unknown_value,
+                                                 const String& value);
 
   static void ReportViewportWarning(Document*,
                                     ViewportErrorCode,

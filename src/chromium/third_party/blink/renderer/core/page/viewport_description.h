@@ -134,12 +134,9 @@ struct CORE_EXPORT ViewportDescription {
   ViewportFit GetViewportFit() const {
     return viewport_fit_.value_or(ViewportFit::kAuto);
   }
-#if 0 // BKTODO:
-  void SetViewportFit(mojom::ViewportFit value) { viewport_fit_ = value; }
-#endif
+  void SetViewportFit(ViewportFit value) { viewport_fit_ = value; }
 
   bool operator==(const ViewportDescription& other) const {
-    ASSERT(false); // BKTODO:
     // Used for figuring out whether to reset the viewport or not,
     // thus we are not taking type into account.
     return min_width == other.min_width && max_width == other.max_width &&

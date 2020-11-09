@@ -129,6 +129,11 @@ inline bool IsHTMLTemplateElement(const Node *node)
     return nullptr != node && IsHTMLTemplateElement(*node);
 }
 
+inline bool IsHTMLTitleElement(const Element &element)
+{
+    return element.HasTagName(html_names::kTitleTag);
+}
+
 } // namespace blink
 
 #endif // BLINKIT_BLINK_HTML_ELEMENT_TYPE_HELPERS_H

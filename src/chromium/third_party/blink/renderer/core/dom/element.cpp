@@ -118,17 +118,20 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
 {
     const QualifiedName &name = params.name;
 #ifndef BLINKIT_CRAWLER_ONLY
-    const bool forCrawler = ForCrawler();
-    if (!forCrawler)
+    const bool forUI = !ForCrawler();
+    if (forUI)
     {
-        ASSERT(false); // BKTODO:
+        if (ShadowRoot *parentShadowRoot = ShadowRootWhereNodeCanBeDistributedForV0(*this))
+        {
+            ASSERT(false); // BKTODO:
 #if 0
-        if (ShadowRoot* parent_shadow_root =
-            ShadowRootWhereNodeCanBeDistributedForV0(*this)) {
             if (ShouldInvalidateDistributionWhenAttributeChanged(
                 *parent_shadow_root, name, params.new_value))
                 parent_shadow_root->SetNeedsDistributionRecalc();
+#endif
         }
+        ASSERT(name.LocalNameUpper() != "SLOT"); // BKTODO:
+#if 0
         if (name == HTMLNames::slotAttr && params.old_value != params.new_value) {
             if (ShadowRoot* root = V1ShadowRootOfParent())
                 root->DidChangeHostChildSlotName(params.old_value, params.new_value);
@@ -149,8 +152,8 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
         {
             GetElementData()->SetIdForStyleResolution(newId);
 #ifndef BLINKIT_CRAWLER_ONLY
-            if (!forCrawler)
-                ASSERT(false); // BKTODO: GetDocument().GetStyleEngine().IdChangedForElement(oldId, newId, *this);
+            if (forUI)
+                GetDocument().GetStyleEngine().IdChangedForElement(oldId, newId, *this);
 #endif
         }
     }
@@ -174,43 +177,50 @@ void Element::AttributeChanged(const AttributeModificationParams &params)
         SetHasName(!params.new_value.IsNull());
     }
 #ifndef BLINKIT_CRAWLER_ONLY
-#if 0 // BKTODO:
-    else if (name == HTMLNames::partAttr) {
-        if (RuntimeEnabledFeatures::CSSPartPseudoElementEnabled()) {
-            EnsureElementRareData().SetPart(params.new_value);
-            GetDocument().GetStyleEngine().PartChangedForElement(*this);
+    else if (forUI)
+    {
+        BKLOG("// BKTODO: Process attribute `%s`", name.LocalName().StdUtf8().c_str());
+#if 0
+        if (name == HTMLNames::partAttr)
+        {
+            if (RuntimeEnabledFeatures::CSSPartPseudoElementEnabled()) {
+                EnsureElementRareData().SetPart(params.new_value);
+                GetDocument().GetStyleEngine().PartChangedForElement(*this);
+            }
         }
-    }
-    else if (name == HTMLNames::partmapAttr) {
-        if (RuntimeEnabledFeatures::CSSPartPseudoElementEnabled()) {
-            EnsureElementRareData().SetPartNamesMap(params.new_value);
-            GetDocument().GetStyleEngine().PartmapChangedForElement(*this);
+        else if (name == HTMLNames::partmapAttr)
+        {
+            if (RuntimeEnabledFeatures::CSSPartPseudoElementEnabled()) {
+                EnsureElementRareData().SetPartNamesMap(params.new_value);
+                GetDocument().GetStyleEngine().PartmapChangedForElement(*this);
+            }
         }
-    }
-    else if (IsStyledElement()) {
-        if (name == styleAttr) {
-            StyleAttributeChanged(params.new_value, params.reason);
+        else if (IsStyledElement())
+        {
+            if (name == styleAttr) {
+                StyleAttributeChanged(params.new_value, params.reason);
+            }
+            else if (IsPresentationAttribute(name)) {
+                GetElementData()->presentation_attribute_style_is_dirty_ = true;
+                SetNeedsStyleRecalc(kLocalStyleChange,
+                    StyleChangeReasonForTracing::FromAttribute(name));
+            }
+            else if (RuntimeEnabledFeatures::InvisibleDOMEnabled() &&
+                name == HTMLNames::invisibleAttr &&
+                params.old_value != params.new_value) {
+                InvisibleAttributeChanged(params.old_value, params.new_value);
+            }
         }
-        else if (IsPresentationAttribute(name)) {
-            GetElementData()->presentation_attribute_style_is_dirty_ = true;
-            SetNeedsStyleRecalc(kLocalStyleChange,
-                StyleChangeReasonForTracing::FromAttribute(name));
-        }
-        else if (RuntimeEnabledFeatures::InvisibleDOMEnabled() &&
-            name == HTMLNames::invisibleAttr &&
-            params.old_value != params.new_value) {
-            InvisibleAttributeChanged(params.old_value, params.new_value);
-        }
-    }
 #endif
+    }
 #endif
 
     InvalidateNodeListCachesInAncestors(&name, this, nullptr);
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (!forCrawler)
+    if (forUI)
     {
-        ASSERT(false); // BKTODO:
+        ASSERT(name.LocalNameUpper() != "TABINDEX"); // BKTODO:
 #if 0
         if (params.reason == AttributeModificationReason::kDirectly &&
             name == tabindexAttr && AdjustedFocusedElementInTreeScope() == this)

@@ -50,8 +50,8 @@
 #include "third_party/blink/renderer/core/scroll/programmatic_scroll_animator.h"
 #include "third_party/blink/renderer/core/scroll/scroll_animator_base.h"
 #include "third_party/blink/renderer/core/scroll/scrollbar_theme.h"
-#include "third_party/blink/renderer/core/scroll/smooth_scroll_sequencer.h"
 #endif
+#include "third_party/blink/renderer/core/scroll/smooth_scroll_sequencer.h"
 #include "third_party/blink/renderer/platform/graphics/graphics_layer.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 // BKTODO: #include "third_party/blink/renderer/platform/scheduler/public/thread_scheduler.h"
@@ -216,11 +216,8 @@ void ScrollableArea::SetScrollOffset(const ScrollOffset& offset,
                                      ScrollBehavior behavior) {
   if (scroll_type != kSequencedScroll && scroll_type != kClampingScroll &&
       scroll_type != kAnchoringScroll) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (SmoothScrollSequencer* sequencer = GetSmoothScrollSequencer())
       sequencer->AbortAnimations();
-#endif
   }
 
   ScrollOffset clamped_offset = ClampScrollOffset(offset);

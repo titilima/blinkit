@@ -75,6 +75,7 @@
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 #include "third_party/blink/renderer/platform/network/http_parsers.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_buffer.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/css/css_font_selector.h"
@@ -82,11 +83,13 @@
 #   include "third_party/blink/renderer/core/css/resolver/font_builder.h"
 #   include "third_party/blink/renderer/core/css/style_engine.h"
 #   include "third_party/blink/renderer/core/css/style_sheet_contents.h"
+#   include "third_party/blink/renderer/core/dom/document_type.h"
 #   include "third_party/blink/renderer/core/dom/layout_tree_builder.h"
 #   include "third_party/blink/renderer/core/dom/visited_link_state.h"
 #   include "third_party/blink/renderer/core/frame/viewport_data.h"
 #   include "third_party/blink/renderer/core/html/custom/v0_custom_element_registration_context.h"
 #   include "third_party/blink/renderer/core/html/imports/html_imports_controller.h"
+#   include "third_party/blink/renderer/core/html/html_title_element.h"
 #   include "third_party/blink/renderer/core/layout/layout_view.h"
 #   include "third_party/blink/renderer/core/layout/text_autosizer.h"
 #   include "third_party/blink/renderer/core/page/chrome_client.h"
@@ -769,6 +772,13 @@ std::shared_ptr<DocumentParser> Document::CreateParser(void)
 {
     return HTMLDocumentParser::Create(*this);
 }
+
+Text* Document::createTextNode(const String &data)
+{
+    ASSERT(false); // BKTODO:
+    return nullptr;
+}
+
 void Document::DecrementLoadEventDelayCount(void)
 {
     ASSERT(m_loadEventDelayCount > 0);
@@ -1561,7 +1571,14 @@ void Document::RemoveFocusedElementOfSubtree(Node *node, bool amongChildrenOnly)
 {
     ASSERT(false); // BKTOOD:
 }
+#endif
 
+void Document::RemoveTitle(Element *titleElement)
+{
+    ASSERT(false); // BKTOOD:
+}
+
+#ifndef BLINKIT_CRAWLER_ONLY
 void Document::ScheduleLayoutTreeUpdate(void)
 {
     ASSERT(!ForCrawler());
@@ -1643,14 +1660,14 @@ void Document::SetDoctype(DocumentType *docType)
 #ifndef BLINKIT_CRAWLER_ONLY
         if (!ForCrawler())
         {
-            ASSERT(false); // BKTODO:
+            if (m_docType->publicId().StartsWithIgnoringASCIICase("-//wapforum//dtd xhtml mobile 1."))
+            {
+                ASSERT(false); // BKTODO:
 #if 0
-            if (doc_type_->publicId().StartsWithIgnoringASCIICase(
-                "-//wapforum//dtd xhtml mobile 1.")) {
                 is_mobile_document_ = true;
                 style_engine_->ViewportRulesChanged();
-            }
 #endif
+            }
         }
 #endif
     }
@@ -1728,6 +1745,27 @@ void Document::SetReadyState(DocumentReadyState readyState)
     {
         m_readyState = readyState;
         DispatchEvent(*Event::Create(event_type_names::kReadystatechange));
+    }
+}
+
+void Document::SetTitleElement(Element *titleElement)
+{
+    if (m_titleElement && m_titleElement != titleElement)
+        m_titleElement = Traversal<Element>::FirstWithin(*this, IsHTMLTitleElement);
+    else
+        m_titleElement = titleElement;
+
+    if (m_titleElement)
+    {
+        String newTitle;
+#ifdef BLINKIT_CRAWLER_ONLY
+        newTitle = m_titleElement->textContent();
+#else
+        newTitle = ForCrawler()
+            ? m_titleElement->textContent()
+            : static_cast<HTMLTitleElement *>(m_titleElement.Get())->text();
+#endif
+        UpdateTitle(newTitle);
     }
 }
 
@@ -2036,6 +2074,66 @@ void Document::UpdateStyleAndLayoutTreeForNode(const Node *node)
     ASSERT(false); // BKTODO:
 }
 #endif
+
+/*
+ * Performs three operations:
+ *  1. Convert control characters to spaces
+ *  2. Trim leading and trailing spaces
+ *  3. Collapse internal whitespace.
+ */
+template <typename CharacterType>
+static inline String CanonicalizedTitle(Document *document, const String &title)
+{
+    unsigned length = title.length();
+    unsigned builderIndex = 0;
+    const CharacterType *characters = title.GetCharacters<CharacterType>();
+
+    StringBuffer<CharacterType> buffer(length);
+
+    // Replace control characters with spaces and collapse whitespace.
+    bool pendingWhitespace = false;
+    for (unsigned i = 0; i < length; ++i)
+    {
+        UChar32 c = characters[i];
+        if ((c <= WTF::Unicode::kSpaceCharacter && c != WTF::Unicode::kLineTabulationCharacter)
+            || c == WTF::Unicode::kDeleteCharacter)
+        {
+            if (builderIndex != 0)
+                pendingWhitespace = true;
+        }
+        else
+        {
+            if (pendingWhitespace)
+            {
+                buffer[builderIndex++] = ' ';
+                pendingWhitespace = false;
+            }
+            buffer[builderIndex++] = c;
+        }
+    }
+    buffer.Shrink(builderIndex);
+
+    return String::Adopt(buffer);
+}
+
+void Document::UpdateTitle(const String &title)
+{
+    if (m_rawTitle == title)
+        return;
+
+    m_rawTitle = title;
+
+    String oldTitle = m_title;
+    if (m_rawTitle.IsEmpty())
+        m_title = String();
+    else if (m_rawTitle.Is8Bit())
+        m_title = CanonicalizedTitle<LChar>(this, m_rawTitle);
+    else
+        m_title = CanonicalizedTitle<UChar>(this, m_rawTitle);
+
+    if (m_frame && oldTitle != m_title)
+        DispatchDidReceiveTitle();
+}
 
 GURL Document::urlForBinding(void) const
 {

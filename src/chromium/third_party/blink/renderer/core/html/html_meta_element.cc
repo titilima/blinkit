@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: html_meta_element.cc
+// Description: HTMLMetaElement Class
+//      Author: Ziming Li
+//     Created: 2020-11-09
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 1999 Lars Knoll (knoll@kde.org)
  *           (C) 1999 Antti Koivisto (koivisto@kde.org)
@@ -31,8 +42,8 @@
 #include "third_party/blink/renderer/core/html/html_head_element.h"
 #include "third_party/blink/renderer/core/html/parser/html_parser_idioms.h"
 #include "third_party/blink/renderer/core/html_names.h"
-#include "third_party/blink/renderer/core/inspector/console_message.h"
-#include "third_party/blink/renderer/core/loader/http_equiv.h"
+// BKTODO: #include "third_party/blink/renderer/core/inspector/console_message.h"
+// BKTODO: #include "third_party/blink/renderer/core/loader/http_equiv.h"
 #include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_to_number.h"
@@ -127,8 +138,11 @@ void HTMLMetaElement::ParseContentAttribute(
     String message =
         "Error parsing a meta element's content: ';' is not a valid key-value "
         "pair separator. Please use ',' instead.";
+    ASSERT(false); // BKTODO:
+#if 0
     document->AddConsoleMessage(ConsoleMessage::Create(
         kRenderingMessageSource, kWarningMessageLevel, message));
+#endif
   }
 }
 
@@ -305,18 +319,18 @@ float HTMLMetaElement::ParseViewportValueAsDPI(Document* document,
   return value;
 }
 
-blink::mojom::ViewportFit HTMLMetaElement::ParseViewportFitValueAsEnum(
+ViewportFit HTMLMetaElement::ParseViewportFitValueAsEnum(
     bool& unknown_value,
     const String& value_string) {
   if (DeprecatedEqualIgnoringCase(value_string, "auto"))
-    return mojom::ViewportFit::kAuto;
+    return ViewportFit::kAuto;
   if (DeprecatedEqualIgnoringCase(value_string, "contain"))
-    return mojom::ViewportFit::kContain;
+    return ViewportFit::kContain;
   if (DeprecatedEqualIgnoringCase(value_string, "cover"))
-    return mojom::ViewportFit::kCover;
+    return ViewportFit::kCover;
 
   unknown_value = true;
-  return mojom::ViewportFit::kAuto;
+  return ViewportFit::kAuto;
 }
 
 void HTMLMetaElement::ProcessViewportKeyValuePair(
@@ -400,6 +414,7 @@ static const char* ViewportErrorMessageTemplate(ViewportErrorCode error_code) {
   return kErrors[error_code];
 }
 
+#if 0 // BKTODO:
 static MessageLevel ViewportErrorMessageLevel(ViewportErrorCode error_code) {
   switch (error_code) {
     case kTruncatedViewportArgumentValueError:
@@ -414,6 +429,7 @@ static MessageLevel ViewportErrorMessageLevel(ViewportErrorCode error_code) {
   NOTREACHED();
   return kErrorMessageLevel;
 }
+#endif
 
 void HTMLMetaElement::ReportViewportWarning(Document* document,
                                             ViewportErrorCode error_code,
@@ -428,10 +444,13 @@ void HTMLMetaElement::ReportViewportWarning(Document* document,
   if (!replacement2.IsNull())
     message.Replace("%replacement2", replacement2);
 
+  ASSERT(false); // BKTODO:
+#if 0
   // FIXME: This message should be moved off the console once a solution to
   // https://bugs.webkit.org/show_bug.cgi?id=103274 exists.
   document->AddConsoleMessage(ConsoleMessage::Create(
       kRenderingMessageSource, ViewportErrorMessageLevel(error_code), message));
+#endif
 }
 
 void HTMLMetaElement::GetViewportDescriptionFromContentAttribute(
@@ -464,10 +483,13 @@ void HTMLMetaElement::ProcessViewportContentAttribute(
   if (viewport_data.ShouldMergeWithLegacyDescription(origin))
     description_from_legacy_tag = viewport_data.GetViewportDescription();
 
+  ASSERT(false); // BKTODO:
+#if 0
   GetViewportDescriptionFromContentAttribute(
       content, description_from_legacy_tag, &GetDocument(),
       GetDocument().GetSettings() &&
           GetDocument().GetSettings()->GetViewportMetaZeroValuesQuirk());
+#endif
 
   viewport_data.SetViewportDescription(description_from_legacy_tag);
 }
@@ -516,8 +538,11 @@ void HTMLMetaElement::Process() {
       ProcessViewportContentAttribute(content_value,
                                       ViewportDescription::kViewportMeta);
     else if (DeprecatedEqualIgnoringCase(name_value, "referrer"))
+      ASSERT(false); // BKTODO: Check if necessary.
+#if 0
       GetDocument().ParseAndSetReferrerPolicy(
           content_value, true /* support legacy keywords */);
+#endif
     else if (DeprecatedEqualIgnoringCase(name_value, "handheldfriendly") &&
              DeprecatedEqualIgnoringCase(content_value, "true"))
       ProcessViewportContentAttribute(
@@ -528,7 +553,7 @@ void HTMLMetaElement::Process() {
           ViewportDescription::kMobileOptimizedMeta);
     else if (DeprecatedEqualIgnoringCase(name_value, "theme-color") &&
              GetDocument().GetFrame())
-      GetDocument().GetFrame()->Client()->DispatchDidChangeThemeColor();
+      ASSERT(false); // BKTODO: GetDocument().GetFrame()->Client()->DispatchDidChangeThemeColor();
   }
 
   // Get the document to process the tag, but only if we're actually part of DOM
@@ -539,8 +564,11 @@ void HTMLMetaElement::Process() {
   if (http_equiv_value.IsEmpty())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   HttpEquiv::Process(GetDocument(), http_equiv_value, content_value,
                      InDocumentHead(this), this);
+#endif
 }
 
 WTF::TextEncoding HTMLMetaElement::ComputeEncoding() const {

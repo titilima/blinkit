@@ -49,8 +49,8 @@ class AsyncMethodRunner final
   static AsyncMethodRunner* Create(
       TargetClass* object,
       TargetMethod method,
-      scoped_refptr<base::SingleThreadTaskRunner> task_runner) {
-    return new AsyncMethodRunner(object, method, std::move(task_runner));
+      const std::shared_ptr<base::SingleThreadTaskRunner> &task_runner) {
+    return new AsyncMethodRunner(object, method, task_runner);
   }
 
   ~AsyncMethodRunner() = default;
@@ -118,7 +118,7 @@ class AsyncMethodRunner final
  private:
   AsyncMethodRunner(TargetClass* object,
                     TargetMethod method,
-                    scoped_refptr<base::SingleThreadTaskRunner> task_runner)
+                    const std::shared_ptr<base::SingleThreadTaskRunner> &task_runner)
       : timer_(std::move(task_runner),
                this,
                &AsyncMethodRunner<TargetClass>::Fired),

@@ -17,6 +17,7 @@
 #include "third_party/blink/renderer/core/layout/layout_view.h"
 #include "third_party/blink/renderer/core/layout/text_autosizer.h"
 #include "third_party/blink/renderer/core/paint/paint_layer.h"
+#include "third_party/blink/renderer/core/page/chrome_client.h"
 #include "third_party/blink/renderer/core/page/page.h"
 #include "third_party/blink/renderer/core/page/scrolling/top_document_root_scroller_controller.h"
 #include "third_party/blink/renderer/core/paint/paint_layer_scrollable_area.h"
@@ -53,27 +54,23 @@ void LocalFrameView::BeginLifecycleUpdates(void)
     // Avoid pumping frames for the initially empty document.
     if (!GetFrame().Loader().StateMachine()->CommittedFirstRealDocumentLoad())
         return;
-    ASSERT(false); // BKTODO:
-#if 0
-    lifecycle_updates_throttled_ = false;
+    m_lifecycleUpdatesThrottled = false;
+#if 0 // BKTODO: Check if necessary.
     if (auto* owner = GetFrame().OwnerLayoutObject())
         owner->SetShouldCheckForPaintInvalidation();
+#endif
 
-    LayoutView* layout_view = GetLayoutView();
-    bool layout_view_is_empty = layout_view && !layout_view->FirstChild();
-    if (layout_view_is_empty && !DidFirstLayout() && !NeedsLayout()) {
+    LayoutView *layoutView = GetLayoutView();
+    bool layoutViewIsEmpty = nullptr != layoutView && nullptr == layoutView->FirstChild();
+    if (layoutViewIsEmpty && !DidFirstLayout() && !NeedsLayout())
+    {
         // Make sure a display:none iframe gets an initial layout pass.
-        layout_view->SetNeedsLayout(LayoutInvalidationReason::kAddedToLayout,
-            kMarkOnlyThis);
+        layoutView->SetNeedsLayout(LayoutInvalidationReason::kAddedToLayout, kMarkOnlyThis);
     }
 
     SetupRenderThrottling();
-    UpdateRenderThrottlingStatus(hidden_for_throttling_, subtree_throttled_);
-    // The compositor will "defer commits" for the main frame until we
-    // explicitly request them.
-    if (GetFrame().IsMainFrame())
-        GetFrame().GetPage()->GetChromeClient().BeginLifecycleUpdates();
-#endif
+    UpdateRenderThrottlingStatus(m_hiddenForThrottling, m_subtreeThrottled);
+    GetFrame().GetPage()->GetChromeClient().BeginLifecycleUpdates();
 }
 
 void LocalFrameView::ClearFragmentAnchor(void)
@@ -379,6 +376,11 @@ void LocalFrameView::SetSelfVisible(bool visible)
     m_selfVisible = visible;
 }
 
+void LocalFrameView::SetupRenderThrottling(void)
+{
+    BKLOG("// BKTODO: Check if necessary.");
+}
+
 void LocalFrameView::Show(void)
 {
     if (!IsSelfVisible())
@@ -410,9 +412,21 @@ void LocalFrameView::UpdateBaseBackgroundColorRecursively(const Color &baseBackg
 #endif
 }
 
+void LocalFrameView::UpdateRenderThrottlingStatus(
+    bool hidden,
+    bool subtreeThrottled,
+    ForceThrottlingInvalidationBehavior forceThrottlingInvalidationHehavior,
+    NotifyChildrenBehavior notifyChildrenBehavior)
+{
+    BKLOG("// BKTODO: Check if necessary.");
+}
+
 void LocalFrameView::WillBeRemovedFromFrame(void)
 {
-    ASSERT(false); // BKTODO:
+#if 0 // BKTODO: Check the logic
+    if (paint_artifact_compositor_)
+        paint_artifact_compositor_->WillBeRemovedFromFrame();
+#endif
 }
 
 } // namespace blink

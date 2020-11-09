@@ -37,6 +37,7 @@ int64_t SaturatedSub(TimeDelta delta, int64_t value);
 /**
  * TimeDelta
  */
+
 class TimeDelta
 {
 public:
@@ -51,6 +52,11 @@ public:
     double InSecondsF(void) const;
     int64_t InMilliseconds(void) const;
     double InMillisecondsF(void) const;
+
+    TimeDelta& operator=(TimeDelta other) {
+        m_delta = other.m_delta;
+        return *this;
+    }
 
     static constexpr TimeDelta Max(void) {
         return TimeDelta(std::numeric_limits<int64_t>::max());
@@ -116,6 +122,11 @@ public:
     static constexpr int64_t kMicrosecondsPerSecond = kMicrosecondsPerMillisecond * kMillisecondsPerSecond;
 
     constexpr bool is_null(void) const { return 0 == m_us; }
+
+    T& operator=(T other) {
+        m_us = other.m_us;
+        return *(static_cast<T *>(this));
+    }
 
     TimeDelta since_origin(void) const {
         return TimeDelta::FromMicroseconds(m_us);

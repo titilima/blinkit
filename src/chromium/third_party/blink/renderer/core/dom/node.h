@@ -200,6 +200,9 @@ public:
     bool IsDescendantOf(const Node *other) const;
     bool IsDocumentNode(void) const;
     bool IsDocumentTypeNode(void) const { return getNodeType() == kDocumentTypeNode; }
+#ifndef BLINKIT_CRAWLER_ONLY
+    bool IsStyledElement(void) const;
+#endif
     bool IsTreeScope(void) const;
     bool HasRareData(void) const { return GetFlag(kHasRareDataFlag); }
     bool IsTextNode(void) const { return GetFlag(kIsTextFlag); }

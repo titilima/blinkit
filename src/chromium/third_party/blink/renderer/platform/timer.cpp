@@ -91,7 +91,11 @@ void TimerBase::Start(TimeDelta nextFireInterval, TimeDelta repeatInterval, cons
 
 void TimerBase::Stop(void)
 {
-    ASSERT(false); // BKTODO:
+    ASSERT(CurrentThread() == m_thread);
+
+    m_repeatInterval = TimeDelta();
+    m_nextFireTime = TimeTicks();
+    *m_isAlive = false;
 }
 
 } // namespace blink

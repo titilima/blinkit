@@ -580,6 +580,14 @@ bool Node::IsShadowIncludingInclusiveAncestorOf(const Node *node) const
     return false;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+bool Node::IsStyledElement(void) const
+{
+    ASSERT(!ForCrawler());
+    return IsHTMLElement();
+}
+#endif
+
 bool Node::IsTreeScope(void) const
 {
     return &GetTreeScope().RootNode() == this;

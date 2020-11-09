@@ -56,6 +56,9 @@
 #include "third_party/blink/renderer/platform/network/http_names.h"
 #include "third_party/blink/renderer/platform/network/mime/mime_type_registry.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
+#ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/page/page.h"
+#endif
 
 namespace blink {
 
@@ -197,7 +200,7 @@ void DocumentLoader::DidCommitNavigation(WebGlobalObjectReusePolicy reusePolicy)
 
 #ifndef BLINKIT_CRAWLER_ONLY
     if (Page *page = m_frame->GetPage())
-        ASSERT(false); // BKTODO: m_frame->GetPage()->DidCommitLoad(frame_);
+        m_frame->GetPage()->DidCommitLoad(m_frame);
 #endif
 }
 

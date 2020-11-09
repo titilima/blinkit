@@ -60,6 +60,7 @@ public:
     bool LayoutPending(void) const;
     bool IsInPerformLayout(void) const;
     bool NeedsLayout(void) const;
+    bool DidFirstLayout(void) const { return !m_firstLayout; }
 
     // FIXME: This should probably be renamed as the 'inSubtreeLayout' parameter
     // passed around the LocalFrameView layout methods can be true while this
@@ -120,6 +121,17 @@ public:
     void RemoveViewportConstrainedObject(LayoutObject &object);
     const ViewportConstrainedObjectSet* ViewportConstrainedObjects(void) const { return m_viewportConstrainedObjects.get(); }
 
+    void SetupRenderThrottling(void);
+
+    enum ForceThrottlingInvalidationBehavior {
+        kDontForceThrottlingInvalidation,
+        kForceThrottlingInvalidation
+    };
+    enum NotifyChildrenBehavior { kDontNotifyChildren, kNotifyChildren };
+    void UpdateRenderThrottlingStatus(bool hidden, bool subtreeThrottled,
+        ForceThrottlingInvalidationBehavior forceThrottlingInvalidationBehavior = kDontForceThrottlingInvalidation,
+        NotifyChildrenBehavior notifyChildrenBehavior = kNotifyChildren);
+
     void DidAttachDocument(void);
     void HandleLoadCompleted(void);
     // Called when this view is going to be removed from its owning
@@ -156,6 +168,7 @@ private:
     std::unique_ptr<ViewportConstrainedObjectSet> m_viewportConstrainedObjects;
     IntSize m_layoutSize;
     IntSize m_initialViewportSize;
+    bool m_firstLayout = true;
     Color m_baseBackgroundColor;
     bool m_layoutSizeFixedToFrameSize = true;
     bool m_needsUpdateGeometries = false;
@@ -163,6 +176,13 @@ private:
     // TODO(bokan): crbug.com/484188. We should specialize LocalFrameView for the
     // main frame.
     std::unique_ptr<RootFrameViewport> m_viewportScrollableArea;
+
+    // The following members control rendering pipeline throttling for this
+    // frame. They are only updated in response to intersection observer
+    // notifications, i.e., not in the middle of the lifecycle.
+    bool m_hiddenForThrottling = false;
+    bool m_subtreeThrottled = false;
+    bool m_lifecycleUpdatesThrottled = false;
 
 #if DCHECK_IS_ON()
     // Verified when finalizing.
