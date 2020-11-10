@@ -26,17 +26,17 @@ class CORE_EXPORT CSSSelectorParser {
 
  public:
   static CSSSelectorList ParseSelector(CSSParserTokenRange,
-                                       std::unique_ptr<CSSParserContext> &,
+                                       const CSSParserContext*,
                                        StyleSheetContents*);
   static CSSSelectorList ConsumeSelector(CSSParserTokenStream&,
-                                         std::unique_ptr<CSSParserContext> &,
+                                         const CSSParserContext*,
                                          StyleSheetContents*,
                                          CSSParserObserver*);
 
   static bool ConsumeANPlusB(CSSParserTokenRange&, std::pair<int, int>&);
 
  private:
-  CSSSelectorParser(std::unique_ptr<CSSParserContext> &, StyleSheetContents*);
+  CSSSelectorParser(const CSSParserContext*, StyleSheetContents*);
 
   // These will all consume trailing comments if successful
 
@@ -81,7 +81,7 @@ class CORE_EXPORT CSSSelectorParser {
       std::unique_ptr<CSSParserSelector> compound_selector);
   void RecordUsageAndDeprecations(const CSSSelectorList&);
 
-  std::unique_ptr<const CSSParserContext> context_;
+  Member<const CSSParserContext> context_;
   Member<const StyleSheetContents> style_sheet_;
 
   bool failed_parsing_ = false;
