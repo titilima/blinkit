@@ -95,11 +95,7 @@ void ViewportStyleResolver::Reset() {
 void ViewportStyleResolver::CollectViewportRulesFromUASheets() {
   CSSDefaultStyleSheets& default_style_sheets =
       CSSDefaultStyleSheets::Instance();
-  ASSERT(false); // BKTODO:
-#if 0
-  WebViewportStyle viewport_style =
-      document_->GetSettings() ? document_->GetSettings()->GetViewportStyle()
-                               : WebViewportStyle::kDefault;
+  WebViewportStyle viewport_style = Settings::ViewportStyle;
   StyleSheetContents* viewport_contents = nullptr;
   switch (viewport_style) {
     case WebViewportStyle::kDefault:
@@ -116,6 +112,7 @@ void ViewportStyleResolver::CollectViewportRulesFromUASheets() {
     CollectViewportChildRules(viewport_contents->ChildRules(),
                               kUserAgentOrigin);
 
+#if 0 // BKTODO: // Check if necessary.
   if (document_->IsMobileDocument()) {
     CollectViewportChildRules(
         default_style_sheets.EnsureXHTMLMobileProfileStyleSheet()->ChildRules(),
@@ -211,8 +208,6 @@ void ViewportStyleResolver::AddViewportRule(StyleRuleViewport& viewport_rule,
 }
 
 void ViewportStyleResolver::Resolve() {
-  ASSERT(false); // BKTODO:
-#if 0
   if (!property_set_) {
     document_->GetViewportData().SetViewportDescription(
         ViewportDescription(ViewportDescription::kUserAgentStyleSheet));
@@ -236,7 +231,6 @@ void ViewportStyleResolver::Resolve() {
     description.SetViewportFit(ViewportFitValue());
 
   document_->GetViewportData().SetViewportDescription(description);
-#endif
 
   DCHECK(initial_style_);
   if (initial_style_->HasViewportUnits())
@@ -344,7 +338,6 @@ Length ViewportStyleResolver::ViewportLengthValue(CSSPropertyID id) {
 #endif
 }
 
-#if 0 // BKTODO:
 mojom::ViewportFit ViewportStyleResolver::ViewportFitValue() const {
   const CSSValue* value =
       property_set_->GetPropertyCSSValue(CSSPropertyViewportFit);
@@ -363,7 +356,6 @@ mojom::ViewportFit ViewportStyleResolver::ViewportFitValue() const {
   NOTREACHED();
   return mojom::ViewportFit::kAuto;
 }
-#endif
 
 void ViewportStyleResolver::InitialStyleChanged() {
   initial_style_ = nullptr;

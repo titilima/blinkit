@@ -1093,10 +1093,9 @@ void ChromeClientImpl::SetEventListenerProperties(
 #endif
 
 void ChromeClientImpl::BeginLifecycleUpdates() {
-  ASSERT(false); // BKTODO:
-#if 0
   web_view_->StopDeferringCommits();
 
+#if 0 // BKTODO:
   if (WebLayerTreeView* tree_view = web_view_->LayerTreeView()) {
     tree_view->SetNeedsBeginFrame();
   }

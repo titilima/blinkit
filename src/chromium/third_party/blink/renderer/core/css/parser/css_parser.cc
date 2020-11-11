@@ -39,7 +39,7 @@ namespace blink {
 #ifndef BLINKIT_CRAWLER_ONLY
 using namespace cssvalue;
 
-bool CSSParser::ParseDeclarationList(std::unique_ptr<CSSParserContext> &context,
+bool CSSParser::ParseDeclarationList(const CSSParserContext* context,
                                      MutableCSSPropertyValueSet* property_set,
                                      const String& declaration) {
   ASSERT(false); // BKTODO:
@@ -60,7 +60,7 @@ void CSSParser::ParseDeclarationListForInspector(
 #endif
 
 CSSSelectorList CSSParser::ParseSelector(
-    std::unique_ptr<CSSParserContext> &context,
+    const CSSParserContext* context,
     StyleSheetContents* style_sheet_contents,
     const String& selector) {
   CSSTokenizer tokenizer(selector);
@@ -204,7 +204,7 @@ MutableCSSPropertyValueSet::SetResult CSSParser::ParseValue(
 
 const CSSValue* CSSParser::ParseSingleValue(CSSPropertyID property_id,
                                             const String& string,
-                                            const CSSParserContext* context) {
+                                            const std::shared_ptr<const CSSParserContext>& context) {
   if (string.IsEmpty())
     return nullptr;
   if (CSSValue* value = CSSParserFastPaths::MaybeParseValue(property_id, string,
@@ -227,7 +227,7 @@ std::unique_ptr<Vector<double>> CSSParser::ParseKeyframeKeyList(
   return CSSParserImpl::ParseKeyframeKeyList(key_list);
 }
 
-StyleRuleKeyframe* CSSParser::ParseKeyframeRule(std::unique_ptr<CSSParserContext> &context,
+StyleRuleKeyframe* CSSParser::ParseKeyframeRule(const CSSParserContext* context,
                                                 const String& rule) {
   StyleRuleBase* keyframe = CSSParserImpl::ParseRule(
       rule, context, nullptr, CSSParserImpl::kKeyframeRules);

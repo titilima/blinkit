@@ -2034,8 +2034,7 @@ void StyleResolver::ComputeFont(ComputedStyle* style,
 }
 
 void StyleResolver::UpdateMediaType() {
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   if (LocalFrameView* view = GetDocument().View()) {
     bool was_print = print_media_type_;
     print_media_type_ =

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_variable_reference_value.h
+// Description: CSSVariableReferenceValue Class
+//      Author: Ziming Li
+//     Created: 2020-11-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -19,14 +30,14 @@ class CSSVariableReferenceValue : public CSSValue {
     return new CSSVariableReferenceValue(std::move(data));
   }
   static CSSVariableReferenceValue* Create(scoped_refptr<CSSVariableData> data,
-                                           const CSSParserContext& context) {
+                                           const std::shared_ptr<const CSSParserContext>& context) {
     return new CSSVariableReferenceValue(std::move(data), context);
   }
 
   CSSVariableData* VariableDataValue() const { return data_.get(); }
-  const CSSParserContext* ParserContext() const {
+  const std::shared_ptr<const CSSParserContext>& ParserContext() const {
     DCHECK(parser_context_);
-    return parser_context_.Get();
+    return parser_context_;
   }
 
   bool Equals(const CSSVariableReferenceValue& other) const {
@@ -39,18 +50,17 @@ class CSSVariableReferenceValue : public CSSValue {
  private:
   CSSVariableReferenceValue(scoped_refptr<CSSVariableData> data)
       : CSSValue(kVariableReferenceClass),
-        data_(std::move(data)),
-        parser_context_(nullptr) {}
+        data_(std::move(data)) {}
 
   CSSVariableReferenceValue(scoped_refptr<CSSVariableData> data,
-                            const CSSParserContext& context)
+                            const std::shared_ptr<const CSSParserContext>& context)
       : CSSValue(kVariableReferenceClass),
         data_(std::move(data)),
         parser_context_(context) {
   }
 
   scoped_refptr<CSSVariableData> data_;
-  Member<const CSSParserContext> parser_context_;
+  std::shared_ptr<const CSSParserContext> parser_context_;
 };
 
 DEFINE_CSS_VALUE_TYPE_CASTS(CSSVariableReferenceValue,

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_property_parser.h
+// Description: CSSPropertyParser Class
+//      Author: Ziming Li
+//     Created: 2020-11-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 /*
  * Copyright (C) 2003 Lars Knoll (knoll@kde.org)
  * Copyright (C) 2004, 2005, 2006, 2008, 2009, 2010 Apple Inc. All rights
@@ -46,18 +57,18 @@ class CORE_EXPORT CSSPropertyParser {
   static bool ParseValue(CSSPropertyID,
                          bool important,
                          const CSSParserTokenRange&,
-                         const CSSParserContext*,
+                         const std::shared_ptr<const CSSParserContext>&,
                          HeapVector<CSSPropertyValue, 256>&,
                          StyleRule::RuleType);
 
   // Parses a non-shorthand CSS property
   static const CSSValue* ParseSingleValue(CSSPropertyID,
                                           const CSSParserTokenRange&,
-                                          const CSSParserContext*);
+                                          const std::shared_ptr<const CSSParserContext>&);
 
  private:
   CSSPropertyParser(const CSSParserTokenRange&,
-                    const CSSParserContext*,
+                    const std::shared_ptr<const CSSParserContext>&,
                     HeapVector<CSSPropertyValue, 256>*);
 
   // TODO(timloh): Rename once the CSSParserValue-based parseValue is removed
@@ -70,7 +81,7 @@ class CORE_EXPORT CSSPropertyParser {
  private:
   // Inputs:
   CSSParserTokenRange range_;
-  Member<const CSSParserContext> context_;
+  std::shared_ptr<const CSSParserContext> context_;
   // Outputs:
   HeapVector<CSSPropertyValue, 256>* parsed_properties_;
   DISALLOW_COPY_AND_ASSIGN(CSSPropertyParser);

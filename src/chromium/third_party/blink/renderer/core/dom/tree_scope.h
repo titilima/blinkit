@@ -81,7 +81,11 @@ public:
     void AdoptIfNeeded(Node &node);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    ScopedStyleResolver* GetScopedStyleResolver(void) const { return m_scopedStyleResolver.get(); }
+    ScopedStyleResolver& EnsureScopedStyleResolver(void);
     void ClearScopedStyleResolver(void);
+
+    bool HasAdoptedStyleSheets(void) const;
 #endif
 
 protected:
@@ -97,7 +101,10 @@ private:
 
     std::unique_ptr<IdTargetObserverRegistry> m_idTargetObserverRegistry;
 
+#ifndef BLINKIT_CRAWLER_ONLY
     std::unique_ptr<ScopedStyleResolver> m_scopedStyleResolver;
+    std::unique_ptr<StyleSheetList> m_adoptedStyleSheets;
+#endif
 };
 
 DEFINE_COMPARISON_OPERATORS_WITH_REFERENCES(TreeScope)

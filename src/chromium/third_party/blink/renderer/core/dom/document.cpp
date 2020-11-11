@@ -76,6 +76,7 @@
 #include "third_party/blink/renderer/platform/loader/fetch/resource_fetcher.h"
 #include "third_party/blink/renderer/platform/network/http_parsers.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_buffer.h"
+#include "third_party/blink/renderer/platform/wtf/text/text_encoding_registry.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/css/css_font_selector.h"
@@ -85,6 +86,7 @@
 #   include "third_party/blink/renderer/core/css/style_sheet_contents.h"
 #   include "third_party/blink/renderer/core/dom/document_type.h"
 #   include "third_party/blink/renderer/core/dom/layout_tree_builder.h"
+#   include "third_party/blink/renderer/core/dom/nth_index_cache.h"
 #   include "third_party/blink/renderer/core/dom/visited_link_state.h"
 #   include "third_party/blink/renderer/core/frame/viewport_data.h"
 #   include "third_party/blink/renderer/core/html/custom/v0_custom_element_registration_context.h"
@@ -673,6 +675,13 @@ bool Document::ChildTypeAllowed(NodeType type) const
     return false;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+void Document::ClearFocusedElementSoon(void)
+{
+    ASSERT(false); // BKTODO:
+}
+#endif
+
 Node* Document::Clone(Document &factory, CloneChildrenFlag flag) const
 {
     ASSERT(false); // BKTODO:
@@ -905,6 +914,26 @@ void Document::ElementDataCacheClearTimerFired(TimerBase *)
     m_elementDataCache.reset();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+StyleResolver& Document::EnsureStyleResolver(void) const
+{
+    return m_styleEngine->EnsureResolver();
+}
+
+void Document::EvaluateMediaQueryList(void)
+{
+    ASSERT(false); // BKTODO:
+}
+
+void Document::EvaluateMediaQueryListIfNeeded(void)
+{
+    if (!m_evaluateMediaQueriesOnStyleRecalc)
+        return;
+    EvaluateMediaQueryList();
+    m_evaluateMediaQueriesOnStyleRecalc = false;
+}
+#endif
+
 LocalFrame* Document::ExecutingFrame(void)
 {
     if (LocalDOMWindow *window = ExecutingWindow())
@@ -1063,6 +1092,13 @@ SelectorQueryCache& Document::GetSelectorQueryCache(void)
         m_selectorQueryCache = std::make_unique<SelectorQueryCache>();
     return *m_selectorQueryCache;
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+StyleResolver* Document::GetStyleResolver(void) const
+{
+    return m_styleEngine->Resolver();
+}
+#endif
 
 std::shared_ptr<base::SingleThreadTaskRunner> Document::GetTaskRunner(TaskType type)
 {
@@ -1394,9 +1430,55 @@ void Document::MaybeHandleHttpRefresh(const String &content, HttpRefreshType ref
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+bool Document::NeedsFullLayoutTreeUpdate(void) const
+{
+    ASSERT(!ForCrawler());
+    if (!IsActive() || nullptr == View())
+        return false;
+    if (m_styleEngine->NeedsActiveStyleUpdate())
+        return true;
+    if (m_styleEngine->NeedsWhitespaceReattachment())
+        return true;
+#if 0 // BKTODO: Remove this later.
+    if (!use_elements_needing_update_.IsEmpty())
+        return true;
+#endif
+    if (NeedsStyleRecalc())
+        return true;
+    if (NeedsStyleInvalidation())
+        return true;
+    // FIXME: The childNeedsDistributionRecalc bit means either self or children,
+    // we should fix that.
+    if (ChildNeedsDistributionRecalc())
+        return true;
+    ASSERT(false); // BKTODO:
+#if 0
+    if (DocumentAnimations::NeedsAnimationTimingUpdate(*this))
+        return true;
+#endif
+    return false;
+}
+
 bool Document::NeedsLayoutTreeUpdate(void) const
 {
-    ASSERT(false); // BKTODO:
+    ASSERT(!ForCrawler());
+    if (!IsActive() || nullptr == View())
+        return false;
+    if (NeedsFullLayoutTreeUpdate())
+        return true;
+    if (ChildNeedsStyleRecalc())
+        return true;
+    if (ChildNeedsStyleInvalidation())
+        return true;
+    if (ChildNeedsReattachLayoutTree()) {
+        ASSERT(InStyleRecalc());
+        return true;
+    }
+    if (LayoutView *layoutView = GetLayoutView())
+    {
+        if (layoutView->WasNotifiedOfSubtreeChange())
+            return true;
+    }
     return false;
 }
 #endif
@@ -1442,26 +1524,36 @@ void Document::NodeWillBeRemoved(Node &n)
 #endif
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    ASSERT(false); // BKTODO:
+    bool forUI = !ForCrawler();
+    if (forUI)
+    {
+        ASSERT(false); // BKTODO:
 #if 0
-    for (Range* range : ranges_)
-        range->NodeWillBeRemoved(n);
+        for (Range* range : ranges_)
+            range->NodeWillBeRemoved(n);
 #endif
+    }
 #endif
 
     NotifyNodeWillBeRemoved(n);
 
 #ifndef BLINKIT_CRAWLER_ONLY
-    if (ContainsV1ShadowTree())
-        n.CheckSlotChangeBeforeRemoved();
-
-    ASSERT(false); // BKTODO:
-#if 0
-    if (n.InActiveDocument())
-        GetStyleEngine().NodeWillBeRemoved(n);
-#endif
+    if (forUI)
+    {
+        if (ContainsV1ShadowTree())
+            n.CheckSlotChangeBeforeRemoved();
+        if (n.InActiveDocument())
+            GetStyleEngine().NodeWillBeRemoved(n);
+    }
 #endif
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void Document::NotifyLayoutTreeOfSubtreeChanges(void)
+{
+    ASSERT(false); // BKTODO:
+}
+#endif
 
 void Document::open(Document *enteredDocument, ExceptionState &exceptionState)
 {
@@ -1520,6 +1612,13 @@ void Document::PopCurrentScript(ScriptElementBase *script)
     ASSERT(m_currentScriptStack.top() == script);
     m_currentScriptStack.pop();
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void Document::PropagateStyleToViewport(void)
+{
+    ASSERT(false); // BKTOOD:
+}
+#endif
 
 void Document::PushCurrentScript(ScriptElementBase *newCurrentScript)
 {
@@ -1681,28 +1780,21 @@ void Document::SetEncodingData(const DocumentEncodingData &newData)
     // <head>, but there is the <title> element. This function detects that
     // situation and re-decodes the document's title so that the user doesn't see
     // an incorrectly decoded title in the title bar.
-    do {
-        if (!m_titleElement)
-            break;
-        ASSERT(false); // BKTODO:
-#if 0
-        if (Encoding() == newData.Encoding())
-            break;
-        if (ElementTraversal::FirstWithin(*m_titleElement))
-            break;
-        if (Encoding() != Latin1Encoding())
-            break;
-        if (!m_titleElement->textContent().ContainsOnlyLatin1())
-            break;
+    if (m_titleElement
+        && Encoding() != newData.Encoding()
+        && !ElementTraversal::FirstWithin(*m_titleElement)
+        && Encoding() == Latin1Encoding()
+        && m_titleElement->textContent().ContainsOnlyLatin1())
+    {
+        CString originalBytes = m_titleElement->textContent().Latin1();
 
-        CString original_bytes = title_element_->textContent().Latin1();
-        std::unique_ptr<TextCodec> codec = NewTextCodec(new_data.Encoding());
-        String correctly_decoded_title =
-            codec->Decode(original_bytes.data(), original_bytes.length(),
-                WTF::FlushBehavior::kDataEOF);
-        title_element_->setTextContent(correctly_decoded_title);
-#endif
-    } while (false);
+        std::unique_ptr<TextCodec> codec = NewTextCodec(newData.Encoding());
+        String correctlyDecodedTitle = codec->Decode(originalBytes.data(), originalBytes.length(),
+            WTF::FlushBehavior::kDataEOF);
+
+        NodeVector detachedChildren;
+        m_titleElement->setTextContent(correctlyDecodedTitle, detachedChildren);
+    }
 
     ASSERT(newData.Encoding().IsValid());
     m_encodingData = newData;
@@ -2018,6 +2110,16 @@ void Document::SuppressLoadEvent(void)
         m_loadEventProgress = kLoadEventCompleted;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+void Document::UpdateActiveStyle(void)
+{
+    ASSERT(!ForCrawler());
+    ASSERT(IsActive());
+    ASSERT(IsMainThread());
+    GetStyleEngine().UpdateActiveStyle();
+}
+#endif
+
 void Document::UpdateBaseURL(void)
 {
     GURL oldBaseURL = m_baseURL;
@@ -2064,14 +2166,233 @@ void Document::UpdateBaseURL(void)
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+void Document::UpdateStyle(void)
+{
+    ASSERT(!ForCrawler());
+    ASSERT(!View()->ShouldThrottleRendering());
+
+    m_lifecycle.AdvanceTo(DocumentLifecycle::kInStyleRecalc);
+
+    StyleRecalcChange change = kNoChange;
+    if (GetStyleChangeType() >= kSubtreeStyleChange)
+        change = kForce;
+
+    NthIndexCache nthIndexCache(*this);
+
+    // TODO(futhark@chromium.org): Cannot access the EnsureStyleResolver() before
+    // calling StyleForViewport() below because apparently the StyleResolver's
+    // constructor has side effects. We should fix it. See
+    // printing/setPrinting.html, printing/width-overflow.html though they only
+    // fail on mac when accessing the resolver by what appears to be a viewport
+    // size difference.
+
+    if (kForce == change)
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        has_nodes_with_placeholder_style_ = false;
+        scoped_refptr<ComputedStyle> viewport_style =
+            StyleResolver::StyleForViewport(*this);
+        StyleRecalcChange local_change = ComputedStyle::StylePropagationDiff(
+            viewport_style.get(), GetLayoutView()->Style());
+        if (local_change != kNoChange)
+            GetLayoutView()->SetStyle(std::move(viewport_style));
+#endif
+    }
+
+    ClearNeedsStyleRecalc();
+    ClearNeedsReattachLayoutTree();
+
+    StyleResolver &resolver = EnsureStyleResolver();
+    if (Element *de = documentElement())
+    {
+        if (de->ShouldCallRecalcStyle(change))
+        {
+            Element* viewport_defining = ViewportDefiningElement();
+            GetStyleEngine().RecalcStyle(change);
+            if (viewport_defining != ViewportDefiningElement())
+                ViewportDefiningElementDidChange();
+        }
+        GetStyleEngine().MarkForWhitespaceReattachment();
+        PropagateStyleToViewport();
+        if (de->NeedsReattachLayoutTree() || de->ChildNeedsReattachLayoutTree())
+        {
+            ReattachLegacyLayoutObjectList legacy_layout_objects(*this);
+            GetStyleEngine().RebuildLayoutTree();
+            legacy_layout_objects.ForceLegacyLayoutIfNeeded();
+        }
+    }
+    GetStyleEngine().ClearWhitespaceReattachSet();
+
+    View()->UpdateCountersAfterStyleChange();
+    GetLayoutView()->RecalcOverflow();
+
+    ClearChildNeedsStyleRecalc();
+    ClearChildNeedsReattachLayoutTree();
+
+    ASSERT(!NeedsStyleRecalc());
+    ASSERT(!ChildNeedsStyleRecalc());
+    ASSERT(!NeedsReattachLayoutTree());
+    ASSERT(!ChildNeedsReattachLayoutTree());
+    ASSERT(InStyleRecalc());
+    ASSERT(GetStyleResolver() == &resolver);
+    m_lifecycle.AdvanceTo(DocumentLifecycle::kStyleClean);
+}
+
+#if DCHECK_IS_ON()
+static void AssertLayoutTreeUpdated(Node &root)
+{
+    for (Node &node : NodeTraversal::InclusiveDescendantsOf(root))
+    {
+        ASSERT(!node.NeedsStyleRecalc());
+        ASSERT(!node.ChildNeedsStyleRecalc());
+        ASSERT(!node.NeedsReattachLayoutTree());
+        ASSERT(!node.ChildNeedsReattachLayoutTree());
+        ASSERT(!node.ChildNeedsDistributionRecalc());
+        ASSERT(!node.NeedsStyleInvalidation());
+        ASSERT(!node.ChildNeedsStyleInvalidation());
+        // Make sure there is no node which has a LayoutObject, but doesn't have a
+        // parent in a flat tree. If there is such a node, we forgot to detach the
+        // node. DocumentNode is only an exception.
+        ASSERT(node.IsDocumentNode() || nullptr == node.GetLayoutObject() || FlatTreeTraversal::Parent(node));
+
+        if (ShadowRoot *shadowRoot = node.GetShadowRoot())
+            AssertLayoutTreeUpdated(*shadowRoot);
+    }
+}
+#endif
+
 void Document::UpdateStyleAndLayoutTree(void)
 {
-    ASSERT(false); // BKTODO:
+    ASSERT(!ForCrawler());
+    ASSERT(IsMainThread());
+    if (Lifecycle().LifecyclePostponed())
+        return;
+
+#if 0 // BKTODO: Remove this later.
+    HTMLFrameOwnerElement::PluginDisposeSuspendScope suspend_plugin_dispose;
+#endif
+    ScriptForbiddenScope forbidScript;
+
+#if 0 // BKTODO: Remove this later.
+    if (HTMLFrameOwnerElement* owner = LocalOwner()) {
+        owner->GetDocument().UpdateStyleAndLayoutTree();
+    }
+#endif
+
+    if (nullptr == View() || !IsActive())
+        return;
+
+    if (View()->ShouldThrottleRendering())
+        return;
+
+#if 0 // BKTODO:
+    // RecalcSlotAssignments should be done before checking
+    // NeedsLayoutTreeUpdate().
+    GetSlotAssignmentEngine().RecalcSlotAssignments();
+#endif
+
+#if DCHECK_IS_ON()
+    NestingLevelIncrementer slotAssignmentRecalcForbiddenScope(m_slotAssignmentRecalcForbiddenRecursionDepth);
+#endif
+
+    if (!NeedsLayoutTreeUpdate())
+    {
+        if (Lifecycle().GetState() < DocumentLifecycle::kStyleClean)
+        {
+            // needsLayoutTreeUpdate may change to false without any actual layout
+            // tree update.  For example, needsAnimationTimingUpdate may change to
+            // false when time elapses.  Advance lifecycle to StyleClean because style
+            // is actually clean now.
+            Lifecycle().AdvanceTo(DocumentLifecycle::kInStyleRecalc);
+            Lifecycle().AdvanceTo(DocumentLifecycle::kStyleClean);
+        }
+        return;
+    }
+
+    if (InStyleRecalc())
+        return;
+
+    // Entering here from inside layout, paint etc. would be catastrophic since
+    // recalcStyle can tear down the layout tree or (unfortunately) run
+    // script. Kill the whole layoutObject if someone managed to get into here in
+    // states not allowing tree mutations.
+    ASSERT(Lifecycle().StateAllowsTreeMutations());
+
+    BKLOG("// BKTODO: UpdateAnimationTimingIfNeeded");
+#if 0
+    DocumentAnimations::UpdateAnimationTimingIfNeeded(*this);
+#endif
+    EvaluateMediaQueryListIfNeeded();
+    UpdateUseShadowTreesIfNeeded();
+
+    UpdateDistributionForLegacyDistributedNodes();
+
+    UpdateActiveStyle();
+    UpdateStyleInvalidationIfNeeded();
+
+    // FIXME: We should update style on our ancestor chain before proceeding
+    // however doing so currently causes several tests to crash, as
+    // LocalFrame::setDocument calls Document::attach before setting the
+    // LocalDOMWindow on the LocalFrame, or the SecurityOrigin on the
+    // document. The attach, in turn resolves style (here) and then when we
+    // resolve style on the parent chain, we may end up re-attaching our
+    // containing iframe, which when asked HTMLFrameElementBase::isURLAllowed hits
+    // a null-dereference due to security code always assuming the document has a
+    // SecurityOrigin.
+
+    UpdateStyle();
+
+    NotifyLayoutTreeOfSubtreeChanges();
+
+    // As a result of the style recalculation, the currently hovered element might
+    // have been detached (for example, by setting display:none in the :hover
+    // style), schedule another mouseMove event to check if any other elements
+    // ended up under the mouse pointer due to re-layout.
+    if (Element *hoverElement = HoverElement())
+    {
+        if (nullptr == hoverElement->GetLayoutObject())
+        {
+            if (LocalFrame *frame = GetFrame())
+            {
+                ASSERT(false); // BKTODO:
+#if 0
+                frame->GetEventHandler().MayUpdateHoverWhenContentUnderMouseChanged(
+                    MouseEventManager::UpdateHoverReason::kLayoutOrStyleChanged);
+#endif
+            }
+        }
+    }
+
+    if (m_focusedElement && !m_focusedElement->IsFocusable())
+        ClearFocusedElementSoon();
+    GetLayoutView()->ClearHitTestCache();
+
+    BKLOG("// BKTODO: NeedsAnimationTimingUpdate");
+#if 0
+    DCHECK(!DocumentAnimations::NeedsAnimationTimingUpdate(*this));
+#endif
+
+#if DCHECK_IS_ON()
+    AssertLayoutTreeUpdated(*this);
+#endif
 }
 
 void Document::UpdateStyleAndLayoutTreeForNode(const Node *node)
 {
     ASSERT(false); // BKTODO:
+}
+
+void Document::UpdateStyleInvalidationIfNeeded(void)
+{
+    ASSERT(!ForCrawler());
+    ASSERT(IsActive());
+
+    ScriptForbiddenScope forbidScript;
+    if (!ChildNeedsStyleInvalidation() && !NeedsStyleInvalidation())
+        return;
+
+    GetStyleEngine().InvalidateStyle();
 }
 #endif
 
@@ -2135,6 +2456,13 @@ void Document::UpdateTitle(const String &title)
         DispatchDidReceiveTitle();
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+void Document::UpdateUseShadowTreesIfNeeded(void)
+{
+    // BKTODO: SVG stuff, may be useless.
+}
+#endif
+
 GURL Document::urlForBinding(void) const
 {
     const GURL &url = Url();
@@ -2179,6 +2507,11 @@ Element* Document::ViewportDefiningElement(const ComputedStyle *rootStyle) const
     if (nullptr != bodyElement && rootStyle->IsOverflowVisible() && IsHTMLHtmlElement(*rootElement))
         return bodyElement;
     return rootElement;
+}
+
+void Document::ViewportDefiningElementDidChange(void)
+{
+    ASSERT(false); // BKTODO:
 }
 #endif
 

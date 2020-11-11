@@ -52,7 +52,7 @@ const CSSParserContext* CSSRule::ParserContext(
     SecureContextMode secure_context_mode) const {
   CSSStyleSheet* style_sheet = parentStyleSheet();
   return style_sheet ? style_sheet->Contents()->ParserContext()
-                     : StrictCSSParserContext(secure_context_mode);
+                     : StrictCSSParserContext(secure_context_mode).get();
 }
 
 void CSSRule::SetParentStyleSheet(CSSStyleSheet* style_sheet) {

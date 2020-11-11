@@ -280,7 +280,6 @@ static inline bool EndsWithWhitespace(const String& text) {
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
-
 static inline bool CanHaveWhitespaceChildren(
     const LayoutObject& parent,
     const ComputedStyle& style,
@@ -506,14 +505,13 @@ void Text::UpdateTextLayoutObject(unsigned offset_of_replaced_data,
     return;
   LayoutText* text_layout_object = GetLayoutObject();
   if (ShouldUpdateLayoutByReattaching(*this, text_layout_object)) {
-    ASSERT(false); // BKTODO: LazyReattachIfAttached();
+    LazyReattachIfAttached();
     return;
   }
 
   text_layout_object->SetTextWithOffset(DataImpl(), offset_of_replaced_data,
                                         length_of_replaced_data);
 }
-
 #endif // BLINKIT_CRAWLER_ONLY
 
 Text* Text::CloneWithData(Document& factory, const String& data) const {

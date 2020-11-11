@@ -37,6 +37,10 @@ private:
 
     // blink::Platform
     WTF::String DefaultLocale(void) override;
+#ifndef BLINKIT_CRAWLER_ONLY
+    // Returns a blob of data corresponding to the named resource.
+    std::string GetDataResource(const char *name) override;
+#endif
     // blink::Thread
     std::shared_ptr<base::SingleThreadTaskRunner> GetTaskRunner(void) const override;
     // AppImpl
@@ -55,7 +59,6 @@ private:
     // blink::Platform
     blink::WebClipboard* clipboard(void) override;
     blink::WebThemeEngine* themeEngine(void) override;
-    blink::WebData loadResource(const char *name) override;
 
     std::unique_ptr<WinClipboard> m_clipboard;
     std::unique_ptr<WinThemeEngine> m_themeEngine;

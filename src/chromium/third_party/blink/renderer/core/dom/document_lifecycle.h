@@ -127,6 +127,7 @@ public:
     }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    bool ThrottlingAllowed(void) const;
     bool LifecyclePostponed(void) const { return m_lifeCyclePostponed; }
 
     // Within this scope, state transitions are not allowed.

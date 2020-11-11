@@ -1,7 +1,7 @@
 // -------------------------------------------------
 // BlinKit - blink Library
 // -------------------------------------------------
-//   File Name: css_keyframes_rule.h
+//   File Name: css_keyframes_rule.cc
 // Description: StyleRuleKeyframes Class
 //      Author: Ziming Li
 //     Created: 2020-08-06
@@ -102,10 +102,10 @@ void CSSKeyframesRule::appendRule(const ExecutionContext* execution_context,
             keyframes_rule_->Keyframes().size());
 
   CSSStyleSheet* style_sheet = parentStyleSheet();
-  std::unique_ptr<CSSParserContext> context = CSSParserContext::CreateWithStyleSheet(
+  std::shared_ptr<CSSParserContext> context = CSSParserContext::CreateWithStyleSheet(
       ParserContext(execution_context->GetSecureContextMode()), style_sheet);
   StyleRuleKeyframe* keyframe =
-      CSSParser::ParseKeyframeRule(context, rule_text);
+      CSSParser::ParseKeyframeRule(context.get(), rule_text);
   if (!keyframe)
     return;
 

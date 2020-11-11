@@ -46,11 +46,7 @@
 namespace blink {
 
 bool CanBeDistributedToV0InsertionPoint(const Node& node) {
-  ASSERT(false); // BKTODO:
-  return false;
-#if 0
   return node.IsInV0ShadowTree() || node.IsChildOfV0ShadowHost();
-#endif
 }
 
 Node* FlatTreeTraversal::TraverseChild(const Node& node,
@@ -179,16 +175,20 @@ ContainerNode* FlatTreeTraversal::TraverseParent(
   if (node.IsPseudoElement())
     return node.ParentOrShadowHostNode();
 
-  ASSERT(false); // BKTODO:
-#if 0
   if (node.IsChildOfV1ShadowHost())
-    return node.AssignedSlot();
+    ASSERT(false); // BKTODO: return node.AssignedSlot();
 
+#if 0
   if (auto* parent_slot =
           ToHTMLSlotElementIfSupportsAssignmentOrNull(node.parentElement())) {
     if (!parent_slot->AssignedNodes().IsEmpty())
       return nullptr;
     return parent_slot;
+  }
+#else
+  if (Element *parent = node.parentElement())
+  {
+    ASSERT(parent->tagName().LowerASCII() != "slot"); // BKTODO:
   }
 #endif
 

@@ -43,31 +43,31 @@ class CORE_EXPORT CSSParserContext
 #ifndef BLINKIT_CRAWLER_ONLY
   // All three of these factories copy the context and override the current
   // Document handle used for UseCounter.
-  static std::unique_ptr<CSSParserContext> CreateWithStyleSheet(const CSSParserContext*,
+  static std::shared_ptr<CSSParserContext> CreateWithStyleSheet(const CSSParserContext*,
                                                                 const CSSStyleSheet*);
-  static std::unique_ptr<CSSParserContext> CreateWithStyleSheetContents(
+  static std::shared_ptr<CSSParserContext> CreateWithStyleSheetContents(
       const CSSParserContext*,
       const StyleSheetContents*);
   // FIXME: This constructor shouldn't exist if we properly piped the UseCounter
   // through the CSS subsystem. Currently the UseCounter life time is too crazy
   // and we need a way to override it.
-  static std::unique_ptr<CSSParserContext> Create(const CSSParserContext* other,
+  static std::shared_ptr<CSSParserContext> Create(const CSSParserContext* other,
                                                   const Document* use_counter_document);
 
-  static std::unique_ptr<CSSParserContext> Create(const CSSParserContext* other,
+  static std::shared_ptr<CSSParserContext> Create(const CSSParserContext* other,
                                                   const GURL& base_url_override,
                                                   bool is_opaque_response_from_service_worker,
                                                   const WTF::TextEncoding& charset_override,
                                                   const Document* use_counter_document);
 
-  static std::unique_ptr<CSSParserContext> Create(
+  static std::shared_ptr<CSSParserContext> Create(
       CSSParserMode,
       SecureContextMode,
       SelectorProfile = kLiveProfile,
       const Document* use_counter_document = nullptr);
-  static std::unique_ptr<CSSParserContext> Create(const Document&);
+  static std::shared_ptr<CSSParserContext> Create(const Document&);
 #endif // BLINKIT_CRAWLER_ONLY
-  static std::unique_ptr<CSSParserContext> Create(
+  static std::shared_ptr<CSSParserContext> Create(
       const Document&,
       const GURL& base_url_override,
       bool is_opaque_response_from_service_worker,
@@ -75,7 +75,7 @@ class CORE_EXPORT CSSParserContext
       SelectorProfile = kLiveProfile);
 #ifndef BLINKIT_CRAWLER_ONLY
   // This is used for workers, where we don't have a document.
-  static std::unique_ptr<CSSParserContext> Create(const ExecutionContext&);
+  static std::shared_ptr<CSSParserContext> Create(const ExecutionContext&);
 
   bool operator==(const CSSParserContext&) const;
   bool operator!=(const CSSParserContext& other) const {
@@ -158,7 +158,7 @@ class CORE_EXPORT CSSParserContext
 };
 
 #ifndef BLINKIT_CRAWLER_ONLY
-CORE_EXPORT const CSSParserContext* StrictCSSParserContext(SecureContextMode);
+CORE_EXPORT const std::shared_ptr<CSSParserContext>& StrictCSSParserContext(SecureContextMode);
 #endif
 
 }  // namespace blink

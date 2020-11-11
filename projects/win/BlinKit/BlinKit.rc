@@ -21,6 +21,17 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// HTML
+//
+
+HTML.CSS                        HTML                    "..\\..\\..\\src\\chromium\\third_party\\blink\\renderer\\core\\css\\html.css"
+QUIRKS.CSS                      HTML                    "..\\..\\..\\src\\chromium\\third_party\\blink\\renderer\\core\\css\\quirks.css"
+THEMEINPUTMULTIPLEFIELDS.CSS    HTML                    "..\\..\\..\\src\\chromium\\third_party\\blink\\renderer\\core\\css\\themeInputMultipleFields.css"
+THEMEWIN.CSS                    HTML                    "..\\..\\..\\src\\chromium\\third_party\\blink\\renderer\\core\\css\\themeWin.css"
+THEMEWINQUIRKS.CSS              HTML                    "..\\..\\..\\src\\chromium\\third_party\\blink\\renderer\\core\\css\\themeWinQuirks.css"
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // Version
 //
 

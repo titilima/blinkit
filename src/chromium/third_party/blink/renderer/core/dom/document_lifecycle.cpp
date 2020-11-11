@@ -340,4 +340,11 @@ bool DocumentLifecycle::StateAllowsTreeMutations(void) const
     }
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+bool DocumentLifecycle::ThrottlingAllowed(void) const
+{
+    return g_allowThrottlingCount > 0;
+}
+#endif
+
 }  // namespace blink

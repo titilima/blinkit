@@ -180,6 +180,9 @@ public:
     // This can happen when handling queued events (e.g. during execCommand())
     ShadowRoot* ContainingShadowRoot(void) const;
     ShadowRoot* GetShadowRoot(void) const;
+#ifndef BLINKIT_CRAWLER_ONLY
+    Node& ShadowIncludingRoot(void) const;
+#endif
 
     Node* PseudoAwareNextSibling(void) const;
     Node* PseudoAwarePreviousSibling(void) const;
@@ -220,6 +223,7 @@ public:
 #endif
     bool IsDocumentFragment(void) const { return GetFlag(kIsDocumentFragmentFlag); }
 #ifndef BLINKIT_CRAWLER_ONLY
+    bool HasCustomStyleCallbacks(void) const { return GetFlag(kHasCustomStyleCallbacksFlag); }
     bool IsV0InsertionPoint(void) const { return GetFlag(kIsV0InsertionPointFlag); }
 #endif
     bool IsLink(void) const { return GetFlag(kIsLinkFlag); }
@@ -245,6 +249,14 @@ public:
     StyleChangeType GetStyleChangeType(void) const { return static_cast<StyleChangeType>(m_nodeFlags & kStyleChangeMask); }
     bool NeedsAttach(void) const { return GetStyleChangeType() == kNeedsReattachStyleChange; }
     bool NeedsDistributionRecalc(void) const;
+    // Returns true if recalcStyle should be called on the object, if there is
+    // such a method (on Document and Element).
+    bool ShouldCallRecalcStyle(StyleRecalcChange change)
+    {
+        if (NeedsReattachLayoutTree())
+            return false;
+        return change >= kIndependentInherit || NeedsStyleRecalc() || ChildNeedsStyleRecalc();
+    }
     // True if the style recalc process should recalculate style for this node.
     bool NeedsStyleRecalc(void) const
     {
@@ -290,6 +302,8 @@ public:
     void SetHasEventTargetData(bool flag) { SetFlag(flag, kHasEventTargetDataFlag); }
     bool NeedsReattachLayoutTree(void) const { return GetFlag(kNeedsReattachLayoutTree); }
 #ifndef BLINKIT_CRAWLER_ONLY
+    void SetNeedsReattachLayoutTree(void);
+    void MarkAncestorsWithChildNeedsReattachLayoutTree(void);
     void ClearNeedsReattachLayoutTree(void) { ClearFlag(kNeedsReattachLayoutTree); }
 #endif
     bool ChildNeedsReattachLayoutTree(void) const { return GetFlag(kChildNeedsReattachLayoutTree); }
@@ -347,6 +361,9 @@ public:
 
 #ifndef BLINKIT_CRAWLER_ONLY
     ShadowRoot* ParentElementShadowRoot(void) const;
+    bool IsInV0ShadowTree(void) const;
+    bool IsInV1ShadowTree(void) const;
+    bool IsChildOfV0ShadowHost(void) const;
     bool IsChildOfV1ShadowHost(void) const;
 
     ContainerNode* GetReattachParent(void) const;
@@ -397,6 +414,7 @@ public:
     };
     virtual void AttachLayoutTree(AttachContext &context);
     virtual void DetachLayoutTree(const AttachContext &context = AttachContext());
+    void LazyReattachIfAttached(void);
 #endif
 private:
     enum NodeFlags {

@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_variable_parser.cc
+// Description: CSSVariableParser Class
+//      Author: Ziming Li
+//     Created: 2020-11-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -198,10 +209,14 @@ CSSVariableReferenceValue* CSSVariableParser::ParseRegisteredPropertyValue(
     return nullptr;  // Invalid or a css-wide keyword
   if (require_var_reference && !has_references)
     return nullptr;
+  ASSERT(false); // BKTODO:
+  return nullptr;
+#if 0
   return CSSVariableReferenceValue::Create(
       CSSVariableData::Create(range, is_animation_tainted, has_references,
                               context.BaseURL(), context.Charset()),
       context);
+#endif
 }
 
 }  // namespace blink

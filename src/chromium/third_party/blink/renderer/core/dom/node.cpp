@@ -56,6 +56,7 @@
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/dom/shadow_root.h"
+#   include "third_party/blink/renderer/core/dom/v0_insertion_point.h"
 #   include "third_party/blink/renderer/core/css/style_engine.h"
 #endif
 
@@ -133,8 +134,8 @@ void Node::AttachLayoutTree(AttachContext &context)
 
 bool Node::CanParticipateInFlatTree(void) const
 {
-    ASSERT(false); // BKTODO:
-    return false;
+    // TODO(hayato): Return false for pseudo elements.
+    return !IsShadowRoot() && !IsActiveV0InsertionPoint(*this);
 }
 
 bool Node::CanStartSelection(void) const
@@ -523,6 +524,13 @@ Node::InsertionNotificationRequest Node::InsertedInto(ContainerNode &insertionPo
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+bool Node::IsChildOfV0ShadowHost(void) const
+{
+    if (ShadowRoot *parentShadowRoot = ParentElementShadowRoot())
+        return !parentShadowRoot->IsV1();
+    return false;
+}
+
 bool Node::IsChildOfV1ShadowHost(void) const
 {
     if (ShadowRoot *parentShadowRoot = ParentElementShadowRoot())
@@ -552,6 +560,22 @@ bool Node::IsDocumentNode(void) const
 {
     return this == GetDocument();
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+bool Node::IsInV0ShadowTree(void) const
+{
+    if (ShadowRoot *shadowRoot = ContainingShadowRoot())
+        return !shadowRoot->IsV1();
+    return false;
+}
+
+bool Node::IsInV1ShadowTree(void) const
+{
+    if (ShadowRoot *shadowRoot = ContainingShadowRoot())
+        return shadowRoot->IsV1();
+    return false;
+}
+#endif
 
 bool Node::IsShadowIncludingInclusiveAncestorOf(const Node *node) const
 {
@@ -607,12 +631,35 @@ Node* Node::lastChild(void) const
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+void Node::LazyReattachIfAttached(void)
+{
+    ASSERT(!ForCrawler());
+
+    if (NeedsAttach())
+        return;
+    if (!InActiveDocument())
+        return;
+
+    AttachContext context;
+    context.performing_reattach = true;
+
+    DetachLayoutTree(context);
+    // Comments and processing instructions are never marked dirty.
+    if (NeedsStyleRecalc())
+        MarkAncestorsWithChildNeedsStyleRecalc();
+}
+
 void Node::MarkAncestorsWithChildNeedsDistributionRecalc(void)
 {
     ASSERT(false); // BKTODO:
 }
 
 void Node::MarkAncestorsWithChildNeedsStyleInvalidation(void)
+{
+    ASSERT(false); // BKTODO:
+}
+
+void Node::MarkAncestorsWithChildNeedsReattachLayoutTree(void)
 {
     ASSERT(false); // BKTODO:
 }
@@ -659,8 +706,7 @@ bool Node::MayContainLegacyNodeTreeWhereDistributionShouldBeSupported(void) cons
 #ifndef BLINKIT_CRAWLER_ONLY
 bool Node::NeedsDistributionRecalc(void) const
 {
-    ASSERT(false); // BKTODO:
-    return false;
+    return ShadowIncludingRoot().ChildNeedsDistributionRecalc();
 }
 #endif
 
@@ -926,6 +972,14 @@ void Node::SetLayoutObject(LayoutObject *layoutObject)
         m_data.m_nodeLayoutData = nodeLayoutData;
 }
 
+void Node::SetNeedsReattachLayoutTree(void)
+{
+    ASSERT(GetDocument().InStyleRecalc());
+    ASSERT(!GetDocument().ChildNeedsDistributionRecalc());
+    SetFlag(kNeedsReattachLayoutTree);
+    MarkAncestorsWithChildNeedsReattachLayoutTree();
+}
+
 void Node::SetNeedsStyleInvalidation(void)
 {
     ASSERT(IsContainerNode());
@@ -937,7 +991,7 @@ void Node::SetNeedsStyleRecalc(StyleChangeType changeType, const StyleChangeReas
 {
     ASSERT(false); // BKTODO:
 }
-#endif
+#endif // BLINKIT_CRAWLER_ONLY
 
 void Node::setNodeValue(const String &nodeValue)
 {
@@ -1000,6 +1054,21 @@ void Node::setTextContent(const String &text, NodeVector &detachedChildren)
     }
     NOTREACHED();
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+Node& Node::ShadowIncludingRoot(void) const
+{
+    if (isConnected())
+        return GetDocument();
+    Node *root = const_cast<Node *>(this);
+    while (Node *host = root->OwnerShadowHost())
+        root = host;
+    while (Node *ancestor = root->parentNode())
+        root = ancestor;
+    ASSERT(nullptr == root->OwnerShadowHost());
+    return *root;
+}
+#endif
 
 String Node::textContent(bool convertBrsToNewlines) const
 {

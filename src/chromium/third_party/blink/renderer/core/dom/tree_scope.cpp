@@ -44,6 +44,7 @@
 #include "third_party/blink/renderer/platform/bindings/script_forbidden_scope.h"
 #ifndef BLINKIT_CRAWLER_ONLY
 #   include "third_party/blink/renderer/core/css/resolver/scoped_style_resolver.h"
+#   include "third_party/blink/renderer/core/dom/shadow_root.h"
 #endif
 
 namespace blink {
@@ -99,6 +100,16 @@ bool TreeScope::ContainsMultipleElementsWithId(const AtomicString &id) const
     return m_elementsById && m_elementsById->ContainsMultiple(id);
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+ScopedStyleResolver& TreeScope::EnsureScopedStyleResolver(void)
+{
+    ASSERT(nullptr != this);
+    if (!m_scopedStyleResolver)
+        m_scopedStyleResolver.reset(ScopedStyleResolver::Create(*this));
+    return *m_scopedStyleResolver;
+}
+#endif
+
 const std::vector<Member<Element>>& TreeScope::GetAllElementsById(const AtomicString &id) const
 {
     if (id.IsEmpty() || !m_elementsById)
@@ -123,6 +134,13 @@ Element* TreeScope::getElementById(const AtomicString &elementId) const
     }
     return element;
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+bool TreeScope::HasAdoptedStyleSheets(void) const
+{
+    return m_adoptedStyleSheets && m_adoptedStyleSheets->length() > 0;
+}
+#endif
 
 bool TreeScope::IsInclusiveOlderSiblingShadowRootOrAncestorTreeScopeOf(const TreeScope &scope) const
 {

@@ -121,6 +121,11 @@ public:
     void RemoveViewportConstrainedObject(LayoutObject &object);
     const ViewportConstrainedObjectSet* ViewportConstrainedObjects(void) const { return m_viewportConstrainedObjects.get(); }
 
+    // Returns true if this frame should not render or schedule visual updates.
+    bool ShouldThrottleRendering(void) const;
+    // Returns true if this frame could potentially skip rendering and avoid
+    // scheduling visual updates.
+    bool CanThrottleRendering(void) const;
     void SetupRenderThrottling(void);
 
     enum ForceThrottlingInvalidationBehavior {
@@ -141,6 +146,8 @@ public:
     void BeginLifecycleUpdates(void);
 
     void ClearFragmentAnchor(void);
+
+    void UpdateCountersAfterStyleChange(void);
 
     void IncrementLayoutObjectCount(void) {} // Just a placeholder
 private:
@@ -177,12 +184,15 @@ private:
     // main frame.
     std::unique_ptr<RootFrameViewport> m_viewportScrollableArea;
 
+    // BKTODO: Check if necessary.
     // The following members control rendering pipeline throttling for this
     // frame. They are only updated in response to intersection observer
     // notifications, i.e., not in the middle of the lifecycle.
     bool m_hiddenForThrottling = false;
     bool m_subtreeThrottled = false;
     bool m_lifecycleUpdatesThrottled = false;
+
+    bool m_needsForcedCompositingUpdate = false;
 
 #if DCHECK_IS_ON()
     // Verified when finalizing.

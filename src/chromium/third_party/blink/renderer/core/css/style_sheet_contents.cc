@@ -79,7 +79,7 @@ unsigned StyleSheetContents::EstimatedSizeInBytes() const {
 
 StyleSheetContents::StyleSheetContents(StyleRuleImport* owner_rule,
                                        const String& original_url,
-                                       std::unique_ptr<CSSParserContext> &context)
+                                       const std::shared_ptr<CSSParserContext> &context)
     : owner_rule_(owner_rule),
       original_url_(original_url),
       default_namespace_(g_star_atom),
@@ -90,15 +90,8 @@ StyleSheetContents::StyleSheetContents(StyleRuleImport* owner_rule,
       has_viewport_rule_(false),
       has_media_queries_(false),
       has_single_owner_document_(true),
-#if 0 // BKTODO:
       is_used_from_text_cache_(false),
-      parser_context_(std::move(context)) {}
-#else
-      is_used_from_text_cache_(false) {
-  ASSERT(false); // BKTODO:
-}
-#endif
-
+      parser_context_(context) {}
 
 StyleSheetContents::StyleSheetContents(const StyleSheetContents& o)
     : owner_rule_(nullptr),
@@ -416,9 +409,8 @@ ParseSheetResult StyleSheetContents::ParseStringAtPosition(
     const String& sheet_text,
     const TextPosition& start_position,
     bool allow_import_rules) {
-  ASSERT(false); // BKTODO:
-  std::unique_ptr<CSSParserContext> context =
-      CSSParserContext::CreateWithStyleSheetContents(ParserContext(), this);
+  std::shared_ptr<CSSParserContext> context =
+      CSSParserContext::CreateWithStyleSheetContents(parser_context_.get(), this);
   return CSSParser::ParseSheet(context.get(), this, sheet_text,
                                CSSDeferPropertyParsing::kNo,
                                allow_import_rules);

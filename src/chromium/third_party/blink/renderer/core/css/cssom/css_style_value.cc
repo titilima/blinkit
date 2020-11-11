@@ -49,7 +49,7 @@ CSSStyleValueVector ParseCSSStyleValue(
           ? PropertyRegistration::From(execution_context, custom_property_name)
           : nullptr;
 
-  std::unique_ptr<CSSParserContext> parserContext = CSSParserContext::Create(*execution_context);
+  std::shared_ptr<CSSParserContext> parserContext = CSSParserContext::Create(*execution_context);
   const auto style_values = StyleValueFactory::FromString(
       property_id, custom_property_name, registration, value,
       parserContext);

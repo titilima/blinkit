@@ -161,6 +161,7 @@ public:
     LocalFrameView* View(void) const;                    // can be null
     TextAutosizer* GetTextAutosizer(void);
     StyleResolver* GetStyleResolver(void) const;
+    StyleResolver& EnsureStyleResolver(void) const;
     VisitedLinkState& GetVisitedLinkState(void) const { return *m_visitedLinkState; }
     // to get visually ordered hebrew and arabic pages right
     bool VisuallyOrdered(void) const { return m_visuallyOrdered; }
@@ -390,6 +391,7 @@ public:
     PageVisibilityState GetPageVisibilityState(void) const;
 
     Element* FocusedElement(void) const { return m_focusedElement.Get(); }
+    Element* HoverElement(void) const { return m_hoverElement.Get(); }
 
     void RemoveFocusedElementOfSubtree(Node *node, bool amongChildrenOnly = false);
 
@@ -416,6 +418,9 @@ public:
         return *m_styleEngine;
     }
     bool HasPendingForcedStyleRecalc(void) const;
+    void UpdateActiveStyle(void);
+
+    void EvaluateMediaQueryList(void);
 
     TextLinkColors& GetTextLinkColors(void) { return m_textLinkColors; }
     const TextLinkColors& GetTextLinkColors(void) const { return m_textLinkColors; }
@@ -473,13 +478,26 @@ private:
     bool IsDocument(void) const final { return true; }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    void ClearFocusedElementSoon(void);
+
     void BeginLifecycleUpdatesIfRenderingReady(void);
 
+    bool NeedsFullLayoutTreeUpdate(void) const;
     bool ShouldScheduleLayoutTreeUpdate(void) const;
     void ScheduleLayoutTreeUpdate(void);
 
+    void UpdateStyleInvalidationIfNeeded(void);
+    void UpdateStyle(void);
+    void NotifyLayoutTreeOfSubtreeChanges(void);
+
+    void EvaluateMediaQueryListIfNeeded(void);
+    void UpdateUseShadowTreesIfNeeded(void);
+
     bool HasPendingVisualUpdate(void) const { return m_lifecycle.GetState() == DocumentLifecycle::kVisualUpdatePending; }
     bool HaveRenderBlockingResourcesLoaded(void) const;
+
+    void PropagateStyleToViewport(void);
+    void ViewportDefiningElementDidChange(void);
 
     void AttachLayoutTree(AttachContext &) override { NOTREACHED(); }
     void DetachLayoutTree(const AttachContext & = AttachContext()) override { NOTREACHED(); }
@@ -576,6 +594,8 @@ private:
 
     std::shared_ptr<CSSStyleSheet> m_elemSheet;
     std::unique_ptr<StyleEngine> m_styleEngine;
+
+    bool m_evaluateMediaQueriesOnStyleRecalc = false;
 
     std::shared_ptr<V0CustomElementRegistrationContext> m_registrationContext;
 

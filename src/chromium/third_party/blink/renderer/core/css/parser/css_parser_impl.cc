@@ -43,6 +43,7 @@
 #include "third_party/blink/renderer/core/css/style_sheet_contents.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/element.h"
+#include "third_party/blink/renderer/core/frame/deprecation.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
 #include "third_party/blink/renderer/platform/instrumentation/tracing/trace_event.h"
 
@@ -71,9 +72,9 @@ AtomicString ConsumeStringOrURI(CSSParserTokenStream& stream) {
 
 }  // namespace
 
-CSSParserImpl::CSSParserImpl(std::unique_ptr<CSSParserContext> &context,
+CSSParserImpl::CSSParserImpl(const CSSParserContext* context,
                              StyleSheetContents* style_sheet)
-    : context_(std::move(context)), style_sheet_(style_sheet), observer_(nullptr) {}
+    : context_(context), style_sheet_(style_sheet), observer_(nullptr) {}
 
 MutableCSSPropertyValueSet::SetResult CSSParserImpl::ParseValue(
     MutableCSSPropertyValueSet* declaration,
@@ -248,7 +249,7 @@ bool CSSParserImpl::ParseDeclarationList(
 }
 
 StyleRuleBase* CSSParserImpl::ParseRule(const String& string,
-                                        std::unique_ptr<CSSParserContext> &context,
+                                        const CSSParserContext* context,
                                         StyleSheetContents* style_sheet,
                                         AllowedRulesType allowed_rules) {
   CSSParserImpl parser(context, style_sheet);
@@ -284,14 +285,11 @@ ParseSheetResult CSSParserImpl::ParseStyleSheet(
                      "CSSParserImpl::parseStyleSheet.parse");
   CSSTokenizer tokenizer(string);
   CSSParserTokenStream stream(tokenizer);
-  ASSERT(false); // BKTODO:
-#if 0
   CSSParserImpl parser(context, style_sheet);
   if (defer_property_parsing == CSSDeferPropertyParsing::kYes) {
     parser.lazy_state_ =
         new CSSLazyParsingState(context, string, parser.style_sheet_);
   }
-#endif
   ParseSheetResult result = ParseSheetResult::kSucceeded;
 #if 0 // BKTODO:
   bool first_rule_valid = parser.ConsumeRuleList(

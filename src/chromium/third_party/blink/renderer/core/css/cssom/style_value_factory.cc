@@ -249,7 +249,7 @@ CSSStyleValueVector StyleValueFactory::FromString(
     const AtomicString& custom_property_name,
     const PropertyRegistration* registration,
     const String& css_text,
-    std::unique_ptr<CSSParserContext> &parser_context) {
+    const std::shared_ptr<CSSParserContext> &parser_context) {
   DCHECK_NE(property_id, CSSPropertyInvalid);
   DCHECK_EQ(property_id == CSSPropertyVariable, !custom_property_name.IsNull());
   CSSTokenizer tokenizer(css_text);

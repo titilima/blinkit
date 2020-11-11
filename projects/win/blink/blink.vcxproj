@@ -1792,6 +1792,7 @@
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_thread_scheduler.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_url_loader.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_url_loader_client.h" />
+    <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\platform\web_viewport_style.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\web\blink.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\web\web_document.h" />
     <ClInclude Include="..\..\..\src\chromium\third_party\blink\public\web\web_document_loader.h" />

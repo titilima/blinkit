@@ -73,6 +73,26 @@ void LocalFrameView::BeginLifecycleUpdates(void)
     GetFrame().GetPage()->GetChromeClient().BeginLifecycleUpdates();
 }
 
+bool LocalFrameView::CanThrottleRendering(void) const
+{
+    if (m_lifecycleUpdatesThrottled)
+        return true;
+    if (!RuntimeEnabledFeatures::RenderingPipelineThrottlingEnabled())
+        return false;
+    if (m_subtreeThrottled)
+        return true;
+    return false;
+#if 0 // BKTODO:
+    // We only throttle hidden cross-origin frames. This is to avoid a situation
+    // where an ancestor frame directly depends on the pipeline timing of a
+    // descendant and breaks as a result of throttling. The rationale is that
+    // cross-origin frames must already communicate with asynchronous messages,
+    // so they should be able to tolerate some delay in receiving replies from a
+    // throttled peer.
+    return m_hiddenForThrottling && frame_->IsCrossOriginSubframe();
+#endif
+}
+
 void LocalFrameView::ClearFragmentAnchor(void)
 {
     m_fragmentAnchor = nullptr;
@@ -381,6 +401,25 @@ void LocalFrameView::SetupRenderThrottling(void)
     BKLOG("// BKTODO: Check if necessary.");
 }
 
+bool LocalFrameView::ShouldThrottleRendering(void) const
+{
+    bool throttledForGlobalReasons =
+        CanThrottleRendering()
+        && nullptr != m_frame->GetDocument()
+        && Lifecycle().ThrottlingAllowed();
+    if (!throttledForGlobalReasons || m_needsForcedCompositingUpdate)
+        return false;
+
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
+    // Only lifecycle phases up to layout are needed to generate an
+    // intersection observation.
+    return intersection_observation_state_ != kRequired ||
+        GetFrame().LocalFrameRoot().View()->past_layout_lifecycle_update_;
+#endif
+}
+
 void LocalFrameView::Show(void)
 {
     if (!IsSelfVisible())
@@ -410,6 +449,11 @@ void LocalFrameView::UpdateBaseBackgroundColorRecursively(const Color &baseBackg
 #else
     SetBaseBackgroundColor(baseBackgroundColor);
 #endif
+}
+
+void LocalFrameView::UpdateCountersAfterStyleChange(void)
+{
+    ASSERT(false); // BKTODO:
 }
 
 void LocalFrameView::UpdateRenderThrottlingStatus(

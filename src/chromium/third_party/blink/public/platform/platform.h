@@ -72,6 +72,11 @@ public:
 
     virtual WTF::String DefaultLocale(void) { return String("en-US"); }
     virtual std::unique_ptr<WebURLLoader> CreateURLLoader(const std::shared_ptr<base::SingleThreadTaskRunner> &taskRunner);
+
+#ifndef BLINKIT_CRAWLER_ONLY
+    // Returns a blob of data corresponding to the named resource.
+    virtual std::string GetDataResource(const char *name) { return std::string(); }
+#endif
 protected:
     void AttachMainThread(Thread *thread);
 

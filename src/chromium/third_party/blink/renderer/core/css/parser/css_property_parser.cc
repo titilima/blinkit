@@ -1,3 +1,14 @@
+// -------------------------------------------------
+// BlinKit - blink Library
+// -------------------------------------------------
+//   File Name: css_property_parser.cc
+// Description: CSSPropertyParser Class
+//      Author: Ziming Li
+//     Created: 2020-11-10
+// -------------------------------------------------
+// Copyright (C) 2020 MingYang Software Technology.
+// -------------------------------------------------
+
 // Copyright 2015 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -29,7 +40,7 @@ class CSSIdentifierValue;
 
 CSSPropertyParser::CSSPropertyParser(
     const CSSParserTokenRange& range,
-    const CSSParserContext* context,
+    const std::shared_ptr<const CSSParserContext>& context,
     HeapVector<CSSPropertyValue, 256>* parsed_properties)
     : range_(range), context_(context), parsed_properties_(parsed_properties) {
   range_.ConsumeWhitespace();
@@ -39,7 +50,7 @@ bool CSSPropertyParser::ParseValue(
     CSSPropertyID unresolved_property,
     bool important,
     const CSSParserTokenRange& range,
-    const CSSParserContext* context,
+    const std::shared_ptr<const CSSParserContext>& context,
     HeapVector<CSSPropertyValue, 256>& parsed_properties,
     StyleRule::RuleType rule_type) {
   int parsed_properties_size = parsed_properties.size();
@@ -71,7 +82,7 @@ bool CSSPropertyParser::ParseValue(
 const CSSValue* CSSPropertyParser::ParseSingleValue(
     CSSPropertyID property,
     const CSSParserTokenRange& range,
-    const CSSParserContext* context) {
+    const std::shared_ptr<const CSSParserContext>& context) {
   DCHECK(context);
   CSSPropertyParser parser(range, context, nullptr);
   const CSSValue* value = ParseLonghand(property, CSSPropertyInvalid,
@@ -120,7 +131,7 @@ bool CSSPropertyParser::ParseValueStart(CSSPropertyID unresolved_property,
     CSSVariableReferenceValue* variable = CSSVariableReferenceValue::Create(
         CSSVariableData::Create(original_range, is_animation_tainted, true,
                                 context_->BaseURL(), context_->Charset()),
-        *context_);
+        context_);
 
     if (is_shorthand) {
       const CSSPendingSubstitutionValue& pending_value =

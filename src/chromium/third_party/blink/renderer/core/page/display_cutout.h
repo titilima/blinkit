@@ -25,6 +25,11 @@ enum class ViewportFit {
     kMinValue = kAuto,
     kMaxValue = kCoverForcedByUserAgent,
 };
+
 } // namespace blink
+
+namespace mojom {
+using blink::ViewportFit;
+} // namespace mojom
 
 #endif // BLINKIT_BLINK_DISPLAY_CUTOUT_H

@@ -30,7 +30,7 @@ namespace blink {
 
 #ifndef BLINKIT_CRAWLER_ONLY
 // static
-std::unique_ptr<CSSParserContext> CSSParserContext::Create(const ExecutionContext& context) {
+std::shared_ptr<CSSParserContext> CSSParserContext::Create(const ExecutionContext& context) {
   ASSERT(false); // BKTODO:
   return nullptr;
 #if 0
@@ -52,7 +52,7 @@ std::unique_ptr<CSSParserContext> CSSParserContext::Create(const ExecutionContex
 }
 
 // static
-std::unique_ptr<CSSParserContext> CSSParserContext::CreateWithStyleSheet(
+std::shared_ptr<CSSParserContext> CSSParserContext::CreateWithStyleSheet(
     const CSSParserContext* other,
     const CSSStyleSheet* style_sheet) {
   return CSSParserContext::Create(
@@ -60,7 +60,7 @@ std::unique_ptr<CSSParserContext> CSSParserContext::CreateWithStyleSheet(
 }
 
 // static
-std::unique_ptr<CSSParserContext> CSSParserContext::CreateWithStyleSheetContents(
+std::shared_ptr<CSSParserContext> CSSParserContext::CreateWithStyleSheetContents(
     const CSSParserContext* other,
     const StyleSheetContents* style_sheet_contents) {
   return CSSParserContext::Create(
@@ -68,24 +68,20 @@ std::unique_ptr<CSSParserContext> CSSParserContext::CreateWithStyleSheetContents
 }
 
 // static
-std::unique_ptr<CSSParserContext> CSSParserContext::Create(
+std::shared_ptr<CSSParserContext> CSSParserContext::Create(
     const CSSParserContext* other,
     const Document* use_counter_document) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
-  return new CSSParserContext(
+  return base::WrapShared(new CSSParserContext(
       other->base_url_, other->is_opaque_response_from_service_worker_,
       other->charset_, other->mode_, other->match_mode_, other->profile_,
       other->referrer_, other->is_html_document_,
       other->use_legacy_background_size_shorthand_behavior_,
       other->secure_context_mode_, other->should_check_content_security_policy_,
-      use_counter_document);
-#endif
+      use_counter_document));
 }
 
 // static
-std::unique_ptr<CSSParserContext> CSSParserContext::Create(
+std::shared_ptr<CSSParserContext> CSSParserContext::Create(
     const CSSParserContext* other,
     const GURL& base_url,
     bool is_opaque_response_from_service_worker,
@@ -106,24 +102,20 @@ std::unique_ptr<CSSParserContext> CSSParserContext::Create(
 }
 
 // static
-std::unique_ptr<CSSParserContext> CSSParserContext::Create(
+std::shared_ptr<CSSParserContext> CSSParserContext::Create(
     CSSParserMode mode,
     SecureContextMode secure_context_mode,
     SelectorProfile profile,
     const Document* use_counter_document) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
-#if 0
-  return base::WrapUnique(new CSSParserContext(
+  return base::WrapShared(new CSSParserContext(
       GURL(), false /* is_opaque_response_from_service_worker */,
-      WTF::TextEncoding(), mode, mode, profile, false, false,
+      WTF::TextEncoding(), mode, mode, profile, std::string(), false, false,
       secure_context_mode, kDoNotCheckContentSecurityPolicy,
       use_counter_document));
-#endif
 }
 
 // static
-std::unique_ptr<CSSParserContext> CSSParserContext::Create(const Document& document) {
+std::shared_ptr<CSSParserContext> CSSParserContext::Create(const Document& document) {
   ASSERT(false); // BKTODO:
   return nullptr;
 #if 0
@@ -136,7 +128,7 @@ std::unique_ptr<CSSParserContext> CSSParserContext::Create(const Document& docum
 #endif // BLINKIT_CRAWLER_ONLY
 
 // static
-std::unique_ptr<CSSParserContext> CSSParserContext::Create(
+std::shared_ptr<CSSParserContext> CSSParserContext::Create(
     const Document& document,
     const GURL& base_url_override,
     bool is_opaque_response_from_service_worker,
@@ -175,7 +167,7 @@ std::unique_ptr<CSSParserContext> CSSParserContext::Create(
 
   ContentSecurityPolicyDisposition policy_disposition = kDoNotCheckContentSecurityPolicy;
 
-  return base::WrapUnique(new CSSParserContext(
+  return base::WrapShared(new CSSParserContext(
       base_url_override, is_opaque_response_from_service_worker, charset, mode,
       match_mode, profile, referrer, document.IsHTMLDocument(),
       use_legacy_background_size_shorthand_behavior,
@@ -223,10 +215,12 @@ bool CSSParserContext::operator==(const CSSParserContext& other) const {
          secure_context_mode_ == other.secure_context_mode_;
 }
 
-const CSSParserContext* StrictCSSParserContext(
+const std::shared_ptr<CSSParserContext>& StrictCSSParserContext(
     SecureContextMode secure_context_mode) {
-  ASSERT(false); // BKTODO:
-  return nullptr;
+  static std::shared_ptr<CSSParserContext> s_strict_context;
+  if (!s_strict_context)
+    ASSERT(false); // BKTODO:
+  return s_strict_context;
 #if 0
   DEFINE_THREAD_SAFE_STATIC_LOCAL(ThreadSpecific<Persistent<CSSParserContext>>,
                                   strict_context_pool, ());

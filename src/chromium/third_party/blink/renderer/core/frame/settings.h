@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include "third_party/blink/public/platform/web_viewport_style.h"
 #include "third_party/blink/renderer/platform/wtf/text/atomic_string.h"
 
 namespace blink {
@@ -36,6 +37,8 @@ public:
     static constexpr bool ViewportEnabled = false;
     static constexpr bool ViewportMetaEnabled = false;
     static constexpr bool ViewportMetaMergeContentQuirk = false;
+
+    static constexpr WebViewportStyle ViewportStyle = WebViewportStyle::kDefault;
 };
 
 } // namespace blink

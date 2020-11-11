@@ -52,11 +52,7 @@ void StyleSheetCollection::Dispose() {
 }
 
 void StyleSheetCollection::Swap(StyleSheetCollection& other) {
-  ASSERT(false); // BKTODO:
-#if 0
-  ::blink::swap(style_sheets_for_style_sheet_list_,
-                other.style_sheets_for_style_sheet_list_);
-#endif
+  style_sheets_for_style_sheet_list_.swap(other.style_sheets_for_style_sheet_list_);
   active_author_style_sheets_.swap(other.active_author_style_sheets_);
   sheet_list_dirty_ = false;
 }

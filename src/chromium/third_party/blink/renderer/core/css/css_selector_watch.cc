@@ -168,11 +168,11 @@ void CSSSelectorWatch::WatchCSSSelectors(const Vector<String>& selectors) {
       ImmutableCSSPropertyValueSet::Create(nullptr, 0, kUASheetMode);
 
   // UA stylesheets always parse in the insecure context mode.
-  std::unique_ptr<CSSParserContext> context = CSSParserContext::Create(
+  std::shared_ptr<CSSParserContext> context = CSSParserContext::Create(
       kUASheetMode, SecureContextMode::kInsecureContext);
   for (const auto& selector : selectors) {
     CSSSelectorList selector_list =
-        CSSParser::ParseSelector(context, nullptr, selector);
+        CSSParser::ParseSelector(context.get(), nullptr, selector);
     if (!selector_list.IsValid())
       continue;
 

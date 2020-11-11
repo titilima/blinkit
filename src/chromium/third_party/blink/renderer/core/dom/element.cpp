@@ -899,6 +899,14 @@ Node::InsertionNotificationRequest Element::InsertedInto(ContainerNode &insertio
     return kInsertionDone;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+bool Element::IsFocusable(void) const
+{
+    ASSERT(false); // BKTODO:
+    return false;
+}
+#endif
+
 bool Element::IsInDescendantTreeOf(const Element *shadowHost) const
 {
 #ifdef BLINKIT_CRAWLER_ONLY
@@ -1010,6 +1018,140 @@ void Element::PseudoStateChanged(CSSSelector::PseudoType pseudo)
     if (GetDocument().InStyleRecalc())
         return;
     GetDocument().GetStyleEngine().PseudoStateChangedForElement(pseudo, *this);
+}
+
+StyleRecalcChange Element::RecalcOwnStyle(StyleRecalcChange change)
+{
+    ASSERT(false); // BKTODO:
+    return StyleRecalcChange::kNoChange;
+}
+
+void Element::RecalcStyle(StyleRecalcChange change)
+{
+    ASSERT(!ForCrawler());
+    ASSERT(GetDocument().InStyleRecalc());
+    ASSERT(!GetDocument().Lifecycle().InDetach());
+    // If we are re-attaching in a Shadow DOM v0 tree, we recalc down to the
+    // distributed nodes to propagate kReattach down the flat tree (See
+    // V0InsertionPoint::DidRecalcStyle). That means we may have a shadow-
+    // including parent (V0InsertionPoint) with dirty recalc bit in the case where
+    // fallback content has been redistributed to a different insertion point.
+    // This will not happen for Shadow DOM v1 because we walk assigned nodes and
+    // slots themselves are assigned and part of the flat tree.
+    ASSERT(!ParentOrShadowHostNode()->NeedsStyleRecalc() || (ParentOrShadowHostNode()->IsV0InsertionPoint() && change == kReattach));
+    ASSERT(InActiveDocument());
+
+    if (HasCustomStyleCallbacks())
+        WillRecalcStyle(change);
+
+    if (change >= kIndependentInherit || NeedsStyleRecalc())
+    {
+        if (HasRareData())
+        {
+            ElementRareData *data = GetElementRareData();
+            ASSERT(false); // BKTODO:
+#if 0
+            if (change != kIndependentInherit)
+            {
+                // We keep the old computed style around for display: contents, option
+                // and optgroup. This way we can call stylePropagationDiff accurately.
+                //
+                // We could clear it always, but we'd have more expensive restyles for
+                // children.
+                //
+                // Note that we can't just keep stored other kind of non-layout object
+                // computed style (like the one that gets set when getComputedStyle is
+                // called on a display: none element), because that is a sizable memory
+                // hit.
+                //
+                // Also, we don't want to leave a stale computed style, which may happen
+                // if we don't end up calling recalcOwnStyle because there's no parent
+                // style.
+                const ComputedStyle *nonLayoutStyle = NonLayoutObjectComputedStyle();
+                if (!nullptr == nonLayoutStyle || !ShouldStoreNonLayoutObjectComputedStyle(*nonLayoutStyle)
+                    || nullptr == ParentComputedStyle())
+                {
+                    data->ClearComputedStyle();
+                }
+            }
+            if (change >= kIndependentInherit)
+            {
+                if (ElementAnimations *elementAnimations = data->GetElementAnimations())
+                    elementAnimations->SetAnimationStyleChange(false);
+            }
+#endif
+        }
+
+        if (nullptr != ParentComputedStyle())
+        {
+            change = RecalcOwnStyle(change);
+        }
+        else if (!CanParticipateInFlatTree())
+        {
+            // Recalculate style for Shadow DOM v0 <content> insertion point.
+            // It does not take style since it's not part of the flat tree, but we
+            // need to traverse into fallback children for reattach.
+            if (NeedsAttach())
+                change = kReattach;
+            if (change == kReattach)
+                SetNeedsReattachLayoutTree();
+            else if (GetStyleChangeType() == kSubtreeStyleChange)
+                change = kForce;
+        }
+
+        // Needed because the RebuildLayoutTree code needs to see what the
+        // StyleChangeType() was on reattach roots. See Node::ReattachLayoutTree()
+        // for an example.
+        if (change != kReattach)
+            ClearNeedsStyleRecalc();
+    }
+
+    if (change >= kUpdatePseudoElements || ChildNeedsStyleRecalc())
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        // ChildrenCanHaveStyle(), hence ShouldCallRecalcStyleForChildren(),
+        // returns false for <object> elements below. Yet, they may have ::backdrop
+        // elements.
+        UpdatePseudoElement(kPseudoIdBackdrop, change);
+#endif
+    }
+
+    if (ShouldCallRecalcStyleForChildren(change))
+    {
+        ASSERT(false); // BKTODO:
+#if 0
+        UpdatePseudoElement(kPseudoIdBefore, change);
+
+        if (change > kUpdatePseudoElements || ChildNeedsStyleRecalc())
+        {
+            SelectorFilterParentScope filter_scope(*this);
+            if (ShadowRoot* root = GetShadowRoot()) {
+                if (root->ShouldCallRecalcStyle(change))
+                    root->RecalcStyle(change);
+            }
+            RecalcDescendantStyles(change);
+        }
+
+        UpdatePseudoElement(kPseudoIdAfter, change);
+
+        // If we are re-attaching us or any of our descendants, we need to attach
+        // the descendants before we know if this element generates a ::first-letter
+        // and which element the ::first-letter inherits style from.
+        if (change < kReattach && !ChildNeedsReattachLayoutTree())
+            UpdateFirstLetterPseudoElement(StyleUpdatePhase::kRecalc);
+#endif
+
+        ClearChildNeedsStyleRecalc();
+    }
+
+    if (HasCustomStyleCallbacks())
+        DidRecalcStyle(change);
+}
+
+void Element::RecalcStyleForTraversalRootAncestor(void)
+{
+    ASSERT(false); // BKTODO:
 }
 
 void Element::RemoveCallbackSelectors(void)
@@ -1164,6 +1306,20 @@ const AtomicString& Element::ShadowPseudoId(void) const
 {
     ASSERT(false); // BKTODO: Check child classes.
     return g_null_atom;
+}
+
+bool Element::ShouldCallRecalcStyleForChildren(StyleRecalcChange change)
+{
+    if (change != kReattach)
+        return change >= kUpdatePseudoElements || ChildNeedsStyleRecalc();
+    ASSERT(false); // BKTODO:
+#if 0
+    if (!ChildrenCanHaveStyle())
+        return false;
+    if (const ComputedStyle *newStyle = GetNonAttachedStyle())
+        return LayoutObjectIsNeeded(*newStyle) || ShouldStoreNonLayoutObjectComputedStyle(*newStyle);
+#endif
+    return !CanParticipateInFlatTree();
 }
 #endif
 
@@ -1419,5 +1575,12 @@ void Element::WillModifyAttribute(const QualifiedName &name, const AtomicString 
     if (MutationObserverInterestGroup *recipients = MutationObserverInterestGroup::CreateForAttributesMutation(*this, name))
         ASSERT(false); // BKTODO: recipients->EnqueueMutationRecord(MutationRecord::CreateAttributes(this, name, oldValue));
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+void Element::WillRecalcStyle(StyleRecalcChange change)
+{
+    ASSERT(false); // BKTODO:
+}
+#endif
 
 } // namespace blink

@@ -93,8 +93,7 @@ void GetAutofillPreviewColorsFromFieldTrial(std::string* color,
   constexpr char kAutofillDefaultBackgroundColor[] = "#FAFFBD";
   constexpr char kAutofillDefaultColor[] = "#000000";
 
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   if (base::FeatureList::IsEnabled(features::kAutofillPreviewStyleExperiment)) {
     std::string bg_color_param = base::GetFieldTrialParamValueByFeature(
         features::kAutofillPreviewStyleExperiment,

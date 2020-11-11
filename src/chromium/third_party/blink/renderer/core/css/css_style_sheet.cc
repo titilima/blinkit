@@ -105,7 +105,7 @@ std::shared_ptr<CSSStyleSheet> CSSStyleSheet::Create(Document& document,
   }
   // Folowing steps at spec draft
   // https://wicg.github.io/construct-stylesheets/#dom-cssstylesheet-cssstylesheet
-  std::unique_ptr<CSSParserContext> parser_context = CSSParserContext::Create(document);
+  std::shared_ptr<CSSParserContext> parser_context = CSSParserContext::Create(document);
   std::shared_ptr<StyleSheetContents> contents = StyleSheetContents::Create(parser_context);
   std::shared_ptr<CSSStyleSheet> sheet(new CSSStyleSheet(contents.get(), nullptr));
   ASSERT(false); // BKTODO:
@@ -150,7 +150,7 @@ std::shared_ptr<CSSStyleSheet> CSSStyleSheet::CreateInline(Node& owner_node,
                                                            const GURL& base_url,
                                                            const TextPosition& start_position,
                                                            const WTF::TextEncoding& encoding) {
-  std::unique_ptr<CSSParserContext> parser_context = CSSParserContext::Create(
+  std::shared_ptr<CSSParserContext> parser_context = CSSParserContext::Create(
       owner_node.GetDocument(), owner_node.GetDocument().BaseURL(),
       false /* is_opaque_response_from_service_worker */, encoding);
   std::shared_ptr<StyleSheetContents> sheet =
@@ -380,7 +380,7 @@ unsigned CSSStyleSheet::insertRule(const String& rule_string,
             ").");
     return 0;
   }
-  std::unique_ptr<CSSParserContext> context =
+  std::shared_ptr<CSSParserContext> context =
       CSSParserContext::CreateWithStyleSheet(contents_->ParserContext(), this);
   ASSERT(false); // BKTODO:
 #if 0

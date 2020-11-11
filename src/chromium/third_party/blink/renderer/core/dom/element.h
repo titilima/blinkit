@@ -200,6 +200,9 @@ public:
     virtual void FinishParsingChildren(void);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    void RecalcStyle(StyleRecalcChange change);
+    void RecalcStyleForTraversalRootAncestor(void);
+
     ComputedStyle* MutableNonLayoutObjectComputedStyle(void) const
     {
         return const_cast<ComputedStyle *>(NonLayoutObjectComputedStyle());
@@ -211,6 +214,11 @@ public:
     // layoutObjectIsFocusable(), this method may be called when layout is not up
     // to date, so it must not use the layoutObject to determine focusability.
     virtual bool SupportsFocus(void) const;
+    // IsFocusable(), IsKeyboardFocusable(), and IsMouseFocusable() check
+    // whether the element can actually be focused. Callers should ensure
+    // ComputedStyle is up to date;
+    // e.g. by calling Document::UpdateStyleAndLayoutTree().
+    bool IsFocusable(void) const;
 
     // Returns the shadow root attached to this element if it is a shadow host.
     ShadowRoot* GetShadowRoot(void) const;
@@ -256,6 +264,7 @@ protected:
     virtual AttributeTriggers* TriggersForAttributeName(const QualifiedName &attrName);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    virtual void WillRecalcStyle(StyleRecalcChange change);
     virtual void DidRecalcStyle(StyleRecalcChange change);
 
     void ChildrenChanged(const ChildrenChange &change) override;
@@ -305,6 +314,11 @@ private:
     bool ChildTypeAllowed(NodeType type) const final;
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    StyleRecalcChange RecalcOwnStyle(StyleRecalcChange change);
+    // Returns true if we should traverse shadow including children and pseudo
+    // elements for RecalcStyle.
+    bool ShouldCallRecalcStyleForChildren(StyleRecalcChange change);
+
     void CancelFocusAppearanceUpdate(void);
 
     void DetachPseudoElement(PseudoId pseudoId, const AttachContext &context);

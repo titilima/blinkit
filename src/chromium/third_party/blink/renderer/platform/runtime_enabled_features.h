@@ -42,6 +42,7 @@ public:
     BLINK_DEFINE_STABLE_FEATURE(HTMLImportsStyleApplication)
     BLINK_DEFINE_STABLE_FEATURE(InputMultipleFieldsUI)
     BLINK_DEFINE_STABLE_FEATURE(PassiveDocumentEventListeners)
+    BLINK_DEFINE_STABLE_FEATURE(RenderingPipelineThrottling)
     BLINK_DEFINE_STABLE_FEATURE(RequireCSSExtensionForFile)
     BLINK_DEFINE_STABLE_FEATURE(SmoothScrollJSIntervention)
     BLINK_DEFINE_STABLE_FEATURE(TextUnderlinePositionLeftRight)

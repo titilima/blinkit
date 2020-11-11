@@ -87,7 +87,7 @@ void StyleRuleImport::NotifyFinished(Resource* resource) {
   // Fallback to an insecure context parser if we don't have a parent style
   // sheet.
   const CSSParserContext* context =
-      StrictCSSParserContext(SecureContextMode::kInsecureContext);
+      StrictCSSParserContext(SecureContextMode::kInsecureContext).get();
 
   if (parent_style_sheet_) {
     document = parent_style_sheet_->SingleOwnerDocument();

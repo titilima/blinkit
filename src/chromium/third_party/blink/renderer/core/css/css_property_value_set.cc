@@ -438,7 +438,7 @@ void MutableCSSPropertyValueSet::ParseDeclarationList(
     StyleSheetContents* context_style_sheet) {
   property_vector_.clear();
 
-  std::unique_ptr<CSSParserContext> context;
+  std::shared_ptr<CSSParserContext> context;
   if (context_style_sheet) {
     context = CSSParserContext::CreateWithStyleSheetContents(
         context_style_sheet->ParserContext(), context_style_sheet);
@@ -447,7 +447,7 @@ void MutableCSSPropertyValueSet::ParseDeclarationList(
     context = CSSParserContext::Create(CssParserMode(), secure_context_mode);
   }
 
-  CSSParser::ParseDeclarationList(context, this, style_declaration);
+  CSSParser::ParseDeclarationList(context.get(), this, style_declaration);
 }
 
 bool MutableCSSPropertyValueSet::AddParsedProperties(

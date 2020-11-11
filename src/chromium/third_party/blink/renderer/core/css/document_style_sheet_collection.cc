@@ -61,12 +61,14 @@ DocumentStyleSheetCollection::DocumentStyleSheetCollection(
 void DocumentStyleSheetCollection::CollectStyleSheetsFromCandidates(
     StyleEngine& master_engine,
     DocumentStyleSheetCollector& collector) {
-  ASSERT(false); // BKTODO:
-#if 0
+#if 0 // BKTODO: Check if necessary.
   // TODO(keishi) Check added for crbug.com/699269 diagnosis. Remove once done.
   CHECK(HeapObjectHeader::FromPayload(this)->IsValid());
   CHECK(ThreadState::Current()->IsOnThreadHeap(this));
+#endif
   for (Node* n : style_sheet_candidate_nodes_) {
+    ASSERT(false); // BKTODO:
+#if 0
     CHECK(HeapObjectHeader::FromPayload(n)->IsValid());
     CHECK(ThreadState::Current()->IsOnThreadHeap(n));
     StyleSheetCandidate candidate(*n);
@@ -100,10 +102,13 @@ void DocumentStyleSheetCollection::CollectStyleSheetsFromCandidates(
     CSSStyleSheet* css_sheet = ToCSSStyleSheet(sheet);
     collector.AppendActiveStyleSheet(
         std::make_pair(css_sheet, master_engine.RuleSetForSheet(*css_sheet)));
+#endif
   }
   if (!GetTreeScope().HasAdoptedStyleSheets())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   StyleSheetList& adopted_style_sheets = GetTreeScope().AdoptedStyleSheets();
   unsigned length = adopted_style_sheets.length();
   for (unsigned index = 0; index < length; ++index) {
@@ -125,15 +130,15 @@ void DocumentStyleSheetCollection::CollectStyleSheetsFromCandidates(
 void DocumentStyleSheetCollection::CollectStyleSheets(
     StyleEngine& master_engine,
     DocumentStyleSheetCollector& collector) {
-  ASSERT(false); // BKTODO:
-#if 0
   for (auto& sheet :
        GetDocument().GetStyleEngine().InjectedAuthorStyleSheets()) {
+    ASSERT(false); // BKTODO:
+#if 0
     collector.AppendActiveStyleSheet(std::make_pair(
         sheet.second,
         GetDocument().GetStyleEngine().RuleSetForSheet(*sheet.second)));
-  }
 #endif
+  }
   CollectStyleSheetsFromCandidates(master_engine, collector);
   if (CSSStyleSheet* inspector_sheet =
           GetDocument().GetStyleEngine().InspectorStyleSheet()) {

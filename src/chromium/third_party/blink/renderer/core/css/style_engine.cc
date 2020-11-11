@@ -455,8 +455,6 @@ void StyleEngine::UpdateActiveStyleSheetsInShadow(
       ToShadowTreeStyleSheetCollection(StyleSheetCollectionFor(*tree_scope));
   DCHECK(collection);
   collection->UpdateActiveStyleSheets(*this);
-  ASSERT(false); // BKTODO:
-#if 0
   if (!collection->HasStyleSheetCandidateNodes() &&
       !tree_scope->HasAdoptedStyleSheets()) {
     tree_scopes_removed.insert(tree_scope);
@@ -464,7 +462,6 @@ void StyleEngine::UpdateActiveStyleSheetsInShadow(
     // its resolver should be destroyed by invoking resetAuthorStyle.
     DCHECK(!tree_scope->GetScopedStyleResolver());
   }
-#endif
 }
 
 void StyleEngine::UpdateActiveUserStyleSheets() {
@@ -578,8 +575,6 @@ void StyleEngine::AddTreeBoundaryCrossingScope(const TreeScope& tree_scope) {
 void StyleEngine::ResetAuthorStyle(TreeScope& tree_scope) {
   tree_boundary_crossing_scopes_.Remove(&tree_scope.RootNode());
 
-  ASSERT(false); // BKTODO:
-#if 0
   ScopedStyleResolver* scoped_resolver = tree_scope.GetScopedStyleResolver();
   if (!scoped_resolver)
     return;
@@ -591,7 +586,6 @@ void StyleEngine::ResetAuthorStyle(TreeScope& tree_scope) {
   }
 
   tree_scope.ClearScopedStyleResolver();
-#endif
 }
 
 void StyleEngine::SetRuleUsageTracker(StyleRuleUsageTracker* tracker) {
@@ -706,10 +700,7 @@ void StyleEngine::MarkTreeScopeDirty(TreeScope& scope) {
   DCHECK(collection);
   collection->MarkSheetListDirty();
   dirty_tree_scopes_.insert(&scope);
-  ASSERT(false); // BKTODO:
-#if 0
   GetDocument().ScheduleLayoutTreeUpdateIfNeeded();
-#endif
 }
 
 void StyleEngine::MarkDocumentDirty() {
@@ -806,8 +797,6 @@ void StyleEngine::CollectUserStyleFeaturesTo(RuleFeatureSet& features) const {
 void StyleEngine::CollectScopedStyleFeaturesTo(RuleFeatureSet& features) const {
   HeapHashSet<Member<const StyleSheetContents>>
       visited_shared_style_sheet_contents;
-  ASSERT(false); // BKTODO:
-#if 0
   if (GetDocument().GetScopedStyleResolver()) {
     GetDocument().GetScopedStyleResolver()->CollectFeaturesTo(
         features, visited_shared_style_sheet_contents);
@@ -818,7 +807,6 @@ void StyleEngine::CollectScopedStyleFeaturesTo(RuleFeatureSet& features) const {
                                   visited_shared_style_sheet_contents);
     }
   }
-#endif
 }
 
 void StyleEngine::FontsNeedUpdate(FontSelector*) {
@@ -1349,15 +1337,12 @@ void StyleEngine::HtmlImportAddedOrRemoved() {
 }
 
 void StyleEngine::V0ShadowAddedOnV1Document() {
-  ASSERT(false); // BKTODO:
-#if 0
   // No need to look into the ScopedStyleResolver for document, as ::slotted
   // never matches anything in a document tree.
   for (TreeScope* tree_scope : active_tree_scopes_) {
     if (ScopedStyleResolver* resolver = tree_scope->GetScopedStyleResolver())
       resolver->V0ShadowAddedOnV1Document();
   }
-#endif
 }
 
 namespace {
@@ -1389,11 +1374,11 @@ void StyleEngine::InvalidateForRuleSetChanges(
     const HeapHashSet<Member<RuleSet>>& changed_rule_sets,
     unsigned changed_rule_flags,
     InvalidationScope invalidation_scope) {
-  ASSERT(false); // BKTODO:
-#if 0
   if (tree_scope.GetDocument().HasPendingForcedStyleRecalc())
     return;
 
+  ASSERT(false); // BKTODO:
+#if 0
   if (!tree_scope.GetDocument().body() ||
       tree_scope.GetDocument().HasNodesWithPlaceholderStyle()) {
     tree_scope.GetDocument().SetNeedsStyleRecalc(
@@ -1401,6 +1386,7 @@ void StyleEngine::InvalidateForRuleSetChanges(
                                  StyleChangeReason::kCleanupPlaceholderStyles));
     return;
   }
+#endif
 
   if (changed_rule_sets.IsEmpty())
     return;
@@ -1421,7 +1407,6 @@ void StyleEngine::InvalidateForRuleSetChanges(
 
   ScheduleInvalidationsForRuleSets(tree_scope, changed_rule_sets,
                                    invalidation_scope);
-#endif
 }
 
 void StyleEngine::ApplyUserRuleSetChanges(
@@ -1442,8 +1427,6 @@ void StyleEngine::ApplyUserRuleSetChanges(
 
   unsigned changed_rule_flags = GetRuleSetFlags(changed_rule_sets);
   if (changed_rule_flags & kFontFaceRules) {
-    ASSERT(false); // BKTODO:
-#if 0
     if (ScopedStyleResolver* scoped_resolver =
             GetDocument().GetScopedStyleResolver()) {
       // User style and document scope author style shares the font cache. If
@@ -1455,7 +1438,6 @@ void StyleEngine::ApplyUserRuleSetChanges(
     } else {
       ClearFontCacheAndAddUserFonts();
     }
-#endif
   }
 
   if (changed_rule_flags & kKeyframesRules) {
@@ -1493,8 +1475,6 @@ void StyleEngine::ApplyRuleSetChanges(
   bool rebuild_font_cache = change == kActiveSheetsChanged &&
                             (changed_rule_flags & kFontFaceRules) &&
                             tree_scope.RootNode().IsDocumentNode();
-  ASSERT(false); // BKTODO:
-#if 0
   ScopedStyleResolver* scoped_resolver = tree_scope.GetScopedStyleResolver();
   if (scoped_resolver && scoped_resolver->NeedsAppendAllSheets()) {
     rebuild_font_cache = true;
@@ -1532,7 +1512,6 @@ void StyleEngine::ApplyRuleSetChanges(
     tree_scope.EnsureScopedStyleResolver().AppendActiveStyleSheets(
         append_start_index, new_style_sheets);
   }
-#endif
 
   InvalidateForRuleSetChanges(tree_scope, changed_rule_sets, changed_rule_flags,
                               kInvalidateCurrentScope);
@@ -1613,11 +1592,8 @@ void StyleEngine::MarkForWhitespaceReattachment() {
   for (auto element : whitespace_reattach_set_) {
     if (element->NeedsReattachLayoutTree() || !element->GetLayoutObject())
       continue;
-    ASSERT(false); // BKTODO:
-#if 0
     if (Node* first_child = LayoutTreeBuilderTraversal::FirstChild(*element))
-      first_child->MarkAncestorsWithChildNeedsReattachLayoutTree();
-#endif
+      ASSERT(false); // BKTODO: first_child->MarkAncestorsWithChildNeedsReattachLayoutTree();
   }
 }
 
@@ -1645,10 +1621,7 @@ void StyleEngine::NodeWillBeRemoved(Node& node) {
   DCHECK(layout_object->GetNode());
   if (layout_object->GetNode()->IsElementNode()) {
     whitespace_reattach_set_.insert(ToElement(layout_object->GetNode()));
-    ASSERT(false); // BKTODO:
-#if 0
     GetDocument().ScheduleLayoutTreeUpdateIfNeeded();
-#endif
   }
 }
 
@@ -1743,8 +1716,6 @@ void StyleEngine::RecalcStyle(StyleRecalcChange change) {
   DCHECK(GetDocument().documentElement());
   DCHECK(GetDocument().ChildNeedsStyleRecalc() || change == kForce);
 
-  ASSERT(false); // BKTODO:
-#if 0
   Element& root_element = style_recalc_root_.RootElement();
   if (change == kForce || &root_element == GetDocument().documentElement()) {
     GetDocument().documentElement()->RecalcStyle(change);
@@ -1760,7 +1731,6 @@ void StyleEngine::RecalcStyle(StyleRecalcChange change) {
       ToElement(ancestor)->RecalcStyleForTraversalRootAncestor();
     ancestor->ClearChildNeedsStyleRecalc();
   }
-#endif
   style_recalc_root_.Clear();
 }
 
@@ -1770,22 +1740,19 @@ void StyleEngine::RebuildLayoutTree() {
   DCHECK(!InRebuildLayoutTree());
   in_layout_tree_rebuild_ = true;
 
-  ASSERT(false); // BKTODO:
-#if 0
   Element& root_element = layout_tree_rebuild_root_.RootElement();
   {
     WhitespaceAttacher whitespace_attacher;
-    root_element.RebuildLayoutTree(whitespace_attacher);
+    ASSERT(false); // BKTODO: root_element.RebuildLayoutTree(whitespace_attacher);
   }
 
   for (ContainerNode* ancestor = root_element.GetReattachParent(); ancestor;
        ancestor = ancestor->GetReattachParent()) {
     if (ancestor->IsElementNode())
-      ToElement(ancestor)->RebuildLayoutTreeForTraversalRootAncestor();
+      ASSERT(false); // BKTODO: ToElement(ancestor)->RebuildLayoutTreeForTraversalRootAncestor();
     ancestor->ClearChildNeedsStyleRecalc();
     ancestor->ClearChildNeedsReattachLayoutTree();
   }
-#endif
   layout_tree_rebuild_root_.Clear();
   in_layout_tree_rebuild_ = false;
 }

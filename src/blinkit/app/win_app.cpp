@@ -15,12 +15,12 @@
 #include "blinkit/blink_impl/win_single_thread_task_runner.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#   include "base/win/resource_util.h"
 #   include "third_party/blink/renderer/platform/fonts/font_cache.h"
 #   include "third_party/skia/include/ports/SkTypeface_win.h"
 #endif
 
 #if 0 // BKTODO:
-#include "base/win/resource_util.h"
 
 #include "blink_impl/win_task_runner.h"
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -117,6 +117,22 @@ WinApp& WinApp::Get(void)
     return static_cast<WinApp &>(AppImpl::Get());
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+std::string WinApp::GetDataResource(const char *name)
+{
+    static const PCSTR RT_HTMLA = MAKEINTRESOURCEA(23);
+
+    void *data;
+    size_t size;
+    if (!base::GetResourceFromModule(theModule, name, RT_HTMLA, &data, &size))
+    {
+        ASSERT(false); // Resource not found!
+        return AppImpl::GetDataResource(name);
+    }
+    return std::string(reinterpret_cast<const char *>(data), size);
+}
+#endif
+
 std::shared_ptr<base::SingleThreadTaskRunner> WinApp::GetTaskRunner(void) const
 {
     return m_taskRunner;
@@ -170,17 +186,6 @@ blink::WebClipboard* WinApp::clipboard(void)
 BkView* BKAPI WinApp::CreateView(BkViewClient &client)
 {
     return new WinView(client);
-}
-
-blink::WebData WinApp::loadResource(const char *name)
-{
-    void *data;
-    size_t dataLength;
-    if (base::GetResourceFromModule(theModule, name, "RES", &data, &dataLength))
-        return blink::WebData(reinterpret_cast<const char *>(data), dataLength);
-
-    assert(false); // Failed loading resource!
-    return blink::WebData();
 }
 
 blink::WebThemeEngine* WinApp::themeEngine(void)

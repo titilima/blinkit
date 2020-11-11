@@ -90,9 +90,7 @@ class CORE_EXPORT ViewportStyleResolver
 
   float ViewportArgumentValue(CSSPropertyID) const;
   Length ViewportLengthValue(CSSPropertyID);
-#if 0 // BKTODO:
   mojom::ViewportFit ViewportFitValue() const;
-#endif
 
   Member<Document> document_;
   Member<MutableCSSPropertyValueSet> property_set_;

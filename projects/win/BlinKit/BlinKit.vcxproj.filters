@@ -37,6 +37,9 @@
     <Filter Include="loader\tasks">
       <UniqueIdentifier>{fe78d12c-5980-4506-b36c-03d39e5a6227}</UniqueIdentifier>
     </Filter>
+    <Filter Include="win">
+      <UniqueIdentifier>{6a592369-c6ef-47ca-8f94-9fd28b6f489e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\_pch.cpp">
@@ -134,6 +137,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\loader\tasks\res_loader_task_win.cpp">
       <Filter>loader\tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\win\dll_main.cpp">
+      <Filter>win</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -255,6 +261,21 @@
   <ItemGroup>
     <None Include="BlinKit.def">
       <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\html.css">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\themeInputMultipleFields.css">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\themeWin.css">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\quirks.css">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\..\src\chromium\third_party\blink\renderer\core\css\themeWinQuirks.css">
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

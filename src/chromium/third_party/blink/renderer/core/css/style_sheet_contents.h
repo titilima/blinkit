@@ -61,16 +61,16 @@ class CORE_EXPORT StyleSheetContents
     : public GarbageCollectedFinalized<StyleSheetContents>
     , public std::enable_shared_from_this<StyleSheetContents> {
  public:
-  static std::shared_ptr<StyleSheetContents> Create(std::unique_ptr<CSSParserContext> &context) {
+  static std::shared_ptr<StyleSheetContents> Create(const std::shared_ptr<CSSParserContext> &context) {
     return base::WrapShared(new StyleSheetContents(nullptr, String(), context));
   }
   static std::shared_ptr<StyleSheetContents> Create(const String& original_url,
-                                                    std::unique_ptr<CSSParserContext> &context) {
+                                                    const std::shared_ptr<CSSParserContext> &context) {
     return base::WrapShared(new StyleSheetContents(nullptr, original_url, context));
   }
   static std::shared_ptr<StyleSheetContents> Create(StyleRuleImport* owner_rule,
                                                     const String& original_url,
-                                                    std::unique_ptr<CSSParserContext> &context) {
+                                                    const std::shared_ptr<CSSParserContext> &context) {
     return base::WrapShared(new StyleSheetContents(owner_rule, original_url, context));
   }
 
@@ -78,7 +78,7 @@ class CORE_EXPORT StyleSheetContents
 
   ~StyleSheetContents();
 
-  const CSSParserContext* ParserContext() const { return parser_context_; }
+  const CSSParserContext* ParserContext() const { return parser_context_.get(); }
 
   const AtomicString& DefaultNamespace() const { return default_namespace_; }
   const AtomicString& NamespaceURIFromPrefix(const AtomicString& prefix) const;
@@ -230,7 +230,7 @@ class CORE_EXPORT StyleSheetContents
  private:
   StyleSheetContents(StyleRuleImport* owner_rule,
                      const String& original_url,
-                     std::unique_ptr<CSSParserContext> &);
+                     const std::shared_ptr<CSSParserContext> &);
   StyleSheetContents(const StyleSheetContents&);
   StyleSheetContents() = delete;
   StyleSheetContents& operator=(const StyleSheetContents&) = delete;
@@ -260,7 +260,7 @@ class CORE_EXPORT StyleSheetContents
   bool has_single_owner_document_ : 1;
   bool is_used_from_text_cache_ : 1;
 
-  Member<const CSSParserContext> parser_context_;
+  std::shared_ptr<const CSSParserContext> parser_context_;
 
   HeapHashSet<WeakMember<CSSStyleSheet>> loading_clients_;
   HeapHashSet<WeakMember<CSSStyleSheet>> completed_clients_;

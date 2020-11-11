@@ -20,6 +20,7 @@
 #include "third_party/blink/renderer/core/css/parser/css_parser_context.h"
 #include "third_party/blink/renderer/core/css/parser/css_parser_observer.h"
 #include "third_party/blink/renderer/core/css/parser/css_parser_token_stream.h"
+#include "third_party/blink/renderer/core/frame/deprecation.h"
 #include "third_party/blink/renderer/core/frame/use_counter.h"
 #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 #ifndef BLINKIT_CRAWLER_ONLY
@@ -31,7 +32,7 @@ namespace blink {
 // static
 CSSSelectorList CSSSelectorParser::ParseSelector(
     CSSParserTokenRange range,
-    std::unique_ptr<CSSParserContext> &context,
+    const CSSParserContext* context,
     StyleSheetContents* style_sheet) {
   CSSSelectorParser parser(context, style_sheet);
   range.ConsumeWhitespace();
@@ -49,7 +50,7 @@ CSSSelectorList CSSSelectorParser::ParseSelector(
 // static
 CSSSelectorList CSSSelectorParser::ConsumeSelector(
     CSSParserTokenStream& stream,
-    std::unique_ptr<CSSParserContext> &context,
+    const CSSParserContext* context,
     StyleSheetContents* style_sheet,
     CSSParserObserver* observer) {
   CSSSelectorParser parser(context, style_sheet);
@@ -62,9 +63,9 @@ CSSSelectorList CSSSelectorParser::ConsumeSelector(
   return result;
 }
 
-CSSSelectorParser::CSSSelectorParser(std::unique_ptr<CSSParserContext> &context,
+CSSSelectorParser::CSSSelectorParser(const CSSParserContext* context,
                                      StyleSheetContents* style_sheet)
-    : context_(std::move(context)), style_sheet_(style_sheet) {}
+    : context_(context), style_sheet_(style_sheet) {}
 
 CSSSelectorList CSSSelectorParser::ConsumeComplexSelectorList(
     CSSParserTokenRange& range) {

@@ -57,14 +57,14 @@ class CORE_EXPORT CSSParser {
           CSSDeferPropertyParsing::kNo,
       bool allow_import_rules = true);
 #endif
-  static CSSSelectorList ParseSelector(std::unique_ptr<CSSParserContext> &,
+  static CSSSelectorList ParseSelector(const CSSParserContext*,
                                        StyleSheetContents*,
                                        const String&);
 #ifndef BLINKIT_CRAWLER_ONLY
   static CSSSelectorList ParsePageSelector(const CSSParserContext&,
                                            StyleSheetContents*,
                                            const String&);
-  static bool ParseDeclarationList(std::unique_ptr<CSSParserContext> &,
+  static bool ParseDeclarationList(const CSSParserContext*,
                                    MutableCSSPropertyValueSet*,
                                    const String&);
 
@@ -95,7 +95,7 @@ class CORE_EXPORT CSSParser {
   // This is for non-shorthands only
   static const CSSValue* ParseSingleValue(CSSPropertyID,
                                           const String&,
-                                          const CSSParserContext*);
+                                          const std::shared_ptr<const CSSParserContext>&);
 
   static const CSSValue* ParseFontFaceDescriptor(CSSPropertyID,
                                                  const String&,
@@ -106,7 +106,7 @@ class CORE_EXPORT CSSParser {
       Element*);
 
   static std::unique_ptr<Vector<double>> ParseKeyframeKeyList(const String&);
-  static StyleRuleKeyframe* ParseKeyframeRule(std::unique_ptr<CSSParserContext> &,
+  static StyleRuleKeyframe* ParseKeyframeRule(const CSSParserContext*,
                                               const String&);
 
   static bool ParseSupportsCondition(const String&, SecureContextMode);

@@ -131,10 +131,10 @@ struct CORE_EXPORT ViewportDescription {
   bool max_zoom_is_explicit;
   bool user_zoom_is_explicit;
 
-  ViewportFit GetViewportFit() const {
-    return viewport_fit_.value_or(ViewportFit::kAuto);
+  mojom::ViewportFit GetViewportFit() const {
+    return viewport_fit_.value_or(mojom::ViewportFit::kAuto);
   }
-  void SetViewportFit(ViewportFit value) { viewport_fit_ = value; }
+  void SetViewportFit(mojom::ViewportFit value) { viewport_fit_ = value; }
 
   bool operator==(const ViewportDescription& other) const {
     // Used for figuring out whether to reset the viewport or not,
@@ -179,7 +179,7 @@ struct CORE_EXPORT ViewportDescription {
   // This is because a Document will have multiple ViewportDescriptions are
   // which one that will be used is dependent on whether any values have been
   // explicitly set.
-  base::Optional<ViewportFit> viewport_fit_;
+  base::Optional<mojom::ViewportFit> viewport_fit_;
 };
 
 }  // namespace blink

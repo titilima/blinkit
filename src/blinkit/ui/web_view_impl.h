@@ -47,6 +47,10 @@ public:
     void ScheduleAnimation(void);
     void UpdateMainFrameLayoutSize(void);
     void UpdatePageDefinedViewportConstraints(const blink::ViewportDescription &description);
+
+    void StopDeferringCommits(void) {
+        // BKTODO: Check this later.
+    }
 protected:
     WebViewImpl(blink::PageVisibilityState visibilityState);
 
