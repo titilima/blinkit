@@ -998,6 +998,13 @@ void Node::setNodeValue(const String &nodeValue)
     // By default, setting nodeValue has no effect.
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+void Node::SetNonAttachedStyle(scoped_refptr<ComputedStyle> nonAttachedStyle)
+{
+    ASSERT(false); // BKTODO:
+}
+#endif
+
 void Node::SetParentOrShadowHostNode(ContainerNode *parent)
 {
     ASSERT(IsMainThread());

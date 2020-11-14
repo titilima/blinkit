@@ -708,9 +708,19 @@ void Element::FinishParsingChildren(void)
 {
     SetIsFinishedParsingChildren(true);
 #ifndef BLINKIT_CRAWLER_ONLY
-    CheckForEmptyStyleChange(this, this);
-    CheckForSiblingStyleChanges(kFinishedParsingChildren, nullptr, lastChild(), nullptr);
+    if (!ForCrawler())
+    {
+        CheckForEmptyStyleChange(this, this);
+        CheckForSiblingStyleChanges(kFinishedParsingChildren, nullptr, lastChild(), nullptr);
+    }
 #endif
+}
+
+ElementAnimations* Element::GetElementAnimations(void) const
+{
+    if (HasRareData())
+        return GetElementRareData()->GetElementAnimations();
+    return nullptr;
 }
 
 AttrNodeList* Element::GetAttrNodeList(void)
@@ -788,6 +798,19 @@ GURL Element::GetURLAttribute(const QualifiedName &name) const
 #endif
     return GetDocument().CompleteURL(StripLeadingAndTrailingHTMLSpaces(getAttribute(name)));
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+bool Element::HasAnimations(void) const
+{
+    ASSERT(!ForCrawler());
+    if (!HasRareData())
+        return false;
+
+    if (ElementAnimations *elementAnimations = GetElementRareData()->GetElementAnimations())
+        return !elementAnimations->IsEmpty();
+    return false;
+}
+#endif
 
 bool Element::hasAttribute(const AtomicString &name) const
 {
@@ -962,6 +985,13 @@ const ComputedStyle* Element::NonLayoutObjectComputedStyle(void) const
 
     return GetElementRareData()->GetComputedStyle();
 }
+
+scoped_refptr<ComputedStyle> Element::OriginalStyleForLayoutObject(void)
+{
+    ASSERT(!ForCrawler());
+    ASSERT(GetDocument().InStyleRecalc());
+    return GetDocument().EnsureStyleResolver().StyleForElement(this);
+}
 #endif
 
 String Element::outerHTML(void) const
@@ -1009,6 +1039,29 @@ void Element::ParserSetAttributes(const Vector<Attribute> &attributeVector)
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+scoped_refptr<ComputedStyle> Element::PropagateInheritedProperties(StyleRecalcChange change)
+{
+    if (change != kIndependentInherit)
+        return nullptr;
+    if (IsPseudoElement())
+        return nullptr;
+    if (NeedsStyleRecalc())
+        return nullptr;
+    if (HasAnimations())
+        return nullptr;
+
+    const ComputedStyle *parentStyle = ParentComputedStyle();
+    ASSERT(nullptr != parentStyle);
+
+    const ComputedStyle *style = GetComputedStyle();
+    if (nullptr == style || style->Animations() || style->Transitions())
+        return nullptr;
+
+    scoped_refptr<ComputedStyle> newStyle = ComputedStyle::Clone(*style);
+    newStyle->PropagateIndependentInheritedProperties(*parentStyle);
+    return newStyle;
+}
+
 void Element::PseudoStateChanged(CSSSelector::PseudoType pseudo)
 {
     // We can't schedule invaliation sets from inside style recalc otherwise
@@ -1022,8 +1075,95 @@ void Element::PseudoStateChanged(CSSSelector::PseudoType pseudo)
 
 StyleRecalcChange Element::RecalcOwnStyle(StyleRecalcChange change)
 {
-    ASSERT(false); // BKTODO:
-    return StyleRecalcChange::kNoChange;
+    ASSERT(GetDocument().InStyleRecalc());
+    ASSERT(change >= kIndependentInherit || NeedsStyleRecalc());
+    ASSERT(nullptr != ParentComputedStyle());
+    ASSERT(nullptr == GetNonAttachedStyle());
+
+    scoped_refptr<const ComputedStyle> oldStyle = GetComputedStyle();
+
+    // When propagating inherited changes, we don't need to do a full style recalc
+    // if the only changed properties are independent. In this case, we can simply
+    // set these directly on the ComputedStyle object.
+    scoped_refptr<ComputedStyle> newStyle = PropagateInheritedProperties(change);
+    if (!newStyle)
+        newStyle = StyleForLayoutObject();
+    if (!newStyle)
+    {
+        DCHECK(IsPseudoElement());
+        SetNeedsReattachLayoutTree();
+        return kReattach;
+    }
+
+    StyleRecalcChange localChange = ComputedStyle::StylePropagationDiff(oldStyle.get(), newStyle.get());
+    if (localChange != kNoChange)
+    {
+        if (this == GetDocument().documentElement())
+        {
+            if (GetDocument().GetStyleEngine().UpdateRemUnits(oldStyle.get(), newStyle.get()))
+            {
+                // Trigger a full document recalc on rem unit changes. We could keep
+                // track of which elements depend on rem units like we do for viewport
+                // styles, but we assume root font size changes are rare and just
+                // recalculate everything.
+                if (localChange < kForce)
+                    localChange = kForce;
+            }
+        }
+    }
+
+    if (kReattach == change || kReattach == localChange)
+    {
+        SetNonAttachedStyle(newStyle);
+        SetNeedsReattachLayoutTree();
+        return kReattach;
+    }
+
+    ASSERT(oldStyle);
+
+    if (localChange != kNoChange)
+        UpdateCallbackSelectors(oldStyle.get(), newStyle.get());
+
+    if (LayoutObject *layoutObject = GetLayoutObject())
+    {
+        // kNoChange may mean that the computed style didn't change, but there are
+        // additional flags in ComputedStyle which may have changed. For instance,
+        // the AffectedBy* flags. We don't need to go through the visual
+        // invalidation diffing in that case, but we replace the old ComputedStyle
+        // object with the new one to ensure the mentioned flags are up to date.
+        if (localChange == kNoChange)
+            layoutObject->SetStyleInternal(newStyle.get());
+        else
+            layoutObject->SetStyle(newStyle.get());
+    }
+    else
+    {
+        if (ShouldStoreNonLayoutObjectComputedStyle(*newStyle))
+            StoreNonLayoutObjectComputedStyle(newStyle);
+        else if (HasRareData())
+            GetElementRareData()->ClearComputedStyle();
+    }
+
+    if (GetStyleChangeType() >= kSubtreeStyleChange)
+        return kForce;
+
+    if (change > kInherit || localChange > kInherit)
+        return std::max(localChange, change);
+
+    if (localChange < kIndependentInherit)
+    {
+        if (oldStyle->HasChildDependentFlags())
+        {
+            if (ChildNeedsStyleRecalc())
+                return kInherit;
+            newStyle->CopyChildDependentFlagsFrom(*oldStyle);
+        }
+
+        if (oldStyle->HasPseudoElementStyle() || newStyle->HasPseudoElementStyle())
+            return kUpdatePseudoElements;
+    }
+
+    return localChange;
 }
 
 void Element::RecalcStyle(StyleRecalcChange change)
@@ -1049,8 +1189,6 @@ void Element::RecalcStyle(StyleRecalcChange change)
         if (HasRareData())
         {
             ElementRareData *data = GetElementRareData();
-            ASSERT(false); // BKTODO:
-#if 0
             if (change != kIndependentInherit)
             {
                 // We keep the old computed style around for display: contents, option
@@ -1068,7 +1206,7 @@ void Element::RecalcStyle(StyleRecalcChange change)
                 // if we don't end up calling recalcOwnStyle because there's no parent
                 // style.
                 const ComputedStyle *nonLayoutStyle = NonLayoutObjectComputedStyle();
-                if (!nullptr == nonLayoutStyle || !ShouldStoreNonLayoutObjectComputedStyle(*nonLayoutStyle)
+                if (nullptr == nonLayoutStyle || !ShouldStoreNonLayoutObjectComputedStyle(*nonLayoutStyle)
                     || nullptr == ParentComputedStyle())
                 {
                     data->ClearComputedStyle();
@@ -1079,7 +1217,6 @@ void Element::RecalcStyle(StyleRecalcChange change)
                 if (ElementAnimations *elementAnimations = data->GetElementAnimations())
                     elementAnimations->SetAnimationStyleChange(false);
             }
-#endif
         }
 
         if (nullptr != ParentComputedStyle())
@@ -1339,12 +1476,101 @@ bool Element::ShouldSerializeEndTag(void) const
     return true;
 }
 
+#ifndef BLINKIT_CRAWLER_ONLY
+bool Element::ShouldStoreNonLayoutObjectComputedStyle(const ComputedStyle &style) const
+{
+#if DCHECK_IS_ON()
+    if (style.Display() == EDisplay::kContents && !NeedsReattachLayoutTree())
+        DCHECK(!GetLayoutObject() || IsPseudoElement());
+#endif
+    if (style.Display() == EDisplay::kNone)
+        return false;
+#if 0 // BKTODO: Remove this later.
+    if (IsSVGElement()) {
+        Element* parent_element = LayoutTreeBuilderTraversal::ParentElement(*this);
+        if (parent_element && !parent_element->IsSVGElement())
+            return false;
+        if (IsSVGStopElement(*this))
+            return true;
+    }
+#endif
+    if (style.Display() == EDisplay::kContents)
+        return true;
+    ASSERT(false); // BKTODO:
+    return false;
+#if 0
+    return IsHTMLOptGroupElement(*this) || IsHTMLOptionElement(*this);
+#endif
+}
+
+void Element::StoreNonLayoutObjectComputedStyle(scoped_refptr<ComputedStyle> style)
+{
+    ASSERT(style);
+    ASSERT(ShouldStoreNonLayoutObjectComputedStyle(*style));
+    EnsureElementRareData().SetComputedStyle(std::move(style));
+}
+#endif
+
 void Element::StripScriptingAttributes(Vector<Attribute> &attributeVector) const
 {
     ASSERT(false); // BKTODO:
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+scoped_refptr<ComputedStyle> Element::StyleForLayoutObject(void)
+{
+    ASSERT(GetDocument().InStyleRecalc());
+
+    // FIXME: Instead of clearing updates that may have been added from calls to
+    // StyleForElement outside RecalcStyle, we should just never set them if we're
+    // not inside RecalcStyle.
+    if (ElementAnimations *elementAnimations = GetElementAnimations())
+        elementAnimations->CssAnimations().ClearPendingUpdate();
+
+#if 0 // BKTODO: Enable later.
+    if (RuntimeEnabledFeatures::InvisibleDOMEnabled() &&
+        hasAttribute(HTMLNames::invisibleAttr)) {
+        auto style = ComputedStyle::Create();
+        style->SetDisplay(EDisplay::kNone);
+        return style;
+    }
+#endif
+
+    scoped_refptr<ComputedStyle> style = HasCustomStyleCallbacks()
+        ? CustomStyleForLayoutObject()
+        : OriginalStyleForLayoutObject();
+    if (!style)
+    {
+        ASSERT(IsPseudoElement());
+        return nullptr;
+    }
+
+    // StyleForElement() might add active animations so we need to get it again.
+    if (ElementAnimations *elementAnimations = GetElementAnimations())
+    {
+        elementAnimations->CssAnimations().MaybeApplyPendingUpdate(this);
+        elementAnimations->UpdateAnimationFlags(*style);
+    }
+
+    if (style->HasTransform())
+    {
+        if (const CSSPropertyValueSet *inlineStyle = InlineStyle())
+        {
+            style->SetHasInlineTransform(
+                inlineStyle->HasProperty(CSSPropertyTransform)
+                || inlineStyle->HasProperty(CSSPropertyTranslate)
+                || inlineStyle->HasProperty(CSSPropertyRotate)
+                || inlineStyle->HasProperty(CSSPropertyScale));
+        }
+    }
+
+    style->UpdateIsStackingContext(this == GetDocument().documentElement(),
+        IsInTopLayer(),
+        false); // BKTODO: IsSVGForeignObjectElement(*this));
+
+    return style;
+}
+
 bool Element::SupportsFocus(void) const
 {
     ASSERT(false); // BKTODO:

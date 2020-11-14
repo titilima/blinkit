@@ -53,7 +53,7 @@ struct SameSizeAsElementRareData : NodeRareData
 #ifdef BLINKIT_CRAWLER_ONLY
     void* pointersOrStrings[5];
 #else
-    void* pointersOrStrings[7];
+    void* pointersOrStrings[8];
 #endif
 };
 
@@ -88,6 +88,11 @@ AttrNodeList& ElementRareData::EnsureAttrNodeList(void)
 }
 
 #ifndef BLINKIT_CRAWLER_ONLY
+void ElementRareData::ClearComputedStyle(void)
+{
+    m_computedStyle = nullptr;
+}
+
 PseudoElement* ElementRareData::GetPseudoElement(PseudoId pseudoId) const
 {
     if (!m_pseudoElementData)
@@ -98,7 +103,12 @@ PseudoElement* ElementRareData::GetPseudoElement(PseudoId pseudoId) const
     return m_pseudoElementData->GetPseudoElement(pseudoId);
 #endif
 }
-#endif
+
+void ElementRareData::SetComputedStyle(scoped_refptr<ComputedStyle> computedStyle)
+{
+    m_computedStyle = std::move(computedStyle);
+}
+#endif // BLINKIT_CRAWLER_ONLY
 
 static_assert(sizeof(ElementRareData) == sizeof(SameSizeAsElementRareData), "ElementRareData should stay small");
 

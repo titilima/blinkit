@@ -35,6 +35,7 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/core/animation/element_animations.h"
 #include "third_party/blink/renderer/core/dom/named_node_map.h"
 #include "third_party/blink/renderer/core/dom/node_rare_data.h"
 #include "third_party/blink/renderer/core/dom/pseudo_element_data.h"
@@ -89,6 +90,10 @@ public:
     ShadowRoot* GetShadowRoot(void) const { return m_shadowRoot.get(); }
 
     ComputedStyle* GetComputedStyle(void) const { return m_computedStyle.get(); }
+    void SetComputedStyle(scoped_refptr<ComputedStyle> computedStyle);
+    void ClearComputedStyle(void);
+
+    ElementAnimations* GetElementAnimations(void) { return m_elementAnimations.Get(); }
 #endif
 
 private:
@@ -101,6 +106,7 @@ private:
 #ifndef BLINKIT_CRAWLER_ONLY
     std::unique_ptr<ShadowRoot> m_shadowRoot;
     scoped_refptr<ComputedStyle> m_computedStyle;
+    Member<ElementAnimations> m_elementAnimations;
 #endif
     std::unique_ptr<NamedNodeMap> m_attributeMap;
     std::unique_ptr<AttrNodeList> m_attrNodeList;

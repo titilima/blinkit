@@ -917,6 +917,7 @@ void Document::ElementDataCacheClearTimerFired(TimerBase *)
 #ifndef BLINKIT_CRAWLER_ONLY
 StyleResolver& Document::EnsureStyleResolver(void) const
 {
+    ASSERT(!ForCrawler());
     return m_styleEngine->EnsureResolver();
 }
 

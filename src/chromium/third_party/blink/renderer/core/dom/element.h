@@ -200,14 +200,29 @@ public:
     virtual void FinishParsingChildren(void);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    bool HasAnimations(void) const;
+    ElementAnimations* GetElementAnimations(void) const;
+
     void RecalcStyle(StyleRecalcChange change);
     void RecalcStyleForTraversalRootAncestor(void);
 
+    const CSSPropertyValueSet* InlineStyle(void) const
+    {
+        ASSERT(!ForCrawler());
+        if (const ElementData *elementData = GetElementData())
+            return elementData->inline_style_.Get();
+        return nullptr;
+    }
     ComputedStyle* MutableNonLayoutObjectComputedStyle(void) const
     {
         return const_cast<ComputedStyle *>(NonLayoutObjectComputedStyle());
     }
     const ComputedStyle* NonLayoutObjectComputedStyle(void) const;
+    // FIXME: public for LayoutTreeBuilder, we shouldn't expose this though.
+    scoped_refptr<ComputedStyle> StyleForLayoutObject(void);
+
+    bool ShouldStoreNonLayoutObjectComputedStyle(const ComputedStyle &style) const;
+    void StoreNonLayoutObjectComputedStyle(scoped_refptr<ComputedStyle> style);
 
     // Whether this element can receive focus at all. Most elements are not
     // focusable but some elements, such as form controls and links, are. Unlike
@@ -264,6 +279,8 @@ protected:
     virtual AttributeTriggers* TriggersForAttributeName(const QualifiedName &attrName);
 
 #ifndef BLINKIT_CRAWLER_ONLY
+    scoped_refptr<ComputedStyle> OriginalStyleForLayoutObject(void);
+
     virtual void WillRecalcStyle(StyleRecalcChange change);
     virtual void DidRecalcStyle(StyleRecalcChange change);
 
@@ -315,6 +332,11 @@ private:
 
 #ifndef BLINKIT_CRAWLER_ONLY
     StyleRecalcChange RecalcOwnStyle(StyleRecalcChange change);
+    // If the only inherited changes in the parent element are independent,
+    // these changes can be directly propagated to this element (the child).
+    // If these conditions are met, propagates the changes to the current style
+    // and returns the new style. Otherwise, returns null.
+    scoped_refptr<ComputedStyle> PropagateInheritedProperties(StyleRecalcChange change);
     // Returns true if we should traverse shadow including children and pseudo
     // elements for RecalcStyle.
     bool ShouldCallRecalcStyleForChildren(StyleRecalcChange change);

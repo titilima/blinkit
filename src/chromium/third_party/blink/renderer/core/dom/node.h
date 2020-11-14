@@ -378,6 +378,7 @@ public:
             ? m_data.m_rareData->GetNodeRenderingData()->GetNonAttachedStyle()
             : m_data.m_nodeLayoutData->GetNonAttachedStyle();
     }
+    void SetNonAttachedStyle(scoped_refptr<ComputedStyle> nonAttachedStyle);
 
     virtual bool SheetLoaded(void) { return true; }
 
