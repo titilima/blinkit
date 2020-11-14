@@ -716,13 +716,6 @@ void Element::FinishParsingChildren(void)
 #endif
 }
 
-ElementAnimations* Element::GetElementAnimations(void) const
-{
-    if (HasRareData())
-        return GetElementRareData()->GetElementAnimations();
-    return nullptr;
-}
-
 AttrNodeList* Element::GetAttrNodeList(void)
 {
     return HasRareData() ? GetElementRareData()->GetAttrNodeList() : nullptr;
@@ -758,6 +751,15 @@ Attr* Element::getAttributeNodeNS(const AtomicString &namespaceURI, const Atomic
     ASSERT(false); // BKTODO:
     return nullptr;
 }
+
+#ifndef BLINKIT_CRAWLER_ONLY
+ElementAnimations* Element::GetElementAnimations(void) const
+{
+    if (HasRareData())
+        return GetElementRareData()->GetElementAnimations();
+    return nullptr;
+}
+#endif
 
 ElementRareData* Element::GetElementRareData(void) const
 {

@@ -78,7 +78,9 @@
 #include "third_party/blink/renderer/platform/wtf/text/string_buffer.h"
 #include "third_party/blink/renderer/platform/wtf/text/text_encoding_registry.h"
 #include "third_party/blink/renderer/platform/wtf/wtf.h"
-#ifndef BLINKIT_CRAWLER_ONLY
+#ifdef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/platform/wtf/text/character_names.h"
+#else
 #   include "third_party/blink/renderer/core/css/css_font_selector.h"
 #   include "third_party/blink/renderer/core/css/css_style_sheet.h"
 #   include "third_party/blink/renderer/core/css/resolver/font_builder.h"

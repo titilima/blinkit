@@ -35,12 +35,12 @@
 
 #pragma once
 
-#include "third_party/blink/renderer/core/animation/element_animations.h"
 #include "third_party/blink/renderer/core/dom/named_node_map.h"
 #include "third_party/blink/renderer/core/dom/node_rare_data.h"
 #include "third_party/blink/renderer/core/dom/pseudo_element_data.h"
 #include "third_party/blink/renderer/core/intersection_observer/element_intersection_observer_data.h"
 #ifndef BLINKIT_CRAWLER_ONLY
+#   include "third_party/blink/renderer/core/animation/element_animations.h"
 #   if 0 // BKTODO:
 #       include "third_party/blink/renderer/core/dom/dataset_dom_string_map.h"
 #   else
