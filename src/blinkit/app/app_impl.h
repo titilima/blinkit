@@ -21,6 +21,7 @@
 namespace BlinKit {
 
 class CookieJarImpl;
+class GCHeap;
 class LoaderThread;
 #ifndef BLINKIT_CRAWLER_ONLY
 class HeapStorage;
@@ -50,6 +51,7 @@ private:
 
     const int m_mode;
     BkAppClient m_client;
+    std::unique_ptr<GCHeap> m_gcHeap;
     std::unique_ptr<blink::scheduler::WebThreadScheduler> m_mainThreadScheduler;
     std::unique_ptr<LoaderThread> m_loaderThread;
 #ifndef BLINKIT_CRAWLER_ONLY
