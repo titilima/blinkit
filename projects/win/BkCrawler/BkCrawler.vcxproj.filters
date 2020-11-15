@@ -34,6 +34,9 @@
     <Filter Include="loader\tasks">
       <UniqueIdentifier>{c1af0a58-024c-4a9d-abd1-51186ed4e646}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gc">
+      <UniqueIdentifier>{175564ad-a6a9-42ec-bb4c-1f3b29033f7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\sdk\include\bk_app.h">
@@ -135,6 +138,15 @@
     <ClInclude Include="..\..\..\src\blinkit\loader\win_loader_thread.h">
       <Filter>loader</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_def.h">
+      <Filter>gc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_heap.h">
+      <Filter>gc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\blinkit\gc\gc_visitor.h">
+      <Filter>gc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BkCrawler.def">
@@ -222,6 +234,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\blinkit\loader\win_loader_thread.cpp">
       <Filter>loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\gc\gc_heap.cpp">
+      <Filter>gc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\blinkit\gc\gc_visitor.cpp">
+      <Filter>gc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
