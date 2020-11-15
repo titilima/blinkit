@@ -54,7 +54,7 @@ namespace blink {
 
 class ChildNodeList;
 
-class NodeListsNodeData final : public GarbageCollected<NodeListsNodeData>
+class NodeListsNodeData final
 {
 public:
     static std::unique_ptr<NodeListsNodeData> Create(void) { return base::WrapUnique(new NodeListsNodeData); }

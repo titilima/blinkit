@@ -71,7 +71,7 @@ struct FiringEventIterator {
 };
 using FiringEventIteratorVector = std::vector<FiringEventIterator>;
 
-class EventTargetData final : public GarbageCollectedFinalized<EventTargetData>
+class EventTargetData final
 {
 public:
     EventTargetData(void) = default;

@@ -48,7 +48,7 @@ class Event;
 class LocalDOMWindow;
 class NodeEventContext;
 
-class WindowEventContext : public GarbageCollected<WindowEventContext> {
+class WindowEventContext {
  public:
   WindowEventContext(Event&, const NodeEventContext& top_node_event_context);
 

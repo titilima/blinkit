@@ -55,7 +55,7 @@ class TreeScope;
 class TreeScopeEventContext;
 class WindowEventContext;
 
-class EventPath final : public GarbageCollectedFinalized<EventPath>
+class EventPath final
 {
 public:
     explicit EventPath(Node &node, Event *event = nullptr);

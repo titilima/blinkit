@@ -54,7 +54,7 @@ namespace blink {
 class LocalFrame;
 class ScheduledNavigation;
 
-class NavigationScheduler final : public GarbageCollectedFinalized<NavigationScheduler>
+class NavigationScheduler final
 {
 public:
     static std::unique_ptr<NavigationScheduler> Create(LocalFrame *frame)

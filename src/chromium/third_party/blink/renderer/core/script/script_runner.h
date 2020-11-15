@@ -53,7 +53,7 @@ class Document;
 class PendingScript;
 class ScriptLoader;
 
-class ScriptRunner final : public GarbageCollectedFinalized<ScriptRunner>
+class ScriptRunner final
 {
 public:
     static std::unique_ptr<ScriptRunner> Create(Document *document)

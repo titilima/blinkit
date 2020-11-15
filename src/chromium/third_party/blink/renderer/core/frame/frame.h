@@ -56,7 +56,7 @@ class Page;
 
 enum class FrameDetachType { kRemove, kSwap };
 
-class Frame : public GarbageCollectedFinalized<Frame>
+class Frame
 {
 public:
     virtual ~Frame(void);

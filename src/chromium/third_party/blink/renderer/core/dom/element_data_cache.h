@@ -51,7 +51,7 @@ class Attribute;
 class ElementData;
 class ShareableElementData;
 
-class ElementDataCache final : public GarbageCollected<ElementDataCache>
+class ElementDataCache final
 {
 public:
     static std::unique_ptr<ElementDataCache> Create(void)
