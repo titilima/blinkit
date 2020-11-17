@@ -28,29 +28,15 @@ GCHeap::GCHeap(void)
 GCHeap::~GCHeap(void)
 {
     ASSERT(this == theHeap);
-    ASSERT(m_gcObjects.empty());
+    ASSERT(m_memberObjects.empty());
+    ASSERT(m_rootObjects.empty());
     theHeap = nullptr;
 }
 
-void GCHeap::Add(GCObjectHeader *obj)
-{
-    void *p = obj->Object();
-    ASSERT(std::end(m_gcObjects) == m_gcObjects.find(p));
-    m_gcObjects.insert(p);
-}
-
-void GCHeap::AddRootObjectImpl(void *p, Tracer tracer)
-{
-    ASSERT(IsMainThread());
-    auto &rootObjects = theHeap->m_rootObjects;
-    ASSERT(std::end(rootObjects) == rootObjects.find(p));
-    rootObjects[p] = tracer;
-}
-
 #ifdef NDEBUG
-GCObjectHeader* GCHeap::Alloc(size_t totalSize, GCTable *gcPtr)
+GCObjectHeader* GCHeap::Alloc(GCObjectType type, size_t totalSize, GCTable *gcPtr)
 #else
-GCObjectHeader* GCHeap::Alloc(size_t totalSize, GCTable *gcPtr, const char *name)
+GCObjectHeader* GCHeap::Alloc(GCObjectType type, size_t totalSize, GCTable *gcPtr, const char *name)
 #endif
 {
     ASSERT(IsMainThread());
@@ -61,41 +47,55 @@ GCObjectHeader* GCHeap::Alloc(size_t totalSize, GCTable *gcPtr, const char *name
 #ifndef NDEBUG
         ret->name = name;
 #endif
+        if (GCObjectType::Root == type)
+            m_rootObjects.insert(ret->Object());
+        else
+            m_memberObjects.insert(ret->Object());
         return ret;
     }
     return nullptr;
 }
 
-void GCHeap::CollectGarbageForRootObjectImpl(void *p)
+void GCHeap::FreeRootObject(GCObjectHeader *hdr)
 {
     ASSERT(IsMainThread());
 
-    auto &rootObjects = theHeap->m_rootObjects;
-    auto it = rootObjects.find(p);
-    if (std::end(rootObjects) == it)
-        return;
+    ASSERT(std::end(m_rootObjects) != m_rootObjects.find(hdr->Object()));
+    m_rootObjects.erase(hdr->Object());
+    free(hdr);
 
-    GCVisitor visitor;
-    it->second(p, &visitor);
-    rootObjects.erase(it);
+    GCVisitor visitor(m_memberObjects);
+    for (void *rootObject : m_rootObjects)
+    {
+        GCObjectHeader::From(rootObject)->gcPtr->Tracer(rootObject, &visitor);
+    }
+    for (void *memberObject : visitor.ObjectsToGC())
+    {
+        m_memberObjects.erase(memberObject);
 
-    visitor.SwitchToSaveMode();
-    for (const auto &it : rootObjects)
-        it.second(it.first, &visitor);
-
-    ASSERT(false); // BKTODO:
+        hdr = GCObjectHeader::From(memberObject);
+        hdr->gcPtr->Deleter(memberObject);
+        free(hdr);
+    }
 }
 
 #ifdef NDEBUG
-void* GCHeapAlloc(size_t size, GCTable *gcPtr)
+void* GCHeapAlloc(GCObjectType type, size_t size, GCTable *gcPtr)
 {
-    return theHeap->Alloc(size + sizeof(GCObjectHeader), gcPtr);
+    GCObjectHeader *hdr = theHeap->Alloc(type, size + sizeof(GCObjectHeader), gcPtr);
+    return hdr->Object();
 }
 #else
-void* GCHeapAlloc(size_t size, GCTable *gcPtr, const char *name)
+void* GCHeapAlloc(GCObjectType type, size_t size, GCTable *gcPtr, const char *name)
 {
-    return theHeap->Alloc(size + sizeof(GCObjectHeader), gcPtr, name);
+    GCObjectHeader *hdr = theHeap->Alloc(type, size + sizeof(GCObjectHeader), gcPtr, name);
+    return hdr->Object();
 }
 #endif
+
+void GCHeapFreeRootObject(void *p)
+{
+    theHeap->FreeRootObject(GCObjectHeader::From(p));
+}
 
 } // namespace BlinKit

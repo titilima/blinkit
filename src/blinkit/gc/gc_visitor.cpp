@@ -11,26 +11,25 @@
 
 #include "gc_visitor.h"
 
+#include "blinkit/gc/gc_def.h"
+
 namespace BlinKit {
 
-GCVisitor::GCVisitor(void) : m_currentWorker(&GCVisitor::Collect)
+GCVisitor::GCVisitor(const std::unordered_set<void *> &memberObjects) : m_objectsToGC(memberObjects)
 {
-}
-
-void GCVisitor::Collect(void *p)
-{
-    ASSERT(false); // BKTODO:
-}
-
-void GCVisitor::Save(void *p)
-{
-    ASSERT(false); // BKTODO:
 }
 
 void GCVisitor::TraceImpl(void *p)
 {
-    if (nullptr != p)
-        (this->*m_currentWorker)(p);
+    if (nullptr == p)
+        return;
+
+    auto it = m_objectsToGC.find(p);
+    if (std::end(m_objectsToGC) == it)
+        return;
+
+    m_objectsToGC.erase(p);
+    GCObjectHeader::From(p)->gcPtr->Tracer(p, this);
 }
 
 } // namespace BlinKit

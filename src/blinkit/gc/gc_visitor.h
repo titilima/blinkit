@@ -22,18 +22,13 @@ namespace BlinKit {
 class GCVisitor final : public blink::Visitor
 {
 public:
-    GCVisitor(void);
+    GCVisitor(const std::unordered_set<void *> &memberObjects);
 
-    void SwitchToSaveMode(void) { m_currentWorker = &GCVisitor::Save; }
+    const std::unordered_set<void *>& ObjectsToGC(void) const { return m_objectsToGC; }
 private:
-    void Collect(void *p);
-    void Save(void *p);
     void TraceImpl(void *p) override;
 
-    using TraceWorker = void (GCVisitor::*)(void*);
-
-    std::unordered_set<void *> m_objects;
-    TraceWorker m_currentWorker;
+    std::unordered_set<void *> m_objectsToGC;
 };
 
 } // namespace BlinKit

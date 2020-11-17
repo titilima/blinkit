@@ -14,13 +14,26 @@
 
 #pragma once
 
+#include "third_party/blink/renderer/platform/heap/garbage_collected.h"
+#include "third_party/blink/renderer/platform/heap/member.h"
+
 namespace blink {
 
-class Visitor final
+class Visitor
 {
 public:
     template <typename T>
+    inline void Trace(Member<T> &o)
+    {
+        TraceImpl(o.Get());
+    }
+
+    template <typename T>
     inline void Trace(const T &) {}
+protected:
+    Visitor(void) = default;
+
+    virtual void TraceImpl(void *p) = 0;
 };
 
 } // namespace blink

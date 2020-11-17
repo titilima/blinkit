@@ -46,11 +46,16 @@ struct GCObjectHeader {
     }
 };
 
+enum class GCObjectType {
+    Member = 0, Root
+};
+
 #ifdef NDEBUG
-void* GCHeapAlloc(size_t size, GCTable *gcPtr);
+void* GCHeapAlloc(GCObjectType type, size_t size, GCTable *gcPtr);
 #else
-void* GCHeapAlloc(size_t size, GCTable *gcPtr, const char *name);
+void* GCHeapAlloc(GCObjectType type, size_t size, GCTable *gcPtr, const char *name);
 #endif
+void GCHeapFreeRootObject(void *p);
 
 template <class T>
 class GCRootImpl
